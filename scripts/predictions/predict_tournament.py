@@ -1092,6 +1092,117 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     except Exception as e:
         print(f"  DPWT form data not available: {e}")
 
+    # ADD DPWT STROKES GAINED STATS (more accurate than estimated SG)
+    # For players with actual DPWT SG stats, use those instead of estimates
+    try:
+        dpwt_sg_path = HISTORICAL_DIR / "dpwt_stats_2026_strokes-gained-total.csv"
+        if dpwt_sg_path.exists():
+            dpwt_sg = pd.read_csv(dpwt_sg_path)
+
+            # DPWT uses different player IDs - need to map via name matching
+            # Create name lookup (DPWT uses "Rory MCILROY" format)
+            dpwt_sg['name_lower'] = dpwt_sg['player_name'].str.lower().str.replace(' ', '')
+
+            sg_filled = 0
+            for idx, row in features_df.iterrows():
+                # Skip if player already has good SG data
+                if pd.notna(row.get('sg_total')) and abs(row.get('sg_total', 0)) > 0.1:
+                    continue
+
+                # Try to match by name
+                player_name = str(row.get('player_name', '')).lower().replace(',', '').replace(' ', '')
+                # Handle "LastName, FirstName" -> "firstnamelastname"
+                if ',' in str(row.get('player_name', '')):
+                    parts = str(row.get('player_name', '')).split(',')
+                    player_name = (parts[1].strip() + parts[0].strip()).lower().replace(' ', '')
+
+                # Find in DPWT stats
+                match = dpwt_sg[dpwt_sg['name_lower'].str.contains(player_name[:6], case=False, na=False)]
+                if len(match) > 0:
+                    dpwt_sg_val = match.iloc[0]['average']
+                    features_df.at[idx, 'sg_total'] = dpwt_sg_val
+                    sg_filled += 1
+
+            if sg_filled > 0:
+                print(f"  ✓ Added DPWT SG:Total for {sg_filled} players (actual European Tour stats)")
+
+            # Also load component SG stats if available
+            sg_components = {
+                'sg_ott': 'strokes-gained-off-the-tee',
+                'sg_app': 'strokes-gained-approach-the-green',
+                'sg_arg': 'strokes-gained-around-the-green',
+                'sg_putt': 'strokes-gained-putting',
+            }
+            for col, filename in sg_components.items():
+                comp_path = HISTORICAL_DIR / f"dpwt_stats_2026_{filename}.csv"
+                if comp_path.exists() and col in features_df.columns:
+                    comp_df = pd.read_csv(comp_path)
+                    comp_df['name_lower'] = comp_df['player_name'].str.lower().str.replace(' ', '')
+                    for idx, row in features_df.iterrows():
+                        if pd.notna(row.get(col)) and abs(row.get(col, 0)) > 0.1:
+                            continue
+                        player_name = str(row.get('player_name', '')).lower().replace(',', '').replace(' ', '')
+                        if ',' in str(row.get('player_name', '')):
+                            parts = str(row.get('player_name', '')).split(',')
+                            player_name = (parts[1].strip() + parts[0].strip()).lower().replace(' ', '')
+                        match = comp_df[comp_df['name_lower'].str.contains(player_name[:6], case=False, na=False)]
+                        if len(match) > 0:
+                            features_df.at[idx, col] = match.iloc[0]['average']
+    except Exception as e:
+        print(f"  DPWT SG stats not available: {e}")
+
+    # FALLBACK TO 2025 STATS FOR PLAYERS WITH NO 2026 DATA
+    # Players who only missed cuts in 2026 have no SG stats - use their 2025 season stats
+    try:
+        stats_2025_path = HISTORICAL_DIR / "tournament_stats_2025.csv"
+        if stats_2025_path.exists():
+            stats_2025 = pd.read_csv(stats_2025_path)
+            stats_2025_avg = stats_2025[stats_2025['stat_component'] == 'Avg'].copy()
+
+            # Pivot to get player season averages
+            if len(stats_2025_avg) > 0:
+                # Group by player and stat to get season average
+                season_avg = stats_2025_avg.groupby(['player_id', 'stat_id'])['stat_value'].mean().reset_index()
+
+                # Map stat IDs to column names
+                stat_id_map = {
+                    2567: 'sg_total',
+                    2568: 'sg_ott',
+                    2569: 'sg_app',
+                    2564: 'sg_putt',
+                    2674: 'sg_t2g'
+                }
+
+                fallback_count = 0
+                for idx, row in features_df.iterrows():
+                    pid = row['player_id']
+
+                    # Check if player has weak/missing SG data
+                    has_weak_sg = (
+                        pd.isna(row.get('sg_total')) or
+                        abs(row.get('sg_total', 0)) < 0.01
+                    )
+
+                    if has_weak_sg:
+                        player_2025 = season_avg[season_avg['player_id'] == pid]
+                        if len(player_2025) > 0:
+                            filled_any = False
+                            for stat_id, col_name in stat_id_map.items():
+                                if col_name in features_df.columns:
+                                    stat_row = player_2025[player_2025['stat_id'] == stat_id]
+                                    if len(stat_row) > 0:
+                                        current_val = features_df.at[idx, col_name]
+                                        if pd.isna(current_val) or abs(current_val) < 0.01:
+                                            features_df.at[idx, col_name] = stat_row.iloc[0]['stat_value']
+                                            filled_any = True
+                            if filled_any:
+                                fallback_count += 1
+
+                if fallback_count > 0:
+                    print(f"  ✓ Used 2025 stats for {fallback_count} players (missed cuts in 2026)")
+    except Exception as e:
+        print(f"  2025 fallback stats not available: {e}")
+
     # ADD DATA GOLF COURSE FIT FEATURES
     # Uses season_sg_* (prior performance) × course importance weights
     print("  Adding Data Golf course fit features...")

@@ -56,57 +56,30 @@ REQUEST_HEADERS = {
     "X-Requested-With": "XMLHttpRequest",
 }
 
-# Stat type aliases (CLI-friendly)
+# Stat type aliases (CLI-friendly) - only stats that actually work
 STAT_TYPE_ALIASES = {
     "sg_total": "strokes-gained-total",
     "sg_ott": "strokes-gained-off-the-tee",
     "sg_app": "strokes-gained-approach-the-green",
     "sg_arg": "strokes-gained-around-the-green",
     "sg_putt": "strokes-gained-putting",
-    "scoring_avg": "scoring-average",
     "driving_distance": "driving-distance",
-    "gir": "greens-in-regulation",
+    "driving_accuracy": "driving-accuracy",
 }
 
-# Fallback slugs for stats that differ from display labels
-STAT_TYPE_FALLBACKS = {
-    "scoring-average": [
-        "scoring-average",
-        "stroke-average",
-        "scoring-average-per-round",
-        "stroke-average-per-round",
-    ],
-    "greens-in-regulation": [
-        "greens-in-regulation",
-        "greens-in-regulation-percentage",
-        "gir-percentage",
-    ],
-    "birdies": [
-        "birdies",
-        "birdies-per-round",
-        "birdies-or-better",
-        "birdies-per-round-average",
-    ],
-    "bogeys": [
-        "bogeys",
-        "bogeys-per-round",
-        "bogey-avoidance",
-        "bogeys-per-round-average",
-    ],
-}
+# No fallbacks - API only supports exact slugs listed in DEFAULT_STAT_TYPES
+STAT_TYPE_FALLBACKS = {}
 
 # Default stat set to pull in batch mode
+# Only these stats are available from the DPWT API (others return 204)
 DEFAULT_STAT_TYPES = [
     "strokes-gained-total",
     "strokes-gained-off-the-tee",
     "strokes-gained-approach-the-green",
     "strokes-gained-around-the-green",
     "strokes-gained-putting",
-    "scoring-average",
     "driving-distance",
-    "greens-in-regulation",
-    "birdies",
-    "bogeys",
+    "driving-accuracy",
 ]
 
 
@@ -626,7 +599,13 @@ def _stat_type_candidates(stat_type: str) -> List[str]:
     return out
 
 
-def fetch_dpwt_stats(year: int, stat_type: str, headers: Optional[Dict[str, str]] = None, debug: bool = False) -> Optional[Dict]:
+def fetch_dpwt_stats(
+    year: int,
+    stat_type: str,
+    headers: Optional[Dict[str, str]] = None,
+    debug: bool = False,
+    debug_dir: Optional[Path] = None
+) -> Optional[Dict]:
     """Fetch DPWT stats leaderboard for a season/stat type."""
     stat_type = _normalize_stat_type(stat_type)
     url = DPWT_API_BASE + DPWT_STATS_BY_SEASON.format(season=year, stat_type=stat_type)
@@ -641,7 +620,18 @@ def fetch_dpwt_stats(year: int, stat_type: str, headers: Optional[Dict[str, str]
         except Exception:
             if debug:
                 snippet = response.text[:200].replace("\n", " ")
-                print(f"  Non-JSON response for {stat_type}: {snippet}")
+                ctype = response.headers.get("Content-Type", "")
+                print(f"  Non-JSON response for {stat_type}: status={response.status_code} content-type={ctype} len={len(response.text)}")
+                if snippet:
+                    print(f"  Snippet: {snippet}")
+                if debug_dir is not None:
+                    debug_dir.mkdir(parents=True, exist_ok=True)
+                    out = debug_dir / f"dpwt_{year}_{stat_type}.txt"
+                    try:
+                        out.write_text(response.text)
+                        print(f"  Wrote debug body: {out}")
+                    except Exception:
+                        pass
             return None
     except requests.exceptions.RequestException as e:
         print(f"  Error fetching DPWT stats: {e}")
@@ -813,6 +803,12 @@ def main():
         action="store_true",
         help="Print non-JSON response snippets for failing stat types"
     )
+    parser.add_argument(
+        "--debug-dir",
+        type=str,
+        default="",
+        help="Write non-JSON responses to this directory"
+    )
 
     args = parser.parse_args()
 
@@ -835,12 +831,19 @@ def main():
         if not stat_types:
             stat_types = [_normalize_stat_type(args.stat_type)]
 
+        debug_dir = Path(args.debug_dir) if args.debug_dir else None
         for st in stat_types:
             candidates = _stat_type_candidates(st)
             data = None
             used_slug = None
             for slug in candidates:
-                data = fetch_dpwt_stats(args.year, slug, headers=extra_headers, debug=args.debug)
+                data = fetch_dpwt_stats(
+                    args.year,
+                    slug,
+                    headers=extra_headers,
+                    debug=args.debug,
+                    debug_dir=debug_dir
+                )
                 if data and data.get("statsData"):
                     used_slug = slug
                     break
