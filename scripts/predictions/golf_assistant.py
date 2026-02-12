@@ -34,8 +34,8 @@ import re
 import shlex
 import subprocess
 
-# Project paths
-PROJECT_ROOT = Path("/Users/jacklegnon/Desktop/golf_data")
+# Project paths - use relative path from this file
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 

@@ -30,7 +30,7 @@ from collections import defaultdict
 import re
 
 
-PROJECT_ROOT = Path("/Users/jacklegnon/Desktop/golf_data")
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 BETTING_PROFILES_DIR = DATA_DIR / "betting_profiles"
 TOURNAMENT_COURSES_PATH = DATA_DIR / "reference" / "tournament_courses.json"

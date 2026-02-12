@@ -22,7 +22,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-PROJECT_ROOT = Path("/Users/jacklegnon/Desktop/golf_data")
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 OUTPUT_DIR = DATA_DIR / "expert_picks"
 

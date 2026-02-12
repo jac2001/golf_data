@@ -35,7 +35,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Paths
-PROJECT_ROOT = Path("/Users/jacklegnon/Desktop/golf_data")
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 MODEL_DIR = DATA_DIR / "models"
 PROCESSED_DIR = DATA_DIR / "processed"

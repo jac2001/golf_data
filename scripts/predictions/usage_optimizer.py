@@ -27,7 +27,7 @@ from datetime import datetime
 from typing import Optional, Dict, List, Any, Tuple
 
 # Project paths
-PROJECT_ROOT = Path("/Users/jacklegnon/Desktop/golf_data")
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 

@@ -23,7 +23,8 @@ from scripts.predictions.cut_model import add_cut_probability, get_cut_risk_summ
 
 
 #Paths
-DATA_DIR = Path('/Users/jacklegnon/Desktop/golf_data/data')
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+DATA_DIR = PROJECT_ROOT / 'data'
 MODEL_DIR = DATA_DIR / 'models'
 PROCESSED_DIR = DATA_DIR / 'processed'
 HISTORICAL_DIR = DATA_DIR / 'historical'  # Fixed: should be 'historical' not 'historical_data'
