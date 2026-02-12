@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pkl
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Claude
+.claude/
+
+# Large data files (optional - uncomment if you want to exclude)
+# data/historical/*.csv
+# data/models/*.pkl
+
+# Temp files
+*.tmp
+*.log
+
+# Nested repos
+FantasyGolf/
+golf_data/

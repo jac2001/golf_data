@@ -1,0 +1,37 @@
+{
+  "players": {
+    "chris gotterup": {
+      "name": "Chris Gotterup",
+      "uses": [
+        {
+          "tournament": "Waste Management Phoenix Open",
+          "date": "2026-02-04T23:47:45.663728"
+        }
+      ],
+      "total_uses": 1
+    },
+    "ben griffin": {
+      "name": "Ben Griffin",
+      "uses": [
+        {
+          "tournament": "Waste Management Phoenix Open",
+          "date": "2026-02-04T23:47:45.663896"
+        }
+      ],
+      "total_uses": 1
+    },
+    "pierceson coody": {
+      "name": "Pierceson Coody",
+      "uses": [
+        {
+          "tournament": "Waste Management Phoenix Open",
+          "date": "2026-02-04T23:47:45.663985"
+        }
+      ],
+      "total_uses": 1
+    }
+  },
+  "tournaments_used": [
+    "Waste Management Phoenix Open"
+  ]
+}

@@ -1,0 +1,1727 @@
+import pandas as pd 
+import numpy as np 
+import argparse
+import joblib
+from pathlib import Path
+import sys 
+from datetime import datetime
+import re
+# Ensure project root is on path so `scripts.*` imports work when running directly
+ROOT_DIR = Path(__file__).resolve().parents[2]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from scripts.scrapers.fetch_world_rankings import fetch_world_rankings
+from scripts.predictions.prize_distributions import calculate_expected_value_detailed
+from scripts.predictions.odds_ensemble import add_odds_to_predictions
+from scripts.features.recent_form import get_form_features_for_field, load_form_stats
+from scripts.predictions.generate_insights import InsightsGenerator
+from scripts.predictions.prediction_tracker import PredictionTracker
+from scripts.predictions.usage_optimizer import UsageTracker, UsageOptimizer
+from scripts.predictions.calibration import ProbabilityCalibrator
+from scripts.predictions.cut_model import add_cut_probability, get_cut_risk_summary
+
+
+#Paths
+DATA_DIR = Path('/Users/jacklegnon/Desktop/golf_data/data')
+MODEL_DIR = DATA_DIR / 'models'
+PROCESSED_DIR = DATA_DIR / 'processed'
+HISTORICAL_DIR = DATA_DIR / 'historical'  # Fixed: should be 'historical' not 'historical_data'
+
+
+def _latest_year_for(prefix: str, base_dir: Path = HISTORICAL_DIR):
+    """Return latest year found for files like '<prefix><year>.csv'."""
+    years = []
+    for path in base_dir.glob(f"{prefix}*.csv"):
+        match = re.search(rf"{re.escape(prefix)}(\d{{4}})", path.stem)
+        if match:
+            years.append(int(match.group(1)))
+    return max(years) if years else None
+
+
+def write_data_dictionary(predictions_df: pd.DataFrame, output_path: Path):
+    """Write a data dictionary for prediction outputs."""
+    descriptions = {
+        # IDs / names
+        "player_id": "PGA Tour player ID (primary key)",
+        "player_name": "Player name",
+        # Recent SG
+        "sg_total": "Recent SG:Total (form window)",
+        "sg_ott": "Recent SG:Off-the-Tee",
+        "sg_app": "Recent SG:Approach",
+        "sg_arg": "Recent SG:Around-the-Green",
+        "sg_putt": "Recent SG:Putting",
+        "sg_t2g": "Recent SG:Tee-to-Green",
+        # Season SG
+        "season_sg_total": "Season-to-date SG:Total average",
+        "season_sg_ott": "Season SG:Off-the-Tee average",
+        "season_sg_app": "Season SG:Approach average",
+        "season_sg_arg": "Season SG:Around-the-Green average",
+        "season_sg_putt": "Season SG:Putting average",
+        "season_sg_t2g": "Season SG:Tee-to-Green average",
+        # Course history
+        "hist_times_played": "Number of starts at this course",
+        "hist_avg_finish": "Average finish at this course",
+        "hist_best_finish": "Best finish at this course",
+        "hist_wins": "Wins at this course",
+        "hist_top5s": "Top-5s at this course",
+        "hist_top10s": "Top-10s at this course",
+        "hist_cut_rate": "Cut-made rate at this course (0-1)",
+        "hist_missed_cuts": "Missed cuts at this course",
+        "has_won_here": "1/0 flag: has won at this course",
+        "has_course_history": "1/0 flag: has course history",
+        "has_made_cut_here": "1/0 flag: has made a cut here",
+        # Venue / field
+        "venue_avg_finish": "Venue average finish baseline (field-level)",
+        "venue_finish_std": "Venue finish standard deviation (volatility)",
+        "world_rank": "Current world rank (lower is better)",
+        "field_avg_rank": "Average world rank of the field",
+        "field_median_rank": "Median world rank of the field",
+        # Form features
+        "form_trend": "SG:Total trend over recent events (positive = improving)",
+        "finish_consistency": "Normalized finish volatility (lower = steadier)",
+        "recent_top10s": "Recency-weighted top-10 count over last N events",
+        "recent_top5s": "Top-5s over last N events",
+        "recent_wins": "Wins over last N events",
+        "recent_cuts_made": "Cuts made over last N events",
+        "recent_cuts_pct": "Cut-made % over last N events (0-1)",
+        "recent_birdie_avg": "Recency-weighted birdies per round",
+        "recent_bogey_avg": "Recency-weighted bogeys per round",
+        "recent_scoring_avg": "Recency-weighted scoring average",
+        "recent_gir_pct": "Recency-weighted GIR%",
+        "recent_scrambling": "Recency-weighted scrambling%",
+        "recent_bounce_back": "Recency-weighted bounce-back%",
+        "recent_final_round": "Recency-weighted final-round scoring",
+        "recent_sand_save": "Recency-weighted sand save%",
+        # Course fit
+        "dg_fit_ott": "Course-fit component: Off-the-Tee",
+        "dg_fit_app": "Course-fit component: Approach",
+        "dg_fit_arg": "Course-fit component: Around-the-Green",
+        "dg_fit_putt": "Course-fit component: Putting",
+        "dg_fit_total": "Total course-fit score (sum of components)",
+        # Model outputs
+        "win_prob": "Predicted win probability (0-1)",
+        "top5_prob": "Predicted top-5 probability (0-1)",
+        "top10_prob": "Predicted top-10 probability (0-1)",
+        "expected_value": "Expected earnings value based on purse + probabilities (USD)",
+        # Cut probability
+        "cut_prob": "Probability of making the cut (0-1, higher = safer)",
+        "cut_risk": "Cut risk category: LOW (>85%), MEDIUM (65-85%), ELEVATED (45-65%), HIGH (<45%)",
+        "miss_cut_prob": "Probability of missing the cut (1 - cut_prob)",
+    }
+
+    lines = [
+        "# Predictions Data Dictionary",
+        "",
+        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        "",
+        "| Column | Description |",
+        "|--------|-------------|",
+    ]
+
+    for col in predictions_df.columns:
+        desc = descriptions.get(col, "No description available")
+        lines.append(f"| {col} | {desc} |")
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines))
+
+
+def get_current_world_rankings() -> pd.DataFrame:
+    """
+    Fetch current world rankings from saved file or API.
+    Returns DataFrame with player_id and world_rank.
+    """
+    from pathlib import Path
+    from datetime import datetime
+    
+    # Try to load most recent rankings file
+    rankings_dir = Path("data/rankings")
+    current_year = datetime.now().year
+    
+    rankings_file = rankings_dir / f"owgr_{current_year}.csv"
+    
+    if rankings_file.exists():
+        df = pd.read_csv(rankings_file)
+        print(f"  Loaded {len(df)} world rankings from {rankings_file}")
+        return df[['player_id', 'world_rank']]
+    
+    # Fallback: try to fetch fresh rankings
+    try:
+        import sys
+        sys.path.insert(0, 'scripts/scrapers')
+        
+        df = fetch_world_rankings(current_year)
+        if len(df) > 0:
+            # Save for future use
+            rankings_dir.mkdir(parents=True, exist_ok=True)
+            df.to_csv(rankings_file, index=False)
+            return df[['player_id', 'world_rank']]
+    except Exception as e:
+        print(f"  Warning: Could not fetch rankings: {e}")
+    
+    return pd.DataFrame(columns=['player_id', 'world_rank'])
+   
+
+
+def load_models():
+    """Load trained win/top5/top10 models"""
+    models = {
+        'win': joblib.load(MODEL_DIR / 'win_model_final.pkl'),
+        'top5': joblib.load(MODEL_DIR / 'top5_model_final.pkl'),
+        'top10': joblib.load(MODEL_DIR / 'top10_model_final.pkl')
+    }
+    return models
+
+def load_reference_data():
+    """Load historical data for feature engineering"""
+    # Master data (for course history lookup and venue stats)
+    master_df = pd.read_csv(PROCESSED_DIR / 'master_training_data_2020_2025.csv')
+
+    # Current year SG stats
+    stats_current = pd.read_csv(HISTORICAL_DIR / 'tournament_stats_2025.csv')
+
+    # Prior year SG stats (for early-season blending)
+    prior_year = datetime.now().year - 1
+    prior_stats_file = HISTORICAL_DIR / f'tournament_stats_{prior_year}.csv'
+    if prior_stats_file.exists():
+        stats_prior = pd.read_csv(prior_stats_file)
+        print(f"  Loaded prior year stats ({prior_year}) for early-season blending")
+    else:
+        stats_prior = pd.DataFrame()
+        print(f"  Prior year stats not found, skipping blend")
+
+    return master_df, stats_current, stats_prior
+
+
+def enrich_field_names(field_df: pd.DataFrame, master_df: pd.DataFrame, tournament_id: str = None) -> pd.DataFrame:
+    """
+    Fill missing/placeholder player names in the field using master data and odds files.
+    - If player_name is empty or looks like 'Player <id>', try master_df map.
+    - If tournament_id is provided, try odds CSV (data/odds/pga_odds_<id>.csv) for names.
+    - Fallback to players DB (data/players/pga_players_*.csv) and OWGR files.
+    """
+    df = field_df.copy()
+
+    # Build master map
+    master_map = dict(zip(master_df['player_id'], master_df['player_name']))
+
+    # Player database map (latest first)
+    player_map = {}
+    players_dir = DATA_DIR / "players"
+    if players_dir.exists():
+        player_files = sorted(players_dir.glob("pga_players_*.csv"),
+                              key=lambda f: f.stat().st_mtime,
+                              reverse=True)
+        for pf in player_files:
+            try:
+                pdf = pd.read_csv(pf, usecols=["player_id", "player_name"])
+                pdf = pdf.dropna(subset=["player_id"])
+                pdf["player_id"] = pdf["player_id"].astype(int)
+                player_map.update(dict(zip(pdf["player_id"], pdf["player_name"])))
+            except Exception as e:
+                print(f"  Could not load player file {pf.name}: {e}")
+
+    # OWGR ranking map as an additional source
+    owgr_map = {}
+    rankings_dir = DATA_DIR / "rankings"
+    if rankings_dir.exists():
+        ranking_files = sorted(rankings_dir.glob("owgr_*.csv"),
+                               key=lambda f: f.stat().st_mtime,
+                               reverse=True)
+        for rf in ranking_files:
+            try:
+                rdf = pd.read_csv(rf, usecols=["player_id", "player_name"])
+                rdf = rdf.dropna(subset=["player_id"])
+                rdf["player_id"] = rdf["player_id"].astype(int)
+                owgr_map.update(dict(zip(rdf["player_id"], rdf["player_name"])))
+            except Exception as e:
+                print(f"  Could not load rankings file {rf.name}: {e}")
+
+    # Optional odds map
+    odds_map = {}
+    if tournament_id:
+        odds_path = DATA_DIR / "odds" / f"pga_odds_{tournament_id}.csv"
+        if odds_path.exists():
+            try:
+                odds_df = pd.read_csv(odds_path)
+                odds_map = dict(zip(odds_df['player_id'], odds_df['player_name']))
+                print(f"  Using odds names from {odds_path.name}")
+            except Exception as e:
+                print(f"  Could not read odds file for names: {e}")
+
+    fixed_names = []
+    for _, row in df.iterrows():
+        pid = row.get('player_id')
+        name = row.get('player_name', '')
+        placeholder = str(name).startswith('Player ') or pd.isna(name) or str(name).strip() == ''
+        if not placeholder:
+            fixed_names.append(name)
+            continue
+
+        # Try odds map first, then master, players DB, then OWGR
+        mapped = None
+        try:
+            pid_int = int(pid) if pd.notna(pid) else pid
+        except Exception:
+            pid_int = pid
+
+        if pd.notna(pid_int):
+            mapped = odds_map.get(pid_int) or master_map.get(pid_int) or player_map.get(pid_int) or owgr_map.get(pid_int)
+
+        fixed_names.append(mapped or name)
+
+    df['player_name'] = fixed_names
+    return df
+
+
+
+def load_prior_year_stats(year: int = None) -> pd.DataFrame:
+    """
+    Load prior year's tournament stats for baseline SG calculations.
+    
+    Early in the season, current year data is sparse. Prior year provides
+    a stable baseline that gets less weight as the season progresses.
+    
+    Args:
+        year: Prior year to load (defaults to current year - 1)
+    
+    Returns:
+        DataFrame with prior year tournament stats
+    """
+    if year is None:
+        year = datetime.now().year - 1
+    prior_stats_file = HISTORICAL_DIR / f'tournament_stats_{year}.csv'
+    if prior_stats_file.exists():
+        print(f"  Loaded prior year ({year}) stats for baseline SG calculations")
+        return pd.read_csv(prior_stats_file)
+    else:
+        print(f"  No prior year stats found for {year}")
+        return pd.DataFrame()
+        
+        
+    
+def get_season_blend_weight(current_year_tournaments: int, month: int = None) -> float:
+    """
+    Calculate how much to weight current vs prior year stats.
+    
+    Early season (few tournaments): weight prior year more heavily
+    Mid/late season (many tournaments): weight current year more heavily
+    
+    Args:
+        current_year_tournaments: Number of tournaments player has in current year
+        month: Current month (1-12), defaults to current month
+    
+    Returns:
+        Float 0-1 representing weight for CURRENT year (1 - this = prior year weight)
+    
+    Examples:
+        - January, 0 current tournaments: 0.2 (80% prior year)
+        - February, 2 current tournaments: 0.4 (60% prior year)
+        - April, 5+ current tournaments: 0.85 (15% prior year)
+        - June+, any tournaments: 0.95 (5% prior year, just for stability)
+    """
+    if month is None:
+        month = datetime.now().month
+    
+    # Base weight from number of current year tournaments
+    # More tournaments = more confidence in current year data
+    
+    if current_year_tournaments == 0:
+        tournament_weight = 0.0
+    elif current_year_tournaments == 1:
+        tournament_weight = 0.3
+    elif current_year_tournaments == 2:
+        tournament_weight = 0.5
+    elif current_year_tournaments == 3:
+        tournament_weight = 0.65
+    elif current_year_tournaments == 4:
+        tournament_weight = 0.75
+    elif current_year_tournaments >= 5:
+        tournament_weight = 0.85
+        
+        
+    # Seasonal adjustment: later in year = trust current data more
+    # PGA season runs Jan-Aug primarily
+    if month <= 2:  # Jan-Feb: Early season, prior year very relevant
+        seasonal_boost = 0.0
+    elif month <= 4:  # Mar-Apr: Getting more data
+        seasonal_boost = 0.05
+    elif month <= 6:  # May-Jun: Mid-season
+        seasonal_boost = 0.10
+    else:  # Jul+: Late season, current year dominant
+        seasonal_boost = 0.15
+    
+    # Combine: tournament count is primary driver, season provides small boost
+    final_weight = min(0.95, tournament_weight + seasonal_boost)
+    
+    # Minimum 20% current year weight (never fully ignore current form)
+    return max(0.2, final_weight)
+
+
+def get_prior_year_sg_stats(player_id, prior_stats_df: pd.DataFrame) -> dict:
+    """
+    Get player's prior year season average SG stats.
+    
+    Args:
+        player_id: Player ID
+        prior_stats_df: DataFrame with prior year tournament stats
+    
+    Returns:
+        Dict with prior_sg_* stats (season averages from prior year)
+    """
+
+    if prior_stats_df.empty:
+        return {
+             'prior_sg_total': np.nan,
+            'prior_sg_ott': np.nan,
+            'prior_sg_app': np.nan,
+            'prior_sg_putt': np.nan,
+            'prior_sg_t2g': np.nan,
+            'prior_sg_arg': np.nan,
+        }
+    # Filter to this player's average stats
+    player_stats = prior_stats_df[
+        (prior_stats_df['player_id'] == player_id) &
+        (prior_stats_df['stat_component'] == 'Avg')
+    ].copy()
+    
+    if len(player_stats) == 0:
+        return {
+            'prior_sg_total': np.nan,
+            'prior_sg_ott': np.nan,
+            'prior_sg_app': np.nan,
+            'prior_sg_putt': np.nan,
+            'prior_sg_t2g': np.nan,
+            'prior_sg_arg': np.nan,
+        }
+    
+    #Stat ID Mapping 
+    stat_mapping = {
+        2567: 'prior_sg_total',
+        2568: 'prior_sg_ott',
+        2569: 'prior_sg_app',
+        2564: 'prior_sg_putt',
+        2674: 'prior_sg_t2g'
+    
+    }
+    
+    #Pivot to get season averages 
+    stats_pivot = player_stats.pivot_table(
+        index='player_id', 
+        columns='stat_id', 
+        values='stat_value',
+        aggfunc='mean'
+    )
+    result = {}
+    for stat_id, stat_name in stat_mapping.items():
+        if stat_id in stats_pivot.columns:
+            result[stat_name] = stats_pivot[stat_id].iloc[0]
+        else:
+            result[stat_name] = np.nan 
+    #Calculate prior_sg_arg from prior_sg_t2g - prior_sg_app
+    if not np.isnan(result.get('prior_sg_t2g', np.nan)) and not np.isnan(result.get('prior_sg_app', np.nan)):
+        result['prior_sg_arg'] = result['prior_sg_t2g'] - result['prior_sg_app']
+    else:
+        result['prior_sg_arg'] = np.nan
+    
+    return result
+
+
+def blend_sg_stats(
+    current_stats: dict,
+    prior_stats: dict,
+    current_year_tournaments: int,
+    month: int = None
+) -> dict:
+    """
+    Blend current and prior year SG stats based on data availability.
+    
+    Args:
+        current_stats: Dict with current year sg_* and season_sg_* stats
+        prior_stats: Dict with prior_sg_* stats
+        current_year_tournaments: Number of tournaments in current year
+        month: Current month for seasonal adjustment
+    
+    Returns:
+        Dict with blended season_sg_* stats (replaces originals)
+    """
+    current_weight = get_season_blend_weight(current_year_tournaments, month)
+    prior_weight = 1.0 - current_weight
+    
+    # Stats to blend (season averages used by model)
+    sg_stats = ['sg_total', 'sg_ott', 'sg_app', 'sg_putt', 'sg_t2g', 'sg_arg']
+    
+    blended = current_stats.copy()
+    
+    for stat in sg_stats:
+        current_key = f'season_{stat}'
+        prior_key = f'prior_{stat}'
+        
+        current_val = current_stats.get(current_key, np.nan)
+        prior_val = prior_stats.get(prior_key, np.nan)
+        
+        # Handle missing values
+        if np.isnan(current_val) and np.isnan(prior_val):
+            # Both missing: keep as NaN (will be filled later)
+            blended[current_key] = np.nan
+        elif np.isnan(current_val):
+            # Only prior available: use prior
+            blended[current_key] = prior_val
+        elif np.isnan(prior_val):
+            # Only current available: use current
+            blended[current_key] = current_val
+        else:
+            # Both available: weighted blend
+            blended[current_key] = (current_val * current_weight) + (prior_val * prior_weight)
+    
+    # Store blend info for debugging
+    blended['sg_blend_current_weight'] = current_weight
+    blended['sg_blend_prior_weight'] = prior_weight
+    blended['sg_blend_tournaments'] = current_year_tournaments
+    
+    return blended
+
+
+def get_recent_sg_stats(
+    player_id,
+    stats_df,
+    method='last_5',
+    weights=None,
+    prior_stats_df=None,
+    blend_with_prior=True
+):
+    """
+    Get recent SG stats for a player from current year data,
+    optionally blended with prior year for early-season stability.
+
+    Args:
+        player_id: Player ID
+        stats_df: DataFrame with current year tournament stats
+        method: 'season_avg', 'last_5', or 'weighted'
+        weights: List of weights for weighted average [0.4, 0.3, 0.2, 0.1]
+        prior_stats_df: DataFrame with prior year stats (for blending)
+        blend_with_prior: Whether to blend with prior year stats
+
+    Returns:
+        Dict with sg_total, sg_ott, sg_app, sg_putt, sg_t2g, season_sg_* stats
+        (blended with prior year if enabled)
+    """
+    # Stat ID mapping
+    stat_mapping = {
+        2567: 'sg_total',
+        2568: 'sg_ott',
+        2569: 'sg_app',
+        2564: 'sg_putt',
+        2674: 'sg_t2g'
+    }
+
+    # Filter stats for the player
+    player_stats = stats_df[
+        (stats_df['player_id'] == player_id) &
+        (stats_df['stat_component'] == 'Avg')
+    ].copy()
+
+    current_year_tournaments = player_stats['tournament_id'].nunique() if len(player_stats) > 0 else 0
+
+    if len(player_stats) == 0:
+        # No current year stats - will rely on prior year if available
+        recent_stats = {
+            'sg_total': np.nan,
+            'sg_ott': np.nan,
+            'sg_app': np.nan,
+            'sg_arg': np.nan,
+            'sg_putt': np.nan,
+            'sg_t2g': np.nan,
+            'season_sg_total': np.nan,
+            'season_sg_ott': np.nan,
+            'season_sg_app': np.nan,
+            'season_sg_putt': np.nan,
+            'season_sg_t2g': np.nan,
+            'season_sg_arg': np.nan,
+        }
+    else:
+        # Pivot stats to wide format
+        stats_pivot = player_stats.pivot_table(
+            index='tournament_id',
+            columns='stat_id',
+            values='stat_value',
+            aggfunc='first'
+        )
+        stats_pivot = stats_pivot.sort_index()
+
+        # Apply selected method for per-tournament stats
+        if method == 'season_avg':
+            recent_stats = {}
+            for stat_id, stat_name in stat_mapping.items():
+                if stat_id in stats_pivot.columns:
+                    recent_stats[stat_name] = stats_pivot[stat_id].mean()
+                else:
+                    recent_stats[stat_name] = np.nan
+
+        elif method == 'last_5':
+            recent_tournaments = stats_pivot.tail(5)
+            recent_stats = {}
+            for stat_id, stat_name in stat_mapping.items():
+                if stat_id in recent_tournaments.columns:
+                    recent_stats[stat_name] = recent_tournaments[stat_id].mean()
+                else:
+                    recent_stats[stat_name] = np.nan
+
+        elif method == 'weighted':
+            if weights is None:
+                weights = [0.4, 0.3, 0.2, 0.1]
+            n = len(weights)
+            recent_tournaments = stats_pivot.tail(n)
+            actual_n = len(recent_tournaments)
+            if actual_n < n:
+                weights = weights[-actual_n:]
+                total_weight = sum(weights)
+                weights = [w / total_weight for w in weights]
+
+            recent_stats = {}
+            for stat_id, stat_name in stat_mapping.items():
+                if stat_id in recent_tournaments.columns:
+                    values = recent_tournaments[stat_id].values
+                    weighted_avg = np.average(values, weights=weights)
+                    recent_stats[stat_name] = weighted_avg
+                else:
+                    recent_stats[stat_name] = np.nan
+        else:
+            raise ValueError(f"Unknown method: {method}. Use 'season_avg', 'last_5', or 'weighted'")
+
+        # Compute season averages (full season)
+        for stat_id, stat_name in stat_mapping.items():
+            season_key = f'season_{stat_name}'
+            if stat_id in stats_pivot.columns:
+                recent_stats[season_key] = stats_pivot[stat_id].mean()
+            else:
+                recent_stats[season_key] = np.nan
+
+        # Calculate sg_arg
+        sg_t2g = recent_stats.get('sg_t2g', np.nan)
+        sg_app = recent_stats.get('sg_app', np.nan)
+        if not np.isnan(sg_t2g) and not np.isnan(sg_app):
+            recent_stats['sg_arg'] = sg_t2g - sg_app
+        else:
+            recent_stats['sg_arg'] = np.nan
+
+        # Calculate season_sg_arg
+        season_t2g = recent_stats.get('season_sg_t2g', np.nan)
+        season_app = recent_stats.get('season_sg_app', np.nan)
+        if not np.isnan(season_t2g) and not np.isnan(season_app):
+            recent_stats['season_sg_arg'] = season_t2g - season_app
+        else:
+            recent_stats['season_sg_arg'] = np.nan
+
+    # Blend with prior year stats if enabled
+    if blend_with_prior and prior_stats_df is not None and not prior_stats_df.empty:
+        prior_stats = get_prior_year_sg_stats(player_id, prior_stats_df)
+        recent_stats = blend_sg_stats(
+            recent_stats,
+            prior_stats,
+            current_year_tournaments
+        )
+
+    return recent_stats
+
+    
+
+    
+    
+def load_course_weights():
+    """Load Data Golf course SG importance weights."""
+    weights_path = DATA_DIR / "course_sg_weights.csv"
+    if weights_path.exists():
+        return pd.read_csv(weights_path)
+    return pd.DataFrame()
+
+
+def add_course_fit_features(features_df, tournament_name):
+    """
+    Add Data Golf course fit features to prediction DataFrame.
+
+    Uses season_sg_* (prior performance) × course importance weights.
+    This avoids data leakage by not using same-tournament SG stats.
+
+    Args:
+        features_df: DataFrame with player features including season_sg_* columns
+        tournament_name: Tournament name to look up course weights
+
+    Returns:
+        DataFrame with dg_fit_* columns added
+    """
+    # Load course weights
+    course_weights = load_course_weights()
+
+    # Default weights for tournaments not in mapping
+    default_weights = {'ott_sg': 0.020, 'app_sg': 0.020, 'arg_sg': 0.025, 'putt_sg': 0.005}
+
+    # Look up weights for this tournament
+    weights = default_weights.copy()
+    if not course_weights.empty:
+        match = course_weights[course_weights['tournament_name'] == tournament_name]
+        if len(match) > 0:
+            row = match.iloc[0]
+            weights = {
+                'ott_sg': row['ott_sg'],
+                'app_sg': row['app_sg'],
+                'arg_sg': row['arg_sg'],
+                'putt_sg': row['putt_sg']
+            }
+            print(f"    Found course weights for {tournament_name}")
+        else:
+            print(f"    Using default weights (tournament '{tournament_name}' not in mapping)")
+
+    # Calculate season_sg_arg if not present
+    if 'season_sg_arg' not in features_df.columns:
+        if 'season_sg_t2g' in features_df.columns and 'season_sg_app' in features_df.columns:
+            features_df['season_sg_arg'] = features_df['season_sg_t2g'].fillna(0) - features_df['season_sg_app'].fillna(0)
+        else:
+            features_df['season_sg_arg'] = 0.0
+
+    # Calculate fit scores (scaled by 10 for interpretability)
+    scale = 10.0
+
+    sg_ott = features_df['season_sg_ott'].fillna(0)
+    sg_app = features_df['season_sg_app'].fillna(0)
+    sg_arg = features_df['season_sg_arg'].fillna(0)
+    sg_putt = features_df['season_sg_putt'].fillna(0)
+
+    features_df['dg_fit_ott'] = sg_ott * weights['ott_sg'] * scale
+    features_df['dg_fit_app'] = sg_app * weights['app_sg'] * scale
+    features_df['dg_fit_arg'] = sg_arg * weights['arg_sg'] * scale
+    features_df['dg_fit_putt'] = sg_putt * weights['putt_sg'] * scale
+    features_df['dg_fit_total'] = (features_df['dg_fit_ott'] + features_df['dg_fit_app'] +
+                                    features_df['dg_fit_arg'] + features_df['dg_fit_putt'])
+
+    print(f"    Course fit range: {features_df['dg_fit_total'].min():.3f} to {features_df['dg_fit_total'].max():.3f}")
+
+    return features_df
+
+
+def normalize_venue_name(tournament_name):
+    """
+    Normalize tournament name to match training data format
+
+    Must match the normalization used in merge_all_historical_data.py
+
+    Example:
+        "The Masters" → "THE MASTERS"
+        "American Express" → "THE AMERICAN EXPRESS"
+        "AT&T Pebble Beach Pro-Am" → "ATT PEBBLE BEACH PROAM"
+
+    Note: Adds "THE" prefix for tournaments commonly known with it
+    """
+    import re
+    normalized = re.sub(r'[^\w\s]', '', tournament_name.upper()).strip()
+    normalized = normalized.replace("&", "AND").replace("'", "")
+
+    # Add "THE" prefix for tournaments that have it in historical data
+    # Check if venue needs "THE" prefix by looking in master data
+    tournaments_with_the = [
+        'AMERICAN EXPRESS',
+        'MASTERS',
+        'PLAYERS CHAMPIONSHIP',
+        'MEMORIAL TOURNAMENT',
+        'TOUR CHAMPIONSHIP',
+        'NORTHERN TRUST',
+        'OPEN CHAMPIONSHIP',
+        'CJ CUP',
+        'RSM CLASSIC',
+        'HONDA CLASSIC',
+        'GENESIS INVITATIONAL',
+        'SENTRY'
+    ]
+
+    # Normalize common aliases to match historical data
+    alias_map = {
+        "WM PHOENIX OPEN": "WASTE MANAGEMENT PHOENIX OPEN",
+        "WASTE MANAGEMENT PHOENIX OPEN": "WASTE MANAGEMENT PHOENIX OPEN",
+        "ATT PEBBLE BEACH PRO AM": "ATT PEBBLE BEACH PROAM",
+        "AT T PEBBLE BEACH PRO AM": "ATT PEBBLE BEACH PROAM",
+        "AMERICAN EXPRESS": "THE AMERICAN EXPRESS",
+        "THE AMERICAN EXPRESS": "THE AMERICAN EXPRESS",
+        "RSM CLASSIC": "THE RSM CLASSIC",
+        "THE RSM CLASSIC": "THE RSM CLASSIC",
+    }
+    if normalized in alias_map:
+        normalized = alias_map[normalized]
+
+    # If normalized name is in the list and doesn't start with THE, add it
+    if normalized in tournaments_with_the and not normalized.startswith('THE '):
+        normalized = 'THE ' + normalized
+
+    return normalized
+
+
+# Step 4: Look up course history 
+
+def get_course_history(player_id, venue_clean, master_df):
+    """
+    Get players' historical performance at the venue
+
+    Args:
+        player_id: Player ID
+        venue_clean: Normalized venue name
+        master_df: Master training DataFrame
+    Returns:
+        Dict with hist_* features
+    """
+    #Filter to this player at this venue (past years only)
+
+    history = master_df[
+                        (master_df['player_id'] == player_id)
+                        & (master_df['venue_clean'] == venue_clean)].copy()
+
+    if len(history) == 0:
+        # No history - return defaults (must match column names when history exists)
+        return {
+            'hist_times_played': 0,
+            'hist_avg_finish': 40.0,  # Default: middle of field
+            'hist_best_finish': 40.0,
+            'hist_wins': 0,
+            'hist_top5s': 0,
+            'hist_top10s': 0,
+            'hist_cut_rate': 0.5,  # Default: neutral
+            'hist_missed_cuts': 0,
+            'has_won_here': 0,
+            'has_course_history': 0,
+            'has_made_cut_here': 0,
+        }
+
+    # Separate made cuts vs missed cuts (999 = missed cut)
+    made_cuts = history[history['position_num'] < 100]
+    missed_cuts = history[history['position_num'] >= 100]
+
+    # Calculate cut rate
+    total_starts = len(history)
+    cuts_made = len(made_cuts)
+    cut_rate = cuts_made / total_starts if total_starts > 0 else 0
+    wins_at_venue = (history['position_num'] == 1).sum()
+
+    # Calculate hist_avg_finish with defaults for MC-only history
+    if len(made_cuts) > 0:
+        avg_finish = made_cuts['position_num'].mean()
+        best_finish = made_cuts['position_num'].min()
+    else:
+        avg_finish = 70.0  # MC-only history
+        best_finish = 70.0
+
+    return {
+        'hist_times_played': len(history),
+        'hist_avg_finish': avg_finish,
+        'hist_best_finish': best_finish,
+        'hist_wins': wins_at_venue,
+        'hist_top5s': (history['position_num'] <= 5).sum(),
+        'hist_top10s': (history['position_num'] <= 10).sum(),
+        'hist_cut_rate': cut_rate,
+        'hist_missed_cuts': len(missed_cuts),
+        'has_won_here': 1 if wins_at_venue > 0 else 0,
+        'has_course_history': 1,
+        'has_made_cut_here': 1 if cuts_made > 0 else 0,
+    }
+    
+    
+    
+def get_tournament_winner_boost(player_id, venue_clean, master_df):
+    """
+    Check if player has won at this venue before
+    Returns 1 if they've won, 0 otherwise
+    
+    This is a powerful predictor - past winners have significantly higher win rates
+    
+    Args:
+        player_id: Player ID
+        venue_clean: Normalized venue name
+        master_df: Master training DataFrame
+    
+    Returns:
+        Dict with has_won_here feature
+    """
+    history = master_df[
+        (master_df['player_id'] == player_id) & 
+        (master_df['venue_clean'] == venue_clean)
+    ]
+    
+    if len(history) == 0:
+        return {'has_won_here': 0}
+    
+    # Check if player has any wins at this venue
+    wins = (history['position_num'] == 1).sum()
+    
+    return {
+        'has_won_here': 1 if wins > 0 else 0,
+        'wins_at_venue': int(wins)  # Store count for reference
+    }
+
+
+# Add this new function after the imports:
+ 
+    
+    
+
+### Step 5: Get Venue Difficulty Stats
+
+
+def get_venue_stats(venue_clean, master_df):
+    """
+    Get venue difficulty statistics
+
+    Args:
+        venue_clean: Normalized venue name
+        master_df: Master training data
+
+    Returns:
+        Dict with venue_avg_finish, venue_finish_std
+        
+    """
+    
+    venue_data = master_df[master_df['venue_clean'] == venue_clean]
+    
+    if len(venue_data) == 0:
+        # No venue data - return NaN
+        return {
+            'venue_avg_finish': np.nan, 
+            'venue_finish_std': np.nan
+        }
+    
+    return {
+        'venue_avg_finish': venue_data['venue_avg_finish'].iloc[0],  # Fixed typo
+        'venue_finish_std': venue_data['venue_finish_std'].iloc[0]   # Fixed typo
+    }
+    
+### Step 6: Build Feature Matrix
+
+def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg_method='last_5', stats_prior=None, tournament_id=None):
+    """
+    Build feature matrix for all players in the field
+
+    Args:
+        field_df: DataFrame with player_id, player_name
+        tournament_name: Tournament name (e.g., "The Masters")
+        master_df: Master training data
+        stats_current: Current year SG stats
+        sg_method: Method for calculating recent SG stats ('season_avg', 'last_5', or 'weighted')
+        stats_prior: Prior year SG stats (for early-season blending)
+
+    Returns:
+        DataFrame with features per player
+    """
+
+    print(f"\n  Building features for {len(field_df)} players...")
+    print(f"  Using SG method: {sg_method}")
+    
+    if tournament_id:
+        stats_current = stats_current[stats_current['tournament_id'] < tournament_id].copy()
+    
+    # Check if we're blending with prior year
+    blend_with_prior = stats_prior is not None and not stats_prior.empty
+    if blend_with_prior:
+        month = datetime.now().month
+        print(f"  Blending with prior year stats (month: {month})")
+
+    venue_clean = normalize_venue_name(tournament_name)
+    venue_stats = get_venue_stats(venue_clean, master_df)
+
+    print(f"  Venue: {venue_clean}")
+
+    features_list = []
+
+    for idx, player in field_df.iterrows():
+        if idx % 20 == 0 and idx > 0:
+            print(f"    Progress: {idx}/{len(field_df)}")
+
+        player_id = player['player_id']
+        player_name = player['player_name']
+
+        sg_stats = get_recent_sg_stats(
+            player_id,
+            stats_current,
+            method=sg_method,
+            prior_stats_df=stats_prior,
+            blend_with_prior=blend_with_prior
+        )
+        course_history = get_course_history(player_id, venue_clean, master_df)
+        winner_boost = get_tournament_winner_boost(player_id, venue_clean, master_df)
+        # Combine all features
+        player_features = {
+            'player_id': player_id,
+            'player_name': player_name,
+            **sg_stats,
+            **course_history,
+            **venue_stats,
+            **winner_boost  # Add winner boost feature
+        }
+
+        features_list.append(player_features)
+
+    features_df = pd.DataFrame(features_list)
+
+    # ADD WORLD RANKINGS (before field strength calculation)
+    rankings_df = get_current_world_rankings()
+    if len(rankings_df) > 0:
+        features_df = features_df.merge(rankings_df, on='player_id', how='left')
+        features_df['world_rank'] = features_df['world_rank'].fillna(500)
+        print(f"  Added world rankings ({features_df['world_rank'].notna().sum()} players)")
+    else:
+        features_df['world_rank'] = 500
+
+    # ADD FIELD STRENGTH (avg/median world rank of tournament field)
+    field_avg_rank = features_df['world_rank'].mean()
+    field_median_rank = features_df['world_rank'].median()
+    features_df['field_avg_rank'] = field_avg_rank
+    features_df['field_median_rank'] = field_median_rank
+    print(f"  Field strength: avg={field_avg_rank:.1f}, median={field_median_rank:.1f}")
+
+    # ADD FORM FEATURES (recent performance indicators)
+    try:
+        # Load latest available form stats
+        form_year = _latest_year_for("form_stats_")
+        form_stats = load_form_stats(form_year) if form_year else pd.DataFrame()
+        if form_stats.empty:
+            # Fall back to tournament stats if form stats not available
+            form_stats = stats_current.copy()
+        if form_year:
+            print(f"  Using form_stats_{form_year}.csv for recent form")
+
+        # Load latest available leaderboards
+        lb_year = _latest_year_for("leaderboards_") or form_year
+        leaderboards = pd.DataFrame()
+        if lb_year:
+            lb_path = HISTORICAL_DIR / f"leaderboards_{lb_year}.csv"
+            if lb_path.exists():
+                leaderboards = pd.read_csv(lb_path)
+                print(f"  Using leaderboards_{lb_year}.csv for recent form ({len(leaderboards)} rows)")
+
+        if leaderboards.empty:
+            raise ValueError("No leaderboard data available for recent form")
+
+        if tournament_id and 'tournament_id' in form_stats.columns and 'tournament_id' in leaderboards.columns:
+            def _id_to_int(series):
+                # keep only valid PGA ids like R2026002 -> 2026002
+                s = series.astype(str)
+                s = s[s.str.match(r'^R\\d{7}$', na=False)]
+                return s.str.replace('R', '', regex=False).astype(int)
+
+            try:
+                tid_int = int(str(tournament_id).replace('R', ''))
+                form_ids = _id_to_int(form_stats['tournament_id'])
+                lb_ids = _id_to_int(leaderboards['tournament_id'])
+                future_form = (form_ids >= tid_int).sum()
+                future_lb = (lb_ids >= tid_int).sum()
+                if future_form or future_lb:
+                    print(f"  ⚠️ recent_form leakage check: form_stats >= tournament_id: {future_form}, leaderboards >= tournament_id: {future_lb}")
+            except Exception:
+                pass
+
+
+        features_df = get_form_features_for_field(
+            features_df, form_stats, leaderboards
+        )
+    except Exception as e:
+        print(f"  Form features not available: {e}")
+        # Add placeholder form columns with neutral defaults
+        form_defaults = {
+            'form_trend': 0.0,
+            'finish_consistency': 0.5,
+            'recent_top10s': 0.0,
+            'recent_top5s': 0,
+            'recent_cuts_pct': 0.5,
+            'recent_birdie_avg': 4.0,
+            'recent_bogey_avg': 3.5,
+            'recent_scoring_avg': 71.0,
+            'recent_gir_pct': 65.0,
+            'recent_scrambling': 58.0,
+            'recent_bounce_back': 20.0,
+            'recent_final_round': 71.0,
+            'recent_sand_save': 50.0,
+        }
+        for col, default in form_defaults.items():
+            features_df[col] = default
+
+    # ADD DPWT FORM DATA FOR PLAYERS WITHOUT PGA TOUR FORM
+    # Players like Rory McIlroy, Tommy Fleetwood who started season in Europe
+    try:
+        dpwt_form_path = HISTORICAL_DIR / "dpwt_form_2026.csv"
+        if dpwt_form_path.exists():
+            dpwt_form = pd.read_csv(dpwt_form_path)
+            dpwt_form['player_id'] = pd.to_numeric(dpwt_form['pga_player_id'], errors='coerce').astype('Int64')
+
+            # Map DPWT columns to prediction form columns
+            dpwt_mapping = {
+                'dpwt_form_score': 'form_trend',  # Use form_score as trend proxy (scaled)
+                'dpwt_recent_top10s': 'recent_top10s',
+                'dpwt_recent_top5s': 'recent_top5s',
+                'dpwt_cuts_pct': 'recent_cuts_pct',
+                'dpwt_estimated_sg_total': 'dpwt_sg_total',  # Add as new feature
+            }
+
+            # For players with missing/zero form data, fill from DPWT
+            filled_count = 0
+            for idx, row in features_df.iterrows():
+                pid = row['player_id']
+                # Check if player has weak form data (trend near 0 or missing top10s)
+                has_weak_form = (
+                    pd.isna(row.get('form_trend')) or
+                    abs(row.get('form_trend', 0)) < 0.01 or
+                    (row.get('recent_top10s', 0) == 0 and row.get('recent_cuts_pct', 0) < 0.1)
+                )
+
+                if has_weak_form and pid in dpwt_form['player_id'].values:
+                    dpwt_player = dpwt_form[dpwt_form['player_id'] == pid].iloc[0]
+
+                    # Scale DPWT form_score (0-100) to form_trend scale (-1 to 1)
+                    form_score = dpwt_player.get('dpwt_form_score', 50)
+                    features_df.at[idx, 'form_trend'] = (form_score - 50) / 50  # 80 -> 0.6, 50 -> 0, 30 -> -0.4
+
+                    # Fill other form columns
+                    features_df.at[idx, 'recent_top10s'] = dpwt_player.get('dpwt_recent_top10s', 0)
+                    features_df.at[idx, 'recent_top5s'] = dpwt_player.get('dpwt_recent_top5s', 0)
+                    features_df.at[idx, 'recent_cuts_pct'] = dpwt_player.get('dpwt_cuts_pct', 0.5)
+
+                    # Add estimated SG from DPWT as boost
+                    est_sg = dpwt_player.get('dpwt_estimated_sg_total', 0)
+                    if 'sg_total' in features_df.columns and (pd.isna(features_df.at[idx, 'sg_total']) or features_df.at[idx, 'sg_total'] == 0):
+                        features_df.at[idx, 'sg_total'] = est_sg
+
+                    filled_count += 1
+
+            if filled_count > 0:
+                print(f"  ✓ Added DPWT form data for {filled_count} players (European Tour results)")
+    except Exception as e:
+        print(f"  DPWT form data not available: {e}")
+
+    # ADD DATA GOLF COURSE FIT FEATURES
+    # Uses season_sg_* (prior performance) × course importance weights
+    print("  Adding Data Golf course fit features...")
+    features_df = add_course_fit_features(features_df, tournament_name)
+
+    print(f"  ✓ Built feature matrix: {features_df.shape}")
+    return features_df 
+
+
+### Step 7: Handle Missing Values (CHALLENGE 3 IMPLEMENTED)
+
+def fill_missing_values(features_df, stats_2025, master_df):
+    """
+    Fill NaN values with intelligent defaults
+
+    CRITICAL: Model was trained only on complete data,
+    so we must fill NaN for predictions
+
+    CHALLENGE 3 ✅: Calculate median SG stats from 2025 data instead of using 0
+    """
+    print("\n  Filling missing values...")
+
+    # CHALLENGE 3: Calculate median SG stats from actual 2025 data
+    stats_avg = stats_2025[stats_2025['stat_component'] == 'Avg'].copy()
+
+    sg_defaults = {
+        'sg_total': 0.0,
+        'sg_ott': 0.0,
+        'sg_app': 0.0,
+        'sg_arg': 0.0,
+        'sg_putt': 0.0,
+        'sg_t2g': 0.0
+    }
+
+    if len(stats_avg) > 0:
+        # Pivot and calculate median
+        stats_pivot = stats_avg.pivot_table(
+            index=['player_id', 'tournament_id'],
+            columns='stat_id',
+            values='stat_value',
+            aggfunc='first'
+        )
+
+        stat_mapping = {
+            2567: 'sg_total',
+            2568: 'sg_ott',
+            2569: 'sg_app',
+            2564: 'sg_putt',
+            2674: 'sg_t2g'
+        }
+
+        print("    Calculated SG defaults (median from 2025 data):")
+        for stat_id, stat_name in stat_mapping.items():
+            if stat_id in stats_pivot.columns:
+                sg_defaults[stat_name] = stats_pivot[stat_id].median()
+                print(f"      {stat_name}: {sg_defaults[stat_name]:.3f}")
+
+        # sg_arg is calculated from sg_t2g - sg_app, default to 0
+        print(f"      sg_arg: 0.000 (calculated field)")
+
+    # Fill SG stats with calculated medians (both per-tournament and season)
+    for stat_name, default_val in sg_defaults.items():
+        # Fill per-tournament SG
+        if stat_name in features_df.columns:
+            n_missing = features_df[stat_name].isna().sum()
+            if n_missing > 0:
+                features_df[stat_name] = features_df[stat_name].fillna(default_val)
+                print(f"      Filled {n_missing} missing {stat_name} values")
+
+        # Fill season SG with same defaults
+        season_stat = f'season_{stat_name}'
+        if season_stat in features_df.columns:
+            n_missing = features_df[season_stat].isna().sum()
+            if n_missing > 0:
+                features_df[season_stat] = features_df[season_stat].fillna(default_val)
+                print(f"      Filled {n_missing} missing {season_stat} values")
+
+    # Course history: Fill avg_finish with venue avg + penalty for rookies
+    # Rationale: Players without course history tend to perform slightly worse than venue avg
+    if features_df['hist_avg_finish'].isna().any():
+        venue_avg = features_df['venue_avg_finish'].iloc[0]
+        rookie_penalty = 5  # Assume rookies finish 5 spots worse than average
+
+        n_missing = features_df['hist_avg_finish'].isna().sum()
+        features_df['hist_avg_finish'] = features_df['hist_avg_finish'].fillna(venue_avg + rookie_penalty)
+        features_df['hist_best_finish'] = features_df['hist_best_finish'].fillna(venue_avg + rookie_penalty)
+        print(f"      Filled {n_missing} missing course history (venue_avg + {rookie_penalty} penalty)")
+
+    # Fill cut rate for players with no history (assume tour average ~85% cut rate)
+    if features_df['hist_cut_rate'].isna().any():
+        n_missing = features_df['hist_cut_rate'].isna().sum()
+        features_df['hist_cut_rate'] = features_df['hist_cut_rate'].fillna(0.85)
+        print(f"      Filled {n_missing} missing hist_cut_rate with 0.85 (tour avg)")
+
+    # Venue stats: Fill with median across all venues (if new venue)
+    if features_df['venue_avg_finish'].isna().any():
+        venue_median = master_df['venue_avg_finish'].median()
+        venue_std_median = master_df['venue_finish_std'].median()
+        features_df['venue_avg_finish'] = features_df['venue_avg_finish'].fillna(venue_median)
+        features_df['venue_finish_std'] = features_df['venue_finish_std'].fillna(venue_std_median)
+        print(f"      Filled venue stats with medians ({venue_median:.1f}, {venue_std_median:.1f})")
+
+
+    if 'world_rank' in features_df.columns and features_df['world_rank'].isna().any():
+        n_missing = features_df['world_rank'].isna().sum()
+        features_df['world_rank'] = features_df['world_rank'].fillna(300)
+        print(f"      Filled {n_missing} missing world_rank with 300 (default)")
+   
+        
+    # Fill form features with neutral defaults
+    form_defaults = {
+        'form_trend': 0.0,           # No trend = neutral
+        'finish_consistency': 0.5,   # Middle of range
+        'recent_top10s': 0,          # No recent top 10s
+        'recent_top5s': 0,           # No recent top 5s
+        'recent_cuts_pct': 0.5,      # 50% cut rate default
+        # Scoring efficiency features (use tour averages as defaults)
+        'recent_birdie_avg': 4.0,    # ~4 birdies per round is average
+        'recent_bogey_avg': 3.5,     # ~3.5 bogeys per round is average
+        'recent_scoring_avg': 71.0,  # Par is ~71 average
+        'recent_gir_pct': 65.0,      # ~65% GIR is average
+        'recent_scrambling': 58.0,   # ~58% scrambling is average
+        # Clutch indicators
+        'recent_bounce_back': 20.0,  # ~20% bounce back is average
+        'recent_final_round': 71.0,  # Similar to scoring avg
+        'recent_sand_save': 50.0,    # ~50% sand save is average
+    }
+    for col, default in form_defaults.items():
+        if col in features_df.columns and features_df[col].isna().any():
+            n_missing = features_df[col].isna().sum()
+            features_df[col] = features_df[col].fillna(default)
+            print(f"      Filled {n_missing} missing {col} with {default}")
+
+    # Fill Data Golf course fit features with 0 (neutral fit)
+    dg_fit_cols = ['dg_fit_ott', 'dg_fit_app', 'dg_fit_arg', 'dg_fit_putt', 'dg_fit_total']
+    for col in dg_fit_cols:
+        if col in features_df.columns and features_df[col].isna().any():
+            n_missing = features_df[col].isna().sum()
+            features_df[col] = features_df[col].fillna(0.0)
+            print(f"      Filled {n_missing} missing {col} with 0.0")
+
+    print(f"    ✓ All missing values filled")
+
+    return features_df
+
+# Step 8: Make Predictions
+
+def make_predictions(features_df, models):
+    """
+    Generate win/top5/top10 probabilities
+
+    Args:
+        features_df: DataFrame with features
+        models: Dict with trained models
+
+    Returns:
+        DataFrame with predictions added
+    """
+    # NOTE: Course fit features removed from model due to data leakage
+    # (They were calculated from same-tournament SG stats)
+    # Model now uses season_sg_* (prior performance) instead of per-tournament SG
+
+    # Feature columns must match EXACT order from model training
+    # Model now uses only non-leaky features (season averages, not per-tournament stats)
+    # Includes Data Golf course fit features (season_sg × course importance weights)
+    feature_cols = [
+        'season_sg_putt', 'season_sg_total', 'season_sg_ott', 'season_sg_app', 'season_sg_t2g', 'season_sg_arg',
+        'hist_times_played', 'hist_avg_finish', 'hist_best_finish',
+        'hist_wins', 'hist_top5s', 'hist_top10s',
+        'hist_cut_rate', 'hist_missed_cuts',
+        'has_won_here', 'has_course_history', 'has_made_cut_here',
+        'venue_avg_finish', 'venue_finish_std',
+        'field_avg_rank', 'field_median_rank',
+        'world_rank',
+        'form_trend', 'finish_consistency', 'recent_top10s', 'recent_top5s', 'recent_cuts_pct',
+        'recent_birdie_avg', 'recent_bogey_avg', 'recent_scoring_avg', 'recent_gir_pct', 'recent_scrambling',
+        'recent_bounce_back', 'recent_final_round', 'recent_sand_save',
+        'dg_fit_ott', 'dg_fit_app', 'dg_fit_arg', 'dg_fit_putt', 'dg_fit_total',
+    ]
+
+    X = features_df[feature_cols]
+
+    # Predict probabilities
+    features_df['win_prob'] = models['win'].predict_proba(X)[:, 1]
+    features_df['top5_prob'] = models['top5'].predict_proba(X)[:, 1]
+    features_df['top10_prob'] = models['top10'].predict_proba(X)[:, 1]
+
+    return features_df
+   
+    
+### Step 9: Calculate Expected Value
+
+
+def calculate_expected_value(predictions_df, purse, tournament_type='Standard'):
+    """
+    Calculate EV for each player using detailed prize distributions
+
+    CHALLENGE 4 ✅: Uses actual PGA Tour prize money structure
+
+    Args:
+        predictions_df: DataFrame with win/top5/top10 probabilities
+        purse: Tournament purse (e.g., 20000000)
+        tournament_type: 'Standard', 'Signature', or 'Major'
+
+    Returns:
+        DataFrame with EV column added
+    """
+    
+    print(f"\n  Calculating Expected Value...")
+    print(f"    Purse: ${purse:,}")
+    print(f"    Type: {tournament_type}")
+    
+    if "top20_prob" not in predictions_df.columns:
+        predictions_df["top20_prob"] = (
+            predictions_df["top10_prob"] + (predictions_df["top10_prob"] - predictions_df["top5_prob"]) * 1.2
+        ).clip(0, 0.95)
+
+    # For each player, calculate detailed EV
+    evs = []
+    for idx, row in predictions_df.iterrows():
+        # Estimate top20 probability (simple heuristic since we don't have a model)
+        # Assumes positions 11-20 have slightly lower prob than 6-10
+        top20_prob_est = row['top20_prob'] 
+        # Calculate detailed EV using actual prize distributions
+        ev = calculate_expected_value_detailed(
+            win_prob=row['win_prob'],
+            top5_prob=row['top5_prob'],
+            top10_prob=row['top10_prob'],
+            top20_prob=top20_prob_est,
+            purse=purse,
+            tournament_type=tournament_type
+        )
+        evs.append(ev)
+
+    predictions_df['expected_value'] = evs
+
+    print(f"    ✓ Avg EV: ${predictions_df['expected_value'].mean():,.0f}")
+    print(f"    ✓ Max EV: ${predictions_df['expected_value'].max():,.0f}")
+
+    
+    return predictions_df 
+
+
+
+# Step 10: Rank and output 
+
+
+def generate_recommendations(predictions_df, top_n=10):
+    """
+    Rank players by EV and format output
+
+    Args:
+        predictions_df: DataFrame with predictions and EV
+        top_n: Number of top recommendations to show
+
+    Returns:
+        DataFrame sorted by EV
+    """
+    recommendations = predictions_df.sort_values('expected_value', ascending=False)
+    # Format for display
+    output_cols = [
+        'player_id',
+        'player_name',
+        'expected_value',
+        'win_prob',
+        'top5_prob',
+        'top10_prob',
+        'hist_times_played',
+        'hist_avg_finish',
+        'sg_total'
+    ]
+
+    # Add cut probability if available
+    if 'cut_prob' in predictions_df.columns:
+        output_cols.extend(['cut_prob', 'cut_risk'])
+
+    # Add course_fit_score if available
+    if 'course_fit_score' in predictions_df.columns:
+        output_cols.append('course_fit_score')
+    if 'course_fit_raw' in predictions_df.columns:
+        output_cols.append('course_fit_raw')
+
+    # Add odds-related columns if available
+    if 'ensemble_win_prob' in predictions_df.columns:
+        output_cols.extend(['ensemble_win_prob', 'vegas_prob', 'model_vs_vegas_edge'])
+        if 'odds_drift_flag' in predictions_df.columns:
+            output_cols.extend(['odds_drift_flag', 'odds_drift_level'])
+
+    # Add form features if available
+    if 'form_trend' in predictions_df.columns:
+        output_cols.extend(['form_trend', 'recent_top10s', 'recent_cuts_pct'])
+
+    # Add usage strategy annotations if available
+    if 'usage_recommendation' in predictions_df.columns:
+        output_cols.extend(['usage_recommendation', 'usage_score', 'uses_remaining'])
+
+    return recommendations[output_cols].head(top_n)
+
+
+
+
+#Step 11: Main function to tie it all together
+def main():
+    parser = argparse.ArgumentParser(
+        description='Generate tournament predictions',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Basic usage with last 5 tournaments method (recommended)
+  python scripts/predictions/predict_tournament.py \\
+      --tournament "The Masters" \\
+      --purse 18000000 \\
+      --field data/fields/masters_2026.csv
+
+  # Using weighted method (more weight to recent form)
+  python scripts/predictions/predict_tournament.py \\
+      --tournament "AT&T Pebble Beach Pro-Am" \\
+      --purse 20000000 \\
+      --field data/fields/pebble_beach_2026.csv \\
+      --sg-method weighted \\
+      --output outputs/pebble_predictions.csv
+        """
+    )
+
+    parser.add_argument('--tournament', required=True, help='Tournament name')
+    parser.add_argument('--tournament-id', default=None,
+                       help='PGA Tour tournament ID for course fit (e.g., R2025002)')
+    parser.add_argument('--purse', type=int, required=True, help='Tournament purse')
+    parser.add_argument('--field', required=True, help='Path to field CSV')
+    parser.add_argument('--output', default=None, help='Output file (optional)')
+    parser.add_argument('--tournament-type', default='Standard',
+                   choices=['Standard', 'Signature', 'Major'],
+                   help='Tournament type (default: Standard)')
+    parser.add_argument('--sg-method', default='last_5',
+                       choices=['season_avg', 'last_5', 'weighted'],
+                       help='Method for calculating recent SG stats (default: last_5)')
+    parser.add_argument('--top-n', type=int, default=10,
+                       help='Number of recommendations to show (default: 10)')
+    parser.add_argument('--odds', default=None,
+                       help='Path to odds CSV (or auto-finds from tournament-id)')
+    parser.add_argument('--model-weight', type=float, default=0.6,
+                       help='Weight for model in ensemble (0-1, default: 0.6)')
+    parser.add_argument('--ensemble-method', default='log_odds',
+                       choices=['weighted_avg', 'geometric', 'log_odds'],
+                       help='Method for combining model + odds (default: log_odds)')
+    parser.add_argument('--insights', action='store_true',
+                       help='Generate narrative insights for predictions (rule-based)')
+    parser.add_argument('--auto-insights', action='store_true',
+                        help='Convenience flag to auto-run local insights without extra args')
+    parser.add_argument('--insights-ollama', action='store_true',
+                       help='Use Ollama (free, local) for LLM insights (requires: ollama serve)')
+    parser.add_argument('--ollama-model', default='llama3.2',
+                       help='Ollama model to use (default: llama3.2)')
+    parser.add_argument('--insights-llm', action='store_true',
+                       help='Use Claude API for deeper insights (requires ANTHROPIC_API_KEY)')
+    parser.add_argument('--save-tracking', action='store_true',
+                        help='Save predictions into data/prediction_tracking via PredictionTracker')
+    parser.add_argument('--tournament-date', type=str, default=None,
+                        help='Override date (YYYY-MM-DD) for tracking files')
+    parser.add_argument('--record-lineup', type=str, default=None,
+                        help='Comma-separated player names to record as used in UsageTracker')
+    parser.add_argument('--no-calibrate', action='store_true',
+                        help='Disable probability calibration (calibration is ON by default to fix overconfidence)')
+    parser.add_argument('--calibrate', action='store_true',
+                        help='[DEPRECATED] Calibration is now on by default. Use --no-calibrate to disable.')
+    parser.add_argument('--usage-strategy', action='store_true',
+                        help='Annotate recommendations with usage strategy (no usage is recorded)')
+
+    args = parser.parse_args()
+
+    print("=" * 70)
+    print(f"  TOURNAMENT PREDICTION: {args.tournament}")
+    print("=" * 70)
+
+    print('\n  Loading models and reference data...')
+    models = load_models()
+    master_df, stats_current, stats_prior = load_reference_data()
+
+    print(f"\n  Loading field from {args.field}...")
+    field_df = pd.read_csv(args.field)
+    print(f"    ✓ Field size: {len(field_df)} players")
+    field_df = enrich_field_names(field_df, master_df, tournament_id=args.tournament_id)
+
+    print("\n  Building feature matrix...")
+    features_df = build_feature_matrix(
+        field_df, args.tournament, master_df,stats_current,
+        sg_method=args.sg_method,stats_prior=stats_prior,
+        tournament_id=args.tournament_id
+    )
+
+    print("\n  Filling missing values...")
+    features_df = fill_missing_values(features_df, stats_current, master_df)
+
+    print("\n  Making predictions...")
+    predictions_df = make_predictions(features_df, models)
+
+
+
+    predictions_df['top20_prob_raw'] = (
+        predictions_df['top10_prob'] + (predictions_df['top10_prob'] - predictions_df['top5_prob']) * 1.2
+        
+    ).clip(0, 0.95)
+    predictions_df['top20_prob'] = predictions_df['top20_prob_raw']
+
+
+
+
+    # Apply probability calibration (fixes overconfidence in top5/top10)
+    # Calibration is ON by default - use --no-calibrate to disable
+    apply_calibration = not getattr(args, 'no_calibrate', False)
+    if apply_calibration:
+        print("\n  Applying probability calibration...")
+        calibrator = ProbabilityCalibrator()
+        predictions_df = calibrator.calibrate_predictions(
+            predictions_df,
+            method="bucket",
+            tournament_type=args.tournament_type,
+        )
+        # Use calibrated probabilities for downstream calculations
+        if 'win_prob_calibrated' in predictions_df.columns:
+            predictions_df['win_prob_raw'] = predictions_df['win_prob']
+            predictions_df['win_prob'] = predictions_df['win_prob_calibrated']
+        if 'top5_prob_calibrated' in predictions_df.columns:
+            predictions_df['top5_prob_raw'] = predictions_df['top5_prob']
+            predictions_df['top5_prob'] = predictions_df['top5_prob_calibrated']
+        if 'top10_prob_calibrated' in predictions_df.columns:
+            predictions_df['top10_prob_raw'] = predictions_df['top10_prob']
+            predictions_df['top10_prob'] = predictions_df['top10_prob_calibrated']
+            
+        predictions_df["top20_prob"] = (
+            predictions_df["top10_prob"] + (predictions_df["top10_prob"] - predictions_df["top5_prob"]) * 1.2
+        ).clip(0, 0.95)
+        
+        
+        top20_cfg = calibrator._select_calibration(args.tournament_type).get("top20_prob")
+        if top20_cfg:
+            predictions_df["top20_prob_raw"] = predictions_df["top20_prob"]
+            predictions_df["top20_prob"] = predictions_df["top20_prob"].apply(
+                lambda v: calibrator._calibrate_value(v, top20_cfg)
+            ).clip(0, 1)
+        print("    ✓ Calibration applied (top5/top10/top20)")
+        print("    → Raw probabilities saved as *_raw columns")
+    else:
+        print("\n  ⚠️ Calibration DISABLED (--no-calibrate flag)")
+        print("    → Using raw model probabilities (may be overconfident)")
+
+    # Add cut probability (risk of missing the cut)
+    print("\n  Calculating cut probability...")
+    try:
+        predictions_df = add_cut_probability(predictions_df)
+        high_risk = (predictions_df['cut_risk'].isin(['HIGH', 'ELEVATED'])).sum()
+        print(f"    ✓ Cut probabilities calculated")
+        print(f"    → {high_risk} players flagged as elevated/high cut risk")
+    except Exception as e:
+        print(f"    ⚠️ Cut model not available: {e}")
+
+    print(f"\n  Calculating expected value (purse: ${args.purse:,})...")
+    predictions_df = calculate_expected_value(predictions_df, args.purse, tournament_type=args.tournament_type)
+
+    # ODDS INTEGRATION: Add Vegas odds and create ensemble predictions
+    if args.odds or args.tournament_id:
+        predictions_df = add_odds_to_predictions(
+            predictions_df,
+            tournament_id=args.tournament_id,
+            odds_path=args.odds,
+            model_weight=args.model_weight,
+            method=args.ensemble_method
+        )
+
+    print("\n" + "=" * 70)
+    print(f"  TOP {args.top_n} RECOMMENDATIONS")
+    print("=" * 70)
+    recommendations = generate_recommendations(predictions_df, top_n=args.top_n)
+
+    # Optional: usage strategy annotation (no usage recorded)
+    if args.usage_strategy:
+        try:
+            optimizer = UsageOptimizer()
+            usage_recs = []
+            usage_scores = []
+            usage_remaining = []
+            for _, row in recommendations.iterrows():
+                rec = optimizer.should_use_player(row['player_name'], args.tournament)
+                usage_recs.append(rec.get('recommendation', 'UNKNOWN'))
+                usage_scores.append(rec.get('score', 0))
+                usage_remaining.append(rec.get('remaining_uses', 3))
+            recommendations = recommendations.copy()
+            recommendations['usage_recommendation'] = usage_recs
+            recommendations['usage_score'] = usage_scores
+            recommendations['uses_remaining'] = usage_remaining
+        except Exception as e:
+            print(f"  ⚠️ Usage strategy annotation failed: {e}")
+
+    # Format probabilities as percentages
+    recommendations_display = recommendations.copy()
+    recommendations_display['win_prob'] = recommendations_display['win_prob'].apply(lambda x: f"{x*100:.2f}%")
+    recommendations_display['top5_prob'] = recommendations_display['top5_prob'].apply(lambda x: f"{x*100:.2f}%")
+    recommendations_display['top10_prob'] = recommendations_display['top10_prob'].apply(lambda x: f"{x*100:.2f}%")
+    recommendations_display['expected_value'] = recommendations_display['expected_value'].apply(lambda x: f"${x:,.0f}")
+
+    print(recommendations_display.to_string(index=False))
+
+    # Always persist predictions to a standard location for downstream tools
+    outputs_dir = Path("outputs")
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+
+    # Primary user-specified output (if provided)
+    if args.output:
+        predictions_df.to_csv(args.output, index=False)
+        print(f"\n✓ Full predictions saved to: {args.output}")
+
+    # Consistent "latest" pointers for automation / GolfAssistant
+    latest_path = outputs_dir / "latest_predictions.csv"
+    predictions_df.to_csv(latest_path, index=False)
+
+    # Also save a tournament-scoped latest file (e.g., farmers_insurance_open_latest.csv)
+    safe_tournament = re.sub(r"[^a-z0-9]+", "_", args.tournament.lower()).strip("_")
+    scoped_latest_path = outputs_dir / f"{safe_tournament}_latest.csv"
+    predictions_df.to_csv(scoped_latest_path, index=False)
+
+    # Write data dictionaries alongside outputs
+    write_data_dictionary(predictions_df, outputs_dir / "latest_predictions_data_dictionary.md")
+    write_data_dictionary(predictions_df, outputs_dir / f"{safe_tournament}_latest_data_dictionary.md")
+    if args.output:
+        output_path = Path(args.output)
+        dd_path = output_path.with_suffix(output_path.suffix + ".data_dictionary.md")
+        write_data_dictionary(predictions_df, dd_path)
+
+    print(f"✓ Latest predictions pointers written to: {latest_path} and {scoped_latest_path}")
+
+    # Generate insights if requested
+    run_insights = args.insights or args.auto_insights or args.insights_ollama or args.insights_llm
+
+    if run_insights:
+        print("\n" + "=" * 70)
+        print("  GENERATING INSIGHTS...")
+        print("=" * 70)
+
+        # Load course weights for this tournament
+        course_weights = {}
+        weights_file = DATA_DIR / "course_sg_weights.csv"
+        if weights_file.exists():
+            weights_df = pd.read_csv(weights_file)
+            # Try to match tournament name
+            match = weights_df[weights_df['tournament_name'].str.lower().str.contains(
+                args.tournament.lower().replace('the ', ''), na=False
+            )]
+            if len(match) > 0:
+                row = match.iloc[0]
+                course_weights = {
+                    'ott_sg': row['ott_sg'],
+                    'app_sg': row['app_sg'],
+                    'arg_sg': row['arg_sg'],
+                    'putt_sg': row['putt_sg'],
+                }
+                print(f"  Loaded course weights for: {row['tournament_name']}")
+
+        generator = InsightsGenerator()
+
+        if args.insights_llm:
+            # Use Claude API for deeper insights
+            print("  Using Claude API...")
+            insights_text = generator.generate_llm_insights(
+                predictions_df, args.tournament, course_weights, top_n=args.top_n
+            )
+            print("\n" + insights_text)
+        elif args.insights_ollama:
+            # Use Ollama (free, local) for LLM insights
+            print(f"  Using Ollama ({args.ollama_model})...")
+            insights_text = generator.generate_ollama_insights(
+                predictions_df, args.tournament, course_weights,
+                top_n=args.top_n, model=args.ollama_model
+            )
+            print("\n" + insights_text)
+        else:
+            # Use local rule-based insights
+            insights = generator.generate_local_insights(
+                predictions_df, args.tournament, course_weights, top_n=args.top_n
+            )
+            print(generator.format_insights_text(insights))
+
+    print("\n" + "=" * 70)
+    print("  PREDICTION COMPLETE!")
+    print("=" * 70)
+
+    # ------------------------------------------------------------------
+    # Optional: save predictions to tracking + record lineup usage
+    # ------------------------------------------------------------------
+    if args.save_tracking:
+        tracker = PredictionTracker()
+        tracker_path = tracker.save_predictions(
+            predictions_df,
+            tournament_name=args.tournament,
+            tournament_date=args.tournament_date
+        )
+        print(f"  Tracking file saved: {tracker_path}")
+
+    if args.record_lineup:
+        lineup = [p.strip() for p in args.record_lineup.split(",") if p.strip()]
+        if lineup:
+            usage_tracker = UsageTracker()
+            for player in lineup:
+                usage_tracker.record_usage(player, args.tournament, tournament_date=args.tournament_date)
+            print(f"  Recorded lineup usage for: {', '.join(lineup)}")
+
+if __name__ == '__main__':
+    main()
+
+
+# ============================================================================
+# CODING CHALLENGES STATUS
+# ============================================================================
+# ✅ Challenge 1: Better SG Stats (Rolling Average) - IMPLEMENTED
+#    - Added 'last_5' method that uses only last 5 tournaments
+#
+# ✅ Challenge 2: Weighted Recent Form - IMPLEMENTED
+#    - Added 'weighted' method with customizable weights
+#    - Default: [0.4, 0.3, 0.2, 0.1] for last 4 tournaments
+#
+# ✅ Challenge 3: Better Missing Value Handling - IMPLEMENTED
+#    - Calculates median SG stats from actual 2025 data
+#    - Adds rookie penalty for players without course history
+#
+# ✅ Challenge 4: More Accurate EV Calculation - IMPLEMENTED
+#    - Uses actual PGA Tour prize distributions
+#    - Accounts for tournament type (Standard/Signature/Major)
+#    - Breaks down top-5 into individual positions
+#    - Improvement: 10-20% higher EV for strong players
+#
+# ⏳ Challenge 5: Field CSV Creator - TODO
+#    - Build helper script to scrape fields from PGA Tour website
+#    - See: scripts/scrapers/ for examples
+# ============================================================================

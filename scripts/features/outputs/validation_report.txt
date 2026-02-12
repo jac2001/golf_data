@@ -1,0 +1,55 @@
+======================================================================
+  FINAL MODEL VALIDATION REPORT
+  Year-Based Cross-Validation (Train: 2020-2024, Test: 2025)
+======================================================================
+
+DATASET SUMMARY:
+  Total Records: 27,880
+  Training Records: 530 (2020-2024)
+  Test Records: 221 (2025)
+  Features Used: 16
+
+FEATURE GROUPS:
+  SG Stats: 5
+  Course History: 8
+  Course/Field: 0
+
+MODEL PERFORMANCE:
+----------------------------------------------------------------------
+Model      Train AUC    Test AUC     Gap        Status         
+----------------------------------------------------------------------
+win        0.9984       0.8906       0.1078     ⚠️  Moderate   
+top5       0.9912       0.9423       0.0489     ✅ Good         
+top10      0.9872       0.9693       0.0178     ✅ Good         
+top20      0.9836       0.9356       0.0480     ✅ Good         
+
+INTERPRETATION:
+  ROC-AUC Scale:
+    0.50 = Random guessing
+    0.60-0.65 = Slight edge
+    0.70-0.75 = Good predictive power
+    0.75-0.80 = Excellent (realistic ceiling for golf)
+    0.90+ = Likely overfitting
+
+  Overfitting Gap:
+    <0.05 = Excellent generalization
+    0.05-0.15 = Acceptable
+    >0.15 = Concerning overfitting
+
+TOP 10 FEATURES:
+----------------------------------------------------------------------
+  sg_t2g                         0.2954
+  sg_putt                        0.2177
+  sg_ott                         0.1325
+  sg_total                       0.1119
+  sg_app                         0.0580
+  venue_avg_finish               0.0431
+  venue_finish_std               0.0416
+  hist_avg_finish                0.0333
+  hist_best_finish               0.0296
+  hist_cut_rate                  0.0092
+
+======================================================================
+  Models saved to: data/models/
+  Next step: Generate 2026 predictions
+======================================================================

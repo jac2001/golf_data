@@ -1,0 +1,86 @@
+======================================================================
+  PREDICTION CALIBRATION REPORT: The American Express
+======================================================================
+
+Matched Players: 142
+Unmatched: 0
+
+CALIBRATION SUMMARY:
+----------------------------------------
+  Model needs calibration work: top5_prob: moderately calibrated (ECE=3.6%); top10_prob: poorly calibrated (ECE=7.6%)
+  → Reduce top5_prob estimates - model is systematically overconfident
+  → Reduce top10_prob estimates - model is systematically overconfident
+
+
+WIN PROB CALIBRATION:
+----------------------------------------
+  ECE (Expected Calibration Error): 1.72%
+
+  Bucket        | N   | Predicted | Actual | Error    | Status
+  ------------------------------------------------------------
+  0-1%         |  82 |     0.6% |   0.0% |   +0.6% | CALIBRATED
+  1-2%         |  43 |     1.4% |   0.0% |   +1.4% | CALIBRATED
+  2-5%         |  16 |     3.0% |   0.0% |   +3.0% | OVERCONFIDENT
+  10-20%       |   1 |    15.4% | 100.0% |  -84.6% | UNDERCONFIDENT
+
+TOP5 PROB CALIBRATION:
+----------------------------------------
+  ECE (Expected Calibration Error): 3.63%
+
+  Bucket        | N   | Predicted | Actual | Error    | Status
+  ------------------------------------------------------------
+  0-5%         |  37 |     3.7% |   0.0% |   +3.7% | OVERCONFIDENT
+  5-10%        |  73 |     7.0% |   4.1% |   +2.9% | OVERCONFIDENT
+  10-20%       |  29 |    12.7% |  10.3% |   +2.4% | OVERCONFIDENT
+  20-30%       |   2 |    23.6% |   0.0% |  +23.6% | OVERCONFIDENT
+  30-50%       |   1 |    48.5% | 100.0% |  -51.5% | UNDERCONFIDENT
+
+TOP10 PROB CALIBRATION:
+----------------------------------------
+  ECE (Expected Calibration Error): 7.56%
+
+  Bucket        | N   | Predicted | Actual | Error    | Status
+  ------------------------------------------------------------
+  0-5%         |   3 |     4.2% |   0.0% |   +4.2% | OVERCONFIDENT
+  5-10%        |  32 |     8.3% |   3.1% |   +5.1% | OVERCONFIDENT
+  10-20%       |  79 |    14.8% |   8.9% |   +5.9% | OVERCONFIDENT
+  20-30%       |  22 |    23.7% |  13.6% |  +10.1% | OVERCONFIDENT
+  30-50%       |   5 |    34.4% |   0.0% |  +34.4% | OVERCONFIDENT
+  50%+         |   1 |    62.6% | 100.0% |  -37.4% | UNDERCONFIDENT
+
+
+FEATURE IMPORTANCE:
+----------------------------------------
+  Most Predictive: predicted_ev
+  Least Predictive: world_rank
+
+  Course Fit Score     | r=-0.270 | p=0.016 [✓]
+    → Moderate predictor - useful but not definitive
+  World Ranking        | r=+0.155 | p=0.169 [✗]
+    → Not statistically significant - unreliable signal
+  Expected Value       | r=-0.285 | p=0.010 [✓]
+    → Moderate predictor - useful but not definitive
+  Win Probability      | r=-0.265 | p=0.017 [✓]
+    → Moderate predictor - useful but not definitive
+  Top-10 Probability   | r=-0.285 | p=0.011 [✓]
+    → Moderate predictor - useful but not definitive
+
+
+WINNER ANALYSIS:
+----------------------------------------
+  Winner: Scottie Scheffler
+  Predicted Win Prob: 15.44%
+  Win Prob Rank: #1
+  Was in Top 10 Predicted: Yes ✓
+
+  TOP 5 PICKS:
+    Top 10s: 1/5
+    Made Cuts: 3/5
+    Avg Finish (made cut): 10.3
+
+  TOP 10 PICKS:
+    Top 10s: 1/10
+    Made Cuts: 6/10
+    Avg Finish (made cut): 18.8
+
+======================================================================

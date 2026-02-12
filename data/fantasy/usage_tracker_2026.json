@@ -1,0 +1,68 @@
+{
+  "season": "2026",
+  "max_uses_per_player": 3,
+  "players_per_lineup": 3,
+  "last_updated": "2026-02-09T07:55:42.178179",
+  "picks": {
+    "Ben Griffin": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Waste Management Phoenix Open",
+          "week": 1,
+          "date": "2026-02-05",
+          "result": "T28",
+          "points": 26
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 26
+    },
+    "Chris Gotterup": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Waste Management Phoenix Open",
+          "week": 1,
+          "date": "2026-02-05",
+          "result": "1",
+          "points": 500
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 500
+    },
+    "Pierceson Coody": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Waste Management Phoenix Open",
+          "week": 1,
+          "date": "2026-02-05",
+          "result": "T10",
+          "points": 70
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 70
+    }
+  },
+  "weekly_lineups": {
+    "week_1": {
+      "tournament": "Waste Management Phoenix Open",
+      "week": 1,
+      "date": "2026-02-05",
+      "lineup": [
+        "Ben Griffin",
+        "Chris Gotterup",
+        "Pierceson Coody"
+      ],
+      "points_earned": null
+    }
+  },
+  "summary": {
+    "total_players_used": 3,
+    "total_picks_made": 3,
+    "total_points": 596
+  }
+}

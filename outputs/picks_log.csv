@@ -1,0 +1,4 @@
+date,tournament_name,tournament_type,player_id,player_name,expected_value,win_prob,top5_prob,top10_prob,world_rank,usage_recommendation,uses_remaining
+2026-02-04,Latest,standard,37455,"Kim, Si Woo",171336.87730454857,0.0365416204044437,0.1123705947091571,0.1865835367559245,30.0,CONSIDER,3
+2026-02-04,Latest,standard,59836,"Coody, Pierceson",168525.4707328969,0.0277596108931252,0.1178353731727136,0.204406243540328,47.0,CONSIDER,3
+2026-02-04,Latest,standard,34046,"Spieth, Jordan",116945.61363941658,0.0117631521697804,0.0648318567773845,0.1337678171399443,83.0,USE,3

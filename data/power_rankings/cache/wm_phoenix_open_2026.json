@@ -1,0 +1,340 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "WM Phoenix Open",
+      "tableTitle": "Power Rankings for WM Phoenix Open",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "46717",
+            "firstName": "Viktor",
+            "lastName": "Hovland",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46717.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Making his season debut in what is his first trip to TPC Scottsdale in three years, but he\u2019s already warm in 2026 with a T14 at the Dubai Desert Classic. Six straight top 25s worldwide going back to the FedExCup Playoffs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "60004",
+            "firstName": "Jacob",
+            "lastName": "Bridgeman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60004.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "When a guy reaches the TOUR Championship for the first time, as he did in 2025, there\u2019s value in where he chooses to play the following season when he entirely controls his schedule. Off and running in 2026 with a T4 and a T13."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "59836",
+            "firstName": "Pierceson",
+            "lastName": "Coody",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59836.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His 2025 was a model for how to thrive during transition. Fully exempt on the PGA TOUR once again, he\u2019s pounced with a T13, a T18 and a T2 to rise to a career-best 47th in the Official World Golf Ranking. Tournament debutant."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "25493",
+            "firstName": "Nick",
+            "lastName": "Taylor",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_25493.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "As long as he\u2019s close, he\u2019s a threat where he\u2019s performed well in the past. That includes at TPC Scottsdale where he chased a runner-up in 2023 with a playoff win in 2024. Opened 2026 with a T13 as the defending champ at Waialae."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "47420",
+            "firstName": "Jake",
+            "lastName": "Knapp",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47420.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 31-year-old has burst out of the gates to begin his third season. Par or better in every round with trademark driving and putting, he\u2019s delivered a T11 at the Sony Open in Hawaii and a T5 at the Farmers Insurance Open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "34046",
+            "firstName": "Jordan",
+            "lastName": "Spieth",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The priorities of life have him adjusting as a father of three since last summer. He\u2019s competed sparingly since but opened 2026 with a T24 at the Sony Open in Hawaii and has four top fixes at TPC Scottsdale since 2021."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "54591",
+            "firstName": "Ben",
+            "lastName": "Griffin",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_54591.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The newlywed is on the board with two top 25s this year. If not for slow starts in his prior trips to TPC Scottsdale, he could cite the same here, but he is 2-for-2. Also buoyed by an outrageous 2025 and his fit here is sublime."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Answered his season-launching victory at the Sony Open with a steady and personal-best T18 at the Farmers Insurance Open. That he\u2019s 0-for-2 at TPC Scottsdale defies who he is now as a well-rounded talent. Enjoy the show."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "All good things come to an end, as did his consecutive cuts-made streak of 72 last week. He hasn\u2019t missed two in a row on the PGA TOUR in eight years and he\u2019s 6-for-6 with two podiums among four top 10s at TPC Scottsdale."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "51634",
+            "firstName": "Sahith",
+            "lastName": "Theegala",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51634.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Healthy and separated from a tough 2025, he\u2019s turned the tables with a pair of top 10s upon arrival for his fifth start at TPC Scottsdale where he\u2019s still out to avenge his close call (T3) in 2022. Also solo fifth in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "46442",
+            "firstName": "Maverick",
+            "lastName": "McNealy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46442.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "No one was beating Justin Rose at Torrey Pines, but McNealy was in position for a spot on the podium until he settled for 10th. His sturdy start to 2026 is met with top 10s in the last two WM Phoenix Opens (14-under in both)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "When he\u2019s on, TPC Scottsdale accentuates the best of his skill set ... and he\u2019s on. This match made in the desert has renewed its vows on multiple occasions. Overall, he\u2019s 11-for-12 with two wins and a T2 among five top 10s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Good luck finding another pro who\u2019s been as nails as he\u2019s been but without a win in his last 10 starts worldwide. Dating back to the FedExCup Playoffs, he\u2019s posted four top fives and no worse than T21. Top 25s in last three here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Proved in his last five official starts of 2025 that his game travels week over week, but TPC Scottsdale is as good a fit as any for his skill set off the tee and on the greens. Already 4-for-4 with a T8 and a T12 since 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Season-opening victory at The American Express. Check. Twenty PGA TOUR wins. Check. Eclipsed $100 million in career earnings. Check. World No. 1. Check. Two-time champion at WM Phoenix Open. Check. Pay that man."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

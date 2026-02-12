@@ -1,0 +1,60 @@
+======================================================================
+  FINAL MODEL VALIDATION REPORT
+  Year-Based Cross-Validation (Train: 2020-2024, Test: 2025)
+======================================================================
+
+DATASET SUMMARY:
+  Total Records: 27,880
+  Training Records: 530 (2020-2024)
+  Test Records: 221 (2025)
+  Features Used: 13
+
+FEATURE GROUPS:
+  SG Stats: 5
+  Course History: 6
+  Course/Field: 0
+
+MODEL PERFORMANCE:
+----------------------------------------------------------------------
+Model      Train AUC    Test AUC     Gap        Status         
+----------------------------------------------------------------------
+win        0.9984       0.8859       0.1124     ⚠️  Moderate   
+top5       0.9911       0.9406       0.0505     ⚠️  Moderate   
+top10      0.9865       0.9703       0.0162     ✅ Good         
+top20      0.9822       0.9410       0.0412     ✅ Good         
+
+INTERPRETATION:
+  ROC-AUC Scale:
+    0.50 = Random guessing
+    0.60-0.65 = Slight edge
+    0.70-0.75 = Good predictive power
+    0.75-0.80 = Excellent (realistic ceiling for golf)
+    0.90+ = Likely overfitting
+
+  Overfitting Gap:
+    <0.05 = Excellent generalization
+    0.05-0.15 = Acceptable
+    >0.15 = Concerning overfitting
+
+TOP 10 FEATURES:
+----------------------------------------------------------------------
+  sg_t2g                         0.2828
+  sg_putt                        0.2156
+  sg_ott                         0.1403
+  sg_total                       0.1043
+  sg_app                         0.0660
+  venue_avg_finish               0.0470
+  venue_finish_std               0.0433
+  hist_avg_finish                0.0396
+  hist_best_finish               0.0305
+  hist_times_played              0.0102
+
+======================================================================
+  Models saved to: data/models/
+  Next step: Generate 2026 predictions
+======================================================================
+https://www.pgatour.com/article/news/betting-profile/2026/at-t-pebble-beach-pro-am/{name_slug}-pga-tour-betting-stats-at-t-pebble-beach-pro-am-2026\"
+
+python3 scripts/scrapers/fetch_betting_profile_articles.py \
+        --field-csv data/fields/att_pebble_beach_proam_field.csv \
+        --url-template \"https://www.pgatour.com/article/news/betting-profile/2026/at-t-pebble-beach-pro-am/{name_slug}-pga-tour-betting-stats-at-t-pebble-beach-pro-am-2026\" \ --output data/betting_profiles/american_express_2026_articles.csv

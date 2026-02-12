@@ -1,0 +1,147 @@
+year,stat_type,player_id,player_name,rank,country,average,total_rounds
+2026,strokes-gained-around-the-green,40063,Ricardo GOUVEIA,1,POR,0.7004,14
+2026,strokes-gained-around-the-green,37073,Jack SENIOR,2,ENG,0.6903,20
+2026,strokes-gained-around-the-green,40148,Viktor HOVLAND,3,NOR,0.6838,8
+2026,strokes-gained-around-the-green,38439,Patrick REED,4,USA,0.665,16
+2026,strokes-gained-around-the-green,35166,Dylan FRITTELLI,5,RSA,0.6515,25
+2026,strokes-gained-around-the-green,293,Padraig HARRINGTON,6,IRL,0.6379,12
+2026,strokes-gained-around-the-green,39187,Shubhankar SHARMA,7,IND,0.6361,18
+2026,strokes-gained-around-the-green,100554,David PUIG,8,ESP,0.6246,14
+2026,strokes-gained-around-the-green,38575,Michael HOLLICK,9,RSA,0.5654,23
+2026,strokes-gained-around-the-green,37793,Adrian OTAEGUI,10,UAE,0.5604,12
+2026,strokes-gained-around-the-green,41662,Min Woo LEE,11,AUS,0.4941,8
+2026,strokes-gained-around-the-green,34932,John PARRY,12,ENG,0.4592,11
+2026,strokes-gained-around-the-green,101583,Wenyi DING,13,CHN,0.4269,16
+2026,strokes-gained-around-the-green,36519,Thorbjørn OLESEN,14,DEN,0.4028,12
+2026,strokes-gained-around-the-green,39609,Nathan KIMSEY,15,ENG,0.4005,19
+2026,strokes-gained-around-the-green,43682,Jayden SCHAPER,16,RSA,0.3976,27
+2026,strokes-gained-around-the-green,40475,Hennie DU PLESSIS,17,RSA,0.3965,19
+2026,strokes-gained-around-the-green,102485,Ryan PEAKE,18,AUS,0.3826,13
+2026,strokes-gained-around-the-green,35122,Ryan FOX,19,NZL,0.3785,16
+2026,strokes-gained-around-the-green,40874,Oliver LINDELL,20,FIN,0.3598,27
+2026,strokes-gained-around-the-green,41282,Tom MCKIBBIN,21,NIR,0.3496,12
+2026,strokes-gained-around-the-green,39617,Matt WALLACE,21,ENG,0.3496,8
+2026,strokes-gained-around-the-green,33676,Bernd WIESBERGER,23,AUT,0.3486,16
+2026,strokes-gained-around-the-green,43801,Freddy SCHOTT,24,GER,0.338,14
+2026,strokes-gained-around-the-green,42600,David MICHELUZZI,25,AUS,0.3188,14
+2026,strokes-gained-around-the-green,41330,Mikael LINDBERG,26,SWE,0.3146,19
+2026,strokes-gained-around-the-green,105484,Daniel RODRIGUES,27,POR,0.305,18
+2026,strokes-gained-around-the-green,37804,Francesco LAPORTA,28,ITA,0.2877,16
+2026,strokes-gained-around-the-green,43332,Eugenio CHACARRA,29,ESP,0.2823,23
+2026,strokes-gained-around-the-green,37017,Thomas DETRY,30,BEL,0.2774,10
+2026,strokes-gained-around-the-green,39593,Sebastian SÖDERBERG,31,SWE,0.2746,8
+2026,strokes-gained-around-the-green,40650,Daniel YOUNG,32,SCO,0.2722,15
+2026,strokes-gained-around-the-green,43327,Manuel ELVIRA,33,ESP,0.2678,17
+2026,strokes-gained-around-the-green,42794,Alex FITZPATRICK,34,ENG,0.2614,22
+2026,strokes-gained-around-the-green,34264,Paul WARING,35,ENG,0.2487,14
+2026,strokes-gained-around-the-green,36932,Andrew JOHNSTON,36,ENG,0.247,10
+2026,strokes-gained-around-the-green,100552,Tom VAILLANT,37,FRA,0.2429,20
+2026,strokes-gained-around-the-green,42213,Robin WILLIAMS,38,RSA,0.2297,12
+2026,strokes-gained-around-the-green,3289,Francesco MOLINARI,38,ITA,0.23,12
+2026,strokes-gained-around-the-green,40882,Ugo COUSSAUD,40,FRA,0.2291,18
+2026,strokes-gained-around-the-green,43831,Brandon ROBINSON THOMPSON,40,ENG,0.2287,11
+2026,strokes-gained-around-the-green,41721,Adri ARNAUS,42,ESP,0.2279,12
+2026,strokes-gained-around-the-green,34771,Scott JAMIESON,43,SCO,0.2261,12
+2026,strokes-gained-around-the-green,101450,Oihan GUILLAMOUNDEGUY,44,FRA,0.2213,13
+2026,strokes-gained-around-the-green,34085,Joost LUITEN,45,NED,0.2153,18
+2026,strokes-gained-around-the-green,39466,Clément SORDET,46,FRA,0.2102,10
+2026,strokes-gained-around-the-green,36452,Marcus ARMITAGE,47,ENG,0.2094,23
+2026,strokes-gained-around-the-green,42648,Calum HILL,48,SCO,0.207,21
+2026,strokes-gained-around-the-green,101251,Martin COUVRA,49,FRA,0.1957,21
+2026,strokes-gained-around-the-green,35329,Andrea PAVAN,50,ITA,0.1926,17
+2026,strokes-gained-around-the-green,32111,Rafa CABRERA BELLO,51,ESP,0.1802,18
+2026,strokes-gained-around-the-green,33674,Julien GUERRIER,52,FRA,0.1706,22
+2026,strokes-gained-around-the-green,101547,Angel AYORA,53,ESP,0.167,25
+2026,strokes-gained-around-the-green,38258,Joel GIRRBACH,54,SUI,0.1633,19
+2026,strokes-gained-around-the-green,42411,Todd CLEMENTS,55,ENG,0.153,14
+2026,strokes-gained-around-the-green,38956,Grant FORREST,56,SCO,0.1491,22
+2026,strokes-gained-around-the-green,32013,Shaun NORRIS,57,RSA,0.1482,15
+2026,strokes-gained-around-the-green,34788,Matteo MANASSERO,58,ITA,0.1347,14
+2026,strokes-gained-around-the-green,38428,Zander LOMBARD,59,RSA,0.1333,15
+2026,strokes-gained-around-the-green,43957,Casey JARVIS,60,RSA,0.1289,17
+2026,strokes-gained-around-the-green,39862,JC RITCHIE,61,RSA,0.1195,17
+2026,strokes-gained-around-the-green,37841,Eddie PEPPERELL,62,ENG,0.1179,16
+2026,strokes-gained-around-the-green,36077,Ashun WU,62,CHN,0.1179,9
+2026,strokes-gained-around-the-green,100023,Gregorio DE LEO,64,ITA,0.1112,18
+2026,strokes-gained-around-the-green,39513,Andreas HALVORSEN,65,NOR,0.1005,14
+2026,strokes-gained-around-the-green,39251,Junghwan LEE,66,KOR,0.0957,21
+2026,strokes-gained-around-the-green,38119,Andy SULLIVAN,67,ENG,0.0918,18
+2026,strokes-gained-around-the-green,33337,Pablo LARRAZÁBAL,68,ESP,0.0783,19
+2026,strokes-gained-around-the-green,38017,Daniel VAN TONDER,69,RSA,0.0755,17
+2026,strokes-gained-around-the-green,100976,Yuto KATSURAGAWA,70,JPN,0.0726,20
+2026,strokes-gained-around-the-green,107390,Cameron ADAM,71,SCO,0.0587,16
+2026,strokes-gained-around-the-green,101468,Connor MCKINNEY,72,AUS,0.055,14
+2026,strokes-gained-around-the-green,102151,Hugo TOWNSEND,73,SWE,0.0519,15
+2026,strokes-gained-around-the-green,36489,Shane LOWRY,73,IRL,0.0524,8
+2026,strokes-gained-around-the-green,106152,Davis BRYANT,75,USA,0.0493,16
+2026,strokes-gained-around-the-green,40120,Antoine ROZNER,76,FRA,0.0308,19
+2026,strokes-gained-around-the-green,100259,Elvis SMYLIE,77,AUS,0.0304,10
+2026,strokes-gained-around-the-green,34024,Rory MCILROY,78,NIR,0.0209,12
+2026,strokes-gained-around-the-green,39271,Guido MIGLIOZZI,79,ITA,0.0169,20
+2026,strokes-gained-around-the-green,40946,Ewen FERGUSON,80,SCO,0.0112,18
+2026,strokes-gained-around-the-green,105456,Jacob Skov OLESEN,81,DEN,-0.0073,22
+2026,strokes-gained-around-the-green,40721,Johannes VEERMAN,82,USA,-0.0194,20
+2026,strokes-gained-around-the-green,37990,Brandon STONE,83,RSA,-0.0274,17
+2026,strokes-gained-around-the-green,36078,Nacho ELVIRA,84,ESP,-0.0302,21
+2026,strokes-gained-around-the-green,104063,Kazuma KOBORI,85,NZL,-0.0326,14
+2026,strokes-gained-around-the-green,37562,David LAW,86,SCO,-0.0344,16
+2026,strokes-gained-around-the-green,39042,Renato PARATORE,87,ITA,-0.0401,18
+2026,strokes-gained-around-the-green,35703,Marcel SCHNEIDER,88,GER,-0.0456,15
+2026,strokes-gained-around-the-green,102397,Rasmus NEERGAARD-PETERSEN,89,DEN,-0.0573,14
+2026,strokes-gained-around-the-green,101595,Jack BUCHANAN,90,AUS,-0.0662,10
+2026,strokes-gained-around-the-green,41684,Sean CROCKER,91,USA,-0.0759,16
+2026,strokes-gained-around-the-green,42689,Rikuya HOSHINO,92,JPN,-0.0816,16
+2026,strokes-gained-around-the-green,32435,Ross FISHER,93,ENG,-0.0894,12
+2026,strokes-gained-around-the-green,39127,Jacques KRUYSWIJK,94,RSA,-0.1021,18
+2026,strokes-gained-around-the-green,40892,Stefano MAZZOLI,95,ITA,-0.106,14
+2026,strokes-gained-around-the-green,101407,Tobias JONSSON,96,SWE,-0.1174,21
+2026,strokes-gained-around-the-green,3467,Marcel SIEM,96,GER,-0.1174,19
+2026,strokes-gained-around-the-green,41420,Nicolai VON DELLINGSHAUSEN,98,GER,-0.1288,18
+2026,strokes-gained-around-the-green,35371,Tommy FLEETWOOD,99,ENG,-0.1303,8
+2026,strokes-gained-around-the-green,43883,David RAVETTO,100,FRA,-0.1446,21
+2026,strokes-gained-around-the-green,104066,Rocco REPETTO TAYLOR,101,ESP,-0.1512,19
+2026,strokes-gained-around-the-green,101155,Dan BRADBURY,102,ENG,-0.1553,21
+2026,strokes-gained-around-the-green,30715,Richard STERNE,103,RSA,-0.158,14
+2026,strokes-gained-around-the-green,41948,Anthony QUAYLE,104,AUS,-0.1692,12
+2026,strokes-gained-around-the-green,39035,Joe DEAN,105,ENG,-0.1716,12
+2026,strokes-gained-around-the-green,43173,Yurav PREMLALL,106,RSA,-0.182,9
+2026,strokes-gained-around-the-green,43885,Ben SCHMIDT,107,ENG,-0.1847,11
+2026,strokes-gained-around-the-green,36421,Darius VAN DRIEL,108,NED,-0.1895,17
+2026,strokes-gained-around-the-green,40516,Ivan CANTERO,109,ESP,-0.2027,14
+2026,strokes-gained-around-the-green,102497,Clement CHARMASSON,110,FRA,-0.2073,18
+2026,strokes-gained-around-the-green,43010,Aaron COCKERILL,111,CAN,-0.2162,13
+2026,strokes-gained-around-the-green,1402,Darren FICHARDT,112,RSA,-0.2276,10
+2026,strokes-gained-around-the-green,35853,Jason SCRIVENER,113,AUS,-0.2296,18
+2026,strokes-gained-around-the-green,39925,Marcus KINHULT,114,SWE,-0.2423,14
+2026,strokes-gained-around-the-green,37259,Kiradech APHIBARNRAT,115,THA,-0.2637,16
+2026,strokes-gained-around-the-green,31690,Niklas LEMKE,116,SWE,-0.2699,17
+2026,strokes-gained-around-the-green,100837,Quim VIDAL,117,ESP,-0.3026,16
+2026,strokes-gained-around-the-green,36484,Jens DANTORP,118,SWE,-0.3082,13
+2026,strokes-gained-around-the-green,36867,Jorge CAMPILLO,119,ESP,-0.3151,17
+2026,strokes-gained-around-the-green,41975,Adam BLOMME,120,SWE,-0.3228,8
+2026,strokes-gained-around-the-green,34610,James MORRISON,121,ENG,-0.3487,19
+2026,strokes-gained-around-the-green,101611,Ryan VAN VELZEN,122,RSA,-0.3596,10
+2026,strokes-gained-around-the-green,38296,Jeff WINTHER,123,DEN,-0.3617,14
+2026,strokes-gained-around-the-green,42143,Nicolai HØJGAARD,124,DEN,-0.3696,8
+2026,strokes-gained-around-the-green,39020,Daniel GAVINS,125,ENG,-0.3724,12
+2026,strokes-gained-around-the-green,39791,Thriston LAWRENCE,126,RSA,-0.3767,13
+2026,strokes-gained-around-the-green,43333,Daniel HILLIER,127,NZL,-0.3974,24
+2026,strokes-gained-around-the-green,42832,Jordan GUMBERG,128,USA,-0.4022,14
+2026,strokes-gained-around-the-green,101569,Jonathan BROOMHEAD,129,RSA,-0.4241,17
+2026,strokes-gained-around-the-green,41268,Alejandro DEL REY,130,ESP,-0.4704,21
+2026,strokes-gained-around-the-green,41858,Frederic LACROIX,131,FRA,-0.4924,20
+2026,strokes-gained-around-the-green,42508,Angel HIDALGO,132,ESP,-0.5224,18
+2026,strokes-gained-around-the-green,100418,Sam BAIRSTOW,133,ENG,-0.5441,20
+2026,strokes-gained-around-the-green,35358,Sebastian GARCIA,134,ESP,-0.5566,17
+2026,strokes-gained-around-the-green,105948,Ryggs JOHNSTON,135,USA,-0.5583,19
+2026,strokes-gained-around-the-green,39075,Romain LANGASQUE,136,FRA,-0.5957,16
+2026,strokes-gained-around-the-green,37579,Joakim LAGERGREN,137,SWE,-0.5975,20
+2026,strokes-gained-around-the-green,40468,Dylan NAIDOO,138,RSA,-0.6182,22
+2026,strokes-gained-around-the-green,38379,Niklas NORGAARD,139,DEN,-0.6584,16
+2026,strokes-gained-around-the-green,103310,Joshua BERRY,140,ENG,-0.6827,14
+2026,strokes-gained-around-the-green,100024,Filippo CELLI,141,ITA,-0.7041,12
+2026,strokes-gained-around-the-green,36659,Ockie STRYDOM,142,RSA,-0.7232,17
+2026,strokes-gained-around-the-green,37624,Laurie CANTER,143,ENG,-0.7393,10
+2026,strokes-gained-around-the-green,41226,Connor SYME,144,SCO,-0.7854,12
+2026,strokes-gained-around-the-green,42160,Benjamin FOLLETT-SMITH,145,ZIM,-0.8139,17
+2026,strokes-gained-around-the-green,42958,Mike TOOROP,146,NED,-1.0728,10

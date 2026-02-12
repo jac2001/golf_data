@@ -1,0 +1,3793 @@
+{
+  "props": {
+    "pageProps": {
+      "pageContext": {
+        "locale": "en",
+        "pagePath": "/stats/course/toughest-course",
+        "tourCode": "R",
+        "partnerId": null,
+        "tournaments": [
+          {
+            "id": "R2026003",
+            "leaderboardId": "R2026003",
+            "tourCode": "R"
+          },
+          {
+            "id": "S2026524",
+            "leaderboardId": "S2026524",
+            "tourCode": "S"
+          },
+          {
+            "id": "H2026104",
+            "leaderboardId": "H2026104",
+            "tourCode": "H"
+          },
+          {
+            "id": "Y2025016",
+            "leaderboardId": "Y2025016",
+            "tourCode": "Y"
+          }
+        ],
+        "clientIp": "35.232.228.160",
+        "countryCode": "US",
+        "isEmbeddedWebView": false,
+        "queryArgs": {
+          "courseStatId": "toughest-course"
+        },
+        "activeTournamentOverride": null,
+        "universalTournaments": [
+          "S2022600",
+          "S2023600",
+          "S2024600",
+          "R2023088",
+          "R2024088"
+        ],
+        "bypassObsoleteCheck": false,
+        "tourMobileNav": [
+          {
+            "key": "leaderboard",
+            "link": "/leaderboard",
+            "label": "Leaderboard"
+          },
+          {
+            "key": "schedule",
+            "link": "/schedule",
+            "label": "Schedule"
+          }
+        ],
+        "tourNavFooter": {
+          "navLists": [
+            {
+              "key": "theTour",
+              "menu": [
+                {
+                  "key": "about",
+                  "link": "/company/about",
+                  "label": "About"
+                },
+                {
+                  "key": "careers",
+                  "link": "https://www.teamworkonline.com/golf-tennis-jobs/pgatour/pga-tour-jobs-2",
+                  "label": "Careers"
+                },
+                {
+                  "key": "tpcNetwork",
+                  "link": "https://tpc.com/?utm_source=pgatour.com&utm_medium=digital&utm_campaign=footer-link",
+                  "label": "TPC Network"
+                },
+                {
+                  "key": "contact",
+                  "link": "/company/contact",
+                  "label": "Contact"
+                },
+                {
+                  "key": "tourcastAbout",
+                  "link": "/tourcast/about",
+                  "label": "TOURCAST"
+                },
+                {
+                  "key": "impact",
+                  "link": "/impact",
+                  "label": "Impact"
+                }
+              ]
+            },
+            {
+              "key": "partnerships",
+              "menu": [
+                {
+                  "key": "marketingPartners",
+                  "link": "/marketing-partners",
+                  "label": "Marketing Partners"
+                },
+                {
+                  "key": "affiliates",
+                  "link": "/partner-sites",
+                  "label": "Affiliates"
+                },
+                {
+                  "key": "media",
+                  "link": "https://pgatourmedia.pgatourhq.com/",
+                  "label": "Media"
+                },
+                {
+                  "key": "advertise",
+                  "link": "/advertise",
+                  "label": "Advertise"
+                }
+              ]
+            },
+            {
+              "key": "links",
+              "menu": [
+                {
+                  "key": "pgaTourLive",
+                  "link": "/live",
+                  "label": "PGA TOUR LIVE"
+                },
+                {
+                  "key": "payneStewartAward",
+                  "link": "/payne-stewart-award",
+                  "label": "Payne Stewart Award"
+                },
+                {
+                  "key": "fanCouncil",
+                  "link": "https://pgatour.co1.qualtrics.com/jfe/form/SV_b0ZNcfzgJ5i9dae?Source=PGATourWebsite",
+                  "label": "Fan Council"
+                },
+                {
+                  "key": "newsletters",
+                  "link": "/newsletters",
+                  "label": "Newsletters"
+                },
+                {
+                  "key": "whatsNew",
+                  "link": "www.pgatour.com/pages/whats-new",
+                  "label": "What's New"
+                },
+                {
+                  "key": "socialResponsibility",
+                  "link": "/content/social-responsibility",
+                  "label": "Social Responsibility"
+                },
+                {
+                  "key": "sustainability",
+                  "link": "/sustainability",
+                  "label": "Sustainability"
+                },
+                {
+                  "key": "volunteer",
+                  "link": "https://www.pgatour.com/volunteer",
+                  "label": "Volunteer"
+                },
+                {
+                  "key": "PGA TOUR Studios",
+                  "link": "/studios",
+                  "label": "PGA TOUR Studios"
+                }
+              ]
+            },
+            {
+              "key": "shop",
+              "menu": [
+                {
+                  "key": "fanShop",
+                  "link": "https://www.pgatourfanshop.com/?_s=bm-pgatourcom-pgatour-Landing-page-footer-04.26.24",
+                  "label": "Fan Shop"
+                },
+                {
+                  "key": "superstore",
+                  "link": "https://www.pgatoursuperstore.com/home",
+                  "label": "Superstore"
+                },
+                {
+                  "key": "tickets",
+                  "link": "/tickets",
+                  "label": "Tickets"
+                },
+                {
+                  "key": "mastercardTickets",
+                  "link": "/mastercard-tickets",
+                  "label": "Mastercard Tickets"
+                }
+              ]
+            },
+            {
+              "key": "apps",
+              "menu": [
+                {
+                  "key": "pgaTour",
+                  "link": "/mobile",
+                  "image": "https://res.cloudinary.com/pgatour-prod/tours/logos/pga-tour-logo-mini.svg",
+                  "label": "PGA TOUR"
+                },
+                {
+                  "key": "vision",
+                  "link": "https://www.pgatour.com/content/apple-vision-pro",
+                  "image": "https://res.cloudinary.com/pgatour-prod/tours/logos/pga-tour-logo-mini.svg",
+                  "label": "PGA TOUR Vision"
+                }
+              ]
+            }
+          ],
+          "legalNav": [
+            {
+              "key": "privacyUse",
+              "menu": [
+                {
+                  "key": "privacyPolicy",
+                  "link": "/company/privacy-policy",
+                  "label": "Privacy Policy"
+                },
+                {
+                  "key": "tos",
+                  "link": "/company/terms-of-use",
+                  "label": "Terms of Use"
+                },
+                {
+                  "key": "accessibility",
+                  "link": "/company/accessibility-statement",
+                  "label": "Accessibility Statement"
+                },
+                {
+                  "key": "doNotSell",
+                  "link": "/company/do-not-sell-or-share-my-personal-information",
+                  "image": "https://res.cloudinary.com/pgatour-prod/pgatour/pages/privacy-policy/ccpa-icon.svg",
+                  "label": "Your Privacy Choices"
+                },
+                {
+                  "key": "cookies",
+                  "link": "/ignored",
+                  "label": "Cookie Choices"
+                },
+                {
+                  "key": "sitemap",
+                  "link": "/company/sitemap",
+                  "label": "Sitemap"
+                }
+              ]
+            }
+          ],
+          "socialNav": [
+            {
+              "key": "Twitter",
+              "link": "https://twitter.com/pgatour",
+              "label": "Twitter"
+            },
+            {
+              "key": "TikTok",
+              "link": "https://www.tiktok.com/@pgatour",
+              "label": "TikTok"
+            },
+            {
+              "key": "Facebook",
+              "link": "https://www.facebook.com/PGATour",
+              "label": "Facebook"
+            },
+            {
+              "key": "Instagram",
+              "link": "https://www.instagram.com/pgatour/",
+              "label": "Instagram"
+            },
+            {
+              "key": "YouTube",
+              "link": "https://www.youtube.com/pgatour",
+              "label": "YouTube"
+            }
+          ],
+          "legalText": {
+            "key": "copyright",
+            "label": "Copyright \u00a9 2026 PGA TOUR, Inc. All rights reserved."
+          },
+          "secondaryLegalText": {
+            "key": "footerLegal",
+            "label": "PGA TOUR, PGA TOUR Champions, and the Swinging Golfer design are registered trademarks. The Korn Ferry trademark is also a registered trademark, and is used in the Korn Ferry Tour logo with permission."
+          }
+        },
+        "tourNavHeader": [
+          {
+            "key": "leaderboard",
+            "link": "/leaderboard",
+            "label": "Leaderboard"
+          },
+          {
+            "key": "watchListen",
+            "link": "/watch",
+            "label": "Watch & Listen"
+          },
+          {
+            "key": "news",
+            "link": "/news",
+            "label": "News"
+          },
+          {
+            "key": "fedexcup",
+            "link": "/fedexcup",
+            "label": "FedExCup"
+          },
+          {
+            "key": "schedule",
+            "link": "/schedule",
+            "label": "Schedule"
+          },
+          {
+            "key": "players",
+            "link": "/players",
+            "label": "Players"
+          },
+          {
+            "key": "stats",
+            "link": "/stats",
+            "label": "Stats"
+          },
+          {
+            "key": "fantasyGaming",
+            "link": "/fantasy-betting",
+            "label": "Fantasy & Betting"
+          },
+          {
+            "key": "signatureEvents",
+            "link": "/signature-events",
+            "label": "Signature Events"
+          },
+          {
+            "key": "more",
+            "menu": [
+              {
+                "key": "aonBetterDecisions",
+                "link": "/aon-better-decisions",
+                "label": "Aon Better Decisions"
+              },
+              {
+                "key": "dpWorldTourEligibilityRankings",
+                "link": "/dp-world-tour-eligibility-rankings",
+                "label": "DP World Tour Eligibility Rankings"
+              },
+              {
+                "key": "howItWorks",
+                "link": "/eligibility",
+                "label": "How It Works"
+              },
+              {
+                "key": "pgaTourTraining",
+                "link": "/training",
+                "label": "PGA TOUR Training"
+              },
+              {
+                "key": "tickets",
+                "link": "/tickets",
+                "label": "Tickets"
+              },
+              {
+                "key": "shop",
+                "link": "/shop",
+                "label": "Shop"
+              }
+            ]
+          }
+        ],
+        "tourSwitcher": [
+          {
+            "id": "pgatour",
+            "label": "PGA TOUR",
+            "code": "R",
+            "logoUrl": "https://res.cloudinary.com/pgatour-prod/tours/logos/pga-tour-logo.svg",
+            "external": false
+          },
+          {
+            "id": "pgatour-champions",
+            "label": "PGA TOUR Champions",
+            "code": "S",
+            "logoUrl": "https://res.cloudinary.com/pgatour-prod/tours/logos/pga-tour-champions-logo.svg",
+            "external": false
+          },
+          {
+            "id": "korn-ferry-tour",
+            "label": "Korn Ferry Tour",
+            "code": "H",
+            "logoUrl": "https://res.cloudinary.com/pgatour-prod/tours/logos/kornferry-tour-logo.svg",
+            "external": false
+          },
+          {
+            "id": "americas",
+            "label": "PGA TOUR Americas",
+            "code": "Y",
+            "logoUrl": "https://res.cloudinary.com/pgatour-prod/tours/logos/pga-tour-americas-logo.svg",
+            "external": false
+          },
+          {
+            "label": "PGA TOUR University",
+            "code": "U",
+            "link": "/university",
+            "logoUrl": "https://res.cloudinary.com/pgatour-prod/tours/logos/pga-tour-u-logo.svg",
+            "external": false
+          },
+          {
+            "label": "DP World Tour",
+            "code": "E",
+            "link": "https://www.europeantour.com/dpworld-tour/",
+            "logoUrl": "https://res.cloudinary.com/pgatour-prod/tours/logos/dp-world-tour-logo.svg",
+            "external": true
+          },
+          {
+            "label": "LPGA TOUR",
+            "code": "L",
+            "link": "https://www.lpga.com/",
+            "logoUrl": "https://res.cloudinary.com/pgatour-prod/tours/logos/lpga-tour-logo.svg",
+            "external": true
+          },
+          {
+            "label": "TGL",
+            "code": "I",
+            "link": "https://tglgolf.com/schedule",
+            "logoUrl": "https://res.cloudinary.com/pgatour-prod/tours/logos/tgl-logo.svg",
+            "external": true
+          }
+        ],
+        "coverageTournament": [
+          "R2026003"
+        ],
+        "backgroundOverride": {
+          "R": {
+            "enabled": false,
+            "takeoverType": "repeat",
+            "wings": "https://res.cloudinary.com/pgatour-prod/image/upload/temp/webTakeover/openingDrive2026/od_pattern-100.svg",
+            "styles": {
+              "headerBackground": "#FFFFFF",
+              "footerBackground": "#FFFFFF",
+              "pageBackground": "#003a70",
+              "pageBackgroundSize": 80,
+              "headerTextColors": {
+                "default": "#000000",
+                "hover": "#003a70",
+                "selected": "#003a70"
+              },
+              "footerTextColors": {
+                "default": "#000000",
+                "hover": "#003a70",
+                "selected": "#003a70"
+              },
+              "opacity": 0.05,
+              "backgroundRailGradient": true
+            }
+          },
+          "S": {
+            "enabled": false,
+            "takeoverType": "repeat",
+            "wings": "https://res.cloudinary.com/pgatour-prod/image/upload/temp/webTakeover/champions2024/championsWings2024.svg",
+            "styles": {
+              "headerBackground": "#030609",
+              "footerBackground": "#030609",
+              "pageBackground": "linear-gradient(0deg, rgba(0,156,219,1) 0%, rgba(0,56,128,1) 35%, rgba(2,0,36,1) 100%)",
+              "pageBackgroundSize": 60,
+              "headerTextColors": {
+                "default": "#e5e5e5",
+                "hover": "#ffffff",
+                "selected": "#e5e5e5"
+              },
+              "footerTextColors": {
+                "default": "#e5e5e5",
+                "hover": "#ffffff",
+                "selected": "#e5e5e5"
+              },
+              "opacity": 0.9,
+              "backgroundRailGradient": true
+            }
+          },
+          "H": {
+            "enabled": false,
+            "takeoverType": "repeat",
+            "wings": "https://res.cloudinary.com/pgatour-prod/temp/webTakeover/kftFinals2025/kftWings2025.svg",
+            "styles": {
+              "headerBackground": "#272727",
+              "footerBackground": "#272727",
+              "pageBackground": "#0f1519",
+              "pageBackgroundSize": 200,
+              "headerTextColors": {
+                "default": "#ffffff",
+                "hover": "#c8a779",
+                "selected": "#3cb371"
+              },
+              "footerTextColors": {
+                "default": "#ffffff",
+                "hover": "#c8a779",
+                "selected": "#3cb371"
+              },
+              "opacity": 0.9,
+              "backgroundRailGradient": false
+            }
+          }
+        },
+        "homeNavIconOverride": {
+          "R": {
+            "enabled": false,
+            "homeNavIcon": "https://res.cloudinary.com/pgatour-prod/image/upload/temp/webTakeover/openingDrive2026/pgat_opening_drive_logo.svg",
+            "desktop": {
+              "width": 187,
+              "height": 44
+            },
+            "mobile": {
+              "width": 170,
+              "height": 40
+            }
+          },
+          "S": {
+            "enabled": false,
+            "homeNavIcon": "https://res.cloudinary.com/pgatour-prod/image/upload/temp/webTakeover/champions2024/championsNavIcon2024.svg",
+            "desktop": {
+              "width": 187,
+              "height": 44
+            },
+            "mobile": {
+              "width": 71,
+              "height": 15
+            }
+          },
+          "H": {
+            "enabled": false,
+            "homeNavIcon": "https://res.cloudinary.com/pgatour-prod/image/upload/temp/webTakeover/kftFinals2025/kftNavIcon2025.svg",
+            "desktop": {
+              "width": 160,
+              "height": 50
+            },
+            "mobile": {
+              "width": 78,
+              "height": 27
+            }
+          }
+        },
+        "searchQuickLinks": {
+          "R": [
+            {
+              "key": "link-4",
+              "url": "/stats/detail/109",
+              "displayText": "Money/Finishes",
+              "newTab": false
+            },
+            {
+              "key": "link-1",
+              "url": "https://www.pgatour.com/tourcast/about",
+              "displayText": "TOURCAST",
+              "newTab": true
+            },
+            {
+              "key": "link-5",
+              "url": "/leaderboard",
+              "displayText": "Leaderboard",
+              "newTab": false
+            },
+            {
+              "key": "link-2",
+              "url": "https://fantasygolf.pgatour.com/#/roster/roster",
+              "displayText": "Fantasy Golf",
+              "newTab": true
+            },
+            {
+              "key": "link-3",
+              "url": "/stats",
+              "displayText": "Stats",
+              "newTab": false
+            }
+          ],
+          "S": [
+            {
+              "key": "link-1",
+              "url": "/schwabcup",
+              "displayText": "Schwab Cup",
+              "newTab": false
+            },
+            {
+              "key": "link-2",
+              "url": "/watch?c=ts",
+              "displayText": "Top Shots",
+              "newTab": false
+            },
+            {
+              "key": "link-3",
+              "url": "/stats",
+              "displayText": "Stats",
+              "newTab": false
+            },
+            {
+              "key": "link-4",
+              "url": "/tickets",
+              "displayText": "Tickets",
+              "newTab": false
+            },
+            {
+              "key": "link-5",
+              "url": "/players",
+              "displayText": "Players",
+              "newTab": false
+            }
+          ],
+          "H": [
+            {
+              "key": "link-1",
+              "url": "/watch",
+              "displayText": "Watch & Listen",
+              "newTab": false
+            },
+            {
+              "key": "link-2",
+              "url": "/pointslist",
+              "displayText": "Points List",
+              "newTab": false
+            },
+            {
+              "key": "link-3",
+              "url": "/stats",
+              "displayText": "Stats",
+              "newTab": false
+            },
+            {
+              "key": "link-4",
+              "url": "/tickets",
+              "displayText": "Tickets",
+              "newTab": false
+            },
+            {
+              "key": "link-5",
+              "url": "/watch?c=tr",
+              "displayText": "Trending Video",
+              "newTab": false
+            }
+          ],
+          "Y": [
+            {
+              "key": "link-1",
+              "url": "/fortinetcup",
+              "displayText": "Fortinet Cup",
+              "newTab": false
+            },
+            {
+              "key": "link-2",
+              "url": "/how-it-works",
+              "displayText": "How it Works",
+              "newTab": false
+            },
+            {
+              "key": "link-3",
+              "url": "/stats",
+              "displayText": "Stats",
+              "newTab": false
+            },
+            {
+              "key": "link-4",
+              "url": "/watch",
+              "displayText": "Watch",
+              "newTab": false
+            },
+            {
+              "key": "link-5",
+              "url": "/leaderboard",
+              "displayText": "Leaderboard",
+              "newTab": false
+            }
+          ]
+        },
+        "seasons": {
+          "R": {
+            "standings": 2026,
+            "stats": 2026,
+            "schedule": 2026
+          },
+          "S": {
+            "standings": 2026,
+            "stats": 2026,
+            "schedule": 2026
+          },
+          "H": {
+            "standings": 2026,
+            "stats": 2026,
+            "schedule": 2026
+          },
+          "Y": {
+            "standings": 2025,
+            "stats": 2025,
+            "schedule": 2026
+          }
+        },
+        "favoriteInteractivity": {
+          "enabled": true,
+          "minimumPromptInterval": 2592000,
+          "leaderboardScorecard": {
+            "enabled": true,
+            "timePeriod": 86440,
+            "interactionCount": 8
+          },
+          "playerScorecard": {
+            "enabled": true,
+            "timePeriod": 86440,
+            "interactionCount": 5
+          },
+          "playerProfile": {
+            "enabled": true,
+            "timePeriod": 345760,
+            "interactionCount": 2
+          }
+        },
+        "locationFavorites": {
+          "enabled": false,
+          "minimumPromptInterval": 2592000,
+          "interactivityPeriod": 604800,
+          "countryCode": "US",
+          "favorites": []
+        },
+        "automatedToolTips": {
+          "leaderboardFavorites": {
+            "currentLBFavoriteCount": 0,
+            "loadDelayTiming": 5,
+            "maxDisplayCount": 1,
+            "interactivityPeriod": 604800,
+            "displayDuration": 8
+          }
+        }
+      },
+      "dehydratedState": {
+        "mutations": [],
+        "queries": [
+          {
+            "dehydratedAt": 1770580821378,
+            "state": {
+              "data": {
+                "id": "R2026003",
+                "tournamentName": "WM Phoenix Open",
+                "tournamentLogo": [
+                  "https://res.cloudinary.com/pgatour-prod/d_tournaments:logos:R000.png/tournaments/logos/R003.png"
+                ],
+                "tournamentLocation": "Scottsdale",
+                "tournamentStatus": "IN_PROGRESS",
+                "roundStatusDisplay": "In Progress",
+                "roundDisplay": "R4",
+                "roundStatus": "IN_PROGRESS",
+                "roundStatusColor": "RED",
+                "currentRound": 4,
+                "timezone": "America/Phoenix",
+                "pdfUrl": null,
+                "seasonYear": "2026",
+                "displayDate": "Feb 5 - 8, 2026",
+                "country": "USA",
+                "state": "Arizona",
+                "city": "Scottsdale",
+                "scoredLevel": "TOURCAST",
+                "howItWorks": null,
+                "howItWorksPill": null,
+                "howItWorksWebview": null,
+                "events": [],
+                "courses": [
+                  {
+                    "id": "510",
+                    "courseName": "TPC Scottsdale (Stadium Course)",
+                    "courseCode": "TS",
+                    "hostCourse": true,
+                    "scoringLevel": "TOURCAST"
+                  }
+                ],
+                "weather": {
+                  "logo": "https://res.cloudinary.com/pgatour-prod/c_fill,f_webp,q_auto/pgatour/sponsors/88x31_-_TripleBlack.png",
+                  "logoDark": "https://res.cloudinary.com/pgatour-prod/c_fill,f_webp,q_auto/pgatour/sponsors/88x31_-_TripleWhite.png",
+                  "logoAccessibility": "deckorators",
+                  "tempF": "81\u00b0F",
+                  "tempC": "27\u00b0C",
+                  "condition": "DAY_SUNNY",
+                  "windDirection": "NORTH_EAST",
+                  "windSpeedMPH": "3",
+                  "windSpeedKPH": "4",
+                  "precipitation": "",
+                  "humidity": "17%",
+                  "logoAsset": {
+                    "imageOrg": "pgatour-prod",
+                    "imagePath": "/pgatour/sponsors/88x31_-_TripleBlack"
+                  },
+                  "logoDarkAsset": {
+                    "imageOrg": "pgatour-prod",
+                    "imagePath": "/pgatour/sponsors/88x31_-_TripleWhite"
+                  }
+                },
+                "ticketsURL": "https://wmphoenixopen.com/tickets/",
+                "tournamentSiteURL": "https://wmphoenixopen.com",
+                "formatType": "STROKE_PLAY",
+                "features": [
+                  "LEADERBOARD",
+                  "RECAP",
+                  "TEE_TIMES",
+                  "ODDS",
+                  "FIELD",
+                  "STANDINGS",
+                  "COURSE_STATS",
+                  "TOURCAST",
+                  "PAST_RESULTS",
+                  "OVERVIEW",
+                  "SIGNATURE_STANDINGS"
+                ],
+                "conductedByLabel": null,
+                "conductedByLink": null,
+                "beautyImage": "https://res.cloudinary.com/pgatour-prod/ar_0.667,c_crop/d_placeholders:tournamentBackgroundSolid.png/pgatour/courses/r003/510/holes/hole18.jpg",
+                "hideRolexClock": false,
+                "hideSov": false,
+                "headshotBaseUrl": null,
+                "rightRailConfig": null,
+                "shouldSubscribe": true,
+                "ticketsEnabled": true,
+                "useTournamentSiteURL": false,
+                "beautyImageAsset": {
+                  "imageOrg": "pgatour-prod",
+                  "imagePath": "pgatour/courses/r003/510/holes/hole18"
+                },
+                "disabledScorecardTabs": [],
+                "leaderboardTakeover": false,
+                "tournamentCategoryInfo": null,
+                "tournamentLogoAsset": [
+                  {
+                    "imageOrg": "pgatour-prod",
+                    "imagePath": "tournaments/logos/R003"
+                  }
+                ]
+              },
+              "dataUpdateCount": 1,
+              "dataUpdatedAt": 1770580821001,
+              "error": null,
+              "errorUpdateCount": 0,
+              "errorUpdatedAt": 0,
+              "fetchFailureCount": 0,
+              "fetchFailureReason": null,
+              "fetchMeta": null,
+              "isInvalidated": false,
+              "status": "success",
+              "fetchStatus": "idle"
+            },
+            "queryKey": [
+              "tournament",
+              {
+                "id": "R2026003"
+              }
+            ],
+            "queryHash": "[\"tournament\",{\"id\":\"R2026003\"}]"
+          },
+          {
+            "dehydratedAt": 1770580821378,
+            "state": {
+              "data": {
+                "id": "R2026003",
+                "tournamentName": "WM Phoenix Open",
+                "roundStatusDisplay": "In Progress",
+                "roundDisplay": "R4",
+                "roundStatus": "IN_PROGRESS",
+                "roundStatusColor": "RED",
+                "sponsor": {
+                  "images": [
+                    {
+                      "__typename": "SponsorImage",
+                      "logo": "https://res.cloudinary.com/pgatour-prod/temp/legendSponsors/mastercard.png",
+                      "logoDark": "https://res.cloudinary.com/pgatour-prod/temp/legendSponsors/mastercard.png",
+                      "logoAsset": {
+                        "__typename": "ImageAsset",
+                        "imageOrg": "pgatour-prod",
+                        "imagePath": "temp/legendSponsors/mastercard",
+                        "assetType": "image"
+                      },
+                      "logoDarkAsset": {
+                        "__typename": "ImageAsset",
+                        "imageOrg": "pgatour-prod",
+                        "imagePath": "temp/legendSponsors/mastercard",
+                        "assetType": "image"
+                      },
+                      "accessibilityText": "Sponsored by Mastercard"
+                    },
+                    {
+                      "__typename": "SponsorImage",
+                      "logo": "https://res.cloudinary.com/pgatour-prod/temp/legendSponsors/cdw.png",
+                      "logoDark": "https://res.cloudinary.com/pgatour-prod/temp/legendSponsors/CDWTransparentLogo.png",
+                      "logoAsset": {
+                        "__typename": "ImageAsset",
+                        "imageOrg": "pgatour-prod",
+                        "imagePath": "temp/legendSponsors/cdw",
+                        "assetType": "image"
+                      },
+                      "logoDarkAsset": {
+                        "__typename": "ImageAsset",
+                        "imageOrg": "pgatour-prod",
+                        "imagePath": "temp/legendSponsors/CDWTransparentLogo",
+                        "assetType": "image"
+                      },
+                      "accessibilityText": "Sponsored by CDW",
+                      "link": "https://www.pgatour.com/shotlink"
+                    }
+                  ],
+                  "text": "Powered By"
+                },
+                "players": [
+                  {
+                    "id": "32839",
+                    "firstName": "Hideki",
+                    "lastName": "Matsuyama",
+                    "shortName": "H. Matsuyama",
+                    "displayName": "Hideki Matsuyama",
+                    "country": "JPN",
+                    "countryFlag": "JPN",
+                    "position": "1",
+                    "thru": "7",
+                    "totalScore": "-15",
+                    "roundHeader": "R4",
+                    "roundScore": "-2",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 13,
+                    "playerIcon": "HOT_STREAK",
+                    "leaderboardSortOrder": 0
+                  },
+                  {
+                    "id": "37455",
+                    "firstName": "Si Woo",
+                    "lastName": "Kim",
+                    "shortName": "S.W. Kim",
+                    "displayName": "Si Woo Kim",
+                    "country": "KOR",
+                    "countryFlag": "KOR",
+                    "position": "T2",
+                    "thru": "8",
+                    "totalScore": "-14",
+                    "roundHeader": "R4",
+                    "roundScore": "-2",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 12,
+                    "leaderboardSortOrder": 1
+                  },
+                  {
+                    "id": "57364",
+                    "firstName": "Michael",
+                    "lastName": "Thorbjornsen",
+                    "shortName": "M. Thorbjornsen",
+                    "displayName": "Michael Thorbjornsen",
+                    "country": "USA",
+                    "countryFlag": "USA",
+                    "position": "T2",
+                    "thru": "8",
+                    "totalScore": "-14",
+                    "roundHeader": "R4",
+                    "roundScore": "-3",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 12,
+                    "leaderboardSortOrder": 2
+                  },
+                  {
+                    "id": "46717",
+                    "firstName": "Viktor",
+                    "lastName": "Hovland",
+                    "shortName": "V. Hovland",
+                    "displayName": "Viktor Hovland",
+                    "country": "NOR",
+                    "countryFlag": "NOR",
+                    "position": "T4",
+                    "thru": "9",
+                    "totalScore": "-13",
+                    "roundHeader": "R4",
+                    "roundScore": "-4",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 10,
+                    "leaderboardSortOrder": 3
+                  },
+                  {
+                    "id": "56630",
+                    "firstName": "Akshay",
+                    "lastName": "Bhatia",
+                    "shortName": "A. Bhatia",
+                    "displayName": "Akshay Bhatia",
+                    "country": "USA",
+                    "countryFlag": "USA",
+                    "position": "T4",
+                    "thru": "8",
+                    "totalScore": "-13",
+                    "roundHeader": "R4",
+                    "roundScore": "-2",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 11,
+                    "leaderboardSortOrder": 4
+                  },
+                  {
+                    "id": "59095",
+                    "firstName": "Chris",
+                    "lastName": "Gotterup",
+                    "shortName": "C. Gotterup",
+                    "displayName": "Chris Gotterup",
+                    "country": "USA",
+                    "countryFlag": "USA",
+                    "position": "T6",
+                    "thru": "10",
+                    "totalScore": "-12",
+                    "roundHeader": "R4",
+                    "roundScore": "-3",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 9,
+                    "leaderboardSortOrder": 5
+                  },
+                  {
+                    "id": "47420",
+                    "firstName": "Jake",
+                    "lastName": "Knapp",
+                    "shortName": "J. Knapp",
+                    "displayName": "Jake Knapp",
+                    "country": "USA",
+                    "countryFlag": "USA",
+                    "position": "T6",
+                    "thru": "8",
+                    "totalScore": "-12",
+                    "roundHeader": "R4",
+                    "roundScore": "-1",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 11,
+                    "leaderboardSortOrder": 6
+                  },
+                  {
+                    "id": "52453",
+                    "firstName": "Nicolai",
+                    "lastName": "H\u00f8jgaard",
+                    "shortName": "N. H\u00f8jgaard",
+                    "displayName": "Nicolai H\u00f8jgaard",
+                    "country": "DEN",
+                    "countryFlag": "DEN",
+                    "position": "T6",
+                    "thru": "7",
+                    "totalScore": "-12",
+                    "roundHeader": "R4",
+                    "roundScore": "E",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 13,
+                    "leaderboardSortOrder": 7
+                  },
+                  {
+                    "id": "46046",
+                    "firstName": "Scottie",
+                    "lastName": "Scheffler",
+                    "shortName": "S. Scheffler",
+                    "displayName": "Scottie Scheffler",
+                    "country": "USA",
+                    "countryFlag": "USA",
+                    "position": "T9",
+                    "thru": "10",
+                    "totalScore": "-11",
+                    "roundHeader": "R4",
+                    "roundScore": "-3",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 8,
+                    "leaderboardSortOrder": 8
+                  },
+                  {
+                    "id": "59836",
+                    "firstName": "Pierceson",
+                    "lastName": "Coody",
+                    "shortName": "Pi. Coody",
+                    "displayName": "Pierceson Coody",
+                    "country": "USA",
+                    "countryFlag": "USA",
+                    "position": "T9",
+                    "thru": "10",
+                    "totalScore": "-11",
+                    "roundHeader": "R4",
+                    "roundScore": "-2",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 9,
+                    "leaderboardSortOrder": 9
+                  },
+                  {
+                    "id": "46442",
+                    "firstName": "Maverick",
+                    "lastName": "McNealy",
+                    "shortName": "M. McNealy",
+                    "displayName": "Maverick McNealy",
+                    "country": "USA",
+                    "countryFlag": "USA",
+                    "position": "T9",
+                    "thru": "7",
+                    "totalScore": "-11",
+                    "roundHeader": "R4",
+                    "roundScore": "+1",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 13,
+                    "leaderboardSortOrder": 10
+                  },
+                  {
+                    "id": "37338",
+                    "firstName": "Zecheng",
+                    "lastName": "Dou",
+                    "shortName": "Z. Dou",
+                    "displayName": "Zecheng Dou",
+                    "country": "CHN",
+                    "countryFlag": "CHN",
+                    "position": "T12",
+                    "thru": "14*",
+                    "totalScore": "-10",
+                    "roundHeader": "R4",
+                    "roundScore": "-7",
+                    "playerState": "ACTIVE",
+                    "backNine": true,
+                    "groupNumber": 16,
+                    "leaderboardSortOrder": 11
+                  },
+                  {
+                    "id": "39335",
+                    "firstName": "Kevin",
+                    "lastName": "Roy",
+                    "shortName": "K. Roy",
+                    "displayName": "Kevin Roy",
+                    "country": "USA",
+                    "countryFlag": "USA",
+                    "position": "T12",
+                    "thru": "10",
+                    "totalScore": "-10",
+                    "roundHeader": "R4",
+                    "roundScore": "-2",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 8,
+                    "leaderboardSortOrder": 12
+                  },
+                  {
+                    "id": "40098",
+                    "firstName": "Matt",
+                    "lastName": "Fitzpatrick",
+                    "shortName": "M. Fitzpatrick",
+                    "displayName": "Matt Fitzpatrick",
+                    "country": "ENG",
+                    "countryFlag": "ENG",
+                    "position": "T12",
+                    "thru": "8",
+                    "totalScore": "-10",
+                    "roundHeader": "R4",
+                    "roundScore": "+1",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 11,
+                    "leaderboardSortOrder": 13
+                  },
+                  {
+                    "id": "51287",
+                    "firstName": "Ryo",
+                    "lastName": "Hisatsune",
+                    "shortName": "R. Hisatsune",
+                    "displayName": "Ryo Hisatsune",
+                    "country": "JPN",
+                    "countryFlag": "JPN",
+                    "position": "T12",
+                    "thru": "8",
+                    "totalScore": "-10",
+                    "roundHeader": "R4",
+                    "roundScore": "+2",
+                    "playerState": "ACTIVE",
+                    "backNine": false,
+                    "groupNumber": 12,
+                    "leaderboardSortOrder": 14
+                  }
+                ],
+                "profileEnabled": true,
+                "hideRolexClock": false,
+                "hideSov": false,
+                "miniatureLeaderboardExternalLinkOverride": null
+              },
+              "dataUpdateCount": 1,
+              "dataUpdatedAt": 1770580820997,
+              "error": null,
+              "errorUpdateCount": 0,
+              "errorUpdatedAt": 0,
+              "fetchFailureCount": 0,
+              "fetchFailureReason": null,
+              "fetchMeta": null,
+              "isInvalidated": false,
+              "status": "success",
+              "fetchStatus": "idle"
+            },
+            "queryKey": [
+              "currentLeaders",
+              {
+                "tournamentId": "R2026003"
+              }
+            ],
+            "queryHash": "[\"currentLeaders\",{\"tournamentId\":\"R2026003\"}]"
+          },
+          {
+            "dehydratedAt": 1770580821378,
+            "state": {
+              "data": {
+                "config": {
+                  "adUnitId": "9517547/pgatour-web",
+                  "networkId": "9517547",
+                  "fluid": false,
+                  "refresh": 30,
+                  "actRefresh": true,
+                  "timedRefresh": true,
+                  "environment": "prod-pgatour",
+                  "playerSponsorship": false,
+                  "injectAds": false
+                },
+                "homepage": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "homepage",
+                  "uniqueId": "web-pgatour-homepage",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 0,
+                      "pos": "top",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 120
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "liveLeaderboard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-live-leaderboard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 20,
+                      "pos": "lb_row2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 1000,
+                        "height": 100
+                      },
+                      "containerMedium": {
+                        "width": 1000,
+                        "height": 100
+                      },
+                      "containerLarge": {
+                        "width": 1000,
+                        "height": 100
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "leaderboard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tournaments",
+                  "uniqueId": "web-pgatour-leaderboard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "lb_row2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 1000,
+                        "height": 100
+                      },
+                      "containerMedium": {
+                        "width": 1000,
+                        "height": 100
+                      },
+                      "containerLarge": {
+                        "width": 1000,
+                        "height": 100
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "leaderboardOdds": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-live-leaderboard-odds",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "lb_row2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "leaderboardProbability": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-live-leaderboard-probability",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "lb_row2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "leaderboardShotDetails": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-live-leaderboard-shot-details",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "lb_row2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "leaderboardCutline": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-leaderboard-cutline",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "leaderboardRow50": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-leaderboard-row50",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "leaderboardFavorites": null,
+                "cupLeaderboardGroup": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-cup-group-live-leaderboard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 4,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "cupLeaderboardSingles": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-cup-singles-live-leaderboard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 6,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "playerProfile": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "player-profile",
+                  "uniqueId": "web-pgatour-player-profile",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 2,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": true
+                    },
+                    {
+                      "index": 4,
+                      "pos": "midcontent2",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": true
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "playerProfileBio": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "player-profile",
+                  "uniqueId": "web-pgatour-player-profile-bio",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": true
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "playerProfileResults": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "player-profile",
+                  "uniqueId": "web-pgatour-player-profile-results",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": true
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "playerProfileStats": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "player-profile",
+                  "uniqueId": "web-pgatour-player-profile-stats",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 0,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": true
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "scorecard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-scorecard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "scorecard_banner",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 120
+                      },
+                      "containerMedium": {
+                        "width": 704,
+                        "height": 120
+                      },
+                      "containerLarge": {
+                        "width": 970,
+                        "height": 110
+                      },
+                      "sizes": null,
+                      "playerSponsorship": true
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "playoffScorecard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-playoff-scorecard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "scorecard_banner",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 120
+                      },
+                      "containerMedium": {
+                        "width": 704,
+                        "height": 120
+                      },
+                      "containerLarge": {
+                        "width": 970,
+                        "height": 110
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "webPlayerStories": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "homepage",
+                  "uniqueId": "web-player-vstory",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "webTopicStories": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "homepage",
+                  "uniqueId": "web-topic-vstory",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "odds": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tournaments",
+                  "uniqueId": "web-pgatour-odds",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 6,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "teeTimes": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tee-times",
+                  "uniqueId": "web-pgatour-tee-times",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "cupTeeTimesGroup": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tournaments",
+                  "uniqueId": "web-pgatour-group-tee-times",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 4,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "cupTeeTimesSingles": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tournaments",
+                  "uniqueId": "web-pgatour-singles-tee-times",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 6,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "tournament": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tournaments",
+                  "uniqueId": "web-pgatour-tournaments",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "tournamentSection": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tournaments",
+                  "uniqueId": "web-pgatour-tournaments",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 2,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "sidebarTicker": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "",
+                  "uniqueId": "web-pgatour-sidebarTicker",
+                  "refresh": 0,
+                  "actRefresh": false,
+                  "timedRefresh": false,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "tickerspon",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 88,
+                        "height": 31
+                      },
+                      "containerMedium": {
+                        "width": 88,
+                        "height": 31
+                      },
+                      "containerLarge": {
+                        "width": 150,
+                        "height": 36
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "groupStageLeaderboard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-group-stage-leaderboard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 2,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 8,
+                      "pos": "lb_row2",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "groupStageStandings": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "field",
+                  "uniqueId": "web-pgatour-group-stage-standings",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 5,
+                      "pos": "midcontent2",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "knockoutLeaderboard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-knockout-leaderboard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 2,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 4,
+                      "pos": "lb_row2",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "groupScorecard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tee-times",
+                  "uniqueId": "web-pgatour-group-scorecard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "scorecard_banner",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 120
+                      },
+                      "containerMedium": {
+                        "width": 704,
+                        "height": 120
+                      },
+                      "containerLarge": {
+                        "width": 970,
+                        "height": 110
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "schedule": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "schedule",
+                  "uniqueId": "web-pgatour-schedule",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 2,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "aon": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "aon",
+                  "uniqueId": "web-pgatour-aon",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "totalPlayCup": null,
+                "totalplaycupSection": null,
+                "schwabCup": null,
+                "schwabcupSection": null,
+                "fedexCup": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "fedexcup",
+                  "uniqueId": "web-pgatour-fedexcup",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "fedexcupSection": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "fedexcup",
+                  "uniqueId": "web-pgatour-fedexcup",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 3,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "fortinetCup": null,
+                "fortinetcupSection": null,
+                "the25pointsList": null,
+                "the25Section": null,
+                "stats": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "stats",
+                  "uniqueId": "web-pgatour-stats",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "statsSection": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "stats",
+                  "uniqueId": "web-pgatour-stats",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "studios": null,
+                "news": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "news",
+                  "uniqueId": "web-pgatour-news",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 4,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "newsArticles": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "news",
+                  "uniqueId": "web-pgatour-news",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 3,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "rsm": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "rsm",
+                  "uniqueId": "web-pgatour-rsm",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "rsmSection": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "rsm",
+                  "uniqueId": "web-pgatour-rsm",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 4,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "golfBet": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "golfbet",
+                  "uniqueId": "web-pgatour-golfbet",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "university": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "university",
+                  "uniqueId": "web-pgatour-university",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 2,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "universityRanking": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "university",
+                  "uniqueId": "web-pgatour-university",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "players": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "players",
+                  "uniqueId": "web-pgatour-players",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 4,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 15,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "aonSection": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "aon",
+                  "uniqueId": "web-pgatour-aon",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 4,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "training": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "training",
+                  "uniqueId": "web-pgatour-training",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 2,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "playerScorecard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "player-scorecard",
+                  "uniqueId": "web-pgatour-player-scorecard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 1,
+                      "pos": "scorecard_banner",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 120
+                      },
+                      "containerMedium": {
+                        "width": 704,
+                        "height": 120
+                      },
+                      "containerLarge": null,
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "yahooLeaderboard": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour-yahoo",
+                  "s2": "leaderboard",
+                  "uniqueId": "web-pgatour-yahoo-leaderboard",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "lb_row",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "lb_row2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "tourcast": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "tournaments",
+                  "uniqueId": "web-pgatour-tourcast",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 15,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "payneStewartaward": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "payne-stewart-award",
+                  "uniqueId": "web-pgatour-payne-stewart-award",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 4,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                },
+                "dpwtRankings": {
+                  "__typename": "AdTagConfig",
+                  "s1": "pgatour",
+                  "s2": "dpwt-rankings",
+                  "uniqueId": "web-pgatour-dpwt-rankings",
+                  "refresh": null,
+                  "actRefresh": null,
+                  "timedRefresh": null,
+                  "injectAds": null,
+                  "rows": [
+                    {
+                      "index": 5,
+                      "pos": "midcontent",
+                      "fluid": null,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    },
+                    {
+                      "index": 25,
+                      "pos": "midcontent2",
+                      "fluid": false,
+                      "container": null,
+                      "containerSmall": {
+                        "width": 335,
+                        "height": 300
+                      },
+                      "containerMedium": {
+                        "width": 581,
+                        "height": 300
+                      },
+                      "containerLarge": {
+                        "width": 1032,
+                        "height": 290
+                      },
+                      "sizes": null,
+                      "playerSponsorship": null
+                    }
+                  ],
+                  "adTest": "evolution-web",
+                  "environment": null
+                }
+              },
+              "dataUpdateCount": 1,
+              "dataUpdatedAt": 1770580821017,
+              "error": null,
+              "errorUpdateCount": 0,
+              "errorUpdatedAt": 0,
+              "fetchFailureCount": 0,
+              "fetchFailureReason": null,
+              "fetchMeta": null,
+              "isInvalidated": false,
+              "status": "success",
+              "fetchStatus": "idle"
+            },
+            "queryKey": [
+              "adTagConfig",
+              {
+                "tour": "R",
+                "tournamentId": null
+              }
+            ],
+            "queryHash": "[\"adTagConfig\",{\"tour\":\"R\",\"tournamentId\":null}]"
+          },
+          {
+            "dehydratedAt": 1770580821378,
+            "state": {
+              "data": {
+                "tourCode": "R",
+                "year": 2026,
+                "round": "ALL",
+                "displayYear": "2026",
+                "seasons": [
+                  {
+                    "year": 2026,
+                    "displaySeason": "2026"
+                  },
+                  {
+                    "year": 2025,
+                    "displaySeason": "2025"
+                  },
+                  {
+                    "year": 2024,
+                    "displaySeason": "2024"
+                  },
+                  {
+                    "year": 2023,
+                    "displaySeason": "2022-2023"
+                  },
+                  {
+                    "year": 2022,
+                    "displaySeason": "2021-2022"
+                  },
+                  {
+                    "year": 2021,
+                    "displaySeason": "2020-2021"
+                  },
+                  {
+                    "year": 2020,
+                    "displaySeason": "2019-2020"
+                  },
+                  {
+                    "year": 2019,
+                    "displaySeason": "2018-2019"
+                  },
+                  {
+                    "year": 2018,
+                    "displaySeason": "2017-2018"
+                  },
+                  {
+                    "year": 2017,
+                    "displaySeason": "2016-2017"
+                  },
+                  {
+                    "year": 2016,
+                    "displaySeason": "2015-2016"
+                  },
+                  {
+                    "year": 2015,
+                    "displaySeason": "2014-2015"
+                  },
+                  {
+                    "year": 2014,
+                    "displaySeason": "2013-2014"
+                  }
+                ],
+                "headers": [
+                  "PAR",
+                  "YARDS",
+                  "AVG",
+                  "+/-",
+                  "EAGLE-",
+                  "BIRDIE",
+                  "PAR",
+                  "BOGEY",
+                  "DBL BOGEY",
+                  "DBL BOGEY+"
+                ],
+                "displayName": "Toughest Courses",
+                "tableName": "All Courses",
+                "rows": [
+                  {
+                    "rank": 1,
+                    "displayName": "Torrey Pines Golf Course (South Course)",
+                    "values": [
+                      {
+                        "value": "72",
+                        "tendency": null
+                      },
+                      {
+                        "value": "7765",
+                        "tendency": null
+                      },
+                      {
+                        "value": "71.803",
+                        "tendency": null
+                      },
+                      {
+                        "value": "-.197",
+                        "tendency": "BELOW"
+                      },
+                      {
+                        "value": "29",
+                        "tendency": null
+                      },
+                      {
+                        "value": "1018",
+                        "tendency": null
+                      },
+                      {
+                        "value": "3312",
+                        "tendency": null
+                      },
+                      {
+                        "value": "853",
+                        "tendency": null
+                      },
+                      {
+                        "value": "75",
+                        "tendency": null
+                      },
+                      {
+                        "value": "5",
+                        "tendency": null
+                      }
+                    ],
+                    "tournamentId": "R2026004",
+                    "tournamentName": "Farmers Insurance Open"
+                  },
+                  {
+                    "rank": 2,
+                    "displayName": "Waialae Country Club",
+                    "values": [
+                      {
+                        "value": "70",
+                        "tendency": null
+                      },
+                      {
+                        "value": "7044",
+                        "tendency": null
+                      },
+                      {
+                        "value": "69.261",
+                        "tendency": null
+                      },
+                      {
+                        "value": "-.739",
+                        "tendency": "BELOW"
+                      },
+                      {
+                        "value": "43",
+                        "tendency": null
+                      },
+                      {
+                        "value": "1409",
+                        "tendency": null
+                      },
+                      {
+                        "value": "4401",
+                        "tendency": null
+                      },
+                      {
+                        "value": "1027",
+                        "tendency": null
+                      },
+                      {
+                        "value": "77",
+                        "tendency": null
+                      },
+                      {
+                        "value": "9",
+                        "tendency": null
+                      }
+                    ],
+                    "tournamentId": "R2026006",
+                    "tournamentName": "Sony Open in Hawaii"
+                  },
+                  {
+                    "rank": 3,
+                    "displayName": "Pete Dye Stadium Course",
+                    "values": [
+                      {
+                        "value": "72",
+                        "tendency": null
+                      },
+                      {
+                        "value": "7210",
+                        "tendency": null
+                      },
+                      {
+                        "value": "70.313",
+                        "tendency": null
+                      },
+                      {
+                        "value": "-1.687",
+                        "tendency": "BELOW"
+                      },
+                      {
+                        "value": "12",
+                        "tendency": null
+                      },
+                      {
+                        "value": "989",
+                        "tendency": null
+                      },
+                      {
+                        "value": "2581",
+                        "tendency": null
+                      },
+                      {
+                        "value": "400",
+                        "tendency": null
+                      },
+                      {
+                        "value": "91",
+                        "tendency": null
+                      },
+                      {
+                        "value": "13",
+                        "tendency": null
+                      }
+                    ],
+                    "tournamentId": "R2026002",
+                    "tournamentName": "The American Express"
+                  },
+                  {
+                    "rank": 4,
+                    "displayName": "Torrey Pines Golf Course (North Course)",
+                    "values": [
+                      {
+                        "value": "72",
+                        "tendency": null
+                      },
+                      {
+                        "value": "7258",
+                        "tendency": null
+                      },
+                      {
+                        "value": "69.362",
+                        "tendency": null
+                      },
+                      {
+                        "value": "-2.639",
+                        "tendency": "BELOW"
+                      },
+                      {
+                        "value": "27",
+                        "tendency": null
+                      },
+                      {
+                        "value": "670",
+                        "tendency": null
+                      },
+                      {
+                        "value": "1632",
+                        "tendency": null
+                      },
+                      {
+                        "value": "299",
+                        "tendency": null
+                      },
+                      {
+                        "value": "17",
+                        "tendency": null
+                      },
+                      {
+                        "value": "1",
+                        "tendency": null
+                      }
+                    ],
+                    "tournamentId": "R2026004",
+                    "tournamentName": "Farmers Insurance Open"
+                  },
+                  {
+                    "rank": 5,
+                    "displayName": "La Quinta Country Club",
+                    "values": [
+                      {
+                        "value": "72",
+                        "tendency": null
+                      },
+                      {
+                        "value": "7060",
+                        "tendency": null
+                      },
+                      {
+                        "value": "67.937",
+                        "tendency": null
+                      },
+                      {
+                        "value": "-4.065",
+                        "tendency": "BELOW"
+                      },
+                      {
+                        "value": "28",
+                        "tendency": null
+                      },
+                      {
+                        "value": "863",
+                        "tendency": null
+                      },
+                      {
+                        "value": "1655",
+                        "tendency": null
+                      },
+                      {
+                        "value": "205",
+                        "tendency": null
+                      },
+                      {
+                        "value": "34",
+                        "tendency": null
+                      },
+                      {
+                        "value": "5",
+                        "tendency": null
+                      }
+                    ],
+                    "tournamentId": "R2026002",
+                    "tournamentName": "The American Express"
+                  },
+                  {
+                    "rank": 6,
+                    "displayName": "Nicklaus Tournament Course",
+                    "values": [
+                      {
+                        "value": "72",
+                        "tendency": null
+                      },
+                      {
+                        "value": "7147",
+                        "tendency": null
+                      },
+                      {
+                        "value": "67.655",
+                        "tendency": null
+                      },
+                      {
+                        "value": "-4.346",
+                        "tendency": "BELOW"
+                      },
+                      {
+                        "value": "26",
+                        "tendency": null
+                      },
+                      {
+                        "value": "882",
+                        "tendency": null
+                      },
+                      {
+                        "value": "1616",
+                        "tendency": null
+                      },
+                      {
+                        "value": "195",
+                        "tendency": null
+                      },
+                      {
+                        "value": "31",
+                        "tendency": null
+                      },
+                      {
+                        "value": "4",
+                        "tendency": null
+                      }
+                    ],
+                    "tournamentId": "R2026002",
+                    "tournamentName": "The American Express"
+                  }
+                ],
+                "shareURL": null,
+                "roundPills": [
+                  {
+                    "display": "All",
+                    "queryVal": "ALL"
+                  },
+                  {
+                    "display": "1",
+                    "queryVal": "ONE"
+                  },
+                  {
+                    "display": "2",
+                    "queryVal": "TWO"
+                  },
+                  {
+                    "display": "3",
+                    "queryVal": "THREE"
+                  },
+                  {
+                    "display": "4",
+                    "queryVal": "FOUR"
+                  }
+                ]
+              },
+              "dataUpdateCount": 1,
+              "dataUpdatedAt": 1770580821378,
+              "error": null,
+              "errorUpdateCount": 0,
+              "errorUpdatedAt": 0,
+              "fetchFailureCount": 0,
+              "fetchFailureReason": null,
+              "fetchMeta": null,
+              "isInvalidated": false,
+              "status": "success",
+              "fetchStatus": "idle"
+            },
+            "queryKey": [
+              "courseStatDetails",
+              {
+                "tourCode": "R",
+                "queryType": "TOUGHEST_COURSE",
+                "round": "ALL",
+                "year": 2026
+              }
+            ],
+            "queryHash": "[\"courseStatDetails\",{\"queryType\":\"TOUGHEST_COURSE\",\"round\":\"ALL\",\"tourCode\":\"R\",\"year\":2026}]"
+          }
+        ]
+      }
+    },
+    "__N_SSP": true
+  },
+  "page": "/stats/course/[courseStatId]",
+  "query": {
+    "courseStatId": "toughest-course"
+  },
+  "buildId": "pgatour-prod-2.15.5",
+  "assetPrefix": "https://www.pgatour.com",
+  "isFallback": false,
+  "isExperimentalCompile": false,
+  "gssp": true,
+  "locale": "en",
+  "locales": [
+    "en",
+    "es",
+    "pt"
+  ],
+  "defaultLocale": "en",
+  "scriptLoader": []
+}

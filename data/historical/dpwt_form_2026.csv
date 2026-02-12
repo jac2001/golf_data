@@ -1,0 +1,5 @@
+dpwt_events_played,dpwt_avg_finish,dpwt_best_finish,dpwt_recent_top10s,dpwt_recent_top5s,dpwt_recent_wins,dpwt_recent_cuts_made,dpwt_cuts_pct,dpwt_form_score,dpwt_estimated_sg_total,dpwt_hot_hand,pga_player_id,player_name,season,source,events,dpwt_momentum
+2,33.0,25,0,0,0,2,1.0,53.6,-0.45999999999999996,0,30911,"Fleetwood, Tommy",2026,dpwt_manual,"['Dubai Invitational', 'Hero Dubai Desert Classic']",
+2,14.5,4,1,1,0,2,1.0,75.5,0.225,0,33204,"Lowry, Shane",2026,dpwt_manual,"['Dubai Invitational', 'Hero Dubai Desert Classic']",
+3,16.666666666666668,3,1,1,0,3,1.0,71.66666666666666,0.11666666666666659,0,28237,"McIlroy, Rory",2026,dpwt_manual,"['Crown Australian Open', 'Dubai Invitational', 'Hero Dubai Desert Classic']",24.5
+2,10.0,8,1,0,0,2,1.0,85.0,0.44999999999999996,1,22405,"Rose, Justin",2026,dpwt_manual,"['Dubai Invitational', 'Hero Dubai Desert Classic']",

@@ -1,0 +1,147 @@
+year,stat_type,player_id,player_name,rank,country,average,total_rounds
+2026,strokes-gained-approach-the-green,36489,Shane LOWRY,1,IRL,1.9762,8
+2026,strokes-gained-approach-the-green,35853,Jason SCRIVENER,2,AUS,1.213,18
+2026,strokes-gained-approach-the-green,38439,Patrick REED,3,USA,1.1625,16
+2026,strokes-gained-approach-the-green,43333,Daniel HILLIER,4,NZL,1.1264,24
+2026,strokes-gained-approach-the-green,34932,John PARRY,5,ENG,1.0647,11
+2026,strokes-gained-approach-the-green,36867,Jorge CAMPILLO,6,ESP,1.038,17
+2026,strokes-gained-approach-the-green,102397,Rasmus NEERGAARD-PETERSEN,7,DEN,0.9657,14
+2026,strokes-gained-approach-the-green,40120,Antoine ROZNER,8,FRA,0.8931,19
+2026,strokes-gained-approach-the-green,41948,Anthony QUAYLE,9,AUS,0.8918,12
+2026,strokes-gained-approach-the-green,37990,Brandon STONE,9,RSA,0.8923,17
+2026,strokes-gained-approach-the-green,39617,Matt WALLACE,11,ENG,0.8478,8
+2026,strokes-gained-approach-the-green,40946,Ewen FERGUSON,12,SCO,0.8362,18
+2026,strokes-gained-approach-the-green,41858,Frederic LACROIX,13,FRA,0.8096,20
+2026,strokes-gained-approach-the-green,40148,Viktor HOVLAND,14,NOR,0.791,8
+2026,strokes-gained-approach-the-green,32111,Rafa CABRERA BELLO,15,ESP,0.7588,18
+2026,strokes-gained-approach-the-green,101547,Angel AYORA,16,ESP,0.7429,25
+2026,strokes-gained-approach-the-green,3289,Francesco MOLINARI,17,ITA,0.7391,12
+2026,strokes-gained-approach-the-green,38017,Daniel VAN TONDER,18,RSA,0.7378,17
+2026,strokes-gained-approach-the-green,36452,Marcus ARMITAGE,19,ENG,0.7335,23
+2026,strokes-gained-approach-the-green,100259,Elvis SMYLIE,20,AUS,0.722,10
+2026,strokes-gained-approach-the-green,33674,Julien GUERRIER,21,FRA,0.6913,22
+2026,strokes-gained-approach-the-green,101155,Dan BRADBURY,22,ENG,0.6838,21
+2026,strokes-gained-approach-the-green,40650,Daniel YOUNG,23,SCO,0.6813,15
+2026,strokes-gained-approach-the-green,39127,Jacques KRUYSWIJK,24,RSA,0.63,18
+2026,strokes-gained-approach-the-green,42143,Nicolai HØJGAARD,25,DEN,0.603,8
+2026,strokes-gained-approach-the-green,40874,Oliver LINDELL,26,FIN,0.5965,27
+2026,strokes-gained-approach-the-green,39862,JC RITCHIE,27,RSA,0.5896,17
+2026,strokes-gained-approach-the-green,101611,Ryan VAN VELZEN,28,RSA,0.5663,10
+2026,strokes-gained-approach-the-green,36078,Nacho ELVIRA,29,ESP,0.5605,21
+2026,strokes-gained-approach-the-green,42794,Alex FITZPATRICK,30,ENG,0.5079,22
+2026,strokes-gained-approach-the-green,39187,Shubhankar SHARMA,31,IND,0.4921,18
+2026,strokes-gained-approach-the-green,32013,Shaun NORRIS,32,RSA,0.4859,15
+2026,strokes-gained-approach-the-green,40475,Hennie DU PLESSIS,33,RSA,0.4854,19
+2026,strokes-gained-approach-the-green,101569,Jonathan BROOMHEAD,34,RSA,0.4748,17
+2026,strokes-gained-approach-the-green,35371,Tommy FLEETWOOD,35,ENG,0.4602,8
+2026,strokes-gained-approach-the-green,35358,Sebastian GARCIA,36,ESP,0.451,17
+2026,strokes-gained-approach-the-green,41226,Connor SYME,37,SCO,0.4193,12
+2026,strokes-gained-approach-the-green,41721,Adri ARNAUS,38,ESP,0.4102,12
+2026,strokes-gained-approach-the-green,37793,Adrian OTAEGUI,39,UAE,0.3913,12
+2026,strokes-gained-approach-the-green,43682,Jayden SCHAPER,40,RSA,0.3763,27
+2026,strokes-gained-approach-the-green,38258,Joel GIRRBACH,41,SUI,0.3715,19
+2026,strokes-gained-approach-the-green,105484,Daniel RODRIGUES,42,POR,0.3617,18
+2026,strokes-gained-approach-the-green,100023,Gregorio DE LEO,43,ITA,0.3587,18
+2026,strokes-gained-approach-the-green,101595,Jack BUCHANAN,44,AUS,0.3526,10
+2026,strokes-gained-approach-the-green,36421,Darius VAN DRIEL,44,NED,0.3528,17
+2026,strokes-gained-approach-the-green,102485,Ryan PEAKE,46,AUS,0.3405,13
+2026,strokes-gained-approach-the-green,34024,Rory MCILROY,47,NIR,0.3389,12
+2026,strokes-gained-approach-the-green,43327,Manuel ELVIRA,48,ESP,0.3375,17
+2026,strokes-gained-approach-the-green,36519,Thorbjørn OLESEN,49,DEN,0.3311,12
+2026,strokes-gained-approach-the-green,43885,Ben SCHMIDT,50,ENG,0.3293,11
+2026,strokes-gained-approach-the-green,42648,Calum HILL,51,SCO,0.3135,21
+2026,strokes-gained-approach-the-green,37017,Thomas DETRY,52,BEL,0.3037,10
+2026,strokes-gained-approach-the-green,39791,Thriston LAWRENCE,53,RSA,0.2917,13
+2026,strokes-gained-approach-the-green,30715,Richard STERNE,54,RSA,0.281,14
+2026,strokes-gained-approach-the-green,41662,Min Woo LEE,55,AUS,0.2693,8
+2026,strokes-gained-approach-the-green,33676,Bernd WIESBERGER,56,AUT,0.2549,16
+2026,strokes-gained-approach-the-green,39593,Sebastian SÖDERBERG,57,SWE,0.2528,8
+2026,strokes-gained-approach-the-green,34610,James MORRISON,58,ENG,0.2473,19
+2026,strokes-gained-approach-the-green,34788,Matteo MANASSERO,58,ITA,0.2466,14
+2026,strokes-gained-approach-the-green,42160,Benjamin FOLLETT-SMITH,58,ZIM,0.2469,17
+2026,strokes-gained-approach-the-green,39609,Nathan KIMSEY,61,ENG,0.2291,19
+2026,strokes-gained-approach-the-green,40892,Stefano MAZZOLI,62,ITA,0.2255,14
+2026,strokes-gained-approach-the-green,41975,Adam BLOMME,63,SWE,0.1985,8
+2026,strokes-gained-approach-the-green,43332,Eugenio CHACARRA,64,ESP,0.1946,23
+2026,strokes-gained-approach-the-green,41282,Tom MCKIBBIN,65,NIR,0.1825,12
+2026,strokes-gained-approach-the-green,39271,Guido MIGLIOZZI,66,ITA,0.1488,20
+2026,strokes-gained-approach-the-green,34085,Joost LUITEN,67,NED,0.1476,18
+2026,strokes-gained-approach-the-green,38956,Grant FORREST,68,SCO,0.1421,22
+2026,strokes-gained-approach-the-green,101407,Tobias JONSSON,69,SWE,0.1216,21
+2026,strokes-gained-approach-the-green,43957,Casey JARVIS,70,RSA,0.1152,17
+2026,strokes-gained-approach-the-green,41684,Sean CROCKER,71,USA,0.1112,16
+2026,strokes-gained-approach-the-green,39251,Junghwan LEE,72,KOR,0.0891,21
+2026,strokes-gained-approach-the-green,107390,Cameron ADAM,73,SCO,0.0756,16
+2026,strokes-gained-approach-the-green,100418,Sam BAIRSTOW,74,ENG,0.0738,20
+2026,strokes-gained-approach-the-green,38119,Andy SULLIVAN,75,ENG,0.0531,18
+2026,strokes-gained-approach-the-green,42832,Jordan GUMBERG,76,USA,0.0438,14
+2026,strokes-gained-approach-the-green,31690,Niklas LEMKE,77,SWE,0.0214,17
+2026,strokes-gained-approach-the-green,39513,Andreas HALVORSEN,78,NOR,0.0204,14
+2026,strokes-gained-approach-the-green,39075,Romain LANGASQUE,79,FRA,0.0012,16
+2026,strokes-gained-approach-the-green,37624,Laurie CANTER,80,ENG,-0.0054,10
+2026,strokes-gained-approach-the-green,41268,Alejandro DEL REY,81,ESP,-0.0263,21
+2026,strokes-gained-approach-the-green,42508,Angel HIDALGO,82,ESP,-0.0369,18
+2026,strokes-gained-approach-the-green,100554,David PUIG,83,ESP,-0.0472,14
+2026,strokes-gained-approach-the-green,101251,Martin COUVRA,84,FRA,-0.0537,21
+2026,strokes-gained-approach-the-green,43801,Freddy SCHOTT,85,GER,-0.0617,14
+2026,strokes-gained-approach-the-green,42213,Robin WILLIAMS,86,RSA,-0.0736,12
+2026,strokes-gained-approach-the-green,105456,Jacob Skov OLESEN,87,DEN,-0.0805,22
+2026,strokes-gained-approach-the-green,102151,Hugo TOWNSEND,88,SWE,-0.0989,15
+2026,strokes-gained-approach-the-green,34771,Scott JAMIESON,88,SCO,-0.099,12
+2026,strokes-gained-approach-the-green,37259,Kiradech APHIBARNRAT,90,THA,-0.1023,16
+2026,strokes-gained-approach-the-green,41330,Mikael LINDBERG,91,SWE,-0.1032,19
+2026,strokes-gained-approach-the-green,36932,Andrew JOHNSTON,92,ENG,-0.1055,10
+2026,strokes-gained-approach-the-green,40063,Ricardo GOUVEIA,93,POR,-0.1227,14
+2026,strokes-gained-approach-the-green,293,Padraig HARRINGTON,94,IRL,-0.1296,12
+2026,strokes-gained-approach-the-green,34264,Paul WARING,95,ENG,-0.1342,14
+2026,strokes-gained-approach-the-green,101583,Wenyi DING,95,CHN,-0.1337,16
+2026,strokes-gained-approach-the-green,102497,Clement CHARMASSON,97,FRA,-0.1403,18
+2026,strokes-gained-approach-the-green,36484,Jens DANTORP,97,SWE,-0.1401,13
+2026,strokes-gained-approach-the-green,38575,Michael HOLLICK,99,RSA,-0.1481,23
+2026,strokes-gained-approach-the-green,35703,Marcel SCHNEIDER,100,GER,-0.1525,15
+2026,strokes-gained-approach-the-green,43883,David RAVETTO,101,FRA,-0.1592,21
+2026,strokes-gained-approach-the-green,40721,Johannes VEERMAN,102,USA,-0.171,20
+2026,strokes-gained-approach-the-green,40882,Ugo COUSSAUD,103,FRA,-0.1778,18
+2026,strokes-gained-approach-the-green,43173,Yurav PREMLALL,104,RSA,-0.1929,9
+2026,strokes-gained-approach-the-green,100976,Yuto KATSURAGAWA,105,JPN,-0.2109,20
+2026,strokes-gained-approach-the-green,38428,Zander LOMBARD,106,RSA,-0.2192,15
+2026,strokes-gained-approach-the-green,39042,Renato PARATORE,107,ITA,-0.2512,18
+2026,strokes-gained-approach-the-green,35329,Andrea PAVAN,108,ITA,-0.2656,17
+2026,strokes-gained-approach-the-green,33337,Pablo LARRAZÁBAL,109,ESP,-0.2842,19
+2026,strokes-gained-approach-the-green,101450,Oihan GUILLAMOUNDEGUY,110,FRA,-0.2886,13
+2026,strokes-gained-approach-the-green,1402,Darren FICHARDT,111,RSA,-0.2907,10
+2026,strokes-gained-approach-the-green,105948,Ryggs JOHNSTON,112,USA,-0.3241,19
+2026,strokes-gained-approach-the-green,43831,Brandon ROBINSON THOMPSON,113,ENG,-0.3273,11
+2026,strokes-gained-approach-the-green,32435,Ross FISHER,114,ENG,-0.3294,12
+2026,strokes-gained-approach-the-green,42411,Todd CLEMENTS,115,ENG,-0.3323,14
+2026,strokes-gained-approach-the-green,3467,Marcel SIEM,116,GER,-0.3392,19
+2026,strokes-gained-approach-the-green,104066,Rocco REPETTO TAYLOR,117,ESP,-0.3827,19
+2026,strokes-gained-approach-the-green,42689,Rikuya HOSHINO,118,JPN,-0.3864,16
+2026,strokes-gained-approach-the-green,104063,Kazuma KOBORI,119,NZL,-0.3869,14
+2026,strokes-gained-approach-the-green,40516,Ivan CANTERO,120,ESP,-0.3928,14
+2026,strokes-gained-approach-the-green,37841,Eddie PEPPERELL,121,ENG,-0.3997,16
+2026,strokes-gained-approach-the-green,103310,Joshua BERRY,122,ENG,-0.4441,14
+2026,strokes-gained-approach-the-green,106152,Davis BRYANT,123,USA,-0.4545,16
+2026,strokes-gained-approach-the-green,37579,Joakim LAGERGREN,124,SWE,-0.4848,20
+2026,strokes-gained-approach-the-green,100024,Filippo CELLI,125,ITA,-0.5256,12
+2026,strokes-gained-approach-the-green,39035,Joe DEAN,126,ENG,-0.5311,12
+2026,strokes-gained-approach-the-green,100552,Tom VAILLANT,127,FRA,-0.5807,20
+2026,strokes-gained-approach-the-green,35166,Dylan FRITTELLI,128,RSA,-0.5839,25
+2026,strokes-gained-approach-the-green,35122,Ryan FOX,129,NZL,-0.5845,16
+2026,strokes-gained-approach-the-green,38379,Niklas NORGAARD,130,DEN,-0.5905,16
+2026,strokes-gained-approach-the-green,38296,Jeff WINTHER,131,DEN,-0.6565,14
+2026,strokes-gained-approach-the-green,37804,Francesco LAPORTA,132,ITA,-0.6837,16
+2026,strokes-gained-approach-the-green,37073,Jack SENIOR,133,ENG,-0.7004,20
+2026,strokes-gained-approach-the-green,39925,Marcus KINHULT,134,SWE,-0.7026,14
+2026,strokes-gained-approach-the-green,36077,Ashun WU,135,CHN,-0.7201,9
+2026,strokes-gained-approach-the-green,37562,David LAW,136,SCO,-0.7205,16
+2026,strokes-gained-approach-the-green,41420,Nicolai VON DELLINGSHAUSEN,137,GER,-0.7718,18
+2026,strokes-gained-approach-the-green,42600,David MICHELUZZI,138,AUS,-0.8031,14
+2026,strokes-gained-approach-the-green,101468,Connor MCKINNEY,139,AUS,-0.9051,14
+2026,strokes-gained-approach-the-green,43010,Aaron COCKERILL,140,CAN,-1.0461,13
+2026,strokes-gained-approach-the-green,42958,Mike TOOROP,141,NED,-1.1099,10
+2026,strokes-gained-approach-the-green,36659,Ockie STRYDOM,142,RSA,-1.1568,17
+2026,strokes-gained-approach-the-green,40468,Dylan NAIDOO,143,RSA,-1.1833,22
+2026,strokes-gained-approach-the-green,39466,Clément SORDET,144,FRA,-1.3978,10
+2026,strokes-gained-approach-the-green,100837,Quim VIDAL,145,ESP,-1.5152,16
+2026,strokes-gained-approach-the-green,39020,Daniel GAVINS,146,ENG,-1.7444,12

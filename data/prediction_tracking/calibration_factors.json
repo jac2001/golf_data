@@ -1,0 +1,28 @@
+{
+  "global": {
+    "win_prob": {
+      "scale_factor": 0.5010407825136914,
+      "buckets": {}
+    },
+    "top5_prob": {
+      "scale_factor": 0.5134614764716696,
+      "buckets": {}
+    },
+    "top10_prob": {
+      "scale_factor": 0.5105025517612235,
+      "buckets": {}
+    },
+    "top20_prob": {
+      "scale_factor": 0.6222805201984108,
+      "buckets": {}
+    }
+  },
+  "by_tournament_type": {},
+  "metadata": {
+    "generated_at": "2026-02-03T08:31:57.479283",
+    "tournaments_by_type": {
+      "Standard": 2
+    },
+    "min_tournaments": 3
+  }
+}

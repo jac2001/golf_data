@@ -1,0 +1,326 @@
+{
+  "tournament": "Farmers Insurance Open",
+  "matched_players": 146,
+  "unmatched_predictions": 1,
+  "unmatched_names": [
+    "Rai, Aaron"
+  ],
+  "metrics": {
+    "n_predictions": 146,
+    "n_with_results": 146,
+    "brier_top5": 0.0394,
+    "predicted_rate_top5": 0.0711,
+    "actual_rate_top5": 0.0411,
+    "brier_top10": 0.0676,
+    "predicted_rate_top10": 0.1459,
+    "actual_rate_top10": 0.0685,
+    "top10_picks_hit_rate": 0.0,
+    "course_fit_correlation": -0.106
+  },
+  "calibration": {
+    "win_prob": {
+      "buckets": [
+        {
+          "bucket": "0-1%",
+          "n_samples": 35,
+          "avg_predicted": 0.0088,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0088,
+          "direction": "CALIBRATED"
+        },
+        {
+          "bucket": "1-2%",
+          "n_samples": 85,
+          "avg_predicted": 0.0134,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0134,
+          "direction": "CALIBRATED"
+        },
+        {
+          "bucket": "2-5%",
+          "n_samples": 25,
+          "avg_predicted": 0.0302,
+          "actual_rate": 0.04,
+          "calibration_error": -0.0098,
+          "direction": "CALIBRATED"
+        },
+        {
+          "bucket": "5-10%",
+          "n_samples": 1,
+          "avg_predicted": 0.0583,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0583,
+          "direction": "OVERCONFIDENT"
+        }
+      ],
+      "expected_calibration_error": 0.012,
+      "total_samples": 146
+    },
+    "top5_prob": {
+      "buckets": [
+        {
+          "bucket": "0-5%",
+          "n_samples": 50,
+          "avg_predicted": 0.0412,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0412,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "5-10%",
+          "n_samples": 69,
+          "avg_predicted": 0.0691,
+          "actual_rate": 0.0725,
+          "calibration_error": -0.0033,
+          "direction": "CALIBRATED"
+        },
+        {
+          "bucket": "10-20%",
+          "n_samples": 26,
+          "avg_predicted": 0.1281,
+          "actual_rate": 0.0385,
+          "calibration_error": 0.0896,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "20-30%",
+          "n_samples": 1,
+          "avg_predicted": 0.2194,
+          "actual_rate": 0.0,
+          "calibration_error": 0.2194,
+          "direction": "OVERCONFIDENT"
+        }
+      ],
+      "expected_calibration_error": 0.0331,
+      "total_samples": 146
+    },
+    "top10_prob": {
+      "buckets": [
+        {
+          "bucket": "0-5%",
+          "n_samples": 2,
+          "avg_predicted": 0.0429,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0429,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "5-10%",
+          "n_samples": 32,
+          "avg_predicted": 0.0845,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0845,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "10-20%",
+          "n_samples": 84,
+          "avg_predicted": 0.1378,
+          "actual_rate": 0.0714,
+          "calibration_error": 0.0663,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "20-30%",
+          "n_samples": 26,
+          "avg_predicted": 0.2409,
+          "actual_rate": 0.1538,
+          "calibration_error": 0.087,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "30-50%",
+          "n_samples": 2,
+          "avg_predicted": 0.3378,
+          "actual_rate": 0.0,
+          "calibration_error": 0.3378,
+          "direction": "OVERCONFIDENT"
+        }
+      ],
+      "expected_calibration_error": 0.0774,
+      "total_samples": 146
+    },
+    "top20_prob": {
+      "error": "Missing columns: predicted_top20_prob or actual_top20"
+    },
+    "summary": {
+      "overall_assessment": "Model needs calibration work: top5_prob: moderately calibrated (ECE=3.3%); top10_prob: poorly calibrated (ECE=7.7%)",
+      "recommendations": [
+        "Reduce top5_prob estimates - model is systematically overconfident",
+        "Reduce top10_prob estimates - model is systematically overconfident"
+      ]
+    }
+  },
+  "feature_importance": {
+    "features": {
+      "course_fit": {
+        "name": "Course Fit Score",
+        "correlation": -0.106,
+        "p_value": 0.3688,
+        "is_statistically_significant": "False",
+        "is_predictive": "False",
+        "interpretation": "Not statistically significant - unreliable signal"
+      },
+      "world_rank": {
+        "name": "World Ranking",
+        "correlation": 0.338,
+        "p_value": 0.0032,
+        "is_statistically_significant": "True",
+        "is_predictive": "True",
+        "interpretation": "Strong predictor - world ranking reliably predicts performance"
+      },
+      "predicted_ev": {
+        "name": "Expected Value",
+        "correlation": -0.372,
+        "p_value": 0.0011,
+        "is_statistically_significant": "True",
+        "is_predictive": "True",
+        "interpretation": "Strong predictor - higher predicted_ev = better finish"
+      },
+      "predicted_win_prob": {
+        "name": "Win Probability",
+        "correlation": -0.261,
+        "p_value": 0.0245,
+        "is_statistically_significant": "True",
+        "is_predictive": "True",
+        "interpretation": "Moderate predictor - useful but not definitive"
+      },
+      "predicted_top10_prob": {
+        "name": "Top-10 Probability",
+        "correlation": -0.373,
+        "p_value": 0.0011,
+        "is_statistically_significant": "True",
+        "is_predictive": "True",
+        "interpretation": "Strong predictor - higher predicted_top10_prob = better finish"
+      }
+    },
+    "feature_ranking": [
+      "predicted_top10_prob",
+      "predicted_ev",
+      "world_rank",
+      "predicted_win_prob",
+      "course_fit"
+    ],
+    "most_predictive": "predicted_top10_prob",
+    "least_predictive": "course_fit",
+    "n_samples": 74
+  },
+  "top_picks_analysis": {
+    "top_5_picks": {
+      "players": [
+        "Spaun, J.J.",
+        "Penge, Marco",
+        "Rose, Justin",
+        "Schauffele, Xander",
+        "H\u00f8jgaard, Nicolai"
+      ],
+      "positions": [
+        "CUT",
+        "CUT",
+        1,
+        "CUT",
+        22
+      ],
+      "wins": 1,
+      "top5s": 1,
+      "top10s": 1,
+      "made_cuts": 2,
+      "avg_finish": 11.5
+    },
+    "top_10_picks": {
+      "players": [
+        "Spaun, J.J.",
+        "Penge, Marco",
+        "Rose, Justin",
+        "Schauffele, Xander",
+        "H\u00f8jgaard, Nicolai",
+        "English, Harris",
+        "Pavon, Matthieu",
+        "Noren, Alex",
+        "Neergaard-Petersen, Rasmus",
+        "Koepka, Brooks"
+      ],
+      "positions": [
+        "CUT",
+        "CUT",
+        1,
+        "CUT",
+        22,
+        22,
+        38,
+        "CUT",
+        49,
+        56
+      ],
+      "wins": 1,
+      "top5s": 1,
+      "top10s": 1,
+      "made_cuts": 6,
+      "avg_finish": 31.3
+    },
+    "top_20_picks": {
+      "players": [
+        "Spaun, J.J.",
+        "Penge, Marco",
+        "Rose, Justin",
+        "Schauffele, Xander",
+        "H\u00f8jgaard, Nicolai",
+        "English, Harris",
+        "Pavon, Matthieu",
+        "Noren, Alex",
+        "Neergaard-Petersen, Rasmus",
+        "Koepka, Brooks",
+        "Brennan, Michael",
+        "Valimaki, Sami",
+        "McNealy, Maverick",
+        "Cantlay, Patrick",
+        "Bradley, Keegan",
+        "Matsuyama, Hideki",
+        "Norlander, Henrik",
+        "Homa, Max",
+        "Smalley, Alex",
+        "Reitan, Kristoffer"
+      ],
+      "positions": [
+        "CUT",
+        "CUT",
+        1,
+        "CUT",
+        22,
+        22,
+        38,
+        "CUT",
+        49,
+        56,
+        "CUT",
+        "CUT",
+        10,
+        "CUT",
+        43,
+        11,
+        "CUT",
+        "CUT",
+        "CUT",
+        30
+      ],
+      "wins": 1,
+      "top5s": 1,
+      "top10s": 2,
+      "made_cuts": 10,
+      "avg_finish": 28.2
+    },
+    "winner_analysis": {
+      "name": "Rose, Justin",
+      "predicted_win_prob": 0.0455,
+      "win_prob_rank": 3,
+      "was_in_top_10_predicted": "True",
+      "was_in_top_5_predicted": "True"
+    }
+  },
+  "value_analysis": {
+    "n_value_picks": 22,
+    "value_top10_rate": 0.091,
+    "non_value_top10_rate": 0.065,
+    "value_outperformed": "True"
+  }
+}

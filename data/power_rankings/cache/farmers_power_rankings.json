@@ -1,0 +1,340 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Farmers Insurance Open",
+      "tableTitle": "Power Rankings for Farmers Insurance Open",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "52666",
+            "firstName": "Sami",
+            "lastName": "Valimaki",
+            "countryFlag": "FIN",
+            "countryName": "Finland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52666.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His blend of ball-striking and putting is the formula for what works best at Torrey Pines because it minimizes mistakes. The RSM Classic champ placed T15 here last year, pacing the field in conversion percentage inside 10 feet."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "For as consistently strong as he\u2019s been striping it with nine consecutive top 25s worldwide upon arrival, he\u2019s poised to establish a personal best at Torrey Pines where he has three top 25s but no better than a T11 in 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "33141",
+            "firstName": "Keegan",
+            "lastName": "Bradley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33141.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With three top fives and another pair of top 20s contributing to his 8-for-8 slate at Torrey Pines since 2017, he\u2019s a horse for the courses. The results are not surprising given his career profile as a long-hitting ball-striker."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "24502",
+            "firstName": "Adam",
+            "lastName": "Scott",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_24502.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He doesn\u2019t always play Torrey Pines, but when he does, he populates the leaderboard. Debuted in 2019 with a solo second and placed T10 in 2021. Also cashed in both U.S. Opens here. Four top 25s in last six starts worldwide."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "55893",
+            "firstName": "Sam",
+            "lastName": "Stevens",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55893.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His trends don\u2019t converge often, but it happens with success over time. He\u2019s 3-for-3 at the Farmers with a T13 in 2023 and a solo second last year. He also hung up top 10s in two of last three starts (T6, The American Express)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "34099",
+            "firstName": "Harris",
+            "lastName": "English",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34099.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The defending champ has covered the podium throughout his career at Torrey Pines. It includes a P2 in 2015 and a solo third in the 2021 U.S. Open. Two runners-up in 2025 majors and an active streak of 18 consecutive cuts made."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Expectations could not be higher as the 28-year-old begins his fifth season on TOUR. It\u2019s the by-product of a breakthrough win (Wyndham Championship) and a strong Ryder Cup among a run of other successes. T20 in last trip (2022)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Harris English is defending his title, but \u00c5berg is the most recent winner at Torrey Pines. He won The Genesis Invitational that relocated due to the nearby fires a year ago. Needs to be healthy after last week\u2019s withdrawal, though."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "39324",
+            "firstName": "J.J.",
+            "lastName": "Spaun",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39324.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although his strong start to 2025 included a T15 at Torrey Pines, his historically stronger remainder of the year no doubt has him fired up about his 10th straight appearance. Bookended a season-opening T40 at Waialae with 66s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "40250",
+            "firstName": "Taylor",
+            "lastName": "Pendrith",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40250.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "A big boy equal to the test has proven the fit for his muscle and precision. Since his debut in 2022, he\u2019s 4-for-4 with top 10s in the last two editions. Opened 2026 with strong putting en route to a T6 at the Sony Open in Hawaii."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Fully formed at 26 years of age. In what was just his second start at Waialae Country Club, he modified his game to the course that has rewards more experience than he had. Such balance and control. Also 2-for-2 at Torrey Pines."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After winning the Hero World Challenge to bracket 2025 with victories, he launched 2026 with a T13 at the Sony Open in Hawaii. His power and precision from tee to green has yielded five top 20s at the Farmers; 9-for-9 since 2017."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The local product who missed last year\u2019s Farmers wants to replicate what Scottie Scheffler did last week after his own delayed start to 2025. Schauffele has three top 10s in his last five appearances, including the U.S. Open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "59018",
+            "firstName": "Ryan",
+            "lastName": "Gerard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The results speak for themselves. He was the runner-up in each of his last three starts dating back to the Mauritius Open in December (that begat an exemption into the Masters). Splashed at Torrey Pines last year with a T15."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "28089",
+            "firstName": "Jason",
+            "lastName": "Day",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28089.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "On top of staying healthy, the 38-year-old has done a great job of remaining a threat. To wit, he\u2019s fresh off a T2 at PGA WEST, his fifth top 10 since last year\u2019s T3. Two wins, a T2 and a T3 among seven top 10s at Torrey Pines."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

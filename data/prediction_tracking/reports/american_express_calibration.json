@@ -1,0 +1,337 @@
+{
+  "tournament": "American Express",
+  "matched_players": 142,
+  "unmatched_predictions": 0,
+  "unmatched_names": [],
+  "metrics": {
+    "n_predictions": 142,
+    "n_with_results": 142,
+    "brier_top5": 0.0323,
+    "predicted_rate_top5": 0.0784,
+    "actual_rate_top5": 0.0352,
+    "brier_top10": 0.079,
+    "predicted_rate_top10": 0.1549,
+    "actual_rate_top10": 0.0845,
+    "top10_picks_hit_rate": 0.0,
+    "course_fit_correlation": -0.101
+  },
+  "calibration": {
+    "win_prob": {
+      "buckets": [
+        {
+          "bucket": "0-1%",
+          "n_samples": 82,
+          "avg_predicted": 0.0062,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0062,
+          "direction": "CALIBRATED"
+        },
+        {
+          "bucket": "1-2%",
+          "n_samples": 43,
+          "avg_predicted": 0.014,
+          "actual_rate": 0.0,
+          "calibration_error": 0.014,
+          "direction": "CALIBRATED"
+        },
+        {
+          "bucket": "2-5%",
+          "n_samples": 16,
+          "avg_predicted": 0.0305,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0305,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "10-20%",
+          "n_samples": 1,
+          "avg_predicted": 0.1544,
+          "actual_rate": 1.0,
+          "calibration_error": -0.8456,
+          "direction": "UNDERCONFIDENT"
+        }
+      ],
+      "expected_calibration_error": 0.0172,
+      "total_samples": 142
+    },
+    "top5_prob": {
+      "buckets": [
+        {
+          "bucket": "0-5%",
+          "n_samples": 37,
+          "avg_predicted": 0.0367,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0367,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "5-10%",
+          "n_samples": 73,
+          "avg_predicted": 0.0703,
+          "actual_rate": 0.0274,
+          "calibration_error": 0.0429,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "10-20%",
+          "n_samples": 29,
+          "avg_predicted": 0.127,
+          "actual_rate": 0.069,
+          "calibration_error": 0.058,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "20-30%",
+          "n_samples": 2,
+          "avg_predicted": 0.2362,
+          "actual_rate": 0.0,
+          "calibration_error": 0.2362,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "30-50%",
+          "n_samples": 1,
+          "avg_predicted": 0.4846,
+          "actual_rate": 1.0,
+          "calibration_error": -0.5154,
+          "direction": "UNDERCONFIDENT"
+        }
+      ],
+      "expected_calibration_error": 0.0504,
+      "total_samples": 142
+    },
+    "top10_prob": {
+      "buckets": [
+        {
+          "bucket": "0-5%",
+          "n_samples": 3,
+          "avg_predicted": 0.0417,
+          "actual_rate": 0.0,
+          "calibration_error": 0.0417,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "5-10%",
+          "n_samples": 32,
+          "avg_predicted": 0.0828,
+          "actual_rate": 0.0625,
+          "calibration_error": 0.0203,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "10-20%",
+          "n_samples": 79,
+          "avg_predicted": 0.1475,
+          "actual_rate": 0.0886,
+          "calibration_error": 0.0589,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "20-30%",
+          "n_samples": 22,
+          "avg_predicted": 0.237,
+          "actual_rate": 0.0455,
+          "calibration_error": 0.1915,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "30-50%",
+          "n_samples": 5,
+          "avg_predicted": 0.3441,
+          "actual_rate": 0.2,
+          "calibration_error": 0.1441,
+          "direction": "OVERCONFIDENT"
+        },
+        {
+          "bucket": "50%+",
+          "n_samples": 1,
+          "avg_predicted": 0.6256,
+          "actual_rate": 1.0,
+          "calibration_error": -0.3744,
+          "direction": "UNDERCONFIDENT"
+        }
+      ],
+      "expected_calibration_error": 0.0756,
+      "total_samples": 142
+    },
+    "summary": {
+      "overall_assessment": "Model needs calibration work: top5_prob: poorly calibrated (ECE=5.0%); top10_prob: poorly calibrated (ECE=7.6%)",
+      "recommendations": [
+        "Reduce top5_prob estimates - model is systematically overconfident",
+        "Reduce top10_prob estimates - model is systematically overconfident"
+      ]
+    }
+  },
+  "feature_importance": {
+    "features": {
+      "course_fit": {
+        "name": "Course Fit Score",
+        "correlation": -0.101,
+        "p_value": 0.4075,
+        "is_statistically_significant": "False",
+        "is_predictive": "False",
+        "interpretation": "Not statistically significant - unreliable signal"
+      },
+      "world_rank": {
+        "name": "World Ranking",
+        "correlation": 0.115,
+        "p_value": 0.3485,
+        "is_statistically_significant": "False",
+        "is_predictive": false,
+        "interpretation": "Not statistically significant - unreliable signal"
+      },
+      "predicted_ev": {
+        "name": "Expected Value",
+        "correlation": -0.232,
+        "p_value": 0.0549,
+        "is_statistically_significant": "False",
+        "is_predictive": "False",
+        "interpretation": "Not statistically significant - unreliable signal"
+      },
+      "predicted_win_prob": {
+        "name": "Win Probability",
+        "correlation": -0.248,
+        "p_value": 0.0403,
+        "is_statistically_significant": "True",
+        "is_predictive": "True",
+        "interpretation": "Moderate predictor - useful but not definitive"
+      },
+      "predicted_top10_prob": {
+        "name": "Top-10 Probability",
+        "correlation": -0.207,
+        "p_value": 0.0882,
+        "is_statistically_significant": "False",
+        "is_predictive": "False",
+        "interpretation": "Not statistically significant - unreliable signal"
+      }
+    },
+    "feature_ranking": [
+      "predicted_win_prob",
+      "course_fit",
+      "world_rank",
+      "predicted_ev",
+      "predicted_top10_prob"
+    ],
+    "most_predictive": "predicted_win_prob",
+    "least_predictive": "predicted_top10_prob",
+    "n_samples": 69
+  },
+  "top_picks_analysis": {
+    "top_5_picks": {
+      "players": [
+        "Scottie Scheffler",
+        "Sepp Straka",
+        "Russell Henley",
+        "Michael Brennan",
+        "Si Woo Kim"
+      ],
+      "positions": [
+        1,
+        "CUT",
+        8,
+        56,
+        6
+      ],
+      "wins": 1,
+      "top5s": 1,
+      "top10s": 3,
+      "made_cuts": 4,
+      "avg_finish": 17.8
+    },
+    "top_10_picks": {
+      "players": [
+        "Scottie Scheffler",
+        "Sepp Straka",
+        "Russell Henley",
+        "Michael Brennan",
+        "Si Woo Kim",
+        "Alex Noren",
+        "Ben Griffin",
+        "Rico Hoey",
+        "Patrick Cantlay",
+        "Justin Rose"
+      ],
+      "positions": [
+        1,
+        "CUT",
+        8,
+        56,
+        6,
+        "CUT",
+        24,
+        "CUT",
+        13,
+        "CUT"
+      ],
+      "wins": 1,
+      "top5s": 1,
+      "top10s": 3,
+      "made_cuts": 6,
+      "avg_finish": 18.0
+    },
+    "top_20_picks": {
+      "players": [
+        "Scottie Scheffler",
+        "Sepp Straka",
+        "Russell Henley",
+        "Michael Brennan",
+        "Si Woo Kim",
+        "Alex Noren",
+        "Ben Griffin",
+        "Rico Hoey",
+        "Patrick Cantlay",
+        "Justin Rose",
+        "Robert MacIntyre",
+        "Pierceson Coody",
+        "Alex Smalley",
+        "Kurt Kitayama",
+        "Bud Cauley",
+        "Doug Ghim",
+        "Keita Nakajima",
+        "Akshay Bhatia",
+        "Harris English",
+        "Ludvig \u00c5berg"
+      ],
+      "positions": [
+        1,
+        "CUT",
+        8,
+        56,
+        6,
+        "CUT",
+        24,
+        "CUT",
+        13,
+        "CUT",
+        38,
+        18,
+        44,
+        "CUT",
+        "CUT",
+        "CUT",
+        "CUT",
+        "CUT",
+        27,
+        "CUT"
+      ],
+      "wins": 1,
+      "top5s": 1,
+      "top10s": 3,
+      "made_cuts": 10,
+      "avg_finish": 23.5
+    },
+    "winner_analysis": {
+      "name": "Scottie Scheffler",
+      "predicted_win_prob": 0.1544,
+      "win_prob_rank": 1,
+      "was_in_top_10_predicted": "True",
+      "was_in_top_5_predicted": "True"
+    }
+  },
+  "value_analysis": {
+    "n_value_picks": 20,
+    "value_top10_rate": 0.0,
+    "non_value_top10_rate": 0.098,
+    "value_outperformed": "False"
+  }
+}

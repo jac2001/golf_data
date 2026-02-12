@@ -1,0 +1,147 @@
+year,stat_type,player_id,player_name,rank,country,average,total_rounds
+2026,strokes-gained-total,38439,Patrick REED,1,USA,2.7725,16
+2026,strokes-gained-total,43682,Jayden SCHAPER,2,RSA,2.5893,27
+2026,strokes-gained-total,34932,John PARRY,3,ENG,2.3872,11
+2026,strokes-gained-total,43333,Daniel HILLIER,4,NZL,2.2829,24
+2026,strokes-gained-total,41662,Min Woo LEE,5,AUS,2.1786,8
+2026,strokes-gained-total,100554,David PUIG,6,ESP,2.1279,14
+2026,strokes-gained-total,39617,Matt WALLACE,7,ENG,1.877,8
+2026,strokes-gained-total,36489,Shane LOWRY,8,IRL,1.8543,8
+2026,strokes-gained-total,41948,Anthony QUAYLE,9,AUS,1.766,12
+2026,strokes-gained-total,34024,Rory MCILROY,10,NIR,1.66,12
+2026,strokes-gained-total,37017,Thomas DETRY,11,BEL,1.6418,10
+2026,strokes-gained-total,33674,Julien GUERRIER,12,FRA,1.6088,22
+2026,strokes-gained-total,101547,Angel AYORA,13,ESP,1.5382,25
+2026,strokes-gained-total,36519,Thorbjørn OLESEN,14,DEN,1.5062,12
+2026,strokes-gained-total,36078,Nacho ELVIRA,15,ESP,1.4243,21
+2026,strokes-gained-total,101155,Dan BRADBURY,16,ENG,1.3563,21
+2026,strokes-gained-total,32013,Shaun NORRIS,17,RSA,1.3466,15
+2026,strokes-gained-total,101583,Wenyi DING,18,CHN,1.3173,16
+2026,strokes-gained-total,39862,JC RITCHIE,19,RSA,1.2657,17
+2026,strokes-gained-total,36452,Marcus ARMITAGE,20,ENG,1.2642,23
+2026,strokes-gained-total,40148,Viktor HOVLAND,21,NOR,1.2343,8
+2026,strokes-gained-total,36867,Jorge CAMPILLO,22,ESP,1.2108,17
+2026,strokes-gained-total,40874,Oliver LINDELL,23,FIN,1.1452,27
+2026,strokes-gained-total,38956,Grant FORREST,24,SCO,1.0851,22
+2026,strokes-gained-total,40946,Ewen FERGUSON,25,SCO,1.0796,18
+2026,strokes-gained-total,40475,Hennie DU PLESSIS,26,RSA,1.0766,19
+2026,strokes-gained-total,32111,Rafa CABRERA BELLO,27,ESP,1.0691,18
+2026,strokes-gained-total,37990,Brandon STONE,28,RSA,1.0491,17
+2026,strokes-gained-total,42648,Calum HILL,29,SCO,1.0074,21
+2026,strokes-gained-total,40063,Ricardo GOUVEIA,30,POR,1.0006,14
+2026,strokes-gained-total,102397,Rasmus NEERGAARD-PETERSEN,31,DEN,0.994,14
+2026,strokes-gained-total,38575,Michael HOLLICK,32,RSA,0.9662,23
+2026,strokes-gained-total,101251,Martin COUVRA,33,FRA,0.9368,21
+2026,strokes-gained-total,3289,Francesco MOLINARI,34,ITA,0.9228,12
+2026,strokes-gained-total,39609,Nathan KIMSEY,35,ENG,0.9019,19
+2026,strokes-gained-total,38017,Daniel VAN TONDER,36,RSA,0.8976,17
+2026,strokes-gained-total,41330,Mikael LINDBERG,37,SWE,0.8306,19
+2026,strokes-gained-total,101569,Jonathan BROOMHEAD,38,RSA,0.7981,17
+2026,strokes-gained-total,43327,Manuel ELVIRA,39,ESP,0.7815,17
+2026,strokes-gained-total,41282,Tom MCKIBBIN,40,NIR,0.7562,12
+2026,strokes-gained-total,35329,Andrea PAVAN,41,ITA,0.7453,17
+2026,strokes-gained-total,39593,Sebastian SÖDERBERG,42,SWE,0.744,8
+2026,strokes-gained-total,39791,Thriston LAWRENCE,43,RSA,0.7427,13
+2026,strokes-gained-total,34085,Joost LUITEN,44,NED,0.7157,18
+2026,strokes-gained-total,43801,Freddy SCHOTT,45,GER,0.6803,14
+2026,strokes-gained-total,100259,Elvis SMYLIE,46,AUS,0.6726,10
+2026,strokes-gained-total,40120,Antoine ROZNER,47,FRA,0.6638,19
+2026,strokes-gained-total,35853,Jason SCRIVENER,48,AUS,0.6475,18
+2026,strokes-gained-total,43332,Eugenio CHACARRA,49,ESP,0.6359,23
+2026,strokes-gained-total,100023,Gregorio DE LEO,50,ITA,0.6264,18
+2026,strokes-gained-total,35371,Tommy FLEETWOOD,51,ENG,0.6043,8
+2026,strokes-gained-total,38428,Zander LOMBARD,52,RSA,0.5859,15
+2026,strokes-gained-total,42794,Alex FITZPATRICK,53,ENG,0.5836,22
+2026,strokes-gained-total,35122,Ryan FOX,54,NZL,0.5675,16
+2026,strokes-gained-total,43885,Ben SCHMIDT,55,ENG,0.5516,11
+2026,strokes-gained-total,105456,Jacob Skov OLESEN,56,DEN,0.4553,22
+2026,strokes-gained-total,41268,Alejandro DEL REY,57,ESP,0.4195,21
+2026,strokes-gained-total,35703,Marcel SCHNEIDER,58,GER,0.4182,15
+2026,strokes-gained-total,38119,Andy SULLIVAN,59,ENG,0.413,18
+2026,strokes-gained-total,101450,Oihan GUILLAMOUNDEGUY,60,FRA,0.3982,13
+2026,strokes-gained-total,105484,Daniel RODRIGUES,61,POR,0.383,18
+2026,strokes-gained-total,40882,Ugo COUSSAUD,62,FRA,0.3788,18
+2026,strokes-gained-total,34771,Scott JAMIESON,63,SCO,0.3731,12
+2026,strokes-gained-total,100552,Tom VAILLANT,64,FRA,0.3455,20
+2026,strokes-gained-total,38258,Joel GIRRBACH,65,SUI,0.3309,19
+2026,strokes-gained-total,40650,Daniel YOUNG,66,SCO,0.3198,15
+2026,strokes-gained-total,43831,Brandon ROBINSON THOMPSON,67,ENG,0.1882,11
+2026,strokes-gained-total,39513,Andreas HALVORSEN,68,NOR,0.1814,14
+2026,strokes-gained-total,41684,Sean CROCKER,69,USA,0.1796,16
+2026,strokes-gained-total,101595,Jack BUCHANAN,70,AUS,0.1596,10
+2026,strokes-gained-total,101407,Tobias JONSSON,71,SWE,0.1359,21
+2026,strokes-gained-total,41858,Frederic LACROIX,72,FRA,0.13,20
+2026,strokes-gained-total,39075,Romain LANGASQUE,73,FRA,0.1162,16
+2026,strokes-gained-total,102151,Hugo TOWNSEND,74,SWE,0.1102,15
+2026,strokes-gained-total,104063,Kazuma KOBORI,74,NZL,0.1104,14
+2026,strokes-gained-total,42143,Nicolai HØJGAARD,76,DEN,0.1043,8
+2026,strokes-gained-total,35166,Dylan FRITTELLI,77,RSA,0.0952,25
+2026,strokes-gained-total,100418,Sam BAIRSTOW,78,ENG,0.0936,20
+2026,strokes-gained-total,40892,Stefano MAZZOLI,79,ITA,0.0885,14
+2026,strokes-gained-total,31690,Niklas LEMKE,79,SWE,0.0876,17
+2026,strokes-gained-total,37804,Francesco LAPORTA,81,ITA,-0.0407,16
+2026,strokes-gained-total,33676,Bernd WIESBERGER,82,AUT,-0.0819,16
+2026,strokes-gained-total,39127,Jacques KRUYSWIJK,83,RSA,-0.0865,18
+2026,strokes-gained-total,36421,Darius VAN DRIEL,84,NED,-0.1034,17
+2026,strokes-gained-total,30715,Richard STERNE,85,RSA,-0.2288,14
+2026,strokes-gained-total,37579,Joakim LAGERGREN,86,SWE,-0.2418,20
+2026,strokes-gained-total,42411,Todd CLEMENTS,87,ENG,-0.2433,14
+2026,strokes-gained-total,40721,Johannes VEERMAN,88,USA,-0.27,20
+2026,strokes-gained-total,42600,David MICHELUZZI,89,AUS,-0.2717,14
+2026,strokes-gained-total,102497,Clement CHARMASSON,90,FRA,-0.3102,18
+2026,strokes-gained-total,42160,Benjamin FOLLETT-SMITH,91,ZIM,-0.3125,17
+2026,strokes-gained-total,37793,Adrian OTAEGUI,92,UAE,-0.3207,12
+2026,strokes-gained-total,39251,Junghwan LEE,93,KOR,-0.3247,21
+2026,strokes-gained-total,34610,James MORRISON,94,ENG,-0.3617,19
+2026,strokes-gained-total,37841,Eddie PEPPERELL,95,ENG,-0.3653,16
+2026,strokes-gained-total,39035,Joe DEAN,96,ENG,-0.3862,12
+2026,strokes-gained-total,42213,Robin WILLIAMS,97,RSA,-0.3868,12
+2026,strokes-gained-total,37259,Kiradech APHIBARNRAT,98,THA,-0.4003,16
+2026,strokes-gained-total,37624,Laurie CANTER,99,ENG,-0.4231,10
+2026,strokes-gained-total,102485,Ryan PEAKE,100,AUS,-0.4337,13
+2026,strokes-gained-total,38379,Niklas NORGAARD,101,DEN,-0.4756,16
+2026,strokes-gained-total,41721,Adri ARNAUS,102,ESP,-0.4812,12
+2026,strokes-gained-total,39042,Renato PARATORE,103,ITA,-0.5067,18
+2026,strokes-gained-total,42832,Jordan GUMBERG,104,USA,-0.5683,14
+2026,strokes-gained-total,105948,Ryggs JOHNSTON,105,USA,-0.5703,19
+2026,strokes-gained-total,37562,David LAW,106,SCO,-0.5727,16
+2026,strokes-gained-total,42508,Angel HIDALGO,107,ESP,-0.5736,18
+2026,strokes-gained-total,34264,Paul WARING,108,ENG,-0.5823,14
+2026,strokes-gained-total,34788,Matteo MANASSERO,109,ITA,-0.5899,14
+2026,strokes-gained-total,104066,Rocco REPETTO TAYLOR,110,ESP,-0.6256,19
+2026,strokes-gained-total,36932,Andrew JOHNSTON,111,ENG,-0.6416,10
+2026,strokes-gained-total,293,Padraig HARRINGTON,112,IRL,-0.6541,12
+2026,strokes-gained-total,43010,Aaron COCKERILL,113,CAN,-0.6656,13
+2026,strokes-gained-total,39187,Shubhankar SHARMA,114,IND,-0.6756,18
+2026,strokes-gained-total,37073,Jack SENIOR,115,ENG,-0.6839,20
+2026,strokes-gained-total,35358,Sebastian GARCIA,116,ESP,-0.7202,17
+2026,strokes-gained-total,3467,Marcel SIEM,117,GER,-0.7254,19
+2026,strokes-gained-total,39271,Guido MIGLIOZZI,118,ITA,-0.732,20
+2026,strokes-gained-total,39925,Marcus KINHULT,119,SWE,-0.7836,14
+2026,strokes-gained-total,41226,Connor SYME,120,SCO,-0.8087,12
+2026,strokes-gained-total,42689,Rikuya HOSHINO,121,JPN,-0.8199,16
+2026,strokes-gained-total,33337,Pablo LARRAZÁBAL,122,ESP,-0.8517,19
+2026,strokes-gained-total,106152,Davis BRYANT,123,USA,-0.8641,16
+2026,strokes-gained-total,43883,David RAVETTO,124,FRA,-0.9265,21
+2026,strokes-gained-total,36077,Ashun WU,125,CHN,-1.0149,9
+2026,strokes-gained-total,43957,Casey JARVIS,126,RSA,-1.0334,17
+2026,strokes-gained-total,40516,Ivan CANTERO,126,ESP,-1.0334,14
+2026,strokes-gained-total,107390,Cameron ADAM,128,SCO,-1.0652,16
+2026,strokes-gained-total,36484,Jens DANTORP,129,SWE,-1.1291,13
+2026,strokes-gained-total,100976,Yuto KATSURAGAWA,130,JPN,-1.1525,20
+2026,strokes-gained-total,41420,Nicolai VON DELLINGSHAUSEN,131,GER,-1.2195,18
+2026,strokes-gained-total,101468,Connor MCKINNEY,132,AUS,-1.3053,14
+2026,strokes-gained-total,41975,Adam BLOMME,133,SWE,-1.3558,8
+2026,strokes-gained-total,103310,Joshua BERRY,134,ENG,-1.4171,14
+2026,strokes-gained-total,100024,Filippo CELLI,135,ITA,-1.4228,12
+2026,strokes-gained-total,38296,Jeff WINTHER,136,DEN,-1.4407,14
+2026,strokes-gained-total,39466,Clément SORDET,137,FRA,-1.5148,10
+2026,strokes-gained-total,43173,Yurav PREMLALL,138,RSA,-1.536,9
+2026,strokes-gained-total,32435,Ross FISHER,139,ENG,-1.8548,12
+2026,strokes-gained-total,42958,Mike TOOROP,140,NED,-1.9085,10
+2026,strokes-gained-total,100837,Quim VIDAL,141,ESP,-2.0718,16
+2026,strokes-gained-total,40468,Dylan NAIDOO,142,RSA,-2.3101,22
+2026,strokes-gained-total,36659,Ockie STRYDOM,143,RSA,-2.561,17
+2026,strokes-gained-total,1402,Darren FICHARDT,144,RSA,-2.5918,10
+2026,strokes-gained-total,101611,Ryan VAN VELZEN,145,RSA,-2.6508,10
+2026,strokes-gained-total,39020,Daniel GAVINS,146,ENG,-4.8688,12

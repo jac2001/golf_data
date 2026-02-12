@@ -1,0 +1,97 @@
+{
+  "_comment": "Configuration for scheduled pipeline runs",
+
+  "weekly_refresh": {
+    "enabled": true,
+    "day": "tuesday",
+    "time": "06:00",
+    "description": "Refresh all data sources every Tuesday morning"
+  },
+
+  "default_settings": {
+    "sg_method": "last_5",
+    "save_tracking": true,
+    "insights_ollama": true,
+    "recommend_lineup": true
+  },
+
+  "upcoming_tournaments": [
+    {
+      "name": "Waste Management Phoenix Open",
+      "start_date": "2026-02-05",
+      "purse": 9600000,
+      "type": "Standard",
+      "espn_id": null,
+      "field_file": null
+    },
+    {
+      "name": "AT&T Pebble Beach Pro-Am",
+      "start_date": "2026-02-12",
+      "purse": 20000000,
+      "type": "Signature",
+      "espn_id": null,
+      "field_file": null
+    },
+    {
+      "name": "The Genesis Invitational",
+      "start_date": "2026-02-19",
+      "purse": 20000000,
+      "type": "Signature",
+      "espn_id": null,
+      "field_file": null
+    },
+    {
+      "name": "Arnold Palmer Invitational",
+      "start_date": "2026-03-05",
+      "purse": 20000000,
+      "type": "Signature",
+      "espn_id": null,
+      "field_file": null
+    },
+    {
+      "name": "THE PLAYERS Championship",
+      "start_date": "2026-03-12",
+      "purse": 25000000,
+      "type": "Major",
+      "espn_id": null,
+      "field_file": null
+    },
+    {
+      "name": "The Masters",
+      "start_date": "2026-04-09",
+      "purse": 21000000,
+      "type": "Major",
+      "espn_id": null,
+      "field_file": null
+    },
+    {
+      "name": "PGA Championship",
+      "start_date": "2026-05-14",
+      "purse": 19000000,
+      "type": "Major",
+      "espn_id": null,
+      "field_file": null
+    },
+    {
+      "name": "U.S. Open",
+      "start_date": "2026-06-18",
+      "purse": 21500000,
+      "type": "Major",
+      "espn_id": null,
+      "field_file": null
+    },
+    {
+      "name": "The Open Championship",
+      "start_date": "2026-07-16",
+      "purse": 17000000,
+      "type": "Major",
+      "espn_id": null,
+      "field_file": null
+    }
+  ],
+
+  "cron_examples": {
+    "weekly_refresh": "0 6 * * 2 cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/run_pipeline.py --weekly-refresh >> logs/weekly_refresh.log 2>&1",
+    "daily_check": "0 7 * * * cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/run_pipeline.py --refresh-only >> logs/daily_refresh.log 2>&1"
+  }
+}

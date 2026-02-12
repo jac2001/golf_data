@@ -1,0 +1,29 @@
+{
+  "summary": {
+    "tournaments_analyzed": 1,
+    "total_predictions": 142
+  },
+  "accuracy": {
+    "top5": {
+      "brier_score": 0.0323,
+      "avg_predicted": 0.0784,
+      "avg_actual": 0.0352,
+      "calibration_error": 0.0432
+    },
+    "top10": {
+      "brier_score": 0.079,
+      "avg_predicted": 0.1549,
+      "avg_actual": 0.0845,
+      "calibration_error": 0.0703
+    }
+  },
+  "biases": [
+    "Model OVERESTIMATES top5 probability by 123%",
+    "Model OVERESTIMATES top10 probability by 83%"
+  ],
+  "player_patterns": [],
+  "course_fit_effectiveness": {
+    "correlation_with_finish": -0.101,
+    "interpretation": "Course fit is predictive"
+  }
+}

@@ -1,0 +1,1765 @@
+player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament_name,year,stat_value_numeric
+59095,Chris Gotterup,1,120,Scoring Average,67.827,R2026003,WM Phoenix Open,2026,67.827
+32839,Hideki Matsuyama,1,120,Scoring Average,67.827,R2026003,WM Phoenix Open,2026,67.827
+56630,Akshay Bhatia,3,120,Scoring Average,68.077,R2026003,WM Phoenix Open,2026,68.077
+52453,Nicolai Højgaard,3,120,Scoring Average,68.077,R2026003,WM Phoenix Open,2026,68.077
+37455,Si Woo Kim,3,120,Scoring Average,68.077,R2026003,WM Phoenix Open,2026,68.077
+46046,Scottie Scheffler,3,120,Scoring Average,68.077,R2026003,WM Phoenix Open,2026,68.077
+57364,Michael Thorbjornsen,3,120,Scoring Average,68.077,R2026003,WM Phoenix Open,2026,68.077
+47420,Jake Knapp,8,120,Scoring Average,68.327,R2026003,WM Phoenix Open,2026,68.327
+40098,Matt Fitzpatrick,9,120,Scoring Average,68.577,R2026003,WM Phoenix Open,2026,68.577
+59836,Pierceson Coody,10,120,Scoring Average,68.827,R2026003,WM Phoenix Open,2026,68.827
+51287,Ryo Hisatsune,10,120,Scoring Average,68.827,R2026003,WM Phoenix Open,2026,68.827
+46717,Viktor Hovland,10,120,Scoring Average,68.827,R2026003,WM Phoenix Open,2026,68.827
+37338,Zecheng Dou,13,120,Scoring Average,69.077,R2026003,WM Phoenix Open,2026,69.077
+46442,Maverick McNealy,13,120,Scoring Average,69.077,R2026003,WM Phoenix Open,2026,69.077
+39335,Kevin Roy,13,120,Scoring Average,69.077,R2026003,WM Phoenix Open,2026,69.077
+40026,Daniel Berger,16,120,Scoring Average,69.327,R2026003,WM Phoenix Open,2026,69.327
+46464,Jordan Smith,16,120,Scoring Average,69.327,R2026003,WM Phoenix Open,2026,69.327
+60004,Jacob Bridgeman,18,120,Scoring Average,69.577,R2026003,WM Phoenix Open,2026,69.577
+32102,Rickie Fowler,18,120,Scoring Average,69.577,R2026003,WM Phoenix Open,2026,69.577
+39975,Michael Kim,18,120,Scoring Average,69.577,R2026003,WM Phoenix Open,2026,69.577
+59143,Mac Meissner,18,120,Scoring Average,69.577,R2026003,WM Phoenix Open,2026,69.577
+49960,Sepp Straka,18,120,Scoring Average,69.577,R2026003,WM Phoenix Open,2026,69.577
+51634,Sahith Theegala,18,120,Scoring Average,69.577,R2026003,WM Phoenix Open,2026,69.577
+29936,Ryan Fox,24,120,Scoring Average,69.827,R2026003,WM Phoenix Open,2026,69.827
+51696,Rico Hoey,24,120,Scoring Average,69.827,R2026003,WM Phoenix Open,2026,69.827
+52686,Rasmus Højgaard,24,120,Scoring Average,69.827,R2026003,WM Phoenix Open,2026,69.827
+48117,Kurt Kitayama,24,120,Scoring Average,69.827,R2026003,WM Phoenix Open,2026,69.827
+34099,Harris English,28,120,Scoring Average,70.077,R2026003,WM Phoenix Open,2026,70.077
+50286,A.J. Ewart,28,120,Scoring Average,70.077,R2026003,WM Phoenix Open,2026,70.077
+54591,Ben Griffin,28,120,Scoring Average,70.077,R2026003,WM Phoenix Open,2026,70.077
+35506,Mackenzie Hughes,28,120,Scoring Average,70.077,R2026003,WM Phoenix Open,2026,70.077
+36799,Stephan Jaeger,28,120,Scoring Average,70.077,R2026003,WM Phoenix Open,2026,70.077
+37378,Min Woo Lee,28,120,Scoring Average,70.077,R2026003,WM Phoenix Open,2026,70.077
+25493,Nick Taylor,28,120,Scoring Average,70.077,R2026003,WM Phoenix Open,2026,70.077
+51766,Wyndham Clark,35,120,Scoring Average,70.327,R2026003,WM Phoenix Open,2026,70.327
+55182,Tom Kim,35,120,Scoring Average,70.327,R2026003,WM Phoenix Open,2026,70.327
+28723,John Parry,35,120,Scoring Average,70.327,R2026003,WM Phoenix Open,2026,70.327
+49771,J.T. Poston,35,120,Scoring Average,70.327,R2026003,WM Phoenix Open,2026,70.327
+46340,Alex Smalley,35,120,Scoring Average,70.327,R2026003,WM Phoenix Open,2026,70.327
+55893,Sam Stevens,35,120,Scoring Average,70.327,R2026003,WM Phoenix Open,2026,70.327
+63454,Johnny Keefer,41,120,Scoring Average,70.577,R2026003,WM Phoenix Open,2026,70.577
+39546,Keith Mitchell,41,120,Scoring Average,70.577,R2026003,WM Phoenix Open,2026,70.577
+52689,Rasmus Neergaard-Petersen,41,120,Scoring Average,70.577,R2026003,WM Phoenix Open,2026,70.577
+49855,Kristoffer Reitan,41,120,Scoring Average,70.577,R2026003,WM Phoenix Open,2026,70.577
+48081,Xander Schauffele,41,120,Scoring Average,70.577,R2026003,WM Phoenix Open,2026,70.577
+52666,Sami Valimaki,41,120,Scoring Average,70.577,R2026003,WM Phoenix Open,2026,70.577
+57366,Cameron Young,41,120,Scoring Average,70.577,R2026003,WM Phoenix Open,2026,70.577
+48001,Zach Bauchou,48,120,Scoring Average,70.827,R2026003,WM Phoenix Open,2026,70.827
+61522,Michael Brennan,48,120,Scoring Average,70.827,R2026003,WM Phoenix Open,2026,70.827
+54422,Christo Lamprecht,48,120,Scoring Average,70.827,R2026003,WM Phoenix Open,2026,70.827
+36529,S.T. Lee,48,120,Scoring Average,70.827,R2026003,WM Phoenix Open,2026,70.827
+51950,Max McGreevy,48,120,Scoring Average,70.827,R2026003,WM Phoenix Open,2026,70.827
+47983,Chad Ramey,48,120,Scoring Average,70.827,R2026003,WM Phoenix Open,2026,70.827
+46443,Brian Campbell,54,120,Scoring Average,71.077,R2026003,WM Phoenix Open,2026,71.077
+60067,Joe Highsmith,54,120,Scoring Average,71.077,R2026003,WM Phoenix Open,2026,71.077
+49120,Kensei Hirata,54,120,Scoring Average,71.077,R2026003,WM Phoenix Open,2026,71.077
+50188,S.H. Kim,54,120,Scoring Average,71.077,R2026003,WM Phoenix Open,2026,71.077
+50525,Collin Morikawa,54,120,Scoring Average,71.077,R2026003,WM Phoenix Open,2026,71.077
+60386,Sudarshan Yellamaraju,54,120,Scoring Average,71.077,R2026003,WM Phoenix Open,2026,71.077
+47917,Takumi Kanaya,60,120,Scoring Average,71.327,R2026003,WM Phoenix Open,2026,71.327
+36699,Patrick Rodgers,60,120,Scoring Average,71.327,R2026003,WM Phoenix Open,2026,71.327
+34371,Adrien Saddier,60,120,Scoring Average,71.327,R2026003,WM Phoenix Open,2026,71.327
+55573,John VanDerLaan,60,120,Scoring Average,71.327,R2026003,WM Phoenix Open,2026,71.327
+58168,Davis Thompson,64,120,Scoring Average,71.577,R2026003,WM Phoenix Open,2026,71.577
+31323,Gary Woodland,64,120,Scoring Average,71.577,R2026003,WM Phoenix Open,2026,71.577
+39977,Max Homa,66,120,Scoring Average,71.827,R2026003,WM Phoenix Open,2026,71.827
+57900,Chandler Phillips,66,120,Scoring Average,71.827,R2026003,WM Phoenix Open,2026,71.827
+34021,Bud Cauley,68,120,Scoring Average,72.077,R2026003,WM Phoenix Open,2026,72.077
+49766,Hank Lebioda,68,120,Scoring Average,72.077,R2026003,WM Phoenix Open,2026,72.077
+63807,Neal Shipley,68,120,Scoring Average,72.077,R2026003,WM Phoenix Open,2026,72.077
+49228,Keita Nakajima,71,120,Scoring Average,72.577,R2026003,WM Phoenix Open,2026,72.577
+32757,Patton Kizzire,72,120,Scoring Average,72.827,R2026003,WM Phoenix Open,2026,72.827
+45157,Cam Davis,73,120,Scoring Average,73.577,R2026003,WM Phoenix Open,2026,73.577
+22405,Justin Rose,1,120,Scoring Average,67.279,R2026004,Farmers Insurance Open,2026,67.279
+37455,Si Woo Kim,2,120,Scoring Average,68.899,R2026004,Farmers Insurance Open,2026,68.899
+59836,Pierceson Coody,3,120,Scoring Average,69.029,R2026004,Farmers Insurance Open,2026,69.029
+51287,Ryo Hisatsune,3,120,Scoring Average,69.029,R2026004,Farmers Insurance Open,2026,69.029
+36799,Stephan Jaeger,5,120,Scoring Average,69.279,R2026004,Farmers Insurance Open,2026,69.279
+47420,Jake Knapp,5,120,Scoring Average,69.279,R2026004,Farmers Insurance Open,2026,69.279
+34076,Joel Dahmen,7,120,Scoring Average,69.399,R2026004,Farmers Insurance Open,2026,69.399
+51997,Andrew Novak,7,120,Scoring Average,69.399,R2026004,Farmers Insurance Open,2026,69.399
+51634,Sahith Theegala,9,120,Scoring Average,69.529,R2026004,Farmers Insurance Open,2026,69.529
+46442,Maverick McNealy,10,120,Scoring Average,69.779,R2026004,Farmers Insurance Open,2026,69.779
+29725,Tony Finau,11,120,Scoring Average,69.899,R2026004,Farmers Insurance Open,2026,69.899
+59018,Ryan Gerard,11,120,Scoring Average,69.899,R2026004,Farmers Insurance Open,2026,69.899
+28252,Seamus Power,11,120,Scoring Average,69.899,R2026004,Farmers Insurance Open,2026,69.899
+35296,Haotong Li,14,120,Scoring Average,70.029,R2026004,Farmers Insurance Open,2026,70.029
+32839,Hideki Matsuyama,14,120,Scoring Average,70.029,R2026004,Farmers Insurance Open,2026,70.029
+39546,Keith Mitchell,14,120,Scoring Average,70.029,R2026004,Farmers Insurance Open,2026,70.029
+47347,Adam Schenk,14,120,Scoring Average,70.029,R2026004,Farmers Insurance Open,2026,70.029
+36326,David Lipsky,18,120,Scoring Average,70.149,R2026004,Farmers Insurance Open,2026,70.149
+59141,Matt McCarty,18,120,Scoring Average,70.149,R2026004,Farmers Insurance Open,2026,70.149
+57364,Michael Thorbjornsen,18,120,Scoring Average,70.149,R2026004,Farmers Insurance Open,2026,70.149
+59095,Chris Gotterup,21,120,Scoring Average,70.279,R2026004,Farmers Insurance Open,2026,70.279
+34099,Harris English,22,120,Scoring Average,70.399,R2026004,Farmers Insurance Open,2026,70.399
+52453,Nicolai Højgaard,22,120,Scoring Average,70.399,R2026004,Farmers Insurance Open,2026,70.399
+47983,Chad Ramey,22,120,Scoring Average,70.399,R2026004,Farmers Insurance Open,2026,70.399
+57366,Cameron Young,22,120,Scoring Average,70.399,R2026004,Farmers Insurance Open,2026,70.399
+35658,Kris Ventura,26,120,Scoring Average,70.529,R2026004,Farmers Insurance Open,2026,70.529
+45522,Christiaan Bezuidenhout,27,120,Scoring Average,70.649,R2026004,Farmers Insurance Open,2026,70.649
+47591,Eric Cole,27,120,Scoring Average,70.649,R2026004,Farmers Insurance Open,2026,70.649
+36699,Patrick Rodgers,29,120,Scoring Average,70.779,R2026004,Farmers Insurance Open,2026,70.779
+57259,Dan Brown,30,120,Scoring Average,70.899,R2026004,Farmers Insurance Open,2026,70.899
+52686,Rasmus Højgaard,30,120,Scoring Average,70.899,R2026004,Farmers Insurance Open,2026,70.899
+51950,Max McGreevy,30,120,Scoring Average,70.899,R2026004,Farmers Insurance Open,2026,70.899
+40162,Justin Lower,33,120,Scoring Average,71.029,R2026004,Farmers Insurance Open,2026,71.029
+49855,Kristoffer Reitan,33,120,Scoring Average,71.029,R2026004,Farmers Insurance Open,2026,71.029
+56781,Isaiah Salinda,33,120,Scoring Average,71.029,R2026004,Farmers Insurance Open,2026,71.029
+24502,Adam Scott,33,120,Scoring Average,71.029,R2026004,Farmers Insurance Open,2026,71.029
+55893,Sam Stevens,33,120,Scoring Average,71.029,R2026004,Farmers Insurance Open,2026,71.029
+31646,Emiliano Grillo,38,120,Scoring Average,71.149,R2026004,Farmers Insurance Open,2026,71.149
+28089,Jason Day,39,120,Scoring Average,71.279,R2026004,Farmers Insurance Open,2026,71.279
+48153,Matthieu Pavon,39,120,Scoring Average,71.279,R2026004,Farmers Insurance Open,2026,71.279
+54304,Karl Vilips,39,120,Scoring Average,71.279,R2026004,Farmers Insurance Open,2026,71.279
+54607,Danny Walker,39,120,Scoring Average,71.279,R2026004,Farmers Insurance Open,2026,71.279
+63454,Johnny Keefer,43,120,Scoring Average,71.399,R2026004,Farmers Insurance Open,2026,71.399
+33141,Keegan Bradley,44,120,Scoring Average,71.529,R2026004,Farmers Insurance Open,2026,71.529
+59440,Ricky Castillo,44,120,Scoring Average,71.529,R2026004,Farmers Insurance Open,2026,71.529
+28723,John Parry,44,120,Scoring Average,71.529,R2026004,Farmers Insurance Open,2026,71.529
+58168,Davis Thompson,44,120,Scoring Average,71.529,R2026004,Farmers Insurance Open,2026,71.529
+55573,John VanDerLaan,44,120,Scoring Average,71.529,R2026004,Farmers Insurance Open,2026,71.529
+50286,A.J. Ewart,49,120,Scoring Average,71.649,R2026004,Farmers Insurance Open,2026,71.649
+47993,Denny McCarthy,49,120,Scoring Average,71.649,R2026004,Farmers Insurance Open,2026,71.649
+52689,Rasmus Neergaard-Petersen,49,120,Scoring Average,71.649,R2026004,Farmers Insurance Open,2026,71.649
+37338,Zecheng Dou,52,120,Scoring Average,71.779,R2026004,Farmers Insurance Open,2026,71.779
+57362,Austin Eckroat,52,120,Scoring Average,71.779,R2026004,Farmers Insurance Open,2026,71.779
+59143,Mac Meissner,52,120,Scoring Average,71.779,R2026004,Farmers Insurance Open,2026,71.779
+49947,Taylor Moore,52,120,Scoring Average,71.779,R2026004,Farmers Insurance Open,2026,71.779
+36689,Brooks Koepka,56,120,Scoring Average,71.899,R2026004,Farmers Insurance Open,2026,71.899
+48867,Matti Schmid,56,120,Scoring Average,71.899,R2026004,Farmers Insurance Open,2026,71.899
+60386,Sudarshan Yellamaraju,56,120,Scoring Average,71.899,R2026004,Farmers Insurance Open,2026,71.899
+35506,Mackenzie Hughes,59,120,Scoring Average,72.149,R2026004,Farmers Insurance Open,2026,72.149
+37275,Sam Ryder,59,120,Scoring Average,72.149,R2026004,Farmers Insurance Open,2026,72.149
+48001,Zach Bauchou,61,120,Scoring Average,72.279,R2026004,Farmers Insurance Open,2026,72.279
+52375,Doug Ghim,61,120,Scoring Average,72.279,R2026004,Farmers Insurance Open,2026,72.279
+50188,S.H. Kim,63,120,Scoring Average,72.529,R2026004,Farmers Insurance Open,2026,72.529
+49228,Keita Nakajima,64,120,Scoring Average,72.779,R2026004,Farmers Insurance Open,2026,72.779
+59567,Emilio Gonzalez,65,120,Scoring Average,72.899,R2026004,Farmers Insurance Open,2026,72.899
+55182,Tom Kim,65,120,Scoring Average,72.899,R2026004,Farmers Insurance Open,2026,72.899
+51766,Wyndham Clark,67,120,Scoring Average,73.029,R2026004,Farmers Insurance Open,2026,73.029
+37076,Marcelo Rozo,67,120,Scoring Average,73.029,R2026004,Farmers Insurance Open,2026,73.029
+36801,Mark Hubbard,69,120,Scoring Average,73.279,R2026004,Farmers Insurance Open,2026,73.279
+45157,Cam Davis,70,120,Scoring Average,73.399,R2026004,Farmers Insurance Open,2026,73.399
+51696,Rico Hoey,70,120,Scoring Average,73.399,R2026004,Farmers Insurance Open,2026,73.399
+35532,Tom Hoge,70,120,Scoring Average,73.399,R2026004,Farmers Insurance Open,2026,73.399
+60019,Jackson Suber,73,120,Scoring Average,73.529,R2026004,Farmers Insurance Open,2026,73.529
+49120,Kensei Hirata,74,120,Scoring Average,73.779,R2026004,Farmers Insurance Open,2026,73.779
+46046,Scottie Scheffler,1,120,Scoring Average,68.338,R2026002,The American Express,2026,68.338
+28089,Jason Day,2,120,Scoring Average,69.044,R2026002,The American Express,2026,69.044
+59018,Ryan Gerard,2,120,Scoring Average,69.044,R2026002,The American Express,2026,69.044
+34256,Andrew Putnam,2,120,Scoring Average,69.044,R2026002,The American Express,2026,69.044
+59141,Matt McCarty,5,120,Scoring Average,69.338,R2026002,The American Express,2026,69.338
+50095,Austin Smotherman,6,120,Scoring Average,69.544,R2026002,The American Express,2026,69.544
+51634,Sahith Theegala,6,120,Scoring Average,69.544,R2026002,The American Express,2026,69.544
+55893,Sam Stevens,8,120,Scoring Average,69.588,R2026002,The American Express,2026,69.588
+37455,Si Woo Kim,9,120,Scoring Average,69.812,R2026002,The American Express,2026,69.812
+34098,Russell Henley,10,120,Scoring Average,69.838,R2026002,The American Express,2026,69.838
+35296,Haotong Li,10,120,Scoring Average,69.838,R2026002,The American Express,2026,69.838
+35532,Tom Hoge,12,120,Scoring Average,70.062,R2026002,The American Express,2026,70.062
+65256,David Ford,13,120,Scoring Average,70.088,R2026002,The American Express,2026,70.088
+57975,Harry Hall,14,120,Scoring Average,70.294,R2026002,The American Express,2026,70.294
+48001,Zach Bauchou,15,120,Scoring Average,70.312,R2026002,The American Express,2026,70.312
+60004,Jacob Bridgeman,15,120,Scoring Average,70.312,R2026002,The American Express,2026,70.312
+35450,Patrick Cantlay,15,120,Scoring Average,70.312,R2026002,The American Express,2026,70.312
+51766,Wyndham Clark,15,120,Scoring Average,70.312,R2026002,The American Express,2026,70.312
+66417,Blades Brown,19,120,Scoring Average,70.338,R2026002,The American Express,2026,70.338
+32102,Rickie Fowler,19,120,Scoring Average,70.338,R2026002,The American Express,2026,70.338
+50188,S.H. Kim,19,120,Scoring Average,70.338,R2026002,The American Express,2026,70.338
+54304,Karl Vilips,19,120,Scoring Average,70.338,R2026002,The American Express,2026,70.338
+47483,Will Zalatoris,19,120,Scoring Average,70.338,R2026002,The American Express,2026,70.338
+39977,Max Homa,24,120,Scoring Average,70.544,R2026002,The American Express,2026,70.544
+59836,Pierceson Coody,25,120,Scoring Average,70.562,R2026002,The American Express,2026,70.562
+34076,Joel Dahmen,26,120,Scoring Average,70.794,R2026002,The American Express,2026,70.794
+55182,Tom Kim,26,120,Scoring Average,70.794,R2026002,The American Express,2026,70.794
+49771,J.T. Poston,26,120,Scoring Average,70.794,R2026002,The American Express,2026,70.794
+54591,Ben Griffin,29,120,Scoring Average,70.812,R2026002,The American Express,2026,70.812
+24502,Adam Scott,29,120,Scoring Average,70.812,R2026002,The American Express,2026,70.812
+47504,Sam Burns,31,120,Scoring Average,70.838,R2026002,The American Express,2026,70.838
+34099,Harris English,31,120,Scoring Average,70.838,R2026002,The American Express,2026,70.838
+63454,Johnny Keefer,31,120,Scoring Average,70.838,R2026002,The American Express,2026,70.838
+51950,Max McGreevy,31,120,Scoring Average,70.838,R2026002,The American Express,2026,70.838
+25493,Nick Taylor,31,120,Scoring Average,70.838,R2026002,The American Express,2026,70.838
+50286,A.J. Ewart,36,120,Scoring Average,71.044,R2026002,The American Express,2026,71.044
+51287,Ryo Hisatsune,36,120,Scoring Average,71.044,R2026002,The American Express,2026,71.044
+36699,Patrick Rodgers,36,120,Scoring Average,71.044,R2026002,The American Express,2026,71.044
+52513,Carson Young,36,120,Scoring Average,71.044,R2026002,The American Express,2026,71.044
+47591,Eric Cole,40,120,Scoring Average,71.062,R2026002,The American Express,2026,71.062
+29420,Billy Horschel,40,120,Scoring Average,71.062,R2026002,The American Express,2026,71.062
+48153,Matthieu Pavon,40,120,Scoring Average,71.062,R2026002,The American Express,2026,71.062
+37275,Sam Ryder,40,120,Scoring Average,71.062,R2026002,The American Express,2026,71.062
+46464,Jordan Smith,40,120,Scoring Average,71.062,R2026002,The American Express,2026,71.062
+61522,Michael Brennan,45,120,Scoring Average,71.294,R2026002,The American Express,2026,71.294
+47993,Denny McCarthy,45,120,Scoring Average,71.294,R2026002,The American Express,2026,71.294
+49947,Taylor Moore,45,120,Scoring Average,71.294,R2026002,The American Express,2026,71.294
+45522,Christiaan Bezuidenhout,48,120,Scoring Average,71.312,R2026002,The American Express,2026,71.312
+37378,Min Woo Lee,48,120,Scoring Average,71.312,R2026002,The American Express,2026,71.312
+52215,Robert MacIntyre,48,120,Scoring Average,71.312,R2026002,The American Express,2026,71.312
+23108,Matt Kuchar,51,120,Scoring Average,71.338,R2026002,The American Express,2026,71.338
+39546,Keith Mitchell,51,120,Scoring Average,71.338,R2026002,The American Express,2026,71.338
+46340,Alex Smalley,51,120,Scoring Average,71.338,R2026002,The American Express,2026,71.338
+59143,Mac Meissner,54,120,Scoring Average,71.544,R2026002,The American Express,2026,71.544
+28252,Seamus Power,54,120,Scoring Average,71.544,R2026002,The American Express,2026,71.544
+32070,Rafael Campos,56,120,Scoring Average,71.562,R2026002,The American Express,2026,71.562
+59440,Ricky Castillo,56,120,Scoring Average,71.562,R2026002,The American Express,2026,71.562
+52686,Rasmus Højgaard,56,120,Scoring Average,71.562,R2026002,The American Express,2026,71.562
+36326,David Lipsky,56,120,Scoring Average,71.562,R2026002,The American Express,2026,71.562
+54783,Dylan Wu,56,120,Scoring Average,71.562,R2026002,The American Express,2026,71.562
+40026,Daniel Berger,61,120,Scoring Average,71.588,R2026002,The American Express,2026,71.588
+51977,Max Greyserman,61,120,Scoring Average,71.588,R2026002,The American Express,2026,71.588
+50497,Adrien Dumont de Chassart,63,120,Scoring Average,71.794,R2026002,The American Express,2026,71.794
+28723,John Parry,64,120,Scoring Average,71.812,R2026002,The American Express,2026,71.812
+47995,Davis Riley,64,120,Scoring Average,71.812,R2026002,The American Express,2026,71.812
+59006,Davis Chatfield,66,120,Scoring Average,72.062,R2026002,The American Express,2026,72.062
+40098,Matt Fitzpatrick,66,120,Scoring Average,72.062,R2026002,The American Express,2026,72.062
+57900,Chandler Phillips,66,120,Scoring Average,72.062,R2026002,The American Express,2026,72.062
+47983,Chad Ramey,66,120,Scoring Average,72.062,R2026002,The American Express,2026,72.062
+31323,Gary Woodland,70,120,Scoring Average,72.544,R2026002,The American Express,2026,72.544
+24024,Zach Johnson,71,120,Scoring Average,72.588,R2026002,The American Express,2026,72.588
+34371,Adrien Saddier,71,120,Scoring Average,72.588,R2026002,The American Express,2026,72.588
+37338,Zecheng Dou,73,120,Scoring Average,73.294,R2026002,The American Express,2026,73.294
+59095,Chris Gotterup,1,120,Scoring Average,66.783,R2026006,Sony Open in Hawaii,2026,66.783
+59018,Ryan Gerard,2,120,Scoring Average,67.283,R2026006,Sony Open in Hawaii,2026,67.283
+36699,Patrick Rodgers,3,120,Scoring Average,67.533,R2026006,Sony Open in Hawaii,2026,67.533
+60004,Jacob Bridgeman,4,120,Scoring Average,67.783,R2026006,Sony Open in Hawaii,2026,67.783
+52215,Robert MacIntyre,4,120,Scoring Average,67.783,R2026006,Sony Open in Hawaii,2026,67.783
+40026,Daniel Berger,6,120,Scoring Average,68.033,R2026006,Sony Open in Hawaii,2026,68.033
+57975,Harry Hall,6,120,Scoring Average,68.033,R2026006,Sony Open in Hawaii,2026,68.033
+54628,Lee Hodges,6,120,Scoring Average,68.033,R2026006,Sony Open in Hawaii,2026,68.033
+40250,Taylor Pendrith,6,120,Scoring Average,68.033,R2026006,Sony Open in Hawaii,2026,68.033
+47995,Davis Riley,6,120,Scoring Average,68.033,R2026006,Sony Open in Hawaii,2026,68.033
+37455,Si Woo Kim,11,120,Scoring Average,68.283,R2026006,Sony Open in Hawaii,2026,68.283
+47420,Jake Knapp,11,120,Scoring Average,68.283,R2026006,Sony Open in Hawaii,2026,68.283
+59836,Pierceson Coody,13,120,Scoring Average,68.533,R2026006,Sony Open in Hawaii,2026,68.533
+50188,S.H. Kim,13,120,Scoring Average,68.533,R2026006,Sony Open in Hawaii,2026,68.533
+32839,Hideki Matsuyama,13,120,Scoring Average,68.533,R2026006,Sony Open in Hawaii,2026,68.533
+39335,Kevin Roy,13,120,Scoring Average,68.533,R2026006,Sony Open in Hawaii,2026,68.533
+25493,Nick Taylor,13,120,Scoring Average,68.533,R2026006,Sony Open in Hawaii,2026,68.533
+60386,Sudarshan Yellamaraju,13,120,Scoring Average,68.533,R2026006,Sony Open in Hawaii,2026,68.533
+57259,Dan Brown,19,120,Scoring Average,68.783,R2026006,Sony Open in Hawaii,2026,68.783
+54591,Ben Griffin,19,120,Scoring Average,68.783,R2026006,Sony Open in Hawaii,2026,68.783
+34098,Russell Henley,19,120,Scoring Average,68.783,R2026006,Sony Open in Hawaii,2026,68.783
+28723,John Parry,19,120,Scoring Average,68.783,R2026006,Sony Open in Hawaii,2026,68.783
+57900,Chandler Phillips,19,120,Scoring Average,68.783,R2026006,Sony Open in Hawaii,2026,68.783
+34021,Bud Cauley,24,120,Scoring Average,69.033,R2026006,Sony Open in Hawaii,2026,69.033
+39997,Corey Conners,24,120,Scoring Average,69.033,R2026006,Sony Open in Hawaii,2026,69.033
+50497,Adrien Dumont de Chassart,24,120,Scoring Average,69.033,R2026006,Sony Open in Hawaii,2026,69.033
+49120,Kensei Hirata,24,120,Scoring Average,69.033,R2026006,Sony Open in Hawaii,2026,69.033
+32757,Patton Kizzire,24,120,Scoring Average,69.033,R2026006,Sony Open in Hawaii,2026,69.033
+46442,Maverick McNealy,24,120,Scoring Average,69.033,R2026006,Sony Open in Hawaii,2026,69.033
+34046,Jordan Spieth,24,120,Scoring Average,69.033,R2026006,Sony Open in Hawaii,2026,69.033
+59440,Ricky Castillo,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+29535,Brice Garnett,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+47917,Takumi Kanaya,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+39975,Michael Kim,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+28252,Seamus Power,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+55893,Sam Stevens,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+51634,Sahith Theegala,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+54783,Dylan Wu,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+56100,Ren Yonezawa,31,120,Scoring Average,69.283,R2026006,Sony Open in Hawaii,2026,69.283
+35532,Tom Hoge,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+48117,Kurt Kitayama,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+47993,Denny McCarthy,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+59143,Mac Meissner,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+24502,Adam Scott,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+6567,Vijay Singh,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+46340,Alex Smalley,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+39324,J.J. Spaun,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+40115,Adam Svensson,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+51894,Vince Whaley,40,120,Scoring Average,69.533,R2026006,Sony Open in Hawaii,2026,69.533
+40058,Zac Blair,50,120,Scoring Average,69.783,R2026006,Sony Open in Hawaii,2026,69.783
+65256,David Ford,50,120,Scoring Average,69.783,R2026006,Sony Open in Hawaii,2026,69.783
+59567,Emilio Gonzalez,50,120,Scoring Average,69.783,R2026006,Sony Open in Hawaii,2026,69.783
+51696,Rico Hoey,50,120,Scoring Average,69.783,R2026006,Sony Open in Hawaii,2026,69.783
+46414,Aaron Rai,50,120,Scoring Average,69.783,R2026006,Sony Open in Hawaii,2026,69.783
+37338,Zecheng Dou,55,120,Scoring Average,70.033,R2026006,Sony Open in Hawaii,2026,70.033
+52375,Doug Ghim,55,120,Scoring Average,70.033,R2026006,Sony Open in Hawaii,2026,70.033
+35296,Haotong Li,55,120,Scoring Average,70.033,R2026006,Sony Open in Hawaii,2026,70.033
+59141,Matt McCarty,55,120,Scoring Average,70.033,R2026006,Sony Open in Hawaii,2026,70.033
+48153,Matthieu Pavon,55,120,Scoring Average,70.033,R2026006,Sony Open in Hawaii,2026,70.033
+29221,Webb Simpson,55,120,Scoring Average,70.033,R2026006,Sony Open in Hawaii,2026,70.033
+59866,Nick Dunlap,61,120,Scoring Average,70.283,R2026006,Sony Open in Hawaii,2026,70.283
+27644,Brian Harman,61,120,Scoring Average,70.283,R2026006,Sony Open in Hawaii,2026,70.283
+24024,Zach Johnson,61,120,Scoring Average,70.283,R2026006,Sony Open in Hawaii,2026,70.283
+63454,Johnny Keefer,61,120,Scoring Average,70.283,R2026006,Sony Open in Hawaii,2026,70.283
+55182,Tom Kim,61,120,Scoring Average,70.283,R2026006,Sony Open in Hawaii,2026,70.283
+60067,Joe Highsmith,66,120,Scoring Average,70.533,R2026006,Sony Open in Hawaii,2026,70.533
+36801,Mark Hubbard,66,120,Scoring Average,70.533,R2026006,Sony Open in Hawaii,2026,70.533
+39546,Keith Mitchell,66,120,Scoring Average,70.533,R2026006,Sony Open in Hawaii,2026,70.533
+46464,Jordan Smith,66,120,Scoring Average,70.533,R2026006,Sony Open in Hawaii,2026,70.533
+48001,Zach Bauchou,70,120,Scoring Average,70.783,R2026006,Sony Open in Hawaii,2026,70.783
+63121,William Mouw,71,120,Scoring Average,71.033,R2026006,Sony Open in Hawaii,2026,71.033
+47983,Chad Ramey,71,120,Scoring Average,71.033,R2026006,Sony Open in Hawaii,2026,71.033
+61148,Kota Kaneko,73,120,Scoring Average,71.533,R2026006,Sony Open in Hawaii,2026,71.533
+29420,Billy Horschel,74,120,Scoring Average,71.783,R2026006,Sony Open in Hawaii,2026,71.783
+40098,Matt Fitzpatrick,1,156,Birdie Average,5.75,R2026003,WM Phoenix Open,2026,5.75
+46046,Scottie Scheffler,1,156,Birdie Average,5.75,R2026003,WM Phoenix Open,2026,5.75
+59836,Pierceson Coody,3,156,Birdie Average,5.25,R2026003,WM Phoenix Open,2026,5.25
+37338,Zecheng Dou,4,156,Birdie Average,5.00,R2026003,WM Phoenix Open,2026,5.0
+47420,Jake Knapp,4,156,Birdie Average,5.00,R2026003,WM Phoenix Open,2026,5.0
+32839,Hideki Matsuyama,4,156,Birdie Average,5.00,R2026003,WM Phoenix Open,2026,5.0
+46442,Maverick McNealy,4,156,Birdie Average,5.00,R2026003,WM Phoenix Open,2026,5.0
+59143,Mac Meissner,4,156,Birdie Average,5.00,R2026003,WM Phoenix Open,2026,5.0
+57364,Michael Thorbjornsen,4,156,Birdie Average,5.00,R2026003,WM Phoenix Open,2026,5.0
+29936,Ryan Fox,10,156,Birdie Average,4.75,R2026003,WM Phoenix Open,2026,4.75
+59095,Chris Gotterup,10,156,Birdie Average,4.75,R2026003,WM Phoenix Open,2026,4.75
+28723,John Parry,10,156,Birdie Average,4.75,R2026003,WM Phoenix Open,2026,4.75
+56630,Akshay Bhatia,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+51287,Ryo Hisatsune,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+52453,Nicolai Højgaard,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+46717,Viktor Hovland,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+36799,Stephan Jaeger,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+63454,Johnny Keefer,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+39975,Michael Kim,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+37455,Si Woo Kim,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+49771,J.T. Poston,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+46464,Jordan Smith,13,156,Birdie Average,4.50,R2026003,WM Phoenix Open,2026,4.5
+61522,Michael Brennan,23,156,Birdie Average,4.25,R2026003,WM Phoenix Open,2026,4.25
+60004,Jacob Bridgeman,23,156,Birdie Average,4.25,R2026003,WM Phoenix Open,2026,4.25
+34099,Harris English,23,156,Birdie Average,4.25,R2026003,WM Phoenix Open,2026,4.25
+51696,Rico Hoey,23,156,Birdie Average,4.25,R2026003,WM Phoenix Open,2026,4.25
+52686,Rasmus Højgaard,23,156,Birdie Average,4.25,R2026003,WM Phoenix Open,2026,4.25
+36529,S.T. Lee,23,156,Birdie Average,4.25,R2026003,WM Phoenix Open,2026,4.25
+39335,Kevin Roy,23,156,Birdie Average,4.25,R2026003,WM Phoenix Open,2026,4.25
+57366,Cameron Young,23,156,Birdie Average,4.25,R2026003,WM Phoenix Open,2026,4.25
+51766,Wyndham Clark,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+32102,Rickie Fowler,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+50188,S.H. Kim,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+48117,Kurt Kitayama,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+47983,Chad Ramey,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+49855,Kristoffer Reitan,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+63807,Neal Shipley,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+55573,John VanDerLaan,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+60386,Sudarshan Yellamaraju,31,156,Birdie Average,4.00,R2026003,WM Phoenix Open,2026,4.0
+40026,Daniel Berger,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+46443,Brian Campbell,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+50286,A.J. Ewart,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+60067,Joe Highsmith,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+49120,Kensei Hirata,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+47917,Takumi Kanaya,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+54422,Christo Lamprecht,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+37378,Min Woo Lee,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+39546,Keith Mitchell,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+36699,Patrick Rodgers,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+48081,Xander Schauffele,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+46340,Alex Smalley,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+49960,Sepp Straka,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+52666,Sami Valimaki,40,156,Birdie Average,3.75,R2026003,WM Phoenix Open,2026,3.75
+34021,Bud Cauley,54,156,Birdie Average,3.50,R2026003,WM Phoenix Open,2026,3.5
+35506,Mackenzie Hughes,54,156,Birdie Average,3.50,R2026003,WM Phoenix Open,2026,3.5
+50525,Collin Morikawa,54,156,Birdie Average,3.50,R2026003,WM Phoenix Open,2026,3.5
+49228,Keita Nakajima,54,156,Birdie Average,3.50,R2026003,WM Phoenix Open,2026,3.5
+55893,Sam Stevens,54,156,Birdie Average,3.50,R2026003,WM Phoenix Open,2026,3.5
+25493,Nick Taylor,54,156,Birdie Average,3.50,R2026003,WM Phoenix Open,2026,3.5
+51634,Sahith Theegala,54,156,Birdie Average,3.50,R2026003,WM Phoenix Open,2026,3.5
+31323,Gary Woodland,54,156,Birdie Average,3.50,R2026003,WM Phoenix Open,2026,3.5
+48001,Zach Bauchou,62,156,Birdie Average,3.25,R2026003,WM Phoenix Open,2026,3.25
+45157,Cam Davis,62,156,Birdie Average,3.25,R2026003,WM Phoenix Open,2026,3.25
+54591,Ben Griffin,62,156,Birdie Average,3.25,R2026003,WM Phoenix Open,2026,3.25
+55182,Tom Kim,62,156,Birdie Average,3.25,R2026003,WM Phoenix Open,2026,3.25
+51950,Max McGreevy,62,156,Birdie Average,3.25,R2026003,WM Phoenix Open,2026,3.25
+52689,Rasmus Neergaard-Petersen,62,156,Birdie Average,3.25,R2026003,WM Phoenix Open,2026,3.25
+34371,Adrien Saddier,62,156,Birdie Average,3.25,R2026003,WM Phoenix Open,2026,3.25
+39977,Max Homa,69,156,Birdie Average,3.00,R2026003,WM Phoenix Open,2026,3.0
+32757,Patton Kizzire,69,156,Birdie Average,3.00,R2026003,WM Phoenix Open,2026,3.0
+57900,Chandler Phillips,69,156,Birdie Average,3.00,R2026003,WM Phoenix Open,2026,3.0
+58168,Davis Thompson,72,156,Birdie Average,2.75,R2026003,WM Phoenix Open,2026,2.75
+49766,Hank Lebioda,73,156,Birdie Average,2.00,R2026003,WM Phoenix Open,2026,2.0
+22405,Justin Rose,1,156,Birdie Average,6.50,R2026004,Farmers Insurance Open,2026,6.5
+59836,Pierceson Coody,2,156,Birdie Average,6.00,R2026004,Farmers Insurance Open,2026,6.0
+51287,Ryo Hisatsune,3,156,Birdie Average,5.75,R2026004,Farmers Insurance Open,2026,5.75
+36799,Stephan Jaeger,3,156,Birdie Average,5.75,R2026004,Farmers Insurance Open,2026,5.75
+37455,Si Woo Kim,3,156,Birdie Average,5.75,R2026004,Farmers Insurance Open,2026,5.75
+36326,David Lipsky,3,156,Birdie Average,5.75,R2026004,Farmers Insurance Open,2026,5.75
+36699,Patrick Rodgers,3,156,Birdie Average,5.75,R2026004,Farmers Insurance Open,2026,5.75
+47420,Jake Knapp,8,156,Birdie Average,5.50,R2026004,Farmers Insurance Open,2026,5.5
+51997,Andrew Novak,8,156,Birdie Average,5.50,R2026004,Farmers Insurance Open,2026,5.5
+46442,Maverick McNealy,10,156,Birdie Average,5.25,R2026004,Farmers Insurance Open,2026,5.25
+39546,Keith Mitchell,11,156,Birdie Average,5.00,R2026004,Farmers Insurance Open,2026,5.0
+52689,Rasmus Neergaard-Petersen,11,156,Birdie Average,5.00,R2026004,Farmers Insurance Open,2026,5.0
+59018,Ryan Gerard,13,156,Birdie Average,4.75,R2026004,Farmers Insurance Open,2026,4.75
+52686,Rasmus Højgaard,13,156,Birdie Average,4.75,R2026004,Farmers Insurance Open,2026,4.75
+63454,Johnny Keefer,13,156,Birdie Average,4.75,R2026004,Farmers Insurance Open,2026,4.75
+60386,Sudarshan Yellamaraju,13,156,Birdie Average,4.75,R2026004,Farmers Insurance Open,2026,4.75
+45522,Christiaan Bezuidenhout,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+57259,Dan Brown,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+47591,Eric Cole,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+29725,Tony Finau,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+35506,Mackenzie Hughes,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+59141,Matt McCarty,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+48153,Matthieu Pavon,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+28252,Seamus Power,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+47983,Chad Ramey,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+56781,Isaiah Salinda,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+51634,Sahith Theegala,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+54607,Danny Walker,17,156,Birdie Average,4.50,R2026004,Farmers Insurance Open,2026,4.5
+48001,Zach Bauchou,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+59440,Ricky Castillo,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+57362,Austin Eckroat,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+50286,A.J. Ewart,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+51950,Max McGreevy,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+47347,Adam Schenk,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+58168,Davis Thompson,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+57364,Michael Thorbjornsen,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+35658,Kris Ventura,29,156,Birdie Average,4.25,R2026004,Farmers Insurance Open,2026,4.25
+34099,Harris English,38,156,Birdie Average,4.00,R2026004,Farmers Insurance Open,2026,4.0
+59095,Chris Gotterup,38,156,Birdie Average,4.00,R2026004,Farmers Insurance Open,2026,4.0
+52453,Nicolai Højgaard,38,156,Birdie Average,4.00,R2026004,Farmers Insurance Open,2026,4.0
+40162,Justin Lower,38,156,Birdie Average,4.00,R2026004,Farmers Insurance Open,2026,4.0
+47993,Denny McCarthy,38,156,Birdie Average,4.00,R2026004,Farmers Insurance Open,2026,4.0
+37275,Sam Ryder,38,156,Birdie Average,4.00,R2026004,Farmers Insurance Open,2026,4.0
+57366,Cameron Young,38,156,Birdie Average,4.00,R2026004,Farmers Insurance Open,2026,4.0
+28089,Jason Day,45,156,Birdie Average,3.75,R2026004,Farmers Insurance Open,2026,3.75
+37338,Zecheng Dou,45,156,Birdie Average,3.75,R2026004,Farmers Insurance Open,2026,3.75
+32839,Hideki Matsuyama,45,156,Birdie Average,3.75,R2026004,Farmers Insurance Open,2026,3.75
+28723,John Parry,45,156,Birdie Average,3.75,R2026004,Farmers Insurance Open,2026,3.75
+24502,Adam Scott,45,156,Birdie Average,3.75,R2026004,Farmers Insurance Open,2026,3.75
+55893,Sam Stevens,45,156,Birdie Average,3.75,R2026004,Farmers Insurance Open,2026,3.75
+55573,John VanDerLaan,45,156,Birdie Average,3.75,R2026004,Farmers Insurance Open,2026,3.75
+54304,Karl Vilips,45,156,Birdie Average,3.75,R2026004,Farmers Insurance Open,2026,3.75
+33141,Keegan Bradley,53,156,Birdie Average,3.50,R2026004,Farmers Insurance Open,2026,3.5
+51766,Wyndham Clark,53,156,Birdie Average,3.50,R2026004,Farmers Insurance Open,2026,3.5
+59567,Emilio Gonzalez,53,156,Birdie Average,3.50,R2026004,Farmers Insurance Open,2026,3.5
+31646,Emiliano Grillo,53,156,Birdie Average,3.50,R2026004,Farmers Insurance Open,2026,3.5
+36689,Brooks Koepka,53,156,Birdie Average,3.50,R2026004,Farmers Insurance Open,2026,3.5
+49947,Taylor Moore,53,156,Birdie Average,3.50,R2026004,Farmers Insurance Open,2026,3.5
+49228,Keita Nakajima,53,156,Birdie Average,3.50,R2026004,Farmers Insurance Open,2026,3.5
+34076,Joel Dahmen,60,156,Birdie Average,3.25,R2026004,Farmers Insurance Open,2026,3.25
+45157,Cam Davis,60,156,Birdie Average,3.25,R2026004,Farmers Insurance Open,2026,3.25
+55182,Tom Kim,60,156,Birdie Average,3.25,R2026004,Farmers Insurance Open,2026,3.25
+49855,Kristoffer Reitan,60,156,Birdie Average,3.25,R2026004,Farmers Insurance Open,2026,3.25
+60019,Jackson Suber,60,156,Birdie Average,3.25,R2026004,Farmers Insurance Open,2026,3.25
+52375,Doug Ghim,65,156,Birdie Average,3.00,R2026004,Farmers Insurance Open,2026,3.0
+51696,Rico Hoey,65,156,Birdie Average,3.00,R2026004,Farmers Insurance Open,2026,3.0
+35532,Tom Hoge,65,156,Birdie Average,3.00,R2026004,Farmers Insurance Open,2026,3.0
+50188,S.H. Kim,65,156,Birdie Average,3.00,R2026004,Farmers Insurance Open,2026,3.0
+35296,Haotong Li,65,156,Birdie Average,3.00,R2026004,Farmers Insurance Open,2026,3.0
+59143,Mac Meissner,65,156,Birdie Average,3.00,R2026004,Farmers Insurance Open,2026,3.0
+37076,Marcelo Rozo,65,156,Birdie Average,3.00,R2026004,Farmers Insurance Open,2026,3.0
+48867,Matti Schmid,72,156,Birdie Average,2.75,R2026004,Farmers Insurance Open,2026,2.75
+49120,Kensei Hirata,73,156,Birdie Average,2.50,R2026004,Farmers Insurance Open,2026,2.5
+36801,Mark Hubbard,73,156,Birdie Average,2.50,R2026004,Farmers Insurance Open,2026,2.5
+46046,Scottie Scheffler,1,156,Birdie Average,8.00,R2026002,The American Express,2026,8.0
+59440,Ricky Castillo,2,156,Birdie Average,7.25,R2026002,The American Express,2026,7.25
+60004,Jacob Bridgeman,3,156,Birdie Average,6.75,R2026002,The American Express,2026,6.75
+28089,Jason Day,3,156,Birdie Average,6.75,R2026002,The American Express,2026,6.75
+34256,Andrew Putnam,3,156,Birdie Average,6.75,R2026002,The American Express,2026,6.75
+51766,Wyndham Clark,6,156,Birdie Average,6.50,R2026002,The American Express,2026,6.5
+59018,Ryan Gerard,6,156,Birdie Average,6.50,R2026002,The American Express,2026,6.5
+54591,Ben Griffin,6,156,Birdie Average,6.50,R2026002,The American Express,2026,6.5
+35532,Tom Hoge,6,156,Birdie Average,6.50,R2026002,The American Express,2026,6.5
+36326,David Lipsky,6,156,Birdie Average,6.50,R2026002,The American Express,2026,6.5
+59141,Matt McCarty,6,156,Birdie Average,6.50,R2026002,The American Express,2026,6.5
+47483,Will Zalatoris,6,156,Birdie Average,6.50,R2026002,The American Express,2026,6.5
+34098,Russell Henley,13,156,Birdie Average,6.25,R2026002,The American Express,2026,6.25
+50188,S.H. Kim,13,156,Birdie Average,6.25,R2026002,The American Express,2026,6.25
+37455,Si Woo Kim,13,156,Birdie Average,6.25,R2026002,The American Express,2026,6.25
+52215,Robert MacIntyre,13,156,Birdie Average,6.25,R2026002,The American Express,2026,6.25
+50095,Austin Smotherman,13,156,Birdie Average,6.25,R2026002,The American Express,2026,6.25
+55893,Sam Stevens,13,156,Birdie Average,6.25,R2026002,The American Express,2026,6.25
+32070,Rafael Campos,19,156,Birdie Average,6.00,R2026002,The American Express,2026,6.0
+34099,Harris English,19,156,Birdie Average,6.00,R2026002,The American Express,2026,6.0
+65256,David Ford,19,156,Birdie Average,6.00,R2026002,The American Express,2026,6.0
+35296,Haotong Li,19,156,Birdie Average,6.00,R2026002,The American Express,2026,6.0
+37275,Sam Ryder,19,156,Birdie Average,6.00,R2026002,The American Express,2026,6.0
+59836,Pierceson Coody,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+50497,Adrien Dumont de Chassart,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+39977,Max Homa,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+55182,Tom Kim,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+23108,Matt Kuchar,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+47995,Davis Riley,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+46464,Jordan Smith,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+54304,Karl Vilips,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+54783,Dylan Wu,24,156,Birdie Average,5.75,R2026002,The American Express,2026,5.75
+66417,Blades Brown,33,156,Birdie Average,5.50,R2026002,The American Express,2026,5.5
+35450,Patrick Cantlay,33,156,Birdie Average,5.50,R2026002,The American Express,2026,5.5
+47591,Eric Cole,33,156,Birdie Average,5.50,R2026002,The American Express,2026,5.5
+50286,A.J. Ewart,33,156,Birdie Average,5.50,R2026002,The American Express,2026,5.5
+57975,Harry Hall,33,156,Birdie Average,5.50,R2026002,The American Express,2026,5.5
+51287,Ryo Hisatsune,33,156,Birdie Average,5.50,R2026002,The American Express,2026,5.5
+63454,Johnny Keefer,33,156,Birdie Average,5.50,R2026002,The American Express,2026,5.5
+52513,Carson Young,33,156,Birdie Average,5.50,R2026002,The American Express,2026,5.5
+48001,Zach Bauchou,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+40026,Daniel Berger,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+45522,Christiaan Bezuidenhout,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+37338,Zecheng Dou,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+51977,Max Greyserman,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+29420,Billy Horschel,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+37378,Min Woo Lee,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+57900,Chandler Phillips,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+49771,J.T. Poston,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+24502,Adam Scott,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+46340,Alex Smalley,41,156,Birdie Average,5.25,R2026002,The American Express,2026,5.25
+34076,Joel Dahmen,52,156,Birdie Average,5.00,R2026002,The American Express,2026,5.0
+40098,Matt Fitzpatrick,52,156,Birdie Average,5.00,R2026002,The American Express,2026,5.0
+32102,Rickie Fowler,52,156,Birdie Average,5.00,R2026002,The American Express,2026,5.0
+52686,Rasmus Højgaard,52,156,Birdie Average,5.00,R2026002,The American Express,2026,5.0
+47993,Denny McCarthy,52,156,Birdie Average,5.00,R2026002,The American Express,2026,5.0
+36699,Patrick Rodgers,52,156,Birdie Average,5.00,R2026002,The American Express,2026,5.0
+25493,Nick Taylor,52,156,Birdie Average,5.00,R2026002,The American Express,2026,5.0
+61522,Michael Brennan,59,156,Birdie Average,4.75,R2026002,The American Express,2026,4.75
+47504,Sam Burns,59,156,Birdie Average,4.75,R2026002,The American Express,2026,4.75
+59006,Davis Chatfield,59,156,Birdie Average,4.75,R2026002,The American Express,2026,4.75
+28723,John Parry,59,156,Birdie Average,4.75,R2026002,The American Express,2026,4.75
+47983,Chad Ramey,59,156,Birdie Average,4.75,R2026002,The American Express,2026,4.75
+31323,Gary Woodland,59,156,Birdie Average,4.75,R2026002,The American Express,2026,4.75
+24024,Zach Johnson,65,156,Birdie Average,4.50,R2026002,The American Express,2026,4.5
+51950,Max McGreevy,65,156,Birdie Average,4.50,R2026002,The American Express,2026,4.5
+39546,Keith Mitchell,65,156,Birdie Average,4.50,R2026002,The American Express,2026,4.5
+28252,Seamus Power,65,156,Birdie Average,4.50,R2026002,The American Express,2026,4.5
+34371,Adrien Saddier,65,156,Birdie Average,4.50,R2026002,The American Express,2026,4.5
+51634,Sahith Theegala,65,156,Birdie Average,4.50,R2026002,The American Express,2026,4.5
+49947,Taylor Moore,71,156,Birdie Average,4.25,R2026002,The American Express,2026,4.25
+48153,Matthieu Pavon,71,156,Birdie Average,4.25,R2026002,The American Express,2026,4.25
+59143,Mac Meissner,73,156,Birdie Average,3.75,R2026002,The American Express,2026,3.75
+47995,Davis Riley,1,156,Birdie Average,6.00,R2026006,Sony Open in Hawaii,2026,6.0
+59095,Chris Gotterup,2,156,Birdie Average,5.50,R2026006,Sony Open in Hawaii,2026,5.5
+40026,Daniel Berger,3,156,Birdie Average,5.25,R2026006,Sony Open in Hawaii,2026,5.25
+60004,Jacob Bridgeman,3,156,Birdie Average,5.25,R2026006,Sony Open in Hawaii,2026,5.25
+59018,Ryan Gerard,5,156,Birdie Average,5.00,R2026006,Sony Open in Hawaii,2026,5.0
+52215,Robert MacIntyre,5,156,Birdie Average,5.00,R2026006,Sony Open in Hawaii,2026,5.0
+51634,Sahith Theegala,5,156,Birdie Average,5.00,R2026006,Sony Open in Hawaii,2026,5.0
+34098,Russell Henley,8,156,Birdie Average,4.75,R2026006,Sony Open in Hawaii,2026,4.75
+37455,Si Woo Kim,8,156,Birdie Average,4.75,R2026006,Sony Open in Hawaii,2026,4.75
+59143,Mac Meissner,8,156,Birdie Average,4.75,R2026006,Sony Open in Hawaii,2026,4.75
+57900,Chandler Phillips,8,156,Birdie Average,4.75,R2026006,Sony Open in Hawaii,2026,4.75
+46340,Alex Smalley,8,156,Birdie Average,4.75,R2026006,Sony Open in Hawaii,2026,4.75
+55893,Sam Stevens,8,156,Birdie Average,4.75,R2026006,Sony Open in Hawaii,2026,4.75
+60386,Sudarshan Yellamaraju,8,156,Birdie Average,4.75,R2026006,Sony Open in Hawaii,2026,4.75
+34021,Bud Cauley,15,156,Birdie Average,4.50,R2026006,Sony Open in Hawaii,2026,4.5
+32839,Hideki Matsuyama,15,156,Birdie Average,4.50,R2026006,Sony Open in Hawaii,2026,4.5
+40250,Taylor Pendrith,15,156,Birdie Average,4.50,R2026006,Sony Open in Hawaii,2026,4.5
+25493,Nick Taylor,15,156,Birdie Average,4.50,R2026006,Sony Open in Hawaii,2026,4.5
+54783,Dylan Wu,15,156,Birdie Average,4.50,R2026006,Sony Open in Hawaii,2026,4.5
+59440,Ricky Castillo,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+39997,Corey Conners,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+59866,Nick Dunlap,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+60067,Joe Highsmith,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+46442,Maverick McNealy,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+48153,Matthieu Pavon,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+28252,Seamus Power,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+36699,Patrick Rodgers,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+39335,Kevin Roy,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+39324,J.J. Spaun,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+34046,Jordan Spieth,20,156,Birdie Average,4.25,R2026006,Sony Open in Hawaii,2026,4.25
+57259,Dan Brown,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+59836,Pierceson Coody,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+37338,Zecheng Dou,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+52375,Doug Ghim,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+54591,Ben Griffin,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+57975,Harry Hall,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+54628,Lee Hodges,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+61148,Kota Kaneko,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+39975,Michael Kim,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+35296,Haotong Li,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+47993,Denny McCarthy,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+59141,Matt McCarty,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+28723,John Parry,31,156,Birdie Average,4.00,R2026006,Sony Open in Hawaii,2026,4.0
+29535,Brice Garnett,44,156,Birdie Average,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+35532,Tom Hoge,44,156,Birdie Average,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+50188,S.H. Kim,44,156,Birdie Average,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+39546,Keith Mitchell,44,156,Birdie Average,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+29221,Webb Simpson,44,156,Birdie Average,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+6567,Vijay Singh,44,156,Birdie Average,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+40058,Zac Blair,50,156,Birdie Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
+50497,Adrien Dumont de Chassart,50,156,Birdie Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
+27644,Brian Harman,50,156,Birdie Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
+55182,Tom Kim,50,156,Birdie Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
+48117,Kurt Kitayama,50,156,Birdie Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
+32757,Patton Kizzire,50,156,Birdie Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
+51894,Vince Whaley,50,156,Birdie Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
+48001,Zach Bauchou,57,156,Birdie Average,3.25,R2026006,Sony Open in Hawaii,2026,3.25
+65256,David Ford,57,156,Birdie Average,3.25,R2026006,Sony Open in Hawaii,2026,3.25
+59567,Emilio Gonzalez,57,156,Birdie Average,3.25,R2026006,Sony Open in Hawaii,2026,3.25
+49120,Kensei Hirata,57,156,Birdie Average,3.25,R2026006,Sony Open in Hawaii,2026,3.25
+24024,Zach Johnson,57,156,Birdie Average,3.25,R2026006,Sony Open in Hawaii,2026,3.25
+47420,Jake Knapp,57,156,Birdie Average,3.25,R2026006,Sony Open in Hawaii,2026,3.25
+46414,Aaron Rai,57,156,Birdie Average,3.25,R2026006,Sony Open in Hawaii,2026,3.25
+51696,Rico Hoey,64,156,Birdie Average,3.00,R2026006,Sony Open in Hawaii,2026,3.0
+63454,Johnny Keefer,64,156,Birdie Average,3.00,R2026006,Sony Open in Hawaii,2026,3.0
+47983,Chad Ramey,64,156,Birdie Average,3.00,R2026006,Sony Open in Hawaii,2026,3.0
+40115,Adam Svensson,64,156,Birdie Average,3.00,R2026006,Sony Open in Hawaii,2026,3.0
+56100,Ren Yonezawa,64,156,Birdie Average,3.00,R2026006,Sony Open in Hawaii,2026,3.0
+63121,William Mouw,69,156,Birdie Average,2.75,R2026006,Sony Open in Hawaii,2026,2.75
+24502,Adam Scott,69,156,Birdie Average,2.75,R2026006,Sony Open in Hawaii,2026,2.75
+36801,Mark Hubbard,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
+47917,Takumi Kanaya,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
+46464,Jordan Smith,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
+29420,Billy Horschel,74,156,Birdie Average,2.25,R2026006,Sony Open in Hawaii,2026,2.25
+59836,Pierceson Coody,1,103,GIR Percentage,81.94%,R2026003,WM Phoenix Open,2026,81.94
+63454,Johnny Keefer,2,103,GIR Percentage,80.56%,R2026003,WM Phoenix Open,2026,80.56
+46046,Scottie Scheffler,2,103,GIR Percentage,80.56%,R2026003,WM Phoenix Open,2026,80.56
+57364,Michael Thorbjornsen,4,103,GIR Percentage,79.17%,R2026003,WM Phoenix Open,2026,79.17
+52686,Rasmus Højgaard,5,103,GIR Percentage,77.78%,R2026003,WM Phoenix Open,2026,77.78
+40026,Daniel Berger,6,103,GIR Percentage,76.39%,R2026003,WM Phoenix Open,2026,76.39
+34099,Harris English,6,103,GIR Percentage,76.39%,R2026003,WM Phoenix Open,2026,76.39
+50286,A.J. Ewart,6,103,GIR Percentage,76.39%,R2026003,WM Phoenix Open,2026,76.39
+51287,Ryo Hisatsune,6,103,GIR Percentage,76.39%,R2026003,WM Phoenix Open,2026,76.39
+47420,Jake Knapp,6,103,GIR Percentage,76.39%,R2026003,WM Phoenix Open,2026,76.39
+46442,Maverick McNealy,6,103,GIR Percentage,76.39%,R2026003,WM Phoenix Open,2026,76.39
+46464,Jordan Smith,6,103,GIR Percentage,76.39%,R2026003,WM Phoenix Open,2026,76.39
+48117,Kurt Kitayama,13,103,GIR Percentage,75.00%,R2026003,WM Phoenix Open,2026,75.0
+49766,Hank Lebioda,13,103,GIR Percentage,75.00%,R2026003,WM Phoenix Open,2026,75.0
+49771,J.T. Poston,13,103,GIR Percentage,75.00%,R2026003,WM Phoenix Open,2026,75.0
+47983,Chad Ramey,13,103,GIR Percentage,75.00%,R2026003,WM Phoenix Open,2026,75.0
+56630,Akshay Bhatia,17,103,GIR Percentage,73.61%,R2026003,WM Phoenix Open,2026,73.61
+40098,Matt Fitzpatrick,17,103,GIR Percentage,73.61%,R2026003,WM Phoenix Open,2026,73.61
+55182,Tom Kim,17,103,GIR Percentage,73.61%,R2026003,WM Phoenix Open,2026,73.61
+49855,Kristoffer Reitan,17,103,GIR Percentage,73.61%,R2026003,WM Phoenix Open,2026,73.61
+59095,Chris Gotterup,21,103,GIR Percentage,72.22%,R2026003,WM Phoenix Open,2026,72.22
+52689,Rasmus Neergaard-Petersen,21,103,GIR Percentage,72.22%,R2026003,WM Phoenix Open,2026,72.22
+63807,Neal Shipley,21,103,GIR Percentage,72.22%,R2026003,WM Phoenix Open,2026,72.22
+58168,Davis Thompson,21,103,GIR Percentage,72.22%,R2026003,WM Phoenix Open,2026,72.22
+55573,John VanDerLaan,21,103,GIR Percentage,72.22%,R2026003,WM Phoenix Open,2026,72.22
+60386,Sudarshan Yellamaraju,21,103,GIR Percentage,72.22%,R2026003,WM Phoenix Open,2026,72.22
+51766,Wyndham Clark,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+37338,Zecheng Dou,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+54591,Ben Griffin,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+60067,Joe Highsmith,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+52453,Nicolai Højgaard,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+37455,Si Woo Kim,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+28723,John Parry,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+34371,Adrien Saddier,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+51634,Sahith Theegala,27,103,GIR Percentage,70.83%,R2026003,WM Phoenix Open,2026,70.83
+60004,Jacob Bridgeman,36,103,GIR Percentage,69.44%,R2026003,WM Phoenix Open,2026,69.44
+29936,Ryan Fox,36,103,GIR Percentage,69.44%,R2026003,WM Phoenix Open,2026,69.44
+51696,Rico Hoey,36,103,GIR Percentage,69.44%,R2026003,WM Phoenix Open,2026,69.44
+51950,Max McGreevy,36,103,GIR Percentage,69.44%,R2026003,WM Phoenix Open,2026,69.44
+48081,Xander Schauffele,36,103,GIR Percentage,69.44%,R2026003,WM Phoenix Open,2026,69.44
+46340,Alex Smalley,36,103,GIR Percentage,69.44%,R2026003,WM Phoenix Open,2026,69.44
+49120,Kensei Hirata,42,103,GIR Percentage,68.06%,R2026003,WM Phoenix Open,2026,68.06
+46717,Viktor Hovland,42,103,GIR Percentage,68.06%,R2026003,WM Phoenix Open,2026,68.06
+39975,Michael Kim,42,103,GIR Percentage,68.06%,R2026003,WM Phoenix Open,2026,68.06
+50188,S.H. Kim,42,103,GIR Percentage,68.06%,R2026003,WM Phoenix Open,2026,68.06
+50525,Collin Morikawa,42,103,GIR Percentage,68.06%,R2026003,WM Phoenix Open,2026,68.06
+36699,Patrick Rodgers,42,103,GIR Percentage,68.06%,R2026003,WM Phoenix Open,2026,68.06
+52666,Sami Valimaki,42,103,GIR Percentage,68.06%,R2026003,WM Phoenix Open,2026,68.06
+46443,Brian Campbell,49,103,GIR Percentage,66.67%,R2026003,WM Phoenix Open,2026,66.67
+39977,Max Homa,49,103,GIR Percentage,66.67%,R2026003,WM Phoenix Open,2026,66.67
+32839,Hideki Matsuyama,49,103,GIR Percentage,66.67%,R2026003,WM Phoenix Open,2026,66.67
+59143,Mac Meissner,49,103,GIR Percentage,66.67%,R2026003,WM Phoenix Open,2026,66.67
+49228,Keita Nakajima,49,103,GIR Percentage,66.67%,R2026003,WM Phoenix Open,2026,66.67
+39335,Kevin Roy,49,103,GIR Percentage,66.67%,R2026003,WM Phoenix Open,2026,66.67
+49960,Sepp Straka,49,103,GIR Percentage,66.67%,R2026003,WM Phoenix Open,2026,66.67
+25493,Nick Taylor,49,103,GIR Percentage,66.67%,R2026003,WM Phoenix Open,2026,66.67
+48001,Zach Bauchou,57,103,GIR Percentage,65.28%,R2026003,WM Phoenix Open,2026,65.28
+34021,Bud Cauley,57,103,GIR Percentage,65.28%,R2026003,WM Phoenix Open,2026,65.28
+32102,Rickie Fowler,57,103,GIR Percentage,65.28%,R2026003,WM Phoenix Open,2026,65.28
+35506,Mackenzie Hughes,57,103,GIR Percentage,65.28%,R2026003,WM Phoenix Open,2026,65.28
+36799,Stephan Jaeger,57,103,GIR Percentage,65.28%,R2026003,WM Phoenix Open,2026,65.28
+32757,Patton Kizzire,57,103,GIR Percentage,65.28%,R2026003,WM Phoenix Open,2026,65.28
+39546,Keith Mitchell,57,103,GIR Percentage,65.28%,R2026003,WM Phoenix Open,2026,65.28
+31323,Gary Woodland,57,103,GIR Percentage,65.28%,R2026003,WM Phoenix Open,2026,65.28
+61522,Michael Brennan,65,103,GIR Percentage,63.89%,R2026003,WM Phoenix Open,2026,63.89
+54422,Christo Lamprecht,65,103,GIR Percentage,63.89%,R2026003,WM Phoenix Open,2026,63.89
+55893,Sam Stevens,65,103,GIR Percentage,63.89%,R2026003,WM Phoenix Open,2026,63.89
+37378,Min Woo Lee,68,103,GIR Percentage,61.11%,R2026003,WM Phoenix Open,2026,61.11
+47917,Takumi Kanaya,69,103,GIR Percentage,59.72%,R2026003,WM Phoenix Open,2026,59.72
+57366,Cameron Young,70,103,GIR Percentage,58.33%,R2026003,WM Phoenix Open,2026,58.33
+36529,S.T. Lee,71,103,GIR Percentage,55.56%,R2026003,WM Phoenix Open,2026,55.56
+45157,Cam Davis,72,103,GIR Percentage,54.17%,R2026003,WM Phoenix Open,2026,54.17
+57900,Chandler Phillips,73,103,GIR Percentage,51.39%,R2026003,WM Phoenix Open,2026,51.39
+22405,Justin Rose,1,103,GIR Percentage,81.94%,R2026004,Farmers Insurance Open,2026,81.94
+59836,Pierceson Coody,2,103,GIR Percentage,80.56%,R2026004,Farmers Insurance Open,2026,80.56
+52453,Nicolai Højgaard,3,103,GIR Percentage,79.17%,R2026004,Farmers Insurance Open,2026,79.17
+32839,Hideki Matsuyama,4,103,GIR Percentage,76.39%,R2026004,Farmers Insurance Open,2026,76.39
+28723,John Parry,4,103,GIR Percentage,76.39%,R2026004,Farmers Insurance Open,2026,76.39
+36699,Patrick Rodgers,4,103,GIR Percentage,76.39%,R2026004,Farmers Insurance Open,2026,76.39
+28089,Jason Day,7,103,GIR Percentage,75.00%,R2026004,Farmers Insurance Open,2026,75.0
+59095,Chris Gotterup,7,103,GIR Percentage,75.00%,R2026004,Farmers Insurance Open,2026,75.0
+35296,Haotong Li,7,103,GIR Percentage,75.00%,R2026004,Farmers Insurance Open,2026,75.0
+51287,Ryo Hisatsune,10,103,GIR Percentage,73.61%,R2026004,Farmers Insurance Open,2026,73.61
+36799,Stephan Jaeger,10,103,GIR Percentage,73.61%,R2026004,Farmers Insurance Open,2026,73.61
+51634,Sahith Theegala,10,103,GIR Percentage,73.61%,R2026004,Farmers Insurance Open,2026,73.61
+57364,Michael Thorbjornsen,10,103,GIR Percentage,73.61%,R2026004,Farmers Insurance Open,2026,73.61
+34076,Joel Dahmen,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+34099,Harris English,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+59018,Ryan Gerard,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+52686,Rasmus Højgaard,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+37455,Si Woo Kim,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+39546,Keith Mitchell,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+55893,Sam Stevens,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+58168,Davis Thompson,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+57366,Cameron Young,14,103,GIR Percentage,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+63454,Johnny Keefer,23,103,GIR Percentage,70.83%,R2026004,Farmers Insurance Open,2026,70.83
+36689,Brooks Koepka,23,103,GIR Percentage,70.83%,R2026004,Farmers Insurance Open,2026,70.83
+36326,David Lipsky,23,103,GIR Percentage,70.83%,R2026004,Farmers Insurance Open,2026,70.83
+51950,Max McGreevy,23,103,GIR Percentage,70.83%,R2026004,Farmers Insurance Open,2026,70.83
+51997,Andrew Novak,23,103,GIR Percentage,70.83%,R2026004,Farmers Insurance Open,2026,70.83
+56781,Isaiah Salinda,23,103,GIR Percentage,70.83%,R2026004,Farmers Insurance Open,2026,70.83
+47347,Adam Schenk,23,103,GIR Percentage,70.83%,R2026004,Farmers Insurance Open,2026,70.83
+45522,Christiaan Bezuidenhout,30,103,GIR Percentage,69.44%,R2026004,Farmers Insurance Open,2026,69.44
+29725,Tony Finau,30,103,GIR Percentage,69.44%,R2026004,Farmers Insurance Open,2026,69.44
+47420,Jake Knapp,30,103,GIR Percentage,69.44%,R2026004,Farmers Insurance Open,2026,69.44
+52689,Rasmus Neergaard-Petersen,30,103,GIR Percentage,69.44%,R2026004,Farmers Insurance Open,2026,69.44
+48153,Matthieu Pavon,30,103,GIR Percentage,69.44%,R2026004,Farmers Insurance Open,2026,69.44
+57259,Dan Brown,35,103,GIR Percentage,68.06%,R2026004,Farmers Insurance Open,2026,68.06
+31646,Emiliano Grillo,35,103,GIR Percentage,68.06%,R2026004,Farmers Insurance Open,2026,68.06
+51696,Rico Hoey,35,103,GIR Percentage,68.06%,R2026004,Farmers Insurance Open,2026,68.06
+59141,Matt McCarty,35,103,GIR Percentage,68.06%,R2026004,Farmers Insurance Open,2026,68.06
+54607,Danny Walker,35,103,GIR Percentage,68.06%,R2026004,Farmers Insurance Open,2026,68.06
+47591,Eric Cole,40,103,GIR Percentage,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+50286,A.J. Ewart,40,103,GIR Percentage,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+47993,Denny McCarthy,40,103,GIR Percentage,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+48867,Matti Schmid,40,103,GIR Percentage,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+24502,Adam Scott,40,103,GIR Percentage,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+60019,Jackson Suber,40,103,GIR Percentage,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+35658,Kris Ventura,40,103,GIR Percentage,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+52375,Doug Ghim,47,103,GIR Percentage,65.28%,R2026004,Farmers Insurance Open,2026,65.28
+35506,Mackenzie Hughes,47,103,GIR Percentage,65.28%,R2026004,Farmers Insurance Open,2026,65.28
+59143,Mac Meissner,47,103,GIR Percentage,65.28%,R2026004,Farmers Insurance Open,2026,65.28
+37076,Marcelo Rozo,47,103,GIR Percentage,65.28%,R2026004,Farmers Insurance Open,2026,65.28
+59440,Ricky Castillo,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+51766,Wyndham Clark,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+37338,Zecheng Dou,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+57362,Austin Eckroat,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+46442,Maverick McNealy,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+49228,Keita Nakajima,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+49855,Kristoffer Reitan,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+37275,Sam Ryder,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+55573,John VanDerLaan,51,103,GIR Percentage,63.89%,R2026004,Farmers Insurance Open,2026,63.89
+48001,Zach Bauchou,60,103,GIR Percentage,62.50%,R2026004,Farmers Insurance Open,2026,62.5
+49120,Kensei Hirata,60,103,GIR Percentage,62.50%,R2026004,Farmers Insurance Open,2026,62.5
+60386,Sudarshan Yellamaraju,60,103,GIR Percentage,62.50%,R2026004,Farmers Insurance Open,2026,62.5
+33141,Keegan Bradley,63,103,GIR Percentage,61.11%,R2026004,Farmers Insurance Open,2026,61.11
+59567,Emilio Gonzalez,63,103,GIR Percentage,61.11%,R2026004,Farmers Insurance Open,2026,61.11
+49947,Taylor Moore,63,103,GIR Percentage,61.11%,R2026004,Farmers Insurance Open,2026,61.11
+28252,Seamus Power,63,103,GIR Percentage,61.11%,R2026004,Farmers Insurance Open,2026,61.11
+47983,Chad Ramey,63,103,GIR Percentage,61.11%,R2026004,Farmers Insurance Open,2026,61.11
+36801,Mark Hubbard,68,103,GIR Percentage,59.72%,R2026004,Farmers Insurance Open,2026,59.72
+50188,S.H. Kim,68,103,GIR Percentage,59.72%,R2026004,Farmers Insurance Open,2026,59.72
+40162,Justin Lower,68,103,GIR Percentage,59.72%,R2026004,Farmers Insurance Open,2026,59.72
+45157,Cam Davis,71,103,GIR Percentage,58.33%,R2026004,Farmers Insurance Open,2026,58.33
+55182,Tom Kim,71,103,GIR Percentage,58.33%,R2026004,Farmers Insurance Open,2026,58.33
+54304,Karl Vilips,71,103,GIR Percentage,58.33%,R2026004,Farmers Insurance Open,2026,58.33
+35532,Tom Hoge,74,103,GIR Percentage,54.17%,R2026004,Farmers Insurance Open,2026,54.17
+66417,Blades Brown,1,103,GIR Percentage,86.11%,R2026002,The American Express,2026,86.11
+36699,Patrick Rodgers,1,103,GIR Percentage,86.11%,R2026002,The American Express,2026,86.11
+49771,J.T. Poston,3,103,GIR Percentage,84.72%,R2026002,The American Express,2026,84.72
+51950,Max McGreevy,4,103,GIR Percentage,83.33%,R2026002,The American Express,2026,83.33
+34256,Andrew Putnam,4,103,GIR Percentage,83.33%,R2026002,The American Express,2026,83.33
+59836,Pierceson Coody,6,103,GIR Percentage,81.94%,R2026002,The American Express,2026,81.94
+63454,Johnny Keefer,6,103,GIR Percentage,81.94%,R2026002,The American Express,2026,81.94
+35296,Haotong Li,6,103,GIR Percentage,81.94%,R2026002,The American Express,2026,81.94
+59143,Mac Meissner,6,103,GIR Percentage,81.94%,R2026002,The American Express,2026,81.94
+39546,Keith Mitchell,6,103,GIR Percentage,81.94%,R2026002,The American Express,2026,81.94
+46046,Scottie Scheffler,6,103,GIR Percentage,81.94%,R2026002,The American Express,2026,81.94
+55893,Sam Stevens,6,103,GIR Percentage,81.94%,R2026002,The American Express,2026,81.94
+48001,Zach Bauchou,13,103,GIR Percentage,80.56%,R2026002,The American Express,2026,80.56
+45522,Christiaan Bezuidenhout,13,103,GIR Percentage,80.56%,R2026002,The American Express,2026,80.56
+40098,Matt Fitzpatrick,13,103,GIR Percentage,80.56%,R2026002,The American Express,2026,80.56
+32102,Rickie Fowler,13,103,GIR Percentage,80.56%,R2026002,The American Express,2026,80.56
+37378,Min Woo Lee,13,103,GIR Percentage,80.56%,R2026002,The American Express,2026,80.56
+47591,Eric Cole,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+37338,Zecheng Dou,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+50286,A.J. Ewart,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+34098,Russell Henley,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+29420,Billy Horschel,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+24502,Adam Scott,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+46340,Alex Smalley,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+46464,Jordan Smith,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+50095,Austin Smotherman,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+54304,Karl Vilips,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+47483,Will Zalatoris,18,103,GIR Percentage,79.17%,R2026002,The American Express,2026,79.17
+40026,Daniel Berger,29,103,GIR Percentage,77.78%,R2026002,The American Express,2026,77.78
+51766,Wyndham Clark,29,103,GIR Percentage,77.78%,R2026002,The American Express,2026,77.78
+28089,Jason Day,29,103,GIR Percentage,77.78%,R2026002,The American Express,2026,77.78
+65256,David Ford,29,103,GIR Percentage,77.78%,R2026002,The American Express,2026,77.78
+37455,Si Woo Kim,29,103,GIR Percentage,77.78%,R2026002,The American Express,2026,77.78
+34371,Adrien Saddier,29,103,GIR Percentage,77.78%,R2026002,The American Express,2026,77.78
+35450,Patrick Cantlay,35,103,GIR Percentage,76.39%,R2026002,The American Express,2026,76.39
+59006,Davis Chatfield,35,103,GIR Percentage,76.39%,R2026002,The American Express,2026,76.39
+34076,Joel Dahmen,35,103,GIR Percentage,76.39%,R2026002,The American Express,2026,76.39
+54591,Ben Griffin,35,103,GIR Percentage,76.39%,R2026002,The American Express,2026,76.39
+59141,Matt McCarty,35,103,GIR Percentage,76.39%,R2026002,The American Express,2026,76.39
+47504,Sam Burns,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+51287,Ryo Hisatsune,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+35532,Tom Hoge,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+24024,Zach Johnson,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+55182,Tom Kim,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+23108,Matt Kuchar,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+28723,John Parry,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+48153,Matthieu Pavon,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+52513,Carson Young,40,103,GIR Percentage,75.00%,R2026002,The American Express,2026,75.0
+60004,Jacob Bridgeman,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+50497,Adrien Dumont de Chassart,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+59018,Ryan Gerard,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+39977,Max Homa,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+49947,Taylor Moore,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+37275,Sam Ryder,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+25493,Nick Taylor,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+51634,Sahith Theegala,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+31323,Gary Woodland,49,103,GIR Percentage,73.61%,R2026002,The American Express,2026,73.61
+61522,Michael Brennan,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+32070,Rafael Campos,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+59440,Ricky Castillo,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+34099,Harris English,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+51977,Max Greyserman,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+36326,David Lipsky,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+47993,Denny McCarthy,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+47995,Davis Riley,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+54783,Dylan Wu,58,103,GIR Percentage,72.22%,R2026002,The American Express,2026,72.22
+28252,Seamus Power,67,103,GIR Percentage,70.83%,R2026002,The American Express,2026,70.83
+50188,S.H. Kim,68,103,GIR Percentage,69.44%,R2026002,The American Express,2026,69.44
+57900,Chandler Phillips,68,103,GIR Percentage,69.44%,R2026002,The American Express,2026,69.44
+57975,Harry Hall,70,103,GIR Percentage,68.06%,R2026002,The American Express,2026,68.06
+52686,Rasmus Højgaard,70,103,GIR Percentage,68.06%,R2026002,The American Express,2026,68.06
+52215,Robert MacIntyre,72,103,GIR Percentage,66.67%,R2026002,The American Express,2026,66.67
+47983,Chad Ramey,73,103,GIR Percentage,65.28%,R2026002,The American Express,2026,65.28
+37455,Si Woo Kim,1,103,GIR Percentage,81.94%,R2026006,Sony Open in Hawaii,2026,81.94
+49120,Kensei Hirata,2,103,GIR Percentage,80.56%,R2026006,Sony Open in Hawaii,2026,80.56
+25493,Nick Taylor,2,103,GIR Percentage,80.56%,R2026006,Sony Open in Hawaii,2026,80.56
+56100,Ren Yonezawa,2,103,GIR Percentage,80.56%,R2026006,Sony Open in Hawaii,2026,80.56
+40026,Daniel Berger,5,103,GIR Percentage,79.17%,R2026006,Sony Open in Hawaii,2026,79.17
+52215,Robert MacIntyre,5,103,GIR Percentage,79.17%,R2026006,Sony Open in Hawaii,2026,79.17
+28723,John Parry,5,103,GIR Percentage,79.17%,R2026006,Sony Open in Hawaii,2026,79.17
+54783,Dylan Wu,5,103,GIR Percentage,79.17%,R2026006,Sony Open in Hawaii,2026,79.17
+39997,Corey Conners,9,103,GIR Percentage,77.78%,R2026006,Sony Open in Hawaii,2026,77.78
+65256,David Ford,9,103,GIR Percentage,77.78%,R2026006,Sony Open in Hawaii,2026,77.78
+59018,Ryan Gerard,9,103,GIR Percentage,77.78%,R2026006,Sony Open in Hawaii,2026,77.78
+57975,Harry Hall,9,103,GIR Percentage,77.78%,R2026006,Sony Open in Hawaii,2026,77.78
+63454,Johnny Keefer,9,103,GIR Percentage,77.78%,R2026006,Sony Open in Hawaii,2026,77.78
+48117,Kurt Kitayama,9,103,GIR Percentage,77.78%,R2026006,Sony Open in Hawaii,2026,77.78
+59141,Matt McCarty,9,103,GIR Percentage,77.78%,R2026006,Sony Open in Hawaii,2026,77.78
+59095,Chris Gotterup,16,103,GIR Percentage,76.39%,R2026006,Sony Open in Hawaii,2026,76.39
+59143,Mac Meissner,16,103,GIR Percentage,76.39%,R2026006,Sony Open in Hawaii,2026,76.39
+28252,Seamus Power,16,103,GIR Percentage,76.39%,R2026006,Sony Open in Hawaii,2026,76.39
+36699,Patrick Rodgers,16,103,GIR Percentage,76.39%,R2026006,Sony Open in Hawaii,2026,76.39
+60004,Jacob Bridgeman,20,103,GIR Percentage,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+34021,Bud Cauley,20,103,GIR Percentage,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+54628,Lee Hodges,20,103,GIR Percentage,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+35296,Haotong Li,20,103,GIR Percentage,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+39546,Keith Mitchell,20,103,GIR Percentage,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+46414,Aaron Rai,20,103,GIR Percentage,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+55893,Sam Stevens,20,103,GIR Percentage,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+48001,Zach Bauchou,27,103,GIR Percentage,73.61%,R2026006,Sony Open in Hawaii,2026,73.61
+40058,Zac Blair,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+59836,Pierceson Coody,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+59866,Nick Dunlap,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+29535,Brice Garnett,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+54591,Ben Griffin,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+27644,Brian Harman,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+34098,Russell Henley,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+50188,S.H. Kim,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+47993,Denny McCarthy,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+46442,Maverick McNealy,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+24502,Adam Scott,28,103,GIR Percentage,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+50497,Adrien Dumont de Chassart,39,103,GIR Percentage,70.83%,R2026006,Sony Open in Hawaii,2026,70.83
+36801,Mark Hubbard,39,103,GIR Percentage,70.83%,R2026006,Sony Open in Hawaii,2026,70.83
+46464,Jordan Smith,39,103,GIR Percentage,70.83%,R2026006,Sony Open in Hawaii,2026,70.83
+57259,Dan Brown,42,103,GIR Percentage,69.44%,R2026006,Sony Open in Hawaii,2026,69.44
+6567,Vijay Singh,42,103,GIR Percentage,69.44%,R2026006,Sony Open in Hawaii,2026,69.44
+34046,Jordan Spieth,42,103,GIR Percentage,69.44%,R2026006,Sony Open in Hawaii,2026,69.44
+60386,Sudarshan Yellamaraju,42,103,GIR Percentage,69.44%,R2026006,Sony Open in Hawaii,2026,69.44
+59440,Ricky Castillo,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+51696,Rico Hoey,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+47917,Takumi Kanaya,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+47420,Jake Knapp,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+32839,Hideki Matsuyama,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+40250,Taylor Pendrith,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+29221,Webb Simpson,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+39324,J.J. Spaun,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+51894,Vince Whaley,46,103,GIR Percentage,68.06%,R2026006,Sony Open in Hawaii,2026,68.06
+37338,Zecheng Dou,55,103,GIR Percentage,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+59567,Emilio Gonzalez,55,103,GIR Percentage,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+60067,Joe Highsmith,55,103,GIR Percentage,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+63121,William Mouw,55,103,GIR Percentage,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+57900,Chandler Phillips,55,103,GIR Percentage,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+46340,Alex Smalley,55,103,GIR Percentage,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+51634,Sahith Theegala,55,103,GIR Percentage,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+52375,Doug Ghim,62,103,GIR Percentage,65.28%,R2026006,Sony Open in Hawaii,2026,65.28
+35532,Tom Hoge,62,103,GIR Percentage,65.28%,R2026006,Sony Open in Hawaii,2026,65.28
+39975,Michael Kim,62,103,GIR Percentage,65.28%,R2026006,Sony Open in Hawaii,2026,65.28
+29420,Billy Horschel,65,103,GIR Percentage,63.89%,R2026006,Sony Open in Hawaii,2026,63.89
+55182,Tom Kim,65,103,GIR Percentage,63.89%,R2026006,Sony Open in Hawaii,2026,63.89
+47995,Davis Riley,65,103,GIR Percentage,63.89%,R2026006,Sony Open in Hawaii,2026,63.89
+40115,Adam Svensson,65,103,GIR Percentage,63.89%,R2026006,Sony Open in Hawaii,2026,63.89
+24024,Zach Johnson,69,103,GIR Percentage,62.50%,R2026006,Sony Open in Hawaii,2026,62.5
+47983,Chad Ramey,69,103,GIR Percentage,62.50%,R2026006,Sony Open in Hawaii,2026,62.5
+61148,Kota Kaneko,71,103,GIR Percentage,61.11%,R2026006,Sony Open in Hawaii,2026,61.11
+39335,Kevin Roy,71,103,GIR Percentage,61.11%,R2026006,Sony Open in Hawaii,2026,61.11
+48153,Matthieu Pavon,73,103,GIR Percentage,58.33%,R2026006,Sony Open in Hawaii,2026,58.33
+32757,Patton Kizzire,74,103,GIR Percentage,55.56%,R2026006,Sony Open in Hawaii,2026,55.56
+52453,Nicolai Højgaard,1,130,Scrambling,85.71%,R2026003,WM Phoenix Open,2026,85.71
+32839,Hideki Matsuyama,2,130,Scrambling,83.33%,R2026003,WM Phoenix Open,2026,83.33
+39335,Kevin Roy,2,130,Scrambling,83.33%,R2026003,WM Phoenix Open,2026,83.33
+57364,Michael Thorbjornsen,4,130,Scrambling,80.00%,R2026003,WM Phoenix Open,2026,80.0
+56630,Akshay Bhatia,5,130,Scrambling,78.95%,R2026003,WM Phoenix Open,2026,78.95
+48001,Zach Bauchou,6,130,Scrambling,76.00%,R2026003,WM Phoenix Open,2026,76.0
+59095,Chris Gotterup,7,130,Scrambling,75.00%,R2026003,WM Phoenix Open,2026,75.0
+49960,Sepp Straka,7,130,Scrambling,75.00%,R2026003,WM Phoenix Open,2026,75.0
+36799,Stephan Jaeger,9,130,Scrambling,72.00%,R2026003,WM Phoenix Open,2026,72.0
+59143,Mac Meissner,10,130,Scrambling,70.83%,R2026003,WM Phoenix Open,2026,70.83
+40026,Daniel Berger,11,130,Scrambling,70.59%,R2026003,WM Phoenix Open,2026,70.59
+57366,Cameron Young,12,130,Scrambling,70.00%,R2026003,WM Phoenix Open,2026,70.0
+57900,Chandler Phillips,13,130,Scrambling,68.57%,R2026003,WM Phoenix Open,2026,68.57
+60004,Jacob Bridgeman,14,130,Scrambling,68.18%,R2026003,WM Phoenix Open,2026,68.18
+32102,Rickie Fowler,15,130,Scrambling,68.00%,R2026003,WM Phoenix Open,2026,68.0
+39546,Keith Mitchell,15,130,Scrambling,68.00%,R2026003,WM Phoenix Open,2026,68.0
+37378,Min Woo Lee,17,130,Scrambling,67.86%,R2026003,WM Phoenix Open,2026,67.86
+37338,Zecheng Dou,18,130,Scrambling,66.67%,R2026003,WM Phoenix Open,2026,66.67
+54591,Ben Griffin,18,130,Scrambling,66.67%,R2026003,WM Phoenix Open,2026,66.67
+39977,Max Homa,18,130,Scrambling,66.67%,R2026003,WM Phoenix Open,2026,66.67
+37455,Si Woo Kim,18,130,Scrambling,66.67%,R2026003,WM Phoenix Open,2026,66.67
+48117,Kurt Kitayama,18,130,Scrambling,66.67%,R2026003,WM Phoenix Open,2026,66.67
+25493,Nick Taylor,18,130,Scrambling,66.67%,R2026003,WM Phoenix Open,2026,66.67
+54422,Christo Lamprecht,24,130,Scrambling,65.38%,R2026003,WM Phoenix Open,2026,65.38
+46717,Viktor Hovland,25,130,Scrambling,65.22%,R2026003,WM Phoenix Open,2026,65.22
+52666,Sami Valimaki,25,130,Scrambling,65.22%,R2026003,WM Phoenix Open,2026,65.22
+34099,Harris English,27,130,Scrambling,64.71%,R2026003,WM Phoenix Open,2026,64.71
+50286,A.J. Ewart,27,130,Scrambling,64.71%,R2026003,WM Phoenix Open,2026,64.71
+46046,Scottie Scheffler,29,130,Scrambling,64.29%,R2026003,WM Phoenix Open,2026,64.29
+35506,Mackenzie Hughes,30,130,Scrambling,64.00%,R2026003,WM Phoenix Open,2026,64.0
+51696,Rico Hoey,31,130,Scrambling,63.64%,R2026003,WM Phoenix Open,2026,63.64
+46340,Alex Smalley,31,130,Scrambling,63.64%,R2026003,WM Phoenix Open,2026,63.64
+55182,Tom Kim,33,130,Scrambling,63.16%,R2026003,WM Phoenix Open,2026,63.16
+46443,Brian Campbell,34,130,Scrambling,62.50%,R2026003,WM Phoenix Open,2026,62.5
+51766,Wyndham Clark,35,130,Scrambling,61.90%,R2026003,WM Phoenix Open,2026,61.9
+55893,Sam Stevens,36,130,Scrambling,61.54%,R2026003,WM Phoenix Open,2026,61.54
+49766,Hank Lebioda,37,130,Scrambling,61.11%,R2026003,WM Phoenix Open,2026,61.11
+39975,Michael Kim,38,130,Scrambling,60.87%,R2026003,WM Phoenix Open,2026,60.87
+50525,Collin Morikawa,38,130,Scrambling,60.87%,R2026003,WM Phoenix Open,2026,60.87
+52689,Rasmus Neergaard-Petersen,40,130,Scrambling,60.00%,R2026003,WM Phoenix Open,2026,60.0
+58168,Davis Thompson,40,130,Scrambling,60.00%,R2026003,WM Phoenix Open,2026,60.0
+31323,Gary Woodland,40,130,Scrambling,60.00%,R2026003,WM Phoenix Open,2026,60.0
+60386,Sudarshan Yellamaraju,40,130,Scrambling,60.00%,R2026003,WM Phoenix Open,2026,60.0
+36529,S.T. Lee,44,130,Scrambling,59.38%,R2026003,WM Phoenix Open,2026,59.38
+51287,Ryo Hisatsune,45,130,Scrambling,58.82%,R2026003,WM Phoenix Open,2026,58.82
+49855,Kristoffer Reitan,46,130,Scrambling,57.89%,R2026003,WM Phoenix Open,2026,57.89
+49120,Kensei Hirata,47,130,Scrambling,56.52%,R2026003,WM Phoenix Open,2026,56.52
+52686,Rasmus Højgaard,48,130,Scrambling,56.25%,R2026003,WM Phoenix Open,2026,56.25
+47917,Takumi Kanaya,49,130,Scrambling,55.17%,R2026003,WM Phoenix Open,2026,55.17
+29936,Ryan Fox,50,130,Scrambling,54.55%,R2026003,WM Phoenix Open,2026,54.55
+51950,Max McGreevy,50,130,Scrambling,54.55%,R2026003,WM Phoenix Open,2026,54.55
+48081,Xander Schauffele,50,130,Scrambling,54.55%,R2026003,WM Phoenix Open,2026,54.55
+61522,Michael Brennan,53,130,Scrambling,53.85%,R2026003,WM Phoenix Open,2026,53.85
+59836,Pierceson Coody,53,130,Scrambling,53.85%,R2026003,WM Phoenix Open,2026,53.85
+47420,Jake Knapp,55,130,Scrambling,52.94%,R2026003,WM Phoenix Open,2026,52.94
+46442,Maverick McNealy,55,130,Scrambling,52.94%,R2026003,WM Phoenix Open,2026,52.94
+40098,Matt Fitzpatrick,57,130,Scrambling,52.63%,R2026003,WM Phoenix Open,2026,52.63
+60067,Joe Highsmith,58,130,Scrambling,52.38%,R2026003,WM Phoenix Open,2026,52.38
+34371,Adrien Saddier,58,130,Scrambling,52.38%,R2026003,WM Phoenix Open,2026,52.38
+51634,Sahith Theegala,58,130,Scrambling,52.38%,R2026003,WM Phoenix Open,2026,52.38
+50188,S.H. Kim,61,130,Scrambling,52.17%,R2026003,WM Phoenix Open,2026,52.17
+34021,Bud Cauley,62,130,Scrambling,48.00%,R2026003,WM Phoenix Open,2026,48.0
+36699,Patrick Rodgers,63,130,Scrambling,47.83%,R2026003,WM Phoenix Open,2026,47.83
+28723,John Parry,64,130,Scrambling,47.62%,R2026003,WM Phoenix Open,2026,47.62
+46464,Jordan Smith,65,130,Scrambling,47.06%,R2026003,WM Phoenix Open,2026,47.06
+45157,Cam Davis,66,130,Scrambling,45.45%,R2026003,WM Phoenix Open,2026,45.45
+63807,Neal Shipley,67,130,Scrambling,45.00%,R2026003,WM Phoenix Open,2026,45.0
+49771,J.T. Poston,68,130,Scrambling,44.44%,R2026003,WM Phoenix Open,2026,44.44
+63454,Johnny Keefer,69,130,Scrambling,42.86%,R2026003,WM Phoenix Open,2026,42.86
+32757,Patton Kizzire,70,130,Scrambling,40.00%,R2026003,WM Phoenix Open,2026,40.0
+47983,Chad Ramey,71,130,Scrambling,38.89%,R2026003,WM Phoenix Open,2026,38.89
+49228,Keita Nakajima,72,130,Scrambling,37.50%,R2026003,WM Phoenix Open,2026,37.5
+55573,John VanDerLaan,73,130,Scrambling,35.00%,R2026003,WM Phoenix Open,2026,35.0
+51287,Ryo Hisatsune,1,130,Scrambling,78.95%,R2026004,Farmers Insurance Open,2026,78.95
+35296,Haotong Li,2,130,Scrambling,77.78%,R2026004,Farmers Insurance Open,2026,77.78
+47347,Adam Schenk,3,130,Scrambling,76.19%,R2026004,Farmers Insurance Open,2026,76.19
+40162,Justin Lower,4,130,Scrambling,75.86%,R2026004,Farmers Insurance Open,2026,75.86
+33141,Keegan Bradley,5,130,Scrambling,75.00%,R2026004,Farmers Insurance Open,2026,75.0
+28252,Seamus Power,5,130,Scrambling,75.00%,R2026004,Farmers Insurance Open,2026,75.0
+46442,Maverick McNealy,7,130,Scrambling,73.08%,R2026004,Farmers Insurance Open,2026,73.08
+55573,John VanDerLaan,7,130,Scrambling,73.08%,R2026004,Farmers Insurance Open,2026,73.08
+47420,Jake Knapp,9,130,Scrambling,72.73%,R2026004,Farmers Insurance Open,2026,72.73
+50188,S.H. Kim,10,130,Scrambling,72.41%,R2026004,Farmers Insurance Open,2026,72.41
+28089,Jason Day,11,130,Scrambling,72.22%,R2026004,Farmers Insurance Open,2026,72.22
+59836,Pierceson Coody,12,130,Scrambling,71.43%,R2026004,Farmers Insurance Open,2026,71.43
+49947,Taylor Moore,12,130,Scrambling,71.43%,R2026004,Farmers Insurance Open,2026,71.43
+35658,Kris Ventura,14,130,Scrambling,70.83%,R2026004,Farmers Insurance Open,2026,70.83
+32839,Hideki Matsuyama,15,130,Scrambling,70.59%,R2026004,Farmers Insurance Open,2026,70.59
+34099,Harris English,16,130,Scrambling,70.00%,R2026004,Farmers Insurance Open,2026,70.0
+59018,Ryan Gerard,16,130,Scrambling,70.00%,R2026004,Farmers Insurance Open,2026,70.0
+55893,Sam Stevens,16,130,Scrambling,70.00%,R2026004,Farmers Insurance Open,2026,70.0
+59141,Matt McCarty,19,130,Scrambling,69.57%,R2026004,Farmers Insurance Open,2026,69.57
+49855,Kristoffer Reitan,20,130,Scrambling,69.23%,R2026004,Farmers Insurance Open,2026,69.23
+57364,Michael Thorbjornsen,21,130,Scrambling,68.42%,R2026004,Farmers Insurance Open,2026,68.42
+59143,Mac Meissner,22,130,Scrambling,68.00%,R2026004,Farmers Insurance Open,2026,68.0
+47983,Chad Ramey,23,130,Scrambling,67.86%,R2026004,Farmers Insurance Open,2026,67.86
+47591,Eric Cole,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+63454,Johnny Keefer,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+36689,Brooks Koepka,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+47993,Denny McCarthy,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+51950,Max McGreevy,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+51997,Andrew Novak,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+24502,Adam Scott,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+60019,Jackson Suber,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+54304,Karl Vilips,24,130,Scrambling,66.67%,R2026004,Farmers Insurance Open,2026,66.67
+36801,Mark Hubbard,33,130,Scrambling,65.52%,R2026004,Farmers Insurance Open,2026,65.52
+51766,Wyndham Clark,34,130,Scrambling,65.38%,R2026004,Farmers Insurance Open,2026,65.38
+37338,Zecheng Dou,34,130,Scrambling,65.38%,R2026004,Farmers Insurance Open,2026,65.38
+31646,Emiliano Grillo,36,130,Scrambling,65.22%,R2026004,Farmers Insurance Open,2026,65.22
+54607,Danny Walker,36,130,Scrambling,65.22%,R2026004,Farmers Insurance Open,2026,65.22
+34076,Joel Dahmen,38,130,Scrambling,65.00%,R2026004,Farmers Insurance Open,2026,65.0
+37455,Si Woo Kim,38,130,Scrambling,65.00%,R2026004,Farmers Insurance Open,2026,65.0
+58168,Davis Thompson,38,130,Scrambling,65.00%,R2026004,Farmers Insurance Open,2026,65.0
+57366,Cameron Young,38,130,Scrambling,65.00%,R2026004,Farmers Insurance Open,2026,65.0
+52375,Doug Ghim,42,130,Scrambling,64.00%,R2026004,Farmers Insurance Open,2026,64.0
+37076,Marcelo Rozo,42,130,Scrambling,64.00%,R2026004,Farmers Insurance Open,2026,64.0
+29725,Tony Finau,44,130,Scrambling,63.64%,R2026004,Farmers Insurance Open,2026,63.64
+36799,Stephan Jaeger,45,130,Scrambling,63.16%,R2026004,Farmers Insurance Open,2026,63.16
+51634,Sahith Theegala,45,130,Scrambling,63.16%,R2026004,Farmers Insurance Open,2026,63.16
+50286,A.J. Ewart,47,130,Scrambling,62.50%,R2026004,Farmers Insurance Open,2026,62.5
+59440,Ricky Castillo,48,130,Scrambling,61.54%,R2026004,Farmers Insurance Open,2026,61.54
+22405,Justin Rose,48,130,Scrambling,61.54%,R2026004,Farmers Insurance Open,2026,61.54
+59095,Chris Gotterup,50,130,Scrambling,61.11%,R2026004,Farmers Insurance Open,2026,61.11
+59567,Emilio Gonzalez,51,130,Scrambling,60.71%,R2026004,Farmers Insurance Open,2026,60.71
+55182,Tom Kim,52,130,Scrambling,60.00%,R2026004,Farmers Insurance Open,2026,60.0
+48001,Zach Bauchou,53,130,Scrambling,59.26%,R2026004,Farmers Insurance Open,2026,59.26
+45522,Christiaan Bezuidenhout,54,130,Scrambling,59.09%,R2026004,Farmers Insurance Open,2026,59.09
+28723,John Parry,55,130,Scrambling,58.82%,R2026004,Farmers Insurance Open,2026,58.82
+48867,Matti Schmid,56,130,Scrambling,58.33%,R2026004,Farmers Insurance Open,2026,58.33
+57362,Austin Eckroat,57,130,Scrambling,57.69%,R2026004,Farmers Insurance Open,2026,57.69
+49228,Keita Nakajima,57,130,Scrambling,57.69%,R2026004,Farmers Insurance Open,2026,57.69
+35532,Tom Hoge,59,130,Scrambling,57.58%,R2026004,Farmers Insurance Open,2026,57.58
+45157,Cam Davis,60,130,Scrambling,56.67%,R2026004,Farmers Insurance Open,2026,56.67
+51696,Rico Hoey,61,130,Scrambling,56.52%,R2026004,Farmers Insurance Open,2026,56.52
+52686,Rasmus Højgaard,62,130,Scrambling,55.00%,R2026004,Farmers Insurance Open,2026,55.0
+39546,Keith Mitchell,62,130,Scrambling,55.00%,R2026004,Farmers Insurance Open,2026,55.0
+52453,Nicolai Højgaard,64,130,Scrambling,53.33%,R2026004,Farmers Insurance Open,2026,53.33
+36326,David Lipsky,65,130,Scrambling,52.38%,R2026004,Farmers Insurance Open,2026,52.38
+56781,Isaiah Salinda,65,130,Scrambling,52.38%,R2026004,Farmers Insurance Open,2026,52.38
+57259,Dan Brown,67,130,Scrambling,52.17%,R2026004,Farmers Insurance Open,2026,52.17
+60386,Sudarshan Yellamaraju,68,130,Scrambling,51.85%,R2026004,Farmers Insurance Open,2026,51.85
+52689,Rasmus Neergaard-Petersen,69,130,Scrambling,50.00%,R2026004,Farmers Insurance Open,2026,50.0
+48153,Matthieu Pavon,69,130,Scrambling,50.00%,R2026004,Farmers Insurance Open,2026,50.0
+37275,Sam Ryder,69,130,Scrambling,50.00%,R2026004,Farmers Insurance Open,2026,50.0
+49120,Kensei Hirata,72,130,Scrambling,48.15%,R2026004,Farmers Insurance Open,2026,48.15
+35506,Mackenzie Hughes,73,130,Scrambling,48.00%,R2026004,Farmers Insurance Open,2026,48.0
+36699,Patrick Rodgers,74,130,Scrambling,41.18%,R2026004,Farmers Insurance Open,2026,41.18
+35450,Patrick Cantlay,1,130,Scrambling,88.24%,R2026002,The American Express,2026,88.24
+45522,Christiaan Bezuidenhout,2,130,Scrambling,85.71%,R2026002,The American Express,2026,85.71
+59836,Pierceson Coody,3,130,Scrambling,84.62%,R2026002,The American Express,2026,84.62
+35296,Haotong Li,3,130,Scrambling,84.62%,R2026002,The American Express,2026,84.62
+49947,Taylor Moore,5,130,Scrambling,84.21%,R2026002,The American Express,2026,84.21
+25493,Nick Taylor,5,130,Scrambling,84.21%,R2026002,The American Express,2026,84.21
+51634,Sahith Theegala,5,130,Scrambling,84.21%,R2026002,The American Express,2026,84.21
+47983,Chad Ramey,8,130,Scrambling,84.00%,R2026002,The American Express,2026,84.0
+47504,Sam Burns,9,130,Scrambling,83.33%,R2026002,The American Express,2026,83.33
+48153,Matthieu Pavon,9,130,Scrambling,83.33%,R2026002,The American Express,2026,83.33
+34076,Joel Dahmen,11,130,Scrambling,82.35%,R2026002,The American Express,2026,82.35
+40026,Daniel Berger,12,130,Scrambling,81.25%,R2026002,The American Express,2026,81.25
+37455,Si Woo Kim,12,130,Scrambling,81.25%,R2026002,The American Express,2026,81.25
+36699,Patrick Rodgers,14,130,Scrambling,80.00%,R2026002,The American Express,2026,80.0
+50095,Austin Smotherman,14,130,Scrambling,80.00%,R2026002,The American Express,2026,80.0
+48001,Zach Bauchou,16,130,Scrambling,78.57%,R2026002,The American Express,2026,78.57
+32102,Rickie Fowler,16,130,Scrambling,78.57%,R2026002,The American Express,2026,78.57
+52686,Rasmus Højgaard,18,130,Scrambling,78.26%,R2026002,The American Express,2026,78.26
+35532,Tom Hoge,19,130,Scrambling,77.78%,R2026002,The American Express,2026,77.78
+50188,S.H. Kim,20,130,Scrambling,77.27%,R2026002,The American Express,2026,77.27
+63454,Johnny Keefer,21,130,Scrambling,76.92%,R2026002,The American Express,2026,76.92
+46046,Scottie Scheffler,21,130,Scrambling,76.92%,R2026002,The American Express,2026,76.92
+55893,Sam Stevens,21,130,Scrambling,76.92%,R2026002,The American Express,2026,76.92
+28252,Seamus Power,24,130,Scrambling,76.19%,R2026002,The American Express,2026,76.19
+51766,Wyndham Clark,25,130,Scrambling,75.00%,R2026002,The American Express,2026,75.0
+28089,Jason Day,25,130,Scrambling,75.00%,R2026002,The American Express,2026,75.0
+34099,Harris English,25,130,Scrambling,75.00%,R2026002,The American Express,2026,75.0
+65256,David Ford,25,130,Scrambling,75.00%,R2026002,The American Express,2026,75.0
+57975,Harry Hall,29,130,Scrambling,73.91%,R2026002,The American Express,2026,73.91
+60004,Jacob Bridgeman,30,130,Scrambling,73.68%,R2026002,The American Express,2026,73.68
+59018,Ryan Gerard,30,130,Scrambling,73.68%,R2026002,The American Express,2026,73.68
+39977,Max Homa,30,130,Scrambling,73.68%,R2026002,The American Express,2026,73.68
+47591,Eric Cole,33,130,Scrambling,73.33%,R2026002,The American Express,2026,73.33
+34098,Russell Henley,33,130,Scrambling,73.33%,R2026002,The American Express,2026,73.33
+29420,Billy Horschel,33,130,Scrambling,73.33%,R2026002,The American Express,2026,73.33
+24502,Adam Scott,33,130,Scrambling,73.33%,R2026002,The American Express,2026,73.33
+54304,Karl Vilips,33,130,Scrambling,73.33%,R2026002,The American Express,2026,73.33
+55182,Tom Kim,38,130,Scrambling,72.22%,R2026002,The American Express,2026,72.22
+23108,Matt Kuchar,38,130,Scrambling,72.22%,R2026002,The American Express,2026,72.22
+52513,Carson Young,38,130,Scrambling,72.22%,R2026002,The American Express,2026,72.22
+52215,Robert MacIntyre,41,130,Scrambling,70.83%,R2026002,The American Express,2026,70.83
+59006,Davis Chatfield,42,130,Scrambling,70.59%,R2026002,The American Express,2026,70.59
+59141,Matt McCarty,42,130,Scrambling,70.59%,R2026002,The American Express,2026,70.59
+66417,Blades Brown,44,130,Scrambling,70.00%,R2026002,The American Express,2026,70.0
+51977,Max Greyserman,44,130,Scrambling,70.00%,R2026002,The American Express,2026,70.0
+47995,Davis Riley,44,130,Scrambling,70.00%,R2026002,The American Express,2026,70.0
+39546,Keith Mitchell,47,130,Scrambling,69.23%,R2026002,The American Express,2026,69.23
+51287,Ryo Hisatsune,48,130,Scrambling,66.67%,R2026002,The American Express,2026,66.67
+24024,Zach Johnson,48,130,Scrambling,66.67%,R2026002,The American Express,2026,66.67
+51950,Max McGreevy,48,130,Scrambling,66.67%,R2026002,The American Express,2026,66.67
+28723,John Parry,48,130,Scrambling,66.67%,R2026002,The American Express,2026,66.67
+34256,Andrew Putnam,48,130,Scrambling,66.67%,R2026002,The American Express,2026,66.67
+46464,Jordan Smith,48,130,Scrambling,66.67%,R2026002,The American Express,2026,66.67
+47483,Will Zalatoris,48,130,Scrambling,66.67%,R2026002,The American Express,2026,66.67
+61522,Michael Brennan,55,130,Scrambling,65.00%,R2026002,The American Express,2026,65.0
+32070,Rafael Campos,55,130,Scrambling,65.00%,R2026002,The American Express,2026,65.0
+47993,Denny McCarthy,55,130,Scrambling,65.00%,R2026002,The American Express,2026,65.0
+54783,Dylan Wu,55,130,Scrambling,65.00%,R2026002,The American Express,2026,65.0
+40098,Matt Fitzpatrick,59,130,Scrambling,64.29%,R2026002,The American Express,2026,64.29
+37378,Min Woo Lee,59,130,Scrambling,64.29%,R2026002,The American Express,2026,64.29
+57900,Chandler Phillips,61,130,Scrambling,63.64%,R2026002,The American Express,2026,63.64
+49771,J.T. Poston,61,130,Scrambling,63.64%,R2026002,The American Express,2026,63.64
+37275,Sam Ryder,63,130,Scrambling,63.16%,R2026002,The American Express,2026,63.16
+31323,Gary Woodland,63,130,Scrambling,63.16%,R2026002,The American Express,2026,63.16
+59143,Mac Meissner,65,130,Scrambling,61.54%,R2026002,The American Express,2026,61.54
+50286,A.J. Ewart,66,130,Scrambling,60.00%,R2026002,The American Express,2026,60.0
+46340,Alex Smalley,66,130,Scrambling,60.00%,R2026002,The American Express,2026,60.0
+54591,Ben Griffin,68,130,Scrambling,58.82%,R2026002,The American Express,2026,58.82
+34371,Adrien Saddier,69,130,Scrambling,56.25%,R2026002,The American Express,2026,56.25
+36326,David Lipsky,70,130,Scrambling,55.00%,R2026002,The American Express,2026,55.0
+50497,Adrien Dumont de Chassart,71,130,Scrambling,52.63%,R2026002,The American Express,2026,52.63
+59440,Ricky Castillo,72,130,Scrambling,50.00%,R2026002,The American Express,2026,50.0
+37338,Zecheng Dou,73,130,Scrambling,46.67%,R2026002,The American Express,2026,46.67
+54628,Lee Hodges,1,130,Scrambling,83.33%,R2026006,Sony Open in Hawaii,2026,83.33
+56100,Ren Yonezawa,2,130,Scrambling,78.57%,R2026006,Sony Open in Hawaii,2026,78.57
+47420,Jake Knapp,3,130,Scrambling,78.26%,R2026006,Sony Open in Hawaii,2026,78.26
+32839,Hideki Matsuyama,3,130,Scrambling,78.26%,R2026006,Sony Open in Hawaii,2026,78.26
+40250,Taylor Pendrith,3,130,Scrambling,78.26%,R2026006,Sony Open in Hawaii,2026,78.26
+36699,Patrick Rodgers,6,130,Scrambling,76.47%,R2026006,Sony Open in Hawaii,2026,76.47
+29535,Brice Garnett,7,130,Scrambling,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+54591,Ben Griffin,7,130,Scrambling,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+57975,Harry Hall,7,130,Scrambling,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+32757,Patton Kizzire,7,130,Scrambling,75.00%,R2026006,Sony Open in Hawaii,2026,75.0
+47995,Davis Riley,11,130,Scrambling,73.08%,R2026006,Sony Open in Hawaii,2026,73.08
+57259,Dan Brown,12,130,Scrambling,72.73%,R2026006,Sony Open in Hawaii,2026,72.73
+6567,Vijay Singh,12,130,Scrambling,72.73%,R2026006,Sony Open in Hawaii,2026,72.73
+55893,Sam Stevens,14,130,Scrambling,72.22%,R2026006,Sony Open in Hawaii,2026,72.22
+39975,Michael Kim,15,130,Scrambling,72.00%,R2026006,Sony Open in Hawaii,2026,72.0
+39335,Kevin Roy,16,130,Scrambling,71.43%,R2026006,Sony Open in Hawaii,2026,71.43
+59567,Emilio Gonzalez,17,130,Scrambling,70.83%,R2026006,Sony Open in Hawaii,2026,70.83
+59095,Chris Gotterup,18,130,Scrambling,70.59%,R2026006,Sony Open in Hawaii,2026,70.59
+24502,Adam Scott,19,130,Scrambling,70.00%,R2026006,Sony Open in Hawaii,2026,70.0
+51894,Vince Whaley,20,130,Scrambling,69.57%,R2026006,Sony Open in Hawaii,2026,69.57
+65256,David Ford,21,130,Scrambling,68.75%,R2026006,Sony Open in Hawaii,2026,68.75
+59018,Ryan Gerard,21,130,Scrambling,68.75%,R2026006,Sony Open in Hawaii,2026,68.75
+48117,Kurt Kitayama,21,130,Scrambling,68.75%,R2026006,Sony Open in Hawaii,2026,68.75
+50497,Adrien Dumont de Chassart,24,130,Scrambling,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+52215,Robert MacIntyre,24,130,Scrambling,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+46414,Aaron Rai,24,130,Scrambling,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+47983,Chad Ramey,24,130,Scrambling,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+46464,Jordan Smith,24,130,Scrambling,66.67%,R2026006,Sony Open in Hawaii,2026,66.67
+55182,Tom Kim,29,130,Scrambling,65.38%,R2026006,Sony Open in Hawaii,2026,65.38
+51696,Rico Hoey,30,130,Scrambling,65.22%,R2026006,Sony Open in Hawaii,2026,65.22
+47917,Takumi Kanaya,30,130,Scrambling,65.22%,R2026006,Sony Open in Hawaii,2026,65.22
+34098,Russell Henley,32,130,Scrambling,65.00%,R2026006,Sony Open in Hawaii,2026,65.0
+50188,S.H. Kim,32,130,Scrambling,65.00%,R2026006,Sony Open in Hawaii,2026,65.0
+48153,Matthieu Pavon,34,130,Scrambling,63.33%,R2026006,Sony Open in Hawaii,2026,63.33
+24024,Zach Johnson,35,130,Scrambling,62.96%,R2026006,Sony Open in Hawaii,2026,62.96
+57900,Chandler Phillips,36,130,Scrambling,62.50%,R2026006,Sony Open in Hawaii,2026,62.5
+40115,Adam Svensson,37,130,Scrambling,61.54%,R2026006,Sony Open in Hawaii,2026,61.54
+34021,Bud Cauley,38,130,Scrambling,61.11%,R2026006,Sony Open in Hawaii,2026,61.11
+59440,Ricky Castillo,39,130,Scrambling,60.87%,R2026006,Sony Open in Hawaii,2026,60.87
+29221,Webb Simpson,39,130,Scrambling,60.87%,R2026006,Sony Open in Hawaii,2026,60.87
+40058,Zac Blair,41,130,Scrambling,60.00%,R2026006,Sony Open in Hawaii,2026,60.0
+35532,Tom Hoge,41,130,Scrambling,60.00%,R2026006,Sony Open in Hawaii,2026,60.0
+46442,Maverick McNealy,41,130,Scrambling,60.00%,R2026006,Sony Open in Hawaii,2026,60.0
+28723,John Parry,41,130,Scrambling,60.00%,R2026006,Sony Open in Hawaii,2026,60.0
+37338,Zecheng Dou,45,130,Scrambling,58.33%,R2026006,Sony Open in Hawaii,2026,58.33
+51634,Sahith Theegala,45,130,Scrambling,58.33%,R2026006,Sony Open in Hawaii,2026,58.33
+29420,Billy Horschel,47,130,Scrambling,57.69%,R2026006,Sony Open in Hawaii,2026,57.69
+49120,Kensei Hirata,48,130,Scrambling,57.14%,R2026006,Sony Open in Hawaii,2026,57.14
+35296,Haotong Li,49,130,Scrambling,55.56%,R2026006,Sony Open in Hawaii,2026,55.56
+39546,Keith Mitchell,49,130,Scrambling,55.56%,R2026006,Sony Open in Hawaii,2026,55.56
+59836,Pierceson Coody,51,130,Scrambling,55.00%,R2026006,Sony Open in Hawaii,2026,55.0
+59866,Nick Dunlap,51,130,Scrambling,55.00%,R2026006,Sony Open in Hawaii,2026,55.0
+27644,Brian Harman,51,130,Scrambling,55.00%,R2026006,Sony Open in Hawaii,2026,55.0
+47993,Denny McCarthy,51,130,Scrambling,55.00%,R2026006,Sony Open in Hawaii,2026,55.0
+34046,Jordan Spieth,55,130,Scrambling,54.55%,R2026006,Sony Open in Hawaii,2026,54.55
+60067,Joe Highsmith,56,130,Scrambling,54.17%,R2026006,Sony Open in Hawaii,2026,54.17
+63121,William Mouw,56,130,Scrambling,54.17%,R2026006,Sony Open in Hawaii,2026,54.17
+46340,Alex Smalley,56,130,Scrambling,54.17%,R2026006,Sony Open in Hawaii,2026,54.17
+37455,Si Woo Kim,59,130,Scrambling,53.85%,R2026006,Sony Open in Hawaii,2026,53.85
+61148,Kota Kaneko,60,130,Scrambling,53.57%,R2026006,Sony Open in Hawaii,2026,53.57
+40026,Daniel Berger,61,130,Scrambling,53.33%,R2026006,Sony Open in Hawaii,2026,53.33
+36801,Mark Hubbard,62,130,Scrambling,52.38%,R2026006,Sony Open in Hawaii,2026,52.38
+52375,Doug Ghim,63,130,Scrambling,52.00%,R2026006,Sony Open in Hawaii,2026,52.0
+60004,Jacob Bridgeman,64,130,Scrambling,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
+39997,Corey Conners,64,130,Scrambling,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
+59141,Matt McCarty,64,130,Scrambling,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
+25493,Nick Taylor,64,130,Scrambling,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
+60386,Sudarshan Yellamaraju,64,130,Scrambling,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
+39324,J.J. Spaun,69,130,Scrambling,47.83%,R2026006,Sony Open in Hawaii,2026,47.83
+59143,Mac Meissner,70,130,Scrambling,47.06%,R2026006,Sony Open in Hawaii,2026,47.06
+28252,Seamus Power,70,130,Scrambling,47.06%,R2026006,Sony Open in Hawaii,2026,47.06
+63454,Johnny Keefer,72,130,Scrambling,43.75%,R2026006,Sony Open in Hawaii,2026,43.75
+48001,Zach Bauchou,73,130,Scrambling,42.11%,R2026006,Sony Open in Hawaii,2026,42.11
+54783,Dylan Wu,74,130,Scrambling,40.00%,R2026006,Sony Open in Hawaii,2026,40.0
+46717,Viktor Hovland,1,104,Putts Per Round,1.633,R2026003,WM Phoenix Open,2026,1.633
+59143,Mac Meissner,2,104,Putts Per Round,1.646,R2026003,WM Phoenix Open,2026,1.646
+35506,Mackenzie Hughes,3,104,Putts Per Round,1.681,R2026003,WM Phoenix Open,2026,1.681
+32839,Hideki Matsuyama,4,104,Putts Per Round,1.688,R2026003,WM Phoenix Open,2026,1.688
+39975,Michael Kim,5,104,Putts Per Round,1.694,R2026003,WM Phoenix Open,2026,1.694
+56630,Akshay Bhatia,6,104,Putts Per Round,1.698,R2026003,WM Phoenix Open,2026,1.698
+29936,Ryan Fox,7,104,Putts Per Round,1.700,R2026003,WM Phoenix Open,2026,1.7
+36529,S.T. Lee,7,104,Putts Per Round,1.700,R2026003,WM Phoenix Open,2026,1.7
+32102,Rickie Fowler,9,104,Putts Per Round,1.702,R2026003,WM Phoenix Open,2026,1.702
+51634,Sahith Theegala,10,104,Putts Per Round,1.706,R2026003,WM Phoenix Open,2026,1.706
+57366,Cameron Young,11,104,Putts Per Round,1.714,R2026003,WM Phoenix Open,2026,1.714
+47917,Takumi Kanaya,12,104,Putts Per Round,1.721,R2026003,WM Phoenix Open,2026,1.721
+49771,J.T. Poston,13,104,Putts Per Round,1.722,R2026003,WM Phoenix Open,2026,1.722
+36799,Stephan Jaeger,14,104,Putts Per Round,1.723,R2026003,WM Phoenix Open,2026,1.723
+37338,Zecheng Dou,15,104,Putts Per Round,1.725,R2026003,WM Phoenix Open,2026,1.725
+37455,Si Woo Kim,15,104,Putts Per Round,1.725,R2026003,WM Phoenix Open,2026,1.725
+28723,John Parry,15,104,Putts Per Round,1.725,R2026003,WM Phoenix Open,2026,1.725
+51287,Ryo Hisatsune,18,104,Putts Per Round,1.727,R2026003,WM Phoenix Open,2026,1.727
+46464,Jordan Smith,18,104,Putts Per Round,1.727,R2026003,WM Phoenix Open,2026,1.727
+39335,Kevin Roy,20,104,Putts Per Round,1.729,R2026003,WM Phoenix Open,2026,1.729
+59095,Chris Gotterup,21,104,Putts Per Round,1.731,R2026003,WM Phoenix Open,2026,1.731
+50188,S.H. Kim,22,104,Putts Per Round,1.735,R2026003,WM Phoenix Open,2026,1.735
+52666,Sami Valimaki,22,104,Putts Per Round,1.735,R2026003,WM Phoenix Open,2026,1.735
+40098,Matt Fitzpatrick,24,104,Putts Per Round,1.736,R2026003,WM Phoenix Open,2026,1.736
+55893,Sam Stevens,25,104,Putts Per Round,1.739,R2026003,WM Phoenix Open,2026,1.739
+60004,Jacob Bridgeman,26,104,Putts Per Round,1.740,R2026003,WM Phoenix Open,2026,1.74
+51696,Rico Hoey,26,104,Putts Per Round,1.740,R2026003,WM Phoenix Open,2026,1.74
+48081,Xander Schauffele,26,104,Putts Per Round,1.740,R2026003,WM Phoenix Open,2026,1.74
+46340,Alex Smalley,26,104,Putts Per Round,1.740,R2026003,WM Phoenix Open,2026,1.74
+46046,Scottie Scheffler,30,104,Putts Per Round,1.741,R2026003,WM Phoenix Open,2026,1.741
+45157,Cam Davis,31,104,Putts Per Round,1.744,R2026003,WM Phoenix Open,2026,1.744
+51766,Wyndham Clark,32,104,Putts Per Round,1.745,R2026003,WM Phoenix Open,2026,1.745
+52453,Nicolai Højgaard,32,104,Putts Per Round,1.745,R2026003,WM Phoenix Open,2026,1.745
+47420,Jake Knapp,32,104,Putts Per Round,1.745,R2026003,WM Phoenix Open,2026,1.745
+46442,Maverick McNealy,32,104,Putts Per Round,1.745,R2026003,WM Phoenix Open,2026,1.745
+46443,Brian Campbell,36,104,Putts Per Round,1.750,R2026003,WM Phoenix Open,2026,1.75
+57900,Chandler Phillips,37,104,Putts Per Round,1.757,R2026003,WM Phoenix Open,2026,1.757
+47983,Chad Ramey,38,104,Putts Per Round,1.759,R2026003,WM Phoenix Open,2026,1.759
+61522,Michael Brennan,39,104,Putts Per Round,1.761,R2026003,WM Phoenix Open,2026,1.761
+34021,Bud Cauley,40,104,Putts Per Round,1.766,R2026003,WM Phoenix Open,2026,1.766
+55573,John VanDerLaan,41,104,Putts Per Round,1.769,R2026003,WM Phoenix Open,2026,1.769
+57364,Michael Thorbjornsen,42,104,Putts Per Round,1.772,R2026003,WM Phoenix Open,2026,1.772
+49855,Kristoffer Reitan,43,104,Putts Per Round,1.774,R2026003,WM Phoenix Open,2026,1.774
+63454,Johnny Keefer,44,104,Putts Per Round,1.776,R2026003,WM Phoenix Open,2026,1.776
+36699,Patrick Rodgers,44,104,Putts Per Round,1.776,R2026003,WM Phoenix Open,2026,1.776
+59836,Pierceson Coody,46,104,Putts Per Round,1.780,R2026003,WM Phoenix Open,2026,1.78
+40026,Daniel Berger,47,104,Putts Per Round,1.782,R2026003,WM Phoenix Open,2026,1.782
+52686,Rasmus Højgaard,48,104,Putts Per Round,1.786,R2026003,WM Phoenix Open,2026,1.786
+39546,Keith Mitchell,49,104,Putts Per Round,1.787,R2026003,WM Phoenix Open,2026,1.787
+52689,Rasmus Neergaard-Petersen,50,104,Putts Per Round,1.788,R2026003,WM Phoenix Open,2026,1.788
+63807,Neal Shipley,50,104,Putts Per Round,1.788,R2026003,WM Phoenix Open,2026,1.788
+49228,Keita Nakajima,52,104,Putts Per Round,1.792,R2026003,WM Phoenix Open,2026,1.792
+49960,Sepp Straka,52,104,Putts Per Round,1.792,R2026003,WM Phoenix Open,2026,1.792
+48117,Kurt Kitayama,54,104,Putts Per Round,1.796,R2026003,WM Phoenix Open,2026,1.796
+54591,Ben Griffin,55,104,Putts Per Round,1.804,R2026003,WM Phoenix Open,2026,1.804
+60067,Joe Highsmith,55,104,Putts Per Round,1.804,R2026003,WM Phoenix Open,2026,1.804
+54422,Christo Lamprecht,55,104,Putts Per Round,1.804,R2026003,WM Phoenix Open,2026,1.804
+34371,Adrien Saddier,55,104,Putts Per Round,1.804,R2026003,WM Phoenix Open,2026,1.804
+48001,Zach Bauchou,59,104,Putts Per Round,1.809,R2026003,WM Phoenix Open,2026,1.809
+32757,Patton Kizzire,59,104,Putts Per Round,1.809,R2026003,WM Phoenix Open,2026,1.809
+55182,Tom Kim,61,104,Putts Per Round,1.811,R2026003,WM Phoenix Open,2026,1.811
+50525,Collin Morikawa,62,104,Putts Per Round,1.816,R2026003,WM Phoenix Open,2026,1.816
+34099,Harris English,63,104,Putts Per Round,1.818,R2026003,WM Phoenix Open,2026,1.818
+50286,A.J. Ewart,63,104,Putts Per Round,1.818,R2026003,WM Phoenix Open,2026,1.818
+37378,Min Woo Lee,63,104,Putts Per Round,1.818,R2026003,WM Phoenix Open,2026,1.818
+51950,Max McGreevy,66,104,Putts Per Round,1.820,R2026003,WM Phoenix Open,2026,1.82
+25493,Nick Taylor,67,104,Putts Per Round,1.833,R2026003,WM Phoenix Open,2026,1.833
+49120,Kensei Hirata,68,104,Putts Per Round,1.837,R2026003,WM Phoenix Open,2026,1.837
+60386,Sudarshan Yellamaraju,69,104,Putts Per Round,1.846,R2026003,WM Phoenix Open,2026,1.846
+31323,Gary Woodland,70,104,Putts Per Round,1.851,R2026003,WM Phoenix Open,2026,1.851
+39977,Max Homa,71,104,Putts Per Round,1.854,R2026003,WM Phoenix Open,2026,1.854
+58168,Davis Thompson,72,104,Putts Per Round,1.885,R2026003,WM Phoenix Open,2026,1.885
+49766,Hank Lebioda,73,104,Putts Per Round,1.926,R2026003,WM Phoenix Open,2026,1.926
+22405,Justin Rose,1,104,Putts Per Round,1.593,R2026004,Farmers Insurance Open,2026,1.593
+37455,Si Woo Kim,2,104,Putts Per Round,1.615,R2026004,Farmers Insurance Open,2026,1.615
+47420,Jake Knapp,3,104,Putts Per Round,1.620,R2026004,Farmers Insurance Open,2026,1.62
+36326,David Lipsky,4,104,Putts Per Round,1.627,R2026004,Farmers Insurance Open,2026,1.627
+37275,Sam Ryder,5,104,Putts Per Round,1.630,R2026004,Farmers Insurance Open,2026,1.63
+28252,Seamus Power,6,104,Putts Per Round,1.636,R2026004,Farmers Insurance Open,2026,1.636
+45522,Christiaan Bezuidenhout,7,104,Putts Per Round,1.640,R2026004,Farmers Insurance Open,2026,1.64
+29725,Tony Finau,7,104,Putts Per Round,1.640,R2026004,Farmers Insurance Open,2026,1.64
+51634,Sahith Theegala,9,104,Putts Per Round,1.642,R2026004,Farmers Insurance Open,2026,1.642
+60386,Sudarshan Yellamaraju,10,104,Putts Per Round,1.644,R2026004,Farmers Insurance Open,2026,1.644
+46442,Maverick McNealy,11,104,Putts Per Round,1.652,R2026004,Farmers Insurance Open,2026,1.652
+47983,Chad Ramey,12,104,Putts Per Round,1.659,R2026004,Farmers Insurance Open,2026,1.659
+36799,Stephan Jaeger,13,104,Putts Per Round,1.660,R2026004,Farmers Insurance Open,2026,1.66
+48153,Matthieu Pavon,13,104,Putts Per Round,1.660,R2026004,Farmers Insurance Open,2026,1.66
+51997,Andrew Novak,15,104,Putts Per Round,1.667,R2026004,Farmers Insurance Open,2026,1.667
+57362,Austin Eckroat,16,104,Putts Per Round,1.674,R2026004,Farmers Insurance Open,2026,1.674
+40162,Justin Lower,16,104,Putts Per Round,1.674,R2026004,Farmers Insurance Open,2026,1.674
+51287,Ryo Hisatsune,18,104,Putts Per Round,1.679,R2026004,Farmers Insurance Open,2026,1.679
+35658,Kris Ventura,19,104,Putts Per Round,1.688,R2026004,Farmers Insurance Open,2026,1.688
+54304,Karl Vilips,20,104,Putts Per Round,1.690,R2026004,Farmers Insurance Open,2026,1.69
+36699,Patrick Rodgers,21,104,Putts Per Round,1.691,R2026004,Farmers Insurance Open,2026,1.691
+34076,Joel Dahmen,22,104,Putts Per Round,1.692,R2026004,Farmers Insurance Open,2026,1.692
+39546,Keith Mitchell,22,104,Putts Per Round,1.692,R2026004,Farmers Insurance Open,2026,1.692
+57259,Dan Brown,24,104,Putts Per Round,1.694,R2026004,Farmers Insurance Open,2026,1.694
+59141,Matt McCarty,24,104,Putts Per Round,1.694,R2026004,Farmers Insurance Open,2026,1.694
+49855,Kristoffer Reitan,26,104,Putts Per Round,1.696,R2026004,Farmers Insurance Open,2026,1.696
+57364,Michael Thorbjornsen,27,104,Putts Per Round,1.698,R2026004,Farmers Insurance Open,2026,1.698
+35506,Mackenzie Hughes,28,104,Putts Per Round,1.702,R2026004,Farmers Insurance Open,2026,1.702
+59836,Pierceson Coody,29,104,Putts Per Round,1.707,R2026004,Farmers Insurance Open,2026,1.707
+47591,Eric Cole,30,104,Putts Per Round,1.708,R2026004,Farmers Insurance Open,2026,1.708
+59018,Ryan Gerard,31,104,Putts Per Round,1.712,R2026004,Farmers Insurance Open,2026,1.712
+57366,Cameron Young,31,104,Putts Per Round,1.712,R2026004,Farmers Insurance Open,2026,1.712
+55182,Tom Kim,33,104,Putts Per Round,1.714,R2026004,Farmers Insurance Open,2026,1.714
+49228,Keita Nakajima,34,104,Putts Per Round,1.717,R2026004,Farmers Insurance Open,2026,1.717
+35532,Tom Hoge,35,104,Putts Per Round,1.718,R2026004,Farmers Insurance Open,2026,1.718
+52686,Rasmus Højgaard,36,104,Putts Per Round,1.731,R2026004,Farmers Insurance Open,2026,1.731
+45157,Cam Davis,37,104,Putts Per Round,1.738,R2026004,Farmers Insurance Open,2026,1.738
+59440,Ricky Castillo,38,104,Putts Per Round,1.739,R2026004,Farmers Insurance Open,2026,1.739
+37338,Zecheng Dou,38,104,Putts Per Round,1.739,R2026004,Farmers Insurance Open,2026,1.739
+59143,Mac Meissner,40,104,Putts Per Round,1.745,R2026004,Farmers Insurance Open,2026,1.745
+56781,Isaiah Salinda,40,104,Putts Per Round,1.745,R2026004,Farmers Insurance Open,2026,1.745
+49947,Taylor Moore,42,104,Putts Per Round,1.750,R2026004,Farmers Insurance Open,2026,1.75
+52453,Nicolai Højgaard,43,104,Putts Per Round,1.754,R2026004,Farmers Insurance Open,2026,1.754
+48001,Zach Bauchou,44,104,Putts Per Round,1.756,R2026004,Farmers Insurance Open,2026,1.756
+59095,Chris Gotterup,45,104,Putts Per Round,1.759,R2026004,Farmers Insurance Open,2026,1.759
+35296,Haotong Li,45,104,Putts Per Round,1.759,R2026004,Farmers Insurance Open,2026,1.759
+51950,Max McGreevy,47,104,Putts Per Round,1.765,R2026004,Farmers Insurance Open,2026,1.765
+47347,Adam Schenk,47,104,Putts Per Round,1.765,R2026004,Farmers Insurance Open,2026,1.765
+52375,Doug Ghim,49,104,Putts Per Round,1.766,R2026004,Farmers Insurance Open,2026,1.766
+34099,Harris English,50,104,Putts Per Round,1.769,R2026004,Farmers Insurance Open,2026,1.769
+47993,Denny McCarthy,51,104,Putts Per Round,1.771,R2026004,Farmers Insurance Open,2026,1.771
+48867,Matti Schmid,51,104,Putts Per Round,1.771,R2026004,Farmers Insurance Open,2026,1.771
+31646,Emiliano Grillo,53,104,Putts Per Round,1.776,R2026004,Farmers Insurance Open,2026,1.776
+54607,Danny Walker,53,104,Putts Per Round,1.776,R2026004,Farmers Insurance Open,2026,1.776
+52689,Rasmus Neergaard-Petersen,55,104,Putts Per Round,1.780,R2026004,Farmers Insurance Open,2026,1.78
+51766,Wyndham Clark,56,104,Putts Per Round,1.783,R2026004,Farmers Insurance Open,2026,1.783
+50286,A.J. Ewart,57,104,Putts Per Round,1.792,R2026004,Farmers Insurance Open,2026,1.792
+59567,Emilio Gonzalez,58,104,Putts Per Round,1.795,R2026004,Farmers Insurance Open,2026,1.795
+49120,Kensei Hirata,59,104,Putts Per Round,1.800,R2026004,Farmers Insurance Open,2026,1.8
+32839,Hideki Matsuyama,59,104,Putts Per Round,1.800,R2026004,Farmers Insurance Open,2026,1.8
+28723,John Parry,59,104,Putts Per Round,1.800,R2026004,Farmers Insurance Open,2026,1.8
+55573,John VanDerLaan,62,104,Putts Per Round,1.804,R2026004,Farmers Insurance Open,2026,1.804
+55893,Sam Stevens,63,104,Putts Per Round,1.808,R2026004,Farmers Insurance Open,2026,1.808
+24502,Adam Scott,64,104,Putts Per Round,1.813,R2026004,Farmers Insurance Open,2026,1.813
+36801,Mark Hubbard,65,104,Putts Per Round,1.814,R2026004,Farmers Insurance Open,2026,1.814
+33141,Keegan Bradley,66,104,Putts Per Round,1.818,R2026004,Farmers Insurance Open,2026,1.818
+63454,Johnny Keefer,67,104,Putts Per Round,1.824,R2026004,Farmers Insurance Open,2026,1.824
+58168,Davis Thompson,68,104,Putts Per Round,1.827,R2026004,Farmers Insurance Open,2026,1.827
+28089,Jason Day,69,104,Putts Per Round,1.833,R2026004,Farmers Insurance Open,2026,1.833
+51696,Rico Hoey,70,104,Putts Per Round,1.857,R2026004,Farmers Insurance Open,2026,1.857
+36689,Brooks Koepka,71,104,Putts Per Round,1.882,R2026004,Farmers Insurance Open,2026,1.882
+37076,Marcelo Rozo,72,104,Putts Per Round,1.894,R2026004,Farmers Insurance Open,2026,1.894
+60019,Jackson Suber,73,104,Putts Per Round,1.896,R2026004,Farmers Insurance Open,2026,1.896
+50188,S.H. Kim,74,104,Putts Per Round,1.907,R2026004,Farmers Insurance Open,2026,1.907
+46046,Scottie Scheffler,1,104,Putts Per Round,1.542,R2026002,The American Express,2026,1.542
+59141,Matt McCarty,2,104,Putts Per Round,1.545,R2026002,The American Express,2026,1.545
+59018,Ryan Gerard,3,104,Putts Per Round,1.547,R2026002,The American Express,2026,1.547
+59440,Ricky Castillo,4,104,Putts Per Round,1.558,R2026002,The American Express,2026,1.558
+37275,Sam Ryder,5,104,Putts Per Round,1.566,R2026002,The American Express,2026,1.566
+34256,Andrew Putnam,6,104,Putts Per Round,1.567,R2026002,The American Express,2026,1.567
+28089,Jason Day,7,104,Putts Per Round,1.571,R2026002,The American Express,2026,1.571
+50188,S.H. Kim,8,104,Putts Per Round,1.580,R2026002,The American Express,2026,1.58
+54591,Ben Griffin,9,104,Putts Per Round,1.582,R2026002,The American Express,2026,1.582
+60004,Jacob Bridgeman,10,104,Putts Per Round,1.585,R2026002,The American Express,2026,1.585
+57975,Harry Hall,11,104,Putts Per Round,1.592,R2026002,The American Express,2026,1.592
+35532,Tom Hoge,12,104,Putts Per Round,1.593,R2026002,The American Express,2026,1.593
+36326,David Lipsky,13,104,Putts Per Round,1.596,R2026002,The American Express,2026,1.596
+57900,Chandler Phillips,14,104,Putts Per Round,1.600,R2026002,The American Express,2026,1.6
+52215,Robert MacIntyre,15,104,Putts Per Round,1.604,R2026002,The American Express,2026,1.604
+25493,Nick Taylor,15,104,Putts Per Round,1.604,R2026002,The American Express,2026,1.604
+51766,Wyndham Clark,17,104,Putts Per Round,1.607,R2026002,The American Express,2026,1.607
+37455,Si Woo Kim,17,104,Putts Per Round,1.607,R2026002,The American Express,2026,1.607
+55182,Tom Kim,19,104,Putts Per Round,1.611,R2026002,The American Express,2026,1.611
+50095,Austin Smotherman,20,104,Putts Per Round,1.614,R2026002,The American Express,2026,1.614
+32070,Rafael Campos,21,104,Putts Per Round,1.615,R2026002,The American Express,2026,1.615
+50497,Adrien Dumont de Chassart,22,104,Putts Per Round,1.623,R2026002,The American Express,2026,1.623
+51634,Sahith Theegala,22,104,Putts Per Round,1.623,R2026002,The American Express,2026,1.623
+47591,Eric Cole,24,104,Putts Per Round,1.632,R2026002,The American Express,2026,1.632
+29420,Billy Horschel,24,104,Putts Per Round,1.632,R2026002,The American Express,2026,1.632
+47483,Will Zalatoris,24,104,Putts Per Round,1.632,R2026002,The American Express,2026,1.632
+34099,Harris English,27,104,Putts Per Round,1.635,R2026002,The American Express,2026,1.635
+47993,Denny McCarthy,27,104,Putts Per Round,1.635,R2026002,The American Express,2026,1.635
+47995,Davis Riley,27,104,Putts Per Round,1.635,R2026002,The American Express,2026,1.635
+54783,Dylan Wu,27,104,Putts Per Round,1.635,R2026002,The American Express,2026,1.635
+48001,Zach Bauchou,31,104,Putts Per Round,1.638,R2026002,The American Express,2026,1.638
+47983,Chad Ramey,31,104,Putts Per Round,1.638,R2026002,The American Express,2026,1.638
+65256,David Ford,33,104,Putts Per Round,1.643,R2026002,The American Express,2026,1.643
+55893,Sam Stevens,34,104,Putts Per Round,1.644,R2026002,The American Express,2026,1.644
+28723,John Parry,35,104,Putts Per Round,1.648,R2026002,The American Express,2026,1.648
+50286,A.J. Ewart,36,104,Putts Per Round,1.649,R2026002,The American Express,2026,1.649
+46340,Alex Smalley,36,104,Putts Per Round,1.649,R2026002,The American Express,2026,1.649
+32102,Rickie Fowler,38,104,Putts Per Round,1.655,R2026002,The American Express,2026,1.655
+66417,Blades Brown,39,104,Putts Per Round,1.661,R2026002,The American Express,2026,1.661
+34098,Russell Henley,40,104,Putts Per Round,1.667,R2026002,The American Express,2026,1.667
+48153,Matthieu Pavon,40,104,Putts Per Round,1.667,R2026002,The American Express,2026,1.667
+52513,Carson Young,40,104,Putts Per Round,1.667,R2026002,The American Express,2026,1.667
+52686,Rasmus Højgaard,43,104,Putts Per Round,1.673,R2026002,The American Express,2026,1.673
+39977,Max Homa,44,104,Putts Per Round,1.679,R2026002,The American Express,2026,1.679
+24502,Adam Scott,45,104,Putts Per Round,1.684,R2026002,The American Express,2026,1.684
+24024,Zach Johnson,46,104,Putts Per Round,1.685,R2026002,The American Express,2026,1.685
+23108,Matt Kuchar,46,104,Putts Per Round,1.685,R2026002,The American Express,2026,1.685
+37378,Min Woo Lee,48,104,Putts Per Round,1.690,R2026002,The American Express,2026,1.69
+35450,Patrick Cantlay,49,104,Putts Per Round,1.691,R2026002,The American Express,2026,1.691
+59006,Davis Chatfield,49,104,Putts Per Round,1.691,R2026002,The American Express,2026,1.691
+34076,Joel Dahmen,49,104,Putts Per Round,1.691,R2026002,The American Express,2026,1.691
+61522,Michael Brennan,52,104,Putts Per Round,1.692,R2026002,The American Express,2026,1.692
+59836,Pierceson Coody,53,104,Putts Per Round,1.695,R2026002,The American Express,2026,1.695
+46464,Jordan Smith,54,104,Putts Per Round,1.702,R2026002,The American Express,2026,1.702
+54304,Karl Vilips,54,104,Putts Per Round,1.702,R2026002,The American Express,2026,1.702
+51287,Ryo Hisatsune,56,104,Putts Per Round,1.704,R2026002,The American Express,2026,1.704
+49771,J.T. Poston,57,104,Putts Per Round,1.705,R2026002,The American Express,2026,1.705
+51977,Max Greyserman,58,104,Putts Per Round,1.712,R2026002,The American Express,2026,1.712
+63454,Johnny Keefer,58,104,Putts Per Round,1.712,R2026002,The American Express,2026,1.712
+34371,Adrien Saddier,60,104,Putts Per Round,1.714,R2026002,The American Express,2026,1.714
+31323,Gary Woodland,61,104,Putts Per Round,1.717,R2026002,The American Express,2026,1.717
+45522,Christiaan Bezuidenhout,62,104,Putts Per Round,1.724,R2026002,The American Express,2026,1.724
+28252,Seamus Power,63,104,Putts Per Round,1.725,R2026002,The American Express,2026,1.725
+36699,Patrick Rodgers,64,104,Putts Per Round,1.726,R2026002,The American Express,2026,1.726
+35296,Haotong Li,65,104,Putts Per Round,1.729,R2026002,The American Express,2026,1.729
+59143,Mac Meissner,65,104,Putts Per Round,1.729,R2026002,The American Express,2026,1.729
+51950,Max McGreevy,67,104,Putts Per Round,1.733,R2026002,The American Express,2026,1.733
+47504,Sam Burns,68,104,Putts Per Round,1.741,R2026002,The American Express,2026,1.741
+40026,Daniel Berger,69,104,Putts Per Round,1.750,R2026002,The American Express,2026,1.75
+37338,Zecheng Dou,70,104,Putts Per Round,1.772,R2026002,The American Express,2026,1.772
+40098,Matt Fitzpatrick,71,104,Putts Per Round,1.776,R2026002,The American Express,2026,1.776
+49947,Taylor Moore,72,104,Putts Per Round,1.792,R2026002,The American Express,2026,1.792
+39546,Keith Mitchell,73,104,Putts Per Round,1.797,R2026002,The American Express,2026,1.797
+60004,Jacob Bridgeman,1,104,Putts Per Round,1.648,R2026006,Sony Open in Hawaii,2026,1.648
+59095,Chris Gotterup,2,104,Putts Per Round,1.655,R2026006,Sony Open in Hawaii,2026,1.655
+51634,Sahith Theegala,3,104,Putts Per Round,1.688,R2026006,Sony Open in Hawaii,2026,1.688
+47995,Davis Riley,4,104,Putts Per Round,1.696,R2026006,Sony Open in Hawaii,2026,1.696
+32757,Patton Kizzire,5,104,Putts Per Round,1.700,R2026006,Sony Open in Hawaii,2026,1.7
+34046,Jordan Spieth,5,104,Putts Per Round,1.700,R2026006,Sony Open in Hawaii,2026,1.7
+60386,Sudarshan Yellamaraju,5,104,Putts Per Round,1.700,R2026006,Sony Open in Hawaii,2026,1.7
+57900,Chandler Phillips,8,104,Putts Per Round,1.708,R2026006,Sony Open in Hawaii,2026,1.708
+59836,Pierceson Coody,9,104,Putts Per Round,1.712,R2026006,Sony Open in Hawaii,2026,1.712
+46442,Maverick McNealy,10,104,Putts Per Round,1.731,R2026006,Sony Open in Hawaii,2026,1.731
+59018,Ryan Gerard,11,104,Putts Per Round,1.732,R2026006,Sony Open in Hawaii,2026,1.732
+40250,Taylor Pendrith,12,104,Putts Per Round,1.735,R2026006,Sony Open in Hawaii,2026,1.735
+54783,Dylan Wu,13,104,Putts Per Round,1.737,R2026006,Sony Open in Hawaii,2026,1.737
+57259,Dan Brown,14,104,Putts Per Round,1.740,R2026006,Sony Open in Hawaii,2026,1.74
+39335,Kevin Roy,15,104,Putts Per Round,1.750,R2026006,Sony Open in Hawaii,2026,1.75
+40026,Daniel Berger,16,104,Putts Per Round,1.754,R2026006,Sony Open in Hawaii,2026,1.754
+52215,Robert MacIntyre,16,104,Putts Per Round,1.754,R2026006,Sony Open in Hawaii,2026,1.754
+47983,Chad Ramey,18,104,Putts Per Round,1.756,R2026006,Sony Open in Hawaii,2026,1.756
+48153,Matthieu Pavon,19,104,Putts Per Round,1.762,R2026006,Sony Open in Hawaii,2026,1.762
+59143,Mac Meissner,20,104,Putts Per Round,1.764,R2026006,Sony Open in Hawaii,2026,1.764
+28252,Seamus Power,20,104,Putts Per Round,1.764,R2026006,Sony Open in Hawaii,2026,1.764
+52375,Doug Ghim,22,104,Putts Per Round,1.766,R2026006,Sony Open in Hawaii,2026,1.766
+35532,Tom Hoge,22,104,Putts Per Round,1.766,R2026006,Sony Open in Hawaii,2026,1.766
+39975,Michael Kim,22,104,Putts Per Round,1.766,R2026006,Sony Open in Hawaii,2026,1.766
+59866,Nick Dunlap,25,104,Putts Per Round,1.769,R2026006,Sony Open in Hawaii,2026,1.769
+34098,Russell Henley,25,104,Putts Per Round,1.769,R2026006,Sony Open in Hawaii,2026,1.769
+50188,S.H. Kim,25,104,Putts Per Round,1.769,R2026006,Sony Open in Hawaii,2026,1.769
+59440,Ricky Castillo,28,104,Putts Per Round,1.776,R2026006,Sony Open in Hawaii,2026,1.776
+39324,J.J. Spaun,28,104,Putts Per Round,1.776,R2026006,Sony Open in Hawaii,2026,1.776
+25493,Nick Taylor,28,104,Putts Per Round,1.776,R2026006,Sony Open in Hawaii,2026,1.776
+51894,Vince Whaley,28,104,Putts Per Round,1.776,R2026006,Sony Open in Hawaii,2026,1.776
+34021,Bud Cauley,32,104,Putts Per Round,1.778,R2026006,Sony Open in Hawaii,2026,1.778
+54628,Lee Hodges,32,104,Putts Per Round,1.778,R2026006,Sony Open in Hawaii,2026,1.778
+24024,Zach Johnson,32,104,Putts Per Round,1.778,R2026006,Sony Open in Hawaii,2026,1.778
+36699,Patrick Rodgers,35,104,Putts Per Round,1.782,R2026006,Sony Open in Hawaii,2026,1.782
+55182,Tom Kim,36,104,Putts Per Round,1.783,R2026006,Sony Open in Hawaii,2026,1.783
+40115,Adam Svensson,36,104,Putts Per Round,1.783,R2026006,Sony Open in Hawaii,2026,1.783
+39997,Corey Conners,38,104,Putts Per Round,1.786,R2026006,Sony Open in Hawaii,2026,1.786
+28723,John Parry,39,104,Putts Per Round,1.789,R2026006,Sony Open in Hawaii,2026,1.789
+60067,Joe Highsmith,40,104,Putts Per Round,1.792,R2026006,Sony Open in Hawaii,2026,1.792
+46340,Alex Smalley,40,104,Putts Per Round,1.792,R2026006,Sony Open in Hawaii,2026,1.792
+61148,Kota Kaneko,42,104,Putts Per Round,1.795,R2026006,Sony Open in Hawaii,2026,1.795
+47917,Takumi Kanaya,43,104,Putts Per Round,1.796,R2026006,Sony Open in Hawaii,2026,1.796
+47420,Jake Knapp,43,104,Putts Per Round,1.796,R2026006,Sony Open in Hawaii,2026,1.796
+29221,Webb Simpson,43,104,Putts Per Round,1.796,R2026006,Sony Open in Hawaii,2026,1.796
+37455,Si Woo Kim,46,104,Putts Per Round,1.797,R2026006,Sony Open in Hawaii,2026,1.797
+57975,Harry Hall,47,104,Putts Per Round,1.804,R2026006,Sony Open in Hawaii,2026,1.804
+54591,Ben Griffin,48,104,Putts Per Round,1.808,R2026006,Sony Open in Hawaii,2026,1.808
+47993,Denny McCarthy,48,104,Putts Per Round,1.808,R2026006,Sony Open in Hawaii,2026,1.808
+37338,Zecheng Dou,50,104,Putts Per Round,1.813,R2026006,Sony Open in Hawaii,2026,1.813
+50497,Adrien Dumont de Chassart,51,104,Putts Per Round,1.824,R2026006,Sony Open in Hawaii,2026,1.824
+40058,Zac Blair,52,104,Putts Per Round,1.827,R2026006,Sony Open in Hawaii,2026,1.827
+29535,Brice Garnett,52,104,Putts Per Round,1.827,R2026006,Sony Open in Hawaii,2026,1.827
+27644,Brian Harman,52,104,Putts Per Round,1.827,R2026006,Sony Open in Hawaii,2026,1.827
+48001,Zach Bauchou,55,104,Putts Per Round,1.830,R2026006,Sony Open in Hawaii,2026,1.83
+59567,Emilio Gonzalez,56,104,Putts Per Round,1.833,R2026006,Sony Open in Hawaii,2026,1.833
+63121,William Mouw,56,104,Putts Per Round,1.833,R2026006,Sony Open in Hawaii,2026,1.833
+51696,Rico Hoey,58,104,Putts Per Round,1.837,R2026006,Sony Open in Hawaii,2026,1.837
+59141,Matt McCarty,59,104,Putts Per Round,1.839,R2026006,Sony Open in Hawaii,2026,1.839
+6567,Vijay Singh,60,104,Putts Per Round,1.840,R2026006,Sony Open in Hawaii,2026,1.84
+24502,Adam Scott,61,104,Putts Per Round,1.846,R2026006,Sony Open in Hawaii,2026,1.846
+55893,Sam Stevens,62,104,Putts Per Round,1.852,R2026006,Sony Open in Hawaii,2026,1.852
+63454,Johnny Keefer,63,104,Putts Per Round,1.857,R2026006,Sony Open in Hawaii,2026,1.857
+48117,Kurt Kitayama,63,104,Putts Per Round,1.857,R2026006,Sony Open in Hawaii,2026,1.857
+36801,Mark Hubbard,65,104,Putts Per Round,1.863,R2026006,Sony Open in Hawaii,2026,1.863
+46464,Jordan Smith,65,104,Putts Per Round,1.863,R2026006,Sony Open in Hawaii,2026,1.863
+29420,Billy Horschel,67,104,Putts Per Round,1.870,R2026006,Sony Open in Hawaii,2026,1.87
+39546,Keith Mitchell,67,104,Putts Per Round,1.870,R2026006,Sony Open in Hawaii,2026,1.87
+32839,Hideki Matsuyama,69,104,Putts Per Round,1.878,R2026006,Sony Open in Hawaii,2026,1.878
+49120,Kensei Hirata,70,104,Putts Per Round,1.879,R2026006,Sony Open in Hawaii,2026,1.879
+35296,Haotong Li,71,104,Putts Per Round,1.889,R2026006,Sony Open in Hawaii,2026,1.889
+56100,Ren Yonezawa,72,104,Putts Per Round,1.897,R2026006,Sony Open in Hawaii,2026,1.897
+46414,Aaron Rai,73,104,Putts Per Round,1.907,R2026006,Sony Open in Hawaii,2026,1.907
+65256,David Ford,74,104,Putts Per Round,1.911,R2026006,Sony Open in Hawaii,2026,1.911
+36799,Stephan Jaeger,1,160,Bounce Back,75.00%,R2026003,WM Phoenix Open,2026,75.0
+52453,Nicolai Højgaard,2,160,Bounce Back,66.67%,R2026003,WM Phoenix Open,2026,66.67
+47420,Jake Knapp,2,160,Bounce Back,66.67%,R2026003,WM Phoenix Open,2026,66.67
+50286,A.J. Ewart,4,160,Bounce Back,57.14%,R2026003,WM Phoenix Open,2026,57.14
+59836,Pierceson Coody,5,160,Bounce Back,55.56%,R2026003,WM Phoenix Open,2026,55.56
+32839,Hideki Matsuyama,6,160,Bounce Back,50.00%,R2026003,WM Phoenix Open,2026,50.0
+40098,Matt Fitzpatrick,7,160,Bounce Back,42.86%,R2026003,WM Phoenix Open,2026,42.86
+54591,Ben Griffin,7,160,Bounce Back,42.86%,R2026003,WM Phoenix Open,2026,42.86
+51287,Ryo Hisatsune,7,160,Bounce Back,42.86%,R2026003,WM Phoenix Open,2026,42.86
+46046,Scottie Scheffler,7,160,Bounce Back,42.86%,R2026003,WM Phoenix Open,2026,42.86
+31323,Gary Woodland,11,160,Bounce Back,41.67%,R2026003,WM Phoenix Open,2026,41.67
+48001,Zach Bauchou,12,160,Bounce Back,40.00%,R2026003,WM Phoenix Open,2026,40.0
+56630,Akshay Bhatia,12,160,Bounce Back,40.00%,R2026003,WM Phoenix Open,2026,40.0
+34099,Harris English,14,160,Bounce Back,37.50%,R2026003,WM Phoenix Open,2026,37.5
+51634,Sahith Theegala,14,160,Bounce Back,37.50%,R2026003,WM Phoenix Open,2026,37.5
+60067,Joe Highsmith,16,160,Bounce Back,36.36%,R2026003,WM Phoenix Open,2026,36.36
+34021,Bud Cauley,17,160,Bounce Back,33.33%,R2026003,WM Phoenix Open,2026,33.33
+47917,Takumi Kanaya,17,160,Bounce Back,33.33%,R2026003,WM Phoenix Open,2026,33.33
+63454,Johnny Keefer,17,160,Bounce Back,33.33%,R2026003,WM Phoenix Open,2026,33.33
+39975,Michael Kim,17,160,Bounce Back,33.33%,R2026003,WM Phoenix Open,2026,33.33
+50188,S.H. Kim,17,160,Bounce Back,33.33%,R2026003,WM Phoenix Open,2026,33.33
+39335,Kevin Roy,17,160,Bounce Back,33.33%,R2026003,WM Phoenix Open,2026,33.33
+49960,Sepp Straka,17,160,Bounce Back,33.33%,R2026003,WM Phoenix Open,2026,33.33
+49120,Kensei Hirata,24,160,Bounce Back,30.77%,R2026003,WM Phoenix Open,2026,30.77
+37378,Min Woo Lee,25,160,Bounce Back,30.00%,R2026003,WM Phoenix Open,2026,30.0
+52689,Rasmus Neergaard-Petersen,25,160,Bounce Back,30.00%,R2026003,WM Phoenix Open,2026,30.0
+47983,Chad Ramey,25,160,Bounce Back,30.00%,R2026003,WM Phoenix Open,2026,30.0
+46464,Jordan Smith,25,160,Bounce Back,30.00%,R2026003,WM Phoenix Open,2026,30.0
+57366,Cameron Young,25,160,Bounce Back,30.00%,R2026003,WM Phoenix Open,2026,30.0
+37338,Zecheng Dou,30,160,Bounce Back,28.57%,R2026003,WM Phoenix Open,2026,28.57
+32102,Rickie Fowler,30,160,Bounce Back,28.57%,R2026003,WM Phoenix Open,2026,28.57
+57364,Michael Thorbjornsen,30,160,Bounce Back,28.57%,R2026003,WM Phoenix Open,2026,28.57
+48081,Xander Schauffele,33,160,Bounce Back,27.27%,R2026003,WM Phoenix Open,2026,27.27
+40026,Daniel Berger,34,160,Bounce Back,25.00%,R2026003,WM Phoenix Open,2026,25.0
+51696,Rico Hoey,34,160,Bounce Back,25.00%,R2026003,WM Phoenix Open,2026,25.0
+55182,Tom Kim,34,160,Bounce Back,25.00%,R2026003,WM Phoenix Open,2026,25.0
+48117,Kurt Kitayama,34,160,Bounce Back,25.00%,R2026003,WM Phoenix Open,2026,25.0
+59143,Mac Meissner,34,160,Bounce Back,25.00%,R2026003,WM Phoenix Open,2026,25.0
+39546,Keith Mitchell,34,160,Bounce Back,25.00%,R2026003,WM Phoenix Open,2026,25.0
+28723,John Parry,34,160,Bounce Back,25.00%,R2026003,WM Phoenix Open,2026,25.0
+55573,John VanDerLaan,41,160,Bounce Back,23.08%,R2026003,WM Phoenix Open,2026,23.08
+39977,Max Homa,42,160,Bounce Back,22.22%,R2026003,WM Phoenix Open,2026,22.22
+46442,Maverick McNealy,42,160,Bounce Back,22.22%,R2026003,WM Phoenix Open,2026,22.22
+50525,Collin Morikawa,42,160,Bounce Back,22.22%,R2026003,WM Phoenix Open,2026,22.22
+46443,Brian Campbell,45,160,Bounce Back,20.00%,R2026003,WM Phoenix Open,2026,20.0
+29936,Ryan Fox,45,160,Bounce Back,20.00%,R2026003,WM Phoenix Open,2026,20.0
+49228,Keita Nakajima,45,160,Bounce Back,20.00%,R2026003,WM Phoenix Open,2026,20.0
+55893,Sam Stevens,45,160,Bounce Back,20.00%,R2026003,WM Phoenix Open,2026,20.0
+49771,J.T. Poston,49,160,Bounce Back,18.18%,R2026003,WM Phoenix Open,2026,18.18
+34371,Adrien Saddier,49,160,Bounce Back,18.18%,R2026003,WM Phoenix Open,2026,18.18
+32757,Patton Kizzire,51,160,Bounce Back,17.65%,R2026003,WM Phoenix Open,2026,17.65
+61522,Michael Brennan,52,160,Bounce Back,16.67%,R2026003,WM Phoenix Open,2026,16.67
+45157,Cam Davis,52,160,Bounce Back,16.67%,R2026003,WM Phoenix Open,2026,16.67
+36529,S.T. Lee,52,160,Bounce Back,16.67%,R2026003,WM Phoenix Open,2026,16.67
+63807,Neal Shipley,52,160,Bounce Back,16.67%,R2026003,WM Phoenix Open,2026,16.67
+59095,Chris Gotterup,56,160,Bounce Back,14.29%,R2026003,WM Phoenix Open,2026,14.29
+37455,Si Woo Kim,56,160,Bounce Back,14.29%,R2026003,WM Phoenix Open,2026,14.29
+46717,Viktor Hovland,58,160,Bounce Back,12.50%,R2026003,WM Phoenix Open,2026,12.5
+54422,Christo Lamprecht,58,160,Bounce Back,12.50%,R2026003,WM Phoenix Open,2026,12.5
+52666,Sami Valimaki,58,160,Bounce Back,12.50%,R2026003,WM Phoenix Open,2026,12.5
+51766,Wyndham Clark,61,160,Bounce Back,11.11%,R2026003,WM Phoenix Open,2026,11.11
+35506,Mackenzie Hughes,61,160,Bounce Back,11.11%,R2026003,WM Phoenix Open,2026,11.11
+49855,Kristoffer Reitan,61,160,Bounce Back,11.11%,R2026003,WM Phoenix Open,2026,11.11
+51950,Max McGreevy,64,160,Bounce Back,9.09%,R2026003,WM Phoenix Open,2026,9.09
+57900,Chandler Phillips,65,160,Bounce Back,8.33%,R2026003,WM Phoenix Open,2026,8.33
+36699,Patrick Rodgers,66,160,Bounce Back,7.69%,R2026003,WM Phoenix Open,2026,7.69
+60004,Jacob Bridgeman,67,160,Bounce Back,.00%,R2026003,WM Phoenix Open,2026,0.0
+52686,Rasmus Højgaard,67,160,Bounce Back,.00%,R2026003,WM Phoenix Open,2026,0.0
+49766,Hank Lebioda,67,160,Bounce Back,.00%,R2026003,WM Phoenix Open,2026,0.0
+46340,Alex Smalley,67,160,Bounce Back,.00%,R2026003,WM Phoenix Open,2026,0.0
+25493,Nick Taylor,67,160,Bounce Back,.00%,R2026003,WM Phoenix Open,2026,0.0
+58168,Davis Thompson,67,160,Bounce Back,.00%,R2026003,WM Phoenix Open,2026,0.0
+60386,Sudarshan Yellamaraju,67,160,Bounce Back,.00%,R2026003,WM Phoenix Open,2026,0.0
+59095,Chris Gotterup,1,160,Bounce Back,57.14%,R2026004,Farmers Insurance Open,2026,57.14
+47420,Jake Knapp,1,160,Bounce Back,57.14%,R2026004,Farmers Insurance Open,2026,57.14
+47591,Eric Cole,3,160,Bounce Back,50.00%,R2026004,Farmers Insurance Open,2026,50.0
+39546,Keith Mitchell,4,160,Bounce Back,44.44%,R2026004,Farmers Insurance Open,2026,44.44
+37455,Si Woo Kim,5,160,Bounce Back,42.86%,R2026004,Farmers Insurance Open,2026,42.86
+33141,Keegan Bradley,6,160,Bounce Back,40.00%,R2026004,Farmers Insurance Open,2026,40.0
+45157,Cam Davis,6,160,Bounce Back,40.00%,R2026004,Farmers Insurance Open,2026,40.0
+22405,Justin Rose,6,160,Bounce Back,40.00%,R2026004,Farmers Insurance Open,2026,40.0
+31646,Emiliano Grillo,9,160,Bounce Back,37.50%,R2026004,Farmers Insurance Open,2026,37.5
+36799,Stephan Jaeger,9,160,Bounce Back,37.50%,R2026004,Farmers Insurance Open,2026,37.5
+46442,Maverick McNealy,9,160,Bounce Back,37.50%,R2026004,Farmers Insurance Open,2026,37.5
+57364,Michael Thorbjornsen,9,160,Bounce Back,37.50%,R2026004,Farmers Insurance Open,2026,37.5
+36326,David Lipsky,13,160,Bounce Back,36.36%,R2026004,Farmers Insurance Open,2026,36.36
+48153,Matthieu Pavon,13,160,Bounce Back,36.36%,R2026004,Farmers Insurance Open,2026,36.36
+59143,Mac Meissner,15,160,Bounce Back,33.33%,R2026004,Farmers Insurance Open,2026,33.33
+47983,Chad Ramey,15,160,Bounce Back,33.33%,R2026004,Farmers Insurance Open,2026,33.33
+36699,Patrick Rodgers,15,160,Bounce Back,33.33%,R2026004,Farmers Insurance Open,2026,33.33
+59567,Emilio Gonzalez,18,160,Bounce Back,30.77%,R2026004,Farmers Insurance Open,2026,30.77
+35506,Mackenzie Hughes,18,160,Bounce Back,30.77%,R2026004,Farmers Insurance Open,2026,30.77
+52689,Rasmus Neergaard-Petersen,18,160,Bounce Back,30.77%,R2026004,Farmers Insurance Open,2026,30.77
+56781,Isaiah Salinda,21,160,Bounce Back,30.00%,R2026004,Farmers Insurance Open,2026,30.0
+59440,Ricky Castillo,22,160,Bounce Back,27.27%,R2026004,Farmers Insurance Open,2026,27.27
+63454,Johnny Keefer,22,160,Bounce Back,27.27%,R2026004,Farmers Insurance Open,2026,27.27
+48867,Matti Schmid,22,160,Bounce Back,27.27%,R2026004,Farmers Insurance Open,2026,27.27
+51766,Wyndham Clark,25,160,Bounce Back,25.00%,R2026004,Farmers Insurance Open,2026,25.0
+35296,Haotong Li,25,160,Bounce Back,25.00%,R2026004,Farmers Insurance Open,2026,25.0
+54304,Karl Vilips,25,160,Bounce Back,25.00%,R2026004,Farmers Insurance Open,2026,25.0
+54607,Danny Walker,25,160,Bounce Back,25.00%,R2026004,Farmers Insurance Open,2026,25.0
+57259,Dan Brown,29,160,Bounce Back,23.08%,R2026004,Farmers Insurance Open,2026,23.08
+37076,Marcelo Rozo,29,160,Bounce Back,23.08%,R2026004,Farmers Insurance Open,2026,23.08
+40162,Justin Lower,31,160,Bounce Back,22.22%,R2026004,Farmers Insurance Open,2026,22.22
+55573,John VanDerLaan,31,160,Bounce Back,22.22%,R2026004,Farmers Insurance Open,2026,22.22
+60386,Sudarshan Yellamaraju,33,160,Bounce Back,21.43%,R2026004,Farmers Insurance Open,2026,21.43
+52375,Doug Ghim,34,160,Bounce Back,20.00%,R2026004,Farmers Insurance Open,2026,20.0
+36689,Brooks Koepka,34,160,Bounce Back,20.00%,R2026004,Farmers Insurance Open,2026,20.0
+32839,Hideki Matsuyama,34,160,Bounce Back,20.00%,R2026004,Farmers Insurance Open,2026,20.0
+50286,A.J. Ewart,37,160,Bounce Back,18.18%,R2026004,Farmers Insurance Open,2026,18.18
+52686,Rasmus Højgaard,37,160,Bounce Back,18.18%,R2026004,Farmers Insurance Open,2026,18.18
+49228,Keita Nakajima,37,160,Bounce Back,18.18%,R2026004,Farmers Insurance Open,2026,18.18
+34099,Harris English,40,160,Bounce Back,16.67%,R2026004,Farmers Insurance Open,2026,16.67
+51696,Rico Hoey,40,160,Bounce Back,16.67%,R2026004,Farmers Insurance Open,2026,16.67
+52453,Nicolai Højgaard,40,160,Bounce Back,16.67%,R2026004,Farmers Insurance Open,2026,16.67
+60019,Jackson Suber,40,160,Bounce Back,16.67%,R2026004,Farmers Insurance Open,2026,16.67
+49120,Kensei Hirata,44,160,Bounce Back,15.38%,R2026004,Farmers Insurance Open,2026,15.38
+34076,Joel Dahmen,45,160,Bounce Back,14.29%,R2026004,Farmers Insurance Open,2026,14.29
+51287,Ryo Hisatsune,45,160,Bounce Back,14.29%,R2026004,Farmers Insurance Open,2026,14.29
+51950,Max McGreevy,45,160,Bounce Back,14.29%,R2026004,Farmers Insurance Open,2026,14.29
+28723,John Parry,45,160,Bounce Back,14.29%,R2026004,Farmers Insurance Open,2026,14.29
+37275,Sam Ryder,45,160,Bounce Back,14.29%,R2026004,Farmers Insurance Open,2026,14.29
+35658,Kris Ventura,45,160,Bounce Back,14.29%,R2026004,Farmers Insurance Open,2026,14.29
+57366,Cameron Young,45,160,Bounce Back,14.29%,R2026004,Farmers Insurance Open,2026,14.29
+59836,Pierceson Coody,52,160,Bounce Back,12.50%,R2026004,Farmers Insurance Open,2026,12.5
+50188,S.H. Kim,52,160,Bounce Back,12.50%,R2026004,Farmers Insurance Open,2026,12.5
+51997,Andrew Novak,52,160,Bounce Back,12.50%,R2026004,Farmers Insurance Open,2026,12.5
+28252,Seamus Power,52,160,Bounce Back,12.50%,R2026004,Farmers Insurance Open,2026,12.5
+49855,Kristoffer Reitan,52,160,Bounce Back,12.50%,R2026004,Farmers Insurance Open,2026,12.5
+24502,Adam Scott,52,160,Bounce Back,12.50%,R2026004,Farmers Insurance Open,2026,12.5
+51634,Sahith Theegala,52,160,Bounce Back,12.50%,R2026004,Farmers Insurance Open,2026,12.5
+45522,Christiaan Bezuidenhout,59,160,Bounce Back,11.11%,R2026004,Farmers Insurance Open,2026,11.11
+49947,Taylor Moore,59,160,Bounce Back,11.11%,R2026004,Farmers Insurance Open,2026,11.11
+58168,Davis Thompson,59,160,Bounce Back,11.11%,R2026004,Farmers Insurance Open,2026,11.11
+37338,Zecheng Dou,62,160,Bounce Back,10.00%,R2026004,Farmers Insurance Open,2026,10.0
+29725,Tony Finau,62,160,Bounce Back,10.00%,R2026004,Farmers Insurance Open,2026,10.0
+36801,Mark Hubbard,62,160,Bounce Back,10.00%,R2026004,Farmers Insurance Open,2026,10.0
+57362,Austin Eckroat,65,160,Bounce Back,9.09%,R2026004,Farmers Insurance Open,2026,9.09
+48001,Zach Bauchou,66,160,Bounce Back,8.33%,R2026004,Farmers Insurance Open,2026,8.33
+55182,Tom Kim,66,160,Bounce Back,8.33%,R2026004,Farmers Insurance Open,2026,8.33
+35532,Tom Hoge,68,160,Bounce Back,7.14%,R2026004,Farmers Insurance Open,2026,7.14
+28089,Jason Day,69,160,Bounce Back,.00%,R2026004,Farmers Insurance Open,2026,0.0
+59018,Ryan Gerard,69,160,Bounce Back,.00%,R2026004,Farmers Insurance Open,2026,0.0
+47993,Denny McCarthy,69,160,Bounce Back,.00%,R2026004,Farmers Insurance Open,2026,0.0
+59141,Matt McCarty,69,160,Bounce Back,.00%,R2026004,Farmers Insurance Open,2026,0.0
+47347,Adam Schenk,69,160,Bounce Back,.00%,R2026004,Farmers Insurance Open,2026,0.0
+55893,Sam Stevens,69,160,Bounce Back,.00%,R2026004,Farmers Insurance Open,2026,0.0
+46464,Jordan Smith,1,160,Bounce Back,80.00%,R2026002,The American Express,2026,80.0
+28252,Seamus Power,2,160,Bounce Back,75.00%,R2026002,The American Express,2026,75.0
+35450,Patrick Cantlay,3,160,Bounce Back,66.67%,R2026002,The American Express,2026,66.67
+59006,Davis Chatfield,4,160,Bounce Back,60.00%,R2026002,The American Express,2026,60.0
+29420,Billy Horschel,4,160,Bounce Back,60.00%,R2026002,The American Express,2026,60.0
+48001,Zach Bauchou,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+45522,Christiaan Bezuidenhout,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+60004,Jacob Bridgeman,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+51766,Wyndham Clark,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+34099,Harris English,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+65256,David Ford,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+37455,Si Woo Kim,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+36326,David Lipsky,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+47993,Denny McCarthy,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+47995,Davis Riley,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+46340,Alex Smalley,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+50095,Austin Smotherman,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+55893,Sam Stevens,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+54304,Karl Vilips,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+47483,Will Zalatoris,6,160,Bounce Back,50.00%,R2026002,The American Express,2026,50.0
+59018,Ryan Gerard,21,160,Bounce Back,40.00%,R2026002,The American Express,2026,40.0
+59141,Matt McCarty,21,160,Bounce Back,40.00%,R2026002,The American Express,2026,40.0
+49771,J.T. Poston,21,160,Bounce Back,40.00%,R2026002,The American Express,2026,40.0
+52513,Carson Young,21,160,Bounce Back,40.00%,R2026002,The American Express,2026,40.0
+32070,Rafael Campos,25,160,Bounce Back,37.50%,R2026002,The American Express,2026,37.5
+59440,Ricky Castillo,25,160,Bounce Back,37.50%,R2026002,The American Express,2026,37.5
+40098,Matt Fitzpatrick,25,160,Bounce Back,37.50%,R2026002,The American Express,2026,37.5
+52215,Robert MacIntyre,25,160,Bounce Back,37.50%,R2026002,The American Express,2026,37.5
+57900,Chandler Phillips,25,160,Bounce Back,37.50%,R2026002,The American Express,2026,37.5
+40026,Daniel Berger,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+59836,Pierceson Coody,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+50497,Adrien Dumont de Chassart,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+32102,Rickie Fowler,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+35532,Tom Hoge,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+39977,Max Homa,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+55182,Tom Kim,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+23108,Matt Kuchar,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+34256,Andrew Putnam,30,160,Bounce Back,33.33%,R2026002,The American Express,2026,33.33
+61522,Michael Brennan,39,160,Bounce Back,30.00%,R2026002,The American Express,2026,30.0
+51977,Max Greyserman,40,160,Bounce Back,28.57%,R2026002,The American Express,2026,28.57
+24024,Zach Johnson,40,160,Bounce Back,28.57%,R2026002,The American Express,2026,28.57
+39546,Keith Mitchell,40,160,Bounce Back,28.57%,R2026002,The American Express,2026,28.57
+54783,Dylan Wu,40,160,Bounce Back,28.57%,R2026002,The American Express,2026,28.57
+34076,Joel Dahmen,44,160,Bounce Back,25.00%,R2026002,The American Express,2026,25.0
+34098,Russell Henley,44,160,Bounce Back,25.00%,R2026002,The American Express,2026,25.0
+63454,Johnny Keefer,44,160,Bounce Back,25.00%,R2026002,The American Express,2026,25.0
+51950,Max McGreevy,44,160,Bounce Back,25.00%,R2026002,The American Express,2026,25.0
+28723,John Parry,44,160,Bounce Back,25.00%,R2026002,The American Express,2026,25.0
+48153,Matthieu Pavon,44,160,Bounce Back,25.00%,R2026002,The American Express,2026,25.0
+47983,Chad Ramey,44,160,Bounce Back,25.00%,R2026002,The American Express,2026,25.0
+34371,Adrien Saddier,44,160,Bounce Back,25.00%,R2026002,The American Express,2026,25.0
+51287,Ryo Hisatsune,52,160,Bounce Back,20.00%,R2026002,The American Express,2026,20.0
+52686,Rasmus Højgaard,52,160,Bounce Back,20.00%,R2026002,The American Express,2026,20.0
+50188,S.H. Kim,52,160,Bounce Back,20.00%,R2026002,The American Express,2026,20.0
+37378,Min Woo Lee,52,160,Bounce Back,20.00%,R2026002,The American Express,2026,20.0
+36699,Patrick Rodgers,52,160,Bounce Back,20.00%,R2026002,The American Express,2026,20.0
+24502,Adam Scott,52,160,Bounce Back,20.00%,R2026002,The American Express,2026,20.0
+50286,A.J. Ewart,58,160,Bounce Back,16.67%,R2026002,The American Express,2026,16.67
+57975,Harry Hall,58,160,Bounce Back,16.67%,R2026002,The American Express,2026,16.67
+59143,Mac Meissner,58,160,Bounce Back,16.67%,R2026002,The American Express,2026,16.67
+37275,Sam Ryder,58,160,Bounce Back,16.67%,R2026002,The American Express,2026,16.67
+37338,Zecheng Dou,62,160,Bounce Back,15.38%,R2026002,The American Express,2026,15.38
+31323,Gary Woodland,63,160,Bounce Back,14.29%,R2026002,The American Express,2026,14.29
+66417,Blades Brown,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+47504,Sam Burns,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+47591,Eric Cole,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+28089,Jason Day,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+54591,Ben Griffin,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+35296,Haotong Li,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+49947,Taylor Moore,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+46046,Scottie Scheffler,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+25493,Nick Taylor,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+51634,Sahith Theegala,64,160,Bounce Back,.00%,R2026002,The American Express,2026,0.0
+52215,Robert MacIntyre,1,160,Bounce Back,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
+36699,Patrick Rodgers,1,160,Bounce Back,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
+60386,Sudarshan Yellamaraju,3,160,Bounce Back,45.45%,R2026006,Sony Open in Hawaii,2026,45.45
+40250,Taylor Pendrith,4,160,Bounce Back,42.86%,R2026006,Sony Open in Hawaii,2026,42.86
+59866,Nick Dunlap,5,160,Bounce Back,40.00%,R2026006,Sony Open in Hawaii,2026,40.0
+54628,Lee Hodges,5,160,Bounce Back,40.00%,R2026006,Sony Open in Hawaii,2026,40.0
+57900,Chandler Phillips,5,160,Bounce Back,40.00%,R2026006,Sony Open in Hawaii,2026,40.0
+59143,Mac Meissner,8,160,Bounce Back,38.46%,R2026006,Sony Open in Hawaii,2026,38.46
+36801,Mark Hubbard,9,160,Bounce Back,36.36%,R2026006,Sony Open in Hawaii,2026,36.36
+60067,Joe Highsmith,10,160,Bounce Back,35.71%,R2026006,Sony Open in Hawaii,2026,35.71
+40026,Daniel Berger,11,160,Bounce Back,33.33%,R2026006,Sony Open in Hawaii,2026,33.33
+60004,Jacob Bridgeman,11,160,Bounce Back,33.33%,R2026006,Sony Open in Hawaii,2026,33.33
+37455,Si Woo Kim,11,160,Bounce Back,33.33%,R2026006,Sony Open in Hawaii,2026,33.33
+35532,Tom Hoge,14,160,Bounce Back,30.00%,R2026006,Sony Open in Hawaii,2026,30.0
+24024,Zach Johnson,14,160,Bounce Back,30.00%,R2026006,Sony Open in Hawaii,2026,30.0
+34021,Bud Cauley,16,160,Bounce Back,27.27%,R2026006,Sony Open in Hawaii,2026,27.27
+47983,Chad Ramey,16,160,Bounce Back,27.27%,R2026006,Sony Open in Hawaii,2026,27.27
+48001,Zach Bauchou,18,160,Bounce Back,26.67%,R2026006,Sony Open in Hawaii,2026,26.67
+57259,Dan Brown,19,160,Bounce Back,25.00%,R2026006,Sony Open in Hawaii,2026,25.0
+65256,David Ford,19,160,Bounce Back,25.00%,R2026006,Sony Open in Hawaii,2026,25.0
+29535,Brice Garnett,19,160,Bounce Back,25.00%,R2026006,Sony Open in Hawaii,2026,25.0
+59141,Matt McCarty,19,160,Bounce Back,25.00%,R2026006,Sony Open in Hawaii,2026,25.0
+54783,Dylan Wu,19,160,Bounce Back,25.00%,R2026006,Sony Open in Hawaii,2026,25.0
+29420,Billy Horschel,24,160,Bounce Back,23.08%,R2026006,Sony Open in Hawaii,2026,23.08
+39546,Keith Mitchell,24,160,Bounce Back,23.08%,R2026006,Sony Open in Hawaii,2026,23.08
+48153,Matthieu Pavon,24,160,Bounce Back,23.08%,R2026006,Sony Open in Hawaii,2026,23.08
+51634,Sahith Theegala,24,160,Bounce Back,23.08%,R2026006,Sony Open in Hawaii,2026,23.08
+59836,Pierceson Coody,28,160,Bounce Back,22.22%,R2026006,Sony Open in Hawaii,2026,22.22
+32757,Patton Kizzire,28,160,Bounce Back,22.22%,R2026006,Sony Open in Hawaii,2026,22.22
+32839,Hideki Matsuyama,28,160,Bounce Back,22.22%,R2026006,Sony Open in Hawaii,2026,22.22
+46414,Aaron Rai,28,160,Bounce Back,22.22%,R2026006,Sony Open in Hawaii,2026,22.22
+46464,Jordan Smith,28,160,Bounce Back,22.22%,R2026006,Sony Open in Hawaii,2026,22.22
+25493,Nick Taylor,28,160,Bounce Back,22.22%,R2026006,Sony Open in Hawaii,2026,22.22
+40058,Zac Blair,34,160,Bounce Back,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
+39997,Corey Conners,34,160,Bounce Back,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
+57975,Harry Hall,34,160,Bounce Back,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
+34098,Russell Henley,34,160,Bounce Back,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
+47420,Jake Knapp,34,160,Bounce Back,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
+46442,Maverick McNealy,34,160,Bounce Back,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
+47993,Denny McCarthy,40,160,Bounce Back,18.18%,R2026006,Sony Open in Hawaii,2026,18.18
+28252,Seamus Power,40,160,Bounce Back,18.18%,R2026006,Sony Open in Hawaii,2026,18.18
+47995,Davis Riley,40,160,Bounce Back,18.18%,R2026006,Sony Open in Hawaii,2026,18.18
+29221,Webb Simpson,40,160,Bounce Back,18.18%,R2026006,Sony Open in Hawaii,2026,18.18
+55893,Sam Stevens,40,160,Bounce Back,18.18%,R2026006,Sony Open in Hawaii,2026,18.18
+59018,Ryan Gerard,45,160,Bounce Back,16.67%,R2026006,Sony Open in Hawaii,2026,16.67
+52375,Doug Ghim,45,160,Bounce Back,16.67%,R2026006,Sony Open in Hawaii,2026,16.67
+56100,Ren Yonezawa,45,160,Bounce Back,16.67%,R2026006,Sony Open in Hawaii,2026,16.67
+37338,Zecheng Dou,48,160,Bounce Back,15.38%,R2026006,Sony Open in Hawaii,2026,15.38
+63454,Johnny Keefer,48,160,Bounce Back,15.38%,R2026006,Sony Open in Hawaii,2026,15.38
+35296,Haotong Li,48,160,Bounce Back,15.38%,R2026006,Sony Open in Hawaii,2026,15.38
+40115,Adam Svensson,48,160,Bounce Back,15.38%,R2026006,Sony Open in Hawaii,2026,15.38
+27644,Brian Harman,52,160,Bounce Back,14.29%,R2026006,Sony Open in Hawaii,2026,14.29
+24502,Adam Scott,52,160,Bounce Back,14.29%,R2026006,Sony Open in Hawaii,2026,14.29
+39324,J.J. Spaun,52,160,Bounce Back,14.29%,R2026006,Sony Open in Hawaii,2026,14.29
+54591,Ben Griffin,55,160,Bounce Back,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+49120,Kensei Hirata,55,160,Bounce Back,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+47917,Takumi Kanaya,55,160,Bounce Back,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+48117,Kurt Kitayama,55,160,Bounce Back,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+28723,John Parry,55,160,Bounce Back,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+6567,Vijay Singh,55,160,Bounce Back,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+61148,Kota Kaneko,61,160,Bounce Back,11.76%,R2026006,Sony Open in Hawaii,2026,11.76
+59567,Emilio Gonzalez,62,160,Bounce Back,11.11%,R2026006,Sony Open in Hawaii,2026,11.11
+39975,Michael Kim,62,160,Bounce Back,11.11%,R2026006,Sony Open in Hawaii,2026,11.11
+55182,Tom Kim,64,160,Bounce Back,10.00%,R2026006,Sony Open in Hawaii,2026,10.0
+34046,Jordan Spieth,64,160,Bounce Back,10.00%,R2026006,Sony Open in Hawaii,2026,10.0
+59440,Ricky Castillo,66,160,Bounce Back,9.09%,R2026006,Sony Open in Hawaii,2026,9.09
+50497,Adrien Dumont de Chassart,66,160,Bounce Back,9.09%,R2026006,Sony Open in Hawaii,2026,9.09
+63121,William Mouw,66,160,Bounce Back,9.09%,R2026006,Sony Open in Hawaii,2026,9.09
+46340,Alex Smalley,69,160,Bounce Back,7.69%,R2026006,Sony Open in Hawaii,2026,7.69
+59095,Chris Gotterup,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
+51696,Rico Hoey,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
+50188,S.H. Kim,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
+39335,Kevin Roy,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
+51894,Vince Whaley,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0

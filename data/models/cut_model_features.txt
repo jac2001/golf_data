@@ -1,0 +1,12 @@
+season_sg_total
+season_sg_ott
+season_sg_app
+season_sg_putt
+season_sg_t2g
+hist_cut_rate
+hist_times_played
+hist_avg_finish
+recent_cuts_pct
+recent_top10s
+world_rank
+field_avg_rank

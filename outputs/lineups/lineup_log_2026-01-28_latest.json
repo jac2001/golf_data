@@ -1,0 +1,73 @@
+{
+  "tournament_name": "Latest",
+  "tournament_type": "standard",
+  "tournament_importance": 5,
+  "date": "2026-01-28",
+  "format": {
+    "name": "Season-Long Earnings League",
+    "roster_size": 3,
+    "salary_cap": null,
+    "uses_per_player": 3,
+    "season_tournaments": 30,
+    "scoring": "actual_earnings",
+    "scoring_description": "Players earn their actual PGA Tour prize money. Only players who make the cut earn money.",
+    "strategy_notes": [
+      "3 uses per player per season - CRITICAL constraint for elite players",
+      "Save elite players (Scheffler, etc.) for MAJORS and high-purse signature events",
+      "Expected Value (EV) = probability of finishing positions \u00d7 prize money at those positions",
+      "Higher purse tournaments = more valuable weeks to use top players",
+      "Missed cuts earn $0 - consider cut probability when picking lower-ranked players",
+      "With only 3 picks per week, focus on CEILING over floor",
+      "Course fit can make mid-tier players outperform their ranking"
+    ]
+  },
+  "strategy": "Save elite players unless they have exceptional course fit",
+  "constraints": {
+    "roster_size": 3,
+    "uses_per_player": 3
+  },
+  "lineup": [
+    {
+      "name": "Penge, Marco",
+      "tier": "tier2",
+      "ev": 264653.1841771716,
+      "win_prob": 0.0475935739937705,
+      "top10_prob": 0.315789076345233,
+      "world_rank": 30.0,
+      "uses_remaining": 3,
+      "usage_recommendation": "UNKNOWN"
+    },
+    {
+      "name": "Neergaard-Petersen, Rasmus",
+      "tier": "tier3",
+      "ev": 215397.78689131505,
+      "win_prob": 0.0357562181689204,
+      "top10_prob": 0.2540406927077885,
+      "world_rank": 53.0,
+      "uses_remaining": 3,
+      "usage_recommendation": "UNKNOWN"
+    },
+    {
+      "name": "Smalley, Alex",
+      "tier": "tier4",
+      "ev": 196307.03888209903,
+      "win_prob": 0.0234165888654314,
+      "top10_prob": 0.2448336240596155,
+      "world_rank": 123.0,
+      "uses_remaining": 3,
+      "usage_recommendation": "UNKNOWN"
+    }
+  ],
+  "reasoning": [
+    "Detected tier: STANDARD (importance: 5/10)",
+    "Strategy: Save elite players - use mid-tier value",
+    "Actual tier distribution: {'tier2': 1, 'tier3': 1, 'tier4': 1}",
+    "Total Expected Value: $676,358",
+    "Average Top-10 Probability: 27.2%"
+  ],
+  "strategic_notes": [
+    "Saving Spaun, J.J. (#7) for bigger events - EV $299,762",
+    "Saving Rose, Justin (#10) for bigger events - EV $241,217",
+    "Saving Schauffele, Xander (#6) for bigger events - EV $228,487"
+  ]
+}

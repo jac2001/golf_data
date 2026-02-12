@@ -1,0 +1,84 @@
+======================================================================
+  PREDICTION CALIBRATION REPORT: Farmers Insurance Open
+======================================================================
+
+Matched Players: 146
+Unmatched: 1
+
+CALIBRATION SUMMARY:
+----------------------------------------
+  Model needs calibration work: top5_prob: moderately calibrated (ECE=3.3%); top10_prob: poorly calibrated (ECE=7.7%)
+  → Reduce top5_prob estimates - model is systematically overconfident
+  → Reduce top10_prob estimates - model is systematically overconfident
+
+
+WIN PROB CALIBRATION:
+----------------------------------------
+  ECE (Expected Calibration Error): 1.20%
+
+  Bucket        | N   | Predicted | Actual | Error    | Status
+  ------------------------------------------------------------
+  0-1%         |  35 |     0.9% |   0.0% |   +0.9% | CALIBRATED
+  1-2%         |  85 |     1.3% |   0.0% |   +1.3% | CALIBRATED
+  2-5%         |  25 |     3.0% |   4.0% |   -1.0% | CALIBRATED
+  5-10%        |   1 |     5.8% |   0.0% |   +5.8% | OVERCONFIDENT
+
+TOP5 PROB CALIBRATION:
+----------------------------------------
+  ECE (Expected Calibration Error): 3.31%
+
+  Bucket        | N   | Predicted | Actual | Error    | Status
+  ------------------------------------------------------------
+  0-5%         |  50 |     4.1% |   0.0% |   +4.1% | OVERCONFIDENT
+  5-10%        |  69 |     6.9% |   7.2% |   -0.3% | CALIBRATED
+  10-20%       |  26 |    12.8% |   3.9% |   +9.0% | OVERCONFIDENT
+  20-30%       |   1 |    21.9% |   0.0% |  +21.9% | OVERCONFIDENT
+
+TOP10 PROB CALIBRATION:
+----------------------------------------
+  ECE (Expected Calibration Error): 7.74%
+
+  Bucket        | N   | Predicted | Actual | Error    | Status
+  ------------------------------------------------------------
+  0-5%         |   2 |     4.3% |   0.0% |   +4.3% | OVERCONFIDENT
+  5-10%        |  32 |     8.5% |   0.0% |   +8.5% | OVERCONFIDENT
+  10-20%       |  84 |    13.8% |   7.1% |   +6.6% | OVERCONFIDENT
+  20-30%       |  26 |    24.1% |  15.4% |   +8.7% | OVERCONFIDENT
+  30-50%       |   2 |    33.8% |   0.0% |  +33.8% | OVERCONFIDENT
+
+
+FEATURE IMPORTANCE:
+----------------------------------------
+  Most Predictive: predicted_top10_prob
+  Least Predictive: course_fit
+
+  Course Fit Score     | r=-0.106 | p=0.369 [✗]
+    → Not statistically significant - unreliable signal
+  World Ranking        | r=+0.338 | p=0.003 [✓]
+    → Strong predictor - world ranking reliably predicts performance
+  Expected Value       | r=-0.372 | p=0.001 [✓]
+    → Strong predictor - higher predicted_ev = better finish
+  Win Probability      | r=-0.261 | p=0.025 [✓]
+    → Moderate predictor - useful but not definitive
+  Top-10 Probability   | r=-0.373 | p=0.001 [✓]
+    → Strong predictor - higher predicted_top10_prob = better finish
+
+
+WINNER ANALYSIS:
+----------------------------------------
+  Winner: Rose, Justin
+  Predicted Win Prob: 4.55%
+  Win Prob Rank: #3
+  Was in Top 10 Predicted: Yes ✓
+
+  TOP 5 PICKS:
+    Top 10s: 1/5
+    Made Cuts: 2/5
+    Avg Finish (made cut): 11.5
+
+  TOP 10 PICKS:
+    Top 10s: 1/10
+    Made Cuts: 6/10
+    Avg Finish (made cut): 31.3
+
+======================================================================

@@ -1,0 +1,352 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "AT&T Pebble Beach Pro-Am\t",
+      "tableTitle": "Power Rankings for AT&T Pebble Beach Pro-Am",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "59018",
+            "firstName": "Ryan",
+            "lastName": "Gerard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Tops among 2026 non-winners at No. 3 in the FedExCup with a pair of runner-up finishes and a T11. Those chased a playoff loss in Mauritius that ended 2025. So, form is tip-top, but this is his first appearance at Pebble Beach."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "59836",
+            "firstName": "Pierceson",
+            "lastName": "Coody",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59836.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The latest Exhibit A of the possibilities. The only 2025 Korn Ferry Tour graduate in the field qualified via the first class of the 2026 Aon Swing 5, "
+                },
+                {
+                  "value": "for which he ranked first"
+                },
+                {
+                  "value": " thanks to results of T13, T18, T2 and T10."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "57364",
+            "firstName": "Michael",
+            "lastName": "Thorbjornsen",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57364.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The product of nearby Stanford is making his debut, but he did make the cut at Pebble Beach as an amateur at the 2019 U.S. Open. In terrific form with a T18 and a T3 in the last two weeks, but he\u2019s been percolating for months."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "46442",
+            "firstName": "Maverick",
+            "lastName": "McNealy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46442.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Given his lifelong connection to Pebble Beach, he probably should have a better record than he does. It boasts a T5 (2020) and a runner-up (2021), but he\u2019s been shut out of a top 30 since. T24, solo 10th and T13 in 2026 thus far."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "We haven\u2019t seen the Brit in the U.S. since his breakthrough victory at the TOUR Championship that netted the 2025 FedExCup title, but he\u2019s stayed sharp. Walked off the year with a Win-P2-T3 run. Fourth tournament appearance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With two wins in three starts this season, he\u2019s already fulfilled the elevated expectations with which he started 2026, so even the sky isn\u2019t the limit right now. Played in zero Signature Events last year. Pebble Beach debut."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "33204",
+            "firstName": "Shane",
+            "lastName": "Lowry",
+            "countryFlag": "IRL",
+            "countryName": "Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33204.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The only guy who beat him on the weekend here last year was the eventual champion and pal, Rory McIlroy. It was Lowry\u2019s first appearance in six years. He returns to begin his PGA TOUR season amid a strong run of form."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "34098",
+            "firstName": "Russell",
+            "lastName": "Henley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Not the first guy who rushes to mind when thinking about success on Poa annua greens, but he hung up a personal-best T5 in his sixth trip last year. Opened with a field-best 64 on Spyglass Hill. Ten straight top 20s upon arrival."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "35450",
+            "firstName": "Patrick",
+            "lastName": "Cantlay",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35450.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "In the stable of horses for the courses, he\u2019s 9-for-9 with two top fives among six top 25s, including a T21 at the 2019 U.S. Open. Opened 2026 with results aligning with his history at PGA WEST (T13) and at Torrey Pines (MC)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "28089",
+            "firstName": "Jason",
+            "lastName": "Day",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28089.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "If you\u2019ve ever wondered how hard it is to win, cite his record at Pebble Beach. When including a T21 at the 2019 U.S. Open, he\u2019s 16-for-16 with five top fives and another four top 10s among 14 top 25s. T2 recently at PGA WEST."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "46717",
+            "firstName": "Viktor",
+            "lastName": "Hovland",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46717.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Courses with small greens feed into the strengths of ball-strikers, so it\u2019s not a surprise that he\u2019s logged two top 25s in four starts. Now he\u2019s fresh off a personal-best T10 at TPC Scottsdale. Seven straight top 25s worldwide."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Refusing to rest, but why would he? And certainly not now. It\u2019s been nothing but leaderboard appearances for months. Eleven straight top 25s worldwide with a T11-T6-T2-T3 burst to open 2026. Top 15s in last two starts here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "28237",
+            "firstName": "Rory",
+            "lastName": "McIlroy",
+            "countryFlag": "NIR",
+            "countryName": "Northern Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28237.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After an historic 2025, the 36-year-old opens a personal series of four title defenses worldwide with renewed focus to tackle Scottie Scheffler. Hasn\u2019t eased off the throttle and got 2026 going with a T3 at the Dubai Invitational."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "22405",
+            "firstName": "Justin",
+            "lastName": "Rose",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_22405.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 45-year-old has Father Time pinned against the ropes. His 13th PGA TOUR title at Torrey Pines lifted him to No. 3 in the Official World Golf Ranking. Winner here in 2023. T3 both last year and at the 2019 U.S. Open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "You know that he\u2019s not keen on spotting the field shots like he did in the opener at the WM Phoenix Open en route to a T3, so there\u2019s that, but he\u2019s "
+                },
+                {
+                  "value": "the"
+                },
+                {
+                  "value": " target no matter what. Eighteen consecutive top 10s, seven of which were wins."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

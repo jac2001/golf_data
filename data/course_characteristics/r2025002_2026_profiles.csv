@@ -1,0 +1,4 @@
+tournament_id,tournament_name,course_id,course_name,course_par,course_yardage,is_host_course,total_scoring_avg,avg_hole_difficulty,total_eagles,total_birdies,total_pars,total_bogeys,total_double_bogeys,birdie_pct,bogey_pct,par3_count,par4_count,par5_count,hardest_holes,easiest_holes
+R2025002,R2025002,202,La Quinta Country Club,72,"7,060",False,68.59000000000002,-0.18944444444444342,37,771,1710,236,28,28.087431693989075,8.597449908925318,4,10,4,"[2, 14, 12]","[6, 5, 11]"
+R2025002,R2025002,233,Nicklaus Tournament Course,72,"7,147",False,68.24700000000001,-0.20849999999999902,20,848,1637,232,31,30.858806404657933,8.442503639010189,4,10,4,"[8, 3, 18]","[11, 4, 7]"
+R2025002,R2025002,704,Pete Dye Stadium Course,72,"7,210",True,71.35000000000001,-0.03611111111111054,14,860,2619,475,99,21.218850234394278,11.719713792252652,4,10,4,"[13, 18, 6]","[8, 2, 5]"

@@ -1,0 +1,21 @@
+{
+  "data": null,
+  "errors": [
+    {
+      "path": [
+        "getPowerRankingsTable"
+      ],
+      "data": null,
+      "errorType": "Error",
+      "errorInfo": null,
+      "locations": [
+        {
+          "line": 3,
+          "column": 3,
+          "sourceName": null
+        }
+      ],
+      "message": "Exception while fetching data (/powerRankingsTableByPath) : Path: '/content/dam/pga-tour/fragments/tours/pga-tour/news/power-rankings/2026/02/01/pr-folder/pr-table' did not yield a Content Fragment: {\"response\":{\"data\":null,\"errors\":[{\"message\":\"Exception while fetching data (/powerRankingsTableByPath) : Path: '/content/dam/pga-tour/fragments/tours/pga-tour/news/power-rankings/2026/02/01/pr-folder/pr-table' did not yield a Content Fragment\",\"locations\":[{\"line\":2,\"column\":3}],\"path\":[\"powerRankingsTableByPath\"],\"extensions\":{\"classification\":\"DataFetchingException\"}}],\"status\":200,\"headers\":{}},\"request\":{\"query\":\"query powerRankingsTable($path: String!) {\\n  powerRankingsTableByPath(_path: $path) {\\n    item {\\n      _path\\n      tableTitle\\n      ascendingOrder\\n      unorderedList\\n      tournament {\\n        tournamentName\\n      }\\n      rows {\\n        player\\n        comment {\\n          html\\n          json\\n        }\\n      }\\n    }\\n  }\\n}\",\"variables\":{\"path\":\"/content/dam/pga-tour/fragments/tours/pga-tour/news/power-rankings/2026/02/01/pr-folder/pr-table\"}}}"
+    }
+  ]
+}

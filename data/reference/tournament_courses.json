@@ -1,0 +1,258 @@
+{
+  "tournaments": {
+    "Waste Management Phoenix Open": {
+      "course": "TPC Scottsdale",
+      "course_full": "TPC Scottsdale (Stadium Course)",
+      "location": "Scottsdale, AZ",
+      "aliases": ["TPC Scottsdale (Stadium Course)", "Scottsdale", "Phoenix", "WM Phoenix", "WMPO", "TPC Scottsdale Stadium"],
+      "course_type": "desert",
+      "notes": "Par 71, rowdy 16th hole, birdie-fest"
+    },
+    "AT&T Pebble Beach Pro-Am": {
+      "course": "Pebble Beach Golf Links",
+      "course_full": "Pebble Beach Golf Links",
+      "location": "Pebble Beach, CA",
+      "aliases": ["Pebble Beach", "Pebble", "AT&T Pebble", "Spyglass Hill", "Monterey Peninsula"],
+      "course_type": "links-style coastal",
+      "notes": "Pro-Am format, 3-course rotation including Spyglass Hill"
+    },
+    "The Genesis Invitational": {
+      "course": "Riviera Country Club",
+      "course_full": "Riviera Country Club",
+      "location": "Pacific Palisades, CA",
+      "aliases": ["Riviera", "Genesis", "LA Open", "Pacific Palisades"],
+      "course_type": "parkland",
+      "notes": "Historic course, hosted by Tiger Woods foundation"
+    },
+    "Cognizant Classic": {
+      "course": "PGA National",
+      "course_full": "PGA National Resort (Champion Course)",
+      "location": "Palm Beach Gardens, FL",
+      "aliases": ["PGA National", "Champion Course", "Bear Trap", "Honda Classic"],
+      "course_type": "florida parkland",
+      "notes": "Features the Bear Trap (holes 15-17), formerly Honda Classic venue"
+    },
+    "Arnold Palmer Invitational": {
+      "course": "Bay Hill Club & Lodge",
+      "course_full": "Arnold Palmer's Bay Hill Club & Lodge",
+      "location": "Orlando, FL",
+      "aliases": ["Arnold Palmer's Bay Hill Club & Lodge", "Bay Hill", "Arnold Palmer", "API", "Arnie's Place"],
+      "course_type": "florida parkland",
+      "notes": "Arnie's tournament, water on 18, historically favors bombers"
+    },
+    "THE PLAYERS Championship": {
+      "course": "TPC Sawgrass",
+      "course_full": "TPC Sawgrass (Stadium Course)",
+      "location": "Ponte Vedra Beach, FL",
+      "aliases": ["Sawgrass", "TPC Sawgrass", "Players", "Island Green", "17th hole"],
+      "course_type": "stadium",
+      "notes": "Iconic island green 17th, considered 5th major"
+    },
+    "Valspar Championship": {
+      "course": "Innisbrook Resort (Copperhead)",
+      "course_full": "Innisbrook Resort (Copperhead Course)",
+      "location": "Palm Harbor, FL",
+      "aliases": ["Innisbrook Resort (Copperhead Course)", "Innisbrook", "Copperhead", "Copperhead Course", "Valspar"],
+      "course_type": "florida parkland",
+      "notes": "Snake Pit finish (16-18), tight tree-lined fairways"
+    },
+    "Texas Children's Houston Open": {
+      "course": "Memorial Park Golf Course",
+      "course_full": "Memorial Park Golf Course",
+      "location": "Houston, TX",
+      "aliases": ["Memorial Park", "Houston Open", "Houston"],
+      "course_type": "municipal parkland",
+      "notes": "Redesigned by Tom Doak, public course"
+    },
+    "Valero Texas Open": {
+      "course": "TPC San Antonio",
+      "course_full": "TPC San Antonio (Oaks Course)",
+      "location": "San Antonio, TX",
+      "aliases": ["TPC San Antonio (Oaks Course)", "TPC San Antonio", "San Antonio", "Texas Open", "Oaks Course"],
+      "course_type": "texas hill country",
+      "notes": "Final tune-up before Masters, Masters exemption to winner"
+    },
+    "The Masters": {
+      "course": "Augusta National Golf Club",
+      "course_full": "Augusta National Golf Club",
+      "location": "Augusta, GA",
+      "aliases": ["Augusta National Golf Club", "Augusta", "Augusta National", "Masters", "Amen Corner"],
+      "course_type": "parkland",
+      "notes": "First major, invitation only, Amen Corner (11-13)"
+    },
+    "RBC Heritage": {
+      "course": "Harbour Town Golf Links",
+      "course_full": "Harbour Town Golf Links",
+      "location": "Hilton Head Island, SC",
+      "aliases": ["Harbour Town", "Harbor Town", "Hilton Head", "Heritage", "Lighthouse"],
+      "course_type": "links-style",
+      "notes": "Week after Masters, iconic lighthouse, shotmaker's course"
+    },
+    "Zurich Classic of New Orleans": {
+      "course": "TPC Louisiana",
+      "course_full": "TPC Louisiana",
+      "location": "New Orleans, LA",
+      "aliases": ["TPC Louisiana", "New Orleans", "Zurich Classic", "NOLA"],
+      "course_type": "louisiana lowland",
+      "notes": "Team event (pairs), alternate shot and best ball formats"
+    },
+    "Cadillac Championship": {
+      "course": "Trump National Doral",
+      "course_full": "Trump National Doral (Blue Monster)",
+      "location": "Miami, FL",
+      "aliases": ["Doral", "Blue Monster", "Trump Doral", "Cadillac", "WGC Cadillac"],
+      "course_type": "florida resort",
+      "notes": "Blue Monster course, water hazards throughout"
+    },
+    "Truist Championship": {
+      "course": "Quail Hollow Club",
+      "course_full": "Quail Hollow Club",
+      "location": "Charlotte, NC",
+      "aliases": ["Quail Hollow", "Charlotte", "Truist", "Wells Fargo", "Green Mile"],
+      "course_type": "parkland",
+      "notes": "Green Mile finish (16-18), hosted 2017 PGA Championship"
+    },
+    "PGA Championship": {
+      "course": "Aronimink Golf Club",
+      "course_full": "Aronimink Golf Club",
+      "location": "Newtown Square, PA",
+      "aliases": ["Aronimink", "PGA", "PGA Championship 2026"],
+      "course_type": "classic parkland",
+      "notes": "2026 venue, Donald Ross design, Philadelphia area"
+    },
+    "The CJ Cup Byron Nelson": {
+      "course": "TPC Craig Ranch",
+      "course_full": "TPC Craig Ranch",
+      "location": "McKinney, TX",
+      "aliases": ["Craig Ranch", "TPC Craig Ranch", "Byron Nelson", "CJ Cup", "Nelson"],
+      "course_type": "texas modern",
+      "notes": "North of Dallas, relatively new TPC course"
+    },
+    "Charles Schwab Challenge": {
+      "course": "Colonial Country Club",
+      "course_full": "Colonial Country Club",
+      "location": "Fort Worth, TX",
+      "aliases": ["Colonial", "Hogan's Alley", "Fort Worth", "Schwab Challenge"],
+      "course_type": "classic parkland",
+      "notes": "Historic course, Hogan's Alley, precision required"
+    },
+    "The Memorial Tournament": {
+      "course": "Muirfield Village Golf Club",
+      "course_full": "Muirfield Village Golf Club",
+      "location": "Dublin, OH",
+      "aliases": ["Muirfield Village", "Memorial", "Jack's Place", "Dublin"],
+      "course_type": "parkland",
+      "notes": "Jack Nicklaus designed and hosts, US Open-like conditions"
+    },
+    "RBC Canadian Open": {
+      "course": "St. George's Golf and Country Club",
+      "course_full": "St. George's Golf and Country Club",
+      "location": "Toronto, Canada",
+      "aliases": ["St. George's", "Canadian Open", "Canada", "Toronto", "RBC Canadian"],
+      "course_type": "classic parkland",
+      "notes": "Rotates venues in Canada, 2026 venue TBC"
+    },
+    "U.S. Open": {
+      "course": "Shinnecock Hills Golf Club",
+      "course_full": "Shinnecock Hills Golf Club",
+      "location": "Southampton, NY",
+      "aliases": ["Shinnecock", "Shinnecock Hills", "US Open", "U.S. Open 2026"],
+      "course_type": "links-style",
+      "notes": "One of the toughest US Open venues, wind exposed"
+    },
+    "Travelers Championship": {
+      "course": "TPC River Highlands",
+      "course_full": "TPC River Highlands",
+      "location": "Cromwell, CT",
+      "aliases": ["River Highlands", "TPC River Highlands", "Travelers", "Hartford", "Cromwell"],
+      "course_type": "new england parkland",
+      "notes": "Birdie-fest, driveable par-4 15th"
+    },
+    "John Deere Classic": {
+      "course": "TPC Deere Run",
+      "course_full": "TPC Deere Run",
+      "location": "Silvis, IL",
+      "aliases": ["Deere Run", "TPC Deere Run", "John Deere", "Quad Cities"],
+      "course_type": "midwest parkland",
+      "notes": "Young player springboard, weaker field before Open"
+    },
+    "Genesis Scottish Open": {
+      "course": "The Renaissance Club",
+      "course_full": "The Renaissance Club",
+      "location": "North Berwick, Scotland",
+      "aliases": ["Renaissance", "Scottish Open", "North Berwick", "Scotland"],
+      "course_type": "links",
+      "notes": "Links prep before The Open, co-sanctioned with DP World Tour"
+    },
+    "The Open Championship": {
+      "course": "Royal Birkdale Golf Club",
+      "course_full": "Royal Birkdale Golf Club",
+      "location": "Southport, England",
+      "aliases": ["Birkdale", "Royal Birkdale", "The Open", "British Open", "Open Championship"],
+      "course_type": "links",
+      "notes": "2026 venue, classic Open rota course, dunes and wind"
+    },
+    "3M Open": {
+      "course": "TPC Twin Cities",
+      "course_full": "TPC Twin Cities",
+      "location": "Blaine, MN",
+      "aliases": ["Twin Cities", "TPC Twin Cities", "3M", "Minnesota", "Blaine"],
+      "course_type": "midwest parkland",
+      "notes": "Scoring course, soft conditions typically"
+    },
+    "Rocket Classic": {
+      "course": "Detroit Golf Club",
+      "course_full": "Detroit Golf Club",
+      "location": "Detroit, MI",
+      "aliases": ["Detroit Golf Club", "Detroit", "Rocket Mortgage", "Rocket"],
+      "course_type": "classic parkland",
+      "notes": "Historic Donald Ross design, shorter course"
+    },
+    "Wyndham Championship": {
+      "course": "Sedgefield Country Club",
+      "course_full": "Sedgefield Country Club",
+      "location": "Greensboro, NC",
+      "aliases": ["Sedgefield", "Wyndham", "Greensboro"],
+      "course_type": "classic parkland",
+      "notes": "Final regular season event, bubble players fighting for playoffs"
+    },
+    "FedEx St. Jude Invitational": {
+      "course": "TPC Southwind",
+      "course_full": "TPC Southwind",
+      "location": "Memphis, TN",
+      "aliases": ["Southwind", "TPC Southwind", "St. Jude", "Memphis", "FedEx Cup Playoffs"],
+      "course_type": "southern parkland",
+      "notes": "First playoff event, top 70 players"
+    },
+    "BMW Championship": {
+      "course": "Bellerive Country Club",
+      "course_full": "Bellerive Country Club",
+      "location": "St. Louis, MO",
+      "aliases": ["Bellerive", "BMW", "St. Louis"],
+      "course_type": "championship parkland",
+      "notes": "Second playoff event, top 50 advance, 2018 PGA Championship venue"
+    },
+    "TOUR Championship": {
+      "course": "East Lake Golf Club",
+      "course_full": "East Lake Golf Club",
+      "location": "Atlanta, GA",
+      "aliases": ["East Lake", "Tour Championship", "Atlanta", "FedEx Cup Final"],
+      "course_type": "classic parkland",
+      "notes": "Season finale, top 30 only, staggered scoring based on FedEx standings"
+    }
+  },
+  "course_type_descriptions": {
+    "links": "Wind-exposed, firm and fast, pot bunkers, minimal trees",
+    "links-style": "Links-inspired but not true links, coastal influence",
+    "parkland": "Tree-lined, lush conditions, traditional American style",
+    "desert": "Waste areas, firm conditions, target golf",
+    "stadium": "Built for spectators, island greens, risk-reward",
+    "florida parkland": "Water hazards, bermuda grass, humidity factor",
+    "classic parkland": "Historic design, strategic bunkering, shot shaping"
+  },
+  "metadata": {
+    "season": "2026",
+    "last_updated": "2026-02-04",
+    "notes": "Course assignments based on 2026 PGA Tour schedule. Some venues rotate annually (Canadian Open, certain majors)."
+  }
+}

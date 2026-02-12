@@ -1,0 +1,35 @@
+======================================================================
+  PREDICTION PERFORMANCE REPORT
+======================================================================
+
+Tournaments Analyzed: 1
+Total Predictions: 142
+
+ACCURACY METRICS:
+----------------------------------------
+
+  TOP5:
+    Brier Score: 0.0323
+    Avg Predicted: 7.8%
+    Avg Actual: 3.5%
+    Calibration Error: +4.3%
+
+  TOP10:
+    Brier Score: 0.079
+    Avg Predicted: 15.5%
+    Avg Actual: 8.5%
+    Calibration Error: +7.0%
+
+
+KNOWN BIASES:
+----------------------------------------
+  ⚠️  Model OVERESTIMATES top5 probability by 123%
+  ⚠️  Model OVERESTIMATES top10 probability by 83%
+
+
+COURSE FIT ANALYSIS:
+----------------------------------------
+  Correlation with finish: -0.101
+  Assessment: Course fit is predictive
+
+======================================================================

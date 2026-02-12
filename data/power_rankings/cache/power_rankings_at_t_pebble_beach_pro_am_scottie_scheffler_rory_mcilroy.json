@@ -1,0 +1,9 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "",
+      "tableTitle": "Power Rankings",
+      "powerRankingsTableRow": []
+    }
+  }
+}
