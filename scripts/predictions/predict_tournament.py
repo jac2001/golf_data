@@ -977,13 +977,12 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     # ADD FORM FEATURES (recent performance indicators)
     try:
         # Load latest available form stats
-        form_year = _latest_year_for("form_stats_")
-        form_stats = load_form_stats(form_year) if form_year else pd.DataFrame()
-        if form_stats.empty:
-            # Fall back to tournament stats if form stats not available
-            form_stats = stats_current.copy()
+        # NOTE: form_stats has scoring/birdie stats, tournament_stats has SG stats
+        # form_trend calculation needs SG data, so we use tournament_stats as primary
+        form_year = _latest_year_for("tournament_stats_")
+        form_stats = stats_current.copy()  # Use tournament_stats (has SG data for form_trend)
         if form_year:
-            print(f"  Using form_stats_{form_year}.csv for recent form")
+            print(f"  Using tournament_stats_{form_year}.csv for recent form (has SG data)")
 
         # Load latest available leaderboards
         lb_year = _latest_year_for("leaderboards_") or form_year
@@ -1151,7 +1150,60 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     except Exception as e:
         print(f"  DPWT SG stats not available: {e}")
 
-    # FALLBACK TO 2025 STATS FOR PLAYERS WITH NO 2026 DATA
+    # FALLBACK TO 2025 DPWT STATS (bigger pool than 2026)
+    # For players still missing SG data, try 2025 DPWT season stats
+    try:
+        dpwt_2025_path = HISTORICAL_DIR / "dpwt_stats_2025_strokes-gained-total.csv"
+        if dpwt_2025_path.exists():
+            dpwt_2025 = pd.read_csv(dpwt_2025_path)
+            dpwt_2025['name_lower'] = dpwt_2025['player_name'].str.lower().str.replace(' ', '')
+
+            dpwt_2025_filled = 0
+            for idx, row in features_df.iterrows():
+                # Skip if player already has good SG data
+                if pd.notna(row.get('sg_total')) and abs(row.get('sg_total', 0)) > 0.1:
+                    continue
+
+                # Try to match by name
+                player_name = str(row.get('player_name', '')).lower().replace(',', '').replace(' ', '')
+                if ',' in str(row.get('player_name', '')):
+                    parts = str(row.get('player_name', '')).split(',')
+                    player_name = (parts[1].strip() + parts[0].strip()).lower().replace(' ', '')
+
+                match = dpwt_2025[dpwt_2025['name_lower'].str.contains(player_name[:6], case=False, na=False)]
+                if len(match) > 0:
+                    features_df.at[idx, 'sg_total'] = match.iloc[0]['average']
+                    dpwt_2025_filled += 1
+
+            if dpwt_2025_filled > 0:
+                print(f"  ✓ Added 2025 DPWT SG:Total for {dpwt_2025_filled} players")
+
+            # Also load 2025 DPWT component stats
+            sg_components = {
+                'sg_ott': 'strokes-gained-off-the-tee',
+                'sg_app': 'strokes-gained-approach-the-green',
+                'sg_arg': 'strokes-gained-around-the-green',
+                'sg_putt': 'strokes-gained-putting',
+            }
+            for col, filename in sg_components.items():
+                comp_path = HISTORICAL_DIR / f"dpwt_stats_2025_{filename}.csv"
+                if comp_path.exists() and col in features_df.columns:
+                    comp_df = pd.read_csv(comp_path)
+                    comp_df['name_lower'] = comp_df['player_name'].str.lower().str.replace(' ', '')
+                    for idx, row in features_df.iterrows():
+                        if pd.notna(row.get(col)) and abs(row.get(col, 0)) > 0.1:
+                            continue
+                        player_name = str(row.get('player_name', '')).lower().replace(',', '').replace(' ', '')
+                        if ',' in str(row.get('player_name', '')):
+                            parts = str(row.get('player_name', '')).split(',')
+                            player_name = (parts[1].strip() + parts[0].strip()).lower().replace(' ', '')
+                        match = comp_df[comp_df['name_lower'].str.contains(player_name[:6], case=False, na=False)]
+                        if len(match) > 0:
+                            features_df.at[idx, col] = match.iloc[0]['average']
+    except Exception as e:
+        print(f"  2025 DPWT stats not available: {e}")
+
+    # FALLBACK TO 2025 PGA STATS FOR PLAYERS WITH NO 2026 DATA
     # Players who only missed cuts in 2026 have no SG stats - use their 2025 season stats
     try:
         stats_2025_path = HISTORICAL_DIR / "tournament_stats_2025.csv"
