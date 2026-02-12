@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-02-09T07:55:42.178179",
+  "last_updated": "2026-02-12T00:11:03.018610",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -57,6 +57,13 @@
         "Chris Gotterup",
         "Pierceson Coody"
       ],
+      "points_earned": null
+    },
+    "week_2": {
+      "tournament": "AT&T Pebble Beach Pro-Am",
+      "week": 2,
+      "date": "2026-02-12",
+      "lineup": [],
       "points_earned": null
     }
   },

@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-11 23:27
+Generated: 2026-02-12 08:25
 
 | Column | Description |
 |--------|-------------|
@@ -34,6 +34,7 @@ Generated: 2026-02-11 23:27
 | has_made_cut_here | 1/0 flag: has made a cut here |
 | venue_avg_finish | Venue average finish baseline (field-level) |
 | venue_finish_std | Venue finish standard deviation (volatility) |
+| wins_at_venue | No description available |
 | world_rank | Current world rank (lower is better) |
 | field_avg_rank | Average world rank of the field |
 | field_median_rank | Median world rank of the field |
