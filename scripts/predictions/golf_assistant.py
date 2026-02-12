@@ -2643,7 +2643,7 @@ Question: {question}
 
         lines = ["## Expert Picks Summary\n"]
 
-        # Regular expert picks (CBS Sports, etc.)
+        # Regular expert picks (legacy sources)
         if has_regular:
             df = self.expert_picks
             picks_df = df[~df['pick_type'].isin(['fade', ''])]
@@ -2651,7 +2651,7 @@ Question: {question}
 
             # Show picks
             if not picks_df.empty:
-                lines.append("### Expert Picks (CBS Sports, etc.)")
+                lines.append("### Expert Picks")
                 # Group by player and count consensus
                 pick_counts = picks_df.groupby('player_name').agg({
                     'source': lambda x: list(x),

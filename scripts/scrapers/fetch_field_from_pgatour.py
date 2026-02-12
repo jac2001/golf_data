@@ -476,6 +476,13 @@ def process_single_event(pga_id: str, tournament_name: str, output: Path, match_
     field_df.to_csv(output, index=False)
     print(f"Saved {len(field_df)} players to {output}")
 
+    # ALWAYS save a copy with tournament ID naming convention
+    # This ensures predict_tournament.py can find the correct field file
+    canonical_output = output.parent / f"field_{pga_id}.csv"
+    if canonical_output != output:
+        field_df.to_csv(canonical_output, index=False)
+        print(f"✓ Also saved canonical field file: {canonical_output.name}")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Fetch tournament field from PGA TOUR")
@@ -516,7 +523,8 @@ def main():
 
             print("\n" + "-" * 60)
             print(f"Event: {tournament_name} ({pga_id}) starting {start_date}")
-            outfile = out_dir / f"{slug}.csv"
+            # Use tournament ID as the canonical filename
+            outfile = out_dir / f"field_{pga_id}.csv"
 
             process_single_event(
                 pga_id,

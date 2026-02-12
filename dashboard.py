@@ -207,6 +207,43 @@ def format_bullets_as_list(bullets_str: str) -> list:
         return []
     return [b.strip() for b in str(bullets_str).split('|') if b.strip()]
 
+
+def clean_betting_profile_text(text: str) -> str:
+    """Remove disclaimer and boilerplate from betting profile text."""
+    import re
+
+    if not text or pd.isna(text):
+        return ""
+
+    cleaned = str(text)
+
+    # Remove the common disclaimer block that appears at end of summaries
+    # This captures: "All stats in this article... HaveAGamePlan.org."
+    disclaimer_block_pattern = r'All stats in this article are accurate for[^.]*\..*?HaveAGamePlan\.org\.?\s*'
+    cleaned = re.sub(disclaimer_block_pattern, '', cleaned, flags=re.IGNORECASE | re.DOTALL)
+
+    # Also handle partial disclaimer patterns that might appear alone
+    partial_disclaimers = [
+        r'Responsible sports betting starts with a game plan[^.]*\.',
+        r'Set a budget\. Keep it social\. Play with friends\.\s*',
+        r'Learn the game and know the odds\.\s*',
+        r'Play with trusted, licensed operators\.\s*',
+        r'CLICK HERE to learn more at HaveAGamePlan\.org\.?\s*',
+        r'Note: Using player performance data from ShotLink powered by CDW[^.]*\.',
+        r'[^.]*PGA TOUR has created this story using AWS Gen AI technology[^.]*\.',
+        r'While we strive for accuracy and quality[^.]*error-free[^.]*\.',
+    ]
+
+    for pattern in partial_disclaimers:
+        cleaned = re.sub(pattern, '', cleaned, flags=re.IGNORECASE)
+
+    # Clean up extra whitespace and newlines
+    cleaned = re.sub(r'\n\s*\n', '\n\n', cleaned)
+    cleaned = re.sub(r'\s+', ' ', cleaned)
+    cleaned = cleaned.strip()
+
+    return cleaned
+
 def parse_strokes_gained_from_bullets(bullets: list) -> dict:                                                         
     """Extract strokes gained stats from bullet points."""                                                            
     sg_stats = {                                                                                                      
@@ -417,10 +454,12 @@ sg_stats['sg_putt'] > 0 else "🔴" if sg_stats['sg_putt'] else "⚪",
             for b in ranking_bullets[:4]:                                                                             
                 st.markdown(f"- {b}")                                                                                 
                                                                                                                     
-    # === OVERVIEW (collapsible) ===                                                                                  
-    if profile.get('summary'):                                                                                        
-        with st.expander("📖 Full Overview"):                                                                         
-            st.markdown(profile.get('summary', ''))
+    # === OVERVIEW (collapsible) ===
+    if profile.get('summary'):
+        cleaned_summary = clean_betting_profile_text(profile.get('summary', ''))
+        if cleaned_summary:
+            with st.expander("📖 Full Overview"):
+                st.markdown(cleaned_summary)
 
 
 
@@ -1024,12 +1063,48 @@ elif page == "🎯 Scoring Engine":
             if pr_files:
                 latest_pr = pr_files[0]
                 df = pd.read_csv(latest_pr)
-                st.markdown(f"**📈 Power Rankings:** {latest_pr.stem.replace('_', ' ').title()}")
-                if 'rank' in df.columns and 'player' in df.columns:
-                    display_cols = ['rank', 'player'] + [c for c in df.columns if c not in ('rank', 'player')][:3]
-                    st.dataframe(df[display_cols].head(20), hide_index=True, use_container_width=True)
+
+                # Get tournament name if available
+                tournament_name = df['tournament_name'].iloc[0] if 'tournament_name' in df.columns else latest_pr.stem.replace('_', ' ').title()
+                st.markdown(f"**📈 Power Rankings:** {tournament_name.strip()}")
+
+                # Sort by rank
+                if 'rank' in df.columns:
+                    df = df.sort_values('rank')
+
+                # Check if we have analysis column for rich display
+                has_analysis = 'analysis' in df.columns
+                player_col = 'player_name' if 'player_name' in df.columns else 'player'
+
+                if has_analysis and player_col in df.columns:
+                    # Rich display with analysis
+                    st.markdown("---")
+
+                    # Show top 15 with analysis
+                    for _, row in df.head(15).iterrows():
+                        rank = row.get('rank', '?')
+                        player = row.get(player_col, 'Unknown')
+                        country = row.get('country_flag', row.get('country', ''))[:3] if row.get('country_flag') or row.get('country') else ''
+                        analysis = row.get('analysis', '')
+
+                        # Create a card-like display
+                        with st.container():
+                            col1, col2 = st.columns([1, 8])
+                            with col1:
+                                st.markdown(f"### #{rank}")
+                            with col2:
+                                st.markdown(f"**{player}** {country}")
+                                if analysis:
+                                    st.caption(analysis)
+                            st.markdown("---")
                 else:
-                    st.dataframe(df.head(20), hide_index=True, use_container_width=True)
+                    # Fallback to simple table
+                    if 'rank' in df.columns and player_col in df.columns:
+                        display_cols = ['rank', player_col] + [c for c in df.columns if c not in ('rank', player_col, 'analysis', 'scraped_at', 'source')][:3]
+                        display_cols = [c for c in display_cols if c in df.columns]
+                        st.dataframe(df[display_cols].head(20), hide_index=True, use_container_width=True)
+                    else:
+                        st.dataframe(df.head(20), hide_index=True, use_container_width=True)
             else:
                 st.warning("No power rankings files found")
         else:
@@ -1371,31 +1446,111 @@ elif page == "💰 Odds & Experts":
 
     # Expert Picks Section
     st.markdown("### 📰 Expert Picks")
-    st.caption("Picks from CBS Sports, PGA Tour, and other sources")
+    st.caption("Picks from PGA Tour experts")
 
-    col1, col2, col3 = st.columns(3)
-
+    col1, col2 = st.columns(2)
     with col1:
-        show_all_picks = st.button("📋 All Picks", use_container_width=True, type="primary")
+        show_expert_picks = st.button("📰 Show Expert Picks", use_container_width=True, type="primary")
     with col2:
-        show_consensus = st.button("⭐ Consensus", use_container_width=True)
-    with col3:
-        show_by_source = st.button("📰 By Source", use_container_width=True)
+        refresh_expert_picks = st.button("🔄 Refresh from PGA", use_container_width=True)
 
-    if show_all_picks:
-        with st.spinner("Loading expert picks..."):
-            output = run_script("planning/expert_picks_viewer.py")
+    if refresh_expert_picks:
+        with st.spinner("Fetching latest expert picks from PGA Tour..."):
+            output = run_script("scrapers/fetch_expert_picks_pga.py")
+        st.success("Expert picks refreshed!")
         st.code(output, language=None)
 
-    if show_consensus:
-        with st.spinner("Loading consensus picks..."):
-            output = run_script("planning/expert_picks_viewer.py", "--consensus")
-        st.code(output, language=None)
+    if show_expert_picks:
+        # Load expert picks data
+        expert_picks_dir = DATA_DIR / "expert_picks"
+        latest_file = expert_picks_dir / "expert_picks_latest.csv"
 
-    if show_by_source:
-        with st.spinner("Loading picks by source..."):
-            output = run_script("planning/expert_picks_viewer.py", "--by-source")
-        st.code(output, language=None)
+        if not latest_file.exists():
+            # Try to find any recent file
+            picks_files = sorted(expert_picks_dir.glob("expert_picks_*.csv"), key=lambda x: x.stat().st_mtime, reverse=True)
+            if picks_files:
+                latest_file = picks_files[0]
+
+        if latest_file.exists():
+            df = pd.read_csv(latest_file)
+
+            if not df.empty:
+                tournament = df['tournament_name'].iloc[0] if 'tournament_name' in df.columns else "Unknown"
+                st.markdown(f"**Tournament:** {tournament.strip()}")
+
+                # Count player mentions across all lineups
+                from collections import Counter
+                player_counts = Counter()
+                winner_counts = Counter()
+
+                for _, row in df.iterrows():
+                    try:
+                        lineup = json.loads(row.get('lineup_player_names', '[]'))
+                        for player in lineup:
+                            if player:
+                                player_counts[player] += 1
+                    except:
+                        pass
+                    winner = row.get('winner_name', '')
+                    if winner:
+                        winner_counts[winner] += 1
+
+                # Show consensus picks
+                st.markdown("#### ⭐ Consensus Picks")
+                consensus_cols = st.columns(2)
+
+                with consensus_cols[0]:
+                    st.markdown("**Most Selected (Lineup)**")
+                    for player, count in player_counts.most_common(6):
+                        pct = count / len(df) * 100
+                        st.markdown(f"- **{player}** — {count}/{len(df)} experts ({pct:.0f}%)")
+
+                with consensus_cols[1]:
+                    st.markdown("**Winner Picks**")
+                    for player, count in winner_counts.most_common(5):
+                        pct = count / len(df) * 100
+                        st.markdown(f"- **{player}** — {count}/{len(df)} experts ({pct:.0f}%)")
+
+                st.markdown("---")
+
+                # Show each expert's picks in cards
+                st.markdown("#### 👤 Expert Lineups")
+
+                for _, row in df.iterrows():
+                    expert_name = row.get('expert_name', 'Unknown')
+                    expert_title = row.get('expert_title', '')
+                    winner = row.get('winner_name', '')
+                    comment = row.get('comment', '')
+
+                    try:
+                        lineup = json.loads(row.get('lineup_player_names', '[]'))
+                        bench = json.loads(row.get('bench_player_names', '[]'))
+                    except:
+                        lineup = []
+                        bench = []
+
+                    with st.container():
+                        col1, col2 = st.columns([1, 3])
+                        with col1:
+                            st.markdown(f"**{expert_name}**")
+                            if expert_title:
+                                st.caption(expert_title)
+                        with col2:
+                            lineup_str = ", ".join(lineup) if lineup else "N/A"
+                            st.markdown(f"**Lineup:** {lineup_str}")
+                            if bench:
+                                st.caption(f"Bench: {', '.join(bench)}")
+                            if winner:
+                                st.markdown(f"🏆 **Winner Pick:** {winner}")
+
+                        if comment:
+                            with st.expander("💬 Analysis"):
+                                st.write(comment)
+                        st.markdown("---")
+            else:
+                st.warning("No expert picks data found")
+        else:
+            st.warning("No expert picks file found. Click 'Refresh from PGA' to fetch.")
 
 
 # ============================================================================

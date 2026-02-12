@@ -178,11 +178,25 @@ def load_reference_data():
     # Master data (for course history lookup and venue stats)
     master_df = pd.read_csv(PROCESSED_DIR / 'master_training_data_2020_2025.csv')
 
-    # Current year SG stats
-    stats_current = pd.read_csv(HISTORICAL_DIR / 'tournament_stats_2025.csv')
+    # Current year SG stats - dynamically find the latest year
+    current_year = datetime.now().year
+    stats_current_file = HISTORICAL_DIR / f'tournament_stats_{current_year}.csv'
+
+    if stats_current_file.exists():
+        stats_current = pd.read_csv(stats_current_file)
+        print(f"  Loaded current year stats ({current_year}): {len(stats_current)} rows")
+    else:
+        # Fallback to most recent available year
+        latest_year = _latest_year_for("tournament_stats_")
+        if latest_year:
+            stats_current = pd.read_csv(HISTORICAL_DIR / f'tournament_stats_{latest_year}.csv')
+            print(f"  Current year not found, using {latest_year} stats: {len(stats_current)} rows")
+        else:
+            stats_current = pd.DataFrame()
+            print(f"  Warning: No tournament stats found!")
 
     # Prior year SG stats (for early-season blending)
-    prior_year = datetime.now().year - 1
+    prior_year = current_year - 1
     prior_stats_file = HISTORICAL_DIR / f'tournament_stats_{prior_year}.csv'
     if prior_stats_file.exists():
         stats_prior = pd.read_csv(prior_stats_file)
@@ -709,13 +723,14 @@ def normalize_venue_name(tournament_name):
     Example:
         "The Masters" → "THE MASTERS"
         "American Express" → "THE AMERICAN EXPRESS"
-        "AT&T Pebble Beach Pro-Am" → "ATT PEBBLE BEACH PROAM"
+        "AT&T Pebble Beach Pro-Am" → "ATANDT PEBBLE BEACH PROAM"
 
     Note: Adds "THE" prefix for tournaments commonly known with it
     """
     import re
-    normalized = re.sub(r'[^\w\s]', '', tournament_name.upper()).strip()
-    normalized = normalized.replace("&", "AND").replace("'", "")
+    # Replace & with AND BEFORE removing special chars (so AT&T -> ATANDT)
+    normalized = tournament_name.upper().replace("&", "AND").replace("'", "")
+    normalized = re.sub(r'[^\w\s]', '', normalized).strip()
 
     # Add "THE" prefix for tournaments that have it in historical data
     # Check if venue needs "THE" prefix by looking in master data
@@ -738,12 +753,21 @@ def normalize_venue_name(tournament_name):
     alias_map = {
         "WM PHOENIX OPEN": "WASTE MANAGEMENT PHOENIX OPEN",
         "WASTE MANAGEMENT PHOENIX OPEN": "WASTE MANAGEMENT PHOENIX OPEN",
-        "ATT PEBBLE BEACH PRO AM": "ATT PEBBLE BEACH PROAM",
-        "AT T PEBBLE BEACH PRO AM": "ATT PEBBLE BEACH PROAM",
+        # Pebble Beach variations (all map to master data format)
+        "ATANDT PEBBLE BEACH PROAM": "ATANDT PEBBLE BEACH PROAM",
+        "ATANDT PEBBLE BEACH PRO AM": "ATANDT PEBBLE BEACH PROAM",
+        "ATT PEBBLE BEACH PROAM": "ATANDT PEBBLE BEACH PROAM",
+        "ATT PEBBLE BEACH PRO AM": "ATANDT PEBBLE BEACH PROAM",
+        "PEBBLE BEACH PROAM": "ATANDT PEBBLE BEACH PROAM",
+        # American Express
         "AMERICAN EXPRESS": "THE AMERICAN EXPRESS",
         "THE AMERICAN EXPRESS": "THE AMERICAN EXPRESS",
+        # RSM Classic
         "RSM CLASSIC": "THE RSM CLASSIC",
         "THE RSM CLASSIC": "THE RSM CLASSIC",
+        # Genesis
+        "GENESIS INVITATIONAL": "THE GENESIS INVITATIONAL",
+        "THE GENESIS INVITATIONAL": "THE GENESIS INVITATIONAL",
     }
     if normalized in alias_map:
         normalized = alias_map[normalized]
@@ -1079,10 +1103,9 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                     features_df.at[idx, 'recent_top5s'] = dpwt_player.get('dpwt_recent_top5s', 0)
                     features_df.at[idx, 'recent_cuts_pct'] = dpwt_player.get('dpwt_cuts_pct', 0.5)
 
-                    # Add estimated SG from DPWT as boost
-                    est_sg = dpwt_player.get('dpwt_estimated_sg_total', 0)
-                    if 'sg_total' in features_df.columns and (pd.isna(features_df.at[idx, 'sg_total']) or features_df.at[idx, 'sg_total'] == 0):
-                        features_df.at[idx, 'sg_total'] = est_sg
+                    # NOTE: Do NOT set sg_total from estimated_sg here
+                    # Actual DPWT SG stats are handled in the next section
+                    # This prevents estimated values from blocking actual stats
 
                     filled_count += 1
 
@@ -1150,8 +1173,61 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     except Exception as e:
         print(f"  DPWT SG stats not available: {e}")
 
-    # FALLBACK TO 2025 DPWT STATS (bigger pool than 2026)
-    # For players still missing SG data, try 2025 DPWT season stats
+    # FALLBACK 1: PGA 2025 STATS (primary fallback for players with no 2026 data)
+    # Players who only missed cuts in 2026 have no SG stats - use their 2025 PGA season stats
+    # This runs BEFORE DPWT fallback because PGA stats are preferred
+    try:
+        stats_2025_path = HISTORICAL_DIR / "tournament_stats_2025.csv"
+        if stats_2025_path.exists():
+            stats_2025 = pd.read_csv(stats_2025_path)
+            stats_2025_avg = stats_2025[stats_2025['stat_component'] == 'Avg'].copy()
+
+            # Pivot to get player season averages
+            if len(stats_2025_avg) > 0:
+                # Group by player and stat to get season average
+                season_avg = stats_2025_avg.groupby(['player_id', 'stat_id'])['stat_value'].mean().reset_index()
+
+                # Map stat IDs to column names
+                stat_id_map = {
+                    2567: 'sg_total',
+                    2568: 'sg_ott',
+                    2569: 'sg_app',
+                    2564: 'sg_putt',
+                    2674: 'sg_t2g'
+                }
+
+                fallback_count = 0
+                for idx, row in features_df.iterrows():
+                    pid = row['player_id']
+
+                    # Check if player has weak/missing SG data (same threshold as DPWT)
+                    has_weak_sg = (
+                        pd.isna(row.get('sg_total')) or
+                        abs(row.get('sg_total', 0)) < 0.1
+                    )
+
+                    if has_weak_sg:
+                        player_2025 = season_avg[season_avg['player_id'] == pid]
+                        if len(player_2025) > 0:
+                            filled_any = False
+                            for stat_id, col_name in stat_id_map.items():
+                                if col_name in features_df.columns:
+                                    stat_row = player_2025[player_2025['stat_id'] == stat_id]
+                                    if len(stat_row) > 0:
+                                        current_val = features_df.at[idx, col_name]
+                                        if pd.isna(current_val) or abs(current_val) < 0.1:
+                                            features_df.at[idx, col_name] = stat_row.iloc[0]['stat_value']
+                                            filled_any = True
+                            if filled_any:
+                                fallback_count += 1
+
+                if fallback_count > 0:
+                    print(f"  ✓ Used 2025 PGA stats for {fallback_count} players (primary fallback)")
+    except Exception as e:
+        print(f"  2025 PGA fallback stats not available: {e}")
+
+    # FALLBACK 2: DPWT 2025 STATS (secondary fallback - only if no PGA data available)
+    # For players still missing SG data after PGA fallback, try 2025 DPWT season stats
     try:
         dpwt_2025_path = HISTORICAL_DIR / "dpwt_stats_2025_strokes-gained-total.csv"
         if dpwt_2025_path.exists():
@@ -1160,7 +1236,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
 
             dpwt_2025_filled = 0
             for idx, row in features_df.iterrows():
-                # Skip if player already has good SG data
+                # Skip if player already has good SG data (from PGA 2026, PGA 2025, or DPWT 2026)
                 if pd.notna(row.get('sg_total')) and abs(row.get('sg_total', 0)) > 0.1:
                     continue
 
@@ -1176,7 +1252,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                     dpwt_2025_filled += 1
 
             if dpwt_2025_filled > 0:
-                print(f"  ✓ Added 2025 DPWT SG:Total for {dpwt_2025_filled} players")
+                print(f"  ✓ Added 2025 DPWT SG:Total for {dpwt_2025_filled} players (secondary fallback)")
 
             # Also load 2025 DPWT component stats
             sg_components = {
@@ -1203,57 +1279,76 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     except Exception as e:
         print(f"  2025 DPWT stats not available: {e}")
 
-    # FALLBACK TO 2025 PGA STATS FOR PLAYERS WITH NO 2026 DATA
-    # Players who only missed cuts in 2026 have no SG stats - use their 2025 season stats
+    # BLEND CURRENT SG WITH PGA 2025 BASELINE FOR ALL PLAYERS
+    # This gives a more complete picture by incorporating proven PGA Tour track record
+    # Especially important for dual-tour players (Rory, Fleetwood, etc.) whose
+    # current DPWT form should be weighted with their PGA Tour baseline
     try:
         stats_2025_path = HISTORICAL_DIR / "tournament_stats_2025.csv"
         if stats_2025_path.exists():
             stats_2025 = pd.read_csv(stats_2025_path)
             stats_2025_avg = stats_2025[stats_2025['stat_component'] == 'Avg'].copy()
 
-            # Pivot to get player season averages
             if len(stats_2025_avg) > 0:
-                # Group by player and stat to get season average
-                season_avg = stats_2025_avg.groupby(['player_id', 'stat_id'])['stat_value'].mean().reset_index()
+                # Get PGA 2025 season averages per player
+                pga_2025_avg = stats_2025_avg.groupby(['player_id', 'stat_id'])['stat_value'].mean().reset_index()
 
-                # Map stat IDs to column names
+                # Map stat IDs to both form columns (sg_*) and season columns (season_sg_*)
+                # The model uses season_sg_* for predictions, so we need to blend both
                 stat_id_map = {
-                    2567: 'sg_total',
-                    2568: 'sg_ott',
-                    2569: 'sg_app',
-                    2564: 'sg_putt',
-                    2674: 'sg_t2g'
+                    2567: ('sg_total', 'season_sg_total'),
+                    2568: ('sg_ott', 'season_sg_ott'),
+                    2569: ('sg_app', 'season_sg_app'),
+                    2564: ('sg_putt', 'season_sg_putt'),
+                    2674: ('sg_t2g', 'season_sg_t2g')
                 }
 
-                fallback_count = 0
+                # Blend weights: 65% current form, 35% PGA 2025 baseline
+                # This balances recent form with proven track record
+                current_weight = 0.65
+                baseline_weight = 0.35
+
+                blended_count = 0
                 for idx, row in features_df.iterrows():
                     pid = row['player_id']
+                    player_2025 = pga_2025_avg[pga_2025_avg['player_id'] == pid]
 
-                    # Check if player has weak/missing SG data
-                    has_weak_sg = (
-                        pd.isna(row.get('sg_total')) or
-                        abs(row.get('sg_total', 0)) < 0.01
-                    )
+                    if len(player_2025) == 0:
+                        continue  # No PGA 2025 data for this player
 
-                    if has_weak_sg:
-                        player_2025 = season_avg[season_avg['player_id'] == pid]
-                        if len(player_2025) > 0:
-                            filled_any = False
-                            for stat_id, col_name in stat_id_map.items():
-                                if col_name in features_df.columns:
-                                    stat_row = player_2025[player_2025['stat_id'] == stat_id]
-                                    if len(stat_row) > 0:
-                                        current_val = features_df.at[idx, col_name]
-                                        if pd.isna(current_val) or abs(current_val) < 0.01:
-                                            features_df.at[idx, col_name] = stat_row.iloc[0]['stat_value']
-                                            filled_any = True
-                            if filled_any:
-                                fallback_count += 1
+                    blended_any = False
+                    for stat_id, (form_col, season_col) in stat_id_map.items():
+                        stat_row = player_2025[player_2025['stat_id'] == stat_id]
+                        if len(stat_row) == 0:
+                            continue  # No 2025 data for this stat
 
-                if fallback_count > 0:
-                    print(f"  ✓ Used 2025 stats for {fallback_count} players (missed cuts in 2026)")
+                        baseline_val = stat_row.iloc[0]['stat_value']
+
+                        # Blend both form column (sg_*) and season column (season_sg_*)
+                        for col_name in [form_col, season_col]:
+                            if col_name not in features_df.columns:
+                                continue
+
+                            current_val = features_df.at[idx, col_name]
+
+                            # Only blend if we have valid current data
+                            if pd.notna(current_val) and abs(current_val) > 0.01:
+                                # Blend current form with PGA 2025 baseline
+                                blended_val = (current_val * current_weight) + (baseline_val * baseline_weight)
+                                features_df.at[idx, col_name] = blended_val
+                                blended_any = True
+                            elif pd.isna(current_val) or abs(current_val) < 0.01:
+                                # No current data - use PGA 2025 baseline directly
+                                features_df.at[idx, col_name] = baseline_val
+                                blended_any = True
+
+                    if blended_any:
+                        blended_count += 1
+
+                if blended_count > 0:
+                    print(f"  ✓ Blended SG with PGA 2025 baseline for {blended_count} players (65% current / 35% baseline)")
     except Exception as e:
-        print(f"  2025 fallback stats not available: {e}")
+        print(f"  PGA 2025 baseline blending not available: {e}")
 
     # ADD DATA GOLF COURSE FIT FEATURES
     # Uses season_sg_* (prior performance) × course importance weights
@@ -1629,6 +1724,28 @@ Examples:
     print(f"  TOURNAMENT PREDICTION: {args.tournament}")
     print("=" * 70)
 
+    # FIELD FILE VALIDATION: Ensure field file matches tournament ID
+    # This prevents using wrong field files (e.g., using Genesis field for Pebble Beach)
+    if args.tournament_id:
+        expected_field_file = DATA_DIR / "fields" / f"field_{args.tournament_id}.csv"
+        provided_field_path = Path(args.field)
+
+        # Check if the expected field file exists
+        if expected_field_file.exists():
+            # Check if user provided a different file
+            if provided_field_path.name != f"field_{args.tournament_id}.csv":
+                print(f"\n  ⚠️  FIELD FILE MISMATCH WARNING!")
+                print(f"      Provided:  {provided_field_path.name}")
+                print(f"      Expected:  field_{args.tournament_id}.csv")
+                print(f"      → Auto-switching to correct field file: {expected_field_file}")
+                args.field = str(expected_field_file)
+        else:
+            # Expected file doesn't exist - warn user but continue
+            if not provided_field_path.name.startswith(f"field_{args.tournament_id}"):
+                print(f"\n  ⚠️  WARNING: Field file may not match tournament ID {args.tournament_id}")
+                print(f"      Using: {provided_field_path.name}")
+                print(f"      Recommended naming: field_{args.tournament_id}.csv")
+
     print('\n  Loading models and reference data...')
     models = load_models()
     master_df, stats_current, stats_prior = load_reference_data()
@@ -1636,6 +1753,11 @@ Examples:
     print(f"\n  Loading field from {args.field}...")
     field_df = pd.read_csv(args.field)
     print(f"    ✓ Field size: {len(field_df)} players")
+
+    # Additional validation: Check field has expected columns
+    if 'player_id' not in field_df.columns:
+        raise ValueError(f"Field file missing required 'player_id' column: {args.field}")
+
     field_df = enrich_field_names(field_df, master_df, tournament_id=args.tournament_id)
 
     print("\n  Building feature matrix...")
