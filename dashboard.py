@@ -12,6 +12,7 @@ Usage:
 
 import streamlit as st
 import pandas as pd
+import numpy as np
 from pathlib import Path
 import sys
 import json
@@ -1441,6 +1442,147 @@ elif page == "💰 Odds & Experts":
         with st.spinner("Loading value picks..."):
             output = run_script("planning/odds_viewer.py", "--value")
         st.code(output, language=None)
+
+    st.markdown("---")
+
+    # Multi-Book Odds Section
+    st.markdown("### 📊 Multi-Book Odds Comparison")
+    st.caption("Compare odds across DraftKings, FanDuel, BetMGM, Caesars & more")
+
+    # Tabs for different input methods
+    odds_tab1, odds_tab2, odds_tab3 = st.tabs(["📊 View Odds", "📤 Upload from OddsChecker", "🔄 Fetch from API"])
+
+    with odds_tab1:
+        multi_odds_file = DATA_DIR / "odds" / "multi_book_odds_latest.csv"
+
+        if multi_odds_file.exists():
+            df = pd.read_csv(multi_odds_file)
+
+            if not df.empty:
+                source = df.get("source", pd.Series(["unknown"])).iloc[0] if "source" in df.columns else "unknown"
+                st.success(f"**{len(df)} players** from **{int(df['num_books'].max())} sportsbooks** (source: {source})")
+
+                # Consensus favorites
+                st.markdown("#### ⭐ Consensus Favorites")
+                fav_cols = ["rank", "player_name", "odds_consensus", "odds_best", "odds_worst", "implied_prob_consensus", "num_books"]
+                fav_cols = [c for c in fav_cols if c in df.columns]
+                st.dataframe(df[fav_cols].head(15), hide_index=True, use_container_width=True)
+
+                # Value opportunities (high odds spread)
+                if "value_spread_pct" in df.columns:
+                    value_df = df[df["value_spread_pct"] >= 10].sort_values("value_spread_pct", ascending=False)
+                    if not value_df.empty:
+                        st.markdown("#### ⚡ Line Shopping Value (>10% spread)")
+                        st.caption("Best odds vs worst odds - find where to place your bet!")
+                        value_cols = ["player_name", "odds_best", "odds_worst", "odds_spread", "value_spread_pct"]
+                        value_cols = [c for c in value_cols if c in value_df.columns]
+                        st.dataframe(value_df[value_cols].head(10), hide_index=True, use_container_width=True)
+
+                # Book comparison for top players
+                book_cols = [c for c in df.columns if c.startswith("odds_") and c not in ["odds_consensus", "odds_best", "odds_worst", "odds_spread"]]
+                if book_cols:
+                    st.markdown("#### 📈 Book-by-Book Comparison")
+                    compare_cols = ["player_name"] + book_cols[:6]
+                    compare_cols = [c for c in compare_cols if c in df.columns]
+                    st.dataframe(df[compare_cols].head(10), hide_index=True, use_container_width=True)
+        else:
+            st.info("No multi-book odds yet. Upload from OddsChecker or fetch from API.")
+
+    with odds_tab2:
+        st.markdown("#### Upload Odds from OddsChecker")
+        st.markdown("""
+        1. Go to [OddsChecker Golf](https://www.oddschecker.com/golf/pebble-beach/winner)
+        2. Copy odds for players you're interested in
+        3. Create a CSV with this format and upload below:
+        """)
+
+        st.code("""player_name,odds_draftkings,odds_fanduel,odds_betmgm,odds_caesars
+Scottie Scheffler,+300,+280,+300,+290
+Rory McIlroy,+1200,+1100,+1300,+1200
+Tommy Fleetwood,+2500,+2200,+2500,+2400""", language="csv")
+
+        uploaded_file = st.file_uploader("Upload CSV with multi-book odds", type="csv", key="odds_upload")
+
+        if uploaded_file is not None:
+            try:
+                import numpy as np
+                upload_df = pd.read_csv(uploaded_file)
+                st.success(f"Loaded {len(upload_df)} players")
+
+                # Process the uploaded data
+                odds_cols = [c for c in upload_df.columns if c.startswith("odds_")]
+
+                if odds_cols and "player_name" in upload_df.columns:
+                    processed_rows = []
+                    for _, row in upload_df.iterrows():
+                        odds_values = []
+                        for col in odds_cols:
+                            val = row.get(col)
+                            if pd.notna(val):
+                                try:
+                                    odds_num = int(str(val).replace("+", "").replace("-", ""))
+                                    odds_values.append(odds_num)
+                                except:
+                                    pass
+
+                        if odds_values:
+                            processed_rows.append({
+                                "player_name": row["player_name"],
+                                "odds_consensus": int(np.mean(odds_values)),
+                                "odds_best": max(odds_values),
+                                "odds_worst": min(odds_values),
+                                "odds_spread": max(odds_values) - min(odds_values),
+                                "num_books": len(odds_values),
+                                "implied_prob_consensus": 100 / (int(np.mean(odds_values)) + 100),
+                                "value_spread_pct": (max(odds_values) - min(odds_values)) / np.mean(odds_values) * 100,
+                                "source": "oddschecker_upload",
+                            })
+
+                    if processed_rows:
+                        result_df = pd.DataFrame(processed_rows)
+                        result_df = result_df.sort_values("implied_prob_consensus", ascending=False)
+                        result_df["rank"] = range(1, len(result_df) + 1)
+
+                        # Show processed data
+                        st.markdown("#### Processed Odds")
+                        st.dataframe(result_df[["rank", "player_name", "odds_consensus", "odds_best", "odds_worst", "value_spread_pct"]],
+                                   hide_index=True, use_container_width=True)
+
+                        # Save button
+                        if st.button("💾 Save as Multi-Book Odds", type="primary"):
+                            save_path = DATA_DIR / "odds" / "multi_book_odds_latest.csv"
+                            result_df.to_csv(save_path, index=False)
+                            st.success(f"Saved to {save_path.name}!")
+                            st.rerun()
+                else:
+                    st.warning("CSV must have 'player_name' column and odds columns like 'odds_draftkings'")
+            except Exception as e:
+                st.error(f"Error processing file: {e}")
+
+    with odds_tab3:
+        st.markdown("#### Fetch from The Odds API")
+        st.caption("Free tier: 500 requests/month - works for **Majors only** (Masters, PGA Championship, US Open, The Open)")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            sport_key = st.selectbox("Select Event", [
+                "golf_masters_tournament_winner",
+                "golf_pga_championship_winner",
+                "golf_us_open_winner",
+                "golf_the_open_championship_winner"
+            ], format_func=lambda x: x.replace("golf_", "").replace("_winner", "").replace("_", " ").title())
+
+        with col2:
+            if st.button("🔄 Fetch Odds", type="primary"):
+                with st.spinner("Fetching from The Odds API..."):
+                    output = run_script("scrapers/fetch_odds_api.py", "--sport-key", sport_key)
+                if "ERROR" in output:
+                    st.error("Failed to fetch odds")
+                    st.code(output, language=None)
+                else:
+                    st.success("Odds fetched successfully!")
+                    st.code(output, language=None)
+                    st.rerun()
 
     st.markdown("---")
 

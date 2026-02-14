@@ -386,3 +386,116 @@ def add_odds_to_predictions(predictions_df: pd.DataFrame,
     print_ensemble_rankings(ensemble_df)
 
     return ensemble_df
+
+
+# ============================================================================
+# Multi-Book Odds Integration
+# ============================================================================
+
+def load_multi_book_odds(tournament_id: str = None) -> pd.DataFrame:
+    """
+    Load multi-book odds data from The Odds API scraper output.
+
+    Returns DataFrame with consensus odds across multiple sportsbooks.
+    """
+    odds_dir = Path(__file__).parent.parent.parent / "data" / "odds"
+
+    # Try tournament-specific file first
+    if tournament_id:
+        multi_file = odds_dir / f"multi_book_odds_{tournament_id}.csv"
+        if multi_file.exists():
+            return pd.read_csv(multi_file)
+
+    # Fall back to latest
+    latest_file = odds_dir / "multi_book_odds_latest.csv"
+    if latest_file.exists():
+        return pd.read_csv(latest_file)
+
+    return pd.DataFrame()
+
+
+def add_multi_book_odds_to_predictions(predictions_df: pd.DataFrame,
+                                        tournament_id: str = None) -> pd.DataFrame:
+    """
+    Enhance predictions with multi-book odds data.
+
+    Adds:
+    - Consensus odds from multiple sportsbooks
+    - Best available odds
+    - Value spread (odds variance across books)
+    - Sharp vs recreational book comparison
+    """
+    multi_df = load_multi_book_odds(tournament_id)
+
+    if multi_df.empty:
+        print("  No multi-book odds available")
+        return predictions_df
+
+    # Normalize names for matching
+    def normalize_name(name):
+        if pd.isna(name):
+            return ""
+        return str(name).lower().strip().replace(".", "").replace("-", " ")
+
+    predictions_df = predictions_df.copy()
+    predictions_df["name_norm"] = predictions_df["player_name"].apply(normalize_name)
+    multi_df["name_norm"] = multi_df["player_name"].apply(normalize_name)
+
+    # Columns to merge
+    merge_cols = ["name_norm", "odds_consensus", "odds_best", "odds_worst",
+                  "implied_prob_consensus", "num_books", "odds_spread", "value_spread_pct"]
+    merge_cols = [c for c in merge_cols if c in multi_df.columns]
+
+    # Merge
+    merged = predictions_df.merge(
+        multi_df[merge_cols],
+        on="name_norm",
+        how="left",
+        suffixes=("", "_multi")
+    )
+
+    merged = merged.drop(columns=["name_norm"])
+
+    # Calculate multi-book edge (model vs multi-book consensus)
+    if "implied_prob_consensus" in merged.columns:
+        merged["multi_book_edge"] = merged["win_prob"] - merged["implied_prob_consensus"]
+        merged["is_multi_book_value"] = merged["multi_book_edge"] > 0.01
+
+    books_found = merged["num_books"].notna().sum()
+    print(f"  ✓ Added multi-book odds for {books_found} players")
+
+    return merged
+
+
+def find_best_odds_opportunities(predictions_df: pd.DataFrame,
+                                  min_edge: float = 0.01,
+                                  min_spread: float = 10.0) -> pd.DataFrame:
+    """
+    Find the best betting opportunities based on multi-book odds.
+
+    Returns players where:
+    1. Model gives positive edge vs consensus
+    2. Significant odds spread exists across books (value opportunity)
+
+    Args:
+        predictions_df: DataFrame with predictions and multi-book odds
+        min_edge: Minimum edge (model - market) to consider
+        min_spread: Minimum odds spread % to consider
+
+    Returns:
+        DataFrame of value opportunities sorted by edge
+    """
+    if "multi_book_edge" not in predictions_df.columns:
+        return pd.DataFrame()
+
+    # Filter for value opportunities
+    value_df = predictions_df[
+        (predictions_df["multi_book_edge"] >= min_edge) &
+        (predictions_df["value_spread_pct"] >= min_spread)
+    ].copy()
+
+    value_df = value_df.sort_values("multi_book_edge", ascending=False)
+
+    return value_df[["player_name", "win_prob", "implied_prob_consensus",
+                     "multi_book_edge", "odds_best", "odds_consensus",
+                     "value_spread_pct", "num_books"]]

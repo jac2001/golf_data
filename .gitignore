@@ -26,3 +26,4 @@ venv/
 # Nested repos
 FantasyGolf/
 golf_data/
+.odds_api_key
