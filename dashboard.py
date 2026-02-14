@@ -44,6 +44,7 @@ st.set_page_config(
 # Custom CSS for better styling
 st.markdown("""
 <style>
+    /* Headers */
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
@@ -55,6 +56,8 @@ st.markdown("""
         color: #666;
         margin-top: 0;
     }
+
+    /* Metrics */
     .stMetric {
         background-color: #f8f9fa;
         padding: 1rem;
@@ -65,20 +68,117 @@ st.markdown("""
         font-size: 1.8rem;
         font-weight: bold;
     }
-    /* Compact tabs for AI assistant */
+
+    /* Compact tabs */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
     }
     .stTabs [data-baseweb="tab"] {
         padding: 8px 16px;
     }
-    /* Chat message styling */
+
+    /* Chat styling */
     [data-testid="stChatMessage"] {
         padding: 0.75rem 1rem;
     }
-    /* Markdown tables in chat */
     [data-testid="stChatMessage"] table {
         font-size: 0.85rem;
+    }
+
+    /* Player cards */
+    .player-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        border-left: 4px solid #1e4d2b;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .player-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .player-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1e4d2b;
+        margin-bottom: 0.25rem;
+    }
+    .player-odds {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #2c5530;
+    }
+
+    /* Probability badges */
+    .prob-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    .prob-high {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .prob-mid {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    .prob-low {
+        background-color: #f8f9fa;
+        color: #6c757d;
+    }
+
+    /* Odds comparison table */
+    .odds-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .odds-table th {
+        background-color: #1e4d2b;
+        color: white;
+        padding: 0.75rem;
+        text-align: left;
+    }
+    .odds-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .odds-table tr:hover {
+        background-color: #f8f9fa;
+    }
+    .best-odds {
+        background-color: #d4edda !important;
+        font-weight: bold;
+    }
+    .odds-diff {
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    /* Quick action bar */
+    .action-bar {
+        background: linear-gradient(90deg, #1e4d2b 0%, #2c5530 100%);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    /* Status indicators */
+    .status-live {
+        color: #28a745;
+        font-weight: bold;
+    }
+    .status-updated {
+        color: #6c757d;
+        font-size: 0.85rem;
+    }
+
+    /* Favorite star */
+    .favorite-btn {
+        cursor: pointer;
+        font-size: 1.2rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -152,6 +252,499 @@ def load_schedule():
     if schedule_file.exists():
         return pd.read_csv(schedule_file)
     return pd.DataFrame()
+
+
+# ============================================================================
+# ODDS COMPARISON HELPERS
+# ============================================================================
+
+def load_odds_from_source(source: str) -> pd.DataFrame:
+    """Load odds data from a specific source."""
+    odds_dir = DATA_DIR / "odds"
+    if source == "polymarket":
+        files = list(odds_dir.glob("polymarket_*.csv"))
+    elif source == "kalshi":
+        files = list(odds_dir.glob("kalshi_*.csv"))
+    else:
+        files = [odds_dir / "multi_book_odds_latest.csv"]
+
+    if files:
+        # Get most recent file
+        latest = max(files, key=lambda f: f.stat().st_mtime)
+        return pd.read_csv(latest)
+    return pd.DataFrame()
+
+
+def merge_odds_sources() -> pd.DataFrame:
+    """Merge odds from Polymarket and Kalshi for comparison."""
+    poly_df = load_odds_from_source("polymarket")
+    kalshi_df = load_odds_from_source("kalshi")
+
+    if poly_df.empty and kalshi_df.empty:
+        return pd.DataFrame()
+
+    # Normalize player names for matching
+    def normalize_name(name):
+        return str(name).lower().strip().replace(".", "").replace("-", " ")
+
+    if not poly_df.empty:
+        poly_df["name_key"] = poly_df["player_name"].apply(normalize_name)
+        poly_df = poly_df.rename(columns={
+            "odds_polymarket": "polymarket_odds",
+            "win_prob": "polymarket_prob"
+        })
+
+    if not kalshi_df.empty:
+        kalshi_df["name_key"] = kalshi_df["player_name"].apply(normalize_name)
+        kalshi_df = kalshi_df.rename(columns={
+            "odds_kalshi": "kalshi_odds",
+            "win_prob": "kalshi_prob"
+        })
+
+    # Merge on normalized name
+    if not poly_df.empty and not kalshi_df.empty:
+        merged = pd.merge(
+            poly_df[["player_name", "name_key", "polymarket_odds", "polymarket_prob"]],
+            kalshi_df[["name_key", "kalshi_odds", "kalshi_prob"]],
+            on="name_key",
+            how="outer"
+        )
+    elif not poly_df.empty:
+        merged = poly_df[["player_name", "name_key", "polymarket_odds", "polymarket_prob"]].copy()
+        merged["kalshi_odds"] = None
+        merged["kalshi_prob"] = None
+    else:
+        merged = kalshi_df[["player_name", "name_key", "kalshi_odds", "kalshi_prob"]].copy()
+        merged["polymarket_odds"] = None
+        merged["polymarket_prob"] = None
+
+    # Fill missing player names from kalshi for rows that only exist in kalshi
+    if not kalshi_df.empty:
+        kalshi_name_map = kalshi_df.set_index("name_key")["player_name"].to_dict()
+        # Fill NaN player names using the kalshi mapping
+        merged["player_name"] = merged.apply(
+            lambda row: kalshi_name_map.get(row["name_key"], row["player_name"])
+            if pd.isna(row.get("player_name")) else row["player_name"],
+            axis=1
+        )
+
+    # Drop any rows still without a player name
+    merged = merged[merged["player_name"].notna()]
+
+    # Calculate best odds and consensus
+    merged["best_odds"] = merged[["polymarket_odds", "kalshi_odds"]].max(axis=1)
+    merged["avg_prob"] = merged[["polymarket_prob", "kalshi_prob"]].mean(axis=1)
+
+    # Calculate odds difference
+    merged["odds_diff"] = abs(
+        merged["polymarket_odds"].fillna(0) - merged["kalshi_odds"].fillna(0)
+    )
+
+    # Sort by average probability
+    merged = merged.sort_values("avg_prob", ascending=False).reset_index(drop=True)
+    merged["rank"] = range(1, len(merged) + 1)
+
+    return merged
+
+
+def prob_to_badge_class(prob: float) -> str:
+    """Get CSS class for probability badge."""
+    if prob >= 0.10:
+        return "prob-high"
+    elif prob >= 0.03:
+        return "prob-mid"
+    return "prob-low"
+
+
+def format_odds_display(odds: float, is_best: bool = False) -> str:
+    """Format odds for display with optional highlighting."""
+    if pd.isna(odds) or odds == 0:
+        return "—"
+    sign = "+" if odds > 0 else ""
+    if is_best:
+        return f"**{sign}{int(odds)}** ✓"
+    return f"{sign}{int(odds)}"
+
+
+def render_odds_comparison_table(df: pd.DataFrame, max_rows: int = 25):
+    """Render an interactive odds comparison table."""
+    if df.empty:
+        st.info("No odds data available. Fetch from Polymarket or Kalshi first.")
+        return
+
+    st.markdown(f"**{len(df)} players** with odds from prediction markets")
+
+    # Create display dataframe
+    display_data = []
+    for _, row in df.head(max_rows).iterrows():
+        poly_odds = row.get("polymarket_odds")
+        kalshi_odds = row.get("kalshi_odds")
+        best = row.get("best_odds")
+
+        # Determine which is best
+        poly_is_best = pd.notna(poly_odds) and poly_odds == best
+        kalshi_is_best = pd.notna(kalshi_odds) and kalshi_odds == best
+
+        display_data.append({
+            "Rank": int(row["rank"]),
+            "Player": row["player_name"],
+            "Polymarket": format_odds_display(poly_odds, poly_is_best),
+            "Kalshi": format_odds_display(kalshi_odds, kalshi_is_best),
+            "Best Odds": format_odds_display(best),
+            "Win %": f"{row['avg_prob']*100:.1f}%" if pd.notna(row.get('avg_prob')) else "—",
+            "Diff": str(int(row["odds_diff"])) if row["odds_diff"] > 50 else ""
+        })
+
+    display_df = pd.DataFrame(display_data)
+    st.dataframe(display_df, hide_index=True, use_container_width=True)
+
+
+def render_quick_action_bar():
+    """Render a quick action bar for refreshing data."""
+    st.markdown("#### ⚡ Quick Actions")
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        if st.button("🔮 Refresh Polymarket", use_container_width=True):
+            with st.spinner("Fetching Polymarket..."):
+                output = run_script("scrapers/fetch_polymarket.py")
+            if "Processed" in output:
+                st.success("Polymarket updated!")
+                st.rerun()
+            else:
+                st.error("Failed to fetch")
+
+    with col2:
+        if st.button("📈 Refresh Kalshi", use_container_width=True):
+            with st.spinner("Fetching Kalshi..."):
+                output = run_script("scrapers/fetch_kalshi.py")
+            if "Processed" in output:
+                st.success("Kalshi updated!")
+                st.rerun()
+            else:
+                st.error("Failed to fetch")
+
+    with col3:
+        if st.button("📰 Refresh Expert Picks", use_container_width=True):
+            with st.spinner("Fetching expert picks..."):
+                output = run_script("scrapers/fetch_expert_picks_pga.py")
+            if "Saved" in output:
+                st.success("Expert picks updated!")
+            else:
+                st.error("Failed to fetch")
+
+    with col4:
+        if st.button("🔄 Refresh All", use_container_width=True, type="primary"):
+            with st.spinner("Refreshing all data..."):
+                run_script("scrapers/fetch_polymarket.py")
+                run_script("scrapers/fetch_kalshi.py")
+                run_script("scrapers/fetch_expert_picks_pga.py")
+            st.success("All data refreshed!")
+            st.rerun()
+
+
+def render_player_odds_card(player_name: str, poly_odds: float, kalshi_odds: float,
+                            avg_prob: float, rank: int):
+    """Render a visual player card with odds."""
+    prob_class = prob_to_badge_class(avg_prob if pd.notna(avg_prob) else 0)
+
+    # Handle NaN values
+    poly_val = poly_odds if pd.notna(poly_odds) else 0
+    kalshi_val = kalshi_odds if pd.notna(kalshi_odds) else 0
+    best_odds = max(poly_val, kalshi_val)
+    best_display = f"+{int(best_odds)}" if best_odds > 0 else "—"
+    avg_prob_display = f"{avg_prob*100:.1f}%" if pd.notna(avg_prob) else "—"
+
+    st.markdown(f"""
+    <div class="player-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <span style="color: #6c757d; font-size: 0.9rem;">#{rank}</span>
+                <span class="player-name">{player_name}</span>
+            </div>
+            <div>
+                <span class="prob-badge {prob_class}">{avg_prob_display}</span>
+            </div>
+        </div>
+        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+            <div>
+                <span style="color: #6c757d; font-size: 0.8rem;">Polymarket</span><br>
+                <span class="player-odds">{format_odds_display(poly_odds)}</span>
+            </div>
+            <div>
+                <span style="color: #6c757d; font-size: 0.8rem;">Kalshi</span><br>
+                <span class="player-odds">{format_odds_display(kalshi_odds)}</span>
+            </div>
+            <div>
+                <span style="color: #6c757d; font-size: 0.8rem;">Best</span><br>
+                <span class="player-odds" style="color: #28a745;">{best_display}</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+
+
+
+def calculate_value_score(poly_odds: float, kalshi_odds: float) -> dict:
+    """Calculate value score based on odds difference between markets"""
+    poly_val = poly_odds if pd.notna(poly_odds) else 0
+    kalshi_val = kalshi_odds if pd.notna(kalshi_odds) else 0
+    
+    
+    if poly_val == 0 or kalshi_val == 0:
+        return {"score": 0, "better_market": None, "edge_pct": 0}
+    
+    diff = abs(poly_val - kalshi_val)
+    avg = (poly_val + kalshi_val) / 2
+    edge_pct = (diff / avg) * 100 if avg > 0 else 0
+    
+    if poly_val > kalshi_val:
+        better_market = "Polymarket"
+        better_odds = poly_val
+    else:
+        better_market = "Kalshi"
+        better_odds = kalshi_val
+        
+    score = min(100, edge_pct * 2)
+    
+    return {
+        "score": round(score, 1),
+        "better_market": better_market,
+        "edge_pct": round(edge_pct, 1),
+        "better_odds": better_odds,
+        'diff': diff
+    }
+    
+def render_value_finder(comparison_df: pd.DataFrame):                                                                    
+    """Render the value finder section."""                                                                               
+    if comparison_df.empty:                                                                                              
+        st.info("No odds data. Fetch from Polymarket and Kalshi first.")                                                 
+        return                                                                                                           
+                                                                                                                        
+    st.markdown("#### 💎 Value Finder")                                                                                  
+    st.caption("Players where one market offers significantly better odds")                                              
+                                                                                                                        
+    # Calculate value for each player                                                                                    
+    value_data = []                                                                                                      
+    for _, row in comparison_df.iterrows():                                                                              
+        value = calculate_value_score(                                                                                   
+            row.get("polymarket_odds"),                                                                                  
+            row.get("kalshi_odds")                                                                                       
+        )                                                                                                                
+        if value["score"] > 10:  # Only show meaningful differences                                                      
+            value_data.append({                                                                                          
+                "Player": row["player_name"],                                                                            
+                "Polymarket": f"+{int(row['polymarket_odds'])}" if pd.notna(row.get('polymarket_odds')) else "—",        
+                "Kalshi": f"+{int(row['kalshi_odds'])}" if pd.notna(row.get('kalshi_odds')) else "—",                    
+                "Best Market": value["better_market"],                                                                   
+                "Edge %": f"{value['edge_pct']}%",                                                                       
+                "Value Score": value["score"],                                                                           
+            })                                                                                                           
+                                                                                                                        
+    if not value_data:                                                                                                   
+        st.success("No significant value gaps found - markets are well aligned!")                                        
+        return                                                                                                           
+                                                                                                                        
+    value_df = pd.DataFrame(value_data)                                                                                  
+    value_df = value_df.sort_values("Value Score", ascending=False)                                                      
+                                                                                                                        
+    # Summary metrics                                                                                                    
+    col1, col2, col3 = st.columns(3)                                                                                     
+    with col1:                                                                                                           
+        st.metric("Value Opportunities", len(value_df))                                                                  
+    with col2:                                                                                                           
+        poly_better = len([v for v in value_data if v["Best Market"] == "Polymarket"])                                   
+        st.metric("Polymarket Better", poly_better)                                                                      
+    with col3:                                                                                                           
+        kalshi_better = len(value_df) - poly_better                                                                      
+        st.metric("Kalshi Better", kalshi_better)                                                                        
+                                                                                                                        
+    # Top value plays                                                                                                    
+    st.markdown("##### 🔥 Top Value Plays")                                                                              
+    for i, row in value_df.head(5).iterrows():                                                                           
+        better = row["Best Market"]                                                                                      
+        color = "#6f42c1" if better == "Polymarket" else "#fd7e14"                                                       
+        st.markdown(f"""                                                                                                 
+        <div style="background: linear-gradient(90deg, #f8f9fa 0%, #fff 100%);                                           
+                    padding: 0.75rem 1rem; border-radius: 8px; margin: 0.5rem 0;                                         
+                    border-left: 4px solid {color};">                                                                    
+            <div style="display: flex; justify-content: space-between; align-items: center;">                            
+                <div>                                                                                                    
+                    <strong>{row['Player']}</strong>                                                                     
+                    <span style="color: #6c757d; margin-left: 0.5rem;">                                                  
+                        Poly: {row['Polymarket']} | Kalshi: {row['Kalshi']}                                              
+                    </span>                                                                                              
+                </div>                                                                                                   
+                <div>                                                                                                    
+                    <span style="background: {color}; color: white; padding: 0.25rem 0.75rem;                            
+                                border-radius: 20px; font-size: 0.85rem;">                                              
+                        {better} +{row['Edge %']} edge                                                                   
+                    </span>                                                                                              
+                </div>                                                                                                   
+            </div>                                                                                                       
+        </div>                                                                                                           
+        """, unsafe_allow_html=True)                                                                                     
+                                                                                                                        
+    # Full table                                                                                                         
+    with st.expander("View All Value Opportunities"):                                                                    
+        st.dataframe(value_df, hide_index=True, use_container_width=True)
+
+
+
+
+
+
+def save_odds_snapshot():                                                                                                
+    """Save current odds as a timestamped snapshot."""                                                                   
+    snapshot_dir = DATA_DIR / "odds" / "snapshots"                                                                       
+    snapshot_dir.mkdir(parents=True, exist_ok=True)                                                                      
+                                                                                                                        
+    # Load current odds                                                                                                  
+    comparison_df = merge_odds_sources()                                                                                 
+    if comparison_df.empty:                                                                                              
+        return None                                                                                                      
+                                                                                                                        
+    # Save with timestamp                                                                                                
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M")                                                                   
+    snapshot_path = snapshot_dir / f"odds_{timestamp}.csv"                                                               
+    comparison_df.to_csv(snapshot_path, index=False)                                                                     
+                                                                                                                        
+    return snapshot_path  
+
+
+def load_odds_history(player_name: str, days: int = 7) -> pd.DataFrame:                                                  
+    """Load historical odds for a specific player."""                                                                    
+    snapshot_dir = DATA_DIR / "odds" / "snapshots"                                                                       
+    if not snapshot_dir.exists():                                                                                        
+        return pd.DataFrame()                                                                                            
+                                                                                                                        
+    # Get all snapshots                                                                                                  
+    snapshots = sorted(snapshot_dir.glob("odds_*.csv"))                                                                  
+                                                                                                                        
+    history = []                                                                                                         
+    for snap in snapshots[-50:]:  # Last 50 snapshots max                                                                
+        try:                                                                                                             
+            # Parse timestamp from filename                                                                              
+            ts_str = snap.stem.replace("odds_", "")                                                                      
+            ts = datetime.strptime(ts_str, "%Y%m%d_%H%M")                                                                
+                                                                                                                        
+            df = pd.read_csv(snap)                                                                                       
+            # Normalize name for matching                                                                                
+            df["name_lower"] = df["player_name"].str.lower().str.strip()                                                 
+            player_row = df[df["name_lower"] == player_name.lower().strip()]                                             
+                                                                                                                        
+            if not player_row.empty:                                                                                     
+                row = player_row.iloc[0]                                                                                 
+                history.append({                                                                                         
+                    "timestamp": ts,                                                                                     
+                    "polymarket_odds": row.get("polymarket_odds"),                                                       
+                    "kalshi_odds": row.get("kalshi_odds"),                                                               
+                    "avg_prob": row.get("avg_prob"),                                                                     
+                })                                                                                                       
+        except Exception:                                                                                                
+            continue                                                                                                     
+                                                                                                                        
+    return pd.DataFrame(history)                                                                                         
+                                                                                                                        
+                                                                                                                           
+def render_odds_history(comparison_df: pd.DataFrame):                                                                    
+    """Render odds history and line movement."""                                                                         
+    st.markdown("#### 📈 Odds History & Line Movement")                                                                  
+    st.caption("Track how odds change over time")                                                                        
+                                                                                                                        
+    # Save snapshot button                                                                                               
+    col1, col2 = st.columns([3, 1])                                                                                      
+    with col2:                                                                                                           
+        if st.button("📸 Save Snapshot", help="Save current odds for tracking"):                                         
+            path = save_odds_snapshot()                                                                                  
+            if path:                                                                                                     
+                st.success(f"Saved!")                                                                                    
+            else:                                                                                                        
+                st.error("No odds to save")                                                                              
+                                                                                                                        
+    # Player selector                                                                                                    
+    if comparison_df.empty:                                                                                              
+        st.info("No odds data available.")                                                                               
+        return                                                                                                           
+                                                                                                                        
+    players = comparison_df["player_name"].dropna().tolist()                                                             
+    selected_player = st.selectbox("Select player to track:", players[:30], key="history_player")                        
+                                                                                                                        
+    if selected_player:                                                                                                  
+        history_df = load_odds_history(selected_player)                                                                  
+                                                                                                                        
+        if history_df.empty:                                                                                             
+            st.info(f"No history for {selected_player}. Click 'Save Snapshot' to start tracking.")                       
+        else:                                                                                                            
+            # Current vs first recorded                                                                                  
+            current_poly = comparison_df[comparison_df["player_name"] == selected_player]["polymarket_odds"].iloc[0]     
+            current_kalshi = comparison_df[comparison_df["player_name"] == selected_player]["kalshi_odds"].iloc[0]       
+                                                                                                                        
+            first_poly = history_df.iloc[0]["polymarket_odds"] if pd.notna(history_df.iloc[0]["polymarket_odds"]) else None                                                                                                                     
+            first_kalshi = history_df.iloc[0]["kalshi_odds"] if pd.notna(history_df.iloc[0]["kalshi_odds"]) else None    
+                                                                                                                        
+            # Show movement                                                                                              
+            col1, col2, col3 = st.columns(3)                                                                             
+            with col1:                                                                                                   
+                if pd.notna(current_poly) and first_poly:                                                                
+                    delta = int(current_poly - first_poly)                                                               
+                    delta_str = f"{'+' if delta > 0 else ''}{delta}"                                                     
+                    st.metric("Polymarket", f"+{int(current_poly)}", delta_str)                                          
+                else:                                                                                                    
+                    st.metric("Polymarket", "—")                                                                         
+            with col2:                                                                                                   
+                if pd.notna(current_kalshi) and first_kalshi:                                                            
+                    delta = int(current_kalshi - first_kalshi)                                                           
+                    delta_str = f"{'+' if delta > 0 else ''}{delta}"                                                     
+                    st.metric("Kalshi", f"+{int(current_kalshi)}", delta_str)                                            
+                else:                                                                                                    
+                    st.metric("Kalshi", "—")                                                                             
+            with col3:                                                                                                   
+                st.metric("Snapshots", len(history_df))                                                                  
+                                                                                                                        
+            # Chart                                                                                                      
+            if len(history_df) > 1:                                                                                      
+                chart_data = history_df.melt(                                                                            
+                    id_vars=["timestamp"],                                                                               
+                    value_vars=["polymarket_odds", "kalshi_odds"],                                                       
+                    var_name="Source",                                                                                   
+                    value_name="Odds"                                                                                    
+                )                                                                                                        
+                chart_data["Source"] = chart_data["Source"].replace({                                                    
+                    "polymarket_odds": "Polymarket",                                                                     
+                    "kalshi_odds": "Kalshi"                                                                              
+                })                                                                                                       
+                chart_data = chart_data.dropna()                                                                         
+                                                                                                                        
+                if not chart_data.empty:                                                                                 
+                    fig = px.line(                                                                                       
+                        chart_data, x="timestamp", y="Odds", color="Source",                                             
+                        title=f"Odds Movement: {selected_player}",                                                       
+                        markers=True                                                                                     
+                    )                                                                                                    
+                    fig.update_layout(                                                                                   
+                        xaxis_title="Date",                                                                              
+                        yaxis_title="American Odds",                                                                     
+                        legend_title="Source",                                                                           
+                        height=300                                                                                       
+                    )                                                                                                    
+                    st.plotly_chart(fig, use_container_width=True)                                                       
+                                                                                                                        
+            # History table                                                                                              
+            with st.expander("View Raw History"):                                                                        
+                display_hist = history_df.copy()                                                                         
+                display_hist["timestamp"] = display_hist["timestamp"].dt.strftime("%m/%d %H:%M")                         
+                st.dataframe(display_hist, hide_index=True, use_container_width=True)                                    
+                            
+
+
+
+
+
+
+
 
 
 def get_prediction_files():
@@ -1446,13 +2039,85 @@ elif page == "💰 Odds & Experts":
     st.markdown("---")
 
     # Multi-Book Odds Section
-    st.markdown("### 📊 Multi-Book Odds Comparison")
-    st.caption("Compare odds across DraftKings, FanDuel, BetMGM, Caesars & more")
+    st.markdown("### 📊 Betting Odds & Prediction Markets")
+    st.caption("Live odds from Polymarket & Kalshi prediction markets")
 
-    # Tabs for different input methods
-    odds_tab1, odds_tab2, odds_tab3 = st.tabs(["📊 View Odds", "📤 Upload from OddsChecker", "🔄 Fetch from API"])
+    # Quick Action Bar
+    render_quick_action_bar()
+
+    st.markdown("---")
+
+    # Tabs for different views
+    odds_tab1, odds_tab2, odds_tab3, odds_tab4 = st.tabs([                                         
+          "🔄 Compare", "💎 Value Finder", "📊 View All", "📈 History"                 
+      ])  
 
     with odds_tab1:
+        st.markdown("#### 🔄 Polymarket vs Kalshi Comparison")
+        st.caption("Side-by-side odds comparison to find the best value")
+
+        # Load and merge odds
+        comparison_df = merge_odds_sources()
+
+        if not comparison_df.empty:
+            # Summary stats
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Total Players", len(comparison_df))
+            with col2:
+                both_sources = comparison_df[
+                    comparison_df["polymarket_odds"].notna() &
+                    comparison_df["kalshi_odds"].notna()
+                ]
+                st.metric("On Both", len(both_sources))
+            with col3:
+                big_diff = comparison_df[comparison_df["odds_diff"] > 100]
+                st.metric("Big Differences", len(big_diff), help="Odds differ by 100+")
+            with col4:
+                if not comparison_df.empty:
+                    top_player = str(comparison_df.iloc[0]["player_name"] or "Unknown")
+                    st.metric("Favorite", top_player[:15] if len(top_player) > 15 else top_player)
+
+            st.markdown("---")
+
+            # Filter options
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                show_diff_only = st.checkbox("Show only players with odds differences > 100", value=False)
+            with col2:
+                max_display = st.selectbox("Show top:", [10, 25, 50, 100], index=1)
+
+            # Apply filters
+            display_data = comparison_df.copy()
+            if show_diff_only:
+                display_data = display_data[display_data["odds_diff"] > 100]
+
+            # Render comparison table
+            render_odds_comparison_table(display_data, max_rows=max_display)
+
+            # Show players with biggest differences
+            if len(comparison_df[comparison_df["odds_diff"] > 200]) > 0:
+                st.markdown("---")
+                st.markdown("#### ⚠️ Biggest Odds Differences")
+                st.caption("These players have significantly different odds - potential value or mispricing")
+                diff_df = comparison_df[comparison_df["odds_diff"] > 200].head(5)
+                for _, row in diff_df.iterrows():
+                    render_player_odds_card(
+                        row["player_name"],
+                        row.get("polymarket_odds"),
+                        row.get("kalshi_odds"),
+                        row.get("avg_prob", 0),
+                        int(row["rank"])
+                    )
+        else:
+            st.info("No odds data available. Use the buttons above to fetch from Polymarket or Kalshi.")
+
+    with odds_tab2:
+        comparison_df = merge_odds_sources()
+        render_value_finder(comparison_df)
+
+    with odds_tab3:
+        st.markdown("#### 📊 All Available Odds")
         multi_odds_file = DATA_DIR / "odds" / "multi_book_odds_latest.csv"
 
         if multi_odds_file.exists():
@@ -1460,171 +2125,48 @@ elif page == "💰 Odds & Experts":
 
             if not df.empty:
                 source = df.get("source", pd.Series(["unknown"])).iloc[0] if "source" in df.columns else "unknown"
-                st.success(f"**{len(df)} players** from **{int(df['num_books'].max())} sportsbooks** (source: {source})")
+                mod_time = datetime.fromtimestamp(multi_odds_file.stat().st_mtime)
+                st.success(f"**{len(df)} players** from **{source}** • Updated: {mod_time.strftime('%b %d %H:%M')}")
 
-                # Consensus favorites
-                st.markdown("#### ⭐ Consensus Favorites")
-                fav_cols = ["rank", "player_name", "odds_consensus", "odds_best", "odds_worst", "implied_prob_consensus", "num_books"]
+                # Favorites with visual cards
+                st.markdown("#### ⭐ Top Favorites")
+
+                # Show top 3 as cards
+                col1, col2, col3 = st.columns(3)
+                for i, (col, (_, row)) in enumerate(zip([col1, col2, col3], df.head(3).iterrows())):
+                    with col:
+                        prob = row.get("win_prob", row.get("implied_prob_consensus", 0))
+                        odds = row.get("odds_polymarket", row.get("odds_kalshi", row.get("odds_consensus", 0)))
+                        render_player_odds_card(
+                            row["player_name"],
+                            odds if source == "polymarket" else None,
+                            odds if source == "kalshi" else None,
+                            prob,
+                            i + 1
+                        )
+
+                st.markdown("---")
+
+                # Full table
+                st.markdown("#### 📋 Full Field")
+                if source == "polymarket":
+                    fav_cols = ["rank", "player_name", "odds_polymarket", "win_prob", "volume"]
+                elif source == "kalshi":
+                    fav_cols = ["rank", "player_name", "odds_kalshi", "win_prob", "volume"]
+                else:
+                    fav_cols = ["rank", "player_name", "odds_consensus", "implied_prob_consensus", "num_books"]
                 fav_cols = [c for c in fav_cols if c in df.columns]
-                st.dataframe(df[fav_cols].head(15), hide_index=True, use_container_width=True)
-
-                # Value opportunities (high odds spread)
-                if "value_spread_pct" in df.columns:
-                    value_df = df[df["value_spread_pct"] >= 10].sort_values("value_spread_pct", ascending=False)
-                    if not value_df.empty:
-                        st.markdown("#### ⚡ Line Shopping Value (>10% spread)")
-                        st.caption("Best odds vs worst odds - find where to place your bet!")
-                        value_cols = ["player_name", "odds_best", "odds_worst", "odds_spread", "value_spread_pct"]
-                        value_cols = [c for c in value_cols if c in value_df.columns]
-                        st.dataframe(value_df[value_cols].head(10), hide_index=True, use_container_width=True)
-
-                # Book comparison for top players
-                book_cols = [c for c in df.columns if c.startswith("odds_") and c not in ["odds_consensus", "odds_best", "odds_worst", "odds_spread"]]
-                if book_cols:
-                    st.markdown("#### 📈 Book-by-Book Comparison")
-                    compare_cols = ["player_name"] + book_cols[:6]
-                    compare_cols = [c for c in compare_cols if c in df.columns]
-                    st.dataframe(df[compare_cols].head(10), hide_index=True, use_container_width=True)
+                display_df = df[fav_cols].head(30).copy()
+                if "win_prob" in display_df.columns:
+                    display_df["win_prob"] = (display_df["win_prob"] * 100).round(1).astype(str) + "%"
+                st.dataframe(display_df, hide_index=True, use_container_width=True)
         else:
-            st.info("No multi-book odds yet. Upload from OddsChecker or fetch from API.")
+            st.info("No odds data yet. Fetch from Polymarket or Kalshi using the tabs.")
 
-    with odds_tab2:
-        st.markdown("#### Quick Entry from OddsChecker")
-        st.markdown("Open [OddsChecker Golf](https://www.oddschecker.com/golf) and paste odds below:")
-
-        # Text area for quick paste
-        odds_text = st.text_area(
-            "Paste odds (Name,DK,FD,MGM,CZR - one per line):",
-            placeholder="Scottie Scheffler,+300,+280,+300,+290\nRory McIlroy,+1200,+1100,+1300,+1200\nTommy Fleetwood,+2500,+2200,+2500,+2400",
-            height=200,
-            key="odds_text_input"
-        )
-
-        if odds_text.strip() and st.button("💾 Process & Save Odds", type="primary"):
-            try:
-                lines = [l.strip() for l in odds_text.strip().split('\n') if l.strip()]
-                rows = []
-                for line in lines:
-                    parts = [p.strip() for p in line.split(',')]
-                    if len(parts) >= 2:
-                        name = parts[0]
-                        odds_vals = []
-                        for p in parts[1:]:
-                            try:
-                                odds_vals.append(int(p.replace('+', '').replace('-', '')))
-                            except:
-                                pass
-                        if odds_vals:
-                            rows.append({
-                                "player_name": name,
-                                "odds_consensus": int(np.mean(odds_vals)),
-                                "odds_best": max(odds_vals),
-                                "odds_worst": min(odds_vals),
-                                "odds_spread": max(odds_vals) - min(odds_vals),
-                                "num_books": len(odds_vals),
-                                "implied_prob_consensus": 100 / (int(np.mean(odds_vals)) + 100),
-                                "value_spread_pct": (max(odds_vals) - min(odds_vals)) / np.mean(odds_vals) * 100 if np.mean(odds_vals) > 0 else 0,
-                                "source": "oddschecker_paste",
-                            })
-
-                if rows:
-                    result_df = pd.DataFrame(rows)
-                    result_df = result_df.sort_values("implied_prob_consensus", ascending=False)
-                    result_df["rank"] = range(1, len(result_df) + 1)
-
-                    save_path = DATA_DIR / "odds" / "multi_book_odds_latest.csv"
-                    result_df.to_csv(save_path, index=False)
-                    st.success(f"Saved {len(rows)} players to {save_path.name}!")
-                    st.dataframe(result_df[["rank", "player_name", "odds_consensus", "odds_best", "odds_worst", "value_spread_pct"]].head(15),
-                               hide_index=True, use_container_width=True)
-            except Exception as e:
-                st.error(f"Error: {e}")
-
-        st.markdown("---")
-        st.markdown("**Or upload CSV file:**")
-        uploaded_file = st.file_uploader("Upload CSV with multi-book odds", type="csv", key="odds_upload")
-
-        if uploaded_file is not None:
-            try:
-                import numpy as np
-                upload_df = pd.read_csv(uploaded_file)
-                st.success(f"Loaded {len(upload_df)} players")
-
-                # Process the uploaded data
-                odds_cols = [c for c in upload_df.columns if c.startswith("odds_")]
-
-                if odds_cols and "player_name" in upload_df.columns:
-                    processed_rows = []
-                    for _, row in upload_df.iterrows():
-                        odds_values = []
-                        for col in odds_cols:
-                            val = row.get(col)
-                            if pd.notna(val):
-                                try:
-                                    odds_num = int(str(val).replace("+", "").replace("-", ""))
-                                    odds_values.append(odds_num)
-                                except:
-                                    pass
-
-                        if odds_values:
-                            processed_rows.append({
-                                "player_name": row["player_name"],
-                                "odds_consensus": int(np.mean(odds_values)),
-                                "odds_best": max(odds_values),
-                                "odds_worst": min(odds_values),
-                                "odds_spread": max(odds_values) - min(odds_values),
-                                "num_books": len(odds_values),
-                                "implied_prob_consensus": 100 / (int(np.mean(odds_values)) + 100),
-                                "value_spread_pct": (max(odds_values) - min(odds_values)) / np.mean(odds_values) * 100,
-                                "source": "oddschecker_upload",
-                            })
-
-                    if processed_rows:
-                        result_df = pd.DataFrame(processed_rows)
-                        result_df = result_df.sort_values("implied_prob_consensus", ascending=False)
-                        result_df["rank"] = range(1, len(result_df) + 1)
-
-                        # Show processed data
-                        st.markdown("#### Processed Odds")
-                        st.dataframe(result_df[["rank", "player_name", "odds_consensus", "odds_best", "odds_worst", "value_spread_pct"]],
-                                   hide_index=True, use_container_width=True)
-
-                        # Save button
-                        if st.button("💾 Save as Multi-Book Odds", type="primary"):
-                            save_path = DATA_DIR / "odds" / "multi_book_odds_latest.csv"
-                            result_df.to_csv(save_path, index=False)
-                            st.success(f"Saved to {save_path.name}!")
-                            st.rerun()
-                else:
-                    st.warning("CSV must have 'player_name' column and odds columns like 'odds_draftkings'")
-            except Exception as e:
-                st.error(f"Error processing file: {e}")
-
-    with odds_tab3:
-        st.markdown("#### Fetch from The Odds API")
-        st.caption("Free tier: 500 requests/month - works for **Majors only** (Masters, PGA Championship, US Open, The Open)")
-
-        col1, col2 = st.columns(2)
-        with col1:
-            sport_key = st.selectbox("Select Event", [
-                "golf_masters_tournament_winner",
-                "golf_pga_championship_winner",
-                "golf_us_open_winner",
-                "golf_the_open_championship_winner"
-            ], format_func=lambda x: x.replace("golf_", "").replace("_winner", "").replace("_", " ").title())
-
-        with col2:
-            if st.button("🔄 Fetch Odds", type="primary"):
-                with st.spinner("Fetching from The Odds API..."):
-                    output = run_script("scrapers/fetch_odds_api.py", "--sport-key", sport_key)
-                if "ERROR" in output:
-                    st.error("Failed to fetch odds")
-                    st.code(output, language=None)
-                else:
-                    st.success("Odds fetched successfully!")
-                    st.code(output, language=None)
-                    st.rerun()
-
+    with odds_tab4:
+        comparison_df = merge_odds_sources()
+        render_odds_history(comparison_df)
+    
     st.markdown("---")
 
     # Expert Picks Section
