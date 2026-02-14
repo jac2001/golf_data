@@ -1489,18 +1489,59 @@ elif page == "💰 Odds & Experts":
             st.info("No multi-book odds yet. Upload from OddsChecker or fetch from API.")
 
     with odds_tab2:
-        st.markdown("#### Upload Odds from OddsChecker")
-        st.markdown("""
-        1. Go to [OddsChecker Golf](https://www.oddschecker.com/golf/pebble-beach/winner)
-        2. Copy odds for players you're interested in
-        3. Create a CSV with this format and upload below:
-        """)
+        st.markdown("#### Quick Entry from OddsChecker")
+        st.markdown("Open [OddsChecker Golf](https://www.oddschecker.com/golf) and paste odds below:")
 
-        st.code("""player_name,odds_draftkings,odds_fanduel,odds_betmgm,odds_caesars
-Scottie Scheffler,+300,+280,+300,+290
-Rory McIlroy,+1200,+1100,+1300,+1200
-Tommy Fleetwood,+2500,+2200,+2500,+2400""", language="csv")
+        # Text area for quick paste
+        odds_text = st.text_area(
+            "Paste odds (Name,DK,FD,MGM,CZR - one per line):",
+            placeholder="Scottie Scheffler,+300,+280,+300,+290\nRory McIlroy,+1200,+1100,+1300,+1200\nTommy Fleetwood,+2500,+2200,+2500,+2400",
+            height=200,
+            key="odds_text_input"
+        )
 
+        if odds_text.strip() and st.button("💾 Process & Save Odds", type="primary"):
+            try:
+                lines = [l.strip() for l in odds_text.strip().split('\n') if l.strip()]
+                rows = []
+                for line in lines:
+                    parts = [p.strip() for p in line.split(',')]
+                    if len(parts) >= 2:
+                        name = parts[0]
+                        odds_vals = []
+                        for p in parts[1:]:
+                            try:
+                                odds_vals.append(int(p.replace('+', '').replace('-', '')))
+                            except:
+                                pass
+                        if odds_vals:
+                            rows.append({
+                                "player_name": name,
+                                "odds_consensus": int(np.mean(odds_vals)),
+                                "odds_best": max(odds_vals),
+                                "odds_worst": min(odds_vals),
+                                "odds_spread": max(odds_vals) - min(odds_vals),
+                                "num_books": len(odds_vals),
+                                "implied_prob_consensus": 100 / (int(np.mean(odds_vals)) + 100),
+                                "value_spread_pct": (max(odds_vals) - min(odds_vals)) / np.mean(odds_vals) * 100 if np.mean(odds_vals) > 0 else 0,
+                                "source": "oddschecker_paste",
+                            })
+
+                if rows:
+                    result_df = pd.DataFrame(rows)
+                    result_df = result_df.sort_values("implied_prob_consensus", ascending=False)
+                    result_df["rank"] = range(1, len(result_df) + 1)
+
+                    save_path = DATA_DIR / "odds" / "multi_book_odds_latest.csv"
+                    result_df.to_csv(save_path, index=False)
+                    st.success(f"Saved {len(rows)} players to {save_path.name}!")
+                    st.dataframe(result_df[["rank", "player_name", "odds_consensus", "odds_best", "odds_worst", "value_spread_pct"]].head(15),
+                               hide_index=True, use_container_width=True)
+            except Exception as e:
+                st.error(f"Error: {e}")
+
+        st.markdown("---")
+        st.markdown("**Or upload CSV file:**")
         uploaded_file = st.file_uploader("Upload CSV with multi-book odds", type="csv", key="odds_upload")
 
         if uploaded_file is not None:
