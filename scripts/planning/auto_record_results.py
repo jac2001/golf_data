@@ -211,10 +211,31 @@ def display_results(result: dict):
     print()         
     
     
-    
-    
-    
-    
+def trigger_recalibration():                                                                                          
+    """Trigger model recalibration after recording new results."""                                                    
+    import subprocess                                                                                                 
+                                                                                                                    
+    calibration_script = Path(__file__).parent / "calibration.py"                                                     
+    if calibration_script.exists():                                                                                   
+        print("\n🔄 Triggering model recalibration...")                                                               
+        try:                                                                                                          
+            result = subprocess.run(                                                                                  
+                ["python3", str(calibration_script), "--update"],                                                     
+                capture_output=True,                                                                                  
+                text=True,                                                                                            
+                timeout=60                                                                                            
+            )                                                                                                         
+            if result.returncode == 0:                                                                                
+                print("✓ Calibration factors updated")                                                                
+            else:                                                                                                     
+                print(f"⚠️ Calibration warning: {result.stderr[:200]}")                                               
+        except Exception as e:                                                                                        
+            print(f"⚠️ Could not run recalibration: {e}")                                                             
+    else:                                                                                                             
+        print("💡 Tip: Create calibration.py to auto-update calibration factors")                                     
+        
+
+
 def main():                                                                                                           
     parser = argparse.ArgumentParser(description="Auto-record tournament results")                                    
     parser.add_argument("--tournament", "-t", help="Filter to specific tournament")                                   
@@ -242,7 +263,10 @@ def main():
         dry_run=args.dry_run                                                                                          
     )                                                                                                                 
                                                                                                                     
-    display_results(result)                                                                                           
+    display_results(result)   
+    
+    if result.get("updates") and not args.dry_run:
+        trigger_recalibration()                                                                             
                                                                                                                     
                                                                                                                     
 if __name__ == "__main__":                                                                                            

@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-02-12T00:11:03.018610",
+  "last_updated": "2026-02-15T23:45:25.491941",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -45,6 +45,48 @@
       ],
       "remaining_uses": 2,
       "total_points": 70
+    },
+    "Maverick McNealy": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "AT&T Pebble Beach Pro-Am",
+          "week": 2,
+          "date": "2026-02-12",
+          "result": "T29",
+          "points": 39
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 39
+    },
+    "Jason Day": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "AT&T Pebble Beach Pro-Am",
+          "week": 2,
+          "date": "2026-02-12",
+          "result": "T24",
+          "points": 49
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 49
+    },
+    "Justin Rose": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "AT&T Pebble Beach Pro-Am",
+          "week": 2,
+          "date": "2026-02-12",
+          "result": "T37",
+          "points": 28
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 28
     }
   },
   "weekly_lineups": {
@@ -63,13 +105,17 @@
       "tournament": "AT&T Pebble Beach Pro-Am",
       "week": 2,
       "date": "2026-02-12",
-      "lineup": [],
+      "lineup": [
+        "Maverick McNealy",
+        "Jason Day",
+        "Justin Rose"
+      ],
       "points_earned": null
     }
   },
   "summary": {
-    "total_players_used": 3,
-    "total_picks_made": 3,
-    "total_points": 596
+    "total_players_used": 6,
+    "total_picks_made": 6,
+    "total_points": 712
   }
 }

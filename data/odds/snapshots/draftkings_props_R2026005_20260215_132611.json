@@ -1,0 +1,1345 @@
+[
+  {
+    "sports": [
+      {
+        "id": "3",
+        "seoIdentifier": "Football",
+        "name": "Football",
+        "sortOrder": 86
+      }
+    ],
+    "leagues": [
+      {
+        "id": "88808",
+        "name": "NFL",
+        "sportId": "3",
+        "sortOrder": 4847,
+        "tags": [
+          "Featured",
+          "FavoriteableFromPage"
+        ],
+        "isTeamSwap": true,
+        "featured": true
+      }
+    ],
+    "events": [
+      {
+        "id": "51e69972-5b84-419b-aa88-08de10dccbbe",
+        "seoIdentifier": "Super Bowl 2027",
+        "sportId": "3",
+        "leagueId": "88808",
+        "name": "Super Bowl 2027",
+        "startEventDate": "2026-09-13T17:00:00.0000000Z",
+        "participants": [
+          {
+            "id": "18397",
+            "name": "LA Rams",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18397",
+              "rosettaTeamName": "Rams",
+              "shortName": "LAR",
+              "teamColor": "#003594"
+            },
+            "seoIdentifier": "Rams",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18401",
+            "name": "MIA Dolphins",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18401",
+              "rosettaTeamName": "Dolphins",
+              "shortName": "MIA",
+              "teamColor": "#008e97"
+            },
+            "seoIdentifier": "Dolphins",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18415",
+            "name": "NE Patriots",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18415",
+              "rosettaTeamName": "Patriots",
+              "shortName": "NE",
+              "teamColor": "#C60C30"
+            },
+            "seoIdentifier": "Patriots",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18461",
+            "name": "LA Chargers",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18461",
+              "rosettaTeamName": "Chargers",
+              "shortName": "LAC",
+              "teamColor": "#0080c6"
+            },
+            "seoIdentifier": "Chargers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18423",
+            "name": "NO Saints",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18423",
+              "rosettaTeamName": "Saints",
+              "shortName": "NO",
+              "teamColor": "#d3bc8d"
+            },
+            "seoIdentifier": "Saints",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18409",
+            "name": "MIN Vikings",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18409",
+              "rosettaTeamName": "Vikings",
+              "shortName": "MIN",
+              "teamColor": "#4f2683"
+            },
+            "seoIdentifier": "Vikings",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18357",
+            "name": "GB Packers",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18357",
+              "rosettaTeamName": "Packers",
+              "shortName": "GB",
+              "teamColor": "#203731"
+            },
+            "seoIdentifier": "Packers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18379",
+            "name": "KC Chiefs",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18379",
+              "rosettaTeamName": "Chiefs",
+              "shortName": "KC",
+              "teamColor": "#e31837"
+            },
+            "seoIdentifier": "Chiefs",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18388",
+            "name": "LV Raiders",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18388",
+              "rosettaTeamName": "Raiders",
+              "shortName": "LV",
+              "teamColor": "#000000"
+            },
+            "seoIdentifier": "Raiders",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18366",
+            "name": "TEN Titans",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18366",
+              "rosettaTeamName": "Titans",
+              "shortName": "TEN",
+              "teamColor": "#0c2340"
+            },
+            "seoIdentifier": "Titans",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18342",
+            "name": "DEN Broncos",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18342",
+              "rosettaTeamName": "Broncos",
+              "shortName": "DEN",
+              "teamColor": "#fb4f14"
+            },
+            "seoIdentifier": "Broncos",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18456",
+            "name": "PIT Steelers",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18456",
+              "rosettaTeamName": "Steelers",
+              "shortName": "PIT",
+              "teamColor": "#ffb612"
+            },
+            "seoIdentifier": "Steelers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18495",
+            "name": "BAL Ravens",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18495",
+              "rosettaTeamName": "Ravens",
+              "shortName": "BAL",
+              "teamColor": "#241773"
+            },
+            "seoIdentifier": "Ravens",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18348",
+            "name": "DET Lions",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18348",
+              "rosettaTeamName": "Lions",
+              "shortName": "DET",
+              "teamColor": "#0076b6"
+            },
+            "seoIdentifier": "Lions",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18312",
+            "name": "CHI Bears",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18312",
+              "rosettaTeamName": "Bears",
+              "shortName": "CHI",
+              "teamColor": "#0b162a"
+            },
+            "seoIdentifier": "Bears",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18372",
+            "name": "IND Colts",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18372",
+              "rosettaTeamName": "Colts",
+              "shortName": "IND",
+              "teamColor": "#002c5f"
+            },
+            "seoIdentifier": "Colts",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18489",
+            "name": "JAX Jaguars",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18489",
+              "rosettaTeamName": "Jaguars",
+              "shortName": "JAX",
+              "teamColor": "#101820"
+            },
+            "seoIdentifier": "Jaguars",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18500",
+            "name": "HOU Texans",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18500",
+              "rosettaTeamName": "Texans",
+              "shortName": "HOU",
+              "teamColor": "#03202f"
+            },
+            "seoIdentifier": "Texans",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18297",
+            "name": "ATL Falcons",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18297",
+              "rosettaTeamName": "Falcons",
+              "shortName": "ATL",
+              "teamColor": "#a71930"
+            },
+            "seoIdentifier": "Falcons",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18465",
+            "name": "SF 49ers",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18465",
+              "rosettaTeamName": "49ers",
+              "shortName": "SF",
+              "teamColor": "#aa0000"
+            },
+            "seoIdentifier": "49ers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18302",
+            "name": "BUF Bills",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18302",
+              "rosettaTeamName": "Bills",
+              "shortName": "BUF",
+              "teamColor": "#00338d"
+            },
+            "seoIdentifier": "Bills",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18474",
+            "name": "TB Buccaneers",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18474",
+              "rosettaTeamName": "Buccaneers",
+              "shortName": "TB",
+              "teamColor": "#d50a0a"
+            },
+            "seoIdentifier": "Buccaneers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18484",
+            "name": "CAR Panthers",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18484",
+              "rosettaTeamName": "Panthers",
+              "shortName": "CAR",
+              "teamColor": "#0085ca"
+            },
+            "seoIdentifier": "Panthers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18336",
+            "name": "DAL Cowboys",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18336",
+              "rosettaTeamName": "Cowboys",
+              "shortName": "DAL",
+              "teamColor": "#003594"
+            },
+            "seoIdentifier": "Cowboys",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18471",
+            "name": "SEA Seahawks",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18471",
+              "rosettaTeamName": "Seahawks",
+              "shortName": "SEA",
+              "teamColor": "#002244"
+            },
+            "seoIdentifier": "Seahawks",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18454",
+            "name": "ARI Cardinals",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18454",
+              "rosettaTeamName": "Cardinals",
+              "shortName": "ARI",
+              "teamColor": "#97233f"
+            },
+            "seoIdentifier": "Cardinals",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18448",
+            "name": "PHI Eagles",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18448",
+              "rosettaTeamName": "Eagles",
+              "shortName": "PHI",
+              "teamColor": "#004c54"
+            },
+            "seoIdentifier": "Eagles",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18325",
+            "name": "CLE Browns",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18325",
+              "rosettaTeamName": "Browns",
+              "shortName": "CLE",
+              "teamColor": "#311d00"
+            },
+            "seoIdentifier": "Browns",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18432",
+            "name": "NY Giants",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18432",
+              "rosettaTeamName": "Giants",
+              "shortName": "NYG",
+              "teamColor": "#0b2265"
+            },
+            "seoIdentifier": "Giants",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18480",
+            "name": "WAS Commanders",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18480",
+              "rosettaTeamName": "Commanders",
+              "shortName": "WAS",
+              "teamColor": "#5a1414"
+            },
+            "seoIdentifier": "Commanders",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18320",
+            "name": "CIN Bengals",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18320",
+              "rosettaTeamName": "Bengals",
+              "shortName": "CIN",
+              "teamColor": "#fb4f14"
+            },
+            "seoIdentifier": "Bengals",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          },
+          {
+            "id": "18441",
+            "name": "NY Jets",
+            "type": "Team",
+            "metadata": {
+              "rosettaTeamId": "18441",
+              "rosettaTeamName": "Jets",
+              "shortName": "NYJ",
+              "teamColor": "#125740"
+            },
+            "seoIdentifier": "Jets",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "eventParticipantType": "MultiTeam",
+        "status": "NOT_STARTED",
+        "eventScorecard": {
+          "scorecardComponentId": 1
+        },
+        "metadata": {
+          "settlementDate": "2027-02-15T04:30:00Z"
+        },
+        "sortOrder": 547206099,
+        "subscriptionKey": "league-events-88808"
+      }
+    ],
+    "markets": [
+      {
+        "id": "303039981",
+        "eventId": "51e69972-5b84-419b-aa88-08de10dccbbe",
+        "sportId": "3",
+        "leagueId": "88808",
+        "name": "Winner",
+        "subcategoryId": 10500,
+        "marketType": {
+          "id": "8",
+          "betOfferTypeId": 0,
+          "name": "Winner"
+        },
+        "subscriptionKey": "league-events-88808",
+        "sortOrder": 303039981,
+        "tags": [
+          "Cashout",
+          "Default"
+        ],
+        "dynamicMetadata": {}
+      }
+    ],
+    "selections": [
+      {
+        "id": "0QA303039981#462893569_4L88808Q1483Q2-1",
+        "marketId": "303039981",
+        "label": "SEA Seahawks",
+        "displayOdds": {
+          "american": "+950",
+          "decimal": "10.50",
+          "fractional": "19/2"
+        },
+        "trueOdds": 10.5,
+        "participants": [
+          {
+            "id": "18471",
+            "name": "SEA Seahawks",
+            "type": "Team",
+            "seoIdentifier": "Seahawks",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 105069,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893579_4L88808Q1323028Q2-1",
+        "marketId": "303039981",
+        "label": "LA Rams",
+        "displayOdds": {
+          "american": "+950",
+          "decimal": "10.50",
+          "fractional": "19/2"
+        },
+        "trueOdds": 10.5,
+        "participants": [
+          {
+            "id": "18397",
+            "name": "LA Rams",
+            "type": "Team",
+            "seoIdentifier": "Rams",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 105079,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893595_4L88808Q1478Q2-1",
+        "marketId": "303039981",
+        "label": "BUF Bills",
+        "displayOdds": {
+          "american": "+1100",
+          "decimal": "12.00",
+          "fractional": "11/1"
+        },
+        "trueOdds": 12,
+        "participants": [
+          {
+            "id": "18302",
+            "name": "BUF Bills",
+            "type": "Team",
+            "seoIdentifier": "Bills",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 120095,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893575_4L88808Q1330Q2-1",
+        "marketId": "303039981",
+        "label": "NE Patriots",
+        "displayOdds": {
+          "american": "+1300",
+          "decimal": "14.00",
+          "fractional": "13/1"
+        },
+        "trueOdds": 14,
+        "participants": [
+          {
+            "id": "18415",
+            "name": "NE Patriots",
+            "type": "Team",
+            "seoIdentifier": "Patriots",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 140075,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893596_4L88808Q1468Q2-1",
+        "marketId": "303039981",
+        "label": "BAL Ravens",
+        "displayOdds": {
+          "american": "+1300",
+          "decimal": "14.00",
+          "fractional": "13/1"
+        },
+        "trueOdds": 14,
+        "participants": [
+          {
+            "id": "18495",
+            "name": "BAL Ravens",
+            "type": "Team",
+            "seoIdentifier": "Ravens",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 140096,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893571_4L88808Q1835Q2-1",
+        "marketId": "303039981",
+        "label": "PHI Eagles",
+        "displayOdds": {
+          "american": "+1400",
+          "decimal": "15.00",
+          "fractional": "14/1"
+        },
+        "trueOdds": 15,
+        "participants": [
+          {
+            "id": "18448",
+            "name": "PHI Eagles",
+            "type": "Team",
+            "seoIdentifier": "Eagles",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 150071,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893581_4L88808Q1463Q2-1",
+        "marketId": "303039981",
+        "label": "KC Chiefs",
+        "displayOdds": {
+          "american": "+1400",
+          "decimal": "15.00",
+          "fractional": "14/1"
+        },
+        "trueOdds": 15,
+        "participants": [
+          {
+            "id": "18379",
+            "name": "KC Chiefs",
+            "type": "Team",
+            "seoIdentifier": "Chiefs",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 150081,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893585_4L88808Q1462Q2-1",
+        "marketId": "303039981",
+        "label": "GB Packers",
+        "displayOdds": {
+          "american": "+1400",
+          "decimal": "15.00",
+          "fractional": "14/1"
+        },
+        "trueOdds": 15,
+        "participants": [
+          {
+            "id": "18357",
+            "name": "GB Packers",
+            "type": "Team",
+            "seoIdentifier": "Packers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 150085,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893586_4L88808Q1469Q2-1",
+        "marketId": "303039981",
+        "label": "DET Lions",
+        "displayOdds": {
+          "american": "+1400",
+          "decimal": "15.00",
+          "fractional": "14/1"
+        },
+        "trueOdds": 15,
+        "participants": [
+          {
+            "id": "18348",
+            "name": "DET Lions",
+            "type": "Team",
+            "seoIdentifier": "Lions",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 150086,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893580_4L88808Q1411332Q2-1",
+        "marketId": "303039981",
+        "label": "LA Chargers",
+        "displayOdds": {
+          "american": "+1500",
+          "decimal": "16.00",
+          "fractional": "15/1"
+        },
+        "trueOdds": 16,
+        "participants": [
+          {
+            "id": "18461",
+            "name": "LA Chargers",
+            "type": "Team",
+            "seoIdentifier": "Chargers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 160080,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893568_4L88808Q1477Q2-1",
+        "marketId": "303039981",
+        "label": "SF 49ers",
+        "displayOdds": {
+          "american": "+1700",
+          "decimal": "18.00",
+          "fractional": "17/1"
+        },
+        "trueOdds": 18,
+        "participants": [
+          {
+            "id": "18465",
+            "name": "SF 49ers",
+            "type": "Team",
+            "seoIdentifier": "49ers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 180068,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893587_4L88808Q1466Q2-1",
+        "marketId": "303039981",
+        "label": "DEN Broncos",
+        "displayOdds": {
+          "american": "+1800",
+          "decimal": "19.00",
+          "fractional": "18/1"
+        },
+        "trueOdds": 19,
+        "participants": [
+          {
+            "id": "18342",
+            "name": "DEN Broncos",
+            "type": "Team",
+            "seoIdentifier": "Broncos",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 190087,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893584_4L88808Q1474Q2-1",
+        "marketId": "303039981",
+        "label": "HOU Texans",
+        "displayOdds": {
+          "american": "+2000",
+          "decimal": "21.00",
+          "fractional": "20/1"
+        },
+        "trueOdds": 21,
+        "participants": [
+          {
+            "id": "18500",
+            "name": "HOU Texans",
+            "type": "Team",
+            "seoIdentifier": "Texans",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 210084,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893582_4L88808Q1473Q2-1",
+        "marketId": "303039981",
+        "label": "JAX Jaguars",
+        "displayOdds": {
+          "american": "+2200",
+          "decimal": "23.00",
+          "fractional": "22/1"
+        },
+        "trueOdds": 23,
+        "participants": [
+          {
+            "id": "18489",
+            "name": "JAX Jaguars",
+            "type": "Team",
+            "seoIdentifier": "Jaguars",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 230082,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893590_4L88808Q1950Q2-1",
+        "marketId": "303039981",
+        "label": "CIN Bengals",
+        "displayOdds": {
+          "american": "+2500",
+          "decimal": "26.00",
+          "fractional": "25/1"
+        },
+        "trueOdds": 26,
+        "participants": [
+          {
+            "id": "18320",
+            "name": "CIN Bengals",
+            "type": "Team",
+            "seoIdentifier": "Bengals",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 260090,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893591_4L88808Q1470Q2-1",
+        "marketId": "303039981",
+        "label": "CHI Bears",
+        "displayOdds": {
+          "american": "+2500",
+          "decimal": "26.00",
+          "fractional": "25/1"
+        },
+        "trueOdds": 26,
+        "participants": [
+          {
+            "id": "18312",
+            "name": "CHI Bears",
+            "type": "Team",
+            "seoIdentifier": "Bears",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 260091,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893588_4L88808Q1481Q2-1",
+        "marketId": "303039981",
+        "label": "DAL Cowboys",
+        "displayOdds": {
+          "american": "+3500",
+          "decimal": "36.00",
+          "fractional": "35/1"
+        },
+        "trueOdds": 36,
+        "participants": [
+          {
+            "id": "18336",
+            "name": "DAL Cowboys",
+            "type": "Team",
+            "seoIdentifier": "Cowboys",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 360088,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893567_4L88808Q1479Q2-1",
+        "marketId": "303039981",
+        "label": "TB Buccaneers",
+        "displayOdds": {
+          "american": "+4000",
+          "decimal": "41.00",
+          "fractional": "40/1"
+        },
+        "trueOdds": 41,
+        "participants": [
+          {
+            "id": "18474",
+            "name": "TB Buccaneers",
+            "type": "Team",
+            "seoIdentifier": "Buccaneers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 410067,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893565_4L88808Q1929653Q2-1",
+        "marketId": "303039981",
+        "label": "WAS Commanders",
+        "displayOdds": {
+          "american": "+6000",
+          "decimal": "61.00",
+          "fractional": "60/1"
+        },
+        "trueOdds": 61,
+        "participants": [
+          {
+            "id": "18480",
+            "name": "WAS Commanders",
+            "type": "Team",
+            "seoIdentifier": "Commanders",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 610065,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893570_4L88808Q1467Q2-1",
+        "marketId": "303039981",
+        "label": "PIT Steelers",
+        "displayOdds": {
+          "american": "+6000",
+          "decimal": "61.00",
+          "fractional": "60/1"
+        },
+        "trueOdds": 61,
+        "participants": [
+          {
+            "id": "18456",
+            "name": "PIT Steelers",
+            "type": "Team",
+            "seoIdentifier": "Steelers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 610070,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893576_4L88808Q1461Q2-1",
+        "marketId": "303039981",
+        "label": "MIN Vikings",
+        "displayOdds": {
+          "american": "+6000",
+          "decimal": "61.00",
+          "fractional": "60/1"
+        },
+        "trueOdds": 61,
+        "participants": [
+          {
+            "id": "18409",
+            "name": "MIN Vikings",
+            "type": "Team",
+            "seoIdentifier": "Vikings",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 610076,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893583_4L88808Q1471Q2-1",
+        "marketId": "303039981",
+        "label": "IND Colts",
+        "displayOdds": {
+          "american": "+6000",
+          "decimal": "61.00",
+          "fractional": "60/1"
+        },
+        "trueOdds": 61,
+        "participants": [
+          {
+            "id": "18372",
+            "name": "IND Colts",
+            "type": "Team",
+            "seoIdentifier": "Colts",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 610083,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893573_4L88808Q1860Q2-1",
+        "marketId": "303039981",
+        "label": "NY Giants",
+        "displayOdds": {
+          "american": "+6500",
+          "decimal": "66.00",
+          "fractional": "65/1"
+        },
+        "trueOdds": 66,
+        "participants": [
+          {
+            "id": "18432",
+            "name": "NY Giants",
+            "type": "Team",
+            "seoIdentifier": "Giants",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 660073,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893597_4L88808Q1476Q2-1",
+        "marketId": "303039981",
+        "label": "ATL Falcons",
+        "displayOdds": {
+          "american": "+8000",
+          "decimal": "81.00",
+          "fractional": "80/1"
+        },
+        "trueOdds": 81,
+        "participants": [
+          {
+            "id": "18297",
+            "name": "ATL Falcons",
+            "type": "Team",
+            "seoIdentifier": "Falcons",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 810097,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893566_4L88808Q1465Q2-1",
+        "marketId": "303039981",
+        "label": "TEN Titans",
+        "displayOdds": {
+          "american": "+10000",
+          "decimal": "101.00",
+          "fractional": "100/1"
+        },
+        "trueOdds": 101,
+        "participants": [
+          {
+            "id": "18366",
+            "name": "TEN Titans",
+            "type": "Team",
+            "seoIdentifier": "Titans",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 1010066,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893574_4L88808Q142936Q2-1",
+        "marketId": "303039981",
+        "label": "NO Saints",
+        "displayOdds": {
+          "american": "+10000",
+          "decimal": "101.00",
+          "fractional": "100/1"
+        },
+        "trueOdds": 101,
+        "participants": [
+          {
+            "id": "18423",
+            "name": "NO Saints",
+            "type": "Team",
+            "seoIdentifier": "Saints",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 1010074,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893592_4L88808Q1480Q2-1",
+        "marketId": "303039981",
+        "label": "CAR Panthers",
+        "displayOdds": {
+          "american": "+10000",
+          "decimal": "101.00",
+          "fractional": "100/1"
+        },
+        "trueOdds": 101,
+        "participants": [
+          {
+            "id": "18484",
+            "name": "CAR Panthers",
+            "type": "Team",
+            "seoIdentifier": "Panthers",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 1010092,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893589_4L88808Q1836Q2-1",
+        "marketId": "303039981",
+        "label": "CLE Browns",
+        "displayOdds": {
+          "american": "+15000",
+          "decimal": "151.00",
+          "fractional": "150/1"
+        },
+        "trueOdds": 151,
+        "participants": [
+          {
+            "id": "18325",
+            "name": "CLE Browns",
+            "type": "Team",
+            "seoIdentifier": "Browns",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 1510089,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893572_4L88808Q1952Q2-1",
+        "marketId": "303039981",
+        "label": "NY Jets",
+        "displayOdds": {
+          "american": "+20000",
+          "decimal": "201.00",
+          "fractional": "200/1"
+        },
+        "trueOdds": 201,
+        "participants": [
+          {
+            "id": "18441",
+            "name": "NY Jets",
+            "type": "Team",
+            "seoIdentifier": "Jets",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 2010072,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893578_4L88808Q1464Q2-1",
+        "marketId": "303039981",
+        "label": "LV Raiders",
+        "displayOdds": {
+          "american": "+20000",
+          "decimal": "201.00",
+          "fractional": "200/1"
+        },
+        "trueOdds": 201,
+        "participants": [
+          {
+            "id": "18388",
+            "name": "LV Raiders",
+            "type": "Team",
+            "seoIdentifier": "Raiders",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 2010078,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893577_4L88808Q1329Q2-1",
+        "marketId": "303039981",
+        "label": "MIA Dolphins",
+        "displayOdds": {
+          "american": "+25000",
+          "decimal": "251.00",
+          "fractional": "250/1"
+        },
+        "trueOdds": 251,
+        "participants": [
+          {
+            "id": "18401",
+            "name": "MIA Dolphins",
+            "type": "Team",
+            "seoIdentifier": "Dolphins",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 2510077,
+        "metadata": {}
+      },
+      {
+        "id": "0QA303039981#462893598_4L88808Q1484Q2-1",
+        "marketId": "303039981",
+        "label": "ARI Cardinals",
+        "displayOdds": {
+          "american": "+25000",
+          "decimal": "251.00",
+          "fractional": "250/1"
+        },
+        "trueOdds": 251,
+        "participants": [
+          {
+            "id": "18454",
+            "name": "ARI Cardinals",
+            "type": "Team",
+            "seoIdentifier": "Cardinals",
+            "isNationalTeam": false,
+            "countryCode": "US"
+          }
+        ],
+        "sortOrder": 2510098,
+        "metadata": {}
+      }
+    ],
+    "categories": [
+      {
+        "id": 529,
+        "name": "Futures",
+        "sortOrder": 985
+      },
+      {
+        "id": 787,
+        "name": "Awards",
+        "sortOrder": 986
+      },
+      {
+        "id": 1803,
+        "name": "2026 Draft",
+        "sortOrder": 1826
+      }
+    ],
+    "subcategories": [
+      {
+        "id": 4651,
+        "categoryId": 529,
+        "name": "Conference Winner",
+        "componentId": 12,
+        "sortOrder": 5623,
+        "tags": []
+      },
+      {
+        "id": 10500,
+        "categoryId": 529,
+        "name": "Champion",
+        "componentId": 212,
+        "sortOrder": 4646,
+        "tags": []
+      },
+      {
+        "id": 10249,
+        "categoryId": 529,
+        "name": "Exact Result",
+        "componentId": 29,
+        "sortOrder": 11767,
+        "tags": []
+      },
+      {
+        "id": 7302,
+        "categoryId": 529,
+        "name": "Name the Finalists",
+        "componentId": 29,
+        "sortOrder": 7685,
+        "tags": []
+      },
+      {
+        "id": 7293,
+        "categoryId": 529,
+        "name": "Division Winner",
+        "componentId": 29,
+        "sortOrder": 7272,
+        "tags": []
+      },
+      {
+        "id": 17747,
+        "categoryId": 1803,
+        "name": "Pick Number",
+        "componentId": 29,
+        "sortOrder": 17704,
+        "tags": []
+      },
+      {
+        "id": 13339,
+        "categoryId": 787,
+        "name": "MVP",
+        "componentId": 29,
+        "sortOrder": 7205,
+        "tags": []
+      }
+    ],
+    "subscriptionPartials": {
+      "league-events-88808": {
+        "entity": "events",
+        "query": "$filter=leagueId eq '88808' and clientMetadata/Subcategories/any(s: s/Id eq '10500')&$orderBy=startEventDate asc",
+        "includeMarkets": "$filter=tags/all(t: t ne 'SportcastBetBuilder') and clientMetadata/subCategoryId eq '10500'"
+      },
+      "lcc-event-": {
+        "entity": "LiveContentCardEvent"
+      },
+      "cc-event-": {
+        "contentCardType": "All",
+        "entity": "ContentCardEvent"
+      }
+    }
+  }
+]

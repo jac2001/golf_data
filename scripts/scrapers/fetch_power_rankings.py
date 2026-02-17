@@ -27,7 +27,7 @@ import re
 import time
 from pathlib import Path
 from typing import Optional
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 
 import pandas as pd
 import requests
@@ -264,6 +264,30 @@ def _extract_fragment_candidates(html: str) -> list[str]:
     return unique
 
 
+def _extract_power_rankings_article_urls(html: str, base_url: str) -> list[str]:
+    """Extract candidate PGA TOUR power-rankings article URLs from page HTML."""
+    hrefs = re.findall(r'href=["\']([^"\']+)["\']', html)
+    urls: list[str] = []
+    for href in hrefs:
+        h = str(href).strip()
+        if not h:
+            continue
+        if "/article/news/power-rankings/" not in h:
+            continue
+        full = urljoin(base_url, h)
+        if full.startswith("https://www.pgatour.com/"):
+            urls.append(full)
+
+    # Ordered unique
+    seen = set()
+    out = []
+    for u in urls:
+        if u not in seen:
+            seen.add(u)
+            out.append(u)
+    return out
+
+
 def resolve_fragment_path(path_or_url: str) -> str:
     if not _is_url(path_or_url):
         return path_or_url
@@ -274,6 +298,21 @@ def resolve_fragment_path(path_or_url: str) -> str:
     fragment = _select_best_fragment(candidates)
     if fragment:
         return fragment
+
+    # Fallback: tournament pages often link to power-rankings articles;
+    # crawl those and try fragment extraction there.
+    article_urls = _extract_power_rankings_article_urls(html, path_or_url)
+    for article_url in article_urls[:8]:
+        try:
+            aresp = requests.get(article_url, headers=HEADERS, timeout=30)
+            aresp.raise_for_status()
+            acands = _extract_fragment_candidates(aresp.text)
+            frag = _select_best_fragment(acands)
+            if frag:
+                return frag
+        except Exception:
+            continue
+
     raise RuntimeError("Could not find power rankings fragment path in article HTML")
 
 
@@ -288,17 +327,29 @@ def main():
     fragment_path = args.path
     if not fragment_path and args.slug:
         fragment_path = load_path_config(args.slug)
+    # Allow cache-only mode when slug is provided with --allow-fail.
     if not fragment_path:
-        parser.error("Provide --path or a slug present in data/power_rankings/paths.csv")
-
-    if fragment_path and _is_url(fragment_path):
+        if args.allow_fail and args.slug:
+            slug = args.slug
+            print("⚠️ No live path configured; attempting cache-only mode.")
+        else:
+            parser.error("Provide --path or a slug present in data/power_rankings/paths.csv")
+            return
+    elif _is_url(fragment_path):
         slug = args.slug or _slug_from_url(fragment_path)
-        fragment_path = resolve_fragment_path(fragment_path)
-        print(f"Resolved fragment path: {fragment_path}")
+        try:
+            fragment_path = resolve_fragment_path(fragment_path)
+            print(f"Resolved fragment path: {fragment_path}")
+        except Exception as e:
+            if args.allow_fail:
+                print(f"⚠️ Could not resolve fragment path from URL: {e}")
+                fragment_path = None
+            else:
+                raise SystemExit(f"Could not resolve fragment path from URL: {e}")
     else:
         slug = args.slug or Path(fragment_path).stem.replace("-", "_")
 
-    data = fetch_graphql_with_retry(fragment_path)
+    data = fetch_graphql_with_retry(fragment_path) if fragment_path else None
     if data is None and args.allow_fail:
         data = load_cache_json(slug)
     if data is None:

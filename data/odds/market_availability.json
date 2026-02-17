@@ -1,0 +1,103 @@
+{
+  "tournament_id": "R2026007",
+  "markets": {
+    "winner": {
+      "DRAFTKINGS": {
+        "market": "winner",
+        "source": "DRAFTKINGS",
+        "available": false,
+        "player_count": 0,
+        "last_updated": "2026-02-17T04:56:26.493172+00:00",
+        "staleness": "fresh"
+      },
+      "FANDUEL": {
+        "market": "winner",
+        "source": "FANDUEL",
+        "available": false,
+        "player_count": 0,
+        "last_updated": null,
+        "staleness": "expired"
+      },
+      "MODEL": {
+        "market": "winner",
+        "source": "MODEL",
+        "available": false,
+        "player_count": 0,
+        "last_updated": null,
+        "staleness": "expired"
+      }
+    },
+    "h2h": {
+      "DRAFTKINGS": {
+        "market": "h2h",
+        "source": "DRAFTKINGS",
+        "available": false,
+        "player_count": 0,
+        "last_updated": "2026-02-17T04:56:26.493172+00:00",
+        "staleness": "fresh"
+      }
+    },
+    "round_score": {
+      "DRAFTKINGS": {
+        "market": "round_score",
+        "source": "DRAFTKINGS",
+        "available": false,
+        "player_count": 0,
+        "last_updated": "2026-02-17T04:56:26.493172+00:00",
+        "staleness": "fresh"
+      }
+    },
+    "birdies": {
+      "DRAFTKINGS": {
+        "market": "birdies",
+        "source": "DRAFTKINGS",
+        "available": false,
+        "player_count": 0,
+        "last_updated": "2026-02-17T04:56:26.493172+00:00",
+        "staleness": "fresh"
+      }
+    },
+    "top5": {
+      "MODEL": {
+        "market": "top5",
+        "source": "MODEL",
+        "available": false,
+        "player_count": 0,
+        "last_updated": null,
+        "staleness": "expired"
+      }
+    },
+    "top10": {
+      "MODEL": {
+        "market": "top10",
+        "source": "MODEL",
+        "available": false,
+        "player_count": 0,
+        "last_updated": null,
+        "staleness": "expired"
+      }
+    },
+    "top20": {
+      "MODEL": {
+        "market": "top20",
+        "source": "MODEL",
+        "available": false,
+        "player_count": 0,
+        "last_updated": null,
+        "staleness": "expired"
+      }
+    },
+    "make_cut": {
+      "MODEL": {
+        "market": "make_cut",
+        "source": "MODEL",
+        "available": false,
+        "player_count": 0,
+        "last_updated": null,
+        "staleness": "expired"
+      }
+    }
+  },
+  "last_scan": "2026-02-17T04:57:09.810181+00:00",
+  "alerts": []
+}

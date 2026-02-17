@@ -1,44 +1,44 @@
 tournament_id,year,player_id,player_name,position,total_score,to_par,fedex_points,earnings,rounds_played,tournament_name
-R2026003,2026,59095,Chris Gotterup,1,268,-16,500.000,"$1,728,000.00",4,WM Phoenix Open
-R2026003,2026,32839,Hideki Matsuyama,2,268,-16,300.000,"$1,046,400.00",4,WM Phoenix Open
-R2026003,2026,46046,Scottie Scheffler,T3,269,-15,125.000,"$439,680.00",4,WM Phoenix Open
-R2026003,2026,56630,Akshay Bhatia,T3,269,-15,125.000,"$439,680.00",4,WM Phoenix Open
-R2026003,2026,37455,Si Woo Kim,T3,269,-15,125.000,"$439,680.00",4,WM Phoenix Open
-R2026003,2026,57364,Michael Thorbjornsen,T3,269,-15,125.000,"$439,680.00",4,WM Phoenix Open
-R2026003,2026,52453,Nicolai Højgaard,T3,269,-15,125.000,"$439,680.00",4,WM Phoenix Open
-R2026003,2026,47420,Jake Knapp,8,270,-14,85.000,"$300,000.00",4,WM Phoenix Open
-R2026003,2026,40098,Matt Fitzpatrick,9,271,-13,80.000,"$280,800.00",4,WM Phoenix Open
-R2026003,2026,59836,Pierceson Coody,T10,272,-12,70.000,"$242,400.00",4,WM Phoenix Open
-R2026003,2026,46717,Viktor Hovland,T10,272,-12,70.000,"$242,400.00",4,WM Phoenix Open
-R2026003,2026,51287,Ryo Hisatsune,T10,272,-12,70.000,"$242,400.00",4,WM Phoenix Open
+R2026003,2026,59095,Chris Gotterup,1,268,-16,500.0,"$1,728,000.00",4,WM Phoenix Open
+R2026003,2026,32839,Hideki Matsuyama,2,268,-16,300.0,"$1,046,400.00",4,WM Phoenix Open
+R2026003,2026,46046,Scottie Scheffler,T3,269,-15,125.0,"$439,680.00",4,WM Phoenix Open
+R2026003,2026,56630,Akshay Bhatia,T3,269,-15,125.0,"$439,680.00",4,WM Phoenix Open
+R2026003,2026,37455,Si Woo Kim,T3,269,-15,125.0,"$439,680.00",4,WM Phoenix Open
+R2026003,2026,57364,Michael Thorbjornsen,T3,269,-15,125.0,"$439,680.00",4,WM Phoenix Open
+R2026003,2026,52453,Nicolai Højgaard,T3,269,-15,125.0,"$439,680.00",4,WM Phoenix Open
+R2026003,2026,47420,Jake Knapp,8,270,-14,85.0,"$300,000.00",4,WM Phoenix Open
+R2026003,2026,40098,Matt Fitzpatrick,9,271,-13,80.0,"$280,800.00",4,WM Phoenix Open
+R2026003,2026,59836,Pierceson Coody,T10,272,-12,70.0,"$242,400.00",4,WM Phoenix Open
+R2026003,2026,46717,Viktor Hovland,T10,272,-12,70.0,"$242,400.00",4,WM Phoenix Open
+R2026003,2026,51287,Ryo Hisatsune,T10,272,-12,70.0,"$242,400.00",4,WM Phoenix Open
 R2026003,2026,37338,Zecheng Dou,T13,273,-11,57.333,"$188,000.00",4,WM Phoenix Open
 R2026003,2026,39335,Kevin Roy,T13,273,-11,57.333,"$188,000.00",4,WM Phoenix Open
 R2026003,2026,46442,Maverick McNealy,T13,273,-11,57.333,"$188,000.00",4,WM Phoenix Open
-R2026003,2026,40026,Daniel Berger,T16,274,-10,52.000,"$160,800.00",4,WM Phoenix Open
-R2026003,2026,46464,Jordan Smith,T16,274,-10,52.000,"$160,800.00",4,WM Phoenix Open
-R2026003,2026,39975,Michael Kim,T18,275,-9,44.000,"$122,720.00",4,WM Phoenix Open
-R2026003,2026,60004,Jacob Bridgeman,T18,275,-9,44.000,"$122,720.00",4,WM Phoenix Open
-R2026003,2026,32102,Rickie Fowler,T18,275,-9,44.000,"$122,720.00",4,WM Phoenix Open
-R2026003,2026,59143,Mac Meissner,T18,275,-9,44.000,"$122,720.00",4,WM Phoenix Open
-R2026003,2026,49960,Sepp Straka,T18,275,-9,44.000,"$122,720.00",4,WM Phoenix Open
-R2026003,2026,51634,Sahith Theegala,T18,275,-9,44.000,"$122,720.00",4,WM Phoenix Open
-R2026003,2026,29936,Ryan Fox,T24,276,-8,34.750,"$82,320.00",4,WM Phoenix Open
-R2026003,2026,51696,Rico Hoey,T24,276,-8,34.750,"$82,320.00",4,WM Phoenix Open
-R2026003,2026,48117,Kurt Kitayama,T24,276,-8,34.750,"$82,320.00",4,WM Phoenix Open
-R2026003,2026,52686,Rasmus Højgaard,T24,276,-8,34.750,"$82,320.00",4,WM Phoenix Open
-R2026003,2026,34099,Harris English,T28,277,-7,26.500,"$62,948.57",4,WM Phoenix Open
-R2026003,2026,50286,A.J. Ewart,T28,277,-7,26.500,"$62,948.57",4,WM Phoenix Open
-R2026003,2026,25493,Nick Taylor,T28,277,-7,26.500,"$62,948.57",4,WM Phoenix Open
-R2026003,2026,54591,Ben Griffin,T28,277,-7,26.500,"$62,948.57",4,WM Phoenix Open
-R2026003,2026,35506,Mackenzie Hughes,T28,277,-7,26.500,"$62,948.57",4,WM Phoenix Open
-R2026003,2026,36799,Stephan Jaeger,T28,277,-7,26.500,"$62,948.57",4,WM Phoenix Open
-R2026003,2026,37378,Min Woo Lee,T28,277,-7,26.500,"$62,948.57",4,WM Phoenix Open
-R2026003,2026,55893,Sam Stevens,T35,278,-6,18.500,"$46,800.00",4,WM Phoenix Open
-R2026003,2026,51766,Wyndham Clark,T35,278,-6,18.500,"$46,800.00",4,WM Phoenix Open
-R2026003,2026,46340,Alex Smalley,T35,278,-6,18.500,"$46,800.00",4,WM Phoenix Open
-R2026003,2026,55182,Tom Kim,T35,278,-6,18.500,"$46,800.00",4,WM Phoenix Open
-R2026003,2026,49771,J.T. Poston,T35,278,-6,18.500,"$46,800.00",4,WM Phoenix Open
-R2026003,2026,28723,John Parry,T35,278,-6,18.500,"$46,800.00",4,WM Phoenix Open
+R2026003,2026,40026,Daniel Berger,T16,274,-10,52.0,"$160,800.00",4,WM Phoenix Open
+R2026003,2026,46464,Jordan Smith,T16,274,-10,52.0,"$160,800.00",4,WM Phoenix Open
+R2026003,2026,39975,Michael Kim,T18,275,-9,44.0,"$122,720.00",4,WM Phoenix Open
+R2026003,2026,60004,Jacob Bridgeman,T18,275,-9,44.0,"$122,720.00",4,WM Phoenix Open
+R2026003,2026,32102,Rickie Fowler,T18,275,-9,44.0,"$122,720.00",4,WM Phoenix Open
+R2026003,2026,59143,Mac Meissner,T18,275,-9,44.0,"$122,720.00",4,WM Phoenix Open
+R2026003,2026,49960,Sepp Straka,T18,275,-9,44.0,"$122,720.00",4,WM Phoenix Open
+R2026003,2026,51634,Sahith Theegala,T18,275,-9,44.0,"$122,720.00",4,WM Phoenix Open
+R2026003,2026,29936,Ryan Fox,T24,276,-8,34.75,"$82,320.00",4,WM Phoenix Open
+R2026003,2026,51696,Rico Hoey,T24,276,-8,34.75,"$82,320.00",4,WM Phoenix Open
+R2026003,2026,48117,Kurt Kitayama,T24,276,-8,34.75,"$82,320.00",4,WM Phoenix Open
+R2026003,2026,52686,Rasmus Højgaard,T24,276,-8,34.75,"$82,320.00",4,WM Phoenix Open
+R2026003,2026,34099,Harris English,T28,277,-7,26.5,"$62,948.57",4,WM Phoenix Open
+R2026003,2026,50286,A.J. Ewart,T28,277,-7,26.5,"$62,948.57",4,WM Phoenix Open
+R2026003,2026,25493,Nick Taylor,T28,277,-7,26.5,"$62,948.57",4,WM Phoenix Open
+R2026003,2026,54591,Ben Griffin,T28,277,-7,26.5,"$62,948.57",4,WM Phoenix Open
+R2026003,2026,35506,Mackenzie Hughes,T28,277,-7,26.5,"$62,948.57",4,WM Phoenix Open
+R2026003,2026,36799,Stephan Jaeger,T28,277,-7,26.5,"$62,948.57",4,WM Phoenix Open
+R2026003,2026,37378,Min Woo Lee,T28,277,-7,26.5,"$62,948.57",4,WM Phoenix Open
+R2026003,2026,55893,Sam Stevens,T35,278,-6,18.5,"$46,800.00",4,WM Phoenix Open
+R2026003,2026,51766,Wyndham Clark,T35,278,-6,18.5,"$46,800.00",4,WM Phoenix Open
+R2026003,2026,46340,Alex Smalley,T35,278,-6,18.5,"$46,800.00",4,WM Phoenix Open
+R2026003,2026,55182,Tom Kim,T35,278,-6,18.5,"$46,800.00",4,WM Phoenix Open
+R2026003,2026,49771,J.T. Poston,T35,278,-6,18.5,"$46,800.00",4,WM Phoenix Open
+R2026003,2026,28723,John Parry,T35,278,-6,18.5,"$46,800.00",4,WM Phoenix Open
 R2026003,2026,52689,Rasmus Neergaard-Petersen,T41,279,-5,12.214,"$34,080.00",4,WM Phoenix Open
 R2026003,2026,39546,Keith Mitchell,T41,279,-5,12.214,"$34,080.00",4,WM Phoenix Open
 R2026003,2026,57366,Cameron Young,T41,279,-5,12.214,"$34,080.00",4,WM Phoenix Open
@@ -46,92 +46,92 @@ R2026003,2026,63454,Johnny Keefer,T41,279,-5,12.214,"$34,080.00",4,WM Phoenix Op
 R2026003,2026,52666,Sami Valimaki,T41,279,-5,12.214,"$34,080.00",4,WM Phoenix Open
 R2026003,2026,49855,Kristoffer Reitan,T41,279,-5,12.214,"$34,080.00",4,WM Phoenix Open
 R2026003,2026,48081,Xander Schauffele,T41,279,-5,12.214,"$34,080.00",4,WM Phoenix Open
-R2026003,2026,54422,Christo Lamprecht,T48,280,-4,8.250,"$24,608.00",4,WM Phoenix Open
-R2026003,2026,48001,Zach Bauchou,T48,280,-4,8.250,"$24,608.00",4,WM Phoenix Open
-R2026003,2026,51950,Max McGreevy,T48,280,-4,8.250,"$24,608.00",4,WM Phoenix Open
-R2026003,2026,47983,Chad Ramey,T48,280,-4,8.250,"$24,608.00",4,WM Phoenix Open
-R2026003,2026,61522,Michael Brennan,T48,280,-4,8.250,"$24,608.00",4,WM Phoenix Open
-R2026003,2026,36529,S.T. Lee,T48,280,-4,8.250,"$24,608.00",4,WM Phoenix Open
-R2026003,2026,50188,S.H. Kim,T54,281,-3,5.750,"$22,272.00",4,WM Phoenix Open
-R2026003,2026,60386,Sudarshan Yellamaraju,T54,281,-3,5.750,"$22,272.00",4,WM Phoenix Open
-R2026003,2026,60067,Joe Highsmith,T54,281,-3,5.750,"$22,272.00",4,WM Phoenix Open
-R2026003,2026,46443,Brian Campbell,T54,281,-3,5.750,"$22,272.00",4,WM Phoenix Open
-R2026003,2026,49120,Kensei Hirata,T54,281,-3,5.750,"$22,272.00",4,WM Phoenix Open
-R2026003,2026,50525,Collin Morikawa,T54,281,-3,5.750,"$22,272.00",4,WM Phoenix Open
-R2026003,2026,36699,Patrick Rodgers,T60,282,-2,4.700,"$21,312.00",4,WM Phoenix Open
-R2026003,2026,55573,John VanDerLaan,T60,282,-2,4.700,"$21,312.00",4,WM Phoenix Open
-R2026003,2026,47917,Takumi Kanaya,T60,282,-2,4.700,"$21,312.00",4,WM Phoenix Open
-R2026003,2026,34371,Adrien Saddier,T60,282,-2,4.700,"$21,312.00",4,WM Phoenix Open
-R2026003,2026,58168,Davis Thompson,T64,283,-1,4.100,"$20,736.00",4,WM Phoenix Open
-R2026003,2026,31323,Gary Woodland,T64,283,-1,4.100,"$20,736.00",4,WM Phoenix Open
-R2026003,2026,57900,Chandler Phillips,T66,284,E,3.700,"$20,352.00",4,WM Phoenix Open
-R2026003,2026,39977,Max Homa,T66,284,E,3.700,"$20,352.00",4,WM Phoenix Open
-R2026003,2026,34021,Bud Cauley,T68,285,+1,3.200,"$19,872.00",4,WM Phoenix Open
-R2026003,2026,49766,Hank Lebioda,T68,285,+1,3.200,"$19,872.00",4,WM Phoenix Open
-R2026003,2026,63807,Neal Shipley,T68,285,+1,3.200,"$19,872.00",4,WM Phoenix Open
-R2026003,2026,49228,Keita Nakajima,71,287,+3,2.900,"$19,488.00",4,WM Phoenix Open
-R2026003,2026,32757,Patton Kizzire,72,288,+4,2.800,"$19,296.00",4,WM Phoenix Open
-R2026003,2026,45157,Cam Davis,73,291,+7,2.700,"$19,104.00",4,WM Phoenix Open
-R2026003,2026,31646,Emiliano Grillo,CUT,142,E,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,33968,Thorbjørn Olesen,CUT,142,E,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,34076,Joel Dahmen,CUT,142,E,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,50497,Adrien Dumont de Chassart,CUT,142,E,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,51977,Max Greyserman,CUT,142,E,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,32070,Rafael Campos,CUT,143,+1,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,45522,Christiaan Bezuidenhout,CUT,143,+1,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,36801,Mark Hubbard,CUT,143,+1,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,51894,Vince Whaley,CUT,143,+1,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,30926,Chris Kirk,CUT,143,+1,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,54304,Karl Vilips,CUT,143,+1,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,34466,Peter Malnati,CUT,143,+1,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,39997,Corey Conners,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,36689,Brooks Koepka,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,54421,Garrick Higgo,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,59141,Matt McCarty,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,40006,Erik van Rooyen,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,57362,Austin Eckroat,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,47393,Jeffrey Kang,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,35532,Tom Hoge,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,57259,Dan Brown,CUT,144,+2,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,48153,Matthieu Pavon,CUT,145,+3,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,29420,Billy Horschel,CUT,145,+3,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,12716,Charley Hoffman,CUT,145,+3,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,54788,Chandler Blanchet,CUT,145,+3,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,35296,Haotong Li,CUT,145,+3,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,37076,Marcelo Rozo,CUT,145,+3,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,34046,Jordan Spieth,CUT,145,+3,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,29725,Tony Finau,CUT,145,+3,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,51349,Nico Echavarria,CUT,146,+4,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,48867,Matti Schmid,CUT,146,+4,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,55851,Pontus Nyholm,CUT,146,+4,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,50095,Austin Smotherman,CUT,146,+4,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,29535,Brice Garnett,CUT,146,+4,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,51003,Marco Penge,CUT,146,+4,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,59006,Davis Chatfield,CUT,146,+4,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,57975,Harry Hall,CUT,147,+5,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,63343,Aldrich Potgieter,CUT,147,+5,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,47504,Sam Burns,CUT,147,+5,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,27644,Brian Harman,CUT,147,+5,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,29221,Webb Simpson,CUT,148,+6,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,47995,Davis Riley,CUT,149,+7,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,51997,Andrew Novak,CUT,149,+7,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,47347,Adam Schenk,CUT,149,+7,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,38991,Alejandro Tosti,CUT,150,+8,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,54607,Danny Walker,CUT,150,+8,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,47591,Eric Cole,CUT,151,+9,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,63121,William Mouw,CUT,153,+11,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,65871,Thomas Avant,CUT,159,+17,0.000,$0.00,2,WM Phoenix Open
-R2026003,2026,59567,Emilio Gonzalez,W/D,76,+5,0.000,$0.00,1,WM Phoenix Open
-R2026004,2026,22405,Justin Rose,1,265,-23,500.000,"$1,728,000.00",4,Farmers Insurance Open
+R2026003,2026,54422,Christo Lamprecht,T48,280,-4,8.25,"$24,608.00",4,WM Phoenix Open
+R2026003,2026,48001,Zach Bauchou,T48,280,-4,8.25,"$24,608.00",4,WM Phoenix Open
+R2026003,2026,51950,Max McGreevy,T48,280,-4,8.25,"$24,608.00",4,WM Phoenix Open
+R2026003,2026,47983,Chad Ramey,T48,280,-4,8.25,"$24,608.00",4,WM Phoenix Open
+R2026003,2026,61522,Michael Brennan,T48,280,-4,8.25,"$24,608.00",4,WM Phoenix Open
+R2026003,2026,36529,S.T. Lee,T48,280,-4,8.25,"$24,608.00",4,WM Phoenix Open
+R2026003,2026,50188,S.H. Kim,T54,281,-3,5.75,"$22,272.00",4,WM Phoenix Open
+R2026003,2026,60386,Sudarshan Yellamaraju,T54,281,-3,5.75,"$22,272.00",4,WM Phoenix Open
+R2026003,2026,60067,Joe Highsmith,T54,281,-3,5.75,"$22,272.00",4,WM Phoenix Open
+R2026003,2026,46443,Brian Campbell,T54,281,-3,5.75,"$22,272.00",4,WM Phoenix Open
+R2026003,2026,49120,Kensei Hirata,T54,281,-3,5.75,"$22,272.00",4,WM Phoenix Open
+R2026003,2026,50525,Collin Morikawa,T54,281,-3,5.75,"$22,272.00",4,WM Phoenix Open
+R2026003,2026,36699,Patrick Rodgers,T60,282,-2,4.7,"$21,312.00",4,WM Phoenix Open
+R2026003,2026,55573,John VanDerLaan,T60,282,-2,4.7,"$21,312.00",4,WM Phoenix Open
+R2026003,2026,47917,Takumi Kanaya,T60,282,-2,4.7,"$21,312.00",4,WM Phoenix Open
+R2026003,2026,34371,Adrien Saddier,T60,282,-2,4.7,"$21,312.00",4,WM Phoenix Open
+R2026003,2026,58168,Davis Thompson,T64,283,-1,4.1,"$20,736.00",4,WM Phoenix Open
+R2026003,2026,31323,Gary Woodland,T64,283,-1,4.1,"$20,736.00",4,WM Phoenix Open
+R2026003,2026,57900,Chandler Phillips,T66,284,E,3.7,"$20,352.00",4,WM Phoenix Open
+R2026003,2026,39977,Max Homa,T66,284,E,3.7,"$20,352.00",4,WM Phoenix Open
+R2026003,2026,34021,Bud Cauley,T68,285,+1,3.2,"$19,872.00",4,WM Phoenix Open
+R2026003,2026,49766,Hank Lebioda,T68,285,+1,3.2,"$19,872.00",4,WM Phoenix Open
+R2026003,2026,63807,Neal Shipley,T68,285,+1,3.2,"$19,872.00",4,WM Phoenix Open
+R2026003,2026,49228,Keita Nakajima,71,287,+3,2.9,"$19,488.00",4,WM Phoenix Open
+R2026003,2026,32757,Patton Kizzire,72,288,+4,2.8,"$19,296.00",4,WM Phoenix Open
+R2026003,2026,45157,Cam Davis,73,291,+7,2.7,"$19,104.00",4,WM Phoenix Open
+R2026003,2026,31646,Emiliano Grillo,CUT,142,E,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,33968,Thorbjørn Olesen,CUT,142,E,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,34076,Joel Dahmen,CUT,142,E,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,50497,Adrien Dumont de Chassart,CUT,142,E,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,51977,Max Greyserman,CUT,142,E,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,32070,Rafael Campos,CUT,143,+1,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,45522,Christiaan Bezuidenhout,CUT,143,+1,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,36801,Mark Hubbard,CUT,143,+1,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,51894,Vince Whaley,CUT,143,+1,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,30926,Chris Kirk,CUT,143,+1,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,54304,Karl Vilips,CUT,143,+1,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,34466,Peter Malnati,CUT,143,+1,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,39997,Corey Conners,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,36689,Brooks Koepka,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,54421,Garrick Higgo,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,59141,Matt McCarty,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,40006,Erik van Rooyen,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,57362,Austin Eckroat,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,47393,Jeffrey Kang,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,35532,Tom Hoge,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,57259,Dan Brown,CUT,144,+2,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,48153,Matthieu Pavon,CUT,145,+3,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,29420,Billy Horschel,CUT,145,+3,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,12716,Charley Hoffman,CUT,145,+3,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,54788,Chandler Blanchet,CUT,145,+3,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,35296,Haotong Li,CUT,145,+3,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,37076,Marcelo Rozo,CUT,145,+3,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,34046,Jordan Spieth,CUT,145,+3,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,29725,Tony Finau,CUT,145,+3,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,51349,Nico Echavarria,CUT,146,+4,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,48867,Matti Schmid,CUT,146,+4,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,55851,Pontus Nyholm,CUT,146,+4,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,50095,Austin Smotherman,CUT,146,+4,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,29535,Brice Garnett,CUT,146,+4,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,51003,Marco Penge,CUT,146,+4,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,59006,Davis Chatfield,CUT,146,+4,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,57975,Harry Hall,CUT,147,+5,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,63343,Aldrich Potgieter,CUT,147,+5,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,47504,Sam Burns,CUT,147,+5,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,27644,Brian Harman,CUT,147,+5,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,29221,Webb Simpson,CUT,148,+6,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,47995,Davis Riley,CUT,149,+7,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,51997,Andrew Novak,CUT,149,+7,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,47347,Adam Schenk,CUT,149,+7,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,38991,Alejandro Tosti,CUT,150,+8,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,54607,Danny Walker,CUT,150,+8,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,47591,Eric Cole,CUT,151,+9,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,63121,William Mouw,CUT,153,+11,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,65871,Thomas Avant,CUT,159,+17,0.0,$0.00,2,WM Phoenix Open
+R2026003,2026,59567,Emilio Gonzalez,W/D,76,+5,0.0,$0.00,1,WM Phoenix Open
+R2026004,2026,22405,Justin Rose,1,265,-23,500.0,"$1,728,000.00",4,Farmers Insurance Open
 R2026004,2026,59836,Pierceson Coody,T2,272,-16,208.333,"$726,400.00",4,Farmers Insurance Open
 R2026004,2026,37455,Si Woo Kim,T2,272,-16,208.333,"$726,400.00",4,Farmers Insurance Open
 R2026004,2026,51287,Ryo Hisatsune,T2,272,-16,208.333,"$726,400.00",4,Farmers Insurance Open
-R2026004,2026,47420,Jake Knapp,T5,273,-15,105.000,"$370,800.00",4,Farmers Insurance Open
-R2026004,2026,36799,Stephan Jaeger,T5,273,-15,105.000,"$370,800.00",4,Farmers Insurance Open
-R2026004,2026,51634,Sahith Theegala,T7,274,-14,85.000,"$301,600.00",4,Farmers Insurance Open
-R2026004,2026,51997,Andrew Novak,T7,274,-14,85.000,"$301,600.00",4,Farmers Insurance Open
-R2026004,2026,34076,Joel Dahmen,T7,274,-14,85.000,"$301,600.00",4,Farmers Insurance Open
-R2026004,2026,46442,Maverick McNealy,10,275,-13,75.000,"$261,600.00",4,Farmers Insurance Open
+R2026004,2026,47420,Jake Knapp,T5,273,-15,105.0,"$370,800.00",4,Farmers Insurance Open
+R2026004,2026,36799,Stephan Jaeger,T5,273,-15,105.0,"$370,800.00",4,Farmers Insurance Open
+R2026004,2026,51634,Sahith Theegala,T7,274,-14,85.0,"$301,600.00",4,Farmers Insurance Open
+R2026004,2026,51997,Andrew Novak,T7,274,-14,85.0,"$301,600.00",4,Farmers Insurance Open
+R2026004,2026,34076,Joel Dahmen,T7,274,-14,85.0,"$301,600.00",4,Farmers Insurance Open
+R2026004,2026,46442,Maverick McNealy,10,275,-13,75.0,"$261,600.00",4,Farmers Insurance Open
 R2026004,2026,29725,Tony Finau,T11,276,-12,58.714,"$193,028.57",4,Farmers Insurance Open
 R2026004,2026,59018,Ryan Gerard,T11,276,-12,58.714,"$193,028.57",4,Farmers Insurance Open
 R2026004,2026,47347,Adam Schenk,T11,276,-12,58.714,"$193,028.57",4,Farmers Insurance Open
@@ -139,18 +139,18 @@ R2026004,2026,39546,Keith Mitchell,T11,276,-12,58.714,"$193,028.57",4,Farmers In
 R2026004,2026,32839,Hideki Matsuyama,T11,276,-12,58.714,"$193,028.57",4,Farmers Insurance Open
 R2026004,2026,28252,Seamus Power,T11,276,-12,58.714,"$193,028.57",4,Farmers Insurance Open
 R2026004,2026,35296,Haotong Li,T11,276,-12,58.714,"$193,028.57",4,Farmers Insurance Open
-R2026004,2026,57364,Michael Thorbjornsen,T18,277,-11,46.000,"$132,000.00",4,Farmers Insurance Open
-R2026004,2026,59095,Chris Gotterup,T18,277,-11,46.000,"$132,000.00",4,Farmers Insurance Open
-R2026004,2026,59141,Matt McCarty,T18,277,-11,46.000,"$132,000.00",4,Farmers Insurance Open
-R2026004,2026,36326,David Lipsky,T18,277,-11,46.000,"$132,000.00",4,Farmers Insurance Open
-R2026004,2026,47983,Chad Ramey,T22,278,-10,37.300,"$92,640.00",4,Farmers Insurance Open
-R2026004,2026,57366,Cameron Young,T22,278,-10,37.300,"$92,640.00",4,Farmers Insurance Open
-R2026004,2026,52453,Nicolai Højgaard,T22,278,-10,37.300,"$92,640.00",4,Farmers Insurance Open
-R2026004,2026,34099,Harris English,T22,278,-10,37.300,"$92,640.00",4,Farmers Insurance Open
-R2026004,2026,35658,Kris Ventura,T22,278,-10,37.300,"$92,640.00",4,Farmers Insurance Open
-R2026004,2026,45522,Christiaan Bezuidenhout,T27,279,-9,31.000,"$71,520.00",4,Farmers Insurance Open
-R2026004,2026,36699,Patrick Rodgers,T27,279,-9,31.000,"$71,520.00",4,Farmers Insurance Open
-R2026004,2026,47591,Eric Cole,T27,279,-9,31.000,"$71,520.00",4,Farmers Insurance Open
+R2026004,2026,57364,Michael Thorbjornsen,T18,277,-11,46.0,"$132,000.00",4,Farmers Insurance Open
+R2026004,2026,59095,Chris Gotterup,T18,277,-11,46.0,"$132,000.00",4,Farmers Insurance Open
+R2026004,2026,59141,Matt McCarty,T18,277,-11,46.0,"$132,000.00",4,Farmers Insurance Open
+R2026004,2026,36326,David Lipsky,T18,277,-11,46.0,"$132,000.00",4,Farmers Insurance Open
+R2026004,2026,47983,Chad Ramey,T22,278,-10,37.3,"$92,640.00",4,Farmers Insurance Open
+R2026004,2026,57366,Cameron Young,T22,278,-10,37.3,"$92,640.00",4,Farmers Insurance Open
+R2026004,2026,52453,Nicolai Højgaard,T22,278,-10,37.3,"$92,640.00",4,Farmers Insurance Open
+R2026004,2026,34099,Harris English,T22,278,-10,37.3,"$92,640.00",4,Farmers Insurance Open
+R2026004,2026,35658,Kris Ventura,T22,278,-10,37.3,"$92,640.00",4,Farmers Insurance Open
+R2026004,2026,45522,Christiaan Bezuidenhout,T27,279,-9,31.0,"$71,520.00",4,Farmers Insurance Open
+R2026004,2026,36699,Patrick Rodgers,T27,279,-9,31.0,"$71,520.00",4,Farmers Insurance Open
+R2026004,2026,47591,Eric Cole,T27,279,-9,31.0,"$71,520.00",4,Farmers Insurance Open
 R2026004,2026,56781,Isaiah Salinda,T30,280,-8,23.125,"$56,280.00",4,Farmers Insurance Open
 R2026004,2026,55893,Sam Stevens,T30,280,-8,23.125,"$56,280.00",4,Farmers Insurance Open
 R2026004,2026,52686,Rasmus Højgaard,T30,280,-8,23.125,"$56,280.00",4,Farmers Insurance Open
@@ -159,142 +159,142 @@ R2026004,2026,40162,Justin Lower,T30,280,-8,23.125,"$56,280.00",4,Farmers Insura
 R2026004,2026,57259,Dan Brown,T30,280,-8,23.125,"$56,280.00",4,Farmers Insurance Open
 R2026004,2026,49855,Kristoffer Reitan,T30,280,-8,23.125,"$56,280.00",4,Farmers Insurance Open
 R2026004,2026,51950,Max McGreevy,T30,280,-8,23.125,"$56,280.00",4,Farmers Insurance Open
-R2026004,2026,48153,Matthieu Pavon,T38,281,-7,16.000,"$41,760.00",4,Farmers Insurance Open
-R2026004,2026,54304,Karl Vilips,T38,281,-7,16.000,"$41,760.00",4,Farmers Insurance Open
-R2026004,2026,28089,Jason Day,T38,281,-7,16.000,"$41,760.00",4,Farmers Insurance Open
-R2026004,2026,54607,Danny Walker,T38,281,-7,16.000,"$41,760.00",4,Farmers Insurance Open
-R2026004,2026,31646,Emiliano Grillo,T38,281,-7,16.000,"$41,760.00",4,Farmers Insurance Open
-R2026004,2026,55573,John VanDerLaan,T43,282,-6,11.000,"$31,264.00",4,Farmers Insurance Open
-R2026004,2026,63454,Johnny Keefer,T43,282,-6,11.000,"$31,264.00",4,Farmers Insurance Open
-R2026004,2026,33141,Keegan Bradley,T43,282,-6,11.000,"$31,264.00",4,Farmers Insurance Open
-R2026004,2026,58168,Davis Thompson,T43,282,-6,11.000,"$31,264.00",4,Farmers Insurance Open
-R2026004,2026,28723,John Parry,T43,282,-6,11.000,"$31,264.00",4,Farmers Insurance Open
-R2026004,2026,59440,Ricky Castillo,T43,282,-6,11.000,"$31,264.00",4,Farmers Insurance Open
-R2026004,2026,59143,Mac Meissner,T49,283,-5,7.500,"$23,739.43",4,Farmers Insurance Open
-R2026004,2026,47993,Denny McCarthy,T49,283,-5,7.500,"$23,739.43",4,Farmers Insurance Open
-R2026004,2026,49947,Taylor Moore,T49,283,-5,7.500,"$23,739.43",4,Farmers Insurance Open
-R2026004,2026,57362,Austin Eckroat,T49,283,-5,7.500,"$23,739.43",4,Farmers Insurance Open
-R2026004,2026,37338,Zecheng Dou,T49,283,-5,7.500,"$23,739.43",4,Farmers Insurance Open
-R2026004,2026,52689,Rasmus Neergaard-Petersen,T49,283,-5,7.500,"$23,739.43",4,Farmers Insurance Open
-R2026004,2026,50286,A.J. Ewart,T49,283,-5,7.500,"$23,739.43",4,Farmers Insurance Open
-R2026004,2026,48867,Matti Schmid,T56,284,-4,5.600,"$22,176.00",4,Farmers Insurance Open
-R2026004,2026,60386,Sudarshan Yellamaraju,T56,284,-4,5.600,"$22,176.00",4,Farmers Insurance Open
-R2026004,2026,36689,Brooks Koepka,T56,284,-4,5.600,"$22,176.00",4,Farmers Insurance Open
-R2026004,2026,35506,Mackenzie Hughes,T59,285,-3,4.900,"$21,504.00",4,Farmers Insurance Open
-R2026004,2026,52375,Doug Ghim,T59,285,-3,4.900,"$21,504.00",4,Farmers Insurance Open
-R2026004,2026,37275,Sam Ryder,T59,285,-3,4.900,"$21,504.00",4,Farmers Insurance Open
-R2026004,2026,48001,Zach Bauchou,T59,285,-3,4.900,"$21,504.00",4,Farmers Insurance Open
-R2026004,2026,50188,S.H. Kim,63,286,-2,4.400,"$21,024.00",4,Farmers Insurance Open
-R2026004,2026,49228,Keita Nakajima,64,287,-1,4.200,"$20,832.00",4,Farmers Insurance Open
-R2026004,2026,51766,Wyndham Clark,T65,288,E,3.700,"$20,352.00",4,Farmers Insurance Open
-R2026004,2026,37076,Marcelo Rozo,T65,288,E,3.700,"$20,352.00",4,Farmers Insurance Open
-R2026004,2026,59567,Emilio Gonzalez,T65,288,E,3.700,"$20,352.00",4,Farmers Insurance Open
-R2026004,2026,55182,Tom Kim,T65,288,E,3.700,"$20,352.00",4,Farmers Insurance Open
-R2026004,2026,36801,Mark Hubbard,69,289,+1,3.200,"$19,872.00",4,Farmers Insurance Open
-R2026004,2026,45157,Cam Davis,T70,290,+2,2.850,"$19,392.00",4,Farmers Insurance Open
-R2026004,2026,51696,Rico Hoey,T70,290,+2,2.850,"$19,392.00",4,Farmers Insurance Open
-R2026004,2026,35532,Tom Hoge,T70,290,+2,2.850,"$19,392.00",4,Farmers Insurance Open
-R2026004,2026,60019,Jackson Suber,T70,290,+2,2.850,"$19,392.00",4,Farmers Insurance Open
-R2026004,2026,49120,Kensei Hirata,74,291,+3,2.600,"$18,912.00",4,Farmers Insurance Open
-R2026004,2026,52666,Sami Valimaki,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,35450,Patrick Cantlay,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,57123,Steven Fisk,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,57586,Jesper Svensson,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,51977,Max Greyserman,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,45242,Kevin Yu,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,40250,Taylor Pendrith,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,63121,William Mouw,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,48081,Xander Schauffele,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,54422,Christo Lamprecht,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,54783,Dylan Wu,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,54788,Chandler Blanchet,CUT,142,-2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,33968,Thorbjørn Olesen,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,64442,Gordon Sargent,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,31323,Gary Woodland,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,57900,Chandler Phillips,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,50095,Austin Smotherman,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,58816,Marcus Byrd,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,35461,Beau Hossler,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,47483,Will Zalatoris,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,66248,Justin Hastings,CUT,143,-1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,35310,Lanto Griffin,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,34466,Peter Malnati,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,47995,Davis Riley,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,27349,Alex Noren,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,50582,Jeremy Paul,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,23108,Matt Kuchar,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,39324,J.J. Spaun,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,34371,Adrien Saddier,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,63806,Hunter Logan,CUT,144,E,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,39335,Kevin Roy,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,51894,Vince Whaley,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,56630,Akshay Bhatia,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,49964,Aaron Wise,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,27649,Brandt Snedeker,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,55851,Pontus Nyholm,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,65256,David Ford,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,46464,Jordan Smith,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,30163,Henrik Norlander,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,39977,Max Homa,CUT,145,+1,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,27129,Luke List,CUT,146,+2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,40115,Adam Svensson,CUT,146,+2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,12716,Charley Hoffman,CUT,146,+2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,47917,Takumi Kanaya,CUT,146,+2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,46340,Alex Smalley,CUT,146,+2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,66743,Luke Clanton,CUT,146,+2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,63343,Aldrich Potgieter,CUT,146,+2,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,50497,Adrien Dumont de Chassart,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,54628,Lee Hodges,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,32070,Rafael Campos,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,40006,Erik van Rooyen,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,54421,Garrick Higgo,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,47393,Jeffrey Kang,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,34256,Andrew Putnam,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,54576,Patrick Fishburn,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,38991,Alejandro Tosti,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,60882,Thomas Rosenmueller,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,63807,Neal Shipley,CUT,147,+3,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,51003,Marco Penge,CUT,148,+4,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,59006,Davis Chatfield,CUT,148,+4,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,60067,Joe Highsmith,CUT,148,+4,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,49766,Hank Lebioda,CUT,148,+4,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,48887,Matt Wallace,CUT,148,+4,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,27214,Kevin Streelman,CUT,149,+5,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,29420,Billy Horschel,CUT,149,+5,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,29535,Brice Garnett,CUT,149,+5,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,27770,Camilo Villegas,CUT,150,+6,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,49893,Mark Geddes,CUT,150,+6,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,52955,Ludvig Åberg,CUT,150,+6,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,49590,Frankie Capan III,CUT,151,+7,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,27064,Jhonattan Vegas,CUT,152,+8,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,36529,S.T. Lee,CUT,154,+10,0.000,$0.00,2,Farmers Insurance Open
-R2026004,2026,61522,Michael Brennan,DQ,70,-2,0.000,$0.00,1,Farmers Insurance Open
-R2026002,2026,46046,Scottie Scheffler,1,261,-27,500.000,"$1,656,000.00",4,The American Express
-R2026002,2026,28089,Jason Day,T2,265,-23,183.750,"$616,400.00",4,The American Express
-R2026002,2026,59018,Ryan Gerard,T2,265,-23,183.750,"$616,400.00",4,The American Express
-R2026002,2026,59141,Matt McCarty,T2,265,-23,183.750,"$616,400.00",4,The American Express
-R2026002,2026,34256,Andrew Putnam,T2,265,-23,183.750,"$616,400.00",4,The American Express
-R2026002,2026,55893,Sam Stevens,T6,266,-22,95.000,"$322,000.00",4,The American Express
-R2026002,2026,37455,Si Woo Kim,T6,266,-22,95.000,"$322,000.00",4,The American Express
-R2026002,2026,51634,Sahith Theegala,T8,267,-21,75.000,"$250,700.00",4,The American Express
-R2026002,2026,35296,Haotong Li,T8,267,-21,75.000,"$250,700.00",4,The American Express
-R2026002,2026,34098,Russell Henley,T8,267,-21,75.000,"$250,700.00",4,The American Express
-R2026002,2026,50095,Austin Smotherman,T8,267,-21,75.000,"$250,700.00",4,The American Express
-R2026002,2026,35532,Tom Hoge,T8,267,-21,75.000,"$250,700.00",4,The American Express
-R2026002,2026,65256,David Ford,T13,268,-20,55.200,"$169,740.00",4,The American Express
-R2026002,2026,48001,Zach Bauchou,T13,268,-20,55.200,"$169,740.00",4,The American Express
-R2026002,2026,60004,Jacob Bridgeman,T13,268,-20,55.200,"$169,740.00",4,The American Express
-R2026002,2026,35450,Patrick Cantlay,T13,268,-20,55.200,"$169,740.00",4,The American Express
-R2026002,2026,51766,Wyndham Clark,T13,268,-20,55.200,"$169,740.00",4,The American Express
-R2026002,2026,50188,S.H. Kim,T18,269,-19,44.000,"$117,606.67",4,The American Express
-R2026002,2026,54304,Karl Vilips,T18,269,-19,44.000,"$117,606.67",4,The American Express
-R2026002,2026,59836,Pierceson Coody,T18,269,-19,44.000,"$117,606.67",4,The American Express
-R2026002,2026,32102,Rickie Fowler,T18,269,-19,44.000,"$117,606.67",4,The American Express
-R2026002,2026,47483,Will Zalatoris,T18,269,-19,44.000,"$117,606.67",4,The American Express
-R2026002,2026,66417,Blades Brown,T18,269,-19,0.000,"$117,606.67",4,The American Express
-R2026002,2026,24502,Adam Scott,T24,270,-18,35.500,"$81,420.00",4,The American Express
-R2026002,2026,54591,Ben Griffin,T24,270,-18,35.500,"$81,420.00",4,The American Express
-R2026002,2026,57975,Harry Hall,T24,270,-18,35.500,"$81,420.00",4,The American Express
+R2026004,2026,48153,Matthieu Pavon,T38,281,-7,16.0,"$41,760.00",4,Farmers Insurance Open
+R2026004,2026,54304,Karl Vilips,T38,281,-7,16.0,"$41,760.00",4,Farmers Insurance Open
+R2026004,2026,28089,Jason Day,T38,281,-7,16.0,"$41,760.00",4,Farmers Insurance Open
+R2026004,2026,54607,Danny Walker,T38,281,-7,16.0,"$41,760.00",4,Farmers Insurance Open
+R2026004,2026,31646,Emiliano Grillo,T38,281,-7,16.0,"$41,760.00",4,Farmers Insurance Open
+R2026004,2026,55573,John VanDerLaan,T43,282,-6,11.0,"$31,264.00",4,Farmers Insurance Open
+R2026004,2026,63454,Johnny Keefer,T43,282,-6,11.0,"$31,264.00",4,Farmers Insurance Open
+R2026004,2026,33141,Keegan Bradley,T43,282,-6,11.0,"$31,264.00",4,Farmers Insurance Open
+R2026004,2026,58168,Davis Thompson,T43,282,-6,11.0,"$31,264.00",4,Farmers Insurance Open
+R2026004,2026,28723,John Parry,T43,282,-6,11.0,"$31,264.00",4,Farmers Insurance Open
+R2026004,2026,59440,Ricky Castillo,T43,282,-6,11.0,"$31,264.00",4,Farmers Insurance Open
+R2026004,2026,59143,Mac Meissner,T49,283,-5,7.5,"$23,739.43",4,Farmers Insurance Open
+R2026004,2026,47993,Denny McCarthy,T49,283,-5,7.5,"$23,739.43",4,Farmers Insurance Open
+R2026004,2026,49947,Taylor Moore,T49,283,-5,7.5,"$23,739.43",4,Farmers Insurance Open
+R2026004,2026,57362,Austin Eckroat,T49,283,-5,7.5,"$23,739.43",4,Farmers Insurance Open
+R2026004,2026,37338,Zecheng Dou,T49,283,-5,7.5,"$23,739.43",4,Farmers Insurance Open
+R2026004,2026,52689,Rasmus Neergaard-Petersen,T49,283,-5,7.5,"$23,739.43",4,Farmers Insurance Open
+R2026004,2026,50286,A.J. Ewart,T49,283,-5,7.5,"$23,739.43",4,Farmers Insurance Open
+R2026004,2026,48867,Matti Schmid,T56,284,-4,5.6,"$22,176.00",4,Farmers Insurance Open
+R2026004,2026,60386,Sudarshan Yellamaraju,T56,284,-4,5.6,"$22,176.00",4,Farmers Insurance Open
+R2026004,2026,36689,Brooks Koepka,T56,284,-4,5.6,"$22,176.00",4,Farmers Insurance Open
+R2026004,2026,35506,Mackenzie Hughes,T59,285,-3,4.9,"$21,504.00",4,Farmers Insurance Open
+R2026004,2026,52375,Doug Ghim,T59,285,-3,4.9,"$21,504.00",4,Farmers Insurance Open
+R2026004,2026,37275,Sam Ryder,T59,285,-3,4.9,"$21,504.00",4,Farmers Insurance Open
+R2026004,2026,48001,Zach Bauchou,T59,285,-3,4.9,"$21,504.00",4,Farmers Insurance Open
+R2026004,2026,50188,S.H. Kim,63,286,-2,4.4,"$21,024.00",4,Farmers Insurance Open
+R2026004,2026,49228,Keita Nakajima,64,287,-1,4.2,"$20,832.00",4,Farmers Insurance Open
+R2026004,2026,51766,Wyndham Clark,T65,288,E,3.7,"$20,352.00",4,Farmers Insurance Open
+R2026004,2026,37076,Marcelo Rozo,T65,288,E,3.7,"$20,352.00",4,Farmers Insurance Open
+R2026004,2026,59567,Emilio Gonzalez,T65,288,E,3.7,"$20,352.00",4,Farmers Insurance Open
+R2026004,2026,55182,Tom Kim,T65,288,E,3.7,"$20,352.00",4,Farmers Insurance Open
+R2026004,2026,36801,Mark Hubbard,69,289,+1,3.2,"$19,872.00",4,Farmers Insurance Open
+R2026004,2026,45157,Cam Davis,T70,290,+2,2.85,"$19,392.00",4,Farmers Insurance Open
+R2026004,2026,51696,Rico Hoey,T70,290,+2,2.85,"$19,392.00",4,Farmers Insurance Open
+R2026004,2026,35532,Tom Hoge,T70,290,+2,2.85,"$19,392.00",4,Farmers Insurance Open
+R2026004,2026,60019,Jackson Suber,T70,290,+2,2.85,"$19,392.00",4,Farmers Insurance Open
+R2026004,2026,49120,Kensei Hirata,74,291,+3,2.6,"$18,912.00",4,Farmers Insurance Open
+R2026004,2026,52666,Sami Valimaki,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,35450,Patrick Cantlay,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,57123,Steven Fisk,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,57586,Jesper Svensson,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,51977,Max Greyserman,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,45242,Kevin Yu,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,40250,Taylor Pendrith,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,63121,William Mouw,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,48081,Xander Schauffele,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,54422,Christo Lamprecht,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,54783,Dylan Wu,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,54788,Chandler Blanchet,CUT,142,-2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,33968,Thorbjørn Olesen,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,64442,Gordon Sargent,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,31323,Gary Woodland,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,57900,Chandler Phillips,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,50095,Austin Smotherman,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,58816,Marcus Byrd,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,35461,Beau Hossler,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,47483,Will Zalatoris,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,66248,Justin Hastings,CUT,143,-1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,35310,Lanto Griffin,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,34466,Peter Malnati,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,47995,Davis Riley,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,27349,Alex Noren,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,50582,Jeremy Paul,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,23108,Matt Kuchar,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,39324,J.J. Spaun,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,34371,Adrien Saddier,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,63806,Hunter Logan,CUT,144,E,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,39335,Kevin Roy,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,51894,Vince Whaley,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,56630,Akshay Bhatia,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,49964,Aaron Wise,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,27649,Brandt Snedeker,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,55851,Pontus Nyholm,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,65256,David Ford,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,46464,Jordan Smith,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,30163,Henrik Norlander,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,39977,Max Homa,CUT,145,+1,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,27129,Luke List,CUT,146,+2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,40115,Adam Svensson,CUT,146,+2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,12716,Charley Hoffman,CUT,146,+2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,47917,Takumi Kanaya,CUT,146,+2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,46340,Alex Smalley,CUT,146,+2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,66743,Luke Clanton,CUT,146,+2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,63343,Aldrich Potgieter,CUT,146,+2,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,50497,Adrien Dumont de Chassart,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,54628,Lee Hodges,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,32070,Rafael Campos,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,40006,Erik van Rooyen,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,54421,Garrick Higgo,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,47393,Jeffrey Kang,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,34256,Andrew Putnam,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,54576,Patrick Fishburn,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,38991,Alejandro Tosti,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,60882,Thomas Rosenmueller,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,63807,Neal Shipley,CUT,147,+3,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,51003,Marco Penge,CUT,148,+4,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,59006,Davis Chatfield,CUT,148,+4,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,60067,Joe Highsmith,CUT,148,+4,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,49766,Hank Lebioda,CUT,148,+4,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,48887,Matt Wallace,CUT,148,+4,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,27214,Kevin Streelman,CUT,149,+5,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,29420,Billy Horschel,CUT,149,+5,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,29535,Brice Garnett,CUT,149,+5,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,27770,Camilo Villegas,CUT,150,+6,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,49893,Mark Geddes,CUT,150,+6,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,52955,Ludvig Åberg,CUT,150,+6,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,49590,Frankie Capan III,CUT,151,+7,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,27064,Jhonattan Vegas,CUT,152,+8,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,36529,S.T. Lee,CUT,154,+10,0.0,$0.00,2,Farmers Insurance Open
+R2026004,2026,61522,Michael Brennan,DQ,70,-2,0.0,$0.00,1,Farmers Insurance Open
+R2026002,2026,46046,Scottie Scheffler,1,261,-27,500.0,"$1,656,000.00",4,The American Express
+R2026002,2026,28089,Jason Day,T2,265,-23,183.75,"$616,400.00",4,The American Express
+R2026002,2026,59018,Ryan Gerard,T2,265,-23,183.75,"$616,400.00",4,The American Express
+R2026002,2026,59141,Matt McCarty,T2,265,-23,183.75,"$616,400.00",4,The American Express
+R2026002,2026,34256,Andrew Putnam,T2,265,-23,183.75,"$616,400.00",4,The American Express
+R2026002,2026,55893,Sam Stevens,T6,266,-22,95.0,"$322,000.00",4,The American Express
+R2026002,2026,37455,Si Woo Kim,T6,266,-22,95.0,"$322,000.00",4,The American Express
+R2026002,2026,51634,Sahith Theegala,T8,267,-21,75.0,"$250,700.00",4,The American Express
+R2026002,2026,35296,Haotong Li,T8,267,-21,75.0,"$250,700.00",4,The American Express
+R2026002,2026,34098,Russell Henley,T8,267,-21,75.0,"$250,700.00",4,The American Express
+R2026002,2026,50095,Austin Smotherman,T8,267,-21,75.0,"$250,700.00",4,The American Express
+R2026002,2026,35532,Tom Hoge,T8,267,-21,75.0,"$250,700.00",4,The American Express
+R2026002,2026,65256,David Ford,T13,268,-20,55.2,"$169,740.00",4,The American Express
+R2026002,2026,48001,Zach Bauchou,T13,268,-20,55.2,"$169,740.00",4,The American Express
+R2026002,2026,60004,Jacob Bridgeman,T13,268,-20,55.2,"$169,740.00",4,The American Express
+R2026002,2026,35450,Patrick Cantlay,T13,268,-20,55.2,"$169,740.00",4,The American Express
+R2026002,2026,51766,Wyndham Clark,T13,268,-20,55.2,"$169,740.00",4,The American Express
+R2026002,2026,50188,S.H. Kim,T18,269,-19,44.0,"$117,606.67",4,The American Express
+R2026002,2026,54304,Karl Vilips,T18,269,-19,44.0,"$117,606.67",4,The American Express
+R2026002,2026,59836,Pierceson Coody,T18,269,-19,44.0,"$117,606.67",4,The American Express
+R2026002,2026,32102,Rickie Fowler,T18,269,-19,44.0,"$117,606.67",4,The American Express
+R2026002,2026,47483,Will Zalatoris,T18,269,-19,44.0,"$117,606.67",4,The American Express
+R2026002,2026,66417,Blades Brown,T18,269,-19,0.0,"$117,606.67",4,The American Express
+R2026002,2026,24502,Adam Scott,T24,270,-18,35.5,"$81,420.00",4,The American Express
+R2026002,2026,54591,Ben Griffin,T24,270,-18,35.5,"$81,420.00",4,The American Express
+R2026002,2026,57975,Harry Hall,T24,270,-18,35.5,"$81,420.00",4,The American Express
 R2026002,2026,39977,Max Homa,T27,271,-17,25.273,"$57,918.18",4,The American Express
 R2026002,2026,46464,Jordan Smith,T27,271,-17,25.273,"$57,918.18",4,The American Express
 R2026002,2026,48153,Matthieu Pavon,T27,271,-17,25.273,"$57,918.18",4,The American Express
@@ -306,12 +306,12 @@ R2026002,2026,51950,Max McGreevy,T27,271,-17,25.273,"$57,918.18",4,The American 
 R2026002,2026,47504,Sam Burns,T27,271,-17,25.273,"$57,918.18",4,The American Express
 R2026002,2026,29420,Billy Horschel,T27,271,-17,25.273,"$57,918.18",4,The American Express
 R2026002,2026,47591,Eric Cole,T27,271,-17,25.273,"$57,918.18",4,The American Express
-R2026002,2026,37378,Min Woo Lee,T38,272,-16,15.500,"$39,100.00",4,The American Express
-R2026002,2026,52215,Robert MacIntyre,T38,272,-16,15.500,"$39,100.00",4,The American Express
-R2026002,2026,34076,Joel Dahmen,T38,272,-16,15.500,"$39,100.00",4,The American Express
-R2026002,2026,45522,Christiaan Bezuidenhout,T38,272,-16,15.500,"$39,100.00",4,The American Express
-R2026002,2026,55182,Tom Kim,T38,272,-16,15.500,"$39,100.00",4,The American Express
-R2026002,2026,49771,J.T. Poston,T38,272,-16,15.500,"$39,100.00",4,The American Express
+R2026002,2026,37378,Min Woo Lee,T38,272,-16,15.5,"$39,100.00",4,The American Express
+R2026002,2026,52215,Robert MacIntyre,T38,272,-16,15.5,"$39,100.00",4,The American Express
+R2026002,2026,34076,Joel Dahmen,T38,272,-16,15.5,"$39,100.00",4,The American Express
+R2026002,2026,45522,Christiaan Bezuidenhout,T38,272,-16,15.5,"$39,100.00",4,The American Express
+R2026002,2026,55182,Tom Kim,T38,272,-16,15.5,"$39,100.00",4,The American Express
+R2026002,2026,49771,J.T. Poston,T38,272,-16,15.5,"$39,100.00",4,The American Express
 R2026002,2026,54783,Dylan Wu,T44,273,-15,8.792,"$25,376.67",4,The American Express
 R2026002,2026,52686,Rasmus Højgaard,T44,273,-15,8.792,"$25,376.67",4,The American Express
 R2026002,2026,51287,Ryo Hisatsune,T44,273,-15,8.792,"$25,376.67",4,The American Express
@@ -324,224 +324,304 @@ R2026002,2026,52513,Carson Young,T44,273,-15,8.792,"$25,376.67",4,The American E
 R2026002,2026,59440,Ricky Castillo,T44,273,-15,8.792,"$25,376.67",4,The American Express
 R2026002,2026,36699,Patrick Rodgers,T44,273,-15,8.792,"$25,376.67",4,The American Express
 R2026002,2026,32070,Rafael Campos,T44,273,-15,8.792,"$25,376.67",4,The American Express
-R2026002,2026,47995,Davis Riley,T56,274,-14,5.200,"$20,884.00",4,The American Express
-R2026002,2026,51977,Max Greyserman,T56,274,-14,5.200,"$20,884.00",4,The American Express
-R2026002,2026,40026,Daniel Berger,T56,274,-14,5.200,"$20,884.00",4,The American Express
-R2026002,2026,49947,Taylor Moore,T56,274,-14,5.200,"$20,884.00",4,The American Express
-R2026002,2026,28723,John Parry,T56,274,-14,5.200,"$20,884.00",4,The American Express
-R2026002,2026,47993,Denny McCarthy,T56,274,-14,5.200,"$20,884.00",4,The American Express
-R2026002,2026,61522,Michael Brennan,T56,274,-14,5.200,"$20,884.00",4,The American Express
-R2026002,2026,47983,Chad Ramey,T63,275,-13,3.900,"$19,688.00",4,The American Express
-R2026002,2026,28252,Seamus Power,T63,275,-13,3.900,"$19,688.00",4,The American Express
-R2026002,2026,57900,Chandler Phillips,T63,275,-13,3.900,"$19,688.00",4,The American Express
-R2026002,2026,40098,Matt Fitzpatrick,T63,275,-13,3.900,"$19,688.00",4,The American Express
-R2026002,2026,59006,Davis Chatfield,T63,275,-13,3.900,"$19,688.00",4,The American Express
-R2026002,2026,59143,Mac Meissner,T63,275,-13,3.900,"$19,688.00",4,The American Express
-R2026002,2026,50497,Adrien Dumont de Chassart,69,276,-12,3.200,"$19,044.00",4,The American Express
-R2026002,2026,34371,Adrien Saddier,T70,278,-10,2.950,"$18,768.00",4,The American Express
-R2026002,2026,24024,Zach Johnson,T70,278,-10,2.950,"$18,768.00",4,The American Express
-R2026002,2026,31323,Gary Woodland,72,279,-9,2.800,"$18,492.00",4,The American Express
-R2026002,2026,37338,Zecheng Dou,73,282,-6,2.700,"$18,308.00",4,The American Express
-R2026002,2026,29535,Brice Garnett,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,27770,Camilo Villegas,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,57362,Austin Eckroat,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,27649,Brandt Snedeker,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,40250,Taylor Pendrith,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,49228,Keita Nakajima,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,35658,Kris Ventura,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,34021,Bud Cauley,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,47917,Takumi Kanaya,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,52375,Doug Ghim,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,51997,Andrew Novak,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,58168,Davis Thompson,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,48117,Kurt Kitayama,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,60386,Sudarshan Yellamaraju,CUT,206,-10,0.000,$0.00,3,The American Express
-R2026002,2026,39975,Michael Kim,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,33597,Harry Higgs,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,30926,Chris Kirk,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,25686,Jason Dufner,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,49766,Hank Lebioda,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,40115,Adam Svensson,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,36799,Stephan Jaeger,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,39335,Kevin Roy,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,27214,Kevin Streelman,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,29725,Tony Finau,CUT,207,-9,0.000,$0.00,3,The American Express
-R2026002,2026,34466,Peter Malnati,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,35461,Beau Hossler,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,57123,Steven Fisk,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,54628,Lee Hodges,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,57586,Jesper Svensson,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,35310,Lanto Griffin,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,40006,Erik van Rooyen,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,48887,Matt Wallace,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,22405,Justin Rose,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,59567,Emilio Gonzalez,CUT,208,-8,0.000,$0.00,3,The American Express
-R2026002,2026,45242,Kevin Yu,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,54607,Danny Walker,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,27349,Alex Noren,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,32757,Patton Kizzire,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,27644,Brian Harman,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,57259,Dan Brown,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,57364,Michael Thorbjornsen,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,51894,Vince Whaley,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,31646,Emiliano Grillo,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,47393,Jeffrey Kang,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,52666,Sami Valimaki,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,49590,Frankie Capan III,CUT,209,-7,0.000,$0.00,3,The American Express
-R2026002,2026,63121,William Mouw,CUT,210,-6,0.000,$0.00,3,The American Express
-R2026002,2026,36529,S.T. Lee,CUT,210,-6,0.000,$0.00,3,The American Express
-R2026002,2026,63343,Aldrich Potgieter,CUT,210,-6,0.000,$0.00,3,The American Express
-R2026002,2026,55573,John VanDerLaan,CUT,210,-6,0.000,$0.00,3,The American Express
-R2026002,2026,49120,Kensei Hirata,CUT,210,-6,0.000,$0.00,3,The American Express
-R2026002,2026,37076,Marcelo Rozo,CUT,210,-6,0.000,$0.00,3,The American Express
-R2026002,2026,34587,Chan Kim,CUT,210,-6,0.000,$0.00,3,The American Express
-R2026002,2026,51349,Nico Echavarria,CUT,211,-5,0.000,$0.00,3,The American Express
-R2026002,2026,64442,Gordon Sargent,CUT,211,-5,0.000,$0.00,3,The American Express
-R2026002,2026,63807,Neal Shipley,CUT,211,-5,0.000,$0.00,3,The American Express
-R2026002,2026,27064,Jhonattan Vegas,CUT,211,-5,0.000,$0.00,3,The American Express
-R2026002,2026,35506,Mackenzie Hughes,CUT,211,-5,0.000,$0.00,3,The American Express
-R2026002,2026,54788,Chandler Blanchet,CUT,212,-4,0.000,$0.00,3,The American Express
-R2026002,2026,60067,Joe Highsmith,CUT,212,-4,0.000,$0.00,3,The American Express
-R2026002,2026,56781,Isaiah Salinda,CUT,212,-4,0.000,$0.00,3,The American Express
-R2026002,2026,36801,Mark Hubbard,CUT,213,-3,0.000,$0.00,3,The American Express
-R2026002,2026,54576,Patrick Fishburn,CUT,213,-3,0.000,$0.00,3,The American Express
-R2026002,2026,48867,Matti Schmid,CUT,213,-3,0.000,$0.00,3,The American Express
-R2026002,2026,49960,Sepp Straka,CUT,214,-2,0.000,$0.00,3,The American Express
-R2026002,2026,60019,Jackson Suber,CUT,214,-2,0.000,$0.00,3,The American Express
-R2026002,2026,22764,Michael Block,CUT,214,-2,0.000,$0.00,3,The American Express
-R2026002,2026,56630,Akshay Bhatia,CUT,215,-1,0.000,$0.00,3,The American Express
-R2026002,2026,46443,Brian Campbell,CUT,215,-1,0.000,$0.00,3,The American Express
-R2026002,2026,40162,Justin Lower,CUT,216,E,0.000,$0.00,3,The American Express
-R2026002,2026,12716,Charley Hoffman,CUT,216,E,0.000,$0.00,3,The American Express
-R2026002,2026,35449,Adam Long,CUT,216,E,0.000,$0.00,3,The American Express
-R2026002,2026,47347,Adam Schenk,CUT,218,+2,0.000,$0.00,3,The American Express
-R2026002,2026,51600,Jimmy Stanger,CUT,219,+3,0.000,$0.00,3,The American Express
-R2026002,2026,45157,Cam Davis,CUT,219,+3,0.000,$0.00,3,The American Express
-R2026002,2026,54422,Christo Lamprecht,CUT,220,+4,0.000,$0.00,3,The American Express
-R2026002,2026,38991,Alejandro Tosti,CUT,221,+5,0.000,$0.00,3,The American Express
-R2026002,2026,33410,Andrew Landry,CUT,222,+6,0.000,$0.00,3,The American Express
-R2026002,2026,55851,Pontus Nyholm,CUT,226,+10,0.000,$0.00,3,The American Express
-R2026002,2026,66743,Luke Clanton,W/D,70,-2,0.000,$0.00,1,The American Express
-R2026002,2026,51696,Rico Hoey,W/D,77,+5,0.000,$0.00,1,The American Express
-R2026002,2026,52955,Ludvig Åberg,W/D,135,-9,0.000,$0.00,2,The American Express
-R2026002,2026,59866,Nick Dunlap,W/D,151,+7,0.000,$0.00,2,The American Express
-R2026006,2026,59095,Chris Gotterup,1,264,-16,500.000,"$1,638,000.00",4,Sony Open in Hawaii
-R2026006,2026,59018,Ryan Gerard,2,266,-14,300.000,"$991,900.00",4,Sony Open in Hawaii
-R2026006,2026,36699,Patrick Rodgers,3,267,-13,190.000,"$627,900.00",4,Sony Open in Hawaii
-R2026006,2026,52215,Robert MacIntyre,T4,268,-12,122.500,"$409,500.00",4,Sony Open in Hawaii
-R2026006,2026,60004,Jacob Bridgeman,T4,268,-12,122.500,"$409,500.00",4,Sony Open in Hawaii
-R2026006,2026,40026,Daniel Berger,T6,269,-11,86.000,"$287,105.00",4,Sony Open in Hawaii
-R2026006,2026,40250,Taylor Pendrith,T6,269,-11,86.000,"$287,105.00",4,Sony Open in Hawaii
-R2026006,2026,54628,Lee Hodges,T6,269,-11,86.000,"$287,105.00",4,Sony Open in Hawaii
-R2026006,2026,47995,Davis Riley,T6,269,-11,86.000,"$287,105.00",4,Sony Open in Hawaii
-R2026006,2026,57975,Harry Hall,T6,269,-11,86.000,"$287,105.00",4,Sony Open in Hawaii
-R2026006,2026,47420,Jake Knapp,T11,270,-10,67.500,"$220,675.00",4,Sony Open in Hawaii
-R2026006,2026,37455,Si Woo Kim,T11,270,-10,67.500,"$220,675.00",4,Sony Open in Hawaii
+R2026002,2026,47995,Davis Riley,T56,274,-14,5.2,"$20,884.00",4,The American Express
+R2026002,2026,51977,Max Greyserman,T56,274,-14,5.2,"$20,884.00",4,The American Express
+R2026002,2026,40026,Daniel Berger,T56,274,-14,5.2,"$20,884.00",4,The American Express
+R2026002,2026,49947,Taylor Moore,T56,274,-14,5.2,"$20,884.00",4,The American Express
+R2026002,2026,28723,John Parry,T56,274,-14,5.2,"$20,884.00",4,The American Express
+R2026002,2026,47993,Denny McCarthy,T56,274,-14,5.2,"$20,884.00",4,The American Express
+R2026002,2026,61522,Michael Brennan,T56,274,-14,5.2,"$20,884.00",4,The American Express
+R2026002,2026,47983,Chad Ramey,T63,275,-13,3.9,"$19,688.00",4,The American Express
+R2026002,2026,28252,Seamus Power,T63,275,-13,3.9,"$19,688.00",4,The American Express
+R2026002,2026,57900,Chandler Phillips,T63,275,-13,3.9,"$19,688.00",4,The American Express
+R2026002,2026,40098,Matt Fitzpatrick,T63,275,-13,3.9,"$19,688.00",4,The American Express
+R2026002,2026,59006,Davis Chatfield,T63,275,-13,3.9,"$19,688.00",4,The American Express
+R2026002,2026,59143,Mac Meissner,T63,275,-13,3.9,"$19,688.00",4,The American Express
+R2026002,2026,50497,Adrien Dumont de Chassart,69,276,-12,3.2,"$19,044.00",4,The American Express
+R2026002,2026,34371,Adrien Saddier,T70,278,-10,2.95,"$18,768.00",4,The American Express
+R2026002,2026,24024,Zach Johnson,T70,278,-10,2.95,"$18,768.00",4,The American Express
+R2026002,2026,31323,Gary Woodland,72,279,-9,2.8,"$18,492.00",4,The American Express
+R2026002,2026,37338,Zecheng Dou,73,282,-6,2.7,"$18,308.00",4,The American Express
+R2026002,2026,29535,Brice Garnett,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,27770,Camilo Villegas,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,57362,Austin Eckroat,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,27649,Brandt Snedeker,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,40250,Taylor Pendrith,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,49228,Keita Nakajima,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,35658,Kris Ventura,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,34021,Bud Cauley,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,47917,Takumi Kanaya,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,52375,Doug Ghim,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,51997,Andrew Novak,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,58168,Davis Thompson,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,48117,Kurt Kitayama,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,60386,Sudarshan Yellamaraju,CUT,206,-10,0.0,$0.00,3,The American Express
+R2026002,2026,39975,Michael Kim,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,33597,Harry Higgs,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,30926,Chris Kirk,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,25686,Jason Dufner,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,49766,Hank Lebioda,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,40115,Adam Svensson,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,36799,Stephan Jaeger,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,39335,Kevin Roy,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,27214,Kevin Streelman,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,29725,Tony Finau,CUT,207,-9,0.0,$0.00,3,The American Express
+R2026002,2026,34466,Peter Malnati,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,35461,Beau Hossler,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,57123,Steven Fisk,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,54628,Lee Hodges,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,57586,Jesper Svensson,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,35310,Lanto Griffin,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,40006,Erik van Rooyen,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,48887,Matt Wallace,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,22405,Justin Rose,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,59567,Emilio Gonzalez,CUT,208,-8,0.0,$0.00,3,The American Express
+R2026002,2026,45242,Kevin Yu,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,54607,Danny Walker,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,27349,Alex Noren,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,32757,Patton Kizzire,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,27644,Brian Harman,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,57259,Dan Brown,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,57364,Michael Thorbjornsen,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,51894,Vince Whaley,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,31646,Emiliano Grillo,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,47393,Jeffrey Kang,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,52666,Sami Valimaki,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,49590,Frankie Capan III,CUT,209,-7,0.0,$0.00,3,The American Express
+R2026002,2026,63121,William Mouw,CUT,210,-6,0.0,$0.00,3,The American Express
+R2026002,2026,36529,S.T. Lee,CUT,210,-6,0.0,$0.00,3,The American Express
+R2026002,2026,63343,Aldrich Potgieter,CUT,210,-6,0.0,$0.00,3,The American Express
+R2026002,2026,55573,John VanDerLaan,CUT,210,-6,0.0,$0.00,3,The American Express
+R2026002,2026,49120,Kensei Hirata,CUT,210,-6,0.0,$0.00,3,The American Express
+R2026002,2026,37076,Marcelo Rozo,CUT,210,-6,0.0,$0.00,3,The American Express
+R2026002,2026,34587,Chan Kim,CUT,210,-6,0.0,$0.00,3,The American Express
+R2026002,2026,51349,Nico Echavarria,CUT,211,-5,0.0,$0.00,3,The American Express
+R2026002,2026,64442,Gordon Sargent,CUT,211,-5,0.0,$0.00,3,The American Express
+R2026002,2026,63807,Neal Shipley,CUT,211,-5,0.0,$0.00,3,The American Express
+R2026002,2026,27064,Jhonattan Vegas,CUT,211,-5,0.0,$0.00,3,The American Express
+R2026002,2026,35506,Mackenzie Hughes,CUT,211,-5,0.0,$0.00,3,The American Express
+R2026002,2026,54788,Chandler Blanchet,CUT,212,-4,0.0,$0.00,3,The American Express
+R2026002,2026,60067,Joe Highsmith,CUT,212,-4,0.0,$0.00,3,The American Express
+R2026002,2026,56781,Isaiah Salinda,CUT,212,-4,0.0,$0.00,3,The American Express
+R2026002,2026,36801,Mark Hubbard,CUT,213,-3,0.0,$0.00,3,The American Express
+R2026002,2026,54576,Patrick Fishburn,CUT,213,-3,0.0,$0.00,3,The American Express
+R2026002,2026,48867,Matti Schmid,CUT,213,-3,0.0,$0.00,3,The American Express
+R2026002,2026,49960,Sepp Straka,CUT,214,-2,0.0,$0.00,3,The American Express
+R2026002,2026,60019,Jackson Suber,CUT,214,-2,0.0,$0.00,3,The American Express
+R2026002,2026,22764,Michael Block,CUT,214,-2,0.0,$0.00,3,The American Express
+R2026002,2026,56630,Akshay Bhatia,CUT,215,-1,0.0,$0.00,3,The American Express
+R2026002,2026,46443,Brian Campbell,CUT,215,-1,0.0,$0.00,3,The American Express
+R2026002,2026,40162,Justin Lower,CUT,216,E,0.0,$0.00,3,The American Express
+R2026002,2026,12716,Charley Hoffman,CUT,216,E,0.0,$0.00,3,The American Express
+R2026002,2026,35449,Adam Long,CUT,216,E,0.0,$0.00,3,The American Express
+R2026002,2026,47347,Adam Schenk,CUT,218,+2,0.0,$0.00,3,The American Express
+R2026002,2026,51600,Jimmy Stanger,CUT,219,+3,0.0,$0.00,3,The American Express
+R2026002,2026,45157,Cam Davis,CUT,219,+3,0.0,$0.00,3,The American Express
+R2026002,2026,54422,Christo Lamprecht,CUT,220,+4,0.0,$0.00,3,The American Express
+R2026002,2026,38991,Alejandro Tosti,CUT,221,+5,0.0,$0.00,3,The American Express
+R2026002,2026,33410,Andrew Landry,CUT,222,+6,0.0,$0.00,3,The American Express
+R2026002,2026,55851,Pontus Nyholm,CUT,226,+10,0.0,$0.00,3,The American Express
+R2026002,2026,66743,Luke Clanton,W/D,70,-2,0.0,$0.00,1,The American Express
+R2026002,2026,51696,Rico Hoey,W/D,77,+5,0.0,$0.00,1,The American Express
+R2026002,2026,52955,Ludvig Åberg,W/D,135,-9,0.0,$0.00,2,The American Express
+R2026002,2026,59866,Nick Dunlap,W/D,151,+7,0.0,$0.00,2,The American Express
+R2026006,2026,59095,Chris Gotterup,1,264,-16,500.0,"$1,638,000.00",4,Sony Open in Hawaii
+R2026006,2026,59018,Ryan Gerard,2,266,-14,300.0,"$991,900.00",4,Sony Open in Hawaii
+R2026006,2026,36699,Patrick Rodgers,3,267,-13,190.0,"$627,900.00",4,Sony Open in Hawaii
+R2026006,2026,52215,Robert MacIntyre,T4,268,-12,122.5,"$409,500.00",4,Sony Open in Hawaii
+R2026006,2026,60004,Jacob Bridgeman,T4,268,-12,122.5,"$409,500.00",4,Sony Open in Hawaii
+R2026006,2026,40026,Daniel Berger,T6,269,-11,86.0,"$287,105.00",4,Sony Open in Hawaii
+R2026006,2026,40250,Taylor Pendrith,T6,269,-11,86.0,"$287,105.00",4,Sony Open in Hawaii
+R2026006,2026,54628,Lee Hodges,T6,269,-11,86.0,"$287,105.00",4,Sony Open in Hawaii
+R2026006,2026,47995,Davis Riley,T6,269,-11,86.0,"$287,105.00",4,Sony Open in Hawaii
+R2026006,2026,57975,Harry Hall,T6,269,-11,86.0,"$287,105.00",4,Sony Open in Hawaii
+R2026006,2026,47420,Jake Knapp,T11,270,-10,67.5,"$220,675.00",4,Sony Open in Hawaii
+R2026006,2026,37455,Si Woo Kim,T11,270,-10,67.5,"$220,675.00",4,Sony Open in Hawaii
 R2026006,2026,59836,Pierceson Coody,T13,271,-9,54.167,"$163,041.67",4,Sony Open in Hawaii
 R2026006,2026,60386,Sudarshan Yellamaraju,T13,271,-9,54.167,"$163,041.67",4,Sony Open in Hawaii
 R2026006,2026,32839,Hideki Matsuyama,T13,271,-9,54.167,"$163,041.67",4,Sony Open in Hawaii
 R2026006,2026,50188,S.H. Kim,T13,271,-9,54.167,"$163,041.67",4,Sony Open in Hawaii
 R2026006,2026,25493,Nick Taylor,T13,271,-9,54.167,"$163,041.67",4,Sony Open in Hawaii
 R2026006,2026,39335,Kevin Roy,T13,271,-9,54.167,"$163,041.67",4,Sony Open in Hawaii
-R2026006,2026,57259,Dan Brown,T19,272,-8,43.000,"$111,839.00",4,Sony Open in Hawaii
-R2026006,2026,54591,Ben Griffin,T19,272,-8,43.000,"$111,839.00",4,Sony Open in Hawaii
-R2026006,2026,57900,Chandler Phillips,T19,272,-8,43.000,"$111,839.00",4,Sony Open in Hawaii
-R2026006,2026,34098,Russell Henley,T19,272,-8,43.000,"$111,839.00",4,Sony Open in Hawaii
-R2026006,2026,28723,John Parry,T19,272,-8,43.000,"$111,839.00",4,Sony Open in Hawaii
-R2026006,2026,46442,Maverick McNealy,T24,273,-7,32.500,"$72,475.00",4,Sony Open in Hawaii
-R2026006,2026,32757,Patton Kizzire,T24,273,-7,32.500,"$72,475.00",4,Sony Open in Hawaii
-R2026006,2026,49120,Kensei Hirata,T24,273,-7,32.500,"$72,475.00",4,Sony Open in Hawaii
-R2026006,2026,34021,Bud Cauley,T24,273,-7,32.500,"$72,475.00",4,Sony Open in Hawaii
-R2026006,2026,50497,Adrien Dumont de Chassart,T24,273,-7,32.500,"$72,475.00",4,Sony Open in Hawaii
-R2026006,2026,34046,Jordan Spieth,T24,273,-7,32.500,"$72,475.00",4,Sony Open in Hawaii
-R2026006,2026,39997,Corey Conners,T24,273,-7,32.500,"$72,475.00",4,Sony Open in Hawaii
+R2026006,2026,57259,Dan Brown,T19,272,-8,43.0,"$111,839.00",4,Sony Open in Hawaii
+R2026006,2026,54591,Ben Griffin,T19,272,-8,43.0,"$111,839.00",4,Sony Open in Hawaii
+R2026006,2026,57900,Chandler Phillips,T19,272,-8,43.0,"$111,839.00",4,Sony Open in Hawaii
+R2026006,2026,34098,Russell Henley,T19,272,-8,43.0,"$111,839.00",4,Sony Open in Hawaii
+R2026006,2026,28723,John Parry,T19,272,-8,43.0,"$111,839.00",4,Sony Open in Hawaii
+R2026006,2026,46442,Maverick McNealy,T24,273,-7,32.5,"$72,475.00",4,Sony Open in Hawaii
+R2026006,2026,32757,Patton Kizzire,T24,273,-7,32.5,"$72,475.00",4,Sony Open in Hawaii
+R2026006,2026,49120,Kensei Hirata,T24,273,-7,32.5,"$72,475.00",4,Sony Open in Hawaii
+R2026006,2026,34021,Bud Cauley,T24,273,-7,32.5,"$72,475.00",4,Sony Open in Hawaii
+R2026006,2026,50497,Adrien Dumont de Chassart,T24,273,-7,32.5,"$72,475.00",4,Sony Open in Hawaii
+R2026006,2026,34046,Jordan Spieth,T24,273,-7,32.5,"$72,475.00",4,Sony Open in Hawaii
+R2026006,2026,39997,Corey Conners,T24,273,-7,32.5,"$72,475.00",4,Sony Open in Hawaii
 R2026006,2026,28252,Seamus Power,T31,274,-6,21.333,"$49,898.33",4,Sony Open in Hawaii
 R2026006,2026,39975,Michael Kim,T31,274,-6,21.333,"$49,898.33",4,Sony Open in Hawaii
 R2026006,2026,29535,Brice Garnett,T31,274,-6,21.333,"$49,898.33",4,Sony Open in Hawaii
-R2026006,2026,56100,Ren Yonezawa,T31,274,-6,0.000,"$49,898.33",4,Sony Open in Hawaii
+R2026006,2026,56100,Ren Yonezawa,T31,274,-6,0.0,"$49,898.33",4,Sony Open in Hawaii
 R2026006,2026,51634,Sahith Theegala,T31,274,-6,21.333,"$49,898.33",4,Sony Open in Hawaii
 R2026006,2026,47917,Takumi Kanaya,T31,274,-6,21.333,"$49,898.33",4,Sony Open in Hawaii
 R2026006,2026,54783,Dylan Wu,T31,274,-6,21.333,"$49,898.33",4,Sony Open in Hawaii
 R2026006,2026,55893,Sam Stevens,T31,274,-6,21.333,"$49,898.33",4,Sony Open in Hawaii
 R2026006,2026,59440,Ricky Castillo,T31,274,-6,21.333,"$49,898.33",4,Sony Open in Hawaii
-R2026006,2026,39324,J.J. Spaun,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,47993,Denny McCarthy,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,35532,Tom Hoge,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,59143,Mac Meissner,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,51894,Vince Whaley,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,48117,Kurt Kitayama,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,24502,Adam Scott,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,06567,Vijay Singh,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,46340,Alex Smalley,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,40115,Adam Svensson,T40,275,-5,12.000,"$31,522.40",4,Sony Open in Hawaii
-R2026006,2026,46414,Aaron Rai,T50,276,-4,7.500,"$22,404.20",4,Sony Open in Hawaii
-R2026006,2026,59567,Emilio Gonzalez,T50,276,-4,7.500,"$22,404.20",4,Sony Open in Hawaii
-R2026006,2026,65256,David Ford,T50,276,-4,7.500,"$22,404.20",4,Sony Open in Hawaii
-R2026006,2026,40058,Zac Blair,T50,276,-4,7.500,"$22,404.20",4,Sony Open in Hawaii
-R2026006,2026,51696,Rico Hoey,T50,276,-4,7.500,"$22,404.20",4,Sony Open in Hawaii
-R2026006,2026,48153,Matthieu Pavon,T55,277,-3,5.500,"$20,930.00",4,Sony Open in Hawaii
-R2026006,2026,37338,Zecheng Dou,T55,277,-3,5.500,"$20,930.00",4,Sony Open in Hawaii
-R2026006,2026,29221,Webb Simpson,T55,277,-3,5.500,"$20,930.00",4,Sony Open in Hawaii
-R2026006,2026,52375,Doug Ghim,T55,277,-3,5.500,"$20,930.00",4,Sony Open in Hawaii
-R2026006,2026,35296,Haotong Li,T55,277,-3,5.500,"$20,930.00",4,Sony Open in Hawaii
-R2026006,2026,59141,Matt McCarty,T55,277,-3,5.500,"$20,930.00",4,Sony Open in Hawaii
-R2026006,2026,24024,Zach Johnson,T61,278,-2,4.400,"$19,929.00",4,Sony Open in Hawaii
-R2026006,2026,59866,Nick Dunlap,T61,278,-2,4.400,"$19,929.00",4,Sony Open in Hawaii
-R2026006,2026,27644,Brian Harman,T61,278,-2,4.400,"$19,929.00",4,Sony Open in Hawaii
-R2026006,2026,55182,Tom Kim,T61,278,-2,4.400,"$19,929.00",4,Sony Open in Hawaii
-R2026006,2026,63454,Johnny Keefer,T61,278,-2,4.400,"$19,929.00",4,Sony Open in Hawaii
-R2026006,2026,39546,Keith Mitchell,T66,279,-1,3.500,"$19,110.00",4,Sony Open in Hawaii
-R2026006,2026,46464,Jordan Smith,T66,279,-1,3.500,"$19,110.00",4,Sony Open in Hawaii
-R2026006,2026,60067,Joe Highsmith,T66,279,-1,3.500,"$19,110.00",4,Sony Open in Hawaii
-R2026006,2026,36801,Mark Hubbard,T66,279,-1,3.500,"$19,110.00",4,Sony Open in Hawaii
-R2026006,2026,48001,Zach Bauchou,70,280,E,3.000,"$18,655.00",4,Sony Open in Hawaii
-R2026006,2026,47983,Chad Ramey,T71,281,+1,2.850,"$18,382.00",4,Sony Open in Hawaii
-R2026006,2026,63121,William Mouw,T71,281,+1,2.850,"$18,382.00",4,Sony Open in Hawaii
-R2026006,2026,61148,Kota Kaneko,73,283,+3,0.000,"$18,109.00",4,Sony Open in Hawaii
-R2026006,2026,29420,Billy Horschel,74,284,+4,2.600,"$17,927.00",4,Sony Open in Hawaii
-R2026006,2026,47591,Eric Cole,CUT,140,E,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,35461,Beau Hossler,CUT,140,E,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,33141,Keegan Bradley,CUT,140,E,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,50095,Austin Smotherman,CUT,140,E,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,57362,Austin Eckroat,CUT,140,E,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,50525,Collin Morikawa,CUT,140,E,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,57123,Steven Fisk,CUT,140,E,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,51287,Ryo Hisatsune,CUT,140,E,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,32070,Rafael Campos,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,30926,Chris Kirk,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,66743,Luke Clanton,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,59006,Davis Chatfield,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,51950,Max McGreevy,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,35778,Kazuki Higa,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,48867,Matti Schmid,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,40006,Erik van Rooyen,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,46443,Brian Campbell,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,55573,John VanDerLaan,CUT,141,+1,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,49766,Hank Lebioda,CUT,142,+2,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,34371,Adrien Saddier,CUT,142,+2,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,66447,Taisei Nagasaki,CUT,142,+2,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,45157,Cam Davis,CUT,142,+2,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,54607,Danny Walker,CUT,142,+2,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,36529,S.T. Lee,CUT,142,+2,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,50286,A.J. Ewart,CUT,143,+3,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,56781,Isaiah Salinda,CUT,143,+3,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,31323,Gary Woodland,CUT,143,+3,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,31646,Emiliano Grillo,CUT,143,+3,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,38991,Alejandro Tosti,CUT,143,+3,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,61522,Michael Brennan,CUT,144,+4,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,49228,Keita Nakajima,CUT,144,+4,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,47735,Corey Kozuma,CUT,144,+4,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,64442,Gordon Sargent,CUT,144,+4,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,34466,Peter Malnati,CUT,145,+5,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,29725,Tony Finau,CUT,146,+6,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,55851,Pontus Nyholm,CUT,146,+6,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,51349,Nico Echavarria,CUT,147,+7,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,54788,Chandler Blanchet,CUT,147,+7,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,47393,Jeffrey Kang,CUT,147,+7,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,63807,Neal Shipley,CUT,148,+8,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,37076,Marcelo Rozo,CUT,148,+8,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,47347,Adam Schenk,CUT,148,+8,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,70036,Anson Cabello,CUT,148,+8,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,54422,Christo Lamprecht,CUT,149,+9,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,49855,Kristoffer Reitan,CUT,155,+15,0.000,$0.00,2,Sony Open in Hawaii
-R2026006,2026,54218,Yuta Sugiura,W/D,69,-1,0.000,$0.00,1,Sony Open in Hawaii
+R2026006,2026,39324,J.J. Spaun,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,47993,Denny McCarthy,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,35532,Tom Hoge,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,59143,Mac Meissner,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,51894,Vince Whaley,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,48117,Kurt Kitayama,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,24502,Adam Scott,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,6567,Vijay Singh,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,46340,Alex Smalley,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,40115,Adam Svensson,T40,275,-5,12.0,"$31,522.40",4,Sony Open in Hawaii
+R2026006,2026,46414,Aaron Rai,T50,276,-4,7.5,"$22,404.20",4,Sony Open in Hawaii
+R2026006,2026,59567,Emilio Gonzalez,T50,276,-4,7.5,"$22,404.20",4,Sony Open in Hawaii
+R2026006,2026,65256,David Ford,T50,276,-4,7.5,"$22,404.20",4,Sony Open in Hawaii
+R2026006,2026,40058,Zac Blair,T50,276,-4,7.5,"$22,404.20",4,Sony Open in Hawaii
+R2026006,2026,51696,Rico Hoey,T50,276,-4,7.5,"$22,404.20",4,Sony Open in Hawaii
+R2026006,2026,48153,Matthieu Pavon,T55,277,-3,5.5,"$20,930.00",4,Sony Open in Hawaii
+R2026006,2026,37338,Zecheng Dou,T55,277,-3,5.5,"$20,930.00",4,Sony Open in Hawaii
+R2026006,2026,29221,Webb Simpson,T55,277,-3,5.5,"$20,930.00",4,Sony Open in Hawaii
+R2026006,2026,52375,Doug Ghim,T55,277,-3,5.5,"$20,930.00",4,Sony Open in Hawaii
+R2026006,2026,35296,Haotong Li,T55,277,-3,5.5,"$20,930.00",4,Sony Open in Hawaii
+R2026006,2026,59141,Matt McCarty,T55,277,-3,5.5,"$20,930.00",4,Sony Open in Hawaii
+R2026006,2026,24024,Zach Johnson,T61,278,-2,4.4,"$19,929.00",4,Sony Open in Hawaii
+R2026006,2026,59866,Nick Dunlap,T61,278,-2,4.4,"$19,929.00",4,Sony Open in Hawaii
+R2026006,2026,27644,Brian Harman,T61,278,-2,4.4,"$19,929.00",4,Sony Open in Hawaii
+R2026006,2026,55182,Tom Kim,T61,278,-2,4.4,"$19,929.00",4,Sony Open in Hawaii
+R2026006,2026,63454,Johnny Keefer,T61,278,-2,4.4,"$19,929.00",4,Sony Open in Hawaii
+R2026006,2026,39546,Keith Mitchell,T66,279,-1,3.5,"$19,110.00",4,Sony Open in Hawaii
+R2026006,2026,46464,Jordan Smith,T66,279,-1,3.5,"$19,110.00",4,Sony Open in Hawaii
+R2026006,2026,60067,Joe Highsmith,T66,279,-1,3.5,"$19,110.00",4,Sony Open in Hawaii
+R2026006,2026,36801,Mark Hubbard,T66,279,-1,3.5,"$19,110.00",4,Sony Open in Hawaii
+R2026006,2026,48001,Zach Bauchou,70,280,E,3.0,"$18,655.00",4,Sony Open in Hawaii
+R2026006,2026,47983,Chad Ramey,T71,281,+1,2.85,"$18,382.00",4,Sony Open in Hawaii
+R2026006,2026,63121,William Mouw,T71,281,+1,2.85,"$18,382.00",4,Sony Open in Hawaii
+R2026006,2026,61148,Kota Kaneko,73,283,+3,0.0,"$18,109.00",4,Sony Open in Hawaii
+R2026006,2026,29420,Billy Horschel,74,284,+4,2.6,"$17,927.00",4,Sony Open in Hawaii
+R2026006,2026,47591,Eric Cole,CUT,140,E,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,35461,Beau Hossler,CUT,140,E,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,33141,Keegan Bradley,CUT,140,E,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,50095,Austin Smotherman,CUT,140,E,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,57362,Austin Eckroat,CUT,140,E,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,50525,Collin Morikawa,CUT,140,E,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,57123,Steven Fisk,CUT,140,E,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,51287,Ryo Hisatsune,CUT,140,E,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,32070,Rafael Campos,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,30926,Chris Kirk,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,66743,Luke Clanton,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,59006,Davis Chatfield,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,51950,Max McGreevy,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,35778,Kazuki Higa,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,48867,Matti Schmid,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,40006,Erik van Rooyen,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,46443,Brian Campbell,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,55573,John VanDerLaan,CUT,141,+1,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,49766,Hank Lebioda,CUT,142,+2,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,34371,Adrien Saddier,CUT,142,+2,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,66447,Taisei Nagasaki,CUT,142,+2,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,45157,Cam Davis,CUT,142,+2,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,54607,Danny Walker,CUT,142,+2,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,36529,S.T. Lee,CUT,142,+2,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,50286,A.J. Ewart,CUT,143,+3,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,56781,Isaiah Salinda,CUT,143,+3,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,31323,Gary Woodland,CUT,143,+3,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,31646,Emiliano Grillo,CUT,143,+3,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,38991,Alejandro Tosti,CUT,143,+3,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,61522,Michael Brennan,CUT,144,+4,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,49228,Keita Nakajima,CUT,144,+4,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,47735,Corey Kozuma,CUT,144,+4,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,64442,Gordon Sargent,CUT,144,+4,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,34466,Peter Malnati,CUT,145,+5,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,29725,Tony Finau,CUT,146,+6,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,55851,Pontus Nyholm,CUT,146,+6,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,51349,Nico Echavarria,CUT,147,+7,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,54788,Chandler Blanchet,CUT,147,+7,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,47393,Jeffrey Kang,CUT,147,+7,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,63807,Neal Shipley,CUT,148,+8,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,37076,Marcelo Rozo,CUT,148,+8,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,47347,Adam Schenk,CUT,148,+8,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,70036,Anson Cabello,CUT,148,+8,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,54422,Christo Lamprecht,CUT,149,+9,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,49855,Kristoffer Reitan,CUT,155,+15,0.0,$0.00,2,Sony Open in Hawaii
+R2026006,2026,54218,Yuta Sugiura,W/D,69,-1,0.0,$0.00,1,Sony Open in Hawaii
+R2026005,2026,50525,Collin Morikawa,1,266,-22,700.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,37378,Min Woo Lee,T2,267,-21,420.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,49960,Sepp Straka,T2,267,-21,420.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,46046,Scottie Scheffler,T4,268,-20,190.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,30911,Tommy Fleetwood,T4,268,-20,190.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,56630,Akshay Bhatia,T6,269,-19,142.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,47504,Sam Burns,T6,269,-19,142.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,32839,Hideki Matsuyama,T8,270,-18,120.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,60004,Jacob Bridgeman,T8,270,-18,120.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,47420,Jake Knapp,T8,270,-18,120.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51349,Nico Echavarria,T8,270,-18,120.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51287,Ryo Hisatsune,T8,270,-18,120.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,33204,Shane Lowry,T8,270,-18,120.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,40098,Matt Fitzpatrick,T14,271,-17,84.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,35450,Patrick Cantlay,T14,271,-17,84.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,28237,Rory McIlroy,T14,271,-17,84.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,35532,Tom Hoge,T14,271,-17,84.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,29725,Tony Finau,18,272,-16,67.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,46340,Alex Smalley,T19,273,-15,64.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,27644,Brian Harman,T19,273,-15,64.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,32102,Rickie Fowler,T19,273,-15,64.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,34098,Russell Henley,T19,273,-15,64.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,48081,Xander Schauffele,T19,273,-15,64.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,34099,Harris English,T24,274,-14,49.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,57975,Harry Hall,T24,274,-14,49.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,28089,Jason Day,T24,274,-14,49.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,25493,Nick Taylor,T24,274,-14,49.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,29936,Ryan Fox,T24,274,-14,49.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,27349,Alex Noren,T29,275,-13,39.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,34046,Jordan Spieth,T29,275,-13,39.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,33141,Keegan Bradley,T29,275,-13,39.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,46442,Maverick McNealy,T29,275,-13,39.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51950,Max McGreevy,T29,275,-13,39.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,35506,Mackenzie Hughes,T34,276,-12,31.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,52666,Sami Valimaki,T34,276,-12,31.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,40250,Taylor Pendrith,T34,276,-12,31.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,54591,Ben Griffin,T37,277,-11,28.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,34021,Bud Cauley,T37,277,-11,28.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,59095,Chris Gotterup,T37,277,-11,28.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,49771,J.T. Poston,T37,277,-11,28.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,22405,Justin Rose,T37,277,-11,28.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,52955,Ludvig Åberg,T37,277,-11,28.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51977,Max Greyserman,T37,277,-11,28.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,52215,Robert MacIntyre,T37,277,-11,28.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,39324,J.J. Spaun,T45,278,-10,20.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,59018,Ryan Gerard,T45,278,-10,20.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,37455,Si Woo Kim,T45,278,-10,20.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51997,Andrew Novak,T48,279,-9,17.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,29420,Billy Horschel,T48,279,-9,17.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,48117,Kurt Kitayama,T48,279,-9,17.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,59836,Pierceson Coody,T48,279,-9,17.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,30926,Chris Kirk,T52,280,-8,13.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,39546,Keith Mitchell,T52,280,-8,13.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,36699,Patrick Rodgers,T52,280,-8,13.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,57366,Cameron Young,T55,281,-7,10.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,47993,Denny McCarthy,T55,281,-7,10.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,55893,Sam Stevens,T55,281,-7,10.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,46717,Viktor Hovland,T58,282,-6,7.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51766,Wyndham Clark,T58,282,-6,7.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,63343,Aldrich Potgieter,T60,283,-5,5.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,54421,Garrick Higgo,T60,283,-5,5.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51634,Sahith Theegala,T60,283,-5,5.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,57123,Steven Fisk,T60,283,-5,5.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,31646,Emiliano Grillo,T64,284,-4,1.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,25900,Lucas Glover,T64,284,-4,1.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51003,Marco Penge,T64,284,-4,1.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,59141,Matt McCarty,T67,285,-3,1.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,51696,Rico Hoey,T67,285,-3,1.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,36799,Stephan Jaeger,T67,285,-3,1.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,39997,Corey Conners,T70,286,-2,1.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,45242,Kevin Yu,T70,286,-2,1.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,39975,Michael Kim,72,288,E,0.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,46414,Aaron Rai,T73,289,+1,0.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,48867,Matti Schmid,T73,289,+1,0.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,40026,Daniel Berger,T75,290,+2,0.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,60067,Joe Highsmith,T75,290,+2,0.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,47347,Adam Schenk,77,293,+5,0.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,46443,Brian Campbell,T78,297,+9,0.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,27064,Jhonattan Vegas,T78,297,+9,0.0,,4,AT&T Pebble Beach Pro-Am
+R2026005,2026,57364,Michael Thorbjornsen,T78,297,+9,0.0,,4,AT&T Pebble Beach Pro-Am

@@ -81,7 +81,7 @@ class PredictionTracker:
                 "predicted_win_prob": row.get("win_prob", 0),
                 "predicted_top5_prob": row.get("top5_prob", 0),
                 "predicted_top10_prob": row.get("top10_prob", 0),
-                "predictied_top20_prob": row.get("top20_prob", 0),
+                "predicted_top20_prob": row.get("top20_prob", 0),
                 "predicted_ev": row.get("expected_value", 0),
                 "world_rank": row.get("world_rank"),
                 "course_fit": row.get("dg_fit_total", 0),
@@ -710,6 +710,24 @@ class PredictionTracker:
 
         df["tournament_type"] = df["tournament_name"].apply(get_tier)
 
+        # Field strength bucket by median world rank (lower = stronger field)
+        def field_strength_bucket(median_rank: float) -> str:
+            if pd.isna(median_rank):
+                return "unknown"
+            if median_rank <= 30:
+                return "strong"
+            if median_rank <= 60:
+                return "medium"
+            return "weak"
+
+        med_by_tournament = (
+            df.groupby("tournament_id")["world_rank"]
+            .median()
+            .rename("field_strength_median_rank")
+        )
+        df = df.join(med_by_tournament, on="tournament_id")
+        df["field_strength_bucket"] = df["field_strength_median_rank"].apply(field_strength_bucket)
+
         # Aggregate by tournament (to count tournaments)
         tournament_counts = df[["tournament_id", "tournament_type"]].drop_duplicates()
         type_counts = tournament_counts["tournament_type"].value_counts().to_dict()
@@ -723,9 +741,12 @@ class PredictionTracker:
         factors = {
             "global": {},
             "by_tournament_type": {},
+            "by_field_strength": {},
+            "by_tournament_type_field_strength": {},
             "metadata": {
                 "generated_at": datetime.now().isoformat(),
                 "tournaments_by_type": type_counts,
+                "field_strength_thresholds": {"strong": "<=30", "medium": "31-60", "weak": ">60"},
                 "min_tournaments": min_tournaments,
             },
         }
@@ -756,6 +777,38 @@ class PredictionTracker:
                 avg_actual = group[actual_col].mean()
                 type_block[prob] = {"scale_factor": scale_factor(avg_actual, avg_pred), "buckets": {}}
             factors["by_tournament_type"][t_type] = type_block
+
+        # Per field strength bucket
+        for bucket, group in df.groupby("field_strength_bucket"):
+            if group["tournament_id"].nunique() < min_tournaments:
+                continue
+            bucket_block = {}
+            for prob, actual_col in [
+                ("win_prob", "actual_won"),
+                ("top5_prob", "actual_top5"),
+                ("top10_prob", "actual_top10"),
+                ("top20_prob", "actual_top20"),
+            ]:
+                avg_pred = group[f"predicted_{prob}"].mean()
+                avg_actual = group[actual_col].mean()
+                bucket_block[prob] = {"scale_factor": scale_factor(avg_actual, avg_pred), "buckets": {}}
+            factors["by_field_strength"][bucket] = bucket_block
+
+        # Combined tournament type + field strength
+        for (t_type, bucket), group in df.groupby(["tournament_type", "field_strength_bucket"]):
+            if group["tournament_id"].nunique() < min_tournaments:
+                continue
+            block = {}
+            for prob, actual_col in [
+                ("win_prob", "actual_won"),
+                ("top5_prob", "actual_top5"),
+                ("top10_prob", "actual_top10"),
+                ("top20_prob", "actual_top20"),
+            ]:
+                avg_pred = group[f"predicted_{prob}"].mean()
+                avg_actual = group[actual_col].mean()
+                block[prob] = {"scale_factor": scale_factor(avg_actual, avg_pred), "buckets": {}}
+            factors["by_tournament_type_field_strength"][f"{t_type}|{bucket}"] = block
 
         # Save to calibration_factors.json
         output_path = output_path or (self.tracking_dir / "calibration_factors.json")

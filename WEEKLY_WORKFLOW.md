@@ -1,392 +1,355 @@
-# Weekly Tournament Workflow - Quick Start Guide
+# Weekly Golf Prediction Workflow
 
-## Single-Command Predictions
+> Last updated: 2026-02-16
 
-Your complete weekly workflow is now automated into one script!
-
-### Quick Start (3 minutes)
-
-```bash
-cd /Users/jacklegnon/Desktop/golf_data
-
-# Run predictions for this week's tournament
-./scripts/predictions/weekly_predictions.sh \
-    --espn-id 401811929 \
-    --name "American Express" \
-    --purse 9600000
-```
-
-**That's it!** The script will:
-1. ✅ Fetch the field from ESPN
-2. ✅ Match player IDs to your database
-3. ✅ Run predictions
-4. ✅ Generate picks report
-5. ✅ Save everything to outputs/
+This guide walks you through the weekly process for generating golf predictions and managing your fantasy lineup.
 
 ---
 
-## How to Find ESPN Tournament ID
-
-### Method 1: ESPN Schedule
-
-1. Go to https://www.espn.com/golf/schedule
-2. Click on this week's tournament
-3. Copy ID from URL: `https://www.espn.com/golf/leaderboard?tournamentId=**401811929**`
-
-### Method 2: Google Search
-
-```
-"[tournament name] 2026 ESPN"
-```
-
-Example: "Farmers Insurance Open 2026 ESPN" → Find ID in URL
-
----
-
-## Common Tournament Types
-
-Use `--type` parameter to specify:
-
-### Standard Events (Most common)
-- Purse: $8M - $9.6M
-- Examples: American Express, Farmers Insurance, Valspar
+## Quick Reference
 
 ```bash
---type Standard
-```
+# TUESDAY: Full pipeline for new tournament week
+python3 scripts/run_pipeline.py --auto-weekly --lineup --calibrate
 
-### Signature Events (Elevated)
-- Purse: $20M
-- Examples: Genesis Invitational, Arnold Palmer, Memorial
+# THURSDAY-SUNDAY: Live updates during tournament
+python3 scripts/scrapers/fetch_live_leaderboard.py
+python3 scripts/scrapers/fetch_draftkings_props.py
 
-```bash
---type Signature
-```
+# SUNDAY NIGHT: Record results after tournament ends
+python3 scripts/planning/auto_record_results.py
 
-### Majors
-- Purse: $18M - $20M
-- Examples: Masters, PGA Championship, US Open, Open Championship
-
-```bash
---type Major
+# View dashboard anytime
+streamlit run dashboard.py
 ```
 
 ---
 
-## Weekly Schedule
+## Detailed Weekly Schedule
 
-### Wednesday/Thursday (Before Tournament)
+### Monday (Optional)
+**Goal:** Light data refresh if needed
 
-**Find tournament info**:
 ```bash
-# Check PGA Tour schedule
-# https://www.pgatour.com/schedule
-
-# Or ESPN
-# https://www.espn.com/golf/schedule
-```
-
-**Run predictions**:
-```bash
-./scripts/predictions/weekly_predictions.sh \
-    --espn-id [ESPN_ID] \
-    --name "[Tournament Name]" \
-    --purse [PURSE_AMOUNT]
-```
-
-**Review picks**:
-```bash
-# Open the generated picks report
-cat outputs/[tournament]_2026_picks.md
-```
-
-**Make your fantasy picks** before first tee time (usually Thursday morning)
-
----
-
-### Sunday/Monday (After Tournament)
-
-**Track your results**:
-1. See how your picks performed
-2. Update `outputs/season_log.csv` (manual for now)
-3. Compare predictions to actual results
-
-**Season log format**:
-```csv
-week,tournament,pick1,pick2,pick3,result1,result2,result3,points,notes
-1,American Express,Scheffler,Brennan,Griffin,1st,T45,T18,150,"Scheffler won!"
+# Update world rankings (changes on Mondays)
+python3 scripts/scrapers/fetch_world_rankings.py
 ```
 
 ---
 
-## Examples for Upcoming Tournaments
+### Tuesday (Main Prep Day)
+**Goal:** Full data refresh and predictions for the new tournament week
 
-### The American Express (Jan 22-25, 2026)
+#### Step 1: Run the Full Pipeline
 ```bash
-./scripts/predictions/weekly_predictions.sh \
-    --espn-id 401811929 \
-    --name "American Express" \
-    --purse 9600000 \
-    --type Standard
+# Auto-detects current week's tournament from schedule
+python3 scripts/run_pipeline.py --auto-weekly --lineup --calibrate
 ```
 
-### Farmers Insurance Open (Jan 29 - Feb 1, 2026)
+This runs:
+- Data refresh (rankings, player database, form stats)
+- Field fetch from PGA Tour
+- Odds from PGA Tour
+- Betting profiles
+- Power rankings
+- Course characteristics
+- Predictions
+- Lineup recommendations
+
+#### Step 2: Fetch Additional Odds (Optional)
 ```bash
-./scripts/predictions/weekly_predictions.sh \
-    --espn-id 401811930 \
-    --name "Farmers Insurance Open" \
-    --purse 9300000 \
-    --type Standard
+# DraftKings props and lines
+python3 scripts/scrapers/fetch_draftkings_props.py
+
+# Multi-book odds comparison
+python3 scripts/scrapers/fetch_odds_api.py
 ```
 
-### AT&T Pebble Beach Pro-Am (Feb 5-8, 2026)
+#### Step 3: Review in Dashboard
 ```bash
-./scripts/predictions/weekly_predictions.sh \
-    --espn-id 401811931 \
-    --name "AT&T Pebble Beach Pro-Am" \
-    --purse 9300000 \
-    --type Standard
+streamlit run dashboard.py
 ```
 
-### The Genesis Invitational (Feb 12-15, 2026) - SIGNATURE
+Navigate to:
+- **🏆 This Week** - Overview and top picks
+- **🎯 Scoring Engine** - Detailed player scores
+- **🎰 Betting** - Odds and value plays
+
+---
+
+### Wednesday
+**Goal:** Finalize picks before tournament starts
+
+#### Step 1: Refresh Odds (they change daily)
 ```bash
-./scripts/predictions/weekly_predictions.sh \
-    --espn-id 401811932 \
-    --name "Genesis Invitational" \
-    --purse 20000000 \
-    --type Signature
+python3 scripts/scrapers/fetch_draftkings_props.py
+python3 scripts/scrapers/fetch_pga_odds.py
+```
+
+#### Step 2: Get Expert Picks
+```bash
+python3 scripts/scrapers/fetch_expert_picks_pga.py
+```
+
+#### Step 3: Add Your Picks to Tracker
+In the dashboard (**📋 My Picks** → **Add Picks**):
+1. Select the tournament
+2. Choose your 3 players
+3. Click "Add Picks"
+
+Or via command line:
+```bash
+python3 scripts/planning/usage_tracker.py --add "Player One" "Player Two" "Player Three" \
+    --tournament "Tournament Name"
 ```
 
 ---
 
-## Advanced Options
+### Thursday - Sunday (Tournament Days)
+**Goal:** Monitor live performance
 
-### Change SG Calculation Method
-
-**Last 5 tournaments** (default, recommended):
+#### Live Leaderboard Updates
 ```bash
---sg-method last_5
+# Run periodically during tournament rounds
+python3 scripts/scrapers/fetch_live_leaderboard.py
 ```
 
-**Weighted recent form** (40%, 30%, 20%, 10%):
+#### Live Odds Updates
 ```bash
---sg-method weighted
+python3 scripts/scrapers/fetch_draftkings_props.py
 ```
 
-**Season average**:
+#### View Live Data
 ```bash
---sg-method season_avg
+streamlit run dashboard.py
+```
+Navigate to **🔴 Live** tab for real-time leaderboard with your picks highlighted.
+
+---
+
+### Sunday Night / Monday Morning
+**Goal:** Record results and update tracking
+
+#### Step 1: Auto-Record Results
+```bash
+# Automatically matches your picks to final results
+python3 scripts/planning/auto_record_results.py
 ```
 
-### Change Number of Recommendations
-
-Default is 20 players. Adjust with:
+If auto-record doesn't find results, manually record:
 ```bash
---top-n 30  # Show top 30 picks
+python3 scripts/planning/usage_tracker.py --result "Player Name" \
+    --tournament "Tournament Name" \
+    --finish "T15" \
+    --points 45
 ```
 
-### Full Example with All Options
-
+#### Step 2: Verify Results
 ```bash
-./scripts/predictions/weekly_predictions.sh \
-    --espn-id 401811929 \
-    --name "American Express" \
-    --purse 9600000 \
-    --type Standard \
-    --sg-method weighted \
-    --top-n 25
+python3 scripts/planning/usage_tracker.py --summary
+python3 scripts/planning/usage_tracker.py --lineups
+```
+
+#### Step 3: Update Historical Data
+```bash
+# Add tournament results to historical leaderboards
+python3 scripts/scrapers/fetch_leaderboard.py
+```
+
+---
+
+## Key Scripts Reference
+
+### Data Fetching
+| Script | Purpose | When to Run |
+|--------|---------|-------------|
+| `fetch_world_rankings.py` | OWGR rankings | Monday/Tuesday |
+| `fetch_field_from_pgatour.py` | Tournament field | Tuesday |
+| `fetch_draftkings_props.py` | DK odds & props | Daily |
+| `fetch_pga_odds.py` | PGA Tour odds | Daily |
+| `fetch_odds_api.py` | Multi-book odds | Tuesday/Wednesday |
+| `fetch_betting_profiles.py` | Player betting profiles | Tuesday |
+| `fetch_expert_picks_pga.py` | Expert consensus | Wednesday |
+| `fetch_live_leaderboard.py` | Live scores | During tournament |
+| `fetch_weather_openmetro.py` | Weather forecast | Wednesday |
+
+### Predictions & Analysis
+| Script | Purpose | When to Run |
+|--------|---------|-------------|
+| `run_pipeline.py` | Full prediction pipeline | Tuesday |
+| `scoring_engine.py` | Score players for tournament | After predictions |
+| `weight_optimizer.py` | Test scoring weights | Periodically |
+
+### Fantasy Management
+| Script | Purpose | When to Run |
+|--------|---------|-------------|
+| `usage_tracker.py` | Track picks & uses | Before/after tournament |
+| `auto_record_results.py` | Record results automatically | Sunday night |
+
+---
+
+## Pipeline Options
+
+### Full Pipeline
+```bash
+python3 scripts/run_pipeline.py --auto-weekly --lineup --calibrate
+```
+
+### With Specific Tournament
+```bash
+python3 scripts/run_pipeline.py \
+    --tournament "The Genesis Invitational" \
+    --use-schedule \
+    --lineup \
+    --calibrate
+```
+
+### Skip Data Refresh (Use Cached)
+```bash
+python3 scripts/run_pipeline.py --auto-weekly --skip-refresh --lineup
+```
+
+### Data Refresh Only (No Predictions)
+```bash
+python3 scripts/run_pipeline.py --weekly-refresh
+```
+
+---
+
+## Dashboard Pages
+
+| Page | Purpose |
+|------|---------|
+| **🏆 This Week** | Tournament overview, top picks, key stats |
+| **🎯 Scoring Engine** | Detailed scoring breakdown by player |
+| **🎰 Betting** | Odds comparison, value plays, props |
+| **👤 Players** | Player lookup, stats, course history |
+| **📊 Predictions** | Full prediction table with filters |
+| **🔴 Live** | Live leaderboard during tournament |
+| **📋 My Picks** | Fantasy lineup management, usage tracking |
+
+---
+
+## Scoring Engine Weights
+
+Current optimized weights (as of 2026-02-16):
+- **Importance:** 25% - Tournament prestige/purse
+- **Course Fit:** 25% - Historical performance at venue
+- **Form:** 30% - Recent results, hot hand
+- **Field Strength:** 20% - Relative field difficulty
+
+To test different weights:
+```bash
+python3 scripts/planning/weight_optimizer.py --backtest 5
+```
+
+---
+
+## Fantasy League Rules (Let It Ride)
+
+- **3 uses per player** for the entire season
+- **3 players per weekly lineup**
+- **30 tournaments** in the season
+- Track usage carefully for majors and playoffs!
+
+### Check Player Usage
+```bash
+python3 scripts/planning/usage_tracker.py --check "Scottie Scheffler"
+```
+
+### View Season Summary
+```bash
+python3 scripts/planning/usage_tracker.py --summary
 ```
 
 ---
 
 ## Troubleshooting
 
-### Error: "Failed to fetch field from ESPN"
-
-**Cause**: Tournament hasn't started yet or ESPN ID is wrong
-
-**Fix**:
-1. Verify ESPN ID from tournament page
-2. Try tomorrow (field usually posted Wednesday)
-3. Use PGA Tour scraper as backup:
-   ```bash
-   python3 scripts/scrapers/fetch_tournament_field.py --tournament-id R2026002
-   ```
-
-### Error: "Unmatched players"
-
-**Cause**: Some players not in 2020-2025 database (rookies)
-
-**Impact**: Minor - predictions still run with median SG stats for rookies
-
-**Fix**: Normal behavior, no action needed
-
-### Error: "Tournament not found"
-
-**Cause**: Tournament name doesn't match historical data
-
-**Fix**: Use exact tournament name from master data:
+### Predictions file not found
 ```bash
-python3 -c "
-import pandas as pd
-df = pd.read_csv('data/processed/master_training_data_2020_2025.csv')
-tournaments = df['venue_clean'].unique()
-print('\n'.join(sorted(set(tournaments))))
-"
+# Check outputs directory
+ls -la outputs/*predictions*.csv
+
+# Re-run predictions
+python3 scripts/run_pipeline.py --auto-weekly
 ```
 
----
-
-## Output Files
-
-Each week generates 3 files:
-
-### 1. Tournament Field
-**Location**: `data/fields/[tournament]_2026.csv`
-
-**Format**:
-```csv
-player_id,player_name
-46046,Scottie Scheffler
-35450,Patrick Cantlay
-```
-
-**Use**: Reference for who's in the field
-
----
-
-### 2. Full Predictions
-**Location**: `outputs/[tournament]_2026_predictions.csv`
-
-**Columns**:
-- player_id, player_name
-- All 13 features (SG stats, course history, venue stats)
-- win_prob, top5_prob, top10_prob
-- expected_value
-
-**Use**: Deep analysis, custom lineup building
-
----
-
-### 3. Picks Report
-**Location**: `outputs/[tournament]_2026_picks.md`
-
-**Includes**:
-- Top 3 recommended picks
-- Top 20 players by EV
-- Field analysis
-- Strategy notes
-
-**Use**: Quick decision making, copy to notes
-
----
-
-## Time Savings
-
-**Before automation**:
-1. Find tournament ID: 2 min
-2. Run field scraper: 2 min
-3. Clean field data: 3 min
-4. Run predictions: 2 min
-5. Analyze results: 5 min
-6. Format picks: 5 min
-
-**Total**: ~20 minutes
-
-**After automation**:
-1. Find ESPN ID: 1 min
-2. Run script: 1 min
-3. Review picks: 2 min
-
-**Total**: ~4 minutes
-
-**Savings**: 16 minutes per week = **8+ hours per season!**
-
----
-
-## Pro Tips
-
-### 1. Create Tournament Aliases
-Add to your `~/.bashrc` or `~/.zshrc`:
-
+### Dashboard not loading
 ```bash
-alias golf-predict="cd /Users/jacklegnon/Desktop/golf_data && ./scripts/predictions/weekly_predictions.sh"
+# Clear cache
+rm -rf __pycache__ scripts/__pycache__ scripts/**/__pycache__
+
+# Restart
+streamlit run dashboard.py
 ```
 
-Then run from anywhere:
+### Auto-record not finding results
 ```bash
-golf-predict --espn-id 401811929 --name "American Express" --purse 9600000
+# Check historical leaderboards have the tournament
+grep -i "tournament name" data/historical/leaderboards_2026.csv
+
+# Manually add if needed, then re-run
+python3 scripts/planning/auto_record_results.py
 ```
 
-### 2. Save Common Tournaments
-Create a file `tournaments_2026.txt`:
-```
-401811929,American Express,9600000,Standard
-401811930,Farmers Insurance Open,9300000,Standard
-401811932,Genesis Invitational,20000000,Signature
-```
-
-### 3. Review Picks on Mobile
-Generated markdown files render perfectly on GitHub, Notion, or any markdown viewer.
-
----
-
-## Season-Long Tracking (Optional)
-
-### Create Season Log
-
+### Odds not updating
 ```bash
-cat > outputs/season_log.csv << 'EOF'
-week,date,tournament,pick1,pick2,pick3,result1,result2,result3,points,league_rank,notes
-EOF
-```
+# Check rate limits, wait a few minutes, then:
+python3 scripts/scrapers/fetch_draftkings_props.py
 
-### Update After Each Tournament
-
-Add a line with your results:
-```csv
-1,2026-01-25,American Express,Scheffler,Brennan,Griffin,1st,T45,T18,150,3/50,"Scheffler won!"
-```
-
-### Analyze at Mid-Season
-```bash
-python3 << 'EOF'
-import pandas as pd
-df = pd.read_csv('outputs/season_log.csv')
-print(f"Tournaments: {len(df)}")
-print(f"Avg Points: {df['points'].mean():.1f}")
-print(f"Avg Rank: {df['league_rank'].apply(lambda x: int(x.split('/')[0])).mean():.1f}")
-EOF
+# Or try PGA odds
+python3 scripts/scrapers/fetch_pga_odds.py
 ```
 
 ---
 
-## Next Enhancements (Future)
+## Season Calendar Reminders
 
-Planned additions to weekly workflow:
-- ✅ Single-command predictions (DONE!)
-- ⏳ Auto-scrape results after tournament
-- ⏳ Compare predictions to actual results
-- ⏳ Monthly model retraining
-- ⏳ Calibration dashboard
-
-See [docs/PIPELINE_ENHANCEMENTS.md](docs/PIPELINE_ENHANCEMENTS.md) for roadmap.
+| Week | Tournament | Type | Notes |
+|------|------------|------|-------|
+| 10 | The Masters | Major | Save elite players! |
+| 15 | PGA Championship | Major | |
+| 20 | U.S. Open | Major | |
+| 24 | The Open Championship | Major | |
+| 6 | THE PLAYERS | Signature | Near-major field |
+| 28-30 | FedEx Playoffs | Playoff | Top 70/50/30 only |
 
 ---
 
-## Getting Help
+## File Locations
 
-```bash
-./scripts/predictions/weekly_predictions.sh --help
+```
+golf_data/
+├── data/
+│   ├── fields/          # Tournament fields
+│   ├── odds/            # Betting odds
+│   ├── live/            # Live leaderboards
+│   ├── historical/      # Past results
+│   ├── fantasy/         # Usage tracker data
+│   └── rankings/        # OWGR rankings
+├── outputs/
+│   └── *_predictions.csv  # Generated predictions
+├── scripts/
+│   ├── scrapers/        # Data fetching
+│   ├── predictions/     # ML models
+│   └── planning/        # Scoring & fantasy
+└── dashboard.py         # Streamlit dashboard
 ```
 
-Or check:
-- [PREDICTION_SYSTEM_COMPLETE.md](PREDICTION_SYSTEM_COMPLETE.md) - System overview
-- [FIELD_SCRAPER_SOLUTION.md](FIELD_SCRAPER_SOLUTION.md) - Field scraping details
-- [docs/PREDICTION_PIPELINE_GUIDE.md](docs/PREDICTION_PIPELINE_GUIDE.md) - Technical details
-
 ---
 
-**Ready for the PGA Tour season! 🏌️⛳**
+## Quick Checklist
 
-*Last updated: January 19, 2026*
+### Before Tournament (Tuesday/Wednesday)
+- [ ] Run full pipeline: `python3 scripts/run_pipeline.py --auto-weekly --lineup --calibrate`
+- [ ] Refresh odds: `python3 scripts/scrapers/fetch_draftkings_props.py`
+- [ ] Review dashboard predictions
+- [ ] Add picks to tracker
+- [ ] Verify picks saved: `python3 scripts/planning/usage_tracker.py --lineups`
+
+### After Tournament (Sunday/Monday)
+- [ ] Record results: `python3 scripts/planning/auto_record_results.py`
+- [ ] Verify results: `python3 scripts/planning/usage_tracker.py --summary`
+- [ ] Check remaining uses for key players
+- [ ] Plan ahead for upcoming majors

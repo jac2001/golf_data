@@ -1,18 +1,18 @@
 {
   "data": {
     "getPowerRankingsTable": {
-      "tournamentName": "AT&T Pebble Beach Pro-Am\t",
-      "tableTitle": "Power Rankings for AT&T Pebble Beach Pro-Am",
+      "tournamentName": "The Genesis Invitational",
+      "tableTitle": "Power Rankings for The Genesis Invitational",
       "powerRankingsTableRow": [
         {
           "rank": 15,
           "player": {
-            "id": "59018",
-            "firstName": "Ryan",
-            "lastName": "Gerard",
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
             "countryFlag": "USA",
             "countryName": "United States of America",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
           },
           "comment": "",
           "commentNodes": [
@@ -20,7 +20,7 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "Tops among 2026 non-winners at No. 3 in the FedExCup with a pair of runner-up finishes and a T11. Those chased a playoff loss in Mauritius that ended 2025. So, form is tip-top, but this is his first appearance at Pebble Beach."
+                  "value": "Hasn\u2019t reignited like a handful of his peers who haven\u2019t let up, but Riviera feeds directly into his skill set to capitalize off the tee and roll in putts. Since a co-runner-up in his debut in 2022, he\u2019s added a T20 and a T16."
                 }
               ]
             }
@@ -29,12 +29,12 @@
         {
           "rank": 14,
           "player": {
-            "id": "59836",
-            "firstName": "Pierceson",
-            "lastName": "Coody",
-            "countryFlag": "USA",
-            "countryName": "United States of America",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59836.jpg"
+            "id": "51287",
+            "firstName": "Ryo",
+            "lastName": "Hisatsune",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51287.jpg"
           },
           "comment": "",
           "commentNodes": [
@@ -42,13 +42,7 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "The latest Exhibit A of the possibilities. The only 2025 Korn Ferry Tour graduate in the field qualified via the first class of the 2026 Aon Swing 5, "
-                },
-                {
-                  "value": "for which he ranked first"
-                },
-                {
-                  "value": " thanks to results of T13, T18, T2 and T10."
+                  "value": "There\u2019s never been a first-time winner in a Signature Event and there hasn\u2019t been an official win by a debutant at Riviera since Pat Fitzsimons in 1975, but the Japanese talent is in some kind of groove. T2-T10-T8 in his last three starts."
                 }
               ]
             }
@@ -56,72 +50,6 @@
         },
         {
           "rank": 13,
-          "player": {
-            "id": "57364",
-            "firstName": "Michael",
-            "lastName": "Thorbjornsen",
-            "countryFlag": "USA",
-            "countryName": "United States of America",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57364.jpg"
-          },
-          "comment": "",
-          "commentNodes": [
-            {
-              "__typename": "NewsArticleParagraph",
-              "segments": [
-                {
-                  "value": "The product of nearby Stanford is making his debut, but he did make the cut at Pebble Beach as an amateur at the 2019 U.S. Open. In terrific form with a T18 and a T3 in the last two weeks, but he\u2019s been percolating for months."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "rank": 12,
-          "player": {
-            "id": "46442",
-            "firstName": "Maverick",
-            "lastName": "McNealy",
-            "countryFlag": "USA",
-            "countryName": "United States of America",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46442.jpg"
-          },
-          "comment": "",
-          "commentNodes": [
-            {
-              "__typename": "NewsArticleParagraph",
-              "segments": [
-                {
-                  "value": "Given his lifelong connection to Pebble Beach, he probably should have a better record than he does. It boasts a T5 (2020) and a runner-up (2021), but he\u2019s been shut out of a top 30 since. T24, solo 10th and T13 in 2026 thus far."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "rank": 11,
-          "player": {
-            "id": "30911",
-            "firstName": "Tommy",
-            "lastName": "Fleetwood",
-            "countryFlag": "ENG",
-            "countryName": "England",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
-          },
-          "comment": "",
-          "commentNodes": [
-            {
-              "__typename": "NewsArticleParagraph",
-              "segments": [
-                {
-                  "value": "We haven\u2019t seen the Brit in the U.S. since his breakthrough victory at the TOUR Championship that netted the 2025 FedExCup title, but he\u2019s stayed sharp. Walked off the year with a Win-P2-T3 run. Fourth tournament appearance."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "rank": 10,
           "player": {
             "id": "59095",
             "firstName": "Chris",
@@ -136,80 +64,14 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "With two wins in three starts this season, he\u2019s already fulfilled the elevated expectations with which he started 2026, so even the sky isn\u2019t the limit right now. Played in zero Signature Events last year. Pebble Beach debut."
+                  "value": "Continuing his foray on the sites for Signature Events, he\u2019s a better fit in his debut at Riviera than he was in his first look at Pebble Beach where he placed T37. His driver plays up here. Scorable greens help (more below)."
                 }
               ]
             }
           ]
         },
         {
-          "rank": 9,
-          "player": {
-            "id": "33204",
-            "firstName": "Shane",
-            "lastName": "Lowry",
-            "countryFlag": "IRL",
-            "countryName": "Ireland",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33204.jpg"
-          },
-          "comment": "",
-          "commentNodes": [
-            {
-              "__typename": "NewsArticleParagraph",
-              "segments": [
-                {
-                  "value": "The only guy who beat him on the weekend here last year was the eventual champion and pal, Rory McIlroy. It was Lowry\u2019s first appearance in six years. He returns to begin his PGA TOUR season amid a strong run of form."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "rank": 8,
-          "player": {
-            "id": "34098",
-            "firstName": "Russell",
-            "lastName": "Henley",
-            "countryFlag": "USA",
-            "countryName": "United States of America",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
-          },
-          "comment": "",
-          "commentNodes": [
-            {
-              "__typename": "NewsArticleParagraph",
-              "segments": [
-                {
-                  "value": "Not the first guy who rushes to mind when thinking about success on Poa annua greens, but he hung up a personal-best T5 in his sixth trip last year. Opened with a field-best 64 on Spyglass Hill. Ten straight top 20s upon arrival."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "rank": 7,
-          "player": {
-            "id": "35450",
-            "firstName": "Patrick",
-            "lastName": "Cantlay",
-            "countryFlag": "USA",
-            "countryName": "United States of America",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35450.jpg"
-          },
-          "comment": "",
-          "commentNodes": [
-            {
-              "__typename": "NewsArticleParagraph",
-              "segments": [
-                {
-                  "value": "In the stable of horses for the courses, he\u2019s 9-for-9 with two top fives among six top 25s, including a T21 at the 2019 U.S. Open. Opened 2026 with results aligning with his history at PGA WEST (T13) and at Torrey Pines (MC)."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "rank": 6,
+          "rank": 12,
           "player": {
             "id": "28089",
             "firstName": "Jason",
@@ -224,14 +86,58 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "If you\u2019ve ever wondered how hard it is to win, cite his record at Pebble Beach. When including a T21 at the 2019 U.S. Open, he\u2019s 16-for-16 with five top fives and another four top 10s among 14 top 25s. T2 recently at PGA WEST."
+                  "value": "Still humming along and not yet a full month removed from a co-runner-up at The American Express, he isn\u2019t so much lurking as he hasn\u2019t gone away. Riviera brought out the best in him with ninth-place finishes in the last two."
                 }
               ]
             }
           ]
         },
         {
-          "rank": 5,
+          "rank": 11,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Say what you want about his success in limited-field action with no cut, his T19 at the AT&T Pebble Beach Pro-Am easily was his personal best in three starts in that event. Now he\u2019s treated to Riviera where he finished T4 in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Positioned to perform with the efficiency that netted a T5 here in 2021 (and rebound from missed cuts in the last two editions). Cashed in every start worldwide since the 2025 Masters and with authority. Top 15s in the last two."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
           "player": {
             "id": "46717",
             "firstName": "Viktor",
@@ -246,21 +152,21 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "Courses with small greens feed into the strengths of ball-strikers, so it\u2019s not a surprise that he\u2019s logged two top 25s in four starts. Now he\u2019s fresh off a personal-best T10 at TPC Scottsdale. Seven straight top 25s worldwide."
+                  "value": "In the context of the first two hosts of Signature Events this season, he\u2019s performed significantly better at Riviera every time with two top fives among four top 20s in as many trips. Opened 2026 with a pair of top 15s abroad."
                 }
               ]
             }
           ]
         },
         {
-          "rank": 4,
+          "rank": 8,
           "player": {
-            "id": "37455",
-            "firstName": "Si Woo",
-            "lastName": "Kim",
-            "countryFlag": "KOR",
-            "countryName": "South Korea",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+            "id": "47420",
+            "firstName": "Jake",
+            "lastName": "Knapp",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47420.jpg"
           },
           "comment": "",
           "commentNodes": [
@@ -268,14 +174,14 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "Refusing to rest, but why would he? And certainly not now. It\u2019s been nothing but leaderboard appearances for months. Eleven straight top 25s worldwide with a T11-T6-T2-T3 burst to open 2026. Top 15s in last two starts here."
+                  "value": "Given his current form fueled by a consistently strong bag, the UCLA product and local native couldn\u2019t be making his debut at Riviera at a better time. He\u2019s opened 2026 with respective results of T11, T5, solo eighth and T8."
                 }
               ]
             }
           ]
         },
         {
-          "rank": 3,
+          "rank": 7,
           "player": {
             "id": "28237",
             "firstName": "Rory",
@@ -290,7 +196,101 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "After an historic 2025, the 36-year-old opens a personal series of four title defenses worldwide with renewed focus to tackle Scottie Scheffler. Hasn\u2019t eased off the throttle and got 2026 going with a T3 at the Dubai Invitational."
+                  "value": "Golf is an individual sport, but he truly was his own worst enemy at Pebble Beach where he managed a T14 despite three double bogeys and one triple. Three top 10s at Riviera but not since 2022, and no podiums in eight tries."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "47504",
+            "firstName": "Sam",
+            "lastName": "Burns",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47504.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Immediately turned the page after a dreadful WM Phoenix Open to finish T6 at the AT&T Pebble Beach Pro-Am with, what else, a marvelous week of putting. He\u2019s been all or nothing at Riviera in six starts as well. T10 in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "35450",
+            "firstName": "Patrick",
+            "lastName": "Cantlay",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35450.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Fresh off a T14 at Pebble Beach where he rallied with a bogey-free, 7-under 65 in the finale. It\u2019s his second top 15 in three starts this season, but he\u2019s had five of them at Riviera, three for a top four, including the last two."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "50525",
+            "firstName": "Collin",
+            "lastName": "Morikawa",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50525.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With victory at Pebble Beach, he\u2019s off the schneid. "
+                },
+                {
+                  "value": "As life outside the ropes is about to arrive at its most fulfilling"
+                },
+                {
+                  "value": ", he can keep the pedal down in the meantime at Riviera where he was co-runner-up in 2022 and T6 in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a personal-best T4 at the AT&T Pebble Beach Pro-Am, the Brit picked up where he left off as the FedExCup champion in 2025. It also was his fourth top-four finish worldwide in the interim. Personal-best T10 here in 2024."
                 }
               ]
             }
@@ -299,12 +299,12 @@
         {
           "rank": 2,
           "player": {
-            "id": "22405",
-            "firstName": "Justin",
-            "lastName": "Rose",
-            "countryFlag": "ENG",
-            "countryName": "England",
-            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_22405.jpg"
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
           },
           "comment": "",
           "commentNodes": [
@@ -312,7 +312,7 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "The 45-year-old has Father Time pinned against the ropes. His 13th PGA TOUR title at Torrey Pines lifted him to No. 3 in the Official World Golf Ranking. Winner here in 2023. T3 both last year and at the 2019 U.S. Open."
+                  "value": "Ludvig \u00c5berg is the defending champ, but he won at Torrey Pines when The Genesis was displaced. Matsuyama is the most recent winner at Riviera in 2024. It\u2019s one of five top-11 finishes here. Also in fantastic form upon arrival."
                 }
               ]
             }
@@ -334,13 +334,7 @@
               "__typename": "NewsArticleParagraph",
               "segments": [
                 {
-                  "value": "You know that he\u2019s not keen on spotting the field shots like he did in the opener at the WM Phoenix Open en route to a T3, so there\u2019s that, but he\u2019s "
-                },
-                {
-                  "value": "the"
-                },
-                {
-                  "value": " target no matter what. Eighteen consecutive top 10s, seven of which were wins."
+                  "value": "If only he could avoid stumbling out of the gate, he\u2019d be pretty good. Despite first-round problems the last two weeks, he battled for a T3 and a T4, respectively. They extended his streak of top-four finishes worldwide to nine."
                 }
               ]
             }

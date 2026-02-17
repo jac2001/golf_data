@@ -1,0 +1,85 @@
+{
+  "timestamp": "2026-02-16T19:50:49.436307",
+  "results": {
+    "baseline": {
+      "config_name": "baseline",
+      "weights": {
+        "importance": 0.25,
+        "course_fit": 0.35,
+        "form": 0.25,
+        "field": 0.15
+      },
+      "tournaments_tested": 2,
+      "avg_pick_finish": 5.333333333333333,
+      "top10_hit_rate": 0.8333333333333334,
+      "top20_hit_rate": 1.0,
+      "winner_identified": 0,
+      "total_points": 1034,
+      "score": 72.8
+    },
+    "form_heavy": {
+      "config_name": "form_heavy",
+      "weights": {
+        "importance": 0.15,
+        "course_fit": 0.3,
+        "form": 0.4,
+        "field": 0.15
+      },
+      "tournaments_tested": 2,
+      "avg_pick_finish": 11.5,
+      "top10_hit_rate": 0.6666666666666666,
+      "top20_hit_rate": 0.8333333333333334,
+      "winner_identified": 0,
+      "total_points": 421,
+      "score": 60.516666666666666
+    },
+    "course_heavy": {
+      "config_name": "course_heavy",
+      "weights": {
+        "importance": 0.2,
+        "course_fit": 0.45,
+        "form": 0.2,
+        "field": 0.15
+      },
+      "tournaments_tested": 2,
+      "avg_pick_finish": 8.0,
+      "top10_hit_rate": 0.5,
+      "top20_hit_rate": 1.0,
+      "winner_identified": 0,
+      "total_points": 856,
+      "score": 59.2
+    },
+    "balanced": {
+      "config_name": "balanced",
+      "weights": {
+        "importance": 0.25,
+        "course_fit": 0.25,
+        "form": 0.3,
+        "field": 0.2
+      },
+      "tournaments_tested": 2,
+      "avg_pick_finish": 4.166666666666667,
+      "top10_hit_rate": 1.0,
+      "top20_hit_rate": 1.0,
+      "winner_identified": 1,
+      "total_points": 1270,
+      "score": 89.58333333333333
+    },
+    "value_focus": {
+      "config_name": "value_focus",
+      "weights": {
+        "importance": 0.2,
+        "course_fit": 0.3,
+        "form": 0.35,
+        "field": 0.15
+      },
+      "tournaments_tested": 2,
+      "avg_pick_finish": 6.5,
+      "top10_hit_rate": 0.8333333333333334,
+      "top20_hit_rate": 1.0,
+      "winner_identified": 0,
+      "total_points": 678,
+      "score": 72.68333333333334
+    }
+  }
+}

@@ -44,7 +44,9 @@ from typing import Optional
 # Configuration
 # ============================================================================
 
-PROJECT_ROOT = Path("/Users/jacklegnon/Desktop/golf_data")
+# Resolve project root dynamically from this file location so the
+# pipeline can run on any machine/path.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 # Ensure project root is on path for imports
 if str(PROJECT_ROOT) not in sys.path:
@@ -151,7 +153,11 @@ def find_schedule_row(
     on_date: str = None,
     schedule_path: Path = SCHEDULE_PATH,
 ) -> Optional[dict]:
-    """Find a tournament row by name or by date (YYYY-MM-DD)."""
+    """Find a tournament row by name or by date (YYYY-MM-DD).
+
+    If on_date is provided and falls between tournaments, returns the NEXT
+    upcoming tournament (prep week behavior).
+    """
     df = load_schedule(schedule_path)
     if df.empty:
         return None
@@ -168,11 +174,18 @@ def find_schedule_row(
     if on_date:
         try:
             d = datetime.strptime(on_date, "%Y-%m-%d").date()
-            df["start_date"] = pd.to_datetime(df["start_date"]).dt.date
-            df["end_date"] = pd.to_datetime(df["end_date"]).dt.date
-            match = df[(df["start_date"] <= d) & (df["end_date"] >= d)]
+            df["start_date_dt"] = pd.to_datetime(df["start_date"]).dt.date
+            df["end_date_dt"] = pd.to_datetime(df["end_date"]).dt.date
+
+            # First try: find tournament currently in progress
+            match = df[(df["start_date_dt"] <= d) & (df["end_date_dt"] >= d)]
             if not match.empty:
                 return match.iloc[0].to_dict()
+
+            # Second try: find next upcoming tournament (prep week)
+            upcoming = df[df["start_date_dt"] > d].sort_values("start_date_dt")
+            if not upcoming.empty:
+                return upcoming.iloc[0].to_dict()
         except Exception:
             pass
 
@@ -604,6 +617,8 @@ Examples:
             args.tournament_type = str(row.get("tournament_type")).title()
         if row.get("tournament_id"):
             args.pga_id = str(row.get("tournament_id"))
+        if row.get("power_slug") and not args.power_slug:
+            args.power_slug = str(row.get("power_slug"))
 
 
     # If schedule override requested (or purse missing), fill from schedule
@@ -615,8 +630,10 @@ Examples:
                 args.purse = int(row.get("purse") or 0)
             if args.use_schedule and row.get("tournament_type"):
                 args.tournament_type = str(row.get("tournament_type")).title()
-            if  args.use_schedule and row.get("tournament_id") and not args.pga_id:
+            if args.use_schedule and row.get("tournament_id") and not args.pga_id:
                 args.pga_id = str(row.get("tournament_id"))
+            if args.use_schedule and row.get("power_slug") and not args.power_slug:
+                args.power_slug = str(row.get("power_slug"))
         else:
             print("Warning: tournament not found in schedule; using provided values.")
 

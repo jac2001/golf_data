@@ -43,13 +43,16 @@ OUTPUTS_DIR = Path(__file__).parent.parent.parent / "outputs"
 SCHEDULE_FILE = DATA_DIR / "raw" / "schedule_2026.csv"
 TOURNAMENT_COURSES_FILE = DATA_DIR / "reference" / "tournament_courses.json"
 USAGE_TRACKER_FILE = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+CALIBRATION_FILE = DATA_DIR / "prediction_tracking" / "calibration_factors.json"
 
 # Default weights (should sum to 1.0)
+# Updated based on weight_optimizer.py backtest results (2026-02-16)
+# "balanced" config outperformed baseline: 89.6 score vs 72.8
 DEFAULT_WEIGHTS = {
     'importance': 0.25,
-    'course_fit': 0.35,
-    'form': 0.25,
-    'field': 0.15
+    'course_fit': 0.25,  # Reduced from 0.35 - form matters more
+    'form': 0.30,        # Increased from 0.25 - hot hand is real
+    'field': 0.20        # Increased from 0.15 - field strength matters
 }
 
 
@@ -287,8 +290,13 @@ class ScoringEngine:
                     self.predictions[player_name] = form
                 except (ValueError, KeyError) as e:
                     continue
-
+                
         print(f"  Loaded {len(self.predictions)} players from predictions")
+        calibration = self._load_calibration_factors()
+        if calibration:
+            for player_name, form in self.predictions.items():
+                self.predictions[player_name] = self._apply_calibration(form, calibration)
+            print(f"  Applied calibration factors to predictions")
 
     def _load_usage(self):
         """Load usage tracker data."""
@@ -306,6 +314,35 @@ class ScoringEngine:
         self.course_db = CourseHistoryDB()
         count = self.course_db.load_from_betting_profiles()
         print(f"  Loaded course history for {len(self.course_db.history)} players")
+
+
+
+    def _load_calibration_factors(self)-> Dict: 
+        """Load calibration factors for probability adjustment."""
+        if not CALIBRATION_FILE.exists():
+            return {}
+        with open(CALIBRATION_FILE, 'r') as f:
+            return json.load(f)
+    def _apply_calibration(self, form: PlayerForm, calibration: Dict) -> PlayerForm:                                  
+        """Apply calibration factors to reduce overconfident probabilities."""                                        
+        global_cal = calibration.get('global', {})                                                                    
+                                                                                                                    
+        # Apply scale factors (model is ~2x overconfident)                                                            
+        if 'win_prob' in global_cal:                                                                                  
+            form.win_prob *= global_cal['win_prob'].get('scale_factor', 1.0)                                          
+        if 'top5_prob' in global_cal:                                                                                 
+            form.top5_prob *= global_cal['top5_prob'].get('scale_factor', 1.0)                                        
+        if 'top10_prob' in global_cal:                                                                                
+            form.top10_prob *= global_cal['top10_prob'].get('scale_factor', 1.0)                                      
+                                                                                                                    
+        return form 
+        
+        
+        
+    
+    
+
+
 
     def _calculate_importance(self, tournament: TournamentInfo) -> float:
         """Calculate tournament importance score (0-100)."""
@@ -343,70 +380,116 @@ class ScoringEngine:
 
         return min(100, score)
 
-    def _calculate_form_score(self, player: str) -> Tuple[float, str]:
-        """Calculate current form score (0-100) and trend."""
-        if player not in self.predictions:
-            return 50.0, "NEUTRAL"  # Default for unknown players
+    def _calculate_form_score(self, player: str) -> Tuple[float, str]:                                                
+        """                                                                                                           
+        Calculate current form score (0-100) and trend.                                                               
+        Uses dynamic form windows based on player consistency/tier.                                                   
+        """                                                                                                           
+        if player not in self.predictions:                                                                            
+            return 50.0, "NEUTRAL"  # Default for unknown players                                                     
+                                                                                                                    
+        form = self.predictions[player]                                                                               
+        score = 0.0                                                                                                   
+                                                                                                                    
+        # === Dynamic form weighting based on player tier ===                                                         
+        # Top players = more stable, use longer window (reflected in lower rank bonus)                                
+        # Lower ranked players = more volatile, recent form matters more                                              
+        rank = form.owgr_rank                                                                                         
+                                                                                                                    
+        # OWGR rank component (0-35 points)                                                                           
+        # Adjusted: Top 10 players get slightly less rank bonus                                                       
+        # because we want to weight their recent form more equally                                                    
+        if rank <= 10:                                                                                                
+            rank_score = 30 + (11 - rank) * 0.5  # 30-35 for top 10                                                   
+            form_multiplier = 1.0  # Standard form weight                                                             
+        elif rank <= 30:                                                                                              
+            rank_score = 20 + (31 - rank) * 0.5  # 20-30 for ranks 11-30                                              
+            form_multiplier = 1.1  # Slightly boost form importance                                                   
+        elif rank <= 60:                                                                                              
+            rank_score = 10 + (61 - rank) * 0.33  # 10-20 for ranks 31-60                                             
+            form_multiplier = 1.2  # Form matters more for mid-tier                                                   
+        else:                                                                                                         
+            rank_score = max(0, 10 - (rank - 60) * 0.1)  # 0-10 for ranks 61+                                         
+            form_multiplier = 1.4  # Recent form is critical for lower ranked                                         
+                                                                                                                    
+        score += rank_score                                                                                           
+                                                                                                                    
+        # Win probability (0-25 points) - already calibrated                                                          
+        win_score = min(25, form.win_prob * 125)                                                                      
+        score += win_score                                                                                            
+                                                                                                                    
+        # Form trend (0-20 points) - apply dynamic multiplier                                                         
+        trend_scores = {'HOT': 20, 'WARM': 12, 'NEUTRAL': 6, 'COLD': 0}                                               
+        base_trend_score = trend_scores.get(form.form_trend, 6)                                                       
+        score += base_trend_score * form_multiplier                                                                   
+                                                                                                                    
+        # Hot hand momentum (0-10 points) - boost for lower ranked players                                            
+        hot_hand = min(10, form.hot_hand_score * 10 * form_multiplier)                                                
+        score += hot_hand                                                                                             
+                                                                                                                    
+        # Model edge component (0-15 points with penalties)                                                           
+        if form.model_edge > 0.05:  # 5%+ edge = strong value                                                         
+            edge_score = min(15, form.model_edge * 150)                                                               
+        elif form.model_edge > 0:  # Small positive edge                                                              
+            edge_score = min(10, form.model_edge * 100)                                                               
+        elif form.model_edge < -0.05:  # Vegas significantly lower = fade                                             
+            edge_score = -5  # Penalty for overvalued by model                                                        
+        else:                                                                                                         
+            edge_score = 0                                                                                            
+        score += edge_score                                                                                           
+                                                                                                                    
+        return min(100, max(0, score)), form.form_trend 
 
-        form = self.predictions[player]
-        score = 0.0
 
-        # OWGR rank (0-35 points)
-        # Rank 1 = 35, Rank 50 = 17.5, Rank 100 = 0
-        rank_score = max(0, 35 - (form.owgr_rank - 1) * 0.35)
-        score += rank_score
 
-        # Win probability (0-25 points)
-        # 20% win prob = 25 pts, 0% = 0 pts
-        win_score = min(25, form.win_prob * 125)
-        score += win_score
 
-        # Form trend (0-20 points)
-        trend_scores = {'HOT': 20, 'WARM': 12, 'NEUTRAL': 6, 'COLD': 0}
-        score += trend_scores.get(form.form_trend, 6)
 
-        # Hot hand momentum (0-10 points)
-        hot_hand = min(10, form.hot_hand_score * 10)
-        score += hot_hand
 
-        # Model edge bonus (0-10 points)
-        edge_score = min(10, max(0, form.model_edge * 100))
-        score += edge_score
+    def _calculate_field_strength(self, tournament: str) -> float:                                                    
+        """                                                                                                           
+        Calculate inverse field strength (0-100).                                                                     
+        Higher score = weaker field = easier path.                                                                    
+        Uses actual field average rank when available.                                                                
+        """                                                                                                           
+        if tournament not in self.tournaments:                                                                        
+            return 50.0                                                                                               
+                                                                                                                    
+        t = self.tournaments[tournament]                                                                              
+                                                                                                                    
+        # Base scores by tournament type                                                                              
+        type_field = {                                                                                                
+            'Major': 10,      # Strongest fields                                                                      
+            'Signature': 20,                                                                                          
+            'Playoff': 15,                                                                                            
+            'Standard': 60,   # Weaker fields                                                                         
+            'Team': 70                                                                                                
+        }                                                                                                             
+        base = type_field.get(t.tournament_type, 50)                                                                  
+                                                                                                                    
+        # Dynamic adjustment based on actual field strength                                                           
+        # Calculate average OWGR of players in predictions (proxy for field)                                          
+        if self.predictions:                                                                                          
+            ranks = [p.owgr_rank for p in self.predictions.values() if p.owgr_rank < 500]                             
+            if ranks:                                                                                                 
+                avg_rank = sum(ranks) / len(ranks)                                                                    
+                # Adjust based on field quality                                                                       
+                # avg_rank 30 = elite field, subtract 15                                                              
+                # avg_rank 60 = typical field, no change                                                              
+                # avg_rank 90 = weak field, add 15                                                                    
+                field_adjustment = (avg_rank - 60) / 2  # -15 to +15 range                                            
+                base = max(5, min(85, base + field_adjustment))                                                       
+                                                                                                                    
+        return base
 
-        return min(100, score), form.form_trend
 
-    def _calculate_field_strength(self, tournament: str) -> float:
-        """
-        Calculate inverse field strength (0-100).
-        Higher score = weaker field = easier path.
-        """
-        # For now, use tournament type as proxy
-        # In future: calculate based on committed players
-        if tournament not in self.tournaments:
-            return 50.0
 
-        t = self.tournaments[tournament]
 
-        # Inverse of importance - weaker events have weaker fields
-        type_field = {
-            'Major': 10,      # Strongest fields
-            'Signature': 20,
-            'Playoff': 15,
-            'Standard': 60,   # Weaker fields
-            'Team': 70
-        }
 
-        base = type_field.get(t.tournament_type, 50)
 
-        # Adjust for specific events known to have weak fields
-        weak_field_events = {
-            'John Deere Classic': 80,
-            '3M Open': 75,
-            'Rocket Classic': 70,
-            'Wyndham Championship': 65
-        }
 
-        return weak_field_events.get(tournament, base)
+
+
+
 
     def get_remaining_uses(self, player: str) -> int:
         """Get remaining uses for a player."""

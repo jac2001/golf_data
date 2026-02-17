@@ -1,31 +1,31 @@
-week,start_date,end_date,tournament_name,tournament_type,location,purse,winner_share,tournament_id
-1,2026-02-05,2026-02-08,Waste Management Phoenix Open,Standard,Scottsdale AZ,"$9,600,000.00","$1,728,000.00",R2026003
-2,2026-02-12,2026-02-15,AT&T Pebble Beach Pro-Am,Signature,Pebble Beach CA,"$20,000,000.00","$3,600,000.00",R2026005
-3,2026-02-19,2026-02-22,The Genesis Invitational,Signature,San Diego CA,"$20,000,000.00","$4,000,000.00",R2026007
-4,2026-02-26,2026-03-01,Cognizant Classic,Standard,Palm Beach Gardens FL,"$9,600,000.00","$1,728,000.00",R2026010
-5,2026-03-05,2026-03-08,Arnold Palmer Invitational,Signature,Orlando FL,"$20,000,000.00","$4,000,000.00",R2026009
-6,2026-03-12,2026-03-15,THE PLAYERS Championship,Major,Ponte Vedra Beach FL,"$25,000,000.00","$4,500,000.00",R2026011
-7,2026-03-19,2026-03-22,Valspar Championship,Standard,Palm Harbor FL,"$9,100,000.00","$1,638,000.00",R2026475
-8,2026-03-26,2026-03-29,Texas Children's Houston Open,Standard,Houston TX,"$9,900,000.00","$1,782,000.00",R2026020
-9,2026-04-02,2026-04-05,Valero Texas Open,Standard,San Antonio TX,"$9,800,000.00","$1,764,000.00",R2026041
-10,2026-04-09,2026-04-12,The Masters,Major,Augusta GA,"$21,000,000.00","$4,200,000.00",R2026014
-11,2026-04-16,2026-04-19,RBC Heritage,Signature,Hilton Head Island SC,"$20,000,000.00","$3,600,000.00",R2026012
-12,2026-04-23,2026-04-26,Zurich Classic of New Orleans,Team,New Orleans LA,"$9,500,000.00","$1,329,400.00",R2026018
-13,2026-04-30,2026-05-03,Cadillac Championship,Signature,Miami FL,"$20,000,000.00","$3,600,000.00",R2026556
-14,2026-05-07,2026-05-10,Truist Championship,Signature,Charlotte NC,"$20,000,000.00","$3,600,000.00",R2026480
-15,2026-05-14,2026-05-17,PGA Championship,Major,Newtown Square PA,"$19,000,000.00","$3,420,000.00",R2026033
-16,2026-05-21,2026-05-24,The CJ Cup Byron Nelson,Standard,McKinney TX,"$10,300,000.00","$1,854,000.00",R2026019
-17,2026-05-28,2026-05-31,Charles Schwab Challenge,Standard,Fort Worth TX,"$9,400,000.00","$1,692,000.00",R2026021
-18,2026-06-04,2026-06-07,The Memorial Tournament,Signature,Dublin OH,"$20,000,000.00","$4,000,000.00",R2026023
-19,2026-06-11,2026-06-14,RBC Canadian Open,Standard,Toronto CAN,"$9,800,000.00","$1,764,000.00",R2026032
-20,2026-06-18,2026-06-21,U.S. Open,Major,Southampton NY,"$21,500,000.00","$4,300,000.00",R2026026
-21,2026-06-25,2026-06-28,Travelers Championship,Signature,Cromwell CT,"$20,000,000.00","$3,600,000.00",R2026034
-22,2026-07-02,2026-07-05,John Deere Classic,Standard,Silvis IL,"$8,800,000.00","$1,584,000.00",R2026030
-23,2026-07-09,2026-07-12,Genesis Scottish Open,Standard,North Berwick Scotland,"$9,000,000.00","$1,575,000.00",R2026541
-24,2026-07-16,2026-07-19,The Open Championship,Major,Southport England,"$17,000,000.00","$3,100,000.00",R2026100
-25,2026-07-23,2026-07-26,3M Open,Standard,Blaine MN,"$8,800,000.00","$1,584,000.00",R2026525
-26,2026-07-30,2026-08-02,Rocket Classic,Standard,Detroit MI,"$10,000,000.00","$1,800,000.00",R2026524
-27,2026-08-06,2026-08-09,Wyndham Championship,Standard,Greensboro NC,"$8,500,000.00","$1,530,000.00",R2026013
-28,2026-08-13,2026-08-16,FedEx St. Jude Invitational,Playoff,Memphis TN,"$20,000,000.00","$3,600,000.00",R2026027
-29,2026-08-20,2026-08-23,BMW Championship,Playoff,St. Louis MO,"$20,000,000.00","$3,600,000.00",R2026028
-30,2026-08-27,2026-08-30,TOUR Championship,Playoff,Atlanta GA,"$20,000,000.00","$3,600,000.00",R2026060
+week,start_date,end_date,tournament_name,tournament_type,location,purse,winner_share,tournament_id,power_slug
+1,2026-02-05,2026-02-08,Waste Management Phoenix Open,Standard,Scottsdale AZ,"$9,600,000.00","$1,728,000.00",R2026003,wm-phoenix-open
+2,2026-02-12,2026-02-15,AT&T Pebble Beach Pro-Am,Signature,Pebble Beach CA,"$20,000,000.00","$3,600,000.00",R2026005,att-pebble-beach-pro-am
+3,2026-02-19,2026-02-22,The Genesis Invitational,Signature,San Diego CA,"$20,000,000.00","$4,000,000.00",R2026007,the-genesis-invitational
+4,2026-02-26,2026-03-01,Cognizant Classic,Standard,Palm Beach Gardens FL,"$9,600,000.00","$1,728,000.00",R2026010,cognizant-classic
+5,2026-03-05,2026-03-08,Arnold Palmer Invitational,Signature,Orlando FL,"$20,000,000.00","$4,000,000.00",R2026009,arnold-palmer-invitational
+6,2026-03-12,2026-03-15,THE PLAYERS Championship,Major,Ponte Vedra Beach FL,"$25,000,000.00","$4,500,000.00",R2026011,the-players-championship
+7,2026-03-19,2026-03-22,Valspar Championship,Standard,Palm Harbor FL,"$9,100,000.00","$1,638,000.00",R2026475,valspar-championship
+8,2026-03-26,2026-03-29,Texas Children's Houston Open,Standard,Houston TX,"$9,900,000.00","$1,782,000.00",R2026020,texas-childrens-houston-open
+9,2026-04-02,2026-04-05,Valero Texas Open,Standard,San Antonio TX,"$9,800,000.00","$1,764,000.00",R2026041,valero-texas-open
+10,2026-04-09,2026-04-12,The Masters,Major,Augusta GA,"$21,000,000.00","$4,200,000.00",R2026014,the-masters
+11,2026-04-16,2026-04-19,RBC Heritage,Signature,Hilton Head Island SC,"$20,000,000.00","$3,600,000.00",R2026012,rbc-heritage
+12,2026-04-23,2026-04-26,Zurich Classic of New Orleans,Team,New Orleans LA,"$9,500,000.00","$1,329,400.00",R2026018,zurich-classic-of-new-orleans
+13,2026-04-30,2026-05-03,Cadillac Championship,Signature,Miami FL,"$20,000,000.00","$3,600,000.00",R2026556,cadillac-championship
+14,2026-05-07,2026-05-10,Truist Championship,Signature,Charlotte NC,"$20,000,000.00","$3,600,000.00",R2026480,truist-championship
+15,2026-05-14,2026-05-17,PGA Championship,Major,Newtown Square PA,"$19,000,000.00","$3,420,000.00",R2026033,pga-championship
+16,2026-05-21,2026-05-24,The CJ Cup Byron Nelson,Standard,McKinney TX,"$10,300,000.00","$1,854,000.00",R2026019,the-cj-cup-byron-nelson
+17,2026-05-28,2026-05-31,Charles Schwab Challenge,Standard,Fort Worth TX,"$9,400,000.00","$1,692,000.00",R2026021,charles-schwab-challenge
+18,2026-06-04,2026-06-07,The Memorial Tournament,Signature,Dublin OH,"$20,000,000.00","$4,000,000.00",R2026023,the-memorial-tournament
+19,2026-06-11,2026-06-14,RBC Canadian Open,Standard,Toronto CAN,"$9,800,000.00","$1,764,000.00",R2026032,rbc-canadian-open
+20,2026-06-18,2026-06-21,U.S. Open,Major,Southampton NY,"$21,500,000.00","$4,300,000.00",R2026026,us-open
+21,2026-06-25,2026-06-28,Travelers Championship,Signature,Cromwell CT,"$20,000,000.00","$3,600,000.00",R2026034,travelers-championship
+22,2026-07-02,2026-07-05,John Deere Classic,Standard,Silvis IL,"$8,800,000.00","$1,584,000.00",R2026030,john-deere-classic
+23,2026-07-09,2026-07-12,Genesis Scottish Open,Standard,North Berwick Scotland,"$9,000,000.00","$1,575,000.00",R2026541,genesis-scottish-open
+24,2026-07-16,2026-07-19,The Open Championship,Major,Southport England,"$17,000,000.00","$3,100,000.00",R2026100,the-open-championship
+25,2026-07-23,2026-07-26,3M Open,Standard,Blaine MN,"$8,800,000.00","$1,584,000.00",R2026525,3m-open
+26,2026-07-30,2026-08-02,Rocket Classic,Standard,Detroit MI,"$10,000,000.00","$1,800,000.00",R2026524,rocket-mortgage-classic
+27,2026-08-06,2026-08-09,Wyndham Championship,Standard,Greensboro NC,"$8,500,000.00","$1,530,000.00",R2026013,wyndham-championship
+28,2026-08-13,2026-08-16,FedEx St. Jude Invitational,Playoff,Memphis TN,"$20,000,000.00","$3,600,000.00",R2026027,fedex-st-jude-invitational
+29,2026-08-20,2026-08-23,BMW Championship,Playoff,St. Louis MO,"$20,000,000.00","$3,600,000.00",R2026028,bmw-championship
+30,2026-08-27,2026-08-30,TOUR Championship,Playoff,Atlanta GA,"$20,000,000.00","$3,600,000.00",R2026060,tour-championship

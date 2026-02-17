@@ -114,6 +114,28 @@ class CourseStats:
             return 0.0
         return self.top_10s / self.times_played
 
+
+
+    @property 
+    def specialization_score(self) -> float:
+        """
+        Calculate specialization score - identfies true course specialists. 
+        Higher = more specialized (multiple good finishes at same venue).
+        Score = (wins * 5 + top5s * 2 + top10s * 1) / (plays * 2)
+        """
+        if self.times_played == 0:
+            return 0.0 
+        weighted_results = (self.wins * 5) + (self.top_5s * 2) + (self.top_10s * 1)
+        return weighted_results / (self.times_played * 2)
+    
+    
+    
+
+
+
+
+
+
     def to_dict(self) -> Dict:
         """Convert to dictionary for serialization."""
         return {
@@ -659,63 +681,80 @@ class CourseHistoryDB:
 
         return specialists
 
-    def calculate_course_fit_score(self, stats: CourseStats) -> float:
-        """
-        Calculate a 0-100 course fit score based on historical performance.
-
-        Factors:
-        - Wins (huge bonus)
-        - Top 5s and Top 10s
-        - Average finish
-        - Consistency (cut rate)
-        - Recency (more recent = better)
-        """
-        if stats.times_played == 0:
-            return 0.0
-
-        score = 50.0  # Base score
-
-        # Win bonus (massive - 20 points per win, max 30)
-        win_bonus = min(stats.wins * 20, 30)
-        score += win_bonus
-
-        # Top 5 bonus (5 points each, max 15)
-        top5_bonus = min((stats.top_5s - stats.wins) * 5, 15)  # Don't double count wins
-        score += top5_bonus
-
-        # Top 10 bonus (2 points each beyond top 5s, max 10)
-        top10_bonus = min((stats.top_10s - stats.top_5s) * 2, 10)
-        score += top10_bonus
-
-        # Average finish adjustment (-0.5 per position above 20, +1 per position below 10)
-        if stats.avg_finish > 0:
-            if stats.avg_finish <= 10:
-                score += (10 - stats.avg_finish) * 1
-            elif stats.avg_finish > 20:
-                score -= (stats.avg_finish - 20) * 0.5
-
-        # Cut rate bonus/penalty
-        if stats.cut_rate >= 0.9:
-            score += 5
-        elif stats.cut_rate < 0.5:
-            score -= 10
-
-        # Experience bonus (played more = more reliable data)
-        if stats.times_played >= 5:
-            score += 5
-        elif stats.times_played >= 3:
-            score += 2
-
-        # Recency bonus (if played recently)
-        if stats.years_played:
-            most_recent = max(stats.years_played)
-            if most_recent >= 2025:
-                score += 5
-            elif most_recent >= 2023:
-                score += 2
-
-        # Clamp to 0-100
+    def calculate_course_fit_score(self, stats: CourseStats) -> float:                                                
+        """                                                                                                           
+        Calculate a 0-100 course fit score based on historical performance.                                           
+                                                                                                                    
+        Factors:                                                                                                      
+        - Wins (huge bonus)                                                                                           
+        - Top 5s and Top 10s                                                                                          
+        - Average finish                                                                                              
+        - Consistency (cut rate)                                                                                      
+        - Recency (more recent = better)                                                                              
+        - Specialization bonus for true course specialists                                                            
+        """                                                                                                           
+        if stats.times_played == 0:                                                                                   
+            return 45.0  # Neutral score for no history (was 0, too harsh)                                            
+                                                                                                                    
+        score = 50.0  # Base score                                                                                    
+                                                                                                                    
+        # Win bonus (massive - 20 points per win, max 30)                                                             
+        win_bonus = min(stats.wins * 20, 30)                                                                          
+        score += win_bonus                                                                                            
+                                                                                                                    
+        # Top 5 bonus (5 points each, max 15)                                                                         
+        top5_bonus = min((stats.top_5s - stats.wins) * 5, 15)  # Don't double count wins                              
+        score += top5_bonus                                                                                           
+                                                                                                                    
+        # Top 10 bonus (2 points each beyond top 5s, max 10)                                                          
+        top10_bonus = min((stats.top_10s - stats.top_5s) * 2, 10)                                                     
+        score += top10_bonus                                                                                          
+                                                                                                                    
+        # Average finish adjustment (-0.5 per position above 20, +1 per position below 10)                            
+        if stats.avg_finish > 0:                                                                                      
+            if stats.avg_finish <= 10:                                                                                
+                score += (10 - stats.avg_finish) * 1                                                                  
+            elif stats.avg_finish > 20:                                                                               
+                score -= (stats.avg_finish - 20) * 0.5                                                                
+                                                                                                                    
+        # Cut rate bonus/penalty                                                                                      
+        if stats.cut_rate >= 0.9:                                                                                     
+            score += 5                                                                                                
+        elif stats.cut_rate < 0.5:                                                                                    
+            score -= 10                                                                                               
+                                                                                                                    
+        # === NEW: Specialization bonus ===                                                                           
+        # True specialists (multiple strong finishes) get 15-25 point boost                                           
+        spec_score = stats.specialization_score                                                                       
+        if spec_score > 0.6:  # Elite specialist (e.g., 2 wins in 4 plays)                                            
+            score += 25                                                                                               
+        elif spec_score > 0.4:  # Strong specialist                                                                   
+            score += 15                                                                                               
+        elif spec_score > 0.25:  # Moderate specialist                                                                
+            score += 8                                                                                                
+                                                                                                                    
+        # Anti-specialist penalty (consistently poor at this course)                                                  
+        if stats.times_played >= 3 and stats.avg_finish > 40 and stats.top_10s == 0:                                  
+            score -= 15  # Fade players who struggle here                                                             
+                                                                                                                    
+        # Recency bonus (playing well recently at course matters more)                                                
+        current_year = 2026                                                                                           
+        if stats.years_played:                                                                                        
+            most_recent = max(stats.years_played)                                                                     
+            if most_recent >= current_year - 1:  # Played last year or this year                                      
+                score += 5                                                                                            
+            elif most_recent <= current_year - 4:  # Haven't played in 4+ years                                       
+                score -= 5                                                                                            
+                                                                                                                    
         return max(0, min(100, score))
+
+
+
+
+
+
+
+
 
     def get_player_all_courses(self, player_name: str) -> Dict[str, CourseStats]:
         """Get all course history for a player."""

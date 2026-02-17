@@ -225,7 +225,7 @@ def run_weekly_prep(tournament_name: str = None, quick: bool = False, dry_run: b
         scrapers = [
             ("fetch_field_from_pgatour.py", ["--pga-id", t_id, "--output", field_output, "--name", t_name] if t_id else []),
             ("fetch_pga_odds.py", ["--tournament-id", t_id] if t_id else []),
-            # Note: PGA expert picks require --path arg, use run_weekly_workflow.py with --expert-path
+            # Note: PGA expert picks require --path arg; run via run_pipeline.py flow when needed.
         ]
     else:
         scrapers = [
@@ -234,7 +234,7 @@ def run_weekly_prep(tournament_name: str = None, quick: bool = False, dry_run: b
             ("fetch_form_stats.py", ["--year", "2026", "--quick"]),
             ("fetch_betting_profiles.py", ["--tournament-id", t_id, "--field", field_output] if t_id else []),
             ("fetch_pga_odds.py", ["--tournament-id", t_id] if t_id else []),
-            # Note: PGA expert picks require --path arg, use run_weekly_workflow.py with --expert-path
+            # Note: PGA expert picks require --path arg; run via run_pipeline.py flow when needed.
             ("fetch_betting_profile_articles.py", [
                 "--field-csv", field_output,
                 "--url-template", betting_articles_template,
@@ -303,4 +303,3 @@ def main():
 if __name__ == "__main__":                                                                                            
     main()                                                                                                                
                                                                                                                     
-

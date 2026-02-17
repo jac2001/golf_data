@@ -60,9 +60,26 @@ DEFAULT_HEADERS = {
 
 # Output directory
 OUTPUT_DIR = Path("data/odds")
+PREDICTIONS_DIR = Path("outputs")
 
 # GraphQL query for tournament odds
 TOURNAMENT_ODDS_QUERY = """
+query TournamentOddsToWin($tournamentId: ID!) {
+  tournamentOddsToWin(tournamentId: $tournamentId) {
+    tournamentId
+    tournamentName
+    players {
+      playerId
+      oddsToWin
+      oddsSwing
+      oddsSort
+      oddsDirection
+    }
+  }
+}
+"""
+
+TOURNAMENT_ODDS_QUERY_FALLBACK = """
 query TournamentOddsToWin($tournamentId: ID!) {
   tournamentOddsToWin(tournamentId: $tournamentId) {
     tournamentId
@@ -119,6 +136,17 @@ def parse_american_odds(odds_str: str) -> int:
         return None
 
 
+def american_odds_to_probability(odds_str: str) -> float:
+    """
+    Convert American odds string (e.g., '+185') to implied probability.
+
+    Returns:
+        Probability on [0, 1], or None if invalid.
+    """
+    odds_numeric = parse_american_odds(odds_str)
+    return american_to_implied_prob(odds_numeric)
+
+
 def american_to_implied_prob(american_odds: int) -> float:
     """
     Convert American odds to implied probability.
@@ -173,6 +201,121 @@ def remove_vig(probabilities: list) -> list:
     return [p / total if p is not None else None for p in probabilities]
 
 
+def _name_key(name: str) -> str:
+    """Normalize player name for loose matching."""
+    if pd.isna(name):
+        return ""
+    cleaned = str(name).replace(",", " ").replace(".", " ").replace("-", " ").lower().strip()
+    tokens = [t for t in cleaned.split() if t]
+    tokens = [t for t in tokens if t not in {"jr", "sr", "ii", "iii", "iv", "v"}]
+    tokens.sort()
+    return " ".join(tokens)
+
+
+def _load_predictions_for_edge(tournament_id: str) -> pd.DataFrame:
+    """Load best-available predictions file for edge calculation."""
+    candidates = [
+        PREDICTIONS_DIR / f"{tournament_id}_predictions.csv",
+        PREDICTIONS_DIR / f"{tournament_id.lower()}_predictions.csv",
+        PREDICTIONS_DIR / "latest_predictions.csv",
+    ]
+    for p in candidates:
+        if p.exists():
+            try:
+                df = pd.read_csv(p)
+                if not df.empty:
+                    return df
+            except Exception:
+                continue
+    return pd.DataFrame()
+
+
+def add_model_edge_columns(odds_df: pd.DataFrame, tournament_id: str) -> pd.DataFrame:
+    """
+    Add model probability + edge columns for value-bet analysis.
+
+    Edge is defined as:
+        edge_win_prob = model_win_prob - fanduel_implied_prob
+    """
+    df = odds_df.copy()
+    if df.empty:
+        return df
+
+    preds = _load_predictions_for_edge(tournament_id)
+    if preds.empty or "win_prob" not in preds.columns:
+        df["model_win_prob"] = np.nan
+        df["edge_win_prob"] = np.nan
+        df["edge_pct_points"] = np.nan
+        df["is_value_bet"] = False
+        return df
+
+    # Prefer exact ID join when possible.
+    if "player_id" in preds.columns:
+        left = df.copy()
+        right = preds[["player_id", "win_prob"]].copy()
+        left["player_id"] = pd.to_numeric(left["player_id"], errors="coerce").astype("Int64")
+        right["player_id"] = pd.to_numeric(right["player_id"], errors="coerce").astype("Int64")
+        merged = left.merge(right, on="player_id", how="left")
+    else:
+        left = df.copy()
+        right = preds[["player_name", "win_prob"]].copy()
+        left["name_key"] = left["player_name"].apply(_name_key)
+        right["name_key"] = right["player_name"].apply(_name_key)
+        merged = left.merge(right[["name_key", "win_prob"]], on="name_key", how="left")
+        merged = merged.drop(columns=["name_key"], errors="ignore")
+
+    merged = merged.rename(columns={"win_prob": "model_win_prob"})
+    merged["edge_win_prob"] = merged["model_win_prob"] - merged["implied_prob"]
+    merged["edge_pct_points"] = merged["edge_win_prob"] * 100.0
+    merged["is_value_bet"] = merged["edge_win_prob"] > 0
+    return merged
+
+
+def build_fanduel_odds_view(df: pd.DataFrame) -> pd.DataFrame:
+    """Create a dedicated FanDuel odds dataset with explicit column naming."""
+    out = df.copy()
+    if out.empty:
+        return out
+
+    out["sportsbook"] = "FanDuel"
+    out["market"] = "winner"
+    out["fanduel_odds"] = out["odds_to_win"]
+    out["fanduel_implied_prob"] = out["implied_prob"]
+    out["fanduel_fair_prob"] = out["fair_prob"]
+    if "odds_direction" not in out.columns:
+        out["odds_direction"] = out.get("odds_swing", "")
+    if "odds_swing" not in out.columns:
+        out["odds_swing"] = ""
+    if "fetched_at" not in out.columns:
+        out["fetched_at"] = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+    out["odds_movement_direction"] = out["odds_direction"].fillna("").astype(str)
+    out["odds_movement_swing"] = out["odds_swing"].fillna("").astype(str)
+
+    priority_cols = [
+        "tournament_id",
+        "tournament_name",
+        "sportsbook",
+        "market",
+        "player_id",
+        "player_name",
+        "fanduel_odds",
+        "odds_numeric",
+        "fanduel_implied_prob",
+        "fanduel_fair_prob",
+        "odds_sort",
+        "odds_rank",
+        "odds_movement_direction",
+        "odds_movement_swing",
+        "model_win_prob",
+        "edge_win_prob",
+        "edge_pct_points",
+        "is_value_bet",
+        "fetched_at",
+    ]
+    remaining = [c for c in out.columns if c not in priority_cols]
+    return out[priority_cols + remaining]
+
+
 # ============================================================================
 # API Functions
 # ============================================================================
@@ -205,8 +348,17 @@ def fetch_tournament_odds(tournament_id: str) -> pd.DataFrame:
         data = resp.json()
 
         if data.get("errors"):
-            print(f"    GraphQL errors: {data['errors']}")
-            return pd.DataFrame()
+            # PGA schema can vary; retry with conservative query.
+            print("    Enhanced odds query failed; retrying fallback fields...")
+            payload["query"] = TOURNAMENT_ODDS_QUERY_FALLBACK
+            resp = requests.post(GRAPHQL_URL, headers=DEFAULT_HEADERS, json=payload, timeout=30)
+            if resp.status_code != 200:
+                print(f"    Error: HTTP {resp.status_code} on fallback query")
+                return pd.DataFrame()
+            data = resp.json()
+            if data.get("errors"):
+                print(f"    GraphQL errors: {data['errors']}")
+                return pd.DataFrame()
 
         odds_data = data.get("data", {}).get("tournamentOddsToWin")
         if not odds_data:
@@ -225,7 +377,7 @@ def fetch_tournament_odds(tournament_id: str) -> pd.DataFrame:
         for p in players:
             odds_str = p.get("oddsToWin", "")
             odds_numeric = parse_american_odds(odds_str)
-            implied_prob = american_to_implied_prob(odds_numeric)
+            implied_prob = american_odds_to_probability(odds_str)
 
             records.append({
                 "tournament_id": tournament_id,
@@ -235,7 +387,9 @@ def fetch_tournament_odds(tournament_id: str) -> pd.DataFrame:
                 "odds_numeric": odds_numeric,
                 "implied_prob": implied_prob,
                 "odds_swing": p.get("oddsSwing", ""),
+                "odds_direction": p.get("oddsDirection", p.get("oddsSwing", "")),
                 "odds_sort": p.get("oddsSort", 0),
+                "fetched_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
             })
 
         df = pd.DataFrame(records)
@@ -372,7 +526,10 @@ Tournament IDs:
         print("\n  No odds data found!")
         return 1
 
-    # Determine output path
+    # Add model-vs-book edge columns (if predictions available)
+    df = add_model_edge_columns(df, args.tournament_id)
+
+    # Determine output path for legacy/general odds file
     if args.output:
         output_path = Path(args.output)
     else:
@@ -380,9 +537,15 @@ Tournament IDs:
         output_path = OUTPUT_DIR / f"pga_odds_{args.tournament_id}.csv"
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Save
+    # Save legacy/general odds file
     df.to_csv(output_path, index=False)
+
+    # Save dedicated FanDuel odds file for value-bet workflow
+    fanduel_df = build_fanduel_odds_view(df)
+    fanduel_output_path = OUTPUT_DIR / f"fanduel_odds_{args.tournament_id}.csv"
+    fanduel_df.to_csv(fanduel_output_path, index=False)
 
     # Print summary
     print("\n" + "=" * 60)
@@ -408,7 +571,13 @@ Tournament IDs:
         swing_icon = "↑" if swing == "UP" else "↓" if swing == "DOWN" else "→"
         print(f"    {name}  {odds:>8}  ({prob:5.2f}%)  {swing_icon}")
 
+    if "edge_win_prob" in df.columns:
+        value_count = int((df["edge_win_prob"] > 0).sum())
+        with_model_count = int(df["edge_win_prob"].notna().sum())
+        print(f"\n  Value edges ready: {value_count}/{with_model_count} players with positive edge")
+
     print(f"\n  Saved to: {output_path}")
+    print(f"  Saved FanDuel view to: {fanduel_output_path}")
 
     return 0
 
