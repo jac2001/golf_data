@@ -128,16 +128,48 @@ class ProbabilityCalibrator:
 
     def _select_calibration(self, tournament_type: Optional[str]) -> Dict:
         """Select calibration config (global or per tournament type)."""
+        def _meta_counts() -> tuple[int, Dict[str, int], int]:
+            meta = self.calibration.get("metadata", {}) if isinstance(self.calibration, dict) else {}
+            min_tournaments = int(meta.get("min_tournaments", 3) or 3)
+            raw_counts = meta.get("tournaments_by_type", {}) if isinstance(meta, dict) else {}
+            counts: Dict[str, int] = {}
+            if isinstance(raw_counts, dict):
+                for k, v in raw_counts.items():
+                    try:
+                        counts[str(k).strip().title()] = int(v)
+                    except Exception:
+                        continue
+            total = int(sum(max(0, c) for c in counts.values()))
+            return min_tournaments, counts, total
+
         # Backward compatibility: old format is flat with win_prob/top5_prob/top10_prob
         if "by_tournament_type" not in self.calibration:
+            min_t, _, total = _meta_counts()
+            if total > 0 and total < min_t:
+                print(f"  Calibration data sparse ({total} tournament(s) < min {min_t}); using default calibration.")
+                return DEFAULT_CALIBRATION
             return self.calibration
+
+        min_t, counts, total = _meta_counts()
+        by_type = self.calibration.get("by_tournament_type", {})
 
         if tournament_type:
             t_key = str(tournament_type).strip().title()
-            if t_key in self.calibration.get("by_tournament_type", {}):
-                return self.calibration["by_tournament_type"][t_key]
+            t_count = counts.get(t_key, 0)
+            if t_key in by_type and t_count >= min_t:
+                return by_type[t_key]
+            if t_key in by_type and t_count < min_t:
+                print(
+                    f"  Calibration for {t_key} has only {t_count} tournament(s) "
+                    f"(min {min_t}); falling back to global/default."
+                )
 
-        return self.calibration.get("global", self.calibration)
+        if total >= min_t:
+            return self.calibration.get("global", DEFAULT_CALIBRATION)
+
+        if total > 0:
+            print(f"  Global calibration data sparse ({total} tournament(s) < min {min_t}); using default calibration.")
+        return DEFAULT_CALIBRATION
 
     def _calibrate_value(self, value: float, config: Dict) -> float:
         """Apply bucket-based calibration to a single probability value."""

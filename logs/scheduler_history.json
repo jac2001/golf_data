@@ -52,5 +52,22 @@
     ],
     "success_count": 6,
     "total_count": 6
+  },
+  {
+    "timestamp": "2026-02-17T18:21:26.443969",
+    "schedule": "tuesday-evening",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      },
+      {
+        "task": "PGA Odds",
+        "success": true
+      }
+    ],
+    "success_count": 1,
+    "total_count": 2
   }
 ]

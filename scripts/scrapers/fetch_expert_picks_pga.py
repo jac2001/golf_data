@@ -14,7 +14,7 @@ Usage:
 import argparse
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -25,6 +25,7 @@ from bs4 import BeautifulSoup
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 OUTPUT_DIR = DATA_DIR / "expert_picks"
+SCHEDULE_PATH = DATA_DIR / "raw" / "schedule_2026.csv"
 
 GRAPHQL_URL = "https://orchestrator.pgatour.com/graphql"
 HEADERS = {
@@ -62,6 +63,93 @@ query GetExpertPicksTable($path: String!) {
 """
 
 
+def _normalize_name(value: str) -> str:
+    if not value:
+        return ""
+    s = re.sub(r"[^a-z0-9]+", " ", str(value).lower()).strip()
+    return re.sub(r"\s+", " ", s)
+
+
+def _name_tokens(value: str) -> set:
+    s = _normalize_name(value)
+    if not s:
+        return set()
+    stop = {
+        "the", "and", "of", "at", "in", "to", "open", "championship",
+        "classic", "invitational", "pro", "am", "presented", "by",
+    }
+    return {t for t in s.split() if t and t not in stop}
+
+
+def _tournament_name_match(actual: str, expected: str) -> bool:
+    at = _name_tokens(actual)
+    et = _name_tokens(expected)
+    if not at or not et:
+        return False
+    overlap = len(at.intersection(et))
+    return overlap >= max(1, min(2, len(et)))
+
+
+def _resolve_tournament_context(tournament_id: Optional[str]) -> Dict[str, str]:
+    """
+    Resolve expected tournament metadata from schedule by tournament_id.
+    Returns keys: tournament_name, power_slug, start_date (may be empty strings).
+    """
+    if not tournament_id or not SCHEDULE_PATH.exists():
+        return {"tournament_name": "", "power_slug": "", "start_date": ""}
+    try:
+        df = pd.read_csv(SCHEDULE_PATH, dtype=str).fillna("")
+    except Exception:
+        return {"tournament_name": "", "power_slug": "", "start_date": ""}
+
+    tid = str(tournament_id).strip().upper()
+    if "tournament_id" not in df.columns:
+        return {"tournament_name": "", "power_slug": "", "start_date": ""}
+
+    match = df[df["tournament_id"].astype(str).str.upper().str.strip() == tid]
+    if match.empty:
+        return {"tournament_name": "", "power_slug": "", "start_date": ""}
+
+    row = match.iloc[0]
+    return {
+        "tournament_name": str(row.get("tournament_name", "")).strip(),
+        "power_slug": str(row.get("power_slug", "")).strip(),
+        "start_date": str(row.get("start_date", "")).strip(),
+    }
+
+
+def _extract_ep_paths(html: str) -> List[str]:
+    ep_paths = re.findall(r'/content/dam[^"\']*ep-table/ep-table[^"\']*', html)
+    if not ep_paths:
+        ep_paths = re.findall(r'/content/dam[^"\']*ep-table[^"\']*', html)
+    # ordered unique
+    seen = set()
+    out = []
+    for p in ep_paths:
+        if p not in seen:
+            seen.add(p)
+            out.append(p)
+    return out
+
+
+def _extract_article_links_from_listing(html: str) -> List[str]:
+    soup = BeautifulSoup(html, "html.parser")
+    article_links: List[str] = []
+    for a in soup.find_all("a", href=True):
+        href = str(a["href"]).strip()
+        if not href:
+            continue
+        if "expert-picks" not in href:
+            continue
+        if href.startswith("/"):
+            href = f"https://www.pgatour.com{href}"
+        if href.startswith("https://www.pgatour.com/"):
+            article_links.append(href)
+    # keep likely target rows first
+    article_links = [u for u in article_links if "/article/news/expert-picks/" in u]
+    return list(dict.fromkeys(article_links))
+
+
 def discover_expert_picks_path(tournament_id: Optional[str] = None) -> Tuple[Optional[str], Optional[str]]:
     """
     Auto-discover the expert picks ep-table path from PGA Tour.
@@ -69,8 +157,14 @@ def discover_expert_picks_path(tournament_id: Optional[str] = None) -> Tuple[Opt
     Returns:
         Tuple of (ep_table_path, article_url) or (None, None) if not found
     """
-    # First, find the latest expert picks article
+    context = _resolve_tournament_context(tournament_id)
+    expected_name = context.get("tournament_name", "")
+    expected_slug = context.get("power_slug", "")
+
+    # First, find expert picks article candidates.
     print("  Discovering expert picks article...")
+    if tournament_id and expected_name:
+        print(f"  Target tournament: {expected_name} ({tournament_id})")
 
     # Try the expert picks landing page
     listing_url = "https://www.pgatour.com/news/expert-picks"
@@ -81,70 +175,88 @@ def discover_expert_picks_path(tournament_id: Optional[str] = None) -> Tuple[Opt
         }, timeout=15)
         resp.raise_for_status()
 
-        # Find article links
-        soup = BeautifulSoup(resp.text, "html.parser")
+        article_links = _extract_article_links_from_listing(resp.text)
 
-        # Look for article links containing "who-are-experts-picking"
-        article_links = []
-        for a in soup.find_all("a", href=True):
-            href = a["href"]
-            if "expert-picks" in href and "who-are-experts-picking" in href:
-                if href.startswith("/"):
-                    href = f"https://www.pgatour.com{href}"
-                article_links.append(href)
+        # Prioritize URLs that look like the target tournament.
+        if expected_slug:
+            slug_hint = expected_slug.lower().replace("_", "-")
+            scored = []
+            for u in article_links:
+                score = 0
+                ul = u.lower()
+                if slug_hint and slug_hint in ul:
+                    score += 3
+                if "who-are-experts-picking" in ul:
+                    score += 1
+                scored.append((score, u))
+            article_links = [u for _, u in sorted(scored, key=lambda x: x[0], reverse=True)]
 
-        if not article_links:
-            # Try finding any recent article link
-            for a in soup.find_all("a", href=True):
-                href = a["href"]
-                if "/article/news/expert-picks/" in href:
-                    if href.startswith("/"):
-                        href = f"https://www.pgatour.com{href}"
-                    article_links.append(href)
+        for article_url in article_links[:12]:
+            print(f"  Checking article: {article_url}")
+            try:
+                resp2 = requests.get(article_url, headers={
+                    "User-Agent": HEADERS["User-Agent"],
+                    "Accept": "text/html,application/xhtml+xml"
+                }, timeout=15)
+                resp2.raise_for_status()
+            except Exception:
+                continue
 
-        # Dedupe and take most recent (usually first)
-        article_links = list(dict.fromkeys(article_links))
-
-        if article_links:
-            article_url = article_links[0]
-            print(f"  Found article: {article_url}")
-
-            # Now fetch the article and extract ep-table path
-            resp2 = requests.get(article_url, headers={
-                "User-Agent": HEADERS["User-Agent"],
-                "Accept": "text/html,application/xhtml+xml"
-            }, timeout=15)
-            resp2.raise_for_status()
-
-            # Find ep-table path in the HTML
-            ep_paths = re.findall(r'/content/dam[^"\']*ep-table/ep-table[^"\']*', resp2.text)
+            ep_paths = _extract_ep_paths(resp2.text)
             if not ep_paths:
-                ep_paths = re.findall(r'/content/dam[^"\']*ep-table[^"\']*', resp2.text)
+                continue
 
-            if ep_paths:
-                ep_path = ep_paths[0]
-                print(f"  Found ep-table path: {ep_path}")
-                return ep_path, article_url
+            # Validate discovered path against requested tournament when available.
+            for ep_path in ep_paths:
+                try:
+                    data = fetch_expert_picks(ep_path)
+                    table = data.get("data", {}).get("getExpertPicksTable", {})
+                    rows = table.get("expertPicksTableRows", []) or []
+                    found_tournament = str(table.get("tournamentName", "")).strip()
+                    if not rows:
+                        continue
+                    if expected_name:
+                        if not _tournament_name_match(found_tournament, expected_name):
+                            continue
+                    print(f"  Found ep-table path: {ep_path}")
+                    return ep_path, article_url
+                except Exception:
+                    continue
 
     except Exception as e:
         print(f"  Warning: Could not discover from listing: {e}")
 
-    # Fallback: Try to construct path based on current date
-    today = datetime.now()
-    base_path = f"/content/dam/pga-tour/fragments/tours/pga-tour/news/expert-picks/{today.year}/{today.month:02d}"
-
-    # Try recent days
-    for day_offset in range(0, 7):
-        check_date = today.replace(day=today.day - day_offset) if today.day > day_offset else today
+    # Fallback: probe date-based ep-table paths.
+    # If tournament start date is known, anchor probes around that week; otherwise use today.
+    base_dt = datetime.now()
+    if context.get("start_date"):
         try:
-            test_path = f"{base_path}/{check_date.day:02d}/ep-table/ep-table"
+            base_dt = datetime.strptime(context["start_date"], "%Y-%m-%d")
+        except Exception:
+            pass
+
+    probe_dates = []
+    for delta in range(-10, 11):
+        probe_dates.append(base_dt + timedelta(days=delta))
+
+    for check_date in probe_dates:
+        try:
+            test_path = (
+                f"/content/dam/pga-tour/fragments/tours/pga-tour/news/expert-picks/"
+                f"{check_date.year}/{check_date.month:02d}/{check_date.day:02d}/ep-table/ep-table"
+            )
             data = fetch_expert_picks(test_path)
-            if data.get("data", {}).get("getExpertPicksTable", {}).get("expertPicksTableRows"):
+            table = data.get("data", {}).get("getExpertPicksTable", {})
+            rows = table.get("expertPicksTableRows", []) or []
+            found_tournament = str(table.get("tournamentName", "")).strip()
+            if rows and (not expected_name or _tournament_name_match(found_tournament, expected_name)):
                 print(f"  Found via date probe: {test_path}")
                 return test_path, None
         except Exception:
             continue
 
+    if expected_name:
+        print("  Could not find expert picks matching requested tournament.")
     return None, None
 
 
@@ -251,6 +363,19 @@ def main():
     if df.empty:
         print("WARNING: No expert picks found in response")
         return
+
+    # Final safety check: never write mismatched tournament picks for a requested ID.
+    if args.tournament_id:
+        context = _resolve_tournament_context(args.tournament_id)
+        expected_name = context.get("tournament_name", "")
+        found_name = str(df["tournament_name"].iloc[0]).strip() if "tournament_name" in df.columns and not df.empty else ""
+        if expected_name and found_name and not _tournament_name_match(found_name, expected_name):
+            raise SystemExit(
+                "ERROR: Expert picks tournament mismatch.\n"
+                f"  Requested: {args.tournament_id} ({expected_name})\n"
+                f"  Found: {found_name}\n"
+                "  Refusing to save mismatched picks."
+            )
 
     # Determine output path
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

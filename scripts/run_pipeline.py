@@ -303,6 +303,7 @@ def run_predictions(
         "--sg-method", sg_method,
         "--output", str(output_path),
         "--top-n", "20",
+        "--skip-bet-recs",
     ]
 
     if insights:
@@ -371,26 +372,93 @@ def run_lineup_recommendation(
             print(f"     Note: {rec}")
 
 
+def run_bet_recommendations(
+    tournament_id: str,
+    predictions_path: Optional[Path] = None,
+):
+    """Generate deterministic tracked betting recommendations."""
+    if not tournament_id:
+        print("\n  Skipping bet recommendations - no tournament ID provided")
+        return False
+
+    print_header("BET RECOMMENDATIONS")
+    cmd = [
+        "python3",
+        str(SCRIPTS_DIR / "models" / "recommend_bets.py"),
+        "--tournament-id",
+        str(tournament_id).strip().upper(),
+        "--min-confidence",
+        "0.60",
+        "--min-edge-points",
+        "1.00",
+        "--min-ev",
+        "0.00",
+    ]
+    if predictions_path and Path(predictions_path).exists():
+        cmd.extend(["--predictions", str(predictions_path)])
+
+    success = run_command(cmd)
+    if not success:
+        print("  Warning: recommendation generation failed, continuing...")
+    return success
+
+
 def fetch_tournament_assets(
     tournament_name: str,
     pga_id: str,
     field_path: Path,
     power_slug: str = None,
+    odds_max_age_hours: float = 6.0,
+    force_odds_refresh: bool = False,
+    dk_props_max_age_hours: float = 6.0,
+    force_dk_props_refresh: bool = False,
+    fetch_expert_picks: bool = True,
     fetch_articles: bool = False,
     article_template: str = None,
 ):
-    """Fetch odds, betting profiles, power rankings, and course characteristics."""
+    """Fetch tournament assets used by dashboard and betting workflow."""
     print_header("TOURNAMENT ASSETS")
+
+    total_stages = 5
+    if fetch_expert_picks and pga_id:
+        total_stages += 1
+    if fetch_articles and article_template:
+        total_stages += 1
+
+    stage_idx = 1
+    dk_props_path = None
+    if pga_id:
+        dk_props_path = DATA_DIR / "odds" / f"prop_lines_{pga_id}.csv"
+        print_stage(stage_idx, total_stages, "Fetch DraftKings props")
+        if (not force_dk_props_refresh) and check_file_fresh(dk_props_path, max_age_hours=dk_props_max_age_hours):
+            print(
+                f"  Skipping DraftKings props - fresh file exists ({dk_props_path.name}, <= {dk_props_max_age_hours:.1f}h old)"
+            )
+        else:
+            run_command([
+                "python3",
+                str(SCRIPTS_DIR / "scrapers" / "fetch_draftkings_props.py"),
+                "--tournament-id",
+                pga_id,
+                "--no-snapshot",
+                "--fetch-profile",
+                "fast",
+            ])
+        stage_idx += 1
 
     odds_path = None
     if pga_id:
         odds_path = DATA_DIR / "odds" / f"pga_odds_{pga_id}.csv"
-        print_stage(1, 4, "Fetch betting odds")
-        run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_pga_odds.py"),
-                     "--tournament-id", pga_id,
-                     "--output", str(odds_path)])
+        print_stage(stage_idx, total_stages, "Fetch betting odds")
+        if (not force_odds_refresh) and check_file_fresh(odds_path, max_age_hours=odds_max_age_hours):
+            print(f"  Skipping odds fetch - fresh file exists ({odds_path.name}, <= {odds_max_age_hours:.1f}h old)")
+        else:
+            run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_pga_odds.py"),
+                         "--tournament-id", pga_id,
+                         "--output", str(odds_path)])
+        stage_idx += 1
 
-    print_stage(2, 4, "Fetch betting profiles")
+    print_stage(stage_idx, total_stages, "Fetch betting profiles")
     bp_out = DATA_DIR / "betting_profiles" / f"betting_profiles_{pga_id}.csv"
     bp_cmd = [
         "python3", str(SCRIPTS_DIR / "scrapers" / "fetch_betting_profiles.py"),
@@ -401,18 +469,31 @@ def fetch_tournament_assets(
     if odds_path and odds_path.exists():
         bp_cmd.extend(["--odds-csv", str(odds_path)])
     run_command(bp_cmd)
+    stage_idx += 1
 
-    print_stage(3, 4, "Fetch power rankings")
+    print_stage(stage_idx, total_stages, "Fetch power rankings")
     slug = power_slug or slugify(tournament_name)
     run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_power_rankings.py"),
                  "--slug", slug, "--allow-fail"])
+    stage_idx += 1
 
-    print_stage(4, 4, "Fetch course characteristics")
+    print_stage(stage_idx, total_stages, "Fetch course characteristics")
     run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_course_characteristics.py"),
                  "--tournament-id", pga_id, "--profile"])
+    stage_idx += 1
+
+    if fetch_expert_picks and pga_id:
+        print_stage(stage_idx, total_stages, "Fetch expert picks")
+        success = run_command([
+            "python3", str(SCRIPTS_DIR / "scrapers" / "fetch_expert_picks_pga.py"),
+            "--tournament-id", pga_id,
+        ])
+        if not success:
+            print("  Warning: expert picks fetch failed, continuing...")
+        stage_idx += 1
 
     if fetch_articles and article_template:
-        print_stage(5, 5, "Fetch betting profile articles")
+        print_stage(stage_idx, total_stages, "Fetch betting profile articles")
         run_command([
             "python3", str(SCRIPTS_DIR / "scrapers" / "fetch_betting_profile_articles.py"),
             "--field-csv", str(field_path),
@@ -435,9 +516,15 @@ def run_full_pipeline(
     recommend_lineup: bool = False,
     save_tracking: bool = False,
     power_slug: str = None,
+    odds_max_age_hours: float = 6.0,
+    force_odds_refresh: bool = False,
+    dk_props_max_age_hours: float = 6.0,
+    force_dk_props_refresh: bool = False,
+    fetch_expert_picks: bool = True,
     fetch_articles: bool = False,
     article_template: str = None,
     calibrate: bool = False,
+    generate_bet_recs: bool = True,
 ):
     """Run the full prediction pipeline."""
     print_header(f"GOLF PREDICTION PIPELINE: {tournament_name}", "=")
@@ -486,6 +573,11 @@ def run_full_pipeline(
             pga_id=pga_id,
             field_path=field_file,
             power_slug=power_slug,
+            odds_max_age_hours=odds_max_age_hours,
+            force_odds_refresh=force_odds_refresh,
+            dk_props_max_age_hours=dk_props_max_age_hours,
+            force_dk_props_refresh=force_dk_props_refresh,
+            fetch_expert_picks=fetch_expert_picks,
             fetch_articles=fetch_articles,
             article_template=article_template,
         )
@@ -503,7 +595,11 @@ def run_full_pipeline(
         calibrate=calibrate,
     )
 
-    # Stage 4: Lineup recommendation (if requested separately)
+    # Stage 4: Deterministic tracked bet recommendations.
+    if generate_bet_recs and predictions_path and pga_id:
+        run_bet_recommendations(pga_id, predictions_path=predictions_path)
+
+    # Stage 5: Lineup recommendation (if requested separately)
     if recommend_lineup and predictions_path:
         run_lineup_recommendation(tournament_name, predictions_path)
 
@@ -570,6 +666,18 @@ Examples:
     parser.add_argument('--field', '-f', help='Path to field CSV file')
     parser.add_argument('--pga-id', help='PGA TOUR tournament ID to fetch field')
     parser.add_argument('--power-slug', help='Power rankings slug (from data/power_rankings/paths.csv)')
+    parser.add_argument('--odds-max-age-hours', type=float, default=6.0,
+                       help='Skip PGA odds refresh if existing odds file is newer than this many hours (default: 6)')
+    parser.add_argument('--force-odds-refresh', action='store_true',
+                       help='Force PGA odds refresh even if cached odds are fresh')
+    parser.add_argument('--dk-max-age-hours', type=float, default=6.0,
+                       help='Skip DraftKings props refresh if existing props file is newer than this many hours (default: 6)')
+    parser.add_argument('--force-dk-refresh', action='store_true',
+                       help='Force DraftKings props refresh even if cached props are fresh')
+    parser.add_argument('--skip-expert-picks', action='store_true',
+                       help='Skip expert picks fetch in tournament assets stage')
+    parser.add_argument('--skip-bet-recs', action='store_true',
+                       help='Skip deterministic bet recommendation generation after predictions')
     parser.add_argument('--fetch-articles', action='store_true',
                        help='Fetch betting profile articles (requires --article-template)')
     parser.add_argument('--article-template', help='URL template for betting profile articles (with {name_slug})')
@@ -662,6 +770,12 @@ Examples:
         recommend_lineup=args.lineup,
         save_tracking=args.save_tracking,
         power_slug=args.power_slug,
+        odds_max_age_hours=args.odds_max_age_hours,
+        force_odds_refresh=args.force_odds_refresh,
+        dk_props_max_age_hours=args.dk_max_age_hours,
+        force_dk_props_refresh=args.force_dk_refresh,
+        fetch_expert_picks=(not args.skip_expert_picks),
+        generate_bet_recs=(not args.skip_bet_recs),
         fetch_articles=args.fetch_articles,
         article_template=args.article_template,
         calibrate=args.calibrate,

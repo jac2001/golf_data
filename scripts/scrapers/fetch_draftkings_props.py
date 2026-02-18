@@ -5,11 +5,15 @@ DraftKings Prop Lines Scraper (Golf)
 
 Builds sportsbook prop lines for dashboard edge scoring and saves:
     data/odds/prop_lines_<tournament_id>.csv
+    data/odds/dk_content_cards_<tournament_id>.csv
 
 Supported markets:
 - h2h
 - round_score (Over/Under)
 - birdies (Over/Under)
+- bogeys (Over/Under)
+- make_cut (Yes/No)
+- preset content cards / prebuilt parlays
 
 Usage:
     # Try live endpoints first
@@ -27,6 +31,7 @@ import glob
 import json
 import re
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
@@ -285,7 +290,13 @@ def _extract_player_from_offer(offer_name: str, event_name: str, market_name: st
     patterns = [
         r"^(.*?)\s+round\s+score",
         r"^(.*?)\s+birdies?",
+        r"^(.*?)\s+bogeys?",
+        r"^(.*?)\s+to\s+make\s+the?\s*cut",
+        r"^(.*?)\s+to\s+make\s+cut",
+        r"^(.*?)\s+to\s+miss\s+the?\s*cut",
+        r"^(.*?)\s+to\s+miss\s+cut",
         r"^(.*?)\s+total\s+birdies?",
+        r"^(.*?)\s+total\s+bogeys?",
     ]
 
     for raw in candidates:
@@ -299,6 +310,96 @@ def _extract_player_from_offer(offer_name: str, event_name: str, market_name: st
 
     # Last resort: if event is "A v B ..." this is not a single-player prop
     return ""
+
+
+def _extract_player_from_cut_labels(outcomes: List[Dict[str, Any]], offer_name: str, event_name: str, market_name: str) -> str:
+    """
+    Extract player name for make_cut markets.
+    Handles labels like:
+      - "Scottie Scheffler to Make the Cut"
+      - "Scottie Scheffler - Yes"
+      - "Yes"/"No" with player in offer name
+    """
+    patterns = [
+        r"^(.*?)\s+to\s+make\s+the?\s*cut",
+        r"^(.*?)\s+to\s+miss\s+the?\s*cut",
+        r"^(.*?)\s*-\s*(?:yes|no)$",
+    ]
+    for o in outcomes:
+        label = str(o.get("label", "")).strip()
+        if not label:
+            continue
+        for pat in patterns:
+            m = re.search(pat, label, flags=re.I)
+            if m:
+                name = _clean_player_name(m.group(1))
+                if name:
+                    return name
+
+    return _extract_player_from_offer(offer_name, event_name, market_name)
+
+
+def _infer_cut_side(label: str, offer_name: str, market_name: str) -> str:
+    """
+    Infer one-way cut market side from label/context.
+    Returns:
+      - "make_cut" for make/yes
+      - "miss_cut" for miss/no
+    """
+    label_txt = str(label or "").strip().lower()
+    if "miss cut" in label_txt or "miss the cut" in label_txt:
+        return "miss_cut"
+    if "make cut" in label_txt or "make the cut" in label_txt:
+        return "make_cut"
+    if " no" in f" {label_txt}" or label_txt == "no":
+        return "miss_cut"
+    if " yes" in f" {label_txt}" or label_txt == "yes":
+        return "make_cut"
+
+    ctx = f"{offer_name} {market_name}".lower()
+    if ("miss cut" in ctx or "miss the cut" in ctx) and ("make cut" not in ctx and "make the cut" not in ctx):
+        return "miss_cut"
+    return "make_cut"
+
+
+def _parse_one_way_cut_rows(
+    parsed_outcomes: List[Dict[str, Any]],
+    offer_name: str,
+    event_name: str,
+    market_name: str,
+    round_num: Optional[int],
+    fetched_at: str,
+) -> List[Dict[str, Any]]:
+    """
+    Parse one-sided cut selections, e.g. "Player to Make the Cut" with no paired No price.
+    """
+    rows: List[Dict[str, Any]] = []
+    for o in parsed_outcomes:
+        label = str(o.get("label", "")).strip()
+        if not label:
+            continue
+        player_name = _extract_player_from_cut_labels([o], offer_name, event_name, market_name)
+        if not player_name:
+            continue
+
+        market = _infer_cut_side(label, offer_name, market_name)
+        rows.append(
+            {
+                "market": market,
+                "player_name": player_name,
+                "line": 1.0,
+                "odds": o["odds"],
+                "round_num": round_num,
+                "book": "DRAFTKINGS",
+                "line_source": "draftkings_api",
+                "event_name": event_name,
+                "market_name": market_name or offer_name,
+                "selection_id": o.get("selection_id"),
+                "fetched_at": fetched_at,
+            }
+        )
+
+    return rows
 
 
 def _classify_market(market_name: str, offer_name: str, event_name: str, outcomes: List[Dict[str, Any]]) -> Optional[str]:
@@ -319,6 +420,10 @@ def _classify_market(market_name: str, offer_name: str, event_name: str, outcome
         return "round_score"
     if "birdie" in text:
         return "birdies"
+    if "bogey" in text:
+        return "bogeys"
+    if any(k in text for k in ["make the cut", "to make cut", "to make the cut", "miss the cut", "cut market"]):
+        return "make_cut"
     if any(k in text for k in ["head to head", "h2h", "matchup", "match-up", "to finish higher"]):
         return "h2h"
 
@@ -357,7 +462,7 @@ def _parse_offer_node(node: Dict[str, Any], event_map: Dict[str, str], fetched_a
     rows: List[Dict[str, Any]] = []
 
     outcomes = _flatten_dict_items(node.get("outcomes"))
-    if len(outcomes) < 2:
+    if len(outcomes) < 1:
         return rows
 
     parsed_outcomes: List[Dict[str, Any]] = []
@@ -396,7 +501,7 @@ def _parse_offer_node(node: Dict[str, Any], event_map: Dict[str, str], fetched_a
             }
         )
 
-    if len(parsed_outcomes) < 2:
+    if len(parsed_outcomes) < 1:
         return rows
 
     market_name = str(node.get("marketName") or node.get("criterionName") or node.get("name") or "").strip()
@@ -443,6 +548,8 @@ def _parse_offer_node(node: Dict[str, Any], event_map: Dict[str, str], fetched_a
         return rows
 
     if market_type == "h2h":
+        if len(parsed_outcomes) < 2:
+            return rows
         a, b = parsed_outcomes[0], parsed_outcomes[1]
         rows.append(
             {
@@ -458,6 +565,79 @@ def _parse_offer_node(node: Dict[str, Any], event_map: Dict[str, str], fetched_a
                 "round_num": round_num,
                 "fetched_at": fetched_at,
             }
+        )
+        return rows
+
+    if market_type == "make_cut":
+        yes = None
+        no = None
+        for o in parsed_outcomes:
+            ll = o["label"].lower()
+            if (
+                ll == "yes"
+                or ll.endswith(" yes")
+                or " to make cut" in ll
+                or " to make the cut" in ll
+            ):
+                yes = o
+            elif (
+                ll == "no"
+                or ll.endswith(" no")
+                or " to miss cut" in ll
+                or " to miss the cut" in ll
+            ):
+                no = o
+
+        if yes and no:
+            yes_label = str(yes.get("label", "")).strip().lower()
+            no_label = str(no.get("label", "")).strip().lower()
+            yes_player = _extract_player_from_cut_labels([yes], offer_name, event_name, market_name)
+            no_player = _extract_player_from_cut_labels([no], offer_name, event_name, market_name)
+            generic_pair = yes_label in {"yes"} and no_label in {"no"}
+            same_player_pair = (
+                bool(yes_player)
+                and bool(no_player)
+                and yes_player.lower() == no_player.lower()
+            )
+            if not (generic_pair or same_player_pair):
+                yes = None
+                no = None
+
+        if yes and no:
+            player_name = _extract_player_from_cut_labels(parsed_outcomes, offer_name, event_name, market_name)
+            if not player_name:
+                return rows
+
+            rows.append(
+                {
+                    "market": "make_cut",
+                    "player_name": player_name,
+                    "line": 1.0,
+                    "odds": yes["odds"],          # yes-odds for quick display/prob
+                    "over_odds": yes["odds"],     # semantic: over/yes
+                    "under_odds": no["odds"],     # semantic: under/no
+                    "round_num": round_num,
+                    "book": "DRAFTKINGS",
+                    "line_source": "draftkings_api",
+                    "event_name": event_name,
+                    "market_name": market_name or offer_name,
+                    "selection_id": yes.get("selection_id"),
+                    "selection_id_over": yes.get("selection_id"),
+                    "selection_id_under": no.get("selection_id"),
+                    "fetched_at": fetched_at,
+                }
+            )
+            return rows
+
+        rows.extend(
+            _parse_one_way_cut_rows(
+                parsed_outcomes=parsed_outcomes,
+                offer_name=offer_name,
+                event_name=event_name,
+                market_name=market_name,
+                round_num=round_num,
+                fetched_at=fetched_at,
+            )
         )
         return rows
 
@@ -566,7 +746,7 @@ def _parse_markets_selections_payload(payload: Any, fetched_at: str) -> List[Dic
         if mid is None:
             continue
         skeys = selections_by_market.get(str(mid), [])
-        if len(skeys) < 2:
+        if len(skeys) < 1:
             continue
 
         parsed_outcomes: List[Dict[str, Any]] = []
@@ -609,12 +789,12 @@ def _parse_markets_selections_payload(payload: Any, fetched_at: str) -> List[Dic
                 {
                     "label": label,
                     "odds": odds,
-                    "selection_id": s.get("id"),
+                    "selection_id": s.get("id", s.get("selectionId", s.get("outcomeId"))),
                     "line": s.get("line", s.get("points")),
                 }
             )
 
-        if len(parsed_outcomes) < 2:
+        if len(parsed_outcomes) < 1:
             continue
 
         market_name = str(m.get("name") or "").strip()
@@ -664,6 +844,8 @@ def _parse_markets_selections_payload(payload: Any, fetched_at: str) -> List[Dic
             continue
 
         if market_type == "h2h":
+            if len(parsed_outcomes) < 2:
+                continue
             a, b = parsed_outcomes[0], parsed_outcomes[1]
             rows.append(
                 {
@@ -679,6 +861,78 @@ def _parse_markets_selections_payload(payload: Any, fetched_at: str) -> List[Dic
                     "round_num": round_num,
                     "fetched_at": fetched_at,
                 }
+            )
+            continue
+
+        if market_type == "make_cut":
+            yes = None
+            no = None
+            for o in parsed_outcomes:
+                ll = o["label"].lower()
+                if (
+                    ll == "yes"
+                    or ll.endswith(" yes")
+                    or " to make cut" in ll
+                    or " to make the cut" in ll
+                ):
+                    yes = o
+                elif (
+                    ll == "no"
+                    or ll.endswith(" no")
+                    or " to miss cut" in ll
+                    or " to miss the cut" in ll
+                ):
+                    no = o
+            if yes and no:
+                yes_label = str(yes.get("label", "")).strip().lower()
+                no_label = str(no.get("label", "")).strip().lower()
+                yes_player = _extract_player_from_cut_labels([yes], offer_name, event_name, market_name)
+                no_player = _extract_player_from_cut_labels([no], offer_name, event_name, market_name)
+                generic_pair = yes_label in {"yes"} and no_label in {"no"}
+                same_player_pair = (
+                    bool(yes_player)
+                    and bool(no_player)
+                    and yes_player.lower() == no_player.lower()
+                )
+                if not (generic_pair or same_player_pair):
+                    yes = None
+                    no = None
+
+            if yes and no:
+                player_name = _extract_player_from_cut_labels(parsed_outcomes, offer_name, event_name, market_name)
+                if not player_name:
+                    continue
+
+                rows.append(
+                    {
+                        "market": "make_cut",
+                        "player_name": player_name,
+                        "line": 1.0,
+                        "odds": yes["odds"],
+                        "over_odds": yes["odds"],
+                        "under_odds": no["odds"],
+                        "round_num": round_num,
+                        "book": "DRAFTKINGS",
+                        "line_source": "draftkings_api",
+                        "event_name": event_name,
+                        "market_name": offer_name or market_name,
+                        "selection_id": yes.get("selection_id"),
+                        "selection_id_over": yes.get("selection_id"),
+                        "selection_id_under": no.get("selection_id"),
+                        "fetched_at": fetched_at,
+                    }
+                )
+                continue
+
+            rows.extend(
+                _parse_one_way_cut_rows(
+                    parsed_outcomes=parsed_outcomes,
+                    offer_name=offer_name,
+                    event_name=event_name,
+                    market_name=market_name,
+                    round_num=round_num,
+                    fetched_at=fetched_at,
+                )
             )
             continue
 
@@ -761,6 +1015,8 @@ def parse_draftkings_payloads(payloads: List[Any], fetched_at: str) -> pd.DataFr
         "event_name",
         "market_name",
         "selection_id",
+        "selection_id_over",
+        "selection_id_under",
         "fetched_at",
     ]
     for c in required_cols:
@@ -779,7 +1035,13 @@ def parse_draftkings_payloads(payloads: List[Any], fetched_at: str) -> pd.DataFr
         |
         (df["market"].eq("h2h") & df["player_a"].notna() & df["player_b"].notna() & df["odds_a"].notna() & df["odds_b"].notna())
         |
-        (df["market"].isin(["round_score", "birdies"]) & df["player_name"].notna() & df["over_odds"].notna() & df["under_odds"].notna())
+        (df["market"].isin(["round_score", "birdies", "bogeys"]) & df["player_name"].notna() & df["over_odds"].notna() & df["under_odds"].notna())
+        |
+        (
+            df["market"].isin(["make_cut", "miss_cut"])
+            & df["player_name"].notna()
+            & (df["odds"].notna() | (df["over_odds"].notna() & df["under_odds"].notna()))
+        )
     )
     df = df[keep].copy()
 
@@ -809,6 +1071,29 @@ def _fetch_json(url: str, headers: Dict[str, str], timeout: int = 20) -> Optiona
         return None
 
 
+def _fetch_many_json(
+    urls: List[str],
+    headers: Dict[str, str],
+    timeout: int = 8,
+    max_workers: int = 8,
+) -> List[Any]:
+    """Fetch multiple JSON URLs concurrently and return successful payloads."""
+    if not urls:
+        return []
+
+    payloads: List[Any] = []
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        futures = [ex.submit(_fetch_json, u, headers, timeout) for u in urls]
+        for fut in as_completed(futures):
+            try:
+                js = fut.result()
+            except Exception:
+                js = None
+            if js is not None:
+                payloads.append(js)
+    return payloads
+
+
 def _fetch_text(url: str, headers: Dict[str, str], timeout: int = 20) -> Optional[str]:
     try:
         resp = requests.get(url, headers=headers, timeout=timeout)
@@ -817,6 +1102,228 @@ def _fetch_text(url: str, headers: Dict[str, str], timeout: int = 20) -> Optiona
         return resp.text
     except Exception:
         return None
+
+
+def _extract_balanced_json_fragment(text: str, start_idx: int, open_char: str, close_char: str) -> str:
+    """
+    Extract a balanced JSON fragment from text, handling quoted strings safely.
+    """
+    if start_idx < 0 or start_idx >= len(text) or text[start_idx] != open_char:
+        return ""
+
+    depth = 0
+    in_string = False
+    escaped = False
+    for i in range(start_idx, len(text)):
+        ch = text[i]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+            continue
+        if ch == open_char:
+            depth += 1
+        elif ch == close_char:
+            depth -= 1
+            if depth == 0:
+                return text[start_idx:i + 1]
+    return ""
+
+
+def _extract_content_cards_from_text(text: str) -> List[Dict[str, Any]]:
+    """
+    Extract contentCards arrays from arbitrary HTML/JS text.
+    """
+    payloads: List[Dict[str, Any]] = []
+    if not text:
+        return payloads
+
+    # 1) __NEXT_DATA__ payload.
+    m = re.search(r'<script[^>]*id="__NEXT_DATA__"[^>]*>(.*?)</script>', text, flags=re.S | re.I)
+    if m:
+        try:
+            js = json.loads(m.group(1))
+            payloads.append(js)
+        except Exception:
+            pass
+
+    # 2) Direct "contentCards": [...] fragments.
+    needle = '"contentCards"'
+    pos = 0
+    while True:
+        idx = text.find(needle, pos)
+        if idx < 0:
+            break
+        colon_idx = text.find(":", idx + len(needle))
+        if colon_idx < 0:
+            break
+        arr_start = text.find("[", colon_idx)
+        if arr_start < 0:
+            pos = colon_idx + 1
+            continue
+        arr_json = _extract_balanced_json_fragment(text, arr_start, "[", "]")
+        if arr_json:
+            try:
+                arr = json.loads(arr_json)
+                if isinstance(arr, list):
+                    payloads.append({"contentCards": arr})
+            except Exception:
+                pass
+            pos = arr_start + len(arr_json)
+        else:
+            pos = arr_start + 1
+
+    return payloads
+
+
+def _event_ids_from_payloads(payloads: List[Any]) -> List[str]:
+    ids = []
+    seen = set()
+    for p in payloads:
+        if isinstance(p, dict) and isinstance(p.get("events"), list):
+            for e in p["events"]:
+                if not isinstance(e, dict):
+                    continue
+                eid = str(e.get("id", "")).strip()
+                if eid and eid not in seen:
+                    seen.add(eid)
+                    ids.append(eid)
+    return ids
+
+
+def _sportsbook_slug_candidates(name: str) -> List[str]:
+    if not name:
+        return []
+    s = str(name).lower()
+    s = re.sub(r"\b20\d{2}\b", " ", s)
+    s = s.replace("&", " and ")
+    s = s.replace("'", "")
+    s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+    if not s:
+        return []
+    cands = [s]
+    if s.startswith("the-"):
+        cands.append(s[len("the-"):])
+    else:
+        cands.append(f"the-{s}")
+    # unique order-preserving
+    out = []
+    seen = set()
+    for c in cands:
+        if c and c not in seen:
+            seen.add(c)
+            out.append(c)
+    return out
+
+
+def _build_candidate_content_card_urls(
+    expected_tournament_name: str,
+    detected_names: List[str],
+) -> List[str]:
+    base = "https://sportsbook.draftkings.com/leagues/golf"
+    urls: List[str] = []
+
+    name_candidates = []
+    if expected_tournament_name:
+        name_candidates.append(expected_tournament_name)
+    name_candidates.extend(detected_names or [])
+
+    seen = set()
+    for name in name_candidates:
+        for slug in _sportsbook_slug_candidates(name):
+            page = f"{base}/{slug}"
+            for suffix in [
+                "",
+                "?category=outrights&subcategory=cut",
+                "?category=golfer-props&subcategory=birdies",
+                "?category=golfer-props&subcategory=bogeys",
+            ]:
+                u = f"{page}{suffix}"
+                if u not in seen:
+                    seen.add(u)
+                    urls.append(u)
+    return urls
+
+
+def _build_card_api_urls(
+    eventgroup_id: Optional[str],
+    event_ids: List[str],
+    region: str = "dkusnj",
+) -> List[str]:
+    """
+    Build a broad set of candidate API URLs for content cards.
+    """
+    urls: List[str] = []
+    eg = str(eventgroup_id or "").strip()
+    if eg:
+        urls.extend(
+            [
+                f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eg}/contentcards?format=json",
+                f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eg}/content-cards?format=json",
+                f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eg}?format=json&includeContentCards=true",
+                f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/leagues/{eg}",
+                f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/leagues/{eg}/contentcards",
+                f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/leagues/{eg}/content-cards",
+            ]
+        )
+
+    for eid in event_ids:
+        if not str(eid).strip():
+            continue
+        urls.extend(
+            [
+                f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/events/{eid}/contentcards?format=json",
+                f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/events/{eid}/content-cards?format=json",
+                f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/events/{eid}?format=json&includeContentCards=true",
+                f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eg}/events/{eid}/contentcards?format=json" if eg else "",
+                f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eg}/events/{eid}/content-cards?format=json" if eg else "",
+                f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/events/{eid}",
+                f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/events/{eid}/contentcards",
+                f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/events/{eid}/content-cards",
+                f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/live/events/{eid}",
+                f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/live/events/{eid}/contentcards",
+            ]
+        )
+
+    # de-dup
+    out = []
+    seen = set()
+    for u in urls:
+        if not u:
+            continue
+        if u not in seen:
+            seen.add(u)
+            out.append(u)
+    return out
+
+
+def _fetch_content_card_payloads_from_urls(
+    urls: List[str],
+    headers: Dict[str, str],
+    timeout: int = 10,
+    max_workers: int = 6,
+) -> List[Dict[str, Any]]:
+    payloads: List[Dict[str, Any]] = []
+    if not urls:
+        return payloads
+
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        futs = {ex.submit(_fetch_text, u, headers, timeout): u for u in urls}
+        for fut in as_completed(futs):
+            try:
+                text = fut.result()
+            except Exception:
+                text = None
+            if not text:
+                continue
+            payloads.extend(_extract_content_cards_from_text(text))
+    return payloads
 
 
 def _extract_eventgroup_ids_from_text(text: str) -> List[str]:
@@ -859,7 +1366,7 @@ def _payload_sport_names(payload: Any) -> List[str]:
 
 
 def _payload_looks_golf(payload: Any) -> bool:
-    tokens = " ".join(_payload_sport_names(payload)).lower()
+    tokens = " ".join(_payload_sport_names(payload) + _extract_payload_event_names(payload)).lower()
     if not tokens:
         # If sport metadata is absent, treat as unknown (not explicitly non-golf).
         return False
@@ -894,12 +1401,43 @@ def _discover_candidate_eventgroup_ids(headers: Dict[str, str]) -> List[str]:
     return out
 
 
+def _sort_numericish_ids(values: Iterable[str]) -> List[str]:
+    def _key(v: str) -> Tuple[int, str]:
+        s = str(v)
+        if s.isdigit():
+            return (0, f"{int(s):012d}")
+        return (1, s)
+
+    return sorted({str(v) for v in values if str(v).strip()}, key=_key)
+
+
+def _extract_ids_from_subscription_query(query: str, token: str) -> List[str]:
+    """
+    Parse numeric ids from subscription query snippets.
+    Example:
+      clientMetadata/Subcategories/any(s: s/Id eq '4508')
+    """
+    if not query:
+        return []
+    if token == "subcategory":
+        pats = [r"Subcategories?/any\(.*?Id eq '(\d+)'\)", r"subCategoryId eq '(\d+)'"]
+    else:
+        pats = [r"Categories?/any\(.*?Id eq '(\d+)'\)", r"categoryId eq '(\d+)'"]
+    out: List[str] = []
+    for pat in pats:
+        out.extend([m.group(1) for m in re.finditer(pat, query)])
+    return out
+
+
 def _expand_eventgroup_payloads_with_subcategories(
     payloads: List[Any],
     eventgroup_id: str,
     headers: Dict[str, str],
-    max_subcategories: int = 40,
-    max_categories: int = 20,
+    max_subcategories: int = 24,
+    max_categories: int = 12,
+    timeout: int = 8,
+    max_workers: int = 8,
+    target_only: bool = True,
 ) -> List[Any]:
     """Fetch subcategory/category payloads for a chosen eventgroup."""
     out_payloads = list(payloads)
@@ -908,7 +1446,69 @@ def _expand_eventgroup_payloads_with_subcategories(
 
     subcategory_ids = set()
     category_ids = set()
+    subcat_name_by_id: Dict[str, str] = {}
+    cat_name_by_id: Dict[str, str] = {}
+
+    target_sub_tokens = [
+        "winner",
+        "top ",
+        "top finish",
+        "head to head",
+        "matchup",
+        "finish higher",
+        "round score",
+        "birdie",
+        "bogey",
+        "cut",
+    ]
+    target_cat_tokens = [
+        "tournament lines",
+        "top finish",
+        "make/miss cut",
+        "round props",
+        "golfer props",
+        "tournament props",
+    ]
+
+    def _is_target_subcategory(name: str) -> bool:
+        s = str(name or "").lower()
+        return any(t in s for t in target_sub_tokens)
+
+    def _is_target_category(name: str) -> bool:
+        s = str(name or "").lower()
+        return any(t in s for t in target_cat_tokens)
+
     for p in out_payloads:
+        # Top-level lists often carry the full id set.
+        if isinstance(p, dict):
+            if isinstance(p.get("subcategories"), list):
+                for s in p["subcategories"]:
+                    if not isinstance(s, dict):
+                        continue
+                    if s.get("id") is not None:
+                        sid = str(s["id"])
+                        subcategory_ids.add(sid)
+                        if s.get("name"):
+                            subcat_name_by_id[sid] = str(s.get("name"))
+                    if s.get("categoryId") is not None:
+                        category_ids.add(str(s["categoryId"]))
+            if isinstance(p.get("categories"), list):
+                for c in p["categories"]:
+                    if isinstance(c, dict) and c.get("id") is not None:
+                        cid = str(c["id"])
+                        category_ids.add(cid)
+                        if c.get("name"):
+                            cat_name_by_id[cid] = str(c.get("name"))
+            if isinstance(p.get("subscriptionPartials"), dict):
+                for v in p["subscriptionPartials"].values():
+                    if not isinstance(v, dict):
+                        continue
+                    q = str(v.get("query", ""))
+                    for sid in _extract_ids_from_subscription_query(q, token="subcategory"):
+                        subcategory_ids.add(sid)
+                    for cid in _extract_ids_from_subscription_query(q, token="category"):
+                        category_ids.add(cid)
+
         for node in _walk(p):
             sid = node.get("subcategoryId")
             cid = node.get("categoryId")
@@ -917,23 +1517,85 @@ def _expand_eventgroup_payloads_with_subcategories(
             if cid is not None:
                 category_ids.add(str(cid))
 
+            # In subcategories[] objects, id is the subcategory id.
+            if ("categoryId" in node) and ("id" in node) and node.get("id") is not None:
+                sid = str(node.get("id"))
+                subcategory_ids.add(sid)
+                if node.get("name"):
+                    subcat_name_by_id[sid] = str(node.get("name"))
+
             # Sometimes descriptors carry explicit IDs.
             if isinstance(node.get("offerSubcategoryDescriptors"), list):
                 for d in _flatten_dict_items(node.get("offerSubcategoryDescriptors")):
                     if "subcategoryId" in d:
                         subcategory_ids.add(str(d["subcategoryId"]))
+                    if "id" in d and d.get("id") is not None:
+                        subcategory_ids.add(str(d["id"]))
+                    if "categoryId" in d and d.get("categoryId") is not None:
+                        category_ids.add(str(d["categoryId"]))
+            if isinstance(node.get("offerCategoryDescriptors"), list):
+                for d in _flatten_dict_items(node.get("offerCategoryDescriptors")):
+                    if "categoryId" in d and d.get("categoryId") is not None:
+                        category_ids.add(str(d["categoryId"]))
+                    if "id" in d and d.get("id") is not None:
+                        cid = str(d["id"])
+                        category_ids.add(cid)
+                        if d.get("name"):
+                            cat_name_by_id[cid] = str(d.get("name"))
 
-    for sid in sorted(subcategory_ids)[:max_subcategories]:
-        u = f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}/subcategories/{sid}?format=json"
-        js = _fetch_json(u, headers=headers)
+            # Capture category names from nodes where possible.
+            if ("id" in node) and ("name" in node) and ("subcategoryId" not in node) and ("categoryId" not in node):
+                nid = str(node.get("id"))
+                nm = str(node.get("name") or "").strip()
+                if nm and nid.isdigit():
+                    if _is_target_category(nm):
+                        cat_name_by_id[nid] = nm
+
+    all_sub_ids = _sort_numericish_ids(subcategory_ids)
+    all_cat_ids = _sort_numericish_ids(category_ids)
+
+    target_sub_ids = [sid for sid in all_sub_ids if _is_target_subcategory(subcat_name_by_id.get(sid, ""))]
+    target_cat_ids = [cid for cid in all_cat_ids if _is_target_category(cat_name_by_id.get(cid, ""))]
+
+    if target_only:
+        selected_sub_ids = target_sub_ids[:max_subcategories]
+        selected_cat_ids = target_cat_ids[:max_categories]
+    else:
+        selected_sub_ids = (target_sub_ids + [sid for sid in all_sub_ids if sid not in target_sub_ids])[:max_subcategories]
+        selected_cat_ids = (target_cat_ids + [cid for cid in all_cat_ids if cid not in target_cat_ids])[:max_categories]
+
+    sub_urls = [
+        f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}/subcategories/{sid}?format=json"
+        for sid in selected_sub_ids
+    ]
+    cat_urls = [
+        f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}/categories/{cid}?format=json"
+        for cid in selected_cat_ids
+    ]
+    out_payloads.extend(_fetch_many_json(sub_urls + cat_urls, headers=headers, timeout=timeout, max_workers=max_workers))
+
+    # Targeted market slugs used on sportsbook URL pages.
+    targeted = [
+        ("outrights", "cut"),
+        ("golfer-props", "birdies"),
+        ("golfer-props", "bogeys"),
+    ]
+    for cat_slug, sub_slug in targeted:
+        u = (
+            f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}"
+            f"?format=json&category={cat_slug}&subcategory={sub_slug}"
+        )
+        js = _fetch_json(u, headers=headers, timeout=timeout)
         if js is not None:
             out_payloads.append(js)
 
-    for cid in sorted(category_ids)[:max_categories]:
-        u = f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}/categories/{cid}?format=json"
-        js = _fetch_json(u, headers=headers)
-        if js is not None:
-            out_payloads.append(js)
+    # Try a few known content-card endpoints (DK frequently rotates these).
+    cc_urls = [
+        f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}/contentcards?format=json",
+        f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}/content-cards?format=json",
+        f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}?format=json&includeContentCards=true",
+    ]
+    out_payloads.extend(_fetch_many_json(cc_urls, headers=headers, timeout=timeout, max_workers=max_workers))
 
     return out_payloads
 
@@ -943,6 +1605,11 @@ def _fetch_live_dk_payloads_for_eventgroup(
     eventgroup_id: str,
     headers: Dict[str, str],
     include_subcategories: bool = True,
+    max_subcategories: int = 24,
+    max_categories: int = 12,
+    request_timeout: int = 8,
+    max_workers: int = 8,
+    target_only: bool = True,
 ) -> List[Any]:
     urls = [
         f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/leagues/{eventgroup_id}",
@@ -952,7 +1619,7 @@ def _fetch_live_dk_payloads_for_eventgroup(
 
     payloads: List[Any] = []
     for u in urls:
-        js = _fetch_json(u, headers=headers)
+        js = _fetch_json(u, headers=headers, timeout=request_timeout)
         if js is not None:
             payloads.append(js)
 
@@ -961,8 +1628,11 @@ def _fetch_live_dk_payloads_for_eventgroup(
             payloads=payloads,
             eventgroup_id=eventgroup_id,
             headers=headers,
-            max_subcategories=40,
-            max_categories=20,
+            max_subcategories=max_subcategories,
+            max_categories=max_categories,
+            timeout=request_timeout,
+            max_workers=max_workers,
+            target_only=target_only,
         )
 
     return payloads
@@ -973,6 +1643,11 @@ def fetch_live_dk_payloads(
     eventgroup_id: Optional[str] = None,
     expected_tournament_name: str = "",
     tournament_id: str = "",
+    max_subcategories: int = 24,
+    max_categories: int = 12,
+    request_timeout: int = 8,
+    max_workers: int = 8,
+    target_only: bool = True,
 ) -> Tuple[List[Any], Optional[str], List[str]]:
     """
     Try multiple DraftKings golf endpoints.
@@ -1006,6 +1681,11 @@ def fetch_live_dk_payloads(
             eventgroup_id=str(egid),
             headers=headers,
             include_subcategories=False,
+            max_subcategories=max_subcategories,
+            max_categories=max_categories,
+            request_timeout=request_timeout,
+            max_workers=max_workers,
+            target_only=target_only,
         )
         if not base_payloads:
             continue
@@ -1045,6 +1725,11 @@ def fetch_live_dk_payloads(
                     payloads=best["payloads"],
                     eventgroup_id=best["eventgroup_id"],
                     headers=headers,
+                    max_subcategories=max_subcategories,
+                    max_categories=max_categories,
+                    timeout=request_timeout,
+                    max_workers=max_workers,
+                    target_only=target_only,
                 )
                 return full_payloads, best["eventgroup_id"], best["names"]
             # No name match at all: do not silently choose a wrong tournament.
@@ -1058,6 +1743,11 @@ def fetch_live_dk_payloads(
             payloads=best["payloads"],
             eventgroup_id=best["eventgroup_id"],
             headers=headers,
+            max_subcategories=max_subcategories,
+            max_categories=max_categories,
+            timeout=request_timeout,
+            max_workers=max_workers,
+            target_only=target_only,
         )
         return full_payloads, best["eventgroup_id"], best["names"]
 
@@ -1066,6 +1756,11 @@ def fetch_live_dk_payloads(
             payloads=fallback_payloads,
             eventgroup_id=fallback_id,
             headers=headers,
+            max_subcategories=max_subcategories,
+            max_categories=max_categories,
+            timeout=request_timeout,
+            max_workers=max_workers,
+            target_only=target_only,
         )
 
     return fallback_payloads, fallback_id, fallback_names
@@ -1089,6 +1784,65 @@ def load_input_payloads(patterns: List[str]) -> List[Any]:
                     payloads.append(raw)
             except Exception:
                 continue
+    return payloads
+
+
+def load_content_card_input_payloads(patterns: List[str]) -> List[Any]:
+    """
+    Load additional content-card payload candidates from JSON/HAR/text files.
+    Useful when browser-exported Network responses contain cards but live endpoints don't.
+    """
+    payloads: List[Any] = []
+    for pat in patterns:
+        if Path(pat).is_absolute():
+            match_paths = sorted(Path(x) for x in glob.glob(pat))
+        else:
+            match_paths = sorted(Path(x) for x in glob.glob(str(PROJECT_ROOT / pat)))
+        for p in match_paths:
+            if not p.exists() or p.is_dir():
+                continue
+            txt = p.read_text(errors="ignore")
+            if not txt.strip():
+                continue
+
+            # 1) Try JSON parse first.
+            raw = None
+            try:
+                raw = json.loads(txt)
+            except Exception:
+                raw = None
+
+            if raw is not None:
+                # HAR file support.
+                if isinstance(raw, dict) and isinstance(raw.get("log"), dict):
+                    entries = raw["log"].get("entries")
+                    if isinstance(entries, list):
+                        for e in entries:
+                            if not isinstance(e, dict):
+                                continue
+                            resp = e.get("response")
+                            if not isinstance(resp, dict):
+                                continue
+                            content = resp.get("content")
+                            if not isinstance(content, dict):
+                                continue
+                            ctext = content.get("text")
+                            if not isinstance(ctext, str) or not ctext:
+                                continue
+                            # Try JSON response body.
+                            try:
+                                body = json.loads(ctext)
+                                payloads.append(body)
+                            except Exception:
+                                pass
+                            # Also try embedded contentCards in text body.
+                            payloads.extend(_extract_content_cards_from_text(ctext))
+                else:
+                    payloads.append(raw)
+
+            # 2) Always attempt raw text extraction for embedded contentCards.
+            payloads.extend(_extract_content_cards_from_text(txt))
+
     return payloads
 
 
@@ -1179,7 +1933,7 @@ def clean_prop_lines_for_dashboard(df: pd.DataFrame) -> pd.DataFrame:
         "market", "player_name", "odds", "implied_prob", "book",
         "player_a", "player_b", "odds_a", "odds_b",
         "line", "over_odds", "under_odds", "round_num",
-        "event_name", "market_name", "fetched_at"
+        "event_name", "market_name", "selection_id", "selection_id_over", "selection_id_under", "fetched_at"
     ]
     output_cols = [c for c in output_cols if c in df.columns]
     df = df[output_cols]
@@ -1193,6 +1947,110 @@ def clean_prop_lines_for_dashboard(df: pd.DataFrame) -> pd.DataFrame:
     return df.reset_index(drop=True)
 
 
+def parse_content_cards(payloads: List[Any], fetched_at: str, tournament_id: str = "") -> pd.DataFrame:
+    """
+    Extract DraftKings prebuilt bet cards (contentCards) into a flat table.
+    Kept separate from prop lines so edge-scoring schema remains stable.
+    """
+    def _extract_card_row(c: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        if not isinstance(c, dict):
+            return None
+
+        display_odds = c.get("displayOdds")
+        american = None
+        decimal = None
+        if isinstance(display_odds, dict):
+            american = display_odds.get("american")
+            decimal = display_odds.get("decimal")
+
+        selections = c.get("selections") if isinstance(c.get("selections"), list) else []
+        leg_labels = []
+        leg_ids = []
+        market_ids = []
+        for s in selections:
+            if not isinstance(s, dict):
+                continue
+            leg_label = str(s.get("selectionLabel") or s.get("label") or s.get("name") or "").strip()
+            if leg_label:
+                leg_labels.append(leg_label)
+            sid = str(s.get("selectionId", "")).strip()
+            if sid:
+                leg_ids.append(sid)
+            mid = str(s.get("marketId", "")).strip()
+            if mid:
+                market_ids.append(mid)
+
+        # Strictness to avoid noisy pseudo-card rows.
+        if len(leg_labels) == 0:
+            return None
+
+        return {
+            "tournament_id": tournament_id,
+            "card_id": c.get("id"),
+            "title": c.get("title"),
+            "subtitle": c.get("subtitle"),
+            "card_label": c.get("cardLabel"),
+            "content_card_type": c.get("contentCardType"),
+            "sort_order": c.get("sortOrder"),
+            "bet_count": c.get("betCount"),
+            "odds_american": _odds_to_int(american),
+            "odds_decimal": pd.to_numeric(decimal, errors="coerce"),
+            "selection_count": len(leg_labels),
+            "selection_labels": " | ".join(leg_labels),
+            "selection_ids": " | ".join(leg_ids),
+            "selection_labels_json": json.dumps(leg_labels),
+            "selection_ids_json": json.dumps(leg_ids),
+            "market_ids_json": json.dumps(market_ids),
+            "background_image_url": c.get("backgroundImageUrl"),
+            "end_date": c.get("endDate"),
+            "fetched_at": fetched_at,
+        }
+
+    rows: List[Dict[str, Any]] = []
+    for p in payloads:
+        for node in _walk(p):
+            # Path 1: explicit contentCards array.
+            cards = node.get("contentCards")
+            if isinstance(cards, list):
+                for c in cards:
+                    row = _extract_card_row(c)
+                    if row:
+                        rows.append(row)
+
+            # Path 2: standalone card-like objects under unknown keys.
+            if not isinstance(node, dict):
+                continue
+            if isinstance(node.get("selections"), list):
+                cardish_signal = any(
+                    k in node
+                    for k in ["title", "subtitle", "cardLabel", "contentCardType", "displayOdds", "backgroundImageUrl"]
+                )
+                if cardish_signal:
+                    row = _extract_card_row(node)
+                    if row:
+                        rows.append(row)
+
+    if not rows:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(rows)
+    if "card_id" in df.columns:
+        has_card_id = df["card_id"].fillna("").astype(str).str.strip() != ""
+        if has_card_id.any():
+            df = pd.concat(
+                [
+                    df[has_card_id].drop_duplicates(subset=["card_id"], keep="first"),
+                    df[~has_card_id].drop_duplicates(subset=["title", "selection_labels"], keep="first"),
+                ],
+                ignore_index=True,
+            )
+        else:
+            df = df.drop_duplicates(subset=["title", "selection_labels"], keep="first")
+    if "sort_order" in df.columns:
+        df["sort_order"] = pd.to_numeric(df["sort_order"], errors="coerce")
+    return df.sort_values(["sort_order", "title"], na_position="last").reset_index(drop=True)
+
+
 def debug_payload_summary(payloads: List[Any]) -> None:
     print("\nDebug summary:")
     print(f"  payload_count: {len(payloads)}")
@@ -1201,6 +2059,7 @@ def debug_payload_summary(payloads: List[Any]) -> None:
     market_selection_payloads = 0
     total_markets = 0
     total_selections = 0
+    content_cards = 0
     sample_rows: List[Tuple[str, str, str, int]] = []
 
     for p in payloads:
@@ -1210,6 +2069,8 @@ def debug_payload_summary(payloads: List[Any]) -> None:
             total_selections += len(p.get("selections", []))
         for node in _walk(p):
             key_counter.update(node.keys())
+            if isinstance(node.get("contentCards"), list):
+                content_cards += len(node.get("contentCards", []))
             if "outcomes" in node:
                 outcomes = _flatten_dict_items(node.get("outcomes"))
                 if outcomes:
@@ -1222,6 +2083,7 @@ def debug_payload_summary(payloads: List[Any]) -> None:
     print("  top_keys:", ", ".join([f"{k}:{v}" for k, v in key_counter.most_common(15)]))
     print(f"  outcomes_nodes: {outcomes_nodes}")
     print(f"  market_selection_payloads: {market_selection_payloads}")
+    print(f"  content_cards: {content_cards}")
     if market_selection_payloads:
         print(f"  total_markets: {total_markets} | total_selections: {total_selections}")
     for i, (mkt, off, evt, nout) in enumerate(sample_rows[:8], start=1):
@@ -1242,20 +2104,83 @@ def main() -> None:
     )
     parser.add_argument("--region", default="dkusnj", help="DraftKings region key used in sportsbook-nash URL")
     parser.add_argument("--eventgroup-id", help="Optional DraftKings event group id override for golf")
+    parser.add_argument(
+        "--content-cards-url",
+        nargs="*",
+        default=[],
+        help="Optional sportsbook page URL(s) to scrape embedded contentCards JSON from",
+    )
+    parser.add_argument(
+        "--content-cards-input",
+        nargs="*",
+        default=[],
+        help="Optional JSON/HAR/text file(s) containing contentCards payloads",
+    )
+    parser.add_argument(
+        "--fetch-profile",
+        choices=["fast", "balanced", "full"],
+        default="fast",
+        help="Network fetch intensity for DK subcategory/category expansion (default: fast)",
+    )
     parser.add_argument("--output", help="Custom output CSV path")
+    parser.add_argument("--content-cards-output", help="Custom output CSV path for content cards")
     parser.add_argument("--no-snapshot", action="store_true", help="Disable saving raw payload snapshots")
+    parser.add_argument(
+        "--max-age-hours",
+        type=float,
+        default=0.0,
+        help="Skip refresh if output file is newer than this many hours (default: 0, disabled)",
+    )
+    parser.add_argument("--force-refresh", action="store_true", help="Force refresh even if output file is fresh")
     parser.add_argument("--debug", action="store_true", help="Print payload structure summary")
     args = parser.parse_args()
 
     ODDS_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = Path(args.output) if args.output else (ODDS_DIR / f"prop_lines_{args.tournament_id}.csv")
+    cards_out_path = (
+        Path(args.content_cards_output)
+        if args.content_cards_output
+        else (ODDS_DIR / f"dk_content_cards_{args.tournament_id}.csv")
+    )
+
+    if args.max_age_hours > 0 and (not args.force_refresh) and out_path.exists():
+        age_hours = (datetime.now().timestamp() - out_path.stat().st_mtime) / 3600.0
+        if age_hours <= args.max_age_hours:
+            print(
+                f"Skipping DraftKings fetch - fresh file exists ({out_path.name}, <= {args.max_age_hours:.1f}h old)"
+            )
+            return
 
     payloads: List[Any] = []
     expected_tournament_name = _resolve_tournament_name_from_schedule(args.tournament_id)
     if expected_tournament_name:
         print(f"Expected tournament for {args.tournament_id}: {expected_tournament_name}")
 
+    profile_cfg = {
+        "fast": {"max_subcategories": 24, "max_categories": 12, "request_timeout": 6, "max_workers": 10, "target_only": True},
+        "balanced": {"max_subcategories": 50, "max_categories": 25, "request_timeout": 8, "max_workers": 10, "target_only": False},
+        "full": {"max_subcategories": 120, "max_categories": 60, "request_timeout": 12, "max_workers": 12, "target_only": False},
+    }[args.fetch_profile]
+
+    chosen_eventgroup: Optional[str] = None
+    detected_names: List[str] = []
+
     if args.input_json:
         payloads.extend(load_input_payloads(args.input_json))
+
+    extra_card_payloads: List[Any] = []
+    card_input_patterns = list(args.content_cards_input or [])
+    if not card_input_patterns:
+        default_har = PROJECT_ROOT / "sportsbook.draftkings.com.har"
+        if default_har.exists():
+            card_input_patterns.append(str(default_har))
+            if args.debug:
+                print(f"Using default HAR for content cards: {default_har}")
+
+    if card_input_patterns:
+        extra_card_payloads.extend(load_content_card_input_payloads(card_input_patterns))
+        if args.debug:
+            print(f"Loaded {len(extra_card_payloads)} content-card payload candidate(s) from --content-cards-input")
 
     if not payloads:
         print("Trying live DraftKings endpoints...")
@@ -1264,6 +2189,7 @@ def main() -> None:
             eventgroup_id=args.eventgroup_id,
             expected_tournament_name=expected_tournament_name,
             tournament_id=args.tournament_id,
+            **profile_cfg,
         )
         if chosen_eventgroup:
             print(f"Using eventgroup id: {chosen_eventgroup}")
@@ -1294,6 +2220,97 @@ def main() -> None:
 
     fetched_at = _now_utc_iso()
     df = parse_draftkings_payloads(payloads, fetched_at=fetched_at)
+    cards_df = parse_content_cards(payloads, fetched_at=fetched_at, tournament_id=args.tournament_id)
+    if cards_df.empty and extra_card_payloads:
+        cards_df = parse_content_cards(
+            payloads + extra_card_payloads,
+            fetched_at=fetched_at,
+            tournament_id=args.tournament_id,
+        )
+
+    if cards_df.empty:
+        # Fallback A: dedicated card/event endpoints that may not be included in league payload.
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+            "Accept": "application/json, text/html",
+        }
+        card_api_urls = _build_card_api_urls(
+            eventgroup_id=chosen_eventgroup,
+            event_ids=_event_ids_from_payloads(payloads),
+            region=args.region,
+        )
+        if card_api_urls:
+            extra_card_payloads = _fetch_many_json(
+                card_api_urls,
+                headers=headers,
+                timeout=max(6, int(profile_cfg.get("request_timeout", 8))),
+                max_workers=min(10, int(profile_cfg.get("max_workers", 8))),
+            )
+            if extra_card_payloads:
+                cards_df = parse_content_cards(
+                    payloads + extra_card_payloads,
+                    fetched_at=fetched_at,
+                    tournament_id=args.tournament_id,
+                )
+            elif args.debug:
+                print(f"  content-card API fallback tried {len(card_api_urls)} URLs, 0 payloads")
+
+    if cards_df.empty:
+        # Fallback B: scrape sportsbook page HTML for embedded contentCards JSON.
+        cc_urls = []
+        if args.content_cards_url:
+            cc_urls.extend([u for u in args.content_cards_url if str(u).strip()])
+        cc_urls.extend(_build_candidate_content_card_urls(expected_tournament_name, detected_names))
+        if cc_urls:
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+                "Accept": "text/html,application/json",
+            }
+            html_card_payloads = _fetch_content_card_payloads_from_urls(
+                urls=cc_urls,
+                headers=headers,
+                timeout=max(8, int(profile_cfg.get("request_timeout", 8))),
+                max_workers=min(8, int(profile_cfg.get("max_workers", 8))),
+            )
+            if args.debug:
+                print(f"  content-card HTML fallback tried {len(cc_urls)} URL(s), got {len(html_card_payloads)} payload candidate(s)")
+            if html_card_payloads:
+                cards_df = parse_content_cards(
+                    payloads + html_card_payloads,
+                    fetched_at=fetched_at,
+                    tournament_id=args.tournament_id,
+                )
+
+    card_cols = [
+        "tournament_id",
+        "card_id",
+        "title",
+        "subtitle",
+        "card_label",
+        "content_card_type",
+        "sort_order",
+        "bet_count",
+        "odds_american",
+        "odds_decimal",
+        "selection_count",
+        "selection_labels",
+        "selection_ids",
+        "selection_labels_json",
+        "selection_ids_json",
+        "market_ids_json",
+        "background_image_url",
+        "end_date",
+        "fetched_at",
+    ]
+    if cards_df.empty:
+        cards_df = pd.DataFrame(columns=card_cols)
+        print("No content cards found in available DK payloads/endpoints; writing empty content-cards file.")
+
+    cards_df.to_csv(cards_out_path, index=False)
+    cards_latest_path = ODDS_DIR / "dk_content_cards_latest.csv"
+    cards_df.to_csv(cards_latest_path, index=False)
+    print(f"Saved {len(cards_df)} content cards to: {cards_out_path}")
+    print(f"Saved latest content cards to: {cards_latest_path}")
 
     if not df.empty and expected_tournament_name and "event_name" in df.columns:
         event_names = df["event_name"].fillna("").astype(str).str.strip()
@@ -1312,19 +2329,16 @@ def main() -> None:
             df = matched_df
 
     if df.empty:
-        print("Loaded payloads but could not parse supported markets (winner / h2h / round_score / birdies).")
+        print("Loaded payloads but could not parse supported markets (winner / h2h / round_score / birdies / bogeys / make_cut).")
         print("Likely cause: payloads are quote-only or market metadata keys differ.")
+        if not cards_df.empty:
+            print("Note: preset content cards were parsed and saved.")
         if snapshot_path:
             print(f"Inspect this snapshot and share one object with full market+outcomes: {snapshot_path}")
         return
 
     # Clean and transform for dashboard integration
     df = clean_prop_lines_for_dashboard(df)
-
-    if args.output:
-        out_path = Path(args.output)
-    else:
-        out_path = ODDS_DIR / f"prop_lines_{args.tournament_id}.csv"
 
     df.to_csv(out_path, index=False)
 

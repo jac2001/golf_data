@@ -236,7 +236,10 @@ def run_tuesday_evening(dry_run: bool = False):
 
     tasks = [
         ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                             "--tournament-id", tournament_id]),
+                             "--tournament-id", tournament_id,
+                             "--max-age-hours", "2",
+                             "--fetch-profile", "fast",
+                             "--no-snapshot"]),
         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                       "--tournament-id", tournament_id]),
     ]
@@ -271,7 +274,10 @@ def run_wednesday_morning(dry_run: bool = False):
         ("Expert Picks", ["python3", "scripts/scrapers/fetch_expert_picks_pga.py",
                           "--tournament-id", tournament_id]),
         ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                             "--tournament-id", tournament_id]),
+                             "--tournament-id", tournament_id,
+                             "--max-age-hours", "2",
+                             "--fetch-profile", "fast",
+                             "--no-snapshot"]),
         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                       "--tournament-id", tournament_id]),
         ("Predictions", ["python3", "scripts/run_pipeline.py",
@@ -307,7 +313,10 @@ def run_live_refresh(dry_run: bool = False):
 
     if tournament_id:
         tasks.append(("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                                          "--tournament-id", tournament_id]))
+                                          "--tournament-id", tournament_id,
+                                          "--max-age-hours", "0.5",
+                                          "--fetch-profile", "fast",
+                                          "--no-snapshot"]))
 
     results = []
     for desc, cmd in tasks:
@@ -330,6 +339,7 @@ def run_record_results(dry_run: bool = False):
     tasks = [
         ("Final Leaderboard", ["python3", "scripts/scrapers/fetch_leaderboard.py"]),
         ("Auto Record Results", ["python3", "scripts/planning/auto_record_results.py"]),
+        ("Grade Recommended Bets", ["python3", "scripts/models/grade_recommended_bets.py"]),
     ]
 
     results = []

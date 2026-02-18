@@ -16,6 +16,7 @@ import numpy as np
 from pathlib import Path
 import sys
 import json
+import ast
 import subprocess
 import textwrap
 from datetime import datetime
@@ -378,12 +379,7 @@ def ensure_player_name_column(df: pd.DataFrame) -> pd.DataFrame:
 def load_odds_from_source(source: str) -> pd.DataFrame:
     """Load odds data from a specific source."""
     odds_dir = DATA_DIR / "odds"
-    if source == "polymarket":
-        files = list(odds_dir.glob("polymarket_*.csv"))
-    elif source == "kalshi":
-        files = list(odds_dir.glob("kalshi_*.csv"))
-    else:
-        files = [odds_dir / "multi_book_odds_latest.csv"]
+    files = [odds_dir / "multi_book_odds_latest.csv"]
 
     if files:
         # Get most recent file
@@ -392,76 +388,6 @@ def load_odds_from_source(source: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-def merge_odds_sources() -> pd.DataFrame:
-    """Merge odds from Polymarket and Kalshi for comparison."""
-    poly_df = load_odds_from_source("polymarket")
-    kalshi_df = load_odds_from_source("kalshi")
-
-    if poly_df.empty and kalshi_df.empty:
-        return pd.DataFrame()
-
-    # Normalize player names for matching
-    def normalize_name(name):
-        return str(name).lower().strip().replace(".", "").replace("-", " ")
-
-    if not poly_df.empty:
-        poly_df["name_key"] = poly_df["player_name"].apply(normalize_name)
-        poly_df = poly_df.rename(columns={
-            "odds_polymarket": "polymarket_odds",
-            "win_prob": "polymarket_prob"
-        })
-
-    if not kalshi_df.empty:
-        kalshi_df["name_key"] = kalshi_df["player_name"].apply(normalize_name)
-        kalshi_df = kalshi_df.rename(columns={
-            "odds_kalshi": "kalshi_odds",
-            "win_prob": "kalshi_prob"
-        })
-
-    # Merge on normalized name
-    if not poly_df.empty and not kalshi_df.empty:
-        merged = pd.merge(
-            poly_df[["player_name", "name_key", "polymarket_odds", "polymarket_prob"]],
-            kalshi_df[["name_key", "kalshi_odds", "kalshi_prob"]],
-            on="name_key",
-            how="outer"
-        )
-    elif not poly_df.empty:
-        merged = poly_df[["player_name", "name_key", "polymarket_odds", "polymarket_prob"]].copy()
-        merged["kalshi_odds"] = None
-        merged["kalshi_prob"] = None
-    else:
-        merged = kalshi_df[["player_name", "name_key", "kalshi_odds", "kalshi_prob"]].copy()
-        merged["polymarket_odds"] = None
-        merged["polymarket_prob"] = None
-
-    # Fill missing player names from kalshi for rows that only exist in kalshi
-    if not kalshi_df.empty:
-        kalshi_name_map = kalshi_df.set_index("name_key")["player_name"].to_dict()
-        # Fill NaN player names using the kalshi mapping
-        merged["player_name"] = merged.apply(
-            lambda row: kalshi_name_map.get(row["name_key"], row["player_name"])
-            if pd.isna(row.get("player_name")) else row["player_name"],
-            axis=1
-        )
-
-    # Drop any rows still without a player name
-    merged = merged[merged["player_name"].notna()]
-
-    # Calculate best odds and consensus
-    merged["best_odds"] = merged[["polymarket_odds", "kalshi_odds"]].max(axis=1)
-    merged["avg_prob"] = merged[["polymarket_prob", "kalshi_prob"]].mean(axis=1)
-
-    # Calculate odds difference
-    merged["odds_diff"] = abs(
-        merged["polymarket_odds"].fillna(0) - merged["kalshi_odds"].fillna(0)
-    )
-
-    # Sort by average probability
-    merged = merged.sort_values("avg_prob", ascending=False).reset_index(drop=True)
-    merged["rank"] = range(1, len(merged) + 1)
-
-    return merged
 
 
 def prob_to_badge_class(prob: float) -> str:
@@ -483,184 +409,10 @@ def format_odds_display(odds: float, is_best: bool = False) -> str:
     return f"{sign}{int(odds)}"
 
 
-def render_odds_comparison_table(df: pd.DataFrame, max_rows: int = 25):
-    """Render an interactive odds comparison table."""
-    if df.empty:
-        st.info("No odds data available. Fetch from Polymarket or Kalshi first.")
-        return
-
-    st.caption(f"{len(df)} players with odds from prediction markets")
-
-    # Create display dataframe
-    display_data = []
-    for _, row in df.head(max_rows).iterrows():
-        poly_odds = row.get("polymarket_odds")
-        kalshi_odds = row.get("kalshi_odds")
-        best = row.get("best_odds")
-
-        # Determine which is best
-        poly_is_best = pd.notna(poly_odds) and poly_odds == best
-        kalshi_is_best = pd.notna(kalshi_odds) and kalshi_odds == best
-        if poly_is_best and kalshi_is_best:
-            best_market = "Tie"
-        elif poly_is_best:
-            best_market = "Polymarket"
-        elif kalshi_is_best:
-            best_market = "Kalshi"
-        else:
-            best_market = "—"
-
-        display_data.append({
-            "Rank": int(row["rank"]),
-            "Player": row["player_name"],
-            "Polymarket": format_odds_display(poly_odds),
-            "Kalshi": format_odds_display(kalshi_odds),
-            "Best Market": best_market,
-            "Best Odds": format_odds_display(best),
-            "Win %": f"{row['avg_prob']*100:.1f}%" if pd.notna(row.get('avg_prob')) else "—",
-            "Diff": int(row["odds_diff"]) if pd.notna(row.get("odds_diff")) else 0
-        })
-
-    display_df = pd.DataFrame(display_data)
-    st.dataframe(
-        display_df,
-        hide_index=True,
-        use_container_width=True,
-        height=520,
-        column_config={
-            "Rank": st.column_config.NumberColumn(width="small"),
-            "Player": st.column_config.TextColumn(width="medium"),
-            "Polymarket": st.column_config.TextColumn(width="small"),
-            "Kalshi": st.column_config.TextColumn(width="small"),
-            "Best Market": st.column_config.TextColumn(width="small"),
-            "Best Odds": st.column_config.TextColumn(width="small"),
-            "Win %": st.column_config.TextColumn(width="small"),
-            "Diff": st.column_config.NumberColumn(width="small"),
-        },
-    )
 
 
 
 
-def render_player_odds_card(player_name: str, poly_odds: float, kalshi_odds: float,
-                            avg_prob: float, rank: int):
-    """Render a visual player card with odds using native Streamlit components."""
-    # Handle NaN values
-    poly_val = poly_odds if pd.notna(poly_odds) else 0
-    kalshi_val = kalshi_odds if pd.notna(kalshi_odds) else 0
-    best_odds = max(poly_val, kalshi_val)
-    best_display = f"+{int(best_odds)}" if best_odds > 0 else "—"
-    avg_prob_display = f"{avg_prob*100:.1f}%" if pd.notna(avg_prob) else "—"
-
-    with st.container():
-        st.markdown(f"**#{rank} {player_name}**")
-        st.metric("Win Probability", avg_prob_display)
-
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            st.metric("Polymarket", format_odds_display(poly_odds))
-        with c2:
-            st.metric("Kalshi", format_odds_display(kalshi_odds))
-        with c3:
-            st.metric("Best Odds", best_display, delta="Best" if best_odds > 0 else None)
-
-
-
-
-
-def calculate_value_score(poly_odds: float, kalshi_odds: float) -> dict:
-    """Calculate value score based on odds difference between markets"""
-    poly_val = poly_odds if pd.notna(poly_odds) else 0
-    kalshi_val = kalshi_odds if pd.notna(kalshi_odds) else 0
-    
-    
-    if poly_val == 0 or kalshi_val == 0:
-        return {"score": 0, "better_market": None, "edge_pct": 0}
-    
-    diff = abs(poly_val - kalshi_val)
-    avg = (poly_val + kalshi_val) / 2
-    edge_pct = (diff / avg) * 100 if avg > 0 else 0
-    
-    if poly_val > kalshi_val:
-        better_market = "Polymarket"
-        better_odds = poly_val
-    else:
-        better_market = "Kalshi"
-        better_odds = kalshi_val
-        
-    score = min(100, edge_pct * 2)
-    
-    return {
-        "score": round(score, 1),
-        "better_market": better_market,
-        "edge_pct": round(edge_pct, 1),
-        "better_odds": better_odds,
-        'diff': diff
-    }
-    
-def render_value_finder(comparison_df: pd.DataFrame):
-    """Render the value finder section using native Streamlit components."""
-    if comparison_df.empty:
-        st.info("No odds data. Fetch from Polymarket and Kalshi first.")
-        return
-
-    st.markdown("#### 💎 Value Finder")
-    st.caption("Players where one market offers significantly better odds")
-
-    # Calculate value for each player
-    value_data = []
-    for _, row in comparison_df.iterrows():
-        value = calculate_value_score(
-            row.get("polymarket_odds"),
-            row.get("kalshi_odds")
-        )
-        if value["score"] > 10:  # Only show meaningful differences
-            value_data.append({
-                "Player": row["player_name"],
-                "Polymarket": f"+{int(row['polymarket_odds'])}" if pd.notna(row.get('polymarket_odds')) else "—",
-                "Kalshi": f"+{int(row['kalshi_odds'])}" if pd.notna(row.get('kalshi_odds')) else "—",
-                "Best Market": value["better_market"],
-                "Edge %": f"{value['edge_pct']}%",
-                "Value Score": value["score"],
-            })
-
-    if not value_data:
-        st.success("No significant value gaps found - markets are well aligned!")
-        return
-
-    value_df = pd.DataFrame(value_data)
-    value_df = value_df.sort_values("Value Score", ascending=False)
-
-    # Summary metrics
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Value Opportunities", len(value_df))
-    with col2:
-        poly_better = len([v for v in value_data if v["Best Market"] == "Polymarket"])
-        st.metric("Polymarket Better", poly_better)
-    with col3:
-        kalshi_better = len(value_df) - poly_better
-        st.metric("Kalshi Better", kalshi_better)
-
-    # Top value plays using native components
-    st.markdown("##### 🔥 Top Value Plays")
-    for _, row in value_df.head(5).iterrows():
-        better = row["Best Market"]
-        indicator = "🟣" if better == "Polymarket" else "🟠"
-        with st.container():
-            c1, c2, c3, c4 = st.columns([3, 2, 2, 2])
-            with c1:
-                st.markdown(f"**{row['Player']}**")
-            with c2:
-                st.caption(f"Poly: {row['Polymarket']}")
-            with c3:
-                st.caption(f"Kalshi: {row['Kalshi']}")
-            with c4:
-                st.metric(f"{indicator} {better}", row['Edge %'])
-
-    # Full table
-    with st.expander("View All Value Opportunities"):
-        st.dataframe(value_df, hide_index=True, use_container_width=True)
 
 
 
@@ -672,143 +424,15 @@ def save_odds_snapshot():
     snapshot_dir = DATA_DIR / "odds" / "snapshots"                                                                       
     snapshot_dir.mkdir(parents=True, exist_ok=True)                                                                      
                                                                                                                         
-    # Load current odds                                                                                                  
-    comparison_df = merge_odds_sources()                                                                                 
-    if comparison_df.empty:                                                                                              
-        return None                                                                                                      
+                                                                                                    
                                                                                                                         
     # Save with timestamp                                                                                                
     timestamp = datetime.now().strftime("%Y%m%d_%H%M")                                                                   
     snapshot_path = snapshot_dir / f"odds_{timestamp}.csv"                                                               
-    comparison_df.to_csv(snapshot_path, index=False)                                                                     
                                                                                                                         
     return snapshot_path  
 
 
-def load_odds_history(player_name: str, days: int = 7) -> pd.DataFrame:                                                  
-    """Load historical odds for a specific player."""                                                                    
-    snapshot_dir = DATA_DIR / "odds" / "snapshots"                                                                       
-    if not snapshot_dir.exists():                                                                                        
-        return pd.DataFrame()                                                                                            
-                                                                                                                        
-    # Get all snapshots                                                                                                  
-    snapshots = sorted(snapshot_dir.glob("odds_*.csv"))                                                                  
-                                                                                                                        
-    history = []                                                                                                         
-    for snap in snapshots[-50:]:  # Last 50 snapshots max                                                                
-        try:                                                                                                             
-            # Parse timestamp from filename                                                                              
-            ts_str = snap.stem.replace("odds_", "")                                                                      
-            ts = datetime.strptime(ts_str, "%Y%m%d_%H%M")                                                                
-                                                                                                                        
-            df = pd.read_csv(snap)                                                                                       
-            # Normalize name for matching                                                                                
-            df["name_lower"] = df["player_name"].str.lower().str.strip()                                                 
-            player_row = df[df["name_lower"] == player_name.lower().strip()]                                             
-                                                                                                                        
-            if not player_row.empty:                                                                                     
-                row = player_row.iloc[0]                                                                                 
-                history.append({                                                                                         
-                    "timestamp": ts,                                                                                     
-                    "polymarket_odds": row.get("polymarket_odds"),                                                       
-                    "kalshi_odds": row.get("kalshi_odds"),                                                               
-                    "avg_prob": row.get("avg_prob"),                                                                     
-                })                                                                                                       
-        except Exception:                                                                                                
-            continue                                                                                                     
-                                                                                                                        
-    return pd.DataFrame(history)                                                                                         
-                                                                                                                        
-                                                                                                                           
-def render_odds_history(comparison_df: pd.DataFrame):                                                                    
-    """Render odds history and line movement."""                                                                         
-    st.markdown("#### 📈 Odds History & Line Movement")                                                                  
-    st.caption("Track how odds change over time")                                                                        
-                                                                                                                        
-    # Save snapshot button                                                                                               
-    col1, col2 = st.columns([3, 1])                                                                                      
-    with col2:                                                                                                           
-        if st.button("📸 Save Snapshot", help="Save current odds for tracking"):                                         
-            path = save_odds_snapshot()                                                                                  
-            if path:                                                                                                     
-                st.success(f"Saved!")                                                                                    
-            else:                                                                                                        
-                st.error("No odds to save")                                                                              
-                                                                                                                        
-    # Player selector                                                                                                    
-    if comparison_df.empty:                                                                                              
-        st.info("No odds data available.")                                                                               
-        return                                                                                                           
-                                                                                                                        
-    players = comparison_df["player_name"].dropna().tolist()                                                             
-    selected_player = st.selectbox("Select player to track:", players[:30], key="history_player")                        
-                                                                                                                        
-    if selected_player:                                                                                                  
-        history_df = load_odds_history(selected_player)                                                                  
-                                                                                                                        
-        if history_df.empty:                                                                                             
-            st.info(f"No history for {selected_player}. Click 'Save Snapshot' to start tracking.")                       
-        else:                                                                                                            
-            # Current vs first recorded                                                                                  
-            current_poly = comparison_df[comparison_df["player_name"] == selected_player]["polymarket_odds"].iloc[0]     
-            current_kalshi = comparison_df[comparison_df["player_name"] == selected_player]["kalshi_odds"].iloc[0]       
-                                                                                                                        
-            first_poly = history_df.iloc[0]["polymarket_odds"] if pd.notna(history_df.iloc[0]["polymarket_odds"]) else None                                                                                                                     
-            first_kalshi = history_df.iloc[0]["kalshi_odds"] if pd.notna(history_df.iloc[0]["kalshi_odds"]) else None    
-                                                                                                                        
-            # Show movement                                                                                              
-            col1, col2, col3 = st.columns(3)                                                                             
-            with col1:                                                                                                   
-                if pd.notna(current_poly) and first_poly:                                                                
-                    delta = int(current_poly - first_poly)                                                               
-                    delta_str = f"{'+' if delta > 0 else ''}{delta}"                                                     
-                    st.metric("Polymarket", f"+{int(current_poly)}", delta_str)                                          
-                else:                                                                                                    
-                    st.metric("Polymarket", "—")                                                                         
-            with col2:                                                                                                   
-                if pd.notna(current_kalshi) and first_kalshi:                                                            
-                    delta = int(current_kalshi - first_kalshi)                                                           
-                    delta_str = f"{'+' if delta > 0 else ''}{delta}"                                                     
-                    st.metric("Kalshi", f"+{int(current_kalshi)}", delta_str)                                            
-                else:                                                                                                    
-                    st.metric("Kalshi", "—")                                                                             
-            with col3:                                                                                                   
-                st.metric("Snapshots", len(history_df))                                                                  
-                                                                                                                        
-            # Chart                                                                                                      
-            if len(history_df) > 1:                                                                                      
-                chart_data = history_df.melt(                                                                            
-                    id_vars=["timestamp"],                                                                               
-                    value_vars=["polymarket_odds", "kalshi_odds"],                                                       
-                    var_name="Source",                                                                                   
-                    value_name="Odds"                                                                                    
-                )                                                                                                        
-                chart_data["Source"] = chart_data["Source"].replace({                                                    
-                    "polymarket_odds": "Polymarket",                                                                     
-                    "kalshi_odds": "Kalshi"                                                                              
-                })                                                                                                       
-                chart_data = chart_data.dropna()                                                                         
-                                                                                                                        
-                if not chart_data.empty:                                                                                 
-                    fig = px.line(                                                                                       
-                        chart_data, x="timestamp", y="Odds", color="Source",                                             
-                        title=f"Odds Movement: {selected_player}",                                                       
-                        markers=True                                                                                     
-                    )                                                                                                    
-                    fig.update_layout(                                                                                   
-                        xaxis_title="Date",                                                                              
-                        yaxis_title="American Odds",                                                                     
-                        legend_title="Source",                                                                           
-                        height=300                                                                                       
-                    )                                                                                                    
-                    st.plotly_chart(fig, use_container_width=True)                                                       
-                                                                                                                        
-            # History table                                                                                              
-            with st.expander("View Raw History"):                                                                        
-                display_hist = history_df.copy()                                                                         
-                display_hist["timestamp"] = display_hist["timestamp"].dt.strftime("%m/%d %H:%M")                         
-                st.dataframe(display_hist, hide_index=True, use_container_width=True)                                    
-                            
 
 
 
@@ -868,6 +492,420 @@ def _latest_tournament_id_from_prop_lines(max_age_hours: float = 30.0) -> str:
             if tid:
                 return tid
     return ""
+
+
+@st.cache_data(ttl=180)
+def load_dk_content_cards_df(preferred_tournament_id: str = "") -> tuple[pd.DataFrame, Path | None]:
+    """Load DraftKings preset content cards for a tournament (or latest fallback)."""
+    odds_dir = DATA_DIR / "odds"
+    if not odds_dir.exists():
+        return pd.DataFrame(), None
+
+    tid = str(preferred_tournament_id or "").strip().upper()
+    candidates: list[Path] = []
+    if tid:
+        candidates.append(odds_dir / f"dk_content_cards_{tid}.csv")
+
+    rid_files = sorted(odds_dir.glob("dk_content_cards_R*.csv"), key=lambda x: x.stat().st_mtime, reverse=True)
+    candidates.extend(rid_files[:5])
+
+    latest_file = odds_dir / "dk_content_cards_latest.csv"
+    if latest_file.exists():
+        candidates.append(latest_file)
+
+    seen = set()
+    ordered = []
+    for c in candidates:
+        if c.exists() and c not in seen:
+            seen.add(c)
+            ordered.append(c)
+
+    for p in ordered:
+        try:
+            df = pd.read_csv(p)
+        except Exception:
+            continue
+        if df.empty:
+            continue
+        if "tournament_id" not in df.columns:
+            df["tournament_id"] = ""
+        if "title" not in df.columns:
+            df["title"] = ""
+        if "subtitle" not in df.columns:
+            df["subtitle"] = ""
+        if "selection_labels" not in df.columns and "selection_labels_json" in df.columns:
+            def _labels_from_json(v):
+                try:
+                    arr = json.loads(v) if pd.notna(v) else []
+                    if isinstance(arr, list):
+                        return " | ".join([str(x).strip() for x in arr if str(x).strip()])
+                except Exception:
+                    return ""
+                return ""
+            df["selection_labels"] = df["selection_labels_json"].apply(_labels_from_json)
+        if "odds_american" not in df.columns:
+            df["odds_american"] = np.nan
+        if "selection_count" not in df.columns:
+            df["selection_count"] = np.nan
+        if "bet_count" not in df.columns:
+            df["bet_count"] = np.nan
+        if "sort_order" in df.columns:
+            df["sort_order"] = pd.to_numeric(df["sort_order"], errors="coerce")
+            df = df.sort_values(["sort_order", "title"], na_position="last")
+        return df.reset_index(drop=True), p
+
+    return pd.DataFrame(), None
+
+
+@st.cache_data(ttl=120)
+def load_recommended_bets_df(preferred_tournament_id: str = "") -> tuple[pd.DataFrame, Path | None]:
+    """Load v1 tracked recommendations for a tournament, with latest fallback."""
+    odds_dir = DATA_DIR / "odds"
+    if not odds_dir.exists():
+        return pd.DataFrame(), None
+
+    tid = str(preferred_tournament_id or "").strip().upper()
+    candidates: list[Path] = []
+    if tid:
+        candidates.append(odds_dir / f"recommended_bets_{tid}.csv")
+
+    rid_files = sorted(odds_dir.glob("recommended_bets_R*.csv"), key=lambda x: x.stat().st_mtime, reverse=True)
+    candidates.extend(rid_files[:5])
+
+    latest_file = odds_dir / "recommended_bets_latest.csv"
+    if latest_file.exists():
+        candidates.append(latest_file)
+
+    seen = set()
+    ordered = []
+    for c in candidates:
+        if c.exists() and c not in seen:
+            seen.add(c)
+            ordered.append(c)
+
+    for p in ordered:
+        try:
+            df = pd.read_csv(p)
+        except Exception:
+            continue
+        if df.empty:
+            continue
+        if "recommendation_rank" in df.columns:
+            df["recommendation_rank"] = pd.to_numeric(df["recommendation_rank"], errors="coerce")
+            df = df.sort_values("recommendation_rank", na_position="last")
+        return df.reset_index(drop=True), p
+
+    return pd.DataFrame(), None
+
+
+@st.cache_data(ttl=120)
+def load_recommended_bet_results_df(preferred_tournament_id: str = "") -> pd.DataFrame:
+    """Load settled recommendation results log, optionally filtered by tournament id."""
+    path = DATA_DIR / "odds" / "recommended_bets_results.csv"
+    if not path.exists():
+        return pd.DataFrame()
+    try:
+        df = pd.read_csv(path)
+    except Exception:
+        return pd.DataFrame()
+    if df.empty:
+        return df
+
+    tid = str(preferred_tournament_id or "").strip().upper()
+    if tid and "tournament_id" in df.columns:
+        df = df[df["tournament_id"].astype(str).str.upper() == tid]
+    return df.reset_index(drop=True)
+
+
+def _format_american_odds(odds) -> str:
+    if pd.isna(odds):
+        return "-"
+    try:
+        val = int(float(odds))
+    except Exception:
+        return str(odds)
+    return f"+{val}" if val > 0 else str(val)
+
+
+def _american_to_prob(odds) -> float:
+    v = pd.to_numeric(odds, errors="coerce")
+    if pd.isna(v):
+        return np.nan
+    if v > 0:
+        return 100.0 / (v + 100.0)
+    return abs(v) / (abs(v) + 100.0)
+
+
+def _american_to_decimal(odds) -> float:
+    v = pd.to_numeric(odds, errors="coerce")
+    if pd.isna(v):
+        return np.nan
+    if v > 0:
+        return 1.0 + (v / 100.0)
+    return 1.0 + (100.0 / abs(v))
+
+
+def _extract_card_leg_labels(row: pd.Series) -> list[str]:
+    labels = _safe_parse_name_list(row.get("selection_labels_json", ""))
+    if labels:
+        return labels
+    raw = str(row.get("selection_labels", "")).strip()
+    if not raw:
+        return []
+    return [x.strip() for x in raw.split("|") if x.strip()]
+
+
+def _parse_card_leg_label(label: str) -> dict:
+    s = str(label or "").strip()
+    low = s.lower()
+
+    m = re.match(r"^(.*?)\s+to\s+finish\s+top\s+(\d+)\b", s, flags=re.I)
+    if m:
+        return {"market": f"top{m.group(2)}", "player": m.group(1).strip(), "raw": s}
+
+    m = re.match(r"^(.*?)\s+to\s+win\s+r([1-4])\s*\(vs\.?\s*(.*?)\)$", s, flags=re.I)
+    if m:
+        return {
+            "market": "h2h_round",
+            "player": m.group(1).strip(),
+            "opponent": m.group(3).strip(),
+            "round_num": int(m.group(2)),
+            "raw": s,
+        }
+
+    if re.search(r"\bto\s+make\s+(?:the\s+)?cut\b", low):
+        player = re.sub(r"\s+to\s+make\s+(?:the\s+)?cut.*$", "", s, flags=re.I).strip()
+        return {"market": "make_cut", "player": player, "raw": s}
+
+    if re.search(r"\bto\s+miss\s+(?:the\s+)?cut\b", low):
+        player = re.sub(r"\s+to\s+miss\s+(?:the\s+)?cut.*$", "", s, flags=re.I).strip()
+        return {"market": "miss_cut", "player": player, "raw": s}
+
+    if re.search(r"\bto\s+win\b", low):
+        player = re.sub(r"\s+to\s+win.*$", "", s, flags=re.I).strip()
+        return {"market": "outright", "player": player, "raw": s}
+
+    return {"market": "unknown", "player": "", "raw": s}
+
+
+def _score_dk_content_cards(cards_df: pd.DataFrame, preds_df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    if cards_df.empty or preds_df.empty or "player_name" not in preds_df.columns:
+        return pd.DataFrame(), pd.DataFrame()
+
+    work = preds_df.copy()
+    work["player_name"] = work["player_name"].fillna("").astype(str).str.strip()
+    work = work[work["player_name"] != ""].copy()
+    if work.empty:
+        return pd.DataFrame(), pd.DataFrame()
+
+    work["name_key"] = work["player_name"].apply(_name_key)
+    by_key = {r["name_key"]: r.to_dict() for _, r in work.iterrows() if r["name_key"]}
+
+    last_name_map: dict[str, list[dict]] = {}
+    for _, r in work.iterrows():
+        pname = str(r["player_name"]).strip()
+        toks = re.sub(r"[^a-z0-9, ]+", " ", pname.lower()).replace(",", " ").split()
+        if toks:
+            last_name_map.setdefault(toks[-1], []).append(r.to_dict())
+
+    def resolve_player(name_text: str) -> dict | None:
+        k = _name_key(name_text)
+        if k in by_key:
+            return by_key[k]
+        toks = [t for t in re.sub(r"[^a-z0-9 ]+", " ", str(name_text).lower()).split() if t]
+        if len(toks) == 1:
+            cands = last_name_map.get(toks[0], [])
+            if len(cands) == 1:
+                return cands[0]
+        return None
+
+    def cut_prob_for_row(row: dict) -> float:
+        for c in ["make_cut_prob", "cut_prob"]:
+            v = pd.to_numeric(row.get(c), errors="coerce")
+            if pd.notna(v):
+                return float(np.clip(v, 0.0, 1.0))
+        t20 = pd.to_numeric(row.get("top20_prob"), errors="coerce")
+        if pd.notna(t20):
+            return float(np.clip(min(0.95, float(t20) * 1.5 + 0.2), 0.0, 1.0))
+        return np.nan
+
+    def prob_for_market(player_row: dict, market: str) -> float:
+        market = str(market or "").lower()
+        col_map = {
+            "outright": "win_prob",
+            "top5": "top5_prob",
+            "top10": "top10_prob",
+            "top20": "top20_prob",
+            "top30": "top30_prob",
+        }
+        if market in col_map:
+            v = pd.to_numeric(player_row.get(col_map[market]), errors="coerce")
+            if pd.notna(v):
+                return float(np.clip(v, 0.0, 1.0))
+            if market == "top30":
+                t20 = pd.to_numeric(player_row.get("top20_prob"), errors="coerce")
+                if pd.notna(t20):
+                    return float(np.clip(min(0.985, float(t20) * 1.30 + 0.05), 0.0, 1.0))
+            return np.nan
+        if market == "make_cut":
+            return cut_prob_for_row(player_row)
+        if market == "miss_cut":
+            cp = cut_prob_for_row(player_row)
+            return float(np.clip(1.0 - cp, 0.0, 1.0)) if pd.notna(cp) else np.nan
+        return np.nan
+
+    card_rows = []
+    leg_rows = []
+
+    for _, card in cards_df.iterrows():
+        legs = _extract_card_leg_labels(card)
+        if not legs:
+            continue
+
+        leg_probs = []
+        priced_legs = 0
+        unpriced_legs = 0
+        players_in_card = []
+        markets_in_card = []
+
+        for leg in legs:
+            parsed = _parse_card_leg_label(leg)
+            market = parsed.get("market", "unknown")
+            player_txt = parsed.get("player", "")
+            p_row = resolve_player(player_txt) if player_txt else None
+            p_prob = np.nan
+            note = ""
+
+            if market == "h2h_round":
+                # keep v1 simple: skip H2H card legs unless explicitly modeled in card engine
+                note = "Unsupported market in card scorer"
+            elif p_row is None:
+                note = "Player not mapped"
+            else:
+                p_prob = prob_for_market(p_row, market)
+                if pd.isna(p_prob):
+                    note = "No model probability for market"
+                else:
+                    priced_legs += 1
+                    leg_probs.append(float(p_prob))
+                    players_in_card.append(str(p_row.get("player_name", player_txt)))
+                    markets_in_card.append(market)
+
+            if pd.isna(p_prob):
+                unpriced_legs += 1
+
+            leg_rows.append(
+                {
+                    "card_id": card.get("card_id", ""),
+                    "title": card.get("title", ""),
+                    "leg_label": leg,
+                    "market": market,
+                    "player_name": p_row.get("player_name") if isinstance(p_row, dict) else player_txt,
+                    "model_prob": p_prob,
+                    "priced": pd.notna(p_prob),
+                    "note": note,
+                }
+            )
+
+        total_legs = len(legs)
+        book_odds = pd.to_numeric(card.get("odds_american"), errors="coerce")
+        book_prob = _american_to_prob(book_odds)
+        book_dec = pd.to_numeric(card.get("odds_decimal"), errors="coerce")
+        if pd.isna(book_dec):
+            book_dec = _american_to_decimal(book_odds)
+
+        if priced_legs <= 0:
+            model_prob = np.nan
+            edge_pts = np.nan
+            ev_per_1 = np.nan
+            status = "unpriced"
+        else:
+            base_prob = float(np.prod(leg_probs))
+            dup_players = max(0, len(players_in_card) - len(set(players_in_card)))
+            dup_markets = max(0, len(markets_in_card) - len(set(markets_in_card)))
+            corr_penalty = (0.92 ** dup_players) * (0.97 ** dup_markets) * (0.98 ** max(0, total_legs - 1))
+            model_prob = float(np.clip(base_prob * corr_penalty, 0.0, 0.999))
+            edge_pts = (model_prob - book_prob) * 100 if pd.notna(book_prob) else np.nan
+            ev_per_1 = (model_prob * book_dec - 1.0) if pd.notna(book_dec) else np.nan
+            status = "priced" if unpriced_legs == 0 else "partial"
+
+        confidence = float(np.clip(priced_legs / max(1, total_legs), 0.0, 1.0))
+
+        card_rows.append(
+            {
+                "tournament_id": card.get("tournament_id", ""),
+                "card_id": card.get("card_id", ""),
+                "title": card.get("title", ""),
+                "subtitle": card.get("subtitle", ""),
+                "selection_count": total_legs,
+                "priced_legs": priced_legs,
+                "unpriced_legs": unpriced_legs,
+                "odds_american": book_odds,
+                "book_prob": book_prob,
+                "model_prob": model_prob,
+                "edge_pts": edge_pts,
+                "ev_per_1": ev_per_1,
+                "confidence": confidence,
+                "status": status,
+                "selection_labels": card.get("selection_labels", ""),
+            }
+        )
+
+    cards_scored = pd.DataFrame(card_rows)
+    legs_scored = pd.DataFrame(leg_rows)
+    if cards_scored.empty:
+        return cards_scored, legs_scored
+
+    cards_scored["edge_pts"] = pd.to_numeric(cards_scored["edge_pts"], errors="coerce")
+    cards_scored["ev_per_1"] = pd.to_numeric(cards_scored["ev_per_1"], errors="coerce")
+    cards_scored["confidence"] = pd.to_numeric(cards_scored["confidence"], errors="coerce")
+    cards_scored = cards_scored.sort_values(
+        ["status", "edge_pts", "ev_per_1"],
+        ascending=[True, False, False],
+        na_position="last",
+    ).reset_index(drop=True)
+    return cards_scored, legs_scored
+
+
+def append_dk_card_recommendation_log(card_scores_df: pd.DataFrame, tournament_id: str = "") -> Path | None:
+    if card_scores_df is None or card_scores_df.empty:
+        return None
+
+    out_dir = DATA_DIR / "odds"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "dk_card_recommendations_log.csv"
+
+    log_df = card_scores_df.copy()
+    log_df["logged_at"] = datetime.now().isoformat()
+    log_df["tournament_id"] = str(tournament_id or "").strip().upper() or log_df.get("tournament_id", "")
+    cols = [
+        "logged_at",
+        "tournament_id",
+        "card_id",
+        "title",
+        "selection_count",
+        "priced_legs",
+        "unpriced_legs",
+        "odds_american",
+        "book_prob",
+        "model_prob",
+        "edge_pts",
+        "ev_per_1",
+        "confidence",
+        "status",
+    ]
+    cols = [c for c in cols if c in log_df.columns]
+    log_df = log_df[cols].copy()
+
+    if out_path.exists():
+        try:
+            prev = pd.read_csv(out_path)
+            log_df = pd.concat([prev, log_df], ignore_index=True)
+        except Exception:
+            pass
+
+    log_df.to_csv(out_path, index=False)
+    return out_path
 
 
 def _latest_tournament_id_from_live(max_age_hours: float = 18.0) -> str:
@@ -953,6 +991,409 @@ def load_latest_fanduel_odds_df() -> tuple:
         df["implied_prob"] = pd.to_numeric(df["implied_prob"], errors="coerce")
 
     return df, odds_file, source
+
+
+def _safe_parse_name_list(value) -> list[str]:
+    """Parse lineup name list stored as JSON-like string."""
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return []
+    if isinstance(value, list):
+        return [str(v).strip() for v in value if str(v).strip()]
+
+    s = str(value).strip()
+    if not s:
+        return []
+
+    parsed = None
+    for parser in (json.loads, ast.literal_eval):
+        try:
+            parsed = parser(s)
+            break
+        except Exception:
+            continue
+
+    if isinstance(parsed, list):
+        return [str(v).strip() for v in parsed if str(v).strip()]
+    return []
+
+
+def _name_tokens_for_match(value: str) -> set:
+    cleaned = re.sub(r"[^a-z0-9]+", " ", str(value or "").lower()).strip()
+    if not cleaned:
+        return set()
+    stop = {
+        "the", "and", "of", "at", "in", "to", "open", "championship",
+        "classic", "invitational", "pro", "am", "presented", "by",
+    }
+    return {t for t in cleaned.split() if t and t not in stop}
+
+
+def _tournament_names_match(actual: str, expected: str) -> bool:
+    a = _name_tokens_for_match(actual)
+    e = _name_tokens_for_match(expected)
+    if not a or not e:
+        return False
+    overlap = len(a.intersection(e))
+    return overlap >= max(1, min(2, len(e)))
+
+
+def _expected_tournament_name_from_id(tournament_id: str) -> str:
+    tid = str(tournament_id or "").strip().upper()
+    if not tid:
+        return ""
+    schedule_path = DATA_DIR / "raw" / "schedule_2026.csv"
+    if not schedule_path.exists():
+        return ""
+    try:
+        sdf = pd.read_csv(schedule_path, dtype=str).fillna("")
+    except Exception:
+        return ""
+    if "tournament_id" not in sdf.columns or "tournament_name" not in sdf.columns:
+        return ""
+    row = sdf[sdf["tournament_id"].astype(str).str.upper().str.strip() == tid]
+    if row.empty:
+        return ""
+    return str(row.iloc[0].get("tournament_name", "")).strip()
+
+
+@st.cache_data(ttl=300)
+def load_expert_picks_df(preferred_tournament_id: str = "") -> tuple[pd.DataFrame, Path | None, str]:
+    """
+    Load expert picks with robust fallback order:
+    1) expert_picks_<tournament_id>.csv
+    2) latest expert_picks_R*.csv
+    3) expert_picks_latest.csv
+    4) expert_picks_ep_table.csv
+    """
+    ep_dir = DATA_DIR / "expert_picks"
+    if not ep_dir.exists():
+        return pd.DataFrame(), None, ""
+
+    candidates: list[Path] = []
+    tid = str(preferred_tournament_id or "").strip().upper()
+    expected_tournament_name = _expected_tournament_name_from_id(tid) if tid else ""
+    if tid:
+        candidates.append(ep_dir / f"expert_picks_{tid}.csv")
+
+    rid_files = sorted(ep_dir.glob("expert_picks_R*.csv"), key=lambda x: x.stat().st_mtime, reverse=True)
+    candidates.extend(rid_files[:5])
+
+    latest_file = ep_dir / "expert_picks_latest.csv"
+    if latest_file.exists():
+        candidates.append(latest_file)
+
+    ep_table_file = ep_dir / "expert_picks_ep_table.csv"
+    if ep_table_file.exists():
+        candidates.append(ep_table_file)
+
+    seen = set()
+    ordered = []
+    for c in candidates:
+        if c.exists() and c not in seen:
+            seen.add(c)
+            ordered.append(c)
+
+    fallback_mismatch_df = None
+    fallback_mismatch_path = None
+
+    for p in ordered:
+        try:
+            df = pd.read_csv(p)
+        except Exception:
+            continue
+
+        if df.empty:
+            continue
+
+        # Column normalization.
+        if "expert_name" not in df.columns and "expert" in df.columns:
+            df["expert_name"] = df["expert"]
+        if "winner_name" not in df.columns and "winner" in df.columns:
+            df["winner_name"] = df["winner"]
+        if "tournament_name" not in df.columns and "tournament" in df.columns:
+            df["tournament_name"] = df["tournament"]
+        if "lineup_player_names" not in df.columns:
+            df["lineup_player_names"] = ""
+        if "bench_player_names" not in df.columns:
+            df["bench_player_names"] = ""
+        if "comment" not in df.columns:
+            df["comment"] = ""
+        if "expert_title" not in df.columns:
+            df["expert_title"] = ""
+        if "source_url" not in df.columns:
+            df["source_url"] = ""
+        if "scraped_at" not in df.columns:
+            df["scraped_at"] = ""
+
+        df["expert_name"] = df["expert_name"].fillna("").astype(str).str.strip()
+        df = df[df["expert_name"] != ""].copy()
+        if df.empty:
+            continue
+
+        # If a target tournament_id was provided, skip files whose tournament_name
+        # clearly maps to a different event (prevents stale previous-week picks).
+        if tid and expected_tournament_name and "tournament_name" in df.columns:
+            names = df["tournament_name"].dropna().astype(str).str.strip()
+            found_name = names.iloc[0] if not names.empty else ""
+            if found_name and not _tournament_names_match(found_name, expected_tournament_name):
+                if fallback_mismatch_df is None:
+                    fallback_mismatch_df = df.reset_index(drop=True)
+                    fallback_mismatch_path = p
+                continue
+
+        source = "tournament_file" if p.name.startswith("expert_picks_R") else p.stem
+        return df.reset_index(drop=True), p, source
+
+    if fallback_mismatch_df is not None:
+        return fallback_mismatch_df, fallback_mismatch_path, "fallback_mismatch"
+
+    return pd.DataFrame(), None, ""
+
+
+def render_expert_picks_section(preds_df: pd.DataFrame, tournament_id: str = ""):
+    """Render expert picks consensus + detail cards in Betting page."""
+    st.markdown("### 📰 Expert Picks")
+    st.caption("Consensus from PGA TOUR experts")
+
+    expert_df, source_file, source_kind = load_expert_picks_df(tournament_id)
+    if expert_df.empty:
+        st.info("No expert picks file found. Run: `python3 scripts/scrapers/fetch_expert_picks_pga.py --tournament-id <RYYYYNNN>`")
+        return
+
+    file_name = source_file.name if source_file else "unknown"
+    updated_str = (
+        datetime.fromtimestamp(source_file.stat().st_mtime).strftime("%b %d %H:%M")
+        if source_file and source_file.exists()
+        else "unknown"
+    )
+    st.caption(f"Source: {file_name} • Updated: {updated_str}")
+    if source_kind == "fallback_mismatch":
+        st.warning("Showing latest available expert picks file (tournament-name mismatch).")
+
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.metric("Experts", int(expert_df["expert_name"].nunique()))
+    with c2:
+        uniq_winners = int(expert_df["winner_name"].fillna("").astype(str).str.strip().replace("", np.nan).dropna().nunique())
+        st.metric("Unique Winners", uniq_winners)
+    with c3:
+        tname = ""
+        if "tournament_name" in expert_df.columns and expert_df["tournament_name"].notna().any():
+            tname = str(expert_df["tournament_name"].dropna().iloc[0]).strip()
+        st.metric("Tournament", tname or "—")
+
+    # Winner consensus table.
+    winners = expert_df["winner_name"].fillna("").astype(str).str.strip()
+    winners = winners[winners != ""]
+    if not winners.empty:
+        winner_counts = winners.value_counts().rename_axis("Player").reset_index(name="Winner Picks")
+        winner_counts["Share %"] = (winner_counts["Winner Picks"] / max(1, len(expert_df)) * 100).round(1)
+
+        if preds_df is not None and not preds_df.empty and "player_name" in preds_df.columns:
+            pred_work = preds_df.copy()
+            pred_work["name_key"] = pred_work["player_name"].apply(_name_key)
+            rank_col = "expected_value" if "expected_value" in pred_work.columns else "win_prob"
+            pred_work = pred_work.sort_values(rank_col, ascending=False).reset_index(drop=True)
+            pred_work["Model Rank"] = np.arange(1, len(pred_work) + 1)
+            pred_work["win_prob_pct"] = (pd.to_numeric(pred_work.get("win_prob"), errors="coerce") * 100).round(2)
+            lookup = pred_work[["name_key", "Model Rank", "win_prob_pct"]].drop_duplicates("name_key")
+            winner_counts["name_key"] = winner_counts["Player"].apply(_name_key)
+            winner_counts = winner_counts.merge(lookup, on="name_key", how="left").drop(columns=["name_key"], errors="ignore")
+            winner_counts = winner_counts.rename(columns={"win_prob_pct": "Model Win %"})
+
+        st.markdown("#### 🏆 Winner Consensus")
+        st.dataframe(winner_counts.head(15), hide_index=True, use_container_width=True)
+    else:
+        st.info("No winner picks found in expert data.")
+
+    # Lineup consensus across expert lineups.
+    lineup_counts = {}
+    for _, row in expert_df.iterrows():
+        for nm in _safe_parse_name_list(row.get("lineup_player_names", "")):
+            lineup_counts[nm] = lineup_counts.get(nm, 0) + 1
+
+    if lineup_counts:
+        lineup_df = (
+            pd.DataFrame({"Player": list(lineup_counts.keys()), "Lineup Mentions": list(lineup_counts.values())})
+            .sort_values("Lineup Mentions", ascending=False)
+            .reset_index(drop=True)
+        )
+        lineup_df["Share %"] = (lineup_df["Lineup Mentions"] / max(1, len(expert_df)) * 100).round(1)
+        st.markdown("#### ✅ Most-Selected Lineup Plays")
+        st.dataframe(lineup_df.head(20), hide_index=True, use_container_width=True)
+
+    with st.expander("Expert Notes", expanded=False):
+        detail_df = expert_df[["expert_name", "expert_title", "winner_name", "comment"]].copy()
+        detail_df = detail_df.rename(
+            columns={
+                "expert_name": "Expert",
+                "expert_title": "Title",
+                "winner_name": "Winner Pick",
+                "comment": "Note",
+            }
+        )
+        st.dataframe(detail_df, hide_index=True, use_container_width=True, height=420)
+
+
+def render_tracked_bets_section(tournament_id: str = ""):
+    """Render deterministic tracked-bets recommendations and settlement stats."""
+    st.markdown("### ✅ Tracked Bet Recommendations")
+    st.caption("Rule-based +EV recommendations with audit log and settlement tracking")
+
+    action_cols = st.columns([1.2, 1.2, 2.6])
+    with action_cols[0]:
+        if st.button("🔄 Refresh Recommendations", key="tracked_refresh_recs", use_container_width=True):
+            cmd = [
+                "python3",
+                str(PROJECT_ROOT / "scripts" / "models" / "recommend_bets.py"),
+            ]
+            tid = str(tournament_id or "").strip().upper()
+            if tid:
+                cmd.extend(["--tournament-id", tid])
+            try:
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    timeout=90,
+                    cwd=PROJECT_ROOT,
+                )
+                if result.returncode == 0:
+                    st.success("Recommendations refreshed")
+                else:
+                    st.warning("Recommendation refresh failed")
+                msg = result.stdout.strip() if result.stdout.strip() else result.stderr.strip()
+                if msg:
+                    st.caption(msg[:900])
+                load_recommended_bets_df.clear()
+            except Exception as e:
+                st.warning(f"Could not refresh recommendations: {e}")
+
+    with action_cols[1]:
+        if st.button("🧾 Grade Settled Bets", key="tracked_grade_recs", use_container_width=True):
+            cmd = [
+                "python3",
+                str(PROJECT_ROOT / "scripts" / "models" / "grade_recommended_bets.py"),
+            ]
+            tid = str(tournament_id or "").strip().upper()
+            if tid:
+                cmd.extend(["--tournament-id", tid])
+            try:
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    timeout=90,
+                    cwd=PROJECT_ROOT,
+                )
+                if result.returncode == 0:
+                    st.success("Grading run complete")
+                else:
+                    st.warning("Grading failed")
+                msg = result.stdout.strip() if result.stdout.strip() else result.stderr.strip()
+                if msg:
+                    st.caption(msg[:900])
+                load_recommended_bet_results_df.clear()
+                load_recommended_bets_df.clear()
+            except Exception as e:
+                st.warning(f"Could not run grading: {e}")
+
+    rec_df, rec_path = load_recommended_bets_df(tournament_id)
+    if rec_df.empty:
+        st.info("No tracked recommendations found yet. Run `python3 scripts/models/recommend_bets.py --tournament-id RYYYYNNN`.")
+        return
+
+    if rec_path and rec_path.exists():
+        updated = datetime.fromtimestamp(rec_path.stat().st_mtime).strftime("%b %d %H:%M")
+        st.caption(f"Source: {rec_path.name} • Updated: {updated}")
+
+    metrics_cols = st.columns(4)
+    with metrics_cols[0]:
+        st.metric("Recommendations", int(len(rec_df)))
+    with metrics_cols[1]:
+        st.metric("Singles", int((rec_df["bet_type"] == "single").sum()) if "bet_type" in rec_df.columns else 0)
+    with metrics_cols[2]:
+        best_edge = pd.to_numeric(rec_df.get("edge_pts"), errors="coerce").max()
+        st.metric("Best Edge", f"{best_edge:+.1f} pts" if pd.notna(best_edge) else "—")
+    with metrics_cols[3]:
+        avg_conf = pd.to_numeric(rec_df.get("confidence"), errors="coerce").mean()
+        st.metric("Avg Confidence", f"{avg_conf:.2f}" if pd.notna(avg_conf) else "—")
+
+    view_cols = [c for c in [
+        "recommendation_rank",
+        "bet_type",
+        "market",
+        "selection_label",
+        "odds_american",
+        "model_prob",
+        "book_prob",
+        "edge_pts",
+        "ev_per_1",
+        "confidence",
+        "status",
+    ] if c in rec_df.columns]
+    view = rec_df[view_cols].copy()
+    if "model_prob" in view.columns:
+        view["model_prob"] = (pd.to_numeric(view["model_prob"], errors="coerce") * 100).round(2)
+        view = view.rename(columns={"model_prob": "model_%"})
+    if "book_prob" in view.columns:
+        view["book_prob"] = (pd.to_numeric(view["book_prob"], errors="coerce") * 100).round(2)
+        view = view.rename(columns={"book_prob": "book_%"})
+    if "ev_per_1" in view.columns:
+        view["ev_per_1"] = (pd.to_numeric(view["ev_per_1"], errors="coerce") * 100).round(2)
+        view = view.rename(columns={"ev_per_1": "ev_%"})
+    if "edge_pts" in view.columns:
+        view["edge_pts"] = pd.to_numeric(view["edge_pts"], errors="coerce").round(2)
+    if "odds_american" in view.columns:
+        view["odds_american"] = pd.to_numeric(view["odds_american"], errors="coerce")
+
+    st.dataframe(view.head(20), hide_index=True, use_container_width=True)
+
+    results_df = load_recommended_bet_results_df(tournament_id)
+    if results_df.empty:
+        st.caption("No settled tracked bets yet.")
+        return
+
+    if "outcome_status" in results_df.columns:
+        status_series = results_df["outcome_status"].astype(str).str.lower()
+    else:
+        status_series = pd.Series(["pending"] * len(results_df), index=results_df.index, dtype=object)
+    settled = results_df[status_series.isin(["won", "lost"])].copy()
+    if settled.empty:
+        st.caption("Tracked bets found, but none are settled yet.")
+        return
+
+    settled["outcome_win"] = settled["outcome_status"].astype(str).str.lower().eq("won")
+    settled["pnl_per_1"] = pd.to_numeric(settled.get("pnl_per_1"), errors="coerce")
+    settled["clv_pts"] = pd.to_numeric(settled.get("clv_pts"), errors="coerce")
+
+    perf_cols = st.columns(4)
+    with perf_cols[0]:
+        st.metric("Settled Bets", int(len(settled)))
+    with perf_cols[1]:
+        hit_rate = settled["outcome_win"].mean() * 100 if len(settled) else 0.0
+        st.metric("Hit Rate", f"{hit_rate:.1f}%")
+    with perf_cols[2]:
+        roi = settled["pnl_per_1"].mean() * 100 if settled["pnl_per_1"].notna().any() else np.nan
+        st.metric("Avg ROI / Bet", f"{roi:+.1f}%" if pd.notna(roi) else "—")
+    with perf_cols[3]:
+        clv = settled["clv_pts"].mean() if settled["clv_pts"].notna().any() else np.nan
+        st.metric("Avg CLV (pts)", f"{clv:+.2f}" if pd.notna(clv) else "—")
+
+    recent_cols = [c for c in [
+        "graded_at",
+        "bet_type",
+        "market",
+        "selection_label",
+        "odds_american",
+        "outcome_status",
+        "pnl_per_1",
+        "clv_pts",
+    ] if c in settled.columns]
+    recent_df = settled[recent_cols].copy()
+    if "graded_at" in recent_df.columns:
+        recent_df = recent_df.sort_values("graded_at", ascending=False)
+    st.dataframe(recent_df.head(12), hide_index=True, use_container_width=True)
 
 
 def render_longshots_view(min_odds: int = 5000, max_rows: int = 24):
@@ -2099,85 +2540,6 @@ def compare_live_vs_predictions(live_df: pd.DataFrame, tournament_id: str = None
     return merged
 
 
-def compare_live_vs_market_odds(live_df: pd.DataFrame) -> pd.DataFrame:
-    """Compare live FanDuel odds with pre-tournament Polymarket/Kalshi odds."""
-    # Load pre-tournament odds
-    polymarket_files = sorted(ODDS_DIR.glob("polymarket_*.csv"), key=lambda x: x.stat().st_mtime, reverse=True)
-    kalshi_files = sorted(ODDS_DIR.glob("kalshi_*.csv"), key=lambda x: x.stat().st_mtime, reverse=True)
-
-    poly_df = pd.read_csv(polymarket_files[0]) if polymarket_files else pd.DataFrame()
-    kalshi_df = pd.read_csv(kalshi_files[0]) if kalshi_files else pd.DataFrame()
-
-    if poly_df.empty and kalshi_df.empty:
-        return pd.DataFrame()
-
-    live_df = ensure_player_name_column(live_df)
-    live_df["name_key"] = live_df["player_name"].apply(_name_key)
-    live_df = live_df[live_df["name_key"] != ""].copy()
-    if live_df.empty:
-        return pd.DataFrame()
-
-    # Parse live odds to numeric
-    def parse_odds(odds_str):
-        if pd.isna(odds_str) or odds_str == "" or odds_str == "-":
-            return None
-        try:
-            return int(str(odds_str).replace("+", ""))
-        except ValueError:
-            return None
-
-    if "odds_to_win" not in live_df.columns:
-        live_df["odds_to_win"] = ""
-    live_df["live_odds_numeric"] = live_df["odds_to_win"].apply(parse_odds)
-    if "position" not in live_df.columns:
-        live_df["position"] = ""
-    if "total" not in live_df.columns:
-        live_df["total"] = ""
-
-    # Get pre-tournament odds
-    result_df = live_df[["position", "player_name", "name_key", "total", "odds_to_win", "live_odds_numeric"]].copy()
-
-    if not poly_df.empty:
-        poly_df = ensure_player_name_column(poly_df)
-        poly_df["name_key"] = poly_df["player_name"].apply(_name_key)
-        odds_col = "odds_polymarket" if "odds_polymarket" in poly_df.columns else "odds_consensus"
-        if odds_col in poly_df.columns:
-            result_df = result_df.merge(
-                poly_df[["name_key", odds_col]].rename(columns={odds_col: "pre_polymarket"}),
-                on="name_key",
-                how="left"
-            )
-
-    if not kalshi_df.empty:
-        kalshi_df = ensure_player_name_column(kalshi_df)
-        kalshi_df["name_key"] = kalshi_df["player_name"].apply(_name_key)
-        odds_col = "odds_kalshi" if "odds_kalshi" in kalshi_df.columns else "odds_consensus"
-        if odds_col in kalshi_df.columns:
-            result_df = result_df.merge(
-                kalshi_df[["name_key", odds_col]].rename(columns={odds_col: "pre_kalshi"}),
-                on="name_key",
-                how="left"
-            )
-
-    # Calculate odds movement
-    if "pre_polymarket" in result_df.columns:
-        result_df["poly_movement"] = result_df.apply(
-            lambda r: r["pre_polymarket"] - r["live_odds_numeric"]
-            if pd.notna(r["pre_polymarket"]) and pd.notna(r["live_odds_numeric"])
-            else None,
-            axis=1
-        )
-
-    if "pre_kalshi" in result_df.columns:
-        result_df["kalshi_movement"] = result_df.apply(
-            lambda r: r["pre_kalshi"] - r["live_odds_numeric"]
-            if pd.notna(r["pre_kalshi"]) and pd.notna(r["live_odds_numeric"])
-            else None,
-            axis=1
-        )
-
-    return result_df
-
 
 def render_live_vs_predictions(live_df: pd.DataFrame, meta: dict):
     """Render comparison of live results vs model predictions."""
@@ -2261,78 +2623,6 @@ def render_live_vs_predictions(live_df: pd.DataFrame, meta: dict):
     st.dataframe(display_df.head(30), hide_index=True, use_container_width=True)
 
 
-def render_live_odds_comparison(live_df: pd.DataFrame):
-    """Render comparison of live odds vs pre-tournament market odds."""
-    comparison = compare_live_vs_market_odds(live_df)
-
-    if comparison.empty:
-        st.warning("No pre-tournament odds data found")
-        return
-
-    st.markdown("### Live Odds vs Pre-Tournament Markets")
-
-    # Show biggest movers
-    has_poly = "poly_movement" in comparison.columns
-    has_kalshi = "kalshi_movement" in comparison.columns
-
-    if has_poly or has_kalshi:
-        movement_col = "poly_movement" if has_poly else "kalshi_movement"
-        with_movement = comparison[comparison[movement_col].notna()].copy()
-
-        if not with_movement.empty:
-            col1, col2 = st.columns(2)
-
-            with col1:
-                st.markdown("#### 📈 Odds Shortened (Now Favored)")
-                st.caption("Pre-tournament odds were longer than current live odds")
-                shortened = with_movement[with_movement[movement_col] > 100].nlargest(10, movement_col)
-                for _, row in shortened.iterrows():
-                    pre = row.get("pre_polymarket") or row.get("pre_kalshi", 0)
-                    live = row["live_odds_numeric"]
-                    if pd.notna(pre) and pd.notna(live):
-                        st.markdown(f"""
-                        <div style="background: #00C85322; padding: 8px; border-radius: 6px; margin: 4px 0;">
-                            <strong>{row['player_name']}</strong> ({row['position']})<br>
-                            Pre: +{int(pre)} → Live: +{int(live)}
-                            <span style="color: #00C853;"> (Shortened {int(pre - live)} pts)</span>
-                        </div>
-                        """, unsafe_allow_html=True)
-
-            with col2:
-                st.markdown("#### 📉 Odds Drifted (Less Favored)")
-                st.caption("Live odds are longer than pre-tournament")
-                drifted = with_movement[with_movement[movement_col] < -100].nsmallest(10, movement_col)
-                for _, row in drifted.iterrows():
-                    pre = row.get("pre_polymarket") or row.get("pre_kalshi", 0)
-                    live = row["live_odds_numeric"]
-                    if pd.notna(pre) and pd.notna(live):
-                        st.markdown(f"""
-                        <div style="background: #FF525222; padding: 8px; border-radius: 6px; margin: 4px 0;">
-                            <strong>{row['player_name']}</strong> ({row['position']})<br>
-                            Pre: +{int(pre)} → Live: +{int(live)}
-                            <span style="color: #FF5252;"> (Drifted {int(live - pre)} pts)</span>
-                        </div>
-                        """, unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    # Full odds table
-    st.markdown("#### All Odds Comparison")
-    display_cols = ["position", "player_name", "total", "odds_to_win"]
-    if has_poly:
-        display_cols.append("pre_polymarket")
-    if has_kalshi:
-        display_cols.append("pre_kalshi")
-
-    display_df = comparison[[c for c in display_cols if c in comparison.columns]].head(30).copy()
-
-    # Format odds columns
-    for col in ["pre_polymarket", "pre_kalshi"]:
-        if col in display_df.columns:
-            display_df[col] = display_df[col].apply(lambda x: f"+{int(x)}" if pd.notna(x) else "-")
-
-    display_df.columns = [c.replace("_", " ").title() for c in display_df.columns]
-    st.dataframe(display_df, hide_index=True, use_container_width=True)
 
 
 def render_fantasy_lineup_tracker(live_df: pd.DataFrame):
@@ -4747,6 +5037,8 @@ elif page == "🎰 Betting":
             book_edges_df = pd.DataFrame()
             prop_lines_source = "none"
             prop_tournament_id = _tournament_id_from_df(preds_df)
+            dk_content_cards_df = pd.DataFrame()
+            dk_content_cards_file = None
 
             if not prop_tournament_id:
                 prop_tournament_id = _latest_tournament_id_from_prop_lines(max_age_hours=48.0)
@@ -4832,6 +5124,10 @@ elif page == "🎰 Betting":
                         course_par=72,
                         course_avg=71.0,
                     )
+
+            dk_content_cards_df, dk_content_cards_file = load_dk_content_cards_df(
+                prop_tournament_id if prop_tournament_id else ""
+            )
 
             # Add winner market edges to unified edge table.
             if not winner_edges_df.empty:
@@ -5024,11 +5320,12 @@ elif page == "🎰 Betting":
                 st.info(f"🔴 **Round {tournament_round}** | Leader: {leader_score:+d} | Showing {len(live_contenders)} contenders")
 
             # Main tabs (consolidated)
-            props_tab1, props_tab2, props_tab3, props_tab4 = st.tabs([
+            props_tab1, props_tab2, props_tab3, props_tab4, props_tab5 = st.tabs([
                 "🤖 AI Picks",
                 "📈 DraftKings Odds",
                 "⚔️ Matchups",
                 "🎲 Parlay Builder",
+                "📰 Expert Picks",
             ])
 
             # =================================================================
@@ -5218,27 +5515,47 @@ elif page == "🎰 Betting":
                         else:
                             st.caption("No edge data available")
 
+                st.markdown("---")
+                render_tracked_bets_section(prop_tournament_id)
+
             # =================================================================
             # TAB 2: DRAFTKINGS ODDS
             # =================================================================
             with props_tab2:
                 st.markdown("### 📈 DraftKings Odds")
-                st.caption("Live odds from DraftKings - Outright, Top 5, Top 10")
+                st.caption("Winner markets plus props: round score, birdies, bogeys, and cut")
 
-                # Load DraftKings odds from prop_lines
                 dk_odds_df = pd.DataFrame()
                 if not prop_lines_df.empty and "market" in prop_lines_df.columns:
-                    dk_odds_df = prop_lines_df[
-                        prop_lines_df["market"].isin(["outright", "top5", "top10"])
-                    ].copy()
+                    dk_odds_df = prop_lines_df.copy()
 
                 if dk_odds_df.empty:
                     st.info("No DraftKings odds available. Run the scraper to fetch latest odds.")
                     st.code("python3 scripts/scrapers/fetch_draftkings_props.py --tournament-id R2026007")
                 else:
-                    # Market type selector
-                    market_options = dk_odds_df["market"].unique().tolist()
-                    market_labels = {"outright": "🏆 Outright Winner", "top5": "🔝 Top 5", "top10": "🎯 Top 10"}
+                    market_labels = {
+                        "outright": "🏆 Outright Winner",
+                        "top5": "🔝 Top 5",
+                        "top10": "🎯 Top 10",
+                        "top20": "📍 Top 20",
+                        "h2h": "⚔️ Head-to-Head",
+                        "round_score": "📊 Round Score O/U",
+                        "birdies": "🐦 Birdies O/U",
+                        "bogeys": "🟥 Bogeys O/U",
+                        "make_cut": "✅ Make Cut",
+                        "miss_cut": "❌ Miss Cut",
+                    }
+                    preferred_order = [
+                        "outright", "top5", "top10", "top20",
+                        "make_cut", "miss_cut",
+                        "round_score", "birdies", "bogeys", "h2h",
+                    ]
+                    all_markets = (
+                        dk_odds_df["market"].dropna().astype(str).str.lower().drop_duplicates().tolist()
+                    )
+                    market_options = [m for m in preferred_order if m in all_markets] + [
+                        m for m in all_markets if m not in preferred_order
+                    ]
 
                     selected_market = st.selectbox(
                         "Market Type",
@@ -5247,60 +5564,88 @@ elif page == "🎰 Betting":
                         key="dk_market_select"
                     )
 
-                    # Filter by selected market
-                    market_df = dk_odds_df[dk_odds_df["market"] == selected_market].copy()
+                    market_df = dk_odds_df[
+                        dk_odds_df["market"].astype(str).str.lower() == selected_market
+                    ].copy()
 
-                    # Sort by odds (favorites first)
-                    market_df["odds_num"] = pd.to_numeric(market_df["odds"], errors="coerce")
-                    market_df = market_df.sort_values("odds_num", ascending=True)
-
-                    # Display count
-                    st.caption(f"Showing {len(market_df)} players")
-
-                    # Search filter
                     search = st.text_input("Search player", key="dk_search", placeholder="Type to filter...")
                     if search:
-                        market_df = market_df[
-                            market_df["player_name"].str.lower().str.contains(search.lower(), na=False)
-                        ]
+                        search_l = search.lower()
+                        if "player_name" in market_df.columns:
+                            market_df = market_df[
+                                market_df["player_name"].fillna("").astype(str).str.lower().str.contains(search_l)
+                            ]
+                        elif "player_a" in market_df.columns and "player_b" in market_df.columns:
+                            market_df = market_df[
+                                market_df["player_a"].fillna("").astype(str).str.lower().str.contains(search_l)
+                                | market_df["player_b"].fillna("").astype(str).str.lower().str.contains(search_l)
+                            ]
 
-                    # Format odds for display
-                    def format_american_odds(odds):
-                        if pd.isna(odds):
-                            return "-"
-                        odds = int(odds)
-                        if odds > 0:
-                            return f"+{odds}"
-                        return str(odds)
+                    if market_df.empty:
+                        st.info("No rows for that market after filters.")
+                    elif selected_market in {"outright", "top5", "top10", "top20", "make_cut", "miss_cut"}:
+                        market_df["odds_num"] = pd.to_numeric(market_df.get("odds"), errors="coerce")
+                        market_df["implied_prob"] = pd.to_numeric(market_df.get("implied_prob"), errors="coerce")
+                        market_df = market_df.sort_values("odds_num", ascending=True, na_position="last")
 
-                    # Create display columns
-                    display_df = market_df[["player_name", "odds", "implied_prob"]].copy()
-                    display_df["odds"] = display_df["odds"].apply(format_american_odds)
-                    display_df["implied_prob"] = (display_df["implied_prob"] * 100).round(2).astype(str) + "%"
-                    display_df.columns = ["Player", "Odds", "Implied %"]
+                        display_df = pd.DataFrame({
+                            "Player": market_df.get("player_name", ""),
+                            "Odds": market_df["odds_num"].apply(_format_american_odds),
+                            "Implied %": (market_df["implied_prob"] * 100).round(2).astype(str) + "%",
+                            "Market": market_df.get("market_name", ""),
+                        })
+                        st.caption(f"Showing {len(display_df)} rows")
+                        st.dataframe(display_df, hide_index=True, use_container_width=True, height=500)
 
-                    # Show as table
-                    st.dataframe(
-                        display_df,
-                        hide_index=True,
-                        use_container_width=True,
-                        height=500
-                    )
+                        if selected_market in {"outright", "top5", "top10"}:
+                            st.markdown("---")
+                            st.markdown("#### 🔥 Top Favorites")
+                            top5_df = market_df.head(5)
+                            cols = st.columns(5)
+                            for i, (_, row) in enumerate(top5_df.iterrows()):
+                                with cols[i]:
+                                    player = str(row.get("player_name", "")).strip()
+                                    st.metric(
+                                        player.split()[-1] if player else "—",
+                                        _format_american_odds(row.get("odds_num")),
+                                        f"{(row.get('implied_prob', np.nan) * 100):.1f}%" if pd.notna(row.get("implied_prob")) else "—",
+                                    )
 
-                    # Show favorites summary
-                    st.markdown("---")
-                    st.markdown("#### 🔥 Top Favorites")
-                    top5_df = market_df.head(5)
-                    cols = st.columns(5)
-                    for i, (_, row) in enumerate(top5_df.iterrows()):
-                        with cols[i]:
-                            odds_str = format_american_odds(row["odds"])
-                            prob_pct = row.get("implied_prob", 0) * 100 if pd.notna(row.get("implied_prob")) else 0
-                            st.metric(
-                                row["player_name"].split()[-1],  # Last name only
-                                odds_str,
-                                f"{prob_pct:.1f}%"
-                            )
+                    elif selected_market in {"round_score", "birdies", "bogeys"}:
+                        market_df["line"] = pd.to_numeric(market_df.get("line"), errors="coerce")
+                        market_df["over_odds"] = pd.to_numeric(market_df.get("over_odds"), errors="coerce")
+                        market_df["under_odds"] = pd.to_numeric(market_df.get("under_odds"), errors="coerce")
+                        market_df["round_num"] = pd.to_numeric(market_df.get("round_num"), errors="coerce")
+                        market_df = market_df.sort_values(["round_num", "player_name"], na_position="last")
+                        display_df = pd.DataFrame({
+                            "Player": market_df.get("player_name", ""),
+                            "Line": market_df["line"],
+                            "Over": market_df["over_odds"].apply(_format_american_odds),
+                            "Under": market_df["under_odds"].apply(_format_american_odds),
+                            "Round": market_df["round_num"].fillna(1).astype(int),
+                            "Market": market_df.get("market_name", ""),
+                        })
+                        st.caption(f"Showing {len(display_df)} rows")
+                        st.dataframe(display_df, hide_index=True, use_container_width=True, height=500)
+
+                    elif selected_market == "h2h":
+                        market_df["odds_a"] = pd.to_numeric(market_df.get("odds_a"), errors="coerce")
+                        market_df["odds_b"] = pd.to_numeric(market_df.get("odds_b"), errors="coerce")
+                        market_df = market_df.sort_values(["player_a", "player_b"], na_position="last")
+                        display_df = pd.DataFrame({
+                            "Player A": market_df.get("player_a", ""),
+                            "Odds A": market_df["odds_a"].apply(_format_american_odds),
+                            "Player B": market_df.get("player_b", ""),
+                            "Odds B": market_df["odds_b"].apply(_format_american_odds),
+                            "Market": market_df.get("market_name", ""),
+                        })
+                        st.caption(f"Showing {len(display_df)} matchups")
+                        st.dataframe(display_df, hide_index=True, use_container_width=True, height=500)
+
+                    if "fetched_at" in market_df.columns:
+                        fetched_vals = market_df["fetched_at"].dropna().astype(str)
+                        if not fetched_vals.empty:
+                            st.caption(f"Source snapshot: {fetched_vals.iloc[0]}")
 
             # =================================================================
             # TAB 3: HEAD-TO-HEAD MATCHUPS
@@ -5505,6 +5850,105 @@ elif page == "🎰 Betting":
                 st.markdown("### 🎲 Parlay Builder")
                 st.caption("Combine multiple props into a parlay")
 
+                st.markdown("#### 🧾 DraftKings Preset Cards")
+                if dk_content_cards_df.empty:
+                    st.caption("No preset cards found in latest DraftKings payloads.")
+                else:
+                    cards_df = dk_content_cards_df.copy()
+                    cards_df["odds_american"] = pd.to_numeric(cards_df.get("odds_american"), errors="coerce")
+                    cards_df["selection_count"] = pd.to_numeric(cards_df.get("selection_count"), errors="coerce")
+                    cards_df["bet_count"] = pd.to_numeric(cards_df.get("bet_count"), errors="coerce")
+                    scored_cards_df, scored_legs_df = _score_dk_content_cards(cards_df, preds_df)
+
+                    m1, m2, m3, m4 = st.columns(4)
+                    with m1:
+                        st.metric("Cards", int(len(cards_df)))
+                    with m2:
+                        priced_count = int((scored_cards_df["status"] == "priced").sum()) if not scored_cards_df.empty else 0
+                        st.metric("Fully Priced", priced_count)
+                    with m3:
+                        best_edge = pd.to_numeric(scored_cards_df.get("edge_pts"), errors="coerce").max() if not scored_cards_df.empty else np.nan
+                        st.metric("Best Edge", f"{best_edge:+.1f} pts" if pd.notna(best_edge) else "—")
+                    with m4:
+                        best_ev = pd.to_numeric(scored_cards_df.get("ev_per_1"), errors="coerce").max() if not scored_cards_df.empty else np.nan
+                        st.metric("Best EV", f"{best_ev*100:+.1f}%" if pd.notna(best_ev) else "—")
+
+                    if scored_cards_df.empty:
+                        st.info("Cards loaded, but none could be priced against current model outputs.")
+                    else:
+                        f1, f2, f3 = st.columns([1.2, 1, 1])
+                        with f1:
+                            min_conf = st.slider("Min confidence", 0.0, 1.0, 0.6, 0.05, key="card_min_conf")
+                        with f2:
+                            include_partial = st.checkbox("Include partial cards", value=True, key="card_include_partial")
+                        with f3:
+                            top_n_cards = st.slider("Top cards", 3, 20, 8, 1, key="card_top_n")
+
+                        view_df = scored_cards_df.copy()
+                        view_df = view_df[view_df["confidence"] >= min_conf]
+                        if not include_partial:
+                            view_df = view_df[view_df["status"] == "priced"]
+
+                        view_df = view_df.sort_values(["edge_pts", "ev_per_1"], ascending=[False, False], na_position="last")
+                        view_df = view_df.head(top_n_cards).copy()
+
+                        if view_df.empty:
+                            st.caption("No cards meet current filter thresholds.")
+                        else:
+                            rec_df = pd.DataFrame({
+                                "Title": view_df.get("title", ""),
+                                "Odds": view_df.get("odds_american").apply(_format_american_odds),
+                                "Legs": view_df.get("selection_count", 0).fillna(0).astype(int),
+                                "Priced": view_df.get("priced_legs", 0).fillna(0).astype(int),
+                                "Status": view_df.get("status", ""),
+                                "Model %": (pd.to_numeric(view_df.get("model_prob"), errors="coerce") * 100).round(2),
+                                "Book %": (pd.to_numeric(view_df.get("book_prob"), errors="coerce") * 100).round(2),
+                                "Edge (pts)": pd.to_numeric(view_df.get("edge_pts"), errors="coerce").round(2),
+                                "EV %": (pd.to_numeric(view_df.get("ev_per_1"), errors="coerce") * 100).round(2),
+                                "Confidence": pd.to_numeric(view_df.get("confidence"), errors="coerce").round(2),
+                            })
+                            st.dataframe(rec_df, hide_index=True, use_container_width=True, height=280)
+
+                            selected_title = st.selectbox(
+                                "Card Details",
+                                options=view_df["title"].fillna("").astype(str).tolist(),
+                                key="card_detail_title",
+                            )
+                            sel_row = view_df[view_df["title"].fillna("").astype(str) == selected_title].head(1)
+                            if not sel_row.empty:
+                                sel_row = sel_row.iloc[0]
+                                st.caption(
+                                    f"Selected: {_format_american_odds(sel_row.get('odds_american'))} • "
+                                    f"Edge {pd.to_numeric(sel_row.get('edge_pts'), errors='coerce'):+.2f} pts • "
+                                    f"EV {(pd.to_numeric(sel_row.get('ev_per_1'), errors='coerce') * 100):+.1f}%"
+                                )
+                                details = scored_legs_df[scored_legs_df["title"].fillna("").astype(str) == selected_title].copy()
+                                if not details.empty:
+                                    details["model_prob_pct"] = (pd.to_numeric(details.get("model_prob"), errors="coerce") * 100).round(2)
+                                    details_display = details[["leg_label", "market", "player_name", "priced", "model_prob_pct", "note"]].copy()
+                                    details_display.columns = ["Leg", "Market", "Player", "Priced", "Model %", "Note"]
+                                    st.dataframe(details_display, hide_index=True, use_container_width=True, height=220)
+
+                            if st.button("📝 Log Card Recommendations", key="log_card_recs"):
+                                log_path = append_dk_card_recommendation_log(view_df, tournament_id=prop_tournament_id)
+                                if log_path:
+                                    st.success(f"Logged card recommendations → {log_path}")
+                                else:
+                                    st.warning("No card recommendations to log.")
+
+                    with st.expander("Raw Card Feed", expanded=False):
+                        preview_df = pd.DataFrame({
+                            "Title": cards_df.get("title", ""),
+                            "Subtitle": cards_df.get("subtitle", ""),
+                            "Odds": cards_df["odds_american"].apply(_format_american_odds),
+                            "Legs": cards_df["selection_count"].fillna(0).astype(int),
+                            "Bets": cards_df["bet_count"].fillna(0).astype(int),
+                            "Ends": cards_df.get("end_date", ""),
+                        })
+                        st.dataframe(preview_df, hide_index=True, use_container_width=True, height=220)
+                    if dk_content_cards_file:
+                        st.caption(f"Preset cards source: {dk_content_cards_file.name}")
+
                 if is_tournament_over:
                     st.warning("🏁 Tournament has finished. Parlays are no longer active.")
 
@@ -5520,29 +5964,7 @@ elif page == "🎰 Betting":
                     st.caption(f"Showing {len(parlay_df)} contenders (within {5 if tournament_round == 4 else 7} shots of lead)")
 
                 # Suggested parlays
-                st.markdown("#### 📋 Suggested Parlays")
-
-                suggested = generate_suggested_parlays(parlay_df)
-
-                if suggested:
-                    cols = st.columns(len(suggested))
-                    for i, s in enumerate(suggested):
-                        with cols[i]:
-                            parlay = s["parlay"]
-                            st.markdown(f"**{s['name']}**")
-                            st.caption(s["description"])
-
-                            for leg in parlay.legs:
-                                st.markdown(f"- {leg.description}")
-
-                            st.metric(
-                                "Odds",
-                                format_american_odds(parlay.combined_odds),
-                                delta=f"${parlay.payout_per_unit:.0f} on $10"
-                            )
-                            st.caption(f"Prob: {parlay.combined_prob*100:.1f}%")
-                else:
-                    st.info("Not enough data to generate suggested parlays")
+                
 
                 st.markdown("---")
 
@@ -5614,6 +6036,12 @@ elif page == "🎰 Betting":
                         st.rerun()
                 else:
                     st.info("Add at least 2 legs to build a parlay")
+
+            # =================================================================
+            # TAB 5: EXPERT PICKS
+            # =================================================================
+            with props_tab5:
+                render_expert_picks_section(preds_df, prop_tournament_id)
 
 # ============================================================================
 # PAGE: PREDICTIONS
@@ -5799,12 +6227,6 @@ elif page == "🔴 Live":
 
     with tab3:
         if live_df is not None:
-            render_live_odds_comparison(live_df)
-        else:
-            st.info("Load leaderboard data first")
-
-    with tab4:
-        if live_df is not None:
             render_fantasy_lineup_tracker(live_df)
         else:
             st.info("Load leaderboard data first")
@@ -5940,6 +6362,84 @@ elif page == "⚙️ Pipeline":
             return ""
         return f"https://www.pgatour.com/tournaments/{year}/{slug}/{tid}"
 
+    def build_power_rankings_fragment_paths(start_date: str) -> list[str]:
+        """
+        Build likely PR fragment paths from tournament start date.
+        Typical structure:
+        /content/dam/pga-tour/fragments/tours/pga-tour/news/power-rankings/YYYY/MM/DD/pr-folder/pr-table
+        """
+        dt = pd.to_datetime(start_date, errors="coerce")
+        if pd.isna(dt):
+            return []
+
+        # PRs are usually published on Monday of tournament week.
+        monday = dt - pd.Timedelta(days=int(dt.weekday()))
+        candidates = [
+            monday,                           # most likely
+            monday - pd.Timedelta(days=7),   # previous week fallback
+            monday + pd.Timedelta(days=7),   # next week fallback
+        ]
+
+        paths = []
+        for c in candidates:
+            y = int(c.year)
+            m = int(c.month)
+            d = int(c.day)
+            paths.append(
+                f"/content/dam/pga-tour/fragments/tours/pga-tour/news/power-rankings/"
+                f"{y:04d}/{m:02d}/{d:02d}/pr-folder/pr-table"
+            )
+        return list(dict.fromkeys(paths))
+
+    def run_power_rankings_scraper(
+        resolved_slug: str,
+        output_slug: str,
+        start_date: str,
+        fallback_url: str = "",
+    ) -> tuple[bool, str]:
+        """
+        Run PR scraper with layered fallbacks:
+        1) configured slug
+        2) guessed direct fragment paths (date-based)
+        3) tournament page URL discovery
+        """
+        attempts = []
+
+        if resolved_slug:
+            ok, out = run_scraper(
+                ["python3", "scripts/scrapers/fetch_power_rankings.py", "--slug", resolved_slug, "--allow-fail"],
+                timeout=180,
+            )
+            attempts.append(f"[slug:{resolved_slug}]\n{out}")
+            if ok:
+                return True, "\n\n".join(attempts)
+
+        for frag_path in build_power_rankings_fragment_paths(start_date):
+            ok, out = run_scraper(
+                [
+                    "python3", "scripts/scrapers/fetch_power_rankings.py",
+                    "--path", frag_path, "--slug", output_slug, "--allow-fail",
+                ],
+                timeout=180,
+            )
+            attempts.append(f"[path:{frag_path}]\n{out}")
+            if ok:
+                return True, "\n\n".join(attempts)
+
+        if fallback_url:
+            ok, out = run_scraper(
+                [
+                    "python3", "scripts/scrapers/fetch_power_rankings.py",
+                    "--path", fallback_url, "--slug", output_slug, "--allow-fail",
+                ],
+                timeout=180,
+            )
+            attempts.append(f"[url:{fallback_url}]\n{out}")
+            if ok:
+                return True, "\n\n".join(attempts)
+
+        return False, "\n\n".join(attempts) if attempts else "No power rankings candidates to try."
+
     # Load schedule for tournament selection
     schedule_df = pd.DataFrame()
     schedule_path = DATA_DIR / "raw" / "schedule_2026.csv"
@@ -6022,6 +6522,7 @@ elif page == "⚙️ Pipeline":
         tournament_id = str(active_tournament.get("tournament_id", ""))
         power_slug = str(active_tournament.get("power_slug", ""))
         selected_tournament = str(active_tournament.get("tournament_name", ""))
+        active_start_date = str(active_tournament.get("start_date", ""))
         purse = active_tournament.get("purse", 0)
         tournament_type = str(active_tournament.get("tournament_type", "Standard"))
 
@@ -6030,6 +6531,7 @@ elif page == "⚙️ Pipeline":
         tournament_id = ""
         power_slug = ""
         selected_tournament = ""
+        active_start_date = ""
         purse = 0
         tournament_type = "Standard"
 
@@ -6109,6 +6611,7 @@ elif page == "⚙️ Pipeline":
             **What this does:**
             - 🏌️ Fetches tournament field from PGA Tour
             - ⛳ Gets course characteristics and history
+            - 📰 Fetches PGA TOUR expert picks
             - 💼 Fetches betting profiles with course history
             - 📊 Fetches power rankings
             - 🎯 Generates initial predictions
@@ -6132,29 +6635,27 @@ elif page == "⚙️ Pipeline":
                                    "--output", field_path, "--match-ids"]),
                         ("Course Info", ["python3", "scripts/scrapers/fetch_course_characteristics.py",
                                          "--tournament-id", tournament_id, "--profile"]),
+                        ("Expert Picks", ["python3", "scripts/scrapers/fetch_expert_picks_pga.py",
+                                          "--tournament-id", tournament_id]),
                         ("Betting Profiles", ["python3", "scripts/scrapers/fetch_betting_profiles.py",
                                               "--tournament-id", tournament_id, "--field", field_path]),
                         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                                       "--tournament-id", tournament_id]),
                     ]
-                    if pr_slug:
-                        tasks.insert(2, ("Power Rankings", ["python3", "scripts/scrapers/fetch_power_rankings.py",
-                                                             "--slug", pr_slug, "--allow-fail"]))
-                    elif pr_fallback_url:
-                        tasks.insert(2, ("Power Rankings", ["python3", "scripts/scrapers/fetch_power_rankings.py",
-                                                             "--path", pr_fallback_url,
-                                                             "--slug", pr_output_slug,
-                                                             "--allow-fail"]))
-                    else:
-                        st.warning(
-                            "Power rankings path not configured and no tournament page URL could be built. "
-                            "Add a row in data/power_rankings/paths.csv."
-                        )
+                    tasks.insert(2, ("Power Rankings", "__AUTO_PR__"))
 
                     results = []
                     for i, (name, cmd) in enumerate(tasks):
                         status.text(f"Running: {name}...")
-                        success, output = run_scraper(cmd, timeout=180)
+                        if cmd == "__AUTO_PR__":
+                            success, output = run_power_rankings_scraper(
+                                resolved_slug=pr_slug,
+                                output_slug=pr_output_slug,
+                                start_date=active_start_date,
+                                fallback_url=pr_fallback_url,
+                            )
+                        else:
+                            success, output = run_scraper(cmd, timeout=180)
                         results.append((name, success))
                         progress.progress((i + 1) / len(tasks))
 
@@ -6209,7 +6710,10 @@ elif page == "⚙️ Pipeline":
 
                     tasks = [
                         ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                                             "--tournament-id", tournament_id]),
+                                             "--tournament-id", tournament_id,
+                                             "--max-age-hours", "2",
+                                             "--fetch-profile", "fast",
+                                             "--no-snapshot"]),
                         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                                       "--tournament-id", tournament_id]),
                     ]
@@ -6272,7 +6776,10 @@ elif page == "⚙️ Pipeline":
                 ]
                 if tournament_id:
                     tasks.append(("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                                                      "--tournament-id", tournament_id]))
+                                                      "--tournament-id", tournament_id,
+                                                      "--max-age-hours", "0.5",
+                                                      "--fetch-profile", "fast",
+                                                      "--no-snapshot"]))
 
                 results = []
                 for i, (name, cmd) in enumerate(tasks):
@@ -6357,10 +6864,20 @@ elif page == "⚙️ Pipeline":
             manual_row = schedule_df[schedule_df["tournament_name"] == manual_tournament].iloc[0]
             manual_id = str(manual_row.get("tournament_id", ""))
             manual_slug = str(manual_row.get("power_slug", ""))
+            manual_start_date = str(manual_row.get("start_date", ""))
         else:
             manual_tournament = ""
             manual_id = ""
             manual_slug = ""
+            manual_start_date = ""
+
+        power_override = st.text_input(
+            "Power Rankings Path/URL Override (optional)",
+            value="",
+            key="manual_power_override",
+            help="Paste the exact working fragment path or article URL from terminal command. "
+                 "If blank, dashboard uses auto resolution.",
+        ).strip()
 
         scraper_col1, scraper_col2, scraper_col3 = st.columns(3)
 
@@ -6433,24 +6950,15 @@ elif page == "⚙️ Pipeline":
                 fallback_url = build_tournament_page_url(manual_id, manual_slug)
                 fallback_slug = (manual_slug or manual_tournament).replace("-", "_").replace(" ", "_").lower()
 
-                if resolved_slug:
+                if power_override:
                     cmd = [
                         "python3", "scripts/scrapers/fetch_power_rankings.py",
-                        "--slug", resolved_slug, "--allow-fail"
-                    ]
-                elif fallback_url:
-                    cmd = [
-                        "python3", "scripts/scrapers/fetch_power_rankings.py",
-                        "--path", fallback_url, "--slug", fallback_slug, "--allow-fail"
+                        "--path", power_override, "--slug", fallback_slug, "--allow-fail"
                     ]
                 else:
-                    cmd = []
+                    cmd = None
 
-                if not cmd:
-                    st.error(
-                        "Power rankings unavailable: no configured slug and no fallback tournament URL."
-                    )
-                else:
+                if cmd is not None:
                     with st.spinner("Fetching..."):
                         success, output = run_scraper(cmd)
                         if success:
@@ -6460,6 +6968,38 @@ elif page == "⚙️ Pipeline":
                         if output:
                             with st.expander("Power rankings output", expanded=not success):
                                 st.code(output, language=None)
+                else:
+                    with st.spinner("Fetching..."):
+                        success, output = run_power_rankings_scraper(
+                            resolved_slug=resolved_slug,
+                            output_slug=fallback_slug,
+                            start_date=manual_start_date,
+                            fallback_url=fallback_url,
+                        )
+                        if success:
+                            st.success("✅ Done")
+                        else:
+                            st.error("❌ Failed")
+                        if output:
+                            with st.expander("Power rankings output", expanded=not success):
+                                st.code(output, language=None)
+
+            if st.button("📰 Expert Picks", use_container_width=True, key="m_expert"):
+                if manual_id:
+                    with st.spinner("Fetching..."):
+                        success, output = run_scraper([
+                            "python3", "scripts/scrapers/fetch_expert_picks_pga.py",
+                            "--tournament-id", manual_id
+                        ], timeout=180)
+                        if success:
+                            st.success("✅ Done")
+                        else:
+                            st.error("❌ Failed")
+                        if output:
+                            with st.expander("Expert picks output", expanded=not success):
+                                st.code(output, language=None)
+                else:
+                    st.warning("Need tournament ID")
 
         with scraper_col3:
             st.markdown("**Odds & Betting**")
@@ -6468,7 +7008,10 @@ elif page == "⚙️ Pipeline":
                     with st.spinner("Fetching..."):
                         success, _ = run_scraper([
                             "python3", "scripts/scrapers/fetch_draftkings_props.py",
-                            "--tournament-id", manual_id
+                            "--tournament-id", manual_id,
+                            "--max-age-hours", "2",
+                            "--fetch-profile", "fast",
+                            "--no-snapshot",
                         ], timeout=180)
                         if success:
                             st.success("✅ Done")

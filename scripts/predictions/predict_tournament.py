@@ -6,6 +6,7 @@ from pathlib import Path
 import sys 
 from datetime import datetime
 import re
+import subprocess
 # Ensure project root is on path so `scripts.*` imports work when running directly
 ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
@@ -1541,6 +1542,137 @@ def make_predictions(features_df, models):
     return features_df
    
     
+def apply_probability_constraints(
+    predictions_df: pd.DataFrame,
+    normalize_topk: bool = True,
+    favorite_bias_strength: float = 0.40,
+    favorite_bias_half_life: float = 8.0,
+    top5_cap: float = 0.65,
+    top10_cap: float = 0.75,
+    top20_cap: float = 0.85,
+) -> pd.DataFrame:
+    """
+    Post-process probabilities for consistency:
+    - Clip all probs to [0, 1]
+    - Normalize win probs to sum to ~1.0 across field
+    - Enforce monotonicity: top20 >= top10 >= top5 >= win
+    - Optionally normalize top-k totals toward expected field totals
+    """
+    df = predictions_df.copy()
+
+    prob_cols = [
+        "win_prob",
+        "top5_prob",
+        "top10_prob",
+        "top20_prob",
+        "win_prob_raw",
+        "top5_prob_raw",
+        "top10_prob_raw",
+        "top20_prob_raw",
+        "win_prob_calibrated",
+        "top5_prob_calibrated",
+        "top10_prob_calibrated",
+        "top20_prob_calibrated",
+    ]
+    for c in prob_cols:
+        if c in df.columns:
+            df[c] = pd.to_numeric(df[c], errors="coerce").clip(0, 1).fillna(0.0)
+
+    if "win_prob" in df.columns:
+        total_win = float(df["win_prob"].sum())
+        if total_win > 0:
+            df["win_prob"] = (df["win_prob"] / total_win).clip(0, 1)
+
+        # Favorite-bias correction: boost top-ranked win probs slightly, then renormalize.
+        # This helps avoid over-dispersed fields where favorites are too compressed.
+        if favorite_bias_strength > 0:
+            rank = df["win_prob"].rank(ascending=False, method="first")
+            decay = np.exp(-(rank - 1.0) / max(1e-6, float(favorite_bias_half_life)))
+            weights = 1.0 + float(favorite_bias_strength) * decay
+            df["win_prob"] = (df["win_prob"] * weights).clip(0, 1)
+            total_win2 = float(df["win_prob"].sum())
+            if total_win2 > 0:
+                df["win_prob"] = (df["win_prob"] / total_win2).clip(0, 1)
+
+    def _enforce_monotonic(work: pd.DataFrame) -> None:
+        chain = ["win_prob", "top5_prob", "top10_prob", "top20_prob"]
+        for i in range(1, len(chain)):
+            prev_c = chain[i - 1]
+            cur_c = chain[i]
+            if prev_c in work.columns and cur_c in work.columns:
+                work[cur_c] = np.maximum(work[cur_c], work[prev_c])
+
+    def _project_with_bounds(
+        current: pd.Series,
+        lower: pd.Series,
+        target_sum: float,
+        upper_cap: float = 1.0,
+        max_iter: int = 30,
+    ) -> pd.Series:
+        """Project probabilities to satisfy lower<=p<=cap and sum≈target."""
+        p = pd.to_numeric(current, errors="coerce").fillna(0.0).to_numpy(dtype=float)
+        lo = pd.to_numeric(lower, errors="coerce").fillna(0.0).to_numpy(dtype=float)
+        cap = float(np.clip(upper_cap, 0.0, 1.0))
+
+        lo = np.clip(lo, 0.0, cap)
+        p = np.clip(np.maximum(p, lo), lo, cap)
+
+        for _ in range(max_iter):
+            total = float(p.sum())
+            diff = float(target_sum - total)
+            if abs(diff) <= 1e-9:
+                break
+
+            if diff > 0:
+                headroom = np.clip(cap - p, 0.0, None)
+                room = float(headroom.sum())
+                if room <= 1e-12:
+                    break
+                p = p + (diff * headroom / room)
+            else:
+                reducible = np.clip(p - lo, 0.0, None)
+                room = float(reducible.sum())
+                if room <= 1e-12:
+                    break
+                p = p - ((-diff) * reducible / room)
+
+            p = np.clip(p, lo, cap)
+
+        return pd.Series(p, index=current.index)
+
+    _enforce_monotonic(df)
+
+    if normalize_topk:
+        if {"top5_prob", "win_prob"}.issubset(df.columns):
+            df["top5_prob"] = _project_with_bounds(
+                current=df["top5_prob"],
+                lower=df["win_prob"],
+                target_sum=5.0,
+                upper_cap=top5_cap,
+            )
+        if {"top10_prob", "top5_prob"}.issubset(df.columns):
+            df["top10_prob"] = _project_with_bounds(
+                current=df["top10_prob"],
+                lower=df["top5_prob"],
+                target_sum=10.0,
+                upper_cap=top10_cap,
+            )
+        if {"top20_prob", "top10_prob"}.issubset(df.columns):
+            df["top20_prob"] = _project_with_bounds(
+                current=df["top20_prob"],
+                lower=df["top10_prob"],
+                target_sum=20.0,
+                upper_cap=top20_cap,
+            )
+        _enforce_monotonic(df)
+
+    for c in ["win_prob", "top5_prob", "top10_prob", "top20_prob"]:
+        if c in df.columns:
+            df[c] = df[c].clip(0, 1)
+
+    return df
+
+
 ### Step 9: Calculate Expected Value
 
 
@@ -1718,6 +1850,20 @@ Examples:
                         help='[DEPRECATED] Calibration is now on by default. Use --no-calibrate to disable.')
     parser.add_argument('--usage-strategy', action='store_true',
                         help='Annotate recommendations with usage strategy (no usage is recorded)')
+    parser.add_argument('--skip-bet-recs', action='store_true',
+                        help='Skip tracked bet recommendation generation at end of prediction run')
+    parser.add_argument('--no-prob-postprocess', action='store_true',
+                        help='Disable probability post-processing (normalization + monotonic constraints)')
+    parser.add_argument('--favorite-bias-strength', type=float, default=0.40,
+                        help='Boost top-ranked win probabilities before normalization (default: 0.40)')
+    parser.add_argument('--favorite-bias-half-life', type=float, default=8.0,
+                        help='Decay speed for favorite-bias boost by rank (default: 8)')
+    parser.add_argument('--top5-cap', type=float, default=0.65,
+                        help='Upper cap for per-player top5 probability (default: 0.65)')
+    parser.add_argument('--top10-cap', type=float, default=0.75,
+                        help='Upper cap for per-player top10 probability (default: 0.75)')
+    parser.add_argument('--top20-cap', type=float, default=0.85,
+                        help='Upper cap for per-player top20 probability (default: 0.85)')
 
     args = parser.parse_args()
 
@@ -1824,6 +1970,32 @@ Examples:
         print("\n  ⚠️ Calibration DISABLED (--no-calibrate flag)")
         print("    → Using raw model probabilities (may be overconfident)")
 
+    if not args.no_prob_postprocess:
+        print("\n  Applying probability post-processing constraints...")
+        predictions_df = apply_probability_constraints(
+            predictions_df,
+            normalize_topk=True,
+            favorite_bias_strength=max(0.0, float(args.favorite_bias_strength)),
+            favorite_bias_half_life=max(1e-6, float(args.favorite_bias_half_life)),
+            top5_cap=float(np.clip(args.top5_cap, 0.0, 1.0)),
+            top10_cap=float(np.clip(args.top10_cap, 0.0, 1.0)),
+            top20_cap=float(np.clip(args.top20_cap, 0.0, 1.0)),
+        )
+        sums = {}
+        for c in ["win_prob", "top5_prob", "top10_prob", "top20_prob"]:
+            if c in predictions_df.columns:
+                sums[c] = float(predictions_df[c].sum())
+        sum_msg = ", ".join([f"{k}={v:.2f}" for k, v in sums.items()])
+        print(f"    ✓ Probability totals: {sum_msg}")
+
+        top5_lt_win = int((predictions_df["top5_prob"] < predictions_df["win_prob"]).sum()) if {"top5_prob", "win_prob"}.issubset(predictions_df.columns) else 0
+        top10_lt_top5 = int((predictions_df["top10_prob"] < predictions_df["top5_prob"]).sum()) if {"top10_prob", "top5_prob"}.issubset(predictions_df.columns) else 0
+        top20_lt_top10 = int((predictions_df["top20_prob"] < predictions_df["top10_prob"]).sum()) if {"top20_prob", "top10_prob"}.issubset(predictions_df.columns) else 0
+        print(
+            "    ✓ Monotonic violations: "
+            f"top5<win={top5_lt_win}, top10<top5={top10_lt_top5}, top20<top10={top20_lt_top10}"
+        )
+
     # Add cut probability (risk of missing the cut)
     print("\n  Calculating cut probability...")
     try:
@@ -1839,13 +2011,17 @@ Examples:
 
     # ODDS INTEGRATION: Add Vegas odds and create ensemble predictions
     if args.odds or args.tournament_id:
-        predictions_df = add_odds_to_predictions(
-            predictions_df,
-            tournament_id=args.tournament_id,
-            odds_path=args.odds,
-            model_weight=args.model_weight,
-            method=args.ensemble_method
-        )
+        try:
+            predictions_df = add_odds_to_predictions(
+                predictions_df,
+                tournament_id=args.tournament_id,
+                odds_path=args.odds,
+                model_weight=args.model_weight,
+                method=args.ensemble_method
+            )
+        except Exception as e:
+            print(f"  ⚠️ Odds ensemble failed: {e}")
+            print("  Continuing with model-only probabilities.")
 
     print("\n" + "=" * 70)
     print(f"  TOP {args.top_n} RECOMMENDATIONS")
@@ -1907,6 +2083,22 @@ Examples:
         write_data_dictionary(predictions_df, dd_path)
 
     print(f"✓ Latest predictions pointers written to: {latest_path} and {scoped_latest_path}")
+
+    # Optional tracked betting recommendations (enabled by default for direct runs).
+    if args.tournament_id and not args.skip_bet_recs:
+        print("\n  Generating tracked bet recommendations...")
+        pred_source = str(Path(args.output)) if args.output else str(scoped_latest_path)
+        rec_cmd = [
+            "python3",
+            str(PROJECT_ROOT / "scripts" / "models" / "recommend_bets.py"),
+            "--tournament-id",
+            str(args.tournament_id).strip().upper(),
+            "--predictions",
+            pred_source,
+        ]
+        rec_result = subprocess.run(rec_cmd, cwd=str(PROJECT_ROOT), capture_output=False, text=True)
+        if rec_result.returncode != 0:
+            print("  ⚠️ Bet recommendations failed; continuing.")
 
     # Generate insights if requested
     run_insights = args.insights or args.auto_insights or args.insights_ollama or args.insights_llm

@@ -61,7 +61,8 @@ def load_odds(odds_path: str) -> pd.DataFrame:
     if 'fair_prob' not in df.columns and 'implied_prob' in df.columns:
         # Normalize implied probs to sum to 1
         total = df['implied_prob'].sum()
-        df['fair_prob'] = df['implied_prob'] / total
+        if pd.notna(total) and total > 0:
+            df['fair_prob'] = df['implied_prob'] / total
 
     return df
 
@@ -204,8 +205,18 @@ def create_ensemble_predictions(predictions_df: pd.DataFrame,
     # Rename fair_prob to vegas_prob for clarity
     odds_subset = odds_subset.rename(columns={'fair_prob': 'vegas_prob'})
 
-    # Merge
-    df = df.merge(odds_subset, on='player_id', how='left')
+    # Merge by player_id when available, otherwise by normalized player_name.
+    if 'player_id' in df.columns and 'player_id' in odds_subset.columns:
+        df = df.merge(odds_subset, on='player_id', how='left')
+    elif 'player_name' in df.columns and 'player_name' in odds_df.columns:
+        lhs = df.copy()
+        rhs = odds_subset.copy()
+        lhs['name_key'] = lhs['player_name'].astype(str).str.lower().str.strip()
+        rhs['name_key'] = odds_df['player_name'].astype(str).str.lower().str.strip()
+        rhs = rhs.drop(columns=['player_name'], errors='ignore')
+        df = lhs.merge(rhs, on='name_key', how='left').drop(columns=['name_key'], errors='ignore')
+    else:
+        raise ValueError("Odds merge requires either player_id or player_name in both datasets")
 
     # Create ensemble win probability
     df['ensemble_win_prob'] = df.apply(
@@ -347,17 +358,45 @@ def add_odds_to_predictions(predictions_df: pd.DataFrame,
         DataFrame with odds and ensemble predictions added
     """
     # Find odds file
+    odds_file = None
     if odds_path:
         odds_file = Path(odds_path)
     elif tournament_id:
         odds_dir = Path("data/odds")
-        matches = list(odds_dir.glob(f"*{tournament_id}*.csv"))
-        if matches:
-            odds_file = matches[0]
-        else:
-            print(f"  No odds file found for {tournament_id}")
-            print(f"  Run: python scripts/scrapers/fetch_pga_odds.py --tournament-id {tournament_id}")
-            return predictions_df
+        preferred = [
+            odds_dir / f"pga_odds_{tournament_id}.csv",
+            odds_dir / f"fanduel_odds_{tournament_id}.csv",
+            odds_dir / f"multi_book_odds_{tournament_id}.csv",
+            odds_dir / f"odds_{tournament_id}.csv",
+        ]
+        for p in preferred:
+            if p.exists():
+                odds_file = p
+                break
+
+        if odds_file is None:
+            matches = sorted(
+                odds_dir.glob(f"*{tournament_id}*.csv"),
+                key=lambda p: p.stat().st_mtime,
+                reverse=True,
+            )
+            filtered = [
+                p for p in matches
+                if not any(bad in p.name for bad in [
+                    "dk_content_cards",
+                    "recommended_bets",
+                    "prop_lines",
+                    "market_availability",
+                ])
+            ]
+            if filtered:
+                odds_file = filtered[0]
+            elif matches:
+                odds_file = matches[0]
+            else:
+                print(f"  No odds file found for {tournament_id}")
+                print(f"  Run: python scripts/scrapers/fetch_pga_odds.py --tournament-id {tournament_id}")
+                return predictions_df
     else:
         print("  No odds file specified")
         return predictions_df
@@ -368,15 +407,29 @@ def add_odds_to_predictions(predictions_df: pd.DataFrame,
 
     print(f"\n  Loading odds from {odds_file}...")
     odds_df = load_odds(str(odds_file))
+    if odds_df.empty:
+        print("  Odds file is empty; skipping odds ensemble")
+        return predictions_df
+
+    has_prob = ('fair_prob' in odds_df.columns) or ('implied_prob' in odds_df.columns)
+    has_key = ('player_id' in odds_df.columns) or ('player_name' in odds_df.columns)
+    if not has_prob or not has_key:
+        print("  Odds file missing required columns (need fair_prob/implied_prob and player_id/player_name); skipping ensemble")
+        return predictions_df
     print(f"  Found odds for {len(odds_df)} players")
 
     # Create ensemble
     print(f"  Creating ensemble (method={method}, model_weight={model_weight})...")
-    ensemble_df = create_ensemble_predictions(
-        predictions_df, odds_df,
-        model_weight=model_weight,
-        method=method
-    )
+    try:
+        ensemble_df = create_ensemble_predictions(
+            predictions_df, odds_df,
+            model_weight=model_weight,
+            method=method
+        )
+    except Exception as e:
+        print(f"  Could not create ensemble from odds file ({odds_file.name}): {e}")
+        print("  Continuing with model-only probabilities.")
+        return predictions_df
 
     # Print analysis
     analysis = analyze_model_vs_vegas(ensemble_df)

@@ -30,6 +30,9 @@ from typing import Optional, Dict, List, Any, Tuple
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+FANTASY_USAGE_FILE = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+LEGACY_USAGE_JSON = OUTPUTS_DIR / "player_usage_tracker.json"
+LEGACY_USAGE_CSV = OUTPUTS_DIR / "player_usage_tracker.csv"
 
 
 class TournamentCalendar:
@@ -256,25 +259,249 @@ class UsageTracker:
     """Tracks player usage across the season."""
 
     def __init__(self, tracker_file: Optional[Path] = None):
-        self.tracker_file = tracker_file or OUTPUTS_DIR / "player_usage_tracker.json"
+        self.tracker_file = tracker_file or FANTASY_USAGE_FILE
         self.usage_data = self._load()
+
+    @staticmethod
+    def _name_key(name: str) -> str:
+        """Normalize player names across 'First Last' and 'Last, First' forms."""
+        if pd.isna(name):
+            return ""
+        s = str(name).strip().lower()
+        if "," in s:
+            parts = s.split(",", 1)
+            if len(parts) == 2:
+                s = f"{parts[1].strip()} {parts[0].strip()}"
+        for suffix in [" jr.", " jr", " iii", " ii", " iv"]:
+            s = s.replace(suffix, "")
+        s = "".join(ch if (ch.isalnum() or ch.isspace()) else " " for ch in s)
+        return " ".join(s.split())
+
+    def _merge_player_usage(self, target: Dict, player_name: str, uses: list, total_uses: int):
+        """Merge usage entries into canonical internal structure."""
+        key = self._name_key(player_name)
+        if not key:
+            return
+        if key not in target["players"]:
+            target["players"][key] = {
+                "name": player_name,
+                "uses": [],
+                "total_uses": 0,
+            }
+        entry = target["players"][key]
+
+        # Deduplicate by tournament (date may vary across sources for same event).
+        existing = {
+            str(u.get("tournament", "")).strip().lower()
+            for u in entry.get("uses", [])
+            if str(u.get("tournament", "")).strip()
+        }
+        for u in uses:
+            t = str(u.get("tournament", "")).strip()
+            d = str(u.get("date", "")).strip()
+            tkey = t.lower()
+            if t and tkey not in existing:
+                entry["uses"].append({"tournament": t, "date": d})
+                existing.add(tkey)
+
+        # Keep highest observed count, but also never less than deduped uses length.
+        entry["total_uses"] = max(int(entry.get("total_uses", 0)), int(total_uses), len(entry["uses"]))
+
+    def _load_usage_file(self, path: Path) -> Dict:
+        """Load one usage file and normalize to internal schema."""
+        out = {"players": {}, "tournaments_used": []}
+        if not path.exists():
+            return out
+
+        try:
+            with open(path) as f:
+                raw = json.load(f)
+        except Exception:
+            return out
+
+        # New fantasy tracker schema used by dashboard/planning tracker.
+        if isinstance(raw, dict) and "picks" in raw:
+            picks = raw.get("picks", {})
+            for player_name, info in picks.items():
+                t_used = info.get("tournaments_used", []) or []
+                uses = [
+                    {
+                        "tournament": str(t.get("tournament", "")).strip(),
+                        "date": str(t.get("date", "")).strip(),
+                    }
+                    for t in t_used
+                    if t.get("tournament")
+                ]
+                self._merge_player_usage(
+                    out,
+                    player_name=player_name,
+                    uses=uses,
+                    total_uses=int(info.get("times_used", len(uses)) or 0),
+                )
+                for t in uses:
+                    tname = t.get("tournament", "")
+                    if tname and tname not in out["tournaments_used"]:
+                        out["tournaments_used"].append(tname)
+            return out
+
+        # Legacy schema used by older usage optimizer.
+        if isinstance(raw, dict) and "players" in raw:
+            for _, info in raw.get("players", {}).items():
+                pname = str(info.get("name", "")).strip()
+                uses = info.get("uses", []) or []
+                self._merge_player_usage(
+                    out,
+                    player_name=pname,
+                    uses=uses,
+                    total_uses=int(info.get("total_uses", len(uses)) or 0),
+                )
+            for tname in raw.get("tournaments_used", []) or []:
+                t = str(tname).strip()
+                if t and t not in out["tournaments_used"]:
+                    out["tournaments_used"].append(t)
+
+        return out
 
     def _load(self) -> Dict:
         """Load usage data from file."""
-        if self.tracker_file.exists():
-            with open(self.tracker_file) as f:
-                return json.load(f)
-        return {"players": {}, "tournaments_used": []}
+        merged = {"players": {}, "tournaments_used": []}
+        # Prefer shared fantasy tracker, but merge legacy usage if present.
+        for src in [self.tracker_file, LEGACY_USAGE_JSON]:
+            data = self._load_usage_file(Path(src))
+            for _, info in data.get("players", {}).items():
+                self._merge_player_usage(
+                    merged,
+                    player_name=info.get("name", ""),
+                    uses=info.get("uses", []) or [],
+                    total_uses=int(info.get("total_uses", 0) or 0),
+                )
+            for tname in data.get("tournaments_used", []):
+                t = str(tname).strip()
+                if t and t not in merged["tournaments_used"]:
+                    merged["tournaments_used"].append(t)
+        return merged
 
     def save(self):
         """Save usage data to file."""
         self.tracker_file.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.tracker_file, 'w') as f:
+        prior = {}
+        if self.tracker_file.exists():
+            try:
+                with open(self.tracker_file) as pf:
+                    prior = json.load(pf)
+            except Exception:
+                prior = {}
+
+        # Save using shared fantasy schema.
+        picks = {}
+        prior_picks = prior.get("picks", {}) if isinstance(prior, dict) else {}
+        prior_by_key = {
+            self._name_key(name): (name, info)
+            for name, info in prior_picks.items()
+            if isinstance(info, dict)
+        }
+        for _, info in self.usage_data.get("players", {}).items():
+            name = str(info.get("name", "")).strip()
+            if not name:
+                continue
+            uses = info.get("uses", []) or []
+            total_uses = int(info.get("total_uses", len(uses)) or 0)
+            key = self._name_key(name)
+            prior_name, prior_info = prior_by_key.get(key, (name, {}))
+            prior_tours = list(prior_info.get("tournaments_used", []) or [])
+
+            # Keep richer prior fields (week/result/points) where possible.
+            by_tournament = {
+                str(t.get("tournament", "")).strip().lower(): dict(t)
+                for t in prior_tours
+                if isinstance(t, dict) and t.get("tournament")
+            }
+            merged_tours = []
+            seen = set()
+            for u in uses:
+                tname = str(u.get("tournament", "")).strip()
+                if not tname:
+                    continue
+                tkey = tname.lower()
+                row = by_tournament.get(tkey, {})
+                row["tournament"] = tname
+                if "week" not in row:
+                    row["week"] = 0
+                if not row.get("date"):
+                    row["date"] = str(u.get("date", "")).strip()
+                merged_tours.append(row)
+                seen.add(tkey)
+
+            # Keep prior tournaments that weren't represented in internal uses.
+            for t in prior_tours:
+                if not isinstance(t, dict):
+                    continue
+                tname = str(t.get("tournament", "")).strip()
+                if not tname:
+                    continue
+                tkey = tname.lower()
+                if tkey not in seen:
+                    merged_tours.append(dict(t))
+                    seen.add(tkey)
+
+            times_used = max(total_uses, int(prior_info.get("times_used", 0) or 0), len(merged_tours))
+            total_points = int(prior_info.get("total_points", 0) or 0)
+
+            picks[prior_name] = {
+                "times_used": times_used,
+                "tournaments_used": merged_tours,
+                "remaining_uses": max(0, 3 - times_used),
+                "total_points": total_points,
+            }
+
+        payload = {
+            "season": "2026",
+            "max_uses_per_player": 3,
+            "players_per_lineup": 3,
+            "last_updated": datetime.now().isoformat(),
+            "picks": picks,
+            # Preserve weekly lineup structure maintained by planning tracker.
+            "weekly_lineups": prior.get("weekly_lineups", {}) if isinstance(prior, dict) else {},
+            "summary": {
+                "total_players_used": len(picks),
+                "total_picks_made": int(sum(v.get("times_used", 0) for v in picks.values())),
+                "total_points": int(sum(v.get("total_points", 0) for v in picks.values())),
+            },
+        }
+        with open(self.tracker_file, "w") as f:
+            json.dump(payload, f, indent=2, default=str)
+
+        # Backward compatibility: write legacy JSON + CSV used by older assistant code.
+        LEGACY_USAGE_JSON.parent.mkdir(parents=True, exist_ok=True)
+        with open(LEGACY_USAGE_JSON, "w") as f:
             json.dump(self.usage_data, f, indent=2, default=str)
+
+        rows = []
+        for _, info in self.usage_data.get("players", {}).items():
+            name = str(info.get("name", "")).strip()
+            total_uses = int(info.get("total_uses", 0) or 0)
+            rows.append(
+                {
+                    "player_name": name,
+                    "uses_used": total_uses,
+                    "uses_remaining": max(0, 3 - total_uses),
+                    "tournaments_used": " | ".join(
+                        [
+                            str(u.get("tournament", "")).strip()
+                            for u in (info.get("uses", []) or [])
+                            if u.get("tournament")
+                        ]
+                    ),
+                }
+            )
+        csv_df = pd.DataFrame(rows)
+        if not csv_df.empty and "player_name" in csv_df.columns:
+            csv_df = csv_df.sort_values("player_name")
+        csv_df.to_csv(LEGACY_USAGE_CSV, index=False)
 
     def record_usage(self, player_name: str, tournament_name: str, tournament_date: str = None):
         """Record that a player was used in a tournament."""
-        player_key = player_name.lower().strip()
+        player_key = self._name_key(player_name)
 
         if player_key not in self.usage_data["players"]:
             self.usage_data["players"][player_key] = {
@@ -298,16 +525,16 @@ class UsageTracker:
 
     def get_remaining_uses(self, player_name: str, max_uses: int = 3) -> int:
         """Get remaining uses for a player."""
-        player_key = player_name.lower().strip()
+        player_key = self._name_key(player_name)
 
         if player_key not in self.usage_data["players"]:
             return max_uses
 
-        return max_uses - self.usage_data["players"][player_key]["total_uses"]
+        return max(0, max_uses - int(self.usage_data["players"][player_key]["total_uses"]))
 
     def get_usage_history(self, player_name: str) -> List[Dict]:
         """Get usage history for a player."""
-        player_key = player_name.lower().strip()
+        player_key = self._name_key(player_name)
 
         if player_key not in self.usage_data["players"]:
             return []
