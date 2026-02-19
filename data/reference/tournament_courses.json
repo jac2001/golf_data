@@ -4,7 +4,7 @@
       "course": "TPC Scottsdale",
       "course_full": "TPC Scottsdale (Stadium Course)",
       "location": "Scottsdale, AZ",
-      "aliases": ["TPC Scottsdale (Stadium Course)", "Scottsdale", "Phoenix", "WM Phoenix", "WMPO", "TPC Scottsdale Stadium"],
+      "aliases": ["TPC Scottsdale (Stadium Course)", "Scottsdale", "Phoenix", "WM Phoenix", "WMPO", "TPC Scottsdale Stadium", "WM Phoenix Open"],
       "course_type": "desert",
       "notes": "Par 71, rowdy 16th hole, birdie-fest"
     },
@@ -20,7 +20,7 @@
       "course": "Riviera Country Club",
       "course_full": "Riviera Country Club",
       "location": "Pacific Palisades, CA",
-      "aliases": ["Riviera", "Genesis", "LA Open", "Pacific Palisades"],
+      "aliases": ["Riviera", "Genesis", "LA Open", "Pacific Palisades", "Genesis Invitational"],
       "course_type": "parkland",
       "notes": "Historic course, hosted by Tiger Woods foundation"
     },
@@ -28,7 +28,7 @@
       "course": "PGA National",
       "course_full": "PGA National Resort (Champion Course)",
       "location": "Palm Beach Gardens, FL",
-      "aliases": ["PGA National", "Champion Course", "Bear Trap", "Honda Classic"],
+      "aliases": ["PGA National", "Champion Course", "Bear Trap", "Honda Classic", "Cognizant Classic in The Palm Beaches"],
       "course_type": "florida parkland",
       "notes": "Features the Bear Trap (holes 15-17), formerly Honda Classic venue"
     },
@@ -36,7 +36,7 @@
       "course": "Bay Hill Club & Lodge",
       "course_full": "Arnold Palmer's Bay Hill Club & Lodge",
       "location": "Orlando, FL",
-      "aliases": ["Arnold Palmer's Bay Hill Club & Lodge", "Bay Hill", "Arnold Palmer", "API", "Arnie's Place"],
+      "aliases": ["Arnold Palmer's Bay Hill Club & Lodge", "Bay Hill", "Arnold Palmer", "API", "Arnie's Place", "Arnold Palmer Invitational presented by Mastercard"],
       "course_type": "florida parkland",
       "notes": "Arnie's tournament, water on 18, historically favors bombers"
     },
@@ -44,7 +44,7 @@
       "course": "TPC Sawgrass",
       "course_full": "TPC Sawgrass (Stadium Course)",
       "location": "Ponte Vedra Beach, FL",
-      "aliases": ["Sawgrass", "TPC Sawgrass", "Players", "Island Green", "17th hole"],
+      "aliases": ["Sawgrass", "TPC Sawgrass", "Players", "Island Green", "17th hole", "The Players"],
       "course_type": "stadium",
       "notes": "Iconic island green 17th, considered 5th major"
     },
@@ -60,7 +60,7 @@
       "course": "Memorial Park Golf Course",
       "course_full": "Memorial Park Golf Course",
       "location": "Houston, TX",
-      "aliases": ["Memorial Park", "Houston Open", "Houston"],
+      "aliases": ["Memorial Park", "Houston Open", "Houston", "Vivint Houston Open", "Hewlett Packard Enterprise Houston Open"],
       "course_type": "municipal parkland",
       "notes": "Redesigned by Tom Doak, public course"
     },
@@ -76,7 +76,7 @@
       "course": "Augusta National Golf Club",
       "course_full": "Augusta National Golf Club",
       "location": "Augusta, GA",
-      "aliases": ["Augusta National Golf Club", "Augusta", "Augusta National", "Masters", "Amen Corner"],
+      "aliases": ["Augusta National Golf Club", "Augusta", "Augusta National", "Masters", "Amen Corner", "Masters Tournament"],
       "course_type": "parkland",
       "notes": "First major, invitation only, Amen Corner (11-13)"
     },
@@ -124,7 +124,7 @@
       "course": "TPC Craig Ranch",
       "course_full": "TPC Craig Ranch",
       "location": "McKinney, TX",
-      "aliases": ["Craig Ranch", "TPC Craig Ranch", "Byron Nelson", "CJ Cup", "Nelson"],
+      "aliases": ["Craig Ranch", "TPC Craig Ranch", "Byron Nelson", "CJ Cup", "Nelson", "THE CJ CUP Byron Nelson"],
       "course_type": "texas modern",
       "notes": "North of Dallas, relatively new TPC course"
     },
@@ -140,7 +140,7 @@
       "course": "Muirfield Village Golf Club",
       "course_full": "Muirfield Village Golf Club",
       "location": "Dublin, OH",
-      "aliases": ["Muirfield Village", "Memorial", "Jack's Place", "Dublin"],
+      "aliases": ["Muirfield Village", "Memorial", "Jack's Place", "Dublin", "the Memorial Tournament presented by Workday", "Memorial Tournament", "the Memorial Tournament presented by Nationwide"],
       "course_type": "parkland",
       "notes": "Jack Nicklaus designed and hosts, US Open-like conditions"
     },
@@ -204,7 +204,7 @@
       "course": "Detroit Golf Club",
       "course_full": "Detroit Golf Club",
       "location": "Detroit, MI",
-      "aliases": ["Detroit Golf Club", "Detroit", "Rocket Mortgage", "Rocket"],
+      "aliases": ["Detroit Golf Club", "Detroit", "Rocket Mortgage", "Rocket", "Rocket Mortgage Classic"],
       "course_type": "classic parkland",
       "notes": "Historic Donald Ross design, shorter course"
     },
@@ -220,7 +220,7 @@
       "course": "TPC Southwind",
       "course_full": "TPC Southwind",
       "location": "Memphis, TN",
-      "aliases": ["Southwind", "TPC Southwind", "St. Jude", "Memphis", "FedEx Cup Playoffs"],
+      "aliases": ["Southwind", "TPC Southwind", "St. Jude", "Memphis", "FedEx Cup Playoffs", "FedEx St. Jude Championship", "World Golf Championships-FedEx St. Jude Invitational", "WGC-FedEx St. Jude"],
       "course_type": "southern parkland",
       "notes": "First playoff event, top 70 players"
     },
@@ -239,6 +239,222 @@
       "aliases": ["East Lake", "Tour Championship", "Atlanta", "FedEx Cup Final"],
       "course_type": "classic parkland",
       "notes": "Season finale, top 30 only, staggered scoring based on FedEx standings"
+    },
+    "Sony Open in Hawaii": {
+      "course": "Waialae Country Club",
+      "course_full": "Waialae Country Club",
+      "location": "Honolulu, HI",
+      "aliases": ["Waialae", "Sony Open", "Hawaii", "Honolulu"],
+      "course_type": "tropical parkland",
+      "notes": "Traditional season opener, coralina greens"
+    },
+    "The American Express": {
+      "course": "PGA West",
+      "course_full": "PGA West (Stadium Course)",
+      "location": "La Quinta, CA",
+      "aliases": ["PGA West", "La Quinta", "American Express", "Desert Classic", "CareerBuilder"],
+      "course_type": "desert",
+      "notes": "3-course rotation, Pete Dye Stadium Course finish"
+    },
+    "Farmers Insurance Open": {
+      "course": "Torrey Pines",
+      "course_full": "Torrey Pines Golf Course (South Course)",
+      "location": "San Diego, CA",
+      "aliases": ["Torrey Pines", "Torrey", "San Diego", "Farmers"],
+      "course_type": "coastal parkland",
+      "notes": "Public course, 2008/2021 US Open venue, North and South courses"
+    },
+    "The Sentry": {
+      "course": "Kapalua Resort (Plantation Course)",
+      "course_full": "Kapalua Resort (Plantation Course)",
+      "location": "Kapalua, Maui, HI",
+      "aliases": ["Kapalua", "Plantation Course", "Sentry", "Tournament of Champions", "Maui"],
+      "course_type": "tropical resort",
+      "notes": "Winners-only field, dramatic elevation changes"
+    },
+    "Puerto Rico Open": {
+      "course": "Grand Reserve Golf Club",
+      "course_full": "Grand Reserve Golf Club",
+      "location": "Rio Grande, Puerto Rico",
+      "aliases": ["Grand Reserve", "Puerto Rico", "Coco Beach"],
+      "course_type": "tropical resort",
+      "notes": "Opposite-field event, TPC-style course"
+    },
+    "Butterfield Bermuda Championship": {
+      "course": "Port Royal Golf Course",
+      "course_full": "Port Royal Golf Course",
+      "location": "Southampton, Bermuda",
+      "aliases": ["Port Royal", "Bermuda", "Bermuda Championship"],
+      "course_type": "coastal links-style",
+      "notes": "Fall event, ocean views, wind factor"
+    },
+    "World Wide Technology Championship": {
+      "course": "El Cardonal at Diamante",
+      "course_full": "El Cardonal at Diamante",
+      "location": "Los Cabos, Mexico",
+      "aliases": ["El Cardonal", "Diamante", "Los Cabos", "Mexico Championship", "Mayakoba"],
+      "course_type": "desert coastal",
+      "notes": "Tiger Woods designed course, desert meets ocean"
+    },
+    "Corales Puntacana Championship": {
+      "course": "Corales Golf Club",
+      "course_full": "Corales Golf Club",
+      "location": "Punta Cana, Dominican Republic",
+      "aliases": ["Corales", "Puntacana", "Dominican Republic"],
+      "course_type": "caribbean resort",
+      "notes": "Dramatic oceanside holes, resort course"
+    },
+    "The RSM Classic": {
+      "course": "Sea Island Resort (Seaside Course)",
+      "course_full": "Sea Island Resort (Seaside Course)",
+      "location": "St. Simons Island, GA",
+      "aliases": ["Sea Island", "Seaside", "RSM", "St. Simons"],
+      "course_type": "coastal links-style",
+      "notes": "Fall event, two-course rotation"
+    },
+    "Sanderson Farms Championship": {
+      "course": "Country Club of Jackson",
+      "course_full": "Country Club of Jackson",
+      "location": "Jackson, MS",
+      "aliases": ["Jackson", "Sanderson Farms", "Mississippi"],
+      "course_type": "southern parkland",
+      "notes": "Fall swing event, scoring opportunities"
+    },
+    "ISCO Championship": {
+      "course": "Keene Trace Golf Club",
+      "course_full": "Keene Trace Golf Club (Champions Course)",
+      "location": "Nicholasville, KY",
+      "aliases": ["Keene Trace", "ISCO", "Kentucky"],
+      "course_type": "midwest parkland",
+      "notes": "Opposite-field event during Open week"
+    },
+    "Baycurrent Classic": {
+      "course": "TPC Summerlin",
+      "course_full": "TPC Summerlin",
+      "location": "Las Vegas, NV",
+      "aliases": ["TPC Summerlin", "Summerlin", "Las Vegas", "Shriners", "Shriners Hospitals", "Shriners Open", "Shriners Hospitals for Children Open"],
+      "course_type": "desert",
+      "notes": "Formerly Shriners Hospitals for Children Open, birdie-fest"
+    },
+    "Mexico Open at VidantaWorld": {
+      "course": "Vidanta Vallarta",
+      "course_full": "Vidanta Vallarta",
+      "location": "Puerto Vallarta, Mexico",
+      "aliases": ["Vidanta", "Vallarta", "Mexico Open"],
+      "course_type": "tropical resort",
+      "notes": "Greg Norman design, jungle setting"
+    },
+    "Procore Championship": {
+      "course": "Silverado Resort (North Course)",
+      "course_full": "Silverado Resort (North Course)",
+      "location": "Napa, CA",
+      "aliases": ["Silverado", "Napa", "Procore", "Fortinet Championship", "Safeway Open"],
+      "course_type": "wine country parkland",
+      "notes": "Season opener location, tree-lined fairways"
+    },
+    "Mayakoba Golf Classic": {
+      "course": "El Camaleon Golf Club",
+      "course_full": "El Camaleon Golf Club at Mayakoba",
+      "location": "Playa del Carmen, Mexico",
+      "aliases": ["El Camaleon", "Mayakoba", "OHL Classic", "Mayakoba Golf Classic presented by UNIFIN", "World Wide Technology Championship", "World Wide Technology Championship at Mayakoba"],
+      "course_type": "tropical resort",
+      "notes": "Jungle and mangrove setting, resort course"
+    },
+    "THE NORTHERN TRUST": {
+      "course": "Liberty National Golf Club",
+      "course_full": "Liberty National Golf Club",
+      "location": "Jersey City, NJ",
+      "aliases": ["Liberty National", "Northern Trust", "Barclays", "FedEx Cup Playoffs"],
+      "course_type": "modern parkland",
+      "notes": "Manhattan skyline views, first playoff event (rotated)"
+    },
+    "THE CJ CUP": {
+      "course": "Congaree Golf Club",
+      "course_full": "Congaree Golf Club",
+      "location": "Ridgeland, SC",
+      "aliases": ["CJ CUP", "CJ Cup", "THE CJ CUP @ SHADOW CREEK", "THE CJ CUP @ SUMMIT", "THE CJ CUP @ NINE BRIDGES", "CJ Cup @ Shadow Creek", "CJ Cup @ Summit", "CJ Cup Byron Nelson", "THE CJ CUP Byron Nelson"],
+      "course_type": "lowcountry links",
+      "notes": "Previously held at Shadow Creek (2020), Summit Club (2021-2022), Nine Bridges (Korea, pre-2020)"
+    },
+    "ZOZO CHAMPIONSHIP": {
+      "course": "Accordia Golf Narashino Country Club",
+      "course_full": "Accordia Golf Narashino Country Club",
+      "location": "Chiba, Japan",
+      "aliases": ["ZOZO", "Zozo Championship", "ZOZO CHAMPIONSHIP @ SHERWOOD", "Zozo @ Sherwood", "Narashino"],
+      "course_type": "parkland",
+      "notes": "Held at Sherwood CC (2020-2021) due to COVID, now back in Japan"
+    },
+    "World Golf Championships-HSBC Champions": {
+      "course": "Sheshan International Golf Club",
+      "course_full": "Sheshan International Golf Club",
+      "location": "Shanghai, China",
+      "aliases": ["HSBC Champions", "WGC HSBC", "Shanghai", "Sheshan"],
+      "course_type": "parkland",
+      "notes": "WGC event in China, discontinued after 2019"
+    },
+    "World Golf Championships-Mexico Championship": {
+      "course": "Club de Golf Chapultepec",
+      "course_full": "Club de Golf Chapultepec",
+      "location": "Mexico City, Mexico",
+      "aliases": ["WGC Mexico", "Mexico Championship", "Chapultepec", "Mexico City"],
+      "course_type": "high altitude parkland",
+      "notes": "High altitude (7,800 ft), ball travels ~10% farther"
+    },
+    "World Golf Championships-Workday Championship at The Concession": {
+      "course": "The Concession Golf Club",
+      "course_full": "The Concession Golf Club",
+      "location": "Bradenton, FL",
+      "aliases": ["WGC Workday", "The Concession", "Concession", "Workday Championship"],
+      "course_type": "florida parkland",
+      "notes": "One-time WGC venue in 2021"
+    },
+    "Corales Puntacana Resort & Club Championship": {
+      "course": "Corales Golf Course",
+      "course_full": "Corales Golf Course at Puntacana Resort & Club",
+      "location": "Punta Cana, Dominican Republic",
+      "aliases": ["Corales", "Puntacana", "Corales Puntacana Resort & Club Championship (2020)", "Corales Puntacana Resort & Club Championship (2021)", "Corales Puntacana Championship"],
+      "course_type": "caribbean coastal",
+      "notes": "Oceanside holes, trade winds, resort course"
+    },
+    "Palmetto Championship at Congaree": {
+      "course": "Congaree Golf Club",
+      "course_full": "Congaree Golf Club",
+      "location": "Ridgeland, SC",
+      "aliases": ["Palmetto Championship", "Congaree"],
+      "course_type": "lowcountry links",
+      "notes": "One-time event replacing Canadian Open in 2021"
+    },
+    "A Military Tribute at The Greenbrier": {
+      "course": "The Old White TPC",
+      "course_full": "The Old White TPC at The Greenbrier",
+      "location": "White Sulphur Springs, WV",
+      "aliases": ["Greenbrier", "The Greenbrier", "Old White", "Military Tribute at The Greenbrier", "Greenbrier Classic"],
+      "course_type": "mountain parkland",
+      "notes": "Historic resort course, no longer on schedule"
+    },
+    "Workday Charity Open": {
+      "course": "Muirfield Village Golf Club",
+      "course_full": "Muirfield Village Golf Club",
+      "location": "Dublin, OH",
+      "aliases": [],
+      "course_type": "parkland",
+      "notes": "One-time 2020 event at Memorial venue"
+    },
+    "Barracuda Championship": {
+      "course": "Tahoe Mountain Club",
+      "course_full": "Tahoe Mountain Club (Old Greenwood)",
+      "location": "Truckee, CA",
+      "aliases": ["Barracuda", "Reno-Tahoe Open", "Old Greenwood"],
+      "course_type": "mountain resort",
+      "notes": "Modified Stableford scoring, high altitude"
+    },
+    "Men's Olympic Golf Competition": {
+      "course": "Kasumigaseki Country Club",
+      "course_full": "Kasumigaseki Country Club (East Course)",
+      "location": "Tokyo, Japan",
+      "aliases": ["Olympics Golf", "Olympic Golf", "Tokyo Olympics"],
+      "course_type": "parkland",
+      "notes": "2020 Tokyo Olympics (held 2021)"
     }
   },
   "course_type_descriptions": {
@@ -248,11 +464,15 @@
     "desert": "Waste areas, firm conditions, target golf",
     "stadium": "Built for spectators, island greens, risk-reward",
     "florida parkland": "Water hazards, bermuda grass, humidity factor",
-    "classic parkland": "Historic design, strategic bunkering, shot shaping"
+    "classic parkland": "Historic design, strategic bunkering, shot shaping",
+    "tropical parkland": "Warm climate, bermuda grass, trade winds",
+    "tropical resort": "Resort-style, scenic, manageable difficulty",
+    "coastal parkland": "Oceanside influence, firm conditions possible",
+    "coastal links-style": "Ocean views, wind factor, links elements"
   },
   "metadata": {
     "season": "2026",
-    "last_updated": "2026-02-04",
-    "notes": "Course assignments based on 2026 PGA Tour schedule. Some venues rotate annually (Canadian Open, certain majors)."
+    "last_updated": "2026-02-18",
+    "notes": "Course assignments based on 2026 PGA Tour schedule. Some venues rotate annually (Canadian Open, certain majors). Aliases added for form_stats name variations."
   }
 }

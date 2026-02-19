@@ -621,7 +621,10 @@ def render_lineup_strategies_section(
         st.info("No strategy lineup output found yet.")
         st.code(
             "python3 scripts/predictions/predict_tournament.py --tournament \"<name>\" --tournament-id RYYYYNNN "
-            "--field data/fields/field_RYYYYNNN.csv --purse <amount> --lineup-strategies"
+            "--field data/fields/field_RYYYYNNN.csv --purse <amount> "
+            "--course-adjust-strength 0.12 --course-adjust-max 0.08 "
+            "--course-adjust-min-starts 2 --course-adjust-min-players 5 "
+            "--lineup-strategies"
         )
         return
 
@@ -4243,6 +4246,421 @@ def render_form_analysis(df: pd.DataFrame):
         """)
 
 
+def load_course_performance_data():
+    """Load player course performance data."""
+    path = DATA_DIR / "processed" / "player_course_performance.csv"
+    if path.exists():
+        return pd.read_csv(path)
+    return pd.DataFrame()
+
+
+def load_course_similarity_data():
+    """Load course similarity matrix and profiles."""
+    sim_path = DATA_DIR / "processed" / "course_similarity_matrix.csv"
+    prof_path = DATA_DIR / "processed" / "course_profiles.csv"
+
+    sim_matrix = None
+    profiles = None
+
+    if sim_path.exists():
+        sim_matrix = pd.read_csv(sim_path, index_col=0)
+    if prof_path.exists():
+        profiles = pd.read_csv(prof_path)
+
+    return sim_matrix, profiles
+
+
+def get_similar_courses(course_key: str, sim_matrix: pd.DataFrame, profiles: pd.DataFrame, top_n: int = 5):
+    """Get most similar courses to a given course."""
+    if sim_matrix is None or course_key not in sim_matrix.index:
+        # Try to find a fuzzy match
+        if sim_matrix is not None:
+            matches = [c for c in sim_matrix.index if course_key in c or c in course_key]
+            if matches:
+                course_key = matches[0]
+            else:
+                return []
+        else:
+            return []
+
+    similarities = sim_matrix[course_key].sort_values(ascending=False)
+    results = []
+
+    for other_course, score in similarities.items():
+        if other_course == course_key:
+            continue
+        if score < 0.5:  # Skip low similarity
+            continue
+
+        # Get profile info
+        profile_row = profiles[profiles["course_key"] == other_course] if profiles is not None else None
+        course_type = profile_row["course_type"].values[0] if profile_row is not None and len(profile_row) > 0 else "unknown"
+        course_name = profile_row["course_name"].values[0] if profile_row is not None and len(profile_row) > 0 else other_course
+
+        results.append({
+            "course_key": other_course,
+            "course_name": course_name,
+            "course_type": course_type,
+            "similarity": score,
+        })
+
+        if len(results) >= top_n:
+            break
+
+    return results
+
+
+def load_tournament_course_mapping():
+    """Load tournament-to-course mapping from JSON."""
+    mapping_path = DATA_DIR / "reference" / "tournament_courses.json"
+    if not mapping_path.exists():
+        return {}
+    with open(mapping_path, 'r') as f:
+        data = json.load(f)
+    return data.get("tournaments", {})
+
+
+def normalize_course_key(text):
+    """Normalize text for course key matching."""
+    if not text:
+        return ""
+    text = str(text).lower().strip()
+    text = text.replace("&", "and")
+    text = re.sub(r"\(\s*\d{4}\s*\)", "", text)
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def get_course_for_tournament(tournament_name: str) -> dict:
+    """Look up the course information for a tournament."""
+    mapping = load_tournament_course_mapping()
+    name_key = normalize_course_key(tournament_name)
+
+    for tourn_name, details in mapping.items():
+        if normalize_course_key(tourn_name) == name_key:
+            return {
+                "course_name": details.get("course", "Unknown"),
+                "course_full_name": details.get("course_full", details.get("course", "Unknown")),
+                "course_key": normalize_course_key(details.get("course_full", details.get("course", "Unknown"))),
+                "course_type": details.get("course_type", "unknown"),
+                "location": details.get("location", "Unknown"),
+            }
+        for alias in details.get("aliases", []):
+            if normalize_course_key(alias) == name_key:
+                return {
+                    "course_name": details.get("course", "Unknown"),
+                    "course_full_name": details.get("course_full", details.get("course", "Unknown")),
+                    "course_key": normalize_course_key(details.get("course_full", details.get("course", "Unknown"))),
+                    "course_type": details.get("course_type", "unknown"),
+                    "location": details.get("location", "Unknown"),
+                }
+
+    return {"course_name": "Unknown", "course_full_name": "Unknown", "course_key": "unknown", "course_type": "unknown", "location": "Unknown"}
+
+
+def _compute_course_perf_score(df: pd.DataFrame) -> pd.Series:
+    """Composite course-performance score used for ranking."""
+    base_score = (
+        df["top_10_rate"].fillna(0) * 3.0 +
+        df["made_cut_rate"].fillna(0) * 1.5 +
+        df["win_rate"].fillna(0) * 5.0 +
+        (1 - df["avg_finish"].fillna(40) / 60.0) * 2.0
+    )
+    if "course_sg_total_vs_avg" in df.columns:
+        return base_score + df["course_sg_total_vs_avg"].fillna(0) * 2.0
+    return base_score
+
+
+def render_course_performance_profiles(tournament_name: str, field_player_ids: list = None):
+    """
+    Render course performance profiles for players at a tournament.
+
+    Shows historical performance at the specific course including:
+    - Made cut rate, top 10 rate, win rate
+    - Average finish, best finish
+    - Stats breakdown (driving, GIR, putting, etc.)
+    """
+    st.markdown("### 📊 Course Performance Profiles")
+
+    course_info = get_course_for_tournament(tournament_name)
+    course_key = course_info["course_key"]
+    if course_key == "unknown":
+        st.info(f"No course mapping found for '{tournament_name}'")
+        return
+
+    st.markdown(f"**Course:** {course_info['course_full_name']}")
+    st.markdown(f"**Type:** {course_info['course_type'].title()} | **Location:** {course_info['location']}")
+
+    sim_matrix, profiles = load_course_similarity_data()
+    if sim_matrix is not None:
+        similar = get_similar_courses(course_key, sim_matrix, profiles, top_n=4)
+        if similar:
+            similar_str = " | ".join([f"{s['course_name']} ({s['similarity']:.0%})" for s in similar])
+            st.caption(f"Closest course comps: {similar_str}")
+
+    st.markdown("---")
+
+    course_perf = load_course_performance_data()
+    if course_perf.empty:
+        st.warning("Course performance data not available. Run the pipeline to generate it.")
+        return
+
+    course_data = course_perf[course_perf["course_key"] == course_key].copy()
+    if course_data.empty:
+        st.info(f"No historical data for {course_info['course_name']}")
+        return
+
+    field_ids_set = set()
+    if field_player_ids:
+        field_ids = pd.to_numeric(pd.Series(field_player_ids), errors="coerce").dropna().astype(int)
+        field_ids_set = set(field_ids.tolist())
+
+    in_field = pd.DataFrame()
+    if field_ids_set:
+        player_ids_num = pd.to_numeric(course_data["player_id"], errors="coerce").fillna(-1).astype(int)
+        in_field = course_data[player_ids_num.isin(field_ids_set)].copy()
+
+    has_sg_data = "course_sg_total_vs_avg" in course_data.columns
+    key_base = f"course_perf_{re.sub(r'[^a-z0-9_]+', '_', course_key)}"
+
+    control_col1, control_col2, control_col3, control_col4 = st.columns([1.4, 1.0, 1.0, 1.2])
+    scope_options = ["Field Players", "All Players"] if not in_field.empty else ["All Players"]
+    with control_col1:
+        scope = st.radio("Scope", scope_options, horizontal=True, key=f"{key_base}_scope")
+    with control_col2:
+        min_starts = st.slider("Min starts", min_value=1, max_value=8, value=2, key=f"{key_base}_min_starts")
+    with control_col3:
+        top_n = st.slider("Top N", min_value=3, max_value=20, value=9, key=f"{key_base}_top_n")
+
+    working_df = in_field if scope == "Field Players" else course_data
+    starts_num = pd.to_numeric(working_df.get("starts"), errors="coerce").fillna(0)
+    filtered = working_df[starts_num >= min_starts].copy()
+    if filtered.empty:
+        filtered = working_df.copy()
+        st.info("No players met the minimum starts filter, showing all available records.")
+
+    filtered["perf_score"] = _compute_course_perf_score(filtered)
+
+    metric_map = {
+        "Composite Score": ("perf_score", False),
+        "SG Edge": ("course_sg_total_vs_avg", False),
+        "Top-10 Rate": ("top_10_rate", False),
+        "Cut Rate": ("made_cut_rate", False),
+        "Average Finish": ("avg_finish", True),
+        "Starts": ("starts", False),
+    }
+    available_metrics = [k for k, (col, _) in metric_map.items() if col in filtered.columns]
+    if not available_metrics:
+        available_metrics = ["Composite Score"]
+    with control_col4:
+        sort_label = st.selectbox("Rank by", available_metrics, key=f"{key_base}_sort")
+
+    sort_col, sort_asc = metric_map.get(sort_label, ("perf_score", False))
+    ranked = filtered.sort_values(sort_col, ascending=sort_asc, na_position="last").copy()
+
+    # Summary metrics
+    metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
+    with metric_col1:
+        st.metric("Players in View", f"{len(ranked)}")
+    with metric_col2:
+        st.metric("Median Starts", f"{pd.to_numeric(ranked['starts'], errors='coerce').median():.1f}")
+    with metric_col3:
+        st.metric("Avg Cut Rate", f"{(pd.to_numeric(ranked['made_cut_rate'], errors='coerce').mean() * 100):.0f}%")
+    with metric_col4:
+        leader_name = str(ranked.iloc[0]["player_name"]) if len(ranked) else "N/A"
+        st.metric("Top Specialist", leader_name)
+
+    st.markdown("#### 🏆 Ranked Course Specialists")
+    st.caption(f"Sorted by {sort_label.lower()} ({'ascending' if sort_asc else 'descending'}).")
+    render_course_performance_cards(
+        ranked,
+        top_n=top_n,
+        sort_col=sort_col,
+        ascending=sort_asc,
+        metric_label=sort_label,
+    )
+
+    if has_sg_data:
+        sg_df = ranked[pd.to_numeric(ranked["course_sg_total_vs_avg"], errors="coerce").notna()].copy()
+        if len(sg_df) >= 4:
+            st.markdown("#### 📈 SG Edge Diagnostics")
+            diag_col1, diag_col2 = st.columns(2)
+
+            with diag_col1:
+                edge_top = sg_df.nlargest(min(10, len(sg_df)), "course_sg_total_vs_avg").sort_values("course_sg_total_vs_avg")
+                fig_edge = px.bar(
+                    edge_top,
+                    x="course_sg_total_vs_avg",
+                    y="player_name",
+                    orientation="h",
+                    color="course_sg_total_vs_avg",
+                    color_continuous_scale="RdYlGn",
+                    labels={"course_sg_total_vs_avg": "SG Edge", "player_name": "Player"},
+                    title="Best SG Edge at This Course",
+                )
+                fig_edge.update_layout(showlegend=False, coloraxis_showscale=False)
+                st.plotly_chart(fig_edge, use_container_width=True)
+
+            with diag_col2:
+                scatter_df = sg_df.copy()
+                scatter_df["bubble_size"] = (scatter_df["top_10_rate"].fillna(0.05).clip(0.05, 1.0) * 40.0)
+                fig_scatter = px.scatter(
+                    scatter_df,
+                    x="starts",
+                    y="course_sg_total_vs_avg",
+                    size="bubble_size",
+                    color="made_cut_rate",
+                    hover_name="player_name",
+                    color_continuous_scale="Viridis",
+                    labels={
+                        "starts": "Starts at Course",
+                        "course_sg_total_vs_avg": "SG Edge",
+                        "made_cut_rate": "Cut Rate",
+                    },
+                    title="Experience vs SG Edge",
+                )
+                fig_scatter.add_hline(y=0, line_dash="dash", line_color="gray")
+                st.plotly_chart(fig_scatter, use_container_width=True)
+
+    st.markdown("#### 📋 Full Course History")
+    table_cols = [
+        "player_name",
+        "starts",
+        "made_cut_rate",
+        "top_10_rate",
+        "win_rate",
+        "avg_finish",
+        "best_finish",
+        "last_season",
+        "course_sg_total_weighted",
+        "course_sg_total_vs_avg",
+        "perf_score",
+    ]
+    table_cols = [c for c in table_cols if c in ranked.columns]
+    table_df = ranked[table_cols].head(30).copy()
+    table_df = table_df.rename(
+        columns={
+            "player_name": "Player",
+            "starts": "Starts",
+            "made_cut_rate": "Cut %",
+            "top_10_rate": "Top-10 %",
+            "win_rate": "Win %",
+            "avg_finish": "Avg Finish",
+            "best_finish": "Best Finish",
+            "last_season": "Last Season",
+            "course_sg_total_weighted": "Course SG",
+            "course_sg_total_vs_avg": "SG Edge",
+            "perf_score": "Composite",
+        }
+    )
+
+    for pct_col in ["Cut %", "Top-10 %", "Win %"]:
+        if pct_col in table_df.columns:
+            table_df[pct_col] = pd.to_numeric(table_df[pct_col], errors="coerce").fillna(0) * 100.0
+
+    column_cfg = {
+        "Cut %": st.column_config.ProgressColumn("Cut %", min_value=0.0, max_value=100.0, format="%.0f%%"),
+        "Top-10 %": st.column_config.ProgressColumn("Top-10 %", min_value=0.0, max_value=100.0, format="%.0f%%"),
+        "Win %": st.column_config.ProgressColumn("Win %", min_value=0.0, max_value=100.0, format="%.0f%%"),
+        "Course SG": st.column_config.NumberColumn("Course SG", format="%.3f"),
+        "SG Edge": st.column_config.NumberColumn("SG Edge", format="%+.3f"),
+        "Composite": st.column_config.NumberColumn("Composite", format="%.2f"),
+        "Avg Finish": st.column_config.NumberColumn("Avg Finish", format="%.1f"),
+    }
+    st.dataframe(table_df, hide_index=True, use_container_width=True, column_config=column_cfg)
+
+
+def render_course_performance_cards(
+    df: pd.DataFrame,
+    top_n: int = 6,
+    sort_col: str = "perf_score",
+    ascending: bool = False,
+    metric_label: str = "Composite Score",
+):
+    """Render compact visual cards for ranked course performers."""
+    if df.empty:
+        st.info("No data available")
+        return
+
+    work = df.copy()
+    if sort_col not in work.columns:
+        work["perf_score"] = _compute_course_perf_score(work)
+        sort_col = "perf_score"
+        ascending = False
+
+    ranked = work.sort_values(sort_col, ascending=ascending, na_position="last").head(top_n)
+    rows = [ranked.iloc[i:i + 3] for i in range(0, len(ranked), 3)]
+
+    for row_df in rows:
+        cols = st.columns(3)
+        for i, (_, player) in enumerate(row_df.iterrows()):
+            with cols[i]:
+                name = str(player.get("player_name", "Unknown"))
+                starts = int(pd.to_numeric(player.get("starts", 0), errors="coerce") or 0)
+                cut_rate = float(pd.to_numeric(player.get("made_cut_rate", 0), errors="coerce") or 0)
+                top10_rate = float(pd.to_numeric(player.get("top_10_rate", 0), errors="coerce") or 0)
+                win_rate = float(pd.to_numeric(player.get("win_rate", 0), errors="coerce") or 0)
+                best_finish = int(pd.to_numeric(player.get("best_finish", 0), errors="coerce") or 0)
+                sg_edge = pd.to_numeric(player.get("course_sg_total_vs_avg"), errors="coerce")
+
+                rank_val = pd.to_numeric(player.get(sort_col), errors="coerce")
+                if pd.isna(rank_val):
+                    metric_value = "N/A"
+                elif sort_col in ["made_cut_rate", "top_10_rate", "win_rate"]:
+                    metric_value = f"{rank_val * 100:.0f}%"
+                elif sort_col == "avg_finish":
+                    metric_value = f"{rank_val:.1f}"
+                elif "sg_" in sort_col:
+                    metric_value = f"{rank_val:+.2f}"
+                else:
+                    metric_value = f"{rank_val:.2f}"
+
+                reason_parts = []
+                if top10_rate >= 0.25:
+                    reason_parts.append("strong top-10 rate")
+                if cut_rate >= 0.8:
+                    reason_parts.append("high cut reliability")
+                if pd.notna(sg_edge) and sg_edge > 0.2:
+                    reason_parts.append("positive SG edge")
+                reason = ", ".join(reason_parts[:2]) if reason_parts else "balanced history profile"
+
+                border_color = "#1e7f37" if (pd.notna(rank_val) and not ascending and rank_val > 0) else "#2d5f9a"
+                if sort_col == "avg_finish":
+                    border_color = "#1e7f37" if pd.notna(rank_val) and rank_val <= 25 else "#2d5f9a"
+
+                sg_text = "N/A" if pd.isna(sg_edge) else f"{sg_edge:+.2f}"
+                best_text = f"{best_finish}" if best_finish > 0 else "N/A"
+
+                st.markdown(
+                    f"""
+                    <div style="background:#f8faf9;border-radius:10px;padding:14px 14px 12px 14px;
+                                margin:4px 0;border-left:4px solid {border_color};border:1px solid #e4ece7;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                            <div style="font-weight:700;color:#163322;font-size:1.0rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                {name}
+                            </div>
+                            <div style="font-weight:700;color:#1f2937;font-size:0.95rem;">
+                                {metric_value}
+                            </div>
+                        </div>
+                        <div style="font-size:0.72rem;color:#5f6b66;margin-top:2px;">{metric_label}</div>
+                        <div style="display:flex;gap:14px;margin-top:10px;font-size:0.78rem;color:#334;">
+                            <span><b>Cut:</b> {cut_rate * 100:.0f}%</span>
+                            <span><b>Top-10:</b> {top10_rate * 100:.0f}%</span>
+                            <span><b>Win:</b> {win_rate * 100:.0f}%</span>
+                        </div>
+                        <div style="display:flex;gap:14px;margin-top:4px;font-size:0.75rem;color:#4b5563;">
+                            <span><b>SG Edge:</b> {sg_text}</span>
+                            <span><b>Best:</b> {best_text}</span>
+                            <span><b>Starts:</b> {starts}</span>
+                        </div>
+                        <div style="font-size:0.72rem;color:#6b7280;margin-top:8px;">Why: {reason}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+
 def render_course_specific_stats(df: pd.DataFrame):
     """
     Render course-specific statistics.
@@ -4567,6 +4985,21 @@ if page == "🏆 This Week":
                 else:
                     st.info("Limited course history data available for this venue")
 
+                # Add course performance profiles from form stats
+                st.markdown("---")
+                st.markdown("### 📈 Course Performance (Form Stats)")
+                st.caption("Based on per-tournament strokes gained data (2020-2026)")
+
+                # Get field player IDs if available
+                field_ids = None
+                if engine.predictions:
+                    # Try to get player IDs from predictions
+                    pred_keys = list(engine.predictions.keys())
+                    if pred_keys:
+                        field_ids = [p.player_id for p in engine.predictions.values() if hasattr(p, 'player_id')]
+
+                render_course_performance_profiles(tournament, field_player_ids=field_ids)
+
             with tab3:
                 st.markdown("### 📊 Field Overview")
 
@@ -4653,7 +5086,53 @@ if page == "🏆 This Week":
 
             with tab5:
                 st.markdown("### 📅 Course History")
-                # Course Specialist button 
+
+                # Quick stats cards for best performers at this course
+                course_perf = load_course_performance_data()
+                course_info_lookup = get_course_for_tournament(tournament)
+                course_key = course_info_lookup.get("course_key", "unknown")
+
+                if not course_perf.empty and course_key != "unknown":
+                    course_data = course_perf[course_perf["course_key"] == course_key].copy()
+
+                    if not course_data.empty:
+                        st.markdown("#### 🏆 Top Course Performers")
+
+                        # Get field player IDs if available
+                        field_names = list(engine.predictions.keys()) if engine.predictions else []
+
+                        # Match by name (lowercase)
+                        course_data["name_lower"] = course_data["player_name"].str.lower()
+                        field_lower = [n.lower() for n in field_names]
+                        in_field = course_data[course_data["name_lower"].isin(field_lower)].copy()
+
+                        if not in_field.empty:
+                            # Show top 6 in field
+                            in_field["score"] = (
+                                in_field["top_10_rate"].fillna(0) * 3.0 +
+                                in_field["made_cut_rate"].fillna(0) * 1.5 +
+                                in_field["win_rate"].fillna(0) * 5.0
+                            )
+                            top_in_field = in_field.nlargest(6, "score")
+
+                            cols = st.columns(3)
+                            for i, (_, player) in enumerate(top_in_field.iterrows()):
+                                with cols[i % 3]:
+                                    name = str(player["player_name"])[:18]
+                                    starts = int(player["starts"])
+                                    cut_pct = player["made_cut_rate"] * 100 if pd.notna(player["made_cut_rate"]) else 0
+                                    top10_pct = player["top_10_rate"] * 100 if pd.notna(player["top_10_rate"]) else 0
+                                    avg = player["avg_finish"] if pd.notna(player["avg_finish"]) else 0
+
+                                    st.metric(
+                                        label=name,
+                                        value=f"{top10_pct:.0f}% Top-10",
+                                        delta=f"{starts} starts | {avg:.1f} avg"
+                                    )
+
+                        st.markdown("---")
+
+                # Course Specialist button
                 if st.button("🏆 Course Specialists (Historical)", use_container_width=True, type="primary"):
                     with st.spinner("Loading course specialists..."):
                         output = run_script("planning/course_history.py", "--tournament", tournament)
@@ -4666,7 +5145,7 @@ if page == "🏆 This Week":
                     hist_player = st.selectbox("Select player:", [""] + all_players, key="hist_player")
                 with col2:
                     check_hist = st.button("📊 View History", use_container_width=True, type='primary')
-                
+
                 if check_hist and hist_player:
                     with st.spinner(f"Loading {hist_player}'s course history..."):
                         output = run_script("planning/course_history.py", "--player", hist_player)

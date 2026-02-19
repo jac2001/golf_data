@@ -1,0 +1,16 @@
+{
+  "tournament_id": "R2026007",
+  "tournament_name": "The Genesis Invitational",
+  "current_round": 1,
+  "round_status": "Suspended",
+  "cut_line": {},
+  "cut_projection": {
+    "projected_cut_score": 999,
+    "projected_cut_position": "-",
+    "bubble_count": 33,
+    "safely_in": 39,
+    "safely_out": 0
+  },
+  "fetched_at": "2026-02-19T18:28:04.752132+00:00",
+  "player_count": 72
+}

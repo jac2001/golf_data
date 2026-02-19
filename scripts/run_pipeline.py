@@ -73,6 +73,16 @@ PIPELINE_STAGES = {
         "description": "Fetch recent form statistics",
         "output": DATA_DIR / "historical" / f"form_stats_{datetime.now().year}.csv",
     },
+    "course_form_features": {
+        "script": SCRIPTS_DIR / "features" / "consolidate_course_form_stats.py",
+        "description": "Build player-course performance features",
+        "output": DATA_DIR / "processed" / "player_course_performance.csv",
+    },
+    "course_similarity": {
+        "script": SCRIPTS_DIR / "features" / "course_similarity.py",
+        "description": "Build course similarity matrix and profiles",
+        "output": DATA_DIR / "processed" / "course_similarity_matrix.csv",
+    },
     "predictions": {
         "script": SCRIPTS_DIR / "predictions" / "predict_tournament.py",
         "description": "Generate tournament predictions",
@@ -196,7 +206,7 @@ def refresh_data(force: bool = False, max_age_hours: int = 24):
     """Refresh all data sources."""
     print_header("DATA REFRESH")
 
-    stages = ["player_database", "world_rankings", "form_stats"]
+    stages = ["player_database", "world_rankings", "form_stats", "course_form_features", "course_similarity"]
     total = len(stages)
 
     for i, stage_name in enumerate(stages, 1):
@@ -205,7 +215,8 @@ def refresh_data(force: bool = False, max_age_hours: int = 24):
 
         # Check if refresh needed
         output_file = stage.get("output")
-        if output_file and not force and check_file_fresh(output_file, max_age_hours):
+        should_use_freshness = stage_name != "course_form_features"
+        if should_use_freshness and output_file and not force and check_file_fresh(output_file, max_age_hours):
             print(f"  Skipping - data is fresh ({output_file.name})")
             continue
 
@@ -215,6 +226,11 @@ def refresh_data(force: bool = False, max_age_hours: int = 24):
             cmd = ["python3", str(script_path)]
             if stage_name == "form_stats":
                 cmd.extend(["--year", str(datetime.now().year)])
+            elif stage_name == "course_form_features":
+                now_year = datetime.now().year
+                # Use 5 years of history for better course performance data
+                years = [str(now_year - i) for i in range(5, -1, -1)]  # 5 years back + current
+                cmd.extend(["--years"] + years)
             success = run_command(cmd)
             if success:
                 print(f"  Done")
@@ -301,6 +317,10 @@ def run_predictions(
         "--field", str(field_path),
         "--tournament-type", tournament_type,
         "--sg-method", sg_method,
+        "--course-adjust-strength", "0.12",
+        "--course-adjust-max", "0.08",
+        "--course-adjust-min-starts", "2",
+        "--course-adjust-min-players", "5",
         "--output", str(output_path),
         "--top-n", "20",
         "--skip-bet-recs",

@@ -111,5 +111,22 @@
     ],
     "success_count": 1,
     "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-19T08:02:07.274248",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      }
+    ],
+    "success_count": 1,
+    "total_count": 2
   }
 ]

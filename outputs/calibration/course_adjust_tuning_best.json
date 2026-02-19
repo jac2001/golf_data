@@ -1,0 +1,43 @@
+{
+  "best": {
+    "boost_strength": 0.12,
+    "max_abs_adjust": 0.08,
+    "min_starts": 2,
+    "min_players_with_history": 5,
+    "allow_similar_fallback": true,
+    "matched_players": 124.25,
+    "brier_win": 0.008188272392060275,
+    "brier_top5": 0.042674228950448326,
+    "brier_top10": 0.08234935246368474,
+    "top10_hit_rate": 0.425,
+    "winner_rank": 6.0,
+    "weighted_brier": 0.03733378772522522,
+    "objective": 0.02808378772522522,
+    "tournaments_used": 4
+  },
+  "baseline": {
+    "boost_strength": 0.0,
+    "max_abs_adjust": 0.04,
+    "min_starts": 1,
+    "min_players_with_history": 5,
+    "allow_similar_fallback": false,
+    "matched_players": 124.25,
+    "brier_win": 0.00822256090486214,
+    "brier_top5": 0.04293324765535547,
+    "brier_top10": 0.0828364659682837,
+    "top10_hit_rate": 0.325,
+    "winner_rank": 8.0,
+    "weighted_brier": 0.037548869773987276,
+    "objective": 0.037298869773987275,
+    "tournaments_used": 4
+  },
+  "delta_vs_baseline": {
+    "objective": -0.009215082048762056,
+    "weighted_brier": -0.00021508204876205528,
+    "brier_win": -3.428851280186558e-05,
+    "brier_top5": -0.0002590187049071463,
+    "brier_top10": -0.0004871135045989572,
+    "top10_hit_rate": 0.09999999999999998,
+    "winner_rank": -2.0
+  }
+}

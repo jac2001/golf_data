@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-17 21:30
+Generated: 2026-02-19 07:58
 
 | Column | Description |
 |--------|-------------|
@@ -63,6 +63,40 @@ Generated: 2026-02-17 21:30
 | dg_fit_arg | Course-fit component: Around-the-Green |
 | dg_fit_putt | Course-fit component: Putting |
 | dg_fit_total | Total course-fit score (sum of components) |
+| course_starts | No description available |
+| course_made_cut_rate | No description available |
+| course_top_10_rate | No description available |
+| course_top_20_rate | No description available |
+| course_win_rate | No description available |
+| course_avg_finish | No description available |
+| course_best_finish | No description available |
+| course_avg_to_par | No description available |
+| course_avg_earnings | No description available |
+| course_last_season | No description available |
+| course_sg_total_weighted | Recency-weighted SG:Total at this specific course |
+| course_sg_ott_weighted | Recency-weighted SG:Off-the-Tee at this course |
+| course_sg_app_weighted | Recency-weighted SG:Approach at this course |
+| course_sg_putt_weighted | Recency-weighted SG:Putting at this course |
+| course_sg_t2g_weighted | Recency-weighted SG:Tee-to-Green at this course |
+| course_sg_total_vs_avg | Course SG edge: how much better/worse at this course vs overall (positive = course specialist) |
+| course_sg_ott_vs_avg | OTT edge at this course vs overall average |
+| course_sg_app_vs_avg | Approach edge at this course vs overall average |
+| course_sg_putt_vs_avg | Putting edge at this course vs overall average |
+| course_sg_t2g_vs_avg | Tee-to-Green edge at this course vs overall average |
+| overall_sg_total_avg | Player's career-average SG:Total across all courses |
+| course_stat_101_driving_distance_weighted | No description available |
+| course_stat_102_driving_accuracy_weighted | No description available |
+| course_stat_103_gir_percentage_weighted | No description available |
+| course_stat_104_putts_per_round_weighted | No description available |
+| course_stat_108_birdie_or_better_weighted | No description available |
+| course_stat_111_sand_save_percentage_weighted | No description available |
+| course_stat_119_1_putt_percentage_weighted | No description available |
+| course_stat_120_scoring_average_weighted | No description available |
+| course_stat_130_scrambling_weighted | No description available |
+| course_stat_142_par_4_scoring_weighted | No description available |
+| has_course_form_history | No description available |
+| course_experience_tier | No description available |
+| course_perf_score | No description available |
 | win_prob | Predicted win probability (0-1) |
 | top5_prob | Predicted top-5 probability (0-1) |
 | top10_prob | Predicted top-10 probability (0-1) |
@@ -75,17 +109,12 @@ Generated: 2026-02-17 21:30
 | win_prob_raw | No description available |
 | top5_prob_raw | No description available |
 | top10_prob_raw | No description available |
+| experience_factor | No description available |
+| course_adjustment | No description available |
+| win_prob_pre_course_adj | No description available |
+| top5_prob_pre_course_adj | No description available |
+| top10_prob_pre_course_adj | No description available |
 | cut_prob | Probability of making the cut (0-1, higher = safer) |
 | cut_risk | Cut risk category: LOW (>85%), MEDIUM (65-85%), ELEVATED (45-65%), HIGH (<45%) |
 | miss_cut_prob | Probability of missing the cut (1 - cut_prob) |
 | expected_value | Expected earnings value based on purse + probabilities (USD) |
-| vegas_prob | No description available |
-| odds_to_win | No description available |
-| odds_numeric | No description available |
-| odds_rank | No description available |
-| ensemble_win_prob | No description available |
-| ensemble_win_prob_normalized | No description available |
-| model_vs_vegas_edge | No description available |
-| is_value_bet | No description available |
-| odds_drift_flag | No description available |
-| odds_drift_level | No description available |

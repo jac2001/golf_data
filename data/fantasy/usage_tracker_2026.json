@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-02-15T23:45:25.491941",
+  "last_updated": "2026-02-18T23:32:38.184439",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -87,6 +87,42 @@
       ],
       "remaining_uses": 2,
       "total_points": 28
+    },
+    "Hideki Matsuyama": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "The Genesis Invitational",
+          "week": 3,
+          "date": "2026-02-19"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 0
+    },
+    "Viktor Hovland": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "The Genesis Invitational",
+          "week": 3,
+          "date": "2026-02-19"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 0
+    },
+    "Patrick Cantlay": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "The Genesis Invitational",
+          "week": 3,
+          "date": "2026-02-19"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 0
     }
   },
   "weekly_lineups": {
@@ -111,11 +147,22 @@
         "Justin Rose"
       ],
       "points_earned": null
+    },
+    "week_3": {
+      "tournament": "The Genesis Invitational",
+      "week": 3,
+      "date": "2026-02-19",
+      "lineup": [
+        "Hideki Matsuyama",
+        "Viktor Hovland",
+        "Patrick Cantlay"
+      ],
+      "points_earned": null
     }
   },
   "summary": {
-    "total_players_used": 6,
-    "total_picks_made": 6,
+    "total_players_used": 9,
+    "total_picks_made": 9,
     "total_points": 712
   }
 }

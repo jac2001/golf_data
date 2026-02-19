@@ -102,6 +102,21 @@ def write_data_dictionary(predictions_df: pd.DataFrame, output_path: Path):
         "dg_fit_arg": "Course-fit component: Around-the-Green",
         "dg_fit_putt": "Course-fit component: Putting",
         "dg_fit_total": "Total course-fit score (sum of components)",
+        # Course SG performance
+        "course_sg_total_weighted": "Recency-weighted SG:Total at this specific course",
+        "course_sg_ott_weighted": "Recency-weighted SG:Off-the-Tee at this course",
+        "course_sg_app_weighted": "Recency-weighted SG:Approach at this course",
+        "course_sg_putt_weighted": "Recency-weighted SG:Putting at this course",
+        "course_sg_t2g_weighted": "Recency-weighted SG:Tee-to-Green at this course",
+        "course_sg_total_vs_avg": "Course SG edge: how much better/worse at this course vs overall (positive = course specialist)",
+        "course_sg_ott_vs_avg": "OTT edge at this course vs overall average",
+        "course_sg_app_vs_avg": "Approach edge at this course vs overall average",
+        "course_sg_putt_vs_avg": "Putting edge at this course vs overall average",
+        "course_sg_t2g_vs_avg": "Tee-to-Green edge at this course vs overall average",
+        "overall_sg_total_avg": "Player's career-average SG:Total across all courses",
+        "course_history_confidence": "Reliability score for course history signal (0-1; higher = more starts/history)",
+        "course_adjustment": "Post-model probability adjustment from course history/similar-course signals",
+        "course_adjustment_confidence": "Confidence applied to course adjustment (0-1)",
         # Model outputs
         "win_prob": "Predicted win probability (0-1)",
         "top5_prob": "Predicted top-5 probability (0-1)",
@@ -713,6 +728,320 @@ def add_course_fit_features(features_df, tournament_name):
                                     features_df['dg_fit_arg'] + features_df['dg_fit_putt'])
 
     print(f"    Course fit range: {features_df['dg_fit_total'].min():.3f} to {features_df['dg_fit_total'].max():.3f}")
+
+    return features_df
+
+
+def load_tournament_course_mapping():
+    """Load tournament-to-course mapping from JSON."""
+    mapping_path = DATA_DIR / "reference" / "tournament_courses.json"
+    if not mapping_path.exists():
+        return {}
+    with open(mapping_path, 'r') as f:
+        data = json.load(f)
+    return data.get("tournaments", {})
+
+
+def normalize_course_key(text):
+    """Normalize text for course key matching."""
+    if not text:
+        return ""
+    import re
+    text = str(text).lower().strip()
+    text = text.replace("&", "and")
+    text = re.sub(r"\(\s*\d{4}\s*\)", "", text)  # Remove year suffixes
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def get_course_for_tournament(tournament_name: str) -> dict:
+    """
+    Look up the course information for a tournament.
+
+    Returns dict with keys: course_name, course_full_name, course_key, course_type
+    """
+    mapping = load_tournament_course_mapping()
+
+    # Normalize tournament name for matching
+    name_key = normalize_course_key(tournament_name)
+
+    # Try direct match first
+    for tourn_name, details in mapping.items():
+        if normalize_course_key(tourn_name) == name_key:
+            return {
+                "course_name": details.get("course", "Unknown"),
+                "course_full_name": details.get("course_full", details.get("course", "Unknown")),
+                "course_key": normalize_course_key(details.get("course_full", details.get("course", "Unknown"))),
+                "course_type": details.get("course_type", "unknown"),
+            }
+        # Check aliases
+        for alias in details.get("aliases", []):
+            if normalize_course_key(alias) == name_key:
+                return {
+                    "course_name": details.get("course", "Unknown"),
+                    "course_full_name": details.get("course_full", details.get("course", "Unknown")),
+                    "course_key": normalize_course_key(details.get("course_full", details.get("course", "Unknown"))),
+                    "course_type": details.get("course_type", "unknown"),
+                }
+
+    return {"course_name": "Unknown", "course_full_name": "Unknown", "course_key": "unknown", "course_type": "unknown"}
+
+
+def add_course_performance_features(features_df: pd.DataFrame, tournament_name: str) -> pd.DataFrame:
+    """
+    Add player course-specific performance features from form stats consolidation.
+
+    Uses data/processed/player_course_performance.csv which contains:
+    - Per-course stats (driving, GIR, scrambling, etc.)
+    - Made cut rate, top 10 rate, win rate at this specific course
+    - Recency-weighted averages
+
+    Args:
+        features_df: DataFrame with player features (must have player_id column)
+        tournament_name: Tournament name to look up course
+
+    Returns:
+        DataFrame with course performance features added
+    """
+    course_perf_path = PROCESSED_DIR / "player_course_performance.csv"
+
+    if not course_perf_path.exists():
+        print("    Course performance data not found, skipping...")
+        return features_df
+
+    # Get course for this tournament
+    course_info = get_course_for_tournament(tournament_name)
+    course_key = course_info["course_key"]
+
+    if course_key == "unknown":
+        print(f"    Course not found for '{tournament_name}', skipping course performance features...")
+        return features_df
+
+    print(f"    Course: {course_info['course_full_name']} ({course_info['course_type']})")
+
+    # Load course performance data
+    course_perf = pd.read_csv(course_perf_path)
+
+    # Filter to this course
+    course_data = course_perf[course_perf["course_key"] == course_key].copy()
+
+    if course_data.empty:
+        print(f"    No historical data for course '{course_key}', skipping...")
+        return features_df
+
+    print(f"    Found {len(course_data)} players with history at this course")
+
+    # Select features to merge (avoid duplicate columns)
+    # These are the most predictive course-specific features
+    feature_cols = [
+        "player_id",
+        "starts",              # Times played at this course
+        "made_cut_rate",       # Cut rate at this course
+        "top_10_rate",         # Top-10 rate at this course
+        "top_20_rate",         # Top-20 rate at this course
+        "win_rate",            # Win rate at this course
+        "avg_finish",          # Average finish at this course
+        "best_finish",         # Best finish at this course
+        "avg_to_par",          # Average score to par at this course
+        "avg_earnings",        # Average earnings at this course
+        "last_season",         # Most recent year played here
+    ]
+
+    # Add Strokes Gained course-specific columns (recency-weighted + vs average)
+    sg_cols = [
+        "course_sg_total_weighted",  # Recency-weighted SG:Total at this course
+        "course_sg_ott_weighted",    # Recency-weighted SG:OTT at this course
+        "course_sg_app_weighted",    # Recency-weighted SG:Approach at this course
+        "course_sg_putt_weighted",   # Recency-weighted SG:Putting at this course
+        "course_sg_t2g_weighted",    # Recency-weighted SG:Tee-to-Green at this course
+        "course_sg_total_vs_avg",    # Course SG vs player's overall average (edge)
+        "course_sg_ott_vs_avg",      # OTT edge at this course
+        "course_sg_app_vs_avg",      # Approach edge at this course
+        "course_sg_putt_vs_avg",     # Putting edge at this course
+        "course_sg_t2g_vs_avg",      # T2G edge at this course
+        "overall_sg_total_avg",      # Player's overall SG:Total for comparison
+    ]
+    feature_cols.extend([c for c in sg_cols if c in course_data.columns])
+
+    # Add form stat columns if available (weighted versions for recency)
+    stat_cols = [c for c in course_data.columns if c.startswith("stat_") and c.endswith("_weighted")]
+    feature_cols.extend(stat_cols[:10])  # Limit to top 10 stat columns
+
+    # Filter to available columns
+    available_cols = [c for c in feature_cols if c in course_data.columns]
+    course_subset = course_data[available_cols].copy()
+
+    # Rename columns to indicate course-specific (but don't double-prefix columns that already have course_/overall_)
+    rename_map = {
+        c: f"course_{c}"
+        for c in available_cols
+        if c != "player_id" and not c.startswith("course_") and not c.startswith("overall_")
+    }
+    course_subset = course_subset.rename(columns=rename_map)
+
+    # Merge with features
+    original_len = len(features_df)
+    features_df = features_df.merge(course_subset, on="player_id", how="left")
+
+    # Fill missing values (players without course history)
+    course_cols = [c for c in features_df.columns if c.startswith("course_")]
+    overall_cols = [c for c in features_df.columns if c.startswith("overall_")]
+
+    for col in course_cols:
+        if col == "course_starts":
+            features_df[col] = features_df[col].fillna(0)
+        elif col in ["course_made_cut_rate", "course_top_10_rate", "course_top_20_rate", "course_win_rate"]:
+            # Use field median for players without course history
+            features_df[col] = features_df[col].fillna(features_df[col].median())
+        elif col == "course_avg_finish":
+            features_df[col] = features_df[col].fillna(40.0)  # Assume middle of pack
+        elif col == "course_best_finish":
+            features_df[col] = features_df[col].fillna(40.0)
+        elif col == "course_avg_to_par":
+            features_df[col] = features_df[col].fillna(0.0)  # Even par as default
+        elif "_vs_avg" in col:
+            # Course edge columns: 0 = no edge (performs same as usual)
+            features_df[col] = features_df[col].fillna(0.0)
+        elif "_weighted" in col and "sg_" in col:
+            # SG weighted columns: use player's overall average if available, else 0
+            # e.g., course_sg_total_weighted -> overall_sg_total_avg
+            overall_col = col.replace("course_sg_", "overall_sg_").replace("_weighted", "_avg")
+            if overall_col in features_df.columns:
+                features_df[col] = features_df[col].fillna(features_df[overall_col])
+            features_df[col] = features_df[col].fillna(0.0)
+        else:
+            features_df[col] = features_df[col].fillna(0.0)
+
+    # Fill overall SG avg columns
+    for col in overall_cols:
+        features_df[col] = features_df[col].fillna(0.0)
+
+    # Ensure similar-course fallback columns always exist for downstream logic
+    if "has_similar_course_data" not in features_df.columns:
+        features_df["has_similar_course_data"] = False
+    if "similar_course_sg_estimate" not in features_df.columns:
+        features_df["similar_course_sg_estimate"] = np.nan
+
+    # Reliability score for course signal (more starts -> higher confidence)
+    starts_num = pd.to_numeric(features_df.get("course_starts", 0), errors="coerce").fillna(0).clip(lower=0)
+    features_df["course_history_confidence"] = (np.log1p(starts_num) / np.log(6.0)).clip(0, 1)
+
+    # Add derived features
+    features_df["has_course_form_history"] = features_df["course_starts"] > 0
+    features_df["course_experience_tier"] = pd.cut(
+        features_df["course_starts"],
+        bins=[-1, 0, 1, 2, 4, float("inf")],
+        labels=["none", "rookie", "familiar", "experienced", "veteran"]
+    )
+
+    # Calculate course fit boost based on historical performance
+    # This combines multiple signals into a single adjustment factor
+    # Enhanced with SG course edge data
+    base_perf_score = (
+        features_df["course_top_10_rate"].fillna(0) * 2.0 +
+        features_df["course_made_cut_rate"].fillna(0) * 1.0 +
+        features_df["course_win_rate"].fillna(0) * 5.0 -
+        (features_df["course_avg_finish"].fillna(40) / 40.0)  # Lower finish = higher score
+    )
+
+    # Add SG course edge bonus (how much better player performs at this course)
+    sg_edge_bonus = 0.0
+    if "course_sg_total_vs_avg" in features_df.columns:
+        # SG edge: +0.5 SG vs avg = very strong course fit
+        sg_edge_bonus = features_df["course_sg_total_vs_avg"].fillna(0) * 1.0
+
+    features_df["course_perf_score"] = base_perf_score + sg_edge_bonus
+
+    matched = features_df["has_course_form_history"].sum()
+    print(f"    Matched {matched}/{original_len} players with course history ({matched/original_len*100:.1f}%)")
+
+    if matched > 0:
+        avg_starts = features_df.loc[features_df["has_course_form_history"], "course_starts"].mean()
+        print(f"    Average starts at course: {avg_starts:.1f}")
+
+    # Try to fill in similar course performance for players without direct history
+    no_history = features_df[~features_df["has_course_form_history"]].copy()
+    if len(no_history) > 0:
+        features_df = add_similar_course_performance(features_df, course_key, course_perf)
+
+    return features_df
+
+
+def add_similar_course_performance(features_df: pd.DataFrame, course_key: str, course_perf: pd.DataFrame) -> pd.DataFrame:
+    """
+    For players without direct course history, estimate performance using similar courses.
+    """
+    # Load similarity data
+    sim_path = PROCESSED_DIR / "course_similarity_matrix.csv"
+    if not sim_path.exists():
+        return features_df
+
+    try:
+        sim_matrix = pd.read_csv(sim_path, index_col=0)
+    except Exception:
+        return features_df
+
+    # Find similar courses
+    if course_key not in sim_matrix.index:
+        # Try fuzzy match
+        matches = [c for c in sim_matrix.index if course_key in c or c in course_key]
+        if matches:
+            course_key = matches[0]
+        else:
+            return features_df
+
+    similarities = sim_matrix[course_key].sort_values(ascending=False)
+    similar_courses = [(k, v) for k, v in similarities.items() if k != course_key and v > 0.6][:5]
+
+    if not similar_courses:
+        return features_df
+
+    if "has_similar_course_data" not in features_df.columns:
+        features_df["has_similar_course_data"] = False
+    if "similar_course_sg_estimate" not in features_df.columns:
+        features_df["similar_course_sg_estimate"] = np.nan
+
+    # For each player without history, estimate from similar courses
+    no_history_mask = ~features_df["has_course_form_history"]
+    similar_estimates = 0
+
+    for idx in features_df[no_history_mask].index:
+        player_id = features_df.loc[idx, "player_id"]
+
+        # Get player's performance at similar courses
+        player_data = course_perf[course_perf["player_id"] == player_id]
+        if player_data.empty:
+            continue
+
+        weighted_sg = 0.0
+        total_weight = 0.0
+
+        for sim_course_key, similarity in similar_courses:
+            perf_at_sim = player_data[player_data["course_key"] == sim_course_key]
+            if perf_at_sim.empty:
+                continue
+
+            row = perf_at_sim.iloc[0]
+            sg_total = row.get("course_sg_total_weighted")
+            if pd.isna(sg_total):
+                continue
+
+            starts = row.get("starts", 1)
+            weight = similarity * min(starts, 3) / 3
+            weighted_sg += sg_total * weight
+            total_weight += weight
+
+        if total_weight > 0:
+            estimated_sg = weighted_sg / total_weight
+            # Add to features with reduced confidence (50% weight)
+            features_df.loc[idx, "similar_course_sg_estimate"] = estimated_sg
+            features_df.loc[idx, "has_similar_course_data"] = True
+            # Partially update course_perf_score for these players
+            features_df.loc[idx, "course_perf_score"] = estimated_sg * 0.5
+            similar_estimates += 1
+
+    if similar_estimates > 0:
+        print(f"    Added similar course estimates for {similar_estimates} players without direct history")
 
     return features_df
 
@@ -1358,6 +1687,11 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     print("  Adding Data Golf course fit features...")
     features_df = add_course_fit_features(features_df, tournament_name)
 
+    # ADD COURSE-SPECIFIC PLAYER PERFORMANCE FEATURES
+    # Uses historical form stats to get per-player course performance
+    print("  Adding player course performance features...")
+    features_df = add_course_performance_features(features_df, tournament_name)
+
     print(f"  ✓ Built feature matrix: {features_df.shape}")
     return features_df 
 
@@ -1541,8 +1875,151 @@ def make_predictions(features_df, models):
     features_df['top10_prob'] = models['top10'].predict_proba(X)[:, 1]
 
     return features_df
-   
-    
+
+
+def _robust_zscore(values: pd.Series) -> pd.Series:
+    """Robust z-score with MAD fallback to std."""
+    numeric = pd.to_numeric(values, errors="coerce")
+    if numeric.notna().sum() <= 1:
+        return pd.Series(np.zeros(len(numeric)), index=numeric.index, dtype=float)
+
+    median = numeric.median()
+    mad = (numeric - median).abs().median()
+    std = numeric.std(ddof=0)
+
+    scale = float(mad * 1.4826) if pd.notna(mad) and mad > 1e-8 else float(std)
+    if not np.isfinite(scale) or scale < 1e-8:
+        scale = 1.0
+
+    return (numeric - median) / scale
+
+
+def _experience_confidence(starts: pd.Series) -> pd.Series:
+    """Map starts count to [0,1] confidence with diminishing returns."""
+    starts_num = pd.to_numeric(starts, errors="coerce").fillna(0).clip(lower=0)
+    return (np.log1p(starts_num) / np.log(6.0)).clip(0, 1)
+
+
+def apply_course_performance_adjustment(
+    predictions_df: pd.DataFrame,
+    boost_strength: float = 0.10,
+    min_starts: int = 2,
+    max_abs_adjust: float = 0.08,
+    min_players_with_history: int = 8,
+    allow_similar_fallback: bool = True,
+) -> pd.DataFrame:
+    """
+    Apply a conservative post-model course adjustment with confidence shrinkage.
+
+    Adjustment signal:
+    - Primary: robust z-score of `course_perf_score` among players with history.
+    - Secondary: SG edge (`course_sg_total_vs_avg`) blended when available.
+
+    Guardrails:
+    - Requires enough players with history.
+    - Shrinks by starts-based confidence.
+    - Hard-clips max absolute adjustment.
+    - Uses smaller multipliers for top-5/top-10/top-20 than win%.
+    """
+    df = predictions_df.copy()
+
+    if "course_perf_score" not in df.columns or "course_starts" not in df.columns:
+        return df
+
+    df["course_adjustment"] = 0.0
+    df["course_adjustment_confidence"] = 0.0
+
+    starts_num = pd.to_numeric(df["course_starts"], errors="coerce").fillna(0)
+    history_mask = starts_num >= max(0, int(min_starts))
+    eligible = history_mask & pd.to_numeric(df["course_perf_score"], errors="coerce").notna()
+    n_history = int(eligible.sum())
+
+    if n_history < max(3, int(min_players_with_history)):
+        print(
+            "    Skipping course history adjustment "
+            f"(need >= {min_players_with_history} players with history, found {n_history})"
+        )
+        return df
+
+    signal = _robust_zscore(df.loc[eligible, "course_perf_score"]).clip(-2.0, 2.0)
+    signal_source = "history_only"
+
+    if "course_sg_total_vs_avg" in df.columns:
+        sg_edge = pd.to_numeric(df.loc[eligible, "course_sg_total_vs_avg"], errors="coerce")
+        if int(sg_edge.notna().sum()) >= max(5, min_players_with_history // 2):
+            sg_signal = _robust_zscore(sg_edge).clip(-2.0, 2.0).fillna(0.0)
+            signal = 0.65 * signal + 0.35 * sg_signal
+            signal_source = "history_plus_sg_edge"
+
+    confidence = _experience_confidence(starts_num)
+    if "course_history_confidence" in df.columns:
+        confidence = np.minimum(
+            confidence,
+            pd.to_numeric(df["course_history_confidence"], errors="coerce").fillna(confidence),
+        )
+    confidence = pd.Series(confidence, index=df.index).clip(0, 1)
+
+    hist_adjust = (signal * float(boost_strength) * confidence.loc[eligible]).clip(
+        -abs(float(max_abs_adjust)),
+        abs(float(max_abs_adjust)),
+    )
+    df.loc[eligible, "course_adjustment"] = hist_adjust
+    df.loc[eligible, "course_adjustment_confidence"] = confidence.loc[eligible]
+
+    similar_adjusted = 0
+    if (
+        allow_similar_fallback
+        and "has_similar_course_data" in df.columns
+        and "similar_course_sg_estimate" in df.columns
+    ):
+        similar_mask = (~history_mask) & df["has_similar_course_data"].fillna(False).astype(bool)
+        valid_sim = similar_mask & pd.to_numeric(df["similar_course_sg_estimate"], errors="coerce").notna()
+        if int(valid_sim.sum()) >= 3:
+            sim_signal = _robust_zscore(df.loc[valid_sim, "similar_course_sg_estimate"]).clip(-1.5, 1.5)
+            sim_adjust = (sim_signal * float(boost_strength) * 0.25).clip(-0.025, 0.025)
+            df.loc[valid_sim, "course_adjustment"] = sim_adjust
+            df.loc[valid_sim, "course_adjustment_confidence"] = 0.25
+            similar_adjusted = int(valid_sim.sum())
+
+    # Apply adjustment to probabilities (decreasing impact for broader finish markets)
+    market_scale = {
+        "win_prob": 1.00,
+        "top5_prob": 0.75,
+        "top10_prob": 0.60,
+        "top20_prob": 0.45,
+    }
+    for col, scale in market_scale.items():
+        if col in df.columns:
+            df[f"{col}_pre_course_adj"] = df[col]
+            df[col] = df[col] * (1 + df["course_adjustment"] * scale)
+            df[col] = pd.to_numeric(df[col], errors="coerce").clip(0.001, 0.999).fillna(0.001)
+
+    # Renormalize win probability back to 1.0 field sum
+    if "win_prob" in df.columns:
+        total_win = float(df["win_prob"].sum())
+        if total_win > 0:
+            df["win_prob"] = (df["win_prob"] / total_win).clip(0, 1)
+
+    adjusted_mask = df["course_adjustment"].abs() >= 0.005
+    boosted = int((df["course_adjustment"] > 0.005).sum())
+    penalized = int((df["course_adjustment"] < -0.005).sum())
+    max_boost = float(df["course_adjustment"].max()) if len(df) else 0.0
+    max_penalty = float(df["course_adjustment"].min()) if len(df) else 0.0
+    avg_conf = float(df.loc[adjusted_mask, "course_adjustment_confidence"].mean()) if adjusted_mask.any() else 0.0
+
+    print(
+        f"    Course adjustment ({signal_source}): "
+        f"{boosted} boosted, {penalized} penalized, {similar_adjusted} similar-course fallback"
+    )
+    print(
+        "    Adjustment range: "
+        f"{max_penalty:.1%} to +{max_boost:.1%} | "
+        f"avg confidence {avg_conf:.2f}"
+    )
+
+    return df
+
+
 def apply_probability_constraints(
     predictions_df: pd.DataFrame,
     normalize_topk: bool = True,
@@ -1955,6 +2432,16 @@ Examples:
                         help='Upper cap for per-player top10 probability (default: 0.75)')
     parser.add_argument('--top20-cap', type=float, default=0.85,
                         help='Upper cap for per-player top20 probability (default: 0.85)')
+    parser.add_argument('--course-adjust-strength', type=float, default=0.12,
+                        help='Base strength for course-history probability adjustment (default: 0.12)')
+    parser.add_argument('--course-adjust-max', type=float, default=0.08,
+                        help='Hard cap for absolute course-history adjustment (default: 0.08)')
+    parser.add_argument('--course-adjust-min-starts', type=int, default=2,
+                        help='Minimum starts at course for direct history adjustment (default: 2)')
+    parser.add_argument('--course-adjust-min-players', type=int, default=5,
+                        help='Minimum players with history needed to apply adjustment (default: 5)')
+    parser.add_argument('--no-similar-course-adjust', action='store_true',
+                        help='Disable similar-course fallback adjustments for players without direct history')
     parser.add_argument('--lineup-strategies', action='store_true',
                         help='Generate Safe/Balanced/Upside fantasy lineup strategy sets')
     parser.add_argument('--lineup-size', type=int, default=3,
@@ -2068,6 +2555,18 @@ Examples:
     else:
         print("\n  ⚠️ Calibration DISABLED (--no-calibrate flag)")
         print("    → Using raw model probabilities (may be overconfident)")
+
+    # Apply course performance adjustment before other post-processing
+    if "course_perf_score" in predictions_df.columns:
+        print("\n  Applying course performance adjustment...")
+        predictions_df = apply_course_performance_adjustment(
+            predictions_df,
+            boost_strength=float(np.clip(args.course_adjust_strength, 0.0, 0.5)),
+            min_starts=max(0, int(args.course_adjust_min_starts)),
+            max_abs_adjust=float(np.clip(args.course_adjust_max, 0.0, 0.5)),
+            min_players_with_history=max(3, int(args.course_adjust_min_players)),
+            allow_similar_fallback=(not args.no_similar_course_adjust),
+        )
 
     if not args.no_prob_postprocess:
         print("\n  Applying probability post-processing constraints...")
