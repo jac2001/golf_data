@@ -5225,19 +5225,27 @@ elif page == "🎯 Scoring Engine":
                         rating_color = {"ELITE": "#4CAF50", "STRONG": "#2196F3", "SOLID": "#FF9800"}.get(score.value_rating, "#666")
 
                         st.markdown(f"""
-                        <div style="background: #1e1e1e; padding: 15px; border-radius: 10px;
-                                    border-left: 4px solid {rating_color}; text-align: center;">
+                        <div style="background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+                                    color: #f8fafc;
+                                    padding: 16px;
+                                    border-radius: 12px;
+                                    border: 1px solid #334155;
+                                    border-left: 5px solid {rating_color};
+                                    text-align: center;
+                                    box-shadow: 0 4px 14px rgba(2, 6, 23, 0.35);">
                             <div style="font-size: 28px;">{medals[i]}</div>
-                            <div style="font-size: 18px; font-weight: bold; margin: 10px 0;">{score.player}</div>
-                            <div style="font-size: 32px; color: {rating_color}; font-weight: bold;">{score.total_score:.0f}</div>
-                            <div style="font-size: 12px; color: #888;">TOTAL SCORE</div>
-                            <hr style="border-color: #333; margin: 10px 0;">
-                            <div style="display: flex; justify-content: space-around; font-size: 11px;">
-                                <div><span style="color: #4CAF50;">{score.course_fit:.0f}</span><br>Course</div>
-                                <div><span style="color: #2196F3;">{score.current_form:.0f}</span><br>Form</div>
-                                <div><span style="color: #FF9800;">{score.field_strength:.0f}</span><br>Field</div>
+                            <div style="font-size: 18px; font-weight: 700; margin: 10px 0; color: #f8fafc;">
+                                {score.player}
                             </div>
-                            <div style="margin-top: 10px; font-size: 12px; color: #aaa;">
+                            <div style="font-size: 32px; color: {rating_color}; font-weight: bold;">{score.total_score:.0f}</div>
+                            <div style="font-size: 12px; color: #cbd5e1; letter-spacing: 0.08em;">TOTAL SCORE</div>
+                            <hr style="border-color: #334155; margin: 10px 0;">
+                            <div style="display: flex; justify-content: space-around; font-size: 11px;">
+                                <div><span style="color: #4CAF50; font-weight: 700;">{score.course_fit:.0f}</span><br><span style="color:#cbd5e1;">Course</span></div>
+                                <div><span style="color: #60A5FA; font-weight: 700;">{score.current_form:.0f}</span><br><span style="color:#cbd5e1;">Form</span></div>
+                                <div><span style="color: #F59E0B; font-weight: 700;">{score.field_strength:.0f}</span><br><span style="color:#cbd5e1;">Field</span></div>
+                            </div>
+                            <div style="margin-top: 10px; font-size: 12px; color: #e2e8f0;">
                                 {uses_left}/3 uses left • OWGR #{score.owgr_rank}
                             </div>
                         </div>
