@@ -494,7 +494,7 @@ class CourseHistoryDB:
 
     def _process_player_history(self, player_name: str, course_history: List[Dict]) -> None:
         """Process a player's course history JSON into CourseStats objects."""
-        player_key = player_name.lower().strip()
+        player_key = normalize_name_for_matching(player_name)
 
         for course_entry in course_history:
             course_name = course_entry.get("course_name", "")
@@ -761,7 +761,7 @@ class CourseHistoryDB:
         if not self._loaded:
             self.load_from_betting_profiles()
 
-        player_key = player_name.lower().strip()
+        player_key = normalize_name_for_matching(player_name)
         return dict(self.history.get(player_key, {}))
 
     def find_best_course_for_player(self, player_name: str, min_plays: int = 2) -> List[Tuple[str, CourseStats, float]]:
@@ -773,7 +773,7 @@ class CourseHistoryDB:
         if not self._loaded:
             self.load_from_betting_profiles()
 
-        player_key = player_name.lower().strip()
+        player_key = normalize_name_for_matching(player_name)
 
         if player_key not in self.history:
             return []
@@ -947,12 +947,18 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Course History Database")
     parser.add_argument("--tournament", "-t", help="Show specialists for a tournament")
-    parser.add_argument("--player", "-p", help="Show course history for a player")
+    parser.add_argument(
+        "--player",
+        "-p",
+        nargs="+",
+        help="Show course history for a player (quotes optional, e.g. --player Jordan Spieth)",
+    )
     parser.add_argument("--course", "-c", help="Show specialists for a specific course")
     parser.add_argument("--top", type=int, default=15, help="Number of results to show")
     parser.add_argument("--validate", "-v", action="store_true", help="Validate data for potential issues")
 
     args = parser.parse_args()
+    player_query = " ".join(args.player).strip() if isinstance(args.player, list) else args.player
 
     db = CourseHistoryDB()
     db.load_from_betting_profiles()
@@ -974,15 +980,15 @@ if __name__ == "__main__":
                 avg_str = f"{stats.avg_finish:.1f}" if stats.avg_finish > 0 else "-"
                 print(f"  {player:<25} {stats.times_played:<6} {avg_str:<6} {stats.wins:<5} {stats.top_5s:<5} {stats.top_10s:<5} {score:.0f}/100")
 
-    elif args.player:
+    elif player_query:
         print(f"\n{'='*70}")
-        print(f"  COURSE HISTORY: {args.player.upper()}")
+        print(f"  COURSE HISTORY: {player_query.upper()}")
         print(f"{'='*70}\n")
 
-        best_courses = db.find_best_course_for_player(args.player, min_plays=1)
+        best_courses = db.find_best_course_for_player(player_query, min_plays=1)
 
         if not best_courses:
-            print(f"  No course history found for {args.player}")
+            print(f"  No course history found for {player_query}")
         else:
             print(f"  {'Course':<30} {'Plays':<6} {'Avg':<6} {'Wins':<5} {'T5s':<5} {'Score':<6}")
             print(f"  {'-'*58}")

@@ -1,6 +1,7 @@
 import pandas as pd 
 import numpy as np 
 import argparse
+import json
 import joblib
 from pathlib import Path
 import sys 
@@ -1782,6 +1783,96 @@ def generate_recommendations(predictions_df, top_n=10):
     return recommendations[output_cols].head(top_n)
 
 
+def _print_strategy_lineups(lineup_bundle: dict):
+    """Pretty-print Safe/Balanced/Upside fantasy lineups."""
+    profiles = lineup_bundle.get("profiles", {}) if isinstance(lineup_bundle, dict) else {}
+    if not profiles:
+        print("  No strategy lineups generated.")
+        return
+
+    print("\n" + "=" * 70)
+    print("  FANTASY STRATEGY LINEUPS")
+    print("=" * 70)
+
+    for key in ["safe", "balanced", "upside"]:
+        info = profiles.get(key, {})
+        players = info.get("players", [])
+        summary = info.get("summary", {})
+        if not players:
+            continue
+        print(f"\n  {info.get('profile', key.title())} Lineup")
+        print(f"    Players: {', '.join(players)}")
+        print(
+            "    Avg probs: "
+            f"win={summary.get('avg_win_prob', 0.0)*100:.2f}% | "
+            f"top10={summary.get('avg_top10_prob', 0.0)*100:.2f}% | "
+            f"cut={summary.get('avg_cut_prob', 0.0)*100:.2f}%"
+        )
+        print(
+            "    Avg strategy: "
+            f"usage_score={summary.get('avg_usage_score', 0.0):.1f} | "
+            f"leverage={summary.get('avg_leverage_raw', 0.0):+.3f}"
+        )
+
+
+def _save_strategy_lineups(lineup_bundle: dict, tournament: str, outputs_dir: Path):
+    """Persist strategy lineup recommendations (JSON + flat CSV)."""
+    if not isinstance(lineup_bundle, dict) or not lineup_bundle.get("profiles"):
+        return
+
+    safe_tournament = re.sub(r"[^a-z0-9]+", "_", tournament.lower()).strip("_")
+    json_latest = outputs_dir / "lineup_strategies_latest.json"
+    json_scoped = outputs_dir / f"{safe_tournament}_lineup_strategies.json"
+
+    with open(json_latest, "w") as f:
+        json.dump(lineup_bundle, f, indent=2, default=str)
+    with open(json_scoped, "w") as f:
+        json.dump(lineup_bundle, f, indent=2, default=str)
+
+    rows = []
+    for profile_key, info in lineup_bundle.get("profiles", {}).items():
+        details = info.get("details", [])
+        for idx, row in enumerate(details, start=1):
+            flat = {
+                "profile": profile_key,
+                "profile_label": info.get("profile", profile_key.title()),
+                "lineup_rank": idx,
+                "player_name": row.get("player_name", ""),
+                "uses_remaining": row.get("uses_remaining", ""),
+                "usage_recommendation": row.get("usage_recommendation", ""),
+                "usage_score": row.get("usage_score", np.nan),
+                "win_prob": row.get("win_prob", np.nan),
+                "top5_prob": row.get("top5_prob", np.nan),
+                "top10_prob": row.get("top10_prob", np.nan),
+                "top20_prob": row.get("top20_prob", np.nan),
+                "cut_prob": row.get("cut_prob", np.nan),
+                "model_gap_raw": row.get("model_gap_raw", np.nan),
+                "leverage_raw": row.get("leverage_raw", np.nan),
+                "leverage_score": row.get("leverage_score", np.nan),
+                "course_fit_norm": row.get("course_fit_norm", np.nan),
+                "sg_total_norm": row.get("sg_total_norm", np.nan),
+                "sg_app_norm": row.get("sg_app_norm", np.nan),
+                "hot_hand_norm": row.get("hot_hand_norm", np.nan),
+                "engine_total_score": row.get("engine_total_score", np.nan),
+                "engine_course_fit": row.get("engine_course_fit", np.nan),
+                "scarcity_penalty": row.get("scarcity_penalty", np.nan),
+            }
+            for score_col in ["safe_score", "balanced_score", "upside_score"]:
+                if score_col in row:
+                    flat[score_col] = row.get(score_col, np.nan)
+            rows.append(flat)
+
+    if rows:
+        df = pd.DataFrame(rows)
+        csv_latest = outputs_dir / "lineup_strategies_latest.csv"
+        csv_scoped = outputs_dir / f"{safe_tournament}_lineup_strategies.csv"
+        df.to_csv(csv_latest, index=False)
+        df.to_csv(csv_scoped, index=False)
+        print(f"✓ Strategy lineups saved: {json_latest.name}, {csv_latest.name}")
+    else:
+        print(f"✓ Strategy lineups saved: {json_latest.name}")
+
+
 
 
 #Step 11: Main function to tie it all together
@@ -1864,6 +1955,14 @@ Examples:
                         help='Upper cap for per-player top10 probability (default: 0.75)')
     parser.add_argument('--top20-cap', type=float, default=0.85,
                         help='Upper cap for per-player top20 probability (default: 0.85)')
+    parser.add_argument('--lineup-strategies', action='store_true',
+                        help='Generate Safe/Balanced/Upside fantasy lineup strategy sets')
+    parser.add_argument('--lineup-size', type=int, default=3,
+                        help='Players per strategy lineup (default: 3)')
+    parser.add_argument('--lineup-candidate-pool', type=int, default=45,
+                        help='Candidate player pool size for lineup strategy optimizer (default: 45)')
+    parser.add_argument('--lineup-max-overlap', type=int, default=1,
+                        help='Max shared players allowed between strategy lineups (default: 1)')
 
     args = parser.parse_args()
 
@@ -2056,6 +2155,24 @@ Examples:
 
     print(recommendations_display.to_string(index=False))
 
+    # Optional: build fantasy strategy lineups from model + usage + leverage.
+    if args.lineup_strategies:
+        try:
+            optimizer = UsageOptimizer()
+            lineup_bundle = optimizer.build_strategy_lineups(
+                predictions_df=predictions_df,
+                tournament_name=args.tournament,
+                lineup_size=max(1, int(args.lineup_size)),
+                candidate_pool_size=max(12, int(args.lineup_candidate_pool)),
+                max_overlap_between_lineups=max(0, int(args.lineup_max_overlap)),
+            )
+            _print_strategy_lineups(lineup_bundle)
+        except Exception as e:
+            lineup_bundle = {}
+            print(f"  ⚠️ Strategy lineup generation failed: {e}")
+    else:
+        lineup_bundle = {}
+
     # Always persist predictions to a standard location for downstream tools
     outputs_dir = Path("outputs")
     outputs_dir.mkdir(parents=True, exist_ok=True)
@@ -2083,6 +2200,8 @@ Examples:
         write_data_dictionary(predictions_df, dd_path)
 
     print(f"✓ Latest predictions pointers written to: {latest_path} and {scoped_latest_path}")
+    if args.lineup_strategies and lineup_bundle:
+        _save_strategy_lineups(lineup_bundle, args.tournament, outputs_dir)
 
     # Optional tracked betting recommendations (enabled by default for direct runs).
     if args.tournament_id and not args.skip_bet_recs:

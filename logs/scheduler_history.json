@@ -69,5 +69,47 @@
     ],
     "success_count": 1,
     "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-18T07:28:16.388439",
+    "schedule": "wednesday-morning",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Expert Picks",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      },
+      {
+        "task": "PGA Odds",
+        "success": true
+      },
+      {
+        "task": "Predictions",
+        "success": false
+      }
+    ],
+    "success_count": 2,
+    "total_count": 4
+  },
+  {
+    "timestamp": "2026-02-18T18:03:06.377772",
+    "schedule": "wednesday-evening",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      },
+      {
+        "task": "PGA Odds",
+        "success": true
+      }
+    ],
+    "success_count": 1,
+    "total_count": 2
   }
 ]

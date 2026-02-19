@@ -291,11 +291,14 @@ def load_scoring_engine():
         return None
 
 
-def load_golf_assistant():
+def load_golf_assistant(predictions_path=None):
     """Load the Golf Assistant for chat functionality (no caching during dev)."""
     try:
         from scripts.predictions.golf_assistant import GolfAssistant
-        return GolfAssistant(format_name="earnings")
+        kwargs = {"format_name": "earnings"}
+        if predictions_path:
+            kwargs["predictions_path"] = str(predictions_path)
+        return GolfAssistant(**kwargs)
     except Exception as e:
         st.warning(f"Golf Assistant not available: {e}")
         return None
@@ -318,6 +321,539 @@ def load_schedule():
     if schedule_file.exists():
         return pd.read_csv(schedule_file)
     return pd.DataFrame()
+
+
+def _safe_slug(name: str) -> str:
+    """Create a file-safe slug."""
+    if not name:
+        return ""
+    return re.sub(r"[^a-z0-9]+", "_", str(name).lower()).strip("_")
+
+
+
+
+@st.cache_data(ttl=120)
+def load_lineup_strategies_bundle(
+    preferred_tournament_name: str = "",
+    preferred_tournament_id: str = "",
+) -> tuple[dict, Path | None]:
+    """
+    Load lineup strategy JSON bundle with robust fallback:
+    1) <tournament_slug>_lineup_strategies.json
+    2) lineup_strategies_latest.json
+    3) newest *_lineup_strategies.json
+    """
+    outputs_dir = PROJECT_ROOT / "outputs"
+    if not outputs_dir.exists():
+        return {}, None
+
+    candidates: list[Path] = []
+    tname = str(preferred_tournament_name or "").strip()
+    if tname:
+        slug = _safe_slug(tname)
+        slug_variants = [slug]
+        if slug.startswith("the_"):
+            slug_variants.append(slug[4:])
+        for s in slug_variants:
+            if s:
+                candidates.append(outputs_dir / f"{s}_lineup_strategies.json")
+
+    latest = outputs_dir / "lineup_strategies_latest.json"
+    if latest.exists():
+        candidates.append(latest)
+
+    scoped = sorted(outputs_dir.glob("*_lineup_strategies.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+    candidates.extend(scoped[:8])
+
+    seen = set()
+    ordered = []
+    for p in candidates:
+        if p.exists() and p not in seen:
+            seen.add(p)
+            ordered.append(p)
+
+    for p in ordered:
+        try:
+            with open(p) as f:
+                data = json.load(f)
+        except Exception:
+            continue
+        if isinstance(data, dict) and isinstance(data.get("profiles"), dict) and data.get("profiles"):
+            return data, p
+
+    # CSV fallback if JSON is unavailable.
+    csv_candidates = []
+    if tname:
+        slug = _safe_slug(tname)
+        csv_candidates.append(outputs_dir / f"{slug}_lineup_strategies.csv")
+    csv_candidates.append(outputs_dir / "lineup_strategies_latest.csv")
+    csv_candidates.extend(sorted(outputs_dir.glob("*_lineup_strategies.csv"), key=lambda p: p.stat().st_mtime, reverse=True)[:5])
+
+    for p in csv_candidates:
+        if not p.exists():
+            continue
+        try:
+            df = pd.read_csv(p)
+        except Exception:
+            continue
+        if df.empty or "profile" not in df.columns:
+            continue
+        profiles = {}
+        for profile, g in df.groupby(df["profile"].astype(str).str.lower()):
+            rows = g.to_dict(orient="records")
+            profiles[str(profile)] = {
+                "profile": str(profile).title(),
+                "players": [str(r.get("player_name", "")).strip() for r in rows if str(r.get("player_name", "")).strip()],
+                "summary": {},
+                "details": rows,
+            }
+        if profiles:
+            return {"tournament": tname, "profiles": profiles, "pool": []}, p
+
+    return {}, None
+
+
+def _format_percent_point(p: float | None, decimals: int = 1) -> str:
+    """Format a percentage-point value with useful precision for small numbers."""
+    if p is None or pd.isna(p):
+        return "n/a"
+    v = float(p)
+    if v < 0.1:
+        return "<0.1%"
+    return f"{v:.{decimals}f}%"
+
+
+def _file_updated_label(path: Path | None) -> str:
+    """Format file modified timestamp for UI."""
+    if path is None or not Path(path).exists():
+        return "—"
+    return datetime.fromtimestamp(Path(path).stat().st_mtime).strftime("%b %d %H:%M")
+
+
+def _file_age_hours(path: Path | None) -> float | None:
+    """Return file age in hours."""
+    if path is None or not Path(path).exists():
+        return None
+    return (datetime.now().timestamp() - Path(path).stat().st_mtime) / 3600.0
+
+
+def _freshness_status(age_hours: float | None) -> str:
+    """Simple freshness status from age."""
+    if age_hours is None:
+        return "Missing"
+    if age_hours <= 6:
+        return "Fresh"
+    if age_hours <= 24:
+        return "Aging"
+    return "Stale"
+
+
+def render_predictions_freshness_panel(
+    selected_tournament: str,
+    selected_tournament_id: str,
+    predictions_path: Path,
+):
+    """Show source-file freshness for predictions-related artifacts."""
+    lineup_bundle, lineup_path = load_lineup_strategies_bundle(
+        preferred_tournament_name=selected_tournament,
+        preferred_tournament_id=selected_tournament_id,
+    )
+    _, expert_path, expert_kind = load_expert_picks_df(selected_tournament_id)
+    _, rec_bets_path = load_recommended_bets_df(selected_tournament_id)
+    _, dk_cards_path = load_dk_content_cards_df(selected_tournament_id)
+
+    rows = []
+    sources = [
+        ("Predictions", Path(predictions_path) if predictions_path else None, "Selected file"),
+        ("Lineup Strategies", lineup_path, f"{len((lineup_bundle or {}).get('profiles', {}))} profiles" if lineup_bundle else "No profiles"),
+        ("Expert Picks", expert_path, expert_kind if expert_kind else "No source"),
+        ("Recommended Bets", rec_bets_path, "Tracked recs"),
+        ("DraftKings Cards", dk_cards_path, "Content cards"),
+    ]
+    for label, path, note in sources:
+        age = _file_age_hours(path)
+        rows.append(
+            {
+                "Source": label,
+                "File": path.name if path is not None and Path(path).exists() else "—",
+                "Updated": _file_updated_label(path),
+                "Age (hrs)": round(float(age), 1) if age is not None else np.nan,
+                "Status": _freshness_status(age),
+                "Notes": note,
+            }
+        )
+
+    st.markdown("### 🕒 Data Freshness")
+    st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+
+
+def build_player_pick_reason_text(row: pd.Series) -> str:
+    """Deterministic player-level explanation for 'Why This Pick'."""
+    def _num(v):
+        n = pd.to_numeric(v, errors="coerce")
+        return None if pd.isna(n) else float(n)
+
+    name = str(row.get("player_name", "Player"))
+    ev = _num(row.get("expected_value"))
+    win = _num(row.get("win_prob"))
+    top10 = _num(row.get("top10_prob"))
+    top20 = _num(row.get("top20_prob"))
+    cut = _num(row.get("cut_prob"))
+    sg_total = _num(row.get("sg_total"))
+    form_trend = _num(row.get("form_trend"))
+    hist_starts = _num(row.get("hist_times_played"))
+    hist_top10s = _num(row.get("hist_top10s"))
+    hist_wins = _num(row.get("hist_wins"))
+    hist_avg = _num(row.get("hist_avg_finish"))
+    dg_fit = _num(row.get("dg_fit_total"))
+
+    lines = [f"**{name}** is a strong pick this week because:"]
+    if ev is not None:
+        lines.append(f"- Expected value is **${ev:,.0f}**, which keeps him near the top of the model board.")
+    if win is not None or top10 is not None or top20 is not None:
+        w = f"{(win * 100):.2f}%" if win is not None else "n/a"
+        t10 = f"{(top10 * 100):.1f}%" if top10 is not None else "n/a"
+        t20 = f"{(top20 * 100):.1f}%" if top20 is not None else "n/a"
+        lines.append(f"- Probabilities: **Win {w} | Top-10 {t10} | Top-20 {t20}**.")
+    if cut is not None:
+        lines.append(f"- Cut stability is **{(cut * 100):.1f}%** (miss-cut risk {(max(0.0, 1.0 - cut) * 100):.1f}%).")
+    if sg_total is not None:
+        lines.append(f"- Recent SG Total is **{sg_total:+.3f}** per round.")
+    if form_trend is not None:
+        trend = "improving" if form_trend > 0.15 else ("slipping" if form_trend < -0.15 else "stable")
+        lines.append(f"- Form trend looks **{trend}** ({form_trend:+.3f}).")
+    if hist_starts is not None and hist_starts > 0:
+        bits = [f"{int(hist_starts)} starts"]
+        if hist_top10s is not None and hist_top10s > 0:
+            bits.append(f"{int(hist_top10s)} top-10" + ("" if int(hist_top10s) == 1 else "s"))
+        if hist_wins is not None and hist_wins > 0:
+            bits.append(f"{int(hist_wins)} win" + ("" if int(hist_wins) == 1 else "s"))
+        if hist_avg is not None:
+            bits.append(f"{hist_avg:.1f} avg finish")
+        lines.append("- Course history: " + ", ".join(bits) + ".")
+    elif dg_fit is not None:
+        lines.append(f"- Course-fit signal is **{dg_fit:+.3f}**.")
+
+    return "\n".join(lines)
+
+
+def _lineup_reasoning_text(row: dict, profile_key: str, context_row: dict | None = None) -> str:
+    """Build conversational reason text for why a player is in the lineup."""
+    ctx = context_row or {}
+    player_name = str(row.get("player_name") or ctx.get("player_name") or "This player")
+    profile_label = {"safe": "Safe", "balanced": "Balanced", "upside": "Upside"}.get(profile_key, profile_key.title())
+
+    reasons = []
+    usage_rec = str(row.get("usage_recommendation", "")).strip()
+    if usage_rec.lower() in {"none", "nan", "na", "n/a", "null"}:
+        usage_rec = ""
+    uses_left = pd.to_numeric(row.get("uses_remaining"), errors="coerce")
+    if usage_rec and pd.notna(uses_left):
+        reasons.append(f"the usage planner tags him as {usage_rec.lower()} with {int(uses_left)}/3 uses left")
+    elif usage_rec:
+        reasons.append(f"the usage planner tags him as {usage_rec.lower()}")
+
+    top10_prob = pd.to_numeric(row.get("top10_prob"), errors="coerce")
+    if pd.notna(top10_prob):
+        reasons.append(f"the model gives him about {float(top10_prob) * 100:.1f}% Top-10 odds")
+
+    lev_score = pd.to_numeric(row.get("leverage_score"), errors="coerce")
+    lev_raw = pd.to_numeric(row.get("leverage_raw"), errors="coerce")
+    if pd.notna(lev_score):
+        if float(lev_score) >= 0.80:
+            reasons.append("he carries strong leverage versus public build patterns")
+        elif float(lev_score) >= 0.65:
+            reasons.append("he gives above-average leverage")
+    elif pd.notna(lev_raw) and float(lev_raw) > 0:
+        reasons.append("our model is slightly higher than market on him")
+
+    cut_prob = pd.to_numeric(row.get("cut_prob"), errors="coerce")
+    if pd.notna(cut_prob):
+        if float(cut_prob) >= 0.95:
+            reasons.append("he projects as a very safe cut-maker")
+        elif float(cut_prob) >= 0.88:
+            reasons.append("he still projects as a solid cut-maker")
+
+    course_fit = pd.to_numeric(row.get("course_fit_norm"), errors="coerce")
+    if pd.notna(course_fit) and float(course_fit) >= 0.65:
+        reasons.append("his stat profile matches this course well")
+
+    if not reasons:
+        reasons.append("his overall profile balances floor and ceiling")
+
+    summary = f"{player_name} is in the {profile_label} lineup because " + ", ".join(reasons[:3]) + "."
+
+    starts = pd.to_numeric(ctx.get("hist_times_played"), errors="coerce")
+    top10s = pd.to_numeric(ctx.get("hist_top10s"), errors="coerce")
+    wins = pd.to_numeric(ctx.get("hist_wins"), errors="coerce")
+    avg_finish = pd.to_numeric(ctx.get("hist_avg_finish"), errors="coerce")
+
+    history_bits = []
+    if pd.notna(starts) and int(starts) > 0:
+        history_bits.append(f"{int(starts)} starts")
+    if pd.notna(top10s) and int(top10s) > 0:
+        history_bits.append(f"{int(top10s)} top-10s")
+    if pd.notna(wins) and int(wins) > 0:
+        history_bits.append(f"{int(wins)} win" + ("" if int(wins) == 1 else "s"))
+    if pd.notna(avg_finish):
+        history_bits.append(f"{float(avg_finish):.1f} avg finish")
+
+    if history_bits:
+        summary += " Course history: " + ", ".join(history_bits[:4]) + "."
+
+    return summary
+
+
+def render_lineup_strategies_section(
+    tournament_name: str = "",
+    tournament_id: str = "",
+    context_df: pd.DataFrame | None = None,
+    output_mode: str = "Detailed",
+):
+    """Render Safe/Balanced/Upside lineups with player-level reasoning."""
+    st.markdown("### 🧠 Fantasy Strategy Lineups")
+
+    bundle, source_path = load_lineup_strategies_bundle(
+        preferred_tournament_name=tournament_name,
+        preferred_tournament_id=tournament_id,
+    )
+    if not bundle or not bundle.get("profiles"):
+        st.info("No strategy lineup output found yet.")
+        st.code(
+            "python3 scripts/predictions/predict_tournament.py --tournament \"<name>\" --tournament-id RYYYYNNN "
+            "--field data/fields/field_RYYYYNNN.csv --purse <amount> --lineup-strategies"
+        )
+        return
+
+    if source_path and source_path.exists():
+        updated = datetime.fromtimestamp(source_path.stat().st_mtime).strftime("%b %d %H:%M")
+
+    profiles = bundle.get("profiles", {})
+    context_lookup = {}
+    if isinstance(context_df, pd.DataFrame) and not context_df.empty and "player_name" in context_df.columns:
+        for _, prow in context_df.iterrows():
+            context_lookup[_name_key(prow.get("player_name", ""))] = prow.to_dict()
+
+    def _profile_details_map(profile_key: str) -> dict:
+        info = profiles.get(profile_key, {})
+        details = info.get("details", []) if isinstance(info.get("details", []), list) else []
+        out = {}
+        for d in details:
+            pname = str(d.get("player_name", "")).strip()
+            if pname:
+                out[_name_key(pname)] = d
+        return out
+
+    def _to_num(v):
+        n = pd.to_numeric(v, errors="coerce")
+        return np.nan if pd.isna(n) else float(n)
+
+    def _pick_primary_profile() -> str:
+        for k in ["balanced", "safe", "upside"]:
+            info = profiles.get(k, {})
+            if isinstance(info, dict) and info.get("players"):
+                return k
+        for k, info in profiles.items():
+            if isinstance(info, dict) and info.get("players"):
+                return k
+        return "balanced"
+
+    def _player_context_row(name: str) -> dict:
+        return context_lookup.get(_name_key(name), {})
+
+    primary_key = _pick_primary_profile()
+    primary_info = profiles.get(primary_key, {}) if isinstance(profiles, dict) else {}
+    primary_players = [str(p).strip() for p in primary_info.get("players", []) if str(p).strip()]
+    primary_details = _profile_details_map(primary_key)
+    primary_score_col = f"{primary_key}_score"
+
+    if not primary_players:
+        st.info("No primary lineup players found in strategy output.")
+        return
+
+    st.markdown(f"#### ✅ Primary Lineup ({primary_info.get('profile', primary_key.title())})")
+
+    rows = []
+    for name in primary_players:
+        row = dict(primary_details.get(_name_key(name), {}))
+        if not row:
+            row = {"player_name": name}
+        ctx = _player_context_row(name)
+        if "win_prob" not in row and "win_prob" in ctx:
+            row["win_prob"] = ctx.get("win_prob")
+        if "top10_prob" not in row and "top10_prob" in ctx:
+            row["top10_prob"] = ctx.get("top10_prob")
+        if "cut_prob" not in row and "cut_prob" in ctx:
+            row["cut_prob"] = ctx.get("cut_prob")
+        if "leverage_score" not in row and "leverage_score" in ctx:
+            row["leverage_score"] = ctx.get("leverage_score")
+        if "uses_remaining" not in row and "uses_remaining" in ctx:
+            row["uses_remaining"] = ctx.get("uses_remaining")
+        if "usage_recommendation" not in row and "usage_recommendation" in ctx:
+            row["usage_recommendation"] = ctx.get("usage_recommendation")
+        cut_prob = _to_num(row.get("cut_prob"))
+        miss_cut_pct = (1.0 - cut_prob) * 100.0 if not np.isnan(cut_prob) else np.nan
+        score = _to_num(row.get(primary_score_col))
+        win_prob = _to_num(row.get("win_prob"))
+        top10_prob = _to_num(row.get("top10_prob"))
+        lev = _to_num(row.get("leverage_score"))
+        uses_left = _to_num(row.get("uses_remaining"))
+        reason_text = _lineup_reasoning_text(row, primary_key, context_row=ctx)
+        if str(output_mode).lower() == "compact":
+            compact = reason_text.split(". ")[0].strip()
+            if compact and not compact.endswith("."):
+                compact += "."
+            reason_text = compact
+        rows.append(
+            {
+                "Player": name,
+                "Score": round(score, 3) if not np.isnan(score) else np.nan,
+                "Win %": round(win_prob * 100, 2) if not np.isnan(win_prob) else np.nan,
+                "Top10 %": round(top10_prob * 100, 2) if not np.isnan(top10_prob) else np.nan,
+                "Miss Cut %": round(miss_cut_pct, 2) if not np.isnan(miss_cut_pct) else np.nan,
+                "Uses": f"{int(uses_left)}/3" if not np.isnan(uses_left) else "—",
+                "Leverage": round(lev, 3) if not np.isnan(lev) else np.nan,
+                "Reasoning": reason_text,
+            }
+        )
+
+    primary_df = pd.DataFrame(rows)
+    st.dataframe(primary_df, hide_index=True, use_container_width=True)
+
+    summary = primary_info.get("summary", {}) if isinstance(primary_info.get("summary"), dict) else {}
+    if summary:
+        avg_cut = pd.to_numeric(summary.get("avg_cut_prob", np.nan), errors="coerce")
+        miss_cut_pp = (1.0 - float(avg_cut)) * 100 if pd.notna(avg_cut) else np.nan
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            st.metric("Avg Win %", f"{float(summary.get('avg_win_prob', 0.0))*100:.2f}%")
+        with c2:
+            st.metric("Avg Top10 %", f"{float(summary.get('avg_top10_prob', 0.0))*100:.2f}%")
+        with c3:
+            st.metric("Avg Miss Cut %", _format_percent_point(miss_cut_pp, decimals=2))
+        with c4:
+            st.metric("Avg Leverage", f"{float(summary.get('avg_leverage_score', summary.get('avg_leverage_raw', 0.0))):+.3f}")
+
+    st.markdown("---")
+
+    pool = bundle.get("pool", [])
+    if isinstance(pool, list) and pool:
+        pool_df = pd.DataFrame(pool)
+    elif isinstance(pool, pd.DataFrame):
+        pool_df = pool.copy()
+    else:
+        pool_df = pd.DataFrame()
+
+    if not pool_df.empty:
+        with st.expander("Candidate Pool Diagnostics", expanded=False):
+            keep_cols = [
+                "player_name", "uses_remaining", "usage_recommendation", "usage_score",
+                "model_gap_raw", "leverage_score", "course_fit_norm",
+                "safe_score", "balanced_score", "upside_score",
+            ]
+            keep_cols = [c for c in keep_cols if c in pool_df.columns]
+            view = pool_df[keep_cols].copy()
+            st.dataframe(view.head(30), hide_index=True, use_container_width=True)
+
+
+def render_fantasy_strategy_copilot(tournament_name: str = "", predictions_path=None):
+    """Render a grounded fantasy strategy assistant with optional LLM generation."""
+    st.markdown("### 🤖 Fantasy Strategy Copilot")
+    st.caption("Ask why a player/lineup is recommended. Grounded to your predictions, usage, course history, and model features.")
+
+    assistant_state_key = "fantasy_assistant_obj"
+    assistant_src_key = "fantasy_assistant_src"
+    src = str(predictions_path) if predictions_path else ""
+
+    if st.session_state.get(assistant_src_key) != src:
+        st.session_state[assistant_state_key] = load_golf_assistant(predictions_path=predictions_path)
+        st.session_state[assistant_src_key] = src
+
+    assistant = st.session_state.get(assistant_state_key)
+    if assistant is None:
+        st.warning("Fantasy assistant not available. Check `scripts/predictions/golf_assistant.py` imports.")
+        return
+
+    controls = st.columns([1.0, 1.1, 1.8])
+    with controls[0]:
+        use_ollama = st.checkbox("Use Ollama LLM", value=False, key="fantasy_copilot_use_ollama")
+    with controls[1]:
+        ollama_model = st.text_input(
+            "Ollama Model",
+            value="llama3.2",
+            key="fantasy_copilot_ollama_model",
+            disabled=not use_ollama,
+        )
+    with controls[2]:
+        ollama_url = st.text_input(
+            "Ollama URL",
+            value="http://localhost:11434/api/generate",
+            key="fantasy_copilot_ollama_url",
+            disabled=not use_ollama,
+        )
+
+    presets = {
+        "Explain Primary Lineup": "Explain this week’s PRIMARY lineup in plain English with stats-backed reasoning and one clear main risk.",
+        "Key Insights Format": (
+            "For Akshay Bhatia, output exactly with these markdown headers: "
+            "'🎯 Key Insights', '🏟️ At This Tournament', '📈 Recent Form'. "
+            "Use concrete stats from local data and clearly say when a stat is unavailable."
+        ),
+        "Use or Save Decision": "Should I use Scottie Scheffler this week or save him? Explain with win/top10 odds and opportunity cost.",
+        "Top 3 Safe Plays": "Give me the top 3 safe fantasy plays this week and explain exactly why each one made the list.",
+        "Top 3 Leverage Plays": "Give me the top 3 leverage plays this week and explain where model vs market differs.",
+        "Player Why Breakdown": "Why is Justin Rose recommended this week? Include course history, form, and risk.",
+    }
+
+    if "fantasy_copilot_question" not in st.session_state:
+        st.session_state["fantasy_copilot_question"] = presets["Explain Primary Lineup"]
+
+    row = st.columns([2.6, 1.0])
+    with row[0]:
+        preset = st.selectbox("Preset Question", options=list(presets.keys()), key="fantasy_copilot_preset")
+    with row[1]:
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("Use Preset", key="fantasy_copilot_use_preset", use_container_width=True):
+            st.session_state["fantasy_copilot_question"] = presets[preset]
+
+    question = st.text_area(
+        "Ask your golf strategy question",
+        key="fantasy_copilot_question",
+        height=110,
+    )
+
+    answer_key = f"fantasy_copilot_answer::{src or 'latest'}"
+    if st.button("Run Fantasy Copilot", key="fantasy_copilot_run", use_container_width=True):
+        with st.spinner("Building grounded answer..."):
+            try:
+                answer = assistant.ask(
+                    question=question,
+                    tournament_name=tournament_name,
+                    use_ollama=bool(use_ollama),
+                    ollama_model=str(ollama_model or "llama3.2"),
+                    ollama_url=str(ollama_url or "").strip(),
+                )
+            except Exception as e:
+                # Retry once with a fresh assistant instance (helps after schema/code changes).
+                try:
+                    st.session_state[assistant_state_key] = load_golf_assistant(predictions_path=predictions_path)
+                    assistant = st.session_state.get(assistant_state_key)
+                    if assistant is not None:
+                        answer = assistant.ask(
+                            question=question,
+                            tournament_name=tournament_name,
+                            use_ollama=bool(use_ollama),
+                            ollama_model=str(ollama_model or "llama3.2"),
+                            ollama_url=str(ollama_url or "").strip(),
+                        )
+                    else:
+                        answer = f"Error running fantasy copilot: {e}"
+                except Exception as e2:
+                    answer = f"Error running fantasy copilot: {e2}"
+        st.session_state[answer_key] = answer
+
+    if answer_key in st.session_state:
+        st.markdown(st.session_state[answer_key])
 
 
 def _name_key(name: str) -> str:
@@ -1153,7 +1689,6 @@ def load_expert_picks_df(preferred_tournament_id: str = "") -> tuple[pd.DataFram
 def render_expert_picks_section(preds_df: pd.DataFrame, tournament_id: str = ""):
     """Render expert picks consensus + detail cards in Betting page."""
     st.markdown("### 📰 Expert Picks")
-    st.caption("Consensus from PGA TOUR experts")
 
     expert_df, source_file, source_kind = load_expert_picks_df(tournament_id)
     if expert_df.empty:
@@ -1166,7 +1701,6 @@ def render_expert_picks_section(preds_df: pd.DataFrame, tournament_id: str = "")
         if source_file and source_file.exists()
         else "unknown"
     )
-    st.caption(f"Source: {file_name} • Updated: {updated_str}")
     if source_kind == "fallback_mismatch":
         st.warning("Showing latest available expert picks file (tournament-name mismatch).")
 
@@ -1238,7 +1772,7 @@ def render_expert_picks_section(preds_df: pd.DataFrame, tournament_id: str = "")
 def render_tracked_bets_section(tournament_id: str = ""):
     """Render deterministic tracked-bets recommendations and settlement stats."""
     st.markdown("### ✅ Tracked Bet Recommendations")
-    st.caption("Rule-based +EV recommendations with audit log and settlement tracking")
+    ("Rule-based +EV recommendations with audit log and settlement tracking")
 
     action_cols = st.columns([1.2, 1.2, 2.6])
     with action_cols[0]:
@@ -1305,7 +1839,6 @@ def render_tracked_bets_section(tournament_id: str = ""):
 
     if rec_path and rec_path.exists():
         updated = datetime.fromtimestamp(rec_path.stat().st_mtime).strftime("%b %d %H:%M")
-        st.caption(f"Source: {rec_path.name} • Updated: {updated}")
 
     metrics_cols = st.columns(4)
     with metrics_cols[0]:
@@ -1351,7 +1884,7 @@ def render_tracked_bets_section(tournament_id: str = ""):
 
     results_df = load_recommended_bet_results_df(tournament_id)
     if results_df.empty:
-        st.caption("No settled tracked bets yet.")
+        ("No settled tracked bets yet.")
         return
 
     if "outcome_status" in results_df.columns:
@@ -1360,7 +1893,7 @@ def render_tracked_bets_section(tournament_id: str = ""):
         status_series = pd.Series(["pending"] * len(results_df), index=results_df.index, dtype=object)
     settled = results_df[status_series.isin(["won", "lost"])].copy()
     if settled.empty:
-        st.caption("Tracked bets found, but none are settled yet.")
+        ("Tracked bets found, but none are settled yet.")
         return
 
     settled["outcome_win"] = settled["outcome_status"].astype(str).str.lower().eq("won")
@@ -1394,6 +1927,150 @@ def render_tracked_bets_section(tournament_id: str = ""):
     if "graded_at" in recent_df.columns:
         recent_df = recent_df.sort_values("graded_at", ascending=False)
     st.dataframe(recent_df.head(12), hide_index=True, use_container_width=True)
+
+
+
+
+
+def run_betting_copilot(
+    question: str,
+    tournament_id: str = "",
+    risk_profile: str = "balanced",
+    max_picks: int = 5,
+    use_llm: bool = False,
+    ollama_model: str = "llama3.2",
+) -> tuple[bool, str]:
+    """Run grounded betting copilot script and return (ok, markdown_or_error)."""
+    cmd = [
+        "python3",
+        str(PROJECT_ROOT / "scripts" / "models" / "betting_copilot.py"),
+        "--risk-profile",
+        str(risk_profile or "balanced"),
+        "--max-picks",
+        str(max(1, int(max_picks))),
+        "--question",
+        str(question or "").strip(),
+        "--format",
+        "json",
+    ]
+    tid = str(tournament_id or "").strip().upper()
+    if tid:
+        cmd.extend(["--tournament-id", tid])
+
+    if use_llm:
+        cmd.append("--use-llm")
+        if str(ollama_model or "").strip():
+            cmd.extend(["--ollama-model", str(ollama_model).strip()])
+
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=120,
+            cwd=PROJECT_ROOT,
+        )
+    except Exception as e:
+        return False, f"Could not run betting copilot: {e}"
+
+    raw = result.stdout.strip() if result.stdout.strip() else result.stderr.strip()
+    if result.returncode != 0:
+        return False, raw[:1200] if raw else "Copilot command failed."
+
+    try:
+        payload = json.loads(raw)
+    except Exception:
+        return False, raw[:1200] if raw else "Copilot returned invalid response."
+
+    if not payload.get("ok", False):
+        return False, str(payload.get("error") or payload.get("answer_markdown") or "Copilot failed.")
+
+    answer = str(payload.get("answer_markdown", "")).strip()
+    if not answer:
+        return False, "Copilot returned an empty answer."
+    return True, answer
+
+
+def render_betting_copilot_section(tournament_id: str = ""):
+    """Render grounded betting/fantasy copilot in Betting page."""
+    st.markdown("### 🧠 Betting + Fantasy Copilot")
+    ("Grounded to your local recommendations, content cards, expert picks, and predictions.")
+
+    controls = st.columns([1.2, 1.0, 1.6])
+    key="copilot_risk_profile",
+        
+    with controls[1]:
+        max_picks = st.slider("Max picks", 3, 12, 6, key="copilot_max_picks")
+    with controls[2]:
+        use_llm = st.checkbox("Use local LLM (Ollama)", value=False, key="copilot_use_llm")
+        ollama_model = st.text_input(
+            "Ollama Model",
+            value="llama3.2",
+            key="copilot_ollama_model",
+            disabled=not use_llm,
+        )
+
+    preset_questions = {
+        "Best Bets + Fantasy Core": "Give me the best bets this week and a fantasy core + pivot plan.",
+        "Conservative Card": "Build a conservative betting card (low variance) with bankroll sizing.",
+        "Aggressive Upside": "Build an aggressive upside card and explain biggest risks clearly.",
+        "Top-10 Focus": "Only use top-10 and make-cut style bets. Show safest plays first.",
+        "DraftKings Cards Review": "Review DraftKings content cards and rank the best 3 by edge and confidence.",
+        "Fade Analysis": "Who should we fade this week and why based on model vs market gap?",
+        "H2H + Props Plan": "Give me a plan focused on matchups/props and how to hedge risk.",
+        "Fantasy Lineup Build": "Build a fantasy lineup strategy: core, pivots, fades, and exposure caps.",
+    }
+
+    default_q = preset_questions["Best Bets + Fantasy Core"]
+    if "copilot_question" not in st.session_state:
+        st.session_state["copilot_question"] = default_q
+
+    preset_cols = st.columns([2.4, 1.1, 1.1, 1.1])
+    with preset_cols[0]:
+        selected_preset = st.selectbox(
+            "Preset Questions",
+            options=list(preset_questions.keys()),
+            key="copilot_preset_select",
+        )
+    with preset_cols[1]:
+        if st.button("Use Preset", key="copilot_use_preset", use_container_width=True):
+            st.session_state["copilot_question"] = preset_questions[selected_preset]
+    with preset_cols[2]:
+        if st.button("Quick: Safe", key="copilot_quick_safe", use_container_width=True):
+            st.session_state["copilot_question"] = preset_questions["Conservative Card"]
+    with preset_cols[3]:
+        if st.button("Quick: Upside", key="copilot_quick_upside", use_container_width=True):
+            st.session_state["copilot_question"] = preset_questions["Aggressive Upside"]
+
+    question = st.text_area(
+        "Ask the copilot",
+        height=100,
+        key="copilot_question",
+    )
+
+    run_key = f"copilot_answer_{str(tournament_id or 'latest').strip().upper() or 'latest'}"
+    if st.button("Run Copilot", key="copilot_run_button", use_container_width=True):
+        with st.spinner("Generating grounded answer..."):
+            ok, answer = run_betting_copilot(
+                question=question,
+                tournament_id=tournament_id,
+                max_picks=max_picks,
+                use_llm=use_llm,
+                ollama_model=ollama_model,
+            )
+        st.session_state[run_key] = answer
+        st.session_state[f"{run_key}_ok"] = ok
+
+    if run_key in st.session_state:
+        if st.session_state.get(f"{run_key}_ok", False):
+            st.markdown(st.session_state[run_key])
+        else:
+            st.warning(st.session_state[run_key])
+    
+
+
+
+
 
 
 def render_longshots_view(min_odds: int = 5000, max_rows: int = 24):
@@ -2101,7 +2778,6 @@ def render_player_profile_card(profile: dict, show_full: bool = True):
                                                                                                                     
     if profile.get('published_at'):                                                                                   
         pub_date = str(profile.get('published_at', ''))[:10]                                                          
-        st.caption(f"📅 {pub_date} • {profile.get('tournament_slug', '').replace('-', ' ').title()}")                 
                                                                                                                     
     # Key metrics row                                                                                                 
     col1, col2, col3, col4 = st.columns(4)                                                                            
@@ -3812,7 +4488,7 @@ if page == "🏆 This Week":
             st.markdown("---")
 
             # Tabs for different views
-            tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🎯 Recommendations", "🏌️ Course Specialists", "📊 Field Analysis", "🎯 Course Fit", "Course History", "📝 Player Profiles"])
+            tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎯 Recommendations", "🏌️ Course Specialists", "📊 Field Analysis", "🎯 Course Fit", "Course History"])
             
 
             with tab1:
@@ -3978,7 +4654,7 @@ if page == "🏆 This Week":
             with tab5:
                 st.markdown("### 📅 Course History")
                 # Course Specialist button 
-                if st.button("🏆 Couse Specialists (Historical)", use_container_width=True, type="primary"):
+                if st.button("🏆 Course Specialists (Historical)", use_container_width=True, type="primary"):
                     with st.spinner("Loading course specialists..."):
                         output = run_script("planning/course_history.py", "--tournament", tournament)
                     st.code(output, language=None)
@@ -3993,46 +4669,10 @@ if page == "🏆 This Week":
                 
                 if check_hist and hist_player:
                     with st.spinner(f"Loading {hist_player}'s course history..."):
-                        output = run_script("planning/course_history.py", hist_player)
+                        output = run_script("planning/course_history.py", "--player", hist_player)
                     st.code(output, language=None)
 
-            with tab6:
-                st.markdown("### 📝 Player Betting Profiles")                                                         
-                st.caption("AI-generated insights from PGA Tour betting profiles")                                    
-                                                                                                                    
-                # Get tournament ID for loading profiles                                                              
-                schedule = load_schedule()                                                                            
-                tournament_id = None                                                                                  
-                if not schedule.empty:                                                                                
-                    match = schedule[schedule['tournament_name'] == tournament]                                       
-                    if not match.empty:                                                                               
-                        tournament_id = match.iloc[0].get('tournament_id', '')                                        
-                                                                                                                    
-                # Load betting profiles                                                                               
-                profiles_df = load_betting_profiles(tournament_id)                                                    
-                                                                                                                    
-                if profiles_df.empty:                                                                                 
-                    st.warning("No betting profiles available for this tournament. Run the weekly prep to fetch them.")                                                                                                               
-                else:                                                                                                 
-                    st.success(f"✓ {len(profiles_df)} player profiles loaded")                                        
-                                                                                                                    
-                    # Player selector                                                                                 
-                    all_players = sorted(engine.predictions.keys()) if engine.predictions else []                     
-                                                                                                                    
-                    profile_player = st.selectbox(                                                                    
-                        "Select a player to view their betting profile:",                                             
-                        [""] + all_players,                                                                           
-                        key="profile_player"                                                                          
-                    )                                                                                                 
-                                                                                                                    
-                    if profile_player:                                                                                
-                        profile = get_player_profile(profiles_df, profile_player)                                     
-                                                                                                                    
-                        if profile:                                                                                   
-                            render_player_profile_card(profile, show_full=True)                                       
-                        else:                                                                                         
-                            st.info(f"No betting profile found for {profile_player}. They may not be in the field or the profile wasn't published.") 
-               
+           
 
 # ============================================================================
 # PAGE: SCORING ENGINE
@@ -5332,8 +5972,6 @@ elif page == "🎰 Betting":
             # TAB 0: AI PICKS (LLM RECOMMENDATIONS)
             # =================================================================
             with props_tab1:
-                st.markdown("### 🤖 AI-Powered Betting Recommendations")
-                st.caption("Model-computed edges with intelligent pick recommendations")
 
                 if is_tournament_over:
                     st.warning("🏁 Tournament has finished. No active betting recommendations.")
@@ -5347,25 +5985,9 @@ elif page == "🎰 Betting":
                     # Risk profile selector
                     profile_col1, profile_col2, profile_col3 = st.columns([2, 2, 2])
 
-                    with profile_col1:
-                        risk_profile = st.selectbox(
-                            "Risk Profile",
-                            options=["balanced", "conservative", "aggressive"],
-                            format_func=lambda x: {
-                                "conservative": "🛡️ Conservative - Lower variance, high confidence",
-                                "balanced": "⚖️ Balanced - Mix of value and safety",
-                                "aggressive": "🚀 Aggressive - Chase bigger edges",
-                            }.get(x, x),
-                            index=0,
-                            key="ai_risk_profile",
-                        )
+                   
 
-                    with profile_col2:
-                        max_picks = st.slider("Max Picks", 3, 10, 5, key="ai_max_picks")
-
-                    with profile_col3:
-                        include_parlays = st.checkbox("Include Parlays", value=True, key="ai_parlays")
-
+                    
                     # Get edge summary first
                     if rec_tournament_id:
                         edge_summary = get_edge_summary(rec_tournament_id)
@@ -5407,116 +6029,17 @@ elif page == "🎰 Betting":
                                 st.caption("📊 Using pre-tournament model predictions")
 
                     # Summary metrics
-                    sum_c1, sum_c2, sum_c3, sum_c4 = st.columns(4)
-                    with sum_c1:
-                        st.metric("Total Legs Scanned", edge_summary.get("total_legs", 0))
-                    with sum_c2:
-                        pos_edges = edge_summary.get("positive_edge_legs", 0)
-                        st.metric("Positive Edge Legs", pos_edges)
-                    with sum_c3:
-                        best = edge_summary.get("best_edge", 0) * 100
-                        st.metric("Best Edge", f"{best:.1f}%")
-                    with sum_c4:
-                        avg = edge_summary.get("avg_edge", 0) * 100
-                        st.metric("Avg Edge", f"{avg:.1f}%")
-
+                    
                     st.markdown("---")
 
                     # Generate recommendations
-                    if st.button("🎯 Generate Recommendations", type="primary", key="gen_recs"):
-                        if not rec_tournament_id:
-                            st.warning("No active tournament ID detected for recommendations yet.")
-                        else:
-                            with st.spinner("Analyzing edges and generating picks..."):
-                                profile_enum = RiskProfile(risk_profile)
-                                recs = generate_recommendations(
-                                    rec_tournament_id,
-                                    profile=profile_enum,
-                                    max_slips=max_picks,
-                                    include_parlays=include_parlays,
-                                )
-
-                                if not recs:
-                                    st.warning("No recommendations generated. Check if predictions and sportsbook lines are available.")
-                                else:
-                                    st.success(f"Generated {len(recs)} recommendations")
-
-                                    for i, slip in enumerate(recs, 1):
-                                        display = format_slip_for_display(slip)
-
-                                        # Determine card styling based on EV
-                                        ev_val = slip.ev_per_unit
-                                        if ev_val > 0.1:
-                                            border_color = "#10b981"  # Green
-                                        elif ev_val > 0:
-                                            border_color = "#f59e0b"  # Yellow
-                                        else:
-                                            border_color = "#6b7280"  # Gray
-
-                                        with st.container():
-                                            st.markdown(f"""
-                                            <div style="border-left: 4px solid {border_color}; padding-left: 1rem; margin: 1rem 0;">
-                                            <h4>#{i} {display['type']} {'🎲' if slip.is_parlay else '🎯'}</h4>
-                                            </div>
-                                            """, unsafe_allow_html=True)
-
-                                            # Legs
-                                            for leg in display['legs']:
-                                                leg_cols = st.columns([3, 1, 1, 1])
-                                                with leg_cols[0]:
-                                                    source_emoji = "🎰" if leg['book'] != "MODEL" else "📊"
-                                                    st.markdown(f"**{leg['player']}** {leg['selection']}")
-                                                with leg_cols[1]:
-                                                    st.markdown(f"`{leg['odds']}`")
-                                                with leg_cols[2]:
-                                                    edge_val = float(leg['edge'].replace('%', ''))
-                                                    edge_color = "green" if edge_val > 5 else "orange" if edge_val > 0 else "red"
-                                                    st.markdown(f":{edge_color}[{leg['edge']} edge]")
-                                                with leg_cols[3]:
-                                                    st.caption(f"{source_emoji} {leg['book']}")
-
-                                            # Combined stats
-                                            stat_cols = st.columns(4)
-                                            with stat_cols[0]:
-                                                st.metric("Combined Odds", display['combined_odds'])
-                                            with stat_cols[1]:
-                                                st.metric("Win Prob", display['combined_prob'])
-                                            with stat_cols[2]:
-                                                st.metric("Edge", display['edge'])
-                                            with stat_cols[3]:
-                                                ev_display = display['ev']
-                                                st.metric("EV", ev_display)
-
-                                            # Reasoning
-                                            st.info(f"💡 {display['reasoning']}")
-
-                                            # Risk notes
-                                            if display['risk_notes']:
-                                                with st.expander("⚠️ Risk Notes"):
-                                                    for note in display['risk_notes']:
-                                                        st.caption(f"• {note}")
-
-                                            st.markdown("---")
-
-                    # Edge breakdown by market
-                    with st.expander("📊 Edge Breakdown by Market", expanded=False):
-                        markets = edge_summary.get("markets", {})
-                        if markets:
-                            for market, data in markets.items():
-                                m_cols = st.columns([2, 1, 1, 1])
-                                with m_cols[0]:
-                                    st.markdown(f"**{market.upper()}**")
-                                with m_cols[1]:
-                                    st.caption(f"{data['count']} legs")
-                                with m_cols[2]:
-                                    st.caption(f"Best: {data['best_edge']*100:.1f}%")
-                                with m_cols[3]:
-                                    st.caption(f"Avg: {data['avg_edge']*100:.1f}%")
-                        else:
-                            st.caption("No edge data available")
+                    
+                
 
                 st.markdown("---")
                 render_tracked_bets_section(prop_tournament_id)
+                st.markdown("---")
+                render_betting_copilot_section(prop_tournament_id)
 
             # =================================================================
             # TAB 2: DRAFTKINGS ODDS
@@ -6076,6 +6599,38 @@ elif page == "📊 Predictions":
 
         st.markdown("---")
 
+        selected_tournament_id = _tournament_id_from_df(df)
+        mode_col, helper_col = st.columns([1.0, 2.0])
+        with mode_col:
+            lineup_output_mode = st.selectbox(
+                "Lineup Output Mode",
+                options=["Compact", "Detailed"],
+                index=1,
+                key=f"pred_lineup_output_mode_{selected_tournament_id or selected}",
+            )
+        with helper_col:
+            st.caption("`Compact` shortens reasoning lines. `Detailed` keeps full context.")
+
+        render_predictions_freshness_panel(
+            selected_tournament=selected,
+            selected_tournament_id=selected_tournament_id,
+            predictions_path=file_options[selected],
+        )
+        st.markdown("---")
+
+        render_lineup_strategies_section(
+            tournament_name=selected,
+            tournament_id=selected_tournament_id,
+            context_df=df,
+            output_mode=lineup_output_mode,
+        )
+        st.markdown("---")
+        render_fantasy_strategy_copilot(
+            tournament_name=selected,
+            predictions_path=file_options[selected],
+        )
+        st.markdown("---")
+
         # Tabs
         tab1, tab2, tab3, tab4, tab5 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head", "📈 Visualizations", "🔍 Search"]) 
 
@@ -6097,6 +6652,29 @@ elif page == "📊 Predictions":
                                  'Top-10 %', 'SG Total', 'Course Plays']
 
             st.dataframe(display_df, hide_index=True, use_container_width=True)
+
+            st.markdown("#### 🔎 Why This Pick")
+            why_cols = st.columns([2.2, 1.0])
+            with why_cols[0]:
+                selected_player = st.selectbox(
+                    "Choose player",
+                    options=top_20["player_name"].tolist(),
+                    key=f"why_pick_player_{selected_tournament_id or selected}",
+                )
+            with why_cols[1]:
+                st.markdown("<br>", unsafe_allow_html=True)
+                explain_click = st.button(
+                    "Explain Pick",
+                    use_container_width=True,
+                    key=f"why_pick_btn_{selected_tournament_id or selected}",
+                )
+
+            why_key = f"why_pick_text_{selected_tournament_id or selected}"
+            if explain_click and selected_player:
+                selected_row = top_20[top_20["player_name"] == selected_player].iloc[0]
+                st.session_state[why_key] = build_player_pick_reason_text(selected_row)
+            if why_key in st.session_state:
+                st.markdown(st.session_state[why_key])
 
         with tab2:
             render_tier_list(df)

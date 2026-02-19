@@ -173,6 +173,9 @@ class QuestionParser:
         (r"(?:who|which players?)\s+(?:has|have)\s+(?:the\s+)?best\s+(?:course\s+)?fit", "course_fit", []),
         (r"(?:who|which players?)\s+should i\s+(?:avoid|skip|fade)", "avoid_players", []),
         (r"(?:who|which players?)\s+(?:are|is)\s+(?:overrated|overvalued)", "avoid_players", []),
+        (r"(?:explain|breakdown|analyze|analysis|why).*(?:primary\\s+)?lineups?.*(?:pivot|swap|risk|safe|balanced|upside)?", "lineup_explain", []),
+        (r"(?:primary\\s+lineup|lineup\\s+pivots?|pivot\\s+swaps?)", "lineup_explain", []),
+        (r"(?:lineup|lineups?).*(?:breakdown|explain|risk|safe|balanced|upside)", "lineup_explain", []),
         (r"(?:best|optimal|recommended)\s+lineup", "lineup", []),
         (r"(?:give|show|get)\s+(?:me\s+)?(?:a\s+)?lineup", "lineup", []),
 
@@ -876,12 +879,104 @@ class GolfAssistant:
         latest_path = expert_dir / "expert_picks_latest.csv"
         if latest_path.exists():
             try:
-                self.expert_picks = pd.read_csv(latest_path)
-                if "player_name" in self.expert_picks.columns:
-                    self.expert_picks["key"] = self.expert_picks["player_name"].str.lower().str.strip()
-                print(f"  Loaded expert picks: {len(self.expert_picks)} picks")
+                raw_df = pd.read_csv(latest_path)
+                self.expert_picks = self._normalize_expert_picks_df(raw_df)
+                if self.expert_picks is None or self.expert_picks.empty:
+                    self.expert_picks = None
+                    print(f"  Loaded expert picks: {latest_path.name} (no usable rows)")
+                else:
+                    print(f"  Loaded expert picks: {len(self.expert_picks)} picks")
             except Exception as e:
                 print(f"  Could not load expert picks: {e}")
+
+    def _safe_parse_name_list(self, value: Any) -> List[str]:
+        """Parse a JSON/list-like value into a cleaned list of player names."""
+        if value is None or (isinstance(value, float) and pd.isna(value)):
+            return []
+        if isinstance(value, list):
+            return [str(v).strip() for v in value if str(v).strip()]
+
+        text = str(value).strip()
+        if not text:
+            return []
+
+        parsed = None
+        try:
+            parsed = json.loads(text)
+        except Exception:
+            try:
+                import ast
+                parsed = ast.literal_eval(text)
+            except Exception:
+                parsed = None
+
+        if isinstance(parsed, list):
+            return [str(v).strip() for v in parsed if str(v).strip()]
+        return [text]
+
+    def _normalize_expert_picks_df(self, df: pd.DataFrame) -> Optional[pd.DataFrame]:
+        """
+        Normalize expert picks into canonical columns:
+        player_name, pick_type, source, note, key, consensus_count
+        Supports both legacy row-per-pick format and PGA ep_table format.
+        """
+        if df is None or df.empty:
+            return None
+
+        out = df.copy()
+
+        # ep_table format -> explode lineup/bench/winner into pick rows.
+        if "pick_type" not in out.columns and "lineup_player_names" in out.columns:
+            rows: List[Dict[str, Any]] = []
+            for _, r in out.iterrows():
+                source = str(r.get("expert_name") or r.get("source_url") or "PGA Expert").strip()
+                note = str(r.get("comment") or "").strip()
+
+                lineup_names = self._safe_parse_name_list(r.get("lineup_player_names"))
+                bench_names = self._safe_parse_name_list(r.get("bench_player_names"))
+                winner_name = str(r.get("winner_name") or "").strip()
+
+                for name in lineup_names:
+                    rows.append({"player_name": name, "pick_type": "lineup", "source": source, "note": note})
+                for name in bench_names:
+                    rows.append({"player_name": name, "pick_type": "bench", "source": source, "note": note})
+                if winner_name:
+                    rows.append({"player_name": winner_name, "pick_type": "winner", "source": source, "note": note})
+
+            out = pd.DataFrame(rows)
+            if out.empty:
+                return None
+
+        # Legacy-ish format fallback.
+        if "player_name" not in out.columns:
+            if "name" in out.columns:
+                out["player_name"] = out["name"]
+            else:
+                return None
+
+        if "pick_type" not in out.columns:
+            out["pick_type"] = "pick"
+        if "source" not in out.columns:
+            out["source"] = "Unknown"
+        if "note" not in out.columns:
+            out["note"] = ""
+
+        out["player_name"] = out["player_name"].astype(str).str.strip()
+        out = out[out["player_name"] != ""].copy()
+        if out.empty:
+            return None
+
+        out["pick_type"] = out["pick_type"].fillna("pick").astype(str).str.strip().str.lower()
+        out["source"] = out["source"].fillna("Unknown").astype(str).str.strip()
+        out["note"] = out["note"].fillna("").astype(str).str.strip()
+
+        out["key"] = out["player_name"].str.lower().str.strip()
+        out["consensus_count"] = out.groupby("key")["source"].transform("nunique")
+
+        # Keep canonical columns first, retain extras for debugging/context.
+        cols = ["player_name", "pick_type", "source", "note", "key", "consensus_count"]
+        extra = [c for c in out.columns if c not in cols]
+        return out[cols + extra]
 
     def _load_pga_expert_picks(self):
         """Load PGA Tour expert picks with full lineup data."""
@@ -1921,7 +2016,8 @@ class GolfAssistant:
         question: str,
         tournament_name: Optional[str] = None,
         use_ollama: bool = True,
-        ollama_model: str = "llama3.2"
+        ollama_model: str = "llama3.2",
+        ollama_url: Optional[str] = None,
     ) -> str:
         """
         Ask the assistant a question.
@@ -1931,6 +2027,7 @@ class GolfAssistant:
             tournament_name: Optional tournament context
             use_ollama: Whether to use Ollama (True) or return structured response
             ollama_model: Ollama model to use
+            ollama_url: Optional Ollama generate endpoint or host
 
         Returns:
             Response string
@@ -2014,6 +2111,14 @@ class GolfAssistant:
             answer = self._handle_cancel_run_predictions()
             self.add_to_history("assistant", answer)
             return answer
+        if intent == "lineup_explain":
+            answer = self._handle_lineup_explain(question)
+            self.add_to_history("assistant", answer)
+            return answer
+        if intent == "lineup":
+            answer = self._format_lineup_response(self.get_lineup_recommendation())
+            self.add_to_history("assistant", answer)
+            return answer
 
         if self.predictions is not None and not skip_field_check:
             known_players = self.predictions['player_name'].tolist()
@@ -2044,8 +2149,18 @@ class GolfAssistant:
         if use_ollama:
             try:
                 import requests
+                raw_ollama_url = str(
+                    ollama_url or os.getenv("OLLAMA_HOST", "http://localhost:11434")
+                ).strip()
+                if not raw_ollama_url:
+                    raw_ollama_url = "http://localhost:11434"
+                if raw_ollama_url.endswith("/api/generate"):
+                    resolved_ollama_url = raw_ollama_url
+                else:
+                    resolved_ollama_url = raw_ollama_url.rstrip("/") + "/api/generate"
+
                 response = requests.post(
-                    "http://localhost:11434/api/generate",
+                    resolved_ollama_url,
                     json={
                         "model": ollama_model,
                         "system": system_prompt,  # Separate system message for better adherence
@@ -2075,10 +2190,26 @@ Question: {question}
                     self.add_to_history("assistant", answer)
                     return answer
                 else:
-                    return f"Error: Ollama returned status {response.status_code}"
+                    err_text = ""
+                    try:
+                        err_text = str(response.json().get("error", "")).strip()
+                    except Exception:
+                        err_text = (response.text or "").strip()
+                    if "not found" in err_text.lower() and "model" in err_text.lower():
+                        return (
+                            f"Error: {err_text}\n\n"
+                            f"Run this first: `ollama pull {ollama_model}`"
+                        )
+                    return (
+                        f"Error: Ollama returned status {response.status_code} "
+                        f"at {resolved_ollama_url}\n{err_text[:500]}"
+                    )
 
             except Exception as e:
-                return f"Error connecting to Ollama: {e}\n\nMake sure Ollama is running: `ollama serve`"
+                return (
+                    f"Error connecting to Ollama: {e}\n\n"
+                    "Make sure Ollama is running: `ollama serve`"
+                )
         else:
             # Return structured response without LLM
             answer = self._generate_simple_response(question)
@@ -2122,6 +2253,9 @@ Question: {question}
 
         elif intent == "avoid_players":
             return self._handle_avoid_players()
+
+        elif intent == "lineup_explain":
+            return self._handle_lineup_explain(question)
 
         elif intent == "lineup":
             result = self.get_lineup_recommendation()
@@ -3952,6 +4086,279 @@ Question: {question}
 
         table = self._fmt_table(headers, rows)
         return "\n".join([f"## Top {count} Picks This Week", table]).strip()
+
+    def _lineup_name_key(self, name: str) -> str:
+        """Normalize a player name to match across different sources/formats."""
+        text = str(name or "").lower().strip()
+        text = text.replace(",", " ").replace(".", " ").replace("-", " ")
+        tokens = [t for t in text.split() if t and t not in {"jr", "sr", "ii", "iii", "iv", "v"}]
+        tokens.sort()
+        return " ".join(tokens)
+
+    def _load_lineup_profiles(self, tournament_name: Optional[str] = None) -> Tuple[Dict[str, Any], str]:
+        """Load safe/balanced/upside lineup profiles from outputs JSON/CSV."""
+        candidates: List[Path] = []
+        if tournament_name:
+            slug = re.sub(r"[^a-z0-9]+", "_", str(tournament_name).lower()).strip("_")
+            if slug:
+                candidates.append(OUTPUTS_DIR / f"{slug}_lineup_strategies.json")
+                if slug.startswith("the_"):
+                    candidates.append(OUTPUTS_DIR / f"{slug[4:]}_lineup_strategies.json")
+
+        latest_json = OUTPUTS_DIR / "lineup_strategies_latest.json"
+        if latest_json.exists():
+            candidates.append(latest_json)
+        candidates.extend(sorted(OUTPUTS_DIR.glob("*_lineup_strategies.json"), key=lambda p: p.stat().st_mtime, reverse=True)[:8])
+
+        seen: set = set()
+        for p in candidates:
+            if p in seen or not p.exists():
+                continue
+            seen.add(p)
+            try:
+                payload = json.loads(p.read_text())
+            except Exception:
+                continue
+            profiles = payload.get("profiles", {}) if isinstance(payload, dict) else {}
+            if isinstance(profiles, dict) and profiles:
+                return profiles, p.name
+
+        # CSV fallback
+        csv_candidates: List[Path] = []
+        if tournament_name:
+            slug = re.sub(r"[^a-z0-9]+", "_", str(tournament_name).lower()).strip("_")
+            if slug:
+                csv_candidates.append(OUTPUTS_DIR / f"{slug}_lineup_strategies.csv")
+                if slug.startswith("the_"):
+                    csv_candidates.append(OUTPUTS_DIR / f"{slug[4:]}_lineup_strategies.csv")
+        latest_csv = OUTPUTS_DIR / "lineup_strategies_latest.csv"
+        if latest_csv.exists():
+            csv_candidates.append(latest_csv)
+        csv_candidates.extend(sorted(OUTPUTS_DIR.glob("*_lineup_strategies.csv"), key=lambda p: p.stat().st_mtime, reverse=True)[:8])
+
+        seen_csv: set = set()
+        for p in csv_candidates:
+            if p in seen_csv or not p.exists():
+                continue
+            seen_csv.add(p)
+            try:
+                df = pd.read_csv(p)
+            except Exception:
+                continue
+            if df.empty or "profile" not in df.columns or "player_name" not in df.columns:
+                continue
+            profiles: Dict[str, Any] = {}
+            for prof, g in df.groupby(df["profile"].astype(str).str.lower()):
+                rows = g.to_dict(orient="records")
+                profiles[str(prof)] = {
+                    "profile": str(prof).title(),
+                    "players": [str(r.get("player_name", "")).strip() for r in rows if str(r.get("player_name", "")).strip()],
+                    "details": rows,
+                    "summary": {},
+                }
+            if profiles:
+                return profiles, p.name
+
+        return {}, ""
+
+    def _handle_lineup_explain(self, question: str = "") -> str:
+        """Explain one primary lineup with structured, stats-backed player notes."""
+        if self.predictions is None or self.predictions.empty:
+            return "Predictions are not loaded yet. Run predictions first."
+
+        profiles, source_name = self._load_lineup_profiles(self.current_tournament)
+        if not profiles:
+            result = self.get_lineup_recommendation()
+            return self._format_lineup_response(result)
+
+        def _num(v: Any) -> Optional[float]:
+            n = pd.to_numeric(v, errors="coerce")
+            return None if pd.isna(n) else float(n)
+
+        def _pct(prob: Optional[float], digits: int = 1) -> str:
+            if prob is None:
+                return "n/a"
+            return f"{prob * 100:.{digits}f}%"
+
+        def _profile_details_map(profile_key: str) -> Dict[str, Dict[str, Any]]:
+            info = profiles.get(profile_key, {}) if isinstance(profiles, dict) else {}
+            detail_rows = info.get("details", []) if isinstance(info.get("details", []), list) else []
+            out: Dict[str, Dict[str, Any]] = {}
+            for d in detail_rows:
+                pname = str(d.get("player_name", "")).strip()
+                if pname:
+                    out[self._lineup_name_key(pname)] = d
+            return out
+
+        def _player_with_context(name: str, details_map: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+            d = details_map.get(self._lineup_name_key(name), {})
+            pred = self._find_player(name)
+            out = dict(d) if isinstance(d, dict) else {}
+            if pred is not None:
+                for col in [
+                    "win_prob", "top10_prob", "cut_prob", "hist_times_played",
+                    "hist_top10s", "hist_wins", "hist_avg_finish", "dg_fit_total",
+                    "leverage_score", "usage_recommendation", "uses_remaining",
+                    "top20_prob", "form_trend", "sg_total", "sg_ott", "sg_app", "sg_arg", "sg_putt",
+                ]:
+                    if col not in out or pd.isna(pd.to_numeric(out.get(col), errors="coerce")):
+                        out[col] = pred.get(col)
+            out["player_name"] = name
+            return out
+
+        def _primary_key() -> str:
+            for k in ["balanced", "safe", "upside"]:
+                info = profiles.get(k, {})
+                players = info.get("players", []) if isinstance(info, dict) else []
+                if players:
+                    return k
+            return next(iter(profiles.keys()))
+
+        def _risk_label(profile_key: str) -> str:
+            return {"safe": "Low", "balanced": "Medium", "upside": "High"}.get(profile_key, "Medium")
+
+        pkey = _primary_key()
+        pinfo = profiles.get(pkey, {}) if isinstance(profiles, dict) else {}
+        primary_players = [str(p).strip() for p in pinfo.get("players", []) if str(p).strip()]
+        if not primary_players:
+            result = self.get_lineup_recommendation()
+            return self._format_lineup_response(result)
+
+        primary_details = _profile_details_map(pkey)
+
+        lines = ["## PRIMARY LINEUP RECOMMENDATION"]
+        if source_name:
+            lines.append(f"_Lineup source: {source_name}_")
+        lines.append(f"Primary Strategy: {pkey.title()}")
+        lines.append(f"Recommended Players: {', '.join(primary_players)}")
+        lines.append(f"Risk Profile: {_risk_label(pkey)}")
+
+        def _pretty_name(name: str) -> str:
+            text = str(name or "").strip()
+            if "," in text:
+                parts = [p.strip() for p in text.split(",", 1)]
+                if len(parts) == 2 and parts[0] and parts[1]:
+                    return f"{parts[1]} {parts[0]}"
+            return text
+
+        def _sg_bar(val: Optional[float], width: int = 20) -> str:
+            if val is None:
+                return "·" * width
+            v = float(val)
+            # Typical SG range bucket for display only.
+            v = max(-1.0, min(1.5, v))
+            pct = (v + 1.0) / 2.5
+            fill = int(round(pct * width))
+            fill = max(0, min(width, fill))
+            return "▓" * fill + "·" * (width - fill)
+
+        def _fmt_sg(v: Optional[float]) -> str:
+            if v is None:
+                return "n/a"
+            return f"{v:+.3f}"
+
+        miss_cut_vals: List[float] = []
+        lines.append("")
+        lines.append("## PLAYER BREAKDOWN")
+        for idx, name in enumerate(primary_players, 1):
+            row = _player_with_context(name, primary_details)
+            win_prob = _num(row.get("win_prob"))
+            top10_prob = _num(row.get("top10_prob"))
+            top20_prob = _num(row.get("top20_prob"))
+            cut_prob = _num(row.get("cut_prob"))
+            usage_rec = str(row.get("usage_recommendation", "")).strip()
+            if usage_rec.lower() in {"none", "nan", "na", "n/a", "null"}:
+                usage_rec = ""
+            uses_left = _num(row.get("uses_remaining"))
+            dg_fit = _num(row.get("dg_fit_total"))
+            starts = _num(row.get("hist_times_played"))
+            hist_top10s = _num(row.get("hist_top10s"))
+            hist_wins = _num(row.get("hist_wins"))
+            hist_avg_finish = _num(row.get("hist_avg_finish"))
+            form_trend = _num(row.get("form_trend"))
+            sg_total = _num(row.get("sg_total"))
+            sg_ott = _num(row.get("sg_ott"))
+            sg_app = _num(row.get("sg_app"))
+            sg_arg = _num(row.get("sg_arg"))
+            sg_putt = _num(row.get("sg_putt"))
+
+            lines.append("")
+            lines.append(f"### {idx}) {_pretty_name(name)}")
+            lines.append("🏟️ At This Tournament")
+
+            starts_i = int(starts) if starts is not None else 0
+            if starts_i > 0:
+                history_parts = [f"{starts_i} starts"]
+                if hist_top10s is not None and hist_top10s > 0:
+                    t10_i = int(hist_top10s)
+                    history_parts.append(f"{t10_i} top-10" + ("" if t10_i == 1 else "s"))
+                if hist_wins is not None and hist_wins > 0:
+                    wins_i = int(hist_wins)
+                    history_parts.append(f"{wins_i} win" + ("" if wins_i == 1 else "s"))
+                if hist_avg_finish is not None:
+                    history_parts.append(f"{hist_avg_finish:.1f} avg finish")
+                lines.append(f"- Course history: {', '.join(history_parts[:4])}.")
+            elif dg_fit is not None:
+                lines.append(f"- No deep event history in current table; course-fit signal is {dg_fit:+.3f}.")
+            else:
+                lines.append("- Limited tournament-history data available in current dataset.")
+
+            lines.append(
+                f"- Model outlook: Win {_pct(win_prob, 2)} | Top-10 {_pct(top10_prob, 1)} | Top-20 {_pct(top20_prob, 1)} | Cut {_pct(cut_prob, 1)}."
+            )
+            if usage_rec and uses_left is not None:
+                lines.append(f"- Usage context: {usage_rec.title()} with {int(uses_left)}/3 uses left.")
+            elif usage_rec:
+                lines.append(f"- Usage context: {usage_rec.title()}.")
+
+            lines.append("📈 Recent Form")
+            if form_trend is not None:
+                if form_trend > 0.15:
+                    trend_note = "improving"
+                elif form_trend < -0.15:
+                    trend_note = "slipping"
+                else:
+                    trend_note = "stable"
+                lines.append(f"- Form trend is {trend_note} ({form_trend:+.3f}).")
+            else:
+                lines.append("- Form trend not available; relying on strokes-gained profile.")
+
+            lines.append("- STROKES GAINED (per round avg, model window)")
+            lines.append("  ------------------------------------------------------------------")
+            sg_rows = [
+                ("SG: Total", sg_total),
+                ("SG: Off-the-Tee", sg_ott),
+                ("SG: Approach", sg_app),
+                ("SG: Around-the-Green", sg_arg),
+                ("SG: Putting", sg_putt),
+            ]
+            for label, sval in sg_rows:
+                lines.append(f"- {label:<19} {_fmt_sg(sval):>7}  [{_sg_bar(sval)}]")
+
+            metric_vals = [(lbl, val) for lbl, val in sg_rows[1:] if val is not None]
+            if metric_vals:
+                strength = max(metric_vals, key=lambda x: x[1])
+                weakness = min(metric_vals, key=lambda x: x[1])
+                lines.append("- ANALYSIS")
+                lines.append("  ------------------------------------------------------------------")
+                lines.append(f"- 💪 Strength: {strength[0].replace('SG: ', '')} ({strength[1]:+.3f})")
+                lines.append(f"- ⚠️ Relative weakness: {weakness[0].replace('SG: ', '')} ({weakness[1]:+.3f})")
+
+            if cut_prob is not None:
+                miss_cut_vals.append(max(0.0, (1.0 - cut_prob) * 100.0))
+
+        miss_cut_avg = float(np.mean(miss_cut_vals)) if miss_cut_vals else None
+        if miss_cut_avg is not None and miss_cut_avg > 4.0:
+            main_risk = f"This primary lineup has elevated miss-cut exposure (~{miss_cut_avg:.1f}% average miss-cut rate)."
+        elif pkey == "safe":
+            main_risk = "Main risk is ceiling: strong floor, but fewer pure win-outlier profiles."
+        elif pkey == "balanced":
+            main_risk = "Main risk is conversion: several players project top-20 well but must convert to top-10 finishes."
+        else:
+            main_risk = "Main risk is volatility: one missed cut can materially drag total lineup output."
+        lines.append(f"Main Risk: {main_risk}")
+
+        return "\n".join(lines)
 
     def _format_lineup_response(self, result: Dict) -> str:
         """Format lineup recommendation as string."""

@@ -20,12 +20,12 @@ Usage:
 
 import os
 import json
+import sys
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, List, Any, Tuple
-
 # Project paths
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
@@ -70,6 +70,16 @@ class TournamentCalendar:
             else:
                 cls._schedule_df = pd.DataFrame()
         return cls._schedule_df
+
+
+
+    
+
+
+
+
+
+
 
     @staticmethod
     def _parse_money(val) -> float:
@@ -1004,6 +1014,549 @@ class UsageOptimizer:
 
         return results
 
+    @staticmethod
+    def _norm_01(series: pd.Series) -> pd.Series:
+        """Min-max normalize series to [0, 1], robust to constants/NaN."""
+        s = pd.to_numeric(series, errors="coerce")
+        if s.isna().all():
+            return pd.Series(np.zeros(len(s)), index=s.index, dtype=float)
+        mn = float(s.min())
+        mx = float(s.max())
+        if np.isclose(mx, mn):
+            return pd.Series(np.full(len(s), 0.5), index=s.index, dtype=float)
+        out = (s - mn) / (mx - mn)
+        return out.fillna(0.5).clip(0.0, 1.0)
+
+    def _load_scoring_engine_scores(self, tournament_name: str) -> pd.DataFrame:
+        """
+        Optionally load scoring-engine features for this tournament.
+        Returns empty DataFrame if unavailable, so lineup generation still works.
+        """
+        try:
+            planning_dir = PROJECT_ROOT / "scripts" / "planning"
+            if str(planning_dir) not in sys.path:
+                sys.path.insert(0, str(planning_dir))
+
+            from scoring_engine import ScoringEngine  # type: ignore
+
+            engine = ScoringEngine(tournament=tournament_name)
+            recs = engine.get_tournament_recommendations(
+                tournament=tournament_name,
+                top_n=max(30, len(engine.predictions)),
+                min_uses=0,
+            )
+            rows = []
+            for s in recs:
+                rows.append(
+                    {
+                        "player_name_engine": str(getattr(s, "player", "")).strip(),
+                        "engine_total_score": float(getattr(s, "total_score", 0.0)),
+                        "engine_course_fit": float(getattr(s, "course_fit", 0.0)),
+                        "engine_form_score": float(getattr(s, "current_form", 0.0)),
+                        "engine_field_score": float(getattr(s, "field_strength", 0.0)),
+                        "engine_importance_score": float(getattr(s, "tournament_importance", 0.0)),
+                    }
+                )
+
+            if not rows:
+                return pd.DataFrame()
+
+            out = pd.DataFrame(rows)
+            out["name_key"] = out["player_name_engine"].apply(UsageTracker._name_key)
+            out = out.drop_duplicates(subset=["name_key"], keep="first")
+            return out
+        except Exception:
+            return pd.DataFrame()
+
+    def _build_lineup(
+        self,
+        pool_df: pd.DataFrame,
+        score_col: str,
+        lineup_size: int,
+        prior_lineups: List[List[str]],
+        max_overlap_between_lineups: int,
+    ) -> List[str]:
+        """Greedy lineup builder with overlap control across strategy profiles."""
+        ranked = pool_df.sort_values(
+            [score_col, "expected_value", "top10_prob", "cut_prob"],
+            ascending=[False, False, False, False],
+            na_position="last",
+        )
+
+        lineup: List[str] = []
+        for row in ranked.itertuples(index=False):
+            if len(lineup) >= lineup_size:
+                break
+
+            name = str(getattr(row, "player_name", "")).strip()
+            if not name or name in lineup:
+                continue
+            if int(getattr(row, "uses_remaining", 0)) <= 0:
+                continue
+
+            valid_overlap = True
+            for prior in prior_lineups:
+                overlap_if_added = len(set(prior).intersection(set(lineup + [name])))
+                if overlap_if_added > max_overlap_between_lineups:
+                    valid_overlap = False
+                    break
+
+            if valid_overlap:
+                lineup.append(name)
+
+        # Fallback fill if overlap constraints are too tight.
+        if len(lineup) < lineup_size:
+            for row in ranked.itertuples(index=False):
+                if len(lineup) >= lineup_size:
+                    break
+                name = str(getattr(row, "player_name", "")).strip()
+                if not name or name in lineup:
+                    continue
+                if int(getattr(row, "uses_remaining", 0)) <= 0:
+                    continue
+                lineup.append(name)
+
+        return lineup
+
+    def build_strategy_lineups(
+        self,
+        predictions_df: pd.DataFrame,
+        tournament_name: str,
+        lineup_size: int = 3,
+        candidate_pool_size: int = 45,
+        max_overlap_between_lineups: int = 2,
+    ) -> Dict[str, Any]:
+        """
+        Build three fantasy strategy lineups:
+        - safe: cut safety and floor
+        - balanced: mix of floor/upside/leverage
+        - upside: ceiling and leverage
+        """
+        if predictions_df is None or predictions_df.empty or "player_name" not in predictions_df.columns:
+            return {
+                "tournament": tournament_name,
+                "lineup_size": lineup_size,
+                "profiles": {},
+                "pool": pd.DataFrame(),
+            }
+
+        pool = predictions_df.copy()
+        pool["player_name"] = pool["player_name"].fillna("").astype(str).str.strip()
+        pool = pool[pool["player_name"] != ""].copy()
+        if pool.empty:
+            return {
+                "tournament": tournament_name,
+                "lineup_size": lineup_size,
+                "profiles": {},
+                "pool": pd.DataFrame(),
+            }
+
+        # Core probability/stat columns.
+        pool["win_prob"] = pd.to_numeric(pool.get("win_prob"), errors="coerce").fillna(0.0).clip(0.0, 1.0)
+        pool["top5_prob"] = pd.to_numeric(pool.get("top5_prob"), errors="coerce").fillna(0.0).clip(0.0, 1.0)
+        pool["top10_prob"] = pd.to_numeric(pool.get("top10_prob"), errors="coerce").fillna(0.0).clip(0.0, 1.0)
+        pool["top20_prob"] = pd.to_numeric(pool.get("top20_prob"), errors="coerce")
+        missing_top20 = pool["top20_prob"].isna()
+        pool.loc[missing_top20, "top20_prob"] = (
+            pool.loc[missing_top20, "top10_prob"] +
+            (pool.loc[missing_top20, "top10_prob"] - pool.loc[missing_top20, "top5_prob"]) * 1.2
+        ).clip(0.0, 0.95)
+        pool["top20_prob"] = pool["top20_prob"].fillna(0.0).clip(0.0, 1.0)
+
+        pool["cut_prob"] = pd.to_numeric(pool.get("cut_prob"), errors="coerce")
+        missing_cut = pool["cut_prob"].isna()
+        pool.loc[missing_cut, "cut_prob"] = (pool.loc[missing_cut, "top20_prob"] * 1.4 + 0.25).clip(0.0, 0.98)
+        pool["cut_prob"] = pool["cut_prob"].fillna(0.5).clip(0.0, 1.0)
+        pool["miss_cut_prob"] = (1.0 - pool["cut_prob"]).clip(0.0, 1.0)
+
+        pool["expected_value"] = pd.to_numeric(pool.get("expected_value"), errors="coerce").fillna(0.0)
+        pool["sg_total"] = pd.to_numeric(pool.get("sg_total"), errors="coerce").fillna(0.0)
+        pool["sg_app"] = pd.to_numeric(pool.get("sg_app"), errors="coerce").fillna(0.0)
+        pool["sg_putt"] = pd.to_numeric(pool.get("sg_putt"), errors="coerce").fillna(0.0)
+        pool["dg_fit_total"] = pd.to_numeric(pool.get("dg_fit_total"), errors="coerce")
+        if pool["dg_fit_total"].isna().all():
+            pool["dg_fit_total"] = pd.to_numeric(pool.get("course_fit_score"), errors="coerce")
+        pool["dg_fit_total"] = pool["dg_fit_total"].fillna(0.0)
+        pool["recent_cuts_pct"] = pd.to_numeric(pool.get("recent_cuts_pct"), errors="coerce").fillna(pool["cut_prob"])
+        pool["hot_hand_score"] = pd.to_numeric(pool.get("hot_hand_score"), errors="coerce").fillna(0.0)
+        pool["form_trend_num"] = pd.to_numeric(pool.get("form_trend"), errors="coerce").fillna(0.0)
+
+        # Popularity + leverage (use model-vs-market edge when present).
+        world_rank = pd.to_numeric(pool.get("world_rank"), errors="coerce")
+        rank_pop = 1.0 - self._norm_01(world_rank.fillna(world_rank.median() if world_rank.notna().any() else 80))
+        vegas_prob = pd.to_numeric(pool.get("vegas_prob"), errors="coerce")
+        if vegas_prob.notna().any():
+            market_pop = self._norm_01(vegas_prob.fillna(vegas_prob.median()))
+        else:
+            market_pop = self._norm_01(pd.to_numeric(pool.get("odds_numeric"), errors="coerce").fillna(5000) * -1.0)
+        pool["popularity_proxy"] = (0.55 * rank_pop + 0.45 * market_pop).clip(0.0, 1.0)
+
+        raw_edge = pd.to_numeric(pool.get("model_vs_vegas_edge"), errors="coerce")
+        if raw_edge.notna().any():
+            pool["model_gap_raw"] = raw_edge.fillna(raw_edge.median())
+        elif vegas_prob.notna().any():
+            pool["model_gap_raw"] = (pool["win_prob"] - vegas_prob.fillna(vegas_prob.median()))
+        else:
+            pool["model_gap_raw"] = pool["win_prob"] - pool["win_prob"].median()
+
+        pool["top10_norm"] = self._norm_01(pool["top10_prob"])
+        pool["model_gap_norm"] = self._norm_01(pool["model_gap_raw"])
+        pool["leverage_score"] = (0.65 * pool["model_gap_norm"] + 0.35 * (1.0 - pool["popularity_proxy"])).clip(0.0, 1.0)
+        pool["leverage_raw"] = pool["model_gap_raw"]
+
+        # Normalize stat features (pre-candidate selection for fair ranking).
+        pool["sg_total_norm"] = self._norm_01(pool["sg_total"])
+        pool["sg_app_norm"] = self._norm_01(pool["sg_app"])
+        pool["sg_putt_norm"] = self._norm_01(pool["sg_putt"])
+        pool["course_fit_norm"] = self._norm_01(pool["dg_fit_total"])
+        pool["ev_norm"] = self._norm_01(pool["expected_value"])
+        pool["recent_cuts_norm"] = self._norm_01(pool["recent_cuts_pct"])
+        pool["hot_hand_norm"] = self._norm_01(pool["hot_hand_score"])
+        pool["trend_norm"] = self._norm_01(pool["form_trend_num"])
+
+        # Candidate pool mixing: don't rely only on top EV/top probability chalk.
+        target_pool = max(int(candidate_pool_size), lineup_size * 10, 24)
+        n_each = max(8, int(target_pool * 0.40))
+        idx_set = set()
+        for col in ["expected_value", "top10_prob", "course_fit_norm", "hot_hand_norm", "leverage_score"]:
+            if col in pool.columns:
+                idx_set.update(pool.nlargest(n_each, col).index.tolist())
+
+        if len(idx_set) < target_pool:
+            fill = pool.sort_values(["expected_value", "top10_prob", "win_prob"], ascending=[False, False, False])
+            idx_set.update(fill.head(target_pool).index.tolist())
+
+        candidate_pool = pool.loc[sorted(idx_set)].copy()
+        if len(candidate_pool) > target_pool:
+            candidate_pool["candidate_blend"] = (
+                0.30 * candidate_pool["ev_norm"] +
+                0.22 * candidate_pool["top10_norm"] +
+                0.20 * candidate_pool["course_fit_norm"] +
+                0.18 * candidate_pool["leverage_score"] +
+                0.10 * candidate_pool["hot_hand_norm"]
+            )
+            candidate_pool = candidate_pool.sort_values("candidate_blend", ascending=False).head(target_pool).copy()
+        pool = candidate_pool.reset_index(drop=True)
+
+        # Usage signals from strategic optimizer.
+        usage_scores = []
+        usage_recs = []
+        uses_left = []
+        for name in pool["player_name"].tolist():
+            analysis = self.should_use_player(name, tournament_name)
+            usage_scores.append(float(analysis.get("score", 0.0)))
+            usage_recs.append(str(analysis.get("recommendation", "UNKNOWN")))
+            uses_left.append(int(analysis.get("remaining_uses", self.max_uses)))
+
+        pool["usage_score"] = usage_scores
+        pool["usage_recommendation"] = usage_recs
+        pool["uses_remaining"] = uses_left
+        pool["usage_norm"] = ((pool["usage_score"] + 25.0) / 60.0).clip(0.0, 1.0)
+
+        # Optional scoring-engine integration.
+        pool["name_key"] = pool["player_name"].apply(UsageTracker._name_key)
+        engine_df = self._load_scoring_engine_scores(tournament_name)
+        if not engine_df.empty and "name_key" in engine_df.columns:
+            pool = pool.merge(
+                engine_df[
+                    [
+                        "name_key",
+                        "engine_total_score",
+                        "engine_course_fit",
+                        "engine_form_score",
+                        "engine_field_score",
+                        "engine_importance_score",
+                    ]
+                ],
+                on="name_key",
+                how="left",
+            )
+        for c in [
+            "engine_total_score",
+            "engine_course_fit",
+            "engine_form_score",
+            "engine_field_score",
+            "engine_importance_score",
+        ]:
+            if c not in pool.columns:
+                pool[c] = np.nan
+        pool["engine_total_norm"] = self._norm_01(pool["engine_total_score"].fillna(50.0))
+        pool["engine_course_norm"] = self._norm_01(pool["engine_course_fit"].fillna(pool["course_fit_norm"] * 100.0))
+        pool["engine_form_norm"] = self._norm_01(pool["engine_form_score"].fillna(50.0))
+
+        # Scarcity penalty: if uses are low, avoid burning on lower-importance events.
+        tournament_importance = float(self.calendar.get_importance(tournament_name))
+        scarcity_map = {
+            1: 0.18 if tournament_importance <= 6 else (0.09 if tournament_importance <= 8 else 0.01),
+            2: 0.07 if tournament_importance <= 6 else (0.03 if tournament_importance <= 8 else 0.0),
+        }
+        pool["scarcity_penalty"] = pool["uses_remaining"].map(lambda u: scarcity_map.get(int(u), 0.0)).fillna(0.0)
+        pool.loc[pool["uses_remaining"] <= 0, "scarcity_penalty"] = 1.0
+
+        # Composite profile scores (uses + stats + course fit + leverage + scoring engine).
+        pool["safe_score"] = (
+            0.22 * pool["cut_prob"] +
+            0.15 * pool["top20_prob"] +
+            0.10 * pool["top10_prob"] +
+            0.12 * pool["usage_norm"] +
+            0.09 * pool["recent_cuts_norm"] +
+            0.10 * pool["course_fit_norm"] +
+            0.08 * pool["sg_total_norm"] +
+            0.08 * pool["engine_total_norm"] +
+            0.06 * pool["engine_course_norm"] -
+            0.10 * pool["scarcity_penalty"]
+        )
+        pool["balanced_score"] = (
+            0.16 * pool["top10_prob"] +
+            0.12 * pool["top20_prob"] +
+            0.10 * pool["cut_prob"] +
+            0.10 * pool["usage_norm"] +
+            0.12 * pool["leverage_score"] +
+            0.08 * pool["model_gap_norm"] +
+            0.08 * pool["course_fit_norm"] +
+            0.07 * pool["sg_total_norm"] +
+            0.06 * pool["sg_app_norm"] +
+            0.05 * pool["ev_norm"] +
+            0.06 * pool["engine_total_norm"] -
+            0.06 * pool["scarcity_penalty"]
+        )
+        pool["upside_score"] = (
+            0.20 * pool["win_prob"] +
+            0.16 * pool["top5_prob"] +
+            0.07 * pool["top10_prob"] +
+            0.18 * pool["leverage_score"] +
+            0.12 * pool["model_gap_norm"] +
+            0.07 * pool["hot_hand_norm"] +
+            0.05 * pool["trend_norm"] +
+            0.04 * pool["sg_app_norm"] +
+            0.03 * pool["sg_putt_norm"] +
+            0.05 * pool["engine_form_norm"] +
+            0.05 * pool["usage_norm"] -
+            0.13 * pool["miss_cut_prob"] -
+            0.05 * pool["scarcity_penalty"]
+        )
+
+        # Profile constraints.
+        cut_floor = float(max(0.86, pool["cut_prob"].quantile(0.60)))
+        balanced_lev_thresh = float(max(0.52, pool["leverage_score"].quantile(0.60)))
+        upside_lev_thresh = float(max(0.62, pool["leverage_score"].quantile(0.75)))
+        chalk_thresh = float(min(0.80, pool["popularity_proxy"].quantile(0.75)))
+
+        profiles = {
+            "safe": {"score_col": "safe_score", "label": "Safe"},
+            "balanced": {"score_col": "balanced_score", "label": "Balanced"},
+            "upside": {"score_col": "upside_score", "label": "Upside"},
+        }
+
+        built_profiles: Dict[str, Any] = {}
+        prior_lineups: List[List[str]] = []
+
+        def _replace_player(lineup_players: List[str], drop_name: str, add_name: str) -> List[str]:
+            return [add_name if p == drop_name else p for p in lineup_players]
+
+        def _enforce_overlap_cap(lineup_players: List[str], score_col: str) -> List[str]:
+            """Guarantee overlap cap after profile-specific replacements."""
+            if not prior_lineups or not lineup_players:
+                return lineup_players
+
+            trial = list(lineup_players)
+            for _ in range(16):
+                overlap_counts = [len(set(trial).intersection(set(prev))) for prev in prior_lineups]
+                max_seen = max(overlap_counts) if overlap_counts else 0
+                if max_seen <= max_overlap_between_lineups:
+                    break
+
+                # Identify the prior lineup with highest overlap.
+                worst_idx = int(np.argmax(overlap_counts))
+                worst_prior = set(prior_lineups[worst_idx])
+                overlap_players = [p for p in trial if p in worst_prior]
+                if not overlap_players:
+                    break
+
+                # Drop the weakest overlapping player by current profile score.
+                overlap_df = pool[pool["player_name"].isin(overlap_players)].copy()
+                if overlap_df.empty:
+                    break
+                drop_name = str(overlap_df.sort_values(score_col, ascending=True).iloc[0]["player_name"]).strip()
+
+                # Add best candidate that preserves overlap cap with all previous lineups.
+                candidates = pool[
+                    (pool["uses_remaining"] > 0) &
+                    (~pool["player_name"].isin(trial))
+                ].sort_values([score_col, "leverage_score"], ascending=[False, False])
+
+                added = False
+                for _, cand in candidates.iterrows():
+                    add_name = str(cand["player_name"]).strip()
+                    if not add_name:
+                        continue
+                    candidate_trial = _replace_player(trial, drop_name, add_name)
+                    valid = all(
+                        len(set(candidate_trial).intersection(set(prev))) <= max_overlap_between_lineups
+                        for prev in prior_lineups
+                    )
+                    if valid:
+                        trial = candidate_trial
+                        added = True
+                        break
+                if not added:
+                    break
+
+            return trial
+
+        for key in ["safe", "balanced", "upside"]:
+            score_col = profiles[key]["score_col"]
+
+            if key == "safe":
+                lineup_pool = pool[
+                    (pool["uses_remaining"] > 0) &
+                    (pool["cut_prob"] >= cut_floor) &
+                    (pool["scarcity_penalty"] <= 0.10)
+                ].copy()
+                if len(lineup_pool) < lineup_size * 2:
+                    lineup_pool = pool[pool["uses_remaining"] > 0].copy()
+            else:
+                lineup_pool = pool[pool["uses_remaining"] > 0].copy()
+
+            lineup_players = self._build_lineup(
+                pool_df=lineup_pool,
+                score_col=score_col,
+                lineup_size=lineup_size,
+                prior_lineups=prior_lineups,
+                max_overlap_between_lineups=max_overlap_between_lineups,
+            )
+
+            # Balanced: enforce at least one leverage play.
+            if key == "balanced" and lineup_players:
+                current = pool[pool["player_name"].isin(lineup_players)].copy()
+                has_balanced_lev = (current["leverage_score"] >= balanced_lev_thresh).any()
+                if not has_balanced_lev:
+                    candidates = pool[
+                        (pool["leverage_score"] >= balanced_lev_thresh) &
+                        (pool["uses_remaining"] > 0) &
+                        (~pool["player_name"].isin(lineup_players))
+                    ].sort_values([score_col, "model_gap_norm"], ascending=[False, False])
+                    if not candidates.empty:
+                        replacement = str(candidates.iloc[0]["player_name"]).strip()
+                        drop_df = current.sort_values([score_col, "usage_score"], ascending=[True, True])
+                        drop_name = str(drop_df.iloc[0]["player_name"]).strip()
+                        lineup_players = _replace_player(lineup_players, drop_name, replacement)
+
+            # Upside: enforce leverage and limit chalk concentration.
+            if key == "upside" and lineup_players:
+                current = pool[pool["player_name"].isin(lineup_players)].copy()
+                has_upside_lev = (current["leverage_score"] >= upside_lev_thresh).any()
+                if not has_upside_lev:
+                    candidates = pool[
+                        (pool["leverage_score"] >= upside_lev_thresh) &
+                        (pool["uses_remaining"] > 0) &
+                        (~pool["player_name"].isin(lineup_players))
+                    ].sort_values([score_col, "win_prob"], ascending=[False, False])
+                    if not candidates.empty:
+                        replacement = str(candidates.iloc[0]["player_name"]).strip()
+                        drop_df = current.sort_values([score_col, "leverage_score"], ascending=[True, True])
+                        drop_name = str(drop_df.iloc[0]["player_name"]).strip()
+                        lineup_players = _replace_player(lineup_players, drop_name, replacement)
+                        current = pool[pool["player_name"].isin(lineup_players)].copy()
+
+                # Max one chalk player in upside lineup.
+                chalk = current[current["popularity_proxy"] >= chalk_thresh].sort_values(score_col, ascending=False)
+                if len(chalk) > 1:
+                    keep_name = str(chalk.iloc[0]["player_name"]).strip()
+                    for _, row in chalk.iloc[1:].iterrows():
+                        drop_name = str(row["player_name"]).strip()
+                        candidates = pool[
+                            (pool["uses_remaining"] > 0) &
+                            (pool["leverage_score"] >= balanced_lev_thresh) &
+                            (pool["popularity_proxy"] < chalk_thresh) &
+                            (~pool["player_name"].isin(lineup_players))
+                        ].sort_values([score_col, "leverage_score"], ascending=[False, False])
+                        if candidates.empty:
+                            continue
+                        replacement = str(candidates.iloc[0]["player_name"]).strip()
+                        if drop_name != keep_name:
+                            lineup_players = _replace_player(lineup_players, drop_name, replacement)
+
+            lineup_players = _enforce_overlap_cap(lineup_players, score_col)
+            prior_lineups.append(lineup_players)
+
+            lineup_df = pool[pool["player_name"].isin(lineup_players)].copy()
+            if not lineup_df.empty:
+                lineup_df["_order"] = lineup_df["player_name"].apply(lambda x: lineup_players.index(x))
+                lineup_df = lineup_df.sort_values("_order").drop(columns=["_order"])
+
+            built_profiles[key] = {
+                "profile": profiles[key]["label"],
+                "players": lineup_players,
+                "summary": {
+                    "avg_win_prob": float(lineup_df["win_prob"].mean()) if not lineup_df.empty else 0.0,
+                    "avg_top10_prob": float(lineup_df["top10_prob"].mean()) if not lineup_df.empty else 0.0,
+                    "avg_cut_prob": float(lineup_df["cut_prob"].mean()) if not lineup_df.empty else 0.0,
+                    "avg_usage_score": float(lineup_df["usage_score"].mean()) if not lineup_df.empty else 0.0,
+                    "avg_leverage_raw": float(lineup_df["leverage_raw"].mean()) if not lineup_df.empty else 0.0,
+                    "avg_leverage_score": float(lineup_df["leverage_score"].mean()) if not lineup_df.empty else 0.0,
+                    "avg_course_fit": float(lineup_df["course_fit_norm"].mean()) if not lineup_df.empty else 0.0,
+                    "avg_engine_score": float(lineup_df["engine_total_score"].mean()) if not lineup_df.empty else 0.0,
+                },
+                "details": lineup_df[[
+                    "player_name",
+                    "uses_remaining",
+                    "usage_recommendation",
+                    "usage_score",
+                    "win_prob",
+                    "top5_prob",
+                    "top10_prob",
+                    "top20_prob",
+                    "cut_prob",
+                    "model_gap_raw",
+                    "leverage_raw",
+                    "leverage_score",
+                    "course_fit_norm",
+                    "sg_total_norm",
+                    "sg_app_norm",
+                    "hot_hand_norm",
+                    "engine_total_score",
+                    "engine_course_fit",
+                    "scarcity_penalty",
+                    score_col,
+                ]].to_dict(orient="records") if not lineup_df.empty else [],
+            }
+
+        pool_view_cols = [
+            "player_name",
+            "uses_remaining",
+            "usage_recommendation",
+            "usage_score",
+            "win_prob",
+            "top5_prob",
+            "top10_prob",
+            "top20_prob",
+            "cut_prob",
+            "model_gap_raw",
+            "popularity_proxy",
+            "leverage_raw",
+            "leverage_score",
+            "course_fit_norm",
+            "sg_total_norm",
+            "sg_app_norm",
+            "hot_hand_norm",
+            "engine_total_score",
+            "engine_course_fit",
+            "scarcity_penalty",
+            "safe_score",
+            "balanced_score",
+            "upside_score",
+        ]
+        pool_view_cols = [c for c in pool_view_cols if c in pool.columns]
+        pool_view = pool.sort_values("balanced_score", ascending=False)[pool_view_cols].reset_index(drop=True)
+
+        return {
+            "tournament": tournament_name,
+            "lineup_size": lineup_size,
+            "profiles": built_profiles,
+            "pool": pool_view,
+        }
+
     def get_season_usage_summary(self) -> Dict[str, Any]:
         """Get summary of usage across the season."""
         all_usage = self.tracker.get_all_usage()
@@ -1050,7 +1603,14 @@ def main():
 
     # Season planner (uses schedule and per-week predictions)
     if args.plan_season:
-        from usage_planner import SeasonUsagePlanner  # imported lazily to avoid circular deps
+        # Imported lazily because this module may not exist in all setups.
+        try:
+            from scripts.predictions.usage_planner import SeasonUsagePlanner  # type: ignore
+        except Exception:
+            try:
+                from usage_planner import SeasonUsagePlanner  # type: ignore
+            except Exception:
+                SeasonUsagePlanner = None
 
         schedule_path = Path(args.schedule)
         if not schedule_path.exists():
@@ -1064,6 +1624,9 @@ def main():
         predictions_path = Path(args.predictions_file)
         if not predictions_path.exists():
             print(f"Predictions file not found: {predictions_path}")
+            return
+        if SeasonUsagePlanner is None:
+            print("usage_planner module not found. Install/create scripts/predictions/usage_planner.py to use --plan-season.")
             return
 
         current_usage = optimizer.tracker.get_all_usage()
