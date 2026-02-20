@@ -438,6 +438,122 @@ print(f"  ✓ Filled {n_mc_only} players with MC-only history (hist_avg_finish=7
 print(f"  ✓ Filled {n_no_history} players with no history (hist_avg_finish=40, cut_rate=0.5)")
 
 # ============================================================================
+# STEP 4b: Add Course SG Features (from player_tournament_course_form.csv)
+# ============================================================================
+print("\n" + "="*60)
+print("Step 4b: Adding Course SG features...")
+print("-" * 60)
+
+# Load tournament-level course form data (has SG per tournament with course_key)
+course_form_file = PROCESSED_DIR / "player_tournament_course_form.csv"
+if course_form_file.exists():
+    course_form = pd.read_csv(course_form_file)
+    print(f"  ✓ Loaded course form data: {len(course_form):,} records")
+
+    # Calculate course SG features for each row (using only PRIOR tournaments)
+    print("  Calculating player-course SG features (this may take a minute)...")
+
+    course_sg_features = []
+    for idx, row in merged.iterrows():
+        if idx % 1000 == 0:
+            print(f"    Progress: {idx:,}/{len(merged):,} ({idx/len(merged)*100:.1f}%)")
+
+        player_id = row['player_id']
+        current_year = row['year']
+        tournament_id = row['tournament_id']
+        venue = row['venue_clean']
+
+        # Get this tournament's course_key from course_form
+        current_tourney = course_form[
+            (course_form['tournament_id'] == tournament_id) &
+            (course_form['year'] == current_year)
+        ]
+        if len(current_tourney) > 0:
+            course_key = current_tourney['course_key'].iloc[0]
+        else:
+            course_key = None
+
+        # Get player's PRIOR performance at this course
+        if course_key and pd.notna(course_key):
+            prior_at_course = course_form[
+                (course_form['player_id'] == player_id) &
+                (course_form['course_key'] == course_key) &
+                (course_form['year'] < current_year)
+            ].copy()
+        else:
+            prior_at_course = pd.DataFrame()
+
+        sg_features = {
+            'course_sg_starts': 0,
+            'course_sg_total_avg': np.nan,
+            'course_sg_ott_avg': np.nan,
+            'course_sg_app_avg': np.nan,
+            'course_sg_putt_avg': np.nan,
+            'course_sg_trend': np.nan,
+        }
+
+        if len(prior_at_course) > 0 and 'sg_total' in prior_at_course.columns:
+            # Filter to rows with SG data
+            with_sg = prior_at_course[prior_at_course['sg_total'].notna()]
+
+            if len(with_sg) > 0:
+                sg_features['course_sg_starts'] = len(with_sg)
+                sg_features['course_sg_total_avg'] = with_sg['sg_total'].mean()
+                sg_features['course_sg_ott_avg'] = with_sg['sg_ott'].mean() if 'sg_ott' in with_sg else np.nan
+                sg_features['course_sg_app_avg'] = with_sg['sg_app'].mean() if 'sg_app' in with_sg else np.nan
+                sg_features['course_sg_putt_avg'] = with_sg['sg_putt'].mean() if 'sg_putt' in with_sg else np.nan
+
+                # Calculate trend if 2+ years of data
+                if len(with_sg) >= 2:
+                    yearly_sg = with_sg.groupby('year')['sg_total'].mean().sort_index()
+                    if len(yearly_sg) >= 2:
+                        years = np.array(yearly_sg.index)
+                        values = np.array(yearly_sg.values)
+                        valid = ~np.isnan(values)
+                        if valid.sum() >= 2:
+                            x = years[valid] - years[valid].min()
+                            y = values[valid]
+                            try:
+                                slope = np.polyfit(x, y, 1)[0]
+                                sg_features['course_sg_trend'] = slope
+                            except:
+                                pass
+
+        course_sg_features.append(sg_features)
+
+    # Add course SG features to merged data
+    print("\n  Adding course SG columns...")
+    sg_df = pd.DataFrame(course_sg_features, index=merged.index)
+    merged = pd.concat([merged, sg_df], axis=1)
+
+    # Calculate course_sg_vs_avg (how player performs at this course vs overall)
+    # We need player's overall SG average from season_sg_total
+    if 'season_sg_total' in merged.columns and 'course_sg_total_avg' in merged.columns:
+        merged['course_sg_vs_avg'] = merged['course_sg_total_avg'] - merged['season_sg_total']
+        merged['course_sg_vs_avg'] = merged['course_sg_vs_avg'].fillna(0)
+
+    # Report coverage
+    sg_coverage = (merged['course_sg_starts'] > 0).mean() * 100
+    print(f"  ✓ Course SG coverage: {sg_coverage:.1f}%")
+    if sg_coverage > 0:
+        avg_sg_starts = merged[merged['course_sg_starts'] > 0]['course_sg_starts'].mean()
+        print(f"  ✓ Average SG starts at course (when >0): {avg_sg_starts:.1f}")
+
+    # Fill NaN values with neutral defaults
+    merged['course_sg_total_avg'] = merged['course_sg_total_avg'].fillna(0)
+    merged['course_sg_ott_avg'] = merged['course_sg_ott_avg'].fillna(0)
+    merged['course_sg_app_avg'] = merged['course_sg_app_avg'].fillna(0)
+    merged['course_sg_putt_avg'] = merged['course_sg_putt_avg'].fillna(0)
+    merged['course_sg_trend'] = merged['course_sg_trend'].fillna(0)
+    merged['has_course_sg_history'] = (merged['course_sg_starts'] > 0).astype(int)
+
+    print(f"  ✓ Created has_course_sg_history binary feature")
+else:
+    print("  ⚠️  Course form data not found - skipping course SG features")
+    print(f"     Expected: {course_form_file}")
+    print("     Run: python scripts/features/consolidate_course_form_stats.py")
+
+# ============================================================================
 # STEP 5: Feature engineering
 # ============================================================================
 print("\n" + "="*60)

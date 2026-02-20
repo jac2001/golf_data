@@ -116,9 +116,17 @@ if dg_fit_features:
 else:
     print("⚠️  No dg_fit_* features found - run merge script first")
 
+# Course SG features - player's historical SG performance at THIS SPECIFIC COURSE
+# SAFE: Only uses data from PRIOR tournaments at the course (no leakage)
+course_sg_features = [c for c in df.columns if c.startswith('course_sg_')]
+if course_sg_features:
+    print(f"✓  Including {len(course_sg_features)} course SG features (prior course performance)")
+else:
+    print("⚠️  No course_sg_* features found - run merge script with course form data")
+
 # Combine all features (WITHOUT leaky features)
 # Note: has_won_here is already in hist_features (starts with 'has_'), so don't add it again
-all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features
+all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features + course_sg_features
 
 # Filter to only existing features that have coverage in training years
 available_features = [
