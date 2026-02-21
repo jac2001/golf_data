@@ -17,12 +17,16 @@ from pathlib import Path
 import sys
 import json
 import ast
+import plotly.graph_objects as go
 import subprocess
 import textwrap
 from datetime import datetime
 import plotly.express as px
 import requests
 import re
+import plotly.graph_objects as go
+
+from scripts.predictions.refresh_odds import refresh_odds
 
 try:
     from scripts.props.prop_odds_edges import (
@@ -84,168 +88,206 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Custom CSS — dark navy golf theme
 st.markdown("""
 <style>
-    /* Headers */
-    .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1e4d2b;
-        margin-bottom: 0;
+    /* ── Global ─────────────────────────────────────── */
+    .stApp { background-color: #080f1e; }
+    .main .block-container { padding-top: 1rem; padding-bottom: 2rem; }
+
+    /* ── Sidebar nav panel ──────────────────────────── */
+    [data-testid="stSidebar"] {
+        background-color: #0d1a30;
+        border-right: 1px solid #1c2f4a;
     }
-    .sub-header {
+    [data-testid="stSidebar"] .stMarkdown h2 {
+        color: #00c44f;
         font-size: 1.1rem;
-        color: #666;
-        margin-top: 0;
-    }
-
-    /* Metrics */
-    .stMetric {
-        background-color: #f8f9fa;
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 4px solid #1e4d2b;
-    }
-    div[data-testid="stMetricValue"] {
-        font-size: 1.8rem;
-        font-weight: bold;
-    }
-
-    /* Compact tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        padding: 8px 16px;
-    }
-
-    /* Chat styling */
-    [data-testid="stChatMessage"] {
-        padding: 0.75rem 1rem;
-    }
-    [data-testid="stChatMessage"] table {
-        font-size: 0.85rem;
-    }
-
-    /* Player cards */
-    .player-card {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-radius: 12px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        border-left: 4px solid #1e4d2b;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .player-card:hover {
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .player-name {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #1e4d2b;
+        letter-spacing: 1px;
+        text-transform: uppercase;
         margin-bottom: 0.25rem;
     }
-    .player-odds {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #2c5530;
+    /* Radio nav items in sidebar */
+    [data-testid="stSidebar"] .stRadio > label { display: none; }
+    [data-testid="stSidebar"] .stRadio > div {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
     }
-
-    /* Probability badges */
-    .prob-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-    .prob-high {
-        background-color: #d4edda;
-        color: #155724;
-    }
-    .prob-mid {
-        background-color: #fff3cd;
-        color: #856404;
-    }
-    .prob-low {
-        background-color: #f8f9fa;
-        color: #6c757d;
-    }
-
-    /* Odds comparison table */
-    .odds-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    .odds-table th {
-        background-color: #1e4d2b;
-        color: white;
-        padding: 0.75rem;
-        text-align: left;
-    }
-    .odds-table td {
-        padding: 0.75rem;
-        border-bottom: 1px solid #dee2e6;
-    }
-    .odds-table tr:hover {
-        background-color: #f8f9fa;
-    }
-    .best-odds {
-        background-color: #d4edda !important;
-        font-weight: bold;
-    }
-    .odds-diff {
-        color: #dc3545;
-        font-weight: bold;
-    }
-
-    /* Quick action bar */
-    .action-bar {
-        background: linear-gradient(90deg, #1e4d2b 0%, #2c5530 100%);
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-    }
-
-    /* Status indicators */
-    .status-live {
-        color: #28a745;
-        font-weight: bold;
-    }
-    .status-updated {
-        color: #6c757d;
-        font-size: 0.85rem;
-    }
-
-    /* Favorite star */
-    .favorite-btn {
+    [data-testid="stSidebar"] .stRadio label {
+        padding: 9px 14px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #7a90b8;
         cursor: pointer;
-        font-size: 1.2rem;
+        transition: all 0.15s;
     }
-    /* Expert picks cards */
-    .expert-card {
-        background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e9 100%);
+    [data-testid="stSidebar"] .stRadio label:hover {
+        background: rgba(0,196,79,0.12);
+        color: #dde6f5;
+    }
+
+    /* ── Metrics ─────────────────────────────────────── */
+    [data-testid="metric-container"] {
+        background: #0d1a30;
         border-radius: 10px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        border-left: 4px solid #2e7d32;
+        padding: 0.8rem 1rem;
+        border: 1px solid #1c2f4a;
     }
-    .expert-name {
+    div[data-testid="stMetricValue"] { font-size: 1.6rem; font-weight: 700; }
+    div[data-testid="stMetricLabel"] { font-size: 0.78rem; color: #7a90b8; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ── Tabs ────────────────────────────────────────── */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 4px;
+        background: #0d1a30;
+        border-radius: 10px;
+        padding: 4px;
+        border: 1px solid #1c2f4a;
+    }
+    .stTabs [data-baseweb="tab"] {
+        padding: 7px 16px;
+        border-radius: 7px;
+        color: #7a90b8;
+        font-size: 13px;
+        font-weight: 500;
+        border: none;
+        background: transparent;
+    }
+    .stTabs [aria-selected="true"] {
+        background: #00c44f !important;
+        color: #fff !important;
         font-weight: 600;
-        color: #1b5e20;
     }
-    .consensus-bar {
-        background: #e0e0e0;
-        border-radius: 10px;
-        height: 8px;
-        overflow: hidden;
+
+    /* ── Dataframes ──────────────────────────────────── */
+    [data-testid="stDataFrame"] { border-radius: 10px; overflow: hidden; }
+
+    /* ── Buttons ─────────────────────────────────────── */
+    .stButton > button {
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.15s;
     }
-    .consensus-fill {
-        background: linear-gradient(90deg, #4caf50 0%, #2e7d32 100%);
-        height: 100%;
-        border-radius: 10px;
+    .stButton > button[kind="primary"] {
+        background: #00c44f;
+        border: none;
+        color: #fff;
     }
+    .stButton > button[kind="primary"]:hover { background: #00a843; }
+
+    /* ── Chat ────────────────────────────────────────── */
+    [data-testid="stChatMessage"] { padding: 0.75rem 1rem; }
+    [data-testid="stChatMessage"] table { font-size: 0.85rem; }
+
+    /* ── Tournament banner ───────────────────────────── */
+    .tourney-banner {
+        background: linear-gradient(135deg, #0d1a30 0%, #0a2240 100%);
+        border: 1px solid #1c3a5e;
+        border-radius: 14px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+    }
+    .tourney-name {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.3px;
+        margin: 0 0 4px 0;
+    }
+    .tourney-meta { color: #6a84aa; font-size: 13px; margin: 0 0 14px 0; }
+    .tourney-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill {
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+    .pill-green  { background: rgba(0,196,79,0.15);  color: #00c44f;  border: 1px solid rgba(0,196,79,0.3); }
+    .pill-gold   { background: rgba(244,196,48,0.15); color: #f4c430;  border: 1px solid rgba(244,196,48,0.3); }
+    .pill-blue   { background: rgba(33,150,243,0.15); color: #4cb8ff;  border: 1px solid rgba(33,150,243,0.3); }
+    .pill-red    { background: rgba(255,80,80,0.15);  color: #ff6060;  border: 1px solid rgba(255,80,80,0.3); }
+
+    /* ── Lineup slot cards ───────────────────────────── */
+    .lineup-section { margin: 16px 0 20px 0; }
+    .lineup-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #4a6080;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+    .lineup-card {
+        background: linear-gradient(160deg, #0d1f38 0%, #0a1828 100%);
+        border: 1px solid #1c3a5e;
+        border-radius: 14px;
+        padding: 16px;
+        text-align: center;
+        position: relative;
+        min-height: 170px;
+    }
+    .lineup-card.active { border-color: #00c44f; box-shadow: 0 0 14px rgba(0,196,79,0.15); }
+    .lineup-card.empty  { border: 2px dashed #1c3a5e; opacity: 0.6; }
+    .lc-rank { font-size: 11px; color: #4a6080; margin-bottom: 6px; }
+    .lc-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; line-height: 1.2; }
+    .lc-wr   { font-size: 12px; color: #7a90b8; margin-bottom: 12px; }
+    .lc-stats { display: flex; justify-content: space-around; margin-bottom: 12px; }
+    .lc-stat-val { font-size: 16px; font-weight: 700; color: #00c44f; }
+    .lc-stat-label { font-size: 9px; color: #4a6080; text-transform: uppercase; letter-spacing: 0.5px; }
+    .lc-uses { font-size: 12px; color: #5a7088; margin-bottom: 10px; }
+    .lc-badge-use  { background: rgba(0,196,79,0.15); color: #00c44f; border: 1px solid rgba(0,196,79,0.4); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 700; display: inline-block; }
+    .lc-badge-save { background: rgba(255,160,0,0.15); color: #ffa000; border: 1px solid rgba(255,160,0,0.4); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 700; display: inline-block; }
+
+    /* ── Player pool cards ───────────────────────────── */
+    .pool-card {
+        background: #0d1a30;
+        border: 1px solid #1c2f4a;
+        border-radius: 12px;
+        padding: 14px 12px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: border-color 0.15s;
+    }
+    .pool-card:hover { border-color: #00c44f; }
+    .pool-card.save-card  { border-left: 3px solid #ffa000; opacity: 0.75; }
+    .pool-card.cant-card  { border-left: 3px solid #e53935; opacity: 0.5; }
+    .pool-card.use-card   { border-left: 3px solid #00c44f; }
+    .pc-rank  { font-size: 11px; color: #4a6080; width: 28px; text-align: right; flex-shrink: 0; }
+    .pc-name  { font-size: 14px; font-weight: 600; color: #dde6f5; flex: 1; }
+    .pc-wr    { font-size: 11px; color: #4a6080; }
+    .pc-stat  { font-size: 13px; font-weight: 700; color: #00c44f; min-width: 40px; text-align: right; }
+    .pc-stat-label { font-size: 9px; color: #4a6080; text-transform: uppercase; }
+    .pc-uses  { font-size: 11px; color: #5a7088; min-width: 36px; text-align: right; }
+    .pc-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 5px; min-width: 50px; text-align: center; }
+    .badge-use  { background: rgba(0,196,79,0.15);  color: #00c44f; }
+    .badge-save { background: rgba(255,160,0,0.12); color: #ffa000; }
+    .badge-no   { background: rgba(229,57,53,0.12);  color: #e53935; }
+
+    /* ── Legacy custom classes (kept for compatibility) ─ */
+    .player-name  { font-size: 1.1rem; font-weight: 600; color: #00c44f; }
+    .player-odds  { font-size: 1.3rem; font-weight: bold; color: #00c44f; }
+    .prob-badge   { display: inline-block; padding: .25rem .75rem; border-radius: 20px; font-size: .85rem; font-weight: 600; }
+    .prob-high    { background: rgba(0,196,79,.18);  color: #00c44f; }
+    .prob-mid     { background: rgba(244,196,48,.18); color: #f4c430; }
+    .prob-low     { background: rgba(122,144,184,.15); color: #7a90b8; }
+    .odds-table   { width: 100%; border-collapse: collapse; }
+    .odds-table th { background: #0d1a30; color: #00c44f; padding: .75rem; text-align: left; }
+    .odds-table td { padding: .75rem; border-bottom: 1px solid #1c2f4a; }
+    .odds-table tr:hover { background: rgba(255,255,255,0.03); }
+    .best-odds    { font-weight: bold; color: #00c44f; }
+    .odds-diff    { color: #ff6060; font-weight: bold; }
+    .action-bar   { background: linear-gradient(90deg,#0d1a30,#0a2240); padding:1rem; border-radius:8px; margin-bottom:1rem; }
+    .status-live  { color: #00c44f; font-weight: bold; }
+    .status-updated { color: #5a7088; font-size: .85rem; }
+    .expert-card  { background: #0d1a30; border-radius:10px; padding:1rem; margin:.5rem 0; border-left:4px solid #00c44f; }
+    .expert-name  { font-weight:600; color:#00c44f; }
+    .consensus-bar { background:#1c2f4a; border-radius:10px; height:8px; overflow:hidden; }
+    .consensus-fill{ background:linear-gradient(90deg,#00c44f,#00a843); height:100%; border-radius:10px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -279,6 +321,10 @@ def run_script(script_name: str, *args) -> str:
 # ============================================================================
 # DATA LOADING
 # ============================================================================
+
+
+
+
 
 @st.cache_resource
 def load_scoring_engine():
@@ -321,6 +367,43 @@ def load_schedule():
     if schedule_file.exists():
         return pd.read_csv(schedule_file)
     return pd.DataFrame()
+
+@st.cache_data(ttl=3600)
+def load_player_form_history(n_events: int = 8):
+    """
+    Load each player's last N tournament SG Total values from training data.
+    Returns dict keyed by player name:
+    { "Scottie Scheffler": {"sg": [1.2, -0.3, 2.1, ...], "events": ["Sentry", "Pebble", ...]} }
+
+    Why cache_data with ttl=3600? This file is 13MB — we read it once,
+    Streamlit caches the result for 1 hour, and every page rerender uses
+    the in-memory cached version instead of re-reading the CSV.
+    """
+    path = DATA_DIR / "processed" / "master_training_data_2020_2025.csv"
+    if not path.exists():
+          return {}
+      
+    df = pd.read_csv(path, usecols=['player_name', 'year', 'tournament_id', 'tournament_name', 'sg_total'])
+    df = df.dropna(subset=['sg_total'])
+    
+    df = df.sort_values(['player_name', 'year', 'tournament_id'])
+    
+    out = {}
+    
+    
+    for player, grp in df.groupby('player_name'):
+        tail = grp.tail(n_events)
+        # Shorten long tournament names
+        short_names = tail['tournament_name'].apply(
+            lambda s: " ".join(str(s).split()[:2])
+        ).tolist()
+        out[player] = {
+            'sg': tail['sg_total'].tolist(), 
+            'events': short_names,
+        }
+    return out
+
+
 
 
 def _safe_slug(name: str) -> str:
@@ -2391,50 +2474,6 @@ def render_tier_list(predictions_df: pd.DataFrame):
 
 
 
-def render_head_to_head(predictions_df: pd.DataFrame):                                                                
-    """Compare two players head-to-head."""                                                                           
-    st.markdown("#### ⚔️ Head-to-Head Comparison")                                                                    
-                                                                                                                    
-    players = predictions_df["player_name"].tolist()                                                                  
-                                                                                                                    
-    col1, col2 = st.columns(2)                                                                                        
-    with col1:                                                                                                        
-        player1 = st.selectbox("Player 1", players[:50], key="h2h_p1")                                                
-    with col2:                                                                                                        
-        player2 = st.selectbox("Player 2", players[:50], index=min(1, len(players)-1), key="h2h_p2")                  
-                                                                                                                    
-    if player1 and player2 and player1 != player2:                                                                    
-        p1_row = predictions_df[predictions_df["player_name"] == player1]                                             
-        p2_row = predictions_df[predictions_df["player_name"] == player2]                                             
-                                                                                                                    
-        if p1_row.empty or p2_row.empty:                                                                              
-            return                                                                                                    
-                                                                                                                    
-        p1_data = p1_row.iloc[0]                                                                                      
-        p2_data = p2_row.iloc[0]                                                                                      
-                                                                                                                    
-        st.markdown("---")                                                                                            
-                                                                                                                    
-        metrics = [                                                                                                   
-            ("win_prob", "Win %"),                                                                                    
-            ("top5_prob", "Top 5 %"),                                                                                 
-            ("top10_prob", "Top 10 %"),                                                                               
-            ("expected_value", "Exp. Value"),                                                                         
-        ]                                                                                                             
-                                                                                                                    
-        cols = st.columns(len(metrics))                                                                               
-        for col, (metric, label) in zip(cols, metrics):                                                               
-            if metric in p1_data and metric in p2_data:                                                               
-                v1 = p1_data[metric] * 100 if "prob" in metric else p1_data[metric]                                   
-                v2 = p2_data[metric] * 100 if "prob" in metric else p2_data[metric]                                   
-                                                                                                                    
-                with col:                                                                                             
-                    st.markdown(f"**{label}**")                                                                       
-                    fmt = ".1f%" if "prob" in metric else ",.0f"                                                      
-                    w1 = "✓" if v1 > v2 else ""                                                                       
-                    w2 = "✓" if v2 > v1 else ""                                                                       
-                    st.markdown(f"{player1.split()[-1]}: **{v1:{fmt}}** {w1}")                                        
-                    st.markdown(f"{player2.split()[-1]}: **{v2:{fmt}}** {w2}")     
 
 
 
@@ -2519,80 +2558,6 @@ def render_tier_list(predictions_df: pd.DataFrame):
                 """, unsafe_allow_html=True)
 
         st.markdown("")  # Spacing
-
-
-def render_head_to_head(predictions_df: pd.DataFrame):
-    """Compare two players head-to-head."""
-    st.markdown("#### Compare Players Head-to-Head")
-
-    if predictions_df.empty:
-        st.warning("No predictions data available")
-        return
-
-    player_list = predictions_df["player_name"].dropna().tolist()
-
-    col1, col2 = st.columns(2)
-    with col1:
-        player1 = st.selectbox("Player 1", player_list, index=0, key="h2h_p1")
-    with col2:
-        default_idx = min(1, len(player_list) - 1)
-        player2 = st.selectbox("Player 2", player_list, index=default_idx, key="h2h_p2")
-
-    if player1 == player2:
-        st.warning("Select two different players to compare")
-        return
-
-    p1_data = predictions_df[predictions_df["player_name"] == player1].iloc[0]
-    p2_data = predictions_df[predictions_df["player_name"] == player2].iloc[0]
-
-    st.markdown("---")
-
-    # Side by side comparison
-    col1, col_vs, col2 = st.columns([2, 1, 2])
-
-    with col1:
-        st.markdown(f"### {player1}")
-        st.metric("Expected Value", f"${p1_data.get('expected_value', 0):,.0f}")
-        st.metric("Win Probability", f"{p1_data.get('win_prob', 0)*100:.2f}%")
-        st.metric("Top-5 %", f"{p1_data.get('top5_prob', 0)*100:.1f}%")
-        st.metric("Top-10 %", f"{p1_data.get('top10_prob', 0)*100:.1f}%")
-        st.metric("SG Total", f"{p1_data.get('sg_total', 0):+.3f}")
-        plays1 = p1_data.get('hist_times_played', 0)
-        st.metric("Course Plays", int(plays1) if pd.notna(plays1) else 0)
-
-    with col_vs:
-        st.markdown("<div style='text-align: center; padding-top: 80px;'><h1>VS</h1></div>", unsafe_allow_html=True)
-
-    with col2:
-        st.markdown(f"### {player2}")
-        st.metric("Expected Value", f"${p2_data.get('expected_value', 0):,.0f}")
-        st.metric("Win Probability", f"{p2_data.get('win_prob', 0)*100:.2f}%")
-        st.metric("Top-5 %", f"{p2_data.get('top5_prob', 0)*100:.1f}%")
-        st.metric("Top-10 %", f"{p2_data.get('top10_prob', 0)*100:.1f}%")
-        st.metric("SG Total", f"{p2_data.get('sg_total', 0):+.3f}")
-        plays2 = p2_data.get('hist_times_played', 0)
-        st.metric("Course Plays", int(plays2) if pd.notna(plays2) else 0)
-
-    # Winner verdict
-    st.markdown("---")
-    ev1 = p1_data.get('expected_value', 0)
-    ev2 = p2_data.get('expected_value', 0)
-
-    if ev1 > ev2:
-        winner = player1
-        margin = ev1 - ev2
-        winner_color = "#00C853"
-    else:
-        winner = player2
-        margin = ev2 - ev1
-        winner_color = "#00C853"
-
-    st.markdown(f"""
-    <div style="background: {winner_color}22; padding: 16px; border-radius: 8px; text-align: center;">
-        <h3 style="color: {winner_color};">Model Pick: {winner}</h3>
-        <p>EV Advantage: ${margin:,.0f}</p>
-    </div>
-    """, unsafe_allow_html=True)
 
 
 def get_prediction_files():
@@ -4856,11 +4821,27 @@ st.sidebar.markdown("### 📊 Quick Stats")
 usage_data = load_usage_data()
 picks = usage_data.get("picks", {})
 total_picks = sum(p.get("times_used", 0) for p in picks.values())
-total_points = sum(p.get("total_points", 0) for p in picks.values())
 
-st.sidebar.metric("Picks Made", f"{total_picks}/90")
-st.sidebar.metric("Points", total_points)
+# Pull accurate points + week from season_log
+_sl_path = OUTPUTS_DIR / "season_log.csv"
+if _sl_path.exists():
+    try:
+        _sl = pd.read_csv(_sl_path)
+        _completed_sl = _sl[pd.to_numeric(_sl.get("points", pd.Series(dtype=float)), errors="coerce").notna() &
+                           (_sl.get("points", pd.Series(dtype=str)).astype(str).str.strip() != "")]
+        total_points = int(pd.to_numeric(_completed_sl["points"], errors="coerce").sum()) if not _completed_sl.empty else 0
+        _current_week = int(_sl["week"].max()) if not _sl.empty else 0
+    except Exception:
+        total_points = sum(p.get("total_points", 0) for p in picks.values())
+        _current_week = total_picks // 3
+else:
+    total_points = sum(p.get("total_points", 0) for p in picks.values())
+    _current_week = total_picks // 3
+
+st.sidebar.metric("Week", f"{_current_week} of 30")
+st.sidebar.metric("Season Points", f"{total_points:,}")
 st.sidebar.metric("Players Used", len(picks))
+st.sidebar.metric("Picks Made", f"{total_picks}/90")
 
 st.sidebar.markdown("---")
 st.sidebar.caption(f"Last updated: {datetime.now().strftime('%b %d, %Y %H:%M')}")
@@ -4871,7 +4852,6 @@ st.sidebar.caption(f"Last updated: {datetime.now().strftime('%b %d, %Y %H:%M')}"
 # ============================================================================
 
 if page == "🏆 This Week":
-    st.markdown("## 📅 This Week's Tournament")
 
     engine = load_scoring_engine()
 
@@ -4882,31 +4862,519 @@ if page == "🏆 This Week":
             t = engine.tournaments[tournament]
             course_info = engine.tournament_courses.get(tournament, {})
 
-            # Tournament info
-            st.markdown(f"### {tournament}")
+            # ── Determine event tier ──────────────────────────────────────
+            _is_standard = t.purse < 9_000_000
+            _is_major = t.tournament_type in ("Major", "Signature", "WGC", "Players")
+            _tier_label = "MAJOR / SIGNATURE" if _is_major else "STANDARD EVENT"
+            _tier_pill = "pill-gold" if _is_major else "pill-blue"
+            _course_type = course_info.get("course_type", "") if course_info else ""
+            _course_note = course_info.get("notes", "") if course_info else ""
 
-            col1, col2, col3, col4, col5 = st.columns(5)
-            with col1:
-                st.metric("Week", t.week)
-            with col2:
-                st.metric("Purse", f"${t.purse/1e6:.1f}M")
-            with col3:
-                st.metric("Type", t.tournament_type)
-            with col4:
-                st.metric("Importance", f"{t.importance_score:.0f}/100")
-            with col5:
-                st.metric("Course", t.course or "TBD")
+            # ── Rich tournament banner ────────────────────────────────────
+            st.markdown(f"""
+<div class="tourney-banner">
+  <p class="tourney-name">{tournament}</p>
+  <p class="tourney-meta">{t.course or t.location or "TBA"} &nbsp;·&nbsp; {t.start_date or ""}</p>
+  <div class="tourney-pills">
+    <span class="pill pill-green">⛳ Week {t.week} of 30</span>
+    <span class="pill {_tier_pill}">{_tier_label}</span>
+    <span class="pill pill-blue">${t.purse/1_000_000:.1f}M Purse</span>
+    {"<span class='pill pill-gold'>🏆 USE ELITE PLAYERS</span>" if _is_major else "<span class='pill pill-red'>⚡ SAVE ELITE PLAYERS</span>"}
+    {f"<span class='pill pill-blue'>{_course_type}</span>" if _course_type else ""}
+  </div>
+  {f"<p style='color:#4a6080;font-size:12px;margin:10px 0 0 0;'>💡 {_course_note}</p>" if _course_note else ""}
+</div>
+""", unsafe_allow_html=True)
+            
+            
+            
+            
+            # Odds refresh button ------------
+            _ref_col1, _ref_col2, _ref_col3 = st.columns([1, 1, 3])
+            with _ref_col1:
+                if st.button("🔄 Refresh Odds", use_container_width=True, type='primary'):
+                    with st.spinner("Fetching latest odds from PGA Tour..."):
+                        _ref_out = run_script("predictions/refresh_odds.py")
+                    if "✅" in _ref_out:
+                        st.success(_ref_out)
+                        st.cache_data.clear()   # force reload of predictions on next render
+                        st.rerun()
+                    else:
+                        st.error(_ref_out)
+            with _ref_col2:
+                # Show when odds were last refreshed
+                _preds_check = OUTPUTS_DIR / "latest_predictions.csv"
+                if _preds_check.exists():
+                    try:
+                        _last_odds = pd.read_csv(_preds_check, usecols=["odds_updated_at"]).iloc[0, 0]
+                        st.caption(f"Last updated: {_last_odds}")
+                    except Exception:
+                        import os
+                        from datetime import datetime as _dt
+                        _mtime = _dt.fromtimestamp(os.path.getmtime(_preds_check)).strftime("%b %d %H:%M")
+                        st.caption(f"File updated: {_mtime}")
 
-            if course_info:
-                st.info(f"**{course_info.get('course_type', 'Unknown')} course** — {course_info.get('notes', '')}")
+            # ── Field Status Card ─────────────────────────────────────────
+            _field_id = getattr(t, "tournament_id", None) or ""
+            # Try schedule CSV for the ID if the engine object doesn't carry it
+            if not _field_id:
+                try:
+                    _sched_tmp = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+                    _sched_row = _sched_tmp[_sched_tmp["tournament_name"] == tournament]
+                    if not _sched_row.empty:
+                        _field_id = str(_sched_row.iloc[0].get("tournament_id", "")).strip()
+                except Exception:
+                    pass
 
-            # Weather widget
+            _field_file = None
+            if _field_id:
+                _canonical = DATA_DIR / "fields" / f"field_{_field_id}.csv"
+                if _canonical.exists():
+                    _field_file = _canonical
+
+            import os as _os_fw
+            from datetime import datetime as _dt_fw
+
+            _fw_col1, _fw_col2 = st.columns([3, 1])
+            with _fw_col1:
+                if _field_file and _field_file.exists():
+                    try:
+                        _fw_df = pd.read_csv(_field_file)
+                        _fw_n = len(_fw_df)
+                        _fw_age_h = (_dt_fw.now().timestamp() - _os_fw.path.getmtime(_field_file)) / 3600
+                        _fw_age_str = (
+                            f"{int(_fw_age_h)}h ago" if _fw_age_h < 48
+                            else f"{_fw_age_h/24:.1f} days ago"
+                        )
+                        _fw_stale = _fw_age_h > 72
+                        _fw_color = "#f39c12" if _fw_stale else "#00c44f"
+                        _fw_icon  = "⚠️" if _fw_stale else "✅"
+
+                        # Top 5 players by world rank for a quick field preview
+                        _fw_top = ""
+                        if "world_rank" in _fw_df.columns and "player_name" in _fw_df.columns:
+                            _fw_ranked = (
+                                _fw_df[_fw_df["world_rank"].notna()]
+                                .sort_values("world_rank")
+                                .head(5)["player_name"]
+                                .tolist()
+                            )
+                            if _fw_ranked:
+                                _fw_top = " · ".join(_fw_ranked)
+
+                        st.markdown(f"""
+                        <div style="background:#0d1a30;border:1px solid {_fw_color}44;
+                                    border-left:4px solid {_fw_color};border-radius:8px;
+                                    padding:10px 16px;margin:8px 0;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <span style="font-weight:600;font-size:0.9em;color:{_fw_color};">
+                                    {_fw_icon} Field Loaded — {_fw_n} players
+                                </span>
+                                <span style="font-size:0.78em;color:#4a6080;">
+                                    Fetched {_fw_age_str}
+                                    {"  ·  ⚠️ Refresh recommended (>72h)" if _fw_stale else ""}
+                            {f'<div style="font-size:0.78em;color:#4a6080;margin-top:4px;">Top ranked: {_fw_top}</div>' if _fw_top else ""}
+                        </div>
+                        """, unsafe_allow_html=True)
+                    except Exception:
+                        st.caption(f"Field file found but could not be read: {_field_file.name}")
+                else:
+                    st.markdown(f"""
+                    <div style="background:#0d1a30;border:1px solid #e74c3c44;
+                                border-left:4px solid #e74c3c;border-radius:8px;
+                                padding:10px 16px;margin:8px 0;">
+                        <span style="font-weight:600;font-size:0.9em;color:#e74c3c;">
+                            ⚠️ No field loaded for {_field_id or tournament}
+                        </span>
+                        <span style="font-size:0.78em;color:#4a6080;display:block;margin-top:4px;">
+                            Predictions may include players not in this week's field.
+                            Use Pipeline → Tuesday Prep to fetch the confirmed entry list.
+                        </span>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            with _fw_col2:
+                if _field_id:
+                    if st.button("⛳ Fetch Field", use_container_width=True,
+                                 help=f"Pull confirmed entry list for {_field_id}"):
+                        with st.spinner(f"Fetching field for {_field_id}..."):
+                            _fw_out = run_script(
+                                "scrapers/fetch_field_from_pgatour.py",
+                                "--pga-id", _field_id,
+                                "--name", tournament,
+                                "--output", f"data/fields/field_{_field_id}.csv",
+                                "--match-ids",
+                            )
+                        if "Saved" in _fw_out or "✓" in _fw_out:
+                            st.success("Field updated")
+                            st.cache_data.clear()
+                            st.rerun()
+                        else:
+                            st.error("Fetch failed — check Pipeline for details")
+
+            # Weather
             render_weather_widget(t.course or tournament)
 
+            # ── Load predictions + usage data ────────────────────────────
+            _preds_path = OUTPUTS_DIR / "latest_predictions.csv"
+            _usage_path = OUTPUTS_DIR / "player_usage_tracker.csv"
+            _preds = pd.DataFrame()
+            _usage_dict = {}
+
+            if _preds_path.exists():
+                _preds = pd.read_csv(_preds_path)
+                if _usage_path.exists():
+                    _udf = pd.read_csv(_usage_path)
+                    _usage_dict = dict(zip(_udf["player_name"], _udf["uses_remaining"]))
+                _preds["uses_remaining"] = _preds["player_name"].map(lambda n: _usage_dict.get(n, 3))
+
+            # ── Elite SAVE list ──────────────────────────────────────────
+            _elite_save = []
+            if _is_standard and not _preds.empty and "world_rank" in _preds.columns:
+                _elite_save = (
+                    _preds[(_preds["world_rank"] <= 20) & (_preds["uses_remaining"] > 0)]
+                    .nsmallest(5, "world_rank")["player_name"].tolist()
+                )
+
+            # ── Identify top USE picks (model rank, exclude saves + maxed) ──
+            _avail = _preds[_preds["uses_remaining"] > 0].copy() if not _preds.empty else pd.DataFrame()
+            if _is_standard and _elite_save and not _avail.empty:
+                _avail = _avail[~_avail["player_name"].isin(_elite_save)]
+            _ev_col = "expected_value" if ("expected_value" in _avail.columns and not _avail.empty) else None
+            _model_top3 = _avail.nlargest(3, _ev_col) if _ev_col else _avail.head(3)
+
+            # ── Load actual picks this week from season log ──────────────
+            _this_week_picks = []
+            _log_path = OUTPUTS_DIR / "season_log.csv"
+            if _log_path.exists():
+                try:
+                    _log = pd.read_csv(_log_path)
+                    _week_row = _log[_log["week"] == t.week]
+                    if not _week_row.empty:
+                        _wr = _week_row.iloc[0]
+                        for _pc in ["pick1", "pick2", "pick3"]:
+                            if _pc in _wr and pd.notna(_wr[_pc]) and str(_wr[_pc]).strip():
+                                _this_week_picks.append(str(_wr[_pc]).strip())
+                except Exception:
+                    pass
+
+            # ── YOUR LINEUP ──────────────────────────────────────────────
+            st.markdown("<div class='lineup-label'>⛳ YOUR LINEUP THIS WEEK</div>", unsafe_allow_html=True)
+
+            _slot_cols = st.columns(3)
+            for _si, _scol in enumerate(_slot_cols):
+                with _scol:
+                    # Check if pick is made for this slot
+                    if _si < len(_this_week_picks):
+                        _pname = _this_week_picks[_si]
+
+                        # Name format mismatch: season_log stores "First Last"
+                        # but predictions CSV uses "Last, First".
+                        # Normalize both to lowercase "first last" for matching.
+                        def _norm_name(n):
+                            parts = str(n).split(",")
+                            if len(parts) == 2:
+                                return f"{parts[1].strip()} {parts[0].strip()}".lower()
+                            return str(n).strip().lower()
+
+                        if not _preds.empty:
+                            _prow = _preds[_preds["player_name"].apply(_norm_name) == _norm_name(_pname)]
+                        else:
+                            _prow = pd.DataFrame()
+
+                        # Safe defaults — set ALL variables before the if/else so
+                        # nothing is ever undefined regardless of whether the player
+                        # name matches a row in the predictions CSV
+                        _wr_v   = "—"
+                        _win_v  = 0.0
+                        _t10_v  = 0.0
+                        _ev_v   = 0.0
+                        _uses_v = 3
+                        _dots   = "🟢🟢🟢"
+                        _odds   = "—"
+                        _edge   = 0.0
+                        _vprob  = 0.0
+                        _drift  = ""
+
+                        if not _prow.empty:
+                            _pr     = _prow.iloc[0]
+                            _wr_v   = int(_pr["world_rank"]) if pd.notna(_pr.get("world_rank")) else "—"
+                            _win_v  = (_pr.get("win_prob", 0) or 0) * 100
+                            _t10_v  = (_pr.get("top10_prob", 0) or 0) * 100
+                            _ev_v   = (_pr.get("expected_value", 0) or 0) / 1000
+                            _uses_v = int(_pr.get("uses_remaining", 3))
+                            _dots   = "🟢" * _uses_v + "⬜" * (3 - _uses_v)
+                            _odds   = str(_pr.get("odds_to_win", "—") or "—")
+                            _edge   = float(_pr.get("model_vs_vegas_edge", 0) or 0)
+                            _vprob  = float(_pr.get("vegas_prob", 0) or 0) * 100
+                            _drift  = str(_pr.get("odds_drift_level", "") or "").upper()
+
+                        # Edge badge — only appears when model/market gap > 3 pts
+                        _edge_badge = ""
+                        if _edge > 0.03:
+                            _edge_badge = (
+                                f'<div style="background:rgba(0,196,79,0.15);border:1px solid '
+                                f'rgba(0,196,79,0.4);border-radius:5px;padding:2px 8px;'
+                                f'font-size:10px;color:#00c44f;font-weight:700;'
+                                f'display:inline-block;margin-top:4px;">'
+                                f'⚡ MODEL EDGE +{_edge*100:.1f}%</div>'
+                            )
+                        elif _edge < -0.03:
+                            _edge_badge = (
+                                f'<div style="background:rgba(229,57,53,0.1);border:1px solid '
+                                f'rgba(229,57,53,0.3);border-radius:5px;padding:2px 8px;'
+                                f'font-size:10px;color:#e57373;font-weight:700;'
+                                f'display:inline-block;margin-top:4px;">'
+                                f'⚠️ MARKET FAVORS {abs(_edge)*100:.1f}%</div>'
+                            )
+
+                        _drift_label = {
+                            "SIGNIFICANT": "📈 Odds moving fast",
+                            "MODERATE":    "📊 Odds drifting",
+                        }.get(_drift, "")
+
+                        st.markdown(f"""
+<div class="lineup-card active">
+  <div class="lc-rank">PICK {_si + 1}</div>
+  <div class="lc-name">{_pname}</div>
+  <div class="lc-wr">World Rank #{_wr_v}</div>
+  <div class="lc-stats">
+    <div><div class="lc-stat-val">{_win_v:.1f}%</div><div class="lc-stat-label">WIN</div></div>
+    <div><div class="lc-stat-val" style="color:#4cb8ff;">{_t10_v:.0f}%</div><div class="lc-stat-label">TOP 10</div></div>
+    <div><div class="lc-stat-val" style="color:#f4c430;">${_ev_v:.0f}k</div><div class="lc-stat-label">EXP VAL</div></div>
+  </div>
+  <hr style="border-color:#1c2f4a; margin:8px 0;">
+  <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px;">
+    <div><span style="color:#4a6080;">Vegas:</span> <span style="color:#dde6f5;font-weight:700;">{_odds}</span></div>
+    <div><span style="color:#4a6080;">Mkt:</span> <span style="color:#dde6f5;font-weight:700;">{_vprob:.1f}%</span></div>
+  </div>
+  {_edge_badge}
+  <div style="font-size:10px;color:#4a6080;margin-top:4px;">{_drift_label}</div>
+  <div class="lc-uses">{_dots} ({_uses_v}/3 uses left)</div>
+  <div class="lc-badge-use">✅ LOCKED IN</div>
+</div>
+""", unsafe_allow_html=True)
+                    else:
+                        # Empty slot — show model suggestion
+                        if _si < len(_model_top3):
+                            _sr = _model_top3.iloc[_si]
+                            _wr_v = int(_sr["world_rank"]) if pd.notna(_sr.get("world_rank")) else "—"
+                            _win_v = (_sr.get("win_prob", 0) or 0) * 100
+                            _t10_v = (_sr.get("top10_prob", 0) or 0) * 100
+                            _ev_v = (_sr.get("expected_value", 0) or 0) / 1000
+                            _uses_v = int(_sr.get("uses_remaining", 3))
+                            _dots = "🟢" * _uses_v + "⬜" * (3 - _uses_v)
+                            st.markdown(f"""
+<div class="lineup-card" style="border-color:#1c3a5e; border-style:dashed;">
+  <div class="lc-rank">PICK {_si + 1} — SUGGESTED</div>
+  <div class="lc-name" style="color:#7a90b8;">{_sr['player_name']}</div>
+  <div class="lc-wr">World Rank #{_wr_v}</div>
+  <div class="lc-stats">
+    <div><div class="lc-stat-val" style="color:#5a8a6a;">{_win_v:.1f}%</div><div class="lc-stat-label">WIN</div></div>
+    <div><div class="lc-stat-val" style="color:#4a7a9a;">{_t10_v:.0f}%</div><div class="lc-stat-label">TOP 10</div></div>
+    <div><div class="lc-stat-val" style="color:#8a7a3a;">${_ev_v:.0f}k</div><div class="lc-stat-label">EXP VAL</div></div>
+  </div>
+  <div class="lc-uses">{_dots} ({_uses_v}/3 uses left)</div>
+  <div class="lc-badge-save">↑ MODEL SUGGESTS</div>
+</div>
+""", unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"""
+<div class="lineup-card empty">
+  <div class="lc-rank">PICK {_si + 1}</div>
+  <div class="lc-name" style="color:#2a3f58;">Empty Slot</div>
+  <div class="lc-wr" style="margin-top:40px;color:#2a3f58;">Not yet selected</div>
+</div>
+""", unsafe_allow_html=True)
+
+            # ── SAVE banner ──────────────────────────────────────────────
+            if _elite_save:
+                _save_names = " · ".join(_elite_save[:5])
+                st.markdown(f"""
+<div style="background:rgba(255,160,0,0.08); border:1px solid rgba(255,160,0,0.3);
+     border-radius:10px; padding:12px 16px; margin:16px 0 8px 0;">
+  <span style="color:#ffa000; font-weight:700; font-size:13px;">⚡ STANDARD EVENT — Save These Players for Majors & Signatures</span><br>
+  <span style="color:#8a7040; font-size:12px; margin-top:4px; display:block;">{_save_names}</span>
+</div>
+""", unsafe_allow_html=True)
+
+            # ── PLAYER POOL ──────────────────────────────────────────────
+            if not _preds.empty:
+                st.markdown("<div class='lineup-label' style='margin-top:20px;'>🏌️ PLAYER POOL — Model Rankings</div>", unsafe_allow_html=True)
+
+                # Sort: USE first (by EV), then SAVE, then CANNOT USE
+                def _pool_sort_key(row):
+                    _uses = row.get("uses_remaining", 3)
+                    _ev = row.get("expected_value", 0) or 0
+                    _wr = row.get("world_rank", 999) or 999
+                    if _uses == 0:
+                        return (3, -_ev)
+                    if _is_standard and row["player_name"] in _elite_save:
+                        return (1, _wr)
+                    return (0, -_ev)
+
+                _pool_df = _preds.copy()
+                _pool_df["_sort"] = [_pool_sort_key(r) for _, r in _pool_df.iterrows()]
+                _pool_df = _pool_df.sort_values("_sort").head(30)
+
+                _pool_html = []
+                for _rank_i, (_, _pr) in enumerate(_pool_df.iterrows(), 1):
+                    _pn = _pr["player_name"]
+                    _uses = int(_pr.get("uses_remaining", 3))
+                    _wr_v = int(_pr["world_rank"]) if pd.notna(_pr.get("world_rank")) else "—"
+                    _win_v = (_pr.get("win_prob", 0) or 0) * 100
+                    _t10_v = (_pr.get("top10_prob", 0) or 0) * 100
+                    _ev_v = (_pr.get("expected_value", 0) or 0) / 1000
+                    _dots = "●" * _uses + "○" * (3 - _uses)
+
+                    if _uses == 0:
+                        _card_cls, _badge_cls, _badge_txt = "cant-card", "badge-no", "❌ MAXED"
+                    elif _is_standard and _pn in _elite_save:
+                        _card_cls, _badge_cls, _badge_txt = "save-card", "badge-save", "⚡ SAVE"
+                    else:
+                        _card_cls, _badge_cls, _badge_txt = "use-card", "badge-use", "✅ USE"
+
+                    _pool_html.append(f"""
+<div class="pool-card {_card_cls}">
+  <div class="pc-rank">#{_rank_i}</div>
+  <div style="flex:1;">
+    <div class="pc-name">{_pn}</div>
+    <div class="pc-wr">WR #{_wr_v} &nbsp;·&nbsp; {_dots} {_uses}/3</div>
+  </div>
+  <div style="text-align:right; min-width:50px;">
+    <div class="pc-stat">{_win_v:.1f}%</div>
+    <div class="pc-stat-label">WIN</div>
+  </div>
+  <div style="text-align:right; min-width:50px;">
+    <div class="pc-stat" style="color:#4cb8ff;">{_t10_v:.0f}%</div>
+    <div class="pc-stat-label">TOP 10</div>
+  </div>
+  <div style="text-align:right; min-width:50px;">
+    <div class="pc-stat" style="color:#f4c430;">${_ev_v:.0f}k</div>
+    <div class="pc-stat-label">EXP VAL</div>
+  </div>
+  <div class="pc-badge {_badge_cls}">{_badge_txt}</div>
+</div>""")
+
+                st.markdown("\n".join(_pool_html), unsafe_allow_html=True)
+
             st.markdown("---")
+             # ── Optimal Lineup Finder ──────────────────────────────────────────
+            with st.expander("🧮 Optimal Lineup Finder", expanded=False):
+                st.caption(
+                    "Brute-force search over all C(n,3) player combinations. "
+                    "Ranks by composite score: base EV + ceiling bonus − last-use penalty."
+                )
+
+                _opt_col1, _opt_col2, _opt_col3 = st.columns(3)
+                with _opt_col1:
+                    _opt_top_n = st.slider(
+                        "Candidate pool (top N by EV):", 20, 60, 40, 5,
+                        key="opt_top_n",
+                        help="C(40,3) = 9,880 combos · C(60,3) = 34,220 combos"
+                    )
+                with _opt_col2:
+                    _opt_top_combos = st.slider(
+                        "Combinations to show:", 5, 25, 10, 5,
+                        key="opt_top_combos"
+                    )
+                with _opt_col3:
+                    _opt_run = st.button(
+                        "▶ Run Optimizer", type="primary",
+                        use_container_width=True, key="opt_run_btn"
+                    )
+
+                if _opt_run:
+                    try:
+                        sys.path.insert(
+                            0, str(PROJECT_ROOT / "scripts" / "predictions")
+                        )
+     
+                        from scripts.predictions.lineup_optimizer import run_optimizer
+                        with st.spinner(f"Evaluating combinations..."):
+                            _opt_df, _opt_elig, _opt_imp, _opt_tname = run_optimizer(
+                                top_n=_opt_top_n,
+                                top_combos=_opt_top_combos,
+                                verbose=False,
+                            )
+
+                        n_combos = (
+                            len(_opt_elig)
+                            * (len(_opt_elig) - 1)
+                            * (len(_opt_elig) - 2)
+                            // 6
+                        )
+                        st.caption(
+                            f"Evaluated {n_combos:,} combinations from "
+                            f"{len(_opt_elig)} eligible players · "
+                            f"Tournament importance: {_opt_imp}/10"
+                        )
+
+                        # Render results as styled cards
+                        for _rank, _row in _opt_df.iterrows():
+                            _penalty = _row["last_use_cost"] > 0
+                            _card_border = "#f39c12" if _penalty else "#00c44f"
+                            _uses_dots = lambda u: "🟢" * u + "⬜" * (3 - u)
+                            st.markdown(f"""
+                            <div style="background:#0d1a30;border:1px solid {_card_border}33;
+                                        border-left:4px solid {_card_border};border-radius:8px;
+                                        padding:12px 16px;margin:6px 0;
+                                        display:flex;justify-content:space-between;align-items:center;">
+                                <div style="font-size:0.82em;color:#4a6080;min-width:28px;">
+                                    #{_rank}
+                                </div>
+                                <div style="flex:1;display:flex;gap:20px;">
+                                    <div>
+                                        <div style="font-weight:600;font-size:0.9em;color:#dde6f5;">
+                                            {_row['pick1'][:22]}
+                                        </div>
+                                        <div style="font-size:0.75em;color:#4a6080;">
+                                            EV ${_row['ev1']:,} &nbsp; {_uses_dots(_row['uses1'])}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight:600;font-size:0.9em;color:#dde6f5;">
+                                            {_row['pick2'][:22]}
+                                        </div>
+                                        <div style="font-size:0.75em;color:#4a6080;">
+                                            EV ${_row['ev2']:,} &nbsp; {_uses_dots(_row['uses2'])}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight:600;font-size:0.9em;color:#dde6f5;">
+                                            {_row['pick3'][:22]}
+                                        </div>
+                                        <div style="font-size:0.75em;color:#4a6080;">
+                                            EV ${_row['ev3']:,} &nbsp; {_uses_dots(_row['uses3'])}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="text-align:right;min-width:140px;">
+                                    <div style="font-weight:700;font-size:1.0em;color:{_card_border};">
+                                        ${_row['score']:,}
+                                    </div>
+                                    <div style="font-size:0.75em;color:#4a6080;">
+                                        P(top-5): {_row['p_top5_any']:.1f}%
+                                        {"  ⚠ last use" if _penalty else ""}
+                                    </div>
+                                </div>
+                            </div>
+                            """, unsafe_allow_html=True)
+
+                        if _opt_df["last_use_cost"].sum() > 0:
+                            st.warning(
+                                "⚠ Some combinations include players on their last use "
+                                "in a standard event — a $15,000 EV penalty was applied. "
+                                "Consider saving them for a Major."
+                            )
+
+                    except Exception as _opt_err:
+                        st.error(f"Optimizer error: {_opt_err}")
+                        st.caption("Make sure predictions are loaded (run full pipeline first).")
+            st.markdown("<div class='lineup-label'>📊 DATA & ANALYSIS</div>", unsafe_allow_html=True)
 
             # Tabs for different views
-            tab1, tab2, tab3, tab4, tab5 = st.tabs(["🎯 Recommendations", "🏌️ Course Specialists", "📊 Field Analysis", "🎯 Course Fit", "Course History"])
+            tab1, tab2, tab3 = st.tabs(["🎯 Recommendations", "📊 Field Analysis", "🏌️ Course"])
             
 
             with tab1:
@@ -4944,11 +5412,48 @@ if page == "🏆 This Week":
                 )
 
             with tab2:
-                st.markdown("### 🏌️ Players Who Excel Here")
+                st.markdown("### 📊 Field Overview")
 
+                if engine.predictions:
+                    ranks = [p.owgr_rank for p in engine.predictions.values() if p.owgr_rank < 500]
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        fig = px.histogram(ranks, nbins=20, title="Field Strength (World Rankings)")
+                        fig.update_layout(showlegend=False, xaxis_title="World Rank", yaxis_title="Players")
+                        st.plotly_chart(fig, use_container_width=True)
+                    with col2:
+                        top_players = sorted(engine.predictions.items(), key=lambda x: x[1].owgr_rank)[:10]
+                        st.markdown("**Top 10 in Field:**")
+                        for player, form in top_players:
+                            st.caption(f"#{form.owgr_rank} {player}")
+
+                st.markdown("---")
+                st.markdown("### 👥 Full Field List")
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    show_field = st.button("👥 Full Field", use_container_width=True, type="primary")
+                with col2:
+                    show_top_30 = st.button("⭐ Top 30", use_container_width=True)
+                with col3:
+                    show_top_50 = st.button("★ Top 50", use_container_width=True)
+                if show_field:
+                    with st.spinner("Loading field..."):
+                        output = run_script("planning/field_viewer.py")
+                    st.code(output, language=None)
+                if show_top_30:
+                    with st.spinner("Loading top 30..."):
+                        output = run_script("planning/field_viewer.py", "--top", "30")
+                    st.code(output, language=None)
+                if show_top_50:
+                    with st.spinner("Loading top 50..."):
+                        output = run_script("planning/field_viewer.py", "--top", "50")
+                    st.code(output, language=None)
+
+            with tab3:
+                # ── Who excels here ──────────────────────────────────────────
+                st.markdown("#### 🏆 Players Who Excel Here")
                 aliases = course_info.get("aliases", [])
                 specialists = []
-
                 if engine.course_db:
                     for alias in aliases:
                         specs = engine.course_db.get_course_specialists(alias, min_plays=2)
@@ -4964,7 +5469,6 @@ if page == "🏆 This Week":
                                 })
                         if specialists:
                             break
-
                 if specialists:
                     seen = set()
                     unique = []
@@ -4973,182 +5477,87 @@ if page == "🏆 This Week":
                         if key not in seen:
                             seen.add(key)
                             unique.append(s)
-
                     st.dataframe(
                         pd.DataFrame(unique[:15]),
-                        column_config={
-                            "Fit Score": st.column_config.ProgressColumn(min_value=0, max_value=100),
-                        },
-                        hide_index=True,
-                        use_container_width=True
+                        column_config={"Fit Score": st.column_config.ProgressColumn(min_value=0, max_value=100)},
+                        hide_index=True, use_container_width=True
                     )
                 else:
                     st.info("Limited course history data available for this venue")
 
-                # Add course performance profiles from form stats
                 st.markdown("---")
-                st.markdown("### 📈 Course Performance (Form Stats)")
-                st.caption("Based on per-tournament strokes gained data (2020-2026)")
-
-                # Get field player IDs if available
-                field_ids = None
-                if engine.predictions:
-                    # Try to get player IDs from predictions
-                    pred_keys = list(engine.predictions.keys())
-                    if pred_keys:
-                        field_ids = [p.player_id for p in engine.predictions.values() if hasattr(p, 'player_id')]
-
-                render_course_performance_profiles(tournament, field_player_ids=field_ids)
-
-            with tab3:
-                st.markdown("### 📊 Field Overview")
-
-                if engine.predictions:
-                    # World rank distribution
-                    ranks = [p.owgr_rank for p in engine.predictions.values() if p.owgr_rank < 500]
-
-                    col1, col2 = st.columns(2)
-
-                    with col1:
-                        fig = px.histogram(ranks, nbins=20, title="Field Strength (World Rankings)")
-                        fig.update_layout(showlegend=False, xaxis_title="World Rank", yaxis_title="Players")
-                        st.plotly_chart(fig, use_container_width=True)
-
-                    with col2:
-                        # Top players in field
-                        top_players = sorted(engine.predictions.items(), key=lambda x: x[1].owgr_rank)[:10]
-                        st.markdown("**Top 10 in Field:**")
-                        for player, form in top_players:
-                            st.caption(f"#{form.owgr_rank} {player}")
-
-                st.markdown("---")
-                st.markdown("### 👥 Full Field List")
-
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    show_field = st.button("👥 Full Field", use_container_width=True, type="primary")
-                with col2:
-                    show_top_30 = st.button("⭐ Top 30", use_container_width=True)
-                with col3:
-                    show_top_50 = st.button("★ Top 50", use_container_width=True)
-
-                if show_field:
-                    with st.spinner("Loading field..."):
-                        output = run_script("planning/field_viewer.py")
-                    st.code(output, language=None)
-
-                if show_top_30:
-                    with st.spinner("Loading top 30..."):
-                        output = run_script("planning/field_viewer.py", "--top", "30")
-                    st.code(output, language=None)
-
-                if show_top_50:
-                    with st.spinner("Loading top 50..."):
-                        output = run_script("planning/field_viewer.py", "--top", "50")
-                    st.code(output, language=None)
-
-            with tab4:
-                st.markdown("### 🎯 Course Fit Analysis")
-
-                # Course profile button
-                col1, col2 = st.columns(2)
-                with col1:
-                    show_course_profile = st.button("🏟️ Course Profile", use_container_width=True, type="primary")
-                with col2:
-                    pass
-
-                if show_course_profile:
-                    with st.spinner("Loading course profile..."):
-                        output = run_script("planning/course_fit.py", "--course", tournament)
-                    st.code(output, language=None)
-                    
-                
-                st.markdown("---")
-                st.markdown("**📊 Course Toughness Rankings")
-                if st.button("📊 Course Toughness Rankings", use_container_width=True):                               
-                    output = run_script("planning/course_stats_viewer.py")                                            
-                    st.code(output, language=None)     
-
-                st.markdown("---")
-                st.markdown("**Check Player Fit for This Course:**")
-
-                all_players = sorted(engine.predictions.keys()) if engine.predictions else []
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    fit_player = st.selectbox("Select player:", [""] + all_players, key="fit_player")
-                with col2:
-                    check_fit = st.button("🎯 Check Fit", use_container_width=True, type="primary")
-
-                if check_fit and fit_player:
-                    with st.spinner(f"Analyzing {fit_player}'s course fit..."):
-                        output = run_script("planning/course_fit.py", fit_player)
-                    st.code(output, language=None)
-
-            with tab5:
-                st.markdown("### 📅 Course History")
-
-                # Quick stats cards for best performers at this course
+                st.markdown("#### 📅 Top Course Performers (in Field)")
                 course_perf = load_course_performance_data()
                 course_info_lookup = get_course_for_tournament(tournament)
                 course_key = course_info_lookup.get("course_key", "unknown")
-
                 if not course_perf.empty and course_key != "unknown":
                     course_data = course_perf[course_perf["course_key"] == course_key].copy()
-
                     if not course_data.empty:
-                        st.markdown("#### 🏆 Top Course Performers")
-
-                        # Get field player IDs if available
                         field_names = list(engine.predictions.keys()) if engine.predictions else []
-
-                        # Match by name (lowercase)
                         course_data["name_lower"] = course_data["player_name"].str.lower()
-                        field_lower = [n.lower() for n in field_names]
-                        in_field = course_data[course_data["name_lower"].isin(field_lower)].copy()
-
+                        in_field = course_data[course_data["name_lower"].isin([n.lower() for n in field_names])].copy()
                         if not in_field.empty:
-                            # Show top 6 in field
                             in_field["score"] = (
                                 in_field["top_10_rate"].fillna(0) * 3.0 +
                                 in_field["made_cut_rate"].fillna(0) * 1.5 +
                                 in_field["win_rate"].fillna(0) * 5.0
                             )
                             top_in_field = in_field.nlargest(6, "score")
-
                             cols = st.columns(3)
                             for i, (_, player) in enumerate(top_in_field.iterrows()):
                                 with cols[i % 3]:
-                                    name = str(player["player_name"])[:18]
-                                    starts = int(player["starts"])
-                                    cut_pct = player["made_cut_rate"] * 100 if pd.notna(player["made_cut_rate"]) else 0
                                     top10_pct = player["top_10_rate"] * 100 if pd.notna(player["top_10_rate"]) else 0
                                     avg = player["avg_finish"] if pd.notna(player["avg_finish"]) else 0
-
                                     st.metric(
-                                        label=name,
+                                        label=str(player["player_name"])[:18],
                                         value=f"{top10_pct:.0f}% Top-10",
-                                        delta=f"{starts} starts | {avg:.1f} avg"
+                                        delta=f"{int(player['starts'])} starts | {avg:.1f} avg"
                                     )
 
-                        st.markdown("---")
-
-                # Course Specialist button
-                if st.button("🏆 Course Specialists (Historical)", use_container_width=True, type="primary"):
-                    with st.spinner("Loading course specialists..."):
-                        output = run_script("planning/course_history.py", "--tournament", tournament)
-                    st.code(output, language=None)
                 st.markdown("---")
-                st.markdown("**Player Course History:**")
-                all_players = sorted(engine.predictions.keys()) if engine.predictions else []
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    hist_player = st.selectbox("Select player:", [""] + all_players, key="hist_player")
-                with col2:
-                    check_hist = st.button("📊 View History", use_container_width=True, type='primary')
+                st.markdown("#### 📈 Course Performance (SG Data)")
+                st.caption("Per-tournament strokes gained data (2020–2026)")
+                field_ids = None
+                if engine.predictions:
+                    field_ids = [p.player_id for p in engine.predictions.values() if hasattr(p, 'player_id')]
+                render_course_performance_profiles(tournament, field_player_ids=field_ids)
 
+                st.markdown("---")
+                st.markdown("#### 🎯 Course Fit & Player History")
+                cf_col1, cf_col2 = st.columns(2)
+                with cf_col1:
+                    show_course_profile = st.button("🏟️ Course Profile", use_container_width=True, type="primary")
+                with cf_col2:
+                    if st.button("📊 Course Toughness Rankings", use_container_width=True):
+                        output = run_script("planning/course_stats_viewer.py")
+                        st.code(output, language=None)
+                if show_course_profile:
+                    with st.spinner("Loading course profile..."):
+                        output = run_script("planning/course_fit.py", "--course", tournament)
+                    st.code(output, language=None)
+
+                st.markdown("---")
+                all_players = sorted(engine.predictions.keys()) if engine.predictions else []
+                ph_col1, ph_col2, ph_col3 = st.columns([2, 2, 1])
+                with ph_col1:
+                    fit_player = st.selectbox("Check player course fit:", [""] + all_players, key="fit_player")
+                with ph_col2:
+                    hist_player = st.selectbox("View player history:", [""] + all_players, key="hist_player")
+                with ph_col3:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    check_fit  = st.button("🎯 Fit", use_container_width=True, type="primary")
+                    check_hist = st.button("📊 History", use_container_width=True)
+                if check_fit and fit_player:
+                    with st.spinner(f"Analyzing {fit_player}'s course fit..."):
+                        output = run_script("planning/course_fit.py", fit_player)
+                    st.code(output, language=None)
                 if check_hist and hist_player:
                     with st.spinner(f"Loading {hist_player}'s course history..."):
                         output = run_script("planning/course_history.py", "--player", hist_player)
+                    st.code(output, language=None)
+                if st.button("🏆 All Course Specialists (Historical)", use_container_width=True):
+                    with st.spinner("Loading course specialists..."):
+                        output = run_script("planning/course_history.py", "--tournament", tournament)
                     st.code(output, language=None)
 
            
@@ -5188,17 +5597,17 @@ elif page == "🎯 Scoring Engine":
                 st.info(f"💡 {course_info.get('notes')}")
 
     # Show current scoring weights
-    with st.expander("⚙️ Current Scoring Weights", expanded=False):
+    with st.expander("⚙️ How Scores Are Calculated", expanded=False):
         w_col1, w_col2, w_col3, w_col4 = st.columns(4)
         with w_col1:
-            st.metric("Importance", "25%", help="Tournament prestige/purse")
+            st.metric("Player Skill", "40%", help="World ranking + strokes gained statistics")
         with w_col2:
-            st.metric("Course Fit", "25%", delta="-10%", delta_color="off", help="Historical performance at venue")
+            st.metric("Recent Form", "35%", help="How well the player has been playing lately")
         with w_col3:
-            st.metric("Form", "30%", delta="+5%", help="Recent results, hot hand")
+            st.metric("Field Strength", "15%", help="How tough the competition is this week")
         with w_col4:
-            st.metric("Field", "20%", delta="+5%", help="Relative field difficulty")
-        st.caption("*Weights optimized on 2026-02-16 based on backtest results*")
+            st.metric("Course History", "10%", help="Past results at this specific course")
+        st.caption("*Model trained on 2020–2024 PGA Tour data. Course Fit removed after A/B testing showed no predictive value.*")
 
     st.markdown("---")
 
@@ -5484,28 +5893,33 @@ elif page == "🎯 Scoring Engine":
                         ].copy()
                     board_df = board_df.head(board_size)
 
+                    def _pr_border(rank_num):
+                        if rank_num == 1:   return "#f1c40f"  # gold
+                        if rank_num == 2:   return "#aaa"     # silver
+                        if rank_num == 3:   return "#cd7f32"  # bronze
+                        if rank_num <= 10:  return "#3498db"  # blue
+                        return "#2a3a50"                      # muted
+
                     for _, row in board_df.iterrows():
                         rank_val = row.get("rank")
                         rank_num = int(rank_val) if pd.notna(rank_val) else None
                         rank_label = medals.get(rank_num, f"#{rank_num}" if rank_num else "•")
-                        player = row.get(player_col, "Unknown")
-                        country = str(row.get("country_flag", row.get("country", ""))).strip()
+                        player   = str(row.get(player_col, "Unknown")).strip()
+                        country  = str(row.get("country_flag", row.get("country", ""))).strip()
                         analysis = str(row.get("analysis", "") or "").strip()
+                        border   = _pr_border(rank_num)
 
-                        r1, r2 = st.columns([1, 8])
-                        with r1:
-                            st.markdown(f"**{rank_label}**")
-                        with r2:
-                            st.markdown(f"**{player}**")
-                            meta_parts = []
-                            if country:
-                                meta_parts.append(country)
-                            if "player_id" in row and pd.notna(row.get("player_id")):
-                                meta_parts.append(f"ID {int(row['player_id'])}")
-                            if meta_parts:
-                                st.caption(" • ".join(meta_parts))
-                            if analysis:
-                                st.caption(analysis[:180] + ("..." if len(analysis) > 180 else ""))
+                        st.markdown(f"""
+<div style="background:#0d1a30;border-left:3px solid {border};border-radius:6px;
+            padding:12px 16px;margin-bottom:8px;">
+  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">
+    <span style="font-size:1.05em;font-weight:700;color:{border};">{rank_label}</span>
+    <span style="font-size:1.0em;font-weight:600;color:#dde6f5;">{player}</span>
+    {"<span style='font-size:0.78em;color:#6b7fa3;'>" + country + "</span>" if country else ""}
+  </div>
+  {"<p style='margin:0;font-size:0.82em;color:#b0bec5;line-height:1.55;'>" + analysis + "</p>" if analysis else ""}
+</div>
+""", unsafe_allow_html=True)
 
                     with st.expander("📊 Full Rankings Table"):
                         drop_cols = {"analysis"}
@@ -5538,31 +5952,64 @@ elif page == "📋 My Picks":
 
     st.markdown("---")
 
-    # Usage Tracker buttons
-    st.markdown("### 📊 Usage Status")
-    col1, col2, col3, col4 = st.columns(4)
+    # ── Player Usage Grid ──────────────────────────────────────────────────────
+    st.markdown("### 🎯 Player Usage Grid")
+    st.caption("All players used this season — color-coded by uses remaining")
 
-    with col1:
-        run_summary = st.button("📋 Summary", use_container_width=True, type="primary", help="--summary")
-    with col2:
-        run_lineups = st.button("📅 Lineups", use_container_width=True, help="--lineups")
-    with col3:
-        run_available = st.button("✅ Available", use_container_width=True, help="--available")
+    if picks:
+        _sorted_picks = sorted(picks.items(), key=lambda x: x[1].get("remaining_uses", 3))
 
-    if run_summary:
-        with st.spinner("Running: usage_tracker.py --summary"):
-            output = run_script("planning/usage_tracker.py", "--summary")
-        st.code(output, language=None)
+        def _use_color(remaining):
+            return {0: "#e74c3c", 1: "#f39c12", 2: "#f1c40f"}.get(remaining, "#00c44f")
 
-    if run_lineups:
-        with st.spinner("Running: usage_tracker.py --lineups"):
-            output = run_script("planning/usage_tracker.py", "--lineups")
-        st.code(output, language=None)
+        _groups = {0: [], 1: [], 2: [], 3: []}
+        for _gn, _gd in _sorted_picks:
+            _groups.get(_gd.get("remaining_uses", 3), []).append((_gn, _gd))
 
-    if run_available:
-        with st.spinner("Running: usage_tracker.py --available"):
-            output = run_script("planning/usage_tracker.py", "--available")
-        st.code(output, language=None)
+        _group_labels = {
+            0: "Maxed Out — 0 uses left",
+            1: "1 use remaining",
+            2: "2 uses remaining",
+            3: "3 uses remaining",
+        }
+
+        for _rem in [0, 1, 2, 3]:
+            if not _groups[_rem]:
+                continue
+            _gc = _use_color(_rem)
+            st.markdown(
+                f"<div style='color:{_gc};font-weight:600;font-size:0.82em;"
+                f"letter-spacing:0.05em;margin:14px 0 5px;'>"
+                f"● {_group_labels[_rem].upper()}</div>",
+                unsafe_allow_html=True,
+            )
+            _gcols = st.columns(min(4, len(_groups[_rem])))
+            for _gi, (_gname, _gdata) in enumerate(_groups[_rem]):
+                _grem   = _gdata.get("remaining_uses", 3)
+                _gtotal = _gdata.get("total_points", 0)
+                _gdots  = "🟢" * _grem + "⬜" * (3 - _grem)
+                _gweeks = [str(t.get("week", "")) for t in _gdata.get("tournaments_used", [])]
+                _gwk_str = ("Wk " + ", ".join(_gweeks)) if _gweeks else ""
+                with _gcols[_gi % 4]:
+                    st.markdown(f"""
+                    <div style="background:{_gc}0d;border:1px solid {_gc}44;
+                                border-radius:8px;padding:10px 12px;margin:3px 0;">
+                        <div style="font-weight:600;font-size:0.85em;color:#dde6f5;
+                                    white-space:nowrap;overflow:hidden;
+                                    text-overflow:ellipsis;margin-bottom:4px;">
+                            {_gname[:22]}
+                        </div>
+                        <div style="font-size:1.05em;margin-bottom:3px;">{_gdots}</div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-size:0.75em;color:{_gc};font-weight:600;">
+                                {_gtotal:,} pts
+                            </span>
+                            <span style="font-size:0.72em;color:#6b7fa3;">{_gwk_str}</span>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+    else:
+        st.info("No players tracked yet this season.")
 
     st.markdown("---")
 
@@ -5737,6 +6184,504 @@ elif page == "📋 My Picks":
             st.code(output, language=None)
             st.cache_data.clear()
 
+    st.markdown("---")
+
+    # ----------------------------------------------------------------
+    # SEASON LOG — Visual Summary
+    # ----------------------------------------------------------------
+    st.markdown("### 📅 Season Log")
+    st.caption("Your picks and results, week by week")
+
+    _log_path = OUTPUTS_DIR / "season_log.csv"
+    if _log_path.exists():
+        _log = pd.read_csv(_log_path)
+        _completed = _log[_log["points"].notna() & (_log["points"] != "")]
+
+        if not _completed.empty:
+            _completed = _completed.copy()
+            _completed["points"] = pd.to_numeric(_completed["points"], errors="coerce").fillna(0)
+            _completed["week"] = pd.to_numeric(_completed["week"], errors="coerce")
+
+            # Season totals row
+            _total_pts = int(_completed["points"].sum())
+            _weeks_played = len(_completed)
+            _best_week = _completed.loc[_completed["points"].idxmax()]
+
+            sm1, sm2, sm3, sm4 = st.columns(4)
+            with sm1:
+                st.metric("Season Points", f"{_total_pts:,}")
+            with sm2:
+                st.metric("Weeks Completed", f"{_weeks_played}/30")
+            with sm3:
+                st.metric("Avg Points/Week", f"{_total_pts/_weeks_played:,.0f}" if _weeks_played else "—")
+            with sm4:
+                st.metric("Best Week", f"{int(_best_week['points']):,} pts", help=_best_week.get("tournament", ""))
+
+            # Points by week bar chart
+            _fig = px.bar(
+                _completed,
+                x="tournament",
+                y="points",
+                text="points",
+                color="points",
+                color_continuous_scale=["#e74c3c", "#f39c12", "#2ecc71"],
+                labels={"tournament": "", "points": "Points"},
+                title="Points by Tournament",
+            )
+            _fig.update_traces(textposition="outside")
+            _fig.update_layout(
+                showlegend=False,
+                coloraxis_showscale=False,
+                height=280,
+                margin=dict(t=40, b=10, l=0, r=0),
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
+                font_color="#ccc",
+                xaxis=dict(tickfont=dict(size=11)),
+            )
+            st.plotly_chart(_fig, use_container_width=True)
+
+            # Pick quality — model rank alignment
+            if "avg_model_rank" in _completed.columns:
+                _rank_data = _completed.dropna(subset=["avg_model_rank"]).copy()
+                _rank_data["avg_model_rank"] = pd.to_numeric(_rank_data["avg_model_rank"], errors="coerce")
+                if not _rank_data.empty:
+                    st.markdown("**Pick Quality — How closely did picks follow the model?**")
+                    st.caption("Lower avg model rank = picks were closer to model's top recommendations")
+                    _rfig = px.scatter(
+                        _rank_data,
+                        x="tournament",
+                        y="avg_model_rank",
+                        size="points",
+                        color="points",
+                        color_continuous_scale=["#e74c3c", "#2ecc71"],
+                        text="tournament",
+                        labels={"tournament": "", "avg_model_rank": "Avg Model Rank of Picks"},
+                    )
+                    _rfig.update_traces(textposition="top center", textfont=dict(size=9))
+                    _rfig.update_yaxes(autorange="reversed")
+                    _rfig.update_layout(
+                        showlegend=False,
+                        coloraxis_showscale=False,
+                        height=220,
+                        margin=dict(t=20, b=10, l=0, r=0),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font_color="#ccc",
+                    )
+                    st.plotly_chart(_rfig, use_container_width=True)
+
+            # Week-by-week table
+            _display_cols = ["week", "tournament", "pick1", "pick2", "pick3",
+                             "result1", "result2", "result3", "points", "notes"]
+            _display_cols = [c for c in _display_cols if c in _log.columns]
+            _rename = {
+                "week": "Wk", "tournament": "Tournament",
+                "pick1": "Pick 1", "pick2": "Pick 2", "pick3": "Pick 3",
+                "result1": "R1", "result2": "R2", "result3": "R3",
+                "points": "Points", "notes": "Notes",
+            }
+            st.dataframe(
+                _log[_display_cols].rename(columns=_rename),
+                hide_index=True,
+                use_container_width=True,
+                column_config={
+                    "Points": st.column_config.NumberColumn(format="%d"),
+                }
+            )
+
+            # ── Season Analytics ───────────────────────────────────────────────
+            st.markdown("---")
+            st.markdown("#### 📈 Season Analytics")
+
+            # Parse finish positions — handles "T28" → 28, "1" → 1, "MC" → None
+            def _parse_finish(r):
+                if pd.isna(r) or str(r).strip().upper() in ("MC", "WD", "DQ", ""):
+                    return None
+                try:
+                    return int(str(r).replace("T", "").replace("t", "").strip())
+                except Exception:
+                    return None
+
+            # Build per-pick flat table from season log
+            _pick_rows = []
+            for _, _slrow in _completed.iterrows():
+                for _pi in range(1, 4):
+                    _pn = _slrow.get(f"pick{_pi}")
+                    _pr = _slrow.get(f"result{_pi}")
+                    _rk = _slrow.get(f"rank{_pi}")
+                    if pd.notna(_pn) and str(_pn).strip():
+                        _pick_rows.append({
+                            "week":       _slrow["week"],
+                            "tournament": _slrow["tournament"],
+                            "player":     _pn,
+                            "result":     _pr,
+                            "finish":     _parse_finish(_pr),
+                            "model_rank": pd.to_numeric(_rk, errors="coerce"),
+                        })
+
+            if _pick_rows:
+                _pk = pd.DataFrame(_pick_rows)
+                _valid = _pk.dropna(subset=["finish"])
+                _total_made = len(_pk)
+                _top10_n  = int((_valid["finish"] <= 10).sum())
+                _top20_n  = int((_valid["finish"] <= 20).sum())
+                _cuts_n   = int(_pk["result"].apply(
+                    lambda x: str(x).strip().upper() not in ("MC", "WD", "DQ", "")
+                ).sum())
+                _mc_n     = _total_made - _cuts_n
+
+                _anal_c1, _anal_c2 = st.columns([3, 2])
+
+                with _anal_c1:
+                    # Cumulative points line chart
+                    _cum = _completed.sort_values("week").copy()
+                    _cum["cumulative"] = _cum["points"].cumsum()
+                    _cfig = px.line(
+                        _cum, x="tournament", y="cumulative",
+                        markers=True,
+                        labels={"tournament": "", "cumulative": "Cumulative Pts"},
+                        title="Cumulative Points",
+                    )
+                    _cfig.update_traces(
+                        line=dict(color="#00c44f", width=2.5),
+                        marker=dict(size=9, color="#00c44f"),
+                    )
+                    _cfig.update_layout(
+                        height=230,
+                        margin=dict(t=36, b=8, l=0, r=0),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font_color="#ccc",
+                        xaxis=dict(tickfont=dict(size=10)),
+                    )
+                    st.plotly_chart(_cfig, use_container_width=True)
+
+                with _anal_c2:
+                    st.markdown("**Pick Outcomes**")
+                    _oc1, _oc2 = st.columns(2)
+                    with _oc1:
+                        st.metric("Picks Made", _total_made)
+                        st.metric("Top 10s", _top10_n)
+                        st.metric("Top 20s", _top20_n)
+                    with _oc2:
+                        st.metric("Cuts Made", _cuts_n)
+                        st.metric("Missed Cuts", _mc_n)
+                        _t10_rate = f"{_top10_n/_total_made*100:.0f}%" if _total_made else "—"
+                        st.metric("Top-10 Rate", _t10_rate)
+
+        else:
+            # Pending weeks only
+            st.info("No completed weeks yet. Results will appear here after each tournament.")
+            _display_cols = ["week", "tournament", "pick1", "pick2", "pick3", "notes"]
+            _display_cols = [c for c in _display_cols if c in _log.columns]
+            if not _log.empty:
+                st.dataframe(_log[_display_cols], hide_index=True, use_container_width=True)
+    else:
+        st.info("Season log not found. It will appear here once picks are recorded.")
+
+    # ── Season Scenario Planner ───────────────────────────────────────────────
+    st.markdown("---")
+    st.markdown("### 🔮 Season Scenario Planner")
+    st.caption(
+        "Monte Carlo simulation (5,000 seasons) comparing three usage strategies "
+        "for the remainder of the year. Helps answer: **should you burn stars early "
+        "or save them for Majors?**"
+    )
+
+    _sp_path = OUTPUTS_DIR / "scenario_plan.json"
+
+    _sp_col1, _sp_col2 = st.columns([1, 5])
+    with _sp_col1:
+        _sp_regen = st.button(
+            "⟳ Re-run", key="sp_regen",
+            help="Regenerate with latest predictions (takes ~5 seconds)",
+            use_container_width=True,
+        )
+    if _sp_regen:
+        with st.spinner("Running 5,000 Monte Carlo simulations..."):
+            import sys as _sys_sp
+            _sys_sp.path.insert(0, str(Path(__file__).parent / "scripts" / "predictions"))
+            from scripts.predictions.scenario_planner import run as _sp_run
+            _sp_run()
+        st.success("Simulation complete! Scroll down to see results.")
+        st.rerun()
+
+    if _sp_path.exists():
+        import json as _sp_json
+        with open(_sp_path) as _spf:
+            _sp = _sp_json.load(_spf)
+
+        _sp_gen  = _sp.get("generated_at", "")[:10]
+        _sp_nsim = _sp.get("n_simulations", 5000)
+        _sp_wks  = _sp.get("weeks_remaining", 0)
+        st.caption(
+            f"Generated: **{_sp_gen}** &nbsp;|&nbsp; "
+            f"{_sp_nsim:,} simulations &nbsp;|&nbsp; "
+            f"{_sp_wks} remaining weeks in schedule"
+        )
+
+        # ── Strategy cards ────────────────────────────────────────────────────
+        _strategy_order = ["greedy", "major_saver", "balanced"]
+        _best = _sp.get("best_strategy", "greedy")
+        _st_cols = st.columns(3)
+
+        for _si, _sk in enumerate(_strategy_order):
+            _sv    = _sp["strategies"].get(_sk, {})
+            _sstat = _sv.get("stats", {})
+            _is_best  = (_sk == _best)
+            _border   = "2px solid #00c44f" if _is_best else "1px solid #2a3a50"
+            _badge    = " 🏆" if _is_best else ""
+
+            with _st_cols[_si]:
+                st.markdown(f"""
+<div style="background:#0d1a30;border:{_border};border-radius:10px;
+            padding:14px 12px;text-align:center;">
+  <div style="font-size:0.85em;font-weight:600;
+              color:{_sv.get('color','#aaa')};">{_sv.get('display_name','')}{_badge}</div>
+  <div style="font-size:2em;font-weight:700;margin:8px 0;color:#fff;">
+    ${_sstat.get('mean', 0)/1_000_000:.1f}M
+  </div>
+  <div style="font-size:0.72em;color:#777;margin-bottom:10px;">expected earnings (remaining season)</div>
+  <hr style="border:none;border-top:1px solid #2a3a50;margin:8px 0;">
+  <table style="width:100%;font-size:0.76em;color:#aaa;border-collapse:collapse;">
+    <tr><td style="text-align:left;">Floor (5th pct)</td>
+        <td style="text-align:right;color:#e74c3c;font-weight:600;">
+          ${_sstat.get('p5', 0)/1_000_000:.1f}M</td></tr>
+    <tr><td style="text-align:left;">Median</td>
+        <td style="text-align:right;color:#f1c40f;font-weight:600;">
+          ${_sstat.get('p50', 0)/1_000_000:.1f}M</td></tr>
+    <tr><td style="text-align:left;">Ceiling (95th pct)</td>
+        <td style="text-align:right;color:#2ecc71;font-weight:600;">
+          ${_sstat.get('p95', 0)/1_000_000:.1f}M</td></tr>
+    <tr><td style="text-align:left;">Std dev</td>
+        <td style="text-align:right;">${_sstat.get('std', 0)/1_000_000:.1f}M</td></tr>
+  </table>
+  <div style="font-size:0.68em;color:#556;margin-top:10px;line-height:1.4;">
+    {_sv.get('description', '')}
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
+        # ── Outcome distribution chart ─────────────────────────────────────────
+        st.markdown("<br>", unsafe_allow_html=True)
+        _dist_colors = {"greedy": "#3498db", "major_saver": "#e67e22", "balanced": "#2ecc71"}
+        _dist_fig = go.Figure()
+
+        for _sk in _strategy_order:
+            _sv   = _sp["strategies"].get(_sk, {})
+            _vals = _sv.get("histogram", {}).get("values", [])
+            if _vals:
+                _dist_fig.add_trace(go.Histogram(
+                    x=_vals,
+                    name=_sv.get("display_name", _sk),
+                    opacity=0.55,
+                    marker_color=_dist_colors.get(_sk, "#aaa"),
+                    nbinsx=40,
+                ))
+
+        # Compute 2025 benchmark: weeks 4-30 actual earnings
+        _hist_bench_path = PROJECT_ROOT / "data" / "historical" / "Fantasy_Results_2025.csv"
+        _bench_val = None
+        if _hist_bench_path.exists():
+            def _pm_bench(v):
+                try: return float(str(v).replace("$","").replace(",","").strip())
+                except: return 0.0
+            _hb = pd.read_csv(_hist_bench_path)
+            _hb["_t"] = _hb["Total Earnings"].apply(_pm_bench)
+            _bench_val = _hb[_hb["Week"] >= 4]["_t"].sum()
+
+        _dist_fig.update_layout(
+            barmode="overlay",
+            title="Earnings Distribution Across 5,000 Simulated Seasons",
+            xaxis_title="Total Prize Money Earned (remaining weeks, $)",
+            yaxis_title="# Simulations",
+            height=320,
+            margin=dict(t=44, b=30, l=0, r=0),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font_color="#ccc",
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        )
+        if _bench_val:
+            _dist_fig.add_vline(
+                x=_bench_val, line_dash="dash", line_color="#f1c40f", line_width=2,
+                annotation_text=f"2025 actual wks 4–30 (${_bench_val/1_000_000:.1f}M)",
+                annotation_position="top right",
+                annotation_font_color="#f1c40f",
+            )
+        st.plotly_chart(_dist_fig, use_container_width=True)
+
+        # ── Build 2025 tournament lookup for side-by-side comparison ──────────
+        _h25_plan_lookup: dict = {}   # normalized_name → {picks, earned}
+        _h25_csv_path = PROJECT_ROOT / "data" / "historical" / "Fantasy_Results_2025.csv"
+        if _h25_csv_path.exists():
+            def _parse_money_sp(v):
+                try: return float(str(v).replace("$","").replace(",","").strip())
+                except: return 0.0
+            def _fmt_sp_money(v):
+                if v <= 0: return "$0"
+                if v >= 1_000_000: return f"${v/1_000_000:.1f}M"
+                if v >= 1_000: return f"${v/1_000:.0f}K"
+                return f"${v:.0f}"
+            _raw25 = pd.read_csv(_h25_csv_path)
+            for _, _r25 in _raw25.iterrows():
+                _tnorm = str(_r25["Tournament"]).lower().strip()
+                _p1 = str(_r25.get("Starter #1","")).strip()
+                _p2 = str(_r25.get("Starter #2","")).strip()
+                _p3 = str(_r25.get("Starter #3","")).strip()
+                _picks_str = " / ".join(p for p in [_p1,_p2,_p3] if p and p.lower() not in ("nan","vacant",""))
+                _earned = _parse_money_sp(_r25.get("Total Earnings", 0))
+                _h25_plan_lookup[_tnorm] = {"picks": _picks_str, "earned": _earned}
+
+        def _get_2025(tourn_name):
+            """Return (picks_str, earned_fmt) for a tournament by fuzzy name match."""
+            _key = tourn_name.lower().strip()
+            if _key in _h25_plan_lookup:
+                _e = _h25_plan_lookup[_key]
+                return _e["picks"], _fmt_sp_money(_e["earned"])
+            # Partial match: check if any 2025 name contains the plan name (≥6 chars)
+            for _k, _v in _h25_plan_lookup.items():
+                if len(_key) >= 6 and (_key in _k or _k in _key):
+                    return _v["picks"], _fmt_sp_money(_v["earned"])
+            return "—", "—"
+
+        # ── Week-by-week season plan ──────────────────────────────────────────
+        _plan_tab_labels = [
+            _sp["strategies"][_sk]["display_name"] for _sk in _strategy_order
+        ]
+        _plan_tabs = st.tabs(_plan_tab_labels)
+
+        for _pi, _sk in enumerate(_strategy_order):
+            with _plan_tabs[_pi]:
+                _sv = _sp["strategies"].get(_sk, {})
+                st.caption(_sv.get("description", ""))
+
+                _plan_rows = []
+                for _wk in _sv.get("season_plan", []):
+                    _type_badges = {
+                        "Major": "🏆 Major", "Signature": "⭐ Signature",
+                        "Playoff": "🔥 Playoff", "Standard": "Standard",
+                        "Team": "👥 Team",
+                    }
+                    _t_label = _type_badges.get(_wk["type"], _wk["type"])
+                    _25_picks, _25_earned = _get_2025(_wk["tournament"])
+                    if _wk.get("skipped"):
+                        _plan_rows.append({
+                            "Wk": _wk["week"],
+                            "Tournament": _wk["tournament"],
+                            "Type": _t_label,
+                            "Pick 1": "—",
+                            "Pick 2": "—",
+                            "Pick 3": "— (skipped)",
+                            "2025 Picks": _25_picks,
+                            "2025 Earned": _25_earned,
+                        })
+                    else:
+                        _pks = _wk.get("picks", [])
+                        _plan_rows.append({
+                            "Wk": _wk["week"],
+                            "Tournament": _wk["tournament"],
+                            "Type": _t_label,
+                            "Pick 1": _pks[0] if len(_pks) > 0 else "—",
+                            "Pick 2": _pks[1] if len(_pks) > 1 else "—",
+                            "Pick 3": _pks[2] if len(_pks) > 2 else "—",
+                            "2025 Picks": _25_picks,
+                            "2025 Earned": _25_earned,
+                        })
+
+                _plan_df = pd.DataFrame(_plan_rows)
+                st.dataframe(
+                    _plan_df, hide_index=True, use_container_width=True,
+                    column_config={"Wk": st.column_config.NumberColumn(width="small")},
+                )
+    else:
+        st.info(
+            "No scenario plan found yet. Click **⟳ Re-run** above to generate "
+            "your season simulation."
+        )
+
+    # ── 2025 Season History ───────────────────────────────────────────────────
+    st.markdown("---")
+    st.markdown("### 📚 2025 Season Review")
+    st.caption("Reference from last year's winning season — use this to benchmark your 2026 strategy.")
+
+    _h25_path = PROJECT_ROOT / "data" / "historical" / "Fantasy_Results_2025.csv"
+    if _h25_path.exists():
+        def _pm25(v):
+            try: return float(str(v).replace("$","").replace(",","").strip())
+            except: return 0.0
+
+        _h25 = pd.read_csv(_h25_path)
+        _h25["_total"]  = _h25["Total Earnings"].apply(_pm25)
+        _h25["_e1"]     = _h25["Earnings"].apply(_pm25)
+        _h25["_e2"]     = _h25["Earnings.1"].apply(_pm25)
+        _h25["_e3"]     = _h25["Earnings.2"].apply(_pm25)
+        _h25["_max"]    = _h25[["_e1","_e2","_e3"]].max(axis=1)
+        _h25["_win_wk"] = _h25["_max"] >= 3_000_000   # winner on roster
+
+        _s_total   = _h25["_total"].sum()
+        _n_played  = (_h25["_total"] > 0).sum()
+        _n_wins    = int(_h25["_win_wk"].sum())
+        _win_earn  = _h25[_h25["_win_wk"]]["_total"].sum()
+        _avg_wk    = _h25[_h25["_total"] > 0]["_total"].mean()
+        _win_pct   = _win_earn / _s_total * 100 if _s_total > 0 else 0
+
+        _hc1, _hc2, _hc3, _hc4 = st.columns(4)
+        with _hc1: st.metric("Season Total",   f"${_s_total/1_000_000:.1f}M")
+        with _hc2: st.metric("Win Weeks",      f"{_n_wins}",              help="Weeks where a picked player won the tournament")
+        with _hc3: st.metric("Avg / Week",     f"${_avg_wk/1_000:.0f}K")
+        with _hc4: st.metric("From Win Weeks", f"{_win_pct:.0f}%",        help="Share of total earnings generated by the 4 weeks a pick won")
+
+        st.caption(
+            f"**Key insight:** {_n_wins} win weeks generated ${_win_earn/1_000_000:.1f}M "
+            f"({_win_pct:.0f}% of the season). The other {_n_played - _n_wins} weeks averaged "
+            f"${(_s_total - _win_earn) / max(1, _n_played - _n_wins) / 1_000:.0f}K. "
+            f"**This format is won by having a winner on your roster — not by floor/consistency.**"
+        )
+
+        # Bar chart: weekly earnings, green = win week
+        _hfig = go.Figure()
+
+        _nw = _h25[~_h25["_win_wk"]]
+        _ww = _h25[_h25["_win_wk"]]
+
+        _h25_hover = _h25[["Tournament","Starter #1","Starter #2","Starter #3"]].values
+
+        _hfig.add_trace(go.Bar(
+            x=_nw["Week"], y=_nw["_total"],
+            name="Regular week",
+            marker_color="#3498db",
+            customdata=_nw[["Tournament","Starter #1","Starter #2","Starter #3"]].values,
+            hovertemplate="<b>Wk %{x} — %{customdata[0]}</b><br>$%{y:,.0f}<br>"
+                          "%{customdata[1]} | %{customdata[2]} | %{customdata[3]}<extra></extra>",
+        ))
+        _hfig.add_trace(go.Bar(
+            x=_ww["Week"], y=_ww["_total"],
+            name="Win week 🏆",
+            marker_color="#00c44f",
+            customdata=_ww[["Tournament","Starter #1","Starter #2","Starter #3"]].values,
+            hovertemplate="<b>Wk %{x} — %{customdata[0]}</b><br>$%{y:,.0f}<br>"
+                          "%{customdata[1]} | %{customdata[2]} | %{customdata[3]}<extra></extra>",
+        ))
+        _hfig.update_layout(
+            barmode="overlay",
+            title="2025 Weekly Earnings (hover for picks)",
+            xaxis_title="Week", yaxis_title="Earnings ($)",
+            height=280,
+            margin=dict(t=40, b=20, l=0, r=0),
+            plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+            font_color="#ccc",
+            legend=dict(orientation="h", yanchor="bottom", y=1.02),
+        )
+        st.plotly_chart(_hfig, use_container_width=True)
+
+        with st.expander("📋 Full 2025 Week-by-Week Results"):
+            _htable = _h25[["Week","Tournament","WRP","Starter #1","Starter #2","Starter #3","Total Earnings"]].copy()
+            st.dataframe(_htable, hide_index=True, use_container_width=True)
+    else:
+        st.info("Historical data not found at `data/historical/Fantasy_Results_2025.csv`.")
+
 
 # ============================================================================
 # PAGE: PLAYERS (consolidated from Player Stats + Stats Deep Dive)
@@ -5790,6 +6735,7 @@ elif page == "👤 Players":
 
             if player_data:
                 # Key metrics row
+                
                 col1, col2, col3, col4, col5 = st.columns(5)
                 with col1:
                     win_prob = player_data.get("win_prob", 0) or 0
@@ -5822,24 +6768,134 @@ elif page == "👤 Players":
                     form_score = player_data.get("recent_form", player_data.get("form_score", None))
                     st.metric("Form Score", f"{form_score:.1f}" if pd.notna(form_score) else "—")
 
-                # Strokes Gained breakdown
-                st.markdown("#### ⛳ Strokes Gained Breakdown")
-                sg_cols = st.columns(5)
-                sg_metrics = [
-                    ("OTT", "sg_ott", "Off The Tee"),
-                    ("APP", "sg_app", "Approach"),
-                    ("ATG", "sg_arg", "Around Green"),
-                    ("PUTT", "sg_putt", "Putting"),
-                    ("T2G", "sg_t2g", "Tee to Green"),
-                ]
-                for i, (label, col, tooltip) in enumerate(sg_metrics):
-                    with sg_cols[i]:
-                        val = player_data.get(col, 0)
-                        if pd.notna(val):
-                            color = "normal" if abs(val) < 0.5 else ("inverse" if val < 0 else "off")
-                            st.metric(label, f"{val:.2f}", help=tooltip)
-                        else:
-                            st.metric(label, "—", help=tooltip)
+
+                # ── RECENT FORM SPARKLINE ─────────────────────────────────────────────
+                st.markdown("---")
+                st.markdown("#### 📈 Recent Form — SG: Total")
+                st.caption(
+                    "Strokes gained vs. the field average across last 8 events. "
+                    "Green = gaining on field · Red = losing strokes."
+                )
+                
+                form_data = load_player_form_history()
+                
+                
+                #Predictions store names as "Last, First" -- training data uses "First Last:
+                # This flips the format so we can look the player up in form data 
+                
+                def _flip_name(n):
+                    parts = str(n).strip(",")
+                    return f"{parts[1].strip()} {parts[0].strip()}" if len(parts) == 2 else n
+                
+                _lookup = _flip_name(player_search)
+                if _lookup in form_data:
+                    _fd = form_data[_lookup]
+                    _sg = _fd["sg"]
+                    _ev = _fd["events"]
+                    _avg = sum(_sg) / len(_sg)
+                    _trend_label = "📈 Trending up recently" if _sg[-1] > _avg else "📉 Below recent average"
+
+                    st.caption(f"Last {len(_sg)} events  ·  Avg SG: {_avg:+.2f}  ·  {_trend_label}")
+
+                    # Color each bar: green if positive (gaining on field), red if negative
+                    _colors = ["#00c44f" if v >= 0 else "#e53935" for v in _sg]
+                    _fig = px.bar(
+                        x=_ev, y=_sg,
+                        text=[f"{v:+.2f}" for v in _sg],
+                        labels={"x": "", "y": "SG: Total"},
+                        color_discrete_sequence=["#00c44f"],  # overridden per-bar below
+                    )
+                    # px.bar doesn't support per-bar color directly — update via plotly internals
+                    _fig.update_traces(marker_color=_colors, textposition="outside",
+                                        textfont=dict(size=10, color="#dde6f5"))
+                    _fig.add_hline(y=0, line_dash="dot", line_color="#4a6080", line_width=1)
+                    _fig.update_layout(
+                        height=230,
+                        margin=dict(t=10, b=10, l=0, r=0),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font_color="#dde6f5",
+                        xaxis=dict(tickfont=dict(size=9), gridcolor="#1c2f4a"),
+                        yaxis=dict(gridcolor="#1c2f4a", zeroline=False),
+                        showlegend=False,
+                    )
+                    st.plotly_chart(_fig, use_container_width=True)
+                else:
+                    st.caption(f"Historical SG data not found for **{player_search}**.")
+
+
+                
+                
+                # ── SG BREAKDOWN (season averages by category) ────────────────────────
+                st.markdown("#### 🎯 Strokes Gained Breakdown")
+                st.caption(
+                    "Season SG per category. Zero = tour average. "
+                    "**OTT** = Off Tee · **APP** = Approach · **ARG** = Around Green · "
+                    "**PUTT** = Putting · **T2G** = Tee to Green"
+                )
+                
+                
+               # Column names from latest_predictions.csv — season-to-date averages
+                _sg_keys  = ["season_sg_ott", "season_sg_app", "season_sg_arg",
+                            "season_sg_putt", "season_sg_t2g"]
+                _sg_labels = ["Off Tee", "Approach", "Around Green", "Putting", "Tee to Green"]
+
+                _sg_vals = [player_data.get(k, 0) or 0 for k in _sg_keys]
+
+                # Horizontal bar chart — easy to read, makes positive/negative obvious
+                _sg_colors = ["#00c44f" if v >= 0 else "#e53935" for v in _sg_vals]
+
+                _fig2 = px.bar(
+                    x=_sg_vals, y=_sg_labels,
+                    orientation="h",
+                    text=[f"{v:+.2f}" for v in _sg_vals],
+                    labels={"x": "Strokes vs Tour Avg", "y": ""},
+                )
+                
+                _fig2.update_traces(marker_color=_sg_colors, textposition="outside",
+                      textfont=dict(size=11, color="#dde6f5"))
+                _fig2.add_vline(x=0, line_dash="dot", line_color="#4a6080", line_width=1)
+                _fig2.update_layout(
+                    height=240,
+                    margin=dict(t=10, b=10, l=10, r=50),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    font_color="#dde6f5",
+                    xaxis=dict(gridcolor="#1c2f4a"),
+                    yaxis=dict(gridcolor="#1c2f4a"),
+                    showlegend=False,
+                )
+                
+                st.plotly_chart(_fig2, use_container_width=True)
+                
+                # Auto-surface best + worst category so the use does not have to read the chart 
+                _best_i = _sg_vals.index(max(_sg_vals))
+                _worst_i = _sg_vals.index(min(_sg_vals))
+                
+                
+                st.caption(
+      f"💪 **Strength:** {_sg_labels[_best_i]} ({_sg_vals[_best_i]:+.2f} strokes/round)  "
+      f"&nbsp;·&nbsp;  "
+      f"⚠️  **Weakness:** {_sg_labels[_worst_i]} ({_sg_vals[_worst_i]:+.2f} strokes/round)"
+  )
+
+                
+                
+
+
+                                                                
+                                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                                           
 
             # Betting profile if available
             profiles_df = load_betting_profiles()
@@ -5889,25 +6945,271 @@ elif page == "👤 Players":
 
     with player_tab3:
         st.markdown("### ⚔️ Head-to-Head Comparison")
-        st.caption("Compare two players side-by-side")
+        st.caption("Select two players — comparison updates automatically")
 
-        col1, col2 = st.columns(2)
-        with col1:
+        _h2h_c1, _h2h_c2 = st.columns(2)
+        with _h2h_c1:
             h2h_player1 = st.selectbox("Player 1:", [""] + all_players, key="h2h_player1")
-        with col2:
+        with _h2h_c2:
             h2h_player2 = st.selectbox("Player 2:", [""] + all_players, key="h2h_player2")
 
-        run_h2h = st.button("⚔️ Compare Players", use_container_width=True, type="primary")
+        if h2h_player1 and h2h_player2 and h2h_player1 != h2h_player2:
+            _h2h_path = OUTPUTS_DIR / "latest_predictions.csv"
+            _h2h_upath = OUTPUTS_DIR / "player_usage_tracker.csv"
 
-        if run_h2h:
-            if not h2h_player1 or not h2h_player2:
-                st.warning("Please select two players to compare")
-            elif h2h_player1 == h2h_player2:
-                st.warning("Please select two different players")
+            if not _h2h_path.exists():
+                st.info("Run predictions first via ⚙️ Pipeline.")
             else:
-                with st.spinner(f"Comparing {h2h_player1} vs {h2h_player2}..."):
-                    output = run_script("planning/head_to_head.py", h2h_player1, h2h_player2)
-                st.code(output, language=None)
+                _h2h_df = pd.read_csv(_h2h_path)
+                _h2h_usage = {}
+                if _h2h_upath.exists():
+                    _u = pd.read_csv(_h2h_upath)
+                    _h2h_usage = dict(zip(_u["player_name"], _u["uses_remaining"]))
+
+                def _h2h_norm(n):
+                    p = str(n).split(",")
+                    return f"{p[1].strip()} {p[0].strip()}".lower() if len(p) == 2 else str(n).strip().lower()
+
+                def _h2h_get(name):
+                    row = _h2h_df[_h2h_df["player_name"] == name]
+                    if row.empty:
+                        row = _h2h_df[_h2h_df["player_name"].apply(_h2h_norm) == _h2h_norm(name)]
+                    return row.iloc[0] if not row.empty else None
+
+                _r1 = _h2h_get(h2h_player1)
+                _r2 = _h2h_get(h2h_player2)
+
+                if _r1 is None or _r2 is None:
+                    st.warning("Prediction data not found for one or both players. Try refreshing predictions.")
+                else:
+                    # Short display names (first name only from "Last, First" format)
+                    def _short(n):
+                        p = str(n).split(",")
+                        return p[1].strip() if len(p) == 2 else str(n).strip()
+
+                    _n1, _n2 = _short(h2h_player1), _short(h2h_player2)
+
+                    # ── PLAYER HEADER CARDS ──────────────────────────────
+                    _hc1, _vs_mid, _hc2 = st.columns([5, 1, 5])
+
+                    for _col, _row, _full_name, _accent in [
+                        (_hc1, _r1, h2h_player1, "#00c44f"),
+                        (_hc2, _r2, h2h_player2, "#4cb8ff"),
+                    ]:
+                        _wr   = int(_row["world_rank"]) if pd.notna(_row.get("world_rank")) else "—"
+                        _win  = (_row.get("win_prob",  0) or 0) * 100
+                        _t10  = (_row.get("top10_prob", 0) or 0) * 100
+                        _ev   = (_row.get("expected_value", 0) or 0) / 1000
+                        _odds = str(_row.get("odds_to_win", "—") or "—")
+                        _cut  = str(_row.get("cut_risk", "—") or "—").upper()
+                        _cut_c = {"LOW": "#00c44f", "MEDIUM": "#f4c430",
+                                  "ELEVATED": "#ff9800", "HIGH": "#e53935"}.get(_cut, "#7a90b8")
+                        _uses = int(_h2h_usage.get(_full_name,
+                                    _row.get("uses_remaining", 3) or 3))
+                        _dots = "●" * _uses + "○" * (3 - _uses)
+                        _hot  = bool(_row.get("hot_hand_flag", False))
+
+                        with _col:
+                            st.markdown(f"""
+<div style="background:#0d1a30;border:2px solid {_accent}33;border-radius:14px;
+     padding:18px;text-align:center;">
+  <div style="font-size:17px;font-weight:800;color:#fff;margin-bottom:2px;">
+    {_short(_full_name)}</div>
+  <div style="font-size:11px;color:#4a6080;margin-bottom:12px;">
+    World Rank #{_wr}{"&nbsp; 🔥" if _hot else ""}</div>
+  <div style="display:flex;justify-content:space-around;margin-bottom:12px;">
+    <div>
+      <div style="font-size:22px;font-weight:800;color:{_accent};">{_win:.1f}%</div>
+      <div style="font-size:10px;color:#4a6080;text-transform:uppercase;">WIN</div>
+    </div>
+    <div>
+      <div style="font-size:22px;font-weight:800;color:{_accent};">{_t10:.0f}%</div>
+      <div style="font-size:10px;color:#4a6080;text-transform:uppercase;">TOP 10</div>
+    </div>
+    <div>
+      <div style="font-size:22px;font-weight:800;color:{_accent};">${_ev:.0f}k</div>
+      <div style="font-size:10px;color:#4a6080;text-transform:uppercase;">EXP VAL</div>
+    </div>
+  </div>
+  <div style="font-size:12px;color:#7a90b8;margin-bottom:6px;">
+    Vegas: {_odds}&nbsp;·&nbsp;
+    <span style="color:{_cut_c};">Cut risk: {_cut}</span>
+  </div>
+  <div style="font-size:12px;color:#4a6080;">{_dots} ({_uses}/3 uses)</div>
+</div>
+""", unsafe_allow_html=True)
+
+                    with _vs_mid:
+                        st.markdown(
+                            "<div style='text-align:center;padding-top:65px;"
+                            "font-size:18px;font-weight:900;color:#2a3f58;'>VS</div>",
+                            unsafe_allow_html=True
+                        )
+
+                    # ── STATS TABLE ──────────────────────────────────────
+                    st.markdown("---")
+                    st.markdown("#### 📊 Key Stats")
+
+                    def _winner_color(v1, v2, higher_is_better):
+                        try:
+                            f1, f2 = float(v1), float(v2)
+                            if abs(f1 - f2) < 0.0001:
+                                return "#dde6f5", "#dde6f5"
+                            better = (f1 > f2) if higher_is_better else (f1 < f2)
+                            return ("#00c44f", "#e57373") if better else ("#e57373", "#00c44f")
+                        except Exception:
+                            return "#dde6f5", "#dde6f5"
+
+                    _stat_rows = [
+                        ("Win Probability",    "win_prob",          True,  lambda v: f"{float(v)*100:.1f}%"),
+                        ("Top 5 Chance",       "top5_prob",         True,  lambda v: f"{float(v)*100:.1f}%"),
+                        ("Top 10 Chance",      "top10_prob",        True,  lambda v: f"{float(v)*100:.1f}%"),
+                        ("Expected Value",     "expected_value",    True,  lambda v: f"${float(v):,.0f}"),
+                        ("World Rank",         "world_rank",        False, lambda v: f"#{int(float(v))}"),
+                        ("Vegas Odds",         "odds_to_win",       None,  lambda v: f"+{int(v)}" if str(v).lstrip("+").isdigit() else str(v)),
+                        ("Model Edge vs Mkt",  "model_vs_vegas_edge",True, lambda v: f"{float(v)*100:+.1f}%"),
+                        ("SG: Total (season)", "season_sg_total",   True,  lambda v: f"{float(v):+.2f}"),
+                        ("SG: Off Tee",        "season_sg_ott",     True,  lambda v: f"{float(v):+.2f}"),
+                        ("SG: Approach",       "season_sg_app",     True,  lambda v: f"{float(v):+.2f}"),
+                        ("SG: Putting",        "season_sg_putt",    True,  lambda v: f"{float(v):+.2f}"),
+                        ("Course Avg Finish",  "hist_avg_finish",   False, lambda v: f"{float(v):.1f}"),
+                        ("Course Plays",       "hist_times_played", True,  lambda v: f"{int(float(v))}"),
+                        ("Recent Top 10s",     "recent_top10s",     True,  lambda v: f"{int(float(v))}"),
+                        ("Cut Risk",           "cut_risk",          None,  lambda v: str(v)),
+                    ]
+
+                    _tbl = (
+                        f"<table style='width:100%;border-collapse:collapse;font-size:13px;'>"
+                        f"<thead><tr>"
+                        f"<th style='text-align:left;padding:8px 12px;color:#4a6080;"
+                        f"border-bottom:1px solid #1c2f4a;'>Stat</th>"
+                        f"<th style='text-align:center;padding:8px 12px;color:#00c44f;font-weight:700;"
+                        f"border-bottom:1px solid #1c2f4a;'>{_n1}</th>"
+                        f"<th style='text-align:center;padding:8px 12px;color:#4cb8ff;font-weight:700;"
+                        f"border-bottom:1px solid #1c2f4a;'>{_n2}</th>"
+                        f"</tr></thead><tbody>"
+                    )
+                    for _label, _col, _hib, _fmt in _stat_rows:
+                        _v1 = _r1.get(_col)
+                        _v2 = _r2.get(_col)
+                        try:
+                            _d1 = _fmt(_v1) if pd.notna(_v1) and _v1 != "" else "—"
+                        except Exception:
+                            _d1 = str(_v1) if pd.notna(_v1) else "—"
+                        try:
+                            _d2 = _fmt(_v2) if pd.notna(_v2) and _v2 != "" else "—"
+                        except Exception:
+                            _d2 = str(_v2) if pd.notna(_v2) else "—"
+
+                        _c1, _c2 = _winner_color(_v1, _v2, _hib) if _hib is not None else ("#dde6f5", "#dde6f5")
+                        _tbl += (
+                            f"<tr style='border-bottom:1px solid #0d1820;'>"
+                            f"<td style='padding:7px 12px;color:#7a90b8;'>{_label}</td>"
+                            f"<td style='padding:7px 12px;text-align:center;font-weight:600;"
+                            f"color:{_c1};'>{_d1}</td>"
+                            f"<td style='padding:7px 12px;text-align:center;font-weight:600;"
+                            f"color:{_c2};'>{_d2}</td>"
+                            f"</tr>"
+                        )
+                    _tbl += "</tbody></table>"
+                    st.markdown(_tbl, unsafe_allow_html=True)
+
+                    # ── SG BREAKDOWN GROUPED BAR ─────────────────────────
+                    st.markdown("---")
+                    st.markdown("#### 🎯 Strokes Gained Breakdown")
+
+                    _sg_cats = ["Off Tee", "Approach", "Around Green", "Putting", "Tee to Green"]
+                    _sg_keys = ["season_sg_ott", "season_sg_app", "season_sg_arg",
+                                "season_sg_putt", "season_sg_t2g"]
+                    _sg_v1 = [float(_r1.get(k, 0) or 0) for k in _sg_keys]
+                    _sg_v2 = [float(_r2.get(k, 0) or 0) for k in _sg_keys]
+
+                    _sg_fig = px.bar(
+                        pd.DataFrame({
+                            "Category": _sg_cats * 2,
+                            "SG":       _sg_v1 + _sg_v2,
+                            "Player":   [_n1] * 5 + [_n2] * 5,
+                        }),
+                        x="SG", y="Category", color="Player", orientation="h",
+                        barmode="group",
+                        color_discrete_map={_n1: "#00c44f", _n2: "#4cb8ff"},
+                        text="SG",
+                        labels={"SG": "Strokes vs Tour Avg", "Category": ""},
+                    )
+                    _sg_fig.update_traces(texttemplate="%{text:+.2f}", textposition="outside")
+                    _sg_fig.add_vline(x=0, line_dash="dot", line_color="#4a6080", line_width=1)
+                    _sg_fig.update_layout(
+                        height=280,
+                        margin=dict(t=10, b=10, l=10, r=60),
+                        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+                        font_color="#dde6f5",
+                        legend=dict(orientation="h", y=1.12, x=0),
+                        xaxis=dict(gridcolor="#1c2f4a"),
+                        yaxis=dict(gridcolor="#1c2f4a"),
+                    )
+                    st.plotly_chart(_sg_fig, use_container_width=True)
+
+                    # ── FORM SPARKLINES (overlaid line chart) ────────────
+                    st.markdown("---")
+                    st.markdown("#### 📈 Recent Form — SG: Total")
+
+                    def _flip_name(n):
+                        p = str(n).split(",")
+                        return f"{p[1].strip()} {p[0].strip()}" if len(p) == 2 else str(n)
+
+                    _form_data = load_player_form_history()
+                    _spark_rows = []
+                    for _pname_full, _pshort, in [(h2h_player1, _n1), (h2h_player2, _n2)]:
+                        _lookup = _flip_name(_pname_full)
+                        if _lookup in _form_data:
+                            for _ev, _sg in zip(_form_data[_lookup]["events"],
+                                                _form_data[_lookup]["sg"]):
+                                _spark_rows.append({"Player": _pshort, "Event": _ev, "SG": _sg})
+
+                    if _spark_rows:
+                        _sp_fig = px.line(
+                            pd.DataFrame(_spark_rows),
+                            x="Event", y="SG", color="Player", markers=True,
+                            color_discrete_map={_n1: "#00c44f", _n2: "#4cb8ff"},
+                            labels={"SG": "SG: Total", "Event": ""},
+                        )
+                        _sp_fig.add_hline(y=0, line_dash="dot", line_color="#4a6080", line_width=1)
+                        _sp_fig.update_layout(
+                            height=230,
+                            margin=dict(t=10, b=10, l=0, r=0),
+                            plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
+                            font_color="#dde6f5",
+                            legend=dict(orientation="h", y=1.12),
+                            xaxis=dict(tickfont=dict(size=9), gridcolor="#1c2f4a"),
+                            yaxis=dict(gridcolor="#1c2f4a", zeroline=False),
+                        )
+                        st.plotly_chart(_sp_fig, use_container_width=True)
+                    else:
+                        st.caption("Form history not available for one or both players.")
+
+                    # ── MODEL VERDICT ────────────────────────────────────
+                    st.markdown("---")
+                    _ev1 = float(_r1.get("expected_value", 0) or 0)
+                    _ev2 = float(_r2.get("expected_value", 0) or 0)
+                    _winner     = _n1 if _ev1 >= _ev2 else _n2
+                    _winner_col = "#00c44f" if _ev1 >= _ev2 else "#4cb8ff"
+                    _ev_gap     = abs(_ev1 - _ev2)
+                    _margin_txt = "comfortable" if _ev_gap > 20_000 else "narrow"
+
+                    st.markdown(f"""
+<div style="background:#0d1a30;border:1px solid #1c3a5e;border-radius:12px;
+     padding:16px 20px;text-align:center;margin-top:8px;">
+  <div style="font-size:11px;color:#4a6080;letter-spacing:1.5px;
+       text-transform:uppercase;margin-bottom:6px;">⚡ Model Verdict</div>
+  <div style="font-size:22px;font-weight:800;color:{_winner_col};">{_winner}</div>
+  <div style="font-size:13px;color:#7a90b8;margin-top:4px;">
+    {_margin_txt.capitalize()} edge &nbsp;·&nbsp; ${_ev_gap:,.0f} higher expected value
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
+        elif h2h_player1 and h2h_player2 and h2h_player1 == h2h_player2:
+            st.warning("Select two different players.")
 
 
 # ============================================================================
@@ -5917,6 +7219,102 @@ elif page == "👤 Players":
 elif page == "🎰 Betting":
     st.markdown("## 🎰 Betting")
     st.caption("Sportsbook-style props powered by model predictions")
+
+    # =========================================================================
+    # VALUE BET TRACKER
+    # =========================================================================
+    st.markdown("### ⚡ Value Bet Tracker")
+    st.caption("Players where the model's win probability exceeds the market-implied probability")
+
+    _vb_path = OUTPUTS_DIR / "latest_predictions.csv"
+    if _vb_path.exists():
+        _vb_raw = pd.read_csv(_vb_path)
+
+        _vb_need = ["model_vs_vegas_edge", "win_prob", "vegas_prob",
+                    "player_name", "odds_to_win", "odds_drift_level", "expected_value"]
+        if all(c in _vb_raw.columns for c in ["model_vs_vegas_edge", "win_prob", "vegas_prob"]):
+            _vb_raw["model_vs_vegas_edge"] = pd.to_numeric(
+                _vb_raw["model_vs_vegas_edge"], errors="coerce"
+            )
+
+            _vb_thresh_pct = st.slider(
+                "Minimum edge threshold (%):", 0.0, 10.0, 2.0, 0.5,
+                key="vb_thresh_slider",
+            )
+            _vb_thresh = _vb_thresh_pct / 100.0
+
+            _vb_hits = _vb_raw[_vb_raw["model_vs_vegas_edge"] >= _vb_thresh].sort_values(
+                "model_vs_vegas_edge", ascending=False
+            )
+
+            if not _vb_hits.empty:
+                _vb_s1, _vb_s2, _vb_s3, _vb_s4 = st.columns(4)
+                with _vb_s1:
+                    st.metric("Value Bets Found", len(_vb_hits))
+                with _vb_s2:
+                    st.metric("Avg Edge",
+                              f"+{_vb_hits['model_vs_vegas_edge'].mean()*100:.1f}%")
+                with _vb_s3:
+                    _vb_best = _vb_hits.iloc[0]
+                    st.metric(
+                        "Top Edge",
+                        f"+{_vb_best['model_vs_vegas_edge']*100:.1f}%",
+                        help=str(_vb_best.get("player_name", "")),
+                    )
+                with _vb_s4:
+                    _vb_strong = int((_vb_hits["model_vs_vegas_edge"] > 0.05).sum())
+                    st.metric("Strong Edges (>5%)", _vb_strong)
+
+                # Build display table
+                _vb_disp_cols = [c for c in _vb_need if c in _vb_hits.columns]
+                _vb_disp = _vb_hits.head(25)[_vb_disp_cols].copy()
+
+                if "win_prob" in _vb_disp.columns:
+                    _vb_disp["win_prob"] = (
+                        pd.to_numeric(_vb_disp["win_prob"], errors="coerce") * 100
+                    ).round(1).astype(str) + "%"
+                if "vegas_prob" in _vb_disp.columns:
+                    _vb_disp["vegas_prob"] = (
+                        pd.to_numeric(_vb_disp["vegas_prob"], errors="coerce") * 100
+                    ).round(1).astype(str) + "%"
+                if "model_vs_vegas_edge" in _vb_disp.columns:
+                    _vb_disp["model_vs_vegas_edge"] = (
+                        "+"
+                        + (pd.to_numeric(_vb_disp["model_vs_vegas_edge"], errors="coerce") * 100)
+                        .round(1)
+                        .astype(str)
+                        + "%"
+                    )
+                if "expected_value" in _vb_disp.columns:
+                    _vb_disp["expected_value"] = _vb_disp["expected_value"].apply(
+                        lambda x: f"${float(x):,.0f}" if pd.notna(x) else "—"
+                    )
+
+                _vb_disp = _vb_disp.rename(columns={
+                    "player_name":         "Player",
+                    "win_prob":            "Model Win%",
+                    "vegas_prob":          "Vegas Implied%",
+                    "model_vs_vegas_edge": "Edge",
+                    "odds_to_win":         "Odds",
+                    "odds_drift_level":    "Signal",
+                    "expected_value":      "EV ($)",
+                })
+                st.dataframe(_vb_disp, hide_index=True, use_container_width=True)
+
+                _vb_ts = _vb_raw.get("odds_updated_at", pd.Series(dtype=str)).dropna()
+                if not _vb_ts.empty:
+                    st.caption(f"Odds last refreshed: {_vb_ts.iloc[0]}")
+            else:
+                st.info(
+                    f"No players found with edge ≥ {_vb_thresh_pct:.1f}%. "
+                    "Try lowering the threshold or refreshing odds."
+                )
+        else:
+            st.info("Run **Refresh Odds** (Pipeline page) to generate model vs. market edge data.")
+    else:
+        st.info("No predictions file found. Run the full pipeline first.")
+
+    st.markdown("---")
 
     # =========================================================================
     # MARKET AVAILABILITY SUMMARY STRIP
@@ -7087,16 +8485,6 @@ elif page == "📊 Predictions":
         st.markdown("---")
 
         selected_tournament_id = _tournament_id_from_df(df)
-        mode_col, helper_col = st.columns([1.0, 2.0])
-        with mode_col:
-            lineup_output_mode = st.selectbox(
-                "Lineup Output Mode",
-                options=["Compact", "Detailed"],
-                index=1,
-                key=f"pred_lineup_output_mode_{selected_tournament_id or selected}",
-            )
-        with helper_col:
-            st.caption("`Compact` shortens reasoning lines. `Detailed` keeps full context.")
 
         render_predictions_freshness_panel(
             selected_tournament=selected,
@@ -7105,29 +8493,40 @@ elif page == "📊 Predictions":
         )
         st.markdown("---")
 
-        render_lineup_strategies_section(
-            tournament_name=selected,
-            tournament_id=selected_tournament_id,
-            context_df=df,
-            output_mode=lineup_output_mode,
-        )
-        st.markdown("---")
-        render_fantasy_strategy_copilot(
-            tournament_name=selected,
-            predictions_path=file_options[selected],
-        )
-        st.markdown("---")
-
         # Tabs
-        tab1, tab2, tab3, tab4, tab5 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head", "📈 Visualizations", "🔍 Search"]) 
+        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head", "📈 Visualizations", "🔍 Search", "📊 Model Health"])
 
         with tab1:
             top_20 = df.nlargest(20, 'expected_value').copy()
+
+            # Build 2025 earnings lookup keyed by last name (lowercase)
+            _p25_path = PROJECT_ROOT / "data" / "historical" / "Fantasy_Results_2025.csv"
+            _p25_lookup = {}
+            if _p25_path.exists():
+                def _pm_p25(v):
+                    try: return float(str(v).replace("$","").replace(",","").strip())
+                    except: return 0.0
+                _p25df = pd.read_csv(_p25_path)
+                for _, _p25r in _p25df.iterrows():
+                    for _sc, _ec in [("Starter #1","Earnings"),("Starter #2","Earnings.1"),("Starter #3","Earnings.2")]:
+                        _pn = str(_p25r.get(_sc,"")).strip()
+                        if not _pn or _pn in ("VACANT","nan"): continue
+                        _last = _pn.split(",")[0].strip().lower()
+                        _earn = _pm_p25(_p25r.get(_ec, 0))
+                        _p25_lookup[_last] = _p25_lookup.get(_last, 0) + _earn
+
+            def _fmt_2025(name):
+                last = str(name).split(",")[0].strip().lower()
+                if last not in _p25_lookup: return "—"
+                e = _p25_lookup[last]
+                if e == 0: return "✓ $0"
+                return f"✓ ${e/1_000:.0f}K" if e < 1_000_000 else f"✓ ${e/1_000_000:.1f}M"
 
             display_cols = ['player_name', 'expected_value', 'win_prob', 'top5_prob',
                            'top10_prob', 'sg_total', 'hist_times_played']
 
             display_df = top_20[display_cols].copy()
+            display_df['2025'] = top_20['player_name'].apply(_fmt_2025)
             display_df['expected_value'] = display_df['expected_value'].apply(lambda x: f"${x:,.0f}")
             display_df['win_prob'] = (display_df['win_prob'] * 100).round(2)
             display_df['top5_prob'] = (display_df['top5_prob'] * 100).round(1)
@@ -7136,9 +8535,10 @@ elif page == "📊 Predictions":
             display_df['hist_times_played'] = display_df['hist_times_played'].fillna(0).astype(int)
 
             display_df.columns = ['Player', 'Expected Value', 'Win %', 'Top-5 %',
-                                 'Top-10 %', 'SG Total', 'Course Plays']
+                                 'Top-10 %', 'SG Total', 'Course Plays', '2025 Earnings']
 
             st.dataframe(display_df, hide_index=True, use_container_width=True)
+            st.caption("**2025 Earnings** — total prize money the player earned across all their appearances in your 2025 lineup. '—' = not used.")
 
             st.markdown("#### 🔎 Why This Pick")
             why_cols = st.columns([2.2, 1.0])
@@ -7167,7 +8567,19 @@ elif page == "📊 Predictions":
             render_tier_list(df)
 
         with tab3:
-            render_head_to_head(df)
+            st.markdown("""
+            <div style="background: #0d1a30; border: 1px solid #1e3a5f; border-left: 4px solid #00c44f;
+                        padding: 20px 24px; border-radius: 10px; margin: 20px 0;">
+                <div style="font-size: 1.1em; font-weight: 600; color: #dde6f5; margin-bottom: 6px;">
+                    ⚔️ Head-to-Head has moved
+                </div>
+                <div style="color: #8ba0b8; font-size: 0.95em;">
+                    The full H2H comparison tool — with SG breakdown, recent form sparklines, and
+                    a 15-row stats matchup — lives in the <strong style="color:#00c44f;">Players</strong>
+                    page under the <strong style="color:#00c44f;">Head-to-Head</strong> tab.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
         with tab4:
             chart = st.radio("Select chart:",
@@ -7214,13 +8626,360 @@ elif page == "📊 Predictions":
                 else:
                     st.warning(f"No players found matching '{search}'")
 
+        with tab6:
+            # ── Model Health — Calibration & Validation Dashboard ──────────────
+            st.markdown("#### 📊 Model Health")
+            st.caption(
+                "How well do our four models perform on held-out 2025 data "
+                "(train: 2020–2024, test: 2025)."
+            )
+
+            _cal_path = OUTPUTS_DIR / "calibration_data.json"
+
+            # Regenerate button runs the script and refreshes
+            _mh_col1, _mh_col2 = st.columns([1, 4])
+            with _mh_col1:
+                if st.button("⟳ Regenerate", key="regen_cal_btn",
+                             help="Re-run against saved models (~20 seconds)"):
+                    with st.spinner("Running calibration analysis..."):
+                        _regen_out = run_script(
+                            "validation/generate_calibration_data.py"
+                        )
+                    st.cache_data.clear()
+                    st.rerun()
+            with _mh_col2:
+                if _cal_path.exists():
+                    import os as _os_mh
+                    from datetime import datetime as _dt_mh
+                    _age_h = (_dt_mh.now().timestamp() - _os_mh.path.getmtime(_cal_path)) / 3600
+                    st.caption(f"Last generated: {_age_h:.0f}h ago")
+
+            if not _cal_path.exists():
+                st.info("No calibration data yet. Click **⟳ Regenerate** to run the analysis.")
+            else:
+                import json as _json_mh
+                with open(_cal_path) as _f_mh:
+                    _cal = _json_mh.load(_f_mh)
+
+                _mdata = _cal.get("models", {})
+                _model_order = ["win", "top5", "top10", "top20"]
+                _model_colors = {
+                    "win":   "#00c44f",
+                    "top5":  "#4a9eff",
+                    "top10": "#f39c12",
+                    "top20": "#e74c3c",
+                }
+
+                # ── Summary metrics table ─────────────────────────────────
+                st.markdown("**Summary Metrics — 2025 Test Set**")
+                _summary_rows = []
+                for _mk in _model_order:
+                    _md = _mdata.get(_mk, {})
+                    if not _md:
+                        continue
+                    _auc   = _md.get("auc", 0)
+                    _brier = _md.get("brier", 0)
+                    _rbrier= _md.get("random_brier", 0)
+                    _ratio = _md.get("cal_ratio", 0)
+                    _summary_rows.append({
+                        "Model":       _md.get("display_name", _mk),
+                        "Test AUC":    f"{_auc:.4f}",
+                        "AUC Grade":   "✅ Excellent" if _auc > 0.85 else ("✅ Good" if _auc > 0.75 else "⚠️ Moderate"),
+                        "Brier Score": f"{_brier:.4f}",
+                        "vs Random":   f"{(_rbrier - _brier) / _rbrier * 100:.0f}% better",
+                        "Cal Ratio":   f"{_ratio:.2f}x",
+                        "Cal Status":  "✅" if 0.85 <= _ratio <= 1.15 else ("⚠️" if 0.7 <= _ratio <= 1.3 else "❌"),
+                    })
+                if _summary_rows:
+                    st.dataframe(
+                        pd.DataFrame(_summary_rows),
+                        hide_index=True,
+                        use_container_width=True,
+                    )
+
+                st.markdown("---")
+
+                # ── Calibration curves ────────────────────────────────────
+                # WHAT YOU'RE LOOKING AT:
+                # Each subplot shows predicted probability (x) vs actual frequency (y).
+                # The grey diagonal is "perfect calibration" — if you say 15%, it wins 15%.
+                # Points above the diagonal = underconfident (actual > predicted).
+                # Points below the diagonal = overconfident (actual < predicted).
+                st.markdown("**Calibration Curves (Reliability Diagrams)**")
+                st.caption(
+                    "Grey diagonal = perfect calibration. "
+                    "Points **above** = model is underconfident. "
+                    "Points **below** = model is overconfident."
+                )
+
+                _ncols = 2
+                _cal_cols = st.columns(_ncols)
+                for _ci, _mk in enumerate(_model_order):
+                    _md = _mdata.get(_mk, {})
+                    if not _md:
+                        continue
+                    _cc = _md.get("calibration_curve", {})
+                    _mp = _cc.get("mean_predicted", [])
+                    _fp = _cc.get("fraction_pos", [])
+                    if not _mp:
+                        continue
+
+                    _color = _model_colors[_mk]
+                    _fig_cal = go.Figure()
+
+                    # Perfect calibration reference line
+                    _fig_cal.add_trace(go.Scatter(
+                        x=[0, 1], y=[0, 1],
+                        mode="lines",
+                        line=dict(color="#4a6080", dash="dash", width=1),
+                        name="Perfect",
+                        showlegend=False,
+                    ))
+
+                    # Model calibration curve
+                    _fig_cal.add_trace(go.Scatter(
+                        x=_mp, y=_fp,
+                        mode="lines+markers",
+                        line=dict(color=_color, width=2),
+                        marker=dict(size=7, color=_color),
+                        name=_md.get("display_name", _mk),
+                        showlegend=False,
+                    ))
+
+                    _fig_cal.update_layout(
+                        title=dict(
+                            text=f"{_md.get('display_name', _mk)}  (AUC {_md['auc']:.3f})",
+                            font=dict(size=13),
+                        ),
+                        xaxis=dict(title="Predicted probability", range=[0, max(_mp) * 1.1],
+                                   tickformat=".0%", gridcolor="#1e3a5f"),
+                        yaxis=dict(title="Actual frequency", range=[0, max(_fp) * 1.2],
+                                   tickformat=".0%", gridcolor="#1e3a5f"),
+                        height=280,
+                        margin=dict(t=40, b=40, l=50, r=20),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font_color="#ccc",
+                    )
+
+                    with _cal_cols[_ci % _ncols]:
+                        st.plotly_chart(_fig_cal, use_container_width=True)
+
+                st.markdown("---")
+
+                # ── ROC curves — all 4 on one chart ──────────────────────
+                # WHAT YOU'RE LOOKING AT:
+                # The ROC curve plots True Positive Rate (correctly identifying winners)
+                # vs False Positive Rate (falsely flagging non-winners) as you vary
+                # the probability threshold. AUC = area under the curve.
+                # The grey diagonal is random guessing (AUC = 0.50).
+                # A good model hugs the top-left corner.
+                st.markdown("**ROC Curves — Ranking Quality**")
+                st.caption(
+                    "True positive rate vs false positive rate as the threshold varies. "
+                    "AUC = area under curve (0.50 = random guess, 1.0 = perfect). "
+                    "Grey diagonal = random baseline."
+                )
+
+                _fig_roc = go.Figure()
+                _fig_roc.add_trace(go.Scatter(
+                    x=[0, 1], y=[0, 1],
+                    mode="lines",
+                    line=dict(color="#4a6080", dash="dash", width=1),
+                    name="Random (AUC 0.50)",
+                ))
+                for _mk in _model_order:
+                    _md = _mdata.get(_mk, {})
+                    if not _md:
+                        continue
+                    _rc = _md.get("roc_curve", {})
+                    _fig_roc.add_trace(go.Scatter(
+                        x=_rc.get("fpr", []),
+                        y=_rc.get("tpr", []),
+                        mode="lines",
+                        line=dict(color=_model_colors[_mk], width=2),
+                        name=f"{_md.get('display_name', _mk)} (AUC {_md['auc']:.3f})",
+                    ))
+                _fig_roc.update_layout(
+                    xaxis=dict(title="False Positive Rate", gridcolor="#1e3a5f"),
+                    yaxis=dict(title="True Positive Rate", gridcolor="#1e3a5f"),
+                    height=350,
+                    margin=dict(t=20, b=40, l=50, r=20),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    font_color="#ccc",
+                    legend=dict(bgcolor="rgba(0,0,0,0)"),
+                )
+                st.plotly_chart(_fig_roc, use_container_width=True)
+
+                st.markdown("---")
+
+                # ── Feature importance ────────────────────────────────────
+                # Shows which input variables the model relies on most.
+                # Importance = average decrease in impurity when this feature is used
+                # to split a tree node, averaged across all trees and models.
+                # High importance ≠ causation — it means the feature is predictive,
+                # not necessarily why players win.
+                st.markdown("**Feature Importance — What Drives Predictions**")
+                st.caption(
+                    "Averaged across all four models. "
+                    "Higher = the model splits on this feature more often. "
+                    "Importance ≠ causation."
+                )
+
+                _fi_data = _cal.get("feature_importance", [])
+                if _fi_data:
+                    _fi_df = pd.DataFrame(_fi_data).head(15)
+                    _fi_df = _fi_df.sort_values("avg_importance")
+
+                    _fi_fig = go.Figure(go.Bar(
+                        x=_fi_df["avg_importance"],
+                        y=_fi_df["feature"],
+                        orientation="h",
+                        marker_color=[
+                            "#00c44f" if v > 0.05
+                            else "#4a9eff" if v > 0.02
+                            else "#4a6080"
+                            for v in _fi_df["avg_importance"]
+                        ],
+                    ))
+                    _fi_fig.update_layout(
+                        xaxis=dict(title="Avg importance", gridcolor="#1e3a5f"),
+                        yaxis=dict(tickfont=dict(size=11)),
+                        height=420,
+                        margin=dict(t=10, b=40, l=160, r=20),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font_color="#ccc",
+                    )
+                    st.plotly_chart(_fi_fig, use_container_width=True)
+
+                # Dataset info footer
+                st.caption(
+                    f"Dataset: {_cal.get('n_train', 0):,} training rows (2020–2024) · "
+                    f"{_cal.get('n_test', 0):,} test rows (2025) · "
+                    f"Generated: {_cal.get('generated_at', '')[:10]}"
+                )
+
 
 # ============================================================================
 # PAGE: LIVE
 # ============================================================================
 
 elif page == "🔴 Live":
+    
+    # ── YOUR PICKS THIS WEEK (live positions) ─────────────────────────────
+    st.markdown("### 🏌️  Your Picks — Live Positions")
+
+    # Load current week's picks from season log
+    _picks_this_week = []
+    _log_path = OUTPUTS_DIR / "season_log.csv"
+    _engine_live = load_scoring_engine()
+    _current_week_num = None
+
+    if _engine_live:
+        _tw = _engine_live.get_current_week_tournament()
+        if _tw and _tw in _engine_live.tournaments:
+            _current_week_num = _engine_live.tournaments[_tw].week
+
+    if _log_path.exists() and _current_week_num:
+        try:
+            _log = pd.read_csv(_log_path)
+            _wrow = _log[_log["week"] == _current_week_num]
+            if not _wrow.empty:
+                _r = _wrow.iloc[0]
+                for _pc in ["pick1", "pick2", "pick3"]:
+                    if _pc in _r and pd.notna(_r[_pc]) and str(_r[_pc]).strip():
+                        _picks_this_week.append(str(_r[_pc]).strip())
+        except Exception:
+            pass
+
+    # Find the most recently modified leaderboard file in data/live/
+    _live_dir = DATA_DIR / "live"
+    _lb_df = pd.DataFrame()
+
+    if _live_dir.exists():
+        _lb_files = sorted(
+            _live_dir.glob("leaderboard_*.csv"),
+            key=lambda f: f.stat().st_mtime,
+            reverse=True
+        )
+        if _lb_files:
+            _lb_df = pd.read_csv(_lb_files[0])
+            # Show which file we loaded + when
+            _lb_age = datetime.fromtimestamp(_lb_files[0].stat().st_mtime).strftime("%b %d %H:%M")
+            st.caption(f"Leaderboard: `{_lb_files[0].name}` · Updated {_lb_age}")
+
+    if _picks_this_week and not _lb_df.empty:
+        # Normalize names for matching — leaderboard uses "First Last",
+        # season_log stores what you typed ("Matsuyama" or "Hideki Matsuyama")
+        def _name_match(lb_name, pick_name):
+            """Fuzzy name match: check if pick appears anywhere in leaderboard name."""
+            return (pick_name.lower() in lb_name.lower() or
+                    lb_name.lower() in pick_name.lower())
+
+        _pick_rows = []
+        for _pick in _picks_this_week:
+            _match = _lb_df[_lb_df["player_name"].apply(
+                lambda n: _name_match(str(n), _pick)
+            )]
+            if not _match.empty:
+                _pick_rows.append(_match.iloc[0])
+
+        if _pick_rows:
+            _pc_cols = st.columns(len(_pick_rows))
+            for _col, _row in zip(_pc_cols, _pick_rows):
+                _pos   = _row.get("position", "—")
+                _pname = _row.get("player_name", "—")
+                _total = _row.get("total", "E")
+                _thru  = str(_row.get("thru", "—"))
+                _r1    = int(_row["R1"]) if pd.notna(_row.get("R1")) else "—"
+                _r2    = int(_row["R2"]) if pd.notna(_row.get("R2")) else "—"
+                _r3    = int(_row["R3"]) if pd.notna(_row.get("R3")) else "—"
+                _r4    = int(_row["R4"]) if pd.notna(_row.get("R4")) else "—"
+                _move  = _row.get("movement", "")
+                _move_icon = "🔼" if _move == "MOVING" else ("🔽" if _move == "FALLING" else "➡️ ")
+                _status = str(_row.get("status", "")).lower()
+                _cut_color = "#e53935" if _status == "cut" else "#00c44f"
+
+                with _col:
+                    st.markdown(f"""
+    <div style="background:#0d1a30; border:1px solid #1c3a5e; border-radius:12px;
+        padding:16px; text-align:center;">
+        <div style="font-size:28px; font-weight:900; color:#fff;">{_pos}</div>
+        <div style="font-size:11px; color:#4a6080; letter-spacing:1px;">POSITION</div>
+        <div style="font-size:14px; font-weight:700; color:#dde6f5; margin:8px 0 2px 0;">{_pname}</div>
+        <div style="font-size:22px; font-weight:800; color:{_cut_color};">{_total}</div>
+        <div style="font-size:11px; color:#4a6080;">Thru {_thru} &nbsp;{_move_icon}</div>
+        <hr style="border-color:#1c2f4a; margin:10px 0;">
+        <div style="display:flex; justify-content:space-around; font-size:11px; color:#6a84aa;">
+        <div><div style="color:#dde6f5; font-weight:600;">{_r1}</div>R1</div>
+        <div><div style="color:#dde6f5; font-weight:600;">{_r2}</div>R2</div>
+        <div><div style="color:#dde6f5; font-weight:600;">{_r3}</div>R3</div>
+        <div><div style="color:#dde6f5; font-weight:600;">{_r4}</div>R4</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+        else:
+            st.info("Picks not found in leaderboard yet — try refreshing live data first.")
+    elif not _picks_this_week:
+        st.info("No picks recorded for this week yet. Add picks in My Picks → Add Picks.")
+    elif _lb_df.empty:
+        st.info("No live leaderboard data found. Run the leaderboard scraper from ⚙️  Pipeline.")
+
+    st.markdown("---")
+
+
+    
+    
+    
     st.markdown("## 🔴 Live Tournament Tracking")
+    
+    
+    
+    
+    
+    
 
     # Load leaderboard data first
     LIVE_DIR.mkdir(parents=True, exist_ok=True)

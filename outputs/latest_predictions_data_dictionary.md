@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-19 12:32
+Generated: 2026-02-19 21:56
 
 | Column | Description |
 |--------|-------------|
@@ -73,11 +73,18 @@ Generated: 2026-02-19 12:32
 | course_avg_to_par | No description available |
 | course_avg_earnings | No description available |
 | course_last_season | No description available |
+| course_sg_total_avg | Historical average SG:Total at this specific course |
+| course_sg_ott_avg | Historical average SG:Off-the-Tee at this specific course |
+| course_sg_app_avg | Historical average SG:Approach at this specific course |
+| course_sg_putt_avg | Historical average SG:Putting at this specific course |
+| course_sg_t2g_avg | No description available |
 | course_sg_total_weighted | Recency-weighted SG:Total at this specific course |
 | course_sg_ott_weighted | Recency-weighted SG:Off-the-Tee at this course |
 | course_sg_app_weighted | Recency-weighted SG:Approach at this course |
 | course_sg_putt_weighted | Recency-weighted SG:Putting at this course |
 | course_sg_t2g_weighted | Recency-weighted SG:Tee-to-Green at this course |
+| course_sg_trend | Trend in SG:Total at this course over time (positive = improving year-over-year) |
+| course_sg_recent_vs_early | Difference between recent and early SG at this course (positive = recent improvement) |
 | course_sg_total_vs_avg | Course SG edge: how much better/worse at this course vs overall (positive = course specialist) |
 | course_sg_ott_vs_avg | OTT edge at this course vs overall average |
 | course_sg_app_vs_avg | Approach edge at this course vs overall average |
@@ -96,8 +103,11 @@ Generated: 2026-02-19 12:32
 | course_stat_142_par_4_scoring_weighted | No description available |
 | has_similar_course_data | No description available |
 | similar_course_sg_estimate | No description available |
+| course_sg_starts | Number of prior starts with usable SG history at this course |
+| course_sg_vs_avg | No description available |
 | course_history_confidence | Reliability score for course history signal (0-1; higher = more starts/history) |
 | has_course_form_history | No description available |
+| has_course_sg_history | Boolean flag: player has SG history at this course |
 | course_experience_tier | No description available |
 | course_perf_score | No description available |
 | win_prob | Predicted win probability (0-1) |

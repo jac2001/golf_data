@@ -1,0 +1,41 @@
+player_name,world_rank,ev_rank,expected_value,win_prob,top10_prob,cut_risk,uses_remaining,usage_score,recommendation,save_for,key_reason,pick_rank
+"Kim, Si Woo",26,5,397304,0.0217,0.2227,LOW,3,14.5,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters",📍 Course fit: +0.79 (not used in scoring),1
+"Gerard, Ryan",25,17,327483,0.012,0.1338,LOW,3,13.0,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.37 (not used in scoring),2
+"Knapp, Jake",55,18,326002,0.0149,0.1287,LOW,3,10.8,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.31 (not used in scoring),3
+"Hisatsune, Ryo",65,25,307408,0.014,0.1126,LOW,3,10.6,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.48 (not used in scoring),4
+"Bhatia, Akshay",37,32,293417,0.012,0.1287,LOW,3,9.7,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.42 (not used in scoring),5
+"Coody, Pierceson",46,14,345800,0.0149,0.1406,LOW,2,8.3,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",6
+"Straka, Sepp",12,9,367221,0.0217,0.1449,LOW,3,7.7,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters",🌟 Elite player (World #12),7
+"McCarty, Matt",36,29,302621,0.0122,0.1198,LOW,3,7.0,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.29 (not used in scoring),8
+"MacIntyre, Robert",9,34,283710,0.0061,0.1166,LOW,3,6.8,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters",🌟 Elite player (World #9),9
+"Day, Jason",34,12,351257,0.0131,0.1954,LOW,2,6.3,CONSIDER,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",10
+"Henley, Russell",6,10,362753,0.0176,0.1954,LOW,3,3.6,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",🌟 Elite player (World #6),11
+"Berger, Daniel",60,19,325426,0.0191,0.1256,LOW,3,3.3,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.39 (not used in scoring),12
+"Stevens, Sam",41,22,317450,0.0129,0.1321,LOW,3,3.2,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.30 (not used in scoring),13
+"Fitzpatrick, Matt",20,21,321628,0.0131,0.1493,LOW,3,3.2,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.28 (not used in scoring),14
+"Lowry, Shane",29,28,303235,0.0111,0.1287,LOW,3,3.0,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.38 (not used in scoring),15
+"Burns, Sam",27,37,279726,0.0093,0.117,LOW,3,2.8,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","💰 EV: $279,726 → score +2.8",16
+"Novak, Andrew",38,38,275647,0.0102,0.1135,LOW,3,2.8,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.34 (not used in scoring),17
+"McNealy, Maverick",24,8,369156,0.0209,0.1493,LOW,2,2.5,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",18
+"Spaun, J.J.",8,7,370500,0.0259,0.1287,LOW,3,-1.3,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",🌟 Elite player (World #8),19
+"Young, Cameron",22,16,333098,0.0149,0.1469,LOW,3,-1.7,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","💰 EV: $333,098 → score +3.3",20
+"English, Harris",15,15,334204,0.0131,0.1493,LOW,3,-1.7,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",🌟 Elite player (World #15),21
+"Bradley, Keegan",19,20,324152,0.0171,0.1287,LOW,3,-1.8,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.29 (not used in scoring),22
+"Åberg, Ludvig",21,23,315076,0.0149,0.1166,LOW,3,-1.8,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.21 (not used in scoring),23
+"Kitayama, Kurt",42,24,309054,0.0129,0.1287,LOW,3,-1.9,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.36 (not used in scoring),24
+"Schauffele, Xander",13,30,301895,0.0111,0.1287,LOW,3,-2.0,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",🌟 Elite player (World #13),25
+"Rai, Aaron",30,31,293463,0.0129,0.1198,LOW,3,-2.1,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.35 (not used in scoring),26
+"Scott, Adam",71,35,281905,0.0129,0.1113,LOW,3,-2.2,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.34 (not used in scoring),27
+"Penge, Marco",33,36,281562,0.009,0.1198,LOW,3,-2.2,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",📍 Course fit: +0.65 (not used in scoring),28
+"Poston, J.T.",63,39,273213,0.0081,0.1102,LOW,3,-2.3,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.31 (not used in scoring),29
+"Fowler, Rickie",69,40,271337,0.0079,0.107,LOW,3,-2.3,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",Course fit: +0.25 (not used in scoring),30
+"Cantlay, Patrick",28,11,360967,0.0191,0.1369,LOW,2,-2.6,SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",31
+"Scheffler, Scottie",1,1,618935,0.0217,0.4826,LOW,3,-6.8,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",🛡️ PROTECTION RULE: Top-5 player with 3 use(s) left should only play SIGNATURE events,32
+"Morikawa, Collin",5,13,348323,0.0217,0.1449,LOW,3,-12.5,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",🛡️ PROTECTION RULE: Top-5 player with 3 use(s) left should only play SIGNATURE events,33
+"Fleetwood, Tommy",3,3,446197,0.0259,0.2037,LOW,3,-16.5,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",🛡️ PROTECTION RULE: Top-5 player with 3 use(s) left should only play SIGNATURE events,34
+"Hovland, Viktor",16,26,306939,0.0111,0.1452,LOW,2,-18.0,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",35
+"McIlroy, Rory",2,4,440205,0.0217,0.2373,LOW,3,-25.6,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters",🛡️ PROTECTION RULE: Top-5 player with 3 use(s) left should only play SIGNATURE events,36
+"Gotterup, Chris",7,2,458262,0.0217,0.2455,LOW,2,-44.9,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",37
+"Rose, Justin",4,27,304367,0.0149,0.1287,LOW,2,-49.0,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",38
+"Matsuyama, Hideki",10,6,378568,0.0199,0.1452,LOW,2,-51.5,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",39
+"Griffin, Ben",11,33,286097,0.0069,0.1246,LOW,2,-63.1,DEFINITELY SAVE,"THE PLAYERS Championship, U.S. Open, The Masters","Tournament: Cognizant Classic (STANDARD, winner share: $1,728,000)",40

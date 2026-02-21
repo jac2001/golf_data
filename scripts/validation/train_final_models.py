@@ -29,6 +29,7 @@ Outputs:
 import pandas as pd
 import numpy as np
 from pathlib import Path
+import os
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import (
@@ -54,6 +55,11 @@ OUTPUT_DIR = Path("outputs")
 MODEL_DIR.mkdir(exist_ok=True)
 OUTPUT_DIR.mkdir(exist_ok=True)
 
+# Use single-process training by default for compatibility with constrained
+# environments (can override: TRAIN_N_JOBS=4 python ...).
+TRAIN_N_JOBS = int(os.getenv("TRAIN_N_JOBS", "1"))
+print(f"Training parallelism: n_jobs={TRAIN_N_JOBS}")
+
 # Load merged dataset
 print("Loading master training data...")
 data_file = DATA_DIR / "processed" / "master_training_data_2020_2025.csv"
@@ -68,6 +74,14 @@ if not data_file.exists():
 df = pd.read_csv(data_file)
 print(f"✓ Loaded {len(df):,} records from {df['year'].min()}-{df['year'].max()}")
 print()
+
+# Backward/forward compatibility for course SG edge naming.
+# Older merged datasets used `course_sg_vs_avg`; newer pipeline uses
+# `course_sg_total_vs_avg` to be explicit.
+if "course_sg_total_vs_avg" not in df.columns and "course_sg_vs_avg" in df.columns:
+    df["course_sg_total_vs_avg"] = df["course_sg_vs_avg"]
+if "course_sg_vs_avg" not in df.columns and "course_sg_total_vs_avg" in df.columns:
+    df["course_sg_vs_avg"] = df["course_sg_total_vs_avg"]
 
 # ============================================================================
 # Feature Selection
@@ -116,17 +130,15 @@ if dg_fit_features:
 else:
     print("⚠️  No dg_fit_* features found - run merge script first")
 
-# Course SG features - player's historical SG performance at THIS SPECIFIC COURSE
-# SAFE: Only uses data from PRIOR tournaments at the course (no leakage)
-course_sg_features = [c for c in df.columns if c.startswith('course_sg_')]
-if course_sg_features:
-    print(f"✓  Including {len(course_sg_features)} course SG features (prior course performance)")
-else:
-    print("⚠️  No course_sg_* features found - run merge script with course form data")
+# Course SG features - REMOVED: all course_sg_* features have 0% feature importance
+# across all models (win/top5/top10/top20). Confirmed via feature_importance.csv.
+# Keeping them adds noise and slows training with zero predictive benefit.
+course_sg_features = []
+print("ℹ️  EXCLUDING course_sg_* features - confirmed 0% importance across all models")
 
-# Combine all features (WITHOUT leaky features)
+# Combine all features (WITHOUT leaky features, WITHOUT zero-importance course SG)
 # Note: has_won_here is already in hist_features (starts with 'has_'), so don't add it again
-all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features + course_sg_features
+all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features
 
 # Filter to only existing features that have coverage in training years
 available_features = [
@@ -223,10 +235,57 @@ results = []
 
 def avg_importance(cal_model):
     return np.mean(
-        [c.estimator.feature_importances_ for c in cal_model.calibrated_classifiers_], 
+        [c.estimator.feature_importances_ for c in cal_model.calibrated_classifiers_],
         axis=0
     )
 
+
+def quick_auc(features, X_tr, X_te, y_tr, y_te):
+    """Train a quick RF and return test AUC - used for feature experiments."""
+    rf = RandomForestClassifier(
+        n_estimators=50, max_depth=5, min_samples_split=50,
+        min_samples_leaf=25, max_features='sqrt', random_state=42,
+        class_weight='balanced_subsample', n_jobs=TRAIN_N_JOBS
+    )
+    rf.fit(X_tr[features], y_tr)
+    return roc_auc_score(y_te, rf.predict_proba(X_te[features])[:, 1])
+
+
+# ============================================================================
+# Experiment: dg_fit features - keep or remove?
+# ============================================================================
+print("=" * 60)
+print("Step 3a: dg_fit Feature Experiment (win model proxy)")
+print("-" * 60)
+print("Testing whether dg_fit_* features improve AUC...")
+
+features_with_dg = available_features
+features_without_dg = [f for f in available_features if not f.startswith('dg_fit_')]
+
+y_win_tr = train_clean['won']
+y_win_te = test_clean['won']
+
+auc_with_dg = quick_auc(features_with_dg, train_clean, test_clean, y_win_tr, y_win_te)
+auc_without_dg = quick_auc(features_without_dg, train_clean, test_clean, y_win_tr, y_win_te)
+
+print(f"  Win AUC WITH dg_fit features:    {auc_with_dg:.4f}")
+print(f"  Win AUC WITHOUT dg_fit features: {auc_without_dg:.4f}")
+print(f"  Difference: {auc_with_dg - auc_without_dg:+.4f}")
+
+if auc_without_dg >= auc_with_dg - 0.005:
+    print("  ✅ dg_fit features add <0.005 AUC — REMOVING for cleaner model")
+    available_features = features_without_dg
+    dg_fit_removed = True
+else:
+    print(f"  ⚠️  dg_fit features add {auc_with_dg - auc_without_dg:.4f} AUC — KEEPING despite mixed real-world correlation")
+    dg_fit_removed = False
+
+print(f"  Final feature count: {len(available_features)}")
+print()
+
+# Rebuild X_train / X_test with final feature set
+X_train = train_clean[available_features]
+X_test = test_clean[available_features]
 
 
 for model_name, target_col in targets.items():
@@ -256,7 +315,7 @@ for model_name, target_col in targets.items():
         min_samples_leaf=25,     # More samples required in leaves (was 10)
         max_features='sqrt',     # Only use sqrt(n_features) at each split
         random_state=42,
-        n_jobs=-1,
+        n_jobs=TRAIN_N_JOBS,
         class_weight='balanced_subsample'  # Handle class imbalance
     )
 
@@ -267,7 +326,7 @@ for model_name, target_col in targets.items():
         estimator=base_rf,
         method='isotonic',  # isotonic regression - better for larger datasets
         cv=3,               # 3-fold CV for calibration
-        n_jobs=-1
+        n_jobs=TRAIN_N_JOBS
     )
 
     rf.fit(X_train, y_train)

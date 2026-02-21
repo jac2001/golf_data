@@ -104,6 +104,11 @@ def write_data_dictionary(predictions_df: pd.DataFrame, output_path: Path):
         "dg_fit_total": "Total course-fit score (sum of components)",
         # Course SG performance
         "course_sg_total_weighted": "Recency-weighted SG:Total at this specific course",
+        "course_sg_total_avg": "Historical average SG:Total at this specific course",
+        "course_sg_ott_avg": "Historical average SG:Off-the-Tee at this specific course",
+        "course_sg_app_avg": "Historical average SG:Approach at this specific course",
+        "course_sg_putt_avg": "Historical average SG:Putting at this specific course",
+        "course_sg_starts": "Number of prior starts with usable SG history at this course",
         "course_sg_ott_weighted": "Recency-weighted SG:Off-the-Tee at this course",
         "course_sg_app_weighted": "Recency-weighted SG:Approach at this course",
         "course_sg_putt_weighted": "Recency-weighted SG:Putting at this course",
@@ -114,7 +119,10 @@ def write_data_dictionary(predictions_df: pd.DataFrame, output_path: Path):
         "course_sg_putt_vs_avg": "Putting edge at this course vs overall average",
         "course_sg_t2g_vs_avg": "Tee-to-Green edge at this course vs overall average",
         "overall_sg_total_avg": "Player's career-average SG:Total across all courses",
+        "course_sg_trend": "Trend in SG:Total at this course over time (positive = improving year-over-year)",
+        "course_sg_recent_vs_early": "Difference between recent and early SG at this course (positive = recent improvement)",
         "course_history_confidence": "Reliability score for course history signal (0-1; higher = more starts/history)",
+        "has_course_sg_history": "Boolean flag: player has SG history at this course",
         "course_adjustment": "Post-model probability adjustment from course history/similar-course signals",
         "course_adjustment_confidence": "Confidence applied to course adjustment (0-1)",
         # Model outputs
@@ -849,11 +857,18 @@ def add_course_performance_features(features_df: pd.DataFrame, tournament_name: 
 
     # Add Strokes Gained course-specific columns (recency-weighted + vs average)
     sg_cols = [
+        "course_sg_total_avg",       # Mean SG:Total at this course (historical)
+        "course_sg_ott_avg",         # Mean SG:OTT at this course (historical)
+        "course_sg_app_avg",         # Mean SG:Approach at this course (historical)
+        "course_sg_putt_avg",        # Mean SG:Putting at this course (historical)
+        "course_sg_t2g_avg",         # Mean SG:T2G at this course (historical)
         "course_sg_total_weighted",  # Recency-weighted SG:Total at this course
         "course_sg_ott_weighted",    # Recency-weighted SG:OTT at this course
         "course_sg_app_weighted",    # Recency-weighted SG:Approach at this course
         "course_sg_putt_weighted",   # Recency-weighted SG:Putting at this course
         "course_sg_t2g_weighted",    # Recency-weighted SG:Tee-to-Green at this course
+        "course_sg_trend",           # Year-over-year trend in SG:Total at this course
+        "course_sg_recent_vs_early", # Recent SG vs early SG at this course
         "course_sg_total_vs_avg",    # Course SG vs player's overall average (edge)
         "course_sg_ott_vs_avg",      # OTT edge at this course
         "course_sg_app_vs_avg",      # Approach edge at this course
@@ -922,12 +937,26 @@ def add_course_performance_features(features_df: pd.DataFrame, tournament_name: 
     if "similar_course_sg_estimate" not in features_df.columns:
         features_df["similar_course_sg_estimate"] = np.nan
 
+    # Compatibility aliases for training/inference feature parity.
+    if "course_sg_starts" not in features_df.columns:
+        if "course_starts" in features_df.columns:
+            features_df["course_sg_starts"] = pd.to_numeric(features_df["course_starts"], errors="coerce").fillna(0)
+        else:
+            features_df["course_sg_starts"] = 0.0
+    if "course_sg_total_vs_avg" not in features_df.columns and "course_sg_vs_avg" in features_df.columns:
+        features_df["course_sg_total_vs_avg"] = pd.to_numeric(features_df["course_sg_vs_avg"], errors="coerce")
+    if "course_sg_vs_avg" not in features_df.columns and "course_sg_total_vs_avg" in features_df.columns:
+        features_df["course_sg_vs_avg"] = pd.to_numeric(features_df["course_sg_total_vs_avg"], errors="coerce")
+
     # Reliability score for course signal (more starts -> higher confidence)
     starts_num = pd.to_numeric(features_df.get("course_starts", 0), errors="coerce").fillna(0).clip(lower=0)
     features_df["course_history_confidence"] = (np.log1p(starts_num) / np.log(6.0)).clip(0, 1)
 
     # Add derived features
     features_df["has_course_form_history"] = features_df["course_starts"] > 0
+    features_df["has_course_sg_history"] = pd.to_numeric(
+        features_df.get("course_sg_starts", 0), errors="coerce"
+    ).fillna(0) > 0
     features_df["course_experience_tier"] = pd.cut(
         features_df["course_starts"],
         bins=[-1, 0, 1, 2, 4, float("inf")],
@@ -1845,14 +1874,8 @@ def make_predictions(features_df, models):
     Returns:
         DataFrame with predictions added
     """
-    # NOTE: Course fit features removed from model due to data leakage
-    # (They were calculated from same-tournament SG stats)
-    # Model now uses season_sg_* (prior performance) instead of per-tournament SG
-
-    # Feature columns must match EXACT order from model training
-    # Model now uses only non-leaky features (season averages, not per-tournament stats)
-    # Includes Data Golf course fit features (season_sg × course importance weights)
-    feature_cols = [
+    # Fallback feature set for legacy models that don't expose feature_names_in_
+    fallback_feature_cols = [
         'season_sg_putt', 'season_sg_total', 'season_sg_ott', 'season_sg_app', 'season_sg_t2g', 'season_sg_arg',
         'hist_times_played', 'hist_avg_finish', 'hist_best_finish',
         'hist_wins', 'hist_top5s', 'hist_top10s',
@@ -1865,14 +1888,49 @@ def make_predictions(features_df, models):
         'recent_birdie_avg', 'recent_bogey_avg', 'recent_scoring_avg', 'recent_gir_pct', 'recent_scrambling',
         'recent_bounce_back', 'recent_final_round', 'recent_sand_save',
         'dg_fit_ott', 'dg_fit_app', 'dg_fit_arg', 'dg_fit_putt', 'dg_fit_total',
+        'course_sg_total_vs_avg', 'course_sg_trend',
     ]
 
-    X = features_df[feature_cols]
+    def _resolve_model_feature_cols(model_obj, fallback_cols):
+        if hasattr(model_obj, "feature_names_in_"):
+            cols = list(getattr(model_obj, "feature_names_in_"))
+            if cols:
+                return cols
+        if hasattr(model_obj, "calibrated_classifiers_"):
+            calibrated = getattr(model_obj, "calibrated_classifiers_", None) or []
+            if calibrated:
+                est = getattr(calibrated[0], "estimator", None)
+                if est is not None and hasattr(est, "feature_names_in_"):
+                    cols = list(getattr(est, "feature_names_in_"))
+                    if cols:
+                        return cols
+        return fallback_cols
+
+    def _prepare_matrix(df, cols):
+        # Backward/forward compatibility for SG edge column naming.
+        if "course_sg_total_vs_avg" in cols and "course_sg_total_vs_avg" not in df.columns and "course_sg_vs_avg" in df.columns:
+            df["course_sg_total_vs_avg"] = pd.to_numeric(df["course_sg_vs_avg"], errors="coerce")
+        if "course_sg_vs_avg" in cols and "course_sg_vs_avg" not in df.columns and "course_sg_total_vs_avg" in df.columns:
+            df["course_sg_vs_avg"] = pd.to_numeric(df["course_sg_total_vs_avg"], errors="coerce")
+
+        missing_cols = [c for c in cols if c not in df.columns]
+        for c in missing_cols:
+            df[c] = 0.0
+
+        if missing_cols:
+            preview = ", ".join(missing_cols[:8])
+            suffix = "..." if len(missing_cols) > 8 else ""
+            print(f"  Added {len(missing_cols)} missing model features with 0 defaults: {preview}{suffix}")
+
+        x = df[cols].copy()
+        x = x.apply(pd.to_numeric, errors="coerce").fillna(0.0)
+        return x
 
     # Predict probabilities
-    features_df['win_prob'] = models['win'].predict_proba(X)[:, 1]
-    features_df['top5_prob'] = models['top5'].predict_proba(X)[:, 1]
-    features_df['top10_prob'] = models['top10'].predict_proba(X)[:, 1]
+    for model_key, out_col in (("win", "win_prob"), ("top5", "top5_prob"), ("top10", "top10_prob")):
+        model_cols = _resolve_model_feature_cols(models[model_key], fallback_feature_cols)
+        X = _prepare_matrix(features_df, model_cols)
+        features_df[out_col] = models[model_key].predict_proba(X)[:, 1]
 
     return features_df
 
@@ -2486,6 +2544,25 @@ Examples:
     print(f"\n  Loading field from {args.field}...")
     field_df = pd.read_csv(args.field)
     print(f"    ✓ Field size: {len(field_df)} players")
+
+    # Field freshness check — withdrawals happen Tuesday/Wednesday;
+    # a field file older than 72 hours may be missing late changes.
+    import os as _os
+    _field_age_hours = (_os.path.getmtime(args.field) and
+                        (datetime.now().timestamp() - _os.path.getmtime(args.field)) / 3600)
+    if _field_age_hours and _field_age_hours > 72:
+        print(f"\n  ⚠️  FIELD FILE MAY BE STALE: {_field_age_hours:.0f}h old (>{72}h threshold)")
+        print(f"      Withdrawals/changes since fetch may not be reflected.")
+        print(f"      Re-run: python3 scripts/scrapers/fetch_field_from_pgatour.py "
+              f"--pga-id {args.tournament_id or 'RYYYYNNN'} --name \"<name>\" "
+              f"--output {args.field} --match-ids")
+    elif _field_age_hours:
+        print(f"    ✓ Field freshness: {_field_age_hours:.1f}h old (OK)")
+
+    # Size sanity check — a normal PGA Tour field is 100–156 players
+    if len(field_df) < 80:
+        print(f"\n  ⚠️  SMALL FIELD WARNING: only {len(field_df)} players "
+              f"(expected 100–156 for a standard event)")
 
     # Additional validation: Check field has expected columns
     if 'player_id' not in field_df.columns:

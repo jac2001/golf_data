@@ -240,22 +240,30 @@ def refresh_data(force: bool = False, max_age_hours: int = 24):
             print(f"  Warning: Script not found: {script_path}")
 
 
-def find_field_file(tournament_name: str) -> Path:
-    """Try to find an existing field file for a tournament."""
-    # Normalize tournament name for file matching
-    import re
-    name_clean = re.sub(r'[^\w\s]', '', tournament_name.lower()).replace(' ', '_')
+def find_field_file(tournament_name: str, tournament_id: str = None) -> Path:
+    """Try to find an existing field file for a tournament.
 
-    # Look in fields directories
+    Lookup order:
+    1. Canonical ID-based file  data/fields/field_{tournament_id}.csv  (most reliable)
+    2. Fuzzy name match inside data/fields/ and data/fields/archive/
+    """
+    import re
+
+    # 1. Canonical ID-based lookup — guaranteed to be the right tournament
+    if tournament_id:
+        canonical = DATA_DIR / "fields" / f"field_{tournament_id}.csv"
+        if canonical.exists():
+            return canonical
+
+    # 2. Fuzzy name-based fallback (first 10 chars of normalized name)
+    name_clean = re.sub(r'[^\w\s]', '', tournament_name.lower()).replace(' ', '_')
     field_dirs = [
         DATA_DIR / "fields",
         DATA_DIR / "fields" / "archive",
     ]
-
     for field_dir in field_dirs:
         if not field_dir.exists():
             continue
-
         for f in field_dir.glob("*.csv"):
             if name_clean[:10] in f.stem.lower():
                 return f
@@ -568,8 +576,8 @@ def run_full_pipeline(
             return
         print(f"  Using provided field: {field_file}")
     else:
-        # Try to find existing field file
-        field_file = find_field_file(tournament_name)
+        # Try to find existing field file (canonical ID lookup first, then fuzzy name)
+        field_file = find_field_file(tournament_name, tournament_id=pga_id)
 
         if field_file:
             print(f"  Found existing field: {field_file}")

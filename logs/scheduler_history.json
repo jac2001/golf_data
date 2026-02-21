@@ -128,5 +128,90 @@
     ],
     "success_count": 1,
     "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-19T20:02:41.818845",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      }
+    ],
+    "success_count": 1,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-20T08:02:08.817921",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      }
+    ],
+    "success_count": 1,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-20T16:56:38.776227",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      }
+    ],
+    "success_count": 1,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-20T20:02:07.974224",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      }
+    ],
+    "success_count": 1,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-21T08:02:06.808899",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": false
+      }
+    ],
+    "success_count": 1,
+    "total_count": 2
   }
 ]

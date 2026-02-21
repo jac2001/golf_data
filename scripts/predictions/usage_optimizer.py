@@ -916,18 +916,32 @@ class UsageOptimizer:
                 reasoning.append(f"📉 Cold form (momentum: {momentum_trend}) (-5)")
 
         # === Factor 4: Upcoming Schedule ===
-        upcoming_majors = [e for e in upcoming if e['tier'] == 'MAJOR']
-        if remaining_uses <= len(upcoming_majors) and tournament_tier not in ['MAJOR', 'ELITE']:
-            score -= 15
-            upcoming_names = [m['name'] for m in upcoming_majors]
-            reasoning.append(f"📅 Save uses! Upcoming majors: {', '.join(upcoming_names)}")
-
-        # Apply future-value penalty only for elite players with scarce uses
+        # Only penalize players who genuinely need to be saved for bigger events.
+        # The threshold is tier-dependent:
+        #   - Rank ≤ 10 (elite): save for majors aggressively — every use is precious
+        #   - Rank 11-30 (good): only save last use for big events
+        #   - Rank 30+ (mid/value): use freely — no major-save obligation
         if player_value:
             world_rank = player_value.get('world_rank')
-            is_elite = world_rank and world_rank <= 20
+            is_elite = world_rank and world_rank <= 10
+            is_good = world_rank and 10 < world_rank <= 30
         else:
+            world_rank = None
             is_elite = False
+            is_good = False
+
+        upcoming_majors = [e for e in upcoming if e['tier'] == 'MAJOR']
+        if tournament_tier not in ['MAJOR', 'ELITE']:
+            if is_elite and remaining_uses <= len(upcoming_majors):
+                # Elite player — every remaining use should go to a top event
+                score -= 15
+                upcoming_names = [m['name'] for m in upcoming_majors[:3]]
+                reasoning.append(f"📅 Save uses! Upcoming majors: {', '.join(upcoming_names)}")
+            elif is_good and remaining_uses == 1:
+                # Good player — last use should go somewhere meaningful
+                score -= 10
+                upcoming_names = [m['name'] for m in upcoming_majors[:2]]
+                reasoning.append(f"📅 Last use — save for: {', '.join(upcoming_names)}")
 
         if is_elite and remaining_uses <= 2 and tournament_importance < 8:
             penalty, higher_event_names = self._compute_future_value_penalty(
@@ -1555,6 +1569,91 @@ class UsageOptimizer:
             "lineup_size": lineup_size,
             "profiles": built_profiles,
             "pool": pool_view,
+        }
+
+    def get_weekly_picks(
+        self,
+        tournament_name: str,
+        n_picks: int = 3,
+        top_n: int = 40,
+    ) -> Dict[str, Any]:
+        """
+        Generate clean, usage-adjusted weekly pick recommendations.
+
+        Answers: "Who should I actually pick this week given usage constraints?"
+        Scheffler is #1 by EV every week — but if this is a Standard event,
+        he should be SAVED for majors. This method makes that explicit.
+
+        Returns dict with:
+            picks        - DataFrame of top n_picks recommended players
+            save_list    - DataFrame of players to save and why
+            full_ranking - DataFrame of all top_n players with use/save labels
+            tournament_tier - tier of current event
+            tournament_importance - importance score (1-10)
+            upcoming_events - next 5 high-value events
+        """
+        if self.predictions is None or self.predictions.empty:
+            return {"error": "No predictions loaded"}
+
+        tournament_importance = self.calendar.get_importance(tournament_name)
+        tournament_tier = self.calendar.get_tournament_tier(tournament_name)
+        upcoming = self.calendar.get_upcoming_important_events(tournament_name, look_ahead=8)
+        upcoming_sig_plus = [e for e in upcoming if e.get("importance", 0) >= 8]
+
+        # Get top N players by raw EV from predictions
+        preds = self.predictions.copy()
+        preds["ev_rank"] = preds["expected_value"].rank(ascending=False).astype(int)
+        top_players = preds.nsmallest(top_n, "ev_rank")
+
+        rows = []
+        for _, player_row in top_players.iterrows():
+            name = str(player_row["player_name"]).strip()
+            analysis = self.should_use_player(name, tournament_name)
+
+            rec = analysis["recommendation"]
+            score = analysis["score"]
+            remaining = analysis["remaining_uses"]
+            world_rank = player_row.get("world_rank", 999)
+
+            # Build save_for text: which upcoming events suit this player
+            elite_tier = self._get_elite_tier(world_rank if not pd.isna(world_rank) else 999)
+            rules = self.ELITE_PROTECTION_RULES.get(elite_tier, self.ELITE_PROTECTION_RULES[999])
+            uses_key = f"uses_{remaining}"
+            min_imp = rules.get(uses_key, 0)
+            save_events = [e["name"] for e in upcoming if e.get("importance", 0) >= max(min_imp, 8)][:3]
+            save_for = ", ".join(save_events) if save_events else "flexible"
+
+            rows.append({
+                "player_name": name,
+                "world_rank": player_row.get("world_rank"),
+                "ev_rank": int(player_row["ev_rank"]),
+                "expected_value": round(float(player_row.get("expected_value", 0))),
+                "win_prob": round(float(player_row.get("win_prob_calibrated", player_row.get("win_prob", 0))), 4),
+                "top10_prob": round(float(player_row.get("top10_prob_calibrated", player_row.get("top10_prob", 0))), 4),
+                "cut_risk": player_row.get("cut_risk", "UNKNOWN"),
+                "uses_remaining": remaining,
+                "usage_score": round(score, 1),
+                "recommendation": rec,
+                "save_for": save_for,
+                "key_reason": analysis["reasoning"][2] if len(analysis["reasoning"]) > 2 else analysis["reasoning"][0] if analysis["reasoning"] else "",
+            })
+
+        full_df = pd.DataFrame(rows).sort_values("usage_score", ascending=False).reset_index(drop=True)
+        full_df["pick_rank"] = full_df.index + 1
+
+        # Picks: players the system says to USE (not SAVE or CANNOT USE)
+        save_recs = {"SAVE", "DEFINITELY SAVE", "CANNOT USE"}
+        picks_df = full_df[~full_df["recommendation"].isin(save_recs)].head(n_picks).reset_index(drop=True)
+        save_df = full_df[full_df["recommendation"].isin(save_recs)].reset_index(drop=True)
+
+        return {
+            "tournament": tournament_name,
+            "tournament_tier": tournament_tier,
+            "tournament_importance": tournament_importance,
+            "picks": picks_df,
+            "save_list": save_df,
+            "full_ranking": full_df,
+            "upcoming_events": upcoming[:5],
         }
 
     def get_season_usage_summary(self) -> Dict[str, Any]:

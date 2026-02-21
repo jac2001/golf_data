@@ -526,11 +526,14 @@ if course_form_file.exists():
     sg_df = pd.DataFrame(course_sg_features, index=merged.index)
     merged = pd.concat([merged, sg_df], axis=1)
 
-    # Calculate course_sg_vs_avg (how player performs at this course vs overall)
-    # We need player's overall SG average from season_sg_total
+    # Calculate course SG edge vs player's baseline SG.
+    # Keep both names for compatibility:
+    # - course_sg_total_vs_avg (preferred)
+    # - course_sg_vs_avg (legacy)
     if 'season_sg_total' in merged.columns and 'course_sg_total_avg' in merged.columns:
-        merged['course_sg_vs_avg'] = merged['course_sg_total_avg'] - merged['season_sg_total']
-        merged['course_sg_vs_avg'] = merged['course_sg_vs_avg'].fillna(0)
+        merged['course_sg_total_vs_avg'] = merged['course_sg_total_avg'] - merged['season_sg_total']
+        merged['course_sg_total_vs_avg'] = merged['course_sg_total_vs_avg'].fillna(0)
+        merged['course_sg_vs_avg'] = merged['course_sg_total_vs_avg']
 
     # Report coverage
     sg_coverage = (merged['course_sg_starts'] > 0).mean() * 100
