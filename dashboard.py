@@ -2077,82 +2077,6 @@ def run_betting_copilot(
     return True, answer
 
 
-def render_betting_copilot_section(tournament_id: str = ""):
-    """Render grounded betting/fantasy copilot in Betting page."""
-    st.markdown("### 🧠 Betting + Fantasy Copilot")
-    ("Grounded to your local recommendations, content cards, expert picks, and predictions.")
-
-    controls = st.columns([1.2, 1.0, 1.6])
-    key="copilot_risk_profile",
-        
-    with controls[1]:
-        max_picks = st.slider("Max picks", 3, 12, 6, key="copilot_max_picks")
-    with controls[2]:
-        use_llm = st.checkbox("Use local LLM (Ollama)", value=False, key="copilot_use_llm")
-        ollama_model = st.text_input(
-            "Ollama Model",
-            value="llama3.2",
-            key="copilot_ollama_model",
-            disabled=not use_llm,
-        )
-
-    preset_questions = {
-        "Best Bets + Fantasy Core": "Give me the best bets this week and a fantasy core + pivot plan.",
-        "Conservative Card": "Build a conservative betting card (low variance) with bankroll sizing.",
-        "Aggressive Upside": "Build an aggressive upside card and explain biggest risks clearly.",
-        "Top-10 Focus": "Only use top-10 and make-cut style bets. Show safest plays first.",
-        "DraftKings Cards Review": "Review DraftKings content cards and rank the best 3 by edge and confidence.",
-        "Fade Analysis": "Who should we fade this week and why based on model vs market gap?",
-        "H2H + Props Plan": "Give me a plan focused on matchups/props and how to hedge risk.",
-        "Fantasy Lineup Build": "Build a fantasy lineup strategy: core, pivots, fades, and exposure caps.",
-    }
-
-    default_q = preset_questions["Best Bets + Fantasy Core"]
-    if "copilot_question" not in st.session_state:
-        st.session_state["copilot_question"] = default_q
-
-    preset_cols = st.columns([2.4, 1.1, 1.1, 1.1])
-    with preset_cols[0]:
-        selected_preset = st.selectbox(
-            "Preset Questions",
-            options=list(preset_questions.keys()),
-            key="copilot_preset_select",
-        )
-    with preset_cols[1]:
-        if st.button("Use Preset", key="copilot_use_preset", use_container_width=True):
-            st.session_state["copilot_question"] = preset_questions[selected_preset]
-    with preset_cols[2]:
-        if st.button("Quick: Safe", key="copilot_quick_safe", use_container_width=True):
-            st.session_state["copilot_question"] = preset_questions["Conservative Card"]
-    with preset_cols[3]:
-        if st.button("Quick: Upside", key="copilot_quick_upside", use_container_width=True):
-            st.session_state["copilot_question"] = preset_questions["Aggressive Upside"]
-
-    question = st.text_area(
-        "Ask the copilot",
-        height=100,
-        key="copilot_question",
-    )
-
-    run_key = f"copilot_answer_{str(tournament_id or 'latest').strip().upper() or 'latest'}"
-    if st.button("Run Copilot", key="copilot_run_button", use_container_width=True):
-        with st.spinner("Generating grounded answer..."):
-            ok, answer = run_betting_copilot(
-                question=question,
-                tournament_id=tournament_id,
-                max_picks=max_picks,
-                use_llm=use_llm,
-                ollama_model=ollama_model,
-            )
-        st.session_state[run_key] = answer
-        st.session_state[f"{run_key}_ok"] = ok
-
-    if run_key in st.session_state:
-        if st.session_state.get(f"{run_key}_ok", False):
-            st.markdown(st.session_state[run_key])
-        else:
-            st.warning(st.session_state[run_key])
-    
 
 
 
@@ -3000,6 +2924,29 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
     with col4:
         st.metric("Players", len(df))
 
+    # ── Cut projection banner ────────────────────────────────────────────────
+    if cut_projection:
+        _cp_score   = cut_projection.get("projected_cut_score")
+        _cp_pos     = cut_projection.get("projected_cut_position")
+        _cp_bubble  = cut_projection.get("bubble_count", 0)
+        _cp_in      = cut_projection.get("safely_in", 0)
+        _cp_out     = cut_projection.get("safely_out", 0)
+
+        if _cp_score is not None or _cp_bubble:
+            _score_str = f"{_cp_score:+d}" if isinstance(_cp_score, int) else str(_cp_score or "—")
+            _pos_str   = f"Top {_cp_pos}" if _cp_pos else "—"
+            st.markdown("#### ✂️ Projected Cut")
+            _ca, _cb, _cc, _cd = st.columns(4)
+            with _ca:
+                st.metric("Projected Score", _score_str, help="Estimated cut score (vs par)")
+            with _cb:
+                st.metric("Cut Position", _pos_str, help="Approx. finishing position of cut line")
+            with _cc:
+                st.metric("On the Bubble", _cp_bubble, help="Players within 1 shot of cut line")
+            with _cd:
+                _in_delta  = f"+{_cp_in} safe" if _cp_in else None
+                st.metric("Safely In", _cp_in, delta=_in_delta, delta_color="normal")
+
     st.markdown("---")
 
     # --- Visual Leader Cards for Top 3 ---
@@ -3265,6 +3212,71 @@ def render_live_vs_predictions(live_df: pd.DataFrame, meta: dict):
     display_df.columns = ["Live Pos", "Player", "Score", "Model Rank", "Diff", "Pre-Tourn EV", "Win %"]
 
     st.dataframe(display_df.head(30), hide_index=True, use_container_width=True)
+
+    st.markdown("---")
+
+    # ── Predicted vs Actual scatter ───────────────────────────────────────────
+    st.markdown("#### 📍 Predicted Rank vs Actual Position")
+    st.caption("Points above the diagonal = outperforming predictions. Below = underperforming.")
+
+    _scatter_df = with_predictions.copy()
+    _scatter_df["model_rank_num"] = pd.to_numeric(_scatter_df["model_rank"], errors="coerce")
+    _scatter_df["position_num"]   = pd.to_numeric(
+        _scatter_df["position"].astype(str).str.replace("T", "", regex=False), errors="coerce"
+    )
+    _scatter_df = _scatter_df.dropna(subset=["model_rank_num", "position_num"])
+
+    if not _scatter_df.empty:
+        _max_rank = max(_scatter_df["model_rank_num"].max(), _scatter_df["position_num"].max()) + 5
+        _scat_fig = px.scatter(
+            _scatter_df,
+            x="model_rank_num",
+            y="position_num",
+            text="player_name",
+            color="rank_diff",
+            color_continuous_scale=["#e74c3c", "#888", "#00c44f"],
+            color_continuous_midpoint=0,
+            labels={"model_rank_num": "Predicted Rank (pre-tournament)",
+                    "position_num":   "Actual Current Position",
+                    "rank_diff":      "Spots gained"},
+            hover_data={"player_name": True, "rank_diff": True},
+        )
+        # Diagonal y = x reference line
+        _scat_fig.add_shape(type="line", x0=1, y0=1, x1=_max_rank, y1=_max_rank,
+                            line=dict(color="#4a6080", dash="dot", width=1))
+        _scat_fig.update_traces(textposition="top center", textfont_size=9)
+        _scat_fig.update_yaxes(autorange="reversed")
+        _scat_fig.update_layout(
+            height=400,
+            margin=dict(t=10, b=40, l=50, r=20),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font_color="#dde6f5",
+            coloraxis_showscale=False,
+            xaxis=dict(gridcolor="#1c2f4a"),
+            yaxis=dict(gridcolor="#1c2f4a", title="Actual Position (lower = better)"),
+        )
+        st.plotly_chart(_scat_fig, use_container_width=True)
+
+    # ── Model's top-10 picks and how they're doing ───────────────────────────
+    st.markdown("#### 🎯 Model's Top-10 Pre-Tournament Picks — Live Status")
+    _top10_picks = with_predictions.nsmallest(10, "model_rank")[
+        ["player_name", "model_rank", "position", "total", "win_prob", "rank_diff"]
+    ].copy()
+    _top10_picks["win_prob"]   = (_top10_picks["win_prob"] * 100).round(1).astype(str) + "%"
+    _top10_picks["rank_diff"]  = _top10_picks["rank_diff"].apply(
+        lambda x: f"+{int(x)}" if x > 0 else str(int(x)) if pd.notna(x) else "—"
+    )
+    _top10_picks["model_rank"] = _top10_picks["model_rank"].fillna(0).astype(int)
+    _top10_picks = _top10_picks.rename(columns={
+        "player_name": "Player",
+        "model_rank":  "Model Rank",
+        "position":    "Live Pos",
+        "total":       "Score",
+        "win_prob":    "Win%",
+        "rank_diff":   "Spots Gained",
+    })
+    st.dataframe(_top10_picks, hide_index=True, use_container_width=True)
 
 
 
@@ -5012,7 +5024,48 @@ if page == "🏆 This Week":
                         else:
                             st.error("Fetch failed — check Pipeline for details")
 
-            # Weather
+            # ── Withdrawal Alerts ─────────────────────────────────────────
+            _wd_dir = DATA_DIR / "news"
+            _wd_file = _wd_dir / f"withdrawals_{tournament}.json"
+            if not _wd_file.exists():
+                # Fallback to latest
+                _wd_files = sorted(_wd_dir.glob("withdrawals_*.json"),
+                                   key=lambda p: p.stat().st_mtime, reverse=True) if _wd_dir.exists() else []
+                _wd_file = _wd_files[0] if _wd_files else None
+
+            _wd_list = []
+            if _wd_file and Path(_wd_file).exists():
+                try:
+                    with open(_wd_file) as _wdf:
+                        _wd_list = json.load(_wdf)
+                except Exception:
+                    pass
+
+            if _wd_list:
+                _wd_names = [w["player_name"] for w in _wd_list]
+                _pick_wds = [n for n in _wd_names if any(
+                    n.lower() in str(p).lower() or str(p).lower() in n.lower()
+                    for p in _this_week_picks
+                )] if "_this_week_picks" in dir() else []
+
+                for _pick_wd in _pick_wds:
+                    st.error(f"🚨 Your pick **{_pick_wd}** has withdrawn from this event!")
+
+                with st.expander(f"⚠️ Withdrawal Alerts — {len(_wd_names)} player(s)", expanded=bool(_pick_wds)):
+                    for _wd in _wd_list:
+                        _wd_src = "confirmed WD" if _wd.get("source") == "leaderboard" else "possible WD (missing from predictions)"
+                        st.markdown(f"• **{_wd['player_name']}** — {_wd.get('status','WD')} ({_wd_src})")
+                    _wd_col1, _wd_col2 = st.columns([3, 1])
+                    with _wd_col2:
+                        if st.button("🔄 Re-check WDs", key="wd_refresh_btn", use_container_width=True):
+                            _wd_cmd = ["python3",
+                                       str(PROJECT_ROOT / "scripts" / "scrapers" / "fetch_withdrawals.py"),
+                                       "--tournament-id", str(tournament)]
+                            import subprocess as _sp2
+                            _sp2.run(_wd_cmd, capture_output=True, cwd=PROJECT_ROOT)
+                            st.rerun()
+
+            # ── Weather
             render_weather_widget(t.course or tournament)
 
             # ── Load predictions + usage data ────────────────────────────
@@ -5027,6 +5080,429 @@ if page == "🏆 This Week":
                     _udf = pd.read_csv(_usage_path)
                     _usage_dict = dict(zip(_udf["player_name"], _udf["uses_remaining"]))
                 _preds["uses_remaining"] = _preds["player_name"].map(lambda n: _usage_dict.get(n, 3))
+
+            # ── Field Strength + Cut Line (combined expander) ─────────────
+            if not _preds.empty and "world_rank" in _preds.columns:
+                _wr_col = pd.to_numeric(_preds["world_rank"], errors="coerce").dropna()
+                if len(_wr_col) >= 5:
+                    _fa  = float(_wr_col.mean())
+                    _fm  = float(_wr_col.median())
+                    _t50 = int((_wr_col <= 50).sum())
+                    if _fa < 30:   _fs_label, _fs_col = "Elite",   "#f1c40f"
+                    elif _fa < 60: _fs_label, _fs_col = "Strong",  "#00c44f"
+                    elif _fa < 90: _fs_label, _fs_col = "Average", "#4cb8ff"
+                    else:          _fs_label, _fs_col = "Weak",    "#7f8c8d"
+
+                    # Pre-calculate cut line for the expander label
+                    _cut_str_lbl = ""
+                    _cut_est_raw = None
+                    if "recent_scoring_avg" in _preds.columns:
+                        _sc_col = pd.to_numeric(_preds["recent_scoring_avg"], errors="coerce").dropna()
+                        if len(_sc_col) >= 10:
+                            _cut_est_raw = float(_sc_col.quantile(0.65))
+                            _cut_vs_par  = round(_cut_est_raw - 72)
+                            _cut_str_lbl = f" · Cut {_cut_vs_par:+d}"
+
+                    with st.expander(f"🌍 Field Strength: {_fs_label}{_cut_str_lbl}", expanded=False):
+                        _fs1, _fs2, _fs3, _fs4 = st.columns(4)
+                        with _fs1:
+                            st.metric("Field Strength", _fs_label)
+                        with _fs2:
+                            st.metric("Avg World Rank", f"#{_fa:.0f}")
+                        with _fs3:
+                            st.metric("Median World Rank", f"#{_fm:.0f}")
+                        with _fs4:
+                            st.metric("Top-50 Players", _t50)
+
+                        _wr_hist = px.histogram(
+                            _wr_col[_wr_col <= 300],
+                            nbins=30,
+                            labels={"value": "World Rank"},
+                            color_discrete_sequence=[_fs_col],
+                        )
+                        _wr_hist.add_vline(x=_fa, line_dash="dash", line_color="#ffffff",
+                                           annotation_text=f"Avg #{_fa:.0f}",
+                                           annotation_position="top right")
+                        _wr_hist.add_vline(x=50, line_dash="dot", line_color="#f39c12",
+                                           annotation_text="Top 50",
+                                           annotation_position="top left")
+                        _wr_hist.update_layout(
+                            height=220,
+                            margin=dict(t=20, b=30, l=40, r=20),
+                            plot_bgcolor="rgba(0,0,0,0)",
+                            paper_bgcolor="rgba(0,0,0,0)",
+                            font_color="#dde6f5",
+                            showlegend=False,
+                            xaxis=dict(title="World Rank (lower = better)", gridcolor="#1c2f4a"),
+                            yaxis=dict(title="Players", gridcolor="#1c2f4a"),
+                        )
+                        st.plotly_chart(_wr_hist, use_container_width=True)
+
+                        # ── Cut Line estimate inside the same expander ──────
+                        if _cut_est_raw is not None:
+                            st.markdown("##### ✂️ Estimated Cut Line")
+                            _cl1, _cl2, _cl3, _cl4 = st.columns(4)
+                            _in_count     = int((_sc_col < _cut_est_raw).sum())
+                            _out_count    = int((_sc_col >= _cut_est_raw).sum())
+                            _bubble_count = int(((_sc_col >= _cut_est_raw - 0.5) & (_sc_col < _cut_est_raw + 0.5)).sum())
+                            _cut_vs_par   = round(_cut_est_raw - 72)
+                            _cut_str      = f"{_cut_vs_par:+d}" if _cut_vs_par != 0 else "E"
+                            with _cl1:
+                                st.metric("Est. Cut Score", _cut_str,
+                                          help="65th-percentile of field's recent scoring avg vs par 72")
+                            with _cl2:
+                                st.metric("Projected In", _in_count)
+                            with _cl3:
+                                st.metric("Projected Out", _out_count)
+                            with _cl4:
+                                st.metric("Bubble Players", _bubble_count,
+                                          help="Players within ±0.5 shots of projected cut")
+                            st.caption("Pre-tournament estimate based on recent scoring averages.")
+
+            # ── Tee Times ─────────────────────────────────────────────────
+            _tt_files = sorted(
+                (DATA_DIR / "live").glob("leaderboard_r*.csv"),
+                key=lambda p: p.stat().st_mtime, reverse=True
+            ) if (DATA_DIR / "live").exists() else []
+            if _tt_files:
+                try:
+                    _tt_df = pd.read_csv(_tt_files[0])
+                    if "tee_time" in _tt_df.columns and _tt_df["tee_time"].notna().any():
+                        _tt_valid = _tt_df[_tt_df["tee_time"].astype(str).str.strip().ne("")].copy()
+                        if not _tt_valid.empty:
+                            # Merge win_prob if predictions available
+                            if not _preds.empty and "player_name" in _preds.columns and "win_prob" in _preds.columns:
+                                _tt_valid = _tt_valid.merge(
+                                    _preds[["player_name", "win_prob", "world_rank"]],
+                                    on="player_name", how="left"
+                                )
+
+                            with st.expander("⏰ Tee Times", expanded=False):
+                                _tt_groups = _tt_valid.groupby("tee_time", sort=True)
+                                for _ttime, _tgroup in _tt_groups:
+                                    st.markdown(f"**{_ttime}**")
+                                    _tt_rows = []
+                                    for _, _tr in _tgroup.iterrows():
+                                        _pwin = float(_tr.get("win_prob", 0) or 0) * 100
+                                        _prank = _tr.get("world_rank")
+                                        _rank_s = f"#{int(_prank)}" if pd.notna(_prank) else "—"
+                                        _win_s  = f"{_pwin:.1f}%" if _pwin > 0 else "—"
+                                        _tt_rows.append({
+                                            "Player": str(_tr.get("player_name", "—")),
+                                            "Rank":   _rank_s,
+                                            "Win%":   _win_s,
+                                        })
+                                    st.dataframe(pd.DataFrame(_tt_rows), hide_index=True,
+                                                 use_container_width=True)
+                except Exception:
+                    pass
+
+            # ── Horses for Courses ────────────────────────────────────────
+            # Resolve the real tournament ID (e.g. "R2026007") from schedule,
+            # because `tournament` here is the scoring-engine name key which
+            # is the tournament *name*, not the PGA Tour ID.
+            _hfc_tid = None
+            _sched_path_hfc = DATA_DIR / "raw" / "schedule_2026.csv"
+            if _sched_path_hfc.exists():
+                try:
+                    _sched_hfc = pd.read_csv(_sched_path_hfc)
+                    _sched_row = _sched_hfc[
+                        _sched_hfc["tournament_name"].astype(str).str.lower()
+                        == str(tournament).lower()
+                    ]
+                    if not _sched_row.empty:
+                        _hfc_tid = str(_sched_row.iloc[0]["tournament_id"])
+                except Exception:
+                    pass
+            # Fallback: if tournament already looks like an ID (R20XXXXX), use it directly
+            if not _hfc_tid and str(tournament).startswith("R20"):
+                _hfc_tid = str(tournament)
+
+            _hfc_dir  = DATA_DIR / "horses_for_courses"
+            _hfc_file = _hfc_dir / f"{_hfc_tid}.csv" if _hfc_tid else None
+            _hfc_df   = pd.DataFrame()
+            if _hfc_file.exists():
+                try:
+                    _hfc_df = pd.read_csv(_hfc_file)
+                except Exception:
+                    pass
+
+            with st.expander("🐴 Horses for Courses", expanded=not _hfc_df.empty):
+                if _hfc_df.empty:
+                    st.info("No Horses for Courses data yet for this tournament.")
+                    if st.button("🔄 Fetch Course History", key="hfc_fetch_btn"):
+                        import subprocess as _sphfc
+                        _hfc_cmd = [
+                            "python3",
+                            str(PROJECT_ROOT / "scripts" / "scrapers" / "fetch_horses_for_courses.py"),
+                            "--tournament-id", str(tournament),
+                        ]
+                        with st.spinner("Fetching course history (may take ~90s)…"):
+                            _hfc_result = _sphfc.run(
+                                _hfc_cmd, capture_output=True, text=True, cwd=PROJECT_ROOT
+                            )
+                        if _hfc_file.exists():
+                            st.success("Done! Reloading…")
+                            st.rerun()
+                        else:
+                            st.error("Fetch failed — check the Pipeline tab for details.")
+                            if _hfc_result.stderr:
+                                st.code(_hfc_result.stderr[-2000:], language="text")
+                else:
+                    # ── Course DNA card ──────────────────────────────────────
+                    _hfc_meta = _hfc_df.iloc[0]
+                    _dom_skill   = str(_hfc_meta.get("dominant_skill", "SG: Total"))
+                    _course_name = str(_hfc_meta.get("course_name", ""))
+                    _rough_diff  = _hfc_meta.get("rough_difficulty", None)
+                    _fw_width    = _hfc_meta.get("fw_width", None)
+                    _yardage     = _hfc_meta.get("course_yardage", None)
+                    _gen_at      = str(_hfc_meta.get("generated_at", ""))
+
+                    _dna_parts = []
+                    if _course_name:
+                        _dna_parts.append(f"**{_course_name}**")
+                    if pd.notna(_yardage) and _yardage:
+                        _dna_parts.append(f"{int(_yardage):,} yds")
+                    _dna_str = " · ".join(_dna_parts)
+
+                    st.markdown(
+                        f"""<div style="background:#0c1f38;border:1px solid #1c3a5e;border-radius:10px;
+                        padding:14px 20px;margin-bottom:14px;">
+                        <div style="color:#4cb8ff;font-size:0.78em;text-transform:uppercase;
+                        letter-spacing:.1em;margin-bottom:6px;">📐 Course DNA</div>
+                        <div style="font-size:1.1em;font-weight:700;color:#dde6f5;">{_dna_str or _hfc_meta.get("tournament_name","")}</div>
+                        <div style="margin-top:8px;display:flex;gap:24px;flex-wrap:wrap;">
+                        <div><span style="color:#7fa8c9;font-size:.8em;">KEY SKILL</span><br/>
+                             <span style="color:#f1c40f;font-weight:700;">{_dom_skill}</span></div>
+                        {"<div><span style='color:#7fa8c9;font-size:.8em;'>ROUGH DIFF</span><br/>"
+                         f"<span style='color:#dde6f5;font-weight:600;'>{float(_rough_diff):.2f}</span></div>"
+                         if pd.notna(_rough_diff) and _rough_diff else ""}
+                        {"<div><span style='color:#7fa8c9;font-size:.8em;'>FW WIDTH</span><br/>"
+                         f"<span style='color:#dde6f5;font-weight:600;'>{float(_fw_width):.1f} yds</span></div>"
+                         if pd.notna(_fw_width) and _fw_width else ""}
+                        </div>
+                        <div style="margin-top:6px;color:#506e8c;font-size:0.72em;">
+                        Generated {_gen_at} · {len(_hfc_df)} players</div>
+                        </div>""",
+                        unsafe_allow_html=True,
+                    )
+
+                    # ── Top 5 Horse cards ────────────────────────────────────
+                    _top5 = _hfc_df.nsmallest(5, "course_fit_rank").reset_index(drop=True)
+                    st.markdown("##### 🏆 Top Course Fits")
+                    _hfc_cols = st.columns(5)
+                    _sg_fields = [("sg_ott", "OTT"), ("sg_app", "APP"), ("sg_putt", "PUTT"), ("sg_total", "TOT")]
+                    for _hi, _hrow in _top5.iterrows():
+                        with _hfc_cols[_hi]:
+                            _hfc_score = float(_hrow.get("course_fit_score", 0) or 0)
+                            _sg_bits   = []
+                            for _sc, _sl in _sg_fields:
+                                _sv = _hrow.get(_sc)
+                                if pd.notna(_sv):
+                                    _sv = float(_sv)
+                                    _clr = "#00c44f" if _sv > 0 else "#e74c3c"
+                                    _sg_bits.append(
+                                        f"<span style='color:#7fa8c9;font-size:.7em;'>{_sl}</span> "
+                                        f"<span style='color:{_clr};font-size:.78em;font-weight:600;'>"
+                                        f"{_sv:+.2f}</span>"
+                                    )
+                            st.markdown(
+                                f"""<div style="background:#0c1f38;border:1px solid #1c3a5e;
+                                border-radius:8px;padding:10px 12px;text-align:center;">
+                                <div style="color:#f1c40f;font-weight:700;font-size:.8em;">#{_hi+1}</div>
+                                <div style="color:#dde6f5;font-weight:700;font-size:.82em;
+                                line-height:1.2;margin:4px 0;">{_hrow["player_name"]}</div>
+                                <div style="color:#4cb8ff;font-size:.9em;font-weight:600;">
+                                {_hfc_score:+.3f}</div>
+                                <div style="margin-top:6px;display:flex;flex-direction:column;gap:2px;">
+                                {"".join(f"<div>{b}</div>" for b in _sg_bits)}
+                                </div></div>""",
+                                unsafe_allow_html=True,
+                            )
+
+                    st.markdown("<br/>", unsafe_allow_html=True)
+
+                    # ── SG Breakdown bar chart (top 10) ──────────────────────
+                    _top10 = _hfc_df.nsmallest(10, "course_fit_rank").copy()
+                    _sg_chart_cols = [c for c in ["sg_ott", "sg_app", "sg_arg", "sg_putt"] if c in _top10.columns]
+                    if _sg_chart_cols:
+                        _chart_label_map = {
+                            "sg_ott": "Off-the-Tee", "sg_app": "Approach",
+                            "sg_arg": "Around Green", "sg_putt": "Putting",
+                        }
+                        _hfc_melted = _top10[["player_name"] + _sg_chart_cols].melt(
+                            id_vars="player_name", var_name="Skill", value_name="SG"
+                        )
+                        _hfc_melted = _hfc_melted.dropna(subset=["SG"])
+                        _hfc_melted["Skill"] = _hfc_melted["Skill"].map(_chart_label_map)
+                        _color_map = {
+                            "Off-the-Tee": "#4cb8ff", "Approach": "#00c44f",
+                            "Around Green": "#f39c12", "Putting": "#9b59b6",
+                        }
+                        _hfc_fig = px.bar(
+                            _hfc_melted,
+                            x="player_name", y="SG", color="Skill",
+                            barmode="group",
+                            color_discrete_map=_color_map,
+                            labels={"player_name": "", "SG": "Strokes Gained"},
+                            title="SG Breakdown — Top 10 Course Fits",
+                        )
+                        _hfc_fig.update_layout(
+                            height=280,
+                            margin=dict(t=40, b=60, l=40, r=20),
+                            plot_bgcolor="rgba(0,0,0,0)",
+                            paper_bgcolor="rgba(0,0,0,0)",
+                            font_color="#dde6f5",
+                            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+                            xaxis=dict(tickangle=-30, gridcolor="#1c2f4a"),
+                            yaxis=dict(gridcolor="#1c2f4a", zeroline=True,
+                                       zerolinecolor="#3a5272", zerolinewidth=1),
+                        )
+                        st.plotly_chart(_hfc_fig, use_container_width=True)
+
+                    # ── Dark Horses (good course fit, long odds) ─────────────
+                    if "odds_numeric" in _preds.columns and not _preds.empty:
+                        _dh_merged = _hfc_df.merge(
+                            _preds[["player_name", "odds_numeric"]],
+                            on="player_name", how="left"
+                        )
+                        _dh_merged["odds_numeric"] = pd.to_numeric(
+                            _dh_merged["odds_numeric"], errors="coerce"
+                        )
+                        # Top-25 course fit + odds > +3000
+                        _dark_horses = _dh_merged[
+                            (_dh_merged["course_fit_rank"] <= 25) &
+                            (_dh_merged["odds_numeric"] > 3000)
+                        ].nsmallest(5, "course_fit_rank")
+
+                        if not _dark_horses.empty:
+                            st.markdown("##### 🌑 Dark Horses")
+                            st.caption("Top-25 course fits with odds >+3000 — value hunters only")
+                            _dh_rows = []
+                            for _, _dhr in _dark_horses.iterrows():
+                                _dh_odds = int(_dhr["odds_numeric"])
+                                _dh_odds_str = f"+{_dh_odds:,}" if _dh_odds >= 0 else f"{_dh_odds:,}"
+                                _dh_rows.append({
+                                    "Player":       _dhr["player_name"],
+                                    "Course Rank":  int(_dhr["course_fit_rank"]),
+                                    "Fit Score":    f'{float(_dhr.get("course_fit_score",0)):+.3f}',
+                                    "Odds":         _dh_odds_str,
+                                })
+                            st.dataframe(pd.DataFrame(_dh_rows), hide_index=True,
+                                         use_container_width=True)
+
+                    # ── Full table + refresh ──────────────────────────────────
+                    _hfc_c1, _hfc_c2 = st.columns([4, 1])
+                    with _hfc_c2:
+                        if st.button("🔄 Refresh", key="hfc_refresh_btn", use_container_width=True):
+                            import subprocess as _sphfc2
+                            _hfc_cmd2 = [
+                                "python3",
+                                str(PROJECT_ROOT / "scripts" / "scrapers" / "fetch_horses_for_courses.py"),
+                                "--tournament-id", str(tournament),
+                            ]
+                            with st.spinner("Refreshing course history…"):
+                                _sphfc2.run(_hfc_cmd2, capture_output=True, cwd=PROJECT_ROOT)
+                            st.rerun()
+
+                    _disp_cols = [c for c in [
+                        "course_fit_rank", "player_name", "course_fit_score",
+                        "sg_total", "sg_ott", "sg_app", "sg_putt", "scoring_avg",
+                    ] if c in _hfc_df.columns]
+                    st.dataframe(
+                        _hfc_df[_disp_cols].rename(columns={
+                            "course_fit_rank": "Rank", "player_name": "Player",
+                            "course_fit_score": "Fit Score", "sg_total": "SG Tot",
+                            "sg_ott": "SG OTT", "sg_app": "SG APP",
+                            "sg_putt": "SG PUTT", "scoring_avg": "Scoring Avg",
+                        }).head(30),
+                        hide_index=True, use_container_width=True,
+                    )
+
+            # ── KFT Graduates ─────────────────────────────────────────────
+            _kft_profiles_path = DATA_DIR / "historical" / "kft_player_profiles.csv"
+            if _kft_profiles_path.exists() and not _preds.empty:
+                try:
+                    _kft_df = pd.read_csv(_kft_profiles_path)
+
+                    def _kft_norm(n):
+                        """Normalize to 'first last' lowercase; handles 'Last, First' format."""
+                        n = str(n).strip()
+                        if ", " in n:
+                            parts = n.split(", ", 1)
+                            n = f"{parts[1]} {parts[0]}"
+                        return n.lower()
+
+                    _kft_df["_norm"] = _kft_df["player_name"].apply(_kft_norm)
+                    _preds["_norm"] = _preds["player_name"].apply(_kft_norm)
+
+                    _in_field = _preds.merge(_kft_df, on="_norm", how="inner", suffixes=("", "_kft"))
+                    _preds.drop(columns=["_norm"], inplace=True)
+
+                    if not _in_field.empty:
+                        # Load master training data to count full PGA seasons
+                        _master_path = DATA_DIR / "processed" / "master_training_data_2020_2025.csv"
+                        _pga_seasons_map = {}
+                        if _master_path.exists():
+                            try:
+                                _mt = pd.read_csv(_master_path, usecols=["player_name", "year", "tournament_id"])
+                                _epy = _mt.groupby(["player_name", "year"]).size().reset_index(name="events")
+                                _full = _epy[_epy["events"] >= 10]
+                                for _pn, _cnt in _full.groupby("player_name").size().items():
+                                    _pga_seasons_map[_kft_norm(_pn)] = int(_cnt)
+                            except Exception:
+                                pass
+
+                        _in_field["pga_seasons"] = _in_field["_norm"].map(lambda n: _pga_seasons_map.get(n, 0))
+
+                        def _tier(pga_s):
+                            if pga_s == 0: return "🆕 Rookie"
+                            if pga_s == 1: return "🌱 Sophomore"
+                            if pga_s <= 3: return "📈 Developing"
+                            return "✅ Established"
+
+                        _in_field["tier"] = _in_field["pga_seasons"].apply(_tier)
+
+                        with st.expander(f"🎓 KFT Graduates in Field ({len(_in_field)})", expanded=False):
+                            st.caption("Field members with Korn Ferry Tour history — useful for players with limited PGA Tour data")
+
+                            _kft_disp_cols = []
+                            _kft_rename = {}
+                            for _c, _lbl in [
+                                ("player_name", "Player"), ("tier", "Tier"),
+                                ("pga_seasons", "PGA Seasons"), ("kft_year", "Best KFT Year"),
+                                ("scoring_avg", "Scoring Avg"), ("kft_sg_proxy", "KFT SG Proxy"),
+                                ("top10s", "KFT Top-10s"),
+                            ]:
+                                if _c in _in_field.columns:
+                                    _kft_disp_cols.append(_c)
+                                    _kft_rename[_c] = _lbl
+
+                            _kft_show = _in_field[_kft_disp_cols].rename(columns=_kft_rename)
+                            if "KFT SG Proxy" in _kft_show.columns:
+                                _kft_show = _kft_show.sort_values("KFT SG Proxy", ascending=False)
+
+                            st.dataframe(_kft_show, hide_index=True, use_container_width=True)
+
+                            if "kft_sg_proxy" in _in_field.columns and len(_in_field) >= 3:
+                                import plotly.express as _kft_px
+                                _kft_fig = _kft_px.bar(
+                                    _in_field.sort_values("kft_sg_proxy", ascending=False).head(15),
+                                    x="player_name", y="kft_sg_proxy",
+                                    color="tier",
+                                    labels={"player_name": "Player", "kft_sg_proxy": "KFT SG Proxy"},
+                                    title="KFT Graduates — Estimated SG Proxy",
+                                )
+                                _kft_fig.update_layout(
+                                    paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                                    font_color="#e2e8f0", xaxis_tickangle=-35,
+                                    showlegend=True, height=320,
+                                )
+                                st.plotly_chart(_kft_fig, use_container_width=True)
+
+                            st.caption("**KFT SG Proxy** ≈ strokes gained vs KFT field × 0.6 conversion. Higher is better.")
+                except Exception as _kft_err:
+                    pass  # silently skip if KFT data can't be loaded
 
             # ── Elite SAVE list ──────────────────────────────────────────
             _elite_save = []
@@ -5371,194 +5847,194 @@ if page == "🏆 This Week":
                     except Exception as _opt_err:
                         st.error(f"Optimizer error: {_opt_err}")
                         st.caption("Make sure predictions are loaded (run full pipeline first).")
-            st.markdown("<div class='lineup-label'>📊 DATA & ANALYSIS</div>", unsafe_allow_html=True)
+            with st.expander("📊 Data & Analysis", expanded=False):
 
-            # Tabs for different views
-            tab1, tab2, tab3 = st.tabs(["🎯 Recommendations", "📊 Field Analysis", "🏌️ Course"])
+                # Tabs for different views
+                tab1, tab2, tab3 = st.tabs(["🎯 Recommendations", "📊 Field Analysis", "🏌️ Course"])
             
 
-            with tab1:
-                recommendations = engine.get_tournament_recommendations(tournament, top_n=20)
+                with tab1:
+                    recommendations = engine.get_tournament_recommendations(tournament, top_n=20)
 
-                rec_data = []
-                for i, score in enumerate(recommendations, 1):
-                    warning = ""
-                    if score.remaining_uses == 0:
-                        warning = "❌"
-                    elif score.remaining_uses == 1:
-                        warning = "⚠️"
-                    elif score.owgr_rank <= 10 and t.importance_score < 50:
-                        warning = "💡"
+                    rec_data = []
+                    for i, score in enumerate(recommendations, 1):
+                        warning = ""
+                        if score.remaining_uses == 0:
+                            warning = "❌"
+                        elif score.remaining_uses == 1:
+                            warning = "⚠️"
+                        elif score.owgr_rank <= 10 and t.importance_score < 50:
+                            warning = "💡"
 
-                    rec_data.append({
-                        "Rank": i,
-                        "Player": score.player,
-                        "Total Score": score.total_score,
-                        "Course Fit": score.course_fit,
-                        "Current Form": score.current_form,
-                        "Uses Left": f"{warning} {score.remaining_uses}/3".strip(),
-                        "Course History": score.course_history_note or "No history"
-                    })
+                        rec_data.append({
+                            "Rank": i,
+                            "Player": score.player,
+                            "Total Score": score.total_score,
+                            "Course Fit": score.course_fit,
+                            "Current Form": score.current_form,
+                            "Uses Left": f"{warning} {score.remaining_uses}/3".strip(),
+                            "Course History": score.course_history_note or "No history"
+                        })
 
-                st.dataframe(
-                    pd.DataFrame(rec_data),
-                    column_config={
-                        "Total Score": st.column_config.ProgressColumn(min_value=0, max_value=100),
-                        "Course Fit": st.column_config.ProgressColumn(min_value=0, max_value=100),
-                        "Current Form": st.column_config.ProgressColumn(min_value=0, max_value=100),
-                    },
-                    hide_index=True,
-                    use_container_width=True
-                )
-
-            with tab2:
-                st.markdown("### 📊 Field Overview")
-
-                if engine.predictions:
-                    ranks = [p.owgr_rank for p in engine.predictions.values() if p.owgr_rank < 500]
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        fig = px.histogram(ranks, nbins=20, title="Field Strength (World Rankings)")
-                        fig.update_layout(showlegend=False, xaxis_title="World Rank", yaxis_title="Players")
-                        st.plotly_chart(fig, use_container_width=True)
-                    with col2:
-                        top_players = sorted(engine.predictions.items(), key=lambda x: x[1].owgr_rank)[:10]
-                        st.markdown("**Top 10 in Field:**")
-                        for player, form in top_players:
-                            st.caption(f"#{form.owgr_rank} {player}")
-
-                st.markdown("---")
-                st.markdown("### 👥 Full Field List")
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    show_field = st.button("👥 Full Field", use_container_width=True, type="primary")
-                with col2:
-                    show_top_30 = st.button("⭐ Top 30", use_container_width=True)
-                with col3:
-                    show_top_50 = st.button("★ Top 50", use_container_width=True)
-                if show_field:
-                    with st.spinner("Loading field..."):
-                        output = run_script("planning/field_viewer.py")
-                    st.code(output, language=None)
-                if show_top_30:
-                    with st.spinner("Loading top 30..."):
-                        output = run_script("planning/field_viewer.py", "--top", "30")
-                    st.code(output, language=None)
-                if show_top_50:
-                    with st.spinner("Loading top 50..."):
-                        output = run_script("planning/field_viewer.py", "--top", "50")
-                    st.code(output, language=None)
-
-            with tab3:
-                # ── Who excels here ──────────────────────────────────────────
-                st.markdown("#### 🏆 Players Who Excel Here")
-                aliases = course_info.get("aliases", [])
-                specialists = []
-                if engine.course_db:
-                    for alias in aliases:
-                        specs = engine.course_db.get_course_specialists(alias, min_plays=2)
-                        for player, stats, fit_score in specs:
-                            if fit_score >= 50:
-                                specialists.append({
-                                    "Player": player.title(),
-                                    "Plays": stats.times_played,
-                                    "Wins": stats.wins,
-                                    "Top 5s": stats.top_5s,
-                                    "Avg Finish": round(stats.avg_finish, 1),
-                                    "Fit Score": round(fit_score)
-                                })
-                        if specialists:
-                            break
-                if specialists:
-                    seen = set()
-                    unique = []
-                    for s in specialists:
-                        key = s["Player"].lower()
-                        if key not in seen:
-                            seen.add(key)
-                            unique.append(s)
                     st.dataframe(
-                        pd.DataFrame(unique[:15]),
-                        column_config={"Fit Score": st.column_config.ProgressColumn(min_value=0, max_value=100)},
-                        hide_index=True, use_container_width=True
+                        pd.DataFrame(rec_data),
+                        column_config={
+                            "Total Score": st.column_config.ProgressColumn(min_value=0, max_value=100),
+                            "Course Fit": st.column_config.ProgressColumn(min_value=0, max_value=100),
+                            "Current Form": st.column_config.ProgressColumn(min_value=0, max_value=100),
+                        },
+                        hide_index=True,
+                        use_container_width=True
                     )
-                else:
-                    st.info("Limited course history data available for this venue")
 
-                st.markdown("---")
-                st.markdown("#### 📅 Top Course Performers (in Field)")
-                course_perf = load_course_performance_data()
-                course_info_lookup = get_course_for_tournament(tournament)
-                course_key = course_info_lookup.get("course_key", "unknown")
-                if not course_perf.empty and course_key != "unknown":
-                    course_data = course_perf[course_perf["course_key"] == course_key].copy()
-                    if not course_data.empty:
-                        field_names = list(engine.predictions.keys()) if engine.predictions else []
-                        course_data["name_lower"] = course_data["player_name"].str.lower()
-                        in_field = course_data[course_data["name_lower"].isin([n.lower() for n in field_names])].copy()
-                        if not in_field.empty:
-                            in_field["score"] = (
-                                in_field["top_10_rate"].fillna(0) * 3.0 +
-                                in_field["made_cut_rate"].fillna(0) * 1.5 +
-                                in_field["win_rate"].fillna(0) * 5.0
-                            )
-                            top_in_field = in_field.nlargest(6, "score")
-                            cols = st.columns(3)
-                            for i, (_, player) in enumerate(top_in_field.iterrows()):
-                                with cols[i % 3]:
-                                    top10_pct = player["top_10_rate"] * 100 if pd.notna(player["top_10_rate"]) else 0
-                                    avg = player["avg_finish"] if pd.notna(player["avg_finish"]) else 0
-                                    st.metric(
-                                        label=str(player["player_name"])[:18],
-                                        value=f"{top10_pct:.0f}% Top-10",
-                                        delta=f"{int(player['starts'])} starts | {avg:.1f} avg"
-                                    )
+                with tab2:
+                    st.markdown("### 📊 Field Overview")
 
-                st.markdown("---")
-                st.markdown("#### 📈 Course Performance (SG Data)")
-                st.caption("Per-tournament strokes gained data (2020–2026)")
-                field_ids = None
-                if engine.predictions:
-                    field_ids = [p.player_id for p in engine.predictions.values() if hasattr(p, 'player_id')]
-                render_course_performance_profiles(tournament, field_player_ids=field_ids)
+                    if engine.predictions:
+                        ranks = [p.owgr_rank for p in engine.predictions.values() if p.owgr_rank < 500]
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            fig = px.histogram(ranks, nbins=20, title="Field Strength (World Rankings)")
+                            fig.update_layout(showlegend=False, xaxis_title="World Rank", yaxis_title="Players")
+                            st.plotly_chart(fig, use_container_width=True)
+                        with col2:
+                            top_players = sorted(engine.predictions.items(), key=lambda x: x[1].owgr_rank)[:10]
+                            st.markdown("**Top 10 in Field:**")
+                            for player, form in top_players:
+                                st.caption(f"#{form.owgr_rank} {player}")
 
-                st.markdown("---")
-                st.markdown("#### 🎯 Course Fit & Player History")
-                cf_col1, cf_col2 = st.columns(2)
-                with cf_col1:
-                    show_course_profile = st.button("🏟️ Course Profile", use_container_width=True, type="primary")
-                with cf_col2:
-                    if st.button("📊 Course Toughness Rankings", use_container_width=True):
-                        output = run_script("planning/course_stats_viewer.py")
+                    st.markdown("---")
+                    st.markdown("### 👥 Full Field List")
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        show_field = st.button("👥 Full Field", use_container_width=True, type="primary")
+                    with col2:
+                        show_top_30 = st.button("⭐ Top 30", use_container_width=True)
+                    with col3:
+                        show_top_50 = st.button("★ Top 50", use_container_width=True)
+                    if show_field:
+                        with st.spinner("Loading field..."):
+                            output = run_script("planning/field_viewer.py")
                         st.code(output, language=None)
-                if show_course_profile:
-                    with st.spinner("Loading course profile..."):
-                        output = run_script("planning/course_fit.py", "--course", tournament)
-                    st.code(output, language=None)
+                    if show_top_30:
+                        with st.spinner("Loading top 30..."):
+                            output = run_script("planning/field_viewer.py", "--top", "30")
+                        st.code(output, language=None)
+                    if show_top_50:
+                        with st.spinner("Loading top 50..."):
+                            output = run_script("planning/field_viewer.py", "--top", "50")
+                        st.code(output, language=None)
 
-                st.markdown("---")
-                all_players = sorted(engine.predictions.keys()) if engine.predictions else []
-                ph_col1, ph_col2, ph_col3 = st.columns([2, 2, 1])
-                with ph_col1:
-                    fit_player = st.selectbox("Check player course fit:", [""] + all_players, key="fit_player")
-                with ph_col2:
-                    hist_player = st.selectbox("View player history:", [""] + all_players, key="hist_player")
-                with ph_col3:
-                    st.markdown("<br>", unsafe_allow_html=True)
-                    check_fit  = st.button("🎯 Fit", use_container_width=True, type="primary")
-                    check_hist = st.button("📊 History", use_container_width=True)
-                if check_fit and fit_player:
-                    with st.spinner(f"Analyzing {fit_player}'s course fit..."):
-                        output = run_script("planning/course_fit.py", fit_player)
-                    st.code(output, language=None)
-                if check_hist and hist_player:
-                    with st.spinner(f"Loading {hist_player}'s course history..."):
-                        output = run_script("planning/course_history.py", "--player", hist_player)
-                    st.code(output, language=None)
-                if st.button("🏆 All Course Specialists (Historical)", use_container_width=True):
-                    with st.spinner("Loading course specialists..."):
-                        output = run_script("planning/course_history.py", "--tournament", tournament)
-                    st.code(output, language=None)
+                with tab3:
+                    # ── Who excels here ──────────────────────────────────────────
+                    st.markdown("#### 🏆 Players Who Excel Here")
+                    aliases = course_info.get("aliases", [])
+                    specialists = []
+                    if engine.course_db:
+                        for alias in aliases:
+                            specs = engine.course_db.get_course_specialists(alias, min_plays=2)
+                            for player, stats, fit_score in specs:
+                                if fit_score >= 50:
+                                    specialists.append({
+                                        "Player": player.title(),
+                                        "Plays": stats.times_played,
+                                        "Wins": stats.wins,
+                                        "Top 5s": stats.top_5s,
+                                        "Avg Finish": round(stats.avg_finish, 1),
+                                        "Fit Score": round(fit_score)
+                                    })
+                            if specialists:
+                                break
+                    if specialists:
+                        seen = set()
+                        unique = []
+                        for s in specialists:
+                            key = s["Player"].lower()
+                            if key not in seen:
+                                seen.add(key)
+                                unique.append(s)
+                        st.dataframe(
+                            pd.DataFrame(unique[:15]),
+                            column_config={"Fit Score": st.column_config.ProgressColumn(min_value=0, max_value=100)},
+                            hide_index=True, use_container_width=True
+                        )
+                    else:
+                        st.info("Limited course history data available for this venue")
+
+                    st.markdown("---")
+                    st.markdown("#### 📅 Top Course Performers (in Field)")
+                    course_perf = load_course_performance_data()
+                    course_info_lookup = get_course_for_tournament(tournament)
+                    course_key = course_info_lookup.get("course_key", "unknown")
+                    if not course_perf.empty and course_key != "unknown":
+                        course_data = course_perf[course_perf["course_key"] == course_key].copy()
+                        if not course_data.empty:
+                            field_names = list(engine.predictions.keys()) if engine.predictions else []
+                            course_data["name_lower"] = course_data["player_name"].str.lower()
+                            in_field = course_data[course_data["name_lower"].isin([n.lower() for n in field_names])].copy()
+                            if not in_field.empty:
+                                in_field["score"] = (
+                                    in_field["top_10_rate"].fillna(0) * 3.0 +
+                                    in_field["made_cut_rate"].fillna(0) * 1.5 +
+                                    in_field["win_rate"].fillna(0) * 5.0
+                                )
+                                top_in_field = in_field.nlargest(6, "score")
+                                cols = st.columns(3)
+                                for i, (_, player) in enumerate(top_in_field.iterrows()):
+                                    with cols[i % 3]:
+                                        top10_pct = player["top_10_rate"] * 100 if pd.notna(player["top_10_rate"]) else 0
+                                        avg = player["avg_finish"] if pd.notna(player["avg_finish"]) else 0
+                                        st.metric(
+                                            label=str(player["player_name"])[:18],
+                                            value=f"{top10_pct:.0f}% Top-10",
+                                            delta=f"{int(player['starts'])} starts | {avg:.1f} avg"
+                                        )
+
+                    st.markdown("---")
+                    st.markdown("#### 📈 Course Performance (SG Data)")
+                    st.caption("Per-tournament strokes gained data (2020–2026)")
+                    field_ids = None
+                    if engine.predictions:
+                        field_ids = [p.player_id for p in engine.predictions.values() if hasattr(p, 'player_id')]
+                    render_course_performance_profiles(tournament, field_player_ids=field_ids)
+
+                    st.markdown("---")
+                    st.markdown("#### 🎯 Course Fit & Player History")
+                    cf_col1, cf_col2 = st.columns(2)
+                    with cf_col1:
+                        show_course_profile = st.button("🏟️ Course Profile", use_container_width=True, type="primary")
+                    with cf_col2:
+                        if st.button("📊 Course Toughness Rankings", use_container_width=True):
+                            output = run_script("planning/course_stats_viewer.py")
+                            st.code(output, language=None)
+                    if show_course_profile:
+                        with st.spinner("Loading course profile..."):
+                            output = run_script("planning/course_fit.py", "--course", tournament)
+                        st.code(output, language=None)
+
+                    st.markdown("---")
+                    all_players = sorted(engine.predictions.keys()) if engine.predictions else []
+                    ph_col1, ph_col2, ph_col3 = st.columns([2, 2, 1])
+                    with ph_col1:
+                        fit_player = st.selectbox("Check player course fit:", [""] + all_players, key="fit_player")
+                    with ph_col2:
+                        hist_player = st.selectbox("View player history:", [""] + all_players, key="hist_player")
+                    with ph_col3:
+                        st.markdown("<br>", unsafe_allow_html=True)
+                        check_fit  = st.button("🎯 Fit", use_container_width=True, type="primary")
+                        check_hist = st.button("📊 History", use_container_width=True)
+                    if check_fit and fit_player:
+                        with st.spinner(f"Analyzing {fit_player}'s course fit..."):
+                            output = run_script("planning/course_fit.py", fit_player)
+                        st.code(output, language=None)
+                    if check_hist and hist_player:
+                        with st.spinner(f"Loading {hist_player}'s course history..."):
+                            output = run_script("planning/course_history.py", "--player", hist_player)
+                        st.code(output, language=None)
+                    if st.button("🏆 All Course Specialists (Historical)", use_container_width=True):
+                        with st.spinner("Loading course specialists..."):
+                            output = run_script("planning/course_history.py", "--tournament", tournament)
+                        st.code(output, language=None)
 
            
 
@@ -6198,101 +6674,64 @@ elif page == "📋 My Picks":
         _completed = _log[_log["points"].notna() & (_log["points"] != "")]
 
         if not _completed.empty:
-            _completed = _completed.copy()
-            _completed["points"] = pd.to_numeric(_completed["points"], errors="coerce").fillna(0)
-            _completed["week"] = pd.to_numeric(_completed["week"], errors="coerce")
+            
+            # Pick Quality — per-pick breakdown table (all weeks)
+            st.markdown("**Pick Quality — How closely did picks follow the model?**")
 
-            # Season totals row
-            _total_pts = int(_completed["points"].sum())
-            _weeks_played = len(_completed)
-            _best_week = _completed.loc[_completed["points"].idxmax()]
+            _pq_rows = []
+            for _, _slrow in _log.iterrows():
+                _wk   = _slrow.get("week")
+                _t    = str(_slrow.get("tournament", "")).strip()
+                _pts  = pd.to_numeric(_slrow.get("points"), errors="coerce")
+                _note = str(_slrow.get("notes", "")).strip() if pd.notna(_slrow.get("notes")) else ""
+                for _pi in range(1, 4):
+                    _pn = _slrow.get(f"pick{_pi}")
+                    _pr = _slrow.get(f"result{_pi}")
+                    _rk = pd.to_numeric(_slrow.get(f"rank{_pi}"), errors="coerce")
+                    if pd.notna(_pn) and str(_pn).strip() not in ("", "nan"):
+                        _result_str = str(_pr).strip() if pd.notna(_pr) and str(_pr).strip() not in ("", "nan") else "—"
+                        _fin = None
+                        if _result_str not in ("—", "MC", "WD", "DQ"):
+                            try:
+                                _fin = int(_result_str.replace("T", "").replace("t", ""))
+                            except Exception:
+                                pass
+                        # Build finish label with emoji badge
+                        if _fin is not None:
+                            if _fin == 1:   _badge = "🏆"
+                            elif _fin <= 5: _badge = "🟢"
+                            elif _fin <= 10: _badge = "🟡"
+                            elif _fin <= 20: _badge = "🔵"
+                            else:           _badge = "⚪"
+                            _result_disp = f"{_badge} {_result_str}"
+                        elif _result_str in ("MC",):
+                            _result_disp = "❌ MC"
+                        elif _result_str == "—":
+                            _result_disp = "⏳ Pending"
+                        else:
+                            _result_disp = _result_str
 
-            sm1, sm2, sm3, sm4 = st.columns(4)
-            with sm1:
-                st.metric("Season Points", f"{_total_pts:,}")
-            with sm2:
-                st.metric("Weeks Completed", f"{_weeks_played}/30")
-            with sm3:
-                st.metric("Avg Points/Week", f"{_total_pts/_weeks_played:,.0f}" if _weeks_played else "—")
-            with sm4:
-                st.metric("Best Week", f"{int(_best_week['points']):,} pts", help=_best_week.get("tournament", ""))
+                        _vs = ""
+                        if pd.notna(_rk) and _fin is not None:
+                            _diff = int(_rk) - _fin
+                            if _diff > 5:   _vs = f"▲ +{_diff}"
+                            elif _diff < -5: _vs = f"▼ {_diff}"
+                            else:           _vs = f"~ {_diff:+d}"
 
-            # Points by week bar chart
-            _fig = px.bar(
-                _completed,
-                x="tournament",
-                y="points",
-                text="points",
-                color="points",
-                color_continuous_scale=["#e74c3c", "#f39c12", "#2ecc71"],
-                labels={"tournament": "", "points": "Points"},
-                title="Points by Tournament",
-            )
-            _fig.update_traces(textposition="outside")
-            _fig.update_layout(
-                showlegend=False,
-                coloraxis_showscale=False,
-                height=280,
-                margin=dict(t=40, b=10, l=0, r=0),
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
-                font_color="#ccc",
-                xaxis=dict(tickfont=dict(size=11)),
-            )
-            st.plotly_chart(_fig, use_container_width=True)
+                        _pq_rows.append({
+                            "Wk":           int(_wk) if pd.notna(_wk) else "—",
+                            "Tournament":   _t,
+                            "Player":       str(_pn).strip(),
+                            "Result":       _result_disp,
+                            "Model Rank":   int(_rk) if pd.notna(_rk) else "—",
+                            "vs Prediction": _vs,
+                            "Wk Points":    int(_pts) if pd.notna(_pts) else "—",
+                        })
 
-            # Pick quality — model rank alignment
-            if "avg_model_rank" in _completed.columns:
-                _rank_data = _completed.dropna(subset=["avg_model_rank"]).copy()
-                _rank_data["avg_model_rank"] = pd.to_numeric(_rank_data["avg_model_rank"], errors="coerce")
-                if not _rank_data.empty:
-                    st.markdown("**Pick Quality — How closely did picks follow the model?**")
-                    st.caption("Lower avg model rank = picks were closer to model's top recommendations")
-                    _rfig = px.scatter(
-                        _rank_data,
-                        x="tournament",
-                        y="avg_model_rank",
-                        size="points",
-                        color="points",
-                        color_continuous_scale=["#e74c3c", "#2ecc71"],
-                        text="tournament",
-                        labels={"tournament": "", "avg_model_rank": "Avg Model Rank of Picks"},
-                    )
-                    _rfig.update_traces(textposition="top center", textfont=dict(size=9))
-                    _rfig.update_yaxes(autorange="reversed")
-                    _rfig.update_layout(
-                        showlegend=False,
-                        coloraxis_showscale=False,
-                        height=220,
-                        margin=dict(t=20, b=10, l=0, r=0),
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
-                        font_color="#ccc",
-                    )
-                    st.plotly_chart(_rfig, use_container_width=True)
-
-            # Week-by-week table
-            _display_cols = ["week", "tournament", "pick1", "pick2", "pick3",
-                             "result1", "result2", "result3", "points", "notes"]
-            _display_cols = [c for c in _display_cols if c in _log.columns]
-            _rename = {
-                "week": "Wk", "tournament": "Tournament",
-                "pick1": "Pick 1", "pick2": "Pick 2", "pick3": "Pick 3",
-                "result1": "R1", "result2": "R2", "result3": "R3",
-                "points": "Points", "notes": "Notes",
-            }
-            st.dataframe(
-                _log[_display_cols].rename(columns=_rename),
-                hide_index=True,
-                use_container_width=True,
-                column_config={
-                    "Points": st.column_config.NumberColumn(format="%d"),
-                }
-            )
-
-            # ── Season Analytics ───────────────────────────────────────────────
-            st.markdown("---")
-            st.markdown("#### 📈 Season Analytics")
+            if _pq_rows:
+                _pq_df = pd.DataFrame(_pq_rows)
+                st.dataframe(_pq_df, hide_index=True, use_container_width=True)
+                st.caption("🏆 Win  🟢 Top 5  🟡 Top 10  🔵 Top 20  ⚪ Outside 20  ❌ Missed Cut  |  **vs Prediction**: ▲ outperformed model rank, ▼ underperformed")
 
             # Parse finish positions — handles "T28" → 28, "1" → 1, "MC" → None
             def _parse_finish(r):
@@ -6319,56 +6758,6 @@ elif page == "📋 My Picks":
                             "finish":     _parse_finish(_pr),
                             "model_rank": pd.to_numeric(_rk, errors="coerce"),
                         })
-
-            if _pick_rows:
-                _pk = pd.DataFrame(_pick_rows)
-                _valid = _pk.dropna(subset=["finish"])
-                _total_made = len(_pk)
-                _top10_n  = int((_valid["finish"] <= 10).sum())
-                _top20_n  = int((_valid["finish"] <= 20).sum())
-                _cuts_n   = int(_pk["result"].apply(
-                    lambda x: str(x).strip().upper() not in ("MC", "WD", "DQ", "")
-                ).sum())
-                _mc_n     = _total_made - _cuts_n
-
-                _anal_c1, _anal_c2 = st.columns([3, 2])
-
-                with _anal_c1:
-                    # Cumulative points line chart
-                    _cum = _completed.sort_values("week").copy()
-                    _cum["cumulative"] = _cum["points"].cumsum()
-                    _cfig = px.line(
-                        _cum, x="tournament", y="cumulative",
-                        markers=True,
-                        labels={"tournament": "", "cumulative": "Cumulative Pts"},
-                        title="Cumulative Points",
-                    )
-                    _cfig.update_traces(
-                        line=dict(color="#00c44f", width=2.5),
-                        marker=dict(size=9, color="#00c44f"),
-                    )
-                    _cfig.update_layout(
-                        height=230,
-                        margin=dict(t=36, b=8, l=0, r=0),
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
-                        font_color="#ccc",
-                        xaxis=dict(tickfont=dict(size=10)),
-                    )
-                    st.plotly_chart(_cfig, use_container_width=True)
-
-                with _anal_c2:
-                    st.markdown("**Pick Outcomes**")
-                    _oc1, _oc2 = st.columns(2)
-                    with _oc1:
-                        st.metric("Picks Made", _total_made)
-                        st.metric("Top 10s", _top10_n)
-                        st.metric("Top 20s", _top20_n)
-                    with _oc2:
-                        st.metric("Cuts Made", _cuts_n)
-                        st.metric("Missed Cuts", _mc_n)
-                        _t10_rate = f"{_top10_n/_total_made*100:.0f}%" if _total_made else "—"
-                        st.metric("Top-10 Rate", _t10_rate)
 
         else:
             # Pending weeks only
@@ -7046,73 +7435,149 @@ elif page == "👤 Players":
                             unsafe_allow_html=True
                         )
 
-                    # ── STATS TABLE ──────────────────────────────────────
+                    # ── PGA-STYLE COMPARISON GRID ────────────────────────
                     st.markdown("---")
-                    st.markdown("#### 📊 Key Stats")
 
-                    def _winner_color(v1, v2, higher_is_better):
+                    def _hg(row, k):
+                        v = row.get(k)
                         try:
-                            f1, f2 = float(v1), float(v2)
-                            if abs(f1 - f2) < 0.0001:
-                                return "#dde6f5", "#dde6f5"
-                            better = (f1 > f2) if higher_is_better else (f1 < f2)
-                            return ("#00c44f", "#e57373") if better else ("#e57373", "#00c44f")
-                        except Exception:
-                            return "#dde6f5", "#dde6f5"
+                            return float(v) if pd.notna(v) else None
+                        except (TypeError, ValueError):
+                            return None
 
-                    _stat_rows = [
-                        ("Win Probability",    "win_prob",          True,  lambda v: f"{float(v)*100:.1f}%"),
-                        ("Top 5 Chance",       "top5_prob",         True,  lambda v: f"{float(v)*100:.1f}%"),
-                        ("Top 10 Chance",      "top10_prob",        True,  lambda v: f"{float(v)*100:.1f}%"),
-                        ("Expected Value",     "expected_value",    True,  lambda v: f"${float(v):,.0f}"),
-                        ("World Rank",         "world_rank",        False, lambda v: f"#{int(float(v))}"),
-                        ("Vegas Odds",         "odds_to_win",       None,  lambda v: f"+{int(v)}" if str(v).lstrip("+").isdigit() else str(v)),
-                        ("Model Edge vs Mkt",  "model_vs_vegas_edge",True, lambda v: f"{float(v)*100:+.1f}%"),
-                        ("SG: Total (season)", "season_sg_total",   True,  lambda v: f"{float(v):+.2f}"),
-                        ("SG: Off Tee",        "season_sg_ott",     True,  lambda v: f"{float(v):+.2f}"),
-                        ("SG: Approach",       "season_sg_app",     True,  lambda v: f"{float(v):+.2f}"),
-                        ("SG: Putting",        "season_sg_putt",    True,  lambda v: f"{float(v):+.2f}"),
-                        ("Course Avg Finish",  "hist_avg_finish",   False, lambda v: f"{float(v):.1f}"),
-                        ("Course Plays",       "hist_times_played", True,  lambda v: f"{int(float(v))}"),
-                        ("Recent Top 10s",     "recent_top10s",     True,  lambda v: f"{int(float(v))}"),
-                        ("Cut Risk",           "cut_risk",          None,  lambda v: str(v)),
-                    ]
+                    def _h2h_bar(fa, fb):
+                        if fa is None or fb is None:
+                            return 50, 50
+                        mn = min(fa, fb)
+                        if mn < 0:
+                            fa -= mn; fb -= mn
+                        t = fa + fb
+                        if t == 0:
+                            return 50, 50
+                        return max(2, fa / t * 100), max(2, fb / t * 100)
 
-                    _tbl = (
-                        f"<table style='width:100%;border-collapse:collapse;font-size:13px;'>"
-                        f"<thead><tr>"
-                        f"<th style='text-align:left;padding:8px 12px;color:#4a6080;"
-                        f"border-bottom:1px solid #1c2f4a;'>Stat</th>"
-                        f"<th style='text-align:center;padding:8px 12px;color:#00c44f;font-weight:700;"
-                        f"border-bottom:1px solid #1c2f4a;'>{_n1}</th>"
-                        f"<th style='text-align:center;padding:8px 12px;color:#4cb8ff;font-weight:700;"
-                        f"border-bottom:1px solid #1c2f4a;'>{_n2}</th>"
-                        f"</tr></thead><tbody>"
-                    )
-                    for _label, _col, _hib, _fmt in _stat_rows:
-                        _v1 = _r1.get(_col)
-                        _v2 = _r2.get(_col)
-                        try:
-                            _d1 = _fmt(_v1) if pd.notna(_v1) and _v1 != "" else "—"
-                        except Exception:
-                            _d1 = str(_v1) if pd.notna(_v1) else "—"
-                        try:
-                            _d2 = _fmt(_v2) if pd.notna(_v2) and _v2 != "" else "—"
-                        except Exception:
-                            _d2 = str(_v2) if pd.notna(_v2) else "—"
-
-                        _c1, _c2 = _winner_color(_v1, _v2, _hib) if _hib is not None else ("#dde6f5", "#dde6f5")
-                        _tbl += (
-                            f"<tr style='border-bottom:1px solid #0d1820;'>"
-                            f"<td style='padding:7px 12px;color:#7a90b8;'>{_label}</td>"
-                            f"<td style='padding:7px 12px;text-align:center;font-weight:600;"
-                            f"color:{_c1};'>{_d1}</td>"
-                            f"<td style='padding:7px 12px;text-align:center;font-weight:600;"
-                            f"color:{_c2};'>{_d2}</td>"
-                            f"</tr>"
+                    def _h2h_row(label, va, vb, higher_better=True, fmt=".1f", suffix=""):
+                        fa = va if isinstance(va, (int, float)) and pd.notna(va) else None
+                        fb = vb if isinstance(vb, (int, float)) and pd.notna(vb) else None
+                        if fa is None and fb is None:
+                            a_str = b_str = "—"
+                            a_col = b_col = "#3a5070"; a_w = b_w = "400"
+                            bar_a = "#112230"; bar_b = "#0d1a2e"; fill_a = fill_b = 50
+                        else:
+                            a_better = b_better = False
+                            if fa is not None and fb is not None:
+                                a_better = (fa > fb) if higher_better else (fa < fb)
+                                b_better = (fb > fa) if higher_better else (fb < fa)
+                            try:
+                                a_str = f"{fa:{fmt}}{suffix}" if fa is not None else "—"
+                            except Exception:
+                                a_str = str(fa) if fa is not None else "—"
+                            try:
+                                b_str = f"{fb:{fmt}}{suffix}" if fb is not None else "—"
+                            except Exception:
+                                b_str = str(fb) if fb is not None else "—"
+                            a_col = "#00c44f" if a_better else ("#8899aa" if b_better else "#dde6f5")
+                            b_col = "#4cb8ff" if b_better else ("#8899aa" if a_better else "#dde6f5")
+                            a_w = "700" if a_better else "400"
+                            b_w = "700" if b_better else "400"
+                            fill_a, fill_b = _h2h_bar(fa, fb)
+                            # Winner side: bright; losing side: dim but colored so bar always shows both
+                            bar_a = "#00c44f" if a_better else "#0d2e18"
+                            bar_b = "#4cb8ff" if b_better else "#0d1e30"
+                        return (
+                            # Stat label — its own centered row
+                            f'<div style="text-align:center;font-size:0.67em;color:#2e4870;'
+                            f'text-transform:uppercase;letter-spacing:.09em;padding:10px 24px 0;">{label}</div>'
+                            # Values flanking a prominent bar
+                            f'<div style="display:grid;grid-template-columns:auto 1fr auto;'
+                            f'align-items:center;gap:12px;padding:5px 24px 12px;'
+                            f'border-bottom:1px solid #0a1624;">'
+                            f'<div style="font-size:1.05em;font-weight:{a_w};color:{a_col};'
+                            f'min-width:52px;text-align:right;">{a_str}</div>'
+                            f'<div style="display:grid;grid-template-columns:{fill_a:.1f}fr {fill_b:.1f}fr;'
+                            f'height:8px;border-radius:5px;overflow:hidden;">'
+                            f'<div style="background:{bar_a};"></div>'
+                            f'<div style="background:{bar_b};"></div>'
+                            f'</div>'
+                            f'<div style="font-size:1.05em;font-weight:{b_w};color:{b_col};'
+                            f'min-width:52px;text-align:left;">{b_str}</div>'
+                            f'</div>'
                         )
-                    _tbl += "</tbody></table>"
-                    st.markdown(_tbl, unsafe_allow_html=True)
+
+                    def _h2h_sec(title):
+                        return (
+                            f'<div style="background:#060d1a;padding:8px 24px;margin-top:2px;'
+                            f'border-top:2px solid #0e1c2e;">'
+                            f'<span style="font-size:0.7em;font-weight:700;color:#3a5878;'
+                            f'text-transform:uppercase;letter-spacing:.12em;">{title}</span></div>'
+                        )
+
+                    # Compute head-to-head win probability
+                    _wp1 = _hg(_r1, "win_prob") or 0
+                    _wp2 = _hg(_r2, "win_prob") or 0
+                    _wp_total = _wp1 + _wp2 if _wp1 + _wp2 > 0 else 1
+                    _h2h_p1 = _wp1 / _wp_total * 100
+                    _h2h_p2 = _wp2 / _wp_total * 100
+
+                    if _h2h_p1 > 55:
+                        _vname = _n1; _vdiff = f"+{_h2h_p1 - _h2h_p2:.1f} pp edge"; _vcol = "#00c44f"
+                    elif _h2h_p2 > 55:
+                        _vname = _n2; _vdiff = f"+{_h2h_p2 - _h2h_p1:.1f} pp edge"; _vcol = "#4cb8ff"
+                    else:
+                        _vname = "TOO CLOSE TO CALL"; _vdiff = "< 5 pp difference"; _vcol = "#f39c12"
+
+                    _rows = ""
+                    _rows += _h2h_sec("Model Probabilities")
+                    _rows += _h2h_row("Head-to-Head Win", _h2h_p1, _h2h_p2, fmt=".1f", suffix="%")
+                    _rows += _h2h_row("Win %", (_hg(_r1,"win_prob") or 0)*100, (_hg(_r2,"win_prob") or 0)*100, fmt=".1f", suffix="%")
+                    _rows += _h2h_row("Top 5 %", (_hg(_r1,"top5_prob") or 0)*100, (_hg(_r2,"top5_prob") or 0)*100, fmt=".1f", suffix="%")
+                    _rows += _h2h_row("Top 10 %", (_hg(_r1,"top10_prob") or 0)*100, (_hg(_r2,"top10_prob") or 0)*100, fmt=".1f", suffix="%")
+                    _rows += _h2h_row("Top 20 %", (_hg(_r1,"top20_prob") or 0)*100, (_hg(_r2,"top20_prob") or 0)*100, fmt=".1f", suffix="%")
+                    _rows += _h2h_row("Expected Value", _hg(_r1,"expected_value"), _hg(_r2,"expected_value"), fmt=",.0f")
+
+                    _rows += _h2h_sec("Strokes Gained · Season")
+                    _rows += _h2h_row("Total", _hg(_r1,"season_sg_total"), _hg(_r2,"season_sg_total"), fmt="+.2f")
+                    _rows += _h2h_row("Off the Tee", _hg(_r1,"season_sg_ott"), _hg(_r2,"season_sg_ott"), fmt="+.2f")
+                    _rows += _h2h_row("Approach", _hg(_r1,"season_sg_app"), _hg(_r2,"season_sg_app"), fmt="+.2f")
+                    _rows += _h2h_row("Around Green", _hg(_r1,"season_sg_arg"), _hg(_r2,"season_sg_arg"), fmt="+.2f")
+                    _rows += _h2h_row("Putting", _hg(_r1,"season_sg_putt"), _hg(_r2,"season_sg_putt"), fmt="+.2f")
+                    _rows += _h2h_row("Tee to Green", _hg(_r1,"season_sg_t2g"), _hg(_r2,"season_sg_t2g"), fmt="+.2f")
+
+                    _rows += _h2h_sec("Recent Form")
+                    _rows += _h2h_row("Form Trend", _hg(_r1,"form_trend"), _hg(_r2,"form_trend"), fmt="+.2f")
+                    _rows += _h2h_row("Scoring Avg", _hg(_r1,"recent_scoring_avg"), _hg(_r2,"recent_scoring_avg"), higher_better=False, fmt=".2f")
+                    _rows += _h2h_row("Top 5s", _hg(_r1,"recent_top5s"), _hg(_r2,"recent_top5s"), fmt=".0f")
+                    _rows += _h2h_row("Top 10s", _hg(_r1,"recent_top10s"), _hg(_r2,"recent_top10s"), fmt=".0f")
+                    _rows += _h2h_row("Cuts Made %", (_hg(_r1,"recent_cuts_pct") or 0)*100, (_hg(_r2,"recent_cuts_pct") or 0)*100, fmt=".0f", suffix="%")
+                    _rows += _h2h_row("Final Round SG", _hg(_r1,"recent_final_round"), _hg(_r2,"recent_final_round"), fmt="+.2f")
+                    _rows += _h2h_row("Consistency (σ)", _hg(_r1,"finish_consistency"), _hg(_r2,"finish_consistency"), higher_better=False, fmt=".1f")
+
+                    _rows += _h2h_sec("Course History")
+                    _rows += _h2h_row("Avg Finish", _hg(_r1,"hist_avg_finish"), _hg(_r2,"hist_avg_finish"), higher_better=False, fmt=".0f")
+                    _rows += _h2h_row("Best Finish", _hg(_r1,"hist_best_finish"), _hg(_r2,"hist_best_finish"), higher_better=False, fmt=".0f")
+                    _rows += _h2h_row("Wins Here", _hg(_r1,"hist_wins"), _hg(_r2,"hist_wins"), fmt=".0f")
+                    _rows += _h2h_row("Top 5s Here", _hg(_r1,"hist_top5s"), _hg(_r2,"hist_top5s"), fmt=".0f")
+                    _rows += _h2h_row("Top 10s Here", _hg(_r1,"hist_top10s"), _hg(_r2,"hist_top10s"), fmt=".0f")
+                    _rows += _h2h_row("Cut Rate", (_hg(_r1,"hist_cut_rate") or 0)*100, (_hg(_r2,"hist_cut_rate") or 0)*100, fmt=".0f", suffix="%")
+                    _rows += _h2h_row("Times Played", _hg(_r1,"hist_times_played"), _hg(_r2,"hist_times_played"), fmt=".0f")
+
+                    _rows += _h2h_sec("Market")
+                    _rows += _h2h_row("World Rank", _hg(_r1,"world_rank"), _hg(_r2,"world_rank"), higher_better=False, fmt=".0f")
+                    _me1 = _hg(_r1,"model_vs_vegas_edge"); _me2 = _hg(_r2,"model_vs_vegas_edge")
+                    if _me1 is not None or _me2 is not None:
+                        _rows += _h2h_row("Model vs Market Edge", (_me1 or 0)*100, (_me2 or 0)*100, fmt="+.1f", suffix=" pp")
+
+                    st.markdown(f"""
+<div style="background:#0d1a30;border-radius:12px;overflow:hidden;border:1px solid #1a2e4a;">
+  <div style="background:#040a14;padding:9px 20px;text-align:center;border-bottom:2px solid #0e1c2e;">
+    <span style="font-size:0.68em;color:#2a4060;text-transform:uppercase;letter-spacing:.08em;">
+      Model Verdict · </span>
+    <span style="font-size:0.88em;font-weight:700;color:{_vcol};">{_vname}</span>
+    <span style="font-size:0.72em;color:#3a5070;"> · {_vdiff}</span>
+  </div>
+  {_rows}
+</div>
+""", unsafe_allow_html=True)
 
                     # ── SG BREAKDOWN GROUPED BAR ─────────────────────────
                     st.markdown("---")
@@ -7187,26 +7652,6 @@ elif page == "👤 Players":
                     else:
                         st.caption("Form history not available for one or both players.")
 
-                    # ── MODEL VERDICT ────────────────────────────────────
-                    st.markdown("---")
-                    _ev1 = float(_r1.get("expected_value", 0) or 0)
-                    _ev2 = float(_r2.get("expected_value", 0) or 0)
-                    _winner     = _n1 if _ev1 >= _ev2 else _n2
-                    _winner_col = "#00c44f" if _ev1 >= _ev2 else "#4cb8ff"
-                    _ev_gap     = abs(_ev1 - _ev2)
-                    _margin_txt = "comfortable" if _ev_gap > 20_000 else "narrow"
-
-                    st.markdown(f"""
-<div style="background:#0d1a30;border:1px solid #1c3a5e;border-radius:12px;
-     padding:16px 20px;text-align:center;margin-top:8px;">
-  <div style="font-size:11px;color:#4a6080;letter-spacing:1.5px;
-       text-transform:uppercase;margin-bottom:6px;">⚡ Model Verdict</div>
-  <div style="font-size:22px;font-weight:800;color:{_winner_col};">{_winner}</div>
-  <div style="font-size:13px;color:#7a90b8;margin-top:4px;">
-    {_margin_txt.capitalize()} edge &nbsp;·&nbsp; ${_ev_gap:,.0f} higher expected value
-  </div>
-</div>
-""", unsafe_allow_html=True)
 
         elif h2h_player1 and h2h_player2 and h2h_player1 == h2h_player2:
             st.warning("Select two different players.")
@@ -7221,6 +7666,241 @@ elif page == "🎰 Betting":
     st.caption("Sportsbook-style props powered by model predictions")
 
     # =========================================================================
+    # ODDS REFRESH PANEL
+    # =========================================================================
+    with st.container():
+        # ── Auto-detect current / next tournament ────────────────────────────
+        _bet_sched_path = DATA_DIR / "raw" / "schedule_2026.csv"
+        _bet_sched_df   = pd.DataFrame()
+        _bet_tid_options: list = []
+        if _bet_sched_path.exists():
+            _bet_sched_df = pd.read_csv(_bet_sched_path, dtype=str)
+            _bet_today = datetime.now().strftime("%Y-%m-%d")
+            # Active first, then upcoming (up to 6 weeks out)
+            _bet_active = _bet_sched_df[
+                (_bet_sched_df["start_date"] <= _bet_today) &
+                (_bet_sched_df["end_date"]   >= _bet_today)
+            ]
+            _bet_upcoming = _bet_sched_df[
+                _bet_sched_df["start_date"] > _bet_today
+            ].sort_values("start_date").head(6)
+            _bet_pool = pd.concat([_bet_active, _bet_upcoming], ignore_index=True)
+            _bet_tid_options = [
+                f"{row['tournament_id']} — {row['tournament_name']} ({row['start_date']})"
+                for _, row in _bet_pool.iterrows()
+            ]
+
+        # ── Data freshness check ─────────────────────────────────────────────
+        _odds_dir   = DATA_DIR / "odds"
+        _prop_files = sorted(_odds_dir.glob("prop_lines_R*.csv"),
+                             key=lambda p: p.stat().st_mtime, reverse=True)
+        _latest_prop_file = _prop_files[0] if _prop_files else None
+        _prop_age_str, _prop_tid_str = "Never fetched", "—"
+        if _latest_prop_file:
+            import os as _os_bet
+            _prop_mtime = _latest_prop_file.stat().st_mtime
+            _prop_age_hours = (datetime.now().timestamp() - _prop_mtime) / 3600
+            if _prop_age_hours < 1:
+                _prop_age_str = f"{int(_prop_age_hours*60)}m ago"
+            elif _prop_age_hours < 24:
+                _prop_age_str = f"{_prop_age_hours:.1f}h ago"
+            else:
+                _prop_age_str = f"{_prop_age_hours/24:.1f}d ago"
+            _prop_tid_str = _latest_prop_file.stem.replace("prop_lines_", "")
+            # Map ID → name
+            if not _bet_sched_df.empty and "tournament_id" in _bet_sched_df.columns:
+                _nm_row = _bet_sched_df[_bet_sched_df["tournament_id"] == _prop_tid_str]
+                if not _nm_row.empty:
+                    _prop_tid_str = _nm_row.iloc[0].get("tournament_name", _prop_tid_str)
+
+        # ── Staleness color ──────────────────────────────────────────────────
+        if _latest_prop_file:
+            if _prop_age_hours < 6:
+                _fresh_color, _fresh_icon = "#00c44f", "🟢"
+            elif _prop_age_hours < 24:
+                _fresh_color, _fresh_icon = "#f39c12", "🟡"
+            else:
+                _fresh_color, _fresh_icon = "#e74c3c", "🔴"
+        else:
+            _fresh_color, _fresh_icon = "#e74c3c", "🔴"
+
+        # ── Layout ───────────────────────────────────────────────────────────
+        st.markdown(f"""
+<div style="background:#0d1a30;border:1px solid #1e3050;border-radius:8px;
+            padding:14px 18px 10px 18px;margin-bottom:16px;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+    <span style="font-size:1.0em;font-weight:700;color:#dde6f5;">📡 DraftKings Odds Feed</span>
+    <span style="font-size:0.78em;color:{_fresh_color};font-weight:600;">
+      {_fresh_icon} {_prop_age_str} &nbsp;·&nbsp; {_prop_tid_str}
+    </span>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
+        _rp_col1, _rp_col2, _rp_col3, _rp_col4 = st.columns([2.5, 1.2, 1.2, 2])
+
+        with _rp_col1:
+            if _bet_tid_options:
+                # Default to first active/upcoming tournament
+                _rp_sel = st.selectbox(
+                    "Tournament", _bet_tid_options, index=0,
+                    key="bet_page_tournament_sel", label_visibility="collapsed"
+                )
+                _rp_tid = _rp_sel.split(" — ")[0].strip()
+            else:
+                _rp_tid = st.text_input(
+                    "Tournament ID", placeholder="e.g. R2026010",
+                    key="bet_page_tid_manual", label_visibility="collapsed"
+                ).strip().upper()
+
+        with _rp_col2:
+            _rp_fetch = st.button(
+                "⬇ Fetch DK Odds", key="bet_fetch_dk", use_container_width=True, type="primary"
+            )
+
+        with _rp_col3:
+            _rp_score = st.button(
+                "⚡ Score Bets", key="bet_score_bets", use_container_width=True
+            )
+
+        with _rp_col4:
+            with st.expander("🔧 Advanced Options"):
+                _dk_override_id = st.text_input(
+                    "DraftKings eventgroup ID",
+                    placeholder="e.g. 89343  (leave blank for auto-detect)",
+                    key="bet_dk_eg_override",
+                )
+                st.caption("Find it in the DK URL: sportsbook.draftkings.com/leagues/golf/**{id}**")
+                st.markdown("---")
+                _dk_har_path = st.text_input(
+                    "HAR file path (for props: round score, birdies, matchups)",
+                    placeholder="e.g. data/odds/dk_props.har",
+                    key="bet_dk_har_path",
+                )
+                st.caption(
+                    "Export from Chrome DevTools → Network tab → right-click → **Save all as HAR**. "
+                    "Browse to Round Props, Birdies, Matchups, Group Winner tabs before exporting."
+                )
+
+        # ── Background fetch status files ─────────────────────────────────────
+        _DK_STATUS_FILE = _odds_dir / ".dk_fetch_status"
+        _DK_LOG_FILE    = _odds_dir / ".dk_fetch_log.txt"
+
+        def _run_dk_bg(cmd):
+            """Run DK scraper in a daemon thread; write status to file when done."""
+            import threading as _thr
+            def _worker():
+                _DK_STATUS_FILE.write_text("running")
+                try:
+                    _r = subprocess.run(cmd, capture_output=True, text=True,
+                                        timeout=600, cwd=PROJECT_ROOT)
+                    _DK_LOG_FILE.write_text((_r.stdout or "") + (_r.stderr or ""))
+                    _DK_STATUS_FILE.write_text(f"done:{_r.returncode}")
+                except subprocess.TimeoutExpired:
+                    _DK_STATUS_FILE.write_text("timeout")
+                except Exception as _ex:
+                    _DK_STATUS_FILE.write_text(f"error:{_ex}")
+            _thr.Thread(target=_worker, daemon=True).start()
+
+        # ── Check if a fetch is already in progress ───────────────────────────
+        _dk_running = False
+        _dk_status  = ""
+        if _DK_STATUS_FILE.exists():
+            _dk_status = _DK_STATUS_FILE.read_text().strip()
+            _dk_running = (_dk_status == "running")
+
+        # ── Run fetch ─────────────────────────────────────────────────────────
+        if _rp_fetch and _rp_tid and not _dk_running:
+            _dk_cmd = [
+                "python3",
+                str(PROJECT_ROOT / "scripts" / "scrapers" / "fetch_draftkings_props.py"),
+                "--tournament-id", _rp_tid,
+                "--fetch-profile", "targeted",
+            ]
+            _dk_eg = st.session_state.get("bet_dk_eg_override", "").strip()
+            if _dk_eg:
+                _dk_cmd.extend(["--eventgroup-id", _dk_eg])
+            _dk_har = st.session_state.get("bet_dk_har_path", "").strip()
+            if _dk_har:
+                # Resolve relative to project root if not absolute
+                _har_p = Path(_dk_har) if Path(_dk_har).is_absolute() else PROJECT_ROOT / _dk_har
+                if _har_p.exists():
+                    _dk_cmd.extend(["--input-json", str(_har_p)])
+                else:
+                    st.warning(f"HAR file not found: {_dk_har}")
+            _run_dk_bg(_dk_cmd)
+            _dk_running = True
+            _dk_status  = "running"
+            st.rerun()
+
+        # ── Status feedback (shown on every page load while running) ──────────
+        if _dk_running:
+            import time as _time_bet
+            st.info("⏳ Fetching DraftKings odds in background… page will refresh when done.")
+            _time_bet.sleep(4)
+            # Re-read status after sleeping
+            _dk_status = _DK_STATUS_FILE.read_text().strip() if _DK_STATUS_FILE.exists() else ""
+            if _dk_status != "running":
+                st.rerun()  # Fetch finished — reload page to show results
+            else:
+                st.rerun()  # Still running — keep polling
+
+        elif _dk_status.startswith("done:0"):
+            st.success("✅ DraftKings odds fetched successfully!")
+            _DK_STATUS_FILE.unlink(missing_ok=True)
+            load_recommended_bets_df.clear()
+            load_dk_content_cards_df.clear()
+            st.cache_data.clear()
+            if _DK_LOG_FILE.exists():
+                with st.expander("Scraper output"):
+                    st.code(_DK_LOG_FILE.read_text()[-2000:])
+
+        elif _dk_status == "timeout":
+            st.error(
+                "Scraper timed out after 10 min. DraftKings may be slow or blocking. "
+                "Try pasting the DK Event Group ID in the override field and retry."
+            )
+            _DK_STATUS_FILE.unlink(missing_ok=True)
+
+        elif _dk_status.startswith("done:") or _dk_status.startswith("error:"):
+            st.error(f"Fetch failed: {_dk_status}")
+            _DK_STATUS_FILE.unlink(missing_ok=True)
+            if _DK_LOG_FILE.exists():
+                with st.expander("Scraper output"):
+                    st.code(_DK_LOG_FILE.read_text()[-2000:])
+
+        # ── Run score ────────────────────────────────────────────────────────
+        if _rp_score and _rp_tid:
+            _sc_cmd = [
+                "python3",
+                str(PROJECT_ROOT / "scripts" / "models" / "recommend_bets.py"),
+                "--tournament-id", _rp_tid,
+            ]
+            with st.spinner("Scoring bets against model probabilities..."):
+                try:
+                    _sc_res = subprocess.run(
+                        _sc_cmd, capture_output=True, text=True,
+                        timeout=60, cwd=PROJECT_ROOT
+                    )
+                    if _sc_res.returncode == 0:
+                        st.success("✅ Bets scored — Value Bets tab updated")
+                        load_recommended_bets_df.clear()
+                        st.cache_data.clear()
+                        st.rerun()
+                    else:
+                        st.error("Scoring failed — see details below")
+                    _sc_out = (_sc_res.stdout or _sc_res.stderr or "").strip()
+                    if _sc_out:
+                        with st.expander("Scorer output"):
+                            st.code(_sc_out[-1500:])
+                except subprocess.TimeoutExpired:
+                    st.error("Scorer timed out after 60s.")
+                except Exception as _sc_e:
+                    st.error(f"Error: {_sc_e}")
+
+    st.markdown("---")
+
+    # =========================================================================
     # VALUE BET TRACKER
     # =========================================================================
     st.markdown("### ⚡ Value Bet Tracker")
@@ -7229,6 +7909,24 @@ elif page == "🎰 Betting":
     _vb_path = OUTPUTS_DIR / "latest_predictions.csv"
     if _vb_path.exists():
         _vb_raw = pd.read_csv(_vb_path)
+
+        # Build cut-player exclusion set (same logic as Value Bets tab)
+        _vb_cut_names: set = set()
+        _vb_lb_files = sorted((DATA_DIR / "live").glob("leaderboard_r*.csv"),
+                               key=lambda p: p.stat().st_mtime, reverse=True)
+        if _vb_lb_files:
+            try:
+                _vb_lb = pd.read_csv(_vb_lb_files[0])
+                if "made_cut" in _vb_lb.columns and "player_name" in _vb_lb.columns:
+                    _vb_mc = _vb_lb["made_cut"].astype(str).str.lower()
+                    _vb_st = _vb_lb.get("status", pd.Series(dtype=str)).astype(str).str.lower()
+                    _vb_cut_mask = (_vb_mc == "false") | (_vb_st.isin(["cut","wd","withdrawn","mc"]))
+                    _vb_cut_names = set(_vb_lb.loc[_vb_cut_mask, "player_name"].str.strip().str.lower())
+            except Exception:
+                pass
+
+        if _vb_cut_names and "player_name" in _vb_raw.columns:
+            _vb_raw = _vb_raw[~_vb_raw["player_name"].str.strip().str.lower().isin(_vb_cut_names)]
 
         _vb_need = ["model_vs_vegas_edge", "win_prob", "vegas_prob",
                     "player_name", "odds_to_win", "odds_drift_level", "expected_value"]
@@ -7319,91 +8017,50 @@ elif page == "🎰 Betting":
     # =========================================================================
     # MARKET AVAILABILITY SUMMARY STRIP
     # =========================================================================
-    if market_availability_available:
-        # Resolve active tournament ID from freshest available sources.
-        avail_tournament_id = _latest_tournament_id_from_prop_lines(max_age_hours=48.0)
-        if not avail_tournament_id:
-            avail_tournament_id = _latest_tournament_id_from_live(max_age_hours=18.0)
-
-        try:
-            preds_probe = OUTPUTS_DIR / "latest_predictions.csv"
-            if preds_probe.exists():
-                temp_df = pd.read_csv(preds_probe, nrows=1)
-                probe_tid = _tournament_id_from_df(temp_df)
-                if probe_tid:
-                    avail_tournament_id = probe_tid
-        except Exception:
-            pass
-
-        if avail_tournament_id:
-            try:
-                availability = load_availability(avail_tournament_id)
-                summary = availability.get_summary()
-
-                # Display availability strip
-                with st.container():
-                    avail_cols = st.columns([1.5, 1, 1, 1, 1.5])
-
-                    with avail_cols[0]:
-                        books = summary.get("books_connected", [])
-                        book_str = ", ".join(books) if books else "None"
-                        st.metric("📡 Books Connected", book_str)
-
-                    with avail_cols[1]:
-                        st.metric("🎯 Live Markets", f"{summary['available_markets']}")
-
-                    with avail_cols[2]:
-                        fresh = summary.get("fresh_markets", 0)
-                        if fresh > 0:
-                            st.metric("🟢 Fresh", fresh)
-                        else:
-                            st.metric("🟡 Recent", summary.get("available_markets", 0) - summary.get("stale_markets", 0))
-
-                    with avail_cols[3]:
-                        stale = summary.get("stale_markets", 0)
-                        if stale > 0:
-                            st.metric("🟠 Stale", stale, delta="needs refresh", delta_color="inverse")
-                        else:
-                            st.metric("✓ Data Fresh", "OK")
-
-                    with avail_cols[4]:
-                        # Recent alerts
-                        alerts = summary.get("recent_alerts", [])
-                        if alerts:
-                            last_alert = alerts[-1]
-                            alert_type = last_alert.get("type", "").replace("_", " ").title()
-                            st.caption(f"⚡ Last alert: {alert_type}")
-                        else:
-                            st.caption("No recent market changes")
-
-                    # Market detail expander
-                    with st.expander("📊 Market Availability Details", expanded=False):
-                        market_data = []
-                        for market_key, sources in availability.markets.items():
-                            for source_key, status in sources.items():
-                                badge = get_staleness_badge(status.staleness)
-                                market_data.append({
-                                    "Market": market_key.upper(),
-                                    "Source": f"{'🎰' if source_key != 'MODEL' else '📊'} {source_key}",
-                                    "Status": "✓ Available" if status.available else "✗ Unavailable",
-                                    "Lines": status.player_count if status.available else 0,
-                                    "Freshness": f"{badge['icon']} {badge['label']}",
-                                })
-
-                        if market_data:
-                            avail_df = pd.DataFrame(market_data)
-                            st.dataframe(avail_df, use_container_width=True, hide_index=True)
-
-                            # Refresh button
-                            if st.button("🔄 Refresh Market Scan"):
-                                scan_all_availability(avail_tournament_id)
-                                st.rerun()
-            except Exception as e:
-                st.caption(f"Market availability: {e}")
+    # ── Market Availability (data-driven from actual prop_lines files) ─────────
+    with st.expander("📊 Market Availability Details", expanded=False):
+        _ma_odds_dir = DATA_DIR / "odds"
+        _ma_prop_files = sorted(_ma_odds_dir.glob("prop_lines_R*.csv"),
+                                key=lambda p: p.stat().st_mtime, reverse=True)
+        if not _ma_prop_files:
+            st.info("No prop lines fetched yet. Use the refresh panel above.")
         else:
-            st.caption("Market availability: no active tournament ID detected yet.")
+            _ma_rows = []
+            for _ma_f in _ma_prop_files[:3]:   # show latest 3 files
+                try:
+                    _ma_df = pd.read_csv(_ma_f)
+                    _ma_age_h = (datetime.now().timestamp() - _ma_f.stat().st_mtime) / 3600
+                    _ma_tid   = _ma_f.stem.replace("prop_lines_", "")
+                    if _ma_age_h < 6:
+                        _ma_icon = "🟢"
+                    elif _ma_age_h < 24:
+                        _ma_icon = "🟡"
+                    else:
+                        _ma_icon = "🔴"
+                    _ma_age_str = (f"{int(_ma_age_h*60)}m" if _ma_age_h < 1
+                                   else f"{_ma_age_h:.1f}h" if _ma_age_h < 24
+                                   else f"{_ma_age_h/24:.1f}d")
+                    for _ma_mkt, _ma_grp in _ma_df.groupby("market"):
+                        _ma_players = int(_ma_grp["player_name"].nunique()) if "player_name" in _ma_grp.columns else len(_ma_grp)
+                        _ma_lbl = {"outright":"Win","top5":"Top 5","top10":"Top 10",
+                                   "top20":"Top 20","h2h":"H2H","make_cut":"Make Cut",
+                                   "round_score":"Round Score","birdies":"Birdies",
+                                   "bogeys":"Bogeys"}.get(str(_ma_mkt), str(_ma_mkt).title())
+                        _ma_rows.append({
+                            "Tournament": _ma_tid,
+                            "Market":     _ma_lbl,
+                            "Players":    _ma_players,
+                            "Source":     "🎰 DraftKings",
+                            "Age":        f"{_ma_icon} {_ma_age_str} ago",
+                        })
+                except Exception:
+                    continue
+            if _ma_rows:
+                st.dataframe(pd.DataFrame(_ma_rows), hide_index=True, use_container_width=True)
+            else:
+                st.info("Could not parse prop line files.")
 
-        st.markdown("---")
+    st.markdown("---")
 
     # Import props model
     try:
@@ -7435,128 +8092,8 @@ elif page == "🎰 Betting":
         if preds_df.empty:
             st.warning("No predictions available. Run predictions first to generate props.")
         else:
-            # Merge in FanDuel winner market data for pricing/edge context.
-            fanduel_df, fanduel_file, fanduel_source = load_latest_fanduel_odds_df()
             preds_df = preds_df.copy()
-            preds_df["name_key"] = preds_df["player_name"].apply(_name_key)
-
-            if not _is_recent_file(fanduel_file, max_age_hours=18.0):
-                fanduel_df = pd.DataFrame()
-
-            if not fanduel_df.empty and "player_name" in fanduel_df.columns:
-                fd = fanduel_df.copy()
-                fd["name_key"] = fd["player_name"].apply(_name_key)
-                fd = fd.sort_values("odds_numeric", ascending=True, na_position="last")
-
-                # Prefer robust ID-based join first when available.
-                data_cols = [
-                    "odds_to_win", "implied_prob", "model_win_prob",
-                    "edge_win_prob", "edge_pct_points", "is_value_bet",
-                    "odds_direction", "odds_swing", "fetched_at"
-                ]
-                if "player_id" in preds_df.columns and "player_id" in fd.columns:
-                    preds_df["player_id"] = pd.to_numeric(preds_df["player_id"], errors="coerce").astype("Int64")
-                    fd["player_id"] = pd.to_numeric(fd["player_id"], errors="coerce").astype("Int64")
-                    id_cols = ["player_id"] + [c for c in data_cols if c in fd.columns]
-                    fd_id = fd[id_cols].drop_duplicates("player_id")
-                    preds_df = preds_df.merge(fd_id, on="player_id", how="left")
-
-                # Name-based fallback for rows still missing odds.
-                name_cols = ["name_key"] + [c for c in data_cols if c in fd.columns]
-                fd_name = fd[name_cols].drop_duplicates("name_key")
-                preds_df = preds_df.merge(
-                    fd_name,
-                    on="name_key",
-                    how="left",
-                    suffixes=("", "_name"),
-                )
-                for c in [c for c in data_cols if c in fd.columns]:
-                    if f"{c}_name" in preds_df.columns:
-                        if c not in preds_df.columns:
-                            preds_df[c] = preds_df[f"{c}_name"]
-                        else:
-                            preds_df[c] = preds_df[c].fillna(preds_df[f"{c}_name"])
-                        preds_df = preds_df.drop(columns=[f"{c}_name"], errors="ignore")
-
-                # Ensure edge columns are always coherent.
-                if "model_win_prob" not in preds_df.columns:
-                    preds_df["model_win_prob"] = preds_df.get("win_prob")
-                else:
-                    preds_df["model_win_prob"] = preds_df["model_win_prob"].fillna(preds_df.get("win_prob"))
-
-                preds_df["edge_win_prob"] = np.where(
-                    preds_df.get("model_win_prob").notna() & preds_df.get("implied_prob").notna(),
-                    preds_df.get("model_win_prob") - preds_df.get("implied_prob"),
-                    preds_df.get("edge_win_prob")
-                )
-                preds_df["edge_pct_points"] = preds_df["edge_win_prob"] * 100
-                preds_df["is_value_bet"] = preds_df["edge_win_prob"] > 0
-
-            st.success(f"Loaded {len(preds_df)} players from model predictions")
-
-            winner_book_label = "FANDUEL" if fanduel_source == "fanduel_odds" else "PGA_ODDS_CACHE"
             winner_edges_df = pd.DataFrame()
-            if (
-                "player_name" in preds_df.columns
-                and "odds_to_win" in preds_df.columns
-            ):
-                winner_work = preds_df.copy()
-                winner_work["book_odds"] = winner_work["odds_to_win"].apply(_parse_american_odds)
-                winner_work["book_prob"] = pd.to_numeric(winner_work.get("implied_prob"), errors="coerce")
-                winner_work["model_prob"] = pd.to_numeric(
-                    winner_work.get("model_win_prob", winner_work.get("win_prob")),
-                    errors="coerce",
-                )
-                if "edge_pct_points" in winner_work.columns:
-                    winner_work["edge_pts"] = pd.to_numeric(winner_work["edge_pct_points"], errors="coerce")
-                else:
-                    winner_work["edge_pts"] = (winner_work["model_prob"] - winner_work["book_prob"]) * 100
-
-                winner_work = winner_work[
-                    winner_work["player_name"].notna()
-                    & winner_work["book_odds"].notna()
-                    & winner_work["book_prob"].notna()
-                    & winner_work["model_prob"].notna()
-                ].copy()
-
-                if not winner_work.empty:
-                    winner_edges_df = pd.DataFrame({
-                        "market": "winner",
-                        "selection": winner_work["player_name"].astype(str),
-                        "book_odds": winner_work["book_odds"],
-                        "book_prob": winner_work["book_prob"],
-                        "model_prob": winner_work["model_prob"],
-                        "edge_pts": winner_work["edge_pts"],
-                        "book": winner_book_label,
-                        "line_source": "winner_market",
-                    })
-                    if "fetched_at" in winner_work.columns:
-                        winner_edges_df["fetched_at"] = winner_work["fetched_at"]
-
-            # Market coverage summary for props workflow.
-            if "odds_to_win" in preds_df.columns and preds_df["odds_to_win"].notna().any():
-                coverage = int(preds_df["odds_to_win"].notna().sum())
-                edge_series = (
-                    pd.to_numeric(preds_df["edge_win_prob"], errors="coerce")
-                    if "edge_win_prob" in preds_df.columns
-                    else pd.Series(dtype=float)
-                )
-                edges = int((edge_series > 0).sum())
-                avg_edge = (
-                    pd.to_numeric(preds_df["edge_pct_points"], errors="coerce").mean()
-                    if "edge_pct_points" in preds_df.columns
-                    else np.nan
-                )
-
-                c1, c2, c3 = st.columns(3)
-                with c1:
-                    st.metric("Winner Coverage", f"{coverage}/{len(preds_df)}")
-                with c2:
-                    st.metric("Positive Edges", edges)
-                with c3:
-                    st.metric("Avg Edge", f"{avg_edge:+.2f} pts" if pd.notna(avg_edge) else "—")
-            else:
-                st.info("FanDuel winner market not linked; continuing with model-only prop pricing.")
 
             prop_lines_df = pd.DataFrame()
             book_edges_df = pd.DataFrame()
@@ -7567,13 +8104,6 @@ elif page == "🎰 Betting":
 
             if not prop_tournament_id:
                 prop_tournament_id = _latest_tournament_id_from_prop_lines(max_age_hours=48.0)
-
-            if (
-                not prop_tournament_id
-                and not fanduel_df.empty
-                and _is_recent_file(fanduel_file, max_age_hours=18.0)
-            ):
-                prop_tournament_id = _tournament_id_from_df(fanduel_df)
 
             if prop_edge_tools_available and load_latest_prop_lines and score_book_props:
                 prop_lines_df = load_latest_prop_lines(prop_tournament_id if prop_tournament_id else None)
@@ -7846,7 +8376,7 @@ elif page == "🎰 Betting":
 
             # Main tabs (consolidated)
             props_tab1, props_tab2, props_tab3, props_tab4, props_tab5 = st.tabs([
-                "🤖 AI Picks",
+                "⚡ Value Bets",
                 "📈 DraftKings Odds",
                 "⚔️ Matchups",
                 "🎲 Parlay Builder",
@@ -7854,77 +8384,433 @@ elif page == "🎰 Betting":
             ])
 
             # =================================================================
-            # TAB 0: AI PICKS (LLM RECOMMENDATIONS)
+            # TAB 0: VALUE BETS
             # =================================================================
             with props_tab1:
 
                 if is_tournament_over:
                     st.warning("🏁 Tournament has finished. No active betting recommendations.")
                     st.info(f"**Winner:** {tournament_winner} finished at {leader_score:+d}")
-                elif not betting_recs_available:
-                    st.warning("Betting recommendations module not available.")
                 else:
-                    # Get tournament ID
-                    rec_tournament_id = (prop_tournament_id or "").strip()
+                    # ── Load data ───────────────────────────────────────────
+                    _vb_rec_df, _vb_rec_path = load_recommended_bets_df(prop_tournament_id)
+                    _vb_preds_df = pd.DataFrame()
+                    _preds_path_vb = OUTPUTS_DIR / "latest_predictions.csv"
+                    if _preds_path_vb.exists():
+                        _vb_preds_df = pd.read_csv(_preds_path_vb)
 
-                    # Risk profile selector
-                    profile_col1, profile_col2, profile_col3 = st.columns([2, 2, 2])
-
-                   
-
-                    
-                    # Get edge summary first
-                    if rec_tournament_id:
-                        edge_summary = get_edge_summary(rec_tournament_id)
+                    if _vb_rec_df.empty:
+                        st.info(
+                            "No value bets generated yet. Click **Refresh** below to score "
+                            "the current DraftKings lines against the model."
+                        )
                     else:
-                        edge_summary = {
-                            "total_legs": 0,
-                            "positive_edge_legs": 0,
-                            "best_edge": 0,
-                            "avg_edge": 0,
-                            "markets": {},
-                            "tournament_state": {},
+                        # ── Merge world_rank + form_trend from predictions ──
+                        if not _vb_preds_df.empty:
+                            _extra = _vb_preds_df[
+                                [c for c in ["player_name","world_rank","form_trend","top20_prob"]
+                                 if c in _vb_preds_df.columns]
+                            ].copy()
+                            _extra["_pname_norm"] = _extra["player_name"].str.strip().str.lower()
+                            _vb_rec_df["_pname_norm"] = _vb_rec_df["player_name"].str.strip().str.lower()
+                            _vb_rec_df = _vb_rec_df.merge(_extra.drop(columns=["player_name"]),
+                                                          on="_pname_norm", how="left")
+                            _vb_rec_df = _vb_rec_df.drop(columns=["_pname_norm"])
+
+                        # Numeric coerce
+                        for _col in ["edge_pts","model_prob","book_prob","ev_per_1",
+                                     "odds_american","confidence"]:
+                            if _col in _vb_rec_df.columns:
+                                _vb_rec_df[_col] = pd.to_numeric(_vb_rec_df[_col], errors="coerce")
+
+                        # ── Market filter ───────────────────────────────────
+                        _mkts_avail = sorted(_vb_rec_df["market"].dropna().unique()) \
+                            if "market" in _vb_rec_df.columns else []
+                        _mkt_labels = {
+                            "outright":"Win","top5":"Top 5","top10":"Top 10","top20":"Top 20",
+                            "make_cut":"Make Cut","h2h":"Matchup","h2h_r1":"Matchup R1",
+                            "h2h_r2":"Matchup R2","h2h_r3":"Matchup R3","h2h_r4":"Matchup R4",
+                            "group_winner":"Group Winner",
                         }
-                        st.caption("No active tournament ID detected yet. Run current event odds fetch to enable live recommendation state.")
-                    tournament_state = edge_summary.get("tournament_state", {})
+                        _mkt_opts = ["All"] + [_mkt_labels.get(m, m.title()) for m in _mkts_avail]
+                        _mkt_raw   = ["All"] + list(_mkts_avail)
 
-                    # Tournament state display
-                    if tournament_state:
-                        round_num = tournament_state.get("round", 1)
-                        is_live = tournament_state.get("is_live", False)
-                        leader_score = tournament_state.get("leader_score", 0)
+                        _vb_filter_col, _vb_thresh_col, _vb_spacer = st.columns([2, 2, 3])
+                        with _vb_filter_col:
+                            _sel_mkt_label = st.selectbox(
+                                "Market", _mkt_opts, key="vb_market_filter"
+                            )
+                        with _vb_thresh_col:
+                            _vb_min_edge = st.slider(
+                                "Min Edge (pts)", 0.0, 8.0, 1.5, 0.5, key="vb_edge_thresh"
+                            )
 
-                        state_cols = st.columns([1, 1, 1, 2])
-                        with state_cols[0]:
-                            round_emoji = "🔴" if is_live else "📍"
-                            st.metric(f"{round_emoji} Round", round_num)
-                        with state_cols[1]:
-                            leader_display = f"{leader_score:+d}" if leader_score != 0 else "E"
-                            st.metric("Leader Score", leader_display)
-                        with state_cols[2]:
-                            threshold = tournament_state.get("contender_threshold", 0)
-                            thresh_display = f"{threshold:+d}" if threshold != 0 else "E"
-                            st.metric("Contender Cutoff", thresh_display)
-                        with state_cols[3]:
-                            if is_live:
-                                st.info("🔴 **LIVE** - Using real-time position-based probabilities")
-                            elif round_num >= 3:
-                                st.warning("⏸️ Round complete - Probabilities based on current standings")
-                            else:
-                                st.caption("📊 Using pre-tournament model predictions")
+                        # ── Build cut-player exclusion set from live leaderboard ──
+                        _cut_names: set = set()
+                        _lb_dir = DATA_DIR / "live"
+                        _lb_files = sorted(_lb_dir.glob("leaderboard_r*.csv"),
+                                           key=lambda p: p.stat().st_mtime, reverse=True)
+                        if _lb_files:
+                            try:
+                                _lb = pd.read_csv(_lb_files[0])
+                                if "made_cut" in _lb.columns and "player_name" in _lb.columns:
+                                    # False = missed cut, or status == 'cut'/'wd'
+                                    _mc = _lb["made_cut"].astype(str).str.lower()
+                                    _st = _lb.get("status", pd.Series(dtype=str)).astype(str).str.lower()
+                                    _cut_mask = (_mc == "false") | (_st.isin(["cut","wd","withdrawn","mc"]))
+                                    _cut_names = set(
+                                        _lb.loc[_cut_mask, "player_name"].str.strip().str.lower()
+                                    )
+                            except Exception:
+                                pass
 
-                    # Summary metrics
-                    
+                        _sel_mkt = _mkt_raw[_mkt_opts.index(_sel_mkt_label)]
+                        _filtered = _vb_rec_df.copy()
+
+                        # Remove cut/WD players
+                        if _cut_names and "player_name" in _filtered.columns:
+                            _before = len(_filtered)
+                            _filtered = _filtered[
+                                ~_filtered["player_name"].str.strip().str.lower().isin(_cut_names)
+                            ]
+                            _n_cut = _before - len(_filtered)
+                            if _n_cut > 0:
+                                st.caption(f"ℹ️ {_n_cut} player{'s' if _n_cut>1 else ''} removed — missed cut or WD")
+
+                        if _sel_mkt != "All":
+                            _filtered = _filtered[_filtered["market"] == _sel_mkt]
+                        _filtered = _filtered[
+                            _filtered["edge_pts"].fillna(0) >= _vb_min_edge
+                        ].sort_values("edge_pts", ascending=False)
+
+                        # ── Hero metrics bar ────────────────────────────────
+                        _mc1, _mc2, _mc3, _mc4 = st.columns(4)
+                        with _mc1:
+                            st.metric("Value Bets", len(_filtered))
+                        with _mc2:
+                            _best_e = _filtered["edge_pts"].max() if not _filtered.empty else 0
+                            st.metric("Best Edge", f"+{_best_e:.1f} pts")
+                        with _mc3:
+                            _avg_ev = _filtered["ev_per_1"].mean() if "ev_per_1" in _filtered.columns and not _filtered.empty else 0
+                            st.metric("Avg EV / $1", f"${_avg_ev:.2f}" if pd.notna(_avg_ev) else "—")
+                        with _mc4:
+                            _upd = ""
+                            if _vb_rec_path and _vb_rec_path.exists():
+                                _upd = datetime.fromtimestamp(_vb_rec_path.stat().st_mtime).strftime("%b %d %H:%M")
+                            st.metric("Last Run", _upd or "—")
+
+                        st.markdown("---")
+
+                        # ── Bet cards ───────────────────────────────────────
+                        _CARD_MKT_COLOR = {
+                            "outright":     "#f1c40f",
+                            "top5":         "#3498db",
+                            "top10":        "#00c44f",
+                            "top20":        "#9b59b6",
+                            "make_cut":     "#1abc9c",
+                            "h2h":          "#e67e22",
+                            "h2h_r1":       "#e67e22",
+                            "h2h_r2":       "#e67e22",
+                            "h2h_r3":       "#e67e22",
+                            "h2h_r4":       "#e67e22",
+                            "group_winner": "#e74c3c",
+                        }
+                        _CONF_BADGE = {
+                            (0.80, 2.0):  ("HIGH",     "#00c44f"),
+                            (0.70, 0.80): ("MODERATE", "#f39c12"),
+                            (0.00, 0.70): ("LEAN",     "#7f8c8d"),
+                        }
+                        def _conf_badge(c):
+                            c = float(c) if pd.notna(c) else 0
+                            if c >= 0.80: return "HIGH",     "#00c44f"
+                            if c >= 0.70: return "MODERATE", "#f39c12"
+                            return "LEAN", "#7f8c8d"
+
+                        def _fmt_odds(v):
+                            try:
+                                n = int(float(v))
+                                return f"+{n}" if n >= 0 else str(n)
+                            except Exception:
+                                return str(v)
+
+                        _top_cards = _filtered.head(8)
+                        if _top_cards.empty:
+                            st.info("No bets meet the current filters. Try lowering the edge threshold.")
+                        else:
+                            _n_cols = 2
+                            for _ci in range(0, len(_top_cards), _n_cols):
+                                _card_cols = st.columns(_n_cols)
+                                for _cj, (_, _row) in enumerate(
+                                    _top_cards.iloc[_ci:_ci + _n_cols].iterrows()
+                                ):
+                                    with _card_cols[_cj]:
+                                        _mkt      = str(_row.get("market", "")).lower()
+                                        _border   = _CARD_MKT_COLOR.get(_mkt, "#444")
+                                        _mkt_lbl  = _mkt_labels.get(_mkt, _mkt.title())
+                                        _player   = str(_row.get("player_name", "—"))
+                                        _odds_str = _fmt_odds(_row.get("odds_american", ""))
+                                        _edge     = float(_row.get("edge_pts", 0) or 0)
+                                        _model_p  = float(_row.get("model_prob", 0) or 0) * 100
+                                        _book_p   = float(_row.get("book_prob", 0) or 0) * 100
+                                        _ev       = float(_row.get("ev_per_1", 0) or 0)
+                                        _conf_lbl, _conf_color = _conf_badge(_row.get("confidence"))
+                                        _rank     = _row.get("world_rank")
+                                        _rank_str = f"Rank #{int(_rank)}" if pd.notna(_rank) else ""
+                                        _form     = _row.get("form_trend")
+                                        _form_str = ""
+                                        if pd.notna(_form):
+                                            _fv = float(_form)
+                                            _form_str = f"Form {_fv:+.2f}"
+
+                                        # Edge bar (0–10 pt scale)
+                                        _bar_pct = min(int(_edge / 10 * 100), 100)
+
+                                        st.markdown(f"""
+<div style="background:#0d1a30;border-left:4px solid {_border};border-radius:8px;
+            padding:14px 16px;margin-bottom:4px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+    <div>
+      <span style="font-size:0.72em;font-weight:600;color:{_border};text-transform:uppercase;
+                   letter-spacing:.06em;">{_mkt_lbl}</span>
+      <div style="font-size:1.1em;font-weight:700;color:#dde6f5;margin-top:2px;">{_player}</div>
+      <div style="font-size:0.75em;color:#7f8c8d;margin-top:1px;">{_rank_str}{"  ·  " if _rank_str and _form_str else ""}{_form_str}</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:1.6em;font-weight:800;color:{_border};line-height:1;">{_odds_str}</div>
+      <span style="font-size:0.68em;font-weight:700;color:{_conf_color};background:rgba(255,255,255,.07);
+                   padding:2px 6px;border-radius:4px;">{_conf_lbl}</span>
+    </div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:18px;">
+    <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">MODEL</div>
+      <div style="font-size:0.92em;font-weight:600;color:#dde6f5;">{_model_p:.1f}%</div>
+    </div>
+    <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">MARKET</div>
+      <div style="font-size:0.92em;font-weight:600;color:#dde6f5;">{_book_p:.1f}%</div>
+    </div>
+    <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">EDGE</div>
+      <div style="font-size:0.92em;font-weight:700;color:{_border};">+{_edge:.1f} pts</div>
+    </div>
+    <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">EV / $1</div>
+      <div style="font-size:0.92em;font-weight:700;color:#00c44f;">${_ev:.2f}</div>
+    </div>
+  </div>
+  <div style="margin-top:8px;background:#1a2a40;border-radius:4px;height:4px;">
+    <div style="width:{_bar_pct}%;height:4px;background:{_border};border-radius:4px;"></div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
+                        # ── Full sortable table ──────────────────────────────
+                        if len(_filtered) > 8:
+                            st.markdown("---")
+                            st.markdown("#### All qualifying bets")
+
+                        with st.expander(
+                            f"Full table — {len(_filtered)} bets",
+                            expanded=len(_filtered) <= 8
+                        ):
+                            _tbl_cols = [c for c in [
+                                "market","player_name","odds_american",
+                                "model_prob","book_prob","edge_pts",
+                                "ev_per_1","confidence",
+                            ] if c in _filtered.columns]
+                            _tbl = _filtered[_tbl_cols].copy()
+                            _tbl["market"]       = _tbl["market"].map(_mkt_labels).fillna(_tbl["market"])
+                            _tbl["odds_american"] = _tbl["odds_american"].apply(
+                                lambda x: _fmt_odds(x) if pd.notna(x) else "—"
+                            )
+                            _tbl["model_prob"] = (_tbl["model_prob"] * 100).round(1).astype(str) + "%"
+                            _tbl["book_prob"]  = (_tbl["book_prob"]  * 100).round(1).astype(str) + "%"
+                            _tbl["edge_pts"]   = _tbl["edge_pts"].round(2)
+                            _tbl["ev_per_1"]   = _tbl["ev_per_1"].round(3)
+                            _tbl["confidence"] = _tbl["confidence"].round(2)
+                            _tbl = _tbl.rename(columns={
+                                "market":       "Market",
+                                "player_name":  "Player",
+                                "odds_american":"Odds",
+                                "model_prob":   "Model%",
+                                "book_prob":    "Market%",
+                                "edge_pts":     "Edge (pts)",
+                                "ev_per_1":     "EV/$1",
+                                "confidence":   "Conf",
+                            })
+                            st.dataframe(_tbl, hide_index=True, use_container_width=True)
+
                     st.markdown("---")
 
-                    # Generate recommendations
-                    
-                
+                    # ── Refresh / Grade controls ─────────────────────────────
+                    _ctrl_c1, _ctrl_c2, _ctrl_c3 = st.columns([1.5, 1.5, 4])
+                    with _ctrl_c1:
+                        if st.button("🔄 Refresh Bets", key="vb_refresh_btn", use_container_width=True):
+                            _cmd = ["python3",
+                                    str(PROJECT_ROOT / "scripts" / "models" / "recommend_bets.py")]
+                            _tid = str(prop_tournament_id or "").strip().upper()
+                            if _tid:
+                                _cmd.extend(["--tournament-id", _tid])
+                            try:
+                                _res = subprocess.run(_cmd, capture_output=True, text=True,
+                                                      timeout=90, cwd=PROJECT_ROOT)
+                                if _res.returncode == 0:
+                                    st.success("Refreshed!")
+                                else:
+                                    st.warning("Refresh failed — check pipeline logs.")
+                                _msg = (_res.stdout or _res.stderr or "").strip()
+                                if _msg:
+                                    st.caption(_msg[:600])
+                                load_recommended_bets_df.clear()
+                                st.rerun()
+                            except Exception as _e:
+                                st.warning(f"Error: {_e}")
+                    with _ctrl_c2:
+                        if st.button("🧾 Grade Settled", key="vb_grade_btn", use_container_width=True):
+                            _cmd = ["python3",
+                                    str(PROJECT_ROOT / "scripts" / "models" / "grade_recommended_bets.py")]
+                            _tid = str(prop_tournament_id or "").strip().upper()
+                            if _tid:
+                                _cmd.extend(["--tournament-id", _tid])
+                            try:
+                                _res = subprocess.run(_cmd, capture_output=True, text=True,
+                                                      timeout=90, cwd=PROJECT_ROOT)
+                                if _res.returncode == 0:
+                                    st.success("Grading complete!")
+                                else:
+                                    st.warning("Grading failed.")
+                                load_recommended_bets_df.clear()
+                                st.rerun()
+                            except Exception as _e:
+                                st.warning(f"Error: {_e}")
 
+            # =================================================================
+            # TAB 1b: FADE LIST (inside props_tab1 as expander)
+            # =================================================================
+            with props_tab1:
                 st.markdown("---")
-                render_tracked_bets_section(prop_tournament_id)
-                st.markdown("---")
-                render_betting_copilot_section(prop_tournament_id)
+                with st.expander("📉 Fade List — Vegas >> Model", expanded=False):
+                    st.caption("Players the market prices higher than our model suggests — potential fades or backs-of-field targets.")
+
+                    _fade_df = preds_df.copy() if not preds_df.empty else pd.DataFrame()
+                    _fade_ready = (
+                        not _fade_df.empty
+                        and "model_vs_vegas_edge" in _fade_df.columns
+                        and "player_name" in _fade_df.columns
+                    )
+
+                    if not _fade_ready:
+                        st.info("Predictions with odds data required. Run the full pipeline with odds refresh first.")
+                    else:
+                        _fade_df["model_vs_vegas_edge"] = pd.to_numeric(
+                            _fade_df["model_vs_vegas_edge"], errors="coerce"
+                        )
+                        _fade_thresh_pct = st.slider(
+                            "Min fade magnitude (%):", 0.5, 10.0, 2.0, 0.5,
+                            key="fade_thresh_slider",
+                        )
+                        _fade_thresh = _fade_thresh_pct / 100.0
+
+                        _fades = _fade_df[
+                            _fade_df["model_vs_vegas_edge"] <= -_fade_thresh
+                        ].sort_values("model_vs_vegas_edge", ascending=True)
+
+                        if _fades.empty:
+                            st.info("No strong fades at this threshold. Try lowering the minimum.")
+                        else:
+                            _f1, _f2, _f3, _f4 = st.columns(4)
+                            with _f1:
+                                st.metric("Fades Found", len(_fades))
+                            with _f2:
+                                st.metric("Avg Fade",
+                                          f"{_fades['model_vs_vegas_edge'].mean()*100:.1f}%")
+                            with _f3:
+                                _worst = _fades.iloc[0]
+                                st.metric("Biggest Fade",
+                                          f"{float(_worst['model_vs_vegas_edge'])*100:.1f}%",
+                                          help=str(_worst.get("player_name", "")))
+                            with _f4:
+                                _strong_fades = int((_fades["model_vs_vegas_edge"] < -0.05).sum())
+                                st.metric("Strong Fades (>5%)", _strong_fades)
+
+                            st.markdown("#### Top Fades")
+                            _n_cols = 2
+                            for _fi in range(0, min(len(_fades), 8), _n_cols):
+                                _fade_cols = st.columns(_n_cols)
+                                for _fj, (_, _frow) in enumerate(
+                                    _fades.iloc[_fi:_fi + _n_cols].iterrows()
+                                ):
+                                    with _fade_cols[_fj]:
+                                        _fp      = str(_frow.get("player_name", "—"))
+                                        _fedge   = float(_frow.get("model_vs_vegas_edge", 0) or 0)
+                                        _fodds   = _frow.get("odds_to_win", "—")
+                                        _fmodel  = float(_frow.get("win_prob", 0) or 0) * 100
+                                        _fvegas  = float(_frow.get("vegas_prob", 0) or 0) * 100
+                                        _frank   = _frow.get("world_rank")
+                                        _frank_s = f"Rank #{int(_frank)}" if pd.notna(_frank) else ""
+                                        _fbar    = min(int(abs(_fedge) / 0.10 * 100), 100)
+                                        st.markdown(f"""
+<div style="background:#0d1a30;border-left:4px solid #e74c3c;border-radius:8px;
+            padding:14px 16px;margin-bottom:4px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+    <div>
+      <span style="font-size:0.72em;font-weight:600;color:#e74c3c;text-transform:uppercase;
+                   letter-spacing:.06em;">FADE</span>
+      <div style="font-size:1.1em;font-weight:700;color:#dde6f5;margin-top:2px;">{_fp}</div>
+      <div style="font-size:0.75em;color:#7f8c8d;margin-top:1px;">{_frank_s}</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:1.6em;font-weight:800;color:#e74c3c;line-height:1;">{_fodds}</div>
+      <span style="font-size:0.68em;font-weight:700;color:#e74c3c;background:rgba(231,76,60,.12);
+                   padding:2px 6px;border-radius:4px;">VEGAS&gt;&gt;MODEL</span>
+    </div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:18px;">
+    <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">MODEL</div>
+      <div style="font-size:0.92em;font-weight:600;color:#dde6f5;">{_fmodel:.1f}%</div>
+    </div>
+    <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">MARKET</div>
+      <div style="font-size:0.92em;font-weight:600;color:#dde6f5;">{_fvegas:.1f}%</div>
+    </div>
+    <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">FADE EDGE</div>
+      <div style="font-size:0.92em;font-weight:700;color:#e74c3c;">{_fedge*100:.1f}%</div>
+    </div>
+  </div>
+  <div style="margin-top:8px;background:#1a2a40;border-radius:4px;height:4px;">
+    <div style="width:{_fbar}%;height:4px;background:#e74c3c;border-radius:4px;"></div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
+                            # Full sortable fade table (no nested expander — use markdown header)
+                            if len(_fades) > 8:
+                                st.markdown(f"---\n**All {len(_fades)} fades**")
+                                _ftbl_cols = [c for c in [
+                                    "player_name", "odds_to_win", "win_prob",
+                                    "vegas_prob", "model_vs_vegas_edge", "world_rank",
+                                ] if c in _fades.columns]
+                                _ftbl = _fades[_ftbl_cols].copy()
+                                if "win_prob"  in _ftbl.columns:
+                                    _ftbl["win_prob"]  = (_ftbl["win_prob"]  * 100).round(1).astype(str) + "%"
+                                if "vegas_prob" in _ftbl.columns:
+                                    _ftbl["vegas_prob"] = (_ftbl["vegas_prob"] * 100).round(1).astype(str) + "%"
+                                if "model_vs_vegas_edge" in _ftbl.columns:
+                                    _ftbl["model_vs_vegas_edge"] = (
+                                        _ftbl["model_vs_vegas_edge"] * 100
+                                    ).round(1).astype(str) + "%"
+                                _ftbl = _ftbl.rename(columns={
+                                    "player_name":         "Player",
+                                    "odds_to_win":         "Odds",
+                                    "win_prob":            "Model%",
+                                    "vegas_prob":          "Market%",
+                                    "model_vs_vegas_edge": "Edge",
+                                    "world_rank":          "Rank",
+                                })
+                                st.dataframe(_ftbl, hide_index=True, use_container_width=True)
 
             # =================================================================
             # TAB 2: DRAFTKINGS ODDS
@@ -7946,17 +8832,19 @@ elif page == "🎰 Betting":
                         "top5": "🔝 Top 5",
                         "top10": "🎯 Top 10",
                         "top20": "📍 Top 20",
+                        "make_cut": "✅ Make Cut",
+                        "miss_cut": "❌ Miss Cut",
                         "h2h": "⚔️ Head-to-Head",
+                        "group_winner": "👥 Group Winner",
                         "round_score": "📊 Round Score O/U",
                         "birdies": "🐦 Birdies O/U",
                         "bogeys": "🟥 Bogeys O/U",
-                        "make_cut": "✅ Make Cut",
-                        "miss_cut": "❌ Miss Cut",
                     }
                     preferred_order = [
                         "outright", "top5", "top10", "top20",
                         "make_cut", "miss_cut",
-                        "round_score", "birdies", "bogeys", "h2h",
+                        "h2h", "group_winner",
+                        "round_score", "birdies", "bogeys",
                     ]
                     all_markets = (
                         dk_odds_df["market"].dropna().astype(str).str.lower().drop_duplicates().tolist()
@@ -7991,7 +8879,7 @@ elif page == "🎰 Betting":
 
                     if market_df.empty:
                         st.info("No rows for that market after filters.")
-                    elif selected_market in {"outright", "top5", "top10", "top20", "make_cut", "miss_cut"}:
+                    elif selected_market in {"outright", "top5", "top10", "top20", "make_cut", "miss_cut", "group_winner"}:
                         market_df["odds_num"] = pd.to_numeric(market_df.get("odds"), errors="coerce")
                         market_df["implied_prob"] = pd.to_numeric(market_df.get("implied_prob"), errors="coerce")
                         market_df = market_df.sort_values("odds_num", ascending=True, na_position="last")
@@ -8005,13 +8893,15 @@ elif page == "🎰 Betting":
                         st.caption(f"Showing {len(display_df)} rows")
                         st.dataframe(display_df, hide_index=True, use_container_width=True, height=500)
 
-                        if selected_market in {"outright", "top5", "top10"}:
+                        if selected_market in {"outright", "top5", "top10", "group_winner"}:
                             st.markdown("---")
-                            st.markdown("#### 🔥 Top Favorites")
-                            top5_df = market_df.head(5)
-                            cols = st.columns(5)
+                            label = "👥 Group Players" if selected_market == "group_winner" else "🔥 Top Favorites"
+                            n_show = len(market_df) if selected_market == "group_winner" else 5
+                            st.markdown(f"#### {label}")
+                            top5_df = market_df.head(n_show)
+                            cols = st.columns(min(n_show, 5))
                             for i, (_, row) in enumerate(top5_df.iterrows()):
-                                with cols[i]:
+                                with cols[i % len(cols)]:
                                     player = str(row.get("player_name", "")).strip()
                                     st.metric(
                                         player.split()[-1] if player else "—",
@@ -8055,92 +8945,184 @@ elif page == "🎰 Betting":
                         if not fetched_vals.empty:
                             st.caption(f"Source snapshot: {fetched_vals.iloc[0]}")
 
+                    # ── Odds Movement / Drift tracker ────────────────────────
+                    st.markdown("---")
+                    with st.expander("📊 Odds Movement — Recent Drift", expanded=False):
+                        _snap_dir = DATA_DIR / "odds" / "snapshots"
+                        _snaps = sorted(
+                            _snap_dir.glob("odds_snapshot_*.csv"),
+                            key=lambda p: p.stat().st_mtime, reverse=True
+                        ) if _snap_dir.exists() else []
+
+                        if len(_snaps) < 2:
+                            st.info("Need at least 2 odds snapshots to show movement. "
+                                    "Snapshots are saved automatically each time you refresh odds.")
+                        else:
+                            try:
+                                _snap_new = pd.read_csv(_snaps[0])
+                                _snap_old = pd.read_csv(_snaps[1])
+                                _snap_new["odds_numeric"] = pd.to_numeric(
+                                    _snap_new["odds_numeric"], errors="coerce")
+                                _snap_old["odds_numeric"] = pd.to_numeric(
+                                    _snap_old["odds_numeric"], errors="coerce")
+
+                                _snap_new_t = _snap_new["snapshot_at"].iloc[0] if "snapshot_at" in _snap_new.columns else "latest"
+                                _snap_old_t = _snap_old["snapshot_at"].iloc[0] if "snapshot_at" in _snap_old.columns else "previous"
+                                st.caption(f"Comparing: **{_snap_old_t}** → **{_snap_new_t}**")
+
+                                _join_col = "player_id" if "player_id" in _snap_new.columns and "player_id" in _snap_old.columns else "player_name"
+                                _drift = _snap_new[[_join_col, "player_name", "odds_numeric", "odds_to_win"]].merge(
+                                    _snap_old[[_join_col, "odds_numeric"]].rename(columns={"odds_numeric": "odds_prev"}),
+                                    on=_join_col, how="inner"
+                                )
+                                _drift["delta"] = _drift["odds_numeric"] - _drift["odds_prev"]
+                                _drift = _drift[_drift["delta"].abs() > 0].sort_values("delta")
+
+                                if _drift.empty:
+                                    st.success("No odds movement detected between the two most recent snapshots.")
+                                else:
+                                    # Summary metrics
+                                    _d1, _d2, _d3 = st.columns(3)
+                                    with _d1:
+                                        st.metric("Players Moved", len(_drift))
+                                    with _d2:
+                                        _shortened = (_drift["delta"] < 0)
+                                        st.metric("Shortened (more favored)", int(_shortened.sum()))
+                                    with _d3:
+                                        _lengthened = (_drift["delta"] > 0)
+                                        st.metric("Lengthened (less favored)", int(_lengthened.sum()))
+
+                                    def _mv_arrow(d):
+                                        if d < -20:  return "▼▼"
+                                        if d < 0:    return "▼"
+                                        if d > 20:   return "▲▲"
+                                        return "▲"
+
+                                    _drift["Move"]    = _drift["delta"].apply(_mv_arrow)
+                                    _drift["Current"] = _drift["odds_to_win"]
+                                    _drift["Change"]  = _drift["delta"].apply(
+                                        lambda x: f"{x:+.0f}" if pd.notna(x) else "—"
+                                    )
+                                    _drift_disp = _drift[["player_name", "Current", "Change", "Move"]].rename(
+                                        columns={"player_name": "Player"}
+                                    )
+                                    st.dataframe(_drift_disp, hide_index=True, use_container_width=True)
+                            except Exception as _de:
+                                st.warning(f"Could not compute drift: {_de}")
+
             # =================================================================
             # TAB 3: HEAD-TO-HEAD MATCHUPS
             # =================================================================
             with props_tab3:
                 st.markdown("### ⚔️ Head-to-Head Matchups")
-                st.caption("Who will finish higher? Model-powered matchup predictions.")
+                st.caption("DraftKings matchup lines scored against model win probabilities.")
 
                 if is_tournament_over:
                     st.warning("🏁 Tournament has finished. Matchups are no longer active.")
 
+                # ── DK Matchup Lines with Edge ────────────────────────────────
+                _dk_h2h = pd.DataFrame()
+                if not prop_lines_df.empty and "market" in prop_lines_df.columns:
+                    _dk_h2h = prop_lines_df[
+                        prop_lines_df["market"].astype(str).str.lower() == "h2h"
+                    ].copy()
+
+                if not _dk_h2h.empty:
+                    # Compute model edge for each side using win_prob
+                    def _h2h_win_prob(name, _pl=preds_df):
+                        _k = str(name).strip().lower()
+                        for _, _r in _pl.iterrows():
+                            if str(_r.get("player_name","")).strip().lower() == _k:
+                                return pd.to_numeric(_r.get("win_prob"), errors="coerce")
+                        # last-name fallback
+                        _last = _k.split()[-1] if _k.split() else ""
+                        _cands = [_r for _, _r in _pl.iterrows()
+                                  if str(_r.get("player_name","")).strip().lower().split()[-1:] == [_last]]
+                        if len(_cands) == 1:
+                            return pd.to_numeric(_cands[0].get("win_prob"), errors="coerce")
+                        return np.nan
+
+                    _h2h_rows = []
+                    for _, _h in _dk_h2h.iterrows():
+                        _pa = str(_h.get("player_a","") or "").strip()
+                        _pb = str(_h.get("player_b","") or "").strip()
+                        _oa = pd.to_numeric(_h.get("odds_a"), errors="coerce")
+                        _ob = pd.to_numeric(_h.get("odds_b"), errors="coerce")
+                        if not _pa or not _pb or pd.isna(_oa) or pd.isna(_ob):
+                            continue
+                        _wp_a = _h2h_win_prob(_pa)
+                        _wp_b = _h2h_win_prob(_pb)
+                        _denom = (_wp_a if pd.notna(_wp_a) else 0) + (_wp_b if pd.notna(_wp_b) else 0)
+                        if _denom > 0 and pd.notna(_wp_a) and pd.notna(_wp_b):
+                            _mp_a = _wp_a / _denom
+                            _mp_b = _wp_b / _denom
+                            _bp_a = 100/(_oa+100) if _oa >= 0 else abs(_oa)/(abs(_oa)+100)
+                            _bp_b = 100/(_ob+100) if _ob >= 0 else abs(_ob)/(abs(_ob)+100)
+                            _edge_a = (_mp_a - _bp_a) * 100
+                            _edge_b = (_mp_b - _bp_b) * 100
+                        else:
+                            _mp_a = _mp_b = _edge_a = _edge_b = np.nan
+
+                        _rn = _h.get("round_num")
+                        _rn_str = f"R{int(_rn)}" if pd.notna(_rn) else "Tournament"
+                        _h2h_rows.append({
+                            "Round":    _rn_str,
+                            "Player A": _pa,
+                            "Odds A":   f"{int(_oa):+d}",
+                            "Edge A":   round(_edge_a, 1) if pd.notna(_edge_a) else None,
+                            "Player B": _pb,
+                            "Odds B":   f"{int(_ob):+d}",
+                            "Edge B":   round(_edge_b, 1) if pd.notna(_edge_b) else None,
+                            "Model A%": f"{_mp_a*100:.0f}%" if pd.notna(_mp_a) else "—",
+                            "Model B%": f"{_mp_b*100:.0f}%" if pd.notna(_mp_b) else "—",
+                        })
+
+                    if _h2h_rows:
+                        _h2h_disp = pd.DataFrame(_h2h_rows)
+                        # Sort by best edge (max of |edge_a|, |edge_b|)
+                        _h2h_disp["_best"] = _h2h_disp[["Edge A","Edge B"]].apply(
+                            pd.to_numeric, errors="coerce"
+                        ).abs().max(axis=1)
+                        _h2h_disp = _h2h_disp.sort_values("_best", ascending=False).drop(columns=["_best"])
+
+                        _m1, _m2, _m3 = st.columns(3)
+                        with _m1: st.metric("DK Matchups", len(_h2h_rows))
+                        with _m2:
+                            _edges = [r["Edge A"] for r in _h2h_rows if r["Edge A"] is not None and r["Edge A"] > 1]
+                            _edges += [r["Edge B"] for r in _h2h_rows if r["Edge B"] is not None and r["Edge B"] > 1]
+                            st.metric("Positive Edges (>1pt)", len(_edges))
+                        with _m3:
+                            _best = max((_e for _e in _edges), default=0)
+                            st.metric("Best Edge", f"+{_best:.1f} pts" if _best else "—")
+
+                        st.dataframe(_h2h_disp, hide_index=True, use_container_width=True, height=420)
+                    st.markdown("---")
+                else:
+                    st.info("No DraftKings H2H lines loaded yet. Fetch odds to populate matchup edge table.")
+                    st.markdown("---")
+
+                st.markdown("#### 🔍 Individual Matchup Explorer")
                 rank_col = "expected_value" if "expected_value" in preds_df.columns else "win_prob"
                 preds_ranked = preds_df.copy()
                 preds_ranked["model_rank"] = preds_ranked[rank_col].rank(ascending=False, method="min").astype(int)
                 player_list = (
                     preds_ranked.sort_values("model_rank")["player_name"]
-                    .dropna()
-                    .astype(str)
-                    .drop_duplicates()
-                    .tolist()
+                    .dropna().astype(str).drop_duplicates().tolist()
                 )
-                player_lookup = {str(r["player_name"]): r.to_dict() for _, r in preds_ranked.iterrows() if pd.notna(r.get("player_name"))}
-
-                live_h2h_count = len(h2h_lines_live_df)
-                live_h2h_matched = (
-                    int(h2h_lines_live_df["is_full_match"].sum())
-                    if not h2h_lines_live_df.empty and "is_full_match" in h2h_lines_live_df.columns
-                    else 0
-                )
-                h1, h2, h3 = st.columns(3)
-                with h1:
-                    st.metric("Model Players", len(player_list))
-                with h2:
-                    st.metric("Live H2H Lines", live_h2h_count)
-                with h3:
-                    st.metric("Mapped H2H Lines", live_h2h_matched)
-
-                source_options = ["Model Explorer"]
-                if live_h2h_count > 0:
-                    source_options.append("Live Sportsbook Lines")
-                source_mode = st.radio(
-                    "Matchup Source",
-                    options=source_options,
-                    horizontal=True,
-                    key="h2h_source_mode",
-                )
+                player_lookup = {str(r["player_name"]): r.to_dict()
+                                 for _, r in preds_ranked.iterrows()
+                                 if pd.notna(r.get("player_name"))}
 
                 player_a = None
                 player_b = None
                 live_h2h_row = None
 
-                if source_mode == "Live Sportsbook Lines" and live_h2h_count > 0:
-                    live_pool = h2h_lines_live_df.copy()
-                    if "is_full_match" in live_pool.columns and live_pool["is_full_match"].any():
-                        live_pool = live_pool[live_pool["is_full_match"]].copy()
-                    live_pool = live_pool.reset_index(drop=True)
-
-                    if not live_pool.empty:
-                        def _fmt_live_h2h(i):
-                            row = live_pool.loc[i]
-                            pa = row.get("model_player_a", row.get("player_a", "A"))
-                            pb = row.get("model_player_b", row.get("player_b", "B"))
-                            oa = row.get("odds_a")
-                            ob = row.get("odds_b")
-                            oa_str = f"{int(oa):+d}" if pd.notna(oa) else "—"
-                            ob_str = f"{int(ob):+d}" if pd.notna(ob) else "—"
-                            return f"{pa} vs {pb} ({oa_str} / {ob_str})"
-
-                        live_idx = st.selectbox(
-                            "Live Matchup Line:",
-                            options=live_pool.index.tolist(),
-                            format_func=_fmt_live_h2h,
-                            key="h2h_live_pick",
-                        )
-                        picked = live_pool.loc[live_idx]
-                        live_h2h_row = picked.to_dict()
-                        player_a = str(picked.get("model_player_a", picked.get("player_a", ""))).strip()
-                        player_b = str(picked.get("model_player_b", picked.get("player_b", ""))).strip()
-                    else:
-                        st.info("No fully mappable live H2H lines found; switch to Model Explorer.")
-                else:
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        player_a = st.selectbox("Player A:", player_list, index=0, key="h2h_a")
-                    with col2:
-                        default_b = 1 if len(player_list) > 1 else 0
-                        player_b = st.selectbox("Player B:", player_list, index=default_b, key="h2h_b")
+                col1, col2 = st.columns(2)
+                with col1:
+                    player_a = st.selectbox("Player A:", player_list, index=0, key="h2h_a")
+                with col2:
+                    default_b = 1 if len(player_list) > 1 else 0
+                    player_b = st.selectbox("Player B:", player_list, index=default_b, key="h2h_b")
 
                 if player_a and player_b and player_a != player_b:
                     # Get player data
@@ -8159,97 +9141,206 @@ elif page == "🎰 Betting":
                         matchup = generate_matchup(player_a_data, player_b_data)
 
                     if matchup is not None:
-                        st.markdown("---")
 
-                        # Display matchup result
-                        st.markdown("#### Matchup Result")
+                        # ── Helpers ──────────────────────────────────────────
+                        def _g(d, k):
+                            v = d.get(k)
+                            try:
+                                return float(v) if pd.notna(v) else None
+                            except (TypeError, ValueError):
+                                return None
 
-                        # Main matchup display
-                        col1, col2, col3 = st.columns([2, 1, 2])
+                        def _bar_split(fa, fb):
+                            """Shift both values to ≥0 then compute proportional fill."""
+                            if fa is None or fb is None:
+                                return 50, 50
+                            mn = min(fa, fb)
+                            if mn < 0:
+                                fa -= mn
+                                fb -= mn
+                            total = fa + fb
+                            if total == 0:
+                                return 50, 50
+                            return max(2, fa / total * 100), max(2, fb / total * 100)
 
-                        with col1:
-                            st.markdown(f"### {matchup.player_a}")
-                            st.metric(
-                                "Win Probability",
-                                f"{matchup.prob_a_wins*100:.1f}%",
-                                delta=format_american_odds(matchup.odds_a)
+                        def _cmp_row(label, va, vb, higher_better=True,
+                                     fmt=".1f", suffix=""):
+                            fa = va if isinstance(va, (int, float)) and pd.notna(va) else None
+                            fb = vb if isinstance(vb, (int, float)) and pd.notna(vb) else None
+                            na_str = "—"
+
+                            if fa is None and fb is None:
+                                a_str = b_str = na_str
+                                a_col = b_col = "#3a5070"
+                                a_w = b_w = "400"
+                                bar_a = bar_b = "#111e33"
+                                fill_a = fill_b = 50
+                            else:
+                                a_better = b_better = False
+                                if fa is not None and fb is not None:
+                                    a_better = (fa > fb) if higher_better else (fa < fb)
+                                    b_better = (fb > fa) if higher_better else (fb < fa)
+                                try:
+                                    a_str = f"{fa:{fmt}}{suffix}" if fa is not None else na_str
+                                except Exception:
+                                    a_str = str(fa) if fa is not None else na_str
+                                try:
+                                    b_str = f"{fb:{fmt}}{suffix}" if fb is not None else na_str
+                                except Exception:
+                                    b_str = str(fb) if fb is not None else na_str
+                                a_col = "#00c44f" if a_better else ("#8899aa" if b_better else "#dde6f5")
+                                b_col = "#00c44f" if b_better else ("#8899aa" if a_better else "#dde6f5")
+                                a_w = "700" if a_better else "400"
+                                b_w = "700" if b_better else "400"
+                                fill_a, fill_b = _bar_split(fa, fb)
+                                bar_a = "#00c44f" if a_better else "#111e33"
+                                bar_b = "#00c44f" if b_better else "#111e33"
+
+                            return (
+                                f'<div style="display:grid;grid-template-columns:1fr auto 1fr;'
+                                f'align-items:center;padding:9px 20px;border-bottom:1px solid #0e1c2e;">'
+                                f'<div style="text-align:right;font-size:1.0em;font-weight:{a_w};color:{a_col};">{a_str}</div>'
+                                f'<div style="text-align:center;font-size:0.7em;color:#4a6080;padding:0 18px;'
+                                f'min-width:155px;text-transform:uppercase;letter-spacing:.06em;">{label}</div>'
+                                f'<div style="text-align:left;font-size:1.0em;font-weight:{b_w};color:{b_col};">{b_str}</div>'
+                                f'</div>'
+                                f'<div style="display:grid;grid-template-columns:{fill_a:.0f}fr {fill_b:.0f}fr;'
+                                f'height:2px;margin:0 20px;">'
+                                f'<div style="background:{bar_a};border-radius:2px 0 0 2px;"></div>'
+                                f'<div style="background:{bar_b};border-radius:0 2px 2px 0;"></div>'
+                                f'</div>'
                             )
-                            # Player A stats
-                            st.caption(f"Model Rank: #{int(player_a_data.get('model_rank', 'N/A'))}")
-                            sg_a = player_a_data.get('sg_total', 0) or 0
-                            st.caption(f"SG Total: {sg_a:+.2f}")
 
-                        with col2:
-                            st.markdown("### VS")
-                            st.markdown(f"**Confidence:** {matchup.confidence}")
-
-                        with col3:
-                            st.markdown(f"### {matchup.player_b}")
-                            st.metric(
-                                "Win Probability",
-                                f"{matchup.prob_b_wins*100:.1f}%",
-                                delta=format_american_odds(matchup.odds_b)
+                        def _sec(title):
+                            return (
+                                f'<div style="background:#070f1c;padding:7px 20px;margin-top:1px;">'
+                                f'<span style="font-size:0.68em;font-weight:700;color:#2a4060;'
+                                f'text-transform:uppercase;letter-spacing:.1em;">{title}</span></div>'
                             )
-                            # Player B stats
-                            st.caption(f"Model Rank: #{int(player_b_data.get('model_rank', 'N/A'))}")
-                            sg_b = player_b_data.get('sg_total', 0) or 0
-                            st.caption(f"SG Total: {sg_b:+.2f}")
 
-                        # Recommendation
-                        st.markdown("---")
+                        # ── Data ─────────────────────────────────────────────
+                        pa, pb = player_a_data, player_b_data
+                        prob_a = matchup.prob_a_wins * 100
+                        prob_b = matchup.prob_b_wins * 100
+                        rank_a = pa.get("model_rank", "—")
+                        rank_b = pb.get("model_rank", "—")
+                        odds_a_str = format_american_odds(matchup.odds_a)
+                        odds_b_str = format_american_odds(matchup.odds_b)
+                        win_col_a = "#00c44f" if prob_a > prob_b else "#dde6f5"
+                        win_col_b = "#00c44f" if prob_b > prob_a else "#dde6f5"
+                        conf_txt = str(matchup.confidence).upper()
+
                         if matchup.prob_a_wins > 0.55:
-                            st.success(f"**Recommendation:** {matchup.player_a} ({format_american_odds(matchup.odds_a)})")
+                            verdict_name = player_a
+                            verdict_diff = f"+{(matchup.prob_a_wins - matchup.prob_b_wins)*100:.1f} pp edge"
+                            verdict_col = "#00c44f"
                         elif matchup.prob_b_wins > 0.55:
-                            st.success(f"**Recommendation:** {matchup.player_b} ({format_american_odds(matchup.odds_b)})")
+                            verdict_name = player_b
+                            verdict_diff = f"+{(matchup.prob_b_wins - matchup.prob_a_wins)*100:.1f} pp edge"
+                            verdict_col = "#00c44f"
                         else:
-                            st.info("**Recommendation:** This matchup is close - consider passing or taking the + odds")
+                            verdict_name = "TOO CLOSE TO CALL"
+                            verdict_diff = "less than 5 pp difference"
+                            verdict_col = "#f39c12"
 
-                        if live_h2h_row is not None:
-                            oa = pd.to_numeric(live_h2h_row.get("odds_a"), errors="coerce")
-                            ob = pd.to_numeric(live_h2h_row.get("odds_b"), errors="coerce")
-                            if pd.notna(oa) and pd.notna(ob):
-                                st.markdown("#### Live Sportsbook Line")
-                                l1, l2, l3, l4 = st.columns(4)
-                                with l1:
-                                    st.metric(f"{matchup.player_a} Odds", f"{int(oa):+d}")
-                                with l2:
-                                    st.metric(f"{matchup.player_b} Odds", f"{int(ob):+d}")
-                                with l3:
-                                    st.metric(f"{matchup.player_a} Edge", f"{calculate_edge(matchup.prob_a_wins, int(oa)):+.1f} pts")
-                                with l4:
-                                    st.metric(f"{matchup.player_b} Edge", f"{calculate_edge(matchup.prob_b_wins, int(ob)):+.1f} pts")
+                        # ── Stat rows ─────────────────────────────────────────
+                        rows = ""
 
-                        # Key factors
-                        st.markdown("#### Key Factors")
-                        for factor, detail in matchup.factors.items():
-                            st.markdown(f"- **{factor}:** {detail}")
+                        rows += _sec("Model Probabilities")
+                        rows += _cmp_row("Win", prob_a, prob_b, fmt=".1f", suffix="%")
+                        rows += _cmp_row("Top 5", (_g(pa,"top5_prob") or 0)*100, (_g(pb,"top5_prob") or 0)*100, fmt=".1f", suffix="%")
+                        rows += _cmp_row("Top 10", (_g(pa,"top10_prob") or 0)*100, (_g(pb,"top10_prob") or 0)*100, fmt=".1f", suffix="%")
+                        rows += _cmp_row("Top 20", (_g(pa,"top20_prob") or 0)*100, (_g(pb,"top20_prob") or 0)*100, fmt=".1f", suffix="%")
+                        rows += _cmp_row("Expected Value", _g(pa,"expected_value"), _g(pb,"expected_value"), fmt=",.0f")
+
+                        rows += _sec("Strokes Gained · Season")
+                        rows += _cmp_row("Total", _g(pa,"season_sg_total"), _g(pb,"season_sg_total"), fmt="+.2f")
+                        rows += _cmp_row("Off the Tee", _g(pa,"season_sg_ott"), _g(pb,"season_sg_ott"), fmt="+.2f")
+                        rows += _cmp_row("Approach", _g(pa,"season_sg_app"), _g(pb,"season_sg_app"), fmt="+.2f")
+                        rows += _cmp_row("Around Green", _g(pa,"season_sg_arg"), _g(pb,"season_sg_arg"), fmt="+.2f")
+                        rows += _cmp_row("Putting", _g(pa,"season_sg_putt"), _g(pb,"season_sg_putt"), fmt="+.2f")
+                        rows += _cmp_row("Tee to Green", _g(pa,"season_sg_t2g"), _g(pb,"season_sg_t2g"), fmt="+.2f")
+
+                        rows += _sec("Recent Form")
+                        rows += _cmp_row("Form Trend", _g(pa,"form_trend"), _g(pb,"form_trend"), fmt="+.2f")
+                        rows += _cmp_row("Scoring Avg", _g(pa,"recent_scoring_avg"), _g(pb,"recent_scoring_avg"), higher_better=False, fmt=".2f")
+                        rows += _cmp_row("Top 5s", _g(pa,"recent_top5s"), _g(pb,"recent_top5s"), fmt=".0f")
+                        rows += _cmp_row("Top 10s", _g(pa,"recent_top10s"), _g(pb,"recent_top10s"), fmt=".0f")
+                        rows += _cmp_row("Cuts Made %", (_g(pa,"recent_cuts_pct") or 0)*100, (_g(pb,"recent_cuts_pct") or 0)*100, fmt=".0f", suffix="%")
+                        rows += _cmp_row("Final Round SG", _g(pa,"recent_final_round"), _g(pb,"recent_final_round"), fmt="+.2f")
+                        rows += _cmp_row("Consistency (σ)", _g(pa,"finish_consistency"), _g(pb,"finish_consistency"), higher_better=False, fmt=".1f")
+
+                        rows += _sec("Course History")
+                        rows += _cmp_row("Avg Finish", _g(pa,"hist_avg_finish"), _g(pb,"hist_avg_finish"), higher_better=False, fmt=".0f")
+                        rows += _cmp_row("Best Finish", _g(pa,"hist_best_finish"), _g(pb,"hist_best_finish"), higher_better=False, fmt=".0f")
+                        rows += _cmp_row("Wins Here", _g(pa,"hist_wins"), _g(pb,"hist_wins"), fmt=".0f")
+                        rows += _cmp_row("Top 5s Here", _g(pa,"hist_top5s"), _g(pb,"hist_top5s"), fmt=".0f")
+                        rows += _cmp_row("Top 10s Here", _g(pa,"hist_top10s"), _g(pb,"hist_top10s"), fmt=".0f")
+                        rows += _cmp_row("Cut Rate", (_g(pa,"hist_cut_rate") or 0)*100, (_g(pb,"hist_cut_rate") or 0)*100, fmt=".0f", suffix="%")
+                        rows += _cmp_row("Times Played", _g(pa,"hist_times_played"), _g(pb,"hist_times_played"), fmt=".0f")
+
+                        rows += _sec("Market")
+                        rows += _cmp_row("World Rank", _g(pa,"world_rank"), _g(pb,"world_rank"), higher_better=False, fmt=".0f")
+                        _ea = _g(pa,"model_vs_vegas_edge")
+                        _eb = _g(pb,"model_vs_vegas_edge")
+                        if _ea is not None or _eb is not None:
+                            rows += _cmp_row("Model vs Market Edge", (_ea or 0)*100, (_eb or 0)*100, fmt="+.1f", suffix=" pp")
+
+                        # ── Render ────────────────────────────────────────────
+                        st.markdown(f"""
+<div style="background:#0d1a30;border-radius:12px;overflow:hidden;margin-top:16px;
+            border:1px solid #1a2e4a;">
+  <div style="display:grid;grid-template-columns:1fr 90px 1fr;
+              background:#060f1c;padding:28px 20px;">
+    <div style="text-align:center;">
+      <div style="font-size:0.68em;color:#2a4060;font-weight:700;letter-spacing:.12em;
+                  text-transform:uppercase;margin-bottom:8px;">PLAYER A</div>
+      <div style="font-size:1.45em;font-weight:800;color:#dde6f5;">{player_a}</div>
+      <div style="font-size:0.78em;color:#3a5070;margin:4px 0 12px;">
+        Model Rank #{rank_a}</div>
+      <div style="font-size:2.8em;font-weight:900;color:{win_col_a};line-height:1;">
+        {prob_a:.1f}%</div>
+      <div style="font-size:0.62em;color:#2a4060;text-transform:uppercase;
+                  letter-spacing:.1em;margin-top:5px;">Win Probability</div>
+      <div style="font-size:1.1em;font-weight:700;color:#7a90b8;margin-top:12px;">
+        {odds_a_str}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;
+                justify-content:center;gap:10px;">
+      <div style="font-size:1.1em;font-weight:900;color:#1a3050;">VS</div>
+      <div style="font-size:0.58em;color:#2a4060;text-align:center;
+                  text-transform:uppercase;letter-spacing:.07em;line-height:1.4;">
+        {conf_txt}</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:0.68em;color:#2a4060;font-weight:700;letter-spacing:.12em;
+                  text-transform:uppercase;margin-bottom:8px;">PLAYER B</div>
+      <div style="font-size:1.45em;font-weight:800;color:#dde6f5;">{player_b}</div>
+      <div style="font-size:0.78em;color:#3a5070;margin:4px 0 12px;">
+        Model Rank #{rank_b}</div>
+      <div style="font-size:2.8em;font-weight:900;color:{win_col_b};line-height:1;">
+        {prob_b:.1f}%</div>
+      <div style="font-size:0.62em;color:#2a4060;text-transform:uppercase;
+                  letter-spacing:.1em;margin-top:5px;">Win Probability</div>
+      <div style="font-size:1.1em;font-weight:700;color:#7a90b8;margin-top:12px;">
+        {odds_b_str}</div>
+    </div>
+  </div>
+  <div style="background:#040a14;padding:9px 20px;text-align:center;
+              border-top:1px solid #0e1c2e;border-bottom:2px solid #0e1c2e;">
+    <span style="font-size:0.68em;color:#2a4060;text-transform:uppercase;
+                 letter-spacing:.08em;">Model Verdict · </span>
+    <span style="font-size:0.88em;font-weight:700;color:{verdict_col};">
+      {verdict_name}</span>
+    <span style="font-size:0.72em;color:#3a5070;"> · {verdict_diff}</span>
+  </div>
+  {rows}
+</div>
+""", unsafe_allow_html=True)
 
                 elif player_a == player_b:
                     st.warning("Please select two different players")
 
-                # Quick matchup suggestions
-                st.markdown("---")
-                st.markdown("#### 🔥 Suggested Matchups")
-                st.caption("Interesting matchups based on similar rankings")
-
-                # Generate 3 interesting matchups
-                if len(preds_ranked) >= 10:
-                    top_ranked_df = preds_ranked.sort_values("model_rank").reset_index(drop=True)
-                    suggested_matchups = [
-                        (0, 1),   # #1 vs #2
-                        (4, 5),   # #5 vs #6
-                        (9, 14),  # #10 vs #15
-                    ]
-
-                    cols = st.columns(3)
-                    for i, (idx_a, idx_b) in enumerate(suggested_matchups):
-                        if idx_a < len(top_ranked_df) and idx_b < len(top_ranked_df):
-                            p_a = top_ranked_df.iloc[idx_a]
-                            p_b = top_ranked_df.iloc[idx_b]
-                            with cols[i]:
-                                st.markdown(f"**{p_a['player_name'][:12]}**")
-                                st.caption("vs")
-                                st.markdown(f"**{p_b['player_name'][:12]}**")
 
             # =================================================================
             # TAB 4: PARLAY BUILDER
@@ -8371,9 +9462,6 @@ elif page == "🎰 Betting":
                     parlay_df = parlay_df[parlay_df["player_name"].apply(is_contender)]
                     st.caption(f"Showing {len(parlay_df)} contenders (within {5 if tournament_round == 4 else 7} shots of lead)")
 
-                # Suggested parlays
-                
-
                 st.markdown("---")
 
                 # Custom parlay builder
@@ -8430,13 +9518,54 @@ elif page == "🎰 Betting":
                     if len(st.session_state.parlay_legs) >= 2:
                         parlay = calculate_parlay(st.session_state.parlay_legs)
                         st.markdown("---")
-                        col1, col2, col3 = st.columns(3)
+
+                        _mp = parlay.combined_prob  # model hit probability
+
+                        # Convert American odds to implied probability
+                        def _a2p(o):
+                            try:
+                                o = float(o)
+                                return 100/(o+100) if o >= 0 else abs(o)/(abs(o)+100)
+                            except Exception:
+                                return None
+
+                        # Fair odds = what this parlay would pay at true model probability
+                        _fair_odds_str = format_american_odds(prob_to_american(_mp)) if _mp > 0 else "—"
+
+                        # Optional: user enters actual sportsbook odds for comparison
+                        _dk_odds_raw = st.text_input(
+                            "Enter actual DraftKings parlay odds (optional):",
+                            placeholder="e.g. +850",
+                            key="parlay_dk_odds",
+                        )
+                        _dk_implied = None
+                        if _dk_odds_raw.strip().lstrip("+"):
+                            try:
+                                _dk_implied = _a2p(float(_dk_odds_raw.strip().replace("+","")))
+                            except Exception:
+                                pass
+
+                        col1, col2, col3, col4 = st.columns(4)
                         with col1:
-                            st.metric("Combined Odds", format_american_odds(parlay.combined_odds))
+                            st.metric("Model Hit %", f"{_mp*100:.2f}%",
+                                      help="Product of individual leg model probabilities")
                         with col2:
-                            st.metric("Win Probability", f"{parlay.combined_prob*100:.2f}%")
+                            st.metric("Fair Odds", _fair_odds_str,
+                                      help="Break-even American odds based on model probability")
                         with col3:
                             st.metric("$10 Pays", f"${parlay.payout_per_unit:.2f}")
+                        with col4:
+                            if _dk_implied is not None:
+                                _edge = (_mp - _dk_implied) * 100
+                                _edge_col = "normal" if _edge >= 0 else "inverse"
+                                st.metric("Model Edge vs DK",
+                                          f"{_edge:+.1f} pp",
+                                          delta=f"{'VALUE' if _edge > 0 else 'OVERPRICED'}",
+                                          delta_color=_edge_col)
+                            else:
+                                st.metric("Avg Leg Prob",
+                                          f"{(_mp ** (1/len(st.session_state.parlay_legs)))*100:.1f}%",
+                                          help="Geometric mean of individual leg model probabilities")
 
                     # Clear button
                     if st.button("Clear Parlay"):
@@ -8494,7 +9623,7 @@ elif page == "📊 Predictions":
         st.markdown("---")
 
         # Tabs
-        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head", "📈 Visualizations", "🔍 Search", "📊 Model Health"])
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head", "📈 Visualizations", "🔍 Search", "📊 Model Health", "📅 History"])
 
         with tab1:
             top_20 = df.nlargest(20, 'expected_value').copy()
@@ -8522,11 +9651,34 @@ elif page == "📊 Predictions":
                 if e == 0: return "✓ $0"
                 return f"✓ ${e/1_000:.0f}K" if e < 1_000_000 else f"✓ ${e/1_000_000:.1f}M"
 
+            # Build KFT lookup: player_name_norm → proxy string
+            _kft_preds_path = DATA_DIR / "historical" / "kft_player_profiles.csv"
+            _kft_pred_lookup = {}
+            if _kft_preds_path.exists():
+                try:
+                    _kft_pred_df = pd.read_csv(_kft_preds_path)
+                    for _, _kr in _kft_pred_df.iterrows():
+                        _kn = str(_kr.get("player_name", "")).strip().lower()
+                        _proxy = _kr.get("kft_sg_proxy")
+                        _yr = _kr.get("kft_year", "")
+                        if _kn and pd.notna(_proxy):
+                            _kft_pred_lookup[_kn] = f"🎓 {float(_proxy):+.2f} ({int(_yr)})" if _yr else f"🎓 {float(_proxy):+.2f}"
+                except Exception:
+                    pass
+
+            def _fmt_kft(name):
+                n = str(name).strip()
+                if ", " in n:
+                    parts = n.split(", ", 1)
+                    n = f"{parts[1]} {parts[0]}"
+                return _kft_pred_lookup.get(n.lower(), "—")
+
             display_cols = ['player_name', 'expected_value', 'win_prob', 'top5_prob',
                            'top10_prob', 'sg_total', 'hist_times_played']
 
             display_df = top_20[display_cols].copy()
             display_df['2025'] = top_20['player_name'].apply(_fmt_2025)
+            display_df['kft'] = top_20['player_name'].apply(_fmt_kft)
             display_df['expected_value'] = display_df['expected_value'].apply(lambda x: f"${x:,.0f}")
             display_df['win_prob'] = (display_df['win_prob'] * 100).round(2)
             display_df['top5_prob'] = (display_df['top5_prob'] * 100).round(1)
@@ -8535,10 +9687,10 @@ elif page == "📊 Predictions":
             display_df['hist_times_played'] = display_df['hist_times_played'].fillna(0).astype(int)
 
             display_df.columns = ['Player', 'Expected Value', 'Win %', 'Top-5 %',
-                                 'Top-10 %', 'SG Total', 'Course Plays', '2025 Earnings']
+                                 'Top-10 %', 'SG Total', 'Course Plays', '2025 Earnings', 'KFT History']
 
             st.dataframe(display_df, hide_index=True, use_container_width=True)
-            st.caption("**2025 Earnings** — total prize money the player earned across all their appearances in your 2025 lineup. '—' = not used.")
+            st.caption("**2025 Earnings** — prize money in your 2025 lineup. '—' = not used. **KFT History** — 🎓 = Korn Ferry Tour grad; value = estimated SG proxy (year).")
 
             st.markdown("#### 🔎 Why This Pick")
             why_cols = st.columns([2.2, 1.0])
@@ -8860,6 +10012,110 @@ elif page == "📊 Predictions":
                     f"{_cal.get('n_test', 0):,} test rows (2025) · "
                     f"Generated: {_cal.get('generated_at', '')[:10]}"
                 )
+
+        with tab7:
+            st.markdown("#### 📅 Tournament-by-Tournament Accuracy")
+            st.caption("How well the model's pre-tournament rankings matched actual outcomes, tournament by tournament.")
+
+            _hist_path = OUTPUTS_DIR / "prediction_history.csv"
+            if not _hist_path.exists():
+                st.info("No prediction history found. Predictions are logged automatically after each tournament completes.")
+            else:
+                _hist = pd.read_csv(_hist_path)
+                _recorded = _hist[_hist["result_recorded"].astype(str).str.lower() == "true"].copy()
+
+                if _recorded.empty:
+                    st.info("No graded tournaments yet. Results are recorded after each tournament finishes.")
+                else:
+                    # Aggregate by tournament
+                    def _tourney_acc(g):
+                        n = len(g)
+                        # Did the model's top-5 win picks actually win?
+                        top5_win  = g.nlargest(5,  "predicted_win_prob")["actual_won"].sum()
+                        # Did top-10 predicted top-5 actually finish top5?
+                        top10_t5  = g.nlargest(10, "predicted_top5_prob")["actual_top5"].mean() if "actual_top5" in g.columns else None
+                        # Did top-15 predicted top-10 actually finish top10?
+                        top15_t10 = g.nlargest(15, "predicted_top10_prob")["actual_top10"].mean() if "actual_top10" in g.columns else None
+                        return pd.Series({
+                            "players": n,
+                            "top5_winner_hit": int(top5_win),
+                            "top10_t5_rate":   round(top10_t5  * 100, 1) if top10_t5  is not None else None,
+                            "top15_t10_rate":  round(top15_t10 * 100, 1) if top15_t10 is not None else None,
+                        })
+
+                    _grp_cols = [c for c in ["tournament_id", "tournament_name"] if c in _recorded.columns]
+                    _by_t = (
+                        _recorded.groupby(_grp_cols, sort=False)
+                        .apply(_tourney_acc)
+                        .reset_index()
+                    )
+
+                    # Summary metrics
+                    _mh1, _mh2, _mh3, _mh4 = st.columns(4)
+                    with _mh1:
+                        st.metric("Tournaments Graded", len(_by_t))
+                    with _mh2:
+                        _avg_t5 = _by_t["top10_t5_rate"].dropna().mean()
+                        st.metric("Avg Top-5 Hit Rate",
+                                  f"{_avg_t5:.1f}%" if not pd.isna(_avg_t5) else "—",
+                                  help="% of model's top-10 picks by top5_prob that actually finished top 5")
+                    with _mh3:
+                        _avg_t10 = _by_t["top15_t10_rate"].dropna().mean()
+                        st.metric("Avg Top-10 Hit Rate",
+                                  f"{_avg_t10:.1f}%" if not pd.isna(_avg_t10) else "—",
+                                  help="% of model's top-15 picks by top10_prob that actually finished top 10")
+                    with _mh4:
+                        _winner_hits = int(_by_t["top5_winner_hit"].sum())
+                        st.metric("Winner in Top-5 Picks",
+                                  f"{_winner_hits} / {len(_by_t)}",
+                                  help="Tournaments where the actual winner was in the model's top-5 win probability picks")
+
+                    st.markdown("---")
+
+                    # Accuracy line chart
+                    _chart_df = _by_t.dropna(subset=["top10_t5_rate", "top15_t10_rate"], how="all").copy()
+                    if not _chart_df.empty:
+                        _name_col = "tournament_name" if "tournament_name" in _chart_df.columns else "tournament_id"
+                        _acc_fig = go.Figure()
+                        _acc_fig.add_trace(go.Bar(
+                            x=_chart_df[_name_col],
+                            y=_chart_df["top10_t5_rate"],
+                            name="Top-5 hit %",
+                            marker_color="#00c44f",
+                        ))
+                        _acc_fig.add_trace(go.Bar(
+                            x=_chart_df[_name_col],
+                            y=_chart_df["top15_t10_rate"],
+                            name="Top-10 hit %",
+                            marker_color="#4cb8ff",
+                        ))
+                        _acc_fig.add_hline(y=50, line_dash="dot", line_color="#f39c12",
+                                           annotation_text="50% baseline")
+                        _acc_fig.update_layout(
+                            barmode="group",
+                            height=320,
+                            margin=dict(t=10, b=80, l=40, r=20),
+                            plot_bgcolor="rgba(0,0,0,0)",
+                            paper_bgcolor="rgba(0,0,0,0)",
+                            font_color="#dde6f5",
+                            legend=dict(orientation="h", y=1.08),
+                            xaxis=dict(tickangle=-30, gridcolor="#1c2f4a"),
+                            yaxis=dict(title="Hit rate %", gridcolor="#1c2f4a", range=[0, 100]),
+                        )
+                        st.plotly_chart(_acc_fig, use_container_width=True)
+
+                    # Full table
+                    with st.expander("Full history table"):
+                        _disp_t = _by_t.copy()
+                        _disp_t = _disp_t.rename(columns={
+                            "tournament_name": "Tournament",
+                            "tournament_id":   "ID",
+                            "players":         "Players",
+                            "top5_winner_hit": "Winner in Top-5",
+                            "top10_t5_rate":   "Top-5 Hit%",
+                            "top15_t10_rate":  "Top-10 Hit%",
+                        })
+                        st.dataframe(_disp_t, hide_index=True, use_container_width=True)
 
 
 # ============================================================================
@@ -9730,6 +10986,17 @@ elif page == "⚙️ Pipeline":
                         st.success("✅ Done")
                     else:
                         st.error("❌ Failed")
+
+            if st.button("🎓 KFT Data", use_container_width=True, key="m_kft"):
+                with st.spinner("Fetching KFT stats (2022–current)…"):
+                    success, output = run_scraper(["python3", "scripts/scrapers/fetch_kft_stats.py"], timeout=120)
+                    if success:
+                        st.success("✅ Done")
+                    else:
+                        st.error("❌ Failed")
+                    if output:
+                        with st.expander("KFT output", expanded=not success):
+                            st.code(output, language=None)
 
         with scraper_col2:
             st.markdown("**Tournament Data**")

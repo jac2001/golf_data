@@ -1958,6 +1958,142 @@ def _experience_confidence(starts: pd.Series) -> pd.Series:
     return (np.log1p(starts_num) / np.log(6.0)).clip(0, 1)
 
 
+def apply_kft_adjustment(
+    predictions_df: pd.DataFrame,
+    kft_profiles_path: Path = None,
+    max_pga_seasons: int = 3,
+    max_abs_adjust: float = 0.08,
+) -> pd.DataFrame:
+    """
+    Boost predictions for players whose KFT history suggests higher skill
+    than their limited PGA Tour record indicates.
+
+    Logic:
+    - Load kft_player_profiles.csv (scoring avg, top10s, kft_sg_proxy)
+    - Identify players with < max_pga_seasons PGA Tour seasons in training data
+    - For those players, apply a modest upward adjustment proportional to
+      kft_sg_proxy, scaled by (1 - pga_experience_factor)
+    - Players with strong KFT records get more credit when they have less tour data
+
+    Adjustment is applied to win/top5/top10/top20 probs then renormalized.
+    """
+    if kft_profiles_path is None:
+        kft_profiles_path = DATA_DIR / "historical" / "kft_player_profiles.csv"
+
+    if not Path(kft_profiles_path).exists():
+        print("    ⚠  KFT profiles not found — skipping KFT adjustment")
+        return predictions_df
+
+    df = predictions_df.copy()
+
+    # Load KFT profiles
+    kft = pd.read_csv(kft_profiles_path)
+    kft["kft_sg_proxy"] = pd.to_numeric(kft["kft_sg_proxy"], errors="coerce")
+    kft["top10s"] = pd.to_numeric(kft["top10s"], errors="coerce").fillna(0)
+    kft["kft_year"] = pd.to_numeric(kft["kft_year"], errors="coerce")
+
+    # Normalize KFT names to "first last" lowercase for matching
+    def _norm(n):
+        parts = str(n).split(",")
+        if len(parts) == 2:
+            return f"{parts[1].strip()} {parts[0].strip()}".lower()
+        return str(n).strip().lower()
+
+    df["_norm"] = df["player_name"].apply(_norm)
+    kft["_norm"] = kft["player_name"].apply(lambda n: str(n).strip().lower())
+
+    # Merge KFT data onto predictions
+    df = df.merge(
+        kft[["_norm", "kft_sg_proxy", "top10s", "kft_year"]].rename(
+            columns={"top10s": "kft_top10s"}
+        ),
+        on="_norm", how="left"
+    )
+    df = df.drop(columns=["_norm"])
+
+    # Determine PGA Tour experience for each player
+    # Use number of times the player appeared in master training data (a proxy for seasons)
+    master_path = DATA_DIR / "processed" / "master_training_data_2020_2025.csv"
+    pga_seasons = {}
+    if master_path.exists():
+        master = pd.read_csv(master_path, usecols=["player_name", "year"])
+        # Count only FULL member seasons: years where a player played ≥ 10 events.
+        # Players on KFT with sponsor exemptions on PGA Tour may appear in 1-3 events
+        # per year — those shouldn't count as full PGA Tour seasons.
+        events_per_year = master.groupby(["player_name", "year"]).size().reset_index(name="events")
+        full_seasons = events_per_year[events_per_year["events"] >= 10]
+        for name, count in full_seasons.groupby("player_name").size().items():
+            pga_seasons[_norm(name)] = int(count)
+
+    df["pga_seasons"] = df["player_name"].apply(
+        lambda n: pga_seasons.get(_norm(n), 0) if pga_seasons else 0
+    )
+
+    # Only apply to players with KFT data AND limited PGA Tour experience
+    has_kft = df["kft_sg_proxy"].notna() & (df["kft_sg_proxy"] > 0)
+    limited_exp = df["pga_seasons"] <= max_pga_seasons
+    eligible = has_kft & limited_exp
+
+    n_eligible = int(eligible.sum())
+    if n_eligible == 0:
+        print("    ✓  KFT adjustment: no eligible players (all have sufficient PGA Tour history)")
+        df = df.drop(columns=["kft_sg_proxy", "kft_top10s", "kft_year", "pga_seasons"], errors="ignore")
+        return df
+
+    # Scale: players with fewer PGA Tour seasons get more credit for KFT history
+    exp_factor = (df.loc[eligible, "pga_seasons"] / max_pga_seasons).clip(0, 1)
+    novelty = 1.0 - exp_factor   # 1.0 = brand new, 0.0 = fully experienced
+
+    # KFT quality signal: z-score of kft_sg_proxy among eligible players
+    sg_proxy = df.loc[eligible, "kft_sg_proxy"]
+    if sg_proxy.std() > 0:
+        sg_signal = ((sg_proxy - sg_proxy.mean()) / sg_proxy.std()).clip(-2, 2)
+    else:
+        sg_signal = pd.Series(0.0, index=sg_proxy.index)
+
+    # Recency penalty: older KFT seasons are less relevant
+    current_year = pd.Timestamp.now().year
+    kft_age = (current_year - df.loc[eligible, "kft_year"]).clip(0, 4)
+    recency = (1.0 - kft_age / 5.0).clip(0.2, 1.0)
+
+    raw_adjust = sg_signal * novelty * recency * max_abs_adjust
+    kft_adjust = raw_adjust.clip(-max_abs_adjust, max_abs_adjust)
+
+    df["kft_adjustment"] = 0.0
+    df.loc[eligible, "kft_adjustment"] = kft_adjust
+
+    # Apply adjustment to probabilities
+    market_scale = {
+        "win_prob":   1.00,
+        "top5_prob":  0.75,
+        "top10_prob": 0.60,
+        "top20_prob": 0.40,
+    }
+    for col, scale in market_scale.items():
+        if col in df.columns:
+            df[col] = (df[col] * (1 + df["kft_adjustment"] * scale)).clip(0.001, 0.999)
+
+    # Renormalize win probs
+    if "win_prob" in df.columns:
+        total = float(df["win_prob"].sum())
+        if total > 0:
+            df["win_prob"] = (df["win_prob"] / total).clip(0, 1)
+
+    boosted = int((kft_adjust > 0.005).sum())
+    penalized = int((kft_adjust < -0.005).sum())
+    print(f"    ✓  KFT adjustment applied: {n_eligible} eligible players, "
+          f"{boosted} boosted, {penalized} penalized")
+    if boosted:
+        top_boosted = df.loc[eligible & (kft_adjust > 0.005), ["player_name", "kft_adjustment", "kft_sg_proxy", "pga_seasons"]]
+        top_boosted = top_boosted.nlargest(5, "kft_adjustment")
+        for _, row in top_boosted.iterrows():
+            print(f"      ↑ {row['player_name']} (KFT proxy={row['kft_sg_proxy']:.2f}, "
+                  f"PGA seasons={int(row['pga_seasons'])}, adj={row['kft_adjustment']:+.3f})")
+
+    df = df.drop(columns=["kft_sg_proxy", "kft_top10s", "kft_year", "pga_seasons"], errors="ignore")
+    return df
+
+
 def apply_course_performance_adjustment(
     predictions_df: pd.DataFrame,
     boost_strength: float = 0.10,
@@ -2644,6 +2780,10 @@ Examples:
             min_players_with_history=max(3, int(args.course_adjust_min_players)),
             allow_similar_fallback=(not args.no_similar_course_adjust),
         )
+
+    # Apply KFT adjustment for players with limited PGA Tour history
+    print("\n  Applying KFT development tour adjustment...")
+    predictions_df = apply_kft_adjustment(predictions_df)
 
     if not args.no_prob_postprocess:
         print("\n  Applying probability post-processing constraints...")

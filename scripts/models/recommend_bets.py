@@ -535,6 +535,194 @@ def score_single_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -> pd.D
     return pd.DataFrame(rows)
 
 
+def score_h2h_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -> pd.DataFrame:
+    """Score head-to-head matchup lines using model win probabilities.
+
+    Edge for side A = model_prob_A_vs_B - book_implied_prob_A
+    where model_prob_A_vs_B = win_prob_A / (win_prob_A + win_prob_B)
+    """
+    if preds_df.empty or lines_df.empty:
+        return pd.DataFrame()
+
+    h2h_lines = lines_df[lines_df["market"].astype(str).str.lower() == "h2h"].copy()
+    if h2h_lines.empty:
+        return pd.DataFrame()
+
+    pred = preds_df.copy()
+    pred["name_key"] = pred["player_name"].apply(normalize_name_key)
+    by_key = {r["name_key"]: r.to_dict() for _, r in pred.iterrows() if r["name_key"]}
+
+    def get_win_prob(name: Any) -> float | None:
+        k = normalize_name_key(name)
+        row = by_key.get(k)
+        if row is None:
+            # last-name fallback
+            toks = k.split()
+            if toks:
+                cands = [v for kk, v in by_key.items() if kk.split() and kk.split()[-1] == toks[-1]]
+                if len(cands) == 1:
+                    row = cands[0]
+        if row is None:
+            return None
+        for col in ["win_prob_calibrated", "win_prob", "win_prob_raw"]:
+            v = pd.to_numeric(row.get(col), errors="coerce")
+            if pd.notna(v) and v > 0:
+                return float(v)
+        return None
+
+    rows: list[dict] = []
+    for _, line in h2h_lines.iterrows():
+        pa = str(line.get("player_a", "") or "").strip()
+        pb = str(line.get("player_b", "") or "").strip()
+        odds_a = parse_american(line.get("odds_a"))
+        odds_b = parse_american(line.get("odds_b"))
+        if not pa or not pb or odds_a is None or odds_b is None:
+            continue
+
+        wp_a = get_win_prob(pa)
+        wp_b = get_win_prob(pb)
+        if wp_a is None or wp_b is None or (wp_a + wp_b) <= 0:
+            continue
+
+        # Normalised model probs for this matchup
+        denom = wp_a + wp_b
+        model_a = wp_a / denom
+        model_b = wp_b / denom
+
+        book_a = american_to_prob(odds_a)
+        book_b = american_to_prob(odds_b)
+        if pd.isna(book_a) or pd.isna(book_b):
+            continue
+
+        dec_a = american_to_decimal(odds_a)
+        dec_b = american_to_decimal(odds_b)
+        book_str = str(line.get("book", "DRAFTKINGS") or "DRAFTKINGS")
+        round_num = line.get("round_num")
+        mkt_label = f"h2h_r{int(round_num)}" if pd.notna(round_num) else "h2h"
+
+        for player, model_p, book_p, odds, dec in [
+            (pa, model_a, book_a, odds_a, dec_a),
+            (pb, model_b, book_b, odds_b, dec_b),
+        ]:
+            edge_pts = (model_p - book_p) * 100.0
+            ev_per_1 = (model_p * dec) - 1.0
+            label = f"{player} to beat {pb if player == pa else pa}"
+            if pd.notna(round_num):
+                label += f" (R{int(round_num)})"
+            rows.append({
+                "bet_type": "single",
+                "market": mkt_label,
+                "player_name": player,
+                "selection_label": label,
+                "book": book_str,
+                "odds_american": odds,
+                "book_prob": float(book_p),
+                "model_prob": float(np.clip(model_p, 0.0, 1.0)),
+                "edge_pts": float(edge_pts),
+                "ev_per_1": float(ev_per_1),
+                "confidence": 0.70 if abs(edge_pts) > 3 else 0.60,
+                "selection_count": 1,
+                "priced_legs": 1,
+                "unpriced_legs": 0,
+                "status": "priced",
+                "selection_labels_json": json.dumps([label]),
+                "card_id": "",
+                "title": "",
+            })
+
+    return pd.DataFrame(rows)
+
+
+def score_group_winner_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -> pd.DataFrame:
+    """Score 3-way group winner markets using model win probabilities.
+
+    Edge = model_prob_A_in_group - book_implied_prob_A
+    where model_prob = win_prob_A / (win_prob_A + win_prob_B + win_prob_C)
+    """
+    if preds_df.empty or lines_df.empty:
+        return pd.DataFrame()
+
+    grp_lines = lines_df[
+        lines_df["market"].astype(str).str.lower().isin(["group_winner", "group", "3_way", "3way"])
+    ].copy()
+    if grp_lines.empty:
+        return pd.DataFrame()
+
+    pred = preds_df.copy()
+    pred["name_key"] = pred["player_name"].apply(normalize_name_key)
+    by_key = {r["name_key"]: r.to_dict() for _, r in pred.iterrows() if r["name_key"]}
+
+    def get_win_prob(name: Any) -> float:
+        k = normalize_name_key(name)
+        row = by_key.get(k)
+        if row is None:
+            toks = k.split()
+            if toks:
+                cands = [v for kk, v in by_key.items() if kk.split() and kk.split()[-1] == toks[-1]]
+                if len(cands) == 1:
+                    row = cands[0]
+        if row is None:
+            return 0.01  # floor for unknown players
+        for col in ["win_prob_calibrated", "win_prob", "win_prob_raw"]:
+            v = pd.to_numeric(row.get(col), errors="coerce")
+            if pd.notna(v) and v > 0:
+                return float(v)
+        return 0.01
+
+    # Group lines by event_name + round_num to identify 3-player groups
+    group_cols = [c for c in ["event_name", "round_num", "market_name"] if c in grp_lines.columns]
+    rows: list[dict] = []
+
+    for grp_key, grp in grp_lines.groupby(group_cols) if group_cols else [("all", grp_lines)]:
+        players = []
+        for _, line in grp.iterrows():
+            pa = str(line.get("player_a", "") or line.get("player_name", "") or "").strip()
+            if pa:
+                players.append((pa, parse_american(line.get("odds_a") or line.get("odds")), line))
+
+        if len(players) < 2:
+            continue
+
+        wps = {p: get_win_prob(p) for p, _, _ in players}
+        total_wp = sum(wps.values())
+        if total_wp <= 0:
+            continue
+
+        for player, odds, line in players:
+            if odds is None:
+                continue
+            model_p = wps[player] / total_wp
+            book_p = american_to_prob(odds)
+            if pd.isna(book_p):
+                continue
+            dec = american_to_decimal(odds)
+            edge_pts = (model_p - book_p) * 100.0
+            ev_per_1 = (model_p * dec) - 1.0
+            label = f"{player} Group Winner"
+            rows.append({
+                "bet_type": "single",
+                "market": "group_winner",
+                "player_name": player,
+                "selection_label": label,
+                "book": str(line.get("book", "DRAFTKINGS") or "DRAFTKINGS"),
+                "odds_american": odds,
+                "book_prob": float(book_p),
+                "model_prob": float(np.clip(model_p, 0.0, 1.0)),
+                "edge_pts": float(edge_pts),
+                "ev_per_1": float(ev_per_1),
+                "confidence": 0.65,
+                "selection_count": 1,
+                "priced_legs": 1,
+                "unpriced_legs": 0,
+                "status": "priced",
+                "selection_labels_json": json.dumps([label]),
+                "card_id": "",
+                "title": "",
+            })
+
+    return pd.DataFrame(rows)
+
+
 @dataclass
 class RecommendationConfig:
     min_confidence: float = 0.60
@@ -566,9 +754,14 @@ def apply_recommendation_filters(df: pd.DataFrame, cfg: RecommendationConfig) ->
 
     if not singles.empty:
         singles = singles.sort_values(["edge_pts", "ev_per_1", "confidence"], ascending=[False, False, False])
+        # h2h and group_winner have many more legs — allow more per market
+        _h2h_mkts = singles["market"].astype(str).str.startswith("h2h") | \
+                    (singles["market"].astype(str) == "group_winner")
+        _cap = singles["market"].map(lambda m: 12 if str(m).startswith("h2h") or m == "group_winner"
+                                     else cfg.max_per_market)
         singles["_market_rank"] = singles.groupby("market").cumcount() + 1
-        singles = singles[singles["_market_rank"] <= cfg.max_per_market].drop(columns=["_market_rank"])
-        singles = singles.head(cfg.top_n)
+        singles = singles[singles["_market_rank"] <= _cap].drop(columns=["_market_rank"])
+        singles = singles.head(cfg.top_n + 20)  # allow more total to fit h2h/group
 
     if not cards.empty:
         if not cfg.include_partial_cards:
@@ -590,7 +783,9 @@ def build_recommendations(
     cards_df: pd.DataFrame,
     cfg: RecommendationConfig,
 ) -> pd.DataFrame:
-    single_df = score_single_markets(preds_df, lines_df)
+    single_df    = score_single_markets(preds_df, lines_df)
+    h2h_df       = score_h2h_markets(preds_df, lines_df)
+    group_df     = score_group_winner_markets(preds_df, lines_df)
 
     content_rows = pd.DataFrame()
     if cfg.include_cards and not cards_df.empty:
@@ -603,7 +798,7 @@ def build_recommendations(
             content_rows["selection_label"] = content_rows["title"].fillna("")
             content_rows["book"] = "DRAFTKINGS"
 
-    all_rows = pd.concat([single_df, content_rows], ignore_index=True)
+    all_rows = pd.concat([single_df, h2h_df, group_df, content_rows], ignore_index=True)
     if all_rows.empty:
         return all_rows
 

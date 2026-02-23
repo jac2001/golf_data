@@ -213,5 +213,111 @@
     ],
     "success_count": 1,
     "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-21T14:13:50.319469",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-21T20:03:48.220785",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-22T08:49:47.508750",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-22T14:24:17.525175",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-22T20:13:51.691853",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-22T23:00:06.233823",
+    "schedule": "record",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Final Leaderboard",
+        "success": false
+      },
+      {
+        "task": "Auto Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Recommended Bets",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 3
   }
 ]

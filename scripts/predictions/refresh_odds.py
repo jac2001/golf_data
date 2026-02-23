@@ -131,6 +131,15 @@ def refresh_odds(tournament_id: str) -> bool:
     n_value  = int(merged["is_value_bet"].sum()) if "is_value_bet" in merged.columns else "—"
     n_edge   = int((merged["model_vs_vegas_edge"].abs() > 0.03).sum()) if "model_vs_vegas_edge" in merged.columns else "—"
     print(f"  ✅ Saved. Value bets: {n_value}  |  Players with edge >3pts: {n_edge}")
+
+    # Auto-save a drift snapshot so the dashboard can track odds movement
+    try:
+        _snap_script = PROJECT_ROOT / "scripts" / "predictions" / "save_odds_snapshot.py"
+        import subprocess as _sp
+        _sp.run(["python3", str(_snap_script)], capture_output=True, cwd=PROJECT_ROOT)
+    except Exception:
+        pass  # Non-fatal; dashboard will just show no movement data
+
     return True
     
 

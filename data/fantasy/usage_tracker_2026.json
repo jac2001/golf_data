@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-02-18T23:32:38.184439",
+  "last_updated": "2026-02-22T21:49:36.001053",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -94,11 +94,13 @@
         {
           "tournament": "The Genesis Invitational",
           "week": 3,
-          "date": "2026-02-19"
+          "date": "2026-02-19",
+          "result": "T28",
+          "points": 40
         }
       ],
       "remaining_uses": 2,
-      "total_points": 0
+      "total_points": 40
     },
     "Viktor Hovland": {
       "times_used": 1,
@@ -106,11 +108,13 @@
         {
           "tournament": "The Genesis Invitational",
           "week": 3,
-          "date": "2026-02-19"
+          "date": "2026-02-19",
+          "result": "T41",
+          "points": 22
         }
       ],
       "remaining_uses": 2,
-      "total_points": 0
+      "total_points": 22
     },
     "Patrick Cantlay": {
       "times_used": 1,
@@ -118,11 +122,13 @@
         {
           "tournament": "The Genesis Invitational",
           "week": 3,
-          "date": "2026-02-19"
+          "date": "2026-02-19",
+          "result": "T37",
+          "points": 28
         }
       ],
       "remaining_uses": 2,
-      "total_points": 0
+      "total_points": 28
     }
   },
   "weekly_lineups": {
@@ -163,6 +169,6 @@
   "summary": {
     "total_players_used": 9,
     "total_picks_made": 9,
-    "total_points": 712
+    "total_points": 802
   }
 }

@@ -1,0 +1,12 @@
+Expected tournament for R2026007: The Genesis Invitational
+Trying live DraftKings endpoints...
+Using eventgroup id: 89343
+Detected sport/league names: Golf, The Genesis Invitational, Genesis Invitational 2026
+Saved raw payload snapshot to: /Users/jacklegnon/Desktop/golf_data/data/odds/snapshots/draftkings_props_R2026007_20260221_113602.json
+Saved 13 content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_R2026007.csv
+Saved latest content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_latest.csv
+Saved 151 prop lines to: /Users/jacklegnon/Desktop/golf_data/data/odds/prop_lines_R2026007.csv
+Parsed markets:
+  top10: 51
+  top5: 51
+  outright: 49

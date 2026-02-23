@@ -63,7 +63,7 @@ def find_pending_tournaments(usage_data: dict) -> list:
     
     pending = []
     for player_name, player_data in usage_data.get("picks", {}).items():
-        for t in player_data.get("tournament_used", []):
+        for t in player_data.get("tournaments_used", player_data.get("tournament_used", [])):
             if t.get("result") is None or t.get('points') is None:
                 tournament = t.get("tournament")
                 if tournament and tournament not in pending:

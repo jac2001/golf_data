@@ -55,6 +55,30 @@ TOURNAMENT_EVENTGROUP_OVERRIDES = {
     "R2026007": "89343",  # The Genesis Invitational
 }
 
+# Auto-persisted cache — written after successful discovery so subsequent
+# runs for the same tournament skip the slow DK page scrape entirely.
+_EG_CACHE_PATH = PROJECT_ROOT / "data" / "odds" / ".dk_eventgroup_cache.json"
+
+
+def _load_eg_cache() -> dict:
+    try:
+        if _EG_CACHE_PATH.exists():
+            return json.load(_EG_CACHE_PATH.open())
+    except Exception:
+        pass
+    return {}
+
+
+def _save_eg_cache(tournament_id: str, eventgroup_id: str) -> None:
+    try:
+        cache = _load_eg_cache()
+        cache[str(tournament_id).upper()] = str(eventgroup_id)
+        _EG_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with _EG_CACHE_PATH.open("w") as f:
+            json.dump(cache, f, indent=2)
+    except Exception:
+        pass
+
 TOURNAMENT_STOPWORDS = {
     "the",
     "and",
@@ -416,6 +440,8 @@ def _classify_market(market_name: str, offer_name: str, event_name: str, outcome
         ):
             return "winner"
 
+    if any(k in text for k in ["group winner", "tournament groups", "group_winner"]):
+        return "group_winner"
     if "round score" in text:
         return "round_score"
     if "birdie" in text:
@@ -1031,7 +1057,7 @@ def parse_draftkings_payloads(payloads: List[Any], fetched_at: str) -> pd.DataFr
 
     # Drop clearly invalid rows.
     keep = (
-        (df["market"].eq("winner") & df["player_name"].notna() & df["odds"].notna())
+        (df["market"].isin(["winner", "group_winner"]) & df["player_name"].notna() & df["odds"].notna())
         |
         (df["market"].eq("h2h") & df["player_a"].notna() & df["player_b"].notna() & df["odds_a"].notna() & df["odds_b"].notna())
         |
@@ -1777,13 +1803,32 @@ def load_input_payloads(patterns: List[str]) -> List[Any]:
             if not p.exists() or p.is_dir():
                 continue
             try:
-                raw = json.loads(p.read_text())
-                if isinstance(raw, list):
-                    payloads.extend(raw)
-                else:
-                    payloads.append(raw)
+                raw = json.loads(p.read_text(errors="ignore"))
             except Exception:
                 continue
+            # HAR file: walk all response bodies as separate payloads
+            if isinstance(raw, dict) and isinstance(raw.get("log"), dict):
+                entries = raw["log"].get("entries") or []
+                n_extracted = 0
+                for e in entries:
+                    if not isinstance(e, dict):
+                        continue
+                    resp = e.get("response", {})
+                    content = resp.get("content", {}) if isinstance(resp, dict) else {}
+                    ctext = content.get("text") if isinstance(content, dict) else None
+                    if not ctext:
+                        continue
+                    try:
+                        body = json.loads(ctext)
+                        payloads.append(body)
+                        n_extracted += 1
+                    except Exception:
+                        pass
+                print(f"  HAR: extracted {n_extracted} response payloads from {p.name}")
+            elif isinstance(raw, list):
+                payloads.extend(raw)
+            else:
+                payloads.append(raw)
     return payloads
 
 
@@ -2118,9 +2163,9 @@ def main() -> None:
     )
     parser.add_argument(
         "--fetch-profile",
-        choices=["fast", "balanced", "full"],
-        default="fast",
-        help="Network fetch intensity for DK subcategory/category expansion (default: fast)",
+        choices=["targeted", "fast", "balanced", "full"],
+        default="targeted",
+        help="Network fetch intensity (default: targeted — win/top5/top10/h2h/round props only)",
     )
     parser.add_argument("--output", help="Custom output CSV path")
     parser.add_argument("--content-cards-output", help="Custom output CSV path for content cards")
@@ -2157,6 +2202,8 @@ def main() -> None:
         print(f"Expected tournament for {args.tournament_id}: {expected_tournament_name}")
 
     profile_cfg = {
+        # targeted: only the subcategory IDs we actually use — fastest after first run
+        "targeted": {"max_subcategories": 20, "max_categories": 10, "request_timeout": 8, "max_workers": 12, "target_only": True},
         "fast": {"max_subcategories": 24, "max_categories": 12, "request_timeout": 6, "max_workers": 10, "target_only": True},
         "balanced": {"max_subcategories": 50, "max_categories": 25, "request_timeout": 8, "max_workers": 10, "target_only": False},
         "full": {"max_subcategories": 120, "max_categories": 60, "request_timeout": 12, "max_workers": 12, "target_only": False},
@@ -2183,16 +2230,28 @@ def main() -> None:
             print(f"Loaded {len(extra_card_payloads)} content-card payload candidate(s) from --content-cards-input")
 
     if not payloads:
+        # ── Resolve eventgroup ID: CLI override → manual dict → cache → discover ──
+        resolved_eg_id = args.eventgroup_id
+        if not resolved_eg_id:
+            resolved_eg_id = _resolve_override_eventgroup_id(args.tournament_id)
+        if not resolved_eg_id:
+            _cache = _load_eg_cache()
+            resolved_eg_id = _cache.get(str(args.tournament_id).upper(), "")
+            if resolved_eg_id:
+                print(f"Using cached eventgroup id for {args.tournament_id}: {resolved_eg_id}")
+
         print("Trying live DraftKings endpoints...")
         payloads, chosen_eventgroup, detected_names = fetch_live_dk_payloads(
             region=args.region,
-            eventgroup_id=args.eventgroup_id,
+            eventgroup_id=resolved_eg_id or None,
             expected_tournament_name=expected_tournament_name,
             tournament_id=args.tournament_id,
             **profile_cfg,
         )
         if chosen_eventgroup:
             print(f"Using eventgroup id: {chosen_eventgroup}")
+            # Persist for next run — skips discovery entirely
+            _save_eg_cache(args.tournament_id, chosen_eventgroup)
         if detected_names:
             print(f"Detected sport/league names: {', '.join(detected_names[:6])}")
 
