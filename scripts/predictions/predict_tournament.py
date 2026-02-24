@@ -1433,6 +1433,64 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     features_df['field_median_rank'] = field_median_rank
     print(f"  Field strength: avg={field_avg_rank:.1f}, median={field_median_rank:.1f}")
 
+    # ADD FIELD-AVERAGE SG FEATURES (vs-field deltas + percentile ranks)
+    sg_field_cols = ['season_sg_ott', 'season_sg_app', 'season_sg_arg',
+                     'season_sg_putt', 'season_sg_total', 'predictive_sg_weighted']
+    for col in sg_field_cols:
+        if col in features_df.columns:
+            col_mean = features_df[col].mean()
+            features_df[f'{col}_vs_field'] = features_df[col] - col_mean
+            features_df[f'field_avg_{col}'] = col_mean
+    for col in ['season_sg_ott', 'season_sg_app', 'season_sg_arg', 'season_sg_putt']:
+        if col in features_df.columns:
+            features_df[f'{col}_field_pct'] = features_df[col].rank(pct=True)
+            features_df[f'{col}_field_rank'] = features_df[col].rank(ascending=False, na_option='bottom').fillna(0).astype(int)
+    print(f"  SG vs-field features added")
+
+    # ADD NON-SG TOUR STAT FIELD RANKS (driving dist, GIR, scrambling etc.)
+    NON_SG_STATS = {
+        '101': ('driving_dist',      False),   # False = higher is better
+        '103': ('gir_pct',           False),
+        '130': ('scrambling',        False),
+        '104': ('putts_per_round',   True),    # True = lower is better
+        '352': ('bogey_avoid',       False),
+        '156': ('birdie_avg',        False),
+    }
+    try:
+        fs_year = _latest_year_for("form_stats_")
+        if fs_year:
+            fs_path = HISTORICAL_DIR / f'form_stats_{fs_year}.csv'
+            if fs_path.exists():
+                fs = pd.read_csv(fs_path)
+                fs['player_id'] = fs['player_id'].astype(str)
+                fs['stat_id'] = fs['stat_id'].astype(str)
+                # Get most recent value per player per stat (last tournament entry)
+                fs_latest = (
+                    fs.sort_values('tournament_id')
+                    .groupby(['player_id', 'stat_id'])
+                    .tail(1)
+                )
+                stat_pivot = fs_latest.pivot_table(
+                    index='player_id', columns='stat_id',
+                    values='stat_value_numeric', aggfunc='first'
+                ).reset_index()
+                stat_pivot.columns.name = None
+                features_df['player_id'] = features_df['player_id'].astype(str)
+                features_df = features_df.merge(stat_pivot, on='player_id', how='left')
+                for stat_id, (col_name, lower_is_better) in NON_SG_STATS.items():
+                    if stat_id in features_df.columns:
+                        features_df = features_df.rename(columns={stat_id: f'{col_name}_val'})
+                        val_col = f'{col_name}_val'
+                        field_avg = features_df[val_col].mean()
+                        features_df[f'{col_name}_field_avg'] = field_avg
+                        features_df[f'{col_name}_field_rank'] = features_df[val_col].rank(
+                            ascending=lower_is_better, na_option='bottom').fillna(0).astype(int)
+                        features_df[f'{col_name}_field_pct'] = features_df[val_col].rank(
+                            ascending=not lower_is_better, pct=True)
+                print(f"  Non-SG tour stat field ranks added from form_stats_{fs_year}.csv")
+    except Exception as e:
+        print(f"  Non-SG stat ranks skipped: {e}")
+
     # ADD FORM FEATURES (recent performance indicators)
     try:
         # Load latest available form stats

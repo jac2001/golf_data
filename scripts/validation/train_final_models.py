@@ -143,6 +143,9 @@ print("ℹ️  EXCLUDING course_sg_* features - confirmed 0% importance across a
 # Combine all features (WITHOUT leaky features, WITHOUT zero-importance course SG)
 # Note: has_won_here is already in hist_features (starts with 'has_'), so don't add it again
 all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features
+# Deduplicate while preserving order (some cols like season_sg_*_field_pct match multiple groups)
+_seen = set()
+all_features = [f for f in all_features if f not in _seen and not _seen.add(f)]
 
 # Filter to only existing features that have coverage in training years
 available_features = [

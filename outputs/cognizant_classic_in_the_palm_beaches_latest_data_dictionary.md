@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-24 07:59
+Generated: 2026-02-24 09:00
 
 | Column | Description |
 |--------|-------------|
@@ -38,6 +38,60 @@ Generated: 2026-02-24 07:59
 | world_rank | Current world rank (lower is better) |
 | field_avg_rank | Average world rank of the field |
 | field_median_rank | Median world rank of the field |
+| season_sg_ott_vs_field | No description available |
+| field_avg_season_sg_ott | No description available |
+| season_sg_app_vs_field | No description available |
+| field_avg_season_sg_app | No description available |
+| season_sg_arg_vs_field | No description available |
+| field_avg_season_sg_arg | No description available |
+| season_sg_putt_vs_field | No description available |
+| field_avg_season_sg_putt | No description available |
+| season_sg_total_vs_field | No description available |
+| field_avg_season_sg_total | No description available |
+| season_sg_ott_field_pct | No description available |
+| season_sg_ott_field_rank | No description available |
+| season_sg_app_field_pct | No description available |
+| season_sg_app_field_rank | No description available |
+| season_sg_arg_field_pct | No description available |
+| season_sg_arg_field_rank | No description available |
+| season_sg_putt_field_pct | No description available |
+| season_sg_putt_field_rank | No description available |
+| driving_dist_val | No description available |
+| 102 | No description available |
+| gir_pct_val | No description available |
+| putts_per_round_val | No description available |
+| 108 | No description available |
+| 111 | No description available |
+| 119 | No description available |
+| 120 | No description available |
+| scrambling_val | No description available |
+| 142 | No description available |
+| 143 | No description available |
+| birdie_avg_val | No description available |
+| 160 | No description available |
+| 2414 | No description available |
+| 2419 | No description available |
+| 299 | No description available |
+| bogey_avoid_val | No description available |
+| 413 | No description available |
+| driving_dist_field_avg | No description available |
+| driving_dist_field_rank | No description available |
+| driving_dist_field_pct | No description available |
+| gir_pct_field_avg | No description available |
+| gir_pct_field_rank | No description available |
+| gir_pct_field_pct | No description available |
+| scrambling_field_avg | No description available |
+| scrambling_field_rank | No description available |
+| scrambling_field_pct | No description available |
+| putts_per_round_field_avg | No description available |
+| putts_per_round_field_rank | No description available |
+| putts_per_round_field_pct | No description available |
+| bogey_avoid_field_avg | No description available |
+| bogey_avoid_field_rank | No description available |
+| bogey_avoid_field_pct | No description available |
+| birdie_avg_field_avg | No description available |
+| birdie_avg_field_rank | No description available |
+| birdie_avg_field_pct | No description available |
 | form_trend | SG:Total trend over recent events (positive = improving) |
 | finish_consistency | Normalized finish volatility (lower = steadier) |
 | recent_top10s | Recency-weighted top-10 count over last N events |

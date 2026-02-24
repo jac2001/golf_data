@@ -282,6 +282,21 @@ if ADD_SEASON_SG and tournament_stats is not None:
         print(f"  ✓ Season SG features added: {season_cols}")
         print(f"  ✓ Coverage: {coverage:.1f}%")
 
+    # Per-tournament field averages → vs_field deltas + percentile ranks
+    sg_field_cols = ['season_sg_ott', 'season_sg_app', 'season_sg_arg',
+                     'season_sg_putt', 'season_sg_total', 'predictive_sg_weighted']
+    present = [c for c in sg_field_cols if c in merged.columns]
+    if present:
+        field_avgs = merged.groupby('tournament_id')[present].mean().reset_index()
+        field_avgs.columns = ['tournament_id'] + [f'field_avg_{c}' for c in present]
+        merged = merged.merge(field_avgs, on='tournament_id', how='left')
+        for col in present:
+            merged[f'{col}_vs_field'] = merged[col] - merged[f'field_avg_{col}']
+        for col in ['season_sg_ott', 'season_sg_app', 'season_sg_arg', 'season_sg_putt']:
+            if col in merged.columns:
+                merged[f'{col}_field_pct'] = merged.groupby('tournament_id')[col].rank(pct=True)
+        print(f"    ✓ SG vs-field features added ({len(present)} stats)")
+
 # ============================================================================
 # STEP 4: Add course history features
 # ============================================================================

@@ -6931,57 +6931,146 @@ elif page == "👤 Players":
                 
                 
                 # ── SG BREAKDOWN (season averages by category) ────────────────────────
-                st.markdown("#### 🎯 Strokes Gained Breakdown")
+                st.markdown("#### Strokes Gained Breakdown")
                 st.caption(
-                    "Season SG per category. Zero = tour average. "
+                    "Season SG per category. **Zero = tour average.** "
+                    "Right column = rank within this week's field.  "
                     "**OTT** = Off Tee · **APP** = Approach · **ARG** = Around Green · "
                     "**PUTT** = Putting · **T2G** = Tee to Green"
                 )
-                
-                
-               # Column names from latest_predictions.csv — season-to-date averages
-                _sg_keys  = ["season_sg_ott", "season_sg_app", "season_sg_arg",
-                            "season_sg_putt", "season_sg_t2g"]
+
+                # Column names from latest_predictions.csv — season-to-date averages
+                _sg_keys   = ["season_sg_ott", "season_sg_app", "season_sg_arg",
+                               "season_sg_putt", "season_sg_t2g"]
                 _sg_labels = ["Off Tee", "Approach", "Around Green", "Putting", "Tee to Green"]
+                _sg_rank_keys = ["season_sg_ott_field_rank", "season_sg_app_field_rank",
+                                 "season_sg_arg_field_rank", "season_sg_putt_field_rank", None]
 
                 _sg_vals = [player_data.get(k, 0) or 0 for k in _sg_keys]
+                _n_field = len(preds_df) if not preds_df.empty else None
 
-                # Horizontal bar chart — easy to read, makes positive/negative obvious
-                _sg_colors = ["#00c44f" if v >= 0 else "#e53935" for v in _sg_vals]
+                # Two-column layout: chart left, rank badges right
+                _sg_chart_col, _sg_rank_col = st.columns([3, 1])
+                with _sg_chart_col:
+                    _sg_colors = ["#00c44f" if v >= 0 else "#e53935" for v in _sg_vals]
+                    _fig2 = px.bar(
+                        x=_sg_vals, y=_sg_labels,
+                        orientation="h",
+                        text=[f"{v:+.2f}" for v in _sg_vals],
+                        labels={"x": "Strokes vs Tour Avg", "y": ""},
+                    )
+                    _fig2.update_traces(marker_color=_sg_colors, textposition="outside",
+                          textfont=dict(size=11, color="#dde6f5"))
+                    _fig2.add_vline(x=0, line_dash="dot", line_color="#4a6080", line_width=1)
+                    # Add dotted line at field avg delta (vs_field value relative to bar)
+                    for _si, (_sk, _rk) in enumerate(zip(_sg_keys, _sg_rank_keys)):
+                        _vs_field = player_data.get(f'{_sk}_vs_field')
+                        if _vs_field is not None and not pd.isna(_vs_field):
+                            _field_avg_x = _sg_vals[_si] - float(_vs_field)
+                            _fig2.add_vline(x=_field_avg_x, line_dash="dashdot",
+                                            line_color="#4cb8ff", line_width=1, opacity=0.6)
+                    _fig2.update_layout(
+                        height=240,
+                        margin=dict(t=10, b=10, l=10, r=50),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font_color="#dde6f5",
+                        xaxis=dict(gridcolor="#1c2f4a"),
+                        yaxis=dict(gridcolor="#1c2f4a"),
+                        showlegend=False,
+                    )
+                    st.plotly_chart(_fig2, use_container_width=True)
 
-                _fig2 = px.bar(
-                    x=_sg_vals, y=_sg_labels,
-                    orientation="h",
-                    text=[f"{v:+.2f}" for v in _sg_vals],
-                    labels={"x": "Strokes vs Tour Avg", "y": ""},
-                )
-                
-                _fig2.update_traces(marker_color=_sg_colors, textposition="outside",
-                      textfont=dict(size=11, color="#dde6f5"))
-                _fig2.add_vline(x=0, line_dash="dot", line_color="#4a6080", line_width=1)
-                _fig2.update_layout(
-                    height=240,
-                    margin=dict(t=10, b=10, l=10, r=50),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    font_color="#dde6f5",
-                    xaxis=dict(gridcolor="#1c2f4a"),
-                    yaxis=dict(gridcolor="#1c2f4a"),
-                    showlegend=False,
-                )
-                
-                st.plotly_chart(_fig2, use_container_width=True)
-                
-                # Auto-surface best + worst category so the use does not have to read the chart 
+                with _sg_rank_col:
+                    st.markdown("<div style='margin-top:14px'></div>", unsafe_allow_html=True)
+                    _rank_rows = []
+                    for _lbl, _rk in zip(_sg_labels, _sg_rank_keys):
+                        if _rk and _n_field:
+                            _r = player_data.get(_rk)
+                            if _r is not None and not pd.isna(_r):
+                                _r_int = int(_r)
+                                _color = "#00c44f" if _r_int <= _n_field * 0.25 else (
+                                         "#f0b429" if _r_int <= _n_field * 0.5 else "#e53935")
+                                _rank_rows.append(
+                                    f"<div style='font-size:12px;margin-bottom:8px'>"
+                                    f"<span style='color:#8aa0bc'>{_lbl[:3]}</span> "
+                                    f"<span style='color:{_color};font-weight:600'>{_r_int}</span>"
+                                    f"<span style='color:#4a6080'>/{_n_field}</span></div>"
+                                )
+                            else:
+                                _rank_rows.append(
+                                    f"<div style='font-size:12px;margin-bottom:8px'>"
+                                    f"<span style='color:#8aa0bc'>{_lbl[:3]}</span> "
+                                    f"<span style='color:#4a6080'>—</span></div>"
+                                )
+                    if _rank_rows:
+                        st.markdown("".join(_rank_rows), unsafe_allow_html=True)
+
+                # Auto-surface best + worst category
                 _best_i = _sg_vals.index(max(_sg_vals))
                 _worst_i = _sg_vals.index(min(_sg_vals))
-                
-                
                 st.caption(
-      f"💪 **Strength:** {_sg_labels[_best_i]} ({_sg_vals[_best_i]:+.2f} strokes/round)  "
-      f"&nbsp;·&nbsp;  "
-      f"⚠️  **Weakness:** {_sg_labels[_worst_i]} ({_sg_vals[_worst_i]:+.2f} strokes/round)"
-  )
+                    f"Strength: **{_sg_labels[_best_i]}** ({_sg_vals[_best_i]:+.2f} strokes/round)"
+                    f"  ·  "
+                    f"Weakness: **{_sg_labels[_worst_i]}** ({_sg_vals[_worst_i]:+.2f} strokes/round)  "
+                    f"  ·  Blue line = this week's field average"
+                )
+
+                # ── TOUR STATS TABLE (non-SG: driving, GIR, scrambling etc.) ──────────
+                _tour_stat_defs = [
+                    ("Driving Dist",  "driving_dist",    "yds",  False),
+                    ("GIR %",         "gir_pct",         "%",    False),
+                    ("Scrambling",    "scrambling",       "%",    False),
+                    ("Bogey Avoid",   "bogey_avoid",      "%",    False),
+                    ("Birdie Avg",    "birdie_avg",       "",     False),
+                    ("Putts/Round",   "putts_per_round",  "",     True),
+                ]
+                _tour_rows = []
+                for _ts_label, _ts_col, _ts_unit, _ts_lower in _tour_stat_defs:
+                    _val = player_data.get(f'{_ts_col}_val')
+                    _avg = player_data.get(f'{_ts_col}_field_avg')
+                    _rnk = player_data.get(f'{_ts_col}_field_rank')
+                    if _val is not None and not pd.isna(_val):
+                        _tour_rows.append((_ts_label, _val, _avg, _rnk, _ts_unit, _ts_lower))
+
+                if _tour_rows and _n_field:
+                    st.markdown("#### Tour Stats vs Field")
+                    _ts_html = (
+                        "<table style='width:100%;border-collapse:collapse;font-size:12px'>"
+                        "<thead><tr>"
+                        "<th style='text-align:left;color:#8aa0bc;padding:4px 6px;border-bottom:1px solid #1c2f4a'>Stat</th>"
+                        "<th style='text-align:right;color:#8aa0bc;padding:4px 6px;border-bottom:1px solid #1c2f4a'>Value</th>"
+                        "<th style='text-align:right;color:#8aa0bc;padding:4px 6px;border-bottom:1px solid #1c2f4a'>Field Avg</th>"
+                        "<th style='text-align:right;color:#8aa0bc;padding:4px 6px;border-bottom:1px solid #1c2f4a'>Field Rank</th>"
+                        "</tr></thead><tbody>"
+                    )
+                    for _ts_label, _val, _avg, _rnk, _ts_unit, _ts_lower in _tour_rows:
+                        _rnk_int = int(_rnk) if _rnk is not None and not pd.isna(_rnk) else None
+                        if _rnk_int:
+                            _good = _rnk_int <= _n_field * 0.25
+                            _mid  = _rnk_int <= _n_field * 0.5
+                            _rc   = "#00c44f" if _good else ("#f0b429" if _mid else "#e53935")
+                            _rnk_str = f"<span style='color:{_rc};font-weight:600'>{_rnk_int}</span><span style='color:#4a6080'>/{_n_field}</span>"
+                        else:
+                            _rnk_str = "<span style='color:#4a6080'>—</span>"
+                        _fmt_val = f"{_val:.1f}{_ts_unit}"
+                        _fmt_avg = f"{_avg:.1f}{_ts_unit}" if _avg is not None and not pd.isna(_avg) else "—"
+                        # Color the value: green if better than field avg, red if worse
+                        if _avg is not None and not pd.isna(_avg):
+                            _better = (_val < _avg) if _ts_lower else (_val > _avg)
+                            _vc = "#00c44f" if _better else "#e53935"
+                        else:
+                            _vc = "#dde6f5"
+                        _ts_html += (
+                            f"<tr>"
+                            f"<td style='color:#8aa0bc;padding:4px 6px;border-bottom:1px solid #0f1c2e'>{_ts_label}</td>"
+                            f"<td style='text-align:right;color:{_vc};font-weight:600;padding:4px 6px;border-bottom:1px solid #0f1c2e'>{_fmt_val}</td>"
+                            f"<td style='text-align:right;color:#7a8fa8;padding:4px 6px;border-bottom:1px solid #0f1c2e'>{_fmt_avg}</td>"
+                            f"<td style='text-align:right;padding:4px 6px;border-bottom:1px solid #0f1c2e'>{_rnk_str}</td>"
+                            f"</tr>"
+                        )
+                    _ts_html += "</tbody></table>"
+                    st.markdown(_ts_html, unsafe_allow_html=True)
 
                 
                 
