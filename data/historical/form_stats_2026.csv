@@ -1,4 +1,55 @@
 player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament_name,year,stat_value_numeric
+60004,Jacob Bridgeman,1,120,Scoring Average,67.845,R2026007,The Genesis Invitational,2026,67.845
+48117,Kurt Kitayama,2,120,Scoring Average,68.095,R2026007,The Genesis Invitational,2026,68.095
+28237,Rory McIlroy,2,120,Scoring Average,68.095,R2026007,The Genesis Invitational,2026,68.095
+24502,Adam Scott,4,120,Scoring Average,68.345,R2026007,The Genesis Invitational,2026,68.345
+63343,Aldrich Potgieter,5,120,Scoring Average,68.595,R2026007,The Genesis Invitational,2026,68.595
+47420,Jake Knapp,6,120,Scoring Average,69.095,R2026007,The Genesis Invitational,2026,69.095
+30911,Tommy Fleetwood,7,120,Scoring Average,69.345,R2026007,The Genesis Invitational,2026,69.345
+29936,Ryan Fox,7,120,Scoring Average,69.345,R2026007,The Genesis Invitational,2026,69.345
+50525,Collin Morikawa,7,120,Scoring Average,69.345,R2026007,The Genesis Invitational,2026,69.345
+48081,Xander Schauffele,7,120,Scoring Average,69.345,R2026007,The Genesis Invitational,2026,69.345
+57366,Cameron Young,7,120,Scoring Average,69.345,R2026007,The Genesis Invitational,2026,69.345
+37378,Min Woo Lee,12,120,Scoring Average,69.595,R2026007,The Genesis Invitational,2026,69.595
+27349,Alex Noren,12,120,Scoring Average,69.595,R2026007,The Genesis Invitational,2026,69.595
+46046,Scottie Scheffler,12,120,Scoring Average,69.595,R2026007,The Genesis Invitational,2026,69.595
+34046,Jordan Spieth,12,120,Scoring Average,69.595,R2026007,The Genesis Invitational,2026,69.595
+56630,Akshay Bhatia,16,120,Scoring Average,69.845,R2026007,The Genesis Invitational,2026,69.845
+59836,Pierceson Coody,16,120,Scoring Average,69.845,R2026007,The Genesis Invitational,2026,69.845
+51003,Marco Penge,16,120,Scoring Average,69.845,R2026007,The Genesis Invitational,2026,69.845
+55893,Sam Stevens,16,120,Scoring Average,69.845,R2026007,The Genesis Invitational,2026,69.845
+52955,Ludvig Åberg,20,120,Scoring Average,70.095,R2026007,The Genesis Invitational,2026,70.095
+52215,Robert MacIntyre,20,120,Scoring Average,70.095,R2026007,The Genesis Invitational,2026,70.095
+34099,Harris English,22,120,Scoring Average,70.345,R2026007,The Genesis Invitational,2026,70.345
+51634,Sahith Theegala,22,120,Scoring Average,70.345,R2026007,The Genesis Invitational,2026,70.345
+40098,Matt Fitzpatrick,24,120,Scoring Average,70.595,R2026007,The Genesis Invitational,2026,70.595
+51977,Max Greyserman,24,120,Scoring Average,70.595,R2026007,The Genesis Invitational,2026,70.595
+33204,Shane Lowry,24,120,Scoring Average,70.595,R2026007,The Genesis Invitational,2026,70.595
+59141,Matt McCarty,24,120,Scoring Average,70.595,R2026007,The Genesis Invitational,2026,70.595
+29725,Tony Finau,28,120,Scoring Average,70.845,R2026007,The Genesis Invitational,2026,70.845
+32102,Rickie Fowler,28,120,Scoring Average,70.845,R2026007,The Genesis Invitational,2026,70.845
+59018,Ryan Gerard,28,120,Scoring Average,70.845,R2026007,The Genesis Invitational,2026,70.845
+32839,Hideki Matsuyama,28,120,Scoring Average,70.845,R2026007,The Genesis Invitational,2026,70.845
+46414,Aaron Rai,28,120,Scoring Average,70.845,R2026007,The Genesis Invitational,2026,70.845
+25493,Nick Taylor,28,120,Scoring Average,70.845,R2026007,The Genesis Invitational,2026,70.845
+37455,Si Woo Kim,34,120,Scoring Average,71.095,R2026007,The Genesis Invitational,2026,71.095
+55182,Tom Kim,34,120,Scoring Average,71.095,R2026007,The Genesis Invitational,2026,71.095
+36699,Patrick Rodgers,34,120,Scoring Average,71.095,R2026007,The Genesis Invitational,2026,71.095
+35450,Patrick Cantlay,37,120,Scoring Average,71.345,R2026007,The Genesis Invitational,2026,71.345
+39997,Corey Conners,37,120,Scoring Average,71.345,R2026007,The Genesis Invitational,2026,71.345
+39977,Max Homa,37,120,Scoring Average,71.345,R2026007,The Genesis Invitational,2026,71.345
+52666,Sami Valimaki,37,120,Scoring Average,71.345,R2026007,The Genesis Invitational,2026,71.345
+51766,Wyndham Clark,41,120,Scoring Average,71.595,R2026007,The Genesis Invitational,2026,71.595
+54591,Ben Griffin,41,120,Scoring Average,71.595,R2026007,The Genesis Invitational,2026,71.595
+46717,Viktor Hovland,41,120,Scoring Average,71.595,R2026007,The Genesis Invitational,2026,71.595
+27064,Jhonattan Vegas,44,120,Scoring Average,71.845,R2026007,The Genesis Invitational,2026,71.845
+51287,Ryo Hisatsune,45,120,Scoring Average,72.095,R2026007,The Genesis Invitational,2026,72.095
+40250,Taylor Pendrith,45,120,Scoring Average,72.095,R2026007,The Genesis Invitational,2026,72.095
+47993,Denny McCarthy,47,120,Scoring Average,72.345,R2026007,The Genesis Invitational,2026,72.345
+51997,Andrew Novak,47,120,Scoring Average,72.345,R2026007,The Genesis Invitational,2026,72.345
+48867,Matti Schmid,49,120,Scoring Average,72.845,R2026007,The Genesis Invitational,2026,72.845
+27644,Brian Harman,50,120,Scoring Average,73.595,R2026007,The Genesis Invitational,2026,73.595
+49960,Sepp Straka,50,120,Scoring Average,73.595,R2026007,The Genesis Invitational,2026,73.595
 50525,Collin Morikawa,1,120,Scoring Average,68.861,R2026005,AT&T Pebble Beach Pro-Am,2026,68.861
 37378,Min Woo Lee,2,120,Scoring Average,69.111,R2026005,AT&T Pebble Beach Pro-Am,2026,69.111
 30911,Tommy Fleetwood,3,120,Scoring Average,69.361,R2026005,AT&T Pebble Beach Pro-Am,2026,69.361
@@ -373,6 +424,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47983,Chad Ramey,71,120,Scoring Average,71.033,R2026006,Sony Open in Hawaii,2026,71.033
 61148,Kota Kaneko,73,120,Scoring Average,71.533,R2026006,Sony Open in Hawaii,2026,71.533
 29420,Billy Horschel,74,120,Scoring Average,71.783,R2026006,Sony Open in Hawaii,2026,71.783
+50525,Collin Morikawa,1,156,Birdie Average,5.50,R2026007,The Genesis Invitational,2026,5.5
+60004,Jacob Bridgeman,2,156,Birdie Average,5.25,R2026007,The Genesis Invitational,2026,5.25
+24502,Adam Scott,2,156,Birdie Average,5.25,R2026007,The Genesis Invitational,2026,5.25
+57366,Cameron Young,2,156,Birdie Average,5.25,R2026007,The Genesis Invitational,2026,5.25
+52955,Ludvig Åberg,5,156,Birdie Average,5.00,R2026007,The Genesis Invitational,2026,5.0
+51766,Wyndham Clark,5,156,Birdie Average,5.00,R2026007,The Genesis Invitational,2026,5.0
+48117,Kurt Kitayama,5,156,Birdie Average,5.00,R2026007,The Genesis Invitational,2026,5.0
+47420,Jake Knapp,5,156,Birdie Average,5.00,R2026007,The Genesis Invitational,2026,5.0
+46046,Scottie Scheffler,5,156,Birdie Average,5.00,R2026007,The Genesis Invitational,2026,5.0
+29725,Tony Finau,10,156,Birdie Average,4.75,R2026007,The Genesis Invitational,2026,4.75
+29936,Ryan Fox,10,156,Birdie Average,4.75,R2026007,The Genesis Invitational,2026,4.75
+27349,Alex Noren,10,156,Birdie Average,4.75,R2026007,The Genesis Invitational,2026,4.75
+51003,Marco Penge,10,156,Birdie Average,4.75,R2026007,The Genesis Invitational,2026,4.75
+34099,Harris English,14,156,Birdie Average,4.50,R2026007,The Genesis Invitational,2026,4.5
+30911,Tommy Fleetwood,14,156,Birdie Average,4.50,R2026007,The Genesis Invitational,2026,4.5
+51287,Ryo Hisatsune,14,156,Birdie Average,4.50,R2026007,The Genesis Invitational,2026,4.5
+37378,Min Woo Lee,14,156,Birdie Average,4.50,R2026007,The Genesis Invitational,2026,4.5
+59141,Matt McCarty,14,156,Birdie Average,4.50,R2026007,The Genesis Invitational,2026,4.5
+28237,Rory McIlroy,14,156,Birdie Average,4.50,R2026007,The Genesis Invitational,2026,4.5
+46414,Aaron Rai,14,156,Birdie Average,4.50,R2026007,The Genesis Invitational,2026,4.5
+52215,Robert MacIntyre,21,156,Birdie Average,4.25,R2026007,The Genesis Invitational,2026,4.25
+63343,Aldrich Potgieter,21,156,Birdie Average,4.25,R2026007,The Genesis Invitational,2026,4.25
+36699,Patrick Rodgers,21,156,Birdie Average,4.25,R2026007,The Genesis Invitational,2026,4.25
+48081,Xander Schauffele,21,156,Birdie Average,4.25,R2026007,The Genesis Invitational,2026,4.25
+55893,Sam Stevens,21,156,Birdie Average,4.25,R2026007,The Genesis Invitational,2026,4.25
+27064,Jhonattan Vegas,21,156,Birdie Average,4.25,R2026007,The Genesis Invitational,2026,4.25
+56630,Akshay Bhatia,27,156,Birdie Average,4.00,R2026007,The Genesis Invitational,2026,4.0
+59836,Pierceson Coody,27,156,Birdie Average,4.00,R2026007,The Genesis Invitational,2026,4.0
+40098,Matt Fitzpatrick,27,156,Birdie Average,4.00,R2026007,The Genesis Invitational,2026,4.0
+32102,Rickie Fowler,27,156,Birdie Average,4.00,R2026007,The Genesis Invitational,2026,4.0
+59018,Ryan Gerard,27,156,Birdie Average,4.00,R2026007,The Genesis Invitational,2026,4.0
+40250,Taylor Pendrith,27,156,Birdie Average,4.00,R2026007,The Genesis Invitational,2026,4.0
+51977,Max Greyserman,33,156,Birdie Average,3.75,R2026007,The Genesis Invitational,2026,3.75
+37455,Si Woo Kim,33,156,Birdie Average,3.75,R2026007,The Genesis Invitational,2026,3.75
+33204,Shane Lowry,33,156,Birdie Average,3.75,R2026007,The Genesis Invitational,2026,3.75
+51997,Andrew Novak,33,156,Birdie Average,3.75,R2026007,The Genesis Invitational,2026,3.75
+48867,Matti Schmid,33,156,Birdie Average,3.75,R2026007,The Genesis Invitational,2026,3.75
+34046,Jordan Spieth,33,156,Birdie Average,3.75,R2026007,The Genesis Invitational,2026,3.75
+35450,Patrick Cantlay,39,156,Birdie Average,3.50,R2026007,The Genesis Invitational,2026,3.5
+54591,Ben Griffin,39,156,Birdie Average,3.50,R2026007,The Genesis Invitational,2026,3.5
+55182,Tom Kim,39,156,Birdie Average,3.50,R2026007,The Genesis Invitational,2026,3.5
+52666,Sami Valimaki,39,156,Birdie Average,3.50,R2026007,The Genesis Invitational,2026,3.5
+39977,Max Homa,43,156,Birdie Average,3.25,R2026007,The Genesis Invitational,2026,3.25
+46717,Viktor Hovland,43,156,Birdie Average,3.25,R2026007,The Genesis Invitational,2026,3.25
+32839,Hideki Matsuyama,43,156,Birdie Average,3.25,R2026007,The Genesis Invitational,2026,3.25
+47993,Denny McCarthy,43,156,Birdie Average,3.25,R2026007,The Genesis Invitational,2026,3.25
+25493,Nick Taylor,43,156,Birdie Average,3.25,R2026007,The Genesis Invitational,2026,3.25
+27644,Brian Harman,48,156,Birdie Average,2.75,R2026007,The Genesis Invitational,2026,2.75
+49960,Sepp Straka,48,156,Birdie Average,2.75,R2026007,The Genesis Invitational,2026,2.75
+39997,Corey Conners,50,156,Birdie Average,2.50,R2026007,The Genesis Invitational,2026,2.5
+51634,Sahith Theegala,50,156,Birdie Average,2.50,R2026007,The Genesis Invitational,2026,2.5
 50525,Collin Morikawa,1,156,Birdie Average,6.75,R2026005,AT&T Pebble Beach Pro-Am,2026,6.75
 49960,Sepp Straka,1,156,Birdie Average,6.75,R2026005,AT&T Pebble Beach Pro-Am,2026,6.75
 28237,Rory McIlroy,3,156,Birdie Average,6.25,R2026005,AT&T Pebble Beach Pro-Am,2026,6.25
@@ -747,6 +849,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47917,Takumi Kanaya,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
 46464,Jordan Smith,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
 29420,Billy Horschel,74,156,Birdie Average,2.25,R2026006,Sony Open in Hawaii,2026,2.25
+60004,Jacob Bridgeman,1,352,Bogey Avoidance,33.33%,R2026007,The Genesis Invitational,2026,33.33
+24502,Adam Scott,2,352,Bogey Avoidance,31.94%,R2026007,The Genesis Invitational,2026,31.94
+47420,Jake Knapp,3,352,Bogey Avoidance,30.56%,R2026007,The Genesis Invitational,2026,30.56
+50525,Collin Morikawa,3,352,Bogey Avoidance,30.56%,R2026007,The Genesis Invitational,2026,30.56
+52955,Ludvig Åberg,5,352,Bogey Avoidance,29.17%,R2026007,The Genesis Invitational,2026,29.17
+51766,Wyndham Clark,5,352,Bogey Avoidance,29.17%,R2026007,The Genesis Invitational,2026,29.17
+29936,Ryan Fox,5,352,Bogey Avoidance,29.17%,R2026007,The Genesis Invitational,2026,29.17
+48117,Kurt Kitayama,5,352,Bogey Avoidance,29.17%,R2026007,The Genesis Invitational,2026,29.17
+57366,Cameron Young,5,352,Bogey Avoidance,29.17%,R2026007,The Genesis Invitational,2026,29.17
+30911,Tommy Fleetwood,10,352,Bogey Avoidance,27.78%,R2026007,The Genesis Invitational,2026,27.78
+51003,Marco Penge,10,352,Bogey Avoidance,27.78%,R2026007,The Genesis Invitational,2026,27.78
+63343,Aldrich Potgieter,10,352,Bogey Avoidance,27.78%,R2026007,The Genesis Invitational,2026,27.78
+46046,Scottie Scheffler,10,352,Bogey Avoidance,27.78%,R2026007,The Genesis Invitational,2026,27.78
+29725,Tony Finau,14,352,Bogey Avoidance,26.39%,R2026007,The Genesis Invitational,2026,26.39
+37378,Min Woo Lee,14,352,Bogey Avoidance,26.39%,R2026007,The Genesis Invitational,2026,26.39
+28237,Rory McIlroy,14,352,Bogey Avoidance,26.39%,R2026007,The Genesis Invitational,2026,26.39
+27349,Alex Noren,14,352,Bogey Avoidance,26.39%,R2026007,The Genesis Invitational,2026,26.39
+46414,Aaron Rai,14,352,Bogey Avoidance,26.39%,R2026007,The Genesis Invitational,2026,26.39
+48081,Xander Schauffele,14,352,Bogey Avoidance,26.39%,R2026007,The Genesis Invitational,2026,26.39
+34099,Harris English,20,352,Bogey Avoidance,25.00%,R2026007,The Genesis Invitational,2026,25.0
+51977,Max Greyserman,20,352,Bogey Avoidance,25.00%,R2026007,The Genesis Invitational,2026,25.0
+51287,Ryo Hisatsune,20,352,Bogey Avoidance,25.00%,R2026007,The Genesis Invitational,2026,25.0
+59141,Matt McCarty,20,352,Bogey Avoidance,25.00%,R2026007,The Genesis Invitational,2026,25.0
+56630,Akshay Bhatia,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+59836,Pierceson Coody,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+40098,Matt Fitzpatrick,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+32102,Rickie Fowler,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+59018,Ryan Gerard,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+52215,Robert MacIntyre,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+36699,Patrick Rodgers,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+55893,Sam Stevens,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+27064,Jhonattan Vegas,24,352,Bogey Avoidance,23.61%,R2026007,The Genesis Invitational,2026,23.61
+54591,Ben Griffin,33,352,Bogey Avoidance,22.22%,R2026007,The Genesis Invitational,2026,22.22
+55182,Tom Kim,33,352,Bogey Avoidance,22.22%,R2026007,The Genesis Invitational,2026,22.22
+33204,Shane Lowry,33,352,Bogey Avoidance,22.22%,R2026007,The Genesis Invitational,2026,22.22
+51997,Andrew Novak,33,352,Bogey Avoidance,22.22%,R2026007,The Genesis Invitational,2026,22.22
+40250,Taylor Pendrith,33,352,Bogey Avoidance,22.22%,R2026007,The Genesis Invitational,2026,22.22
+34046,Jordan Spieth,33,352,Bogey Avoidance,22.22%,R2026007,The Genesis Invitational,2026,22.22
+37455,Si Woo Kim,39,352,Bogey Avoidance,20.83%,R2026007,The Genesis Invitational,2026,20.83
+48867,Matti Schmid,39,352,Bogey Avoidance,20.83%,R2026007,The Genesis Invitational,2026,20.83
+35450,Patrick Cantlay,41,352,Bogey Avoidance,19.44%,R2026007,The Genesis Invitational,2026,19.44
+52666,Sami Valimaki,41,352,Bogey Avoidance,19.44%,R2026007,The Genesis Invitational,2026,19.44
+39977,Max Homa,43,352,Bogey Avoidance,18.06%,R2026007,The Genesis Invitational,2026,18.06
+46717,Viktor Hovland,43,352,Bogey Avoidance,18.06%,R2026007,The Genesis Invitational,2026,18.06
+32839,Hideki Matsuyama,43,352,Bogey Avoidance,18.06%,R2026007,The Genesis Invitational,2026,18.06
+47993,Denny McCarthy,43,352,Bogey Avoidance,18.06%,R2026007,The Genesis Invitational,2026,18.06
+25493,Nick Taylor,43,352,Bogey Avoidance,18.06%,R2026007,The Genesis Invitational,2026,18.06
+49960,Sepp Straka,48,352,Bogey Avoidance,16.67%,R2026007,The Genesis Invitational,2026,16.67
+39997,Corey Conners,49,352,Bogey Avoidance,15.28%,R2026007,The Genesis Invitational,2026,15.28
+27644,Brian Harman,49,352,Bogey Avoidance,15.28%,R2026007,The Genesis Invitational,2026,15.28
+51634,Sahith Theegala,49,352,Bogey Avoidance,15.28%,R2026007,The Genesis Invitational,2026,15.28
 49960,Sepp Straka,1,352,Bogey Avoidance,38.89%,R2026005,AT&T Pebble Beach Pro-Am,2026,38.89
 28237,Rory McIlroy,2,352,Bogey Avoidance,37.50%,R2026005,AT&T Pebble Beach Pro-Am,2026,37.5
 50525,Collin Morikawa,2,352,Bogey Avoidance,37.50%,R2026005,AT&T Pebble Beach Pro-Am,2026,37.5
@@ -1121,6 +1274,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 36801,Mark Hubbard,72,352,Bogey Avoidance,15.28%,R2026006,Sony Open in Hawaii,2026,15.28
 46464,Jordan Smith,73,352,Bogey Avoidance,13.89%,R2026006,Sony Open in Hawaii,2026,13.89
 29420,Billy Horschel,74,352,Bogey Avoidance,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+60004,Jacob Bridgeman,1,103,GIR Percentage,77.78%,R2026007,The Genesis Invitational,2026,77.78
+28237,Rory McIlroy,1,103,GIR Percentage,77.78%,R2026007,The Genesis Invitational,2026,77.78
+57366,Cameron Young,1,103,GIR Percentage,77.78%,R2026007,The Genesis Invitational,2026,77.78
+63343,Aldrich Potgieter,4,103,GIR Percentage,76.39%,R2026007,The Genesis Invitational,2026,76.39
+52955,Ludvig Åberg,5,103,GIR Percentage,75.00%,R2026007,The Genesis Invitational,2026,75.0
+48081,Xander Schauffele,5,103,GIR Percentage,75.00%,R2026007,The Genesis Invitational,2026,75.0
+59018,Ryan Gerard,7,103,GIR Percentage,73.61%,R2026007,The Genesis Invitational,2026,73.61
+55182,Tom Kim,7,103,GIR Percentage,73.61%,R2026007,The Genesis Invitational,2026,73.61
+24502,Adam Scott,7,103,GIR Percentage,73.61%,R2026007,The Genesis Invitational,2026,73.61
+55893,Sam Stevens,7,103,GIR Percentage,73.61%,R2026007,The Genesis Invitational,2026,73.61
+32102,Rickie Fowler,11,103,GIR Percentage,72.22%,R2026007,The Genesis Invitational,2026,72.22
+50525,Collin Morikawa,11,103,GIR Percentage,72.22%,R2026007,The Genesis Invitational,2026,72.22
+46046,Scottie Scheffler,11,103,GIR Percentage,72.22%,R2026007,The Genesis Invitational,2026,72.22
+48117,Kurt Kitayama,14,103,GIR Percentage,70.83%,R2026007,The Genesis Invitational,2026,70.83
+59836,Pierceson Coody,15,103,GIR Percentage,69.44%,R2026007,The Genesis Invitational,2026,69.44
+46717,Viktor Hovland,15,103,GIR Percentage,69.44%,R2026007,The Genesis Invitational,2026,69.44
+33204,Shane Lowry,15,103,GIR Percentage,69.44%,R2026007,The Genesis Invitational,2026,69.44
+51634,Sahith Theegala,15,103,GIR Percentage,69.44%,R2026007,The Genesis Invitational,2026,69.44
+52666,Sami Valimaki,15,103,GIR Percentage,69.44%,R2026007,The Genesis Invitational,2026,69.44
+56630,Akshay Bhatia,20,103,GIR Percentage,68.06%,R2026007,The Genesis Invitational,2026,68.06
+39997,Corey Conners,20,103,GIR Percentage,68.06%,R2026007,The Genesis Invitational,2026,68.06
+30911,Tommy Fleetwood,20,103,GIR Percentage,68.06%,R2026007,The Genesis Invitational,2026,68.06
+37455,Si Woo Kim,20,103,GIR Percentage,68.06%,R2026007,The Genesis Invitational,2026,68.06
+40250,Taylor Pendrith,20,103,GIR Percentage,68.06%,R2026007,The Genesis Invitational,2026,68.06
+35450,Patrick Cantlay,25,103,GIR Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+39977,Max Homa,25,103,GIR Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+47993,Denny McCarthy,25,103,GIR Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+27349,Alex Noren,25,103,GIR Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+46414,Aaron Rai,25,103,GIR Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+34046,Jordan Spieth,25,103,GIR Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+29725,Tony Finau,31,103,GIR Percentage,65.28%,R2026007,The Genesis Invitational,2026,65.28
+40098,Matt Fitzpatrick,31,103,GIR Percentage,65.28%,R2026007,The Genesis Invitational,2026,65.28
+54591,Ben Griffin,31,103,GIR Percentage,65.28%,R2026007,The Genesis Invitational,2026,65.28
+51287,Ryo Hisatsune,31,103,GIR Percentage,65.28%,R2026007,The Genesis Invitational,2026,65.28
+47420,Jake Knapp,31,103,GIR Percentage,65.28%,R2026007,The Genesis Invitational,2026,65.28
+25493,Nick Taylor,31,103,GIR Percentage,65.28%,R2026007,The Genesis Invitational,2026,65.28
+51766,Wyndham Clark,37,103,GIR Percentage,63.89%,R2026007,The Genesis Invitational,2026,63.89
+34099,Harris English,37,103,GIR Percentage,63.89%,R2026007,The Genesis Invitational,2026,63.89
+29936,Ryan Fox,37,103,GIR Percentage,63.89%,R2026007,The Genesis Invitational,2026,63.89
+27644,Brian Harman,37,103,GIR Percentage,63.89%,R2026007,The Genesis Invitational,2026,63.89
+59141,Matt McCarty,37,103,GIR Percentage,63.89%,R2026007,The Genesis Invitational,2026,63.89
+37378,Min Woo Lee,42,103,GIR Percentage,62.50%,R2026007,The Genesis Invitational,2026,62.5
+36699,Patrick Rodgers,42,103,GIR Percentage,62.50%,R2026007,The Genesis Invitational,2026,62.5
+49960,Sepp Straka,42,103,GIR Percentage,62.50%,R2026007,The Genesis Invitational,2026,62.5
+27064,Jhonattan Vegas,42,103,GIR Percentage,62.50%,R2026007,The Genesis Invitational,2026,62.5
+51977,Max Greyserman,46,103,GIR Percentage,61.11%,R2026007,The Genesis Invitational,2026,61.11
+51003,Marco Penge,46,103,GIR Percentage,61.11%,R2026007,The Genesis Invitational,2026,61.11
+32839,Hideki Matsuyama,48,103,GIR Percentage,59.72%,R2026007,The Genesis Invitational,2026,59.72
+48867,Matti Schmid,48,103,GIR Percentage,59.72%,R2026007,The Genesis Invitational,2026,59.72
+51997,Andrew Novak,50,103,GIR Percentage,56.94%,R2026007,The Genesis Invitational,2026,56.94
+52215,Robert MacIntyre,51,103,GIR Percentage,55.56%,R2026007,The Genesis Invitational,2026,55.56
 40098,Matt Fitzpatrick,1,103,GIR Percentage,84.72%,R2026005,AT&T Pebble Beach Pro-Am,2026,84.72
 50525,Collin Morikawa,2,103,GIR Percentage,83.33%,R2026005,AT&T Pebble Beach Pro-Am,2026,83.33
 35450,Patrick Cantlay,3,103,GIR Percentage,81.94%,R2026005,AT&T Pebble Beach Pro-Am,2026,81.94
@@ -1495,6 +1699,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39335,Kevin Roy,71,103,GIR Percentage,61.11%,R2026006,Sony Open in Hawaii,2026,61.11
 48153,Matthieu Pavon,73,103,GIR Percentage,58.33%,R2026006,Sony Open in Hawaii,2026,58.33
 32757,Patton Kizzire,74,103,GIR Percentage,55.56%,R2026006,Sony Open in Hawaii,2026,55.56
+63343,Aldrich Potgieter,1,101,Driving Distance,322.4,R2026007,The Genesis Invitational,2026,322.4
+51766,Wyndham Clark,2,101,Driving Distance,311.9,R2026007,The Genesis Invitational,2026,311.9
+47420,Jake Knapp,3,101,Driving Distance,311.6,R2026007,The Genesis Invitational,2026,311.6
+51003,Marco Penge,4,101,Driving Distance,311.4,R2026007,The Genesis Invitational,2026,311.4
+37378,Min Woo Lee,5,101,Driving Distance,310.4,R2026007,The Genesis Invitational,2026,310.4
+24502,Adam Scott,6,101,Driving Distance,308.1,R2026007,The Genesis Invitational,2026,308.1
+28237,Rory McIlroy,7,101,Driving Distance,305.9,R2026007,The Genesis Invitational,2026,305.9
+59836,Pierceson Coody,8,101,Driving Distance,303.5,R2026007,The Genesis Invitational,2026,303.5
+29936,Ryan Fox,9,101,Driving Distance,303.3,R2026007,The Genesis Invitational,2026,303.3
+46046,Scottie Scheffler,10,101,Driving Distance,302.9,R2026007,The Genesis Invitational,2026,302.9
+40250,Taylor Pendrith,11,101,Driving Distance,302.5,R2026007,The Genesis Invitational,2026,302.5
+39977,Max Homa,12,101,Driving Distance,302.3,R2026007,The Genesis Invitational,2026,302.3
+60004,Jacob Bridgeman,13,101,Driving Distance,302.0,R2026007,The Genesis Invitational,2026,302.0
+50525,Collin Morikawa,14,101,Driving Distance,301.8,R2026007,The Genesis Invitational,2026,301.8
+52955,Ludvig Åberg,15,101,Driving Distance,300.9,R2026007,The Genesis Invitational,2026,300.9
+52215,Robert MacIntyre,16,101,Driving Distance,298.9,R2026007,The Genesis Invitational,2026,298.9
+34046,Jordan Spieth,17,101,Driving Distance,298.4,R2026007,The Genesis Invitational,2026,298.4
+34099,Harris English,18,101,Driving Distance,297.5,R2026007,The Genesis Invitational,2026,297.5
+40098,Matt Fitzpatrick,19,101,Driving Distance,296.8,R2026007,The Genesis Invitational,2026,296.8
+30911,Tommy Fleetwood,20,101,Driving Distance,296.6,R2026007,The Genesis Invitational,2026,296.6
+46717,Viktor Hovland,21,101,Driving Distance,296.3,R2026007,The Genesis Invitational,2026,296.3
+48117,Kurt Kitayama,22,101,Driving Distance,296.0,R2026007,The Genesis Invitational,2026,296.0
+51977,Max Greyserman,23,101,Driving Distance,295.9,R2026007,The Genesis Invitational,2026,295.9
+59018,Ryan Gerard,24,101,Driving Distance,293.9,R2026007,The Genesis Invitational,2026,293.9
+55182,Tom Kim,24,101,Driving Distance,293.9,R2026007,The Genesis Invitational,2026,293.9
+32102,Rickie Fowler,26,101,Driving Distance,293.6,R2026007,The Genesis Invitational,2026,293.6
+29725,Tony Finau,27,101,Driving Distance,293.1,R2026007,The Genesis Invitational,2026,293.1
+56630,Akshay Bhatia,28,101,Driving Distance,292.8,R2026007,The Genesis Invitational,2026,292.8
+55893,Sam Stevens,29,101,Driving Distance,292.6,R2026007,The Genesis Invitational,2026,292.6
+51287,Ryo Hisatsune,30,101,Driving Distance,291.5,R2026007,The Genesis Invitational,2026,291.5
+54591,Ben Griffin,31,101,Driving Distance,291.3,R2026007,The Genesis Invitational,2026,291.3
+36699,Patrick Rodgers,31,101,Driving Distance,291.3,R2026007,The Genesis Invitational,2026,291.3
+33204,Shane Lowry,33,101,Driving Distance,290.8,R2026007,The Genesis Invitational,2026,290.8
+32839,Hideki Matsuyama,34,101,Driving Distance,290.3,R2026007,The Genesis Invitational,2026,290.3
+51997,Andrew Novak,35,101,Driving Distance,289.9,R2026007,The Genesis Invitational,2026,289.9
+51634,Sahith Theegala,36,101,Driving Distance,289.5,R2026007,The Genesis Invitational,2026,289.5
+48081,Xander Schauffele,37,101,Driving Distance,289.3,R2026007,The Genesis Invitational,2026,289.3
+59141,Matt McCarty,38,101,Driving Distance,288.6,R2026007,The Genesis Invitational,2026,288.6
+48867,Matti Schmid,38,101,Driving Distance,288.6,R2026007,The Genesis Invitational,2026,288.6
+37455,Si Woo Kim,40,101,Driving Distance,288.3,R2026007,The Genesis Invitational,2026,288.3
+35450,Patrick Cantlay,41,101,Driving Distance,287.1,R2026007,The Genesis Invitational,2026,287.1
+57366,Cameron Young,42,101,Driving Distance,286.5,R2026007,The Genesis Invitational,2026,286.5
+49960,Sepp Straka,43,101,Driving Distance,286.1,R2026007,The Genesis Invitational,2026,286.1
+27644,Brian Harman,44,101,Driving Distance,286.0,R2026007,The Genesis Invitational,2026,286.0
+27064,Jhonattan Vegas,45,101,Driving Distance,285.1,R2026007,The Genesis Invitational,2026,285.1
+25493,Nick Taylor,46,101,Driving Distance,284.3,R2026007,The Genesis Invitational,2026,284.3
+39997,Corey Conners,47,101,Driving Distance,283.6,R2026007,The Genesis Invitational,2026,283.6
+27349,Alex Noren,48,101,Driving Distance,282.1,R2026007,The Genesis Invitational,2026,282.1
+46414,Aaron Rai,49,101,Driving Distance,280.6,R2026007,The Genesis Invitational,2026,280.6
+52666,Sami Valimaki,50,101,Driving Distance,279.0,R2026007,The Genesis Invitational,2026,279.0
+47993,Denny McCarthy,51,101,Driving Distance,274.9,R2026007,The Genesis Invitational,2026,274.9
 47420,Jake Knapp,1,101,Driving Distance,325.0,R2026005,AT&T Pebble Beach Pro-Am,2026,325.0
 63343,Aldrich Potgieter,2,101,Driving Distance,322.3,R2026005,AT&T Pebble Beach Pro-Am,2026,322.3
 28237,Rory McIlroy,3,101,Driving Distance,322.0,R2026005,AT&T Pebble Beach Pro-Am,2026,322.0
@@ -1869,6 +2124,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 6567,Vijay Singh,72,101,Driving Distance,287.0,R2026006,Sony Open in Hawaii,2026,287.0
 40058,Zac Blair,73,101,Driving Distance,285.6,R2026006,Sony Open in Hawaii,2026,285.6
 47995,Davis Riley,74,101,Driving Distance,278.4,R2026006,Sony Open in Hawaii,2026,278.4
+50525,Collin Morikawa,1,102,Driving Accuracy,71.43%,R2026007,The Genesis Invitational,2026,71.43
+27644,Brian Harman,2,102,Driving Accuracy,69.64%,R2026007,The Genesis Invitational,2026,69.64
+37378,Min Woo Lee,2,102,Driving Accuracy,69.64%,R2026007,The Genesis Invitational,2026,69.64
+32839,Hideki Matsuyama,2,102,Driving Accuracy,69.64%,R2026007,The Genesis Invitational,2026,69.64
+39997,Corey Conners,5,102,Driving Accuracy,67.86%,R2026007,The Genesis Invitational,2026,67.86
+40098,Matt Fitzpatrick,5,102,Driving Accuracy,67.86%,R2026007,The Genesis Invitational,2026,67.86
+55182,Tom Kim,5,102,Driving Accuracy,67.86%,R2026007,The Genesis Invitational,2026,67.86
+30911,Tommy Fleetwood,8,102,Driving Accuracy,66.07%,R2026007,The Genesis Invitational,2026,66.07
+46717,Viktor Hovland,9,102,Driving Accuracy,64.29%,R2026007,The Genesis Invitational,2026,64.29
+37455,Si Woo Kim,9,102,Driving Accuracy,64.29%,R2026007,The Genesis Invitational,2026,64.29
+60004,Jacob Bridgeman,11,102,Driving Accuracy,62.50%,R2026007,The Genesis Invitational,2026,62.5
+32102,Rickie Fowler,11,102,Driving Accuracy,62.50%,R2026007,The Genesis Invitational,2026,62.5
+35450,Patrick Cantlay,13,102,Driving Accuracy,60.71%,R2026007,The Genesis Invitational,2026,60.71
+48117,Kurt Kitayama,13,102,Driving Accuracy,60.71%,R2026007,The Genesis Invitational,2026,60.71
+47420,Jake Knapp,13,102,Driving Accuracy,60.71%,R2026007,The Genesis Invitational,2026,60.71
+46414,Aaron Rai,13,102,Driving Accuracy,60.71%,R2026007,The Genesis Invitational,2026,60.71
+48867,Matti Schmid,13,102,Driving Accuracy,60.71%,R2026007,The Genesis Invitational,2026,60.71
+52666,Sami Valimaki,13,102,Driving Accuracy,60.71%,R2026007,The Genesis Invitational,2026,60.71
+33204,Shane Lowry,19,102,Driving Accuracy,58.93%,R2026007,The Genesis Invitational,2026,58.93
+52215,Robert MacIntyre,19,102,Driving Accuracy,58.93%,R2026007,The Genesis Invitational,2026,58.93
+28237,Rory McIlroy,19,102,Driving Accuracy,58.93%,R2026007,The Genesis Invitational,2026,58.93
+49960,Sepp Straka,19,102,Driving Accuracy,58.93%,R2026007,The Genesis Invitational,2026,58.93
+51766,Wyndham Clark,23,102,Driving Accuracy,57.14%,R2026007,The Genesis Invitational,2026,57.14
+59018,Ryan Gerard,23,102,Driving Accuracy,57.14%,R2026007,The Genesis Invitational,2026,57.14
+54591,Ben Griffin,23,102,Driving Accuracy,57.14%,R2026007,The Genesis Invitational,2026,57.14
+51997,Andrew Novak,23,102,Driving Accuracy,57.14%,R2026007,The Genesis Invitational,2026,57.14
+51003,Marco Penge,23,102,Driving Accuracy,57.14%,R2026007,The Genesis Invitational,2026,57.14
+46046,Scottie Scheffler,23,102,Driving Accuracy,57.14%,R2026007,The Genesis Invitational,2026,57.14
+34099,Harris English,29,102,Driving Accuracy,55.36%,R2026007,The Genesis Invitational,2026,55.36
+51977,Max Greyserman,29,102,Driving Accuracy,55.36%,R2026007,The Genesis Invitational,2026,55.36
+39977,Max Homa,29,102,Driving Accuracy,55.36%,R2026007,The Genesis Invitational,2026,55.36
+24502,Adam Scott,29,102,Driving Accuracy,55.36%,R2026007,The Genesis Invitational,2026,55.36
+55893,Sam Stevens,29,102,Driving Accuracy,55.36%,R2026007,The Genesis Invitational,2026,55.36
+27064,Jhonattan Vegas,29,102,Driving Accuracy,55.36%,R2026007,The Genesis Invitational,2026,55.36
+57366,Cameron Young,29,102,Driving Accuracy,55.36%,R2026007,The Genesis Invitational,2026,55.36
+56630,Akshay Bhatia,36,102,Driving Accuracy,53.57%,R2026007,The Genesis Invitational,2026,53.57
+47993,Denny McCarthy,36,102,Driving Accuracy,53.57%,R2026007,The Genesis Invitational,2026,53.57
+59141,Matt McCarty,36,102,Driving Accuracy,53.57%,R2026007,The Genesis Invitational,2026,53.57
+27349,Alex Noren,36,102,Driving Accuracy,53.57%,R2026007,The Genesis Invitational,2026,53.57
+40250,Taylor Pendrith,36,102,Driving Accuracy,53.57%,R2026007,The Genesis Invitational,2026,53.57
+48081,Xander Schauffele,36,102,Driving Accuracy,53.57%,R2026007,The Genesis Invitational,2026,53.57
+25493,Nick Taylor,36,102,Driving Accuracy,53.57%,R2026007,The Genesis Invitational,2026,53.57
+51634,Sahith Theegala,36,102,Driving Accuracy,53.57%,R2026007,The Genesis Invitational,2026,53.57
+51287,Ryo Hisatsune,44,102,Driving Accuracy,51.79%,R2026007,The Genesis Invitational,2026,51.79
+63343,Aldrich Potgieter,44,102,Driving Accuracy,51.79%,R2026007,The Genesis Invitational,2026,51.79
+52955,Ludvig Åberg,46,102,Driving Accuracy,50.00%,R2026007,The Genesis Invitational,2026,50.0
+59836,Pierceson Coody,46,102,Driving Accuracy,50.00%,R2026007,The Genesis Invitational,2026,50.0
+29725,Tony Finau,46,102,Driving Accuracy,50.00%,R2026007,The Genesis Invitational,2026,50.0
+29936,Ryan Fox,46,102,Driving Accuracy,50.00%,R2026007,The Genesis Invitational,2026,50.0
+34046,Jordan Spieth,46,102,Driving Accuracy,50.00%,R2026007,The Genesis Invitational,2026,50.0
+36699,Patrick Rodgers,51,102,Driving Accuracy,37.50%,R2026007,The Genesis Invitational,2026,37.5
 51287,Ryo Hisatsune,1,102,Driving Accuracy,83.93%,R2026005,AT&T Pebble Beach Pro-Am,2026,83.93
 39997,Corey Conners,2,102,Driving Accuracy,80.36%,R2026005,AT&T Pebble Beach Pro-Am,2026,80.36
 34021,Bud Cauley,3,102,Driving Accuracy,78.57%,R2026005,AT&T Pebble Beach Pro-Am,2026,78.57
@@ -2243,6 +2549,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 32757,Patton Kizzire,70,102,Driving Accuracy,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
 59866,Nick Dunlap,73,102,Driving Accuracy,48.21%,R2026006,Sony Open in Hawaii,2026,48.21
 36801,Mark Hubbard,74,102,Driving Accuracy,46.43%,R2026006,Sony Open in Hawaii,2026,46.43
+37455,Si Woo Kim,1,331,Proximity to Hole,"30' 5""",R2026007,The Genesis Invitational,2026,
+52666,Sami Valimaki,2,331,Proximity to Hole,"31' 5""",R2026007,The Genesis Invitational,2026,
+40098,Matt Fitzpatrick,3,331,Proximity to Hole,"32' 11""",R2026007,The Genesis Invitational,2026,
+36699,Patrick Rodgers,4,331,Proximity to Hole,"33' 5""",R2026007,The Genesis Invitational,2026,
+57366,Cameron Young,4,331,Proximity to Hole,"33' 5""",R2026007,The Genesis Invitational,2026,
+48117,Kurt Kitayama,6,331,Proximity to Hole,"33' 6""",R2026007,The Genesis Invitational,2026,
+63343,Aldrich Potgieter,7,331,Proximity to Hole,"33' 8""",R2026007,The Genesis Invitational,2026,
+28237,Rory McIlroy,8,331,Proximity to Hole,"33' 11""",R2026007,The Genesis Invitational,2026,
+29936,Ryan Fox,9,331,Proximity to Hole,"34' 0""",R2026007,The Genesis Invitational,2026,
+59141,Matt McCarty,10,331,Proximity to Hole,"34' 6""",R2026007,The Genesis Invitational,2026,
+51977,Max Greyserman,11,331,Proximity to Hole,"34' 10""",R2026007,The Genesis Invitational,2026,
+24502,Adam Scott,11,331,Proximity to Hole,"34' 10""",R2026007,The Genesis Invitational,2026,
+47420,Jake Knapp,13,331,Proximity to Hole,"35' 3""",R2026007,The Genesis Invitational,2026,
+55182,Tom Kim,14,331,Proximity to Hole,"35' 8""",R2026007,The Genesis Invitational,2026,
+35450,Patrick Cantlay,15,331,Proximity to Hole,"35' 9""",R2026007,The Genesis Invitational,2026,
+32839,Hideki Matsuyama,15,331,Proximity to Hole,"35' 9""",R2026007,The Genesis Invitational,2026,
+52955,Ludvig Åberg,17,331,Proximity to Hole,"35' 10""",R2026007,The Genesis Invitational,2026,
+60004,Jacob Bridgeman,18,331,Proximity to Hole,"35' 11""",R2026007,The Genesis Invitational,2026,
+59018,Ryan Gerard,18,331,Proximity to Hole,"35' 11""",R2026007,The Genesis Invitational,2026,
+51766,Wyndham Clark,20,331,Proximity to Hole,"36' 0""",R2026007,The Genesis Invitational,2026,
+51634,Sahith Theegala,21,331,Proximity to Hole,"36' 1""",R2026007,The Genesis Invitational,2026,
+46046,Scottie Scheffler,22,331,Proximity to Hole,"36' 7""",R2026007,The Genesis Invitational,2026,
+50525,Collin Morikawa,23,331,Proximity to Hole,"36' 8""",R2026007,The Genesis Invitational,2026,
+55893,Sam Stevens,23,331,Proximity to Hole,"36' 8""",R2026007,The Genesis Invitational,2026,
+27064,Jhonattan Vegas,25,331,Proximity to Hole,"37' 0""",R2026007,The Genesis Invitational,2026,
+46717,Viktor Hovland,26,331,Proximity to Hole,"37' 2""",R2026007,The Genesis Invitational,2026,
+51287,Ryo Hisatsune,27,331,Proximity to Hole,"37' 5""",R2026007,The Genesis Invitational,2026,
+33204,Shane Lowry,27,331,Proximity to Hole,"37' 5""",R2026007,The Genesis Invitational,2026,
+48081,Xander Schauffele,29,331,Proximity to Hole,"37' 9""",R2026007,The Genesis Invitational,2026,
+59836,Pierceson Coody,30,331,Proximity to Hole,"37' 11""",R2026007,The Genesis Invitational,2026,
+25493,Nick Taylor,31,331,Proximity to Hole,"38' 1""",R2026007,The Genesis Invitational,2026,
+51003,Marco Penge,32,331,Proximity to Hole,"38' 6""",R2026007,The Genesis Invitational,2026,
+34046,Jordan Spieth,33,331,Proximity to Hole,"38' 8""",R2026007,The Genesis Invitational,2026,
+56630,Akshay Bhatia,34,331,Proximity to Hole,"38' 10""",R2026007,The Genesis Invitational,2026,
+32102,Rickie Fowler,35,331,Proximity to Hole,"39' 0""",R2026007,The Genesis Invitational,2026,
+27644,Brian Harman,36,331,Proximity to Hole,"39' 10""",R2026007,The Genesis Invitational,2026,
+39997,Corey Conners,37,331,Proximity to Hole,"40' 6""",R2026007,The Genesis Invitational,2026,
+34099,Harris English,38,331,Proximity to Hole,"40' 9""",R2026007,The Genesis Invitational,2026,
+54591,Ben Griffin,39,331,Proximity to Hole,"41' 1""",R2026007,The Genesis Invitational,2026,
+46414,Aaron Rai,40,331,Proximity to Hole,"41' 3""",R2026007,The Genesis Invitational,2026,
+47993,Denny McCarthy,41,331,Proximity to Hole,"41' 5""",R2026007,The Genesis Invitational,2026,
+37378,Min Woo Lee,42,331,Proximity to Hole,"42' 0""",R2026007,The Genesis Invitational,2026,
+49960,Sepp Straka,42,331,Proximity to Hole,"42' 0""",R2026007,The Genesis Invitational,2026,
+27349,Alex Noren,44,331,Proximity to Hole,"42' 2""",R2026007,The Genesis Invitational,2026,
+39977,Max Homa,45,331,Proximity to Hole,"42' 4""",R2026007,The Genesis Invitational,2026,
+51997,Andrew Novak,46,331,Proximity to Hole,"42' 7""",R2026007,The Genesis Invitational,2026,
+52215,Robert MacIntyre,47,331,Proximity to Hole,"43' 1""",R2026007,The Genesis Invitational,2026,
+29725,Tony Finau,48,331,Proximity to Hole,"44' 2""",R2026007,The Genesis Invitational,2026,
+40250,Taylor Pendrith,49,331,Proximity to Hole,"44' 3""",R2026007,The Genesis Invitational,2026,
+30911,Tommy Fleetwood,50,331,Proximity to Hole,"44' 5""",R2026007,The Genesis Invitational,2026,
+48867,Matti Schmid,51,331,Proximity to Hole,"46' 10""",R2026007,The Genesis Invitational,2026,
 25900,Lucas Glover,1,331,Proximity to Hole,"26' 1""",R2026005,AT&T Pebble Beach Pro-Am,2026,
 27644,Brian Harman,2,331,Proximity to Hole,"26' 4""",R2026005,AT&T Pebble Beach Pro-Am,2026,
 51349,Nico Echavarria,3,331,Proximity to Hole,"26' 9""",R2026005,AT&T Pebble Beach Pro-Am,2026,
@@ -2617,6 +2974,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 59567,Emilio Gonzalez,72,331,Proximity to Hole,"40' 9""",R2026006,Sony Open in Hawaii,2026,
 48153,Matthieu Pavon,73,331,Proximity to Hole,"43' 10""",R2026006,Sony Open in Hawaii,2026,
 37338,Zecheng Dou,74,331,Proximity to Hole,"45' 1""",R2026006,Sony Open in Hawaii,2026,
+28237,Rory McIlroy,1,130,Scrambling,87.50%,R2026007,The Genesis Invitational,2026,87.5
+25493,Nick Taylor,2,130,Scrambling,84.00%,R2026007,The Genesis Invitational,2026,84.0
+34046,Jordan Spieth,3,130,Scrambling,83.33%,R2026007,The Genesis Invitational,2026,83.33
+39997,Corey Conners,4,130,Scrambling,82.61%,R2026007,The Genesis Invitational,2026,82.61
+51634,Sahith Theegala,5,130,Scrambling,81.82%,R2026007,The Genesis Invitational,2026,81.82
+48117,Kurt Kitayama,6,130,Scrambling,80.95%,R2026007,The Genesis Invitational,2026,80.95
+32839,Hideki Matsuyama,7,130,Scrambling,79.31%,R2026007,The Genesis Invitational,2026,79.31
+52215,Robert MacIntyre,8,130,Scrambling,78.13%,R2026007,The Genesis Invitational,2026,78.13
+59836,Pierceson Coody,9,130,Scrambling,77.27%,R2026007,The Genesis Invitational,2026,77.27
+27349,Alex Noren,10,130,Scrambling,75.00%,R2026007,The Genesis Invitational,2026,75.0
+51003,Marco Penge,10,130,Scrambling,75.00%,R2026007,The Genesis Invitational,2026,75.0
+30911,Tommy Fleetwood,12,130,Scrambling,73.91%,R2026007,The Genesis Invitational,2026,73.91
+34099,Harris English,13,130,Scrambling,73.08%,R2026007,The Genesis Invitational,2026,73.08
+46717,Viktor Hovland,14,130,Scrambling,72.73%,R2026007,The Genesis Invitational,2026,72.73
+48081,Xander Schauffele,15,130,Scrambling,72.22%,R2026007,The Genesis Invitational,2026,72.22
+47420,Jake Knapp,16,130,Scrambling,72.00%,R2026007,The Genesis Invitational,2026,72.0
+35450,Patrick Cantlay,17,130,Scrambling,70.83%,R2026007,The Genesis Invitational,2026,70.83
+55182,Tom Kim,18,130,Scrambling,68.42%,R2026007,The Genesis Invitational,2026,68.42
+55893,Sam Stevens,18,130,Scrambling,68.42%,R2026007,The Genesis Invitational,2026,68.42
+40098,Matt Fitzpatrick,20,130,Scrambling,68.00%,R2026007,The Genesis Invitational,2026,68.0
+51977,Max Greyserman,21,130,Scrambling,67.86%,R2026007,The Genesis Invitational,2026,67.86
+39977,Max Homa,22,130,Scrambling,66.67%,R2026007,The Genesis Invitational,2026,66.67
+37378,Min Woo Lee,22,130,Scrambling,66.67%,R2026007,The Genesis Invitational,2026,66.67
+47993,Denny McCarthy,22,130,Scrambling,66.67%,R2026007,The Genesis Invitational,2026,66.67
+56630,Akshay Bhatia,25,130,Scrambling,65.22%,R2026007,The Genesis Invitational,2026,65.22
+37455,Si Woo Kim,25,130,Scrambling,65.22%,R2026007,The Genesis Invitational,2026,65.22
+63343,Aldrich Potgieter,27,130,Scrambling,64.71%,R2026007,The Genesis Invitational,2026,64.71
+52666,Sami Valimaki,28,130,Scrambling,63.64%,R2026007,The Genesis Invitational,2026,63.64
+24502,Adam Scott,29,130,Scrambling,63.16%,R2026007,The Genesis Invitational,2026,63.16
+27064,Jhonattan Vegas,30,130,Scrambling,62.96%,R2026007,The Genesis Invitational,2026,62.96
+57366,Cameron Young,31,130,Scrambling,62.50%,R2026007,The Genesis Invitational,2026,62.5
+29936,Ryan Fox,32,130,Scrambling,61.54%,R2026007,The Genesis Invitational,2026,61.54
+59141,Matt McCarty,32,130,Scrambling,61.54%,R2026007,The Genesis Invitational,2026,61.54
+51997,Andrew Novak,34,130,Scrambling,61.29%,R2026007,The Genesis Invitational,2026,61.29
+29725,Tony Finau,35,130,Scrambling,60.00%,R2026007,The Genesis Invitational,2026,60.0
+32102,Rickie Fowler,35,130,Scrambling,60.00%,R2026007,The Genesis Invitational,2026,60.0
+46046,Scottie Scheffler,35,130,Scrambling,60.00%,R2026007,The Genesis Invitational,2026,60.0
+36699,Patrick Rodgers,38,130,Scrambling,59.26%,R2026007,The Genesis Invitational,2026,59.26
+33204,Shane Lowry,39,130,Scrambling,59.09%,R2026007,The Genesis Invitational,2026,59.09
+48867,Matti Schmid,40,130,Scrambling,58.62%,R2026007,The Genesis Invitational,2026,58.62
+54591,Ben Griffin,41,130,Scrambling,56.00%,R2026007,The Genesis Invitational,2026,56.0
+51287,Ryo Hisatsune,41,130,Scrambling,56.00%,R2026007,The Genesis Invitational,2026,56.0
+52955,Ludvig Åberg,43,130,Scrambling,55.56%,R2026007,The Genesis Invitational,2026,55.56
+50525,Collin Morikawa,44,130,Scrambling,55.00%,R2026007,The Genesis Invitational,2026,55.0
+46414,Aaron Rai,45,130,Scrambling,54.17%,R2026007,The Genesis Invitational,2026,54.17
+59018,Ryan Gerard,46,130,Scrambling,52.63%,R2026007,The Genesis Invitational,2026,52.63
+40250,Taylor Pendrith,47,130,Scrambling,52.17%,R2026007,The Genesis Invitational,2026,52.17
+60004,Jacob Bridgeman,48,130,Scrambling,50.00%,R2026007,The Genesis Invitational,2026,50.0
+51766,Wyndham Clark,48,130,Scrambling,50.00%,R2026007,The Genesis Invitational,2026,50.0
+27644,Brian Harman,50,130,Scrambling,46.15%,R2026007,The Genesis Invitational,2026,46.15
+49960,Sepp Straka,51,130,Scrambling,44.44%,R2026007,The Genesis Invitational,2026,44.44
 51977,Max Greyserman,1,130,Scrambling,87.50%,R2026005,AT&T Pebble Beach Pro-Am,2026,87.5
 57975,Harry Hall,2,130,Scrambling,81.82%,R2026005,AT&T Pebble Beach Pro-Am,2026,81.82
 32839,Hideki Matsuyama,3,130,Scrambling,80.00%,R2026005,AT&T Pebble Beach Pro-Am,2026,80.0
@@ -2991,6 +3399,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 63454,Johnny Keefer,72,130,Scrambling,43.75%,R2026006,Sony Open in Hawaii,2026,43.75
 48001,Zach Bauchou,73,130,Scrambling,42.11%,R2026006,Sony Open in Hawaii,2026,42.11
 54783,Dylan Wu,74,130,Scrambling,40.00%,R2026006,Sony Open in Hawaii,2026,40.0
+35450,Patrick Cantlay,1,111,Sand Save Percentage,100.00%,R2026007,The Genesis Invitational,2026,100.0
+34099,Harris English,1,111,Sand Save Percentage,100.00%,R2026007,The Genesis Invitational,2026,100.0
+28237,Rory McIlroy,1,111,Sand Save Percentage,100.00%,R2026007,The Genesis Invitational,2026,100.0
+27349,Alex Noren,1,111,Sand Save Percentage,100.00%,R2026007,The Genesis Invitational,2026,100.0
+48081,Xander Schauffele,1,111,Sand Save Percentage,100.00%,R2026007,The Genesis Invitational,2026,100.0
+34046,Jordan Spieth,1,111,Sand Save Percentage,100.00%,R2026007,The Genesis Invitational,2026,100.0
+25493,Nick Taylor,7,111,Sand Save Percentage,85.71%,R2026007,The Genesis Invitational,2026,85.71
+52215,Robert MacIntyre,8,111,Sand Save Percentage,80.00%,R2026007,The Genesis Invitational,2026,80.0
+63343,Aldrich Potgieter,9,111,Sand Save Percentage,75.00%,R2026007,The Genesis Invitational,2026,75.0
+50525,Collin Morikawa,10,111,Sand Save Percentage,71.43%,R2026007,The Genesis Invitational,2026,71.43
+36699,Patrick Rodgers,10,111,Sand Save Percentage,71.43%,R2026007,The Genesis Invitational,2026,71.43
+51766,Wyndham Clark,12,111,Sand Save Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+32102,Rickie Fowler,12,111,Sand Save Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+51977,Max Greyserman,12,111,Sand Save Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+51287,Ryo Hisatsune,12,111,Sand Save Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+39977,Max Homa,12,111,Sand Save Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+59141,Matt McCarty,12,111,Sand Save Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+24502,Adam Scott,12,111,Sand Save Percentage,66.67%,R2026007,The Genesis Invitational,2026,66.67
+32839,Hideki Matsuyama,19,111,Sand Save Percentage,63.64%,R2026007,The Genesis Invitational,2026,63.64
+51634,Sahith Theegala,20,111,Sand Save Percentage,62.50%,R2026007,The Genesis Invitational,2026,62.5
+47420,Jake Knapp,21,111,Sand Save Percentage,60.00%,R2026007,The Genesis Invitational,2026,60.0
+47993,Denny McCarthy,21,111,Sand Save Percentage,60.00%,R2026007,The Genesis Invitational,2026,60.0
+46414,Aaron Rai,21,111,Sand Save Percentage,60.00%,R2026007,The Genesis Invitational,2026,60.0
+52666,Sami Valimaki,21,111,Sand Save Percentage,60.00%,R2026007,The Genesis Invitational,2026,60.0
+29936,Ryan Fox,25,111,Sand Save Percentage,57.14%,R2026007,The Genesis Invitational,2026,57.14
+27644,Brian Harman,25,111,Sand Save Percentage,57.14%,R2026007,The Genesis Invitational,2026,57.14
+37455,Si Woo Kim,25,111,Sand Save Percentage,57.14%,R2026007,The Genesis Invitational,2026,57.14
+56630,Akshay Bhatia,28,111,Sand Save Percentage,50.00%,R2026007,The Genesis Invitational,2026,50.0
+39997,Corey Conners,28,111,Sand Save Percentage,50.00%,R2026007,The Genesis Invitational,2026,50.0
+29725,Tony Finau,28,111,Sand Save Percentage,50.00%,R2026007,The Genesis Invitational,2026,50.0
+55182,Tom Kim,28,111,Sand Save Percentage,50.00%,R2026007,The Genesis Invitational,2026,50.0
+37378,Min Woo Lee,28,111,Sand Save Percentage,50.00%,R2026007,The Genesis Invitational,2026,50.0
+51997,Andrew Novak,28,111,Sand Save Percentage,50.00%,R2026007,The Genesis Invitational,2026,50.0
+52955,Ludvig Åberg,34,111,Sand Save Percentage,42.86%,R2026007,The Genesis Invitational,2026,42.86
+30911,Tommy Fleetwood,35,111,Sand Save Percentage,40.00%,R2026007,The Genesis Invitational,2026,40.0
+55893,Sam Stevens,35,111,Sand Save Percentage,40.00%,R2026007,The Genesis Invitational,2026,40.0
+57366,Cameron Young,35,111,Sand Save Percentage,40.00%,R2026007,The Genesis Invitational,2026,40.0
+40098,Matt Fitzpatrick,38,111,Sand Save Percentage,37.50%,R2026007,The Genesis Invitational,2026,37.5
+59836,Pierceson Coody,39,111,Sand Save Percentage,33.33%,R2026007,The Genesis Invitational,2026,33.33
+54591,Ben Griffin,39,111,Sand Save Percentage,33.33%,R2026007,The Genesis Invitational,2026,33.33
+46717,Viktor Hovland,39,111,Sand Save Percentage,33.33%,R2026007,The Genesis Invitational,2026,33.33
+40250,Taylor Pendrith,39,111,Sand Save Percentage,33.33%,R2026007,The Genesis Invitational,2026,33.33
+51003,Marco Penge,39,111,Sand Save Percentage,33.33%,R2026007,The Genesis Invitational,2026,33.33
+46046,Scottie Scheffler,39,111,Sand Save Percentage,33.33%,R2026007,The Genesis Invitational,2026,33.33
+59018,Ryan Gerard,45,111,Sand Save Percentage,25.00%,R2026007,The Genesis Invitational,2026,25.0
+48867,Matti Schmid,45,111,Sand Save Percentage,25.00%,R2026007,The Genesis Invitational,2026,25.0
+60004,Jacob Bridgeman,47,111,Sand Save Percentage,0.00%,R2026007,The Genesis Invitational,2026,0.0
+48117,Kurt Kitayama,47,111,Sand Save Percentage,0.00%,R2026007,The Genesis Invitational,2026,0.0
+33204,Shane Lowry,47,111,Sand Save Percentage,0.00%,R2026007,The Genesis Invitational,2026,0.0
+49960,Sepp Straka,47,111,Sand Save Percentage,0.00%,R2026007,The Genesis Invitational,2026,0.0
+27064,Jhonattan Vegas,47,111,Sand Save Percentage,0.00%,R2026007,The Genesis Invitational,2026,0.0
 52955,Ludvig Åberg,1,111,Sand Save Percentage,100.00%,R2026005,AT&T Pebble Beach Pro-Am,2026,100.0
 32839,Hideki Matsuyama,2,111,Sand Save Percentage,87.50%,R2026005,AT&T Pebble Beach Pro-Am,2026,87.5
 46414,Aaron Rai,2,111,Sand Save Percentage,87.50%,R2026005,AT&T Pebble Beach Pro-Am,2026,87.5
@@ -3364,6 +3823,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 60004,Jacob Bridgeman,72,111,Sand Save Percentage,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
 47993,Denny McCarthy,73,111,Sand Save Percentage,16.67%,R2026006,Sony Open in Hawaii,2026,16.67
 63454,Johnny Keefer,74,111,Sand Save Percentage,0.00%,R2026006,Sony Open in Hawaii,2026,0.0
+60004,Jacob Bridgeman,1,104,Putts Per Round,1.625,R2026007,The Genesis Invitational,2026,1.625
+29936,Ryan Fox,2,104,Putts Per Round,1.630,R2026007,The Genesis Invitational,2026,1.63
+47420,Jake Knapp,3,104,Putts Per Round,1.660,R2026007,The Genesis Invitational,2026,1.66
+24502,Adam Scott,3,104,Putts Per Round,1.660,R2026007,The Genesis Invitational,2026,1.66
+46046,Scottie Scheffler,5,104,Putts Per Round,1.673,R2026007,The Genesis Invitational,2026,1.673
+51977,Max Greyserman,6,104,Putts Per Round,1.682,R2026007,The Genesis Invitational,2026,1.682
+46414,Aaron Rai,7,104,Putts Per Round,1.688,R2026007,The Genesis Invitational,2026,1.688
+59141,Matt McCarty,8,104,Putts Per Round,1.696,R2026007,The Genesis Invitational,2026,1.696
+52215,Robert MacIntyre,9,104,Putts Per Round,1.700,R2026007,The Genesis Invitational,2026,1.7
+48117,Kurt Kitayama,10,104,Putts Per Round,1.706,R2026007,The Genesis Invitational,2026,1.706
+51997,Andrew Novak,11,104,Putts Per Round,1.707,R2026007,The Genesis Invitational,2026,1.707
+63343,Aldrich Potgieter,12,104,Putts Per Round,1.709,R2026007,The Genesis Invitational,2026,1.709
+37378,Min Woo Lee,13,104,Putts Per Round,1.711,R2026007,The Genesis Invitational,2026,1.711
+34099,Harris English,14,104,Putts Per Round,1.717,R2026007,The Genesis Invitational,2026,1.717
+29725,Tony Finau,15,104,Putts Per Round,1.723,R2026007,The Genesis Invitational,2026,1.723
+27349,Alex Noren,16,104,Putts Per Round,1.729,R2026007,The Genesis Invitational,2026,1.729
+50525,Collin Morikawa,17,104,Putts Per Round,1.731,R2026007,The Genesis Invitational,2026,1.731
+55893,Sam Stevens,18,104,Putts Per Round,1.736,R2026007,The Genesis Invitational,2026,1.736
+52955,Ludvig Åberg,19,104,Putts Per Round,1.741,R2026007,The Genesis Invitational,2026,1.741
+54591,Ben Griffin,20,104,Putts Per Round,1.745,R2026007,The Genesis Invitational,2026,1.745
+32102,Rickie Fowler,21,104,Putts Per Round,1.750,R2026007,The Genesis Invitational,2026,1.75
+57366,Cameron Young,21,104,Putts Per Round,1.750,R2026007,The Genesis Invitational,2026,1.75
+56630,Akshay Bhatia,23,104,Putts Per Round,1.755,R2026007,The Genesis Invitational,2026,1.755
+30911,Tommy Fleetwood,23,104,Putts Per Round,1.755,R2026007,The Genesis Invitational,2026,1.755
+40250,Taylor Pendrith,23,104,Putts Per Round,1.755,R2026007,The Genesis Invitational,2026,1.755
+51766,Wyndham Clark,26,104,Putts Per Round,1.761,R2026007,The Genesis Invitational,2026,1.761
+32839,Hideki Matsuyama,27,104,Putts Per Round,1.767,R2026007,The Genesis Invitational,2026,1.767
+36699,Patrick Rodgers,28,104,Putts Per Round,1.778,R2026007,The Genesis Invitational,2026,1.778
+48081,Xander Schauffele,28,104,Putts Per Round,1.778,R2026007,The Genesis Invitational,2026,1.778
+33204,Shane Lowry,30,104,Putts Per Round,1.780,R2026007,The Genesis Invitational,2026,1.78
+51634,Sahith Theegala,30,104,Putts Per Round,1.780,R2026007,The Genesis Invitational,2026,1.78
+51287,Ryo Hisatsune,32,104,Putts Per Round,1.787,R2026007,The Genesis Invitational,2026,1.787
+59018,Ryan Gerard,33,104,Putts Per Round,1.792,R2026007,The Genesis Invitational,2026,1.792
+51003,Marco Penge,34,104,Putts Per Round,1.795,R2026007,The Genesis Invitational,2026,1.795
+37455,Si Woo Kim,35,104,Putts Per Round,1.796,R2026007,The Genesis Invitational,2026,1.796
+49960,Sepp Straka,36,104,Putts Per Round,1.800,R2026007,The Genesis Invitational,2026,1.8
+34046,Jordan Spieth,37,104,Putts Per Round,1.813,R2026007,The Genesis Invitational,2026,1.813
+48867,Matti Schmid,38,104,Putts Per Round,1.814,R2026007,The Genesis Invitational,2026,1.814
+52666,Sami Valimaki,39,104,Putts Per Round,1.820,R2026007,The Genesis Invitational,2026,1.82
+27064,Jhonattan Vegas,40,104,Putts Per Round,1.822,R2026007,The Genesis Invitational,2026,1.822
+40098,Matt Fitzpatrick,41,104,Putts Per Round,1.830,R2026007,The Genesis Invitational,2026,1.83
+55182,Tom Kim,41,104,Putts Per Round,1.830,R2026007,The Genesis Invitational,2026,1.83
+25493,Nick Taylor,41,104,Putts Per Round,1.830,R2026007,The Genesis Invitational,2026,1.83
+35450,Patrick Cantlay,44,104,Putts Per Round,1.833,R2026007,The Genesis Invitational,2026,1.833
+39977,Max Homa,44,104,Putts Per Round,1.833,R2026007,The Genesis Invitational,2026,1.833
+59836,Pierceson Coody,46,104,Putts Per Round,1.840,R2026007,The Genesis Invitational,2026,1.84
+27644,Brian Harman,47,104,Putts Per Round,1.848,R2026007,The Genesis Invitational,2026,1.848
+28237,Rory McIlroy,48,104,Putts Per Round,1.857,R2026007,The Genesis Invitational,2026,1.857
+47993,Denny McCarthy,49,104,Putts Per Round,1.875,R2026007,The Genesis Invitational,2026,1.875
+39997,Corey Conners,50,104,Putts Per Round,1.878,R2026007,The Genesis Invitational,2026,1.878
+46717,Viktor Hovland,51,104,Putts Per Round,1.900,R2026007,The Genesis Invitational,2026,1.9
 28237,Rory McIlroy,1,104,Putts Per Round,1.519,R2026005,AT&T Pebble Beach Pro-Am,2026,1.519
 49960,Sepp Straka,2,104,Putts Per Round,1.537,R2026005,AT&T Pebble Beach Pro-Am,2026,1.537
 30911,Tommy Fleetwood,3,104,Putts Per Round,1.566,R2026005,AT&T Pebble Beach Pro-Am,2026,1.566
@@ -3738,6 +4248,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 56100,Ren Yonezawa,72,104,Putts Per Round,1.897,R2026006,Sony Open in Hawaii,2026,1.897
 46414,Aaron Rai,73,104,Putts Per Round,1.907,R2026006,Sony Open in Hawaii,2026,1.907
 65256,David Ford,74,104,Putts Per Round,1.911,R2026006,Sony Open in Hawaii,2026,1.911
+52215,Robert MacIntyre,1,413,3-Putt Avoidance,52.78%,R2026007,The Genesis Invitational,2026,52.78
+51997,Andrew Novak,1,413,3-Putt Avoidance,52.78%,R2026007,The Genesis Invitational,2026,52.78
+34099,Harris English,3,413,3-Putt Avoidance,50.00%,R2026007,The Genesis Invitational,2026,50.0
+51977,Max Greyserman,3,413,3-Putt Avoidance,50.00%,R2026007,The Genesis Invitational,2026,50.0
+32839,Hideki Matsuyama,3,413,3-Putt Avoidance,50.00%,R2026007,The Genesis Invitational,2026,50.0
+47420,Jake Knapp,6,413,3-Putt Avoidance,48.61%,R2026007,The Genesis Invitational,2026,48.61
+24502,Adam Scott,7,413,3-Putt Avoidance,47.22%,R2026007,The Genesis Invitational,2026,47.22
+48117,Kurt Kitayama,8,413,3-Putt Avoidance,45.83%,R2026007,The Genesis Invitational,2026,45.83
+27349,Alex Noren,8,413,3-Putt Avoidance,45.83%,R2026007,The Genesis Invitational,2026,45.83
+51003,Marco Penge,8,413,3-Putt Avoidance,45.83%,R2026007,The Genesis Invitational,2026,45.83
+34046,Jordan Spieth,8,413,3-Putt Avoidance,45.83%,R2026007,The Genesis Invitational,2026,45.83
+37378,Min Woo Lee,12,413,3-Putt Avoidance,43.06%,R2026007,The Genesis Invitational,2026,43.06
+59141,Matt McCarty,12,413,3-Putt Avoidance,43.06%,R2026007,The Genesis Invitational,2026,43.06
+56630,Akshay Bhatia,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+29725,Tony Finau,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+30911,Tommy Fleetwood,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+32102,Rickie Fowler,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+29936,Ryan Fox,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+51287,Ryo Hisatsune,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+63343,Aldrich Potgieter,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+46414,Aaron Rai,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+46046,Scottie Scheffler,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+48867,Matti Schmid,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+25493,Nick Taylor,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+27064,Jhonattan Vegas,14,413,3-Putt Avoidance,41.67%,R2026007,The Genesis Invitational,2026,41.67
+39997,Corey Conners,26,413,3-Putt Avoidance,40.28%,R2026007,The Genesis Invitational,2026,40.28
+40098,Matt Fitzpatrick,26,413,3-Putt Avoidance,40.28%,R2026007,The Genesis Invitational,2026,40.28
+39977,Max Homa,26,413,3-Putt Avoidance,40.28%,R2026007,The Genesis Invitational,2026,40.28
+60004,Jacob Bridgeman,29,413,3-Putt Avoidance,38.89%,R2026007,The Genesis Invitational,2026,38.89
+35450,Patrick Cantlay,29,413,3-Putt Avoidance,38.89%,R2026007,The Genesis Invitational,2026,38.89
+51766,Wyndham Clark,29,413,3-Putt Avoidance,38.89%,R2026007,The Genesis Invitational,2026,38.89
+59836,Pierceson Coody,29,413,3-Putt Avoidance,38.89%,R2026007,The Genesis Invitational,2026,38.89
+46717,Viktor Hovland,29,413,3-Putt Avoidance,38.89%,R2026007,The Genesis Invitational,2026,38.89
+37455,Si Woo Kim,29,413,3-Putt Avoidance,38.89%,R2026007,The Genesis Invitational,2026,38.89
+47993,Denny McCarthy,29,413,3-Putt Avoidance,38.89%,R2026007,The Genesis Invitational,2026,38.89
+48081,Xander Schauffele,29,413,3-Putt Avoidance,38.89%,R2026007,The Genesis Invitational,2026,38.89
+54591,Ben Griffin,37,413,3-Putt Avoidance,37.50%,R2026007,The Genesis Invitational,2026,37.5
+55182,Tom Kim,37,413,3-Putt Avoidance,37.50%,R2026007,The Genesis Invitational,2026,37.5
+50525,Collin Morikawa,37,413,3-Putt Avoidance,37.50%,R2026007,The Genesis Invitational,2026,37.5
+55893,Sam Stevens,37,413,3-Putt Avoidance,37.50%,R2026007,The Genesis Invitational,2026,37.5
+51634,Sahith Theegala,37,413,3-Putt Avoidance,37.50%,R2026007,The Genesis Invitational,2026,37.5
+33204,Shane Lowry,42,413,3-Putt Avoidance,36.11%,R2026007,The Genesis Invitational,2026,36.11
+40250,Taylor Pendrith,42,413,3-Putt Avoidance,36.11%,R2026007,The Genesis Invitational,2026,36.11
+36699,Patrick Rodgers,42,413,3-Putt Avoidance,36.11%,R2026007,The Genesis Invitational,2026,36.11
+57366,Cameron Young,42,413,3-Putt Avoidance,36.11%,R2026007,The Genesis Invitational,2026,36.11
+52955,Ludvig Åberg,46,413,3-Putt Avoidance,34.72%,R2026007,The Genesis Invitational,2026,34.72
+27644,Brian Harman,46,413,3-Putt Avoidance,34.72%,R2026007,The Genesis Invitational,2026,34.72
+52666,Sami Valimaki,46,413,3-Putt Avoidance,34.72%,R2026007,The Genesis Invitational,2026,34.72
+59018,Ryan Gerard,49,413,3-Putt Avoidance,31.94%,R2026007,The Genesis Invitational,2026,31.94
+28237,Rory McIlroy,50,413,3-Putt Avoidance,30.56%,R2026007,The Genesis Invitational,2026,30.56
+49960,Sepp Straka,50,413,3-Putt Avoidance,30.56%,R2026007,The Genesis Invitational,2026,30.56
 30911,Tommy Fleetwood,1,413,3-Putt Avoidance,54.17%,R2026005,AT&T Pebble Beach Pro-Am,2026,54.17
 32839,Hideki Matsuyama,2,413,3-Putt Avoidance,52.78%,R2026005,AT&T Pebble Beach Pro-Am,2026,52.78
 49960,Sepp Straka,3,413,3-Putt Avoidance,51.39%,R2026005,AT&T Pebble Beach Pro-Am,2026,51.39
@@ -4112,6 +4673,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 65256,David Ford,72,413,3-Putt Avoidance,26.39%,R2026006,Sony Open in Hawaii,2026,26.39
 56100,Ren Yonezawa,72,413,3-Putt Avoidance,26.39%,R2026006,Sony Open in Hawaii,2026,26.39
 49120,Kensei Hirata,74,413,3-Putt Avoidance,25.00%,R2026006,Sony Open in Hawaii,2026,25.0
+52215,Robert MacIntyre,1,119,1-Putt Percentage,26.25,R2026007,The Genesis Invitational,2026,26.25
+29936,Ryan Fox,2,119,1-Putt Percentage,27.25,R2026007,The Genesis Invitational,2026,27.25
+51977,Max Greyserman,2,119,1-Putt Percentage,27.25,R2026007,The Genesis Invitational,2026,27.25
+47420,Jake Knapp,2,119,1-Putt Percentage,27.25,R2026007,The Genesis Invitational,2026,27.25
+32839,Hideki Matsuyama,2,119,1-Putt Percentage,27.25,R2026007,The Genesis Invitational,2026,27.25
+48117,Kurt Kitayama,6,119,1-Putt Percentage,27.50,R2026007,The Genesis Invitational,2026,27.5
+59141,Matt McCarty,6,119,1-Putt Percentage,27.50,R2026007,The Genesis Invitational,2026,27.5
+51997,Andrew Novak,6,119,1-Putt Percentage,27.50,R2026007,The Genesis Invitational,2026,27.5
+34099,Harris English,9,119,1-Putt Percentage,27.75,R2026007,The Genesis Invitational,2026,27.75
+51003,Marco Penge,9,119,1-Putt Percentage,27.75,R2026007,The Genesis Invitational,2026,27.75
+34046,Jordan Spieth,9,119,1-Putt Percentage,27.75,R2026007,The Genesis Invitational,2026,27.75
+37378,Min Woo Lee,12,119,1-Putt Percentage,28.00,R2026007,The Genesis Invitational,2026,28.0
+36699,Patrick Rodgers,12,119,1-Putt Percentage,28.00,R2026007,The Genesis Invitational,2026,28.0
+27349,Alex Noren,14,119,1-Putt Percentage,28.25,R2026007,The Genesis Invitational,2026,28.25
+46414,Aaron Rai,14,119,1-Putt Percentage,28.25,R2026007,The Genesis Invitational,2026,28.25
+46046,Scottie Scheffler,14,119,1-Putt Percentage,28.25,R2026007,The Genesis Invitational,2026,28.25
+25493,Nick Taylor,14,119,1-Putt Percentage,28.25,R2026007,The Genesis Invitational,2026,28.25
+51634,Sahith Theegala,14,119,1-Putt Percentage,28.25,R2026007,The Genesis Invitational,2026,28.25
+60004,Jacob Bridgeman,19,119,1-Putt Percentage,28.50,R2026007,The Genesis Invitational,2026,28.5
+29725,Tony Finau,19,119,1-Putt Percentage,28.50,R2026007,The Genesis Invitational,2026,28.5
+30911,Tommy Fleetwood,19,119,1-Putt Percentage,28.50,R2026007,The Genesis Invitational,2026,28.5
+24502,Adam Scott,19,119,1-Putt Percentage,28.50,R2026007,The Genesis Invitational,2026,28.5
+56630,Akshay Bhatia,23,119,1-Putt Percentage,28.75,R2026007,The Genesis Invitational,2026,28.75
+48867,Matti Schmid,23,119,1-Putt Percentage,28.75,R2026007,The Genesis Invitational,2026,28.75
+39977,Max Homa,25,119,1-Putt Percentage,29.00,R2026007,The Genesis Invitational,2026,29.0
+37455,Si Woo Kim,25,119,1-Putt Percentage,29.00,R2026007,The Genesis Invitational,2026,29.0
+63343,Aldrich Potgieter,25,119,1-Putt Percentage,29.00,R2026007,The Genesis Invitational,2026,29.0
+55893,Sam Stevens,25,119,1-Putt Percentage,29.00,R2026007,The Genesis Invitational,2026,29.0
+59836,Pierceson Coody,29,119,1-Putt Percentage,29.25,R2026007,The Genesis Invitational,2026,29.25
+40098,Matt Fitzpatrick,29,119,1-Putt Percentage,29.25,R2026007,The Genesis Invitational,2026,29.25
+32102,Rickie Fowler,29,119,1-Putt Percentage,29.25,R2026007,The Genesis Invitational,2026,29.25
+50525,Collin Morikawa,29,119,1-Putt Percentage,29.25,R2026007,The Genesis Invitational,2026,29.25
+27064,Jhonattan Vegas,29,119,1-Putt Percentage,29.25,R2026007,The Genesis Invitational,2026,29.25
+52955,Ludvig Åberg,34,119,1-Putt Percentage,29.50,R2026007,The Genesis Invitational,2026,29.5
+39997,Corey Conners,34,119,1-Putt Percentage,29.50,R2026007,The Genesis Invitational,2026,29.5
+54591,Ben Griffin,34,119,1-Putt Percentage,29.50,R2026007,The Genesis Invitational,2026,29.5
+48081,Xander Schauffele,34,119,1-Putt Percentage,29.50,R2026007,The Genesis Invitational,2026,29.5
+57366,Cameron Young,34,119,1-Putt Percentage,29.50,R2026007,The Genesis Invitational,2026,29.5
+51766,Wyndham Clark,39,119,1-Putt Percentage,29.75,R2026007,The Genesis Invitational,2026,29.75
+51287,Ryo Hisatsune,39,119,1-Putt Percentage,29.75,R2026007,The Genesis Invitational,2026,29.75
+33204,Shane Lowry,39,119,1-Putt Percentage,29.75,R2026007,The Genesis Invitational,2026,29.75
+40250,Taylor Pendrith,39,119,1-Putt Percentage,29.75,R2026007,The Genesis Invitational,2026,29.75
+35450,Patrick Cantlay,43,119,1-Putt Percentage,30.00,R2026007,The Genesis Invitational,2026,30.0
+55182,Tom Kim,43,119,1-Putt Percentage,30.00,R2026007,The Genesis Invitational,2026,30.0
+28237,Rory McIlroy,43,119,1-Putt Percentage,30.00,R2026007,The Genesis Invitational,2026,30.0
+59018,Ryan Gerard,46,119,1-Putt Percentage,30.25,R2026007,The Genesis Invitational,2026,30.25
+27644,Brian Harman,46,119,1-Putt Percentage,30.25,R2026007,The Genesis Invitational,2026,30.25
+47993,Denny McCarthy,46,119,1-Putt Percentage,30.25,R2026007,The Genesis Invitational,2026,30.25
+52666,Sami Valimaki,46,119,1-Putt Percentage,30.25,R2026007,The Genesis Invitational,2026,30.25
+46717,Viktor Hovland,50,119,1-Putt Percentage,30.50,R2026007,The Genesis Invitational,2026,30.5
+49960,Sepp Straka,50,119,1-Putt Percentage,30.50,R2026007,The Genesis Invitational,2026,30.5
 36699,Patrick Rodgers,1,119,1-Putt Percentage,26.00,R2026005,AT&T Pebble Beach Pro-Am,2026,26.0
 30911,Tommy Fleetwood,2,119,1-Putt Percentage,26.25,R2026005,AT&T Pebble Beach Pro-Am,2026,26.25
 47504,Sam Burns,3,119,1-Putt Percentage,26.50,R2026005,AT&T Pebble Beach Pro-Am,2026,26.5
@@ -4486,6 +5098,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 63454,Johnny Keefer,72,119,1-Putt Percentage,32.00,R2026006,Sony Open in Hawaii,2026,32.0
 65256,David Ford,73,119,1-Putt Percentage,32.25,R2026006,Sony Open in Hawaii,2026,32.25
 49120,Kensei Hirata,73,119,1-Putt Percentage,32.25,R2026006,Sony Open in Hawaii,2026,32.25
+24502,Adam Scott,1,160,Bounce Back,80.00%,R2026007,The Genesis Invitational,2026,80.0
+28237,Rory McIlroy,2,160,Bounce Back,66.67%,R2026007,The Genesis Invitational,2026,66.67
+50525,Collin Morikawa,3,160,Bounce Back,50.00%,R2026007,The Genesis Invitational,2026,50.0
+46414,Aaron Rai,3,160,Bounce Back,50.00%,R2026007,The Genesis Invitational,2026,50.0
+57366,Cameron Young,3,160,Bounce Back,50.00%,R2026007,The Genesis Invitational,2026,50.0
+37455,Si Woo Kim,6,160,Bounce Back,42.86%,R2026007,The Genesis Invitational,2026,42.86
+29936,Ryan Fox,7,160,Bounce Back,40.00%,R2026007,The Genesis Invitational,2026,40.0
+47993,Denny McCarthy,7,160,Bounce Back,40.00%,R2026007,The Genesis Invitational,2026,40.0
+52955,Ludvig Åberg,9,160,Bounce Back,36.36%,R2026007,The Genesis Invitational,2026,36.36
+39977,Max Homa,10,160,Bounce Back,33.33%,R2026007,The Genesis Invitational,2026,33.33
+32839,Hideki Matsuyama,10,160,Bounce Back,33.33%,R2026007,The Genesis Invitational,2026,33.33
+51003,Marco Penge,12,160,Bounce Back,30.00%,R2026007,The Genesis Invitational,2026,30.0
+39997,Corey Conners,13,160,Bounce Back,28.57%,R2026007,The Genesis Invitational,2026,28.57
+51287,Ryo Hisatsune,13,160,Bounce Back,28.57%,R2026007,The Genesis Invitational,2026,28.57
+63343,Aldrich Potgieter,13,160,Bounce Back,28.57%,R2026007,The Genesis Invitational,2026,28.57
+27644,Brian Harman,16,160,Bounce Back,26.67%,R2026007,The Genesis Invitational,2026,26.67
+35450,Patrick Cantlay,17,160,Bounce Back,25.00%,R2026007,The Genesis Invitational,2026,25.0
+51766,Wyndham Clark,17,160,Bounce Back,25.00%,R2026007,The Genesis Invitational,2026,25.0
+51977,Max Greyserman,17,160,Bounce Back,25.00%,R2026007,The Genesis Invitational,2026,25.0
+27064,Jhonattan Vegas,20,160,Bounce Back,23.08%,R2026007,The Genesis Invitational,2026,23.08
+34099,Harris English,21,160,Bounce Back,22.22%,R2026007,The Genesis Invitational,2026,22.22
+55182,Tom Kim,21,160,Bounce Back,22.22%,R2026007,The Genesis Invitational,2026,22.22
+33204,Shane Lowry,21,160,Bounce Back,22.22%,R2026007,The Genesis Invitational,2026,22.22
+40250,Taylor Pendrith,24,160,Bounce Back,21.43%,R2026007,The Genesis Invitational,2026,21.43
+48867,Matti Schmid,24,160,Bounce Back,21.43%,R2026007,The Genesis Invitational,2026,21.43
+30911,Tommy Fleetwood,26,160,Bounce Back,20.00%,R2026007,The Genesis Invitational,2026,20.0
+32102,Rickie Fowler,26,160,Bounce Back,20.00%,R2026007,The Genesis Invitational,2026,20.0
+59018,Ryan Gerard,26,160,Bounce Back,20.00%,R2026007,The Genesis Invitational,2026,20.0
+48117,Kurt Kitayama,26,160,Bounce Back,20.00%,R2026007,The Genesis Invitational,2026,20.0
+36699,Patrick Rodgers,26,160,Bounce Back,20.00%,R2026007,The Genesis Invitational,2026,20.0
+25493,Nick Taylor,26,160,Bounce Back,20.00%,R2026007,The Genesis Invitational,2026,20.0
+40098,Matt Fitzpatrick,32,160,Bounce Back,18.18%,R2026007,The Genesis Invitational,2026,18.18
+59141,Matt McCarty,32,160,Bounce Back,18.18%,R2026007,The Genesis Invitational,2026,18.18
+27349,Alex Noren,34,160,Bounce Back,16.67%,R2026007,The Genesis Invitational,2026,16.67
+37378,Min Woo Lee,35,160,Bounce Back,14.29%,R2026007,The Genesis Invitational,2026,14.29
+48081,Xander Schauffele,35,160,Bounce Back,14.29%,R2026007,The Genesis Invitational,2026,14.29
+56630,Akshay Bhatia,37,160,Bounce Back,12.50%,R2026007,The Genesis Invitational,2026,12.5
+59836,Pierceson Coody,37,160,Bounce Back,12.50%,R2026007,The Genesis Invitational,2026,12.5
+47420,Jake Knapp,37,160,Bounce Back,12.50%,R2026007,The Genesis Invitational,2026,12.5
+46046,Scottie Scheffler,37,160,Bounce Back,12.50%,R2026007,The Genesis Invitational,2026,12.5
+54591,Ben Griffin,41,160,Bounce Back,8.33%,R2026007,The Genesis Invitational,2026,8.33
+51997,Andrew Novak,42,160,Bounce Back,7.14%,R2026007,The Genesis Invitational,2026,7.14
+60004,Jacob Bridgeman,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
+29725,Tony Finau,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
+46717,Viktor Hovland,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
+52215,Robert MacIntyre,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
+34046,Jordan Spieth,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
+55893,Sam Stevens,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
+49960,Sepp Straka,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
+51634,Sahith Theegala,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
+52666,Sami Valimaki,43,160,Bounce Back,.00%,R2026007,The Genesis Invitational,2026,0.0
 48117,Kurt Kitayama,1,160,Bounce Back,66.67%,R2026005,AT&T Pebble Beach Pro-Am,2026,66.67
 45242,Kevin Yu,1,160,Bounce Back,66.67%,R2026005,AT&T Pebble Beach Pro-Am,2026,66.67
 35532,Tom Hoge,3,160,Bounce Back,57.14%,R2026005,AT&T Pebble Beach Pro-Am,2026,57.14
@@ -4860,6 +5523,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 50188,S.H. Kim,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
 39335,Kevin Roy,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
 51894,Vince Whaley,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
+28237,Rory McIlroy,1,02414,Par Breakers,4.17%,R2026007,The Genesis Invitational,2026,4.17
+51634,Sahith Theegala,2,02414,Par Breakers,5.56%,R2026007,The Genesis Invitational,2026,5.56
+48117,Kurt Kitayama,3,02414,Par Breakers,6.94%,R2026007,The Genesis Invitational,2026,6.94
+34046,Jordan Spieth,3,02414,Par Breakers,6.94%,R2026007,The Genesis Invitational,2026,6.94
+25493,Nick Taylor,5,02414,Par Breakers,8.33%,R2026007,The Genesis Invitational,2026,8.33
+39997,Corey Conners,6,02414,Par Breakers,9.72%,R2026007,The Genesis Invitational,2026,9.72
+32839,Hideki Matsuyama,6,02414,Par Breakers,9.72%,R2026007,The Genesis Invitational,2026,9.72
+55893,Sam Stevens,6,02414,Par Breakers,9.72%,R2026007,The Genesis Invitational,2026,9.72
+56630,Akshay Bhatia,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+60004,Jacob Bridgeman,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+59836,Pierceson Coody,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+37455,Si Woo Kim,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+52215,Robert MacIntyre,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+27349,Alex Noren,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+63343,Aldrich Potgieter,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+46046,Scottie Scheffler,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+24502,Adam Scott,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+57366,Cameron Young,9,02414,Par Breakers,11.11%,R2026007,The Genesis Invitational,2026,11.11
+35450,Patrick Cantlay,19,02414,Par Breakers,12.50%,R2026007,The Genesis Invitational,2026,12.5
+39977,Max Homa,19,02414,Par Breakers,12.50%,R2026007,The Genesis Invitational,2026,12.5
+47420,Jake Knapp,19,02414,Par Breakers,12.50%,R2026007,The Genesis Invitational,2026,12.5
+37378,Min Woo Lee,19,02414,Par Breakers,12.50%,R2026007,The Genesis Invitational,2026,12.5
+48081,Xander Schauffele,19,02414,Par Breakers,12.50%,R2026007,The Genesis Invitational,2026,12.5
+34099,Harris English,24,02414,Par Breakers,13.89%,R2026007,The Genesis Invitational,2026,13.89
+30911,Tommy Fleetwood,24,02414,Par Breakers,13.89%,R2026007,The Genesis Invitational,2026,13.89
+46717,Viktor Hovland,24,02414,Par Breakers,13.89%,R2026007,The Genesis Invitational,2026,13.89
+55182,Tom Kim,24,02414,Par Breakers,13.89%,R2026007,The Genesis Invitational,2026,13.89
+33204,Shane Lowry,24,02414,Par Breakers,13.89%,R2026007,The Genesis Invitational,2026,13.89
+50525,Collin Morikawa,24,02414,Par Breakers,13.89%,R2026007,The Genesis Invitational,2026,13.89
+52666,Sami Valimaki,24,02414,Par Breakers,13.89%,R2026007,The Genesis Invitational,2026,13.89
+52955,Ludvig Åberg,31,02414,Par Breakers,15.28%,R2026007,The Genesis Invitational,2026,15.28
+40098,Matt Fitzpatrick,31,02414,Par Breakers,15.28%,R2026007,The Genesis Invitational,2026,15.28
+32102,Rickie Fowler,31,02414,Par Breakers,15.28%,R2026007,The Genesis Invitational,2026,15.28
+29936,Ryan Fox,31,02414,Par Breakers,15.28%,R2026007,The Genesis Invitational,2026,15.28
+59018,Ryan Gerard,31,02414,Par Breakers,15.28%,R2026007,The Genesis Invitational,2026,15.28
+59141,Matt McCarty,31,02414,Par Breakers,15.28%,R2026007,The Genesis Invitational,2026,15.28
+51003,Marco Penge,31,02414,Par Breakers,15.28%,R2026007,The Genesis Invitational,2026,15.28
+29725,Tony Finau,38,02414,Par Breakers,16.67%,R2026007,The Genesis Invitational,2026,16.67
+51977,Max Greyserman,38,02414,Par Breakers,16.67%,R2026007,The Genesis Invitational,2026,16.67
+47993,Denny McCarthy,38,02414,Par Breakers,16.67%,R2026007,The Genesis Invitational,2026,16.67
+36699,Patrick Rodgers,38,02414,Par Breakers,16.67%,R2026007,The Genesis Invitational,2026,16.67
+54591,Ben Griffin,42,02414,Par Breakers,18.06%,R2026007,The Genesis Invitational,2026,18.06
+40250,Taylor Pendrith,43,02414,Par Breakers,19.44%,R2026007,The Genesis Invitational,2026,19.44
+46414,Aaron Rai,43,02414,Par Breakers,19.44%,R2026007,The Genesis Invitational,2026,19.44
+27064,Jhonattan Vegas,43,02414,Par Breakers,19.44%,R2026007,The Genesis Invitational,2026,19.44
+49960,Sepp Straka,46,02414,Par Breakers,20.83%,R2026007,The Genesis Invitational,2026,20.83
+27644,Brian Harman,47,02414,Par Breakers,22.22%,R2026007,The Genesis Invitational,2026,22.22
+51287,Ryo Hisatsune,47,02414,Par Breakers,22.22%,R2026007,The Genesis Invitational,2026,22.22
+51997,Andrew Novak,47,02414,Par Breakers,22.22%,R2026007,The Genesis Invitational,2026,22.22
+48867,Matti Schmid,47,02414,Par Breakers,22.22%,R2026007,The Genesis Invitational,2026,22.22
+51766,Wyndham Clark,51,02414,Par Breakers,23.61%,R2026007,The Genesis Invitational,2026,23.61
 56630,Akshay Bhatia,1,02414,Par Breakers,5.56%,R2026005,AT&T Pebble Beach Pro-Am,2026,5.56
 30911,Tommy Fleetwood,1,02414,Par Breakers,5.56%,R2026005,AT&T Pebble Beach Pro-Am,2026,5.56
 25493,Nick Taylor,1,02414,Par Breakers,5.56%,R2026005,AT&T Pebble Beach Pro-Am,2026,5.56
@@ -5234,6 +5948,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39324,J.J. Spaun,69,02414,Par Breakers,19.44%,R2026006,Sony Open in Hawaii,2026,19.44
 48001,Zach Bauchou,73,02414,Par Breakers,20.83%,R2026006,Sony Open in Hawaii,2026,20.83
 61148,Kota Kaneko,74,02414,Par Breakers,23.61%,R2026006,Sony Open in Hawaii,2026,23.61
+28237,Rory McIlroy,1,02419,Final Round Scoring,0.75,R2026007,The Genesis Invitational,2026,0.75
+34046,Jordan Spieth,2,02419,Final Round Scoring,1.00,R2026007,The Genesis Invitational,2026,1.0
+51634,Sahith Theegala,2,02419,Final Round Scoring,1.00,R2026007,The Genesis Invitational,2026,1.0
+48117,Kurt Kitayama,4,02419,Final Round Scoring,1.25,R2026007,The Genesis Invitational,2026,1.25
+25493,Nick Taylor,4,02419,Final Round Scoring,1.25,R2026007,The Genesis Invitational,2026,1.25
+39997,Corey Conners,6,02419,Final Round Scoring,1.50,R2026007,The Genesis Invitational,2026,1.5
+37455,Si Woo Kim,6,02419,Final Round Scoring,1.50,R2026007,The Genesis Invitational,2026,1.5
+60004,Jacob Bridgeman,8,02419,Final Round Scoring,1.75,R2026007,The Genesis Invitational,2026,1.75
+47420,Jake Knapp,8,02419,Final Round Scoring,1.75,R2026007,The Genesis Invitational,2026,1.75
+32839,Hideki Matsuyama,8,02419,Final Round Scoring,1.75,R2026007,The Genesis Invitational,2026,1.75
+46046,Scottie Scheffler,8,02419,Final Round Scoring,1.75,R2026007,The Genesis Invitational,2026,1.75
+24502,Adam Scott,8,02419,Final Round Scoring,1.75,R2026007,The Genesis Invitational,2026,1.75
+55893,Sam Stevens,8,02419,Final Round Scoring,1.75,R2026007,The Genesis Invitational,2026,1.75
+57366,Cameron Young,8,02419,Final Round Scoring,1.75,R2026007,The Genesis Invitational,2026,1.75
+56630,Akshay Bhatia,15,02419,Final Round Scoring,2.00,R2026007,The Genesis Invitational,2026,2.0
+35450,Patrick Cantlay,15,02419,Final Round Scoring,2.00,R2026007,The Genesis Invitational,2026,2.0
+59836,Pierceson Coody,15,02419,Final Round Scoring,2.00,R2026007,The Genesis Invitational,2026,2.0
+55182,Tom Kim,15,02419,Final Round Scoring,2.00,R2026007,The Genesis Invitational,2026,2.0
+52215,Robert MacIntyre,15,02419,Final Round Scoring,2.00,R2026007,The Genesis Invitational,2026,2.0
+27349,Alex Noren,15,02419,Final Round Scoring,2.00,R2026007,The Genesis Invitational,2026,2.0
+63343,Aldrich Potgieter,15,02419,Final Round Scoring,2.00,R2026007,The Genesis Invitational,2026,2.0
+39977,Max Homa,22,02419,Final Round Scoring,2.25,R2026007,The Genesis Invitational,2026,2.25
+37378,Min Woo Lee,22,02419,Final Round Scoring,2.25,R2026007,The Genesis Invitational,2026,2.25
+48081,Xander Schauffele,22,02419,Final Round Scoring,2.25,R2026007,The Genesis Invitational,2026,2.25
+52955,Ludvig Åberg,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+34099,Harris English,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+30911,Tommy Fleetwood,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+32102,Rickie Fowler,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+59018,Ryan Gerard,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+51977,Max Greyserman,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+46717,Viktor Hovland,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+33204,Shane Lowry,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+50525,Collin Morikawa,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+52666,Sami Valimaki,25,02419,Final Round Scoring,2.50,R2026007,The Genesis Invitational,2026,2.5
+29725,Tony Finau,35,02419,Final Round Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+40098,Matt Fitzpatrick,35,02419,Final Round Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+29936,Ryan Fox,35,02419,Final Round Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+54591,Ben Griffin,35,02419,Final Round Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+47993,Denny McCarthy,35,02419,Final Round Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+59141,Matt McCarty,35,02419,Final Round Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+51003,Marco Penge,35,02419,Final Round Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+36699,Patrick Rodgers,42,02419,Final Round Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+40250,Taylor Pendrith,43,02419,Final Round Scoring,3.25,R2026007,The Genesis Invitational,2026,3.25
+49960,Sepp Straka,43,02419,Final Round Scoring,3.25,R2026007,The Genesis Invitational,2026,3.25
+27064,Jhonattan Vegas,43,02419,Final Round Scoring,3.25,R2026007,The Genesis Invitational,2026,3.25
+46414,Aaron Rai,46,02419,Final Round Scoring,3.50,R2026007,The Genesis Invitational,2026,3.5
+51766,Wyndham Clark,47,02419,Final Round Scoring,3.75,R2026007,The Genesis Invitational,2026,3.75
+51287,Ryo Hisatsune,47,02419,Final Round Scoring,3.75,R2026007,The Genesis Invitational,2026,3.75
+51997,Andrew Novak,47,02419,Final Round Scoring,3.75,R2026007,The Genesis Invitational,2026,3.75
+48867,Matti Schmid,47,02419,Final Round Scoring,3.75,R2026007,The Genesis Invitational,2026,3.75
+27644,Brian Harman,51,02419,Final Round Scoring,4.00,R2026007,The Genesis Invitational,2026,4.0
 28237,Rory McIlroy,1,02419,Final Round Scoring,0.75,R2026005,AT&T Pebble Beach Pro-Am,2026,0.75
 25493,Nick Taylor,1,02419,Final Round Scoring,0.75,R2026005,AT&T Pebble Beach Pro-Am,2026,0.75
 56630,Akshay Bhatia,3,02419,Final Round Scoring,1.00,R2026005,AT&T Pebble Beach Pro-Am,2026,1.0
@@ -5608,6 +6373,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39546,Keith Mitchell,71,02419,Final Round Scoring,3.50,R2026006,Sony Open in Hawaii,2026,3.5
 39324,J.J. Spaun,71,02419,Final Round Scoring,3.50,R2026006,Sony Open in Hawaii,2026,3.5
 48001,Zach Bauchou,74,02419,Final Round Scoring,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+60004,Jacob Bridgeman,1,108,Birdie or Better %,66.50,R2026007,The Genesis Invitational,2026,66.5
+48117,Kurt Kitayama,2,108,Birdie or Better %,66.75,R2026007,The Genesis Invitational,2026,66.75
+28237,Rory McIlroy,2,108,Birdie or Better %,66.75,R2026007,The Genesis Invitational,2026,66.75
+24502,Adam Scott,4,108,Birdie or Better %,67.00,R2026007,The Genesis Invitational,2026,67.0
+63343,Aldrich Potgieter,5,108,Birdie or Better %,67.25,R2026007,The Genesis Invitational,2026,67.25
+47420,Jake Knapp,6,108,Birdie or Better %,67.75,R2026007,The Genesis Invitational,2026,67.75
+30911,Tommy Fleetwood,7,108,Birdie or Better %,68.00,R2026007,The Genesis Invitational,2026,68.0
+29936,Ryan Fox,7,108,Birdie or Better %,68.00,R2026007,The Genesis Invitational,2026,68.0
+50525,Collin Morikawa,7,108,Birdie or Better %,68.00,R2026007,The Genesis Invitational,2026,68.0
+48081,Xander Schauffele,7,108,Birdie or Better %,68.00,R2026007,The Genesis Invitational,2026,68.0
+57366,Cameron Young,7,108,Birdie or Better %,68.00,R2026007,The Genesis Invitational,2026,68.0
+37378,Min Woo Lee,12,108,Birdie or Better %,68.25,R2026007,The Genesis Invitational,2026,68.25
+27349,Alex Noren,12,108,Birdie or Better %,68.25,R2026007,The Genesis Invitational,2026,68.25
+46046,Scottie Scheffler,12,108,Birdie or Better %,68.25,R2026007,The Genesis Invitational,2026,68.25
+34046,Jordan Spieth,12,108,Birdie or Better %,68.25,R2026007,The Genesis Invitational,2026,68.25
+56630,Akshay Bhatia,16,108,Birdie or Better %,68.50,R2026007,The Genesis Invitational,2026,68.5
+59836,Pierceson Coody,16,108,Birdie or Better %,68.50,R2026007,The Genesis Invitational,2026,68.5
+51003,Marco Penge,16,108,Birdie or Better %,68.50,R2026007,The Genesis Invitational,2026,68.5
+55893,Sam Stevens,16,108,Birdie or Better %,68.50,R2026007,The Genesis Invitational,2026,68.5
+52955,Ludvig Åberg,20,108,Birdie or Better %,68.75,R2026007,The Genesis Invitational,2026,68.75
+52215,Robert MacIntyre,20,108,Birdie or Better %,68.75,R2026007,The Genesis Invitational,2026,68.75
+34099,Harris English,22,108,Birdie or Better %,69.00,R2026007,The Genesis Invitational,2026,69.0
+51634,Sahith Theegala,22,108,Birdie or Better %,69.00,R2026007,The Genesis Invitational,2026,69.0
+40098,Matt Fitzpatrick,24,108,Birdie or Better %,69.25,R2026007,The Genesis Invitational,2026,69.25
+51977,Max Greyserman,24,108,Birdie or Better %,69.25,R2026007,The Genesis Invitational,2026,69.25
+33204,Shane Lowry,24,108,Birdie or Better %,69.25,R2026007,The Genesis Invitational,2026,69.25
+59141,Matt McCarty,24,108,Birdie or Better %,69.25,R2026007,The Genesis Invitational,2026,69.25
+29725,Tony Finau,28,108,Birdie or Better %,69.50,R2026007,The Genesis Invitational,2026,69.5
+32102,Rickie Fowler,28,108,Birdie or Better %,69.50,R2026007,The Genesis Invitational,2026,69.5
+59018,Ryan Gerard,28,108,Birdie or Better %,69.50,R2026007,The Genesis Invitational,2026,69.5
+32839,Hideki Matsuyama,28,108,Birdie or Better %,69.50,R2026007,The Genesis Invitational,2026,69.5
+46414,Aaron Rai,28,108,Birdie or Better %,69.50,R2026007,The Genesis Invitational,2026,69.5
+25493,Nick Taylor,28,108,Birdie or Better %,69.50,R2026007,The Genesis Invitational,2026,69.5
+37455,Si Woo Kim,34,108,Birdie or Better %,69.75,R2026007,The Genesis Invitational,2026,69.75
+55182,Tom Kim,34,108,Birdie or Better %,69.75,R2026007,The Genesis Invitational,2026,69.75
+36699,Patrick Rodgers,34,108,Birdie or Better %,69.75,R2026007,The Genesis Invitational,2026,69.75
+35450,Patrick Cantlay,37,108,Birdie or Better %,70.00,R2026007,The Genesis Invitational,2026,70.0
+39997,Corey Conners,37,108,Birdie or Better %,70.00,R2026007,The Genesis Invitational,2026,70.0
+39977,Max Homa,37,108,Birdie or Better %,70.00,R2026007,The Genesis Invitational,2026,70.0
+52666,Sami Valimaki,37,108,Birdie or Better %,70.00,R2026007,The Genesis Invitational,2026,70.0
+51766,Wyndham Clark,41,108,Birdie or Better %,70.25,R2026007,The Genesis Invitational,2026,70.25
+54591,Ben Griffin,41,108,Birdie or Better %,70.25,R2026007,The Genesis Invitational,2026,70.25
+46717,Viktor Hovland,41,108,Birdie or Better %,70.25,R2026007,The Genesis Invitational,2026,70.25
+27064,Jhonattan Vegas,44,108,Birdie or Better %,70.50,R2026007,The Genesis Invitational,2026,70.5
+51287,Ryo Hisatsune,45,108,Birdie or Better %,70.75,R2026007,The Genesis Invitational,2026,70.75
+40250,Taylor Pendrith,45,108,Birdie or Better %,70.75,R2026007,The Genesis Invitational,2026,70.75
+47993,Denny McCarthy,47,108,Birdie or Better %,71.00,R2026007,The Genesis Invitational,2026,71.0
+51997,Andrew Novak,47,108,Birdie or Better %,71.00,R2026007,The Genesis Invitational,2026,71.0
+48867,Matti Schmid,49,108,Birdie or Better %,71.50,R2026007,The Genesis Invitational,2026,71.5
+27644,Brian Harman,50,108,Birdie or Better %,72.25,R2026007,The Genesis Invitational,2026,72.25
+49960,Sepp Straka,50,108,Birdie or Better %,72.25,R2026007,The Genesis Invitational,2026,72.25
 50525,Collin Morikawa,1,108,Birdie or Better %,66.50,R2026005,AT&T Pebble Beach Pro-Am,2026,66.5
 37378,Min Woo Lee,2,108,Birdie or Better %,66.75,R2026005,AT&T Pebble Beach Pro-Am,2026,66.75
 49960,Sepp Straka,2,108,Birdie or Better %,66.75,R2026005,AT&T Pebble Beach Pro-Am,2026,66.75
@@ -5982,6 +6798,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47983,Chad Ramey,71,108,Birdie or Better %,70.25,R2026006,Sony Open in Hawaii,2026,70.25
 61148,Kota Kaneko,73,108,Birdie or Better %,70.75,R2026006,Sony Open in Hawaii,2026,70.75
 29420,Billy Horschel,74,108,Birdie or Better %,71.00,R2026006,Sony Open in Hawaii,2026,71.0
+24502,Adam Scott,1,299,Par 3 Scoring,63,R2026007,The Genesis Invitational,2026,63.0
+60004,Jacob Bridgeman,2,299,Par 3 Scoring,64,R2026007,The Genesis Invitational,2026,64.0
+48117,Kurt Kitayama,2,299,Par 3 Scoring,64,R2026007,The Genesis Invitational,2026,64.0
+51003,Marco Penge,2,299,Par 3 Scoring,64,R2026007,The Genesis Invitational,2026,64.0
+35450,Patrick Cantlay,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+34099,Harris English,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+47420,Jake Knapp,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+37378,Min Woo Lee,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+28237,Rory McIlroy,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+50525,Collin Morikawa,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+63343,Aldrich Potgieter,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+48081,Xander Schauffele,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+46046,Scottie Scheffler,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+55893,Sam Stevens,5,299,Par 3 Scoring,65,R2026007,The Genesis Invitational,2026,65.0
+52955,Ludvig Åberg,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+40098,Matt Fitzpatrick,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+30911,Tommy Fleetwood,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+32102,Rickie Fowler,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+51977,Max Greyserman,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+39977,Max Homa,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+52215,Robert MacIntyre,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+27349,Alex Noren,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+46414,Aaron Rai,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+34046,Jordan Spieth,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+57366,Cameron Young,15,299,Par 3 Scoring,66,R2026007,The Genesis Invitational,2026,66.0
+56630,Akshay Bhatia,26,299,Par 3 Scoring,67,R2026007,The Genesis Invitational,2026,67.0
+51766,Wyndham Clark,26,299,Par 3 Scoring,67,R2026007,The Genesis Invitational,2026,67.0
+59836,Pierceson Coody,26,299,Par 3 Scoring,67,R2026007,The Genesis Invitational,2026,67.0
+29936,Ryan Fox,26,299,Par 3 Scoring,67,R2026007,The Genesis Invitational,2026,67.0
+59018,Ryan Gerard,26,299,Par 3 Scoring,67,R2026007,The Genesis Invitational,2026,67.0
+55182,Tom Kim,26,299,Par 3 Scoring,67,R2026007,The Genesis Invitational,2026,67.0
+33204,Shane Lowry,26,299,Par 3 Scoring,67,R2026007,The Genesis Invitational,2026,67.0
+51634,Sahith Theegala,26,299,Par 3 Scoring,67,R2026007,The Genesis Invitational,2026,67.0
+29725,Tony Finau,34,299,Par 3 Scoring,68,R2026007,The Genesis Invitational,2026,68.0
+54591,Ben Griffin,34,299,Par 3 Scoring,68,R2026007,The Genesis Invitational,2026,68.0
+37455,Si Woo Kim,34,299,Par 3 Scoring,68,R2026007,The Genesis Invitational,2026,68.0
+32839,Hideki Matsuyama,34,299,Par 3 Scoring,68,R2026007,The Genesis Invitational,2026,68.0
+49960,Sepp Straka,34,299,Par 3 Scoring,68,R2026007,The Genesis Invitational,2026,68.0
+25493,Nick Taylor,34,299,Par 3 Scoring,68,R2026007,The Genesis Invitational,2026,68.0
+52666,Sami Valimaki,34,299,Par 3 Scoring,68,R2026007,The Genesis Invitational,2026,68.0
+27064,Jhonattan Vegas,34,299,Par 3 Scoring,68,R2026007,The Genesis Invitational,2026,68.0
+39997,Corey Conners,42,299,Par 3 Scoring,69,R2026007,The Genesis Invitational,2026,69.0
+51287,Ryo Hisatsune,42,299,Par 3 Scoring,69,R2026007,The Genesis Invitational,2026,69.0
+46717,Viktor Hovland,42,299,Par 3 Scoring,69,R2026007,The Genesis Invitational,2026,69.0
+59141,Matt McCarty,42,299,Par 3 Scoring,69,R2026007,The Genesis Invitational,2026,69.0
+51997,Andrew Novak,42,299,Par 3 Scoring,69,R2026007,The Genesis Invitational,2026,69.0
+40250,Taylor Pendrith,42,299,Par 3 Scoring,69,R2026007,The Genesis Invitational,2026,69.0
+36699,Patrick Rodgers,42,299,Par 3 Scoring,69,R2026007,The Genesis Invitational,2026,69.0
+27644,Brian Harman,49,299,Par 3 Scoring,70,R2026007,The Genesis Invitational,2026,70.0
+47993,Denny McCarthy,49,299,Par 3 Scoring,70,R2026007,The Genesis Invitational,2026,70.0
+48867,Matti Schmid,49,299,Par 3 Scoring,70,R2026007,The Genesis Invitational,2026,70.0
 51287,Ryo Hisatsune,1,299,Par 3 Scoring,62,R2026005,AT&T Pebble Beach Pro-Am,2026,62.0
 50525,Collin Morikawa,1,299,Par 3 Scoring,62,R2026005,AT&T Pebble Beach Pro-Am,2026,62.0
 33141,Keegan Bradley,3,299,Par 3 Scoring,63,R2026005,AT&T Pebble Beach Pro-Am,2026,63.0
@@ -6356,6 +7223,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 29420,Billy Horschel,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
 36801,Mark Hubbard,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
 63121,William Mouw,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
+29936,Ryan Fox,1,142,Par 4 Scoring,2.63,R2026007,The Genesis Invitational,2026,2.63
+47420,Jake Knapp,2,142,Par 4 Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+36699,Patrick Rodgers,2,142,Par 4 Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+24502,Adam Scott,2,142,Par 4 Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+55893,Sam Stevens,2,142,Par 4 Scoring,2.75,R2026007,The Genesis Invitational,2026,2.75
+59018,Ryan Gerard,6,142,Par 4 Scoring,2.81,R2026007,The Genesis Invitational,2026,2.81
+51977,Max Greyserman,6,142,Par 4 Scoring,2.81,R2026007,The Genesis Invitational,2026,2.81
+34046,Jordan Spieth,6,142,Par 4 Scoring,2.81,R2026007,The Genesis Invitational,2026,2.81
+25493,Nick Taylor,6,142,Par 4 Scoring,2.81,R2026007,The Genesis Invitational,2026,2.81
+27064,Jhonattan Vegas,6,142,Par 4 Scoring,2.81,R2026007,The Genesis Invitational,2026,2.81
+34099,Harris English,11,142,Par 4 Scoring,2.88,R2026007,The Genesis Invitational,2026,2.88
+28237,Rory McIlroy,11,142,Par 4 Scoring,2.88,R2026007,The Genesis Invitational,2026,2.88
+51997,Andrew Novak,11,142,Par 4 Scoring,2.88,R2026007,The Genesis Invitational,2026,2.88
+40250,Taylor Pendrith,11,142,Par 4 Scoring,2.88,R2026007,The Genesis Invitational,2026,2.88
+46414,Aaron Rai,11,142,Par 4 Scoring,2.88,R2026007,The Genesis Invitational,2026,2.88
+52666,Sami Valimaki,11,142,Par 4 Scoring,2.88,R2026007,The Genesis Invitational,2026,2.88
+59836,Pierceson Coody,17,142,Par 4 Scoring,2.94,R2026007,The Genesis Invitational,2026,2.94
+29725,Tony Finau,17,142,Par 4 Scoring,2.94,R2026007,The Genesis Invitational,2026,2.94
+46717,Viktor Hovland,17,142,Par 4 Scoring,2.94,R2026007,The Genesis Invitational,2026,2.94
+37455,Si Woo Kim,17,142,Par 4 Scoring,2.94,R2026007,The Genesis Invitational,2026,2.94
+48117,Kurt Kitayama,17,142,Par 4 Scoring,2.94,R2026007,The Genesis Invitational,2026,2.94
+47993,Denny McCarthy,17,142,Par 4 Scoring,2.94,R2026007,The Genesis Invitational,2026,2.94
+46046,Scottie Scheffler,17,142,Par 4 Scoring,2.94,R2026007,The Genesis Invitational,2026,2.94
+60004,Jacob Bridgeman,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+39997,Corey Conners,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+32102,Rickie Fowler,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+39977,Max Homa,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+33204,Shane Lowry,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+52215,Robert MacIntyre,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+32839,Hideki Matsuyama,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+63343,Aldrich Potgieter,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+51634,Sahith Theegala,24,142,Par 4 Scoring,3.00,R2026007,The Genesis Invitational,2026,3.0
+56630,Akshay Bhatia,33,142,Par 4 Scoring,3.06,R2026007,The Genesis Invitational,2026,3.06
+55182,Tom Kim,33,142,Par 4 Scoring,3.06,R2026007,The Genesis Invitational,2026,3.06
+37378,Min Woo Lee,33,142,Par 4 Scoring,3.06,R2026007,The Genesis Invitational,2026,3.06
+59141,Matt McCarty,33,142,Par 4 Scoring,3.06,R2026007,The Genesis Invitational,2026,3.06
+50525,Collin Morikawa,33,142,Par 4 Scoring,3.06,R2026007,The Genesis Invitational,2026,3.06
+51003,Marco Penge,33,142,Par 4 Scoring,3.06,R2026007,The Genesis Invitational,2026,3.06
+49960,Sepp Straka,33,142,Par 4 Scoring,3.06,R2026007,The Genesis Invitational,2026,3.06
+35450,Patrick Cantlay,40,142,Par 4 Scoring,3.13,R2026007,The Genesis Invitational,2026,3.13
+30911,Tommy Fleetwood,40,142,Par 4 Scoring,3.13,R2026007,The Genesis Invitational,2026,3.13
+54591,Ben Griffin,40,142,Par 4 Scoring,3.13,R2026007,The Genesis Invitational,2026,3.13
+51287,Ryo Hisatsune,40,142,Par 4 Scoring,3.13,R2026007,The Genesis Invitational,2026,3.13
+57366,Cameron Young,40,142,Par 4 Scoring,3.13,R2026007,The Genesis Invitational,2026,3.13
+52955,Ludvig Åberg,45,142,Par 4 Scoring,3.19,R2026007,The Genesis Invitational,2026,3.19
+51766,Wyndham Clark,45,142,Par 4 Scoring,3.19,R2026007,The Genesis Invitational,2026,3.19
+40098,Matt Fitzpatrick,45,142,Par 4 Scoring,3.19,R2026007,The Genesis Invitational,2026,3.19
+27349,Alex Noren,45,142,Par 4 Scoring,3.19,R2026007,The Genesis Invitational,2026,3.19
+27644,Brian Harman,49,142,Par 4 Scoring,3.25,R2026007,The Genesis Invitational,2026,3.25
+48081,Xander Schauffele,50,142,Par 4 Scoring,3.31,R2026007,The Genesis Invitational,2026,3.31
+48867,Matti Schmid,50,142,Par 4 Scoring,3.31,R2026007,The Genesis Invitational,2026,3.31
 35450,Patrick Cantlay,1,142,Par 4 Scoring,2.69,R2026005,AT&T Pebble Beach Pro-Am,2026,2.69
 39546,Keith Mitchell,2,142,Par 4 Scoring,2.75,R2026005,AT&T Pebble Beach Pro-Am,2026,2.75
 51997,Andrew Novak,2,142,Par 4 Scoring,2.75,R2026005,AT&T Pebble Beach Pro-Am,2026,2.75
@@ -6730,6 +7648,57 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 34046,Jordan Spieth,70,142,Par 4 Scoring,3.25,R2026006,Sony Open in Hawaii,2026,3.25
 35296,Haotong Li,73,142,Par 4 Scoring,3.31,R2026006,Sony Open in Hawaii,2026,3.31
 59143,Mac Meissner,74,142,Par 4 Scoring,3.38,R2026006,Sony Open in Hawaii,2026,3.38
+63343,Aldrich Potgieter,1,143,Par 5 Scoring,3.84,R2026007,The Genesis Invitational,2026,3.84
+48081,Xander Schauffele,1,143,Par 5 Scoring,3.84,R2026007,The Genesis Invitational,2026,3.84
+60004,Jacob Bridgeman,3,143,Par 5 Scoring,3.89,R2026007,The Genesis Invitational,2026,3.89
+48117,Kurt Kitayama,3,143,Par 5 Scoring,3.89,R2026007,The Genesis Invitational,2026,3.89
+37378,Min Woo Lee,3,143,Par 5 Scoring,3.89,R2026007,The Genesis Invitational,2026,3.89
+27349,Alex Noren,3,143,Par 5 Scoring,3.89,R2026007,The Genesis Invitational,2026,3.89
+24502,Adam Scott,3,143,Par 5 Scoring,3.89,R2026007,The Genesis Invitational,2026,3.89
+50525,Collin Morikawa,8,143,Par 5 Scoring,3.91,R2026007,The Genesis Invitational,2026,3.91
+46046,Scottie Scheffler,8,143,Par 5 Scoring,3.91,R2026007,The Genesis Invitational,2026,3.91
+57366,Cameron Young,8,143,Par 5 Scoring,3.91,R2026007,The Genesis Invitational,2026,3.91
+52955,Ludvig Åberg,11,143,Par 5 Scoring,3.93,R2026007,The Genesis Invitational,2026,3.93
+30911,Tommy Fleetwood,11,143,Par 5 Scoring,3.93,R2026007,The Genesis Invitational,2026,3.93
+28237,Rory McIlroy,11,143,Par 5 Scoring,3.93,R2026007,The Genesis Invitational,2026,3.93
+56630,Akshay Bhatia,14,143,Par 5 Scoring,3.95,R2026007,The Genesis Invitational,2026,3.95
+34099,Harris English,14,143,Par 5 Scoring,3.95,R2026007,The Genesis Invitational,2026,3.95
+52215,Robert MacIntyre,14,143,Par 5 Scoring,3.95,R2026007,The Genesis Invitational,2026,3.95
+51003,Marco Penge,14,143,Par 5 Scoring,3.95,R2026007,The Genesis Invitational,2026,3.95
+35450,Patrick Cantlay,18,143,Par 5 Scoring,3.98,R2026007,The Genesis Invitational,2026,3.98
+40098,Matt Fitzpatrick,18,143,Par 5 Scoring,3.98,R2026007,The Genesis Invitational,2026,3.98
+32102,Rickie Fowler,18,143,Par 5 Scoring,3.98,R2026007,The Genesis Invitational,2026,3.98
+32839,Hideki Matsuyama,18,143,Par 5 Scoring,3.98,R2026007,The Genesis Invitational,2026,3.98
+59141,Matt McCarty,18,143,Par 5 Scoring,3.98,R2026007,The Genesis Invitational,2026,3.98
+34046,Jordan Spieth,18,143,Par 5 Scoring,3.98,R2026007,The Genesis Invitational,2026,3.98
+39977,Max Homa,24,143,Par 5 Scoring,4.00,R2026007,The Genesis Invitational,2026,4.0
+33204,Shane Lowry,24,143,Par 5 Scoring,4.00,R2026007,The Genesis Invitational,2026,4.0
+55893,Sam Stevens,24,143,Par 5 Scoring,4.00,R2026007,The Genesis Invitational,2026,4.0
+51634,Sahith Theegala,24,143,Par 5 Scoring,4.00,R2026007,The Genesis Invitational,2026,4.0
+59836,Pierceson Coody,28,143,Par 5 Scoring,4.02,R2026007,The Genesis Invitational,2026,4.02
+29725,Tony Finau,28,143,Par 5 Scoring,4.02,R2026007,The Genesis Invitational,2026,4.02
+29936,Ryan Fox,28,143,Par 5 Scoring,4.02,R2026007,The Genesis Invitational,2026,4.02
+46717,Viktor Hovland,28,143,Par 5 Scoring,4.02,R2026007,The Genesis Invitational,2026,4.02
+47420,Jake Knapp,28,143,Par 5 Scoring,4.02,R2026007,The Genesis Invitational,2026,4.02
+39997,Corey Conners,33,143,Par 5 Scoring,4.05,R2026007,The Genesis Invitational,2026,4.05
+37455,Si Woo Kim,33,143,Par 5 Scoring,4.05,R2026007,The Genesis Invitational,2026,4.05
+51977,Max Greyserman,35,143,Par 5 Scoring,4.07,R2026007,The Genesis Invitational,2026,4.07
+52666,Sami Valimaki,35,143,Par 5 Scoring,4.07,R2026007,The Genesis Invitational,2026,4.07
+51287,Ryo Hisatsune,37,143,Par 5 Scoring,4.09,R2026007,The Genesis Invitational,2026,4.09
+40250,Taylor Pendrith,37,143,Par 5 Scoring,4.09,R2026007,The Genesis Invitational,2026,4.09
+48867,Matti Schmid,37,143,Par 5 Scoring,4.09,R2026007,The Genesis Invitational,2026,4.09
+25493,Nick Taylor,37,143,Par 5 Scoring,4.09,R2026007,The Genesis Invitational,2026,4.09
+59018,Ryan Gerard,41,143,Par 5 Scoring,4.11,R2026007,The Genesis Invitational,2026,4.11
+27644,Brian Harman,41,143,Par 5 Scoring,4.11,R2026007,The Genesis Invitational,2026,4.11
+55182,Tom Kim,41,143,Par 5 Scoring,4.11,R2026007,The Genesis Invitational,2026,4.11
+47993,Denny McCarthy,41,143,Par 5 Scoring,4.11,R2026007,The Genesis Invitational,2026,4.11
+46414,Aaron Rai,41,143,Par 5 Scoring,4.11,R2026007,The Genesis Invitational,2026,4.11
+36699,Patrick Rodgers,41,143,Par 5 Scoring,4.11,R2026007,The Genesis Invitational,2026,4.11
+51766,Wyndham Clark,47,143,Par 5 Scoring,4.14,R2026007,The Genesis Invitational,2026,4.14
+54591,Ben Griffin,47,143,Par 5 Scoring,4.14,R2026007,The Genesis Invitational,2026,4.14
+27064,Jhonattan Vegas,47,143,Par 5 Scoring,4.14,R2026007,The Genesis Invitational,2026,4.14
+51997,Andrew Novak,50,143,Par 5 Scoring,4.18,R2026007,The Genesis Invitational,2026,4.18
+49960,Sepp Straka,51,143,Par 5 Scoring,4.23,R2026007,The Genesis Invitational,2026,4.23
 60004,Jacob Bridgeman,1,143,Par 5 Scoring,3.75,R2026005,AT&T Pebble Beach Pro-Am,2026,3.75
 51349,Nico Echavarria,1,143,Par 5 Scoring,3.75,R2026005,AT&T Pebble Beach Pro-Am,2026,3.75
 30911,Tommy Fleetwood,3,143,Par 5 Scoring,3.78,R2026005,AT&T Pebble Beach Pro-Am,2026,3.78

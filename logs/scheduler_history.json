@@ -319,5 +319,26 @@
     ],
     "success_count": 2,
     "total_count": 3
+  },
+  {
+    "timestamp": "2026-02-23T07:22:18.084176",
+    "schedule": "monday",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "World Rankings (OWGR)",
+        "success": true
+      },
+      {
+        "task": "Player Database",
+        "success": true
+      },
+      {
+        "task": "Form Stats",
+        "success": true
+      }
+    ],
+    "success_count": 3,
+    "total_count": 3
   }
 ]

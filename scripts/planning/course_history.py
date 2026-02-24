@@ -213,6 +213,52 @@ class CourseHistoryDB:
                 data = json.load(f)
                 self.tournament_courses = data.get("tournaments", {})
 
+    def load_from_db(self) -> int:
+        """
+        Load course performance from DuckDB (course_performance table).
+        Populates self.history with CourseStats objects.
+        Returns the number of player-course combinations loaded.
+        Falls back silently if DB is unavailable.
+        """
+        try:
+            import sys
+            sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "database"))
+            from db import get_conn
+            with get_conn(read_only=True) as conn:
+                df = conn.execute("SELECT * FROM course_performance").df()
+        except Exception as e:
+            print(f"  DB load failed ({e}), falling back to betting profiles")
+            return 0
+
+        loaded = 0
+        for _, row in df.iterrows():
+            player_name = normalize_player_name(str(row.get("player_name", "")))
+            if not player_name:
+                continue
+            player_key = player_name.lower().strip()
+            course_key = self._normalize_course_name(str(row.get("course_name", "")))
+
+            stats = CourseStats(
+                player_name=player_name,
+                course_name=str(row.get("course_name", "")),
+                times_played=int(row.get("starts", 0) or 0),
+                avg_finish=float(row.get("avg_finish", 0) or 0),
+                best_finish=int(row.get("best_finish", 999) or 999),
+                wins=int(round(float(row.get("win_rate", 0) or 0) * int(row.get("starts", 0) or 0))),
+                top_5s=0,
+                top_10s=int(round(float(row.get("top_10_rate", 0) or 0) * int(row.get("starts", 0) or 0))),
+                top_20s=0,
+                cuts_made=int(round(float(row.get("made_cut_rate", 0) or 0) * int(row.get("starts", 0) or 0))),
+                missed_cuts=0,
+            )
+            self.history[player_key][course_key] = stats
+            loaded += 1
+
+        self._loaded = True
+        total_combinations = sum(len(c) for c in self.history.values())
+        print(f"Loaded course history from DB: {len(self.history)} players, {total_combinations} player-course combinations")
+        return loaded
+
     def load_from_betting_profiles(self, profiles_dir: Path = None) -> int:
         """
         Load course history from all betting profile CSV files.
@@ -609,7 +655,8 @@ class CourseHistoryDB:
             CourseStats object or None if no history
         """
         if not self._loaded:
-            self.load_from_betting_profiles()
+            if self.load_from_db() == 0:
+                self.load_from_betting_profiles()
 
         player_key = player_name.lower().strip()
 
@@ -663,7 +710,8 @@ class CourseHistoryDB:
             List of (player_name, CourseStats, fit_score) sorted by fit_score descending
         """
         if not self._loaded:
-            self.load_from_betting_profiles()
+            if self.load_from_db() == 0:
+                self.load_from_betting_profiles()
 
         specialists = []
 
@@ -759,7 +807,8 @@ class CourseHistoryDB:
     def get_player_all_courses(self, player_name: str) -> Dict[str, CourseStats]:
         """Get all course history for a player."""
         if not self._loaded:
-            self.load_from_betting_profiles()
+            if self.load_from_db() == 0:
+                self.load_from_betting_profiles()
 
         player_key = normalize_name_for_matching(player_name)
         return dict(self.history.get(player_key, {}))
@@ -771,7 +820,8 @@ class CourseHistoryDB:
         Returns list of (course_name, stats, fit_score) sorted by fit_score.
         """
         if not self._loaded:
-            self.load_from_betting_profiles()
+            if self.load_from_db() == 0:
+                self.load_from_betting_profiles()
 
         player_key = normalize_name_for_matching(player_name)
 

@@ -573,7 +573,17 @@ def _parse_position(pos) -> float:
 
 
 def load_form_stats(year: int) -> pd.DataFrame:
-    """Load form stats for a year."""
+    """Load form stats for a year (DB-first, CSV fallback)."""
+    try:
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent.parent / "database"))
+        from db import get_conn
+        with get_conn(read_only=True) as conn:
+            return conn.execute(
+                "SELECT * FROM form_stats WHERE year = ?", [year]
+            ).df()
+    except Exception:
+        pass
     path = Path(f"data/historical/form_stats_{year}.csv")
     if path.exists():
         return pd.read_csv(path)
@@ -581,7 +591,17 @@ def load_form_stats(year: int) -> pd.DataFrame:
 
 
 def load_leaderboards(year: int) -> pd.DataFrame:
-    """Load leaderboard data for a year."""
+    """Load leaderboard data for a year (DB-first, CSV fallback)."""
+    try:
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent.parent / "database"))
+        from db import get_conn
+        with get_conn(read_only=True) as conn:
+            return conn.execute(
+                "SELECT * FROM leaderboards WHERE year = ?", [year]
+            ).df()
+    except Exception:
+        pass
     path = Path(f"data/historical/leaderboards_{year}.csv")
     if path.exists():
         return pd.read_csv(path)

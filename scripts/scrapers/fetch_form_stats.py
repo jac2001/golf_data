@@ -357,10 +357,32 @@ def scrape_form_stats_for_year(
         # Parse numeric values
         final_df['stat_value_numeric'] = final_df['stat_value'].apply(parse_stat_value)
 
-        # Save
+        # Save CSV
         output_dir.mkdir(parents=True, exist_ok=True)
         output_path = output_dir / f"form_stats_{year}.csv"
         final_df.to_csv(output_path, index=False)
+
+        # Upsert into DuckDB
+        try:
+            import sys as _sys
+            _db_path = Path(__file__).parent.parent.parent / "scripts" / "database"
+            _sys.path.insert(0, str(_db_path))
+            from db import get_conn
+            _db_df = final_df.copy()
+            _db_df["player_id"] = _db_df["player_id"].astype(str)
+            _db_df["stat_id"]   = _db_df["stat_id"].astype(str)
+            if "stat_value_numeric" in _db_df.columns:
+                _db_df = _db_df.drop(columns=["stat_value"], errors="ignore")
+                _db_df = _db_df.rename(columns={"stat_value_numeric": "stat_value"})
+            _keep = ["player_id", "player_name", "tournament_id", "tournament_name",
+                     "year", "stat_id", "stat_name", "stat_value"]
+            _db_df = _db_df[[c for c in _keep if c in _db_df.columns]]
+            with get_conn() as _conn:
+                _conn.execute(f"DELETE FROM form_stats WHERE year = {year}")
+                _conn.execute("INSERT INTO form_stats SELECT * FROM _db_df")
+            print(f"  DB: upserted {len(_db_df):,} form_stats rows for {year}")
+        except Exception as _e:
+            print(f"  DB upsert skipped: {_e}")
 
         print("\n" + "=" * 70)
         print("SCRAPING COMPLETE")

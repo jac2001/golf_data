@@ -1,0 +1,64 @@
+======================================================================
+  FINAL MODEL VALIDATION REPORT
+  Year-Based Cross-Validation (Train: 2020-2024, Test: 2025)
+======================================================================
+
+DATASET SUMMARY:
+  Total Records: 46,009
+  Training Records: 40,744 (2020-2024)
+  Test Records: 4,567 (2025)
+  Features Used: 37
+
+FEATURE GROUPS:
+  SG Stats: 0
+  Course History: 8
+  Course/Field: 4
+
+MODEL PERFORMANCE:
+----------------------------------------------------------------------
+Model      Train AUC    Test AUC     Gap        Status         
+----------------------------------------------------------------------
+win        0.9342       0.8786       0.0556     ⚠️  Moderate   
+top5       0.8678       0.8292       0.0386     ✅ Good         
+top10      0.8563       0.8237       0.0326     ✅ Good         
+top20      0.8597       0.8449       0.0148     ✅ Good         
+
+PROBABILITY CALIBRATION:
+----------------------------------------------------------------------
+Model      Brier      Pred Avg     Actual     Ratio      Status         
+----------------------------------------------------------------------
+win        0.0098     1.49      % 0.75    % 1.98      x ❌ Poor         
+top5       0.0451     4.85      % 4.56    % 1.06      x ✅ Calibrated   
+top10      0.0731     8.97      % 8.73    % 1.03      x ✅ Calibrated   
+top20      0.1142     17.05     % 16.99   % 1.00      x ✅ Calibrated   
+
+INTERPRETATION:
+  ROC-AUC Scale:
+    0.50 = Random guessing
+    0.60-0.65 = Slight edge
+    0.70-0.75 = Good predictive power
+    0.75-0.80 = Excellent (realistic ceiling for golf)
+    0.90+ = Likely overfitting
+
+  Overfitting Gap:
+    <0.05 = Excellent generalization
+    0.05-0.15 = Acceptable
+    >0.15 = Concerning overfitting
+
+TOP 10 FEATURES:
+----------------------------------------------------------------------
+  season_sg_ott                  0.1444
+  predictive_sg_weighted         0.1281
+  season_sg_t2g                  0.1209
+  season_sg_arg                  0.1207
+  season_sg_total                0.1193
+  world_rank                     0.0918
+  season_sg_app                  0.0797
+  season_sg_putt                 0.0586
+  recent_cuts_pct                0.0190
+  recent_top10s                  0.0153
+
+======================================================================
+  Models saved to: data/models/
+  Next step: Generate 2026 predictions
+======================================================================

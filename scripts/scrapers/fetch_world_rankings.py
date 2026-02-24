@@ -189,8 +189,37 @@ def main():
         output_path = Path(args.output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    # Save
+    # Save CSV
     df.to_csv(output_path, index=False)
+
+    # Upsert into DuckDB players table
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).parent.parent / "database"))
+        from db import get_conn
+        _df = df.copy()
+        _df["player_id"] = _df["player_id"].astype(str)
+        _df["updated_at"] = pd.Timestamp.now()
+        for c in ["first_name", "last_name", "country", "is_active",
+                  "world_rank_points", "first_name", "last_name"]:
+            if c not in _df.columns:
+                _df[c] = None
+        _cols = ["player_id", "player_name", "first_name", "last_name", "country",
+                 "world_rank", "world_rank_points", "is_active", "updated_at"]
+        _out = _df[[c for c in _cols if c in _df.columns]]
+        with get_conn() as _conn:
+            for _, row in _out.iterrows():
+                _conn.execute(
+                    "INSERT OR REPLACE INTO players VALUES (?,?,?,?,?,?,?,?,?)",
+                    [row.get("player_id"), row.get("player_name"),
+                     row.get("first_name"), row.get("last_name"),
+                     row.get("country"), row.get("world_rank"),
+                     row.get("world_rank_points"), row.get("is_active"),
+                     row.get("updated_at")]
+                )
+        print(f"  DB: upserted {len(_out):,} players")
+    except Exception as _e:
+        print(f"  DB upsert skipped: {_e}")
 
     print(f"\n{'='*60}")
     print(f"World Rankings Fetched Successfully!")

@@ -476,6 +476,33 @@ def process_single_event(pga_id: str, tournament_name: str, output: Path, match_
     field_df.to_csv(output, index=False)
     print(f"Saved {len(field_df)} players to {output}")
 
+    # Upsert players into DuckDB
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).parent.parent / "database"))
+        from db import get_conn
+        import pandas as _pd
+        _pf = field_df.copy()
+        if "player_id" in _pf.columns:
+            _pf["player_id"] = _pf["player_id"].astype(str)
+            _pf["updated_at"] = _pd.Timestamp.now()
+            with get_conn() as _conn:
+                for _, _row in _pf.iterrows():
+                    _pid = _row.get("player_id")
+                    _pname = _row.get("player_name", "")
+                    if _pid and str(_pid) not in ("nan", ""):
+                        _conn.execute(
+                            """INSERT INTO players (player_id, player_name, updated_at)
+                               VALUES (?, ?, ?)
+                               ON CONFLICT (player_id) DO UPDATE
+                               SET player_name = excluded.player_name,
+                                   updated_at  = excluded.updated_at""",
+                            [str(_pid), _pname, _pd.Timestamp.now()]
+                        )
+            print(f"  DB: upserted {len(_pf)} player records")
+    except Exception as _e:
+        print(f"  DB upsert skipped: {_e}")
+
     # ALWAYS save a copy with tournament ID naming convention
     # This ensures predict_tournament.py can find the correct field file
     canonical_output = output.parent / f"field_{pga_id}.csv"

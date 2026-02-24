@@ -46,13 +46,13 @@ USAGE_TRACKER_FILE = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
 CALIBRATION_FILE = DATA_DIR / "prediction_tracking" / "calibration_factors.json"
 
 # Default weights (should sum to 1.0)
-# Updated based on weight_optimizer.py backtest results (2026-02-16)
-# "balanced" config outperformed baseline: 89.6 score vs 72.8
+# Updated 2026-02-23: ML model win_prob now primary driver (merged systems)
 DEFAULT_WEIGHTS = {
-    'importance': 0.25,
-    'course_fit': 0.25,  # Reduced from 0.35 - form matters more
-    'form': 0.30,        # Increased from 0.25 - hot hand is real
-    'field': 0.20        # Increased from 0.15 - field strength matters
+    'ml_prediction': 0.50,  # ML model win probability rank (primary signal)
+    'course_fit':    0.20,  # Historical course performance
+    'importance':    0.15,  # Tournament importance / purse
+    'field':         0.10,  # Field strength (inverse)
+    'form':          0.05,  # Momentum/trend boost
 }
 
 
@@ -98,12 +98,15 @@ class TournamentScore:
     course_fit: float = 0.0
     current_form: float = 0.0
     field_strength: float = 0.0
+    ml_prediction: float = 50.0  # ML model win_prob percentile rank (0-100)
 
     # Context
     owgr_rank: int = 999
     remaining_uses: int = 3
     course_history_note: str = ""
     form_trend: str = "NEUTRAL"
+    win_prob: float = 0.0        # Raw ML win probability (for display)
+    expected_value: float = 0.0  # Raw ML expected value (for display)
 
     # Weights
     weights: Dict[str, float] = field(default_factory=lambda: DEFAULT_WEIGHTS.copy())
@@ -111,10 +114,11 @@ class TournamentScore:
     @property
     def total_score(self) -> float:
         return (
-            self.tournament_importance * self.weights['importance'] +
-            self.course_fit * self.weights['course_fit'] +
-            self.current_form * self.weights['form'] +
-            self.field_strength * self.weights['field']
+            self.ml_prediction       * self.weights.get('ml_prediction', 0.50) +
+            self.tournament_importance * self.weights.get('importance', 0.15) +
+            self.course_fit          * self.weights.get('course_fit', 0.20) +
+            self.current_form        * self.weights.get('form', 0.05) +
+            self.field_strength      * self.weights.get('field', 0.10)
         )
 
     @property
@@ -158,6 +162,7 @@ class ScoringEngine:
         self.course_db: Optional[CourseHistoryDB] = None
         self.tournament_courses: Dict[str, dict] = {}
         self.target_tournament = tournament
+        self.ml_scores: Dict[str, float] = {}  # player -> ML percentile score (0-100)
 
         self._load_data()
 
@@ -168,6 +173,7 @@ class ScoringEngine:
         self._load_predictions()
         self._load_usage()
         self._load_course_history()
+        self._compute_ml_scores()
 
     def _normalize_name(self, name: str) -> str:
         """Normalize 'Last, First' to 'First Last' format."""
@@ -343,6 +349,28 @@ class ScoringEngine:
     
 
 
+
+    def _compute_ml_scores(self):
+        """
+        Normalize ML model win_prob across the field to a 0-100 percentile score.
+        The player with the highest win_prob gets 100, lowest gets 0.
+        This becomes the primary ranking signal in total_score.
+        """
+        if not self.predictions:
+            return
+
+        players = list(self.predictions.keys())
+        win_probs = [self.predictions[p].win_prob for p in players]
+
+        min_wp = min(win_probs) if win_probs else 0
+        max_wp = max(win_probs) if win_probs else 1
+        rng = max_wp - min_wp
+
+        for player, wp in zip(players, win_probs):
+            if rng > 0:
+                self.ml_scores[player] = round((wp - min_wp) / rng * 100, 2)
+            else:
+                self.ml_scores[player] = 50.0
 
     def _calculate_importance(self, tournament: TournamentInfo) -> float:
         """Calculate tournament importance score (0-100)."""
@@ -538,9 +566,15 @@ class ScoringEngine:
         # Field strength
         score.field_strength = self._calculate_field_strength(tournament)
 
+        # ML model prediction (primary signal)
+        score.ml_prediction = self.ml_scores.get(player, 50.0)
+
         # Context
         if player in self.predictions:
-            score.owgr_rank = self.predictions[player].owgr_rank
+            form = self.predictions[player]
+            score.owgr_rank = form.owgr_rank
+            score.win_prob = form.win_prob
+            score.expected_value = form.model_edge  # stored as expected_value $
         score.remaining_uses = self.get_remaining_uses(player)
 
         return score
@@ -786,8 +820,8 @@ def print_tournament_recommendations(engine: ScoringEngine, tournament: str, top
     print(f"  Tournament Importance: {t.importance_score:.0f}/100 ({t.tournament_type})")
     print(f"{'='*90}")
 
-    print(f"\n  {'#':<3} {'Player':<24} {'Score':>6} {'Rating':<7} {'Course':>7} {'Form':>6} {'Trend':<8} {'Uses':<10} Notes")
-    print(f"  {'-'*100}")
+    print(f"\n  {'#':<3} {'Player':<24} {'Score':>6} {'Rating':<7} {'Win%':>6} {'Course':>7} {'Form':>6} {'Trend':<8} {'Uses':<10} Notes")
+    print(f"  {'-'*110}")
 
     for i, score in enumerate(recommendations, 1):
         warning = score.usage_warning
@@ -796,7 +830,7 @@ def print_tournament_recommendations(engine: ScoringEngine, tournament: str, top
             uses_str = f"{uses_str} {warning}"
 
         print(f"  {i:<3} {score.player:<24} {score.total_score:>5.0f}  {score.value_rating:<7} "
-              f"{score.course_fit:>6.0f}  {score.current_form:>5.0f}  {score.form_trend:<8} "
+              f"{score.win_prob*100:>5.1f}%  {score.course_fit:>6.0f}  {score.current_form:>5.0f}  {score.form_trend:<8} "
               f"{uses_str:<15} {score.course_history_note}")
 
     # Value picks section - lower threshold for weaker events

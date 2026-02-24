@@ -40,8 +40,12 @@ DATA_DIR = Path("/Users/jacklegnon/Desktop/golf_data/data")
 HISTORICAL_DIR = DATA_DIR / "historical"
 PROCESSED_DIR = DATA_DIR / "processed"
 PROCESSED_DIR.mkdir(exist_ok=True)
-# Years with available data (adjust based on what you've scraped)
-YEARS = [2020, 2021, 2022, 2023, 2024, 2025]
+# Years with available data (auto-detect which years have files)
+_all_candidate_years = list(range(2016, 2027))
+YEARS = [y for y in _all_candidate_years
+         if (HISTORICAL_DIR / f"leaderboards_{y}.csv").exists()
+         and (HISTORICAL_DIR / f"tournament_stats_{y}.csv").exists()]
+print(f"Detected years with full data: {YEARS}")
 
 # Configuration options
 DROP_MISSED_CUTS = True  # Drop missed cuts from training (better SG coverage, cleaner signal)
@@ -885,7 +889,7 @@ if ADD_COURSE_FIT:
                     print("  ⚠️ season_sg_arg set to 0 (missing season_sg_t2g or season_sg_app)")
 
             # Initialize course fit columns
-            fit_cols = ['dg_fit_ott', 'dg_fit_app', 'dg_fit_arg', 'dg_fit_putt', 'dg_fit_total']
+            fit_cols = ['dg_fit_ott', 'dg_fit_app', 'dg_fit_arg', 'dg_fit_putt', 'dg_fit_total', 'predictive_sg_weighted']
             weight_cols = ['course_ott_weight', 'course_app_weight', 'course_arg_weight', 'course_putt_weight']
 
             for col in fit_cols + weight_cols:
@@ -930,13 +934,23 @@ if ADD_COURSE_FIT:
                 fit_app = sg_app * weights['app_sg'] * scale
                 fit_arg = sg_arg * weights['arg_sg'] * scale
                 fit_putt = sg_putt * weights['putt_sg'] * scale
-                fit_total = fit_ott + fit_app + fit_arg + fit_putt
+                # DataGolf predictive weights: OTT=1.2, APP=1.0, ARG=0.9, PUTT=0.6
+                _dg_total = 3.7
+                fit_total = (fit_ott * 1.2 + fit_app * 1.0 + fit_arg * 0.9 + fit_putt * 0.6) / _dg_total
 
                 merged.at[idx, 'dg_fit_ott'] = fit_ott
                 merged.at[idx, 'dg_fit_app'] = fit_app
                 merged.at[idx, 'dg_fit_arg'] = fit_arg
                 merged.at[idx, 'dg_fit_putt'] = fit_putt
                 merged.at[idx, 'dg_fit_total'] = fit_total
+                # Predictive SG composite using DataGolf coefficients
+                _dg_total = 3.7
+                merged.at[idx, 'predictive_sg_weighted'] = (
+                    sg_ott  * (1.2 / _dg_total) +
+                    sg_app  * (1.0 / _dg_total) +
+                    sg_arg  * (0.9 / _dg_total) +
+                    sg_putt * (0.6 / _dg_total)
+                )
 
             # Report coverage
             total = len(merged)

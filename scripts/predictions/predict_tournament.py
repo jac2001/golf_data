@@ -199,37 +199,60 @@ def load_models():
     }
     return models
 
+def _load_tournament_stats_from_db(year: int) -> pd.DataFrame:
+    """Try loading tournament stats from DuckDB; return empty DataFrame on failure."""
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "database"))
+        from db import get_conn
+        with get_conn(read_only=True) as conn:
+            df = conn.execute(
+                "SELECT * FROM tournament_stats WHERE year = ?", [year]
+            ).df()
+            if not df.empty:
+                return df
+    except Exception:
+        pass
+    return pd.DataFrame()
+
+
 def load_reference_data():
     """Load historical data for feature engineering"""
     # Master data (for course history lookup and venue stats)
     master_df = pd.read_csv(PROCESSED_DIR / 'master_training_data_2020_2025.csv')
 
-    # Current year SG stats - dynamically find the latest year
+    # Current year SG stats - try DB first, then CSV
     current_year = datetime.now().year
-    stats_current_file = HISTORICAL_DIR / f'tournament_stats_{current_year}.csv'
-
-    if stats_current_file.exists():
-        stats_current = pd.read_csv(stats_current_file)
-        print(f"  Loaded current year stats ({current_year}): {len(stats_current)} rows")
+    stats_current = _load_tournament_stats_from_db(current_year)
+    if not stats_current.empty:
+        print(f"  Loaded current year stats ({current_year}) from DB: {len(stats_current)} rows")
     else:
-        # Fallback to most recent available year
-        latest_year = _latest_year_for("tournament_stats_")
-        if latest_year:
-            stats_current = pd.read_csv(HISTORICAL_DIR / f'tournament_stats_{latest_year}.csv')
-            print(f"  Current year not found, using {latest_year} stats: {len(stats_current)} rows")
+        stats_current_file = HISTORICAL_DIR / f'tournament_stats_{current_year}.csv'
+        if stats_current_file.exists():
+            stats_current = pd.read_csv(stats_current_file)
+            print(f"  Loaded current year stats ({current_year}): {len(stats_current)} rows")
         else:
-            stats_current = pd.DataFrame()
-            print(f"  Warning: No tournament stats found!")
+            latest_year = _latest_year_for("tournament_stats_")
+            if latest_year:
+                stats_current = pd.read_csv(HISTORICAL_DIR / f'tournament_stats_{latest_year}.csv')
+                print(f"  Current year not found, using {latest_year} stats: {len(stats_current)} rows")
+            else:
+                stats_current = pd.DataFrame()
+                print(f"  Warning: No tournament stats found!")
 
-    # Prior year SG stats (for early-season blending)
+    # Prior year SG stats (for early-season blending) - try DB first, then CSV
     prior_year = current_year - 1
-    prior_stats_file = HISTORICAL_DIR / f'tournament_stats_{prior_year}.csv'
-    if prior_stats_file.exists():
-        stats_prior = pd.read_csv(prior_stats_file)
-        print(f"  Loaded prior year stats ({prior_year}) for early-season blending")
+    stats_prior = _load_tournament_stats_from_db(prior_year)
+    if not stats_prior.empty:
+        print(f"  Loaded prior year stats ({prior_year}) from DB for early-season blending")
     else:
-        stats_prior = pd.DataFrame()
-        print(f"  Prior year stats not found, skipping blend")
+        prior_stats_file = HISTORICAL_DIR / f'tournament_stats_{prior_year}.csv'
+        if prior_stats_file.exists():
+            stats_prior = pd.read_csv(prior_stats_file)
+            print(f"  Loaded prior year stats ({prior_year}) for early-season blending")
+        else:
+            stats_prior = pd.DataFrame()
+            print(f"  Prior year stats not found, skipping blend")
 
     return master_df, stats_current, stats_prior
 
@@ -331,6 +354,11 @@ def load_prior_year_stats(year: int = None) -> pd.DataFrame:
     """
     if year is None:
         year = datetime.now().year - 1
+    # Try DB first
+    df = _load_tournament_stats_from_db(year)
+    if not df.empty:
+        print(f"  Loaded prior year ({year}) stats from DB for baseline SG calculations")
+        return df
     prior_stats_file = HISTORICAL_DIR / f'tournament_stats_{year}.csv'
     if prior_stats_file.exists():
         print(f"  Loaded prior year ({year}) stats for baseline SG calculations")
@@ -732,8 +760,23 @@ def add_course_fit_features(features_df, tournament_name):
     features_df['dg_fit_app'] = sg_app * weights['app_sg'] * scale
     features_df['dg_fit_arg'] = sg_arg * weights['arg_sg'] * scale
     features_df['dg_fit_putt'] = sg_putt * weights['putt_sg'] * scale
-    features_df['dg_fit_total'] = (features_df['dg_fit_ott'] + features_df['dg_fit_app'] +
-                                    features_df['dg_fit_arg'] + features_df['dg_fit_putt'])
+
+    # DataGolf predictive SG weights: OTT=1.2, APP=1.0, ARG=0.9, PUTT=0.6 (total=3.7)
+    _dg_total = 3.7
+    features_df['predictive_sg_weighted'] = (
+        sg_ott  * (1.2 / _dg_total) +
+        sg_app  * (1.0 / _dg_total) +
+        sg_arg  * (0.9 / _dg_total) +
+        sg_putt * (0.6 / _dg_total)
+    )
+
+    # dg_fit_total weighted by DataGolf predictive coefficients
+    features_df['dg_fit_total'] = (
+        features_df['dg_fit_ott']  * 1.2 +
+        features_df['dg_fit_app']  * 1.0 +
+        features_df['dg_fit_arg']  * 0.9 +
+        features_df['dg_fit_putt'] * 0.6
+    ) / _dg_total
 
     print(f"    Course fit range: {features_df['dg_fit_total'].min():.3f} to {features_df['dg_fit_total'].max():.3f}")
 

@@ -125,6 +125,10 @@ print("⚠️  EXCLUDING old fit_* features (fit_*, course_fit_total) - based on
 
 # NEW Data Golf course fit features - SAFE (uses season_sg_* × course importance weights)
 dg_fit_features = [c for c in df.columns if c.startswith('dg_fit_')]
+# Include DataGolf predictive SG composite if present
+if 'predictive_sg_weighted' in df.columns:
+    dg_fit_features.append('predictive_sg_weighted')
+    print(f"✓  Including predictive_sg_weighted (DataGolf OTT=1.2/APP=1.0/ARG=0.9/PUTT=0.6)")
 if dg_fit_features:
     print(f"✓  Including {len(dg_fit_features)} Data Golf course fit features (uses season SG, no leakage)")
 else:
