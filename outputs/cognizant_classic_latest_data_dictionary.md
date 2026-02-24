@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-23 08:04
+Generated: 2026-02-24 06:06
 
 | Column | Description |
 |--------|-------------|
@@ -61,6 +61,7 @@ Generated: 2026-02-23 08:04
 | dg_fit_app | Course-fit component: Approach |
 | dg_fit_arg | Course-fit component: Around-the-Green |
 | dg_fit_putt | Course-fit component: Putting |
+| predictive_sg_weighted | No description available |
 | dg_fit_total | Total course-fit score (sum of components) |
 | course_starts | No description available |
 | course_made_cut_rate | No description available |

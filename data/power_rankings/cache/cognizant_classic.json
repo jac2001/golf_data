@@ -1,0 +1,346 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Cognizant Classic",
+      "tableTitle": "Power Rankings for Cognizant Classic in The Palm Beaches",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "39335",
+            "firstName": "Kevin",
+            "lastName": "Roy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39335.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s too early to properly assess progress, but he\u2019s overcome uncharacteristically inconsistent ball-striking with unusually strong putting, yet he\u2019s scraped together a pair of T13s in four starts. Hey, whatever works!"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "54628",
+            "firstName": "Lee",
+            "lastName": "Hodges",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_54628.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Cooled since bracketing the holidays with a T4 at The RSM Classic and a T6 at the Sony Open in Hawaii ("
+                },
+                {
+                  "value": "that fulfilled his medical extension"
+                },
+                {
+                  "value": "), but the return of Bermudagrass is a coup. T9 (2022) and a T14 (2023) at PGA National."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "28723",
+            "firstName": "John",
+            "lastName": "Parry",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28723.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a resurgence on the DP World Tour, the 39-year-old ball-striker is turning heads as a PGA TOUR rookie. Perfect in four starts with a top 20. Although a debutant, he possesses the patience and wisdom for PGA National."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "34256",
+            "firstName": "Andrew",
+            "lastName": "Putnam",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34256.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Limited to just two starts due to conditional status, but already a co-runner-up at The American Express with patented, elite ball-striking. En route to a T11 here last year, he ranked second in Fairways and first in Greens Hit."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "36689",
+            "firstName": "Brooks",
+            "lastName": "Koepka",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36689.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Now that he\u2019s logged two starts in his PGA TOUR return, the 35-year-old can exhale. He can also find comfort in this home game and confidence from past success. Co-runner-up here in 2019, he was T16 in his last start in 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "63454",
+            "firstName": "Johnny",
+            "lastName": "Keefer",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_63454.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The darling of the Korn Ferry Tour in 2025 has launched quietly as a PGA TOUR member, but he\u2019s still cashed in all four starts. He\u2019s also proving his fit. No. 1 on TOUR in Greens Hit, second in Ball-Striking and 15th in Proximity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "39546",
+            "firstName": "Keith",
+            "lastName": "Mitchell",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39546.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The ball-striker is off to another methodical start with paydays in all five tries, albeit only one as a result of a top 40. Back on Bermudagrass, he arrives at the site of his lone PGA TOUR title in 2019. Two T9s here since."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "57364",
+            "firstName": "Michael",
+            "lastName": "Thorbjornsen",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57364.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Already proven to be such a strong starter, it feels like he should have even more than the eight top 25s that he\u2019s recorded in his last 15 starts. His precision from tee to green feeds the firepower as he reaches for consistency."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "35296",
+            "firstName": "Haotong",
+            "lastName": "Li",
+            "countryFlag": "CHN",
+            "countryName": "People's Republic of China",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35296.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His foray as a PGA TOUR member has been sparkling thus far, with a T8 and a T11 already in the bank. He\u2019s a first-timer at PGA National, where early metrics project success. Sits eighth in SG: Tee-to-Green and 19th in Scrambling."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "46464",
+            "firstName": "Jordan",
+            "lastName": "Smith",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46464.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The Brit has opened his rookie season 3-for-4 with a T16 at TPC Scottsdale. With a sturdy foundation laid, he can pile on using his tactical skill set from tee to green at PGA National. He\u2019s tops on the PGA TOUR in ball-striking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "52686",
+            "firstName": "Rasmus",
+            "lastName": "H\u00f8jgaard",
+            "countryFlag": "DEN",
+            "countryName": "Denmark",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52686.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The younger of the Danish twins has been slower out of the gate than his brother, Nicolai, but he\u2019s too efficient to dismiss at any time. While not a sharpshooter off the tee, larger greens allow his power and putting to play up."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "40026",
+            "firstName": "Daniel",
+            "lastName": "Berger",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40026.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Home game. Although he was a late entry after missing the cut at Riviera, he was an automatic for the Power Rankings at PGA National, where he debuted with a playoff loss in 2015 and has added a pair of fourth-place finishes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "52453",
+            "firstName": "Nicolai",
+            "lastName": "H\u00f8jgaard",
+            "countryFlag": "DEN",
+            "countryName": "Denmark",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52453.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Dialed in. A T3 at the WM Phoenix Open in his last start was his third top-four finish in his last six worldwide and fifth top-15 in his last seven. Carded four sub-70s with fantastic irons and short game for a T18 here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "33204",
+            "firstName": "Shane",
+            "lastName": "Lowry",
+            "countryFlag": "IRL",
+            "countryName": "Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33204.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Neither snow nor rain nor heat nor gloom of night prevents the Irishman from not only posting at PGA National but thriving. His route has yielded an 8-for-8 slate with a runner-up in 2022, sparking four straight top-11 finishes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "59018",
+            "firstName": "Ryan",
+            "lastName": "Gerard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The early FedExCup leader has slipped to seventh, but he\u2019s the only one inside the top 30 in the field at PGA National. This is where he debuted as a rookie in 2023 and placed fourth. Answered with a T25 in his return last year."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

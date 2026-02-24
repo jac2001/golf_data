@@ -2515,20 +2515,24 @@ def get_prediction_files():
 
 @st.cache_data(ttl=300)
 def load_betting_profiles(tournament_id: str = None):
-    """Load betting profile articles for current tournament."""
+    """Load betting profiles for current tournament."""
     profiles_dir = DATA_DIR / "betting_profiles"
 
     if tournament_id:
-        # Try tournament-specific file first
-        specific_file = profiles_dir / f"articles_{tournament_id}.csv"
-        if specific_file.exists():
-            return pd.read_csv(specific_file)
+        # Try both naming conventions (canonical first, then articles)
+        for prefix in ("betting_profiles_", "articles_"):
+            specific_file = profiles_dir / f"{prefix}{tournament_id}.csv"
+            if specific_file.exists():
+                return pd.read_csv(specific_file)
 
-    # Find most recent articles file
-    article_files = sorted(profiles_dir.glob("articles_*.csv"),
-                          key=lambda x: x.stat().st_mtime, reverse=True)
-    if article_files:
-        return pd.read_csv(article_files[0])
+    # Find most recent file matching either pattern
+    all_profile_files = sorted(
+        list(profiles_dir.glob("betting_profiles_R*.csv")) +
+        list(profiles_dir.glob("articles_R*.csv")),
+        key=lambda x: x.stat().st_mtime, reverse=True
+    )
+    if all_profile_files:
+        return pd.read_csv(all_profile_files[0])
 
     return pd.DataFrame()
 
@@ -5315,6 +5319,14 @@ if page == "🏆 This Week":
                         return (0, -_ev)
 
                     _pool_df = _preds.copy()
+                    # Filter to current field only (prevents stale players from appearing)
+                    if _field_file and _field_file.exists():
+                        try:
+                            _field_df_pool = pd.read_csv(_field_file)
+                            _field_ids_pool = set(_field_df_pool["player_id"].astype(str))
+                            _pool_df = _pool_df[_pool_df["player_id"].astype(str).isin(_field_ids_pool)]
+                        except Exception:
+                            pass
                     _pool_df["_sort"] = [_pool_sort_key(r) for _, r in _pool_df.iterrows()]
                     _pool_df = _pool_df.sort_values("_sort").head(30)
 
@@ -6990,7 +7002,7 @@ elif page == "👤 Players":
                                            
 
             # Betting profile if available
-            profiles_df = load_betting_profiles()
+            profiles_df = load_betting_profiles(_latest_tournament_id_from_prop_lines())
             if not profiles_df.empty:
                 profile = get_player_profile(profiles_df, player_search)
                 if profile:

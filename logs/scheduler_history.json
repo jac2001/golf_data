@@ -340,5 +340,38 @@
     ],
     "success_count": 3,
     "total_count": 3
+  },
+  {
+    "timestamp": "2026-02-24T06:06:43.398131",
+    "schedule": "tuesday-morning",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Field",
+        "success": false
+      },
+      {
+        "task": "Course Info",
+        "success": true
+      },
+      {
+        "task": "Power Rankings",
+        "success": false
+      },
+      {
+        "task": "Betting Profiles",
+        "success": false
+      },
+      {
+        "task": "PGA Odds",
+        "success": false
+      },
+      {
+        "task": "Predictions",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 6
   }
 ]

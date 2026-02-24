@@ -221,6 +221,15 @@ def load_reference_data():
     # Master data (for course history lookup and venue stats)
     master_df = pd.read_csv(PROCESSED_DIR / 'master_training_data_2020_2025.csv')
 
+    def _normalize_stats_df(df):
+        """Ensure player_id and stat_id are strings for consistent lookup."""
+        if df.empty:
+            return df
+        df = df.copy()
+        df['player_id'] = df['player_id'].astype(str).str.strip()
+        df['stat_id']   = df['stat_id'].astype(str).str.strip()
+        return df
+
     # Current year SG stats - try DB first, then CSV
     current_year = datetime.now().year
     stats_current = _load_tournament_stats_from_db(current_year)
@@ -229,12 +238,12 @@ def load_reference_data():
     else:
         stats_current_file = HISTORICAL_DIR / f'tournament_stats_{current_year}.csv'
         if stats_current_file.exists():
-            stats_current = pd.read_csv(stats_current_file)
+            stats_current = _normalize_stats_df(pd.read_csv(stats_current_file))
             print(f"  Loaded current year stats ({current_year}): {len(stats_current)} rows")
         else:
             latest_year = _latest_year_for("tournament_stats_")
             if latest_year:
-                stats_current = pd.read_csv(HISTORICAL_DIR / f'tournament_stats_{latest_year}.csv')
+                stats_current = _normalize_stats_df(pd.read_csv(HISTORICAL_DIR / f'tournament_stats_{latest_year}.csv'))
                 print(f"  Current year not found, using {latest_year} stats: {len(stats_current)} rows")
             else:
                 stats_current = pd.DataFrame()
@@ -248,7 +257,7 @@ def load_reference_data():
     else:
         prior_stats_file = HISTORICAL_DIR / f'tournament_stats_{prior_year}.csv'
         if prior_stats_file.exists():
-            stats_prior = pd.read_csv(prior_stats_file)
+            stats_prior = _normalize_stats_df(pd.read_csv(prior_stats_file))
             print(f"  Loaded prior year stats ({prior_year}) for early-season blending")
         else:
             stats_prior = pd.DataFrame()
@@ -448,12 +457,15 @@ def get_prior_year_sg_stats(player_id, prior_stats_df: pd.DataFrame) -> dict:
             'prior_sg_t2g': np.nan,
             'prior_sg_arg': np.nan,
         }
+    # Normalize player_id type to match stats_df (which stores as str)
+    pid_str = str(int(player_id)) if player_id is not None else None
+
     # Filter to this player's average stats
     player_stats = prior_stats_df[
-        (prior_stats_df['player_id'] == player_id) &
+        (prior_stats_df['player_id'] == pid_str) &
         (prior_stats_df['stat_component'] == 'Avg')
     ].copy()
-    
+
     if len(player_stats) == 0:
         return {
             'prior_sg_total': np.nan,
@@ -463,15 +475,14 @@ def get_prior_year_sg_stats(player_id, prior_stats_df: pd.DataFrame) -> dict:
             'prior_sg_t2g': np.nan,
             'prior_sg_arg': np.nan,
         }
-    
-    #Stat ID Mapping 
+
+    # Stat ID mapping — use strings to match DB/CSV string stat_ids
     stat_mapping = {
-        2567: 'prior_sg_total',
-        2568: 'prior_sg_ott',
-        2569: 'prior_sg_app',
-        2564: 'prior_sg_putt',
-        2674: 'prior_sg_t2g'
-    
+        '2567': 'prior_sg_total',
+        '2568': 'prior_sg_ott',
+        '2569': 'prior_sg_app',
+        '2564': 'prior_sg_putt',
+        '2674': 'prior_sg_t2g'
     }
     
     #Pivot to get season averages 
@@ -575,18 +586,21 @@ def get_recent_sg_stats(
         Dict with sg_total, sg_ott, sg_app, sg_putt, sg_t2g, season_sg_* stats
         (blended with prior year if enabled)
     """
-    # Stat ID mapping
+    # Stat ID mapping — use strings to match DB/CSV string stat_ids
     stat_mapping = {
-        2567: 'sg_total',
-        2568: 'sg_ott',
-        2569: 'sg_app',
-        2564: 'sg_putt',
-        2674: 'sg_t2g'
+        '2567': 'sg_total',
+        '2568': 'sg_ott',
+        '2569': 'sg_app',
+        '2564': 'sg_putt',
+        '2674': 'sg_t2g'
     }
+
+    # Normalize player_id type to match stats_df (which stores as str)
+    pid_str = str(int(player_id)) if player_id is not None else None
 
     # Filter stats for the player
     player_stats = stats_df[
-        (stats_df['player_id'] == player_id) &
+        (stats_df['player_id'] == pid_str) &
         (stats_df['stat_component'] == 'Avg')
     ].copy()
 
@@ -1394,6 +1408,23 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
         print(f"  Added world rankings ({features_df['world_rank'].notna().sum()} players)")
     else:
         features_df['world_rank'] = 500
+
+    # SG-ADJUSTED WORLD RANK: rescue LIV/injury players whose OWGR doesn't reflect ability
+    # For players where world_rank >> SG-implied rank, use the better of the two.
+    # Applied consistently here (inference) and in merge_all_historical_data.py (training).
+    if 'predictive_sg_weighted' in features_df.columns:
+        sg_vals = features_df['predictive_sg_weighted'].fillna(0)
+        # Rank within field by SG (1=best). Scale to world-rank units:
+        # field rank 1 → ~30 (top-30 world), field rank N → ~(N * field_size_scale)
+        n_players = len(features_df)
+        field_size_scale = 4.0   # rank-1-in-field ≈ world rank 4
+        sg_implied = sg_vals.rank(ascending=False) * field_size_scale
+        # Only adjust when OWGR is likely stale (rank > 150) AND SG suggests better ability
+        mask = (features_df['world_rank'] > 150) & (sg_implied < features_df['world_rank'])
+        n_adj = mask.sum()
+        if n_adj > 0:
+            features_df.loc[mask, 'world_rank'] = sg_implied[mask].round(0)
+            print(f"  SG-adjusted world_rank for {n_adj} players (LIV/injury/stale OWGR)")
 
     # ADD FIELD STRENGTH (avg/median world rank of tournament field)
     field_avg_rank = features_df['world_rank'].mean()

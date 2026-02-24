@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-23 08:04
+Generated: 2026-02-24 07:59
 
 | Column | Description |
 |--------|-------------|
@@ -34,6 +34,7 @@ Generated: 2026-02-23 08:04
 | has_made_cut_here | 1/0 flag: has made a cut here |
 | venue_avg_finish | Venue average finish baseline (field-level) |
 | venue_finish_std | Venue finish standard deviation (volatility) |
+| wins_at_venue | No description available |
 | world_rank | Current world rank (lower is better) |
 | field_avg_rank | Average world rank of the field |
 | field_median_rank | Median world rank of the field |
@@ -61,6 +62,7 @@ Generated: 2026-02-23 08:04
 | dg_fit_app | Course-fit component: Approach |
 | dg_fit_arg | Course-fit component: Around-the-Green |
 | dg_fit_putt | Course-fit component: Putting |
+| predictive_sg_weighted | No description available |
 | dg_fit_total | Total course-fit score (sum of components) |
 | course_starts | No description available |
 | course_made_cut_rate | No description available |

@@ -280,7 +280,8 @@ def fetch_field_from_pga(tournament_name: str, tournament_id: str = None) -> Pat
         print("  No PGA TOUR tournament ID provided, cannot auto-fetch field")
         return None
 
-    output_path = DATA_DIR / "fields" / f"{tournament_name.lower().replace(' ', '_')}_field.csv"
+    # Always use canonical ID-based path to avoid stale name-based files
+    output_path = DATA_DIR / "fields" / f"field_{tournament_id}.csv"
 
     script_path = SCRIPTS_DIR / "scrapers" / "fetch_field_from_pgatour.py"
     if script_path.exists():

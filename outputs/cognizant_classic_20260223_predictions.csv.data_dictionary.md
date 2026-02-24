@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-23 08:04
+Generated: 2026-02-23 22:26
 
 | Column | Description |
 |--------|-------------|
@@ -9,6 +9,7 @@ Generated: 2026-02-23 08:04
 | sg_total | Recent SG:Total (form window) |
 | sg_ott | Recent SG:Off-the-Tee |
 | sg_app | Recent SG:Approach |
+| sg_arg | Recent SG:Around-the-Green |
 | sg_putt | Recent SG:Putting |
 | sg_t2g | Recent SG:Tee-to-Green |
 | season_sg_total | Season-to-date SG:Total average |
@@ -16,7 +17,6 @@ Generated: 2026-02-23 08:04
 | season_sg_app | Season SG:Approach average |
 | season_sg_putt | Season SG:Putting average |
 | season_sg_t2g | Season SG:Tee-to-Green average |
-| sg_arg | Recent SG:Around-the-Green |
 | season_sg_arg | Season SG:Around-the-Green average |
 | sg_blend_current_weight | No description available |
 | sg_blend_prior_weight | No description available |
@@ -61,6 +61,7 @@ Generated: 2026-02-23 08:04
 | dg_fit_app | Course-fit component: Approach |
 | dg_fit_arg | Course-fit component: Around-the-Green |
 | dg_fit_putt | Course-fit component: Putting |
+| predictive_sg_weighted | No description available |
 | dg_fit_total | Total course-fit score (sum of components) |
 | course_starts | No description available |
 | course_made_cut_rate | No description available |

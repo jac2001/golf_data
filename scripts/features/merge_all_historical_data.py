@@ -634,6 +634,18 @@ else:
 
 
 
+# SG-ADJUSTED WORLD RANK: rescue LIV/injury players whose OWGR doesn't reflect ability
+# Applied consistently here (training) and in predict_tournament.py (inference).
+if 'world_rank' in merged.columns and 'predictive_sg_weighted' in merged.columns:
+    field_size_scale = 4.0
+    for tid, grp in merged.groupby('tournament_id'):
+        sg_vals = grp['predictive_sg_weighted'].fillna(0)
+        sg_implied = sg_vals.rank(ascending=False) * field_size_scale
+        mask = grp.index[(grp['world_rank'] > 150) & (sg_implied < grp['world_rank'])]
+        if len(mask) > 0:
+            merged.loc[mask, 'world_rank'] = sg_implied[mask].round(0)
+    print(f"    ✓ SG-adjusted world_rank applied (LIV/injury players)")
+
 # Field strength (average world ranking of field)
 if 'world_rank' in merged.columns:
     field_strength = merged.groupby('tournament_id')['world_rank'].agg(['mean', 'median']).reset_index()
