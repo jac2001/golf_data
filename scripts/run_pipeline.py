@@ -5,7 +5,7 @@ Golf Prediction Pipeline Runner
 Single script to run the entire prediction pipeline end-to-end.
 
 Stages:
-1. DATA REFRESH - Fetch latest rankings, player database, form stats
+1. DATA REFRESH - Fetch latest rankings, player database, form stats, tournament SG stats
 2. FIELD FETCH - Get tournament field (from PGA TOUR or manual)
 3. PREDICTIONS - Run the prediction model
 4. INSIGHTS - Generate AI insights (optional)
@@ -38,7 +38,8 @@ from pathlib import Path
 from datetime import datetime
 import json
 import pandas as pd
-from typing import Optional
+import traceback
+from typing import Optional, Any, Dict, List
 
 # ============================================================================
 # Configuration
@@ -54,7 +55,12 @@ if str(PROJECT_ROOT) not in sys.path:
 DATA_DIR = PROJECT_ROOT / "data"
 SCRIPTS_DIR = PROJECT_ROOT / "scripts"
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+LOGS_DIR = PROJECT_ROOT / "logs"
 SCHEDULE_PATH = DATA_DIR / "raw" / "schedule_2026.csv"
+PIPELINE_STATUS_PATH = LOGS_DIR / "pipeline_status_latest.json"
+PIPELINE_HISTORY_PATH = LOGS_DIR / "pipeline_status_history.json"
+
+from scripts.utils.tournament_context import resolve_tournament_context
 
 # Pipeline stages and their scripts
 PIPELINE_STAGES = {
@@ -73,6 +79,11 @@ PIPELINE_STAGES = {
         "description": "Fetch recent form statistics",
         "output": DATA_DIR / "historical" / f"form_stats_{datetime.now().year}.csv",
     },
+    "tournament_stats": {
+        "script": SCRIPTS_DIR / "scrapers" / "fetch_tournament_stats.py",
+        "description": "Fetch tournament SG statistics",
+        "output": DATA_DIR / "historical" / f"tournament_stats_{datetime.now().year}.csv",
+    },
     "course_form_features": {
         "script": SCRIPTS_DIR / "features" / "consolidate_course_form_stats.py",
         "description": "Build player-course performance features",
@@ -88,6 +99,157 @@ PIPELINE_STAGES = {
         "description": "Generate tournament predictions",
     },
 }
+
+_ACTIVE_TRACKER = None
+
+
+def _now_iso() -> str:
+    return datetime.now().isoformat(timespec="seconds")
+
+
+def _tail_text(value: str, limit: int = 4000) -> str:
+    if not value:
+        return ""
+    text = str(value)
+    return text[-limit:] if len(text) > limit else text
+
+
+class PipelineRunTracker:
+    """Tracks per-command pipeline execution health for dashboard visibility."""
+
+    def __init__(self, run_type: str, tournament_name: str = "", tournament_id: str = ""):
+        self.run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.started_at = _now_iso()
+        self.ended_at = ""
+        self.status = "running"
+        self.run_type = run_type
+        self.tournament_name = str(tournament_name or "")
+        self.tournament_id = str(tournament_id or "")
+        self.steps: List[Dict[str, Any]] = []
+        self._counter = 0
+
+    def start_step(self, name: str, command: List[str], timeout: Optional[int] = None) -> int:
+        self._counter += 1
+        idx = len(self.steps)
+        self.steps.append({
+            "id": f"step_{self._counter:03d}",
+            "name": str(name or "command"),
+            "command": list(command or []),
+            "command_str": " ".join([str(x) for x in (command or [])]),
+            "timeout_seconds": int(timeout) if timeout else None,
+            "status": "running",
+            "started_at": _now_iso(),
+            "ended_at": "",
+            "duration_seconds": None,
+            "return_code": None,
+            "stdout_tail": "",
+            "stderr_tail": "",
+            "error": "",
+        })
+        self._flush()
+        return idx
+
+    def end_step(
+        self,
+        idx: int,
+        success: bool,
+        return_code: Optional[int] = None,
+        stdout: str = "",
+        stderr: str = "",
+        error: str = "",
+    ) -> None:
+        if idx < 0 or idx >= len(self.steps):
+            return
+        step = self.steps[idx]
+        step["ended_at"] = _now_iso()
+        try:
+            started = datetime.fromisoformat(step["started_at"])
+            ended = datetime.fromisoformat(step["ended_at"])
+            step["duration_seconds"] = round((ended - started).total_seconds(), 3)
+        except Exception:
+            step["duration_seconds"] = None
+        step["status"] = "success" if success else "failed"
+        step["return_code"] = return_code
+        step["stdout_tail"] = _tail_text(stdout)
+        step["stderr_tail"] = _tail_text(stderr)
+        step["error"] = _tail_text(error)
+        self._flush()
+
+    def finalize(self, success: bool, error: str = "") -> None:
+        self.ended_at = _now_iso()
+        self.status = "success" if success else "failed"
+        payload = self.to_dict()
+        if error:
+            payload["error"] = _tail_text(error)
+        self._write(payload, append_history=True)
+
+    def record_manual_step(
+        self,
+        name: str,
+        success: bool,
+        command: Optional[List[str]] = None,
+        error: str = "",
+        stdout: str = "",
+    ) -> None:
+        idx = self.start_step(name=name, command=(command or []), timeout=None)
+        self.end_step(
+            idx=idx,
+            success=success,
+            return_code=0 if success else 1,
+            stdout=stdout,
+            stderr="",
+            error=error,
+        )
+
+    def _flush(self) -> None:
+        self._write(self.to_dict(), append_history=False)
+
+    def to_dict(self) -> Dict[str, Any]:
+        failed_steps = [s for s in self.steps if s.get("status") == "failed"]
+        return {
+            "run_id": self.run_id,
+            "run_type": self.run_type,
+            "status": self.status,
+            "started_at": self.started_at,
+            "ended_at": self.ended_at,
+            "tournament_name": self.tournament_name,
+            "tournament_id": self.tournament_id,
+            "step_count": len(self.steps),
+            "failed_count": len(failed_steps),
+            "failed_step_ids": [s.get("id", "") for s in failed_steps],
+            "steps": self.steps,
+        }
+
+    def _write(self, payload: Dict[str, Any], append_history: bool) -> None:
+        try:
+            LOGS_DIR.mkdir(parents=True, exist_ok=True)
+            PIPELINE_STATUS_PATH.write_text(json.dumps(payload, indent=2))
+            if append_history:
+                history = []
+                if PIPELINE_HISTORY_PATH.exists():
+                    try:
+                        history = json.loads(PIPELINE_HISTORY_PATH.read_text())
+                        if not isinstance(history, list):
+                            history = []
+                    except Exception:
+                        history = []
+                history.append({
+                    "run_id": payload.get("run_id", ""),
+                    "run_type": payload.get("run_type", ""),
+                    "status": payload.get("status", ""),
+                    "started_at": payload.get("started_at", ""),
+                    "ended_at": payload.get("ended_at", ""),
+                    "tournament_name": payload.get("tournament_name", ""),
+                    "tournament_id": payload.get("tournament_id", ""),
+                    "step_count": payload.get("step_count", 0),
+                    "failed_count": payload.get("failed_count", 0),
+                    "failed_step_ids": payload.get("failed_step_ids", []),
+                })
+                history = history[-250:]
+                PIPELINE_HISTORY_PATH.write_text(json.dumps(history, indent=2))
+        except Exception:
+            # Status logging should never fail the pipeline.
+            pass
 
 
 def slugify(name: str) -> str:
@@ -114,20 +276,70 @@ def print_stage(stage_num: int, total: int, name: str):
     print("-" * 50)
 
 
-def run_command(cmd: list, description: str = "", check: bool = True) -> bool:
+def run_command(
+    cmd: list,
+    description: str = "",
+    check: bool = True,
+    timeout: Optional[int] = None,
+) -> bool:
     """Run a command and return success status."""
+    label = description or " ".join([str(x) for x in cmd[:3]])
     print(f"  Running: {' '.join(cmd)}")
+
+    step_idx = None
+    if _ACTIVE_TRACKER is not None:
+        step_idx = _ACTIVE_TRACKER.start_step(label, cmd, timeout=timeout)
 
     try:
         result = subprocess.run(
             cmd,
             cwd=PROJECT_ROOT,
-            capture_output=False,
+            capture_output=True,
             text=True,
+            timeout=timeout,
         )
-        return result.returncode == 0
+        stdout = result.stdout or ""
+        stderr = result.stderr or ""
+        if stdout:
+            print(stdout, end="" if stdout.endswith("\n") else "\n")
+        if stderr:
+            print(stderr, end="" if stderr.endswith("\n") else "\n")
+
+        success = result.returncode == 0
+        if step_idx is not None:
+            _ACTIVE_TRACKER.end_step(
+                step_idx,
+                success=success,
+                return_code=result.returncode,
+                stdout=stdout,
+                stderr=stderr,
+                error=stderr if not success else "",
+            )
+        return success
+    except subprocess.TimeoutExpired as e:
+        msg = f"Timeout after {timeout}s"
+        print(f"  Error: {msg}")
+        if step_idx is not None:
+            _ACTIVE_TRACKER.end_step(
+                step_idx,
+                success=False,
+                return_code=None,
+                stdout=e.stdout or "",
+                stderr=e.stderr or "",
+                error=msg,
+            )
+        return False
     except Exception as e:
         print(f"  Error: {e}")
+        if step_idx is not None:
+            _ACTIVE_TRACKER.end_step(
+                step_idx,
+                success=False,
+                return_code=None,
+                stdout="",
+                stderr="",
+                error=str(e),
+            )
         return False
 
 
@@ -163,50 +375,22 @@ def find_schedule_row(
     on_date: str = None,
     schedule_path: Path = SCHEDULE_PATH,
 ) -> Optional[dict]:
-    """Find a tournament row by name or by date (YYYY-MM-DD).
-
-    If on_date is provided and falls between tournaments, returns the NEXT
-    upcoming tournament (prep week behavior).
-    """
-    df = load_schedule(schedule_path)
-    if df.empty:
+    """Find tournament row by name or by date via centralized context resolver."""
+    ctx = resolve_tournament_context(
+        tournament_name=tournament_name or "",
+        on_date=on_date or "",
+        schedule_path=schedule_path,
+    )
+    if not ctx.get("tournament_name"):
         return None
-
-    if tournament_name:
-        key = tournament_name.lower().strip()
-        match = df[df["name_key"] == key]
-        if match.empty:
-            # fallback partial match
-            match = df[df["name_key"].str.contains(key[:12], na=False)]
-        if not match.empty:
-            return match.iloc[0].to_dict()
-
-    if on_date:
-        try:
-            d = datetime.strptime(on_date, "%Y-%m-%d").date()
-            df["start_date_dt"] = pd.to_datetime(df["start_date"]).dt.date
-            df["end_date_dt"] = pd.to_datetime(df["end_date"]).dt.date
-
-            # First try: find tournament currently in progress
-            match = df[(df["start_date_dt"] <= d) & (df["end_date_dt"] >= d)]
-            if not match.empty:
-                return match.iloc[0].to_dict()
-
-            # Second try: find next upcoming tournament (prep week)
-            upcoming = df[df["start_date_dt"] > d].sort_values("start_date_dt")
-            if not upcoming.empty:
-                return upcoming.iloc[0].to_dict()
-        except Exception:
-            pass
-
-    return None
+    return ctx
 
 
 def refresh_data(force: bool = False, max_age_hours: int = 24):
     """Refresh all data sources."""
     print_header("DATA REFRESH")
 
-    stages = ["player_database", "world_rankings", "form_stats", "course_form_features", "course_similarity"]
+    stages = ["player_database", "world_rankings", "form_stats", "tournament_stats", "course_form_features", "course_similarity"]
     total = len(stages)
 
     for i, stage_name in enumerate(stages, 1):
@@ -215,7 +399,7 @@ def refresh_data(force: bool = False, max_age_hours: int = 24):
 
         # Check if refresh needed
         output_file = stage.get("output")
-        should_use_freshness = stage_name != "course_form_features"
+        should_use_freshness = stage_name not in {"course_form_features", "tournament_stats"}
         if should_use_freshness and output_file and not force and check_file_fresh(output_file, max_age_hours):
             print(f"  Skipping - data is fresh ({output_file.name})")
             continue
@@ -226,12 +410,15 @@ def refresh_data(force: bool = False, max_age_hours: int = 24):
             cmd = ["python3", str(script_path)]
             if stage_name == "form_stats":
                 cmd.extend(["--year", str(datetime.now().year)])
+            elif stage_name == "tournament_stats":
+                cmd.extend(["--year", str(datetime.now().year), "--refresh-latest", "3"])
             elif stage_name == "course_form_features":
                 now_year = datetime.now().year
                 # Use 5 years of history for better course performance data
                 years = [str(now_year - i) for i in range(5, -1, -1)]  # 5 years back + current
                 cmd.extend(["--years"] + years)
-            success = run_command(cmd)
+            timeout = 300 if stage_name in {"tournament_stats", "course_form_features"} else 180
+            success = run_command(cmd, description=stage["description"], timeout=timeout)
             if success:
                 print(f"  Done")
             else:
@@ -285,15 +472,23 @@ def fetch_field_from_pga(tournament_name: str, tournament_id: str = None) -> Pat
 
     script_path = SCRIPTS_DIR / "scrapers" / "fetch_field_from_pgatour.py"
     if script_path.exists():
-        success = run_command([
+        cmd = [
             "python3", str(script_path),
             "--pga-id", tournament_id,
             "--output", str(output_path),
             "--match-ids",
             "--name", tournament_name,
-        ])
+        ]
+        success = run_command(cmd, description="Fetch tournament field from PGA TOUR", timeout=240)
         if success and output_path.exists():
             return output_path
+        if _ACTIVE_TRACKER is not None:
+            _ACTIVE_TRACKER.record_manual_step(
+                name="Validate fetched field file",
+                success=False,
+                command=cmd,
+                error=f"Field fetch command completed but output missing: {output_path}",
+            )
 
     return None
 
@@ -350,13 +545,127 @@ def run_predictions(
     if calibrate:
         cmd.append("--calibrate")
 
-    success = run_command(cmd)
+    success = run_command(cmd, description="Generate tournament predictions", timeout=900)
 
     if success and output_path.exists():
         print(f"\n  Predictions saved to: {output_path}")
         return output_path
 
+    if _ACTIVE_TRACKER is not None and success and (not output_path.exists()):
+        _ACTIVE_TRACKER.record_manual_step(
+            name="Validate predictions output file",
+            success=False,
+            command=cmd,
+            error=f"Predictions command succeeded but output missing: {output_path}",
+        )
+
     return None
+
+
+def generate_calibration_report() -> bool:
+    """
+    Regenerate calibration diagnostics and a lightweight markdown summary.
+    """
+    print_header("CALIBRATION REPORT")
+    success = run_command(
+        ["python3", str(SCRIPTS_DIR / "validation" / "generate_calibration_data.py")],
+        description="Generate calibration diagnostics",
+        timeout=300,
+    )
+    if not success:
+        print("  Warning: calibration report generation failed, continuing...")
+        return False
+
+    cal_path = OUTPUTS_DIR / "calibration_data.json"
+    if not cal_path.exists():
+        if _ACTIVE_TRACKER is not None:
+            _ACTIVE_TRACKER.record_manual_step(
+                name="Validate calibration output file",
+                success=False,
+                command=["python3", str(SCRIPTS_DIR / "validation" / "generate_calibration_data.py")],
+                error=f"Calibration script succeeded but output missing: {cal_path}",
+            )
+        return True
+
+    summary_path = OUTPUTS_DIR / "calibration_report_latest.md"
+    try:
+        data = json.loads(cal_path.read_text())
+        lines = [
+            "# Calibration Report",
+            "",
+            f"- Generated at: {data.get('generated_at', '')}",
+            f"- Train rows: {data.get('n_train', '')}",
+            f"- Test rows: {data.get('n_test', '')}",
+            "",
+            "| Model | AUC | Brier | Pred Avg | Actual Avg | Cal Ratio |",
+            "|---|---:|---:|---:|---:|---:|",
+        ]
+        for key in ["win", "top5", "top10", "top20"]:
+            md = (data.get("models") or {}).get(key, {})
+            if not md:
+                continue
+            lines.append(
+                f"| {md.get('display_name', key)} | "
+                f"{float(md.get('auc', 0.0)):.4f} | "
+                f"{float(md.get('brier', 0.0)):.4f} | "
+                f"{float(md.get('pred_avg', 0.0)) * 100:.2f}% | "
+                f"{float(md.get('actual_avg', 0.0)) * 100:.2f}% | "
+                f"{float(md.get('cal_ratio', 0.0)):.2f}x |"
+            )
+        summary_path.write_text("\n".join(lines))
+        print(f"  Calibration summary saved to: {summary_path}")
+    except Exception as e:
+        print(f"  Warning: failed writing calibration markdown summary: {e}")
+    return True
+
+
+def rerun_failed_step(step_id: str = "") -> bool:
+    """
+    Re-run one failed command from the latest pipeline status artifact.
+    """
+    if not PIPELINE_STATUS_PATH.exists():
+        print(f"No pipeline status file found: {PIPELINE_STATUS_PATH}")
+        return False
+
+    try:
+        status = json.loads(PIPELINE_STATUS_PATH.read_text())
+    except Exception as e:
+        print(f"Could not read pipeline status file: {e}")
+        return False
+
+    failed = [s for s in (status.get("steps") or []) if str(s.get("status", "")).lower() == "failed"]
+    if not failed:
+        print("No failed steps found in latest pipeline run.")
+        return False
+
+    target = None
+    if step_id:
+        for s in failed:
+            if str(s.get("id", "")).strip() == str(step_id).strip():
+                target = s
+                break
+        if target is None:
+            print(f"Failed step id not found: {step_id}")
+            print("Available failed step ids:", ", ".join([str(s.get("id", "")) for s in failed]))
+            return False
+    else:
+        target = failed[-1]
+
+    cmd = target.get("command") or []
+    if not isinstance(cmd, list) or not cmd:
+        print(f"Failed step {target.get('id', '')} has no runnable command.")
+        return False
+
+    print_header("RETRY FAILED STEP")
+    print(f"  Run ID: {status.get('run_id', '')}")
+    print(f"  Step:   {target.get('id', '')} - {target.get('name', '')}")
+    print(f"  Cmd:    {' '.join([str(x) for x in cmd])}")
+    timeout = target.get("timeout_seconds")
+    return run_command(
+        cmd,
+        description=f"Retry failed step {target.get('id', '')}",
+        timeout=int(timeout) if timeout else None,
+    )
 
 
 def run_lineup_recommendation(
@@ -426,7 +735,7 @@ def run_bet_recommendations(
     if predictions_path and Path(predictions_path).exists():
         cmd.extend(["--predictions", str(predictions_path)])
 
-    success = run_command(cmd)
+    success = run_command(cmd, description="Generate bet recommendations", timeout=300)
     if not success:
         print("  Warning: recommendation generation failed, continuing...")
     return success
@@ -448,6 +757,15 @@ def fetch_tournament_assets(
     """Fetch tournament assets used by dashboard and betting workflow."""
     print_header("TOURNAMENT ASSETS")
 
+    def _csv_has_rows(path: Path) -> bool:
+        if not path or not path.exists():
+            return False
+        try:
+            probe = pd.read_csv(path, nrows=1)
+            return not probe.empty
+        except Exception:
+            return False
+
     total_stages = 5
     if fetch_expert_picks and pga_id:
         total_stages += 1
@@ -458,10 +776,15 @@ def fetch_tournament_assets(
     dk_props_path = None
     if pga_id:
         dk_props_path = DATA_DIR / "odds" / f"prop_lines_{pga_id}.csv"
+        dk_cards_path = DATA_DIR / "odds" / f"dk_content_cards_{pga_id}.csv"
         print_stage(stage_idx, total_stages, "Fetch DraftKings props")
-        if (not force_dk_props_refresh) and check_file_fresh(dk_props_path, max_age_hours=dk_props_max_age_hours):
+        props_fresh = check_file_fresh(dk_props_path, max_age_hours=dk_props_max_age_hours)
+        cards_fresh = check_file_fresh(dk_cards_path, max_age_hours=dk_props_max_age_hours)
+        cards_non_empty = _csv_has_rows(dk_cards_path)
+        if (not force_dk_props_refresh) and props_fresh and cards_fresh and cards_non_empty:
             print(
-                f"  Skipping DraftKings props - fresh file exists ({dk_props_path.name}, <= {dk_props_max_age_hours:.1f}h old)"
+                "  Skipping DraftKings props - fresh prop + content-card files exist "
+                f"({dk_props_path.name}, {dk_cards_path.name}, <= {dk_props_max_age_hours:.1f}h old)"
             )
         else:
             run_command([
@@ -472,7 +795,7 @@ def fetch_tournament_assets(
                 "--no-snapshot",
                 "--fetch-profile",
                 "fast",
-            ])
+            ], description="Fetch DraftKings props", timeout=240)
         stage_idx += 1
 
     odds_path = None
@@ -484,7 +807,8 @@ def fetch_tournament_assets(
         else:
             run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_pga_odds.py"),
                          "--tournament-id", pga_id,
-                         "--output", str(odds_path)])
+                         "--output", str(odds_path)],
+                        description="Fetch PGA odds", timeout=180)
         stage_idx += 1
 
     print_stage(stage_idx, total_stages, "Fetch betting profiles")
@@ -497,18 +821,20 @@ def fetch_tournament_assets(
     ]
     if odds_path and odds_path.exists():
         bp_cmd.extend(["--odds-csv", str(odds_path)])
-    run_command(bp_cmd)
+    run_command(bp_cmd, description="Fetch betting profiles", timeout=240)
     stage_idx += 1
 
     print_stage(stage_idx, total_stages, "Fetch power rankings")
     slug = power_slug or slugify(tournament_name)
     run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_power_rankings.py"),
-                 "--slug", slug, "--allow-fail"])
+                 "--slug", slug, "--allow-fail"],
+                description="Fetch power rankings", timeout=240)
     stage_idx += 1
 
     print_stage(stage_idx, total_stages, "Fetch course characteristics")
     run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_course_characteristics.py"),
-                 "--tournament-id", pga_id, "--profile"])
+                 "--tournament-id", pga_id, "--profile"],
+                description="Fetch course characteristics", timeout=240)
     stage_idx += 1
 
     if fetch_expert_picks and pga_id:
@@ -516,7 +842,7 @@ def fetch_tournament_assets(
         success = run_command([
             "python3", str(SCRIPTS_DIR / "scrapers" / "fetch_expert_picks_pga.py"),
             "--tournament-id", pga_id,
-        ])
+        ], description="Fetch expert picks", timeout=240)
         if not success:
             print("  Warning: expert picks fetch failed, continuing...")
         stage_idx += 1
@@ -528,7 +854,7 @@ def fetch_tournament_assets(
             "--field-csv", str(field_path),
             "--url-template", article_template,
             "--output", str(DATA_DIR / "betting_profiles" / "article_blurbs.csv"),
-        ])
+        ], description="Fetch betting profile articles", timeout=300)
 
     return odds_path
 
@@ -556,100 +882,136 @@ def run_full_pipeline(
     generate_bet_recs: bool = True,
 ):
     """Run the full prediction pipeline."""
-    print_header(f"GOLF PREDICTION PIPELINE: {tournament_name}", "=")
-    print(f"  Purse: ${purse:,}")
-    print(f"  Type: {tournament_type}")
-    print(f"  Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
-
-    # Stage 1: Data refresh
-    if not skip_refresh:
-        refresh_data(force=False, max_age_hours=24)
-    else:
-        print("\n  Skipping data refresh (--skip-refresh)")
-
-    # Stage 2: Get field
-    print_header("TOURNAMENT FIELD")
-
-    if field_path:
-        field_file = Path(field_path)
-        if not field_file.exists():
-            print(f"  Error: Field file not found: {field_path}")
-            return
-        print(f"  Using provided field: {field_file}")
-    else:
-        # Try to find existing field file (canonical ID lookup first, then fuzzy name)
-        field_file = find_field_file(tournament_name, tournament_id=pga_id)
-
-        if field_file:
-            print(f"  Found existing field: {field_file}")
-        elif pga_id:
-            # Try to fetch from PGA TOUR
-            field_file = fetch_field_from_pga(tournament_name, pga_id)
-
-    if not field_file:
-        print("\n  No field file found!")
-        print("  Please provide one with --field or --pga-id")
-        print("\n  Example:")
-        print(f"    python scripts/run_pipeline.py --tournament \"{tournament_name}\" \\")
-        print(f"        --purse {purse} --field data/fields/your_field.csv")
-        return
-
-    # Stage 2b: Fetch tournament assets (odds, profiles, rankings)
-    odds_path = None
-    if pga_id:
-        odds_path = fetch_tournament_assets(
-            tournament_name=tournament_name,
-            pga_id=pga_id,
-            field_path=field_file,
-            power_slug=power_slug,
-            odds_max_age_hours=odds_max_age_hours,
-            force_odds_refresh=force_odds_refresh,
-            dk_props_max_age_hours=dk_props_max_age_hours,
-            force_dk_props_refresh=force_dk_props_refresh,
-            fetch_expert_picks=fetch_expert_picks,
-            fetch_articles=fetch_articles,
-            article_template=article_template,
-        )
-
-    # Stage 3: Run predictions
-    predictions_path = run_predictions(
+    global _ACTIVE_TRACKER
+    tracker = PipelineRunTracker(
+        run_type="full_pipeline",
         tournament_name=tournament_name,
-        purse=purse,
-        field_path=field_file,
-        tournament_type=tournament_type,
-        insights=insights,
-        insights_ollama=insights_ollama,
-        save_tracking=save_tracking,
-        odds_path=odds_path,
-        calibrate=calibrate,
+        tournament_id=str(pga_id or ""),
     )
+    _ACTIVE_TRACKER = tracker
 
-    # Stage 4: Deterministic tracked bet recommendations.
-    if generate_bet_recs and predictions_path and pga_id:
-        run_bet_recommendations(pga_id, predictions_path=predictions_path)
+    pipeline_success = False
+    pipeline_error = ""
 
-    # Stage 5: Lineup recommendation (if requested separately)
-    if recommend_lineup and predictions_path:
-        run_lineup_recommendation(tournament_name, predictions_path)
+    try:
+        print_header(f"GOLF PREDICTION PIPELINE: {tournament_name}", "=")
+        print(f"  Purse: ${purse:,}")
+        print(f"  Type: {tournament_type}")
+        print(f"  Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
 
-    print_header("PIPELINE COMPLETE", "=")
+        # Stage 1: Data refresh
+        if not skip_refresh:
+            refresh_data(force=False, max_age_hours=24)
+        else:
+            print("\n  Skipping data refresh (--skip-refresh)")
+
+        # Stage 2: Get field
+        print_header("TOURNAMENT FIELD")
+
+        if field_path:
+            field_file = Path(field_path)
+            if not field_file.exists():
+                raise FileNotFoundError(f"Field file not found: {field_path}")
+            print(f"  Using provided field: {field_file}")
+        else:
+            # Try to find existing field file (canonical ID lookup first, then fuzzy name)
+            field_file = find_field_file(tournament_name, tournament_id=pga_id)
+
+            if field_file:
+                print(f"  Found existing field: {field_file}")
+            elif pga_id:
+                # Try to fetch from PGA TOUR
+                field_file = fetch_field_from_pga(tournament_name, pga_id)
+
+        if not field_file:
+            raise RuntimeError(
+                "No field file found. Provide --field or --pga-id so the pipeline can fetch one."
+            )
+
+        # Stage 2b: Fetch tournament assets (odds, profiles, rankings)
+        odds_path = None
+        if pga_id:
+            odds_path = fetch_tournament_assets(
+                tournament_name=tournament_name,
+                pga_id=pga_id,
+                field_path=field_file,
+                power_slug=power_slug,
+                odds_max_age_hours=odds_max_age_hours,
+                force_odds_refresh=force_odds_refresh,
+                dk_props_max_age_hours=dk_props_max_age_hours,
+                force_dk_props_refresh=force_dk_props_refresh,
+                fetch_expert_picks=fetch_expert_picks,
+                fetch_articles=fetch_articles,
+                article_template=article_template,
+            )
+
+        # Stage 3: Run predictions
+        predictions_path = run_predictions(
+            tournament_name=tournament_name,
+            purse=purse,
+            field_path=field_file,
+            tournament_type=tournament_type,
+            insights=insights,
+            insights_ollama=insights_ollama,
+            save_tracking=save_tracking,
+            odds_path=odds_path,
+            calibrate=calibrate,
+        )
+        if not predictions_path:
+            raise RuntimeError("Prediction stage failed: no output file was created.")
+
+        # Stage 4: Calibration report (always refresh after predictions).
+        generate_calibration_report()
+
+        # Stage 5: Deterministic tracked bet recommendations.
+        if generate_bet_recs and pga_id:
+            run_bet_recommendations(pga_id, predictions_path=predictions_path)
+
+        # Stage 6: Lineup recommendation (if requested separately)
+        if recommend_lineup:
+            run_lineup_recommendation(tournament_name, predictions_path)
+
+        print_header("PIPELINE COMPLETE", "=")
+        pipeline_success = True
+    except Exception as e:
+        pipeline_error = f"{e}\n{traceback.format_exc()}"
+        print(f"\nPipeline failed: {e}")
+    finally:
+        if _ACTIVE_TRACKER is not None:
+            _ACTIVE_TRACKER.finalize(success=pipeline_success, error=pipeline_error)
+        _ACTIVE_TRACKER = None
 
 
 def weekly_refresh():
     """Run weekly data refresh for all sources."""
-    print_header("WEEKLY DATA REFRESH")
-    print(f"  Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    global _ACTIVE_TRACKER
+    tracker = PipelineRunTracker(run_type="weekly_refresh")
+    _ACTIVE_TRACKER = tracker
 
-    # Force refresh all data
-    refresh_data(force=True)
+    ok = False
+    err = ""
+    try:
+        print_header("WEEKLY DATA REFRESH")
+        print(f"  Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
 
-    # Update player database
-    print("\n  Updating master player database...")
-    script_path = SCRIPTS_DIR / "scrapers" / "fetch_player_database.py"
-    if script_path.exists():
-        run_command(["python3", str(script_path)])
+        # Force refresh all data
+        refresh_data(force=True)
 
-    print_header("WEEKLY REFRESH COMPLETE")
+        # Update player database
+        print("\n  Updating master player database...")
+        script_path = SCRIPTS_DIR / "scrapers" / "fetch_player_database.py"
+        if script_path.exists():
+            run_command(["python3", str(script_path)], description="Weekly player database refresh")
+
+        print_header("WEEKLY REFRESH COMPLETE")
+        ok = True
+    except Exception as e:
+        err = f"{e}\n{traceback.format_exc()}"
+        print(f"\nWeekly refresh failed: {e}")
+    finally:
+        if _ACTIVE_TRACKER is not None:
+            _ACTIVE_TRACKER.finalize(success=ok, error=err)
+        _ACTIVE_TRACKER = None
 
 
 def main():
@@ -718,6 +1080,8 @@ Examples:
                        help='Only refresh data, no predictions')
     parser.add_argument('--weekly-refresh', action='store_true',
                        help='Run weekly data refresh')
+    parser.add_argument('--rerun-failed-step', nargs='?', const='',
+                       help='Re-run one failed command from logs/pipeline_status_latest.json (optional step id)')
 
     # Output options
     parser.add_argument('--insights', action='store_true',
@@ -735,6 +1099,10 @@ Examples:
 
     # Ensure we're in the project directory
     os.chdir(PROJECT_ROOT)
+
+    if args.rerun_failed_step is not None:
+        rerun_failed_step(args.rerun_failed_step)
+        return
 
     # Weekly refresh mode
     if args.weekly_refresh:
@@ -776,7 +1144,21 @@ Examples:
 
     # Refresh only mode
     if args.refresh_only:
-        refresh_data(force=True)
+        global _ACTIVE_TRACKER
+        tracker = PipelineRunTracker(run_type="refresh_only")
+        _ACTIVE_TRACKER = tracker
+        ok = False
+        err = ""
+        try:
+            refresh_data(force=True)
+            ok = True
+        except Exception as e:
+            err = f"{e}\n{traceback.format_exc()}"
+            print(f"Refresh-only failed: {e}")
+        finally:
+            if _ACTIVE_TRACKER is not None:
+                _ACTIVE_TRACKER.finalize(success=ok, error=err)
+            _ACTIVE_TRACKER = None
         return
 
     # Require tournament and purse for predictions

@@ -27,6 +27,11 @@ from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 import time
 import re
+import unicodedata
+from scripts.utils.tournament_context import (
+    resolve_tournament_context as resolve_shared_tournament_context,
+    tournament_name_match as shared_tournament_name_match,
+)
 # ============================================================================
 # Configuration
 # ============================================================================
@@ -44,6 +49,21 @@ DEFAULT_HEADERS = {
 
 OUTPUT_DIR = Path("data/betting_profiles")
 ODDS_CACHE_DIR = Path("data/odds")
+RAW_DIR = Path("data/raw")
+
+HTML_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    ),
+    "Accept": "text/html,application/xhtml+xml",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+
+# Some tournaments use a different article slug than schedule power_slug.
+BETTING_SLUG_OVERRIDES = {
+    "cognizant-classic": "cognizant-classic-in-the-palm-beaches",
+}
 
 # ============================================================================
 # GraphQL Queries
@@ -520,6 +540,300 @@ def _summarize_course_history(courses: List[Dict]) -> str:
     return "; ".join(summaries) if summaries else "No course history"
 
 
+def _normalize_text(value: str) -> str:
+    if not value:
+        return ""
+    s = unicodedata.normalize("NFKD", str(value))
+    s = "".join(ch for ch in s if not unicodedata.combining(ch))
+    s = s.lower().strip()
+    s = re.sub(r"[^a-z0-9]+", " ", s)
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def _slugify_text(value: str) -> str:
+    return _normalize_text(value).replace(" ", "-")
+
+
+def _name_tokens(value: str) -> set:
+    stop = {
+        "the", "and", "of", "at", "in", "to", "open", "championship",
+        "classic", "invitational", "pro", "am", "presented", "by",
+        "palm", "beaches", "beach",
+    }
+    return {t for t in _normalize_text(value).split() if t and t not in stop}
+
+
+def _tournament_name_match(actual: str, expected: str) -> bool:
+    return shared_tournament_name_match(actual, expected)
+
+
+def _slugify_player_name(name: str) -> str:
+    # Convert "Last, First" to "first-last" and strip accents.
+    raw = str(name or "").strip()
+    if "," in raw:
+        parts = [p.strip() for p in raw.split(",", 1)]
+        if len(parts) == 2 and parts[0] and parts[1]:
+            raw = f"{parts[1]} {parts[0]}"
+    return _slugify_text(raw)
+
+
+def _resolve_tournament_context(tournament_id: str) -> Dict[str, str]:
+    """
+    Resolve schedule metadata for a tournament ID.
+    Returns keys: tournament_name, power_slug, start_date, year.
+    """
+    tid = str(tournament_id or "").strip().upper()
+    row = resolve_shared_tournament_context(tournament_id=tid)
+    return {
+        "tournament_name": str(row.get("tournament_name", "")).strip(),
+        "power_slug": str(row.get("power_slug", "")).strip(),
+        "start_date": str(row.get("start_date", "")).strip(),
+        "year": str(row.get("year", "")).strip(),
+    }
+
+
+def _extract_betting_profile_links(html: str, year: str) -> List[str]:
+    """
+    Parse betting-profile article links from listing HTML.
+    """
+    links = re.findall(r'href="([^"]+)"', html)
+    out = []
+    year_pat = f"/article/news/betting-profile/{year}/"
+    for href in links:
+        h = str(href or "").strip()
+        if not h:
+            continue
+        if h.startswith("/"):
+            h = f"https://www.pgatour.com{h}"
+        if not h.startswith("https://www.pgatour.com/"):
+            continue
+        if year_pat not in h:
+            continue
+        out.append(h.split("?")[0].split("#")[0])
+    # ordered unique
+    return list(dict.fromkeys(out))
+
+
+def _discover_betting_profile_slug(
+    year: str,
+    tournament_name: str,
+    power_slug: str,
+) -> Tuple[str, str]:
+    """
+    Discover a tournament betting-profile slug from the PGA listing page.
+
+    Returns:
+      (slug, sample_url)
+    """
+    listing_url = "https://www.pgatour.com/news/betting-profile"
+    try:
+        resp = requests.get(listing_url, headers=HTML_HEADERS, timeout=20)
+        resp.raise_for_status()
+    except Exception:
+        return "", ""
+
+    links = _extract_betting_profile_links(resp.text, year)
+    if not links:
+        return "", ""
+
+    pslug = str(power_slug or "").strip().lower().replace("_", "-")
+    expected = str(tournament_name or "").strip()
+    scored: List[Tuple[int, str, str]] = []
+    for url in links:
+        m = re.search(r"/article/news/betting-profile/\d{4}/([^/]+)/", url)
+        if not m:
+            continue
+        slug = m.group(1).strip().lower()
+        score = 0
+        if pslug and pslug in slug:
+            score += 4
+        if expected and _tournament_name_match(slug.replace("-", " "), expected):
+            score += 3
+        scored.append((score, slug, url))
+
+    if not scored:
+        return "", ""
+
+    scored.sort(key=lambda t: t[0], reverse=True)
+    top = scored[0]
+    if top[0] == 0:
+        # Keep deterministic fallback to first link if no confident match.
+        return scored[0][1], scored[0][2]
+    return top[1], top[2]
+
+
+def _parse_betting_article_from_next_data(html: str) -> Dict[str, str]:
+    """
+    Parse PGA Tour betting-profile article fields from __NEXT_DATA__ JSON.
+    Returns empty dict if the article payload is missing.
+    """
+    m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
+    if not m:
+        return {}
+    try:
+        data = json.loads(m.group(1))
+    except Exception:
+        return {}
+
+    queries = data.get("props", {}).get("pageProps", {}).get("dehydratedState", {}).get("queries", [])
+    article = None
+    for q in queries:
+        qkey = q.get("queryKey", [])
+        if qkey and qkey[0] == "newsArticleDetails":
+            article = q.get("state", {}).get("data", {})
+            break
+    if not article or not article.get("nodes"):
+        return {}
+
+    paragraphs: List[str] = []
+    bullets: List[str] = []
+    headings: List[str] = []
+    body_parts: List[str] = []
+
+    for node in article.get("nodes", []):
+        if not isinstance(node, dict):
+            continue
+        tname = str(node.get("__typename", ""))
+        if tname in {"NewsArticleParagraph", "NewsArticleOddsParagraph"}:
+            segs = node.get("segments", [])
+            text = " ".join(s.get("value", "") for s in segs if isinstance(s, dict) and s.get("value"))
+            text = re.sub(r"\s+", " ", text).strip()
+            if text:
+                paragraphs.append(text)
+                body_parts.append(text)
+        elif tname in {"NewsArticleHeader", "NewsArticleHeading"}:
+            text = node.get("text", "") or node.get("value", "")
+            if not text:
+                for hs in node.get("headerSegments", []):
+                    for seg in hs.get("segments", []):
+                        if isinstance(seg, dict) and seg.get("value"):
+                            text = seg.get("value")
+                            break
+                    if text:
+                        break
+            text = re.sub(r"\s+", " ", str(text)).strip()
+            if text:
+                headings.append(text)
+                body_parts.append(f"## {text}")
+        elif tname in {"NewsArticleList", "UnorderedListNode", "OrderedListNode"}:
+            for item in node.get("items", []):
+                txt = ""
+                if isinstance(item, dict):
+                    segs = item.get("segments", [])
+                    txt = " ".join(s.get("value", "") for s in segs if isinstance(s, dict) and s.get("value"))
+                elif isinstance(item, str):
+                    txt = item
+                txt = re.sub(r"\s+", " ", str(txt)).strip()
+                if txt:
+                    bullets.append(txt)
+                    body_parts.append(f"- {txt}")
+
+    published_at = ""
+    date_ms = article.get("datePublished")
+    if date_ms:
+        try:
+            published_at = datetime.fromtimestamp(int(date_ms) / 1000).isoformat()
+        except Exception:
+            pass
+
+    return {
+        "title": str(article.get("headline", "")).strip(),
+        "summary": " ".join(paragraphs[:3]).strip(),
+        "body": "\n".join(paragraphs).strip(),
+        "body_formatted": "\n\n".join(body_parts).strip(),
+        "bullets": " | ".join(bullets).strip(),
+        "headings": " | ".join(headings).strip(),
+        "published_at": published_at,
+        "article_tournament_name": str(article.get("tournamentName", "")).strip(),
+    }
+
+
+def _fetch_article(url: str) -> Dict[str, str]:
+    try:
+        resp = requests.get(url, headers=HTML_HEADERS, timeout=20)
+        if resp.status_code != 200 or not resp.text:
+            return {}
+    except Exception:
+        return {}
+    article = _parse_betting_article_from_next_data(resp.text)
+    if not article:
+        return {}
+    article["article_url"] = url
+    return article
+
+
+def _build_article_url_candidates(
+    player_name: str,
+    year: str,
+    tournament_slug: str,
+    sample_url: str = "",
+) -> List[str]:
+    base = f"https://www.pgatour.com/article/news/betting-profile/{year}/{tournament_slug}"
+    name_slug = _slugify_player_name(player_name)
+    if not name_slug:
+        return []
+
+    candidates = [
+        f"{base}/{name_slug}-pga-tour-betting-stats-{tournament_slug}-{year}",
+        f"{base}/{name_slug}-pga-tour-betting-stats-{tournament_slug}",
+        f"{base}/{name_slug}",
+    ]
+
+    if sample_url and f"/{tournament_slug}/" in sample_url:
+        tail = sample_url.split(f"/{tournament_slug}/", 1)[1]
+        if "-pga-tour-betting-stats-" in tail:
+            rest = tail.split("-pga-tour-betting-stats-", 1)[1]
+            if rest:
+                candidates.insert(0, f"{base}/{name_slug}-pga-tour-betting-stats-{rest}")
+
+    # ordered unique
+    seen = set()
+    return [u for u in candidates if not (u in seen or seen.add(u))]
+
+
+def _resolve_betting_profile_article_context(
+    tournament_id: str,
+    tournament_name: str,
+) -> Dict[str, str]:
+    context = _resolve_tournament_context(tournament_id)
+    year = context.get("year", "") or str(datetime.now().year)
+    name = tournament_name or context.get("tournament_name", "")
+    power_slug = context.get("power_slug", "")
+
+    discovered_slug, sample_url = _discover_betting_profile_slug(year, name, power_slug)
+    candidates = []
+    if discovered_slug:
+        candidates.append(discovered_slug)
+    if power_slug:
+        candidates.append(power_slug.lower().replace("_", "-"))
+        override = BETTING_SLUG_OVERRIDES.get(power_slug.lower().replace("_", "-"))
+        if override:
+            candidates.append(override)
+    if name:
+        candidates.append(_slugify_text(name))
+
+    seen = set()
+    slug_candidates = [s for s in candidates if s and not (s in seen or seen.add(s))]
+    return {
+        "year": year,
+        "slug_candidates": slug_candidates,
+        "sample_url": sample_url,
+    }
+
+
+def _fetch_player_betting_profile_article(player_name: str, article_ctx: Dict[str, str]) -> Dict[str, str]:
+    year = article_ctx.get("year", "")
+    sample_url = article_ctx.get("sample_url", "")
+    for slug in article_ctx.get("slug_candidates", []):
+        urls = _build_article_url_candidates(player_name, year, slug, sample_url=sample_url)
+        for url in urls:
+            article = _fetch_article(url)
+            if article.get("summary") or article.get("bullets") or article.get("body"):
+                article["article_slug"] = slug
+                return article
+    return {}
+
+
 # ============================================================================
 # Main Profile Builder
 # ============================================================================
@@ -575,6 +889,7 @@ def build_betting_profiles(
     # Decide odds source
     odds_map: Dict[int, Dict] = {}
     tournament_name = ""
+    tournament_context = _resolve_tournament_context(tournament_id)
 
     # Prefer live odds unless offline is requested
     if not offline:
@@ -585,6 +900,9 @@ def build_betting_profiles(
         default_odds_csv = ODDS_CACHE_DIR / f"pga_odds_{tournament_id}.csv"
         odds_source = Path(odds_csv) if odds_csv else default_odds_csv
         odds_map, tournament_name = load_cached_odds(odds_source)
+
+    if not tournament_name:
+        tournament_name = tournament_context.get("tournament_name", "")
 
     # Fetch field from leaderboard when online
     field: List[Dict] = []
@@ -692,8 +1010,17 @@ def build_betting_profiles(
         field = field[:max_players]
 
     # Build profiles
-    profiles = []
+    records = []
     total = len(field)
+    fetch_profiles = bool(profiles)
+    article_ctx = {"year": "", "slug_candidates": [], "sample_url": ""}
+    if not offline:
+        article_ctx = _resolve_betting_profile_article_context(
+            tournament_id=tournament_id,
+            tournament_name=tournament_name,
+        )
+        slugs = ", ".join(article_ctx.get("slug_candidates", [])[:3]) or "none"
+        print(f"  Betting article slugs: {slugs}")
 
     print(f"\n  Fetching detailed profiles for {total} players...")
     print("-" * 60)
@@ -709,7 +1036,7 @@ def build_betting_profiles(
 
         # Get profile (optional because PGA profile schema changes often)
         profile = {}
-        if profiles and not offline:
+        if fetch_profiles and not offline:
             try:
                 profile = fetch_player_profile(player_id)
             except Exception:
@@ -741,6 +1068,12 @@ def build_betting_profiles(
 
         # Extract recent results from course history (since playerResults API was removed)
         recent_results = extract_recent_form_from_course_history(course_history, limit=5)
+        article = {}
+        if not offline and article_ctx.get("slug_candidates"):
+            try:
+                article = _fetch_player_betting_profile_article(player_name, article_ctx)
+            except Exception:
+                article = {}
 
         # Build profile record
         record = {
@@ -793,15 +1126,27 @@ def build_betting_profiles(
 
             # Form summary (from course history data)
             "recent_form_summary": _summarize_form_from_history(recent_results) if recent_results else "",
+
+            # Tournament-specific betting profile article
+            "title": article.get("title", ""),
+            "summary": article.get("summary", ""),
+            "bullets": article.get("bullets", ""),
+            "headings": article.get("headings", ""),
+            "body": article.get("body", ""),
+            "body_formatted": article.get("body_formatted", ""),
+            "published_at": article.get("published_at", ""),
+            "article_url": article.get("article_url", ""),
+            "article_slug": article.get("article_slug", ""),
+            "article_tournament_name": article.get("article_tournament_name", ""),
         }
 
-        profiles.append(record)
+        records.append(record)
         print("done")
 
         # Rate limiting
         time.sleep(delay)
 
-    df = pd.DataFrame(profiles)
+    df = pd.DataFrame(records)
 
     # Sort by odds rank
     if "odds_rank" in df.columns:

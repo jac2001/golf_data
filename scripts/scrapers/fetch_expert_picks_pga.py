@@ -21,6 +21,10 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from scripts.utils.tournament_context import (
+    resolve_tournament_context as resolve_shared_tournament_context,
+    tournament_name_match as shared_tournament_name_match,
+)
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
@@ -82,12 +86,7 @@ def _name_tokens(value: str) -> set:
 
 
 def _tournament_name_match(actual: str, expected: str) -> bool:
-    at = _name_tokens(actual)
-    et = _name_tokens(expected)
-    if not at or not et:
-        return False
-    overlap = len(at.intersection(et))
-    return overlap >= max(1, min(2, len(et)))
+    return shared_tournament_name_match(actual, expected)
 
 
 def _resolve_tournament_context(tournament_id: Optional[str]) -> Dict[str, str]:
@@ -95,22 +94,12 @@ def _resolve_tournament_context(tournament_id: Optional[str]) -> Dict[str, str]:
     Resolve expected tournament metadata from schedule by tournament_id.
     Returns keys: tournament_name, power_slug, start_date (may be empty strings).
     """
-    if not tournament_id or not SCHEDULE_PATH.exists():
+    if not tournament_id:
         return {"tournament_name": "", "power_slug": "", "start_date": ""}
-    try:
-        df = pd.read_csv(SCHEDULE_PATH, dtype=str).fillna("")
-    except Exception:
-        return {"tournament_name": "", "power_slug": "", "start_date": ""}
-
-    tid = str(tournament_id).strip().upper()
-    if "tournament_id" not in df.columns:
-        return {"tournament_name": "", "power_slug": "", "start_date": ""}
-
-    match = df[df["tournament_id"].astype(str).str.upper().str.strip() == tid]
-    if match.empty:
-        return {"tournament_name": "", "power_slug": "", "start_date": ""}
-
-    row = match.iloc[0]
+    row = resolve_shared_tournament_context(
+        tournament_id=str(tournament_id).strip().upper(),
+        schedule_path=SCHEDULE_PATH,
+    )
     return {
         "tournament_name": str(row.get("tournament_name", "")).strip(),
         "power_slug": str(row.get("power_slug", "")).strip(),

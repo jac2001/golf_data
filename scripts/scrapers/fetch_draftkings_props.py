@@ -38,6 +38,7 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import pandas as pd
 import requests
+from scripts.utils.tournament_context import resolve_tournament_context
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = PROJECT_ROOT / "data" / "raw"
@@ -221,25 +222,13 @@ def _tokenize_tournament_text(text: str) -> List[str]:
 
 
 def _resolve_tournament_name_from_schedule(tournament_id: str) -> str:
-    if not tournament_id:
-        return ""
+    ctx = resolve_tournament_context(tournament_id=str(tournament_id or ""))
+    return str(ctx.get("tournament_name", "")).strip()
 
-    schedule_files = sorted(RAW_DIR.glob("schedule_*.csv"), key=lambda p: p.stat().st_mtime, reverse=True)
-    for sf in schedule_files:
-        try:
-            sdf = pd.read_csv(sf, dtype=str)
-        except Exception:
-            continue
-        if "tournament_id" not in sdf.columns:
-            continue
-        match = sdf[sdf["tournament_id"].astype(str).str.upper() == str(tournament_id).upper()]
-        if match.empty:
-            continue
-        if "tournament_name" in match.columns:
-            name = str(match.iloc[0].get("tournament_name", "")).strip()
-            if name:
-                return name
-    return ""
+
+def _resolve_tournament_start_date_from_schedule(tournament_id: str) -> str:
+    ctx = resolve_tournament_context(tournament_id=str(tournament_id or ""))
+    return str(ctx.get("start_date", "")).strip()
 
 
 def _resolve_override_eventgroup_id(tournament_id: str) -> str:
@@ -1296,6 +1285,9 @@ def _build_card_api_urls(
                 f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/leagues/{eg}",
                 f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/leagues/{eg}/contentcards",
                 f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/leagues/{eg}/content-cards",
+                f"https://sportsbook-nash.draftkings.com/sites/US-SB/api/sportscontent/prepacks/league/v1/contentcards/prelive/leagues/{eg}",
+                f"https://sportsbook-nash.draftkings.com/sites/US-SB/api/sportscontent/prepacks/league/v1/contentcards/live/leagues/{eg}",
+                f"https://sportsbook-nash.draftkings.com/sites/US-SB/api/sportscontent/prepacks/league/v1/contentcards/pregame/leagues/{eg}",
             ]
         )
 
@@ -1620,6 +1612,9 @@ def _expand_eventgroup_payloads_with_subcategories(
         f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}/contentcards?format=json",
         f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}/content-cards?format=json",
         f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}?format=json&includeContentCards=true",
+        f"https://sportsbook-nash.draftkings.com/sites/US-SB/api/sportscontent/prepacks/league/v1/contentcards/prelive/leagues/{eventgroup_id}",
+        f"https://sportsbook-nash.draftkings.com/sites/US-SB/api/sportscontent/prepacks/league/v1/contentcards/live/leagues/{eventgroup_id}",
+        f"https://sportsbook-nash.draftkings.com/sites/US-SB/api/sportscontent/prepacks/league/v1/contentcards/pregame/leagues/{eventgroup_id}",
     ]
     out_payloads.extend(_fetch_many_json(cc_urls, headers=headers, timeout=timeout, max_workers=max_workers))
 
@@ -1641,6 +1636,7 @@ def _fetch_live_dk_payloads_for_eventgroup(
         f"https://sportsbook-nash.draftkings.com/api/sportscontent/{region}/v1/leagues/{eventgroup_id}",
         f"https://sportsbook.draftkings.com/api/odds/v1/leagues/{eventgroup_id}/offers/gamelines",
         f"https://sportsbook.draftkings.com/sites/US-SB/api/v5/eventgroups/{eventgroup_id}?format=json",
+        f"https://sportsbook-nash.draftkings.com/sites/US-SB/api/sportscontent/prepacks/league/v1/contentcards/prelive/leagues/{eventgroup_id}",
     ]
 
     payloads: List[Any] = []
@@ -1992,11 +1988,39 @@ def clean_prop_lines_for_dashboard(df: pd.DataFrame) -> pd.DataFrame:
     return df.reset_index(drop=True)
 
 
-def parse_content_cards(payloads: List[Any], fetched_at: str, tournament_id: str = "") -> pd.DataFrame:
+def _text_matches_expected_tournament(text: str, expected_tournament_name: str) -> bool:
+    """Token-overlap match for free-form card text vs expected tournament name."""
+    if not expected_tournament_name:
+        return True
+    etoks = set(_tokenize_tournament_text(expected_tournament_name))
+    if not etoks:
+        return True
+    ntoks = set(_tokenize_tournament_text(text))
+    if not ntoks:
+        return False
+    overlap = len(etoks.intersection(ntoks))
+    return overlap >= max(1, min(2, len(etoks)))
+
+
+def parse_content_cards(
+    payloads: List[Any],
+    fetched_at: str,
+    tournament_id: str = "",
+    expected_tournament_name: str = "",
+    expected_start_date: str = "",
+) -> pd.DataFrame:
     """
     Extract DraftKings prebuilt bet cards (contentCards) into a flat table.
     Kept separate from prop lines so edge-scoring schema remains stable.
     """
+    # Build eventId -> eventName map so cards can be matched to current tournament.
+    event_name_by_id: Dict[str, str] = {}
+    for p in payloads:
+        try:
+            event_name_by_id.update(_extract_event_map(p))
+        except Exception:
+            pass
+
     def _extract_card_row(c: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         if not isinstance(c, dict):
             return None
@@ -2012,6 +2036,8 @@ def parse_content_cards(payloads: List[Any], fetched_at: str, tournament_id: str
         leg_labels = []
         leg_ids = []
         market_ids = []
+        event_ids = []
+        event_names = []
         for s in selections:
             if not isinstance(s, dict):
                 continue
@@ -2024,10 +2050,23 @@ def parse_content_cards(payloads: List[Any], fetched_at: str, tournament_id: str
             mid = str(s.get("marketId", "")).strip()
             if mid:
                 market_ids.append(mid)
+            eid = str(s.get("eventId", "")).strip()
+            if eid:
+                event_ids.append(eid)
+                ev_name = str(event_name_by_id.get(eid, "")).strip()
+                if ev_name:
+                    event_names.append(ev_name)
+            ev_name_inline = str(s.get("eventName", "")).strip()
+            if ev_name_inline:
+                event_names.append(ev_name_inline)
 
         # Strictness to avoid noisy pseudo-card rows.
         if len(leg_labels) == 0:
             return None
+
+        # ordered unique
+        event_ids = list(dict.fromkeys([e for e in event_ids if e]))
+        event_names = list(dict.fromkeys([e for e in event_names if e]))
 
         return {
             "tournament_id": tournament_id,
@@ -2046,6 +2085,9 @@ def parse_content_cards(payloads: List[Any], fetched_at: str, tournament_id: str
             "selection_labels_json": json.dumps(leg_labels),
             "selection_ids_json": json.dumps(leg_ids),
             "market_ids_json": json.dumps(market_ids),
+            "selection_event_ids_json": json.dumps(event_ids),
+            "selection_event_names_json": json.dumps(event_names),
+            "selection_event_names": " | ".join(event_names),
             "background_image_url": c.get("backgroundImageUrl"),
             "end_date": c.get("endDate"),
             "fetched_at": fetched_at,
@@ -2093,6 +2135,65 @@ def parse_content_cards(payloads: List[Any], fetched_at: str, tournament_id: str
             df = df.drop_duplicates(subset=["title", "selection_labels"], keep="first")
     if "sort_order" in df.columns:
         df["sort_order"] = pd.to_numeric(df["sort_order"], errors="coerce")
+
+    # Hard tournament filter to avoid stale previous-week cards from fallback payloads/HAR files.
+    if expected_tournament_name or expected_start_date:
+        def _parse_json_list_cell(value: Any) -> List[str]:
+            if value is None or (isinstance(value, float) and pd.isna(value)):
+                return []
+            if isinstance(value, list):
+                return [str(v).strip() for v in value if str(v).strip()]
+            s = str(value).strip()
+            if not s:
+                return []
+            try:
+                parsed = json.loads(s)
+                if isinstance(parsed, list):
+                    return [str(v).strip() for v in parsed if str(v).strip()]
+            except Exception:
+                pass
+            return []
+
+        expected_dt = None
+        if expected_start_date:
+            try:
+                expected_dt = pd.to_datetime(str(expected_start_date), utc=True, errors="coerce")
+            except Exception:
+                expected_dt = None
+
+        keep_mask = []
+        for _, row in df.iterrows():
+            event_names = _parse_json_list_cell(row.get("selection_event_names_json"))
+            event_match = any(_event_name_matches_expected(nm, expected_tournament_name) for nm in event_names if nm) if expected_tournament_name else False
+
+            text_blob = " ".join(
+                [
+                    str(row.get("title", "") or ""),
+                    str(row.get("subtitle", "") or ""),
+                    str(row.get("selection_labels", "") or ""),
+                    str(row.get("selection_event_names", "") or ""),
+                ]
+            )
+            text_match = _text_matches_expected_tournament(text_blob, expected_tournament_name) if expected_tournament_name else False
+
+            # Date guard: keep cards whose end_date is near this tournament's start week.
+            date_match = False
+            if expected_dt is not None and not pd.isna(expected_dt):
+                end_date_raw = row.get("end_date")
+                end_dt = pd.to_datetime(end_date_raw, utc=True, errors="coerce")
+                if not pd.isna(end_dt):
+                    delta_days = (end_dt - expected_dt).days
+                    # Keep cards ending around/after tournament start; reject prior-week cards.
+                    date_match = (-1 <= delta_days <= 10)
+
+            keep_mask.append(bool(event_match or text_match or date_match))
+
+        if keep_mask:
+            filtered = df[pd.Series(keep_mask, index=df.index)].copy()
+            # Strict apply: if nothing matches expected tournament/date, return empty
+            # so stale previous-week cards are not written.
+            df = filtered
+
     return df.sort_values(["sort_order", "title"], na_position="last").reset_index(drop=True)
 
 
@@ -2188,16 +2289,35 @@ def main() -> None:
         else (ODDS_DIR / f"dk_content_cards_{args.tournament_id}.csv")
     )
 
-    if args.max_age_hours > 0 and (not args.force_refresh) and out_path.exists():
-        age_hours = (datetime.now().timestamp() - out_path.stat().st_mtime) / 3600.0
-        if age_hours <= args.max_age_hours:
+    if args.max_age_hours > 0 and (not args.force_refresh):
+        def _is_fresh(path: Path, max_age_hours: float) -> bool:
+            if not path.exists():
+                return False
+            age_hours = (datetime.now().timestamp() - path.stat().st_mtime) / 3600.0
+            return age_hours <= max_age_hours
+
+        def _csv_has_rows(path: Path) -> bool:
+            if not path.exists():
+                return False
+            try:
+                probe = pd.read_csv(path, nrows=1)
+                return not probe.empty
+            except Exception:
+                return False
+
+        props_fresh = _is_fresh(out_path, args.max_age_hours)
+        cards_fresh = _is_fresh(cards_out_path, args.max_age_hours)
+        cards_non_empty = _csv_has_rows(cards_out_path)
+        if props_fresh and cards_fresh and cards_non_empty:
             print(
-                f"Skipping DraftKings fetch - fresh file exists ({out_path.name}, <= {args.max_age_hours:.1f}h old)"
+                "Skipping DraftKings fetch - fresh prop + content-card files exist "
+                f"({out_path.name}, {cards_out_path.name}, <= {args.max_age_hours:.1f}h old)"
             )
             return
 
     payloads: List[Any] = []
     expected_tournament_name = _resolve_tournament_name_from_schedule(args.tournament_id)
+    expected_start_date = _resolve_tournament_start_date_from_schedule(args.tournament_id)
     if expected_tournament_name:
         print(f"Expected tournament for {args.tournament_id}: {expected_tournament_name}")
 
@@ -2211,6 +2331,7 @@ def main() -> None:
 
     chosen_eventgroup: Optional[str] = None
     detected_names: List[str] = []
+    resolved_eg_id = str(args.eventgroup_id or "").strip()
 
     if args.input_json:
         payloads.extend(load_input_payloads(args.input_json))
@@ -2231,7 +2352,6 @@ def main() -> None:
 
     if not payloads:
         # ── Resolve eventgroup ID: CLI override → manual dict → cache → discover ──
-        resolved_eg_id = args.eventgroup_id
         if not resolved_eg_id:
             resolved_eg_id = _resolve_override_eventgroup_id(args.tournament_id)
         if not resolved_eg_id:
@@ -2256,8 +2376,103 @@ def main() -> None:
             print(f"Detected sport/league names: {', '.join(detected_names[:6])}")
 
     if not payloads:
-        print("No DraftKings payloads loaded.")
-        print("Tip: export JSON responses from browser DevTools and rerun with --input-json.")
+        print("No DraftKings prop payloads loaded; attempting content-cards-only fallback.")
+
+        fetched_at = _now_utc_iso()
+        cards_sources: List[Any] = list(extra_card_payloads)
+        cards_eventgroup = chosen_eventgroup or resolved_eg_id
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+            "Accept": "application/json, text/html",
+        }
+        if cards_eventgroup:
+            card_api_urls = _build_card_api_urls(
+                eventgroup_id=cards_eventgroup,
+                event_ids=[],
+                region=args.region,
+            )
+            api_payloads = _fetch_many_json(
+                card_api_urls,
+                headers=headers,
+                timeout=max(6, int(profile_cfg.get("request_timeout", 8))),
+                max_workers=min(10, int(profile_cfg.get("max_workers", 8))),
+            )
+            cards_sources.extend(api_payloads)
+            if args.debug:
+                print(
+                    f"  content-card fallback via eventgroup {cards_eventgroup}: "
+                    f"{len(api_payloads)} payload(s) from {len(card_api_urls)} URL(s)"
+                )
+
+        cards_df = parse_content_cards(
+            cards_sources,
+            fetched_at=fetched_at,
+            tournament_id=args.tournament_id,
+            expected_tournament_name=expected_tournament_name,
+            expected_start_date=expected_start_date,
+        )
+
+        if cards_df.empty:
+            cc_urls = []
+            if args.content_cards_url:
+                cc_urls.extend([u for u in args.content_cards_url if str(u).strip()])
+            cc_urls.extend(_build_candidate_content_card_urls(expected_tournament_name, detected_names))
+            if cc_urls:
+                html_card_payloads = _fetch_content_card_payloads_from_urls(
+                    urls=cc_urls,
+                    headers=headers,
+                    timeout=max(8, int(profile_cfg.get("request_timeout", 8))),
+                    max_workers=min(8, int(profile_cfg.get("max_workers", 8))),
+                )
+                if args.debug:
+                    print(
+                        f"  content-card HTML fallback tried {len(cc_urls)} URL(s), "
+                        f"got {len(html_card_payloads)} payload candidate(s)"
+                    )
+                if html_card_payloads:
+                    cards_df = parse_content_cards(
+                        cards_sources + html_card_payloads,
+                        fetched_at=fetched_at,
+                        tournament_id=args.tournament_id,
+                        expected_tournament_name=expected_tournament_name,
+                        expected_start_date=expected_start_date,
+                    )
+
+        card_cols = [
+            "tournament_id",
+            "card_id",
+            "title",
+            "subtitle",
+            "card_label",
+            "content_card_type",
+            "sort_order",
+            "bet_count",
+            "odds_american",
+            "odds_decimal",
+            "selection_count",
+            "selection_labels",
+            "selection_ids",
+            "selection_labels_json",
+            "selection_ids_json",
+            "market_ids_json",
+            "selection_event_ids_json",
+            "selection_event_names_json",
+            "selection_event_names",
+            "background_image_url",
+            "end_date",
+            "fetched_at",
+        ]
+        if cards_df.empty:
+            cards_df = pd.DataFrame(columns=card_cols)
+            print("No content cards found in available DK payloads/endpoints; writing empty content-cards file.")
+
+        cards_df.to_csv(cards_out_path, index=False)
+        cards_latest_path = ODDS_DIR / "dk_content_cards_latest.csv"
+        cards_df.to_csv(cards_latest_path, index=False)
+        print(f"Saved {len(cards_df)} content cards to: {cards_out_path}")
+        print(f"Saved latest content cards to: {cards_latest_path}")
+        print("Tip: prop lines were not updated because live DK market payloads were unavailable.")
         return
 
     # Guardrail: hard fail if payload clearly isn't golf.
@@ -2279,12 +2494,20 @@ def main() -> None:
 
     fetched_at = _now_utc_iso()
     df = parse_draftkings_payloads(payloads, fetched_at=fetched_at)
-    cards_df = parse_content_cards(payloads, fetched_at=fetched_at, tournament_id=args.tournament_id)
+    cards_df = parse_content_cards(
+        payloads,
+        fetched_at=fetched_at,
+        tournament_id=args.tournament_id,
+        expected_tournament_name=expected_tournament_name,
+        expected_start_date=expected_start_date,
+    )
     if cards_df.empty and extra_card_payloads:
         cards_df = parse_content_cards(
             payloads + extra_card_payloads,
             fetched_at=fetched_at,
             tournament_id=args.tournament_id,
+            expected_tournament_name=expected_tournament_name,
+            expected_start_date=expected_start_date,
         )
 
     if cards_df.empty:
@@ -2310,6 +2533,8 @@ def main() -> None:
                     payloads + extra_card_payloads,
                     fetched_at=fetched_at,
                     tournament_id=args.tournament_id,
+                    expected_tournament_name=expected_tournament_name,
+                    expected_start_date=expected_start_date,
                 )
             elif args.debug:
                 print(f"  content-card API fallback tried {len(card_api_urls)} URLs, 0 payloads")
@@ -2338,6 +2563,8 @@ def main() -> None:
                     payloads + html_card_payloads,
                     fetched_at=fetched_at,
                     tournament_id=args.tournament_id,
+                    expected_tournament_name=expected_tournament_name,
+                    expected_start_date=expected_start_date,
                 )
 
     card_cols = [
@@ -2357,6 +2584,9 @@ def main() -> None:
         "selection_labels_json",
         "selection_ids_json",
         "market_ids_json",
+        "selection_event_ids_json",
+        "selection_event_names_json",
+        "selection_event_names",
         "background_image_url",
         "end_date",
         "fetched_at",

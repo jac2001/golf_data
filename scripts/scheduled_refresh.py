@@ -7,7 +7,7 @@ Automatically runs the appropriate scrapers based on day/time.
 Can be run via cron, launchd, or manually.
 
 Schedule:
-- Monday 6:00 AM: Post-tournament refresh (OWGR, form stats, player database)
+- Monday 6:00 AM: Post-tournament refresh (OWGR, form stats, tournament SG stats, player database)
 - Tuesday 6:00 AM: Tournament prep (field, course info, betting profiles, predictions)
 - Tuesday 6:00 PM: Odds refresh (DK, PGA odds)
 - Wednesday 6:00 AM: Final prep (odds refresh, re-run predictions)
@@ -151,6 +151,7 @@ def run_monday_refresh(dry_run: bool = False):
         ("World Rankings (OWGR)", ["python3", "scripts/scrapers/fetch_world_rankings.py"]),
         ("Player Database", ["python3", "scripts/scrapers/fetch_player_database.py"]),
         ("Form Stats", ["python3", "scripts/scrapers/fetch_form_stats.py", "--year", "2026"]),
+        ("Tournament SG Stats", ["python3", "scripts/scrapers/fetch_tournament_stats.py", "--year", "2026", "--refresh-latest", "3"]),
     ]
 
     results = []
@@ -159,7 +160,8 @@ def run_monday_refresh(dry_run: bool = False):
             log(f"[DRY RUN] Would run: {desc}")
             results.append((desc, True))
         else:
-            success = run_command(cmd, desc, timeout=120)
+            timeout = 300 if "Tournament SG Stats" in desc else 120
+            success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
 
     return results

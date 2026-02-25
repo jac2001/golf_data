@@ -82,6 +82,10 @@ KEY_STATS = {
     "02674": "Strokes Gained: Tee-to-Green",
 }
 
+# Project-relative defaults (stable regardless of where command is run from)
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "historical"
+
 # ============================================================================
 # Helper Functions
 # ============================================================================
@@ -341,8 +345,8 @@ def main():
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="historical_data",
-        help="Output directory"
+        default=str(DEFAULT_OUTPUT_DIR),
+        help="Output directory (default: data/historical)"
     )
     parser.add_argument(
         "--sleep",
@@ -359,7 +363,7 @@ def main():
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
-    output_dir.mkdir(exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     stats_to_scrape = KEY_STATS
 

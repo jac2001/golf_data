@@ -219,7 +219,7 @@ def _load_tournament_stats_from_db(year: int) -> pd.DataFrame:
 def load_reference_data():
     """Load historical data for feature engineering"""
     # Master data (for course history lookup and venue stats)
-    master_df = pd.read_csv(PROCESSED_DIR / 'master_training_data_2020_2025.csv')
+    master_df = pd.read_csv(PROCESSED_DIR / 'master_training_data_2016_2025.csv')
 
     def _normalize_stats_df(df):
         """Ensure player_id and stat_id are strings for consistent lookup."""
@@ -1843,6 +1843,24 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     except Exception as e:
         print(f"  PGA 2025 baseline blending not available: {e}")
 
+    # REFRESH SG FIELD-CONTEXT FEATURES AFTER SG FALLBACK/BLENDING
+    # SG columns can be modified above (PGA/DPWT fallback + baseline blend), so
+    # recompute field_avg_* and *_vs_field from final values.
+    sg_field_cols = ['season_sg_ott', 'season_sg_app', 'season_sg_arg',
+                     'season_sg_putt', 'season_sg_total', 'predictive_sg_weighted']
+    for col in sg_field_cols:
+        if col in features_df.columns:
+            col_mean = features_df[col].mean()
+            features_df[f'{col}_vs_field'] = features_df[col] - col_mean
+            features_df[f'field_avg_{col}'] = col_mean
+    for col in ['season_sg_ott', 'season_sg_app', 'season_sg_arg', 'season_sg_putt']:
+        if col in features_df.columns:
+            features_df[f'{col}_field_pct'] = features_df[col].rank(pct=True)
+            features_df[f'{col}_field_rank'] = features_df[col].rank(
+                ascending=False, na_option='bottom'
+            ).fillna(0).astype(int)
+    print("  SG vs-field features refreshed after SG blending")
+
     # ADD DATA GOLF COURSE FIT FEATURES
     # Uses season_sg_* (prior performance) × course importance weights
     print("  Adding Data Golf course fit features...")
@@ -2776,6 +2794,8 @@ Examples:
                         help='Candidate player pool size for lineup strategy optimizer (default: 45)')
     parser.add_argument('--lineup-max-overlap', type=int, default=1,
                         help='Max shared players allowed between strategy lineups (default: 1)')
+    parser.add_argument('--skip-calibration-report', action='store_true',
+                        help='Skip regeneration of outputs/calibration_data.json after predictions')
 
     args = parser.parse_args()
 
@@ -3050,6 +3070,16 @@ Examples:
     print(f"✓ Latest predictions pointers written to: {latest_path} and {scoped_latest_path}")
     if args.lineup_strategies and lineup_bundle:
         _save_strategy_lineups(lineup_bundle, args.tournament, outputs_dir)
+
+    if not args.skip_calibration_report:
+        print("\n  Refreshing calibration report...")
+        cal_cmd = [
+            "python3",
+            str(PROJECT_ROOT / "scripts" / "validation" / "generate_calibration_data.py"),
+        ]
+        cal_result = subprocess.run(cal_cmd, cwd=str(PROJECT_ROOT), capture_output=False, text=True)
+        if cal_result.returncode != 0:
+            print("  ⚠️ Calibration report refresh failed; continuing.")
 
     # Optional tracked betting recommendations (enabled by default for direct runs).
     if args.tournament_id and not args.skip_bet_recs:
