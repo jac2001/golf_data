@@ -23,11 +23,17 @@ import requests
 import pandas as pd
 import json
 from pathlib import Path
+import sys
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 import time
 import re
 import unicodedata
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from scripts.utils.tournament_context import (
     resolve_tournament_context as resolve_shared_tournament_context,
     tournament_name_match as shared_tournament_name_match,
@@ -47,9 +53,9 @@ DEFAULT_HEADERS = {
     "Referer": "https://www.pgatour.com/",
 }
 
-OUTPUT_DIR = Path("data/betting_profiles")
-ODDS_CACHE_DIR = Path("data/odds")
-RAW_DIR = Path("data/raw")
+OUTPUT_DIR = PROJECT_ROOT / "data" / "betting_profiles"
+ODDS_CACHE_DIR = PROJECT_ROOT / "data" / "odds"
+RAW_DIR = PROJECT_ROOT / "data" / "raw"
 
 HTML_HEADERS = {
     "User-Agent": (

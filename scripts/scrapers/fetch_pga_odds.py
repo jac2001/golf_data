@@ -42,6 +42,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 # ============================================================================
 # Configuration
@@ -117,7 +118,7 @@ query LeaderboardV3($id: ID!) {
 # Odds Conversion Functions
 # ============================================================================
 
-def parse_american_odds(odds_str: str) -> int:
+def parse_american_odds(odds_str: Any) -> Optional[int]:
     """
     Parse American odds string to numeric value.
 
@@ -127,12 +128,28 @@ def parse_american_odds(odds_str: str) -> int:
     Returns:
         Numeric odds value (500 for "+500", -150 for "-150")
     """
-    if not odds_str:
+    if odds_str is None or odds_str == "":
         return None
     try:
+        # Numeric payloads are already American odds.
+        if isinstance(odds_str, (int, float)) and not pd.isna(odds_str):
+            return int(odds_str)
+        # Handle dict payloads such as {"american": "+1600"}.
+        if isinstance(odds_str, dict):
+            raw = (
+                odds_str.get("american")
+                or odds_str.get("oddsAmerican")
+                or odds_str.get("odds")
+                or odds_str.get("value")
+            )
+            return parse_american_odds(raw)
+        s = str(odds_str).strip()
+        if not s:
+            return None
         # Remove "+" prefix if present
-        return int(odds_str.replace("+", ""))
-    except (ValueError, TypeError):
+        s = s.replace("+", "")
+        return int(float(s))
+    except (ValueError, TypeError, AttributeError):
         return None
 
 
@@ -212,6 +229,94 @@ def _name_key(name: str) -> str:
     return " ".join(tokens)
 
 
+def _walk(obj: Any):
+    """Yield dict nodes recursively."""
+    if isinstance(obj, dict):
+        yield obj
+        for v in obj.values():
+            yield from _walk(v)
+    elif isinstance(obj, list):
+        for x in obj:
+            yield from _walk(x)
+
+
+def _extract_players_from_odds_payload(odds_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """
+    Extract player-level odds rows from varying PGA payload shapes.
+    Primary shape is odds_data["players"], but schema can drift.
+    """
+    if not isinstance(odds_data, dict):
+        return []
+
+    if isinstance(odds_data.get("players"), list):
+        return [p for p in odds_data.get("players", []) if isinstance(p, dict)]
+
+    # Fallback: search recursively for list fields containing playerId + odds.
+    candidates: List[Dict[str, Any]] = []
+    for node in _walk(odds_data):
+        for key in ("players", "playerOdds", "entries", "selections", "outcomes"):
+            arr = node.get(key)
+            if not isinstance(arr, list):
+                continue
+            for item in arr:
+                if not isinstance(item, dict):
+                    continue
+                has_player = any(k in item for k in ("playerId", "player_id", "id"))
+                has_odds = any(k in item for k in ("oddsToWin", "odds", "americanOdds", "oddsAmerican", "displayOdds"))
+                if has_player and has_odds:
+                    candidates.append(item)
+    return candidates
+
+
+def _normalize_player_id(value: Any) -> Optional[int]:
+    if value is None:
+        return None
+    try:
+        if isinstance(value, (int, float)) and not pd.isna(value):
+            return int(value)
+        s = str(value).strip()
+        if not s:
+            return None
+        # player IDs are numeric; tolerate accidental wrappers.
+        digits = "".join(ch for ch in s if ch.isdigit())
+        return int(digits) if digits else None
+    except Exception:
+        return None
+
+
+def _extract_odds_value(player_row: Dict[str, Any]) -> Any:
+    """Extract american odds value from multiple row shapes."""
+    if player_row.get("oddsToWin") is not None:
+        return player_row.get("oddsToWin")
+    if player_row.get("oddsAmerican") is not None:
+        return player_row.get("oddsAmerican")
+    if player_row.get("americanOdds") is not None:
+        return player_row.get("americanOdds")
+    if player_row.get("odds") is not None:
+        return player_row.get("odds")
+    display = player_row.get("displayOdds")
+    if isinstance(display, dict):
+        return display.get("american")
+    return None
+
+
+def load_cached_odds_df(tournament_id: str) -> pd.DataFrame:
+    """Load last saved odds as fallback if live fetch is empty/unavailable."""
+    path = OUTPUT_DIR / f"pga_odds_{tournament_id}.csv"
+    if not path.exists():
+        return pd.DataFrame()
+    try:
+        df = pd.read_csv(path)
+        if df.empty:
+            return pd.DataFrame()
+        # Mark source for visibility in logs/dashboard if needed.
+        if "line_source" not in df.columns:
+            df["line_source"] = "pga_odds_cache"
+        return df
+    except Exception:
+        return pd.DataFrame()
+
+
 def _load_predictions_for_edge(tournament_id: str) -> pd.DataFrame:
     """Load best-available predictions file for edge calculation."""
     candidates = [
@@ -241,6 +346,15 @@ def add_model_edge_columns(odds_df: pd.DataFrame, tournament_id: str) -> pd.Data
     if df.empty:
         return df
 
+    # Cached odds files may already include these columns; recompute cleanly.
+    edge_cols = ["model_win_prob", "edge_win_prob", "edge_pct_points", "is_value_bet"]
+    drop_cols = [c for c in edge_cols if c in df.columns]
+    if drop_cols:
+        df = df.drop(columns=drop_cols, errors="ignore")
+
+    if "implied_prob" in df.columns:
+        df["implied_prob"] = pd.to_numeric(df["implied_prob"], errors="coerce")
+
     preds = _load_predictions_for_edge(tournament_id)
     if preds.empty or "win_prob" not in preds.columns:
         df["model_win_prob"] = np.nan
@@ -265,6 +379,7 @@ def add_model_edge_columns(odds_df: pd.DataFrame, tournament_id: str) -> pd.Data
         merged = merged.drop(columns=["name_key"], errors="ignore")
 
     merged = merged.rename(columns={"win_prob": "model_win_prob"})
+    merged["model_win_prob"] = pd.to_numeric(merged["model_win_prob"], errors="coerce")
     merged["edge_win_prob"] = merged["model_win_prob"] - merged["implied_prob"]
     merged["edge_pct_points"] = merged["edge_win_prob"] * 100.0
     merged["is_value_bet"] = merged["edge_win_prob"] > 0
@@ -366,7 +481,7 @@ def fetch_tournament_odds(tournament_id: str) -> pd.DataFrame:
             return pd.DataFrame()
 
         tournament_name = odds_data.get("tournamentName", tournament_id)
-        players = odds_data.get("players", [])
+        players = _extract_players_from_odds_payload(odds_data)
 
         if not players:
             print(f"    No player odds found")
@@ -375,24 +490,36 @@ def fetch_tournament_odds(tournament_id: str) -> pd.DataFrame:
         # Build DataFrame
         records = []
         for p in players:
-            odds_str = p.get("oddsToWin", "")
+            player_id = _normalize_player_id(p.get("playerId", p.get("player_id", p.get("id"))))
+            if not player_id:
+                continue
+
+            odds_raw = _extract_odds_value(p)
+            odds_numeric = parse_american_odds(odds_raw)
+            if odds_numeric is None:
+                continue
+
+            odds_str = f"+{odds_numeric}" if odds_numeric > 0 else str(odds_numeric)
             odds_numeric = parse_american_odds(odds_str)
             implied_prob = american_odds_to_probability(odds_str)
 
             records.append({
                 "tournament_id": tournament_id,
                 "tournament_name": tournament_name,
-                "player_id": int(p.get("playerId", 0)),
+                "player_id": int(player_id),
                 "odds_to_win": odds_str,
                 "odds_numeric": odds_numeric,
                 "implied_prob": implied_prob,
                 "odds_swing": p.get("oddsSwing", ""),
                 "odds_direction": p.get("oddsDirection", p.get("oddsSwing", "")),
-                "odds_sort": p.get("oddsSort", 0),
+                "odds_sort": p.get("oddsSort", p.get("oddsRank", 0)),
                 "fetched_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
             })
 
         df = pd.DataFrame(records)
+        if df.empty:
+            print(f"    No valid odds rows after parsing")
+            return pd.DataFrame()
 
         # Calculate fair probabilities (remove vig)
         df["fair_prob"] = remove_vig(df["implied_prob"].tolist())
@@ -436,7 +563,8 @@ def fetch_player_names(tournament_id: str) -> dict:
         name_map = {}
         for p in players:
             player_info = p.get("player", {})
-            player_id = int(player_info.get("id", 0))
+            pid = _normalize_player_id(player_info.get("id", 0))
+            player_id = int(pid) if pid else 0
             display_name = player_info.get("displayName", "")
             if player_id and display_name:
                 name_map[player_id] = display_name
@@ -462,6 +590,10 @@ def fetch_and_merge_odds(tournament_id: str) -> pd.DataFrame:
     odds_df = fetch_tournament_odds(tournament_id)
 
     if len(odds_df) == 0:
+        cache_df = load_cached_odds_df(tournament_id)
+        if not cache_df.empty:
+            print(f"  Live odds unavailable; using cached odds file for {tournament_id}")
+            return cache_df
         return pd.DataFrame()
 
     # Fetch player names

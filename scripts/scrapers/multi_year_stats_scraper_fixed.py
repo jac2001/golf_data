@@ -328,6 +328,84 @@ def scrape_stats_for_year(
         print("\n⚠️  No data scraped")
 
 
+def _tournament_sort_key(tournament_id: str) -> int:
+    digits = "".join(ch for ch in str(tournament_id) if ch.isdigit())
+    return int(digits) if digits else 0
+
+
+def refresh_latest_tournaments(
+    year: int,
+    output_dir: Path,
+    refresh_latest: int,
+    stats_to_scrape: Dict[str, str] = None,
+    sleep_time: float = 0.6,
+) -> bool:
+    """
+    Refresh only latest N tournaments and merge into tournament_stats_{year}.csv.
+    """
+    if stats_to_scrape is None:
+        stats_to_scrape = KEY_STATS
+    if refresh_latest <= 0:
+        return False
+
+    first_stat_id = list(stats_to_scrape.keys())[0]
+    tournaments = get_tournaments_for_year(year, first_stat_id)
+    if not tournaments:
+        print(f"⚠️  No tournaments found for {year}")
+        return False
+
+    tournaments = sorted(
+        tournaments,
+        key=lambda t: _tournament_sort_key(str(t.get("tournament_id", ""))),
+        reverse=True,
+    )[:refresh_latest]
+
+    print(f"\nRefreshing latest {len(tournaments)} tournaments for {year}...")
+    refreshed_chunks = []
+    for stat_id, stat_name in stats_to_scrape.items():
+        print(f"\nStat: {stat_name} ({stat_id})")
+        for tourn in tournaments:
+            tid = str(tourn.get("tournament_id", "")).strip()
+            tname = str(tourn.get("tournament_name", "")).strip()
+            if not tid:
+                continue
+            print(f"  {tid} | {tname[:42]:42s} ", end="")
+            try:
+                df = fetch_stat_for_tournament(stat_id, stat_name, tid, tname, year)
+                if df.empty:
+                    print("⊘")
+                else:
+                    refreshed_chunks.append(df)
+                    print(f"✓ {len(df):3d} rows")
+            except Exception as e:
+                print(f"✗ {str(e)[:60]}")
+            time.sleep(sleep_time)
+
+    if not refreshed_chunks:
+        print("\n⚠️  No refreshed data returned")
+        return False
+
+    refreshed_df = pd.concat(refreshed_chunks, ignore_index=True)
+    output_path = output_dir / f"tournament_stats_{year}.csv"
+    latest_ids = {str(t.get("tournament_id", "")).strip() for t in tournaments}
+
+    if output_path.exists():
+        existing = pd.read_csv(output_path)
+        if "tournament_id" in existing.columns:
+            existing = existing[~existing["tournament_id"].astype(str).isin(latest_ids)]
+        combined = pd.concat([existing, refreshed_df], ignore_index=True)
+    else:
+        combined = refreshed_df
+
+    combined.to_csv(output_path, index=False)
+    print("\n" + "=" * 70)
+    print("✅ LATEST TOURNAMENTS REFRESH COMPLETE")
+    print("=" * 70)
+    print(f"Saved to: {output_path}")
+    print(f"Rows: {len(combined):,} (refreshed {len(refreshed_df):,})")
+    return True
+
+
 # ============================================================================
 # Main
 # ============================================================================
@@ -359,6 +437,12 @@ def main():
         action="store_true",
         help="Scrape ALL stats (not just key SG stats)"
     )
+    parser.add_argument(
+        "--refresh-latest",
+        type=int,
+        default=0,
+        help="Refresh only latest N tournaments and merge into yearly file"
+    )
 
     args = parser.parse_args()
 
@@ -387,12 +471,22 @@ def main():
     print(f"Sleep: {args.sleep}s between requests")
     print(f"Output: {output_dir}")
 
-    scrape_stats_for_year(
-        year=args.year,
-        output_dir=output_dir,
-        stats_to_scrape=stats_to_scrape,
-        sleep_time=args.sleep
-    )
+    if args.refresh_latest and args.refresh_latest > 0:
+        ok = refresh_latest_tournaments(
+            year=args.year,
+            output_dir=output_dir,
+            refresh_latest=args.refresh_latest,
+            stats_to_scrape=stats_to_scrape,
+            sleep_time=args.sleep,
+        )
+        raise SystemExit(0 if ok else 1)
+    else:
+        scrape_stats_for_year(
+            year=args.year,
+            output_dir=output_dir,
+            stats_to_scrape=stats_to_scrape,
+            sleep_time=args.sleep
+        )
 
     print("\n" + "#"*70)
     print("# DONE!")

@@ -30,6 +30,7 @@ import argparse
 import glob
 import json
 import re
+import sys
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
@@ -38,9 +39,13 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import pandas as pd
 import requests
-from scripts.utils.tournament_context import resolve_tournament_context
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from scripts.utils.tournament_context import resolve_tournament_context
+
 RAW_DIR = PROJECT_ROOT / "data" / "raw"
 ODDS_DIR = PROJECT_ROOT / "data" / "odds"
 SNAPSHOT_DIR = ODDS_DIR / "snapshots"

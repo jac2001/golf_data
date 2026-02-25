@@ -227,7 +227,7 @@ def run_weekly_prep(tournament_name: str = None, quick: bool = False, dry_run: b
         scrapers = [
             ("fetch_field_from_pgatour.py", ["--pga-id", t_id, "--output", field_output, "--name", t_name] if t_id else []),
             ("fetch_pga_odds.py", ["--tournament-id", t_id] if t_id else []),
-            ("fetch_tournament_stats.py", ["--year", str(current_year), "--refresh-latest", "3"]),
+            ("multi_year_stats_scraper_fixed.py", ["--year", str(current_year), "--refresh-latest", "3"]),
             ("../features/consolidate_course_form_stats.py", ["--years", *recent_years]),
             ("../features/course_similarity.py", []),
             # Note: PGA expert picks require --path arg; run via run_pipeline.py flow when needed.
@@ -237,7 +237,7 @@ def run_weekly_prep(tournament_name: str = None, quick: bool = False, dry_run: b
             ("fetch_field_from_pgatour.py", ["--pga-id", t_id, "--output", field_output, "--name", t_name] if t_id else []),
             ("fetch_world_rankings.py", []),
             ("fetch_form_stats.py", ["--year", str(current_year), "--quick"]),
-            ("fetch_tournament_stats.py", ["--year", str(current_year), "--refresh-latest", "3"]),
+            ("multi_year_stats_scraper_fixed.py", ["--year", str(current_year), "--refresh-latest", "3"]),
             ("../features/consolidate_course_form_stats.py", ["--years", *recent_years]),
             ("../features/course_similarity.py", []),
             ("fetch_betting_profiles.py", ["--tournament-id", t_id, "--field", field_output] if t_id else []),

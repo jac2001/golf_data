@@ -39,6 +39,7 @@ from datetime import datetime
 import json
 import pandas as pd
 import traceback
+import re
 from typing import Optional, Any, Dict, List
 
 # ============================================================================
@@ -59,6 +60,7 @@ LOGS_DIR = PROJECT_ROOT / "logs"
 SCHEDULE_PATH = DATA_DIR / "raw" / "schedule_2026.csv"
 PIPELINE_STATUS_PATH = LOGS_DIR / "pipeline_status_latest.json"
 PIPELINE_HISTORY_PATH = LOGS_DIR / "pipeline_status_history.json"
+PIPELINE_RUNS_DIR = LOGS_DIR / "pipeline_runs"
 
 from scripts.utils.tournament_context import resolve_tournament_context
 
@@ -80,7 +82,7 @@ PIPELINE_STAGES = {
         "output": DATA_DIR / "historical" / f"form_stats_{datetime.now().year}.csv",
     },
     "tournament_stats": {
-        "script": SCRIPTS_DIR / "scrapers" / "fetch_tournament_stats.py",
+        "script": SCRIPTS_DIR / "scrapers" / "multi_year_stats_scraper_fixed.py",
         "description": "Fetch tournament SG statistics",
         "output": DATA_DIR / "historical" / f"tournament_stats_{datetime.now().year}.csv",
     },
@@ -178,6 +180,13 @@ class PipelineRunTracker:
     def finalize(self, success: bool, error: str = "") -> None:
         self.ended_at = _now_iso()
         self.status = "success" if success else "failed"
+        if (not success) and error and (not any(s.get("status") == "failed" for s in self.steps)):
+            self.record_manual_step(
+                name="Pipeline exception",
+                success=False,
+                command=[],
+                error=error,
+            )
         payload = self.to_dict()
         if error:
             payload["error"] = _tail_text(error)
@@ -224,6 +233,9 @@ class PipelineRunTracker:
         try:
             LOGS_DIR.mkdir(parents=True, exist_ok=True)
             PIPELINE_STATUS_PATH.write_text(json.dumps(payload, indent=2))
+            PIPELINE_RUNS_DIR.mkdir(parents=True, exist_ok=True)
+            run_file = PIPELINE_RUNS_DIR / f"{payload.get('run_id', 'unknown')}.json"
+            run_file.write_text(json.dumps(payload, indent=2))
             if append_history:
                 history = []
                 if PIPELINE_HISTORY_PATH.exists():
@@ -235,6 +247,7 @@ class PipelineRunTracker:
                         history = []
                 history.append({
                     "run_id": payload.get("run_id", ""),
+                    "run_file": str(run_file),
                     "run_type": payload.get("run_type", ""),
                     "status": payload.get("status", ""),
                     "started_at": payload.get("started_at", ""),
@@ -741,6 +754,121 @@ def run_bet_recommendations(
     return success
 
 
+def _artifact_age_hours(path: Path) -> Optional[float]:
+    if not path.exists():
+        return None
+    return (datetime.now().timestamp() - path.stat().st_mtime) / 3600.0
+
+
+def _file_updated_since(path: Path, run_started_at: datetime, grace_seconds: int = 120) -> bool:
+    if not path.exists():
+        return False
+    return path.stat().st_mtime >= (run_started_at.timestamp() - grace_seconds)
+
+
+def run_post_run_sanity_checks(
+    tournament_name: str,
+    tournament_id: str,
+    field_file: Path,
+    predictions_path: Path,
+    run_started_at: datetime,
+) -> tuple[bool, str]:
+    """
+    Validate that core artifacts exist and are usable for downstream dashboard pages.
+    Returns (ok, details). On failure, details includes actionable reason(s).
+    """
+    print_header("POST-RUN SANITY CHECKS")
+
+    tid = str(tournament_id or "").strip().upper()
+    failures: List[str] = []
+    notes: List[str] = []
+
+    # 1) Field file must exist and be non-empty.
+    if not field_file or not Path(field_file).exists():
+        failures.append(f"Field file missing: {field_file}")
+    else:
+        try:
+            _field_df = pd.read_csv(field_file)
+            if _field_df.empty:
+                failures.append(f"Field file is empty: {field_file}")
+            else:
+                notes.append(f"✓ Field: {field_file} ({len(_field_df)} players)")
+        except Exception as e:
+            failures.append(f"Field file unreadable: {field_file} ({e})")
+
+    # 2) Predictions output must exist and be updated this run.
+    pred_path = Path(predictions_path)
+    if not pred_path.exists():
+        failures.append(f"Predictions output missing: {pred_path}")
+    else:
+        try:
+            _pred_df = pd.read_csv(pred_path)
+            if _pred_df.empty:
+                failures.append(f"Predictions output is empty: {pred_path}")
+            else:
+                notes.append(f"✓ Predictions output: {pred_path} ({len(_pred_df)} rows)")
+            if not _file_updated_since(pred_path, run_started_at):
+                failures.append(f"Predictions output not updated this run: {pred_path}")
+        except Exception as e:
+            failures.append(f"Predictions output unreadable: {pred_path} ({e})")
+
+    # 3) latest_predictions.csv must also be updated this run (dashboard dependency).
+    latest_preds = OUTPUTS_DIR / "latest_predictions.csv"
+    if not latest_preds.exists():
+        failures.append(f"Missing dashboard pointer file: {latest_preds}")
+    elif not _file_updated_since(latest_preds, run_started_at):
+        failures.append(f"Stale dashboard pointer file (not updated this run): {latest_preds}")
+    else:
+        notes.append(f"✓ Dashboard latest predictions updated: {latest_preds}")
+
+    # 4) Tournament odds existence check (if tournament context available).
+    if tid:
+        pga_odds_file = DATA_DIR / "odds" / f"pga_odds_{tid}.csv"
+        dk_props_file = DATA_DIR / "odds" / f"prop_lines_{tid}.csv"
+        has_odds = pga_odds_file.exists() or dk_props_file.exists()
+        if not has_odds:
+            failures.append(
+                f"No tournament odds files found for {tid} "
+                f"(expected one of: {pga_odds_file.name}, {dk_props_file.name})"
+            )
+        else:
+            if pga_odds_file.exists():
+                age = _artifact_age_hours(pga_odds_file)
+                notes.append(f"✓ PGA odds: {pga_odds_file.name} (age {age:.1f}h)")
+            if dk_props_file.exists():
+                age = _artifact_age_hours(dk_props_file)
+                notes.append(f"✓ DK props: {dk_props_file.name} (age {age:.1f}h)")
+
+    # 5) Tournament-scoped latest file should exist for the requested tournament.
+    safe_tournament = re.sub(r"[^a-z0-9]+", "_", str(tournament_name).lower()).strip("_")
+    scoped_latest = OUTPUTS_DIR / f"{safe_tournament}_latest.csv"
+    if scoped_latest.exists():
+        notes.append(f"✓ Tournament scoped predictions: {scoped_latest.name}")
+    else:
+        notes.append(f"ℹ Tournament scoped predictions not found: {scoped_latest.name}")
+
+    for line in notes:
+        print(f"  {line}")
+    if failures:
+        print("  ❌ Sanity checks failed:")
+        for msg in failures:
+            print(f"    - {msg}")
+    else:
+        print("  ✅ All sanity checks passed")
+
+    details = "\n".join(notes + ([f"FAIL: {f}" for f in failures] if failures else []))
+    ok = len(failures) == 0
+    if _ACTIVE_TRACKER is not None:
+        _ACTIVE_TRACKER.record_manual_step(
+            name="Post-run artifact sanity checks",
+            success=ok,
+            command=[],
+            error="\n".join(failures),
+            stdout=details,
+        )
+    return ok, details
+
+
 def fetch_tournament_assets(
     tournament_name: str,
     pga_id: str,
@@ -898,6 +1026,7 @@ def run_full_pipeline(
         print(f"  Purse: ${purse:,}")
         print(f"  Type: {tournament_type}")
         print(f"  Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+        run_started_at = datetime.now()
 
         # Stage 1: Data refresh
         if not skip_refresh:
@@ -970,6 +1099,17 @@ def run_full_pipeline(
         # Stage 6: Lineup recommendation (if requested separately)
         if recommend_lineup:
             run_lineup_recommendation(tournament_name, predictions_path)
+
+        # Stage 7: Validate expected artifacts for downstream consumers.
+        sanity_ok, sanity_details = run_post_run_sanity_checks(
+            tournament_name=tournament_name,
+            tournament_id=str(pga_id or ""),
+            field_file=Path(field_file),
+            predictions_path=Path(predictions_path),
+            run_started_at=run_started_at,
+        )
+        if not sanity_ok:
+            raise RuntimeError(f"Post-run sanity checks failed:\n{sanity_details}")
 
         print_header("PIPELINE COMPLETE", "=")
         pipeline_success = True

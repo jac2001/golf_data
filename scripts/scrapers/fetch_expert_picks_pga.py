@@ -14,6 +14,7 @@ Usage:
 import argparse
 import json
 import re
+import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -21,12 +22,16 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from scripts.utils.tournament_context import (
     resolve_tournament_context as resolve_shared_tournament_context,
     tournament_name_match as shared_tournament_name_match,
 )
 
-PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 OUTPUT_DIR = DATA_DIR / "expert_picks"
 SCHEDULE_PATH = DATA_DIR / "raw" / "schedule_2026.csv"

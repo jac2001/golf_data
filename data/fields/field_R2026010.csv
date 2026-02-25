@@ -1,124 +1,124 @@
-player_id,player_name
-48001,"Bauchou, Zach"
-40026,"Berger, Daniel"
-45522,"Bezuidenhout, Christiaan"
-54788,"Blanchet, Chandler"
-61522,"Brennan, Michael"
-66417,"Brown, Blades"
-57259,"Brown, Dan"
-32070,"Campos, Rafael"
-49590,"Capan III, Frankie"
-59440,"Castillo, Ricky"
-59006,"Chatfield, Davis"
-66743,"Clanton, Luke"
-47591,"Cole, Eric"
-34076,"Dahmen, Joel"
-45157,"Davis, Cam"
-37338,"Dou, Zecheng"
-50497,"Dumont de Chassart, Adrien"
-59866,"Dunlap, Nick"
-51349,"Echavarria, Nico"
-57362,"Eckroat, Austin"
-50286,"Ewart, A.J."
-54576,"Fishburn, Patrick"
-57123,"Fisk, Steven"
-65256,"Ford, David"
-29535,"Garnett, Brice"
-59018,"Gerard, Ryan"
-52375,"Ghim, Doug"
-35310,"Griffin, Lanto"
-31646,"Grillo, Emiliano"
-33399,"Hadwin, Adam"
-25444,"Hicks, Justin"
-54421,"Higgo, Garrick"
-33597,"Higgs, Harry"
-60067,"Highsmith, Joe"
-49120,"Hirata, Kensei"
-54628,"Hodges, Lee"
-51696,"Hoey, Rico"
-12716,"Hoffman, Charley"
-52453,"Højgaard, Nicolai"
-52686,"Højgaard, Rasmus"
-39977,"Homa, Max"
-29420,"Horschel, Billy"
-35461,"Hossler, Beau"
-36801,"Hubbard, Mark"
-35506,"Hughes, Mackenzie"
-36799,"Jaeger, Stephan"
-47917,"Kanaya, Takumi"
-47393,"Kang, Jeffrey"
-63454,"Keefer, Johnny"
-34587,"Kim, Chan"
-50188,"Kim, S.H."
-55182,"Kim, Tom"
-30926,"Kirk, Chris"
-32757,"Kizzire, Patton"
-36689,"Koepka, Brooks"
-23108,"Kuchar, Matt"
-54422,"Lamprecht, Christo"
-49766,"Lebioda, Hank"
-32791,"Lee, K.H."
-35296,"Li, Haotong"
-36326,"Lipsky, David"
-40162,"Lower, Justin"
-33204,"Lowry, Shane"
-34466,"Malnati, Peter"
-51950,"McGreevy, Max"
-59143,"Meissner, Mac"
-39546,"Mitchell, Keith"
-49947,"Moore, Taylor"
-63121,"Mouw, William"
-49228,"Nakajima, Keita"
-52689,"Neergaard-Petersen, Rasmus"
-55851,"Nyholm, Pontus"
-33968,"Olesen, Thorbjørn"
-28723,"Parry, John"
-48153,"Pavon, Matthieu"
-57900,"Phillips, Chandler"
-28252,"Power, Seamus"
-34256,"Putnam, Andrew"
-46414,"Rai, Aaron"
-47983,"Ramey, Chad"
-49855,"Reitan, Kristoffer"
-47995,"Riley, Davis"
-39335,"Roy, Kevin"
-37076,"Rozo, Marcelo"
-37275,"Ryder, Sam"
-34371,"Saddier, Adrien"
-56781,"Salinda, Isaiah"
-64442,"Sargent, Gordon"
-47347,"Schenk, Adam"
-48867,"Schmid, Matti"
-63807,"Shipley, Neal"
-29221,"Simpson, Webb"
-46340,"Smalley, Alex"
-46464,"Smith, Jordan"
-50095,"Smotherman, Austin"
-27649,"Snedeker, Brandt"
-51600,"Stanger, Jimmy"
-27214,"Streelman, Kevin"
-60019,"Suber, Jackson"
-40115,"Svensson, Adam"
-57586,"Svensson, Jesper"
-58168,"Thompson, Davis"
-57364,"Thorbjornsen, Michael"
-30927,"Todd, Brendon"
-38991,"Tosti, Alejandro"
-52666,"Valimaki, Sami"
-40006,"van Rooyen, Erik"
-55573,"VanDerLaan, John"
-35658,"Ventura, Kris"
-54304,"Vilips, Karl"
-27770,"Villegas, Camilo"
-54607,"Walker, Danny"
-48887,"Wallace, Matt"
-31113,"Waring, Paul"
-51894,"Whaley, Vince"
-32139,"Willett, Danny"
-49964,"Wise, Aaron"
-31323,"Woodland, Gary"
-54783,"Wu, Dylan"
-60386,"Yellamaraju, Sudarshan"
-52513,"Young, Carson"
-45242,"Yu, Kevin"
-47483,"Zalatoris, Will"
+player_id,player_name,country,owgr,how_qualified,status
+48001,"Bauchou, Zach",United States,179,Top 20 Prior Season Korn Ferry Tour Points List,IN
+40026,"Berger, Daniel",United States,62,Top 70 on Prior Years FedExCup Points List,IN
+45522,"Bezuidenhout, Christiaan",South Africa,89,Top 100 on prior season FedExCup Fall Points List,IN
+54788,"Blanchet, Chandler",United States,137,Top 20 Prior Season Korn Ferry Tour Points List,IN
+61522,"Brennan, Michael",United States,42,Tournament Winner in Past Two Seasons.,IN
+66417,"Brown, Blades",United States,335,Sponsors Exemptions - Unrestricted,IN
+57259,"Brown, Dan",England,77,Leading 10 players (not otherwise exempt) on DP World Tour,IN
+32070,"Campos, Rafael",Puerto Rico,428,Tournament Winner in Past Two Seasons.,IN
+49590,"Capan III, Frankie",United States,262,126-150 on FedExCup Fall Points List,IN
+59440,"Castillo, Ricky",United States,161,101-110 prior season FedExCup Fall Points List,IN
+59006,"Chatfield, Davis",United States,235,Top 20 Prior Season Korn Ferry Tour Points List,IN
+66743,"Clanton, Luke",United States,211,PGA TOUR University,IN
+47591,"Cole, Eric",United States,118,Top 100 on prior season FedExCup Fall Points List,IN
+34076,"Dahmen, Joel",United States,181,111-125 prior season FedExCup Fall Points List,IN
+45157,"Davis, Cam",Australia,162,Tournament Winner in Past Two Seasons.,IN
+37338,"Dou, Zecheng",People’s Rep of China,183,Top 20 Prior Season Korn Ferry Tour Points List,IN
+50497,"Dumont de Chassart, Adrien",Belgium,164,Top 20 Prior Season Korn Ferry Tour Points List,IN
+59866,"Dunlap, Nick",United States,207,Tournament Winner in Past Two Seasons.,IN
+51349,"Echavarria, Nico",Colombia,59,Tournament Winner in Past Two Seasons.,IN
+57362,"Eckroat, Austin",United States,154,Tournament Winner in Past Two Seasons.,IN
+50286,"Ewart, A.J.",Canada,364,Top 5 from PGA TOUR Q-School,IN
+54576,"Fishburn, Patrick",United States,148,101-110 prior season FedExCup Fall Points List,IN
+57123,"Fisk, Steven",United States,120,Tournament Winner in Past Two Seasons.,IN
+65256,"Ford, David",United States,317,PGA TOUR University,IN
+29535,"Garnett, Brice",United States,348,Tournament Winner in Past Two Seasons.,IN
+59018,"Gerard, Ryan",United States,26,Tournament Winner in Past Two Seasons.,IN
+52375,"Ghim, Doug",United States,168,111-125 prior season FedExCup Fall Points List,IN
+35310,"Griffin, Lanto",United States,198,111-125 prior season FedExCup Fall Points List,IN
+31646,"Grillo, Emiliano",Argentina,109,Top 70 on Prior Years FedExCup Points List,IN
+33399,"Hadwin, Adam",Canada,209,Sponsors Exemptions - Unrestricted,IN
+25444,"Hicks, Justin",United States,,PGA Section Champion\Player of the Year,IN
+54421,"Higgo, Garrick",South Africa,75,Tournament Winner in Past Two Seasons.,IN
+33597,"Higgs, Harry",United States,227,Sponsors Exemptions - Unrestricted,IN
+60067,"Highsmith, Joe",United States,129,Tournament Winner in Past Two Seasons.,IN
+49120,"Hirata, Kensei",Japan,167,Top 20 Prior Season Korn Ferry Tour Points List,IN
+54628,"Hodges, Lee",United States,133,Top 100 (Medical),IN
+51696,"Hoey, Rico",Philippines,74,Top 100 on prior season FedExCup Fall Points List,IN
+12716,"Hoffman, Charley",United States,327,Major Medical Extension,IN
+52453,"Højgaard, Nicolai",Denmark,55,Top 100 on prior season FedExCup Fall Points List,IN
+52686,"Højgaard, Rasmus",Denmark,48,Top 100 on prior season FedExCup Fall Points List,IN
+39977,"Homa, Max",United States,150,Tournament Winner in Past Two Seasons.,IN
+29420,"Horschel, Billy",United States,81,Tournament Winner in Past Two Seasons.,IN
+35461,"Hossler, Beau",United States,153,101-110 prior season FedExCup Fall Points List,IN
+36801,"Hubbard, Mark",United States,135,Top 100 on prior season FedExCup Fall Points List,IN
+35506,"Hughes, Mackenzie",Canada,104,Top 70 on Prior Years FedExCup Points List,IN
+36799,"Jaeger, Stephan",Germany,102,Tournament Winner in Past Two Seasons.,IN
+47917,"Kanaya, Takumi",Japan,126,Top 100 on prior season FedExCup Fall Points List,IN
+47393,"Kang, Jeffrey",United States,221,Top 20 Prior Season Korn Ferry Tour Points List,IN
+63454,"Keefer, Johnny",United States,61,Top 20 Prior Season Korn Ferry Tour Points List,IN
+34587,"Kim, Chan",United States,260,126-150 on FedExCup Fall Points List,IN
+50188,"Kim, S.H.",Republic of Korea,149,Top 20 Prior Season Korn Ferry Tour Points List,IN
+55182,"Kim, Tom",Republic of Korea,116,Tournament Winner in Past Two Seasons.,IN
+30926,"Kirk, Chris",United States,95,Tournament Winner in Past Two Seasons.,IN
+32757,"Kizzire, Patton",United States,243,Tournament Winner in Past Two Seasons.,IN
+36689,"Koepka, Brooks",United States,263,Winner - PGA/U.S. Open Championship.,IN
+23108,"Kuchar, Matt",United States,143,111-125 prior season FedExCup Fall Points List,IN
+54422,"Lamprecht, Christo",South Africa,173,Top 20 Prior Season Korn Ferry Tour Points List,IN
+49766,"Lebioda, Hank",United States,214,Top 20 Prior Season Korn Ferry Tour Points List,IN
+32791,"Lee, K.H.",Republic of Korea,496,Major Medical Extension,IN
+35296,"Li, Haotong",People’s Rep of China,72,Leading 10 players (not otherwise exempt) on DP World Tour,IN
+36326,"Lipsky, David",United States,146,101-110 prior season FedExCup Fall Points List,IN
+40162,"Lower, Justin",United States,177,111-125 prior season FedExCup Fall Points List,IN
+33204,"Lowry, Shane",Ireland,31,Tournament Winner in Past Two Seasons.,IN
+34466,"Malnati, Peter",United States,612,Tournament Winner in Past Two Seasons.,IN
+51950,"McGreevy, Max",United States,69,Top 100 on prior season FedExCup Fall Points List,IN
+59143,"Meissner, Mac",United States,103,Top 100 on prior season FedExCup Fall Points List,IN
+39546,"Mitchell, Keith",United States,124,Top 100 on prior season FedExCup Fall Points List,IN
+49947,"Moore, Taylor",United States,189,111-125 prior season FedExCup Fall Points List,IN
+63121,"Mouw, William",United States,138,Tournament Winner in Past Two Seasons.,IN
+49228,"Nakajima, Keita",Japan,111,Leading 10 players (not otherwise exempt) on DP World Tour,IN
+52689,"Neergaard-Petersen, Rasmus",Denmark,58,Leading 10 players (not otherwise exempt) on DP World Tour,IN
+55851,"Nyholm, Pontus",Sweden,287,Top 20 Prior Season Korn Ferry Tour Points List,IN
+33968,"Olesen, Thorbjørn",Denmark,97,Top 100 on prior season FedExCup Fall Points List,IN
+28723,"Parry, John",England,84,Leading 10 players (not otherwise exempt) on DP World Tour,IN
+48153,"Pavon, Matthieu",France,273,Tournament Winner in Past Two Seasons.,IN
+57900,"Phillips, Chandler",United States,160,Top 100 on prior season FedExCup Fall Points List,IN
+28252,"Power, Seamus",Ireland,151,111-125 prior season FedExCup Fall Points List,IN
+34256,"Putnam, Andrew",United States,115,111-125 prior season FedExCup Fall Points List,IN
+46414,"Rai, Aaron",England,32,Tournament Winner in Past Two Seasons.,IN
+47983,"Ramey, Chad",United States,156,Top 100 on prior season FedExCup Fall Points List,IN
+49855,"Reitan, Kristoffer",Norway,46,Leading 10 players (not otherwise exempt) on DP World Tour,IN
+47995,"Riley, Davis",United States,98,Tournament Winner in Past Two Seasons.,IN
+39335,"Roy, Kevin",United States,134,Top 100 on prior season FedExCup Fall Points List,IN
+37076,"Rozo, Marcelo",Colombia,471,Top 5 from PGA TOUR Q-School,IN
+37275,"Ryder, Sam",United States,213,111-125 prior season FedExCup Fall Points List,IN
+34371,"Saddier, Adrien",France,85,Leading 10 players (not otherwise exempt) on DP World Tour,IN
+56781,"Salinda, Isaiah",United States,229,101-110 prior season FedExCup Fall Points List,IN
+64442,"Sargent, Gordon",United States,962,PGA TOUR University,IN
+47347,"Schenk, Adam",United States,136,Tournament Winner in Past Two Seasons.,IN
+48867,"Schmid, Matti",Germany,101,Top 70 on Prior Years FedExCup Points List,IN
+63807,"Shipley, Neal",United States,121,Top 20 Prior Season Korn Ferry Tour Points List,IN
+29221,"Simpson, Webb",United States,474,Tournament Winner in Past Two Seasons.,IN
+46340,"Smalley, Alex",United States,119,Top 100 on prior season FedExCup Fall Points List,IN
+46464,"Smith, Jordan",England,90,Leading 10 players (not otherwise exempt) on DP World Tour,IN
+50095,"Smotherman, Austin",United States,127,Top 20 Prior Season Korn Ferry Tour Points List,IN
+27649,"Snedeker, Brandt",United States,289,126-150 on FedExCup Fall Points List,IN
+51600,"Stanger, Jimmy",United States,,Major Medical Extension,IN
+27214,"Streelman, Kevin",United States,506,Major Medical Extension,IN
+60019,"Suber, Jackson",United States,186,111-125 prior season FedExCup Fall Points List,IN
+40115,"Svensson, Adam",Canada,341,Top 5 from PGA TOUR Q-School,IN
+57586,"Svensson, Jesper",Sweden,165,111-125 prior season FedExCup Fall Points List,IN
+58168,"Thompson, Davis",United States,114,Tournament Winner in Past Two Seasons.,IN
+57364,"Thorbjornsen, Michael",United States,50,Top 100 on prior season FedExCup Fall Points List,IN
+30927,"Todd, Brendon",United States,672,Major Medical Extension,IN
+38991,"Tosti, Alejandro",Argentina,285,Top 5 from PGA TOUR Q-School,IN
+52666,"Valimaki, Sami",Finland,47,Tournament Winner in Past Two Seasons.,IN
+40006,"van Rooyen, Erik",South Africa,140,Top 70 on Prior Years FedExCup Points List,IN
+55573,"VanDerLaan, John",United States,254,Top 20 Prior Season Korn Ferry Tour Points List,IN
+35658,"Ventura, Kris",Norway,212,111-125 prior season FedExCup Fall Points List,IN
+54304,"Vilips, Karl",Australia,142,Tournament Winner in Past Two Seasons.,IN
+27770,"Villegas, Camilo",Colombia,445,Sponsors Exemptions - Unrestricted,IN
+54607,"Walker, Danny",United States,220,Top 100 on prior season FedExCup Fall Points List,IN
+48887,"Wallace, Matt",England,91,101-110 prior season FedExCup Fall Points List,IN
+31113,"Waring, Paul",England,268,Major Medical Extension,IN
+51894,"Whaley, Vince",United States,117,Top 100 on prior season FedExCup Fall Points List,IN
+32139,"Willett, Danny",England,375,Major Medical Extension,IN
+49964,"Wise, Aaron",United States,,Major Medical Extension,IN
+31323,"Woodland, Gary",United States,144,Top 100 on prior season FedExCup Fall Points List,IN
+54783,"Wu, Dylan",United States,349,Top 5 from PGA TOUR Q-School,IN
+60386,"Yellamaraju, Sudarshan",Canada,226,Top 20 Prior Season Korn Ferry Tour Points List,IN
+52513,"Young, Carson",United States,158,126-150 on FedExCup Fall Points List,IN
+45242,"Yu, Kevin",Chinese Taipei,105,Tournament Winner in Past Two Seasons.,IN
+47483,"Zalatoris, Will",United States,252,Major Medical Extension,IN

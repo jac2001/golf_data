@@ -341,18 +341,162 @@ def run_scraper(cmd, timeout=120):
         return False, str(e)
 
 
-def load_pipeline_status() -> dict:
-    """Load latest run_pipeline status artifact."""
-    status_path = LOGS_DIR / "pipeline_status_latest.json"
-    if not status_path.exists():
+WORKFLOW_TIMEOUTS = {
+    "Tournament SG Stats": 1800,
+    "Field": 300,
+    "Course Info": 300,
+    "Power Rankings": 300,
+    "Expert Picks": 300,
+    "Betting Profiles": 900,
+    "DraftKings Odds": 360,
+    "PGA Odds": 300,
+    "Predictions": 900,
+}
+
+
+def workflow_timeout(step_name: str, default: int = 180) -> int:
+    """Return timeout for a workflow step name."""
+    return int(WORKFLOW_TIMEOUTS.get(step_name, default))
+
+
+def _is_test_pipeline_run(payload: dict) -> bool:
+    """Detect synthetic/test runs so they don't pollute pipeline health UI."""
+    if not isinstance(payload, dict):
+        return False
+    run_type = str(payload.get("run_type", "")).strip().lower()
+    run_id = str(payload.get("run_id", "")).strip().lower()
+    tid = str(payload.get("tournament_id", "")).strip().upper()
+    tname = str(payload.get("tournament_name", "")).strip().lower()
+    if "test" in run_type:
+        return True
+    if run_id.startswith("test") or run_id.startswith("fake"):
+        return True
+    if tid.startswith("R999"):
+        return True
+    if "fake" in tname or "test" in tname:
+        return True
+    return False
+
+
+def _latest_non_test_from_history(history_path: Path) -> dict:
+    """Return the most recent non-test run from pipeline history."""
+    if not history_path.exists():
         return {}
     try:
-        data = json.loads(status_path.read_text())
-        if isinstance(data, dict):
-            return data
+        hist = json.loads(history_path.read_text())
     except Exception:
-        pass
+        return {}
+    if not isinstance(hist, list):
+        return {}
+
+    for entry in reversed(hist):
+        if _is_test_pipeline_run(entry):
+            continue
+        run_file = str(entry.get("run_file", "")).strip()
+        if run_file and Path(run_file).exists():
+            try:
+                run_data = json.loads(Path(run_file).read_text())
+                if isinstance(run_data, dict) and not _is_test_pipeline_run(run_data):
+                    run_data["_from_history"] = True
+                    return run_data
+            except Exception:
+                pass
+        return {
+            "run_id": entry.get("run_id", ""),
+            "run_type": entry.get("run_type", ""),
+            "status": entry.get("status", ""),
+            "started_at": entry.get("started_at", ""),
+            "ended_at": entry.get("ended_at", ""),
+            "tournament_name": entry.get("tournament_name", ""),
+            "tournament_id": entry.get("tournament_id", ""),
+            "step_count": entry.get("step_count", 0),
+            "failed_count": entry.get("failed_count", 0),
+            "failed_step_ids": entry.get("failed_step_ids", []),
+            "steps": [],
+            "_from_history": True,
+        }
     return {}
+
+
+def load_pipeline_status(preferred_tournament_id: str = "") -> dict:
+    """Load run_pipeline status, preferring the latest run for the selected tournament."""
+    status_path = LOGS_DIR / "pipeline_status_latest.json"
+    history_path = LOGS_DIR / "pipeline_status_history.json"
+    preferred_tid = str(preferred_tournament_id or "").strip().upper()
+
+    latest = {}
+    if status_path.exists():
+        try:
+            data = json.loads(status_path.read_text())
+            if isinstance(data, dict):
+                latest = data
+        except Exception:
+            latest = {}
+    if _is_test_pipeline_run(latest):
+        latest = {}
+
+    if not preferred_tid:
+        if latest:
+            return latest
+        return _latest_non_test_from_history(history_path)
+
+    latest_tid = str(latest.get("tournament_id", "")).strip().upper()
+    if latest and latest_tid == preferred_tid:
+        return latest
+
+    # Try history for the most recent matching tournament run.
+    if history_path.exists():
+        try:
+            hist = json.loads(history_path.read_text())
+            if isinstance(hist, list):
+                for entry in reversed(hist):
+                    if _is_test_pipeline_run(entry):
+                        continue
+                    tid = str(entry.get("tournament_id", "")).strip().upper()
+                    if tid != preferred_tid:
+                        continue
+                    run_file = str(entry.get("run_file", "")).strip()
+                    if run_file and Path(run_file).exists():
+                        try:
+                            run_data = json.loads(Path(run_file).read_text())
+                            if isinstance(run_data, dict) and (not _is_test_pipeline_run(run_data)):
+                                run_data["_from_history"] = True
+                                run_data["_latest_mismatch"] = True
+                                run_data["_latest_run_id"] = latest.get("run_id", "")
+                                run_data["_latest_tournament_id"] = latest.get("tournament_id", "")
+                                run_data["_latest_tournament_name"] = latest.get("tournament_name", "")
+                                return run_data
+                        except Exception:
+                            pass
+                    # Fall back to summary entry if detailed run file is unavailable.
+                    summary = {
+                        "run_id": entry.get("run_id", ""),
+                        "run_type": entry.get("run_type", ""),
+                        "status": entry.get("status", ""),
+                        "started_at": entry.get("started_at", ""),
+                        "ended_at": entry.get("ended_at", ""),
+                        "tournament_name": entry.get("tournament_name", ""),
+                        "tournament_id": entry.get("tournament_id", ""),
+                        "step_count": entry.get("step_count", 0),
+                        "failed_count": entry.get("failed_count", 0),
+                        "failed_step_ids": entry.get("failed_step_ids", []),
+                        "steps": [],
+                        "_from_history": True,
+                        "_latest_mismatch": True,
+                        "_no_selected_match": False,
+                        "_latest_run_id": latest.get("run_id", ""),
+                        "_latest_tournament_id": latest.get("tournament_id", ""),
+                        "_latest_tournament_name": latest.get("tournament_name", ""),
+                    }
+                    return summary
+        except Exception:
+            pass
+
+    # No matching history run; return latest but flag mismatch.
+    if latest:
+        latest["_latest_mismatch"] = (latest_tid != preferred_tid)
+        latest["_no_selected_match"] = (latest_tid != preferred_tid)
+    return latest
 
 
 def _file_health(path: Path, stale_hours: float) -> dict:
@@ -11298,7 +11442,7 @@ elif page == "⚙️ Pipeline":
 
     # Pipeline health/status panel (latest run + file health + one-click retry).
     st.markdown("### 🩺 Pipeline Health")
-    pipe_status = load_pipeline_status()
+    pipe_status = load_pipeline_status(tournament_id)
     health_snapshot = build_pipeline_health_snapshot(tournament_id)
 
     last_status = str(pipe_status.get("status", "unknown")).strip().lower() if pipe_status else "unknown"
@@ -11321,6 +11465,20 @@ elif page == "⚙️ Pipeline":
             st.caption(f"Started: {started_at}")
         if ended_at:
             st.caption(f"Ended: {ended_at}")
+        if pipe_status.get("_latest_mismatch"):
+            latest_run = str(pipe_status.get("_latest_run_id", "")).strip()
+            latest_name = str(pipe_status.get("_latest_tournament_name", "")).strip()
+            latest_tid = str(pipe_status.get("_latest_tournament_id", "")).strip()
+            if pipe_status.get("_no_selected_match"):
+                st.caption(
+                    "No saved pipeline run found for the selected tournament yet. "
+                    "Showing latest overall run."
+                )
+            elif latest_run:
+                st.caption(
+                    f"Showing latest selected-tournament run. Latest overall run is `{latest_run}` "
+                    f"({latest_name or 'unknown'} {latest_tid})"
+                )
     with ph_col2:
         st.metric("Failed Steps", len(failed_steps))
         if failed_steps:
@@ -11369,11 +11527,17 @@ elif page == "⚙️ Pipeline":
                     st.caption(f"**{sid}** · {sname}")
                     if sdesc:
                         st.code(sdesc, language="bash")
+                    serr = str(step.get("error", "") or step.get("stderr_tail", "")).strip()
+                    if serr:
+                        st.caption(f"Error: {serr[:300]}")
                 with c2:
                     if st.button("↻ Retry", key=f"retry_step_{sid}", use_container_width=True):
                         cmd = step.get("command") or []
                         if isinstance(cmd, str):
                             cmd = shlex.split(cmd)
+                        if not cmd:
+                            st.warning(f"No runnable command stored for {sid}.")
+                            continue
                         timeout = int(step.get("timeout_seconds") or 180)
                         with st.spinner(f"Re-running {sid}..."):
                             ok, out = run_scraper(cmd, timeout=timeout)
@@ -11427,25 +11591,28 @@ elif page == "⚙️ Pipeline":
                     ("World Rankings", ["python3", "scripts/scrapers/fetch_world_rankings.py"]),
                     ("Player Database", ["python3", "scripts/scrapers/fetch_player_database.py"]),
                     ("Form Stats", ["python3", "scripts/scrapers/fetch_form_stats.py", "--year", "2026"]),
-                    ("Tournament SG Stats", ["python3", "scripts/scrapers/fetch_tournament_stats.py", "--year", "2026", "--refresh-latest", "3"]),
+                    ("Tournament SG Stats", ["python3", "scripts/scrapers/multi_year_stats_scraper_fixed.py", "--year", "2026", "--refresh-latest", "3"]),
                 ]
 
                 results = []
                 for i, (name, cmd) in enumerate(tasks):
                     status.text(f"Running: {name}...")
-                    _timeout = 300 if name == "Tournament SG Stats" else 120
+                    _timeout = workflow_timeout(name, 120)
                     success, output = run_scraper(cmd, timeout=_timeout)
-                    results.append((name, success))
+                    results.append((name, success, output))
                     progress.progress((i + 1) / len(tasks))
 
                 status.empty()
                 progress.empty()
 
-                for name, success in results:
+                for name, success, output in results:
                     if success:
                         st.success(f"✅ {name}")
                     else:
                         st.error(f"❌ {name}")
+                        if output:
+                            with st.expander(f"{name} error output", expanded=False):
+                                st.code(output, language=None)
 
                 st.cache_data.clear()
 
@@ -11507,8 +11674,8 @@ elif page == "⚙️ Pipeline":
                                 fallback_url=pr_fallback_url,
                             )
                         else:
-                            success, output = run_scraper(cmd, timeout=180)
-                        results.append((name, success))
+                            success, output = run_scraper(cmd, timeout=workflow_timeout(name, 180))
+                        results.append((name, success, output))
                         progress.progress((i + 1) / len(tasks))
 
                     # Run predictions
@@ -11516,20 +11683,25 @@ elif page == "⚙️ Pipeline":
                     pred_cmd = [
                         "python3", "scripts/run_pipeline.py",
                         "--tournament", selected_tournament,
+                        "--pga-id", tournament_id,
+                        "--field", field_path,
                         "--use-schedule", "--skip-refresh", "--calibrate", "--lineup"
                     ]
-                    success, output = run_scraper(pred_cmd, timeout=300)
-                    results.append(("Predictions", success))
+                    success, output = run_scraper(pred_cmd, timeout=workflow_timeout("Predictions", 300))
+                    results.append(("Predictions", success, output))
                     progress.progress(1.0)
 
                     status.empty()
                     progress.empty()
 
-                    for name, success in results:
+                    for name, success, output in results:
                         if success:
                             st.success(f"✅ {name}")
                         else:
                             st.error(f"❌ {name}")
+                            if output:
+                                with st.expander(f"{name} error output", expanded=False):
+                                    st.code(output, language=None)
 
                     st.cache_data.clear()
             else:
@@ -11573,29 +11745,35 @@ elif page == "⚙️ Pipeline":
                     results = []
                     for i, (name, cmd) in enumerate(tasks):
                         status.text(f"Running: {name}...")
-                        success, output = run_scraper(cmd, timeout=120)
-                        results.append((name, success))
+                        success, output = run_scraper(cmd, timeout=workflow_timeout(name, 120))
+                        results.append((name, success, output))
                         progress.progress((i + 1) / len(tasks))
 
                     # Re-run predictions
                     status.text("Updating predictions...")
+                    field_path = f"data/fields/field_{tournament_id}.csv"
                     pred_cmd = [
                         "python3", "scripts/run_pipeline.py",
                         "--tournament", selected_tournament,
+                        "--pga-id", tournament_id,
+                        "--field", field_path,
                         "--use-schedule", "--skip-refresh", "--calibrate", "--lineup"
                     ]
-                    success, output = run_scraper(pred_cmd, timeout=300)
-                    results.append(("Predictions", success))
+                    success, output = run_scraper(pred_cmd, timeout=workflow_timeout("Predictions", 300))
+                    results.append(("Predictions", success, output))
                     progress.progress(1.0)
 
                     status.empty()
                     progress.empty()
 
-                    for name, success in results:
+                    for name, success, output in results:
                         if success:
                             st.success(f"✅ {name}")
                         else:
                             st.error(f"❌ {name}")
+                            if output:
+                                with st.expander(f"{name} error output", expanded=False):
+                                    st.code(output, language=None)
 
                     st.cache_data.clear()
             else:
@@ -11762,8 +11940,8 @@ elif page == "⚙️ Pipeline":
             if st.button("📊 Tournament SG Stats", use_container_width=True, key="m_tournament_sg"):
                 with st.spinner("Fetching..."):
                     success, _ = run_scraper(
-                        ["python3", "scripts/scrapers/fetch_tournament_stats.py", "--year", "2026", "--refresh-latest", "3"],
-                        timeout=300
+                        ["python3", "scripts/scrapers/multi_year_stats_scraper_fixed.py", "--year", "2026", "--refresh-latest", "3"],
+                        timeout=workflow_timeout("Tournament SG Stats", 300)
                     )
                     if success:
                         st.success("✅ Done")

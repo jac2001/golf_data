@@ -68,6 +68,18 @@ SCHEDULE_PATH = DATA_DIR / "raw" / "schedule_2026.csv"
 # Ensure logs directory exists
 LOGS_DIR.mkdir(exist_ok=True)
 
+STEP_TIMEOUTS = {
+    "Tournament SG Stats": 1800,
+    "Field": 300,
+    "Course Info": 300,
+    "Power Rankings": 300,
+    "Expert Picks": 300,
+    "Betting Profiles": 900,
+    "DraftKings Odds": 360,
+    "PGA Odds": 300,
+    "Predictions": 900,
+}
+
 
 def log(message: str):
     """Print timestamped log message."""
@@ -100,6 +112,11 @@ def run_command(cmd: list, description: str, timeout: int = 180) -> bool:
     except Exception as e:
         log(f"  ✗ Error: {e}")
         return False
+
+
+def step_timeout(description: str, default: int = 180) -> int:
+    """Return timeout based on task label."""
+    return int(STEP_TIMEOUTS.get(description, default))
 
 
 def get_current_tournament() -> dict:
@@ -151,7 +168,7 @@ def run_monday_refresh(dry_run: bool = False):
         ("World Rankings (OWGR)", ["python3", "scripts/scrapers/fetch_world_rankings.py"]),
         ("Player Database", ["python3", "scripts/scrapers/fetch_player_database.py"]),
         ("Form Stats", ["python3", "scripts/scrapers/fetch_form_stats.py", "--year", "2026"]),
-        ("Tournament SG Stats", ["python3", "scripts/scrapers/fetch_tournament_stats.py", "--year", "2026", "--refresh-latest", "3"]),
+        ("Tournament SG Stats", ["python3", "scripts/scrapers/multi_year_stats_scraper_fixed.py", "--year", "2026", "--refresh-latest", "3"]),
     ]
 
     results = []
@@ -160,7 +177,7 @@ def run_monday_refresh(dry_run: bool = False):
             log(f"[DRY RUN] Would run: {desc}")
             results.append((desc, True))
         else:
-            timeout = 300 if "Tournament SG Stats" in desc else 120
+            timeout = step_timeout(desc, 120)
             success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
 
@@ -188,8 +205,7 @@ def run_tuesday_morning(dry_run: bool = False):
         log("No tournament ID found!")
         return []
 
-    slug = tournament_name.lower().replace(" ", "_")
-    field_path = f"data/fields/{slug}_field.csv"
+    field_path = f"data/fields/field_{tournament_id}.csv"
 
     tasks = [
         ("Field", ["python3", "scripts/scrapers/fetch_field_from_pgatour.py",
@@ -203,7 +219,10 @@ def run_tuesday_morning(dry_run: bool = False):
         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                       "--tournament-id", tournament_id]),
         ("Predictions", ["python3", "scripts/run_pipeline.py",
-                         "--tournament", tournament_name, "--use-schedule",
+                         "--tournament", tournament_name,
+                         "--pga-id", tournament_id,
+                         "--field", field_path,
+                         "--use-schedule",
                          "--skip-refresh", "--calibrate", "--lineup"]),
     ]
 
@@ -213,7 +232,7 @@ def run_tuesday_morning(dry_run: bool = False):
             log(f"[DRY RUN] Would run: {desc}")
             results.append((desc, True))
         else:
-            timeout = 300 if "Predictions" in desc else 180
+            timeout = step_timeout(desc, 180)
             success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
 
@@ -252,7 +271,7 @@ def run_tuesday_evening(dry_run: bool = False):
             log(f"[DRY RUN] Would run: {desc}")
             results.append((desc, True))
         else:
-            success = run_command(cmd, desc, timeout=120)
+            success = run_command(cmd, desc, timeout=step_timeout(desc, 120))
             results.append((desc, success))
 
     return results
@@ -283,7 +302,10 @@ def run_wednesday_morning(dry_run: bool = False):
         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                       "--tournament-id", tournament_id]),
         ("Predictions", ["python3", "scripts/run_pipeline.py",
-                         "--tournament", tournament_name, "--use-schedule",
+                         "--tournament", tournament_name,
+                         "--pga-id", tournament_id,
+                         "--field", f"data/fields/field_{tournament_id}.csv",
+                         "--use-schedule",
                          "--skip-refresh", "--calibrate", "--lineup"]),
     ]
 
@@ -293,7 +315,7 @@ def run_wednesday_morning(dry_run: bool = False):
             log(f"[DRY RUN] Would run: {desc}")
             results.append((desc, True))
         else:
-            timeout = 300 if "Predictions" in desc else 120
+            timeout = step_timeout(desc, 120)
             success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
 
