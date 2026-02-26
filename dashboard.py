@@ -709,6 +709,326 @@ def load_player_recent_results(n_events: int = 8):
     return out
 
 
+def _normalize_tournament_key(name: str) -> str:
+    """Normalize tournament names for simple cross-year matching."""
+    if not name:
+        return ""
+    cleaned = re.sub(r"[^a-z0-9]+", " ", str(name).lower()).strip()
+    return re.sub(r"\s+", " ", cleaned)
+
+
+@st.cache_data(ttl=3600)
+def load_tournament_course_lookup_keys() -> tuple[dict, dict]:
+    """
+    Return tournament_name_normalized -> course_key mapping from tournament_courses.json.
+    Also returns course_key -> display course name.
+    """
+    mapping_path = DATA_DIR / "reference" / "tournament_courses.json"
+    if not mapping_path.exists():
+        return {}, {}
+    try:
+        payload = json.loads(mapping_path.read_text())
+    except Exception:
+        return {}, {}
+
+    tournaments = payload.get("tournaments", {}) if isinstance(payload, dict) else {}
+    tournament_to_course: dict[str, str] = {}
+    course_labels: dict[str, str] = {}
+
+    for tournament_name, details in tournaments.items():
+        if not isinstance(details, dict):
+            continue
+        course_label = str(details.get("course_full") or details.get("course") or "").strip()
+        if not course_label:
+            continue
+        course_key = _normalize_tournament_key(course_label)
+        if not course_key:
+            continue
+        course_labels[course_key] = course_label
+
+        candidate_names = [str(tournament_name)]
+        candidate_names.extend([str(a) for a in details.get("aliases", []) if a])
+        for cname in candidate_names:
+            ckey = _normalize_tournament_key(cname)
+            if ckey:
+                tournament_to_course[ckey] = course_key
+
+    return tournament_to_course, course_labels
+
+
+def _position_to_finish_num(position) -> float:
+    """Convert leaderboard position strings to sortable numeric finish."""
+    if pd.isna(position):
+        return np.nan
+    s = str(position).strip().upper()
+    if s.startswith("T"):
+        s = s[1:]
+    if s in {"CUT", "MC", "MDF", "WD", "W/D", "DQ"}:
+        return 999.0
+    try:
+        return float(s)
+    except Exception:
+        return np.nan
+
+
+@st.cache_data(ttl=1800)
+def load_historical_player_event_results() -> pd.DataFrame:
+    """
+    Build event-level player history from leaderboard + SG tournament stats.
+    Output rows are one player per tournament start.
+    """
+    hist_dir = DATA_DIR / "historical"
+
+    lb_frames = []
+    for p in sorted(hist_dir.glob("leaderboards_*.csv")):
+        try:
+            lb = pd.read_csv(
+                p,
+                usecols=[
+                    "tournament_id",
+                    "tournament_name",
+                    "year",
+                    "player_id",
+                    "player_name",
+                    "position",
+                    "to_par",
+                    "total_score",
+                ],
+            )
+        except Exception:
+            continue
+        if lb.empty:
+            continue
+        lb_frames.append(lb)
+
+    if not lb_frames:
+        return pd.DataFrame()
+
+    lb_all = pd.concat(lb_frames, ignore_index=True)
+    lb_all["tournament_id"] = lb_all["tournament_id"].astype(str).str.strip().str.upper()
+    lb_all["event_code"] = lb_all["tournament_id"].str.extract(r"(\d{3})$", expand=False)
+    lb_all["tournament_key"] = lb_all["tournament_name"].apply(_normalize_tournament_key)
+    _t2c, _ = load_tournament_course_lookup_keys()
+    lb_all["course_key"] = lb_all["tournament_key"].map(_t2c).fillna("")
+    lb_all["name_key"] = lb_all["player_name"].apply(_name_key)
+    lb_all["player_id_num"] = pd.to_numeric(lb_all["player_id"], errors="coerce").astype("Int64")
+    lb_all["finish_num"] = lb_all["position"].apply(_position_to_finish_num)
+    lb_all["made_cut"] = lb_all["finish_num"].apply(lambda x: float(x) < 70.0 if pd.notna(x) else False)
+    lb_all["top10"] = lb_all["finish_num"].apply(lambda x: float(x) <= 10.0 if pd.notna(x) else False)
+
+    sg_frames = []
+    for p in sorted(hist_dir.glob("tournament_stats_*.csv")):
+        try:
+            sg = pd.read_csv(
+                p,
+                usecols=["tournament_id", "player_id", "stat_id", "stat_component", "stat_value"],
+            )
+        except Exception:
+            continue
+        if sg.empty:
+            continue
+        sg["stat_id"] = sg["stat_id"].astype(str).str.strip()
+        sg["stat_component"] = sg["stat_component"].astype(str).str.strip().str.lower()
+        sg = sg[(sg["stat_id"] == "2567") & (sg["stat_component"] == "avg")].copy()
+        if sg.empty:
+            continue
+        sg["tournament_id"] = sg["tournament_id"].astype(str).str.strip().str.upper()
+        sg["player_id_num"] = pd.to_numeric(sg["player_id"], errors="coerce").astype("Int64")
+        sg["sg_total_event"] = pd.to_numeric(sg["stat_value"], errors="coerce")
+        sg = (
+            sg.groupby(["tournament_id", "player_id_num"], as_index=False)["sg_total_event"]
+            .mean()
+        )
+        sg_frames.append(sg)
+
+    if sg_frames:
+        sg_all = pd.concat(sg_frames, ignore_index=True)
+        sg_all = sg_all.drop_duplicates(subset=["tournament_id", "player_id_num"], keep="last")
+        merged = lb_all.merge(
+            sg_all,
+            on=["tournament_id", "player_id_num"],
+            how="left",
+        )
+    else:
+        merged = lb_all.copy()
+        merged["sg_total_event"] = np.nan
+
+    return merged
+
+
+def _infer_tournament_id_from_field_overlap(preds_df: pd.DataFrame, min_overlap: float = 0.55) -> str:
+    """
+    Infer active tournament id by matching loaded predictions to field_{RYYYYNNN}.csv files.
+    """
+    if preds_df is None or preds_df.empty or "player_id" not in preds_df.columns:
+        return ""
+
+    pred_ids = set(pd.to_numeric(preds_df["player_id"], errors="coerce").dropna().astype(int).tolist())
+    if not pred_ids:
+        return ""
+
+    fields_dir = DATA_DIR / "fields"
+    if not fields_dir.exists():
+        return ""
+
+    candidates = sorted(fields_dir.glob("field_R*.csv"), key=lambda p: p.stat().st_mtime, reverse=True)[:24]
+    best_tid = ""
+    best_overlap = 0.0
+    for f in candidates:
+        try:
+            field_df = pd.read_csv(f, usecols=["player_id"])
+        except Exception:
+            continue
+        field_ids = set(pd.to_numeric(field_df["player_id"], errors="coerce").dropna().astype(int).tolist())
+        if not field_ids:
+            continue
+
+        overlap = len(pred_ids.intersection(field_ids)) / float(max(1, min(len(pred_ids), len(field_ids))))
+        if overlap > best_overlap:
+            best_overlap = overlap
+            best_tid = _extract_tournament_id(f.stem)
+
+    return best_tid if best_overlap >= float(min_overlap) else ""
+
+
+def resolve_players_page_tournament_context(preds_df: pd.DataFrame) -> dict:
+    """Resolve tournament id/name for player history panels."""
+    tid = _infer_tournament_id_from_field_overlap(preds_df)
+    if not tid:
+        tid = _latest_tournament_id_from_prop_lines(max_age_hours=168.0)
+    if not tid:
+        status = load_pipeline_status()
+        tid = _extract_tournament_id(status.get("tournament_id", ""))
+
+    tname = ""
+    schedule_df = load_schedule()
+    if tid and not schedule_df.empty and "tournament_id" in schedule_df.columns:
+        _sched = schedule_df.copy()
+        _sched["tournament_id"] = _sched["tournament_id"].astype(str).str.strip().str.upper()
+        row = _sched[_sched["tournament_id"] == tid]
+        if not row.empty:
+            tname = str(row.iloc[0].get("tournament_name", "")).strip()
+
+    if not tname:
+        status = load_pipeline_status(preferred_tournament_id=tid)
+        tname = str(status.get("tournament_name", "")).strip()
+
+    t2c, course_labels = load_tournament_course_lookup_keys()
+    tkey = _normalize_tournament_key(tname)
+    ckey = t2c.get(tkey, "") if tkey else ""
+    course_name = course_labels.get(ckey, "")
+    return {
+        "tournament_id": tid,
+        "tournament_name": tname,
+        "course_key": ckey,
+        "course_name": course_name,
+    }
+
+
+def get_player_history_for_current_event(player_name: str, preds_df: pd.DataFrame, max_rows: int = 12) -> tuple[pd.DataFrame, dict]:
+    """Return player event history for the currently resolved tournament context."""
+    context = resolve_players_page_tournament_context(preds_df)
+    history = load_historical_player_event_results()
+    if history.empty:
+        return pd.DataFrame(), context
+
+    name_key = _name_key(player_name)
+    if not name_key:
+        return pd.DataFrame(), context
+
+    player_rows = history[history["name_key"] == name_key].copy()
+    if player_rows.empty:
+        return pd.DataFrame(), context
+
+    target_course_key = str(context.get("course_key", "")).strip()
+    if not target_course_key:
+        # Exact-course mode: no course key means we cannot safely match.
+        return pd.DataFrame(), context
+
+    player_rows = player_rows[player_rows["course_key"] == target_course_key].copy()
+
+    player_rows["year_num"] = pd.to_numeric(player_rows["year"], errors="coerce")
+    player_rows = player_rows.sort_values(["year_num", "tournament_id"], ascending=[False, False], na_position="last")
+    player_rows = player_rows.drop_duplicates(subset=["tournament_id"], keep="first").head(max_rows)
+
+    return player_rows, context
+
+
+def render_player_event_history_panel(player_name: str, preds_df: pd.DataFrame, panel_title: str = "History At This Course"):
+    """Render per-player historical results for the exact course context."""
+    if not player_name:
+        st.info("Select a player to view exact-course history.")
+        return
+
+    _event_hist_df, _event_ctx = get_player_history_for_current_event(
+        player_name,
+        preds_df,
+        max_rows=12,
+    )
+    _event_name = str(_event_ctx.get("tournament_name", "")).strip()
+    _event_tid = str(_event_ctx.get("tournament_id", "")).strip().upper()
+    _course_name = str(_event_ctx.get("course_name", "")).strip()
+
+    st.markdown(f"#### {panel_title}")
+    _label_parts = []
+    if _event_name:
+        _label_parts.append(_event_name)
+    if _event_tid:
+        _label_parts.append(_event_tid)
+    if _course_name:
+        _label_parts.append(_course_name)
+    if _label_parts:
+        st.caption("Exact-course historical results for: " + " • ".join(_label_parts))
+    else:
+        st.caption("Exact-course historical results for the currently inferred tournament context.")
+
+    if _event_hist_df.empty:
+        if not str(_event_ctx.get("course_key", "")).strip():
+            st.info("Exact-course mapping is missing for this tournament in `data/reference/tournament_courses.json`.")
+        else:
+            st.info("No historical starts found for this player at the exact course.")
+        return
+
+    _starts = len(_event_hist_df)
+    _made_cut_rate = float(pd.to_numeric(_event_hist_df["made_cut"], errors="coerce").fillna(False).mean() * 100.0)
+    _top10s = int(pd.to_numeric(_event_hist_df["top10"], errors="coerce").fillna(False).sum())
+    _valid_finishes = pd.to_numeric(_event_hist_df["finish_num"], errors="coerce")
+    _valid_finishes = _valid_finishes[_valid_finishes < 900]
+    _best_finish = int(_valid_finishes.min()) if not _valid_finishes.empty else None
+    _avg_sg_event = pd.to_numeric(_event_hist_df["sg_total_event"], errors="coerce").mean()
+
+    _hcol1, _hcol2, _hcol3, _hcol4, _hcol5 = st.columns(5)
+    with _hcol1:
+        st.metric("Starts", _starts)
+    with _hcol2:
+        st.metric("Made Cut", f"{_made_cut_rate:.0f}%")
+    with _hcol3:
+        st.metric("Top-10s", _top10s)
+    with _hcol4:
+        st.metric("Best Finish", f"T{_best_finish}" if _best_finish is not None else "—")
+    with _hcol5:
+        st.metric("Avg SG (Event)", f"{_avg_sg_event:+.2f}" if pd.notna(_avg_sg_event) else "—")
+
+    _hist_table = _event_hist_df.copy()
+    _hist_table["Year"] = pd.to_numeric(_hist_table["year"], errors="coerce").astype("Int64")
+    _hist_table["Finish"] = _hist_table["position"].astype(str).str.strip()
+    _hist_table["To Par"] = _hist_table["to_par"]
+    _hist_table["SG: Total"] = pd.to_numeric(_hist_table["sg_total_event"], errors="coerce")
+    _hist_table["Tournament"] = _hist_table["tournament_name"]
+
+    _display_cols = ["Year", "Tournament", "Finish", "To Par", "SG: Total"]
+    _hist_table = _hist_table[_display_cols]
+    st.dataframe(
+        _hist_table,
+        hide_index=True,
+        use_container_width=True,
+        column_config={
+            "Year": st.column_config.NumberColumn("Year", format="%d"),
+            "SG: Total": st.column_config.NumberColumn("SG: Total", format="%+.2f"),
+        },
+    )
+
+
 
 
 def _safe_slug(name: str) -> str:
@@ -4371,104 +4691,317 @@ def render_mini_player_card(player_data: dict, rank: int = 0) -> str:
 
 def render_form_stats_section(df: pd.DataFrame):
     """
-    Render enhanced form statistics with visual cards.
+    Render enhanced form analysis using both model form + actual recent results.
     """
     st.markdown("### 🔥 Player Form Analysis")
+    base_df = df.copy()
+    if "player_name" not in base_df.columns:
+        st.warning("No player names available for form analysis.")
+        return
+    base_df["name_key"] = base_df["player_name"].apply(_name_key)
 
-    # Quick filters
+    # ── Enhanced form block (same philosophy as enhanced course fit) ──────────
+    st.markdown("#### Enhanced Form (Model + Actual Recent Results)")
+    st.caption("Blends model form with actual recent SG/finishes, confidence-weighted by recent sample size.")
+
+    ec1, ec2 = st.columns([1, 1])
+    with ec1:
+        lookback_events = st.slider("Recent events window", 5, 16, 10, key="form_actual_lookback")
+    with ec2:
+        min_actual_events = st.slider("Min actual events for display", 1, 8, 3, key="form_actual_min_events")
+
+    enhanced_df = build_enhanced_recent_form_for_field(base_df, lookback_events=lookback_events)
+    if enhanced_df.empty:
+        st.info("Could not build enhanced form from historical results. Showing model form only below.")
+    else:
+        enhanced_view = enhanced_df.copy()
+        enhanced_view["actual_events"] = pd.to_numeric(enhanced_view["actual_events"], errors="coerce").fillna(0)
+        enhanced_view = enhanced_view[enhanced_view["actual_events"] >= min_actual_events]
+        if enhanced_view.empty:
+            enhanced_view = enhanced_df.copy()
+
+        covered = int((pd.to_numeric(enhanced_df["actual_events"], errors="coerce").fillna(0) > 0).sum())
+        avg_events = float(pd.to_numeric(enhanced_df["actual_events"], errors="coerce").fillna(0).mean())
+        avg_sg_cov = float(pd.to_numeric(enhanced_df["actual_sg_coverage"], errors="coerce").fillna(0).mean())
+        cut_delta = pd.to_numeric(enhanced_df["model_vs_actual_cut_delta_pts"], errors="coerce").dropna().abs()
+        cut_delta_mae = float(cut_delta.mean()) if len(cut_delta) else np.nan
+
+        mc1, mc2, mc3, mc4 = st.columns(4)
+        with mc1:
+            st.metric("Players With Actual Results", f"{covered}/{len(enhanced_df)}")
+        with mc2:
+            st.metric("Avg Events/Player", f"{avg_events:.1f}")
+        with mc3:
+            st.metric("SG Coverage", f"{avg_sg_cov*100:.0f}%")
+        with mc4:
+            st.metric("Cut-Rate Delta (MAE)", f"{cut_delta_mae:.1f} pts" if pd.notna(cut_delta_mae) else "—")
+
+        top3 = enhanced_view.sort_values("enhanced_form_pct", ascending=False).head(3)
+        if not top3.empty:
+            tcols = st.columns(3)
+            for i, (_, row) in enumerate(top3.iterrows()):
+                with tcols[i]:
+                    nm = str(row.get("player_name", "Unknown"))[:18]
+                    ep = pd.to_numeric(row.get("enhanced_form_pct"), errors="coerce")
+                    mp = pd.to_numeric(row.get("model_form_pct"), errors="coerce")
+                    lift = pd.to_numeric(row.get("form_lift_pts"), errors="coerce")
+                    evs = int(pd.to_numeric(row.get("actual_events"), errors="coerce") or 0)
+                    conf = pd.to_numeric(row.get("actual_confidence"), errors="coerce")
+                    sgt = pd.to_numeric(row.get("actual_sg_trend"), errors="coerce")
+
+                    ep_s = f"{ep:.1f}%" if pd.notna(ep) else "—"
+                    mp_s = f"{mp:.1f}%" if pd.notna(mp) else "—"
+                    lift_s = f"{lift:+.1f}" if pd.notna(lift) else "—"
+                    conf_s = f"{conf:.2f}" if pd.notna(conf) else "0.00"
+                    sgt_s = f"{sgt:+.3f}" if pd.notna(sgt) else "—"
+
+                    st.markdown(
+                        f"""
+                        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                                    border-radius: 12px; padding: 14px; margin: 4px 0;
+                                    border: 1px solid #2a2a4a; text-align: center;">
+                            <div style="font-weight: bold; color: #fff; font-size: 1.0em; margin-bottom: 6px;">{nm}</div>
+                            <div style="color: #00C853; font-size: 1.3em; font-weight: bold;">{ep_s}</div>
+                            <div style="color: #888; font-size: 0.75em;">Enhanced Form Percentile</div>
+                            <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:0.78em;color:#c9d6ea;">
+                                <span>Model: <b>{mp_s}</b></span>
+                                <span>Lift: <b>{lift_s}</b></span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:0.75em;color:#9fb0c7;">
+                                <span>Events: <b>{evs}</b></span>
+                                <span>Conf: <b>{conf_s}</b></span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:0.75em;color:#9fb0c7;">
+                                <span>SG Trend: <b>{sgt_s}</b></span>
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+
+        plot_df = enhanced_view.copy()
+        plot_df["model_form_pct"] = pd.to_numeric(plot_df["model_form_pct"], errors="coerce")
+        plot_df["enhanced_form_pct"] = pd.to_numeric(plot_df["enhanced_form_pct"], errors="coerce")
+        plot_df["form_lift_pts"] = pd.to_numeric(plot_df["form_lift_pts"], errors="coerce")
+        plot_df["actual_events"] = pd.to_numeric(plot_df["actual_events"], errors="coerce").fillna(0)
+        plot_df = plot_df[plot_df["model_form_pct"].notna() & plot_df["enhanced_form_pct"].notna()]
+        if not plot_df.empty:
+            fig_form = px.scatter(
+                plot_df,
+                x="model_form_pct",
+                y="enhanced_form_pct",
+                size="actual_events",
+                color="form_lift_pts",
+                hover_name="player_name",
+                hover_data={
+                    "actual_events": True,
+                    "actual_avg_sg": ":.2f",
+                    "actual_sg_trend": ":+.3f",
+                    "actual_cut_rate": ":.2%",
+                    "actual_top10_rate": ":.2%",
+                    "actual_confidence": ":.2f",
+                    "model_form_pct": ":.1f",
+                    "enhanced_form_pct": ":.1f",
+                    "form_lift_pts": ":+.1f",
+                },
+                color_continuous_scale="RdYlGn",
+                labels={
+                    "model_form_pct": "Model Form Percentile",
+                    "enhanced_form_pct": "Enhanced Form Percentile",
+                    "form_lift_pts": "Lift (pts)",
+                },
+                title="Enhanced vs Model-Only Form",
+            )
+            fig_form.add_shape(
+                type="line",
+                x0=0, y0=0, x1=100, y1=100,
+                line=dict(color="#8093ad", width=1, dash="dot"),
+            )
+            fig_form.update_layout(
+                height=340,
+                margin=dict(t=40, b=10, l=10, r=10),
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
+                font_color="#dde6f5",
+            )
+            st.plotly_chart(fig_form, use_container_width=True)
+
+        top_table = (
+            enhanced_view.sort_values("enhanced_form_pct", ascending=False)
+            .head(20)[
+                [
+                    "player_name",
+                    "actual_events",
+                    "actual_avg_sg",
+                    "actual_sg_trend",
+                    "actual_cut_rate",
+                    "actual_top10_rate",
+                    "actual_confidence",
+                    "model_form_pct",
+                    "enhanced_form_pct",
+                    "form_lift_pts",
+                ]
+            ]
+            .rename(
+                columns={
+                    "player_name": "Player",
+                    "actual_events": "Events",
+                    "actual_avg_sg": "Avg SG",
+                    "actual_sg_trend": "SG Trend",
+                    "actual_cut_rate": "Cut %",
+                    "actual_top10_rate": "Top-10 %",
+                    "actual_confidence": "Confidence",
+                    "model_form_pct": "Model %",
+                    "enhanced_form_pct": "Enhanced %",
+                    "form_lift_pts": "Lift",
+                }
+            )
+        )
+        st.dataframe(
+            top_table,
+            hide_index=True,
+            use_container_width=True,
+            column_config={
+                "Avg SG": st.column_config.NumberColumn("Avg SG", format="%+.2f"),
+                "SG Trend": st.column_config.NumberColumn("SG Trend", format="%+.3f"),
+                "Cut %": st.column_config.ProgressColumn("Cut %", min_value=0.0, max_value=1.0, format="%.0f%%"),
+                "Top-10 %": st.column_config.ProgressColumn("Top-10 %", min_value=0.0, max_value=1.0, format="%.0f%%"),
+                "Confidence": st.column_config.ProgressColumn("Confidence", min_value=0.0, max_value=1.0, format="%.2f"),
+                "Model %": st.column_config.NumberColumn("Model %", format="%.1f"),
+                "Enhanced %": st.column_config.NumberColumn("Enhanced %", format="%.1f"),
+                "Lift": st.column_config.NumberColumn("Lift", format="%+.1f"),
+            },
+        )
+
+        # Carry enhanced columns into the board section below.
+        keep_cols = [
+            "name_key",
+            "actual_events",
+            "actual_sg_coverage",
+            "actual_avg_sg",
+            "actual_cut_rate",
+            "actual_top10_rate",
+            "actual_confidence",
+            "enhanced_form_pct",
+            "model_form_pct",
+            "form_lift_pts",
+        ]
+        base_df = base_df.merge(
+            enhanced_df[keep_cols].drop_duplicates(subset=["name_key"], keep="first"),
+            on="name_key",
+            how="left",
+        )
+
+    # ── Existing board (kept, now with enhanced sort options) ─────────────────
+    st.markdown("---")
+    st.markdown("#### Form Board")
+
     col1, col2, col3 = st.columns(3)
     with col1:
         show_filter = st.selectbox("Show:", ["All", "Hot Players", "Cold Players", "Most Consistent"], key="form_filter")
     with col2:
-        sort_by = st.selectbox("Sort by:", ["Form Trend", "SG Total", "Recent Top-10s", "World Rank"], key="form_sort")
+        sort_by = st.selectbox(
+            "Sort by:",
+            ["Enhanced Form %", "Form Lift", "Form Trend", "SG Total", "Actual SG (Recent)", "Recent Top-10s", "World Rank"],
+            key="form_sort",
+        )
     with col3:
         limit = st.slider("Players to show:", 5, 30, 15, key="form_limit")
 
-    # Apply filters
-    filtered_df = df.copy()
-
+    filtered_df = base_df.copy()
     if show_filter == "Hot Players":
-        filtered_df = filtered_df[filtered_df["form_trend"] >= 0.2] if "form_trend" in filtered_df.columns else filtered_df
+        if "enhanced_form_pct" in filtered_df.columns and filtered_df["enhanced_form_pct"].notna().any():
+            filtered_df = filtered_df[filtered_df["enhanced_form_pct"] >= 70]
+        elif "form_trend" in filtered_df.columns:
+            filtered_df = filtered_df[filtered_df["form_trend"] >= 0.2]
     elif show_filter == "Cold Players":
-        filtered_df = filtered_df[filtered_df["form_trend"] <= -0.2] if "form_trend" in filtered_df.columns else filtered_df
+        if "enhanced_form_pct" in filtered_df.columns and filtered_df["enhanced_form_pct"].notna().any():
+            filtered_df = filtered_df[filtered_df["enhanced_form_pct"] <= 30]
+        elif "form_trend" in filtered_df.columns:
+            filtered_df = filtered_df[filtered_df["form_trend"] <= -0.2]
     elif show_filter == "Most Consistent":
         if "finish_consistency" in filtered_df.columns:
             filtered_df = filtered_df.nsmallest(limit * 2, "finish_consistency")
 
-    # Apply sorting
     sort_map = {
+        "Enhanced Form %": ("enhanced_form_pct", False),
+        "Form Lift": ("form_lift_pts", False),
         "Form Trend": ("form_trend", False),
         "SG Total": ("sg_total", False),
+        "Actual SG (Recent)": ("actual_avg_sg", False),
         "Recent Top-10s": ("recent_top10s", False),
-        "World Rank": ("world_rank", True)
+        "World Rank": ("world_rank", True),
     }
-    sort_col, ascending = sort_map.get(sort_by, ("form_trend", False))
+    sort_col, ascending = sort_map.get(sort_by, ("enhanced_form_pct", False))
     if sort_col in filtered_df.columns:
-        filtered_df = filtered_df.sort_values(sort_col, ascending=ascending)
+        filtered_df = filtered_df.sort_values(sort_col, ascending=ascending, na_position="last")
 
-    # Limit results
     filtered_df = filtered_df.head(limit)
-
     if filtered_df.empty:
         st.warning("No players match the current filter")
         return
 
-    # Display mode toggle
     display_mode = st.radio("Display:", ["Cards", "List", "Table"], horizontal=True, key="form_display")
-
     if display_mode == "Cards":
-        # Show detailed cards (2 per row)
         cols = st.columns(2)
         for idx, (_, row) in enumerate(filtered_df.iterrows()):
             with cols[idx % 2]:
                 st.markdown(render_player_stat_card(row.to_dict()), unsafe_allow_html=True)
-
     elif display_mode == "List":
-        # Compact list view
         st.markdown('<div style="background: #0e0e1a; border-radius: 12px; padding: 12px;">', unsafe_allow_html=True)
         for idx, (_, row) in enumerate(filtered_df.iterrows(), 1):
             st.markdown(render_mini_player_card(row.to_dict(), idx), unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
+        st.markdown("</div>", unsafe_allow_html=True)
     else:
-        # Traditional table
-        display_cols = ["player_name", "form_trend", "sg_total", "recent_top10s", "recent_top5s", "recent_cuts_pct"]
+        display_cols = [
+            "player_name",
+            "enhanced_form_pct",
+            "form_lift_pts",
+            "actual_events",
+            "actual_avg_sg",
+            "form_trend",
+            "sg_total",
+            "recent_top10s",
+            "recent_top5s",
+            "recent_cuts_pct",
+        ]
         display_df = filtered_df[[c for c in display_cols if c in filtered_df.columns]].copy()
-
-        # Format columns
         if "form_trend" in display_df.columns:
-            display_df["form_trend"] = display_df["form_trend"].round(2)
+            display_df["form_trend"] = pd.to_numeric(display_df["form_trend"], errors="coerce").round(2)
         if "sg_total" in display_df.columns:
-            display_df["sg_total"] = display_df["sg_total"].round(2)
+            display_df["sg_total"] = pd.to_numeric(display_df["sg_total"], errors="coerce").round(2)
+        if "actual_avg_sg" in display_df.columns:
+            display_df["actual_avg_sg"] = pd.to_numeric(display_df["actual_avg_sg"], errors="coerce").round(2)
+        if "enhanced_form_pct" in display_df.columns:
+            display_df["enhanced_form_pct"] = pd.to_numeric(display_df["enhanced_form_pct"], errors="coerce").round(1)
+        if "form_lift_pts" in display_df.columns:
+            display_df["form_lift_pts"] = pd.to_numeric(display_df["form_lift_pts"], errors="coerce").round(1)
         if "recent_cuts_pct" in display_df.columns:
-            display_df["recent_cuts_pct"] = (display_df["recent_cuts_pct"] * 100).round(0).astype(str) + "%"
-
+            display_df["recent_cuts_pct"] = (pd.to_numeric(display_df["recent_cuts_pct"], errors="coerce") * 100).round(0).astype("Int64").astype(str) + "%"
         display_df.columns = [c.replace("_", " ").title() for c in display_df.columns]
         st.dataframe(display_df, hide_index=True, use_container_width=True)
 
-    # Summary stats
     st.markdown("---")
     st.markdown("#### Field Summary")
+    s1, s2, s3, s4 = st.columns(4)
 
-    col1, col2, col3, col4 = st.columns(4)
-
-    if "form_trend" in df.columns:
-        hot_count = len(df[df["form_trend"] >= 0.3])
-        cold_count = len(df[df["form_trend"] <= -0.3])
-        with col1:
+    if "form_trend" in base_df.columns:
+        hot_count = len(base_df[pd.to_numeric(base_df["form_trend"], errors="coerce") >= 0.3])
+        cold_count = len(base_df[pd.to_numeric(base_df["form_trend"], errors="coerce") <= -0.3])
+        with s1:
             st.metric("🔥 Hot Players", hot_count)
-        with col2:
+        with s2:
             st.metric("❄️ Cold Players", cold_count)
 
-    if "sg_total" in df.columns:
-        avg_sg = df["sg_total"].mean()
-        with col3:
-            st.metric("Field Avg SG", f"{avg_sg:+.2f}")
+    if "sg_total" in base_df.columns:
+        avg_sg = pd.to_numeric(base_df["sg_total"], errors="coerce").mean()
+        with s3:
+            st.metric("Field Avg SG", f"{avg_sg:+.2f}" if pd.notna(avg_sg) else "—")
 
-    if "recent_cuts_pct" in df.columns:
-        avg_cuts = df["recent_cuts_pct"].mean() * 100
-        with col4:
-            st.metric("Avg Cut Rate", f"{avg_cuts:.0f}%")
+    if "recent_cuts_pct" in base_df.columns:
+        avg_cuts = pd.to_numeric(base_df["recent_cuts_pct"], errors="coerce").mean() * 100
+        with s4:
+            st.metric("Avg Cut Rate", f"{avg_cuts:.0f}%" if pd.notna(avg_cuts) else "—")
 
 
 def load_player_stats() -> pd.DataFrame:
@@ -5199,6 +5732,264 @@ def render_course_performance_cards(
                 )
 
 
+def _zscore_numeric(values: pd.Series) -> pd.Series:
+    """Standard z-score with safe fallbacks for sparse/constant vectors."""
+    s = pd.to_numeric(values, errors="coerce")
+    if s.notna().sum() < 2:
+        return pd.Series(np.zeros(len(s)), index=s.index, dtype=float)
+    mu = s.mean()
+    sigma = s.std(ddof=0)
+    if not np.isfinite(sigma) or sigma < 1e-9:
+        return pd.Series(np.zeros(len(s)), index=s.index, dtype=float)
+    return (s - mu) / sigma
+
+
+def build_enhanced_recent_form_for_field(field_df: pd.DataFrame, lookback_events: int = 10) -> pd.DataFrame:
+    """
+    Blend model form signals with actual recent historical performance.
+
+    Returns one row per field player with confidence-adjusted actual form,
+    model form baseline, enhanced form percentile, and diagnostic deltas.
+    """
+    if field_df is None or field_df.empty or "player_name" not in field_df.columns:
+        return pd.DataFrame()
+
+    lookback_events = int(max(4, min(20, lookback_events)))
+    history = load_historical_player_event_results()
+    if history.empty:
+        return pd.DataFrame()
+
+    work = field_df.copy()
+    work["name_key"] = work["player_name"].apply(_name_key)
+    work = work[work["name_key"] != ""].copy()
+    if work.empty:
+        return pd.DataFrame()
+
+    field_keys = set(work["name_key"].tolist())
+    hist = history[history["name_key"].isin(field_keys)].copy()
+    if hist.empty:
+        return pd.DataFrame()
+
+    hist["year_num"] = pd.to_numeric(hist["year"], errors="coerce")
+    hist["finish_num"] = pd.to_numeric(hist["finish_num"], errors="coerce")
+    hist["finish_valid"] = hist["finish_num"].where(hist["finish_num"] < 900, np.nan)
+    hist["sg_total_event"] = pd.to_numeric(hist["sg_total_event"], errors="coerce")
+    hist["made_cut"] = pd.to_numeric(hist["made_cut"], errors="coerce")
+    hist["top10"] = pd.to_numeric(hist["top10"], errors="coerce")
+
+    rows = []
+    for key, grp in hist.groupby("name_key"):
+        recent = (
+            grp.sort_values(["year_num", "tournament_id"], ascending=[False, False], na_position="last")
+            .drop_duplicates(subset=["tournament_id"], keep="first")
+            .head(lookback_events)
+            .copy()
+        )
+        if recent.empty:
+            continue
+
+        sg_vals = pd.to_numeric(recent["sg_total_event"], errors="coerce").dropna()
+        finish_vals = pd.to_numeric(recent["finish_valid"], errors="coerce").dropna()
+        cut_vals = pd.to_numeric(recent["made_cut"], errors="coerce").dropna()
+        top10_vals = pd.to_numeric(recent["top10"], errors="coerce").dropna()
+
+        slope = np.nan
+        trend_base = recent.sort_values(["year_num", "tournament_id"], ascending=[True, True], na_position="last")
+        trend_sg = pd.to_numeric(trend_base["sg_total_event"], errors="coerce").dropna().values
+        if len(trend_sg) >= 2:
+            x = np.arange(len(trend_sg), dtype=float)
+            try:
+                slope = float(np.polyfit(x, trend_sg, 1)[0])
+            except Exception:
+                slope = np.nan
+
+        rows.append(
+            {
+                "name_key": key,
+                "actual_events": int(len(recent)),
+                "actual_events_with_sg": int(len(sg_vals)),
+                "actual_avg_sg": float(sg_vals.mean()) if len(sg_vals) else np.nan,
+                "actual_sg_trend": slope,
+                "actual_avg_finish": float(finish_vals.mean()) if len(finish_vals) else np.nan,
+                "actual_finish_std": float(finish_vals.std(ddof=0)) if len(finish_vals) > 1 else np.nan,
+                "actual_cut_rate": float(cut_vals.mean()) if len(cut_vals) else np.nan,
+                "actual_top10_rate": float(top10_vals.mean()) if len(top10_vals) else np.nan,
+            }
+        )
+
+    actual_df = pd.DataFrame(rows)
+    if actual_df.empty:
+        return pd.DataFrame()
+
+    merged = work.merge(actual_df, on="name_key", how="left")
+
+    merged["actual_events"] = pd.to_numeric(merged["actual_events"], errors="coerce").fillna(0)
+    merged["actual_events_with_sg"] = pd.to_numeric(merged["actual_events_with_sg"], errors="coerce").fillna(0)
+    merged["actual_sg_coverage"] = np.where(
+        merged["actual_events"] > 0,
+        merged["actual_events_with_sg"] / merged["actual_events"],
+        0.0,
+    ).clip(0.0, 1.0)
+    merged["actual_confidence"] = (
+        (np.log1p(merged["actual_events"]) / np.log1p(float(lookback_events)))
+        * (0.6 + 0.4 * merged["actual_sg_coverage"])
+    ).clip(0.0, 1.0)
+
+    # Model-form baseline from existing prediction columns (dynamic by availability).
+    model_components = [
+        ("form_trend", 0.40, True),
+        ("recent_top10s", 0.20, True),
+        ("recent_cuts_pct", 0.20, True),
+        ("hot_hand_score", 0.10, True),
+        ("finish_consistency", 0.10, False),  # lower is better
+    ]
+    model_raw = pd.Series(np.zeros(len(merged)), index=merged.index, dtype=float)
+    model_w = 0.0
+    for col, weight, higher_is_better in model_components:
+        if col not in merged.columns:
+            continue
+        z = _zscore_numeric(merged[col])
+        model_raw += (z if higher_is_better else -z) * float(weight)
+        model_w += float(weight)
+    if model_w > 0:
+        model_raw = model_raw / model_w
+    merged["model_form_raw"] = model_raw
+
+    # Actual recent-form signal.
+    actual_components = [
+        ("actual_avg_sg", 0.45, True),
+        ("actual_sg_trend", 0.20, True),
+        ("actual_top10_rate", 0.20, True),
+        ("actual_cut_rate", 0.10, True),
+        ("actual_avg_finish", 0.05, False),  # lower is better
+    ]
+    actual_raw = pd.Series(np.zeros(len(merged)), index=merged.index, dtype=float)
+    actual_w = 0.0
+    for col, weight, higher_is_better in actual_components:
+        if col not in merged.columns:
+            continue
+        z = _zscore_numeric(merged[col])
+        actual_raw += (z if higher_is_better else -z) * float(weight)
+        actual_w += float(weight)
+    if actual_w > 0:
+        actual_raw = actual_raw / actual_w
+    merged["actual_form_raw"] = actual_raw
+    merged["actual_form_conf"] = merged["actual_form_raw"] * merged["actual_confidence"]
+
+    merged["enhanced_form_raw"] = 0.65 * merged["model_form_raw"] + 0.35 * merged["actual_form_conf"]
+    merged["model_form_pct"] = merged["model_form_raw"].rank(pct=True) * 100.0
+    merged["enhanced_form_pct"] = merged["enhanced_form_raw"].rank(pct=True) * 100.0
+    merged["form_lift_pts"] = merged["enhanced_form_pct"] - merged["model_form_pct"]
+
+    # Diagnostic: model recent cut rate vs actual recent cut rate.
+    if "recent_cuts_pct" in merged.columns:
+        merged["model_vs_actual_cut_delta_pts"] = (
+            (pd.to_numeric(merged["recent_cuts_pct"], errors="coerce") - pd.to_numeric(merged["actual_cut_rate"], errors="coerce"))
+            * 100.0
+        )
+    else:
+        merged["model_vs_actual_cut_delta_pts"] = np.nan
+
+    return merged
+
+
+def build_enhanced_course_fit_for_field(field_df: pd.DataFrame, course_key: str) -> pd.DataFrame:
+    """
+    Blend model course fit (dg_fit_total) with actual historical performance at the exact course.
+
+    Returns one row per field player with:
+    - actual course metrics (starts, cut rate, top-10 rate, avg finish, event SG)
+    - confidence-adjusted actual signal
+    - enhanced course-fit percentile and lift vs model-only fit
+    """
+    if field_df is None or field_df.empty or not course_key:
+        return pd.DataFrame()
+
+    if "player_name" not in field_df.columns:
+        return pd.DataFrame()
+
+    history = load_historical_player_event_results()
+    if history.empty:
+        return pd.DataFrame()
+
+    out = field_df.copy()
+    out["name_key"] = out["player_name"].apply(_name_key)
+    out = out[out["name_key"] != ""].copy()
+    if out.empty:
+        return pd.DataFrame()
+
+    field_keys = set(out["name_key"].tolist())
+    hist = history[
+        (history["course_key"] == str(course_key).strip())
+        & (history["name_key"].isin(field_keys))
+    ].copy()
+    if hist.empty:
+        return pd.DataFrame()
+
+    hist["year_num"] = pd.to_numeric(hist["year"], errors="coerce")
+    hist["finish_num"] = pd.to_numeric(hist["finish_num"], errors="coerce")
+    hist["finish_valid"] = hist["finish_num"].where(hist["finish_num"] < 900, np.nan)
+    hist["sg_total_event"] = pd.to_numeric(hist["sg_total_event"], errors="coerce")
+    hist["made_cut"] = hist["made_cut"].astype(float)
+    hist["top10"] = hist["top10"].astype(float)
+
+    agg = (
+        hist.groupby("name_key", as_index=False)
+        .agg(
+            actual_starts=("tournament_id", "nunique"),
+            actual_made_cut_rate=("made_cut", "mean"),
+            actual_top10_rate=("top10", "mean"),
+            actual_avg_finish=("finish_valid", "mean"),
+            actual_best_finish=("finish_valid", "min"),
+            actual_sg_avg=("sg_total_event", "mean"),
+            actual_sg_std=("sg_total_event", "std"),
+            actual_last_year=("year_num", "max"),
+        )
+    )
+
+    trend_rows = []
+    for key, grp in hist.groupby("name_key"):
+        g = grp.sort_values("year_num")
+        vals = pd.to_numeric(g["sg_total_event"], errors="coerce").dropna().values
+        slope = np.nan
+        if len(vals) >= 2:
+            x = np.arange(len(vals), dtype=float)
+            try:
+                slope = float(np.polyfit(x, vals, 1)[0])
+            except Exception:
+                slope = np.nan
+        trend_rows.append({"name_key": key, "actual_sg_trend": slope})
+    trend_df = pd.DataFrame(trend_rows)
+    agg = agg.merge(trend_df, on="name_key", how="left")
+
+    merged = out.merge(agg, on="name_key", how="left")
+    merged["actual_starts"] = pd.to_numeric(merged["actual_starts"], errors="coerce").fillna(0)
+    merged["actual_confidence"] = (
+        np.log1p(merged["actual_starts"]) / np.log(6.0)
+    ).clip(0.0, 1.0)
+
+    z_sg = _zscore_numeric(merged["actual_sg_avg"])
+    z_finish = -_zscore_numeric(merged["actual_avg_finish"])  # lower finish is better
+    z_top10 = _zscore_numeric(merged["actual_top10_rate"])
+
+    merged["actual_signal_raw"] = 0.55 * z_sg + 0.30 * z_finish + 0.15 * z_top10
+    merged["actual_signal_conf"] = merged["actual_signal_raw"] * merged["actual_confidence"]
+
+    if "dg_fit_total" in merged.columns:
+        z_dg = _zscore_numeric(merged["dg_fit_total"])
+        merged["dg_fit_pct"] = pd.to_numeric(merged["dg_fit_total"], errors="coerce").rank(pct=True) * 100.0
+    else:
+        z_dg = pd.Series(np.zeros(len(merged)), index=merged.index, dtype=float)
+        merged["dg_fit_pct"] = np.nan
+
+    merged["enhanced_fit_raw"] = 0.60 * z_dg + 0.40 * merged["actual_signal_conf"]
+    merged["actual_fit_pct"] = merged["actual_signal_conf"].rank(pct=True) * 100.0
+    merged["enhanced_fit_pct"] = merged["enhanced_fit_raw"].rank(pct=True) * 100.0
+    merged["fit_lift_pts"] = merged["enhanced_fit_pct"] - merged["dg_fit_pct"]
+
+    return merged
+
+
 def render_course_specific_stats(df: pd.DataFrame):
     """
     Render course-specific statistics.
@@ -5209,12 +6000,81 @@ def render_course_specific_stats(df: pd.DataFrame):
     - Course fit metrics (how well player's game fits the course)
     """
     st.markdown("### Course-Specific Analysis")
+    _ctx = resolve_players_page_tournament_context(df)
+    _ctx_tname = str(_ctx.get("tournament_name", "")).strip()
+    _ctx_tid = str(_ctx.get("tournament_id", "")).strip().upper()
+    _ctx_cname = str(_ctx.get("course_name", "")).strip()
+    _ctx_ckey = str(_ctx.get("course_key", "")).strip()
+    if _ctx_cname:
+        _ctx_bits = []
+        if _ctx_tname:
+            _ctx_bits.append(_ctx_tname)
+        if _ctx_tid:
+            _ctx_bits.append(_ctx_tid)
+        _ctx_bits.append(_ctx_cname)
+        st.caption("Resolved context: " + " • ".join(_ctx_bits))
+    enhanced_df = build_enhanced_course_fit_for_field(df, _ctx_ckey) if _ctx_ckey else pd.DataFrame()
 
     # --- Section 0: Top Course Fits Visual Cards ---
     fit_cols = ["dg_fit_total", "dg_fit_ott", "dg_fit_app", "dg_fit_arg", "dg_fit_putt"]
-    if "dg_fit_total" in df.columns:
+    if not enhanced_df.empty:
         st.markdown("#### 🎯 Best Course Fits")
-        st.caption("Players whose game best matches this course")
+        st.caption("Blended ranking: model course fit + actual exact-course results (confidence-weighted).")
+
+        top3_fits = enhanced_df.sort_values("enhanced_fit_pct", ascending=False).head(3)
+        fit_cols = st.columns(3)
+
+        for i, (_, player) in enumerate(top3_fits.iterrows()):
+            with fit_cols[i]:
+                name = str(player.get("player_name", "Unknown"))[:18]
+                enhanced_pct = pd.to_numeric(player.get("enhanced_fit_pct"), errors="coerce")
+                model_pct = pd.to_numeric(player.get("dg_fit_pct"), errors="coerce")
+                lift_pts = pd.to_numeric(player.get("fit_lift_pts"), errors="coerce")
+                starts = int(pd.to_numeric(player.get("actual_starts"), errors="coerce") or 0)
+                confidence = pd.to_numeric(player.get("actual_confidence"), errors="coerce")
+                avg_sg = pd.to_numeric(player.get("actual_sg_avg"), errors="coerce")
+                top10_rate = pd.to_numeric(player.get("actual_top10_rate"), errors="coerce")
+
+                rank_colors = ["#FFD700", "#C0C0C0", "#CD7F32"]
+                rank_labels = ["1st", "2nd", "3rd"]
+
+                enhanced_str = f"{enhanced_pct:.1f}%" if pd.notna(enhanced_pct) else "—"
+                model_str = f"{model_pct:.1f}%" if pd.notna(model_pct) else "—"
+                lift_str = f"{lift_pts:+.1f}" if pd.notna(lift_pts) else "—"
+                conf_str = f"{confidence:.2f}" if pd.notna(confidence) else "0.00"
+                sg_str = f"{avg_sg:+.2f}" if pd.notna(avg_sg) else "—"
+                t10_str = f"{(top10_rate * 100):.0f}%" if pd.notna(top10_rate) else "—"
+
+                st.markdown(f"""
+                <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                            border-radius: 12px; padding: 16px; margin: 4px 0;
+                            border: 2px solid {rank_colors[i]}; text-align: center;">
+                    <div style="display: inline-block; background: {rank_colors[i]}; color: #000;
+                                padding: 2px 10px; border-radius: 12px; font-size: 0.8em;
+                                font-weight: bold; margin-bottom: 8px;">{rank_labels[i]}</div>
+                    <div style="font-weight: bold; color: #fff; font-size: 1.1em; margin: 8px 0;">{name}</div>
+                    <div style="color: #00C853; font-size: 1.35em; font-weight: bold;">{enhanced_str}</div>
+                    <div style="color: #888; font-size: 0.75em; margin-top: 4px;">Enhanced Fit Percentile</div>
+                    <div style="display:flex;justify-content:space-between;margin-top:10px;
+                                padding-top:10px;border-top:1px solid #2a2a4a;font-size:0.78em;color:#c9d6ea;">
+                        <span>Model: <b>{model_str}</b></span>
+                        <span>Lift: <b>{lift_str}</b></span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.75em;color:#9fb0c7;">
+                        <span>Starts: <b>{starts}</b></span>
+                        <span>Conf: <b>{conf_str}</b></span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.75em;color:#9fb0c7;">
+                        <span>Avg SG: <b>{sg_str}</b></span>
+                        <span>Top-10: <b>{t10_str}</b></span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        st.markdown("---")
+    elif "dg_fit_total" in df.columns:
+        st.markdown("#### 🎯 Best Course Fits")
+        st.caption("Players whose game best matches this course (model-only fallback).")
 
         top3_fits = df.nlargest(3, "dg_fit_total")
         fit_cols = st.columns(3)
@@ -5269,42 +6129,6 @@ def render_course_specific_stats(df: pd.DataFrame):
 
         st.markdown("---")
 
-    # --- Section 1: Course History ---
-    st.markdown("#### Course History")
-
-    history_cols = ["hist_times_played", "hist_avg_finish", "hist_best_finish", "hist_wins", "hist_top10s"]
-    available_hist = [col for col in history_cols if col in df.columns]
-
-    if available_hist and "hist_times_played" in df.columns:
-        # Players with course history
-        with_history = df[df["hist_times_played"] > 0].copy()
-
-        if not with_history.empty:
-            st.caption(f"Players with course experience: {len(with_history)}")
-
-            # Sort by times played (experience matters)
-            course_vets = with_history.nlargest(15, "hist_times_played")[
-                ["player_name"] + available_hist
-            ].copy()
-
-            # Format columns
-            if "hist_avg_finish" in course_vets.columns:
-                course_vets["hist_avg_finish"] = course_vets["hist_avg_finish"].round(1)
-
-            # Rename for display
-            col_names = {
-                "player_name": "Player",
-                "hist_times_played": "Times Played",
-                "hist_avg_finish": "Avg Finish",
-                "hist_best_finish": "Best Finish",
-                "hist_wins": "Wins",
-                "hist_top10s": "Top-10s"
-            }
-            course_vets = course_vets.rename(columns={k: v for k, v in col_names.items() if k in course_vets.columns})
-
-            st.dataframe(course_vets, hide_index=True, use_container_width=True)
-        else:
-            st.info("No players have course history data")
 
     # --- Section 2: Course Fit Analysis ---
     st.markdown("#### Course Fit Score")
@@ -5342,6 +6166,124 @@ def render_course_specific_stats(df: pd.DataFrame):
         - **Negative** = Course exposes player's weaknesses
         - Based on historical correlations between SG categories and performance at this venue
         """)
+
+    # --- Section 3: Enhanced Course Fit (Model + Actual Results) ---
+    st.markdown("#### Enhanced Course Fit (Model + Actual Results)")
+    st.caption("Blends model course-fit with actual historical results at this exact course.")
+
+    if not _ctx_ckey:
+        st.info("Exact-course mapping missing for this tournament. Add mapping in `data/reference/tournament_courses.json`.")
+    else:
+        if enhanced_df.empty:
+            st.info("No historical exact-course results found for current field players.")
+        else:
+            _covered = int((pd.to_numeric(enhanced_df["actual_starts"], errors="coerce").fillna(0) > 0).sum())
+            _avg_starts = float(pd.to_numeric(enhanced_df["actual_starts"], errors="coerce").fillna(0).mean())
+            _best_row = enhanced_df.sort_values("enhanced_fit_pct", ascending=False).iloc[0]
+            _lift_row = enhanced_df.sort_values("fit_lift_pts", ascending=False).iloc[0]
+
+            _ec1, _ec2, _ec3, _ec4 = st.columns(4)
+            with _ec1:
+                st.metric("Players With Course Results", f"{_covered}/{len(enhanced_df)}")
+            with _ec2:
+                st.metric("Avg Starts (Field)", f"{_avg_starts:.1f}")
+            with _ec3:
+                st.metric("Top Enhanced Fit", str(_best_row.get("player_name", "—")))
+            with _ec4:
+                _lift_name = str(_lift_row.get("player_name", "—"))
+                _lift_pts = pd.to_numeric(_lift_row.get("fit_lift_pts"), errors="coerce")
+                st.metric("Biggest Positive Lift", f"{_lift_name}", f"{_lift_pts:+.1f} pts" if pd.notna(_lift_pts) else None)
+
+            _plot_df = enhanced_df.copy()
+            _plot_df["actual_starts"] = pd.to_numeric(_plot_df["actual_starts"], errors="coerce").fillna(0)
+            _plot_df["enhanced_fit_pct"] = pd.to_numeric(_plot_df["enhanced_fit_pct"], errors="coerce")
+            _plot_df["dg_fit_pct"] = pd.to_numeric(_plot_df["dg_fit_pct"], errors="coerce")
+            _plot_df["fit_lift_pts"] = pd.to_numeric(_plot_df["fit_lift_pts"], errors="coerce")
+            _plot_df = _plot_df[_plot_df["enhanced_fit_pct"].notna()]
+
+            if not _plot_df.empty:
+                fig_blend = px.scatter(
+                    _plot_df,
+                    x="dg_fit_pct",
+                    y="enhanced_fit_pct",
+                    size="actual_starts",
+                    color="fit_lift_pts",
+                    hover_name="player_name",
+                    hover_data={
+                        "actual_starts": True,
+                        "actual_sg_avg": ":.2f",
+                        "actual_avg_finish": ":.1f",
+                        "actual_top10_rate": ":.2%",
+                        "actual_confidence": ":.2f",
+                        "dg_fit_pct": ":.1f",
+                        "enhanced_fit_pct": ":.1f",
+                        "fit_lift_pts": ":+.1f",
+                    },
+                    color_continuous_scale="RdYlGn",
+                    labels={
+                        "dg_fit_pct": "Model Course-Fit Percentile",
+                        "enhanced_fit_pct": "Enhanced Course-Fit Percentile",
+                        "fit_lift_pts": "Lift (pts)",
+                    },
+                    title="Enhanced vs Model-Only Course Fit",
+                )
+                fig_blend.add_shape(
+                    type="line",
+                    x0=0, y0=0, x1=100, y1=100,
+                    line=dict(color="#8093ad", width=1, dash="dot"),
+                )
+                fig_blend.update_layout(
+                    height=360,
+                    margin=dict(t=40, b=10, l=10, r=10),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    font_color="#dde6f5",
+                )
+                st.plotly_chart(fig_blend, use_container_width=True)
+
+            _table = enhanced_df.copy()
+            _table = _table.sort_values("enhanced_fit_pct", ascending=False)
+            _table = _table[[
+                "player_name",
+                "actual_starts",
+                "actual_made_cut_rate",
+                "actual_top10_rate",
+                "actual_avg_finish",
+                "actual_sg_avg",
+                "actual_sg_trend",
+                "actual_confidence",
+                "dg_fit_pct",
+                "enhanced_fit_pct",
+                "fit_lift_pts",
+            ]].rename(columns={
+                "player_name": "Player",
+                "actual_starts": "Starts",
+                "actual_made_cut_rate": "Cut %",
+                "actual_top10_rate": "Top-10 %",
+                "actual_avg_finish": "Avg Finish",
+                "actual_sg_avg": "Avg SG",
+                "actual_sg_trend": "SG Trend",
+                "actual_confidence": "Confidence",
+                "dg_fit_pct": "Model Fit %",
+                "enhanced_fit_pct": "Enhanced Fit %",
+                "fit_lift_pts": "Lift",
+            })
+            st.dataframe(
+                _table,
+                hide_index=True,
+                use_container_width=True,
+                column_config={
+                    "Cut %": st.column_config.ProgressColumn("Cut %", min_value=0.0, max_value=1.0, format="%.0f%%"),
+                    "Top-10 %": st.column_config.ProgressColumn("Top-10 %", min_value=0.0, max_value=1.0, format="%.0f%%"),
+                    "Confidence": st.column_config.ProgressColumn("Confidence", min_value=0.0, max_value=1.0, format="%.2f"),
+                    "Avg Finish": st.column_config.NumberColumn("Avg Finish", format="%.1f"),
+                    "Avg SG": st.column_config.NumberColumn("Avg SG", format="%+.2f"),
+                    "SG Trend": st.column_config.NumberColumn("SG Trend", format="%+.3f"),
+                    "Model Fit %": st.column_config.NumberColumn("Model Fit %", format="%.1f"),
+                    "Enhanced Fit %": st.column_config.NumberColumn("Enhanced Fit %", format="%.1f"),
+                    "Lift": st.column_config.NumberColumn("Lift", format="%+.1f"),
+                },
+            )
 
     # --- Section 3: Course History vs Current Form ---
     st.markdown("#### Experience + Form Combo")
@@ -7190,26 +8132,154 @@ elif page == "👤 Players":
 
     engine = load_scoring_engine()
     all_players = sorted(engine.predictions.keys()) if engine and engine.predictions else []
+    _best_events_state_key = "player_best_events_cache"
+    if _best_events_state_key not in st.session_state:
+        st.session_state[_best_events_state_key] = {}
+
+    def _player_best_events_df(_player_name: str, _top_n: int = 10) -> pd.DataFrame:
+        """Build a structured best-events table for the selected player."""
+        if not engine or not _player_name:
+            return pd.DataFrame()
+        try:
+            _scores = engine.get_player_best_tournaments(_player_name, top_n=_top_n)
+        except Exception:
+            return pd.DataFrame()
+        _rows = []
+        for _i, _s in enumerate(_scores, 1):
+            _t = engine.tournaments.get(_s.tournament)
+            _rows.append({
+                "#": _i,
+                "Tournament": _s.tournament,
+                "Date": _t.start_date if _t else "—",
+                "Type": _t.tournament_type if _t else "—",
+                "Importance": round(float(_s.tournament_importance), 1),
+                "Total Score": round(float(_s.total_score), 1),
+                "Course Fit": round(float(_s.course_fit), 1),
+                "DG Fit": round(float(getattr(_s, "dg_fit_score", 50.0)), 1),
+                "Fit Confidence": round(float(getattr(_s, "fit_confidence", 0.0)) * 100.0, 1),
+                "ML Score": round(float(getattr(_s, "ml_prediction", 50.0)), 1),
+                "Form Score": round(float(getattr(_s, "current_form", 50.0)), 1),
+                "Field Score": round(float(getattr(_s, "field_strength", 50.0)), 1),
+                "W ML": round(float(getattr(_s, "weights", {}).get("ml_prediction", 0.0)) * 100.0, 1),
+                "W Importance": round(float(getattr(_s, "weights", {}).get("importance", 0.0)) * 100.0, 1),
+                "W Course": round(float(getattr(_s, "weights", {}).get("course_fit", 0.0)) * 100.0, 1),
+                "W Form": round(float(getattr(_s, "weights", {}).get("form", 0.0)) * 100.0, 1),
+                "W Field": round(float(getattr(_s, "weights", {}).get("field", 0.0)) * 100.0, 1),
+                "Signal": _s.course_history_note or "—",
+            })
+        return pd.DataFrame(_rows)
+
+    def _render_best_events_ui(_events_df: pd.DataFrame, _title: str = "Best Events"):
+        """Render visual best-events section with score and component charts."""
+        if _events_df.empty:
+            return
+
+        st.markdown(f"#### {_title}")
+        _m1, _m2, _m3, _m4 = st.columns(4)
+        with _m1:
+            _best_t = str(_events_df.iloc[0]["Tournament"])
+            st.metric("Top Event", _best_t[:24] + ("…" if len(_best_t) > 24 else ""))
+        with _m2:
+            st.metric("Best Score", f"{float(_events_df['Total Score'].max()):.1f}")
+        with _m3:
+            st.metric("Avg DG Fit", f"{float(pd.to_numeric(_events_df['DG Fit'], errors='coerce').mean()):.1f}")
+        with _m4:
+            st.metric("Avg Fit Confidence", f"{float(pd.to_numeric(_events_df['Fit Confidence'], errors='coerce').mean()):.0f}%")
+
+        _chart_df = _events_df.head(10).copy()
+        _chart_df = _chart_df.sort_values("Total Score", ascending=True)
+
+        _bar = go.Figure()
+        _bar.add_trace(go.Bar(
+            x=pd.to_numeric(_chart_df["Total Score"], errors="coerce"),
+            y=_chart_df["Tournament"],
+            orientation="h",
+            marker=dict(color="#00c44f", line=dict(color="#1c2f4a", width=1)),
+            customdata=_chart_df[["Type", "DG Fit", "Course Fit", "Fit Confidence"]].values,
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                "Total: %{x:.1f}<br>"
+                "Type: %{customdata[0]}<br>"
+                "DG Fit: %{customdata[1]:.1f}<br>"
+                "Course Fit: %{customdata[2]:.1f}<br>"
+                "Fit Confidence: %{customdata[3]:.0f}%<extra></extra>"
+            ),
+        ))
+        _bar.update_layout(
+            height=max(280, 34 * len(_chart_df)),
+            margin=dict(t=8, b=8, l=8, r=8),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font_color="#dde6f5",
+            xaxis=dict(title="Total Score", gridcolor="#1c2f4a"),
+            yaxis=dict(title="", gridcolor="rgba(0,0,0,0)"),
+            showlegend=False,
+        )
+        st.plotly_chart(_bar, use_container_width=True)
+
+        _comp_df = _events_df.head(6).copy()
+        _comp_df["ML"] = pd.to_numeric(_comp_df["ML Score"], errors="coerce") * (
+            pd.to_numeric(_comp_df["W ML"], errors="coerce") / 100.0
+        )
+        _comp_df["Course"] = pd.to_numeric(_comp_df["Course Fit"], errors="coerce") * (
+            pd.to_numeric(_comp_df["W Course"], errors="coerce") / 100.0
+        )
+        _comp_df["Importance"] = pd.to_numeric(_comp_df["Importance"], errors="coerce") * (
+            pd.to_numeric(_comp_df["W Importance"], errors="coerce") / 100.0
+        )
+        _comp_df["Form"] = pd.to_numeric(_comp_df["Form Score"], errors="coerce") * (
+            pd.to_numeric(_comp_df["W Form"], errors="coerce") / 100.0
+        )
+        _comp_df["Field"] = pd.to_numeric(_comp_df["Field Score"], errors="coerce") * (
+            pd.to_numeric(_comp_df["W Field"], errors="coerce") / 100.0
+        )
+
+        _stack = go.Figure()
+        for _name, _color in [
+            ("ML", "#00c44f"),
+            ("Course", "#4cb8ff"),
+            ("Importance", "#f59e0b"),
+            ("Form", "#d97706"),
+            ("Field", "#6b7280"),
+        ]:
+            _stack.add_trace(go.Bar(
+                x=_comp_df["Tournament"],
+                y=_comp_df[_name],
+                name=_name,
+                marker_color=_color,
+                hovertemplate=f"{_name}: %{{y:.1f}}<extra></extra>",
+            ))
+        _stack.update_layout(
+            barmode="stack",
+            height=300,
+            margin=dict(t=8, b=8, l=8, r=8),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font_color="#dde6f5",
+            xaxis=dict(title="", tickangle=-20, gridcolor="rgba(0,0,0,0)"),
+            yaxis=dict(title="Weighted Component Points", gridcolor="#1c2f4a"),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
+        )
+        st.plotly_chart(_stack, use_container_width=True)
+
+        _table_cols = [
+            "#", "Tournament", "Date", "Type", "Total Score", "Course Fit", "DG Fit",
+            "Fit Confidence", "W Importance", "W Course", "Signal",
+        ]
+        st.dataframe(_events_df[_table_cols], hide_index=True, use_container_width=True)
 
     # Tabs for different views
     player_tab1, player_tab2, player_tab3 = st.tabs(["🔍 Player Lookup", "📊 Stats Deep Dive", "⚔️ Head-to-Head"])
 
     with player_tab1:
         st.markdown("### 🔍 Player Lookup")
-        st.caption("Best events and usage optimization")
+        st.caption("Player event fit and usage optimization")
 
-        col1, col2, col3 = st.columns([2, 1, 1])
+        col1, col2 = st.columns([3, 1])
         with col1:
             player_search = st.selectbox("Select a player:", [""] + all_players, key="quick_player")
         with col2:
-            run_player = st.button("🔍 Best Events", use_container_width=True, type="primary", help="--player")
-        with col3:
             run_optimize = st.button("⚡ Optimize Uses", use_container_width=True, help="--optimize")
-
-        if run_player and player_search:
-            with st.spinner(f"Running: scoring_engine.py --player '{player_search}'"):
-                output = run_script("planning/scoring_engine.py", "--player", player_search)
-            st.code(output, language=None)
 
         if run_optimize and player_search:
             with st.spinner(f"Running: scoring_engine.py --optimize '{player_search}'"):
@@ -7220,6 +8290,17 @@ elif page == "👤 Players":
         if player_search:
             st.markdown("---")
             st.markdown(f"### 📊 {player_search}")
+
+            _cached_rows = st.session_state.get(_best_events_state_key, {}).get(player_search, [])
+            if _cached_rows:
+                _auto_best_df = pd.DataFrame(_cached_rows)
+            else:
+                _auto_best_df = _player_best_events_df(player_search, _top_n=12)
+                if not _auto_best_df.empty:
+                    st.session_state[_best_events_state_key][player_search] = _auto_best_df.to_dict(orient="records")
+            if not _auto_best_df.empty:
+                st.caption("Best-events ranking blends exact history, course-type fallback, and DataGolf-style course demand fit.")
+                _render_best_events_ui(_auto_best_df, _title="🗓️ Best Events (Player-Specific)")
 
             # Load player data from predictions
             preds_path = OUTPUTS_DIR / "latest_predictions.csv"
@@ -7923,19 +9004,12 @@ elif page == "👤 Players":
                     st.markdown("#### 🎰 Betting Profile")
                     render_player_profile_card(profile, show_full=True)
 
-            # Action buttons
+            # Extra report action
             st.markdown("---")
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("🔍 Best Events", use_container_width=True, type="primary", key="player_best"):
-                    with st.spinner(f"Getting best events for {player_search}..."):
-                        output = run_script("planning/scoring_engine.py", "--player", player_search)
-                    st.code(output, language=None)
-            with col2:
-                if st.button("📊 Full Stats Report", use_container_width=True, key="player_full_stats"):
-                    with st.spinner(f"Getting full stats for {player_search}..."):
-                        output = run_script("planning/player_stats.py", player_search, "--recent", "10")
-                    st.code(output, language=None)
+            if st.button("📊 Full Stats Report", use_container_width=True, key="player_full_stats"):
+                with st.spinner(f"Getting full stats for {player_search}..."):
+                    output = run_script("planning/player_stats.py", player_search, "--recent", "10")
+                st.code(output, language=None)
 
     with player_tab2:
         st.markdown("### 📊 Stats Deep Dive")
@@ -7960,6 +9034,20 @@ elif page == "👤 Players":
 
             with deep_tab3:
                 render_course_specific_stats(stats_df)
+                st.markdown("---")
+                st.markdown("### Player Exact-Course History")
+                st.caption("Select a player to view past starts/results at this exact course.")
+
+                _deep_default_player = str(st.session_state.get("quick_player", "")).strip()
+                _deep_player_options = [""] + all_players
+                _deep_index = _deep_player_options.index(_deep_default_player) if _deep_default_player in _deep_player_options else 0
+                _deep_player = st.selectbox(
+                    "Player",
+                    options=_deep_player_options,
+                    index=_deep_index,
+                    key="deep_course_history_player",
+                )
+                render_player_event_history_panel(_deep_player, stats_df, panel_title="History At This Course")
 
     with player_tab3:
         st.markdown("### ⚔️ Head-to-Head Comparison")

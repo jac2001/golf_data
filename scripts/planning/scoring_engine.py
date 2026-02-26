@@ -25,6 +25,7 @@ Usage:
 import csv
 import json
 import argparse
+import re
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Tuple
@@ -54,6 +55,45 @@ DEFAULT_WEIGHTS = {
     'field':         0.10,  # Field strength (inverse)
     'form':          0.05,  # Momentum/trend boost
 }
+
+COURSE_WEIGHTS_FILE = DATA_DIR / "course_sg_weights.csv"
+DG_DEFAULT_WEIGHTS = {
+    "ott_sg": 0.020,
+    "app_sg": 0.020,
+    "arg_sg": 0.025,
+    "putt_sg": 0.005,
+}
+
+# Course-weights naming normalizer mirrors prediction feature engineering.
+DG_ALIAS_MAP = {
+    "shriners hospitals for children open": "shriners children s open",
+    "mexico open at vidantaworld": "mexico open at vidanta",
+    "oneflight myrtle beach classic": "myrtle beach classic",
+    "atandt byron nelson": "the cj cup byron nelson",
+    "rocket classic": "rocket mortgage classic",
+    "safeway open": "fortinet championship",
+    "sentry tournament of champions": "the sentry",
+    "texas children s houston open": "cadence bank houston open",
+    "hewlett packard enterprise houston open": "cadence bank houston open",
+    "vivint houston open": "cadence bank houston open",
+    "waste management phoenix open": "wm phoenix open",
+    "the honda classic": "cognizant classic in the palm beaches",
+    "the memorial tournament presented by nationwide": "the memorial tournament",
+    "houston open": "cadence bank houston open",
+}
+
+
+def normalize_tournament_name(name: str) -> str:
+    """Normalize tournament names for course-weight lookups."""
+    if not isinstance(name, str):
+        return ""
+    cleaned = re.sub(r"\(\s*\d{4}\s*\)", "", name)
+    cleaned = cleaned.replace("&", "and").lower()
+    cleaned = re.sub(r"[^a-z0-9]+", " ", cleaned)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip()
+    if not cleaned:
+        return ""
+    return DG_ALIAS_MAP.get(cleaned, cleaned)
 
 
 # ============================================================================
@@ -85,6 +125,10 @@ class PlayerForm:
     form_trend: str = "NEUTRAL"  # COLD, NEUTRAL, WARM, HOT
     hot_hand_score: float = 0.0
     model_edge: float = 0.0  # model vs vegas edge
+    season_sg_ott: float = 0.0
+    season_sg_app: float = 0.0
+    season_sg_arg: float = 0.0
+    season_sg_putt: float = 0.0
 
 
 @dataclass
@@ -107,6 +151,9 @@ class TournamentScore:
     form_trend: str = "NEUTRAL"
     win_prob: float = 0.0        # Raw ML win probability (for display)
     expected_value: float = 0.0  # Raw ML expected value (for display)
+    dg_fit_score: float = 50.0
+    dg_fit_predictability: float = 1.0
+    fit_confidence: float = 0.0
 
     # Weights
     weights: Dict[str, float] = field(default_factory=lambda: DEFAULT_WEIGHTS.copy())
@@ -161,6 +208,12 @@ class ScoringEngine:
         self.usage: Dict[str, int] = {}  # player -> remaining uses
         self.course_db: Optional[CourseHistoryDB] = None
         self.tournament_courses: Dict[str, dict] = {}
+        self.course_label_to_type: Dict[str, str] = {}
+        self._course_type_fit_cache: Dict[Tuple[str, str], Tuple[float, str]] = {}
+        self._player_course_baseline_cache: Dict[str, float] = {}
+        self.course_weight_lookup: Dict[str, Dict[str, float]] = {}
+        self._dg_weight_sum_avg: float = sum(DG_DEFAULT_WEIGHTS.values())
+        self._dg_fit_cache: Dict[Tuple[str, str], Tuple[float, float, str]] = {}
         self.target_tournament = tournament
         self.ml_scores: Dict[str, float] = {}  # player -> ML percentile score (0-100)
 
@@ -170,6 +223,7 @@ class ScoringEngine:
         """Load all data sources."""
         self._load_schedule()
         self._load_tournament_courses()
+        self._load_course_weights()
         self._load_predictions()
         self._load_usage()
         self._load_course_history()
@@ -220,12 +274,237 @@ class ScoringEngine:
         with open(TOURNAMENT_COURSES_FILE, 'r') as f:
             data = json.load(f)
             self.tournament_courses = data.get('tournaments', {})
+            self.course_label_to_type = {}
+            for info in self.tournament_courses.values():
+                ctype = str(info.get("course_type", "")).strip().lower()
+                if not ctype:
+                    continue
+                labels = [
+                    info.get("course", ""),
+                    info.get("course_full", ""),
+                    *info.get("aliases", []),
+                ]
+                for label in labels:
+                    norm = self._normalize_course_label(str(label))
+                    if norm:
+                        self.course_label_to_type[norm] = ctype
 
         # Update tournament info with course data
         for name, info in self.tournament_courses.items():
             if name in self.tournaments:
                 self.tournaments[name].course = info.get('course', '')
                 self.tournaments[name].course_type = info.get('course_type', '')
+
+    def _load_course_weights(self):
+        """Load DataGolf-style course demand weights."""
+        self.course_weight_lookup = {}
+        if not COURSE_WEIGHTS_FILE.exists():
+            print(f"Warning: Course SG weights not found at {COURSE_WEIGHTS_FILE}")
+            self._dg_weight_sum_avg = sum(DG_DEFAULT_WEIGHTS.values())
+            return
+
+        with open(COURSE_WEIGHTS_FILE, "r") as f:
+            reader = csv.DictReader(f)
+            weight_sums = []
+            for row in reader:
+                t_name = row.get("tournament_name", "")
+                key = normalize_tournament_name(t_name)
+                if not key:
+                    continue
+                try:
+                    w = {
+                        "ott_sg": float(row.get("ott_sg", DG_DEFAULT_WEIGHTS["ott_sg"]) or DG_DEFAULT_WEIGHTS["ott_sg"]),
+                        "app_sg": float(row.get("app_sg", DG_DEFAULT_WEIGHTS["app_sg"]) or DG_DEFAULT_WEIGHTS["app_sg"]),
+                        "arg_sg": float(row.get("arg_sg", DG_DEFAULT_WEIGHTS["arg_sg"]) or DG_DEFAULT_WEIGHTS["arg_sg"]),
+                        "putt_sg": float(row.get("putt_sg", DG_DEFAULT_WEIGHTS["putt_sg"]) or DG_DEFAULT_WEIGHTS["putt_sg"]),
+                    }
+                except Exception:
+                    continue
+                self.course_weight_lookup[key] = w
+                weight_sums.append(sum(w.values()))
+
+        if weight_sums:
+            self._dg_weight_sum_avg = sum(weight_sums) / len(weight_sums)
+        else:
+            self._dg_weight_sum_avg = sum(DG_DEFAULT_WEIGHTS.values())
+        print(f"  Loaded DataGolf course weights for {len(self.course_weight_lookup)} tournaments")
+
+    def _get_course_weights(self, tournament_name: str) -> Dict[str, float]:
+        """Fetch course demand weights with normalized name lookup."""
+        key = normalize_tournament_name(tournament_name)
+        if key in self.course_weight_lookup:
+            return self.course_weight_lookup[key]
+        return DG_DEFAULT_WEIGHTS.copy()
+
+    def _course_predictability_factor(self, tournament_name: str) -> float:
+        """
+        Estimate course predictability from total SG explanatory power.
+        <1 means more random (shrink adjustments), >1 means more predictable.
+        """
+        w = self._get_course_weights(tournament_name)
+        total = sum(w.values())
+        if self._dg_weight_sum_avg <= 0:
+            return 1.0
+        factor = total / self._dg_weight_sum_avg
+        return max(0.70, min(1.25, factor))
+
+    def _get_player_dg_fit(self, player: str, tournament_name: str) -> Tuple[float, float, str]:
+        """
+        DataGolf-style skill-demand score (0-100) for player × tournament.
+        Returns (fit_score_0_100, predictability_factor, reason_note).
+        """
+        cache_key = (player.lower().strip(), normalize_tournament_name(tournament_name))
+        if cache_key in self._dg_fit_cache:
+            return self._dg_fit_cache[cache_key]
+
+        form = self.predictions.get(player)
+        if not form:
+            out = (50.0, 1.0, "DG: neutral")
+            self._dg_fit_cache[cache_key] = out
+            return out
+
+        # Build raw DG fit values for the whole field to rank as percentile.
+        weights = self._get_course_weights(tournament_name)
+        scale = 10.0
+        raw_values: Dict[str, float] = {}
+        for pname, pf in self.predictions.items():
+            raw = (
+                float(pf.season_sg_ott) * weights["ott_sg"] +
+                float(pf.season_sg_app) * weights["app_sg"] +
+                float(pf.season_sg_arg) * weights["arg_sg"] +
+                float(pf.season_sg_putt) * weights["putt_sg"]
+            ) * scale
+            raw_values[pname] = raw
+
+        # Convert raw fit to percentile score in current field.
+        vals = sorted(raw_values.values())
+        target_raw = raw_values.get(player, 0.0)
+        n = len(vals)
+        if n <= 1:
+            pct = 50.0
+        else:
+            # Mid-rank percentile
+            lower = sum(1 for v in vals if v < target_raw)
+            equal = sum(1 for v in vals if v == target_raw)
+            rank = lower + 0.5 * equal
+            pct = (rank / n) * 100.0
+
+        # Random courses shrink toward neutral 50.
+        predictability = self._course_predictability_factor(tournament_name)
+        adjusted = 50.0 + (pct - 50.0) * predictability
+        adjusted = max(0.0, min(100.0, adjusted))
+
+        note = f"DG fit p{pct:.0f} (x{predictability:.2f})"
+        out = (adjusted, predictability, note)
+        self._dg_fit_cache[cache_key] = out
+        return out
+
+    def _normalize_course_label(self, value: str) -> str:
+        """Normalize course labels for fuzzy matching."""
+        if not value:
+            return ""
+        return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9]+", " ", value.lower())).strip()
+
+    def _course_type_tokens(self, value: str) -> set:
+        """Tokenize course type strings for approximate matching."""
+        if not value:
+            return set()
+        stop = {
+            "course", "style", "club", "resort", "golf", "the", "and",
+            "at", "in", "of", "with", "to", "for",
+        }
+        tokens = self._normalize_course_label(value).split()
+        return {t for t in tokens if t and t not in stop}
+
+    def _course_type_matches(self, actual: str, target: str) -> bool:
+        """Return True when course types are semantically compatible."""
+        a = str(actual or "").strip().lower()
+        b = str(target or "").strip().lower()
+        if not a or not b:
+            return False
+        if a == b:
+            return True
+        ta = self._course_type_tokens(a)
+        tb = self._course_type_tokens(b)
+        if not ta or not tb:
+            return False
+        overlap = ta.intersection(tb)
+        return len(overlap) >= max(1, min(len(ta), len(tb)) // 2)
+
+    def _infer_course_type_from_course_name(self, course_name: str) -> str:
+        """Infer course type label from tournament course alias map."""
+        key = self._normalize_course_label(course_name)
+        if not key:
+            return ""
+        if key in self.course_label_to_type:
+            return self.course_label_to_type[key]
+        # Fuzzy fallback: exact token containment.
+        for label, ctype in self.course_label_to_type.items():
+            if key in label or label in key:
+                return ctype
+        return ""
+
+    def _player_course_baseline_fit(self, player: str) -> Optional[float]:
+        """
+        Player-specific neutral course fit from all known course history.
+        Used when exact/tournament-type history is unavailable.
+        """
+        cache_key = player.lower().strip()
+        if cache_key in self._player_course_baseline_cache:
+            return self._player_course_baseline_cache[cache_key]
+        if not self.course_db:
+            return None
+        all_courses = self.course_db.get_player_all_courses(player)
+        if not all_courses:
+            return None
+        fits = []
+        for stats in all_courses.values():
+            if stats.times_played < 1:
+                continue
+            fits.append(self.course_db.calculate_course_fit_score(stats))
+        if not fits:
+            return None
+        baseline = float(sum(fits) / len(fits))
+        self._player_course_baseline_cache[cache_key] = baseline
+        return baseline
+
+    def _estimate_course_type_fit(self, player: str, target_course_type: str) -> Optional[Tuple[float, str]]:
+        """
+        Estimate player fit for a course type using all known course history.
+        Provides player-specific differentiation when no exact venue history exists.
+        """
+        if not self.course_db or not target_course_type:
+            return None
+
+        cache_key = (player.lower().strip(), str(target_course_type).strip().lower())
+        if cache_key in self._course_type_fit_cache:
+            return self._course_type_fit_cache[cache_key]
+
+        all_courses = self.course_db.get_player_all_courses(player)
+        if not all_courses:
+            return None
+
+        matched = []
+        for stats in all_courses.values():
+            inferred_type = self._infer_course_type_from_course_name(stats.course_name)
+            if not inferred_type:
+                continue
+            if not self._course_type_matches(inferred_type, target_course_type):
+                continue
+            fit = self.course_db.calculate_course_fit_score(stats)
+            weight = max(1, int(stats.times_played))
+            matched.append((fit, weight))
+
+        if not matched:
+            return None
+
+        weighted_fit = sum(f * w for f, w in matched) / sum(w for _, w in matched)
+        confidence = min(1.0, sum(w for _, w in matched) / 8.0)
+        adjusted_fit = 45.0 * (1.0 - confidence) + weighted_fit * confidence
+        note = f"Type fit ({target_course_type})"
+        out = (max(0.0, min(100.0, adjusted_fit)), note)
+        self._course_type_fit_cache[cache_key] = out
+        return out
 
     def _load_predictions(self):
         """Load current predictions/form data from outputs folder."""
@@ -254,6 +533,14 @@ class ScoringEngine:
                     break
 
         print(f"  Loading predictions from: {predictions_file.name}")
+
+        def _to_float(value, default=0.0):
+            try:
+                if value in (None, "", "nan"):
+                    return float(default)
+                return float(value)
+            except Exception:
+                return float(default)
 
         with open(predictions_file, 'r') as f:
             reader = csv.DictReader(f)
@@ -285,13 +572,17 @@ class ScoringEngine:
 
                     form = PlayerForm(
                         player_name=player_name,
-                        owgr_rank=int(float(row.get('world_rank', row.get('owgr_rank', 999)) or 999)),
-                        win_prob=float(row.get('win_prob', 0) or 0),
-                        top5_prob=float(row.get('top5_prob', row.get('top_5_prob', 0)) or 0),
-                        top10_prob=float(row.get('top10_prob', row.get('top_10_prob', 0)) or 0),
+                        owgr_rank=int(_to_float(row.get('world_rank', row.get('owgr_rank', 999)), 999)),
+                        win_prob=_to_float(row.get('win_prob', 0), 0),
+                        top5_prob=_to_float(row.get('top5_prob', row.get('top_5_prob', 0)), 0),
+                        top10_prob=_to_float(row.get('top10_prob', row.get('top_10_prob', 0)), 0),
                         form_trend=form_trend,
-                        hot_hand_score=float(row.get('hot_hand_score', 0) or 0),
-                        model_edge=float(row.get('expected_value', row.get('model_vs_vegas_edge', 0)) or 0)
+                        hot_hand_score=_to_float(row.get('hot_hand_score', 0), 0),
+                        model_edge=_to_float(row.get('expected_value', row.get('model_vs_vegas_edge', 0)), 0),
+                        season_sg_ott=_to_float(row.get('season_sg_ott', row.get('sg_ott', 0)), 0),
+                        season_sg_app=_to_float(row.get('season_sg_app', row.get('sg_app', 0)), 0),
+                        season_sg_arg=_to_float(row.get('season_sg_arg', row.get('sg_arg', 0)), 0),
+                        season_sg_putt=_to_float(row.get('season_sg_putt', row.get('sg_putt', 0)), 0),
                     )
                     self.predictions[player_name] = form
                 except (ValueError, KeyError) as e:
@@ -530,6 +821,8 @@ class ScoringEngine:
             tournament=tournament,
             weights=self.weights.copy()
         )
+        matched_exact = False
+        history_confidence = 0.20
 
         # Tournament importance
         if tournament in self.tournaments:
@@ -553,10 +846,75 @@ class ScoringEngine:
                         notes.append(f"{stats.top_5s} T5s")
                     notes.append(f"{stats.times_played} plays")
                     score.course_history_note = ", ".join(notes)
+                    matched_exact = True
+                    history_confidence = min(0.90, 0.55 + 0.10 * min(int(stats.times_played), 4))
                     break
-            else:
-                score.course_fit = 40.0  # Default for no history
-                score.course_history_note = "No history"
+
+            if not matched_exact:
+                # Fallback 1: same course-type fit (player-specific)
+                target_type = str(course_info.get("course_type", "")).strip()
+                type_fit = self._estimate_course_type_fit(player, target_type)
+                if type_fit is not None:
+                    score.course_fit = type_fit[0]
+                    score.course_history_note = type_fit[1]
+                    history_confidence = 0.55
+                else:
+                    # Fallback 2: player's global course baseline (still player-specific)
+                    baseline = self._player_course_baseline_fit(player)
+                    if baseline is not None:
+                        score.course_fit = 40.0 + 0.5 * (baseline - 45.0)
+                        score.course_fit = max(0.0, min(100.0, score.course_fit))
+                        score.course_history_note = "General course form"
+                        history_confidence = 0.35
+                    else:
+                        score.course_fit = 40.0  # Neutral default
+                        score.course_history_note = "No history"
+                        history_confidence = 0.20
+
+        # DataGolf-style event-demand fit (skill profile × course weights).
+        dg_fit, dg_predictability, dg_note = self._get_player_dg_fit(player, tournament)
+        score.dg_fit_score = dg_fit
+        score.dg_fit_predictability = dg_predictability
+
+        # Blend historical/course-type fit with DG fit.
+        # Exact course history gets more weight than modeled fit; no-history relies more on DG fit.
+        base_fit = score.course_fit if score.course_fit > 0 else 45.0
+        dg_weight = 0.30 if matched_exact else 0.55
+        score.course_fit = (1.0 - dg_weight) * base_fit + dg_weight * dg_fit
+        score.course_fit = max(0.0, min(100.0, score.course_fit))
+
+        if score.course_history_note and score.course_history_note != "No history":
+            score.course_history_note = f"{score.course_history_note} + {dg_note}"
+        else:
+            score.course_history_note = dg_note
+
+        # Confidence-aware reweighting:
+        # when player-course signal is strong, shift weight away from generic event prestige
+        # toward true player-event fit (course + form).
+        fit_signal = min(1.0, abs(score.course_fit - 50.0) / 35.0)
+        fit_conf = max(
+            0.0,
+            min(1.0, 0.45 * history_confidence + 0.30 * dg_predictability + 0.25 * fit_signal),
+        )
+        score.fit_confidence = fit_conf
+
+        w = score.weights.copy()
+        shift = min(0.08, 0.02 + 0.10 * fit_conf)  # max 8 points moved from importance
+        imp0 = w.get("importance", 0.15)
+        course0 = w.get("course_fit", 0.20)
+        form0 = w.get("form", 0.05)
+
+        moved = min(shift, max(0.0, imp0 - 0.06))
+        w["importance"] = imp0 - moved
+        w["course_fit"] = min(0.38, course0 + moved * 0.75)
+        w["form"] = min(0.15, form0 + moved * 0.25)
+
+        # Normalize to keep total score scale stable.
+        total_w = sum(float(v) for v in w.values() if v is not None and v > 0)
+        if total_w > 0:
+            for k in list(w.keys()):
+                w[k] = float(w[k]) / total_w
+            score.weights = w
 
         # Current form
         form_score, trend = self._calculate_form_score(player)
@@ -860,14 +1218,15 @@ def print_player_outlook(engine: ScoringEngine, player: str):
         print(f"\n  No upcoming tournaments found.")
         return
 
-    print(f"\n  {'#':<3} {'Tournament':<35} {'Date':<12} {'Score':>6} {'Rating':<7} {'Course':>7} {'Form':>6}")
-    print(f"  {'-'*85}")
+    print(f"\n  {'#':<3} {'Tournament':<31} {'Date':<12} {'Score':>6} {'Rating':<7} {'Course':>7} {'DG':>5} {'Form':>6}  Signal")
+    print(f"  {'-'*128}")
 
     for i, score in enumerate(tournaments, 1):
         t = engine.tournaments.get(score.tournament)
         date = t.start_date if t else "?"
-        print(f"  {i:<3} {score.tournament:<35} {date:<12} {score.total_score:>5.0f}  "
-              f"{score.value_rating:<7} {score.course_fit:>6.0f}  {score.current_form:>5.0f}")
+        signal = score.course_history_note or "—"
+        print(f"  {i:<3} {score.tournament:<31} {date:<12} {score.total_score:>5.0f}  "
+              f"{score.value_rating:<7} {score.course_fit:>6.0f} {score.dg_fit_score:>5.0f} {score.current_form:>5.0f}  {signal}")
 
 
 def print_this_week(engine: ScoringEngine):
