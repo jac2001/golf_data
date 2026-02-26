@@ -21,9 +21,14 @@ Expected improvements over current model:
 Target performance: 0.72-0.78 ROC-AUC (realistic for golf prediction)
 """
 
+import sys
+from pathlib import Path
+# Ensure scripts/features/ is on the path so `course_fit_dg` can be imported
+# regardless of which directory the script is launched from.
+sys.path.insert(0, str(Path(__file__).parent))
+
 import pandas as pd
 import numpy as np
-from pathlib import Path
 import warnings
 import re
 from course_fit_dg import normalize_tournament_name
@@ -296,6 +301,51 @@ if ADD_SEASON_SG and tournament_stats is not None:
             if col in merged.columns:
                 merged[f'{col}_field_pct'] = merged.groupby('tournament_id')[col].rank(pct=True)
         print(f"    ✓ SG vs-field features added ({len(present)} stats)")
+
+    # ── Recent form: exponential decay avg + trend ──────────────────────────
+    # Why: season_sg_* is a flat average that buries hot/cold streaks.
+    # recent_sg_weighted gives more weight to recent events (decay=0.85 per event).
+    # recent_sg_trend = (last 3 avg) - (events 4-8 avg) → positive = heating up.
+    try:
+        sg_hist = tournament_stats[
+            (tournament_stats['stat_component'] == 'Avg') &
+            (tournament_stats['stat_id'].astype(str) == '2567')  # sg_total
+        ][['player_id', 'year', 'tournament_id', 'stat_value']].copy()
+        sg_hist['player_id'] = sg_hist['player_id'].astype(str)
+        sg_hist = sg_hist.sort_values(['player_id', 'year', 'tournament_id'])
+
+        def _recent_form_features(grp, decay=0.85, n=8):
+            arr = grp['stat_value'].values
+            weighted_vals, trend_vals = [], []
+            for i in range(len(arr)):
+                prior = arr[:i]
+                if len(prior) == 0:
+                    weighted_vals.append(np.nan)
+                    trend_vals.append(0.0)
+                    continue
+                window = prior[-n:][::-1]  # most recent first
+                w = np.array([decay**j for j in range(len(window))], dtype=float)
+                w /= w.sum()
+                weighted_vals.append(float(np.dot(window, w)))
+                if len(prior) >= 4:
+                    last3 = float(np.mean(prior[-3:]))
+                    older = prior[-n:-3] if len(prior) >= n else prior[:-3]
+                    trend_vals.append(float(last3 - np.mean(older)) if len(older) > 0 else 0.0)
+                else:
+                    trend_vals.append(0.0)
+            grp = grp.copy()
+            grp['recent_sg_weighted'] = weighted_vals
+            grp['recent_sg_trend']    = trend_vals
+            return grp
+
+        sg_hist = sg_hist.groupby('player_id', group_keys=False).apply(_recent_form_features)
+        rf = sg_hist[['player_id', 'year', 'tournament_id', 'recent_sg_weighted', 'recent_sg_trend']].copy()
+        merged['player_id'] = merged['player_id'].astype(str)
+        merged = merged.merge(rf, on=['player_id', 'year', 'tournament_id'], how='left')
+        cov = merged['recent_sg_weighted'].notna().mean() * 100
+        print(f"    ✓ Recent form features added (coverage: {cov:.1f}%): recent_sg_weighted, recent_sg_trend")
+    except Exception as _e:
+        print(f"    ⚠ Recent form features skipped: {_e}")
 
 # ============================================================================
 # STEP 4: Add course history features
@@ -1015,7 +1065,9 @@ print("\n" + "="*60)
 print("Step 6: Saving processed dataset...")
 print("-" * 60)
 
-output_file = PROCESSED_DIR / "master_training_data_2020_2025.csv"
+_yr_min = min(YEARS) if YEARS else 2016
+_yr_max = max(YEARS) if YEARS else 2025
+output_file = PROCESSED_DIR / f"master_training_data_{_yr_min}_{_yr_max}.csv"
 merged.to_csv(output_file, index=False)
 
 print(f"  ✓ Saved to: {output_file}")

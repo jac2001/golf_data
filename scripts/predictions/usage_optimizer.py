@@ -21,11 +21,28 @@ Usage:
 import os
 import json
 import sys
+import unicodedata
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, List, Any, Tuple
+
+# Transliteration table for Nordic/Latin-extended characters that don't
+# decompose under NFKD.  Keeps "Højgaard" → "hojgaard" = "Hojgaard".
+_LATIN_MAP = str.maketrans({
+    'ø': 'o', 'ö': 'o', 'ó': 'o', 'ô': 'o', 'õ': 'o',
+    'æ': 'ae',
+    'å': 'a', 'ä': 'a', 'á': 'a', 'à': 'a', 'â': 'a',
+    'ð': 'd',
+    'þ': 'th',
+    'ñ': 'n',
+    'ü': 'u', 'ú': 'u', 'ù': 'u', 'û': 'u',
+    'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+    'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
+    'ç': 'c',
+    'ß': 'ss',
+})
 # Project paths
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
@@ -274,7 +291,11 @@ class UsageTracker:
 
     @staticmethod
     def _name_key(name: str) -> str:
-        """Normalize player names across 'First Last' and 'Last, First' forms."""
+        """Normalize player names across 'First Last' and 'Last, First' forms.
+
+        Uses explicit transliteration (ø→o, æ→ae, etc.) so that
+        'Nicolai Hojgaard' and 'Nicolai Højgaard' map to the same key.
+        """
         if pd.isna(name):
             return ""
         s = str(name).strip().lower()
@@ -284,6 +305,11 @@ class UsageTracker:
                 s = f"{parts[1].strip()} {parts[0].strip()}"
         for suffix in [" jr.", " jr", " iii", " ii", " iv"]:
             s = s.replace(suffix, "")
+        # Transliterate Nordic/Latin-extended chars, then NFKD for composed accents
+        s = s.translate(_LATIN_MAP)
+        s = unicodedata.normalize("NFKD", s)
+        s = "".join(c for c in s if not unicodedata.combining(c))
+        # Keep only alphanumeric + spaces
         s = "".join(ch if (ch.isalnum() or ch.isspace()) else " " for ch in s)
         return " ".join(s.split())
 

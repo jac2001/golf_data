@@ -14,11 +14,13 @@
       python3 scripts/predictions/refresh_odds.py --tournament-id R2026007
 """
 
-import sys 
-import argparse 
-import pandas as pd 
-from pathlib import Path   
-from datetime import datetime 
+import sys
+import argparse
+import unicodedata
+import numpy as np
+import pandas as pd
+from pathlib import Path
+from datetime import datetime
 
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -80,23 +82,97 @@ def _drift_label(edge: float) -> str:
 
 
 
+def _normalize_name(s: str) -> str:
+    """Lowercase, strip accents, normalize spacing."""
+    s = str(s).strip().lower()
+    s = unicodedata.normalize("NFKD", s)
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return " ".join(s.split())
+
+
+# Common nickname/short-name → full name overrides
+_NICKNAME_MAP = {
+    "dan brown":       "daniel brown",
+    "cam davis":       "cameron davis",
+    "cam young":       "cameron young",
+    "matt fitzpatrick":"matthew fitzpatrick",
+    "si woo kim":      "si woo kim",
+    "tom kim":         "tom kim",
+}
+
+
+def _fallback_odds_from_prop_lines(tournament_id: str, preds: pd.DataFrame) -> pd.DataFrame:
+    """
+    When the DK API is unavailable, load odds from the locally-cached
+    prop_lines_{tid}.csv (outright market) and match players by name.
+    Returns a DataFrame with columns [player_id, odds_to_win, odds_numeric],
+    same shape as fetch_and_merge_odds output — or empty DataFrame on failure.
+    """
+    prop_path = PROJECT_ROOT / "data" / "odds" / f"prop_lines_{tournament_id}.csv"
+    if not prop_path.exists():
+        print(f"  Fallback: prop_lines file not found at {prop_path}")
+        return pd.DataFrame()
+
+    try:
+        prop = pd.read_csv(prop_path)
+        prop = prop[prop["market"] == "outright"].copy()
+        if prop.empty:
+            print("  Fallback: no outright rows in prop_lines file.")
+            return pd.DataFrame()
+
+        # Build name → player_id lookup from predictions
+        name_to_id = {
+            _normalize_name(str(row["player_name"])): str(row["player_id"])
+            for _, row in preds.iterrows()
+            if pd.notna(row.get("player_name"))
+        }
+
+        rows = []
+        unmatched = []
+        for _, row in prop.iterrows():
+            norm = _normalize_name(str(row.get("player_name", "")))
+            norm = _NICKNAME_MAP.get(norm, norm)
+            pid = name_to_id.get(norm)
+            if pid:
+                rows.append({
+                    "player_id":   pid,
+                    "odds_to_win": str(row.get("odds", "")),
+                    "odds_numeric": float(row.get("odds", 0)),
+                })
+            else:
+                unmatched.append(row.get("player_name", "?"))
+
+        if unmatched:
+            print(f"  Fallback: {len(unmatched)} unmatched players: {unmatched[:8]}")
+        print(f"  Fallback: matched {len(rows)}/{len(prop)} players from prop_lines.")
+        return pd.DataFrame(rows) if rows else pd.DataFrame()
+
+    except Exception as e:
+        print(f"  Fallback error: {e}")
+        return pd.DataFrame()
+
+
 def refresh_odds(tournament_id: str) -> bool:
     preds_path = PROJECT_ROOT / 'outputs' / 'latest_predictions.csv'
-    
+
     if not preds_path.exists():
         print(f"Error: {preds_path} not found. Run the full pipeline first.")
         return False
-    
+
+    # Load predictions first — needed for fallback name matching
+    preds = pd.read_csv(preds_path)
+
     print(f"  Fetching fresh odds for {tournament_id} ...")
     odds_df = fetch_and_merge_odds(tournament_id)
 
     if odds_df.empty:
-        print("ERROR: No odds data returned from API.")
-        return False
+        print("  DK API returned empty — trying prop_lines fallback...")
+        odds_df = _fallback_odds_from_prop_lines(tournament_id, preds)
+        if odds_df.empty:
+            print("ERROR: No odds data from API or prop_lines fallback.")
+            return False
 
     print(f"  Got odds for {len(odds_df)} players.")
-
-    preds = pd.read_csv(preds_path)
 
     # ── Match odds → predictions by player_id (most reliable) ──────────
     preds["player_id"]   = preds["player_id"].astype(str)
@@ -109,6 +185,11 @@ def refresh_odds(tournament_id: str) -> bool:
     merged = preds.merge(odds_slim, on="player_id", how="left")
 
     # Fill in new odds where available, keep old value where not
+    # Guard: columns may not exist on a fresh predictions file
+    if "odds_to_win" not in merged.columns:
+        merged["odds_to_win"] = np.nan
+    if "odds_numeric" not in merged.columns:
+        merged["odds_numeric"] = np.nan
     merged["odds_to_win"]  = merged["new_odds_to_win"].combine_first(merged["odds_to_win"])
     merged["odds_numeric"] = merged["new_odds_numeric"].combine_first(merged["odds_numeric"])
     merged = merged.drop(columns=["new_odds_to_win", "new_odds_numeric"])
@@ -117,13 +198,58 @@ def refresh_odds(tournament_id: str) -> bool:
     
     # ------------- Recompute derived odds columns ----------------
     
-    merged["vegas_prob"] = merged["odds_numeric"].apply(_odds_to_prob)
-    if "win_prob" in merged.columns:
-          merged["model_vs_vegas_edge"] = merged["win_prob"] - merged["vegas_prob"]
-          merged["is_value_bet"]        = merged["model_vs_vegas_edge"] > 0
-          merged["odds_drift_level"]    = merged["model_vs_vegas_edge"].apply(_drift_label)
+    # ── No-vig consensus probability ────────────────────────────────────────
+    # Raw DK odds → implied prob includes vig (~10-15% overround). We remove it
+    # by normalizing per book (each player's prob ÷ sum of all probs = 100%).
+    # Averaging across multiple books gives a cleaner "true market probability".
+    raw_dk_prob = merged["odds_numeric"].apply(_odds_to_prob)
+    dk_total    = raw_dk_prob.sum()
+    dk_nv       = raw_dk_prob / dk_total if dk_total > 0 else raw_dk_prob  # no-vig DK
 
-      # ── Timestamp ────────────────────────────────────────────────────────
+    # Try to load additional books for consensus
+    book_probs = [dk_nv]
+    book_names = ["DK"]
+
+    for book_tag, fname_pat, odds_col in [
+        ("FD",  f"fanduel_odds_{tournament_id}.csv", "odds_numeric"),
+        ("PGA", f"pga_odds_{tournament_id}.csv",     "odds_numeric"),
+    ]:
+        book_path = PROJECT_ROOT / "data" / "odds" / fname_pat
+        if not book_path.exists():
+            continue
+        try:
+            bdf = pd.read_csv(book_path)
+            bdf["player_id"] = bdf["player_id"].astype(str)
+            bdf = bdf[["player_id", odds_col]].dropna()
+            # Compute raw implied prob per player
+            bdf["raw_prob"] = bdf[odds_col].apply(_odds_to_prob)
+            total = bdf["raw_prob"].sum()
+            if total > 0:
+                bdf["nv_prob"] = bdf["raw_prob"] / total
+            else:
+                continue
+            # Align to merged (left join on player_id)
+            aligned = merged[["player_id"]].merge(bdf[["player_id", "nv_prob"]], on="player_id", how="left")
+            book_probs.append(aligned["nv_prob"].values)
+            book_names.append(book_tag)
+        except Exception as _be:
+            print(f"  Skipped {book_tag} odds: {_be}")
+
+    if len(book_probs) > 1:
+        import numpy as _np
+        consensus = _np.nanmedian(_np.column_stack(book_probs), axis=1)
+        merged["vegas_prob"] = consensus
+        print(f"  Consensus odds from {len(book_probs)} books: {book_names}")
+    else:
+        merged["vegas_prob"] = dk_nv.values
+        print("  Using DK no-vig odds (no other books available)")
+
+    if "win_prob" in merged.columns:
+        merged["model_vs_vegas_edge"] = merged["win_prob"] - merged["vegas_prob"]
+        merged["is_value_bet"]        = merged["model_vs_vegas_edge"] > 0
+        merged["odds_drift_level"]    = merged["model_vs_vegas_edge"].apply(_drift_label)
+
+    # ── Timestamp ────────────────────────────────────────────────────────────
     merged["odds_updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     merged.to_csv(preds_path, index=False)

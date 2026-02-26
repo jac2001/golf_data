@@ -1,21 +1,21 @@
 {
   "players": {
-    "chris gotterup": {
-      "name": "Chris Gotterup",
-      "uses": [
-        {
-          "tournament": "Waste Management Phoenix Open",
-          "date": "2026-02-04T23:47:45.663728"
-        }
-      ],
-      "total_uses": 1
-    },
     "ben griffin": {
       "name": "Ben Griffin",
       "uses": [
         {
           "tournament": "Waste Management Phoenix Open",
-          "date": "2026-02-04T23:47:45.663896"
+          "date": "2026-02-05"
+        }
+      ],
+      "total_uses": 1
+    },
+    "chris gotterup": {
+      "name": "Chris Gotterup",
+      "uses": [
+        {
+          "tournament": "Waste Management Phoenix Open",
+          "date": "2026-02-05"
         }
       ],
       "total_uses": 1
@@ -25,13 +25,125 @@
       "uses": [
         {
           "tournament": "Waste Management Phoenix Open",
-          "date": "2026-02-04T23:47:45.663985"
+          "date": "2026-02-05"
+        }
+      ],
+      "total_uses": 1
+    },
+    "maverick mcnealy": {
+      "name": "Maverick McNealy",
+      "uses": [
+        {
+          "tournament": "AT&T Pebble Beach Pro-Am",
+          "date": "2026-02-12"
+        }
+      ],
+      "total_uses": 1
+    },
+    "jason day": {
+      "name": "Jason Day",
+      "uses": [
+        {
+          "tournament": "AT&T Pebble Beach Pro-Am",
+          "date": "2026-02-12"
+        }
+      ],
+      "total_uses": 1
+    },
+    "justin rose": {
+      "name": "Justin Rose",
+      "uses": [
+        {
+          "tournament": "AT&T Pebble Beach Pro-Am",
+          "date": "2026-02-12"
+        }
+      ],
+      "total_uses": 1
+    },
+    "hideki matsuyama": {
+      "name": "Hideki Matsuyama",
+      "uses": [
+        {
+          "tournament": "The Genesis Invitational",
+          "date": "2026-02-19"
+        }
+      ],
+      "total_uses": 1
+    },
+    "viktor hovland": {
+      "name": "Viktor Hovland",
+      "uses": [
+        {
+          "tournament": "The Genesis Invitational",
+          "date": "2026-02-19"
+        }
+      ],
+      "total_uses": 1
+    },
+    "patrick cantlay": {
+      "name": "Patrick Cantlay",
+      "uses": [
+        {
+          "tournament": "The Genesis Invitational",
+          "date": "2026-02-19"
+        }
+      ],
+      "total_uses": 1
+    },
+    "ryan gerard": {
+      "name": "Ryan Gerard",
+      "uses": [
+        {
+          "tournament": "Cognizant Classic",
+          "date": "2026-02-26"
+        },
+        {
+          "tournament": "Cognizant Classic in The Palm Beaches",
+          "date": "2026-02-26T07:41:47.305840"
+        }
+      ],
+      "total_uses": 2
+    },
+    "michael thorbjornsen": {
+      "name": "Michael Thorbjornsen",
+      "uses": [
+        {
+          "tournament": "Cognizant Classic",
+          "date": "2026-02-26"
+        },
+        {
+          "tournament": "Cognizant Classic in The Palm Beaches",
+          "date": "2026-02-26T07:41:47.307759"
+        }
+      ],
+      "total_uses": 2
+    },
+    "nicolai h\u00f8jgaard": {
+      "name": "Nicolai H\u00f8jgaard",
+      "uses": [
+        {
+          "tournament": "Cognizant Classic",
+          "date": "2026-02-26"
+        }
+      ],
+      "total_uses": 1
+    },
+    "nicolai hojgaard": {
+      "name": "Nicolai Hojgaard",
+      "uses": [
+        {
+          "tournament": "Cognizant Classic in The Palm Beaches",
+          "date": "2026-02-26T07:41:47.308424"
         }
       ],
       "total_uses": 1
     }
   },
   "tournaments_used": [
-    "Waste Management Phoenix Open"
+    "Waste Management Phoenix Open",
+    "AT&T Pebble Beach Pro-Am",
+    "The Genesis Invitational",
+    "Cognizant Classic",
+    "Cognizant Classic in The Palm Beaches"
   ]
 }

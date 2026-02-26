@@ -60,9 +60,14 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 TRAIN_N_JOBS = int(os.getenv("TRAIN_N_JOBS", "1"))
 print(f"Training parallelism: n_jobs={TRAIN_N_JOBS}")
 
-# Load merged dataset
+# Load merged dataset — auto-detect the most recent master file
 print("Loading master training data...")
-data_file = DATA_DIR / "processed" / "master_training_data_2020_2025.csv"
+_processed = DATA_DIR / "processed"
+# Pick the most recently written master training file — the freshest merge run wins.
+# Falls back to legacy name if nothing is found.
+_candidates = sorted(_processed.glob("master_training_data_*.csv"), key=lambda p: p.stat().st_mtime, reverse=True)
+data_file = _candidates[0] if _candidates else (_processed / "master_training_data_2020_2025.csv")
+print(f"  Using: {data_file.name}")
 
 if not data_file.exists():
     print(f"❌ Master data file not found: {data_file}")
@@ -113,10 +118,14 @@ field_features = [c for c in df.columns if 'field_' in c]
 rank_features = ['world_rank'] if 'world_rank' in df.columns else []
 
 # Form features (recent performance indicators) - expanded to include scoring stats
+# recent_sg_weighted: exponential decay avg over last 8 events (decay=0.85)
+#   - captures hot/cold streaks that season averages smooth out
+# recent_sg_trend: (last 3 avg) - (events 4-8 avg) — positive = player is heating up
 form_features = [c for c in df.columns if c in [
     'form_trend', 'finish_consistency', 'recent_top10s', 'recent_top5s', 'recent_cuts_pct',
     'recent_birdie_avg', 'recent_bogey_avg', 'recent_scoring_avg', 'recent_gir_pct',
-    'recent_scrambling', 'recent_bounce_back', 'recent_final_round', 'recent_sand_save'
+    'recent_scrambling', 'recent_bounce_back', 'recent_final_round', 'recent_sand_save',
+    'recent_sg_weighted', 'recent_sg_trend',
 ]]
 
 # Course fit features - OLD fit_* features EXCLUDED (calculated from per-tournament SG = leakage!)

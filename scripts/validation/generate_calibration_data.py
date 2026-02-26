@@ -146,11 +146,11 @@ def _roc_curve_data(y_true, y_prob) -> dict:
 def run() -> dict:
     print("\n" + "=" * 62)
     print("  CALIBRATION DATA GENERATOR")
-    print("  Train: 2020-2024   |   Test (held-out): 2025")
+    print("  Train: 2016-2024   |   Test (held-out): 2025")
     print("=" * 62)
 
     # 1. Load master data
-    master_path = PROCESSED_DIR / "master_training_data_2020_2025.csv"
+    master_path = PROCESSED_DIR / "master_training_data_2016_2025.csv"
     if not master_path.exists():
         raise FileNotFoundError(f"Master data not found: {master_path}")
 
@@ -161,7 +161,7 @@ def run() -> dict:
     # 2. Year-based split — identical to train_final_models.py
     train_df = df[df["year"] < 2025].copy()
     test_df  = df[df["year"] == 2025].copy()
-    print(f"  Train (2020–2024): {len(train_df):,}")
+    print(f"  Train (2016–2024): {len(train_df):,}")
     print(f"  Test  (2025):      {len(test_df):,}")
 
     # 3. Drop rows with missing targets (same as training)

@@ -466,7 +466,9 @@ def process_single_event(pga_id: str, tournament_name: str, output: Path, match_
         return
 
     if match_ids:
-        master_path = Path("data/processed/master_training_data_2020_2025.csv")
+        _proc = Path("data/processed")
+        _candidates = sorted(_proc.glob("master_training_data_*.csv"), key=lambda p: p.stat().st_mtime, reverse=True)
+        master_path = _candidates[0] if _candidates else Path("data/processed/master_training_data_2020_2025.csv")
         if master_path.exists():
             field_df = match_players_to_database(field_df, master_path)
         else:

@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-25 06:53
+Generated: 2026-02-26 08:31
 
 | Column | Description |
 |--------|-------------|
@@ -18,6 +18,8 @@ Generated: 2026-02-25 06:53
 | season_sg_t2g | Season SG:Tee-to-Green average |
 | sg_arg | Recent SG:Around-the-Green |
 | season_sg_arg | Season SG:Around-the-Green average |
+| recent_sg_weighted | No description available |
+| recent_sg_trend | No description available |
 | sg_blend_current_weight | No description available |
 | sg_blend_prior_weight | No description available |
 | sg_blend_tournaments | No description available |
@@ -34,6 +36,7 @@ Generated: 2026-02-25 06:53
 | has_made_cut_here | 1/0 flag: has made a cut here |
 | venue_avg_finish | Venue average finish baseline (field-level) |
 | venue_finish_std | Venue finish standard deviation (volatility) |
+| wins_at_venue | No description available |
 | world_rank | Current world rank (lower is better) |
 | field_avg_rank | Average world rank of the field |
 | field_median_rank | Median world rank of the field |
@@ -56,23 +59,11 @@ Generated: 2026-02-25 06:53
 | season_sg_putt_field_pct | No description available |
 | season_sg_putt_field_rank | No description available |
 | driving_dist_val | No description available |
-| 102 | No description available |
 | gir_pct_val | No description available |
 | putts_per_round_val | No description available |
-| 108 | No description available |
-| 111 | No description available |
-| 119 | No description available |
-| 120 | No description available |
 | scrambling_val | No description available |
-| 142 | No description available |
-| 143 | No description available |
 | birdie_avg_val | No description available |
-| 160 | No description available |
-| 2414 | No description available |
-| 2419 | No description available |
-| 299 | No description available |
 | bogey_avoid_val | No description available |
-| 413 | No description available |
 | driving_dist_field_avg | No description available |
 | driving_dist_field_rank | No description available |
 | driving_dist_field_pct | No description available |
@@ -197,3 +188,4 @@ Generated: 2026-02-25 06:53
 | is_value_bet | No description available |
 | odds_drift_flag | No description available |
 | odds_drift_level | No description available |
+| dfs_ownership_proj | No description available |

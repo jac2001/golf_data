@@ -1,10 +1,14 @@
-player_name,player_id,uses_remaining,tournaments_used,last_updated
-Ben Griffin,54591,2,"Waste Management Phoenix Open",2026-02-19
-Chris Gotterup,59095,2,"Waste Management Phoenix Open",2026-02-19
-Pierceson Coody,59836,2,"Waste Management Phoenix Open",2026-02-19
-Maverick McNealy,46442,2,"AT&T Pebble Beach Pro-Am",2026-02-19
-Jason Day,28089,2,"AT&T Pebble Beach Pro-Am",2026-02-19
-Justin Rose,22405,2,"AT&T Pebble Beach Pro-Am",2026-02-19
-Hideki Matsuyama,32839,2,"The Genesis Invitational",2026-02-19
-Viktor Hovland,46717,2,"The Genesis Invitational",2026-02-19
-Patrick Cantlay,35450,2,"The Genesis Invitational",2026-02-19
+player_name,uses_used,uses_remaining,tournaments_used
+Ben Griffin,1,2,Waste Management Phoenix Open
+Chris Gotterup,1,2,Waste Management Phoenix Open
+Hideki Matsuyama,1,2,The Genesis Invitational
+Jason Day,1,2,AT&T Pebble Beach Pro-Am
+Justin Rose,1,2,AT&T Pebble Beach Pro-Am
+Maverick McNealy,1,2,AT&T Pebble Beach Pro-Am
+Michael Thorbjornsen,2,1,Cognizant Classic | Cognizant Classic in The Palm Beaches
+Nicolai Hojgaard,1,2,Cognizant Classic in The Palm Beaches
+Nicolai Højgaard,1,2,Cognizant Classic
+Patrick Cantlay,1,2,The Genesis Invitational
+Pierceson Coody,1,2,Waste Management Phoenix Open
+Ryan Gerard,2,1,Cognizant Classic | Cognizant Classic in The Palm Beaches
+Viktor Hovland,1,2,The Genesis Invitational

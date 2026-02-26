@@ -622,6 +622,26 @@ def get_recent_sg_stats(
             'season_sg_t2g': np.nan,
             'season_sg_arg': np.nan,
         }
+        # Still compute recent form from prior-year data if available
+        if prior_stats_df is not None and not prior_stats_df.empty:
+            _prior_player = prior_stats_df[
+                (prior_stats_df['player_id'] == pid_str) &
+                (prior_stats_df['stat_component'] == 'Avg') &
+                (prior_stats_df['stat_id'].astype(str) == '2567')
+            ].sort_values('tournament_id')
+            sg_vals = _prior_player['stat_value'].dropna().values
+            if len(sg_vals) > 0:
+                _n = min(8, len(sg_vals))
+                _window = sg_vals[-_n:][::-1]
+                _w = np.array([0.85**i for i in range(_n)], dtype=float)
+                _w /= _w.sum()
+                recent_stats['recent_sg_weighted'] = float(np.dot(_window, _w))
+                if len(sg_vals) >= 4:
+                    _last3 = float(np.mean(sg_vals[-3:]))
+                    _older = sg_vals[-8:-3] if len(sg_vals) >= 8 else sg_vals[:-3]
+                    recent_stats['recent_sg_trend'] = float(_last3 - np.mean(_older)) if len(_older) > 0 else 0.0
+                else:
+                    recent_stats['recent_sg_trend'] = 0.0
     else:
         # Pivot stats to wide format
         stats_pivot = player_stats.pivot_table(
@@ -695,6 +715,44 @@ def get_recent_sg_stats(
             recent_stats['season_sg_arg'] = season_t2g - season_app
         else:
             recent_stats['season_sg_arg'] = np.nan
+
+        # ── Recent form: exponential decay + trend ─────────────────────────
+        # Mirrors the training-data computation in merge_all_historical_data.py.
+        # Cross-year: combine prior-year sg_total values (older) with current-year
+        # values (newer) so the 8-event window spans year boundaries.
+        # This matters early in the season when players have <4 current-year events.
+        sg_total_col = '2567'
+        # Current-year values (sorted ascending by tournament_id already)
+        cur_sg = stats_pivot[sg_total_col].dropna().values if sg_total_col in stats_pivot.columns else np.array([])
+
+        # Prior-year values for this player (sorted ascending by tournament_id)
+        prior_sg = np.array([])
+        if prior_stats_df is not None and not prior_stats_df.empty:
+            _prior_player = prior_stats_df[
+                (prior_stats_df['player_id'] == pid_str) &
+                (prior_stats_df['stat_component'] == 'Avg') &
+                (prior_stats_df['stat_id'].astype(str) == sg_total_col)
+            ].sort_values('tournament_id')
+            prior_sg = _prior_player['stat_value'].dropna().values
+
+        # Combine: prior events first, then current events (chronological order)
+        sg_vals = np.concatenate([prior_sg, cur_sg]) if len(prior_sg) > 0 else cur_sg
+
+        if len(sg_vals) > 0:
+            _n = min(8, len(sg_vals))
+            _window = sg_vals[-_n:][::-1]          # most recent at index 0
+            _w = np.array([0.85**i for i in range(_n)], dtype=float)
+            _w /= _w.sum()
+            recent_stats['recent_sg_weighted'] = float(np.dot(_window, _w))
+            if len(sg_vals) >= 4:
+                _last3 = float(np.mean(sg_vals[-3:]))
+                _older = sg_vals[-8:-3] if len(sg_vals) >= 8 else sg_vals[:-3]
+                recent_stats['recent_sg_trend'] = float(_last3 - np.mean(_older)) if len(_older) > 0 else 0.0
+            else:
+                recent_stats['recent_sg_trend'] = 0.0
+        else:
+            recent_stats['recent_sg_weighted'] = np.nan
+            recent_stats['recent_sg_trend'] = 0.0
 
     # Blend with prior year stats if enabled
     if blend_with_prior and prior_stats_df is not None and not prior_stats_df.empty:
@@ -1487,6 +1545,12 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                             ascending=lower_is_better, na_option='bottom').fillna(0).astype(int)
                         features_df[f'{col_name}_field_pct'] = features_df[val_col].rank(
                             ascending=not lower_is_better, pct=True)
+                # Drop any remaining unmapped stat_id columns from the pivot
+                # (numeric string names like '102', '108', etc. that weren't in NON_SG_STATS)
+                unmapped = [c for c in features_df.columns if str(c).isdigit()]
+                if unmapped:
+                    features_df = features_df.drop(columns=unmapped)
+                    print(f"  Dropped {len(unmapped)} unmapped stat_id columns: {unmapped}")
                 print(f"  Non-SG tour stat field ranks added from form_stats_{fs_year}.csv")
     except Exception as e:
         print(f"  Non-SG stat ranks skipped: {e}")
@@ -2163,7 +2227,7 @@ def apply_kft_adjustment(
 
     # Determine PGA Tour experience for each player
     # Use number of times the player appeared in master training data (a proxy for seasons)
-    master_path = DATA_DIR / "processed" / "master_training_data_2020_2025.csv"
+    master_path = DATA_DIR / "processed" / "master_training_data_2016_2025.csv"
     pga_seasons = {}
     if master_path.exists():
         master = pd.read_csv(master_path, usecols=["player_name", "year"])
@@ -3041,6 +3105,18 @@ Examples:
     else:
         lineup_bundle = {}
 
+    # ── DFS ownership proxy ──────────────────────────────────────────────────
+    # Approximates what % of DFS lineups will contain each player.
+    # Formula: consensus_prob^0.75 scales the win probability into an ownership
+    # range (~2-35%). Lower exponent = more compressed top, less "chalky" feel.
+    # The lineup optimizer uses this to reward high-edge, low-ownership picks.
+    if "vegas_prob" in predictions_df.columns:
+        _vp = predictions_df["vegas_prob"].clip(lower=0)
+        predictions_df["dfs_ownership_proj"] = (_vp ** 0.75 * 100).round(1)
+    elif "win_prob" in predictions_df.columns:
+        _vp = predictions_df["win_prob"].clip(lower=0)
+        predictions_df["dfs_ownership_proj"] = (_vp ** 0.75 * 100).round(1)
+
     # Always persist predictions to a standard location for downstream tools
     outputs_dir = Path("outputs")
     outputs_dir.mkdir(parents=True, exist_ok=True)
@@ -3153,16 +3229,25 @@ Examples:
     print("=" * 70)
 
     # ------------------------------------------------------------------
-    # Optional: save predictions to tracking + record lineup usage
+    # Auto-save predictions to tracking on every run
     # ------------------------------------------------------------------
-    if args.save_tracking:
+    try:
         tracker = PredictionTracker()
-        tracker_path = tracker.save_predictions(
+        tracker.save_predictions(
             predictions_df,
             tournament_name=args.tournament,
-            tournament_date=args.tournament_date
+            tournament_date=args.tournament_date,
         )
-        print(f"  Tracking file saved: {tracker_path}")
+        # Sync to outputs/prediction_history.csv so the dashboard can read it
+        _out_base = Path(args.output) if args.output else Path("outputs/latest_predictions.csv")
+        _outputs_hist = _out_base.parent / "prediction_history.csv"
+        _tracking_hist = tracker.tracking_file
+        if _tracking_hist.exists():
+            import shutil as _shutil
+            _shutil.copy2(_tracking_hist, _outputs_hist)
+            print(f"  Prediction history synced → {_outputs_hist}")
+    except Exception as _te:
+        print(f"  Warning: prediction tracking skipped ({_te})")
 
     if args.record_lineup:
         lineup = [p.strip() for p in args.record_lineup.split(",") if p.strip()]

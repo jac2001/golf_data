@@ -35,11 +35,45 @@ Usage:
 
 import json
 import argparse
+import unicodedata
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, List, Dict
 from dataclasses import dataclass, asdict
 import csv
+
+
+_LATIN_MAP = str.maketrans({
+    # Nordic / Scandinavian
+    'ø': 'o', 'ö': 'o', 'ó': 'o', 'ô': 'o', 'õ': 'o',
+    'æ': 'ae',
+    'å': 'a', 'ä': 'a', 'á': 'a', 'à': 'a', 'â': 'a',
+    'ð': 'd',
+    'þ': 'th',
+    # Spanish / French / other
+    'ñ': 'n',
+    'ü': 'u', 'ú': 'u', 'ù': 'u', 'û': 'u',
+    'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+    'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
+    'ç': 'c',
+    'ß': 'ss',
+})
+
+
+def _normalize_name(name: str) -> str:
+    """Lowercase + transliterate accented/Nordic chars for fuzzy name matching.
+
+    "Nicolai Hojgaard" and "Nicolai Højgaard" both normalize to
+    "nicolai hojgaard" because ø → o in the transliteration table.
+    NFKD alone is insufficient because ø has no Unicode decomposition.
+    """
+    s = str(name).strip().lower()
+    # Explicit transliteration first (ø→o, æ→ae, å→a, etc.)
+    s = s.translate(_LATIN_MAP)
+    # Then NFKD + combining-char strip for anything remaining (é→e, etc.)
+    s = unicodedata.normalize("NFKD", s)
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return " ".join(s.split())
 
 
 # ============================================================================
@@ -114,6 +148,19 @@ class UsageTracker:
 
         self._load_schedule()
 
+    def _find_player_key(self, player_name: str) -> Optional[str]:
+        """Return the canonical dict key for a player using accent-normalized comparison.
+
+        If "Nicolai Hojgaard" is passed but the tracker stores "Nicolai Højgaard",
+        this returns "Nicolai Højgaard" so we update the right record.
+        Returns None if the player has never been tracked.
+        """
+        norm_input = _normalize_name(player_name)
+        for key in self.picks:
+            if _normalize_name(key) == norm_input:
+                return key
+        return None
+
     def _load_schedule(self):
         """Load tournament schedule for week/date lookups."""
         if not SCHEDULE_FILE.exists():
@@ -135,9 +182,12 @@ class UsageTracker:
         if tournament in self.schedule:
             return self.schedule[tournament]
 
-        # Try partial match
+        # Try partial match (either direction so both
+        # "Cognizant Classic" and "Cognizant Classic in The Palm Beaches" resolve)
+        t_lower = tournament.lower()
         for name, info in self.schedule.items():
-            if tournament.lower() in name.lower():
+            n_lower = name.lower()
+            if t_lower in n_lower or n_lower in t_lower:
                 return info
 
         # Default if not found
@@ -208,8 +258,13 @@ class UsageTracker:
         week = info['week']
         date = info['start_date']
 
-        # Check if player exists in tracker
-        if player_name not in self.picks:
+        # Resolve to canonical player key (accent-normalized lookup).
+        # This ensures "Nicolai Hojgaard" updates the same record as
+        # "Nicolai Højgaard" rather than creating a second entry.
+        canonical_key = self._find_player_key(player_name)
+        if canonical_key:
+            player_name = canonical_key  # use the spelling already in tracker
+        else:
             self.picks[player_name] = PlayerUsage(
                 player_name=player_name,
                 times_used=0,
@@ -222,9 +277,14 @@ class UsageTracker:
         if player.remaining_uses <= 0:
             return False, f"❌ {player_name} has no uses remaining (used {player.times_used}/{self.max_uses})"
 
-        # Check if already used at this tournament
+        # Check if already used this week.
+        # Match on week number (not tournament name) so "Cognizant Classic"
+        # and "Cognizant Classic in The Palm Beaches" are treated as the same
+        # event and don't get double-counted.
         for t in player.tournaments_used:
-            if t.tournament == tournament:
+            if week != 0 and t.week == week:
+                return False, f"❌ {player_name} already used this week (Week {week}: {t.tournament})"
+            if t.tournament == tournament:  # exact-name fallback (week=0 edge case)
                 return False, f"❌ {player_name} already used at {tournament}"
 
         # Add the pick
@@ -253,6 +313,10 @@ class UsageTracker:
 
     def remove_pick(self, player_name: str, tournament: str) -> tuple[bool, str]:
         """Remove a pick (undo mistake)."""
+        canonical_key = self._find_player_key(player_name)
+        if not canonical_key:
+            return False, f"❌ {player_name} not found in tracker"
+        player_name = canonical_key
         if player_name not in self.picks:
             return False, f"❌ {player_name} not found in tracker"
 
@@ -300,8 +364,9 @@ class UsageTracker:
         return False, f"❌ {player_name} not used at {tournament}"
 
     def get_player_status(self, player_name: str) -> Optional[PlayerUsage]:
-        """Get usage status for a player."""
-        return self.picks.get(player_name)
+        """Get usage status for a player (accent-normalized lookup)."""
+        key = self._find_player_key(player_name) or player_name
+        return self.picks.get(key)
 
     def get_available_players(self, used_players: List[str] = None) -> Dict[str, int]:
         """

@@ -9,7 +9,7 @@ Outputs:
 Usage:
   python3 scripts/analysis/data_qa_report.py
   python3 scripts/analysis/data_qa_report.py --output-dir outputs/qa
-  python3 scripts/analysis/data_qa_report.py --files data/processed/master_training_data_2020_2025.csv data/historical/leaderboards_2026.csv
+  python3 scripts/analysis/data_qa_report.py --files data/processed/master_training_data_2016_2025.csv data/historical/leaderboards_2026.csv
 """
 
 from __future__ import annotations
@@ -24,8 +24,14 @@ from typing import Dict, List, Optional
 import pandas as pd
 
 
+def _latest_master_file() -> str:
+    """Return the path to the most recently written master training data file."""
+    import glob as _glob
+    _candidates = sorted(_glob.glob("data/processed/master_training_data_*.csv"), reverse=True)
+    return _candidates[0] if _candidates else "data/processed/master_training_data_2020_2025.csv"
+
 DEFAULT_FILES = [
-    "data/processed/master_training_data_2020_2025.csv",
+    _latest_master_file(),
     "data/historical/leaderboards_2026.csv",
     "data/historical/leaderboards_2025.csv",
     "data/historical/leaderboards_2024.csv",

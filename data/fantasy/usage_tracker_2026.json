@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-02-22T21:49:36.001053",
+  "last_updated": "2026-02-26T07:41:47.308509",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -129,6 +129,42 @@
       ],
       "remaining_uses": 2,
       "total_points": 28
+    },
+    "Ryan Gerard": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Cognizant Classic",
+          "week": 4,
+          "date": "2026-02-26"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 0
+    },
+    "Michael Thorbjornsen": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Cognizant Classic",
+          "week": 4,
+          "date": "2026-02-26"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 0
+    },
+    "Nicolai H\u00f8jgaard": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Cognizant Classic",
+          "week": 4,
+          "date": "2026-02-26"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_points": 0
     }
   },
   "weekly_lineups": {
@@ -164,11 +200,22 @@
         "Patrick Cantlay"
       ],
       "points_earned": null
+    },
+    "week_4": {
+      "tournament": "Cognizant Classic",
+      "week": 4,
+      "date": "2026-02-26",
+      "lineup": [
+        "Ryan Gerard",
+        "Michael Thorbjornsen",
+        "Nicolai H\u00f8jgaard"
+      ],
+      "points_earned": null
     }
   },
   "summary": {
-    "total_players_used": 9,
-    "total_picks_made": 9,
+    "total_players_used": 11,
+    "total_picks_made": 15,
     "total_points": 802
   }
 }

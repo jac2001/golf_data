@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-24 21:42
+Generated: 2026-02-26 08:31
 
 | Column | Description |
 |--------|-------------|
@@ -18,6 +18,8 @@ Generated: 2026-02-24 21:42
 | season_sg_t2g | Season SG:Tee-to-Green average |
 | sg_arg | Recent SG:Around-the-Green |
 | season_sg_arg | Season SG:Around-the-Green average |
+| recent_sg_weighted | No description available |
+| recent_sg_trend | No description available |
 | sg_blend_current_weight | No description available |
 | sg_blend_prior_weight | No description available |
 | sg_blend_tournaments | No description available |
@@ -57,23 +59,11 @@ Generated: 2026-02-24 21:42
 | season_sg_putt_field_pct | No description available |
 | season_sg_putt_field_rank | No description available |
 | driving_dist_val | No description available |
-| 102 | No description available |
 | gir_pct_val | No description available |
 | putts_per_round_val | No description available |
-| 108 | No description available |
-| 111 | No description available |
-| 119 | No description available |
-| 120 | No description available |
 | scrambling_val | No description available |
-| 142 | No description available |
-| 143 | No description available |
 | birdie_avg_val | No description available |
-| 160 | No description available |
-| 2414 | No description available |
-| 2419 | No description available |
-| 299 | No description available |
 | bogey_avoid_val | No description available |
-| 413 | No description available |
 | driving_dist_field_avg | No description available |
 | driving_dist_field_rank | No description available |
 | driving_dist_field_pct | No description available |
@@ -188,3 +178,14 @@ Generated: 2026-02-24 21:42
 | cut_risk | Cut risk category: LOW (>85%), MEDIUM (65-85%), ELEVATED (45-65%), HIGH (<45%) |
 | miss_cut_prob | Probability of missing the cut (1 - cut_prob) |
 | expected_value | Expected earnings value based on purse + probabilities (USD) |
+| vegas_prob | No description available |
+| odds_to_win | No description available |
+| odds_numeric | No description available |
+| odds_rank | No description available |
+| ensemble_win_prob | No description available |
+| ensemble_win_prob_normalized | No description available |
+| model_vs_vegas_edge | No description available |
+| is_value_bet | No description available |
+| odds_drift_flag | No description available |
+| odds_drift_level | No description available |
+| dfs_ownership_proj | No description available |

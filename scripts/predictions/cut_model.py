@@ -53,6 +53,9 @@ CUT_FEATURES = [
     'season_sg_app',
     'season_sg_putt',
     'season_sg_t2g',
+    # Field-adjusted SG: player vs this week's specific field
+    # (added Phase 2 — player below field level is higher cut risk)
+    'season_sg_total_vs_field',
     # Course history (known before tournament)
     'hist_cut_rate',
     'hist_times_played',
@@ -60,6 +63,9 @@ CUT_FEATURES = [
     # Recent performance (from prior tournaments)
     'recent_cuts_pct',
     'recent_top10s',
+    # Recent form: exponential decay avg (added Phase 2)
+    # A player in poor recent form misses cuts more than their season avg suggests
+    'recent_sg_weighted',
     # Context (known before tournament)
     'world_rank',
     'field_avg_rank',
@@ -68,7 +74,10 @@ CUT_FEATURES = [
 
 def load_training_data():
     """Load master training data and create cut target."""
-    master_path = PROCESSED_DIR / "master_training_data_2020_2025.csv"
+    # Auto-detect the most recently written master training file
+    _candidates = sorted(PROCESSED_DIR.glob("master_training_data_*.csv"), key=lambda p: p.stat().st_mtime, reverse=True)
+    master_path = _candidates[0] if _candidates else (PROCESSED_DIR / "master_training_data_2020_2025.csv")
+    print(f"Using training data: {master_path.name}")
     df = pd.read_csv(master_path)
 
     # Create target: 1 = made cut, 0 = missed cut

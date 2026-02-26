@@ -2758,7 +2758,7 @@ def render_tracked_bets_section(tournament_id: str = ""):
 
     results_df = load_recommended_bet_results_df(tournament_id)
     if results_df.empty:
-        ("No settled tracked bets yet.")
+        st.info("No settled tracked bets yet.")
         return
 
     if "outcome_status" in results_df.columns:
@@ -2767,7 +2767,7 @@ def render_tracked_bets_section(tournament_id: str = ""):
         status_series = pd.Series(["pending"] * len(results_df), index=results_df.index, dtype=object)
     settled = results_df[status_series.isin(["won", "lost"])].copy()
     if settled.empty:
-        ("Tracked bets found, but none are settled yet.")
+        st.info("Tracked bets found, but none are settled yet.")
         return
 
     settled["outcome_win"] = settled["outcome_status"].astype(str).str.lower().eq("won")
@@ -6701,6 +6701,7 @@ if page == "🏆 This Week":
                         _edge   = 0.0
                         _vprob  = 0.0
                         _drift  = ""
+                        _dfs_own = 0.0
 
                         if not _prow.empty:
                             _pr     = _prow.iloc[0]
@@ -6714,6 +6715,7 @@ if page == "🏆 This Week":
                             _edge   = float(_pr.get("model_vs_vegas_edge", 0) or 0)
                             _vprob  = float(_pr.get("vegas_prob", 0) or 0) * 100
                             _drift  = str(_pr.get("odds_drift_level", "") or "").upper()
+                            _dfs_own = float(_pr.get("dfs_ownership_proj", 0) or 0)
 
                         # Edge badge — only appears when model/market gap > 3 pts
                         _edge_badge = ""
@@ -6753,6 +6755,7 @@ if page == "🏆 This Week":
   <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px;">
     <div><span style="color:#4a6080;">Vegas:</span> <span style="color:#dde6f5;font-weight:700;">{_odds}</span></div>
     <div><span style="color:#4a6080;">Mkt:</span> <span style="color:#dde6f5;font-weight:700;">{_vprob:.1f}%</span></div>
+    <div><span style="color:#4a6080;">DFS Own:</span> <span style="color:#dde6f5;font-weight:700;">{_dfs_own:.1f}%</span></div>
   </div>
   {_edge_badge}
   <div style="font-size:10px;color:#4a6080;margin-top:4px;">{_drift_label}</div>
@@ -6844,6 +6847,7 @@ if page == "🏆 This Week":
                         _win_v = (_pr.get("win_prob", 0) or 0) * 100
                         _t10_v = (_pr.get("top10_prob", 0) or 0) * 100
                         _ev_v = (_pr.get("expected_value", 0) or 0) / 1000
+                        _dfs_own_v = float(_pr.get("dfs_ownership_proj", 0) or 0)
                         _dots = "●" * _uses + "○" * (3 - _uses)
 
                         if _uses == 0:
@@ -6871,6 +6875,10 @@ if page == "🏆 This Week":
       <div style="text-align:right; min-width:50px;">
         <div class="pc-stat" style="color:#f4c430;">${_ev_v:.0f}k</div>
         <div class="pc-stat-label">EXP VAL</div>
+      </div>
+      <div style="text-align:right; min-width:50px;">
+        <div class="pc-stat" style="color:#9b9bff;">{_dfs_own_v:.0f}%</div>
+        <div class="pc-stat-label">DFS OWN</div>
       </div>
       <div class="pc-badge {_badge_cls}">{_badge_txt}</div>
     </div>""")
@@ -8550,6 +8558,72 @@ elif page == "👤 Players":
                     with row3[3]:
                         st.metric("Vegas Win %", _fmt_pct(vegas_prob, 2) if vegas_prob is not None else "—")
 
+                # ── RECENT FORM SPARKLINE ───────────────────────────────────────────
+                # Shows per-event SG Total bars + decay-weighted form signal.
+                # Complements the full form chart lower on the page — this gives
+                # an immediate at-a-glance read without scrolling.
+                with st.container(border=True):
+                    st.markdown("#### Recent Form")
+                    st.caption("SG Total per event (green = positive, red = negative) · Decay-weighted avg gives more weight to recent events")
+
+                    _spark_form = load_player_form_history(n_events=8)
+                    # Names may be "Last, First" — flip for lookup
+                    _spark_name = player_search
+                    if "," in str(player_search):
+                        _sp = str(player_search).split(",", 1)
+                        _spark_name = f"{_sp[1].strip()} {_sp[0].strip()}"
+
+                    _spark_sg = _spark_form.get(_spark_name, {}).get("sg", [])
+                    _spark_ev = _spark_form.get(_spark_name, {}).get("events", [])
+                    _rsw      = player_data.get("recent_sg_weighted")
+                    _rst      = player_data.get("recent_sg_trend")
+
+                    _sp_col1, _sp_col2 = st.columns([3, 1])
+                    with _sp_col1:
+                        if _spark_sg:
+                            _sp_colors = ["#00c44f" if v >= 0 else "#e74c3c" for v in _spark_sg]
+                            _sfig = go.Figure()
+                            _sfig.add_trace(go.Bar(
+                                x=_spark_ev, y=_spark_sg,
+                                marker_color=_sp_colors,
+                                hovertemplate="%{x}<br>SG: %{y:+.2f}<extra></extra>",
+                            ))
+                            _sfig.add_hline(y=0, line_color="#4a6080", line_width=1)
+                            _sfig.update_layout(
+                                height=150,
+                                margin=dict(t=4, b=4, l=0, r=0),
+                                paper_bgcolor="rgba(0,0,0,0)",
+                                plot_bgcolor="rgba(0,0,0,0)",
+                                font_color="#dde6f5",
+                                showlegend=False,
+                                xaxis=dict(tickfont=dict(size=9), gridcolor="rgba(0,0,0,0)"),
+                                yaxis=dict(gridcolor="#1c2f4a", zeroline=False),
+                            )
+                            st.plotly_chart(_sfig, use_container_width=True)
+                        else:
+                            st.caption("No per-event SG data available.")
+
+                    with _sp_col2:
+                        if _rsw is not None and pd.notna(_rsw):
+                            st.metric(
+                                "Weighted SG",
+                                f"{float(_rsw):+.3f}",
+                                help="Exponential decay avg of last 8 SG Total events. Most recent event = full weight, each prior event × 0.85."
+                            )
+                        if _rst is not None and pd.notna(_rst):
+                            _rst_f = float(_rst)
+                            _trend_label = "Heating up" if _rst_f > 0.05 else ("Cooling off" if _rst_f < -0.05 else "Stable")
+                            _trend_color = "#00c44f" if _rst_f > 0.05 else ("#e74c3c" if _rst_f < -0.05 else "#7f8c8d")
+                            st.metric(
+                                "Trend",
+                                f"{_rst_f:+.3f}",
+                                help="(Avg last 3 events) − (avg events 4–8). Positive = form improving."
+                            )
+                            st.markdown(
+                                f'<span style="color:{_trend_color};font-size:0.82em;font-weight:600;">{_trend_label}</span>',
+                                unsafe_allow_html=True
+                            )
+
                 # ── PGA TOUR-STYLE STAT SHEET ───────────────────────────────────────
                 with st.container(border=True):
                     st.markdown("#### 📋 PGA TOUR-Style Stat Sheet")
@@ -9774,7 +9848,8 @@ elif page == "🎰 Betting":
             _vb_raw = _vb_raw[~_vb_raw["player_name"].str.strip().str.lower().isin(_vb_cut_names)]
 
         _vb_need = ["model_vs_vegas_edge", "win_prob", "vegas_prob",
-                    "player_name", "odds_to_win", "odds_drift_level", "expected_value"]
+                    "player_name", "odds_to_win", "odds_drift_level", "expected_value",
+                    "dfs_ownership_proj"]
         if all(c in _vb_raw.columns for c in ["model_vs_vegas_edge", "win_prob", "vegas_prob"]):
             _vb_raw["model_vs_vegas_edge"] = pd.to_numeric(
                 _vb_raw["model_vs_vegas_edge"], errors="coerce"
@@ -9832,6 +9907,11 @@ elif page == "🎰 Betting":
                     _vb_disp["expected_value"] = _vb_disp["expected_value"].apply(
                         lambda x: f"${float(x):,.0f}" if pd.notna(x) else "—"
                     )
+                if "dfs_ownership_proj" in _vb_disp.columns:
+                    _vb_disp["dfs_ownership_proj"] = (
+                        pd.to_numeric(_vb_disp["dfs_ownership_proj"], errors="coerce")
+                        .round(1).astype(str) + "%"
+                    )
 
                 _vb_disp = _vb_disp.rename(columns={
                     "player_name":         "Player",
@@ -9841,6 +9921,7 @@ elif page == "🎰 Betting":
                     "odds_to_win":         "Odds",
                     "odds_drift_level":    "Signal",
                     "expected_value":      "EV ($)",
+                    "dfs_ownership_proj":  "DFS Own%",
                 })
                 st.dataframe(_vb_disp, hide_index=True, use_container_width=True)
 
@@ -10257,7 +10338,8 @@ elif page == "🎰 Betting":
                         # ── Merge world_rank + form_trend from predictions ──
                         if not _vb_preds_df.empty:
                             _extra = _vb_preds_df[
-                                [c for c in ["player_name","world_rank","form_trend","top20_prob"]
+                                [c for c in ["player_name","world_rank","form_trend","top20_prob",
+                                             "cut_prob","dfs_ownership_proj"]
                                  if c in _vb_preds_df.columns]
                             ].copy()
                             _extra["_pname_norm"] = _extra["player_name"].str.strip().str.lower()
@@ -10333,7 +10415,7 @@ elif page == "🎰 Betting":
                         ].sort_values("edge_pts", ascending=False)
 
                         # ── Hero metrics bar ────────────────────────────────
-                        _mc1, _mc2, _mc3, _mc4 = st.columns(4)
+                        _mc1, _mc2, _mc3, _mc4, _mc5 = st.columns(5)
                         with _mc1:
                             st.metric("Value Bets", len(_filtered))
                         with _mc2:
@@ -10343,6 +10425,17 @@ elif page == "🎰 Betting":
                             _avg_ev = _filtered["ev_per_1"].mean() if "ev_per_1" in _filtered.columns and not _filtered.empty else 0
                             st.metric("Avg EV / $1", f"${_avg_ev:.2f}" if pd.notna(_avg_ev) else "—")
                         with _mc4:
+                            if not _filtered.empty and "ev_per_1" in _filtered.columns:
+                                _stakes = pd.to_numeric(
+                                    _filtered.get("stake_units", pd.Series([1.0]*len(_filtered))),
+                                    errors="coerce"
+                                ).fillna(1.0)
+                                _total_ev = (_filtered["ev_per_1"] * _stakes).sum()
+                                st.metric("Total Slate EV", f"${_total_ev:.2f}",
+                                          help="Sum of (EV per $1 × stake units) across all qualifying bets")
+                            else:
+                                st.metric("Total Slate EV", "—")
+                        with _mc5:
                             _upd = ""
                             if _vb_rec_path and _vb_rec_path.exists():
                                 _upd = datetime.fromtimestamp(_vb_rec_path.stat().st_mtime).strftime("%b %d %H:%M")
@@ -10411,6 +10504,30 @@ elif page == "🎰 Betting":
                                             _fv = float(_form)
                                             _form_str = f"Form {_fv:+.2f}"
 
+                                        # Cut risk for top5/top10 bets
+                                        _cut_p = _row.get("cut_prob")
+                                        _cut_warn = ""
+                                        if _mkt in ("top5", "top10", "make_cut") and pd.notna(_cut_p):
+                                            _cp = float(_cut_p)
+                                            if _cp < 0.65:
+                                                _cut_warn = (
+                                                    f'<div style="margin-top:7px;padding:4px 8px;'
+                                                    f'background:rgba(229,57,53,0.12);border:1px solid rgba(229,57,53,0.3);'
+                                                    f'border-radius:5px;font-size:0.70em;color:#e57373;">'
+                                                    f'⚠️ Cut risk: {(1-_cp)*100:.0f}% miss-cut probability</div>'
+                                                )
+                                            elif _cp < 0.80:
+                                                _cut_warn = (
+                                                    f'<div style="margin-top:7px;padding:4px 8px;'
+                                                    f'background:rgba(243,156,18,0.10);border:1px solid rgba(243,156,18,0.25);'
+                                                    f'border-radius:5px;font-size:0.70em;color:#f39c12;">'
+                                                    f'Cut risk: {(1-_cp)*100:.0f}% miss-cut probability</div>'
+                                                )
+
+                                        # DFS ownership
+                                        _dfs_own = _row.get("dfs_ownership_proj")
+                                        _dfs_str = f"{float(_dfs_own):.1f}%" if pd.notna(_dfs_own) else "—"
+
                                         # Edge bar (0–10 pt scale)
                                         _bar_pct = min(int(_edge / 10 * 100), 100)
 
@@ -10447,10 +10564,15 @@ elif page == "🎰 Betting":
       <div style="font-size:0.68em;color:#7f8c8d;">EV / $1</div>
       <div style="font-size:0.92em;font-weight:700;color:#00c44f;">${_ev:.2f}</div>
     </div>
+    <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">DFS OWN</div>
+      <div style="font-size:0.92em;font-weight:600;color:#9b9bff;">{_dfs_str}</div>
+    </div>
   </div>
   <div style="margin-top:8px;background:#1a2a40;border-radius:4px;height:4px;">
     <div style="width:{_bar_pct}%;height:4px;background:{_border};border-radius:4px;"></div>
   </div>
+  {_cut_warn}
 </div>
 """, unsafe_allow_html=True)
 
