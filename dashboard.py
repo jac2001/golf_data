@@ -548,9 +548,37 @@ def build_pipeline_health_snapshot(tournament_id: str = "") -> dict:
 
 
 
+def _scoring_engine_cache_key() -> tuple:
+    """Cache key that refreshes scoring engine when key inputs/code change."""
+    deps = [
+        PROJECT_ROOT / "scripts" / "planning" / "scoring_engine.py",
+        PROJECT_ROOT / "scripts" / "planning" / "course_history.py",
+        OUTPUTS_DIR / "latest_predictions.csv",
+        DATA_DIR / "fantasy" / "usage_tracker_2026.json",
+        DATA_DIR / "reference" / "tournament_courses.json",
+        DATA_DIR / "raw" / "schedule_2026.csv",
+        DATA_DIR / "course_sg_weights.csv",
+    ]
+
+    # Include the newest betting profile file to refresh course-history-derived signals.
+    bp_dir = DATA_DIR / "betting_profiles"
+    if bp_dir.exists():
+        bp_files = sorted(bp_dir.glob("betting_profiles_*.csv"), key=lambda p: p.stat().st_mtime, reverse=True)
+        if bp_files:
+            deps.append(bp_files[0])
+
+    key_parts = []
+    for p in deps:
+        try:
+            key_parts.append((str(p), int(p.stat().st_mtime)))
+        except Exception:
+            key_parts.append((str(p), 0))
+    return tuple(key_parts)
+
+
 @st.cache_resource
-def load_scoring_engine():
-    """Load the scoring engine with caching."""
+def load_scoring_engine(cache_key: tuple):
+    """Load the scoring engine with dependency-aware caching."""
     try:
         from scripts.planning.scoring_engine import ScoringEngine
         return ScoringEngine()
@@ -6368,7 +6396,7 @@ st.sidebar.caption(f"Last updated: {datetime.now().strftime('%b %d, %Y %H:%M')}"
 
 if page == "🏆 This Week":
 
-    engine = load_scoring_engine()
+    engine = load_scoring_engine(_scoring_engine_cache_key())
 
     if engine:
         tournament = engine.get_current_week_tournament()
@@ -6850,113 +6878,170 @@ if page == "🏆 This Week":
                     st.markdown("\n".join(_pool_html), unsafe_allow_html=True)
 
             st.markdown("---")
-             # ── Optimal Lineup Finder ──────────────────────────────────────────
+            # ── Optimal Lineup Finder ──────────────────────────────────────────
             with st.expander("🧮 Optimal Lineup Finder", expanded=False):
                 st.caption(
-                    "Brute-force search over all C(n,3) player combinations. "
-                    "Ranks by composite score: base EV + ceiling bonus − last-use penalty."
+                    "Deterministic combinatorial search with hard constraints. "
+                    "Objective = EV + ceiling + leverage - risk - usage."
                 )
 
-                _opt_col1, _opt_col2, _opt_col3 = st.columns(3)
-                with _opt_col1:
-                    _opt_top_n = st.slider(
-                        "Candidate pool (top N by EV):", 20, 60, 40, 5,
-                        key="opt_top_n",
-                        help="C(40,3) = 9,880 combos · C(60,3) = 34,220 combos"
-                    )
-                with _opt_col2:
+                _profile_label = st.radio(
+                    "Optimization Mode",
+                    ["Safe", "Balanced", "Upside"],
+                    horizontal=True,
+                    key="opt_profile_mode",
+                )
+                _profile_key = str(_profile_label).lower()
+                _profile_defaults = {
+                    "safe": {
+                        "desc": "Higher floor: stricter cut safety, fewer burn-now usage decisions.",
+                        "top_n": 36,
+                        "min_cut": 0.89,
+                        "max_last_use": 0,
+                        "min_lev_players": 0,
+                        "lev_thresh": 0.70,
+                        "w_ceiling": 0.06,
+                        "w_lev": 0.02,
+                        "w_risk": 0.30,
+                        "w_usage": 1.20,
+                        "last_use_penalty": 18000,
+                    },
+                    "balanced": {
+                        "desc": "Best default for most users: balanced floor, upside, and usage discipline.",
+                        "top_n": 45,
+                        "min_cut": 0.84,
+                        "max_last_use": 1,
+                        "min_lev_players": 0,
+                        "lev_thresh": 0.65,
+                        "w_ceiling": 0.10,
+                        "w_lev": 0.08,
+                        "w_risk": 0.20,
+                        "w_usage": 1.00,
+                        "last_use_penalty": 15000,
+                    },
+                    "upside": {
+                        "desc": "Tournament ceiling focus: accepts more volatility and leverage.",
+                        "top_n": 55,
+                        "min_cut": 0.78,
+                        "max_last_use": 2,
+                        "min_lev_players": 1,
+                        "lev_thresh": 0.62,
+                        "w_ceiling": 0.16,
+                        "w_lev": 0.16,
+                        "w_risk": 0.10,
+                        "w_usage": 0.70,
+                        "last_use_penalty": 12000,
+                    },
+                }
+                _d = _profile_defaults.get(_profile_key, _profile_defaults["balanced"])
+                st.caption(_d["desc"])
+
+                _quick_cols = st.columns(2)
+                with _quick_cols[0]:
+                    st.metric("Lineup Size", "3", help="Fixed for this contest format.")
+                    _opt_lineup_size = 3
+                with _quick_cols[1]:
                     _opt_top_combos = st.slider(
-                        "Combinations to show:", 5, 25, 10, 5,
-                        key="opt_top_combos"
+                        "Combinations to show:",
+                        5,
+                        25,
+                        10,
+                        5,
+                        key="opt_top_combos",
                     )
-                with _opt_col3:
-                    _opt_run = st.button(
-                        "▶ Run Optimizer", type="primary",
-                        use_container_width=True, key="opt_run_btn"
-                    )
+
+                _opt_top_n = int(_d["top_n"])
+                _opt_min_cut = float(_d["min_cut"])
+                _opt_max_last_use = int(_d["max_last_use"])
+                _opt_min_lev_players = int(_d["min_lev_players"])
+                _opt_lev_thresh = float(_d["lev_thresh"])
+                _opt_w_ceiling = float(_d["w_ceiling"])
+                _opt_w_lev = float(_d["w_lev"])
+                _opt_w_risk = float(_d["w_risk"])
+                _opt_w_usage = float(_d["w_usage"])
+                _opt_last_use_penalty = int(_d["last_use_penalty"])
+
+                _opt_run = st.button(
+                    "▶ Run Optimizer", type="primary",
+                    use_container_width=True, key="opt_run_btn",
+                )
 
                 if _opt_run:
                     try:
-                        sys.path.insert(
-                            0, str(PROJECT_ROOT / "scripts" / "predictions")
-                        )
-     
+                        sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "predictions"))
                         from scripts.predictions.lineup_optimizer import run_optimizer
-                        with st.spinner(f"Evaluating combinations..."):
+
+                        with st.spinner("Evaluating combinations..."):
                             _opt_df, _opt_elig, _opt_imp, _opt_tname = run_optimizer(
-                                top_n=_opt_top_n,
-                                top_combos=_opt_top_combos,
+                                top_n=int(_opt_top_n),
+                                top_combos=int(_opt_top_combos),
+                                lineup_size=int(_opt_lineup_size),
+                                min_avg_cut_prob=float(_opt_min_cut),
+                                max_last_use_players=int(_opt_max_last_use),
+                                min_leverage_players=int(_opt_min_lev_players),
+                                leverage_threshold=float(_opt_lev_thresh),
+                                ceiling_weight=float(_opt_w_ceiling),
+                                leverage_weight=float(_opt_w_lev),
+                                risk_weight=float(_opt_w_risk),
+                                usage_weight=float(_opt_w_usage),
+                                last_use_penalty=float(_opt_last_use_penalty),
+                                locked_players=[],
+                                excluded_players=[],
                                 verbose=False,
                             )
 
-                        n_combos = (
-                            len(_opt_elig)
-                            * (len(_opt_elig) - 1)
-                            * (len(_opt_elig) - 2)
-                            // 6
-                        )
+                        _opt_meta = _opt_df.attrs.get("optimizer_meta", {})
                         st.caption(
-                            f"Evaluated {n_combos:,} combinations from "
-                            f"{len(_opt_elig)} eligible players · "
-                            f"Tournament importance: {_opt_imp}/10"
+                            f"Mode: {_profile_label} · "
+                            f"Tournament: {_opt_tname or 'Unknown'} · Importance: {int(_opt_imp)}/10 · "
+                            f"Candidates: {len(_opt_elig)} · "
+                            f"Passed combos: {_opt_meta.get('scored_combos', 0):,}/{_opt_meta.get('total_combos', 0):,}"
                         )
 
-                        # Render results as styled cards
-                        for _rank, _row in _opt_df.iterrows():
-                            _penalty = _row["last_use_cost"] > 0
-                            _card_border = "#f39c12" if _penalty else "#00c44f"
-                            _uses_dots = lambda u: "🟢" * u + "⬜" * (3 - u)
-                            st.markdown(f"""
-                            <div style="background:#0d1a30;border:1px solid {_card_border}33;
-                                        border-left:4px solid {_card_border};border-radius:8px;
-                                        padding:12px 16px;margin:6px 0;
-                                        display:flex;justify-content:space-between;align-items:center;">
-                                <div style="font-size:0.82em;color:#4a6080;min-width:28px;">
-                                    #{_rank}
-                                </div>
-                                <div style="flex:1;display:flex;gap:20px;">
-                                    <div>
-                                        <div style="font-weight:600;font-size:0.9em;color:#dde6f5;">
-                                            {_row['pick1'][:22]}
-                                        </div>
-                                        <div style="font-size:0.75em;color:#4a6080;">
-                                            EV ${_row['ev1']:,} &nbsp; {_uses_dots(_row['uses1'])}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div style="font-weight:600;font-size:0.9em;color:#dde6f5;">
-                                            {_row['pick2'][:22]}
-                                        </div>
-                                        <div style="font-size:0.75em;color:#4a6080;">
-                                            EV ${_row['ev2']:,} &nbsp; {_uses_dots(_row['uses2'])}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div style="font-weight:600;font-size:0.9em;color:#dde6f5;">
-                                            {_row['pick3'][:22]}
-                                        </div>
-                                        <div style="font-size:0.75em;color:#4a6080;">
-                                            EV ${_row['ev3']:,} &nbsp; {_uses_dots(_row['uses3'])}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="text-align:right;min-width:140px;">
-                                    <div style="font-weight:700;font-size:1.0em;color:{_card_border};">
-                                        ${_row['score']:,}
-                                    </div>
-                                    <div style="font-size:0.75em;color:#4a6080;">
-                                        P(top-5): {_row['p_top5_any']:.1f}%
-                                        {"  ⚠ last use" if _penalty else ""}
-                                    </div>
-                                </div>
-                            </div>
-                            """, unsafe_allow_html=True)
+                        if _opt_meta.get("unresolved_locked"):
+                            st.warning("Unresolved lock names: " + ", ".join(_opt_meta["unresolved_locked"]))
+                        if _opt_meta.get("unresolved_excluded"):
+                            st.warning("Unresolved exclude names: " + ", ".join(_opt_meta["unresolved_excluded"]))
 
-                        if _opt_df["last_use_cost"].sum() > 0:
+                        if _opt_df.empty:
                             st.warning(
-                                "⚠ Some combinations include players on their last use "
-                                "in a standard event — a $15,000 EV penalty was applied. "
-                                "Consider saving them for a Major."
+                                "No lineups matched your constraints. Try lowering min avg cut %, "
+                                "increasing max last-use players, or reducing min leverage players."
+                            )
+                        else:
+                            for _rank, _row in _opt_df.iterrows():
+                                _usage_pen = float(pd.to_numeric(_row.get("usage_penalty"), errors="coerce") or 0.0)
+                                _risk_pen = float(pd.to_numeric(_row.get("risk_penalty"), errors="coerce") or 0.0)
+                                _penalty = _usage_pen > 0 or _risk_pen > 0
+                                _player_lines = []
+                                for _idx in range(1, int(_opt_lineup_size) + 1):
+                                    _p = str(_row.get(f"pick{_idx}", "")).strip()
+                                    if not _p:
+                                        continue
+                                    _ev = float(pd.to_numeric(_row.get(f"ev{_idx}", 0), errors="coerce") or 0.0)
+                                    _uses = int(pd.to_numeric(_row.get(f"uses{_idx}", 3), errors="coerce") or 0)
+                                    _player_lines.append(f"{_p}  |  EV ${_ev:,.0f}  |  Uses {_uses}/3")
+
+                                with st.container(border=True):
+                                    _c1, _c2, _c3 = st.columns([0.6, 4, 1.4])
+                                    with _c1:
+                                        st.caption(f"#{_rank}")
+                                    with _c2:
+                                        st.text("\n".join(_player_lines))
+                                    with _c3:
+                                        st.metric("Score", f"${float(_row.get('score', 0)):,.0f}")
+                                        st.caption(
+                                            f"Cut {float(_row.get('avg_cut_prob', 0)):.1f}% · "
+                                            f"Top-5 any {float(_row.get('p_top5_any', 0)):.1f}%"
+                                        )
+                                    if _penalty:
+                                        st.caption("Includes risk/usage penalties.")
+
+                        if _opt_meta:
+                            st.caption(
+                                f"Constraint rejections -> cut: {_opt_meta.get('skipped_by_cut', 0):,} | "
+                                f"usage: {_opt_meta.get('skipped_by_usage', 0):,} | "
+                                f"leverage: {_opt_meta.get('skipped_by_leverage', 0):,}"
                             )
 
                     except Exception as _opt_err:
@@ -6971,7 +7056,7 @@ elif page == "🎯 Scoring Engine":
     st.markdown("## 🎯 Scoring Engine")
     st.caption("Fantasy league scoring and recommendations")
 
-    engine = load_scoring_engine()
+    engine = load_scoring_engine(_scoring_engine_cache_key())
 
     # Load predictions for Course & Research tab
     _se_preds = pd.DataFrame()
@@ -7453,7 +7538,7 @@ elif page == "📋 My Picks":
     st.markdown("## 📋 My Picks")
     st.caption("Track usage and manage your lineup")
 
-    engine = load_scoring_engine()
+    engine = load_scoring_engine(_scoring_engine_cache_key())
     all_players = sorted(engine.predictions.keys()) if engine and engine.predictions else []
 
     # Current tournament banner
@@ -8130,11 +8215,12 @@ elif page == "👤 Players":
     st.markdown("## 👤 Players")
     st.caption("Player lookup, strokes gained analysis, and statistical deep dive")
 
-    engine = load_scoring_engine()
+    engine = load_scoring_engine(_scoring_engine_cache_key())
     all_players = sorted(engine.predictions.keys()) if engine and engine.predictions else []
     _best_events_state_key = "player_best_events_cache"
     if _best_events_state_key not in st.session_state:
         st.session_state[_best_events_state_key] = {}
+    _best_events_cache_ver = int((PROJECT_ROOT / "scripts" / "planning" / "scoring_engine.py").stat().st_mtime)
 
     def _player_best_events_df(_player_name: str, _top_n: int = 10) -> pd.DataFrame:
         """Build a structured best-events table for the selected player."""
@@ -8147,6 +8233,17 @@ elif page == "👤 Players":
         _rows = []
         for _i, _s in enumerate(_scores, 1):
             _t = engine.tournaments.get(_s.tournament)
+            _fc_raw = float(getattr(_s, "fit_confidence", 0.0) or 0.0)
+            _fc_pct = _fc_raw * 100.0 if _fc_raw <= 1.5 else _fc_raw
+            _fc_pct = float(np.clip(_fc_pct, 0.0, 100.0))
+            if _fc_pct >= 75:
+                _fc_tier = "High"
+            elif _fc_pct >= 50:
+                _fc_tier = "Medium"
+            elif _fc_pct > 0:
+                _fc_tier = "Low"
+            else:
+                _fc_tier = "Unknown"
             _rows.append({
                 "#": _i,
                 "Tournament": _s.tournament,
@@ -8156,7 +8253,8 @@ elif page == "👤 Players":
                 "Total Score": round(float(_s.total_score), 1),
                 "Course Fit": round(float(_s.course_fit), 1),
                 "DG Fit": round(float(getattr(_s, "dg_fit_score", 50.0)), 1),
-                "Fit Confidence": round(float(getattr(_s, "fit_confidence", 0.0)) * 100.0, 1),
+                "Fit Confidence": round(_fc_pct, 1),
+                "Confidence Tier": _fc_tier,
                 "ML Score": round(float(getattr(_s, "ml_prediction", 50.0)), 1),
                 "Form Score": round(float(getattr(_s, "current_form", 50.0)), 1),
                 "Field Score": round(float(getattr(_s, "field_strength", 50.0)), 1),
@@ -8184,25 +8282,34 @@ elif page == "👤 Players":
         with _m3:
             st.metric("Avg DG Fit", f"{float(pd.to_numeric(_events_df['DG Fit'], errors='coerce').mean()):.1f}")
         with _m4:
-            st.metric("Avg Fit Confidence", f"{float(pd.to_numeric(_events_df['Fit Confidence'], errors='coerce').mean()):.0f}%")
+            _fc_vals = pd.to_numeric(_events_df["Fit Confidence"], errors="coerce")
+            st.metric("Avg Fit Confidence", f"{float(_fc_vals.mean()):.0f}%")
 
         _chart_df = _events_df.head(10).copy()
         _chart_df = _chart_df.sort_values("Total Score", ascending=True)
+        _chart_df["Fit Confidence"] = pd.to_numeric(_chart_df["Fit Confidence"], errors="coerce").fillna(0.0)
 
         _bar = go.Figure()
         _bar.add_trace(go.Bar(
             x=pd.to_numeric(_chart_df["Total Score"], errors="coerce"),
             y=_chart_df["Tournament"],
             orientation="h",
-            marker=dict(color="#00c44f", line=dict(color="#1c2f4a", width=1)),
-            customdata=_chart_df[["Type", "DG Fit", "Course Fit", "Fit Confidence"]].values,
+            marker=dict(
+                color=_chart_df["Fit Confidence"],
+                colorscale="RdYlGn",
+                cmin=0,
+                cmax=100,
+                line=dict(color="#1c2f4a", width=1),
+                colorbar=dict(title="Confidence %"),
+            ),
+            customdata=_chart_df[["Type", "DG Fit", "Course Fit", "Fit Confidence", "Confidence Tier"]].values,
             hovertemplate=(
                 "<b>%{y}</b><br>"
                 "Total: %{x:.1f}<br>"
                 "Type: %{customdata[0]}<br>"
                 "DG Fit: %{customdata[1]:.1f}<br>"
                 "Course Fit: %{customdata[2]:.1f}<br>"
-                "Fit Confidence: %{customdata[3]:.0f}%<extra></extra>"
+                "Fit Confidence: %{customdata[3]:.0f}% (%{customdata[4]})<extra></extra>"
             ),
         ))
         _bar.update_layout(
@@ -8264,9 +8371,18 @@ elif page == "👤 Players":
 
         _table_cols = [
             "#", "Tournament", "Date", "Type", "Total Score", "Course Fit", "DG Fit",
-            "Fit Confidence", "W Importance", "W Course", "Signal",
+            "Fit Confidence", "Confidence Tier", "W Importance", "W Course", "Signal",
         ]
-        st.dataframe(_events_df[_table_cols], hide_index=True, use_container_width=True)
+        st.dataframe(
+            _events_df[_table_cols],
+            hide_index=True,
+            use_container_width=True,
+            column_config={
+                "Fit Confidence": st.column_config.ProgressColumn(
+                    "Fit Confidence", min_value=0.0, max_value=100.0, format="%.0f%%"
+                ),
+            },
+        )
 
     # Tabs for different views
     player_tab1, player_tab2, player_tab3 = st.tabs(["🔍 Player Lookup", "📊 Stats Deep Dive", "⚔️ Head-to-Head"])
@@ -8291,13 +8407,31 @@ elif page == "👤 Players":
             st.markdown("---")
             st.markdown(f"### 📊 {player_search}")
 
-            _cached_rows = st.session_state.get(_best_events_state_key, {}).get(player_search, [])
-            if _cached_rows:
-                _auto_best_df = pd.DataFrame(_cached_rows)
-            else:
+            _cache_payload = st.session_state.get(_best_events_state_key, {}).get(player_search, {})
+            _cached_rows = []
+            _cached_ver = None
+            if isinstance(_cache_payload, dict):
+                _cached_rows = _cache_payload.get("rows", [])
+                _cached_ver = _cache_payload.get("version")
+            elif isinstance(_cache_payload, list):
+                # Legacy cache shape.
+                _cached_rows = _cache_payload
+
+            _auto_best_df = pd.DataFrame(_cached_rows) if _cached_rows and _cached_ver == _best_events_cache_ver else pd.DataFrame()
+            _needs_rebuild = _auto_best_df.empty
+            if (not _needs_rebuild) and ("Fit Confidence" in _auto_best_df.columns):
+                _fc_cached = pd.to_numeric(_auto_best_df["Fit Confidence"], errors="coerce").fillna(0.0)
+                if float(_fc_cached.max()) <= 0.0:
+                    # Self-heal stale zero-confidence cache from previous logic.
+                    _needs_rebuild = True
+
+            if _needs_rebuild:
                 _auto_best_df = _player_best_events_df(player_search, _top_n=12)
                 if not _auto_best_df.empty:
-                    st.session_state[_best_events_state_key][player_search] = _auto_best_df.to_dict(orient="records")
+                    st.session_state[_best_events_state_key][player_search] = {
+                        "version": _best_events_cache_ver,
+                        "rows": _auto_best_df.to_dict(orient="records"),
+                    }
             if not _auto_best_df.empty:
                 st.caption("Best-events ranking blends exact history, course-type fallback, and DataGolf-style course demand fit.")
                 _render_best_events_ui(_auto_best_df, _title="🗓️ Best Events (Player-Specific)")
@@ -8375,67 +8509,46 @@ elif page == "👤 Players":
                 # ── SNAPSHOT CARDS (grouped, less "floating") ───────────────────────
                 with st.container(border=True):
                     st.markdown("#### Snapshot")
-                    st.caption("Model output + field context for this week")
+                    st.caption("Model outputs and market context for this week")
 
                     ensemble_win = player_data.get("ensemble_win_prob", None)
                     vegas_prob = player_data.get("vegas_prob", None)
                     top20 = player_data.get("top20_prob", None)
                     _edge_pp = (float(model_edge) * 100.0) if model_edge is not None and pd.notna(model_edge) else None
+                    _ensemble_edge = None
+                    if ensemble_win is not None and vegas_prob is not None and pd.notna(ensemble_win) and pd.notna(vegas_prob):
+                        _ensemble_edge = (float(ensemble_win) - float(vegas_prob)) * 100.0
 
-                    row1 = st.columns(6)
+                    row1 = st.columns(4)
                     with row1[0]:
                         st.metric("Win %", _fmt_pct(win_prob, 2), f"#{_win_rank}" if _win_rank else None)
                     with row1[1]:
-                        st.metric("Top 5 %", _fmt_pct(top5, 1))
-                    with row1[2]:
                         st.metric("Top 10 %", _fmt_pct(top10, 1), f"#{_top10_rank}" if _top10_rank else None)
-                    with row1[3]:
-                        st.metric("Top 20 %", _fmt_pct(top20, 1) if top20 is not None else "—")
-                    with row1[4]:
+                    with row1[2]:
                         st.metric("Cut %", _fmt_pct(cut_prob, 1) if cut_prob is not None else "—")
-                    with row1[5]:
+                    with row1[3]:
                         st.metric("Exp. Value", f"${ev:,.0f}", f"#{_ev_rank}" if _ev_rank else None)
 
-                    row2 = st.columns(6)
+                    row2 = st.columns(4)
                     with row2[0]:
                         st.metric("SG Total", f"{sg:.2f}")
                     with row2[1]:
                         st.metric("Model Edge", f"{_edge_pp:+.2f} pts" if _edge_pp is not None else "—")
                     with row2[2]:
-                        st.metric("Ensemble Win %", _fmt_pct(ensemble_win, 2) if ensemble_win is not None else "—")
+                        st.metric("Model vs Vegas", f"{_ensemble_edge:+.2f} pts" if _ensemble_edge is not None else "—")
                     with row2[3]:
-                        st.metric("Vegas Win %", _fmt_pct(vegas_prob, 2) if vegas_prob is not None else "—")
-                    with row2[4]:
-                        st.metric("Course Plays", int(hist_plays) if pd.notna(hist_plays) else 0)
-                    with row2[5]:
-                        st.metric("Avg Finish (Course)", f"{hist_avg:.1f}" if pd.notna(hist_avg) else "—")
+                        _hist_delta = f"{int(hist_plays)} starts" if pd.notna(hist_plays) else None
+                        st.metric("Avg Finish (Course)", f"{hist_avg:.1f}" if pd.notna(hist_avg) else "—", _hist_delta)
 
-                with st.container(border=True):
-                    st.markdown("#### Field Skill Context")
-                    st.caption("Where this player ranks in this week's field")
-
-                    def _fmt_pct_rank(col):
-                        val = player_data.get(col, np.nan)
-                        return f"{float(val)*100:.0f}th" if pd.notna(val) else "—"
-
-                    def _fmt_rank(col):
-                        val = player_data.get(col, np.nan)
-                        return f"#{int(val)}" if pd.notna(val) else "—"
-
-                    row3 = st.columns(6)
+                    row3 = st.columns(4)
                     with row3[0]:
-                        st.metric("OWGR", f"#{int(float(owgr))}" if owgr is not None and pd.notna(owgr) else "—")
+                        st.metric("Top 5 %", _fmt_pct(top5, 1))
                     with row3[1]:
-                        st.metric("OTT Field %", _fmt_pct_rank("season_sg_ott_field_pct"), _fmt_rank("season_sg_ott_field_rank"))
+                        st.metric("Top 20 %", _fmt_pct(top20, 1) if top20 is not None else "—")
                     with row3[2]:
-                        st.metric("APP Field %", _fmt_pct_rank("season_sg_app_field_pct"), _fmt_rank("season_sg_app_field_rank"))
+                        st.metric("Ensemble Win %", _fmt_pct(ensemble_win, 2) if ensemble_win is not None else "—")
                     with row3[3]:
-                        st.metric("ARG Field %", _fmt_pct_rank("season_sg_arg_field_pct"), _fmt_rank("season_sg_arg_field_rank"))
-                    with row3[4]:
-                        st.metric("PUTT Field %", _fmt_pct_rank("season_sg_putt_field_pct"), _fmt_rank("season_sg_putt_field_rank"))
-                    with row3[5]:
-                        st.metric("Birdie Field %", _fmt_pct_rank("birdie_avg_field_pct"), _fmt_rank("birdie_avg_field_rank"))
-
+                        st.metric("Vegas Win %", _fmt_pct(vegas_prob, 2) if vegas_prob is not None else "—")
 
                 # ── PGA TOUR-STYLE STAT SHEET ───────────────────────────────────────
                 with st.container(border=True):
@@ -8519,6 +8632,7 @@ elif page == "👤 Players":
                             "Player": _fmt_stat(val, kind),
                             "Field Avg": _fmt_stat(avg, kind),
                             "Adv vs Field": _fmt_adv(adv, "pct" if kind == "pct" else kind),
+                            "Field %": float(pct) if not pd.isna(pct) else np.nan,
                             "Field Rank": _rank_text(rank, pct),
                         }
 
@@ -8545,10 +8659,24 @@ elif page == "👤 Players":
                     _stat_col1, _stat_col2 = st.columns(2)
                     with _stat_col1:
                         st.markdown("**Strokes Gained / Fit**")
-                        st.dataframe(_sg_df, hide_index=True, use_container_width=True)
+                        st.dataframe(
+                            _sg_df,
+                            hide_index=True,
+                            use_container_width=True,
+                            column_config={
+                                "Field %": st.column_config.ProgressColumn("Field %", min_value=0.0, max_value=100.0, format="%.0f%%"),
+                            },
+                        )
                     with _stat_col2:
                         st.markdown("**Scoring / Ball-Striking**")
-                        st.dataframe(_scoring_df, hide_index=True, use_container_width=True)
+                        st.dataframe(
+                            _scoring_df,
+                            hide_index=True,
+                            use_container_width=True,
+                            column_config={
+                                "Field %": st.column_config.ProgressColumn("Field %", min_value=0.0, max_value=100.0, format="%.0f%%"),
+                            },
+                        )
 
 
                 # ── RECENT FORM TREND (line + rolling average) ───────────────────────
@@ -12066,7 +12194,7 @@ elif page == "🔴 Live":
     # Load current week's picks from season log
     _picks_this_week = []
     _log_path = OUTPUTS_DIR / "season_log.csv"
-    _engine_live = load_scoring_engine()
+    _engine_live = load_scoring_engine(_scoring_engine_cache_key())
     _current_week_num = None
 
     if _engine_live:
