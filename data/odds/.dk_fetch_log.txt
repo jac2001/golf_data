@@ -3,8 +3,8 @@ Using cached eventgroup id for R2026010: 212444
 Trying live DraftKings endpoints...
 Using eventgroup id: 212444
 Detected sport/league names: Golf, Cognizant Classic, Cognizant Classic 2026
-Saved raw payload snapshot to: /Users/jacklegnon/Desktop/golf_data/data/odds/snapshots/draftkings_props_R2026010_20260226_072807.json
-Saved 1 content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_R2026010.csv
+Saved raw payload snapshot to: /Users/jacklegnon/Desktop/golf_data/data/odds/snapshots/draftkings_props_R2026010_20260226_221336.json
+Saved 4 content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_R2026010.csv
 Saved latest content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_latest.csv
 Saved 369 prop lines to: /Users/jacklegnon/Desktop/golf_data/data/odds/prop_lines_R2026010.csv
 Parsed markets:

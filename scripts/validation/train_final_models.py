@@ -126,6 +126,8 @@ form_features = [c for c in df.columns if c in [
     'recent_birdie_avg', 'recent_bogey_avg', 'recent_scoring_avg', 'recent_gir_pct',
     'recent_scrambling', 'recent_bounce_back', 'recent_final_round', 'recent_sand_save',
     'recent_sg_weighted', 'recent_sg_trend',
+    'recent_sg_ott_weighted', 'recent_sg_app_weighted',
+    'recent_sg_arg_weighted', 'recent_sg_putt_weighted',
 ]]
 
 # Course fit features - OLD fit_* features EXCLUDED (calculated from per-tournament SG = leakage!)

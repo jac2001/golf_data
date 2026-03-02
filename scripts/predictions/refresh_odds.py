@@ -29,7 +29,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 # This lets us import fetch_pga_odds by filename rather than as a package path,
 # which avoids the "No module named 'scripts'" error when scripts/ has no __init__.py
 sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "scrapers"))
-from fetch_pga_odds import fetch_and_merge_odds
+from fetch_pga_odds import fetch_and_merge_odds, fetch_all_market_odds
 
 
 def get_current_tournament_id() -> str | None:
@@ -163,7 +163,20 @@ def refresh_odds(tournament_id: str) -> bool:
     preds = pd.read_csv(preds_path)
 
     print(f"  Fetching fresh odds for {tournament_id} ...")
-    odds_df = fetch_and_merge_odds(tournament_id)
+
+    # Fetch all markets first so we can save pga_market_odds and pass to merge
+    try:
+        all_markets_df = fetch_all_market_odds(tournament_id)
+        if not all_markets_df.empty:
+            _mkt_path = PROJECT_ROOT / "data" / "odds" / f"pga_market_odds_{tournament_id}.csv"
+            all_markets_df.to_csv(_mkt_path, index=False)
+            print(f"  Saved all PGA markets to {_mkt_path.name}")
+    except Exception as _e:
+        print(f"  PGA market fetch skipped: {_e}")
+        all_markets_df = None
+
+    odds_df = fetch_and_merge_odds(tournament_id,
+                                   all_markets_df=all_markets_df if all_markets_df is not None and not all_markets_df.empty else None)
 
     if odds_df.empty:
         print("  DK API returned empty — trying prop_lines fallback...")
@@ -213,6 +226,7 @@ def refresh_odds(tournament_id: str) -> bool:
     for book_tag, fname_pat, odds_col in [
         ("FD",  f"fanduel_odds_{tournament_id}.csv", "odds_numeric"),
         ("PGA", f"pga_odds_{tournament_id}.csv",     "odds_numeric"),
+        ("DKP", f"dk_odds_{tournament_id}.csv",      "dk_odds_numeric"),
     ]:
         book_path = PROJECT_ROOT / "data" / "odds" / fname_pat
         if not book_path.exists():
@@ -248,6 +262,20 @@ def refresh_odds(tournament_id: str) -> bool:
         merged["model_vs_vegas_edge"] = merged["win_prob"] - merged["vegas_prob"]
         merged["is_value_bet"]        = merged["model_vs_vegas_edge"] > 0
         merged["odds_drift_level"]    = merged["model_vs_vegas_edge"].apply(_drift_label)
+
+    # ── DK movement direction from PGA Tour compressed endpoint ─────────────
+    dk_path = PROJECT_ROOT / "data" / "odds" / f"dk_odds_{tournament_id}.csv"
+    if dk_path.exists():
+        try:
+            dk_dir = pd.read_csv(dk_path)[["player_id", "dk_odds_direction"]].copy()
+            dk_dir["player_id"] = dk_dir["player_id"].astype(str)
+            merged = merged.merge(dk_dir, on="player_id", how="left", suffixes=("", "_new"))
+            # Keep existing column if already present, else use new one
+            if "dk_odds_direction" in merged.columns:
+                pass  # already merged cleanly
+            print(f"  DK direction merged: {int(dk_dir['dk_odds_direction'].notna().sum())} players")
+        except Exception as _e:
+            print(f"  Skipped DK direction: {_e}")
 
     # ── Timestamp ────────────────────────────────────────────────────────────
     merged["odds_updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")

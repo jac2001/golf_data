@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-02-26 08:31
+Generated: 2026-03-01 23:27
 
 | Column | Description |
 |--------|-------------|
@@ -20,6 +20,9 @@ Generated: 2026-02-26 08:31
 | season_sg_arg | Season SG:Around-the-Green average |
 | recent_sg_weighted | No description available |
 | recent_sg_trend | No description available |
+| recent_sg_ott_weighted | No description available |
+| recent_sg_app_weighted | No description available |
+| recent_sg_putt_weighted | No description available |
 | sg_blend_current_weight | No description available |
 | sg_blend_prior_weight | No description available |
 | sg_blend_tournaments | No description available |
@@ -36,7 +39,6 @@ Generated: 2026-02-26 08:31
 | has_made_cut_here | 1/0 flag: has made a cut here |
 | venue_avg_finish | Venue average finish baseline (field-level) |
 | venue_finish_std | Venue finish standard deviation (volatility) |
-| wins_at_venue | No description available |
 | world_rank | Current world rank (lower is better) |
 | field_avg_rank | Average world rank of the field |
 | field_median_rank | Median world rank of the field |
@@ -108,6 +110,8 @@ Generated: 2026-02-26 08:31
 | dg_fit_putt | Course-fit component: Putting |
 | predictive_sg_weighted | No description available |
 | dg_fit_total | Total course-fit score (sum of components) |
+| field_avg_predictive_sg_weighted | No description available |
+| predictive_sg_weighted_vs_field | No description available |
 | course_starts | No description available |
 | course_made_cut_rate | No description available |
 | course_top_10_rate | No description available |

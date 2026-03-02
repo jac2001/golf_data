@@ -474,5 +474,291 @@
     ],
     "success_count": 2,
     "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-26T14:49:48.660795",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-26T20:00:10.530429",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-27T08:00:09.888010",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-27T14:01:44.109686",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-27T20:10:36.330655",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-28T08:41:48.131647",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-28T14:08:03.051760",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 2
+  },
+  {
+    "timestamp": "2026-02-28T20:59:37.145928",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      }
+    ],
+    "success_count": 4,
+    "total_count": 4
+  },
+  {
+    "timestamp": "2026-03-01T08:38:30.192472",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      }
+    ],
+    "success_count": 4,
+    "total_count": 4
+  },
+  {
+    "timestamp": "2026-03-01T14:00:10.284360",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      }
+    ],
+    "success_count": 4,
+    "total_count": 4
+  },
+  {
+    "timestamp": "2026-03-01T20:00:11.512647",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      }
+    ],
+    "success_count": 4,
+    "total_count": 4
+  },
+  {
+    "timestamp": "2026-03-01T22:59:34.609478",
+    "schedule": "record",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Final Leaderboard",
+        "success": false
+      },
+      {
+        "task": "Auto Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Recommended Bets",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 3
+  },
+  {
+    "timestamp": "2026-03-01T23:00:05.347750",
+    "schedule": "record",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Final Leaderboard",
+        "success": false
+      },
+      {
+        "task": "Auto Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Recommended Bets",
+        "success": true
+      }
+    ],
+    "success_count": 2,
+    "total_count": 3
+  },
+  {
+    "timestamp": "2026-03-02T07:18:17.128599",
+    "schedule": "monday",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "World Rankings (OWGR)",
+        "success": true
+      },
+      {
+        "task": "Player Database",
+        "success": true
+      },
+      {
+        "task": "Form Stats",
+        "success": false
+      },
+      {
+        "task": "Tournament SG Stats",
+        "success": true
+      }
+    ],
+    "success_count": 3,
+    "total_count": 4
   }
 ]

@@ -1,0 +1,476 @@
+{
+  "method": "ILP",
+  "total_ev": 19692125.0,
+  "n_players": 150,
+  "n_tournaments": 27,
+  "generated_at": "2026-02-26T20:59:04",
+  "lineups": [
+    {
+      "week": 4,
+      "tournament": "Cognizant Classic",
+      "start_date": "2026-02-26",
+      "importance": 1.0,
+      "players": [
+        "Matt Fitzpatrick",
+        "Tyrrell Hatton",
+        "Keegan Bradley"
+      ],
+      "ev": 435000.0
+    },
+    {
+      "week": 5,
+      "tournament": "Arnold Palmer Invitational",
+      "start_date": "2026-03-05",
+      "importance": 1.913,
+      "players": [
+        "Nicolai H\u00f8jgaard",
+        "Kristoffer Reitan",
+        "Jacob Bridgeman"
+      ],
+      "ev": 840341.0
+    },
+    {
+      "week": 6,
+      "tournament": "THE PLAYERS Championship",
+      "start_date": "2026-03-12",
+      "importance": 2.542,
+      "players": [
+        "Ryan Gerard",
+        "Michael Thorbjornsen",
+        "Xander Schauffele"
+      ],
+      "ev": 1249780.0
+    },
+    {
+      "week": 7,
+      "tournament": "Valspar Championship",
+      "start_date": "2026-03-19",
+      "importance": 0.979,
+      "players": [
+        "Maverick McNealy",
+        "Ludvig \u00c5berg",
+        "Alex Noren"
+      ],
+      "ev": 425865.0
+    },
+    {
+      "week": 8,
+      "tournament": "Texas Children's Houston Open",
+      "start_date": "2026-03-26",
+      "importance": 1.012,
+      "players": [
+        "Maverick McNealy",
+        "Tyrrell Hatton",
+        "Keegan Bradley"
+      ],
+      "ev": 440220.0
+    },
+    {
+      "week": 9,
+      "tournament": "Valero Texas Open",
+      "start_date": "2026-04-02",
+      "importance": 1.008,
+      "players": [
+        "Hideki Matsuyama",
+        "Viktor Hovland",
+        "Patrick Reed"
+      ],
+      "ev": 438480.0
+    },
+    {
+      "week": 10,
+      "tournament": "The Masters",
+      "start_date": "2026-04-09",
+      "importance": 2.375,
+      "players": [
+        "Rory McIlroy",
+        "Scottie Scheffler",
+        "Robert MacIntyre"
+      ],
+      "ev": 1140000.0
+    },
+    {
+      "week": 11,
+      "tournament": "RBC Heritage",
+      "start_date": "2026-04-16",
+      "importance": 1.913,
+      "players": [
+        "Nicolai H\u00f8jgaard",
+        "Kristoffer Reitan",
+        "Rasmus Neergaard-Petersen"
+      ],
+      "ev": 843054.0
+    },
+    {
+      "week": 12,
+      "tournament": "Zurich Classic of New Orleans",
+      "start_date": "2026-04-23",
+      "importance": 0.996,
+      "players": [
+        "Cameron Young",
+        "Ludvig \u00c5berg",
+        "Keegan Bradley"
+      ],
+      "ev": 433260.0
+    },
+    {
+      "week": 13,
+      "tournament": "Cadillac Championship",
+      "start_date": "2026-04-30",
+      "importance": 1.913,
+      "players": [
+        "Tommy Fleetwood",
+        "Collin Morikawa",
+        "Kristoffer Reitan"
+      ],
+      "ev": 893330.0
+    },
+    {
+      "week": 14,
+      "tournament": "Truist Championship",
+      "start_date": "2026-05-07",
+      "importance": 1.913,
+      "players": [
+        "J.J. Spaun",
+        "Collin Morikawa",
+        "Sepp Straka"
+      ],
+      "ev": 889545.0
+    },
+    {
+      "week": 15,
+      "tournament": "PGA Championship",
+      "start_date": "2026-05-14",
+      "importance": 2.292,
+      "players": [
+        "Rory McIlroy",
+        "Justin Rose",
+        "Chris Gotterup"
+      ],
+      "ev": 1100160.0
+    },
+    {
+      "week": 16,
+      "tournament": "The CJ Cup Byron Nelson",
+      "start_date": "2026-05-21",
+      "importance": 1.029,
+      "players": [
+        "Cameron Young",
+        "Harris English",
+        "Sepp Straka"
+      ],
+      "ev": 447615.0
+    },
+    {
+      "week": 17,
+      "tournament": "Charles Schwab Challenge",
+      "start_date": "2026-05-28",
+      "importance": 0.992,
+      "players": [
+        "Harris English",
+        "Justin Thomas",
+        "Patrick Reed"
+      ],
+      "ev": 431520.0
+    },
+    {
+      "week": 18,
+      "tournament": "The Memorial Tournament",
+      "start_date": "2026-06-04",
+      "importance": 1.913,
+      "players": [
+        "J.J. Spaun",
+        "Russell Henley",
+        "Rasmus Neergaard-Petersen"
+      ],
+      "ev": 892258.0
+    },
+    {
+      "week": 19,
+      "tournament": "RBC Canadian Open",
+      "start_date": "2026-06-11",
+      "importance": 1.008,
+      "players": [
+        "Matt Fitzpatrick",
+        "Justin Thomas",
+        "Alex Noren"
+      ],
+      "ev": 438480.0
+    },
+    {
+      "week": 20,
+      "tournament": "U.S. Open",
+      "start_date": "2026-06-18",
+      "importance": 2.396,
+      "players": [
+        "Ryan Gerard",
+        "Michael Thorbjornsen",
+        "Justin Rose"
+      ],
+      "ev": 1177999.0
+    },
+    {
+      "week": 21,
+      "tournament": "Travelers Championship",
+      "start_date": "2026-06-25",
+      "importance": 1.913,
+      "players": [
+        "Robert MacIntyre",
+        "Chris Gotterup",
+        "Rasmus Neergaard-Petersen"
+      ],
+      "ev": 892258.0
+    },
+    {
+      "week": 22,
+      "tournament": "John Deere Classic",
+      "start_date": "2026-07-02",
+      "importance": 0.967,
+      "players": [
+        "Matt Fitzpatrick",
+        "Jacob Bridgeman",
+        "Viktor Hovland"
+      ],
+      "ev": 420645.0
+    },
+    {
+      "week": 23,
+      "tournament": "Genesis Scottish Open",
+      "start_date": "2026-07-09",
+      "importance": 0.975,
+      "players": [
+        "Tyrrell Hatton",
+        "Jacob Bridgeman",
+        "Hideki Matsuyama"
+      ],
+      "ev": 424125.0
+    },
+    {
+      "week": 24,
+      "tournament": "The Open Championship",
+      "start_date": "2026-07-16",
+      "importance": 2.208,
+      "players": [
+        "Tommy Fleetwood",
+        "Xander Schauffele",
+        "Scottie Scheffler"
+      ],
+      "ev": 1059840.0
+    },
+    {
+      "week": 25,
+      "tournament": "3M Open",
+      "start_date": "2026-07-23",
+      "importance": 0.967,
+      "players": [
+        "Cameron Young",
+        "Ben Griffin",
+        "Sepp Straka"
+      ],
+      "ev": 420645.0
+    },
+    {
+      "week": 26,
+      "tournament": "Rocket Classic",
+      "start_date": "2026-07-30",
+      "importance": 1.017,
+      "players": [
+        "Harris English",
+        "Ben Griffin",
+        "Patrick Reed"
+      ],
+      "ev": 442395.0
+    },
+    {
+      "week": 27,
+      "tournament": "Wyndham Championship",
+      "start_date": "2026-08-06",
+      "importance": 0.954,
+      "players": [
+        "Ludvig \u00c5berg",
+        "Justin Thomas",
+        "Alex Noren"
+      ],
+      "ev": 414990.0
+    },
+    {
+      "week": 28,
+      "tournament": "FedEx St. Jude Invitational",
+      "start_date": "2026-08-13",
+      "importance": 2.153,
+      "players": [
+        "Tommy Fleetwood",
+        "Scottie Scheffler",
+        "Russell Henley"
+      ],
+      "ev": 1033440.0
+    },
+    {
+      "week": 29,
+      "tournament": "BMW Championship",
+      "start_date": "2026-08-20",
+      "importance": 2.153,
+      "players": [
+        "Xander Schauffele",
+        "J.J. Spaun",
+        "Robert MacIntyre"
+      ],
+      "ev": 1033440.0
+    },
+    {
+      "week": 30,
+      "tournament": "TOUR Championship",
+      "start_date": "2026-08-27",
+      "importance": 2.153,
+      "players": [
+        "Rory McIlroy",
+        "Collin Morikawa",
+        "Russell Henley"
+      ],
+      "ev": 1033440.0
+    }
+  ],
+  "allocations": {
+    "Matt Fitzpatrick": [
+      "Cognizant Classic",
+      "RBC Canadian Open",
+      "John Deere Classic"
+    ],
+    "Tyrrell Hatton": [
+      "Cognizant Classic",
+      "Texas Children's Houston Open",
+      "Genesis Scottish Open"
+    ],
+    "Keegan Bradley": [
+      "Cognizant Classic",
+      "Texas Children's Houston Open",
+      "Zurich Classic of New Orleans"
+    ],
+    "Nicolai H\u00f8jgaard": [
+      "Arnold Palmer Invitational",
+      "RBC Heritage"
+    ],
+    "Kristoffer Reitan": [
+      "Arnold Palmer Invitational",
+      "RBC Heritage",
+      "Cadillac Championship"
+    ],
+    "Jacob Bridgeman": [
+      "Arnold Palmer Invitational",
+      "John Deere Classic",
+      "Genesis Scottish Open"
+    ],
+    "Ryan Gerard": [
+      "THE PLAYERS Championship",
+      "U.S. Open"
+    ],
+    "Michael Thorbjornsen": [
+      "THE PLAYERS Championship",
+      "U.S. Open"
+    ],
+    "Xander Schauffele": [
+      "THE PLAYERS Championship",
+      "The Open Championship",
+      "BMW Championship"
+    ],
+    "Maverick McNealy": [
+      "Valspar Championship",
+      "Texas Children's Houston Open"
+    ],
+    "Ludvig \u00c5berg": [
+      "Valspar Championship",
+      "Zurich Classic of New Orleans",
+      "Wyndham Championship"
+    ],
+    "Alex Noren": [
+      "Valspar Championship",
+      "RBC Canadian Open",
+      "Wyndham Championship"
+    ],
+    "Hideki Matsuyama": [
+      "Valero Texas Open",
+      "Genesis Scottish Open"
+    ],
+    "Viktor Hovland": [
+      "Valero Texas Open",
+      "John Deere Classic"
+    ],
+    "Patrick Reed": [
+      "Valero Texas Open",
+      "Charles Schwab Challenge",
+      "Rocket Classic"
+    ],
+    "Rory McIlroy": [
+      "The Masters",
+      "PGA Championship",
+      "TOUR Championship"
+    ],
+    "Scottie Scheffler": [
+      "The Masters",
+      "The Open Championship",
+      "FedEx St. Jude Invitational"
+    ],
+    "Robert MacIntyre": [
+      "The Masters",
+      "Travelers Championship",
+      "BMW Championship"
+    ],
+    "Rasmus Neergaard-Petersen": [
+      "RBC Heritage",
+      "The Memorial Tournament",
+      "Travelers Championship"
+    ],
+    "Cameron Young": [
+      "Zurich Classic of New Orleans",
+      "The CJ Cup Byron Nelson",
+      "3M Open"
+    ],
+    "Tommy Fleetwood": [
+      "Cadillac Championship",
+      "The Open Championship",
+      "FedEx St. Jude Invitational"
+    ],
+    "Collin Morikawa": [
+      "Cadillac Championship",
+      "Truist Championship",
+      "TOUR Championship"
+    ],
+    "J.J. Spaun": [
+      "Truist Championship",
+      "The Memorial Tournament",
+      "BMW Championship"
+    ],
+    "Sepp Straka": [
+      "Truist Championship",
+      "The CJ Cup Byron Nelson",
+      "3M Open"
+    ],
+    "Justin Rose": [
+      "PGA Championship",
+      "U.S. Open"
+    ],
+    "Chris Gotterup": [
+      "PGA Championship",
+      "Travelers Championship"
+    ],
+    "Harris English": [
+      "The CJ Cup Byron Nelson",
+      "Charles Schwab Challenge",
+      "Rocket Classic"
+    ],
+    "Justin Thomas": [
+      "Charles Schwab Challenge",
+      "RBC Canadian Open",
+      "Wyndham Championship"
+    ],
+    "Russell Henley": [
+      "The Memorial Tournament",
+      "FedEx St. Jude Invitational",
+      "TOUR Championship"
+    ],
+    "Ben Griffin": [
+      "3M Open",
+      "Rocket Classic"
+    ]
+  }
+}

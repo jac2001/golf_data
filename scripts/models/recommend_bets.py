@@ -87,6 +87,306 @@ def parse_american(odds: Any) -> int | None:
         return None
 
 
+def kelly_fraction(model_prob: float, decimal_odds: float,
+                   fraction: float = 0.5, cap: float = 0.05) -> float:
+    """Return fractional Kelly stake as a fraction of bankroll (0–cap).
+
+    Uses half-Kelly by default (fraction=0.5) to reduce variance.
+    Caps at 5% of bankroll regardless of edge size.
+    Returns 0.0 for negative-edge or invalid inputs.
+    """
+    b = decimal_odds - 1.0
+    if b <= 0 or not (0.0 < model_prob < 1.0):
+        return 0.0
+    f = (model_prob * b - (1.0 - model_prob)) / b
+    return round(min(max(f, 0.0), cap) * fraction, 4)
+
+
+def build_consensus_book_probs(tournament_id: str,
+                                preds_df: pd.DataFrame) -> dict[str, float]:
+    """Build a no-vig consensus outright win probability per player.
+
+    Loads FanDuel and PGA Tour odds files (when available) alongside DK
+    implied probs already in preds_df.  For each book, normalizes the raw
+    implied probs so they sum to 1.0 (removes the vig).  Returns a
+    name_key → consensus_prob dict (median across available books).
+
+    Falls back to an empty dict if no additional books are found — callers
+    should treat a missing key as "use DK raw implied_prob".
+    """
+    book_probs: dict[str, list[float]] = {}  # name_key → [prob_book1, ...]
+
+    def _load_book(path: Path, name_col: str, odds_col: str) -> None:
+        try:
+            df = pd.read_csv(path)
+            if name_col not in df.columns or odds_col not in df.columns:
+                return
+            df = df[[name_col, odds_col]].copy()
+            df["raw_prob"] = df[odds_col].apply(american_to_prob)
+            df = df[df["raw_prob"].notna() & (df["raw_prob"] > 0)]
+            total = df["raw_prob"].sum()
+            if total <= 0:
+                return
+            df["nv_prob"] = df["raw_prob"] / total
+            for _, row in df.iterrows():
+                key = normalize_name_key(row[name_col])
+                if key:
+                    book_probs.setdefault(key, []).append(float(row["nv_prob"]))
+        except Exception:
+            pass
+
+    # FanDuel outright — column is "winner" market; filter if market col exists
+    fd_path = ODDS_DIR / f"fanduel_odds_{tournament_id}.csv"
+    if fd_path.exists():
+        try:
+            fd = pd.read_csv(fd_path)
+            if "market" in fd.columns:
+                fd = fd[fd["market"].astype(str).str.lower() == "winner"]
+            if not fd.empty and "player_name" in fd.columns and "odds_numeric" in fd.columns:
+                fd = fd[["player_name", "odds_numeric"]].copy()
+                fd["raw_prob"] = fd["odds_numeric"].apply(american_to_prob)
+                fd = fd[fd["raw_prob"].notna() & (fd["raw_prob"] > 0)]
+                total = fd["raw_prob"].sum()
+                if total > 0:
+                    fd["nv_prob"] = fd["raw_prob"] / total
+                    for _, row in fd.iterrows():
+                        key = normalize_name_key(row["player_name"])
+                        if key:
+                            book_probs.setdefault(key, []).append(float(row["nv_prob"]))
+                    print(f"  Consensus: loaded FanDuel odds ({len(fd)} players)")
+        except Exception as e:
+            print(f"  Consensus: FanDuel load failed — {e}")
+
+    # PGA Tour odds
+    pga_path = ODDS_DIR / f"pga_odds_{tournament_id}.csv"
+    if pga_path.exists():
+        _load_book(pga_path, "player_name", "odds_numeric")
+        if pga_path.exists():
+            print(f"  Consensus: loaded PGA Tour odds")
+
+    if not book_probs:
+        return {}
+
+    # Median across books for each player
+    return {k: float(np.median(v)) for k, v in book_probs.items()}
+
+
+def build_prop_consensus_probs(
+    lines_df: pd.DataFrame,
+) -> dict[tuple[str, str, str], float]:
+    """Build per-book, per-market no-vig probability for each player.
+
+    Computes a proper per-book no-vig probability by normalising each
+    book's raw implied probs so they sum to ``expected_spots``.  Keyed
+    by (player_name_key, canonical_market, book).
+
+    Why this matters: when lines_df contains both DK and FanDuel lines,
+    the old ``_market_vig`` approach sums ALL books together, halving the
+    effective vig factor and inflating computed edges.  This function
+    fixes that by isolating each book before normalising.
+
+    Example
+    -------
+    DK  top10 for Rory: raw 0.600 / DK_sum(15.3) * 10 → 0.392 no-vig
+    FD  top10 for Rory: raw 0.550 / FD_sum(14.8) * 10 → 0.372 no-vig
+    Edge vs DK  = model_prob - 0.392
+    Edge vs FD  = model_prob - 0.372
+    (previously both would have used the same badly-mixed value ~0.19)
+    """
+    PROP_MARKETS = {"top5", "top10", "top20", "top30", "make_cut", "miss_cut", "r2_leader"}
+    EXPECTED_SPOTS: dict[str, float] = {
+        "top5": 5.0, "top10": 10.0, "top20": 20.0, "top30": 30.0,
+        "make_cut": 60.0, "miss_cut": 60.0, "r2_leader": 1.0,
+    }
+
+    if lines_df.empty or "book" not in lines_df.columns:
+        return {}
+
+    work = lines_df.copy()
+    work["_mkt"]  = work["market"].astype(str).str.lower().map(canonical_market)
+    work["_key"]  = work["player_name"].apply(normalize_name_key)
+    work["_book"] = work["book"].fillna("UNKNOWN").astype(str).str.upper()
+    work["_raw"]  = work["odds"].apply(lambda o: american_to_prob(parse_american(o)) or 0.0)
+    work = work[work["_mkt"].isin(PROP_MARKETS) & (work["_raw"] > 0)].copy()
+
+    if work.empty:
+        return {}
+
+    result: dict[tuple[str, str, str], float] = {}
+    log_parts: list[str] = []
+
+    for (mkt, book), grp in work.groupby(["_mkt", "_book"]):
+        total = grp["_raw"].sum()
+        if total <= 0:
+            continue
+        exp   = EXPECTED_SPOTS.get(mkt, 10.0)
+        scale = exp / total          # same formula as _market_vig but isolated to this book
+        for _, row in grp.iterrows():
+            k = (str(row["_key"]), str(mkt), str(book))
+            result[k] = float(row["_raw"]) * scale
+        log_parts.append(f"{book}/{mkt}:{len(grp)}")
+
+    if result:
+        print(f"  Prop no-vig (per book): {', '.join(log_parts)}")
+    return result
+
+
+def load_pga_market_odds(tournament_id: str) -> pd.DataFrame:
+    """Convert pga_market_odds_{tid}.csv into prop_lines-compatible format.
+
+    Market mappings:
+      FINISH  "Top 5 Finish"  → top5
+      FINISH  "Top 10 Finish" → top10
+      FINISH  "Top 20 Finish" → top20
+      MATCHUP_PROPS           → h2h   (one row per pair with player_a/b/odds_a/b)
+      THREE_BALL + GROUP      → group_winner (one row per player per group)
+
+    Returns a DataFrame that can be pd.concat-ed with the DK prop_lines_df.
+    """
+    path = resolve_pga_market_path(tournament_id)
+    if path is None:
+        return pd.DataFrame()
+
+    try:
+        df = pd.read_csv(path)
+    except Exception as e:
+        print(f"  PGA market odds load error: {e}")
+        return pd.DataFrame()
+
+    if df.empty:
+        return pd.DataFrame()
+
+    rows: list[dict[str, Any]] = []
+
+    # ── FINISH: Top 5 / 10 / 20 ──────────────────────────────────────────────
+    SUBMARKET_MARKET = {
+        "top 5 finish":  "top5",
+        "top 10 finish": "top10",
+        "top 20 finish": "top20",
+    }
+    finish_df = df[df["market_type"] == "FINISH"].copy()
+    for _, row in finish_df.iterrows():
+        sub = str(row.get("submarket_name", "")).strip().lower()
+        mkt = SUBMARKET_MARKET.get(sub)
+        if not mkt:
+            continue
+        player = str(row.get("player_name", "")).strip()
+        odds_num = row.get("odds_numeric")
+        if not player or pd.isna(odds_num):
+            continue
+        rows.append({
+            "market":      mkt,
+            "player_name": player,
+            "odds":        int(odds_num),
+            "implied_prob": row.get("implied_prob", np.nan),
+            "book":        "FANDUEL",
+        })
+
+    # ── MATCHUP_PROPS: H2H (pivot pairs into one row per matchup) ────────────
+    matchup_df = df[df["market_type"] == "MATCHUP_PROPS"].copy()
+    if not matchup_df.empty and "bet_group_id" in matchup_df.columns:
+        for _gid, grp in matchup_df.groupby("bet_group_id"):
+            grp = grp.reset_index(drop=True)
+            if len(grp) != 2:
+                continue
+            pa = str(grp.iloc[0]["player_name"]).strip()
+            pb = str(grp.iloc[1]["player_name"]).strip()
+            odds_a = grp.iloc[0]["odds_numeric"]
+            odds_b = grp.iloc[1]["odds_numeric"]
+            if not pa or not pb or pd.isna(odds_a) or pd.isna(odds_b):
+                continue
+            sub = str(grp.iloc[0].get("submarket_name", ""))
+            round_m = re.search(r"Round\s+(\d)", sub, re.I)
+            round_num = int(round_m.group(1)) if round_m else np.nan
+            rows.append({
+                "market":      "h2h",
+                "player_name": pa,
+                "player_a":    pa,
+                "player_b":    pb,
+                "odds":        int(odds_a),
+                "odds_a":      int(odds_a),
+                "odds_b":      int(odds_b),
+                "implied_prob": grp.iloc[0].get("implied_prob", np.nan),
+                "book":        "FANDUEL",
+                "round_num":   round_num,
+                "event_name":  str(grp.iloc[0].get("tournament_name", "")),
+            })
+
+    # ── Country lookup for NATIONALITY groups ────────────────────────────────
+    _player_country: dict[str, str] = {}
+    _players_path = DATA_DIR / "players" / "pga_players_2026.csv"
+    if _players_path.exists():
+        try:
+            _pdb = pd.read_csv(_players_path, usecols=["player_id", "country"])
+            _pdb["player_id"] = _pdb["player_id"].apply(
+                lambda x: str(int(float(x))) if pd.notna(x) else ""
+            )
+            _player_country = dict(zip(_pdb["player_id"], _pdb["country"].fillna("")))
+        except Exception:
+            pass
+
+    # ── THREE_BALL + GROUP + NATIONALITY: group winner (one row per player) ──
+    group_df = df[df["market_type"].isin(["THREE_BALL", "GROUP", "NATIONALITY"])].copy()
+    if not group_df.empty and "bet_group_id" in group_df.columns:
+        for _gid, grp in group_df.groupby("bet_group_id"):
+            grp = grp.reset_index(drop=True)
+            if len(grp) < 2:
+                continue
+            sub = str(grp.iloc[0].get("submarket_name", ""))
+            round_m = re.search(r"Round\s+(\d)", sub, re.I)
+            round_num = int(round_m.group(1)) if round_m else np.nan
+            mtype = str(grp.iloc[0].get("market_type", ""))
+            for _, prow in grp.iterrows():
+                player = str(prow["player_name"]).strip()
+                odds_num = prow["odds_numeric"]
+                if not player or pd.isna(odds_num):
+                    continue
+                pid = str(int(float(prow.get("player_id", 0) or 0)))
+                country = _player_country.get(pid, "") if mtype == "NATIONALITY" else ""
+                rows.append({
+                    "market":      "group_winner",
+                    "player_name": player,
+                    "player_a":    player,
+                    "odds":        int(odds_num),
+                    "odds_a":      int(odds_num),
+                    "implied_prob": prow.get("implied_prob", np.nan),
+                    "book":        "FANDUEL",
+                    "round_num":   round_num,
+                    "market_name": str(_gid),   # used for groupby in score_group_winner_markets
+                    "event_name":  str(grp.iloc[0].get("tournament_name", "")),
+                    "group_title": sub,          # e.g. "Top African Player", "Best Score - Round 2"
+                    "market_subtype": mtype,     # THREE_BALL / GROUP / NATIONALITY
+                    "player_country": country,   # e.g. "South Africa" — only set for NATIONALITY
+                })
+
+    # ── PLAYER_PROPS: Leader After Round N → r2_leader ────────────────────────
+    pp_df = df[df["market_type"] == "PLAYER_PROPS"].copy()
+    if not pp_df.empty:
+        for _, row in pp_df.iterrows():
+            sub = str(row.get("submarket_name", "")).strip().lower()
+            if "leader after round" not in sub:
+                continue
+            player = str(row.get("player_name", "")).strip()
+            odds_num = row.get("odds_numeric")
+            if not player or pd.isna(odds_num):
+                continue
+            rows.append({
+                "market":      "r2_leader",
+                "player_name": player,
+                "odds":        int(odds_num),
+                "implied_prob": row.get("implied_prob", np.nan),
+                "book":        "FANDUEL",
+            })
+
+    if not rows:
+        return pd.DataFrame()
+
+    result = pd.DataFrame(rows)
+    mkt_counts = result["market"].value_counts().to_dict()
+    print(f"  PGA market odds loaded: {mkt_counts}")
+    return result
+
+
 def resolve_tournament_id(explicit_tid: str = "") -> str:
     tid = extract_tournament_id(explicit_tid)
     if tid:
@@ -148,6 +448,15 @@ def resolve_prop_lines_path(tid: str, explicit: str = "") -> Path | None:
     return files[0] if files else None
 
 
+def resolve_pga_market_path(tid: str) -> Path | None:
+    """Locate pga_market_odds_{tid}.csv."""
+    if tid:
+        p = ODDS_DIR / f"pga_market_odds_{tid}.csv"
+        if p.exists():
+            return p
+    return None
+
+
 def resolve_cards_path(tid: str, explicit: str = "") -> Path | None:
     if explicit:
         p = Path(explicit)
@@ -191,6 +500,9 @@ def market_prob_from_prediction(row: dict, market: str) -> tuple[float, bool]:
         "top30": ["top30_prob", "top20_prob"],
         "make_cut": ["make_cut_prob", "cut_prob"],
         "miss_cut": ["miss_cut_prob"],
+        # Round-leader prop — no dedicated prediction column; win_prob is the
+        # best available proxy (better players more likely to lead after any round).
+        "r2_leader": ["win_prob_calibrated", "win_prob", "win_prob_raw"],
     }
 
     cols = pref_cols.get(market, [])
@@ -226,6 +538,8 @@ def confidence_for_single(pred_row: dict, market: str, calibrated: bool, odds: i
         "top30": 0.70,
         "make_cut": 0.75,
         "miss_cut": 0.70,
+        # Win_prob is an imperfect proxy for round leadership — lower base
+        "r2_leader": 0.55,
     }.get(canonical_market(market), 0.55)
 
     conf = base
@@ -265,6 +579,8 @@ def selection_label_for_market(market: str, player: str) -> str:
         return f"{player} to Make Cut"
     if m == "miss_cut":
         return f"{player} to Miss Cut"
+    if m == "r2_leader":
+        return f"{player} to Lead After R2"
     return f"{player} {m}"
 
 
@@ -443,9 +759,42 @@ def score_content_cards(cards_df: pd.DataFrame, preds_df: pd.DataFrame) -> tuple
     return cards_scored, legs_scored
 
 
-def score_single_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -> pd.DataFrame:
+def score_single_markets(
+    preds_df: pd.DataFrame,
+    lines_df: pd.DataFrame,
+    consensus_map: dict[str, float] | None = None,
+    prop_consensus_map: dict[tuple[str, str, str], float] | None = None,
+) -> pd.DataFrame:
+    """Score prop lines vs model predictions.
+
+    consensus_map:      name_key → no-vig consensus outright prob (multi-book).
+    prop_consensus_map: (name_key, market, book) → per-book no-vig prob.
+                        Built by build_prop_consensus_probs().  When present,
+                        replaces the old mixed-book _market_vig approach.
+    """
     if preds_df.empty or lines_df.empty:
         return pd.DataFrame()
+
+    # Fallback vig factors — computed from DK-only lines to avoid contamination
+    # when FanDuel lines are also present.  Only used when prop_consensus_map
+    # doesn't cover a given player/market/book triple (edge case).
+    _EXPECTED_SPOTS = {"outright": 1, "winner": 1, "top5": 5, "top10": 10, "top20": 20, "top30": 30}
+    _market_vig: dict[str, float] = {}
+    _dk_lines = lines_df[
+        lines_df.get("book", pd.Series("DRAFTKINGS", index=lines_df.index))
+        .fillna("DRAFTKINGS").astype(str).str.upper().str.startswith("DRAFT")
+    ] if "book" in lines_df.columns else lines_df
+    for _mkt, _exp in _EXPECTED_SPOTS.items():
+        _sub = _dk_lines[_dk_lines["market"].astype(str).str.lower().map(canonical_market) == _mkt]
+        if _sub.empty:
+            continue
+        _total = _sub["odds"].apply(
+            lambda o: american_to_prob(parse_american(o)) or 0.0
+        ).sum()
+        if _total > _exp * 0.5:
+            _market_vig[_mkt] = _total / _exp
+    if _market_vig and not prop_consensus_map:
+        print(f"  Prop vig fallback: { {k: round(v,3) for k,v in _market_vig.items()} }")
 
     pred = preds_df.copy()
     pred["name_key"] = pred["player_name"].apply(normalize_name_key)
@@ -477,7 +826,7 @@ def score_single_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -> pd.D
     rows: list[dict[str, Any]] = []
     for _, line in lines_df.iterrows():
         mkt = canonical_market(line.get("market", ""))
-        if mkt not in {"outright", "top5", "top10", "top20", "top30", "make_cut", "miss_cut"}:
+        if mkt not in {"outright", "top5", "top10", "top20", "top30", "make_cut", "miss_cut", "r2_leader"}:
             continue
 
         player_name = str(line.get("player_name", "") or "").strip()
@@ -497,9 +846,26 @@ def score_single_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -> pd.D
             continue
 
         implied = pd.to_numeric(line.get("implied_prob"), errors="coerce")
-        book_prob = float(implied) if pd.notna(implied) and 0 < float(implied) < 1 else american_to_prob(odds)
-        if pd.isna(book_prob):
+        raw_book_prob = float(implied) if pd.notna(implied) and 0 < float(implied) < 1 else american_to_prob(odds)
+        if pd.isna(raw_book_prob):
             continue
+
+        # Use no-vig probability as book_prob (priority order):
+        # 1. Outright:  multi-book consensus (build_consensus_book_probs)
+        # 2. Props:     per-book no-vig from build_prop_consensus_probs
+        # 3. Fallback:  DK-only _market_vig (single-book normalisation)
+        # 4. Last:      raw implied_prob (includes vig — least accurate)
+        player_key = normalize_name_key(player_name)
+        book_str   = str(line.get("book", "DRAFTKINGS") or "DRAFTKINGS").upper()
+        is_outright = mkt in {"outright", "winner"}
+        if is_outright and consensus_map and player_key in consensus_map:
+            book_prob = consensus_map[player_key]
+        elif prop_consensus_map and (player_key, mkt, book_str) in prop_consensus_map:
+            book_prob = prop_consensus_map[(player_key, mkt, book_str)]
+        elif mkt in _market_vig:
+            book_prob = raw_book_prob / _market_vig[mkt]
+        else:
+            book_prob = raw_book_prob
 
         dec = american_to_decimal(odds)
         if pd.isna(dec):
@@ -600,13 +966,16 @@ def score_h2h_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -> pd.Data
         round_num = line.get("round_num")
         mkt_label = f"h2h_r{int(round_num)}" if pd.notna(round_num) else "h2h"
 
+        group_members = f"{pa} ({odds_a:+d}) | {pb} ({odds_b:+d})"
+
         for player, model_p, book_p, odds, dec in [
             (pa, model_a, book_a, odds_a, dec_a),
             (pb, model_b, book_b, odds_b, dec_b),
         ]:
             edge_pts = (model_p - book_p) * 100.0
             ev_per_1 = (model_p * dec) - 1.0
-            label = f"{player} to beat {pb if player == pa else pa}"
+            opponent = pb if player == pa else pa
+            label = f"{player} to beat {opponent}"
             if pd.notna(round_num):
                 label += f" (R{int(round_num)})"
             rows.append({
@@ -614,6 +983,7 @@ def score_h2h_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -> pd.Data
                 "market": mkt_label,
                 "player_name": player,
                 "selection_label": label,
+                "group_members": group_members,
                 "book": book_str,
                 "odds_american": odds,
                 "book_prob": float(book_p),
@@ -673,7 +1043,7 @@ def score_group_winner_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -
     group_cols = [c for c in ["event_name", "round_num", "market_name"] if c in grp_lines.columns]
     rows: list[dict] = []
 
-    for grp_key, grp in grp_lines.groupby(group_cols) if group_cols else [("all", grp_lines)]:
+    for grp_key, grp in grp_lines.groupby(group_cols, dropna=False) if group_cols else [("all", grp_lines)]:
         players = []
         for _, line in grp.iterrows():
             pa = str(line.get("player_a", "") or line.get("player_name", "") or "").strip()
@@ -688,6 +1058,35 @@ def score_group_winner_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -
         if total_wp <= 0:
             continue
 
+        # Infer a readable group type from the first line's metadata
+        sample_line = players[0][2]
+        group_title   = str(sample_line.get("group_title", "")).strip()
+        market_subtype = str(sample_line.get("market_subtype", "")).strip()
+        if market_subtype == "NATIONALITY":
+            group_type = group_title          # e.g. "Top African Player"
+        elif market_subtype == "THREE_BALL":
+            round_tag = f" R{int(sample_line['round_num'])}" if pd.notna(sample_line.get("round_num")) else ""
+            group_type = f"3-Ball{round_tag}"
+        else:
+            group_type = "Group"
+
+        # Build group_members string sorted by odds (favourite first)
+        # For nationality groups, include each player's country in parentheses
+        _country_by_player = {p: str(ln.get("player_country", "") or "") for p, _, ln in players}
+        sorted_players = sorted(
+            [(p, o) for p, o, _ in players if o is not None],
+            key=lambda x: x[1]
+        )
+        if market_subtype == "NATIONALITY":
+            group_members = " | ".join(
+                f"{p} ({_country_by_player.get(p, '')}, {o:+d})" if _country_by_player.get(p) else f"{p} ({o:+d})"
+                for p, o in sorted_players
+            )
+        else:
+            group_members = " | ".join(
+                f"{p} ({o:+d})" for p, o in sorted_players
+            )
+
         for player, odds, line in players:
             if odds is None:
                 continue
@@ -698,12 +1097,14 @@ def score_group_winner_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -
             dec = american_to_decimal(odds)
             edge_pts = (model_p - book_p) * 100.0
             ev_per_1 = (model_p * dec) - 1.0
-            label = f"{player} Group Winner"
+            label = f"{player} — {group_type}"
+            mkt_val = "nationality_group" if market_subtype == "NATIONALITY" else "group_winner"
             rows.append({
                 "bet_type": "single",
-                "market": "group_winner",
+                "market": mkt_val,
                 "player_name": player,
                 "selection_label": label,
+                "group_members": group_members,
                 "book": str(line.get("book", "DRAFTKINGS") or "DRAFTKINGS"),
                 "odds_american": odds,
                 "book_prob": float(book_p),
@@ -754,11 +1155,13 @@ def apply_recommendation_filters(df: pd.DataFrame, cfg: RecommendationConfig) ->
 
     if not singles.empty:
         singles = singles.sort_values(["edge_pts", "ev_per_1", "confidence"], ascending=[False, False, False])
-        # h2h and group_winner have many more legs — allow more per market
+        # h2h, group_winner, and nationality_group have many more legs — allow more per market
         _h2h_mkts = singles["market"].astype(str).str.startswith("h2h") | \
-                    (singles["market"].astype(str) == "group_winner")
-        _cap = singles["market"].map(lambda m: 12 if str(m).startswith("h2h") or m == "group_winner"
-                                     else cfg.max_per_market)
+                    singles["market"].astype(str).isin(["group_winner", "nationality_group"])
+        _cap = singles["market"].map(
+            lambda m: 12 if str(m).startswith("h2h") or m in ("group_winner", "nationality_group")
+            else cfg.max_per_market
+        )
         singles["_market_rank"] = singles.groupby("market").cumcount() + 1
         singles = singles[singles["_market_rank"] <= _cap].drop(columns=["_market_rank"])
         singles = singles.head(cfg.top_n + 20)  # allow more total to fit h2h/group
@@ -776,6 +1179,70 @@ def apply_recommendation_filters(df: pd.DataFrame, cfg: RecommendationConfig) ->
     return out
 
 
+def add_corroboration_scores(df: pd.DataFrame) -> pd.DataFrame:
+    """Add corroboration_score: # of distinct market families where a player has edge > 0.
+
+    A bet with corroboration_score >= 2 means the model independently found
+    positive edge on the same player in multiple markets (e.g. top10 + H2H +
+    3-ball group). That convergence is a much stronger signal than a single
+    market crossing the edge threshold.
+
+    Side effects:
+    - Adds ``corroboration_score`` (int) and ``corroborated`` (bool) columns.
+    - Boosts ``confidence`` by 0.05 for corroborated single bets (capped at 0.95).
+    - Re-sorts so corroborated bets surface first within the same edge tier.
+    """
+    if df.empty or "player_name" not in df.columns:
+        return df
+
+    work = df.copy()
+
+    # Normalise market to family so h2h_r1/r2/r3 all count as one "h2h" signal
+    def _mkt_family(m: str) -> str:
+        m = str(m or "")
+        if m.startswith("h2h"):
+            return "h2h"
+        return m
+
+    work["_family"] = work["market"].apply(_mkt_family)
+
+    # Count distinct families with positive edge per named player
+    scored = work[
+        (pd.to_numeric(work["edge_pts"], errors="coerce") > 0) &
+        work["player_name"].notna() &
+        (work["player_name"].astype(str).str.strip() != "")
+    ].copy()
+
+    corr = (
+        scored.groupby("player_name")["_family"]
+        .nunique()
+        .rename("corroboration_score")
+    )
+
+    work = work.merge(corr, on="player_name", how="left")
+    work["corroboration_score"] = work["corroboration_score"].fillna(0).astype(int)
+    work["corroborated"] = work["corroboration_score"] >= 2
+
+    # Small confidence lift for corroborated bets
+    boost = work["corroborated"] & (work["bet_type"] == "single")
+    work.loc[boost, "confidence"] = (
+        pd.to_numeric(work.loc[boost, "confidence"], errors="coerce").add(0.05).clip(upper=0.95)
+    )
+
+    work = work.drop(columns=["_family"])
+
+    n_corr = int(work["corroborated"].sum())
+    if n_corr:
+        print(f"  Corroboration: {n_corr} bets have 2+ market signals on the same player")
+
+    # Corroborated bets first, then by edge within each tier
+    work = work.sort_values(
+        ["corroborated", "edge_pts", "ev_per_1", "confidence"],
+        ascending=[False, False, False, False],
+    ).reset_index(drop=True)
+    return work
+
+
 def build_recommendations(
     tournament_id: str,
     preds_df: pd.DataFrame,
@@ -783,7 +1250,18 @@ def build_recommendations(
     cards_df: pd.DataFrame,
     cfg: RecommendationConfig,
 ) -> pd.DataFrame:
-    single_df    = score_single_markets(preds_df, lines_df)
+    # Build multi-book no-vig consensus for outright market edge calculation
+    consensus_map = build_consensus_book_probs(tournament_id, preds_df)
+    if consensus_map:
+        print(f"  Consensus map: {len(consensus_map)} players across multiple books")
+
+    # Build per-book no-vig for prop markets (top5/top10/top20/etc.)
+    # Fixes the mixed-book inflation bug: when DK + FanDuel lines coexist in
+    # lines_df, using a combined vig factor halves book_prob and inflates edges.
+    prop_consensus_map = build_prop_consensus_probs(lines_df)
+
+    single_df    = score_single_markets(preds_df, lines_df, consensus_map=consensus_map,
+                                        prop_consensus_map=prop_consensus_map)
     h2h_df       = score_h2h_markets(preds_df, lines_df)
     group_df     = score_group_winner_markets(preds_df, lines_df)
 
@@ -806,6 +1284,9 @@ def build_recommendations(
     if filtered.empty:
         return filtered
 
+    # Cross-market corroboration: boost and re-rank bets backed by 2+ markets
+    filtered = add_corroboration_scores(filtered)
+
     run_id = now_utc_iso()
     rec_ts = run_id
 
@@ -814,6 +1295,20 @@ def build_recommendations(
     filtered["tournament_id"] = tournament_id
     filtered["run_id"] = run_id
     filtered["recommended_at"] = rec_ts
+
+    # Kelly criterion stake sizing (half-Kelly, capped at 5% of bankroll)
+    def _kelly(row: pd.Series) -> float:
+        mp = pd.to_numeric(row.get("model_prob"), errors="coerce")
+        o  = pd.to_numeric(row.get("odds_american"), errors="coerce")
+        if pd.isna(mp) or pd.isna(o):
+            return 0.0
+        dec = american_to_decimal(int(o))
+        if pd.isna(dec):
+            return 0.0
+        return kelly_fraction(float(mp), float(dec))
+
+    filtered["kelly_fraction"] = filtered.apply(_kelly, axis=1)
+    # stake_units kept as 1.0 for backward-compat (log grading uses it)
     filtered["stake_units"] = 1.0
     filtered["outcome_status"] = "pending"
     filtered["outcome_win"] = np.nan
@@ -863,8 +1358,12 @@ def build_recommendations(
         "edge_pts",
         "ev_per_1",
         "confidence",
+        "corroboration_score",
+        "corroborated",
+        "group_members",
         "status",
         "stake_units",
+        "kelly_fraction",
         "outcome_status",
         "outcome_win",
         "pnl_per_1",
@@ -932,6 +1431,13 @@ def main() -> int:
     preds_df = pd.read_csv(pred_path)
     lines_df = pd.read_csv(lines_path)
     cards_df = pd.read_csv(cards_path) if (cards_path and cards_path.exists()) else pd.DataFrame()
+
+    # Augment prop lines with FanDuel markets from pga_market_odds_{tid}.csv
+    # (adds top20, H2H matchups, 3-ball, and group props — not in DK prop_lines)
+    pga_market_lines = load_pga_market_odds(tid)
+    if not pga_market_lines.empty:
+        lines_df = pd.concat([lines_df, pga_market_lines], ignore_index=True)
+        print(f"  Merged {len(pga_market_lines)} PGA market lines into prop_lines")
 
     cfg = RecommendationConfig(
         min_confidence=float(args.min_confidence),

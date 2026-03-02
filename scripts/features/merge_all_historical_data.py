@@ -302,50 +302,95 @@ if ADD_SEASON_SG and tournament_stats is not None:
                 merged[f'{col}_field_pct'] = merged.groupby('tournament_id')[col].rank(pct=True)
         print(f"    ✓ SG vs-field features added ({len(present)} stats)")
 
-    # ── Recent form: exponential decay avg + trend ──────────────────────────
+    # ── Recent form: per-category exponential decay averages ─────────────────
     # Why: season_sg_* is a flat average that buries hot/cold streaks.
-    # recent_sg_weighted gives more weight to recent events (decay=0.85 per event).
-    # recent_sg_trend = (last 3 avg) - (events 4-8 avg) → positive = heating up.
+    # recent_sg_*_weighted gives more weight to recent events (decay=0.85 per event).
+    # recent_sg_trend = (last 3 avg) − (events 4-8 avg) → positive = heating up.
+    # Per-category (OTT/APP/ARG/PUTT) lets the model detect skill-specific hot streaks.
     try:
-        sg_hist = tournament_stats[
-            (tournament_stats['stat_component'] == 'Avg') &
-            (tournament_stats['stat_id'].astype(str) == '2567')  # sg_total
-        ][['player_id', 'year', 'tournament_id', 'stat_value']].copy()
-        sg_hist['player_id'] = sg_hist['player_id'].astype(str)
-        sg_hist = sg_hist.sort_values(['player_id', 'year', 'tournament_id'])
+        _SG_CAT_IDS = {'2567': 'sg_total', '2568': 'sg_ott',
+                       '2569': 'sg_app',   '2570': 'sg_arg',  '2564': 'sg_putt'}
 
-        def _recent_form_features(grp, decay=0.85, n=8):
-            arr = grp['stat_value'].values
-            weighted_vals, trend_vals = [], []
+        cat_hist = tournament_stats[
+            (tournament_stats['stat_component'] == 'Avg') &
+            (tournament_stats['stat_id'].astype(str).isin(_SG_CAT_IDS))
+        ][['player_id', 'year', 'tournament_id', 'stat_id', 'stat_value']].copy()
+        cat_hist['player_id'] = cat_hist['player_id'].astype(str)
+        cat_hist['stat_id']   = cat_hist['stat_id'].astype(str)
+        cat_hist['stat_name'] = cat_hist['stat_id'].map(_SG_CAT_IDS)
+
+        # One row per (player, year, tournament), one col per stat
+        cat_pivot = cat_hist.pivot_table(
+            index=['player_id', 'year', 'tournament_id'],
+            columns='stat_name',
+            values='stat_value',
+            aggfunc='first'
+        ).reset_index()
+        cat_pivot = cat_pivot.sort_values(['player_id', 'year', 'tournament_id'])
+
+        def _decay_weighted(arr, decay=0.85, n=8):
+            """Return (weighted_avg, trend) arrays with look-ahead leakage blocked."""
+            weighted, trend = [], []
             for i in range(len(arr)):
                 prior = arr[:i]
-                if len(prior) == 0:
-                    weighted_vals.append(np.nan)
-                    trend_vals.append(0.0)
+                valid = prior[~np.isnan(prior)] if len(prior) else np.array([])
+                if len(valid) == 0:
+                    weighted.append(np.nan)
+                    trend.append(0.0)
                     continue
-                window = prior[-n:][::-1]  # most recent first
+                window = valid[-n:][::-1]
                 w = np.array([decay**j for j in range(len(window))], dtype=float)
                 w /= w.sum()
-                weighted_vals.append(float(np.dot(window, w)))
-                if len(prior) >= 4:
-                    last3 = float(np.mean(prior[-3:]))
-                    older = prior[-n:-3] if len(prior) >= n else prior[:-3]
-                    trend_vals.append(float(last3 - np.mean(older)) if len(older) > 0 else 0.0)
+                weighted.append(float(np.dot(window, w)))
+                if len(valid) >= 4:
+                    last3 = float(np.mean(valid[-3:]))
+                    older = valid[-n:-3] if len(valid) >= n else valid[:-3]
+                    trend.append(float(last3 - np.mean(older)) if len(older) > 0 else 0.0)
                 else:
-                    trend_vals.append(0.0)
+                    trend.append(0.0)
+            return np.array(weighted), np.array(trend)
+
+        _CAT_OUT = [
+            ('sg_total', 'recent_sg_weighted',    'recent_sg_trend'),
+            ('sg_ott',   'recent_sg_ott_weighted', None),
+            ('sg_app',   'recent_sg_app_weighted', None),
+            ('sg_arg',   'recent_sg_arg_weighted', None),
+            ('sg_putt',  'recent_sg_putt_weighted', None),
+        ]
+
+        def _apply_decay_all(grp):
             grp = grp.copy()
-            grp['recent_sg_weighted'] = weighted_vals
-            grp['recent_sg_trend']    = trend_vals
+            for stat_col, w_col, t_col in _CAT_OUT:
+                if stat_col not in grp.columns:
+                    continue
+                arr = grp[stat_col].values.astype(float)
+                w_arr, t_arr = _decay_weighted(arr)
+                grp[w_col] = w_arr
+                if t_col:
+                    grp[t_col] = t_arr
             return grp
 
-        sg_hist = sg_hist.groupby('player_id', group_keys=False).apply(_recent_form_features)
-        rf = sg_hist[['player_id', 'year', 'tournament_id', 'recent_sg_weighted', 'recent_sg_trend']].copy()
+        cat_pivot = cat_pivot.groupby('player_id', group_keys=False).apply(_apply_decay_all)
+
+        out_cols = ['player_id', 'year', 'tournament_id']
+        for _, w_col, t_col in _CAT_OUT:
+            if w_col in cat_pivot.columns:
+                out_cols.append(w_col)
+            if t_col and t_col in cat_pivot.columns:
+                out_cols.append(t_col)
+
+        rf = cat_pivot[[c for c in out_cols if c in cat_pivot.columns]].copy()
         merged['player_id'] = merged['player_id'].astype(str)
         merged = merged.merge(rf, on=['player_id', 'year', 'tournament_id'], how='left')
-        cov = merged['recent_sg_weighted'].notna().mean() * 100
-        print(f"    ✓ Recent form features added (coverage: {cov:.1f}%): recent_sg_weighted, recent_sg_trend")
+
+        new_form_cols = [c for c in out_cols if c not in ('player_id', 'year', 'tournament_id')]
+        for col in new_form_cols:
+            if col in merged.columns:
+                cov = merged[col].notna().mean() * 100
+                print(f"    ✓ {col} (coverage: {cov:.1f}%)")
     except Exception as _e:
         print(f"    ⚠ Recent form features skipped: {_e}")
+        import traceback; traceback.print_exc()
 
 # ============================================================================
 # STEP 4: Add course history features
@@ -1053,6 +1098,18 @@ if ADD_COURSE_FIT:
         print(f"  ⚠️ Could not add course fit features: {e}")
         import traceback
         traceback.print_exc()
+
+# season_sg_arg and predictive_sg_weighted are both computed inside the course-fit
+# block above (after the initial vs_field pass at ~line 291), so their vs-field
+# deltas must be computed here.
+for _col in ('season_sg_arg', 'predictive_sg_weighted'):
+    if _col in merged.columns:
+        _avg = merged.groupby('tournament_id')[_col].transform('mean')
+        merged[f'field_avg_{_col}'] = _avg
+        merged[f'{_col}_vs_field'] = merged[_col] - _avg
+        if _col == 'season_sg_arg':
+            merged[f'{_col}_field_pct'] = merged.groupby('tournament_id')[_col].rank(pct=True)
+        print(f"    ✓ {_col}_vs_field added")
 
 # ============================================================================
 # STEP 5.5: Optionally drop missed cuts for cleaner training data

@@ -37,7 +37,10 @@ Output columns:
 """
 
 import argparse
+import base64
+import json
 import requests
+import zlib
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -49,6 +52,7 @@ from typing import Any, Dict, List, Optional
 # ============================================================================
 
 GRAPHQL_URL = "https://orchestrator.pgatour.com/graphql"
+PGA_ODDS_API_URL = "https://data-api.pgatour.com/odds/tournament"
 
 DEFAULT_HEADERS = {
     "Content-Type": "application/json",
@@ -57,6 +61,13 @@ DEFAULT_HEADERS = {
     "x-api-key": "da2-gsrx5bibzbb4njvhl7t37wqyl4",
     "Origin": "https://www.pgatour.com",
     "Referer": "https://www.pgatour.com/",
+}
+
+REST_HEADERS = {
+    "Accept": "application/json, text/plain, */*",
+    "Origin": "https://www.pgatour.com",
+    "Referer": "https://www.pgatour.com/",
+    "User-Agent": "Mozilla/5.0",
 }
 
 # Output directory
@@ -91,6 +102,18 @@ query TournamentOddsToWin($tournamentId: ID!) {
       oddsSwing
       oddsSort
     }
+  }
+}
+"""
+
+# DraftKings outright winner odds via PGA Tour's GraphQL proxy.
+# Returns a compressed (gzip+base64) payload with 122 players, each having
+# odds, oddsSort, oddsDirection (UP/DOWN/CONSTANT), and optionId.
+DK_ODDS_COMPRESSED_QUERY = """
+query oddsToWinCompressed($tournamentId: ID!) {
+  oddsToWinCompressed(oddsToWinId: $tournamentId) {
+    id
+    payload
   }
 }
 """
@@ -435,7 +458,7 @@ def build_fanduel_odds_view(df: pd.DataFrame) -> pd.DataFrame:
 # API Functions
 # ============================================================================
 
-def fetch_tournament_odds(tournament_id: str) -> pd.DataFrame:
+def fetch_tournament_odds(tournament_id: str, all_markets_df: Optional[pd.DataFrame] = None) -> pd.DataFrame:
     """
     Fetch betting odds for a tournament.
 
@@ -447,90 +470,225 @@ def fetch_tournament_odds(tournament_id: str) -> pd.DataFrame:
     """
     print(f"  Fetching odds for tournament {tournament_id}...")
 
-    payload = {
-        "operationName": "TournamentOddsToWin",
-        "variables": {"tournamentId": tournament_id},
-        "query": TOURNAMENT_ODDS_QUERY,
-    }
+    if all_markets_df is None:
+        all_markets_df = fetch_all_market_odds(tournament_id)
+    if all_markets_df.empty:
+        print("    No odds data found")
+        return pd.DataFrame()
 
+    winner_df = all_markets_df[all_markets_df["market_type"].astype(str) == "ODDS_TO_WIN"].copy()
+    if winner_df.empty:
+        print("    No outright winner market found")
+        return pd.DataFrame()
+
+    winner_df = winner_df.sort_values(["odds_sort", "implied_prob"], na_position="last").reset_index(drop=True)
+    winner_df["fair_prob"] = remove_vig(winner_df["implied_prob"].tolist())
+    winner_df["odds_rank"] = range(1, len(winner_df) + 1)
+
+    legacy_cols = [
+        "tournament_id",
+        "tournament_name",
+        "player_id",
+        "player_name",
+        "odds_to_win",
+        "odds_numeric",
+        "implied_prob",
+        "fair_prob",
+        "odds_swing",
+        "odds_direction",
+        "odds_sort",
+        "odds_rank",
+        "fetched_at",
+    ]
+    for col in legacy_cols:
+        if col not in winner_df.columns:
+            winner_df[col] = np.nan
+
+    print(f"    Found odds for {len(winner_df)} players")
+    return winner_df[legacy_cols]
+
+
+def fetch_market_catalog(tournament_id: str) -> Dict[str, Any]:
+    """Fetch available PGA/FanDuel betting markets for a tournament."""
+    url = f"{PGA_ODDS_API_URL}/{tournament_id}"
+    resp = requests.get(url, headers=REST_HEADERS, timeout=30)
+    resp.raise_for_status()
+    data = resp.json()
+    return data if isinstance(data, dict) else {}
+
+
+def fetch_market_payload(tournament_id: str, market_id: Any) -> Dict[str, Any]:
+    """Fetch one concrete market payload by market ID."""
+    url = f"{PGA_ODDS_API_URL}/{tournament_id}/{market_id}"
+    resp = requests.get(url, headers=REST_HEADERS, timeout=30)
+    resp.raise_for_status()
+    data = resp.json()
+    return data if isinstance(data, dict) else {}
+
+
+def _build_selection_label(entity: Dict[str, Any], players: List[Dict[str, Any]]) -> str:
+    names = [str(p.get("displayName") or p.get("shortName") or "").strip() for p in players]
+    names = [n for n in names if n]
+    if names:
+        return " / ".join(names)
+    for key in ("displayName", "name", "label", "title"):
+        value = entity.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return ""
+
+
+def _flatten_market_payload(
+    tournament_id: str,
+    market_meta: Dict[str, Any],
+    market_payload: Dict[str, Any],
+    fetched_at: str,
+) -> List[Dict[str, Any]]:
+    """Flatten PGA market payload into normalized row records."""
+    rows: List[Dict[str, Any]] = []
+    market_id = market_payload.get("marketId", market_meta.get("id"))
+    market_name = market_payload.get("market", market_meta.get("name", ""))
+    market_display_name = market_payload.get("marketDisplayName", market_meta.get("displayName", ""))
+    market_type = market_payload.get("marketType", market_meta.get("marketType", ""))
+    betting_provider = market_payload.get("bettingProvider", market_meta.get("book", ""))
+    tournament_name = market_payload.get("tournamentName", tournament_id)
+
+    sub_markets = market_payload.get("subMarkets") or []
+    for sub_idx, sub_market in enumerate(sub_markets):
+        sub_market_name = str(sub_market.get("subMarketName", "")).strip()
+        odds_groups = sub_market.get("oddsDataGroup") or []
+        for grp_idx, odds_group in enumerate(odds_groups):
+            group_title = str(odds_group.get("title", "")).strip()
+            odds_entries = odds_group.get("oddsData") or []
+            for entry_idx, odds_entry in enumerate(odds_entries):
+                selection_type = odds_entry.get("type", "")
+                group_count = odds_entry.get("groupCount", 0)
+                group = odds_entry.get("group") or []
+                if not isinstance(group, list):
+                    continue
+
+                option_ids = [str(g.get("optionId", "")).strip() for g in group if isinstance(g, dict)]
+                option_id = next((oid for oid in option_ids if oid), "")
+
+                if int(group_count or 0) > 1:
+                    bet_group_id = f"{market_id}|{sub_idx}|{grp_idx}|{entry_idx}"
+                else:
+                    bet_group_id = f"{market_id}|{sub_idx}|{grp_idx}|{option_id or 'single'}"
+
+                entity_names = []
+                for entity in group:
+                    if not isinstance(entity, dict):
+                        continue
+                    entity_players = entity.get("players") or []
+                    entity_names.append(_build_selection_label(entity, entity_players))
+
+                for selection_index, entity in enumerate(group):
+                    if not isinstance(entity, dict):
+                        continue
+
+                    players = entity.get("players") or []
+                    selection_label = _build_selection_label(entity, players)
+                    player_names = [str(p.get("displayName") or "").strip() for p in players if isinstance(p, dict)]
+                    player_short_names = [str(p.get("shortName") or "").strip() for p in players if isinstance(p, dict)]
+                    player_ids = [_normalize_player_id(p.get("playerId")) for p in players if isinstance(p, dict)]
+                    player_ids = [pid for pid in player_ids if pid]
+                    opponent_names = [n for i, n in enumerate(entity_names) if i != selection_index and n]
+
+                    odds_value = entity.get("oddsValue")
+                    odds_numeric = parse_american_odds(odds_value)
+
+                    row = {
+                        "tournament_id": tournament_id,
+                        "tournament_name": tournament_name,
+                        "market_id": market_id,
+                        "market_name": market_name,
+                        "market_display_name": market_display_name,
+                        "market_type": market_type,
+                        "betting_provider": betting_provider,
+                        "submarket_name": sub_market_name,
+                        "group_title": group_title,
+                        "selection_type": selection_type,
+                        "group_count": group_count,
+                        "bet_group_id": bet_group_id,
+                        "selection_index": selection_index,
+                        "option_id": str(entity.get("optionId", "")).strip(),
+                        "entity_id": str(entity.get("entityId", "")).strip(),
+                        "selection_label": selection_label,
+                        "player_ids": "|".join(str(pid) for pid in player_ids),
+                        "player_id": player_ids[0] if len(player_ids) == 1 else None,
+                        "player_names": " | ".join(n for n in player_names if n),
+                        "player_name": player_names[0] if len(player_names) == 1 else selection_label,
+                        "player_short_names": " | ".join(n for n in player_short_names if n),
+                        "opponent_name": " vs ".join(opponent_names),
+                        "odds_value": odds_value,
+                        "odds_numeric": odds_numeric,
+                        "implied_prob": american_to_implied_prob(odds_numeric),
+                        "odd_direction": entity.get("oddDirection", ""),
+                        "fetched_at": fetched_at,
+                    }
+                    rows.append(row)
+    return rows
+
+
+def fetch_all_market_odds(tournament_id: str) -> pd.DataFrame:
+    """Fetch and normalize all PGA market odds for a tournament."""
+    fetched_at = datetime.utcnow().isoformat(timespec="seconds") + "Z"
     try:
-        resp = requests.post(GRAPHQL_URL, headers=DEFAULT_HEADERS, json=payload, timeout=30)
+        catalog = fetch_market_catalog(tournament_id)
+    except requests.RequestException as e:
+        print(f"    Market catalog request error: {e}")
+        return pd.DataFrame()
 
-        if resp.status_code != 200:
-            print(f"    Error: HTTP {resp.status_code}")
-            return pd.DataFrame()
+    available_markets = catalog.get("availableMarkets") or []
+    if not available_markets:
+        return pd.DataFrame()
 
-        data = resp.json()
+    all_rows: List[Dict[str, Any]] = []
+    print(f"    Available markets: {len(available_markets)}")
+    for market_meta in available_markets:
+        market_id = market_meta.get("id")
+        market_name = market_meta.get("name", market_id)
+        try:
+            market_payload = fetch_market_payload(tournament_id, market_id)
+        except requests.RequestException as e:
+            print(f"    Skipping market {market_id} ({market_name}): {e}")
+            continue
 
-        if data.get("errors"):
-            # PGA schema can vary; retry with conservative query.
-            print("    Enhanced odds query failed; retrying fallback fields...")
-            payload["query"] = TOURNAMENT_ODDS_QUERY_FALLBACK
-            resp = requests.post(GRAPHQL_URL, headers=DEFAULT_HEADERS, json=payload, timeout=30)
-            if resp.status_code != 200:
-                print(f"    Error: HTTP {resp.status_code} on fallback query")
-                return pd.DataFrame()
-            data = resp.json()
-            if data.get("errors"):
-                print(f"    GraphQL errors: {data['errors']}")
-                return pd.DataFrame()
+        rows = _flatten_market_payload(tournament_id, market_meta, market_payload, fetched_at)
+        if rows:
+            all_rows.extend(rows)
+            print(f"      {market_id}: {market_name} -> {len(rows)} rows")
+        else:
+            print(f"      {market_id}: {market_name} -> no rows")
 
-        odds_data = data.get("data", {}).get("tournamentOddsToWin")
-        if not odds_data:
-            print(f"    No odds data found")
-            return pd.DataFrame()
+    if not all_rows:
+        return pd.DataFrame()
 
-        tournament_name = odds_data.get("tournamentName", tournament_id)
-        players = _extract_players_from_odds_payload(odds_data)
-
-        if not players:
-            print(f"    No player odds found")
-            return pd.DataFrame()
-
-        # Build DataFrame
-        records = []
-        for p in players:
-            player_id = _normalize_player_id(p.get("playerId", p.get("player_id", p.get("id"))))
-            if not player_id:
-                continue
-
-            odds_raw = _extract_odds_value(p)
-            odds_numeric = parse_american_odds(odds_raw)
-            if odds_numeric is None:
-                continue
-
-            odds_str = f"+{odds_numeric}" if odds_numeric > 0 else str(odds_numeric)
-            odds_numeric = parse_american_odds(odds_str)
-            implied_prob = american_odds_to_probability(odds_str)
-
-            records.append({
-                "tournament_id": tournament_id,
-                "tournament_name": tournament_name,
-                "player_id": int(player_id),
-                "odds_to_win": odds_str,
-                "odds_numeric": odds_numeric,
-                "implied_prob": implied_prob,
-                "odds_swing": p.get("oddsSwing", ""),
-                "odds_direction": p.get("oddsDirection", p.get("oddsSwing", "")),
-                "odds_sort": p.get("oddsSort", p.get("oddsRank", 0)),
-                "fetched_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
-            })
-
-        df = pd.DataFrame(records)
-        if df.empty:
-            print(f"    No valid odds rows after parsing")
-            return pd.DataFrame()
-
-        # Calculate fair probabilities (remove vig)
-        df["fair_prob"] = remove_vig(df["implied_prob"].tolist())
-
-        print(f"    Found odds for {len(df)} players")
-
+    df = pd.DataFrame(all_rows)
+    if df.empty:
         return df
 
-    except requests.RequestException as e:
-        print(f"    Request error: {e}")
-        return pd.DataFrame()
+    # Remove vig within each discrete betting group.
+    df["fair_prob"] = df.groupby("bet_group_id")["implied_prob"].transform(
+        lambda s: pd.Series(remove_vig(s.tolist()), index=s.index)
+    )
+
+    # Preserve legacy naming for outright workflow.
+    df["odds_to_win"] = np.where(df["market_type"] == "ODDS_TO_WIN", df["odds_value"], np.nan)
+    df["odds_swing"] = df["odd_direction"]
+    df["odds_sort"] = np.where(
+        df["market_type"] == "ODDS_TO_WIN",
+        pd.to_numeric(df["implied_prob"], errors="coerce") * -1.0,
+        np.nan,
+    )
+
+    winner_mask = df["market_type"] == "ODDS_TO_WIN"
+    if winner_mask.any():
+        df.loc[winner_mask, "odds_sort"] = (
+            df.loc[winner_mask, "odds_numeric"].rank(method="first", ascending=True).astype(float)
+        )
+
+    return df
 
 
 def fetch_player_names(tournament_id: str) -> dict:
@@ -576,7 +734,93 @@ def fetch_player_names(tournament_id: str) -> dict:
         return {}
 
 
-def fetch_and_merge_odds(tournament_id: str) -> pd.DataFrame:
+def fetch_dk_odds_compressed(tournament_id: str) -> pd.DataFrame:
+    """
+    Fetch DraftKings outright winner odds via PGA Tour's GraphQL proxy.
+
+    Uses the ``oddsToWinCompressed`` query which returns a gzip+base64 payload
+    containing DK odds for all field players, including live movement direction
+    (UP / DOWN / CONSTANT).  Player names are NOT included — caller must join
+    against a name map (e.g. from fetch_player_names).
+
+    Returns
+    -------
+    DataFrame with columns:
+        player_id, dk_odds, dk_odds_numeric, dk_implied_prob,
+        dk_odds_direction, dk_option_id, fetched_at
+    or an empty DataFrame on failure.
+    """
+    payload = {
+        "operationName": "oddsToWinCompressed",
+        "variables": {"tournamentId": tournament_id},
+        "query": DK_ODDS_COMPRESSED_QUERY,
+    }
+
+    try:
+        resp = requests.post(GRAPHQL_URL, headers=DEFAULT_HEADERS, json=payload, timeout=20)
+        if resp.status_code != 200:
+            return pd.DataFrame()
+
+        data = resp.json()
+        if data.get("errors"):
+            return pd.DataFrame()
+
+        result = (data.get("data") or {}).get("oddsToWinCompressed") or {}
+        b64_payload = result.get("payload", "")
+        if not b64_payload:
+            return pd.DataFrame()
+
+        # Decompress: gzip-encoded binary → JSON
+        raw = base64.b64decode(b64_payload)
+        try:
+            decompressed = zlib.decompress(raw, 16 + zlib.MAX_WBITS)
+        except Exception:
+            decompressed = zlib.decompress(raw)
+        inner = json.loads(decompressed)
+
+        players = inner.get("players") or []
+        if not players:
+            return pd.DataFrame()
+
+        fetched_at = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+        records = []
+        for p in players:
+            pid = _normalize_player_id(p.get("playerId"))
+            if not pid:
+                continue
+            odds_raw = p.get("odds", "")
+            odds_num = parse_american_odds(odds_raw)
+            if odds_num is None:
+                continue
+            records.append({
+                "player_id":        int(pid),
+                "dk_odds":          odds_raw,
+                "dk_odds_numeric":  odds_num,
+                "dk_implied_prob":  american_to_implied_prob(odds_num),
+                "dk_odds_direction": p.get("oddsDirection", ""),
+                "dk_option_id":     p.get("optionId", ""),
+                "fetched_at":       fetched_at,
+            })
+
+        df = pd.DataFrame(records)
+        if df.empty:
+            return df
+
+        # Remove vig — normalize implied probs so they sum to 1
+        df["dk_fair_prob"] = remove_vig(df["dk_implied_prob"].tolist())
+        df = df.sort_values("dk_odds_numeric")
+        print(f"    DK (compressed): {len(df)} players  "
+              f"UP={int((df['dk_odds_direction']=='UP').sum())}  "
+              f"DOWN={int((df['dk_odds_direction']=='DOWN').sum())}  "
+              f"CONSTANT={int((df['dk_odds_direction']=='CONSTANT').sum())}")
+        return df
+
+    except Exception as e:
+        print(f"    DK compressed fetch error: {e}")
+        return pd.DataFrame()
+
+
+def fetch_and_merge_odds(tournament_id: str, all_markets_df: Optional[pd.DataFrame] = None) -> pd.DataFrame:
     """
     Fetch odds and merge with player names.
 
@@ -587,7 +831,7 @@ def fetch_and_merge_odds(tournament_id: str) -> pd.DataFrame:
         DataFrame with odds and player names
     """
     # Fetch odds
-    odds_df = fetch_tournament_odds(tournament_id)
+    odds_df = fetch_tournament_odds(tournament_id, all_markets_df=all_markets_df)
 
     if len(odds_df) == 0:
         cache_df = load_cached_odds_df(tournament_id)
@@ -616,6 +860,26 @@ def fetch_and_merge_odds(tournament_id: str) -> pd.DataFrame:
     odds_df["odds_rank"] = range(1, len(odds_df) + 1)
 
     return odds_df
+
+
+def fetch_and_merge_all_markets(tournament_id: str, all_df: Optional[pd.DataFrame] = None) -> pd.DataFrame:
+    """Fetch all PGA market odds and backfill any missing names from leaderboard."""
+    if all_df is None:
+        all_df = fetch_all_market_odds(tournament_id)
+    if all_df.empty:
+        return all_df
+
+    if all_df["player_name"].fillna("").eq("").any() or all_df["player_name"].astype(str).str.startswith("Unknown").any():
+        name_map = fetch_player_names(tournament_id)
+        if name_map:
+            missing_mask = all_df["player_id"].notna() & (
+                all_df["player_name"].fillna("").eq("") |
+                all_df["player_name"].astype(str).str.startswith("Unknown")
+            )
+            all_df.loc[missing_mask, "player_name"] = all_df.loc[missing_mask, "player_id"].map(name_map).fillna(
+                all_df.loc[missing_mask, "player_name"]
+            )
+    return all_df
 
 
 # ============================================================================
@@ -651,8 +915,9 @@ Tournament IDs:
     print("  PGA TOUR ODDS SCRAPER")
     print("=" * 60)
 
-    # Fetch odds with player names
-    df = fetch_and_merge_odds(args.tournament_id)
+    all_markets_raw = fetch_all_market_odds(args.tournament_id)
+    all_markets_df = fetch_and_merge_all_markets(args.tournament_id, all_df=all_markets_raw)
+    df = fetch_and_merge_odds(args.tournament_id, all_markets_df=all_markets_df)
 
     if len(df) == 0:
         print("\n  No odds data found!")
@@ -674,10 +939,26 @@ Tournament IDs:
     # Save legacy/general odds file
     df.to_csv(output_path, index=False)
 
+    if not all_markets_df.empty:
+        all_markets_output_path = OUTPUT_DIR / f"pga_market_odds_{args.tournament_id}.csv"
+        all_markets_df.to_csv(all_markets_output_path, index=False)
+        print(f"  Saved all PGA markets to: {all_markets_output_path}")
+
     # Save dedicated FanDuel odds file for value-bet workflow
     fanduel_df = build_fanduel_odds_view(df)
     fanduel_output_path = OUTPUT_DIR / f"fanduel_odds_{args.tournament_id}.csv"
     fanduel_df.to_csv(fanduel_output_path, index=False)
+
+    # Fetch DK outright odds via PGA Tour compressed endpoint (adds movement direction)
+    print("\n  Fetching DK odds (PGA Tour compressed endpoint)...")
+    dk_df = fetch_dk_odds_compressed(args.tournament_id)
+    if not dk_df.empty:
+        # Merge player names from the FanDuel fetch
+        name_map = df.set_index("player_id")["player_name"].to_dict() if "player_name" in df.columns else {}
+        dk_df["player_name"] = dk_df["player_id"].map(name_map).fillna("")
+        dk_output_path = OUTPUT_DIR / f"dk_odds_{args.tournament_id}.csv"
+        dk_df.to_csv(dk_output_path, index=False)
+        print(f"  Saved DK odds to: {dk_output_path}")
 
     # Print summary
     print("\n" + "=" * 60)

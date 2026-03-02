@@ -113,12 +113,16 @@ def leaderboard_complete(lb: pd.DataFrame) -> bool:
     if lb.empty:
         return False
 
+    round_max = pd.to_numeric(lb.get("current_round"), errors="coerce").max() if "current_round" in lb.columns else np.nan
+
+    # "complete" / "final" status means a ROUND is done, not necessarily the tournament.
+    # Must also confirm we are in round 4 or later before declaring the tournament settled.
     if "status" in lb.columns:
         statuses = lb["status"].fillna("").astype(str).str.lower().str.strip()
-        if len(statuses) > 0 and statuses.isin(["complete", "final", "finished"]).all():
-            return True
+        if len(statuses) > 0 and statuses.isin(["complete", "final", "finished", "withdrawn", "wd"]).all():
+            if pd.isna(round_max) or round_max >= 4:
+                return True
 
-    round_max = pd.to_numeric(lb.get("current_round"), errors="coerce").max() if "current_round" in lb.columns else np.nan
     thru = lb.get("thru")
     if thru is not None:
         thru_vals = thru.fillna("").astype(str).str.upper().str.strip()
@@ -144,10 +148,15 @@ def build_player_result_lookup(lb: pd.DataFrame) -> dict[str, dict[str, Any]]:
         if isinstance(made_cut, str):
             made_cut = made_cut.strip().lower() in {"true", "1", "yes", "y"}
 
-        out[k] = {
+        entry: dict[str, Any] = {
             "position_num": pos_num,
             "made_cut": made_cut if isinstance(made_cut, (bool, np.bool_)) else np.nan,
         }
+        # Include per-round scores for round-specific H2H grading
+        for rnd in ("R1", "R2", "R3", "R4"):
+            val = pd.to_numeric(row.get(rnd), errors="coerce")
+            entry[rnd] = int(val) if pd.notna(val) else None
+        out[k] = entry
 
     return out
 
@@ -177,7 +186,30 @@ def _parse_card_leg_label(label: str) -> dict[str, str]:
     return {"market": "unknown", "player": "", "raw": s}
 
 
-def evaluate_market_outcome(market: str, player_key: str, player_results: dict[str, dict[str, Any]]) -> bool | None:
+def _parse_group_members_keys(group_members_str: str) -> list[str]:
+    """Extract normalized player name keys from group_members string.
+    Format: 'Player A (+350) · Player B (+200)' or 'Player A | Player B'
+    """
+    s = str(group_members_str or "")
+    # Split on · or |
+    parts = re.split(r"[·|]", s)
+    keys = []
+    for p in parts:
+        # Strip odds like (+350) or (-135)
+        p = re.sub(r"\([^)]*\)", "", p).strip()
+        # Strip country in parens that were removed
+        p = p.strip(" ,")
+        if p:
+            keys.append(normalize_name_key(p))
+    return [k for k in keys if k]
+
+
+def evaluate_market_outcome(
+    market: str,
+    player_key: str,
+    player_results: dict[str, dict[str, Any]],
+    group_members: str = "",
+) -> bool | None:
     m = canonical_market(market)
     row = player_results.get(player_key)
     if row is None:
@@ -208,6 +240,48 @@ def evaluate_market_outcome(market: str, player_key: str, player_results: dict[s
         if pos_num is not None:
             return pos_num == 999
         return None
+
+    # H2H / group winner: selected player must finish better (lower pos_num) than all opponents
+    if m in {"h2h", "group_winner", "nationality_group"}:
+        if pos_num is None:
+            return None
+        opponent_keys = _parse_group_members_keys(group_members)
+        # Remove the selected player themselves if present in the list
+        opponent_keys = [k for k in opponent_keys if k != player_key]
+        if not opponent_keys:
+            return None
+        for opp_key in opponent_keys:
+            opp = player_results.get(opp_key)
+            if opp is None:
+                return None  # Can't resolve — keep pending
+            opp_pos = opp.get("position_num")
+            if opp_pos is None:
+                return None
+            if pos_num >= opp_pos:  # tied or worse = loss
+                return False
+        return True  # beat all opponents
+
+    # Round-specific H2H: compare single-round score
+    round_map = {"h2h_r1": "R1", "h2h_r2": "R2", "h2h_r3": "R3", "h2h_r4": "R4"}
+    if m in round_map:
+        rnd = round_map[m]
+        my_score = row.get(rnd)
+        if my_score is None:
+            return None
+        opponent_keys = _parse_group_members_keys(group_members)
+        opponent_keys = [k for k in opponent_keys if k != player_key]
+        if not opponent_keys:
+            return None
+        for opp_key in opponent_keys:
+            opp = player_results.get(opp_key)
+            if opp is None:
+                return None
+            opp_score = opp.get(rnd)
+            if opp_score is None:
+                return None
+            if my_score >= opp_score:  # tied or higher strokes = loss
+                return False
+        return True
 
     return None
 
@@ -273,7 +347,8 @@ def settle_row(
         if not market or not player_key:
             return "pending", None, None, "missing market/player", None, None, None
 
-        outcome = evaluate_market_outcome(market, player_key, player_results)
+        group_members = str(row.get("group_members", "") or "")
+        outcome = evaluate_market_outcome(market, player_key, player_results, group_members)
         if outcome is None:
             return "pending", None, None, "missing player result or unsupported market", None, None, None
 

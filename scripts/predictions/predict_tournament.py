@@ -754,6 +754,29 @@ def get_recent_sg_stats(
             recent_stats['recent_sg_weighted'] = np.nan
             recent_stats['recent_sg_trend'] = 0.0
 
+        # Per-category recent form (OTT, APP, PUTT) — same decay window as sg_total
+        _SG_CAT = {'2568': 'recent_sg_ott_weighted',
+                   '2569': 'recent_sg_app_weighted',
+                   '2564': 'recent_sg_putt_weighted'}
+        for _cat_id, _cat_col in _SG_CAT.items():
+            _cur_cat = stats_pivot[_cat_id].dropna().values if _cat_id in stats_pivot.columns else np.array([])
+            _prior_cat = np.array([])
+            if prior_stats_df is not None and not prior_stats_df.empty:
+                _pc = prior_stats_df[
+                    (prior_stats_df['player_id'] == pid_str) &
+                    (prior_stats_df['stat_component'] == 'Avg') &
+                    (prior_stats_df['stat_id'].astype(str) == _cat_id)
+                ].sort_values('tournament_id')
+                _prior_cat = _pc['stat_value'].dropna().values
+            _cat_vals = np.concatenate([_prior_cat, _cur_cat]) if len(_prior_cat) > 0 else _cur_cat
+            if len(_cat_vals) > 0:
+                _cn = min(8, len(_cat_vals))
+                _cw = np.array([0.85**i for i in range(_cn)], dtype=float)
+                _cw /= _cw.sum()
+                recent_stats[_cat_col] = float(np.dot(_cat_vals[-_cn:][::-1], _cw))
+            else:
+                recent_stats[_cat_col] = np.nan
+
     # Blend with prior year stats if enabled
     if blend_with_prior and prior_stats_df is not None and not prior_stats_df.empty:
         prior_stats = get_prior_year_sg_stats(player_id, prior_stats_df)
@@ -1930,6 +1953,12 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     print("  Adding Data Golf course fit features...")
     features_df = add_course_fit_features(features_df, tournament_name)
 
+    # Refresh predictive_sg_weighted vs-field after course fit (which sets the column)
+    if 'predictive_sg_weighted' in features_df.columns:
+        _psw_mean = features_df['predictive_sg_weighted'].mean()
+        features_df['field_avg_predictive_sg_weighted'] = _psw_mean
+        features_df['predictive_sg_weighted_vs_field'] = features_df['predictive_sg_weighted'] - _psw_mean
+
     # ADD COURSE-SPECIFIC PLAYER PERFORMANCE FEATURES
     # Uses historical form stats to get per-player course performance
     print("  Adding player course performance features...")
@@ -2431,17 +2460,19 @@ def apply_course_performance_adjustment(
 def apply_probability_constraints(
     predictions_df: pd.DataFrame,
     normalize_topk: bool = True,
-    favorite_bias_strength: float = 0.40,
+    favorite_bias_strength: float = 0.15,
     favorite_bias_half_life: float = 8.0,
     top5_cap: float = 0.65,
     top10_cap: float = 0.75,
     top20_cap: float = 0.85,
+    max_top10_win_ratio: float = 20.0,
 ) -> pd.DataFrame:
     """
     Post-process probabilities for consistency:
     - Clip all probs to [0, 1]
     - Normalize win probs to sum to ~1.0 across field
     - Enforce monotonicity: top20 >= top10 >= top5 >= win
+    - Cap top10/win ratio to avoid wild disconnects for weak-field players
     - Optionally normalize top-k totals toward expected field totals
     """
     df = predictions_df.copy()
@@ -2526,6 +2557,19 @@ def apply_probability_constraints(
 
         return pd.Series(p, index=current.index)
 
+    _enforce_monotonic(df)
+
+    # Ratio cap: prevent top10_prob from being unreasonably large vs win_prob.
+    # A 20x ratio means a 0.1% win-prob player is capped at 2% top10, which is
+    # still realistic for a weak player in a soft field while avoiding 70x absurdities.
+    # Apply before _project_with_bounds so the normalization redistributes cleanly.
+    if max_top10_win_ratio > 0 and {"win_prob", "top10_prob"}.issubset(df.columns):
+        ceiling = df["win_prob"] * max_top10_win_ratio
+        df["top10_prob"] = np.minimum(df["top10_prob"], ceiling)
+    if max_top10_win_ratio > 0 and {"win_prob", "top5_prob"}.issubset(df.columns):
+        ceiling5 = df["win_prob"] * (max_top10_win_ratio * 0.6)
+        df["top5_prob"] = np.minimum(df["top5_prob"], ceiling5)
+    # Re-enforce monotonicity after capping
     _enforce_monotonic(df)
 
     if normalize_topk:
@@ -2830,8 +2874,8 @@ Examples:
                         help='Skip tracked bet recommendation generation at end of prediction run')
     parser.add_argument('--no-prob-postprocess', action='store_true',
                         help='Disable probability post-processing (normalization + monotonic constraints)')
-    parser.add_argument('--favorite-bias-strength', type=float, default=0.40,
-                        help='Boost top-ranked win probabilities before normalization (default: 0.40)')
+    parser.add_argument('--favorite-bias-strength', type=float, default=0.15,
+                        help='Boost top-ranked win probabilities before normalization (default: 0.15)')
     parser.add_argument('--favorite-bias-half-life', type=float, default=8.0,
                         help='Decay speed for favorite-bias boost by rank (default: 8)')
     parser.add_argument('--top5-cap', type=float, default=0.65,

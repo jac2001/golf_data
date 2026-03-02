@@ -36,5 +36,73 @@
     "failed_step_ids": [
       "step_002"
     ]
+  },
+  {
+    "run_id": "20260301_164436",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260301_164436.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-01T16:44:36",
+    "ended_at": "2026-03-01T16:48:50",
+    "tournament_name": "Cognizant Classic",
+    "tournament_id": "R2026010",
+    "step_count": 10,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_003",
+      "step_004",
+      "step_008"
+    ]
+  },
+  {
+    "run_id": "20260301_165148",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260301_165148.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-01T16:51:48",
+    "ended_at": "2026-03-01T16:56:01",
+    "tournament_name": "Cognizant Classic",
+    "tournament_id": "R2026010",
+    "step_count": 9,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_002",
+      "step_003",
+      "step_007"
+    ]
+  },
+  {
+    "run_id": "20260301_173554",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260301_173554.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-01T17:35:54",
+    "ended_at": "2026-03-01T17:40:04",
+    "tournament_name": "Cognizant Classic",
+    "tournament_id": "R2026010",
+    "step_count": 9,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_002",
+      "step_003",
+      "step_007"
+    ]
+  },
+  {
+    "run_id": "20260301_232255",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260301_232255.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-01T23:22:55",
+    "ended_at": "2026-03-01T23:27:07",
+    "tournament_name": "Cognizant Classic",
+    "tournament_id": "R2026010",
+    "step_count": 10,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_003",
+      "step_004",
+      "step_008"
+    ]
   }
 ]

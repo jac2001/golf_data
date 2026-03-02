@@ -32,21 +32,54 @@ def save_usage_tracker(data: dict):
         json.dump(data, f, indent=2)                                                                                  
                                                                                                                     
                                                                                                                     
-def load_leaderboards() -> pd.DataFrame:                                                                              
-    if LEADERBOARDS_FILE.exists():                                                                                    
-        return pd.read_csv(LEADERBOARDS_FILE)                                                                         
-    return pd.DataFrame()                                                                                             
+def load_leaderboards() -> pd.DataFrame:
+    frames = []
+    if LEADERBOARDS_FILE.exists():
+        frames.append(pd.read_csv(LEADERBOARDS_FILE))
+
+    # Also load any live leaderboard CSVs so recently-finished tournaments
+    # don't need to wait for the historical scraper to run.
+    live_dir = DATA_DIR / "live"
+    if live_dir.exists():
+        import re as _re
+        for live_path in sorted(live_dir.glob("leaderboard_r*.csv")):
+            if "_meta" in live_path.name:
+                continue
+            try:
+                ldf = pd.read_csv(live_path)
+                # Derive tournament_id from filename (e.g. leaderboard_r2026010.csv → R2026010)
+                m = _re.search(r"leaderboard_(r\d+)", live_path.stem, _re.I)
+                tid = m.group(1).upper() if m else ""
+                ldf["tournament_id"] = tid
+                # Normalise column names to match historical schema
+                if "total" in ldf.columns and "to_par" not in ldf.columns:
+                    ldf = ldf.rename(columns={"total": "to_par"})
+                if "position" not in ldf.columns and "rank" in ldf.columns:
+                    ldf = ldf.rename(columns={"rank": "position"})
+                ldf["tournament_name"] = ""  # empty so fallback name-only match works
+                frames.append(ldf[["tournament_id", "tournament_name", "player_name", "position", "to_par"]
+                                   + [c for c in ["fedex_points", "total_score"] if c in ldf.columns]])
+            except Exception:
+                pass
+
+    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()                                                                                            
                                                                                                                     
                                                                                                                     
-def normalize_name(name: str) -> str:                                                                                 
-    """Normalize player name for matching."""                                                                         
-    if not name:                                                                                                      
-        return ""                                                                                                     
-    name = str(name).strip().lower()                                                                                  
-    # Handle "Last, First" format                                                                                     
-    if ", " in name:                                                                                                  
-        parts = name.split(", ", 1)                                                                                   
-        name = f"{parts[1]} {parts[0]}"                                                                               
+def normalize_name(name: str) -> str:
+    """Normalize player name for matching."""
+    import unicodedata
+    if not name:
+        return ""
+    name = str(name).strip().lower()
+    # Transliterate non-ASCII letters (ø→o, å→a, ä→a, etc.)
+    name = unicodedata.normalize("NFKD", name)
+    name = "".join(c for c in name if not unicodedata.combining(c))
+    # Drop any remaining non-ASCII (covers ø, ð, þ, etc. that don't decompose)
+    name = name.encode("ascii", "ignore").decode("ascii")
+    # Handle "Last, First" format
+    if ", " in name:
+        parts = name.split(", ", 1)
+        name = f"{parts[1]} {parts[0]}"
     return name
 
 

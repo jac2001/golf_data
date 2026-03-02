@@ -7,30 +7,30 @@ DATASET SUMMARY:
   Total Records: 46,009
   Training Records: 40,744 (2020-2024)
   Test Records: 4,567 (2025)
-  Features Used: 53
+  Features Used: 57
 
 FEATURE GROUPS:
   SG Stats: 0
   Course History: 8
-  Course/Field: 11
+  Course/Field: 14
 
 MODEL PERFORMANCE:
 ----------------------------------------------------------------------
 Model      Train AUC    Test AUC     Gap        Status         
 ----------------------------------------------------------------------
-win        0.9312       0.8509       0.0804     ⚠️  Moderate   
-top5       0.8698       0.8269       0.0429     ✅ Good         
-top10      0.8599       0.8250       0.0349     ✅ Good         
-top20      0.8612       0.8414       0.0198     ✅ Good         
+win        0.9285       0.8487       0.0799     ⚠️  Moderate   
+top5       0.8697       0.8231       0.0466     ✅ Good         
+top10      0.8593       0.8233       0.0359     ✅ Good         
+top20      0.8609       0.8426       0.0183     ✅ Good         
 
 PROBABILITY CALIBRATION:
 ----------------------------------------------------------------------
 Model      Brier      Pred Avg     Actual     Ratio      Status         
 ----------------------------------------------------------------------
-win        0.0078     0.83      % 0.75    % 1.10      x ✅ Calibrated   
-top5       0.0443     4.79      % 4.56    % 1.05      x ✅ Calibrated   
-top10      0.0735     9.28      % 8.73    % 1.06      x ✅ Calibrated   
-top20      0.1146     17.04     % 16.99   % 1.00      x ✅ Calibrated   
+win        0.0086     1.02      % 0.75    % 1.36      x ⚠️  Moderate   
+top5       0.0444     4.68      % 4.56    % 1.03      x ✅ Calibrated   
+top10      0.0732     9.07      % 8.73    % 1.04      x ✅ Calibrated   
+top20      0.1145     16.89     % 16.99   % 0.99      x ✅ Calibrated   
 
 INTERPRETATION:
   ROC-AUC Scale:
@@ -47,16 +47,16 @@ INTERPRETATION:
 
 TOP 10 FEATURES:
 ----------------------------------------------------------------------
-  season_sg_t2g                  0.0848
-  season_sg_arg                  0.0805
-  predictive_sg_weighted         0.0788
-  season_sg_ott                  0.0694
-  world_rank                     0.0645
-  season_sg_total                0.0579
-  dg_fit_total                   0.0573
-  season_sg_ott_field_pct        0.0494
-  dg_fit_arg                     0.0492
-  season_sg_total_vs_field       0.0463
+  season_sg_total                0.0775
+  season_sg_arg                  0.0758
+  recent_sg_weighted             0.0645
+  season_sg_t2g                  0.0616
+  season_sg_total_vs_field       0.0604
+  world_rank                     0.0584
+  season_sg_ott                  0.0515
+  predictive_sg_weighted         0.0496
+  season_sg_app                  0.0485
+  season_sg_arg_vs_field         0.0435
 
 ======================================================================
   Models saved to: data/models/

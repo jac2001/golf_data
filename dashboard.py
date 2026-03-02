@@ -21,6 +21,7 @@ import plotly.graph_objects as go
 import subprocess
 import textwrap
 import shlex
+import time
 from datetime import datetime
 import plotly.express as px
 import requests
@@ -7799,8 +7800,57 @@ elif page == "📋 My Picks":
     st.caption("Your picks and results, week by week")
 
     _log_path = OUTPUTS_DIR / "season_log.csv"
-    if _log_path.exists():
-        _log = pd.read_csv(_log_path)
+    _tracker_path = PROJECT_ROOT / "data" / "fantasy" / "usage_tracker_2026.json"
+
+    # Load season log; fall back to empty frame if file is missing
+    _log = pd.read_csv(_log_path) if _log_path.exists() else pd.DataFrame(
+        columns=["week", "date", "tournament", "pick1", "pick2", "pick3",
+                 "result1", "result2", "result3", "points", "league_rank",
+                 "notes", "rank1", "rank2", "rank3", "avg_model_rank"])
+
+    # Augment from usage_tracker for any weeks not yet written to season_log.csv
+    if _tracker_path.exists():
+        try:
+            _tracker = json.loads(_tracker_path.read_text())
+            _log_weeks = set(pd.to_numeric(_log["week"], errors="coerce").dropna().astype(int).tolist())
+            _wk_lineups = _tracker.get("weekly_lineups", {})
+            # Build per-week player → result / points lookup
+            _wk_player_res: dict = {}
+            for _pname, _pdata in _tracker.get("picks", {}).items():
+                for _tu in _pdata.get("tournaments_used", []):
+                    _wk = _tu.get("week")
+                    if _wk is not None:
+                        _wk_player_res.setdefault(int(_wk), {})[_pname] = {
+                            "result": _tu.get("result", ""),
+                            "points": _tu.get("points") or 0,
+                        }
+            _new_rows = []
+            for _wk_key in sorted(_wk_lineups.keys()):
+                _wd = _wk_lineups[_wk_key]
+                _wk_n = int(_wd.get("week", 0))
+                if _wk_n > 0 and _wk_n not in _log_weeks:
+                    _lp = (_wd.get("lineup") or [])[:3]
+                    _lp = (_lp + ["", "", ""])[:3]
+                    _wr = _wk_player_res.get(_wk_n, {})
+                    _rs = [_wr.get(_lp[i], {}).get("result", "") for i in range(3)]
+                    _tp = sum(_wr.get(_lp[i], {}).get("points", 0) or 0 for i in range(3))
+                    _any_res = any(str(r).strip() not in ("", "nan") for r in _rs)
+                    _new_rows.append({
+                        "week": _wk_n, "date": _wd.get("date", ""),
+                        "tournament": _wd.get("tournament", ""),
+                        "pick1": _lp[0], "pick2": _lp[1], "pick3": _lp[2],
+                        "result1": _rs[0], "result2": _rs[1], "result3": _rs[2],
+                        "points": _tp if _any_res else None,
+                        "league_rank": None, "notes": "",
+                        "rank1": None, "rank2": None, "rank3": None, "avg_model_rank": None,
+                    })
+            if _new_rows:
+                _log = pd.concat([_log, pd.DataFrame(_new_rows)], ignore_index=True)
+                _log = _log.sort_values("week").reset_index(drop=True)
+        except Exception:
+            pass
+
+    if not _log.empty:
         _completed = _log[_log["points"].notna() & (_log["points"] != "")]
 
         if not _completed.empty:
@@ -7821,7 +7871,7 @@ elif page == "📋 My Picks":
                     if pd.notna(_pn) and str(_pn).strip() not in ("", "nan"):
                         _result_str = str(_pr).strip() if pd.notna(_pr) and str(_pr).strip() not in ("", "nan") else "—"
                         _fin = None
-                        if _result_str not in ("—", "MC", "WD", "DQ"):
+                        if _result_str not in ("—", "MC", "CUT", "WD", "DQ"):
                             try:
                                 _fin = int(_result_str.replace("T", "").replace("t", ""))
                             except Exception:
@@ -7834,7 +7884,7 @@ elif page == "📋 My Picks":
                             elif _fin <= 20: _badge = "🔵"
                             else:           _badge = "⚪"
                             _result_disp = f"{_badge} {_result_str}"
-                        elif _result_str in ("MC",):
+                        elif _result_str in ("MC", "CUT"):
                             _result_disp = "❌ MC"
                         elif _result_str == "—":
                             _result_disp = "⏳ Pending"
@@ -7878,7 +7928,7 @@ elif page == "📋 My Picks":
 
             # Parse finish positions — handles "T28" → 28, "1" → 1, "MC" → None
             def _parse_finish(r):
-                if pd.isna(r) or str(r).strip().upper() in ("MC", "WD", "DQ", ""):
+                if pd.isna(r) or str(r).strip().upper() in ("MC", "CUT", "WD", "DQ", ""):
                     return None
                 try:
                     return int(str(r).replace("T", "").replace("t", "").strip())
@@ -7912,228 +7962,7 @@ elif page == "📋 My Picks":
     else:
         st.info("Season log not found. It will appear here once picks are recorded.")
 
-    # ── Season Scenario Planner ───────────────────────────────────────────────
-    st.markdown("---")
-    st.markdown("### 🔮 Season Scenario Planner")
-    st.caption(
-        "Monte Carlo simulation (5,000 seasons) comparing three usage strategies "
-        "for the remainder of the year. Helps answer: **should you burn stars early "
-        "or save them for Majors?**"
-    )
-
-    _sp_path = OUTPUTS_DIR / "scenario_plan.json"
-
-    _sp_col1, _sp_col2 = st.columns([1, 5])
-    with _sp_col1:
-        _sp_regen = st.button(
-            "⟳ Re-run", key="sp_regen",
-            help="Regenerate with latest predictions (takes ~5 seconds)",
-            use_container_width=True,
-        )
-    if _sp_regen:
-        with st.spinner("Running 5,000 Monte Carlo simulations..."):
-            import sys as _sys_sp
-            _sys_sp.path.insert(0, str(Path(__file__).parent / "scripts" / "predictions"))
-            from scripts.predictions.scenario_planner import run as _sp_run
-            _sp_run()
-        st.success("Simulation complete! Scroll down to see results.")
-        st.rerun()
-
-    if _sp_path.exists():
-        import json as _sp_json
-        with open(_sp_path) as _spf:
-            _sp = _sp_json.load(_spf)
-
-        _sp_gen  = _sp.get("generated_at", "")[:10]
-        _sp_nsim = _sp.get("n_simulations", 5000)
-        _sp_wks  = _sp.get("weeks_remaining", 0)
-        st.caption(
-            f"Generated: **{_sp_gen}** &nbsp;|&nbsp; "
-            f"{_sp_nsim:,} simulations &nbsp;|&nbsp; "
-            f"{_sp_wks} remaining weeks in schedule"
-        )
-
-        # ── Strategy cards ────────────────────────────────────────────────────
-        _strategy_order = ["greedy", "major_saver", "balanced"]
-        _best = _sp.get("best_strategy", "greedy")
-        _st_cols = st.columns(3)
-
-        for _si, _sk in enumerate(_strategy_order):
-            _sv    = _sp["strategies"].get(_sk, {})
-            _sstat = _sv.get("stats", {})
-            _is_best  = (_sk == _best)
-            _border   = "2px solid #00c44f" if _is_best else "1px solid #2a3a50"
-            _badge    = " 🏆" if _is_best else ""
-
-            with _st_cols[_si]:
-                st.markdown(f"""
-<div style="background:#0d1a30;border:{_border};border-radius:10px;
-            padding:14px 12px;text-align:center;">
-  <div style="font-size:0.85em;font-weight:600;
-              color:{_sv.get('color','#aaa')};">{_sv.get('display_name','')}{_badge}</div>
-  <div style="font-size:2em;font-weight:700;margin:8px 0;color:#fff;">
-    ${_sstat.get('mean', 0)/1_000_000:.1f}M
-  </div>
-  <div style="font-size:0.72em;color:#777;margin-bottom:10px;">expected earnings (remaining season)</div>
-  <hr style="border:none;border-top:1px solid #2a3a50;margin:8px 0;">
-  <table style="width:100%;font-size:0.76em;color:#aaa;border-collapse:collapse;">
-    <tr><td style="text-align:left;">Floor (5th pct)</td>
-        <td style="text-align:right;color:#e74c3c;font-weight:600;">
-          ${_sstat.get('p5', 0)/1_000_000:.1f}M</td></tr>
-    <tr><td style="text-align:left;">Median</td>
-        <td style="text-align:right;color:#f1c40f;font-weight:600;">
-          ${_sstat.get('p50', 0)/1_000_000:.1f}M</td></tr>
-    <tr><td style="text-align:left;">Ceiling (95th pct)</td>
-        <td style="text-align:right;color:#2ecc71;font-weight:600;">
-          ${_sstat.get('p95', 0)/1_000_000:.1f}M</td></tr>
-    <tr><td style="text-align:left;">Std dev</td>
-        <td style="text-align:right;">${_sstat.get('std', 0)/1_000_000:.1f}M</td></tr>
-  </table>
-  <div style="font-size:0.68em;color:#556;margin-top:10px;line-height:1.4;">
-    {_sv.get('description', '')}
-  </div>
-</div>
-""", unsafe_allow_html=True)
-
-        # ── Outcome distribution chart ─────────────────────────────────────────
-        st.markdown("<br>", unsafe_allow_html=True)
-        _dist_colors = {"greedy": "#3498db", "major_saver": "#e67e22", "balanced": "#2ecc71"}
-        _dist_fig = go.Figure()
-
-        for _sk in _strategy_order:
-            _sv   = _sp["strategies"].get(_sk, {})
-            _vals = _sv.get("histogram", {}).get("values", [])
-            if _vals:
-                _dist_fig.add_trace(go.Histogram(
-                    x=_vals,
-                    name=_sv.get("display_name", _sk),
-                    opacity=0.55,
-                    marker_color=_dist_colors.get(_sk, "#aaa"),
-                    nbinsx=40,
-                ))
-
-        # Compute 2025 benchmark: weeks 4-30 actual earnings
-        _hist_bench_path = PROJECT_ROOT / "data" / "historical" / "Fantasy_Results_2025.csv"
-        _bench_val = None
-        if _hist_bench_path.exists():
-            def _pm_bench(v):
-                try: return float(str(v).replace("$","").replace(",","").strip())
-                except: return 0.0
-            _hb = pd.read_csv(_hist_bench_path)
-            _hb["_t"] = _hb["Total Earnings"].apply(_pm_bench)
-            _bench_val = _hb[_hb["Week"] >= 4]["_t"].sum()
-
-        _dist_fig.update_layout(
-            barmode="overlay",
-            title="Earnings Distribution Across 5,000 Simulated Seasons",
-            xaxis_title="Total Prize Money Earned (remaining weeks, $)",
-            yaxis_title="# Simulations",
-            height=320,
-            margin=dict(t=44, b=30, l=0, r=0),
-            plot_bgcolor="rgba(0,0,0,0)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            font_color="#ccc",
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        )
-        if _bench_val:
-            _dist_fig.add_vline(
-                x=_bench_val, line_dash="dash", line_color="#f1c40f", line_width=2,
-                annotation_text=f"2025 actual wks 4–30 (${_bench_val/1_000_000:.1f}M)",
-                annotation_position="top right",
-                annotation_font_color="#f1c40f",
-            )
-        st.plotly_chart(_dist_fig, use_container_width=True)
-
-        # ── Build 2025 tournament lookup for side-by-side comparison ──────────
-        _h25_plan_lookup: dict = {}   # normalized_name → {picks, earned}
-        _h25_csv_path = PROJECT_ROOT / "data" / "historical" / "Fantasy_Results_2025.csv"
-        if _h25_csv_path.exists():
-            def _parse_money_sp(v):
-                try: return float(str(v).replace("$","").replace(",","").strip())
-                except: return 0.0
-            def _fmt_sp_money(v):
-                if v <= 0: return "$0"
-                if v >= 1_000_000: return f"${v/1_000_000:.1f}M"
-                if v >= 1_000: return f"${v/1_000:.0f}K"
-                return f"${v:.0f}"
-            _raw25 = pd.read_csv(_h25_csv_path)
-            for _, _r25 in _raw25.iterrows():
-                _tnorm = str(_r25["Tournament"]).lower().strip()
-                _p1 = str(_r25.get("Starter #1","")).strip()
-                _p2 = str(_r25.get("Starter #2","")).strip()
-                _p3 = str(_r25.get("Starter #3","")).strip()
-                _picks_str = " / ".join(p for p in [_p1,_p2,_p3] if p and p.lower() not in ("nan","vacant",""))
-                _earned = _parse_money_sp(_r25.get("Total Earnings", 0))
-                _h25_plan_lookup[_tnorm] = {"picks": _picks_str, "earned": _earned}
-
-        def _get_2025(tourn_name):
-            """Return (picks_str, earned_fmt) for a tournament by fuzzy name match."""
-            _key = tourn_name.lower().strip()
-            if _key in _h25_plan_lookup:
-                _e = _h25_plan_lookup[_key]
-                return _e["picks"], _fmt_sp_money(_e["earned"])
-            # Partial match: check if any 2025 name contains the plan name (≥6 chars)
-            for _k, _v in _h25_plan_lookup.items():
-                if len(_key) >= 6 and (_key in _k or _k in _key):
-                    return _v["picks"], _fmt_sp_money(_v["earned"])
-            return "—", "—"
-
-        # ── Week-by-week season plan ──────────────────────────────────────────
-        _plan_tab_labels = [
-            _sp["strategies"][_sk]["display_name"] for _sk in _strategy_order
-        ]
-        _plan_tabs = st.tabs(_plan_tab_labels)
-
-        for _pi, _sk in enumerate(_strategy_order):
-            with _plan_tabs[_pi]:
-                _sv = _sp["strategies"].get(_sk, {})
-                st.caption(_sv.get("description", ""))
-
-                _plan_rows = []
-                for _wk in _sv.get("season_plan", []):
-                    _type_badges = {
-                        "Major": "🏆 Major", "Signature": "⭐ Signature",
-                        "Playoff": "🔥 Playoff", "Standard": "Standard",
-                        "Team": "👥 Team",
-                    }
-                    _t_label = _type_badges.get(_wk["type"], _wk["type"])
-                    _25_picks, _25_earned = _get_2025(_wk["tournament"])
-                    if _wk.get("skipped"):
-                        _plan_rows.append({
-                            "Wk": _wk["week"],
-                            "Tournament": _wk["tournament"],
-                            "Type": _t_label,
-                            "Pick 1": "—",
-                            "Pick 2": "—",
-                            "Pick 3": "— (skipped)",
-                            "2025 Picks": _25_picks,
-                            "2025 Earned": _25_earned,
-                        })
-                    else:
-                        _pks = _wk.get("picks", [])
-                        _plan_rows.append({
-                            "Wk": _wk["week"],
-                            "Tournament": _wk["tournament"],
-                            "Type": _t_label,
-                            "Pick 1": _pks[0] if len(_pks) > 0 else "—",
-                            "Pick 2": _pks[1] if len(_pks) > 1 else "—",
-                            "Pick 3": _pks[2] if len(_pks) > 2 else "—",
-                            "2025 Picks": _25_picks,
-                            "2025 Earned": _25_earned,
-                        })
-
-                _plan_df = pd.DataFrame(_plan_rows)
-                st.dataframe(
-                    _plan_df, hide_index=True, use_container_width=True,
-                    column_config={"Wk": st.column_config.NumberColumn(width="small")},
-                )
-    else:
-        st.info(
-            "No scenario plan found yet. Click **⟳ Re-run** above to generate "
-            "your season simulation."
-        )
-
-    # ── 2025 Season History ───────────────────────────────────────────────────
+    # ── 2025 Season Review ────────────────────────────────────────────────────
     st.markdown("---")
     st.markdown("### 📚 2025 Season Review")
     st.caption("Reference from last year's winning season — use this to benchmark your 2026 strategy.")
@@ -10339,10 +10168,17 @@ elif page == "🎰 Betting":
                         if not _vb_preds_df.empty:
                             _extra = _vb_preds_df[
                                 [c for c in ["player_name","world_rank","form_trend","top20_prob",
-                                             "cut_prob","dfs_ownership_proj"]
+                                             "cut_prob","dfs_ownership_proj","dk_odds_direction"]
                                  if c in _vb_preds_df.columns]
                             ].copy()
-                            _extra["_pname_norm"] = _extra["player_name"].str.strip().str.lower()
+                            def _flip_name(n):
+                                # "Last, First" → "first last" for matching rec file "First Last"
+                                s = str(n).strip().lower()
+                                if "," in s:
+                                    parts = s.split(",", 1)
+                                    s = f"{parts[1].strip()} {parts[0].strip()}"
+                                return s
+                            _extra["_pname_norm"] = _extra["player_name"].apply(_flip_name)
                             _vb_rec_df["_pname_norm"] = _vb_rec_df["player_name"].str.strip().str.lower()
                             _vb_rec_df = _vb_rec_df.merge(_extra.drop(columns=["player_name"]),
                                                           on="_pname_norm", how="left")
@@ -10361,12 +10197,13 @@ elif page == "🎰 Betting":
                             "outright":"Win","top5":"Top 5","top10":"Top 10","top20":"Top 20",
                             "make_cut":"Make Cut","h2h":"Matchup","h2h_r1":"Matchup R1",
                             "h2h_r2":"Matchup R2","h2h_r3":"Matchup R3","h2h_r4":"Matchup R4",
-                            "group_winner":"Group Winner",
+                            "group_winner":"Group Winner","r2_leader":"Lead After R2",
+                            "nationality_group":"Nationality",
                         }
                         _mkt_opts = ["All"] + [_mkt_labels.get(m, m.title()) for m in _mkts_avail]
                         _mkt_raw   = ["All"] + list(_mkts_avail)
 
-                        _vb_filter_col, _vb_thresh_col, _vb_spacer = st.columns([2, 2, 3])
+                        _vb_filter_col, _vb_thresh_col, _vb_bankroll_col, _vb_spacer = st.columns([2, 2, 2, 1])
                         with _vb_filter_col:
                             _sel_mkt_label = st.selectbox(
                                 "Market", _mkt_opts, key="vb_market_filter"
@@ -10375,6 +10212,72 @@ elif page == "🎰 Betting":
                             _vb_min_edge = st.slider(
                                 "Min Edge (pts)", 0.0, 8.0, 1.5, 0.5, key="vb_edge_thresh"
                             )
+                        with _vb_bankroll_col:
+                            _vb_bankroll = st.number_input(
+                                "Bankroll ($)", min_value=100, max_value=100000,
+                                value=1000, step=100, key="vb_bankroll",
+                                help="Used to compute Kelly dollar amounts on each bet card"
+                            )
+
+                        # ── Auto-refresh odds control ───────────────────────────
+                        _ar_c1, _ar_c2, _ar_c3, _ar_c4 = st.columns([1, 1, 1, 2])
+                        with _ar_c1:
+                            _auto_on = st.toggle(
+                                "Auto-refresh", value=False, key="vb_auto_on",
+                                help="Automatically refresh odds + recommendations on a timer"
+                            )
+                        with _ar_c2:
+                            _auto_interval = st.selectbox(
+                                "Interval", [15, 30, 60],
+                                format_func=lambda x: f"{x} min",
+                                key="vb_auto_interval",
+                                label_visibility="collapsed",
+                                disabled=not _auto_on,
+                            )
+                        with _ar_c3:
+                            if st.button("Refresh Now", key="vb_refresh_now", use_container_width=True):
+                                with st.spinner("Refreshing odds..."):
+                                    run_scraper(
+                                        ["python3", "scripts/predictions/refresh_odds.py"],
+                                        timeout=120
+                                    )
+                                    run_scraper(
+                                        ["python3", "scripts/models/recommend_bets.py",
+                                         "--tournament-id", prop_tournament_id],
+                                        timeout=120
+                                    )
+                                st.session_state["_vb_auto_last"] = time.time()
+                                st.cache_data.clear()
+                                st.rerun()
+
+                        # Auto-refresh timer logic
+                        if _auto_on:
+                            _now_ts   = time.time()
+                            _last_ts  = st.session_state.get("_vb_auto_last", 0)
+                            _interval_sec = _auto_interval * 60
+                            _remaining    = _interval_sec - (_now_ts - _last_ts)
+
+                            if _remaining <= 0:
+                                with st.spinner("Auto-refreshing odds + bets..."):
+                                    run_scraper(
+                                        ["python3", "scripts/predictions/refresh_odds.py"],
+                                        timeout=120
+                                    )
+                                    run_scraper(
+                                        ["python3", "scripts/models/recommend_bets.py",
+                                         "--tournament-id", prop_tournament_id],
+                                        timeout=120
+                                    )
+                                st.session_state["_vb_auto_last"] = time.time()
+                                st.cache_data.clear()
+                                st.rerun()
+                            else:
+                                _m = int(_remaining // 60)
+                                _s = int(_remaining % 60)
+                                with _ar_c4:
+                                    st.caption(f"Next refresh in {_m}:{_s:02d}")
+                                time.sleep(min(10, _remaining))
+                                st.rerun()
 
                         # ── Build cut-player exclusion set from live leaderboard ──
                         _cut_names: set = set()
@@ -10455,7 +10358,9 @@ elif page == "🎰 Betting":
                             "h2h_r2":       "#e67e22",
                             "h2h_r3":       "#e67e22",
                             "h2h_r4":       "#e67e22",
-                            "group_winner": "#e74c3c",
+                            "group_winner":      "#e74c3c",
+                            "r2_leader":         "#16a085",
+                            "nationality_group": "#8e44ad",
                         }
                         _CONF_BADGE = {
                             (0.80, 2.0):  ("HIGH",     "#00c44f"),
@@ -10528,26 +10433,70 @@ elif page == "🎰 Betting":
                                         _dfs_own = _row.get("dfs_ownership_proj")
                                         _dfs_str = f"{float(_dfs_own):.1f}%" if pd.notna(_dfs_own) else "—"
 
+                                        # DK movement direction arrow
+                                        _dk_dir = str(_row.get("dk_odds_direction", "") or "")
+                                        if _dk_dir == "UP":
+                                            _dir_arrow = "▲"; _dir_color = "#00c44f"
+                                        elif _dk_dir == "DOWN":
+                                            _dir_arrow = "▼"; _dir_color = "#e74c3c"
+                                        else:
+                                            _dir_arrow = "→"; _dir_color = "#7f8c8d"
+
+                                        # Group members (H2H / 3-ball / group bets)
+                                        _group_members = str(_row.get("group_members", "") or "").strip()
+                                        _group_members_html = ""
+                                        if _group_members and _mkt in ("h2h","h2h_r1","h2h_r2","h2h_r3","h2h_r4","group_winner","nationality_group"):
+                                            # Replace pipe separators with middle dots to prevent
+                                            # Streamlit's markdown parser from treating them as table columns
+                                            _gm_display = _group_members.replace(" | ", " &middot; ")
+                                            _group_members_html = (
+                                                f'<div style="margin-top:5px;font-size:0.72em;color:#8a9bbf;'
+                                                f'background:rgba(255,255,255,0.04);padding:3px 7px;border-radius:4px;">'
+                                                f'{_gm_display}</div>'
+                                            )
+
+                                        # Corroboration badge
+                                        _corr_score = int(_row.get("corroboration_score", 0) or 0)
+                                        _corroborated = bool(_row.get("corroborated", False))
+                                        _corr_badge = ""
+                                        if _corroborated and _corr_score >= 2:
+                                            _corr_badge = (
+                                                f'<span style="font-size:0.65em;font-weight:700;color:#f39c12;'
+                                                f'background:rgba(243,156,18,0.15);padding:2px 6px;border-radius:4px;'
+                                                f'margin-left:6px;">★ {_corr_score} markets</span>'
+                                            )
+
+                                        # Kelly stake
+                                        _kelly_f = pd.to_numeric(_row.get("kelly_fraction"), errors="coerce")
+                                        if pd.notna(_kelly_f) and _kelly_f > 0:
+                                            _kelly_dollar = _kelly_f * _vb_bankroll
+                                            _kelly_str = f"{_kelly_f*100:.1f}% · ${_kelly_dollar:.0f}"
+                                        else:
+                                            _kelly_str = "—"
+
                                         # Edge bar (0–10 pt scale)
                                         _bar_pct = min(int(_edge / 10 * 100), 100)
 
-                                        st.markdown(f"""
+                                        _card_html = re.sub(r'\n[ \t]*\n', '\n', f"""
 <div style="background:#0d1a30;border-left:4px solid {_border};border-radius:8px;
             padding:14px 16px;margin-bottom:4px;">
   <div style="display:flex;justify-content:space-between;align-items:flex-start;">
     <div>
       <span style="font-size:0.72em;font-weight:600;color:{_border};text-transform:uppercase;
-                   letter-spacing:.06em;">{_mkt_lbl}</span>
+                   letter-spacing:.06em;">{_mkt_lbl}</span>{_corr_badge}
       <div style="font-size:1.1em;font-weight:700;color:#dde6f5;margin-top:2px;">{_player}</div>
       <div style="font-size:0.75em;color:#7f8c8d;margin-top:1px;">{_rank_str}{"  ·  " if _rank_str and _form_str else ""}{_form_str}</div>
+      {_group_members_html}
     </div>
     <div style="text-align:right;">
-      <div style="font-size:1.6em;font-weight:800;color:{_border};line-height:1;">{_odds_str}</div>
+      <div style="font-size:1.6em;font-weight:800;color:{_border};line-height:1;">
+        {_odds_str} <span style="font-size:0.55em;color:{_dir_color};vertical-align:middle;">{_dir_arrow}</span>
+      </div>
       <span style="font-size:0.68em;font-weight:700;color:{_conf_color};background:rgba(255,255,255,.07);
                    padding:2px 6px;border-radius:4px;">{_conf_lbl}</span>
     </div>
   </div>
-  <div style="margin-top:10px;display:flex;gap:18px;">
+  <div style="margin-top:10px;display:flex;gap:18px;flex-wrap:wrap;">
     <div>
       <div style="font-size:0.68em;color:#7f8c8d;">MODEL</div>
       <div style="font-size:0.92em;font-weight:600;color:#dde6f5;">{_model_p:.1f}%</div>
@@ -10565,6 +10514,10 @@ elif page == "🎰 Betting":
       <div style="font-size:0.92em;font-weight:700;color:#00c44f;">${_ev:.2f}</div>
     </div>
     <div>
+      <div style="font-size:0.68em;color:#7f8c8d;">KELLY (½K)</div>
+      <div style="font-size:0.92em;font-weight:600;color:#f39c12;">{_kelly_str}</div>
+    </div>
+    <div>
       <div style="font-size:0.68em;color:#7f8c8d;">DFS OWN</div>
       <div style="font-size:0.92em;font-weight:600;color:#9b9bff;">{_dfs_str}</div>
     </div>
@@ -10574,7 +10527,8 @@ elif page == "🎰 Betting":
   </div>
   {_cut_warn}
 </div>
-""", unsafe_allow_html=True)
+""")
+                                        st.markdown(_card_html, unsafe_allow_html=True)
 
                         # ── Full sortable table ──────────────────────────────
                         if len(_filtered) > 8:
@@ -10588,7 +10542,7 @@ elif page == "🎰 Betting":
                             _tbl_cols = [c for c in [
                                 "market","player_name","odds_american",
                                 "model_prob","book_prob","edge_pts",
-                                "ev_per_1","confidence",
+                                "ev_per_1","kelly_fraction","confidence",
                             ] if c in _filtered.columns]
                             _tbl = _filtered[_tbl_cols].copy()
                             _tbl["market"]       = _tbl["market"].map(_mkt_labels).fillna(_tbl["market"])
@@ -10600,15 +10554,23 @@ elif page == "🎰 Betting":
                             _tbl["edge_pts"]   = _tbl["edge_pts"].round(2)
                             _tbl["ev_per_1"]   = _tbl["ev_per_1"].round(3)
                             _tbl["confidence"] = _tbl["confidence"].round(2)
+                            if "kelly_fraction" in _tbl.columns:
+                                _tbl["kelly_fraction"] = pd.to_numeric(
+                                    _tbl["kelly_fraction"], errors="coerce"
+                                )
+                                _tbl["kelly_fraction"] = _tbl["kelly_fraction"].apply(
+                                    lambda x: f"{x*100:.1f}%" if pd.notna(x) and x > 0 else "—"
+                                )
                             _tbl = _tbl.rename(columns={
-                                "market":       "Market",
-                                "player_name":  "Player",
-                                "odds_american":"Odds",
-                                "model_prob":   "Model%",
-                                "book_prob":    "Market%",
-                                "edge_pts":     "Edge (pts)",
-                                "ev_per_1":     "EV/$1",
-                                "confidence":   "Conf",
+                                "market":         "Market",
+                                "player_name":    "Player",
+                                "odds_american":  "Odds",
+                                "model_prob":     "Model%",
+                                "book_prob":      "Market%",
+                                "edge_pts":       "Edge (pts)",
+                                "ev_per_1":       "EV/$1",
+                                "kelly_fraction": "Kelly (½K)",
+                                "confidence":     "Conf",
                             })
                             st.dataframe(_tbl, hide_index=True, use_container_width=True)
 

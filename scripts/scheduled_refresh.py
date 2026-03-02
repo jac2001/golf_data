@@ -78,6 +78,8 @@ STEP_TIMEOUTS = {
     "DraftKings Odds": 360,
     "PGA Odds": 300,
     "Predictions": 900,
+    "Refresh Odds": 120,
+    "Recommend Bets": 120,
 }
 
 
@@ -341,6 +343,10 @@ def run_live_refresh(dry_run: bool = False):
                                           "--max-age-hours", "0.5",
                                           "--fetch-profile", "fast",
                                           "--no-snapshot"]))
+        tasks.append(("Refresh Odds", ["python3", "scripts/predictions/refresh_odds.py",
+                                       "--tournament-id", tournament_id]))
+        tasks.append(("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
+                                         "--tournament-id", tournament_id]))
 
     results = []
     for desc, cmd in tasks:
@@ -348,7 +354,8 @@ def run_live_refresh(dry_run: bool = False):
             log(f"[DRY RUN] Would run: {desc}")
             results.append((desc, True))
         else:
-            success = run_command(cmd, desc, timeout=120)
+            timeout = step_timeout(desc, 120)
+            success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
 
     return results
@@ -361,7 +368,7 @@ def run_record_results(dry_run: bool = False):
     log("=" * 60)
 
     tasks = [
-        ("Final Leaderboard", ["python3", "scripts/scrapers/fetch_leaderboard.py"]),
+        ("Final Leaderboard", ["python3", "scripts/scrapers/fetch_live_leaderboard.py"]),
         ("Auto Record Results", ["python3", "scripts/planning/auto_record_results.py"]),
         ("Grade Recommended Bets", ["python3", "scripts/models/grade_recommended_bets.py"]),
     ]

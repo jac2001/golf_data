@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-02-26T07:41:47.308509",
+  "last_updated": "2026-03-01T23:04:47.453069",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -136,7 +136,9 @@
         {
           "tournament": "Cognizant Classic",
           "week": 4,
-          "date": "2026-02-26"
+          "date": "2026-02-26",
+          "result": "T23",
+          "points": 0
         }
       ],
       "remaining_uses": 2,
@@ -148,7 +150,9 @@
         {
           "tournament": "Cognizant Classic",
           "week": 4,
-          "date": "2026-02-26"
+          "date": "2026-02-26",
+          "result": "CUT",
+          "points": 0
         }
       ],
       "remaining_uses": 2,
@@ -160,7 +164,9 @@
         {
           "tournament": "Cognizant Classic",
           "week": 4,
-          "date": "2026-02-26"
+          "date": "2026-02-26",
+          "result": "T6",
+          "points": 0
         }
       ],
       "remaining_uses": 2,

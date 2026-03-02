@@ -1272,7 +1272,8 @@ Examples:
                                 schedule_path=Path(args.schedule_path))
         if row:
             if args.purse is None or args.use_schedule:
-                args.purse = int(row.get("purse") or 0)
+                _purse_raw = str(row.get("purse") or "0").replace("$", "").replace(",", "").strip()
+                args.purse = int(float(_purse_raw)) if _purse_raw else 0
             if args.use_schedule and row.get("tournament_type"):
                 args.tournament_type = str(row.get("tournament_type")).title()
             if args.use_schedule and row.get("tournament_id") and not args.pga_id:
