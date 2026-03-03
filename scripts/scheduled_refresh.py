@@ -218,7 +218,7 @@ def run_tuesday_morning(dry_run: bool = False):
         ("Course Info", ["python3", "scripts/scrapers/fetch_course_characteristics.py",
                          "--tournament-id", tournament_id, "--profile"]),
         ("Power Rankings", ["python3", "scripts/scrapers/fetch_power_rankings.py",
-                            "--slug", power_slug or slug.replace("_", "-"), "--allow-fail"]),
+                            "--slug", power_slug or tournament_name.lower().replace(" ", "-"), "--allow-fail"]),
         ("Betting Profiles", ["python3", "scripts/scrapers/fetch_betting_profiles.py",
                               "--tournament-id", tournament_id, "--field", field_path]),
         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
@@ -388,6 +388,49 @@ def run_record_results(dry_run: bool = False):
     return results
 
 
+def sync_leaderboard_to_db(tid: str, year: int) -> int:
+    """Upsert leaderboard rows for a tournament from CSV into DuckDB.
+
+    Returns the number of rows upserted (0 on failure or no data).
+    """
+    hist_path = DATA_DIR / "historical" / f"leaderboards_{year}.csv"
+    if not hist_path.exists():
+        log(f"  Leaderboard CSV not found: {hist_path}")
+        return 0
+
+    try:
+        import duckdb
+        df = pd.read_csv(hist_path)
+        rows = df[df["tournament_id"] == tid].copy()
+        if rows.empty:
+            log(f"  No rows for {tid} in CSV — skipping DB sync")
+            return 0
+
+        # Coerce types to match DB schema
+        rows["player_id"] = rows["player_id"].astype(str)
+        rows["total_score"] = pd.to_numeric(rows["total_score"], errors="coerce")
+        rows["to_par"] = rows["to_par"].astype(str).replace("nan", None)
+        rows["earnings"] = rows["earnings"].astype(str).replace("nan", None)
+        rows["rounds_played"] = pd.to_numeric(rows["rounds_played"], errors="coerce").fillna(0).astype(int)
+
+        db_path = PROJECT_ROOT / "data" / "golf_data.db"
+        con = duckdb.connect(str(db_path))
+        con.execute(f"DELETE FROM leaderboards WHERE tournament_id = '{tid}'")
+        con.execute("""
+            INSERT INTO leaderboards
+                (tournament_id, tournament_name, year, player_id, player_name,
+                 position, total_score, to_par, earnings, rounds_played, fedex_points)
+            SELECT tournament_id, tournament_name, year, player_id, player_name,
+                   position, total_score, to_par, earnings, rounds_played, fedex_points
+            FROM rows
+        """)
+        con.close()
+        return len(rows)
+    except Exception as e:
+        log(f"  DB sync failed: {e}")
+        return 0
+
+
 def is_tournament_official(tid: str) -> bool:
     """Return True if the most recent leaderboard meta marks the tournament as Official."""
     meta = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
@@ -493,12 +536,15 @@ def run_post_tournament_refresh(dry_run: bool = False):
     else:
         if dry_run:
             log(f"[DRY RUN] Would append leaderboard for {tid} → leaderboards_{year}.csv")
+            log(f"[DRY RUN] Would sync {tid} leaderboard to DuckDB")
         else:
             n = append_leaderboard_to_historical(tid, name, year)
             log(f"  Appended {n} rows to leaderboards_{year}.csv")
+            n_db = sync_leaderboard_to_db(tid, year)
+            log(f"  Synced {n_db} rows to DuckDB leaderboards table")
             sentinel.touch()
 
-    # Steps 5-9: remaining scrapers (idempotent by design)
+    # Steps 5-10: remaining scrapers (idempotent by design)
     tasks = [
         ("Tournament SG Stats", ["python3", "scripts/scrapers/fetch_tournament_stats.py",
                                   "--year", str(year), "--refresh-latest", "3"]),
@@ -506,6 +552,8 @@ def run_post_tournament_refresh(dry_run: bool = False):
         ("World Rankings", ["python3", "scripts/scrapers/fetch_world_rankings.py"]),
         ("Record Results", ["python3", "scripts/planning/auto_record_results.py"]),
         ("Grade Bets", ["python3", "scripts/models/grade_recommended_bets.py"]),
+        ("CLV Tracking", ["python3", "scripts/validation/track_clv.py",
+                          "--tournament-id", tid, "--tournament-name", name]),
     ]
 
     results = []
