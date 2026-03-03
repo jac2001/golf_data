@@ -760,5 +760,167 @@
     ],
     "success_count": 3,
     "total_count": 4
+  },
+  {
+    "timestamp": "2026-03-03T07:12:25.586612",
+    "schedule": "tuesday-morning",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Field",
+        "success": false
+      },
+      {
+        "task": "Course Info",
+        "success": true
+      },
+      {
+        "task": "Power Rankings",
+        "success": false
+      },
+      {
+        "task": "Betting Profiles",
+        "success": true
+      },
+      {
+        "task": "PGA Odds",
+        "success": false
+      },
+      {
+        "task": "Predictions",
+        "success": true
+      }
+    ],
+    "success_count": 3,
+    "total_count": 6
+  },
+  {
+    "timestamp": "2026-03-03T07:35:07.075607",
+    "schedule": "post-tournament",
+    "dry_run": true,
+    "results": [
+      {
+        "task": "Tournament SG Stats",
+        "success": true
+      },
+      {
+        "task": "Form Stats",
+        "success": true
+      },
+      {
+        "task": "World Rankings",
+        "success": true
+      },
+      {
+        "task": "Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Bets",
+        "success": true
+      }
+    ],
+    "success_count": 5,
+    "total_count": 5
+  },
+  {
+    "timestamp": "2026-03-03T07:41:08.270174",
+    "schedule": "monday",
+    "dry_run": true,
+    "results": [
+      {
+        "task": "Player Database",
+        "success": true
+      }
+    ],
+    "success_count": 1,
+    "total_count": 1
+  },
+  {
+    "timestamp": "2026-03-03T07:41:08.485925",
+    "schedule": "post-tournament",
+    "dry_run": true,
+    "results": [
+      {
+        "task": "Tournament SG Stats",
+        "success": true
+      },
+      {
+        "task": "Form Stats",
+        "success": true
+      },
+      {
+        "task": "World Rankings",
+        "success": true
+      },
+      {
+        "task": "Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Bets",
+        "success": true
+      }
+    ],
+    "success_count": 5,
+    "total_count": 5
+  },
+  {
+    "timestamp": "2026-03-03T07:42:53.295172",
+    "schedule": "post-tournament",
+    "dry_run": true,
+    "results": [
+      {
+        "task": "Tournament SG Stats",
+        "success": true
+      },
+      {
+        "task": "Form Stats",
+        "success": true
+      },
+      {
+        "task": "World Rankings",
+        "success": true
+      },
+      {
+        "task": "Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Bets",
+        "success": true
+      }
+    ],
+    "success_count": 5,
+    "total_count": 5
+  },
+  {
+    "timestamp": "2026-03-03T07:45:26.433412",
+    "schedule": "post-tournament",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Tournament SG Stats",
+        "success": true
+      },
+      {
+        "task": "Form Stats",
+        "success": true
+      },
+      {
+        "task": "World Rankings",
+        "success": true
+      },
+      {
+        "task": "Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Bets",
+        "success": true
+      }
+    ],
+    "success_count": 5,
+    "total_count": 5
   }
 ]

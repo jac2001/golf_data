@@ -7,7 +7,7 @@ Automatically runs the appropriate scrapers based on day/time.
 Can be run via cron, launchd, or manually.
 
 Schedule:
-- Monday 6:00 AM: Post-tournament refresh (OWGR, form stats, tournament SG stats, player database)
+- Monday 6:00 AM: Player database update (OWGR/form stats/SG stats handled by post-tournament)
 - Tuesday 6:00 AM: Tournament prep (field, course info, betting profiles, predictions)
 - Tuesday 6:00 PM: Odds refresh (DK, PGA odds)
 - Wednesday 6:00 AM: Final prep (odds refresh, re-run predictions)
@@ -15,7 +15,9 @@ Schedule:
 - Thursday-Sunday 8:00 AM: Live refresh (leaderboard, live odds)
 - Thursday-Sunday 2:00 PM: Live refresh
 - Thursday-Sunday 8:00 PM: Live refresh
+- Sunday 9:00 PM: Post-tournament refresh (first attempt — checks Official status)
 - Sunday 11:00 PM: Record results
+- Monday 8:00 AM: Post-tournament fallback (if Mac was asleep Sunday)
 
 Usage:
     # Run based on current day/time
@@ -28,6 +30,7 @@ Usage:
     python3 scripts/scheduled_refresh.py --schedule wednesday-morning
     python3 scripts/scheduled_refresh.py --schedule live
     python3 scripts/scheduled_refresh.py --schedule record
+    python3 scripts/scheduled_refresh.py --schedule post-tournament
 
     # Dry run (show what would run)
     python3 scripts/scheduled_refresh.py --dry-run
@@ -161,16 +164,16 @@ def get_last_tournament() -> dict:
 
 
 def run_monday_refresh(dry_run: bool = False):
-    """Post-tournament data refresh."""
+    """Monday-only steps not covered by post-tournament refresh."""
     log("=" * 60)
-    log("MONDAY REFRESH - Post-Tournament")
+    log("MONDAY REFRESH - Player Database")
     log("=" * 60)
+    # World Rankings, Form Stats, and SG Stats are handled by run_post_tournament_refresh()
+    # (post-monday-8am job). This job only runs the player database update, which is
+    # not part of the post-tournament sequence.
 
     tasks = [
-        ("World Rankings (OWGR)", ["python3", "scripts/scrapers/fetch_world_rankings.py"]),
         ("Player Database", ["python3", "scripts/scrapers/fetch_player_database.py"]),
-        ("Form Stats", ["python3", "scripts/scrapers/fetch_form_stats.py", "--year", "2026"]),
-        ("Tournament SG Stats", ["python3", "scripts/scrapers/multi_year_stats_scraper_fixed.py", "--year", "2026", "--refresh-latest", "3"]),
     ]
 
     results = []
@@ -385,6 +388,138 @@ def run_record_results(dry_run: bool = False):
     return results
 
 
+def is_tournament_official(tid: str) -> bool:
+    """Return True if the most recent leaderboard meta marks the tournament as Official."""
+    meta = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
+    if not meta.exists():
+        return False
+    with open(meta) as f:
+        data = json.load(f)
+    return str(data.get("round_status", "")).lower() == "official"
+
+
+def append_leaderboard_to_historical(tid: str, tournament_name: str, year: int) -> int:
+    """Convert live leaderboard CSV to historical rows and append to leaderboards_{year}.csv.
+
+    Returns the number of rows appended (0 if live file missing).
+    """
+    live_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+    hist_path = DATA_DIR / "historical" / f"leaderboards_{year}.csv"
+
+    if not live_path.exists():
+        log(f"  Live leaderboard not found: {live_path}")
+        return 0
+
+    live = pd.read_csv(live_path)
+    rows = []
+    for _, r in live.iterrows():
+        pos = str(r["position"])
+        if pos in ("CUT", "MC"):
+            rounds_played = 2
+            fedex_points = 0.0
+        elif pos == "WD":
+            rounds_played = int(r["current_round"]) if pd.notna(r.get("current_round")) else 1
+            fedex_points = 0.0
+        else:
+            rounds_played = 4
+            fedex_points = float("nan")
+
+        total_score = int(r["total_strokes"]) if pd.notna(r.get("total_strokes")) else None
+        rows.append({
+            "tournament_id": tid,
+            "year": year,
+            "player_id": int(r["player_id"]),
+            "player_name": r["player_name"],
+            "position": pos,
+            "total_score": total_score,
+            "to_par": r.get("total_numeric"),
+            "fedex_points": fedex_points,
+            "earnings": None,
+            "rounds_played": rounds_played,
+            "tournament_name": tournament_name,
+        })
+
+    new_df = pd.DataFrame(rows)
+
+    if hist_path.exists():
+        hist = pd.read_csv(hist_path)
+        # Remove any existing rows for this tournament (idempotent re-run)
+        hist = hist[hist["tournament_id"] != tid]
+        combined = pd.concat([hist, new_df], ignore_index=True)
+    else:
+        combined = new_df
+
+    combined.to_csv(hist_path, index=False)
+    return len(new_df)
+
+
+def run_post_tournament_refresh(dry_run: bool = False):
+    """Full post-tournament sequence: leaderboard append + stats + form + record + grade."""
+    log("=" * 60)
+    log("POST-TOURNAMENT REFRESH")
+    log("=" * 60)
+
+    tournament = get_last_tournament()
+    if not tournament:
+        log("No completed tournament found in schedule!")
+        return []
+
+    tid = str(tournament.get("tournament_id", ""))
+    name = str(tournament.get("tournament_name", ""))
+    year = int(str(tid)[1:5]) if len(tid) >= 5 else datetime.now().year
+
+    log(f"Tournament: {name} (ID: {tid})")
+
+    sentinel = LOGS_DIR / f"post_tournament_{tid}.done"
+
+    # Step 1: fetch leaderboard to get fresh meta for official check
+    if dry_run:
+        log(f"[DRY RUN] Would run: Final Leaderboard")
+    else:
+        run_command(
+            ["python3", "scripts/scrapers/fetch_live_leaderboard.py", "--tournament-id", tid],
+            "Final Leaderboard",
+            timeout=120,
+        )
+
+    # Step 2: official status check
+    if not dry_run and not is_tournament_official(tid):
+        log(f"  {tid} not yet official — will retry next scheduled run")
+        return [("Official Check", False)]
+
+    # Step 3+4: append leaderboard to historical + write sentinel (idempotent)
+    if sentinel.exists():
+        log(f"  Leaderboard already appended for {tid} (sentinel exists)")
+    else:
+        if dry_run:
+            log(f"[DRY RUN] Would append leaderboard for {tid} → leaderboards_{year}.csv")
+        else:
+            n = append_leaderboard_to_historical(tid, name, year)
+            log(f"  Appended {n} rows to leaderboards_{year}.csv")
+            sentinel.touch()
+
+    # Steps 5-9: remaining scrapers (idempotent by design)
+    tasks = [
+        ("Tournament SG Stats", ["python3", "scripts/scrapers/fetch_tournament_stats.py",
+                                  "--year", str(year), "--refresh-latest", "3"]),
+        ("Form Stats", ["python3", "scripts/scrapers/fetch_form_stats.py", "--year", str(year)]),
+        ("World Rankings", ["python3", "scripts/scrapers/fetch_world_rankings.py"]),
+        ("Record Results", ["python3", "scripts/planning/auto_record_results.py"]),
+        ("Grade Bets", ["python3", "scripts/models/grade_recommended_bets.py"]),
+    ]
+
+    results = []
+    for desc, cmd in tasks:
+        if dry_run:
+            log(f"[DRY RUN] Would run: {desc}")
+            results.append((desc, True))
+        else:
+            success = run_command(cmd, desc, timeout=step_timeout(desc, 300))
+            results.append((desc, success))
+
+    return results
+
+
 def determine_schedule() -> str:
     """Determine which schedule to run based on current day/time."""
     now = datetime.now()
@@ -408,6 +543,8 @@ def determine_schedule() -> str:
     elif day == "sunday":
         if hour >= 22:
             return "record"
+        elif hour >= 21:
+            return "post-tournament"
         else:
             return "live"
 
@@ -419,7 +556,7 @@ def main():
     parser.add_argument("--schedule", choices=[
         "monday", "tuesday-morning", "tuesday-evening",
         "wednesday-morning", "wednesday-evening",
-        "live", "record", "auto"
+        "live", "record", "post-tournament", "auto"
     ], default="auto", help="Which schedule to run (default: auto-detect)")
     parser.add_argument("--dry-run", action="store_true", help="Show what would run without executing")
     args = parser.parse_args()
@@ -448,6 +585,8 @@ def main():
         results = run_live_refresh(args.dry_run)
     elif schedule == "record":
         results = run_record_results(args.dry_run)
+    elif schedule == "post-tournament":
+        results = run_post_tournament_refresh(args.dry_run)
     else:
         log("No schedule to run.")
         return

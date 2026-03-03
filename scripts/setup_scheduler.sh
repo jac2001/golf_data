@@ -125,8 +125,14 @@ install_jobs() {
         create_plist "live-${day_name}-8pm" "live" 20 0 $day
     done
 
+    # Sunday 9 PM - Post-tournament refresh (first attempt)
+    create_plist "post-sunday-9pm" "post-tournament" 21 0 0
+
     # Sunday 11 PM - Record results
     create_plist "record" "record" 23 0 0
+
+    # Monday 8 AM - Post-tournament fallback (if Mac was asleep Sunday)
+    create_plist "post-monday-8am" "post-tournament" 8 0 1
 
     echo ""
     echo "Loading jobs..."
