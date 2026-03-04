@@ -204,8 +204,6 @@ SCORE_FEATURES = [
     "hist_wins", "hist_top5s", "hist_top10s", "hist_cut_rate", "hist_missed_cuts",
     "has_won_here", "has_course_history", "has_made_cut_here",
     "venue_avg_finish", "venue_finish_std",
-    "field_avg_rank", "field_median_rank",
-    "field_avg_season_sg_arg", "field_avg_predictive_sg_weighted",
     "form_trend", "finish_consistency", "recent_top10s", "recent_top5s",
     "recent_cuts_pct", "recent_birdie_avg", "recent_scoring_avg",
     "dg_fit_ott", "dg_fit_app", "dg_fit_arg", "dg_fit_putt",
@@ -2450,8 +2448,19 @@ def make_predictions(features_df, models):
         _sf = models.get('score_features') or SCORE_FEATURES
         _sf = [f for f in _sf if f in features_df.columns]
         _Xs = features_df[_sf].apply(pd.to_numeric, errors='coerce').fillna(0).values
-        features_df['projected_score'] = models['score'].predict(_Xs).round(1)
-        features_df['score_rank'] = features_df['projected_score'].rank(method='min').astype(int)
+        # Model predicts score relative to field average (score_vs_field target).
+        # Add field average scoring to convert back to an absolute to_par estimate.
+        # field_avg_offset: mean of recent_scoring_avg across field, centered on par (0).
+        # If recent_scoring_avg unavailable, offset = 0 (display relative score only).
+        _relative = models['score'].predict(_Xs)
+        if 'recent_scoring_avg' in features_df.columns:
+            _field_scoring = pd.to_numeric(features_df['recent_scoring_avg'], errors='coerce')
+            _field_offset = float(_field_scoring.median() - 72)  # rough par-based centering
+        else:
+            _field_offset = 0.0
+        features_df['projected_score'] = (_relative + _field_offset).round(1)
+        features_df['projected_score_vs_field'] = _relative.round(2)
+        features_df['score_rank'] = features_df['projected_score_vs_field'].rank(method='min').astype(int)
 
     return features_df
 

@@ -22,8 +22,6 @@ SCORE_FEATURES = [
     "hist_wins", "hist_top5s", "hist_top10s", "hist_cut_rate", "hist_missed_cuts",
     "has_won_here", "has_course_history", "has_made_cut_here",
     "venue_avg_finish", "venue_finish_std",
-    "field_avg_rank", "field_median_rank",
-    "field_avg_season_sg_arg", "field_avg_predictive_sg_weighted",
     "form_trend", "finish_consistency", "recent_top10s", "recent_top5s",
     "recent_cuts_pct", "recent_birdie_avg", "recent_scoring_avg",
     "dg_fit_ott", "dg_fit_app", "dg_fit_arg", "dg_fit_putt",
@@ -64,8 +62,14 @@ def main():
     print(f"  After dropping NaN to_par: {len(df)}")
 
     # Train/test split (2025 holdout, same as classification models)
-    train = df[df["year"].astype(int) <= 2024]
-    test  = df[df["year"].astype(int) == 2025]
+    field_avg = +(
+        df.groupby(["tournament_id", "year"])['to_par_num']
+        .transform('mean')
+    )
+    df['score_vs_field'] = df['to_par_num'] - field_avg
+    train = df[df['year'].astype(int) < 2024].copy()
+    test  = df[df['year'].astype(int) == 2025].copy()
+    
     print(f"  Train rows: {len(train)} | Test rows: {len(test)}")
 
     # Use only features present in data
@@ -75,10 +79,8 @@ def main():
         print(f"  Missing features (will skip): {missing}")
     print(f"  Using {len(feats)} features")
 
-    X_train = train[feats].fillna(0)
-    y_train = train["to_par_num"]
-    X_test  = test[feats].fillna(0)
-    y_test  = test["to_par_num"]
+    X_train, y_train = train[feats].fillna(0), train['score_vs_field']
+    X_test, y_test = test[feats].fillna(0), test['score_vs_field']
 
     # Train
     print("\nTraining RandomForestRegressor...")
@@ -98,9 +100,11 @@ def main():
 
     # Sanity check: distribution of test predictions
     pred_series = pd.Series(preds_test)
-    print(f"\nTest prediction distribution:")
+    print(f"\nTest prediction distribution (relative to field avg):")
     print(f"  min={pred_series.min():.1f}  mean={pred_series.mean():.1f}  "
-          f"max={pred_series.max():.1f}  std={pred_series.std():.1f}")
+            f"max={pred_series.max():.1f}  std={pred_series.std():.1f}")
+    print(f"  (Expected: mean near 0, good players around -3 to -5, tail around +3)")
+
 
     # Feature importance (top 15)
     fi = (pd.Series(model.feature_importances_, index=feats)
