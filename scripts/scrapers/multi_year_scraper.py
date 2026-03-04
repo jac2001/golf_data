@@ -169,7 +169,11 @@ def fetch_tournament_results(tournament_id: str, year: int) -> pd.DataFrame:
 
     rows = []
     for p in tpr["players"]:
-        rows.append({
+        rounds = p.get("rounds", [])
+        # Extract per-round scores from the rounds array (already in API response).
+        # score = stroke total for that round, parRelativeScore = to-par for that round.
+        # Pad with None for players who didn't complete all 4 rounds (MC, WD, etc.).
+        row = {
             "tournament_id": tournament_id,
             "year": year,
             "player_id": p["player"]["id"],
@@ -179,8 +183,17 @@ def fetch_tournament_results(tournament_id: str, year: int) -> pd.DataFrame:
             "to_par": p["parRelativeScore"],
             "fedex_points": p["additionalData"][0] if len(p.get("additionalData", [])) > 0 else None,
             "earnings": p["additionalData"][1] if len(p.get("additionalData", [])) > 1 else None,
-            "rounds_played": len(p.get("rounds", []))
-        })
+            "rounds_played": len(rounds),
+            "r1_score": rounds[0]["score"] if len(rounds) > 0 else None,
+            "r2_score": rounds[1]["score"] if len(rounds) > 1 else None,
+            "r3_score": rounds[2]["score"] if len(rounds) > 2 else None,
+            "r4_score": rounds[3]["score"] if len(rounds) > 3 else None,
+            "r1_to_par": rounds[0]["parRelativeScore"] if len(rounds) > 0 else None,
+            "r2_to_par": rounds[1]["parRelativeScore"] if len(rounds) > 1 else None,
+            "r3_to_par": rounds[2]["parRelativeScore"] if len(rounds) > 2 else None,
+            "r4_to_par": rounds[3]["parRelativeScore"] if len(rounds) > 3 else None,
+        }
+        rows.append(row)
 
     return pd.DataFrame(rows)
 
