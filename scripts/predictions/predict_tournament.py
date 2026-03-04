@@ -2374,6 +2374,28 @@ def fill_missing_values(features_df, stats_2025, master_df):
 
 # Step 8: Make Predictions
 
+def _apply_score_model(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
+    """Apply optional score regression model to add projected_score columns."""
+    if 'score' not in models:
+        return features_df
+    sf: list = models.get('score_features') or SCORE_FEATURES
+    sf = [f for f in sf if f in features_df.columns]
+    Xs = features_df[sf].apply(pd.to_numeric, errors='coerce').fillna(0).values
+    # Model predicts score relative to field average (score_vs_field target).
+    # Add field average scoring to convert back to an absolute to_par estimate.
+    # If recent_scoring_avg unavailable, offset = 0 (display relative score only).
+    relative = models['score'].predict(Xs)
+    if 'recent_scoring_avg' in features_df.columns:
+        field_scoring = pd.to_numeric(features_df['recent_scoring_avg'], errors='coerce')
+        field_offset = float(field_scoring.median() - 72)  # stroke avg - par = per-round to_par proxy
+    else:
+        field_offset = 0.0
+    features_df['projected_score'] = (relative + field_offset).round(1)
+    features_df['projected_score_vs_field'] = relative.round(2)
+    features_df['score_rank'] = features_df['projected_score_vs_field'].rank(method='min').astype(int)
+    return features_df
+
+
 def make_predictions(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
     """
     Generate win/top5/top10 probabilities
@@ -2443,24 +2465,8 @@ def make_predictions(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
         X = _prepare_matrix(features_df, model_cols)
         features_df[out_col] = models[model_key].predict_proba(X)[:, 1]
 
-    # Score regression model (optional — only runs if score_model_final.pkl exists)
-    if 'score' in models:
-        _sf = models.get('score_features') or SCORE_FEATURES
-        _sf = [f for f in _sf if f in features_df.columns]
-        _Xs = features_df[_sf].apply(pd.to_numeric, errors='coerce').fillna(0).values
-        # Model predicts score relative to field average (score_vs_field target).
-        # Add field average scoring to convert back to an absolute to_par estimate.
-        # field_avg_offset: mean of recent_scoring_avg across field, centered on par (0).
-        # If recent_scoring_avg unavailable, offset = 0 (display relative score only).
-        _relative = models['score'].predict(_Xs)
-        if 'recent_scoring_avg' in features_df.columns:
-            _field_scoring = pd.to_numeric(features_df['recent_scoring_avg'], errors='coerce')
-            _field_offset = float(_field_scoring.median() - 72)  # rough par-based centering
-        else:
-            _field_offset = 0.0
-        features_df['projected_score'] = (_relative + _field_offset).round(1)
-        features_df['projected_score_vs_field'] = _relative.round(2)
-        features_df['score_rank'] = features_df['projected_score_vs_field'].rank(method='min').astype(int)
+    # Score regression model — delegated to top-level helper to avoid Pylance scope issues
+    features_df = _apply_score_model(features_df, models)
 
     return features_df
 
