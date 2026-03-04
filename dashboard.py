@@ -7698,15 +7698,19 @@ if page == "🏆 This Week":
                             _card_cls, _badge_cls, _badge_txt = "use-card", "badge-use", "✅ USE"
 
                         # Projected score stat box (only when model has run)
+                        # Shows score vs field average (e.g. -5.8 = 5.8 strokes better than avg finisher)
                         _proj_score_html = ""
-                        if _has_proj_score and pd.notna(_pr.get("projected_score")):
-                            _ps_v = float(_pr["projected_score"])
+                        _has_proj_vsf = "projected_score_vs_field" in _pool_df.columns
+                        _ps_col = "projected_score_vs_field" if _has_proj_vsf else ("projected_score" if _has_proj_score else None)
+                        if _ps_col and pd.notna(_pr.get(_ps_col)):
+                            _ps_v = float(_pr[_ps_col])
                             _ps_str = f"E" if _ps_v == 0 else (f"+{_ps_v:.1f}" if _ps_v > 0 else f"{_ps_v:.1f}")
                             _ps_color = "#ff6b6b" if _ps_v > 0 else ("#00c44f" if _ps_v < 0 else "#aaaaaa")
+                            _ps_label = "vs FLD" if _has_proj_vsf else "PROJ"
                             _proj_score_html = f"""
-      <div style="text-align:right; min-width:50px;">
+      <div style="text-align:right; min-width:52px;">
         <div class="pc-stat" style="color:{_ps_color};">{_ps_str}</div>
-        <div class="pc-stat-label">PROJ</div>
+        <div class="pc-stat-label">{_ps_label}</div>
       </div>"""
 
                         _pool_html.append(f"""
@@ -10028,6 +10032,13 @@ elif page == "👤 Players":
                     _me1 = _hg(_r1,"model_vs_vegas_edge"); _me2 = _hg(_r2,"model_vs_vegas_edge")
                     if _me1 is not None or _me2 is not None:
                         _rows += _h2h_row("Model vs Market Edge", (_me1 or 0)*100, (_me2 or 0)*100, fmt="+.1f", suffix=" pp")
+
+                    _ps1 = _hg(_r1, "projected_score_vs_field"); _ps2 = _hg(_r2, "projected_score_vs_field")
+                    if _ps1 is not None or _ps2 is not None:
+                        _rows += _h2h_sec("Score Projection")
+                        _rows += _h2h_row("vs Field Avg", _ps1, _ps2, higher_better=False, fmt="+.2f")
+                        _rows += _h2h_row("Projected Score", _hg(_r1,"projected_score"), _hg(_r2,"projected_score"), higher_better=False, fmt="+.1f")
+                        _rows += _h2h_row("Score Rank", _hg(_r1,"score_rank"), _hg(_r2,"score_rank"), higher_better=False, fmt=".0f")
 
                     st.markdown(f"""
                     <div style="background:#0d1a30;border-radius:12px;overflow:hidden;border:1px solid #1a2e4a;">

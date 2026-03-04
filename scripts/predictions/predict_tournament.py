@@ -2374,7 +2374,7 @@ def fill_missing_values(features_df, stats_2025, master_df):
 
 # Step 8: Make Predictions
 
-def make_predictions(features_df, models):
+def make_predictions(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
     """
     Generate win/top5/top10 probabilities
 
