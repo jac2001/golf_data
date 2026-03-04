@@ -15,9 +15,10 @@ venv/
 # Claude
 .claude/
 
-# Large data files (optional - uncomment if you want to exclude)
+# Large data files
 # data/historical/*.csv
 # data/models/*.pkl
+data/golf_data.db
 
 # Temp files
 *.tmp
