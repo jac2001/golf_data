@@ -129,6 +129,8 @@ def write_data_dictionary(predictions_df: pd.DataFrame, output_path: Path):
         "win_prob": "Predicted win probability (0-1)",
         "top5_prob": "Predicted top-5 probability (0-1)",
         "top10_prob": "Predicted top-10 probability (0-1)",
+        "projected_score": "Regression model: predicted 4-round to-par total (e.g. -12.5)",
+        "score_rank": "Field rank by projected_score (1 = best/lowest projected score)",
         "expected_value": "Expected earnings value based on purse + probabilities (USD)",
         # Cut probability
         "cut_prob": "Probability of making the cut (0-1, higher = safer)",
@@ -190,13 +192,41 @@ def get_current_world_rankings() -> pd.DataFrame:
    
 
 
+SCORE_FEATURES = [
+    "season_sg_total", "season_sg_ott", "season_sg_app", "season_sg_arg",
+    "season_sg_t2g", "season_sg_putt", "season_sg_arg_vs_field",
+    "season_sg_total_vs_field", "season_sg_ott_vs_field",
+    "season_sg_app_vs_field", "season_sg_putt_vs_field",
+    "season_sg_ott_field_pct", "season_sg_app_field_pct", "season_sg_putt_field_pct",
+    "recent_sg_weighted", "recent_sg_trend",
+    "recent_sg_ott_weighted", "recent_sg_app_weighted", "recent_sg_putt_weighted",
+    "hist_times_played", "hist_avg_finish", "hist_best_finish",
+    "hist_wins", "hist_top5s", "hist_top10s", "hist_cut_rate", "hist_missed_cuts",
+    "has_won_here", "has_course_history", "has_made_cut_here",
+    "venue_avg_finish", "venue_finish_std",
+    "field_avg_rank", "field_median_rank",
+    "field_avg_season_sg_arg", "field_avg_predictive_sg_weighted",
+    "form_trend", "finish_consistency", "recent_top10s", "recent_top5s",
+    "recent_cuts_pct", "recent_birdie_avg", "recent_scoring_avg",
+    "dg_fit_ott", "dg_fit_app", "dg_fit_arg", "dg_fit_putt",
+    "dg_fit_total", "predictive_sg_weighted",
+    "world_rank",
+]
+
+
 def load_models():
-    """Load trained win/top5/top10 models"""
+    """Load trained win/top5/top10 models (+ optional score regression model)"""
     models = {
         'win': joblib.load(MODEL_DIR / 'win_model_final.pkl'),
         'top5': joblib.load(MODEL_DIR / 'top5_model_final.pkl'),
         'top10': joblib.load(MODEL_DIR / 'top10_model_final.pkl')
     }
+    _score_path = MODEL_DIR / 'score_model_final.pkl'
+    if _score_path.exists():
+        models['score'] = joblib.load(_score_path)
+        _feats_path = MODEL_DIR / 'score_model_features.txt'
+        if _feats_path.exists():
+            models['score_features'] = _feats_path.read_text().splitlines()
     return models
 
 def _load_tournament_stats_from_db(year: int) -> pd.DataFrame:
@@ -824,6 +854,14 @@ def add_course_fit_features(features_df, tournament_name):
     weights = default_weights.copy()
     if not course_weights.empty:
         match = course_weights[course_weights['tournament_name'] == tournament_name]
+        if len(match) == 0:
+            # Substring fallback (same logic as insights section)
+            search_term = tournament_name.lower().replace('the ', '')
+            match = course_weights[
+                course_weights['tournament_name'].str.lower().str.contains(search_term, na=False)
+            ]
+            if len(match) > 0:
+                print(f"    Fuzzy-matched course weights: '{match.iloc[0]['tournament_name']}'")
         if len(match) > 0:
             row = match.iloc[0]
             weights = {
@@ -832,7 +870,8 @@ def add_course_fit_features(features_df, tournament_name):
                 'arg_sg': row['arg_sg'],
                 'putt_sg': row['putt_sg']
             }
-            print(f"    Found course weights for {tournament_name}")
+            if match.iloc[0]['tournament_name'] == tournament_name:
+                print(f"    Found course weights for {tournament_name}")
         else:
             print(f"    Using default weights (tournament '{tournament_name}' not in mapping)")
 
@@ -1267,6 +1306,49 @@ def normalize_venue_name(tournament_name):
         # Genesis
         "GENESIS INVITATIONAL": "THE GENESIS INVITATIONAL",
         "THE GENESIS INVITATIONAL": "THE GENESIS INVITATIONAL",
+        # Arnold Palmer (Bay Hill) — sponsor suffix
+        "ARNOLD PALMER INVITATIONAL": "ARNOLD PALMER INVITATIONAL PRESENTED BY MASTERCARD",
+        "ARNOLD PALMER INVITATIONAL PRESENTED BY MASTERCARD": "ARNOLD PALMER INVITATIONAL PRESENTED BY MASTERCARD",
+        # Cognizant Classic / Honda Classic — SAME COURSE (PGA National)
+        # Map to THE HONDA CLASSIC which has 8 years of data (2016-2023)
+        "HONDA CLASSIC": "THE HONDA CLASSIC",
+        "THE HONDA CLASSIC": "THE HONDA CLASSIC",
+        "COGNIZANT CLASSIC": "THE HONDA CLASSIC",
+        "COGNIZANT CLASSIC IN THE PALM BEACHES": "THE HONDA CLASSIC",
+        # Memorial Tournament (Muirfield Village) — same course, different sponsors
+        "THE MEMORIAL TOURNAMENT": "THE MEMORIAL TOURNAMENT PRESENTED BY NATIONWIDE",
+        "THE MEMORIAL TOURNAMENT PRESENTED BY WORKDAY": "THE MEMORIAL TOURNAMENT PRESENTED BY NATIONWIDE",
+        "THE MEMORIAL TOURNAMENT PRESENTED BY NATIONWIDE": "THE MEMORIAL TOURNAMENT PRESENTED BY NATIONWIDE",
+        # Truist / Wells Fargo (Quail Hollow) — same course
+        "TRUIST CHAMPIONSHIP": "WELLS FARGO CHAMPIONSHIP",
+        "WELLS FARGO CHAMPIONSHIP": "WELLS FARGO CHAMPIONSHIP",
+        # Colonial CC (Dean & Deluca → Fort Worth → Charles Schwab Challenge)
+        "DEAN AND DELUCA INVITATIONAL": "CHARLES SCHWAB CHALLENGE",
+        "FORT WORTH INVITATIONAL": "CHARLES SCHWAB CHALLENGE",
+        "CHARLES SCHWAB CHALLENGE": "CHARLES SCHWAB CHALLENGE",
+        # American Express / PGA West (Desert Classic, CareerBuilder)
+        "CAREERBUILDER CHALLENGE": "THE AMERICAN EXPRESS",
+        "CAREERBUILDER CHALLENGE IN PARTNERSHIP WITH THE CLINTON FOUNDATION": "THE AMERICAN EXPRESS",
+        "DESERT CLASSIC": "THE AMERICAN EXPRESS",
+        # Genesis Invitational (Riviera)
+        "GENESIS OPEN": "THE GENESIS INVITATIONAL",
+        # Sentry / Kapalua — same course
+        "THE SENTRY": "SENTRY TOURNAMENT OF CHAMPIONS",
+        "HYUNDAI TOURNAMENT OF CHAMPIONS": "SENTRY TOURNAMENT OF CHAMPIONS",
+        "SBS TOURNAMENT OF CHAMPIONS": "SENTRY TOURNAMENT OF CHAMPIONS",
+        "SENTRY TOURNAMENT OF CHAMPIONS": "SENTRY TOURNAMENT OF CHAMPIONS",
+        # Shriners (TPC Summerlin) — keep HOSPITALS as canonical (852 rows vs 552)
+        "SHRINERS HOSPITALS FOR CHILDREN OPEN": "SHRINERS HOSPITALS FOR CHILDREN OPEN",
+        "SHRINERS CHILDRENS OPEN": "SHRINERS HOSPITALS FOR CHILDREN OPEN",
+        # Rocket Mortgage / Rocket Classic (Detroit Golf Club)
+        "ROCKET CLASSIC": "ROCKET MORTGAGE CLASSIC",
+        "ROCKET MORTGAGE CLASSIC": "ROCKET MORTGAGE CLASSIC",
+        # Mexico Open (Vidanta Vallarta)
+        "MEXICO OPEN AT VIDANTAWORLD": "MEXICO OPEN AT VIDANTA",
+        "MEXICO OPEN AT VIDANTA": "MEXICO OPEN AT VIDANTA",
+        # Myrtle Beach Classic
+        "ONEFLIGHT MYRTLE BEACH CLASSIC": "MYRTLE BEACH CLASSIC",
+        "MYRTLE BEACH CLASSIC": "MYRTLE BEACH CLASSIC",
     }
     if normalized in alias_map:
         normalized = alias_map[normalized]
@@ -1379,10 +1461,177 @@ def get_tournament_winner_boost(player_id, venue_clean, master_df):
     }
 
 
-# Add this new function after the imports:
- 
-    
-    
+def _parse_pos_num(pos_str) -> float:
+    """Convert position string ('T3', 'MC', 'WD', '1') to a numeric value.
+    Missed cut / withdrawn / disqualified → 999.
+    """
+    if pd.isna(pos_str):
+        return 999.0
+    s = str(pos_str).upper().strip().lstrip("T").lstrip("=")
+    if s in ("MC", "CUT", "MDF", "WD", "DQ", "W/D", "DNS", "RTD", "DSQ"):
+        return 999.0
+    try:
+        return float(s)
+    except ValueError:
+        return 999.0
+
+
+def add_situational_features(
+    features_df: pd.DataFrame,
+    tournament_name: str,
+    master_df: pd.DataFrame,
+    tournament_id: str = None,
+) -> pd.DataFrame:
+    """
+    Add narrative/situational features that capture event-specific context.
+
+    Features added:
+      is_defending_champion  — Won this tournament in the most recent prior year
+      first_start_of_season  — Player has no starts yet in the current season
+      last_start_position    — Numeric finishing position of most recent start (999 = MC/WD)
+      post_top5_last_start   — Most recent start was a top-5 finish (binary)
+      missed_cut_last_start  — Most recent start was a missed cut (binary)
+      consecutive_top10s     — Streak of consecutive top-10 finishes going into this week
+      pre_major_flag         — Next tournament on schedule is a Major (same for all players)
+    """
+    features_df = features_df.copy()
+
+    # ── 1. Current-year leaderboard (for recent-result features) ─────────────
+    current_year = datetime.now().year
+    lb_path = HISTORICAL_DIR / f"leaderboards_{current_year}.csv"
+    if lb_path.exists():
+        lb = pd.read_csv(lb_path)
+        lb["player_id"] = lb["player_id"].astype(str).str.strip()
+        lb["pos_num"] = lb["position"].apply(_parse_pos_num)
+        # Exclude the current tournament only (by exact ID match).
+        # Do NOT use tournament_id < current_id: PGA R-IDs are not assigned
+        # in calendar order (e.g. Cognizant R2026010 played before Arnold Palmer R2026009).
+        if tournament_id and "tournament_id" in lb.columns:
+            lb = lb[lb["tournament_id"] != tournament_id]
+    else:
+        lb = pd.DataFrame()
+
+    # ── 2. Defending champion ─────────────────────────────────────────────────
+    venue_clean = normalize_venue_name(tournament_name)
+    prior_wins = master_df[
+        (master_df["venue_clean"] == venue_clean) &
+        (master_df["position_num"] == 1)
+    ]
+    # Fuzzy fallback: "Arnold Palmer Invitational" won't exactly match
+    # "Arnold Palmer Invitational presented by Mastercard" in master_df
+    if prior_wins.empty:
+        search_term = venue_clean.replace("THE ", "").strip()
+        prior_wins = master_df[
+            master_df["venue_clean"].str.contains(search_term, na=False) &
+            (master_df["position_num"] == 1)
+        ]
+    defending_pid = None
+    if not prior_wins.empty:
+        last_year_won = prior_wins["year"].max()
+        winner_row = prior_wins[prior_wins["year"] == last_year_won].iloc[0]
+        defending_pid = str(int(float(winner_row["player_id"])))
+
+    # ── 3. Pre-major flag (same value for all players this week) ─────────────
+    pre_major_flag = 0
+    schedule_path = DATA_DIR / "raw" / "schedule_2026.csv"
+    if schedule_path.exists() and tournament_id:
+        try:
+            sched = pd.read_csv(schedule_path)
+            future = sched[sched["tournament_id"] > tournament_id].sort_values("tournament_id")
+            if not future.empty:
+                next_type = str(future.iloc[0].get("tournament_type", "")).strip().title()
+                pre_major_flag = 1 if next_type == "Major" else 0
+        except Exception:
+            pass
+
+    # ── 4. Per-player situational features ───────────────────────────────────
+    sit_rows = []
+    for _, row in features_df.iterrows():
+        try:
+            pid = str(int(float(row["player_id"])))
+        except Exception:
+            pid = str(row["player_id"])
+
+        is_defending = 1 if (defending_pid and pid == defending_pid) else 0
+
+        if not lb.empty and "player_id" in lb.columns:
+            player_lb = lb[lb["player_id"] == pid]
+            if "tournament_id" in player_lb.columns:
+                player_lb = player_lb.sort_values("tournament_id")
+            n_starts = len(player_lb)
+        else:
+            player_lb = pd.DataFrame()
+            n_starts = 0
+
+        first_start = 1 if n_starts == 0 else 0
+
+        if n_starts > 0:
+            positions = player_lb["pos_num"].tolist()
+            last_pos = positions[-1]
+            post_top5 = 1 if last_pos <= 5 else 0
+            missed_cut = 1 if last_pos >= 100 else 0
+            # Count consecutive top-10s from the most recent start backwards
+            streak = 0
+            for pos in reversed(positions):
+                if pos <= 10:
+                    streak += 1
+                else:
+                    break
+        else:
+            last_pos = 40.0  # neutral default
+            post_top5 = 0
+            missed_cut = 0
+            streak = 0
+
+        sit_rows.append({
+            "player_id": row["player_id"],
+            "is_defending_champion": is_defending,
+            "first_start_of_season": first_start,
+            "last_start_position": last_pos,
+            "post_top5_last_start": post_top5,
+            "missed_cut_last_start": missed_cut,
+            "consecutive_top10s": streak,
+            "pre_major_flag": pre_major_flag,
+        })
+
+    sit_df = pd.DataFrame(sit_rows)
+    if not sit_df.empty:
+        features_df["player_id"] = features_df["player_id"].astype(str)
+        sit_df["player_id"] = sit_df["player_id"].astype(str)
+        # Drop any columns from features_df that sit_df would also add (avoids _x/_y split)
+        overlap = [c for c in sit_df.columns if c in features_df.columns and c != "player_id"]
+        if overlap:
+            features_df = features_df.drop(columns=overlap)
+        features_df = features_df.merge(sit_df, on="player_id", how="left")
+
+    # Ensure all situational columns exist with safe defaults (guards against merge edge cases)
+    _sit_defaults = {
+        "is_defending_champion": 0,
+        "first_start_of_season": 0,
+        "post_top5_last_start": 0,
+        "missed_cut_last_start": 0,
+        "consecutive_top10s": 0,
+        "pre_major_flag": pre_major_flag,
+        "last_start_position": 40.0,
+    }
+    for col, default in _sit_defaults.items():
+        if col not in features_df.columns:
+            features_df[col] = default
+        else:
+            features_df[col] = features_df[col].fillna(default)
+    for col in ["is_defending_champion", "first_start_of_season", "post_top5_last_start",
+                "missed_cut_last_start", "consecutive_top10s", "pre_major_flag"]:
+        features_df[col] = features_df[col].astype(int)
+
+    n_defending = int(features_df["is_defending_champion"].sum())
+    n_first = int(features_df["first_start_of_season"].sum())
+    n_top5 = int(features_df["post_top5_last_start"].sum())
+    n_streak = int((features_df["consecutive_top10s"] > 0).sum())
+    print(f"    Situational: defending={n_defending}, first_start={n_first}, "
+          f"post_top5={n_top5}, hot_streak>0={n_streak}, pre_major={pre_major_flag}")
+
+    return features_df
+
 
 ### Step 5: Get Venue Difficulty Stats
 
@@ -1531,9 +1780,12 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     # ADD NON-SG TOUR STAT FIELD RANKS (driving dist, GIR, scrambling etc.)
     NON_SG_STATS = {
         '101': ('driving_dist',      False),   # False = higher is better
+        '102': ('driving_acc',       False),
         '103': ('gir_pct',           False),
+        '119': ('one_putt_pct',      False),
         '130': ('scrambling',        False),
         '104': ('putts_per_round',   True),    # True = lower is better
+        '111': ('sand_save',         False),
         '352': ('bogey_avoid',       False),
         '156': ('birdie_avg',        False),
     }
@@ -1581,12 +1833,23 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     # ADD FORM FEATURES (recent performance indicators)
     try:
         # Load latest available form stats
-        # NOTE: form_stats has scoring/birdie stats, tournament_stats has SG stats
-        # form_trend calculation needs SG data, so we use tournament_stats as primary
+        # tournament_stats has SG data (form_trend); form_stats has scoring/birdie/GIR stats
+        # We need both: concat them so get_form_features_for_field can find all stat IDs
         form_year = _latest_year_for("tournament_stats_")
-        form_stats = stats_current.copy()  # Use tournament_stats (has SG data for form_trend)
+        form_stats = stats_current.copy()  # Start with tournament_stats (SG data)
         if form_year:
             print(f"  Using tournament_stats_{form_year}.csv for recent form (has SG data)")
+        # Supplement with form_stats (scoring_avg, birdie_avg, GIR, etc.)
+        _fs_year = _latest_year_for("form_stats_") or form_year
+        if _fs_year:
+            _fs_path = HISTORICAL_DIR / f"form_stats_{_fs_year}.csv"
+            if _fs_path.exists():
+                _fs_extra = pd.read_csv(_fs_path)
+                # Apply same tournament_id cutoff as tournament_stats if needed
+                if tournament_id and 'tournament_id' in _fs_extra.columns:
+                    _fs_extra = _fs_extra[_fs_extra['tournament_id'] < tournament_id].copy()
+                form_stats = pd.concat([form_stats, _fs_extra], ignore_index=True)
+                print(f"  + form_stats_{_fs_year}.csv merged ({len(_fs_extra)} rows, adds scoring/birdie/GIR stats)")
 
         # Load latest available leaderboards
         lb_year = _latest_year_for("leaderboards_") or form_year
@@ -1964,6 +2227,13 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     print("  Adding player course performance features...")
     features_df = add_course_performance_features(features_df, tournament_name)
 
+    # ADD SITUATIONAL / NARRATIVE FEATURES
+    # Defending champion, first start of season, momentum, pre-major flag
+    print("  Adding situational features...")
+    features_df = add_situational_features(
+        features_df, tournament_name, master_df, tournament_id=tournament_id
+    )
+
     print(f"  ✓ Built feature matrix: {features_df.shape}")
     return features_df 
 
@@ -2174,6 +2444,14 @@ def make_predictions(features_df, models):
         model_cols = _resolve_model_feature_cols(models[model_key], fallback_feature_cols)
         X = _prepare_matrix(features_df, model_cols)
         features_df[out_col] = models[model_key].predict_proba(X)[:, 1]
+
+    # Score regression model (optional — only runs if score_model_final.pkl exists)
+    if 'score' in models:
+        _sf = models.get('score_features') or SCORE_FEATURES
+        _sf = [f for f in _sf if f in features_df.columns]
+        _Xs = features_df[_sf].apply(pd.to_numeric, errors='coerce').fillna(0).values
+        features_df['projected_score'] = models['score'].predict(_Xs).round(1)
+        features_df['score_rank'] = features_df['projected_score'].rank(method='min').astype(int)
 
     return features_df
 

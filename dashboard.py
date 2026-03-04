@@ -27,6 +27,7 @@ import plotly.express as px
 import requests
 import re
 import plotly.graph_objects as go
+import unicodedata
 
 from scripts.predictions.refresh_odds import refresh_odds
 
@@ -349,7 +350,7 @@ WORKFLOW_TIMEOUTS = {
     "Power Rankings": 300,
     "Expert Picks": 300,
     "Betting Profiles": 900,
-    "DraftKings Odds": 360,
+    "DraftKings Odds": 45,
     "PGA Odds": 300,
     "Predictions": 900,
 }
@@ -604,10 +605,48 @@ def load_golf_assistant(predictions_path=None):
 @st.cache_data(ttl=60)
 def load_usage_data():
     """Load usage tracker data."""
+    def _coerce_money(value):
+        if value is None:
+            return None
+        text = str(value).strip()
+        if not text or text.lower() == "nan":
+            return None
+        text = text.replace("$", "").replace(",", "")
+        try:
+            return int(round(float(text)))
+        except Exception:
+            return None
+
     usage_file = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
     if usage_file.exists():
         with open(usage_file) as f:
-            return json.load(f)
+            data = json.load(f)
+
+        for player_data in data.get("picks", {}).values():
+            for tournament_use in player_data.get("tournaments_used", []):
+                earnings = _coerce_money(tournament_use.get("earnings", tournament_use.get("points")))
+                tournament_use["earnings"] = earnings
+                tournament_use["points"] = earnings
+            total_earnings = _coerce_money(player_data.get("total_earnings", player_data.get("total_points")))
+            if total_earnings is None:
+                total_earnings = sum((t.get("earnings") or 0) for t in player_data.get("tournaments_used", []))
+            player_data["total_earnings"] = total_earnings
+            player_data["total_points"] = total_earnings
+
+        for lineup in data.get("weekly_lineups", {}).values():
+            earnings = _coerce_money(lineup.get("earnings_earned", lineup.get("points_earned")))
+            lineup["earnings_earned"] = earnings
+            lineup["points_earned"] = earnings
+
+        summary = data.setdefault("summary", {})
+        total_earnings = _coerce_money(summary.get("total_earnings", summary.get("total_points")))
+        if total_earnings is None:
+            total_earnings = sum(
+                (player_data.get("total_earnings") or 0) for player_data in data.get("picks", {}).values()
+            )
+        summary["total_earnings"] = total_earnings
+        summary["total_points"] = total_earnings
+        return data
     return {"picks": {}, "weekly_lineups": {}, "summary": {}}
 
 
@@ -798,7 +837,6 @@ def _position_to_finish_num(position) -> float:
         return float(s)
     except Exception:
         return np.nan
-
 
 @st.cache_data(ttl=1800)
 def load_historical_player_event_results() -> pd.DataFrame:
@@ -1185,43 +1223,6 @@ def _freshness_status(age_hours: float | None) -> str:
     return "Stale"
 
 
-def render_predictions_freshness_panel(
-    selected_tournament: str,
-    selected_tournament_id: str,
-    predictions_path: Path,
-):
-    """Show source-file freshness for predictions-related artifacts."""
-    lineup_bundle, lineup_path = load_lineup_strategies_bundle(
-        preferred_tournament_name=selected_tournament,
-        preferred_tournament_id=selected_tournament_id,
-    )
-    _, expert_path, expert_kind = load_expert_picks_df(selected_tournament_id)
-    _, rec_bets_path = load_recommended_bets_df(selected_tournament_id)
-    _, dk_cards_path = load_dk_content_cards_df(selected_tournament_id)
-
-    rows = []
-    sources = [
-        ("Predictions", Path(predictions_path) if predictions_path else None, "Selected file"),
-        ("Lineup Strategies", lineup_path, f"{len((lineup_bundle or {}).get('profiles', {}))} profiles" if lineup_bundle else "No profiles"),
-        ("Expert Picks", expert_path, expert_kind if expert_kind else "No source"),
-        ("Recommended Bets", rec_bets_path, "Tracked recs"),
-        ("DraftKings Cards", dk_cards_path, "Content cards"),
-    ]
-    for label, path, note in sources:
-        age = _file_age_hours(path)
-        rows.append(
-            {
-                "Source": label,
-                "File": path.name if path is not None and Path(path).exists() else "—",
-                "Updated": _file_updated_label(path),
-                "Age (hrs)": round(float(age), 1) if age is not None else np.nan,
-                "Status": _freshness_status(age),
-                "Notes": note,
-            }
-        )
-
-    st.markdown("### 🕒 Data Freshness")
-    st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
 
 
 def build_player_pick_reason_text(row: pd.Series) -> str:
@@ -1600,7 +1601,10 @@ def _name_key(name: str) -> str:
     """Normalize player name for loose matching across sources."""
     if pd.isna(name):
         return ""
-    cleaned = str(name).replace(",", " ").replace(".", " ").replace("-", " ").lower().strip()
+    cleaned = unicodedata.normalize("NFKD", str(name))
+    cleaned = "".join(ch for ch in cleaned if not unicodedata.combining(ch))
+    cleaned = cleaned.encode("ascii", "ignore").decode("ascii")
+    cleaned = cleaned.replace(",", " ").replace(".", " ").replace("-", " ").lower().strip()
     tokens = [t for t in cleaned.split() if t]
     # Remove common suffixes.
     tokens = [t for t in tokens if t not in {"jr", "sr", "ii", "iii", "iv", "v"}]
@@ -2804,6 +2808,120 @@ def render_tracked_bets_section(tournament_id: str = ""):
     st.dataframe(recent_df.head(12), hide_index=True, use_container_width=True)
 
 
+def render_betting_history_section() -> None:
+    """Season-wide bet performance: hit rate, P&L, ROI by market, tournament breakdown."""
+    st.markdown("### Betting History")
+    st.caption("Season-to-date performance across all graded bets")
+
+    all_results = load_recommended_bet_results_df()  # no tournament filter — all results
+    if all_results.empty:
+        st.info("No settled bets yet this season.")
+        return
+
+    if "outcome_status" in all_results.columns:
+        _status = all_results["outcome_status"].astype(str).str.lower()
+    else:
+        _status = pd.Series(["pending"] * len(all_results), dtype=object)
+    settled = all_results[_status.isin(["won", "lost"])].copy()
+    if settled.empty:
+        st.info("No settled bets yet this season.")
+        return
+
+    settled["outcome_win"] = settled["outcome_status"].astype(str).str.lower().eq("won")
+    settled["pnl_per_1"]   = pd.to_numeric(settled.get("pnl_per_1"), errors="coerce")
+    settled["clv_pts"]     = pd.to_numeric(settled.get("clv_pts"), errors="coerce")
+
+    # ── Season summary metrics ─────────────────────────────────────────────
+    total_pnl = float(settled["pnl_per_1"].sum())
+    hit_rate  = float(settled["outcome_win"].mean() * 100)
+    avg_roi   = float(settled["pnl_per_1"].mean() * 100)
+    clv_vals  = settled["clv_pts"].dropna()
+    avg_clv   = float(clv_vals.mean()) if len(clv_vals) else float("nan")
+
+    m1, m2, m3, m4, m5 = st.columns(5)
+    with m1:
+        st.metric("Settled Bets", len(settled))
+    with m2:
+        st.metric("Hit Rate", f"{hit_rate:.1f}%")
+    with m3:
+        st.metric("Total P&L", f"{total_pnl:+.2f}u", delta=f"{total_pnl:+.2f}u")
+    with m4:
+        st.metric("Avg ROI / Bet", f"{avg_roi:+.1f}%")
+    with m5:
+        st.metric("Avg CLV (pts)", f"{avg_clv:+.2f}" if pd.notna(avg_clv) else "—")
+
+    st.markdown("---")
+
+    # ── Breakdown by market type ───────────────────────────────────────────
+    if "market" in settled.columns:
+        _mkt = (
+            settled.groupby("market")
+            .agg(
+                Bets=("pnl_per_1", "count"),
+                Wins=("outcome_win", "sum"),
+                pnl=("pnl_per_1", "sum"),
+                roi=("pnl_per_1", "mean"),
+                clv=("clv_pts", "mean"),
+            )
+            .assign(**{"Hit %": lambda d: (d["Wins"] / d["Bets"] * 100).round(1)})
+            .sort_values("Bets", ascending=False)
+            .reset_index()
+        )
+        _mkt["P&L (u)"] = _mkt["pnl"].map("{:+.2f}".format)
+        _mkt["ROI %"]   = _mkt["roi"].map(lambda x: f"{x*100:+.1f}%")
+        _mkt["CLV pts"] = _mkt["clv"].map(lambda x: f"{x:+.2f}" if pd.notna(x) else "—")
+        _mkt["Hit %"]   = _mkt["Hit %"].map("{:.1f}%".format)
+        _mkt = _mkt.rename(columns={"market": "Market"})
+        _mkt_show = [c for c in ["Market", "Bets", "Wins", "Hit %", "P&L (u)", "ROI %", "CLV pts"] if c in _mkt.columns]
+        st.dataframe(_mkt[_mkt_show], hide_index=True, use_container_width=True)
+
+    # ── P&L by tournament bar chart ────────────────────────────────────────
+    if "tournament_id" in settled.columns:
+        _tid_pnl = (
+            settled.groupby("tournament_id")["pnl_per_1"]
+            .sum()
+            .reset_index()
+            .rename(columns={"pnl_per_1": "pnl"})
+            .sort_values("tournament_id")
+        )
+        _sched_csv = DATA_DIR / "raw" / "schedule_2026.csv"
+        if _sched_csv.exists():
+            _sched_names = pd.read_csv(_sched_csv, dtype=str)[["tournament_id", "tournament_name"]]
+            _tid_pnl = _tid_pnl.merge(_sched_names, on="tournament_id", how="left")
+            _tid_pnl["label"] = _tid_pnl["tournament_name"].fillna(_tid_pnl["tournament_id"])
+        else:
+            _tid_pnl["label"] = _tid_pnl["tournament_id"]
+
+        import plotly.graph_objects as _go_hist
+        _colors = ["#00c44f" if v >= 0 else "#e05252" for v in _tid_pnl["pnl"]]
+        _fig_hist = _go_hist.Figure(_go_hist.Bar(
+            x=_tid_pnl["label"],
+            y=_tid_pnl["pnl"],
+            marker_color=_colors,
+            text=_tid_pnl["pnl"].map("{:+.2f}u".format),
+            textposition="outside",
+        ))
+        _fig_hist.update_layout(
+            title="P&L by Tournament (units)",
+            yaxis_title="Units",
+            plot_bgcolor="#0e1117",
+            paper_bgcolor="#0e1117",
+            font_color="#fafafa",
+            height=280,
+            margin=dict(t=40, b=20, l=40, r=20),
+        )
+        st.plotly_chart(_fig_hist, use_container_width=True)
+
+    # ── Full settled bets table (expandable) ───────────────────────────────
+    with st.expander("All Settled Bets"):
+        _disp_cols = [c for c in [
+            "tournament_id", "graded_at", "market", "selection_label",
+            "odds_american", "outcome_status", "pnl_per_1", "clv_pts", "edge_pts",
+        ] if c in settled.columns]
+        _disp = settled[_disp_cols].copy()
+        if "graded_at" in _disp.columns:
+            _disp = _disp.sort_values("graded_at", ascending=False)
+        st.dataframe(_disp, hide_index=True, use_container_width=True)
 
 
 
@@ -3048,6 +3166,98 @@ COURSE_COORDINATES = {
     "waialae": (21.2769, -157.7559),
 }
 
+_PGA_GRAPHQL_HEADERS = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "x-pgat-platform": "web",
+    "x-api-key": "da2-gsrx5bibzbb4njvhl7t37wqyl4",
+    "Origin": "https://www.pgatour.com",
+    "Referer": "https://www.pgatour.com/",
+}
+
+_PGA_WEATHER_QUERY = """
+query Weather($tournamentId: ID!) {
+  weather(tournamentId: $tournamentId) {
+    title
+    sponsorLink
+    sponsorLogo
+    sponsorLogoDark
+    sponsorLogoAsset { imageOrg imagePath }
+    sponsorLogoDarkAsset { imageOrg imagePath }
+    modalSponsorLogoAsset { imageOrg imagePath }
+    modalSponsorLogoDarkAsset { imageOrg imagePath }
+    modalSponsorLogo
+    modalSponsorLogoDark
+    accessibilityText
+    hourly {
+      title
+      condition
+      windDirection
+      windSpeedKPH
+      windSpeedMPH
+      humidity
+      precipitation
+      temperature {
+        ... on StandardWeatherTemp { __typename tempC tempF }
+        ... on RangeWeatherTemp { __typename minTempC minTempF maxTempC maxTempF }
+      }
+    }
+    daily {
+      title
+      condition
+      windDirection
+      windSpeedKPH
+      windSpeedMPH
+      humidity
+      precipitation
+      temperature {
+        ... on StandardWeatherTemp { __typename tempC tempF }
+        ... on RangeWeatherTemp { __typename minTempC minTempF maxTempC maxTempF }
+      }
+    }
+  }
+}
+"""
+
+
+def _clean_weather_number(value):
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return int(round(float(value)))
+    text = str(value).strip()
+    if not text or text.lower() == "nan":
+        return None
+    text = (
+        text.replace("\u00b0F", "")
+        .replace("°F", "")
+        .replace("\u00b0C", "")
+        .replace("°C", "")
+        .replace("%", "")
+    )
+    try:
+        return int(round(float(text)))
+    except Exception:
+        return value
+
+
+def _normalize_weather_periods(periods):
+    rows = []
+    for period in periods or []:
+        item = dict(period or {})
+        temp = item.get("temperature") or {}
+        if isinstance(temp, dict):
+            item["temperature"] = {
+                k: _clean_weather_number(v)
+                for k, v in temp.items()
+                if k in {"tempF", "tempC", "minTempF", "minTempC", "maxTempF", "maxTempC", "__typename"}
+            }
+        for key in ("windSpeedKPH", "windSpeedMPH", "humidity", "precipitation"):
+            if key in item:
+                item[key] = _clean_weather_number(item.get(key))
+        rows.append(item)
+    return rows
+
 
 def get_course_coordinates(course_name: str) -> tuple:
     """Get lat/lon for a course, or default to Pebble Beach."""
@@ -3063,80 +3273,212 @@ def get_course_coordinates(course_name: str) -> tuple:
 
 
 @st.cache_data(ttl=900)  # Cache for 15 minutes
-def fetch_weather(lat: float, lon: float) -> dict:
-    """Fetch current weather from Open-Meteo API (free, no key needed)."""
+def fetch_weather(lat: float, lon: float, tid: str = "") -> dict:
+    """Fetch tournament weather forecast from PGA Tour GraphQL API.
+    Falls back to open-meteo current conditions if tid not provided or API fails.
+    Reads from data/weather/{tid}.json if fresh (<3h)."""
+    import time
     import requests
-    try:
-        url = "https://api.open-meteo.com/v1/forecast"
-        params = {
-            "latitude": lat,
-            "longitude": lon,
-            "current_weather": "true",
-            "temperature_unit": "fahrenheit",
-            "windspeed_unit": "mph",
-            "timezone": "America/Los_Angeles"
-        }
-        resp = requests.get(url, params=params, timeout=10)
-        resp.raise_for_status()
-        data = resp.json()
 
-        current = data.get("current_weather", {})
+    # Try saved snapshot first (avoids hitting API every page load)
+    if tid:
+        weather_file = DATA_DIR / "weather" / f"{tid}.json"
+        if weather_file.exists() and (time.time() - weather_file.stat().st_mtime) < 10800:
+            try:
+                saved = json.loads(weather_file.read_text())
+                # Only trust cached PGA daily forecast for tid-based event pages.
+                # If the cached file is just the open-meteo fallback, keep going
+                # so we can retry the official PGA endpoint.
+                if saved.get("success") and saved.get("daily"):
+                    return saved
+                if not tid and saved.get("success") and saved.get("temp_f") is not None:
+                    return saved
+            except Exception:
+                pass
 
-        weather_codes = {
-            0: "Clear", 1: "Mainly Clear", 2: "Partly Cloudy", 3: "Overcast",
-            45: "Foggy", 48: "Foggy", 51: "Light Drizzle", 53: "Drizzle",
-            55: "Heavy Drizzle", 61: "Light Rain", 63: "Rain", 65: "Heavy Rain",
-            71: "Light Snow", 73: "Snow", 75: "Heavy Snow", 80: "Rain Showers",
-            81: "Rain Showers", 82: "Heavy Showers", 95: "Thunderstorm"
-        }
+    # Primary: PGA Tour GraphQL weather query — returns 7-day daily forecast + hourly
+    if tid:
+        try:
+            resp = requests.post(
+                "https://orchestrator.pgatour.com/graphql",
+                json={
+                    "query": _PGA_WEATHER_QUERY,
+                    "variables": {"tournamentId": tid},
+                    "operationName": "Weather",
+                },
+                headers=_PGA_GRAPHQL_HEADERS,
+                timeout=10,
+            )
+            resp.raise_for_status()
+            _body = resp.json()
+            if _body.get("errors"):
+                raise RuntimeError(_body["errors"][0].get("message", "Weather query failed"))
+            _w = _body.get("data", {}).get("weather")
+            if _w and _w.get("daily"):
+                result = {
+                    "success": True,
+                    "source": "pgatour",
+                    "title": _w.get("title", ""),
+                    "daily": _normalize_weather_periods(_w.get("daily", [])),
+                    "hourly": _normalize_weather_periods(_w.get("hourly", [])),
+                    "saved_at": datetime.now().isoformat(),
+                }
+                weather_dir = DATA_DIR / "weather"
+                weather_dir.mkdir(parents=True, exist_ok=True)
+                (weather_dir / f"{tid}.json").write_text(json.dumps(result, indent=2))
+                return result
+        except Exception:
+            pass
 
-        code = current.get("weathercode", 0)
+    # Fallback: open-meteo current conditions (lat/lon required)
+    if lat and lon:
+        try:
+            url = "https://api.open-meteo.com/v1/forecast"
+            params = {
+                "latitude": lat, "longitude": lon, "current_weather": "true",
+                "temperature_unit": "fahrenheit", "windspeed_unit": "mph",
+                "timezone": "America/Los_Angeles",
+            }
+            resp = requests.get(url, params=params, timeout=10)
+            resp.raise_for_status()
+            current = resp.json().get("current_weather", {})
+            weather_codes = {
+                0: "Clear", 1: "Mainly Clear", 2: "Partly Cloudy", 3: "Overcast",
+                45: "Foggy", 48: "Foggy", 51: "Light Drizzle", 53: "Drizzle",
+                55: "Heavy Drizzle", 61: "Light Rain", 63: "Rain", 65: "Heavy Rain",
+                71: "Light Snow", 73: "Snow", 75: "Heavy Snow", 80: "Rain Showers",
+                81: "Rain Showers", 82: "Heavy Showers", 95: "Thunderstorm",
+            }
+            code = current.get("weathercode", 0)
+            result = {
+                "temp_f": round(current.get("temperature", 0)),
+                "wind_mph": round(current.get("windspeed", 0)),
+                "wind_dir": current.get("winddirection", 0),
+                "conditions": weather_codes.get(code, "Unknown"),
+                "code": code,
+                "is_windy": current.get("windspeed", 0) > 15,
+                "success": True,
+                "source": "openmeteo",
+                "saved_at": datetime.now().isoformat(),
+            }
+            if tid:
+                weather_dir = DATA_DIR / "weather"
+                weather_dir.mkdir(parents=True, exist_ok=True)
+                (weather_dir / f"{tid}.json").write_text(json.dumps(result, indent=2))
+            return result
+        except Exception as e:
+            return {"success": False, "error": str(e)}
 
-        return {
-            "temp_f": round(current.get("temperature", 0)),
-            "wind_mph": round(current.get("windspeed", 0)),
-            "wind_dir": current.get("winddirection", 0),
-            "conditions": weather_codes.get(code, "Unknown"),
-            "code": code,
-            "is_windy": current.get("windspeed", 0) > 15,
-            "success": True
-        }
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+    return {"success": False, "error": "No weather data available"}
 
 
-def render_weather_widget(course_name: str):
+# Condition code → emoji (PGA Tour enum values)
+_PGA_CONDITION_ICON = {
+    "DAY_SUNNY": "☀️", "DAY_MOSTLY_SUNNY": "🌤️", "DAY_PARTLY_CLOUDY": "⛅",
+    "DAY_MOSTLY_CLOUDY": "🌥️", "DAY_CLOUDY": "☁️", "DAY_OVERCAST": "☁️",
+    "DAY_SCATTERED_SHOWERS": "🌦️", "DAY_ISOLATED_SHOWERS": "🌦️",
+    "DAY_SHOWERS": "🌧️", "DAY_RAIN": "🌧️", "DAY_HEAVY_RAIN": "🌧️",
+    "DAY_ISOLATED_THUNDERSTORMS": "⛈️", "DAY_SCATTERED_THUNDERSTORMS": "⛈️",
+    "DAY_THUNDERSTORMS": "⛈️", "DAY_SNOW": "🌨️", "DAY_FOGGY": "🌫️",
+    "DAY_WINDY": "💨", "DAY_HAZY": "🌫️",
+    "NIGHT_CLEAR": "🌙", "NIGHT_MOSTLY_CLEAR": "🌙", "NIGHT_PARTLY_CLOUDY": "⛅",
+    "NIGHT_MOSTLY_CLOUDY": "🌥️", "NIGHT_CLOUDY": "☁️", "NIGHT_OVERCAST": "☁️",
+    "NIGHT_ISOLATED_CLOUDS": "🌙", "NIGHT_ISOLATED_SHOWERS": "🌦️",
+    "NIGHT_SCATTERED_SHOWERS": "🌦️", "NIGHT_SHOWERS": "🌧️",
+    "NIGHT_THUNDERSTORMS": "⛈️", "NIGHT_SNOW": "🌨️", "NIGHT_FOGGY": "🌫️",
+}
+# Wind direction enum → compass abbreviation
+_PGA_WIND_DIR = {
+    "NORTH": "N", "NORTH_NORTH_EAST": "NNE", "NORTH_EAST": "NE",
+    "EAST_NORTH_EAST": "ENE", "EAST": "E", "EAST_SOUTH_EAST": "ESE",
+    "SOUTH_EAST": "SE", "SOUTH_SOUTH_EAST": "SSE", "SOUTH": "S",
+    "SOUTH_SOUTH_WEST": "SSW", "SOUTH_WEST": "SW", "WEST_SOUTH_WEST": "WSW",
+    "WEST": "W", "WEST_NORTH_WEST": "WNW", "NORTH_WEST": "NW",
+    "NORTH_NORTH_WEST": "NNW",
+}
+
+
+def render_weather_widget(course_name: str, tid: str = ""):
     """Render a weather widget for the tournament course."""
     lat, lon = get_course_coordinates(course_name)
-    weather = fetch_weather(lat, lon)
+    weather = fetch_weather(lat, lon, tid=tid)
 
     if not weather.get("success"):
         st.warning(f"Could not fetch weather: {weather.get('error', 'Unknown error')}")
         return
 
+    # ── PGA Tour forecast format: 4-column round-day layout ──────────────────
+    if weather.get("daily"):
+        daily = weather["daily"]
+        _ROUND_DAYS = {"Thu", "Fri", "Sat", "Sun"}
+        round_days = [d for d in daily if d.get("title") in _ROUND_DAYS]
+        if not round_days:
+            round_days = daily[:4]
+
+        st.markdown("#### Weather Forecast")
+        cols = st.columns(len(round_days))
+        for col, day in zip(cols, round_days):
+            with col:
+                icon = _PGA_CONDITION_ICON.get(day.get("condition", ""), "🌡️")
+                temp = day.get("temperature", {})
+                if "maxTempF" in temp:
+                    hi = temp["maxTempF"]
+                    lo = temp["minTempF"]
+                    temp_str = f"{hi}° / {lo}°"
+                elif "tempF" in temp:
+                    temp_str = f"{temp['tempF']}°"
+                else:
+                    temp_str = "—"
+                wind_dir = _PGA_WIND_DIR.get(day.get("windDirection", ""), day.get("windDirection", ""))
+                wind_mph = day.get("windSpeedMPH", "—")
+                precip = day.get("precipitation", "—")
+                try:
+                    is_windy = int(wind_mph) > 15
+                except (ValueError, TypeError):
+                    is_windy = False
+                wind_color = "#ff9f43" if is_windy else "inherit"
+                st.markdown(
+                    f"<div style='text-align:center'>"
+                    f"<div style='font-weight:600;font-size:0.85rem;letter-spacing:0.05em'>{day['title']}</div>"
+                    f"<div style='font-size:1.9rem;line-height:1.3'>{icon}</div>"
+                    f"<div style='font-size:0.9rem;font-weight:500'>{temp_str}</div>"
+                    f"<div style='font-size:0.75rem;color:{wind_color};margin-top:2px'>{wind_mph} mph {wind_dir}</div>"
+                    f"<div style='font-size:0.75rem;color:#7eb8f7;margin-top:1px'>&#128167; {precip}</div>"
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
+        _saved = weather.get("saved_at", "")
+        if _saved:
+            try:
+                _dt = datetime.fromisoformat(_saved)
+                st.caption(f"Updated {_dt.strftime('%-I:%M %p')}")
+            except Exception:
+                pass
+        return
+
+    # ── Legacy fallback: open-meteo current conditions ────────────────────────
     weather_icons = {
         "Clear": "☀️", "Mainly Clear": "🌤️", "Partly Cloudy": "⛅",
         "Overcast": "☁️", "Foggy": "🌫️", "Light Drizzle": "🌦️",
         "Drizzle": "🌧️", "Heavy Drizzle": "🌧️", "Light Rain": "🌧️",
         "Rain": "🌧️", "Heavy Rain": "⛈️", "Rain Showers": "🌦️",
-        "Thunderstorm": "⛈️", "Light Snow": "🌨️", "Snow": "❄️"
+        "Thunderstorm": "⛈️", "Light Snow": "🌨️", "Snow": "❄️",
     }
     icon = weather_icons.get(weather["conditions"], "🌡️")
 
     def wind_direction_to_compass(degrees):
         directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
-        idx = round(degrees / 45) % 8
-        return directions[idx]
+        return directions[round(degrees / 45) % 8]
 
     wind_compass = wind_direction_to_compass(weather.get("wind_dir", 0))
 
-    st.markdown("#### 🌤️ Current Weather")
+    st.markdown("#### Current Weather")
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric("Temperature", f"{weather['temp_f']}°F")
     with col2:
         wind_label = f"{weather['wind_mph']} mph {wind_compass}"
-        delta = "Windy! 💨" if weather["is_windy"] else None
+        delta = "Windy" if weather["is_windy"] else None
         st.metric("Wind", wind_label, delta=delta)
     with col3:
         st.metric("Conditions", f"{icon} {weather['conditions']}")
@@ -3279,6 +3621,91 @@ def get_prediction_files():
         return sorted(OUTPUTS_DIR.glob("*_predictions.csv"),
                      key=lambda x: x.stat().st_mtime, reverse=True)
     return []
+
+
+def _prediction_file_tournament_key(path: Path) -> str:
+    stem = re.sub(r"_\d{8}_predictions$", "", path.stem)
+    stem = re.sub(r"_predictions$", "", stem)
+    return _normalize_tournament_key(stem.replace("_", " "))
+
+
+def _prediction_file_date_token(path: Path) -> int | None:
+    m = re.search(r"_(\d{8})_predictions$", path.stem)
+    return int(m.group(1)) if m else None
+
+
+def _resolve_prediction_file_for_tournament(tournament_name: str, event_date: str = "") -> Path | None:
+    """Find the best saved prediction file for a historical tournament row."""
+    target_key = _normalize_tournament_key(tournament_name)
+    if not target_key:
+        return None
+
+    target_tokens = set(target_key.split())
+    target_date = None
+    if event_date:
+        try:
+            target_date = int(str(event_date).replace("-", "")[:8])
+        except Exception:
+            target_date = None
+
+    candidates = []
+    for path in get_prediction_files():
+        if path.name == "latest_predictions.csv":
+            continue
+        file_key = _prediction_file_tournament_key(path)
+        if not file_key:
+            continue
+        file_tokens = set(file_key.split())
+        overlap = len(target_tokens & file_tokens)
+        if overlap == 0:
+            continue
+        score = overlap / max(len(target_tokens | file_tokens), 1)
+        if target_key in file_key or file_key in target_key:
+            score = max(score, 0.95)
+        if score < 0.45:
+            continue
+
+        fdate = _prediction_file_date_token(path)
+        prior_fit = 1 if (target_date and fdate and fdate <= target_date) else 0
+        gap = abs((fdate or 0) - (target_date or 0)) if target_date and fdate else 99999999
+        candidates.append((score, prior_fit, -(fdate or 0), -int(path.stat().st_mtime), gap, path))
+
+    if not candidates:
+        return None
+    candidates.sort(reverse=True)
+    return candidates[0][-1]
+
+
+@st.cache_data(ttl=900)
+def load_prediction_rank_lookup_for_tournament(tournament_name: str, event_date: str = "") -> dict:
+    """Load name_key -> model rank mapping for a saved tournament prediction file."""
+    pred_path = _resolve_prediction_file_for_tournament(tournament_name, event_date)
+    if pred_path is None or not pred_path.exists():
+        return {}
+    try:
+        df = pd.read_csv(pred_path)
+    except Exception:
+        return {}
+    if df.empty:
+        return {}
+    df = ensure_player_name_column(df)
+    if "player_name" not in df.columns:
+        return {}
+    rank_col = None
+    for candidate in ("expected_value", "win_prob", "top10_prob"):
+        if candidate in df.columns:
+            rank_col = candidate
+            break
+    if not rank_col:
+        return {}
+    df[rank_col] = pd.to_numeric(df[rank_col], errors="coerce")
+    df = df.dropna(subset=[rank_col]).sort_values(rank_col, ascending=False).reset_index(drop=True)
+    if df.empty:
+        return {}
+    df["model_rank"] = np.arange(1, len(df) + 1)
+    df["name_key"] = df["player_name"].apply(_name_key)
+    df = df[df["name_key"] != ""].drop_duplicates("name_key")
+    return dict(zip(df["name_key"], df["model_rank"]))
 
 
 @st.cache_data(ttl=300)
@@ -3773,6 +4200,59 @@ def load_leaderboard_meta(meta_path: Path) -> dict:
         return {}
 
 
+@st.cache_data(ttl=3600)
+def get_historical_cut_line(tournament_id: str) -> dict:
+    """Query the DB for the historical average cut line at this venue.
+
+    Why this exists:
+    Before round 2 begins the PGA Tour API returns projected_cut_score=999
+    (a sentinel meaning "no data yet").  Instead of showing +999 we look up
+    the past 5 years at the same course and display a typical range.
+
+    How it works:
+    - The event number (last 3 digits of the R-ID) stays the same every year.
+      R2016009, R2020009, R2026009 are all the Arnold Palmer at Bay Hill.
+    - Players who MISS the cut only play 2 rounds, so their `to_par` in the
+      leaderboards table IS their 2-round score.
+    - The cut line = (best score of any player who missed) - 1 stroke.
+      E.g. if the best missed score was +3, the cut was at +2.
+    """
+    try:
+        import duckdb as _ddb
+        _conn = _ddb.connect(str(DATA_DIR / "golf_data.db"), read_only=True)
+        event_num = tournament_id[-3:]   # e.g. "009" from "R2026009"
+        df = _conn.execute(f"""
+            WITH cut_scores AS (
+                SELECT
+                    year,
+                    MIN(CAST(REPLACE(REPLACE(to_par, 'E', '0'), '+', '') AS INTEGER)) AS best_missed
+                FROM leaderboards
+                WHERE tournament_id LIKE '%{event_num}'
+                  AND year < 2026
+                  AND position = 'CUT'
+                GROUP BY year
+            )
+            SELECT
+                COUNT(*)            AS years,
+                AVG(best_missed - 1)  AS avg_cut,
+                MIN(best_missed - 1)  AS best_cut,
+                MAX(best_missed - 1)  AS worst_cut
+            FROM cut_scores
+        """).fetchdf()
+        _conn.close()
+        if df.empty or df["years"].iloc[0] == 0:
+            return {}
+        row = df.iloc[0]
+        return {
+            "years": int(row["years"]),
+            "avg": round(row["avg_cut"], 1),
+            "best": int(row["best_cut"]),
+            "worst": int(row["worst_cut"]),
+        }
+    except Exception:
+        return {}
+
+
 @st.cache_data(ttl=120)  # Cache for 2 minutes for live data
 def fetch_live_leaderboard(tournament_id: str = None) -> tuple:
     """Fetch live leaderboard data."""
@@ -3836,26 +4316,54 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
 
     # ── Cut projection banner ────────────────────────────────────────────────
     if cut_projection:
-        _cp_score   = cut_projection.get("projected_cut_score")
-        _cp_pos     = cut_projection.get("projected_cut_position")
-        _cp_bubble  = cut_projection.get("bubble_count", 0)
-        _cp_in      = cut_projection.get("safely_in", 0)
-        _cp_out     = cut_projection.get("safely_out", 0)
+        _cp_score  = cut_projection.get("projected_cut_score")
+        _cp_bubble = cut_projection.get("bubble_count", 0)
+        _cp_in     = cut_projection.get("safely_in", 0)
+        _cp_out    = cut_projection.get("safely_out", 0)
 
-        if _cp_score is not None or _cp_bubble:
-            _score_str = f"{_cp_score:+d}" if isinstance(_cp_score, int) else str(_cp_score or "—")
-            _pos_str   = f"Top {_cp_pos}" if _cp_pos else "—"
-            st.markdown("#### ✂️ Projected Cut")
+        # 999 is the PGA Tour API sentinel meaning "no scores yet".
+        # When we see it, replace it with the historical average cut line
+        # for this course so the user sees something useful.
+        _tid = meta.get("tournament_id", "")
+        _no_live_cut = (not isinstance(_cp_score, int)) or _cp_score == 999 or _cp_score > 50
+
+        if _no_live_cut:
+            # Pre-tournament: show historical baseline instead
+            _hist = get_historical_cut_line(_tid) if _tid else {}
+            if _hist:
+                _avg = _hist["avg"]
+                _best = _hist["best"]
+                _worst = _hist["worst"]
+                _yrs = _hist["years"]
+                _avg_str = f"{_avg:+.0f}" if _avg != 0 else "E"
+                _range_str = f"{_best:+d} to {_worst:+d}"
+                st.markdown("#### Cut Line")
+                _ca, _cb, _cc, _cd = st.columns(4)
+                with _ca:
+                    st.metric(
+                        "Typical Cut",
+                        _avg_str,
+                        help=f"Historical average cut score at this course ({_yrs} years)",
+                    )
+                with _cb:
+                    st.metric("Historical Range", _range_str, help="Best and worst cut in recent years")
+                with _cc:
+                    st.metric("Field Size", len(df), help="Players in this week's field")
+                with _cd:
+                    st.metric("Est. Make Cut", f"~{len(df)//2}", help="Approx. players advancing (typically ~50%)")
+        else:
+            # Live cut data available — show actual projection
+            _score_str = f"{_cp_score:+d}" if _cp_score != 0 else "E"
+            st.markdown("#### Cut Line")
             _ca, _cb, _cc, _cd = st.columns(4)
             with _ca:
-                st.metric("Projected Score", _score_str, help="Estimated cut score (vs par)")
+                st.metric("Projected", _score_str, help="Live projected cut score (vs par)")
             with _cb:
-                st.metric("Cut Position", _pos_str, help="Approx. finishing position of cut line")
-            with _cc:
                 st.metric("On the Bubble", _cp_bubble, help="Players within 1 shot of cut line")
+            with _cc:
+                st.metric("Safely In", _cp_in)
             with _cd:
-                _in_delta  = f"+{_cp_in} safe" if _cp_in else None
-                st.metric("Safely In", _cp_in, delta=_in_delta, delta_color="normal")
+                st.metric("Safely Out", _cp_out)
 
     st.markdown("---")
 
@@ -4615,6 +5123,40 @@ def get_form_badge(form_trend: float, recent_top10s: int = 0) -> str:
         return '<span style="background: #9E9E9E; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75em;">NEUTRAL</span>'
 
 
+def get_situational_badges(player_data: dict) -> str:
+    """
+    Return HTML badge spans for narrative/situational features.
+    Returns empty string if no notable situations apply.
+    Defensive: all features are optional — safe to call before pipeline reruns them.
+    """
+    badges = []
+    _b = lambda color, text: (
+        f'<span style="background:{color};color:#fff;padding:2px 7px;'
+        f'border-radius:10px;font-size:0.72em;font-weight:700;'
+        f'margin-left:4px;white-space:nowrap;">{text}</span>'
+    )
+
+    if int(player_data.get("is_defending_champion", 0) or 0):
+        badges.append(_b("#b8860b", "👑 DEFENDING"))
+
+    streak = int(player_data.get("consecutive_top10s", 0) or 0)
+    if streak >= 3:
+        badges.append(_b("#00C853", f"🔥 {streak}-WEEK STREAK"))
+    elif streak == 2:
+        badges.append(_b("#4CAF50", f"▲ {streak} CONSEC T10"))
+
+    if int(player_data.get("post_top5_last_start", 0) or 0):
+        badges.append(_b("#1976D2", "▲ TOP-5 LAST"))
+
+    if int(player_data.get("missed_cut_last_start", 0) or 0):
+        badges.append(_b("#B71C1C", "✂ MC LAST"))
+
+    if int(player_data.get("first_start_of_season", 0) or 0):
+        badges.append(_b("#555", "◎ DEBUT"))
+
+    return "".join(badges)
+
+
 def render_player_stat_card(player_data: dict) -> str:
     """
     Render a visual player stat card with all key metrics.
@@ -4647,6 +5189,7 @@ def render_player_stat_card(player_data: dict) -> str:
 
     # Form badge
     form_badge = get_form_badge(form_trend, recent_top10s)
+    sit_badges = get_situational_badges(player_data)
 
     # SG Total formatted
     sg_total_str = f"+{sg_total:.2f}" if sg_total >= 0 else f"{sg_total:.2f}"
@@ -4663,7 +5206,7 @@ def render_player_stat_card(player_data: dict) -> str:
         f'<span style="font-size: 1.2em; font-weight: bold; color: #fff;">{name}</span>'
         f'<span style="color: #888; margin-left: 8px;">{rank_display}</span>'
         f'</div>'
-        f'{form_badge}'
+        f'<div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;">{form_badge}{sit_badges}</div>'
         f'</div>'
         f'<div style="display: flex; justify-content: space-between; margin-bottom: 12px;'
         f' padding: 8px; background: #2a2a4a; border-radius: 8px;">'
@@ -4689,13 +5232,18 @@ def render_mini_player_card(player_data: dict, rank: int = 0) -> str:
     """
     Render a compact player card for list views.
     """
-    name = player_data.get("player_name", "Unknown")[:20]
+    name = player_data.get("player_name", "Unknown")[:22]
     form_trend = player_data.get("form_trend", 0) or 0
     sg_total = player_data.get("sg_total", 0) or 0
     recent_top10s = int(player_data.get("recent_top10s", 0) or 0)
 
-    # Trend indicator
+    # Trend indicator (form + situational)
     trend = "🔥" if form_trend >= 0.3 else "❄️" if form_trend <= -0.3 else ""
+    if int(player_data.get("is_defending_champion", 0) or 0):
+        trend = "👑" + trend
+    streak = int(player_data.get("consecutive_top10s", 0) or 0)
+    if streak >= 2 and "🔥" not in trend:
+        trend = "🔥" + trend  # hot streak overrides neutral trend icon
 
     # SG color
     sg_color = "#00C853" if sg_total >= 0.5 else "#4CAF50" if sg_total >= 0 else "#FF9800" if sg_total >= -0.5 else "#F44336"
@@ -6365,25 +6913,25 @@ st.sidebar.markdown("### 📊 Quick Stats")
 usage_data = load_usage_data()
 picks = usage_data.get("picks", {})
 total_picks = sum(p.get("times_used", 0) for p in picks.values())
+season_earnings = int(usage_data.get("summary", {}).get("total_earnings", 0) or 0)
 
-# Pull accurate points + week from season_log
+# Pull accurate week count from season_log
 _sl_path = OUTPUTS_DIR / "season_log.csv"
 if _sl_path.exists():
     try:
         _sl = pd.read_csv(_sl_path)
-        _completed_sl = _sl[pd.to_numeric(_sl.get("points", pd.Series(dtype=float)), errors="coerce").notna() &
-                           (_sl.get("points", pd.Series(dtype=str)).astype(str).str.strip() != "")]
-        total_points = int(pd.to_numeric(_completed_sl["points"], errors="coerce").sum()) if not _completed_sl.empty else 0
         _current_week = int(_sl["week"].max()) if not _sl.empty else 0
+        _logged_weeks = int(_sl["week"].nunique()) if "week" in _sl.columns and not _sl.empty else 0
     except Exception:
-        total_points = sum(p.get("total_points", 0) for p in picks.values())
         _current_week = total_picks // 3
+        _logged_weeks = int(len((usage_data.get("weekly_lineups") or {})))
 else:
-    total_points = sum(p.get("total_points", 0) for p in picks.values())
     _current_week = total_picks // 3
+    _logged_weeks = int(len((usage_data.get("weekly_lineups") or {})))
 
 st.sidebar.metric("Week", f"{_current_week} of 30")
-st.sidebar.metric("Season Points", f"{total_points:,}")
+st.sidebar.metric("Weeks Logged", _logged_weeks)
+st.sidebar.metric("Season Earnings", f"${season_earnings:,.0f}")
 st.sidebar.metric("Players Used", len(picks))
 st.sidebar.metric("Picks Made", f"{total_picks}/90")
 
@@ -6468,6 +7016,30 @@ if page == "🏆 This Week":
                         _field_id = str(_sched_row.iloc[0].get("tournament_id", "")).strip()
                 except Exception:
                     pass
+            # Fallback 2: partial name match against schedule CSV (normalize spaces/underscores)
+            if not _field_id:
+                try:
+                    _sched_tmp2 = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+                    _t_lower = tournament.lower().replace("_", " ")
+                    for _, _row in _sched_tmp2.iterrows():
+                        _sched_name = str(_row.get("tournament_name", "")).lower().replace("_", " ")
+                        if _sched_name and (_sched_name in _t_lower or _t_lower in _sched_name):
+                            _field_id = str(_row.get("tournament_id", "")).strip()
+                            break
+                except Exception:
+                    pass
+            # Fallback 3: most recently modified live meta file
+            if not _field_id:
+                import glob as _glob
+                _metas = [Path(f) for f in _glob.glob(str(DATA_DIR / "live" / "leaderboard_r*_meta.json"))]
+                if _metas:
+                    _newest_meta = max(_metas, key=lambda f: f.stat().st_mtime)
+                    try:
+                        _meta_tid = json.loads(_newest_meta.read_text()).get("tournament_id", "")
+                        if _meta_tid:
+                            _field_id = _meta_tid
+                    except Exception:
+                        pass
 
             _field_file = None
             if _field_id:
@@ -6558,7 +7130,270 @@ if page == "🏆 This Week":
                             st.rerun()
 
             # ── Weather
-            render_weather_widget(t.course or tournament)
+            render_weather_widget(t.course or tournament, tid=str(_field_id))
+
+            # ── Course Layout Charts ──────────────────────────────────────
+            def _load_course_chars(tid_str: str, year: int) -> pd.DataFrame:
+                chars_dir = DATA_DIR / "course_characteristics"
+                # 1) Specific file for this year
+                specific = chars_dir / f"r{tid_str.lower()}_{year}.csv"
+                if specific.exists():
+                    return pd.read_csv(specific)
+                # 2) all_courses_{year}.csv filtered by tournament_id
+                all_path = chars_dir / f"all_courses_{year}.csv"
+                if all_path.exists():
+                    df_all = pd.read_csv(all_path)
+                    hit = df_all[df_all["tournament_id"].str.upper() == tid_str.upper()]
+                    if not hit.empty:
+                        return hit
+                # 3) Fall back to previous year's same event number (same course)
+                event_num = tid_str[-3:] if len(tid_str) >= 3 else ""
+                if event_num:
+                    for prev_year in range(year - 1, year - 4, -1):
+                        prev_path = chars_dir / f"all_courses_{prev_year}.csv"
+                        if prev_path.exists():
+                            df_prev = pd.read_csv(prev_path)
+                            hit = df_prev[df_prev["tournament_id"].str.endswith(event_num)]
+                            if not hit.empty:
+                                return hit
+                return pd.DataFrame()
+
+            _cc_tid = str(_field_id) if _field_id else ""
+            try:
+                _cc_year = int(_cc_tid[1:5]) if len(_cc_tid) >= 5 and _cc_tid[1:5].isdigit() else datetime.now().year
+            except (ValueError, IndexError):
+                _cc_year = datetime.now().year
+            _cc_df = _load_course_chars(_cc_tid, _cc_year) if _cc_tid else pd.DataFrame()
+
+            if not _cc_df.empty and "hole_num" in _cc_df.columns:
+                with st.expander("Course Layout", expanded=False):
+                    _cc_df = _cc_df.sort_values("hole_num").reset_index(drop=True).copy()
+                    _cc_df["hole_num"] = _cc_df["hole_num"].astype(int)
+                    for _c in ["hole_par", "hole_yards", "scoring_avg", "difficulty_rank"]:
+                        if _c in _cc_df.columns:
+                            _cc_df[_c] = pd.to_numeric(_cc_df[_c], errors="coerce")
+                    _cc_df["scoring_diff"] = pd.to_numeric(
+                        _cc_df["scoring_diff"].astype(str).str.replace("+", "", regex=False),
+                        errors="coerce"
+                    )
+                    # Compute scoring distribution percentages
+                    for _dc in ["eagles", "birdies", "pars", "bogeys", "double_bogeys"]:
+                        if _dc in _cc_df.columns:
+                            _cc_df[_dc] = pd.to_numeric(_cc_df[_dc], errors="coerce").fillna(0)
+                    _has_dist = all(c in _cc_df.columns for c in ["birdies", "pars", "bogeys"])
+                    if _has_dist:
+                        _cc_df["_total"] = sum(_cc_df[c] for c in ["eagles","birdies","pars","bogeys","double_bogeys"] if c in _cc_df.columns).clip(lower=1)
+                        for _dc, _lab in [("eagles","Eagle%"),("birdies","Birdie%"),("pars","Par%"),("bogeys","Bogey%"),("double_bogeys","Dbl+%")]:
+                            if _dc in _cc_df.columns:
+                                _cc_df[_lab] = (_cc_df[_dc] / _cc_df["_total"] * 100).round(1)
+
+                    # Helper: value for a given hole number
+                    def _cv(col, h):
+                        rows = _cc_df[_cc_df["hole_num"] == h]
+                        if rows.empty or col not in rows.columns:
+                            return None
+                        v = rows.iloc[0][col]
+                        return None if pd.isna(v) else v
+
+                    front9 = list(range(1, 10))
+                    back9  = list(range(10, 19))
+                    all18  = front9 + back9
+
+                    # -- Difficulty rank color: rank 1 (hardest) = red, rank 18 (easiest) = green
+                    def _rank_color(rank):
+                        if rank is None: return "#2a3a4a"
+                        r = max(1, min(18, int(rank)))
+                        # 1=hardest→red, 18=easiest→green
+                        pct = (r - 1) / 17.0
+                        red = int(180 * (1 - pct))
+                        grn = int(180 * pct)
+                        return f"rgb({red+40},{grn+40},50)"
+
+                    # -- Scoring diff color: negative=birdie-friendly (green), positive=bogey (red)
+                    def _diff_color(diff):
+                        if diff is None: return "#2a3a4a"
+                        if diff < -0.15:   return "#1a4a2a"
+                        elif diff < -0.05: return "#1e3a25"
+                        elif diff < 0.05:  return "#1c2a3a"
+                        elif diff < 0.15:  return "#3a1a1a"
+                        else:              return "#4a1a1a"
+
+                    def _diff_text_color(diff):
+                        if diff is None: return "#6a84aa"
+                        if diff < 0:  return "#4caf72"
+                        elif diff > 0.05: return "#e57373"
+                        else: return "#aabbcc"
+
+                    # Build the scorecard HTML table
+                    def _td(val, bg="#0d1a2e", color="#dde6f5", bold=False, small=False):
+                        fw = "700" if bold else "400"
+                        fs = "10px" if small else "12px"
+                        return (f'<td style="text-align:center;padding:5px 2px;background:{bg};'
+                                f'color:{color};font-weight:{fw};font-size:{fs};'
+                                f'border:1px solid #0a1624;">{val}</td>')
+
+                    def _th(val, bg="#060d1a", color="#4a6080"):
+                        return (f'<td style="text-align:center;padding:5px 2px;background:{bg};'
+                                f'color:{color};font-weight:700;font-size:10px;'
+                                f'letter-spacing:.05em;border:1px solid #0a1624;">{val}</td>')
+
+                    def _build_row(label, col, fmt_fn, sum_fn=None, label_col="#4a6080"):
+                        cells = _th(label)
+                        f9_vals = [_cv(col, h) for h in front9]
+                        b9_vals = [_cv(col, h) for h in back9]
+                        for h, v in zip(front9, f9_vals):
+                            bg, tc = fmt_fn(v)
+                            cells += _td("—" if v is None else (f"{v:.0f}" if v == int(v or 0) else f"{v:.1f}"), bg, tc)
+                        # OUT summary
+                        if sum_fn:
+                            sv = sum_fn(f9_vals)
+                            sbg, stc = fmt_fn(sv)
+                            cells += _td("—" if sv is None else f"{sv:.0f}", sbg, stc, bold=True)
+                        else:
+                            cells += _th("OUT")
+                        for h, v in zip(back9, b9_vals):
+                            bg, tc = fmt_fn(v)
+                            cells += _td("—" if v is None else (f"{v:.0f}" if v == int(v or 0) else f"{v:.1f}"), bg, tc)
+                        # IN summary
+                        if sum_fn:
+                            sv = sum_fn(b9_vals)
+                            sbg, stc = fmt_fn(sv)
+                            cells += _td("—" if sv is None else f"{sv:.0f}", sbg, stc, bold=True)
+                            # TOT
+                            all_vals = f9_vals + b9_vals
+                            tv = sum_fn(all_vals)
+                            tbg, ttc = fmt_fn(tv)
+                            cells += _td("—" if tv is None else f"{tv:.0f}", tbg, ttc, bold=True)
+                        else:
+                            cells += _th("IN")
+                            cells += _th("TOT")
+                        return f"<tr>{cells}</tr>"
+
+                    # Header row
+                    hdr = _th("HOLE", bg="#040a14", color="#6a84aa")
+                    for h in front9:
+                        hdr += _th(str(h), bg="#040a14", color="#dde6f5")
+                    hdr += _th("OUT", bg="#040a14", color="#fff")
+                    for h in back9:
+                        hdr += _th(str(h), bg="#040a14", color="#dde6f5")
+                    hdr += _th("IN", bg="#040a14", color="#fff")
+                    hdr += _th("TOT", bg="#030810", color="#fff")
+
+                    # PAR row
+                    par_row = _th("PAR")
+                    fp = [_cv("hole_par", h) for h in front9]
+                    bp = [_cv("hole_par", h) for h in back9]
+                    for v in fp:
+                        par_row += _td("—" if v is None else int(v), "#0a1420", "#aabbcc")
+                    par_row += _td(int(sum(v for v in fp if v)), "#060d1a", "#fff", bold=True)
+                    for v in bp:
+                        par_row += _td("—" if v is None else int(v), "#0a1420", "#aabbcc")
+                    par_row += _td(int(sum(v for v in bp if v)), "#060d1a", "#fff", bold=True)
+                    par_row += _td(int(sum(v for v in fp+bp if v)), "#030810", "#fff", bold=True)
+
+                    # YARDS row
+                    yds_row = _th("YDS")
+                    fy = [_cv("hole_yards", h) for h in front9]
+                    by = [_cv("hole_yards", h) for h in back9]
+                    for v in fy:
+                        yds_row += _td("—" if v is None else int(v), "#0a1420", "#7a90b8", small=True)
+                    yds_row += _td(int(sum(v for v in fy if v)), "#060d1a", "#aabbcc", bold=True, small=True)
+                    for v in by:
+                        yds_row += _td("—" if v is None else int(v), "#0a1420", "#7a90b8", small=True)
+                    yds_row += _td(int(sum(v for v in by if v)), "#060d1a", "#aabbcc", bold=True, small=True)
+                    yds_row += _td(int(sum(v for v in fy+by if v)), "#030810", "#dde6f5", bold=True, small=True)
+
+                    # AVG SCORE row
+                    avg_row = _th("AVG")
+                    for h in all18:
+                        v = _cv("scoring_avg", h)
+                        avg_row += _td("—" if v is None else f"{v:.2f}", "#0a1420", "#9aaabf", small=True)
+                        if h == 9:
+                            fa = [_cv("scoring_avg", hh) for hh in front9]
+                            avg_row += _td(f"{sum(v for v in fa if v):.2f}", "#060d1a", "#aabbcc", bold=True, small=True)
+                    ba = [_cv("scoring_avg", hh) for hh in back9]
+                    avg_row += _td(f"{sum(v for v in ba if v):.2f}", "#060d1a", "#aabbcc", bold=True, small=True)
+                    alls = [_cv("scoring_avg", hh) for hh in all18]
+                    avg_row += _td(f"{sum(v for v in alls if v):.2f}", "#030810", "#dde6f5", bold=True, small=True)
+
+                    # vs PAR row
+                    diff_row = _th("vs PAR")
+                    fd = [_cv("scoring_diff", h) for h in front9]
+                    bd = [_cv("scoring_diff", h) for h in back9]
+                    for v in fd:
+                        bg = _diff_color(v); tc = _diff_text_color(v)
+                        diff_row += _td("—" if v is None else f"{v:+.2f}", bg, tc, small=True)
+                    fds = sum(v for v in fd if v is not None)
+                    diff_row += _td(f"{fds:+.2f}", _diff_color(fds), _diff_text_color(fds), bold=True, small=True)
+                    for v in bd:
+                        bg = _diff_color(v); tc = _diff_text_color(v)
+                        diff_row += _td("—" if v is None else f"{v:+.2f}", bg, tc, small=True)
+                    bds = sum(v for v in bd if v is not None)
+                    diff_row += _td(f"{bds:+.2f}", _diff_color(bds), _diff_text_color(bds), bold=True, small=True)
+                    tds = fds + bds
+                    diff_row += _td(f"{tds:+.2f}", _diff_color(tds), _diff_text_color(tds), bold=True, small=True)
+
+                    # DIFFICULTY RANK row
+                    rank_row = _th("RANK")
+                    for h in all18:
+                        v = _cv("difficulty_rank", h)
+                        rank_row += _td("—" if v is None else int(v), _rank_color(v),
+                                        "#fff" if v is not None else "#3a5070", small=True)
+                        if h == 9:
+                            rank_row += _th("")  # OUT spacer
+                    rank_row += _th("")  # IN spacer
+                    rank_row += _th("")  # TOT spacer
+
+                    # BIRDIE% / BOGEY% rows (if distribution data available)
+                    birdie_row = bogey_row = ""
+                    if _has_dist:
+                        birdie_row = _th("BIRDIE%")
+                        bogey_row  = _th("BOGEY%")
+                        fb = [_cv("Birdie%", h) for h in front9]
+                        bb = [_cv("Birdie%", h) for h in back9]
+                        fg = [_cv("Bogey%",  h) for h in front9]
+                        bg2= [_cv("Bogey%",  h) for h in back9]
+                        for v in fb:
+                            birdie_row += _td("—" if v is None else f"{v:.0f}%", "#0d1a10", "#4caf72", small=True)
+                        birdie_row += _th("")
+                        for v in bb:
+                            birdie_row += _td("—" if v is None else f"{v:.0f}%", "#0d1a10", "#4caf72", small=True)
+                        birdie_row += _th("") + _th("")
+                        for v in fg:
+                            bogey_row += _td("—" if v is None else f"{v:.0f}%", "#1a0d0d", "#e57373", small=True)
+                        bogey_row += _th("")
+                        for v in bg2:
+                            bogey_row += _td("—" if v is None else f"{v:.0f}%", "#1a0d0d", "#e57373", small=True)
+                        bogey_row += _th("") + _th("")
+                        birdie_row = f"<tr>{birdie_row}</tr>"
+                        bogey_row  = f"<tr>{bogey_row}</tr>"
+
+                    _sc_course = _cc_df.iloc[0].get("course_name", "") if not _cc_df.empty else ""
+                    _sc_par    = _cc_df.iloc[0].get("course_par", "") if not _cc_df.empty else ""
+                    _sc_yds    = _cc_df.iloc[0].get("course_yardage", "") if not _cc_df.empty else ""
+
+                    st.markdown(f"""
+<div style="overflow-x:auto;margin-bottom:8px;">
+<div style="font-size:11px;color:#4a6080;margin-bottom:6px;">
+  {_sc_course} &nbsp;·&nbsp; Par {_sc_par} &nbsp;·&nbsp; {_sc_yds} yds
+</div>
+<table style="border-collapse:collapse;width:100%;font-family:monospace;">
+  <thead><tr>{hdr}</tr></thead>
+  <tbody>
+    <tr>{par_row}</tr>
+    <tr>{yds_row}</tr>
+    <tr>{avg_row}</tr>
+    <tr>{diff_row}</tr>
+    <tr>{rank_row}</tr>
+    {birdie_row}
+    {bogey_row}
+  </tbody>
+</table>
+<div style="font-size:10px;color:#2e4060;margin-top:6px;">
+  RANK: 1 = hardest &nbsp;·&nbsp; vs PAR: green = birdie-friendly, red = bogey-heavy
+</div>
+</div>
+""", unsafe_allow_html=True)
 
             # ── Load predictions + usage data ────────────────────────────
             _preds_path = OUTPUTS_DIR / "latest_predictions.csv"
@@ -6704,6 +7539,7 @@ if page == "🏆 This Week":
                         _drift  = ""
                         _dfs_own = 0.0
 
+                        _sit_html = ""
                         if not _prow.empty:
                             _pr     = _prow.iloc[0]
                             _wr_v   = int(_pr["world_rank"]) if pd.notna(_pr.get("world_rank")) else "—"
@@ -6717,6 +7553,7 @@ if page == "🏆 This Week":
                             _vprob  = float(_pr.get("vegas_prob", 0) or 0) * 100
                             _drift  = str(_pr.get("odds_drift_level", "") or "").upper()
                             _dfs_own = float(_pr.get("dfs_ownership_proj", 0) or 0)
+                            _sit_html = get_situational_badges(_pr.to_dict())
 
                         # Edge badge — only appears when model/market gap > 3 pts
                         _edge_badge = ""
@@ -6760,6 +7597,7 @@ if page == "🏆 This Week":
   </div>
   {_edge_badge}
   <div style="font-size:10px;color:#4a6080;margin-top:4px;">{_drift_label}</div>
+  {f'<div style="margin-top:6px;">{_sit_html}</div>' if _sit_html else ''}
   <div class="lc-uses">{_dots} ({_uses_v}/3 uses left)</div>
   <div class="lc-badge-use">✅ LOCKED IN</div>
 </div>
@@ -6841,6 +7679,7 @@ if page == "🏆 This Week":
                     _pool_df = _pool_df.sort_values("_sort").head(30)
 
                     _pool_html = []
+                    _has_proj_score = "projected_score" in _pool_df.columns
                     for _rank_i, (_, _pr) in enumerate(_pool_df.iterrows(), 1):
                         _pn = _pr["player_name"]
                         _uses = int(_pr.get("uses_remaining", 3))
@@ -6857,6 +7696,18 @@ if page == "🏆 This Week":
                             _card_cls, _badge_cls, _badge_txt = "save-card", "badge-save", "⚡ SAVE"
                         else:
                             _card_cls, _badge_cls, _badge_txt = "use-card", "badge-use", "✅ USE"
+
+                        # Projected score stat box (only when model has run)
+                        _proj_score_html = ""
+                        if _has_proj_score and pd.notna(_pr.get("projected_score")):
+                            _ps_v = float(_pr["projected_score"])
+                            _ps_str = f"E" if _ps_v == 0 else (f"+{_ps_v:.1f}" if _ps_v > 0 else f"{_ps_v:.1f}")
+                            _ps_color = "#ff6b6b" if _ps_v > 0 else ("#00c44f" if _ps_v < 0 else "#aaaaaa")
+                            _proj_score_html = f"""
+      <div style="text-align:right; min-width:50px;">
+        <div class="pc-stat" style="color:{_ps_color};">{_ps_str}</div>
+        <div class="pc-stat-label">PROJ</div>
+      </div>"""
 
                         _pool_html.append(f"""
     <div class="pool-card {_card_cls}">
@@ -6880,7 +7731,7 @@ if page == "🏆 This Week":
       <div style="text-align:right; min-width:50px;">
         <div class="pc-stat" style="color:#9b9bff;">{_dfs_own_v:.0f}%</div>
         <div class="pc-stat-label">DFS OWN</div>
-      </div>
+      </div>{_proj_score_html}
       <div class="pc-badge {_badge_cls}">{_badge_txt}</div>
     </div>""")
 
@@ -7118,7 +7969,7 @@ elif page == "🎯 Scoring Engine":
     st.markdown("---")
 
     # Tabs for different functions
-    se_tab1, se_tab2, se_tab3, se_tab4, se_tab5 = st.tabs(["🏆 Top Picks", "💎 Value Plays", "📊 Full Rankings", "📰 Reports", "🐴 Course & Research"])
+    se_tab1, se_tab2, se_tab3, se_tab4 = st.tabs(["🏆 Top Picks", "💎 Value Plays", "📊 Full Rankings", "📰 Reports"])
 
     with se_tab1:
         st.markdown("### 🏆 Top Picks for This Week")
@@ -7365,7 +8216,6 @@ elif page == "🎯 Scoring Engine":
                     with m4:
                         st.metric("Updated", last_updated_str)
 
-                    # Spotlight top 3
                     st.markdown("#### Top 3 Spotlight")
                     medals = {1: "🥇", 2: "🥈", 3: "🥉"}
                     top3 = df.head(3).copy()
@@ -7402,11 +8252,11 @@ elif page == "🎯 Scoring Engine":
                     board_df = board_df.head(board_size)
 
                     def _pr_border(rank_num):
-                        if rank_num == 1:   return "#f1c40f"  # gold
-                        if rank_num == 2:   return "#aaa"     # silver
-                        if rank_num == 3:   return "#cd7f32"  # bronze
-                        if rank_num <= 10:  return "#3498db"  # blue
-                        return "#2a3a50"                      # muted
+                        if rank_num == 1:   return "#f1c40f"
+                        if rank_num == 2:   return "#aaa"
+                        if rank_num == 3:   return "#cd7f32"
+                        if rank_num <= 10:  return "#3498db"
+                        return "#2a3a50"
 
                     for _, row in board_df.iterrows():
                         rank_val = row.get("rank")
@@ -7438,105 +8288,6 @@ elif page == "🎯 Scoring Engine":
                 st.info("No power rankings available yet.")
         else:
             st.info("Power rankings directory not found.")
-
-    with se_tab5:
-        st.markdown("### Course & Research")
-        st.caption("Course history, player fit data, and tour-specific research for this week's field.")
-
-        if engine and tournament:
-            # ── Resolve tournament ID for HFC files ──────────────────────────
-            _se_hfc_tid = None
-            _sched_path_se = DATA_DIR / "raw" / "schedule_2026.csv"
-            if _sched_path_se.exists():
-                try:
-                    _sched_se = pd.read_csv(_sched_path_se)
-                    _sched_row_se = _sched_se[
-                        _sched_se["tournament_name"].astype(str).str.lower() == str(tournament).lower()
-                    ]
-                    if not _sched_row_se.empty:
-                        _se_hfc_tid = str(_sched_row_se.iloc[0]["tournament_id"])
-                except Exception:
-                    pass
-            if not _se_hfc_tid and str(tournament).startswith("R20"):
-                _se_hfc_tid = str(tournament)
-
-        
-
-            st.markdown("---")
-
-            # ── KFT Graduates in Field ─────────────────────────────────────
-            _se_kft_path = DATA_DIR / "historical" / "kft_player_profiles.csv"
-            if _se_kft_path.exists() and not _se_preds.empty:
-                try:
-                    _se_kft_df = pd.read_csv(_se_kft_path)
-
-                    def _se_kft_norm(n):
-                        n = str(n).strip()
-                        if ", " in n:
-                            parts = n.split(", ", 1)
-                            n = f"{parts[1]} {parts[0]}"
-                        return n.lower()
-
-                    _se_kft_df["_norm"] = _se_kft_df["player_name"].apply(_se_kft_norm)
-                    _se_preds["_norm"]  = _se_preds["player_name"].apply(_se_kft_norm)
-                    _se_in_field = _se_preds.merge(_se_kft_df, on="_norm", how="inner", suffixes=("", "_kft"))
-                    _se_preds.drop(columns=["_norm"], inplace=True)
-
-                    if not _se_in_field.empty:
-                        with st.expander(f"🎓 KFT Graduates in Field ({len(_se_in_field)})", expanded=False):
-                            st.caption("Field members with Korn Ferry Tour history — useful for players with limited PGA Tour data.")
-                            _se_kft_cols = []
-                            _se_kft_ren = {}
-                            for _c, _lbl in [("player_name", "Player"), ("kft_year", "Best KFT Year"),
-                                             ("scoring_avg", "Scoring Avg"), ("kft_sg_proxy", "KFT SG Proxy"),
-                                             ("top10s", "KFT Top-10s")]:
-                                if _c in _se_in_field.columns:
-                                    _se_kft_cols.append(_c)
-                                    _se_kft_ren[_c] = _lbl
-                            _se_kft_show = _se_in_field[_se_kft_cols].rename(columns=_se_kft_ren)
-                            if "KFT SG Proxy" in _se_kft_show.columns:
-                                _se_kft_show = _se_kft_show.sort_values("KFT SG Proxy", ascending=False)
-                            st.dataframe(_se_kft_show, hide_index=True, use_container_width=True)
-                except Exception:
-                    pass
-
-            # ── LIV Golf Players in Field ──────────────────────────────────
-            _se_liv_path = DATA_DIR / "historical" / "liv_player_profiles.csv"
-            if _se_liv_path.exists() and not _se_preds.empty:
-                try:
-                    _se_liv_df = pd.read_csv(_se_liv_path)
-
-                    def _se_liv_norm(n):
-                        n = str(n).strip()
-                        if ", " in n:
-                            parts = n.split(", ", 1)
-                            n = f"{parts[1]} {parts[0]}"
-                        return n.lower()
-
-                    _se_liv_df["_norm"] = _se_liv_df["player_name"].apply(_se_liv_norm)
-                    _se_preds["_norm"]  = _se_preds["player_name"].apply(_se_liv_norm)
-                    _se_liv_in = _se_preds.merge(_se_liv_df, on="_norm", how="inner", suffixes=("", "_liv"))
-                    _se_preds.drop(columns=["_norm"], inplace=True)
-
-                    if not _se_liv_in.empty:
-                        with st.expander(f"⛳ LIV Golf Players in Field ({len(_se_liv_in)})", expanded=False):
-                            st.caption("LIV Golf players currently in this week's field. No official SG data — proxy based on scoring average vs field.")
-                            _se_liv_cols = [c for c in ["player_name", "year", "liv_scoring_avg",
-                                                         "liv_sg_proxy", "liv_events", "liv_top10s"]
-                                            if c in _se_liv_in.columns]
-                            _se_liv_show = _se_liv_in[_se_liv_cols].rename(columns={
-                                "player_name": "Player", "year": "Season",
-                                "liv_scoring_avg": "Scoring Avg", "liv_sg_proxy": "SG Proxy",
-                                "liv_events": "Events", "liv_top10s": "Top-10s"
-                            })
-                            if "SG Proxy" in _se_liv_show.columns:
-                                _se_liv_show = _se_liv_show.sort_values("SG Proxy", ascending=False)
-                            st.dataframe(_se_liv_show, hide_index=True, use_container_width=True)
-                except Exception:
-                    pass
-
-        else:
-            st.info("No current tournament found. Run the pipeline to load predictions.")
 
 
 # ============================================================================
@@ -7593,7 +8344,7 @@ elif page == "📋 My Picks":
             _gcols = st.columns(min(4, len(_groups[_rem])))
             for _gi, (_gname, _gdata) in enumerate(_groups[_rem]):
                 _grem   = _gdata.get("remaining_uses", 3)
-                _gtotal = _gdata.get("total_points", 0)
+                _gtotal = _gdata.get("total_earnings", _gdata.get("total_points", 0))
                 _gdots  = "🟢" * _grem + "⬜" * (3 - _grem)
                 _gweeks = [str(t.get("week", "")) for t in _gdata.get("tournaments_used", [])]
                 _gwk_str = ("Wk " + ", ".join(_gweeks)) if _gweeks else ""
@@ -7609,7 +8360,7 @@ elif page == "📋 My Picks":
                         <div style="font-size:1.05em;margin-bottom:3px;">{_gdots}</div>
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <span style="font-size:0.75em;color:{_gc};font-weight:600;">
-                                {_gtotal:,} pts
+                                ${int(_gtotal or 0):,}
                             </span>
                             <span style="font-size:0.72em;color:#6b7fa3;">{_gwk_str}</span>
                         </div>
@@ -7724,7 +8475,7 @@ elif page == "📋 My Picks":
             with col1:
                 finish_pos = st.text_input("Finish position:", placeholder="e.g., 1st, T3, T15, MC", key="finish_pos")
             with col2:
-                points_earned = st.number_input("Points earned:", min_value=0, max_value=500, value=0, key="points_earned")
+                earnings_earned = st.number_input("Earnings ($):", min_value=0, max_value=10000000, value=0, step=1000, key="earnings_earned")
 
             record_result_btn = st.button("📝 Record Result", type="primary", key="record_result_btn")
 
@@ -7740,7 +8491,7 @@ elif page == "📋 My Picks":
                             "--result", result_player,
                             "--tournament", result_tourney,
                             "--finish", finish_pos,
-                            "--points", str(points_earned)
+                            "--earnings", str(earnings_earned)
                         )
                     st.code(output, language=None)
                     if "recorded" in output.lower() or "updated" in output.lower():
@@ -7776,7 +8527,7 @@ elif page == "📋 My Picks":
 
     # Auto-Record Results
     st.markdown("### 🤖 Auto-Record Results")
-    st.caption("Automatically fetch results from leaderboard data using FedEx points")
+    st.caption("Automatically fetch results and official earnings from leaderboard data when available")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -7801,12 +8552,15 @@ elif page == "📋 My Picks":
 
     _log_path = OUTPUTS_DIR / "season_log.csv"
     _tracker_path = PROJECT_ROOT / "data" / "fantasy" / "usage_tracker_2026.json"
+    _wk_player_res: dict = {}
 
     # Load season log; fall back to empty frame if file is missing
     _log = pd.read_csv(_log_path) if _log_path.exists() else pd.DataFrame(
         columns=["week", "date", "tournament", "pick1", "pick2", "pick3",
-                 "result1", "result2", "result3", "points", "league_rank",
+                 "result1", "result2", "result3", "earnings", "league_rank",
                  "notes", "rank1", "rank2", "rank3", "avg_model_rank"])
+    if "earnings" not in _log.columns and "points" in _log.columns:
+        _log["earnings"] = _log["points"]
 
     # Augment from usage_tracker for any weeks not yet written to season_log.csv
     if _tracker_path.exists():
@@ -7814,16 +8568,65 @@ elif page == "📋 My Picks":
             _tracker = json.loads(_tracker_path.read_text())
             _log_weeks = set(pd.to_numeric(_log["week"], errors="coerce").dropna().astype(int).tolist())
             _wk_lineups = _tracker.get("weekly_lineups", {})
-            # Build per-week player → result / points lookup
-            _wk_player_res: dict = {}
+            _wk_totals: dict[int, float] = {}
+            for _wk_key, _wd in _wk_lineups.items():
+                _wk_num = pd.to_numeric(_wd.get("week"), errors="coerce")
+                _wk_earnings = pd.to_numeric(_wd.get("earnings_earned", _wd.get("points_earned")), errors="coerce")
+                if pd.notna(_wk_num) and pd.notna(_wk_earnings):
+                    _wk_totals[int(_wk_num)] = float(_wk_earnings)
+            # Build per-week player → result / earnings lookup
             for _pname, _pdata in _tracker.get("picks", {}).items():
                 for _tu in _pdata.get("tournaments_used", []):
                     _wk = _tu.get("week")
                     if _wk is not None:
-                        _wk_player_res.setdefault(int(_wk), {})[_pname] = {
+                        _wk_player_res.setdefault(int(_wk), {})[_name_key(_pname)] = {
                             "result": _tu.get("result", ""),
-                            "points": _tu.get("points") or 0,
+                            "earnings": pd.to_numeric(_tu.get("earnings", _tu.get("points")), errors="coerce"),
+                            "source": str(_tu.get("result_source", "")).strip(),
                         }
+            # Hydrate any existing season_log rows with tracker results/earnings + saved model ranks.
+            for _idx in _log.index:
+                _wk_n = pd.to_numeric(_log.at[_idx, "week"], errors="coerce")
+                if pd.isna(_wk_n):
+                    continue
+                _wk_n = int(_wk_n)
+                _wr = _wk_player_res.get(_wk_n, {})
+                _tournament_name = str(_log.at[_idx, "tournament"]).strip() if "tournament" in _log.columns else ""
+                _event_date = str(_log.at[_idx, "date"]).strip() if "date" in _log.columns else ""
+                _rank_lookup = load_prediction_rank_lookup_for_tournament(_tournament_name, _event_date)
+                _rank_vals = []
+                _has_non_cut_finish = False
+                for _pi in range(1, 4):
+                    _pick_col = f"pick{_pi}"
+                    _result_col = f"result{_pi}"
+                    _rank_col = f"rank{_pi}"
+                    _pname = str(_log.at[_idx, _pick_col]).strip() if _pick_col in _log.columns and pd.notna(_log.at[_idx, _pick_col]) else ""
+                    if not _pname:
+                        continue
+                    _pinfo = _wr.get(_name_key(_pname), {})
+                    _existing_result = str(_log.at[_idx, _result_col]).strip() if _result_col in _log.columns and pd.notna(_log.at[_idx, _result_col]) else ""
+                    if _result_col in _log.columns and (not _existing_result or _existing_result.lower() == "nan") and _pinfo.get("result"):
+                        _log.at[_idx, _result_col] = _pinfo.get("result", "")
+                    _final_result = str(_log.at[_idx, _result_col]).strip() if _result_col in _log.columns and pd.notna(_log.at[_idx, _result_col]) else ""
+                    if _final_result and _final_result.upper() not in {"CUT", "MC", "WD", "DQ", "MDF", "W/D", "0"}:
+                        _has_non_cut_finish = True
+                    _rk = pd.to_numeric(_log.at[_idx, _rank_col], errors="coerce") if _rank_col in _log.columns else np.nan
+                    if pd.isna(_rk):
+                        _rk = _rank_lookup.get(_name_key(_pname), np.nan)
+                        if pd.notna(_rk):
+                            _log.at[_idx, _rank_col] = int(_rk)
+                    if pd.notna(_rk):
+                        _rank_vals.append(float(_rk))
+
+                _existing_earnings = pd.to_numeric(_log.at[_idx, "earnings"], errors="coerce") if "earnings" in _log.columns else np.nan
+                _week_total = _wk_totals.get(_wk_n)
+                if "earnings" in _log.columns and pd.notna(_week_total) and (pd.isna(_existing_earnings) or float(_existing_earnings) <= 0):
+                    _log.at[_idx, "earnings"] = int(_week_total)
+                elif "earnings" in _log.columns and pd.notna(_existing_earnings) and float(_existing_earnings) <= 0 and _has_non_cut_finish:
+                    _log.at[_idx, "earnings"] = np.nan
+                if "avg_model_rank" in _log.columns and _rank_vals and pd.isna(pd.to_numeric(_log.at[_idx, "avg_model_rank"], errors="coerce")):
+                    _log.at[_idx, "avg_model_rank"] = round(float(np.mean(_rank_vals)), 1)
+
             _new_rows = []
             for _wk_key in sorted(_wk_lineups.keys()):
                 _wd = _wk_lineups[_wk_key]
@@ -7832,17 +8635,21 @@ elif page == "📋 My Picks":
                     _lp = (_wd.get("lineup") or [])[:3]
                     _lp = (_lp + ["", "", ""])[:3]
                     _wr = _wk_player_res.get(_wk_n, {})
-                    _rs = [_wr.get(_lp[i], {}).get("result", "") for i in range(3)]
-                    _tp = sum(_wr.get(_lp[i], {}).get("points", 0) or 0 for i in range(3))
-                    _any_res = any(str(r).strip() not in ("", "nan") for r in _rs)
+                    _rs = [_wr.get(_name_key(_lp[i]), {}).get("result", "") for i in range(3)]
+                    _tp = _wk_totals.get(_wk_n)
+                    _rank_lookup = load_prediction_rank_lookup_for_tournament(_wd.get("tournament", ""), _wd.get("date", ""))
+                    _ranks = [_rank_lookup.get(_name_key(_lp[i]), np.nan) for i in range(3)]
                     _new_rows.append({
                         "week": _wk_n, "date": _wd.get("date", ""),
                         "tournament": _wd.get("tournament", ""),
                         "pick1": _lp[0], "pick2": _lp[1], "pick3": _lp[2],
                         "result1": _rs[0], "result2": _rs[1], "result3": _rs[2],
-                        "points": _tp if _any_res else None,
+                        "earnings": int(_tp) if pd.notna(_tp) else None,
                         "league_rank": None, "notes": "",
-                        "rank1": None, "rank2": None, "rank3": None, "avg_model_rank": None,
+                        "rank1": _ranks[0] if pd.notna(_ranks[0]) else None,
+                        "rank2": _ranks[1] if pd.notna(_ranks[1]) else None,
+                        "rank3": _ranks[2] if pd.notna(_ranks[2]) else None,
+                        "avg_model_rank": round(float(np.nanmean(_ranks)), 1) if any(pd.notna(x) for x in _ranks) else None,
                     })
             if _new_rows:
                 _log = pd.concat([_log, pd.DataFrame(_new_rows)], ignore_index=True)
@@ -7851,7 +8658,17 @@ elif page == "📋 My Picks":
             pass
 
     if not _log.empty:
-        _completed = _log[_log["points"].notna() & (_log["points"] != "")]
+        _result_cols = [c for c in ["result1", "result2", "result3"] if c in _log.columns]
+        if _result_cols:
+            _completed = _log[
+                _log[_result_cols]
+                .astype(str)
+                .apply(lambda col: col.str.strip().str.lower().replace("nan", ""))
+                .ne("")
+                .any(axis=1)
+            ]
+        else:
+            _completed = pd.DataFrame()
 
         if not _completed.empty:
             
@@ -7862,13 +8679,13 @@ elif page == "📋 My Picks":
             for _, _slrow in _log.iterrows():
                 _wk   = _slrow.get("week")
                 _t    = str(_slrow.get("tournament", "")).strip()
-                _pts  = pd.to_numeric(_slrow.get("points"), errors="coerce")
                 _note = str(_slrow.get("notes", "")).strip() if pd.notna(_slrow.get("notes")) else ""
                 for _pi in range(1, 4):
                     _pn = _slrow.get(f"pick{_pi}")
                     _pr = _slrow.get(f"result{_pi}")
                     _rk = pd.to_numeric(_slrow.get(f"rank{_pi}"), errors="coerce")
                     if pd.notna(_pn) and str(_pn).strip() not in ("", "nan"):
+                        _pinfo = _wk_player_res.get(int(_wk), {}).get(_name_key(str(_pn).strip()), {}) if pd.notna(_wk) else {}
                         _result_str = str(_pr).strip() if pd.notna(_pr) and str(_pr).strip() not in ("", "nan") else "—"
                         _fin = None
                         if _result_str not in ("—", "MC", "CUT", "WD", "DQ"):
@@ -7897,21 +8714,31 @@ elif page == "📋 My Picks":
                             if _diff > 5:   _vs = f"▲ +{_diff}"
                             elif _diff < -5: _vs = f"▼ {_diff}"
                             else:           _vs = f"~ {_diff:+d}"
+                        elif pd.notna(_rk) and _result_str in ("MC", "CUT", "WD", "DQ"):
+                            _vs = f"▼ {_result_str}"
+
+                        # Per-pick FedEx Cup points from tracker
+                        _pick_pts = _pinfo.get("earnings")
+                        _pick_pts_v = int(_pick_pts) if pd.notna(_pick_pts) else "—"
+                        # Weekly total from _wk_totals
+                        _wk_total = _wk_totals.get(int(_wk)) if pd.notna(_wk) else None
+                        _wk_pts_v = int(_wk_total) if _wk_total is not None and pd.notna(_wk_total) else "—"
 
                         _pq_rows.append({
-                            "Wk":           int(_wk) if pd.notna(_wk) else "—",
-                            "Tournament":   _t,
-                            "Player":       str(_pn).strip(),
-                            "Result":       _result_disp,
-                            "Model Rank":   int(_rk) if pd.notna(_rk) else "—",
+                            "Wk":            int(_wk) if pd.notna(_wk) else "—",
+                            "Tournament":    _t,
+                            "Player":        str(_pn).strip(),
+                            "Result":        _result_disp,
+                            "FedEx Pts":     _pick_pts_v,
+                            "Wk Total":      _wk_pts_v,
+                            "Model Rank":    int(_rk) if pd.notna(_rk) else "—",
                             "vs Prediction": _vs,
-                            "Wk Points":    int(_pts) if pd.notna(_pts) else "—",
                         })
 
             if _pq_rows:
                 _pq_df = pd.DataFrame(_pq_rows)
                 # Keep nullable integer dtypes so Arrow conversion is stable (avoid mixed int/"—" objects).
-                for _num_col in ("Wk", "Model Rank", "Wk Points"):
+                for _num_col in ("Wk", "FedEx Pts", "Wk Total", "Model Rank"):
                     if _num_col in _pq_df.columns:
                         _pq_df[_num_col] = pd.to_numeric(_pq_df[_num_col], errors="coerce").astype("Int64")
                 st.dataframe(
@@ -7919,9 +8746,12 @@ elif page == "📋 My Picks":
                     hide_index=True,
                     use_container_width=True,
                     column_config={
-                        "Wk": st.column_config.NumberColumn("Wk", width="small"),
+                        "Wk":         st.column_config.NumberColumn("Wk", width="small"),
+                        "FedEx Pts":  st.column_config.NumberColumn("FedEx Pts", width="small",
+                                        help="FedEx Cup points earned by this player"),
+                        "Wk Total":   st.column_config.NumberColumn("Wk Total", width="small",
+                                        help="Total FedEx Cup points for the week (all 3 picks combined)"),
                         "Model Rank": st.column_config.NumberColumn("Model Rank", width="small"),
-                        "Wk Points": st.column_config.NumberColumn("Wk Points", width="small"),
                     },
                 )
                 st.caption("🏆 Win  🟢 Top 5  🟡 Top 10  🔵 Top 20  ⚪ Outside 20  ❌ Missed Cut  |  **vs Prediction**: ▲ outperformed model rank, ▼ underperformed")
@@ -8054,173 +8884,6 @@ elif page == "👤 Players":
 
     engine = load_scoring_engine(_scoring_engine_cache_key())
     all_players = sorted(engine.predictions.keys()) if engine and engine.predictions else []
-    _best_events_state_key = "player_best_events_cache"
-    if _best_events_state_key not in st.session_state:
-        st.session_state[_best_events_state_key] = {}
-    _best_events_cache_ver = int((PROJECT_ROOT / "scripts" / "planning" / "scoring_engine.py").stat().st_mtime)
-
-    def _player_best_events_df(_player_name: str, _top_n: int = 10) -> pd.DataFrame:
-        """Build a structured best-events table for the selected player."""
-        if not engine or not _player_name:
-            return pd.DataFrame()
-        try:
-            _scores = engine.get_player_best_tournaments(_player_name, top_n=_top_n)
-        except Exception:
-            return pd.DataFrame()
-        _rows = []
-        for _i, _s in enumerate(_scores, 1):
-            _t = engine.tournaments.get(_s.tournament)
-            _fc_raw = float(getattr(_s, "fit_confidence", 0.0) or 0.0)
-            _fc_pct = _fc_raw * 100.0 if _fc_raw <= 1.5 else _fc_raw
-            _fc_pct = float(np.clip(_fc_pct, 0.0, 100.0))
-            if _fc_pct >= 75:
-                _fc_tier = "High"
-            elif _fc_pct >= 50:
-                _fc_tier = "Medium"
-            elif _fc_pct > 0:
-                _fc_tier = "Low"
-            else:
-                _fc_tier = "Unknown"
-            _rows.append({
-                "#": _i,
-                "Tournament": _s.tournament,
-                "Date": _t.start_date if _t else "—",
-                "Type": _t.tournament_type if _t else "—",
-                "Importance": round(float(_s.tournament_importance), 1),
-                "Total Score": round(float(_s.total_score), 1),
-                "Course Fit": round(float(_s.course_fit), 1),
-                "DG Fit": round(float(getattr(_s, "dg_fit_score", 50.0)), 1),
-                "Fit Confidence": round(_fc_pct, 1),
-                "Confidence Tier": _fc_tier,
-                "ML Score": round(float(getattr(_s, "ml_prediction", 50.0)), 1),
-                "Form Score": round(float(getattr(_s, "current_form", 50.0)), 1),
-                "Field Score": round(float(getattr(_s, "field_strength", 50.0)), 1),
-                "W ML": round(float(getattr(_s, "weights", {}).get("ml_prediction", 0.0)) * 100.0, 1),
-                "W Importance": round(float(getattr(_s, "weights", {}).get("importance", 0.0)) * 100.0, 1),
-                "W Course": round(float(getattr(_s, "weights", {}).get("course_fit", 0.0)) * 100.0, 1),
-                "W Form": round(float(getattr(_s, "weights", {}).get("form", 0.0)) * 100.0, 1),
-                "W Field": round(float(getattr(_s, "weights", {}).get("field", 0.0)) * 100.0, 1),
-                "Signal": _s.course_history_note or "—",
-            })
-        return pd.DataFrame(_rows)
-
-    def _render_best_events_ui(_events_df: pd.DataFrame, _title: str = "Best Events"):
-        """Render visual best-events section with score and component charts."""
-        if _events_df.empty:
-            return
-
-        st.markdown(f"#### {_title}")
-        _m1, _m2, _m3, _m4 = st.columns(4)
-        with _m1:
-            _best_t = str(_events_df.iloc[0]["Tournament"])
-            st.metric("Top Event", _best_t[:24] + ("…" if len(_best_t) > 24 else ""))
-        with _m2:
-            st.metric("Best Score", f"{float(_events_df['Total Score'].max()):.1f}")
-        with _m3:
-            st.metric("Avg DG Fit", f"{float(pd.to_numeric(_events_df['DG Fit'], errors='coerce').mean()):.1f}")
-        with _m4:
-            _fc_vals = pd.to_numeric(_events_df["Fit Confidence"], errors="coerce")
-            st.metric("Avg Fit Confidence", f"{float(_fc_vals.mean()):.0f}%")
-
-        _chart_df = _events_df.head(10).copy()
-        _chart_df = _chart_df.sort_values("Total Score", ascending=True)
-        _chart_df["Fit Confidence"] = pd.to_numeric(_chart_df["Fit Confidence"], errors="coerce").fillna(0.0)
-
-        _bar = go.Figure()
-        _bar.add_trace(go.Bar(
-            x=pd.to_numeric(_chart_df["Total Score"], errors="coerce"),
-            y=_chart_df["Tournament"],
-            orientation="h",
-            marker=dict(
-                color=_chart_df["Fit Confidence"],
-                colorscale="RdYlGn",
-                cmin=0,
-                cmax=100,
-                line=dict(color="#1c2f4a", width=1),
-                colorbar=dict(title="Confidence %"),
-            ),
-            customdata=_chart_df[["Type", "DG Fit", "Course Fit", "Fit Confidence", "Confidence Tier"]].values,
-            hovertemplate=(
-                "<b>%{y}</b><br>"
-                "Total: %{x:.1f}<br>"
-                "Type: %{customdata[0]}<br>"
-                "DG Fit: %{customdata[1]:.1f}<br>"
-                "Course Fit: %{customdata[2]:.1f}<br>"
-                "Fit Confidence: %{customdata[3]:.0f}% (%{customdata[4]})<extra></extra>"
-            ),
-        ))
-        _bar.update_layout(
-            height=max(280, 34 * len(_chart_df)),
-            margin=dict(t=8, b=8, l=8, r=8),
-            plot_bgcolor="rgba(0,0,0,0)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            font_color="#dde6f5",
-            xaxis=dict(title="Total Score", gridcolor="#1c2f4a"),
-            yaxis=dict(title="", gridcolor="rgba(0,0,0,0)"),
-            showlegend=False,
-        )
-        st.plotly_chart(_bar, use_container_width=True)
-
-        _comp_df = _events_df.head(6).copy()
-        _comp_df["ML"] = pd.to_numeric(_comp_df["ML Score"], errors="coerce") * (
-            pd.to_numeric(_comp_df["W ML"], errors="coerce") / 100.0
-        )
-        _comp_df["Course"] = pd.to_numeric(_comp_df["Course Fit"], errors="coerce") * (
-            pd.to_numeric(_comp_df["W Course"], errors="coerce") / 100.0
-        )
-        _comp_df["Importance"] = pd.to_numeric(_comp_df["Importance"], errors="coerce") * (
-            pd.to_numeric(_comp_df["W Importance"], errors="coerce") / 100.0
-        )
-        _comp_df["Form"] = pd.to_numeric(_comp_df["Form Score"], errors="coerce") * (
-            pd.to_numeric(_comp_df["W Form"], errors="coerce") / 100.0
-        )
-        _comp_df["Field"] = pd.to_numeric(_comp_df["Field Score"], errors="coerce") * (
-            pd.to_numeric(_comp_df["W Field"], errors="coerce") / 100.0
-        )
-
-        _stack = go.Figure()
-        for _name, _color in [
-            ("ML", "#00c44f"),
-            ("Course", "#4cb8ff"),
-            ("Importance", "#f59e0b"),
-            ("Form", "#d97706"),
-            ("Field", "#6b7280"),
-        ]:
-            _stack.add_trace(go.Bar(
-                x=_comp_df["Tournament"],
-                y=_comp_df[_name],
-                name=_name,
-                marker_color=_color,
-                hovertemplate=f"{_name}: %{{y:.1f}}<extra></extra>",
-            ))
-        _stack.update_layout(
-            barmode="stack",
-            height=300,
-            margin=dict(t=8, b=8, l=8, r=8),
-            plot_bgcolor="rgba(0,0,0,0)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            font_color="#dde6f5",
-            xaxis=dict(title="", tickangle=-20, gridcolor="rgba(0,0,0,0)"),
-            yaxis=dict(title="Weighted Component Points", gridcolor="#1c2f4a"),
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
-        )
-        st.plotly_chart(_stack, use_container_width=True)
-
-        _table_cols = [
-            "#", "Tournament", "Date", "Type", "Total Score", "Course Fit", "DG Fit",
-            "Fit Confidence", "Confidence Tier", "W Importance", "W Course", "Signal",
-        ]
-        st.dataframe(
-            _events_df[_table_cols],
-            hide_index=True,
-            use_container_width=True,
-            column_config={
-                "Fit Confidence": st.column_config.ProgressColumn(
-                    "Fit Confidence", min_value=0.0, max_value=100.0, format="%.0f%%"
-                ),
-            },
-        )
-
     # Tabs for different views
     player_tab1, player_tab2, player_tab3 = st.tabs(["🔍 Player Lookup", "📊 Stats Deep Dive", "⚔️ Head-to-Head"])
 
@@ -8243,35 +8906,6 @@ elif page == "👤 Players":
         if player_search:
             st.markdown("---")
             st.markdown(f"### 📊 {player_search}")
-
-            _cache_payload = st.session_state.get(_best_events_state_key, {}).get(player_search, {})
-            _cached_rows = []
-            _cached_ver = None
-            if isinstance(_cache_payload, dict):
-                _cached_rows = _cache_payload.get("rows", [])
-                _cached_ver = _cache_payload.get("version")
-            elif isinstance(_cache_payload, list):
-                # Legacy cache shape.
-                _cached_rows = _cache_payload
-
-            _auto_best_df = pd.DataFrame(_cached_rows) if _cached_rows and _cached_ver == _best_events_cache_ver else pd.DataFrame()
-            _needs_rebuild = _auto_best_df.empty
-            if (not _needs_rebuild) and ("Fit Confidence" in _auto_best_df.columns):
-                _fc_cached = pd.to_numeric(_auto_best_df["Fit Confidence"], errors="coerce").fillna(0.0)
-                if float(_fc_cached.max()) <= 0.0:
-                    # Self-heal stale zero-confidence cache from previous logic.
-                    _needs_rebuild = True
-
-            if _needs_rebuild:
-                _auto_best_df = _player_best_events_df(player_search, _top_n=12)
-                if not _auto_best_df.empty:
-                    st.session_state[_best_events_state_key][player_search] = {
-                        "version": _best_events_cache_ver,
-                        "rows": _auto_best_df.to_dict(orient="records"),
-                    }
-            if not _auto_best_df.empty:
-                st.caption("Best-events ranking blends exact history, course-type fallback, and DataGolf-style course demand fit.")
-                _render_best_events_ui(_auto_best_df, _title="🗓️ Best Events (Player-Specific)")
 
             # Load player data from predictions
             preds_path = OUTPUTS_DIR / "latest_predictions.csv"
@@ -8342,6 +8976,23 @@ elif page == "👤 Players":
                     _context_bits.append(f"Usage: {usage_label}")
                 if _context_bits:
                     st.caption(" • ".join(_context_bits))
+
+                # Course history compact line
+                if hist_plays and int(hist_plays) > 0:
+                    hist_best = player_data.get("hist_best_finish")
+                    hist_wins_ct = int(player_data.get("hist_wins", 0) or 0)
+                    hist_top10_ct = int(player_data.get("hist_top10s", 0) or 0)
+                    hist_cut_r = player_data.get("hist_cut_rate")
+                    _hparts = [f"{int(hist_plays)} starts at this course"]
+                    if pd.notna(hist_best) and float(hist_best) < 40:
+                        _hparts.append("best: Win" if float(hist_best) <= 1 else f"best: T{int(float(hist_best))}")
+                    if hist_wins_ct > 0:
+                        _hparts.append(f"{hist_wins_ct} win{'s' if hist_wins_ct > 1 else ''}")
+                    elif hist_top10_ct > 0:
+                        _hparts.append(f"{hist_top10_ct} top-10{'s' if hist_top10_ct > 1 else ''}")
+                    if pd.notna(hist_cut_r):
+                        _hparts.append(f"{float(hist_cut_r)*100:.0f}% cuts made")
+                    st.caption(" · ".join(_hparts))
 
                 # ── SNAPSHOT CARDS (grouped, less "floating") ───────────────────────
                 with st.container(border=True):
@@ -9186,12 +9837,62 @@ elif page == "👤 Players":
                     # ── PGA-STYLE COMPARISON GRID ────────────────────────
                     st.markdown("---")
 
+                    # Load form_stats fallback for any non-SG stat columns missing
+                    # from predictions.csv (e.g. driving_acc, sand_save, one_putt_pct
+                    # added to NON_SG_STATS but pipeline not yet re-run).
+                    _h2h_fs_extra: dict = {}
+                    _h2h_fs_map = {
+                        "102": "driving_acc_val",
+                        "111": "sand_save_val",
+                        "119": "one_putt_pct_val",
+                    }
+                    _missing_fs = {sid: col for sid, col in _h2h_fs_map.items()
+                                   if col not in _h2h_df.columns}
+                    if _missing_fs:
+                        _fs_hist = DATA_DIR / "historical"
+                        _fs_year_path = next(
+                            (_fs_hist / f"form_stats_{y}.csv"
+                             for y in [datetime.now().year, datetime.now().year - 1]
+                             if (_fs_hist / f"form_stats_{y}.csv").exists()),
+                            None
+                        )
+                        if _fs_year_path:
+                            try:
+                                _fs_raw = pd.read_csv(_fs_year_path)
+                                _fs_raw["stat_id"] = _fs_raw["stat_id"].astype(str)
+                                _fs_raw["player_id"] = _fs_raw["player_id"].astype(str)
+                                for _fsid, _fscol in _missing_fs.items():
+                                    _fs_rows = _fs_raw[_fs_raw["stat_id"] == _fsid]
+                                    if not _fs_rows.empty:
+                                        _fs_latest = (
+                                            _fs_rows.sort_values("tournament_id")
+                                            .groupby("player_id")
+                                            .tail(1)
+                                        )
+                                        _h2h_fs_extra[_fscol] = dict(
+                                            zip(_fs_latest["player_id"],
+                                                _fs_latest["stat_value_numeric"])
+                                        )
+                            except Exception:
+                                pass
+
                     def _hg(row, k):
                         v = row.get(k)
                         try:
-                            return float(v) if pd.notna(v) else None
+                            if v is not None and pd.notna(v):
+                                return float(v)
                         except (TypeError, ValueError):
-                            return None
+                            pass
+                        # Fallback: look up in form_stats extra dict keyed by player_id
+                        if k in _h2h_fs_extra:
+                            try:
+                                pid = str(int(float(row.get("player_id") or 0)))
+                                fv = _h2h_fs_extra[k].get(pid)
+                                if fv is not None and pd.notna(fv):
+                                    return float(fv)
+                            except (TypeError, ValueError):
+                                pass
+                        return None
 
                     def _h2h_bar(fa, fb):
                         if fa is None or fb is None:
@@ -9309,6 +10010,19 @@ elif page == "👤 Players":
                     _rows += _h2h_row("Cut Rate", (_hg(_r1,"hist_cut_rate") or 0)*100, (_hg(_r2,"hist_cut_rate") or 0)*100, fmt=".0f", suffix="%")
                     _rows += _h2h_row("Times Played", _hg(_r1,"hist_times_played"), _hg(_r2,"hist_times_played"), fmt=".0f")
 
+                    _rows += _h2h_sec("Ball Striking")
+                    _rows += _h2h_row("Driving Distance", _hg(_r1,"driving_dist_val"), _hg(_r2,"driving_dist_val"), fmt=".0f", suffix=" yds")
+                    _rows += _h2h_row("Driving Accuracy", _hg(_r1,"driving_acc_val"), _hg(_r2,"driving_acc_val"), fmt=".1f", suffix="%")
+                    _rows += _h2h_row("GIR %", _hg(_r1,"gir_pct_val"), _hg(_r2,"gir_pct_val"), fmt=".1f", suffix="%")
+                    _rows += _h2h_row("Scrambling %", _hg(_r1,"scrambling_val"), _hg(_r2,"scrambling_val"), fmt=".1f", suffix="%")
+                    _rows += _h2h_row("Sand Save %", _hg(_r1,"sand_save_val"), _hg(_r2,"sand_save_val"), fmt=".1f", suffix="%")
+
+                    _rows += _h2h_sec("Scoring")
+                    _rows += _h2h_row("Birdie Avg", _hg(_r1,"birdie_avg_val"), _hg(_r2,"birdie_avg_val"), fmt=".2f")
+                    _rows += _h2h_row("Bogey Avoidance", _hg(_r1,"bogey_avoid_val"), _hg(_r2,"bogey_avoid_val"), fmt=".1f", suffix="%")
+                    _rows += _h2h_row("Putts / Round", _hg(_r1,"putts_per_round_val"), _hg(_r2,"putts_per_round_val"), higher_better=False, fmt=".2f")
+                    _rows += _h2h_row("1-Putt %", _hg(_r1,"one_putt_pct_val"), _hg(_r2,"one_putt_pct_val"), fmt=".1f", suffix="%")
+
                     _rows += _h2h_sec("Market")
                     _rows += _h2h_row("World Rank", _hg(_r1,"world_rank"), _hg(_r2,"world_rank"), higher_better=False, fmt=".0f")
                     _me1 = _hg(_r1,"model_vs_vegas_edge"); _me2 = _hg(_r2,"model_vs_vegas_edge")
@@ -9316,51 +10030,18 @@ elif page == "👤 Players":
                         _rows += _h2h_row("Model vs Market Edge", (_me1 or 0)*100, (_me2 or 0)*100, fmt="+.1f", suffix=" pp")
 
                     st.markdown(f"""
-<div style="background:#0d1a30;border-radius:12px;overflow:hidden;border:1px solid #1a2e4a;">
-  <div style="background:#040a14;padding:9px 20px;text-align:center;border-bottom:2px solid #0e1c2e;">
-    <span style="font-size:0.68em;color:#2a4060;text-transform:uppercase;letter-spacing:.08em;">
-      Model Verdict · </span>
-    <span style="font-size:0.88em;font-weight:700;color:{_vcol};">{_vname}</span>
-    <span style="font-size:0.72em;color:#3a5070;"> · {_vdiff}</span>
-  </div>
-  {_rows}
-</div>
-""", unsafe_allow_html=True)
+                    <div style="background:#0d1a30;border-radius:12px;overflow:hidden;border:1px solid #1a2e4a;">
+                    <div style="background:#040a14;padding:9px 20px;text-align:center;border-bottom:2px solid #0e1c2e;">
+                        <span style="font-size:0.68em;color:#2a4060;text-transform:uppercase;letter-spacing:.08em;">
+                        Model Verdict · </span>
+                        <span style="font-size:0.88em;font-weight:700;color:{_vcol};">{_vname}</span>
+                        <span style="font-size:0.72em;color:#3a5070;"> · {_vdiff}</span>
+                    </div>
+                    {_rows}
+                    </div>
+                    """, unsafe_allow_html=True)
 
-                    # ── SG BREAKDOWN GROUPED BAR ─────────────────────────
-                    st.markdown("---")
-                    st.markdown("#### 🎯 Strokes Gained Breakdown")
-
-                    _sg_cats = ["Off Tee", "Approach", "Around Green", "Putting", "Tee to Green"]
-                    _sg_keys = ["season_sg_ott", "season_sg_app", "season_sg_arg",
-                                "season_sg_putt", "season_sg_t2g"]
-                    _sg_v1 = [float(_r1.get(k, 0) or 0) for k in _sg_keys]
-                    _sg_v2 = [float(_r2.get(k, 0) or 0) for k in _sg_keys]
-
-                    _sg_fig = px.bar(
-                        pd.DataFrame({
-                            "Category": _sg_cats * 2,
-                            "SG":       _sg_v1 + _sg_v2,
-                            "Player":   [_n1] * 5 + [_n2] * 5,
-                        }),
-                        x="SG", y="Category", color="Player", orientation="h",
-                        barmode="group",
-                        color_discrete_map={_n1: "#00c44f", _n2: "#4cb8ff"},
-                        text="SG",
-                        labels={"SG": "Strokes vs Tour Avg", "Category": ""},
-                    )
-                    _sg_fig.update_traces(texttemplate="%{text:+.2f}", textposition="outside")
-                    _sg_fig.add_vline(x=0, line_dash="dot", line_color="#4a6080", line_width=1)
-                    _sg_fig.update_layout(
-                        height=280,
-                        margin=dict(t=10, b=10, l=10, r=60),
-                        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
-                        font_color="#dde6f5",
-                        legend=dict(orientation="h", y=1.12, x=0),
-                        xaxis=dict(gridcolor="#1c2f4a"),
-                        yaxis=dict(gridcolor="#1c2f4a"),
-                    )
-                    st.plotly_chart(_sg_fig, use_container_width=True)
+                                
 
                     # ── FORM SPARKLINES (overlaid line chart) ────────────
                     st.markdown("---")
@@ -10139,7 +10820,7 @@ elif page == "🎰 Betting":
                 "⚔️ Matchups",
                 "🎲 Parlay Builder",
                 "📰 Expert Picks",
-                "💼 Betting Profiles",
+                "📊 Betting History",
             ])
 
             # =================================================================
@@ -11514,10 +12195,10 @@ elif page == "🎰 Betting":
                 render_expert_picks_section(preds_df, prop_tournament_id)
 
             # =================================================================
-            # TAB 6: BETTING PROFILES
+            # TAB 6: BETTING HISTORY
             # =================================================================
             with props_tab6:
-                render_betting_profiles_section(preds_df, prop_tournament_id)
+                render_betting_history_section()
 
 # ============================================================================
 # PAGE: PREDICTIONS
@@ -11610,15 +12291,10 @@ elif page == "📊 Predictions":
 
         selected_tournament_id = _tournament_id_from_df(df)
 
-        render_predictions_freshness_panel(
-            selected_tournament=selected,
-            selected_tournament_id=selected_tournament_id,
-            predictions_path=file_options[selected],
-        )
-        st.markdown("---")
+        
 
         # Tabs
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head", "📈 Visualizations", "🔍 Search", "📊 Model Health", "📅 History", "⛳ LIV Golf"])
+        tab1, tab2, tab3 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head"])
 
         with tab1:
             top_20 = df.nlargest(20, 'expected_value').copy()
@@ -11751,519 +12427,6 @@ elif page == "📊 Predictions":
                 </div>
             </div>
             """, unsafe_allow_html=True)
-
-        with tab4:
-            chart = st.radio("Select chart:",
-                            ["Win Probability", "EV Distribution", "Form vs EV"],
-                            horizontal=True)
-
-            if chart == "Win Probability":
-                top_30 = df.nlargest(30, 'win_prob')
-                fig = px.bar(top_30, x='player_name', y='win_prob',
-                            title="Top 30 by Win Probability")
-                fig.update_layout(xaxis_tickangle=-45)
-                st.plotly_chart(fig, use_container_width=True)
-
-            elif chart == "EV Distribution":
-                fig = px.histogram(df, x='expected_value', nbins=50,
-                                  title="Expected Value Distribution")
-                st.plotly_chart(fig, use_container_width=True)
-
-            elif chart == "Form vs EV":
-                fig = px.scatter(df, x='sg_total', y='expected_value',
-                                hover_data=['player_name'],
-                                title="Recent Form vs Expected Value")
-                st.plotly_chart(fig, use_container_width=True)
-
-        with tab5:
-            search = st.text_input("Search for a player:")
-            if search:
-                results = df[df['player_name'].str.contains(search, case=False, na=False)]
-                if len(results) > 0:
-                    for _, player in results.iterrows():
-                        with st.expander(f"📊 {player['player_name']}", expanded=True):
-                            col1, col2, col3 = st.columns(3)
-                            with col1:
-                                st.metric("Expected Value", f"${player['expected_value']:,.0f}")
-                                st.metric("Win %", f"{player['win_prob']*100:.2f}%")
-                            with col2:
-                                st.metric("Top-5 %", f"{player['top5_prob']*100:.1f}%")
-                                st.metric("Top-10 %", f"{player['top10_prob']*100:.1f}%")
-                            with col3:
-                                st.metric("SG Total", f"{player['sg_total']:+.3f}")
-                                plays = player['hist_times_played']
-                                st.metric("Course History",
-                                         f"{int(plays)} plays" if pd.notna(plays) else "None")
-                else:
-                    st.warning(f"No players found matching '{search}'")
-
-        with tab6:
-            # ── Model Health — Calibration & Validation Dashboard ──────────────
-            st.markdown("#### 📊 Model Health")
-            st.caption(
-                "How well do our four models perform on held-out 2025 data "
-                "(train: 2020–2024, test: 2025)."
-            )
-
-            _cal_path = OUTPUTS_DIR / "calibration_data.json"
-
-            # Regenerate button runs the script and refreshes
-            _mh_col1, _mh_col2 = st.columns([1, 4])
-            with _mh_col1:
-                if st.button("⟳ Regenerate", key="regen_cal_btn",
-                             help="Re-run against saved models (~20 seconds)"):
-                    with st.spinner("Running calibration analysis..."):
-                        _regen_out = run_script(
-                            "validation/generate_calibration_data.py"
-                        )
-                    st.cache_data.clear()
-                    st.rerun()
-            with _mh_col2:
-                if _cal_path.exists():
-                    import os as _os_mh
-                    from datetime import datetime as _dt_mh
-                    _age_h = (_dt_mh.now().timestamp() - _os_mh.path.getmtime(_cal_path)) / 3600
-                    st.caption(f"Last generated: {_age_h:.0f}h ago")
-
-            if not _cal_path.exists():
-                st.info("No calibration data yet. Click **⟳ Regenerate** to run the analysis.")
-            else:
-                import json as _json_mh
-                with open(_cal_path) as _f_mh:
-                    _cal = _json_mh.load(_f_mh)
-
-                _mdata = _cal.get("models", {})
-                _model_order = ["win", "top5", "top10", "top20"]
-                _model_colors = {
-                    "win":   "#00c44f",
-                    "top5":  "#4a9eff",
-                    "top10": "#f39c12",
-                    "top20": "#e74c3c",
-                }
-
-                # ── Summary metrics table ─────────────────────────────────
-                st.markdown("**Summary Metrics — 2025 Test Set**")
-                _summary_rows = []
-                for _mk in _model_order:
-                    _md = _mdata.get(_mk, {})
-                    if not _md:
-                        continue
-                    _auc   = _md.get("auc", 0)
-                    _brier = _md.get("brier", 0)
-                    _rbrier= _md.get("random_brier", 0)
-                    _ratio = _md.get("cal_ratio", 0)
-                    _summary_rows.append({
-                        "Model":       _md.get("display_name", _mk),
-                        "Test AUC":    f"{_auc:.4f}",
-                        "AUC Grade":   "✅ Excellent" if _auc > 0.85 else ("✅ Good" if _auc > 0.75 else "⚠️ Moderate"),
-                        "Brier Score": f"{_brier:.4f}",
-                        "vs Random":   f"{(_rbrier - _brier) / _rbrier * 100:.0f}% better",
-                        "Cal Ratio":   f"{_ratio:.2f}x",
-                        "Cal Status":  "✅" if 0.85 <= _ratio <= 1.15 else ("⚠️" if 0.7 <= _ratio <= 1.3 else "❌"),
-                    })
-                if _summary_rows:
-                    st.dataframe(
-                        pd.DataFrame(_summary_rows),
-                        hide_index=True,
-                        use_container_width=True,
-                    )
-
-                st.markdown("---")
-
-                # ── Calibration curves ────────────────────────────────────
-                # WHAT YOU'RE LOOKING AT:
-                # Each subplot shows predicted probability (x) vs actual frequency (y).
-                # The grey diagonal is "perfect calibration" — if you say 15%, it wins 15%.
-                # Points above the diagonal = underconfident (actual > predicted).
-                # Points below the diagonal = overconfident (actual < predicted).
-                st.markdown("**Calibration Curves (Reliability Diagrams)**")
-                st.caption(
-                    "Grey diagonal = perfect calibration. "
-                    "Points **above** = model is underconfident. "
-                    "Points **below** = model is overconfident."
-                )
-
-                _ncols = 2
-                _cal_cols = st.columns(_ncols)
-                for _ci, _mk in enumerate(_model_order):
-                    _md = _mdata.get(_mk, {})
-                    if not _md:
-                        continue
-                    _cc = _md.get("calibration_curve", {})
-                    _mp = _cc.get("mean_predicted", [])
-                    _fp = _cc.get("fraction_pos", [])
-                    if not _mp:
-                        continue
-
-                    _color = _model_colors[_mk]
-                    _fig_cal = go.Figure()
-
-                    # Perfect calibration reference line
-                    _fig_cal.add_trace(go.Scatter(
-                        x=[0, 1], y=[0, 1],
-                        mode="lines",
-                        line=dict(color="#4a6080", dash="dash", width=1),
-                        name="Perfect",
-                        showlegend=False,
-                    ))
-
-                    # Model calibration curve
-                    _fig_cal.add_trace(go.Scatter(
-                        x=_mp, y=_fp,
-                        mode="lines+markers",
-                        line=dict(color=_color, width=2),
-                        marker=dict(size=7, color=_color),
-                        name=_md.get("display_name", _mk),
-                        showlegend=False,
-                    ))
-
-                    _fig_cal.update_layout(
-                        title=dict(
-                            text=f"{_md.get('display_name', _mk)}  (AUC {_md['auc']:.3f})",
-                            font=dict(size=13),
-                        ),
-                        xaxis=dict(title="Predicted probability", range=[0, max(_mp) * 1.1],
-                                   tickformat=".0%", gridcolor="#1e3a5f"),
-                        yaxis=dict(title="Actual frequency", range=[0, max(_fp) * 1.2],
-                                   tickformat=".0%", gridcolor="#1e3a5f"),
-                        height=280,
-                        margin=dict(t=40, b=40, l=50, r=20),
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
-                        font_color="#ccc",
-                    )
-
-                    with _cal_cols[_ci % _ncols]:
-                        st.plotly_chart(_fig_cal, use_container_width=True)
-
-                st.markdown("---")
-
-                # ── ROC curves — all 4 on one chart ──────────────────────
-                # WHAT YOU'RE LOOKING AT:
-                # The ROC curve plots True Positive Rate (correctly identifying winners)
-                # vs False Positive Rate (falsely flagging non-winners) as you vary
-                # the probability threshold. AUC = area under the curve.
-                # The grey diagonal is random guessing (AUC = 0.50).
-                # A good model hugs the top-left corner.
-                st.markdown("**ROC Curves — Ranking Quality**")
-                st.caption(
-                    "True positive rate vs false positive rate as the threshold varies. "
-                    "AUC = area under curve (0.50 = random guess, 1.0 = perfect). "
-                    "Grey diagonal = random baseline."
-                )
-
-                _fig_roc = go.Figure()
-                _fig_roc.add_trace(go.Scatter(
-                    x=[0, 1], y=[0, 1],
-                    mode="lines",
-                    line=dict(color="#4a6080", dash="dash", width=1),
-                    name="Random (AUC 0.50)",
-                ))
-                for _mk in _model_order:
-                    _md = _mdata.get(_mk, {})
-                    if not _md:
-                        continue
-                    _rc = _md.get("roc_curve", {})
-                    _fig_roc.add_trace(go.Scatter(
-                        x=_rc.get("fpr", []),
-                        y=_rc.get("tpr", []),
-                        mode="lines",
-                        line=dict(color=_model_colors[_mk], width=2),
-                        name=f"{_md.get('display_name', _mk)} (AUC {_md['auc']:.3f})",
-                    ))
-                _fig_roc.update_layout(
-                    xaxis=dict(title="False Positive Rate", gridcolor="#1e3a5f"),
-                    yaxis=dict(title="True Positive Rate", gridcolor="#1e3a5f"),
-                    height=350,
-                    margin=dict(t=20, b=40, l=50, r=20),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    font_color="#ccc",
-                    legend=dict(bgcolor="rgba(0,0,0,0)"),
-                )
-                st.plotly_chart(_fig_roc, use_container_width=True)
-
-                st.markdown("---")
-
-                # ── Feature importance ────────────────────────────────────
-                # Shows which input variables the model relies on most.
-                # Importance = average decrease in impurity when this feature is used
-                # to split a tree node, averaged across all trees and models.
-                # High importance ≠ causation — it means the feature is predictive,
-                # not necessarily why players win.
-                st.markdown("**Feature Importance — What Drives Predictions**")
-                st.caption(
-                    "Averaged across all four models. "
-                    "Higher = the model splits on this feature more often. "
-                    "Importance ≠ causation."
-                )
-
-                _fi_data = _cal.get("feature_importance", [])
-                if _fi_data:
-                    _fi_df = pd.DataFrame(_fi_data).head(15)
-                    _fi_df = _fi_df.sort_values("avg_importance")
-
-                    _fi_fig = go.Figure(go.Bar(
-                        x=_fi_df["avg_importance"],
-                        y=_fi_df["feature"],
-                        orientation="h",
-                        marker_color=[
-                            "#00c44f" if v > 0.05
-                            else "#4a9eff" if v > 0.02
-                            else "#4a6080"
-                            for v in _fi_df["avg_importance"]
-                        ],
-                    ))
-                    _fi_fig.update_layout(
-                        xaxis=dict(title="Avg importance", gridcolor="#1e3a5f"),
-                        yaxis=dict(tickfont=dict(size=11)),
-                        height=420,
-                        margin=dict(t=10, b=40, l=160, r=20),
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
-                        font_color="#ccc",
-                    )
-                    st.plotly_chart(_fi_fig, use_container_width=True)
-
-                # Dataset info footer
-                st.caption(
-                    f"Dataset: {_cal.get('n_train', 0):,} training rows (2020–2024) · "
-                    f"{_cal.get('n_test', 0):,} test rows (2025) · "
-                    f"Generated: {_cal.get('generated_at', '')[:10]}"
-                )
-
-        with tab7:
-            st.markdown("#### 📅 Tournament-by-Tournament Accuracy")
-            st.caption("How well the model's pre-tournament rankings matched actual outcomes, tournament by tournament.")
-
-            _hist_path = OUTPUTS_DIR / "prediction_history.csv"
-            if not _hist_path.exists():
-                st.info("No prediction history found. Predictions are logged automatically after each tournament completes.")
-            else:
-                _hist = pd.read_csv(_hist_path)
-                _recorded = _hist[_hist["result_recorded"].astype(str).str.lower() == "true"].copy()
-
-                if _recorded.empty:
-                    st.info("No graded tournaments yet. Results are recorded after each tournament finishes.")
-                else:
-                    # Aggregate by tournament
-                    def _tourney_acc(g):
-                        n = len(g)
-                        # Did the model's top-5 win picks actually win?
-                        top5_win  = g.nlargest(5,  "predicted_win_prob")["actual_won"].sum()
-                        # Did top-10 predicted top-5 actually finish top5?
-                        top10_t5  = g.nlargest(10, "predicted_top5_prob")["actual_top5"].mean() if "actual_top5" in g.columns else None
-                        # Did top-15 predicted top-10 actually finish top10?
-                        top15_t10 = g.nlargest(15, "predicted_top10_prob")["actual_top10"].mean() if "actual_top10" in g.columns else None
-                        return pd.Series({
-                            "players": n,
-                            "top5_winner_hit": int(top5_win),
-                            "top10_t5_rate":   round(top10_t5  * 100, 1) if top10_t5  is not None else None,
-                            "top15_t10_rate":  round(top15_t10 * 100, 1) if top15_t10 is not None else None,
-                        })
-
-                    _grp_cols = [c for c in ["tournament_id", "tournament_name"] if c in _recorded.columns]
-                    _by_t = (
-                        _recorded.groupby(_grp_cols, sort=False)
-                        .apply(_tourney_acc)
-                        .reset_index()
-                    )
-
-                    # Summary metrics
-                    _mh1, _mh2, _mh3, _mh4 = st.columns(4)
-                    with _mh1:
-                        st.metric("Tournaments Graded", len(_by_t))
-                    with _mh2:
-                        _avg_t5 = _by_t["top10_t5_rate"].dropna().mean()
-                        st.metric("Avg Top-5 Hit Rate",
-                                  f"{_avg_t5:.1f}%" if not pd.isna(_avg_t5) else "—",
-                                  help="% of model's top-10 picks by top5_prob that actually finished top 5")
-                    with _mh3:
-                        _avg_t10 = _by_t["top15_t10_rate"].dropna().mean()
-                        st.metric("Avg Top-10 Hit Rate",
-                                  f"{_avg_t10:.1f}%" if not pd.isna(_avg_t10) else "—",
-                                  help="% of model's top-15 picks by top10_prob that actually finished top 10")
-                    with _mh4:
-                        _winner_hits = int(_by_t["top5_winner_hit"].sum())
-                        st.metric("Winner in Top-5 Picks",
-                                  f"{_winner_hits} / {len(_by_t)}",
-                                  help="Tournaments where the actual winner was in the model's top-5 win probability picks")
-
-                    st.markdown("---")
-
-                    # Accuracy line chart
-                    _chart_df = _by_t.dropna(subset=["top10_t5_rate", "top15_t10_rate"], how="all").copy()
-                    if not _chart_df.empty:
-                        _name_col = "tournament_name" if "tournament_name" in _chart_df.columns else "tournament_id"
-                        _acc_fig = go.Figure()
-                        _acc_fig.add_trace(go.Bar(
-                            x=_chart_df[_name_col],
-                            y=_chart_df["top10_t5_rate"],
-                            name="Top-5 hit %",
-                            marker_color="#00c44f",
-                        ))
-                        _acc_fig.add_trace(go.Bar(
-                            x=_chart_df[_name_col],
-                            y=_chart_df["top15_t10_rate"],
-                            name="Top-10 hit %",
-                            marker_color="#4cb8ff",
-                        ))
-                        _acc_fig.add_hline(y=50, line_dash="dot", line_color="#f39c12",
-                                           annotation_text="50% baseline")
-                        _acc_fig.update_layout(
-                            barmode="group",
-                            height=320,
-                            margin=dict(t=10, b=80, l=40, r=20),
-                            plot_bgcolor="rgba(0,0,0,0)",
-                            paper_bgcolor="rgba(0,0,0,0)",
-                            font_color="#dde6f5",
-                            legend=dict(orientation="h", y=1.08),
-                            xaxis=dict(tickangle=-30, gridcolor="#1c2f4a"),
-                            yaxis=dict(title="Hit rate %", gridcolor="#1c2f4a", range=[0, 100]),
-                        )
-                        st.plotly_chart(_acc_fig, use_container_width=True)
-
-                    # Full table
-                    with st.expander("Full history table"):
-                        _disp_t = _by_t.copy()
-                        _disp_t = _disp_t.rename(columns={
-                            "tournament_name": "Tournament",
-                            "tournament_id":   "ID",
-                            "players":         "Players",
-                            "top5_winner_hit": "Winner in Top-5",
-                            "top10_t5_rate":   "Top-5 Hit%",
-                            "top15_t10_rate":  "Top-10 Hit%",
-                        })
-                        st.dataframe(_disp_t, hide_index=True, use_container_width=True)
-
-        with tab8:
-            st.markdown("#### ⛳ LIV Golf Player Profiles")
-            st.caption(
-                "LIV Tour players are eligible for all 4 Majors (Masters, PGA Championship, U.S. Open, The Open) "
-                "and may receive sponsor exemptions to other PGA Tour events. "
-                "Scoring averages and SG proxies are derived from LIV event results via ESPN."
-            )
-
-            _liv_tab_path = DATA_DIR / "historical" / "liv_player_profiles.csv"
-            if not _liv_tab_path.exists():
-                st.info("No LIV Golf data found.")
-                st.caption("Run the scraper: **⚙️ Pipeline → Manual → ⛳ LIV Data**")
-            else:
-                _liv_tab_df = pd.read_csv(_liv_tab_path)
-
-                # Summary metrics
-                _lt1, _lt2, _lt3, _lt4 = st.columns(4)
-                with _lt1:
-                    st.metric("LIV Players Tracked", len(_liv_tab_df))
-                with _lt2:
-                    _avg_proxy = _liv_tab_df["liv_sg_proxy"].dropna().mean() if "liv_sg_proxy" in _liv_tab_df.columns else None
-                    st.metric("Avg SG Proxy", f"{_avg_proxy:+.2f}" if _avg_proxy is not None else "—")
-                with _lt3:
-                    _top10_total = _liv_tab_df["liv_top10s"].dropna().sum() if "liv_top10s" in _liv_tab_df.columns else None
-                    st.metric("Total Top-10s (tracked)", f"{int(_top10_total):,}" if _top10_total is not None else "—")
-                with _lt4:
-                    _latest_yr = _liv_tab_df["year"].max() if "year" in _liv_tab_df.columns else "—"
-                    st.metric("Latest Season", int(_latest_yr) if _latest_yr != "—" else "—")
-
-                st.markdown("---")
-
-                # Filters
-                _lf1, _lf2 = st.columns(2)
-                with _lf1:
-                    _liv_year_filter = st.selectbox(
-                        "Season",
-                        options=["All"] + sorted(_liv_tab_df["year"].dropna().unique().astype(int).tolist(), reverse=True),
-                        key="liv_year_filter",
-                    )
-                with _lf2:
-                    _liv_sort = st.selectbox(
-                        "Sort by",
-                        ["SG Proxy", "Scoring Avg", "Top 10s", "Events"],
-                        key="liv_sort",
-                    )
-
-                _liv_disp = _liv_tab_df.copy()
-                if _liv_year_filter != "All":
-                    _liv_disp = _liv_disp[_liv_disp["year"] == int(_liv_year_filter)]
-
-                _sort_col_map = {
-                    "SG Proxy":    "liv_sg_proxy",
-                    "Scoring Avg": "liv_scoring_avg",
-                    "Top 10s":     "liv_top10s",
-                    "Events":      "liv_events",
-                }
-                _sort_col = _sort_col_map.get(_liv_sort, "liv_sg_proxy")
-                _asc = _sort_col == "liv_scoring_avg"  # lower scoring avg = better
-                if _sort_col in _liv_disp.columns:
-                    _liv_disp = _liv_disp.sort_values(_sort_col, ascending=_asc)
-
-                _liv_show_cols = []
-                _liv_col_rename = {}
-                for _c, _lbl in [
-                    ("player_name",      "Player"),
-                    ("year",             "Season"),
-                    ("liv_scoring_avg",  "Scoring Avg"),
-                    ("liv_sg_proxy",     "SG Proxy"),
-                    ("liv_events",       "Events"),
-                    ("liv_rounds",       "Rounds"),
-                    ("liv_top10s",       "Top 10s"),
-                    ("liv_earnings",     "LIV Earnings"),
-                ]:
-                    if _c in _liv_disp.columns:
-                        _liv_show_cols.append(_c)
-                        _liv_col_rename[_c] = _lbl
-
-                _liv_table = _liv_disp[_liv_show_cols].rename(columns=_liv_col_rename).reset_index(drop=True)
-
-                # Format earnings
-                if "LIV Earnings" in _liv_table.columns:
-                    _liv_table["LIV Earnings"] = _liv_table["LIV Earnings"].apply(
-                        lambda x: f"${int(x):,}" if pd.notna(x) and x > 0 else "—"
-                    )
-
-                st.dataframe(_liv_table, hide_index=True, use_container_width=True)
-                st.caption(
-                    "**SG Proxy** ≈ (LIV field avg scoring − player avg scoring) × 0.5. "
-                    "Represents estimated strokes gained vs PGA Tour field. "
-                    "Positive = above LIV field average, higher tier player."
-                )
-
-                # SG proxy bar chart
-                _liv_chart_df = _liv_disp.dropna(subset=["liv_sg_proxy"]).head(20)
-                if not _liv_chart_df.empty:
-                    import plotly.express as _lx
-                    _liv_fig = _lx.bar(
-                        _liv_chart_df,
-                        x="player_name", y="liv_sg_proxy",
-                        color="liv_sg_proxy",
-                        color_continuous_scale=["#e74c3c", "#f39c12", "#2ecc71"],
-                        labels={"player_name": "Player", "liv_sg_proxy": "SG Proxy"},
-                        title=f"Top 20 LIV Players by SG Proxy — {_liv_year_filter} Season",
-                    )
-                    _liv_fig.update_layout(
-                        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                        font_color="#e2e8f0", xaxis_tickangle=-35,
-                        coloraxis_showscale=False, height=340,
-                        margin=dict(t=36, b=10, l=0, r=0),
-                    )
-                    _liv_fig.add_hline(y=0, line_dash="dot", line_color="#94a3b8",
-                                       annotation_text="Field average")
-                    st.plotly_chart(_liv_fig, use_container_width=True)
-
-                # Refresh button
-                if st.button("🔄 Refresh LIV Data", key="liv_refresh_btn"):
-                    with st.spinner("Fetching LIV Golf stats (2023–current)…"):
-                        _lr_success, _lr_out = run_scraper(
-                            ["python3", "scripts/scrapers/fetch_liv_stats.py"], timeout=180
-                        )
-                    if _lr_success:
-                        st.success("✅ LIV data updated")
-                        st.cache_data.clear()
-                        st.rerun()
-                    else:
-                        st.error("❌ Failed")
-                    if _lr_out:
-                        st.code(_lr_out, language=None)
 
 
 # ============================================================================
@@ -12433,17 +12596,79 @@ elif page == "🔴 Live":
     st.markdown("---")
 
     # Tabs for different views
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4 = st.tabs([
         "📊 Leaderboard",
         "🎯 vs Predictions",
         "💰 vs Market Odds",
-        "🏆 My Lineup",
-        "📤 Upload"
+        "🏆 My Lineup"
     ])
 
     with tab1:
         if live_df is not None:
             render_live_leaderboard(live_df, live_meta)
+
+            # ── Scorecards expander ──────────────────────────────────────
+            _live_tid = live_meta.get("tournament_id", "")
+            if _live_tid:
+                _hs_path = LIVE_DIR / f"hole_scores_{_live_tid.lower()}.csv"
+                if _hs_path.exists():
+                    with st.expander("Scorecards (Hole-by-Hole)", expanded=False):
+                        _hs_df = pd.read_csv(_hs_path)
+                        if not _hs_df.empty:
+                            _hole_cols = [f"h{i}" for i in range(1, 19)]
+                            _avail_holes = [c for c in _hole_cols if c in _hs_df.columns]
+                            _rounds_available = sorted(_hs_df["round"].dropna().unique().tolist()) if "round" in _hs_df.columns else [1]
+
+                            _sc_round = st.selectbox(
+                                "Round:", _rounds_available,
+                                index=len(_rounds_available) - 1,
+                                key="scorecard_round_sel"
+                            )
+                            _hs_rd = _hs_df[_hs_df["round"] == _sc_round].copy() if "round" in _hs_df.columns else _hs_df.copy()
+
+                            if not _hs_rd.empty and _avail_holes:
+                                # Merge position from live_df for ordering
+                                if "player_id" in live_df.columns and "player_id" in _hs_rd.columns:
+                                    _pos_map = dict(zip(
+                                        live_df["player_id"].astype(str),
+                                        live_df.get("position", live_df.index).fillna(999)
+                                    ))
+                                    _hs_rd["_pos_sort"] = _hs_rd["player_id"].astype(str).map(
+                                        lambda x: _pos_map.get(x, 999)
+                                    ).apply(lambda v: int(str(v).strip("T")) if str(v).strip("T").isdigit() else 999)
+                                    _hs_rd = _hs_rd.sort_values("_pos_sort").drop(columns=["_pos_sort"])
+
+                                # Build display frame
+                                rename_map = {"player_name": "Player", "front9": "F9", "back9": "B9", "total": "Tot"}
+                                for i, h in enumerate(_avail_holes, 1):
+                                    rename_map[h] = str(i)
+                                _sc_display = _hs_rd[
+                                    ["player_name"] + _avail_holes +
+                                    [c for c in ["front9", "back9", "total"] if c in _hs_rd.columns]
+                                ].rename(columns=rename_map)
+
+                                # Color-coded styling using pandas Styler
+                                _score_cols = [str(i) for i in range(1, len(_avail_holes) + 1)]
+
+                                def _score_color(val):
+                                    try:
+                                        v = int(val)
+                                    except (TypeError, ValueError):
+                                        return ""
+                                    if v <= 2:    return "background-color:#7d6100;color:#FFD700;font-weight:700"  # eagle
+                                    elif v == 3:  return "background-color:#6e1010;color:#e74c3c;font-weight:700"  # birdie (relative to par 4)
+                                    elif v == 4:  return "background-color:#1c1c1c;color:#aaa"                      # par
+                                    elif v == 5:  return "background-color:#0d1e30;color:#4cb8ff"                   # bogey
+                                    else:         return "background-color:#0a1220;color:#1a6a9c;font-weight:700"  # double+
+
+                                # pandas 2.x uses .map(); .applymap() deprecated
+                                try:
+                                    _sc_styled = _sc_display.style.map(_score_color, subset=_score_cols)
+                                except AttributeError:
+                                    _sc_styled = _sc_display.style.applymap(_score_color, subset=_score_cols)
+                                st.dataframe(_sc_styled, use_container_width=True, height=400)
+                else:
+                    st.caption("No hole score data yet. Hole scores are fetched during live refresh.")
         else:
             st.info("Select a tournament or fetch live data to view leaderboard")
 
@@ -12459,43 +12684,6 @@ elif page == "🔴 Live":
         else:
             st.info("Load leaderboard data first")
 
-    with tab5:
-        st.markdown("### Upload Leaderboard CSV")
-        st.markdown("""
-        Upload a CSV with columns: `player_name`, `position`, `total`, `thru`, `R1`-`R4` (optional)
-        """)
-
-        uploaded = st.file_uploader("Choose a CSV file", type="csv", key="live_upload")
-
-        if uploaded:
-            tournament_name = st.text_input("Tournament Name:", value=uploaded.name.replace(".csv", ""))
-
-            if st.button("💾 Save Leaderboard", type="primary"):
-                df = pd.read_csv(uploaded)
-
-                required = ["player_name"]
-                missing = [c for c in required if c not in df.columns]
-                if missing:
-                    st.error(f"Missing required columns: {missing}")
-                else:
-                    if "position" not in df.columns:
-                        df["position"] = range(1, len(df) + 1)
-
-                    slug = tournament_name.lower().replace(" ", "_").replace("-", "_")
-                    out_path = LIVE_DIR / f"leaderboard_{slug}.csv"
-                    df.to_csv(out_path, index=False)
-
-                    meta = {
-                        "tournament_name": tournament_name,
-                        "fetched_at": datetime.now().isoformat(),
-                        "player_count": len(df),
-                    }
-                    meta_path = LIVE_DIR / f"leaderboard_{slug}_meta.json"
-                    with open(meta_path, "w") as f:
-                        json.dump(meta, f, indent=2)
-
-                    st.success(f"Saved to {out_path}")
-                    st.cache_data.clear()
 
 # =============================================================================
 # PAGE: PIPELINE CONTROL
@@ -12722,6 +12910,26 @@ elif page == "⚙️ Pipeline":
         if last_tournament is not None:
             st.caption(f"Last week: {last_tournament['tournament_name']}")
 
+    # ── Tournament Override ────────────────────────────────────────────────────
+    # Allow user to manually select any upcoming tournament instead of auto-detect
+    _override_options = ["(auto-detect)"]
+    _override_rows = {}
+    if not schedule_df.empty:
+        _fut = schedule_df[schedule_df["end_dt"] >= today_dt].sort_values("start_dt")
+        for _, _sr in _fut.iterrows():
+            _lbl = f"{_sr.get('tournament_name','')} ({_sr.get('tournament_id','')})"
+            _override_options.append(_lbl)
+            _override_rows[_lbl] = _sr
+
+    _override_sel = st.selectbox(
+        "Tournament override (leave auto-detect unless wrong):",
+        _override_options,
+        key="pipeline_tournament_override",
+    )
+
+    if _override_sel != "(auto-detect)" and _override_sel in _override_rows:
+        active_tournament = _override_rows[_override_sel]
+
     # Get active tournament details
     if active_tournament is not None:
         tournament_id = str(active_tournament.get("tournament_id", ""))
@@ -12740,116 +12948,74 @@ elif page == "⚙️ Pipeline":
         purse = 0
         tournament_type = "Standard"
 
-    # Pipeline health/status panel (latest run + file health + one-click retry).
-    st.markdown("### 🩺 Pipeline Health")
-    pipe_status = load_pipeline_status(tournament_id)
-    health_snapshot = build_pipeline_health_snapshot(tournament_id)
+    # ─── Weekly Status Checklist ───────────────────────────────────────────────
+    st.markdown("### 📋 This Week at a Glance")
+    if tournament_id:
+        import time as _time
 
-    last_status = str(pipe_status.get("status", "unknown")).strip().lower() if pipe_status else "unknown"
-    status_badge = {
-        "success": "✅ Success",
-        "failed": "❌ Failed",
-        "running": "⏳ Running",
-    }.get(last_status, "⚪ No recent run")
-    run_id = str(pipe_status.get("run_id", "")).strip()
-    started_at = str(pipe_status.get("started_at", "")).strip()
-    ended_at = str(pipe_status.get("ended_at", "")).strip()
-    failed_steps = [s for s in (pipe_status.get("steps") or []) if str(s.get("status", "")).lower() == "failed"]
+        def _chk_file_fresh(path_str: str, hours: float = 24.0) -> str:
+            p = Path(path_str)
+            if not p.exists():
+                return "missing"
+            age_h = (_time.time() - p.stat().st_mtime) / 3600
+            return "ok" if age_h <= hours else "stale"
 
-    ph_col1, ph_col2, ph_col3 = st.columns(3)
-    with ph_col1:
-        st.metric("Latest Pipeline Run", status_badge)
-        if run_id:
-            st.caption(f"Run: `{run_id}`")
-        if started_at:
-            st.caption(f"Started: {started_at}")
-        if ended_at:
-            st.caption(f"Ended: {ended_at}")
-        if pipe_status.get("_latest_mismatch"):
-            latest_run = str(pipe_status.get("_latest_run_id", "")).strip()
-            latest_name = str(pipe_status.get("_latest_tournament_name", "")).strip()
-            latest_tid = str(pipe_status.get("_latest_tournament_id", "")).strip()
-            if pipe_status.get("_no_selected_match"):
-                st.caption(
-                    "No saved pipeline run found for the selected tournament yet. "
-                    "Showing latest overall run."
-                )
-            elif latest_run:
-                st.caption(
-                    f"Showing latest selected-tournament run. Latest overall run is `{latest_run}` "
-                    f"({latest_name or 'unknown'} {latest_tid})"
-                )
-    with ph_col2:
-        st.metric("Failed Steps", len(failed_steps))
-        if failed_steps:
-            st.caption("Use one-click retry below.")
-        else:
-            st.caption("No failed steps in latest run.")
-    with ph_col3:
-        ok_count = int(health_snapshot.get("ok_count", 0))
-        total_count = int(health_snapshot.get("total_count", 0))
-        st.metric("Data Health", f"{ok_count}/{total_count} fresh")
-        stale_count = total_count - ok_count
-        if stale_count > 0:
-            st.caption(f"{stale_count} stale/missing file(s)")
-        else:
-            st.caption("All critical files are fresh")
+        def _chk_any_file(path_str: str) -> str:
+            return "ok" if Path(path_str).exists() else "missing"
 
-    with st.expander("Pipeline File Health", expanded=False):
-        rows = []
-        for item in health_snapshot.get("items", []):
-            age_h = item.get("age_hours")
-            if age_h is None:
-                age_label = "missing"
-            elif age_h < 1:
-                age_label = f"{int(age_h * 60)}m"
-            else:
-                age_label = f"{age_h:.1f}h"
-            state = item.get("label", "unknown")
-            icon = "✅" if item.get("ok") else ("❌" if state == "missing" else "⚠️")
-            rows.append({
-                "Status": f"{icon} {state}",
-                "Dataset": item.get("label_name", ""),
-                "Age": age_label,
-                "Path": item.get("path", ""),
-            })
-        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+        def _chk_season_log_has(t_id: str) -> str:
+            """Check if season_log has a non-empty result for this tournament."""
+            t_name = selected_tournament
+            if not schedule_df.empty and t_id:
+                sched_row = schedule_df[
+                    schedule_df["tournament_id"].astype(str).str.upper() == t_id.upper()
+                ]
+                if not sched_row.empty:
+                    t_name = str(sched_row.iloc[0].get("tournament_name", selected_tournament))
+            slog = OUTPUTS_DIR / "season_log.csv"
+            if not slog.exists() or not t_name:
+                return "missing"
+            try:
+                sdf = pd.read_csv(slog, dtype=str)
+                sdf = sdf[sdf["tournament"].str.strip().str.lower() == t_name.strip().lower()]
+                if sdf.empty:
+                    return "missing"
+                for col in ["result1", "result2", "result3"]:
+                    if col in sdf.columns:
+                        vals = sdf[col].dropna()
+                        if not vals.empty and (vals.str.strip() != "").any():
+                            return "ok"
+                return "missing"
+            except Exception:
+                return "missing"
 
-    if failed_steps:
-        st.markdown("#### Retry Failed Step")
-        for step in failed_steps:
-            sid = str(step.get("id", "")).strip()
-            sname = str(step.get("name", "")).strip() or sid
-            sdesc = str(step.get("command_str", "")).strip()
-            with st.container():
-                c1, c2 = st.columns([4, 1])
-                with c1:
-                    st.caption(f"**{sid}** · {sname}")
-                    if sdesc:
-                        st.code(sdesc, language="bash")
-                    serr = str(step.get("error", "") or step.get("stderr_tail", "")).strip()
-                    if serr:
-                        st.caption(f"Error: {serr[:300]}")
-                with c2:
-                    if st.button("↻ Retry", key=f"retry_step_{sid}", use_container_width=True):
-                        cmd = step.get("command") or []
-                        if isinstance(cmd, str):
-                            cmd = shlex.split(cmd)
-                        if not cmd:
-                            st.warning(f"No runnable command stored for {sid}.")
-                            continue
-                        timeout = int(step.get("timeout_seconds") or 180)
-                        with st.spinner(f"Re-running {sid}..."):
-                            ok, out = run_scraper(cmd, timeout=timeout)
-                        if ok:
-                            st.success(f"✅ {sid} completed")
-                        else:
-                            st.error(f"❌ {sid} failed")
-                            if out:
-                                with st.expander(f"{sid} output", expanded=True):
-                                    st.code(out, language=None)
+        bp_dir = DATA_DIR / "betting_profiles"
+        bp_state = (
+            "ok"
+            if (bp_dir / f"betting_profiles_{tournament_id}.csv").exists()
+            or (bp_dir / f"articles_{tournament_id}.csv").exists()
+            else "missing"
+        )
 
-    st.markdown("---")
+        _wk_checks = [
+            ("Field",       _chk_any_file(str(DATA_DIR / "fields" / f"field_{tournament_id}.csv"))),
+            ("Predictions", _chk_file_fresh(str(OUTPUTS_DIR / "latest_predictions.csv"), hours=96)),
+            ("DK Odds",     _chk_any_file(str(DATA_DIR / "odds" / f"prop_lines_{tournament_id}.csv"))),
+            ("Profiles",    bp_state),
+            ("Results",     _chk_season_log_has(tournament_id)),
+        ]
+        _status_icon = {"ok": "✅", "stale": "⚠️", "missing": "❌"}
+        _wk_cols = st.columns(len(_wk_checks) + 1)
+        with _wk_cols[0]:
+            _lbl = selected_tournament or tournament_id
+            st.markdown(f"**{_lbl}**")
+        for _col, (_lbl, _state) in zip(_wk_cols[1:], _wk_checks):
+            with _col:
+                st.markdown(f"{_status_icon[_state]} {_lbl}")
+    else:
+        st.caption("Select a tournament above to see weekly prep status.")
+
+
 
     # =========================================================================
     # SMART WORKFLOW TABS
@@ -12934,6 +13100,7 @@ elif page == "⚙️ Pipeline":
             - 📰 Fetches PGA TOUR expert picks
             - 💼 Fetches betting profiles with course history
             - 📊 Fetches power rankings
+            - 🎰 Attempts DraftKings odds (info if not live yet)
             - 🎯 Generates initial predictions
             """)
 
@@ -12960,6 +13127,11 @@ elif page == "⚙️ Pipeline":
                                               "--tournament-id", tournament_id, "--field", field_path]),
                         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                                       "--tournament-id", tournament_id]),
+                        ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
+                                             "--tournament-id", tournament_id,
+                                             "--max-age-hours", "2",
+                                             "--fetch-profile", "fast",
+                                             "--no-snapshot"]),
                     ]
                     tasks.insert(2, ("Power Rankings", "__AUTO_PR__"))
 
@@ -12997,6 +13169,11 @@ elif page == "⚙️ Pipeline":
                     for name, success, output in results:
                         if success:
                             st.success(f"✅ {name}")
+                        elif name == "DraftKings Odds":
+                            st.info("DK odds not live yet — will retry on Wednesday")
+                            if output:
+                                with st.expander("DraftKings Odds output", expanded=False):
+                                    st.code(output, language=None)
                         else:
                             st.error(f"❌ {name}")
                             if output:
@@ -13032,15 +13209,29 @@ elif page == "⚙️ Pipeline":
                     progress = st.progress(0)
                     status = st.empty()
 
-                    tasks = [
-                        ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                                             "--tournament-id", tournament_id,
-                                             "--max-age-hours", "2",
-                                             "--fetch-profile", "fast",
-                                             "--no-snapshot"]),
-                        ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
-                                      "--tournament-id", tournament_id]),
-                    ]
+                    # DK odds: check cache before fetching (odds go live ~Wednesday)
+                    import time as _time_wed
+                    _dk_cache = DATA_DIR / "odds" / f"prop_lines_{tournament_id}.csv"
+                    _dk_cache_age_h = (
+                        (_time_wed.time() - _dk_cache.stat().st_mtime) / 3600
+                        if _dk_cache.exists() else None
+                    )
+                    _dk_cache_msg = None
+                    if _dk_cache_age_h is not None and _dk_cache_age_h < 12:
+                        _dk_task = None
+                        _dk_cache_msg = f"DK odds cached ({_dk_cache_age_h:.1f}h ago) — skipping re-fetch"
+                    else:
+                        _dk_task = ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
+                                                         "--tournament-id", tournament_id,
+                                                         "--max-age-hours", "2",
+                                                         "--fetch-profile", "fast",
+                                                         "--no-snapshot"])
+
+                    tasks = []
+                    if _dk_task:
+                        tasks.append(_dk_task)
+                    tasks.append(("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
+                                               "--tournament-id", tournament_id]))
 
                     results = []
                     for i, (name, cmd) in enumerate(tasks):
@@ -13066,9 +13257,17 @@ elif page == "⚙️ Pipeline":
                     status.empty()
                     progress.empty()
 
+                    if _dk_cache_msg:
+                        st.info(_dk_cache_msg)
+
                     for name, success, output in results:
                         if success:
                             st.success(f"✅ {name}")
+                        elif name == "DraftKings Odds":
+                            st.warning("DK odds not live yet — try again Wednesday or Thursday")
+                            if output:
+                                with st.expander("DraftKings Odds output", expanded=False):
+                                    st.code(output, language=None)
                         else:
                             st.error(f"❌ {name}")
                             if output:
