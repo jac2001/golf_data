@@ -206,7 +206,14 @@ def create_ensemble_predictions(predictions_df: pd.DataFrame,
     odds_subset = odds_subset.rename(columns={'fair_prob': 'vegas_prob'})
 
     # Merge by player_id when available, otherwise by normalized player_name.
+    # Normalize both sides to str before merging — player_ids are labels, not
+    # numbers, and the internal pipeline casts them to str (line 1569 of
+    # predict_tournament.py) while odds CSVs load as int64 from pandas.
+    # Casting both to str is the safest fix at the join boundary.
     if 'player_id' in df.columns and 'player_id' in odds_subset.columns:
+        df['player_id'] = df['player_id'].astype(str)
+        odds_subset = odds_subset.copy()
+        odds_subset['player_id'] = odds_subset['player_id'].astype(str)
         df = df.merge(odds_subset, on='player_id', how='left')
     elif 'player_name' in df.columns and 'player_name' in odds_df.columns:
         lhs = df.copy()

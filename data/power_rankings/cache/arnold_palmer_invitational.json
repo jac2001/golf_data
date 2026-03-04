@@ -1,0 +1,340 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Arnold Palmer Invitational presented by Mastercard",
+      "tableTitle": "Power Rankings for Arnold Palmer Invitational presented by Mastercard",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "51349",
+            "firstName": "Nico",
+            "lastName": "Echavarria",
+            "countryFlag": "COL",
+            "countryName": "Colombia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51349.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although he\u2019s a debutant, he gets the nod over numerous notables for this slot due to momentum. Bogey-free, 6-under 66 in each of his last two rounds at PGA National, and exhibited an impeccable short game en route to victory."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "39997",
+            "firstName": "Corey",
+            "lastName": "Conners",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39997.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Hasn\u2019t contended in a larger field in a while and Bay Hill doesn\u2019t lunge forward as a site where a guy can find his game, but he hasn\u2019t lost his on the track. Since 2021, he\u2019s sandwiched three top 25s with a pair of solo thirds."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although he\u2019s 4-for-4 at Bay Hill, he\u2019s made no noise (zero top 20s), but he\u2019s on the bounce of a T7 at The Genesis Invitational. Run it back to the finale of the WM Phoenix Open and he\u2019s been under par in his last nine rounds."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "48117",
+            "firstName": "Kurt",
+            "lastName": "Kitayama",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48117.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Bay Hill almost always requires experience before success, but he broke through in his debut in 2023. Now in his third appearance, he\u2019s fresh off a co-runner-up at The Genesis, where he was locked in from tee to green."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "52453",
+            "firstName": "Nicolai",
+            "lastName": "H\u00f8jgaard",
+            "countryFlag": "DEN",
+            "countryName": "Denmark",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52453.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Zero quit. After surviving the cut on the number at PGA National, no one was lower on the weekend. His share of sixth place extended a run of eight straight paydays worldwide consisting of four top 10s and another three top 25s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The top-25 machine at Bay Hill has six in 11 tries, including in four of the last five. Given that he minimizes mistakes from tee to green so well, another (or better) is in the offing. Two top 10s among four top 15s this year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "34098",
+            "firstName": "Russell",
+            "lastName": "Henley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The defending champ arrives after having missed the cut at Riviera. While his form over time has been exceptional, he chased each of his last four missed cuts (dating back to 2023) with a top 10. Three top 15s here since 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "What do you get when you combine the TOUR\u2019s leading ball-striker with a runner-up finish among six top 15s at Bay Hill? You get the 31-year-old Englishman whose form hasn\u2019t relented since he turned a corner last summer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "47420",
+            "firstName": "Jake",
+            "lastName": "Knapp",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47420.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Off to a sizzling start to the season with a PGA TOUR-leading four top 10s since a T11 in Hawaii. Fourth in Strokes Gained: Putting, he\u2019s paying off the foundation of elite ball-striking. Also No. 1 in par-5 scoring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "60004",
+            "firstName": "Jacob",
+            "lastName": "Bridgeman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60004.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "If he can excel on The Riviera Country Club when he didn\u2019t seem like a good fit and where he was the first debutant with an official win since 1975, imagine what\u2019s in store on his native Bermudagrass. T15 here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "33204",
+            "firstName": "Shane",
+            "lastName": "Lowry",
+            "countryFlag": "IRL",
+            "countryName": "Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33204.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "When having experienced as massive a disappointment as he did at PGA National, often the best medicine is to get right back after it. Three days of separation is plenty, and he\u2019s finished third and seventh here the last two years."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The reigning FedExCup champ\u2019s record at Bay Hill extends back to before he joined the PGA TOUR. It\u2019s revealed his fit to the tune of a T3 and two T10s among five top 20s. Returns in great form with top 10s in his last two."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "50525",
+            "firstName": "Collin",
+            "lastName": "Morikawa",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50525.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Before his win at Pebble Beach, he probably paced the TOUR in Strokes Gained: Frustration. Now armed with renewed confidence, he\u2019s positioned to avenge his runner-up finish here last year after serving as the 54-hole leader."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "28237",
+            "firstName": "Rory",
+            "lastName": "McIlroy",
+            "countryFlag": "NIR",
+            "countryName": "Northern Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28237.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Picking up where he left off in 2025, but his first win at Riviera (T2) will have to wait another year. However, he captured the title at Bay Hill in 2018. It\u2019s the highlight of six top 10s contributing to his 11-for-11 record."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Enough of this first-round foolishness! Despite big numbers (for him) to open each of his last three starts, he\u2019s rallied to finish T3, T4 and T12 in consecutive weeks. Now the two-time champ at Bay Hill is rested after a break."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

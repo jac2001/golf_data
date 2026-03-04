@@ -923,7 +923,9 @@ def fetch_tournament_assets(
                 "--no-snapshot",
                 "--fetch-profile",
                 "fast",
-            ], description="Fetch DraftKings props", timeout=240)
+            ], description="Fetch DraftKings props", timeout=45)
+            if not dk_props_path.exists():
+                print("  Info: DK odds not live yet — try again Wednesday/Thursday")
         stage_idx += 1
 
     odds_path = None
@@ -936,33 +938,37 @@ def fetch_tournament_assets(
             run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_pga_odds.py"),
                          "--tournament-id", pga_id,
                          "--output", str(odds_path)],
-                        description="Fetch PGA odds", timeout=180)
+                        description="Fetch PGA odds", timeout=60)
         stage_idx += 1
 
     print_stage(stage_idx, total_stages, "Fetch betting profiles")
     bp_out = DATA_DIR / "betting_profiles" / f"betting_profiles_{pga_id}.csv"
-    bp_cmd = [
-        "python3", str(SCRIPTS_DIR / "scrapers" / "fetch_betting_profiles.py"),
-        "--tournament-id", pga_id,
-        "--field", str(field_path),
-        "--output", str(bp_out),
-    ]
-    if odds_path and odds_path.exists():
-        bp_cmd.extend(["--odds-csv", str(odds_path)])
-    run_command(bp_cmd, description="Fetch betting profiles", timeout=240)
+    bp_fresh = check_file_fresh(bp_out, max_age_hours=12)
+    if bp_fresh and _csv_has_rows(bp_out):
+        print(f"  Skipping betting profiles - fresh file exists ({bp_out.name})")
+    else:
+        bp_cmd = [
+            "python3", str(SCRIPTS_DIR / "scrapers" / "fetch_betting_profiles.py"),
+            "--tournament-id", pga_id,
+            "--field", str(field_path),
+            "--output", str(bp_out),
+        ]
+        if odds_path and odds_path.exists():
+            bp_cmd.extend(["--odds-csv", str(odds_path)])
+        run_command(bp_cmd, description="Fetch betting profiles", timeout=60)
     stage_idx += 1
 
     print_stage(stage_idx, total_stages, "Fetch power rankings")
     slug = power_slug or slugify(tournament_name)
     run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_power_rankings.py"),
                  "--slug", slug, "--allow-fail"],
-                description="Fetch power rankings", timeout=240)
+                description="Fetch power rankings", timeout=45)
     stage_idx += 1
 
     print_stage(stage_idx, total_stages, "Fetch course characteristics")
     run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_course_characteristics.py"),
                  "--tournament-id", pga_id, "--profile"],
-                description="Fetch course characteristics", timeout=240)
+                description="Fetch course characteristics", timeout=45)
     stage_idx += 1
 
     if fetch_expert_picks and pga_id:
@@ -970,7 +976,7 @@ def fetch_tournament_assets(
         success = run_command([
             "python3", str(SCRIPTS_DIR / "scrapers" / "fetch_expert_picks_pga.py"),
             "--tournament-id", pga_id,
-        ], description="Fetch expert picks", timeout=240)
+        ], description="Fetch expert picks", timeout=60)
         if not success:
             print("  Warning: expert picks fetch failed, continuing...")
         stage_idx += 1
@@ -982,7 +988,7 @@ def fetch_tournament_assets(
             "--field-csv", str(field_path),
             "--url-template", article_template,
             "--output", str(DATA_DIR / "betting_profiles" / "article_blurbs.csv"),
-        ], description="Fetch betting profile articles", timeout=300)
+        ], description="Fetch betting profile articles", timeout=60)
 
     return odds_path
 

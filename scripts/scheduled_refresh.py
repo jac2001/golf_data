@@ -71,6 +71,119 @@ SCHEDULE_PATH = DATA_DIR / "raw" / "schedule_2026.csv"
 # Ensure logs directory exists
 LOGS_DIR.mkdir(exist_ok=True)
 
+# Course coordinates for weather snapshots (subset matching fetch_weather_openmetro.py)
+_COURSE_COORDS = {
+    "pebble beach": (36.5675, -121.9486),
+    "torrey pines": (32.9005, -117.2516),
+    "augusta national": (33.5021, -82.0232),
+    "tpc scottsdale": (33.6417, -111.9083),
+    "riviera": (34.0489, -118.5003),
+    "bay hill": (28.4603, -81.5053),
+    "tpc sawgrass": (30.1975, -81.3964),
+    "harbour town": (32.1363, -80.8090),
+    "quail hollow": (35.1089, -80.8519),
+    "southern hills": (36.0631, -95.9408),
+    "bethpage black": (40.7445, -73.4533),
+    "valhalla": (38.2527, -85.4938),
+    "pinehurst": (35.1894, -79.4694),
+    "tpc san antonio": (29.5585, -98.6193),
+    "innisbrook": (28.1531, -82.7338),
+    "tpc louisiana": (29.9421, -90.1710),
+    "pga national": (26.8373, -80.1169),
+    "sedgefield": (36.0413, -79.8888),
+    "muirfield village": (40.1037, -83.1418),
+    "colonial": (32.7157, -97.3671),
+    "east lake": (33.7215, -84.3019),
+    "kapalua": (20.9931, -156.6647),
+    "waialae": (21.2769, -157.7559),
+}
+
+
+def _find_course_coords(tournament_name: str):
+    """Fuzzy-match tournament name to known course coordinates."""
+    tname_lower = tournament_name.lower()
+    for key, coords in _COURSE_COORDS.items():
+        if key in tname_lower:
+            return coords
+    return None
+
+
+def save_weather_snapshot(tid: str, tournament_name: str) -> bool:
+    """Fetch tournament weather forecast from PGA Tour API and save to data/weather/{tid}.json.
+
+    Returns True on success.
+    """
+    import requests as _requests
+    import json as _json
+
+    weather_dir = DATA_DIR / "weather"
+    weather_dir.mkdir(parents=True, exist_ok=True)
+    out_path = weather_dir / f"{tid}.json"
+
+    try:
+        resp = _requests.post(
+            "https://orchestrator.pgatour.com/graphql",
+            json={
+                "query": """
+query Weather($tournamentId: ID!) {
+  weather(tournamentId: $tournamentId) {
+    title
+    hourly {
+      title condition windDirection windSpeedKPH windSpeedMPH humidity precipitation
+      temperature {
+        ... on StandardWeatherTemp { __typename tempC tempF }
+        ... on RangeWeatherTemp { __typename minTempC minTempF maxTempC maxTempF }
+      }
+    }
+    daily {
+      title condition windDirection windSpeedKPH windSpeedMPH humidity precipitation
+      temperature {
+        ... on StandardWeatherTemp { __typename tempC tempF }
+        ... on RangeWeatherTemp { __typename minTempC minTempF maxTempC maxTempF }
+      }
+    }
+  }
+}
+""",
+                "variables": {"tournamentId": tid},
+                "operationName": "Weather",
+            },
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "x-pgat-platform": "web",
+                "x-api-key": "da2-gsrx5bibzbb4njvhl7t37wqyl4",
+                "Origin": "https://www.pgatour.com",
+                "Referer": "https://www.pgatour.com/",
+            },
+            timeout=15,
+        )
+        resp.raise_for_status()
+        _body = resp.json()
+        if _body.get("errors"):
+            raise RuntimeError(_body["errors"][0].get("message", "Weather query failed"))
+        _w = _body.get("data", {}).get("weather")
+        if _w and _w.get("daily"):
+            from datetime import datetime as _dt
+            result = {
+                "success": True,
+                "source": "pgatour",
+                "title": _w.get("title", ""),
+                "daily": _w["daily"],
+                "hourly": _w.get("hourly", []),
+                "saved_at": _dt.now().isoformat(),
+            }
+            out_path.write_text(_json.dumps(result, indent=2))
+            log(f"  Weather saved: {len(_w['daily'])} days for {tid}")
+            return True
+        else:
+            log(f"  PGA Tour weather API returned no daily data for {tid}")
+            return False
+    except Exception as e:
+        log(f"  Weather snapshot failed for {tid}: {e}")
+        return False
+
+
 STEP_TIMEOUTS = {
     "Tournament SG Stats": 1800,
     "Field": 300,
@@ -241,6 +354,10 @@ def run_tuesday_morning(dry_run: bool = False):
             success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
 
+    # Save weather snapshot after field fetch
+    if not dry_run and tournament_id and tournament_name:
+        save_weather_snapshot(tournament_id, tournament_name)
+
     return results
 
 
@@ -341,6 +458,8 @@ def run_live_refresh(dry_run: bool = False):
     ]
 
     if tournament_id:
+        tasks.append(("Hole Scores", ["python3", "scripts/scrapers/fetch_hole_scores.py",
+                                      "--tournament-id", tournament_id]))
         tasks.append(("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
                                           "--tournament-id", tournament_id,
                                           "--max-age-hours", "0.5",
@@ -360,6 +479,11 @@ def run_live_refresh(dry_run: bool = False):
             timeout = step_timeout(desc, 120)
             success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
+
+    # Save once-per-live-run weather snapshot
+    if not dry_run and tournament_id and tournament:
+        tournament_name = str(tournament.get("tournament_name", ""))
+        save_weather_snapshot(tournament_id, tournament_name)
 
     return results
 

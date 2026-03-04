@@ -15,7 +15,7 @@ Usage:
     python usage_tracker.py --add "Scottie Scheffler" "Rory McIlroy" "Jon Rahm" --tournament "Waste Management Phoenix Open"
 
     # Record result after tournament
-    python usage_tracker.py --result "Scottie Scheffler" --tournament "Waste Management Phoenix Open" --finish "T3" --points 85
+    python usage_tracker.py --result "Scottie Scheffler" --tournament "Waste Management Phoenix Open" --finish "T3" --earnings 485000
 
     # Check a player's usage
     python usage_tracker.py --check "Scottie Scheffler"
@@ -101,10 +101,13 @@ class TournamentUse:
     week: int
     date: str
     result: Optional[str] = None  # e.g., "1st", "T3", "MC" (missed cut)
-    points: Optional[int] = None
+    earnings: Optional[int] = None
 
     def to_dict(self) -> dict:
-        return {k: v for k, v in asdict(self).items() if v is not None}
+        data = {k: v for k, v in asdict(self).items() if v is not None}
+        if "earnings" in data:
+            data["points"] = data["earnings"]  # legacy compatibility
+        return data
 
 
 @dataclass
@@ -119,16 +122,27 @@ class PlayerUsage:
         return MAX_USES_PER_PLAYER - self.times_used
 
     @property
+    def total_earnings(self) -> int:
+        return sum(t.earnings or 0 for t in self.tournaments_used)
+
+    @property
     def total_points(self) -> int:
-        return sum(t.points or 0 for t in self.tournaments_used)
+        return self.total_earnings
 
     def to_dict(self) -> dict:
         return {
             "times_used": self.times_used,
             "tournaments_used": [t.to_dict() for t in self.tournaments_used],
             "remaining_uses": self.remaining_uses,
-            "total_points": self.total_points
+            "total_earnings": self.total_earnings,
+            "total_points": self.total_earnings,
         }
+
+
+def _fmt_money(value: Optional[int]) -> str:
+    if value is None:
+        return "-"
+    return f"${int(value):,}"
 
 
 # ============================================================================
@@ -209,7 +223,7 @@ class UsageTracker:
                     week=t['week'],
                     date=t.get('date', ''),
                     result=t.get('result'),
-                    points=t.get('points')
+                    earnings=t.get('earnings', t.get('points'))
                 )
                 for t in player_data.get('tournaments_used', [])
             ]
@@ -221,6 +235,10 @@ class UsageTracker:
 
         # Load weekly lineups
         self.weekly_lineups = data.get('weekly_lineups', {})
+        for lineup in self.weekly_lineups.values():
+            earnings = lineup.get("earnings_earned", lineup.get("points_earned"))
+            lineup["earnings_earned"] = earnings
+            lineup["points_earned"] = earnings
 
         return True
 
@@ -241,7 +259,8 @@ class UsageTracker:
             "summary": {
                 "total_players_used": len(self.picks),
                 "total_picks_made": sum(p.times_used for p in self.picks.values()),
-                "total_points": sum(p.total_points for p in self.picks.values())
+                "total_earnings": sum(p.total_earnings for p in self.picks.values()),
+                "total_points": sum(p.total_earnings for p in self.picks.values()),
             }
         }
 
@@ -303,7 +322,8 @@ class UsageTracker:
                 "week": week,
                 "date": date,
                 "lineup": [],
-                "points_earned": None
+                "earnings_earned": None,
+                "points_earned": None,
             }
 
         if player_name not in self.weekly_lineups[week_key]["lineup"]:
@@ -347,9 +367,30 @@ class UsageTracker:
 
         return False, f"❌ {player_name} not used at {tournament}"
 
+    def _recompute_week_earnings(self, tournament: str, week: int):
+        week_key = f"week_{week}"
+        if week_key not in self.weekly_lineups:
+            return
+        lineup = self.weekly_lineups[week_key]
+        total = 0
+        has_any = False
+        for player_name in lineup.get("lineup", []):
+            player = self.picks.get(player_name)
+            if not player:
+                continue
+            for t in player.tournaments_used:
+                if t.tournament == tournament:
+                    if t.earnings is not None:
+                        total += t.earnings
+                        has_any = True
+                    break
+        lineup["earnings_earned"] = total if has_any else None
+        lineup["points_earned"] = lineup["earnings_earned"]
+
     def record_result(self, player_name: str, tournament: str,
-                      result: str, points: int) -> tuple[bool, str]:
+                      result: str, earnings: int) -> tuple[bool, str]:
         """Record the result after a tournament finishes."""
+        player_name = self._find_player_key(player_name) or player_name
         if player_name not in self.picks:
             return False, f"❌ {player_name} not found in tracker"
 
@@ -358,8 +399,9 @@ class UsageTracker:
         for t in player.tournaments_used:
             if t.tournament == tournament:
                 t.result = result
-                t.points = points
-                return True, f"✓ Recorded {player_name}: {result} ({points} pts) at {tournament}"
+                t.earnings = earnings
+                self._recompute_week_earnings(tournament, t.week)
+                return True, f"✓ Recorded {player_name}: {result} ({_fmt_money(earnings)}) at {tournament}"
 
         return False, f"❌ {player_name} not used at {tournament}"
 
@@ -409,15 +451,15 @@ def print_player_status(tracker: UsageTracker, player_name: str):
 
     print(f"\n  Uses: {usage.times_used}/{MAX_USES_PER_PLAYER}")
     print(f"  Remaining: {usage.remaining_uses}")
-    print(f"  Total Points: {usage.total_points}")
+    print(f"  Total Earnings: {_fmt_money(usage.total_earnings)}")
 
     if usage.tournaments_used:
         print(f"\n  Tournament History:")
         print(f"  {'-'*50}")
         for t in usage.tournaments_used:
             result_str = t.result if t.result else "In Progress" if t.week > 0 else "Pending"
-            points_str = f"{t.points} pts" if t.points else "-"
-            print(f"  Week {t.week:2}: {t.tournament[:30]:<30} {result_str:<8} {points_str}")
+            earnings_str = _fmt_money(t.earnings)
+            print(f"  Week {t.week:2}: {t.tournament[:30]:<30} {result_str:<8} {earnings_str}")
 
 
 def print_summary(tracker: UsageTracker):
@@ -427,11 +469,11 @@ def print_summary(tracker: UsageTracker):
     print(f"{'='*70}")
 
     total_picks = sum(p.times_used for p in tracker.picks.values())
-    total_points = sum(p.total_points for p in tracker.picks.values())
+    total_earnings = sum(p.total_earnings for p in tracker.picks.values())
 
     print(f"\n  Players Used: {len(tracker.picks)}")
     print(f"  Total Picks Made: {total_picks}")
-    print(f"  Total Points: {total_points}")
+    print(f"  Total Earnings: {_fmt_money(total_earnings)}")
 
     # Show players by remaining uses
     print(f"\n  PLAYERS BY REMAINING USES:")
@@ -447,8 +489,8 @@ def print_summary(tracker: UsageTracker):
             status = "⚠️ EXHAUSTED" if remaining == 0 else f"{remaining} left"
             print(f"\n  {status}:")
             for player, usage in by_remaining[remaining]:
-                pts = f"({usage.total_points} pts)" if usage.total_points else ""
-                print(f"    - {player} {pts}")
+                earned = f"({_fmt_money(usage.total_earnings)})" if usage.total_earnings else ""
+                print(f"    - {player} {earned}")
 
 
 def print_lineups(tracker: UsageTracker):
@@ -466,7 +508,7 @@ def print_lineups(tracker: UsageTracker):
         week = lineup.get('week', week_key)
         tournament = lineup.get('tournament', 'Unknown')
         players = lineup.get('lineup', [])
-        points = lineup.get('points_earned')
+        earnings = lineup.get('earnings_earned', lineup.get('points_earned'))
 
         print(f"\n  Week {week}: {tournament}")
         print(f"  {'-'*50}")
@@ -479,14 +521,14 @@ def print_lineups(tracker: UsageTracker):
                 if usage:
                     for t in usage.tournaments_used:
                         if t.tournament == tournament and t.result:
-                            result_str = f" → {t.result} ({t.points} pts)"
+                            result_str = f" → {t.result} ({_fmt_money(t.earnings)})"
                             break
                 print(f"    - {player}{result_str}")
         else:
             print(f"    (No players)")
 
-        if points is not None:
-            print(f"  Total: {points} pts")
+        if earnings is not None:
+            print(f"  Total: {_fmt_money(earnings)}")
 
 
 def print_available(tracker: UsageTracker):
@@ -499,9 +541,9 @@ def print_available(tracker: UsageTracker):
         print("\n  No players tracked yet.")
         return
 
-    # Sort by remaining uses (ascending) then by total points (descending)
+    # Sort by remaining uses (ascending) then by total earnings (descending)
     players = [(name, usage) for name, usage in tracker.picks.items() if usage.remaining_uses > 0]
-    players.sort(key=lambda x: (x[1].remaining_uses, -x[1].total_points))
+    players.sort(key=lambda x: (x[1].remaining_uses, -x[1].total_earnings))
 
     current_remaining = None
     for player, usage in players:
@@ -510,8 +552,8 @@ def print_available(tracker: UsageTracker):
             indicator = "⚠️ " if current_remaining == 1 else ""
             print(f"\n  {indicator}{current_remaining} USE{'S' if current_remaining > 1 else ''} REMAINING:")
 
-        pts = f"({usage.total_points} pts)" if usage.total_points else ""
-        print(f"    - {player} {pts}")
+        earned = f"({_fmt_money(usage.total_earnings)})" if usage.total_earnings else ""
+        print(f"    - {player} {earned}")
 
 
 # ============================================================================
@@ -528,7 +570,7 @@ Examples:
   python usage_tracker.py --add "Scottie Scheffler" "Rory McIlroy" "Jon Rahm" --tournament "Waste Management Phoenix Open"
 
   # Record results
-  python usage_tracker.py --result "Scottie Scheffler" --tournament "Waste Management Phoenix Open" --finish "T3" --points 85
+  python usage_tracker.py --result "Scottie Scheffler" --tournament "Waste Management Phoenix Open" --finish "T3" --earnings 485000
 
   # Check player status
   python usage_tracker.py --check "Scottie Scheffler"
@@ -555,8 +597,10 @@ Examples:
     # Result details
     parser.add_argument('--finish', metavar='POSITION',
                         help='Finish position (e.g., "1st", "T3", "MC")')
+    parser.add_argument('--earnings', type=int, metavar='USD',
+                        help='Official earnings in dollars')
     parser.add_argument('--points', type=int, metavar='PTS',
-                        help='Points earned')
+                        help=argparse.SUPPRESS)
 
     # Views
     parser.add_argument('--summary', '-s', action='store_true',
@@ -603,12 +647,13 @@ Examples:
         if not args.finish:
             print("Error: --finish required with --result")
             return
-        if args.points is None:
-            print("Error: --points required with --result")
+        earnings_value = args.earnings if args.earnings is not None else args.points
+        if earnings_value is None:
+            print("Error: --earnings required with --result")
             return
 
         success, message = tracker.record_result(
-            args.result, args.tournament, args.finish, args.points
+            args.result, args.tournament, args.finish, earnings_value
         )
         print(message)
 

@@ -16,23 +16,47 @@ import requests
   # ============================================================================                                        
                                                                                                                         
   # Course coordinates for weather lookup                                                                               
-COURSE_COORDINATES = {                                                                                                
-      "pebble beach": (36.5675, -121.9486),                                                                             
-      "torrey pines": (32.9005, -117.2516),                                                                             
-      "augusta national": (33.5021, -82.0232),                                                                          
-      "tpc scottsdale": (33.6417, -111.9083),                                                                           
-      "riviera": (34.0489, -118.5003),                                                                                  
-      "bay hill": (28.4603, -81.5053),                                                                                  
-      "tpc sawgrass": (30.1975, -81.3964),                                                                              
-      "harbour town": (32.1363, -80.8090),                                                                              
-      "quail hollow": (35.1089, -80.8519),                                                                              
-      "southern hills": (36.0631, -95.9408),                                                                            
-      "bethpage black": (40.7445, -73.4533),                                                                            
-      "valhalla": (38.2527, -85.4938),                                                                                  
-      "pinehurst": (35.1894, -79.4694),                                                                                 
-      "royal troon": (55.5436, -4.8492),                                                                                
-      "st andrews": (56.3433, -2.8019),                                                                                 
-  }
+COURSE_COORDINATES = {
+    "pebble beach": (36.5675, -121.9486),
+    "torrey pines": (32.9005, -117.2516),
+    "augusta national": (33.5021, -82.0232),
+    "tpc scottsdale": (33.6417, -111.9083),
+    "riviera": (34.0489, -118.5003),
+    "bay hill": (28.4603, -81.5053),
+    "tpc sawgrass": (30.1975, -81.3964),
+    "harbour town": (32.1363, -80.8090),
+    "quail hollow": (35.1089, -80.8519),
+    "southern hills": (36.0631, -95.9408),
+    "bethpage black": (40.7445, -73.4533),
+    "valhalla": (38.2527, -85.4938),
+    "pinehurst": (35.1894, -79.4694),
+    "royal troon": (55.5436, -4.8492),
+    "st andrews": (56.3433, -2.8019),
+    # 2026 schedule additions
+    "tpc san antonio": (29.5585, -98.6193),
+    "innisbrook": (28.1531, -82.7338),           # Copperhead course, Zurich Classic area
+    "tpc louisiana": (29.9421, -90.1710),        # Zurich Classic
+    "pga national": (26.8373, -80.1169),         # Honda Classic
+    "sedgefield": (36.0413, -79.8888),           # Wyndham Championship
+    "muirfield village": (40.1037, -83.1418),    # Memorial Tournament
+    "colonial": (32.7157, -97.3671),             # Charles Schwab / Colonial CC, Fort Worth
+    "castle pines": (39.4631, -104.8760),        # BMW Championship alternate
+    "oak hill": (43.1133, -77.5538),             # Rochester, NY
+    "oakmont": (40.5195, -79.7986),              # USGA / PGA championship site
+    "shinnecock": (40.8843, -72.4371),           # Shinnecock Hills
+    "wilmington cc": (39.8102, -75.5171),        # BMW Championship
+    "east lake": (33.7215, -84.3019),            # Tour Championship
+    "kapalua": (20.9931, -156.6647),             # Sentry
+    "waialae": (21.2769, -157.7559),             # Sony Open
+    "shadow creek": (36.2272, -115.1908),        # CJ Cup
+    "the grove xxiii": (34.2103, -118.6325),     # unofficial, Sherwood adj
+    "century club": (32.9546, -117.0632),        # Farmers Insurance adj Torrey
+    "muirhead": (56.3433, -2.8019),              # alias for st andrews
+    "carnoustie": (56.5020, -2.6589),
+    "royal st george": (51.3128, 1.3842),
+    "hoylake": (53.3950, -3.1885),
+    "royal birkdale": (53.6389, -3.0314),
+}
 
 def fetch_weather(lat: float, lon: float) -> dict:
     url = (

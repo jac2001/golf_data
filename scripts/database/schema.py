@@ -99,6 +99,27 @@ CREATE_STATEMENTS = [
     """,
 
     # -------------------------------------------------------------------------
+    # picks: weekly fantasy lineup picks + results
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS picks (
+        season              VARCHAR NOT NULL,
+        week                INTEGER NOT NULL,
+        tournament_id       VARCHAR,
+        tournament          VARCHAR,
+        pick_date           DATE,
+        player_name         VARCHAR NOT NULL,
+        result              VARCHAR,
+        fedex_points        INTEGER,
+        model_rank          INTEGER,
+        opening_odds        VARCHAR,
+        opening_implied_prob DOUBLE,
+        updated_at          TIMESTAMP DEFAULT current_timestamp,
+        PRIMARY KEY (season, week, player_name)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
     # course_performance: per-player per-course historical stats
     # -------------------------------------------------------------------------
     """

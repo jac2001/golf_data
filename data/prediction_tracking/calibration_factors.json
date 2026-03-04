@@ -1,28 +1,88 @@
 {
   "global": {
     "win_prob": {
-      "scale_factor": 0.5010407825136914,
+      "scale_factor": 0.6009987354265972,
       "buckets": {}
     },
     "top5_prob": {
-      "scale_factor": 0.5134614764716696,
+      "scale_factor": 0.6055279350587448,
       "buckets": {}
     },
     "top10_prob": {
-      "scale_factor": 0.5105025517612235,
+      "scale_factor": 0.6215299150769602,
       "buckets": {}
     },
     "top20_prob": {
-      "scale_factor": 0.6222805201984108,
+      "scale_factor": 1.5,
       "buckets": {}
     }
   },
-  "by_tournament_type": {},
+  "by_tournament_type": {
+    "Standard": {
+      "win_prob": {
+        "scale_factor": 0.6009987354265972,
+        "buckets": {}
+      },
+      "top5_prob": {
+        "scale_factor": 0.6055279350587448,
+        "buckets": {}
+      },
+      "top10_prob": {
+        "scale_factor": 0.6215299150769602,
+        "buckets": {}
+      }
+    }
+  },
+  "by_field_strength": {
+    "weak": {
+      "win_prob": {
+        "scale_factor": 0.5010407825136914,
+        "buckets": {}
+      },
+      "top5_prob": {
+        "scale_factor": 0.5134614764716696,
+        "buckets": {}
+      },
+      "top10_prob": {
+        "scale_factor": 0.5105025517612235,
+        "buckets": {}
+      },
+      "top20_prob": {
+        "scale_factor": 1.5,
+        "buckets": {}
+      }
+    }
+  },
+  "by_tournament_type_field_strength": {
+    "Standard|weak": {
+      "win_prob": {
+        "scale_factor": 0.5010407825136914,
+        "buckets": {}
+      },
+      "top5_prob": {
+        "scale_factor": 0.5134614764716696,
+        "buckets": {}
+      },
+      "top10_prob": {
+        "scale_factor": 0.5105025517612235,
+        "buckets": {}
+      },
+      "top20_prob": {
+        "scale_factor": 1.5,
+        "buckets": {}
+      }
+    }
+  },
   "metadata": {
-    "generated_at": "2026-02-03T08:31:57.479283",
+    "generated_at": "2026-03-02T22:31:32.922192",
     "tournaments_by_type": {
-      "Standard": 2
+      "Standard": 3
     },
-    "min_tournaments": 3
+    "field_strength_thresholds": {
+      "strong": "<=30",
+      "medium": "31-60",
+      "weak": ">60"
+    },
+    "min_tournaments": 2
   }
 }

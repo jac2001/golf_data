@@ -149,8 +149,10 @@ def run() -> dict:
     print("  Train: 2016-2024   |   Test (held-out): 2025")
     print("=" * 62)
 
-    # 1. Load master data
-    master_path = PROCESSED_DIR / "master_training_data_2016_2025.csv"
+    # 1. Load master data — auto-detect newest file
+    import glob as _glob
+    _td_files = sorted(_glob.glob(str(PROCESSED_DIR / "master_training_data_*.csv")))
+    master_path = Path(_td_files[-1]) if _td_files else PROCESSED_DIR / "master_training_data_2016_2025.csv"
     if not master_path.exists():
         raise FileNotFoundError(f"Master data not found: {master_path}")
 
@@ -198,8 +200,13 @@ def run() -> dict:
 
         # Build X_test using the exact feature order the model expects,
         # imputing missing values with training-set medians.
-        feature_medians = train_df[features].median(numeric_only=True)
-        X_test = test_df[features].fillna(feature_medians)
+        # Guard against new features added after this training data was built.
+        present = [f for f in features if f in train_df.columns]
+        missing = [f for f in features if f not in train_df.columns]
+        if missing:
+            print(f"    ⚠  {len(missing)} feature(s) not in training data, filling with 0: {missing[:5]}")
+        feature_medians = train_df[present].median(numeric_only=True)
+        X_test = test_df.reindex(columns=features, fill_value=0).fillna(feature_medians)
 
         y_true = test_df[target_col].fillna(0).astype(int)
         y_prob = model.predict_proba(X_test)[:, 1]

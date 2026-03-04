@@ -1,0 +1,16 @@
+{
+  "tournament_id": "R2026009",
+  "tournament_name": "Arnold Palmer Invitational presented by Mastercard",
+  "current_round": 1,
+  "round_status": "Groupings Official",
+  "cut_line": {},
+  "cut_projection": {
+    "projected_cut_score": 999,
+    "projected_cut_position": "-",
+    "bubble_count": 72,
+    "safely_in": 0,
+    "safely_out": 0
+  },
+  "fetched_at": "2026-03-03T18:37:05.439480+00:00",
+  "player_count": 72
+}

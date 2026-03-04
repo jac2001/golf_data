@@ -11,7 +11,7 @@ Features:
 - Creates course history features
 
 Usage:
-    python multi_year_scraper.py --years 2020 2021 2022 2023 2024
+    python3 multi_year_scraper.py --years 2026 2021 2022 2023 2024
 
     Or for a single year:
     python multi_year_scraper.py --years 2023

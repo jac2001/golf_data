@@ -1,0 +1,86 @@
+{
+  "run_id": "20260302_223325",
+  "run_type": "full_pipeline",
+  "status": "running",
+  "started_at": "2026-03-02T22:33:25",
+  "ended_at": "",
+  "tournament_name": "Arnold Palmer Invitational",
+  "tournament_id": "R2026009",
+  "step_count": 3,
+  "failed_count": 2,
+  "failed_step_ids": [
+    "step_001",
+    "step_002"
+  ],
+  "steps": [
+    {
+      "id": "step_001",
+      "name": "Fetch DraftKings props",
+      "command": [
+        "python3",
+        "/Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_draftkings_props.py",
+        "--tournament-id",
+        "R2026009",
+        "--no-snapshot",
+        "--fetch-profile",
+        "fast"
+      ],
+      "command_str": "python3 /Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_draftkings_props.py --tournament-id R2026009 --no-snapshot --fetch-profile fast",
+      "timeout_seconds": 240,
+      "status": "failed",
+      "started_at": "2026-03-02T22:33:25",
+      "ended_at": "2026-03-02T22:37:25",
+      "duration_seconds": 240.0,
+      "return_code": null,
+      "stdout_tail": "",
+      "stderr_tail": "",
+      "error": "Timeout after 240s"
+    },
+    {
+      "id": "step_002",
+      "name": "Fetch PGA odds",
+      "command": [
+        "python3",
+        "/Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_pga_odds.py",
+        "--tournament-id",
+        "R2026009",
+        "--output",
+        "/Users/jacklegnon/Desktop/golf_data/data/odds/pga_odds_R2026009.csv"
+      ],
+      "command_str": "python3 /Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_pga_odds.py --tournament-id R2026009 --output /Users/jacklegnon/Desktop/golf_data/data/odds/pga_odds_R2026009.csv",
+      "timeout_seconds": 180,
+      "status": "failed",
+      "started_at": "2026-03-02T22:37:25",
+      "ended_at": "2026-03-02T22:37:26",
+      "duration_seconds": 1.0,
+      "return_code": 1,
+      "stdout_tail": "\n============================================================\n  PGA TOUR ODDS SCRAPER\n============================================================\n  Fetching odds for tournament R2026009...\n    No odds data found\n\n  No odds data found!\n",
+      "stderr_tail": "/Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_pga_odds.py:635: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\n  fetched_at = datetime.utcnow().isoformat(timespec=\"seconds\") + \"Z\"\n",
+      "error": "/Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_pga_odds.py:635: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\n  fetched_at = datetime.utcnow().isoformat(timespec=\"seconds\") + \"Z\"\n"
+    },
+    {
+      "id": "step_003",
+      "name": "Fetch betting profiles",
+      "command": [
+        "python3",
+        "/Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_betting_profiles.py",
+        "--tournament-id",
+        "R2026009",
+        "--field",
+        "/Users/jacklegnon/Desktop/golf_data/data/fields/field_R2026009.csv",
+        "--output",
+        "/Users/jacklegnon/Desktop/golf_data/data/betting_profiles/betting_profiles_R2026009.csv"
+      ],
+      "command_str": "python3 /Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_betting_profiles.py --tournament-id R2026009 --field /Users/jacklegnon/Desktop/golf_data/data/fields/field_R2026009.csv --output /Users/jacklegnon/Desktop/golf_data/data/betting_profiles/betting_profiles_R2026009.csv",
+      "timeout_seconds": 240,
+      "status": "running",
+      "started_at": "2026-03-02T22:37:26",
+      "ended_at": "",
+      "duration_seconds": null,
+      "return_code": null,
+      "stdout_tail": "",
+      "stderr_tail": "",
+      "error": ""
+    }
+  ]
+}

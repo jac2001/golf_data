@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-03-01T23:04:47.453069",
+  "last_updated": "2026-03-02T00:00:00.000000",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -54,11 +54,11 @@
           "week": 2,
           "date": "2026-02-12",
           "result": "T29",
-          "points": 39
+          "points": 31
         }
       ],
       "remaining_uses": 2,
-      "total_points": 39
+      "total_points": 31
     },
     "Jason Day": {
       "times_used": 1,
@@ -68,11 +68,11 @@
           "week": 2,
           "date": "2026-02-12",
           "result": "T24",
-          "points": 49
+          "points": 40
         }
       ],
       "remaining_uses": 2,
-      "total_points": 49
+      "total_points": 40
     },
     "Justin Rose": {
       "times_used": 1,
@@ -82,11 +82,11 @@
           "week": 2,
           "date": "2026-02-12",
           "result": "T37",
-          "points": 28
+          "points": 20
         }
       ],
       "remaining_uses": 2,
-      "total_points": 28
+      "total_points": 20
     },
     "Hideki Matsuyama": {
       "times_used": 1,
@@ -96,11 +96,11 @@
           "week": 3,
           "date": "2026-02-19",
           "result": "T28",
-          "points": 40
+          "points": 32
         }
       ],
       "remaining_uses": 2,
-      "total_points": 40
+      "total_points": 32
     },
     "Viktor Hovland": {
       "times_used": 1,
@@ -110,11 +110,11 @@
           "week": 3,
           "date": "2026-02-19",
           "result": "T41",
-          "points": 22
+          "points": 19
         }
       ],
       "remaining_uses": 2,
-      "total_points": 22
+      "total_points": 19
     },
     "Patrick Cantlay": {
       "times_used": 1,
@@ -124,11 +124,11 @@
           "week": 3,
           "date": "2026-02-19",
           "result": "T37",
-          "points": 28
+          "points": 22
         }
       ],
       "remaining_uses": 2,
-      "total_points": 28
+      "total_points": 22
     },
     "Ryan Gerard": {
       "times_used": 1,
@@ -138,11 +138,11 @@
           "week": 4,
           "date": "2026-02-26",
           "result": "T23",
-          "points": 0
+          "points": 33
         }
       ],
       "remaining_uses": 2,
-      "total_points": 0
+      "total_points": 33
     },
     "Michael Thorbjornsen": {
       "times_used": 1,
@@ -166,11 +166,11 @@
           "week": 4,
           "date": "2026-02-26",
           "result": "T6",
-          "points": 0
+          "points": 92
         }
       ],
       "remaining_uses": 2,
-      "total_points": 0
+      "total_points": 92
     }
   },
   "weekly_lineups": {
@@ -183,7 +183,7 @@
         "Chris Gotterup",
         "Pierceson Coody"
       ],
-      "points_earned": null
+      "points_earned": 596
     },
     "week_2": {
       "tournament": "AT&T Pebble Beach Pro-Am",
@@ -194,7 +194,7 @@
         "Jason Day",
         "Justin Rose"
       ],
-      "points_earned": null
+      "points_earned": 91
     },
     "week_3": {
       "tournament": "The Genesis Invitational",
@@ -205,7 +205,7 @@
         "Viktor Hovland",
         "Patrick Cantlay"
       ],
-      "points_earned": null
+      "points_earned": 73
     },
     "week_4": {
       "tournament": "Cognizant Classic",
@@ -216,12 +216,12 @@
         "Michael Thorbjornsen",
         "Nicolai H\u00f8jgaard"
       ],
-      "points_earned": null
+      "points_earned": 125
     }
   },
   "summary": {
-    "total_players_used": 11,
-    "total_picks_made": 15,
-    "total_points": 802
+    "total_players_used": 12,
+    "total_picks_made": 12,
+    "total_points": 885
   }
 }

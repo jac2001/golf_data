@@ -30,10 +30,6 @@ has_course_history
 has_made_cut_here
 venue_avg_finish
 venue_finish_std
-field_avg_rank
-field_median_rank
-field_avg_season_sg_arg
-field_avg_predictive_sg_weighted
 form_trend
 finish_consistency
 recent_top10s

@@ -1,2 +1,2 @@
 tournament_id,tournament_name,course_id,course_name,course_par,course_yardage,is_host_course,total_scoring_avg,avg_hole_difficulty,total_eagles,total_birdies,total_pars,total_bogeys,total_double_bogeys,birdie_pct,bogey_pct,par3_count,par4_count,par5_count,hardest_holes,easiest_holes
-R2026010,R2026010,928,PGA National - Champion Course,71,"7,223",True,70.54799999999999,-0.025111111111112194,31,1358,4341,961,131,19.997054925636874,14.15108231482845,4,11,3,"[6, 17, 11]","[10, 3, 18]"
+R2026010,R2026010,928,PGA National - Champion Course,71,"7,223",True,70.54799999999999,-0.025111111111112194,31,1358,4341,961,110,20.059084194977846,14.194977843426884,4,11,3,"[6, 17, 11]","[10, 3, 18]"

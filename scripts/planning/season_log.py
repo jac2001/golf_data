@@ -1,7 +1,7 @@
 """
 Season Log
 ==========
-Track and display Season-Long fantasy golf performance.
+Track and display season-long fantasy golf earnings performance.
 
 Usage:                                                                                                                
     python season_log.py                    # Show season summary                                                     
@@ -61,31 +61,31 @@ def build_season_log() -> pd.DataFrame:
         date = lineup.get("date", "")
         
         
-        week_points = 0
+        week_earnings = 0
         week_picks = []
         
         for player_name in lineup.get("lineup", []):
             player_data = picks.get(player_name, [])
             
             result = None 
-            points = 0
+            earnings = 0
             for t in player_data.get("tournaments_used", []):
                 if t.get("tournament") == tournament:
                     result = t.get('result', "?")
-                    points = t.get("points", 0)
+                    earnings = t.get("earnings", t.get("points", 0)) or 0
                     break 
-            week_points += points 
+            week_earnings += earnings
             week_picks.append({
                 "week": week_num, 
                 "tournament": tournament, 
                 'date': date, 
                 'player': player_name, 
                 'finish': result, 
-                'points': points
+                'earnings': earnings
             })
             
         for pick in week_picks:
-            pick['week_total'] = week_picks 
+            pick['week_total'] = week_earnings
             rows.append(pick)
     return pd.DataFrame(rows)
 
@@ -102,38 +102,38 @@ def display_summary():
     print("=" * 70)
     print()
     
-    total_points = usage.get("summary", {}).get("total_points", 0)
+    total_earnings = usage.get("summary", {}).get("total_earnings", usage.get("summary", {}).get("total_points", 0))
     weeks_played = len(usage.get("weekly_lineups", {}))
     
                        
-    print(f"  Total Points:     {total_points}")                                                                      
+    print(f"  Total Earnings:   ${total_earnings:,.0f}")                                                                      
     print(f"  Weeks Played:     {weeks_played}")                                                                      
-    print(f"  Avg Points/Week:  {total_points/weeks_played:.1f}" if weeks_played else "  Avg Points/Week:  -")        
+    print(f"  Avg Earn/Week:    ${total_earnings/weeks_played:,.0f}" if weeks_played else "  Avg Earn/Week:    -")        
     print()                                                                                                           
                                                                                                                         
     # Week by week                                                                                                    
     print("  WEEKLY RESULTS")                                                                                         
     print("  " + "-" * 65)                                                                                            
-    print(f"  {'Week':<6} {'Tournament':<35} {'Points':<10}")                                                         
+    print(f"  {'Week':<6} {'Tournament':<35} {'Earnings':<12}")                                                         
     print("  " + "-" * 65)    
     
     
-    weekly = df.groupby(['week', 'tournament']).agg({"points": "sum"}).reset_index()
+    weekly = df.groupby(['week', 'tournament']).agg({"earnings": "sum"}).reset_index()
     cumulative = 0
     
     for _, row in weekly.iterrows():                                                                                  
-          cumulative += row["points"]                                                                                   
-          print(f"  {row['week']:<6} {row['tournament'][:35]:<35} {int(row['points']):<10} (cum: {cumulative})")        
+          cumulative += row["earnings"]                                                                                   
+          print(f"  {row['week']:<6} {row['tournament'][:35]:<35} ${int(row['earnings']):<10,} (cum: ${int(cumulative):,})")        
                                                                                                                         
     print()                                                                                                           
                                                                                                                         
     # Top performers                                                                                                  
-    print("  TOP PICKS (by points)")                                                                                  
+    print("  TOP PICKS (by earnings)")                                                                                  
     print("  " + "-" * 65)                                                                                            
                                                                                                                         
-    player_totals = df.groupby("player")["points"].sum().sort_values(ascending=False)                                 
-    for player, pts in player_totals.head(5).items():                                                                 
-        print(f"  • {player:<30} {int(pts)} pts")
+    player_totals = df.groupby("player")["earnings"].sum().sort_values(ascending=False)                                 
+    for player, earned in player_totals.head(5).items():                                                                 
+        print(f"  • {player:<30} ${int(earned):,}")
         
         
     print()
@@ -192,15 +192,15 @@ def display_detailed():
         print()                                                                                                       
         print(f"  WEEK {week}: {tournament}")                                                                         
         print("  " + "-" * 60)                                                                                        
-        print(f"  {'Player':<30} {'Finish':<10} {'Points':<10}")                                                      
+        print(f"  {'Player':<30} {'Finish':<10} {'Earnings':<12}")                                                      
         print("  " + "-" * 60)                                                                                        
                                                                                                                     
         for _, row in week_df.iterrows():                                                                             
             finish = row["finish"] if row["finish"] else "?"                                                          
-            points = int(row["points"]) if row["points"] else 0                                                       
-            print(f"  {row['player']:<30} {finish:<10} {points:<10}")                                                 
+            earnings = int(row["earnings"]) if row["earnings"] else 0                                                       
+            print(f"  {row['player']:<30} {finish:<10} ${earnings:<11,}")                                                 
                                                                                                                     
-        print(f"  {'TOTAL':<30} {'':<10} {int(week_total):<10}")                                                      
+        print(f"  {'TOTAL':<30} {'':<10} ${int(week_total):<11,}")                                                      
                                                                                                                         
     print()  
     

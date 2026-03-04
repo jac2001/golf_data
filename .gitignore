@@ -27,3 +27,5 @@ venv/
 FantasyGolf/
 golf_data/
 .odds_api_key
+config.json
+.env
