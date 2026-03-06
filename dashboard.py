@@ -4296,136 +4296,106 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
         st.warning("No leaderboard data available")
         return
 
-    # Tournament info header
     tournament_name = meta.get("tournament_name", "Tournament")
-    current_round = meta.get("current_round", 1)
-    round_status = meta.get("round_status", "")
-    cut_line = meta.get("cut_line", {})
-    cut_projection = meta.get("cut_projection", {})
+    current_round   = meta.get("current_round", 1)
+    round_status    = meta.get("round_status", "")
+    cut_line        = meta.get("cut_line", {})
+    cut_projection  = meta.get("cut_projection", {})
+    _tid            = meta.get("tournament_id", "")
 
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("Round", current_round)
-    with col2:
-        st.metric("Status", round_status or "In Progress")
-    with col3:
-        cut_score = cut_line.get("cutScore", "TBD") if cut_line else "TBD"
-        st.metric("Cut Line", cut_score)
-    with col4:
-        st.metric("Players", len(df))
+    # ── Tournament header ────────────────────────────────────────────────────
+    st.markdown(f"## {tournament_name}")
 
-    # ── Cut projection banner ────────────────────────────────────────────────
+    _status_color = "#2ecc71" if "progress" in round_status.lower() else "#888"
+    _cut_score    = cut_line.get("cutScore", "—") if cut_line else "—"
+
+    _h1, _h2, _h3, _h4 = st.columns(4)
+    _h1.metric("Round",   f"{current_round} of 4")
+    _h2.metric("Status",  round_status or "Upcoming")
+    _h3.metric("Cut",     _cut_score)
+    _h4.metric("Field",   len(df))
+
+    # ── Cut projection ───────────────────────────────────────────────────────
     if cut_projection:
         _cp_score  = cut_projection.get("projected_cut_score")
         _cp_bubble = cut_projection.get("bubble_count", 0)
         _cp_in     = cut_projection.get("safely_in", 0)
         _cp_out    = cut_projection.get("safely_out", 0)
-
-        # 999 is the PGA Tour API sentinel meaning "no scores yet".
-        # When we see it, replace it with the historical average cut line
-        # for this course so the user sees something useful.
-        _tid = meta.get("tournament_id", "")
         _no_live_cut = (not isinstance(_cp_score, int)) or _cp_score == 999 or _cp_score > 50
 
         if _no_live_cut:
-            # Pre-tournament: show historical baseline instead
             _hist = get_historical_cut_line(_tid) if _tid else {}
             if _hist:
-                _avg = _hist["avg"]
-                _best = _hist["best"]
-                _worst = _hist["worst"]
-                _yrs = _hist["years"]
-                _avg_str = f"{_avg:+.0f}" if _avg != 0 else "E"
-                _range_str = f"{_best:+d} to {_worst:+d}"
-                st.markdown("#### Cut Line")
-                _ca, _cb, _cc, _cd = st.columns(4)
-                with _ca:
-                    st.metric(
-                        "Typical Cut",
-                        _avg_str,
-                        help=f"Historical average cut score at this course ({_yrs} years)",
-                    )
-                with _cb:
-                    st.metric("Historical Range", _range_str, help="Best and worst cut in recent years")
-                with _cc:
-                    st.metric("Field Size", len(df), help="Players in this week's field")
-                with _cd:
-                    st.metric("Est. Make Cut", f"~{len(df)//2}", help="Approx. players advancing (typically ~50%)")
+                _avg_str   = f"{_hist['avg']:+.0f}" if _hist["avg"] != 0 else "E"
+                _range_str = f"{_hist['best']:+d} to {_hist['worst']:+d}"
+                st.caption(f"Projected cut (historical avg): **{_avg_str}** · range {_range_str} · ~{len(df)//2} players advance")
         else:
-            # Live cut data available — show actual projection
             _score_str = f"{_cp_score:+d}" if _cp_score != 0 else "E"
-            st.markdown("#### Cut Line")
             _ca, _cb, _cc, _cd = st.columns(4)
-            with _ca:
-                st.metric("Projected", _score_str, help="Live projected cut score (vs par)")
-            with _cb:
-                st.metric("On the Bubble", _cp_bubble, help="Players within 1 shot of cut line")
-            with _cc:
-                st.metric("Safely In", _cp_in)
-            with _cd:
-                st.metric("Safely Out", _cp_out)
+            _ca.metric("Projected Cut",  _score_str)
+            _cb.metric("On the Bubble",  _cp_bubble, help="Within 1 shot of cut line")
+            _cc.metric("Safely In",      _cp_in)
+            _cd.metric("Safely Out",     _cp_out)
 
     st.markdown("---")
 
-    # --- Visual Leader Cards for Top 3 ---
-    st.markdown("### 🏆 Leaders")
+    # ── Top 3 leader cards ───────────────────────────────────────────────────
     top3 = df.head(3)
-
-    leader_cols = st.columns(3)
-    position_colors = ["#FFD700", "#C0C0C0", "#CD7F32"]  # Gold, Silver, Bronze
-    position_emojis = ["🥇", "🥈", "🥉"]
+    _pos_colors  = ["#FFD700", "#C0C0C0", "#CD7F32"]
+    _pos_labels  = ["1st", "2nd", "3rd"]
+    _leader_cols = st.columns(3)
 
     for i, (_, player) in enumerate(top3.iterrows()):
-        with leader_cols[i]:
-            pos = player.get("position", f"{i+1}")
-            name = str(player.get("player_name", "Unknown"))[:16]
-            total = player.get("total", "E")
-            thru = player.get("thru", "-")
-            r1 = player.get("R1", "-")
-            r2 = player.get("R2", "-")
-            r3 = player.get("R3", "-")
-            odds = player.get("odds_to_win", "")
-            country = player.get("country", "")
+        with _leader_cols[i]:
+            name    = str(player.get("player_name", "Unknown"))
+            total   = str(player.get("total", "E"))
+            thru    = str(player.get("thru", "-"))
+            country = str(player.get("country", ""))
+            odds    = str(player.get("odds_to_win", "")) if player.get("odds_to_win") else ""
 
-            # Position change indicator
+            # Current round score (bold) + previous rounds smaller
+            _cur_r  = player.get(f"R{current_round}")
+            _cur_str = f"{int(_cur_r)}" if pd.notna(_cur_r) else "—"
+            _prev_parts = []
+            for _pr in range(1, current_round):
+                _v = player.get(f"R{_pr}")
+                if pd.notna(_v):
+                    _prev_parts.append(f"R{_pr}: {int(_v)}")
+            _prev_str = " · ".join(_prev_parts)
+
+            # Score color: negative total = green, positive = red, E = white
+            try:
+                _tot_num = 0 if total == "E" else int(total)
+                _score_color = "#2ecc71" if _tot_num < 0 else ("#e74c3c" if _tot_num > 0 else "#fff")
+            except (ValueError, TypeError):
+                _score_color = "#2ecc71"
+
+            # Movement arrow
             change = player.get("position_change", 0)
             if pd.notna(change) and change != 0:
-                change_str = f"↑{abs(int(change))}" if change > 0 else f"↓{abs(int(change))}"
-                change_color = "#00C853" if change > 0 else "#F44336"
+                _mv_html = f"<span style='color:{'#2ecc71' if change > 0 else '#e74c3c'};font-size:0.8em'>{'↑' if change > 0 else '↓'}{abs(int(change))}</span>"
             else:
-                change_str = ""
-                change_color = "#888"
+                _mv_html = ""
 
-            change_html = (
-                f'<div style="color: {change_color}; font-size: 0.85em; margin-top: 4px;">{change_str}</div>'
-                if change_str else
-                '<div style="margin-top: 4px;"></div>'
-            )
-            odds_html = (
-                f'<div style="color: #4CAF50; font-size: 0.9em; font-weight: bold; margin-top: 8px;">{odds}</div>'
-                if odds else ""
-            )
-
-            card_html = textwrap.dedent(f"""
-                <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-                            border-radius: 12px; padding: 16px; margin: 4px 0;
-                            border: 2px solid {position_colors[i]}; text-align: center;
-                            min-height: 330px; height: 330px;
-                            display: flex; flex-direction: column; justify-content: space-between;">
-                    <div style="font-size: 2em;">{position_emojis[i]}</div>
-                    <div style="font-weight: bold; color: #fff; font-size: 1.1em; margin: 8px 0;">{name}</div>
-                    <div style="color: #888; font-size: 0.8em;">{country}</div>
-                    <div style="color: #00C853; font-size: 1.8em; font-weight: bold; margin: 8px 0;">{total}</div>
-                    <div style="color: #aaa; font-size: 0.85em;">Thru {thru}</div>{change_html}
-                    <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;
-                                padding-top: 10px; border-top: 1px solid #2a2a4a;">
-                        <span style="color: #888; font-size: 0.75em;">R1: {r1}</span>
-                        <span style="color: #888; font-size: 0.75em;">R2: {r2}</span>
-                        <span style="color: #888; font-size: 0.75em;">R3: {r3}</span>
-                    </div>{odds_html}
-                </div>
-            """).strip()
-            st.markdown(card_html, unsafe_allow_html=True)
+            st.markdown(f"""
+<div style="background:#1a1a2e;border-radius:10px;padding:14px 16px;
+            border:2px solid {_pos_colors[i]};margin-bottom:8px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <span style="color:{_pos_colors[i]};font-size:0.75em;font-weight:700;letter-spacing:1px">{_pos_labels[i].upper()}</span>
+    {_mv_html}
+  </div>
+  <div style="font-weight:700;color:#fff;font-size:1.05em;margin-bottom:2px">{name}</div>
+  <div style="color:#666;font-size:0.75em;margin-bottom:10px">{country}</div>
+  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+    <span style="color:{_score_color};font-size:2em;font-weight:700;line-height:1">{total}</span>
+    <span style="color:#888;font-size:0.8em">Thru {thru}</span>
+  </div>
+  <div style="border-top:1px solid #2a2a4a;padding-top:8px;display:flex;justify-content:space-between;align-items:center">
+    <span style="color:#666;font-size:0.72em">{_prev_str}</span>
+    <span style="color:#aaa;font-size:0.8em;font-weight:600">Rd: {_cur_str}</span>
+  </div>
+  {"<div style='color:#4CAF50;font-size:0.8em;font-weight:600;margin-top:6px'>" + odds + "</div>" if odds else ""}
+</div>""", unsafe_allow_html=True)
 
     st.markdown("---")
 
@@ -4485,9 +4455,25 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
             display_df["Move"] = df.head(50).apply(format_change, axis=1)
         display_df.columns = [c.replace("_", " ").title() for c in display_df.columns]
 
+    # Color-code score/total columns: under par = green, over par = red, E = default
+    def _color_score(val):
+        try:
+            n = 0 if str(val).strip() == "E" else int(val)
+        except (ValueError, TypeError):
+            return ""
+        if n < 0:   return "color:#2ecc71;font-weight:600"
+        elif n > 0: return "color:#e74c3c;font-weight:600"
+        return "color:#aaa"
+
+    _score_style_cols = [c for c in display_df.columns if c in ("Score", "Total", "R1", "R2", "R3", "R4")]
+    try:
+        _styled = display_df.style.map(_color_score, subset=_score_style_cols)
+    except Exception:
+        _styled = display_df
+
     st.caption("Click a player row to view their scorecard below.")
     _lb_event = st.dataframe(
-        display_df,
+        _styled,
         hide_index=True,
         use_container_width=True,
         height=600,
@@ -4496,29 +4482,14 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
     )
     # Store selected player name in session_state so tab1 body can read it
     if _lb_event.selection.rows:
-        _sel_idx = _lb_event.selection.rows[0]
-        # display_df columns were renamed with .title() so player_name → Player Name
-        _sel_name = display_df.iloc[_sel_idx].get("Player Name", "")
+        _sel_idx  = _lb_event.selection.rows[0]
+        _sel_row  = display_df.iloc[_sel_idx]
+        # Column name differs: "Player Name" in All view, "Player" in round view
+        _sel_name = _sel_row.get("Player Name") or _sel_row.get("Player", "")
         if _sel_name:
-            st.session_state["live_selected_player"] = _sel_name
+            st.session_state["live_selected_player"] = str(_sel_name)
     elif "live_selected_player" not in st.session_state:
         st.session_state["live_selected_player"] = None
-
-    # Cut line projection
-    if cut_projection:
-        st.markdown("### Cut Line Projection")
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            projected = cut_projection.get("projected_cut_score", "E")
-            if projected == 0:
-                projected = "E"
-            elif projected > 0:
-                projected = f"+{projected}"
-            st.metric("Projected Cut", projected)
-        with col2:
-            st.metric("On the Bubble", cut_projection.get("bubble_count", 0))
-        with col3:
-            st.metric("Safely In", cut_projection.get("safely_in", 0))
 
 
 def compare_live_vs_predictions(live_df: pd.DataFrame, tournament_id: str = None) -> pd.DataFrame:
