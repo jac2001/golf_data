@@ -4432,24 +4432,58 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
     # Leaderboard table with styling
     display_df = df.head(50).copy()
 
-    # Format columns
-    cols_to_show = ["position", "player_name", "total", "thru", "R1", "R2", "R3", "R4"]
-    if "odds_to_win" in display_df.columns:
-        cols_to_show.append("odds_to_win")
+    # ── Round filter ─────────────────────────────────────────────────────────
+    # Figure out which rounds actually have data (column exists and >50% filled)
+    _rounds_with_data = []
+    for _rn in [1, 2, 3, 4]:
+        _col = f"R{_rn}"
+        if _col in df.columns and df[_col].notna().sum() / max(len(df), 1) > 0.1:
+            _rounds_with_data.append(_rn)
 
-    display_df = display_df[[c for c in cols_to_show if c in display_df.columns]]
+    # Default to current round; fall back to "All" if no round data yet
+    _default_round = current_round if _rounds_with_data else None
+    _round_options = ["All"] + [f"R{r}" for r in _rounds_with_data]
+    _default_idx   = _round_options.index(f"R{_default_round}") if _default_round and f"R{_default_round}" in _round_options else 0
 
-    # Add position change indicator
-    if "position_change" in df.columns:
-        def format_change(row):
-            change = row.get("position_change", 0)
-            if pd.isna(change) or change == 0:
-                return ""
-            return f"↑{abs(int(change))}" if change > 0 else f"↓{abs(int(change))}"
-        display_df["Move"] = df.head(50).apply(format_change, axis=1)
+    _round_filter = st.segmented_control(
+        "Round", _round_options,
+        default=_round_options[_default_idx],
+        key="lb_round_filter",
+    )
 
-    # Rename columns for display
-    display_df.columns = [c.replace("_", " ").title() for c in display_df.columns]
+    # Build column list based on selection
+    if _round_filter and _round_filter != "All":
+        # Single round: show that round's score as "Score", hide other rounds
+        _rnum = int(_round_filter[1])
+        cols_to_show = ["position", "player_name", f"R{_rnum}", "total", "thru"]
+        if "odds_to_win" in display_df.columns:
+            cols_to_show.append("odds_to_win")
+        display_df = display_df[[c for c in cols_to_show if c in display_df.columns]]
+        # Add move column before rename
+        if "position_change" in df.columns:
+            def format_change(row):
+                change = row.get("position_change", 0)
+                if pd.isna(change) or change == 0: return ""
+                return f"↑{abs(int(change))}" if change > 0 else f"↓{abs(int(change))}"
+            display_df["Move"] = df.head(50).apply(format_change, axis=1)
+        display_df = display_df.rename(columns={
+            "position": "Pos", "player_name": "Player",
+            f"R{_rnum}": "Score", "total": "Total", "thru": "Thru",
+            "odds_to_win": "Odds", "Move": "Move",
+        })
+    else:
+        # All rounds
+        cols_to_show = ["position", "player_name", "total", "thru", "R1", "R2", "R3", "R4"]
+        if "odds_to_win" in display_df.columns:
+            cols_to_show.append("odds_to_win")
+        display_df = display_df[[c for c in cols_to_show if c in display_df.columns]]
+        if "position_change" in df.columns:
+            def format_change(row):
+                change = row.get("position_change", 0)
+                if pd.isna(change) or change == 0: return ""
+                return f"↑{abs(int(change))}" if change > 0 else f"↓{abs(int(change))}"
+            display_df["Move"] = df.head(50).apply(format_change, axis=1)
+        display_df.columns = [c.replace("_", " ").title() for c in display_df.columns]
 
     st.caption("Click a player row to view their scorecard below.")
     _lb_event = st.dataframe(
