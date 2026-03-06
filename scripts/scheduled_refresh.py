@@ -470,6 +470,16 @@ def run_live_refresh(dry_run: bool = False):
                                        "--tournament-id", tournament_id]))
         tasks.append(("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
                                          "--tournament-id", tournament_id]))
+        
+        # After fetching the fresh leaderboard, immediately blend actual scores 
+        # into the predictions so live_projected_score stays current 
+        
+        tasks.append(("Live Prediction Update", ['python3', 'scripts/predictions/live_update_predictions.py', 
+                                                 "--tournament-id", tournament_id
+                                                 ]))
+        
+        
+        
 
     results = []
     for desc, cmd in tasks:

@@ -4451,7 +4451,24 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
     # Rename columns for display
     display_df.columns = [c.replace("_", " ").title() for c in display_df.columns]
 
-    st.dataframe(display_df, hide_index=True, use_container_width=True, height=600)
+    st.caption("Click a player row to view their scorecard below.")
+    _lb_event = st.dataframe(
+        display_df,
+        hide_index=True,
+        use_container_width=True,
+        height=600,
+        on_select="rerun",
+        selection_mode="single-row",
+    )
+    # Store selected player name in session_state so tab1 body can read it
+    if _lb_event.selection.rows:
+        _sel_idx = _lb_event.selection.rows[0]
+        # display_df columns were renamed with .title() so player_name → Player Name
+        _sel_name = display_df.iloc[_sel_idx].get("Player Name", "")
+        if _sel_name:
+            st.session_state["live_selected_player"] = _sel_name
+    elif "live_selected_player" not in st.session_state:
+        st.session_state["live_selected_player"] = None
 
     # Cut line projection
     if cut_projection:
@@ -12689,69 +12706,176 @@ elif page == "🔴 Live":
         if live_df is not None:
             render_live_leaderboard(live_df, live_meta)
 
-            # ── Scorecards expander ──────────────────────────────────────
+            # ── Player Scorecard (row-click driven) ─────────────────────────
             _live_tid = live_meta.get("tournament_id", "")
-            if _live_tid:
-                _hs_path = LIVE_DIR / f"hole_scores_{_live_tid.lower()}.csv"
-                if _hs_path.exists():
-                    with st.expander("Scorecards (Hole-by-Hole)", expanded=False):
-                        _hs_df = pd.read_csv(_hs_path)
-                        if not _hs_df.empty:
-                            _hole_cols = [f"h{i}" for i in range(1, 19)]
-                            _avail_holes = [c for c in _hole_cols if c in _hs_df.columns]
-                            _rounds_available = sorted(_hs_df["round"].dropna().unique().tolist()) if "round" in _hs_df.columns else [1]
+            _selected_sc_player = st.session_state.get("live_selected_player")
 
-                            _sc_round = st.selectbox(
-                                "Round:", _rounds_available,
-                                index=len(_rounds_available) - 1,
-                                key="scorecard_round_sel"
-                            )
-                            _hs_rd = _hs_df[_hs_df["round"] == _sc_round].copy() if "round" in _hs_df.columns else _hs_df.copy()
+            if _selected_sc_player and not live_df.empty:
+                _sc_lb_row = live_df[live_df["player_name"] == _selected_sc_player]
 
-                            if not _hs_rd.empty and _avail_holes:
-                                # Merge position from live_df for ordering
-                                if "player_id" in live_df.columns and "player_id" in _hs_rd.columns:
-                                    _pos_map = dict(zip(
-                                        live_df["player_id"].astype(str),
-                                        live_df.get("position", live_df.index).fillna(999)
-                                    ))
-                                    _hs_rd["_pos_sort"] = _hs_rd["player_id"].astype(str).map(
-                                        lambda x: _pos_map.get(x, 999)
-                                    ).apply(lambda v: int(str(v).strip("T")) if str(v).strip("T").isdigit() else 999)
-                                    _hs_rd = _hs_rd.sort_values("_pos_sort").drop(columns=["_pos_sort"])
+                if not _sc_lb_row.empty:
+                    _sc_r = _sc_lb_row.iloc[0]
+                    st.markdown("---")
+                    st.markdown(f"#### {_selected_sc_player}")
 
-                                # Build display frame
-                                rename_map = {"player_name": "Player", "front9": "F9", "back9": "B9", "total": "Tot"}
-                                for i, h in enumerate(_avail_holes, 1):
-                                    rename_map[h] = str(i)
-                                _sc_display = _hs_rd[
-                                    ["player_name"] + _avail_holes +
-                                    [c for c in ["front9", "back9", "total"] if c in _hs_rd.columns]
-                                ].rename(columns=rename_map)
+                    # Summary metrics
+                    _sc_pos   = _sc_r.get("position", "—")
+                    _sc_total = _sc_r.get("total", "E")
+                    _sc_thru  = str(_sc_r.get("thru", "—"))
+                    _sc_r1    = int(_sc_r["R1"]) if pd.notna(_sc_r.get("R1")) else "—"
+                    _sc_r2    = int(_sc_r["R2"]) if pd.notna(_sc_r.get("R2")) else "—"
+                    _sc_r3    = int(_sc_r["R3"]) if pd.notna(_sc_r.get("R3")) else "—"
+                    _sc_r4    = int(_sc_r["R4"]) if pd.notna(_sc_r.get("R4")) else "—"
+                    _sc_odds  = _sc_r.get("odds_to_win", "")
 
-                                # Color-coded styling using pandas Styler
-                                _score_cols = [str(i) for i in range(1, len(_avail_holes) + 1)]
+                    _mc1, _mc2, _mc3, _mc4, _mc5 = st.columns(5)
+                    _mc1.metric("Position", _sc_pos)
+                    _mc2.metric("Total",    _sc_total)
+                    _mc3.metric("Thru",     _sc_thru)
+                    _mc4.metric("Odds",     f"+{_sc_odds}" if _sc_odds else "—")
+                    _mc5.metric("Rounds",   f"{_sc_r1} · {_sc_r2} · {_sc_r3} · {_sc_r4}")
 
-                                def _score_color(val):
+                    # Load hole scores
+                    if _live_tid:
+                        _hs3_path = LIVE_DIR / f"hole_scores_{_live_tid.lower()}.csv"
+                        if _hs3_path.exists():
+                            _hs3_df = pd.read_csv(_hs3_path)
+                            _pid3 = str(int(_sc_r.get("player_id", -1)))
+                            _hs3_player = _hs3_df[_hs3_df["player_id"].astype(str) == _pid3]
+
+                            if not _hs3_player.empty:
+                                _rounds3 = sorted(_hs3_player["round"].dropna().unique().tolist()) if "round" in _hs3_player.columns else [1]
+                                _rtabs3  = st.tabs([f"Round {int(r)}" for r in _rounds3])
+
+                                def _hole_cell3(stroke, rel):
+                                    if stroke is None:
+                                        return "<td style='padding:4px 6px;text-align:center;color:#555'>-</td>"
                                     try:
-                                        v = int(val)
+                                        s = int(stroke)
+                                        r = int(rel) if rel is not None else 0
                                     except (TypeError, ValueError):
-                                        return ""
-                                    if v <= 2:    return "background-color:#7d6100;color:#FFD700;font-weight:700"  # eagle
-                                    elif v == 3:  return "background-color:#6e1010;color:#e74c3c;font-weight:700"  # birdie (relative to par 4)
-                                    elif v == 4:  return "background-color:#1c1c1c;color:#aaa"                      # par
-                                    elif v == 5:  return "background-color:#0d1e30;color:#4cb8ff"                   # bogey
-                                    else:         return "background-color:#0a1220;color:#1a6a9c;font-weight:700"  # double+
+                                        return f"<td style='padding:4px 6px;text-align:center'>{stroke}</td>"
+                                    if r <= -2:
+                                        inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+                                                 f"width:22px;height:22px;border-radius:50%;border:2px solid #FFD700;"
+                                                 f"background:#7d6100;color:#FFD700;font-weight:700;font-size:12px'>{s}</span>")
+                                        return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
+                                    elif r == -1:
+                                        inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+                                                 f"width:22px;height:22px;border-radius:50%;"
+                                                 f"background:#c0392b;color:#fff;font-weight:700;font-size:12px'>{s}</span>")
+                                        return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
+                                    elif r == 0:
+                                        return f"<td style='padding:4px 6px;text-align:center;color:#ccc;font-size:13px'>{s}</td>"
+                                    elif r == 1:
+                                        inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+                                                 f"width:22px;height:22px;border:2px solid #4cb8ff;"
+                                                 f"background:transparent;color:#4cb8ff;font-size:12px'>{s}</span>")
+                                        return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
+                                    else:
+                                        inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+                                                 f"width:22px;height:22px;background:#1a3a5c;color:#aaa;"
+                                                 f"font-weight:700;font-size:12px'>{s}</span>")
+                                        return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
 
-                                # pandas 2.x uses .map(); .applymap() deprecated
-                                try:
-                                    _sc_styled = _sc_display.style.map(_score_color, subset=_score_cols)
-                                except AttributeError:
-                                    _sc_styled = _sc_display.style.applymap(_score_color, subset=_score_cols)
-                                st.dataframe(_sc_styled, use_container_width=True, height=400)
-                else:
-                    st.caption("No hole score data yet. Hole scores are fetched during live refresh.")
-        else:
+                                def _safe_sum3(vals):
+                                    t = 0
+                                    for v in vals:
+                                        try: t += int(v)
+                                        except (TypeError, ValueError): pass
+                                    return t
+
+                                def _topar_str3(n):
+                                    return "E" if n == 0 else (f"+{n}" if n > 0 else str(n))
+
+                                def _running_cell(val, border_left=False):
+                                    bl = "border-left:1px solid #333;" if border_left else ""
+                                    if val is None or str(val).strip() in ("", "nan"):
+                                        return f"<td style='padding:4px 6px;{bl}text-align:center;color:#444;font-size:11px'>-</td>"
+                                    v = str(val).strip()
+                                    try: n = 0 if v == "E" else int(v)
+                                    except ValueError: n = 0
+                                    color = "#2ecc71" if n < 0 else ("#e74c3c" if n > 0 else "#888")
+                                    return f"<td style='padding:4px 6px;{bl}text-align:center;color:{color};font-size:11px;font-weight:600'>{v}</td>"
+
+                                for _rtab3, _rnum3 in zip(_rtabs3, _rounds3):
+                                    with _rtab3:
+                                        _rd3 = _hs3_player[_hs3_player["round"] == _rnum3].copy()
+                                        if _rd3.empty:
+                                            continue
+
+                                        _row3     = _rd3.iloc[0]
+                                        _strokes3 = [_row3.get(f"h{i}")         for i in range(1, 19)]
+                                        _rels3    = [_row3.get(f"h{i}_rel")     for i in range(1, 19)]
+                                        _pars3    = [_row3.get(f"h{i}_par")     for i in range(1, 19)]
+                                        _running3 = [_row3.get(f"h{i}_running") for i in range(1, 19)]
+
+                                        if all(p is None for p in _pars3):
+                                            _pars3 = []
+                                            for _s3, _r3 in zip(_strokes3, _rels3):
+                                                try: _pars3.append(int(_s3) - int(_r3))
+                                                except (TypeError, ValueError): _pars3.append(None)
+
+                                        _f9s  = _safe_sum3(_strokes3[:9]);  _b9s  = _safe_sum3(_strokes3[9:]);  _tots = _f9s + _b9s
+                                        _f9p  = _safe_sum3(_pars3[:9]);     _b9p  = _safe_sum3(_pars3[9:]);     _totp = _f9p + _b9p
+                                        _f9r  = _f9s - _f9p;                _b9r  = _b9s - _b9p;                _totr = _tots - _totp
+
+                                        _td_hdr  = "style='padding:4px 8px;text-align:center;color:#888;font-size:11px;font-weight:600;border-bottom:1px solid #333'"
+                                        _td_par  = "style='padding:4px 8px;text-align:center;color:#666;font-size:12px;border-bottom:1px solid #222'"
+                                        _td_sum  = "style='padding:4px 8px;text-align:center;color:#fff;font-size:13px;font-weight:700;border-left:1px solid #333'"
+                                        _td_sump = "style='padding:4px 8px;text-align:center;color:#666;font-size:12px;border-left:1px solid #333;border-bottom:1px solid #222'"
+
+                                        _hdr_cells  = "".join(f"<th {_td_hdr}>{i}</th>" for i in range(1, 10))
+                                        _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>OUT</th>"
+                                        _hdr_cells += "".join(f"<th {_td_hdr}>{i}</th>" for i in range(10, 19))
+                                        _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>IN</th>"
+                                        _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>TOT</th>"
+
+                                        _par_cells  = "".join(f"<td {_td_par}>{p if p else '-'}</td>" for p in _pars3[:9])
+                                        _par_cells += f"<td {_td_sump}>{_f9p}</td>"
+                                        _par_cells += "".join(f"<td {_td_par}>{p if p else '-'}</td>" for p in _pars3[9:])
+                                        _par_cells += f"<td {_td_sump}>{_b9p}</td>"
+                                        _par_cells += f"<td {_td_sump}>{_totp}</td>"
+
+                                        _score_cells  = "".join(_hole_cell3(_strokes3[i], _rels3[i]) for i in range(9))
+                                        _score_cells += f"<td {_td_sum}>{_f9s}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_f9r)})</span></td>"
+                                        _score_cells += "".join(_hole_cell3(_strokes3[i], _rels3[i]) for i in range(9, 18))
+                                        _score_cells += f"<td {_td_sum}>{_b9s}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_b9r)})</span></td>"
+                                        _score_cells += f"<td {_td_sum}>{_tots}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_totr)})</span></td>"
+
+                                        _out_run = next((r for r in reversed(_running3[:9])  if r is not None and str(r).strip() not in ("","nan")), None)
+                                        _in_run  = next((r for r in reversed(_running3[9:])  if r is not None and str(r).strip() not in ("","nan")), None)
+                                        _run_cells  = "".join(_running_cell(v) for v in _running3[:9])
+                                        _run_cells += _running_cell(_out_run, border_left=True)
+                                        _run_cells += "".join(_running_cell(v) for v in _running3[9:])
+                                        _run_cells += _running_cell(_in_run,  border_left=True)
+                                        _run_cells += _running_cell(_in_run,  border_left=True)
+
+                                        _last_name = _selected_sc_player.split()[-1]
+                                        st.markdown(f"""
+<div style='overflow-x:auto'>
+<table style='border-collapse:collapse;background:#111;width:100%;font-family:monospace'>
+  <thead><tr>
+    <th {_td_hdr} style='text-align:left;min-width:52px'>HOLE</th>{_hdr_cells}
+  </tr></thead>
+  <tbody>
+    <tr><td style='padding:4px 8px;color:#666;font-size:11px;font-weight:600'>PAR</td>{_par_cells}</tr>
+    <tr><td style='padding:4px 8px;color:#eee;font-size:12px;font-weight:600'>{_last_name}</td>{_score_cells}</tr>
+    <tr><td style='padding:4px 8px;color:#555;font-size:10px;font-weight:600'>SCORE</td>{_run_cells}</tr>
+  </tbody>
+</table></div>
+<div style='margin-top:8px;display:flex;gap:16px;font-size:11px;color:#888'>
+  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#7d6100;color:#FFD700;font-size:9px;border:1.5px solid #FFD700'>&#x25CF;</span> Eagle</span>
+  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#c0392b;color:#fff;font-size:9px'>&#x25CF;</span> Birdie</span>
+  <span style='color:#aaa'>&#8212; Par</span>
+  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid #4cb8ff;color:#4cb8ff;font-size:9px'>&#x25CF;</span> Bogey</span>
+  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#1a3a5c;color:#aaa;font-size:9px'>&#x25CF;</span> Double+</span>
+</div>""", unsafe_allow_html=True)
+                            else:
+                                st.caption("Hole scores not yet available for this player.")
+                        else:
+                            st.caption("Hole score data not yet fetched. Loads automatically during live refresh.")
+
             st.info("Select a tournament or fetch live data to view leaderboard")
 
     with tab2:
@@ -12762,9 +12886,167 @@ elif page == "🔴 Live":
 
     with tab3:
         if live_df is not None:
+
+            # ── ODDS MOVEMENT CHART ───────────────────────────────────────────
+            # Each time the scraper runs, it saves a snapshot of every player's
+            # current odds to data/odds/snapshots/odds_snapshot_YYYYMMDD_HHMM.csv
+            # This section loads all those snapshots and charts how odds moved.
+            #
+            # HOW TO READ THE CHART:
+            #   Y-axis = American odds (e.g., 500 means +500)
+            #   FALLING line = odds shortening (money coming in, market likes this player)
+            #   RISING line  = odds drifting out (market betting against this player)
+            st.markdown("### Odds Movement")
+            st.caption("Falling line = market shortening (money in) · Rising = drifting out")
+
+            _snap_dir = DATA_DIR / "odds" / "snapshots"
+            _snap_files = sorted(_snap_dir.glob("odds_snapshot_*.csv")) if _snap_dir.exists() else []
+
+            if len(_snap_files) >= 2:
+                # Load every snapshot file and stack them into one big DataFrame
+                _snaps = []
+                for _sf in _snap_files:
+                    try:
+                        _sdf = pd.read_csv(_sf)
+                        _snaps.append(_sdf)
+                    except Exception:
+                        pass
+
+                if _snaps:
+                    _all_snaps = pd.concat(_snaps, ignore_index=True)
+
+                    # Parse the timestamp column so Plotly can put it on a time axis
+                    _all_snaps["snapshot_at"] = pd.to_datetime(
+                        _all_snaps["snapshot_at"], errors="coerce"
+                    )
+                    _all_snaps = _all_snaps.dropna(subset=["snapshot_at", "odds_numeric"])
+
+                    # Only show snapshots from the last 7 days (current tournament week)
+                    # Older snapshots are from last week's tournament and would clutter the chart
+                    _cutoff = pd.Timestamp.now() - pd.Timedelta(days=7)
+                    _all_snaps = _all_snaps[_all_snaps["snapshot_at"] >= _cutoff]
+
+                    if not _all_snaps.empty:
+                        # Find the 20 players with the best (lowest) odds at any point
+                        # These are the players worth watching for movement
+                        _top_players = (
+                            _all_snaps.groupby("player_name")["odds_numeric"]
+                            .min()
+                            .nsmallest(20)
+                            .index.tolist()
+                        )
+
+                        # Multiselect so the user can pick which players to show
+                        # Default to top 8 — showing all 20 makes the chart unreadable
+                        _sel_players = st.multiselect(
+                            "Players to show:",
+                            options=_top_players,
+                            default=_top_players[:8],
+                            key="odds_chart_players"
+                        )
+
+                        if _sel_players:
+                            _chart_df = _all_snaps[_all_snaps["player_name"].isin(_sel_players)]
+
+                            # Build a Plotly line chart
+                            # One line per player, x=time, y=American odds number
+                            import plotly.graph_objects as go
+                            fig = go.Figure()
+
+                            for _pname in _sel_players:
+                                _pdf = _chart_df[
+                                    _chart_df["player_name"] == _pname
+                                ].sort_values("snapshot_at")
+
+                                fig.add_trace(go.Scatter(
+                                    x=_pdf["snapshot_at"],
+                                    y=_pdf["odds_numeric"],
+                                    mode="lines+markers",
+                                    # Show just last name to save legend space
+                                    name=_pname.split(",")[0],
+                                    hovertemplate=(
+                                        "%{fullData.name}<br>"
+                                        "%{x|%a %H:%M}<br>"
+                                        "+%{y:,.0f}<extra></extra>"
+                                    )
+                                ))
+
+                            fig.update_layout(
+                                template="plotly_dark",
+                                plot_bgcolor="#0a1628",
+                                paper_bgcolor="#0a1628",
+                                height=420,
+                                margin=dict(l=0, r=0, t=30, b=0),
+                                legend=dict(orientation="h", yanchor="bottom", y=1.02),
+                                xaxis_title="",
+                                # Higher y = longer odds = player drifting out
+                                # Favorites stay near the bottom of the chart
+                                yaxis=dict(
+                                    title="American Odds",
+                                    autorange=True,
+                                    tickformat=",d",
+                                    tickprefix="+",
+                                ),
+                            )
+                            st.plotly_chart(fig, use_container_width=True)
+
+                            # Summary table: opening odds → current odds → change
+                            st.markdown("**Opening → Current**")
+                            _summary_rows = []
+                            for _pname in _sel_players:
+                                _pdf = _all_snaps[
+                                    _all_snaps["player_name"] == _pname
+                                ].sort_values("snapshot_at")
+                                if len(_pdf) >= 1:
+                                    _open_odds = _pdf.iloc[0]["odds_numeric"]
+                                    _curr_odds = _pdf.iloc[-1]["odds_numeric"]
+                                    _change    = _curr_odds - _open_odds
+                                    _summary_rows.append({
+                                        "Player":   _pname.split(",")[0],
+                                        "Open":     f"+{int(_open_odds):,}",
+                                        "Current":  f"+{int(_curr_odds):,}",
+                                        # Negative change = odds shortened = GOOD (player being backed)
+                                        # Positive change = odds drifted = BAD (market fading them)
+                                        "Change":   f"{int(_change):+,}",
+                                        "_raw":     _change,
+                                    })
+
+                            if _summary_rows:
+                                _sum_df = pd.DataFrame(_summary_rows)
+
+                                def _color_odds_change(val):
+                                    """Green when odds shortened, red when drifted out."""
+                                    try:
+                                        n = int(str(val).replace("+", "").replace(",", ""))
+                                    except ValueError:
+                                        return ""
+                                    if n < -500:  return "color:#00c44f; font-weight:700"
+                                    if n < 0:     return "color:#4caf50"
+                                    if n > 500:   return "color:#e53935; font-weight:700"
+                                    if n > 0:     return "color:#ef9a9a"
+                                    return ""
+
+                                _sum_styled = (
+                                    _sum_df[["Player", "Open", "Current", "Change"]]
+                                    .style.map(_color_odds_change, subset=["Change"])
+                                )
+                                st.dataframe(
+                                    _sum_styled, hide_index=True, use_container_width=True
+                                )
+                    else:
+                        st.info("No snapshots within the last 7 days.")
+            else:
+                st.info(
+                    f"Need at least 2 snapshots to show movement. "
+                    f"Found {len(_snap_files)}. Snapshots save automatically each live refresh."
+                )
+
+            st.markdown("---")
             render_fantasy_lineup_tracker(live_df)
         else:
             st.info("Load leaderboard data first")
+
+
 
 
 # =============================================================================

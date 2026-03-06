@@ -4,7 +4,10 @@ PGA Tour Hole-Level Score Fetcher
 ==================================
 
 Fetches per-hole scores for all players via PGA Tour GraphQL API.
-Falls back to `scorecardV3` if `leaderboardV3` holes sub-field is unsupported.
+
+Primary method: scorecardCompressedV3 — returns a gzip+base64 payload
+containing full hole-by-hole data with actual par per hole and shot status
+(BIRDIE, PAR, BOGEY, etc.) for each player.
 
 Usage:
     python3 scripts/scrapers/fetch_hole_scores.py --tournament-id R2026009
@@ -12,10 +15,11 @@ Usage:
 """
 
 import argparse
+import base64
+import gzip
 import json
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 import pandas as pd
 import requests
@@ -36,65 +40,29 @@ GRAPHQL_HEADERS = {
     "Referer": "https://www.pgatour.com/",
 }
 
-# Try leaderboardV3 with holes sub-field first
-LEADERBOARD_WITH_HOLES_QUERY = """
-query LeaderboardV3WithHoles($id: ID!) {
-  leaderboardV3(id: $id) {
-    currentRound
-    players {
-      ... on PlayerRowV3 {
-        player {
-          id
-          displayName
-        }
-        rounds {
-          roundNumber
-          score
-          holes {
-            holeNumber
-            score
-            parRelativeScore
-          }
-        }
-      }
-    }
+# ── Primary query: compressed scorecard per player ───────────────────────────
+# Takes tournamentId + playerId as separate arguments (not combined).
+# Returns a gzip+base64 "payload" we decode ourselves.
+SCORECARD_COMPRESSED_QUERY = """
+query ScorecardCompressedV3($tournamentId: ID!, $playerId: ID!) {
+  scorecardCompressedV3(tournamentId: $tournamentId, playerId: $playerId) {
+    id
+    payload
   }
 }
 """
 
-# Fallback: scorecardV3 per player
-SCORECARD_V3_QUERY = """
-query ScorecardV3($tournamentId: ID!, $playerId: ID!) {
-  scorecardV3(tournamentId: $tournamentId, playerId: $playerId) {
-    rounds {
-      roundNumber
-      strokes
-      holes {
-        holeNumber
-        strokes
-        parRelativeScore
-      }
-    }
-  }
+# ── Status string → par-relative integer mapping ─────────────────────────────
+# The decoded payload has a "status" field per hole (e.g. "BIRDIE", "BOGEY").
+# We convert this to the same -2/-1/0/+1/+2 scale used throughout the dashboard.
+STATUS_TO_REL = {
+    "EAGLE": -2,
+    "BIRDIE": -1,
+    "PAR": 0,
+    "BOGEY": 1,
+    "DOUBLE_BOGEY": 2,
+    "TRIPLE_BOGEY": 3,
 }
-"""
-
-# Alternative: playerScorecard query
-PLAYER_SCORECARD_QUERY = """
-query PlayerScorecard($id: ID!, $playerId: ID!) {
-  playerScorecard(id: $id, playerId: $playerId) {
-    rounds {
-      roundNumber
-      strokes
-      holes {
-        holeNumber
-        strokes
-        parRelativeScore
-      }
-    }
-  }
-}
-"""
 
 
 def _build_session() -> requests.Session:
@@ -114,6 +82,7 @@ SESSION = _build_session()
 
 
 def _gql(query: str, variables: dict) -> Optional[dict]:
+    """POST a GraphQL query. Returns the 'data' dict or None on any error."""
     try:
         resp = SESSION.post(
             GRAPHQL_URL,
@@ -138,90 +107,125 @@ def _safe_int(v, default=None):
         return default
 
 
-def fetch_holes_via_leaderboard(tournament_id: str) -> Optional[List[dict]]:
+def _decode_payload(payload_b64: str) -> Optional[dict]:
     """
-    Try to get hole scores from leaderboardV3 holes sub-field.
-    Returns list of {player_id, player_name, round, h1..h18, front9, back9, total}
-    or None if the query fails / holes field unsupported.
+    Decode the gzip+base64 payload returned by scorecardCompressedV3.
+
+    The API returns a base64-encoded string. When decoded, it's gzip-compressed
+    JSON. We decompress and parse it here.
     """
-    data = _gql(LEADERBOARD_WITH_HOLES_QUERY, {"id": tournament_id})
-    if not data:
+    try:
+        compressed = base64.b64decode(payload_b64)
+        raw_json = gzip.decompress(compressed)
+        return json.loads(raw_json)
+    except Exception:
         return None
 
-    lb = data.get("leaderboardV3", {})
-    players = lb.get("players", [])
-    if not players:
-        return None
 
-    # Check if any player has holes data
-    sample = players[0] if players else {}
-    rounds = sample.get("rounds", [])
-    if not rounds or not rounds[0].get("holes"):
-        print("  leaderboardV3 holes sub-field not supported")
-        return None
+def _parse_compressed_scorecard(data: dict, player_id: str, player_name: str) -> List[dict]:
+    """
+    Parse decoded scorecardCompressedV3 payload into our standard row format.
 
+    The decoded structure looks like:
+    {
+      "currentRound": 1,
+      "roundScores": [
+        {
+          "firstNine": {
+            "holes": [{"holeNumber":1, "par":4, "score":"4", "status":"PAR"}, ...]
+          },
+          "secondNine": {
+            "holes": [{"holeNumber":10, ...}, ...]
+          }
+        },
+        ...  (one entry per round played)
+      ]
+    }
+
+    Each entry in roundScores corresponds to one round (index 0 = round 1, etc.).
+    """
     rows = []
-    for p in players:
-        pid = p.get("player", {}).get("id")
-        pname = p.get("player", {}).get("displayName", "")
-        for r in (p.get("rounds") or []):
-            rnum = _safe_int(r.get("roundNumber"), 1)
-            holes = r.get("holes") or []
-            if not holes:
-                continue
-            row = {"player_id": pid, "player_name": pname, "round": rnum}
-            for h in holes:
-                hnum = _safe_int(h.get("holeNumber"))
-                score = _safe_int(h.get("score") or h.get("strokes"))
-                if hnum and score is not None:
-                    row[f"h{hnum}"] = score
-            if any(f"h{i}" in row for i in range(1, 19)):
-                row["front9"] = sum(row.get(f"h{i}", 0) for i in range(1, 10))
-                row["back9"] = sum(row.get(f"h{i}", 0) for i in range(10, 19))
-                row["total"] = row["front9"] + row["back9"]
-                rows.append(row)
+    round_scores = data.get("roundScores") or []
 
-    return rows if rows else None
+    for round_idx, rdata in enumerate(round_scores):
+        # Round number = 1-indexed position in the array
+        rnum = round_idx + 1
 
+        # Collect all 18 holes from firstNine + secondNine
+        first_nine = (rdata.get("firstNine") or {}).get("holes") or []
+        second_nine = (rdata.get("secondNine") or {}).get("holes") or []
+        all_holes = first_nine + second_nine
 
-def fetch_scorecard_for_player(tournament_id: str, player_id: str, player_name: str) -> List[dict]:
-    """Fetch hole scores for a single player via scorecardV3 or playerScorecard."""
-    rows = []
-
-    for query, query_name in [
-        (SCORECARD_V3_QUERY, "scorecardV3"),
-        (PLAYER_SCORECARD_QUERY, "playerScorecard"),
-    ]:
-        data = _gql(query, {"tournamentId": tournament_id, "id": tournament_id,
-                             "playerId": player_id})
-        if not data:
+        if not all_holes:
             continue
 
-        scorecard = data.get(query_name) or data.get("scorecardV3") or data.get("playerScorecard")
-        if not scorecard:
-            continue
+        row = {"player_id": player_id, "player_name": player_name, "round": rnum}
 
-        for r in (scorecard.get("rounds") or []):
-            rnum = _safe_int(r.get("roundNumber"), 1)
-            holes = r.get("holes") or []
-            if not holes:
+        for h in all_holes:
+            hnum = _safe_int(h.get("holeNumber"))
+            if not hnum:
                 continue
-            row = {"player_id": player_id, "player_name": player_name, "round": rnum}
-            for h in holes:
-                hnum = _safe_int(h.get("holeNumber"))
-                score = _safe_int(h.get("strokes") or h.get("score"))
-                if hnum and score is not None:
-                    row[f"h{hnum}"] = score
-            if any(f"h{i}" in row for i in range(1, 19)):
-                row["front9"] = sum(row.get(f"h{i}", 0) for i in range(1, 10))
-                row["back9"] = sum(row.get(f"h{i}", 0) for i in range(10, 19))
-                row["total"] = row["front9"] + row["back9"]
-                rows.append(row)
 
-        if rows:
-            break
+            # Raw strokes on this hole (e.g. 4)
+            strokes = _safe_int(h.get("score"))
+            if strokes is not None:
+                row[f"h{hnum}"] = strokes
+
+            # Par for this hole (e.g. 4) — store directly so the dashboard
+            # can show the PAR row without computing it from relative score
+            par = _safe_int(h.get("par"))
+            if par is not None:
+                row[f"h{hnum}_par"] = par
+
+            # Par-relative integer: -2=eagle, -1=birdie, 0=par, +1=bogey, +2=double
+            status = str(h.get("status", "")).upper()
+            if status in STATUS_TO_REL:
+                rel = STATUS_TO_REL[status]
+            else:
+                # Unusual status (e.g. HOLE_IN_ONE) — compute from score - par
+                if strokes is not None and par is not None:
+                    rel = strokes - par
+                else:
+                    rel = None
+            if rel is not None:
+                row[f"h{hnum}_rel"] = rel
+
+            # Running to-par score after this hole (e.g. "E", "-1", "+2")
+            # This shows how the score changed hole-by-hole — same as the tour site
+            running = h.get("roundScore")
+            if running is not None:
+                row[f"h{hnum}_running"] = str(running)
+
+        # Only keep this round if we got at least some hole data
+        if any(f"h{i}" in row for i in range(1, 19)):
+            row["front9"] = sum(row.get(f"h{i}", 0) for i in range(1, 10))
+            row["back9"]  = sum(row.get(f"h{i}", 0) for i in range(10, 19))
+            row["total"]  = row["front9"] + row["back9"]
+            rows.append(row)
 
     return rows
+
+
+def fetch_compressed_scorecard(tournament_id: str, player_id: str, player_name: str) -> List[dict]:
+    """
+    Fetch hole scores for one player using scorecardCompressedV3.
+
+    The API combines tournament + player into a single ID: "R2026009-50525".
+    Returns list of rows (one per round played), or empty list if unavailable.
+    """
+    data = _gql(SCORECARD_COMPRESSED_QUERY, {"tournamentId": tournament_id, "playerId": player_id})
+    if not data:
+        return []
+
+    sc = data.get("scorecardCompressedV3")
+    if not sc or not sc.get("payload"):
+        return []
+
+    decoded = _decode_payload(sc["payload"])
+    if not decoded:
+        return []
+
+    return _parse_compressed_scorecard(decoded, player_id, player_name)
 
 
 def load_players_from_leaderboard(tournament_id: str) -> List[dict]:
@@ -241,44 +245,36 @@ def load_players_from_leaderboard(tournament_id: str) -> List[dict]:
 
 def fetch_all_hole_scores(tournament_id: str, round_num: Optional[int] = None) -> pd.DataFrame:
     """
-    Main fetch function. Tries leaderboard bulk first, then per-player fallback.
-    Returns DataFrame with columns: player_id, player_name, round, h1..h18, front9, back9, total
+    Main fetch function. Fetches scorecardCompressedV3 for every player in the field.
+
+    Returns DataFrame with columns:
+        player_id, player_name, round, h1..h18, h1_rel..h18_rel, front9, back9, total
     """
     print(f"Fetching hole scores for {tournament_id}...")
 
-    # Attempt 1: bulk via leaderboardV3 holes sub-field
-    rows = fetch_holes_via_leaderboard(tournament_id)
-    if rows:
-        print(f"  Got {len(rows)} round rows via leaderboardV3 holes sub-field")
-    else:
-        print("  Falling back to per-player scorecard fetch...")
-        players = load_players_from_leaderboard(tournament_id)
-        if not players:
-            print(f"  No player list available — run fetch_live_leaderboard.py first")
-            return pd.DataFrame()
+    players = load_players_from_leaderboard(tournament_id)
+    if not players:
+        print("  No player list available — run fetch_live_leaderboard.py first")
+        return pd.DataFrame()
 
-        rows = []
-        for i, p in enumerate(players[:5]):  # limit to 5 players as probe
-            pid = str(p["player_id"])
-            pname = str(p["player_name"])
-            player_rows = fetch_scorecard_for_player(tournament_id, pid, pname)
-            if player_rows:
-                rows.extend(player_rows)
-                if i == 0:
-                    print(f"  Scorecard fetch works for {pname} ({len(player_rows)} rounds)")
+    # Probe first player to confirm the endpoint is working
+    probe = players[0]
+    probe_rows = fetch_compressed_scorecard(
+        tournament_id, str(probe["player_id"]), str(probe["player_name"])
+    )
+    if not probe_rows:
+        print("  scorecardCompressedV3 returned no data — scores not yet available")
+        return pd.DataFrame()
 
-        if not rows:
-            print("  Neither scorecard endpoint returned hole data — not yet available")
-            return pd.DataFrame()
+    print(f"  Endpoint confirmed ({probe['player_name']}: {len(probe_rows)} round(s))")
+    print(f"  Fetching all {len(players)} players...")
 
-        # If probe worked, fetch full field
-        print(f"  Fetching all {len(players)} players...")
-        rows = []
-        for p in players:
-            pid = str(p["player_id"])
-            pname = str(p["player_name"])
-            player_rows = fetch_scorecard_for_player(tournament_id, pid, pname)
-            rows.extend(player_rows)
+    rows = list(probe_rows)  # start with probe results already fetched
+    for p in players[1:]:
+        pid   = str(p["player_id"])
+        pname = str(p["player_name"])
+        player_rows = fetch_compressed_scorecard(tournament_id, pid, pname)
+        rows.extend(player_rows)
 
     if not rows:
         return pd.DataFrame()
@@ -289,33 +285,36 @@ def fetch_all_hole_scores(tournament_id: str, round_num: Optional[int] = None) -
     if round_num is not None and "round" in df.columns:
         df = df[df["round"] == round_num].copy()
 
-    # Ensure all h1..h18 columns exist
+    # Ensure all h1..h18 columns exist (fill missing with None)
     for i in range(1, 19):
-        col = f"h{i}"
-        if col not in df.columns:
-            df[col] = None
+        if f"h{i}" not in df.columns:
+            df[f"h{i}"] = None
 
-    # Reorder columns
-    base_cols = ["player_id", "player_name", "round"]
-    hole_cols = [f"h{i}" for i in range(1, 19)]
+    # Reorder columns: base | h1..h18 | h1_par..h18_par | h1_rel..h18_rel | h1_running..h18_running | totals
+    base_cols    = ["player_id", "player_name", "round"]
+    hole_cols    = [f"h{i}" for i in range(1, 19)]
+    par_cols     = [f"h{i}_par"     for i in range(1, 19) if f"h{i}_par"     in df.columns]
+    rel_cols     = [f"h{i}_rel"     for i in range(1, 19) if f"h{i}_rel"     in df.columns]
+    running_cols = [f"h{i}_running" for i in range(1, 19) if f"h{i}_running" in df.columns]
     summary_cols = ["front9", "back9", "total"]
-    keep = base_cols + hole_cols + summary_cols
+    keep = base_cols + hole_cols + par_cols + rel_cols + running_cols + summary_cols
     keep = [c for c in keep if c in df.columns]
     df = df[keep].sort_values(["round", "player_name"]).reset_index(drop=True)
 
+    print(f"  Done — {len(df)} player-round rows ({df['round'].nunique()} round(s))")
     return df
 
 
 def save_hole_scores(df: pd.DataFrame, tournament_id: str) -> Path:
     """
-    Save hole scores, merging with existing file (overwrite same round, append new rounds).
+    Save hole scores, merging with existing file.
+    Rounds in the new DataFrame overwrite the same rounds in the existing file.
     """
     LIVE_DIR.mkdir(parents=True, exist_ok=True)
     out_path = LIVE_DIR / f"hole_scores_{tournament_id.lower()}.csv"
 
     if out_path.exists() and not df.empty:
         existing = pd.read_csv(out_path)
-        # Drop rounds being overwritten
         if "round" in existing.columns and "round" in df.columns:
             updated_rounds = df["round"].unique().tolist()
             existing = existing[~existing["round"].isin(updated_rounds)]
@@ -346,11 +345,8 @@ def main():
         df.to_csv(out_path, index=False)
 
     print(f"Saved {len(df)} rows to {out_path}")
-
-    # Preview
     print(f"\nSample:")
     print(df.head(3).to_string(index=False))
-
     return 0
 
 
