@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-03-02T00:00:00.000000",
+  "last_updated": "2026-03-05T19:23:14.128632",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -12,10 +12,12 @@
           "week": 1,
           "date": "2026-02-05",
           "result": "T28",
+          "earnings": 26,
           "points": 26
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 26,
       "total_points": 26
     },
     "Chris Gotterup": {
@@ -26,10 +28,12 @@
           "week": 1,
           "date": "2026-02-05",
           "result": "1",
+          "earnings": 500,
           "points": 500
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 500,
       "total_points": 500
     },
     "Pierceson Coody": {
@@ -40,10 +44,12 @@
           "week": 1,
           "date": "2026-02-05",
           "result": "T10",
+          "earnings": 70,
           "points": 70
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 70,
       "total_points": 70
     },
     "Maverick McNealy": {
@@ -54,10 +60,12 @@
           "week": 2,
           "date": "2026-02-12",
           "result": "T29",
+          "earnings": 31,
           "points": 31
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 31,
       "total_points": 31
     },
     "Jason Day": {
@@ -68,10 +76,12 @@
           "week": 2,
           "date": "2026-02-12",
           "result": "T24",
+          "earnings": 40,
           "points": 40
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 40,
       "total_points": 40
     },
     "Justin Rose": {
@@ -82,10 +92,12 @@
           "week": 2,
           "date": "2026-02-12",
           "result": "T37",
+          "earnings": 20,
           "points": 20
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 20,
       "total_points": 20
     },
     "Hideki Matsuyama": {
@@ -96,10 +108,12 @@
           "week": 3,
           "date": "2026-02-19",
           "result": "T28",
+          "earnings": 32,
           "points": 32
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 32,
       "total_points": 32
     },
     "Viktor Hovland": {
@@ -110,10 +124,12 @@
           "week": 3,
           "date": "2026-02-19",
           "result": "T41",
+          "earnings": 19,
           "points": 19
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 19,
       "total_points": 19
     },
     "Patrick Cantlay": {
@@ -124,10 +140,12 @@
           "week": 3,
           "date": "2026-02-19",
           "result": "T37",
+          "earnings": 22,
           "points": 22
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 22,
       "total_points": 22
     },
     "Ryan Gerard": {
@@ -138,10 +156,12 @@
           "week": 4,
           "date": "2026-02-26",
           "result": "T23",
+          "earnings": 33,
           "points": 33
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 33,
       "total_points": 33
     },
     "Michael Thorbjornsen": {
@@ -152,10 +172,12 @@
           "week": 4,
           "date": "2026-02-26",
           "result": "CUT",
+          "earnings": 0,
           "points": 0
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 0,
       "total_points": 0
     },
     "Nicolai H\u00f8jgaard": {
@@ -166,11 +188,52 @@
           "week": 4,
           "date": "2026-02-26",
           "result": "T6",
+          "earnings": 92,
           "points": 92
         }
       ],
       "remaining_uses": 2,
+      "total_earnings": 92,
       "total_points": 92
+    },
+    "Rory McIlroy": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Arnold Palmer Invitational presented by Mastercard",
+          "week": 5,
+          "date": "2026-03-05"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Russell Henley": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Arnold Palmer Invitational presented by Mastercard",
+          "week": 5,
+          "date": "2026-03-05"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Ludvig \u00c5berg": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Arnold Palmer Invitational presented by Mastercard",
+          "week": 5,
+          "date": "2026-03-05"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 0,
+      "total_points": 0
     }
   },
   "weekly_lineups": {
@@ -183,7 +246,8 @@
         "Chris Gotterup",
         "Pierceson Coody"
       ],
-      "points_earned": 596
+      "points_earned": 596,
+      "earnings_earned": 596
     },
     "week_2": {
       "tournament": "AT&T Pebble Beach Pro-Am",
@@ -194,7 +258,8 @@
         "Jason Day",
         "Justin Rose"
       ],
-      "points_earned": 91
+      "points_earned": 91,
+      "earnings_earned": 91
     },
     "week_3": {
       "tournament": "The Genesis Invitational",
@@ -205,7 +270,8 @@
         "Viktor Hovland",
         "Patrick Cantlay"
       ],
-      "points_earned": 73
+      "points_earned": 73,
+      "earnings_earned": 73
     },
     "week_4": {
       "tournament": "Cognizant Classic",
@@ -216,12 +282,26 @@
         "Michael Thorbjornsen",
         "Nicolai H\u00f8jgaard"
       ],
-      "points_earned": 125
+      "points_earned": 125,
+      "earnings_earned": 125
+    },
+    "week_5": {
+      "tournament": "Arnold Palmer Invitational presented by Mastercard",
+      "week": 5,
+      "date": "2026-03-05",
+      "lineup": [
+        "Rory McIlroy",
+        "Russell Henley",
+        "Ludvig \u00c5berg"
+      ],
+      "earnings_earned": null,
+      "points_earned": null
     }
   },
   "summary": {
-    "total_players_used": 12,
-    "total_picks_made": 12,
+    "total_players_used": 15,
+    "total_picks_made": 15,
+    "total_earnings": 885,
     "total_points": 885
   }
 }

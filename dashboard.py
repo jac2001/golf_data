@@ -12445,7 +12445,18 @@ elif page == "📊 Predictions":
 # ============================================================================
 
 elif page == "🔴 Live":
-    
+
+    # ── AUTO-REFRESH while a round is in progress ──────────────────────────
+    _LIVE_AUTO_SECS = 300  # re-read files every 5 minutes
+    if "live_auto_refresh_at" not in st.session_state:
+        st.session_state.live_auto_refresh_at = time.time() + _LIVE_AUTO_SECS
+    _secs_left = int(st.session_state.live_auto_refresh_at - time.time())
+    if _secs_left <= 0:
+        st.session_state.live_auto_refresh_at = time.time() + _LIVE_AUTO_SECS
+        st.rerun()
+    _min_left, _sec_left = divmod(max(_secs_left, 0), 60)
+    st.caption(f"Auto-refresh in {_min_left}m {_sec_left:02d}s · background scraper updates data every 10m during active rounds")
+
     # ── YOUR PICKS THIS WEEK (live positions) ─────────────────────────────
     st.markdown("### 🏌️  Your Picks — Live Positions")
 
@@ -12488,6 +12499,24 @@ elif page == "🔴 Live":
             _lb_age = datetime.fromtimestamp(_lb_files[0].stat().st_mtime).strftime("%b %d %H:%M")
             st.caption(f"Leaderboard: `{_lb_files[0].name}` · Updated {_lb_age}")
 
+    # Load cut projection + current round from accompanying meta JSON
+    _cut_proj_score = None
+    _current_round_live = 1
+    if _live_dir.exists():
+        _meta_candidates = sorted(
+            _live_dir.glob("leaderboard_*_meta.json"),
+            key=lambda f: f.stat().st_mtime,
+            reverse=True,
+        )
+        if _meta_candidates:
+            try:
+                with open(_meta_candidates[0]) as _mf:
+                    _live_meta = json.load(_mf)
+                _cut_proj_score = _live_meta.get("cut_projection", {}).get("projected_cut_score")
+                _current_round_live = int(_live_meta.get("current_round", 1))
+            except Exception:
+                pass
+
     if _picks_this_week and not _lb_df.empty:
         # Normalize names for matching — leaderboard uses "First Last",
         # season_log stores what you typed ("Matsuyama" or "Hideki Matsuyama")
@@ -12507,18 +12536,59 @@ elif page == "🔴 Live":
         if _pick_rows:
             _pc_cols = st.columns(len(_pick_rows))
             for _col, _row in zip(_pc_cols, _pick_rows):
-                _pos   = _row.get("position", "—")
-                _pname = _row.get("player_name", "—")
-                _total = _row.get("total", "E")
-                _thru  = str(_row.get("thru", "—"))
-                _r1    = int(_row["R1"]) if pd.notna(_row.get("R1")) else "—"
-                _r2    = int(_row["R2"]) if pd.notna(_row.get("R2")) else "—"
-                _r3    = int(_row["R3"]) if pd.notna(_row.get("R3")) else "—"
-                _r4    = int(_row["R4"]) if pd.notna(_row.get("R4")) else "—"
-                _move  = _row.get("movement", "")
-                _move_icon = "🔼" if _move == "MOVING" else ("🔽" if _move == "FALLING" else "➡️ ")
-                _status = str(_row.get("status", "")).lower()
-                _cut_color = "#e53935" if _status == "cut" else "#00c44f"
+                _pos        = _row.get("position", "—")
+                _pname      = _row.get("player_name", "—")
+                _total      = _row.get("total", "E")
+                _thru       = str(_row.get("thru", "—"))
+                _r1         = int(_row["R1"]) if pd.notna(_row.get("R1")) else "—"
+                _r2         = int(_row["R2"]) if pd.notna(_row.get("R2")) else "—"
+                _r3         = int(_row["R3"]) if pd.notna(_row.get("R3")) else "—"
+                _r4         = int(_row["R4"]) if pd.notna(_row.get("R4")) else "—"
+                _status     = str(_row.get("status", "")).lower()
+                _cut_color  = "#e53935" if _status == "cut" else "#00c44f"
+
+                # Position change (numeric ±N, from API movementAmount)
+                _pos_change = 0
+                try:
+                    _pc_raw = _row.get("position_change", 0)
+                    if pd.notna(_pc_raw):
+                        _pos_change = int(_pc_raw)
+                except Exception:
+                    pass
+                if _pos_change > 0:
+                    _move_icon = f"🔼 +{_pos_change}"
+                    _move_color = "#00c44f"
+                elif _pos_change < 0:
+                    _move_icon = f"🔽 {_pos_change}"
+                    _move_color = "#e53935"
+                else:
+                    _move_icon = "➡️"
+                    _move_color = "#4a6080"
+
+                # Cut status badge (rounds 1-2 only, when cut projection available)
+                _cut_badge_html = ""
+                if _cut_proj_score is not None and _current_round_live <= 2 and _status != "cut":
+                    try:
+                        _total_num = float(_row.get("total_numeric", 0) or 0)
+                        _gap = _total_num - float(_cut_proj_score)
+                        if _gap <= -2:
+                            _badge_color = "#00c44f"
+                            _badge_label = f"SAFE ({int(-_gap):+d})"
+                        elif _gap <= 1:
+                            _badge_color = "#ffa726"
+                            _badge_label = "BUBBLE"
+                        else:
+                            _badge_color = "#e53935"
+                            _badge_label = f"AT RISK (+{int(_gap)})"
+                        _cut_badge_html = (
+                            f'<div style="margin:6px auto 0; display:inline-block; '
+                            f'background:{_badge_color}22; border:1px solid {_badge_color}; '
+                            f'border-radius:6px; padding:2px 8px; font-size:10px; '
+                            f'color:{_badge_color}; font-weight:700; letter-spacing:1px;">'
+                            f'{_badge_label}</div>'
+                        )
+                    except Exception:
+                        pass
 
                 with _col:
                     st.markdown(f"""
@@ -12528,7 +12598,8 @@ elif page == "🔴 Live":
         <div style="font-size:11px; color:#4a6080; letter-spacing:1px;">POSITION</div>
         <div style="font-size:14px; font-weight:700; color:#dde6f5; margin:8px 0 2px 0;">{_pname}</div>
         <div style="font-size:22px; font-weight:800; color:{_cut_color};">{_total}</div>
-        <div style="font-size:11px; color:#4a6080;">Thru {_thru} &nbsp;{_move_icon}</div>
+        <div style="font-size:11px; color:{_move_color}; margin-top:2px;">Thru {_thru} &nbsp;{_move_icon}</div>
+        {_cut_badge_html}
         <hr style="border-color:#1c2f4a; margin:10px 0;">
         <div style="display:flex; justify-content:space-around; font-size:11px; color:#6a84aa;">
         <div><div style="color:#dde6f5; font-weight:600;">{_r1}</div>R1</div>

@@ -58,6 +58,7 @@ Cron Examples (add to crontab -e):
 import argparse
 import subprocess
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 import pandas as pd
@@ -692,6 +693,52 @@ def run_post_tournament_refresh(dry_run: bool = False):
     return results
 
 
+def is_round_in_progress() -> bool:
+    """Return True if a tournament round is currently active (meta JSON says In Progress)."""
+    live_dir = DATA_DIR / "live"
+    meta_files = sorted(
+        live_dir.glob("leaderboard_*_meta.json"),
+        key=lambda f: f.stat().st_mtime,
+        reverse=True,
+    )
+    if not meta_files:
+        return False
+    try:
+        with open(meta_files[0]) as f:
+            meta = json.load(f)
+        return meta.get("round_status", "").lower() in ("in progress", "active", "playing")
+    except Exception:
+        return False
+
+
+def watch_loop(interval_minutes: int = 10, dry_run: bool = False):
+    """Continuously refresh live data while a tournament round is in progress.
+
+    - Active round: refresh every `interval_minutes` minutes
+    - No active round: check again in 30 minutes
+    Stop with Ctrl+C.
+    """
+    log(f"Watch mode started (interval={interval_minutes}m during active round, 30m otherwise).")
+    log("Press Ctrl+C to stop.")
+    try:
+        while True:
+            if is_round_in_progress():
+                log(f"Round in progress — running live refresh")
+                run_live_refresh(dry_run=dry_run)
+                sleep_min = interval_minutes
+            else:
+                log("No active round detected — will check again in 30 minutes")
+                sleep_min = 30
+            wake_at = datetime.now().strftime("%H:%M")
+            next_at = datetime.fromtimestamp(
+                datetime.now().timestamp() + sleep_min * 60
+            ).strftime("%H:%M")
+            log(f"[{wake_at}] Sleeping {sleep_min}m — next check at {next_at}")
+            time.sleep(sleep_min * 60)
+    except KeyboardInterrupt:
+        log("Watch mode stopped.")
+
+
 def determine_schedule() -> str:
     """Determine which schedule to run based on current day/time."""
     now = datetime.now()
@@ -731,7 +778,16 @@ def main():
         "live", "record", "post-tournament", "auto"
     ], default="auto", help="Which schedule to run (default: auto-detect)")
     parser.add_argument("--dry-run", action="store_true", help="Show what would run without executing")
+    parser.add_argument("--watch", action="store_true",
+                        help="Continuously refresh live data while a round is in progress")
+    parser.add_argument("--interval", type=int, default=10,
+                        help="Minutes between refreshes in --watch mode (default: 10)")
     args = parser.parse_args()
+
+    # Watch mode: run indefinitely, refreshing during active rounds
+    if args.watch:
+        watch_loop(interval_minutes=args.interval, dry_run=args.dry_run)
+        return
 
     # Determine schedule
     if args.schedule == "auto":
