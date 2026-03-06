@@ -4348,27 +4348,31 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
     for i, (_, player) in enumerate(top3.iterrows()):
         with _leader_cols[i]:
             name    = str(player.get("player_name", "Unknown"))
-            total   = str(player.get("total", "E"))
-            thru    = str(player.get("thru", "-"))
             country = str(player.get("country", ""))
             odds    = str(player.get("odds_to_win", "")) if player.get("odds_to_win") else ""
+            thru    = str(player.get("thru", "-"))
+
+            # Normalize total to-par: "-3.0" → "-3", "E" stays "E"
+            _raw_total = player.get("total", "E")
+            try:
+                _tot_num = int(float(_raw_total))
+                total = "E" if _tot_num == 0 else (f"+{_tot_num}" if _tot_num > 0 else str(_tot_num))
+            except (ValueError, TypeError):
+                _tot_num = 0
+                total = str(_raw_total)
 
             # Current round score (bold) + previous rounds smaller
-            _cur_r  = player.get(f"R{current_round}")
-            _cur_str = f"{int(_cur_r)}" if pd.notna(_cur_r) else "—"
+            _cur_r   = player.get(f"R{current_round}")
+            _cur_str = f"{int(float(_cur_r))}" if pd.notna(_cur_r) else "—"
             _prev_parts = []
             for _pr in range(1, current_round):
                 _v = player.get(f"R{_pr}")
                 if pd.notna(_v):
-                    _prev_parts.append(f"R{_pr}: {int(_v)}")
+                    _prev_parts.append(f"R{_pr}: {int(float(_v))}")
             _prev_str = " · ".join(_prev_parts)
 
-            # Score color: negative total = green, positive = red, E = white
-            try:
-                _tot_num = 0 if total == "E" else int(total)
-                _score_color = "#2ecc71" if _tot_num < 0 else ("#e74c3c" if _tot_num > 0 else "#fff")
-            except (ValueError, TypeError):
-                _score_color = "#2ecc71"
+            # Score color: negative = green, positive = red, even = white
+            _score_color = "#2ecc71" if _tot_num < 0 else ("#e74c3c" if _tot_num > 0 else "#fff")
 
             # Movement arrow
             change = player.get("position_change", 0)
@@ -4480,16 +4484,185 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
         on_select="rerun",
         selection_mode="single-row",
     )
-    # Store selected player name in session_state so tab1 body can read it
+    # Store selected player name in session_state
     if _lb_event.selection.rows:
         _sel_idx  = _lb_event.selection.rows[0]
         _sel_row  = display_df.iloc[_sel_idx]
-        # Column name differs: "Player Name" in All view, "Player" in round view
         _sel_name = _sel_row.get("Player Name") or _sel_row.get("Player", "")
         if _sel_name:
             st.session_state["live_selected_player"] = str(_sel_name)
     elif "live_selected_player" not in st.session_state:
         st.session_state["live_selected_player"] = None
+
+    # ── Player Scorecard — appears directly below table when row is clicked ──
+    _selected_sc_player = st.session_state.get("live_selected_player")
+    if _selected_sc_player:
+        _sc_lb_row = df[df["player_name"] == _selected_sc_player]
+        if not _sc_lb_row.empty:
+            _sc_r = _sc_lb_row.iloc[0]
+            st.markdown("---")
+            st.markdown(f"#### {_selected_sc_player}")
+
+            # Summary metrics — round to whole numbers
+            _sc_pos   = _sc_r.get("position", "—")
+            _sc_thru  = str(_sc_r.get("thru", "—"))
+            _sc_odds  = _sc_r.get("odds_to_win", "")
+            try:
+                _sc_tot_num = int(float(_sc_r.get("total", 0)))
+                _sc_total   = "E" if _sc_tot_num == 0 else (f"+{_sc_tot_num}" if _sc_tot_num > 0 else str(_sc_tot_num))
+            except (ValueError, TypeError):
+                _sc_total = str(_sc_r.get("total", "E"))
+            _sc_r1 = int(float(_sc_r["R1"])) if pd.notna(_sc_r.get("R1")) else "—"
+            _sc_r2 = int(float(_sc_r["R2"])) if pd.notna(_sc_r.get("R2")) else "—"
+            _sc_r3 = int(float(_sc_r["R3"])) if pd.notna(_sc_r.get("R3")) else "—"
+            _sc_r4 = int(float(_sc_r["R4"])) if pd.notna(_sc_r.get("R4")) else "—"
+
+            _mc1, _mc2, _mc3, _mc4, _mc5 = st.columns(5)
+            _mc1.metric("Position", _sc_pos)
+            _mc2.metric("Total",    _sc_total)
+            _mc3.metric("Thru",     _sc_thru)
+            _mc4.metric("Odds",     f"+{_sc_odds}" if _sc_odds else "—")
+            _mc5.metric("Rounds",   f"{_sc_r1} · {_sc_r2} · {_sc_r3} · {_sc_r4}")
+
+            # Load hole scores using tournament_id from meta
+            _sc_tid = meta.get("tournament_id", "")
+            if _sc_tid:
+                _hs3_path = LIVE_DIR / f"hole_scores_{_sc_tid.lower()}.csv"
+                if _hs3_path.exists():
+                    _hs3_df     = pd.read_csv(_hs3_path)
+                    _pid3       = str(int(_sc_r.get("player_id", -1)))
+                    _hs3_player = _hs3_df[_hs3_df["player_id"].astype(str) == _pid3]
+
+                    if not _hs3_player.empty:
+                        _rounds3 = sorted(_hs3_player["round"].dropna().unique().tolist()) if "round" in _hs3_player.columns else [1]
+                        _rtabs3  = st.tabs([f"Round {int(r)}" for r in _rounds3])
+
+                        def _hole_cell3(stroke, rel):
+                            if stroke is None:
+                                return "<td style='padding:4px 6px;text-align:center;color:#555'>-</td>"
+                            try:
+                                s = int(stroke); r = int(rel) if rel is not None else 0
+                            except (TypeError, ValueError):
+                                return f"<td style='padding:4px 6px;text-align:center'>{stroke}</td>"
+                            if r <= -2:
+                                inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+                                         f"width:22px;height:22px;border-radius:50%;border:2px solid #FFD700;"
+                                         f"background:#7d6100;color:#FFD700;font-weight:700;font-size:12px'>{s}</span>")
+                                return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
+                            elif r == -1:
+                                inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+                                         f"width:22px;height:22px;border-radius:50%;"
+                                         f"background:#c0392b;color:#fff;font-weight:700;font-size:12px'>{s}</span>")
+                                return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
+                            elif r == 0:
+                                return f"<td style='padding:4px 6px;text-align:center;color:#ccc;font-size:13px'>{s}</td>"
+                            elif r == 1:
+                                inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+                                         f"width:22px;height:22px;border:2px solid #4cb8ff;"
+                                         f"background:transparent;color:#4cb8ff;font-size:12px'>{s}</span>")
+                                return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
+                            else:
+                                inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
+                                         f"width:22px;height:22px;background:#1a3a5c;color:#aaa;"
+                                         f"font-weight:700;font-size:12px'>{s}</span>")
+                                return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
+
+                        def _safe_sum3(vals):
+                            t = 0
+                            for v in vals:
+                                try: t += int(v)
+                                except (TypeError, ValueError): pass
+                            return t
+
+                        def _topar_str3(n):
+                            return "E" if n == 0 else (f"+{n}" if n > 0 else str(n))
+
+                        def _running_cell(val, border_left=False):
+                            bl = "border-left:1px solid #333;" if border_left else ""
+                            if val is None or str(val).strip() in ("", "nan"):
+                                return f"<td style='padding:4px 6px;{bl}text-align:center;color:#444;font-size:11px'>-</td>"
+                            v = str(val).strip()
+                            try: n = 0 if v == "E" else int(v)
+                            except ValueError: n = 0
+                            color = "#2ecc71" if n < 0 else ("#e74c3c" if n > 0 else "#888")
+                            return f"<td style='padding:4px 6px;{bl}text-align:center;color:{color};font-size:11px;font-weight:600'>{v}</td>"
+
+                        for _rtab3, _rnum3 in zip(_rtabs3, _rounds3):
+                            with _rtab3:
+                                _rd3 = _hs3_player[_hs3_player["round"] == _rnum3].copy()
+                                if _rd3.empty:
+                                    continue
+                                _row3     = _rd3.iloc[0]
+                                _strokes3 = [_row3.get(f"h{i}")         for i in range(1, 19)]
+                                _rels3    = [_row3.get(f"h{i}_rel")     for i in range(1, 19)]
+                                _pars3    = [_row3.get(f"h{i}_par")     for i in range(1, 19)]
+                                _running3 = [_row3.get(f"h{i}_running") for i in range(1, 19)]
+
+                                if all(p is None for p in _pars3):
+                                    _pars3 = []
+                                    for _s3, _r3 in zip(_strokes3, _rels3):
+                                        try: _pars3.append(int(_s3) - int(_r3))
+                                        except (TypeError, ValueError): _pars3.append(None)
+
+                                _f9s = _safe_sum3(_strokes3[:9]);  _b9s = _safe_sum3(_strokes3[9:]);  _tots = _f9s + _b9s
+                                _f9p = _safe_sum3(_pars3[:9]);     _b9p = _safe_sum3(_pars3[9:]);     _totp = _f9p + _b9p
+                                _f9r = _f9s - _f9p;                _b9r = _b9s - _b9p;                _totr = _tots - _totp
+
+                                _td_hdr  = "style='padding:4px 8px;text-align:center;color:#888;font-size:11px;font-weight:600;border-bottom:1px solid #333'"
+                                _td_par  = "style='padding:4px 8px;text-align:center;color:#666;font-size:12px;border-bottom:1px solid #222'"
+                                _td_sum  = "style='padding:4px 8px;text-align:center;color:#fff;font-size:13px;font-weight:700;border-left:1px solid #333'"
+                                _td_sump = "style='padding:4px 8px;text-align:center;color:#666;font-size:12px;border-left:1px solid #333;border-bottom:1px solid #222'"
+
+                                _hdr_cells  = "".join(f"<th {_td_hdr}>{i}</th>" for i in range(1, 10))
+                                _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>OUT</th>"
+                                _hdr_cells += "".join(f"<th {_td_hdr}>{i}</th>" for i in range(10, 19))
+                                _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>IN</th>"
+                                _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>TOT</th>"
+
+                                _par_cells  = "".join(f"<td {_td_par}>{p if p else '-'}</td>" for p in _pars3[:9])
+                                _par_cells += f"<td {_td_sump}>{_f9p}</td>"
+                                _par_cells += "".join(f"<td {_td_par}>{p if p else '-'}</td>" for p in _pars3[9:])
+                                _par_cells += f"<td {_td_sump}>{_b9p}</td>"
+                                _par_cells += f"<td {_td_sump}>{_totp}</td>"
+
+                                _score_cells  = "".join(_hole_cell3(_strokes3[i], _rels3[i]) for i in range(9))
+                                _score_cells += f"<td {_td_sum}>{_f9s}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_f9r)})</span></td>"
+                                _score_cells += "".join(_hole_cell3(_strokes3[i], _rels3[i]) for i in range(9, 18))
+                                _score_cells += f"<td {_td_sum}>{_b9s}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_b9r)})</span></td>"
+                                _score_cells += f"<td {_td_sum}>{_tots}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_totr)})</span></td>"
+
+                                _out_run = next((r for r in reversed(_running3[:9])  if r is not None and str(r).strip() not in ("","nan")), None)
+                                _in_run  = next((r for r in reversed(_running3[9:])  if r is not None and str(r).strip() not in ("","nan")), None)
+                                _run_cells  = "".join(_running_cell(v) for v in _running3[:9])
+                                _run_cells += _running_cell(_out_run, border_left=True)
+                                _run_cells += "".join(_running_cell(v) for v in _running3[9:])
+                                _run_cells += _running_cell(_in_run,  border_left=True)
+                                _run_cells += _running_cell(_in_run,  border_left=True)
+
+                                _last_name = _selected_sc_player.split()[-1]
+                                st.markdown(f"""
+<div style='overflow-x:auto'>
+<table style='border-collapse:collapse;background:#111;width:100%;font-family:monospace'>
+  <thead><tr>
+    <th {_td_hdr} style='text-align:left;min-width:52px'>HOLE</th>{_hdr_cells}
+  </tr></thead>
+  <tbody>
+    <tr><td style='padding:4px 8px;color:#666;font-size:11px;font-weight:600'>PAR</td>{_par_cells}</tr>
+    <tr><td style='padding:4px 8px;color:#eee;font-size:12px;font-weight:600'>{_last_name}</td>{_score_cells}</tr>
+    <tr><td style='padding:4px 8px;color:#555;font-size:10px;font-weight:600'>SCORE</td>{_run_cells}</tr>
+  </tbody>
+</table></div>
+<div style='margin-top:8px;display:flex;gap:16px;font-size:11px;color:#888'>
+  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#7d6100;color:#FFD700;font-size:9px;border:1.5px solid #FFD700'>&#x25CF;</span> Eagle</span>
+  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#c0392b;color:#fff;font-size:9px'>&#x25CF;</span> Birdie</span>
+  <span style='color:#aaa'>&#8212; Par</span>
+  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid #4cb8ff;color:#4cb8ff;font-size:9px'>&#x25CF;</span> Bogey</span>
+  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#1a3a5c;color:#aaa;font-size:9px'>&#x25CF;</span> Double+</span>
+</div>""", unsafe_allow_html=True)
+                    else:
+                        st.caption("Hole scores not yet available for this player.")
+                else:
+                    st.caption("Hole score data not yet fetched. Loads automatically during live refresh.")
 
 
 def compare_live_vs_predictions(live_df: pd.DataFrame, tournament_id: str = None) -> pd.DataFrame:
@@ -12710,177 +12883,7 @@ elif page == "🔴 Live":
     with tab1:
         if live_df is not None:
             render_live_leaderboard(live_df, live_meta)
-
-            # ── Player Scorecard (row-click driven) ─────────────────────────
-            _live_tid = live_meta.get("tournament_id", "")
-            _selected_sc_player = st.session_state.get("live_selected_player")
-
-            if _selected_sc_player and not live_df.empty:
-                _sc_lb_row = live_df[live_df["player_name"] == _selected_sc_player]
-
-                if not _sc_lb_row.empty:
-                    _sc_r = _sc_lb_row.iloc[0]
-                    st.markdown("---")
-                    st.markdown(f"#### {_selected_sc_player}")
-
-                    # Summary metrics
-                    _sc_pos   = _sc_r.get("position", "—")
-                    _sc_total = _sc_r.get("total", "E")
-                    _sc_thru  = str(_sc_r.get("thru", "—"))
-                    _sc_r1    = int(_sc_r["R1"]) if pd.notna(_sc_r.get("R1")) else "—"
-                    _sc_r2    = int(_sc_r["R2"]) if pd.notna(_sc_r.get("R2")) else "—"
-                    _sc_r3    = int(_sc_r["R3"]) if pd.notna(_sc_r.get("R3")) else "—"
-                    _sc_r4    = int(_sc_r["R4"]) if pd.notna(_sc_r.get("R4")) else "—"
-                    _sc_odds  = _sc_r.get("odds_to_win", "")
-
-                    _mc1, _mc2, _mc3, _mc4, _mc5 = st.columns(5)
-                    _mc1.metric("Position", _sc_pos)
-                    _mc2.metric("Total",    _sc_total)
-                    _mc3.metric("Thru",     _sc_thru)
-                    _mc4.metric("Odds",     f"+{_sc_odds}" if _sc_odds else "—")
-                    _mc5.metric("Rounds",   f"{_sc_r1} · {_sc_r2} · {_sc_r3} · {_sc_r4}")
-
-                    # Load hole scores
-                    if _live_tid:
-                        _hs3_path = LIVE_DIR / f"hole_scores_{_live_tid.lower()}.csv"
-                        if _hs3_path.exists():
-                            _hs3_df = pd.read_csv(_hs3_path)
-                            _pid3 = str(int(_sc_r.get("player_id", -1)))
-                            _hs3_player = _hs3_df[_hs3_df["player_id"].astype(str) == _pid3]
-
-                            if not _hs3_player.empty:
-                                _rounds3 = sorted(_hs3_player["round"].dropna().unique().tolist()) if "round" in _hs3_player.columns else [1]
-                                _rtabs3  = st.tabs([f"Round {int(r)}" for r in _rounds3])
-
-                                def _hole_cell3(stroke, rel):
-                                    if stroke is None:
-                                        return "<td style='padding:4px 6px;text-align:center;color:#555'>-</td>"
-                                    try:
-                                        s = int(stroke)
-                                        r = int(rel) if rel is not None else 0
-                                    except (TypeError, ValueError):
-                                        return f"<td style='padding:4px 6px;text-align:center'>{stroke}</td>"
-                                    if r <= -2:
-                                        inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
-                                                 f"width:22px;height:22px;border-radius:50%;border:2px solid #FFD700;"
-                                                 f"background:#7d6100;color:#FFD700;font-weight:700;font-size:12px'>{s}</span>")
-                                        return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
-                                    elif r == -1:
-                                        inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
-                                                 f"width:22px;height:22px;border-radius:50%;"
-                                                 f"background:#c0392b;color:#fff;font-weight:700;font-size:12px'>{s}</span>")
-                                        return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
-                                    elif r == 0:
-                                        return f"<td style='padding:4px 6px;text-align:center;color:#ccc;font-size:13px'>{s}</td>"
-                                    elif r == 1:
-                                        inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
-                                                 f"width:22px;height:22px;border:2px solid #4cb8ff;"
-                                                 f"background:transparent;color:#4cb8ff;font-size:12px'>{s}</span>")
-                                        return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
-                                    else:
-                                        inner = (f"<span style='display:inline-flex;align-items:center;justify-content:center;"
-                                                 f"width:22px;height:22px;background:#1a3a5c;color:#aaa;"
-                                                 f"font-weight:700;font-size:12px'>{s}</span>")
-                                        return f"<td style='padding:3px 5px;text-align:center'>{inner}</td>"
-
-                                def _safe_sum3(vals):
-                                    t = 0
-                                    for v in vals:
-                                        try: t += int(v)
-                                        except (TypeError, ValueError): pass
-                                    return t
-
-                                def _topar_str3(n):
-                                    return "E" if n == 0 else (f"+{n}" if n > 0 else str(n))
-
-                                def _running_cell(val, border_left=False):
-                                    bl = "border-left:1px solid #333;" if border_left else ""
-                                    if val is None or str(val).strip() in ("", "nan"):
-                                        return f"<td style='padding:4px 6px;{bl}text-align:center;color:#444;font-size:11px'>-</td>"
-                                    v = str(val).strip()
-                                    try: n = 0 if v == "E" else int(v)
-                                    except ValueError: n = 0
-                                    color = "#2ecc71" if n < 0 else ("#e74c3c" if n > 0 else "#888")
-                                    return f"<td style='padding:4px 6px;{bl}text-align:center;color:{color};font-size:11px;font-weight:600'>{v}</td>"
-
-                                for _rtab3, _rnum3 in zip(_rtabs3, _rounds3):
-                                    with _rtab3:
-                                        _rd3 = _hs3_player[_hs3_player["round"] == _rnum3].copy()
-                                        if _rd3.empty:
-                                            continue
-
-                                        _row3     = _rd3.iloc[0]
-                                        _strokes3 = [_row3.get(f"h{i}")         for i in range(1, 19)]
-                                        _rels3    = [_row3.get(f"h{i}_rel")     for i in range(1, 19)]
-                                        _pars3    = [_row3.get(f"h{i}_par")     for i in range(1, 19)]
-                                        _running3 = [_row3.get(f"h{i}_running") for i in range(1, 19)]
-
-                                        if all(p is None for p in _pars3):
-                                            _pars3 = []
-                                            for _s3, _r3 in zip(_strokes3, _rels3):
-                                                try: _pars3.append(int(_s3) - int(_r3))
-                                                except (TypeError, ValueError): _pars3.append(None)
-
-                                        _f9s  = _safe_sum3(_strokes3[:9]);  _b9s  = _safe_sum3(_strokes3[9:]);  _tots = _f9s + _b9s
-                                        _f9p  = _safe_sum3(_pars3[:9]);     _b9p  = _safe_sum3(_pars3[9:]);     _totp = _f9p + _b9p
-                                        _f9r  = _f9s - _f9p;                _b9r  = _b9s - _b9p;                _totr = _tots - _totp
-
-                                        _td_hdr  = "style='padding:4px 8px;text-align:center;color:#888;font-size:11px;font-weight:600;border-bottom:1px solid #333'"
-                                        _td_par  = "style='padding:4px 8px;text-align:center;color:#666;font-size:12px;border-bottom:1px solid #222'"
-                                        _td_sum  = "style='padding:4px 8px;text-align:center;color:#fff;font-size:13px;font-weight:700;border-left:1px solid #333'"
-                                        _td_sump = "style='padding:4px 8px;text-align:center;color:#666;font-size:12px;border-left:1px solid #333;border-bottom:1px solid #222'"
-
-                                        _hdr_cells  = "".join(f"<th {_td_hdr}>{i}</th>" for i in range(1, 10))
-                                        _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>OUT</th>"
-                                        _hdr_cells += "".join(f"<th {_td_hdr}>{i}</th>" for i in range(10, 19))
-                                        _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>IN</th>"
-                                        _hdr_cells += f"<th {_td_hdr} style='border-left:1px solid #333'>TOT</th>"
-
-                                        _par_cells  = "".join(f"<td {_td_par}>{p if p else '-'}</td>" for p in _pars3[:9])
-                                        _par_cells += f"<td {_td_sump}>{_f9p}</td>"
-                                        _par_cells += "".join(f"<td {_td_par}>{p if p else '-'}</td>" for p in _pars3[9:])
-                                        _par_cells += f"<td {_td_sump}>{_b9p}</td>"
-                                        _par_cells += f"<td {_td_sump}>{_totp}</td>"
-
-                                        _score_cells  = "".join(_hole_cell3(_strokes3[i], _rels3[i]) for i in range(9))
-                                        _score_cells += f"<td {_td_sum}>{_f9s}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_f9r)})</span></td>"
-                                        _score_cells += "".join(_hole_cell3(_strokes3[i], _rels3[i]) for i in range(9, 18))
-                                        _score_cells += f"<td {_td_sum}>{_b9s}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_b9r)})</span></td>"
-                                        _score_cells += f"<td {_td_sum}>{_tots}<span style='font-size:10px;color:#888;margin-left:3px'>({_topar_str3(_totr)})</span></td>"
-
-                                        _out_run = next((r for r in reversed(_running3[:9])  if r is not None and str(r).strip() not in ("","nan")), None)
-                                        _in_run  = next((r for r in reversed(_running3[9:])  if r is not None and str(r).strip() not in ("","nan")), None)
-                                        _run_cells  = "".join(_running_cell(v) for v in _running3[:9])
-                                        _run_cells += _running_cell(_out_run, border_left=True)
-                                        _run_cells += "".join(_running_cell(v) for v in _running3[9:])
-                                        _run_cells += _running_cell(_in_run,  border_left=True)
-                                        _run_cells += _running_cell(_in_run,  border_left=True)
-
-                                        _last_name = _selected_sc_player.split()[-1]
-                                        st.markdown(f"""
-<div style='overflow-x:auto'>
-<table style='border-collapse:collapse;background:#111;width:100%;font-family:monospace'>
-  <thead><tr>
-    <th {_td_hdr} style='text-align:left;min-width:52px'>HOLE</th>{_hdr_cells}
-  </tr></thead>
-  <tbody>
-    <tr><td style='padding:4px 8px;color:#666;font-size:11px;font-weight:600'>PAR</td>{_par_cells}</tr>
-    <tr><td style='padding:4px 8px;color:#eee;font-size:12px;font-weight:600'>{_last_name}</td>{_score_cells}</tr>
-    <tr><td style='padding:4px 8px;color:#555;font-size:10px;font-weight:600'>SCORE</td>{_run_cells}</tr>
-  </tbody>
-</table></div>
-<div style='margin-top:8px;display:flex;gap:16px;font-size:11px;color:#888'>
-  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#7d6100;color:#FFD700;font-size:9px;border:1.5px solid #FFD700'>&#x25CF;</span> Eagle</span>
-  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#c0392b;color:#fff;font-size:9px'>&#x25CF;</span> Birdie</span>
-  <span style='color:#aaa'>&#8212; Par</span>
-  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border:1.5px solid #4cb8ff;color:#4cb8ff;font-size:9px'>&#x25CF;</span> Bogey</span>
-  <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#1a3a5c;color:#aaa;font-size:9px'>&#x25CF;</span> Double+</span>
-</div>""", unsafe_allow_html=True)
-                            else:
-                                st.caption("Hole scores not yet available for this player.")
-                        else:
-                            st.caption("Hole score data not yet fetched. Loads automatically during live refresh.")
-
+        else:
             st.info("Select a tournament or fetch live data to view leaderboard")
 
     with tab2:
