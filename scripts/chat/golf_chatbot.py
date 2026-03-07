@@ -104,12 +104,34 @@ def _detect_tournament_id() -> str | None:
 # Context blocks
 # ---------------------------------------------------------------------------
 
-def _predictions_block(top_n: int = 20) -> str:
-    """Top N players by win probability.
+def _fmt_odds(odds) -> str:
+    """Format American odds as +1300 or -110."""
+    try:
+        o = int(float(odds))
+        return f"+{o}" if o > 0 else str(o)
+    except (TypeError, ValueError):
+        return "—"
 
-    Fix 1: names normalized to First Last.
-    Fix 2: implied_prob% column derived from DK American odds.
-    Fix 3: edge_pp column = model win% − implied win% (positive = model favors player).
+
+def _fmt_course_history(row) -> str:
+    """Compact course history: '5 starts · 3 T10s · 2 wins' or 'No history'."""
+    starts = int(row.get("hist_times_played", 0) or 0)
+    if starts == 0:
+        return "No history"
+    top10s = int(row.get("hist_top10s", 0) or 0)
+    wins   = int(row.get("hist_wins", 0) or 0)
+    parts  = [f"{starts} starts", f"{top10s} T10s"]
+    if wins:
+        parts.append(f"{wins} win{'s' if wins > 1 else ''}")
+    return " · ".join(parts)
+
+
+def _predictions_block(top_n: int = 20) -> str:
+    """Top N players ranked by win probability, in user-friendly terms.
+
+    Columns: Player, Win Odds, World Rank, Top 10%, Top 5%,
+             Course History, SG Total, SG OTT, SG APP, SG Putt,
+             Live Position (if tournament is live).
     """
     path = OUTPUTS / "latest_predictions.csv"
     if not path.exists():
@@ -117,49 +139,44 @@ def _predictions_block(top_n: int = 20) -> str:
     try:
         df = pd.read_csv(path)
         df = df.sort_values("win_prob", ascending=False).head(top_n).copy()
-
-        # Fix 1: normalize player names
         df["player_name"] = df["player_name"].apply(_fmt_name)
 
-        # Fix 2: implied probability from market odds
-        df["implied_prob"] = df["odds_to_win"].apply(_american_to_implied)
-
-        # Fix 3: model vs market edge (in percentage points)
-        df["edge_pp"] = ((df["win_prob"] - df["implied_prob"]) * 100).round(1)
-
-        # Select and format columns
-        cols = ["player_name", "win_prob", "implied_prob", "edge_pp",
-                "top10_prob", "odds_to_win", "projected_score_vs_field",
-                "form_trend", "course_perf_score"]
-        live_cols = ["live_win_prob", "live_win_prob_change"]
-        for c in live_cols:
-            if c in df.columns:
-                cols.append(c)
-
-        df = df[[c for c in cols if c in df.columns]].copy()
-
-        df["win_prob"]    = (df["win_prob"] * 100).round(1).astype(str) + "%"
-        df["implied_prob"] = df["implied_prob"].apply(
-            lambda x: f"{x*100:.1f}%" if x is not None else "—"
+        # Build output frame with plain-English columns
+        out = pd.DataFrame()
+        out["Player"]       = df["player_name"]
+        out["Win Odds"]     = df["odds_to_win"].apply(_fmt_odds)
+        out["World Rank"]   = df["world_rank"].apply(
+            lambda x: f"#{int(x)}" if pd.notna(x) else "—"
         )
-        df["top10_prob"]  = (df["top10_prob"] * 100).round(1).astype(str) + "%"
-        df["edge_pp"]     = df["edge_pp"].apply(
-            lambda x: f"+{x:.1f}pp" if x > 0 else f"{x:.1f}pp" if pd.notna(x) else "—"
-        )
-        if "live_win_prob" in df.columns:
-            df["live_win_prob"] = (df["live_win_prob"] * 100).round(1).astype(str) + "%"
-        if "live_win_prob_change" in df.columns:
-            df["live_win_prob_change"] = (df["live_win_prob_change"] * 100).round(1).astype(str) + "pp"
-        if "projected_score_vs_field" in df.columns:
-            df["projected_score_vs_field"] = df["projected_score_vs_field"].round(2)
-        if "course_perf_score" in df.columns:
-            df["course_perf_score"] = df["course_perf_score"].round(2)
+        out["Top 10%"]      = (df["top10_prob"] * 100).round(0).astype(int).astype(str) + "%"
+        out["Top 5%"]       = (df["top5_prob"] * 100).round(0).astype(int).astype(str) + "%"
+        out["Course History"] = df.apply(_fmt_course_history, axis=1)
 
-        df.columns = [c.replace("_", " ").title() for c in df.columns]
-        note = "(Edge Pp = model win% minus market implied%; positive means model likes player more than market)"
-        return "## MODEL TOP 20 (by win probability)\n" + note + "\n" + df.to_markdown(index=False)
+        # Strokes Gained (season, signed vs field average)
+        for sg_col, label in [
+            ("sg_total", "SG Total"),
+            ("sg_ott",   "SG OTT"),
+            ("sg_app",   "SG APP"),
+            ("sg_putt",  "SG Putt"),
+        ]:
+            if sg_col in df.columns:
+                out[label] = df[sg_col].apply(
+                    lambda x: f"{x:+.2f}" if pd.notna(x) else "—"
+                )
+
+        # Live position if available
+        if "live_top10_prob" in df.columns:
+            live_t10 = (df["live_top10_prob"] * 100).round(0).fillna(0).astype(int)
+            out["Live T10%"] = live_t10.astype(str) + "%"
+
+        note = (
+            "SG = Strokes Gained vs field average (positive = better than average). "
+            "OTT = off the tee, APP = approach, Putt = putting. "
+            "Top 10% / Top 5% = estimated finish probability."
+        )
+        return "## FIELD OVERVIEW — Top 20 contenders\n" + note + "\n" + out.to_markdown(index=False)
     except Exception as e:
-        return f"## MODEL TOP 20\n(unavailable: {e})"
+        return f"## FIELD OVERVIEW\n(unavailable: {e})"
 
 
 def _live_leaderboard_block(tid: str) -> str:
@@ -227,7 +244,7 @@ def _live_leaderboard_block(tid: str) -> str:
 
 
 def _recommended_bets_block(top_n: int = 10) -> str:
-    """Top recommended bets by edge."""
+    """Top recommended bets in plain-English terms."""
     path = DATA / "odds" / "recommended_bets_latest.csv"
     if not path.exists():
         return ""
@@ -236,21 +253,35 @@ def _recommended_bets_block(top_n: int = 10) -> str:
         df = df[df["status"] == "priced"].copy() if "status" in df.columns else df
         df = df.sort_values("edge_pts", ascending=False).head(top_n)
 
-        cols = ["market", "player_name", "book", "odds_american",
-                "edge_pts", "model_prob", "ev_per_1", "confidence"]
-        df = df[[c for c in cols if c in df.columns]].copy()
-        df["player_name"] = df["player_name"].apply(_fmt_name)
-        if "edge_pts" in df.columns:
-            df["edge_pts"] = df["edge_pts"].round(1).astype(str) + "pp"
+        out = pd.DataFrame()
+        out["Market"]       = df["market"] if "market" in df.columns else "—"
+        out["Player"]       = df["player_name"].apply(_fmt_name)
+        out["Book"]         = df["book"] if "book" in df.columns else "—"
+        out["Odds"]         = df["odds_american"].apply(
+            lambda x: _fmt_odds(x) if pd.notna(x) else "—"
+        )
+        # Book implied % and model estimate — plain English labels
+        if "book_prob" in df.columns:
+            out["Book Says"] = (df["book_prob"] * 100).round(1).astype(str) + "%"
         if "model_prob" in df.columns:
-            df["model_prob"] = (df["model_prob"] * 100).round(1).astype(str) + "%"
+            out["We Think"]  = (df["model_prob"] * 100).round(1).astype(str) + "%"
         if "ev_per_1" in df.columns:
-            df["ev_per_1"] = df["ev_per_1"].round(3)
+            out["EV / $1"]   = df["ev_per_1"].round(2).apply(
+                lambda x: f"+${x:.2f}" if x > 0 else f"-${abs(x):.2f}"
+            )
+        if "confidence" in df.columns:
+            out["Confidence"] = df["confidence"].apply(
+                lambda x: "High" if x >= 0.9 else ("Med" if x >= 0.7 else "Low")
+            )
 
-        df.columns = [c.replace("_", " ").title() for c in df.columns]
-        return "## TOP RECOMMENDED BETS\n" + df.to_markdown(index=False)
+        note = (
+            "Book Says = what the sportsbook's odds imply. "
+            "We Think = our estimate of the true probability. "
+            "EV / $1 = expected profit per $1 wagered."
+        )
+        return "## TOP BETS THIS WEEK\n" + note + "\n" + out.to_markdown(index=False)
     except Exception as e:
-        return f"## TOP RECOMMENDED BETS\n(unavailable: {e})"
+        return f"## TOP BETS THIS WEEK\n(unavailable: {e})"
 
 
 def _course_profile_block(tid: str) -> str:
@@ -511,10 +542,19 @@ def build_context(tournament_id: str | None = None) -> str:
         tournament_id = _detect_tournament_id()
 
     sections = [
-        "You are an expert golf analytics assistant with access to current tournament data.",
-        "Your role: help the user make lineup decisions, evaluate betting edges, analyze player form, and explain live tournament developments.",
-        "Always ground your responses in the provided data. Cite specific numbers (win probabilities, odds, strokes gained).",
-        "When Edge Pp is positive and large (>10pp), the model strongly favors that player vs the market — highlight it.",
+        "You are an expert golf analyst helping a user with fantasy lineup decisions, betting, and tournament analysis.",
+        "Communicate like a knowledgeable golf fan talking to another fan — use plain English, not technical jargon.",
+        "",
+        "COMMUNICATION RULES:",
+        "- Use odds (+1300, +600) and finish percentages (Top 10%, Top 5%) — these are intuitive.",
+        "- Reference course history ('2 wins here in 5 starts'), recent form, and strokes gained stats.",
+        "- SG = Strokes Gained. Positive = better than field average, negative = worse. OTT = off the tee, APP = approach, Putt = putting.",
+        "- When a bet looks good, say 'the odds undervalue this player' — not 'positive edge'.",
+        "- EV / $1 means expected profit per dollar wagered. Positive EV = profitable long-term.",
+        "- 'Book Says X%' is what the sportsbook thinks the odds imply. 'We Think Y%' is our estimate.",
+        "- Never say 'model output', 'implied probability', 'edge pp', or 'projected score vs field'.",
+        "- When discussing course fit, reference the specific holes and stats from the course profile.",
+        "- For lineup advice, reference the user's own uses remaining and their league standing.",
         "",
     ]
 
