@@ -144,7 +144,18 @@ def _predictions_block(top_n: int = 20) -> str:
         # Build output frame with plain-English columns
         out = pd.DataFrame()
         out["Player"]       = df["player_name"]
-        out["Win Odds"]     = df["odds_to_win"].apply(_fmt_odds)
+
+        # Win Odds + implied % together so value comparisons are explicit
+        def _odds_with_implied(odds):
+            o = _fmt_odds(odds)
+            imp = _american_to_implied(odds)
+            if imp is not None:
+                return f"{o} ({imp*100:.0f}% implied)"
+            return o
+        out["Win Odds (Implied%)"] = df["odds_to_win"].apply(_odds_with_implied)
+
+        # Est. Win% — clearly labelled as our estimate, for value play comparisons
+        out["Est. Win%"]    = (df["win_prob"] * 100).round(1).astype(str) + "%"
         out["World Rank"]   = df["world_rank"].apply(
             lambda x: f"#{int(x)}" if pd.notna(x) else "—"
         )
@@ -170,9 +181,9 @@ def _predictions_block(top_n: int = 20) -> str:
             out["Live T10%"] = live_t10.astype(str) + "%"
 
         note = (
-            "SG = Strokes Gained vs field average (positive = better than average). "
-            "OTT = off the tee, APP = approach, Putt = putting. "
-            "Top 10% / Top 5% = estimated finish probability."
+            "IMPORTANT: Est. Win% is our win probability estimate — compare this to Implied% for value plays. "
+            "Top 10% and Top 5% are finish probabilities — do NOT compare these to win odds. "
+            "SG = Strokes Gained vs field average. OTT = off the tee, APP = approach, Putt = putting."
         )
         return "## FIELD OVERVIEW — Top 20 contenders\n" + note + "\n" + out.to_markdown(index=False)
     except Exception as e:
@@ -260,11 +271,11 @@ def _recommended_bets_block(top_n: int = 10) -> str:
         out["Odds"]         = df["odds_american"].apply(
             lambda x: _fmt_odds(x) if pd.notna(x) else "—"
         )
-        # Book implied % and model estimate — plain English labels
+        # Book implied % and model estimate — clearly scoped to the specific market
         if "book_prob" in df.columns:
-            out["Book Says"] = (df["book_prob"] * 100).round(1).astype(str) + "%"
+            out["Book Says (this market)"] = (df["book_prob"] * 100).round(1).astype(str) + "%"
         if "model_prob" in df.columns:
-            out["We Think"]  = (df["model_prob"] * 100).round(1).astype(str) + "%"
+            out["We Think (this market)"]  = (df["model_prob"] * 100).round(1).astype(str) + "%"
         if "ev_per_1" in df.columns:
             out["EV / $1"]   = df["ev_per_1"].round(2).apply(
                 lambda x: f"+${x:.2f}" if x > 0 else f"-${abs(x):.2f}"
@@ -275,9 +286,9 @@ def _recommended_bets_block(top_n: int = 10) -> str:
             )
 
         note = (
-            "Book Says = what the sportsbook's odds imply. "
-            "We Think = our estimate of the true probability. "
-            "EV / $1 = expected profit per $1 wagered."
+            "Each row is a specific market (top20, top10, h2h, outright win). "
+            "'Book Says' and 'We Think' apply to THAT market only — not to win probability. "
+            "EV / $1 = expected profit per $1 wagered. Positive = good bet long-term."
         )
         return "## TOP BETS THIS WEEK\n" + note + "\n" + out.to_markdown(index=False)
     except Exception as e:
@@ -546,15 +557,24 @@ def build_context(tournament_id: str | None = None) -> str:
         "Communicate like a knowledgeable golf fan talking to another fan — use plain English, not technical jargon.",
         "",
         "COMMUNICATION RULES:",
-        "- Use odds (+1300, +600) and finish percentages (Top 10%, Top 5%) — these are intuitive.",
-        "- Reference course history ('2 wins here in 5 starts'), recent form, and strokes gained stats.",
+        "- Use American odds (+1300, +600) and plain finish percentages. Reference course history and strokes gained stats.",
         "- SG = Strokes Gained. Positive = better than field average, negative = worse. OTT = off the tee, APP = approach, Putt = putting.",
-        "- When a bet looks good, say 'the odds undervalue this player' — not 'positive edge'.",
-        "- EV / $1 means expected profit per dollar wagered. Positive EV = profitable long-term.",
-        "- 'Book Says X%' is what the sportsbook thinks the odds imply. 'We Think Y%' is our estimate.",
-        "- Never say 'model output', 'implied probability', 'edge pp', or 'projected score vs field'.",
-        "- When discussing course fit, reference the specific holes and stats from the course profile.",
-        "- For lineup advice, reference the user's own uses remaining and their league standing.",
+        "- Never say 'model output', 'implied probability', 'edge pp', 'projected score vs field', or 'win probability was X%'.",
+        "- For pre-tournament expectations, say 'listed at +1300' or 'ranked #1 in the world' — not 'had a 21% win probability'.",
+        "- EV / $1 = expected profit per dollar wagered. Positive = good bet long-term.",
+        "- When discussing course fit, reference specific holes, yardage, and which SG categories matter.",
+        "- For lineup advice, reference the user's uses remaining and league standing.",
+        "",
+        "VALUE PLAYS — CRITICAL RULE:",
+        "- The field table has 'Est. Win%' and 'Win Odds (Implied%)'. To find value, compare Est. Win% to the Implied% in the odds.",
+        "- Example: Est. Win% = 17%, Implied% = 6% → the odds undervalue this player for a WIN bet.",
+        "- Top 10% and Top 5% measure finish placement — NEVER compare them to win odds. They are different markets.",
+        "- For top 10 / top 20 value, use the BETS TABLE which shows 'Book Says' vs 'We Think' for that specific market.",
+        "",
+        "TOURNAMENT UPDATES — RULES:",
+        "- 5+ strokes back with 1 round left is a very difficult deficit. Be realistic — don't call large gaps 'only X strokes'.",
+        "- When noting who has outperformed or underperformed, say 'Scheffler was the favorite at +1300 but sits T15' — not probabilities.",
+        "- Focus on actual tournament position, strokes to leader, and remaining holes.",
         "",
     ]
 
