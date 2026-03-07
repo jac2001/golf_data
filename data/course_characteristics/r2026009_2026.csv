@@ -1,0 +1,19 @@
+tournament_id,tournament_name,course_id,course_name,course_code,course_par,course_yardage,is_host_course,hole_num,hole_par,hole_yards,scoring_avg,scoring_diff,eagles,birdies,pars,bogeys,double_bogeys,difficulty_rank,fetched_date
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,1,4,461,4.063,+0.063,0,20,99,21,4,9,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,2,3,231,3.132,+0.132,0,12,103,27,2,7,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,3,4,434,4.014,+0.014,0,22,98,24,0,12,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,4,5,590,4.569,-0.431,2,65,71,5,1,17,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,5,4,390,4.028,+0.028,0,16,108,20,0,10,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,6,5,555,4.764,-0.236,2,49,79,9,5,15,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,7,3,199,3.021,+0.021,0,18,105,21,0,11,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,8,4,460,4.236,+0.236,0,13,89,38,4,3,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,9,4,480,4.257,+0.257,0,12,87,41,4,1,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,10,4,400,3.986,-0.014,0,28,93,20,3,13,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,11,4,438,4.236,+0.236,0,20,87,24,13,3,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,12,5,574,4.674,-0.326,3,58,68,14,1,16,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,13,4,382,3.951,-0.049,0,25,105,10,4,14,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,14,3,215,3.083,+0.083,0,14,106,22,2,8,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,15,4,467,4.181,+0.181,0,14,92,36,2,5,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,16,5,511,4.472,-0.528,5,73,61,3,2,18,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,17,3,221,3.174,+0.174,0,11,106,20,7,6,2026-03-06
+R2026009,R2026009,009,Arnold Palmer's Bay Hill Club & Lodge,BH,72,"7,466",True,18,4,458,4.243,+0.243,0,15,86,36,7,2,2026-03-06
