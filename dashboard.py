@@ -4349,8 +4349,12 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
         with _leader_cols[i]:
             name    = str(player.get("player_name", "Unknown"))
             country = str(player.get("country", ""))
-            odds    = str(player.get("odds_to_win", "")) if player.get("odds_to_win") else ""
             thru    = str(player.get("thru", "-"))
+            _odds_raw = player.get("odds_to_win")
+            try:
+                odds = str(int(float(_odds_raw))) if _odds_raw else ""
+            except (ValueError, TypeError):
+                odds = str(_odds_raw) if _odds_raw else ""
 
             # Normalize total to-par: "-3.0" → "-3", "E" stays "E"
             _raw_total = player.get("total", "E")
@@ -4459,10 +4463,20 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
             display_df["Move"] = df.head(50).apply(format_change, axis=1)
         display_df.columns = [c.replace("_", " ").title() for c in display_df.columns]
 
+    # Convert numeric display columns to whole-number strings
+    _int_cols = [c for c in display_df.columns if c in ("Score", "Total", "R1", "R2", "R3", "R4", "Odds", "Odds To Win", "Thru")]
+    for _ic in _int_cols:
+        def _fmt_int(v, _col=_ic):
+            s = str(v).strip()
+            if s in ("", "nan", "E"): return s if s == "E" else ""
+            try: return str(int(float(s)))
+            except (ValueError, TypeError): return s
+        display_df[_ic] = display_df[_ic].apply(_fmt_int)
+
     # Color-code score/total columns: under par = green, over par = red, E = default
     def _color_score(val):
         try:
-            n = 0 if str(val).strip() == "E" else int(val)
+            n = 0 if str(val).strip() == "E" else int(float(val))
         except (ValueError, TypeError):
             return ""
         if n < 0:   return "color:#2ecc71;font-weight:600"
@@ -4504,9 +4518,13 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
             st.markdown(f"#### {_selected_sc_player}")
 
             # Summary metrics — round to whole numbers
-            _sc_pos   = _sc_r.get("position", "—")
-            _sc_thru  = str(_sc_r.get("thru", "—"))
-            _sc_odds  = _sc_r.get("odds_to_win", "")
+            _sc_pos  = _sc_r.get("position", "—")
+            _sc_odds = _sc_r.get("odds_to_win", "")
+            _thru_raw = _sc_r.get("thru", "—")
+            try:
+                _sc_thru = str(int(float(_thru_raw)))
+            except (ValueError, TypeError):
+                _sc_thru = str(_thru_raw)
             try:
                 _sc_tot_num = int(float(_sc_r.get("total", 0)))
                 _sc_total   = "E" if _sc_tot_num == 0 else (f"+{_sc_tot_num}" if _sc_tot_num > 0 else str(_sc_tot_num))
@@ -4517,25 +4535,44 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
             _sc_r3 = int(float(_sc_r["R3"])) if pd.notna(_sc_r.get("R3")) else "—"
             _sc_r4 = int(float(_sc_r["R4"])) if pd.notna(_sc_r.get("R4")) else "—"
 
+            try:
+                _sc_odds_disp = str(int(float(_sc_odds))) if _sc_odds else ""
+            except (ValueError, TypeError):
+                _sc_odds_disp = str(_sc_odds)
             _mc1, _mc2, _mc3, _mc4, _mc5 = st.columns(5)
             _mc1.metric("Position", _sc_pos)
             _mc2.metric("Total",    _sc_total)
             _mc3.metric("Thru",     _sc_thru)
-            _mc4.metric("Odds",     f"+{_sc_odds}" if _sc_odds else "—")
+            _mc4.metric("Odds",     f"+{_sc_odds_disp}" if _sc_odds_disp else "—")
             _mc5.metric("Rounds",   f"{_sc_r1} · {_sc_r2} · {_sc_r3} · {_sc_r4}")
 
             # Load hole scores using tournament_id from meta
             _sc_tid = meta.get("tournament_id", "")
+            # Determine if player is mid-round (thru < 18 and not finished)
+            _thru_val = _sc_r.get("thru", "")
+            try:
+                _mid_round = 0 < int(float(_thru_val)) < 18
+            except (ValueError, TypeError):
+                _mid_round = False
+
             if _sc_tid:
                 _hs3_path = LIVE_DIR / f"hole_scores_{_sc_tid.lower()}.csv"
                 if _hs3_path.exists():
-                    _hs3_df     = pd.read_csv(_hs3_path)
-                    _pid3       = str(int(_sc_r.get("player_id", -1)))
+                    _hs3_df = pd.read_csv(_hs3_path)
+                    try:
+                        _pid3 = str(int(float(_sc_r.get("player_id", -1))))
+                    except (ValueError, TypeError):
+                        _pid3 = str(_sc_r.get("player_id", ""))
                     _hs3_player = _hs3_df[_hs3_df["player_id"].astype(str) == _pid3]
 
                     if not _hs3_player.empty:
                         _rounds3 = sorted(_hs3_player["round"].dropna().unique().tolist()) if "round" in _hs3_player.columns else [1]
-                        _rtabs3  = st.tabs([f"Round {int(r)}" for r in _rounds3])
+                        def _round_tab_label(r):
+                            label = f"Round {int(r)}"
+                            if _mid_round and int(r) == current_round:
+                                label += " (Live)"
+                            return label
+                        _rtabs3 = st.tabs([_round_tab_label(r) for r in _rounds3])
 
                         def _hole_cell3(stroke, rel):
                             if stroke is None:
@@ -4660,9 +4697,15 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
   <span><span style='display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#1a3a5c;color:#aaa;font-size:9px'>&#x25CF;</span> Double+</span>
 </div>""", unsafe_allow_html=True)
                     else:
-                        st.caption("Hole scores not yet available for this player.")
+                        if _mid_round:
+                            st.caption(f"Round {current_round} is in progress (thru {_sc_thru}) — hole scores will appear after next refresh.")
+                        else:
+                            st.caption("Hole scores not yet available for this player.")
                 else:
-                    st.caption("Hole score data not yet fetched. Loads automatically during live refresh.")
+                    if _mid_round:
+                        st.caption(f"Round {current_round} is in progress (thru {_sc_thru}) — hole scores load automatically during live refresh.")
+                    else:
+                        st.caption("Hole score data not yet fetched. Loads automatically during live refresh.")
 
 
 def compare_live_vs_predictions(live_df: pd.DataFrame, tournament_id: str = None) -> pd.DataFrame:
