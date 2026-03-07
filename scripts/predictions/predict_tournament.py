@@ -225,6 +225,11 @@ def load_models():
         _feats_path = MODEL_DIR / 'score_model_features.txt'
         if _feats_path.exists():
             models['score_features'] = _feats_path.read_text().splitlines()
+        # Quantile models: Q10=ceiling (best 10% of weeks), Q90=floor (worst 10%)
+        for _q in ('q10', 'q50', 'q90'):
+            _qpath = MODEL_DIR / f'score_model_{_q}.pkl'
+            if _qpath.exists():
+                models[f'score_{_q}'] = joblib.load(_qpath)
     return models
 
 def _load_tournament_stats_from_db(year: int) -> pd.DataFrame:
@@ -2375,24 +2380,39 @@ def fill_missing_values(features_df, stats_2025, master_df):
 # Step 8: Make Predictions
 
 def _apply_score_model(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
-    """Apply optional score regression model to add projected_score columns."""
+    """Apply score regression + quantile models to add projected score columns.
+
+    Mean model  → projected_score_vs_field  (best for RANKING players)
+    Q10 model   → proj_ceiling  (best 10% of weeks — upside scenario)
+    Q50 model   → proj_median   (typical week)
+    Q90 model   → proj_floor    (worst 10% of weeks — downside scenario)
+
+    All values are vs-field (negative = better than average).
+    """
     if 'score' not in models:
         return features_df
     sf: list = models.get('score_features') or SCORE_FEATURES
     sf = [f for f in sf if f in features_df.columns]
     Xs = features_df[sf].apply(pd.to_numeric, errors='coerce').fillna(0).values
-    # Model predicts score relative to field average (score_vs_field target).
-    # Add field average scoring to convert back to an absolute to_par estimate.
-    # If recent_scoring_avg unavailable, offset = 0 (display relative score only).
+
+    # Mean model — predicts conditional mean, best for ranking
     relative = models['score'].predict(Xs)
     if 'recent_scoring_avg' in features_df.columns:
         field_scoring = pd.to_numeric(features_df['recent_scoring_avg'], errors='coerce')
-        field_offset = float(field_scoring.median() - 72)  # stroke avg - par = per-round to_par proxy
+        field_offset = float(field_scoring.median() - 72)
     else:
         field_offset = 0.0
     features_df['projected_score'] = (relative + field_offset).round(1)
     features_df['projected_score_vs_field'] = relative.round(2)
     features_df['score_rank'] = features_df['projected_score_vs_field'].rank(method='min').astype(int)
+
+    # Quantile models — ceiling/median/floor range
+    # These are trained with pinball loss to target specific percentiles,
+    # so they give a realistic spread rather than compressed means.
+    for _q, _col in (('q10', 'proj_ceiling'), ('q50', 'proj_median'), ('q90', 'proj_floor')):
+        if f'score_{_q}' in models:
+            features_df[_col] = models[f'score_{_q}'].predict(Xs).round(1)
+
     return features_df
 
 

@@ -1,0 +1,7 @@
+{
+  "slope": 0.9973662495613098,
+  "intercept": 0.3173370361328125,
+  "n_cal": 2529,
+  "mae_raw": 3.6784,
+  "note": "Slope ~1 confirms model is unbiased in mean. No correction applied."
+}

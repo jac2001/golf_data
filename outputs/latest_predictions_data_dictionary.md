@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-03-04 12:50
+Generated: 2026-03-06 22:30
 
 | Column | Description |
 |--------|-------------|
@@ -184,6 +184,9 @@ Generated: 2026-03-04 12:50
 | projected_score | Regression model: predicted 4-round to-par total (e.g. -12.5) |
 | projected_score_vs_field | No description available |
 | score_rank | Field rank by projected_score (1 = best/lowest projected score) |
+| proj_ceiling | No description available |
+| proj_median | No description available |
+| proj_floor | No description available |
 | top20_prob_raw | No description available |
 | top20_prob | No description available |
 | win_prob_calibrated | No description available |

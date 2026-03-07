@@ -1,0 +1,30 @@
+{
+  "interval_coverage_80pct": 0.7936,
+  "quantiles": {
+    "q10": {
+      "alpha": 0.1,
+      "pinball_loss": 0.7749,
+      "coverage": 0.0992,
+      "pred_min": -12.25,
+      "pred_median": -5.66,
+      "pred_max": -0.93
+    },
+    "q50": {
+      "alpha": 0.5,
+      "pinball_loss": 1.8507,
+      "coverage": 0.484,
+      "pred_min": -7.67,
+      "pred_median": -0.31,
+      "pred_max": 4.27
+    },
+    "q90": {
+      "alpha": 0.9,
+      "pinball_loss": 0.8679,
+      "coverage": 0.8928,
+      "pred_min": 2.65,
+      "pred_median": 5.75,
+      "pred_max": 9.18
+    }
+  },
+  "note": "interval_coverage_80pct = fraction of 2025 actuals that fell within the Q10-Q90 interval. Target is 0.80."
+}

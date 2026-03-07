@@ -10274,7 +10274,9 @@ elif page == "👤 Players":
                     _ps1 = _hg(_r1, "projected_score_vs_field"); _ps2 = _hg(_r2, "projected_score_vs_field")
                     if _ps1 is not None or _ps2 is not None:
                         _rows += _h2h_sec("Score Projection")
-                        _rows += _h2h_row("vs Field Avg", _ps1, _ps2, higher_better=False, fmt="+.1f")
+                        _rows += _h2h_row("vs Field Avg (mean)", _ps1, _ps2, higher_better=False, fmt="+.1f")
+                        _rows += _h2h_row("Ceiling (best 10%)", _hg(_r1,"proj_ceiling"), _hg(_r2,"proj_ceiling"), higher_better=False, fmt="+.1f")
+                        _rows += _h2h_row("Floor (worst 10%)", _hg(_r1,"proj_floor"), _hg(_r2,"proj_floor"), higher_better=False, fmt="+.1f")
                         _rows += _h2h_row("Score Rank", _hg(_r1,"score_rank"), _hg(_r2,"score_rank"), higher_better=False, fmt=".0f")
 
                     st.markdown(f"""
@@ -12652,7 +12654,8 @@ elif page == "📊 Predictions":
             # projected_score (absolute to-par). The model predicts a conditional mean
             # so absolute scores are compressed — but the relative ranking is accurate.
             # "vs Avg" reads as: -5.7 = projected 5.7 strokes better than avg finisher.
-            _extra_cols  = [c for c in ['projected_score_vs_field', 'model_vs_vegas_edge'] if c in df.columns]
+            # proj_ceiling / proj_floor: Q10/Q90 quantile models — realistic upside/downside range.
+            _extra_cols  = [c for c in ['projected_score_vs_field', 'proj_ceiling', 'proj_floor', 'model_vs_vegas_edge'] if c in df.columns]
             display_cols = _base_cols + _extra_cols
 
             display_df = top_20[display_cols].copy()
@@ -12665,14 +12668,20 @@ elif page == "📊 Predictions":
             display_df['top10_prob'] = (display_df['top10_prob'] * 100).round(1)
             display_df['sg_total'] = display_df['sg_total'].round(3)
             display_df['hist_times_played'] = display_df['hist_times_played'].fillna(0).astype(int)
+
+            def _fmt_vsf(v):
+                try:
+                    n = float(v)
+                    return "E" if n == 0 else (f"+{n:.1f}" if n > 0 else f"{n:.1f}")
+                except (TypeError, ValueError):
+                    return "—"
+
             if 'projected_score_vs_field' in display_df.columns:
-                def _fmt_vsf(v):
-                    try:
-                        n = float(v)
-                        return "E" if n == 0 else (f"+{n:.1f}" if n > 0 else f"{n:.1f}")
-                    except (TypeError, ValueError):
-                        return "—"
                 display_df['projected_score_vs_field'] = display_df['projected_score_vs_field'].apply(_fmt_vsf)
+            if 'proj_ceiling' in display_df.columns:
+                display_df['proj_ceiling'] = display_df['proj_ceiling'].apply(_fmt_vsf)
+            if 'proj_floor' in display_df.columns:
+                display_df['proj_floor'] = display_df['proj_floor'].apply(_fmt_vsf)
             if 'model_vs_vegas_edge' in display_df.columns:
                 display_df['model_vs_vegas_edge'] = display_df['model_vs_vegas_edge'].round(1)
 
@@ -12680,14 +12689,15 @@ elif page == "📊 Predictions":
                 'player_name': 'Player', 'expected_value': 'Expected Value',
                 'win_prob': 'Win %', 'top5_prob': 'Top-5 %', 'top10_prob': 'Top-10 %',
                 'sg_total': 'SG Total', 'hist_times_played': 'Course Plays',
-                'projected_score_vs_field': 'vs Avg', 'model_vs_vegas_edge': 'Edge %',
+                'projected_score_vs_field': 'vs Avg', 'proj_ceiling': 'Ceiling',
+                'proj_floor': 'Floor', 'model_vs_vegas_edge': 'Edge %',
             }
             display_df.columns = (
                 [_col_rename.get(c, c) for c in display_cols] + ['2025 Earnings', 'KFT History', 'LIV History']
             )
 
             st.dataframe(display_df, hide_index=True, use_container_width=True)
-            st.caption("**vs Avg** — projected strokes vs field average (negative = better than field). **2025 Earnings** — prize money in your 2025 lineup. **KFT/LIV History** — SG proxy from non-PGA seasons.")
+            st.caption("**vs Avg** — mean projected score vs field (negative = better). **Ceiling** — best 10% of weeks (Q10). **Floor** — worst 10% of weeks (Q90). All vs field average. **2025 Earnings** — prize money in your 2025 lineup.")
 
             st.markdown("#### 🔎 Why This Pick")
             why_cols = st.columns([2.2, 1.0])
@@ -12747,8 +12757,9 @@ elif page == "📊 Predictions":
                     st.info(f"No players with edge ≥ {_min_edge}%. Try lowering the threshold.")
                 else:
                     _val_show_cols = ["player_name", "win_prob", "top10_prob", "model_vs_vegas_edge", "world_rank", "sg_total"]
-                    if "projected_score_vs_field" in _val_df.columns:
-                        _val_show_cols.append("projected_score_vs_field")
+                    for _qc in ["projected_score_vs_field", "proj_ceiling", "proj_floor"]:
+                        if _qc in _val_df.columns:
+                            _val_show_cols.append(_qc)
                     if "odds_to_win" in _val_df.columns:
                         _val_show_cols.append("odds_to_win")
                     _val_show_cols = [c for c in _val_show_cols if c in _val_df.columns]
@@ -12757,11 +12768,12 @@ elif page == "📊 Predictions":
                     _val_disp["top10_prob"] = (_val_disp["top10_prob"] * 100).round(1)
                     _val_disp["sg_total"]   = _val_disp["sg_total"].round(2)
                     _val_disp["model_vs_vegas_edge"] = _val_disp["model_vs_vegas_edge"].round(1)
-                    if "projected_score_vs_field" in _val_disp.columns:
-                        _val_disp["projected_score_vs_field"] = _val_disp["projected_score_vs_field"].apply(
-                            lambda v: ("E" if float(v) == 0 else (f"+{float(v):.1f}" if float(v) > 0 else f"{float(v):.1f}"))
-                            if pd.notna(v) else "—"
-                        )
+                    for _qc in ["projected_score_vs_field", "proj_ceiling", "proj_floor"]:
+                        if _qc in _val_disp.columns:
+                            _val_disp[_qc] = _val_disp[_qc].apply(
+                                lambda v: ("E" if float(v) == 0 else (f"+{float(v):.1f}" if float(v) > 0 else f"{float(v):.1f}"))
+                                if pd.notna(v) else "—"
+                            )
                     if "world_rank" in _val_disp.columns:
                         _val_disp["world_rank"] = pd.to_numeric(_val_disp["world_rank"], errors="coerce").apply(
                             lambda x: int(x) if pd.notna(x) else "—"
@@ -12769,11 +12781,12 @@ elif page == "📊 Predictions":
                     _val_rename = {
                         "player_name": "Player", "win_prob": "Win %", "top10_prob": "Top-10 %",
                         "model_vs_vegas_edge": "Edge %", "world_rank": "WR",
-                        "sg_total": "SG Total", "projected_score_vs_field": "vs Avg", "odds_to_win": "DK Odds",
+                        "sg_total": "SG Total", "projected_score_vs_field": "vs Avg",
+                        "proj_ceiling": "Ceiling", "proj_floor": "Floor", "odds_to_win": "DK Odds",
                     }
                     _val_disp.columns = [_val_rename.get(c, c) for c in _val_show_cols]
                     st.dataframe(_val_disp, hide_index=True, use_container_width=True)
-                    st.caption(f"Showing {len(_val_disp)} players with model edge ≥ {_min_edge}%.")
+                    st.caption(f"Showing {len(_val_disp)} players with model edge ≥ {_min_edge}%. **Ceiling** = best 10% of weeks (Q10), **Floor** = worst 10% (Q90), all vs field avg.")
 
         # ── Model Calibration ────────────────────────────────────────────────
         _cal_path = OUTPUTS_DIR / "calibration_data.json"
