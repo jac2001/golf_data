@@ -12536,14 +12536,26 @@ elif page == "📊 Predictions":
             with_history = df['hist_times_played'].notna().sum()
             st.metric("With History", f"{with_history}/{len(df)}")
 
+        # ── Field strength ──────────────────────────────────────────────────
+        if "world_rank" in df.columns:
+            _wr_all  = pd.to_numeric(df["world_rank"], errors="coerce").dropna()
+            _wr_real = _wr_all[_wr_all < 400]  # exclude 500-placeholder for LIV/injured
+            _avg_wr  = _wr_real.mean() if not _wr_real.empty else None
+            _t10  = int((_wr_all <= 10).sum())
+            _t25  = int((_wr_all <= 25).sum())
+            _t50  = int((_wr_all <= 50).sum())
+            _fs1, _fs2, _fs3, _fs4 = st.columns(4)
+            _fs1.metric("Avg World Rank",  f"#{_avg_wr:.0f}" if _avg_wr else "—")
+            _fs2.metric("Top-10 Players",  _t10)
+            _fs3.metric("Top-25 Players",  _t25)
+            _fs4.metric("Top-50 Players",  _t50)
+
         st.markdown("---")
 
         selected_tournament_id = _tournament_id_from_df(df)
 
-        
-
         # Tabs
-        tab1, tab2, tab3 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head"])
+        tab1, tab2, tab3, tab4 = st.tabs(["🏆 Top Picks", "🎖️ Tier List", "⚔️ Head-to-Head", "💡 Value Picks"])
 
         with tab1:
             top_20 = df.nlargest(20, 'expected_value').copy()
@@ -12615,8 +12627,10 @@ elif page == "📊 Predictions":
                     n = f"{parts[1]} {parts[0]}"
                 return _kft_pred_lookup.get(n.lower(), "—")
 
-            display_cols = ['player_name', 'expected_value', 'win_prob', 'top5_prob',
-                           'top10_prob', 'sg_total', 'hist_times_played']
+            _base_cols   = ['player_name', 'expected_value', 'win_prob', 'top5_prob',
+                            'top10_prob', 'sg_total', 'hist_times_played']
+            _extra_cols  = [c for c in ['projected_score', 'model_vs_vegas_edge'] if c in df.columns]
+            display_cols = _base_cols + _extra_cols
 
             display_df = top_20[display_cols].copy()
             display_df['2025'] = top_20['player_name'].apply(_fmt_2025)
@@ -12628,10 +12642,26 @@ elif page == "📊 Predictions":
             display_df['top10_prob'] = (display_df['top10_prob'] * 100).round(1)
             display_df['sg_total'] = display_df['sg_total'].round(3)
             display_df['hist_times_played'] = display_df['hist_times_played'].fillna(0).astype(int)
+            if 'projected_score' in display_df.columns:
+                def _fmt_proj(v):
+                    try:
+                        n = float(v)
+                        return "E" if n == 0 else (f"+{n:.1f}" if n > 0 else f"{n:.1f}")
+                    except (TypeError, ValueError):
+                        return "—"
+                display_df['projected_score'] = display_df['projected_score'].apply(_fmt_proj)
+            if 'model_vs_vegas_edge' in display_df.columns:
+                display_df['model_vs_vegas_edge'] = display_df['model_vs_vegas_edge'].round(1)
 
-            display_df.columns = ['Player', 'Expected Value', 'Win %', 'Top-5 %',
-                                 'Top-10 %', 'SG Total', 'Course Plays', '2025 Earnings',
-                                 'KFT History', 'LIV History']
+            _col_rename = {
+                'player_name': 'Player', 'expected_value': 'Expected Value',
+                'win_prob': 'Win %', 'top5_prob': 'Top-5 %', 'top10_prob': 'Top-10 %',
+                'sg_total': 'SG Total', 'hist_times_played': 'Course Plays',
+                'projected_score': 'Proj Score', 'model_vs_vegas_edge': 'Edge %',
+            }
+            display_df.columns = (
+                [_col_rename.get(c, c) for c in display_cols] + ['2025 Earnings', 'KFT History', 'LIV History']
+            )
 
             st.dataframe(display_df, hide_index=True, use_container_width=True)
             st.caption("**2025 Earnings** — prize money in your 2025 lineup. '—' = not used. **KFT History** — 🎓 KFT grad, SG proxy. **LIV History** — ⛳ LIV player, SG proxy (year).")
@@ -12676,6 +12706,90 @@ elif page == "📊 Predictions":
                 </div>
             </div>
             """, unsafe_allow_html=True)
+
+        with tab4:
+            st.caption("Players where the model probability is meaningfully higher than the market's implied probability — sorted by edge.")
+            if "model_vs_vegas_edge" not in df.columns:
+                st.info("Edge data not available. Run odds refresh and predictions to generate edge values.")
+            else:
+                _val_df = df.copy()
+                _val_df["model_vs_vegas_edge"] = pd.to_numeric(_val_df["model_vs_vegas_edge"], errors="coerce")
+                _val_df = _val_df[_val_df["model_vs_vegas_edge"].notna()]
+                _val_df = _val_df.sort_values("model_vs_vegas_edge", ascending=False)
+
+                _min_edge = st.slider("Minimum edge (%)", min_value=0, max_value=20, value=5, step=1, key="val_min_edge")
+                _val_df = _val_df[_val_df["model_vs_vegas_edge"] >= _min_edge]
+
+                if _val_df.empty:
+                    st.info(f"No players with edge ≥ {_min_edge}%. Try lowering the threshold.")
+                else:
+                    _val_show_cols = ["player_name", "win_prob", "top10_prob", "model_vs_vegas_edge", "world_rank", "sg_total"]
+                    if "projected_score" in _val_df.columns:
+                        _val_show_cols.append("projected_score")
+                    if "odds_to_win" in _val_df.columns:
+                        _val_show_cols.append("odds_to_win")
+                    _val_show_cols = [c for c in _val_show_cols if c in _val_df.columns]
+                    _val_disp = _val_df[_val_show_cols].copy()
+                    _val_disp["win_prob"]   = (_val_disp["win_prob"] * 100).round(1)
+                    _val_disp["top10_prob"] = (_val_disp["top10_prob"] * 100).round(1)
+                    _val_disp["sg_total"]   = _val_disp["sg_total"].round(2)
+                    _val_disp["model_vs_vegas_edge"] = _val_disp["model_vs_vegas_edge"].round(1)
+                    if "projected_score" in _val_disp.columns:
+                        _val_disp["projected_score"] = _val_disp["projected_score"].apply(
+                            lambda v: ("E" if float(v) == 0 else (f"+{float(v):.1f}" if float(v) > 0 else f"{float(v):.1f}"))
+                            if pd.notna(v) else "—"
+                        )
+                    if "world_rank" in _val_disp.columns:
+                        _val_disp["world_rank"] = pd.to_numeric(_val_disp["world_rank"], errors="coerce").apply(
+                            lambda x: int(x) if pd.notna(x) else "—"
+                        )
+                    _val_rename = {
+                        "player_name": "Player", "win_prob": "Win %", "top10_prob": "Top-10 %",
+                        "model_vs_vegas_edge": "Edge %", "world_rank": "WR",
+                        "sg_total": "SG Total", "projected_score": "Proj Score", "odds_to_win": "DK Odds",
+                    }
+                    _val_disp.columns = [_val_rename.get(c, c) for c in _val_show_cols]
+                    st.dataframe(_val_disp, hide_index=True, use_container_width=True)
+                    st.caption(f"Showing {len(_val_disp)} players with model edge ≥ {_min_edge}%.")
+
+        # ── Model Calibration ────────────────────────────────────────────────
+        _cal_path = OUTPUTS_DIR / "calibration_data.json"
+        if _cal_path.exists():
+            with st.expander("📐 Model Calibration", expanded=False):
+                try:
+                    _cal = json.loads(_cal_path.read_text())
+                    _cal_models = _cal.get("models", {})
+                    st.caption(f"Generated: {_cal.get('generated_at', '—')[:16]}  ·  Train: {_cal.get('n_train', '—'):,} rows  ·  Test: {_cal.get('n_test', '—'):,} rows")
+
+                    _cm_cols = st.columns(len(_cal_models))
+                    for _ci, (_mk, _mv) in enumerate(_cal_models.items()):
+                        with _cm_cols[_ci]:
+                            _auc   = float(_mv.get("auc", 0))
+                            _brier = float(_mv.get("brier", 0))
+                            _ratio = float(_mv.get("cal_ratio", 1))
+                            _name  = _mv.get("display_name", _mk)
+                            # cal_ratio: 1.0 = perfect, >1 = overconfident, <1 = underconfident
+                            _ratio_color = "#2ecc71" if 0.85 <= _ratio <= 1.15 else ("#f4c430" if 0.7 <= _ratio <= 1.3 else "#e74c3c")
+                            _ratio_label = "Well calibrated" if 0.85 <= _ratio <= 1.15 else ("Overconfident" if _ratio > 1 else "Underconfident")
+                            st.markdown(f"**{_name}**")
+                            st.metric("AUC",   f"{_auc:.3f}",   help="1.0 = perfect ranking, 0.5 = random")
+                            st.metric("Brier",  f"{_brier:.4f}", help="Lower = better; 0 = perfect")
+                            st.markdown(
+                                f"<span style='color:{_ratio_color};font-size:0.85em'>"
+                                f"Cal ratio: {_ratio:.2f} — {_ratio_label}</span>",
+                                unsafe_allow_html=True,
+                            )
+
+                    # Feature importance top 10
+                    _fi = _cal.get("feature_importance", {})
+                    if _fi:
+                        st.markdown("**Top Features (Win Model)**")
+                        _fi_items = sorted(_fi.items(), key=lambda x: x[1], reverse=True)[:10]
+                        _fi_df = pd.DataFrame(_fi_items, columns=["Feature", "Importance"])
+                        _fi_df["Importance"] = (_fi_df["Importance"] * 100).round(1)
+                        st.dataframe(_fi_df, hide_index=True, use_container_width=True, height=250)
+                except Exception as _e:
+                    st.warning(f"Could not load calibration data: {_e}")
 
 
 # ============================================================================
