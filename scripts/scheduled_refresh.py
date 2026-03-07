@@ -327,6 +327,7 @@ def run_tuesday_morning(dry_run: bool = False):
     field_path = f"data/fields/field_{tournament_id}.csv"
 
     tasks = [
+        ("League Picks", ["python3", "scripts/scrapers/fetch_league_picks.py"]),
         ("Field", ["python3", "scripts/scrapers/fetch_field_from_pgatour.py",
                    "--pga-id", tournament_id, "--output", field_path, "--match-ids"]),
         ("Course Info", ["python3", "scripts/scrapers/fetch_course_characteristics.py",
@@ -456,6 +457,7 @@ def run_live_refresh(dry_run: bool = False):
 
     tasks = [
         ("Live Leaderboard", ["python3", "scripts/scrapers/fetch_live_leaderboard.py"]),
+        ("League Picks", ["python3", "scripts/scrapers/fetch_league_picks.py"]),
     ]
 
     if tournament_id:

@@ -450,28 +450,33 @@ def _league_context_block() -> str:
         except Exception as e:
             lines.append(f"(weekly picks unavailable: {e})")
 
-    # --- Season-long usage: players with 2+ uses (running low) ---
+    # --- Rival intel: which competitor teams are locked out of elite players ---
     if usage_path.exists():
         try:
             usage = pd.read_csv(usage_path)
-            # Players used 2 or 3 times by each team — shows who's getting depleted
-            scarce = (
-                usage[usage["times_used"] >= 2]
-                .groupby("player")
-                .agg(teams_used_twice=("team_name", "count"), avg_earned=("total_earned", "mean"))
-                .sort_values("teams_used_twice", ascending=False)
-                .head(12)
-                .reset_index()
-            )
-            lines.append("\n**Players used 2+ times (scarcity alert — limited future availability):**")
-            scarce["avg_earned"] = scarce["avg_earned"].apply(lambda x: f"${int(x):,}")
-            lines.append(scarce.to_markdown(index=False))
 
-            # My team's remaining uses
+            # Teams that have used a player all 3 times (locked out forever)
+            locked = usage[usage["uses_left"] == 0].copy()
+            if not locked.empty:
+                # Group by player: list which rival teams can NEVER use them again
+                locked_summary = (
+                    locked[locked["team_name"] != MY_TEAM]
+                    .groupby("player")["team_name"]
+                    .apply(lambda teams: ", ".join(sorted(teams)))
+                    .reset_index()
+                    .rename(columns={"team_name": "locked_out_teams"})
+                    .sort_values("player")
+                )
+                lines.append("\n**Rival teams locked out (used all 3x — can never use again):**")
+                lines.append("This is competitive intel: if a rival can't use Scheffler/McIlroy at a major, that's a significant disadvantage for them.")
+                lines.append(locked_summary.to_markdown(index=False))
+
+            # My team's own usage history (YOUR uses — this is what matters for YOUR decisions)
             my_usage = usage[usage["team_name"] == MY_TEAM][["player", "times_used", "uses_left", "total_earned"]]
             if not my_usage.empty:
-                lines.append(f"\n**{MY_TEAM} player use history (season):**")
-                my_usage = my_usage.sort_values("times_used", ascending=False)
+                lines.append(f"\n**{MY_TEAM} (your team) player use history — uses_left is what constrains YOUR picks:**")
+                my_usage = my_usage.sort_values("times_used", ascending=False).copy()
+                my_usage["total_earned"] = my_usage["total_earned"].apply(lambda x: f"${int(x):,}")
                 lines.append(my_usage.to_markdown(index=False))
         except Exception as e:
             lines.append(f"(usage data unavailable: {e})")
