@@ -589,18 +589,6 @@ def load_scoring_engine(cache_key: tuple):
         return None
 
 
-def load_golf_assistant(predictions_path=None):
-    """Load the Golf Assistant for chat functionality (no caching during dev)."""
-    try:
-        from scripts.predictions.golf_assistant import GolfAssistant
-        kwargs = {"format_name": "earnings"}
-        if predictions_path:
-            kwargs["predictions_path"] = str(predictions_path)
-        return GolfAssistant(**kwargs)
-    except Exception as e:
-        st.warning(f"Golf Assistant not available: {e}")
-        return None
-
 
 @st.cache_data(ttl=60)
 def load_usage_data():
@@ -1496,105 +1484,6 @@ def render_lineup_strategies_section(
             view = pool_df[keep_cols].copy()
             st.dataframe(view.head(30), hide_index=True, use_container_width=True)
 
-
-def render_fantasy_strategy_copilot(tournament_name: str = "", predictions_path=None):
-    """Render a grounded fantasy strategy assistant with optional LLM generation."""
-    st.markdown("### 🤖 Fantasy Strategy Copilot")
-    st.caption("Ask why a player/lineup is recommended. Grounded to your predictions, usage, course history, and model features.")
-
-    assistant_state_key = "fantasy_assistant_obj"
-    assistant_src_key = "fantasy_assistant_src"
-    src = str(predictions_path) if predictions_path else ""
-
-    if st.session_state.get(assistant_src_key) != src:
-        st.session_state[assistant_state_key] = load_golf_assistant(predictions_path=predictions_path)
-        st.session_state[assistant_src_key] = src
-
-    assistant = st.session_state.get(assistant_state_key)
-    if assistant is None:
-        st.warning("Fantasy assistant not available. Check `scripts/predictions/golf_assistant.py` imports.")
-        return
-
-    controls = st.columns([1.0, 1.1, 1.8])
-    with controls[0]:
-        use_ollama = st.checkbox("Use Ollama LLM", value=False, key="fantasy_copilot_use_ollama")
-    with controls[1]:
-        ollama_model = st.text_input(
-            "Ollama Model",
-            value="llama3.2",
-            key="fantasy_copilot_ollama_model",
-            disabled=not use_ollama,
-        )
-    with controls[2]:
-        ollama_url = st.text_input(
-            "Ollama URL",
-            value="http://localhost:11434/api/generate",
-            key="fantasy_copilot_ollama_url",
-            disabled=not use_ollama,
-        )
-
-    presets = {
-        "Explain Primary Lineup": "Explain this week’s PRIMARY lineup in plain English with stats-backed reasoning and one clear main risk.",
-        "Key Insights Format": (
-            "For Akshay Bhatia, output exactly with these markdown headers: "
-            "'🎯 Key Insights', '🏟️ At This Tournament', '📈 Recent Form'. "
-            "Use concrete stats from local data and clearly say when a stat is unavailable."
-        ),
-        "Use or Save Decision": "Should I use Scottie Scheffler this week or save him? Explain with win/top10 odds and opportunity cost.",
-        "Top 3 Safe Plays": "Give me the top 3 safe fantasy plays this week and explain exactly why each one made the list.",
-        "Top 3 Leverage Plays": "Give me the top 3 leverage plays this week and explain where model vs market differs.",
-        "Player Why Breakdown": "Why is Justin Rose recommended this week? Include course history, form, and risk.",
-    }
-
-    if "fantasy_copilot_question" not in st.session_state:
-        st.session_state["fantasy_copilot_question"] = presets["Explain Primary Lineup"]
-
-    row = st.columns([2.6, 1.0])
-    with row[0]:
-        preset = st.selectbox("Preset Question", options=list(presets.keys()), key="fantasy_copilot_preset")
-    with row[1]:
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("Use Preset", key="fantasy_copilot_use_preset", use_container_width=True):
-            st.session_state["fantasy_copilot_question"] = presets[preset]
-
-    question = st.text_area(
-        "Ask your golf strategy question",
-        key="fantasy_copilot_question",
-        height=110,
-    )
-
-    answer_key = f"fantasy_copilot_answer::{src or 'latest'}"
-    if st.button("Run Fantasy Copilot", key="fantasy_copilot_run", use_container_width=True):
-        with st.spinner("Building grounded answer..."):
-            try:
-                answer = assistant.ask(
-                    question=question,
-                    tournament_name=tournament_name,
-                    use_ollama=bool(use_ollama),
-                    ollama_model=str(ollama_model or "llama3.2"),
-                    ollama_url=str(ollama_url or "").strip(),
-                )
-            except Exception as e:
-                # Retry once with a fresh assistant instance (helps after schema/code changes).
-                try:
-                    st.session_state[assistant_state_key] = load_golf_assistant(predictions_path=predictions_path)
-                    assistant = st.session_state.get(assistant_state_key)
-                    if assistant is not None:
-                        answer = assistant.ask(
-                            question=question,
-                            tournament_name=tournament_name,
-                            use_ollama=bool(use_ollama),
-                            ollama_model=str(ollama_model or "llama3.2"),
-                            ollama_url=str(ollama_url or "").strip(),
-                        )
-                    else:
-                        answer = f"Error running fantasy copilot: {e}"
-                except Exception as e2:
-                    answer = f"Error running fantasy copilot: {e2}"
-        st.session_state[answer_key] = answer
-
-    if answer_key in st.session_state:
-        st.markdown(st.session_state[answer_key])
 
 
 def _name_key(name: str) -> str:
@@ -2806,182 +2695,6 @@ def render_tracked_bets_section(tournament_id: str = ""):
     if "graded_at" in recent_df.columns:
         recent_df = recent_df.sort_values("graded_at", ascending=False)
     st.dataframe(recent_df.head(12), hide_index=True, use_container_width=True)
-
-
-def render_betting_history_section() -> None:
-    """Season-wide bet performance: hit rate, P&L, ROI by market, tournament breakdown."""
-    st.markdown("### Betting History")
-    st.caption("Season-to-date performance across all graded bets")
-
-    all_results = load_recommended_bet_results_df()  # no tournament filter — all results
-    if all_results.empty:
-        st.info("No settled bets yet this season.")
-        return
-
-    if "outcome_status" in all_results.columns:
-        _status = all_results["outcome_status"].astype(str).str.lower()
-    else:
-        _status = pd.Series(["pending"] * len(all_results), dtype=object)
-    settled = all_results[_status.isin(["won", "lost"])].copy()
-    if settled.empty:
-        st.info("No settled bets yet this season.")
-        return
-
-    settled["outcome_win"] = settled["outcome_status"].astype(str).str.lower().eq("won")
-    settled["pnl_per_1"]   = pd.to_numeric(settled.get("pnl_per_1"), errors="coerce")
-    settled["clv_pts"]     = pd.to_numeric(settled.get("clv_pts"), errors="coerce")
-
-    # ── Season summary metrics ─────────────────────────────────────────────
-    total_pnl = float(settled["pnl_per_1"].sum())
-    hit_rate  = float(settled["outcome_win"].mean() * 100)
-    avg_roi   = float(settled["pnl_per_1"].mean() * 100)
-    clv_vals  = settled["clv_pts"].dropna()
-    avg_clv   = float(clv_vals.mean()) if len(clv_vals) else float("nan")
-
-    m1, m2, m3, m4, m5 = st.columns(5)
-    with m1:
-        st.metric("Settled Bets", len(settled))
-    with m2:
-        st.metric("Hit Rate", f"{hit_rate:.1f}%")
-    with m3:
-        st.metric("Total P&L", f"{total_pnl:+.2f}u", delta=f"{total_pnl:+.2f}u")
-    with m4:
-        st.metric("Avg ROI / Bet", f"{avg_roi:+.1f}%")
-    with m5:
-        st.metric("Avg CLV (pts)", f"{avg_clv:+.2f}" if pd.notna(avg_clv) else "—")
-
-    st.markdown("---")
-
-    # ── Breakdown by market type ───────────────────────────────────────────
-    if "market" in settled.columns:
-        _mkt = (
-            settled.groupby("market")
-            .agg(
-                Bets=("pnl_per_1", "count"),
-                Wins=("outcome_win", "sum"),
-                pnl=("pnl_per_1", "sum"),
-                roi=("pnl_per_1", "mean"),
-                clv=("clv_pts", "mean"),
-            )
-            .assign(**{"Hit %": lambda d: (d["Wins"] / d["Bets"] * 100).round(1)})
-            .sort_values("Bets", ascending=False)
-            .reset_index()
-        )
-        _mkt["P&L (u)"] = _mkt["pnl"].map("{:+.2f}".format)
-        _mkt["ROI %"]   = _mkt["roi"].map(lambda x: f"{x*100:+.1f}%")
-        _mkt["CLV pts"] = _mkt["clv"].map(lambda x: f"{x:+.2f}" if pd.notna(x) else "—")
-        _mkt["Hit %"]   = _mkt["Hit %"].map("{:.1f}%".format)
-        _mkt = _mkt.rename(columns={"market": "Market"})
-        _mkt_show = [c for c in ["Market", "Bets", "Wins", "Hit %", "P&L (u)", "ROI %", "CLV pts"] if c in _mkt.columns]
-        st.dataframe(_mkt[_mkt_show], hide_index=True, use_container_width=True)
-
-    # ── P&L by tournament bar chart ────────────────────────────────────────
-    if "tournament_id" in settled.columns:
-        _tid_pnl = (
-            settled.groupby("tournament_id")["pnl_per_1"]
-            .sum()
-            .reset_index()
-            .rename(columns={"pnl_per_1": "pnl"})
-            .sort_values("tournament_id")
-        )
-        _sched_csv = DATA_DIR / "raw" / "schedule_2026.csv"
-        if _sched_csv.exists():
-            _sched_names = pd.read_csv(_sched_csv, dtype=str)[["tournament_id", "tournament_name"]]
-            _tid_pnl = _tid_pnl.merge(_sched_names, on="tournament_id", how="left")
-            _tid_pnl["label"] = _tid_pnl["tournament_name"].fillna(_tid_pnl["tournament_id"])
-        else:
-            _tid_pnl["label"] = _tid_pnl["tournament_id"]
-
-        import plotly.graph_objects as _go_hist
-        _colors = ["#00c44f" if v >= 0 else "#e05252" for v in _tid_pnl["pnl"]]
-        _fig_hist = _go_hist.Figure(_go_hist.Bar(
-            x=_tid_pnl["label"],
-            y=_tid_pnl["pnl"],
-            marker_color=_colors,
-            text=_tid_pnl["pnl"].map("{:+.2f}u".format),
-            textposition="outside",
-        ))
-        _fig_hist.update_layout(
-            title="P&L by Tournament (units)",
-            yaxis_title="Units",
-            plot_bgcolor="#0e1117",
-            paper_bgcolor="#0e1117",
-            font_color="#fafafa",
-            height=280,
-            margin=dict(t=40, b=20, l=40, r=20),
-        )
-        st.plotly_chart(_fig_hist, use_container_width=True)
-
-    # ── Full settled bets table (expandable) ───────────────────────────────
-    with st.expander("All Settled Bets"):
-        _disp_cols = [c for c in [
-            "tournament_id", "graded_at", "market", "selection_label",
-            "odds_american", "outcome_status", "pnl_per_1", "clv_pts", "edge_pts",
-        ] if c in settled.columns]
-        _disp = settled[_disp_cols].copy()
-        if "graded_at" in _disp.columns:
-            _disp = _disp.sort_values("graded_at", ascending=False)
-        st.dataframe(_disp, hide_index=True, use_container_width=True)
-
-
-
-def run_betting_copilot(
-    question: str,
-    tournament_id: str = "",
-    risk_profile: str = "balanced",
-    max_picks: int = 5,
-    use_llm: bool = False,
-    ollama_model: str = "llama3.2",
-) -> tuple[bool, str]:
-    """Run grounded betting copilot script and return (ok, markdown_or_error)."""
-    cmd = [
-        "python3",
-        str(PROJECT_ROOT / "scripts" / "models" / "betting_copilot.py"),
-        "--risk-profile",
-        str(risk_profile or "balanced"),
-        "--max-picks",
-        str(max(1, int(max_picks))),
-        "--question",
-        str(question or "").strip(),
-        "--format",
-        "json",
-    ]
-    tid = str(tournament_id or "").strip().upper()
-    if tid:
-        cmd.extend(["--tournament-id", tid])
-
-    if use_llm:
-        cmd.append("--use-llm")
-        if str(ollama_model or "").strip():
-            cmd.extend(["--ollama-model", str(ollama_model).strip()])
-
-    try:
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=120,
-            cwd=PROJECT_ROOT,
-        )
-    except Exception as e:
-        return False, f"Could not run betting copilot: {e}"
-
-    raw = result.stdout.strip() if result.stdout.strip() else result.stderr.strip()
-    if result.returncode != 0:
-        return False, raw[:1200] if raw else "Copilot command failed."
-
-    try:
-        payload = json.loads(raw)
-    except Exception:
-        return False, raw[:1200] if raw else "Copilot returned invalid response."
-
-    if not payload.get("ok", False):
-        return False, str(payload.get("error") or payload.get("answer_markdown") or "Copilot failed.")
-
-    answer = str(payload.get("answer_markdown", "")).strip()
-    if not answer:
-        return False, "Copilot returned an empty answer."
-    return True, answer
 
 
 
@@ -4770,9 +4483,15 @@ def compare_live_vs_predictions(live_df: pd.DataFrame, tournament_id: str = None
     else:
         live_df["live_pos_numeric"] = 999
 
-    # Merge
+    # Merge — include live probability columns when available
+    extra_live_cols = [c for c in [
+        "live_win_prob", "live_win_prob_change", "live_top10_prob",
+        "live_projected_score", "projected_score_vs_field", "rounds_complete"
+    ] if c in predictions_df.columns]
+    _merge_cols = ["name_key", "model_rank", "expected_value", "win_prob", "top5_prob", "top10_prob"] + extra_live_cols
+
     merged = live_df.merge(
-        predictions_df[["name_key", "model_rank", "expected_value", "win_prob", "top5_prob", "top10_prob"]],
+        predictions_df[_merge_cols],
         on="name_key",
         how="left"
     )
@@ -4819,11 +4538,58 @@ def render_live_vs_predictions(live_df: pd.DataFrame, meta: dict):
 
     st.markdown("---")
 
-    # Top overperformers
+    # ── Win Probability Movers (only when Monte Carlo data is available) ──
+    _has_live_prob = "live_win_prob" in with_predictions.columns and with_predictions["live_win_prob"].notna().any()
+    if _has_live_prob and "live_win_prob_change" in with_predictions.columns:
+        st.markdown("#### Win Probability Movers")
+        _prob_df = with_predictions[with_predictions["live_win_prob_change"].notna()].copy()
+
+        _gain_col, _lose_col = st.columns(2)
+        with _gain_col:
+            st.markdown("**Biggest Gainers**")
+            _gainers = _prob_df.nlargest(8, "live_win_prob_change")
+            for _, _row in _gainers.iterrows():
+                _pre  = float(_row.get("win_prob", 0) or 0) * 100
+                _live = float(_row.get("live_win_prob", 0) or 0) * 100
+                _chg  = float(_row.get("live_win_prob_change", 0) or 0) * 100
+                if _chg < 0.1:
+                    continue
+                st.markdown(f"""
+                <div style="background:#00c44f18; border-left:3px solid #00c44f; padding:7px 10px; border-radius:5px; margin:3px 0;">
+                    <strong>{_row['player_name']}</strong> &nbsp;
+                    <span style="color:#888; font-size:0.85em;">Pos: {_row.get('position','—')}</span><br>
+                    <span style="color:#888;">Pre: {_pre:.1f}%</span>
+                    <span style="color:#666;"> → </span>
+                    <span style="color:#00c44f;">Live: {_live:.1f}%</span>
+                    &nbsp;<span style="color:#00c44f; font-weight:700;">+{_chg:.1f}pp</span>
+                </div>""", unsafe_allow_html=True)
+
+        with _lose_col:
+            st.markdown("**Biggest Losers**")
+            _losers = _prob_df.nsmallest(8, "live_win_prob_change")
+            for _, _row in _losers.iterrows():
+                _pre  = float(_row.get("win_prob", 0) or 0) * 100
+                _live = float(_row.get("live_win_prob", 0) or 0) * 100
+                _chg  = float(_row.get("live_win_prob_change", 0) or 0) * 100
+                if _chg > -0.1:
+                    continue
+                st.markdown(f"""
+                <div style="background:#ff6b6b18; border-left:3px solid #ff6b6b; padding:7px 10px; border-radius:5px; margin:3px 0;">
+                    <strong>{_row['player_name']}</strong> &nbsp;
+                    <span style="color:#888; font-size:0.85em;">Pos: {_row.get('position','—')}</span><br>
+                    <span style="color:#888;">Pre: {_pre:.1f}%</span>
+                    <span style="color:#666;"> → </span>
+                    <span style="color:#ff6b6b;">Live: {_live:.1f}%</span>
+                    &nbsp;<span style="color:#ff6b6b; font-weight:700;">{_chg:.1f}pp</span>
+                </div>""", unsafe_allow_html=True)
+
+        st.markdown("---")
+
+    # Top overperformers (position-based)
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("#### 🚀 Exceeding Expectations")
+        st.markdown("#### Exceeding Expectations")
         top_outperform = with_predictions.nlargest(10, "rank_diff")
         for _, row in top_outperform.iterrows():
             diff = int(row["rank_diff"])
@@ -4838,7 +4604,7 @@ def render_live_vs_predictions(live_df: pd.DataFrame, meta: dict):
                 """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown("#### 📉 Underperforming")
+        st.markdown("#### Underperforming")
         top_underperform = with_predictions.nsmallest(10, "rank_diff")
         for _, row in top_underperform.iterrows():
             diff = int(row["rank_diff"])
@@ -4856,16 +4622,30 @@ def render_live_vs_predictions(live_df: pd.DataFrame, meta: dict):
 
     # Full comparison table
     st.markdown("#### Full Comparison")
-    display_df = with_predictions[[
-        "position", "player_name", "total", "model_rank", "rank_diff", "expected_value", "win_prob"
-    ]].copy()
 
-    display_df["model_rank"] = display_df["model_rank"].fillna(999).astype(int)
-    display_df["rank_diff"] = display_df["rank_diff"].fillna(0).astype(int)
-    display_df["expected_value"] = display_df["expected_value"].apply(lambda x: f"${x:,.0f}" if pd.notna(x) else "-")
-    display_df["win_prob"] = display_df["win_prob"].apply(lambda x: f"{x*100:.1f}%" if pd.notna(x) else "-")
-
-    display_df.columns = ["Live Pos", "Player", "Score", "Model Rank", "Diff", "Pre-Tourn EV", "Win %"]
+    if _has_live_prob and "live_win_prob" in with_predictions.columns:
+        # Extended table with live probability columns
+        _disp_cols = ["position", "player_name", "total", "model_rank", "win_prob", "live_win_prob", "live_win_prob_change"]
+        display_df = with_predictions[[c for c in _disp_cols if c in with_predictions.columns]].copy()
+        display_df["model_rank"] = display_df["model_rank"].fillna(999).astype(int)
+        display_df["win_prob"]   = display_df["win_prob"].apply(lambda x: f"{x*100:.1f}%" if pd.notna(x) else "-")
+        display_df["live_win_prob"] = display_df["live_win_prob"].apply(lambda x: f"{x*100:.1f}%" if pd.notna(x) else "-")
+        def _fmt_chg(x):
+            if pd.isna(x):
+                return "-"
+            pp = x * 100
+            return f"+{pp:.1f}pp" if pp >= 0 else f"{pp:.1f}pp"
+        display_df["live_win_prob_change"] = display_df["live_win_prob_change"].apply(_fmt_chg)
+        display_df.columns = ["Live Pos", "Player", "Score", "Model Rank", "Pre Win%", "Live Win%", "Change"]
+    else:
+        display_df = with_predictions[[
+            "position", "player_name", "total", "model_rank", "rank_diff", "expected_value", "win_prob"
+        ]].copy()
+        display_df["model_rank"] = display_df["model_rank"].fillna(999).astype(int)
+        display_df["rank_diff"] = display_df["rank_diff"].fillna(0).astype(int)
+        display_df["expected_value"] = display_df["expected_value"].apply(lambda x: f"${x:,.0f}" if pd.notna(x) else "-")
+        display_df["win_prob"] = display_df["win_prob"].apply(lambda x: f"{x*100:.1f}%" if pd.notna(x) else "-")
+        display_df.columns = ["Live Pos", "Player", "Score", "Model Rank", "Diff", "Pre-Tourn EV", "Win %"]
 
     st.dataframe(display_df.head(30), hide_index=True, use_container_width=True)
 
@@ -7140,7 +6920,7 @@ st.sidebar.markdown("---")
 # Navigation (consolidated)
 page = st.sidebar.radio(
     "📍 Navigation",
-    ["🏆 This Week", "🎯 Scoring Engine", "🎰 Betting", "👤 Players", "📊 Predictions", "🔴 Live", "📋 My Picks", "⚙️ Pipeline"],
+    ["🏆 This Week", "💬 Assistant", "🎰 Betting", "👤 Players", "📊 Predictions", "🔴 Live", "📋 My Picks", "⚙️ Pipeline"],
     label_visibility="collapsed"
 )
 
@@ -7951,6 +7731,25 @@ if page == "🏆 This Week":
         <div class="pc-stat-label">{_ps_label}</div>
       </div>"""
 
+                        # Live win% delta badge (shown when Monte Carlo data is available)
+                        _live_delta_html = ""
+                        try:
+                            _live_win = float(_pr.get("live_win_prob", float("nan")))
+                            _pre_win  = float(_pr.get("win_prob", float("nan")))
+                            if not (np.isnan(_live_win) or np.isnan(_pre_win)):
+                                _delta_pp = (_live_win - _pre_win) * 100
+                                if abs(_delta_pp) >= 0.5:
+                                    _arrow = "↑" if _delta_pp > 0 else "↓"
+                                    _d_col = "#00c44f" if _delta_pp > 0 else "#ff6b6b"
+                                    _d_sign = "+" if _delta_pp > 0 else ""
+                                    _live_delta_html = f"""
+      <div style="text-align:right; min-width:52px;">
+        <div class="pc-stat" style="color:{_d_col}; font-size:12px;">{_arrow}{_d_sign}{_delta_pp:.1f}pp</div>
+        <div class="pc-stat-label">LIVE</div>
+      </div>"""
+                        except (TypeError, ValueError):
+                            pass
+
                         _pool_html.append(f"""
     <div class="pool-card {_card_cls}">
       <div class="pc-rank">#{_rank_i}</div>
@@ -7973,7 +7772,7 @@ if page == "🏆 This Week":
       <div style="text-align:right; min-width:50px;">
         <div class="pc-stat" style="color:#9b9bff;">{_dfs_own_v:.0f}%</div>
         <div class="pc-stat-label">DFS OWN</div>
-      </div>{_proj_score_html}
+      </div>{_proj_score_html}{_live_delta_html}
       <div class="pc-badge {_badge_cls}">{_badge_txt}</div>
     </div>""")
 
@@ -8150,243 +7949,11 @@ if page == "🏆 This Week":
                         st.error(f"Optimizer error: {_opt_err}")
                         st.caption("Make sure predictions are loaded (run full pipeline first).")
 
-# ============================================================================
-# PAGE: SCORING ENGINE
-# ============================================================================
+    # ── Power Rankings & Tools ────────────────────────────────────────────────
+    _tw_pr_tab, _tw_tools_tab = st.tabs(["📈 Power Rankings", "🔧 Tools"])
 
-elif page == "🎯 Scoring Engine":
-    st.markdown("## 🎯 Scoring Engine")
-    st.caption("Fantasy league scoring and recommendations")
-
-    engine = load_scoring_engine(_scoring_engine_cache_key())
-
-    # Load predictions for Course & Research tab
-    _se_preds = pd.DataFrame()
-    _se_preds_path = OUTPUTS_DIR / "latest_predictions.csv"
-    if _se_preds_path.exists():
-        try:
-            _se_preds = pd.read_csv(_se_preds_path)
-        except Exception:
-            pass
-
-    # Current tournament header card
-    if engine:
-        tournament = engine.get_current_week_tournament()
-        if tournament and tournament in engine.tournaments:
-            t = engine.tournaments[tournament]
-            course_info = engine.tournament_courses.get(tournament, {})
-
-            # Tournament card - enhanced
-            st.markdown(f"""
-            <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-                        padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                <h2 style="margin: 0; color: #fff;">{tournament}</h2>
-                <p style="color: #aaa; margin: 5px 0;">{t.course or t.location} • Week {t.week} • {t.start_date}</p>
-                <div style="display: flex; gap: 30px; margin-top: 15px;">
-                    <div><span style="color: #4CAF50; font-size: 24px; font-weight: bold;">{t.tournament_type}</span><br><span style="color: #888; font-size: 12px;">TYPE</span></div>
-                    <div><span style="color: #2196F3; font-size: 24px; font-weight: bold;">${t.purse/1_000_000:.1f}M</span><br><span style="color: #888; font-size: 12px;">PURSE</span></div>
-                    <div><span style="color: #FF9800; font-size: 24px; font-weight: bold;">{t.importance_score:.0f}</span><br><span style="color: #888; font-size: 12px;">IMPORTANCE</span></div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-
-            if course_info.get("notes"):
-                st.info(f"💡 {course_info.get('notes')}")
-
-    # Show current scoring weights
-    with st.expander("⚙️ How Scores Are Calculated", expanded=False):
-        w_col1, w_col2, w_col3, w_col4, w_col5 = st.columns(5)
-        with w_col1:
-            st.metric("ML Model", "50%", help="Win probability from ML model — percentile rank across this week's field. Primary driver.")
-        with w_col2:
-            st.metric("Course Fit", "20%", help="Historical performance at this specific course")
-        with w_col3:
-            st.metric("Tournament Importance", "15%", help="Major/Signature/Standard — purse and prestige weight")
-        with w_col4:
-            st.metric("Field Strength", "10%", help="Weaker field = more path to top finish")
-        with w_col5:
-            st.metric("Momentum", "5%", help="Recent form trend (HOT/WARM/NEUTRAL/COLD)")
-        st.caption("Rankings driven by ML model (trained on 2020–2024 PGA Tour data). Scoring Engine adds course fit and strategic context on top.")
-
-    st.markdown("---")
-
-    # Tabs for different functions
-    se_tab1, se_tab2, se_tab3, se_tab4 = st.tabs(["🏆 Top Picks", "💎 Value Plays", "📊 Full Rankings", "📰 Reports"])
-
-    with se_tab1:
-        st.markdown("### 🏆 Top Picks for This Week")
-
-        # Get scores from engine
-        if engine and tournament:
-            scores = engine.get_tournament_recommendations(tournament, top_n=100, min_uses=0)
-            scores_sorted = sorted(scores, key=lambda x: x.total_score, reverse=True)[:15]
-
-            if scores_sorted:
-                # Top 3 cards
-                st.markdown("#### 🥇 Top 3 Recommendations")
-                top3_cols = st.columns(3)
-                medals = ["🥇", "🥈", "🥉"]
-
-                for i, score in enumerate(scores_sorted[:3]):
-                    with top3_cols[i]:
-                        uses_left = engine.usage.get(score.player, 3)
-                        rating_color = {"ELITE": "#4CAF50", "STRONG": "#2196F3", "SOLID": "#FF9800"}.get(score.value_rating, "#666")
-                        win_pct = score.win_prob * 100
-
-                        st.markdown(f"""
-                        <div style="background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
-                                    color: #f8fafc;
-                                    padding: 16px;
-                                    border-radius: 12px;
-                                    border: 1px solid #334155;
-                                    border-left: 5px solid {rating_color};
-                                    text-align: center;
-                                    box-shadow: 0 4px 14px rgba(2, 6, 23, 0.35);">
-                            <div style="font-size: 28px;">{medals[i]}</div>
-                            <div style="font-size: 18px; font-weight: 700; margin: 10px 0; color: #f8fafc;">
-                                {score.player}
-                            </div>
-                            <div style="font-size: 32px; color: {rating_color}; font-weight: bold;">{score.total_score:.0f}</div>
-                            <div style="font-size: 12px; color: #cbd5e1; letter-spacing: 0.08em;">TOTAL SCORE</div>
-                            <hr style="border-color: #334155; margin: 10px 0;">
-                            <div style="display: flex; justify-content: space-around; font-size: 11px;">
-                                <div><span style="color: #a78bfa; font-weight: 700;">{win_pct:.1f}%</span><br><span style="color:#cbd5e1;">ML Win%</span></div>
-                                <div><span style="color: #4CAF50; font-weight: 700;">{score.course_fit:.0f}</span><br><span style="color:#cbd5e1;">Course</span></div>
-                                <div><span style="color: #60A5FA; font-weight: 700;">{score.current_form:.0f}</span><br><span style="color:#cbd5e1;">Form</span></div>
-                            </div>
-                            <div style="margin-top: 10px; font-size: 12px; color: #e2e8f0;">
-                                {uses_left}/3 uses left • OWGR #{score.owgr_rank}
-                            </div>
-                        </div>
-                        """, unsafe_allow_html=True)
-
-                # Rest of top 15
-                st.markdown("#### 📋 Next Best Options")
-                for i, score in enumerate(scores_sorted[3:15], start=4):
-                    uses_left = engine.usage.get(score.player, 3)
-                    col1, col2, col3, col4, col5, col6 = st.columns([0.5, 3, 1, 1, 1, 1])
-                    with col1:
-                        st.markdown(f"**{i}**")
-                    with col2:
-                        st.markdown(f"**{score.player}**")
-                        st.caption(f"#{score.owgr_rank} • {score.form_trend} • {uses_left}/3 uses")
-                    with col3:
-                        st.metric("Total", f"{score.total_score:.0f}", label_visibility="collapsed")
-                    with col4:
-                        st.metric("Win%", f"{score.win_prob*100:.1f}%", label_visibility="collapsed")
-                    with col5:
-                        st.metric("Course", f"{score.course_fit:.0f}", label_visibility="collapsed")
-                    with col6:
-                        rating_emoji = {"ELITE": "🔥", "STRONG": "💪", "SOLID": "✅", "FAIR": "➖"}.get(score.value_rating, "")
-                        st.markdown(f"{rating_emoji} {score.value_rating}")
-            else:
-                st.warning("No scores available. Run the pipeline first.")
-        else:
-            st.info("Loading scoring engine...")
-
-    with se_tab2:
-        st.markdown("### 💎 Value Picks")
-        st.caption("Mid-ranked players (OWGR 20-60) with high scores - save elite players for majors!")
-
-        if engine and tournament:
-            scores = engine.get_tournament_recommendations(tournament, top_n=100, min_uses=0)
-            # Filter for value picks: rank 20-60 with good scores
-            value_picks = [s for s in scores if 20 <= s.owgr_rank <= 80 and s.total_score >= 45]
-            value_picks = sorted(value_picks, key=lambda x: x.total_score, reverse=True)[:10]
-
-            if value_picks:
-                for i, score in enumerate(value_picks, start=1):
-                    uses_left = engine.usage.get(score.player, 3)
-                    edge = score.total_score - 50  # vs baseline
-
-                    col1, col2, col3 = st.columns([3, 1, 2])
-                    with col1:
-                        st.markdown(f"**{i}. {score.player}**")
-                        st.caption(f"OWGR #{score.owgr_rank} • {score.form_trend} form • {uses_left}/3 uses")
-                    with col2:
-                        st.metric("Score", f"{score.total_score:.0f}", f"+{edge:.0f}")
-                    with col3:
-                        # Mini bar chart
-                        st.progress(min(1.0, score.course_fit / 100), text=f"Course: {score.course_fit:.0f}")
-                        st.progress(min(1.0, score.current_form / 100), text=f"Form: {score.current_form:.0f}")
-            else:
-                st.info("No value picks found matching criteria.")
-
-    with se_tab3:
-        st.markdown("### 📊 Full Player Rankings")
-
-        if engine and tournament:
-            scores = engine.get_tournament_recommendations(tournament, top_n=200, min_uses=0)
-
-            # Filters
-            filter_col1, filter_col2, filter_col3 = st.columns(3)
-            with filter_col1:
-                min_score = st.slider("Min Score", 0, 100, 40, key="se_min_score")
-            with filter_col2:
-                max_rank = st.slider("Max OWGR", 1, 200, 150, key="se_max_rank")
-            with filter_col3:
-                sort_by = st.selectbox("Sort By", ["Total Score", "Course Fit", "Form", "OWGR"], key="se_sort")
-
-            # Filter and sort
-            filtered = [s for s in scores if s.total_score >= min_score and s.owgr_rank <= max_rank]
-
-            sort_map = {"Total Score": "total_score", "Course Fit": "course_fit", "Form": "current_form", "OWGR": "owgr_rank"}
-            reverse = sort_by != "OWGR"
-            filtered = sorted(filtered, key=lambda x: getattr(x, sort_map[sort_by]), reverse=reverse)
-
-            # Build dataframe for display
-            data = []
-            for s in filtered[:50]:
-                uses = engine.usage.get(s.player, 3)
-                data.append({
-                    "Player": s.player,
-                    "Total": round(s.total_score, 1),
-                    "Win%": round(s.win_prob * 100, 2),
-                    "Course": round(s.course_fit, 1),
-                    "Form": round(s.current_form, 1),
-                    "OWGR": s.owgr_rank,
-                    "Trend": s.form_trend,
-                    "Uses": f"{uses}/3",
-                    "Rating": s.value_rating,
-                })
-
-            if data:
-                df = pd.DataFrame(data)
-                st.dataframe(df, hide_index=True, use_container_width=True,
-                            column_config={
-                                "Total": st.column_config.ProgressColumn("Total", min_value=0, max_value=100, format="%.0f"),
-                                "Win%": st.column_config.NumberColumn("Win%", format="%.2f%%"),
-                                "Course": st.column_config.ProgressColumn("Course", min_value=0, max_value=100, format="%.0f"),
-                                "Form": st.column_config.ProgressColumn("Form", min_value=0, max_value=100, format="%.0f"),
-                            })
-                st.caption(f"Showing {len(data)} players")
-
-    with se_tab4:
-        st.markdown("### 📰 Reports & Rankings")
-        st.caption("Weekly reports, data refresh, and power-ranking intelligence in one place.")
-
-        action_col1, action_col2 = st.columns(2)
-        with action_col1:
-            run_report = st.button("📰 Generate Weekly Report", use_container_width=True, type="primary", key="se_report")
-        with action_col2:
-            refresh_all = st.button("🔄 Refresh All Data", use_container_width=True, key="se_refresh")
-
-        if run_report:
-            with st.spinner("Generating weekly report..."):
-                output = run_script("planning/weekly_report.py")
-            with st.expander("Weekly report output", expanded=False):
-                st.code(output, language=None)
-
-        if refresh_all:
-            with st.spinner("Refreshing data..."):
-                output = run_script("run_pipeline.py", "--auto-weekly", "--skip-refresh")
-            with st.expander("Refresh output", expanded=False):
-                st.code(output, language=None)
-            st.cache_data.clear()
-
-        # Power Rankings section
-        st.markdown("---")
-        st.markdown("### 📈 Power Rankings")
+    with _tw_pr_tab:
+        st.markdown("### Power Rankings")
         st.caption("Editorial ranking feed with quick scanning, filtering, and full-table drill-down.")
 
         pr_dir = DATA_DIR / "power_rankings"
@@ -8403,7 +7970,7 @@ elif page == "🎯 Scoring Engine":
                     "Ranking file",
                     list(file_options.keys()),
                     index=0,
-                    key="se_pr_file",
+                    key="tw_pr_file",
                 )
                 selected_file = file_options[selected_label]
                 df = pd.read_csv(selected_file)
@@ -8482,9 +8049,9 @@ elif page == "🎯 Scoring Engine":
                     st.markdown("#### Ranked Board")
                     board_col1, board_col2 = st.columns([2, 1])
                     with board_col1:
-                        search_q = st.text_input("Search player", value="", key="se_pr_search")
+                        search_q = st.text_input("Search player", value="", key="tw_pr_search")
                     with board_col2:
-                        board_size = st.slider("Show rows", min_value=10, max_value=40, value=15, step=5, key="se_pr_rows")
+                        board_size = st.slider("Show rows", min_value=10, max_value=40, value=15, step=5, key="tw_pr_rows")
 
                     board_df = df.copy()
                     if search_q.strip():
@@ -8521,7 +8088,7 @@ elif page == "🎯 Scoring Engine":
 </div>
 """, unsafe_allow_html=True)
 
-                    with st.expander("📊 Full Rankings Table"):
+                    with st.expander("Full Rankings Table"):
                         drop_cols = {"analysis"}
                         table_cols = [c for c in ["rank", player_col, "country_flag", "country", "player_id", "source", "scraped_at"] if c in df.columns]
                         table_cols += [c for c in df.columns if c not in set(table_cols) | drop_cols][:4]
@@ -8530,6 +8097,115 @@ elif page == "🎯 Scoring Engine":
                 st.info("No power rankings available yet.")
         else:
             st.info("Power rankings directory not found.")
+
+    with _tw_tools_tab:
+        st.markdown("### Tools")
+        action_col1, action_col2 = st.columns(2)
+        with action_col1:
+            run_report = st.button("Generate Weekly Report", use_container_width=True, type="primary", key="tw_report")
+        with action_col2:
+            refresh_all = st.button("Refresh All Data", use_container_width=True, key="tw_refresh")
+
+        if run_report:
+            with st.spinner("Generating weekly report..."):
+                output = run_script("planning/weekly_report.py")
+            with st.expander("Weekly report output", expanded=False):
+                st.code(output, language=None)
+
+        if refresh_all:
+            with st.spinner("Refreshing data..."):
+                output = run_script("run_pipeline.py", "--auto-weekly", "--skip-refresh")
+            with st.expander("Refresh output", expanded=False):
+                st.code(output, language=None)
+            st.cache_data.clear()
+
+
+# ============================================================================
+# PAGE: ASSISTANT (Groq-powered golf chat)
+# ============================================================================
+
+elif page == "💬 Assistant":
+    import os as _os
+    st.markdown("## Golf Assistant")
+    st.caption("Ask about lineups, bets, player form, live scores — powered by Groq (free).")
+
+    _groq_key = _os.environ.get("GROQ_API_KEY", "") or st.session_state.get("groq_api_key", "")
+
+    with st.sidebar:
+        st.markdown("### Assistant Settings")
+        _key_input = st.text_input(
+            "Groq API Key", value=_groq_key, type="password", key="groq_api_key_input"
+        )
+        if _key_input:
+            st.session_state["groq_api_key"] = _key_input
+            _groq_key = _key_input
+        if not _groq_key:
+            st.warning("Enter your free Groq API key above.\nGet one at groq.com")
+        if st.button("Clear conversation", key="chat_clear"):
+            st.session_state["chat_history"] = []
+            st.rerun()
+
+    _qa_cols = st.columns(4)
+    _quick_actions = [
+        (
+            "Build my lineup",
+            "Build my optimal lineup for this week. Consider uses remaining, player form, and tournament importance. Give me 3 players to use and explain why.",
+        ),
+        (
+            "Best bets this week",
+            "What are the top 3 bets with the best edge this week? Show me the odds, model probability, and edge for each.",
+        ),
+        (
+            "Live tournament update",
+            "Give me a current tournament update. Who's winning, who's moved up or down from their expected position, and who still has a chance?",
+        ),
+        (
+            "Value plays",
+            "Who are the best value plays this week — players where the model probability is significantly higher than what the odds imply?",
+        ),
+    ]
+    for _i, (_label, _prompt) in enumerate(_quick_actions):
+        with _qa_cols[_i]:
+            if st.button(_label, use_container_width=True, key=f"qa_{_i}"):
+                st.session_state["chat_prefill"] = _prompt
+
+    if "chat_history" not in st.session_state:
+        st.session_state["chat_history"] = []
+
+    for _msg in st.session_state["chat_history"]:
+        with st.chat_message(_msg["role"]):
+            st.markdown(_msg["content"])
+
+    _prefill = st.session_state.pop("chat_prefill", None)
+
+    if _prompt := (st.chat_input("Ask about lineups, bets, players, live scores...") or _prefill):
+        if not _groq_key:
+            st.error("Please enter your Groq API key in the sidebar to use the assistant.")
+        else:
+            with st.chat_message("user"):
+                st.markdown(_prompt)
+            st.session_state["chat_history"].append({"role": "user", "content": _prompt})
+
+            try:
+                from scripts.chat.golf_chatbot import build_context, stream_response
+                _context = build_context()
+            except Exception as _ctx_err:
+                _context = f"You are a golf analytics assistant. Context unavailable: {_ctx_err}"
+
+            _messages = [{"role": "system", "content": _context}]
+            _messages += st.session_state["chat_history"][-20:]
+
+            with st.chat_message("assistant"):
+                try:
+                    _response_text = st.write_stream(stream_response(_messages, _groq_key))
+                except Exception as _err:
+                    _response_text = f"Error: {_err}"
+                    st.error(_response_text)
+
+            if _response_text:
+                st.session_state["chat_history"].append(
+                    {"role": "assistant", "content": _response_text}
+                )
 
 
 # ============================================================================
@@ -11064,13 +10740,12 @@ elif page == "🎰 Betting":
                 st.info(f"🔴 **Round {tournament_round}** | Leader: {leader_score:+d} | Showing {len(live_contenders)} contenders")
 
             # Main tabs (consolidated)
-            props_tab1, props_tab2, props_tab3, props_tab4, props_tab5, props_tab6 = st.tabs([
+            props_tab1, props_tab2, props_tab3, props_tab4, props_tab5 = st.tabs([
                 "⚡ Value Bets",
                 "📈 DraftKings Odds",
                 "⚔️ Matchups",
                 "🎲 Parlay Builder",
                 "📰 Expert Picks",
-                "📊 Betting History",
             ])
 
             # =================================================================
@@ -12444,11 +12119,6 @@ elif page == "🎰 Betting":
             with props_tab5:
                 render_expert_picks_section(preds_df, prop_tournament_id)
 
-            # =================================================================
-            # TAB 6: BETTING HISTORY
-            # =================================================================
-            with props_tab6:
-                render_betting_history_section()
 
 # ============================================================================
 # PAGE: PREDICTIONS
