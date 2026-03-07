@@ -378,6 +378,107 @@ def _my_picks_block() -> str:
         return f"## MY PICKS THIS WEEK\n(unavailable: {e})"
 
 
+def _league_context_block() -> str:
+    """League standings, current week picks, and player ownership across all 28 teams.
+
+    Reads:
+      data/fantasy/league_standings.csv     — season standings
+      data/fantasy/league_weekly_picks.csv  — this week's picks + earnings per team
+      data/fantasy/league_player_usage.csv  — all-time usage per player per team
+    """
+    standings_path = DATA / "fantasy" / "league_standings.csv"
+    weekly_path    = DATA / "fantasy" / "league_weekly_picks.csv"
+    usage_path     = DATA / "fantasy" / "league_player_usage.csv"
+
+    if not standings_path.exists():
+        return ""
+
+    lines = ["## LEAGUE CONTEXT (Louisiana/Delaware Connection — 28 teams, max 3 uses/player)"]
+
+    MY_TEAM = "WineTime"
+
+    # --- Season standings (top 5 + WineTime) ---
+    try:
+        standings = pd.read_csv(standings_path)
+        my_row = standings[standings["team_name"] == MY_TEAM]
+        my_place = my_row["place"].iloc[0] if not my_row.empty else "?"
+        my_earnings = my_row["earnings"].iloc[0] if not my_row.empty else "?"
+        my_back = my_row["earnings_back"].iloc[0] if not my_row.empty else "?"
+
+        lines.append(f"\n**Season Standings — {MY_TEAM} is {my_place} | {my_earnings} | {my_back} back**")
+        top5 = standings.head(5)[["place", "team_name", "owner", "earnings", "earnings_back"]]
+        lines.append(top5.to_markdown(index=False))
+        if not my_row.empty and int(my_row.index[0]) >= 5:
+            lines.append(f"...  {my_place} | {MY_TEAM} | {my_earnings} | {my_back} back")
+    except Exception as e:
+        lines.append(f"(standings unavailable: {e})")
+
+    # --- Current week picks and results ---
+    if weekly_path.exists():
+        try:
+            weekly = pd.read_csv(weekly_path)
+            # Sort by total earnings desc
+            weekly = weekly.sort_values("total_earnings", ascending=False).reset_index(drop=True)
+            my_week = weekly[weekly["team_name"] == MY_TEAM]
+
+            if not my_week.empty:
+                r = my_week.iloc[0]
+                lines.append(
+                    f"\n**{MY_TEAM} this week (rank #{r['weekly_rank']}): "
+                    f"{r['player_1']} ${r['earnings_1']:,} | "
+                    f"{r['player_2']} ${r['earnings_2']:,} | "
+                    f"{r['player_3']} ${r['earnings_3']:,} | "
+                    f"Total ${r['total_earnings']:,}**"
+                )
+
+            lines.append("\n**Current week standings (all teams):**")
+            display = weekly[["weekly_rank", "team_name", "player_1", "player_2", "player_3", "total_earnings"]].copy()
+            display["total_earnings"] = display["total_earnings"].apply(lambda x: f"${x:,}")
+            lines.append(display.to_markdown(index=False))
+
+            # Player ownership this week
+            all_picks = pd.concat([
+                weekly[["player_1"]].rename(columns={"player_1": "player"}),
+                weekly[["player_2"]].rename(columns={"player_2": "player"}),
+                weekly[["player_3"]].rename(columns={"player_3": "player"}),
+            ]).query("player != 'VACANT'")["player"].value_counts()
+
+            lines.append("\n**Player ownership this week (# of teams):**")
+            ownership_str = " | ".join(f"{p}: {c}" for p, c in all_picks.items())
+            lines.append(ownership_str)
+
+        except Exception as e:
+            lines.append(f"(weekly picks unavailable: {e})")
+
+    # --- Season-long usage: players with 2+ uses (running low) ---
+    if usage_path.exists():
+        try:
+            usage = pd.read_csv(usage_path)
+            # Players used 2 or 3 times by each team — shows who's getting depleted
+            scarce = (
+                usage[usage["times_used"] >= 2]
+                .groupby("player")
+                .agg(teams_used_twice=("team_name", "count"), avg_earned=("total_earned", "mean"))
+                .sort_values("teams_used_twice", ascending=False)
+                .head(12)
+                .reset_index()
+            )
+            lines.append("\n**Players used 2+ times (scarcity alert — limited future availability):**")
+            scarce["avg_earned"] = scarce["avg_earned"].apply(lambda x: f"${int(x):,}")
+            lines.append(scarce.to_markdown(index=False))
+
+            # My team's remaining uses
+            my_usage = usage[usage["team_name"] == MY_TEAM][["player", "times_used", "uses_left", "total_earned"]]
+            if not my_usage.empty:
+                lines.append(f"\n**{MY_TEAM} player use history (season):**")
+                my_usage = my_usage.sort_values("times_used", ascending=False)
+                lines.append(my_usage.to_markdown(index=False))
+        except Exception as e:
+            lines.append(f"(usage data unavailable: {e})")
+
+    return "\n".join(lines)
+
+
 def _tournament_header(tid: str) -> str:
     """Tournament name from meta JSON."""
     if not tid:
@@ -443,6 +544,11 @@ def build_context(tournament_id: str | None = None) -> str:
     my_picks = _my_picks_block()
     if my_picks:
         sections.append(my_picks)
+        sections.append("")
+
+    league = _league_context_block()
+    if league:
+        sections.append(league)
         sections.append("")
 
     return "\n".join(sections)
