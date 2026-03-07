@@ -10274,8 +10274,7 @@ elif page == "👤 Players":
                     _ps1 = _hg(_r1, "projected_score_vs_field"); _ps2 = _hg(_r2, "projected_score_vs_field")
                     if _ps1 is not None or _ps2 is not None:
                         _rows += _h2h_sec("Score Projection")
-                        _rows += _h2h_row("vs Field Avg", _ps1, _ps2, higher_better=False, fmt="+.2f")
-                        _rows += _h2h_row("Projected Score", _hg(_r1,"projected_score"), _hg(_r2,"projected_score"), higher_better=False, fmt="+.1f")
+                        _rows += _h2h_row("vs Field Avg", _ps1, _ps2, higher_better=False, fmt="+.1f")
                         _rows += _h2h_row("Score Rank", _hg(_r1,"score_rank"), _hg(_r2,"score_rank"), higher_better=False, fmt=".0f")
 
                     st.markdown(f"""
@@ -12544,29 +12543,31 @@ elif page == "📊 Predictions":
             _t10  = int((_wr_all <= 10).sum())
             _t25  = int((_wr_all <= 25).sum())
             _t50  = int((_wr_all <= 50).sum())
-            # Projected score context: winner projection + approx cut line
+            # Use projected_score_vs_field for winner/cut context.
+            # e.g. "Leader: -5.7 vs avg" means the top pick is projected
+            # 5.7 strokes better than the average field finisher.
             _proj_winner_str = "—"
             _proj_cut_str    = "—"
-            if "projected_score" in df.columns and "score_rank" in df.columns:
-                _ps_df = df[["projected_score", "score_rank"]].copy()
-                _ps_df["projected_score"] = pd.to_numeric(_ps_df["projected_score"], errors="coerce")
-                _ps_df["score_rank"]      = pd.to_numeric(_ps_df["score_rank"],      errors="coerce")
+            if "projected_score_vs_field" in df.columns and "score_rank" in df.columns:
+                _ps_df = df[["projected_score_vs_field", "score_rank"]].copy()
+                _ps_df["projected_score_vs_field"] = pd.to_numeric(_ps_df["projected_score_vs_field"], errors="coerce")
+                _ps_df["score_rank"]               = pd.to_numeric(_ps_df["score_rank"],               errors="coerce")
                 _ps_df = _ps_df.dropna()
                 if not _ps_df.empty:
                     def _ps_fmt(v):
                         return "E" if v == 0 else (f"+{v:.1f}" if v > 0 else f"{v:.1f}")
                     _winner_row = _ps_df[_ps_df["score_rank"] == _ps_df["score_rank"].min()]
                     if not _winner_row.empty:
-                        _proj_winner_str = _ps_fmt(float(_winner_row["projected_score"].iloc[0]))
-                    # Approx cut: median of bottom half by score_rank
-                    _cut_approx = _ps_df["projected_score"].median()
+                        _proj_winner_str = _ps_fmt(float(_winner_row["projected_score_vs_field"].iloc[0]))
+                    # Cut bubble: median projected score vs field (half above, half below)
+                    _cut_approx = _ps_df["projected_score_vs_field"].median()
                     _proj_cut_str = _ps_fmt(float(_cut_approx))
             _fs1, _fs2, _fs3, _fs4, _fs5 = st.columns(5)
             _fs1.metric("Avg World Rank",  f"#{_avg_wr:.0f}" if _avg_wr else "—")
             _fs2.metric("Top-10 Players",  _t10)
             _fs3.metric("Top-25 Players",  _t25)
-            _fs4.metric("Proj Winner",     _proj_winner_str, help="Model's projected 4-round score for the top-ranked player")
-            _fs5.metric("Proj Cut Line",   _proj_cut_str,   help="Median projected score across field — rough cut line estimate")
+            _fs4.metric("Leader vs Avg",   _proj_winner_str, help="Top-ranked player's projected strokes vs field average (negative = better than field)")
+            _fs5.metric("Cut vs Avg",      _proj_cut_str,    help="Median projected score vs field — players at or below this line are projected to make the cut")
 
         st.markdown("---")
 
@@ -12647,7 +12648,11 @@ elif page == "📊 Predictions":
 
             _base_cols   = ['player_name', 'expected_value', 'win_prob', 'top5_prob',
                             'top10_prob', 'sg_total', 'hist_times_played']
-            _extra_cols  = [c for c in ['projected_score', 'model_vs_vegas_edge'] if c in df.columns]
+            # Use projected_score_vs_field (strokes vs field average) rather than
+            # projected_score (absolute to-par). The model predicts a conditional mean
+            # so absolute scores are compressed — but the relative ranking is accurate.
+            # "vs Avg" reads as: -5.7 = projected 5.7 strokes better than avg finisher.
+            _extra_cols  = [c for c in ['projected_score_vs_field', 'model_vs_vegas_edge'] if c in df.columns]
             display_cols = _base_cols + _extra_cols
 
             display_df = top_20[display_cols].copy()
@@ -12660,14 +12665,14 @@ elif page == "📊 Predictions":
             display_df['top10_prob'] = (display_df['top10_prob'] * 100).round(1)
             display_df['sg_total'] = display_df['sg_total'].round(3)
             display_df['hist_times_played'] = display_df['hist_times_played'].fillna(0).astype(int)
-            if 'projected_score' in display_df.columns:
-                def _fmt_proj(v):
+            if 'projected_score_vs_field' in display_df.columns:
+                def _fmt_vsf(v):
                     try:
                         n = float(v)
                         return "E" if n == 0 else (f"+{n:.1f}" if n > 0 else f"{n:.1f}")
                     except (TypeError, ValueError):
                         return "—"
-                display_df['projected_score'] = display_df['projected_score'].apply(_fmt_proj)
+                display_df['projected_score_vs_field'] = display_df['projected_score_vs_field'].apply(_fmt_vsf)
             if 'model_vs_vegas_edge' in display_df.columns:
                 display_df['model_vs_vegas_edge'] = display_df['model_vs_vegas_edge'].round(1)
 
@@ -12675,14 +12680,14 @@ elif page == "📊 Predictions":
                 'player_name': 'Player', 'expected_value': 'Expected Value',
                 'win_prob': 'Win %', 'top5_prob': 'Top-5 %', 'top10_prob': 'Top-10 %',
                 'sg_total': 'SG Total', 'hist_times_played': 'Course Plays',
-                'projected_score': 'Proj Score', 'model_vs_vegas_edge': 'Edge %',
+                'projected_score_vs_field': 'vs Avg', 'model_vs_vegas_edge': 'Edge %',
             }
             display_df.columns = (
                 [_col_rename.get(c, c) for c in display_cols] + ['2025 Earnings', 'KFT History', 'LIV History']
             )
 
             st.dataframe(display_df, hide_index=True, use_container_width=True)
-            st.caption("**2025 Earnings** — prize money in your 2025 lineup. '—' = not used. **KFT History** — 🎓 KFT grad, SG proxy. **LIV History** — ⛳ LIV player, SG proxy (year).")
+            st.caption("**vs Avg** — projected strokes vs field average (negative = better than field). **2025 Earnings** — prize money in your 2025 lineup. **KFT/LIV History** — SG proxy from non-PGA seasons.")
 
             st.markdown("#### 🔎 Why This Pick")
             why_cols = st.columns([2.2, 1.0])
@@ -12742,8 +12747,8 @@ elif page == "📊 Predictions":
                     st.info(f"No players with edge ≥ {_min_edge}%. Try lowering the threshold.")
                 else:
                     _val_show_cols = ["player_name", "win_prob", "top10_prob", "model_vs_vegas_edge", "world_rank", "sg_total"]
-                    if "projected_score" in _val_df.columns:
-                        _val_show_cols.append("projected_score")
+                    if "projected_score_vs_field" in _val_df.columns:
+                        _val_show_cols.append("projected_score_vs_field")
                     if "odds_to_win" in _val_df.columns:
                         _val_show_cols.append("odds_to_win")
                     _val_show_cols = [c for c in _val_show_cols if c in _val_df.columns]
@@ -12752,8 +12757,8 @@ elif page == "📊 Predictions":
                     _val_disp["top10_prob"] = (_val_disp["top10_prob"] * 100).round(1)
                     _val_disp["sg_total"]   = _val_disp["sg_total"].round(2)
                     _val_disp["model_vs_vegas_edge"] = _val_disp["model_vs_vegas_edge"].round(1)
-                    if "projected_score" in _val_disp.columns:
-                        _val_disp["projected_score"] = _val_disp["projected_score"].apply(
+                    if "projected_score_vs_field" in _val_disp.columns:
+                        _val_disp["projected_score_vs_field"] = _val_disp["projected_score_vs_field"].apply(
                             lambda v: ("E" if float(v) == 0 else (f"+{float(v):.1f}" if float(v) > 0 else f"{float(v):.1f}"))
                             if pd.notna(v) else "—"
                         )
@@ -12764,7 +12769,7 @@ elif page == "📊 Predictions":
                     _val_rename = {
                         "player_name": "Player", "win_prob": "Win %", "top10_prob": "Top-10 %",
                         "model_vs_vegas_edge": "Edge %", "world_rank": "WR",
-                        "sg_total": "SG Total", "projected_score": "Proj Score", "odds_to_win": "DK Odds",
+                        "sg_total": "SG Total", "projected_score_vs_field": "vs Avg", "odds_to_win": "DK Odds",
                     }
                     _val_disp.columns = [_val_rename.get(c, c) for c in _val_show_cols]
                     st.dataframe(_val_disp, hide_index=True, use_container_width=True)

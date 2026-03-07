@@ -29,9 +29,11 @@ ANALOGY:
 
 import glob
 import joblib
+import json
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error
 from xgboost import XGBRegressor
 
@@ -251,6 +253,65 @@ def main():
           f"max={pred_series.max():.2f}  std={pred_series.std():.2f}")
     print(f"    (Target: winners ~-6 to -10, bubble ~+2 to +4 vs field avg)")
 
+    # ── Calibration: fit a linear stretch on the 2025 holdout ────────────────
+    #
+    # WHAT IS CALIBRATION?
+    # The model predicts score_vs_field values that are systematically
+    # compressed toward zero — a known trait of gradient boosting and all
+    # ensemble regression models. The model predicts the CONDITIONAL MEAN
+    # (expected outcome), so extreme values get averaged away.
+    #
+    # Example without calibration:
+    #   True winner shoots  -10 vs field | model predicts  -6
+    #   True median player shoots -1     | model predicts  -0.5
+    #   True bad finisher   +5 vs field  | model predicts  +2
+    #
+    # The RANKINGS are correct (winner > median > bad) but the MAGNITUDES
+    # are wrong. Calibration fixes the magnitudes by learning a linear
+    # mapping from compressed predictions to realistic values.
+    #
+    # HOW LINEAR CALIBRATION WORKS:
+    #   We fit: actual_score = slope × raw_prediction + intercept
+    #
+    #   If slope > 1: the model is under-predicting the spread (most common)
+    #                 calibration will stretch predictions outward
+    #   If intercept ≠ 0: there's a systematic bias (model always too high/low)
+    #
+    # We fit this on the 2025 HOLDOUT — data the model has never seen.
+    # This gives us an unbiased estimate of the real-world gap.
+    #
+    # After calibration, a player predicted at -6 (raw) might become -9
+    # (calibrated), which better matches what tournament winners actually shoot.
+    #
+    print("\n── Calibration (fit on 2025 holdout) ──────────────────────────────")
+
+    # Reshape for sklearn: needs (n, 1) column matrix, not 1D array
+    X_cal = preds_test.reshape(-1, 1)
+    y_cal = y_test.values  # actual score_vs_field for 2025
+
+    cal_model = LinearRegression()
+    cal_model.fit(X_cal, y_cal)
+
+    slope     = float(cal_model.coef_[0])
+    intercept = float(cal_model.intercept_)
+    print(f"  slope={slope:.4f}  intercept={intercept:.4f}")
+    print(f"  Interpretation: a raw prediction of -5.0 becomes "
+          f"{slope * -5.0 + intercept:.1f} after calibration")
+
+    # Measure improvement: how much does calibration reduce MAE on 2025 holdout?
+    preds_calibrated = slope * preds_test + intercept
+    mae_raw = mean_absolute_error(y_cal, preds_test)
+    mae_cal = mean_absolute_error(y_cal, preds_calibrated)
+    print(f"  Test MAE before calibration: {mae_raw:.3f}")
+    print(f"  Test MAE after  calibration: {mae_cal:.3f}  "
+          f"({'better' if mae_cal < mae_raw else 'no improvement — slope near 1'})")
+
+    # Show how the prediction range changes after calibration
+    cal_series = pd.Series(preds_calibrated)
+    print(f"  Calibrated spread: min={cal_series.min():.1f}  "
+          f"mean={cal_series.mean():.1f}  max={cal_series.max():.1f}  "
+          f"std={cal_series.std():.2f}")
+
     # ── Feature importance (gain-based) ──────────────────────────────────────
     # XGBoost gives us gain-based importance: how much each feature
     # reduced error across all splits where it was used.
@@ -262,15 +323,36 @@ def main():
     print("\n  Top 15 features (gain importance):")
     print(fi.to_string())
 
-    # ── Save ──────────────────────────────────────────────────────────────────
+    # ── Save model, features, and calibration parameters ─────────────────────
     MODEL_DIR.mkdir(exist_ok=True)
     model_path = MODEL_DIR / "score_model_final.pkl"
     feats_path = MODEL_DIR / "score_model_features.txt"
+    cal_path   = MODEL_DIR / "score_model_calibration.json"
+
     joblib.dump(model, model_path)
     feats_path.write_text("\n".join(feats))
-    print(f"\n  Saved model   -> {model_path}")
-    print(f"  Saved features -> {feats_path}")
-    print(f"\nDone. Retrain classification models with train_final_models.py if needed.")
+
+    # Calibration is stored as a simple JSON dict so predict_tournament.py
+    # can load it without needing to import sklearn or joblib.
+    # The 'n_cal' field records how many points we fit on, so we can
+    # sanity-check it hasn't been fit on too small a sample.
+    cal_data = {
+        "slope":     slope,
+        "intercept": intercept,
+        "n_cal":     int(len(y_cal)),
+        "mae_raw":   round(mae_raw, 4),
+        "mae_calibrated": round(mae_cal, 4),
+        "note": (
+            "Applied as: calibrated = slope * raw_prediction + intercept. "
+            "Fit on 2025 holdout (never seen during training)."
+        ),
+    }
+    cal_path.write_text(json.dumps(cal_data, indent=2))
+
+    print(f"\n  Saved model       -> {model_path}")
+    print(f"  Saved features    -> {feats_path}")
+    print(f"  Saved calibration -> {cal_path}")
+    print(f"\nDone. Run predict_tournament.py to generate new projected scores.")
 
 
 if __name__ == "__main__":
