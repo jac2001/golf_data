@@ -14079,6 +14079,53 @@ elif page == "⚙️ Pipeline":
 
         st.markdown("---")
 
+        # ── Watch Log ────────────────────────────────────────────────────────
+        st.markdown("#### Live Refresh Log")
+        _watch_log_path = PROJECT_ROOT / "logs" / "watch.log"
+        if _watch_log_path.exists():
+            try:
+                _watch_lines = _watch_log_path.read_text().splitlines()
+                # Show last 50 lines, newest at top
+                _watch_tail = _watch_lines[-50:][::-1]
+
+                # Color-code lines: ✓ = green, ✗ = red, headers = blue, rest = grey
+                _log_html_lines = []
+                for _wl in _watch_tail:
+                    if "✓" in _wl or "Done" in _wl or "Saved" in _wl:
+                        color = "#2ecc71"
+                    elif "✗" in _wl or "Failed" in _wl or "Error" in _wl:
+                        color = "#e74c3c"
+                    elif "LIVE REFRESH" in _wl or "Watch mode" in _wl:
+                        color = "#4cb8ff"
+                    elif "Sleeping" in _wl or "next check" in _wl:
+                        color = "#888"
+                    else:
+                        color = "#ccc"
+                    _escaped = _wl.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                    _log_html_lines.append(
+                        f"<div style='color:{color};font-size:12px;font-family:monospace;"
+                        f"padding:1px 0;white-space:pre'>{_escaped}</div>"
+                    )
+
+                _log_mtime = datetime.fromtimestamp(_watch_log_path.stat().st_mtime)
+                _log_age   = (datetime.now() - _log_mtime).total_seconds()
+                _log_age_str = f"{int(_log_age // 60)}m ago" if _log_age >= 60 else f"{int(_log_age)}s ago"
+                st.caption(f"Last updated: {_log_mtime.strftime('%H:%M:%S')} ({_log_age_str}) — showing last {len(_watch_tail)} lines")
+
+                st.markdown(
+                    f"<div style='background:#0e0e0e;border:1px solid #2a2a2a;border-radius:6px;"
+                    f"padding:10px 14px;max-height:320px;overflow-y:auto'>"
+                    + "".join(_log_html_lines)
+                    + "</div>",
+                    unsafe_allow_html=True,
+                )
+            except Exception as _e:
+                st.warning(f"Could not read watch log: {_e}")
+        else:
+            st.caption("No watch log found. Start the live watcher to see refresh activity here.")
+
+        st.markdown("---")
+
         # Manual run buttons
         st.markdown("#### Run Scheduled Task Now")
 
