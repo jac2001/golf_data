@@ -12544,11 +12544,19 @@ elif page == "📊 Predictions":
             _t10  = int((_wr_all <= 10).sum())
             _t25  = int((_wr_all <= 25).sum())
             _t50  = int((_wr_all <= 50).sum())
-            _fs1, _fs2, _fs3, _fs4 = st.columns(4)
+            # Avg projected score across field
+            _avg_proj_str = "—"
+            if "projected_score" in df.columns:
+                _ps_vals = pd.to_numeric(df["projected_score"], errors="coerce").dropna()
+                if not _ps_vals.empty:
+                    _avg_ps = _ps_vals.mean()
+                    _avg_proj_str = "E" if _avg_ps == 0 else (f"+{_avg_ps:.1f}" if _avg_ps > 0 else f"{_avg_ps:.1f}")
+            _fs1, _fs2, _fs3, _fs4, _fs5 = st.columns(5)
             _fs1.metric("Avg World Rank",  f"#{_avg_wr:.0f}" if _avg_wr else "—")
             _fs2.metric("Top-10 Players",  _t10)
             _fs3.metric("Top-25 Players",  _t25)
             _fs4.metric("Top-50 Players",  _t50)
+            _fs5.metric("Avg Proj Score",  _avg_proj_str, help="Average projected 4-round to-par score across the field")
 
         st.markdown("---")
 
@@ -12780,13 +12788,16 @@ elif page == "📊 Predictions":
                                 unsafe_allow_html=True,
                             )
 
-                    # Feature importance top 10
-                    _fi = _cal.get("feature_importance", {})
-                    if _fi:
+                    # Feature importance top 10 (list of dicts with feature + *_importance keys)
+                    _fi = _cal.get("feature_importance", [])
+                    if _fi and isinstance(_fi, list):
                         st.markdown("**Top Features (Win Model)**")
-                        _fi_items = sorted(_fi.items(), key=lambda x: x[1], reverse=True)[:10]
-                        _fi_df = pd.DataFrame(_fi_items, columns=["Feature", "Importance"])
-                        _fi_df["Importance"] = (_fi_df["Importance"] * 100).round(1)
+                        _fi_sorted = sorted(_fi, key=lambda x: x.get("win_importance", 0), reverse=True)[:10]
+                        _fi_df = pd.DataFrame([
+                            {"Feature": r["feature"], "Win %": round(r.get("win_importance", 0) * 100, 1),
+                             "Avg %": round(r.get("avg_importance", 0) * 100, 1)}
+                            for r in _fi_sorted
+                        ])
                         st.dataframe(_fi_df, hide_index=True, use_container_width=True, height=250)
                 except Exception as _e:
                     st.warning(f"Could not load calibration data: {_e}")
