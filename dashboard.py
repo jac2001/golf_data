@@ -12544,19 +12544,29 @@ elif page == "📊 Predictions":
             _t10  = int((_wr_all <= 10).sum())
             _t25  = int((_wr_all <= 25).sum())
             _t50  = int((_wr_all <= 50).sum())
-            # Avg projected score across field
-            _avg_proj_str = "—"
-            if "projected_score" in df.columns:
-                _ps_vals = pd.to_numeric(df["projected_score"], errors="coerce").dropna()
-                if not _ps_vals.empty:
-                    _avg_ps = _ps_vals.mean()
-                    _avg_proj_str = "E" if _avg_ps == 0 else (f"+{_avg_ps:.1f}" if _avg_ps > 0 else f"{_avg_ps:.1f}")
+            # Projected score context: winner projection + approx cut line
+            _proj_winner_str = "—"
+            _proj_cut_str    = "—"
+            if "projected_score" in df.columns and "score_rank" in df.columns:
+                _ps_df = df[["projected_score", "score_rank"]].copy()
+                _ps_df["projected_score"] = pd.to_numeric(_ps_df["projected_score"], errors="coerce")
+                _ps_df["score_rank"]      = pd.to_numeric(_ps_df["score_rank"],      errors="coerce")
+                _ps_df = _ps_df.dropna()
+                if not _ps_df.empty:
+                    def _ps_fmt(v):
+                        return "E" if v == 0 else (f"+{v:.1f}" if v > 0 else f"{v:.1f}")
+                    _winner_row = _ps_df[_ps_df["score_rank"] == _ps_df["score_rank"].min()]
+                    if not _winner_row.empty:
+                        _proj_winner_str = _ps_fmt(float(_winner_row["projected_score"].iloc[0]))
+                    # Approx cut: median of bottom half by score_rank
+                    _cut_approx = _ps_df["projected_score"].median()
+                    _proj_cut_str = _ps_fmt(float(_cut_approx))
             _fs1, _fs2, _fs3, _fs4, _fs5 = st.columns(5)
             _fs1.metric("Avg World Rank",  f"#{_avg_wr:.0f}" if _avg_wr else "—")
             _fs2.metric("Top-10 Players",  _t10)
             _fs3.metric("Top-25 Players",  _t25)
-            _fs4.metric("Top-50 Players",  _t50)
-            _fs5.metric("Avg Proj Score",  _avg_proj_str, help="Average projected 4-round to-par score across the field")
+            _fs4.metric("Proj Winner",     _proj_winner_str, help="Model's projected 4-round score for the top-ranked player")
+            _fs5.metric("Proj Cut Line",   _proj_cut_str,   help="Median projected score across field — rough cut line estimate")
 
         st.markdown("---")
 
