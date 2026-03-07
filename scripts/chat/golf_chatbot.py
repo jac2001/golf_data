@@ -526,21 +526,145 @@ def _league_context_block() -> str:
     return "\n".join(lines)
 
 
+def _tournament_state(tid: str) -> dict:
+    """Return a dict describing exactly where we are in the tournament lifecycle.
+
+    Keys: name, round, round_status, phase
+    phase one of: pre_tournament | round_1 | round_2 | round_3 | round_4 | complete
+    """
+    state = {"name": tid, "round": 0, "round_status": "", "phase": "pre_tournament"}
+    if not tid:
+        return state
+    meta_path = DATA / "live" / f"leaderboard_{tid.lower()}_meta.json"
+    if not meta_path.exists():
+        return state
+    try:
+        with open(meta_path) as f:
+            meta = json.load(f)
+        state["name"]         = meta.get("tournament_name", tid)
+        state["round"]        = int(meta.get("current_round", 0))
+        state["round_status"] = meta.get("round_status", "")
+        state["fetched_at"]   = meta.get("fetched_at", "")
+        r = state["round"]
+        rs = state["round_status"].lower()
+        if rs == "official" and r == 4:
+            state["phase"] = "complete"
+        elif r == 0:
+            state["phase"] = "pre_tournament"
+        else:
+            state["phase"] = f"round_{r}"
+    except Exception:
+        pass
+    return state
+
+
+def _tournament_state_block(tid: str) -> str:
+    """Inject a clear tournament state header so the LLM knows exactly how to frame responses."""
+    ts = _tournament_state(tid)
+    phase = ts["phase"]
+    name  = ts["name"]
+    r     = ts["round"]
+
+    if phase == "pre_tournament":
+        status_line = f"PRE-TOURNAMENT — no rounds have been played yet."
+        instruction = (
+            "Focus on pre-tournament analysis: predictions, betting value, lineup decisions, course fit. "
+            "Do not reference live scores or leaderboard positions."
+        )
+    elif phase == "complete":
+        status_line = f"TOURNAMENT COMPLETE — all 4 rounds are official."
+        instruction = (
+            "This tournament is FINISHED. When asked about it, reference final results and what happened. "
+            "Shift any lineup/betting questions toward the NEXT TOURNAMENT on the schedule."
+        )
+    else:
+        rounds_remaining = 4 - r
+        status_line = f"ROUND {r} OF 4 COMPLETE — {rounds_remaining} round(s) remaining."
+        instruction = (
+            f"We are mid-tournament after Round {r}. "
+            "Focus on the live leaderboard: who's leading, who's surged or faded, who still has a realistic chance. "
+            f"A player needs to be within ~{max(4, rounds_remaining * 4)} strokes to have a serious chance at winning. "
+            "Betting questions should focus on in-play value based on current position. "
+            "Lineup questions should reference the current week's picks since they are already locked."
+        )
+
+    fetched = ts.get("fetched_at", "")
+    freshness = f" (data last refreshed: {fetched[:16].replace('T', ' ')} UTC)" if fetched else ""
+
+    return (
+        f"## TOURNAMENT STATUS: {name}\n"
+        f"{status_line}{freshness}\n"
+        f"RESPOND ACCORDINGLY: {instruction}"
+    )
+
+
+def _schedule_block(current_tid: str | None = None) -> str:
+    """Season schedule with completed, current, and upcoming tournaments.
+
+    Marks each week as: DONE (complete) | NOW (current) | NEXT | upcoming.
+    Warns when predictions for upcoming weeks are not yet available.
+    """
+    path = DATA / "raw" / "schedule_2026.csv"
+    if not path.exists():
+        return ""
+    try:
+        sched = pd.read_csv(path)
+        today = datetime.now().date()
+
+        # Detect which TIDs have complete leaderboards
+        complete_tids = set()
+        for mf in glob.glob(str(DATA / "live" / "leaderboard_r*_meta.json")):
+            try:
+                with open(mf) as f:
+                    m = json.load(f)
+                if m.get("round_status", "").lower() == "official":
+                    complete_tids.add(str(m.get("tournament_id", "")))
+            except Exception:
+                pass
+
+        lines = ["## 2026 SEASON SCHEDULE"]
+        lines.append("(Predictions are only available for the CURRENT week. For upcoming weeks, advise based on player quality, world ranking, and course history.)")
+
+        for _, row in sched.iterrows():
+            tid      = str(row.get("tournament_id", ""))
+            name     = row.get("tournament_name", "")
+            ttype    = row.get("tournament_type", "")
+            purse    = row.get("purse", "")
+            week     = int(row.get("week", 0))
+            start    = str(row.get("start_date", ""))
+            end      = str(row.get("end_date", ""))
+
+            try:
+                start_date = datetime.strptime(start, "%Y-%m-%d").date()
+                end_date   = datetime.strptime(end,   "%Y-%m-%d").date()
+            except Exception:
+                start_date = end_date = None
+
+            # current_tid takes priority — it's NOW even if marked official
+            if tid == current_tid:
+                marker = "▶ NOW  "
+            elif tid in complete_tids:
+                marker = "✓ DONE "
+            elif start_date and start_date > today:
+                marker = "→ NEXT " if "→ NEXT" not in "".join(lines) else "  "
+            else:
+                marker = "  "
+
+            lines.append(
+                f"{marker}Wk{week:02d} | {name} | {ttype} | {purse} | {start} – {end}"
+            )
+
+        return "\n".join(lines)
+    except Exception as e:
+        return f"## SCHEDULE\n(unavailable: {e})"
+
+
 def _tournament_header(tid: str) -> str:
     """Tournament name from meta JSON."""
     if not tid:
         return ""
-    tid_lower = tid.lower()
-    meta_path = DATA / "live" / f"leaderboard_{tid_lower}_meta.json"
-    if meta_path.exists():
-        try:
-            with open(meta_path) as f:
-                meta = json.load(f)
-            name = meta.get("tournament_name", tid)
-            return f"## TOURNAMENT: {name} | {tid}"
-        except Exception:
-            pass
-    return f"## TOURNAMENT: {tid}"
+    ts = _tournament_state(tid)
+    return f"## TOURNAMENT: {ts['name']} | {tid}"
 
 
 # ---------------------------------------------------------------------------
@@ -581,6 +705,8 @@ def build_context(tournament_id: str | None = None) -> str:
     if tournament_id:
         sections.append(_tournament_header(tournament_id))
         sections.append("")
+        sections.append(_tournament_state_block(tournament_id))
+        sections.append("")
 
     sections.append(_predictions_block())
     sections.append("")
@@ -614,6 +740,11 @@ def build_context(tournament_id: str | None = None) -> str:
     league = _league_context_block()
     if league:
         sections.append(league)
+        sections.append("")
+
+    schedule = _schedule_block(current_tid=tournament_id)
+    if schedule:
+        sections.append(schedule)
         sections.append("")
 
     return "\n".join(sections)
