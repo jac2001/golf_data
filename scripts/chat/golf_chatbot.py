@@ -126,7 +126,7 @@ def _fmt_course_history(row) -> str:
     return " · ".join(parts)
 
 
-def _predictions_block(top_n: int = 20) -> str:
+def _predictions_block(top_n: int = 15) -> str:
     """Top N players ranked by win probability, in user-friendly terms.
 
     Columns: Player, Win Odds, World Rank, Top 10%, Top 5%,
@@ -185,7 +185,7 @@ def _predictions_block(top_n: int = 20) -> str:
             "Top 10% and Top 5% are finish probabilities — do NOT compare these to win odds. "
             "SG = Strokes Gained vs field average. OTT = off the tee, APP = approach, Putt = putting."
         )
-        return "## FIELD OVERVIEW — Top 20 contenders\n" + note + "\n" + out.to_markdown(index=False)
+        return f"## FIELD OVERVIEW — Top {top_n} contenders\n" + note + "\n" + out.to_markdown(index=False)
     except Exception as e:
         return f"## FIELD OVERVIEW\n(unavailable: {e})"
 
@@ -473,8 +473,13 @@ def _league_context_block() -> str:
                     f"Total ${r['total_earnings']:,}**"
                 )
 
-            lines.append("\n**Current week standings (all teams):**")
-            display = weekly[["weekly_rank", "team_name", "player_1", "player_2", "player_3", "total_earnings"]].copy()
+            # Show top 12 teams by earnings this week + always pin WineTime
+            top12 = weekly.head(12)
+            if MY_TEAM not in top12["team_name"].values:
+                my_week_row = weekly[weekly["team_name"] == MY_TEAM]
+                top12 = pd.concat([top12, my_week_row]).drop_duplicates()
+            lines.append(f"\n**Current week standings (top 12 + {MY_TEAM}):**")
+            display = top12[["weekly_rank", "team_name", "player_1", "player_2", "player_3", "total_earnings"]].copy()
             display["total_earnings"] = display["total_earnings"].apply(lambda x: f"${x:,}")
             lines.append(display.to_markdown(index=False))
 
@@ -625,6 +630,10 @@ def _schedule_block(current_tid: str | None = None) -> str:
         lines = ["## 2026 SEASON SCHEDULE"]
         lines.append("(Predictions are only available for the CURRENT week. For upcoming weeks, advise based on player quality, world ranking, and course history.)")
 
+        upcoming_shown = 0
+        upcoming_limit = 3
+        skipped_upcoming = 0
+
         for _, row in sched.iterrows():
             tid      = str(row.get("tournament_id", ""))
             name     = row.get("tournament_name", "")
@@ -636,23 +645,33 @@ def _schedule_block(current_tid: str | None = None) -> str:
 
             try:
                 start_date = datetime.strptime(start, "%Y-%m-%d").date()
-                end_date   = datetime.strptime(end,   "%Y-%m-%d").date()
             except Exception:
-                start_date = end_date = None
+                start_date = None
 
-            # current_tid takes priority — it's NOW even if marked official
-            if tid == current_tid:
-                marker = "▶ NOW  "
-            elif tid in complete_tids:
+            is_done     = tid in complete_tids and tid != current_tid
+            is_current  = tid == current_tid
+            is_upcoming = start_date and start_date > today and not is_done and not is_current
+
+            if is_done:
                 marker = "✓ DONE "
-            elif start_date and start_date > today:
-                marker = "→ NEXT " if "→ NEXT" not in "".join(lines) else "  "
+            elif is_current:
+                marker = "▶ NOW  "
+            elif is_upcoming:
+                if upcoming_shown < upcoming_limit:
+                    marker = "→ NEXT " if upcoming_shown == 0 else "  "
+                    upcoming_shown += 1
+                else:
+                    skipped_upcoming += 1
+                    continue
             else:
-                marker = "  "
+                continue  # past, non-done, non-current entries (shouldn't exist)
 
             lines.append(
                 f"{marker}Wk{week:02d} | {name} | {ttype} | {purse} | {start} – {end}"
             )
+
+        if skipped_upcoming:
+            lines.append(f"  ... + {skipped_upcoming} more upcoming tournaments")
 
         return "\n".join(lines)
     except Exception as e:
@@ -708,7 +727,7 @@ def build_context(tournament_id: str | None = None) -> str:
         sections.append(_tournament_state_block(tournament_id))
         sections.append("")
 
-    sections.append(_predictions_block())
+    sections.append(_predictions_block(top_n=15))
     sections.append("")
 
     if tournament_id:
@@ -754,19 +773,40 @@ def build_context(tournament_id: str | None = None) -> str:
 # Groq streaming
 # ---------------------------------------------------------------------------
 
+_PRIMARY_MODEL = "llama-3.3-70b-versatile"
+_FALLBACK_MODEL = "llama-3.1-8b-instant"
+
+
 def stream_response(messages: list[dict], api_key: str) -> Iterator[str]:
-    """Stream a response from Groq llama-3.3-70b-versatile."""
-    from groq import Groq
+    """Stream a response from Groq.
+
+    Attempts the primary model (llama-3.3-70b-versatile) first.  If Groq
+    returns a 429 rate-limit error, automatically falls back to
+    llama-3.1-8b-instant which has its own independent token quota, yielding
+    a brief notice before continuing.
+    """
+    from groq import Groq, RateLimitError
 
     client = Groq(api_key=api_key)
-    stream = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=messages,
-        stream=True,
-        temperature=0.3,
-        max_tokens=1500,
-    )
-    for chunk in stream:
-        delta = chunk.choices[0].delta.content or ""
-        if delta:
-            yield delta
+
+    def _stream(model: str):
+        return client.chat.completions.create(
+            model=model,
+            messages=messages,
+            stream=True,
+            temperature=0.3,
+            max_tokens=1500,
+        )
+
+    try:
+        for chunk in _stream(_PRIMARY_MODEL):
+            delta = chunk.choices[0].delta.content or ""
+            if delta:
+                yield delta
+    except RateLimitError:
+        # Primary model daily quota exhausted — fall back silently
+        yield f"*(Daily limit reached for {_PRIMARY_MODEL} — switching to {_FALLBACK_MODEL})*\n\n"
+        for chunk in _stream(_FALLBACK_MODEL):
+            delta = chunk.choices[0].delta.content or ""
+            if delta:
+                yield delta

@@ -8126,10 +8126,30 @@ if page == "🏆 This Week":
 
 elif page == "💬 Assistant":
     import os as _os
+    import time as _time
+    from datetime import datetime as _dt
+
     st.markdown("## Golf Assistant")
     st.caption("Ask about lineups, bets, player form, live scores — powered by Groq (free).")
 
     _groq_key = _os.environ.get("GROQ_API_KEY", "") or st.session_state.get("groq_api_key", "")
+
+    # --- Context cache: build once, refresh every 15 min or on demand ---
+    _CTX_TTL = 15 * 60  # seconds
+    _ctx_built_at = st.session_state.get("chat_context_built_at", 0)
+    _ctx_stale = (_time.time() - _ctx_built_at) > _CTX_TTL
+    _ctx_missing = "chat_context" not in st.session_state
+
+    if _ctx_missing or _ctx_stale:
+        with st.spinner("Loading tournament data..."):
+            try:
+                from scripts.chat.golf_chatbot import build_context as _build_context
+                st.session_state["chat_context"] = _build_context()
+            except Exception as _ctx_err:
+                st.session_state["chat_context"] = (
+                    f"You are a golf analytics assistant. Context unavailable: {_ctx_err}"
+                )
+            st.session_state["chat_context_built_at"] = _time.time()
 
     with st.sidebar:
         st.markdown("### Assistant Settings")
@@ -8141,6 +8161,17 @@ elif page == "💬 Assistant":
             _groq_key = _key_input
         if not _groq_key:
             st.warning("Enter your free Groq API key above.\nGet one at groq.com")
+
+        # Context freshness indicator + refresh button
+        if "chat_context_built_at" in st.session_state:
+            _built_str = _dt.fromtimestamp(
+                st.session_state["chat_context_built_at"]
+            ).strftime("%I:%M %p")
+            st.caption(f"Context built: {_built_str} (refreshes every 15 min)")
+        if st.button("Refresh context", key="chat_refresh_ctx"):
+            st.session_state.pop("chat_context", None)
+            st.session_state.pop("chat_context_built_at", None)
+            st.rerun()
         if st.button("Clear conversation", key="chat_clear"):
             st.session_state["chat_history"] = []
             st.rerun()
@@ -8186,18 +8217,17 @@ elif page == "💬 Assistant":
                 st.markdown(_prompt)
             st.session_state["chat_history"].append({"role": "user", "content": _prompt})
 
-            try:
-                from scripts.chat.golf_chatbot import build_context, stream_response
-                _context = build_context()
-            except Exception as _ctx_err:
-                _context = f"You are a golf analytics assistant. Context unavailable: {_ctx_err}"
-
+            # Use cached context — never rebuild per-message
+            _context = st.session_state.get(
+                "chat_context", "You are a golf analytics assistant."
+            )
             _messages = [{"role": "system", "content": _context}]
             _messages += st.session_state["chat_history"][-20:]
 
             with st.chat_message("assistant"):
                 try:
-                    _response_text = st.write_stream(stream_response(_messages, _groq_key))
+                    from scripts.chat.golf_chatbot import stream_response as _stream_response
+                    _response_text = st.write_stream(_stream_response(_messages, _groq_key))
                 except Exception as _err:
                     _response_text = f"Error: {_err}"
                     st.error(_response_text)
