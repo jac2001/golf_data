@@ -1,5 +1,13 @@
 """
 Golf chat assistant — context builder + Groq streaming response.
+
+Context is query-aware: the blocks included depend on what the user asked.
+  - Player question  → player deep-dive + SG + odds movement
+  - Bet question     → bets + odds movement + weather
+  - Live question    → leaderboard + cut projection
+  - Lineup question  → my picks + usage + predictions
+  - Weather/course   → weather forecast + course profile
+  - General          → full overview (default)
 """
 
 from __future__ import annotations
@@ -7,7 +15,7 @@ from __future__ import annotations
 import glob
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Iterator
 
@@ -43,67 +51,6 @@ def _american_to_implied(odds) -> float | None:
         return None
 
 
-# ---------------------------------------------------------------------------
-# Tournament ID detection
-# ---------------------------------------------------------------------------
-
-def _detect_tournament_id() -> str | None:
-    """Auto-detect active tournament ID.
-
-    Priority:
-    1. tournament_id column in latest_predictions.csv
-    2. tournament_id in recommended_bets_latest.csv (tied to current week's odds run)
-    3. Meta JSON with a non-Official round status (still in progress)
-    4. Most recently modified meta JSON file (mtime, not filename sort)
-    """
-    # 1. Predictions CSV
-    preds_path = OUTPUTS / "latest_predictions.csv"
-    if preds_path.exists():
-        try:
-            df = pd.read_csv(preds_path, usecols=lambda c: c in ("tournament_id",), nrows=5)
-            if "tournament_id" in df.columns and not df.empty:
-                return str(df["tournament_id"].mode().iloc[0])
-        except Exception:
-            pass
-
-    # 2. Recommended bets — most reliable current-week indicator
-    bets_path = DATA / "odds" / "recommended_bets_latest.csv"
-    if bets_path.exists():
-        try:
-            df = pd.read_csv(bets_path, usecols=["tournament_id"], nrows=5)
-            if not df.empty:
-                return str(df["tournament_id"].mode().iloc[0])
-        except Exception:
-            pass
-
-    meta_files = glob.glob(str(DATA / "live" / "leaderboard_r*_meta.json"))
-    if not meta_files:
-        return None
-
-    # 3. Prefer a meta file whose round_status is not "Official" (active tournament)
-    for mf in meta_files:
-        try:
-            with open(mf) as f:
-                meta = json.load(f)
-            if str(meta.get("round_status", "")).lower() != "official":
-                return meta.get("tournament_id")
-        except Exception:
-            pass
-
-    # 4. Most recently modified meta file
-    meta_files.sort(key=os.path.getmtime, reverse=True)
-    try:
-        with open(meta_files[0]) as f:
-            return json.load(f).get("tournament_id")
-    except Exception:
-        pass
-    return None
-
-
-# ---------------------------------------------------------------------------
-# Context blocks
-# ---------------------------------------------------------------------------
-
 def _fmt_odds(odds) -> str:
     """Format American odds as +1300 or -110."""
     try:
@@ -126,13 +73,99 @@ def _fmt_course_history(row) -> str:
     return " · ".join(parts)
 
 
-def _predictions_block(top_n: int = 15) -> str:
-    """Top N players ranked by win probability, in user-friendly terms.
+# ---------------------------------------------------------------------------
+# Tournament ID detection
+# ---------------------------------------------------------------------------
 
-    Columns: Player, Win Odds, World Rank, Top 10%, Top 5%,
-             Course History, SG Total, SG OTT, SG APP, SG Putt,
-             Live Position (if tournament is live).
-    """
+def _detect_tournament_id() -> str | None:
+    """Auto-detect active tournament ID."""
+    preds_path = OUTPUTS / "latest_predictions.csv"
+    if preds_path.exists():
+        try:
+            df = pd.read_csv(preds_path, usecols=lambda c: c in ("tournament_id",), nrows=5)
+            if "tournament_id" in df.columns and not df.empty:
+                return str(df["tournament_id"].mode().iloc[0])
+        except Exception:
+            pass
+
+    bets_path = DATA / "odds" / "recommended_bets_latest.csv"
+    if bets_path.exists():
+        try:
+            df = pd.read_csv(bets_path, usecols=["tournament_id"], nrows=5)
+            if not df.empty:
+                return str(df["tournament_id"].mode().iloc[0])
+        except Exception:
+            pass
+
+    meta_files = glob.glob(str(DATA / "live" / "leaderboard_r*_meta.json"))
+    if not meta_files:
+        return None
+
+    for mf in meta_files:
+        try:
+            with open(mf) as f:
+                meta = json.load(f)
+            if str(meta.get("round_status", "")).lower() != "official":
+                return meta.get("tournament_id")
+        except Exception:
+            pass
+
+    meta_files.sort(key=os.path.getmtime, reverse=True)
+    try:
+        with open(meta_files[0]) as f:
+            return json.load(f).get("tournament_id")
+    except Exception:
+        pass
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Query classification
+# ---------------------------------------------------------------------------
+
+def _extract_players(query: str) -> list[str]:
+    """Find player names mentioned in the query. Returns list of formatted names."""
+    path = OUTPUTS / "latest_predictions.csv"
+    if not path.exists():
+        return []
+    try:
+        df = pd.read_csv(path, usecols=["player_name"])
+        q_lower = query.lower()
+        matched = []
+        for raw in df["player_name"]:
+            name = _fmt_name(str(raw))
+            parts = name.lower().split()
+            # Match on last name (≥4 chars) appearing as a word in the query
+            last = parts[-1] if parts else ""
+            if len(last) >= 4 and last in q_lower:
+                matched.append(name)
+        return matched
+    except Exception:
+        return []
+
+
+def _classify_query(query: str) -> dict:
+    """Return intent flags from user query."""
+    q = query.lower()
+    players = _extract_players(q)
+    return {
+        "players":           players,
+        "is_player":         bool(players),
+        "is_bet":            any(w in q for w in ["bet", "wager", "odds", "value", "edge", "parlay", "prop", "book", "line", "wager"]),
+        "is_live":           any(w in q for w in ["live", "leaderboard", "leading", "update", "score", "round", "cut", "leader", "current", "standing", "position"]),
+        "is_lineup":         any(w in q for w in ["lineup", "pick", "use", "fantasy", "team", "build", "choose", "start", "who should", "draft"]),
+        "is_weather":        any(w in q for w in ["weather", "wind", "rain", "forecast", "conditions", "temperature", "temp"]),
+        "is_course":         any(w in q for w in ["course", "hole", "layout", "yardage", "field", "green", "fairway", "rough", "setup"]),
+        "is_value":          any(w in q for w in ["value", "underdog", "long shot", "longshot", "undervalued", "sharp"]),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Context blocks
+# ---------------------------------------------------------------------------
+
+def _predictions_block(top_n: int = 15) -> str:
+    """Top N players ranked by win probability."""
     path = OUTPUTS / "latest_predictions.csv"
     if not path.exists():
         return ""
@@ -141,53 +174,243 @@ def _predictions_block(top_n: int = 15) -> str:
         df = df.sort_values("win_prob", ascending=False).head(top_n).copy()
         df["player_name"] = df["player_name"].apply(_fmt_name)
 
-        # Build output frame with plain-English columns
         out = pd.DataFrame()
-        out["Player"]       = df["player_name"]
+        out["Player"] = df["player_name"]
 
-        # Win Odds + implied % together so value comparisons are explicit
         def _odds_with_implied(odds):
             o = _fmt_odds(odds)
             imp = _american_to_implied(odds)
             if imp is not None:
                 return f"{o} ({imp*100:.0f}% implied)"
             return o
+
         out["Win Odds (Implied%)"] = df["odds_to_win"].apply(_odds_with_implied)
+        out["Est. Win%"]   = (df["win_prob"] * 100).round(1).astype(str) + "%"
+        out["World Rank"]  = df["world_rank"].apply(lambda x: f"#{int(x)}" if pd.notna(x) else "—")
+        out["Top 10%"]     = (df["top10_prob"] * 100).round(0).astype(int).astype(str) + "%"
+        out["Course Hist"] = df.apply(_fmt_course_history, axis=1)
 
-        # Est. Win% — clearly labelled as our estimate, for value play comparisons
-        out["Est. Win%"]    = (df["win_prob"] * 100).round(1).astype(str) + "%"
-        out["World Rank"]   = df["world_rank"].apply(
-            lambda x: f"#{int(x)}" if pd.notna(x) else "—"
-        )
-        out["Top 10%"]      = (df["top10_prob"] * 100).round(0).astype(int).astype(str) + "%"
-        out["Top 5%"]       = (df["top5_prob"] * 100).round(0).astype(int).astype(str) + "%"
-        out["Course History"] = df.apply(_fmt_course_history, axis=1)
-
-        # Strokes Gained (season, signed vs field average)
-        for sg_col, label in [
-            ("sg_total", "SG Total"),
-            ("sg_ott",   "SG OTT"),
-            ("sg_app",   "SG APP"),
-            ("sg_putt",  "SG Putt"),
-        ]:
+        for sg_col, label in [("sg_total","SG Total"),("sg_ott","OTT"),("sg_app","APP"),("sg_putt","Putt")]:
             if sg_col in df.columns:
-                out[label] = df[sg_col].apply(
-                    lambda x: f"{x:+.2f}" if pd.notna(x) else "—"
-                )
+                out[label] = df[sg_col].apply(lambda x: f"{x:+.2f}" if pd.notna(x) else "—")
 
-        # Live position if available
         if "live_top10_prob" in df.columns:
-            live_t10 = (df["live_top10_prob"] * 100).round(0).fillna(0).astype(int)
-            out["Live T10%"] = live_t10.astype(str) + "%"
+            out["Live T10%"] = (df["live_top10_prob"] * 100).round(0).fillna(0).astype(int).astype(str) + "%"
 
         note = (
-            "IMPORTANT: Est. Win% is our win probability estimate — compare this to Implied% for value plays. "
-            "Top 10% and Top 5% are finish probabilities — do NOT compare these to win odds. "
-            "SG = Strokes Gained vs field average. OTT = off the tee, APP = approach, Putt = putting."
+            "Est. Win% is our estimate — compare to Implied% for value. "
+            "Top 10% is a finish probability, not a win probability — don't compare to win odds. "
+            "SG = Strokes Gained vs field average."
         )
-        return f"## FIELD OVERVIEW — Top {top_n} contenders\n" + note + "\n" + out.to_markdown(index=False)
+        return f"## FIELD OVERVIEW — Top {top_n} contenders\n{note}\n" + out.to_markdown(index=False)
     except Exception as e:
         return f"## FIELD OVERVIEW\n(unavailable: {e})"
+
+
+def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> str:
+    """Detailed stat card for each named player — SG breakdown, odds, finish probs, course history."""
+    if not player_names:
+        return ""
+    path = OUTPUTS / "latest_predictions.csv"
+    if not path.exists():
+        return ""
+    try:
+        df = pd.read_csv(path)
+        df["player_name"] = df["player_name"].apply(_fmt_name)
+
+        lines = [f"## PLAYER SPOTLIGHT: {', '.join(player_names)}"]
+
+        for pname in player_names:
+            last = pname.split()[-1].lower()
+            mask = df["player_name"].str.lower().str.contains(last, na=False)
+            rows = df[mask]
+            if rows.empty:
+                lines.append(f"\n### {pname}: No data found")
+                continue
+
+            r = rows.iloc[0]
+            actual = r["player_name"]
+            lines.append(f"\n### {actual}")
+
+            # Odds + value
+            odds = _fmt_odds(r.get("odds_to_win"))
+            win_prob = float(r.get("win_prob", 0) or 0)
+            implied = _american_to_implied(r.get("odds_to_win"))
+            value_flag = ""
+            if implied and win_prob > implied * 1.25:
+                value_flag = " ← VALUE (model likes more than market)"
+            elif implied and win_prob < implied * 0.75:
+                value_flag = " ← FADE (market likes more than model)"
+            if implied:
+                lines.append(
+                    f"**Odds**: {odds} ({implied*100:.0f}% implied) | "
+                    f"**Our estimate**: {win_prob*100:.1f}% to win{value_flag}"
+                )
+
+            # Finish probabilities
+            t5  = float(r.get("top5_prob",  0) or 0)
+            t10 = float(r.get("top10_prob", 0) or 0)
+            t20 = float(r.get("top20_prob", 0) or 0)
+            lines.append(f"**Finish probs**: Top 5: {t5*100:.0f}% | Top 10: {t10*100:.0f}% | Top 20: {t20*100:.0f}%")
+
+            # World rank + form trend
+            wr = r.get("world_rank")
+            form = r.get("form_trend", "")
+            rank_str = f"World #{int(wr)}" if pd.notna(wr) else ""
+            form_str = f" | Form: {form}" if form and str(form) not in ("nan", "") else ""
+            if rank_str:
+                lines.append(f"**Ranking**: {rank_str}{form_str}")
+
+            # SG breakdown
+            sg_parts = []
+            for col, label in [("sg_total","Total"),("sg_ott","OTT"),("sg_app","APP"),("sg_arg","ARG"),("sg_putt","Putt")]:
+                v = r.get(col)
+                if pd.notna(v):
+                    sg_parts.append(f"{label}: {float(v):+.2f}")
+            if sg_parts:
+                lines.append(f"**Strokes Gained**: {' | '.join(sg_parts)}")
+
+            # Season SG field ranks
+            rank_parts = []
+            for col, label in [("season_sg_ott_field_rank","OTT rank"),("season_sg_app_field_rank","APP rank"),("season_sg_putt_field_rank","Putt rank")]:
+                v = r.get(col)
+                if pd.notna(v):
+                    rank_parts.append(f"{label}: #{int(v)}")
+            if rank_parts:
+                lines.append(f"**Season SG field rank (this field)**: {' | '.join(rank_parts)}")
+
+            # Course history
+            hist = _fmt_course_history(r)
+            course_sg = r.get("course_sg_total_avg")
+            course_sg_str = f" | Course SG avg: {float(course_sg):+.2f}" if pd.notna(course_sg) else ""
+            lines.append(f"**Course history**: {hist}{course_sg_str}")
+
+            # Live position if tournament is in progress
+            if "live_position" in r and pd.notna(r.get("live_position")):
+                total  = r.get("total", "?")
+                thru   = r.get("thru", "?")
+                live_w = r.get("live_win_prob")
+                live_str = f" | Live win%: {float(live_w)*100:.1f}%" if pd.notna(live_w) else ""
+                lines.append(f"**Live**: {r['live_position']} | {total} total | thru {thru}{live_str}")
+
+            # Projected score vs field
+            proj = r.get("projected_score_vs_field")
+            if pd.notna(proj):
+                lines.append(f"**Projected score vs field**: {float(proj):+.2f} strokes")
+
+        return "\n".join(lines)
+    except Exception as e:
+        return f"## PLAYER SPOTLIGHT\n(unavailable: {e})"
+
+
+def _odds_movement_block(player_names: list[str] | None = None) -> str:
+    """Price drift from odds snapshots — biggest movers, or movement for specific players."""
+    snap_dir = DATA / "odds" / "snapshots"
+    if not snap_dir.exists():
+        return ""
+    try:
+        snap_files = sorted(snap_dir.glob("odds_snapshot_*.csv"))
+        # Only use snapshots from the last 14 days
+        cutoff = datetime.now() - timedelta(days=14)
+        recent = []
+        for f in snap_files:
+            try:
+                ts_str = f.stem.replace("odds_snapshot_", "")
+                ts = datetime.strptime(ts_str, "%Y%m%d_%H%M")
+                if ts >= cutoff:
+                    recent.append(f)
+            except Exception:
+                continue
+
+        if len(recent) < 2:
+            return ""
+
+        first = pd.read_csv(recent[0])
+        last  = pd.read_csv(recent[-1])
+
+        for df in [first, last]:
+            df["player_name"] = df["player_name"].apply(_fmt_name)
+
+        merged = first.merge(last, on="player_name", suffixes=("_open", "_now"))
+        merged = merged.dropna(subset=["odds_numeric_open", "odds_numeric_now"])
+
+        def imp(o):
+            try:
+                o = float(o)
+                return 100 / (o + 100) if o > 0 else abs(o) / (abs(o) + 100)
+            except Exception:
+                return None
+
+        merged["prob_open"] = merged["odds_numeric_open"].apply(imp)
+        merged["prob_now"]  = merged["odds_numeric_now"].apply(imp)
+        merged = merged.dropna(subset=["prob_open", "prob_now"])
+        merged["prob_chg"] = merged["prob_now"] - merged["prob_open"]
+        merged = merged.sort_values("prob_chg", ascending=False)
+
+        if player_names:
+            p_lower = [p.lower() for p in player_names]
+            mask = merged["player_name"].str.lower().apply(
+                lambda n: any(pl in n or n in pl for pl in p_lower)
+            )
+            subset = merged[mask]
+        else:
+            # Top 5 shortened + top 5 lengthened
+            top5 = merged.head(5)
+            bot5 = merged.tail(5).sort_values("prob_chg")
+            subset = pd.concat([top5, bot5]).drop_duplicates()
+
+        if subset.empty:
+            return ""
+
+        t0 = recent[0].stem.replace("odds_snapshot_", "")
+        t1 = recent[-1].stem.replace("odds_snapshot_", "")
+        lines = [f"## ODDS MOVEMENT ({t0} → {t1})", "Positive = odds shortened (became more favored)."]
+
+        for _, row in subset.iterrows():
+            o_open = _fmt_odds(row["odds_numeric_open"])
+            o_now  = _fmt_odds(row["odds_numeric_now"])
+            chg    = row["prob_chg"]
+            arrow  = "▲" if chg > 0.005 else ("▼" if chg < -0.005 else "→")
+            pct    = f"{chg*100:+.1f}pp"
+            lines.append(f"- {row['player_name']}: {o_open} → {o_now} {arrow} ({pct})")
+
+        return "\n".join(lines)
+    except Exception as e:
+        return f"## ODDS MOVEMENT\n(unavailable: {e})"
+
+
+def _weather_block(tid: str) -> str:
+    """4-round weather forecast from cached weather JSON."""
+    if not tid:
+        return ""
+    path = DATA / "weather" / f"{tid}.json"
+    if not path.exists():
+        return ""
+    try:
+        with open(path) as f:
+            data = json.load(f)
+        daily = data.get("daily", [])
+        if not daily:
+            return ""
+        round_labels = ["Thursday (R1)", "Friday (R2)", "Saturday (R3)", "Sunday (R4)"]
+        lines = ["## WEATHER FORECAST"]
+        for i, day in enumerate(daily[:4]):
+            label  = round_labels[i] if i < 4 else f"Day {i+1}"
+            hi     = day.get("temperature", {}).get("maxTempF", "?").replace("°F","")
+            lo     = day.get("temperature", {}).get("minTempF", "?").replace("°F","")
+            wind   = day.get("windSpeedMPH", "?")
+            precip = day.get("precipitation", "?")
+            desc   = day.get("condition", "").replace("_", " ").title()
+            wdir   = day.get("windDirection", "").replace("_", " ").title()
+            lines.append(
+                f"- {label}: {desc} | {lo}–{hi}°F | Wind: {wind} mph {wdir} | Precip: {precip}"
+            )
+        saved = data.get("saved_at", "")
+        if saved:
+            lines.append(f"_(forecast as of {saved[:10]})_")
+        return "\n".join(lines)
+    except Exception as e:
+        return f"## WEATHER\n(unavailable: {e})"
 
 
 def _live_leaderboard_block(tid: str) -> str:
@@ -216,8 +439,8 @@ def _live_leaderboard_block(tid: str) -> str:
                 cp = meta.get("cut_projection", {})
                 if cp:
                     cut_score = cp.get("projected_cut_score", "?")
-                    bubble = cp.get("bubble_count", "?")
-                    cut_info = (
+                    bubble    = cp.get("bubble_count", "?")
+                    cut_info  = (
                         f"\n\n## CUT PROJECTION: {cut_score:+d} | {bubble} players on bubble"
                         if isinstance(cut_score, int)
                         else f"\n\n## CUT PROJECTION: {cut_score} | {bubble} players on bubble"
@@ -228,7 +451,6 @@ def _live_leaderboard_block(tid: str) -> str:
         if rounds_complete == 0:
             return cut_info
 
-        # Normalize names in leaderboard for merge
         df["player_name"] = df["player_name"].apply(_fmt_name)
 
         cols = ["position", "player_name", "total", "thru", "current_round"]
@@ -255,7 +477,7 @@ def _live_leaderboard_block(tid: str) -> str:
 
 
 def _recommended_bets_block(top_n: int = 10) -> str:
-    """Top recommended bets in plain-English terms."""
+    """Top recommended bets."""
     path = DATA / "odds" / "recommended_bets_latest.csv"
     if not path.exists():
         return ""
@@ -265,30 +487,22 @@ def _recommended_bets_block(top_n: int = 10) -> str:
         df = df.sort_values("edge_pts", ascending=False).head(top_n)
 
         out = pd.DataFrame()
-        out["Market"]       = df["market"] if "market" in df.columns else "—"
-        out["Player"]       = df["player_name"].apply(_fmt_name)
-        out["Book"]         = df["book"] if "book" in df.columns else "—"
-        out["Odds"]         = df["odds_american"].apply(
-            lambda x: _fmt_odds(x) if pd.notna(x) else "—"
-        )
-        # Book implied % and model estimate — clearly scoped to the specific market
+        out["Market"]  = df["market"] if "market" in df.columns else "—"
+        out["Player"]  = df["player_name"].apply(_fmt_name)
+        out["Book"]    = df["book"] if "book" in df.columns else "—"
+        out["Odds"]    = df["odds_american"].apply(lambda x: _fmt_odds(x) if pd.notna(x) else "—")
         if "book_prob" in df.columns:
-            out["Book Says (this market)"] = (df["book_prob"] * 100).round(1).astype(str) + "%"
+            out["Book Says"] = (df["book_prob"] * 100).round(1).astype(str) + "%"
         if "model_prob" in df.columns:
-            out["We Think (this market)"]  = (df["model_prob"] * 100).round(1).astype(str) + "%"
+            out["We Think"]  = (df["model_prob"] * 100).round(1).astype(str) + "%"
         if "ev_per_1" in df.columns:
-            out["EV / $1"]   = df["ev_per_1"].round(2).apply(
-                lambda x: f"+${x:.2f}" if x > 0 else f"-${abs(x):.2f}"
-            )
+            out["EV/$1"] = df["ev_per_1"].round(2).apply(lambda x: f"+${x:.2f}" if x > 0 else f"-${abs(x):.2f}")
         if "confidence" in df.columns:
-            out["Confidence"] = df["confidence"].apply(
-                lambda x: "High" if x >= 0.9 else ("Med" if x >= 0.7 else "Low")
-            )
+            out["Conf"] = df["confidence"].apply(lambda x: "High" if x >= 0.9 else ("Med" if x >= 0.7 else "Low"))
 
         note = (
-            "Each row is a specific market (top20, top10, h2h, outright win). "
-            "'Book Says' and 'We Think' apply to THAT market only — not to win probability. "
-            "EV / $1 = expected profit per $1 wagered. Positive = good bet long-term."
+            "Each row is a specific market. 'Book Says' and 'We Think' are for THAT market only. "
+            "EV/$1 = expected profit per $1 wagered."
         )
         return "## TOP BETS THIS WEEK\n" + note + "\n" + out.to_markdown(index=False)
     except Exception as e:
@@ -296,23 +510,15 @@ def _recommended_bets_block(top_n: int = 10) -> str:
 
 
 def _course_profile_block(tid: str) -> str:
-    """Course context from hole-level and summary profile CSVs.
-
-    Reads data/course_characteristics/r{tid}_{year}.csv (per-hole) and
-    r{tid}_{year}_profiles.csv (summary). Emits course facts and the 3
-    hardest / 3 easiest holes so the model can reason about course fit.
-    """
+    """Course summary + hardest/easiest holes."""
     if not tid:
         return ""
     tid_lower = tid.lower()
     year = datetime.now().year
-
     hole_path    = DATA / "course_characteristics" / f"{tid_lower}_{year}.csv"
     profile_path = DATA / "course_characteristics" / f"{tid_lower}_{year}_profiles.csv"
-
     lines = []
 
-    # Summary stats
     if profile_path.exists():
         try:
             p = pd.read_csv(profile_path).iloc[0]
@@ -325,19 +531,12 @@ def _course_profile_block(tid: str) -> str:
             p3      = int(p.get("par3_count", 0))
             p4      = int(p.get("par4_count", 0))
             p5      = int(p.get("par5_count", 0))
-
             lines.append(f"## COURSE PROFILE: {course}")
-            lines.append(
-                f"Par {par} | {yardage} yards | Layout: {p3} par-3s, {p4} par-4s, {p5} par-5s"
-            )
-            lines.append(
-                f"Field scoring avg: {scoring:.3f} (par+{scoring-par:.3f}) | "
-                f"Birdie rate: {birdie:.1f}% | Bogey rate: {bogey:.1f}%"
-            )
+            lines.append(f"Par {par} | {yardage} yards | {p3} par-3s, {p4} par-4s, {p5} par-5s")
+            lines.append(f"Field scoring avg: {scoring:.3f} | Birdie rate: {birdie:.1f}% | Bogey rate: {bogey:.1f}%")
         except Exception as e:
-            lines.append(f"## COURSE PROFILE\n(summary unavailable: {e})")
+            lines.append(f"## COURSE PROFILE\n(unavailable: {e})")
 
-    # Per-hole difficulty
     if hole_path.exists():
         try:
             h = pd.read_csv(hole_path).sort_values("difficulty_rank")
@@ -348,19 +547,17 @@ def _course_profile_block(tid: str) -> str:
                 return (
                     f"  Hole {int(row['hole_num'])} "
                     f"(Par {int(row['hole_par'])}, {int(row['hole_yards'])} yds): "
-                    f"avg {row['scoring_avg']:.3f} "
-                    f"({row['scoring_diff']:+.3f} vs par)"
+                    f"avg {row['scoring_avg']:.3f} ({row['scoring_diff']:+.3f} vs par)"
                 )
 
-            lines.append("\nHardest holes (by scoring average vs par):")
+            lines.append("\nHardest holes:")
             for _, r in hardest.iterrows():
                 lines.append(_hole_str(r))
-
-            lines.append("\nEasiest holes (birdie opportunities):")
+            lines.append("\nEasiest holes (birdie chances):")
             for _, r in easiest.iterrows():
                 lines.append(_hole_str(r))
-        except Exception as e:
-            lines.append(f"(hole-level data unavailable: {e})")
+        except Exception:
+            pass
 
     return "\n".join(lines) if lines else ""
 
@@ -379,33 +576,32 @@ def _expert_picks_block() -> str:
             expert = row.get("expert_name", "?")
             winner = _fmt_name(str(row.get("winner_name", "?")))
             comment = str(row.get("comment", "")).strip()
-            short_comment = comment[:120] + "…" if len(comment) > 120 else comment
-            lines.append(f"- **{expert}** → {winner}: {short_comment}")
+            short = comment[:120] + "…" if len(comment) > 120 else comment
+            lines.append(f"- **{expert}** → {winner}: {short}")
         return "\n".join(lines)
     except Exception as e:
         return f"## EXPERT CONSENSUS\n(unavailable: {e})"
 
 
 def _my_picks_block() -> str:
-    """Current week picks + remaining uses from usage tracker."""
+    """Current week picks + remaining uses."""
     path = DATA / "fantasy" / "usage_tracker_2026.json"
     if not path.exists():
         return ""
     try:
         with open(path) as f:
             data = json.load(f)
-
-        weekly = data.get("weekly_lineups", {})
-        current_week = weekly[max(weekly.keys())] if weekly else None
-        picks = data.get("picks", {})
+        weekly   = data.get("weekly_lineups", {})
+        cur_week = weekly[max(weekly.keys())] if weekly else None
+        picks    = data.get("picks", {})
         max_uses = int(data.get("max_uses_per_player", 3))
 
         lines = ["## MY PICKS THIS WEEK"]
-        if current_week:
-            lineup = current_week.get("lineup", [])
-            tournament = current_week.get("tournament", "")
+        if cur_week:
+            lineup     = cur_week.get("lineup", [])
+            tournament = cur_week.get("tournament", "")
             lines.append(
-                f"**Week {current_week.get('week', '?')} lineup — {tournament}**: "
+                f"**Week {cur_week.get('week','?')} lineup — {tournament}**: "
                 + ", ".join(lineup)
             )
 
@@ -421,13 +617,7 @@ def _my_picks_block() -> str:
 
 
 def _league_context_block() -> str:
-    """League standings, current week picks, and player ownership across all 28 teams.
-
-    Reads:
-      data/fantasy/league_standings.csv     — season standings
-      data/fantasy/league_weekly_picks.csv  — this week's picks + earnings per team
-      data/fantasy/league_player_usage.csv  — all-time usage per player per team
-    """
+    """League standings, weekly picks, ownership, and rival intel."""
     standings_path = DATA / "fantasy" / "league_standings.csv"
     weekly_path    = DATA / "fantasy" / "league_weekly_picks.csv"
     usage_path     = DATA / "fantasy" / "league_player_usage.csv"
@@ -435,34 +625,28 @@ def _league_context_block() -> str:
     if not standings_path.exists():
         return ""
 
+    MY_TEAM = "WineTime"
     lines = ["## LEAGUE CONTEXT (Louisiana/Delaware Connection — 28 teams, max 3 uses/player)"]
 
-    MY_TEAM = "WineTime"
-
-    # --- Season standings (top 5 + WineTime) ---
     try:
         standings = pd.read_csv(standings_path)
-        my_row = standings[standings["team_name"] == MY_TEAM]
-        my_place = my_row["place"].iloc[0] if not my_row.empty else "?"
-        my_earnings = my_row["earnings"].iloc[0] if not my_row.empty else "?"
-        my_back = my_row["earnings_back"].iloc[0] if not my_row.empty else "?"
-
-        lines.append(f"\n**Season Standings — {MY_TEAM} is {my_place} | {my_earnings} | {my_back} back**")
+        my_row    = standings[standings["team_name"] == MY_TEAM]
+        my_place  = my_row["place"].iloc[0] if not my_row.empty else "?"
+        my_earn   = my_row["earnings"].iloc[0] if not my_row.empty else "?"
+        my_back   = my_row["earnings_back"].iloc[0] if not my_row.empty else "?"
+        lines.append(f"\n**Season Standings — {MY_TEAM} is {my_place} | {my_earn} | {my_back} back**")
         top5 = standings.head(5)[["place", "team_name", "owner", "earnings", "earnings_back"]]
         lines.append(top5.to_markdown(index=False))
         if not my_row.empty and int(my_row.index[0]) >= 5:
-            lines.append(f"...  {my_place} | {MY_TEAM} | {my_earnings} | {my_back} back")
+            lines.append(f"...  {my_place} | {MY_TEAM} | {my_earn} | {my_back} back")
     except Exception as e:
         lines.append(f"(standings unavailable: {e})")
 
-    # --- Current week picks and results ---
     if weekly_path.exists():
         try:
             weekly = pd.read_csv(weekly_path)
-            # Sort by total earnings desc
             weekly = weekly.sort_values("total_earnings", ascending=False).reset_index(drop=True)
             my_week = weekly[weekly["team_name"] == MY_TEAM]
-
             if not my_week.empty:
                 r = my_week.iloc[0]
                 lines.append(
@@ -473,39 +657,29 @@ def _league_context_block() -> str:
                     f"Total ${r['total_earnings']:,}**"
                 )
 
-            # Show top 12 teams by earnings this week + always pin WineTime
             top12 = weekly.head(12)
             if MY_TEAM not in top12["team_name"].values:
-                my_week_row = weekly[weekly["team_name"] == MY_TEAM]
-                top12 = pd.concat([top12, my_week_row]).drop_duplicates()
+                top12 = pd.concat([top12, weekly[weekly["team_name"] == MY_TEAM]]).drop_duplicates()
             lines.append(f"\n**Current week standings (top 12 + {MY_TEAM}):**")
-            display = top12[["weekly_rank", "team_name", "player_1", "player_2", "player_3", "total_earnings"]].copy()
+            display = top12[["weekly_rank","team_name","player_1","player_2","player_3","total_earnings"]].copy()
             display["total_earnings"] = display["total_earnings"].apply(lambda x: f"${x:,}")
             lines.append(display.to_markdown(index=False))
 
-            # Player ownership this week
             all_picks = pd.concat([
                 weekly[["player_1"]].rename(columns={"player_1": "player"}),
                 weekly[["player_2"]].rename(columns={"player_2": "player"}),
                 weekly[["player_3"]].rename(columns={"player_3": "player"}),
             ]).query("player != 'VACANT'")["player"].value_counts()
-
             lines.append("\n**Player ownership this week (# of teams):**")
-            ownership_str = " | ".join(f"{p}: {c}" for p, c in all_picks.items())
-            lines.append(ownership_str)
-
+            lines.append(" | ".join(f"{p}: {c}" for p, c in all_picks.items()))
         except Exception as e:
             lines.append(f"(weekly picks unavailable: {e})")
 
-    # --- Rival intel: which competitor teams are locked out of elite players ---
     if usage_path.exists():
         try:
             usage = pd.read_csv(usage_path)
-
-            # Teams that have used a player all 3 times (locked out forever)
             locked = usage[usage["uses_left"] == 0].copy()
             if not locked.empty:
-                # Group by player: list which rival teams can NEVER use them again
                 locked_summary = (
                     locked[locked["team_name"] != MY_TEAM]
                     .groupby("player")["team_name"]
@@ -514,14 +688,12 @@ def _league_context_block() -> str:
                     .rename(columns={"team_name": "locked_out_teams"})
                     .sort_values("player")
                 )
-                lines.append("\n**Rival teams locked out (used all 3x — can never use again):**")
-                lines.append("This is competitive intel: if a rival can't use Scheffler/McIlroy at a major, that's a significant disadvantage for them.")
+                lines.append("\n**Rival teams locked out of players (used all 3x):**")
                 lines.append(locked_summary.to_markdown(index=False))
 
-            # My team's own usage history (YOUR uses — this is what matters for YOUR decisions)
-            my_usage = usage[usage["team_name"] == MY_TEAM][["player", "times_used", "uses_left", "total_earned"]]
+            my_usage = usage[usage["team_name"] == MY_TEAM][["player","times_used","uses_left","total_earned"]]
             if not my_usage.empty:
-                lines.append(f"\n**{MY_TEAM} (your team) player use history — uses_left is what constrains YOUR picks:**")
+                lines.append(f"\n**{MY_TEAM} player use history:**")
                 my_usage = my_usage.sort_values("times_used", ascending=False).copy()
                 my_usage["total_earned"] = my_usage["total_earned"].apply(lambda x: f"${int(x):,}")
                 lines.append(my_usage.to_markdown(index=False))
@@ -532,11 +704,7 @@ def _league_context_block() -> str:
 
 
 def _tournament_state(tid: str) -> dict:
-    """Return a dict describing exactly where we are in the tournament lifecycle.
-
-    Keys: name, round, round_status, phase
-    phase one of: pre_tournament | round_1 | round_2 | round_3 | round_4 | complete
-    """
+    """Return tournament phase dict."""
     state = {"name": tid, "round": 0, "round_status": "", "phase": "pre_tournament"}
     if not tid:
         return state
@@ -550,7 +718,7 @@ def _tournament_state(tid: str) -> dict:
         state["round"]        = int(meta.get("current_round", 0))
         state["round_status"] = meta.get("round_status", "")
         state["fetched_at"]   = meta.get("fetched_at", "")
-        r = state["round"]
+        r  = state["round"]
         rs = state["round_status"].lower()
         if rs == "official" and r == 4:
             state["phase"] = "complete"
@@ -564,22 +732,22 @@ def _tournament_state(tid: str) -> dict:
 
 
 def _tournament_state_block(tid: str) -> str:
-    """Inject a clear tournament state header so the LLM knows exactly how to frame responses."""
-    ts = _tournament_state(tid)
+    """Inject tournament state header so the LLM knows how to frame responses."""
+    ts    = _tournament_state(tid)
     phase = ts["phase"]
     name  = ts["name"]
     r     = ts["round"]
 
     if phase == "pre_tournament":
-        status_line = f"PRE-TOURNAMENT — no rounds have been played yet."
+        status_line = "PRE-TOURNAMENT — no rounds have been played yet."
         instruction = (
             "Focus on pre-tournament analysis: predictions, betting value, lineup decisions, course fit. "
             "Do not reference live scores or leaderboard positions."
         )
     elif phase == "complete":
-        status_line = f"TOURNAMENT COMPLETE — all 4 rounds are official."
+        status_line = "TOURNAMENT COMPLETE — all 4 rounds are official."
         instruction = (
-            "This tournament is FINISHED. When asked about it, reference final results and what happened. "
+            "This tournament is FINISHED. When asked about it, reference final results. "
             "Shift any lineup/betting questions toward the NEXT TOURNAMENT on the schedule."
         )
     else:
@@ -588,13 +756,13 @@ def _tournament_state_block(tid: str) -> str:
         instruction = (
             f"We are mid-tournament after Round {r}. "
             "Focus on the live leaderboard: who's leading, who's surged or faded, who still has a realistic chance. "
-            f"A player needs to be within ~{max(4, rounds_remaining * 4)} strokes to have a serious chance at winning. "
-            "Betting questions should focus on in-play value based on current position. "
-            "Lineup questions should reference the current week's picks since they are already locked."
+            f"A player needs to be within ~{max(4, rounds_remaining * 4)} strokes to have a serious chance. "
+            "Betting questions: focus on in-play value based on current position. "
+            "Lineup questions: picks are already locked for this week."
         )
 
     fetched = ts.get("fetched_at", "")
-    freshness = f" (data last refreshed: {fetched[:16].replace('T', ' ')} UTC)" if fetched else ""
+    freshness = f" (data last refreshed: {fetched[:16].replace('T',' ')} UTC)" if fetched else ""
 
     return (
         f"## TOURNAMENT STATUS: {name}\n"
@@ -604,11 +772,7 @@ def _tournament_state_block(tid: str) -> str:
 
 
 def _schedule_block(current_tid: str | None = None) -> str:
-    """Season schedule with completed, current, and upcoming tournaments.
-
-    Marks each week as: DONE (complete) | NOW (current) | NEXT | upcoming.
-    Warns when predictions for upcoming weeks are not yet available.
-    """
+    """Season schedule: completed, current, and next 3 upcoming."""
     path = DATA / "raw" / "schedule_2026.csv"
     if not path.exists():
         return ""
@@ -616,7 +780,6 @@ def _schedule_block(current_tid: str | None = None) -> str:
         sched = pd.read_csv(path)
         today = datetime.now().date()
 
-        # Detect which TIDs have complete leaderboards
         complete_tids = set()
         for mf in glob.glob(str(DATA / "live" / "leaderboard_r*_meta.json")):
             try:
@@ -628,20 +791,19 @@ def _schedule_block(current_tid: str | None = None) -> str:
                 pass
 
         lines = ["## 2026 SEASON SCHEDULE"]
-        lines.append("(Predictions are only available for the CURRENT week. For upcoming weeks, advise based on player quality, world ranking, and course history.)")
+        lines.append("(Predictions are only available for the CURRENT week.)")
 
         upcoming_shown = 0
-        upcoming_limit = 3
-        skipped_upcoming = 0
+        skipped = 0
 
         for _, row in sched.iterrows():
-            tid      = str(row.get("tournament_id", ""))
-            name     = row.get("tournament_name", "")
-            ttype    = row.get("tournament_type", "")
-            purse    = row.get("purse", "")
-            week     = int(row.get("week", 0))
-            start    = str(row.get("start_date", ""))
-            end      = str(row.get("end_date", ""))
+            tid   = str(row.get("tournament_id", ""))
+            name  = row.get("tournament_name", "")
+            ttype = row.get("tournament_type", "")
+            purse = row.get("purse", "")
+            week  = int(row.get("week", 0))
+            start = str(row.get("start_date", ""))
+            end   = str(row.get("end_date", ""))
 
             try:
                 start_date = datetime.strptime(start, "%Y-%m-%d").date()
@@ -657,116 +819,171 @@ def _schedule_block(current_tid: str | None = None) -> str:
             elif is_current:
                 marker = "▶ NOW  "
             elif is_upcoming:
-                if upcoming_shown < upcoming_limit:
+                if upcoming_shown < 3:
                     marker = "→ NEXT " if upcoming_shown == 0 else "  "
                     upcoming_shown += 1
                 else:
-                    skipped_upcoming += 1
+                    skipped += 1
                     continue
             else:
-                continue  # past, non-done, non-current entries (shouldn't exist)
+                continue
 
-            lines.append(
-                f"{marker}Wk{week:02d} | {name} | {ttype} | {purse} | {start} – {end}"
-            )
+            lines.append(f"{marker}Wk{week:02d} | {name} | {ttype} | {purse} | {start} – {end}")
 
-        if skipped_upcoming:
-            lines.append(f"  ... + {skipped_upcoming} more upcoming tournaments")
+        if skipped:
+            lines.append(f"  ... + {skipped} more upcoming tournaments")
 
         return "\n".join(lines)
     except Exception as e:
         return f"## SCHEDULE\n(unavailable: {e})"
 
 
-def _tournament_header(tid: str) -> str:
-    """Tournament name from meta JSON."""
-    if not tid:
-        return ""
-    ts = _tournament_state(tid)
-    return f"## TOURNAMENT: {ts['name']} | {tid}"
-
-
 # ---------------------------------------------------------------------------
-# Main context builder
+# Main context builder — query-aware routing
 # ---------------------------------------------------------------------------
 
-def build_context(tournament_id: str | None = None) -> str:
-    """Assemble full system prompt context from all data sources."""
+_SYSTEM_PROMPT = """You are an expert golf analyst helping a user with fantasy lineup decisions, betting, and tournament analysis.
+Communicate like a knowledgeable golf fan talking to another fan — plain English, not technical jargon.
+
+COMMUNICATION RULES:
+- Use American odds (+1300, +600) and plain finish percentages.
+- SG = Strokes Gained. Positive = better than field average. OTT = off the tee, APP = approach, ARG = around the green, Putt = putting.
+- Never say 'model output', 'implied probability', 'edge pp', or 'win probability was X%'.
+- For pre-tournament expectations, say 'listed at +1300' or 'ranked #1 in the world'.
+- EV/$1 = expected profit per dollar wagered. Positive = good bet long-term.
+- When discussing course fit, reference specific holes, yardage, and which SG categories matter most.
+- For lineup advice, reference the user's uses remaining and league standing.
+
+VALUE PLAYS — CRITICAL RULE:
+- The field table has 'Est. Win%' and 'Win Odds (Implied%)'. To find value, compare Est. Win% to Implied%.
+- Example: Est. Win% = 17%, Implied% = 6% → market undervalues this player for a win bet.
+- Top 10% and Top 5% are finish probabilities — NEVER compare them to win odds.
+- For top 10 / top 20 bets, use the BETS TABLE which shows 'Book Says' vs 'We Think' per market.
+
+TOURNAMENT UPDATES:
+- 5+ strokes back with 1 round left is a very difficult deficit. Be realistic.
+- When noting over/underperformance, say 'Scheffler was the +1300 favorite but sits T15' — not probabilities.
+- Focus on actual tournament position, strokes to leader, and remaining holes."""
+
+
+def build_context(query: str = "", tournament_id: str | None = None) -> str:
+    """Assemble context relevant to the user's query.
+
+    Routes context blocks based on query intent:
+    - Player question  → player deep-dive card + compact field + odds movement + weather
+    - Bet question     → bets + odds movement + weather + compact field
+    - Live question    → leaderboard + predictions + my picks + league
+    - Lineup question  → predictions + expert picks + my picks + league
+    - Weather/course   → weather + course profile + compact field
+    - General          → full default (everything)
+    """
     if tournament_id is None:
         tournament_id = _detect_tournament_id()
 
-    sections = [
-        "You are an expert golf analyst helping a user with fantasy lineup decisions, betting, and tournament analysis.",
-        "Communicate like a knowledgeable golf fan talking to another fan — use plain English, not technical jargon.",
-        "",
-        "COMMUNICATION RULES:",
-        "- Use American odds (+1300, +600) and plain finish percentages. Reference course history and strokes gained stats.",
-        "- SG = Strokes Gained. Positive = better than field average, negative = worse. OTT = off the tee, APP = approach, Putt = putting.",
-        "- Never say 'model output', 'implied probability', 'edge pp', 'projected score vs field', or 'win probability was X%'.",
-        "- For pre-tournament expectations, say 'listed at +1300' or 'ranked #1 in the world' — not 'had a 21% win probability'.",
-        "- EV / $1 = expected profit per dollar wagered. Positive = good bet long-term.",
-        "- When discussing course fit, reference specific holes, yardage, and which SG categories matter.",
-        "- For lineup advice, reference the user's uses remaining and league standing.",
-        "",
-        "VALUE PLAYS — CRITICAL RULE:",
-        "- The field table has 'Est. Win%' and 'Win Odds (Implied%)'. To find value, compare Est. Win% to the Implied% in the odds.",
-        "- Example: Est. Win% = 17%, Implied% = 6% → the odds undervalue this player for a WIN bet.",
-        "- Top 10% and Top 5% measure finish placement — NEVER compare them to win odds. They are different markets.",
-        "- For top 10 / top 20 value, use the BETS TABLE which shows 'Book Says' vs 'We Think' for that specific market.",
-        "",
-        "TOURNAMENT UPDATES — RULES:",
-        "- 5+ strokes back with 1 round left is a very difficult deficit. Be realistic — don't call large gaps 'only X strokes'.",
-        "- When noting who has outperformed or underperformed, say 'Scheffler was the favorite at +1300 but sits T15' — not probabilities.",
-        "- Focus on actual tournament position, strokes to leader, and remaining holes.",
-        "",
-    ]
+    intent = _classify_query(query) if query.strip() else {
+        "players": [], "is_player": False, "is_bet": False,
+        "is_live": False, "is_lineup": False, "is_weather": False,
+        "is_course": False, "is_value": False,
+    }
 
+    sections = [_SYSTEM_PROMPT, ""]
+
+    # Always: tournament status
     if tournament_id:
-        sections.append(_tournament_header(tournament_id))
+        sections.append(f"## TOURNAMENT: {_tournament_state(tournament_id)['name']} | {tournament_id}")
         sections.append("")
         sections.append(_tournament_state_block(tournament_id))
         sections.append("")
 
-    sections.append(_predictions_block(top_n=15))
-    sections.append("")
-
-    if tournament_id:
-        course = _course_profile_block(tournament_id)
-        if course:
-            sections.append(course)
+    # ── Route by intent ────────────────────────────────────────────────────
+    if intent["is_player"]:
+        # Deep dive on the named player(s) + compact field for context
+        sections.append(_player_deep_dive_block(intent["players"], tournament_id))
+        sections.append("")
+        sections.append(_predictions_block(top_n=10))
+        sections.append("")
+        sections.append(_odds_movement_block(player_names=intent["players"]))
+        sections.append("")
+        if tournament_id:
+            sections.append(_weather_block(tournament_id))
             sections.append("")
-
-        live = _live_leaderboard_block(tournament_id)
-        if live:
-            sections.append(live)
+            sections.append(_live_leaderboard_block(tournament_id))
             sections.append("")
-
-    bets = _recommended_bets_block()
-    if bets:
-        sections.append(bets)
+        sections.append(_recommended_bets_block(top_n=8))
         sections.append("")
 
-    experts = _expert_picks_block()
-    if experts:
-        sections.append(experts)
+    elif intent["is_bet"] or intent["is_value"]:
+        # Bets + odds movement front-and-center, compact field, weather for context
+        sections.append(_predictions_block(top_n=12))
+        sections.append("")
+        sections.append(_recommended_bets_block(top_n=15))
+        sections.append("")
+        sections.append(_odds_movement_block())
+        sections.append("")
+        if tournament_id:
+            sections.append(_weather_block(tournament_id))
+            sections.append("")
+        sections.append(_expert_picks_block())
         sections.append("")
 
-    my_picks = _my_picks_block()
-    if my_picks:
-        sections.append(my_picks)
+    elif intent["is_live"]:
+        # Leaderboard first, then field context
+        if tournament_id:
+            sections.append(_live_leaderboard_block(tournament_id))
+            sections.append("")
+        sections.append(_predictions_block(top_n=15))
+        sections.append("")
+        sections.append(_my_picks_block())
+        sections.append("")
+        sections.append(_league_context_block())
         sections.append("")
 
-    league = _league_context_block()
-    if league:
-        sections.append(league)
+    elif intent["is_lineup"]:
+        # Fantasy-focused
+        sections.append(_predictions_block(top_n=15))
+        sections.append("")
+        sections.append(_expert_picks_block())
+        sections.append("")
+        sections.append(_my_picks_block())
+        sections.append("")
+        sections.append(_league_context_block())
+        sections.append("")
+        sections.append(_recommended_bets_block(top_n=5))
         sections.append("")
 
-    schedule = _schedule_block(current_tid=tournament_id)
-    if schedule:
-        sections.append(schedule)
+    elif intent["is_weather"] or intent["is_course"]:
+        if tournament_id:
+            sections.append(_weather_block(tournament_id))
+            sections.append("")
+            sections.append(_course_profile_block(tournament_id))
+            sections.append("")
+        sections.append(_predictions_block(top_n=10))
         sections.append("")
 
-    return "\n".join(sections)
+    else:
+        # General: full overview
+        sections.append(_predictions_block(top_n=15))
+        sections.append("")
+        if tournament_id:
+            sections.append(_course_profile_block(tournament_id))
+            sections.append("")
+            sections.append(_weather_block(tournament_id))
+            sections.append("")
+            sections.append(_live_leaderboard_block(tournament_id))
+            sections.append("")
+        sections.append(_recommended_bets_block())
+        sections.append("")
+        sections.append(_expert_picks_block())
+        sections.append("")
+        sections.append(_my_picks_block())
+        sections.append("")
+        sections.append(_league_context_block())
+        sections.append("")
+
+    # Always append schedule
+    sections.append(_schedule_block(current_tid=tournament_id))
+
+    return "\n".join(s for s in sections if s is not None)
 
 
 # ---------------------------------------------------------------------------
@@ -778,13 +995,7 @@ _FALLBACK_MODEL = "llama-3.1-8b-instant"
 
 
 def stream_response(messages: list[dict], api_key: str) -> Iterator[str]:
-    """Stream a response from Groq.
-
-    Attempts the primary model (llama-3.3-70b-versatile) first.  If Groq
-    returns a 429 rate-limit error, automatically falls back to
-    llama-3.1-8b-instant which has its own independent token quota, yielding
-    a brief notice before continuing.
-    """
+    """Stream a response from Groq with automatic rate-limit fallback."""
     from groq import Groq, RateLimitError
 
     client = Groq(api_key=api_key)
@@ -804,7 +1015,6 @@ def stream_response(messages: list[dict], api_key: str) -> Iterator[str]:
             if delta:
                 yield delta
     except RateLimitError:
-        # Primary model daily quota exhausted — fall back silently
         yield f"*(Daily limit reached for {_PRIMARY_MODEL} — switching to {_FALLBACK_MODEL})*\n\n"
         for chunk in _stream(_FALLBACK_MODEL):
             delta = chunk.choices[0].delta.content or ""

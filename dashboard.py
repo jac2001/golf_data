@@ -4003,8 +4003,12 @@ def fetch_live_leaderboard(tournament_id: str = None) -> tuple:
     return df, meta, None
 
 
-def render_live_leaderboard(df: pd.DataFrame, meta: dict):
-    """Render the live leaderboard."""
+def render_live_leaderboard(df: pd.DataFrame, meta: dict, my_picks: list | None = None):
+    """Render the live leaderboard.
+
+    my_picks: list of player name strings (e.g. ["Rory McIlroy", "Russell Henley"]).
+    Pick rows are highlighted in the table and a compact summary is shown above it.
+    """
     if df is None or df.empty:
         st.warning("No leaderboard data available")
         return
@@ -4202,7 +4206,57 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict):
     except Exception:
         _styled = display_df
 
-    st.caption("Click a player row to view their scorecard below.")
+    # ── My Picks summary + row highlighting ──────────────────────────────────
+    # Helper: fuzzy last-name match between a pick string and a leaderboard name
+    def _is_my_pick(lb_name: str, picks: list) -> bool:
+        lb_lower = str(lb_name).lower()
+        for p in picks:
+            last = p.strip().split()[-1].lower()
+            if last in lb_lower or lb_lower in p.strip().lower():
+                return True
+        return False
+
+    if my_picks:
+        # Build a compact "Your picks: Name Pos (Score) · ..." line from full df
+        _pick_parts = []
+        for _p in my_picks:
+            _last = _p.strip().split()[-1].lower()
+            _pmatch = df[df["player_name"].str.lower().str.contains(_last, na=False)]
+            if not _pmatch.empty:
+                _pr = _pmatch.iloc[0]
+                _ptotal = str(_pr.get("total", "?"))
+                _ppos   = str(_pr.get("position", "?"))
+                _pick_parts.append(
+                    f"<span style='color:#00c44f;font-weight:700;'>{_p.split()[0]} {_p.split()[-1]}</span>"
+                    f"<span style='color:#dde6f5;'> {_ppos} ({_ptotal})</span>"
+                )
+            else:
+                _pick_parts.append(f"<span style='color:#4a6080;'>{_p} (not found)</span>")
+        st.markdown(
+            "<div style='background:#0b1f0b;border:1px solid #1a4a1a;border-radius:8px;"
+            "padding:8px 14px;margin-bottom:10px;font-size:13px;'>"
+            "<span style='color:#4a6080;font-size:11px;font-weight:600;letter-spacing:.5px;"
+            "margin-right:10px;'>YOUR PICKS</span>"
+            + " &nbsp;·&nbsp; ".join(_pick_parts)
+            + "</div>",
+            unsafe_allow_html=True,
+        )
+
+        # Highlight pick rows in the styled dataframe with a green tint
+        def _highlight_picks_row(row):
+            player_col = "Player" if "Player" in row.index else "Player Name"
+            if _is_my_pick(str(row.get(player_col, "")), my_picks):
+                return [
+                    "background-color:#0b2a0b;font-weight:700;border-left:3px solid #00c44f"
+                ] * len(row)
+            return [""] * len(row)
+
+        try:
+            _styled = _styled.apply(_highlight_picks_row, axis=1)
+        except Exception:
+            pass
+
+    st.caption("Highlighted rows = your picks · Click a row to view scorecard")
     _lb_event = st.dataframe(
         _styled,
         hide_index=True,
@@ -6999,6 +7053,121 @@ if page == "🏆 This Week":
             
             
             
+            # ── At-a-Glance Summary Strip ─────────────────────────────────
+            # Four quick-read tiles: round status, your picks + live positions,
+            # top recommended bet, and your season standing. Everything you need
+            # to know at a glance before diving into the details below.
+            # Note: _field_id is resolved later; we use None here and fill in below.
+            _gl_meta_path = None
+
+            # 1. Round status from meta JSON
+            _gl_round_label  = "Pre-Tournament"
+            _gl_status_label = "Not started"
+            _gl_status_color = "#4a6080"
+            if _gl_meta_path and Path(_gl_meta_path).exists():
+                try:
+                    _gl_meta = json.loads(Path(_gl_meta_path).read_text())
+                    _gl_rnum = int(_gl_meta.get("current_round", 0))
+                    _gl_rs   = _gl_meta.get("round_status", "")
+                    if _gl_rnum > 0:
+                        _gl_round_label = f"Round {_gl_rnum} of 4"
+                    _gl_status_label = _gl_rs or "Scheduled"
+                    _gl_status_color = (
+                        "#00c44f" if "progress" in _gl_rs.lower()
+                        else "#ffa726" if "official" in _gl_rs.lower()
+                        else "#4a6080"
+                    )
+                except Exception:
+                    pass
+
+            # 2. My picks + live positions (last name + pos + score)
+            _gl_picks_html = "<span style='color:#4a6080;'>No picks recorded</span>"
+            _gl_tracker_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+            _gl_lb_path = None  # filled in after _field_id resolves below
+            if _gl_tracker_path.exists():
+                try:
+                    _gl_td  = json.loads(_gl_tracker_path.read_text())
+                    _gl_wks = _gl_td.get("weekly_lineups", {})
+                    _gl_cur = _gl_wks.get(f"week_{max(int(k.split('_')[1]) for k in _gl_wks)}", {})
+                    _gl_lineup = _gl_cur.get("lineup", [])
+                    _gl_lb_df  = pd.read_csv(_gl_lb_path) if (_gl_lb_path and Path(_gl_lb_path).exists()) else pd.DataFrame()
+                    _gl_parts  = []
+                    for _gp in _gl_lineup:
+                        _last = _gp.strip().split()[-1].lower()
+                        _first_word = _gp.strip().split()[0]
+                        if not _gl_lb_df.empty:
+                            _m = _gl_lb_df[_gl_lb_df["player_name"].str.lower().str.contains(_last, na=False)]
+                            if not _m.empty:
+                                _mr = _m.iloc[0]
+                                _gl_parts.append(
+                                    f"<span style='color:#00c44f;font-weight:700'>{_last.title()}</span>"
+                                    f" <span style='color:#dde6f5'>{_mr.get('position','?')} ({_mr.get('total','?')})</span>"
+                                )
+                                continue
+                        _gl_parts.append(f"<span style='color:#dde6f5'>{_last.title()}</span>")
+                    _gl_picks_html = " &nbsp;·&nbsp; ".join(_gl_parts) if _gl_parts else _gl_picks_html
+                except Exception:
+                    pass
+
+            # 3. Top recommended bet (highest edge_pts)
+            _gl_bet_label = "—"
+            _gl_bets_path = DATA_DIR / "odds" / "recommended_bets_latest.csv"
+            if _gl_bets_path.exists():
+                try:
+                    _gl_bets = pd.read_csv(_gl_bets_path)
+                    if not _gl_bets.empty:
+                        if "edge_pts" in _gl_bets.columns:
+                            _gl_bets = _gl_bets.sort_values("edge_pts", ascending=False)
+                        _tb = _gl_bets.iloc[0]
+                        _pname = str(_tb.get("player_name", "?")).split(",")[0].strip()
+                        _mkt   = str(_tb.get("market", "")).replace("top_", "Top ").replace("_", " ").title()
+                        _odds  = _tb.get("book_odds", _tb.get("odds", ""))
+                        _odds_str = f"+{int(_odds)}" if _odds and float(_odds) > 0 else str(int(_odds)) if _odds else ""
+                        _gl_bet_label = f"{_pname} · {_mkt}" + (f" · {_odds_str}" if _odds_str else "")
+                except Exception:
+                    pass
+
+            # 4. Season standing
+            _gl_rank_label = "—"
+            _gl_back_label = ""
+            _gl_standings_path = DATA_DIR / "fantasy" / "league_standings.csv"
+            if _gl_standings_path.exists():
+                try:
+                    _gl_st = pd.read_csv(_gl_standings_path)
+                    _gl_me = _gl_st[_gl_st["team_name"] == "WineTime"]
+                    if not _gl_me.empty:
+                        _gl_rank_label = f"{_gl_me.iloc[0]['place']} of {len(_gl_st)}"
+                        _gl_back_label = str(_gl_me.iloc[0].get("earnings_back", ""))
+                except Exception:
+                    pass
+
+            st.markdown(
+                f"""
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+            margin:12px 0 16px;padding:16px;
+            background:#0b1929;border:1px solid #1a3050;border-radius:10px;">
+  <div>
+    <div style="font-size:10px;color:#4a6080;font-weight:600;letter-spacing:.5px;margin-bottom:4px;">ROUND STATUS</div>
+    <div style="font-size:16px;font-weight:800;color:#dde6f5;">{_gl_round_label}</div>
+    <div style="font-size:12px;color:{_gl_status_color};font-weight:600;">{_gl_status_label}</div>
+  </div>
+  <div>
+    <div style="font-size:10px;color:#4a6080;font-weight:600;letter-spacing:.5px;margin-bottom:4px;">MY PICKS</div>
+    <div style="font-size:13px;line-height:1.6;">{_gl_picks_html}</div>
+  </div>
+  <div>
+    <div style="font-size:10px;color:#4a6080;font-weight:600;letter-spacing:.5px;margin-bottom:4px;">TOP BET</div>
+    <div style="font-size:13px;font-weight:600;color:#dde6f5;">{_gl_bet_label}</div>
+  </div>
+  <div>
+    <div style="font-size:10px;color:#4a6080;font-weight:600;letter-spacing:.5px;margin-bottom:4px;">SEASON RANK</div>
+    <div style="font-size:16px;font-weight:800;color:#ffa726;">{_gl_rank_label}</div>
+    <div style="font-size:11px;color:#4a6080;">{_gl_back_label} back</div>
+  </div>
+</div>""",
+                unsafe_allow_html=True,
+            )
+
             # Odds refresh button ------------
             _ref_col1, _ref_col2, _ref_col3 = st.columns([1, 1, 3])
             with _ref_col1:
@@ -7058,6 +7227,11 @@ if page == "🏆 This Week":
                             _field_id = _meta_tid
                     except Exception:
                         pass
+
+            # Now that _field_id is resolved, fill in the at-a-glance paths
+            if _field_id:
+                _gl_meta_path = DATA_DIR / "live" / f"leaderboard_{_field_id.lower()}_meta.json"
+                _gl_lb_path   = DATA_DIR / "live" / f"leaderboard_{_field_id.lower()}.csv"
 
             _field_file = None
             if _field_id:
@@ -8299,16 +8473,19 @@ elif page == "💬 Assistant":
                 st.markdown(_prompt)
             st.session_state["chat_history"].append({"role": "user", "content": _prompt})
 
-            # Use cached context — never rebuild per-message
-            _context = st.session_state.get(
-                "chat_context", "You are a golf analytics assistant."
-            )
+            # Build query-aware context for this specific message
+            try:
+                from scripts.chat.golf_chatbot import build_context as _build_ctx, stream_response as _stream_response
+                _cur_tid = _detect_tournament_id() if "_cur_tid" not in dir() else _cur_tid
+                _context = _build_ctx(query=_prompt, tournament_id=_cur_tid)
+            except Exception as _ctx_err:
+                _context = st.session_state.get("chat_context", "You are a golf analytics assistant.")
+
             _messages = [{"role": "system", "content": _context}]
             _messages += st.session_state["chat_history"][-20:]
 
             with st.chat_message("assistant"):
                 try:
-                    from scripts.chat.golf_chatbot import stream_response as _stream_response
                     _response_text = st.write_stream(_stream_response(_messages, _groq_key))
                 except Exception as _err:
                     _response_text = f"Error: {_err}"
@@ -9841,6 +10018,130 @@ elif page == "👤 Players":
                     st.markdown("#### 🎰 Betting Profile")
                     render_player_profile_card(profile, show_full=True)
 
+            # ── Recent Form Stats ──────────────────────────────────────────────
+            # Loads actual PGA Tour stat data from form_stats_2026.csv.
+            # Shows all 19 tracked stats grouped by category, with field rank
+            # (colored by percentile) and a trend arrow based on rank over the
+            # last 3 tournaments — so you can see if a player is improving or fading.
+            _fs_path = DATA_DIR / "historical" / "form_stats_2026.csv"
+            if _fs_path.exists():
+                try:
+                    _fs_all = pd.read_csv(_fs_path)
+                    # Fuzzy match: try exact name first, then last-name substring
+                    _fs_player = _fs_all[_fs_all["player_name"] == player_search]
+                    if _fs_player.empty:
+                        _fs_last = player_search.strip().split()[-1].lower()
+                        _fs_player = _fs_all[
+                            _fs_all["player_name"].str.lower().str.contains(_fs_last, na=False)
+                        ]
+
+                    if not _fs_player.empty:
+                        st.markdown("---")
+                        st.markdown("#### Recent Form Stats")
+                        st.caption("PGA Tour stats from this season · Rank = position among all players in that tournament · Trend = rank change over last 3 events")
+
+                        # Group stats into categories for readability
+                        # 2419=Bogey Avg/Rnd, 2414=Bogey Avoid% (scraper had wrong labels)
+                        _FS_GROUPS = {
+                            "Scoring":     [120, 156, 108, 160],
+                            "Driving":     [101, 102],
+                            "Approach":    [103, 331, 130, 299, 142, 143],
+                            "Putting":     [104, 119, 413],
+                            "Consistency": [352, 2414, 2419, 111],
+                        }
+                        # Override display names for mislabeled stats
+                        _FS_NAME_OVERRIDE = {
+                            2419: "Bogey Avg/Rnd",
+                            2414: "Bogey Avoid%",
+                        }
+                        # Which stats are "lower is better" (rank 1 = best = lowest value)
+                        _LOWER_BETTER = {104, 413, 142, 143, 299, 120, 2419, 2414}
+
+                        def _rank_color(rank):
+                            try:
+                                r = int(rank)
+                                if r <= 10:  return "#00c44f"
+                                if r <= 30:  return "#6ddb9a"
+                                if r <= 60:  return "#dde6f5"
+                                if r <= 100: return "#ffa726"
+                                return "#e53935"
+                            except Exception:
+                                return "#4a6080"
+
+                        def _trend_arrow(stat_id):
+                            """▲ improving / ▼ declining / → stable based on rank over last 3 events."""
+                            _sid_rows = _fs_player[_fs_player["stat_id"] == stat_id].sort_values("tournament_id")
+                            if len(_sid_rows) < 2:
+                                return "—", "#4a6080"
+                            ranks = pd.to_numeric(_sid_rows["rank"], errors="coerce").dropna().tolist()
+                            if len(ranks) < 2:
+                                return "—", "#4a6080"
+                            # Rank improving = number going down
+                            delta = ranks[-1] - ranks[-2]
+                            if delta <= -3:   return "▲", "#00c44f"
+                            elif delta >= 3:  return "▼", "#e53935"
+                            else:             return "→", "#4a6080"
+
+                        for _grp_name, _stat_ids in _FS_GROUPS.items():
+                            _grp_rows = []
+                            for _sid in _stat_ids:
+                                _sid_data = _fs_player[_fs_player["stat_id"] == _sid]
+                                if _sid_data.empty:
+                                    continue
+                                # Most recent tournament entry
+                                _latest = _sid_data.sort_values("tournament_id", ascending=False).iloc[0]
+                                _trend, _tcolor = _trend_arrow(_sid)
+                                _grp_rows.append({
+                                    "Stat":       _FS_NAME_OVERRIDE.get(_sid, _latest["stat_name"]),
+                                    "Value":      _latest["stat_value"],
+                                    "Rank":       int(_latest["rank"]) if pd.notna(_latest["rank"]) else "—",
+                                    "_rank_num":  _latest["rank"],
+                                    "Trend":      _trend,
+                                    "_tcolor":    _tcolor,
+                                    "Tournament": _latest["tournament_name"],
+                                })
+
+                            if not _grp_rows:
+                                continue
+
+                            st.markdown(
+                                f"<div style='font-size:11px;font-weight:700;color:#4a6080;"
+                                f"letter-spacing:.8px;text-transform:uppercase;"
+                                f"margin:14px 0 6px;'>{_grp_name}</div>",
+                                unsafe_allow_html=True,
+                            )
+
+                            # Render as a compact card grid (up to 3 per row)
+                            _row_items = _grp_rows
+                            _cols_per_row = min(3, len(_row_items))
+                            for _chunk_start in range(0, len(_row_items), _cols_per_row):
+                                _chunk = _row_items[_chunk_start:_chunk_start + _cols_per_row]
+                                _fcols = st.columns(len(_chunk))
+                                for _fc, _item in zip(_fcols, _chunk):
+                                    _rc = _rank_color(_item["Rank"])
+                                    with _fc:
+                                        st.markdown(
+                                            f"<div style='background:#0b1929;border:1px solid #1a3050;"
+                                            f"border-left:3px solid {_rc};border-radius:8px;"
+                                            f"padding:10px 12px;'>"
+                                            f"<div style='font-size:11px;color:#4a6080;margin-bottom:4px;"
+                                            f"white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>"
+                                            f"{_item['Stat']}</div>"
+                                            f"<div style='display:flex;justify-content:space-between;"
+                                            f"align-items:baseline;'>"
+                                            f"<span style='font-size:17px;font-weight:800;color:#dde6f5;'>"
+                                            f"{_item['Value']}</span>"
+                                            f"<span style='font-size:13px;font-weight:700;color:{_rc};'>"
+                                            f"#{_item['Rank']}</span>"
+                                            f"</div>"
+                                            f"<div style='font-size:12px;color:{_item['_tcolor']};margin-top:2px;'>"
+                                            f"{_item['Trend']}</div>"
+                                            f"</div>",
+                                            unsafe_allow_html=True,
+                                        )
+                except Exception:
+                    pass
+
             # Extra report action
             st.markdown("---")
             if st.button("📊 Full Stats Report", use_container_width=True, key="player_full_stats"):
@@ -9861,7 +10162,9 @@ elif page == "👤 Players":
             st.success(f"Loaded stats for {len(stats_df)} players")
 
             # Sub-tabs for each analysis type
-            deep_tab1, deep_tab2, deep_tab3 = st.tabs(["⛳ Strokes Gained", "🔥 Form Analysis", "🏌️ Course Fit"])
+            deep_tab1, deep_tab2, deep_tab3, deep_tab4 = st.tabs(
+                ["⛳ Strokes Gained", "🔥 Form Analysis", "🏌️ Course Fit", "📈 Tour Stats"]
+            )
 
             with deep_tab1:
                 render_strokes_gained_analysis(stats_df)
@@ -9885,6 +10188,140 @@ elif page == "👤 Players":
                     key="deep_course_history_player",
                 )
                 render_player_event_history_panel(_deep_player, stats_df, panel_title="History At This Course")
+
+            with deep_tab4:
+                st.markdown("### PGA Tour Stats — Full Field Rankings")
+                st.caption("Most recent available rank and value for each stat, across all players in the dataset. Click any column header to sort.")
+
+                _fs4_path = DATA_DIR / "historical" / "form_stats_2026.csv"
+                if not _fs4_path.exists():
+                    st.info("No form stats data found. Run the form stats scraper first.")
+                else:
+                    _fs4_df = pd.read_csv(_fs4_path)
+
+                    # For each player × stat, keep the row from the most recent tournament
+                    _tid_order = (
+                        _fs4_df[["tournament_id"]]
+                        .drop_duplicates()
+                        .assign(_sort=lambda d: d["tournament_id"].str.extract(r"(\d+)").astype(int))
+                        .sort_values("_sort", ascending=False)["tournament_id"]
+                        .tolist()
+                    )
+                    _tid_rank = {tid: i for i, tid in enumerate(_tid_order)}
+                    _fs4_df["_tid_rank"] = _fs4_df["tournament_id"].map(_tid_rank)
+                    _fs4_latest = (
+                        _fs4_df.sort_values("_tid_rank")
+                        .groupby(["player_name", "stat_id"], as_index=False)
+                        .first()
+                    )
+
+                    # Stat category groupings for column ordering
+                    # Note: 2414=Bogey Avoidance%, 2419=Bogey Avg/Rnd (mislabeled in scraper)
+                    _stat_categories = {
+                        "Scoring": [120, 156, 108, 160],
+                        "Driving": [101, 102],
+                        "Approach": [103, 331, 130, 299, 142, 143],
+                        "Putting": [104, 119, 413],
+                        "Consistency": [352, 2414, 2419, 111],
+                    }
+                    _ordered_stat_ids = []
+                    for _cat_ids in _stat_categories.values():
+                        _ordered_stat_ids.extend(_cat_ids)
+
+                    # Build stat_id → short display name
+                    _stat_labels = {
+                        101: "Drive Dist", 102: "Drive Acc%", 103: "GIR%",
+                        104: "Putts/Rnd", 108: "Birdie+%", 111: "Sand Save%",
+                        119: "1-Putt%", 120: "Scoring Avg", 130: "Scrambling%",
+                        142: "Par4 Avg", 143: "Par5 Avg", 156: "Birdies/Rnd",
+                        160: "Bounce Back%", 299: "Par3 Avg", 331: "Proximity(ft)",
+                        352: "Bogey Avoid%", 413: "3-Putt Avoid%",
+                        2414: "Bogey Avoid% (2)", 2419: "Bogey Avg/Rnd",
+                    }
+
+                    # Pivot: rank table (lower rank = better)
+                    _rank_pivot = _fs4_latest.pivot(
+                        index="player_name", columns="stat_id", values="rank"
+                    )
+                    _rank_pivot.columns = [_stat_labels.get(int(c), str(c)) for c in _rank_pivot.columns]
+
+                    # Pivot: value table
+                    _val_pivot = _fs4_latest.pivot(
+                        index="player_name", columns="stat_id", values="stat_value_numeric"
+                    )
+                    _val_pivot.columns = [_stat_labels.get(int(c), str(c)) for c in _val_pivot.columns]
+
+                    # Display mode toggle
+                    _fs4_mode = st.radio(
+                        "Display",
+                        ["Field Rank", "Stat Value"],
+                        horizontal=True,
+                        key="fs4_display_mode",
+                    )
+
+                    # Category filter
+                    _fs4_cat = st.selectbox(
+                        "Category",
+                        ["All"] + list(_stat_categories.keys()),
+                        key="fs4_category",
+                    )
+
+                    _display_df = _rank_pivot if _fs4_mode == "Field Rank" else _val_pivot
+
+                    # Filter to selected category columns
+                    if _fs4_cat != "All":
+                        _cat_ids = _stat_categories[_fs4_cat]
+                        _cat_cols = [_stat_labels.get(sid, str(sid)) for sid in _cat_ids if _stat_labels.get(sid) in _display_df.columns]
+                        _display_df = _display_df[[c for c in _cat_cols if c in _display_df.columns]]
+
+                    # Reorder columns by category order where possible
+                    _ordered_labels = [_stat_labels.get(sid, str(sid)) for sid in _ordered_stat_ids]
+                    _final_cols = [c for c in _ordered_labels if c in _display_df.columns]
+                    _extra_cols = [c for c in _display_df.columns if c not in _final_cols]
+                    _display_df = _display_df[_final_cols + _extra_cols]
+
+                    # Color rank cells: green=top10, yellow=top30, grey=top60, orange=top100, red=rest
+                    def _color_rank_cell(val):
+                        if pd.isna(val):
+                            return "color: #555"
+                        v = float(val)
+                        if v <= 10:
+                            return "color: #00c44f; font-weight:600"
+                        elif v <= 30:
+                            return "color: #6ddb9a"
+                        elif v <= 60:
+                            return "color: #dde6f5"
+                        elif v <= 100:
+                            return "color: #ffa726"
+                        else:
+                            return "color: #e53935"
+
+                    _display_df.index.name = "Player"
+                    _display_df = _display_df.reset_index()
+                    _display_df = _display_df.sort_values(_display_df.columns[1], ascending=True if _fs4_mode == "Field Rank" else False).reset_index(drop=True)
+
+                    st.caption(
+                        f"{len(_display_df)} players · {len(_display_df.columns)-1} stats · "
+                        f"Most recent: {_tid_order[0] if _tid_order else 'N/A'}"
+                    )
+
+                    if _fs4_mode == "Field Rank":
+                        _styled = (
+                            _display_df.style
+                            .applymap(_color_rank_cell, subset=[c for c in _display_df.columns if c != "Player"])
+                            .format(lambda x: f"{int(x)}" if pd.notna(x) and x == int(x) else ("" if pd.isna(x) else f"{x:.0f}"), subset=[c for c in _display_df.columns if c != "Player"])
+                        )
+                        st.dataframe(_styled, use_container_width=True, height=600, hide_index=True)
+                    else:
+                        st.dataframe(
+                            _display_df.style.format(
+                                {c: "{:.3f}" for c in _display_df.columns if c != "Player"},
+                                na_rep="—",
+                            ),
+                            use_container_width=True,
+                            height=600,
+                            hide_index=True,
+                        )
 
     with player_tab3:
         st.markdown("### ⚔️ Head-to-Head Comparison")
@@ -13031,7 +13468,7 @@ elif page == "🔴 Live":
 
     with tab1:
         if live_df is not None:
-            render_live_leaderboard(live_df, live_meta)
+            render_live_leaderboard(live_df, live_meta, my_picks=_picks_this_week)
         else:
             st.info("Select a tournament or fetch live data to view leaderboard")
 

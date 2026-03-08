@@ -108,8 +108,8 @@ FORM_STATS = {
 
     # Clutch / Consistency
     "160": ("Bounce Back", "Birdie+ after bogey+ %", True),
-    "02414": ("Par Breakers", "% of par 5s with birdie+", True),
-    "02419": ("Final Round Scoring", "Final round scoring avg", False),
+    "02414": ("Bogey Avoidance", "% of holes where bogey is made (lower = better)", False),
+    "02419": ("Bogey Average", "Average bogeys per round (lower = better)", False),
 
     # Additional valuable stats
     "108": ("Birdie or Better %", "% of holes with birdie+", True),
