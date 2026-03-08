@@ -204,6 +204,34 @@ def main():
     usage.to_csv(OUT_DIR / "league_player_usage.csv", index=False)
     print(f"  Saved {len(usage)} rows → league_player_usage.csv")
 
+    # Append this week's results to rolling history file (used for trajectory chart)
+    _hist_path = OUT_DIR / "league_earnings_history.csv"
+    _week_col  = weekly.get("week", pd.Series(dtype=str)) if "week" in weekly.columns else None
+    _snap_rows = []
+    for _, _row in weekly.iterrows():
+        _snap_rows.append({
+            "week":          _row.get("week", "current"),
+            "team_name":     _row["team_name"],
+            "weekly_rank":   _row.get("weekly_rank", ""),
+            "weekly_earnings": int(_row.get("total_earnings", 0)),
+        })
+    _snap_df = pd.DataFrame(_snap_rows)
+
+    if _hist_path.exists():
+        _existing = pd.read_csv(_hist_path)
+        # Only append if this week's data isn't already recorded (match on week + team)
+        _snap_week = _snap_df["week"].iloc[0] if not _snap_df.empty else None
+        _already   = (_snap_week is not None and str(_snap_week) in _existing["week"].astype(str).values)
+        if not _already:
+            _combined = pd.concat([_existing, _snap_df], ignore_index=True)
+            _combined.to_csv(_hist_path, index=False)
+            print(f"  Appended week '{_snap_week}' → league_earnings_history.csv")
+        else:
+            print(f"  Week '{_snap_week}' already in history — skipping append")
+    else:
+        _snap_df.to_csv(_hist_path, index=False)
+        print(f"  Created league_earnings_history.csv ({len(_snap_df)} rows)")
+
     # Quick summary
     print("\n--- WEEK PICKS SUMMARY ---")
     print(weekly[["weekly_rank", "team_name", "player_1", "player_2", "player_3", "total_earnings"]]

@@ -8143,12 +8143,20 @@ elif page == "💬 Assistant":
     if _ctx_missing or _ctx_stale:
         with st.spinner("Loading tournament data..."):
             try:
-                from scripts.chat.golf_chatbot import build_context as _build_context
-                st.session_state["chat_context"] = _build_context()
+                from scripts.chat.golf_chatbot import (
+                    build_context as _build_context,
+                    _detect_tournament_id,
+                    _tournament_state,
+                )
+                _cur_tid = _detect_tournament_id()
+                st.session_state["chat_context"] = _build_context(_cur_tid)
+                _ts = _tournament_state(_cur_tid) if _cur_tid else {}
+                st.session_state["chat_phase"] = _ts.get("phase", "pre_tournament")
             except Exception as _ctx_err:
                 st.session_state["chat_context"] = (
                     f"You are a golf analytics assistant. Context unavailable: {_ctx_err}"
                 )
+                st.session_state["chat_phase"] = "pre_tournament"
             st.session_state["chat_context_built_at"] = _time.time()
 
     with st.sidebar:
@@ -8176,25 +8184,81 @@ elif page == "💬 Assistant":
             st.session_state["chat_history"] = []
             st.rerun()
 
+    # Phase-aware quick action buttons
+    _PHASE_ACTIONS = {
+        "pre_tournament": [
+            ("Build my lineup", "Build my optimal lineup for this week. Consider my uses remaining, player form, and course fit. Give me 3 players and explain why each one makes sense."),
+            ("Best bets", "What are the top 3 bets with the best value this week? Walk me through the odds and why each one makes sense."),
+            ("Value plays", "Who are the best value plays for a win bet this week — players where the odds clearly underestimate their chances?"),
+            ("Course breakdown", "Break down this week's course. What game wins here — ball-striking, putting, bombers? Who fits the course profile best?"),
+        ],
+        "round_1": [
+            ("Round 1 update", "Give me a live update after Round 1. Who's leading, who surprised me, and who's already in trouble?"),
+            ("Still a contender?", "Based on Round 1, who are the realistic winners and who is out of it?"),
+            ("In-play value", "Given Round 1 results, are there any in-play betting opportunities where the live odds look out of line?"),
+            ("Cut projection", "Where does the cut project right now and who's fighting to make the weekend?"),
+        ],
+        "round_2": [
+            ("36-hole update", "Give me a live update through 2 rounds. Who's in the best position heading into the weekend?"),
+            ("Weekend contenders", "Who are the realistic winners heading into Saturday? Who has the game and position to close?"),
+            ("Cut projection", "Where does the cut project right now and who's on the bubble?"),
+            ("In-play value", "Given the 36-hole leaderboard, any in-play betting angles worth considering for the weekend?"),
+        ],
+        "round_3": [
+            ("Saturday recap", "Where does the tournament stand after Round 3? Who's in pole position and who's still alive?"),
+            ("Who can win?", "Who can realistically win from their current position? Walk me through the contenders and what they need to shoot."),
+            ("Cash out bets?", "Given Round 3 results, should I cash out any of my current bets or let them ride?"),
+            ("Final round picks", "Who do you like in the final round based on current position, form, and course history?"),
+        ],
+        "round_4": [
+            ("Live update", "Give me a live Round 4 update. Who's leading, who's charging, and who's fading?"),
+            ("Who can still win?", "Who can still realistically win and what do they need to do in the remaining holes?"),
+            ("Cash out bets?", "Based on current leaderboard positions, should I cash out any bets before the finish?"),
+            ("Late drama", "Which holes are going to decide this tournament? What should I be watching?"),
+        ],
+        "complete": [
+            ("Final results", "Walk me through the final results. Who won, how did it unfold, and what were the key moments?"),
+            ("How did my picks do?", "How did my picks finish this week? Walk me through each player's result and what it means for my season standings."),
+            ("Next week preview", "Give me a preview of next week's tournament. What should I know about the course and who are the early favorites?"),
+            ("Season standings", "How did this week shake up the league standings? Who moved up, who fell back, and where does WineTime stand now?"),
+        ],
+    }
+    _PHASE_FOLLOWUPS = {
+        "pre_tournament": [
+            "Who are the biggest risks in my lineup this week?",
+            "Which players have the best course history here?",
+            "Any players I should avoid at any price?",
+        ],
+        "round_1": [
+            "Who's still a realistic winner from this position?",
+            "Any surprise leaders I should know about?",
+            "Who should I be watching closely in Round 2?",
+        ],
+        "round_2": [
+            "Who has the best record of closing from this position?",
+            "Who's the biggest threat to the current leader?",
+            "Who do you like to make a big move this weekend?",
+        ],
+        "round_3": [
+            "Who has the best closing record in the field?",
+            "Any sleepers who could make a late charge?",
+            "What does the winning score look like from here?",
+        ],
+        "round_4": [
+            "Who tends to buckle under pressure at this stage?",
+            "What does the winner need to shoot to close it out?",
+            "Who's the best putter among the current leaders?",
+        ],
+        "complete": [
+            "What should I prioritize in next week's lineup?",
+            "Who outperformed their pre-tournament ranking?",
+            "How did the recommended bets finish?",
+        ],
+    }
+
+    _chat_phase = st.session_state.get("chat_phase", "pre_tournament")
+    _quick_actions = _PHASE_ACTIONS.get(_chat_phase, _PHASE_ACTIONS["pre_tournament"])
     _qa_cols = st.columns(4)
-    _quick_actions = [
-        (
-            "Build my lineup",
-            "Build my optimal lineup for this week. Consider uses remaining, player form, and tournament importance. Give me 3 players to use and explain why.",
-        ),
-        (
-            "Best bets this week",
-            "What are the top 3 bets with the best edge this week? Show me the odds, model probability, and edge for each.",
-        ),
-        (
-            "Live tournament update",
-            "Give me a current tournament update. Who's winning, who's moved up or down from their expected position, and who still has a chance?",
-        ),
-        (
-            "Value plays",
-            "Who are the best value plays this week — players where the model probability is significantly higher than what the odds imply?",
-        ),
-    ]
     for _i, (_label, _prompt) in enumerate(_quick_actions):
         with _qa_cols[_i]:
             if st.button(_label, use_container_width=True, key=f"qa_{_i}"):
@@ -8206,6 +8270,24 @@ elif page == "💬 Assistant":
     for _msg in st.session_state["chat_history"]:
         with st.chat_message(_msg["role"]):
             st.markdown(_msg["content"])
+
+    # Follow-up chips — shown after the last assistant message
+    if (
+        st.session_state.get("chat_history")
+        and st.session_state["chat_history"][-1]["role"] == "assistant"
+    ):
+        _followups = _PHASE_FOLLOWUPS.get(_chat_phase, _PHASE_FOLLOWUPS["pre_tournament"])
+        st.caption("Follow up:")
+        _fu_cols = st.columns(len(_followups))
+        for _fi, _fq in enumerate(_followups):
+            with _fu_cols[_fi]:
+                if st.button(
+                    _fq,
+                    key=f"fu_{_fi}_{len(st.session_state['chat_history'])}",
+                    use_container_width=True,
+                ):
+                    st.session_state["chat_prefill"] = _fq
+                    st.rerun()
 
     _prefill = st.session_state.pop("chat_prefill", None)
 
@@ -8258,8 +8340,133 @@ elif page == "📋 My Picks":
 
     st.markdown("---")
 
+    # ── This Week's Results ────────────────────────────────────────────────────
+    _wkly_picks_path = DATA_DIR / "fantasy" / "league_weekly_picks.csv"
+    _tracker_path    = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+    _my_wk           = pd.DataFrame()  # shared between the two blocks below
+    _wk_total        = 0
+
+    if _wkly_picks_path.exists():
+        try:
+            import json as _json
+            _wkly_df = pd.read_csv(_wkly_picks_path)
+            _my_wk = _wkly_df[_wkly_df["team_name"] == "WineTime"]
+            if not _my_wk.empty:
+                _wr = _my_wk.iloc[0]
+                _wk_rank   = _wr.get("weekly_rank", "?")
+                _wk_total  = int(_wr.get("total_earnings", 0))
+                _p1, _e1   = _wr.get("player_1", ""), int(_wr.get("earnings_1", 0))
+                _p2, _e2   = _wr.get("player_2", ""), int(_wr.get("earnings_2", 0))
+                _p3, _e3   = _wr.get("player_3", ""), int(_wr.get("earnings_3", 0))
+
+                # League average this week
+                _all_earn  = _wkly_df["total_earnings"].replace(0, pd.NA).dropna()
+                _lg_avg    = int(_all_earn.mean()) if not _all_earn.empty else 0
+                _lg_max    = int(_all_earn.max()) if not _all_earn.empty else 0
+                _vs_avg    = _wk_total - _lg_avg
+                _vs_avg_str = (f"+${_vs_avg:,}" if _vs_avg >= 0 else f"-${abs(_vs_avg):,}")
+                _vs_avg_col = "#00c44f" if _vs_avg >= 0 else "#e74c3c"
+
+                st.markdown("### This Week's Results")
+                _rc1, _rc2, _rc3, _rc4 = st.columns(4)
+                with _rc1:
+                    st.metric("Weekly Rank", f"#{_wk_rank}")
+                with _rc2:
+                    st.metric("Total Earned", f"${_wk_total:,}")
+                with _rc3:
+                    st.metric("vs League Avg", _vs_avg_str)
+                with _rc4:
+                    st.metric("League Best", f"${_lg_max:,}")
+
+                # Player cards
+                _pc1, _pc2, _pc3 = st.columns(3)
+                for _col, _pname, _earn in [(_pc1, _p1, _e1), (_pc2, _p2, _e2), (_pc3, _p3, _e3)]:
+                    _pc = "#00c44f" if _earn > _lg_avg / 3 else ("#f39c12" if _earn > 0 else "#e74c3c")
+                    with _col:
+                        st.markdown(
+                            f"<div style='background:{_pc}11;border:1px solid {_pc}44;"
+                            f"border-radius:8px;padding:12px;text-align:center;'>"
+                            f"<div style='font-size:0.85em;color:#dde6f5;font-weight:600;"
+                            f"margin-bottom:6px;'>{_pname}</div>"
+                            f"<div style='font-size:1.3em;font-weight:700;color:{_pc};'>"
+                            f"${_earn:,}</div></div>",
+                            unsafe_allow_html=True,
+                        )
+        except Exception:
+            pass
+
+    # ── Season Earnings Trajectory ─────────────────────────────────────────────
+    if _tracker_path.exists():
+        try:
+            import json as _json
+            import plotly.graph_objects as _pgo
+            with open(_tracker_path) as _tf:
+                _tracker = _json.load(_tf)
+
+            _wk_lineups = _tracker.get("weekly_lineups", {})
+            _hist_rows = []
+            for _wk_key in sorted(_wk_lineups.keys()):
+                _wkd = _wk_lineups[_wk_key]
+                _earn = _wkd.get("earnings_earned") or 0
+                _hist_rows.append({
+                    "Week": f"Wk {_wkd.get('week', '?')}",
+                    "Tournament": _wkd.get("tournament", ""),
+                    "Earnings": _earn,
+                })
+            if _hist_rows:
+                _hist_df = pd.DataFrame(_hist_rows)
+                _hist_df["Cumulative"] = _hist_df["Earnings"].cumsum()
+
+                # Pull current week league earnings from weekly picks (in actual $)
+                if not _my_wk.empty and _hist_df["Earnings"].iloc[-1] == 0:
+                    _hist_df.loc[_hist_df.index[-1], "Earnings"] = _wk_total
+                    _hist_df["Cumulative"] = _hist_df["Earnings"].cumsum()
+
+                st.markdown("### Season Earnings by Week")
+                _fig = _pgo.Figure()
+                _fig.add_trace(_pgo.Bar(
+                    x=_hist_df["Week"],
+                    y=_hist_df["Earnings"],
+                    name="Weekly Earnings",
+                    marker_color="#4cb8ff",
+                    text=_hist_df["Earnings"].apply(lambda v: f"${v:,}"),
+                    textposition="outside",
+                    hovertext=_hist_df["Tournament"],
+                ))
+                _fig.add_trace(_pgo.Scatter(
+                    x=_hist_df["Week"],
+                    y=_hist_df["Cumulative"],
+                    name="Cumulative",
+                    mode="lines+markers",
+                    line=dict(color="#00c44f", width=2),
+                    marker=dict(size=6),
+                    yaxis="y2",
+                ))
+                _fig.update_layout(
+                    height=320,
+                    margin=dict(t=20, b=20, l=0, r=0),
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    font=dict(color="#dde6f5"),
+                    legend=dict(orientation="h", y=1.08),
+                    xaxis=dict(gridcolor="#2a3a5c"),
+                    yaxis=dict(title="Weekly Earnings ($)", gridcolor="#2a3a5c", tickprefix="$"),
+                    yaxis2=dict(
+                        title="Cumulative ($)",
+                        overlaying="y",
+                        side="right",
+                        gridcolor="rgba(0,0,0,0)",
+                        tickprefix="$",
+                    ),
+                )
+                st.plotly_chart(_fig, use_container_width=True)
+        except Exception:
+            pass
+
+    st.markdown("---")
+
     # ── Player Usage Grid ──────────────────────────────────────────────────────
-    st.markdown("### 🎯 Player Usage Grid")
+    st.markdown("### Player Usage Grid")
     st.caption("All players used this season — color-coded by uses remaining")
 
     if picks:
@@ -12681,25 +12888,71 @@ elif page == "🔴 Live":
                     except Exception:
                         pass
 
+                # Score color: green under par, red over, white even
+                def _sc(total):
+                    s = str(total).strip()
+                    if s.startswith("-"): return "#00c44f"
+                    if s in ("E", "0"):   return "#dde6f5"
+                    return "#e53935"
+
+                # Round score color relative to par 72
+                def _rc(val):
+                    if val == "—": return "#3a5270"
+                    try:
+                        v = int(val)
+                        if v <= 69:   return "#00c44f"
+                        elif v <= 71: return "#6ddb9a"
+                        elif v == 72: return "#dde6f5"
+                        elif v <= 74: return "#ffa726"
+                        else:         return "#e53935"
+                    except Exception:
+                        return "#3a5270"
+
+                _score_color  = _sc(_total)
+                _border_color = _score_color if _status != "cut" else "#e53935"
+
+                _move_str = (
+                    f"▲ +{_pos_change}" if _pos_change > 0
+                    else (f"▼ {_pos_change}" if _pos_change < 0 else "—")
+                )
+
+                # Build round score cells
+                _rnd_cells = "".join(
+                    f'<div><div style="font-size:16px;font-weight:800;color:{_rc(v)};">{v}</div>'
+                    f'<div style="font-size:10px;color:#3a5270;font-weight:600;letter-spacing:.5px;">R{i}</div></div>'
+                    for i, v in enumerate([_r1, _r2, _r3, _r4], 1)
+                )
+
                 with _col:
-                    st.markdown(f"""
-    <div style="background:#0d1a30; border:1px solid #1c3a5e; border-radius:12px;
-        padding:16px; text-align:center;">
-        <div style="font-size:28px; font-weight:900; color:#fff;">{_pos}</div>
-        <div style="font-size:11px; color:#4a6080; letter-spacing:1px;">POSITION</div>
-        <div style="font-size:14px; font-weight:700; color:#dde6f5; margin:8px 0 2px 0;">{_pname}</div>
-        <div style="font-size:22px; font-weight:800; color:{_cut_color};">{_total}</div>
-        <div style="font-size:11px; color:{_move_color}; margin-top:2px;">Thru {_thru} &nbsp;{_move_icon}</div>
-        {_cut_badge_html}
-        <hr style="border-color:#1c2f4a; margin:10px 0;">
-        <div style="display:flex; justify-content:space-around; font-size:11px; color:#6a84aa;">
-        <div><div style="color:#dde6f5; font-weight:600;">{_r1}</div>R1</div>
-        <div><div style="color:#dde6f5; font-weight:600;">{_r2}</div>R2</div>
-        <div><div style="color:#dde6f5; font-weight:600;">{_r3}</div>R3</div>
-        <div><div style="color:#dde6f5; font-weight:600;">{_r4}</div>R4</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+                    st.markdown(
+                        f"""
+<div style="background:#0b1929;border:1px solid #1a3050;
+            border-top:3px solid {_border_color};border-radius:12px;
+            padding:18px 16px 14px;box-sizing:border-box;">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <span style="background:#132840;color:#dde6f5;font-size:13px;font-weight:800;
+                 padding:3px 11px;border-radius:20px;">{_pos}</span>
+    <span style="font-size:12px;font-weight:700;color:{_move_color};">{_move_str}</span>
+  </div>
+
+  <div style="font-size:15px;font-weight:700;color:#e8eef8;margin-bottom:10px;
+              white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{_pname}</div>
+
+  <div style="margin-bottom:8px;">
+    <span style="font-size:40px;font-weight:900;color:{_score_color};line-height:1;">{_total}</span>
+    <span style="font-size:12px;color:#5a7a9a;margin-left:8px;">Thru {_thru}</span>
+  </div>
+
+  {_cut_badge_html}
+
+  <div style="border-top:1px solid #1a3050;margin-top:12px;padding-top:10px;
+              display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center;">
+    {_rnd_cells}
+  </div>
+</div>""",
+                        unsafe_allow_html=True,
+                    )
         else:
             st.info("Picks not found in leaderboard yet — try refreshing live data first.")
     elif not _picks_this_week:
