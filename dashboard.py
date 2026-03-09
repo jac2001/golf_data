@@ -10018,6 +10018,78 @@ elif page == "👤 Players":
                     st.markdown("#### 🎰 Betting Profile")
                     render_player_profile_card(profile, show_full=True)
 
+            # ── Strokes Gained ─────────────────────────────────────────────────
+            # Pulled from latest_predictions.csv — season SG vs field average.
+            # This is the single most predictive stat category in golf.
+            _preds_path = OUTPUTS_DIR / "latest_predictions.csv"
+            if _preds_path.exists():
+                try:
+                    _sg_df = pd.read_csv(_preds_path)
+                    # Normalize names for matching
+                    def _norm_name(n):
+                        s = str(n).strip()
+                        if ", " in s:
+                            last, first = s.split(", ", 1)
+                            return f"{first} {last}"
+                        return s
+                    _sg_df["_norm"] = _sg_df["player_name"].apply(_norm_name)
+                    _sg_last = player_search.strip().split()[-1].lower()
+                    _sg_row = _sg_df[_sg_df["_norm"].str.lower().str.contains(_sg_last, na=False)]
+                    if _sg_row.empty:
+                        _sg_row = _sg_df[_sg_df["player_name"].str.lower().str.contains(_sg_last, na=False)]
+
+                    if not _sg_row.empty:
+                        _sg = _sg_row.iloc[0]
+                        st.markdown("---")
+                        st.markdown("#### Strokes Gained")
+                        st.caption("Season SG vs field average for this week's field · Positive = better than field · Rank = position among players in this event's field")
+
+                        _SG_DEFS = [
+                            ("sg_total",  "SG: Total",     "season_sg_total_vs_field",  None),
+                            ("sg_ott",    "SG: Off Tee",   "season_sg_ott_vs_field",    "season_sg_ott_field_rank"),
+                            ("sg_app",    "SG: Approach",  "season_sg_app_vs_field",    "season_sg_app_field_rank"),
+                            ("sg_arg",    "SG: Arg Green", "season_sg_arg_vs_field",    "season_sg_arg_field_rank"),
+                            ("sg_putt",   "SG: Putting",   "season_sg_putt_vs_field",   "season_sg_putt_field_rank"),
+                        ]
+
+                        def _sg_rank_color(rank):
+                            try:
+                                r = int(rank)
+                                if r <= 5:   return "#00c44f"
+                                if r <= 15:  return "#6ddb9a"
+                                if r <= 35:  return "#dde6f5"
+                                if r <= 60:  return "#ffa726"
+                                return "#e53935"
+                            except Exception:
+                                return "#4a6080"
+
+                        _sg_cols = st.columns(5)
+                        for _sci, (_col, _label, _vs_col, _rank_col) in enumerate(_SG_DEFS):
+                            _sg_val = _sg.get(_vs_col) if _vs_col and pd.notna(_sg.get(_vs_col, float("nan"))) else _sg.get(_col)
+                            _sg_rank = _sg.get(_rank_col) if _rank_col else None
+                            _sg_num = float(_sg_val) if pd.notna(_sg_val) else None
+                            _sg_rank_num = int(_sg_rank) if _sg_rank and pd.notna(_sg_rank) else None
+
+                            _sg_color = _sg_rank_color(_sg_rank_num) if _sg_rank_num else ("#00c44f" if (_sg_num or 0) > 0 else "#e53935")
+                            _sg_val_str = f"{_sg_num:+.2f}" if _sg_num is not None else "—"
+                            _sg_rank_str = f"#{_sg_rank_num}" if _sg_rank_num else "—"
+
+                            with _sg_cols[_sci]:
+                                st.markdown(
+                                    f"<div style='background:#0b1929;border:1px solid #1a3050;"
+                                    f"border-top:3px solid {_sg_color};border-radius:8px;"
+                                    f"padding:10px 12px;text-align:center;'>"
+                                    f"<div style='font-size:10px;color:#4a6080;margin-bottom:6px;"
+                                    f"font-weight:700;letter-spacing:.6px;text-transform:uppercase;'>{_label}</div>"
+                                    f"<div style='font-size:22px;font-weight:800;color:#dde6f5;'>{_sg_val_str}</div>"
+                                    f"<div style='font-size:12px;color:{_sg_color};margin-top:2px;font-weight:700;'>"
+                                    f"Field rank {_sg_rank_str}</div>"
+                                    f"</div>",
+                                    unsafe_allow_html=True,
+                                )
+                except Exception:
+                    pass
+
             # ── Recent Form Stats ──────────────────────────────────────────────
             # Loads actual PGA Tour stat data from form_stats_2026.csv.
             # Shows all 19 tracked stats grouped by category, with field rank
@@ -10042,17 +10114,25 @@ elif page == "👤 Players":
 
                         # Group stats into categories for readability
                         # 2419=Bogey Avg/Rnd, 2414=Bogey Avoid% (scraper had wrong labels)
+                        # 2675/2567/2568/2569/2564 = SG stats (display only, from extended scrape)
                         _FS_GROUPS = {
-                            "Scoring":     [120, 156, 108, 160],
-                            "Driving":     [101, 102],
-                            "Approach":    [103, 331, 130, 299, 142, 143],
-                            "Putting":     [104, 119, 413],
-                            "Consistency": [352, 2414, 2419, 111],
+                            "Strokes Gained": [2675, 2567, 2568, 2569, 2564],
+                            "Scoring":        [120, 156, 108, 160],
+                            "Driving":        [101, 102, 2401],
+                            "Approach":       [103, 331, 130, 299, 142, 143],
+                            "Putting":        [104, 119, 413],
+                            "Consistency":    [352, 2414, 2419, 111],
                         }
-                        # Override display names for mislabeled stats
+                        # Override display names for mislabeled or verbose stat names
                         _FS_NAME_OVERRIDE = {
                             2419: "Bogey Avg/Rnd",
                             2414: "Bogey Avoid%",
+                            2675: "SG: Total",
+                            2567: "SG: Off Tee",
+                            2568: "SG: Approach",
+                            2569: "SG: Arg Green",
+                            2564: "SG: Putting",
+                            2401: "Club Hd Spd",
                         }
                         # Which stats are "lower is better" (rank 1 = best = lowest value)
                         _LOWER_BETTER = {104, 413, 142, 143, 299, 120, 2419, 2414}
@@ -10216,13 +10296,15 @@ elif page == "👤 Players":
                     )
 
                     # Stat category groupings for column ordering
-                    # Note: 2414=Bogey Avoidance%, 2419=Bogey Avg/Rnd (mislabeled in scraper)
+                    # 2414=Bogey Avoidance%, 2419=Bogey Avg/Rnd (scraper mislabels fixed)
+                    # 2675/2567/2568/2569/2564 = SG stats (show when scraper re-run)
                     _stat_categories = {
-                        "Scoring": [120, 156, 108, 160],
-                        "Driving": [101, 102],
-                        "Approach": [103, 331, 130, 299, 142, 143],
-                        "Putting": [104, 119, 413],
-                        "Consistency": [352, 2414, 2419, 111],
+                        "Strokes Gained": [2675, 2567, 2568, 2569, 2564],
+                        "Scoring":        [120, 156, 108, 160],
+                        "Driving":        [101, 102, 2401],
+                        "Approach":       [103, 331, 130, 299, 142, 143],
+                        "Putting":        [104, 119, 413],
+                        "Consistency":    [352, 2414, 2419, 111],
                     }
                     _ordered_stat_ids = []
                     for _cat_ids in _stat_categories.values():
@@ -10230,13 +10312,15 @@ elif page == "👤 Players":
 
                     # Build stat_id → short display name
                     _stat_labels = {
-                        101: "Drive Dist", 102: "Drive Acc%", 103: "GIR%",
-                        104: "Putts/Rnd", 108: "Birdie+%", 111: "Sand Save%",
-                        119: "1-Putt%", 120: "Scoring Avg", 130: "Scrambling%",
-                        142: "Par4 Avg", 143: "Par5 Avg", 156: "Birdies/Rnd",
-                        160: "Bounce Back%", 299: "Par3 Avg", 331: "Proximity(ft)",
-                        352: "Bogey Avoid%", 413: "3-Putt Avoid%",
-                        2414: "Bogey Avoid% (2)", 2419: "Bogey Avg/Rnd",
+                        101: "Drive Dist",    102: "Drive Acc%",   103: "GIR%",
+                        104: "Putts/Rnd",     108: "Birdie+%",     111: "Sand Save%",
+                        119: "1-Putt%",       120: "Scoring Avg",  130: "Scrambling%",
+                        142: "Par4 Avg",      143: "Par5 Avg",     156: "Birdies/Rnd",
+                        160: "Bounce Back%",  299: "Par3 Avg",     331: "Proximity(ft)",
+                        352: "Bogey Avoid%",  413: "3-Putt Avoid%",
+                        2414: "Bogey Avoid%2", 2419: "Bogey Avg/Rnd",
+                        2675: "SG: Total",    2567: "SG: OTT",     2568: "SG: APP",
+                        2569: "SG: ARG",      2564: "SG: Putt",    2401: "Club Hd Spd",
                     }
 
                     # Pivot: rank table (lower rank = better)

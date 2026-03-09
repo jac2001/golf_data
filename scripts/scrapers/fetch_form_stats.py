@@ -99,7 +99,6 @@ FORM_STATS = {
     # Scrambling / Short Game
     "130": ("Scrambling", "Up and down % when missing GIR", True),
     "111": ("Sand Save Percentage", "Sand save %", True),
-    "02570": ("SG Around Green", "Strokes gained around green", True),
 
     # Putting
     "104": ("Putts Per Round", "Average putts per round", False),
@@ -116,6 +115,17 @@ FORM_STATS = {
     "299": ("Par 3 Scoring", "Scoring average on par 3s", False),
     "142": ("Par 4 Scoring", "Scoring average on par 4s", False),
     "143": ("Par 5 Scoring", "Scoring average on par 5s", False),
+
+    # Strokes Gained (verified PGA Tour stat IDs — display only, not in model)
+    # 02675=SG Total, 02567=SG OTT, 02568=SG Approach, 02569=SG ARG, 02564=SG Putting
+    "02675": ("SG: Total",          "Strokes gained total vs field", True),
+    "02567": ("SG: Off the Tee",    "Strokes gained off the tee", True),
+    "02568": ("SG: Approach",       "Strokes gained approach the green", True),
+    "02569": ("SG: Around Green",   "Strokes gained around the green", True),
+    "02564": ("SG: Putting",        "Strokes gained putting", True),
+
+    # Club Head Speed — interesting power metric for driver performance analysis
+    "02401": ("Club Head Speed",    "Average club head speed (mph)", True),
 }
 
 # Output directory
