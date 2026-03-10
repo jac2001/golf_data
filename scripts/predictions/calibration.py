@@ -84,11 +84,17 @@ class ProbabilityCalibrator:
             self.calibration = DEFAULT_CALIBRATION
             print("  Using default calibration factors")
 
+    # Maximum win probability cap — prevents single player from dominating.
+    # Set relative to field size: full field (144) ~= 0.18, signature (70) ~= 0.22,
+    # but we use a flat 0.20 as a reasonable guardrail across tournament types.
+    MAX_WIN_PROB = 0.20
+
     def calibrate_predictions(
         self,
         df: pd.DataFrame,
         method: str = "bucket",
         tournament_type: Optional[str] = None,
+        max_win_prob: Optional[float] = None,
     ) -> pd.DataFrame:
         """
         Apply calibration to prediction DataFrame.
@@ -97,12 +103,14 @@ class ProbabilityCalibrator:
             df: DataFrame with win_prob, top5_prob, top10_prob columns
             method: "simple" (single scale factor) or "bucket" (per-bucket adjustment)
             tournament_type: Optional tournament type (Standard/Signature/Major/Playoff)
+            max_win_prob: Hard cap on calibrated win probability (default: MAX_WIN_PROB=0.20)
 
         Returns:
             DataFrame with calibrated probabilities added
         """
         df = df.copy()
         cal_config = self._select_calibration(tournament_type)
+        _max_win = max_win_prob if max_win_prob is not None else self.MAX_WIN_PROB
 
         for prob_col in ["win_prob", "top5_prob", "top10_prob", "top20_prob"]:
             if prob_col not in df.columns:
@@ -123,6 +131,13 @@ class ProbabilityCalibrator:
 
             # Ensure probabilities stay in [0, 1]
             df[f"{prob_col}_calibrated"] = df[f"{prob_col}_calibrated"].clip(0, 1)
+
+            # Hard cap on win_prob to prevent single-player over-concentration
+            if prob_col == "win_prob" and _max_win is not None:
+                n_capped = (df[f"{prob_col}_calibrated"] > _max_win).sum()
+                if n_capped > 0:
+                    df[f"{prob_col}_calibrated"] = df[f"{prob_col}_calibrated"].clip(0, _max_win)
+                    print(f"  Win prob capped at {_max_win:.0%} for {n_capped} player(s)")
 
         return df
 

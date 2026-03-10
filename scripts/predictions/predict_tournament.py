@@ -209,6 +209,7 @@ SCORE_FEATURES = [
     "dg_fit_ott", "dg_fit_app", "dg_fit_arg", "dg_fit_putt",
     "dg_fit_total", "predictive_sg_weighted",
     "world_rank",
+    "world_rank_log",
 ]
 
 
@@ -1758,6 +1759,9 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
         if n_adj > 0:
             features_df.loc[mask, 'world_rank'] = sg_implied[mask].round(0)
             print(f"  SG-adjusted world_rank for {n_adj} players (LIV/injury/stale OWGR)")
+
+    # Log-transform world rank to match training feature
+    features_df['world_rank_log'] = np.log1p(features_df['world_rank'])
 
     # ADD FIELD STRENGTH (avg/median world rank of tournament field)
     field_avg_rank = features_df['world_rank'].mean()

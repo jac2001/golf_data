@@ -180,9 +180,15 @@ if all_rankings:
     )
     coverage = leaderboards['world_rank'].notna().mean() * 100
     print(f"  ✓ Merged world rankings into leaderboards (coverage: {coverage:.1f}%)")
+    # Log-transform world rank to compress elite vs. field distance
+    # log1p(1)=0.69, log1p(10)=2.40, log1p(100)=4.61, log1p(300)=5.71
+    # This prevents rank-1 players from dominating over rank-10 players
+    leaderboards['world_rank_log'] = np.log1p(leaderboards['world_rank'].fillna(300))
+    print(f"  ✓ Added world_rank_log feature (log1p transform)")
 else:
     print("  ℹ️  No rankings data available, skipping rankings merge.")
     leaderboards['world_rank'] = np.nan
+    leaderboards['world_rank_log'] = np.log1p(300)  # default for missing
 
 
 # ============================================================================

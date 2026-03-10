@@ -115,7 +115,16 @@ hist_features = [c for c in df.columns if c.startswith('hist_') or c.startswith(
 # Remove hist_missed_cuts (now has variance, but keep it for now to see if it helps)
 venue_features = ['venue_avg_finish', 'venue_finish_std']  # Only numeric venue features
 field_features = [c for c in df.columns if 'field_' in c]
-rank_features = ['world_rank'] if 'world_rank' in df.columns else []
+# Prefer log-transformed world rank (compresses rank-1 dominance)
+# Falls back to raw world_rank for backward compatibility with older merged files
+if 'world_rank_log' in df.columns:
+    rank_features = ['world_rank_log']
+    print("✓  Using world_rank_log (log1p transform — less dominated by #1 player)")
+elif 'world_rank' in df.columns:
+    rank_features = ['world_rank']
+    print("⚠️  world_rank_log not found — using raw world_rank (run merge script to update)")
+else:
+    rank_features = []
 
 # Form features (recent performance indicators) - expanded to include scoring stats
 # recent_sg_weighted: exponential decay avg over last 8 events (decay=0.85)
