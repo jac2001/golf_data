@@ -136,19 +136,78 @@ def fetch_weather(lat: float, lon: float) -> dict:
 
 
 
+def fetch_hourly_forecast(lat: float, lon: float) -> list:
+    """Fetch 7-day hourly forecast from Open-Meteo. Returns list of dicts."""
+    url = "https://api.open-meteo.com/v1/forecast"
+    params = {
+        "latitude": lat,
+        "longitude": lon,
+        "hourly": ["wind_speed_10m", "wind_gusts_10m", "precipitation_probability", "temperature_2m"],
+        "wind_speed_unit": "mph",
+        "temperature_unit": "fahrenheit",
+        "timezone": "auto",
+        "forecast_days": 7,
+    }
+    r = requests.get(url, params=params, timeout=20)
+    r.raise_for_status()
+    data = r.json()
+
+    hourly = data.get("hourly", {})
+    times = hourly.get("time", [])
+    wind = hourly.get("wind_speed_10m", [])
+    gusts = hourly.get("wind_gusts_10m", [])
+    precip = hourly.get("precipitation_probability", [])
+    temp = hourly.get("temperature_2m", [])
+
+    records = []
+    for i, t in enumerate(times):
+        records.append({
+            "time": t,
+            "wind_mph": wind[i] if i < len(wind) else None,
+            "gusts_mph": gusts[i] if i < len(gusts) else None,
+            "precip_pct": precip[i] if i < len(precip) else None,
+            "temp_f": temp[i] if i < len(temp) else None,
+        })
+    return records
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Fetch weather from Open-Meteo")
-    parser.add_argument("--lat", type=float, required=True)
-    parser.add_argument("--lon", type=float, required=True)
+    parser.add_argument("--lat", type=float)
+    parser.add_argument("--lon", type=float)
     parser.add_argument("--output", type=str, default="")
+    parser.add_argument("--tid", type=str, default="", help="Tournament ID (for --hourly mode)")
+    parser.add_argument("--course", type=str, default="", help="Course name (for coord lookup)")
+    parser.add_argument("--hourly", action="store_true", help="Fetch 7-day hourly forecast")
     args = parser.parse_args()
 
-    data = fetch_weather(args.lat, args.lon)
+    # Resolve lat/lon
+    lat, lon = args.lat, args.lon
+    if (lat is None or lon is None) and args.course:
+        lat, lon = get_course_coordinates(args.course)
+    if lat is None or lon is None:
+        print("ERROR: --lat/--lon or --course required")
+        return 1
+
+    if args.hourly:
+        records = fetch_hourly_forecast(lat, lon)
+        if args.tid:
+            import os
+            out_path = args.output or f"data/weather/{args.tid}_hourly.json"
+            os.makedirs(os.path.dirname(out_path), exist_ok=True)
+            with open(out_path, "w") as f:
+                json.dump(records, f, indent=2)
+            print(f"Saved {len(records)} hourly records → {out_path}")
+        else:
+            print(json.dumps(records[:24], indent=2))
+        return 0
+
+    data = fetch_weather(lat, lon)
 
     if args.output:
         with open(args.output, "w") as f:
             json.dump(data, f, indent=2)
-        print(f"✓ Saved weather → {args.output}")
+        print(f"Saved weather → {args.output}")
     else:
         print(json.dumps(data, indent=2))
 

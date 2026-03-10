@@ -7624,42 +7624,118 @@ if page == "🏆 This Week":
 
                     
             # ── Tee Times ─────────────────────────────────────────────────
-            _tt_files = sorted(
-                (DATA_DIR / "live").glob("leaderboard_r*.csv"),
-                key=lambda p: p.stat().st_mtime, reverse=True
-            ) if (DATA_DIR / "live").exists() else []
-            if _tt_files:
-                try:
-                    _tt_df = pd.read_csv(_tt_files[0])
-                    if "tee_time" in _tt_df.columns and _tt_df["tee_time"].notna().any():
-                        _tt_valid = _tt_df[_tt_df["tee_time"].astype(str).str.strip().ne("")].copy()
-                        if not _tt_valid.empty:
-                            # Merge win_prob if predictions available
-                            if not _preds.empty and "player_name" in _preds.columns and "win_prob" in _preds.columns:
-                                _tt_valid = _tt_valid.merge(
-                                    _preds[["player_name", "win_prob", "world_rank"]],
-                                    on="player_name", how="left"
+            try:
+                # Load draw advantage + dedicated tee times CSVs (pre-tournament draw)
+                _da_df = pd.DataFrame()
+                _da_round = 1
+                _tt_draw_df = pd.DataFrame()
+                if _field_id:
+                    for _r in [1, 2, 3, 4]:
+                        _da_path = DATA_DIR / "live" / f"draw_advantage_{_field_id}_r{_r}.csv"
+                        if _da_path.exists():
+                            try:
+                                _da_df = pd.read_csv(_da_path)
+                                _da_round = _r
+                            except Exception:
+                                pass
+                    for _r in [1, 2, 3, 4]:
+                        _tt_draw_path = DATA_DIR / "live" / f"tee_times_{_field_id}_r{_r}.csv"
+                        if _tt_draw_path.exists():
+                            try:
+                                _tt_draw_df = pd.read_csv(_tt_draw_path)
+                                break
+                            except Exception:
+                                pass
+
+                # Build _tt_valid: prefer dedicated tee_times CSV, fall back to leaderboard tee_time col
+                _tt_valid = pd.DataFrame()
+                if not _tt_draw_df.empty and "tee_time_str" in _tt_draw_df.columns:
+                    _tt_valid = _tt_draw_df.rename(columns={"tee_time_str": "tee_time"}).copy()
+                else:
+                    _tt_files = sorted(
+                        (DATA_DIR / "live").glob("leaderboard_r*.csv"),
+                        key=lambda p: p.stat().st_mtime, reverse=True
+                    ) if (DATA_DIR / "live").exists() else []
+                    if _tt_files:
+                        _tt_df = pd.read_csv(_tt_files[0])
+                        if "tee_time" in _tt_df.columns and _tt_df["tee_time"].notna().any():
+                            _tt_valid = _tt_df[_tt_df["tee_time"].astype(str).str.strip().ne("")].copy()
+
+                if not _tt_valid.empty:
+                    # Merge win_prob/world_rank from predictions
+                    if not _preds.empty and "player_name" in _preds.columns and "win_prob" in _preds.columns:
+                        _tt_valid = _tt_valid.merge(
+                            _preds[["player_name", "win_prob", "world_rank"]],
+                            on="player_name", how="left"
+                        )
+
+                    with st.expander("Tee Times", expanded=False):
+                        # AM/PM summary banner if draw advantage available
+                        if not _da_df.empty and "am_pm" in _da_df.columns and "window_avg_wind" in _da_df.columns:
+                            _am_rows = _da_df[_da_df["am_pm"] == "AM"]["window_avg_wind"].dropna()
+                            _pm_rows = _da_df[_da_df["am_pm"] == "PM"]["window_avg_wind"].dropna()
+                            if not _am_rows.empty and not _pm_rows.empty:
+                                _am_avg = _am_rows.mean()
+                                _pm_avg = _pm_rows.mean()
+                                _fav = "AM" if _am_avg < _pm_avg else "PM"
+                                _fav_col = "#00c44f"
+                                _dis_col = "#e74c3c"
+                                _am_col = _fav_col if _fav == "AM" else _dis_col
+                                _pm_col = _fav_col if _fav == "PM" else _dis_col
+                                st.markdown(
+                                    f"<div style='font-size:0.82rem;margin-bottom:8px;padding:6px 10px;"
+                                    f"background:#1a1a2e;border-radius:6px;'>"
+                                    f"<span style='color:{_am_col};font-weight:600;'>Morning (AM): {_am_avg:.0f} mph avg</span>"
+                                    f"<span style='color:#888;margin:0 10px;'>|</span>"
+                                    f"<span style='color:{_pm_col};font-weight:600;'>Afternoon (PM): {_pm_avg:.0f} mph avg</span>"
+                                    f"<span style='color:#888;margin:0 10px;'>→</span>"
+                                    f"<span style='color:{_fav_col};font-weight:700;'>{_fav} draw favored</span> (R{_da_round})"
+                                    f"</div>",
+                                    unsafe_allow_html=True,
                                 )
 
-                            with st.expander("⏰ Tee Times", expanded=False):
-                                _tt_groups = _tt_valid.groupby("tee_time", sort=True)
-                                for _ttime, _tgroup in _tt_groups:
-                                    st.markdown(f"**{_ttime}**")
-                                    _tt_rows = []
-                                    for _, _tr in _tgroup.iterrows():
-                                        _pwin = float(_tr.get("win_prob", 0) or 0) * 100
-                                        _prank = _tr.get("world_rank")
-                                        _rank_s = f"#{int(_prank)}" if pd.notna(_prank) else "—"
-                                        _win_s  = f"{_pwin:.1f}%" if _pwin > 0 else "—"
-                                        _tt_rows.append({
-                                            "Player": str(_tr.get("player_name", "—")),
-                                            "Rank":   _rank_s,
-                                            "Win%":   _win_s,
-                                        })
-                                    st.dataframe(pd.DataFrame(_tt_rows), hide_index=True,
-                                                 use_container_width=True)
-                except Exception:
-                    pass
+                        # Merge draw advantage columns into display df
+                        _has_da = (
+                            not _da_df.empty
+                            and "player_name" in _da_df.columns
+                            and "draw_tier" in _da_df.columns
+                        )
+                        if _has_da:
+                            _da_merge = _da_df[["player_name", "tee_time_str", "window_avg_wind", "draw_advantage", "draw_tier"]].copy()
+                            _tt_valid = _tt_valid.merge(_da_merge, on="player_name", how="left")
+
+                        _tt_groups = _tt_valid.groupby("tee_time", sort=True)
+                        for _ttime, _tgroup in _tt_groups:
+                            st.markdown(f"**{_ttime}**")
+                            _tt_rows = []
+                            for _, _tr in _tgroup.iterrows():
+                                _pwin = float(_tr.get("win_prob", 0) or 0) * 100
+                                _prank = _tr.get("world_rank")
+                                _rank_s = f"#{int(_prank)}" if pd.notna(_prank) else "—"
+                                _win_s  = f"{_pwin:.1f}%" if _pwin > 0 else "—"
+                                _row = {
+                                    "Player": str(_tr.get("player_name", "—")),
+                                    "Rank":   _rank_s,
+                                    "Win%":   _win_s,
+                                }
+                                if _has_da:
+                                    _tier = str(_tr.get("draw_tier", "") or "")
+                                    _wind = _tr.get("window_avg_wind")
+                                    _wind_s = f"{_wind:.0f} mph" if pd.notna(_wind) else "—"
+                                    _tier_display = {
+                                        "Strong Adv": "++ Calm",
+                                        "Adv": "+ Calm",
+                                        "Neutral": "~",
+                                        "Disadv": "- Wind",
+                                        "Strong Disadv": "-- Wind",
+                                    }.get(_tier, _tier or "—")
+                                    _row["Wind"] = _wind_s
+                                    _row["Draw"] = _tier_display
+                                _tt_rows.append(_row)
+                            st.dataframe(pd.DataFrame(_tt_rows), hide_index=True,
+                                         use_container_width=True)
+            except Exception:
+                pass
 
 
             # ── Elite SAVE list ──────────────────────────────────────────

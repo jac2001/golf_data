@@ -360,6 +360,36 @@ def run_tuesday_morning(dry_run: bool = False):
     if not dry_run and tournament_id and tournament_name:
         save_weather_snapshot(tournament_id, tournament_name)
 
+    # Fetch extended hourly forecast for draw advantage
+    if not dry_run and tournament_id and tournament_name:
+        _coords = _find_course_coords(tournament_name)
+        if _coords:
+            _lat, _lon = _coords
+            run_command(
+                ["python3", "scripts/scrapers/fetch_weather_openmetro.py",
+                 "--lat", str(_lat), "--lon", str(_lon),
+                 "--tid", tournament_id, "--hourly"],
+                "Hourly Weather Forecast",
+                timeout=30,
+            )
+
+    # Fetch tee times + compute draw advantage for R1 and R2 (draw announced Mon/Tue)
+    if not dry_run and tournament_id:
+        for _rnd in [1, 2]:
+            _tt_ok = run_command(
+                ["python3", "scripts/scrapers/fetch_tee_times.py",
+                 "--tid", tournament_id, "--round", str(_rnd)],
+                f"Tee Times R{_rnd}",
+                timeout=30,
+            )
+            if _tt_ok:
+                run_command(
+                    ["python3", "scripts/predictions/draw_advantage.py",
+                     "--tid", tournament_id, "--round", str(_rnd)],
+                    f"Draw Advantage R{_rnd}",
+                    timeout=30,
+                )
+
     return results
 
 
