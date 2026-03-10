@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-03-09 19:25
+Generated: 2026-03-09 19:34
 
 | Column | Description |
 |--------|-------------|
@@ -208,4 +208,14 @@ Generated: 2026-03-09 19:25
 | cut_risk | Cut risk category: LOW (>85%), MEDIUM (65-85%), ELEVATED (45-65%), HIGH (<45%) |
 | miss_cut_prob | Probability of missing the cut (1 - cut_prob) |
 | expected_value | Expected earnings value based on purse + probabilities (USD) |
+| vegas_prob | No description available |
+| odds_to_win | No description available |
+| odds_numeric | No description available |
+| odds_rank | No description available |
+| ensemble_win_prob | No description available |
+| ensemble_win_prob_normalized | No description available |
+| model_vs_vegas_edge | No description available |
+| is_value_bet | No description available |
+| odds_drift_flag | No description available |
+| odds_drift_level | No description available |
 | dfs_ownership_proj | No description available |

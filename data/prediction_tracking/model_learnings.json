@@ -1,29 +1,29 @@
 {
   "summary": {
-    "tournaments_analyzed": 2,
-    "total_predictions": 286
+    "tournaments_analyzed": 3,
+    "total_predictions": 358
   },
   "accuracy": {
     "top5": {
-      "brier_score": 0.0361,
-      "avg_predicted": 0.0749,
-      "avg_actual": 0.0385,
-      "calibration_error": 0.0364
+      "brier_score": 0.042,
+      "avg_predicted": 0.0738,
+      "avg_actual": 0.0447,
+      "calibration_error": 0.0291
     },
     "top10": {
-      "brier_score": 0.0736,
-      "avg_predicted": 0.1507,
-      "avg_actual": 0.0769,
-      "calibration_error": 0.0738
+      "brier_score": 0.0847,
+      "avg_predicted": 0.1483,
+      "avg_actual": 0.0922,
+      "calibration_error": 0.0561
     }
   },
   "biases": [
-    "Model OVERESTIMATES top5 probability by 95%",
-    "Model OVERESTIMATES top10 probability by 96%"
+    "Model OVERESTIMATES top5 probability by 65%",
+    "Model OVERESTIMATES top10 probability by 61%"
   ],
   "player_patterns": [],
   "course_fit_effectiveness": {
-    "correlation_with_finish": -0.103,
+    "correlation_with_finish": -0.19,
     "interpretation": "Course fit is predictive"
   }
 }

@@ -1101,5 +1101,422 @@
     ],
     "success_count": 4,
     "total_count": 5
+  },
+  {
+    "timestamp": "2026-03-06T08:00:26.142629",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 5,
+    "total_count": 6
+  },
+  {
+    "timestamp": "2026-03-06T14:26:23.107943",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 5,
+    "total_count": 6
+  },
+  {
+    "timestamp": "2026-03-06T20:00:28.246019",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 5,
+    "total_count": 6
+  },
+  {
+    "timestamp": "2026-03-07T08:00:27.053594",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 5,
+    "total_count": 6
+  },
+  {
+    "timestamp": "2026-03-07T14:31:57.802896",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "League Picks",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 6,
+    "total_count": 7
+  },
+  {
+    "timestamp": "2026-03-07T20:01:50.542901",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "League Picks",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 6,
+    "total_count": 7
+  },
+  {
+    "timestamp": "2026-03-08T09:11:19.973847",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "League Picks",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 6,
+    "total_count": 7
+  },
+  {
+    "timestamp": "2026-03-08T14:08:29.489474",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "League Picks",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 6,
+    "total_count": 7
+  },
+  {
+    "timestamp": "2026-03-08T20:00:29.888685",
+    "schedule": "live",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Live Leaderboard",
+        "success": true
+      },
+      {
+        "task": "League Picks",
+        "success": true
+      },
+      {
+        "task": "Hole Scores",
+        "success": true
+      },
+      {
+        "task": "DraftKings Odds",
+        "success": true
+      },
+      {
+        "task": "Refresh Odds",
+        "success": true
+      },
+      {
+        "task": "Recommend Bets",
+        "success": true
+      },
+      {
+        "task": "Live Prediction Update",
+        "success": false
+      }
+    ],
+    "success_count": 6,
+    "total_count": 7
+  },
+  {
+    "timestamp": "2026-03-08T21:02:46.797722",
+    "schedule": "post-tournament",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Tournament SG Stats",
+        "success": true
+      },
+      {
+        "task": "Form Stats",
+        "success": true
+      },
+      {
+        "task": "World Rankings",
+        "success": true
+      },
+      {
+        "task": "Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Bets",
+        "success": true
+      },
+      {
+        "task": "CLV Tracking",
+        "success": true
+      }
+    ],
+    "success_count": 6,
+    "total_count": 6
+  },
+  {
+    "timestamp": "2026-03-08T23:00:07.324875",
+    "schedule": "record",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Final Leaderboard",
+        "success": true
+      },
+      {
+        "task": "Auto Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Recommended Bets",
+        "success": true
+      }
+    ],
+    "success_count": 3,
+    "total_count": 3
+  },
+  {
+    "timestamp": "2026-03-09T06:01:02.012661",
+    "schedule": "monday",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Player Database",
+        "success": true
+      }
+    ],
+    "success_count": 1,
+    "total_count": 1
+  },
+  {
+    "timestamp": "2026-03-09T08:03:26.863911",
+    "schedule": "post-tournament",
+    "dry_run": false,
+    "results": [
+      {
+        "task": "Tournament SG Stats",
+        "success": true
+      },
+      {
+        "task": "Form Stats",
+        "success": true
+      },
+      {
+        "task": "World Rankings",
+        "success": true
+      },
+      {
+        "task": "Record Results",
+        "success": true
+      },
+      {
+        "task": "Grade Bets",
+        "success": true
+      },
+      {
+        "task": "CLV Tracking",
+        "success": true
+      }
+    ],
+    "success_count": 6,
+    "total_count": 6
   }
 ]
