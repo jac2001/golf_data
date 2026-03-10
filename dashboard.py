@@ -7018,6 +7018,7 @@ st.sidebar.caption(f"Last updated: {datetime.now().strftime('%b %d, %Y %H:%M')}"
 if page == "🏆 This Week":
 
     engine = load_scoring_engine(_scoring_engine_cache_key())
+    _tw_pr_tab = _tw_tt_tab = _tw_tools_tab = None  # filled when tournament loads
 
     if engine:
         tournament = engine.get_current_week_tournament()
@@ -7324,6 +7325,11 @@ if page == "🏆 This Week":
             # ── Weather
             render_weather_widget(t.course or tournament, tid=str(_field_id))
 
+            # ── Page tabs (Power Rankings | Tee Times | Tools) ──────────
+            _tw_pr_tab, _tw_tt_tab, _tw_tools_tab = st.tabs(
+                ["📈 Power Rankings", "⏰ Tee Times", "🔧 Tools"]
+            )
+
             # ── Course Layout Charts ──────────────────────────────────────
             def _load_course_chars(tid_str: str, year: int) -> pd.DataFrame:
                 chars_dir = DATA_DIR / "course_characteristics"
@@ -7358,7 +7364,8 @@ if page == "🏆 This Week":
             _cc_df = _load_course_chars(_cc_tid, _cc_year) if _cc_tid else pd.DataFrame()
 
             if not _cc_df.empty and "hole_num" in _cc_df.columns:
-                with st.expander("Course Layout", expanded=False):
+                with _tw_tt_tab:
+                    st.markdown("#### Course Layout")
                     _cc_df = _cc_df.sort_values("hole_num").reset_index(drop=True).copy()
                     _cc_df["hole_num"] = _cc_df["hole_num"].astype(int)
                     for _c in ["hole_par", "hole_yards", "scoring_avg", "difficulty_rank"]:
@@ -7669,7 +7676,8 @@ if page == "🏆 This Week":
                             on="player_name", how="left"
                         )
 
-                    with st.expander("Tee Times", expanded=False):
+                    with _tw_tt_tab:
+                        st.markdown("#### Tee Times")
                         # AM/PM summary banner if draw advantage available
                         if not _da_df.empty and "am_pm" in _da_df.columns and "window_avg_wind" in _da_df.columns:
                             _am_rows = _da_df[_da_df["am_pm"] == "AM"]["window_avg_wind"].dropna()
@@ -8200,9 +8208,8 @@ if page == "🏆 This Week":
                         st.caption("Make sure predictions are loaded (run full pipeline first).")
 
     # ── Power Rankings & Tools ────────────────────────────────────────────────
-    _tw_pr_tab, _tw_tools_tab = st.tabs(["📈 Power Rankings", "🔧 Tools"])
 
-    with _tw_pr_tab:
+    with (_tw_pr_tab if _tw_pr_tab is not None else st.container()):
         st.markdown("### Power Rankings")
         st.caption("Editorial ranking feed with quick scanning, filtering, and full-table drill-down.")
 
@@ -8338,17 +8345,12 @@ if page == "🏆 This Week":
 </div>
 """, unsafe_allow_html=True)
 
-                    with st.expander("Full Rankings Table"):
-                        drop_cols = {"analysis"}
-                        table_cols = [c for c in ["rank", player_col, "country_flag", "country", "player_id", "source", "scraped_at"] if c in df.columns]
-                        table_cols += [c for c in df.columns if c not in set(table_cols) | drop_cols][:4]
-                        st.dataframe(df[table_cols], hide_index=True, use_container_width=True, height=520)
             else:
                 st.info("No power rankings available yet.")
         else:
             st.info("Power rankings directory not found.")
 
-    with _tw_tools_tab:
+    with (_tw_tools_tab if _tw_tools_tab is not None else st.container()):
         st.markdown("### Tools")
         action_col1, action_col2 = st.columns(2)
         with action_col1:
