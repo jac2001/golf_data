@@ -189,19 +189,19 @@ def _predictions_block(top_n: int = 15) -> str:
         out["Est. Win%"]   = (df["win_prob"] * 100).round(1).astype(str) + "%"
         out["World Rank"]  = df["world_rank"].apply(lambda x: f"#{int(x)}" if pd.notna(x) else "—")
         out["Top 10%"]     = (df["top10_prob"] * 100).round(0).astype(int).astype(str) + "%"
+        out["Top 20%"]     = (df["top20_prob"] * 100).round(0).astype(int).astype(str) + "%"
         out["Course Hist"] = df.apply(_fmt_course_history, axis=1)
 
-        for sg_col, label in [("sg_total","SG Total"),("sg_ott","OTT"),("sg_app","APP"),("sg_putt","Putt")]:
-            if sg_col in df.columns:
-                out[label] = df[sg_col].apply(lambda x: f"{x:+.2f}" if pd.notna(x) else "—")
+        # Note: raw SG numbers removed — use FORM & STATS section for player strengths.
+        # This table is for odds/probability reference only.
 
         if "live_top10_prob" in df.columns:
             out["Live T10%"] = (df["live_top10_prob"] * 100).round(0).fillna(0).astype(int).astype(str) + "%"
 
         note = (
             "Est. Win% is our estimate — compare to Implied% for value. "
-            "Top 10% is a finish probability, not a win probability — don't compare to win odds. "
-            "SG = Strokes Gained vs field average."
+            "Top 10%/Top 20% are finish probabilities — do NOT compare to win odds. "
+            "Player stats, form, and course history are in the FORM & STATS section below."
         )
         return f"## FIELD OVERVIEW — Top {top_n} contenders\n{note}\n" + out.to_markdown(index=False)
     except Exception as e:
