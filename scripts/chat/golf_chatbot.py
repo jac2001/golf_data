@@ -347,13 +347,20 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
             if stat_parts:
                 lines.append(f"**Stats in this field**: {' · '.join(stat_parts)}")
 
-            # --- Course history (narrative) ---
+            # --- Course history + course-specific performance ---
             n_starts  = max(int(r.get("course_starts", 0) or 0), int(r.get("hist_times_played", 0) or 0))
             wins      = int(r.get("hist_wins",   0) or 0)
             t10s      = int(r.get("hist_top10s", 0) or 0)
             best      = r.get("course_best_finish")
             cut_rt    = float(r.get("course_made_cut_rate", 1) or 1)
             avg_fin   = r.get("course_avg_finish")
+            avg_to_par = r.get("course_avg_to_par")
+            c_scoring  = r.get("course_stat_120_scoring_average_weighted")
+            c_drv_acc  = r.get("course_stat_102_driving_accuracy_weighted")
+            c_sg_app   = r.get("course_sg_app_weighted")
+            c_sg_ott   = r.get("course_sg_ott_weighted")
+            c_sg_putt  = r.get("course_sg_putt_weighted")
+            c_birdie   = r.get("course_stat_108_birdie_or_better_weighted")
 
             if n_starts == 0:
                 lines.append("**Course history**: No history here — first start at this venue")
@@ -367,13 +374,97 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
                     ch_parts.append("1 top-10 finish")
                 if pd.notna(best) and float(best) <= 10:
                     ch_parts.append(f"best finish T{int(float(best))}")
-                if pd.notna(avg_fin) and float(avg_fin) <= 25:
-                    ch_parts.append(f"avg finish T{int(float(avg_fin))}")
+                if pd.notna(avg_to_par):
+                    ch_parts.append(f"averages {float(avg_to_par):+.1f} per tournament here")
+                if pd.notna(c_scoring):
+                    ch_parts.append(f"scoring avg {float(c_scoring):.1f}/round here")
                 if cut_rt < 0.5 and n_starts >= 3:
                     ch_parts.append("struggles to make the weekend here")
                 elif cut_rt >= 0.9 and n_starts >= 3:
                     ch_parts.append("makes the cut here every time")
                 lines.append(f"**Course history**: {' · '.join(ch_parts)}")
+
+                # Course-specific strengths/weaknesses vs season stats
+                c_stat_parts = []
+                if pd.notna(c_drv_acc):
+                    season_acc = float(r.get("driving_acc_val") or 0)
+                    c_val = float(c_drv_acc)
+                    if c_val >= 65:
+                        c_stat_parts.append(f"drives it accurately here ({c_val:.0f}% fairways)")
+                    elif season_acc and c_val > season_acc + 5:
+                        c_stat_parts.append(f"drives straighter here than his season avg ({c_val:.0f}% vs {season_acc:.0f}%)")
+                if pd.notna(c_sg_app):
+                    c_val = float(c_sg_app)
+                    if c_val >= 0.5:
+                        c_stat_parts.append(f"excellent approach play at this course (+{c_val:.2f} SG/round historically)")
+                    elif c_val <= -0.2:
+                        c_stat_parts.append(f"struggles with approach play here ({c_val:+.2f} SG/round)")
+                if pd.notna(c_sg_putt):
+                    c_val = float(c_sg_putt)
+                    if c_val >= 0.4:
+                        c_stat_parts.append(f"putts well on these greens (+{c_val:.2f} SG/round here)")
+                    elif c_val <= -0.3:
+                        c_stat_parts.append(f"poor putter on these greens ({c_val:+.2f} SG/round here)")
+                if c_stat_parts:
+                    lines.append(f"**At this course specifically**: {' · '.join(c_stat_parts)}")
+
+            # --- Par scoring breakdown ---
+            par3_rank = r.get("par3_scoring_field_rank")
+            par4_rank = r.get("par4_scoring_field_rank")
+            par5_rank = r.get("par5_scoring_field_rank")
+            par_parts = []
+            if pd.notna(par3_rank):
+                rank = int(par3_rank)
+                if rank <= 15:
+                    par_parts.append(f"strong par-3 scorer (top-15 in field)")
+                elif rank > field_size * 0.75:
+                    par_parts.append(f"weak on par 3s (#{rank} of {field_size} — concern at this course)")
+            if pd.notna(par4_rank):
+                rank = int(par4_rank)
+                if rank <= 15:
+                    par_parts.append(f"dominant on par 4s (top-15)")
+                elif rank > field_size * 0.75:
+                    par_parts.append(f"below-average on par 4s (#{rank})")
+            if pd.notna(par5_rank):
+                rank = int(par5_rank)
+                if rank <= 15:
+                    par_parts.append(f"birdie machine on par 5s (top-15)")
+            if par_parts:
+                lines.append(f"**Par scoring**: {' · '.join(par_parts)}")
+
+            # --- Round-by-round tendencies ---
+            r1 = r.get("recent_r1_avg")
+            r4 = r.get("recent_r4_avg")
+            r4_pct = r.get("recent_r4_avg_field_pct")
+            r1_pct = r.get("recent_r1_avg_field_pct")
+            round_parts = []
+            if pd.notna(r1) and pd.notna(r1_pct):
+                r1v = float(r1)
+                if float(r1_pct) >= 0.85:
+                    round_parts.append(f"strong starter (avg {r1v:+.1f} in R1)")
+                elif float(r1_pct) <= 0.25:
+                    round_parts.append(f"slow starter (avg {r1v:+.1f} in R1)")
+            if pd.notna(r4) and pd.notna(r4_pct):
+                r4v = float(r4)
+                if float(r4_pct) >= 0.85:
+                    round_parts.append(f"elite closer (avg {r4v:+.1f} in R4 — one of the best in the field)")
+                elif float(r4_pct) <= 0.25:
+                    round_parts.append(f"fades on Sundays (avg {r4v:+.1f} in R4)")
+            birdie_r = r.get("birdie_avg_field_rank")
+            if pd.notna(birdie_r) and int(birdie_r) <= 15:
+                b_val = float(r.get("birdie_avg_val") or 0)
+                round_parts.append(f"makes {b_val:.1f} birdies/round (top-15 in field)")
+            if round_parts:
+                lines.append(f"**Tendencies**: {' · '.join(round_parts)}")
+
+            # --- Projected score ---
+            proj = r.get("projected_score")
+            proj_vs = r.get("projected_score_vs_field")
+            if pd.notna(proj):
+                proj_str = f"Projected {float(proj):+.1f} for the week"
+                if pd.notna(proj_vs):
+                    proj_str += f" ({float(proj_vs):+.1f} vs field average)"
+                lines.append(f"**Projection**: {proj_str}")
 
             # --- Live position if tournament in progress ---
             if "live_position" in r and pd.notna(r.get("live_position")):
@@ -504,10 +595,10 @@ def _player_form_context_block(top_n: int = 20) -> str:
         ]
 
         for _, row in df.iterrows():
-            name  = row["player_name"]
-            wr    = row.get("world_rank")
+            name   = row["player_name"]
+            wr     = row.get("world_rank")
             wr_str = f"World #{int(wr)}" if pd.notna(wr) else ""
-            last  = _last_result(row)
+            last   = _last_result(row)
             streak = _form_streak(row)
             sg_str = _sg_strengths(row)
             course = _course_narrative(row)
@@ -519,6 +610,38 @@ def _player_form_context_block(top_n: int = 20) -> str:
             if sg_str:
                 line += f" Stats: {sg_str}."
             line += f" Course: {course}."
+
+            # Append critical extras: course scoring avg, par-3 concern, R4 closing, projection
+            extras = []
+            avg_to_par = row.get("course_avg_to_par")
+            c_scoring  = row.get("course_stat_120_scoring_average_weighted")
+            if pd.notna(avg_to_par) and int(row.get("hist_times_played", 0) or 0) >= 2:
+                extras.append(f"avg {float(avg_to_par):+.1f}/tournament here")
+            elif pd.notna(c_scoring) and int(row.get("hist_times_played", 0) or 0) >= 2:
+                extras.append(f"scoring avg {float(c_scoring):.1f}/round here")
+
+            par3_rank = row.get("par3_scoring_field_rank")
+            if pd.notna(par3_rank):
+                r = int(par3_rank)
+                if r <= 10:
+                    extras.append("elite par-3 scorer")
+                elif r > full_field_size * 0.75:
+                    extras.append(f"poor par-3 scorer (#{r}) — concern at this course")
+
+            r4_pct = row.get("recent_r4_avg_field_pct")
+            r4_val = row.get("recent_r4_avg")
+            if pd.notna(r4_pct) and pd.notna(r4_val):
+                if float(r4_pct) >= 0.9:
+                    extras.append(f"elite Sunday closer (avg {float(r4_val):+.1f})")
+                elif float(r4_pct) <= 0.2:
+                    extras.append(f"fades on Sundays (avg {float(r4_val):+.1f})")
+
+            proj = row.get("projected_score")
+            if pd.notna(proj):
+                extras.append(f"projected {float(proj):+.1f} for the week")
+
+            if extras:
+                line += f" Key: {' · '.join(extras)}."
             lines.append(line)
 
         return "\n".join(lines)
