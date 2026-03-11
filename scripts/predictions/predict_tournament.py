@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np 
 import argparse
 import json
+from collections import Counter
 import joblib
 from pathlib import Path
 import sys 
@@ -2293,8 +2294,40 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
         features_df, tournament_name, master_df, tournament_id=tournament_id
     )
 
+    # SG EVENT COUNT PENALTY: Regression-to-mean for players with < 10 events
+    # Prevents hot-but-shallow SG stats from over-ranking low-sample players
+    try:
+        _ec_year = _latest_year_for("form_stats_")
+        if _ec_year:
+            _ec_path = HISTORICAL_DIR / f"form_stats_{_ec_year}.csv"
+            if _ec_path.exists():
+                _ec_fs = pd.read_csv(_ec_path, usecols=['player_id', 'tournament_id'])
+                _ec_fs['player_id'] = _ec_fs['player_id'].astype(str)
+                if tournament_id:
+                    _ec_fs = _ec_fs[_ec_fs['tournament_id'] < tournament_id]
+                _event_counts = (
+                    _ec_fs.groupby('player_id')['tournament_id']
+                    .nunique()
+                    .reset_index()
+                    .rename(columns={'tournament_id': 'sg_event_count'})
+                )
+                features_df = features_df.merge(_event_counts, on='player_id', how='left')
+                features_df['sg_event_count'] = features_df['sg_event_count'].fillna(5)
+                _MIN_EVENTS = 10
+                _conf = (features_df['sg_event_count'] / _MIN_EVENTS).clip(0, 1)
+                _adjusted = []
+                for _sg_col in ['season_sg_total', 'season_sg_arg', 'predictive_sg_weighted']:
+                    if _sg_col in features_df.columns:
+                        _field_avg = features_df[_sg_col].mean()
+                        features_df[_sg_col] = _field_avg + _conf * (features_df[_sg_col] - _field_avg)
+                        _adjusted.append(_sg_col)
+                _low_sample = int((features_df['sg_event_count'] < _MIN_EVENTS).sum())
+                print(f"  SG event count penalty: {_low_sample} low-sample players adjusted in {_adjusted}")
+    except Exception as _ec_e:
+        print(f"  SG event count penalty skipped: {_ec_e}")
+
     print(f"  ✓ Built feature matrix: {features_df.shape}")
-    return features_df 
+    return features_df
 
 
 ### Step 7: Handle Missing Values (CHALLENGE 3 IMPLEMENTED)
@@ -2858,20 +2891,21 @@ def apply_course_win_boost(
 
 def apply_elite_market_blend(
     df: pd.DataFrame,
-    top_n: int = 5,
-    max_market_weight: float = 0.35,
+    top_n: int = 15,
+    max_market_weight: float = 0.25,
 ) -> pd.DataFrame:
     """
     For top world-ranked players, blend model win_prob toward market-implied probability.
 
     The model systematically underprices elite players — Scheffler at +480 gets 8.5%
     model vs 17.2% market. The market is very efficient at the top of the field where
-    sharp money and media attention are highest. We blend toward market for rank 1-5.
+    sharp money and media attention are highest. We blend toward market for rank 1-15.
 
     Weight schedule (linear decay):
-      rank 1 → max_market_weight (e.g. 35% market)
-      rank 5 → max_market_weight / top_n (e.g. 7% market)
-      rank 6+ → unchanged
+      rank 1 → max_market_weight (e.g. 25% market)
+      rank 8 → ~13% market
+      rank 15 → 1.7% market
+      rank 16+ → unchanged
 
     Requires vegas_prob from add_odds_to_predictions() — call this after odds integration.
     """
@@ -2893,6 +2927,76 @@ def apply_elite_market_blend(
         df["win_prob"] = (df["win_prob"] / total).clip(0, 1)
     n_blended = int(mask.sum())
     print(f"    Elite market blend: {n_blended} players adjusted (top {top_n} world rank, max weight {max_market_weight:.0%})")
+    return df
+
+
+def apply_expert_consensus_blend(
+    df: pd.DataFrame,
+    tid: str,
+    blend_weight: float = 0.12,
+) -> pd.DataFrame:
+    """
+    Blend model win_prob 12% toward expert consensus distribution.
+
+    Reads expert_picks_{tid}.csv, counts each player's appearances across all
+    lineup_player_names arrays, normalizes to a probability distribution, then
+    softly blends toward that distribution.
+
+    Effect: Players selected by many experts get a probability boost; players
+    selected by no experts get a slight reduction.
+    """
+    ep_path = DATA_DIR / "expert_picks" / f"expert_picks_{tid}.csv"
+    if not ep_path.exists():
+        print(f"    Expert consensus blend skipped (no file: expert_picks_{tid}.csv)")
+        return df
+    ep = pd.read_csv(ep_path)
+    if len(ep) < 3:
+        print(f"    Expert consensus blend skipped (only {len(ep)} experts, need >= 3)")
+        return df
+    counts: Counter = Counter()
+    for names_json in ep['lineup_player_names'].dropna():
+        try:
+            for name in json.loads(names_json):
+                counts[name] += 1
+        except (json.JSONDecodeError, TypeError):
+            pass
+    if not counts:
+        print("    Expert consensus blend skipped (no valid player names parsed)")
+        return df
+    total_experts = len(ep)
+    df = df.copy()
+
+    # Expert picks use "First Last" but predictions use "Last, First" — build a lookup
+    # that handles both formats. Convert "First Last" → "Last, First" for matching.
+    def _to_last_first(name: str) -> str:
+        """Convert 'Collin Morikawa' → 'Morikawa, Collin'. Multi-part last names handled naively."""
+        parts = name.strip().split()
+        if len(parts) >= 2:
+            return f"{parts[-1]}, {' '.join(parts[:-1])}"
+        return name
+
+    normalized_counts: Counter = Counter()
+    for name, cnt in counts.items():
+        # Try "Last, First" format
+        normalized_counts[_to_last_first(name)] += cnt
+        # Also keep original in case predictions use "First Last"
+        normalized_counts[name] += cnt
+
+    def _lookup_expert_pct(pred_name: str) -> float:
+        return normalized_counts.get(pred_name, 0) / total_experts
+
+    df['expert_pct'] = df['player_name'].map(_lookup_expert_pct).fillna(0)
+    expert_total = df['expert_pct'].sum()
+    if expert_total == 0:
+        print("    Expert consensus blend skipped (no expert picks matched field)")
+        return df
+    expert_dist = df['expert_pct'] / expert_total
+    df['win_prob'] = (1 - blend_weight) * df['win_prob'] + blend_weight * expert_dist
+    total = df['win_prob'].sum()
+    if total > 0:
+        df['win_prob'] = (df['win_prob'] / total).clip(0, 1)
+    n_in = int((df['expert_pct'] > 0).sum())
+    print(f"    Expert consensus blend: {n_in} players in expert lineups ({total_experts} experts, weight {blend_weight:.0%})")
     return df
 
 
@@ -3544,6 +3648,11 @@ Examples:
         # Apply elite market blend now that vegas_prob is available
         print("\n  Applying elite market blend...")
         predictions_df = apply_elite_market_blend(predictions_df)
+
+        # Apply expert consensus blend
+        if args.tournament_id:
+            print("\n  Applying expert consensus blend...")
+            predictions_df = apply_expert_consensus_blend(predictions_df, args.tournament_id)
 
     print("\n" + "=" * 70)
     print(f"  TOP {args.top_n} RECOMMENDATIONS")
