@@ -298,6 +298,24 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
             except (TypeError, ValueError):
                 last_pos_int = None
 
+            # --- Season summary ---
+            n_events    = int(r.get("sg_event_count", 0) or 0)
+            r_wins      = int(r.get("recent_wins",  0) or 0)
+            r_t5s       = int(r.get("recent_top5s", 0) or 0)
+            r_t10s_raw  = float(r.get("recent_top10s", 0) or 0)
+            r_scoring   = r.get("recent_scoring_avg")
+            if n_events >= 1:
+                season_parts = [f"{n_events} starts this season"]
+                if r_wins:
+                    season_parts.append(f"{r_wins} win{'s' if r_wins > 1 else ''}")
+                if r_t5s:
+                    season_parts.append(f"{r_t5s} top-5{'s' if r_t5s > 1 else ''}")
+                elif r_t10s_raw >= 1:
+                    season_parts.append(f"{int(round(r_t10s_raw))} top-10s")
+                if pd.notna(r_scoring) and float(r_scoring) > 0:
+                    season_parts.append(f"scoring avg {float(r_scoring):.1f}/round")
+                lines.append(f"**This season**: {' · '.join(season_parts)}")
+
             form_parts = []
             if mc_last:
                 form_parts.append("missed the cut last start")
@@ -307,8 +325,8 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
 
             if consec_t >= 2:
                 form_parts.append(f"{consec_t} top-10s in a row")
-            elif r_t10 >= 2:
-                form_parts.append(f"{int(round(r_t10))} top-10s in last 5 starts")
+            elif r_t10s_raw >= 2:
+                form_parts.append(f"{int(round(r_t10s_raw))} top-10s in last 5 starts")
             if consec_c >= 5:
                 form_parts.append(f"made {consec_c} cuts straight")
             elif r_cuts >= 0.8:
@@ -316,7 +334,7 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
             elif r_cuts < 0.5:
                 form_parts.append("missing cuts regularly")
             if hot and hot_score >= 8:
-                form_parts.append("in red-hot form right now")
+                form_parts.append(f"peak hot-hand form (score {int(hot_score)}/10)")
             elif ft > 0.5:
                 form_parts.append("trending up")
             elif ft < -0.5:
@@ -386,25 +404,31 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
 
                 # Course-specific strengths/weaknesses vs season stats
                 c_stat_parts = []
+                if pd.notna(c_sg_ott):
+                    c_val = float(c_sg_ott)
+                    if c_val >= 0.4:
+                        c_stat_parts.append(f"elite off-the-tee here (+{c_val:.2f} SG/round historically)")
+                    elif c_val <= -0.3:
+                        c_stat_parts.append(f"drives it poorly at this course ({c_val:+.2f} SG/round)")
                 if pd.notna(c_drv_acc):
                     season_acc = float(r.get("driving_acc_val") or 0)
                     c_val = float(c_drv_acc)
                     if c_val >= 65:
-                        c_stat_parts.append(f"drives it accurately here ({c_val:.0f}% fairways)")
+                        c_stat_parts.append(f"hits fairways here ({c_val:.0f}% driving acc)")
                     elif season_acc and c_val > season_acc + 5:
-                        c_stat_parts.append(f"drives straighter here than his season avg ({c_val:.0f}% vs {season_acc:.0f}%)")
+                        c_stat_parts.append(f"drives straighter here than season avg ({c_val:.0f}% vs {season_acc:.0f}%)")
                 if pd.notna(c_sg_app):
                     c_val = float(c_sg_app)
-                    if c_val >= 0.5:
-                        c_stat_parts.append(f"excellent approach play at this course (+{c_val:.2f} SG/round historically)")
+                    if c_val >= 0.3:
+                        c_stat_parts.append(f"strong approach play at this course (+{c_val:.2f} SG/round)")
                     elif c_val <= -0.2:
-                        c_stat_parts.append(f"struggles with approach play here ({c_val:+.2f} SG/round)")
+                        c_stat_parts.append(f"struggles with irons here ({c_val:+.2f} SG/round)")
                 if pd.notna(c_sg_putt):
                     c_val = float(c_sg_putt)
-                    if c_val >= 0.4:
-                        c_stat_parts.append(f"putts well on these greens (+{c_val:.2f} SG/round here)")
+                    if c_val >= 0.3:
+                        c_stat_parts.append(f"putts well on these greens (+{c_val:.2f} SG/round)")
                     elif c_val <= -0.3:
-                        c_stat_parts.append(f"poor putter on these greens ({c_val:+.2f} SG/round here)")
+                        c_stat_parts.append(f"poor putter on these greens ({c_val:+.2f} SG/round)")
                 if c_stat_parts:
                     lines.append(f"**At this course specifically**: {' · '.join(c_stat_parts)}")
 
@@ -424,7 +448,7 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
                 if rank <= 15:
                     par_parts.append(f"dominant on par 4s (top-15)")
                 elif rank > field_size * 0.75:
-                    par_parts.append(f"below-average on par 4s (#{rank})")
+                    par_parts.append(f"below-average on par 4s (#{rank} — major concern, course has 10 par 4s)")
             if pd.notna(par5_rank):
                 rank = int(par5_rank)
                 if rank <= 15:
@@ -433,23 +457,46 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
                 lines.append(f"**Par scoring**: {' · '.join(par_parts)}")
 
             # --- Round-by-round tendencies ---
-            r1 = r.get("recent_r1_avg")
-            r4 = r.get("recent_r4_avg")
-            r4_pct = r.get("recent_r4_avg_field_pct")
-            r1_pct = r.get("recent_r1_avg_field_pct")
+            r1    = r.get("recent_r1_avg");  r1_pct = r.get("recent_r1_avg_field_pct")
+            r2    = r.get("recent_r2_avg");  r2_pct = r.get("recent_r2_avg_field_pct")
+            r3    = r.get("recent_r3_avg");  r3_pct = r.get("recent_r3_avg_field_pct")
+            r4    = r.get("recent_r4_avg");  r4_pct = r.get("recent_r4_avg_field_pct")
             round_parts = []
-            if pd.notna(r1) and pd.notna(r1_pct):
+            # Compact all-4 summary if we have all rounds
+            _rnd = {1: (r1, r1_pct), 2: (r2, r2_pct), 3: (r3, r3_pct), 4: (r4, r4_pct)}
+            _have = [(n, float(v), float(p)) for n, (v, p) in _rnd.items()
+                     if pd.notna(v) and pd.notna(p)]
+            if len(_have) == 4:
+                elite = [n for n, v, p in _have if p >= 0.85]
+                poor  = [n for n, v, p in _have if p <= 0.25]
+                r1v, r1p = float(r1), float(r1_pct)
+                r4v, r4p = float(r4), float(r4_pct)
+                if len(elite) == 4:
+                    round_parts.append(
+                        f"elite in ALL four rounds (R1: {r1v:+.1f}, R2: {float(r2):+.1f}, "
+                        f"R3: {float(r3):+.1f}, R4: {r4v:+.1f})"
+                    )
+                else:
+                    if r1p >= 0.85:
+                        round_parts.append(f"strong starter (R1 avg {r1v:+.1f})")
+                    elif r1p <= 0.25:
+                        round_parts.append(f"slow starter (R1 avg {r1v:+.1f})")
+                    if r4p >= 0.85:
+                        round_parts.append(f"elite Sunday closer (R4 avg {r4v:+.1f})")
+                    elif r4p <= 0.25:
+                        round_parts.append(f"fades on Sundays (R4 avg {r4v:+.1f})")
+            elif pd.notna(r1) and pd.notna(r1_pct):
                 r1v = float(r1)
                 if float(r1_pct) >= 0.85:
-                    round_parts.append(f"strong starter (avg {r1v:+.1f} in R1)")
+                    round_parts.append(f"strong starter (R1 avg {r1v:+.1f})")
                 elif float(r1_pct) <= 0.25:
-                    round_parts.append(f"slow starter (avg {r1v:+.1f} in R1)")
-            if pd.notna(r4) and pd.notna(r4_pct):
-                r4v = float(r4)
-                if float(r4_pct) >= 0.85:
-                    round_parts.append(f"elite closer (avg {r4v:+.1f} in R4 — one of the best in the field)")
-                elif float(r4_pct) <= 0.25:
-                    round_parts.append(f"fades on Sundays (avg {r4v:+.1f} in R4)")
+                    round_parts.append(f"slow starter (R1 avg {r1v:+.1f})")
+                if pd.notna(r4) and pd.notna(r4_pct):
+                    r4v = float(r4)
+                    if float(r4_pct) >= 0.85:
+                        round_parts.append(f"elite Sunday closer (R4 avg {r4v:+.1f})")
+                    elif float(r4_pct) <= 0.25:
+                        round_parts.append(f"fades on Sundays (R4 avg {r4v:+.1f})")
             birdie_r = r.get("birdie_avg_field_rank")
             if pd.notna(birdie_r) and int(birdie_r) <= 15:
                 b_val = float(r.get("birdie_avg_val") or 0)
