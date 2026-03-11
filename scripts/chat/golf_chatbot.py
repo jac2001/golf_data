@@ -15,6 +15,7 @@ from __future__ import annotations
 import glob
 import json
 import os
+import re
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Iterator
@@ -151,7 +152,7 @@ def _classify_query(query: str) -> dict:
     return {
         "players":           players,
         "is_player":         bool(players),
-        "is_bet":            any(w in q for w in ["bet", "wager", "odds", "value", "edge", "parlay", "prop", "book", "line", "wager"]),
+        "is_bet":            any(w in q for w in ["bet", "wager", "odds", "value", "edge", "parlay", "prop", "book", "wager"]) or re.search(r'\bline\b', q) is not None,
         "is_live":           any(w in q for w in ["live", "leaderboard", "leading", "update", "score", "round", "cut", "leader", "current", "standing", "position"]),
         "is_lineup":         any(w in q for w in ["lineup", "pick", "use", "fantasy", "team", "build", "choose", "start", "who should", "draft"]),
         "is_weather":        any(w in q for w in ["weather", "wind", "rain", "forecast", "conditions", "temperature", "temp"]),
@@ -310,8 +311,8 @@ def _odds_movement_block(player_names: list[str] | None = None) -> str:
         return ""
     try:
         snap_files = sorted(snap_dir.glob("odds_snapshot_*.csv"))
-        # Only use snapshots from the last 14 days
-        cutoff = datetime.now() - timedelta(days=14)
+        # Only use snapshots from the last 7 days (keeps within current tournament week)
+        cutoff = datetime.now() - timedelta(days=7)
         recent = []
         for f in snap_files:
             try:
@@ -396,8 +397,8 @@ def _weather_block(tid: str) -> str:
         lines = ["## WEATHER FORECAST"]
         for i, day in enumerate(daily[:4]):
             label  = round_labels[i] if i < 4 else f"Day {i+1}"
-            hi     = day.get("temperature", {}).get("maxTempF", "?").replace("°F","")
-            lo     = day.get("temperature", {}).get("minTempF", "?").replace("°F","")
+            hi     = str(day.get("temperature", {}).get("maxTempF", "?")).replace("°F","")
+            lo     = str(day.get("temperature", {}).get("minTempF", "?")).replace("°F","")
             wind   = day.get("windSpeedMPH", "?")
             precip = day.get("precipitation", "?")
             desc   = day.get("condition", "").replace("_", " ").title()
@@ -720,9 +721,11 @@ def _tournament_state(tid: str) -> dict:
         state["fetched_at"]   = meta.get("fetched_at", "")
         r  = state["round"]
         rs = state["round_status"].lower()
+        # "groupings official" / "no round" = tee times set but no golf played yet
+        _pre_play_statuses = {"groupings official", "no round", "not started", ""}
         if rs == "official" and r == 4:
             state["phase"] = "complete"
-        elif r == 0:
+        elif r == 0 or rs in _pre_play_statuses:
             state["phase"] = "pre_tournament"
         else:
             state["phase"] = f"round_{r}"
@@ -939,6 +942,19 @@ def build_context(
         sections.append(_recommended_bets_block(top_n=8))
         sections.append("")
 
+    elif intent["is_lineup"]:
+        # Fantasy-focused — check before bet so "build my lineup" doesn't misroute
+        sections.append(_predictions_block(top_n=15))
+        sections.append("")
+        sections.append(_expert_picks_block())
+        sections.append("")
+        sections.append(_my_picks_block())
+        sections.append("")
+        sections.append(_league_context_block())
+        sections.append("")
+        sections.append(_recommended_bets_block(top_n=5))
+        sections.append("")
+
     elif intent["is_bet"] or intent["is_value"]:
         # Bets + odds movement front-and-center, compact field, weather for context
         sections.append(_predictions_block(top_n=12))
@@ -963,19 +979,6 @@ def build_context(
         sections.append(_my_picks_block())
         sections.append("")
         sections.append(_league_context_block())
-        sections.append("")
-
-    elif intent["is_lineup"]:
-        # Fantasy-focused
-        sections.append(_predictions_block(top_n=15))
-        sections.append("")
-        sections.append(_expert_picks_block())
-        sections.append("")
-        sections.append(_my_picks_block())
-        sections.append("")
-        sections.append(_league_context_block())
-        sections.append("")
-        sections.append(_recommended_bets_block(top_n=5))
         sections.append("")
 
     elif intent["is_weather"] or intent["is_course"]:
