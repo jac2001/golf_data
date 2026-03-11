@@ -10752,8 +10752,14 @@ elif page == "👤 Players":
                     _rows += _h2h_row("Top 5s", _hg(_r1,"recent_top5s"), _hg(_r2,"recent_top5s"), fmt=".0f")
                     _rows += _h2h_row("Top 10s", _hg(_r1,"recent_top10s"), _hg(_r2,"recent_top10s"), fmt=".0f")
                     _rows += _h2h_row("Cuts Made %", (_hg(_r1,"recent_cuts_pct") or 0)*100, (_hg(_r2,"recent_cuts_pct") or 0)*100, fmt=".0f", suffix="%")
-                    _rows += _h2h_row("Final Round SG", _hg(_r1,"recent_final_round"), _hg(_r2,"recent_final_round"), fmt="+.2f")
                     _rows += _h2h_row("Consistency (σ)", _hg(_r1,"finish_consistency"), _hg(_r2,"finish_consistency"), higher_better=False, fmt=".1f")
+
+                    _rows += _h2h_sec("Round Scoring (Recent)")
+                    _rows += _h2h_row("R1 Avg", _hg(_r1,"recent_r1_avg"), _hg(_r2,"recent_r1_avg"), higher_better=False, fmt="+.2f")
+                    _rows += _h2h_row("R2 Avg", _hg(_r1,"recent_r2_avg"), _hg(_r2,"recent_r2_avg"), higher_better=False, fmt="+.2f")
+                    _rows += _h2h_row("R3 Avg", _hg(_r1,"recent_r3_avg"), _hg(_r2,"recent_r3_avg"), higher_better=False, fmt="+.2f")
+                    _rows += _h2h_row("R4 Avg", _hg(_r1,"recent_r4_avg"), _hg(_r2,"recent_r4_avg"), higher_better=False, fmt="+.2f")
+                    _rows += _h2h_row("Closing Ability", _hg(_r1,"closing_delta"), _hg(_r2,"closing_delta"), higher_better=False, fmt="+.2f")
 
                     _rows += _h2h_sec("Course History")
                     _rows += _h2h_row("Avg Finish", _hg(_r1,"hist_avg_finish"), _hg(_r2,"hist_avg_finish"), higher_better=False, fmt=".0f")
@@ -10776,6 +10782,13 @@ elif page == "👤 Players":
                     _rows += _h2h_row("Bogey Avoidance", _hg(_r1,"bogey_avoid_val"), _hg(_r2,"bogey_avoid_val"), fmt=".1f", suffix="%")
                     _rows += _h2h_row("Putts / Round", _hg(_r1,"putts_per_round_val"), _hg(_r2,"putts_per_round_val"), higher_better=False, fmt=".2f")
                     _rows += _h2h_row("1-Putt %", _hg(_r1,"one_putt_pct_val"), _hg(_r2,"one_putt_pct_val"), fmt=".1f", suffix="%")
+
+                    _rows += _h2h_sec("Par Scoring (Field Rank, lower = better)")
+                    _rows += _h2h_row("Par 3 Rank", _hg(_r1,"par3_scoring_field_rank"), _hg(_r2,"par3_scoring_field_rank"), higher_better=False, fmt=".0f")
+                    _rows += _h2h_row("Par 4 Avg", _hg(_r1,"par4_scoring_val"), _hg(_r2,"par4_scoring_val"), higher_better=False, fmt=".2f")
+                    _rows += _h2h_row("Par 4 Rank", _hg(_r1,"par4_scoring_field_rank"), _hg(_r2,"par4_scoring_field_rank"), higher_better=False, fmt=".0f")
+                    _rows += _h2h_row("Par 5 Avg", _hg(_r1,"par5_scoring_val"), _hg(_r2,"par5_scoring_val"), higher_better=False, fmt=".2f")
+                    _rows += _h2h_row("Par 5 Rank", _hg(_r1,"par5_scoring_field_rank"), _hg(_r2,"par5_scoring_field_rank"), higher_better=False, fmt=".0f")
 
                     _rows += _h2h_sec("Market")
                     _rows += _h2h_row("World Rank", _hg(_r1,"world_rank"), _hg(_r2,"world_rank"), higher_better=False, fmt=".0f")
@@ -11306,6 +11319,21 @@ elif page == "🎰 Betting":
             if not prop_tournament_id:
                 prop_tournament_id = _latest_tournament_id_from_prop_lines(max_age_hours=48.0)
 
+
+            # Load draw advantage for betting page
+            _da_bet_df = pd.DataFrame()
+            for _r in [1, 2, 3, 4]:
+                _da_p = DATA_DIR / "live" / f"draw_advantage_{prop_tournament_id}_r{_r}.csv"
+                if _da_p.exists():
+                    _da_bet_df = pd.read_csv(_da_p)[["player_name", "tee_time_str", "window_avg_wind", "draw_advantage",
+            "draw_tier"]]
+                    break
+            if not _da_bet_df.empty and not preds_df.empty:
+                preds_df = preds_df.merge(_da_bet_df, on="player_name", how="left")
+                        
+                        
+                        
+            
             if prop_edge_tools_available and load_latest_prop_lines and score_book_props:
                 prop_lines_df = load_latest_prop_lines(prop_tournament_id if prop_tournament_id else None)
                 if not prop_lines_df.empty:
@@ -11758,6 +11786,8 @@ elif page == "🎰 Betting":
                         _filtered = _filtered[
                             _filtered["edge_pts"].fillna(0) >= _vb_min_edge
                         ].sort_values("edge_pts", ascending=False)
+                        
+                        
 
                         # ── Hero metrics bar ────────────────────────────────
                         _mc1, _mc2, _mc3, _mc4, _mc5 = st.columns(5)
@@ -11918,6 +11948,25 @@ elif page == "🎰 Betting":
 
                                         # Edge bar (0–10 pt scale)
                                         _bar_pct = min(int(_edge / 10 * 100), 100)
+                                        # Draw advantage badge
+                                        _draw_tier = str(_row.get("draw_tier", "") or "")
+                                        _draw_wind = pd.to_numeric(_row.get("window_avg_wind"), errors="coerce")
+                                        _draw_badge = ""
+                                        if _draw_tier and _draw_tier not in ("nan", ""):
+                                            _dt_cfg = {
+                                                "Strong Adv": ("++ Calm", "#00c44f"),
+                                                "Adv":        ("+ Calm",  "#4caf72"),
+                                                "Neutral":    ("~",       "#7f8c8d"),
+                                                "Disadv":     ("- Wind",  "#e67e22"),
+                                                "Strong Disadv": ("-- Wind", "#e74c3c"),
+                                            }.get(_draw_tier, ("", "#7f8c8d"))
+                                            _dt_label, _dt_color = _dt_cfg
+                                            _wind_detail = f" {_draw_wind:.0f}mph" if pd.notna(_draw_wind) else ""
+                                            _draw_badge = (
+                                                f'<span style="font-size:0.65em;font-weight:700;color:{_dt_color};'
+                                                f'background:rgba(255,255,255,0.07);padding:2px 6px;border-radius:4px;'
+                                                f'margin-left:6px;">Draw {_dt_label}{_wind_detail}</span>'
+                                            )
 
                                         _card_html = re.sub(r'\n[ \t]*\n', '\n', f"""
 <div style="background:#0d1a30;border-left:4px solid {_border};border-radius:8px;
@@ -11925,7 +11974,7 @@ elif page == "🎰 Betting":
   <div style="display:flex;justify-content:space-between;align-items:flex-start;">
     <div>
       <span style="font-size:0.72em;font-weight:600;color:{_border};text-transform:uppercase;
-                   letter-spacing:.06em;">{_mkt_lbl}</span>{_corr_badge}
+                   letter-spacing:.06em;">{_row.get('book', '')}</span>{_corr_badge}{_draw_badge}
       <div style="font-size:1.1em;font-weight:700;color:#dde6f5;margin-top:2px;">{_player}</div>
       <div style="font-size:0.75em;color:#7f8c8d;margin-top:1px;">{_rank_str}{"  ·  " if _rank_str and _form_str else ""}{_form_str}</div>
       {_group_members_html}
