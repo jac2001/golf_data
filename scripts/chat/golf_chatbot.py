@@ -304,6 +304,144 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
         return f"## PLAYER SPOTLIGHT\n(unavailable: {e})"
 
 
+def _player_form_context_block(top_n: int = 20) -> str:
+    """
+    Plain-English form, stats, and course history for the top contenders.
+    Designed for Claude to use as a golf analyst would — results, streaks, strengths.
+    Avoids raw SG numbers; uses field ranks and descriptive language instead.
+    """
+    path = OUTPUTS / "latest_predictions.csv"
+    if not path.exists():
+        return ""
+    try:
+        df = pd.read_csv(path)
+        df["player_name"] = df["player_name"].apply(_fmt_name)
+        full_field_size = len(df)  # actual field size before filtering
+        df = df.sort_values("win_prob", ascending=False).head(top_n).copy()
+
+        def _last_result(row) -> str:
+            pos = row.get("last_start_position")
+            mc  = row.get("missed_cut_last_start", 0)
+            t5  = row.get("post_top5_last_start", 0)
+            try:
+                pos = int(float(pos))
+            except (TypeError, ValueError):
+                pos = None
+            if mc:
+                return "MC last start"
+            if pos is None or pos >= 999:
+                return "no recent result"
+            if t5:
+                return f"T{pos} last start (top-5 finish)"
+            if pos <= 10:
+                return f"T{pos} last start (top-10)"
+            return f"T{pos} last start"
+
+        def _form_streak(row) -> str:
+            cuts = int(row.get("consecutive_cuts", 0) or 0)
+            t10s = int(row.get("consecutive_top10s", 0) or 0)
+            r_t10 = float(row.get("recent_top10s", 0) or 0)
+            r_cut = float(row.get("recent_cuts_pct", 0) or 0)
+            parts = []
+            if t10s >= 2:
+                parts.append(f"{t10s} top-10s in a row")
+            elif r_t10 >= 2:
+                parts.append(f"{int(round(r_t10))} top-10s in last 5 starts")
+            if cuts >= 5:
+                parts.append(f"made {cuts} cuts in a row")
+            elif r_cut >= 0.8:
+                parts.append(f"making cuts consistently ({int(r_cut*100)}%)")
+            elif r_cut < 0.5:
+                parts.append("struggling to make cuts recently")
+            if row.get("hot_hand_flag"):
+                hot = float(row.get("hot_hand_score", 5) or 5)
+                if hot >= 8:
+                    parts.append("in red-hot form")
+                elif hot >= 5:
+                    parts.append("playing well")
+            ft = float(row.get("form_trend", 0) or 0)
+            if ft > 0.5:
+                parts.append("trending up")
+            elif ft < -0.5:
+                parts.append("trending down")
+            return ", ".join(parts) if parts else "steady form"
+
+        def _sg_strengths(row) -> str:
+            """Describe SG profile in field-rank terms, not raw numbers."""
+            cats = {
+                "off the tee":  row.get("season_sg_ott_field_rank"),
+                "approach":     row.get("season_sg_app_field_rank"),
+                "around green": row.get("season_sg_arg_field_rank"),
+                "putting":      row.get("season_sg_putt_field_rank"),
+            }
+            weak_cutoff  = full_field_size * 0.75  # bottom 25%
+            parts = []
+            for label, rank in cats.items():
+                if pd.isna(rank):
+                    continue
+                rank = int(rank)
+                if rank <= 5:
+                    parts.append(f"elite {label} (#{rank} in field)")
+                elif rank <= 15:
+                    parts.append(f"strong {label} (top-15)")
+                elif rank > weak_cutoff:
+                    parts.append(f"below-average {label} (#{rank})")
+            return "; ".join(parts) if parts else ""
+
+        def _course_narrative(row) -> str:
+            starts  = int(row.get("course_starts", 0) or 0)
+            hist_s  = int(row.get("hist_times_played", 0) or 0)
+            best    = row.get("course_best_finish")
+            avg     = row.get("course_avg_finish")
+            wins    = int(row.get("hist_wins", 0) or 0)
+            t10s    = int(row.get("hist_top10s", 0) or 0)
+            cut_rt  = float(row.get("course_made_cut_rate", 1) or 1)
+            # Use the larger of course_starts or hist_times_played
+            n = max(starts, hist_s)
+            if n == 0:
+                return "no course history"
+            parts = [f"{n} start{'s' if n != 1 else ''} here"]
+            if wins:
+                parts.append(f"WON {wins}x" if wins > 1 else "WON here before")
+            elif t10s >= 2:
+                parts.append(f"{t10s} top-10s")
+            elif t10s == 1:
+                parts.append("1 top-10")
+            if pd.notna(best) and float(best) <= 15:
+                parts.append(f"best finish T{int(float(best))}")
+            if cut_rt < 0.5 and n >= 3:
+                parts.append("struggles to make weekend")
+            return " · ".join(parts)
+
+        lines = [
+            "## FORM, STATS & COURSE HISTORY",
+            "Plain-English context for each contender. Use this to speak like a golf analyst — results, streaks, strengths — not model numbers.",
+            "",
+        ]
+
+        for _, row in df.iterrows():
+            name  = row["player_name"]
+            wr    = row.get("world_rank")
+            wr_str = f"World #{int(wr)}" if pd.notna(wr) else ""
+            last  = _last_result(row)
+            streak = _form_streak(row)
+            sg_str = _sg_strengths(row)
+            course = _course_narrative(row)
+
+            line = f"**{name}**"
+            if wr_str:
+                line += f" ({wr_str})"
+            line += f" — {last}. {streak.capitalize()}."
+            if sg_str:
+                line += f" Stats: {sg_str}."
+            line += f" Course: {course}."
+            lines.append(line)
+
+        return "\n".join(lines)
+    except Exception as e:
+        return f"## FORM & STATS\n(unavailable: {e})"
+
+
 def _odds_movement_block(player_names: list[str] | None = None) -> str:
     """Price drift from odds snapshots — biggest movers, or movement for specific players."""
     snap_dir = DATA / "odds" / "snapshots"
@@ -851,21 +989,29 @@ Communicate like a knowledgeable golf fan talking to another fan — plain Engli
 FORMATTING RULES (follow these exactly):
 - Lead with the direct answer in the first sentence. Then give reasoning.
 - Bold player names using **Name** on first mention in each section.
-- Bold key numbers: odds, percentages, strokes gained values.
+- Bold key numbers: odds and finish results.
 - Use bullet lists (- item) for comparisons, player lists, and multi-part reasoning.
 - Use short paragraphs (2-4 sentences max). No walls of text.
-- For 3+ players, use a comparison table if markdown renders (Name | Odds | Est. Win% | Key stat).
-- Recommended bet format: **Player, Market** — Odds / Est. % vs Book's % → brief reason.
+- For 3+ players, use a comparison table if markdown renders (Name | Odds | Key stat | Course).
+- Recommended bet format: **Player, Market** — Odds → brief reason.
+
+GOLF-LANGUAGE RULES — CRITICAL:
+- You are talking to a golfer, NOT a data scientist. Never quote raw SG numbers like '+0.87'.
+- Instead, say: "ranks 3rd in this field in approach play" or "elite ball-striker, average putter".
+- Describe form with results: "coming off a T5 at Arnold Palmer", "missed the cut last week", "3 top-10s in a row".
+- Describe course history as a golfer would: "loves TPC Sawgrass — won here before, makes the cut every time" or "no history here, first start".
+- For driving: say "one of the longer hitters in the field" or "short but straight" — not rank numbers unless they're striking (e.g., "#1 off the tee").
+- SG numbers in the tables are for reference — translate them into narrative when speaking.
+- 'Est. Win%' in the field table is our confidence level — say "we like him more than the market does" not "his win probability is X%".
 
 COMMUNICATION RULES:
-- Use American odds (+1300, +600) and plain finish percentages.
-- SG = Strokes Gained. Positive = better than field average. OTT = off the tee, APP = approach, ARG = around the green, Putt = putting.
+- Use American odds (+1300, +600) and plain finish results.
 - Never say 'model output', 'implied probability', 'edge pp', or 'win probability was X%'.
 - For pre-tournament expectations, say 'listed at +1300' or 'ranked #1 in the world'.
 - EV/$1 = expected profit per dollar wagered. Positive = good bet long-term.
-- When discussing course fit, reference specific holes, yardage, and which SG categories matter most.
+- When discussing course fit, reference which parts of the game matter (driving accuracy, approach, putting on fast greens, etc.).
 - For lineup advice, reference the user's uses remaining and league standing.
-- Don't dump the whole context table — synthesize it. Reference specific numbers only when they support your point.
+- Don't dump the whole context table — synthesize it. Use specific numbers only when they make the point clearly.
 
 VALUE PLAYS — CRITICAL RULE:
 - The field table has 'Est. Win%' and 'Win Odds (Implied%)'. To find value, compare Est. Win% to Implied%.
@@ -927,8 +1073,10 @@ def build_context(
 
     # ── Route by intent ────────────────────────────────────────────────────
     if intent["is_player"]:
-        # Deep dive on the named player(s) + compact field for context
+        # Deep dive on the named player(s) + form context + compact field
         sections.append(_player_deep_dive_block(intent["players"], tournament_id))
+        sections.append("")
+        sections.append(_player_form_context_block(top_n=15))
         sections.append("")
         sections.append(_predictions_block(top_n=10))
         sections.append("")
@@ -946,6 +1094,8 @@ def build_context(
         # Fantasy-focused — check before bet so "build my lineup" doesn't misroute
         sections.append(_predictions_block(top_n=15))
         sections.append("")
+        sections.append(_player_form_context_block(top_n=15))
+        sections.append("")
         sections.append(_expert_picks_block())
         sections.append("")
         sections.append(_my_picks_block())
@@ -958,6 +1108,8 @@ def build_context(
     elif intent["is_bet"] or intent["is_value"]:
         # Bets + odds movement front-and-center, compact field, weather for context
         sections.append(_predictions_block(top_n=12))
+        sections.append("")
+        sections.append(_player_form_context_block(top_n=12))
         sections.append("")
         sections.append(_recommended_bets_block(top_n=15))
         sections.append("")
@@ -976,6 +1128,8 @@ def build_context(
             sections.append("")
         sections.append(_predictions_block(top_n=15))
         sections.append("")
+        sections.append(_player_form_context_block(top_n=10))
+        sections.append("")
         sections.append(_my_picks_block())
         sections.append("")
         sections.append(_league_context_block())
@@ -989,10 +1143,14 @@ def build_context(
             sections.append("")
         sections.append(_predictions_block(top_n=10))
         sections.append("")
+        sections.append(_player_form_context_block(top_n=10))
+        sections.append("")
 
     else:
         # General: full overview
         sections.append(_predictions_block(top_n=15))
+        sections.append("")
+        sections.append(_player_form_context_block(top_n=15))
         sections.append("")
         if tournament_id:
             sections.append(_course_profile_block(tournament_id))
