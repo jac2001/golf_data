@@ -8381,10 +8381,53 @@ elif page == "💬 Assistant":
     import time as _time
     from datetime import datetime as _dt
 
-    st.markdown("## Golf Assistant")
-    st.caption("Ask about lineups, bets, player form, live scores — powered by Groq (free).")
+    # --- Persistent API key config ---
+    _CFG_PATH = PROJECT_ROOT / "data" / "config" / "assistant.json"
 
-    _groq_key = _os.environ.get("GROQ_API_KEY", "") or st.session_state.get("groq_api_key", "")
+    def _load_api_key() -> str:
+        """Load persisted API key from config file. Prefers Anthropic, falls back to Groq."""
+        # Check env vars first
+        _ant = _os.environ.get("ANTHROPIC_API_KEY", "")
+        if _ant:
+            return _ant
+        _groq = _os.environ.get("GROQ_API_KEY", "")
+        if _groq:
+            return _groq
+        # Check config file
+        try:
+            if _CFG_PATH.exists():
+                with open(_CFG_PATH) as _f:
+                    _cfg = json.load(_f)
+                return _cfg.get("anthropic_api_key") or _cfg.get("groq_api_key") or ""
+        except Exception:
+            pass
+        return ""
+
+    def _save_api_key(key: str) -> None:
+        """Save API key to config file."""
+        try:
+            _CFG_PATH.parent.mkdir(parents=True, exist_ok=True)
+            _existing = {}
+            if _CFG_PATH.exists():
+                with open(_CFG_PATH) as _f:
+                    _existing = json.load(_f)
+            if key.startswith("sk-ant-"):
+                _existing["anthropic_api_key"] = key
+            else:
+                _existing["groq_api_key"] = key
+            with open(_CFG_PATH, "w") as _f:
+                json.dump(_existing, _f)
+        except Exception:
+            pass
+
+    # Load key: config file → session state → empty
+    if "chat_api_key" not in st.session_state:
+        st.session_state["chat_api_key"] = _load_api_key()
+    _api_key = st.session_state["chat_api_key"]
+    _is_claude = _api_key.startswith("sk-ant-")
+
+    st.markdown("## Golf Assistant")
+    st.caption(f"Ask about lineups, bets, player form, live scores — powered by {'Claude' if _is_claude else 'Groq (free)'}.")
 
     # --- Context cache: build once, refresh every 15 min or on demand ---
     _CTX_TTL = 15 * 60  # seconds
@@ -8414,13 +8457,20 @@ elif page == "💬 Assistant":
     with st.sidebar:
         st.markdown("### Assistant Settings")
         _key_input = st.text_input(
-            "Groq API Key", value=_groq_key, type="password", key="groq_api_key_input"
+            "API Key (Anthropic or Groq)",
+            value=_api_key,
+            type="password",
+            key="chat_api_key_input",
+            help="Anthropic key (sk-ant-...) uses Claude. Groq key uses Llama (free). Saved locally.",
         )
-        if _key_input:
-            st.session_state["groq_api_key"] = _key_input
-            _groq_key = _key_input
-        if not _groq_key:
-            st.warning("Enter your free Groq API key above.\nGet one at groq.com")
+        if _key_input and _key_input != _api_key:
+            st.session_state["chat_api_key"] = _key_input
+            _api_key = _key_input
+            _is_claude = _api_key.startswith("sk-ant-")
+            _save_api_key(_key_input)
+            st.success("Key saved — won't need to enter again.")
+        if not _api_key:
+            st.warning("Enter an Anthropic key (Claude) or Groq key (free) above.\nGroq: groq.com  |  Anthropic: console.anthropic.com")
 
         # Context freshness indicator + refresh button
         if "chat_context_built_at" in st.session_state:
@@ -8523,12 +8573,18 @@ elif page == "💬 Assistant":
         with st.chat_message(_msg["role"]):
             st.markdown(_msg["content"])
 
-    # Follow-up chips — shown after the last assistant message
+    # Follow-up chips — dynamic based on players discussed in last response
     if (
         st.session_state.get("chat_history")
         and st.session_state["chat_history"][-1]["role"] == "assistant"
     ):
-        _followups = _PHASE_FOLLOWUPS.get(_chat_phase, _PHASE_FOLLOWUPS["pre_tournament"])
+        try:
+            from scripts.chat.golf_chatbot import generate_followup_questions as _gen_followups
+            _last_resp = st.session_state["chat_history"][-1]["content"]
+            _last_players = st.session_state.get("chat_last_players", [])
+            _followups = _gen_followups(_last_resp, _last_players, _chat_phase)
+        except Exception:
+            _followups = _PHASE_FOLLOWUPS.get(_chat_phase, _PHASE_FOLLOWUPS["pre_tournament"])
         st.caption("Follow up:")
         _fu_cols = st.columns(len(_followups))
         for _fi, _fq in enumerate(_followups):
@@ -8544,27 +8600,33 @@ elif page == "💬 Assistant":
     _prefill = st.session_state.pop("chat_prefill", None)
 
     if _prompt := (st.chat_input("Ask about lineups, bets, players, live scores...") or _prefill):
-        if not _groq_key:
-            st.error("Please enter your Groq API key in the sidebar to use the assistant.")
+        if not _api_key:
+            st.error("Please enter your API key in the sidebar to use the assistant.")
         else:
             with st.chat_message("user"):
                 st.markdown(_prompt)
             st.session_state["chat_history"].append({"role": "user", "content": _prompt})
 
-            # Build query-aware context for this specific message
+            # Build query-aware context, injecting players from the previous response
             try:
-                from scripts.chat.golf_chatbot import build_context as _build_ctx, stream_response as _stream_response
+                from scripts.chat.golf_chatbot import (
+                    build_context as _build_ctx,
+                    stream_response as _stream_response,
+                    extract_mentioned_players as _extract_players_resp,
+                )
                 _cur_tid = _detect_tournament_id() if "_cur_tid" not in dir() else _cur_tid
-                _context = _build_ctx(query=_prompt, tournament_id=_cur_tid)
+                _last_players = st.session_state.get("chat_last_players", [])
+                _context = _build_ctx(query=_prompt, tournament_id=_cur_tid, last_players=_last_players)
             except Exception as _ctx_err:
                 _context = st.session_state.get("chat_context", "You are a golf analytics assistant.")
+                _extract_players_resp = None
 
             _messages = [{"role": "system", "content": _context}]
             _messages += st.session_state["chat_history"][-20:]
 
             with st.chat_message("assistant"):
                 try:
-                    _response_text = st.write_stream(_stream_response(_messages, _groq_key))
+                    _response_text = st.write_stream(_stream_response(_messages, _api_key))
                 except Exception as _err:
                     _response_text = f"Error: {_err}"
                     st.error(_response_text)
@@ -8573,6 +8635,12 @@ elif page == "💬 Assistant":
                 st.session_state["chat_history"].append(
                     {"role": "assistant", "content": _response_text}
                 )
+                # Extract players mentioned for follow-up context
+                try:
+                    if _extract_players_resp:
+                        st.session_state["chat_last_players"] = _extract_players_resp(_response_text)
+                except Exception:
+                    pass
 
 
 # ============================================================================

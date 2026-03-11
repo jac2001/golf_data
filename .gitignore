@@ -28,5 +28,6 @@ data/golf_data.db
 FantasyGolf/
 golf_data/
 .odds_api_key
+data/config/assistant.json
 config.json
 .env

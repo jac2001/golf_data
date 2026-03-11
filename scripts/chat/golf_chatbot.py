@@ -845,6 +845,15 @@ def _schedule_block(current_tid: str | None = None) -> str:
 _SYSTEM_PROMPT = """You are an expert golf analyst helping a user with fantasy lineup decisions, betting, and tournament analysis.
 Communicate like a knowledgeable golf fan talking to another fan — plain English, not technical jargon.
 
+FORMATTING RULES (follow these exactly):
+- Lead with the direct answer in the first sentence. Then give reasoning.
+- Bold player names using **Name** on first mention in each section.
+- Bold key numbers: odds, percentages, strokes gained values.
+- Use bullet lists (- item) for comparisons, player lists, and multi-part reasoning.
+- Use short paragraphs (2-4 sentences max). No walls of text.
+- For 3+ players, use a comparison table if markdown renders (Name | Odds | Est. Win% | Key stat).
+- Recommended bet format: **Player, Market** — Odds / Est. % vs Book's % → brief reason.
+
 COMMUNICATION RULES:
 - Use American odds (+1300, +600) and plain finish percentages.
 - SG = Strokes Gained. Positive = better than field average. OTT = off the tee, APP = approach, ARG = around the green, Putt = putting.
@@ -853,6 +862,7 @@ COMMUNICATION RULES:
 - EV/$1 = expected profit per dollar wagered. Positive = good bet long-term.
 - When discussing course fit, reference specific holes, yardage, and which SG categories matter most.
 - For lineup advice, reference the user's uses remaining and league standing.
+- Don't dump the whole context table — synthesize it. Reference specific numbers only when they support your point.
 
 VALUE PLAYS — CRITICAL RULE:
 - The field table has 'Est. Win%' and 'Win Odds (Implied%)'. To find value, compare Est. Win% to Implied%.
@@ -866,7 +876,11 @@ TOURNAMENT UPDATES:
 - Focus on actual tournament position, strokes to leader, and remaining holes."""
 
 
-def build_context(query: str = "", tournament_id: str | None = None) -> str:
+def build_context(
+    query: str = "",
+    tournament_id: str | None = None,
+    last_players: list[str] | None = None,
+) -> str:
     """Assemble context relevant to the user's query.
 
     Routes context blocks based on query intent:
@@ -876,6 +890,9 @@ def build_context(query: str = "", tournament_id: str | None = None) -> str:
     - Lineup question  → predictions + expert picks + my picks + league
     - Weather/course   → weather + course profile + compact field
     - General          → full default (everything)
+
+    last_players: players mentioned in the previous assistant response — injected
+    as context so follow-up questions like 'what about his odds?' resolve correctly.
     """
     if tournament_id is None:
         tournament_id = _detect_tournament_id()
@@ -886,7 +903,17 @@ def build_context(query: str = "", tournament_id: str | None = None) -> str:
         "is_course": False, "is_value": False,
     }
 
+    # If the query mentions no players but the previous response did, carry them forward
+    if not intent["players"] and last_players:
+        intent["players"] = last_players
+        intent["is_player"] = True
+
     sections = [_SYSTEM_PROMPT, ""]
+
+    # Inject prior conversation entities so follow-ups resolve correctly
+    if last_players:
+        sections.append(f"## CONVERSATION CONTEXT\nPlayers discussed in the previous response: {', '.join(last_players)}\n")
+        sections.append("")
 
     # Always: tournament status
     if tournament_id:
@@ -990,12 +1017,62 @@ def build_context(query: str = "", tournament_id: str | None = None) -> str:
 # Groq streaming
 # ---------------------------------------------------------------------------
 
-_PRIMARY_MODEL = "llama-3.3-70b-versatile"
-_FALLBACK_MODEL = "llama-3.1-8b-instant"
+_CLAUDE_MODEL  = "claude-haiku-4-5-20251001"
+_GROQ_PRIMARY  = "llama-3.3-70b-versatile"
+_GROQ_FALLBACK = "llama-3.1-8b-instant"
 
 
-def stream_response(messages: list[dict], api_key: str) -> Iterator[str]:
-    """Stream a response from Groq with automatic rate-limit fallback."""
+def stream_response(messages: list[dict], api_key: str, provider: str = "auto") -> Iterator[str]:
+    """Stream a response — Claude primary (if Anthropic key), Groq fallback (free).
+
+    provider:
+      "auto"      → use Claude if api_key looks like an Anthropic key, else Groq
+      "anthropic" → always Claude
+      "groq"      → always Groq
+    """
+    is_anthropic = api_key.startswith("sk-ant-") or provider == "anthropic"
+    if not is_anthropic and provider != "groq":
+        # detect by prefix
+        is_anthropic = api_key.startswith("sk-ant-")
+
+    if is_anthropic:
+        yield from _stream_claude(messages, api_key)
+    else:
+        yield from _stream_groq(messages, api_key)
+
+
+def _stream_claude(messages: list[dict], api_key: str) -> Iterator[str]:
+    """Stream from Claude (Anthropic). Extracts system prompt automatically."""
+    try:
+        from anthropic import Anthropic
+    except ImportError:
+        yield "*(anthropic package not installed — run: pip install anthropic)*"
+        return
+
+    system = ""
+    conv = []
+    for m in messages:
+        if m["role"] == "system":
+            system = m["content"]
+        else:
+            conv.append(m)
+
+    client = Anthropic(api_key=api_key)
+    try:
+        with client.messages.stream(
+            model=_CLAUDE_MODEL,
+            max_tokens=2500,
+            system=system,
+            messages=conv,
+        ) as stream:
+            for text in stream.text_stream:
+                yield text
+    except Exception as e:
+        yield f"*(Claude error: {e})*"
+
+
+def _stream_groq(messages: list[dict], api_key: str) -> Iterator[str]:
+    """Stream from Groq with rate-limit fallback to smaller model."""
     from groq import Groq, RateLimitError
 
     client = Groq(api_key=api_key)
@@ -1006,17 +1083,64 @@ def stream_response(messages: list[dict], api_key: str) -> Iterator[str]:
             messages=messages,
             stream=True,
             temperature=0.3,
-            max_tokens=1500,
+            max_tokens=2500,
         )
 
     try:
-        for chunk in _stream(_PRIMARY_MODEL):
+        for chunk in _stream(_GROQ_PRIMARY):
             delta = chunk.choices[0].delta.content or ""
             if delta:
                 yield delta
     except RateLimitError:
-        yield f"*(Daily limit reached for {_PRIMARY_MODEL} — switching to {_FALLBACK_MODEL})*\n\n"
-        for chunk in _stream(_FALLBACK_MODEL):
+        yield f"*(Daily limit reached for {_GROQ_PRIMARY} — switching to {_GROQ_FALLBACK})*\n\n"
+        for chunk in _stream(_GROQ_FALLBACK):
             delta = chunk.choices[0].delta.content or ""
             if delta:
                 yield delta
+
+
+def extract_mentioned_players(text: str) -> list[str]:
+    """Return player names (First Last) that appear in the given text."""
+    path = OUTPUTS / "latest_predictions.csv"
+    if not path.exists():
+        return []
+    try:
+        df = pd.read_csv(path, usecols=["player_name"])
+        text_lower = text.lower()
+        found = []
+        for raw in df["player_name"]:
+            name = _fmt_name(str(raw))
+            last = name.split()[-1].lower()
+            if len(last) >= 4 and last in text_lower:
+                found.append(name)
+        return found[:5]  # cap at 5
+    except Exception:
+        return []
+
+
+def generate_followup_questions(
+    response_text: str,
+    last_players: list[str],
+    phase: str,
+) -> list[str]:
+    """Generate 3 contextual follow-up questions based on who was just discussed."""
+    _PHASE_FALLBACK = {
+        "pre_tournament":  ["Who are the biggest risks this week?", "Any players to avoid at any price?", "Which players have the best course history here?"],
+        "round_1":         ["Who's still a realistic winner?", "Any surprise leaders to know about?", "Who to watch closely in Round 2?"],
+        "round_2":         ["Who has the best closing record from this position?", "Who's the biggest threat to the leader?", "Who do you like to make a big move this weekend?"],
+        "round_3":         ["Who has the best closing record in the field?", "What does the winning score look like from here?", "Any sleepers who could make a late charge?"],
+        "round_4":         ["Who tends to buckle under pressure?", "What does the winner need to shoot?", "Who's the best putter among the current leaders?"],
+        "complete":        ["What should I prioritize next week?", "Who outperformed their pre-tournament ranking?", "How did the recommended bets finish?"],
+    }
+    if not last_players:
+        return _PHASE_FALLBACK.get(phase, _PHASE_FALLBACK["pre_tournament"])
+
+    p = last_players[0]
+    questions = [f"What are {p}'s odds and value this week?"]
+    if len(last_players) >= 2:
+        p2 = last_players[1]
+        questions.append(f"How does {p} compare to {p2}?")
+    else:
+        questions.append(f"How has {p} played this course historically?")
+    questions.append(_PHASE_FALLBACK.get(phase, _PHASE_FALLBACK["pre_tournament"])[0])
+    return questions[:3]
