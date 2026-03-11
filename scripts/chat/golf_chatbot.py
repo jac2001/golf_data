@@ -1271,9 +1271,15 @@ GOLF-LANGUAGE RULES:
 - 'Est. Win%' in the field table = our confidence. Say "we like him more than the market" not raw percentages.
 
 VALUE PLAYS — CRITICAL RULE:
-- The field table has 'Est. Win%' and 'Win Odds (Implied%)'. To find value, compare Est. Win% to Implied%.
-- Top 10% and Top 5% are finish probabilities — NEVER compare them to win odds.
-- Use the BETS TABLE for top-10/top-20 value: shows 'Book Says' vs 'We Think'.
+- The field table has 'Est. Win%' and 'Win Odds (Implied%)'. Use this exact logic:
+  - If Est. Win% > Implied%: we like him MORE than the market → potential value bet
+  - If Est. Win% < Implied%: market prices him HIGHER than we do → fade or pass
+  - Example 1: Est. Win% 8%, Implied% 17% → we like him LESS, don't recommend a win bet
+  - Example 2: Est. Win% 25%, Implied% 12% → we like him MORE, strong value for a win bet
+- Top 5%/Top 10%/Top 20% are FINISH probabilities from the 'We Think' column — NEVER compare them to win odds.
+- Use the BETS TABLE for top-10/top-20 value: shows 'Book Says' vs 'We Think' per market.
+- PROBABILITY DISPLAY CAP: Never state a finish probability above 85% for any market. If the data shows 90%+,
+  say "very likely" or "strong probability" instead. NEVER say "nearly 100%" or "virtually certain".
 
 COMMUNICATION RULES:
 - Use American odds (+1300, +600) and plain finish results.
