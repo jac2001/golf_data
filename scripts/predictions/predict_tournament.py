@@ -2774,6 +2774,76 @@ def apply_course_performance_adjustment(
     return df
 
 
+def apply_course_win_boost(
+    df: pd.DataFrame,
+    boost_per_win: float = 0.012,
+    max_boost: float = 0.04,
+) -> pd.DataFrame:
+    """
+    Post-calibration multiplicative boost to win_prob for players with wins at this venue.
+
+    The model's hist_wins feature has ~0.0001 importance because across all PGA Tour
+    events, course wins are rare and not consistently predictive. But for unique,
+    specialist venues (TPC Sawgrass, Augusta, Pebble Beach) past wins carry real signal
+    that the model discards. This adds it back directly.
+
+    boost_per_win: fractional boost per venue win (0.012 = 1.2% additive per win)
+    max_boost: hard cap on total boost regardless of win count
+    """
+    if "wins_at_venue" not in df.columns:
+        return df
+    df = df.copy()
+    wins = pd.to_numeric(df["wins_at_venue"], errors="coerce").fillna(0)
+    boost = (wins * boost_per_win).clip(0, max_boost)
+    df["win_prob"] = df["win_prob"] * (1 + boost)
+    total = df["win_prob"].sum()
+    if total > 0:
+        df["win_prob"] = (df["win_prob"] / total).clip(0, 1)
+    n_boosted = int((boost > 0).sum())
+    print(f"    Course win boost: {n_boosted} players boosted (max boost {boost.max():.1%})")
+    return df
+
+
+def apply_elite_market_blend(
+    df: pd.DataFrame,
+    top_n: int = 5,
+    max_market_weight: float = 0.35,
+) -> pd.DataFrame:
+    """
+    For top world-ranked players, blend model win_prob toward market-implied probability.
+
+    The model systematically underprices elite players — Scheffler at +480 gets 8.5%
+    model vs 17.2% market. The market is very efficient at the top of the field where
+    sharp money and media attention are highest. We blend toward market for rank 1-5.
+
+    Weight schedule (linear decay):
+      rank 1 → max_market_weight (e.g. 35% market)
+      rank 5 → max_market_weight / top_n (e.g. 7% market)
+      rank 6+ → unchanged
+
+    Requires vegas_prob from add_odds_to_predictions() — call this after odds integration.
+    """
+    if "vegas_prob" not in df.columns:
+        print("    Elite market blend skipped (no vegas_prob — run with --tournament-id or --odds)")
+        return df
+    df = df.copy()
+    rank = pd.to_numeric(df["world_rank"], errors="coerce")
+    vegas = pd.to_numeric(df["vegas_prob"], errors="coerce")
+    model_p = pd.to_numeric(df["win_prob"], errors="coerce")
+    mask = rank.notna() & (rank <= top_n) & vegas.notna() & (vegas > 0) & model_p.notna()
+    if not mask.any():
+        print("    Elite market blend: no eligible top-ranked players found")
+        return df
+    mw = ((top_n - rank + 1) / top_n * max_market_weight).clip(0, max_market_weight)
+    df.loc[mask, "win_prob"] = (1 - mw[mask]) * model_p[mask] + mw[mask] * vegas[mask]
+    total = df["win_prob"].sum()
+    if total > 0:
+        df["win_prob"] = (df["win_prob"] / total).clip(0, 1)
+    n_blended = int(mask.sum())
+    print(f"    Elite market blend: {n_blended} players adjusted (top {top_n} world rank, max weight {max_market_weight:.0%})")
+    return df
+
+
 def apply_probability_constraints(
     predictions_df: pd.DataFrame,
     normalize_topk: bool = True,
@@ -3346,6 +3416,10 @@ Examples:
         print("\n  ⚠️ Calibration DISABLED (--no-calibrate flag)")
         print("    → Using raw model probabilities (may be overconfident)")
 
+    # Apply course win boost (venue specialists — e.g. TPC Sawgrass winners)
+    print("\n  Applying course win boost...")
+    predictions_df = apply_course_win_boost(predictions_df)
+
     # Apply course performance adjustment before other post-processing
     if "course_perf_score" in predictions_df.columns:
         print("\n  Applying course performance adjustment...")
@@ -3414,6 +3488,10 @@ Examples:
         except Exception as e:
             print(f"  ⚠️ Odds ensemble failed: {e}")
             print("  Continuing with model-only probabilities.")
+
+        # Apply elite market blend now that vegas_prob is available
+        print("\n  Applying elite market blend...")
+        predictions_df = apply_elite_market_blend(predictions_df)
 
     print("\n" + "=" * 70)
     print(f"  TOP {args.top_n} RECOMMENDATIONS")
