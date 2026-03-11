@@ -1795,6 +1795,9 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
         '111': ('sand_save',         False),
         '352': ('bogey_avoid',       False),
         '156': ('birdie_avg',        False),
+        '299': ('par3_scoring',      True),
+        '142': ('par4_scoring',      True),
+        '143': ('par5_scoring',      True)
     }
     try:
         fs_year = _latest_year_for("form_stats_")
@@ -1836,6 +1839,55 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                 print(f"  Non-SG tour stat field ranks added from form_stats_{fs_year}.csv")
     except Exception as e:
         print(f"  Non-SG stat ranks skipped: {e}")
+
+    # ADD ROUND-SPECIFIC SCORING (R1/R2/R3/R4 averages + closing ability)
+    try:
+        import glob as _glob
+        _lb_files = sorted(_glob.glob(str(HISTORICAL_DIR / 'leaderboards_20*.csv')))[-4:]
+        if _lb_files:
+            _lb_all = []
+            for _f in _lb_files:
+                _df = pd.read_csv(_f)
+                for _rc in ['r1_to_par', 'r2_to_par', 'r3_to_par', 'r4_to_par']:
+                    _df[_rc] = pd.to_numeric(_df[_rc], errors='coerce')
+                _lb_all.append(_df[['player_id', 'tournament_id',
+                                     'r1_to_par', 'r2_to_par', 'r3_to_par', 'r4_to_par']])
+            _lb_df = pd.concat(_lb_all, ignore_index=True)
+            _lb_df['player_id'] = _lb_df['player_id'].astype(str)
+            if tournament_id:
+                _lb_df = _lb_df[_lb_df['tournament_id'] < tournament_id]
+
+            _weekend_rows = []
+            for _pid, _grp in _lb_df.groupby('player_id'):
+                _grp = _grp.sort_values('tournament_id').tail(20)
+                _r1 = _grp['r1_to_par'].dropna()
+                _r2 = _grp['r2_to_par'].dropna()
+                _r3 = _grp['r3_to_par'].dropna()
+                _r4 = _grp['r4_to_par'].dropna()
+                _r1a = float(_r1.mean()) if len(_r1) >= 3 else np.nan
+                _r2a = float(_r2.mean()) if len(_r2) >= 3 else np.nan
+                _r3a = float(_r3.mean()) if len(_r3) >= 3 else np.nan
+                _r4a = float(_r4.mean()) if len(_r4) >= 3 else np.nan
+                _delta = float((_r3.mean() + _r4.mean()) / 2 - (_r1.mean() + _r2.mean()) / 2) \
+                    if all(len(x) >= 3 for x in [_r1, _r2, _r3, _r4]) else np.nan
+                _weekend_rows.append({
+                    'player_id': _pid,
+                    'recent_r1_avg': _r1a, 'recent_r2_avg': _r2a,
+                    'recent_r3_avg': _r3a, 'recent_r4_avg': _r4a,
+                    'closing_delta': _delta,
+                })
+            _wdf = pd.DataFrame(_weekend_rows)
+            features_df['player_id'] = features_df['player_id'].astype(str)
+            features_df = features_df.merge(_wdf, on='player_id', how='left')
+            for _col in ['recent_r1_avg', 'recent_r2_avg', 'recent_r3_avg', 'recent_r4_avg', 'closing_delta']:
+                if _col in features_df.columns:
+                    # lower = better (negative to-par = good), rank descending → lowest gets pct 1.0
+                    features_df[f'{_col}_field_pct'] = features_df[_col].rank(ascending=False, pct=True)
+                    features_df[f'{_col}_vs_field'] = features_df[_col] - features_df[_col].mean()
+            _n = int(_wdf['recent_r3_avg'].notna().sum())
+            print(f"  Round scoring features added ({_n} players with R3/R4 history)")
+    except Exception as e:
+        print(f"  Round scoring features skipped: {e}")
 
     # ADD FORM FEATURES (recent performance indicators)
     try:

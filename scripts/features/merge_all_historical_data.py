@@ -793,6 +793,10 @@ if ADD_FORM_FEATURES:
 
         if all_form_stats:
             form_stats_df = pd.concat(all_form_stats, ignore_index=True)
+            # Normalize player_id to str — merged['player_id'] is cast to str at line ~389
+            # (astype(str) for the decay features merge). Keeping both as str ensures the
+            # player_id filter in the form loop always matches.
+            form_stats_df['player_id'] = form_stats_df['player_id'].astype(str)
             print(f"  ✓ Total form_stats records: {len(form_stats_df):,}")
         else:
             form_stats_df = pd.DataFrame()
@@ -807,7 +811,9 @@ if ADD_FORM_FEATURES:
             'gir_pct': 103,
             'scrambling': 130,
             'bounce_back': 160,
-            'final_round': 299,
+            'par3_scoring': 299,   # Par 3 scoring average (was mislabeled 'final_round')
+            'par4_scoring': 142,   # Par 4 scoring average
+            'par5_scoring': 143,   # Par 5 scoring average
             'sand_save': 111,
         }
 
@@ -880,12 +886,32 @@ if ADD_FORM_FEATURES:
                 recent_top10s = int((recent_5['position_num'] <= 10).sum())
                 recent_top5s = int((recent_5['position_num'] <= 5).sum())
                 recent_cuts_pct = float((recent_5['position_num'] < 100).mean())
+
+                # Round-specific scoring from leaderboard data (r1/r2/r3/r4)
+                _r8 = prior_data.tail(8)
+                _r1 = pd.to_numeric(_r8.get('r1_to_par', pd.Series(dtype=float)), errors='coerce').dropna()
+                _r2 = pd.to_numeric(_r8.get('r2_to_par', pd.Series(dtype=float)), errors='coerce').dropna()
+                _r3 = pd.to_numeric(_r8.get('r3_to_par', pd.Series(dtype=float)), errors='coerce').dropna()
+                _r4 = pd.to_numeric(_r8.get('r4_to_par', pd.Series(dtype=float)), errors='coerce').dropna()
+                recent_r1_avg = float(_r1.mean()) if len(_r1) >= 2 else np.nan
+                recent_r2_avg = float(_r2.mean()) if len(_r2) >= 2 else np.nan
+                recent_r3_avg = float(_r3.mean()) if len(_r3) >= 2 else np.nan
+                recent_r4_avg = float(_r4.mean()) if len(_r4) >= 2 else np.nan
+                # Closing ability: avg weekend (R3+R4) vs opening (R1+R2) — negative = improves
+                closing_delta = np.nan
+                if len(_r3) >= 2 and len(_r4) >= 2 and len(_r1) >= 2 and len(_r2) >= 2:
+                    closing_delta = float((_r3.mean() + _r4.mean()) / 2 - (_r1.mean() + _r2.mean()) / 2)
             else:
                 form_trend = 0.0
                 finish_consistency = 20.0
                 recent_top10s = 0
                 recent_top5s = 0
                 recent_cuts_pct = 0.5
+                recent_r1_avg = np.nan
+                recent_r2_avg = np.nan
+                recent_r3_avg = np.nan
+                recent_r4_avg = np.nan
+                closing_delta = np.nan
 
             # Calculate scoring efficiency from form_stats
             recent_birdie_avg = np.nan
@@ -894,7 +920,9 @@ if ADD_FORM_FEATURES:
             recent_gir_pct = np.nan
             recent_scrambling = np.nan
             recent_bounce_back = np.nan
-            recent_final_round = np.nan
+            recent_par3_scoring = np.nan
+            recent_par4_scoring = np.nan
+            recent_par5_scoring = np.nan
             recent_sand_save = np.nan
 
             if len(prior_form_stats) > 0:
@@ -904,31 +932,60 @@ if ADD_FORM_FEATURES:
                 recent_gir_pct = get_recent_stat_avg(prior_form_stats, STAT_IDS['gir_pct'])
                 recent_scrambling = get_recent_stat_avg(prior_form_stats, STAT_IDS['scrambling'])
                 recent_bounce_back = get_recent_stat_avg(prior_form_stats, STAT_IDS['bounce_back'])
-                recent_final_round = get_recent_stat_avg(prior_form_stats, STAT_IDS['final_round'])
+                recent_par3_scoring = get_recent_stat_avg(prior_form_stats, STAT_IDS['par3_scoring'])
+                recent_par4_scoring = get_recent_stat_avg(prior_form_stats, STAT_IDS['par4_scoring'])
+                recent_par5_scoring = get_recent_stat_avg(prior_form_stats, STAT_IDS['par5_scoring'])
                 recent_sand_save = get_recent_stat_avg(prior_form_stats, STAT_IDS['sand_save'])
 
             form_features_list.append({
                 'player_id': player_id,
                 'tournament_id': tournament_id,
                 'form_trend': form_trend,
-                'finish_consistency': min(finish_consistency / 30.0, 1.0),  # Normalize
+                'finish_consistency': min(finish_consistency / 30.0, 1.0),
                 'recent_top10s': recent_top10s,
                 'recent_top5s': recent_top5s,
                 'recent_cuts_pct': recent_cuts_pct,
-                # Scoring efficiency (from form_stats)
+                # Round-specific scoring (from leaderboard r1/r2/r3/r4 data)
+                'recent_r1_avg': recent_r1_avg,
+                'recent_r2_avg': recent_r2_avg,
+                'recent_r3_avg': recent_r3_avg,
+                'recent_r4_avg': recent_r4_avg,
+                'closing_delta': closing_delta,
+                # Par scoring by hole type (from form_stats)
+                'recent_par3_scoring': recent_par3_scoring,
+                'recent_par4_scoring': recent_par4_scoring,
+                'recent_par5_scoring': recent_par5_scoring,
+                # Other scoring efficiency
                 'recent_birdie_avg': recent_birdie_avg,
                 'recent_bogey_avg': recent_bogey_avg,
                 'recent_scoring_avg': recent_scoring_avg,
                 'recent_gir_pct': recent_gir_pct,
                 'recent_scrambling': recent_scrambling,
-                # Clutch indicators (from form_stats)
                 'recent_bounce_back': recent_bounce_back,
-                'recent_final_round': recent_final_round,
                 'recent_sand_save': recent_sand_save,
             })
 
         form_df = pd.DataFrame(form_features_list)
         merged = merged.merge(form_df, on=['player_id', 'tournament_id'], how='left')
+
+        # Field-relative features for par scoring and round scoring
+        for _col, _lower_better in [
+            ('recent_par3_scoring', True),
+            ('recent_par4_scoring', True),
+            ('recent_par5_scoring', True),
+            ('recent_r3_avg',       True),
+            ('recent_r4_avg',       True),
+            ('closing_delta',       True),  # negative = improves in final rounds = good
+        ]:
+            if _col in merged.columns:
+                _asc = False  # lower = better → rank descending so lowest gets pct 1.0
+                merged[f'{_col}_field_pct'] = merged.groupby('tournament_id')[_col].rank(
+                    ascending=_asc, pct=True
+                )
+                merged[f'{_col}_vs_field'] = (
+                    merged[_col] - merged.groupby('tournament_id')[_col].transform('mean')
+                )
+        print("    ✓ Par scoring + round scoring field percentiles added")
 
         # Define all form columns and their defaults
         form_cols_defaults = {
@@ -937,13 +994,23 @@ if ADD_FORM_FEATURES:
             'recent_top10s': 0.0,
             'recent_top5s': 0.0,
             'recent_cuts_pct': 0.5,
-            'recent_birdie_avg': np.nan,  # Will fill with median
+            # Round-specific scoring
+            'recent_r1_avg': np.nan,
+            'recent_r2_avg': np.nan,
+            'recent_r3_avg': np.nan,
+            'recent_r4_avg': np.nan,
+            'closing_delta': np.nan,
+            # Par scoring by hole type
+            'recent_par3_scoring': np.nan,
+            'recent_par4_scoring': np.nan,
+            'recent_par5_scoring': np.nan,
+            # Scoring efficiency
+            'recent_birdie_avg': np.nan,
             'recent_bogey_avg': np.nan,
             'recent_scoring_avg': np.nan,
             'recent_gir_pct': np.nan,
             'recent_scrambling': np.nan,
             'recent_bounce_back': np.nan,
-            'recent_final_round': np.nan,
             'recent_sand_save': np.nan,
         }
 
