@@ -219,85 +219,169 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None) -> 
         df = pd.read_csv(path)
         df["player_name"] = df["player_name"].apply(_fmt_name)
 
+        field_size = len(df)
         lines = [f"## PLAYER SPOTLIGHT: {', '.join(player_names)}"]
 
         for pname in player_names:
-            last = pname.split()[-1].lower()
-            mask = df["player_name"].str.lower().str.contains(last, na=False)
-            rows = df[mask]
+            # Match by exact last name first, then fall back to substring
+            # Prevents "Scott" from matching "Scottie Scheffler"
+            parts = pname.lower().split()
+            last  = parts[-1]
+            first = parts[0] if len(parts) > 1 else ""
+
+            # 1. Exact last name match (case-insensitive)
+            def _last_name(n):
+                n = n.lower()
+                return n.split()[-1] if n else ""
+            mask_exact = df["player_name"].apply(_last_name) == last
+            rows = df[mask_exact]
+
+            # 2. If multiple hits (e.g. "Rose" matches "Justin Rose" and "Rose Zhang"),
+            #    narrow by first name if we have it
+            if len(rows) > 1 and first:
+                first_mask = rows["player_name"].str.lower().str.startswith(first)
+                if first_mask.any():
+                    rows = rows[first_mask]
+
+            # 3. Fall back to substring if exact match found nothing
             if rows.empty:
-                lines.append(f"\n### {pname}: No data found")
+                mask_sub = df["player_name"].str.lower().str.contains(last, na=False)
+                rows = df[mask_sub]
+
+            if rows.empty:
+                lines.append(f"\n### {pname}: Not found in this week's field")
                 continue
 
             r = rows.iloc[0]
             actual = r["player_name"]
-            lines.append(f"\n### {actual}")
-
-            # Odds + value
-            odds = _fmt_odds(r.get("odds_to_win"))
-            win_prob = float(r.get("win_prob", 0) or 0)
-            implied = _american_to_implied(r.get("odds_to_win"))
-            value_flag = ""
-            if implied and win_prob > implied * 1.25:
-                value_flag = " ← VALUE (model likes more than market)"
-            elif implied and win_prob < implied * 0.75:
-                value_flag = " ← FADE (market likes more than model)"
-            if implied:
-                lines.append(
-                    f"**Odds**: {odds} ({implied*100:.0f}% implied) | "
-                    f"**Our estimate**: {win_prob*100:.1f}% to win{value_flag}"
-                )
-
-            # Finish probabilities
-            t5  = float(r.get("top5_prob",  0) or 0)
-            t10 = float(r.get("top10_prob", 0) or 0)
-            t20 = float(r.get("top20_prob", 0) or 0)
-            lines.append(f"**Finish probs**: Top 5: {t5*100:.0f}% | Top 10: {t10*100:.0f}% | Top 20: {t20*100:.0f}%")
-
-            # World rank + form trend
             wr = r.get("world_rank")
-            form = r.get("form_trend", "")
-            rank_str = f"World #{int(wr)}" if pd.notna(wr) else ""
-            form_str = f" | Form: {form}" if form and str(form) not in ("nan", "") else ""
-            if rank_str:
-                lines.append(f"**Ranking**: {rank_str}{form_str}")
+            wr_str = f"World #{int(wr)}" if pd.notna(wr) else ""
+            lines.append(f"\n### {actual}" + (f" ({wr_str})" if wr_str else ""))
 
-            # SG breakdown
-            sg_parts = []
-            for col, label in [("sg_total","Total"),("sg_ott","OTT"),("sg_app","APP"),("sg_arg","ARG"),("sg_putt","Putt")]:
-                v = r.get(col)
-                if pd.notna(v):
-                    sg_parts.append(f"{label}: {float(v):+.2f}")
-            if sg_parts:
-                lines.append(f"**Strokes Gained**: {' | '.join(sg_parts)}")
+            # --- Odds & value ---
+            odds      = _fmt_odds(r.get("odds_to_win"))
+            win_prob  = float(r.get("win_prob", 0) or 0)
+            implied   = _american_to_implied(r.get("odds_to_win"))
+            t5        = float(r.get("top5_prob",  0) or 0)
+            t10       = float(r.get("top10_prob", 0) or 0)
+            t20       = float(r.get("top20_prob", 0) or 0)
 
-            # Season SG field ranks
-            rank_parts = []
-            for col, label in [("season_sg_ott_field_rank","OTT rank"),("season_sg_app_field_rank","APP rank"),("season_sg_putt_field_rank","Putt rank")]:
-                v = r.get(col)
-                if pd.notna(v):
-                    rank_parts.append(f"{label}: #{int(v)}")
-            if rank_parts:
-                lines.append(f"**Season SG field rank (this field)**: {' | '.join(rank_parts)}")
+            if implied:
+                value_flag = ""
+                if win_prob > implied * 1.3:
+                    value_flag = " ← we like him MORE than the market"
+                elif win_prob < implied * 0.7:
+                    value_flag = " ← market favors him more than we do"
+                lines.append(
+                    f"**Win odds**: {odds} (book implies {implied*100:.0f}% chance){value_flag}"
+                )
+            else:
+                lines.append(f"**Win odds**: {odds}")
+            lines.append(
+                f"**Finish chances**: Top 5: {t5*100:.0f}% | Top 10: {t10*100:.0f}% | Top 20: {t20*100:.0f}%"
+            )
 
-            # Course history
-            hist = _fmt_course_history(r)
-            course_sg = r.get("course_sg_total_avg")
-            course_sg_str = f" | Course SG avg: {float(course_sg):+.2f}" if pd.notna(course_sg) else ""
-            lines.append(f"**Course history**: {hist}{course_sg_str}")
+            # --- Form (plain English, no raw numbers) ---
+            mc_last   = int(r.get("missed_cut_last_start", 0) or 0)
+            t5_last   = int(r.get("post_top5_last_start",  0) or 0)
+            last_pos  = r.get("last_start_position")
+            consec_c  = int(r.get("consecutive_cuts",   0) or 0)
+            consec_t  = int(r.get("consecutive_top10s", 0) or 0)
+            r_t10     = float(r.get("recent_top10s",    0) or 0)
+            r_cuts    = float(r.get("recent_cuts_pct",  0) or 0)
+            hot       = bool(r.get("hot_hand_flag", False))
+            hot_score = float(r.get("hot_hand_score", 0) or 0)
+            ft        = float(r.get("form_trend",    0) or 0)
 
-            # Live position if tournament is in progress
+            try:
+                last_pos_int = int(float(last_pos)) if last_pos and float(last_pos) < 999 else None
+            except (TypeError, ValueError):
+                last_pos_int = None
+
+            form_parts = []
+            if mc_last:
+                form_parts.append("missed the cut last start")
+            elif last_pos_int:
+                label = "top-5 finish" if t5_last else ("top-10" if last_pos_int <= 10 else "")
+                form_parts.append(f"T{last_pos_int} last start" + (f" ({label})" if label else ""))
+
+            if consec_t >= 2:
+                form_parts.append(f"{consec_t} top-10s in a row")
+            elif r_t10 >= 2:
+                form_parts.append(f"{int(round(r_t10))} top-10s in last 5 starts")
+            if consec_c >= 5:
+                form_parts.append(f"made {consec_c} cuts straight")
+            elif r_cuts >= 0.8:
+                form_parts.append("consistently making cuts")
+            elif r_cuts < 0.5:
+                form_parts.append("missing cuts regularly")
+            if hot and hot_score >= 8:
+                form_parts.append("in red-hot form right now")
+            elif ft > 0.5:
+                form_parts.append("trending up")
+            elif ft < -0.5:
+                form_parts.append("trending down lately")
+
+            if form_parts:
+                lines.append(f"**Recent form**: {' · '.join(form_parts)}")
+
+            # --- Stats in field-rank language ---
+            sg_cats = [
+                ("season_sg_ott_field_rank", "off the tee"),
+                ("season_sg_app_field_rank", "approach play"),
+                ("season_sg_arg_field_rank", "around the greens"),
+                ("season_sg_putt_field_rank", "putting"),
+            ]
+            stat_parts = []
+            for col, label in sg_cats:
+                rank = r.get(col)
+                if pd.isna(rank):
+                    continue
+                rank = int(rank)
+                if rank <= 5:
+                    stat_parts.append(f"elite {label} (#{rank} in field)")
+                elif rank <= 15:
+                    stat_parts.append(f"strong {label} (top-15 in field)")
+                elif rank > field_size * 0.75:
+                    stat_parts.append(f"below-average {label} (#{rank} of {field_size})")
+            if stat_parts:
+                lines.append(f"**Stats in this field**: {' · '.join(stat_parts)}")
+
+            # --- Course history (narrative) ---
+            n_starts  = max(int(r.get("course_starts", 0) or 0), int(r.get("hist_times_played", 0) or 0))
+            wins      = int(r.get("hist_wins",   0) or 0)
+            t10s      = int(r.get("hist_top10s", 0) or 0)
+            best      = r.get("course_best_finish")
+            cut_rt    = float(r.get("course_made_cut_rate", 1) or 1)
+            avg_fin   = r.get("course_avg_finish")
+
+            if n_starts == 0:
+                lines.append("**Course history**: No history here — first start at this venue")
+            else:
+                ch_parts = [f"{n_starts} start{'s' if n_starts != 1 else ''} at this course"]
+                if wins:
+                    ch_parts.append(f"WON {wins}x" if wins > 1 else "won here before")
+                elif t10s >= 2:
+                    ch_parts.append(f"{t10s} top-10 finishes")
+                elif t10s == 1:
+                    ch_parts.append("1 top-10 finish")
+                if pd.notna(best) and float(best) <= 10:
+                    ch_parts.append(f"best finish T{int(float(best))}")
+                if pd.notna(avg_fin) and float(avg_fin) <= 25:
+                    ch_parts.append(f"avg finish T{int(float(avg_fin))}")
+                if cut_rt < 0.5 and n_starts >= 3:
+                    ch_parts.append("struggles to make the weekend here")
+                elif cut_rt >= 0.9 and n_starts >= 3:
+                    ch_parts.append("makes the cut here every time")
+                lines.append(f"**Course history**: {' · '.join(ch_parts)}")
+
+            # --- Live position if tournament in progress ---
             if "live_position" in r and pd.notna(r.get("live_position")):
                 total  = r.get("total", "?")
-                thru   = r.get("thru", "?")
+                thru   = r.get("thru",  "?")
                 live_w = r.get("live_win_prob")
-                live_str = f" | Live win%: {float(live_w)*100:.1f}%" if pd.notna(live_w) else ""
-                lines.append(f"**Live**: {r['live_position']} | {total} total | thru {thru}{live_str}")
-
-            # Projected score vs field
-            proj = r.get("projected_score_vs_field")
-            if pd.notna(proj):
-                lines.append(f"**Projected score vs field**: {float(proj):+.2f} strokes")
+                live_str = f" | Updated win chance: {float(live_w)*100:.1f}%" if pd.notna(live_w) else ""
+                lines.append(f"**Live position**: {r['live_position']} | {total} total | thru {thru}{live_str}")
 
         return "\n".join(lines)
     except Exception as e:
@@ -1012,6 +1096,7 @@ COMMUNICATION RULES:
 - When discussing course fit, reference which parts of the game matter (driving accuracy, approach, putting on fast greens, etc.).
 - For lineup advice, reference the user's uses remaining and league standing.
 - Don't dump the whole context table — synthesize it. Use specific numbers only when they make the point clearly.
+- NEVER invent or interpolate statistics. Only cite specific results, streaks, or rankings that appear explicitly in the FORM & STATS or PLAYER SPOTLIGHT sections. If a stat isn't in the provided data, say "no data" or leave it out — do not guess.
 
 VALUE PLAYS — CRITICAL RULE:
 - The field table has 'Est. Win%' and 'Win Odds (Implied%)'. To find value, compare Est. Win% to Implied%.
