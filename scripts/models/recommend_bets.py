@@ -1127,9 +1127,9 @@ def score_group_winner_markets(preds_df: pd.DataFrame, lines_df: pd.DataFrame) -
 @dataclass
 class RecommendationConfig:
     min_confidence: float = 0.60
-    min_edge_points: float = 1.00
+    min_edge_points: float = 3.00   # raised from 1.0 — low-edge bets showed near-zero win rate
     min_ev_per_1: float = 0.00
-    max_abs_odds: int = 10000
+    max_abs_odds: int = 5000        # lowered from 10000 — extreme longshots never win
     max_per_market: int = 5
     top_n: int = 20
     top_n_cards: int = 8
@@ -1142,6 +1142,26 @@ def apply_recommendation_filters(df: pd.DataFrame, cfg: RecommendationConfig) ->
         return df
 
     work = df.copy()
+
+    # ── Market exclusions ──────────────────────────────────────────────────────
+    # nationality_group: model applies win_prob share within nationality cohorts,
+    #   but has no concept of the market's actual vig structure. Results across
+    #   288 graded bets: 2.4% win rate vs 37.5% model_prob → -271 units.
+    #   Excluded permanently.
+    #
+    # top5 / top10 / top20 (PAUSED): across 3 tournaments (869 graded finish-market
+    #   bets after removing nationality_group), actual wins = 0 after removing a
+    #   grading duplicate. The market is efficient for finish positions — our model
+    #   overestimates probabilities for selected players because edge-selection
+    #   introduces severe sample bias. Re-enable when properly recalibrated.
+    #   To re-enable: remove "top5", "top10", "top20" from _EXCLUDED_MARKETS below.
+    #
+    # outright (PAUSED): 109 graded bets, 0 wins across all odds levels.
+    #   Model finds apparent edge but books' outright markets are too efficient.
+    #   Re-enable only if backed by corroborating multi-book consensus.
+    _EXCLUDED_MARKETS = {"nationality_group", "top5", "top10", "top20", "outright"}
+    work = work[~work["market"].isin(_EXCLUDED_MARKETS)]
+
     work = work[pd.to_numeric(work["confidence"], errors="coerce") >= cfg.min_confidence]
     work = work[pd.to_numeric(work["edge_pts"], errors="coerce") >= cfg.min_edge_points]
     work = work[pd.to_numeric(work["ev_per_1"], errors="coerce") >= cfg.min_ev_per_1]
@@ -1155,11 +1175,9 @@ def apply_recommendation_filters(df: pd.DataFrame, cfg: RecommendationConfig) ->
 
     if not singles.empty:
         singles = singles.sort_values(["edge_pts", "ev_per_1", "confidence"], ascending=[False, False, False])
-        # h2h, group_winner, and nationality_group have many more legs — allow more per market
-        _h2h_mkts = singles["market"].astype(str).str.startswith("h2h") | \
-                    singles["market"].astype(str).isin(["group_winner", "nationality_group"])
+        # h2h and group_winner have many more legs than finish markets — allow more per market
         _cap = singles["market"].map(
-            lambda m: 12 if str(m).startswith("h2h") or m in ("group_winner", "nationality_group")
+            lambda m: 12 if str(m).startswith("h2h") or m == "group_winner"
             else cfg.max_per_market
         )
         singles["_market_rank"] = singles.groupby("market").cumcount() + 1

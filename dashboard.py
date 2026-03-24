@@ -29,6 +29,7 @@ import re
 import plotly.graph_objects as go
 import unicodedata
 
+from golf_data.scripts.analysis.track_performance import load_predictions
 from scripts.predictions.refresh_odds import refresh_odds
 
 try:
@@ -6974,7 +6975,7 @@ st.sidebar.markdown("---")
 # Navigation (consolidated)
 page = st.sidebar.radio(
     "📍 Navigation",
-    ["🏆 This Week", "💬 Assistant", "🎰 Betting", "👤 Players", "📊 Predictions", "🔴 Live", "📋 My Picks", "⚙️ Pipeline"],
+    ["🏆 This Week", "💬 Assistant", "🎰 Betting", "👤 Players", "📊 Predictions", "🔴 Live", "📋 My Picks"],
     label_visibility="collapsed"
 )
 
@@ -7008,7 +7009,26 @@ st.sidebar.metric("Players Used", len(picks))
 st.sidebar.metric("Picks Made", f"{total_picks}/90")
 
 st.sidebar.markdown("---")
-st.sidebar.caption(f"Last updated: {datetime.now().strftime('%b %d, %Y %H:%M')}")
+
+# Scheduler status — last run time and success rate
+try:
+    import json as _sj
+    _sh_path = Path("logs/scheduler_history.json")
+    if _sh_path.exists():
+        with open(_sh_path) as _f:
+            _sh = _sj.load(_f)
+        if _sh:
+            _last = _sh[-1]
+            _last_ts = _last.get("timestamp", "")[:16].replace("T", " ")
+            _ok = _last.get("success_count", 0)
+            _total = _last.get("total_count", 0)
+            _all_ok = _ok == _total
+            _status_icon = "🟢" if _all_ok else "🟡"
+            st.sidebar.caption(f"{_status_icon} Scheduler: {_last_ts} · {_ok}/{_total} tasks OK")
+except Exception:
+    pass
+
+st.sidebar.caption(f"Dashboard loaded: {datetime.now().strftime('%b %d %H:%M')}")
 
 
 # ============================================================================
@@ -8444,7 +8464,7 @@ elif page == "💬 Assistant":
                     _tournament_state,
                 )
                 _cur_tid = _detect_tournament_id()
-                st.session_state["chat_context"] = _build_context(_cur_tid)
+                st.session_state["chat_context"] = _build_context(tournament_id=_cur_tid)
                 _ts = _tournament_state(_cur_tid) if _cur_tid else {}
                 st.session_state["chat_phase"] = _ts.get("phase", "pre_tournament")
             except Exception as _ctx_err:
@@ -8613,11 +8633,13 @@ elif page == "💬 Assistant":
                     build_context as _build_ctx,
                     stream_response as _stream_response,
                     extract_mentioned_players as _extract_players_resp,
+                    _detect_tournament_id as _detect_tid_fn,
                 )
-                _cur_tid = _detect_tournament_id() if "_cur_tid" not in dir() else _cur_tid
+                _cur_tid = _detect_tid_fn()
                 _last_players = st.session_state.get("chat_last_players", [])
                 _context = _build_ctx(query=_prompt, tournament_id=_cur_tid, last_players=_last_players)
             except Exception as _ctx_err:
+                st.warning(f"Context build failed (using cache): {_ctx_err}")
                 _context = st.session_state.get("chat_context", "You are a golf analytics assistant.")
                 _extract_players_resp = None
 
@@ -8745,44 +8767,7 @@ elif page == "📋 My Picks":
                     _hist_df.loc[_hist_df.index[-1], "Earnings"] = _wk_total
                     _hist_df["Cumulative"] = _hist_df["Earnings"].cumsum()
 
-                st.markdown("### Season Earnings by Week")
-                _fig = _pgo.Figure()
-                _fig.add_trace(_pgo.Bar(
-                    x=_hist_df["Week"],
-                    y=_hist_df["Earnings"],
-                    name="Weekly Earnings",
-                    marker_color="#4cb8ff",
-                    text=_hist_df["Earnings"].apply(lambda v: f"${v:,}"),
-                    textposition="outside",
-                    hovertext=_hist_df["Tournament"],
-                ))
-                _fig.add_trace(_pgo.Scatter(
-                    x=_hist_df["Week"],
-                    y=_hist_df["Cumulative"],
-                    name="Cumulative",
-                    mode="lines+markers",
-                    line=dict(color="#00c44f", width=2),
-                    marker=dict(size=6),
-                    yaxis="y2",
-                ))
-                _fig.update_layout(
-                    height=320,
-                    margin=dict(t=20, b=20, l=0, r=0),
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    font=dict(color="#dde6f5"),
-                    legend=dict(orientation="h", y=1.08),
-                    xaxis=dict(gridcolor="#2a3a5c"),
-                    yaxis=dict(title="Weekly Earnings ($)", gridcolor="#2a3a5c", tickprefix="$"),
-                    yaxis2=dict(
-                        title="Cumulative ($)",
-                        overlaying="y",
-                        side="right",
-                        gridcolor="rgba(0,0,0,0)",
-                        tickprefix="$",
-                    ),
-                )
-                st.plotly_chart(_fig, use_container_width=True)
+      
         except Exception:
             pass
 
@@ -8849,8 +8834,90 @@ elif page == "📋 My Picks":
 
     st.markdown("---")
 
-    # Manage Picks
+    # ── League Usage Table ─────────────────────────────────────────────────────
+    st.markdown("### League Usage")
+    st.caption("Season-wide usage across all 28 teams (max 3 uses per player). Sourced from Pro Tour Fantasy Golf tracker.")
+
+    _league_usage_path = DATA_DIR / "fantasy" / "league_total_usages.csv"
+    if _league_usage_path.exists():
+        try:
+            _lu_df = pd.read_csv(_league_usage_path)
+
+            # Merge with my own usage from tracker
+            _my_usage: dict[str, int] = {}
+            for _pname, _pdata in (picks or {}).items():
+                _last = _pname.lower().split()[-1]
+                _my_usage[_last] = _pdata.get("times_used", 0)
+
+            def _my_uses(row):
+                last = str(row["player_name"]).lower().split()[-1].replace(",", "").strip()
+                return _my_usage.get(last, 0)
+
+            _lu_df["My Uses"] = _lu_df.apply(_my_uses, axis=1)
+            _lu_df["My Remaining"] = 3 - _lu_df["My Uses"]
+            _lu_df = _lu_df.rename(columns={
+                "player_name": "Player",
+                "times_used": "League Uses",
+                "util_pct": "League %",
+            })
+            _lu_df = _lu_df.sort_values("League Uses", ascending=False).reset_index(drop=True)
+
+            # Color-code: high demand = red/orange, low = green
+            def _style_lu(row):
+                uses = row["League Uses"]
+                my_rem = row["My Remaining"]
+                color = ""
+                if my_rem == 0:
+                    color = "color:#e74c3c"
+                elif uses >= 20:
+                    color = "color:#f39c12"
+                elif uses <= 5:
+                    color = "color:#00c44f"
+                return [color] * len(row)
+
+            _lu_cols = ["Player", "League Uses", "League %", "My Uses", "My Remaining"]
+            _lu_display = _lu_df[_lu_cols]
+
+            st.dataframe(
+                _lu_display.style.apply(_style_lu, axis=1),
+                use_container_width=True,
+                height=420,
+                hide_index=True,
+            )
+
+            # Summary callouts
+            _high = _lu_df[_lu_df["League Uses"] >= 20]
+            _fresh = _lu_df[(_lu_df["League Uses"] <= 3) & (_lu_df["My Remaining"] > 0)]
+            _c1, _c2 = st.columns(2)
+            with _c1:
+                st.caption(f"**{len(_high)} high-demand players** (20+ league uses) — most teams have already spent uses on these")
+            with _c2:
+                st.caption(f"**{len(_fresh)} under-the-radar players** (≤3 league uses) still available to you")
+        except Exception as _e:
+            st.caption(f"League usage data unavailable: {_e}")
+    else:
+        st.caption("No league usage data yet — run `scripts/scrapers/fetch_fantasy_usage.py` to fetch from the tracker site.")
+
+    st.markdown("---")
+
+    # Manage Picks — owner-only PIN gate
     st.markdown("### ✏️ Manage Picks")
+
+    _OWNER_PIN = "winetime"   # change to your preferred PIN/passphrase
+    if "owner_unlocked" not in st.session_state:
+        st.session_state["owner_unlocked"] = False
+
+    if not st.session_state["owner_unlocked"]:
+        with st.form("owner_pin_form", clear_on_submit=True):
+            _pin_input = st.text_input("Enter PIN to manage picks:", type="password", key="owner_pin_input")
+            _pin_submit = st.form_submit_button("Unlock")
+        if _pin_submit:
+            if _pin_input == _OWNER_PIN:
+                st.session_state["owner_unlocked"] = True
+                st.rerun()
+            else:
+                st.error("Incorrect PIN.")
+        st.stop()
 
     manage_tab1, manage_tab2, manage_tab3 = st.tabs(["➕ Add Picks", "📝 Record Result", "🗑️ Remove Pick"])
 
@@ -9270,88 +9337,7 @@ elif page == "📋 My Picks":
     else:
         st.info("Season log not found. It will appear here once picks are recorded.")
 
-    # ── 2025 Season Review ────────────────────────────────────────────────────
-    st.markdown("---")
-    st.markdown("### 📚 2025 Season Review")
-    st.caption("Reference from last year's winning season — use this to benchmark your 2026 strategy.")
-
-    _h25_path = PROJECT_ROOT / "data" / "historical" / "Fantasy_Results_2025.csv"
-    if _h25_path.exists():
-        def _pm25(v):
-            try: return float(str(v).replace("$","").replace(",","").strip())
-            except: return 0.0
-
-        _h25 = pd.read_csv(_h25_path)
-        _h25["_total"]  = _h25["Total Earnings"].apply(_pm25)
-        _h25["_e1"]     = _h25["Earnings"].apply(_pm25)
-        _h25["_e2"]     = _h25["Earnings.1"].apply(_pm25)
-        _h25["_e3"]     = _h25["Earnings.2"].apply(_pm25)
-        _h25["_max"]    = _h25[["_e1","_e2","_e3"]].max(axis=1)
-        _h25["_win_wk"] = _h25["_max"] >= 3_000_000   # winner on roster
-
-        _s_total   = _h25["_total"].sum()
-        _n_played  = (_h25["_total"] > 0).sum()
-        _n_wins    = int(_h25["_win_wk"].sum())
-        _win_earn  = _h25[_h25["_win_wk"]]["_total"].sum()
-        _avg_wk    = _h25[_h25["_total"] > 0]["_total"].mean()
-        _win_pct   = _win_earn / _s_total * 100 if _s_total > 0 else 0
-
-        _hc1, _hc2, _hc3, _hc4 = st.columns(4)
-        with _hc1: st.metric("Season Total",   f"${_s_total/1_000_000:.1f}M")
-        with _hc2: st.metric("Win Weeks",      f"{_n_wins}",              help="Weeks where a picked player won the tournament")
-        with _hc3: st.metric("Avg / Week",     f"${_avg_wk/1_000:.0f}K")
-        with _hc4: st.metric("From Win Weeks", f"{_win_pct:.0f}%",        help="Share of total earnings generated by the 4 weeks a pick won")
-
-        st.caption(
-            f"**Key insight:** {_n_wins} win weeks generated ${_win_earn/1_000_000:.1f}M "
-            f"({_win_pct:.0f}% of the season). The other {_n_played - _n_wins} weeks averaged "
-            f"${(_s_total - _win_earn) / max(1, _n_played - _n_wins) / 1_000:.0f}K. "
-            f"**This format is won by having a winner on your roster — not by floor/consistency.**"
-        )
-
-        # Bar chart: weekly earnings, green = win week
-        _hfig = go.Figure()
-
-        _nw = _h25[~_h25["_win_wk"]]
-        _ww = _h25[_h25["_win_wk"]]
-
-        _h25_hover = _h25[["Tournament","Starter #1","Starter #2","Starter #3"]].values
-
-        _hfig.add_trace(go.Bar(
-            x=_nw["Week"], y=_nw["_total"],
-            name="Regular week",
-            marker_color="#3498db",
-            customdata=_nw[["Tournament","Starter #1","Starter #2","Starter #3"]].values,
-            hovertemplate="<b>Wk %{x} — %{customdata[0]}</b><br>$%{y:,.0f}<br>"
-                          "%{customdata[1]} | %{customdata[2]} | %{customdata[3]}<extra></extra>",
-        ))
-        _hfig.add_trace(go.Bar(
-            x=_ww["Week"], y=_ww["_total"],
-            name="Win week 🏆",
-            marker_color="#00c44f",
-            customdata=_ww[["Tournament","Starter #1","Starter #2","Starter #3"]].values,
-            hovertemplate="<b>Wk %{x} — %{customdata[0]}</b><br>$%{y:,.0f}<br>"
-                          "%{customdata[1]} | %{customdata[2]} | %{customdata[3]}<extra></extra>",
-        ))
-        _hfig.update_layout(
-            barmode="overlay",
-            title="2025 Weekly Earnings (hover for picks)",
-            xaxis_title="Week", yaxis_title="Earnings ($)",
-            height=280,
-            margin=dict(t=40, b=20, l=0, r=0),
-            plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
-            font_color="#ccc",
-            legend=dict(orientation="h", yanchor="bottom", y=1.02),
-        )
-        st.plotly_chart(_hfig, use_container_width=True)
-
-        with st.expander("📋 Full 2025 Week-by-Week Results"):
-            _htable = _h25[["Week","Tournament","WRP","Starter #1","Starter #2","Starter #3","Total Earnings"]].copy()
-            st.dataframe(_htable, hide_index=True, use_container_width=True)
-    else:
-        st.info("Historical data not found at `data/historical/Fantasy_Results_2025.csv`.")
-
-
+   
 # ============================================================================
 # PAGE: PLAYERS (consolidated from Player Stats + Stats Deep Dive)
 # ============================================================================
@@ -9363,7 +9349,7 @@ elif page == "👤 Players":
     engine = load_scoring_engine(_scoring_engine_cache_key())
     all_players = sorted(engine.predictions.keys()) if engine and engine.predictions else []
     # Tabs for different views
-    player_tab1, player_tab2, player_tab3 = st.tabs(["🔍 Player Lookup", "📊 Stats Deep Dive", "⚔️ Head-to-Head"])
+    player_tab1, player_tab2, player_tab3, player_tab4 = st.tabs(["🔍 Player Lookup", "📊 Stats Deep Dive", "⚔️ Head-to-Head", "👥 Player Similarity"])
 
     with player_tab1:
         st.markdown("### 🔍 Player Lookup")
@@ -10928,6 +10914,107 @@ elif page == "👤 Players":
         elif h2h_player1 and h2h_player2 and h2h_player1 == h2h_player2:
             st.warning("Select two different players.")
 
+    with player_tab4:
+        st.markdown("### Find Similar Players")
+        st.caption(
+            "Select any player to see who in this week's field plays most like them — "
+            "same strengths, same weaknesses, same style. Useful for finding value on "
+            "players who mirror a favorite but come at longer odds."
+        )
+
+        _sim_path = OUTPUTS_DIR / "player_similarity.csv"
+
+        if not _sim_path.exists():
+            st.info("Similarity data not computed yet. Run `python3 scripts/validation/player_similarity.py`")
+        else:
+            _sim_df = pd.read_csv(_sim_path)
+            _sim_players = sorted(_sim_df["player_name"].unique().tolist())
+
+            _sel_player = st.selectbox("Select a player:", _sim_players, key="sim_player_sel")
+
+            if _sel_player:
+                _neighbors = _sim_df[_sim_df["player_name"] == _sel_player].copy()
+
+                # Load their own stats for the comparison bar charts
+                _sim_features = ["season_sg_ott", "season_sg_app", "season_sg_arg",
+                                "season_sg_putt", "season_sg_t2g", "course_fit"]
+                _sim_labels   = ["Off the Tee", "Approach", "Around Green", "Putting", "Tee-to-Green", "Course Fit"]
+
+                _preds_for_sim = pd.read_csv(OUTPUTS_DIR / "latest_predictions.csv")
+                _sel_row = _preds_for_sim[_preds_for_sim["player_name"] == _sel_player]
+
+                # Summary bar showing similarity scores
+                import plotly.graph_objects as go
+
+                _fig_sim = go.Figure(go.Bar(
+                    x=_neighbors["similarity_score"].head(8).tolist(),
+                    y=_neighbors["similar_player"].head(8).tolist(),
+                    orientation="h",
+                    marker_color="#4cb8ff",
+                    text=[f"{s:.3f}" for s in _neighbors["similarity_score"].head(8)],
+                    textposition="outside",
+                    textfont=dict(size=10),
+                ))
+                _fig_sim.update_layout(
+                    title=dict(text=f"Players most similar to {_sel_player}", font=dict(size=13, color="#dde6f5")),
+                    xaxis_title="Similarity (1.0 = identical profile)",
+                    xaxis=dict(range=[0, 1.05], gridcolor="#1e2d3d"),
+                    yaxis=dict(autorange="reversed", gridcolor="#1e2d3d"),
+                    height=360,
+                    margin=dict(l=10, r=60, t=40, b=40),
+                    plot_bgcolor="#0e1117", paper_bgcolor="#0e1117",
+                    font=dict(color="#dde6f5"),
+                )
+                st.plotly_chart(_fig_sim, use_container_width=True)
+
+                # Detail table
+                _neighbors_disp = _neighbors.head(8)[
+                    ["similar_player", "similarity_score", "similar_world_rank", "similar_win_prob"]
+                ].copy()
+                _neighbors_disp.columns = ["Player", "Similarity", "World Rank", "Win Prob"]
+                _neighbors_disp["Similarity"] = _neighbors_disp["Similarity"].map("{:.3f}".format)
+                _neighbors_disp["Win Prob"]   = _neighbors_disp["Win Prob"].map("{:.1%}".format)
+                _neighbors_disp["World Rank"] = _neighbors_disp["World Rank"].fillna("—").astype(str).str.replace(".0","",regex=False)
+                st.dataframe(_neighbors_disp, use_container_width=True, hide_index=True)
+
+                # SG radar-style comparison for top match
+                if not _neighbors.empty and not _sel_row.empty:
+                    _top_match = _neighbors.iloc[0]["similar_player"]
+                    _top_row   = _preds_for_sim[_preds_for_sim["player_name"] == _top_match]
+
+                    _avail_feats = [f for f in _sim_features if f in _preds_for_sim.columns]
+                    _avail_lbls  = [_sim_labels[_sim_features.index(f)] for f in _avail_feats]
+
+                    if not _top_row.empty:
+                        st.markdown(f"**Profile comparison: {_sel_player} vs {_top_match}** (closest match)")
+                        _comp_fig = go.Figure()
+                        for _cp, _cr, _clr in [
+                            (_sel_player, _sel_row, "#00c44f"),
+                            (_top_match,  _top_row, "#4cb8ff"),
+                        ]:
+                            _vals = [float(_cr[f].values[0]) if f in _cr.columns and pd.notna(_cr[f].values[0]) else 0.0
+                                     for f in _avail_feats]
+                            _comp_fig.add_trace(go.Bar(
+                                name=_cp, x=_avail_lbls, y=_vals,
+                                marker_color=_clr, opacity=0.85,
+                            ))
+                        _comp_fig.update_layout(
+                            barmode="group",
+                            height=300,
+                            margin=dict(l=10, r=10, t=20, b=40),
+                            plot_bgcolor="#0e1117", paper_bgcolor="#0e1117",
+                            font=dict(color="#dde6f5"),
+                            xaxis=dict(gridcolor="#1e2d3d"),
+                            yaxis=dict(gridcolor="#1e2d3d", title="Strokes Gained"),
+                            legend=dict(orientation="h", y=-0.3),
+                        )
+                        st.plotly_chart(_comp_fig, use_container_width=True)
+                        st.caption(
+                            "Bars above 0 = gaining strokes on the field in that category. "
+                            "If the bars look similar, these two players truly have the same style."
+                        )
+
+
 
 # ============================================================================
 # PAGE: BETTING (consolidated from Props Lab + Odds & Experts)
@@ -10936,6 +11023,78 @@ elif page == "👤 Players":
 elif page == "🎰 Betting":
     st.markdown("## 🎰 Betting")
     st.caption("Sportsbook-style props powered by model predictions")
+
+    # =========================================================================
+    # SEASON BET PERFORMANCE SUMMARY
+    # =========================================================================
+    _results_path = DATA_DIR / "odds" / "recommended_bets_results.csv"
+    if _results_path.exists():
+        try:
+            _res = pd.read_csv(_results_path)
+            _graded = _res[_res["outcome_status"].isin(["won", "lost"])].copy()
+            if not _graded.empty:
+                _total  = len(_graded)
+                _wins   = int((_graded["outcome_win"] == True).sum())
+                _pnl    = float(_graded["pnl_per_1"].sum())
+                _roi    = _pnl / _total * 100
+                _by_mkt = (
+                    _graded.groupby("market")
+                    .agg(bets=("pnl_per_1", "count"), won=("outcome_win", "sum"), pnl=("pnl_per_1", "sum"))
+                    .assign(roi=lambda d: (d["pnl"] / d["bets"] * 100).round(1))
+                    .sort_values("roi", ascending=False)
+                    .reset_index()
+                )
+                # Markets excluded from future recommendations after backtest analysis
+                _PAUSED_MARKETS = {"nationality_group", "top5", "top10", "top20", "outright"}
+
+                with st.expander("📊 Season Bet Performance", expanded=False):
+                    # ── Top-line: ALL historical bets ───────────────────────────
+                    _c1, _c2, _c3, _c4 = st.columns(4)
+                    _c1.metric("Total Bets Graded", f"{_total:,}")
+                    _c2.metric("Won", f"{_wins} ({_wins/_total*100:.0f}%)")
+                    _c3.metric("Total PnL (units)", f"{_pnl:+.1f}")
+                    _c4.metric("ROI", f"{_roi:+.1f}%")
+
+                    # ── Filtered view: only markets still active ─────────────────
+                    _active_graded = _graded[~_graded["market"].isin(_PAUSED_MARKETS)].copy()
+                    if not _active_graded.empty:
+                        _a_pnl = float(_active_graded["pnl_per_1"].sum())
+                        _a_n   = len(_active_graded)
+                        st.caption(
+                            f"Active markets only (excl. paused): "
+                            f"**{_a_n} bets · {_a_pnl:+.1f} units · {_a_pnl/_a_n*100:+.1f}% ROI**"
+                        )
+
+                    # ── Market breakdown table ───────────────────────────────────
+                    st.markdown("**By Market** — green = active, grey = paused")
+                    _disp = _by_mkt[["market", "bets", "won", "pnl", "roi"]].copy()
+                    _disp.columns = ["Market", "Bets", "Won", "PnL (units)", "ROI %"]
+                    _disp["PnL (units)"] = _disp["PnL (units)"].round(1)
+                    _disp["Status"] = _disp["Market"].apply(
+                        lambda m: "Paused" if m in _PAUSED_MARKETS else "Active"
+                    )
+
+                    def _style_mkt_row(row):
+                        if row["Status"] == "Paused":
+                            return ["color:#888"] * len(row)
+                        if row["ROI %"] > 0:
+                            return ["color:#00c44f; font-weight:600"] * len(row)
+                        return [""] * len(row)
+
+                    st.dataframe(
+                        _disp[["Market", "Status", "Bets", "Won", "PnL (units)", "ROI %"]]
+                        .style.apply(_style_mkt_row, axis=1),
+                        use_container_width=True,
+                        hide_index=True,
+                    )
+
+                    st.caption(
+                        "Paused markets had 0 real wins across 3 tournaments. "
+                        "Active markets: content_card (+325% ROI), h2h_r4 (+25% ROI). "
+                        "h2h full-tournament is drag from vig — round-by-round h2h is better."
+                    )
+        except Exception:
+            pass
 
     # =========================================================================
     # ODDS REFRESH PANEL
@@ -13322,28 +13481,22 @@ elif page == "📊 Predictions":
             st.dataframe(display_df, hide_index=True, use_container_width=True)
             st.caption("**vs Avg** — mean projected score vs field (negative = better). **Ceiling** — best 10% of weeks (Q10). **Floor** — worst 10% of weeks (Q90). All vs field average. **2025 Earnings** — prize money in your 2025 lineup.")
 
-            st.markdown("#### 🔎 Why This Pick")
-            why_cols = st.columns([2.2, 1.0])
-            with why_cols[0]:
-                selected_player = st.selectbox(
-                    "Choose player",
-                    options=top_20["player_name"].tolist(),
-                    key=f"why_pick_player_{selected_tournament_id or selected}",
-                )
-            with why_cols[1]:
-                st.markdown("<br>", unsafe_allow_html=True)
-                explain_click = st.button(
-                    "Explain Pick",
-                    use_container_width=True,
-                    key=f"why_pick_btn_{selected_tournament_id or selected}",
-                )
-
-            why_key = f"why_pick_text_{selected_tournament_id or selected}"
-            if explain_click and selected_player:
-                selected_row = top_20[top_20["player_name"] == selected_player].iloc[0]
-                st.session_state[why_key] = build_player_pick_reason_text(selected_row)
-            if why_key in st.session_state:
-                st.markdown(st.session_state[why_key])
+            st.markdown("""
+<div style="background:#0d1a30; border:1px solid #1e3a5f; border-left:4px solid #00c44f;
+            padding:16px 20px; border-radius:8px; margin:12px 0 4px 0;">
+  <div style="font-size:1.0em; font-weight:600; color:#dde6f5; margin-bottom:6px;">
+    🤖 Ask the Golf Assistant
+  </div>
+  <div style="color:#8ba0b8; font-size:0.9em; line-height:1.6;">
+    For a full breakdown of any pick — form, course fit, model vs market, expert consensus, and a verdict —
+    ask the assistant on the right:
+    <br><br>
+    <span style="color:#00c44f; font-family:monospace;">"Why should I pick [player name]?"</span><br>
+    <span style="color:#00c44f; font-family:monospace;">"Make the case for [player name]"</span><br>
+    <span style="color:#00c44f; font-family:monospace;">"Tell me about [player name] this week"</span>
+  </div>
+</div>
+""", unsafe_allow_html=True)
 
         with tab2:
             render_tier_list(df)
@@ -13453,6 +13606,623 @@ elif page == "📊 Predictions":
                 except Exception as _e:
                     st.warning(f"Could not load calibration data: {_e}")
 
+    # ── In-season prediction accuracy tracker ──────────────────────────────
+    st.markdown("---")
+    _ph_path = DATA_DIR / "prediction_tracking" / "prediction_history.csv"
+    if _ph_path.exists():
+        try:
+            _ph = pd.read_csv(_ph_path)
+            # Only rows with result_recorded = True
+            _ph_graded = _ph[_ph["result_recorded"] == True].copy()
+
+            if not _ph_graded.empty:
+                with st.expander("📈 In-Season Prediction Accuracy", expanded=False):
+                    st.caption(
+                        f"{len(_ph_graded)} graded predictions across "
+                        f"{_ph_graded['tournament_id'].nunique()} tournaments · "
+                        "run backfill_results.py after each event to update"
+                    )
+
+                    # ── Convert outcome columns robustly ────────────────────
+                    def _to_bool(s):
+                        try:
+                            return bool(int(float(s)))
+                        except Exception:
+                            return str(s).strip().lower() not in {"false","0","nan","none",""}
+
+                    for _col in ["actual_won","actual_top5","actual_top10","actual_top20"]:
+                        if _col in _ph_graded.columns:
+                            _ph_graded[_col] = _ph_graded[_col].map(_to_bool)
+
+                    # ── Headline calibration table ───────────────────────────
+                    _cal_rows = []
+                    for _mkt, _pred_col, _act_col in [
+                        ("Win",    "predicted_win_prob",   "actual_won"),
+                        ("Top 5",  "predicted_top5_prob",  "actual_top5"),
+                        ("Top 10", "predicted_top10_prob", "actual_top10"),
+                        ("Top 20", "predicted_top20_prob", "actual_top20"),
+                    ]:
+                        if _act_col not in _ph_graded.columns:
+                            continue
+                        _s = _ph_graded[[_pred_col, _act_col]].dropna()
+                        if _s.empty:
+                            continue
+                        _s[_pred_col] = pd.to_numeric(_s[_pred_col], errors="coerce")
+                        _s = _s.dropna()
+                        _pred_avg   = _s[_pred_col].mean() * 100
+                        _actual_avg = _s[_act_col].mean() * 100
+                        _ratio      = _actual_avg / _pred_avg if _pred_avg > 0 else float("nan")
+                        _cal_rows.append({
+                            "Market":     _mkt,
+                            "Pred Avg %": round(_pred_avg, 2),
+                            "Actual %":   round(_actual_avg, 2),
+                            "Ratio":      round(_ratio, 2),
+                            "n":          len(_s),
+                        })
+
+                    if _cal_rows:
+                        _cal_df = pd.DataFrame(_cal_rows)
+
+                        def _color_ratio(val):
+                            try:
+                                v = float(val)
+                                if v >= 0.9:   return "color:#00c44f; font-weight:600"  # well calibrated
+                                if v >= 0.7:   return "color:#81c784"                   # slight over-estimate
+                                if v < 0.5:    return "color:#ef5350; font-weight:600"  # badly off
+                            except Exception:
+                                pass
+                            return ""
+
+                        st.dataframe(
+                            _cal_df.style.map(_color_ratio, subset=["Ratio"]),
+                            hide_index=True,
+                            use_container_width=True,
+                        )
+                        st.caption(
+                            "Ratio = actual hit rate ÷ predicted probability. "
+                            "1.0 = perfectly calibrated. "
+                            "< 0.8 = model over-estimates, > 1.2 = under-estimates."
+                        )
+
+                    # ── Per-tournament breakdown ─────────────────────────────
+                    st.markdown("**Win prediction accuracy by tournament**")
+                    _ph_graded["predicted_win_prob"] = pd.to_numeric(
+                        _ph_graded["predicted_win_prob"], errors="coerce"
+                    )
+                    _by_tid = (
+                        _ph_graded.groupby("tournament_id")
+                        .agg(
+                            players=("player_name", "count"),
+                            avg_pred_win=("predicted_win_prob", "mean"),
+                            actual_winners=("actual_won", "sum"),
+                        )
+                        .assign(
+                            pred_win_pct=lambda d: (d["avg_pred_win"] * 100).round(2),
+                            actual_win_pct=lambda d: (d["actual_winners"] / d["players"] * 100).round(2),
+                        )
+                        .reset_index()
+                    )
+                    st.dataframe(
+                        _by_tid[["tournament_id", "players", "pred_win_pct", "actual_win_pct"]]
+                        .rename(columns={
+                            "tournament_id": "Tournament",
+                            "players": "Players",
+                            "pred_win_pct": "Avg Pred Win %",
+                            "actual_win_pct": "Actual Win %",
+                        }),
+                        hide_index=True,
+                        use_container_width=True,
+                    )
+        except Exception as _e:
+            pass  # Don't break the page if prediction_history is malformed
+
+    # ── SHAP Model Explainability ───────────────────────────────────────────
+    with st.expander("🔍 Model Explainability (SHAP)", expanded=False):
+        st.markdown("""
+**What is SHAP?**
+Every prediction is the sum of small contributions from each feature:
+`P(top10) = base_rate + SHAP(form_trend) + SHAP(sg_app) + SHAP(course_history) + ...`
+A positive SHAP value means that feature *raised* the probability for that player.
+A negative value means it *lowered* it. This turns the model from a black box into something you can inspect and learn from.
+        """)
+
+        _shap_model_choice = st.selectbox(
+            "Model:", ["win", "top5", "top10", "top20"],
+            index=2, key="shap_model_select"
+        )
+        _shap_global_path = OUTPUTS_DIR / f"shap_global_{_shap_model_choice}.csv"
+        _shap_player_path = OUTPUTS_DIR / f"shap_values_{_shap_model_choice}.csv"
+
+        if not _shap_global_path.exists():
+            st.info("SHAP values not yet computed. Run `python3 scripts/validation/compute_shap.py` to generate them.")
+        else:
+            _sg = pd.read_csv(_shap_global_path)
+            _sp = pd.read_csv(_shap_player_path)
+
+            # ── Global importance bar chart ─────────────────────────────────
+            st.markdown("#### Feature Importance — What Drives This Model?")
+            st.caption("Mean absolute SHAP value across all players this week. Larger bar = bigger average impact on predictions.")
+
+            _top_n = st.slider("Show top N features:", 5, 30, 15, key="shap_top_n")
+            _sg_top = _sg.head(_top_n).copy()
+            _sg_top["color"] = _sg_top["mean_shap"].apply(
+                lambda v: "#00c44f" if v > 0 else "#e74c3c"
+            )
+            _sg_top["label"] = _sg_top["feature"].str.replace("_", " ")
+
+            import plotly.graph_objects as go
+            _fig_global = go.Figure(go.Bar(
+                x=_sg_top["mean_abs_shap"],
+                y=_sg_top["label"],
+                orientation="h",
+                marker_color=_sg_top["color"],
+                text=_sg_top["mean_abs_shap"].apply(lambda v: f"{v:.4f}"),
+                textposition="outside",
+            ))
+            _fig_global.update_layout(
+                height=max(350, _top_n * 28),
+                margin=dict(l=10, r=60, t=10, b=10),
+                xaxis_title="Mean |SHAP| value",
+                yaxis=dict(autorange="reversed"),
+                plot_bgcolor="#0e1117",
+                paper_bgcolor="#0e1117",
+                font=dict(color="#dde6f5", size=12),
+                xaxis=dict(gridcolor="#1e2d3d"),
+            )
+            st.plotly_chart(_fig_global, use_container_width=True)
+
+            st.caption(
+                "Green = feature on average raises predictions | Red = on average lowers them | "
+                "Color reflects the *direction*, size reflects *importance*."
+            )
+
+            # ── Per-player waterfall ────────────────────────────────────────
+            st.markdown("#### Player Spotlight — Why This Prediction?")
+            st.caption("Select a player to see exactly which features pushed their prediction up or down.")
+
+            _sp_players = _sp["player_name"].tolist()
+            _shap_player_sel = st.selectbox(
+                "Player:", _sp_players, key="shap_player_sel"
+            )
+
+            _feat_cols = [c for c in _sp.columns if c not in ("player_name", "tournament_id")]
+            _player_row = _sp[_sp["player_name"] == _shap_player_sel].iloc[0]
+            _player_shap = pd.Series(
+                _player_row[_feat_cols].values.astype(float),
+                index=_feat_cols
+            ).sort_values(key=abs, ascending=False).head(15)
+
+            # Build waterfall chart
+            _wf_labels = [f.replace("_", " ") for f in _player_shap.index]
+            _wf_vals   = _player_shap.values
+            _wf_colors = ["#00c44f" if v > 0 else "#e74c3c" for v in _wf_vals]
+
+            _fig_wf = go.Figure(go.Bar(
+                x=_wf_vals,
+                y=_wf_labels,
+                orientation="h",
+                marker_color=_wf_colors,
+                text=[f"{v:+.4f}" for v in _wf_vals],
+                textposition="outside",
+            ))
+            _fig_wf.update_layout(
+                title=dict(
+                    text=f"{_shap_player_sel} — Top 15 feature contributions ({_shap_model_choice} model)",
+                    font=dict(size=13, color="#dde6f5"),
+                ),
+                height=450,
+                margin=dict(l=10, r=80, t=40, b=10),
+                xaxis_title="SHAP value (impact on predicted probability)",
+                xaxis=dict(zeroline=True, zerolinecolor="#4a5568", gridcolor="#1e2d3d"),
+                yaxis=dict(autorange="reversed"),
+                plot_bgcolor="#0e1117",
+                paper_bgcolor="#0e1117",
+                font=dict(color="#dde6f5", size=12),
+            )
+            st.plotly_chart(_fig_wf, use_container_width=True)
+
+            # Show actual predicted probability for context
+            _pred_col = {"win": "win_prob", "top5": "top5_prob",
+                         "top10": "top10_prob", "top20": "top20_prob"}.get(_shap_model_choice)
+            if _pred_col and "df" in dir() and _pred_col in df.columns:
+                _player_pred = df[df["player_name"].str.contains(
+                    _shap_player_sel.split()[-1], case=False, na=False
+                )]
+                if not _player_pred.empty:
+                    _prob = float(_player_pred.iloc[0][_pred_col])
+                    st.caption(
+                        f"**{_shap_player_sel}** predicted {_shap_model_choice} probability: "
+                        f"**{_prob*100:.1f}%** — the bars above show which features drove that number."
+                    )
+
+
+    # ── Monte Carlo Simulation ──────────────────────────────────────────────
+    with st.expander("🎲 Monte Carlo Tournament Simulation", expanded=False):
+        st.markdown("""
+**What is Monte Carlo simulation?**
+Instead of one prediction ("15% top-10 chance"), we simulate 10,000 complete tournaments.
+Each simulation draws a finish position for every player — the fraction of sims where a
+player finishes top-10 should match the model's 15% probability (it does: error < 0.3%).
+This gives us *distributions* not just point estimates: best case, worst case, median.
+        """)
+
+        _mc_path     = OUTPUTS_DIR / "monte_carlo_results.csv"
+        _mc_npz_path = OUTPUTS_DIR / "monte_carlo_sims.npz"
+
+        if not _mc_path.exists():
+            st.info("Monte Carlo results not computed yet. Run `python3 scripts/validation/monte_carlo.py`")
+        else:
+            _mc = pd.read_csv(_mc_path)
+
+            # ── Field-wide finish distribution table ───────────────────────
+            st.markdown("#### Simulated Finish Distribution")
+            st.caption(
+                "p10 finish = best-case (top 10% of sims) · p90 = worst-case · "
+                "Std = consistency (low std = consistent finisher, high = boom/bust)"
+            )
+
+            _mc_disp = _mc[[
+                "player_name", "sim_win_pct", "sim_top5_pct", "sim_top10_pct",
+                "sim_top20_pct", "sim_median_finish", "sim_p10_finish",
+                "sim_p90_finish", "sim_finish_std"
+            ]].copy()
+            _mc_disp.columns = [
+                "Player", "Win%", "Top5%", "Top10%", "Top20%",
+                "Median Finish", "Best Case (p10)", "Worst Case (p90)", "Finish Std"
+            ]
+            _mc_disp["Win%"]   = (_mc_disp["Win%"] * 100).round(1)
+            _mc_disp["Top5%"]  = (_mc_disp["Top5%"] * 100).round(1)
+            _mc_disp["Top10%"] = (_mc_disp["Top10%"] * 100).round(1)
+            _mc_disp["Top20%"] = (_mc_disp["Top20%"] * 100).round(1)
+
+            st.dataframe(_mc_disp.head(40), use_container_width=True,
+                        hide_index=True, height=400)
+
+            # ── Player finish distribution chart ───────────────────────────
+            st.markdown("#### Player Finish Distribution")
+            st.caption("Select a player to see their full finish distribution across all simulations.")
+
+            if _mc_npz_path.exists():
+                _mc_sel = st.selectbox(
+                    "Player:", _mc["player_name"].tolist(), key="mc_player_sel"
+                )
+                _npz = np.load(str(_mc_npz_path), allow_pickle=True)
+                _pos_matrix  = _npz["positions"]
+                _player_names_npz = list(_npz["player_names"])
+
+                if _mc_sel in _player_names_npz:
+                    _pidx = _player_names_npz.index(_mc_sel)
+                    _player_positions = _pos_matrix[_pidx]
+
+                    # Histogram of finish positions
+                    _bins = list(range(1, 42))
+                    _hist, _ = np.histogram(_player_positions, bins=_bins)
+                    _hist_pct = _hist / _hist.sum() * 100
+
+                    _bin_colors = []
+                    for b in _bins[:-1]:
+                        if b == 1: _bin_colors.append("#ffd700")
+                        elif b <= 5: _bin_colors.append("#00c44f")
+                        elif b <= 10: _bin_colors.append("#4cb8ff")
+                        elif b <= 20: _bin_colors.append("#f39c12")
+                        else: _bin_colors.append("#4a5568")
+
+                    import plotly.graph_objects as go
+                    _fig_hist = go.Figure(go.Bar(
+                        x=list(range(1, 42)),
+                        y=_hist_pct,
+                        marker_color=_bin_colors,
+                        text=[f"{v:.1f}%" if v > 0.5 else "" for v in _hist_pct],
+                        textposition="outside",
+                        textfont=dict(size=9),
+                    ))
+                    _fig_hist.update_layout(
+                        title=dict(
+                            text=f"{_mc_sel} — finish distribution across 10,000 simulations",
+                            font=dict(size=13, color="#dde6f5"),
+                        ),
+                        xaxis_title="Finish Position",
+                        yaxis_title="% of simulations",
+                        height=380,
+                        margin=dict(l=10, r=10, t=40, b=40),
+                        plot_bgcolor="#0e1117",
+                        paper_bgcolor="#0e1117",
+                        font=dict(color="#dde6f5"),
+                        xaxis=dict(gridcolor="#1e2d3d", dtick=5),
+                        yaxis=dict(gridcolor="#1e2d3d"),
+                        showlegend=False,
+                    )
+                    st.plotly_chart(_fig_hist, use_container_width=True)
+
+                    # Summary stats
+                    _pr = _mc[_mc["player_name"] == _mc_sel].iloc[0]
+                    _c1, _c2, _c3, _c4 = st.columns(4)
+                    _c1.metric("Median Finish", f"T{int(_pr['sim_median_finish'])}")
+                    _c2.metric("Best Case (p10)", f"T{int(_pr['sim_p10_finish'])}")
+                    _c3.metric("Worst Case (p90)", f"T{int(_pr['sim_p90_finish'])}")
+                    _c4.metric("Finish Std", f"±{float(_pr['sim_finish_std']):.0f}")
+
+            # ── Fantasy lineup projection ───────────────────────────────────
+            st.markdown("#### Fantasy Lineup Earnings Projection")
+            st.caption(
+                "Enter your 3 picks to project total fantasy points across all simulations. "
+                "Uses a simplified FedEx points table (Win=500, T5≈120, T10≈70, T20≈26)."
+            )
+
+            if _mc_npz_path.exists():
+                _lp_c1, _lp_c2, _lp_c3 = st.columns(3)
+                _all_sim_players = _mc["player_name"].tolist()
+                with _lp_c1:
+                    _lp1 = st.selectbox("Pick 1:", [""] + _all_sim_players, key="mc_lp1")
+                with _lp_c2:
+                    _lp2 = st.selectbox("Pick 2:", [""] + _all_sim_players, key="mc_lp2")
+                with _lp_c3:
+                    _lp3 = st.selectbox("Pick 3:", [""] + _all_sim_players, key="mc_lp3")
+
+                _lineup_picks = [p for p in [_lp1, _lp2, _lp3] if p]
+                if len(_lineup_picks) >= 2:
+                    import sys
+                    sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+                    try:
+                        from validation.monte_carlo import project_lineup_earnings
+                        _npz2 = np.load(str(_mc_npz_path), allow_pickle=True)
+                        _pos2 = _npz2["positions"]
+                        _names2 = list(_npz2["player_names"])
+                        _preds_for_mc = pd.DataFrame({"player_name": _names2})
+                        _proj = project_lineup_earnings(_pos2, _preds_for_mc, _lineup_picks)
+
+                        _m1, _m2, _m3, _m4 = st.columns(4)
+                        _m1.metric("Mean Pts", f"{_proj['mean_pts']:.0f}")
+                        _m2.metric("Median Pts", f"{_proj['median_pts']:.0f}")
+                        _m3.metric("Best Case (p90)", f"{_proj['p90_pts']:.0f}")
+                        _m4.metric("P(>500 pts)", f"{_proj['pct_over_500']*100:.0f}%")
+
+                        # Earnings distribution histogram
+                        _dist = _proj["distribution"]
+                        _fig_dist = go.Figure(go.Histogram(
+                            x=_dist,
+                            nbinsx=50,
+                            marker_color="#4cb8ff",
+                            opacity=0.8,
+                        ))
+                        _fig_dist.add_vline(x=_proj["mean_pts"], line_color="#00c44f",
+                                            line_dash="dash",
+                                            annotation_text=f"Mean: {_proj['mean_pts']:.0f}",
+                                            annotation_font_color="#00c44f")
+                        _fig_dist.update_layout(
+                            title=dict(
+                                text=f"Projected points: {' + '.join(_lineup_picks)}",
+                                font=dict(size=12, color="#dde6f5"),
+                            ),
+                            xaxis_title="Total Fantasy Points",
+                            yaxis_title="# Simulations",
+                            height=320,
+                            margin=dict(l=10, r=10, t=40, b=40),
+                            plot_bgcolor="#0e1117",
+                            paper_bgcolor="#0e1117",
+                            font=dict(color="#dde6f5"),
+                            xaxis=dict(gridcolor="#1e2d3d"),
+                            yaxis=dict(gridcolor="#1e2d3d"),
+                        )
+                        st.plotly_chart(_fig_dist, use_container_width=True)
+
+                    except Exception as _mc_e:
+                        st.caption(f"Projection error: {_mc_e}")
+
+
+    # ── How Accurate Are Our Predictions? ───────────────────────────────────
+    with st.expander("📊 How Accurate Are Our Predictions?", expanded=False):
+
+        _pred_hist_path = OUTPUTS_DIR / "prediction_history.csv"
+
+        if not _pred_hist_path.exists():
+            st.info("No prediction history found.")
+        else:
+            try:
+                import plotly.graph_objects as go
+                from scipy import stats as _scipy_stats
+
+                _ph = pd.read_csv(_pred_hist_path)
+                _ph_res = _ph[_ph["result_recorded"] == True].copy()
+                _ph_res = _ph_res[_ph_res["actual_position"] < 500].copy()
+
+                for _bc in ["actual_won", "actual_top5", "actual_top10"]:
+                    _ph_res[_bc] = _ph_res[_bc].map(
+                        lambda x: 1 if str(x).strip() in ("True","1","true") else 0
+                    )
+                _ph_res["actual_top20"] = (_ph_res["actual_position"] <= 20).astype(int)
+
+                _n_tournaments = _ph_res["tournament_name"].nunique()
+                _n_players = len(_ph_res)
+
+                # ── Quick scorecard ─────────────────────────────────────────
+                st.markdown("#### Season Scorecard")
+                st.caption(f"Based on {_n_players} predictions across {_n_tournaments} completed tournaments this season.")
+
+                _sc_c1, _sc_c2, _sc_c3, _sc_c4 = st.columns(4)
+                # How often did our top-3 win picks actually win?
+                _top3_win = _ph_res.nlargest(3 * _n_tournaments, "predicted_win_prob")
+                _top3_win_rate = _top3_win["actual_won"].mean()
+                _sc_c1.metric("Top-3 Picks Win Rate", f"{_top3_win_rate:.0%}",
+                              help="How often did our 3 highest-confidence win picks per tournament actually win?")
+                # Top-5 predicted → actual top-10 rate (gives slack for near-misses)
+                _top5_pred = _ph_res.nlargest(5 * _n_tournaments, "predicted_win_prob")
+                _top5_t10  = _top5_pred["actual_top10"].mean()
+                _sc_c2.metric("Top-5 Picks → Top 10", f"{_top5_t10:.0%}",
+                              help="Of our 5 highest win-probability picks per tournament, how many finished top-10?")
+                # Top-10 prob model: predicted vs actual
+                _t10_hi = _ph_res[_ph_res["predicted_top10_prob"] > 0.18]
+                _t10_hi_rate = _t10_hi["actual_top10"].mean() if len(_t10_hi) else float("nan")
+                _sc_c3.metric("High-Conf Top-10 Hit Rate", f"{_t10_hi_rate:.0%}" if not pd.isna(_t10_hi_rate) else "—",
+                              help="Players we gave >18% top-10 odds — how often did they actually finish top-10?")
+                # Overall rank correlation summary
+                _r_all, _ = _scipy_stats.spearmanr(_ph_res["predicted_win_prob"], _ph_res["actual_position"])
+                _grade = "Strong" if _r_all < -0.25 else "Moderate" if _r_all < -0.10 else "Weak"
+                _sc_c4.metric("Ranking Accuracy", _grade,
+                              help=f"How well does our ranking order match actual finishes? (r={_r_all:.2f}; stronger negative = better)")
+
+                st.markdown("---")
+
+                # ── Did the odds come true? ──────────────────────────────────
+                st.markdown("#### Did the Odds Come True?")
+                st.caption(
+                    "The dashed line is perfect accuracy — if we said 15%, exactly 15% happened. "
+                    "Dots **above** the line means we were conservative (things happened more than we predicted). "
+                    "Dots **below** means we were too bold. Each dot shows how many players were in that group."
+                )
+
+                def _cal_curve(df, pred_col, actual_col, bins, labels):
+                    df = df[df[pred_col].notna()].copy()
+                    df["bucket"] = pd.cut(df[pred_col], bins=bins, labels=labels)
+                    g = df.groupby("bucket", observed=True).agg(
+                        n=(actual_col, "count"),
+                        actual_rate=(actual_col, "mean"),
+                        avg_pred=(pred_col, "mean"),
+                    ).reset_index()
+                    return g[g["n"] >= 5]
+
+                _cal_configs = [
+                    ("Outright Win",  "predicted_win_prob",   "actual_won",
+                     [0, 0.01, 0.02, 0.03, 0.05, 1.0], ["<1%","1-2%","2-3%","3-5%","5%+"], "#ffd700"),
+                    ("Top 5 Finish", "predicted_top5_prob",  "actual_top5",
+                     [0, 0.05, 0.10, 0.15, 0.20, 1.0], ["<5%","5-10%","10-15%","15-20%","20%+"], "#00c44f"),
+                    ("Top 10 Finish","predicted_top10_prob", "actual_top10",
+                     [0, 0.08, 0.12, 0.18, 0.25, 1.0], ["<8%","8-12%","12-18%","18-25%","25%+"], "#4cb8ff"),
+                    ("Top 20 Finish","predicted_top20_prob", "actual_top20",
+                     [0, 0.15, 0.25, 0.35, 1.0], ["<15%","15-25%","25-35%","35%+"], "#f39c12"),
+                ]
+
+                _cal_cols = st.columns(2)
+                for _ci, (_title, _pred_c, _act_c, _bins, _lbls, _clr) in enumerate(_cal_configs):
+                    _g = _cal_curve(_ph_res, _pred_c, _act_c, _bins, _lbls)
+                    if _g.empty:
+                        continue
+                    _max_val = max(_g["avg_pred"].max(), _g["actual_rate"].max()) * 1.15
+                    _fig_cal = go.Figure()
+                    _fig_cal.add_trace(go.Scatter(
+                        x=[0, _max_val], y=[0, _max_val],
+                        mode="lines", line=dict(color="#4a5568", dash="dash", width=1),
+                        name="Perfect", showlegend=True,
+                    ))
+                    _fig_cal.add_trace(go.Scatter(
+                        x=_g["avg_pred"], y=_g["actual_rate"],
+                        mode="markers+lines+text",
+                        marker=dict(color=_clr, size=10),
+                        line=dict(color=_clr, width=1.5),
+                        text=_g["n"].apply(lambda n: f"{n} players"),
+                        textposition="top center",
+                        textfont=dict(size=9, color="#aaa"),
+                        name="Actual outcome",
+                        showlegend=True,
+                    ))
+                    _fig_cal.update_layout(
+                        title=dict(text=_title, font=dict(size=12, color="#dde6f5")),
+                        xaxis_title="What we predicted",
+                        yaxis_title="What actually happened",
+                        height=280,
+                        margin=dict(l=10, r=10, t=35, b=40),
+                        plot_bgcolor="#0e1117", paper_bgcolor="#0e1117",
+                        font=dict(color="#dde6f5"),
+                        xaxis=dict(gridcolor="#1e2d3d", tickformat=".0%"),
+                        yaxis=dict(gridcolor="#1e2d3d", tickformat=".0%"),
+                        legend=dict(orientation="h", y=-0.25, font=dict(size=10)),
+                    )
+                    with _cal_cols[_ci % 2]:
+                        st.plotly_chart(_fig_cal, use_container_width=True)
+
+                st.markdown("---")
+
+                # ── Tournament-by-tournament breakdown ──────────────────────
+                st.markdown("#### Tournament Breakdown")
+                st.caption(
+                    "**Ranking score** = how well our top picks matched actual finishes "
+                    "(A = excellent, B = good, C = fair, D = weak). "
+                    "**Top-10 calls** shows how many players we flagged as top-10 contenders vs. how many actually finished there."
+                )
+
+                _corr_rows = []
+                for _tn, _tgrp in _ph_res.groupby("tournament_name"):
+                    if len(_tgrp) < 10:
+                        continue
+                    _r_win, _ = _scipy_stats.spearmanr(_tgrp["predicted_win_prob"], _tgrp["actual_position"])
+                    _r_t10, _ = _scipy_stats.spearmanr(_tgrp["predicted_top10_prob"], _tgrp["actual_position"])
+                    _n_pred_t10 = int((_tgrp["predicted_top10_prob"] > 0.15).sum())
+                    _n_act_t10  = int(_tgrp["actual_top10"].sum())
+                    # Convert r to letter grade (negative r = better)
+                    _grade_win = "A" if _r_win < -0.28 else "B" if _r_win < -0.18 else "C" if _r_win < -0.08 else "D"
+                    _corr_rows.append({
+                        "Tournament": _tn,
+                        "Players": len(_tgrp),
+                        "Ranking Score": _grade_win,
+                        "We Called Top-10": _n_pred_t10,
+                        "Actual Top-10": _n_act_t10,
+                    })
+                if _corr_rows:
+                    _corr_df = pd.DataFrame(_corr_rows)
+                    def _color_grade(val):
+                        if val == "A": return "color: #00c44f; font-weight: bold"
+                        if val == "B": return "color: #4cb8ff; font-weight: bold"
+                        if val == "C": return "color: #f39c12; font-weight: bold"
+                        return "color: #e74c3c; font-weight: bold"
+                    st.dataframe(
+                        _corr_df.style.applymap(_color_grade, subset=["Ranking Score"]),
+                        use_container_width=True, hide_index=True
+                    )
+
+                st.markdown("---")
+
+                # ── Betting results ──────────────────────────────────────────
+                st.markdown("#### Betting Results")
+                _bets_log_path = DATA_DIR / "odds" / "recommended_bets_log.csv"
+                if _bets_log_path.exists():
+                    _bl = pd.read_csv(_bets_log_path)
+                    _bl_graded = _bl[_bl["outcome_status"].isin(["won","lost"])].copy()
+
+                    if _bl_graded.empty:
+                        st.caption("No graded bets yet.")
+                    else:
+                        _bl_graded["outcome_win"] = _bl_graded["outcome_win"].astype(bool)
+
+                        # Show content cards (parlays) separately — they're more meaningful
+                        _cards = _bl_graded[_bl_graded["bet_type"] == "content_card"]
+                        _singles = _bl_graded[_bl_graded["bet_type"] == "single"]
+
+                        _b1, _b2 = st.columns(2)
+                        with _b1:
+                            st.markdown("**Parlay Cards**")
+                            if len(_cards):
+                                st.metric("Win Rate", f"{_cards['outcome_win'].mean():.0%}")
+                                st.metric("Return on $1 bet", f"${_cards['pnl_per_1'].sum():.2f}")
+                            else:
+                                st.caption("No parlay cards graded yet.")
+                        with _b2:
+                            st.markdown("**Individual Bets**")
+                            if len(_singles):
+                                st.metric("Win Rate", f"{_singles['outcome_win'].mean():.0%}")
+                                st.caption(
+                                    "Individual bet P&L is tracked per recommendation log entry — "
+                                    "use parlay cards for a cleaner profit picture."
+                                )
+
+                        # CLV — beat the closing line?
+                        _clv_data = _bl_graded[_bl_graded["clv_pts"].notna()]
+                        if len(_clv_data) > 10:
+                            _clv_avg = _clv_data["clv_pts"].mean()
+                            _clv_pct = (_clv_data["clv_pts"] > 0).mean()
+                            st.markdown("---")
+                            st.markdown("**Did we beat the closing line?**")
+                            st.caption(
+                                "Sportsbooks sharpen their odds as game time approaches. "
+                                "If we consistently get better odds than where the line closes, "
+                                "it means we're finding real edges — not just noise."
+                            )
+                            _clv_c1, _clv_c2 = st.columns(2)
+                            _clv_c1.metric("Avg edge vs closing line", f"+{_clv_avg:.2f}pp" if _clv_avg > 0 else f"{_clv_avg:.2f}pp")
+                            _clv_c2.metric("% of bets beating closing line", f"{_clv_pct:.0%}")
+
+            except Exception as _cal_err:
+                st.error(f"Prediction accuracy error: {_cal_err}")
+
 
 # ============================================================================
 # PAGE: LIVE
@@ -13461,15 +14231,16 @@ elif page == "📊 Predictions":
 elif page == "🔴 Live":
 
     # ── AUTO-REFRESH while a round is in progress ──────────────────────────
-    _LIVE_AUTO_SECS = 300  # re-read files every 5 minutes
+    _LIVE_AUTO_SECS = 120  # re-read files every 2 minutes
     if "live_auto_refresh_at" not in st.session_state:
         st.session_state.live_auto_refresh_at = time.time() + _LIVE_AUTO_SECS
     _secs_left = int(st.session_state.live_auto_refresh_at - time.time())
     if _secs_left <= 0:
         st.session_state.live_auto_refresh_at = time.time() + _LIVE_AUTO_SECS
+        st.cache_data.clear()
         st.rerun()
     _min_left, _sec_left = divmod(max(_secs_left, 0), 60)
-    st.caption(f"Auto-refresh in {_min_left}m {_sec_left:02d}s · background scraper updates data every 10m during active rounds")
+    st.caption(f"Auto-refresh in {_min_left}m {_sec_left:02d}s · background scraper updates data every 15 min during active rounds")
 
     # ── YOUR PICKS THIS WEEK (live positions) ─────────────────────────────
     st.markdown("### 🏌️  Your Picks — Live Positions")
@@ -13738,11 +14509,12 @@ elif page == "🔴 Live":
     st.markdown("---")
 
     # Tabs for different views
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "📊 Leaderboard",
         "🎯 vs Predictions",
         "💰 vs Market Odds",
-        "🏆 My Lineup"
+        "🏆 My Lineup",
+        "📈 Live Stats",
     ])
 
     with tab1:
@@ -13914,18 +14686,247 @@ elif page == "🔴 Live":
                     f"Found {len(_snap_files)}. Snapshots save automatically each live refresh."
                 )
 
-            st.markdown("---")
+        else:
+            st.info("Load leaderboard data first")
+
+    with tab4:
+        if live_df is not None:
             render_fantasy_lineup_tracker(live_df)
         else:
             st.info("Load leaderboard data first")
 
+    with tab5:
+        _live_stats_tid = live_meta.get("tournament_id") if live_meta else None
+        _live_stats_path = LIVE_DIR / f"live_tournament_stats_{_live_stats_tid}.json" if _live_stats_tid else None
+        _course_stats_path = LIVE_DIR / f"course_stats_{_live_stats_tid}.json" if _live_stats_tid else None
 
+        _subtab_sg, _subtab_course = st.tabs(["📈 Player SG Stats", "⛳ Course Stats"])
+
+        with _subtab_course:
+            if _course_stats_path and _course_stats_path.exists():
+                import json as _json
+                with open(_course_stats_path) as _f:
+                    _cs = _json.load(_f)
+
+                _cs_fetched = _cs.get("fetched_at", "")[:16].replace("T", " ")
+                _cs_holes   = _cs.get("holes", [])
+                st.markdown(f"### {_cs.get('course_name', 'Course')} — Live Hole Stats")
+                st.caption(f"Scoring averages vs par across all completed rounds · as of {_cs_fetched} UTC")
+
+                if _cs_holes:
+                    _hole_rows = []
+                    for _h in sorted(_cs_holes, key=lambda h: h["holeNum"]):
+                        _avg = float(_h["scoringAverage"])
+                        _total = sum((_h.get(k) or 0) for k in ["eagles","birdies","pars","bogeys","doubleBogeys"])
+                        _hole_rows.append({
+                            "Hole":    _h["holeNum"],
+                            "Avg vs Par": _avg,
+                            "Birdie%": float(str(_h.get("birdiesPercent","0")).replace("%","")),
+                            "Par%":    float(str(_h.get("parsPercent","0")).replace("%","")),
+                            "Bogey%":  float(str(_h.get("bogeysPercent","0")).replace("%","")),
+                            "Dbl+%":   float(str(_h.get("doubleBogeysPercent","0")).replace("%","")),
+                            "Eagles":  _h.get("eagles") or 0,
+                            "Birdies": _h.get("birdies") or 0,
+                            "Bogeys":  _h.get("bogeys") or 0,
+                        })
+
+                    _hole_df = pd.DataFrame(_hole_rows)
+
+                    # Color the avg vs par column
+                    def _color_hole(val):
+                        try:
+                            v = float(val)
+                            if v <= -0.3:  return "color:#00c44f; font-weight:600"
+                            if v <= 0.0:   return "color:#81c784"
+                            if v >= 0.3:   return "color:#ef5350; font-weight:600"
+                            if v >= 0.1:   return "color:#ef9a9a"
+                        except Exception:
+                            pass
+                        return ""
+
+                    _styled_holes = _hole_df.style.map(_color_hole, subset=["Avg vs Par"])
+                    st.dataframe(_styled_holes, hide_index=True, use_container_width=True)
+
+                    # Bar chart: scoring avg vs par per hole
+                    import plotly.graph_objects as _go
+                    _fig = _go.Figure()
+                    _colors = ["#ef5350" if v > 0 else "#00c44f" for v in _hole_df["Avg vs Par"]]
+                    _fig.add_trace(_go.Bar(
+                        x=[f"H{n}" for n in _hole_df["Hole"]],
+                        y=_hole_df["Avg vs Par"],
+                        marker_color=_colors,
+                        text=[f"{v:+.3f}" for v in _hole_df["Avg vs Par"]],
+                        textposition="outside",
+                    ))
+                    _fig.update_layout(
+                        title="Scoring Average vs Par — Each Hole This Week",
+                        yaxis_title="Strokes vs Par",
+                        xaxis_title="Hole",
+                        height=380,
+                        margin=dict(t=50, b=40, l=40, r=20),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        yaxis=dict(zeroline=True, zerolinecolor="#555", gridcolor="#333"),
+                        font=dict(color="#ddd"),
+                    )
+                    st.plotly_chart(_fig, use_container_width=True)
+            elif _live_stats_tid:
+                st.info("Course stats not yet fetched. Will appear after the next scheduled refresh.")
+
+        with _subtab_sg:
+            if _live_stats_path and _live_stats_path.exists():
+                import json as _json
+                with open(_live_stats_path) as _f:
+                    _ls = _json.load(_f)
+    
+                _ls_fetched   = _ls.get("fetched_at", "")[:16].replace("T", " ")
+                _ls_round     = _ls.get("current_round", "?")
+                _ls_rounds    = _ls.get("rounds_fetched", [])
+                _ls_pmap      = _ls.get("player_map", {})
+                _ls_cats      = _ls.get("categories", {})
+                _ls_pids      = _ls.get("player_ids", [])
+                _rnd_label    = f"through R{max(_ls_rounds, key=int)}" if _ls_rounds else f"R{_ls_round}"
+    
+                st.markdown(f"### Live Tournament Stats — {_rnd_label}")
+                st.caption(
+                    f"Cumulative strokes gained vs field — matches PGA Tour website. "
+                    f"Data as of {_ls_fetched} UTC. "
+                    f"Rounds: {', '.join('R'+r for r in sorted(_ls_rounds, key=int)) if _ls_rounds else '—'}"
+                )
+    
+                # ── Category selector ────────────────────────────────────────────
+                _cat_options = {
+                    "Strokes Gained":  "STROKES_GAINED",
+                    "Scoring":         "SCORING",
+                    "Driving":         "OFF_TEE",
+                    "Approach":        "APPROACH_GREEN",
+                    "Short Game":      "AROUND_GREEN",
+                    "Putting":         "PUTTING",
+                }
+                _selected_cat_label = st.selectbox(
+                    "Category", list(_cat_options.keys()), key="live_stats_cat"
+                )
+                _selected_cat = _cat_options[_selected_cat_label]
+    
+                _cat_data = _ls_cats.get(_selected_cat, {})
+                _cumul    = _cat_data.get("cumulative", {})
+                _per_rnd  = _cat_data.get("per_round",  {})
+    
+                if _cumul:
+                    # ── Build display table ──────────────────────────────────────
+                    # Stat columns from the first player with data
+                    _sample_pid  = next((p for p in _ls_pids if p in _cumul), None)
+                    _stat_names  = list(_cumul[_sample_pid].keys()) if _sample_pid else []
+    
+                    _rows = []
+                    for _pid in _ls_pids:
+                        if _pid not in _cumul:
+                            continue
+                        # Leaderboard position from live_df if available
+                        _lb_row = live_df[live_df["player_id"].astype(str) == _pid] if live_df is not None else None
+                        _pos    = _lb_row["position"].iloc[0] if _lb_row is not None and not _lb_row.empty else "—"
+                        _total  = _lb_row["total"].iloc[0]    if _lb_row is not None and not _lb_row.empty else "—"
+                        _name   = _ls_pmap.get(_pid, _pid)
+                        _row    = {"Pos": _pos, "Player": _name, "Score": _total}
+    
+                        for _sn in _stat_names:
+                            _entry = _cumul[_pid].get(_sn, {})
+                            try:
+                                _v = float(_entry.get("value", 0))
+                                _r = _entry.get("rank", "")
+                                _row[_sn] = f"{_v:+.3f} (#{_r})" if _r else f"{_v:+.3f}"
+                            except (TypeError, ValueError):
+                                _row[_sn] = "—"
+                        _rows.append(_row)
+    
+                    if _rows:
+                        _stats_display = pd.DataFrame(_rows)
+    
+                        # Color coding: green for top-10 rank, red for bottom-25%
+                        def _color_sg(val):
+                            if not isinstance(val, str) or val == "—":
+                                return ""
+                            try:
+                                v = float(val.split(" ")[0])
+                                if v >= 2.0:   return "color:#00c44f; font-weight:600"
+                                if v >= 0.5:   return "color:#81c784"
+                                if v <= -0.5:  return "color:#ef9a9a"
+                                if v <= -2.0:  return "color:#e53935; font-weight:600"
+                            except Exception:
+                                pass
+                            return ""
+    
+                        _sg_cols = [c for c in _stats_display.columns if c not in ("Pos", "Player", "Score")]
+                        _styled  = _stats_display.style.map(_color_sg, subset=_sg_cols)
+                        st.dataframe(_styled, hide_index=True, use_container_width=True)
+    
+                        # ── Per-round breakdown for a selected player ────────────
+                        if _per_rnd and len(_ls_rounds) > 1:
+                            st.markdown("---")
+                            st.markdown("**Round-by-round breakdown**")
+                            _player_options = [_ls_pmap.get(p, p) for p in _ls_pids if p in _cumul]
+                            _sel_player_name = st.selectbox(
+                                "Select player", _player_options, key="live_stats_player"
+                            )
+                            _sel_pid = next(
+                                (p for p in _ls_pids if _ls_pmap.get(p, p) == _sel_player_name), None
+                            )
+                            if _sel_pid:
+                                _rnd_rows = []
+                                for _rn in sorted(_ls_rounds, key=int):
+                                    _rnd_data = _per_rnd.get(_rn, {}).get(_sel_pid, {})
+                                    if not _rnd_data:
+                                        continue
+                                    _rrow = {"Round": f"R{_rn}"}
+                                    for _sn in _stat_names:
+                                        _e = _rnd_data.get(_sn, {})
+                                        try:
+                                            _v = float(_e.get("value", 0))
+                                            _r = _e.get("rank", "")
+                                            _rrow[_sn] = f"{_v:+.3f} (#{_r})" if _r else f"{_v:+.3f}"
+                                        except (TypeError, ValueError):
+                                            _rrow[_sn] = "—"
+                                    _rnd_rows.append(_rrow)
+                                if _rnd_rows:
+                                    _rnd_df = pd.DataFrame(_rnd_rows)
+                                    st.dataframe(
+                                        _rnd_df.style.map(_color_sg, subset=[c for c in _rnd_df.columns if c != "Round"]),
+                                        hide_index=True,
+                                        use_container_width=True,
+                                    )
+                else:
+                    st.info(f"No data for category: {_selected_cat_label}")
+    
+            elif _live_stats_tid:
+                st.info(
+                    f"Live stats not yet fetched for {_live_stats_tid}. "
+                    "Run: `python scripts/scrapers/fetch_live_tournament_stats.py`"
+                )
+            else:
+                st.info("No active tournament detected.")
 
 
 # =============================================================================
 # PAGE: PIPELINE CONTROL
 # =============================================================================
 elif page == "⚙️ Pipeline":
+    _OWNER_PIN = "winetime"
+    if "pipeline_unlocked" not in st.session_state:
+        st.session_state["pipeline_unlocked"] = False
+
+    if not st.session_state["pipeline_unlocked"]:
+        st.markdown("## ⚙️ Pipeline Control")
+        with st.form("pipeline_pin_form", clear_on_submit=True):
+            _pin_input = st.text_input("Enter PIN to access pipeline:", type="password", key="pipeline_pin_input")
+            _pin_submit = st.form_submit_button("Unlock")
+        if _pin_submit:
+            if _pin_input == _OWNER_PIN:
+                st.session_state["pipeline_unlocked"] = True
+                st.rerun()
+            else:
+                st.error("Incorrect PIN.")
+        st.stop()
+
     st.markdown("## ⚙️ Pipeline Control")
     st.caption("Smart weekly workflow - run the right scrapers at the right time")
 

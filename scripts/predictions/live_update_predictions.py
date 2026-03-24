@@ -30,6 +30,7 @@ updated = +1.7 + (-2.5 × 3/4)
 """
 
 import argparse
+import numpy as np
 import pandas as pd
 from pathlib import Path
 
@@ -136,17 +137,48 @@ def run_live_update(tournament_id: str = None) -> pd.DataFrame:
         r4 = _to_float(lb["R4"]).fillna(r4_avg)
         lb["_actual_vs_field"] += (r4 - r4_avg)
 
-    # ── STEP 6: Merge actual scores onto predictions ───────────────────────
+    # ── STEP 6: Merge actual scores + status onto predictions ─────────────
     # Join on player_id. Convert both sides to string to avoid int/str mismatch.
     # "left" join keeps all prediction rows; anyone not in leaderboard gets NaN.
     lb["_pid"] = lb["player_id"].astype(str)
     preds["_pid"] = preds["player_id"].astype(str)
 
+    # Pull made_cut and status for active-player detection
+    lb_merge_cols = ["_pid", "_actual_vs_field"]
+    if "made_cut" in lb.columns:
+        lb_merge_cols.append("made_cut")
+    if "status" in lb.columns:
+        lb_merge_cols.append("status")
+
+    # Drop any stale copies of these columns from preds before merging
+    _pre_drop = [c for c in ["made_cut", "status"] if c in preds.columns]
+    if _pre_drop:
+        preds = preds.drop(columns=_pre_drop)
+
     preds = preds.merge(
-        lb[["_pid", "_actual_vs_field"]],
+        lb[lb_merge_cols],
         on="_pid",
         how="left"
     ).drop(columns=["_pid"])
+
+    # ── STEP 6b: Determine active players ─────────────────────────────────
+    # Active = eligible to win. Inactive = cut/WD players.
+    # Pre-cut (rounds_complete <= 1): treat all as active (no cut yet).
+    INACTIVE_STATUSES = {"cut", "wd", "CUT", "WD", "MC", "MDF"}
+
+    if rounds_complete <= 1:
+        preds["_is_active"] = True
+    else:
+        is_active = pd.Series(True, index=preds.index)
+        if "made_cut" in preds.columns:
+            mc = pd.to_numeric(preds["made_cut"], errors="coerce")
+            # made_cut==0 or False means missed cut
+            explicitly_missed = mc == 0
+            is_active = is_active & ~explicitly_missed
+        if "status" in preds.columns:
+            in_bad_status = preds["status"].astype(str).isin(INACTIVE_STATUSES)
+            is_active = is_active & ~in_bad_status
+        preds["_is_active"] = is_active
     
     # ── STEP 7: Compute the blended updated projection ─────────────────────
     #
@@ -179,22 +211,89 @@ def run_live_update(tournament_id: str = None) -> pd.DataFrame:
           preds["live_projected_score"].rank(method="min", ascending=True).astype(int)
       )
     
-    # ── STEP 9: Save updated projections ─────────────────────────────────
+    # ── STEP 9: Monte Carlo win/top5/top10 probability estimation ─────────
+    # We can't run the classification model mid-tournament (missing features),
+    # so we simulate 10k tournaments by adding noise to each player's
+    # live_projected_score. The noise magnitude shrinks each round as actual
+    # scores replace model uncertainty.
+    N_SIMS = 10_000
+
+    # Player-specific variance: derived from Q10/Q90 quantile spread
+    # proj_floor = Q10 (bad scenario), proj_ceiling = Q90 (good scenario)
+    # std ≈ spread / (2 * 1.28) based on normal distribution quantile relationship
+    if "proj_ceiling" in preds.columns and "proj_floor" in preds.columns:
+        full_std = (
+            pd.to_numeric(preds["proj_floor"], errors="coerce").fillna(5) -
+            pd.to_numeric(preds["proj_ceiling"], errors="coerce").fillna(-10)
+        ) / (2 * 1.28)
+    else:
+        full_std = pd.Series(4.9, index=preds.index)
+
+    full_std = full_std.clip(lower=1.0)  # floor at 1 stroke std
+
+    # Remaining noise scales down as rounds complete — less uncertainty remains
+    noise_std = full_std * np.sqrt(rounds_remaining / 4.0)
+
+    live_scores = pd.to_numeric(preds["live_projected_score"], errors="coerce").fillna(0.0).values
+    active_mask = preds["_is_active"].fillna(True).values
+
+    rng = np.random.default_rng(seed=42)
+    noise = rng.normal(0, noise_std.values[:, None], size=(len(preds), N_SIMS))
+    sim_finals = live_scores[:, None] + noise
+
+    # Eliminated players can't win — assign a large score so they rank last
+    sim_finals[~active_mask] = 999.0
+
+    # Rank within each simulated tournament (1 = best score = lowest)
+    # argsort twice gives dense ranks
+    ranks = sim_finals.argsort(axis=0).argsort(axis=0) + 1
+
+    preds["live_win_prob"]   = ((ranks == 1).sum(axis=1) / N_SIMS).round(4)
+    preds["live_top5_prob"]  = ((ranks <= 5).sum(axis=1) / N_SIMS).round(4)
+    preds["live_top10_prob"] = ((ranks <= 10).sum(axis=1) / N_SIMS).round(4)
+
+    # Change vs pre-tournament model (positive = improved)
+    preds["live_win_prob_change"] = (
+        preds["live_win_prob"] - pd.to_numeric(preds.get("win_prob", pd.Series(np.nan, index=preds.index)), errors="coerce")
+    ).round(4)
+    preds["live_top10_prob_change"] = (
+        preds["live_top10_prob"] - pd.to_numeric(preds.get("top10_prob", pd.Series(np.nan, index=preds.index)), errors="coerce")
+    ).round(4)
+
+    preds["rounds_complete"] = rounds_complete
+
+    n_active = int(active_mask.sum())
+    win_sum  = float(preds.loc[active_mask, "live_win_prob"].sum())
+    print(f"\nMonte Carlo: {N_SIMS:,} sims | active players: {n_active} | win_prob sum: {win_sum:.3f}")
+
+    # ── STEP 10: Save updated projections ────────────────────────────────
     matched = preds['_actual_vs_field'].notna().sum()
-    preds = preds.drop(columns=['_actual_vs_field'])
+    preds = preds.drop(columns=['_actual_vs_field', '_is_active'], errors='ignore')
+    if "made_cut" in preds.columns:
+        preds = preds.drop(columns=["made_cut"], errors='ignore')
+    if "status" in preds.columns:
+        preds = preds.drop(columns=["status"], errors='ignore')
     
     print(f"\nBlended {matched}/{len(preds)} players with actual scores.")
     print(f"Rounds complete: {rounds_complete}  |  Remaining weight: {remaining_weight:.2f}")
     print(f"\nTop 10 by live projection:")
-    show_cols = [c for c in ["player_name", "live_projected_score", "live_score_rank",
-                            "win_prob", "projected_score_vs_field"] if c in preds.columns]
+    show_cols = [c for c in [
+        "player_name", "live_projected_score", "live_score_rank",
+        "live_win_prob", "live_win_prob_change", "win_prob", "projected_score_vs_field"
+    ] if c in preds.columns]
     print(preds.nsmallest(10, "live_projected_score")[show_cols].to_string(index=False))
 
 
-    # ── STEP 10: Save ─────────────────────────────────────────────────────
-    # Overwrites latest_predictions.csv with two new columns:
-    #   live_projected_score — updated projection blending actual + model
-    #   live_score_rank      — rank within field (1 = best)
+    # ── STEP 11: Save ─────────────────────────────────────────────────────
+    # Overwrites latest_predictions.csv with new columns:
+    #   live_projected_score      — updated projection blending actual + model
+    #   live_score_rank           — rank within field (1 = best)
+    #   live_win_prob             — Monte Carlo win probability
+    #   live_top5_prob            — Monte Carlo top-5 probability
+    #   live_top10_prob           — Monte Carlo top-10 probability
+    #   live_win_prob_change      — change vs pre-tournament win_prob
+    #   live_top10_prob_change    — change vs pre-tournament top10_prob
+    #   rounds_complete           — how many rounds are done
     preds.to_csv(preds_path, index=False)
     print(f"\nSaved → {preds_path}")
 

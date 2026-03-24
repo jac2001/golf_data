@@ -562,6 +562,23 @@ def run_predictions(
 
     if success and output_path.exists():
         print(f"\n  Predictions saved to: {output_path}")
+        # Compute SHAP values immediately after predictions so the dashboard
+        # always has fresh explainability data
+        run_command(
+            ["python3", str(SCRIPTS_DIR / "validation" / "compute_shap.py")],
+            description="Compute SHAP feature importance",
+            timeout=120,
+        )
+        run_command(
+      ["python3", str(SCRIPTS_DIR / "validation" / "monte_carlo.py")],
+      description="Run Monte Carlo simulation",
+      timeout=60,
+  )
+        run_command(
+      ["python3", str(SCRIPTS_DIR / "validation" / "player_similarity.py")],
+      "Player Similarity",
+      timeout=60,
+  )
         return output_path
 
     if _ACTIVE_TRACKER is not None and success and (not output_path.exists()):
@@ -688,12 +705,9 @@ def run_lineup_recommendation(
     """Run strategic lineup recommendation."""
     print_header("LINEUP RECOMMENDATION")
 
-    from scripts.predictions.golf_assistant import GolfAssistant
-
-    # Pass the predictions path so we use the correct file
-    assistant = GolfAssistant(predictions_path=str(predictions_path) if predictions_path else None)
-
-    result = assistant.get_lineup_recommendation(tournament_name=tournament_name)
+    # golf_assistant.py retired — use golf_chatbot.py via the dashboard assistant
+    print("  Lineup recommendation is available in the dashboard Golf Assistant tab.")
+    return
 
     if "error" in result:
         print(f"  Error: {result['error']}")

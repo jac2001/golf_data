@@ -493,6 +493,10 @@ def run_live_refresh(dry_run: bool = False):
     if tournament_id:
         tasks.append(("Hole Scores", ["python3", "scripts/scrapers/fetch_hole_scores.py",
                                       "--tournament-id", tournament_id]))
+        tasks.append(("Live Tournament Stats", ["python3", "scripts/scrapers/fetch_live_tournament_stats.py",
+                                                "--tid", tournament_id, "--top-n", "25"]))
+        tasks.append(("Live Course Stats", ["python3", "scripts/scrapers/fetch_course_stats.py",
+                                            "--tid", tournament_id]))
         tasks.append(("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
                                           "--tournament-id", tournament_id,
                                           "--max-age-hours", "0.5",
@@ -506,9 +510,12 @@ def run_live_refresh(dry_run: bool = False):
         # After fetching the fresh leaderboard, immediately blend actual scores 
         # into the predictions so live_projected_score stays current 
         
-        tasks.append(("Live Prediction Update", ['python3', 'scripts/predictions/live_update_predictions.py', 
-                                                 "--tournament-id", tournament_id
+        tasks.append(("Live Prediction Update", ['python3', 'scripts/predictions/live_update_predictions.py',
+                                                 "--tournament_id", tournament_id
                                                  ]))
+        tasks.append(("Live Bet Recommendations", ['python3', 'scripts/predictions/generate_live_bets.py',
+                                                   "--tid", tournament_id
+                                                   ]))
         
         
         
@@ -599,13 +606,20 @@ def sync_leaderboard_to_db(tid: str, year: int) -> int:
 
 
 def is_tournament_official(tid: str) -> bool:
-    """Return True if the most recent leaderboard meta marks the tournament as Official."""
+    """Return True if the tournament is fully official: R4 (or later) is complete.
+
+    Guards against the R3-official false-positive: after R3 finishes, the API sets
+    round_status='Official' for that round. We must also confirm current_round >= 4
+    so the sentinel never fires mid-tournament.
+    """
     meta = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
     if not meta.exists():
         return False
     with open(meta) as f:
         data = json.load(f)
-    return str(data.get("round_status", "")).lower() == "official"
+    status_ok = str(data.get("round_status", "")).lower() == "official"
+    round_ok   = int(data.get("current_round", 0)) >= 4
+    return status_ok and round_ok
 
 
 def append_leaderboard_to_historical(tid: str, tournament_name: str, year: int) -> int:
@@ -718,6 +732,8 @@ def run_post_tournament_refresh(dry_run: bool = False):
         ("Form Stats", ["python3", "scripts/scrapers/fetch_form_stats.py", "--year", str(year)]),
         ("World Rankings", ["python3", "scripts/scrapers/fetch_world_rankings.py"]),
         ("Record Results", ["python3", "scripts/planning/auto_record_results.py"]),
+        ("Fantasy League Usage", ["python3", "scripts/scrapers/fetch_fantasy_usage.py"]),
+        ("Backfill Prediction Results", ["python3", "scripts/predictions/backfill_results.py"]),
         ("Grade Bets", ["python3", "scripts/models/grade_recommended_bets.py"]),
         ("CLV Tracking", ["python3", "scripts/validation/track_clv.py",
                           "--tournament-id", tid, "--tournament-name", name]),

@@ -560,6 +560,21 @@ def print_available(tracker: UsageTracker):
 # MAIN CLI
 # ============================================================================
 
+def _rebuild_season_log_from_tracker(tracker: "UsageTracker") -> None:
+    """Rebuild outputs/season_log.csv after any pick change so the Live tab stays in sync."""
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        from planning.auto_record_results import _rebuild_season_log
+        data = {
+            "picks": {name: usage.to_dict() for name, usage in tracker.picks.items()},
+            "weekly_lineups": tracker.weekly_lineups,
+        }
+        _rebuild_season_log(data)
+    except Exception as e:
+        print(f"  (season_log rebuild skipped: {e})")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Track fantasy golf player usage",
@@ -627,6 +642,7 @@ Examples:
             print(message)
 
         tracker.save()
+        _rebuild_season_log_from_tracker(tracker)
         print(f"\nSaved to {TRACKER_FILE}")
 
     elif args.remove:
@@ -639,6 +655,7 @@ Examples:
 
         if success:
             tracker.save()
+            _rebuild_season_log_from_tracker(tracker)
 
     elif args.result:
         if not args.tournament:
@@ -659,6 +676,7 @@ Examples:
 
         if success:
             tracker.save()
+            _rebuild_season_log_from_tracker(tracker)
 
     elif args.check:
         print_player_status(tracker, args.check)
