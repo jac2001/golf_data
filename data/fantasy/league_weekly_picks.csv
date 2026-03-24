@@ -1,29 +1,29 @@
 weekly_rank,season_rank,team_name,player_1,earnings_1,player_2,earnings_2,player_3,earnings_3,total_earnings,week
-T-23,1,TimmyD,"Fitzpatrick, M",143000,Kitayama,193000,Lowry,0,336000,current
-2,2,HUBBERS,Henley,675000,Morikawa,1380000,Schauffele,675000,2730000,current
-5,3,GOLOWORGOHOME,"Fitzpatrick, M",143000,Morikawa,1380000,Schauffele,675000,2198000,current
-17,4,Buck Foursome,Henley,675000,Kitayama,193000,Smotherman,87000,955000,current
-T-12,5,Andrew Sisson,"Fitzpatrick, M",143000,Henley,675000,Scheffler,365000,1183000,current
-4,6,Team OGG,McIlroy,585000,Morikawa,1380000,Scheffler,365000,2330000,current
-18,7,NLA Boys,Lowry,0,McIlroy,585000,Scheffler,365000,950000,current
-25,8,Davemc410,"Fitzpatrick, M",143000,Fleetwood,87000,"Hojgaard, N",87000,317000,current
-16,9,SMETHPORT GOLFER,Fleetwood,87000,McIlroy,585000,Scheffler,365000,1037000,current
-22,10,Wildcats,"Fitzpatrick, M",143000,"Hojgaard, N",87000,Kitayama,193000,423000,current
-8,11,Birdie Bandits,"Fitzpatrick, M",143000,Kitayama,193000,Morikawa,1380000,1716000,current
-7,12,Chest Rockwell,Aberg,1380000,Scheffler,365000,"Thomas, J",0,1745000,current
-T-27,13,GoForeYourself,VACANT,0,VACANT,0,VACANT,0,0,current
-11,14,JoeBuckYourself,"Fitzpatrick, M",143000,Fleetwood,87000,Morikawa,1380000,1610000,current
-3,15,WineTime,Aberg,1380000,Henley,675000,McIlroy,585000,2640000,current
-20,16,Rmr617,English,365000,Fleetwood,87000,Hovland,143000,595000,current
-1,17,EagleEash,Bhatia,2180000,McIlroy,585000,Schauffele,675000,3440000,current
-T-23,18,Green Jackets,"Day, J",0,"Fitzpatrick, M",143000,Spieth,193000,336000,current
-19,19,Dimpled Balls,Horschel,193000,Mitchell,87000,Scheffler,365000,645000,current
-21,20,Yanks His Putz,Bridgeman,143000,"Fitzpatrick, M",143000,MacIntyre,143000,429000,current
-T-12,21,MacDaddy,"Fitzpatrick, M",143000,Henley,675000,Scheffler,365000,1183000,current
-6,22,Jlemoine,"Fitzpatrick, M",143000,McIlroy,585000,Morikawa,1380000,2108000,current
-9,23,CARL SPACKLER,Fleetwood,87000,Kitayama,193000,Morikawa,1380000,1660000,current
-15,24,COMER,Matsuyama,143000,Scheffler,365000,"Young, Cam",585000,1093000,current
-26,25,Danny Noonan,Fleetwood,87000,Hovland,143000,Lowry,0,230000,current
-14,26,Caddyshark,Fleetwood,87000,Henley,675000,Scott,365000,1127000,current
-10,27,MikeKett,McIlroy,585000,Schauffele,675000,Scheffler,365000,1625000,current
-T-27,28,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current
+1,1,EagleEash,"Fitzpatrick, M",445900,"Koepka, B",229775,"Taylor, N",0,675675,current
+T-22,2,WineTime,Bridgeman,147875,Theegala,0,"Thomas, J",20475,168350,current
+3,3,JoeBuckYourself,Bridgeman,147875,"Fitzpatrick, M",445900,Hovland,0,593775,current
+16,4,HUBBERS,Conners,284375,Theegala,0,"Thomas, J",20475,304850,current
+14,5,Buck Foursome,Bridgeman,147875,Cantlay,147875,"Thomas, J",20475,316225,current
+T-19,6,Birdie Bandits,Bridgeman,147875,Hisatsune,80535,Smotherman,0,228410,current
+9,7,TimmyD,"Koepka, B",229775,Spieth,147875,"Thomas, J",20475,398125,current
+28,8,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current
+T-22,9,GOLOWORGOHOME,Bridgeman,147875,Hovland,0,"Thomas, J",20475,168350,current
+T-17,10,Andrew Sisson,Bridgeman,147875,Schauffele,80535,"Thomas, J",20475,248885,current
+T-22,11,Team OGG,Bridgeman,147875,Hovland,0,"Thomas, J",20475,168350,current
+6,12,Wildcats,"Bradley, K",20475,"Fitzpatrick, M",445900,"Thomas, J",20475,486850,current
+T-25,13,Rmr617,"Bradley, K",20475,Hisatsune,80535,"Taylor, N",0,101010,current
+12,14,Davemc410,"Brown, B",25389,Hisatsune,80535,"Koepka, B",229775,335699,current
+15,15,NLA Boys,Bridgeman,147875,Hisatsune,80535,Schauffele,80535,308945,current
+7,16,MacDaddy,Bridgeman,147875,"Koepka, B",229775,Schauffele,80535,458185,current
+T-25,17,COMER,Hovland,0,Schauffele,80535,"Thomas, J",20475,101010,current
+8,18,Chest Rockwell,"Fitzpatrick, M",445900,"Griffin, B",0,Spaun,0,445900,current
+27,19,Caddyshark,Hovland,0,Rodgers,80535,Theegala,0,80535,current
+5,20,SMETHPORT GOLFER,Cantlay,147875,Conners,284375,Schauffele,80535,512785,current
+10,21,CARL SPACKLER,Bridgeman,147875,Hisatsune,80535,Spieth,147875,376285,current
+21,22,Green Jackets,Bezuidenhout,25389,Bridgeman,147875,"Thomas, J",20475,193739,current
+T-17,23,GoForeYourself,Bridgeman,147875,Hisatsune,80535,"Thomas, J",20475,248885,current
+11,24,Yanks His Putz,Conners,284375,Hisatsune,80535,Smotherman,0,364910,current
+2,25,Dimpled Balls,Cantlay,147875,"Fitzpatrick, M",445900,"Thomas, J",20475,614250,current
+13,26,Jlemoine,Hisatsune,80535,"Koepka, B",229775,"Thomas, J",20475,330785,current
+4,27,Danny Noonan,"Fitzpatrick, M",445900,Schauffele,80535,"Thomas, J",20475,546910,current
+T-19,28,MikeKett,Hovland,0,Schauffele,80535,Spieth,147875,228410,current

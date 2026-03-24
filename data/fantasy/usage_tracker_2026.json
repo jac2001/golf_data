@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-03-05T19:23:14.128632",
+  "last_updated": "2026-03-22T23:00:07.586626",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -202,7 +202,10 @@
         {
           "tournament": "Arnold Palmer Invitational presented by Mastercard",
           "week": 5,
-          "date": "2026-03-05"
+          "date": "2026-03-05",
+          "result": "WD",
+          "earnings": 0,
+          "points": 0
         }
       ],
       "remaining_uses": 2,
@@ -215,12 +218,15 @@
         {
           "tournament": "Arnold Palmer Invitational presented by Mastercard",
           "week": 5,
-          "date": "2026-03-05"
+          "date": "2026-03-05",
+          "result": "T6",
+          "earnings": 233,
+          "points": 233
         }
       ],
       "remaining_uses": 2,
-      "total_earnings": 0,
-      "total_points": 0
+      "total_earnings": 233,
+      "total_points": 233
     },
     "Ludvig \u00c5berg": {
       "times_used": 1,
@@ -228,7 +234,110 @@
         {
           "tournament": "Arnold Palmer Invitational presented by Mastercard",
           "week": 5,
-          "date": "2026-03-05"
+          "date": "2026-03-05",
+          "result": "T3",
+          "earnings": 338,
+          "points": 338
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 338,
+      "total_points": 338
+    },
+    "Scottie Scheffler": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "THE PLAYERS Championship",
+          "week": 6,
+          "date": "2026-03-12",
+          "result": "T22",
+          "earnings": 271250,
+          "points": 271250
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 271250,
+      "total_points": 271250
+    },
+    "Adam Scott": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "THE PLAYERS Championship",
+          "week": 6,
+          "date": "2026-03-12",
+          "result": "T56",
+          "earnings": 11,
+          "points": 11,
+          "result_source": "pga_past_results"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 11,
+      "total_points": 11
+    },
+    "Cameron Young": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "THE PLAYERS Championship",
+          "week": 6,
+          "date": "2026-03-12",
+          "result": "1",
+          "earnings": 4500000,
+          "points": 4500000
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 4500000,
+      "total_points": 4500000
+    },
+    "Jacob Bridgeman": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Valspar Championship",
+          "week": 7,
+          "date": "2026-03-19",
+          "result": "T14",
+          "earnings": 54,
+          "points": 54,
+          "result_source": "pga_past_results"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 54,
+      "total_points": 54
+    },
+    "Justin Thomas": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Valspar Championship",
+          "week": 7,
+          "date": "2026-03-19",
+          "result": "T30",
+          "earnings": 22,
+          "points": 22,
+          "result_source": "pga_past_results"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 22,
+      "total_points": 22
+    },
+    "Sahith Theegala": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Valspar Championship",
+          "week": 7,
+          "date": "2026-03-19",
+          "result": "CUT",
+          "earnings": 0,
+          "points": 0,
+          "result_source": "pga_past_results"
         }
       ],
       "remaining_uses": 2,
@@ -294,14 +403,38 @@
         "Russell Henley",
         "Ludvig \u00c5berg"
       ],
-      "earnings_earned": null,
-      "points_earned": null
+      "earnings_earned": 571,
+      "points_earned": 571
+    },
+    "week_6": {
+      "tournament": "THE PLAYERS Championship",
+      "week": 6,
+      "date": "2026-03-12",
+      "lineup": [
+        "Scottie Scheffler",
+        "Adam Scott",
+        "Cameron Young"
+      ],
+      "earnings_earned": 4771261,
+      "points_earned": 4771261
+    },
+    "week_7": {
+      "tournament": "Valspar Championship",
+      "week": 7,
+      "date": "2026-03-19",
+      "lineup": [
+        "Jacob Bridgeman",
+        "Justin Thomas",
+        "Sahith Theegala"
+      ],
+      "earnings_earned": 76,
+      "points_earned": 76
     }
   },
   "summary": {
-    "total_players_used": 15,
-    "total_picks_made": 15,
-    "total_earnings": 885,
-    "total_points": 885
+    "total_players_used": 21,
+    "total_picks_made": 21,
+    "total_earnings": 4772793,
+    "total_points": 4772793
   }
 }

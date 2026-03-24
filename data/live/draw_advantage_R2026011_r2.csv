@@ -1,0 +1,124 @@
+player_id,player_name,round,tee_time_str,tee_hour,am_pm,window_avg_wind,window_max_gust,window_precip_pct,field_avg_wind,draw_advantage,draw_tier
+35532,Tom Hoge,2,7:40 AM EDT,7.67,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+47993,Denny McCarthy,2,7:40 AM EDT,7.67,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+52453,Nicolai Højgaard,2,7:40 AM EDT,7.67,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+54628,Lee Hodges,2,7:40 AM EDT,7.67,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+34256,Andrew Putnam,2,7:40 AM EDT,7.67,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+55893,Sam Stevens,2,7:40 AM EDT,7.67,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+36699,Patrick Rodgers,2,7:52 AM EDT,7.87,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+39335,Kevin Roy,2,7:52 AM EDT,7.87,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+51003,Marco Penge,2,7:52 AM EDT,7.87,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+40006,Erik van Rooyen,2,7:52 AM EDT,7.87,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+39546,Keith Mitchell,2,7:52 AM EDT,7.87,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+39975,Michael Kim,2,7:52 AM EDT,7.87,AM,4.9799999999999995,11.6,0.0,7.5,2.5,Adv
+47983,Chad Ramey,2,8:04 AM EDT,8.07,AM,5.225,11.6,0.0,7.5,2.2,Adv
+46340,Alex Smalley,2,8:04 AM EDT,8.07,AM,5.225,11.6,0.0,7.5,2.2,Adv
+59836,Pierceson Coody,2,8:04 AM EDT,8.07,AM,5.225,11.6,0.0,7.5,2.2,Adv
+49947,Taylor Moore,2,8:04 AM EDT,8.07,AM,5.225,11.6,0.0,7.5,2.2,Adv
+34076,Joel Dahmen,2,8:04 AM EDT,8.07,AM,5.225,11.6,0.0,7.5,2.2,Adv
+51287,Ryo Hisatsune,2,8:04 AM EDT,8.07,AM,5.225,11.6,0.0,7.5,2.2,Adv
+48117,Kurt Kitayama,2,8:16 AM EDT,8.27,AM,5.225,11.6,0.0,7.5,2.2,Adv
+57975,Harry Hall,2,8:16 AM EDT,8.27,AM,5.225,11.6,0.0,7.5,2.2,Adv
+36799,Stephan Jaeger,2,8:16 AM EDT,8.27,AM,5.225,11.6,0.0,7.5,2.2,Adv
+60004,Jacob Bridgeman,2,8:16 AM EDT,8.27,AM,5.225,11.6,0.0,7.5,2.2,Adv
+54591,Ben Griffin,2,8:16 AM EDT,8.27,AM,5.225,11.6,0.0,7.5,2.2,Adv
+24502,Adam Scott,2,8:16 AM EDT,8.27,AM,5.225,11.6,0.0,7.5,2.2,Adv
+33141,Keegan Bradley,2,8:28 AM EDT,8.47,AM,5.225,11.6,0.0,7.5,2.2,Adv
+29936,Ryan Fox,2,8:28 AM EDT,8.47,AM,5.225,11.6,0.0,7.5,2.2,Adv
+30926,Chris Kirk,2,8:28 AM EDT,8.47,AM,5.225,11.6,0.0,7.5,2.2,Adv
+39324,J.J. Spaun,2,8:28 AM EDT,8.47,AM,5.225,11.6,0.0,7.5,2.2,Adv
+49960,Sepp Straka,2,8:28 AM EDT,8.47,AM,5.225,11.6,0.0,7.5,2.2,Adv
+33204,Shane Lowry,2,8:28 AM EDT,8.47,AM,5.225,11.6,0.0,7.5,2.2,Adv
+51997,Andrew Novak,2,8:40 AM EDT,8.67,AM,4.72,11.6,0.0,7.5,2.7,Adv
+25493,Nick Taylor,2,8:40 AM EDT,8.67,AM,4.72,11.6,0.0,7.5,2.7,Adv
+51766,Wyndham Clark,2,8:40 AM EDT,8.67,AM,4.72,11.6,0.0,7.5,2.7,Adv
+51634,Sahith Theegala,2,8:40 AM EDT,8.67,AM,4.72,11.6,0.0,7.5,2.7,Adv
+32102,Rickie Fowler,2,8:40 AM EDT,8.67,AM,4.72,11.6,0.0,7.5,2.7,Adv
+34046,Jordan Spieth,2,8:40 AM EDT,8.67,AM,4.72,11.6,0.0,7.5,2.7,Adv
+57123,Steven Fisk,2,8:52 AM EDT,8.87,AM,4.72,11.6,0.0,7.5,2.7,Adv
+63121,William Mouw,2,8:52 AM EDT,8.87,AM,4.72,11.6,0.0,7.5,2.7,Adv
+60067,Joe Highsmith,2,8:52 AM EDT,8.87,AM,4.72,11.6,0.0,7.5,2.7,Adv
+48081,Xander Schauffele,2,8:52 AM EDT,8.87,AM,4.72,11.6,0.0,7.5,2.7,Adv
+28237,Rory McIlroy,2,8:52 AM EDT,8.87,AM,4.72,11.6,0.0,7.5,2.7,Adv
+32839,Hideki Matsuyama,2,8:52 AM EDT,8.87,AM,4.72,11.6,0.0,7.5,2.7,Adv
+57366,Cameron Young,2,9:04 AM EDT,9.07,AM,4.875,10.5,0.0,7.5,2.6,Adv
+58168,Davis Thompson,2,9:04 AM EDT,9.07,AM,4.875,10.5,0.0,7.5,2.6,Adv
+47504,Sam Burns,2,9:04 AM EDT,9.07,AM,4.875,10.5,0.0,7.5,2.6,Adv
+59095,Chris Gotterup,2,9:04 AM EDT,9.07,AM,4.875,10.5,0.0,7.5,2.6,Adv
+22405,Justin Rose,2,9:04 AM EDT,9.07,AM,4.875,10.5,0.0,7.5,2.6,Adv
+37378,Min Woo Lee,2,9:04 AM EDT,9.07,AM,4.875,10.5,0.0,7.5,2.6,Adv
+51349,Nico Echavarria,2,9:16 AM EDT,9.27,AM,4.875,10.5,0.0,7.5,2.6,Adv
+28089,Jason Day,2,9:16 AM EDT,9.27,AM,4.875,10.5,0.0,7.5,2.6,Adv
+39997,Corey Conners,2,9:16 AM EDT,9.27,AM,4.875,10.5,0.0,7.5,2.6,Adv
+46443,Brian Campbell,2,9:16 AM EDT,9.27,AM,4.875,10.5,0.0,7.5,2.6,Adv
+54304,Karl Vilips,2,9:16 AM EDT,9.27,AM,4.875,10.5,0.0,7.5,2.6,Adv
+46414,Aaron Rai,2,9:16 AM EDT,9.27,AM,4.875,10.5,0.0,7.5,2.6,Adv
+48153,Matthieu Pavon,2,9:28 AM EDT,9.47,AM,4.875,10.5,0.0,7.5,2.6,Adv
+50188,S.H. Kim,2,9:28 AM EDT,9.47,AM,4.875,10.5,0.0,7.5,2.6,Adv
+50095,Austin Smotherman,2,9:28 AM EDT,9.47,AM,4.875,10.5,0.0,7.5,2.6,Adv
+48867,Matti Schmid,2,9:28 AM EDT,9.47,AM,4.875,10.5,0.0,7.5,2.6,Adv
+51950,Max McGreevy,2,9:28 AM EDT,9.47,AM,4.875,10.5,0.0,7.5,2.6,Adv
+47917,Takumi Kanaya,2,9:28 AM EDT,9.47,AM,4.875,10.5,0.0,7.5,2.6,Adv
+48001,Zach Bauchou,2,9:40 AM EDT,9.67,AM,5.5,10.5,0.0,7.5,2.0,Adv
+60386,Sudarshan Yellamaraju,2,9:40 AM EDT,9.67,AM,5.5,10.5,0.0,7.5,2.0,Adv
+50286,A.J. Ewart,2,9:40 AM EDT,9.67,AM,5.5,10.5,0.0,7.5,2.0,Adv
+35506,Mackenzie Hughes,2,12:30 PM EDT,12.5,PM,8.35,14.1,0.0,7.5,-0.9,Neutral
+47591,Eric Cole,2,12:30 PM EDT,12.5,PM,8.35,14.1,0.0,7.5,-0.9,Neutral
+51696,Rico Hoey,2,12:30 PM EDT,12.5,PM,8.35,14.1,0.0,7.5,-0.9,Neutral
+36801,Mark Hubbard,2,12:30 PM EDT,12.5,PM,8.35,14.1,0.0,7.5,-0.9,Neutral
+33968,Thorbjørn Olesen,2,12:30 PM EDT,12.5,PM,8.35,14.1,0.0,7.5,-0.9,Neutral
+59143,Mac Meissner,2,12:30 PM EDT,12.5,PM,8.35,14.1,0.0,7.5,-0.9,Neutral
+39977,Max Homa,2,12:42 PM EDT,12.7,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+40026,Daniel Berger,2,12:42 PM EDT,12.7,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+57364,Michael Thorbjornsen,2,12:42 PM EDT,12.7,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+34021,Bud Cauley,2,12:42 PM EDT,12.7,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+51894,Vince Whaley,2,12:42 PM EDT,12.7,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+57900,Chandler Phillips,2,12:42 PM EDT,12.7,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+52686,Rasmus Højgaard,2,12:54 PM EDT,12.9,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+54607,Danny Walker,2,12:54 PM EDT,12.9,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+49855,Kristoffer Reitan,2,12:54 PM EDT,12.9,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+31646,Emiliano Grillo,2,12:54 PM EDT,12.9,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+45522,Christiaan Bezuidenhout,2,12:54 PM EDT,12.9,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+51977,Max Greyserman,2,12:54 PM EDT,12.9,PM,8.919999999999998,14.1,0.0,7.5,-1.5,Disadv
+27064,Jhonattan Vegas,2,1:06 PM EDT,13.1,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+40250,Taylor Pendrith,2,1:06 PM EDT,13.1,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+27349,Alex Noren,2,1:06 PM EDT,13.1,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+45242,Kevin Yu,2,1:06 PM EDT,13.1,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+45157,Cam Davis,2,1:06 PM EDT,13.1,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+31323,Gary Woodland,2,1:06 PM EDT,13.1,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+56630,Akshay Bhatia,2,1:18 PM EDT,13.3,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+36689,Brooks Koepka,2,1:18 PM EDT,13.3,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+29725,Tony Finau,2,1:18 PM EDT,13.3,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+59440,Ricky Castillo,2,1:18 PM EDT,13.3,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+59018,Ryan Gerard,2,1:18 PM EDT,13.3,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+35450,Patrick Cantlay,2,1:18 PM EDT,13.3,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+50525,Collin Morikawa,2,1:30 PM EDT,13.5,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+52955,Ludvig Åberg,2,1:30 PM EDT,13.5,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+37455,Si Woo Kim,2,1:30 PM EDT,13.5,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+47347,Adam Schenk,2,1:30 PM EDT,13.5,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+54421,Garrick Higgo,2,1:30 PM EDT,13.5,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+59141,Matt McCarty,2,1:30 PM EDT,13.5,PM,10.475,14.1,0.0,7.5,-3.0,Strong Disadv
+46046,Scottie Scheffler,2,1:42 PM EDT,13.7,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+30911,Tommy Fleetwood,2,1:42 PM EDT,13.7,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+33448,Justin Thomas,2,1:42 PM EDT,13.7,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+27644,Brian Harman,2,1:42 PM EDT,13.7,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+46442,Maverick McNealy,2,1:42 PM EDT,13.7,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+47995,Davis Riley,2,1:42 PM EDT,13.7,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+46717,Viktor Hovland,2,1:54 PM EDT,13.9,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+34098,Russell Henley,2,1:54 PM EDT,13.9,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+52215,Robert MacIntyre,2,1:54 PM EDT,13.9,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+52666,Sami Valimaki,2,1:54 PM EDT,13.9,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+25900,Lucas Glover,2,1:54 PM EDT,13.9,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+40098,Matt Fitzpatrick,2,1:54 PM EDT,13.9,PM,10.4,14.1,0.0,7.5,-2.9,Disadv
+63343,Aldrich Potgieter,2,2:06 PM EDT,14.1,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+47420,Jake Knapp,2,2:06 PM EDT,14.1,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+39971,Sungjae Im,2,2:06 PM EDT,14.1,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+61522,Michael Brennan,2,2:06 PM EDT,14.1,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+34099,Harris English,2,2:06 PM EDT,14.1,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+49771,J.T. Poston,2,2:06 PM EDT,14.1,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+32757,Patton Kizzire,2,2:18 PM EDT,14.3,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+28252,Seamus Power,2,2:18 PM EDT,14.3,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+63454,Johnny Keefer,2,2:18 PM EDT,14.3,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+35296,Haotong Li,2,2:18 PM EDT,14.3,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+37338,Zecheng Dou,2,2:18 PM EDT,14.3,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv
+46464,Jordan Smith,2,2:18 PM EDT,14.3,PM,11.0,14.1,0.0,7.5,-3.5,Strong Disadv

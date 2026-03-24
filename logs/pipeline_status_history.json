@@ -426,5 +426,187 @@
       "step_002",
       "step_003"
     ]
+  },
+  {
+    "run_id": "20260310_072903",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260310_072903.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-10T07:29:03",
+    "ended_at": "2026-03-10T07:29:36",
+    "tournament_name": "THE PLAYERS Championship",
+    "tournament_id": "R2026011",
+    "step_count": 8,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260310_085149",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260310_085149.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-10T08:51:49",
+    "ended_at": "2026-03-10T08:52:17",
+    "tournament_name": "THE PLAYERS Championship",
+    "tournament_id": "R2026011",
+    "step_count": 7,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260310_234008",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260310_234008.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-10T23:40:08",
+    "ended_at": "2026-03-10T23:40:15",
+    "tournament_name": "THE PLAYERS Championship",
+    "tournament_id": "",
+    "step_count": 3,
+    "failed_count": 0,
+    "failed_step_ids": []
+  },
+  {
+    "run_id": "20260310_234042",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260310_234042.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-10T23:40:42",
+    "ended_at": "2026-03-10T23:41:51",
+    "tournament_name": "THE PLAYERS Championship",
+    "tournament_id": "R2026011",
+    "step_count": 8,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260311_060107",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260311_060107.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-11T06:01:07",
+    "ended_at": "2026-03-11T07:12:51",
+    "tournament_name": "THE PLAYERS Championship",
+    "tournament_id": "R2026011",
+    "step_count": 8,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260311_085330",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260311_085330.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-11T08:53:30",
+    "ended_at": "2026-03-11T09:13:40",
+    "tournament_name": "THE PLAYERS Championship",
+    "tournament_id": "R2026011",
+    "step_count": 8,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260311_114331",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260311_114331.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-11T11:43:31",
+    "ended_at": "2026-03-11T11:44:41",
+    "tournament_name": "THE PLAYERS Championship",
+    "tournament_id": "R2026011",
+    "step_count": 8,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260316_182413",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260316_182413.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-03-16T18:24:13",
+    "ended_at": "2026-03-16T21:43:18",
+    "tournament_name": "Valspar Championship",
+    "tournament_id": "R2026475",
+    "step_count": 10,
+    "failed_count": 6,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_003",
+      "step_004",
+      "step_006",
+      "step_010"
+    ]
+  },
+  {
+    "run_id": "20260316_182458",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260316_182458.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-03-16T18:24:58",
+    "ended_at": "2026-03-16T22:36:46",
+    "tournament_name": "Valspar Championship",
+    "tournament_id": "R2026475",
+    "step_count": 10,
+    "failed_count": 6,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_003",
+      "step_004",
+      "step_006",
+      "step_010"
+    ]
+  },
+  {
+    "run_id": "20260317_080716",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260317_080716.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-03-17T08:07:16",
+    "ended_at": "2026-03-17T08:19:18",
+    "tournament_name": "Valspar Championship",
+    "tournament_id": "R2026475",
+    "step_count": 9,
+    "failed_count": 4,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_003",
+      "step_009"
+    ]
+  },
+  {
+    "run_id": "20260318_084954",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260318_084954.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-03-18T08:49:54",
+    "ended_at": "2026-03-18T08:51:49",
+    "tournament_name": "Valspar Championship",
+    "tournament_id": "R2026475",
+    "step_count": 9,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_003"
+    ]
   }
 ]

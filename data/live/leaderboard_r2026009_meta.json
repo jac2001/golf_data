@@ -1,16 +1,16 @@
 {
   "tournament_id": "R2026009",
   "tournament_name": "Arnold Palmer Invitational presented by Mastercard",
-  "current_round": 1,
+  "current_round": 401,
   "round_status": "Official",
   "cut_line": {},
   "cut_projection": {
-    "projected_cut_score": 3,
-    "projected_cut_position": "T61",
-    "bubble_count": 16,
-    "safely_in": 51,
-    "safely_out": 5
+    "projected_cut_score": 6,
+    "projected_cut_position": "CUT",
+    "bubble_count": 8,
+    "safely_in": 58,
+    "safely_out": 4
   },
-  "fetched_at": "2026-03-06T03:18:43.894142+00:00",
+  "fetched_at": "2026-03-09T13:00:06.469758+00:00",
   "player_count": 72
 }

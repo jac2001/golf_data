@@ -1,12 +1,13 @@
-Expected tournament for R2026009: Arnold Palmer Invitational
+Expected tournament for R2026011: THE PLAYERS Championship
+Using cached eventgroup id for R2026011: 94238
 Trying live DraftKings endpoints...
-Using eventgroup id: 91019
-Detected sport/league names: Golf, Arnold Palmer Invitational, Arnold Palmer Invitational 2026
-Saved raw payload snapshot to: /Users/jacklegnon/Desktop/golf_data/data/odds/snapshots/draftkings_props_R2026009_20260303_193453.json
-Saved 8 content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_R2026009.csv
+Using eventgroup id: 94238
+Detected sport/league names: Golf, THE PLAYERS Championship, THE PLAYERS Championship 2026
+Saved raw payload snapshot to: /Users/jacklegnon/Desktop/golf_data/data/odds/snapshots/draftkings_props_R2026011_20260311_174713.json
+Saved 13 content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_R2026011.csv
 Saved latest content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_latest.csv
-Saved 216 prop lines to: /Users/jacklegnon/Desktop/golf_data/data/odds/prop_lines_R2026009.csv
+Saved 369 prop lines to: /Users/jacklegnon/Desktop/golf_data/data/odds/prop_lines_R2026011.csv
 Parsed markets:
-  outright: 72
-  top10: 72
-  top5: 72
+  outright: 123
+  top10: 123
+  top5: 123

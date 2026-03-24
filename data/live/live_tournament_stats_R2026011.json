@@ -1,0 +1,92 @@
+{
+  "tournament_id": "R2026011",
+  "fetched_at": "2026-03-16T01:11:14.883691+00:00",
+  "current_round": 3,
+  "rounds_fetched": [],
+  "player_ids": [
+    "52955",
+    "57364",
+    "57366",
+    "27644",
+    "39997",
+    "33448",
+    "40098",
+    "46717",
+    "48081",
+    "50095",
+    "60004",
+    "52215",
+    "51634",
+    "49960",
+    "22405",
+    "34098",
+    "51287",
+    "63121",
+    "46340",
+    "36689",
+    "39324",
+    "33141",
+    "46442",
+    "36699",
+    "60386"
+  ],
+  "player_map": {
+    "52955": "Ludvig \u00c5berg",
+    "57364": "Michael Thorbjornsen",
+    "57366": "Cameron Young",
+    "27644": "Brian Harman",
+    "39997": "Corey Conners",
+    "33448": "Justin Thomas",
+    "40098": "Matt Fitzpatrick",
+    "46717": "Viktor Hovland",
+    "48081": "Xander Schauffele",
+    "50095": "Austin Smotherman",
+    "60004": "Jacob Bridgeman",
+    "52215": "Robert MacIntyre",
+    "51634": "Sahith Theegala",
+    "49960": "Sepp Straka",
+    "22405": "Justin Rose",
+    "34098": "Russell Henley",
+    "51287": "Ryo Hisatsune",
+    "63121": "William Mouw",
+    "46340": "Alex Smalley",
+    "36689": "Brooks Koepka",
+    "39324": "J.J. Spaun",
+    "33141": "Keegan Bradley",
+    "46442": "Maverick McNealy",
+    "36699": "Patrick Rodgers",
+    "60386": "Sudarshan Yellamaraju"
+  },
+  "categories": {
+    "STROKES_GAINED": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "SCORING": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "OFF_TEE": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "APPROACH_GREEN": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "AROUND_GREEN": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "PUTTING": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    }
+  }
+}
