@@ -348,6 +348,19 @@ def settle_row(
             return "pending", None, None, "missing market/player", None, None, None
 
         group_members = str(row.get("group_members", "") or "")
+
+        # For h2h/matchup bets, group_members is often empty — fall back to selection_label.
+        # Format: "Player A to beat Player B" or "Player A to beat Player B (R1)"
+        if not group_members.strip() and canonical_market(market) in {
+            "h2h", "h2h_r1", "h2h_r2", "h2h_r3", "h2h_r4", "matchup"
+        }:
+            sel = str(row.get("selection_label", "") or "")
+            if " to beat " in sel:
+                opponent_raw = re.sub(r"\s*\(R\d\)\s*$", "", sel.split(" to beat ", 1)[1]).strip()
+                if opponent_raw:
+                    player_name = str(row.get("player_name", "") or "")
+                    group_members = f"{player_name} | {opponent_raw}"
+
         outcome = evaluate_market_outcome(market, player_key, player_results, group_members)
         if outcome is None:
             return "pending", None, None, "missing player result or unsupported market", None, None, None
@@ -534,6 +547,43 @@ def main() -> int:
     if "recommendation_id" in combined.columns:
         combined = combined.drop_duplicates(subset=["recommendation_id"], keep="last")
     combined.to_csv(results_path, index=False)
+
+    # ── Update placed_bets.csv with outcomes ─────────────────────────────────
+    # placed_bets.csv is the user's personal ledger of bets they actually placed.
+    # We join it to the graded log by recommendation_id and fill in outcome +
+    # real-dollar P&L (stake * pnl_per_1, where pnl_per_1 = decimal_return - 1).
+    # This keeps the ledger in sync without the user doing anything manually.
+    placed_path = ODDS_DIR / "placed_bets.csv"
+    if placed_path.exists():
+        try:
+            pb = pd.read_csv(placed_path)
+            if not pb.empty and "recommendation_id" in pb.columns:
+                # Build lookup from just-graded rows: rec_id -> (status, win, pnl_per_1)
+                grade_lookup = {
+                    str(r["recommendation_id"]): r
+                    for _, r in log_df[
+                        log_df["outcome_status"].isin(["won", "lost"])
+                    ].iterrows()
+                }
+                changed = False
+                for idx, row in pb.iterrows():
+                    if str(row.get("outcome_status", "pending")) != "pending":
+                        continue
+                    rec_id = str(row.get("recommendation_id", ""))
+                    if rec_id not in grade_lookup:
+                        continue
+                    g = grade_lookup[rec_id]
+                    stake = float(row.get("stake_usd", 1.0) or 1.0)
+                    pnl_per_1 = float(g.get("pnl_per_1", -1.0) or -1.0)
+                    pb.loc[idx, "outcome_status"] = g["outcome_status"]
+                    pb.loc[idx, "outcome_win"]    = bool(g["outcome_win"])
+                    pb.loc[idx, "pnl_usd"]        = round(stake * pnl_per_1, 2)
+                    changed = True
+                if changed:
+                    pb.to_csv(placed_path, index=False)
+                    print(f"Updated placed_bets.csv -> {placed_path}")
+        except Exception as _pb_err:
+            print(f"Warning: could not update placed_bets.csv: {_pb_err}")
 
     settled = graded_df[graded_df["outcome_status"].isin(["won", "lost"])].copy()
     hit_rate = float((settled["outcome_status"] == "won").mean() * 100.0) if not settled.empty else 0.0

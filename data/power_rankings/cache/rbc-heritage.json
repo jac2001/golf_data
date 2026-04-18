@@ -1,0 +1,344 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "RBC Heritage",
+      "tableTitle": "Power Rankings for RBC Heritage",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "60004",
+            "firstName": "Jacob",
+            "lastName": "Bridgeman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60004.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His string of eight top 20s ended with a T41 in his Masters debut. That\u2019s the learning curve at Augusta National. Continues to pace the TOUR in Strokes Gained: Putting, but his tee-to-green game makes it matter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 30-year-old has been a regular on leaderboards for months, but when a veteran paces the TOUR in both fairways hit and proximity to the hole, he\u2019s expected to be. T18-T8 here since 2024. Also lost in a playoff in 2018."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "27644",
+            "firstName": "Brian",
+            "lastName": "Harman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_27644.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Of all of the horses for this course, many of whom are omitted from the Power Rankings, he\u2019s arguably the steadiest. Made his TOUR debut here in 2004 and has six top 15s, including in each of the last three editions. T3 last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "33448",
+            "firstName": "Justin",
+            "lastName": "Thomas",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33448.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s been a long year for the defending champ, so it has to feel good to return after missing time for back surgery in the interim. This is his fifth start back, but he can lick his chops here most at 7-for-7 with five top 25s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Finished T21 at the Masters but never threatened in earnest. Still, it\u2019s his fifth straight top 25 upon arrival, the middle three of which were top fives. Strong throughout his bag but especially on approach. T10 here in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "46717",
+            "firstName": "Viktor",
+            "lastName": "Hovland",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46717.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His profile is the archetype for what works best around here (two top 25s), but the ball-striker\u2019s short game is much-improved this season while he\u2019s still nails with the longest sticks. Three top 20s in his last four starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "34046",
+            "firstName": "Jordan",
+            "lastName": "Spieth",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "If one can fall just short of expectations while teasing at the same time, he\u2019s straddling that line with two T11s and two T12s in last six starts. Fantastic at Harbour Town where he\u2019s 9-for-9 with the 2022 title and a P2 in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "47504",
+            "firstName": "Sam",
+            "lastName": "Burns",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47504.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After co-leading the Masters with an opening 67, he placed T7 to tie his personal-best finish in a major. In throttling it back at Harbour Town, he can lean on his more reliable weapons on approach and on greens. Three top 15s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "A Power Rankings fixture, his strengths are amplified by Harbour Town\u2019s requirement to strike it consistently well from tee to green. His average putting is muted, too. Four top 25s with a personal-best solo seventh a year ago."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "34098",
+            "firstName": "Russell",
+            "lastName": "Henley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Aside from a couple of rare off-weeks lately, he\u2019s been locked in. No stranger to Harbour Town, when he cashes, he\u2019s a force, and the first part of that is guaranteed this week. Two top 10s among four top 20s since 2021."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "35450",
+            "firstName": "Patrick",
+            "lastName": "Cantlay",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35450.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a playoff loss and four T3s among seven top 15s at Harbour Town, he\u2019s been the most-eligible groomsman of the last decade. He arrives this year with four top 15s on the season, including in his last two. T12 at the Masters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The Brit loves himself some Harbour Town and he captured victory in his ninth start in 2023. It\u2019s one of four top 15s. Leads the TOUR in ball-striking and slots fifth in proximity. Recent winner of the Valspar Championship."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The machine is fresh off a T9 at the Masters, his fourth top 10 in five starts. Solo fourth and T18 twice in last three trips to Harbour Town. Run it back to a closing 66 in 2020 and he\u2019s averaged 68.08 in his last 13 rounds here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Settled for a T3 at the Masters where he co-led entering the final round. After his quiet start to 2026, he won THE PLAYERS Championship and has no worse than a T7 in four starts. Debuted at Harbour Town with a T3 in 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "How good was that runner-up finish at the Masters? It wasn\u2019t the outcome he preferred but it was a return to the dazzling form with which he\u2019s synonymous. Winner here in 2024 also has a T11 (2023) and a T8 (2025)."
+                }
+              ]
+            },
+            {
+              "__typename": "NewsArticleLineBreak",
+              "breakValue": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

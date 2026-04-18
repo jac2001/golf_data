@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-03-22T23:00:07.586626",
+  "last_updated": "2026-04-13T22:33:03.241347",
   "picks": {
     "Ben Griffin": {
       "times_used": 1,
@@ -229,7 +229,7 @@
       "total_points": 233
     },
     "Ludvig \u00c5berg": {
-      "times_used": 1,
+      "times_used": 2,
       "tournaments_used": [
         {
           "tournament": "Arnold Palmer Invitational presented by Mastercard",
@@ -238,11 +238,20 @@
           "result": "T3",
           "earnings": 338,
           "points": 338
+        },
+        {
+          "tournament": "The Masters",
+          "week": 10,
+          "date": "2026-04-09",
+          "result": "T21",
+          "earnings": 50,
+          "points": 50,
+          "result_source": "leaderboard_page_2026-04-13"
         }
       ],
-      "remaining_uses": 2,
-      "total_earnings": 338,
-      "total_points": 338
+      "remaining_uses": 1,
+      "total_earnings": 388,
+      "total_points": 388
     },
     "Scottie Scheffler": {
       "times_used": 1,
@@ -269,8 +278,7 @@
           "date": "2026-03-12",
           "result": "T56",
           "earnings": 11,
-          "points": 11,
-          "result_source": "pga_past_results"
+          "points": 11
         }
       ],
       "remaining_uses": 2,
@@ -302,8 +310,7 @@
           "date": "2026-03-19",
           "result": "T14",
           "earnings": 54,
-          "points": 54,
-          "result_source": "pga_past_results"
+          "points": 54
         }
       ],
       "remaining_uses": 2,
@@ -319,8 +326,7 @@
           "date": "2026-03-19",
           "result": "T30",
           "earnings": 22,
-          "points": 22,
-          "result_source": "pga_past_results"
+          "points": 22
         }
       ],
       "remaining_uses": 2,
@@ -336,13 +342,115 @@
           "date": "2026-03-19",
           "result": "CUT",
           "earnings": 0,
-          "points": 0,
-          "result_source": "pga_past_results"
+          "points": 0
         }
       ],
       "remaining_uses": 2,
       "total_earnings": 0,
       "total_points": 0
+    },
+    "Jordan Spieth": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Valero Texas Open",
+          "week": 9,
+          "date": "2026-04-02",
+          "result": "T11",
+          "earnings": 4,
+          "points": 4
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 4,
+      "total_points": 4
+    },
+    "Sudarshan Yellamaraju": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Valero Texas Open",
+          "week": 9,
+          "date": "2026-04-02",
+          "result": "T14",
+          "earnings": 51,
+          "points": 51
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 51,
+      "total_points": 51
+    },
+    "Rickie Fowler": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "Valero Texas Open",
+          "week": 9,
+          "date": "2026-04-02",
+          "result": "CUT",
+          "earnings": 0,
+          "points": 0
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Bryson DeChambeau": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "The Masters",
+          "week": 10,
+          "date": "2026-04-09",
+          "result": "CUT",
+          "earnings": 0,
+          "points": 0,
+          "result_source": "leaderboard_page_2026-04-13"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Xander Schauffele": {
+      "times_used": 1,
+      "tournaments_used": [
+        {
+          "tournament": "The Masters",
+          "week": 10,
+          "date": "2026-04-09",
+          "result": "T9",
+          "earnings": 150,
+          "points": 150,
+          "result_source": "leaderboard_page_2026-04-13"
+        }
+      ],
+      "remaining_uses": 2,
+      "total_earnings": 150,
+      "total_points": 150
+    },
+    "Matt Fitzpatrick": {
+      "uses": 1,
+      "remaining_uses": 2,
+      "weeks": [
+        11
+      ]
+    },
+    "Collin Morikawa": {
+      "uses": 1,
+      "remaining_uses": 2,
+      "weeks": [
+        11
+      ]
+    },
+    "Tommy Fleetwood": {
+      "uses": 1,
+      "remaining_uses": 2,
+      "weeks": [
+        11
+      ]
     }
   },
   "weekly_lineups": {
@@ -429,12 +537,46 @@
       ],
       "earnings_earned": 76,
       "points_earned": 76
+    },
+    "week_9": {
+      "tournament": "Valero Texas Open",
+      "week": 9,
+      "date": "2026-04-02",
+      "lineup": [
+        "Jordan Spieth",
+        "Sudarshan Yellamaraju",
+        "Rickie Fowler"
+      ],
+      "earnings_earned": 55,
+      "points_earned": 55
+    },
+    "week_10": {
+      "tournament": "The Masters",
+      "week": 10,
+      "date": "2026-04-09",
+      "lineup": [
+        "Ludvig \u00c5berg",
+        "Bryson DeChambeau",
+        "Xander Schauffele"
+      ],
+      "earnings_earned": 200,
+      "points_earned": 200
+    },
+    "week_11": {
+      "tournament": "RBC Heritage",
+      "tournament_id": "R2026012",
+      "lineup": [
+        "Matt Fitzpatrick",
+        "Collin Morikawa",
+        "Tommy Fleetwood"
+      ],
+      "recorded_at": "2026-04-18T09:58:05.203765"
     }
   },
   "summary": {
-    "total_players_used": 21,
-    "total_picks_made": 21,
-    "total_earnings": 4772793,
-    "total_points": 4772793
+    "total_players_used": 26,
+    "total_picks_made": 27,
+    "total_earnings": 4773287,
+    "total_points": 4773287
   }
 }

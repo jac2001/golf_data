@@ -1,0 +1,17 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Valspar Championship (R2026020)
+Generated: 2026-04-13 19:00
+============================================================
+
+  [WARN] Field players                  135 rows  (499h ago)
+  [WARN] Predictions                    88 rows, tid=R2026014  (22h ago)
+  [WARN] Odds (multi-book)              91 rows  (155h ago)
+  [WARN] Expert picks                   5 rows  (467h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (4)
+----------------------------------------
+  ! Field players: stale (499h old)
+  ! Predictions: tid=R2026014, expected R2026020
+  ! Odds (multi-book): stale (155h old)
+  ! Expert picks: stale (467h old)

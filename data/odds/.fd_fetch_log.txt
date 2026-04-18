@@ -1,0 +1,55 @@
+
+============================================================
+  PGA TOUR ODDS SCRAPER
+============================================================
+    Available markets: 6
+      2260: Outright Winner -> 82 rows
+      2264: Matchup Props -> 20 rows
+      2261: Finish -> 492 rows
+      2262: Group Props -> 25 rows
+      2263: Player Props -> 82 rows
+      2259: Nationality -> 170 rows
+  Fetching odds for tournament R2026012...
+    Found odds for 82 players
+  Fetching player names...
+    Found 82 player names
+  Saved all PGA markets to: data/odds/pga_market_odds_R2026012.csv
+
+  Fetching DK odds (PGA Tour compressed endpoint)...
+    DK (compressed): 82 players  UP=32  DOWN=25  CONSTANT=25
+  Saved DK odds to: data/odds/dk_odds_R2026012.csv
+
+============================================================
+  ODDS SUMMARY
+============================================================
+
+  Tournament: R2026012
+  Players: 82
+  Total implied prob: 138.0% (vig = 38.0%)
+
+  Top 15 Favorites:
+------------------------------------------------------------
+    Scottie Scheffler           +440  (13.41%)  ↓
+    Xander Schauffele          +1500  ( 4.53%)  →
+    Matt Fitzpatrick           +1600  ( 4.26%)  ↑
+    Russell Henley             +1800  ( 3.81%)  ↑
+    Cameron Young              +1800  ( 3.81%)  ↑
+    Tommy Fleetwood            +2000  ( 3.45%)  ↑
+    Ludvig Åberg               +2200  ( 3.15%)  →
+    Patrick Cantlay            +2500  ( 2.79%)  ↓
+    Collin Morikawa            +2500  ( 2.79%)  →
+    Si Woo Kim                 +3000  ( 2.34%)  ↑
+    Maverick McNealy           +3300  ( 2.13%)  ↑
+    Jordan Spieth              +3300  ( 2.13%)  →
+    Viktor Hovland             +3500  ( 2.01%)  →
+    Sepp Straka                +4000  ( 1.77%)  ↑
+    Sam Burns                  +4000  ( 1.77%)  ↓
+
+  Value edges ready: 33/82 players with positive edge
+
+  Saved to: data/odds/pga_odds_R2026012.csv
+  Saved FanDuel view to: data/odds/fanduel_odds_R2026012.csv
+/Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_pga_odds.py:635: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  fetched_at = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+/Users/jacklegnon/Desktop/golf_data/scripts/scrapers/fetch_pga_odds.py:785: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  fetched_at = datetime.utcnow().isoformat(timespec="seconds") + "Z"

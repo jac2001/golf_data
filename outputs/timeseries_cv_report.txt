@@ -1,0 +1,30 @@
+Walk-Forward Cross-Validation Report
+==================================================
+Data: master_training_data_2016_2026.csv
+Features: 67
+
+AUC by year (higher = better, 0.5 = random, 1.0 = perfect):
+Year          Win     Top5    Top10    Top20
+------------------------------------------
+2022       0.8722   0.8562   0.8427   0.8593
+2023       0.8751   0.8537   0.8640   0.8665
+2024       0.8083   0.8188   0.8301   0.8425
+2025       0.8264   0.8232   0.8181   0.8427
+------------------------------------------
+  Avg win AUC: 0.8455
+  Avg top5 AUC: 0.8380
+  Avg top10 AUC: 0.8387
+  Avg top20 AUC: 0.8527
+
+Interpretation:
+  AUC > 0.75 = strong predictive power
+  AUC 0.65-0.75 = moderate (typical for golf)
+  AUC < 0.65 = weak / near random
+
+Brier Score (lower = better calibrated, 0.0 = perfect):
+Year          Win     Top5    Top10    Top20
+------------------------------------------
+2022       0.0870   0.1571   0.1711   0.1678
+2023       0.0849   0.1602   0.1695   0.1675
+2024       0.0918   0.1794   0.1897   0.1859
+2025       0.1003   0.1793   0.1911   0.1804

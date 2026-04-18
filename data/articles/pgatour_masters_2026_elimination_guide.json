@@ -1,0 +1,82 @@
+{
+  "source": "PGA Tour",
+  "url": "https://www.pgatour.com/article/news/betting-dfs/2026/04/05/from-91-to-one-a-step-by-step-guide-to-identifying-masters-winner-2026-augusta-national-mcilroy-scheffler-schauffele",
+  "title": "From 91 to one: Step-by-step guide to identifying 2026 Masters winner",
+  "published": "2026-04-05",
+  "tournament_id": "R2026014",
+  "tournament": "Masters",
+  "year": 2026,
+  "scraped_at": "2026-04-08",
+  "conclusion": "Xander Schauffele",
+  "elimination_steps": [
+    {
+      "criterion": "Prior Masters start",
+      "stat": "Each of the last 46 winners had played in at least one prior Masters",
+      "note": "Only Fuzzy Zoeller (1979) won on debut. Recent runners-up Im (2020), Zalatoris (2022), Åberg (2024) could not close.",
+      "eliminated": ["Michael Brennan","Jacob Bridgeman","Ethan Fang","Ryan Gerard","Chris Gotterup","Ben Griffin","Harry Hall","Jackson Herrington","Brandon Holtz","Mason Howell","Casey Jarvis","Naoyuki Kataoka","Johnny Keefer","Fifa Laopakdee","Tom McKibbin","Rasmus Neergaard-Petersen","Andrew Novak","Marco Penge","Mateo Pulcini","Kristoffer Reitan","Sam Stevens","Sami Valimaki"],
+      "field_remaining": 69
+    },
+    {
+      "criterion": "Age under 50",
+      "stat": "No one has won the Masters over age 50. High-water mark: Jack Nicklaus at 46 (1986).",
+      "eliminated": ["Angel Cabrera","Fred Couples","Zach Johnson","Jose Maria Olazabal","Vijay Singh","Mike Weir"],
+      "field_remaining": 63
+    },
+    {
+      "criterion": "Prior top-30 finish at Masters",
+      "stat": "26 of the last 28 winners had a prior top-30 at Augusta. Outliers: Zach Johnson 2007, Danny Willett 2016.",
+      "eliminated": ["Akshay Bhatia","Brian Campbell","Wyndham Clark","Nico Echavarria","Ryan Fox","Max Greyserman","Rasmus Hojgaard","Kurt Kitayama","Jake Knapp","Haotong Li","Maverick McNealy","Alex Noren","Carlos Ortiz","Aldrich Potgieter"],
+      "field_remaining": 49
+    },
+    {
+      "criterion": "Made Masters cut the year prior",
+      "stat": "Since 1998, all but one champion made the Masters cut the year prior. Exception: Patrick Reed 2018.",
+      "eliminated": ["Keegan Bradley","Sergio Garcia","Russell Henley","Nicolai Hojgaard","Dustin Johnson","Brooks Koepka","Robert MacIntyre","Adam Scott","Cameron Smith","Cameron Young"],
+      "field_remaining": 39
+    },
+    {
+      "criterion": "Top-6 major finish in last 2 years",
+      "stat": "14 of the last 16 winners had a top-6 finish in a major over the two preceding years.",
+      "eliminated": ["Daniel Berger","Sam Burns","Corey Conners","Jason Day","Brian Harman","Michael Kim","Si Woo Kim","Min Woo Lee","Matt McCarty","Jon Rahm","Aaron Rai","Charl Schwartzel","Jordan Spieth","Sepp Straka","Nick Taylor","Justin Thomas","Bubba Watson","Danny Willett","Gary Woodland"],
+      "field_remaining": 20
+    },
+    {
+      "criterion": "SG Tee-to-Green 18+ shots last 4 starts",
+      "stat": "Each of the last 14 Masters champions picked up at least 18 shots via SG:T2G in their four most recent starts.",
+      "eliminated": ["Tyrrell Hatton","Max Homa","Viktor Hovland","Sungjae Im","Shane Lowry","Davis Riley","Justin Rose","J.J. Spaun"],
+      "field_remaining": 12
+    },
+    {
+      "criterion": "Top 50 in Driving Distance",
+      "stat": "16 of the last 17 winners ranked inside the top 50 in Driving Distance the year preceding their victory.",
+      "eliminated": ["Patrick Cantlay","Harris English","Tommy Fleetwood","Matt Fitzpatrick","Hideki Matsuyama","Collin Morikawa","Patrick Reed"],
+      "field_remaining": 5
+    },
+    {
+      "criterion": "3+ career PGA Tour wins",
+      "stat": "13 of the last 14 winners had 3+ career Tour wins. Exception: Danny Willett 2016.",
+      "eliminated": ["Ludvig Aberg"],
+      "field_remaining": 4
+    },
+    {
+      "criterion": "Under-par scoring average at Augusta",
+      "stat": "Last 7 Masters champions each had an under-par scoring average at Augusta. DeChambeau sits at 72.54 (over par).",
+      "eliminated": ["Bryson DeChambeau"],
+      "field_remaining": 3
+    },
+    {
+      "criterion": "Not the pre-tournament betting favorite",
+      "stat": "Only once since 2006 has the betting favorite won — Scheffler in 2024 (and Tiger Woods 2005).",
+      "eliminated": ["Scottie Scheffler"],
+      "field_remaining": 2
+    },
+    {
+      "criterion": "Not the defending champion",
+      "stat": "Back-to-back Masters wins have happened only 3 times: Nicklaus 1966, Faldo 1990, Tiger 2002.",
+      "eliminated": ["Rory McIlroy"],
+      "field_remaining": 1
+    }
+  ],
+  "winner_pick": "Xander Schauffele",
+  "winner_summary": "Solid Masters record, recent major success, length off the tee, ball-striking chops, promising recent form."
+}

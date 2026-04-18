@@ -1,0 +1,346 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Masters Tournament",
+      "tableTitle": "Power Rankings for Masters Tournament",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "50525",
+            "firstName": "Collin",
+            "lastName": "Morikawa",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50525.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The last two times he committed to play, he was No. 1 in the Power Rankings but withdrew after one hole (THE PLAYERS) and early (Valero) due to a sore back. Sneaks in again based on a terrific record across his last five trips."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "56630",
+            "firstName": "Akshay",
+            "lastName": "Bhatia",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_56630.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s one thing to fit the profile of a top-tier performer, but that\u2019s measured with quality wins. That\u2019s exactly what he snared with the recent title in the Signature Event at Bay Hill. The budding star is 2-for-2 at the Masters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "22405",
+            "firstName": "Justin",
+            "lastName": "Rose",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_22405.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "If ever there was going to be a Masters with two winners, it\u2019d have been last year\u2019s when the likable Englishman succumbed in a playoff. Winner at Torrey Pines earlier this year and a persistent threat on the biggest stages."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With the two-time Masters champ scuffling, there\u2019s nothing better than the birth of a child to yield a professional reset, "
+                },
+                {
+                  "value": "but his second son, Remy"
+                },
+                {
+                  "value": ", doesn\u2019t yet have the skills to help dad with his irons that have cooled recently."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Not only has the 2021 champ cashed in each of his last 11 appearances, nine of which going for a top 25, but he also arrives with a consecutive cuts made streak of 19 that includes five top 25s this season. Plug and play."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "47959",
+            "firstName": "Bryson",
+            "lastName": "DeChambeau",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47959.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although he had logged seven starts from 2016-23, it wasn\u2019t until after he turned 30 that he made noise at Augusta National with a T6 in 2024 and a T5 in 2025. Wisdom and maturity fused with the learning curve on the greens."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "34360",
+            "firstName": "Patrick",
+            "lastName": "Reed",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34360.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He\u2019s the classic case of how some experience goes a long way. He was quiet in four starts until breaking through in 2018. Since, he\u2019s gone 7-for-7 with five top-12 finishes. Comfortably on top in the Race to Dubai standings, too."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "52215",
+            "firstName": "Robert",
+            "lastName": "MacIntyre",
+            "countryFlag": "SCO",
+            "countryName": "Scotland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52215.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Continues to perform at the kind of elevated level that fuels when he\u2019ll win his first major, not if. Three top-four finishes this year, including in his last two. Also has adapted nicely to Augusta National with two top 25s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "28237",
+            "firstName": "Rory",
+            "lastName": "McIlroy",
+            "countryFlag": "NIR",
+            "countryName": "Northern Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28237.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Defending his historic title but not without a reasonable amount of concern. Hasn\u2019t competed since a forgettable Florida Swing during which he battled back spasms. A question mark isn\u2019t the punctuation that he had in mind."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "46970",
+            "firstName": "Jon",
+            "lastName": "Rahm",
+            "countryFlag": "ESP",
+            "countryName": "Spain",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46970.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Once experience is logged, Augusta National becomes a playground for many. This includes the 31-year-old Spaniard who is 9-for-9 with a victory (2023) among five top 10s. Last year\u2019s T14 was one of three top 15s in the majors."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He was crossed off the short list of best without a PGA TOUR title at the 2025 TOUR Championship, but the 35-year-old Brit remains on the short list among best active talents without a win in a major. T3 among five top 25s here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a slow start to the season, the soft-spoken force answered consecutive top 10s in Signature Events with a statement win at TPC Sawgrass. Connected top 10s at Augusta National in 2023 and 2024. Poised with no weaknesses."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Already has a pair of podium finishes among five top 10s at the Masters, but with his latest surge of form upon arrival \u2013 T7-T24-third-T4 \u2013 his confidence no doubt is high as he chases the third leg of the career Grand Slam."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Balanced throughout the bag and between his ears at just 26 years of age, the Swede is the exception to the rule. After placing second in his Masters debut in 2024, he added a solo seventh last year. T3-T5-T5 since Bay Hill."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Couldn\u2019t ask for better form ahead of his 12th Masters. The win at the Valspar Championship was the response to his close call at THE PLAYERS Championship the week prior. Perfect here since 2016 with five top 25s."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

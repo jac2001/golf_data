@@ -192,9 +192,31 @@ def build_pga_past_results_lookup(usage_data: dict, tournament_filter: str = Non
 
     for _, tracker_tournament, ctx in resolved:
         official_name = ctx.get("tournament_name") or tracker_tournament
-        lookup = fetch_pga_past_results(ctx.get("tournament_id", ""), official_name)
+        tid = ctx.get("tournament_id", "")
+        lookup = fetch_pga_past_results(tid, official_name)
         if not lookup:
             continue
+
+        # Validate: cross-check winner against live leaderboard to guard against
+        # the PGA Tour API returning prior-year data for a recently completed tournament.
+        live_path = Path(__file__).parent.parent / "data" / "live" / f"leaderboard_{tid.lower()}.csv"
+        if live_path.exists():
+            try:
+                live_df = pd.read_csv(live_path)
+                pos1 = live_df[live_df["position"].astype(str).str.strip() == "1"]
+                if not pos1.empty:
+                    live_winner_name = normalize_name(pos1.iloc[0]["player_name"])
+                    api_winner_norm = next(
+                        (p_norm for (t_norm, p_norm), row in lookup.items()
+                         if row.get("position") == "1"),
+                        None
+                    )
+                    if api_winner_norm and live_winner_name and api_winner_norm not in live_winner_name and live_winner_name not in api_winner_norm:
+                        print(f"  SKIPPING {official_name}: API winner '{api_winner_norm}' "
+                              f"!= live winner '{live_winner_name}' — likely stale data")
+                        continue
+            except Exception as e:
+                print(f"  Warning: could not validate winner for {official_name}: {e}")
         # Store under both the official schedule name and the tracker-entered name.
         tracker_norm = normalize_tournament(tracker_tournament)
         official_norm = normalize_tournament(official_name)

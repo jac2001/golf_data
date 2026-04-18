@@ -1,67 +1,84 @@
 player_name,times_used,util_pct
-Aberg,19,22.6
+Aberg,30,35.7
 Berger,10,11.9
 Bezuidenhout,1,1.2
-Bhatia,10,11.9
+Bhatia,11,13.1
 "Bradley, K",2,2.4
-Bridgeman,15,17.9
+Bridgeman,16,19.0
 "Brown, B",1,1.2
-Burns,8,9.5
+Burns,12,14.3
 Cantlay,14,16.7
-"Clark, W",4,4.8
+"Clark, W",7,8.3
 Cole,1,1.2
 Conners,7,8.3
-"Coody, Pier",4,4.8
+"Coody, Pier",5,6.0
 "Day, J",6,7.1
+DeChambeau,13,15.5
 Echavarria,1,1.2
 English,1,1.2
-Finau,1,1.2
-"Fitzpatrick, M",27,32.1
-Fleetwood,24,28.6
-Fowler,6,7.1
+Finau,3,3.6
+"Fitzpatrick, M",31,36.9
+Fleetwood,31,36.9
+Fowler,12,14.3
+Fox,1,1.2
 Gerard,15,17.9
-Gotterup,11,13.1
-"Griffin, B",8,9.5
-Henley,15,17.9
-Hisatsune,10,11.9
-"Hojgaard, N",24,28.6
-"Hojgaard, R",6,7.1
+Gotterup,29,34.5
+"Griffin, B",9,10.7
+Hall,1,1.2
+Harman,3,3.6
+Henley,23,27.4
+Hisatsune,11,13.1
+"Hojgaard, N",25,29.8
+"Hojgaard, R",7,8.3
 Homa,2,2.4
 Horschel,1,1.2
 Hovland,23,27.4
-Jaeger,2,2.4
-"Kim, SW",25,29.8
-Kitayama,6,7.1
-Knapp,11,13.1
-"Koepka, B",8,9.5
-"Lee, MW",8,9.5
-Lowry,19,22.6
-MacIntyre,1,1.2
+Hughes,1,1.2
+Im,1,1.2
+Jaeger,4,4.8
+Keefer,2,2.4
+"Kim, M",1,1.2
+"Kim, SW",28,33.3
+Kitayama,7,8.3
+Knapp,17,20.2
+"Koepka, B",20,23.8
+"Lee, MW",18,21.4
+Lowry,21,25.0
+MacIntyre,13,15.5
 Matsuyama,20,23.8
+McCarthy,1,1.2
 McGreevy,1,1.2
-McIlroy,17,20.2
-McNealy,21,25.0
-Mitchell,2,2.4
+McIlroy,21,25.0
+McNealy,24,28.6
+Mitchell,7,8.3
 Morikawa,11,13.1
+Noren,1,1.2
 Novak,1,1.2
+Penge,5,6.0
 Poston,2,2.4
 Power,3,3.6
 "Putnam, A",1,1.2
+Rahm,15,17.9
 Rai,1,1.2
+Reed,3,3.6
 Rodgers,1,1.2
-Rose,15,17.9
-Ryder,1,1.2
-Schauffele,24,28.6
-Scheffler,25,29.8
+Rose,20,23.8
+Ryder,2,2.4
+Schauffele,31,36.9
+Scheffler,34,40.5
 Scott,3,3.6
 Smalley,1,1.2
+"Smith, J",1,1.2
 Smotherman,3,3.6
 Spaun,2,2.4
-Spieth,5,6.0
-Straka,4,4.8
+Spieth,21,25.0
+Straka,12,14.3
 "Taylor, N",5,6.0
-Theegala,8,9.5
+Theegala,9,10.7
 "Thomas, J",15,17.9
-Thorbjornsen,7,8.3
+"Thompson, D",1,1.2
+Thorbjornsen,14,16.7
 van Rooyen,1,1.2
-"Young, Cam",14,16.7
+Woodland,1,1.2
+Yellamaraju,3,3.6
+"Young, Cam",19,22.6

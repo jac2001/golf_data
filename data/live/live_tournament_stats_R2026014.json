@@ -1,0 +1,3297 @@
+{
+  "tournament_id": "R2026014",
+  "fetched_at": "2026-04-13T01:00:32.580755+00:00",
+  "current_round": 4,
+  "rounds_fetched": [
+    "1",
+    "2",
+    "3",
+    "4"
+  ],
+  "player_ids": [
+    "28237",
+    "46046",
+    "57366",
+    "22405",
+    "34098",
+    "34363",
+    "50525",
+    "47504",
+    "39977",
+    "48081",
+    "47420",
+    "36689",
+    "32839",
+    "28089",
+    "34046",
+    "35450",
+    "34360",
+    "40098",
+    "46442",
+    "46717",
+    "33141",
+    "52955",
+    "51766",
+    "24502",
+    "46443"
+  ],
+  "player_map": {
+    "28237": "Rory McIlroy",
+    "46046": "Scottie Scheffler",
+    "57366": "Cameron Young",
+    "22405": "Justin Rose",
+    "34098": "Russell Henley",
+    "34363": "Tyrrell Hatton",
+    "50525": "Collin Morikawa",
+    "47504": "Sam Burns",
+    "39977": "Max Homa",
+    "48081": "Xander Schauffele",
+    "47420": "Jake Knapp",
+    "36689": "Brooks Koepka",
+    "32839": "Hideki Matsuyama",
+    "28089": "Jason Day",
+    "34046": "Jordan Spieth",
+    "35450": "Patrick Cantlay",
+    "34360": "Patrick Reed",
+    "40098": "Matt Fitzpatrick",
+    "46442": "Maverick McNealy",
+    "46717": "Viktor Hovland",
+    "33141": "Keegan Bradley",
+    "52955": "Ludvig \u00c5berg",
+    "51766": "Wyndham Clark",
+    "24502": "Adam Scott",
+    "46443": "Brian Campbell"
+  },
+  "categories": {
+    "STROKES_GAINED": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "SCORING": {
+      "header": "Scoring",
+      "per_round": {
+        "1": {
+          "28237": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": true
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            }
+          },
+          "46046": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": false
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "1",
+              "rank": "65",
+              "rank_deviation": -0.4285714285714286,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "15",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": true
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            }
+          },
+          "57366": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            }
+          },
+          "22405": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "57",
+              "rank_deviation": -0.25274725274725274,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            }
+          },
+          "34098": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "7",
+              "rank": "86",
+              "rank_deviation": -0.8901098901098901,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "6",
+              "rank": "78",
+              "rank_deviation": -0.7142857142857142,
+              "is_best": false
+            }
+          },
+          "34363": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "38",
+              "rank_deviation": 0.1648351648351648,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            }
+          },
+          "50525": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "38",
+              "rank_deviation": 0.1648351648351648,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            }
+          },
+          "47504": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": false
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            }
+          },
+          "39977": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": false
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "38",
+              "rank_deviation": 0.1648351648351648,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "54",
+              "rank_deviation": -0.18681318681318682,
+              "is_best": true
+            }
+          },
+          "48081": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "57",
+              "rank_deviation": -0.25274725274725274,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            }
+          },
+          "47420": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            }
+          },
+          "36689": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "8",
+              "rank": "78",
+              "rank_deviation": -0.7142857142857142,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "5",
+              "rank": "61",
+              "rank_deviation": -0.34065934065934056,
+              "is_best": false
+            }
+          },
+          "32839": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "38",
+              "rank_deviation": 0.1648351648351648,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "14",
+              "rank": "6",
+              "rank_deviation": 0.8681318681318682,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            }
+          },
+          "28089": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            }
+          },
+          "34046": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            }
+          },
+          "35450": {
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "5",
+              "rank": "61",
+              "rank_deviation": -0.34065934065934056,
+              "is_best": false
+            }
+          },
+          "34360": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "2",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "1",
+              "rank": "65",
+              "rank_deviation": -0.4285714285714286,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            }
+          },
+          "40098": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "38",
+              "rank_deviation": 0.1648351648351648,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "54",
+              "rank_deviation": -0.18681318681318682,
+              "is_best": true
+            }
+          },
+          "46442": {
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "5",
+              "rank": "61",
+              "rank_deviation": -0.34065934065934056,
+              "is_best": false
+            }
+          },
+          "46717": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "1",
+              "rank": "65",
+              "rank_deviation": -0.4285714285714286,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "14",
+              "rank": "6",
+              "rank_deviation": 0.8681318681318682,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "54",
+              "rank_deviation": -0.18681318681318682,
+              "is_best": true
+            }
+          },
+          "33141": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "57",
+              "rank_deviation": -0.25274725274725274,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            }
+          },
+          "52955": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "57",
+              "rank_deviation": -0.25274725274725274,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "2",
+              "rank": "79",
+              "rank_deviation": -0.7362637362637363,
+              "is_best": false
+            }
+          },
+          "51766": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            }
+          },
+          "24502": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": false
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "66",
+              "rank_deviation": -0.4505494505494505,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "5",
+              "rank": "61",
+              "rank_deviation": -0.34065934065934056,
+              "is_best": false
+            }
+          },
+          "46443": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            }
+          }
+        },
+        "2": {
+          "28237": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "9",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "7",
+              "rank": "85",
+              "rank_deviation": -0.8681318681318682,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            }
+          },
+          "46046": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "54",
+              "rank_deviation": -0.18681318681318682,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "55",
+              "rank_deviation": -0.20879120879120872,
+              "is_best": false
+            }
+          },
+          "57366": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "5",
+              "rank_deviation": 0.8901098901098901,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "22405": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            }
+          },
+          "34098": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "68",
+              "rank_deviation": -0.4945054945054945,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "55",
+              "rank_deviation": -0.20879120879120872,
+              "is_best": false
+            }
+          },
+          "34363": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "7",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "55",
+              "rank_deviation": -0.20879120879120872,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "50525": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "5",
+              "rank_deviation": 0.8901098901098901,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "68",
+              "rank_deviation": -0.4945054945054945,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "31",
+              "rank_deviation": 0.31868131868131866,
+              "is_best": false
+            }
+          },
+          "47504": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "31",
+              "rank_deviation": 0.31868131868131866,
+              "is_best": false
+            }
+          },
+          "39977": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            }
+          },
+          "48081": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "36",
+              "rank_deviation": 0.20879120879120883,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "31",
+              "rank_deviation": 0.31868131868131866,
+              "is_best": false
+            }
+          },
+          "47420": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "5",
+              "rank_deviation": 0.8901098901098901,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "7",
+              "rank": "85",
+              "rank_deviation": -0.8681318681318682,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "31",
+              "rank_deviation": 0.31868131868131866,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "61",
+              "rank_deviation": -0.34065934065934056,
+              "is_best": true
+            }
+          },
+          "36689": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "5",
+              "rank_deviation": 0.8901098901098901,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "68",
+              "rank_deviation": -0.4945054945054945,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "31",
+              "rank_deviation": 0.31868131868131866,
+              "is_best": false
+            }
+          },
+          "32839": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "5",
+              "rank_deviation": 0.8901098901098901,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "8",
+              "rank": "79",
+              "rank_deviation": -0.7362637362637363,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "55",
+              "rank_deviation": -0.20879120879120872,
+              "is_best": false
+            }
+          },
+          "28089": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "36",
+              "rank_deviation": 0.20879120879120883,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "10",
+              "rank_deviation": 0.7802197802197802,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            }
+          },
+          "34046": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "1",
+              "rank": "82",
+              "rank_deviation": -0.8021978021978022,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "15",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            }
+          },
+          "35450": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "10",
+              "rank_deviation": 0.7802197802197802,
+              "is_best": false
+            }
+          },
+          "34360": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "10",
+              "rank_deviation": 0.7802197802197802,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "40098": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "10",
+              "rank_deviation": 0.7802197802197802,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "46442": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "25",
+              "rank_deviation": 0.4505494505494505,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            }
+          },
+          "46717": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "55",
+              "rank_deviation": -0.20879120879120872,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "61",
+              "rank_deviation": -0.34065934065934056,
+              "is_best": true
+            }
+          },
+          "33141": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "54",
+              "rank_deviation": -0.18681318681318682,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "55",
+              "rank_deviation": -0.20879120879120872,
+              "is_best": false
+            }
+          },
+          "52955": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "55",
+              "rank_deviation": -0.20879120879120872,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "31",
+              "rank_deviation": 0.31868131868131866,
+              "is_best": false
+            }
+          },
+          "51766": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "22",
+              "rank_deviation": 0.5164835164835164,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "24502": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "36",
+              "rank_deviation": 0.20879120879120883,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "31",
+              "rank_deviation": 0.31868131868131866,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "61",
+              "rank_deviation": -0.34065934065934056,
+              "is_best": true
+            }
+          },
+          "46443": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "54",
+              "rank_deviation": -0.18681318681318682,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "10",
+              "rank_deviation": 0.7802197802197802,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "31",
+              "rank_deviation": 0.31868131868131866,
+              "is_best": false
+            }
+          }
+        },
+        "3": {
+          "28237": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "24",
+              "rank_deviation": 0.4725274725274725,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "27",
+              "rank_deviation": 0.4065934065934066,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "45",
+              "rank_deviation": 0.01098901098901095,
+              "is_best": true
+            }
+          },
+          "46046": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "14",
+              "rank_deviation": 0.6923076923076923,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "10",
+              "rank_deviation": 0.7802197802197802,
+              "is_best": false
+            }
+          },
+          "57366": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "8",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "6",
+              "rank_deviation": 0.8681318681318682,
+              "is_best": true
+            }
+          },
+          "22405": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "37",
+              "rank_deviation": 0.18681318681318682,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "15",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            }
+          },
+          "34098": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "10",
+              "rank_deviation": 0.7802197802197802,
+              "is_best": false
+            }
+          },
+          "34363": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "46",
+              "rank_deviation": -0.01098901098901095,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "14",
+              "rank": "3",
+              "rank_deviation": 0.9340659340659341,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            }
+          },
+          "50525": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "24",
+              "rank_deviation": 0.4725274725274725,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            }
+          },
+          "47504": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "24",
+              "rank_deviation": 0.4725274725274725,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "14",
+              "rank": "3",
+              "rank_deviation": 0.9340659340659341,
+              "is_best": false
+            }
+          },
+          "39977": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "24",
+              "rank_deviation": 0.4725274725274725,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "27",
+              "rank_deviation": 0.4065934065934066,
+              "is_best": false
+            }
+          },
+          "48081": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "37",
+              "rank_deviation": 0.18681318681318682,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "27",
+              "rank_deviation": 0.4065934065934066,
+              "is_best": false
+            }
+          },
+          "47420": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "14",
+              "rank_deviation": 0.6923076923076923,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "8",
+              "rank": "49",
+              "rank_deviation": -0.07692307692307687,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "39",
+              "rank_deviation": 0.1428571428571429,
+              "is_best": false
+            }
+          },
+          "36689": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "24",
+              "rank_deviation": 0.4725274725274725,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "27",
+              "rank_deviation": 0.4065934065934066,
+              "is_best": false
+            }
+          },
+          "32839": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "6",
+              "rank": "53",
+              "rank_deviation": -0.16483516483516492,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "6",
+              "rank": "54",
+              "rank_deviation": -0.18681318681318682,
+              "is_best": false
+            }
+          },
+          "28089": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            }
+          },
+          "34046": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "14",
+              "rank_deviation": 0.6923076923076923,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "27",
+              "rank_deviation": 0.4065934065934066,
+              "is_best": false
+            }
+          },
+          "35450": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "10",
+              "rank_deviation": 0.7802197802197802,
+              "is_best": false
+            }
+          },
+          "34360": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "24",
+              "rank_deviation": 0.4725274725274725,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "39",
+              "rank_deviation": 0.1428571428571429,
+              "is_best": false
+            }
+          },
+          "40098": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "45",
+              "rank_deviation": 0.01098901098901095,
+              "is_best": true
+            }
+          },
+          "46442": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "14",
+              "rank_deviation": 0.6923076923076923,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "27",
+              "rank_deviation": 0.4065934065934066,
+              "is_best": false
+            }
+          },
+          "46717": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "37",
+              "rank_deviation": 0.18681318681318682,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            }
+          },
+          "33141": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "14",
+              "rank_deviation": 0.6923076923076923,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "44",
+              "rank_deviation": 0.03296703296703296,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "2",
+              "rank": "53",
+              "rank_deviation": -0.16483516483516492,
+              "is_best": false
+            }
+          },
+          "52955": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "7",
+              "rank": "2",
+              "rank_deviation": 0.9560439560439561,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "7",
+              "rank": "50",
+              "rank_deviation": -0.098901098901099,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "39",
+              "rank_deviation": 0.1428571428571429,
+              "is_best": false
+            }
+          },
+          "51766": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "46",
+              "rank_deviation": -0.01098901098901095,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "39",
+              "rank_deviation": 0.1428571428571429,
+              "is_best": false
+            }
+          },
+          "24502": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "37",
+              "rank_deviation": 0.18681318681318682,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "14",
+              "rank": "3",
+              "rank_deviation": 0.9340659340659341,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "6",
+              "rank_deviation": 0.8681318681318682,
+              "is_best": true
+            }
+          },
+          "46443": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "14",
+              "rank_deviation": 0.6923076923076923,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "11",
+              "rank_deviation": 0.7582417582417582,
+              "is_best": false
+            }
+          }
+        },
+        "4": {
+          "28237": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "23",
+              "rank_deviation": 0.4945054945054945,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": true
+            }
+          },
+          "46046": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "14",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            }
+          },
+          "57366": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "7",
+              "rank_deviation": 0.8461538461538461,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            }
+          },
+          "22405": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "8",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "34",
+              "rank_deviation": 0.25274725274725274,
+              "is_best": false
+            }
+          },
+          "34098": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "34363": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "36",
+              "rank_deviation": 0.20879120879120883,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            }
+          },
+          "50525": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "7",
+              "rank": "3",
+              "rank_deviation": 0.9340659340659341,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "36",
+              "rank_deviation": 0.20879120879120883,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": true
+            }
+          },
+          "47504": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "23",
+              "rank_deviation": 0.4945054945054945,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": true
+            }
+          },
+          "39977": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "30",
+              "rank_deviation": 0.34065934065934067,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "14",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            }
+          },
+          "48081": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "47420": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "23",
+              "rank_deviation": 0.4945054945054945,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            }
+          },
+          "36689": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "5",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "9",
+              "rank": "36",
+              "rank_deviation": 0.20879120879120883,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "34",
+              "rank_deviation": 0.25274725274725274,
+              "is_best": false
+            }
+          },
+          "32839": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "7",
+              "rank": "3",
+              "rank_deviation": 0.9340659340659341,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "7",
+              "rank": "50",
+              "rank_deviation": -0.098901098901099,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "4",
+              "rank": "34",
+              "rank_deviation": 0.25274725274725274,
+              "is_best": false
+            }
+          },
+          "28089": {
+            "Pars": {
+              "stat_id": "1005",
+              "value": "16",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": true
+            }
+          },
+          "34046": {
+            "Eagles -": {
+              "stat_id": "106",
+              "value": "1",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "30",
+              "rank_deviation": 0.34065934065934067,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "7",
+              "rank_deviation": 0.8461538461538461,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "35450": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "7",
+              "rank_deviation": 0.8461538461538461,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            }
+          },
+          "34360": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "10",
+              "rank": "23",
+              "rank_deviation": 0.4945054945054945,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": true
+            }
+          },
+          "40098": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            }
+          },
+          "46442": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "6",
+              "rank": "8",
+              "rank_deviation": 0.8241758241758241,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "46717": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "8",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "8",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": true
+            }
+          },
+          "33141": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "8",
+              "rank": "1",
+              "rank_deviation": 0.978021978021978,
+              "is_best": true
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "8",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            }
+          },
+          "52955": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "4",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "11",
+              "rank": "17",
+              "rank_deviation": 0.6263736263736264,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": true
+            }
+          },
+          "51766": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "30",
+              "rank_deviation": 0.34065934065934067,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "12",
+              "rank": "12",
+              "rank_deviation": 0.7362637362637363,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "2",
+              "rank": "13",
+              "rank_deviation": 0.7142857142857143,
+              "is_best": false
+            },
+            "Double Bogeys": {
+              "stat_id": "1003",
+              "value": "1",
+              "rank": "35",
+              "rank_deviation": 0.23076923076923073,
+              "is_best": true
+            }
+          },
+          "24502": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "3",
+              "rank": "30",
+              "rank_deviation": 0.34065934065934067,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "14",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "1",
+              "rank": "4",
+              "rank_deviation": 0.9120879120879121,
+              "is_best": true
+            }
+          },
+          "46443": {
+            "Birdies": {
+              "stat_id": "107",
+              "value": "2",
+              "rank": "41",
+              "rank_deviation": 0.09890109890109888,
+              "is_best": false
+            },
+            "Pars": {
+              "stat_id": "1005",
+              "value": "13",
+              "rank": "7",
+              "rank_deviation": 0.8461538461538461,
+              "is_best": false
+            },
+            "Bogeys": {
+              "stat_id": "1002",
+              "value": "3",
+              "rank": "20",
+              "rank_deviation": 0.5604395604395604,
+              "is_best": false
+            }
+          }
+        }
+      },
+      "cumulative": {
+        "28237": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 6.0,
+            "rank": "12",
+            "is_best": true,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 9.5,
+            "rank": "23",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.0,
+            "rank": "13",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "35",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "46046": {
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          },
+          "Birdies": {
+            "stat_id": "107",
+            "value": 3.0,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 13.25,
+            "rank": "4",
+            "is_best": true,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.5,
+            "rank": "55",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "57366": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.75,
+            "rank": "41",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.0,
+            "rank": "7",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.25,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "22405": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.75,
+            "rank": "8",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.0,
+            "rank": "41",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 3.0,
+            "rank": "34",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "34098": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 5.25,
+            "rank": "12",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 10.0,
+            "rank": "12",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 3.667,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "34363": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.25,
+            "rank": "8",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.25,
+            "rank": "36",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.25,
+            "rank": "13",
+            "is_best": false,
+            "additive": false
+          },
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "50525": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.75,
+            "rank": "3",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 10.25,
+            "rank": "36",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.5,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "35",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "47504": {
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "2",
+            "is_best": false,
+            "additive": false
+          },
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.0,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.75,
+            "rank": "23",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.333,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "35",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "39977": {
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          },
+          "Birdies": {
+            "stat_id": "107",
+            "value": 3.25,
+            "rank": "30",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 12.25,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.333,
+            "rank": "27",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "54",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "48081": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.0,
+            "rank": "12",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.25,
+            "rank": "12",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.5,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "47420": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.75,
+            "rank": "12",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 9.0,
+            "rank": "23",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 3.5,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "61",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "36689": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 5.0,
+            "rank": "12",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 9.25,
+            "rank": "36",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 3.75,
+            "rank": "34",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "32839": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 5.25,
+            "rank": "3",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 8.75,
+            "rank": "50",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 4.0,
+            "rank": "34",
+            "is_best": true,
+            "additive": false
+          }
+        },
+        "28089": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.333,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 13.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 1.5,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "35",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "34046": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 3.0,
+            "rank": "30",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 12.5,
+            "rank": "7",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.25,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "35450": {
+          "Pars": {
+            "stat_id": "1005",
+            "value": 12.75,
+            "rank": "7",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 4.0,
+            "rank": "20",
+            "is_best": true,
+            "additive": false
+          },
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.333,
+            "rank": "41",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "34360": {
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 2.0,
+            "rank": "1",
+            "is_best": true,
+            "additive": false
+          },
+          "Birdies": {
+            "stat_id": "107",
+            "value": 3.25,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.5,
+            "rank": "23",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.5,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "35",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "40098": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.0,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.5,
+            "rank": "17",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.0,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "45",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "46442": {
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.5,
+            "rank": "17",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.75,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Birdies": {
+            "stat_id": "107",
+            "value": 5.0,
+            "rank": "8",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "46717": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.25,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.25,
+            "rank": "41",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 1.75,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "35",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "33141": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 4.75,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 9.75,
+            "rank": "41",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 3.0,
+            "rank": "13",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 2.0,
+            "rank": "53",
+            "is_best": true,
+            "additive": false
+          }
+        },
+        "52955": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 5.0,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 9.5,
+            "rank": "17",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.75,
+            "rank": "13",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.5,
+            "rank": "35",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "51766": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 3.25,
+            "rank": "30",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 11.75,
+            "rank": "12",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.5,
+            "rank": "13",
+            "is_best": false,
+            "additive": false
+          },
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "1",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "35",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "24502": {
+          "Eagles -": {
+            "stat_id": "106",
+            "value": 1.0,
+            "rank": "2",
+            "is_best": false,
+            "additive": false
+          },
+          "Birdies": {
+            "stat_id": "107",
+            "value": 3.0,
+            "rank": "30",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 12.0,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.5,
+            "rank": "4",
+            "is_best": false,
+            "additive": false
+          },
+          "Double Bogeys": {
+            "stat_id": "1003",
+            "value": 1.0,
+            "rank": "61",
+            "is_best": false,
+            "additive": false
+          }
+        },
+        "46443": {
+          "Birdies": {
+            "stat_id": "107",
+            "value": 3.25,
+            "rank": "41",
+            "is_best": false,
+            "additive": false
+          },
+          "Pars": {
+            "stat_id": "1005",
+            "value": 12.0,
+            "rank": "7",
+            "is_best": false,
+            "additive": false
+          },
+          "Bogeys": {
+            "stat_id": "1002",
+            "value": 2.75,
+            "rank": "20",
+            "is_best": false,
+            "additive": false
+          }
+        }
+      }
+    },
+    "OFF_TEE": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "APPROACH_GREEN": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "AROUND_GREEN": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    },
+    "PUTTING": {
+      "header": "",
+      "per_round": {},
+      "cumulative": {}
+    }
+  }
+}

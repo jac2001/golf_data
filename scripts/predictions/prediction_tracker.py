@@ -48,6 +48,7 @@ class PredictionTracker:
         predictions_df: pd.DataFrame,
         tournament_name: str,
         tournament_date: Optional[str] = None,
+        tournament_id: Optional[str] = None,
     ) -> str:
         """
         Save predictions before a tournament starts.
@@ -56,14 +57,20 @@ class PredictionTracker:
             predictions_df: DataFrame with predictions
             tournament_name: Name of tournament
             tournament_date: Date string (YYYY-MM-DD), defaults to today
+            tournament_id: R-prefixed PGA Tour ID (e.g. "R2026041"). When provided,
+                           used as the canonical ID instead of a date-based composite.
 
         Returns:
             Path to saved predictions file
         """
         tournament_date = tournament_date or datetime.now().strftime("%Y-%m-%d")
 
-        # Create a clean ID for the tournament
-        tournament_id = f"{tournament_date}_{tournament_name.replace(' ', '_').lower()}"
+        # Use the R-prefixed PGA Tour ID when available; fall back to date+name composite
+        # so that prediction_history rows are keyed the same as all other data files.
+        if tournament_id and str(tournament_id).strip().upper().startswith("R"):
+            tournament_id = str(tournament_id).strip().upper()
+        else:
+            tournament_id = f"{tournament_date}_{tournament_name.replace(' ', '_').lower()}"
 
         # Save full predictions
         predictions_file = self.tracking_dir / f"pred_{tournament_id}.csv"

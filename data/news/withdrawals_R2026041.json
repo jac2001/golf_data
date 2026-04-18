@@ -1,0 +1,37 @@
+[
+  {
+    "player_name": "Pierceson Coody",
+    "player_id": "59836",
+    "status": "WITHDRAWN",
+    "source": "leaderboard",
+    "detected_at": "2026-03-31T19:26:33.975017"
+  },
+  {
+    "player_name": "Collin Morikawa",
+    "player_id": "50525",
+    "status": "WITHDRAWN",
+    "source": "manual",
+    "detected_at": "2026-03-31T19:27:40.628373"
+  },
+  {
+    "player_name": "Berger, Daniel",
+    "player_id": "40026",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-03-31T19:32:16.545622"
+  },
+  {
+    "player_name": "Castillo, Ricky",
+    "player_id": "59440",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-03-31T19:32:16.545625"
+  },
+  {
+    "player_name": "Lipsky, David",
+    "player_id": "36326",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-03-31T19:32:16.545626"
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "cv_auc_mean": 0.8010814199050881,
+  "cv_auc_std": 0.006331084999255828,
+  "cv_brier_mean": 0.18332630950654838,
+  "cv_brier_std": 0.002304629511956449,
+  "n_training_rows": 55680,
+  "features": [
+    "round_num",
+    "score_diff_before",
+    "sg_total_diff",
+    "sg_ott_diff",
+    "sg_app_diff",
+    "sg_putt_diff"
+  ],
+  "feature_importances": {
+    "sg_ott_diff": 0.211486,
+    "sg_putt_diff": 0.202498,
+    "score_diff_before": 0.168382,
+    "sg_total_diff": 0.155599,
+    "sg_app_diff": 0.14192,
+    "round_num": 0.120116
+  }
+}

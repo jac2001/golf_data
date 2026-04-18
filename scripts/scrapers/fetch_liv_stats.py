@@ -200,17 +200,54 @@ def fetch_liv_season(year: int) -> pd.DataFrame:
 
 
 def build_player_profiles(all_years: list[pd.DataFrame]) -> pd.DataFrame:
-    """One row per player: use most recent season, track best year."""
+    """One row per player: blend recent seasons, weighted by event count.
+
+    When the current year has fewer than MIN_EVENTS events, the proxy is
+    blended with the prior year using event-count weighting. This prevents
+    a 3-event 2026 sample from discarding a 13-event 2025 season.
+    """
+    MIN_EVENTS = 6  # below this, blend with prior year
+
     if not all_years:
         return pd.DataFrame()
 
     combined = pd.concat(all_years, ignore_index=True)
 
+    # Start from the most-recent-year row (non-proxy fields: name, earnings, etc.)
     profiles = (
         combined.sort_values("year", ascending=False)
         .groupby("player_id", as_index=False)
         .first()
     )
+
+    # Blend sg_proxy across years weighted by liv_events
+    if "liv_sg_proxy" in combined.columns and "liv_events" in combined.columns:
+        def _blended_proxy(grp: pd.DataFrame) -> float:
+            grp = grp.dropna(subset=["liv_sg_proxy"]).sort_values("year", ascending=False)
+            if grp.empty:
+                return float("nan")
+            # If most-recent year has enough events, use it directly
+            latest = grp.iloc[0]
+            if float(latest.get("liv_events", 0)) >= MIN_EVENTS or len(grp) == 1:
+                return float(latest["liv_sg_proxy"])
+            # Otherwise blend: weight = events / total_events across all rows
+            total_events = grp["liv_events"].sum()
+            if total_events == 0:
+                return float(latest["liv_sg_proxy"])
+            blended = (grp["liv_sg_proxy"] * grp["liv_events"]).sum() / total_events
+            return round(float(blended), 3)
+
+        proxy_series = (
+            combined.groupby("player_id")
+            .apply(_blended_proxy, include_groups=False)
+            .rename("liv_sg_proxy_blended")
+        )
+        profiles = profiles.merge(proxy_series.reset_index(), on="player_id", how="left")
+        # Replace the snapshot proxy with the blended one
+        profiles["liv_sg_proxy"] = profiles["liv_sg_proxy_blended"].combine_first(
+            profiles["liv_sg_proxy"]
+        )
+        profiles.drop(columns=["liv_sg_proxy_blended"], inplace=True, errors="ignore")
 
     # Add best season (highest sg_proxy year)
     if "liv_sg_proxy" in combined.columns:

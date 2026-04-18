@@ -194,10 +194,44 @@ STEP_TIMEOUTS = {
     "Betting Profiles": 900,
     "DraftKings Odds": 360,
     "PGA Odds": 300,
+    "DG Approach Skill": 60,
+    "DG Skill Ratings": 60,
     "Predictions": 900,
     "Refresh Odds": 120,
     "Recommend Bets": 120,
+    "Past Results": 120,
+    # Post-tournament model refresh
+    "Calibration Refresh": 120,
+    "Training Data Merge": 1800,
+    "Model Retrain": 3600,
+    "SHAP Values": 300,
+    "Player Explanations": 120,
 }
+
+RETRAIN_LOG = LOGS_DIR / "retrain_log.json"
+TOURNAMENTS_PER_RETRAIN = 4
+
+
+def _load_retrain_log() -> dict:
+    """Read the retrain tracking log; return defaults if missing/corrupt."""
+    if RETRAIN_LOG.exists():
+        try:
+            return json.loads(RETRAIN_LOG.read_text())
+        except Exception:
+            pass
+    return {"last_retrain_tid": None, "tournaments_since_retrain": 0, "last_retrain_at": None}
+
+
+def _update_retrain_log(tid: str, did_retrain: bool):
+    """Increment the tournament counter; reset it (and record timestamp) when we retrain."""
+    data = _load_retrain_log()
+    if did_retrain:
+        data["last_retrain_tid"] = tid
+        data["tournaments_since_retrain"] = 0
+        data["last_retrain_at"] = datetime.now().isoformat()
+    else:
+        data["tournaments_since_retrain"] = data.get("tournaments_since_retrain", 0) + 1
+    RETRAIN_LOG.write_text(json.dumps(data, indent=2))
 
 
 def log(message: str):
@@ -328,8 +362,13 @@ def run_tuesday_morning(dry_run: bool = False):
 
     tasks = [
         ("League Picks", ["python3", "scripts/scrapers/fetch_league_picks.py"]),
-        ("Field", ["python3", "scripts/scrapers/fetch_field_from_pgatour.py",
-                   "--pga-id", tournament_id, "--output", field_path, "--match-ids"]),
+        # DataGolf field: tries upcoming_pga first (earlier data), falls back to pga
+        ("Field", ["python3", "scripts/scrapers/fetch_dg_field.py",
+                   "--tournament-id", tournament_id, "--tour", "auto"]),
+        # WD check runs immediately after field fetch so pre-tournament withdrawals
+        # are removed from the field CSV before predictions are generated.
+        ("WD Check", ["python3", "scripts/scrapers/fetch_withdrawals.py",
+                      "--tournament-id", tournament_id, "--auto-update-field"]),
         ("Course Info", ["python3", "scripts/scrapers/fetch_course_characteristics.py",
                          "--tournament-id", tournament_id, "--profile"]),
         ("Power Rankings", ["python3", "scripts/scrapers/fetch_power_rankings.py",
@@ -338,12 +377,21 @@ def run_tuesday_morning(dry_run: bool = False):
                               "--tournament-id", tournament_id, "--field", field_path]),
         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                       "--tournament-id", tournament_id]),
+        ("DG Approach Skill", ["python3", "scripts/scrapers/fetch_dg_approach_skill.py",
+                               "--period", "l24"]),
+        ("DG Skill Ratings", ["python3", "scripts/scrapers/fetch_dg_skill_ratings.py"]),
+        
+        
         ("Predictions", ["python3", "scripts/run_pipeline.py",
                          "--tournament", tournament_name,
                          "--pga-id", tournament_id,
                          "--field", field_path,
                          "--use-schedule",
                          "--skip-refresh", "--calibrate", "--lineup"]),
+        # Re-run DG field after predictions to merge dg_id/dg_rank into predictions CSV
+        ("DG Field Merge", ["python3", "scripts/scrapers/fetch_dg_field.py",
+                             "--tournament-id", tournament_id, "--tour", "auto",
+                             "--merge-predictions"]),
     ]
 
     results = []
@@ -431,6 +479,103 @@ def run_tuesday_evening(dry_run: bool = False):
     return results
 
 
+def run_pretournament_validation(tid: str, tournament_name: str) -> None:
+    """
+    Check that all required data is in place before a tournament starts.
+    Writes a validation report to logs/pretournament_validation_{tid}.txt.
+    """
+    from datetime import timedelta
+    now = datetime.now()
+    stale_threshold = now - timedelta(hours=36)
+    lines = []
+    warnings = []
+
+    lines.append("=" * 60)
+    lines.append(f"PRE-TOURNAMENT VALIDATION — {tournament_name} ({tid})")
+    lines.append(f"Generated: {now.strftime('%Y-%m-%d %H:%M')}")
+    lines.append("=" * 60)
+    lines.append("")
+
+    def _check(label, path, min_rows=None, warn_if_missing=True):
+        p = Path(path)
+        if not p.exists():
+            if warn_if_missing:
+                warnings.append(f"{label}: file not found ({p.name})")
+            lines.append(f"  [{'WARN' if warn_if_missing else 'INFO'}] {label:<30} MISSING")
+            return
+        mtime = datetime.fromtimestamp(p.stat().st_mtime)
+        age_h = int((now - mtime).total_seconds() // 3600)
+        stale = mtime < stale_threshold
+        if stale:
+            warnings.append(f"{label}: stale ({age_h}h old)")
+        detail = ""
+        if min_rows is not None:
+            try:
+                nrows = sum(1 for _ in open(p)) - 1  # fast row count
+                detail = f"{nrows} rows  "
+                if nrows < min_rows:
+                    warnings.append(f"{label}: only {nrows} rows (expected {min_rows}+)")
+            except Exception:
+                detail = "unreadable  "
+        flag = "WARN" if stale else "OK  "
+        lines.append(f"  [{flag}] {label:<30} {detail}({age_h}h ago)")
+
+    _check("Field players", DATA_DIR / "fields" / f"field_{tid}.csv", min_rows=50)
+
+    # Predictions: check file + tournament_id match
+    pred_path = PROJECT_ROOT / "outputs" / "latest_predictions.csv"
+    if pred_path.exists():
+        try:
+            mtime = datetime.fromtimestamp(pred_path.stat().st_mtime)
+            age_h = int((now - mtime).total_seconds() // 3600)
+            stale = mtime < stale_threshold
+            with open(pred_path) as f:
+                header = f.readline()
+                first = f.readline()
+            cols = header.strip().split(",")
+            vals = first.strip().split(",")
+            row = dict(zip(cols, vals))
+            pred_tid = row.get("tournament_id", "unknown")
+            nrows = sum(1 for _ in open(pred_path)) - 1
+            tid_match = pred_tid == tid
+            flag = "WARN" if (stale or not tid_match) else "OK  "
+            if not tid_match:
+                warnings.append(f"Predictions: tid={pred_tid}, expected {tid}")
+            if stale:
+                warnings.append(f"Predictions: stale ({age_h}h old)")
+            lines.append(f"  [{flag}] {'Predictions':<30} {nrows} rows, tid={pred_tid}  ({age_h}h ago)")
+        except Exception as e:
+            warnings.append(f"Predictions: unreadable ({e})")
+            lines.append(f"  [WARN] {'Predictions':<30} unreadable")
+    else:
+        warnings.append("Predictions: latest_predictions.csv not found")
+        lines.append(f"  [WARN] {'Predictions':<30} MISSING")
+
+    _check("Odds (multi-book)", DATA_DIR / "odds" / "multi_book_odds_latest.csv", min_rows=30)
+    _check("Expert picks", DATA_DIR / "expert_picks" / f"expert_picks_{tid}.csv",
+           min_rows=5, warn_if_missing=False)
+    _check("Betting profiles", DATA_DIR / "odds" / f"betting_profiles_{tid}.csv",
+           min_rows=10, warn_if_missing=False)
+
+    lines.append("")
+    if warnings:
+        lines.append(f"WARNINGS ({len(warnings)})")
+        lines.append("-" * 40)
+        for w in warnings:
+            lines.append(f"  ! {w}")
+    else:
+        lines.append("All checks passed — ready for tournament.")
+    lines.append("")
+
+    out_path = LOGS_DIR / f"pretournament_validation_{tid}.txt"
+    out_path.write_text("\n".join(lines))
+    log(f"  Validation report → {out_path.name}")
+    if warnings:
+        log(f"  WARNINGS: {len(warnings)} issue(s) — check {out_path.name}")
+    else:
+        log("  Validation: all checks passed.")
+
+
 def run_wednesday_morning(dry_run: bool = False):
     """Final prep - refresh odds, expert picks, and predictions."""
     log("=" * 60)
@@ -446,6 +591,9 @@ def run_wednesday_morning(dry_run: bool = False):
     tournament_id = str(tournament.get("tournament_id", ""))
 
     tasks = [
+        # WD check first — catches any overnight withdrawals before predictions rerun
+        ("WD Check", ["python3", "scripts/scrapers/fetch_withdrawals.py",
+                      "--tournament-id", tournament_id, "--auto-update-field"]),
         ("Expert Picks", ["python3", "scripts/scrapers/fetch_expert_picks_pga.py",
                           "--tournament-id", tournament_id]),
         ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
@@ -473,6 +621,9 @@ def run_wednesday_morning(dry_run: bool = False):
             success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
 
+    if not dry_run:
+        run_pretournament_validation(tournament_id, tournament_name)
+
     return results
 
 
@@ -495,6 +646,8 @@ def run_live_refresh(dry_run: bool = False):
                                       "--tournament-id", tournament_id]))
         tasks.append(("Live Tournament Stats", ["python3", "scripts/scrapers/fetch_live_tournament_stats.py",
                                                 "--tid", tournament_id, "--top-n", "25"]))
+        tasks.append(("DG Live Stats", ["python3", "scripts/scrapers/fetch_dg_live_stats.py",
+                                        "--tournament-id", tournament_id]))
         tasks.append(("Live Course Stats", ["python3", "scripts/scrapers/fetch_course_stats.py",
                                             "--tid", tournament_id]))
         tasks.append(("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
@@ -530,6 +683,36 @@ def run_live_refresh(dry_run: bool = False):
             success = run_command(cmd, desc, timeout=timeout)
             results.append((desc, success))
 
+    # ── Tee times + draw advantage for R3/R4 ─────────────────────────────────
+    # R1/R2 tee times are fetched on Tuesday morning (run_tuesday_morning).
+    # R3/R4 pairings are announced Friday evening after the cut — we fetch them
+    # during the Saturday/Sunday 8am live refresh so they're ready before betting.
+    # Draw advantage is recomputed each morning with the latest weather forecast.
+    if not dry_run and tournament_id:
+        now = datetime.now()
+        day = now.strftime("%A").lower()
+        hour = now.hour
+
+        # Map day → round that starts today
+        _round_for_day = {"thursday": 1, "friday": 2, "saturday": 3, "sunday": 4}
+        todays_round = _round_for_day.get(day)
+
+        if todays_round and hour < 14:  # morning refreshes only (8am run)
+            log(f"Fetching tee times + draw advantage for R{todays_round} ({day})")
+            _tt_ok = run_command(
+                ["python3", "scripts/scrapers/fetch_tee_times.py",
+                 "--tid", tournament_id, "--round", str(todays_round)],
+                f"Tee Times R{todays_round}",
+                timeout=30,
+            )
+            if _tt_ok:
+                run_command(
+                    ["python3", "scripts/predictions/draw_advantage.py",
+                     "--tid", tournament_id, "--round", str(todays_round)],
+                    f"Draw Advantage R{todays_round}",
+                    timeout=30,
+                )
+
     # Save once-per-live-run weather snapshot
     if not dry_run and tournament_id and tournament:
         tournament_name = str(tournament.get("tournament_name", ""))
@@ -561,6 +744,31 @@ def run_record_results(dry_run: bool = False):
 
     return results
 
+
+def run_monday_noon_check(dry_run: bool = False):
+    """
+    Monday noon safety net for tournaments that finish late (weather delays, playoffs).
+    Runs record + post-tournament if the last tournament completed but the sentinel
+    hasn't been written yet (i.e. the 8am post-tournament run was too early).
+    Does nothing if the post-tournament pipeline already ran successfully.
+    """
+    tournament = get_last_tournament()
+    if not tournament:
+        log("Monday noon check: no recent tournament found.")
+        return []
+
+    tid = str(tournament.get("tournament_id", ""))
+    name = str(tournament.get("tournament_name", ""))
+    sentinel = LOGS_DIR / f"post_tournament_{tid}.done"
+
+    if sentinel.exists():
+        log(f"Monday noon check: {name} ({tid}) already processed — nothing to do.")
+        return []
+
+    log(f"Monday noon check: {name} ({tid}) sentinel missing — running record + post-tournament.")
+    results = run_record_results(dry_run)
+    results += run_post_tournament_refresh(dry_run)
+    return results
 
 def sync_leaderboard_to_db(tid: str, year: int) -> int:
     """Upsert leaderboard rows for a tournament from CSV into DuckDB.
@@ -677,6 +885,101 @@ def append_leaderboard_to_historical(tid: str, tournament_name: str, year: int) 
     return len(new_df)
 
 
+
+def write_post_tournament_summary(tid: str, name: str, results: list) -> None:
+    """Write a human-readable post-tournament summary to logs/post_tournament_{tid}.txt."""
+    lines = []
+    lines.append("=" * 60)
+    lines.append(f"POST-TOURNAMENT SUMMARY — {name} ({tid})")                                                        
+    lines.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    lines.append("=" * 60)                                                                                           
+    lines.append("")                                                                                                 
+
+    # Pipeline status                                                                                                
+    lines.append("PIPELINE STATUS")                       
+    lines.append("-" * 40)
+    for desc, success in results:
+        lines.append(f"  [{'OK  ' if success else 'FAIL'}] {desc}")
+    failed = [d for d, s in results if not s]                                                                        
+    lines.append(f"\n  {len(results) - len(failed)}/{len(results)} tasks passed")
+    if failed:                                                                                                       
+        lines.append(f"  FAILED: {', '.join(failed)}")    
+    lines.append("") 
+    
+      
+    # Bet P&L 
+    lines.append('BET RESULTS')
+    lines.append("-" * 40)                                                                                           
+    try:                                                  
+        results_csv = DATA_DIR / "odds" / "recommended_bets_results.csv"
+        if results_csv.exists():                                                                                     
+            bets = pd.read_csv(results_csv)
+            week = bets[bets["tournament_id"] == tid].copy()
+            # Support both column naming conventions
+            outcome_col = "outcome" if "outcome" in week.columns else "outcome_status"
+            pnl_col = "pnl" if "pnl" in week.columns else ("pnl_per_1" if "pnl_per_1" in week.columns else None)
+            graded = week[~week[outcome_col].astype(str).isin(["", "nan", "pending"])]
+            wins = (graded[outcome_col] == "won").sum()
+            pushes = (graded[outcome_col] == "push").sum()
+            total = len(graded)
+            pnl = graded[pnl_col].sum() if pnl_col else 0.0
+            roi = (pnl / total * 100) if total > 0 else 0.0
+            lines.append(f"  Graded: {total}  Wins: {wins}  Pushes: {pushes}  Losses: {total - wins - pushes}")
+            lines.append(f"  Win rate: {wins/total*100:.1f}%  |  P&L: {pnl:+.2f} units  |  ROI: {roi:+.1f}%")
+            if "market" in graded.columns and not graded.empty:
+                lines.append("  By market:")
+                for mkt, g in graded.groupby("market"):
+                    mkt_pnl = g[pnl_col].sum() if pnl_col else 0.0
+                    lines.append(
+                        f"    {mkt:<22} {len(g):>2} bets  "
+                        f"{(g[outcome_col]=='won').sum()} wins  P&L {mkt_pnl:+.2f}"
+                    )
+            else:
+                lines.append("  No market breakdown available.")
+    except Exception as e:
+        lines.append(f" Error summarizing bet results: {e}")
+            
+    lines.append("")
+    # Top 10 leaderboard — prefer live CSV (authoritative for recent tournaments)
+    lines.append("LEADERBOARD (Top 10)")
+    lines.append("-" * 40)
+    try:
+        year = int(str(tid)[1:5])
+        live_lb_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+        hist_path = DATA_DIR / "historical" / f"leaderboards_{year}.csv"
+        if live_lb_path.exists():
+            tid_rows = pd.read_csv(live_lb_path)
+            tid_rows = tid_rows.rename(columns={"total_numeric": "to_par"})
+        elif hist_path.exists():
+            lb = pd.read_csv(hist_path)
+            tid_rows = lb[lb["tournament_id"] == tid].copy()
+        else:
+            tid_rows = pd.DataFrame()
+        if not tid_rows.empty:
+            finishers = tid_rows[~tid_rows["position"].astype(str).isin(["CUT", "WD", "DQ", "MC"])].copy()
+            finishers["_tp"] = pd.to_numeric(finishers["to_par"], errors="coerce")
+            for _, row in finishers.sort_values("_tp").head(10).iterrows():
+                tp = row.get("to_par", "")
+                try:
+                    tp_str = f"{int(float(tp)):+d}"
+                except (ValueError, TypeError):
+                    tp_str = str(tp)
+                lines.append(f"  {str(row['position']):<6} {str(row['player_name']):<26} {tp_str}")
+        else:
+            lines.append("  No leaderboard file found.")
+    except Exception as e:
+        lines.append(f"  [Error loading leaderboard: {e}]")
+    lines.append("")                                                                                                 
+                                                        
+    out_path = LOGS_DIR / f"post_tournament_summary_{tid}.txt"                                                       
+    out_path.write_text("\n".join(lines))
+    log(f"  Summary written → {out_path.name}")
+        
+
+
+
+
+
 def run_post_tournament_refresh(dry_run: bool = False):
     """Full post-tournament sequence: leaderboard append + stats + form + record + grade."""
     log("=" * 60)
@@ -711,7 +1014,24 @@ def run_post_tournament_refresh(dry_run: bool = False):
         log(f"  {tid} not yet official — will retry next scheduled run")
         return [("Official Check", False)]
 
-    # Step 3+4: append leaderboard to historical + write sentinel (idempotent)
+    # Step 3: fetch canonical past-results from PGA Tour (earnings, FedEx points).
+    # Runs BEFORE the live-leaderboard append so that the live CSV always wins
+    # if the official page is stale (e.g. serving prior-year data for a major).
+    # The validation guard in fetch_past_results.py will skip the write if the
+    # scraped winner doesn't match the live leaderboard winner.
+    if dry_run:
+        log(f"[DRY RUN] Would run: Past Results")
+    else:
+        run_command(
+            ["python3", "scripts/scrapers/fetch_past_results.py",
+             "--tournament-id", tid, "--year", str(year)],
+            "Past Results",
+            timeout=step_timeout("Past Results", 120),
+        )
+
+    # Step 4+5: append live leaderboard to historical + write sentinel (idempotent).
+    # Runs AFTER fetch_past_results so the live CSV is always the final word on
+    # positions/scores for the current tournament.
     if sentinel.exists():
         log(f"  Leaderboard already appended for {tid} (sentinel exists)")
     else:
@@ -725,7 +1045,7 @@ def run_post_tournament_refresh(dry_run: bool = False):
             log(f"  Synced {n_db} rows to DuckDB leaderboards table")
             sentinel.touch()
 
-    # Steps 5-10: remaining scrapers (idempotent by design)
+    # Steps 6-10: remaining scrapers (idempotent by design)
     tasks = [
         ("Tournament SG Stats", ["python3", "scripts/scrapers/fetch_tournament_stats.py",
                                   "--year", str(year), "--refresh-latest", "3"]),
@@ -747,6 +1067,76 @@ def run_post_tournament_refresh(dry_run: bool = False):
         else:
             success = run_command(cmd, desc, timeout=step_timeout(desc, 300))
             results.append((desc, success))
+
+    # Step 12: Assistant context file
+    # Now that bet grading + backfill are done, regenerate the season-level
+    # summary that feeds the chatbot (and any external LLM). It covers:
+    # recent results, pick accuracy, bet ROI, CLV, and top SHAP features.
+    log("-" * 40)
+    log("Assistant Context")
+    ctx_cmd = ["python3", "scripts/chat/build_assistant_context.py"]
+    if dry_run:
+        log("[DRY RUN] Would run: Assistant Context")
+        results.append(("Assistant Context", True))
+    else:
+        success = run_command(ctx_cmd, "Assistant Context", timeout=60)
+        results.append(("Assistant Context", success))
+
+    # Step 13: Calibration refresh
+    # Now that bet grading + prediction backfill are done, regenerate the
+    # accuracy/calibration curves so the dashboard shows up-to-date model stats.
+    log("-" * 40)
+    log("Calibration Refresh")
+    calib_cmd = ["python3", "scripts/validation/generate_calibration_data.py"]
+    if dry_run:
+        log("[DRY RUN] Would run: Calibration Refresh")
+        results.append(("Calibration Refresh", True))
+    else:
+        success = run_command(calib_cmd, "Calibration Refresh", timeout=120)
+        results.append(("Calibration Refresh", success))
+
+    # Step 13: Monthly retrain check
+    # We track how many tournaments have finished since the last model retrain.
+    # At TOURNAMENTS_PER_RETRAIN (4), we run the full retrain pipeline:
+    #   merge training data → retrain models → refresh SHAP → refresh player explanations
+    # This keeps the model improving without retraining every single week (which
+    # would overfit to the most recent tournament).
+    log("-" * 40)
+    retrain_data = _load_retrain_log()
+    # +1 because this tournament hasn't been counted yet
+    tournaments_since = retrain_data.get("tournaments_since_retrain", 0) + 1
+    did_retrain = False
+
+    if tournaments_since >= TOURNAMENTS_PER_RETRAIN:
+        log(f"Retrain threshold reached: {tournaments_since} tournaments since last retrain — running full retrain pipeline")
+        retrain_steps = [
+            # 1. Pull new tournament results into master_training_data_*.csv
+            ("Training Data Merge", ["python3", "scripts/features/merge_all_historical_data.py"]),
+            # 2. Retrain all four models (win, top5, top10, top20) on the updated CSV
+            ("Model Retrain", ["python3", "scripts/validation/train_final_models.py"]),
+            # 3. Recompute SHAP values against the new models + current week's field
+            ("SHAP Values", ["python3", "scripts/validation/compute_shap.py"]),
+            # 4. Regenerate plain-English player card explanations from fresh SHAP values
+            ("Player Explanations", ["python3", "scripts/predictions/generate_player_explanations.py"]),
+        ]
+        for desc, cmd in retrain_steps:
+            if dry_run:
+                log(f"[DRY RUN] Would run: {desc}")
+                results.append((desc, True))
+            else:
+                success = run_command(cmd, desc, timeout=step_timeout(desc, 600))
+                results.append((desc, success))
+                if not success:
+                    log(f"  Retrain step '{desc}' failed — stopping retrain pipeline")
+                    break
+        did_retrain = not dry_run
+    else:
+        log(f"Retrain check: {tournaments_since}/{TOURNAMENTS_PER_RETRAIN} tournaments since last retrain — no retrain needed")
+
+    if not dry_run:
+        _update_retrain_log(tid, did_retrain)
+        write_post_tournament_summary(tid, name, results)
+        log(f"  Retrain log updated (did_retrain={did_retrain}, count={0 if did_retrain else tournaments_since})")
 
     return results
 
@@ -831,7 +1221,7 @@ def determine_schedule() -> str:
 def main():
     parser = argparse.ArgumentParser(description="Scheduled data refresh")
     parser.add_argument("--schedule", choices=[
-        "monday", "tuesday-morning", "tuesday-evening",
+        "monday", "monday-noon", "tuesday-morning", "tuesday-evening",
         "wednesday-morning", "wednesday-evening",
         "live", "record", "post-tournament", "auto"
     ], default="auto", help="Which schedule to run (default: auto-detect)")
@@ -859,6 +1249,10 @@ def main():
     # Run appropriate schedule
     if schedule == "monday":
         results = run_monday_refresh(args.dry_run)
+    elif schedule == "monday-noon":
+      results = run_monday_noon_check(args.dry_run)
+
+
     elif schedule == "tuesday-morning":
         results = run_tuesday_morning(args.dry_run)
     elif schedule == "tuesday-evening":

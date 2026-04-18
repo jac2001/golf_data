@@ -1,0 +1,37 @@
+[
+  {
+    "player_name": "Lucas Glover",
+    "player_id": "25900",
+    "status": "WITHDRAWN",
+    "source": "leaderboard",
+    "detected_at": "2026-04-07T07:07:16.343211"
+  },
+  {
+    "player_name": "Webb Simpson",
+    "player_id": "29221",
+    "status": "WITHDRAWN",
+    "source": "leaderboard",
+    "detected_at": "2026-04-07T07:07:16.343221"
+  },
+  {
+    "player_name": "Couples, Fred",
+    "player_id": "1226",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-04-07T07:07:16.343223"
+  },
+  {
+    "player_name": "Olaz\u00e1bal, Jos\u00e9 Mar\u00eda",
+    "player_id": "6373",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-04-07T07:07:16.343227"
+  },
+  {
+    "player_name": "Singh, Vijay",
+    "player_id": "6567",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-04-07T07:07:16.343229"
+  }
+]

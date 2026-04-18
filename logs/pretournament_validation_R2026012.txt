@@ -1,0 +1,15 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — RBC Heritage (R2026012)
+Generated: 2026-04-15 07:30
+============================================================
+
+  [WARN] Field players                  82 rows  (36h ago)
+  [OK  ] Predictions                    82 rows, tid=R2026012  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (191h ago)
+  [OK  ] Expert picks                   6 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (2)
+----------------------------------------
+  ! Field players: stale (36h old)
+  ! Odds (multi-book): stale (191h old)

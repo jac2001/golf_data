@@ -517,6 +517,7 @@ def run_predictions(
     save_tracking: bool = False,
     odds_path: Path = None,
     calibrate: bool = False,
+    tournament_id: str = None,
 ) -> Path:
     """Run the prediction model."""
     print_header("GENERATING PREDICTIONS")
@@ -542,6 +543,9 @@ def run_predictions(
         "--top-n", "20",
         "--skip-bet-recs",
     ]
+
+    if tournament_id:
+        cmd.extend(["--tournament-id", tournament_id])
 
     if insights:
         cmd.append("--insights")
@@ -575,10 +579,15 @@ def run_predictions(
       timeout=60,
   )
         run_command(
-      ["python3", str(SCRIPTS_DIR / "validation" / "player_similarity.py")],
-      "Player Similarity",
-      timeout=60,
-  )
+            ["python3", str(SCRIPTS_DIR / "validation" / "player_similarity.py")],
+            description="Player Similarity",
+            timeout=60,
+        )
+        run_command(
+            ["python3", str(SCRIPTS_DIR / "predictions" / "generate_player_explanations.py")],
+            description="Generate player card explanations",
+            timeout=30,
+        )
         return output_path
 
     if _ACTIVE_TRACKER is not None and success and (not output_path.exists()):
@@ -1105,6 +1114,7 @@ def run_full_pipeline(
             save_tracking=save_tracking,
             odds_path=odds_path,
             calibrate=calibrate,
+            tournament_id=pga_id,
         )
         if not predictions_path:
             raise RuntimeError("Prediction stage failed: no output file was created.")

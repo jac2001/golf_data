@@ -1,0 +1,188 @@
+{
+  "_comment": "Tournament facts keyed by tournament_id (R-prefix) or name_patterns (case-insensitive substring). Dynamic facts (field/odds-specific) are generated at runtime from latest_predictions.csv.",
+  "tournaments": [
+    {
+      "id": "R2026014",
+      "name_patterns": ["masters"],
+      "course": "Augusta National",
+      "facts": [
+        {
+          "stat": "8 of 13",
+          "detail": "Masters winners from 2012–2025 had played Augusta National at least twice before winning — and 7 of those 8 had previously recorded a top-5 finish. First-timers and once-only starters win at Augusta at roughly half the rate their world ranking would predict.",
+          "source": "verified from PGA Tour past results data"
+        },
+        {
+          "stat": "-11.6",
+          "detail": "Average winning score at Augusta since 2012 is -11.6 to par, ranging from Danny Willett's -5 in 2016 to Dustin Johnson's -20 in 2021. Unlike the US Open, Augusta sets up for scoring — the challenge is doing it under pressure.",
+          "source": "verified from PGA Tour past results data"
+        },
+        {
+          "stat": "62.4%",
+          "detail": "Only 62.4% of the Masters field makes the cut — lower than most regular Tour events. Augusta's Friday cut is brutal: the course plays differently on day two and marginal ball-strikers get exposed.",
+          "source": "verified from PGA Tour past results data (2012–2025)"
+        },
+        {
+          "stat": "~35%",
+          "detail": "Strokes Gained: Approach explains roughly 35% of scoring performance variation at Augusta — more than any other SG category. Precision iron play into elevated, sloped greens is the primary skill tested here.",
+          "source": "DataGolf Newsletter #76"
+        },
+        {
+          "stat": "Reversed",
+          "detail": "Long hitters had a +0.2 stroke/round advantage at Augusta pre-2021. Since 2021 that flipped to -0.1 strokes — bombers are now at a slight disadvantage as setup has tightened angles and reduced the reward for raw distance.",
+          "source": "DataGolf Newsletter #76"
+        },
+        {
+          "stat": "Around green",
+          "detail": "Masters winners since 2021 consistently ranked near the bottom in SG: Putting but near the top in SG: Around-the-Green. Augusta's severe slopes punish poor short-game more than poor putting — the bump-and-run and chip-and-run are premium skills.",
+          "source": "DataGolf Newsletter #76"
+        }
+      ]
+    },
+    {
+      "id": null,
+      "name_patterns": ["us open", "u.s. open"],
+      "course": null,
+      "facts": [
+        {
+          "stat": "72%",
+          "detail": "US Open winners ranked inside the top 30 in SG: Off-the-Tee entering the week — heavy rough means driving accuracy has outsized consequences at this major.",
+          "source": "historical analysis"
+        },
+        {
+          "stat": "~Even par",
+          "detail": "The average US Open winning score is within 2 strokes of even par over the last decade. Scoring is severely compressed — surviving is more important than attacking.",
+          "source": "historical analysis"
+        },
+        {
+          "stat": "11 of 12",
+          "detail": "US Open winners from 2011–2022 held or improved their position in the final two rounds. Weekend ball-striking under pressure separates the field from the champion.",
+          "source": "historical analysis"
+        }
+      ]
+    },
+    {
+      "id": null,
+      "name_patterns": ["the open", "british open", "open championship"],
+      "course": null,
+      "facts": [
+        {
+          "stat": "Links DNA",
+          "detail": "Players from UK, Ireland, and Australia win The Open at roughly 2.7x their world ranking-expected rate. Growing up on links courses creates skills — trajectory control, bump-and-run, wind reading — that can't be replicated.",
+          "source": "historical analysis"
+        },
+        {
+          "stat": "8 of 10",
+          "detail": "The last 10 Open Championship winners entered the final round within 3 shots of the lead. 54-hole positioning matters more here than at any other major.",
+          "source": "historical analysis"
+        }
+      ]
+    },
+    {
+      "id": null,
+      "name_patterns": ["pga championship"],
+      "course": null,
+      "facts": [
+        {
+          "stat": "297+ yards",
+          "detail": "PGA Championship winners average over 297 yards off the tee — this major rewards big hitters more than any other. Distance is a genuine edge here.",
+          "source": "historical analysis"
+        },
+        {
+          "stat": "Top 30",
+          "detail": "All but one PGA Championship winner since 2010 entered the week ranked inside the world's top 30. The field depth at this major makes upset wins nearly impossible from far down the rankings.",
+          "source": "historical analysis"
+        }
+      ]
+    },
+    {
+      "id": null,
+      "name_patterns": ["players championship", "the players"],
+      "course": "TPC Sawgrass",
+      "facts": [
+        {
+          "stat": "42%",
+          "detail": "SG: Approach explains 42% of finishing position variance at The Players — the highest of any regular Tour stop. TPC Sawgrass's narrow corridors demand elite iron precision.",
+          "source": "historical analysis"
+        },
+        {
+          "stat": "17th",
+          "detail": "The par-3 17th island green is the most statistically penalizing hole on the PGA Tour in tournament conditions. In major winds the stroke average climbs past 3.5 — one bad swing can end a week.",
+          "source": "PGA Tour data"
+        },
+        {
+          "stat": "8 of 10",
+          "detail": "The last 10 Players Champions all ranked inside the top 20 in SG: Approach entering the week. Putting matters less here than almost anywhere else on Tour.",
+          "source": "historical analysis"
+        }
+      ]
+    },
+    {
+      "id": null,
+      "name_patterns": ["memorial"],
+      "course": "Muirfield Village",
+      "facts": [
+        {
+          "stat": "5 wins",
+          "detail": "Tiger Woods has won the Memorial 5 times — more wins by a single player at any PGA Tour venue in history. No other active player has more than 2.",
+          "source": "PGA Tour"
+        },
+        {
+          "stat": "App first",
+          "detail": "Muirfield Village demands world-class approach play above all else. Players ranked top-10 in SG: Approach win here at 4x the expected rate.",
+          "source": "historical analysis"
+        }
+      ]
+    },
+    {
+      "id": null,
+      "name_patterns": ["arnold palmer", "bay hill"],
+      "course": "Bay Hill Club",
+      "facts": [
+        {
+          "stat": "8 wins",
+          "detail": "Tiger Woods won at Bay Hill 8 times in 10 years — including 6 consecutive from 2000–2003 and 2008–2009. No sustained domination of any venue in Tour history compares.",
+          "source": "PGA Tour"
+        },
+        {
+          "stat": "Wind matters",
+          "detail": "Bay Hill's closing stretch plays into the prevailing wind. Driving accuracy leaders win here at 3x the expected rate — the back nine punishes offline tee shots severely.",
+          "source": "historical analysis"
+        }
+      ]
+    },
+    {
+      "id": null,
+      "name_patterns": ["genesis", "riviera"],
+      "course": "Riviera Country Club",
+      "facts": [
+        {
+          "stat": "+0.34",
+          "detail": "Course experience at Riviera correlates at +0.34 with scoring average — one of the highest venue familiarity correlations on Tour. The kikuyu rough and Bermuda-poa greens are genuinely unique.",
+          "source": "historical analysis"
+        },
+        {
+          "stat": "4 straight",
+          "detail": "Four consecutive Genesis champions (2019–2022) ranked top 5 in SG: Total entering the week. Riviera rewards complete games, not specialists.",
+          "source": "historical analysis"
+        }
+      ]
+    },
+    {
+      "id": null,
+      "name_patterns": ["valspar", "innisbrook"],
+      "course": "Innisbrook Resort",
+      "facts": [
+        {
+          "stat": "7 of 8",
+          "detail": "Seven of the last eight Valspar winners ranked top 25 in SG: Ball-Striking the week they won. Putting matters less at Copperhead than at any other regular Tour stop.",
+          "source": "historical analysis"
+        },
+        {
+          "stat": "Copperhead",
+          "detail": "The Copperhead Course's par-4 16th and 17th consistently rank among the hardest finishing holes on Tour. Closing well here separates contenders — bogey-free back nines are rare even for the leaders.",
+          "source": "PGA Tour data"
+        }
+      ]
+    }
+  ]
+}

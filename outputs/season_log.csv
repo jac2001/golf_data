@@ -1,8 +1,10 @@
 week,date,tournament,pick1,pick2,pick3,result1,result2,result3,points,league_rank,notes,rank1,rank2,rank3,avg_model_rank
 1,2026-02-05,Waste Management Phoenix Open,Ben Griffin,Chris Gotterup,Pierceson Coody,T28,1,T10,596,,Model-aligned,7.0,5.0,3.0,5.0
+10,2026-04-09,The Masters,Ludvig Åberg,Bryson DeChambeau,Xander Schauffele,T5,CUT,T4,439,,,,,,
 2,2026-02-12,AT&T Pebble Beach Pro-Am,Maverick McNealy,Jason Day,Justin Rose,T29,T24,T37,91,,Below model,13.0,32.0,28.0,24.3
 3,2026-02-19,The Genesis Invitational,Hideki Matsuyama,Viktor Hovland,Patrick Cantlay,T28,T41,T37,73,,Below model,6.0,10.0,17.0,11.0
 4,2026-02-26,Cognizant Classic,Ryan Gerard,Michael Thorbjornsen,Nicolai Højgaard,T23,CUT,T6,125,,Model-aligned,4.0,1.0,2.0,2.3
 5,2026-03-05,Arnold Palmer Invitational presented by Mastercard,Rory McIlroy,Russell Henley,Ludvig Åberg,WD,T6,T3,571,,,2.0,13.0,31.0,15.3
 6,2026-03-12,THE PLAYERS Championship,Scottie Scheffler,Adam Scott,Cameron Young,T22,T56,1,4771261,,,,,,
 7,2026-03-19,Valspar Championship,Jacob Bridgeman,Justin Thomas,Sahith Theegala,T14,T30,CUT,76,,,,,,
+9,2026-04-02,Valero Texas Open,Jordan Spieth,Sudarshan Yellamaraju,Rickie Fowler,T11,T14,CUT,55,,,,,,

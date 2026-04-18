@@ -327,6 +327,31 @@ def main():
     fragment_path = args.path
     if not fragment_path and args.slug:
         fragment_path = load_path_config(args.slug)
+
+    # Auto-derive fragment path from schedule start_date when slug not in paths.csv.
+    # Pattern: power rankings publish the Monday before the tournament (start_date - 3 days).
+    # Path format: /content/dam/pga-tour/fragments/tours/pga-tour/news/power-rankings/YYYY/MM/DD/pr-folder/pr-table
+    if not fragment_path and args.slug:
+        try:
+            import pandas as _pd
+            from datetime import timedelta as _td, date as _date
+            _sched = Path(__file__).resolve().parents[2] / "data" / "raw" / "schedule_2026.csv"
+            if _sched.exists():
+                _df = _pd.read_csv(_sched)
+                _row = _df[_df["power_slug"] == args.slug]
+                if not _row.empty:
+                    _start = _pd.to_datetime(_row.iloc[0]["start_date"]).date()
+                    # Monday = start_date - (start_date.weekday() - 0) → back to Monday
+                    _monday = _start - _td(days=_start.weekday())
+                    _derived = (
+                        f"/content/dam/pga-tour/fragments/tours/pga-tour/news/power-rankings/"
+                        f"{_monday.year}/{_monday.month:02d}/{_monday.day:02d}/pr-folder/pr-table"
+                    )
+                    print(f"  Auto-derived fragment path from schedule: {_derived}")
+                    fragment_path = _derived
+        except Exception as _e:
+            print(f"  Could not auto-derive path from schedule: {_e}")
+
     # Allow cache-only mode when slug is provided with --allow-fail.
     if not fragment_path:
         if args.allow_fail and args.slug:

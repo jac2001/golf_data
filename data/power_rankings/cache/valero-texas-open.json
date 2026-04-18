@@ -1,0 +1,346 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Valero Texas Open",
+      "tableTitle": "Power Rankings for Valero Texas Open",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "57364",
+            "firstName": "Michael",
+            "lastName": "Thorbjornsen",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57364.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Like a few guys with whom he\u2019s included here, needs to win the Valero to play in the Masters, but if he doesn\u2019t, it might be the last one he misses for a while. Four top 25s this season. Leads the PGA TOUR in total driving."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "60386",
+            "firstName": "Sudarshan",
+            "lastName": "Yellamaraju",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60386.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The only debutant in the Power Rankings, the lefty is in position to do more than be the "
+                },
+                {
+                  "value": "Rookie of the Year."
+                },
+                {
+                  "value": " Second in total driving, T5 in proximity, 19th in SG: Putting and ninth in the all-around. T5-T6 in last two starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "47993",
+            "firstName": "Denny",
+            "lastName": "McCarthy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47993.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The Texas Children\u2019s Houston Open isn\u2019t billed as a tuneup for the Valero, but it applies. Snapped out of a funk last week with a steady T12. Now he\u2019s, ahem, treated to TPC San Antonio where he has a P2 (2024) among four top 20s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "27644",
+            "firstName": "Brian",
+            "lastName": "Harman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_27644.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After opening with a pair of 6-under 66s last year, he grinded his way to the checkered flag in vintage fashion. (More on it below.) That\u2019s what we\u2019ve come to expect from the gritty 39-year-old. Off since a T11 at THE PLAYERS."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "34046",
+            "firstName": "Jordan",
+            "lastName": "Spieth",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s wild how well he\u2019s played TPC San Antonio given what presents as a mismatch off the tee, but a win (2021) and a runner-up (2015) among five top 15s prove it. The Texan also has two T11s and a T12 in his last four starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "49960",
+            "firstName": "Sepp",
+            "lastName": "Straka",
+            "countryFlag": "AUT",
+            "countryName": "Austria",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49960.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "As surgical as he can be from tee to green, he\u2019d likely be a regular on the leaderboard at TPC San Antonio, but he hasn\u2019t appeared since a T22 in 2023. Sits 11th in the FedExCup with two top 10s among four top 20s this season."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "51287",
+            "firstName": "Ryo",
+            "lastName": "Hisatsune",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51287.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Already irrefutably a problem from tee to green at just 23 years of age, the rock-solid ball-striker has connected for four top-15 finishes in his last seven starts. The same attack yielded a T5 in his second trip here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "34098",
+            "firstName": "Russell",
+            "lastName": "Henley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Because he\u2019s been such a beast in the Southeast and at other haunts, it feels out of context to lift expectations in Texas where he appears only occasionally, but he rose for a solo fourth in his last appearance here in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "46442",
+            "firstName": "Maverick",
+            "lastName": "McNealy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46442.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Arguably known best as a terrific putter but if he wasn\u2019t as efficient tee to green, pouring in putts wouldn't resonate as well. The longest clubs happen to be his best right now. Last year he was T6 in Par-5 Soring, T3 overall here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "39546",
+            "firstName": "Keith",
+            "lastName": "Mitchell",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39546.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His tee-to-green proficiency is as notable as his wardrobe, so it\u2019s no surprise that he\u2019s 4-for-4 at TPC San Antonio with top 20s in his last three. Now he\u2019s fresh off a T14 in Houston where he showed it off. And his game."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With an uptick in form since the 2025 FedExCup Playoffs, he\u2019s become a fixture in the Power Rankings. He\u2019s second on TOUR in fairways hit, 16th in Greens in Regulation and first in Proximity. T4 here in 2019 among four top 25s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "52215",
+            "firstName": "Robert",
+            "lastName": "MacIntyre",
+            "countryFlag": "SCO",
+            "countryName": "Scotland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52215.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Rested since a solo fourth at THE PLAYERS, the latest superb outcome for the 29-year-old with a consistently strong bag. Carded a trio of 69s here in last year\u2019s debut (T35). The Scot wouldn\u2019t mind if the wind blew a bit, either."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Drop his tee-to-green control on any course and he\u2019s a threat. Drop it at TPC San Antonio and he\u2019s a target. Went T15-T7 here in 2023 and 2024. The irony is that his last missed cut in a non-major happened to be here a year ago."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a series of stumbles to start the season, the Swede has rebounded nicely with a T20, a T3 and a T5 in his last three, all of which premier contests. Just 1-for-3 at TPC San Antonio with a T14 in 2024, but he has momentum."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The balanced Brit didn\u2019t debut at TPC San Antonio until 2024 but he\u2019s back for a third straight. Finished T7 as a first-timer before getting blown around in the winds of last year\u2019s finale. Top 10s in three of last four starts."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

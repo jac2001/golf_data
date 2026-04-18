@@ -1,0 +1,595 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Smith, Jordan","Wallace, Matt",18586,20706,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","Wallace, Matt",18586,20706,void,betcris,-116,-114,0.537037,0.53271,0.502022,0.497978,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","Wallace, Matt",18586,20706,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","Wallace, Matt",18586,20706,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","Gerard, Ryan",13126,29767,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","Gerard, Ryan",13126,29767,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","Gerard, Ryan",13126,29767,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","Gerard, Ryan",13126,29767,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Spaun, J.J.",14577,17536,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Spaun, J.J.",14577,17536,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Spaun, J.J.",14577,17536,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Griffin, Ben","Bridgeman, Jacob",24968,29433,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Griffin, Ben","Bridgeman, Jacob",24968,29433,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Griffin, Ben","Bridgeman, Jacob",24968,29433,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Griffin, Ben","Bridgeman, Jacob",24968,29433,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,datagolf,+133,-133,0.429185,0.570815,0.429185,0.570815,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Straka, Sepp","Gotterup, Chris",17511,27774,void,bet365,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Straka, Sepp","Gotterup, Chris",17511,27774,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Straka, Sepp","Gotterup, Chris",17511,27774,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Hovland, Viktor",14636,18841,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Hovland, Viktor",14636,18841,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Hovland, Viktor",14636,18841,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Hovland, Viktor",14636,18841,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,betonline,-102,-118,0.50495,0.541284,0.482636,0.517364,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Theegala, Sahith",22465,23014,void,bet365,+110,-130,0.47619,0.565217,0.457256,0.542744,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Theegala, Sahith",22465,23014,void,bovada,+110,-130,0.47619,0.565217,0.457256,0.542744,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Theegala, Sahith",22465,23014,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Hojgaard, Nicolai",12965,23602,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Hojgaard, Nicolai",12965,23602,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Hojgaard, Nicolai",12965,23602,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Hojgaard, Nicolai",12965,23602,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kitayama, Kurt","Clark, Wyndham",21891,23604,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kitayama, Kurt","Clark, Wyndham",21891,23604,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kitayama, Kurt","Clark, Wyndham",21891,23604,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Bhatia, Akshay",9771,26096,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Bhatia, Akshay",9771,26096,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Bhatia, Akshay",9771,26096,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Cantlay, Patrick",12294,15466,void,bet365,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Cantlay, Patrick",12294,15466,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Cantlay, Patrick",12294,15466,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Knapp, Jake",13900,19396,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Knapp, Jake",13900,19396,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Knapp, Jake",13900,19396,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Fitzpatrick, Matt",14578,17646,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Fitzpatrick, Matt",14578,17646,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Fitzpatrick, Matt",14578,17646,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,bet365,-160,+135,0.615385,0.425532,0.591195,0.408805,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,bovada,-160,+135,0.615385,0.425532,0.591195,0.408805,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,datagolf,-142,+142,0.586777,0.413223,0.586777,0.413223,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,separate bet offered,datagolf,+131,+117,0.4329,0.460829,0.484375,0.515625,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,separate bet offered,pointsbet,+120,-105,0.454545,0.512195,0.470183,0.529817,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,void,caesars,-112,-135,0.528302,0.574468,0.479068,0.520932,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,void,draftkings,-115,-108,0.534884,0.519231,0.507425,0.492575,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lipsky, David","Blanchet, Chandler",15980,24956,void,unibet,-107,-120,0.516908,0.545455,0.486565,0.513435,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,separate bet offered,bet365,-120,+137,0.545455,0.421941,0.563838,0.436162,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,separate bet offered,datagolf,-104,+161,0.509804,0.383142,0.570924,0.429076,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,separate bet offered,pointsbet,-125,+135,0.555556,0.425532,0.566265,0.433735,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,void,bovada,-140,+120,0.583333,0.454545,0.562044,0.437956,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,void,fanduel,-150,+110,0.6,0.47619,0.557522,0.442478,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Campbell, Brian","Highsmith, Joe",18628,28469,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,separate bet offered,bet365,+187,-170,0.348432,0.62963,0.356248,0.643752,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,separate bet offered,datagolf,+224,-148,0.308642,0.596774,0.340884,0.659116,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,separate bet offered,pointsbet,+170,-160,0.37037,0.615385,0.375723,0.624277,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,void,betmgm,+160,-200,0.384615,0.666667,0.365854,0.634146,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,void,bovada,+160,-195,0.384615,0.661017,0.36783,0.63217,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,void,caesars,+160,-200,0.384615,0.666667,0.365854,0.634146,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,void,datagolf,+193,-193,0.341297,0.658703,0.341297,0.658703,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,void,fanduel,+162,-200,0.381679,0.666667,0.364078,0.635922,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Schenk, Adam","Wallace, Matt",19477,20706,void,unibet,+170,-220,0.37037,0.6875,0.350109,0.649891,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,separate bet offered,datagolf,+121,+127,0.452489,0.440529,0.506696,0.493304,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,separate bet offered,pointsbet,-110,+115,0.52381,0.465116,0.529675,0.470325,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,void,draftkings,-110,-114,0.52381,0.53271,0.495788,0.504212,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,void,pinnacle,-116,-103,0.537037,0.507389,0.514193,0.485807,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","McCarthy, Denny",18586,19870,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,separate bet offered,bet365,-150,+162,0.6,0.381679,0.611198,0.388802,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,separate bet offered,datagolf,-124,+192,0.553571,0.342466,0.6178,0.3822,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,separate bet offered,pointsbet,-140,+155,0.583333,0.392157,0.59799,0.40201,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,void,betmgm,-182,+145,0.64539,0.408163,0.612584,0.387416,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,void,bovada,-170,+145,0.62963,0.408163,0.606701,0.393299,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,void,caesars,-180,+140,0.642857,0.416667,0.606742,0.393258,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,void,datagolf,-161,+161,0.616858,0.383142,0.616858,0.383142,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,void,draftkings,-172,+138,0.632353,0.420168,0.600798,0.399202,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Poston, J.T.","Fisk, Steven",21554,26657,void,unibet,-167,+130,0.625468,0.434783,0.589925,0.410075,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,separate bet offered,datagolf,+128,+119,0.438596,0.456621,0.489933,0.510067,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,separate bet offered,pointsbet,+115,-105,0.465116,0.512195,0.475914,0.524086,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,void,draftkings,-104,-122,0.509804,0.54955,0.481241,0.518759,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Glover, Lucas","Rodgers, Patrick",7399,16283,void,unibet,-103,-125,0.507389,0.555556,0.477343,0.522657,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,separate bet offered,bet365,-125,+137,0.555556,0.421941,0.568345,0.431655,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,separate bet offered,datagolf,-108,+166,0.519231,0.37594,0.580036,0.419964,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,separate bet offered,pointsbet,-130,+140,0.565217,0.416667,0.575646,0.424354,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,void,bovada,-155,+120,0.607843,0.454545,0.572148,0.427852,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,void,caesars,-165,+127,0.622642,0.440529,0.585646,0.414354,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,void,datagolf,-138,+138,0.579832,0.420168,0.579832,0.420168,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,void,draftkings,-152,+122,0.603175,0.45045,0.572476,0.427524,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,void,fanduel,-150,+125,0.6,0.444444,0.574468,0.425532,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,void,pinnacle,-147,+123,0.595142,0.44843,0.570293,0.429707,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hisatsune, Ryo","Brennan, Michael",22760,29197,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,separate bet offered,datagolf,+121,+124,0.452489,0.446429,0.503371,0.496629,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,separate bet offered,pointsbet,+120,-105,0.454545,0.512195,0.470183,0.529817,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,void,caesars,-112,-135,0.528302,0.574468,0.479068,0.520932,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hoge, Tom","Vilips, Karl",15575,24304,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,separate bet offered,bet365,-125,+137,0.555556,0.421941,0.568345,0.431655,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,separate bet offered,datagolf,-121,+185,0.547511,0.350877,0.609437,0.390563,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,separate bet offered,pointsbet,-130,+140,0.565217,0.416667,0.575646,0.424354,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,void,betmgm,-161,+130,0.616858,0.434783,0.586567,0.413433,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,void,bovada,-150,+125,0.6,0.444444,0.574468,0.425532,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,void,caesars,-170,+130,0.62963,0.434783,0.591528,0.408472,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,void,datagolf,-156,+156,0.609375,0.390625,0.609375,0.390625,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,void,draftkings,-158,+126,0.612403,0.442478,0.580542,0.419458,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,void,pinnacle,-176,+145,0.637681,0.408163,0.609729,0.390271,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Pendrith, Taylor",16841,17780,void,unibet,-167,+130,0.625468,0.434783,0.589925,0.410075,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,separate bet offered,bet365,-105,+115,0.512195,0.465116,0.524086,0.475914,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,separate bet offered,datagolf,+128,+119,0.438596,0.456621,0.489933,0.510067,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,separate bet offered,pointsbet,+100,+115,0.5,0.465116,0.518072,0.481928,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,void,draftkings,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","McCarty, Matt",26649,28635,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,separate bet offered,datagolf,+183,-119,0.353357,0.543379,0.394048,0.605952,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,separate bet offered,pointsbet,+135,-120,0.425532,0.545455,0.438247,0.561753,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,void,betmgm,+120,-149,0.454545,0.598394,0.431692,0.568308,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,void,bovada,+120,-140,0.454545,0.583333,0.437956,0.562044,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,void,caesars,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,void,datagolf,+154,-154,0.393701,0.606299,0.393701,0.606299,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,void,draftkings,+118,-148,0.458716,0.596774,0.4346,0.5654,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,void,fanduel,+110,-150,0.47619,0.6,0.442478,0.557522,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,void,pinnacle,+141,-171,0.414938,0.630996,0.396715,0.603285,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Gerard, Ryan",11676,29767,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,separate bet offered,bet365,+120,-110,0.454545,0.52381,0.464602,0.535398,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,separate bet offered,datagolf,+140,+110,0.416667,0.47619,0.466667,0.533333,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,separate bet offered,pointsbet,+120,+100,0.454545,0.5,0.47619,0.52381,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,void,betmgm,+105,-130,0.487805,0.565217,0.463243,0.536757,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,void,draftkings,-102,-124,0.50495,0.553571,0.477034,0.522966,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,void,pinnacle,+102,-122,0.49505,0.54955,0.473913,0.526087,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","English, Harris",13126,14577,void,unibet,+104,-132,0.490196,0.568966,0.462815,0.537185,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,separate bet offered,datagolf,+103,+150,0.492611,0.4,0.551876,0.448124,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,separate bet offered,pointsbet,-110,+125,0.52381,0.444444,0.540984,0.459016,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,betcris,-140,+110,0.583333,0.47619,0.550562,0.449438,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,draftkings,-132,+106,0.568966,0.485437,0.539609,0.460391,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,pinnacle,-128,+107,0.561404,0.483092,0.537488,0.462512,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Griffin, Ben",23323,24968,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,separate bet offered,datagolf,+121,+126,0.452489,0.442478,0.505593,0.494407,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,separate bet offered,pointsbet,+105,+105,0.487805,0.487805,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Im, Sungjae",8825,17488,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,separate bet offered,datagolf,+129,+119,0.436681,0.456621,0.488839,0.511161,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,separate bet offered,pointsbet,+105,+105,0.487805,0.487805,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,draftkings,-106,-118,0.514563,0.541284,0.487346,0.512654,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,pinnacle,-104,-115,0.509804,0.534884,0.487997,0.512003,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Bridgeman, Jacob",17536,29433,void,unibet,-107,-120,0.516908,0.545455,0.486565,0.513435,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,separate bet offered,datagolf,+163,-107,0.380228,0.516908,0.423824,0.576176,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,separate bet offered,pointsbet,+135,-125,0.425532,0.555556,0.433735,0.566265,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,betmgm,+120,-149,0.454545,0.598394,0.431692,0.568308,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,bovada,+115,-135,0.465116,0.574468,0.447406,0.552594,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,caesars,+122,-155,0.45045,0.607843,0.425638,0.574362,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,datagolf,+136,-136,0.423729,0.576271,0.423729,0.576271,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,draftkings,+126,-158,0.442478,0.612403,0.419458,0.580542,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,fanduel,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,pinnacle,+126,-151,0.442478,0.601594,0.4238,0.5762,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,separate bet offered,datagolf,+102,+149,0.49505,0.401606,0.552106,0.447894,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,separate bet offered,pointsbet,-105,+115,0.512195,0.465116,0.524086,0.475914,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,draftkings,-128,+102,0.561404,0.49505,0.531404,0.468596,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,pinnacle,-136,+114,0.576271,0.46729,0.552216,0.447784,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,unibet,-125,-103,0.555556,0.507389,0.522657,0.477343,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,separate bet offered,bet365,+120,-110,0.454545,0.52381,0.464602,0.535398,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,separate bet offered,datagolf,+157,-104,0.389105,0.509804,0.432864,0.567136,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,separate bet offered,pointsbet,+135,-120,0.425532,0.545455,0.438247,0.561753,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,caesars,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,datagolf,+131,-131,0.4329,0.5671,0.4329,0.5671,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,draftkings,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,pinnacle,+102,-122,0.49505,0.54955,0.473913,0.526087,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,unibet,+108,-136,0.480769,0.576271,0.454826,0.545174,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,separate bet offered,bet365,+125,-115,0.444444,0.534884,0.453826,0.546174,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,separate bet offered,datagolf,+168,-111,0.373134,0.526066,0.414962,0.585038,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,separate bet offered,pointsbet,+120,-110,0.454545,0.52381,0.464602,0.535398,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,bovada,+110,-130,0.47619,0.565217,0.457256,0.542744,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,datagolf,+141,-141,0.414938,0.585062,0.414938,0.585062,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,draftkings,+105,-132,0.487805,0.568966,0.4616,0.5384,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,pinnacle,+106,-126,0.485437,0.557522,0.465442,0.534558,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,separate bet offered,datagolf,+169,-110,0.371747,0.52381,0.415102,0.584898,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,separate bet offered,pointsbet,+155,-150,0.392157,0.6,0.395257,0.604743,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,betmgm,+135,-167,0.425532,0.625468,0.404883,0.595117,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,caesars,+115,-145,0.465116,0.591837,0.440054,0.559946,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,datagolf,+141,-141,0.414938,0.585062,0.414938,0.585062,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,draftkings,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,fanduel,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,pinnacle,+131,-157,0.4329,0.610895,0.414737,0.585263,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,separate bet offered,datagolf,+108,+140,0.480769,0.416667,0.535714,0.464286,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,separate bet offered,pointsbet,-115,+125,0.534884,0.444444,0.546174,0.453826,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,betmgm,-143,+115,0.588477,0.465116,0.558543,0.441457,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,draftkings,-134,+106,0.57265,0.485437,0.541212,0.458788,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,separate bet offered,datagolf,+163,-107,0.380228,0.516908,0.423824,0.576176,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,separate bet offered,pointsbet,+135,-120,0.425532,0.545455,0.438247,0.561753,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,void,betmgm,+115,-143,0.465116,0.588477,0.441457,0.558543,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,void,caesars,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,void,datagolf,+136,-136,0.423729,0.576271,0.423729,0.576271,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,void,draftkings,+122,-152,0.45045,0.603175,0.427524,0.572476,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Vegas, Jhonattan","Coody, Pierceson",13508,28309,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,separate bet offered,datagolf,+136,+113,0.423729,0.469484,0.474388,0.525612,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,separate bet offered,pointsbet,+110,+105,0.47619,0.487805,0.493976,0.506024,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,void,draftkings,-105,-120,0.512195,0.545455,0.484277,0.515723,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,void,pinnacle,-107,-111,0.516908,0.526066,0.49561,0.50439,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fox, Ryan","Kim, Michael",11889,17543,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,separate bet offered,datagolf,-112,+173,0.528302,0.3663,0.590544,0.409456,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,separate bet offered,pointsbet,-125,+135,0.555556,0.425532,0.566265,0.433735,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,void,caesars,-155,+122,0.607843,0.45045,0.574362,0.425638,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,void,datagolf,-144,+144,0.590164,0.409836,0.590164,0.409836,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,void,draftkings,-150,+118,0.6,0.458716,0.566724,0.433276,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,void,fanduel,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Mouw, William",14704,29770,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,separate bet offered,bet365,-163,+180,0.619772,0.357143,0.634418,0.365582,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,separate bet offered,datagolf,-136,+205,0.576271,0.327869,0.637369,0.362631,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,separate bet offered,pointsbet,-160,+170,0.615385,0.37037,0.624277,0.375723,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,void,bovada,-190,+155,0.655172,0.392157,0.625565,0.374435,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,void,caesars,-200,+160,0.666667,0.384615,0.634146,0.365854,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,void,datagolf,-176,+176,0.637681,0.362319,0.637681,0.362319,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,void,draftkings,-188,+150,0.652778,0.4,0.620053,0.379947,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,void,fanduel,-200,+162,0.666667,0.381679,0.635922,0.364078,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Higgo, Garrick",17606,24342,void,unibet,-220,+170,0.6875,0.37037,0.649891,0.350109,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,separate bet offered,datagolf,+178,-116,0.359712,0.537037,0.401129,0.598871,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,separate bet offered,pointsbet,+150,-130,0.4,0.565217,0.414414,0.585586,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,void,betmgm,+130,-161,0.434783,0.616858,0.413433,0.586567,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,void,bovada,+120,-140,0.454545,0.583333,0.437956,0.562044,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,void,datagolf,+149,-149,0.401606,0.598394,0.401606,0.598394,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,void,draftkings,+122,-154,0.45045,0.606299,0.42626,0.57374,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,void,fanduel,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Valimaki, Sami","Stevens, Sam",23816,25569,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,separate bet offered,datagolf,+118,+128,0.458716,0.438596,0.511211,0.488789,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,separate bet offered,pointsbet,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,void,draftkings,-124,-102,0.553571,0.50495,0.522966,0.477034,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Kitayama, Kurt",12965,21891,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,separate bet offered,datagolf,+101,+152,0.497512,0.396825,0.556291,0.443709,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,separate bet offered,pointsbet,-110,+125,0.52381,0.444444,0.540984,0.459016,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,void,draftkings,-128,+102,0.561404,0.49505,0.531404,0.468596,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,void,pinnacle,-132,+111,0.568966,0.473934,0.545561,0.454439,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Hojgaard, Nicolai",10419,23602,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,separate bet offered,bet365,-160,+175,0.615385,0.363636,0.628571,0.371429,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,separate bet offered,datagolf,-151,+227,0.601594,0.30581,0.662983,0.337017,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,separate bet offered,pointsbet,-160,+160,0.615385,0.384615,0.615385,0.384615,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,void,betmgm,-200,+160,0.666667,0.384615,0.634146,0.365854,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,void,bovada,-185,+155,0.649123,0.392157,0.623389,0.376611,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,void,caesars,-250,+190,0.714286,0.344828,0.674419,0.325581,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,void,datagolf,-197,+197,0.6633,0.3367,0.6633,0.3367,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,void,draftkings,-192,+142,0.657534,0.413223,0.614083,0.385917,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,void,fanduel,-200,+162,0.666667,0.381679,0.635922,0.364078,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Potgieter, Aldrich",23604,27900,void,unibet,-220,+170,0.6875,0.37037,0.649891,0.350109,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,separate bet offered,datagolf,+115,+133,0.465116,0.429185,0.520089,0.479911,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,void,caesars,-145,-110,0.591837,0.52381,0.530488,0.469512,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,void,draftkings,-120,-105,0.545455,0.512195,0.515723,0.484277,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Smotherman, Austin",14502,22985,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,separate bet offered,datagolf,-100,+154,0.5,0.393701,0.559471,0.440529,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,void,betmgm,-143,+115,0.588477,0.465116,0.558543,0.441457,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,void,draftkings,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,void,pinnacle,-142,+119,0.586777,0.456621,0.562371,0.437629,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Hall, Harry","Castillo, Ricky",27194,27819,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,separate bet offered,datagolf,+184,-119,0.352113,0.543379,0.393206,0.606794,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,void,betmgm,+135,-167,0.425532,0.625468,0.404883,0.595117,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,void,bovada,+120,-140,0.454545,0.583333,0.437956,0.562044,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,void,caesars,+130,-170,0.434783,0.62963,0.408472,0.591528,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,void,datagolf,+154,-154,0.393701,0.606299,0.393701,0.606299,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,void,draftkings,+128,-162,0.438596,0.618321,0.414977,0.585023,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,void,pinnacle,+141,-170,0.414938,0.62963,0.397234,0.602766,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Kim, Si Woo",13872,14609,void,unibet,+126,-162,0.442478,0.618321,0.417118,0.582882,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,separate bet offered,bet365,-138,+150,0.579832,0.4,0.591767,0.408233,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,separate bet offered,datagolf,-124,+189,0.553571,0.346021,0.615358,0.384642,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,void,bovada,-160,+130,0.615385,0.434783,0.585987,0.414013,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,void,caesars,-180,+140,0.642857,0.416667,0.606742,0.393258,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,void,datagolf,-160,+160,0.615385,0.384615,0.615385,0.384615,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,void,draftkings,-160,+128,0.615385,0.438596,0.583867,0.416133,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,void,fanduel,-188,+138,0.652778,0.420168,0.608398,0.391602,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,void,pinnacle,-174,+144,0.635036,0.409836,0.607765,0.392235,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"McNealy, Maverick","Novak, Andrew",18634,23475,void,unibet,-167,+130,0.625468,0.434783,0.589925,0.410075,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,separate bet offered,datagolf,+181,-118,0.355872,0.541284,0.396667,0.603333,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,betmgm,+140,-175,0.416667,0.636364,0.395683,0.604317,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,caesars,+130,-170,0.434783,0.62963,0.408472,0.591528,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,datagolf,+152,-152,0.396825,0.603175,0.396825,0.603175,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,draftkings,+138,-174,0.420168,0.635036,0.398186,0.601814,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,unibet,+126,-162,0.442478,0.618321,0.417118,0.582882,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,separate bet offered,bet365,-138,+150,0.579832,0.4,0.591767,0.408233,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,separate bet offered,datagolf,-109,+169,0.521531,0.371747,0.583839,0.416161,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,void,betmgm,-167,+135,0.625468,0.425532,0.595117,0.404883,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,void,bovada,-160,+130,0.615385,0.434783,0.585987,0.414013,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,void,caesars,-180,+140,0.642857,0.416667,0.606742,0.393258,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,void,datagolf,-141,+141,0.585062,0.414938,0.585062,0.414938,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,void,draftkings,-160,+128,0.615385,0.438596,0.583867,0.416133,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,void,pinnacle,-150,+125,0.6,0.444444,0.574468,0.425532,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Conners, Corey",15466,17576,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,separate bet offered,datagolf,+165,-107,0.377358,0.516908,0.421975,0.578025,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,void,betmgm,+120,-149,0.454545,0.598394,0.431692,0.568308,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,void,bovada,+115,-135,0.465116,0.574468,0.447406,0.552594,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,void,caesars,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,void,datagolf,+137,-137,0.421941,0.578059,0.421941,0.578059,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,void,draftkings,+115,-144,0.465116,0.590164,0.440751,0.559249,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Morikawa, Collin",13900,22085,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,separate bet offered,datagolf,+122,+126,0.45045,0.442478,0.504464,0.495536,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,draftkings,-110,-115,0.52381,0.534884,0.49477,0.50523,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,unibet,-107,-120,0.516908,0.545455,0.486565,0.513435,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,separate bet offered,datagolf,-103,+157,0.507389,0.389105,0.56597,0.43403,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,void,betonline,-140,+117,0.583333,0.460829,0.558661,0.441339,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,void,datagolf,-131,+131,0.5671,0.4329,0.5671,0.4329,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,void,draftkings,-142,+114,0.586777,0.46729,0.556679,0.443321,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,void,fanduel,-150,+110,0.6,0.47619,0.557522,0.442478,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,void,pinnacle,-143,+120,0.588477,0.454545,0.564204,0.435796,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Burns, Sam",12294,19483,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,separate bet offered,bet365,+150,-140,0.4,0.583333,0.40678,0.59322,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,separate bet offered,datagolf,+166,-109,0.37594,0.521531,0.418888,0.581112,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,betonline,+135,-163,0.425532,0.619772,0.407089,0.592911,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,bovada,+130,-160,0.434783,0.615385,0.414013,0.585987,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,caesars,+140,-180,0.416667,0.642857,0.393258,0.606742,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,datagolf,+139,-139,0.41841,0.58159,0.41841,0.58159,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,draftkings,+140,-175,0.416667,0.636364,0.395683,0.604317,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,pinnacle,+126,-151,0.442478,0.601594,0.4238,0.5762,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,unibet,+130,-167,0.434783,0.625468,0.410075,0.589925,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,separate bet offered,datagolf,+133,+115,0.429185,0.465116,0.479911,0.520089,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,draftkings,-106,-118,0.514563,0.541284,0.487346,0.512654,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,pinnacle,+100,-119,0.5,0.543379,0.479212,0.520788,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,unibet,-103,-125,0.507389,0.555556,0.477343,0.522657,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,separate bet offered,datagolf,+120,+125,0.454545,0.444444,0.505618,0.494382,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,draftkings,-106,-118,0.514563,0.541284,0.487346,0.512654,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Homa, Max","Yellamaraju, Sudarshan",17538,29925,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Wallace, Matt","Poston, J.T.",20706,21554,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Wallace, Matt","Poston, J.T.",20706,21554,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","Brennan, Michael",18586,29197,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Smith, Jordan","Brennan, Michael",18586,29197,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Hisatsune, Ryo",16841,22760,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Hisatsune, Ryo",16841,22760,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lee, Min Woo","Hisatsune, Ryo",16841,22760,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Pendrith, Taylor","McCarty, Matt",17780,28635,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Pendrith, Taylor","McCarty, Matt",17780,28635,void,datagolf,+125,-125,0.444444,0.555556,0.444444,0.555556,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,draftkings,-110,-118,0.52381,0.541284,0.491797,0.508203,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Taylor, Nick",11676,13126,void,betonline,+127,-153,0.440529,0.604743,0.421449,0.578551,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Taylor, Nick",11676,13126,void,datagolf,+143,-143,0.411523,0.588477,0.411523,0.588477,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Straka, Sepp","MacIntyre, Robert",17511,23323,void,betonline,+102,-122,0.49505,0.54955,0.473913,0.526087,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Straka, Sepp","MacIntyre, Robert",17511,23323,void,datagolf,+130,-130,0.434783,0.565217,0.434783,0.565217,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,void,datagolf,+125,-125,0.444444,0.555556,0.444444,0.555556,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Im, Sungjae","Spaun, J.J.",17488,17536,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Im, Sungjae","Spaun, J.J.",17488,17536,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Penge, Marco",12577,22465,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Penge, Marco",12577,22465,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Theegala, Sahith",17606,23014,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Theegala, Sahith",17606,23014,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Stevens, Sam",12965,25569,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fowler, Rickie","Stevens, Sam",12965,25569,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kitayama, Kurt","Hojgaard, Nicolai",21891,23602,void,betonline,+101,-121,0.497512,0.547511,0.476078,0.523922,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kitayama, Kurt","Hojgaard, Nicolai",21891,23602,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kitayama, Kurt","Hojgaard, Nicolai",21891,23602,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Bradley, Keegan",10419,13872,void,betonline,-132,+110,0.568966,0.47619,0.544383,0.455617,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Bradley, Keegan",10419,13872,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Bhatia, Akshay",23604,26096,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Bhatia, Akshay",23604,26096,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Clark, Wyndham","Bhatia, Akshay",23604,26096,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Si Woo","McNealy, Maverick",14609,18634,void,betcris,-122,-108,0.54955,0.519231,0.514184,0.485816,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Si Woo","McNealy, Maverick",14609,18634,void,betonline,-123,+103,0.55157,0.492611,0.528232,0.471768,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Si Woo","McNealy, Maverick",14609,18634,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,betonline,-102,-118,0.50495,0.541284,0.482636,0.517364,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Lowry, Shane",9771,13900,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Lowry, Shane",9771,13900,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Lowry, Shane",9771,13900,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Henley, Russell",12294,14578,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Henley, Russell",12294,14578,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Gotterup, Chris",8825,27774,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Gotterup, Chris",8825,27774,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Gotterup, Chris",8825,27774,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Schauffele, Xander",17646,19895,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Schauffele, Xander",17646,19895,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Straka, Sepp","Hovland, Viktor",17511,18841,void,betcris,+107,-137,0.483092,0.578059,0.455253,0.544747,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Straka, Sepp","Hovland, Viktor",17511,18841,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Straka, Sepp","Hovland, Viktor",17511,18841,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"McCarthy, Denny","Poston, J.T.",19870,21554,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"McCarthy, Denny","Poston, J.T.",19870,21554,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Pendrith, Taylor",11676,17780,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Finau, Tony","Pendrith, Taylor",11676,17780,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Im, Sungjae",14577,17488,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Im, Sungjae",14577,17488,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Theegala, Sahith",12577,23014,void,betcris,+107,-137,0.483092,0.578059,0.455253,0.544747,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Woodland, Gary","Theegala, Sahith",12577,23014,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Michael","Coody, Pierceson",17543,28309,void,betcris,-129,-101,0.563319,0.502488,0.528538,0.471462,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Michael","Coody, Pierceson",17543,28309,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Kitayama, Kurt",14704,21891,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Putnam, Andrew","Kitayama, Kurt",14704,21891,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Stevens, Sam",17606,25569,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Berger, Daniel","Stevens, Sam",17606,25569,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Clark, Wyndham",10419,23604,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Clark, Wyndham",10419,23604,void,datagolf,-131,+131,0.5671,0.4329,0.5671,0.4329,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Castillo, Ricky",14502,27819,void,betcris,-134,+104,0.57265,0.490196,0.538789,0.461211,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cauley, Bud","Castillo, Ricky",14502,27819,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Novak, Andrew","Hall, Harry",23475,27194,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Novak, Andrew","Hall, Harry",23475,27194,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,betcris,-116,-114,0.537037,0.53271,0.502022,0.497978,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Bhatia, Akshay",13900,26096,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","Bhatia, Akshay",13900,26096,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Scheffler, Scottie",14578,18417,void,betcris,+132,-166,0.431034,0.62406,0.408527,0.591473,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Scheffler, Scottie",14578,18417,void,datagolf,+143,-143,0.411523,0.588477,0.411523,0.588477,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Henley, Russell","Scheffler, Scottie",14578,18417,void,draftkings,+142,-186,0.413223,0.65035,0.388524,0.611476,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,draftkings,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,betcris,-143,+113,0.588477,0.469484,0.556237,0.443763,False,True,RBC Heritage,2026-04-16 00:33:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,datagolf,-144,+144,0.590164,0.409836,0.590164,0.409836,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Poston, J.T.",8825,21554,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Harman, Brian","Poston, J.T.",8825,21554,void,draftkings,-114,-114,0.53271,0.53271,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","Hisatsune, Ryo",13126,22760,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Taylor, Nick","Hisatsune, Ryo",13126,22760,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Lee, Min Woo",14577,16841,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"English, Harris","Lee, Min Woo",14577,16841,void,draftkings,-114,-114,0.53271,0.53271,0.5,0.5,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Young, Cameron",23323,26651,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"MacIntyre, Robert","Young, Cameron",23323,26651,void,draftkings,+102,-132,0.49505,0.568966,0.465266,0.534734,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Gotterup, Chris",17536,27774,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spaun, J.J.","Gotterup, Chris",17536,27774,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Straka, Sepp",14139,17511,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Thomas, Justin","Straka, Sepp",14139,17511,void,draftkings,-116,-114,0.537037,0.53271,0.502022,0.497978,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Aberg, Ludvig",14636,23950,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Spieth, Jordan","Aberg, Ludvig",14636,23950,void,draftkings,-104,-126,0.509804,0.557522,0.477646,0.522354,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Theegala, Sahith","Hojgaard, Nicolai",23014,23602,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Theegala, Sahith","Hojgaard, Nicolai",23014,23602,void,draftkings,-115,-114,0.534884,0.53271,0.501018,0.498982,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Kitayama, Kurt",10419,21891,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Noren, Alex","Kitayama, Kurt",10419,21891,void,draftkings,-128,-102,0.561404,0.50495,0.52647,0.47353,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Si Woo","Fitzpatrick, Matt",14609,17646,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Kim, Si Woo","Fitzpatrick, Matt",14609,17646,void,draftkings,-102,-128,0.50495,0.561404,0.47353,0.52647,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","McNealy, Maverick",13900,18634,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Lowry, Shane","McNealy, Maverick",13900,18634,void,draftkings,-105,-124,0.512195,0.553571,0.480588,0.519412,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Knapp, Jake",15466,19396,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Cantlay, Patrick","Knapp, Jake",15466,19396,void,draftkings,-134,+102,0.57265,0.49505,0.53634,0.46366,False,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Burns, Sam",9771,19483,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,RBC Heritage,2026-04-16 00:33:00 UTC
+"Day, Jason","Burns, Sam",9771,19483,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,RBC Heritage,2026-04-16 00:33:00 UTC

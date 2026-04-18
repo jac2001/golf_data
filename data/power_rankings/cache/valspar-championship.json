@@ -1,0 +1,352 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Valspar Championship",
+      "tableTitle": "Power Rankings for Valspar Championship",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "66417",
+            "firstName": "Blades",
+            "lastName": "Brown",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66417.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 18-year-old is in the field via his solo third at the Puerto Rico Open where he carded four sub-70s. Also placed T18 at The American Express, so he needs a solo fifth at Copperhead to qualify for "
+                },
+                {
+                  "value": "Special Temporary Membership"
+                },
+                {
+                  "value": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "59440",
+            "firstName": "Ricky",
+            "lastName": "Castillo",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59440.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The recent breakthrough champion of the Puerto Rico Open hasn\u2019t missed a beat all season, cashing in all six starts with a balanced skill set. Dazzled at the Copperhead Course last year with a T12 after sharing the opening-round lead."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "28723",
+            "firstName": "John",
+            "lastName": "Parry",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28723.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "A debutant hasn\u2019t won the Valspar Championship since Gary Woodland in 2011, but the Englishman has been a quick study in his PGA TOUR rookie season. He\u2019s 6-for-6 with a T8 in his last start and leads the circuit in greens hit."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "36689",
+            "firstName": "Brooks",
+            "lastName": "Koepka",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36689.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After returning to the PGA TOUR on the West Coast, it has been no surprise that he\u2019s locked in at home in Florida with a T9 and a T13. His putting remains the weakness, but his tee-to-green is on point. T12 in last trip in 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "50095",
+            "firstName": "Austin",
+            "lastName": "Smotherman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 31-year-old continues to excel in his return as a Korn Ferry Tour grad. Co-led THE PLAYERS with an opening-round 67, finished T13 and led the field in SG: Off-the-Tee and greens hit. He\u2019s 2-for-2 at Copperhead with a T25 in 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "52453",
+            "firstName": "Nicolai",
+            "lastName": "H\u00f8jgaard",
+            "countryFlag": "DEN",
+            "countryName": "Denmark",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52453.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 25-year-old Dane hasn\u2019t rested on the Florida Swing, and why would he? After bridging the holidays with three top fives among six top 25s worldwide, he\u2019s gone T6-T24-T27 in the Sunshine State. Sixth in adjusted scoring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "51287",
+            "firstName": "Ryo",
+            "lastName": "Hisatsune",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51287.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Continues to check all boxes at just 23 years of age. A personal-best T13 at THE PLAYERS was his fourth top 15 of the season. Ranks third in greens hit, eighth in SG: Tee-to-Green and 23rd in adjusted scoring. T4 here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "51634",
+            "firstName": "Sahith",
+            "lastName": "Theegala",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51634.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Settled for a T32 at THE PLAYERS, but he opened as a co-leader with a 5-under 67 that was an extension of season-long sterling form. Now 8-for-8 with three top 10s among five top 25s. Debuted here with a T7 in 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "39997",
+            "firstName": "Corey",
+            "lastName": "Conners",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39997.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Not that his M.O. as a world-class ball-striker doesn\u2019t have value everywhere, but it\u2019s expected to play up at Copperhead. And it has. In three trips, he\u2019s placed T16, T21 and T8. Now fresh off a T13 at THE PLAYERS fueled by it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "46717",
+            "firstName": "Viktor",
+            "lastName": "Hovland",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46717.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It was at Copperhead a year ago when he reignited after extended inconsistency. He hasn\u2019t relented, making the cut in every start worldwide since. Three top 15s this season with T13s in his last two. Also placed T3 here in 2021."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "56630",
+            "firstName": "Akshay",
+            "lastName": "Bhatia",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_56630.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His T17 at Copperhead last year is as much a reflection of how his game evolved into its full-formed, well-rounded version as any site where he\u2019s had success. The recent champ at Bay Hill piled on with a T13 at THE PLAYERS."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "33448",
+            "firstName": "Justin",
+            "lastName": "Thomas",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33448.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "No matter his r\u00e9sum\u00e9, it was beyond impressive if not unprecedented for him to hang on for a T8 at THE PLAYERS after returning from a microdiscectomy within four months. Runner-up last year among six top 20s here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The dark irony of his closing bogey en route to solo second at THE PLAYERS is that he led the field in both fairways hit and total driving. In the macro, it was the latest in a litany of dazzling performances. T5 here in 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a T5, a pair of T12s and a scoring average of 69 in three appearances, Copperhead fears "
+                },
+                {
+                  "value": "him"
+                },
+                {
+                  "value": ". Now he arrives with a solo third at TPC Sawgrass fueled by elite accuracy and distance control on approach. Four straight top 25s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "60004",
+            "firstName": "Jacob",
+            "lastName": "Bridgeman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60004.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He did it again, this time at TPC Sawgrass where he led the field in SG: Putting en route to a T5 and return to the top of the FedExCup standings. Four top 10s among seven top 20s on the season. Solo third here a year ago."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -211,6 +211,8 @@ SCORE_FEATURES = [
     "dg_fit_total", "predictive_sg_weighted",
     "world_rank",
     "world_rank_log",
+    # DG approach-skill feature (added 2026-04; activate after retrain)
+    # "approach_skill_sg",
 ]
 
 
@@ -1076,9 +1078,29 @@ def add_course_performance_features(features_df: pd.DataFrame, tournament_name: 
     }
     course_subset = course_subset.rename(columns=rename_map)
 
+    # Deduplicate course_subset to one row per player before merging.
+    # player_course_performance.csv can have multiple rows per player per course
+    # (e.g., separate records for 2023 and 2025 appearances). Merging without
+    # deduplication produces cartesian-product duplicates in the output.
+    # Sort by last_season descending so keep='first' retains the most recent row.
+    if "last_season" in course_subset.columns:
+        course_subset = (
+            course_subset
+            .sort_values("last_season", ascending=False)
+            .drop_duplicates(subset=["player_id"], keep="first")
+            .reset_index(drop=True)
+        )
+    else:
+        course_subset = course_subset.drop_duplicates(subset=["player_id"], keep="first").reset_index(drop=True)
+
     # Merge with features
     original_len = len(features_df)
     features_df = features_df.merge(course_subset, on="player_id", how="left")
+
+    # Guard: if merge accidentally multiplied rows, deduplicate and warn
+    if len(features_df) != original_len:
+        print(f"    WARNING: course merge changed row count {original_len} → {len(features_df)}. Deduplicating.")
+        features_df = features_df.drop_duplicates(subset=["player_id"], keep="first").reset_index(drop=True)
 
     # Fill missing values (players without course history)
     course_cols = [c for c in features_df.columns if c.startswith("course_")]
@@ -1537,15 +1559,21 @@ def add_situational_features(
         defending_pid = str(int(float(winner_row["player_id"])))
 
     # ── 3. Pre-major flag (same value for all players this week) ─────────────
+    # IMPORTANT: PGA R-IDs are NOT in calendar order (e.g. R2026010 plays before
+    # R2026009). Use start_date comparison — never tournament_id string comparison.
     pre_major_flag = 0
     schedule_path = DATA_DIR / "raw" / "schedule_2026.csv"
     if schedule_path.exists() and tournament_id:
         try:
             sched = pd.read_csv(schedule_path)
-            future = sched[sched["tournament_id"] > tournament_id].sort_values("tournament_id")
-            if not future.empty:
-                next_type = str(future.iloc[0].get("tournament_type", "")).strip().title()
-                pre_major_flag = 1 if next_type == "Major" else 0
+            sched["start_date"] = pd.to_datetime(sched["start_date"], errors="coerce")
+            cur_row = sched[sched["tournament_id"] == tournament_id]
+            if not cur_row.empty:
+                cur_date = cur_row.iloc[0]["start_date"]
+                future = sched[sched["start_date"] > cur_date].sort_values("start_date")
+                if not future.empty:
+                    next_type = str(future.iloc[0].get("tournament_type", "")).strip().title()
+                    pre_major_flag = 1 if next_type == "Major" else 0
         except Exception:
             pass
 
@@ -2294,6 +2322,18 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
         features_df, tournament_name, master_df, tournament_id=tournament_id
     )
 
+    # LIV players: active on LIV Tour, only appear in PGA Tour data via majors.
+    # Their form_stats event count (0-2 PGA Tour starts) vastly understates their
+    # actual competitive activity. Bypass the SG regression penalty for them.
+    # Update this list as players return to PGA Tour (e.g. Koepka returned in 2026).
+    _LIV_PLAYER_NAMES = {
+        "DeChambeau, Bryson", "Johnson, Dustin", "Rahm, Jon",
+        "Garcia, Sergio", "Reed, Patrick", "Westwood, Lee",
+        "Gooch, Talor", "Niemann, Joaquin", "Hatton, Tyrrell",
+        "Smith, Cameron", "Wolff, Matthew", "Ancer, Abraham",
+        "Scott, Adam", "Na, Kevin",
+    }
+
     # SG EVENT COUNT PENALTY: Regression-to-mean for players with < 10 events
     # Prevents hot-but-shallow SG stats from over-ranking low-sample players
     try:
@@ -2312,9 +2352,33 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                     .rename(columns={'tournament_id': 'sg_event_count'})
                 )
                 features_df = features_df.merge(_event_counts, on='player_id', how='left')
-                features_df['sg_event_count'] = features_df['sg_event_count'].fillna(5)
-                _MIN_EVENTS = 10
-                _conf = (features_df['sg_event_count'] / _MIN_EVENTS).clip(0, 1)
+                # Players with no form_stats entry default to half the field median
+                # (better than 5, which was too aggressive early in the season)
+                _field_median_events = features_df['sg_event_count'].median()
+                features_df['sg_event_count'] = features_df['sg_event_count'].fillna(
+                    max(1, _field_median_events * 0.5)
+                )
+
+                # Dynamic threshold: target is 1.5x the field median
+                # Rationale: players significantly below the typical active player this
+                # week get penalized; players at or above the median do not.
+                # This adapts automatically to early-season (median=4 → threshold=6)
+                # vs mid-season (median=12 → threshold=18) without needing re-tuning.
+                _MIN_EVENTS = max(5, _field_median_events * 1.5)
+
+                # Confidence floor of 0.30: even players with very few events retain
+                # 30% weight on their actual stats (the model already has career context
+                # from training; we don't want to fully erase this week's stats).
+                _CONF_FLOOR = 0.30
+                _conf = (_CONF_FLOOR + (1 - _CONF_FLOOR) * (features_df['sg_event_count'] / _MIN_EVENTS)).clip(_CONF_FLOOR, 1)
+
+                # LIV players get confidence=1.0 — their 0-2 PGA Tour starts this
+                # season don't reflect their true form (they're competing on LIV
+                # full-time; we only see them in majors). Don't regress their stats.
+                _liv_mask = features_df['player_name'].isin(_LIV_PLAYER_NAMES)
+                _conf = _conf.where(~_liv_mask, 1.0)
+                _n_liv_exempted = int(_liv_mask.sum())
+
                 _adjusted = []
                 for _sg_col in ['season_sg_total', 'season_sg_arg', 'predictive_sg_weighted']:
                     if _sg_col in features_df.columns:
@@ -2322,12 +2386,94 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                         features_df[_sg_col] = _field_avg + _conf * (features_df[_sg_col] - _field_avg)
                         _adjusted.append(_sg_col)
                 _low_sample = int((features_df['sg_event_count'] < _MIN_EVENTS).sum())
-                print(f"  SG event count penalty: {_low_sample} low-sample players adjusted in {_adjusted}")
+                print(f"  SG event count penalty: {_low_sample} low-sample players adjusted "
+                      f"(threshold={_MIN_EVENTS:.1f}, floor={_CONF_FLOOR:.0%}, field median={_field_median_events:.1f} events)")
+                if _n_liv_exempted:
+                    print(f"    LIV exemptions: {_n_liv_exempted} players bypassed penalty (major-only PGA Tour data)")
     except Exception as _ec_e:
         print(f"  SG event count penalty skipped: {_ec_e}")
 
+    # ADD DG APPROACH SKILL (shot-count-weighted SG/shot across distance×lie segments)
+    # Loaded from data/datagolf/dg_approach_skill_latest.csv, joined by normalized name.
+    # Carries forward as informational columns in predictions (not yet a trained model feature;
+    # will be included in next retrain).
+    try:
+        _as_path = DATA_DIR / "datagolf" / "dg_approach_skill_latest.csv"
+        if _as_path.exists():
+            import re as _re
+            _as_df = pd.read_csv(_as_path, usecols=["player_name", "approach_skill_sg", "approach_skill_proximity", "approach_skill_shot_total"])
+
+            def _as_norm(n):
+                import unicodedata as _ud
+                s = str(n).strip().lower()
+                # manual replacements for chars NFKD doesn't transliterate (ø, æ)
+                for _from, _to in [("ø","o"),("Ø","o"),("æ","ae"),("Æ","ae")]:
+                    s = s.replace(_from.lower(), _to)
+                # transliterate composed chars (Å→a, ü→u, é→e, etc.)
+                s = _ud.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")
+                if "," in s:
+                    parts = s.split(",", 1)
+                    s = f"{parts[1].strip()} {parts[0].strip()}"
+                s = _re.sub(r"[^a-z0-9\s]", " ", s)
+                return " ".join(s.split())
+
+            _as_df["_nk"] = _as_df["player_name"].apply(_as_norm)
+            _as_lookup = _as_df.set_index("_nk")[["approach_skill_sg", "approach_skill_proximity", "approach_skill_shot_total"]]
+
+            features_df["_nk"] = features_df["player_name"].apply(_as_norm)
+            features_df = features_df.merge(_as_lookup, on="_nk", how="left")
+            features_df.drop(columns=["_nk"], inplace=True, errors="ignore")
+
+            # vs-field delta (useful for display + eventually for training)
+            _as_field_mean = features_df["approach_skill_sg"].mean()
+            features_df["approach_skill_sg_vs_field"] = features_df["approach_skill_sg"] - _as_field_mean
+
+            _matched = features_df["approach_skill_sg"].notna().sum()
+            print(f"  DG approach skill merged: {_matched}/{len(features_df)} players matched")
+        else:
+            print(f"  DG approach skill: {_as_path.name} not found — run fetch_dg_approach_skill.py")
+    except Exception as _as_e:
+        print(f"  DG approach skill merge skipped: {_as_e}")
+
     print(f"  ✓ Built feature matrix: {features_df.shape}")
+    
+    
+    # ADD DG SKILL RATINGS
+    try:
+        _sr_path = DATA_DIR / "datagolf" / "dg_skill_ratings_latest.csv"
+        if _sr_path.exists():
+            _sr_df = pd.read_csv(_sr_path, usecols=[
+              "player_name","dg_skill_total","dg_skill_ott",
+              "dg_skill_app","dg_skill_arg","dg_skill_putt",
+              "dg_skill_dist","dg_skill_acc",
+          ])
+            
+            _sr_df['_nk'] = _sr_df['player_name'].apply(_as_norm)
+            _sr_lookup = _sr_df.set_index("_nk").drop(columns=['player_name'])
+            features_df['_nk'] = features_df['player_name'].apply(_as_norm)
+            features_df = features_df.merge(_sr_lookup, on="_nk", how="left")
+            features_df.drop(columns=["_nk"], inplace=True, errors="ignore")
+            for _sc in ["dg_skill_total","dg_skill_app","dg_skill_ott","dg_skill_putt"]:
+                if _sc in features_df.columns:
+                    features_df[f"{_sc}_vs_field"] = features_df[_sc] - features_df[_sc].mean()
+            _m = features_df["dg_skill_total"].notna().sum()
+            print(f"  DG skill ratings merged: {_m}/{len(features_df)} players matched")
+    except Exception as _sr_e:
+        print(f"  DG skill ratings merge skipped: {_sr_e}")
+
+
+                        
+        
+    
+    
+    
+    
+    
     return features_df
+
+
+
+
 
 
 ### Step 7: Handle Missing Values (CHALLENGE 3 IMPLEMENTED)
@@ -2889,6 +3035,226 @@ def apply_course_win_boost(
     return df
 
 
+def apply_course_history_upside_boost(
+    df: pd.DataFrame,
+    wr_min: int = 50,
+    wr_max: int = 200,
+    min_starts: int = 3,
+    t10_rate_threshold: float = 0.33,
+    perf_score_threshold: float = 1.0,
+    max_boost: float = 0.08,
+) -> pd.DataFrame:
+    """
+    Post-calibration boost for mid-ranked players (WR 50-200) with strong course history.
+
+    The problem this solves:
+    The model's world_rank_log feature penalizes players ranked 50-200 significantly.
+    But world rank is a lagging indicator — a player who's missed time to injury or
+    has been playing LIV/minor tours can be ranked 120 yet have exceptional course history
+    at specific venues. The course_top_10_rate and course_perf_score columns capture this
+    pattern, but the world rank penalty in the model overshadows them.
+
+    This function adds it back as a post-processing multiplicative boost, similar to
+    how apply_course_win_boost() re-adds venue win signal the model discards.
+
+    Who qualifies:
+    - World rank 50-200 (top players already handled by elite market blend; WR > 200
+      probably not a true contender even with course history)
+    - course_starts >= min_starts (need enough data to trust the pattern — 3+ starts)
+    - course_top_10_rate >= t10_rate_threshold (33% = meaningfully above random)
+    - course_perf_score >= perf_score_threshold (composite score above baseline)
+
+    Boost formula:
+    The boost scales with BOTH signals — a player with 50% T10 rate and perf score 2.0
+    gets a larger boost than 33% T10 / perf 1.0. This rewards strong, consistent histories
+    rather than fluky single results.
+
+        boost_strength = (t10_rate - threshold) / (1 - threshold)  # 0-1 scale
+        perf_scale = min(perf_score / 2.0, 1.0)                    # 0-1 scale (2.0 is very strong)
+        boost = boost_strength * perf_scale * max_boost
+
+    Max boost is 8% — conservative. A player with 50% T10 rate and perf score 2.0
+    gets the full 8%. A player barely qualifying (33% / 1.0) gets ~0%.
+
+    max_boost: float = 0.08,
+        Hard cap on the multiplicative boost. 8% means win_prob * 1.08 before renorm.
+    """
+    required = {"world_rank", "course_top_10_rate", "course_perf_score", "course_starts"}
+    missing = required - set(df.columns)
+    if missing:
+        print(f"    Course history upside boost skipped (missing columns: {missing})")
+        return df
+
+    df = df.copy()
+    wr = pd.to_numeric(df["world_rank"], errors="coerce")
+    t10_rate = pd.to_numeric(df["course_top_10_rate"], errors="coerce").fillna(0)
+    perf_score = pd.to_numeric(df["course_perf_score"], errors="coerce").fillna(0)
+    starts = pd.to_numeric(df["course_starts"], errors="coerce").fillna(0)
+
+    # Who qualifies?
+    mask = (
+        wr.between(wr_min, wr_max)
+        & (starts >= min_starts)
+        & (t10_rate >= t10_rate_threshold)
+        & (perf_score >= perf_score_threshold)
+    )
+
+    if not mask.any():
+        print(f"    Course history upside boost: no eligible players (WR {wr_min}-{wr_max}, "
+              f"T10 rate ≥{t10_rate_threshold:.0%}, perf ≥{perf_score_threshold})")
+        return df
+
+    # Scale both signals to 0-1, multiply together, scale by max_boost
+    boost_strength = ((t10_rate - t10_rate_threshold) / (1.0 - t10_rate_threshold)).clip(0, 1)
+    perf_scale = (perf_score / 2.0).clip(0, 1)
+    boost = (boost_strength * perf_scale * max_boost)
+
+    # Only apply to qualifying players
+    boost = boost.where(mask, 0.0)
+
+    df["win_prob"] = df["win_prob"] * (1 + boost)
+    total = df["win_prob"].sum()
+    if total > 0:
+        df["win_prob"] = (df["win_prob"] / total).clip(0, 1)
+
+    n_boosted = int((boost > 0).sum())
+    if n_boosted > 0:
+        boosted_df = df[mask].copy()
+        boosted_df["_boost"] = boost[mask]
+        boosted_df = boosted_df.sort_values("_boost", ascending=False)
+        print(f"    Course history upside boost: {n_boosted} players boosted")
+        for _, row in boosted_df.head(5).iterrows():
+            name = str(row.get("player_name", "?"))
+            if ", " in name:
+                last, first = name.split(", ", 1)
+                name = f"{first} {last}"
+            print(f"      {name}: WR={int(row['world_rank'])}, "
+                  f"T10={row['course_top_10_rate']:.0%}, "
+                  f"perf={row['course_perf_score']:.2f}, "
+                  f"boost=+{row['_boost']:.1%}")
+    return df
+
+
+def apply_finish_variance_adjustment(
+    df: pd.DataFrame,
+    win_boost_max: float = 0.06,
+    placement_shift_max: float = 0.04,
+) -> pd.DataFrame:
+    """
+    Adjust win_prob and top-N probabilities based on each player's historical
+    finish variance profile (boom-bust score and consistency flag).
+
+    The core insight:
+    Two players with identical SG stats and world rank can have very different
+    finish distributions. One wins occasionally but also misses cuts (boom-bust).
+    The other never wins but reliably finishes T15-T30 (consistent grinder).
+    The model treats them identically. This function separates them.
+
+    What we adjust and why:
+
+    Boom-or-bust players (high boom_bust_score):
+      - Boost win_prob: their actual win rate is higher than their SG predicts
+        because they can "get hot" in ways the model doesn't capture
+      - Reduce top10/top20 prob: they're less reliable for placement bets
+        (higher chance of going CUT instead of a safe T15)
+
+    Consistent / low-variance players (low_variance = 1):
+      - Reduce win_prob: they rarely win even when they're playing well
+        (the model overestimates their win probability)
+      - Boost top10/top20: they're more reliable for placement bets
+        (they almost never miss cuts and regularly finish 10-25)
+
+    Boost formula:
+      We normalize boom_bust_score to a 0-1 scale relative to the field,
+      so the adjustment is always relative — not an absolute threshold.
+      This means the biggest boom-bust player in the field gets the full boost,
+      not some hardcoded cutoff.
+
+    win_boost_max: max fractional boost to win_prob for extreme boom-bust players
+    placement_shift_max: max fractional shift to top10/top20 for consistency adjustments
+    """
+    try:
+        import sys
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+        from features.finish_variance import compute_finish_variance
+        variance_df = compute_finish_variance(min_year=2019, min_starts=15)
+    except Exception as e:
+        print(f"    Finish variance adjustment skipped: {e}")
+        return df
+
+    df = df.copy()
+
+    # Normalize player names: predictions use 'Last, First', leaderboards use 'First Last'
+    def _to_first_last(name: str) -> str:
+        s = str(name).strip()
+        if ", " in s:
+            last, first = s.split(", ", 1)
+            return f"{first} {last}"
+        return s
+
+    df["_name_fl"] = df["player_name"].apply(_to_first_last)
+
+    # Merge variance stats by name
+    df = df.merge(
+        variance_df[["boom_bust_score", "finish_std", "low_variance", "cut_miss_rate"]].reset_index(),
+        left_on="_name_fl",
+        right_on="player_name",
+        how="left",
+        suffixes=("", "_var"),
+    )
+
+    matched = df["boom_bust_score"].notna().sum()
+    print(f"    Finish variance: matched {matched}/{len(df)} players with variance data")
+
+    # Fill unmatched players with field median (neutral — no adjustment)
+    for col in ("boom_bust_score", "finish_std", "low_variance", "cut_miss_rate"):
+        median_val = df[col].median()
+        df[col] = df[col].fillna(median_val)
+
+    # ── Boom-bust adjustment ────────────────────────────────────────────────
+    # Normalize boom_bust_score to 0-1 relative to this field
+    bb_min = df["boom_bust_score"].min()
+    bb_max = df["boom_bust_score"].max()
+    if bb_max > bb_min:
+        bb_norm = (df["boom_bust_score"] - bb_min) / (bb_max - bb_min)
+    else:
+        bb_norm = pd.Series(0.0, index=df.index)
+
+    # Boost win_prob for boom-bust players; reduce for consistent ones
+    win_adj = bb_norm * win_boost_max - (df["low_variance"] * win_boost_max * 0.5)
+    df["win_prob"] = (df["win_prob"] * (1 + win_adj)).clip(0, 1)
+
+    # ── Placement adjustment (top5/top10/top20) ────────────────────────────
+    # Consistent players are more reliable for placement bets
+    # Boom-bust players are less reliable (miss cut instead of safe finish)
+    if "top10_prob" in df.columns:
+        placement_adj = (df["low_variance"] * placement_shift_max) - (bb_norm * placement_shift_max * 0.5)
+        for col in ("top5_prob", "top10_prob", "top20_prob"):
+            if col in df.columns:
+                df[col] = (df[col] * (1 + placement_adj)).clip(0, 1)
+
+    # Renormalize win_prob so field sums to ~1
+    total = df["win_prob"].sum()
+    if total > 0:
+        df["win_prob"] = (df["win_prob"] / total).clip(0, 1)
+
+    # Report top adjustments
+    df["_win_adj"] = win_adj
+    top_boosted = df.nlargest(3, "_win_adj")[["_name_fl", "boom_bust_score", "finish_std", "_win_adj"]]
+    top_reduced = df.nsmallest(3, "_win_adj")[["_name_fl", "boom_bust_score", "finish_std", "_win_adj"]]
+    print("      Win boosted (boom-bust):  " + " | ".join(
+        f"{r['_name_fl']} +{r['_win_adj']:.1%}" for _, r in top_boosted.iterrows()
+    ))
+    print("      Win reduced (consistent): " + " | ".join(
+        f"{r['_name_fl']} {r['_win_adj']:+.1%}" for _, r in top_reduced.iterrows()
+    ))
+
+    # Clean up temp columns
+    df = df.drop(columns=["_name_fl", "_win_adj", "player_name_var"], errors="ignore")
+
+    return df
+
+
 def apply_elite_market_blend(
     df: pd.DataFrame,
     top_n: int = 15,
@@ -2927,6 +3293,238 @@ def apply_elite_market_blend(
         df["win_prob"] = (df["win_prob"] / total).clip(0, 1)
     n_blended = int(mask.sum())
     print(f"    Elite market blend: {n_blended} players adjusted (top {top_n} world rank, max weight {max_market_weight:.0%})")
+    return df
+
+
+def apply_market_cut_blend(
+    df: pd.DataFrame,
+    tid: str,
+    blend_weight: float = 0.20,
+) -> pd.DataFrame:
+    """
+    Blend model cut_prob toward sportsbook-implied make_cut probability.
+
+    The sportsbook (FanDuel) sets individual player make_cut lines based on
+    sharp money, injury info, and course-specific data our model may not fully
+    capture.  A 20% blend means:
+        blended_cut_prob = 0.80 × model_cut_prob + 0.20 × market_implied_cut_prob
+
+    This is Bayesian shrinkage toward a well-calibrated external prior.
+    Unlike win_prob where the whole field sums to 1, cut_prob is independent
+    per player (each one is a binary yes/no), so we apply the blend directly
+    without renormalizing.
+
+    Only adjusts players where we have a market line.  Players without a line
+    keep their model cut_prob unchanged.
+
+    Source file: data/odds/pga_market_odds_{tid}.csv
+    Market: PLAYER_PROPS / "To Make The Cut"
+    """
+    odds_path = Path("data/odds") / f"pga_market_odds_{tid}.csv"
+    if not odds_path.exists():
+        print(f"    Market cut blend skipped (no file: pga_market_odds_{tid}.csv)")
+        return df
+
+    try:
+        mkt = pd.read_csv(odds_path)
+    except Exception as e:
+        print(f"    Market cut blend skipped (read error: {e})")
+        return df
+
+    # Filter to make_cut rows only
+    cut_rows = mkt[
+        mkt["submarket_name"].str.lower().str.contains("make the cut", na=False)
+    ].copy()
+    if cut_rows.empty:
+        print("    Market cut blend skipped (no 'To Make The Cut' rows in market odds)")
+        return df
+
+    # Vig removal: apply flat 5% factor (binary two-way market, not a pool)
+    cut_rows["market_cut_prob"] = pd.to_numeric(
+        cut_rows["implied_prob"], errors="coerce"
+    ) / 1.05
+    cut_rows = cut_rows[cut_rows["market_cut_prob"].notna()].copy()
+
+    # Build name lookup — odds file uses "First Last", predictions use "Last, First"
+    # Sorting tokens handles both: "Keith Mitchell" and "Mitchell, Keith"
+    # both become the sorted key "keith mitchell".
+    def _norm(name: str) -> str:
+        """Lowercase, remove punctuation, sort tokens so name order doesn't matter."""
+        tokens = str(name or "").lower().replace(",", " ").replace(".", "").split()
+        tokens = [t for t in tokens if t not in {"jr", "sr", "ii", "iii", "iv"}]
+        return " ".join(sorted(tokens))
+
+    cut_lookup = {_norm(r["player_name"]): float(r["market_cut_prob"])
+                  for _, r in cut_rows.iterrows()}
+
+    if not cut_lookup:
+        print("    Market cut blend skipped (empty lookup after normalization)")
+        return df
+
+    df = df.copy()
+    if "cut_prob" not in df.columns:
+        print("    Market cut blend skipped (no cut_prob column)")
+        return df
+
+    n_blended = 0
+    for idx, row in df.iterrows():
+        name_key = _norm(row.get("player_name", ""))
+        market_p = cut_lookup.get(name_key)
+        if market_p is None:
+            continue
+        model_p = pd.to_numeric(row.get("cut_prob"), errors="coerce")
+        if pd.isna(model_p):
+            continue
+        blended = (1 - blend_weight) * model_p + blend_weight * market_p
+        df.loc[idx, "cut_prob"] = float(np.clip(blended, 0.0, 1.0))
+        if "miss_cut_prob" in df.columns:
+            df.loc[idx, "miss_cut_prob"] = float(np.clip(1.0 - blended, 0.0, 1.0))
+        n_blended += 1
+
+    print(f"    Market cut blend: {n_blended}/{len(cut_rows)} players adjusted "
+          f"(weight={blend_weight:.0%}, source={odds_path.name})")
+    return df
+
+
+def apply_augusta_fit_blend(
+    df: pd.DataFrame,
+    tid: str,
+    top10_weight: float = 0.10,
+    win_weight: float = 0.05,
+    elimination_penalty: float = 0.80,
+) -> pd.DataFrame:
+    """
+    Blend top10_prob / win_prob toward an Augusta-specific composite distribution.
+
+    Only applied when masters_qualifiers_{tid}.csv exists (Masters week only).
+
+    Composite scores each player by:
+      Augusta avg to_par (30%) + SG T2G last 4 starts (25%) + cut rate (20%)
+      + driving distance rank (15%) + model top10_prob (10%)
+
+    Effect:
+      - Players with high Augusta composite get a top10_prob / win_prob boost.
+      - Players with qualifier_score <= 1 (first-timers, eliminated) get an
+        additional elimination_penalty multiplier on top10_prob and win_prob.
+        Rationale: model edges on these players are false positives from general
+        SG stats — Augusta history is the better predictor.
+    """
+    qual_path = DATA_DIR / "qualitative" / f"masters_qualifiers_{tid}.csv"
+    if not qual_path.exists():
+        print(f"    Augusta fit blend skipped (no file: masters_qualifiers_{tid}.csv)")
+        return df
+
+    try:
+        qdf = pd.read_csv(qual_path)
+    except Exception as e:
+        print(f"    Augusta fit blend skipped (read error: {e})")
+        return df
+
+    def _nk(n: str) -> str:
+        s = str(n).strip().lower()
+        if ", " in s:
+            p = s.split(", ", 1)
+            return f"{p[1]} {p[0]}"
+        return s
+
+    def _minmax(s: pd.Series) -> pd.Series:
+        mn, mx = s.min(), s.max()
+        if mx == mn:
+            return pd.Series([0.5] * len(s), index=s.index)
+        return (s - mn) / (mx - mn)
+
+    # Compute composite on qualifier df
+    for col in ["augusta_avg_to_par", "sg_t2g_last4_total", "augusta_starts",
+                "augusta_cuts_made", "driving_dist_field_rank"]:
+        qdf[col] = pd.to_numeric(qdf[col], errors="coerce")
+    qdf["augusta_starts"]          = qdf["augusta_starts"].fillna(1).clip(lower=1)
+    qdf["augusta_cuts_made"]       = qdf["augusta_cuts_made"].fillna(0)
+    qdf["driving_dist_field_rank"] = qdf["driving_dist_field_rank"].fillna(88)
+
+    # Blend in model top10_prob from df for the 10% component
+    df_keys = df.copy()
+    df_keys["_key"] = df_keys["player_name"].apply(_nk)
+    if "top10_prob" in df_keys.columns:
+        prob_map = dict(zip(df_keys["_key"], pd.to_numeric(df_keys["top10_prob"], errors="coerce")))
+        qdf["_key"] = qdf["player_name"].apply(_nk)
+        qdf["_model_prob"] = qdf["_key"].map(prob_map).fillna(0)
+    else:
+        qdf["_model_prob"] = 0.0
+
+    qdf["_s_aug"]     = _minmax(-qdf["augusta_avg_to_par"].fillna(0))
+    qdf["_s_form"]    = _minmax(qdf["sg_t2g_last4_total"].fillna(0))
+    qdf["_s_consist"] = _minmax(qdf["augusta_cuts_made"] / qdf["augusta_starts"])
+    qdf["_s_dist"]    = _minmax(-qdf["driving_dist_field_rank"])
+    qdf["_s_prob"]    = _minmax(qdf["_model_prob"])
+
+    qdf["aug_composite"] = (
+        0.30 * qdf["_s_aug"] +
+        0.25 * qdf["_s_form"] +
+        0.20 * qdf["_s_consist"] +
+        0.15 * qdf["_s_dist"] +
+        0.10 * qdf["_s_prob"]
+    )
+    qdf["aug_rank"] = qdf["aug_composite"].rank(ascending=False, method="min").astype(int)
+
+    # Build lookup maps by normalized key
+    comp_map  = dict(zip(qdf["_key"], qdf["aug_composite"]))
+    qscore_map = dict(zip(qdf["_key"], qdf["qualifier_score"].astype(int)))
+    rank_map  = dict(zip(qdf["_key"], qdf["aug_rank"].astype(int)))
+
+    df = df.copy()
+    df["_key"] = df["player_name"].apply(_nk)
+    df["aug_composite"]       = df["_key"].map(comp_map)
+    df["aug_qualifier_score"] = df["_key"].map(qscore_map).fillna(0).astype(int)
+    df["aug_rank"]            = df["_key"].map(rank_map)
+    df.drop(columns=["_key"], inplace=True)
+
+    # --- Part B: blend top10_prob toward Augusta composite distribution ---
+    # Only blend for players in the qualifier file (Masters field)
+    has_comp = df["aug_composite"].notna()
+    n_in_qual = int(has_comp.sum())
+    if n_in_qual == 0:
+        print("    Augusta fit blend: no players matched qualifier file")
+        return df
+
+    # Normalize composite to a probability distribution over the field
+    comp_series = df.loc[has_comp, "aug_composite"].clip(lower=0)
+    comp_total  = comp_series.sum()
+    if comp_total <= 0:
+        return df
+    aug_dist = comp_series / comp_total  # sums to 1.0 over matched players
+
+    # Blend top10_prob
+    if "top10_prob" in df.columns:
+        t10_sub = df.loc[has_comp, "top10_prob"].fillna(0)
+        t10_total = t10_sub.sum()
+        if t10_total > 0:
+            t10_norm = t10_sub / t10_sub.sum()
+            blended = (1 - top10_weight) * t10_norm + top10_weight * aug_dist
+            df.loc[has_comp, "top10_prob"] = (blended * t10_total).clip(0, 1)
+
+    # Blend win_prob (lighter weight)
+    if "win_prob" in df.columns:
+        wp_sub = df.loc[has_comp, "win_prob"].fillna(0)
+        wp_total = wp_sub.sum()
+        if wp_total > 0:
+            wp_norm = wp_sub / wp_sub.sum()
+            blended_w = (1 - win_weight) * wp_norm + win_weight * aug_dist
+            df.loc[has_comp, "win_prob"] = (blended_w * wp_total).clip(0, 1)
+
+    # --- Elimination penalty: first-timers and heavily eliminated players ---
+    elim_mask = has_comp & (df["aug_qualifier_score"] <= 1)
+    n_elim = int(elim_mask.sum())
+    if n_elim > 0:
+        for col in ["top10_prob", "top5_prob", "win_prob"]:
+            if col in df.columns:
+                df.loc[elim_mask, col] = (
+                    df.loc[elim_mask, col] * elimination_penalty
+                ).clip(0, 1)
+
+    print(
+        f"    Augusta fit blend: {n_in_qual} players, top10 weight={top10_weight:.0%}, "
+        f"win weight={win_weight:.0%}, {n_elim} elimination-penalized"
+    )
     return df
 
 
@@ -3576,6 +4174,14 @@ Examples:
     print("\n  Applying course win boost...")
     predictions_df = apply_course_win_boost(predictions_df)
 
+    # Apply course history upside boost (WR 50-200 players with strong course history)
+    print("\n  Applying course history upside boost...")
+    predictions_df = apply_course_history_upside_boost(predictions_df)
+
+    # Apply finish variance adjustment (boom-bust win boost, consistent player placement boost)
+    print("\n  Applying finish variance adjustment...")
+    predictions_df = apply_finish_variance_adjustment(predictions_df)
+
     # Apply course performance adjustment before other post-processing
     if "course_perf_score" in predictions_df.columns:
         print("\n  Applying course performance adjustment...")
@@ -3649,10 +4255,20 @@ Examples:
         print("\n  Applying elite market blend...")
         predictions_df = apply_elite_market_blend(predictions_df)
 
+        # Blend cut_prob toward sportsbook-implied make_cut probability
+        if args.tournament_id:
+            print("\n  Applying market cut blend...")
+            predictions_df = apply_market_cut_blend(predictions_df, args.tournament_id)
+
         # Apply expert consensus blend
         if args.tournament_id:
             print("\n  Applying expert consensus blend...")
             predictions_df = apply_expert_consensus_blend(predictions_df, args.tournament_id)
+
+        # Apply Augusta fit blend (Masters only — skipped silently for other events)
+        if args.tournament_id:
+            print("\n  Applying Augusta fit blend...")
+            predictions_df = apply_augusta_fit_blend(predictions_df, args.tournament_id)
 
     print("\n" + "=" * 70)
     print(f"  TOP {args.top_n} RECOMMENDATIONS")
@@ -3727,6 +4343,9 @@ Examples:
         print(f"\n✓ Full predictions saved to: {args.output}")
 
     # Consistent "latest" pointers for automation / GolfAssistant
+    # Stamp tournament_id so downstream tools (chatbot, context builder) can identify the week
+    if args.tournament_id and "tournament_id" not in predictions_df.columns:
+        predictions_df.insert(0, "tournament_id", str(args.tournament_id).strip().upper())
     latest_path = outputs_dir / "latest_predictions.csv"
     predictions_df.to_csv(latest_path, index=False)
 
@@ -3837,6 +4456,7 @@ Examples:
             predictions_df,
             tournament_name=args.tournament,
             tournament_date=args.tournament_date,
+            tournament_id=getattr(args, "tournament_id", None),
         )
         # Sync to outputs/prediction_history.csv so the dashboard can read it
         _out_base = Path(args.output) if args.output else Path("outputs/latest_predictions.csv")

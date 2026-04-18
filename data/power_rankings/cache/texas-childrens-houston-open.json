@@ -1,0 +1,358 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Texas Children\u2019s Houston Open",
+      "tableTitle": "Power Rankings for Texas Children's Houston Open",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "59018",
+            "firstName": "Ryan",
+            "lastName": "Gerard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Like a few others below, his profile is a fantastic fit for Memorial Park, so it\u2019s the kind of uncommon challenge on which he could lock back into the kind of form with which he started 2026. Solo ninth in last year\u2019s debut."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "54788",
+            "firstName": "Chandler",
+            "lastName": "Blanchet",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_54788.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "There are many bigger names in the field but none have dazzled like the rookie in his last two starts. After dousing a 0-for-5 drought to open his season with a solo second in Puerto Rico, he answered with a T18 at Copperhead."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "50188",
+            "firstName": "S.H.",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50188.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a quiet spell, he reignited for a well-balanced T7 at the Valspar Championship. It\u2019s the kind of form with which he bracketed the holidays, but on one of the toughest tracks in Copperhead. He\u2019s 2-for-2 at Memorial Park."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "46414",
+            "firstName": "Aaron",
+            "lastName": "Rai",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46414.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "While not performing his best of late, perhaps Memorial Park is exactly what the ball-striker needs to snap out of it, as odd as that seems. When it played its toughest for him from 2022-24, he hung up a T19 and a pair of T7s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "60386",
+            "firstName": "Sudarshan",
+            "lastName": "Yellamaraju",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60386.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The lefty opted for well-earned rest after a T5 at THE PLAYERS and still remained inside the bubble of the "
+                },
+                {
+                  "value": "Aon Next 10"
+                },
+                {
+                  "value": ". It\u2019s heady stuff for a PGA TOUR rookie, but all he\u2019s been doing is turning heads with his balanced attack."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "29725",
+            "firstName": "Tony",
+            "lastName": "Finau",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_29725.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Not quite percolating but relative to his unusually quiet 2025, he has momentum with three top 20s in his last six starts. With a victory (2022) and a T2 (2024) at Memorial Park, he\u2019s positioned for another, if not better."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "46464",
+            "firstName": "Jordan",
+            "lastName": "Smith",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46464.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "As an elite ball-striker, his solo third in his debut at Copperhead not only is the manifestation of his skill set, it\u2019s exactly what it portends on a track that rewards it. Same thing this week, "
+                },
+                {
+                  "value": "and"
+                },
+                {
+                  "value": " he can step on the driver."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "39971",
+            "firstName": "Sungjae",
+            "lastName": "Im",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39971.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "No, Sunday at Copperhead wasn\u2019t his best, but while the wire-to-wire bid went by the boards, he still reeled in a T4 for his first payday worldwide since October. Consider the rust shed and his competitive edge galvanized."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "51003",
+            "firstName": "Marco",
+            "lastName": "Penge",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51003.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "All systems firing. The Brit was the total package on the DP World Tour in 2025 and Memorial Park is ideal for his power and precision from tee to green. He flashed that at Copperhead for a T4 with his newborn son in attendance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "36799",
+            "firstName": "Stephan",
+            "lastName": "Jaeger",
+            "countryFlag": "GER",
+            "countryName": "Germany",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36799.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s been two years already since he was the \u201cScottie Slayer\u201d during Scheffler\u2019s torrid stretch at the time. Jaeger also placed T9 in 2023 and T11 in his title defense last year. Now he\u2019s fresh off an end-loaded T7 at Copperhead."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "48117",
+            "firstName": "Kurt",
+            "lastName": "Kitayama",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48117.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He didn\u2019t cash at TPC Sawgrass but he was T2 at Riviera and T18 at Bay Hill, more proof that he\u2019s a threat when the challenge rises. That goes with the territory as a premier ball-striker, and his greenside game also is filthy."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "37378",
+            "firstName": "Min Woo",
+            "lastName": "Lee",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37378.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Last year\u2019s breakthrough winner in his first look at Memorial Park capitalized on soft turf, so the same aggressive game plan could backfire this week. However, he\u2019s obviously comfortable here and he arrives with solid form."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "31323",
+            "firstName": "Gary",
+            "lastName": "Woodland",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_31323.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "If you ever wondered about the mental influence of a pro athlete, his T14 at Valspar right after relieving himself of the weight of his "
+                },
+                {
+                  "value": "ongoing challenge with PTSD"
+                },
+                {
+                  "value": " demands attention. Finished T9-T21-T2 in his last three starts here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "While he showcased at Waialae Country Club that he\u2019s everything but a one-trick pony, Memorial Park presents as a better stage on which to show off his muscle (like he did at TPC Scottsdale, where he also won). T18 here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "36689",
+            "firstName": "Brooks",
+            "lastName": "Koepka",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36689.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After time at and near home in Florida where he went T9-T13-T18 with improved putting, he returns to Memorial Park, where he was an advisor to Tom Doak in the renovation a few years ago. First on TOUR in SG: Approach-the-Green."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

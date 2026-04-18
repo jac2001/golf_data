@@ -120,6 +120,23 @@ CREATE_STATEMENTS = [
     """,
 
     # -------------------------------------------------------------------------
+    # conversation_log: assistant Q&A history for context injection
+    # -------------------------------------------------------------------------
+    """
+    CREATE SEQUENCE IF NOT EXISTS conversation_log_id_seq;
+    CREATE TABLE IF NOT EXISTS conversation_log (
+        id               INTEGER DEFAULT nextval('conversation_log_id_seq'),
+        timestamp        TIMESTAMP NOT NULL,
+        tournament_id    VARCHAR,
+        phase            VARCHAR,
+        question         TEXT NOT NULL,
+        response_short   VARCHAR(400),
+        response_full    TEXT,
+        PRIMARY KEY (id)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
     # course_performance: per-player per-course historical stats
     # -------------------------------------------------------------------------
     """

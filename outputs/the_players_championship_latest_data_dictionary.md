@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-03-09 19:34
+Generated: 2026-03-11 11:45
 
 | Column | Description |
 |--------|-------------|
@@ -69,7 +69,10 @@ Generated: 2026-03-09 19:34
 | sand_save_val | No description available |
 | one_putt_pct_val | No description available |
 | scrambling_val | No description available |
+| par4_scoring_val | No description available |
+| par5_scoring_val | No description available |
 | birdie_avg_val | No description available |
+| par3_scoring_val | No description available |
 | bogey_avoid_val | No description available |
 | driving_dist_field_avg | No description available |
 | driving_dist_field_rank | No description available |
@@ -98,6 +101,30 @@ Generated: 2026-03-09 19:34
 | birdie_avg_field_avg | No description available |
 | birdie_avg_field_rank | No description available |
 | birdie_avg_field_pct | No description available |
+| par3_scoring_field_avg | No description available |
+| par3_scoring_field_rank | No description available |
+| par3_scoring_field_pct | No description available |
+| par4_scoring_field_avg | No description available |
+| par4_scoring_field_rank | No description available |
+| par4_scoring_field_pct | No description available |
+| par5_scoring_field_avg | No description available |
+| par5_scoring_field_rank | No description available |
+| par5_scoring_field_pct | No description available |
+| recent_r1_avg | No description available |
+| recent_r2_avg | No description available |
+| recent_r3_avg | No description available |
+| recent_r4_avg | No description available |
+| closing_delta | No description available |
+| recent_r1_avg_field_pct | No description available |
+| recent_r1_avg_vs_field | No description available |
+| recent_r2_avg_field_pct | No description available |
+| recent_r2_avg_vs_field | No description available |
+| recent_r3_avg_field_pct | No description available |
+| recent_r3_avg_vs_field | No description available |
+| recent_r4_avg_field_pct | No description available |
+| recent_r4_avg_vs_field | No description available |
+| closing_delta_field_pct | No description available |
+| closing_delta_vs_field | No description available |
 | form_trend | SG:Total trend over recent events (positive = improving) |
 | finish_consistency | Normalized finish volatility (lower = steadier) |
 | recent_top10s | Recency-weighted top-10 count over last N events |
@@ -179,6 +206,10 @@ Generated: 2026-03-09 19:34
 | missed_cut_last_start | No description available |
 | consecutive_top10s | No description available |
 | pre_major_flag | No description available |
+| sg_event_count | No description available |
+| recent_par3_scoring_field_pct | No description available |
+| recent_par4_scoring_field_pct | No description available |
+| recent_par5_scoring_field_pct | No description available |
 | win_prob | Predicted win probability (0-1) |
 | top5_prob | Predicted top-5 probability (0-1) |
 | top10_prob | Predicted top-10 probability (0-1) |
@@ -218,4 +249,5 @@ Generated: 2026-03-09 19:34
 | is_value_bet | No description available |
 | odds_drift_flag | No description available |
 | odds_drift_level | No description available |
+| expert_pct | No description available |
 | dfs_ownership_proj | No description available |

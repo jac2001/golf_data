@@ -1,13 +1,12 @@
-Expected tournament for R2026011: THE PLAYERS Championship
-Using cached eventgroup id for R2026011: 94238
+Expected tournament for R2026012: RBC Heritage
 Trying live DraftKings endpoints...
-Using eventgroup id: 94238
-Detected sport/league names: Golf, THE PLAYERS Championship, THE PLAYERS Championship 2026
-Saved raw payload snapshot to: /Users/jacklegnon/Desktop/golf_data/data/odds/snapshots/draftkings_props_R2026011_20260311_174713.json
-Saved 13 content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_R2026011.csv
+Using eventgroup id: 92728
+Detected sport/league names: Golf, RBC Heritage, RBC Heritage 2026
+Saved raw payload snapshot to: /Users/jacklegnon/Desktop/golf_data/data/odds/snapshots/draftkings_props_R2026012_20260414_210741.json
+Saved 13 content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_R2026012.csv
 Saved latest content cards to: /Users/jacklegnon/Desktop/golf_data/data/odds/dk_content_cards_latest.csv
-Saved 369 prop lines to: /Users/jacklegnon/Desktop/golf_data/data/odds/prop_lines_R2026011.csv
+Saved 246 prop lines to: /Users/jacklegnon/Desktop/golf_data/data/odds/prop_lines_R2026012.csv
 Parsed markets:
-  outright: 123
-  top10: 123
-  top5: 123
+  outright: 82
+  top10: 82
+  top5: 82

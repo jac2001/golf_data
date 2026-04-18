@@ -1,0 +1,205 @@
+[
+  {
+    "player_name": "Blanchet, Chandler",
+    "player_id": "54788",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153486"
+  },
+  {
+    "player_name": "Castillo, Ricky",
+    "player_id": "59440",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153506"
+  },
+  {
+    "player_name": "Cauley, Bud",
+    "player_id": "34021",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153509"
+  },
+  {
+    "player_name": "Coody, Pierceson",
+    "player_id": "59836",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153510"
+  },
+  {
+    "player_name": "Finau, Tony",
+    "player_id": "29725",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153511"
+  },
+  {
+    "player_name": "Fisk, Steven",
+    "player_id": "57123",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153513"
+  },
+  {
+    "player_name": "Fowler, Rickie",
+    "player_id": "32102",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153514"
+  },
+  {
+    "player_name": "Glover, Lucas",
+    "player_id": "25900",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153581"
+  },
+  {
+    "player_name": "Higgo, Garrick",
+    "player_id": "54421",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153583"
+  },
+  {
+    "player_name": "Highsmith, Joe",
+    "player_id": "60067",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153584"
+  },
+  {
+    "player_name": "Hisatsune, Ryo",
+    "player_id": "51287",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153585"
+  },
+  {
+    "player_name": "Hoge, Tom",
+    "player_id": "35532",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153586"
+  },
+  {
+    "player_name": "Horschel, Billy",
+    "player_id": "29420",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153588"
+  },
+  {
+    "player_name": "Lipsky, David",
+    "player_id": "36326",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153589"
+  },
+  {
+    "player_name": "McCarthy, Denny",
+    "player_id": "47993",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153590"
+  },
+  {
+    "player_name": "Mouw, William",
+    "player_id": "63121",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153591"
+  },
+  {
+    "player_name": "Pendrith, Taylor",
+    "player_id": "40250",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153592"
+  },
+  {
+    "player_name": "Poston, J.T.",
+    "player_id": "49771",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153594"
+  },
+  {
+    "player_name": "Putnam, Andrew",
+    "player_id": "34256",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153595"
+  },
+  {
+    "player_name": "Rodgers, Patrick",
+    "player_id": "36699",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153596"
+  },
+  {
+    "player_name": "Schenk, Adam",
+    "player_id": "47347",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153597"
+  },
+  {
+    "player_name": "Smith, Jordan",
+    "player_id": "46464",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153599"
+  },
+  {
+    "player_name": "Smotherman, Austin",
+    "player_id": "50095",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153600"
+  },
+  {
+    "player_name": "Theegala, Sahith",
+    "player_id": "51634",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153601"
+  },
+  {
+    "player_name": "Thorbjornsen, Michael",
+    "player_id": "57364",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153602"
+  },
+  {
+    "player_name": "Vegas, Jhonattan",
+    "player_id": "27064",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153603"
+  },
+  {
+    "player_name": "Vilips, Karl",
+    "player_id": "54304",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153605"
+  },
+  {
+    "player_name": "Wallace, Matt",
+    "player_id": "48887",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153606"
+  },
+  {
+    "player_name": "Yellamaraju, Sudarshan",
+    "player_id": "60386",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-04-14T06:00:13.153607"
+  }
+]

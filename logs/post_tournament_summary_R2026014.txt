@@ -1,0 +1,35 @@
+============================================================
+POST-TOURNAMENT SUMMARY — Masters Tournament (R2026014)
+Generated: 2026-04-13 18:24
+============================================================
+
+PIPELINE STATUS
+----------------------------------------
+  [OK  ] Past Results
+  [OK  ] Form Stats
+  [OK  ] Grade Bets
+
+  3/3 tasks passed
+
+BET RESULTS
+----------------------------------------
+  Graded: 28  Wins: 14  Pushes: 0  Losses: 14
+  Win rate: 50.0%  |  P&L: +7.60 units  |  ROI: +27.2%
+  By market:
+    content_card            1 bets  1 wins  P&L +11.24
+    h2h_r1                 11 bets  3 wins  P&L -5.33
+    h2h_r3                 11 bets  5 wins  P&L -1.28
+    make_cut                5 bets  5 wins  P&L +2.98
+
+LEADERBOARD (Top 10)
+----------------------------------------
+  1      Rory McIlroy               -12
+  2      Scottie Scheffler          -11
+  T3     Cameron Young              -10
+  T3     Justin Rose                -10
+  T3     Russell Henley             -10
+  T3     Tyrrell Hatton             -10
+  T7     Collin Morikawa            -9
+  T7     Sam Burns                  -9
+  T9     Max Homa                   -8
+  T9     Xander Schauffele          -8

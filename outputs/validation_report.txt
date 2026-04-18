@@ -4,7 +4,7 @@
 ======================================================================
 
 DATASET SUMMARY:
-  Total Records: 46,204
+  Total Records: 46,729
   Training Records: 40,744 (2020-2024)
   Test Records: 4,567 (2025)
   Features Used: 62
@@ -18,18 +18,18 @@ MODEL PERFORMANCE:
 ----------------------------------------------------------------------
 Model      Train AUC    Test AUC     Gap        Status         
 ----------------------------------------------------------------------
-win        0.9332       0.8406       0.0927     ⚠️  Moderate   
-top5       0.8687       0.8172       0.0515     ⚠️  Moderate   
-top10      0.8579       0.8177       0.0402     ✅ Good         
-top20      0.8592       0.8384       0.0208     ✅ Good         
+win        0.9318       0.8469       0.0849     ⚠️  Moderate   
+top5       0.8688       0.8178       0.0509     ⚠️  Moderate   
+top10      0.8577       0.8177       0.0400     ✅ Good         
+top20      0.8592       0.8386       0.0206     ✅ Good         
 
 PROBABILITY CALIBRATION:
 ----------------------------------------------------------------------
 Model      Brier      Pred Avg     Actual     Ratio      Status         
 ----------------------------------------------------------------------
-win        0.0079     0.79      % 0.75    % 1.06      x ✅ Calibrated   
-top5       0.0445     4.80      % 4.56    % 1.05      x ✅ Calibrated   
-top10      0.0737     9.26      % 8.73    % 1.06      x ✅ Calibrated   
+win        0.0079     0.80      % 0.75    % 1.06      x ✅ Calibrated   
+top5       0.0446     4.83      % 4.56    % 1.06      x ✅ Calibrated   
+top10      0.0736     9.24      % 8.73    % 1.06      x ✅ Calibrated   
 top20      0.1152     17.22     % 16.99   % 1.01      x ✅ Calibrated   
 
 INTERPRETATION:
@@ -47,16 +47,16 @@ INTERPRETATION:
 
 TOP 10 FEATURES:
 ----------------------------------------------------------------------
-  season_sg_arg_field_pct        0.0958
-  predictive_sg_weighted         0.0726
-  season_sg_total                0.0717
+  season_sg_arg_field_pct        0.0957
+  predictive_sg_weighted         0.0724
+  season_sg_total                0.0718
   season_sg_arg                  0.0681
-  season_sg_t2g                  0.0671
+  season_sg_t2g                  0.0669
   season_sg_total_vs_field       0.0578
-  season_sg_arg_vs_field         0.0558
+  season_sg_arg_vs_field         0.0559
   world_rank_log                 0.0498
-  season_sg_ott                  0.0423
-  season_sg_ott_field_pct        0.0386
+  season_sg_ott                  0.0424
+  season_sg_ott_field_pct        0.0385
 
 ======================================================================
   Models saved to: data/models/

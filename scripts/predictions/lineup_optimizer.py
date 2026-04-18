@@ -1,10 +1,12 @@
 """
-Lineup Optimizer — Constraint-Aware Combinatorial Selector
-===========================================================
+Lineup Optimizer — Prize-Money-Curve Combinatorial Selector
+============================================================
 Objective:
-    expected_value + ceiling_bonus + leverage_bonus - risk_penalty - usage_penalty
+    expected_prize_money + ceiling_bonus + leverage_bonus - risk_penalty - usage_penalty
 
-This keeps the search deterministic while letting the user tune risk/usage tradeoffs.
+base_ev is computed from the full PGA Tour payout curve (PRIZE_CURVE) rather than
+a generic EV proxy.  This correctly weights win probability far more than T20
+probability, matching the exponential shape of real prize money payouts.
 """
 
 import argparse
@@ -37,6 +39,50 @@ DEFAULT_LEVERAGE_WEIGHT = 0.08
 DEFAULT_RISK_WEIGHT = 0.20
 DEFAULT_USAGE_WEIGHT = 1.00
 DEFAULT_LAST_USE_PENALTY = 15_000.0
+
+
+PRIZE_CURVE = {
+    "win":      0.180,
+    "t2_5":     0.068,
+    "t6_10":    0.030,
+    "t11_20":   0.017,
+    "t21_cut":  0.006,
+    "miss_cut": 0.000,
+}
+
+DEFAULT_PURSE = 8_000_000.0  # typical PGA Tour event; overridden per-tournament when schedule has purse data
+
+
+def expected_prize_money(row: dict, purse: float = DEFAULT_PURSE) -> float:
+    """
+    Compute expected prize money for one player using the PRIZE_CURVE payout bands.
+
+    Converts cumulative finish probabilities (win_prob, top5_prob, …) into
+    incremental band probabilities, then weights each band by its average
+    payout fraction.  This is the correct objective for prize-money leagues
+    where one win can outweigh dozens of mid-pack finishes.
+    """
+    win   = float(row.get("win_prob",   0.0))
+    top5  = float(row.get("top5_prob",  0.0))
+    top10 = float(row.get("top10_prob", 0.0))
+    top20 = float(row.get("top20_prob", 0.0))
+    cut   = float(row.get("cut_prob",   0.0))
+
+    # Incremental band probabilities (each is mutually exclusive)
+    p_win     = win
+    p_t2_5    = max(0.0, top5  - win)
+    p_t6_10   = max(0.0, top10 - top5)
+    p_t11_20  = max(0.0, top20 - top10)
+    p_t21_cut = max(0.0, cut   - top20)
+    # miss_cut payout = $0, so it contributes nothing
+
+    return purse * (
+        p_win     * PRIZE_CURVE["win"]     +
+        p_t2_5    * PRIZE_CURVE["t2_5"]    +
+        p_t6_10   * PRIZE_CURVE["t6_10"]   +
+        p_t11_20  * PRIZE_CURVE["t11_20"]  +
+        p_t21_cut * PRIZE_CURVE["t21_cut"]
+    )
 
 
 def _norm(name: str) -> str:
@@ -165,11 +211,11 @@ def _prepare_prediction_pool(preds: pd.DataFrame) -> pd.DataFrame:
     df["miss_cut_prob"] = (1.0 - df["cut_prob"]).clip(0.0, 1.0)
 
     df["world_rank"] = pd.to_numeric(df.get("world_rank"), errors="coerce")
-    vegas_prob = pd.to_numeric(df.get("vegas_prob"), errors="coerce")
-    model_gap = pd.to_numeric(df.get("model_vs_vegas_edge"), errors="coerce")
-    if model_gap.notna().any():
+    vegas_prob = pd.to_numeric(df["vegas_prob"], errors="coerce") if "vegas_prob" in df.columns else pd.Series(dtype=float)
+    model_gap = pd.to_numeric(df["model_vs_vegas_edge"], errors="coerce") if "model_vs_vegas_edge" in df.columns else pd.Series(dtype=float)
+    if not model_gap.empty and model_gap.notna().any():
         df["leverage_raw"] = model_gap.fillna(model_gap.median())
-    elif vegas_prob.notna().any():
+    elif not vegas_prob.empty and vegas_prob.notna().any():
         df["leverage_raw"] = (df["win_prob"] - vegas_prob.fillna(vegas_prob.median()))
     else:
         df["leverage_raw"] = df["win_prob"] - df["win_prob"].median()
@@ -194,9 +240,16 @@ def score_combo(
     risk_weight: float,
     usage_weight: float,
     last_use_penalty: float,
+    purse: float = DEFAULT_PURSE,
 ) -> dict:
-    """Score one lineup using the tuned objective."""
-    base_ev = sum(float(r.get("expected_value", 0.0)) for r in rows)
+    """Score one lineup using the prize-money-curve objective.
+
+    base_ev is now expected prize dollars computed from the full finish
+    distribution (win → T2-5 → T6-10 → … → miss cut), not a flat EV proxy.
+    This correctly weights win probability far more heavily than T20 probability,
+    matching the exponential shape of PGA Tour payouts.
+    """
+    base_ev = sum(expected_prize_money(r, purse) for r in rows)
 
     p_none_top5 = 1.0
     for r in rows:
@@ -246,7 +299,7 @@ def run_optimizer(
     tournament_name: str | None = None,
     verbose: bool = True,
     lineup_size: int = DEFAULT_LINEUP_SIZE,
-    min_avg_cut_prob: float = 0.84,
+    min_avg_cut_prob: float = 0.65,
     max_last_use_players: int = 1,
     min_leverage_players: int = 0,
     leverage_threshold: float = 0.65,
@@ -286,6 +339,22 @@ def run_optimizer(
                     tournament_name = str(upcoming.iloc[0]["tournament_name"]).strip()
 
     importance = float(TournamentCalendar.get_importance(tournament_name) if tournament_name else 5.0)
+
+    # Look up actual purse from schedule so EV is in real dollars, not a generic default.
+    purse = DEFAULT_PURSE
+    sched_path = DATA_DIR / "raw" / "schedule_2026.csv"
+    if sched_path.exists() and tournament_name:
+        try:
+            _sched = pd.read_csv(sched_path)
+            _purse_col = next((c for c in _sched.columns if "purse" in c.lower()), None)
+            if _purse_col:
+                _match = _sched[_sched["tournament_name"].str.lower() == tournament_name.lower()]
+                if not _match.empty:
+                    _p = pd.to_numeric(_match.iloc[0][_purse_col], errors="coerce")
+                    if pd.notna(_p) and _p > 0:
+                        purse = float(_p)
+        except Exception:
+            pass
 
     usage = load_usage_remaining(usage_path)
     pool["remaining_uses"] = pool["player_name"].apply(lambda n: int(usage.get(_norm(n), 3)))
@@ -400,6 +469,7 @@ def run_optimizer(
             risk_weight=risk_weight,
             usage_weight=usage_weight,
             last_use_penalty=last_use_penalty,
+            purse=purse,
         )
 
         row = {
@@ -422,16 +492,24 @@ def run_optimizer(
         for i in range(max(3, lineup_size)):
             if i < lineup_size:
                 pr = combo[i]
-                row[f"pick{i + 1}"] = pr["player_name"]
-                row[f"ev{i + 1}"] = round(float(pr.get("expected_value", 0.0)), 2)
-                row[f"uses{i + 1}"] = int(pr.get("remaining_uses", 3))
+                row[f"pick{i + 1}"]      = pr["player_name"]
+                row[f"ev{i + 1}"]        = round(float(pr.get("expected_value", 0.0)), 2)
+                row[f"prize_ev{i + 1}"]  = round(expected_prize_money(pr, purse), 0)
+                row[f"cut{i + 1}"]       = round(float(pr.get("cut_prob", 0.5)) * 100.0, 1)
+                row[f"win{i + 1}"]       = round(float(pr.get("win_prob", 0.0)) * 100.0, 2)
+                row[f"top10{i + 1}"]     = round(float(pr.get("top10_prob", 0.0)) * 100.0, 1)
+                row[f"uses{i + 1}"]      = int(pr.get("remaining_uses", 3))
                 wr = pr.get("world_rank")
                 row[f"wr{i + 1}"] = "" if pd.isna(wr) else int(wr)
             else:
-                row[f"pick{i + 1}"] = ""
-                row[f"ev{i + 1}"] = np.nan
-                row[f"uses{i + 1}"] = np.nan
-                row[f"wr{i + 1}"] = ""
+                row[f"pick{i + 1}"]     = ""
+                row[f"ev{i + 1}"]       = np.nan
+                row[f"prize_ev{i + 1}"] = np.nan
+                row[f"cut{i + 1}"]      = np.nan
+                row[f"win{i + 1}"]      = np.nan
+                row[f"top10{i + 1}"]    = np.nan
+                row[f"uses{i + 1}"]     = np.nan
+                row[f"wr{i + 1}"]       = ""
         results.append(row)
 
     results_df = pd.DataFrame(results)
@@ -454,6 +532,7 @@ def run_optimizer(
         "unresolved_locked": unresolved_locked,
         "resolved_excluded": resolved_excluded,
         "unresolved_excluded": unresolved_excluded,
+        "purse": purse,
     }
     results_df.attrs["optimizer_meta"] = meta
     candidate.attrs["optimizer_meta"] = meta

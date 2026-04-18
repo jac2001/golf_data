@@ -1,0 +1,12 @@
+{
+  "tournament_id": "R2026012",
+  "event_name": "RBC Heritage",
+  "last_updated": "2026-04-14 20:20:41  UTC",
+  "model": "baseline_history_fit",
+  "models_available": [
+    "baseline",
+    "baseline_history_fit"
+  ],
+  "fetched_at": "2026-04-16T02:54:49.201922+00:00",
+  "player_count": 82
+}

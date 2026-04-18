@@ -1,0 +1,16 @@
+{
+  "tournament_id": "R2026041",
+  "tournament_name": "Valero Texas Open",
+  "current_round": 4,
+  "round_status": "Official",
+  "cut_line": {},
+  "cut_projection": {
+    "projected_cut_score": -1,
+    "projected_cut_position": "CUT",
+    "bubble_count": 39,
+    "safely_in": 58,
+    "safely_out": 33
+  },
+  "fetched_at": "2026-04-06T13:00:06.513517+00:00",
+  "player_count": 132
+}
