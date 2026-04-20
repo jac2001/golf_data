@@ -1,15 +1,23 @@
 ============================================================
-POST-TOURNAMENT SUMMARY — Masters Tournament (R2026014)
-Generated: 2026-04-13 18:24
+POST-TOURNAMENT SUMMARY — The Masters (R2026014)
+Generated: 2026-04-19 21:05
 ============================================================
 
 PIPELINE STATUS
 ----------------------------------------
-  [OK  ] Past Results
-  [OK  ] Form Stats
+  [OK  ] Tournament SG Stats
+  [FAIL] Form Stats
+  [OK  ] World Rankings
+  [OK  ] Record Results
+  [OK  ] Fantasy League Usage
+  [OK  ] Backfill Prediction Results
   [OK  ] Grade Bets
+  [OK  ] CLV Tracking
+  [OK  ] Assistant Context
+  [OK  ] Calibration Refresh
 
-  3/3 tasks passed
+  9/10 tasks passed
+  FAILED: Form Stats
 
 BET RESULTS
 ----------------------------------------

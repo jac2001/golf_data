@@ -11604,6 +11604,104 @@ elif page == "👤 Players":
                 except Exception:
                     pass
 
+            # ── DG Player Decompositions ───────────────────────────────────────
+            # Event-specific: DG's full prediction broken into components.
+            # final_pred = complete SG prediction for this week's course.
+            # course_fit_delta = how much this course helps/hurts vs baseline.
+            _dc_path = DATA_DIR / "datagolf" / "dg_decompositions_latest.csv"
+            if _dc_path.exists():
+                try:
+                    _dc_full = pd.read_csv(_dc_path)
+                    _dc_last = player_search.strip().split()[-1].lower()
+                    _dc_row = _dc_full[_dc_full["player_name"].str.lower().str.contains(_dc_last, na=False)]
+                    if len(_dc_row) > 1:
+                        _dc_exact = _dc_row[_dc_row["player_name"].apply(_name_key) == _name_key(player_search)]
+                        if not _dc_exact.empty:
+                            _dc_row = _dc_exact
+                    if not _dc_row.empty:
+                        _dcr = _dc_row.iloc[0]
+                        _dc_event   = str(_dcr.get("event_name", ""))
+                        _dc_course  = str(_dcr.get("course_name", ""))
+                        _dc_updated = str(_dcr.get("last_updated", "")).split(" ")[0]
+                        _dc_base    = _dcr.get("baseline_pred")
+                        _dc_final   = _dcr.get("final_pred")
+                        _dc_delta   = _dcr.get("course_fit_delta")
+                        _dc_std     = _dcr.get("std_deviation")
+
+                        st.markdown("---")
+                        st.markdown("#### DG Tournament Prediction")
+                        st.caption(f"{_dc_event} @ {_dc_course} · DG prediction decomposition · Updated {_dc_updated}")
+
+                        # Top row: baseline → final with delta
+                        if pd.notna(_dc_final):
+                            _dc_f = float(_dc_final)
+                            _dc_b = float(_dc_base) if pd.notna(_dc_base) else 0.0
+                            _dc_d = float(_dc_delta) if pd.notna(_dc_delta) else 0.0
+                            _dc_d_col = "#00c44f" if _dc_d > 0.05 else ("#e53935" if _dc_d < -0.05 else "#aaaaaa")
+                            _dc_f_col = "#00c44f" if _dc_f > 1.5 else ("#6ddb9a" if _dc_f > 0.5 else ("#ffa726" if _dc_f > -0.2 else "#e53935"))
+                            _dc_std_str = f"±{float(_dc_std):.2f}" if _dc_std and pd.notna(_dc_std) else "—"
+
+                            st.markdown(
+                                f"<div style='background:#0b1929;border:1px solid #1a3050;border-top:3px solid {_dc_f_col};"
+                                f"border-radius:8px;padding:12px 16px;display:flex;gap:24px;align-items:center;margin-bottom:10px;'>"
+                                f"<div style='text-align:center;'><div style='font-size:10px;color:#4a6080;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px;'>DG Prediction</div>"
+                                f"<div style='font-size:28px;font-weight:800;color:{_dc_f_col};'>{_dc_f:+.3f}</div>"
+                                f"<div style='font-size:11px;color:#6a8caf;'>SG/round vs field</div></div>"
+                                f"<div style='text-align:center;'><div style='font-size:10px;color:#4a6080;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px;'>Baseline</div>"
+                                f"<div style='font-size:20px;font-weight:700;color:#dde6f5;'>{_dc_b:+.3f}</div>"
+                                f"<div style='font-size:11px;color:#6a8caf;'>overall skill</div></div>"
+                                f"<div style='text-align:center;'><div style='font-size:10px;color:#4a6080;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px;'>Course Fit</div>"
+                                f"<div style='font-size:20px;font-weight:700;color:{_dc_d_col};'>{_dc_d:+.3f}</div>"
+                                f"<div style='font-size:11px;color:#6a8caf;'>vs baseline</div></div>"
+                                f"<div style='text-align:center;'><div style='font-size:10px;color:#4a6080;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px;'>Uncertainty</div>"
+                                f"<div style='font-size:20px;font-weight:700;color:#9b9bff;'>{_dc_std_str}</div>"
+                                f"<div style='font-size:11px;color:#6a8caf;'>std deviation</div></div>"
+                                f"</div>",
+                                unsafe_allow_html=True,
+                            )
+
+                        # Adjustment breakdown bar chart
+                        _dc_adj_defs = [
+                            ("Course History",   "course_history_adjustment"),
+                            ("Driving Accuracy", "driving_accuracy_adjustment"),
+                            ("Driving Distance", "driving_distance_adjustment"),
+                            ("Recent Form",      "timing_adjustment"),
+                            ("Approach Fit",     "cf_approach_comp"),
+                            ("Short Game Fit",   "cf_short_comp"),
+                        ]
+                        _dc_adj_rows = []
+                        for _lbl, _col in _dc_adj_defs:
+                            _v = _dcr.get(_col)
+                            if _v is not None and pd.notna(_v):
+                                _dc_adj_rows.append((_lbl, float(_v)))
+
+                        if _dc_adj_rows:
+                            _max_abs = max(abs(v) for _, v in _dc_adj_rows) or 0.01
+                            _adj_cards = []
+                            for _lbl, _v in _dc_adj_rows:
+                                _bar_pct = min(abs(_v) / _max_abs * 100, 100)
+                                _v_col = "#00c44f" if _v > 0.005 else ("#e53935" if _v < -0.005 else "#888")
+                                _bar_col = _v_col
+                                _adj_cards.append(
+                                    f"<div style='margin-bottom:6px;'>"
+                                    f"<div style='display:flex;justify-content:space-between;margin-bottom:2px;'>"
+                                    f"<span style='font-size:11px;color:#8aa8c8;'>{_lbl}</span>"
+                                    f"<span style='font-size:11px;font-weight:700;color:{_v_col};'>{_v:+.3f}</span>"
+                                    f"</div>"
+                                    f"<div style='background:#0d1e30;border-radius:3px;height:6px;'>"
+                                    f"<div style='background:{_bar_col};border-radius:3px;height:6px;width:{_bar_pct:.0f}%;'></div>"
+                                    f"</div></div>"
+                                )
+                            st.markdown(
+                                f"<div style='background:#0b1929;border:1px solid #1a3050;border-radius:8px;padding:12px 16px;'>"
+                                f"<div style='font-size:10px;color:#4a6080;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:10px;'>Adjustment Breakdown</div>"
+                                f"{''.join(_adj_cards)}"
+                                f"</div>",
+                                unsafe_allow_html=True,
+                            )
+                except Exception:
+                    pass
+
             # ── Recent Form Stats ──────────────────────────────────────────────
             # Loads actual PGA Tour stat data from form_stats_2026.csv.
             # Shows all 19 tracked stats grouped by category, with field rank

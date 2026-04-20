@@ -211,8 +211,18 @@ SCORE_FEATURES = [
     "dg_fit_total", "predictive_sg_weighted",
     "world_rank",
     "world_rank_log",
-    # DG approach-skill feature (added 2026-04; activate after retrain)
+    # DG features (added 2026-04; activate after retrain)
     # "approach_skill_sg",
+    # "final_pred",            # DG's full course-adjusted prediction
+    # "course_fit_delta",      # final_pred - baseline_pred (course uplift/drag)
+    # "driving_accuracy_adjustment",
+    # "driving_distance_adjustment",
+    # "dg_skill_total",
+    # DG archive features (pre-tournament model probs; added 2026-04; activate after retrain)
+    # "dg_win",                # DG pre-tournament win probability
+    # "dg_top10",              # DG pre-tournament top-10 probability
+    # "dg_top20",              # DG pre-tournament top-20 probability
+    # "dg_make_cut",           # DG pre-tournament make-cut probability
 ]
 
 
@@ -2460,6 +2470,34 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
             print(f"  DG skill ratings merged: {_m}/{len(features_df)} players matched")
     except Exception as _sr_e:
         print(f"  DG skill ratings merge skipped: {_sr_e}")
+
+    # ADD DG PLAYER DECOMPOSITIONS (event-specific — updates each week)
+    # final_pred = DG's full course-adjusted SG prediction for this event
+    # course_fit_delta = final_pred - baseline_pred (how course helps/hurts this player)
+    # Saves as pass-through columns; activate in SCORE_FEATURES after retrain.
+    try:
+        _dc_path = DATA_DIR / "datagolf" / "dg_decompositions_latest.csv"
+        if _dc_path.exists():
+            _dc_df = pd.read_csv(_dc_path, usecols=[
+                "player_name", "baseline_pred", "final_pred", "course_fit_delta",
+                "driving_accuracy_adjustment", "driving_distance_adjustment",
+                "timing_adjustment", "course_history_adjustment",
+                "total_course_history_adjustment", "std_deviation", "sample_size",
+            ])
+            _dc_df["_nk"] = _dc_df["player_name"].apply(_as_norm)
+            _dc_lookup = _dc_df.set_index("_nk").drop(columns=["player_name"])
+            features_df["_nk"] = features_df["player_name"].apply(_as_norm)
+            features_df = features_df.merge(_dc_lookup, on="_nk", how="left")
+            features_df.drop(columns=["_nk"], inplace=True, errors="ignore")
+            # vs-field delta for final_pred (useful as a ranked signal)
+            _dc_field_mean = features_df["final_pred"].mean()
+            features_df["dg_final_pred_vs_field"] = features_df["final_pred"] - _dc_field_mean
+            _m = features_df["final_pred"].notna().sum()
+            print(f"  DG decompositions merged: {_m}/{len(features_df)} players matched")
+        else:
+            print(f"  DG decompositions: dg_decompositions_latest.csv not found — run fetch_dg_decompositions.py")
+    except Exception as _dc_e:
+        print(f"  DG decompositions merge skipped: {_dc_e}")
 
 
                         

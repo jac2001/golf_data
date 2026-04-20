@@ -1189,6 +1189,86 @@ for _col in ('season_sg_arg', 'predictive_sg_weighted'):
 # ============================================================================
 
 # ============================================================================
+# STEP 5.7: Merge DataGolf pre-tournament archive predictions
+# ============================================================================
+# Adds dg_win, dg_top5, dg_top10, dg_top20, dg_make_cut, dg_frl as features.
+# Source: data/datagolf/dg_archive_all.csv (built by fetch_dg_archive.py)
+# Coverage: 2020-present, ~12 recurring events/year, ~30% of training rows.
+# Missing rows (pre-2020 or non-covered events) get NaN — models handle this.
+# ============================================================================
+try:
+    _dg_archive_path = DATA_DIR / "datagolf" / "dg_archive_all.csv"
+    if _dg_archive_path.exists():
+        print("\n" + "=" * 60)
+        print("Step 5.7: Merging DataGolf archive predictions...")
+        print("-" * 60)
+
+        import re as _re2
+        import unicodedata as _ud2
+
+        def _norm_name(n: str) -> str:
+            """Normalize player name: 'Last, First' or 'First Last' → 'first last' ASCII."""
+            s = str(n).strip().lower()
+            for _from, _to in [("ø", "o"), ("æ", "ae"), ("ß", "ss")]:
+                s = s.replace(_from, _to)
+            s = _ud2.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")
+            if "," in s:
+                parts = s.split(",", 1)
+                s = f"{parts[1].strip()} {parts[0].strip()}"
+            s = _re2.sub(r"[^a-z0-9\s]", " ", s)
+            return " ".join(s.split())
+
+        def _norm_event(e: str) -> str:
+            """Normalize event/tournament name for fuzzy matching."""
+            s = str(e).lower()
+            s = _re2.sub(r"[^a-z0-9\s]", " ", s)
+            return " ".join(s.split())
+
+        dg_arch = pd.read_csv(_dg_archive_path)
+        print(f"  Loaded archive: {len(dg_arch):,} rows, {dg_arch['event_name'].nunique()} events, "
+              f"years {dg_arch['year'].min()}-{dg_arch['year'].max()}")
+
+        # Normalise keys in archive
+        dg_arch["_name_key"] = dg_arch["player_name"].apply(_norm_name)
+        dg_arch["_evt_key"]  = dg_arch["event_name"].apply(_norm_event)
+
+        # Keep only the DG probability columns we want
+        _dg_cols = ["dg_win", "dg_top5", "dg_top10", "dg_top20", "dg_make_cut", "dg_frl"]
+        _dg_cols_present = [c for c in _dg_cols if c in dg_arch.columns]
+        dg_arch_slim = dg_arch[["_name_key", "_evt_key", "year"] + _dg_cols_present].copy()
+        # Drop duplicates (keep last if any)
+        dg_arch_slim = dg_arch_slim.drop_duplicates(["_name_key", "_evt_key", "year"], keep="last")
+
+        # Normalise keys in training data
+        merged["_name_key"] = merged["player_name"].apply(_norm_name)
+        merged["_evt_key"]  = merged["tournament_name"].apply(_norm_event) if "tournament_name" in merged.columns else ""
+
+        # If tournament_name not directly available, try building from tournament_id
+        if "tournament_name" not in merged.columns or (merged["_evt_key"] == "").all():
+            print("  ⚠️  tournament_name not in merged — skipping DG archive merge")
+        else:
+            before = len(merged)
+            merged = merged.merge(
+                dg_arch_slim,
+                on=["_name_key", "_evt_key", "year"],
+                how="left",
+            )
+            matched = merged[_dg_cols_present[0]].notna().sum() if _dg_cols_present else 0
+            pct = matched / before * 100
+            print(f"  Matched {matched:,} / {before:,} rows ({pct:.1f}%) with DG archive data")
+            for col in _dg_cols_present:
+                cov = merged[col].notna().mean() * 100
+                print(f"    {col}: {cov:.1f}% coverage")
+
+        # Clean up temp keys
+        merged.drop(columns=["_name_key", "_evt_key"], errors="ignore", inplace=True)
+    else:
+        print("\n  [skip] DG archive not found — run fetch_dg_archive.py --years 2020 2025 --combine first")
+except Exception as _e:
+    print(f"\n  [warn] DG archive merge failed: {_e}")
+    merged.drop(columns=["_name_key", "_evt_key"], errors="ignore", inplace=True)
+
+# ============================================================================
 # STEP 6: Save processed dataset
 # ============================================================================
 print("\n" + "="*60)

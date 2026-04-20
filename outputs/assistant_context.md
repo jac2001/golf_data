@@ -1,11 +1,11 @@
 # Golf Model — Season Context
-_Updated: 2026-04-13 08:30_
+_Updated: 2026-04-19 21:05_
 
 ## Season Summary (2026 PGA Tour)
 - Tournaments tracked: **10**
 - Tournaments with results: **10**
 - Top pick finished top 10: **6/10** (60%)
-- Top-5 predictions → top-10 rate: **42%** (expected: ~33%)
+- Top-5 predictions → top-10 rate: **44%** (expected: ~33%)
 - Average rank of actual winner in our presets: **#21.2**
 - Times our #1 pick won: **2**
 
@@ -14,7 +14,7 @@ _Updated: 2026-04-13 08:30_
 ### Masters (R2026014)
 - **Winner**: Rory McIlroy
 - Winner was our **#3** ranked player pre-tournament
-- Our **#1 pick**: Scottie Scheffler — finished #4
+- Our **#1 pick**: Scottie Scheffler — finished #2
 - Top-10 predictions hit: **5/10** finished inside top 10
 
 ### Valero Texas Open (R2026041)
@@ -52,7 +52,7 @@ Note: Most bets are outright/top-10/top-20 markets. High volume because the syst
 CLV measures whether our model priced players better than the closing market. Positive CLV = we got value; negative = we were wrong about the price.
 - Tournaments with CLV data: **7**
 - Average CLV: **+0.16pp** (percentage points vs closing line)
-- % of picks with positive CLV: **76%**
+- % of picks with positive CLV: **75%**
 
 **Best CLV picks this season:**
   - Scottie Scheffler (Cognizant Classic): +39.4pp
@@ -64,16 +64,16 @@ What the model weighs most when ranking players this week:
 
 | # | Feature | Importance |
 |---|---|---|
-| 1 | Approach play (SG:APP season avg) | 11.8% |
+| 1 | Approach play (SG:APP season avg) | 12.4% |
 | 2 | Recent form trend | 9.1% |
 | 3 | season_sg_app_field_pct | 5.9% |
-| 4 | Has SG history at this course | 5.1% |
+| 4 | Has SG history at this course | 5.3% |
 | 5 | has_made_cut_here | 3.9% |
-| 6 | season_sg_ott_vs_field | 3.7% |
-| 7 | recent_par3_scoring_field_pct | 3.7% |
-| 8 | Recent SG (weighted last 5 events) | 3.0% |
-| 9 | hist_cut_rate | 3.0% |
-| 10 | hist_top10s | 2.8% |
+| 6 | season_sg_ott_vs_field | 3.8% |
+| 7 | Recent SG (weighted last 5 events) | 3.7% |
+| 8 | recent_par3_scoring_field_pct | 3.3% |
+| 9 | Off-the-tee (SG:OTT season avg) | 2.9% |
+| 10 | hist_times_played | 2.6% |
 
 ## Model Architecture Notes
 - 4 XGBoost models: win, top-5, top-10, top-20 probability

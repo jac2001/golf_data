@@ -196,6 +196,7 @@ STEP_TIMEOUTS = {
     "PGA Odds": 300,
     "DG Approach Skill": 60,
     "DG Skill Ratings": 60,
+    "DG Decompositions": 60,
     "Predictions": 900,
     "Refresh Odds": 120,
     "Recommend Bets": 120,
@@ -380,8 +381,8 @@ def run_tuesday_morning(dry_run: bool = False):
         ("DG Approach Skill", ["python3", "scripts/scrapers/fetch_dg_approach_skill.py",
                                "--period", "l24"]),
         ("DG Skill Ratings", ["python3", "scripts/scrapers/fetch_dg_skill_ratings.py"]),
-        
-        
+        ("DG Decompositions", ["python3", "scripts/scrapers/fetch_dg_decompositions.py",
+                               "--tournament-id", tournament_id]),
         ("Predictions", ["python3", "scripts/run_pipeline.py",
                          "--tournament", tournament_name,
                          "--pga-id", tournament_id,
