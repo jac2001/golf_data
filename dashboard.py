@@ -10343,12 +10343,27 @@ elif page == "📋 My Picks":
                         _lu_win  = _lp.get("win_prob", 0)
                         _lu_t10  = _lp.get("top10_prob", 0)
                         # Alt cost if you save this player
-                        _alt     = _lu_alts.get(_lp["name"], {})
+                        _alt      = _lu_alts.get(_lp["name"], {})
                         _alt_cost = _alt.get("ev_cost", 0)
                         _alt_str  = (
                             f'<div style="font-size:0.6em;color:#ef4444;margin-top:3px;">'
                             f'Save cost: −{_alt_cost:,} EV</div>'
                         ) if _alt_cost > 0 else ""
+                        # Venue fit badge
+                        _v_sg  = _lp.get("course_sg", 0.0)
+                        _v_sig = _lp.get("course_sig", False)
+                        if _v_sig and _v_sg >= 0.25:
+                            _venue_badge = (
+                                f'<div style="font-size:0.58em;color:#00c44f;margin-top:4px;">'
+                                f'★ venue fit {_v_sg:+.2f} SG</div>'
+                            )
+                        elif _v_sig and _v_sg <= -0.25:
+                            _venue_badge = (
+                                f'<div style="font-size:0.58em;color:#ef4444;margin-top:4px;">'
+                                f'↓ venue miss {_v_sg:+.2f} SG</div>'
+                            )
+                        else:
+                            _venue_badge = ""
                         _lu_cards += f"""
 <div style="flex:1;min-width:130px;background:#060f1c;border:1px solid {_lc}44;
             border-top:3px solid {_lc};border-radius:0 0 8px 8px;padding:12px 14px;">
@@ -10359,7 +10374,7 @@ elif page == "📋 My Picks":
   <div style="font-size:1.1em;font-weight:800;color:{_lc};">{_lu_ev:,} <span style="font-size:0.55em;color:#4a6080;">EV</span></div>
   <div style="font-size:0.65em;color:#4a6080;margin-top:3px;">{_lu_win:.0f}% win · {_lu_t10:.0f}% top-10</div>
   <div style="font-size:0.65em;color:#3a5070;letter-spacing:2px;margin-top:3px;">{_lu_dots}</div>
-  {_alt_str}
+  {_venue_badge}{_alt_str}
 </div>"""
 
                     st.markdown(f"""

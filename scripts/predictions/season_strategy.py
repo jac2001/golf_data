@@ -294,7 +294,7 @@ def _normalize_tournament_name(name: str) -> str:
 
 def _load_course_fit(
     schedule: pd.DataFrame,
-) -> tuple[dict[str, str], dict[tuple[str, str], float]]:
+) -> tuple[dict[str, str], dict[tuple[str, str], float], dict[tuple[str, str], tuple[int, int]]]:
     """
     Returns:
         tid_to_course  — {tournament_id: course_key}  for 2026 schedule entries
@@ -309,6 +309,7 @@ def _load_course_fit(
     """
     tid_to_course: dict[str, str] = {}
     course_fit_map: dict[tuple[str, str], float] = {}
+    course_rounds_map: dict[tuple[str, str], tuple[int, int]] = {}
 
     # Build tournament_name_normalized → course_key from historical form file
     name_to_course: dict[str, str] = {}
@@ -348,7 +349,14 @@ def _load_course_fit(
         try:
             cp = pd.read_csv(
                 COURSE_PERF_FILE,
-                usecols=["player_name", "course_key", "course_sg_total_weighted"],
+                usecols=["player_name", "course_key", "course_sg_total_weighted",
+                         "course_sg_total_rounds", "starts"],
+            )
+            # Multiple rows can exist per (player, course) — keep the one with
+            # the most SG rounds so the recency-weighted value uses full history.
+            cp["_rounds"] = cp["course_sg_total_rounds"].fillna(0).astype(int)
+            cp = cp.sort_values("_rounds").drop_duplicates(
+                subset=["player_name", "course_key"], keep="last"
             )
             for _, row in cp.iterrows():
                 nk  = _name_key(str(row["player_name"]))
@@ -356,10 +364,13 @@ def _load_course_fit(
                 sg  = row["course_sg_total_weighted"]
                 if sg is not None and not pd.isna(sg):
                     course_fit_map[(nk, ck)] = float(sg)
+                rounds = int(row["course_sg_total_rounds"]) if not pd.isna(row.get("course_sg_total_rounds", float("nan"))) else 0
+                starts = int(row["starts"]) if not pd.isna(row.get("starts", float("nan"))) else 0
+                course_rounds_map[(nk, ck)] = (rounds, starts)
         except Exception:
             pass
 
-    return tid_to_course, course_fit_map
+    return tid_to_course, course_fit_map, course_rounds_map
 
 
 def _load_historical_fields() -> dict[str, set[str]]:
@@ -565,7 +576,7 @@ def get_season_strategy(
     weeks_remaining = len(sched[sched["start_date"] >= today])
 
     # ── Course fit lookup ─────────────────────────────────────────────────────
-    tid_to_course, course_fit_map = _load_course_fit(sched)
+    tid_to_course, course_fit_map, course_rounds_map = _load_course_fit(sched)
 
     # ── Historical field lookup (2025) ────────────────────────────────────────
     # Used to flag whether a tracker player was in last year's field for each
@@ -852,6 +863,19 @@ def get_season_strategy(
         else:
             this_week_ev = 0.0
 
+        # ── Current venue fit ─────────────────────────────────────────────────
+        _cur_tid = str(current_event_row.get("tournament_id", "")) if current_event_row is not None else ""
+        _cur_ck  = tid_to_course.get(_cur_tid, "")
+        current_course_sg     = course_fit_map.get((key, _cur_ck), 0.0) if _cur_ck else 0.0
+        _cr_rounds, _cr_starts = course_rounds_map.get((key, _cur_ck), (0, 0)) if _cur_ck else (0, 0)
+        # Flag as meaningful when there's real historical evidence.
+        # 3+ rounds covers a full start or a WD-after-R3 scenario.
+        # Pre-SG-era courses have rounds=0 but ≥2 starts is still evidence.
+        current_course_sig = (
+            abs(current_course_sg) >= 0.25
+            and (_cr_rounds >= 3 or (_cr_rounds == 0 and _cr_starts >= 2))
+        )
+
         # ── Future event scores ───────────────────────────────────────────────
         # Base EV uses effective rank (blended SG + world rank).
         # Course-fit multiplier from historical venue SG.
@@ -973,6 +997,21 @@ def get_season_strategy(
                         use_this_week       = True
                         hot_streak_override = True
 
+        # ── Venue fit clause (injected into reason when meaningful) ──────────
+        _venue_clause = ""
+        if current_course_sig:
+            _vdir = "boost" if current_course_sg > 0 else "miss"
+            _vev  = f"{_cr_rounds} rounds" if _cr_rounds >= 4 else f"{_cr_starts} starts"
+            _venue_clause = (
+                f" Venue {_vdir}: {current_course_sg:+.2f} SG at this course ({_vev})."
+            )
+        # Best future event venue fit (only mention if it's better than current)
+        _best_venue_clause = ""
+        if best_events:
+            _bv_sg = best_events[0].get("course_sg", 0.0)
+            if abs(_bv_sg) >= 0.25 and _bv_sg > current_course_sg + 0.2:
+                _best_venue_clause = f" {best_events[0]['name']}: {_bv_sg:+.2f} SG historically."
+
         # ── Reason string ─────────────────────────────────────────────────────
         if use_this_week and hot_streak_override:
             _cb = sg_career if sg_career != 0.0 else sg_season
@@ -982,7 +1021,7 @@ def get_season_strategy(
                 f"Hot streak: SG {recent_sg:+.2f} vs career {_cb:+.2f} "
                 f"(+{recent_sg - _cb:.2f}/rnd), trend rising. "
                 f"Form is perishable — use now while it lasts. "
-                f"{wp:.1f}% win / {t10:.0f}% top-10."
+                f"{wp:.1f}% win / {t10:.0f}% top-10.{_venue_clause}"
             )
         elif use_this_week:
             wp  = this_week_probs["win_prob"]  * 100
@@ -993,7 +1032,7 @@ def get_season_strategy(
             )
             reason = (
                 f"{wp:.1f}% win / {t10:.0f}% top-10 this week "
-                f"({this_week_ev:,.0f} EV). Ranks in top-{uses_left} windows.{_opp_str}"
+                f"({this_week_ev:,.0f} EV). Ranks in top-{uses_left} windows.{_opp_str}{_venue_clause}"
             )
         elif best_events:
             _best = best_events[0]
@@ -1003,17 +1042,17 @@ def get_season_strategy(
                 wp  = this_week_probs["win_prob"]  * 100
                 t10 = this_week_probs["top10_prob"] * 100
                 reason = (
-                    f"This week: {this_week_ev:,.0f} EV ({wp:.1f}% win / {t10:.0f}% top-10). "
-                    f"{_best_name}: {_best_ev:,.0f} EV. "
+                    f"This week: {this_week_ev:,.0f} EV ({wp:.1f}% win / {t10:.0f}% top-10).{_venue_clause} "
+                    f"{_best_name}: {_best_ev:,.0f} EV.{_best_venue_clause} "
                     f"Save — opportunity cost of using now: {opp_cost_ev:,.0f} EV ({opp_cost_pct:.0f}% better later)."
                 )
             else:
                 reason = (
-                    f"Not in this week's field. "
-                    f"Best window: {_best_name} ({_best_ev:,.0f} EV)."
+                    f"Not in this week's field.{_venue_clause} "
+                    f"Best window: {_best_name} ({_best_ev:,.0f} EV).{_best_venue_clause}"
                 )
         else:
-            reason = "Limited future opportunities — consider using now."
+            reason = f"Limited future opportunities — consider using now.{_venue_clause}"
 
         upcoming_premium = [e for e in best_events if e["tier"] == "premium"]
         save_signal = (
@@ -1049,6 +1088,10 @@ def get_season_strategy(
             "save_signal":         save_signal,
             "is_hot_streak":       is_hot_streak,
             "hot_streak_override": hot_streak_override,
+            "current_course_sg":   round(current_course_sg, 2),
+            "current_course_rounds": _cr_rounds,
+            "current_course_starts": _cr_starts,
+            "current_course_sig":  current_course_sig,
             "reason":              reason,
         }
 
@@ -1101,12 +1144,14 @@ def get_season_strategy(
     weekly_lineup = {
         "players": [
             {
-                "name":     n,
-                "ev":       p["this_week_ev"],
-                "tier":     p["tier"],
-                "uses_left": p["uses_left"],
-                "win_prob": round(p["this_week_probs"]["win_prob"] * 100, 1) if p.get("this_week_probs") else 0,
+                "name":       n,
+                "ev":         p["this_week_ev"],
+                "tier":       p["tier"],
+                "uses_left":  p["uses_left"],
+                "win_prob":   round(p["this_week_probs"]["win_prob"] * 100, 1) if p.get("this_week_probs") else 0,
                 "top10_prob": round(p["this_week_probs"]["top10_prob"] * 100, 1) if p.get("this_week_probs") else 0,
+                "course_sg":  p.get("current_course_sg", 0.0),
+                "course_sig": p.get("current_course_sig", False),
             }
             for n, p in _top3
         ],
