@@ -878,6 +878,7 @@ def score_single_markets(
     lines_df: pd.DataFrame,
     consensus_map: dict[str, float] | None = None,
     prop_consensus_map: dict[tuple[str, str, str], float] | None = None,
+    dg_model_probs: dict[tuple[str, str], float] | None = None,
 ) -> pd.DataFrame:
     """Score prop lines vs model predictions.
 
@@ -885,6 +886,9 @@ def score_single_markets(
     prop_consensus_map: (name_key, market, book) → per-book no-vig prob.
                         Built by build_prop_consensus_probs().  When present,
                         replaces the old mixed-book _market_vig approach.
+    dg_model_probs:     (normalized_name, market) → DG model implied_prob.
+                        When provided, overrides our model's pool-market probability
+                        for players where DG has a reading (better calibrated).
     """
     if preds_df.empty or lines_df.empty:
         return pd.DataFrame()
@@ -948,10 +952,22 @@ def score_single_markets(
             continue
 
         pred_row = resolve_player(player_name)
-        if pred_row is None:
-            continue
 
-        model_prob, calibrated = market_prob_from_prediction(pred_row, mkt)
+        # Use DG model probability when available — better calibrated for pool markets.
+        # Allow scoring even when pred_row is None (player not in our predictions file)
+        # as long as DG covers them — DG model IS the probability estimate.
+        _dg_key = (normalize_name_key(player_name), mkt)
+        _using_dg_prob = False
+        if dg_model_probs and _dg_key in dg_model_probs:
+            model_prob = dg_model_probs[_dg_key]
+            calibrated = True
+            _using_dg_prob = True
+            if pred_row is None:
+                pred_row = {}   # DG model covers this player — no predictions row needed
+        else:
+            if pred_row is None:
+                continue
+            model_prob, calibrated = market_prob_from_prediction(pred_row, mkt)
         if pd.isna(model_prob):
             continue
 
@@ -959,47 +975,48 @@ def score_single_markets(
         if odds is None:
             continue
 
-        implied = pd.to_numeric(line.get("implied_prob"), errors="coerce")
-        raw_book_prob = float(implied) if pd.notna(implied) and 0 < float(implied) < 1 else american_to_prob(odds)
-        if pd.isna(raw_book_prob):
+        dec = american_to_decimal(odds)
+        if pd.isna(dec) or dec <= 0:
             continue
 
-        # Use no-vig probability as book_prob (priority order):
-        # 1. Outright:  multi-book consensus (build_consensus_book_probs)
-        # 2. Props:     per-book no-vig from build_prop_consensus_probs
-        # 3. Fallback:  DK-only _market_vig (single-book normalisation)
-        # 4. Last:      raw implied_prob (includes vig — least accurate)
         player_key = normalize_name_key(player_name)
         book_str   = str(line.get("book", "DRAFTKINGS") or "DRAFTKINGS").upper()
         is_outright = mkt in {"outright", "winner"}
-        if is_outright and consensus_map and player_key in consensus_map:
+
+        # ── book_prob: break-even probability at actual decimal odds ─────────
+        # When DG model probs are used, they are already dead-heat-adjusted and
+        # vig-free (DG top20 probs sum to exactly 20, top10 to 10, etc.).
+        # EV = DG_prob × decimal - 1 is the correct formula per DG's methodology.
+        # book_prob = 1/decimal is the break-even probability — edge and EV are
+        # then consistent: edge > 0 ↔ EV > 0.
+        #
+        # For our own model probs (less calibrated), continue using no-vig
+        # normalisation (no_vig_book_prob < raw_implied) as before.
+        if _using_dg_prob:
+            book_prob = 1.0 / dec
+        elif is_outright and consensus_map and player_key in consensus_map:
             book_prob = consensus_map[player_key]
-        elif prop_consensus_map and (player_key, mkt, book_str) in prop_consensus_map:
-            book_prob = prop_consensus_map[(player_key, mkt, book_str)]
-        elif mkt in _market_vig:
-            book_prob = raw_book_prob / _market_vig[mkt]
         else:
-            book_prob = raw_book_prob
+            implied = pd.to_numeric(line.get("implied_prob"), errors="coerce")
+            raw_book_prob = float(implied) if pd.notna(implied) and 0 < float(implied) < 1 else american_to_prob(odds)
+            if pd.isna(raw_book_prob):
+                continue
+            if prop_consensus_map and (player_key, mkt, book_str) in prop_consensus_map:
+                book_prob = prop_consensus_map[(player_key, mkt, book_str)]
+            elif mkt in _market_vig:
+                book_prob = raw_book_prob / _market_vig[mkt]
+            else:
+                book_prob = raw_book_prob
 
-        dec = american_to_decimal(odds)
-        if pd.isna(dec):
-            continue
-
-        # ── Bayesian market-consensus blend ──────────────────────────────────
-        # For outright/finish markets, blend model_prob with the no-vig market
-        # consensus (consensus_map or prop_consensus_map).  Markets aggregate
-        # information from many bettors; blending reduces false-positive edges
-        # caused by model noise.  α=0.75 weights our model 3:1 over the market.
-        # We store the raw model_prob separately so callers can see both.
+        # ── Bayesian blend (own model only) ──────────────────────────────────
+        # Skip for DG probs: DG already incorporates market info, blending is circular.
         raw_model_prob = float(np.clip(model_prob, 0.0, 1.0))
-        _BLEND_ALPHA = 0.75   # model weight; market weight = 1 - α
-        if is_outright and consensus_map and player_key in consensus_map:
-            # Use the same consensus no-vig we're already computing
-            _mkt_nv = consensus_map[player_key]
-            model_prob = _BLEND_ALPHA * model_prob + (1 - _BLEND_ALPHA) * _mkt_nv
-        elif prop_consensus_map and (player_key, mkt, book_str) in prop_consensus_map:
-            _mkt_nv = prop_consensus_map[(player_key, mkt, book_str)]
-            model_prob = _BLEND_ALPHA * model_prob + (1 - _BLEND_ALPHA) * _mkt_nv
+        if not _using_dg_prob:
+            _BLEND_ALPHA = 0.75
+            if is_outright and consensus_map and player_key in consensus_map:
+                model_prob = _BLEND_ALPHA * model_prob + (1 - _BLEND_ALPHA) * consensus_map[player_key]
+            elif prop_consensus_map and (player_key, mkt, book_str) in prop_consensus_map:
+                model_prob = _BLEND_ALPHA * model_prob + (1 - _BLEND_ALPHA) * prop_consensus_map[(player_key, mkt, book_str)]
 
         edge_pts = (model_prob - book_prob) * 100.0
         ev_per_1 = (model_prob * dec) - 1.0
@@ -1169,13 +1186,44 @@ def _load_dg_matchup_model(tid: str) -> dict:
         return {}
 
 
+def _dg_outright_model_lookup(tid: str) -> dict[tuple[str, str], float]:
+    """Extract DG model probabilities from dg_outrights_{tid}.csv.
+
+    Returns {(normalized_player_name, canonical_market): dg_model_prob} for use
+    in score_single_markets to override our own model's pool-market probability
+    estimates (which are less calibrated than DG's model).
+    """
+    _MKT_MAP = {"win": "outright", "top_5": "top5", "top_10": "top10",
+                "top_20": "top20", "make_cut": "make_cut"}
+    path = DATA_DIR / "datagolf" / f"dg_outrights_{tid}.csv"
+    if not path.exists():
+        return {}
+    try:
+        df = pd.read_csv(path)
+        dg = df[df["is_dg_model"].astype(str).str.lower() == "true"].copy()
+        lookup: dict[tuple[str, str], float] = {}
+        for _, row in dg.iterrows():
+            name = str(row.get("player_name", "") or "").strip()
+            mkt_raw = str(row.get("market", "") or "")
+            mkt = _MKT_MAP.get(mkt_raw, mkt_raw)
+            prob = pd.to_numeric(row.get("implied_prob"), errors="coerce")
+            if name and mkt and pd.notna(prob):
+                lookup[(normalize_name_key(name), mkt)] = float(prob)
+        return lookup
+    except Exception:
+        return {}
+
+
 def _dg_matchups_to_prop_lines(tid: str) -> pd.DataFrame:
     """Convert dg_matchups_{tid}.csv (non-DG-model rows) into h2h prop_lines format.
 
-    Only includes US-accessible books. Sets round_num=1 (pre-tournament R1 matchups).
-    Returns empty DataFrame if file not found.
+    Includes all available books (sharp: Pinnacle/Betcris/Bet365 + US books).
+    Sets round_num=1 so they score as h2h_r1 (pre-tournament round matchups).
     """
-    _US_BOOKS = {"fanduel", "draftkings", "betmgm", "caesars", "pointsbet"}
+    _ALL_BOOKS = {
+        "fanduel", "draftkings", "betmgm", "caesars", "pointsbet",
+        "pinnacle", "betcris", "bet365", "unibet", "bovada", "betonline",
+    }
     path = DATA_DIR / "datagolf" / f"dg_matchups_{tid}.csv"
     if not path.exists():
         return pd.DataFrame()
@@ -1183,7 +1231,7 @@ def _dg_matchups_to_prop_lines(tid: str) -> pd.DataFrame:
         df = pd.read_csv(path)
         book_rows = df[
             (df["is_dg_model"].astype(str).str.lower() == "false") &
-            (df["book"].str.lower().isin(_US_BOOKS))
+            (df["book"].str.lower().isin(_ALL_BOOKS))
         ]
         if book_rows.empty:
             return pd.DataFrame()
@@ -1213,11 +1261,16 @@ def _dg_outrights_to_prop_lines(tid: str) -> pd.DataFrame:
     """Convert dg_outrights_{tid}.csv into prop_lines format for score_single_markets.
 
     Market mapping: win→outright, top_5→top5, top_10→top10, top_20→top20
-    Excludes DG model rows — we use our own blended model_prob.
-    Only includes US-accessible books.
+    Excludes DG model rows (model_prob comes via _dg_outright_model_lookup instead).
+    Includes ALL books — sharp books (Pinnacle, Betcris) are used for best-price
+    discovery; bettable US books get separate filtering in scoring.
     """
-    _US_BOOKS = {"fanduel", "draftkings", "betmgm", "caesars", "pointsbet"}
-    _MKT_MAP = {"win": "outright", "top_5": "top5", "top_10": "top10", "top_20": "top20", "make_cut": "make_cut"}
+    _ALL_BOOKS = {
+        "fanduel", "draftkings", "betmgm", "caesars", "pointsbet",
+        "pinnacle", "betcris", "bet365", "unibet", "bovada", "betonline",
+    }
+    _MKT_MAP = {"win": "outright", "top_5": "top5", "top_10": "top10",
+                "top_20": "top20", "make_cut": "make_cut"}
     path = DATA_DIR / "datagolf" / f"dg_outrights_{tid}.csv"
     if not path.exists():
         return pd.DataFrame()
@@ -1225,7 +1278,7 @@ def _dg_outrights_to_prop_lines(tid: str) -> pd.DataFrame:
         df = pd.read_csv(path)
         df = df[
             (df["is_dg_model"].astype(str).str.lower() == "false") &
-            (df["book"].str.lower().isin(_US_BOOKS))
+            (df["book"].str.lower().isin(_ALL_BOOKS))
         ]
         if df.empty:
             return pd.DataFrame()
@@ -1233,7 +1286,7 @@ def _dg_outrights_to_prop_lines(tid: str) -> pd.DataFrame:
         df["market"] = df["market"].map(_MKT_MAP).fillna(df["market"])
         df = df.rename(columns={"odds_american": "odds"})
         df["book"] = df["book"].str.upper()
-        # Normalize "Last, First" → "First Last" to match our prediction name format
+        # Normalize "Last, First" → "First Last"
         def _to_first_last(name):
             s = str(name).strip()
             if "," in s:
@@ -1449,7 +1502,12 @@ def score_h2h_markets(
         return _k * (wp_a / denom) + 0.15, _k * (wp_b / denom) + 0.15
 
     # ── Known-book filter ─────────────────────────────────────────────────────
-    _KNOWN_BOOKS = {"DRAFTKINGS", "FANDUEL", "BETMGM", "CAESARS", "POINTSBET"}
+    # Include DG-sourced matchup books (BET365, Bovada, BetOnline, Unibet)
+    # alongside standard US books — DG doesn't provide DK/FD matchup odds.
+    _KNOWN_BOOKS = {
+        "DRAFTKINGS", "FANDUEL", "BETMGM", "CAESARS", "POINTSBET",
+        "BET365", "BOVADA", "BETONLINE", "UNIBET", "PINNACLE",
+    }
     if "book" in h2h_lines.columns:
         h2h_lines = h2h_lines[
             h2h_lines["book"].astype(str).str.upper().isin(_KNOWN_BOOKS)
@@ -1514,13 +1572,15 @@ def score_h2h_markets(
         
             
 
-        book_a = american_to_prob(odds_a)
-        book_b = american_to_prob(odds_b)
-        if pd.isna(book_a) or pd.isna(book_b):
-            continue
-
         dec_a = american_to_decimal(odds_a)
         dec_b = american_to_decimal(odds_b)
+        if pd.isna(dec_a) or pd.isna(dec_b) or dec_a <= 0 or dec_b <= 0:
+            continue
+        # book_prob = 1/decimal: break-even probability at actual odds.
+        # DG round matchup probs are no-vig (sum to 1 per pair), so
+        # EV = DG_prob × decimal - 1 is directly correct.
+        book_a = 1.0 / dec_a
+        book_b = 1.0 / dec_b
         book_str = str(line.get("book", "DRAFTKINGS") or "DRAFTKINGS")
         round_num = line.get("round_num")
         mkt_label = f"h2h_r{int(round_num)}" if pd.notna(round_num) else "h2h"
@@ -1558,13 +1618,6 @@ def score_h2h_markets(
                     )
             if abs(edge_pts) > 5:
                 reason_parts.append(f"Model edge: {edge_pts:+.1f}pp vs book")
-                
-                
-                
-            if abs(edge_pts) > 5:
-                reason_parts.append(f"Model edge: {edge_pts:+.1f}pp vs book")
-            if not is_round_specific and _dg_matchups.get(frozenset({normalize_name_key(pa), normalize_name_key(pb)})): 
-                reason_parts.append("DG Model USED")
 
 
             rows.append({
@@ -1971,8 +2024,8 @@ def get_tournament_phase(tid: str) -> str:
 @dataclass
 class RecommendationConfig:
     min_confidence: float = 0.60
-    min_edge_points: float = 3.00   # raised from 1.0 — low-edge bets showed near-zero win rate
-    min_ev_per_1: float = 0.00
+    min_edge_points: float = 1.50   # edge = DG_prob - 1/decimal; consistent with EV
+    min_ev_per_1: float = 0.01     # 1% minimum EV floor — filters near-breakeven bets
     min_kelly_fraction: float = 0.005  # 0.5% half-Kelly — filters marginal plays a real bettor wouldn't touch
     max_abs_odds: int = 5000        # longshots never win; don't chase them
     max_per_market: int = 5
@@ -2028,41 +2081,53 @@ def apply_recommendation_filters(df: pd.DataFrame, cfg: RecommendationConfig) ->
         return work
 
     # ── Market exclusions ──────────────────────────────────────────────────────
-    # nationality_group: model win_prob share within nationality cohorts has no
-    #   concept of actual vig structure. 288 graded bets: 2.4% win rate vs
-    #   37.5% model_prob → -271 units. Excluded permanently.
-    #
-    # outright: 109 graded bets, 0 wins. Books too efficient on winner markets.
-    #
-    # group_winner: 16.2% actual vs ~33% expected (308 bets, -$82). Poor signal.
-    #
-    # h2h (tournament-long 72hr): 26.3% actual vs ~50% expected (190 bets, -$98).
-    #   Books set matchup lines very carefully; our signal is noise at that horizon.
-    #   Round-specific h2h_r1/r2/r3/r4 remain ACTIVE (differentiated signal).
-    #
-    # top5/top10/top20: RE-ENABLED (FanDuel primary source). Higher edge thresholds
-    #   applied below to compensate for model overconfidence on finish markets.
-    #
-    # make_cut: ACTIVE. 100% WR post-fix (25 bets).
-    # h2h_r1/r2/r3/r4: ACTIVE. Round-specific matchups from FanDuel pairings.
-    _EXCLUDED_MARKETS = {"nationality_group", "outright", "group_winner", "h2h"}
+    # nationality_group: 2.4% actual vs 37.5% model_prob → -271u. Excluded.
+    # outright: 109 graded bets, 0 wins. Books too efficient.
+    # group_winner: 16.2% actual vs ~33% expected. Poor signal.
+    # h2h (tournament-long): 26.3% actual vs ~50% expected. Excluded.
+    # top5: 1% win rate across 395 graded bets, -78.6% ROI. Model systematically
+    #   overestimates top-5 finish probability. Excluded permanently.
+    # make_cut: ACTIVE. 100% win rate, +48.4% ROI.
+    # h2h_r1/r2/r3/r4: ACTIVE. Round-specific matchups retain differentiated signal.
+    _EXCLUDED_MARKETS = {"nationality_group", "outright", "group_winner", "h2h", "top5"}
     work = work[~work["market"].isin(_EXCLUDED_MARKETS)]
 
     # ── Per-market minimum edge overrides ────────────────────────────────────
-    # Higher thresholds where model signal is less reliable:
-    #   make_cut: 4pp — well-calibrated binary prop; FanDuel prices conservatively
-    #   top10: 6pp — model historically overconfident; require larger margin
-    #   top5: 7pp — even harder market to find edge; require very high conviction
-    #   top20: 5pp — moderate threshold; books slightly softer here
-    #   h2h_r1: 5pp — early-round matchups less predictive than mid-tournament
+    # make_cut: 4pp — well-calibrated binary prop
+    # Edge = DG_prob - 1/decimal (consistent with EV = DG_prob × decimal - 1).
+    # Since DG probs are vig-free and dead-heat adjusted, edge > 0 ↔ EV > 0.
+    # Thresholds set to filter tiny-margin bets where variance dominates:
+    #   top10/top20: 1.5pp → EV ≥ 2-3% at typical pool odds
+    #   h2h_r1: 3pp → DG model must have meaningful read over book price
+    #   make_cut: 2pp → binary prop, high base-rate, want clear signal
     _mkt_min_edge = {
-        "make_cut": 4.0,
-        "top10":    6.0,
-        "top5":     7.0,
-        "top20":    5.0,
-        "h2h_r1":   5.0,
-        "outright": 6.0,
+        "make_cut": 2.0,
+        "top10":    1.5,
+        "top20":    1.5,
+        "h2h_r1":   3.0,
+        "outright": 3.0,
     }
+
+    # ── Max book odds cap for pool markets ────────────────────────────────────
+    # The model overestimates pool market probs for long shots. When the book
+    # prices a player at +700+ for top10 or +400+ for top20, the "edge" we see
+    # is model error, not market inefficiency. Cap to avoid chasing long shots.
+    _MAX_BOOK_ODDS: dict[str, int] = {
+        "top10": 700,   # book prob ≥ 12.5% — no top10 on +700 or longer
+        "top20": 400,   # book prob ≥ 20.0% — no top20 on +400 or longer
+    }
+    if _MAX_BOOK_ODDS:
+        _odds_col_raw = pd.to_numeric(work["odds_american"], errors="coerce")
+        _cap_mask = pd.Series(True, index=work.index)
+        for _mkt, _max_odds in _MAX_BOOK_ODDS.items():
+            _is_mkt = work["market"] == _mkt
+            _too_long = _odds_col_raw > _max_odds
+            _cap_mask = _cap_mask & ~(_is_mkt & _too_long)
+        before = len(work)
+        work = work[_cap_mask]
+        removed = before - len(work)
+        if removed:
+            print(f"  Book odds cap: removed {removed} long-shot pool bets")
     
     work = work[
         work.apply(
@@ -2371,8 +2436,15 @@ def build_recommendations(
     # lines_df, using a combined vig factor halves book_prob and inflates edges.
     prop_consensus_map = build_prop_consensus_probs(lines_df)
 
+    # Load DG model probabilities for pool markets — primary signal when available
+    dg_model_probs = _dg_outright_model_lookup(tournament_id)
+    if dg_model_probs:
+        n_dg = len(set(k[0] for k in dg_model_probs))
+        print(f"  DG model probs loaded: {n_dg} players × {len(set(k[1] for k in dg_model_probs))} markets")
+
     single_df    = score_single_markets(preds_df, lines_df, consensus_map=consensus_map,
-                                        prop_consensus_map=prop_consensus_map)
+                                        prop_consensus_map=prop_consensus_map,
+                                        dg_model_probs=dg_model_probs or None)
     h2h_df       = score_h2h_markets(preds_df, lines_df, tid=tournament_id)
     group_df     = score_group_winner_markets(preds_df, lines_df)
     w2w_df       = score_wire_to_wire_market(preds_df, lines_df, tid=tournament_id)
@@ -2532,8 +2604,8 @@ def main() -> int:
     parser.add_argument("--cards", default="", help="Path to DK content cards CSV")
 
     parser.add_argument("--min-confidence", type=float, default=0.60)
-    parser.add_argument("--min-edge-points", type=float, default=3.00)
-    parser.add_argument("--min-ev", type=float, default=0.00)
+    parser.add_argument("--min-edge-points", type=float, default=1.50)
+    parser.add_argument("--min-ev", type=float, default=0.01)
     parser.add_argument("--max-abs-odds", type=int, default=5000)   # fixed: was 10000
     parser.add_argument("--max-per-market", type=int, default=5)
     parser.add_argument("--top-n", type=int, default=20)
@@ -2556,53 +2628,95 @@ def main() -> int:
         return 1
 
     pred_path = resolve_predictions_path(tid, args.predictions)
-    lines_path = resolve_prop_lines_path(tid, args.prop_lines)
     cards_path = resolve_cards_path(tid, args.cards)
 
     if pred_path is None or not pred_path.exists():
         print("Predictions file not found.")
         return 1
-    if lines_path is None or not lines_path.exists():
-        print("Prop lines file not found.")
-        return 1
 
     preds_df = pd.read_csv(pred_path)
-    lines_df = pd.read_csv(lines_path)
     cards_df = pd.read_csv(cards_path) if (cards_path and cards_path.exists()) else pd.DataFrame()
 
-    # Augment prop lines with FanDuel markets from pga_market_odds_{tid}.csv
+    # Always fetch fresh DG odds — DG returns the current live event, so cached files
+    # go stale when a new tournament starts. Re-fetch if file is missing OR > 4h old.
+    import time as _time_mod
+    _dg_outrights_path = DATA_DIR / "datagolf" / f"dg_outrights_{tid}.csv"
+    _dg_matchups_path  = DATA_DIR / "datagolf" / f"dg_matchups_{tid}.csv"
+    _dg_age_hours = 999.0
+    if _dg_outrights_path.exists():
+        _dg_age_hours = (_time_mod.time() - _dg_outrights_path.stat().st_mtime) / 3600
+    if _dg_age_hours > 4.0:
+        print(f"[INFO] Fetching fresh DataGolf odds (cached data is {_dg_age_hours:.1f}h old)...")
+        try:
+            import subprocess
+            subprocess.run(
+                ["python3", str(PROJECT_ROOT / "scripts" / "scrapers" / "fetch_dg_odds.py"),
+                 "--tournament-id", tid, "--market", "all"],
+                timeout=120, capture_output=False,
+            )
+        except Exception as _dg_err:
+            print(f"  [warn] DG fetch failed: {_dg_err}")
+
+    # Build lines_df: prefer tournament-specific prop_lines file (DK scraper output).
+    # If no tournament-specific file exists, use DG outrights as the primary source
+    # so we never fall back to a stale file from a different tournament.
+    _specific_lines = ODDS_DIR / f"prop_lines_{tid}.csv"
+    if _specific_lines.exists():
+        lines_df = pd.read_csv(_specific_lines)
+        print(f"  Prop lines: {_specific_lines.name} ({len(lines_df)} rows)")
+    else:
+        dg_outright_lines_primary = _dg_outrights_to_prop_lines(tid)
+        if not dg_outright_lines_primary.empty:
+            # Set priority=0 so they're treated as primary (not supplementary)
+            dg_outright_lines_primary["_source_priority"] = 0
+            lines_df = dg_outright_lines_primary
+            print(f"  Prop lines: DG outrights primary ({len(lines_df)} rows, {lines_df['book'].nunique()} books)")
+        else:
+            print("No prop lines available (no DK file and DG outrights empty).")
+            return 1
+
+    # Augment with FanDuel markets from pga_market_odds_{tid}.csv
     pga_market_lines = load_pga_market_odds(tid)
     if not pga_market_lines.empty:
         lines_df = pd.concat([lines_df, pga_market_lines], ignore_index=True)
         print(f"  Merged {len(pga_market_lines)} PGA market lines into prop_lines")
 
-    # Augment with DataGolf multi-book outright odds (top5/top10/top20/win across ~9 books)
-    dg_outright_lines = _dg_outrights_to_prop_lines(tid)
-    if not dg_outright_lines.empty:
-        lines_df = pd.concat([lines_df, dg_outright_lines], ignore_index=True)
-        print(f"  Merged {len(dg_outright_lines)} DG outright lines ({dg_outright_lines['book'].nunique()} books)")
+    # When DK prop_lines exists, supplement with DG outrights for additional books
+    if _specific_lines.exists():
+        dg_outright_lines = _dg_outrights_to_prop_lines(tid)
+        if not dg_outright_lines.empty:
+            lines_df = pd.concat([lines_df, dg_outright_lines], ignore_index=True)
+            print(f"  Merged {len(dg_outright_lines)} DG outright lines ({dg_outright_lines['book'].nunique()} books)")
 
-    # Augment with DataGolf round matchup lines (49 FanDuel + DK/BetMGM/Caesars)
+    # Augment with DataGolf round matchup lines (all books incl. Pinnacle/Betcris)
     dg_matchup_lines = _dg_matchups_to_prop_lines(tid)
     if not dg_matchup_lines.empty:
         lines_df = pd.concat([lines_df, dg_matchup_lines], ignore_index=True)
-        n_fd = (dg_matchup_lines["book"] == "FANDUEL").sum() // 2
-        print(f"  Merged {len(dg_matchup_lines)} DG matchup lines (~{n_fd} FD matchups)")
+        n_books = dg_matchup_lines["book"].nunique()
+        print(f"  Merged {len(dg_matchup_lines)//2} DG matchups ({n_books} books)")
 
     if not lines_df.empty and "player_name" in lines_df.columns and "market" in lines_df.columns:
-        # Dedup: normalize names, prioritize PGA market/DK lines over DG lines,
-        # then prefer higher odds within same source (best bettable price).
-        lines_df["_nkey_dedup"] = lines_df["player_name"].apply(normalize_name_key)
-        lines_df["_src_pri"] = pd.to_numeric(lines_df.get("_source_priority", 0), errors="coerce").fillna(0)
-        _odds_col = "odds" if "odds" in lines_df.columns else None
-        if _odds_col:
-            lines_df["_odds_sort"] = pd.to_numeric(lines_df[_odds_col], errors="coerce")
-            lines_df = (
-                lines_df.sort_values(["_src_pri", "_odds_sort"], ascending=[True, False])
-                .drop_duplicates(subset=["_nkey_dedup", "market", "book"], keep="first")
-                .drop(columns=["_nkey_dedup", "_src_pri", "_odds_sort", "_source_priority"], errors="ignore")
-                .reset_index(drop=True)
-            )
+        # Dedup single-market rows only (player_name + market + book).
+        # H2H rows use player_a/player_b and have no player_name — exclude from dedup.
+        _h2h_mask = lines_df["market"].astype(str).str.lower() == "h2h"
+        _single_df = lines_df[~_h2h_mask].copy()
+        _h2h_df    = lines_df[_h2h_mask].copy()
+
+        if not _single_df.empty:
+            _single_df["_nkey_dedup"] = _single_df["player_name"].apply(normalize_name_key)
+            _src_series = _single_df["_source_priority"] if "_source_priority" in _single_df.columns else pd.Series(0, index=_single_df.index)
+            _single_df["_src_pri"] = pd.to_numeric(_src_series, errors="coerce").fillna(0)
+            _odds_col = "odds" if "odds" in _single_df.columns else None
+            if _odds_col:
+                _single_df["_odds_sort"] = pd.to_numeric(_single_df[_odds_col], errors="coerce")
+                _single_df = (
+                    _single_df.sort_values(["_src_pri", "_odds_sort"], ascending=[True, False])
+                    .drop_duplicates(subset=["_nkey_dedup", "market", "book"], keep="first")
+                    .drop(columns=["_nkey_dedup", "_src_pri", "_odds_sort", "_source_priority"], errors="ignore")
+                    .reset_index(drop=True)
+                )
+
+        lines_df = pd.concat([_single_df, _h2h_df], ignore_index=True)
 
 
 
@@ -2650,7 +2764,10 @@ def main() -> int:
             "stake_units", "outcome_status", "outcome_win", "pnl_per_1", "roi_pct",
             "closing_odds_american", "closing_implied_prob", "clv_pts", "graded_at",
         ]).to_csv(out_path, index=False)
-        (ODDS_DIR / "recommended_bets_latest.csv").write_text(out_path.read_text())
+        # Don't overwrite _latest with an empty file — keep the most recent active week's recs
+        # so the dashboard always shows something useful.
+        if _phase != "post":
+            (ODDS_DIR / "recommended_bets_latest.csv").write_text(out_path.read_text())
         print(f"No qualifying recommendations for {tid} with current thresholds.")
         print(f"Wrote empty recommendation file -> {out_path}")
         return 0

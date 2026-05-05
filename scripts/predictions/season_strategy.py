@@ -30,6 +30,9 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
+
+
+
 OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 
 USAGE_TRACKER          = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
@@ -40,6 +43,9 @@ COURSE_PERF_FILE       = DATA_DIR / "processed" / "player_course_performance.csv
 TOURNAMENT_COURSE_FILE = DATA_DIR / "processed" / "player_tournament_course_form.csv"
 LEADERBOARDS_FILE      = DATA_DIR / "historical" / "leaderboards_2026.csv"
 LEADERBOARDS_2025_FILE = DATA_DIR / "historical" / "leaderboards_2025.csv"
+DG_SKILL_FILE = DATA_DIR / "datagolf" / "dg_skill_ratings_latest.csv"
+DG_RANKINGS_FILE = DATA_DIR / "datagolf" / "dg_rankings_latest.csv"
+DG_PRE_TOURNEY_FILE = DATA_DIR / "datagolf" / "dg_pre_tournament_latest.csv"
 
 
 def _name_key(name: str) -> str:
@@ -623,6 +629,64 @@ def get_season_strategy(
         except Exception:
             pass
 
+
+
+    # --- DG Skill Ratings -- current SG for all ~800 ---- 
+    dg_sg_map: dict[str, float] = {}
+    if DG_SKILL_FILE.exists():
+        try:
+            dg_sr = pd.read_csv(DG_SKILL_FILE, usecols=['player_name', 'dg_skill_total'])
+            for _, row in dg_sr.iterrows():
+                nk = _name_key(str(row['player_name']))
+                v  = row['dg_skill_total']
+                if not pd.isna(v):
+                    dg_sg_map[nk] = float(v)
+        except Exception:
+            pass
+
+    
+    
+    # ── DG Rankings — more current world rank for all players ─────────────────
+    dg_rank_map: dict[str, float] = {}
+    if DG_RANKINGS_FILE.exists():
+        try:
+            dg_rk = pd.read_csv(DG_RANKINGS_FILE, usecols=["player_name", "owgr_rank"])
+            for _, row in dg_rk.iterrows():
+                nk = _name_key(str(row["player_name"]))
+                v  = row["owgr_rank"]
+                if not pd.isna(v):
+                    dg_rank_map[nk] = float(v)
+        except Exception:
+            pass
+        
+        
+    # --- DG Pre-Tournament Probs -- for current week blend -- 
+    dg_pred_map: dict[str, dict] = {}
+    if DG_PRE_TOURNEY_FILE.exists():
+        try:
+            dg_pt = pd.read_csv(DG_PRE_TOURNEY_FILE)
+            dg_pt = dg_pt[dg_pt["model"] == "baseline_history_fit"].copy()
+            # Only useful for individual events (team names have "/" separator)
+            dg_pt = dg_pt[~dg_pt["team_name"].str.contains("/", na=False)]
+            
+            
+            for _, row in dg_pt.iterrows():
+                nk = _name_key(str(row['team_name']))
+                dg_pred_map[nk] = {
+                    'win_prob':   float(row.get('win',      0) or 0),
+                    'top10_prob': float(row.get('top_10',   0) or 0),
+                    'cut_prob':   float(row.get('make_cut', 0) or 0),
+                }
+                
+        except Exception:
+            pass
+            
+
+
+
+
+
+
     # ── 2026 season results — cut rate and recent form ────────────────────────
     # Compute per-player: tournaments played, cut rate, avg finishing position.
     # This captures in-season form for ALL players (not just current field).
@@ -656,6 +720,10 @@ def get_season_strategy(
             preds = pd.read_csv(PREDICTIONS_FILE)
             for _, row in preds.iterrows():
                 key = _name_key(str(row["player_name"]))
+                
+                
+                
+                
 
                 # Supplement rank_map for players not in OWGR file
                 if key not in rank_map and "world_rank" in preds.columns:
@@ -699,14 +767,22 @@ def get_season_strategy(
         uses_left = int(info.get("remaining_uses", 0))
         if uses_left <= 0:
             continue
+        
+        
 
         key = _name_key(player_name)
-        wr  = max(1.0, float(rank_map.get(key, 200.0)))
+        
+        _szn_check = season_form_map.get(key, {})
+        _in_field_check = key in pred_map
+        if _szn_check.get("events", 0) == 0 and not _in_field_check:
+            continue 
+        wr = max(1.0, float(rank_map.get(key) or dg_rank_map.get(key) or 200.0))
 
-        # Season SG: prefer in-field prediction data, fall back to career SG
+        # Season SG: prefer in-field prediction data, fall back to DG skill rating
         sg_season = sg_map.get(key, 0.0)
-        sg_career = career_sg_map.get(key, 0.0)
-
+        if sg_season == 0.0:
+            sg_season = dg_sg_map.get(key, 0.0)
+        sg_career = career_sg_map.get(key, dg_sg_map.get(key, 0.0))
         # Season form data from 2026 leaderboards
         szn = season_form_map.get(key, {})
         szn_events   = szn.get("events", 0)
@@ -729,7 +805,19 @@ def get_season_strategy(
         tier     = _player_tier(eff_rank)
 
         # ── This week's EV: actual model probs if in field ────────────────────
+        # This week: blend our calibrated probs with DG's (60/40) when both available
         this_week_probs = pred_map.get(key)
+        dg_probs = dg_pred_map.get(key)
+        if this_week_probs and dg_probs:
+            this_week_probs = {
+                "win_prob":   0.60 * this_week_probs["win_prob"]   + 0.40 * dg_probs["win_prob"],
+                "top5_prob":  this_week_probs.get("top5_prob", 0),
+                "top10_prob": 0.60 * this_week_probs["top10_prob"] + 0.40 * dg_probs["top10_prob"],
+                "top20_prob": this_week_probs.get("top20_prob", 0),
+                "cut_prob":   0.60 * this_week_probs["cut_prob"]   + 0.40 * dg_probs["cut_prob"],
+            }
+
+        # ── This week's EV ────────────────────────────────────────────────────
         if current_event_row is not None:
             this_week_ev = _player_expected_prize(
                 eff_rank,
@@ -815,10 +903,18 @@ def get_season_strategy(
         candidate_events = event_scores[:max(uses_left * 3, 6)]
 
         # ── Use-this-week decision ────────────────────────────────────────────
+        # ── Use-this-week decision ────────────────────────────────────────────
+        # Dynamic threshold: as uses_left/weeks_remaining shrinks (pressure rises),
+        # lower the bar so we don't save forever and waste picks.
+        # _urgency = 1.0 means "1 use per 1 week remaining" → threshold = 0.55 (minimum)
+        # _urgency = 0.0 means "lots of uses left" → threshold stays near 0.90
+        _urgency = uses_left / max(1, weeks_remaining)
+        _use_threshold = max(0.55, 0.90 - 0.50 * min(1.0, _urgency))
+
         best_ev_threshold = best_events[-1]["ev"] if best_events else 0.0
         use_this_week = (
             current_event_row is not None
-            and this_week_ev >= best_ev_threshold * 0.90
+            and this_week_ev >= best_ev_threshold * _use_threshold
             and this_week_probs is not None
         )
 
@@ -938,6 +1034,24 @@ def get_season_strategy(
 
     # ── Season allocation plan ─────────────────────────────────────────────────
     season_plan, plan_conflicts = get_optimal_season_plan(player_strategy)
+    # ── Conflict overflow redirect ─────────────────────────────────────────────
+    # If a player's best event is over-subscribed (>3 want it), and this week
+    # is a reasonable alternative (≥70% of their best EV), flip them to USE.
+    for ev_name, cf_data in plan_conflicts.items():
+        for overflow_player in cf_data.get("overflow", []):
+            ps = player_strategy.get(overflow_player)
+            if ps is None or ps.get('use_this_week') or ps.get('this_week_ev', 0) == 0:
+                continue 
+            
+            best_ev = ps["best_events"][-1]["ev"] if ps["best_events"] else 0
+            if best_ev > 0 and ps["this_week_ev"] >= best_ev * 0.70:
+                player_strategy[overflow_player]["use_this_week"] = True
+                player_strategy[overflow_player]["reason"] = (
+                    f"Conflict at {ev_name} (too many players targeting it) — "
+                    f"redirected here. " + player_strategy[overflow_player].get("reason", "")
+                )
+
+    
 
     return {
         "current_event": {

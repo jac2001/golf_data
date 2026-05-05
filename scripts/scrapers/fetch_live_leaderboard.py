@@ -41,30 +41,28 @@ GRAPHQL_HEADERS = {
 LEADERBOARD_QUERY_FULL = """
 query LeaderboardV3($id: ID!) {
   leaderboardV3(id: $id) {
-    tournamentName
-    currentRound
-    roundStatusDisplay
-    cutLine {
-      cutScore
-      cutCount
+    tournamentId
+    leaderboardRoundHeader
+    tournamentStatus
+    cutLineProbabilities {
+      projectedCutLine
+      probableCutLine
     }
     players {
       ... on PlayerRowV3 {
-        position
-        positionChange
-        total
-        thru
-        currentRound
-        currentHole
-        status
-        movement
-        oddsToWin
-        oddsSwing
-        teeTime
-        rounds {
-          roundNumber
-          score
-          parRelativeScore
+        scoringData {
+          position
+          movementAmount
+          movementDirection
+          total
+          thru
+          currentRound
+          teeTime
+          totalStrokes
+          oddsToWin
+          oddsSwing
+          playerState
+          rounds
         }
         player {
           id
@@ -81,11 +79,16 @@ query LeaderboardV3($id: ID!) {
 LEADERBOARD_QUERY_MINIMAL = """
 query LeaderboardV3($id: ID!) {
   leaderboardV3(id: $id) {
+    tournamentStatus
     players {
       ... on PlayerRowV3 {
-        position
-        total
-        thru
+        scoringData {
+          position
+          total
+          thru
+          currentRound
+          playerState
+        }
         player {
           id
           firstName
@@ -374,6 +377,43 @@ def fetch_leaderboard_from_graphql(tournament_id: str) -> Optional[Dict]:
                 and leaderboard["players"]
             ):
                 leaderboard.setdefault("id", tournament_id)
+                # New schema: scoringData is nested; flatten into player dict
+                # so parse_leaderboard_to_df can find position/total/etc at top level.
+                # Also normalize top-level fields that moved.
+                leaderboard["tournamentName"] = leaderboard.get("tournamentId", tournament_id)
+                cut_info = leaderboard.get("cutLineProbabilities") or {}
+                leaderboard["cutLine"] = {
+                    "cutScore": cut_info.get("projectedCutLine", ""),
+                    "cutCount": "",
+                }
+                leaderboard["currentRound"] = 1
+                leaderboard["roundStatusDisplay"] = leaderboard.get("leaderboardRoundHeader", "")
+                for p in leaderboard["players"]:
+                    if not isinstance(p, dict):
+                        continue
+                    sd = p.pop("scoringData", {}) or {}
+                    # Flatten scoringData fields into player dict
+                    p["position"]       = sd.get("position", "")
+                    p["positionChange"] = sd.get("movementAmount", 0)
+                    p["total"]          = sd.get("total", "E")
+                    p["thru"]           = sd.get("thru", "")
+                    p["currentRound"]   = sd.get("currentRound", 1)
+                    p["status"]         = sd.get("playerState", "ACTIVE")
+                    p["movement"]       = sd.get("movementDirection", "")
+                    p["oddsToWin"]      = sd.get("oddsToWin", "")
+                    p["oddsSwing"]      = sd.get("oddsSwing", "")
+                    p["teeTime"]        = sd.get("teeTime", "")
+                    # rounds is a list of score strings ["65","63",...] in new schema
+                    raw_rounds = sd.get("rounds", [])
+                    if raw_rounds and not isinstance(raw_rounds[0], dict):
+                        p["rounds"] = [
+                            {"roundNumber": i + 1, "score": s}
+                            for i, s in enumerate(raw_rounds)
+                        ]
+                    else:
+                        p["rounds"] = raw_rounds
+                    if leaderboard["currentRound"] < int(sd.get("currentRound") or 1):
+                        leaderboard["currentRound"] = int(sd.get("currentRound") or 1)
                 return leaderboard
         except Exception as e:
             print(f"  GraphQL attempt {idx} failed: {e}")
@@ -566,8 +606,10 @@ def parse_leaderboard_to_df(leaderboard: Dict, tournament_id: Optional[str] = No
     rows = []
     effective_tournament_id = tournament_id or leaderboard.get("id")
     player_lookup = load_player_lookup(effective_tournament_id)
-    cut_line = leaderboard.get("cutLine") or {}
-    cut_score = _parse_score_to_numeric(cut_line.get("cutScore")) if cut_line else None
+    cut_line = leaderboard.get("cutLine") or leaderboard.get("cutLineProbabilities") or {}
+    cut_score = _parse_score_to_numeric(
+        cut_line.get("cutScore") or cut_line.get("projectedCutLine")
+    ) if cut_line else None
     current_round = _safe_int(leaderboard.get("currentRound"), default=1)
 
     for player in leaderboard["players"]:

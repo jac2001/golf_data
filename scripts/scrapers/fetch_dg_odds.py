@@ -82,9 +82,9 @@ def fetch_outrights(market: str) -> dict:
     return dg_get("/betting-tools/outrights", {"tour": "pga", "market": market, "odds_format": "american"})
 
 
-def fetch_matchups() -> dict:
-    """Fetch round matchup odds."""
-    return dg_get("/betting-tools/matchups", {"tour": "pga", "market": "round_matchups", "odds_format": "american"})
+def fetch_matchups(market: str = "round_matchups") -> dict:
+    """Fetch matchup odds. market: 'round_matchups' or 'tournament_matchups'."""
+    return dg_get("/betting-tools/matchups", {"tour": "pga", "market": market, "odds_format": "american"})
 
 
 # ── Flatteners ────────────────────────────────────────────────────────────────
@@ -98,7 +98,10 @@ def flatten_outrights(raw: dict, market: str) -> pd.DataFrame:
     event_name = raw.get("event_name", "")
     last_updated = raw.get("last_updated", "")
 
-    for player in raw.get("odds", []):
+    odds_data = raw.get("odds", [])
+    if not isinstance(odds_data, list):
+        return pd.DataFrame()  # e.g. tournament is live → "No make_cut bets offered"
+    for player in odds_data:
         name = player.get("player_name", "")
         dg_id = player.get("dg_id")
 
@@ -201,7 +204,7 @@ def flatten_matchups(raw: dict) -> pd.DataFrame:
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
-MARKET_CHOICES = OUTRIGHT_MARKETS + ["matchups", "all"]
+MARKET_CHOICES = OUTRIGHT_MARKETS + ["matchups", "tournament_matchups", "all"]
 
 
 def main():
@@ -215,9 +218,10 @@ def main():
     args = parser.parse_args()
     tid = args.tournament_id.upper()
 
-    fetch_outrights_flag = args.market in OUTRIGHT_MARKETS or args.market == "all"
-    fetch_matchups_flag  = args.market in ("matchups", "all")
-    specific_market      = args.market if args.market in OUTRIGHT_MARKETS else None
+    fetch_outrights_flag          = args.market in OUTRIGHT_MARKETS or args.market == "all"
+    fetch_round_matchups_flag     = args.market in ("matchups", "all")
+    fetch_tourn_matchups_flag     = args.market in ("tournament_matchups", "all")
+    specific_market               = args.market if args.market in OUTRIGHT_MARKETS else None
 
     combined: dict = {"tournament_id": tid, "fetched_at": datetime.now(timezone.utc).isoformat()}
     outright_frames: list[pd.DataFrame] = []
@@ -231,6 +235,9 @@ def main():
                 raw = fetch_outrights(mkt)
                 combined[f"outrights_{mkt}"] = raw
                 df = flatten_outrights(raw, mkt)
+                if df.empty:
+                    print(f"  → No data for {mkt}: {raw.get('notes', raw.get('odds', ''))}")
+                    continue
                 outright_frames.append(df)
                 n_players = df["player_name"].nunique()
                 n_books = df[~df["is_dg_model"]]["book"].nunique()
@@ -238,21 +245,41 @@ def main():
             except Exception as e:
                 print(f"  [WARN] {mkt} failed: {e}")
 
-    # ── Matchups ──
-    if fetch_matchups_flag:
-        print("[INFO] Fetching round matchups...")
+    # ── Round Matchups (3-ball pairings) ──
+    df_m = pd.DataFrame()
+    if fetch_round_matchups_flag:
+        print("[INFO] Fetching round matchups (3-ball)...")
         try:
-            raw_m = fetch_matchups()
+            raw_m = fetch_matchups("round_matchups")
             combined["matchups"] = raw_m
-            df_m = flatten_matchups(raw_m)
-            n_matchups = df_m[df_m["is_dg_model"]]["p1_name"].nunique() if not df_m.empty else 0
-            book_counts = df_m[~df_m["is_dg_model"]]["book"].value_counts().to_dict() if not df_m.empty else {}
-            print(f"  → {n_matchups} matchups | DG model: all | Books: {book_counts}")
+            match_list = raw_m.get("match_list", [])
+            if not isinstance(match_list, list):
+                print(f"  → No round matchups: {raw_m.get('notes', match_list)}")
+            else:
+                df_m = flatten_matchups(raw_m)
+                n_matchups = df_m[df_m["is_dg_model"]]["p1_name"].nunique() if not df_m.empty else 0
+                book_counts = df_m[~df_m["is_dg_model"]]["book"].value_counts().to_dict() if not df_m.empty else {}
+                print(f"  → {n_matchups} round matchups | Books: {book_counts}")
         except Exception as e:
-            print(f"  [WARN] matchups failed: {e}")
-            df_m = pd.DataFrame()
-    else:
-        df_m = pd.DataFrame()
+            print(f"  [WARN] round matchups failed: {e}")
+
+    # ── Tournament Matchups (head-to-head, full tournament) ──
+    df_tm = pd.DataFrame()
+    if fetch_tourn_matchups_flag:
+        print("[INFO] Fetching tournament matchups (H2H)...")
+        try:
+            raw_tm = fetch_matchups("tournament_matchups")
+            combined["tournament_matchups"] = raw_tm
+            match_list_tm = raw_tm.get("match_list", [])
+            if not isinstance(match_list_tm, list):
+                print(f"  → No tournament matchups: {raw_tm.get('notes', match_list_tm)}")
+            else:
+                df_tm = flatten_matchups(raw_tm)
+                n_tm = df_tm[df_tm["is_dg_model"]]["p1_name"].nunique() if not df_tm.empty else 0
+                book_counts_tm = df_tm[~df_tm["is_dg_model"]]["book"].value_counts().to_dict() if not df_tm.empty else {}
+                print(f"  → {n_tm} tournament matchups | Books: {book_counts_tm}")
+        except Exception as e:
+            print(f"  [WARN] tournament matchups failed: {e}")
 
     # ── Save ──
     combined_path = DG_DIR / f"dg_odds_{tid}.json"
@@ -269,24 +296,34 @@ def main():
     if not df_m.empty:
         m_path = DG_DIR / f"dg_matchups_{tid}.csv"
         df_m.to_csv(m_path, index=False)
-        print(f"[OK] Matchups CSV → {m_path}  ({len(df_m)} rows)")
+        print(f"[OK] Round Matchups CSV → {m_path}  ({len(df_m)} rows)")
+
+    if not df_tm.empty:
+        tm_path = DG_DIR / f"dg_tourn_matchups_{tid}.csv"
+        df_tm.to_csv(tm_path, index=False)
+        print(f"[OK] Tournament Matchups CSV → {tm_path}  ({len(df_tm)} rows)")
 
     # ── Summary ──
     if not df_m.empty:
         dg_m = df_m[df_m["is_dg_model"]]
-        fd_m = df_m[df_m["book"] == "fanduel"]
         pin_m = df_m[df_m["book"] == "pinnacle"]
-        print(f"\nMatchup coverage:  DG model={len(dg_m)}  FanDuel={len(fd_m)}  Pinnacle={len(pin_m)}")
+        print(f"\nRound matchup coverage:  DG model={len(dg_m)}  Pinnacle={len(pin_m)}")
+    if not df_tm.empty:
+        dg_tm = df_tm[df_tm["is_dg_model"]]
+        pin_tm = df_tm[df_tm["book"] == "pinnacle"]
+        print(f"Tourn matchup coverage:  DG model={len(dg_tm)}  Pinnacle={len(pin_tm)}")
 
     if outright_frames:
-        for mkt in (markets_to_fetch if specific_market else OUTRIGHT_MARKETS):
-            sub = pd.concat(outright_frames)[pd.concat(outright_frames)["market"] == mkt] if outright_frames else pd.DataFrame()
-            if sub.empty:
-                continue
-            fd_n = sub[sub["book"] == "fanduel"]["player_name"].nunique()
-            pin_n = sub[sub["book"] == "pinnacle"]["player_name"].nunique()
-            dg_n = sub[sub["is_dg_model"]]["player_name"].nunique()
-            print(f"  {mkt:<10} FanDuel={fd_n}  Pinnacle={pin_n}  DG model={dg_n}")
+        _all_outrights = pd.concat(outright_frames, ignore_index=True)
+        if not _all_outrights.empty and "market" in _all_outrights.columns:
+            for mkt in (markets_to_fetch if specific_market else OUTRIGHT_MARKETS):
+                sub = _all_outrights[_all_outrights["market"] == mkt]
+                if sub.empty:
+                    continue
+                fd_n  = sub[sub["book"] == "fanduel"]["player_name"].nunique()
+                pin_n = sub[sub["book"] == "pinnacle"]["player_name"].nunique()
+                dg_n  = sub[sub["is_dg_model"]]["player_name"].nunique()
+                print(f"  {mkt:<10} FanDuel={fd_n}  Pinnacle={pin_n}  DG model={dg_n}")
 
 
 if __name__ == "__main__":

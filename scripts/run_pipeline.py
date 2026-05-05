@@ -483,26 +483,6 @@ def fetch_field_from_pga(tournament_name: str, tournament_id: str = None) -> Pat
     # Always use canonical ID-based path to avoid stale name-based files
     output_path = DATA_DIR / "fields" / f"field_{tournament_id}.csv"
 
-    script_path = SCRIPTS_DIR / "scrapers" / "fetch_field_from_pgatour.py"
-    if script_path.exists():
-        cmd = [
-            "python3", str(script_path),
-            "--pga-id", tournament_id,
-            "--output", str(output_path),
-            "--match-ids",
-            "--name", tournament_name,
-        ]
-        success = run_command(cmd, description="Fetch tournament field from PGA TOUR", timeout=240)
-        if success and output_path.exists():
-            return output_path
-        if _ACTIVE_TRACKER is not None:
-            _ACTIVE_TRACKER.record_manual_step(
-                name="Validate fetched field file",
-                success=False,
-                command=cmd,
-                error=f"Field fetch command completed but output missing: {output_path}",
-            )
-
     return None
 
 
@@ -1003,15 +983,6 @@ def fetch_tournament_assets(
         if not success:
             print("  Warning: expert picks fetch failed, continuing...")
         stage_idx += 1
-
-    if fetch_articles and article_template:
-        print_stage(stage_idx, total_stages, "Fetch betting profile articles")
-        run_command([
-            "python3", str(SCRIPTS_DIR / "scrapers" / "fetch_betting_profile_articles.py"),
-            "--field-csv", str(field_path),
-            "--url-template", article_template,
-            "--output", str(DATA_DIR / "betting_profiles" / "article_blurbs.csv"),
-        ], description="Fetch betting profile articles", timeout=60)
 
     return odds_path
 

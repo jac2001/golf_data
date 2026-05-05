@@ -85,21 +85,16 @@ def fetch_standings(s: requests.Session) -> pd.DataFrame:
 
 
 def _get_results_url(s: requests.Session) -> str:
-    """Auto-detect the current week projected results URL from the nav."""
-    r = s.get(f"{BASE_URL}/", timeout=15)
+    """Auto-detect the current week results URL from the nav."""
+    r = s.get(f"{BASE_URL}/weekly_results", timeout=15)
     soup = BeautifulSoup(r.text, "html.parser")
     for a in soup.find_all("a", href=True):
-        if "/projected_results/index/" in a["href"]:
+        if "/weekly_results/index/" in a["href"] and "Current Week" in a.get_text():
             return BASE_URL + a["href"]
-    # Fallback: check the Results page itself for "Current Week" link
+    # Fallback: first /weekly_results/index/ link
     for a in soup.find_all("a", href=True):
-        if "result" in a["href"].lower():
-            r2 = s.get(BASE_URL + a["href"], timeout=15)
-            soup2 = BeautifulSoup(r2.text, "html.parser")
-            for a2 in soup2.find_all("a", href=True):
-                if "Current Week" in a2.get_text() or "/projected_results/index/" in a2["href"]:
-                    if "/projected_results/index/" in a2["href"]:
-                        return BASE_URL + a2["href"]
+        if "/weekly_results/index/" in a["href"]:
+            return BASE_URL + a["href"]
     raise RuntimeError("Could not find projected results URL")
 
 

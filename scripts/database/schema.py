@@ -172,6 +172,167 @@ CREATE_STATEMENTS = [
         PRIMARY KEY (player_id, course_key)
     )
     """,
+    # -------------------------------------------------------------------------
+    # dg_players: DataGolf master player list (static, all tours)
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS dg_players (
+        dg_id        INTEGER PRIMARY KEY,
+        player_name  VARCHAR,
+        country      VARCHAR,
+        country_code VARCHAR,
+        amateur      INTEGER
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # dg_rankings: weekly snapshot of DG rankings + skill ratings combined
+    # One row per player per snapshot date — tracks skill drift over time
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS dg_rankings (
+        dg_id              INTEGER,
+        snapshot_date      VARCHAR,
+        player_name        VARCHAR,
+        datagolf_rank      INTEGER,
+        dg_skill_estimate  DOUBLE,
+        owgr_rank          INTEGER,
+        country            VARCHAR,
+        am                 INTEGER,
+        primary_tour       VARCHAR,
+        sg_total           DOUBLE,
+        sg_ott             DOUBLE,
+        sg_app             DOUBLE,
+        sg_arg             DOUBLE,
+        sg_putt            DOUBLE,
+        driving_dist       DOUBLE,
+        driving_acc        DOUBLE,
+        last_updated       VARCHAR,
+        PRIMARY KEY (dg_id, snapshot_date)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # dg_decompositions: per-tournament prediction breakdown
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS dg_decompositions (
+        dg_id                              INTEGER,
+        event_name                         VARCHAR,
+        last_updated                       VARCHAR,
+        player_name                        VARCHAR,
+        baseline_pred                      DOUBLE,
+        final_pred                         DOUBLE,
+        course_fit_delta                   DOUBLE,
+        std_deviation                      DOUBLE,
+        course_history_adjustment          DOUBLE,
+        course_experience_adjustment       DOUBLE,
+        total_course_history_adjustment    DOUBLE,
+        driving_accuracy_adjustment        DOUBLE,
+        driving_distance_adjustment        DOUBLE,
+        cf_approach_comp                   DOUBLE,
+        cf_short_comp                      DOUBLE,
+        other_fit_adjustment               DOUBLE,
+        total_fit_adjustment               DOUBLE,
+        timing_adjustment                  DOUBLE,
+        strokes_gained_category_adjustment DOUBLE,
+        true_sg_adjustments                DOUBLE,
+        age_adjustment                     DOUBLE,
+        country_adjustment                 DOUBLE,
+        PRIMARY KEY (dg_id, event_name, last_updated)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # dg_pre_tournament: pre-tournament win/top10/cut probabilities
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS dg_pre_tournament (
+        dg_id        INTEGER,
+        player_name  VARCHAR,
+        country      VARCHAR,
+        model        VARCHAR,
+        event_name   VARCHAR,
+        win          DOUBLE,
+        top_5        DOUBLE,
+        top_10       DOUBLE,
+        top_20       DOUBLE,
+        make_cut     DOUBLE,
+        sample_size  INTEGER,
+        last_updated VARCHAR,
+        PRIMARY KEY (dg_id, model, event_name)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # dg_fantasy: DFS salary + projected points per event per site
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS dg_fantasy (
+        dg_id                INTEGER,
+        site                 VARCHAR,
+        event_name           VARCHAR,
+        player_name          VARCHAR,
+        salary               INTEGER,
+        proj_points_total    DOUBLE,
+        proj_points_scoring  DOUBLE,
+        proj_points_finish   DOUBLE,
+        proj_ownership       DOUBLE,
+        std_dev              DOUBLE,
+        value                DOUBLE,
+        r1_teetime           VARCHAR,
+        last_updated         VARCHAR,
+        PRIMARY KEY (dg_id, site, event_name)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # dg_matchups: round pairings + tee times + matchup odds
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS dg_matchups (
+        event_name   VARCHAR,
+        round        INTEGER,
+        group_num    INTEGER,
+        teetime      VARCHAR,
+        start_hole   INTEGER,
+        p1_dg_id     INTEGER,
+        p1_name      VARCHAR,
+        p1_odds      VARCHAR,
+        p2_dg_id     INTEGER,
+        p2_name      VARCHAR,
+        p2_odds      VARCHAR,
+        p3_dg_id     INTEGER,
+        p3_name      VARCHAR,
+        p3_odds      VARCHAR,
+        last_update  VARCHAR,
+        PRIMARY KEY (event_name, round, group_num)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # dg_hole_stats: per-hole scoring distributions during live tournaments
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS dg_hole_stats (
+        event_name       VARCHAR,
+        round_num        VARCHAR,
+        course_key       VARCHAR,
+        hole             INTEGER,
+        par              INTEGER,
+        yardage          INTEGER,
+        avg_score        DOUBLE,
+        vs_par           DOUBLE,
+        birdies          INTEGER,
+        pars             INTEGER,
+        bogeys           INTEGER,
+        doubles_or_worse INTEGER,
+        eagles_or_better INTEGER,
+        players_thru     INTEGER,
+        last_update      VARCHAR,
+        PRIMARY KEY (event_name, round_num, course_key, hole)
+    )
+    """,
 ]
 
 

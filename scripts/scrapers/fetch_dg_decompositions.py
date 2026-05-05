@@ -173,6 +173,14 @@ def main():
 
     print_summary(df, top_n=args.top_n)
 
+    if not args.no_save:
+        try:
+            from scripts.database.upsert_dg import upsert_table
+            upsert_table("dg_decompositions")
+            print("[OK] DB updated → dg_decompositions")
+        except Exception as _e:
+            print(f"[WARN] DB upsert skipped: {_e}")
+
 
 if __name__ == "__main__":
     main()

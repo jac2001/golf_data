@@ -363,6 +363,7 @@ def run_tuesday_morning(dry_run: bool = False):
 
     tasks = [
         ("League Picks", ["python3", "scripts/scrapers/fetch_league_picks.py"]),
+        ("Fantasy Scorecard", ["python3", "scripts/scrapers/fetch_fantasy_scorecard.py"]),
         # DataGolf field: tries upcoming_pga first (earlier data), falls back to pga
         ("Field", ["python3", "scripts/scrapers/fetch_dg_field.py",
                    "--tournament-id", tournament_id, "--tour", "auto"]),
@@ -382,6 +383,8 @@ def run_tuesday_morning(dry_run: bool = False):
                                "--period", "l24"]),
         ("DG Skill Ratings", ["python3", "scripts/scrapers/fetch_dg_skill_ratings.py"]),
         ("DG Decompositions", ["python3", "scripts/scrapers/fetch_dg_decompositions.py",
+                               "--tournament-id", tournament_id]),
+        ("DG Pre-Tournament", ["python3", "scripts/scrapers/fetch_dg_pre_tournament.py",
                                "--tournament-id", tournament_id]),
         ("Predictions", ["python3", "scripts/run_pipeline.py",
                          "--tournament", tournament_name,
@@ -443,9 +446,9 @@ def run_tuesday_morning(dry_run: bool = False):
 
 
 def run_tuesday_evening(dry_run: bool = False):
-    """Odds refresh."""
+    """Odds refresh + DG pre-tournament check + predictions re-run."""
     log("=" * 60)
-    log("TUESDAY EVENING - Odds Refresh")
+    log("TUESDAY EVENING - Odds + DG Pre-Tournament Refresh")
     log("=" * 60)
 
     tournament = get_current_tournament()
@@ -454,6 +457,7 @@ def run_tuesday_evening(dry_run: bool = False):
         return []
 
     tournament_id = str(tournament.get("tournament_id", ""))
+    tournament_name = str(tournament.get("tournament_name", ""))
     if not tournament_id:
         log("No tournament ID!")
         return []
@@ -466,6 +470,21 @@ def run_tuesday_evening(dry_run: bool = False):
                              "--no-snapshot"]),
         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                       "--tournament-id", tournament_id]),
+        # DG publishes pre-tournament predictions Tue/Wed evening — fetch and re-run
+        ("DG Pre-Tournament", ["python3", "scripts/scrapers/fetch_dg_pre_tournament.py",
+                                "--tournament-id", tournament_id]),
+        # DG betting odds: win/top10/top20/make_cut + round matchups across all books
+        ("DG Betting Odds", ["python3", "scripts/scrapers/fetch_dg_odds.py",
+                              "--tournament-id", tournament_id, "--market", "all"]),
+        ("Predictions", ["python3", "scripts/run_pipeline.py",
+                         "--tournament", tournament_name,
+                         "--pga-id", tournament_id,
+                         "--field", f"data/fields/field_{tournament_id}.csv",
+                         "--use-schedule",
+                         "--skip-refresh", "--calibrate", "--lineup"]),
+        # Score bets after predictions are updated, using fresh DG odds
+        ("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
+                             "--tournament-id", tournament_id]),
     ]
 
     results = []
@@ -597,11 +616,6 @@ def run_wednesday_morning(dry_run: bool = False):
                       "--tournament-id", tournament_id, "--auto-update-field"]),
         ("Expert Picks", ["python3", "scripts/scrapers/fetch_expert_picks_pga.py",
                           "--tournament-id", tournament_id]),
-        ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                             "--tournament-id", tournament_id,
-                             "--max-age-hours", "2",
-                             "--fetch-profile", "fast",
-                             "--no-snapshot"]),
         ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
                       "--tournament-id", tournament_id]),
         ("Predictions", ["python3", "scripts/run_pipeline.py",
@@ -645,8 +659,6 @@ def run_live_refresh(dry_run: bool = False):
     if tournament_id:
         tasks.append(("Hole Scores", ["python3", "scripts/scrapers/fetch_hole_scores.py",
                                       "--tournament-id", tournament_id]))
-        tasks.append(("Live Tournament Stats", ["python3", "scripts/scrapers/fetch_live_tournament_stats.py",
-                                                "--tid", tournament_id, "--top-n", "25"]))
         tasks.append(("DG Live Stats", ["python3", "scripts/scrapers/fetch_dg_live_stats.py",
                                         "--tournament-id", tournament_id]))
         tasks.append(("Live Course Stats", ["python3", "scripts/scrapers/fetch_course_stats.py",
@@ -656,6 +668,8 @@ def run_live_refresh(dry_run: bool = False):
                                           "--max-age-hours", "0.5",
                                           "--fetch-profile", "fast",
                                           "--no-snapshot"]))
+        tasks.append(("DG Betting Odds", ["python3", "scripts/scrapers/fetch_dg_odds.py",
+                                          "--tournament-id", tournament_id, "--market", "all"]))
         tasks.append(("Refresh Odds", ["python3", "scripts/predictions/refresh_odds.py",
                                        "--tournament-id", tournament_id]))
         tasks.append(("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
@@ -1139,6 +1153,23 @@ def run_post_tournament_refresh(dry_run: bool = False):
         write_post_tournament_summary(tid, name, results)
         log(f"  Retrain log updated (did_retrain={did_retrain}, count={0 if did_retrain else tournaments_since})")
 
+        # ── Send weekly report email ──────────────────────────────────────────
+        try:
+            import importlib.util
+            _rpt_path = PROJECT_ROOT / "scripts" / "reporting" / "send_report_email.py"
+            _spec = importlib.util.spec_from_file_location("send_report_email", _rpt_path)
+            _mod  = importlib.util.module_from_spec(_spec)
+            _spec.loader.exec_module(_mod)
+
+            _report      = _mod.load_report_for_tid(tid)
+            _model_picks = _mod.get_top_model_picks(n=5)
+            _html        = _mod.build_html_email(_report, tid, _model_picks)
+            _subject     = f"Golf Report: {name} Results + This Week's Picks"
+            _mod.send_email(_subject, _html)
+            log(f"  Weekly report email sent for {name}")
+        except Exception as _email_err:
+            log(f"  [warn] Email report failed: {_email_err}")
+
     return results
 
 
@@ -1287,6 +1318,28 @@ def main():
 
     log(f"\nCompleted: {success_count}/{total_count} tasks")
 
+    if not args.dry_run:
+        failed_tasks = [d for d, s in results if not s]
+        if failed_tasks:
+            _title = f"Golf Pipeline [{schedule}]: {success_count}/{total_count} ✗"
+            _msg = "Failed: " + ", ".join(failed_tasks[:3])
+        else:
+            _title = f"Golf Pipeline [{schedule}]: All {total_count} tasks ✓"
+            _msg   = "Pipeline completed successfully."
+        try:
+            import subprocess as _sp
+            _sp.run(
+                ["osascript", "-e",
+                f'display notification "{_msg}" with title "{_title}"'],
+                capture_output=True, timeout=5
+            )
+        except Exception:
+            pass
+
+
+
+
+
     # Save run log
     log_entry = {
         "timestamp": datetime.now().isoformat(),
@@ -1294,7 +1347,8 @@ def main():
         "dry_run": args.dry_run,
         "results": [{"task": d, "success": s} for d, s in results],
         "success_count": success_count,
-        "total_count": total_count
+        "total_count": total_count,
+        "failed_tasks": [d for d, s in results if not s],
     }
 
     log_file = LOGS_DIR / "scheduler_history.json"

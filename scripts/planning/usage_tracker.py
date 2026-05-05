@@ -215,21 +215,39 @@ class UsageTracker:
         with open(TRACKER_FILE, 'r') as f:
             data = json.load(f)
 
-        # Load player picks
+        # Load player picks — handle both current format (times_used/tournaments_used)
+        # and legacy format (uses/weeks) that was produced by an older tracker version.
         for player_name, player_data in data.get('picks', {}).items():
-            tournaments = [
-                TournamentUse(
-                    tournament=t['tournament'],
-                    week=t['week'],
-                    date=t.get('date', ''),
-                    result=t.get('result'),
-                    earnings=t.get('earnings', t.get('points'))
-                )
-                for t in player_data.get('tournaments_used', [])
-            ]
+            if 'times_used' in player_data:
+                # Current format
+                tournaments = [
+                    TournamentUse(
+                        tournament=t['tournament'],
+                        week=t['week'],
+                        date=t.get('date', ''),
+                        result=t.get('result'),
+                        earnings=t.get('earnings', t.get('points'))
+                    )
+                    for t in player_data.get('tournaments_used', [])
+                ]
+                times_used = player_data['times_used']
+            else:
+                # Legacy format: {uses, remaining_uses, weeks: [11, ...]}
+                # Reconstruct minimal TournamentUse objects from week numbers.
+                times_used = player_data.get('uses', 0)
+                week_nums = player_data.get('weeks', [])
+                sched_by_week = {v['week']: k for k, v in self.schedule.items()}
+                tournaments = [
+                    TournamentUse(
+                        tournament=sched_by_week.get(w, f'Week {w}'),
+                        week=w,
+                        date='',
+                    )
+                    for w in week_nums
+                ]
             self.picks[player_name] = PlayerUsage(
                 player_name=player_name,
-                times_used=player_data['times_used'],
+                times_used=times_used,
                 tournaments_used=tournaments
             )
 

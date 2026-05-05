@@ -998,17 +998,18 @@ class ScoringEngine:
 
     def get_current_week_tournament(self) -> Optional[str]:
         """Get the tournament for the current week."""
+        from datetime import timedelta
         today = datetime.now().strftime('%Y-%m-%d')
 
         for name, t in self.tournaments.items():
             # Check if today falls within tournament week (start to start+3 days)
             if t.start_date <= today:
                 try:
-                    end_day = int(t.start_date[8:10]) + 3
-                    end_date = t.start_date[:8] + str(end_day).zfill(2)
+                    start_dt = datetime.strptime(t.start_date, '%Y-%m-%d')
+                    end_date = (start_dt + timedelta(days=3)).strftime('%Y-%m-%d')
                     if today <= end_date:
                         return name
-                except:
+                except Exception:
                     pass
 
         # Find next upcoming

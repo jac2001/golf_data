@@ -149,6 +149,12 @@ dg_fit_features = [c for c in df.columns if c.startswith('dg_fit_')]
 if 'predictive_sg_weighted' in df.columns:
     dg_fit_features.append('predictive_sg_weighted')
     print(f"✓  Including predictive_sg_weighted (DataGolf OTT=1.2/APP=1.0/ARG=0.9/PUTT=0.6)")
+dg_archive_features = [c for c in df.columns if c in ['dg_win', 'dg_top10', 'dg_make_cut']]
+if dg_archive_features:
+    cov = df['dg_win'].notna().mean() if 'dg_win' in df.columns else 0
+    print(f" Including {len(dg_archive_features)} archived Data Golf features (win/top10/make_cut) with ~{cov:.0%} coverage - may be leaky but worth testing")
+else:
+    print("⚠️  No archived Data Golf features (dg_win, dg_top10, dg_make_cut) found - may be missing from merged data")
 if dg_fit_features:
     print(f"✓  Including {len(dg_fit_features)} Data Golf course fit features (uses season SG, no leakage)")
 else:
@@ -162,7 +168,7 @@ print("ℹ️  EXCLUDING course_sg_* features - confirmed 0% importance across a
 
 # Combine all features (WITHOUT leaky features, WITHOUT zero-importance course SG)
 # Note: has_won_here is already in hist_features (starts with 'has_'), so don't add it again
-all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features
+all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features + dg_archive_features  
 # Deduplicate while preserving order (some cols like season_sg_*_field_pct match multiple groups)
 _seen = set()
 all_features = [f for f in all_features if f not in _seen and not _seen.add(f)]

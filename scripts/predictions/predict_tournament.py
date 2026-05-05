@@ -211,18 +211,19 @@ SCORE_FEATURES = [
     "dg_fit_total", "predictive_sg_weighted",
     "world_rank",
     "world_rank_log",
-    # DG features (added 2026-04; activate after retrain)
+    # DG archive features — activated 2026-04 (have historical data 2020-2025 via dg_archive_all.csv)
+    # NaN for pre-2020 or non-covered events; tree models handle this gracefully.
+    "dg_win",                # DG pre-tournament win probability
+    "dg_top10",              # DG pre-tournament top-10 probability
+    "dg_make_cut",           # DG pre-tournament make-cut probability
+    # DG inference-only features (no historical equivalents — activate after architecture change)
     # "approach_skill_sg",
     # "final_pred",            # DG's full course-adjusted prediction
     # "course_fit_delta",      # final_pred - baseline_pred (course uplift/drag)
     # "driving_accuracy_adjustment",
     # "driving_distance_adjustment",
     # "dg_skill_total",
-    # DG archive features (pre-tournament model probs; added 2026-04; activate after retrain)
-    # "dg_win",                # DG pre-tournament win probability
-    # "dg_top10",              # DG pre-tournament top-10 probability
-    # "dg_top20",              # DG pre-tournament top-20 probability
-    # "dg_make_cut",           # DG pre-tournament make-cut probability
+    # "dg_top20",
 ]
 
 
@@ -2499,15 +2500,63 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     except Exception as _dc_e:
         print(f"  DG decompositions merge skipped: {_dc_e}")
 
+    # ADD DG PRE-TOURNAMENT PROBABILITIES (dg_win, dg_top10, dg_make_cut for this week)
+    # These match trained SCORE_FEATURES — populated here at inference so model sees real values not NaN.
+    try:
+        _pt_path = DATA_DIR / "datagolf" / "dg_pre_tournament_latest.csv"
+        if _pt_path.exists():
+            _pt_df = pd.read_csv(_pt_path)
+            _pt_df = _pt_df[_pt_df["model"] == "baseline_history_fit"].copy()
+            _pt_df = _pt_df[["player_name", "win", "top_10", "make_cut"]].rename(columns={
+                "win":       "dg_win",
+                "top_10":    "dg_top10",
+                "make_cut":  "dg_make_cut",
+            })
+            _pt_df["_nk"] = _pt_df["player_name"].apply(_as_norm)
+            _pt_lookup = _pt_df.set_index("_nk").drop(columns=["player_name"])
+            features_df["_nk"] = features_df["player_name"].apply(_as_norm)
+            features_df = features_df.merge(_pt_lookup, on="_nk", how="left")
+            features_df.drop(columns=["_nk"], inplace=True, errors="ignore")
+            _m = features_df["dg_win"].notna().sum()
+            print(f"  DG pre-tournament merged: {_m}/{len(features_df)} players (dg_win/top10/make_cut)")
+        else:
+            print("  DG pre-tournament: not found — run fetch_dg_pre_tournament.py")
+    except Exception as _pt_e:
+        print(f"  DG pre-tournament merge skipped: {_pt_e}")
 
-                        
-        
+
     
-    
-    
-    
-    
-    return features_df
+    try:
+        _fit_path = DATA_DIR / "datagolf" / "dg_course_fit_latest.csv"
+        if _fit_path.exists():
+            _fit_df = pd.read_csv(_fit_path)[["player_name", "course_fit_delta", "course_fit_delta_pct"]]
+            _fit_df = _fit_df.rename(columns={
+                "course_fit_delta":     "dg_course_fit_delta",
+                "course_fit_delta_pct": "dg_course_fit_delta_pct",
+            })
+            _fit_df["_nk"] = _fit_df["player_name"].apply(_as_norm)
+            _fit_lookup = _fit_df.set_index("_nk")[["dg_course_fit_delta", "dg_course_fit_delta_pct"]]
+            features_df["_nk"] = features_df["player_name"].apply(_as_norm)
+            features_df = features_df.merge(_fit_lookup, on="_nk", how="left")
+            features_df.drop(columns=["_nk"], inplace=True, errors="ignore")
+            _m_fit = features_df["dg_course_fit_delta"].notna().sum()
+            print(f"  DG course fit merged: {_m_fit}/{len(features_df)} players (dg_course_fit_delta)")                  
+        else:                                             
+            print("  DG course fit: not found — run fetch_dg_pre_tournament.py")                                      
+    except Exception as _fit_e:                                                                                       
+        print(f"  DG course fit merge skipped: {_fit_e}")
+
+
+
+
+
+
+
+
+
+
+
+    return features_df  
 
 
 
@@ -3782,6 +3831,121 @@ def apply_probability_constraints(
     return df
 
 
+
+def apply_dg_pretournament_blend(df: pd.DataFrame, blend_weight: float=0.35) -> pd.DataFrame:
+    """ 
+    Blend our calibrated probabilities with DG pre-tournament predictions.
+    
+    For each player, where DG data exists, replaces calibrated probs with: 
+     (1 - blend_weight) * ours  +  blend_weight * DG     
+      blend_weight=0.35 means 65% our model / 35% DG.                                                                   
+      Players without DG data are unchanged.                                                                            
+                                                                                                                        
+      DG columns expected: dg_win, dg_top5, dg_top10, dg_top20, dg_make_cut                                             
+      (values are 0–1 fractions, same scale as our calibrated probs)
+      """
+      
+    pairs = [
+        ('win_prob_calibrated', "dg_win"),
+        ("top5_prob_calibrated",  "dg_top5"),
+        ("top10_prob_calibrated", "dg_top10"),
+        ("top20_prob_calibrated", "dg_top20"),
+        ("cut_prob", 'dg_make_cut')
+    ]
+    
+    has_dg = False
+    for our_col, dg_col in pairs:
+        if dg_col not in df.columns or our_col not in df.columns:
+            continue 
+        mask = df[dg_col].notna() & (df[dg_col] > 0)
+        
+        if not mask.any():
+            continue
+        has_dg = True
+        df.loc[mask, our_col] = (
+            (1 - blend_weight) * df.loc[mask, our_col] +
+            blend_weight * df.loc[mask, dg_col]
+        )
+
+    if not has_dg:
+        print(" No DG pre-tournament data available -- skipping blend.")
+        return df
+    
+    n = df[df['dg_win'].notna() & (df['dg_win'] > 0)].shape[0] if "dg_win" in df.columns else 0
+    print(f" DG Blend applied to {n} players (weight={blend_weight:.0%} DG / {1-blend_weight:.0%} ours)")
+    
+    
+    for _, row in df.iterrows():
+        pass # Constraints already applied by apply_probability_constraints - called before us 
+    
+    if "win_prob_calibrated" in df.columns:
+        total = df["win_prob_calibrated"].sum()
+        if total > 0:
+            df["win_prob_calibrated"] = (df["win_prob_calibrated"] / total).clip(0, 1)
+    return df
+
+
+def apply_dg_skill_nudge(df: pd.DataFrame, scale: float=0.08) -> pd.DataFrame:
+    """ 
+    Light ranking nudge based on DG skill ratings, applied only to players
+    where dg_win is unavailable (prob blend already covers the rest).
+    
+    dg_skill_total is SG vs tour average: + 1.0 = 1 stroke better than average.
+    Multiplier = 1 + scale * (player_skill - field_mean_skill)
+    Clambed to [0.85, 1.15] max +- 15% adjustment for extreme players.
+    
+    Applies to win/top5/top10/top20 probs, then renormalize win prob
+    """
+    
+    #Only nudge players without DG pre-tournament coverage 
+    if "dg_skill_total" not in df.columns:
+        return df 
+    
+    no_dg_mask = df['dg_win'].isna() | (df['dg_win'] <= 0) if "dg_win" in df.columns else pd.Series(True, index=df.index)
+    
+    skill_col = df['dg_skill_total']
+    has_skill = skill_col.notna() & (skill_col != 0)
+    target = no_dg_mask & has_skill
+    
+    
+    if not target.any():
+        print(" DG skill nudge: no eligible players (all have DG prob coverage or no skill data)")
+        return df 
+    
+    field_mean = skill_col[has_skill].mean()
+    multiplier = (1 + scale * (skill_col - field_mean)).clip(0.85, 1.15)
+    
+    prob_cols = [c for c in ['win_prob_calibrated', 'top5_prob_calibrated', 'top10_prob_calibrated', 'top20_prob_calibrated'] if c in df.columns]
+    
+    for col in prob_cols:
+        df.loc[target, col] = (df.loc[target, col] * multiplier[target]).clip(lower=0)
+       
+       
+    delta_col = "dg_course_fit_delta_pct"
+    if delta_col in df.columns:
+        delta_mask = df[delta_col].notna() & (df[delta_col] != 0)
+        if delta_mask.any():
+            #course_fit_delta_pct: positive = dg likes this player more at this course 
+            # Scaled: +10% -> ~5% boost, Clamped to [0.90, 1.10]
+            delta_mult = (1 + 0.05 * df[delta_col].clip(-2, 2)).clip(0.90, 1.10)
+            for col in prob_cols:
+                df.loc[target & delta_mask, col] = (df.loc[target & delta_mask, col] * delta_mult[target & delta_mask]).clip(lower=0)
+            n_delta = int(delta_mask.sum())
+            print(f" DG skill nudge: applied course fit adjustment to {n_delta} players with course_fit_delta_pct data (mean delta {df.loc[delta_mask, delta_col].mean():.2f}%)")
+    # Renormalize win_prob across full field
+    if "win_prob_calibrated" in df.columns:
+        total = df["win_prob_calibrated"].sum()
+        if total > 0:
+            df["win_prob_calibrated"] /= total 
+            
+    
+    n = int(target.sum())
+    print(f" DG Skill nudge applied to {n} players (scale={scale}, field mean = {field_mean:.3f})")
+    return df 
+
+
+        
+        
 ### Step 9: Calculate Expected Value
 
 
@@ -4140,8 +4304,13 @@ Examples:
               f"(expected 100–156 for a standard event)")
 
     # Additional validation: Check field has expected columns
+    # DG field files use 'player_num' for the PGA Tour player ID — normalize it
     if 'player_id' not in field_df.columns:
-        raise ValueError(f"Field file missing required 'player_id' column: {args.field}")
+        if 'player_num' in field_df.columns:
+            field_df = field_df.rename(columns={"player_num": "player_id"})
+            print("    ✓ Mapped player_num → player_id (DG field format)")
+        else:
+            raise ValueError(f"Field file missing required 'player_id' column: {args.field}")
 
     field_df = enrich_field_names(field_df, master_df, tournament_id=args.tournament_id)
 
@@ -4302,6 +4471,20 @@ Examples:
         if args.tournament_id:
             print("\n  Applying expert consensus blend...")
             predictions_df = apply_expert_consensus_blend(predictions_df, args.tournament_id)
+
+
+        _course_hist_coverage = (
+            (predictions_df.get('course_sg_starts', pd.Series(0)) > 1).mean()
+            if "course_sg_starts" in predictions_df.columns else 0.0
+        )
+        
+        _dg_blend_weight = 0.50 if _course_hist_coverage > 0.25 else 0.30
+        print(f"\n Applying DG pre-tournament blend (weight={_dg_blend_weight:.2f}, course history coverage={_course_hist_coverage:.1%})...")
+        print("\n  Applying DG pre-tournament blend...")
+        predictions_df = apply_dg_pretournament_blend(predictions_df, blend_weight=_dg_blend_weight)
+
+        print("\n  Applying DG skill nudge...")
+        predictions_df = apply_dg_skill_nudge(predictions_df)
 
         # Apply Augusta fit blend (Masters only — skipped silently for other events)
         if args.tournament_id:
