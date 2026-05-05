@@ -10323,6 +10323,62 @@ elif page == "📋 My Picks":
                 _bud     = _strat["budget"]
                 _pstrat  = _strat["player_strategy"]
                 _pevents = _strat["premium_events"]
+                _lineup  = _strat.get("weekly_lineup", {})
+
+                # ── Optimal Lineup Card ───────────────────────────────────────
+                import html as _hesc_lu
+                _lu_players = _lineup.get("players", [])
+                _lu_total   = _lineup.get("total_ev", 0)
+                _lu_alts    = _lineup.get("alt_lineups", {})
+                _tier_colors = {"elite": "#f1c40f", "strong": "#00c44f", "mid": "#4cb8ff", "value": "#9b59b6"}
+
+                if _lu_players:
+                    _lu_cards = ""
+                    for _lp in _lu_players:
+                        _lc = _tier_colors.get(_lp.get("tier",""), "#7a9bbf")
+                        _lu_name = _hesc_lu.escape(_lp["name"])
+                        _lu_ev   = _lp["ev"]
+                        _lu_uses = _lp.get("uses_left", 0)
+                        _lu_dots = "●" * _lu_uses + "○" * (3 - _lu_uses)
+                        _lu_win  = _lp.get("win_prob", 0)
+                        _lu_t10  = _lp.get("top10_prob", 0)
+                        # Alt cost if you save this player
+                        _alt     = _lu_alts.get(_lp["name"], {})
+                        _alt_cost = _alt.get("ev_cost", 0)
+                        _alt_str  = (
+                            f'<div style="font-size:0.6em;color:#ef4444;margin-top:3px;">'
+                            f'Save cost: −{_alt_cost:,} EV</div>'
+                        ) if _alt_cost > 0 else ""
+                        _lu_cards += f"""
+<div style="flex:1;min-width:130px;background:#060f1c;border:1px solid {_lc}44;
+            border-top:3px solid {_lc};border-radius:0 0 8px 8px;padding:12px 14px;">
+  <div style="font-size:0.6em;font-weight:800;color:{_lc};letter-spacing:.1em;
+              text-transform:uppercase;margin-bottom:4px;">{_lp.get("tier","").upper()}</div>
+  <div style="font-size:0.9em;font-weight:700;color:#e8f0f8;line-height:1.2;
+              margin-bottom:6px;">{_lu_name}</div>
+  <div style="font-size:1.1em;font-weight:800;color:{_lc};">{_lu_ev:,} <span style="font-size:0.55em;color:#4a6080;">EV</span></div>
+  <div style="font-size:0.65em;color:#4a6080;margin-top:3px;">{_lu_win:.0f}% win · {_lu_t10:.0f}% top-10</div>
+  <div style="font-size:0.65em;color:#3a5070;letter-spacing:2px;margin-top:3px;">{_lu_dots}</div>
+  {_alt_str}
+</div>"""
+
+                    st.markdown(f"""
+<div style="background:#07101e;border:1px solid #0e2040;border-radius:10px;
+            padding:16px 18px;margin-bottom:16px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <div>
+      <span style="font-size:0.62em;font-weight:800;color:#4cb8ff;letter-spacing:.12em;
+                   text-transform:uppercase;">Optimal Lineup This Week</span>
+      <span style="font-size:0.62em;color:#2a4060;margin-left:10px;">
+        {_hesc_lu.escape(_ce.get("name",""))}</span>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:1.2em;font-weight:800;color:#00c44f;">{_lu_total:,}</div>
+      <div style="font-size:0.58em;color:#2a4060;text-transform:uppercase;">Combined EV</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">{_lu_cards}</div>
+</div>""", unsafe_allow_html=True)
 
                 # Verdict banner
                 _tier_color = {"premium": "#00c44f", "high": "#4cb8ff", "standard": "#f59e0b"}.get(
@@ -10434,7 +10490,25 @@ elif page == "📋 My Picks":
                     _uses   = _rp["uses_left"]
                     _dots   = "●" * _uses + "○" * (3 - _uses)
                     _hot    = " ↑" if _rp.get("is_hot_streak") else ""
-                    _field  = " ·" if _rp.get("in_field") else ""
+                    # Opportunity cost column
+                    _opp_ev  = int(_rp.get("opportunity_cost_ev", 0) or 0)
+                    _opp_pct = float(_rp.get("opportunity_cost_pct", 0) or 0)
+                    _tw_ev   = int(_rp.get("this_week_ev", 0) or 0)
+                    _bf_ev   = int(_rp.get("best_future_ev", 0) or 0)
+                    if _rec == "SAVE" and _opp_ev > 0:
+                        _opp_cell = (
+                            f'<div style="font-size:0.72em;color:#e8f0f8;">'
+                            f'{_tw_ev:,} → {_bf_ev:,}</div>'
+                            f'<div style="font-size:0.65em;color:#ef4444;">'
+                            f'+{_opp_ev:,} EV ({_opp_pct:.0f}%) later</div>'
+                        )
+                    elif _rec == "USE NOW" and _tw_ev > 0:
+                        _opp_cell = (
+                            f'<div style="font-size:0.72em;color:#00c44f;">{_tw_ev:,} EV</div>'
+                        )
+                    else:
+                        _opp_cell = f'<div style="font-size:0.72em;color:#4a6080;">{_tw_ev:,}</div>'
+
                     _row_parts.append(
                         f'<tr>'
                         f'<td style="padding:7px 10px;font-weight:600;color:#e8f0f8;">'
@@ -10446,6 +10520,7 @@ elif page == "📋 My Picks":
                         f'background:{_rc}22;padding:2px 7px;border-radius:4px;">{_rec}</span></td>'
                         f'<td style="padding:7px 10px;font-size:0.8em;color:#a0b8d0;">'
                         f'{_hesc.escape(_target)}</td>'
+                        f'<td style="padding:7px 10px;">{_opp_cell}</td>'
                         f'</tr>'
                     )
 
@@ -10457,6 +10532,7 @@ elif page == "📋 My Picks":
                     '<th style="padding:6px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">USES</th>'
                     '<th style="padding:6px 8px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">REC</th>'
                     '<th style="padding:6px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">TARGET</th>'
+                    '<th style="padding:6px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">EV / OPP COST</th>'
                     '</tr></thead><tbody>'
                     + "".join(_row_parts) +
                     '</tbody></table>',

@@ -552,7 +552,13 @@ def get_season_strategy(
     ]
     future_events = sched[sched["start_date"] > today].sort_values("start_date")
 
-    current_event_row = current_events.iloc[0] if not current_events.empty else None
+    # Between tournaments: fall back to next upcoming event so strategy
+    # still computes with the correct purse/tier instead of going blank.
+    current_event_row = (
+        current_events.iloc[0] if not current_events.empty
+        else future_events.iloc[0] if not future_events.empty
+        else None
+    )
     if current_week is None and current_event_row is not None:
         current_week = int(current_event_row["week"])
 
@@ -760,6 +766,26 @@ def get_season_strategy(
         except Exception:
             pass
 
+    # ── Key resolver: tracker uses last-name-only, data maps use full names ──────
+    # Build a single-token -> full-key lookup so "McIlroy" resolves to
+    # "mcilroy rory" instead of silently missing every lookup.
+    _all_known_keys: set = (
+        set(pred_map) | set(season_form_map) | set(rank_map) |
+        set(sg_map)   | set(career_sg_map)   | set(dg_sg_map)
+    )
+    _last_to_full: dict = {}
+    for _fk in _all_known_keys:
+        for _tok in _fk.split():
+            if _tok not in _last_to_full:
+                _last_to_full[_tok] = _fk
+
+    def _resolve_key(raw_key: str) -> str:
+        if raw_key in _all_known_keys:
+            return raw_key
+        if " " not in raw_key:
+            return _last_to_full.get(raw_key, raw_key)
+        return raw_key
+
     # ── Per-player strategy ───────────────────────────────────────────────────
     player_strategy: dict = {}
 
@@ -767,15 +793,13 @@ def get_season_strategy(
         uses_left = int(info.get("remaining_uses", 0))
         if uses_left <= 0:
             continue
-        
-        
 
-        key = _name_key(player_name)
-        
+        key = _resolve_key(_name_key(player_name))
+
         _szn_check = season_form_map.get(key, {})
         _in_field_check = key in pred_map
         if _szn_check.get("events", 0) == 0 and not _in_field_check:
-            continue 
+            continue
         wr = max(1.0, float(rank_map.get(key) or dg_rank_map.get(key) or 200.0))
 
         # Season SG: prefer in-field prediction data, fall back to DG skill rating
@@ -903,7 +927,6 @@ def get_season_strategy(
         candidate_events = event_scores[:max(uses_left * 3, 6)]
 
         # ── Use-this-week decision ────────────────────────────────────────────
-        # ── Use-this-week decision ────────────────────────────────────────────
         # Dynamic threshold: as uses_left/weeks_remaining shrinks (pressure rises),
         # lower the bar so we don't save forever and waste picks.
         # _urgency = 1.0 means "1 use per 1 week remaining" → threshold = 0.55 (minimum)
@@ -912,11 +935,18 @@ def get_season_strategy(
         _use_threshold = max(0.55, 0.90 - 0.50 * min(1.0, _urgency))
 
         best_ev_threshold = best_events[-1]["ev"] if best_events else 0.0
+        best_single_ev    = best_events[0]["ev"]  if best_events else 0.0
         use_this_week = (
             current_event_row is not None
             and this_week_ev >= best_ev_threshold * _use_threshold
             and this_week_probs is not None
         )
+
+        # ── Opportunity cost ──────────────────────────────────────────────────
+        # How much EV are you giving up by using this player THIS week
+        # instead of their single best remaining event?
+        opp_cost_ev  = max(0.0, best_single_ev - this_week_ev)
+        opp_cost_pct = (opp_cost_ev / best_single_ev * 100) if best_single_ev > 0 else 0.0
 
         # ── Hot streak detection ──────────────────────────────────────────────
         # A player is "hot" when recent form is surging above their career
@@ -945,31 +975,43 @@ def get_season_strategy(
 
         # ── Reason string ─────────────────────────────────────────────────────
         if use_this_week and hot_streak_override:
+            _cb = sg_career if sg_career != 0.0 else sg_season
             wp  = this_week_probs["win_prob"]  * 100
             t10 = this_week_probs["top10_prob"] * 100
             reason = (
-                f"Hot streak: recent SG {recent_sg:+.2f} vs career {_career_baseline:+.2f} "
-                f"(+{recent_sg - _career_baseline:.2f}/round), trend rising. "
-                f"Form is perishable — {wp:.1f}% win / {t10:.0f}% top-10 this week. Use now."
+                f"Hot streak: SG {recent_sg:+.2f} vs career {_cb:+.2f} "
+                f"(+{recent_sg - _cb:.2f}/rnd), trend rising. "
+                f"Form is perishable — use now while it lasts. "
+                f"{wp:.1f}% win / {t10:.0f}% top-10."
             )
         elif use_this_week:
             wp  = this_week_probs["win_prob"]  * 100
             t10 = this_week_probs["top10_prob"] * 100
+            _opp_str = (
+                f" Opportunity cost vs best event: {opp_cost_ev:,.0f} EV ({opp_cost_pct:.0f}%) — within range."
+                if opp_cost_ev > 0 else ""
+            )
             reason = (
-                f"Strong model value this week: {wp:.1f}% win / {t10:.0f}% top-10. "
-                f"Ranks in their top-{uses_left} EV windows this season."
+                f"{wp:.1f}% win / {t10:.0f}% top-10 this week "
+                f"({this_week_ev:,.0f} EV). Ranks in top-{uses_left} windows.{_opp_str}"
             )
         elif best_events:
-            top_names = " + ".join(e["name"] for e in best_events[:2])
+            _best = best_events[0]
+            _best_name = _best["name"]
+            _best_ev   = _best["ev"]
             if this_week_probs:
                 wp  = this_week_probs["win_prob"]  * 100
                 t10 = this_week_probs["top10_prob"] * 100
                 reason = (
-                    f"Model this week: {wp:.1f}% win / {t10:.0f}% top-10 "
-                    f"— lower EV than {top_names}. Save."
+                    f"This week: {this_week_ev:,.0f} EV ({wp:.1f}% win / {t10:.0f}% top-10). "
+                    f"{_best_name}: {_best_ev:,.0f} EV. "
+                    f"Save — opportunity cost of using now: {opp_cost_ev:,.0f} EV ({opp_cost_pct:.0f}% better later)."
                 )
             else:
-                reason = f"Not in this week's field. Best windows: {top_names}."
+                reason = (
+                    f"Not in this week's field. "
+                    f"Best window: {_best_name} ({_best_ev:,.0f} EV)."
+                )
         else:
             reason = "Limited future opportunities — consider using now."
 
@@ -998,6 +1040,9 @@ def get_season_strategy(
             "best_events":         best_events,
             "candidate_events":    candidate_events,
             "this_week_ev":        round(this_week_ev, 0),
+            "best_future_ev":      round(best_single_ev, 0),
+            "opportunity_cost_ev": round(opp_cost_ev, 0),
+            "opportunity_cost_pct": round(opp_cost_pct, 1),
             "this_week_probs":     this_week_probs,
             "in_field":            this_week_probs is not None,
             "use_this_week":       use_this_week,
@@ -1032,6 +1077,43 @@ def get_season_strategy(
                 f"No premium events in the next 4 weeks — fine to use top players."
             )
 
+    # ── Optimal weekly lineup ─────────────────────────────────────────────────
+    # Pick the best 3 in-field players by this_week_ev, respecting uses_left.
+    # Also compute alt lineups — what does it cost to save each top pick?
+    _in_field = sorted(
+        [(n, p) for n, p in player_strategy.items()
+         if p.get("in_field") and p.get("uses_left", 0) > 0],
+        key=lambda x: x[1]["this_week_ev"], reverse=True,
+    )
+    _top3 = _in_field[:3]
+    _top3_ev = sum(p["this_week_ev"] for _, p in _top3)
+
+    _lineup_alts: dict[str, dict] = {}
+    for _save_name, _ in _top3:
+        _alt = [(n, p) for n, p in _in_field if n != _save_name][:3]
+        _alt_ev = sum(p["this_week_ev"] for _, p in _alt)
+        _lineup_alts[_save_name] = {
+            "players":  [n for n, _ in _alt],
+            "total_ev": round(_alt_ev),
+            "ev_cost":  round(_top3_ev - _alt_ev),
+        }
+
+    weekly_lineup = {
+        "players": [
+            {
+                "name":     n,
+                "ev":       p["this_week_ev"],
+                "tier":     p["tier"],
+                "uses_left": p["uses_left"],
+                "win_prob": round(p["this_week_probs"]["win_prob"] * 100, 1) if p.get("this_week_probs") else 0,
+                "top10_prob": round(p["this_week_probs"]["top10_prob"] * 100, 1) if p.get("this_week_probs") else 0,
+            }
+            for n, p in _top3
+        ],
+        "total_ev":  round(_top3_ev),
+        "alt_lineups": _lineup_alts,
+    }
+
     # ── Season allocation plan ─────────────────────────────────────────────────
     season_plan, plan_conflicts = get_optimal_season_plan(player_strategy)
     # ── Conflict overflow redirect ─────────────────────────────────────────────
@@ -1065,6 +1147,7 @@ def get_season_strategy(
         "player_strategy": player_strategy,
         "season_plan":     season_plan,
         "plan_conflicts":  plan_conflicts,
+        "weekly_lineup": weekly_lineup,
         "budget": {
             "uses_remaining":    uses_remaining_total,
             "weeks_remaining":   weeks_remaining,
