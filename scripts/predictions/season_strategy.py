@@ -784,6 +784,7 @@ def get_season_strategy(
         set(pred_map) | set(season_form_map) | set(rank_map) |
         set(sg_map)   | set(career_sg_map)   | set(dg_sg_map)
     )
+    _pred_keys: set = set(pred_map)   # closure for abbreviated-name resolution
     _last_to_full: dict = {}
     for _fk in _all_known_keys:
         for _tok in _fk.split():
@@ -795,6 +796,28 @@ def get_season_strategy(
             return raw_key
         if " " not in raw_key:
             return _last_to_full.get(raw_key, raw_key)
+        # Handle abbreviated first names: "fitzpatrick m" → "fitzpatrick matt"
+        # Separate long tokens (real names) from single-letter initials
+        tokens = raw_key.split()
+        long_tokens = [t for t in tokens if len(t) > 1]
+        initials    = [t for t in tokens if len(t) == 1]
+        if long_tokens and initials:
+            candidates = [
+                fk for fk in _all_known_keys
+                if all(lt in fk.split() for lt in long_tokens)
+                and all(
+                    any(ft.startswith(it) for ft in fk.split() if ft not in long_tokens)
+                    for it in initials
+                )
+            ]
+            if len(candidates) == 1:
+                return candidates[0]
+            if len(candidates) > 1:
+                # Multiple candidates (e.g. "Matt" vs "Matthew" from different sources)
+                # Prefer the pred_map entry (most authoritative / current week)
+                pred_cands = [c for c in candidates if c in _pred_keys]
+                if len(pred_cands) == 1:
+                    return pred_cands[0]
         return raw_key
 
     # ── Per-player strategy ───────────────────────────────────────────────────
@@ -806,6 +829,7 @@ def get_season_strategy(
             continue
 
         key = _resolve_key(_name_key(player_name))
+
 
         _szn_check = season_form_map.get(key, {})
         _in_field_check = key in pred_map

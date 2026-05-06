@@ -187,6 +187,19 @@ specific numbers. Plain prose — no headers, bullets, bold, or markdown."""
 
 # ── Core generation ────────────────────────────────────────────────────────────
 
+def _last_key(name: str) -> str:
+    """Normalize to lowercase last name for cross-format matching.
+
+    Handles:
+      'Last, First'  (predictions CSV)  → 'last'
+      'Last'         (tracker key)       → 'last'
+      'F Last'       (abbreviated tracker key) → 'last'
+    """
+    if "," in name:
+        return name.split(",")[0].strip().lower()
+    return name.strip().split()[-1].lower()
+
+
 def generate_reasoning(
     top_saves: int = 8,
     verbose: bool = True,
@@ -262,12 +275,14 @@ def generate_reasoning(
     budget          = strat["budget"]
     player_strategy = strat["player_strategy"]
 
+    # Normalize lineup names to last-name keys for strategy dict lookups
+    lineup_keys = {_last_key(n) for n in lineup_names}
+
     # Attach course fit from strategy to lineup rows
-    lineup_name_set = {n.lower() for n in lineup_names}
     for r in lineup_rows:
-        pn = r.get("player_name", "")
+        pn_key = _last_key(r.get("player_name", ""))
         sp = next(
-            (d for name, d in player_strategy.items() if name.lower() == pn.lower()),
+            (d for sn, d in player_strategy.items() if _last_key(sn) == pn_key),
             {}
         )
         r["course_sg"]  = sp.get("current_course_sg", 0.0)
@@ -279,7 +294,7 @@ def generate_reasoning(
         [
             {"name": n, **d}
             for n, d in player_strategy.items()
-            if n not in lineup_names
+            if _last_key(n) not in lineup_keys
             and not d.get("use_this_week")
             and d.get("uses_left", 0) > 0
         ],
@@ -313,8 +328,9 @@ def generate_reasoning(
 
     # Mark USE NOW players (they appear in the lineup)
     for name in lineup_names:
+        name_key = _last_key(name)
         sp = next(
-            (d for n, d in player_strategy.items() if n.lower() == name.lower()),
+            (d for n, d in player_strategy.items() if _last_key(n) == name_key),
             {}
         )
         narratives[name] = {

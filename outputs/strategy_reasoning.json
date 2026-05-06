@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-06T18:26:48.427756+00:00",
+  "generated_at": "2026-05-06T23:16:50.020517+00:00",
   "tournament": "Truist Championship",
   "tournament_week": 14,
   "lineup": [
@@ -7,29 +7,29 @@
     "McIlroy, Rory",
     "Schauffele, Xander"
   ],
-  "weekly_narrative": "This week's optimal lineup of Fitzpatrick, McIlroy, and Schauffele makes strong sense given your remaining budget and time horizon. McIlroy is your most compelling play with a 287k EV and 9.4% win probability\u2014that's genuinely elite equity for a high-tier event, and with two uses banked you're not overextending on him. Fitzpatrick and Schauffele both offer solid top-10 equity around 26-28%, and their 237k and 223k EVs respectively give you three balanced, complementary exposures without reaching for lottery tickets. The critical save here is Scheffler: he has only two uses remaining and his best event shows 1.36M EV\u2014that's 28% more value than this week, and with limited remaining uses, you need to preserve him for that premium spot rather than risk his final appearances on a moderately valued event. DeChambeau is worth monitoring too, but his incremental edge in a future event (just 7% more) doesn't justify holding out compared to what Scheffler offers. Your 69 uses across 17 weeks gives you flexibility to play this patiently, so banking Scheffler and McIlroy's second and third uses for their genuine peak events is the right long-term strategy.",
+  "weekly_narrative": "Your optimizer is recommending a strong trio for Truist this week, and I agree with the picks. McIlroy is your anchor here with a 287k EV driven by his elite 9.5% win probability and 33.4% top-10 rate, plus he's showing genuine course form with a +1.04 SG edge. Fitzpatrick and Schauffele round out a balanced lineup with respectable 237k and 224k EVs respectively, both sitting at 91% cut probability so you're minimizing waste. The real story this week is Scheffler, who you absolutely need to preserve for his best event coming up\u2014that 1.4M EV represents 28% more value than playing him here, a massive delta that justifies banking a use despite his obvious talent. Morikawa is also a strong candidate to save given his single remaining use and a 30% EV premium at his optimal event, making him too valuable to deploy at a high-tier but not premium venue like Truist. This lineup respects the resource scarcity you're facing with 69 uses across 17 weeks while setting yourself up to unleash your best players at marquee events down the stretch.",
   "players": {
     "Fitzpatrick, Matt": {
       "recommendation": "USE NOW",
-      "tier": "",
-      "uses_left": 0,
-      "this_week_ev": 0,
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 504810,
       "in_field": true,
       "narrative": ""
     },
     "McIlroy, Rory": {
       "recommendation": "USE NOW",
-      "tier": "",
-      "uses_left": 0,
-      "this_week_ev": 0,
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 640003,
       "in_field": true,
       "narrative": ""
     },
     "Schauffele, Xander": {
       "recommendation": "USE NOW",
-      "tier": "",
-      "uses_left": 0,
-      "this_week_ev": 0,
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 506105,
       "in_field": true,
       "narrative": ""
     },
@@ -39,7 +39,7 @@
       "uses_left": 2,
       "this_week_ev": 998851,
       "in_field": false,
-      "narrative": "Scheffler isn't even in this week's field, making the decision straightforward: save the use for the U.S. Open in six weeks, where he projects to earn $1,386,060 in expected value compared to the opportunity cost of just $387,209 if you used him now. With only two uses remaining and a premium major event looming where he has a course fit advantage (+0.33 SG), banking this use preserves maximum flexibility and captures the 28% value uplift that waiting provides. There's no downside to sitting tight when he's not competing this week anyway."
+      "narrative": "With Scheffler not in this week's field, you have an easy decision to save his use for the U.S. Open in week 20, where his expected value jumps to 1,386,060 compared to just 998,851 this week\u2014a gain of 387,209 in EV or 28% more value. Given that Scheffler is your elite asset with only 2 uses remaining, deploying him at a major championship where he has a demonstrated course strength advantage of +0.33 strokes is far more efficient than using a use on a $20M high-tier event. Banking this use now costs you nothing since he's not playing anyway, so you're simply preserving maximum firepower for a premium opportunity later in the season."
     },
     "Morikawa": {
       "recommendation": "SAVE",
@@ -47,15 +47,7 @@
       "uses_left": 1,
       "this_week_ev": 932431,
       "in_field": false,
-      "narrative": "With only one use remaining for Morikawa, you should save him for the U.S. Open in week 20, where his course fit is exceptional (+0.62 SG) and his expected value jumps to $1.33M compared to just $934k if used at a premium event this week. The opportunity cost of burning his final use now is nearly $399k in forgone value, representing a 30% premium he'd capture by waiting six weeks for a major championship where he historically performs well. Since Morikawa isn't even in this week's field anyway, there's no downside to preserving that last use for a tournament where his elite ranking and course-specific advantage can truly maximize your return."
-    },
-    "McIlroy": {
-      "recommendation": "SAVE",
-      "tier": "good",
-      "uses_left": 2,
-      "this_week_ev": 644716,
-      "in_field": true,
-      "narrative": "McIlroy's expected value this week is 644,716, but he's projected to gain 315,521 additional EV by waiting just one week for the Truist Championship, where his EV jumps to 960,237 and he maintains the same strong course fit at +1.01 SG. Since you have exactly two uses remaining for McIlroy and the Truist is a high-tier $20M event just days away, banking this use now preserves maximum optionality while positioning him for a premium event where he's significantly more likely to generate substantial prize money. The 33% value uplift makes this a clear mathematical advantage given the proximity of his ideal opportunity."
+      "narrative": "With only one use remaining, Morikawa should be saved this week since he's not even in the Truist Championship field. His best remaining opportunity is the U.S. Open in six weeks, where he projects 1,331,256 EV\u2014a significantly stronger value than burning his final use on a high-tier event now. By banking this use, you preserve the chance to deploy it at a major championship where Morikawa's demonstrated course fit (plus-0.62 SG) and the larger purse create roughly 30% more expected value than any alternative this week."
     },
     "DeChambeau": {
       "recommendation": "SAVE",
@@ -63,7 +55,31 @@
       "uses_left": 2,
       "this_week_ev": 869604,
       "in_field": false,
-      "narrative": "DeChambeau isn't even in this week's field, so there's no decision to make, but more importantly, you should preserve his remaining two uses for premium events where he can actually compete. His best upcoming opportunity at The Memorial Tournament in week 18 offers 936,216 EV compared to the opportunity cost of just 66,612 EV by waiting, meaning you'd gain 7% more value by banking this use for that $20.0M major event where his demonstrated course fit (+0.77 SG) gives him genuine equity."
+      "narrative": "DeChambeau isn't even in this week's field, so the decision is straightforward: save this use for The Memorial Tournament in week 18, where his course fit is exceptional with a +0.77 strokes gained advantage and an expected value of 936,216. While using him now would only cost about 66,612 EV in opportunity cost, that represents a 7% value gain by waiting, and since he has premium events ahead with larger purses, banking the use is the mathematically sound play to maximize season earnings."
+    },
+    "Henley": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 851440,
+      "in_field": false,
+      "narrative": "Henley isn't even in this week's field, so there's no decision to make here, but the underlying logic reinforces saving his remaining uses for stronger opportunities. His best future event is the Travelers Championship in seven weeks, which offers 886,401 EV\u2014roughly 35,000 points more valuable than using him now would be, representing a 4% gain by waiting. Given that he only has two uses left for the entire season, deploying them at premium events with his demonstrated course fit makes far more sense than settling for marginal weeks."
+    },
+    "Aberg": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 1,
+      "this_week_ev": 435856,
+      "in_field": true,
+      "narrative": "Aberg's expected value jumps dramatically from 435,856 this week to 831,865 at the Truist Championship just one week away, representing a 396,009 EV gain or 48% improvement by waiting. With only one use remaining and a course fit that strongly favors him (+0.76 strokes gained), banking this use now preserves his final opportunity for a premium $20M event where he's nearly twice as valuable. The minimal cost of skipping this week\u2014just 435,856 in EV\u2014is far outweighed by the opportunity to deploy his last use at an event where he projects to earn nearly double."
+    },
+    "J Thomas": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 289649,
+      "in_field": true,
+      "narrative": "J Thomas has a strong course fit at this venue with +0.46 SG, but his expected value this week is only $289,649 compared to $781,880 at the Truist Championship just one week away\u2014a difference of $492,231 that represents 63% more value. Since he still has 2 uses remaining and is barely outside contention for next week's event, banking this use now to deploy him at Truist will substantially maximize his seasonal earnings. The marginal gain from playing him this week does not justify sacrificing the opportunity to use him at a premium $20M event where he's a better fit and has significantly higher equity."
     }
   }
 }
