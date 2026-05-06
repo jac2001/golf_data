@@ -1,0 +1,72 @@
+[
+  {
+    "player_name": "McIlroy, Rory",
+    "player_id": "28237",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890667"
+  },
+  {
+    "player_name": "Fitzpatrick, Matt",
+    "player_id": "40098",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890696"
+  },
+  {
+    "player_name": "Schauffele, Xander",
+    "player_id": "48081",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890698"
+  },
+  {
+    "player_name": "Aberg, Ludvig",
+    "player_id": "52955",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890700"
+  },
+  {
+    "player_name": "MacIntyre, Robert",
+    "player_id": "52215",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890701"
+  },
+  {
+    "player_name": "Cantlay, Patrick",
+    "player_id": "35450",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890703"
+  },
+  {
+    "player_name": "Reitan, Kristoffer",
+    "player_id": "49855",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890704"
+  },
+  {
+    "player_name": "Hughes, Mackenzie",
+    "player_id": "35506",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890705"
+  },
+  {
+    "player_name": "Finau, Tony",
+    "player_id": "29725",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890707"
+  },
+  {
+    "player_name": "Simpson, Webb",
+    "player_id": "29221",
+    "status": "POSSIBLE_WD",
+    "source": "field_vs_predictions",
+    "detected_at": "2026-05-05T06:00:15.890708"
+  }
+]

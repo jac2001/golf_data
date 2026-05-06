@@ -1,15 +1,21 @@
 # Golf Model — Season Context
-_Updated: 2026-04-19 21:05_
+_Updated: 2026-04-20 08:05_
 
 ## Season Summary (2026 PGA Tour)
-- Tournaments tracked: **10**
-- Tournaments with results: **10**
-- Top pick finished top 10: **6/10** (60%)
-- Top-5 predictions → top-10 rate: **44%** (expected: ~33%)
-- Average rank of actual winner in our presets: **#21.2**
+- Tournaments tracked: **11**
+- Tournaments with results: **11**
+- Top pick finished top 10: **7/11** (64%)
+- Top-5 predictions → top-10 rate: **45%** (expected: ~33%)
+- Average rank of actual winner in our presets: **#19.5**
 - Times our #1 pick won: **2**
 
 ## Recent Tournament Results (Last 4)
+
+### RBC Heritage (R2026012)
+- **Winner**: Matt Fitzpatrick
+- Winner was our **#2** ranked player pre-tournament
+- Our **#1 pick**: Scottie Scheffler — finished #2
+- Top-10 predictions hit: **4/10** finished inside top 10
 
 ### Masters (R2026014)
 - **Winner**: Rory McIlroy
@@ -29,12 +35,6 @@ _Updated: 2026-04-19 21:05_
 - Our **#1 pick**: Chris Gotterup — finished #6
 - Top-10 predictions hit: **4/10** finished inside top 10
 
-### Valspar Championship (R2026475)
-- **Winner**: Matt Fitzpatrick
-- Winner was our **#1** ranked player pre-tournament
-- Our **#1 pick**: Matt Fitzpatrick — finished #1
-- Top-10 predictions hit: **3/10** finished inside top 10
-
 ## Bet Performance (Recommended Bets — Priced Only)
 Season totals: **4069 bets**, **674 wins** (17%), ROI **-39.6%**
 
@@ -50,9 +50,9 @@ Note: Most bets are outright/top-10/top-20 markets. High volume because the syst
 
 ## Closing Line Value (CLV)
 CLV measures whether our model priced players better than the closing market. Positive CLV = we got value; negative = we were wrong about the price.
-- Tournaments with CLV data: **7**
-- Average CLV: **+0.16pp** (percentage points vs closing line)
-- % of picks with positive CLV: **75%**
+- Tournaments with CLV data: **8**
+- Average CLV: **+0.13pp** (percentage points vs closing line)
+- % of picks with positive CLV: **73%**
 
 **Best CLV picks this season:**
   - Scottie Scheffler (Cognizant Classic): +39.4pp

@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Cadillac Championship (R2026556)
+Generated: 2026-04-29 17:18
+============================================================
+
+  [OK  ] Field players                  72 rows  (0h ago)
+  [OK  ] Predictions                    72 rows, tid=R2026556  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (537h ago)
+  [OK  ] Expert picks                   6 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (537h old)

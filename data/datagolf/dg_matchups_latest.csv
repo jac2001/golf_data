@@ -1,0 +1,42 @@
+event_name,round,last_update,group,teetime,start_hole,p1_dg_id,p1_name,p1_odds,p2_dg_id,p2_name,p2_odds,p3_dg_id,p3_name,p3_odds
+RBC Heritage,4,2026-04-18 23:47:00 UTC,1,2026-04-19 06:55,1,11676,"Finau, Tony",+127,17780,"Pendrith, Taylor",+118,-1,Tie,+887
+RBC Heritage,4,2026-04-18 23:47:00 UTC,2,2026-04-19 07:04,1,11276,"Horschel, Billy",+173,14139,"Thomas, Justin",-113,-1,Tie,+877
+RBC Heritage,4,2026-04-18 23:47:00 UTC,3,2026-04-19 07:13,1,13508,"Vegas, Jhonattan",+173,22985,"Smotherman, Austin",-114,-1,Tie,+892
+RBC Heritage,4,2026-04-18 23:47:00 UTC,4,2026-04-19 07:22,1,17538,"Homa, Max",+174,19396,"Knapp, Jake",-114,-1,Tie,+879
+RBC Heritage,4,2026-04-18 23:47:00 UTC,5,2026-04-19 07:31,1,18628,"Campbell, Brian",+171,27819,"Castillo, Ricky",-111,-1,Tie,+850
+RBC Heritage,4,2026-04-18 23:47:00 UTC,6,2026-04-19 07:40,1,9771,"Day, Jason",+100,17543,"Kim, Michael",+152,-1,Tie,+860
+RBC Heritage,4,2026-04-18 23:47:00 UTC,7,2026-04-19 07:49,1,19870,"McCarthy, Denny",+114,22465,"Penge, Marco",+135,-1,Tie,+844
+RBC Heritage,4,2026-04-18 23:47:00 UTC,8,2026-04-19 07:58,1,24342,"Higgo, Garrick",+152,29770,"Mouw, William",-101,-1,Tie,+888
+RBC Heritage,4,2026-04-18 23:47:00 UTC,9,2026-04-19 08:07,1,22833,"Echavarria, Nico",+157,26649,"Thorbjornsen, Michael",-103,-1,Tie,+865
+RBC Heritage,4,2026-04-18 23:47:00 UTC,10,2026-04-19 08:16,1,12294,"Fleetwood, Tommy",-128,21554,"Poston, J.T.",+197,-1,Tie,+875
+RBC Heritage,4,2026-04-18 23:47:00 UTC,11,2026-04-19 08:30,1,10419,"Noren, Alex",+103,27194,"Hall, Harry",+151,-1,Tie,+819
+RBC Heritage,4,2026-04-18 23:47:00 UTC,12,2026-04-19 08:40,1,23602,"Hojgaard, Nicolai",+101,29925,"Yellamaraju, Sudarshan",+149,-1,Tie,+878
+RBC Heritage,4,2026-04-18 23:47:00 UTC,13,2026-04-19 08:50,1,15575,"Hoge, Tom",+218,27774,"Gotterup, Chris",-146,-1,Tie,+989
+RBC Heritage,4,2026-04-18 23:47:00 UTC,14,2026-04-19 09:00,1,15980,"Lipsky, David",+190,22760,"Hisatsune, Ryo",-124,-1,Tie,+894
+RBC Heritage,4,2026-04-18 23:47:00 UTC,15,2026-04-19 09:10,1,17576,"Conners, Corey",+134,29767,"Gerard, Ryan",+114,-1,Tie,+842
+RBC Heritage,4,2026-04-18 23:47:00 UTC,16,2026-04-19 09:20,1,13126,"Taylor, Nick",-126,32457,"Keefer, Johnny",+193,-1,Tie,+892
+RBC Heritage,4,2026-04-18 23:47:00 UTC,17,2026-04-19 09:30,1,18586,"Smith, Jordan",+118,20706,"Wallace, Matt",+130,-1,Tie,+832
+RBC Heritage,4,2026-04-18 23:47:00 UTC,18,2026-04-19 09:45,1,19477,"Schenk, Adam",+224,24968,"Griffin, Ben",-148,-1,Tie,+960
+RBC Heritage,4,2026-04-18 23:47:00 UTC,19,2026-04-19 09:55,1,17488,"Im, Sungjae",+115,23014,"Theegala, Sahith",+132,-1,Tie,+864
+RBC Heritage,4,2026-04-18 23:47:00 UTC,20,2026-04-19 10:05,1,14704,"Putnam, Andrew",+118,17606,"Berger, Daniel",+130,-1,Tie,+837
+RBC Heritage,4,2026-04-18 23:47:00 UTC,21,2026-04-19 10:15,1,14636,"Spieth, Jordan",+145,18634,"McNealy, Maverick",+105,-1,Tie,+857
+RBC Heritage,4,2026-04-18 23:47:00 UTC,22,2026-04-19 10:25,1,24304,"Vilips, Karl",+211,25569,"Stevens, Sam",-137,-1,Tie,+894
+RBC Heritage,4,2026-04-18 23:47:00 UTC,23,2026-04-19 10:35,1,13872,"Bradley, Keegan",+155,16841,"Lee, Min Woo",-101,-1,Tie,+850
+RBC Heritage,4,2026-04-18 23:47:00 UTC,24,2026-04-19 10:50,1,23604,"Clark, Wyndham",+108,29197,"Brennan, Michael",+142,-1,Tie,+845
+RBC Heritage,4,2026-04-18 23:47:00 UTC,25,2026-04-19 11:00,1,14578,"Henley, Russell",-104,17536,"Spaun, J.J.",+161,-1,Tie,+829
+RBC Heritage,4,2026-04-18 23:47:00 UTC,26,2026-04-19 11:10,1,13900,"Lowry, Shane",+137,29433,"Bridgeman, Jacob",+111,-1,Tie,+856
+RBC Heritage,4,2026-04-18 23:47:00 UTC,27,2026-04-19 11:20,1,24956,"Blanchet, Chandler",+172,28635,"McCarty, Matt",-112,-1,Tie,+853
+RBC Heritage,4,2026-04-18 23:47:00 UTC,28,2026-04-19 11:30,1,23323,"MacIntyre, Robert",+108,26096,"Bhatia, Akshay",+141,-1,Tie,+851
+RBC Heritage,4,2026-04-18 23:47:00 UTC,29,2026-04-19 11:40,1,19895,"Schauffele, Xander",+120,26651,"Young, Cameron",+125,-1,Tie,+886
+RBC Heritage,4,2026-04-18 23:47:00 UTC,30,2026-04-19 11:55,1,22085,"Morikawa, Collin",-126,23816,"Valimaki, Sami",+194,-1,Tie,+885
+RBC Heritage,4,2026-04-18 23:47:00 UTC,31,2026-04-19 12:05,1,7399,"Glover, Lucas",-115,28469,"Highsmith, Joe",+175,-1,Tie,+886
+RBC Heritage,4,2026-04-18 23:47:00 UTC,32,2026-04-19 12:15,1,11889,"Fox, Ryan",+174,19483,"Burns, Sam",-113,-1,Tie,+860
+RBC Heritage,4,2026-04-18 23:47:00 UTC,33,2026-04-19 12:25,1,12965,"Fowler, Rickie",-113,26657,"Fisk, Steven",+172,-1,Tie,+867
+RBC Heritage,4,2026-04-18 23:47:00 UTC,34,2026-04-19 12:35,1,16283,"Rodgers, Patrick",+184,18841,"Hovland, Viktor",-121,-1,Tie,+900
+RBC Heritage,4,2026-04-18 23:47:00 UTC,35,2026-04-19 12:45,1,14577,"English, Harris",+119,21891,"Kitayama, Kurt",+129,-1,Tie,+852
+RBC Heritage,4,2026-04-18 23:47:00 UTC,36,2026-04-19 13:00,1,14502,"Cauley, Bud",+104,28309,"Coody, Pierceson",+144,-1,Tie,+896
+RBC Heritage,4,2026-04-18 23:47:00 UTC,37,2026-04-19 13:10,1,15466,"Cantlay, Patrick",+111,23950,"Aberg, Ludvig",+137,-1,Tie,+850
+RBC Heritage,4,2026-04-18 23:47:00 UTC,38,2026-04-19 13:20,1,12577,"Woodland, Gary",-110,27900,"Potgieter, Aldrich",+167,-1,Tie,+885
+RBC Heritage,4,2026-04-18 23:47:00 UTC,39,2026-04-19 13:30,1,17511,"Straka, Sepp",-108,23475,"Novak, Andrew",+163,-1,Tie,+884
+RBC Heritage,4,2026-04-18 23:47:00 UTC,40,2026-04-19 13:40,1,8825,"Harman, Brian",+177,14609,"Kim, Si Woo",-114,-1,Tie,+835
+RBC Heritage,4,2026-04-18 23:47:00 UTC,41,2026-04-19 13:50,1,17646,"Fitzpatrick, Matt",+186,18417,"Scheffler, Scottie",-120,-1,Tie,+864

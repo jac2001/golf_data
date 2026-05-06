@@ -957,5 +957,274 @@
     "failed_step_ids": [
       "step_001"
     ]
+  },
+  {
+    "run_id": "20260421_070437",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260421_070437.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-04-21T07:04:37",
+    "ended_at": "2026-04-21T07:05:50",
+    "tournament_name": "Zurich Classic of New Orleans",
+    "tournament_id": "R2026018",
+    "step_count": 6,
+    "failed_count": 4,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_003",
+      "step_006"
+    ]
+  },
+  {
+    "run_id": "20260421_191118",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260421_191118.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-21T19:11:18",
+    "ended_at": "2026-04-21T19:17:05",
+    "tournament_name": "Zurich Classic of New Orleans",
+    "tournament_id": "R2026018",
+    "step_count": 19,
+    "failed_count": 5,
+    "failed_step_ids": [
+      "step_003",
+      "step_007",
+      "step_008",
+      "step_009",
+      "step_018"
+    ]
+  },
+  {
+    "run_id": "20260422_071918",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260422_071918.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-04-22T07:19:18",
+    "ended_at": "2026-04-22T07:23:06",
+    "tournament_name": "Zurich Classic of New Orleans",
+    "tournament_id": "R2026018",
+    "step_count": 5,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_005"
+    ]
+  },
+  {
+    "run_id": "20260428_060323",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260428_060323.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-04-28T06:03:23",
+    "ended_at": "2026-04-28T06:04:45",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 13,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_013"
+    ]
+  },
+  {
+    "run_id": "20260429_072243",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260429_072243.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-29T07:22:43",
+    "ended_at": "2026-04-29T07:45:46",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 13,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260429_170257",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260429_170257.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-29T17:02:57",
+    "ended_at": "2026-04-29T17:04:00",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260429_171154",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260429_171154.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-29T17:11:54",
+    "ended_at": "2026-04-29T17:12:53",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260429_171704",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260429_171704.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-29T17:17:04",
+    "ended_at": "2026-04-29T17:18:04",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260429_172203",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260429_172203.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-29T17:22:03",
+    "ended_at": "2026-04-29T17:31:51",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260429_173125",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260429_173125.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-29T17:31:25",
+    "ended_at": "2026-04-29T17:32:23",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260429_173307",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260429_173307.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-29T17:33:07",
+    "ended_at": "2026-04-29T17:34:06",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260429_173436",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260429_173436.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-29T17:34:36",
+    "ended_at": "2026-04-29T17:35:35",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260430_000344",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260430_000344.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-04-30T00:03:44",
+    "ended_at": "2026-04-30T00:04:45",
+    "tournament_name": "Cadillac Championship",
+    "tournament_id": "R2026556",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260504_204810",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260504_204810.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-05-04T20:48:10",
+    "ended_at": "2026-05-04T20:48:10",
+    "tournament_name": "Truist Championship",
+    "tournament_id": "R2026480",
+    "step_count": 1,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260504_204816",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260504_204816.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-05-04T20:48:16",
+    "ended_at": "2026-05-04T20:48:16",
+    "tournament_name": "Truist Championship",
+    "tournament_id": "R2026480",
+    "step_count": 1,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260505_060234",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260505_060234.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-05-05T06:02:34",
+    "ended_at": "2026-05-05T06:04:10",
+    "tournament_name": "Truist Championship",
+    "tournament_id": "R2026480",
+    "step_count": 13,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_013"
+    ]
+  },
+  {
+    "run_id": "20260505_180604",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260505_180604.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-05T18:06:04",
+    "ended_at": "2026-05-05T18:07:20",
+    "tournament_name": "Truist Championship",
+    "tournament_id": "R2026480",
+    "step_count": 12,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
   }
 ]

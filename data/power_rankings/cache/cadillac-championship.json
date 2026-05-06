@@ -1,0 +1,340 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Cadillac Championship",
+      "tableTitle": "Power Rankings for Cadillac Championship",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "34099",
+            "firstName": "Harris",
+            "lastName": "English",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34099.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although he\u2019s more of a threat for a top 25 than a victory, he recorded a T10 here in 2016, so he\u2019s displayed his best self. He\u2019s also on the bounce of a season-best T4 at the RBC Heritage where he flashed vintage putting."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "31323",
+            "firstName": "Gary",
+            "lastName": "Woodland",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_31323.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "When he won the Texas Children\u2019s Houston Open, he said that he wanted it to make a difference for someone else who also battles demons, but his T14-Win-T33-T8 run since opening up about his have showcased the possibilities."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "48117",
+            "firstName": "Kurt",
+            "lastName": "Kitayama",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48117.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Perhaps the quietest among the elite but rises often when par is a good score. Power and precision from tee to green defines his attack but his greenside touch accentuates his profile. Fresh off a T8 at the RBC Heritage."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "51634",
+            "firstName": "Sahith",
+            "lastName": "Theegala",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51634.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "This will be fun to watch. He checks all of the boxes for pretty much every test but the Blue Monster demands everyone\u2019s best. He\u2019s been close to his all season en route to four top 10s among eight top 25s. Ranks 14th in scoring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "47420",
+            "firstName": "Jake",
+            "lastName": "Knapp",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47420.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Among five to co-lead the PGA TOUR with five top 10s on the season, he\u2019s the only who\u2019s yet to land on a podium. Toss in a pair of 11th-place finishes and he\u2019s arguably the most consistently strong among them. Second in scoring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "22405",
+            "firstName": "Justin",
+            "lastName": "Rose",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_22405.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His win on the Blue Monster in 2012 preceded the redo but he\u2019s among those with experience on the current version. Resonates on premium sites, T3 in his last start at the Masters and leads the PGA TOUR in greens in regulation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "47504",
+            "firstName": "Sam",
+            "lastName": "Burns",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47504.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It was only three weeks ago when he co-led the Masters with an opening 67 en route to a T7. It\u2019s one of four top 25s upon arrival, so he\u2019s simmering. While unfamiliar greens benefits ball-strikers early, great putters always rise."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "35450",
+            "firstName": "Patrick",
+            "lastName": "Cantlay",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35450.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a T7-T12-T8 surge since the Valspar Championship, he\u2019s reemerged as a consistent lurker on leaderboards with another tough test in the Blue Monster waiting. Slots seventh on TOUR in bogey avoidance, a measure of his tenacity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 30-year-old is a career-best 25th in the Official World Golf Ranking thanks in large part to a trio of podium finishes this year, but his run dates back to the Playoffs. Still No. 1 in fairways hit and proximity to the hole."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "While he\u2019s one of only two with multiple wins this season, this endorsement leans more on fit than form. Proven to adapt beyond his years, the 26-year-old pays off his muscle with precision on approach and above-average putting."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "56630",
+            "firstName": "Akshay",
+            "lastName": "Bhatia",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_56630.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Now a proven winner on a long, strong track at Bay Hill, the lefty already had accumulated receipts on tests where he could wield drivers often and in the wind. Oh, and he leads the TOUR in converting greens into par breakers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Rested since another fruitful Masters (T12), he\u2019s poised to plug in his tee-to-green machine on a track on which the targets are unfamiliar to most, but the 34-year-old\u2019s putting is at a historically strong level right now, too"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "50525",
+            "firstName": "Collin",
+            "lastName": "Morikawa",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50525.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "While everyone\u2019s approach limits taking one week at a time, literally, his mindset is the same what with ongoing discomfort in his back and his first child on the way, but he\u2019s continued to flourish. T7-T4 since the Masters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Power and precision off the tee plays way up on the longest tracks, so he\u2019s poised to enjoy his debut on the Blue Monster. Of course, he\u2019s more sizzle than slotting second in total driving. Also second in proximity to the hole."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "\u201cStuck\u201d on one win this season but beaten by only one in each of his last two starts, so he\u2019s \u201cclose.\u201d That tongue-in-cheek refrain aside, he remains the best on TOUR from tee to green and numerous scoring metrics. Shocker."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

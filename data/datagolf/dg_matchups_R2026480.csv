@@ -1,0 +1,336 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Pendrith, Taylor","Poston, J.T.",17780,21554,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Pendrith, Taylor","Poston, J.T.",17780,21554,separate bet offered,datagolf,+118,+129,0.458716,0.436681,0.512304,0.487696,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Pendrith, Taylor","Poston, J.T.",17780,21554,separate bet offered,pointsbet,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Pendrith, Taylor","Poston, J.T.",17780,21554,void,betcris,-118,-112,0.541284,0.528302,0.506069,0.493931,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Pendrith, Taylor","Poston, J.T.",17780,21554,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Pendrith, Taylor","Poston, J.T.",17780,21554,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Pendrith, Taylor","Poston, J.T.",17780,21554,void,draftkings,-115,-108,0.534884,0.519231,0.507425,0.492575,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Pendrith, Taylor","Poston, J.T.",17780,21554,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarty, Matt","Gerard, Ryan",28635,29767,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarty, Matt","Gerard, Ryan",28635,29767,separate bet offered,datagolf,+140,+109,0.416667,0.478469,0.465479,0.534521,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarty, Matt","Gerard, Ryan",28635,29767,separate bet offered,pointsbet,+110,-105,0.47619,0.512195,0.481786,0.518214,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarty, Matt","Gerard, Ryan",28635,29767,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarty, Matt","Gerard, Ryan",28635,29767,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarty, Matt","Gerard, Ryan",28635,29767,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarty, Matt","Gerard, Ryan",28635,29767,void,draftkings,-102,-122,0.50495,0.54955,0.478853,0.521147,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarty, Matt","Gerard, Ryan",28635,29767,void,unibet,+104,-132,0.490196,0.568966,0.462815,0.537185,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Berger, Daniel","Knapp, Jake",17606,19396,separate bet offered,bet365,+125,-115,0.444444,0.534884,0.453826,0.546174,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Berger, Daniel","Knapp, Jake",17606,19396,separate bet offered,datagolf,+152,-100,0.396825,0.5,0.442478,0.557522,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Berger, Daniel","Knapp, Jake",17606,19396,separate bet offered,pointsbet,+125,-120,0.444444,0.545455,0.44898,0.55102,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Berger, Daniel","Knapp, Jake",17606,19396,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Berger, Daniel","Knapp, Jake",17606,19396,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Berger, Daniel","Knapp, Jake",17606,19396,void,unibet,+108,-136,0.480769,0.576271,0.454826,0.545174,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Simpson, Webb","Hughes, Mackenzie",11049,15556,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Simpson, Webb","Hughes, Mackenzie",11049,15556,separate bet offered,datagolf,+131,+116,0.4329,0.462963,0.483221,0.516779,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Simpson, Webb","Hughes, Mackenzie",11049,15556,separate bet offered,pointsbet,+110,-105,0.47619,0.512195,0.481786,0.518214,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Simpson, Webb","Hughes, Mackenzie",11049,15556,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Simpson, Webb","Hughes, Mackenzie",11049,15556,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Simpson, Webb","Hughes, Mackenzie",11049,15556,void,draftkings,-104,-120,0.509804,0.545455,0.483108,0.516892,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Simpson, Webb","Hughes, Mackenzie",11049,15556,void,unibet,-107,-120,0.516908,0.545455,0.486565,0.513435,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Vegas, Jhonattan","Potgieter, Aldrich",13508,27900,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Vegas, Jhonattan","Potgieter, Aldrich",13508,27900,separate bet offered,datagolf,+148,+100,0.403226,0.5,0.446429,0.553571,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Vegas, Jhonattan","Potgieter, Aldrich",13508,27900,separate bet offered,pointsbet,+120,-115,0.454545,0.534884,0.459402,0.540598,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Vegas, Jhonattan","Potgieter, Aldrich",13508,27900,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Vegas, Jhonattan","Potgieter, Aldrich",13508,27900,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Vegas, Jhonattan","Potgieter, Aldrich",13508,27900,void,draftkings,+102,-128,0.49505,0.561404,0.468596,0.531404,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Vegas, Jhonattan","Potgieter, Aldrich",13508,27900,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,separate bet offered,datagolf,-104,+158,0.509804,0.387597,0.568089,0.431911,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,separate bet offered,pointsbet,-120,+135,0.545455,0.425532,0.561753,0.438247,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,void,draftkings,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,separate bet offered,datagolf,+159,-105,0.3861,0.512195,0.429814,0.570186,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,separate bet offered,pointsbet,+135,-125,0.425532,0.555556,0.433735,0.566265,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,void,caesars,+122,-155,0.45045,0.607843,0.425638,0.574362,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,void,datagolf,+133,-133,0.429185,0.570815,0.429185,0.570815,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,void,draftkings,+118,-148,0.458716,0.596774,0.4346,0.5654,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"MacIntyre, Robert","Hall, Harry",23323,27194,separate bet offered,bet365,-125,+137,0.555556,0.421941,0.568345,0.431655,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"MacIntyre, Robert","Hall, Harry",23323,27194,separate bet offered,datagolf,+100,+153,0.5,0.395257,0.558499,0.441501,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"MacIntyre, Robert","Hall, Harry",23323,27194,separate bet offered,pointsbet,-130,+135,0.565217,0.425532,0.570495,0.429505,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"MacIntyre, Robert","Hall, Harry",23323,27194,void,caesars,-155,+122,0.607843,0.45045,0.574362,0.425638,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"MacIntyre, Robert","Hall, Harry",23323,27194,void,datagolf,-126,+126,0.557522,0.442478,0.557522,0.442478,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"MacIntyre, Robert","Hall, Harry",23323,27194,void,draftkings,-148,+118,0.596774,0.458716,0.5654,0.4346,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"MacIntyre, Robert","Hall, Harry",23323,27194,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,separate bet offered,datagolf,+114,+133,0.46729,0.429185,0.521253,0.478747,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,separate bet offered,pointsbet,-110,+115,0.52381,0.465116,0.529675,0.470325,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,void,draftkings,-118,-106,0.541284,0.514563,0.512654,0.487346,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Novak, Andrew",13872,23475,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Novak, Andrew",13872,23475,separate bet offered,datagolf,-114,+171,0.53271,0.369004,0.590775,0.409225,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Novak, Andrew",13872,23475,separate bet offered,pointsbet,-125,+135,0.555556,0.425532,0.566265,0.433735,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Novak, Andrew",13872,23475,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Novak, Andrew",13872,23475,void,datagolf,-144,+144,0.590164,0.409836,0.590164,0.409836,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Novak, Andrew",13872,23475,void,draftkings,-154,+122,0.606299,0.45045,0.57374,0.42626,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Novak, Andrew",13872,23475,void,unibet,-162,+126,0.618321,0.442478,0.582882,0.417118,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Spaun, J.J.",6093,17536,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Spaun, J.J.",6093,17536,separate bet offered,datagolf,+141,+107,0.414938,0.483092,0.462054,0.537946,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Spaun, J.J.",6093,17536,separate bet offered,pointsbet,+115,-110,0.465116,0.52381,0.470325,0.529675,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Spaun, J.J.",6093,17536,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Spaun, J.J.",6093,17536,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Spaun, J.J.",6093,17536,void,draftkings,-104,-120,0.509804,0.545455,0.483108,0.516892,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Spaun, J.J.",6093,17536,void,unibet,-107,-120,0.516908,0.545455,0.486565,0.513435,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,separate bet offered,datagolf,-101,+152,0.502488,0.396825,0.558746,0.441254,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,separate bet offered,pointsbet,-120,+125,0.545455,0.444444,0.55102,0.44898,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,void,draftkings,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Griffin, Ben","Bhatia, Akshay",24968,26096,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Griffin, Ben","Bhatia, Akshay",24968,26096,separate bet offered,datagolf,+111,+137,0.473934,0.421941,0.529018,0.470982,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Griffin, Ben","Bhatia, Akshay",24968,26096,separate bet offered,pointsbet,-115,+115,0.534884,0.465116,0.534884,0.465116,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Griffin, Ben","Bhatia, Akshay",24968,26096,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Griffin, Ben","Bhatia, Akshay",24968,26096,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Griffin, Ben","Bhatia, Akshay",24968,26096,void,draftkings,-124,-102,0.553571,0.50495,0.522966,0.477034,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Griffin, Ben","Bhatia, Akshay",24968,26096,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,separate bet offered,datagolf,-105,+158,0.512195,0.387597,0.569237,0.430763,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,separate bet offered,pointsbet,-120,+135,0.545455,0.425532,0.561753,0.438247,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,betcris,-155,+124,0.607843,0.446429,0.576553,0.423447,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,draftkings,-154,+124,0.606299,0.446429,0.575932,0.424068,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,separate bet offered,datagolf,+126,+121,0.442478,0.452489,0.494407,0.505593,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,separate bet offered,pointsbet,+100,+105,0.5,0.487805,0.506173,0.493827,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,draftkings,-112,-112,0.528302,0.528302,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Fitzpatrick, Alex",12965,25362,separate bet offered,bet365,-125,+137,0.555556,0.421941,0.568345,0.431655,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Fitzpatrick, Alex",12965,25362,separate bet offered,datagolf,-108,+164,0.519231,0.378788,0.578196,0.421804,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Fitzpatrick, Alex",12965,25362,separate bet offered,pointsbet,-135,+140,0.574468,0.416667,0.579606,0.420394,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Fitzpatrick, Alex",12965,25362,void,caesars,-165,+127,0.622642,0.440529,0.585646,0.414354,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Fitzpatrick, Alex",12965,25362,void,datagolf,-137,+137,0.578059,0.421941,0.578059,0.421941,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Fitzpatrick, Alex",12965,25362,void,draftkings,-166,+132,0.62406,0.431034,0.591473,0.408527,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Fitzpatrick, Alex",12965,25362,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Conners, Corey","Burns, Sam",17576,19483,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Conners, Corey","Burns, Sam",17576,19483,separate bet offered,datagolf,+152,-100,0.396825,0.5,0.442478,0.557522,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Conners, Corey","Burns, Sam",17576,19483,separate bet offered,pointsbet,+125,-120,0.444444,0.545455,0.44898,0.55102,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Conners, Corey","Burns, Sam",17576,19483,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Conners, Corey","Burns, Sam",17576,19483,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Conners, Corey","Burns, Sam",17576,19483,void,draftkings,+116,-146,0.462963,0.593496,0.438221,0.561779,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Conners, Corey","Burns, Sam",17576,19483,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Campbell, Brian",16841,18628,separate bet offered,bet365,-240,+260,0.705882,0.277778,0.717608,0.282392,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Campbell, Brian",16841,18628,separate bet offered,datagolf,-221,+340,0.688474,0.227273,0.751817,0.248183,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Campbell, Brian",16841,18628,separate bet offered,pointsbet,-230,+225,0.69697,0.307692,0.693735,0.306265,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Campbell, Brian",16841,18628,void,caesars,-310,+230,0.756098,0.30303,0.713887,0.286113,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Campbell, Brian",16841,18628,void,datagolf,-303,+303,0.751861,0.248139,0.751861,0.248139,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Campbell, Brian",16841,18628,void,draftkings,-280,+220,0.736842,0.3125,0.702194,0.297806,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Campbell, Brian",16841,18628,void,unibet,-305,+225,0.753086,0.307692,0.709937,0.290063,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Finau, Tony","Putnam, Andrew",11676,14704,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Finau, Tony","Putnam, Andrew",11676,14704,separate bet offered,datagolf,+137,+111,0.421941,0.473934,0.470982,0.529018,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Finau, Tony","Putnam, Andrew",11676,14704,separate bet offered,pointsbet,-105,+110,0.512195,0.47619,0.518214,0.481786,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Finau, Tony","Putnam, Andrew",11676,14704,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Finau, Tony","Putnam, Andrew",11676,14704,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Finau, Tony","Putnam, Andrew",11676,14704,void,draftkings,-114,-110,0.53271,0.52381,0.504212,0.495788,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Finau, Tony","Putnam, Andrew",11676,14704,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Homa, Max","Hisatsune, Ryo",17538,22760,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Homa, Max","Hisatsune, Ryo",17538,22760,separate bet offered,datagolf,+135,+112,0.425532,0.471698,0.474273,0.525727,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Homa, Max","Hisatsune, Ryo",17538,22760,separate bet offered,pointsbet,+110,+100,0.47619,0.5,0.487805,0.512195,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Homa, Max","Hisatsune, Ryo",17538,22760,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Homa, Max","Hisatsune, Ryo",17538,22760,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Homa, Max","Hisatsune, Ryo",17538,22760,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Homa, Max","Hisatsune, Ryo",17538,22760,void,draftkings,-106,-118,0.514563,0.541284,0.487346,0.512654,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Homa, Max","Hisatsune, Ryo",17538,22760,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Rodgers, Patrick",14502,16283,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Rodgers, Patrick",14502,16283,separate bet offered,datagolf,+103,+147,0.492611,0.404858,0.548889,0.451111,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Rodgers, Patrick",14502,16283,separate bet offered,pointsbet,-110,+120,0.52381,0.454545,0.535398,0.464602,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Rodgers, Patrick",14502,16283,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Rodgers, Patrick",14502,16283,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Rodgers, Patrick",14502,16283,void,draftkings,-140,+112,0.583333,0.471698,0.552906,0.447094,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Rodgers, Patrick",14502,16283,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Blanchet, Chandler","Yellamaraju, Sudarshan",24956,29925,separate bet offered,bet365,+150,-138,0.4,0.579832,0.408233,0.591767,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Blanchet, Chandler","Yellamaraju, Sudarshan",24956,29925,separate bet offered,datagolf,+168,-112,0.373134,0.528302,0.413933,0.586067,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Blanchet, Chandler","Yellamaraju, Sudarshan",24956,29925,separate bet offered,pointsbet,+140,-135,0.416667,0.574468,0.420394,0.579606,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Blanchet, Chandler","Yellamaraju, Sudarshan",24956,29925,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Blanchet, Chandler","Yellamaraju, Sudarshan",24956,29925,void,datagolf,+142,-142,0.413223,0.586777,0.413223,0.586777,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Blanchet, Chandler","Yellamaraju, Sudarshan",24956,29925,void,draftkings,+124,-154,0.446429,0.606299,0.424068,0.575932,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Blanchet, Chandler","Yellamaraju, Sudarshan",24956,29925,void,unibet,+130,-167,0.434783,0.625468,0.410075,0.589925,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lipsky, David","Theegala, Sahith",15980,23014,separate bet offered,bet365,+175,-163,0.363636,0.619772,0.369772,0.630228,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Lipsky, David","Theegala, Sahith",15980,23014,separate bet offered,datagolf,+205,-136,0.327869,0.576271,0.362631,0.637369,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lipsky, David","Theegala, Sahith",15980,23014,separate bet offered,pointsbet,+160,-150,0.384615,0.6,0.390625,0.609375,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lipsky, David","Theegala, Sahith",15980,23014,void,caesars,+150,-190,0.4,0.655172,0.379085,0.620915,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lipsky, David","Theegala, Sahith",15980,23014,void,datagolf,+176,-176,0.362319,0.637681,0.362319,0.637681,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lipsky, David","Theegala, Sahith",15980,23014,void,unibet,+145,-186,0.408163,0.65035,0.385601,0.614399,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Hojgaard, Nicolai",9771,23602,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Hojgaard, Nicolai",9771,23602,separate bet offered,datagolf,+136,+112,0.423729,0.471698,0.473214,0.526786,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Hojgaard, Nicolai",9771,23602,separate bet offered,pointsbet,+105,+105,0.487805,0.487805,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Hojgaard, Nicolai",9771,23602,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Hojgaard, Nicolai",9771,23602,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Hojgaard, Nicolai",9771,23602,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Hojgaard, Nicolai",9771,23602,void,draftkings,-115,-110,0.534884,0.52381,0.50523,0.49477,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Hojgaard, Nicolai",9771,23602,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Castillo, Ricky",14577,27819,separate bet offered,bet365,-125,+137,0.555556,0.421941,0.568345,0.431655,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Castillo, Ricky",14577,27819,separate bet offered,datagolf,-109,+167,0.521531,0.374532,0.582025,0.417975,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Castillo, Ricky",14577,27819,separate bet offered,pointsbet,-125,+135,0.555556,0.425532,0.566265,0.433735,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Castillo, Ricky",14577,27819,void,caesars,-155,+122,0.607843,0.45045,0.574362,0.425638,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Castillo, Ricky",14577,27819,void,datagolf,-139,+139,0.58159,0.41841,0.58159,0.41841,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Castillo, Ricky",14577,27819,void,draftkings,-148,+118,0.596774,0.458716,0.5654,0.4346,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Castillo, Ricky",14577,27819,void,unibet,-162,+126,0.618321,0.442478,0.582882,0.417118,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cantlay, Patrick","Kitayama, Kurt",15466,21891,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Cantlay, Patrick","Kitayama, Kurt",15466,21891,separate bet offered,datagolf,+114,+132,0.46729,0.431034,0.520179,0.479821,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cantlay, Patrick","Kitayama, Kurt",15466,21891,separate bet offered,pointsbet,-110,+115,0.52381,0.465116,0.529675,0.470325,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cantlay, Patrick","Kitayama, Kurt",15466,21891,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cantlay, Patrick","Kitayama, Kurt",15466,21891,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cantlay, Patrick","Kitayama, Kurt",15466,21891,void,draftkings,-124,-102,0.553571,0.50495,0.522966,0.477034,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cantlay, Patrick","Kitayama, Kurt",15466,21891,void,unibet,-125,-103,0.555556,0.507389,0.522657,0.477343,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,separate bet offered,bet365,+120,-110,0.454545,0.52381,0.464602,0.535398,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,separate bet offered,datagolf,+143,+107,0.411523,0.483092,0.46,0.54,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,separate bet offered,pointsbet,+125,-115,0.444444,0.534884,0.453826,0.546174,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,void,draftkings,+104,-130,0.490196,0.565217,0.464459,0.535541,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Bridgeman, Jacob",8825,29433,void,unibet,+104,-132,0.490196,0.568966,0.462815,0.537185,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Im, Sungjae",13126,17488,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Im, Sungjae",13126,17488,separate bet offered,datagolf,+107,+142,0.483092,0.413223,0.538976,0.461024,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Im, Sungjae",13126,17488,separate bet offered,pointsbet,-115,+120,0.534884,0.454545,0.540598,0.459402,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Im, Sungjae",13126,17488,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Im, Sungjae",13126,17488,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Im, Sungjae",13126,17488,void,draftkings,-126,+100,0.557522,0.5,0.527197,0.472803,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Im, Sungjae",13126,17488,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Echavarria, Nico",18841,22833,separate bet offered,bet365,-170,+187,0.62963,0.348432,0.643752,0.356248,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Echavarria, Nico",18841,22833,separate bet offered,datagolf,-158,+241,0.612403,0.293255,0.676197,0.323803,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Echavarria, Nico",18841,22833,separate bet offered,pointsbet,-175,+175,0.636364,0.363636,0.636364,0.363636,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Echavarria, Nico",18841,22833,void,caesars,-210,+165,0.677419,0.377358,0.642239,0.357761,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Echavarria, Nico",18841,22833,void,datagolf,-209,+209,0.676375,0.323625,0.676375,0.323625,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Echavarria, Nico",18841,22833,void,draftkings,-230,+182,0.69697,0.35461,0.662784,0.337216,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Echavarria, Nico",18841,22833,void,unibet,-220,+170,0.6875,0.37037,0.649891,0.350109,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fox, Ryan","Gotterup, Chris",11889,27774,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Fox, Ryan","Gotterup, Chris",11889,27774,separate bet offered,datagolf,+163,-109,0.380228,0.521531,0.421652,0.578348,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fox, Ryan","Gotterup, Chris",11889,27774,void,caesars,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fox, Ryan","Gotterup, Chris",11889,27774,void,datagolf,+137,-137,0.421941,0.578059,0.421941,0.578059,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fox, Ryan","Gotterup, Chris",11889,27774,void,draftkings,+118,-148,0.458716,0.596774,0.4346,0.5654,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fox, Ryan","Gotterup, Chris",11889,27774,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,separate bet offered,datagolf,+103,+147,0.492611,0.404858,0.548889,0.451111,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,void,draftkings,-134,+106,0.57265,0.485437,0.541212,0.458788,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,separate bet offered,bet365,+175,-160,0.363636,0.615385,0.371429,0.628571,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,separate bet offered,datagolf,+201,-132,0.332226,0.568966,0.368652,0.631348,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,caesars,+150,-190,0.4,0.655172,0.379085,0.620915,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,datagolf,+171,-171,0.369004,0.630996,0.369004,0.630996,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,draftkings,+150,-186,0.4,0.65035,0.380826,0.619174,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,unibet,+145,-186,0.408163,0.65035,0.385601,0.614399,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spieth, Jordan","Straka, Sepp",14636,17511,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Spieth, Jordan","Straka, Sepp",14636,17511,separate bet offered,datagolf,+126,+120,0.442478,0.454545,0.493274,0.506726,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spieth, Jordan","Straka, Sepp",14636,17511,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spieth, Jordan","Straka, Sepp",14636,17511,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spieth, Jordan","Straka, Sepp",14636,17511,void,draftkings,-112,-112,0.528302,0.528302,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spieth, Jordan","Straka, Sepp",14636,17511,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Noren, Alex","Coody, Pierceson",10419,28309,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Noren, Alex","Coody, Pierceson",10419,28309,separate bet offered,datagolf,+116,+131,0.462963,0.4329,0.516779,0.483221,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Noren, Alex","Coody, Pierceson",10419,28309,void,betcris,-134,+104,0.57265,0.490196,0.538789,0.461211,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Noren, Alex","Coody, Pierceson",10419,28309,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Noren, Alex","Coody, Pierceson",10419,28309,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Noren, Alex","Coody, Pierceson",10419,28309,void,draftkings,-124,+100,0.553571,0.5,0.525424,0.474576,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Noren, Alex","Coody, Pierceson",10419,28309,void,unibet,-125,-103,0.555556,0.507389,0.522657,0.477343,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Glover, Lucas","Reitan, Kristoffer",7399,21407,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Glover, Lucas","Reitan, Kristoffer",7399,21407,separate bet offered,datagolf,+155,-103,0.392157,0.507389,0.43595,0.56405,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Glover, Lucas","Reitan, Kristoffer",7399,21407,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Glover, Lucas","Reitan, Kristoffer",7399,21407,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Glover, Lucas","Reitan, Kristoffer",7399,21407,void,draftkings,+106,-134,0.485437,0.57265,0.458788,0.541212,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Glover, Lucas","Reitan, Kristoffer",7399,21407,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Michael","Stevens, Sam",17543,25569,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Michael","Stevens, Sam",17543,25569,separate bet offered,datagolf,+165,-108,0.377358,0.519231,0.420882,0.579118,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Michael","Stevens, Sam",17543,25569,void,datagolf,+138,-138,0.420168,0.579832,0.420168,0.579832,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Michael","Stevens, Sam",17543,25569,void,draftkings,+112,-140,0.471698,0.583333,0.447094,0.552906,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Michael","Stevens, Sam",17543,25569,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Berger, Daniel","Wallace, Matt",17606,20706,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Berger, Daniel","Wallace, Matt",17606,20706,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Knapp, Jake",18474,19396,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Knapp, Jake",18474,19396,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarthy, Denny","Potgieter, Aldrich",19870,27900,void,betcris,-137,+107,0.578059,0.483092,0.544747,0.455253,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"McCarthy, Denny","Potgieter, Aldrich",19870,27900,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McNealy, Maverick","Hall, Harry",18634,27194,void,betcris,-136,+106,0.576271,0.485437,0.542777,0.457223,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"McNealy, Maverick","Hall, Harry",18634,27194,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","MacIntyre, Robert",13562,23323,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Matsuyama, Hideki","MacIntyre, Robert",13562,23323,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Spaun, J.J.",13872,17536,void,betcris,-117,-113,0.539171,0.530516,0.504045,0.495955,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Bradley, Keegan","Spaun, J.J.",13872,17536,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Novak, Andrew",6093,23475,void,betcris,-137,+107,0.578059,0.483092,0.544747,0.455253,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Novak, Andrew",6093,23475,void,datagolf,-136,+136,0.576271,0.423729,0.576271,0.423729,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Griffin, Ben",6430,24968,void,betcris,-133,+103,0.570815,0.492611,0.53677,0.46323,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Griffin, Ben",6430,24968,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Woodland, Gary","Bhatia, Akshay",12577,26096,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Woodland, Gary","Bhatia, Akshay",12577,26096,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Conners, Corey",12965,17576,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","Conners, Corey",12965,17576,void,datagolf,-126,+126,0.557522,0.442478,0.557522,0.442478,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,betcris,-107,-123,0.516908,0.55157,0.48378,0.51622,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Putnam, Andrew","Yellamaraju, Sudarshan",14704,29925,void,betcris,-117,-113,0.539171,0.530516,0.504045,0.495955,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Putnam, Andrew","Yellamaraju, Sudarshan",14704,29925,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Theegala, Sahith",14502,23014,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Theegala, Sahith",14502,23014,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Cantlay, Patrick",14577,15466,void,betcris,-101,-129,0.502488,0.563319,0.471462,0.528538,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Cantlay, Patrick",14577,15466,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Im, Sungjae","Castillo, Ricky",17488,27819,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Im, Sungjae","Castillo, Ricky",17488,27819,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Kitayama, Kurt","Bridgeman, Jacob",21891,29433,void,betcris,-141,+111,0.585062,0.473934,0.552469,0.447531,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Kitayama, Kurt","Bridgeman, Jacob",21891,29433,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Fox, Ryan",8825,11889,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Harman, Brian","Fox, Ryan",8825,11889,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Gotterup, Chris",13126,27774,void,betcris,+100,-130,0.5,0.565217,0.469388,0.530612,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Taylor, Nick","Gotterup, Chris",13126,27774,void,datagolf,+140,-140,0.416667,0.583333,0.416667,0.583333,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Aberg, Ludvig",18841,23950,void,betcris,+100,-130,0.5,0.565217,0.469388,0.530612,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Aberg, Ludvig",18841,23950,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Straka, Sepp","Stevens, Sam",17511,25569,void,betcris,-122,-108,0.54955,0.519231,0.514184,0.485816,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Straka, Sepp","Stevens, Sam",17511,25569,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Michael","Reitan, Kristoffer",17543,21407,void,betcris,+100,-130,0.5,0.565217,0.469388,0.530612,False,True,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Michael","Reitan, Kristoffer",17543,21407,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Gerard, Ryan",18474,29767,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Smalley, Alex","Gerard, Ryan",18474,29767,void,draftkings,-122,-108,0.54955,0.519231,0.514184,0.485816,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Si Woo","MacIntyre, Robert",14609,23323,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Kim, Si Woo","MacIntyre, Robert",14609,23323,void,draftkings,-134,+102,0.57265,0.49505,0.53634,0.46366,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","McNealy, Maverick",12965,18634,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fowler, Rickie","McNealy, Maverick",12965,18634,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Matsuyama, Hideki",6430,13562,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Scott, Adam","Matsuyama, Hideki",6430,13562,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Bradley, Keegan",6093,13872,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Rose, Justin","Bradley, Keegan",6093,13872,void,draftkings,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,draftkings,-114,-115,0.53271,0.534884,0.498982,0.501018,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Woodland, Gary","Conners, Corey",12577,17576,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Woodland, Gary","Conners, Corey",12577,17576,void,draftkings,-124,-106,0.553571,0.514563,0.51826,0.48174,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Bhatia, Akshay",9771,26096,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Day, Jason","Bhatia, Akshay",9771,26096,void,draftkings,-124,-106,0.553571,0.514563,0.51826,0.48174,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fleetwood, Tommy",10091,12294,void,datagolf,-151,+151,0.601594,0.398406,0.601594,0.398406,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"McIlroy, Rory","Fleetwood, Tommy",10091,12294,void,draftkings,-174,+132,0.635036,0.431034,0.595679,0.404321,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,datagolf,-134,+134,0.57265,0.42735,0.57265,0.42735,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,draftkings,-144,+110,0.590164,0.47619,0.553441,0.446559,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Hisatsune, Ryo",14502,22760,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Cauley, Bud","Hisatsune, Ryo",14502,22760,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Theegala, Sahith","Coody, Pierceson",23014,28309,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Theegala, Sahith","Coody, Pierceson",23014,28309,void,draftkings,-124,-106,0.553571,0.514563,0.51826,0.48174,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Hojgaard, Nicolai",14577,23602,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"English, Harris","Hojgaard, Nicolai",14577,23602,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spieth, Jordan","Cantlay, Patrick",14636,15466,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Spieth, Jordan","Cantlay, Patrick",14636,15466,void,draftkings,-102,-128,0.50495,0.561404,0.47353,0.52647,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Straka, Sepp","Bridgeman, Jacob",17511,29433,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Straka, Sepp","Bridgeman, Jacob",17511,29433,void,draftkings,-130,-102,0.565217,0.50495,0.528158,0.471842,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Schauffele, Xander",18841,19895,void,datagolf,+150,-150,0.4,0.6,0.4,0.6,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Hovland, Viktor","Schauffele, Xander",18841,19895,void,draftkings,+125,-162,0.444444,0.618321,0.418196,0.581804,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fox, Ryan","Reitan, Kristoffer",11889,21407,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Fox, Ryan","Reitan, Kristoffer",11889,21407,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,draftkings,-110,-118,0.52381,0.541284,0.491797,0.508203,False,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Truist Championship,2026-05-05 21:32:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,draftkings,+110,-146,0.47619,0.593496,0.445168,0.554832,False,False,Truist Championship,2026-05-05 21:32:00 UTC

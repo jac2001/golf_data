@@ -1,0 +1,340 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Truist Championship",
+      "tableTitle": "Power Rankings for Truist Championship",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "34099",
+            "firstName": "Harris",
+            "lastName": "English",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34099.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": " If he closes his eyes, perhaps he\u2019ll recapture the feels of a co-runner-up at the PGA Championship at Quail Hollow last year, but it wasn\u2019t his first podium on the course. That occurred in 2023 (T3). T4 recently at Harbour Town."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "46340",
+            "firstName": "Alex",
+            "lastName": "Smalley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46340.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The Duke product who lives in Greensboro, North Carolina, has been exceptionally balanced for a while but he\u2019s found yet another gear with only one missed cut in a dozen starts. T21-T14-T2-T7 upon arrival. T18 here in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "31323",
+            "firstName": "Gary",
+            "lastName": "Woodland",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_31323.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "A third-round 77 at Doral spoiled what was shaping up to be another dazzler. His epic win in Houston is among three top 15s in seven weeks. The Quail Hollow fixture most recently logged a solo fifth (2021) and a T14 (2023)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "32102",
+            "firstName": "Rickie",
+            "lastName": "Fowler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32102.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It was at Quail Hollow in 2012 where he broke through for the first of his six PGA TOUR victories, but it\u2019s one of five top 10s among eight top 25s on the course. And now he struts in with top 10s in his most recent two starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "48117",
+            "firstName": "Kurt",
+            "lastName": "Kitayama",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48117.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s unlike him to deliver a top 10 in consecutive starts but that\u2019s what he did in his last two at the RBC Heritage (T8) and Cadillac Championship (T9). Sits ninth in both total driving and greens hit, and 11th in proximity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "54591",
+            "firstName": "Ben",
+            "lastName": "Griffin",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_54591.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The North Carolina native arrives home on the bounce of a season-best solo third at the Cadillac Championship where his putting was on point, just as it was when he tied for eighth at the 2025 PGA Championship at Quail Hollow."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "24502",
+            "firstName": "Adam",
+            "lastName": "Scott",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_24502.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Punctuated a T4 in his \u201c10-year title defense\u201d at Trump National Doral with a tournament-low-tying 64 on Sunday. Fittingly, his irons were vintage all week. Led the field in greens hit and SG: Approach. Hung up a T5 here in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "49960",
+            "firstName": "Sepp",
+            "lastName": "Straka",
+            "countryFlag": "AUT",
+            "countryName": "Austria",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49960.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although he\u2019s not defending this title where he prevailed a year ago (at Philadelphia Cricket Club), he\u2019s fresh off an end-loaded T4 at the Cadillac Championship and he placed T8 at Quail Hollow in this tournament in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": " The Brit loves himself tough tests; at least his years of success on them suggest it to be so. His receipts include a T5 and another two top 15s at Quail Hollow in three straight visits through 2024. Four top 10s this season."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a T4 on the Blue Monster where he paced the field in Strokes Gained: Tee-to-Green despite a field-average performance off the tee, he\u2019s already reached a career-best six top 10s. Placed T8 here at the 2025 PGA Championship."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "While his experience at Quail Hollow is minimal (MC, 2025 PGA Championship), that hasn\u2019t stopped him from prospering most of the time. Oh, and he\u2019s surging with four top fives in his last five starts. No. 2 in the all-around."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Motoring along as usual with seven straight top 25s upon arrival. Four were top 10s. Ranks fifth in adjusted scoring. In the last two editions of this event at Quail Hollow, he averaged 67.625 and finished second both times."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": " If you\u2019ve wondered what the prime of a career looks like, here you go! Thrice a winner this year, including in his last two starts, and the birth of his first child is imminent. T8 at the 2025 PGA Championship at Quail Hollow."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": " It\u2019s magical when everything comes together but he\u2019s become a menace for the competition. No one possesses a higher value of Strokes Gained: Self-Confidence these days with a pair of big wins and two T3s in his last five starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "28237",
+            "firstName": "Rory",
+            "lastName": "McIlroy",
+            "countryFlag": "NIR",
+            "countryName": "Northern Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28237.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": " You know you\u2019re doing OK when you can take a break after successfully defending your title at the Masters and return at a course on which you\u2019ve recorded four victories. He\u2019s the last winner of this tournament at Quail Hollow."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

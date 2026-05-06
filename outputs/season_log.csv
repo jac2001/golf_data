@@ -1,10 +1,31 @@
-week,date,tournament,pick1,pick2,pick3,result1,result2,result3,points,league_rank,notes,rank1,rank2,rank3,avg_model_rank
-1,2026-02-05,Waste Management Phoenix Open,Ben Griffin,Chris Gotterup,Pierceson Coody,T28,1,T10,596,,Model-aligned,7.0,5.0,3.0,5.0
-10,2026-04-09,The Masters,Ludvig Åberg,Bryson DeChambeau,Xander Schauffele,T5,CUT,T4,439,,,,,,
-2,2026-02-12,AT&T Pebble Beach Pro-Am,Maverick McNealy,Jason Day,Justin Rose,T29,T24,T37,91,,Below model,13.0,32.0,28.0,24.3
-3,2026-02-19,The Genesis Invitational,Hideki Matsuyama,Viktor Hovland,Patrick Cantlay,T28,T41,T37,73,,Below model,6.0,10.0,17.0,11.0
-4,2026-02-26,Cognizant Classic,Ryan Gerard,Michael Thorbjornsen,Nicolai Højgaard,T23,CUT,T6,125,,Model-aligned,4.0,1.0,2.0,2.3
-5,2026-03-05,Arnold Palmer Invitational presented by Mastercard,Rory McIlroy,Russell Henley,Ludvig Åberg,WD,T6,T3,571,,,2.0,13.0,31.0,15.3
-6,2026-03-12,THE PLAYERS Championship,Scottie Scheffler,Adam Scott,Cameron Young,T22,T56,1,4771261,,,,,,
-7,2026-03-19,Valspar Championship,Jacob Bridgeman,Justin Thomas,Sahith Theegala,T14,T30,CUT,76,,,,,,
-9,2026-04-02,Valero Texas Open,Jordan Spieth,Sudarshan Yellamaraju,Rickie Fowler,T11,T14,CUT,55,,,,,,
+week,tournament,wrp,player_1,result_1,earnings_1,player_2,result_2,earnings_2,player_3,result_3,earnings_3,total_earnings
+1,Waste Management Phoenix Open,2,Pier Coody,T10,242400,Gotterup,1,1728000,B Griffin,T28,62949,2033349
+2,AT&T Pebble Beach Pro-Am,15,J Day,T24,162000,McNealy,T29,125200,Rose,T37,78375,365575
+3,The Genesis Invitational,26,Cantlay,T37,92250,Hovland,T41,78000,Matsuyama,T28,136500,306750
+4,Cognizant Classic,24,Gerard,T23,77600,N Hojgaard,T6,324000,Thorbjornsen,CUT,0,401600
+5,Arnold Palmer Invitational,2,Aberg,T3,1200000,Henley,T6,702000,McIlroy,WD,0,1902000
+6,THE PLAYERS Championship,4,Scheffler,T22,271250,Scott,T56,58000,Cam Young,1,4500000,4829250
+7,Valspar Championship,18,Bridgeman,T14,161525,Theegala,CUT,0,J Thomas,T30,51142,212667
+8,Texas Children's Houston Open,5,Knapp,T6,322988,B Koepka,CUT,0,MW Lee,T3,584100,907088
+9,Valero Texas Open,18,Fowler,CUT,0,Spieth,T63,21364,Yellamaraju,T14,159250,180614
+10,The Masters,20,Aberg,T21,252000,DeChambeau,CUT,0,Schauffele,T9,630000,882000
+11,RBC Heritage,2,M Fitzpatrick,1,3600000,Fleetwood,T52,43500,Morikawa,T4,823333,4466833
+12,Zurich Classic of New Orleans,16,Brennan,CUT,0,A Fitzpatrick,1,1372750,Lowry,CUT,0,1372750
+13,Cadillac Championship,18,Fleetwood,T23,167143,SW Kim,T4,826667,Morikawa,T62,41500,1035310
+14,Truist Championship,,,,0,,,0,,,0,
+15,PGA Championship,,,,0,,,0,,,0,
+16,The CJ Cup Byron Nelson,,,,0,,,0,,,0,
+17,Charles Schwab Challenge,,,,0,,,0,,,0,
+18,The Memorial Tournament,,,,0,,,0,,,0,
+19,RBC Canadian Open,,,,0,,,0,,,0,
+20,U.S. Open,,,,0,,,0,,,0,
+21,Travelers Championship,,,,0,,,0,,,0,
+22,John Deere Classic,,,,0,,,0,,,0,
+23,Genesis Scottish Open,,,,0,,,0,,,0,
+24,The Open Championship,,,,0,,,0,,,0,
+25,3M Open,,,,0,,,0,,,0,
+26,Rocket Classic,,,,0,,,0,,,0,
+27,Wyndham Championship,,,,0,,,0,,,0,
+28,FedEx St. Jude Invitational,,,,0,,,0,,,0,
+29,BMW Championship,,,,0,,,0,,,0,
+30,TOUR Championship,,,,0,,,0,,,0,

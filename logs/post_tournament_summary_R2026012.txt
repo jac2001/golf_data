@@ -1,0 +1,43 @@
+============================================================
+POST-TOURNAMENT SUMMARY — RBC Heritage (R2026012)
+Generated: 2026-04-20 08:28
+============================================================
+
+PIPELINE STATUS
+----------------------------------------
+  [OK  ] Tournament SG Stats
+  [FAIL] Form Stats
+  [OK  ] World Rankings
+  [OK  ] Record Results
+  [OK  ] Fantasy League Usage
+  [OK  ] Backfill Prediction Results
+  [OK  ] Grade Bets
+  [OK  ] CLV Tracking
+  [OK  ] Assistant Context
+  [OK  ] Calibration Refresh
+  [OK  ] Training Data Merge
+  [OK  ] Model Retrain
+  [OK  ] SHAP Values
+  [OK  ] Player Explanations
+
+  13/14 tasks passed
+  FAILED: Form Stats
+
+BET RESULTS
+----------------------------------------
+  Graded: 0  Wins: 0  Pushes: 0  Losses: 0
+  Win rate: nan%  |  P&L: +0.00 units  |  ROI: +0.0%
+  No market breakdown available.
+
+LEADERBOARD (Top 10)
+----------------------------------------
+  1      Matt Fitzpatrick           -18
+  2      Scottie Scheffler          -18
+  3      Si Woo Kim                 -16
+  T4     Collin Morikawa            -13
+  T4     Harris English             -13
+  T4     Ludvig Åberg               -13
+  7      Bud Cauley                 -12
+  T8     Rickie Fowler              -11
+  T8     Patrick Cantlay            -11
+  T8     Gary Woodland              -11

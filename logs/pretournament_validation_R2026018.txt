@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Zurich Classic of New Orleans (R2026018)
+Generated: 2026-04-22 07:23
+============================================================
+
+  [OK  ] Field players                  148 rows  (24h ago)
+  [OK  ] Predictions                    148 rows, tid=R2026018  (12h ago)
+  [WARN] Odds (multi-book)              91 rows  (359h ago)
+  [INFO] Expert picks                   MISSING
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (359h old)
