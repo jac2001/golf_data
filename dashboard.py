@@ -10318,6 +10318,18 @@ elif page == "📋 My Picks":
         try:
             from scripts.predictions.season_strategy import get_season_strategy as _get_strategy
             _strat = _get_strategy()
+
+            # Load pre-generated LLM narratives if available
+            _reasoning_path = PROJECT_ROOT / "outputs" / "strategy_reasoning.json"
+            _reasoning: dict = {}
+            if _reasoning_path.exists():
+                try:
+                    import json as _strat_json
+                    _reasoning_data = _strat_json.loads(_reasoning_path.read_text())
+                    _reasoning = _reasoning_data.get("players", {})
+                except Exception:
+                    pass
+
             if "error" not in _strat:
                 _ce      = _strat["current_event"]
                 _bud     = _strat["budget"]
@@ -10553,6 +10565,40 @@ elif page == "📋 My Picks":
                     '</tbody></table>',
                     unsafe_allow_html=True,
                 )
+
+                # ── LLM Narratives — one expander per player with a narrative ────
+                if _reasoning:
+                    import html as _nar_hesc
+                    _nar_generated_at = _reasoning_data.get("generated_at", "")[:10]
+                    st.markdown(
+                        f'<div style="font-size:0.62em;color:#2a4060;margin:8px 0 4px;">'
+                        f'AI analysis generated {_nar_generated_at}</div>',
+                        unsafe_allow_html=True,
+                    )
+                    for _rn, _rp, _rec, _rc in _all_players:
+                        _nar = _reasoning.get(_rn, {}).get("narrative", "")
+                        if not _nar:
+                            continue
+                        with st.expander(f"{_rn}  —  {_rec}", expanded=False):
+                            st.markdown(
+                                f'<div style="font-size:0.88em;color:#c8d8e8;'
+                                f'line-height:1.65;padding:4px 2px;">'
+                                f'{_nar_hesc.escape(_nar)}</div>',
+                                unsafe_allow_html=True,
+                            )
+
+                # Regenerate button
+                _col_regen, _ = st.columns([1, 4])
+                with _col_regen:
+                    if st.button("Regenerate AI analysis", key="regen_reasoning"):
+                        with st.spinner("Generating narratives..."):
+                            try:
+                                from scripts.predictions.generate_strategy_reasoning import generate_reasoning as _regen_fn
+                                _regen_fn(top_n=12, verbose=False)
+                                st.success("Done — reload the page to see updated analysis.")
+                            except Exception as _re:
+                                st.error(f"Failed: {_re}")
+
                 st.markdown("<br>", unsafe_allow_html=True)
 
 
