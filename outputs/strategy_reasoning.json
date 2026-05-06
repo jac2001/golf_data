@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-05-06T18:19:02.361578+00:00",
+  "tournament": "Truist Championship",
+  "tournament_week": 14,
+  "players": {
+    "Schauffele": {
+      "recommendation": "USE NOW",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 503648,
+      "in_field": true,
+      "narrative": "Schauffele has strong fundamentals this week with 503,648 EV and a +1.04 SG course fit at Truist, but the data reveals a critical constraint: he's your best future event, and using him now costs you 268,972 EV (35% upside) compared to saving for a later occurrence of this same tournament. With only 2 uses remaining and a high-tier event already in front of you, save this use and bank it for when you can deploy Schauffele at maximum value later in the season."
+    },
+    "Bridgeman": {
+      "recommendation": "USE NOW",
+      "tier": "standard",
+      "uses_left": 2,
+      "this_week_ev": 274082,
+      "in_field": true,
+      "narrative": "Bridgeman is in great form and has solid value this week at 274,082 EV with a 13.9% top-10 chance, but The Memorial in 4 weeks offers 28% more value at 380,454 EV\u2014a 106,372 EV opportunity cost of using him now. Since you have 2 uses left and premium events like Memorial are exactly where you want to deploy your best players, save this week and bank the use for that stronger tournament. The Truist is a standard-tier event; wait for the major purses."
+    },
+    "Matsuyama": {
+      "recommendation": "USE NOW",
+      "tier": "standard",
+      "uses_left": 2,
+      "this_week_ev": 267175,
+      "in_field": true,
+      "narrative": "Given that Matsuyama has 2 uses remaining and the Travelers Championship in week 21 offers 335,960 EV compared to 267,175 EV this week at Truist, you should save this use and bank it for Travelers, where he has a course history advantage with plus-0.31 strokes gained. The opportunity cost of using him now is 68,785 EV, which is meaningful when you're trying to maximize total prize money across the full season. With only 7 weeks separating these events, waiting gives you better odds of cashing in on his peak performance at a course that suits his game."
+    },
+    "Scheffler": {
+      "recommendation": "SAVE",
+      "tier": "elite",
+      "uses_left": 2,
+      "this_week_ev": 998851,
+      "in_field": false,
+      "narrative": "You should save Scheffler's use this week since he's not even in the field at Truist Championship anyway. His best upcoming opportunity is the U.S. Open in 6 weeks with a $21.5M purse where he has a massive +0.33 course skill gain and an expected value of $1.39M per use, compared to what you could get now\u2014that's a $387k swing in your favor by waiting. With only 2 uses left for the entire season, banking this one for a premium event where he has a legitimate advantage is the right call."
+    },
+    "Morikawa": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 1,
+      "this_week_ev": 932431,
+      "in_field": false,
+      "narrative": "Morikawa isn't even in this week's field, so this is straightforward\u2014save your last use. His best upcoming opportunity is the U.S. Open in 6 weeks with a $21.5M purse and an expected value of 1.33M, which is 398k more EV than anything available now, representing 30% additional value by waiting. Banking this use for that premium event is the clear play."
+    },
+    "McIlroy": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 644716,
+      "in_field": true,
+      "narrative": "McIlroy has excellent course fit here at Truist with a plus-1.01 SG advantage and an EV of 644,716, but you should save this use because the exact same event next week offers 960,237 EV\u2014a 315,521 advantage or 33% more value\u2014and you still have 2 uses remaining to deploy elsewhere this week. With only 2 uses left for the season, banking one for that stronger future spot is the mathematically sound play."
+    },
+    "DeChambeau": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 869604,
+      "in_field": false,
+      "narrative": "DeChambeau isn't even in this week's field, so the decision is straightforward: save both remaining uses. His best opportunity ahead is The Memorial Tournament in 4.1 weeks, where he projects 936,216 EV with a +0.77 course fit, giving you about 66,612 more EV there compared to using him at a similar-tier event now. Bank the uses for that premium event where his game matches the course profile."
+    },
+    "Henley": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 851440,
+      "in_field": false,
+      "narrative": "You should save Henley's use because he's not even in this week's field at the Truist Championship, so the decision is already made for you. More importantly, Henley has only 2 uses left and his best opportunity ahead is the Travelers Championship in 7 weeks with a 886,401 EV and a course fit advantage of +0.41, which is worth 34,961 more EV than using him now\u2014a meaningful 4% gain by waiting for that premium event."
+    },
+    "Aberg": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 1,
+      "this_week_ev": 434936,
+      "in_field": true,
+      "narrative": "Save Aberg for a future event. While he has solid expected value of 434,936 at this week's Truist Championship with a 3.7% win probability, his best opportunity is actually at the same tournament next week where his expected value jumps to 831,865\u2014a difference of 396,929 EV or 48% more value. Since you only have one use left for Aberg, banking it for that future Truist Championship event makes much more sense than using it now."
+    },
+    "Gotterup": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 397738,
+      "in_field": true,
+      "narrative": "Save Gotterup for The Memorial Tournament. While he has a solid 397,738 EV this week at Truist with a 2.9% win probability, he's projected to generate 775,105 EV at Memorial in four weeks\u2014a difference of 377,367 in opportunity cost that represents 49% more value. With only 2 uses remaining, it makes sense to preserve one for that stronger future event rather than use it on a comparable tier tournament where his expected return is significantly lower."
+    },
+    "Cantlay": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 313783,
+      "in_field": true,
+      "narrative": "Skip Cantlay this week at Truist and bank the use for Travelers Championship in week 21, where he has a significantly stronger course history (plus 0.50 strokes gained) and expected value of 754,977 compared to just 313,783 this week. You're looking at a 441,194 EV advantage by waiting, which represents 58 percent more expected value from the same resource. With only two uses left, preserving one for that premium event seven weeks out is the smart play, especially since his 18.3 percent top-10 probability this week doesn't justify the opportunity cost."
+    },
+    "Fleetwood": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 1,
+      "this_week_ev": 460600,
+      "in_field": true,
+      "narrative": "You should save Fleetwood's last use for the Travelers Championship in week 21. While he has a respectable 460,600 EV this week with a 3.3% win probability at Truist, his expected value jumps significantly to 754,588 at Travelers\u2014nearly 294,000 more EV\u2014because that course suits his game better with a plus-0.30 strokes gained advantage. Since you only have one use left on him and both events carry the same high-tier 20 million dollar purse, banking this use for a tournament where he's projected to perform nearly 40% better is the mathematically sound play."
+    }
+  }
+}

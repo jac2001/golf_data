@@ -1084,7 +1084,7 @@ def get_season_strategy(
             "opportunity_cost_pct": round(opp_cost_pct, 1),
             "this_week_probs":     this_week_probs,
             "in_field":            this_week_probs is not None,
-            "use_this_week":       use_this_week,
+            "use_this_week":       use_this_week and (this_week_probs is not None),
             "save_signal":         save_signal,
             "is_hot_streak":       is_hot_streak,
             "hot_streak_override": hot_streak_override,
@@ -1167,8 +1167,9 @@ def get_season_strategy(
     for ev_name, cf_data in plan_conflicts.items():
         for overflow_player in cf_data.get("overflow", []):
             ps = player_strategy.get(overflow_player)
-            if ps is None or ps.get('use_this_week') or ps.get('this_week_ev', 0) == 0:
-                continue 
+            # Never redirect to USE for players not in this week's field
+            if ps is None or ps.get('use_this_week') or not ps.get('in_field', False):
+                continue
             
             best_ev = ps["best_events"][-1]["ev"] if ps["best_events"] else 0
             if best_ev > 0 and ps["this_week_ev"] >= best_ev * 0.70:
