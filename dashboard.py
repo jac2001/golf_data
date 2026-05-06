@@ -10566,20 +10566,43 @@ elif page == "📋 My Picks":
                     unsafe_allow_html=True,
                 )
 
-                # ── LLM Narratives — one expander per player with a narrative ────
-                if _reasoning:
-                    import html as _nar_hesc
-                    _nar_generated_at = _reasoning_data.get("generated_at", "")[:10]
+                # ── Weekly Lineup Narrative ───────────────────────────────────
+                import html as _nar_hesc
+                _weekly_nar     = (_reasoning_data or {}).get("weekly_narrative", "") if _reasoning else ""
+                _nar_lineup     = (_reasoning_data or {}).get("lineup", [])
+                _nar_generated  = (_reasoning_data or {}).get("generated_at", "")[:10]
+
+                if _weekly_nar:
                     st.markdown(
-                        f'<div style="font-size:0.62em;color:#2a4060;margin:8px 0 4px;">'
-                        f'AI analysis generated {_nar_generated_at}</div>',
+                        f'<div style="background:#07101e;border:1px solid #0e2040;'
+                        f'border-left:4px solid #4cb8ff;border-radius:0 8px 8px 0;'
+                        f'padding:16px 20px;margin:12px 0 16px;">'
+                        f'<div style="font-size:0.6em;font-weight:800;color:#4cb8ff;'
+                        f'letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;">'
+                        f'AI Weekly Recommendation'
+                        f'<span style="font-weight:400;color:#2a4060;margin-left:10px;">'
+                        f'generated {_nar_generated}</span></div>'
+                        f'<div style="font-size:0.88em;color:#c8d8e8;line-height:1.7;">'
+                        f'{_nar_hesc.escape(_weekly_nar)}</div>'
+                        f'</div>',
                         unsafe_allow_html=True,
                     )
-                    for _rn, _rp, _rec, _rc in _all_players:
+
+                # ── SAVE narratives — individual expanders ────────────────────
+                _save_nars = [
+                    (_rn, _rp, _rec, _rc) for _rn, _rp, _rec, _rc in _all_players
+                    if _rec == "SAVE"
+                    and _reasoning.get(_rn, {}).get("narrative", "")
+                ]
+                if _save_nars:
+                    st.markdown(
+                        '<div style="font-size:0.62em;color:#2a4060;'
+                        'margin:4px 0 6px;letter-spacing:.05em;">WHY SAVE</div>',
+                        unsafe_allow_html=True,
+                    )
+                    for _rn, _rp, _rec, _rc in _save_nars:
                         _nar = _reasoning.get(_rn, {}).get("narrative", "")
-                        if not _nar:
-                            continue
-                        with st.expander(f"{_rn}  —  {_rec}", expanded=False):
+                        with st.expander(f"{_rn}", expanded=False):
                             st.markdown(
                                 f'<div style="font-size:0.88em;color:#c8d8e8;'
                                 f'line-height:1.65;padding:4px 2px;">'
@@ -10591,11 +10614,11 @@ elif page == "📋 My Picks":
                 _col_regen, _ = st.columns([1, 4])
                 with _col_regen:
                     if st.button("Regenerate AI analysis", key="regen_reasoning"):
-                        with st.spinner("Generating narratives..."):
+                        with st.spinner("Generating..."):
                             try:
                                 from scripts.predictions.generate_strategy_reasoning import generate_reasoning as _regen_fn
-                                _regen_fn(top_n=12, verbose=False)
-                                st.success("Done — reload the page to see updated analysis.")
+                                _regen_fn(top_saves=8, verbose=False)
+                                st.success("Done — reload to see updated analysis.")
                             except Exception as _re:
                                 st.error(f"Failed: {_re}")
 

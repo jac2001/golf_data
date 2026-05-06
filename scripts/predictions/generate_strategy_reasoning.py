@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """
-Generate LLM-powered natural language reasoning for season strategy picks.
+Generate LLM-powered reasoning for the weekly lineup recommendation.
 
-Calls get_season_strategy(), formats per-player context, and asks Claude to
-write 2-3 sentence narratives grounded strictly in the provided data.
+Two outputs saved to outputs/strategy_reasoning.json:
 
-Output: outputs/strategy_reasoning.json
+  weekly_narrative — one 4-6 sentence block covering the optimal 3-player
+                     lineup (from lineup_optimizer) + key save advice.
+  players          — individual SAVE narratives for notable held-back players.
+                     USE NOW players are already covered in the weekly narrative.
 
 Usage:
     python3 scripts/predictions/generate_strategy_reasoning.py
-    python3 scripts/predictions/generate_strategy_reasoning.py --top-n 10
-    python3 scripts/predictions/generate_strategy_reasoning.py --player "McIlroy"
+    python3 scripts/predictions/generate_strategy_reasoning.py --top-saves 6
 """
 
 from __future__ import annotations
@@ -26,26 +27,24 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+OUTPUTS_DIR  = PROJECT_ROOT / "outputs"
 OUTPUTS_DIR.mkdir(exist_ok=True)
-OUTPUT_FILE = OUTPUTS_DIR / "strategy_reasoning.json"
+OUTPUT_FILE  = OUTPUTS_DIR / "strategy_reasoning.json"
+CONFIG_FILE  = PROJECT_ROOT / "data" / "config" / "assistant.json"
+PREDICTIONS  = OUTPUTS_DIR / "latest_predictions.csv"
 
-CONFIG_FILE = PROJECT_ROOT / "data" / "config" / "assistant.json"
-
-# League context injected into every prompt so Claude understands the stakes
 LEAGUE_CONTEXT = """
 You are advising a player in a season-long fantasy golf league called "Let It Ride."
-Rules:
-- Each player has exactly 3 uses per golfer for the entire ~30-week season.
-- You must pick 3 golfers per week. Once you use all 3 of a golfer's uses, they are gone.
-- The goal is to maximize total prize money earned across the season.
-- Saving a use means banking it for a better tournament later.
-- Premium events (Majors, Signature events) have larger purses and more value per use.
+Rules: each golfer has exactly 3 uses for the entire ~30-week season; you pick 3 golfers
+per week; once all 3 uses are spent the golfer is gone. The goal is to maximise total
+prize money earned across the season. Saving a use means banking it for a better event.
+Premium events (Majors, Signature events) have larger purses and more value per use.
 """.strip()
 
 
+# ── API helpers ────────────────────────────────────────────────────────────────
+
 def _load_api_key() -> str:
-    """Load Anthropic API key from environment or saved config."""
     key = os.environ.get("ANTHROPIC_API_KEY", "")
     if key.startswith("sk-ant-"):
         return key
@@ -60,159 +59,282 @@ def _load_api_key() -> str:
     return ""
 
 
-def _format_player_context(name: str, data: dict, current_event: dict) -> str:
-    """Build a structured data block for one player to feed into the prompt."""
-    rec  = "USE THIS WEEK" if data.get("use_this_week") else "SAVE"
-    tier = data.get("tier", "unknown").upper()
-    uses = data.get("uses_left", 0)
-    wr   = data.get("world_rank", 0)
+# ── Prompt builders ────────────────────────────────────────────────────────────
 
-    ev       = int(data.get("this_week_ev", 0))
+def _lineup_prompt(
+    lineup_rows: list[dict],
+    save_players: list[dict],
+    current_event: dict,
+    budget: dict,
+) -> str:
+    """Build the prompt for the single weekly lineup narrative."""
+    ev_total = sum(int(p.get("prize_ev", 0)) for p in lineup_rows)
+
+    picks_str = ""
+    for i, p in enumerate(lineup_rows, 1):
+        name   = p["player_name"]
+        ev     = int(p.get("prize_ev", 0))
+        win    = round(float(p.get("win_prob", 0)) * 100, 1)
+        t10    = round(float(p.get("top10_prob", 0)) * 100, 1)
+        cut    = round(float(p.get("cut_prob", 0)) * 100, 1)
+        uses   = int(p.get("remaining_uses", 3))
+        c_sg   = p.get("course_sg", 0.0)
+        c_sig  = p.get("course_sig", False)
+        venue  = f", {c_sg:+.2f} SG at this course" if c_sig and abs(c_sg) >= 0.25 else ""
+        picks_str += (
+            f"  {i}. {name} — {ev:,} EV | {win}% win | {t10}% top-10 | "
+            f"{cut}% cut | {uses} uses left{venue}\n"
+        )
+
+    saves_str = ""
+    for p in save_players[:4]:
+        name     = p["name"]
+        best_ev  = int(p.get("best_future_ev", 0))
+        best_evt = p.get("best_event_name", "")
+        opp_pct  = p.get("opportunity_cost_pct", 0)
+        uses     = p.get("uses_left", 0)
+        c_sg     = p.get("current_course_sg", 0.0)
+        c_sig    = p.get("current_course_sig", False)
+        venue    = f" (venue miss: {c_sg:+.2f} SG)" if c_sig and c_sg < -0.2 else ""
+        saves_str += (
+            f"  - {name}: {uses} uses left | best event: {best_evt} "
+            f"({best_ev:,} EV, {opp_pct:.0f}% more than this week){venue}\n"
+        )
+
+    return f"""{LEAGUE_CONTEXT}
+
+Current event: {current_event.get('name')} \
+(week {current_event.get('week')}, \
+${current_event.get('purse', 0)/1e6:.1f}M purse, \
+tier={current_event.get('tier', 'standard')})
+Budget: {budget.get('uses_remaining')} total uses remaining | \
+{budget.get('weeks_remaining')} weeks left in season
+
+Optimal lineup (chosen by combinatorial optimizer, combined EV {ev_total:,}):
+{picks_str.rstrip()}
+
+Notable players to save this week:
+{saves_str.rstrip()}
+
+Write 4-6 sentences as a weekly lineup recommendation. Cover: why each of the 3 \
+picks makes sense this week (reference their specific numbers), and briefly note \
+the most important save and why. Plain prose only — no headers, no bullets, \
+no markdown, no bold text. Speak directly to the manager."""
+
+
+def _save_prompt(name: str, data: dict, current_event: dict) -> str:
+    """Build the prompt for a single SAVE player narrative."""
+    uses     = data.get("uses_left", 0)
+    wr       = data.get("world_rank", 0)
+    tier     = data.get("tier", "").upper()
+    best_evs = data.get("best_events", [])
     best_ev  = int(data.get("best_future_ev", 0))
     opp_cost = int(data.get("opportunity_cost_ev", 0))
     opp_pct  = data.get("opportunity_cost_pct", 0)
+    c_sg     = data.get("current_course_sg", 0.0)
+    c_sig    = data.get("current_course_sig", False)
+    c_rnds   = data.get("current_course_rounds", 0)
 
-    probs = data.get("this_week_probs") or {}
-    win   = round(probs.get("win_prob", 0) * 100, 1)
-    top10 = round(probs.get("top10_prob", 0) * 100, 1)
+    in_field = data.get("in_field", False)
+    probs    = data.get("this_week_probs") or {}
+    win      = round(probs.get("win_prob", 0) * 100, 1)
+    t10      = round(probs.get("top10_prob", 0) * 100, 1)
+    tw_ev    = int(data.get("this_week_ev", 0))
 
-    c_sg    = data.get("current_course_sg", 0.0)
-    c_sig   = data.get("current_course_sig", False)
-    c_rnds  = data.get("current_course_rounds", 0)
+    venue_line = ""
+    if c_sig:
+        direction = "strong fit" if c_sg > 0 else "poor fit"
+        venue_line = f"\n  Venue: {c_sg:+.2f} SG at this course ({c_rnds} rounds) — {direction}"
 
-    best_events = data.get("best_events", [])
-    best_str = ""
-    if best_events:
-        b = best_events[0]
-        best_str = (
-            f"  Best future event: {b['name']} (week {b['week']}, "
-            f"{b['weeks_away']:.1f} weeks away, "
-            f"${b['purse']/1e6:.1f}M purse, tier={b['tier']}, "
-            f"EV={int(b['ev']):,}"
-            + (f", course_sg={b['course_sg']:+.2f}" if b.get('course_sg') else "")
+    best_line = ""
+    if best_evs:
+        b = best_evs[0]
+        best_line = (
+            f"\n  Best future event: {b['name']} "
+            f"(week {b['week']}, {b['weeks_away']:.1f}w away, "
+            f"${b['purse']/1e6:.1f}M, {best_ev:,} EV"
+            + (f", course_sg={b['course_sg']:+.2f}" if b.get("course_sg") else "")
             + ")"
         )
 
-    venue_str = ""
-    if c_sig:
-        direction = "strong historical fit" if c_sg > 0 else "historically poor fit"
-        venue_str = f"  Venue fit at {current_event.get('name','this week')}: {c_sg:+.2f} SG ({c_rnds} rounds) — {direction}"
+    this_week_line = (
+        f"\n  This week: {tw_ev:,} EV | {win}% win | {t10}% top-10"
+        if in_field else "\n  This week: NOT IN FIELD"
+    )
 
-    is_in_field = data.get("in_field", False)
-    hot = " [HOT STREAK]" if data.get("is_hot_streak") else ""
+    context = (
+        f"Player: {name}\n"
+        f"  World rank: #{wr} | Tier: {tier} | Uses left: {uses}/3"
+        f"{this_week_line}"
+        f"{venue_line}"
+        f"{best_line}"
+        + (f"\n  Opportunity cost of using now: {opp_cost:,} EV ({opp_pct:.0f}% more value later)"
+           if opp_cost > 0 else "")
+    )
 
-    lines = [
-        f"Player: {name}{hot}",
-        f"  World rank: #{wr}  |  Tier: {tier}  |  Uses remaining: {uses}/3",
-        f"  Recommendation: {rec}",
-        f"  This week ({current_event.get('name', '?')}): {ev:,} EV  |  {win}% win  |  {top10}% top-10"
-        if is_in_field else
-        f"  This week: NOT IN FIELD",
-    ]
-    if venue_str:
-        lines.append(venue_str)
-    if best_str:
-        lines.append(best_str)
-    if opp_cost > 0:
-        lines.append(f"  Opportunity cost of using now vs best future event: {opp_cost:,} EV ({opp_pct:.0f}% more EV later)")
-    if data.get("save_signal"):
-        lines.append("  Save signal: premium events upcoming — strong reason to conserve this use")
-
-    return "\n".join(lines)
-
-
-def _build_prompt(name: str, player_context: str, current_event: dict) -> str:
-    """Build the full prompt sent to Claude for one player."""
     return f"""{LEAGUE_CONTEXT}
 
-Current tournament: {current_event.get('name', 'Unknown')} \
-(week {current_event.get('week', '?')}, \
-${current_event.get('purse', 0)/1e6:.1f}M purse, \
+Current event: {current_event.get('name')} \
+(week {current_event.get('week')}, \
+${current_event.get('purse', 0)/1e6:.1f}M, \
 tier={current_event.get('tier', 'standard')})
 
-Here is the data for {name}:
+{context}
 
-{player_context}
+Write 2-3 sentences explaining why to save this player this week. Reference the \
+specific numbers. Plain prose — no headers, bullets, bold, or markdown."""
 
-Write exactly 2-3 sentences. No headers, no bullet points, no bold text, no markdown. \
-Plain prose only. Be specific — reference the actual numbers (EV, win probability, \
-course history, opportunity cost). Explain the USE/SAVE decision plainly, as if \
-advising a friend. Do not invent facts not in the data above."""
 
+# ── Core generation ────────────────────────────────────────────────────────────
 
 def generate_reasoning(
-    top_n: int = 12,
-    player_filter: str | None = None,
+    top_saves: int = 8,
     verbose: bool = True,
 ) -> dict:
     """
-    Run the full generation pipeline.
-
-    Returns the complete reasoning dict that was saved to OUTPUT_FILE.
+    Full generation pipeline:
+      1. Run lineup_optimizer to get the best 3-player combo.
+      2. Get season_strategy for SAVE context + course fit data.
+      3. Generate weekly lineup narrative (1 call).
+      4. Generate individual SAVE narratives for top held-back players.
+      5. Save outputs/strategy_reasoning.json.
     """
     api_key = _load_api_key()
     if not api_key:
         print("[ERROR] No Anthropic API key found.")
-        print("  Set ANTHROPIC_API_KEY in your environment or .env file,")
-        print("  or enter it in the dashboard chatbot settings first.")
+        print("  Set ANTHROPIC_API_KEY in your environment, or enter it in the")
+        print("  dashboard chatbot settings first.")
         sys.exit(1)
 
     from anthropic import Anthropic
     client = Anthropic(api_key=api_key)
 
-    # ── Load strategy data ────────────────────────────────────────────────────
+    # ── Step 1: Run the combinatorial optimizer ───────────────────────────────
     if verbose:
-        print("[INFO] Loading season strategy data...")
+        print("[INFO] Running lineup optimizer...")
+    try:
+        import pandas as pd
+        from scripts.predictions.lineup_optimizer import run_optimizer
+
+        preds_df = pd.read_csv(PREDICTIONS)
+        results_df, candidate_pool, importance, tournament_name = run_optimizer(
+            top_n=40,
+            top_combos=5,
+            verbose=False,
+        )
+    except Exception as e:
+        print(f"[ERROR] Lineup optimizer failed: {e}")
+        sys.exit(1)
+
+    if results_df.empty:
+        print("[ERROR] Optimizer returned no results.")
+        sys.exit(1)
+
+    # Best combo is row 1 (highest score)
+    best = results_df.iloc[0]
+    lineup_size = 3
+    lineup_names = [best.get(f"pick{i}", "") for i in range(1, lineup_size + 1) if best.get(f"pick{i}", "")]
+
+    # Build lineup rows with all stats for the prompt
+    lineup_rows = []
+    for i, name in enumerate(lineup_names, 1):
+        row = candidate_pool[candidate_pool["player_name"] == name]
+        if row.empty:
+            continue
+        r = row.iloc[0].to_dict()
+        r["prize_ev"] = best.get(f"prize_ev{i}", r.get("expected_value", 0))
+        lineup_rows.append(r)
+
+    if verbose:
+        ev_total = sum(int(r.get("prize_ev", 0)) for r in lineup_rows)
+        print(f"  Optimal lineup: {' + '.join(lineup_names)}  ({ev_total:,} EV)")
+
+    # ── Step 2: Season strategy for SAVE context ──────────────────────────────
+    if verbose:
+        print("[INFO] Loading season strategy...")
     from scripts.predictions.season_strategy import get_season_strategy
     strat = get_season_strategy()
     if "error" in strat:
-        print(f"[ERROR] Strategy error: {strat['error']}")
+        print(f"[ERROR] Strategy: {strat['error']}")
         sys.exit(1)
 
-    current_event  = strat["current_event"]
+    current_event   = strat["current_event"]
+    budget          = strat["budget"]
     player_strategy = strat["player_strategy"]
 
-    if verbose:
-        print(f"  Tournament: {current_event.get('name')} (week {current_event.get('week')})")
-        print(f"  Players in strategy: {len(player_strategy)}")
-
-    # ── Select players to generate for ───────────────────────────────────────
-    # Priority: USE NOW first (highest this_week_ev), then SAVE by best_future_ev
-    if player_filter:
-        targets = {
-            n: d for n, d in player_strategy.items()
-            if player_filter.lower() in n.lower()
-        }
-    else:
-        use_now = sorted(
-            [(n, d) for n, d in player_strategy.items() if d.get("use_this_week")],
-            key=lambda x: x[1].get("this_week_ev", 0), reverse=True,
+    # Attach course fit from strategy to lineup rows
+    lineup_name_set = {n.lower() for n in lineup_names}
+    for r in lineup_rows:
+        pn = r.get("player_name", "")
+        sp = next(
+            (d for name, d in player_strategy.items() if name.lower() == pn.lower()),
+            {}
         )
-        saves = sorted(
-            [(n, d) for n, d in player_strategy.items() if not d.get("use_this_week")],
-            key=lambda x: x[1].get("best_future_ev", 0), reverse=True,
-        )
-        ordered = use_now + saves
-        targets = dict(ordered[:top_n])
+        r["course_sg"]  = sp.get("current_course_sg", 0.0)
+        r["course_sig"] = sp.get("current_course_sig", False)
+        r["remaining_uses"] = sp.get("uses_left", r.get("remaining_uses", 3))
 
+    # Top SAVE players: not in lineup, not USE NOW, sorted by best_future_ev
+    save_players = sorted(
+        [
+            {"name": n, **d}
+            for n, d in player_strategy.items()
+            if n not in lineup_names
+            and not d.get("use_this_week")
+            and d.get("uses_left", 0) > 0
+        ],
+        key=lambda x: x.get("best_future_ev", 0),
+        reverse=True,
+    )
+
+    # ── Step 3: Weekly lineup narrative ──────────────────────────────────────
     if verbose:
-        print(f"  Generating narratives for {len(targets)} players...")
-
-    # ── Generate per-player ───────────────────────────────────────────────────
-    narratives: dict[str, dict] = {}
-    for i, (name, data) in enumerate(targets.items(), 1):
+        print("[INFO] Generating weekly lineup narrative...")
+    prompt = _lineup_prompt(lineup_rows, save_players, current_event, budget)
+    try:
+        resp = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=350,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        weekly_narrative = resp.content[0].text.strip()
         if verbose:
-            rec = "USE" if data.get("use_this_week") else "SAVE"
-            print(f"  [{i}/{len(targets)}] {name} ({rec})...", end=" ", flush=True)
+            print("  done")
+    except Exception as e:
+        weekly_narrative = ""
+        print(f"  [WARN] Weekly narrative failed: {e}")
 
-        ctx    = _format_player_context(name, data, current_event)
-        prompt = _build_prompt(name, ctx, current_event)
+    # ── Step 4: Individual SAVE narratives ────────────────────────────────────
+    targets = save_players[:top_saves]
+    if verbose:
+        print(f"[INFO] Generating {len(targets)} SAVE narratives...")
 
+    narratives: dict[str, dict] = {}
+
+    # Mark USE NOW players (they appear in the lineup)
+    for name in lineup_names:
+        sp = next(
+            (d for n, d in player_strategy.items() if n.lower() == name.lower()),
+            {}
+        )
+        narratives[name] = {
+            "recommendation": "USE NOW",
+            "tier":           sp.get("tier", ""),
+            "uses_left":      sp.get("uses_left", 0),
+            "this_week_ev":   int(sp.get("this_week_ev", 0)),
+            "in_field":       True,
+            "narrative":      "",   # covered by weekly_narrative
+        }
+
+    for i, player in enumerate(targets, 1):
+        name = player["name"]
+        if verbose:
+            print(f"  [{i}/{len(targets)}] {name}...", end=" ", flush=True)
         try:
             resp = client.messages.create(
-                model="claude-haiku-4-5-20251001",   # fast + cheap for batch generation
+                model="claude-haiku-4-5-20251001",
                 max_tokens=200,
-                messages=[{"role": "user", "content": prompt}],
+                messages=[{"role": "user", "content": _save_prompt(name, player, current_event)}],
             )
             narrative = resp.content[0].text.strip()
             if verbose:
@@ -222,53 +344,41 @@ def generate_reasoning(
             if verbose:
                 print(f"ERROR: {e}")
 
-        # A player flagged use_this_week but not in the field is a data edge case
-        # (conflict redirect). Treat as SAVE for display purposes.
-        in_field = data.get("in_field", False)
-        rec_label = "USE NOW" if (data.get("use_this_week") and in_field) else "SAVE"
-
         narratives[name] = {
-            "recommendation": rec_label,
-            "tier":           data.get("tier", ""),
-            "uses_left":      data.get("uses_left", 0),
-            "this_week_ev":   int(data.get("this_week_ev", 0)),
-            "in_field":       in_field,
+            "recommendation": "SAVE",
+            "tier":           player.get("tier", ""),
+            "uses_left":      player.get("uses_left", 0),
+            "this_week_ev":   int(player.get("this_week_ev", 0)),
+            "in_field":       player.get("in_field", False),
             "narrative":      narrative,
         }
 
-        # Respect API rate limits — small pause between calls
         if i < len(targets):
             time.sleep(0.3)
 
-    # ── Save output ───────────────────────────────────────────────────────────
+    # ── Save ──────────────────────────────────────────────────────────────────
     output = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "tournament":   current_event.get("name", ""),
+        "generated_at":    datetime.now(timezone.utc).isoformat(),
+        "tournament":      current_event.get("name", ""),
         "tournament_week": current_event.get("week", 0),
-        "players":      narratives,
+        "lineup":          lineup_names,
+        "weekly_narrative": weekly_narrative,
+        "players":         narratives,
     }
     OUTPUT_FILE.write_text(json.dumps(output, indent=2))
     if verbose:
-        print(f"\n[OK] Saved → {OUTPUT_FILE}  ({len(narratives)} players)")
+        print(f"\n[OK] Saved → {OUTPUT_FILE}")
 
     return output
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate LLM strategy reasoning")
-    parser.add_argument("--top-n",   type=int, default=12,
-                        help="Number of players to generate for (default: 12)")
-    parser.add_argument("--player",  type=str, default=None,
-                        help="Filter to a single player by name substring")
-    parser.add_argument("--quiet",   action="store_true",
-                        help="Suppress progress output")
+    parser = argparse.ArgumentParser(description="Generate LLM weekly lineup reasoning")
+    parser.add_argument("--top-saves", type=int, default=8,
+                        help="Number of SAVE players to generate individual narratives for (default: 8)")
+    parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
-
-    generate_reasoning(
-        top_n=args.top_n,
-        player_filter=args.player,
-        verbose=not args.quiet,
-    )
+    generate_reasoning(top_saves=args.top_saves, verbose=not args.quiet)
 
 
 if __name__ == "__main__":
