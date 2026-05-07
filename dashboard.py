@@ -7545,12 +7545,12 @@ if page == "🏆 This Week":
             _is_team_event  = bool(_team_pred_path and _team_pred_path.exists())
 
             if _is_team_event:
-                _tw_tt_tab, _tw_teetimes_tab, _tw_pool_tab, _tw_opt_tab, _tw_wd_tab, _tw_teams_tab = st.tabs(
-                    ["🏌️ Overview", "⏰ Tee Times", "📋 Player Pool", "🧮 Lineup Optimizer", _wd_tab_label, "👥 Teams"]
+                _tw_tt_tab, _tw_teetimes_tab, _tw_pool_tab, _tw_opt_tab, _tw_wd_tab, _tw_teams_tab, _tw_lineup_tab = st.tabs(
+                    ["🏌️ Overview", "⏰ Tee Times", "📋 Player Pool", "🧮 Lineup Optimizer", _wd_tab_label, "👥 Teams", "🎯 My Lineup"]
                 )
             else:
-                _tw_tt_tab, _tw_teetimes_tab, _tw_pool_tab, _tw_opt_tab, _tw_wd_tab = st.tabs(
-                    ["🏌️ Overview", "⏰ Tee Times", "📋 Player Pool", "🧮 Lineup Optimizer", _wd_tab_label]
+                _tw_tt_tab, _tw_teetimes_tab, _tw_pool_tab, _tw_opt_tab, _tw_wd_tab, _tw_lineup_tab = st.tabs(
+                    ["🏌️ Overview", "⏰ Tee Times", "📋 Player Pool", "🧮 Lineup Optimizer", _wd_tab_label, "🎯 My Lineup"]
                 )
                 _tw_teams_tab = None
             _tw_pr_tab = None
@@ -9568,6 +9568,286 @@ if _tw_teams_tab is not None:
         except Exception as _te:
             st.error(f"Could not load team predictions: {_te}")
 
+# ── My Lineup Tab ────────────────────────────────────────────────────────────
+if _tw_lineup_tab is not None:
+    with _tw_lineup_tab:
+        try:
+            from scripts.predictions.season_strategy import get_season_strategy as _get_strategy_lu
+            _strat_lu = _get_strategy_lu()
+
+            _reasoning_path_lu = PROJECT_ROOT / "outputs" / "strategy_reasoning.json"
+            _reasoning_lu: dict = {}
+            _reasoning_data_lu = {}
+            if _reasoning_path_lu.exists():
+                try:
+                    import json as _json_lu
+                    _reasoning_data_lu = _json_lu.loads(_reasoning_path_lu.read_text())
+                    _reasoning_lu = _reasoning_data_lu.get("players", {})
+                except Exception:
+                    pass
+
+            if "error" not in _strat_lu:
+                import html as _lu_hesc
+                import html as _lu_nar_hesc
+
+                _lu_ce      = _strat_lu["current_event"]
+                _lu_pstrat  = _strat_lu["player_strategy"]
+                _lu_pevents = _strat_lu["premium_events"]
+
+                def _lu_last_key(n):
+                    if "," in n:
+                        return n.split(",")[0].strip().lower()
+                    return n.strip().split()[-1].lower()
+
+                _lu_opt_names  = _reasoning_data_lu.get("lineup", [])
+                _lu_opt_lasts  = {_lu_last_key(n) for n in _lu_opt_names}
+                _lu_weekly_nar = _reasoning_data_lu.get("weekly_narrative", "") if _reasoning_lu else ""
+                _lu_nar_gen    = _reasoning_data_lu.get("generated_at", "")[:10]
+                _lu_tier_col   = {"elite": "#f1c40f", "strong": "#00c44f", "good": "#00c44f",
+                                  "mid": "#4cb8ff", "standard": "#4cb8ff", "value": "#9b59b6"}
+
+                # 1. AI narrative
+                if _lu_weekly_nar:
+                    st.markdown(
+                        f'<div style="background:#07101e;border:1px solid #0e2040;'
+                        f'border-left:4px solid #4cb8ff;border-radius:0 8px 8px 0;'
+                        f'padding:16px 20px;margin-bottom:16px;">'
+                        f'<div style="font-size:0.6em;font-weight:800;color:#4cb8ff;'
+                        f'letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;">'
+                        f'AI Lineup Recommendation'
+                        f'<span style="font-weight:400;color:#2a4060;margin-left:10px;">'
+                        f'generated {_lu_nar_gen}</span></div>'
+                        f'<div style="font-size:0.88em;color:#c8d8e8;line-height:1.7;">'
+                        f'{_lu_nar_hesc.escape(_lu_weekly_nar)}</div>'
+                        f'</div>',
+                        unsafe_allow_html=True,
+                    )
+
+                # 2. Optimizer lineup card
+                if _lu_opt_names:
+                    _lu_cards_html = ""
+                    _lu_total_ev   = 0
+                    for _ln in _lu_opt_names:
+                        _lr   = _reasoning_lu.get(_ln, {})
+                        _lev  = int(_lr.get("this_week_ev", 0))
+                        _lu_total_ev += _lev
+                        _lti  = _lr.get("tier", "")
+                        _luse = int(_lr.get("uses_left", 0))
+                        _lc   = _lu_tier_col.get(_lti, "#4a6080")
+                        _ldts = "●" * _luse + "○" * (3 - _luse)
+                        _lpd  = next((d for n, d in _lu_pstrat.items() if _lu_last_key(n) == _lu_last_key(_ln)), {})
+                        _lpr  = _lpd.get("this_week_probs") or {}
+                        _lwin = round(_lpr.get("win_prob", 0) * 100, 1)
+                        _lt10 = round(_lpr.get("top10_prob", 0) * 100, 1)
+                        _vsg  = _lpd.get("current_course_sg", 0.0)
+                        _vsig = _lpd.get("current_course_sig", False)
+                        _vb   = (
+                            f'<div style="font-size:0.58em;color:#00c44f;margin-top:4px;">★ venue {_vsg:+.2f} SG</div>'
+                            if _vsig and _vsg >= 0.25 else
+                            f'<div style="font-size:0.58em;color:#ef4444;margin-top:4px;">↓ venue {_vsg:+.2f} SG</div>'
+                            if _vsig and _vsg <= -0.25 else ""
+                        )
+                        _ldn  = _ln.split(",")[0].strip() if "," in _ln else _ln
+                        _lu_cards_html += (
+                            f'<div style="flex:1;min-width:130px;background:#060f1c;'
+                            f'border:1px solid {_lc}44;border-top:3px solid {_lc};'
+                            f'border-radius:0 0 8px 8px;padding:12px 14px;">'
+                            f'<div style="font-size:0.6em;font-weight:800;color:{_lc};'
+                            f'letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">'
+                            f'{_lti.upper() or "PICK"}</div>'
+                            f'<div style="font-size:0.9em;font-weight:700;color:#e8f0f8;'
+                            f'line-height:1.2;margin-bottom:6px;">{_lu_hesc.escape(_ldn)}</div>'
+                            f'<div style="font-size:1.1em;font-weight:800;color:{_lc};">{_lev:,} '
+                            f'<span style="font-size:0.55em;color:#4a6080;">EV</span></div>'
+                            f'<div style="font-size:0.65em;color:#4a6080;margin-top:3px;">'
+                            f'{_lwin:.0f}% win · {_lt10:.0f}% top-10</div>'
+                            f'<div style="font-size:0.65em;color:#3a5070;letter-spacing:2px;'
+                            f'margin-top:3px;">{_ldts}</div>{_vb}</div>'
+                        )
+                    st.markdown(
+                        f'<div style="background:#07101e;border:1px solid #0e2040;'
+                        f'border-radius:10px;padding:16px 18px;margin-bottom:12px;">'
+                        f'<div style="display:flex;justify-content:space-between;'
+                        f'align-items:center;margin-bottom:12px;">'
+                        f'<div><span style="font-size:0.62em;font-weight:800;color:#4cb8ff;'
+                        f'letter-spacing:.12em;text-transform:uppercase;">This Week\'s Lineup</span>'
+                        f'<span style="font-size:0.62em;color:#2a4060;margin-left:10px;">'
+                        f'{_lu_hesc.escape(_lu_ce.get("name",""))}</span></div>'
+                        f'<div style="text-align:right;">'
+                        f'<div style="font-size:1.2em;font-weight:800;color:#00c44f;">{_lu_total_ev:,}</div>'
+                        f'<div style="font-size:0.58em;color:#2a4060;text-transform:uppercase;">Combined EV</div>'
+                        f'</div></div>'
+                        f'<div style="display:flex;gap:10px;flex-wrap:wrap;">{_lu_cards_html}</div>'
+                        f'</div>',
+                        unsafe_allow_html=True,
+                    )
+
+                # 3. Regenerate button
+                _lu_col_regen, _ = st.columns([1, 4])
+                with _lu_col_regen:
+                    if st.button("Regenerate AI analysis", key="regen_reasoning_tw"):
+                        with st.spinner("Generating..."):
+                            try:
+                                from scripts.predictions.generate_strategy_reasoning import generate_reasoning as _lu_regen_fn
+                                _lu_regen_fn(top_saves=8, verbose=False)
+                                st.success("Done — reload to see updated analysis.")
+                            except Exception as _lu_re:
+                                st.error(f"Failed: {_lu_re}")
+
+                st.markdown("<br>", unsafe_allow_html=True)
+
+                # 4. In field this week
+                _lu_in_field = sorted(
+                    [(n, d) for n, d in _lu_pstrat.items() if d.get("in_field")],
+                    key=lambda x: x[1].get("this_week_ev", 0), reverse=True,
+                )
+                if _lu_in_field:
+                    st.markdown(
+                        '<div style="font-size:0.62em;font-weight:700;color:#4a6080;'
+                        'letter-spacing:.1em;margin-bottom:6px;">IN FIELD THIS WEEK</div>',
+                        unsafe_allow_html=True,
+                    )
+                    _lu_if_rows = []
+                    for _ifn, _ifd in _lu_in_field:
+                        _ip   = _lu_last_key(_ifn) in _lu_opt_lasts
+                        _ilbl = "IN LINEUP" if _ip else "AVAILABLE"
+                        _iclr = "#00c44f" if _ip else "#4cb8ff"
+                        _iev  = int(_ifd.get("this_week_ev", 0))
+                        _ipr  = _ifd.get("this_week_probs") or {}
+                        _iwin = round(_ipr.get("win_prob", 0) * 100, 1)
+                        _it10 = round(_ipr.get("top10_prob", 0) * 100, 1)
+                        _iuse = int(_ifd.get("uses_left", 0))
+                        _idts = "●" * _iuse + "○" * (3 - _iuse)
+                        _itir = _ifd.get("tier", "")
+                        _ihot = " ↑" if _ifd.get("is_hot_streak") else ""
+                        _lu_if_rows.append(
+                            f'<tr style="{"background:#061606;" if _ip else ""}">'
+                            f'<td style="padding:7px 10px;font-weight:{"700" if _ip else "500"};'
+                            f'color:{"#b8e0b8" if _ip else "#e8f0f8"};">'
+                            f'{_lu_hesc.escape(_ifn)}{_ihot}</td>'
+                            f'<td style="padding:7px 6px;font-size:0.75em;color:#7a9bbf;">#{_ifd["world_rank"]}</td>'
+                            f'<td style="padding:7px 6px;letter-spacing:1px;color:#7a9bbf;">{_idts}</td>'
+                            f'<td style="padding:7px 6px;font-size:0.72em;color:#4a6080;">{_itir}</td>'
+                            f'<td style="padding:7px 8px;">'
+                            f'<span style="font-size:0.7em;font-weight:800;color:{_iclr};'
+                            f'background:{_iclr}22;padding:2px 7px;border-radius:4px;">{_ilbl}</span></td>'
+                            f'<td style="padding:7px 10px;font-size:0.78em;font-weight:600;'
+                            f'color:{"#00c44f" if _ip else "#e8f0f8"};">{_iev:,}</td>'
+                            f'<td style="padding:7px 6px;font-size:0.75em;color:#7a9bbf;">{_iwin:.0f}%</td>'
+                            f'<td style="padding:7px 6px;font-size:0.75em;color:#7a9bbf;">{_it10:.0f}%</td>'
+                            f'</tr>'
+                        )
+                    st.markdown(
+                        '<table style="width:100%;border-collapse:collapse;font-size:0.88em;">'
+                        '<thead><tr style="border-bottom:1px solid #1c2f4a;">'
+                        '<th style="padding:6px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">PLAYER</th>'
+                        '<th style="padding:6px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">WR</th>'
+                        '<th style="padding:6px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">USES</th>'
+                        '<th style="padding:6px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">TIER</th>'
+                        '<th style="padding:6px 8px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">STATUS</th>'
+                        '<th style="padding:6px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">EV</th>'
+                        '<th style="padding:6px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">WIN%</th>'
+                        '<th style="padding:6px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">TOP10%</th>'
+                        '</tr></thead><tbody>'
+                        + "".join(_lu_if_rows)
+                        + '</tbody></table>',
+                        unsafe_allow_html=True,
+                    )
+
+                # 5. Sitting out
+                _lu_out = sorted(
+                    [(n, d) for n, d in _lu_pstrat.items()
+                     if not d.get("in_field") and d.get("uses_left", 0) > 0],
+                    key=lambda x: x[1].get("world_rank", 999),
+                )
+                if _lu_out:
+                    with st.expander(f"Sitting out this week ({len(_lu_out)})", expanded=False):
+                        _lu_out_rows = []
+                        for _on, _od in _lu_out:
+                            _ouse = int(_od.get("uses_left", 0))
+                            _odts = "●" * _ouse + "○" * (3 - _ouse)
+                            _obe  = _od.get("best_events", [])
+                            _opre = next((e for e in _obe if e.get("tier") in ("premium", "high")), None)
+                            _oflg = (
+                                f'<span style="font-size:0.72em;color:#00c44f;">'
+                                f'→ {" ".join(_opre["name"].split()[:3])} ({_opre.get("weeks_away",0):.0f}w)</span>'
+                                if _opre else
+                                f'<span style="font-size:0.72em;color:#4a6080;">—</span>'
+                            )
+                            _lu_out_rows.append(
+                                f'<tr>'
+                                f'<td style="padding:6px 10px;color:#9ab0c8;">{_lu_hesc.escape(_on)}</td>'
+                                f'<td style="padding:6px 6px;font-size:0.75em;color:#4a6080;">#{_od["world_rank"]}</td>'
+                                f'<td style="padding:6px 6px;letter-spacing:1px;color:#4a6080;">{_odts}</td>'
+                                f'<td style="padding:6px 10px;">{_oflg}</td>'
+                                f'</tr>'
+                            )
+                        st.markdown(
+                            '<table style="width:100%;border-collapse:collapse;font-size:0.85em;">'
+                            '<thead><tr style="border-bottom:1px solid #1c2f4a;">'
+                            '<th style="padding:5px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">PLAYER</th>'
+                            '<th style="padding:5px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">WR</th>'
+                            '<th style="padding:5px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">USES</th>'
+                            '<th style="padding:5px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">NEXT PREMIUM</th>'
+                            '</tr></thead><tbody>'
+                            + "".join(_lu_out_rows)
+                            + '</tbody></table>',
+                            unsafe_allow_html=True,
+                        )
+
+                # 6. WHY SAVE narratives
+                _lu_save_nars = [
+                    (_rn, _reasoning_lu.get(_rn, {}).get("narrative", ""))
+                    for _rn in _reasoning_lu
+                    if _reasoning_lu.get(_rn, {}).get("recommendation") == "SAVE"
+                    and _reasoning_lu.get(_rn, {}).get("narrative", "")
+                ]
+                if _lu_save_nars:
+                    st.markdown(
+                        '<div style="font-size:0.62em;color:#2a4060;'
+                        'margin:16px 0 6px;letter-spacing:.05em;">WHY SAVE</div>',
+                        unsafe_allow_html=True,
+                    )
+                    for _rn, _nar in _lu_save_nars:
+                        with st.expander(_rn, expanded=False):
+                            st.markdown(
+                                f'<div style="font-size:0.88em;color:#c8d8e8;'
+                                f'line-height:1.65;padding:4px 2px;">'
+                                f'{_lu_nar_hesc.escape(_nar)}</div>',
+                                unsafe_allow_html=True,
+                            )
+
+                # 7. Upcoming premium events
+                _lu_upcoming = [e for e in _lu_pevents if e["tier"] in ("premium", "high")][:6]
+                if _lu_upcoming:
+                    with st.expander("Upcoming premium events", expanded=False):
+                        _lu_ev_parts = []
+                        for _ue in _lu_upcoming:
+                            _utc = {"premium": "#00c44f", "high": "#4cb8ff"}.get(_ue["tier"], "#7a9bbf")
+                            _ubg = {"premium": "MAJOR", "high": "SIGNATURE"}.get(_ue["tier"], "EVENT")
+                            _lu_ev_parts.append(
+                                f'<div style="flex:1;min-width:120px;max-width:180px;'
+                                f'border:1px solid {_utc}33;border-top:3px solid {_utc};'
+                                f'border-radius:0 0 8px 8px;padding:10px 12px;background:{_utc}08;">'
+                                f'<div style="font-size:0.58em;font-weight:800;color:{_utc};'
+                                f'letter-spacing:0.1em;margin-bottom:4px;">{_ubg}</div>'
+                                f'<div style="font-size:0.8em;font-weight:700;color:#e8f0f8;'
+                                f'line-height:1.25;margin-bottom:6px;">{_lu_hesc.escape(_ue["name"])}</div>'
+                                f'<div style="font-size:0.65em;color:#7a9bbf;">{_ue.get("start_date","")[:10]}</div>'
+                                f'<div style="font-size:0.68em;color:{_utc};font-weight:600;'
+                                f'margin-top:3px;">${_ue["purse"]/1e6:.0f}M purse</div>'
+                                f'</div>'
+                            )
+                        st.markdown(
+                            '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">'
+                            + "".join(_lu_ev_parts) + "</div>",
+                            unsafe_allow_html=True,
+                        )
+            else:
+                st.caption(f"Strategy unavailable: {_strat_lu.get('error')}")
+        except Exception as _lu_err:
+            st.caption(f"My Lineup unavailable: {_lu_err}")
+
 # ============================================================================
 # PAGE: ASSISTANT (Groq-powered golf chat)
 # ============================================================================
@@ -10308,477 +10588,67 @@ elif page == "📋 My Picks":
             st.success(f"📍 **This Week:** {tournament} — Week {t.week} • {t.tournament_type}")
 
 
-    _tab_strategy, _tab_stats = st.tabs([
-        "🎯 Usage Strategy",
-        "📊 Season Stats",
-    ])
+    st.caption("See **This Week → 🎯 My Lineup** for weekly lineup decisions and AI analysis.")
+    st.markdown("### Season Scorecard")
+    st.caption(f"WineTime · 2026 · Synced from [protourfantasygolf.com](https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133)")
 
-    with _tab_strategy:
-        # ── Season Usage Strategy ──────────────────────────────────────────────────
+    _sc_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+    if _sc_path.exists():
         try:
-            from scripts.predictions.season_strategy import get_season_strategy as _get_strategy
-            _strat = _get_strategy()
-
-            # Load pre-generated LLM narratives if available
-            _reasoning_path = PROJECT_ROOT / "outputs" / "strategy_reasoning.json"
-            _reasoning: dict = {}
-            if _reasoning_path.exists():
-                try:
-                    import json as _strat_json
-                    _reasoning_data = _strat_json.loads(_reasoning_path.read_text())
-                    _reasoning = _reasoning_data.get("players", {})
-                except Exception:
-                    pass
-
-            if "error" not in _strat:
-                _ce      = _strat["current_event"]
-                _bud     = _strat["budget"]
-                _pstrat  = _strat["player_strategy"]
-                _pevents = _strat["premium_events"]
-                _lineup  = _strat.get("weekly_lineup", {})
-
-                # ── Optimal Lineup Card ───────────────────────────────────────
-                import html as _hesc_lu
-                _lu_players = _lineup.get("players", [])
-                _lu_total   = _lineup.get("total_ev", 0)
-                _lu_alts    = _lineup.get("alt_lineups", {})
-                _tier_colors = {"elite": "#f1c40f", "strong": "#00c44f", "mid": "#4cb8ff", "value": "#9b59b6"}
-
-                if _lu_players:
-                    _lu_cards = ""
-                    for _lp in _lu_players:
-                        _lc = _tier_colors.get(_lp.get("tier",""), "#7a9bbf")
-                        _lu_name = _hesc_lu.escape(_lp["name"])
-                        _lu_ev   = _lp["ev"]
-                        _lu_uses = _lp.get("uses_left", 0)
-                        _lu_dots = "●" * _lu_uses + "○" * (3 - _lu_uses)
-                        _lu_win  = _lp.get("win_prob", 0)
-                        _lu_t10  = _lp.get("top10_prob", 0)
-                        # Alt cost if you save this player
-                        _alt      = _lu_alts.get(_lp["name"], {})
-                        _alt_cost = _alt.get("ev_cost", 0)
-                        _alt_str  = (
-                            f'<div style="font-size:0.6em;color:#ef4444;margin-top:3px;">'
-                            f'Save cost: −{_alt_cost:,} EV</div>'
-                        ) if _alt_cost > 0 else ""
-                        # Venue fit badge
-                        _v_sg  = _lp.get("course_sg", 0.0)
-                        _v_sig = _lp.get("course_sig", False)
-                        if _v_sig and _v_sg >= 0.25:
-                            _venue_badge = (
-                                f'<div style="font-size:0.58em;color:#00c44f;margin-top:4px;">'
-                                f'★ venue fit {_v_sg:+.2f} SG</div>'
-                            )
-                        elif _v_sig and _v_sg <= -0.25:
-                            _venue_badge = (
-                                f'<div style="font-size:0.58em;color:#ef4444;margin-top:4px;">'
-                                f'↓ venue miss {_v_sg:+.2f} SG</div>'
-                            )
-                        else:
-                            _venue_badge = ""
-                        _lu_cards += f"""
-<div style="flex:1;min-width:130px;background:#060f1c;border:1px solid {_lc}44;
-            border-top:3px solid {_lc};border-radius:0 0 8px 8px;padding:12px 14px;">
-  <div style="font-size:0.6em;font-weight:800;color:{_lc};letter-spacing:.1em;
-              text-transform:uppercase;margin-bottom:4px;">{_lp.get("tier","").upper()}</div>
-  <div style="font-size:0.9em;font-weight:700;color:#e8f0f8;line-height:1.2;
-              margin-bottom:6px;">{_lu_name}</div>
-  <div style="font-size:1.1em;font-weight:800;color:{_lc};">{_lu_ev:,} <span style="font-size:0.55em;color:#4a6080;">EV</span></div>
-  <div style="font-size:0.65em;color:#4a6080;margin-top:3px;">{_lu_win:.0f}% win · {_lu_t10:.0f}% top-10</div>
-  <div style="font-size:0.65em;color:#3a5070;letter-spacing:2px;margin-top:3px;">{_lu_dots}</div>
-  {_venue_badge}{_alt_str}
-</div>"""
-
-                    st.markdown(f"""
-<div style="background:#07101e;border:1px solid #0e2040;border-radius:10px;
-            padding:16px 18px;margin-bottom:16px;">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <div>
-      <span style="font-size:0.62em;font-weight:800;color:#4cb8ff;letter-spacing:.12em;
-                   text-transform:uppercase;">Optimal Lineup This Week</span>
-      <span style="font-size:0.62em;color:#2a4060;margin-left:10px;">
-        {_hesc_lu.escape(_ce.get("name",""))}</span>
-    </div>
-    <div style="text-align:right;">
-      <div style="font-size:1.2em;font-weight:800;color:#00c44f;">{_lu_total:,}</div>
-      <div style="font-size:0.58em;color:#2a4060;text-transform:uppercase;">Combined EV</div>
-    </div>
-  </div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;">{_lu_cards}</div>
-</div>""", unsafe_allow_html=True)
-
-                # Verdict banner
-                _tier_color = {"premium": "#00c44f", "high": "#4cb8ff", "standard": "#f59e0b"}.get(
-                    _ce.get("tier", "standard"), "#f59e0b"
-                )
-                _tier_icon = {"premium": "MAJOR / PREMIUM", "high": "HIGH VALUE", "standard": "STANDARD EVENT"}.get(
-                    _ce.get("tier", "standard"), "STANDARD EVENT"
-                )
-                st.markdown(
-                    f"""<div style="border-left:4px solid {_tier_color};border-radius:0 10px 10px 0;
-                      padding:14px 20px;background:{_tier_color}12;margin-bottom:20px;
-                      border-top:1px solid {_tier_color}22;border-right:1px solid {_tier_color}22;
-                      border-bottom:1px solid {_tier_color}22;">
-                      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-                        <span style="font-size:0.62em;font-weight:800;color:{_tier_color};
-                          letter-spacing:0.12em;background:{_tier_color}22;
-                          padding:2px 8px;border-radius:4px;">{_tier_icon}</span>
-                        <span style="font-size:0.62em;color:#7a9bbf;letter-spacing:0.06em;">
-                          SEASON USAGE STRATEGY</span>
-                      </div>
-                      <div style="font-size:0.97em;color:#e8f0f8;font-weight:500;line-height:1.5;">
-                        {_strat['this_week_verdict']}</div>
-                      <div style="display:flex;gap:20px;margin-top:10px;flex-wrap:wrap;">
-                        <span style="font-size:0.72em;color:#7a9bbf;">
-                          <span style="color:#e8f0f8;font-weight:600;">{_bud['uses_remaining']}</span>
-                          &nbsp;uses banked</span>
-                        <span style="font-size:0.72em;color:#7a9bbf;">
-                          <span style="color:#e8f0f8;font-weight:600;">{_bud['weeks_remaining']}</span>
-                          &nbsp;weeks left</span>
-                        <span style="font-size:0.72em;color:#7a9bbf;">
-                          ~<span style="color:#f59e0b;font-weight:600;">{_bud['new_players_needed']}</span>
-                          &nbsp;new players still needed</span>
-                      </div>
-                    </div>""",
-                    unsafe_allow_html=True,
-                )
-
-                # Upcoming premium events timeline (collapsed by default)
-                _upcoming = [e for e in _pevents if e["tier"] in ("premium", "high")][:6]
-                if _upcoming:
-                  with st.expander("Upcoming premium events", expanded=False):
-                    _ev_html_parts = []
-                    for _uev in _upcoming:
-                        import html as _hesc_uev
-                        _utc    = {"premium": "#00c44f", "high": "#4cb8ff"}.get(_uev["tier"], "#7a9bbf")
-                        _ubadge = {"premium": "MAJOR", "high": "SIGNATURE"}.get(_uev["tier"], "EVENT")
-                        _udate  = _uev.get("start_date", "")[:10]
-                        _uname  = _hesc_uev.escape(_uev["name"])
-                        _ev_html_parts.append(
-                            f"""<div style="flex:1;min-width:120px;max-width:180px;
-                              border:1px solid {_utc}33;border-top:3px solid {_utc};
-                              border-radius:0 0 8px 8px;padding:10px 12px;background:{_utc}08;">
-                              <div style="font-size:0.58em;font-weight:800;color:{_utc};
-                                letter-spacing:0.1em;margin-bottom:4px;">{_ubadge}</div>
-                              <div style="font-size:0.8em;font-weight:700;color:#e8f0f8;
-                                line-height:1.25;margin-bottom:6px;">{_uname}</div>
-                              <div style="font-size:0.65em;color:#7a9bbf;">{_udate}</div>
-                              <div style="font-size:0.68em;color:{_utc};font-weight:600;
-                                margin-top:3px;">${_uev['purse']/1e6:.0f}M purse</div>
-                            </div>"""
-                        )
-                    st.markdown(
-                        f'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">'
-                        + "".join(_ev_html_parts) + "</div>",
-                        unsafe_allow_html=True,
+            import json as _json
+            _sc = _json.loads(_sc_path.read_text())
+            _wl = _sc.get("weekly_lineups", {})
+            _sc_rows = []
+            for _wk_key in sorted(_wl.keys(), key=lambda x: int(x.split("_")[1])):
+                _e = _wl[_wk_key]
+                _lineup = _e.get("lineup", [])
+                if not _lineup and not _e.get("earnings_earned"):
+                    continue  # skip empty future weeks
+                _week   = _e.get("week", "")
+                _tourney = _e.get("tournament", "")
+                _earn   = _e.get("earnings_earned")
+                _wrp    = _e.get("wrp", "")
+                _picks  = _sc.get("picks", {})
+                _p_cols = []
+                for _pn in _lineup[:3]:
+                    _trec = next(
+                        (t for t in _picks.get(_pn, {}).get("tournaments_used", [])
+                         if t.get("week") == _week),
+                        {}
                     )
+                    _res  = _trec.get("result") or ("?" if not _earn else "—")
+                    _earn_p = _trec.get("earnings", 0) or 0
+                    _p_cols.append(f"{_pn.split()[-1]} ({_res}) ${_earn_p:,}" if _earn else f"{_pn.split()[-1]}")
+                while len(_p_cols) < 3:
+                    _p_cols.append("—")
+                _sc_rows.append({
+                    "Wk":         _week,
+                    "Tournament": _tourney,
+                    "WRP":        _wrp if _wrp else "—",
+                    "Pick 1":     _p_cols[0],
+                    "Pick 2":     _p_cols[1],
+                    "Pick 3":     _p_cols[2],
+                    "Earnings":   f"${_earn:,}" if _earn else ("Pending" if _lineup else "—"),
+                })
+            if _sc_rows:
+                _sc_df = pd.DataFrame(_sc_rows)
+                st.dataframe(_sc_df, hide_index=True, use_container_width=True)
+                _season_total = _sc.get("summary", {}).get("total_earnings", 0)
+                _completed    = sum(1 for r in _sc_rows if r["Earnings"] not in ("Pending", "—"))
+                st.caption(f"**{_completed} completed weeks · Season total: ${_season_total:,}**")
+            else:
+                st.info("No picks recorded yet.")
+        except Exception as _sc_e:
+            st.warning(f"Could not load scorecard: {_sc_e}")
+    else:
+        st.info("Tracker not found. Run the scorecard sync first.")
 
-                # Player cards
-                def _sp_all_premium(p):
-                    return len(p["best_events"]) > 0 and all(e["tier"] == "premium" for e in p["best_events"])
-                def _sp_has_premium(p):
-                    return any(e["tier"] == "premium" for e in p["best_events"])
-                def _sp_has_non_premium(p):
-                    return any(e["tier"] != "premium" for e in p["best_events"])
-
-                _sp_use   = [(n, p) for n, p in _pstrat.items() if p["use_this_week"]]
-                _sp_save  = [(n, p) for n, p in _pstrat.items()
-                             if not p["use_this_week"] and (p["save_signal"] or _sp_all_premium(p))]
-                _sp_split = [(n, p) for n, p in _pstrat.items()
-                             if not p["use_this_week"] and not p["save_signal"]
-                             and not _sp_all_premium(p) and _sp_has_premium(p) and _sp_has_non_premium(p)]
-                _sp_ok    = [(n, p) for n, p in _pstrat.items()
-                             if not p["use_this_week"] and not p["save_signal"]
-                             and not _sp_all_premium(p) and not _sp_has_premium(p)]
-
-                # ── Roster table — one row per player ─────────────────────────
-                import html as _hesc
-                _all_players = (
-                    [(n, p, "USE NOW",  "#00c44f") for n, p in _pstrat.items() if p["use_this_week"]] +
-                    [(n, p, "SAVE",     "#ef4444") for n, p in _pstrat.items()
-                     if not p["use_this_week"] and (p["save_signal"] or _sp_all_premium(p))] +
-                    [(n, p, "USE/SAVE", "#f97316") for n, p in _pstrat.items()
-                     if not p["use_this_week"] and not p["save_signal"]
-                     and not _sp_all_premium(p) and _sp_has_premium(p) and _sp_has_non_premium(p)] +
-                    [(n, p, "OK",       "#4cb8ff") for n, p in _pstrat.items()
-                     if not p["use_this_week"] and not p["save_signal"]
-                     and not _sp_all_premium(p) and not _sp_has_premium(p)]
-                )
-                _all_players.sort(key=lambda x: (
-                    {"USE NOW": 0, "SAVE": 1, "USE/SAVE": 2, "OK": 3}[x[2]], x[1]["world_rank"]
-                ))
-
-                _row_parts = []
-                for _rn, _rp, _rec, _rc in _all_players:
-                    _best   = _rp["best_events"]
-                    _target = " ".join(_best[0]["name"].split()[:3]) if _best else "—"
-                    _wa     = _best[0].get("weeks_away", 0) if _best else 0
-                    _target += f" ({int(_wa)}w)" if _wa > 0.5 else " (this wk)"
-                    _uses   = _rp["uses_left"]
-                    _dots   = "●" * _uses + "○" * (3 - _uses)
-                    _hot    = " ↑" if _rp.get("is_hot_streak") else ""
-                    # Opportunity cost column
-                    _opp_ev  = int(_rp.get("opportunity_cost_ev", 0) or 0)
-                    _opp_pct = float(_rp.get("opportunity_cost_pct", 0) or 0)
-                    _tw_ev   = int(_rp.get("this_week_ev", 0) or 0)
-                    _bf_ev   = int(_rp.get("best_future_ev", 0) or 0)
-                    if _rec == "SAVE" and _opp_ev > 0:
-                        _opp_cell = (
-                            f'<div style="font-size:0.72em;color:#e8f0f8;">'
-                            f'{_tw_ev:,} → {_bf_ev:,}</div>'
-                            f'<div style="font-size:0.65em;color:#ef4444;">'
-                            f'+{_opp_ev:,} EV ({_opp_pct:.0f}%) later</div>'
-                        )
-                    elif _rec == "USE NOW" and _tw_ev > 0:
-                        _opp_cell = (
-                            f'<div style="font-size:0.72em;color:#00c44f;">{_tw_ev:,} EV</div>'
-                        )
-                    else:
-                        _opp_cell = f'<div style="font-size:0.72em;color:#4a6080;">{_tw_ev:,}</div>'
-
-                    _row_parts.append(
-                        f'<tr>'
-                        f'<td style="padding:7px 10px;font-weight:600;color:#e8f0f8;">'
-                        f'{_hesc.escape(_rn)}{_hot}</td>'
-                        f'<td style="padding:7px 6px;font-size:0.75em;color:#7a9bbf;">#{_rp["world_rank"]}</td>'
-                        f'<td style="padding:7px 6px;letter-spacing:1px;color:#7a9bbf;">{_dots}</td>'
-                        f'<td style="padding:7px 8px;">'
-                        f'<span style="font-size:0.7em;font-weight:800;color:{_rc};'
-                        f'background:{_rc}22;padding:2px 7px;border-radius:4px;">{_rec}</span></td>'
-                        f'<td style="padding:7px 10px;font-size:0.8em;color:#a0b8d0;">'
-                        f'{_hesc.escape(_target)}</td>'
-                        f'<td style="padding:7px 10px;">{_opp_cell}</td>'
-                        f'</tr>'
-                    )
-
-                st.markdown(
-                    '<table style="width:100%;border-collapse:collapse;font-size:0.88em;">'
-                    '<thead><tr style="border-bottom:1px solid #1c2f4a;">'
-                    '<th style="padding:6px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">PLAYER</th>'
-                    '<th style="padding:6px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">WR</th>'
-                    '<th style="padding:6px 6px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">USES</th>'
-                    '<th style="padding:6px 8px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">REC</th>'
-                    '<th style="padding:6px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">TARGET</th>'
-                    '<th style="padding:6px 10px;text-align:left;font-size:0.65em;color:#4a6080;font-weight:700;letter-spacing:0.1em;">EV / OPP COST</th>'
-                    '</tr></thead><tbody>'
-                    + "".join(_row_parts) +
-                    '</tbody></table>',
-                    unsafe_allow_html=True,
-                )
-
-                # ── Weekly Lineup Narrative ───────────────────────────────────
-                import html as _nar_hesc
-                _weekly_nar     = (_reasoning_data or {}).get("weekly_narrative", "") if _reasoning else ""
-                _nar_lineup     = (_reasoning_data or {}).get("lineup", [])
-                _nar_generated  = (_reasoning_data or {}).get("generated_at", "")[:10]
-
-                if _weekly_nar:
-                    st.markdown(
-                        f'<div style="background:#07101e;border:1px solid #0e2040;'
-                        f'border-left:4px solid #4cb8ff;border-radius:0 8px 8px 0;'
-                        f'padding:16px 20px;margin:12px 0 16px;">'
-                        f'<div style="font-size:0.6em;font-weight:800;color:#4cb8ff;'
-                        f'letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;">'
-                        f'AI Weekly Recommendation'
-                        f'<span style="font-weight:400;color:#2a4060;margin-left:10px;">'
-                        f'generated {_nar_generated}</span></div>'
-                        f'<div style="font-size:0.88em;color:#c8d8e8;line-height:1.7;">'
-                        f'{_nar_hesc.escape(_weekly_nar)}</div>'
-                        f'</div>',
-                        unsafe_allow_html=True,
-                    )
-
-                # ── SAVE narratives — individual expanders ────────────────────
-                _save_nars = [
-                    (_rn, _rp, _rec, _rc) for _rn, _rp, _rec, _rc in _all_players
-                    if _rec == "SAVE"
-                    and _reasoning.get(_rn, {}).get("narrative", "")
-                ]
-                if _save_nars:
-                    st.markdown(
-                        '<div style="font-size:0.62em;color:#2a4060;'
-                        'margin:4px 0 6px;letter-spacing:.05em;">WHY SAVE</div>',
-                        unsafe_allow_html=True,
-                    )
-                    for _rn, _rp, _rec, _rc in _save_nars:
-                        _nar = _reasoning.get(_rn, {}).get("narrative", "")
-                        with st.expander(f"{_rn}", expanded=False):
-                            st.markdown(
-                                f'<div style="font-size:0.88em;color:#c8d8e8;'
-                                f'line-height:1.65;padding:4px 2px;">'
-                                f'{_nar_hesc.escape(_nar)}</div>',
-                                unsafe_allow_html=True,
-                            )
-
-                # Regenerate button
-                _col_regen, _ = st.columns([1, 4])
-                with _col_regen:
-                    if st.button("Regenerate AI analysis", key="regen_reasoning"):
-                        with st.spinner("Generating..."):
-                            try:
-                                from scripts.predictions.generate_strategy_reasoning import generate_reasoning as _regen_fn
-                                _regen_fn(top_saves=8, verbose=False)
-                                st.success("Done — reload to see updated analysis.")
-                            except Exception as _re:
-                                st.error(f"Failed: {_re}")
-
-                st.markdown("<br>", unsafe_allow_html=True)
-
-
-                # ── Season Allocation Plan (collapsed) ────────────────────────────
-                _sp_plan      = _strat.get("season_plan", {})
-                _sp_conflicts = _strat.get("plan_conflicts", {})
-
-                if _sp_plan:
-                  with st.expander("Season allocation plan", expanded=False):
-                    st.caption("Greedy optimizer: highest-EV assignment wins, 3 players/week cap.")
-
-                    # Group plan events into columns of 2
-                    _plan_items = [
-                        (ev_name, ev_data) for ev_name, ev_data in _sp_plan.items()
-                        if ev_data.get("assigned")
-                    ]
-                    for _pi in range(0, len(_plan_items), 2):
-                        _pcols = st.columns(2)
-                        for _pccol, (_pev_name, _pev_data) in zip(_pcols, _plan_items[_pi:_pi+2]):
-                            import html as _hesc_pev
-                            _pev_tier    = _pev_data.get("tier", "standard")
-                            _pev_date    = _pev_data.get("date", "")[:10]
-                            _pev_type    = _pev_data.get("type", "")
-                            _pev_assigned = _pev_data.get("assigned", [])
-                            _pev_tc      = {"premium": "#00c44f", "high": "#4cb8ff"}.get(_pev_tier, "#7a9bbf")
-                            _pev_badge   = {"premium": "MAJOR", "high": "SIGNATURE"}.get(_pev_tier, _pev_type.upper()[:10])
-                            _pev_name_esc = _hesc_pev.escape(_pev_name)
-                            _pev_players  = " · ".join(_hesc_pev.escape(p) for p in _pev_assigned)
-                            _pev_html = (
-                                f'<div style="border:1px solid {_pev_tc}33;border-top:2px solid {_pev_tc};'
-                                f'border-radius:0 0 8px 8px;padding:10px 12px;background:{_pev_tc}06;margin-bottom:8px;">'
-                                f'<div style="font-size:0.58em;font-weight:800;color:{_pev_tc};letter-spacing:0.1em;">{_pev_badge}</div>'
-                                f'<div style="font-size:0.82em;font-weight:700;color:#e8f0f8;margin:3px 0;">{_pev_name_esc}</div>'
-                                f'<div style="font-size:0.65em;color:#7a9bbf;margin-bottom:6px;">{_pev_date}</div>'
-                                f'<div style="font-size:0.72em;color:#e8f0f8;">{_pev_players}</div>'
-                                f'</div>'
-                            )
-                            with _pccol:
-                                st.markdown(_pev_html, unsafe_allow_html=True)
-
-                # ── Conflict Warnings (collapsed) ─────────────────────────────────
-                if _sp_conflicts:
-                  with st.expander(f"Scheduling conflicts ({len(_sp_conflicts)})", expanded=False):
-                    import html as _cf_hesc
-                    st.caption(
-                        f"{len(_sp_conflicts)} event(s) where more than 3 players peak simultaneously. "
-                        "Top-3 by EV get the slot — others need alternate weeks."
-                    )
-                    _cf_sorted = sorted(_sp_conflicts.items(), key=lambda x: x[1].get("week", 0))
-                    _cf_col_list = st.columns(min(2, len(_cf_sorted)))
-                    for _cfi, (_cf_name, _cf_data) in enumerate(_cf_sorted):
-                        _cf_assigned = _cf_data.get("assigned", [])
-                        _cf_overflow = _cf_data.get("overflow", [])
-                        _cf_date     = _cf_data.get("date", "")[:10]
-                        _cf_total    = len(_cf_assigned) + len(_cf_overflow)
-                        _cf_a_html   = " &nbsp;·&nbsp; ".join(
-                            f'<span style="color:#00c44f;font-weight:600">{_cf_hesc.escape(p)}</span>'
-                            for p in _cf_assigned
-                        )
-                        _cf_ov_list  = _cf_overflow[:5]
-                        _cf_ov_html  = " &nbsp;·&nbsp; ".join(
-                            f'<span style="color:#f97316">{_cf_hesc.escape(p)}</span>'
-                            for p in _cf_ov_list
-                        )
-                        _cf_more_html = (
-                            f'<span style="color:#7a9bbf"> +{len(_cf_overflow)-5} more</span>'
-                            if len(_cf_overflow) > 5 else ""
-                        )
-                        with _cf_col_list[_cfi % 2]:
-                            st.markdown(
-                                f'<div style="border:1px solid #f9731633;border-left:3px solid #f97316;'
-                                f'border-radius:0 8px 8px 0;padding:10px 14px;'
-                                f'background:#f9731608;margin-bottom:8px">'
-                                f'<div style="display:flex;justify-content:space-between;'
-                                f'align-items:baseline;margin-bottom:8px">'
-                                f'<span style="font-size:0.88em;font-weight:700;color:#e8f0f8">'
-                                f'{_cf_hesc.escape(_cf_name)}</span>'
-                                f'<span style="font-size:0.6em;color:#7a9bbf;margin-left:8px">'
-                                f'{_cf_date} &nbsp;·&nbsp; {_cf_total} players want in</span></div>'
-                                f'<div style="font-size:0.7em;margin-bottom:6px">'
-                                f'<span style="font-size:0.85em;text-transform:uppercase;'
-                                f'letter-spacing:0.07em;color:#00c44f">Gets slot</span><br>'
-                                f'<span style="line-height:2">{_cf_a_html}</span></div>'
-                                f'<div style="font-size:0.7em;padding-top:6px;'
-                                f'border-top:1px solid #f9731622">'
-                                f'<span style="font-size:0.85em;text-transform:uppercase;'
-                                f'letter-spacing:0.07em;color:#f97316">Needs alternative</span><br>'
-                                f'<span style="line-height:2">{_cf_ov_html}{_cf_more_html}</span></div>'
-                                f'</div>',
-                                unsafe_allow_html=True,
-                            )
-
-        except Exception as _strat_err:
-            st.caption(f"Season strategy unavailable: {_strat_err}")
-
-
-    with _tab_stats:
-        st.markdown("### Season Scorecard")
-        st.caption(f"WineTime · 2026 · Synced from [protourfantasygolf.com](https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133)")
-
-        _sc_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
-        if _sc_path.exists():
-            try:
-                import json as _json
-                _sc = _json.loads(_sc_path.read_text())
-                _wl = _sc.get("weekly_lineups", {})
-                _sc_rows = []
-                for _wk_key in sorted(_wl.keys(), key=lambda x: int(x.split("_")[1])):
-                    _e = _wl[_wk_key]
-                    _lineup = _e.get("lineup", [])
-                    if not _lineup and not _e.get("earnings_earned"):
-                        continue  # skip empty future weeks
-                    _week   = _e.get("week", "")
-                    _tourney = _e.get("tournament", "")
-                    _earn   = _e.get("earnings_earned")
-                    _wrp    = _e.get("wrp", "")
-                    _picks  = _sc.get("picks", {})
-                    _p_cols = []
-                    for _pn in _lineup[:3]:
-                        _trec = next(
-                            (t for t in _picks.get(_pn, {}).get("tournaments_used", [])
-                             if t.get("week") == _week),
-                            {}
-                        )
-                        _res  = _trec.get("result") or ("?" if not _earn else "—")
-                        _earn_p = _trec.get("earnings", 0) or 0
-                        _p_cols.append(f"{_pn.split()[-1]} ({_res}) ${_earn_p:,}" if _earn else f"{_pn.split()[-1]}")
-                    while len(_p_cols) < 3:
-                        _p_cols.append("—")
-                    _sc_rows.append({
-                        "Wk":         _week,
-                        "Tournament": _tourney,
-                        "WRP":        _wrp if _wrp else "—",
-                        "Pick 1":     _p_cols[0],
-                        "Pick 2":     _p_cols[1],
-                        "Pick 3":     _p_cols[2],
-                        "Earnings":   f"${_earn:,}" if _earn else ("Pending" if _lineup else "—"),
-                    })
-                if _sc_rows:
-                    _sc_df = pd.DataFrame(_sc_rows)
-                    st.dataframe(_sc_df, hide_index=True, use_container_width=True)
-                    _season_total = _sc.get("summary", {}).get("total_earnings", 0)
-                    _completed    = sum(1 for r in _sc_rows if r["Earnings"] not in ("Pending", "—"))
-                    st.caption(f"**{_completed} completed weeks · Season total: ${_season_total:,}**")
-                else:
-                    st.info("No picks recorded yet.")
-            except Exception as _sc_e:
-                st.warning(f"Could not load scorecard: {_sc_e}")
-        else:
-            st.info("Tracker not found. Run the scorecard sync first.")
-
-        if st.button("Sync from Fantasy Site", key="sync_scorecard_btn"):
-            with st.spinner("Fetching from protourfantasygolf.com..."):
-                _sync_out = run_script("scrapers/fetch_fantasy_scorecard.py")
-            st.code(_sync_out, language=None)
-            st.cache_data.clear()
-            st.rerun()
+    if st.button("Sync from Fantasy Site", key="sync_scorecard_btn"):
+        with st.spinner("Fetching from protourfantasygolf.com..."):
+            _sync_out = run_script("scrapers/fetch_fantasy_scorecard.py")
+        st.code(_sync_out, language=None)
+        st.cache_data.clear()
+        st.rerun()
 
 
 # ============================================================================
