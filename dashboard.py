@@ -2609,18 +2609,34 @@ def render_expert_picks_section(preds_df: pd.DataFrame, tournament_id: str = "")
             board = consensus_df[show_cols].copy()
             if "odds_to_win" in board.columns:
                 board = board.rename(columns={"odds_to_win": "Odds"})
-            st.dataframe(
-                board.head(25),
-                hide_index=True,
-                use_container_width=True,
-                column_config={
-                    "Winner Picks": st.column_config.NumberColumn(width="small"),
-                    "Lineup Mentions": st.column_config.NumberColumn(width="small"),
-                    "Total Mentions": st.column_config.NumberColumn(width="small"),
-                    "Winner Share %": st.column_config.NumberColumn(format="%.1f%%", width="small"),
-                    "Lineup Share %": st.column_config.NumberColumn(format="%.1f%%", width="small"),
-                    "Model Win %": st.column_config.NumberColumn(format="%.2f%%", width="small"),
-                },
+            _ep_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+            _ep_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+            _ep_num_cols = {"Winner Picks","Lineup Mentions","Total Mentions"}
+            _ep_pct_cols = {"Winner Share %","Lineup Share %","Model Win %"}
+            _ep_head = "".join(f'<th style="{_ep_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in board.columns)
+            _ep_body = []
+            for _ei, _er in board.head(25).iterrows():
+                _ebg = "#0d1a30" if _ei % 2 == 0 else "#0a1525"
+                _cells = []
+                for _ec in board.columns:
+                    _ev = _er[_ec]
+                    if _ec == "Player":
+                        _cells.append(f'<td style="{_ep_td}text-align:left;color:#dde6f5;font-weight:600;">{_ev}</td>')
+                    elif _ec in _ep_pct_cols:
+                        _cells.append(f'<td style="{_ep_td}text-align:center;color:#4cb8ff;">{float(_ev):.1f}%</td>' if pd.notna(_ev) else f'<td style="{_ep_td}text-align:center;color:#4a5a6a;">—</td>')
+                    elif _ec == "Odds":
+                        _cells.append(f'<td style="{_ep_td}text-align:center;color:#8ba0b8;">{_ev}</td>')
+                    elif _ec == "Model Rank":
+                        _cells.append(f'<td style="{_ep_td}text-align:center;color:#f4c430;">{int(_ev) if pd.notna(_ev) else "—"}</td>')
+                    else:
+                        _cells.append(f'<td style="{_ep_td}text-align:center;color:#8ba0b8;">{int(_ev) if pd.notna(_ev) else "—"}</td>')
+                _ep_body.append(f'<tr style="background:{_ebg};">{"".join(_cells)}</tr>')
+            st.markdown(
+                f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;">'
+                f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                f'<thead><tr>{_ep_head}</tr></thead>'
+                f'<tbody>{"".join(_ep_body)}</tbody></table></div>',
+                unsafe_allow_html=True,
             )
 
         # ── Season expert accuracy tracker ───────────────────────────────────
@@ -2667,8 +2683,29 @@ def render_expert_picks_section(preds_df: pd.DataFrame, tournament_id: str = "")
                                     .reset_index()
                                     .rename(columns={"expert_name":"Expert","picks":"Picks","hits":"Correct","hit_rate":"Hit %"})
                                 )
-                                st.dataframe(_by_expert, hide_index=True, use_container_width=True,
-                                             column_config={"Hit %": st.column_config.NumberColumn(format="%.1f%%")})
+                                _acc_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;"
+                                _acc_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+                                _acc_head = "".join(f'<th style="{_acc_th}text-align:{"left" if c=="Expert" else "center"};">{c}</th>' for c in _by_expert.columns)
+                                _acc_body = []
+                                for _acci, _accr in _by_expert.iterrows():
+                                    _abg = "#0d1a30" if _acci % 2 == 0 else "#0a1525"
+                                    _hr = float(_accr["Hit %"])
+                                    _hcol = "#00c44f" if _hr >= 20 else ("#f4c430" if _hr >= 10 else "#8ba0b8")
+                                    _acc_body.append(
+                                        f'<tr style="background:{_abg};">'
+                                        f'<td style="{_acc_td}text-align:left;color:#dde6f5;font-weight:600;">{_accr["Expert"]}</td>'
+                                        f'<td style="{_acc_td}text-align:center;color:#8ba0b8;">{int(_accr["Picks"])}</td>'
+                                        f'<td style="{_acc_td}text-align:center;color:#4cb8ff;">{int(_accr["Correct"])}</td>'
+                                        f'<td style="{_acc_td}text-align:center;color:{_hcol};font-weight:600;">{_hr:.1f}%</td>'
+                                        f'</tr>'
+                                    )
+                                st.markdown(
+                                    f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;">'
+                                    f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                                    f'<thead><tr>{_acc_head}</tr></thead>'
+                                    f'<tbody>{"".join(_acc_body)}</tbody></table></div>',
+                                    unsafe_allow_html=True,
+                                )
                                 _total_picks = int(_ep_graded["hit"].count())
                                 _total_hits  = int(_ep_graded["hit"].sum())
                                 st.caption(f"Season total: {_total_hits}/{_total_picks} correct winner picks ({_total_hits/_total_picks*100:.1f}%)" if _total_picks else "")
@@ -2719,7 +2756,27 @@ def render_expert_picks_section(preds_df: pd.DataFrame, tournament_id: str = "")
                 "comment": "Note",
             }
         )
-        st.dataframe(detail_df, hide_index=True, use_container_width=True, height=420)
+        _dt_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+        _dt_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+        _dt_head = "".join(f'<th style="{_dt_th}text-align:left;">{c}</th>' for c in detail_df.columns)
+        _dt_body = []
+        for _dti, _dtr in detail_df.iterrows():
+            _dtbg = "#0d1a30" if _dti % 2 == 0 else "#0a1525"
+            _dt_body.append(
+                f'<tr style="background:{_dtbg};">'
+                f'<td style="{_dt_td}color:#dde6f5;font-weight:600;white-space:nowrap;">{_dtr["Expert"]}</td>'
+                f'<td style="{_dt_td}color:#8ba0b8;">{_dtr["Title"]}</td>'
+                f'<td style="{_dt_td}color:#f4c430;font-weight:600;">{_dtr["Winner Pick"]}</td>'
+                f'<td style="{_dt_td}color:#c8d8ea;">{_dtr["Note"]}</td>'
+                f'</tr>'
+            )
+        st.markdown(
+            f'<div style="overflow-x:auto;overflow-y:auto;max-height:420px;border:1px solid #1e3a5f;border-radius:10px;">'
+            f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+            f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_dt_head}</tr></thead>'
+            f'<tbody>{"".join(_dt_body)}</tbody></table></div>',
+            unsafe_allow_html=True,
+        )
 
 
 def render_tracked_bets_section(tournament_id: str = ""):
@@ -9847,17 +9904,31 @@ if _tw_teams_tab is not None:
                 _td_show = _td[["rank", "team_name", "dg_win", "dg_top10", "dg_make_cut",
                                  "our_composite", "team_avg_sg", "team_max_sg"]].copy()
                 _td_show.columns = ["Rk", "Team", "Win%", "Top10%", "Cut%", "Score", "Avg SG", "Max SG"]
-                st.dataframe(
-                    _td_show.style.format({
-                        "Win%":   "{:.2f}",
-                        "Top10%": "{:.1f}",
-                        "Cut%":   "{:.1f}",
-                        "Score":  "{:.3f}",
-                        "Avg SG": "{:.3f}",
-                        "Max SG": "{:.3f}",
-                    }, na_rep="—"),
-                    use_container_width=True,
-                    hide_index=True,
+                _th_s = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                _td_s = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+                _tr_html = []
+                for _tri, _trr in _td_show.iterrows():
+                    _bg = "#0d1a30" if _tri % 2 == 0 else "#0a1525"
+                    def _sgc(v): return "#00c44f" if pd.notna(v) and float(v) > 0 else ("#e74c3c" if pd.notna(v) and float(v) < 0 else "#8ba0b8")
+                    _tr_html.append(
+                        f'<tr style="background:{_bg};">'
+                        f'<td style="{_td_s}text-align:center;color:#8ba0b8;">{int(_trr["Rk"]) if pd.notna(_trr["Rk"]) else "—"}</td>'
+                        f'<td style="{_td_s}text-align:left;color:#dde6f5;font-weight:600;">{_trr["Team"]}</td>'
+                        f'<td style="{_td_s}text-align:center;color:#00c44f;">{float(_trr["Win%"]):.2f}%</td>'
+                        f'<td style="{_td_s}text-align:center;color:#4cb8ff;">{float(_trr["Top10%"]):.1f}%</td>'
+                        f'<td style="{_td_s}text-align:center;color:#f4c430;">{float(_trr["Cut%"]):.1f}%</td>'
+                        f'<td style="{_td_s}text-align:center;color:#9b9bff;">{float(_trr["Score"]):.3f}</td>'
+                        f'<td style="{_td_s}text-align:center;color:{_sgc(_trr["Avg SG"])};">{float(_trr["Avg SG"]):+.3f}</td>'
+                        f'<td style="{_td_s}text-align:center;color:{_sgc(_trr["Max SG"])};">{float(_trr["Max SG"]):+.3f}</td>'
+                        f'</tr>'
+                    )
+                st.markdown(
+                    f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;">'
+                    f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                    f'<thead><tr>'
+                    + "".join(f'<th style="{_th_s}text-align:{"left" if h=="Team" else "center"};">{h}</th>' for h in ["Rk","Team","Win%","Top10%","Cut%","Score","Avg SG","Max SG"])
+                    + f'</tr></thead><tbody>{"".join(_tr_html)}</tbody></table></div>',
+                    unsafe_allow_html=True,
                 )
         except Exception as _te:
             st.error(f"Could not load team predictions: {_te}")
@@ -10646,7 +10717,34 @@ elif page == "📋 My Picks":
                 })
             if _sc_rows:
                 _sc_df = pd.DataFrame(_sc_rows)
-                st.dataframe(_sc_df, hide_index=True, use_container_width=True)
+                _sc_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                _sc_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+                _sc_cols = list(_sc_df.columns)
+                _sc_head = "".join(f'<th style="{_sc_th}text-align:{"left" if c in ("Tournament","Pick 1","Pick 2","Pick 3") else "center"};">{c}</th>' for c in _sc_cols)
+                _sc_body = []
+                for _si, _sr in _sc_df.iterrows():
+                    _sbg = "#0d1a30" if _si % 2 == 0 else "#0a1525"
+                    _earn = str(_sr["Earnings"])
+                    _ecol = "#00c44f" if _earn.startswith("$") else ("#f4c430" if _earn == "Pending" else "#4a5a6a")
+                    _cells = []
+                    for _sc_col in _sc_cols:
+                        _sv = str(_sr[_sc_col])
+                        if _sc_col == "Earnings":
+                            _cells.append(f'<td style="{_sc_td}text-align:center;color:{_ecol};font-weight:600;">{_sv}</td>')
+                        elif _sc_col == "Tournament":
+                            _cells.append(f'<td style="{_sc_td}text-align:left;color:#dde6f5;">{_sv}</td>')
+                        elif _sc_col in ("Pick 1","Pick 2","Pick 3"):
+                            _cells.append(f'<td style="{_sc_td}text-align:left;color:#c8d8ea;">{_sv}</td>')
+                        else:
+                            _cells.append(f'<td style="{_sc_td}text-align:center;color:#8ba0b8;">{_sv}</td>')
+                    _sc_body.append(f'<tr style="background:{_sbg};">{"".join(_cells)}</tr>')
+                st.markdown(
+                    f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;">'
+                    f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                    f'<thead><tr>{_sc_head}</tr></thead>'
+                    f'<tbody>{"".join(_sc_body)}</tbody></table></div>',
+                    unsafe_allow_html=True,
+                )
                 _season_total = _sc.get("summary", {}).get("total_earnings", 0)
                 _completed    = sum(1 for r in _sc_rows if r["Earnings"] not in ("Pending", "—"))
                 st.caption(f"**{_completed} completed weeks · Season total: ${_season_total:,}**")
@@ -13419,7 +13517,43 @@ elif page == "🎰 Betting":
                                 "kelly_fraction": "Kelly (½K)",
                                 "confidence":     "Conf",
                             })
-                            st.dataframe(_tbl, hide_index=True, use_container_width=True)
+                            _bt_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                            _bt_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+                            _bt_cols = list(_tbl.columns)
+                            _bt_head = "".join(f'<th style="{_bt_th}text-align:{"left" if c in ("Market","Player") else "center"};">{c}</th>' for c in _bt_cols)
+                            _bt_body = []
+                            for _bti, _btr in _tbl.iterrows():
+                                _bbg = "#0d1a30" if _bti % 2 == 0 else "#0a1525"
+                                _cells = []
+                                for _bc in _bt_cols:
+                                    _bv = str(_btr[_bc]) if pd.notna(_btr[_bc]) else "—"
+                                    if _bc == "Player":
+                                        _cells.append(f'<td style="{_bt_td}text-align:left;color:#dde6f5;font-weight:600;">{_bv}</td>')
+                                    elif _bc == "Market":
+                                        _cells.append(f'<td style="{_bt_td}text-align:left;color:#8ba0b8;">{_bv}</td>')
+                                    elif _bc == "Odds":
+                                        _cells.append(f'<td style="{_bt_td}text-align:center;color:#f4c430;">{_bv}</td>')
+                                    elif _bc == "Model%":
+                                        _cells.append(f'<td style="{_bt_td}text-align:center;color:#00c44f;">{_bv}</td>')
+                                    elif _bc == "Market%":
+                                        _cells.append(f'<td style="{_bt_td}text-align:center;color:#4cb8ff;">{_bv}</td>')
+                                    elif _bc == "Edge (pts)":
+                                        try:
+                                            _bfv = float(_btr[_bc])
+                                            _bcol = "#00c44f" if _bfv > 0 else "#e74c3c"
+                                            _cells.append(f'<td style="{_bt_td}text-align:center;color:{_bcol};font-weight:700;">{_bfv:+.2f}</td>')
+                                        except (ValueError, TypeError):
+                                            _cells.append(f'<td style="{_bt_td}text-align:center;color:#8ba0b8;">{_bv}</td>')
+                                    else:
+                                        _cells.append(f'<td style="{_bt_td}text-align:center;color:#8ba0b8;">{_bv}</td>')
+                                _bt_body.append(f'<tr style="background:{_bbg};">{"".join(_cells)}</tr>')
+                            st.markdown(
+                                f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;">'
+                                f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                                f'<thead><tr>{_bt_head}</tr></thead>'
+                                f'<tbody>{"".join(_bt_body)}</tbody></table></div>',
+                                unsafe_allow_html=True,
+                            )
 
                     st.markdown("---")
 
@@ -13603,9 +13737,34 @@ elif page == "🎰 Betting":
                                 styles.loc[_big, "Max Spread"] = "color:#f39c12;font-weight:700"
                             return styles
 
-                        st.dataframe(
-                            _shop_disp.style.apply(_style_shop, axis=None),
-                            hide_index=True, use_container_width=True, height=420,
+                        _sh_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                        _sh_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+                        _sh_cols = list(_shop_disp.columns)
+                        _sh_head = "".join(f'<th style="{_sh_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in _sh_cols)
+                        _sh_body = []
+                        for _shi, _shr in _shop_disp.iterrows():
+                            _shbg = "#0d1a30" if _shi % 2 == 0 else "#0a1525"
+                            _big_spread = pd.notna(_shr.get("Max Spread")) and float(_shr.get("Max Spread", 0)) >= 3.0
+                            _cells = []
+                            for _shc in _sh_cols:
+                                _shv = str(_shr[_shc]) if pd.notna(_shr[_shc]) else "—"
+                                if _shc == "Player":
+                                    _cells.append(f'<td style="{_sh_td}text-align:left;color:#dde6f5;font-weight:600;">{_shv}</td>')
+                                elif _shc in ("Win ▲","Top10 ▲","Cut ▲"):
+                                    _acol = "#00c44f" if _shv == "DK" else ("#4cb8ff" if _shv == "FD" else "#8ba0b8")
+                                    _cells.append(f'<td style="{_sh_td}text-align:center;color:{_acol};font-weight:700;">{_shv}</td>')
+                                elif _shc == "Max Spread":
+                                    _scol = "#f39c12" if _big_spread else "#8ba0b8"
+                                    _cells.append(f'<td style="{_sh_td}text-align:center;color:{_scol};font-weight:{"700" if _big_spread else "400"};">{_shv}</td>')
+                                else:
+                                    _cells.append(f'<td style="{_sh_td}text-align:center;color:#8ba0b8;">{_shv}</td>')
+                            _sh_body.append(f'<tr style="background:{_shbg};">{"".join(_cells)}</tr>')
+                        st.markdown(
+                            f'<div style="overflow-x:auto;overflow-y:auto;max-height:420px;border:1px solid #1e3a5f;border-radius:10px;">'
+                            f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                            f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_sh_head}</tr></thead>'
+                            f'<tbody>{"".join(_sh_body)}</tbody></table></div>',
+                            unsafe_allow_html=True,
                         )
                         st.caption("▲ = better value (higher payout). Max Spread = largest implied prob gap between books (pp). Rows with spread ≥ 3pp are worth line-shopping.")
                 except Exception as _shop_e:
@@ -14131,10 +14290,36 @@ elif page == "🎰 Betting":
                                         return "color:#666680"
                                     return ""
 
-                                st.dataframe(
-                                    _mu_display.style.applymap(_style_mu, subset=["P1 EV","P2 EV"]),
-                                    hide_index=True, use_container_width=True,
-                                    height=min(600, 38 + len(_mu_display) * 35),
+                                _mu_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                                _mu_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+                                _mu_cols = list(_mu_display.columns)
+                                _mu_head = "".join(f'<th style="{_mu_th}text-align:{"left" if "Player" in c else "center"};">{c}</th>' for c in _mu_cols)
+                                _mu_body = []
+                                for _mui, _mur in _mu_display.iterrows():
+                                    _mubg = "#0d1a30" if _mui % 2 == 0 else "#0a1525"
+                                    _cells = []
+                                    for _muc in _mu_cols:
+                                        _muv = str(_mur[_muc])
+                                        if "Player" in _muc:
+                                            _cells.append(f'<td style="{_mu_td}text-align:left;color:#dde6f5;font-weight:600;">{_muv}</td>')
+                                        elif "Odds" in _muc:
+                                            _cells.append(f'<td style="{_mu_td}text-align:center;color:#f4c430;">{_muv}</td>')
+                                        elif "DG" in _muc:
+                                            _cells.append(f'<td style="{_mu_td}text-align:center;color:#8ba0b8;">{_muv}</td>')
+                                        elif "EV" in _muc:
+                                            _is_pos = _muv.startswith("+") and "%" in _muv
+                                            _evcol = "#00c44f" if _is_pos else ("#4a5a6a" if _muv == "" else "#8ba0b8")
+                                            _cells.append(f'<td style="{_mu_td}text-align:center;color:{_evcol};font-weight:{"700" if _is_pos else "400"};">{_muv}</td>')
+                                        else:
+                                            _cells.append(f'<td style="{_mu_td}text-align:center;color:#8ba0b8;">{_muv}</td>')
+                                    _mu_body.append(f'<tr style="background:{_mubg};">{"".join(_cells)}</tr>')
+                                _mu_h = min(560, 38 + len(_mu_display) * 35)
+                                st.markdown(
+                                    f'<div style="overflow-x:auto;overflow-y:auto;max-height:{_mu_h}px;border:1px solid #1e3a5f;border-radius:10px;">'
+                                    f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                                    f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_mu_head}</tr></thead>'
+                                    f'<tbody>{"".join(_mu_body)}</tbody></table></div>',
+                                    unsafe_allow_html=True,
                                 )
 
 # ============================================================================
