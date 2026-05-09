@@ -113,10 +113,54 @@ def _detect_tid() -> str | None:
 # ---------------------------------------------------------------------------
 
 def _load_prop_odds(tid: str) -> pd.DataFrame:
-    """Load top5/top10 odds from prop_lines_{tid}.csv, normalise per-book."""
+    """Load top5/top10 odds from dg_outrights_{tid}.csv, normalise per-book.
+
+    DG outrights are the primary source — fresher than DK prop_lines scraper
+    and include 10+ books (Pinnacle, Betcris, Bet365, etc.).
+    Falls back to prop_lines_{tid}.csv if DG file is missing.
+    """
+    _MKT_MAP = {"top_5": "top5", "top_10": "top10", "win": "outright"}
+    dg_path = DATA_DIR / "datagolf" / f"dg_outrights_{tid}.csv"
+
+    if dg_path.exists():
+        try:
+            df = pd.read_csv(dg_path)
+            # Filter to top5/top10, exclude DG model rows
+            df = df[
+                df["market"].isin(["top_5", "top_10"]) &
+                (df["is_dg_model"].astype(str).str.lower() != "true")
+            ].copy()
+            if not df.empty:
+                df["market"] = df["market"].map(_MKT_MAP).fillna(df["market"])
+                # Normalise "Last, First" → "First Last"
+                def _flip(n):
+                    s = str(n).strip()
+                    return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
+                df["player_name"] = df["player_name"].apply(_flip)
+                df["name_key"] = df["player_name"].apply(_norm_name)
+                df["raw_prob"] = df["odds_american"].apply(_american_to_prob)
+                df = df[df["raw_prob"].notna() & (df["raw_prob"] > 0)].copy()
+                df = df.rename(columns={"odds_american": "odds"})
+                rows = []
+                for (book, market), grp in df.groupby(["book", "market"]):
+                    spots = 5.0 if market == "top5" else 10.0
+                    total_raw = grp["raw_prob"].sum()
+                    if total_raw <= 0:
+                        continue
+                    grp = grp.copy()
+                    grp["book_prob_nv"] = grp["raw_prob"] / total_raw * spots
+                    rows.append(grp)
+                if rows:
+                    out = pd.concat(rows, ignore_index=True)
+                    print(f"  DG outrights: {len(out)} top5/top10 rows, {out['book'].nunique()} books")
+                    return out[["name_key", "player_name", "market", "book", "odds", "book_prob_nv"]].copy()
+        except Exception as e:
+            print(f"  DG outrights load error: {e}")
+
+    # Fallback: prop_lines (DK only)
     path = ODDS_DIR / f"prop_lines_{tid}.csv"
     if not path.exists():
-        print(f"  No prop_lines file: {path.name}")
+        print(f"  No odds source available (tried DG outrights + {path.name})")
         return pd.DataFrame()
     try:
         df = pd.read_csv(path)
@@ -124,8 +168,6 @@ def _load_prop_odds(tid: str) -> pd.DataFrame:
         df["name_key"] = df["player_name"].apply(_norm_name)
         df["raw_prob"] = df["odds"].apply(_american_to_prob)
         df = df[df["raw_prob"].notna() & (df["raw_prob"] > 0)].copy()
-
-        # No-vig per book + market
         rows = []
         for (book, market), grp in df.groupby(["book", "market"]):
             spots = 5.0 if market == "top5" else 10.0
@@ -135,7 +177,6 @@ def _load_prop_odds(tid: str) -> pd.DataFrame:
             grp = grp.copy()
             grp["book_prob_nv"] = grp["raw_prob"] / total_raw * spots
             rows.append(grp)
-
         if not rows:
             return pd.DataFrame()
         out = pd.concat(rows, ignore_index=True)

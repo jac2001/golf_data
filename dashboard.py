@@ -352,7 +352,7 @@ WORKFLOW_TIMEOUTS = {
     "Expert Picks": 300,
     "Betting Profiles": 900,
     "DraftKings Odds": 45,
-    "PGA Odds": 300,
+
     "Predictions": 900,
 }
 
@@ -525,7 +525,7 @@ def build_pipeline_health_snapshot(tournament_id: str = "") -> dict:
             ("Field", DATA_DIR / "fields" / f"field_{tid}.csv", 48.0),
             ("DK Props", DATA_DIR / "odds" / f"prop_lines_{tid}.csv", 12.0),
             ("DK Cards", DATA_DIR / "odds" / f"dk_content_cards_{tid}.csv", 12.0),
-            ("PGA Odds", DATA_DIR / "odds" / f"pga_odds_{tid}.csv", 12.0),
+            ("DG Odds", DATA_DIR / "datagolf" / f"dg_outrights_{tid}.csv", 12.0),
             ("Betting Profiles", DATA_DIR / "betting_profiles" / f"betting_profiles_{tid}.csv", 24.0),
             ("Expert Picks", DATA_DIR / "expert_picks" / f"expert_picks_{tid}.csv", 72.0),
         ])
@@ -1828,7 +1828,14 @@ def _latest_tournament_id_from_prop_lines(max_age_hours: float = 30.0) -> str:
 
 @st.cache_data(ttl=120)
 def load_recommended_bets_df(preferred_tournament_id: str = "") -> tuple[pd.DataFrame, Path | None]:
-    """Load v1 tracked recommendations for a tournament, with latest fallback."""
+    """Load tracked recommendations for a tournament, with latest fallback.
+
+    Priority order when a tid is given:
+      1. recommended_bets_live_{tid}.csv  — mid-tournament live recs (most current)
+      2. recommended_bets_{tid}.csv       — standard pre-tournament recs
+      3. Most recently modified live_R*.csv or R*.csv files (up to 5 each)
+      4. recommended_bets_latest.csv
+    """
     odds_dir = DATA_DIR / "odds"
     if not odds_dir.exists():
         return pd.DataFrame(), None
@@ -1836,10 +1843,22 @@ def load_recommended_bets_df(preferred_tournament_id: str = "") -> tuple[pd.Data
     tid = str(preferred_tournament_id or "").strip().upper()
     candidates: list[Path] = []
     if tid:
-        candidates.append(odds_dir / f"recommended_bets_{tid}.csv")
+        # For the same tid, pick whichever file is newer (live vs standard)
+        _live_p = odds_dir / f"recommended_bets_live_{tid}.csv"
+        _std_p  = odds_dir / f"recommended_bets_{tid}.csv"
+        _tid_opts = sorted(
+            [p for p in [_live_p, _std_p] if p.exists()],
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+        candidates.extend(_tid_opts)
 
-    rid_files = sorted(odds_dir.glob("recommended_bets_R*.csv"), key=lambda x: x.stat().st_mtime, reverse=True)
-    candidates.extend(rid_files[:5])
+    # All live files + standard files sorted by recency, interleaved so live wins ties
+    live_files = sorted(odds_dir.glob("recommended_bets_live_R*.csv"), key=lambda x: x.stat().st_mtime, reverse=True)
+    rid_files  = sorted(odds_dir.glob("recommended_bets_R*.csv"),      key=lambda x: x.stat().st_mtime, reverse=True)
+    # Merge by mtime so the single most-recent file wins regardless of type
+    all_fallbacks = sorted(live_files[:5] + rid_files[:5], key=lambda x: x.stat().st_mtime, reverse=True)
+    candidates.extend(all_fallbacks)
 
     latest_file = odds_dir / "recommended_bets_latest.csv"
     if latest_file.exists():
@@ -2254,73 +2273,63 @@ def _latest_tournament_id_from_live(max_age_hours: float = 18.0) -> str:
 
 
 def load_latest_fanduel_odds_df() -> tuple:
-    """
-    Load latest FanDuel winner odds dataset.
+    """Load latest winner odds from DataGolf outrights (win market, DraftKings book).
 
-    Priority:
-    1. data/odds/fanduel_odds_*.csv
-    2. data/odds/pga_odds_*.csv (fallback)
+    Returns (df, file_path, source_label) with columns:
+      player_name, odds_numeric, implied_prob, odds_direction
+    Uses DraftKings rows from dg_outrights_{tid}.csv as the primary display book.
     """
-    fd_files = sorted(
-        (DATA_DIR / "odds").glob("fanduel_odds_*.csv"),
+    dg_files = sorted(
+        (DATA_DIR / "datagolf").glob("dg_outrights_R*.csv"),
         key=lambda x: x.stat().st_mtime,
         reverse=True,
     )
-    source = "fanduel_odds"
-    odds_file = fd_files[0] if fd_files else None
-
-    if odds_file is None:
-        pga_files = sorted(
-            (DATA_DIR / "odds").glob("pga_odds_*.csv"),
-            key=lambda x: x.stat().st_mtime,
-            reverse=True,
-        )
-        source = "pga_odds"
-        odds_file = pga_files[0] if pga_files else None
-
-    if odds_file is None:
+    if not dg_files:
         return pd.DataFrame(), None, ""
 
-    df = pd.read_csv(odds_file)
+    odds_file = dg_files[0]
+    try:
+        raw = pd.read_csv(odds_file)
+    except Exception:
+        return pd.DataFrame(), odds_file, "dg_outrights"
+
+    if raw.empty or "market" not in raw.columns:
+        return pd.DataFrame(), odds_file, "dg_outrights"
+
+    # Win market, DraftKings book for display; fall back to any book
+    win = raw[raw["market"].astype(str).str.lower() == "win"].copy()
+    dk_win = win[win["book"].astype(str).str.lower() == "draftkings"]
+    df = dk_win if not dk_win.empty else win.drop_duplicates(subset=["player_name"])
+
     if df.empty:
-        return pd.DataFrame(), odds_file, source
+        return pd.DataFrame(), odds_file, "dg_outrights"
 
-    if "player_name" not in df.columns and "name" in df.columns:
-        df["player_name"] = df["name"]
+    # Normalise "Last, First" → "First Last"
+    def _flip(n):
+        s = str(n).strip()
+        if "," in s:
+            parts = s.split(",", 1)
+            return f"{parts[1].strip()} {parts[0].strip()}"
+        return s
+    df = df.copy()
+    df["player_name"] = df["player_name"].apply(_flip)
 
-    if "odds_to_win" not in df.columns and "fanduel_odds" in df.columns:
-        df["odds_to_win"] = df["fanduel_odds"]
+    # odds_american → odds_numeric (integer American format)
+    df["odds_numeric"] = pd.to_numeric(df["odds_american"], errors="coerce")
+    df["implied_prob"] = df["implied_prob"].pipe(pd.to_numeric, errors="coerce") if "implied_prob" in df.columns else (
+        np.where(df["odds_numeric"] > 0,
+                 100.0 / (df["odds_numeric"] + 100.0),
+                 np.where(df["odds_numeric"] < 0,
+                          -df["odds_numeric"] / (-df["odds_numeric"] + 100.0),
+                          np.nan))
+    )
+    df["odds_to_win"] = df["odds_numeric"].apply(
+        lambda x: f"+{int(x)}" if x > 0 else str(int(x)) if pd.notna(x) else ""
+    )
+    df["odds_direction"] = ""
 
-    if "implied_prob" not in df.columns and "fanduel_implied_prob" in df.columns:
-        df["implied_prob"] = df["fanduel_implied_prob"]
-
-    if "odds_direction" not in df.columns:
-        if "odds_movement_direction" in df.columns:
-            df["odds_direction"] = df["odds_movement_direction"]
-        elif "odds_swing" in df.columns:
-            df["odds_direction"] = df["odds_swing"]
-        else:
-            df["odds_direction"] = ""
-
-    if "odds_swing" not in df.columns and "odds_movement_swing" in df.columns:
-        df["odds_swing"] = df["odds_movement_swing"]
-
-    if "odds_numeric" not in df.columns:
-        src_col = "odds_to_win" if "odds_to_win" in df.columns else None
-        df["odds_numeric"] = df[src_col].apply(_parse_american_odds) if src_col else np.nan
-    else:
-        df["odds_numeric"] = pd.to_numeric(df["odds_numeric"], errors="coerce")
-
-    if "implied_prob" not in df.columns:
-        df["implied_prob"] = np.where(
-            df["odds_numeric"] > 0,
-            100.0 / (df["odds_numeric"] + 100.0),
-            np.nan,
-        )
-    else:
-        df["implied_prob"] = pd.to_numeric(df["implied_prob"], errors="coerce")
-
-    return df, odds_file, source
+    df = df.sort_values("odds_numeric", ascending=True).reset_index(drop=True)
+    return df, odds_file, "dg_outrights"
 
 
 def _safe_parse_name_list(value) -> list[str]:
@@ -13057,12 +13066,19 @@ elif page == "🎰 Betting":
 
                     # Detect stale fallback — file is from a different tournament
                     if not _vb_rec_df.empty and "tournament_id" in _vb_rec_df.columns:
-                        _rec_tid = str(_vb_rec_df["tournament_id"].iloc[0]).strip().upper()
-                        _want_tid = str(prop_tournament_id or "").strip().upper()
+                        _rec_tid   = str(_vb_rec_df["tournament_id"].iloc[0]).strip().upper()
+                        _want_tid  = str(prop_tournament_id or "").strip().upper()
+                        _is_live_rec = bool(_vb_rec_df.get("is_live_rec", pd.Series(dtype=bool)).any()) if "is_live_rec" in _vb_rec_df.columns else False
+                        _rounds_done = int(pd.to_numeric(_vb_rec_df.get("rounds_complete", pd.Series(dtype=float)), errors="coerce").max()) if "rounds_complete" in _vb_rec_df.columns else 0
                         if _want_tid and _rec_tid != _want_tid:
                             st.warning(
                                 f"Showing bets from **{_rec_tid}** (no scored bets yet for {_want_tid}). "
                                 "Run **Score Bets** in the Data Management panel to generate recommendations for this week."
+                            )
+                        elif _is_live_rec and _rounds_done > 0:
+                            st.info(
+                                f"Showing live in-tournament recs generated after R{_rounds_done} — "
+                                "click **Refresh Bets** below for latest R3 recommendations."
                             )
 
                     if _vb_rec_df.empty:
@@ -17314,8 +17330,6 @@ elif page == "⚙️ Pipeline":
                                           "--tournament-id", tournament_id]),
                         ("Betting Profiles", ["python3", "scripts/scrapers/fetch_betting_profiles.py",
                                               "--tournament-id", tournament_id, "--field", field_path]),
-                        ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
-                                      "--tournament-id", tournament_id]),
                         ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
                                              "--tournament-id", tournament_id,
                                              "--max-age-hours", "2",
@@ -17419,8 +17433,6 @@ elif page == "⚙️ Pipeline":
                     tasks = []
                     if _dk_task:
                         tasks.append(_dk_task)
-                    tasks.append(("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
-                                               "--tournament-id", tournament_id]))
 
                     results = []
                     for i, (name, cmd) in enumerate(tasks):
@@ -17771,19 +17783,6 @@ elif page == "⚙️ Pipeline":
                 else:
                     st.warning("Need tournament ID")
 
-            if st.button("🏆 PGA Tour Odds", use_container_width=True, key="m_pga"):
-                if manual_id:
-                    with st.spinner("Fetching..."):
-                        success, _ = run_scraper([
-                            "python3", "scripts/scrapers/fetch_pga_odds.py",
-                            "--tournament-id", manual_id
-                        ])
-                        if success:
-                            st.success("✅ Done")
-                        else:
-                            st.error("❌ Failed")
-                else:
-                    st.warning("Need tournament ID")
 
             if st.button("💼 Betting Profiles", use_container_width=True, key="m_betting"):
                 if manual_id:
@@ -18053,7 +18052,7 @@ elif page == "⚙️ Pipeline":
         if tournament_id:
             files = [
                 ("Field", DATA_DIR / "fields" / f"field_{tournament_id}.csv"),
-                ("PGA Odds", DATA_DIR / "odds" / f"pga_odds_{tournament_id}.csv"),
+                ("DG Odds", DATA_DIR / "datagolf" / f"dg_outrights_{tournament_id}.csv"),
                 ("DK Odds", DATA_DIR / "odds" / f"prop_lines_{tournament_id}.csv"),
                 ("Betting Profiles", DATA_DIR / "betting_profiles" / f"betting_profiles_{tournament_id}.csv"),
             ]

@@ -106,68 +106,54 @@ def build_consensus_book_probs(tournament_id: str,
                                 preds_df: pd.DataFrame) -> dict[str, float]:
     """Build a no-vig consensus outright win probability per player.
 
-    Loads FanDuel and PGA Tour odds files (when available) alongside DK
-    implied probs already in preds_df.  For each book, normalizes the raw
-    implied probs so they sum to 1.0 (removes the vig).  Returns a
-    name_key → consensus_prob dict (median across available books).
+    Reads dg_outrights_{tid}.csv (DataGolf win market rows, 10+ books including
+    DK, FanDuel, Pinnacle, Bet365, BetMGM, Caesars, Bovada, BetOnline).
+    For each book normalizes raw implied probs to sum to 1.0, then returns
+    the median across books as name_key → prob.
 
-    Falls back to an empty dict if no additional books are found — callers
-    should treat a missing key as "use DK raw implied_prob".
+    Falls back to empty dict if DG file absent — callers use DK raw implied_prob.
     """
-    book_probs: dict[str, list[float]] = {}  # name_key → [prob_book1, ...]
+    dg_path = DATA_DIR / "datagolf" / f"dg_outrights_{tournament_id}.csv"
+    if not dg_path.exists():
+        return {}
 
-    def _load_book(path: Path, name_col: str, odds_col: str) -> None:
-        try:
-            df = pd.read_csv(path)
-            if name_col not in df.columns or odds_col not in df.columns:
-                return
-            df = df[[name_col, odds_col]].copy()
-            df["raw_prob"] = df[odds_col].apply(american_to_prob)
-            df = df[df["raw_prob"].notna() & (df["raw_prob"] > 0)]
-            total = df["raw_prob"].sum()
-            if total <= 0:
-                return
-            df["nv_prob"] = df["raw_prob"] / total
-            for _, row in df.iterrows():
-                key = normalize_name_key(row[name_col])
-                if key:
-                    book_probs.setdefault(key, []).append(float(row["nv_prob"]))
-        except Exception:
-            pass
+    try:
+        dg = pd.read_csv(dg_path)
+    except Exception:
+        return {}
 
-    # FanDuel outright — column is "winner" market; filter if market col exists
-    fd_path = ODDS_DIR / f"fanduel_odds_{tournament_id}.csv"
-    if fd_path.exists():
-        try:
-            fd = pd.read_csv(fd_path)
-            if "market" in fd.columns:
-                fd = fd[fd["market"].astype(str).str.lower() == "winner"]
-            if not fd.empty and "player_name" in fd.columns and "odds_numeric" in fd.columns:
-                fd = fd[["player_name", "odds_numeric"]].copy()
-                fd["raw_prob"] = fd["odds_numeric"].apply(american_to_prob)
-                fd = fd[fd["raw_prob"].notna() & (fd["raw_prob"] > 0)]
-                total = fd["raw_prob"].sum()
-                if total > 0:
-                    fd["nv_prob"] = fd["raw_prob"] / total
-                    for _, row in fd.iterrows():
-                        key = normalize_name_key(row["player_name"])
-                        if key:
-                            book_probs.setdefault(key, []).append(float(row["nv_prob"]))
-                    print(f"  Consensus: loaded FanDuel odds ({len(fd)} players)")
-        except Exception as e:
-            print(f"  Consensus: FanDuel load failed — {e}")
+    if "market" not in dg.columns or "player_name" not in dg.columns:
+        return {}
 
-    # PGA Tour odds
-    pga_path = ODDS_DIR / f"pga_odds_{tournament_id}.csv"
-    if pga_path.exists():
-        _load_book(pga_path, "player_name", "odds_numeric")
-        if pga_path.exists():
-            print(f"  Consensus: loaded PGA Tour odds")
+    win_rows = dg[dg["market"].astype(str).str.lower() == "win"].copy()
+    if win_rows.empty:
+        return {}
+
+    # Use odds_american col; convert to prob
+    if "odds_american" not in win_rows.columns:
+        return {}
+    win_rows["raw_prob"] = win_rows["odds_american"].apply(
+        lambda x: american_to_prob(parse_american(x))
+    )
+    win_rows = win_rows[win_rows["raw_prob"].notna() & (win_rows["raw_prob"] > 0)]
+
+    book_probs: dict[str, list[float]] = {}
+    books_loaded = []
+    for book, grp in win_rows.groupby("book"):
+        total = grp["raw_prob"].sum()
+        if total <= 0:
+            continue
+        nv = grp["raw_prob"] / total
+        for name, prob in zip(grp["player_name"], nv):
+            key = normalize_name_key(name)
+            if key:
+                book_probs.setdefault(key, []).append(float(prob))
+        books_loaded.append(str(book))
 
     if not book_probs:
         return {}
 
-    # Median across books for each player
+    print(f"  Consensus: loaded DG outrights ({len(books_loaded)} books: {', '.join(books_loaded)})")
     return {k: float(np.median(v)) for k, v in book_probs.items()}
 
 
@@ -1294,7 +1280,7 @@ def _dg_outrights_to_prop_lines(tid: str) -> pd.DataFrame:
                 return f"{parts[1].strip()} {parts[0].strip()}"
             return s
         df["player_name"] = df["player_name"].apply(_to_first_last)
-        df["_source_priority"] = 1  # lower priority than PGA market / DK lines
+        df["_source_priority"] = 0  # DG outrights are primary — fresher than DK prop_lines scraper
         return df[["player_name", "market", "book", "odds", "implied_prob", "_source_priority"]].copy()
     except Exception:
         return pd.DataFrame()
@@ -2657,36 +2643,36 @@ def main() -> int:
         except Exception as _dg_err:
             print(f"  [warn] DG fetch failed: {_dg_err}")
 
-    # Build lines_df: prefer tournament-specific prop_lines file (DK scraper output).
-    # If no tournament-specific file exists, use DG outrights as the primary source
-    # so we never fall back to a stale file from a different tournament.
-    _specific_lines = ODDS_DIR / f"prop_lines_{tid}.csv"
-    if _specific_lines.exists():
-        lines_df = pd.read_csv(_specific_lines)
-        print(f"  Prop lines: {_specific_lines.name} ({len(lines_df)} rows)")
+    # Build lines_df: DG outrights are the primary source for outright/top5/top10/top20.
+    # prop_lines (DK scraper) is dropped for markets DG covers — DG is fresher and
+    # includes 10+ books (Pinnacle, Betcris, Bet365, etc.) vs DK-only from the scraper.
+    _DG_MARKETS = {"outright", "top5", "top10", "top20"}
+
+    dg_outright_lines = _dg_outrights_to_prop_lines(tid)
+    if not dg_outright_lines.empty:
+        lines_df = dg_outright_lines
+        print(f"  DG outrights: {len(lines_df)} rows, {lines_df['book'].nunique()} books")
     else:
-        dg_outright_lines_primary = _dg_outrights_to_prop_lines(tid)
-        if not dg_outright_lines_primary.empty:
-            # Set priority=0 so they're treated as primary (not supplementary)
-            dg_outright_lines_primary["_source_priority"] = 0
-            lines_df = dg_outright_lines_primary
-            print(f"  Prop lines: DG outrights primary ({len(lines_df)} rows, {lines_df['book'].nunique()} books)")
+        # Fallback to prop_lines if DG file is missing
+        _specific_lines = ODDS_DIR / f"prop_lines_{tid}.csv"
+        if _specific_lines.exists():
+            lines_df = pd.read_csv(_specific_lines)
+            print(f"  Fallback prop lines: {_specific_lines.name} ({len(lines_df)} rows)")
         else:
-            print("No prop lines available (no DK file and DG outrights empty).")
+            print("No lines available (DG outrights empty and no prop_lines file).")
             return 1
 
-    # Augment with FanDuel markets from pga_market_odds_{tid}.csv
+    # Add FanDuel markets from pga_market_odds_{tid}.csv — but only markets that
+    # DG doesn't cover (make_cut, h2h, group_winner, wire_to_wire, etc.).
     pga_market_lines = load_pga_market_odds(tid)
     if not pga_market_lines.empty:
-        lines_df = pd.concat([lines_df, pga_market_lines], ignore_index=True)
-        print(f"  Merged {len(pga_market_lines)} PGA market lines into prop_lines")
-
-    # When DK prop_lines exists, supplement with DG outrights for additional books
-    if _specific_lines.exists():
-        dg_outright_lines = _dg_outrights_to_prop_lines(tid)
-        if not dg_outright_lines.empty:
-            lines_df = pd.concat([lines_df, dg_outright_lines], ignore_index=True)
-            print(f"  Merged {len(dg_outright_lines)} DG outright lines ({dg_outright_lines['book'].nunique()} books)")
+        pga_extra = pga_market_lines[
+            ~pga_market_lines["market"].astype(str).str.lower().apply(canonical_market).isin(_DG_MARKETS)
+        ]
+        if not pga_extra.empty:
+            lines_df = pd.concat([lines_df, pga_extra], ignore_index=True)
+            mkt_counts = pga_extra["market"].value_counts().to_dict()
+            print(f"  FanDuel non-DG markets added: {mkt_counts}")
 
     # Augment with DataGolf round matchup lines (all books incl. Pinnacle/Betcris)
     dg_matchup_lines = _dg_matchups_to_prop_lines(tid)

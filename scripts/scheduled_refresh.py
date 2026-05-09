@@ -377,8 +377,6 @@ def run_tuesday_morning(dry_run: bool = False):
                             "--slug", power_slug or tournament_name.lower().replace(" ", "-"), "--allow-fail"]),
         ("Betting Profiles", ["python3", "scripts/scrapers/fetch_betting_profiles.py",
                               "--tournament-id", tournament_id, "--field", field_path]),
-        ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
-                      "--tournament-id", tournament_id]),
         ("DG Approach Skill", ["python3", "scripts/scrapers/fetch_dg_approach_skill.py",
                                "--period", "l24"]),
         ("DG Skill Ratings", ["python3", "scripts/scrapers/fetch_dg_skill_ratings.py"]),
@@ -468,8 +466,6 @@ def run_tuesday_evening(dry_run: bool = False):
                              "--max-age-hours", "2",
                              "--fetch-profile", "fast",
                              "--no-snapshot"]),
-        ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
-                      "--tournament-id", tournament_id]),
         # DG publishes pre-tournament predictions Tue/Wed evening — fetch and re-run
         ("DG Pre-Tournament", ["python3", "scripts/scrapers/fetch_dg_pre_tournament.py",
                                 "--tournament-id", tournament_id]),
@@ -616,14 +612,14 @@ def run_wednesday_morning(dry_run: bool = False):
                       "--tournament-id", tournament_id, "--auto-update-field"]),
         ("Expert Picks", ["python3", "scripts/scrapers/fetch_expert_picks_pga.py",
                           "--tournament-id", tournament_id]),
-        ("PGA Odds", ["python3", "scripts/scrapers/fetch_pga_odds.py",
-                      "--tournament-id", tournament_id]),
         ("Predictions", ["python3", "scripts/run_pipeline.py",
                          "--tournament", tournament_name,
                          "--pga-id", tournament_id,
                          "--field", f"data/fields/field_{tournament_id}.csv",
                          "--use-schedule",
                          "--skip-refresh", "--calibrate", "--lineup"]),
+        ("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
+                             "--tournament-id", tournament_id]),
     ]
 
     results = []

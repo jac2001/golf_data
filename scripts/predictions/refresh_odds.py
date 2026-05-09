@@ -211,68 +211,74 @@ def refresh_odds(tournament_id: str) -> bool:
     
     # ------------- Recompute derived odds columns ----------------
     
-    # ── No-vig consensus probability ────────────────────────────────────────
-    # Raw DK odds → implied prob includes vig (~10-15% overround). We remove it
-    # by normalizing per book (each player's prob ÷ sum of all probs = 100%).
-    # Averaging across multiple books gives a cleaner "true market probability".
-    raw_dk_prob = merged["odds_numeric"].apply(_odds_to_prob)
-    dk_total    = raw_dk_prob.sum()
-    dk_nv       = raw_dk_prob / dk_total if dk_total > 0 else raw_dk_prob  # no-vig DK
+    # ── No-vig consensus probability via DataGolf outrights (10+ books) ────────
+    # dg_outrights_{tid}.csv has win market rows per player per book.
+    # We normalize each book independently then take the median across books.
+    dg_outrights_path = PROJECT_ROOT / "data" / "datagolf" / f"dg_outrights_{tournament_id}.csv"
+    book_probs = []
+    book_names = []
 
-    # Try to load additional books for consensus
-    book_probs = [dk_nv]
-    book_names = ["DK"]
-
-    for book_tag, fname_pat, odds_col in [
-        ("FD",  f"fanduel_odds_{tournament_id}.csv", "odds_numeric"),
-        ("PGA", f"pga_odds_{tournament_id}.csv",     "odds_numeric"),
-        ("DKP", f"dk_odds_{tournament_id}.csv",      "dk_odds_numeric"),
-    ]:
-        book_path = PROJECT_ROOT / "data" / "odds" / fname_pat
-        if not book_path.exists():
-            continue
+    if dg_outrights_path.exists():
         try:
-            bdf = pd.read_csv(book_path)
-            bdf["player_id"] = bdf["player_id"].astype(str)
-            bdf = bdf[["player_id", odds_col]].dropna()
-            # Compute raw implied prob per player
-            bdf["raw_prob"] = bdf[odds_col].apply(_odds_to_prob)
-            total = bdf["raw_prob"].sum()
-            if total > 0:
-                bdf["nv_prob"] = bdf["raw_prob"] / total
-            else:
-                continue
-            # Align to merged (left join on player_id)
-            aligned = merged[["player_id"]].merge(bdf[["player_id", "nv_prob"]], on="player_id", how="left")
-            book_probs.append(aligned["nv_prob"].values)
-            book_names.append(book_tag)
-        except Exception as _be:
-            print(f"  Skipped {book_tag} odds: {_be}")
+            dg = pd.read_csv(dg_outrights_path)
+            dg_win = dg[dg["market"].astype(str).str.lower() == "win"].copy()
+            if not dg_win.empty and "player_name" in dg_win.columns and "odds_american" in dg_win.columns:
+                # Build name_key → player_id map from merged (predictions)
+                merged["_nk"] = merged["player_name"].apply(
+                    lambda n: " ".join(sorted(str(n).lower().split(","))) if "," in str(n)
+                    else str(n).strip().lower()
+                )
+                dg_win["_nk"] = dg_win["player_name"].apply(
+                    lambda n: f"{n.split(',')[1].strip()} {n.split(',')[0].strip()}".lower()
+                    if "," in str(n) else str(n).strip().lower()
+                )
+                dg_win["raw_prob"] = dg_win["odds_american"].apply(
+                    lambda x: (1 / (1 + float(x)/100) if float(x) > 0 else float(-x) / (float(-x) + 100))
+                    if str(x).lstrip("+-").replace(".","").isdigit() else np.nan
+                )
+                dg_win = dg_win[dg_win["raw_prob"].notna() & (dg_win["raw_prob"] > 0)]
 
-    if len(book_probs) > 1:
-        import numpy as _np
-        consensus = _np.nanmedian(_np.column_stack(book_probs), axis=1)
-        merged["vegas_prob"] = consensus
-        print(f"  Consensus odds from {len(book_probs)} books: {book_names}")
+                for book, grp in dg_win.groupby("book"):
+                    total = grp["raw_prob"].sum()
+                    if total <= 0:
+                        continue
+                    grp = grp.copy()
+                    grp["nv_prob"] = grp["raw_prob"] / total
+                    # Align to merged by name key
+                    nk_map = dict(zip(grp["_nk"], grp["nv_prob"]))
+                    aligned = merged["_nk"].map(nk_map)
+                    book_probs.append(aligned.values)
+                    book_names.append(str(book))
+
+                print(f"  Consensus: DG outrights — {len(book_names)} books: {', '.join(book_names)}")
+        except Exception as _dge:
+            print(f"  DG outrights consensus skipped: {_dge}")
+
+    if not book_probs:
+        # Fallback: DK no-vig from merged odds_numeric
+        raw_dk_prob = merged["odds_numeric"].apply(_odds_to_prob)
+        dk_total    = raw_dk_prob.sum()
+        merged["vegas_prob"] = raw_dk_prob / dk_total if dk_total > 0 else raw_dk_prob
+        print("  Using DK no-vig odds (DG outrights not available)")
     else:
-        merged["vegas_prob"] = dk_nv.values
-        print("  Using DK no-vig odds (no other books available)")
+        consensus = np.nanmedian(np.column_stack(book_probs), axis=1)
+        merged["vegas_prob"] = consensus
+
+    # Clean up temp key column
+    merged = merged.drop(columns=["_nk"], errors="ignore")
 
     if "win_prob" in merged.columns:
         merged["model_vs_vegas_edge"] = merged["win_prob"] - merged["vegas_prob"]
         merged["is_value_bet"]        = merged["model_vs_vegas_edge"] > 0
         merged["odds_drift_level"]    = merged["model_vs_vegas_edge"].apply(_drift_label)
 
-    # ── DK movement direction from PGA Tour compressed endpoint ─────────────
+    # ── DK movement direction (optional — from dk_odds_{tid}.csv if present) ──
     dk_path = PROJECT_ROOT / "data" / "odds" / f"dk_odds_{tournament_id}.csv"
     if dk_path.exists():
         try:
             dk_dir = pd.read_csv(dk_path)[["player_id", "dk_odds_direction"]].copy()
             dk_dir["player_id"] = dk_dir["player_id"].astype(str)
             merged = merged.merge(dk_dir, on="player_id", how="left", suffixes=("", "_new"))
-            # Keep existing column if already present, else use new one
-            if "dk_odds_direction" in merged.columns:
-                pass  # already merged cleanly
             print(f"  DK direction merged: {int(dk_dir['dk_odds_direction'].notna().sum())} players")
         except Exception as _e:
             print(f"  Skipped DK direction: {_e}")
