@@ -15753,12 +15753,35 @@ elif page == "🔴 Live":
                                     if n > 0:     return "color:#ef9a9a"
                                     return ""
 
-                                _sum_styled = (
-                                    _sum_df[["Player", "Open", "Current", "Change"]]
-                                    .style.map(_color_odds_change, subset=["Change"])
-                                )
-                                st.dataframe(
-                                    _sum_styled, hide_index=True, use_container_width=True
+                                _om_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;"
+                                _om_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+                                _om_body = []
+                                for _omi, _omr in _sum_df[["Player","Open","Current","Change"]].iterrows():
+                                    _ombg = "#0d1a30" if _omi % 2 == 0 else "#0a1525"
+                                    try:
+                                        _cn = int(str(_omr["Change"]).replace("+","").replace(",",""))
+                                    except (ValueError, TypeError):
+                                        _cn = 0
+                                    if _cn < -500:   _ccol = "#00c44f"; _cw = "700"
+                                    elif _cn < 0:    _ccol = "#4caf50"; _cw = "400"
+                                    elif _cn > 500:  _ccol = "#e53935"; _cw = "700"
+                                    elif _cn > 0:    _ccol = "#ef9a9a"; _cw = "400"
+                                    else:            _ccol = "#8ba0b8"; _cw = "400"
+                                    _om_body.append(
+                                        f'<tr style="background:{_ombg};">'
+                                        f'<td style="{_om_td}text-align:left;color:#dde6f5;font-weight:600;">{_omr["Player"]}</td>'
+                                        f'<td style="{_om_td}text-align:center;color:#8ba0b8;">{_omr["Open"]}</td>'
+                                        f'<td style="{_om_td}text-align:center;color:#8ba0b8;">{_omr["Current"]}</td>'
+                                        f'<td style="{_om_td}text-align:center;color:{_ccol};font-weight:{_cw};">{_omr["Change"]}</td>'
+                                        f'</tr>'
+                                    )
+                                st.markdown(
+                                    f'<div style="border:1px solid #1e3a5f;border-radius:10px;overflow:hidden;">'
+                                    f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                                    f'<thead><tr>'
+                                    + "".join(f'<th style="{_om_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in ["Player","Open","Current","Change"])
+                                    + f'</tr></thead><tbody>{"".join(_om_body)}</tbody></table></div>',
+                                    unsafe_allow_html=True,
                                 )
                     else:
                         st.info("No snapshots within the last 7 days.")
@@ -15915,13 +15938,55 @@ elif page == "🔴 Live":
                                 pass
                             return ""
 
-                        _styled_sc = _display_sc.style
-                        for _sc_col in ["Birdies", "Eagles", "Bogeys", "Dbl+", "Net"]:
-                            if _sc_col in _display_sc.columns:
-                                _styled_sc = _styled_sc.map(
-                                    lambda v, c=_sc_col: _color_scoring(v, c), subset=[_sc_col]
-                                )
-                        st.dataframe(_styled_sc, hide_index=True, use_container_width=True)
+                        def _sc_cell_color(v, col):
+                            try:
+                                n = int(v)
+                                if col == "Birdies":
+                                    return "#00c44f" if n >= 6 else ("#81c784" if n >= 3 else "#8ba0b8")
+                                if col == "Eagles":
+                                    return "#ffd700" if n >= 1 else "#8ba0b8"
+                                if col == "Bogeys":
+                                    return "#00c44f" if n == 0 else ("#e53935" if n >= 4 else "#ef9a9a" if n >= 2 else "#8ba0b8")
+                                if col == "Dbl+":
+                                    return "#e53935" if n >= 2 else ("#ef9a9a" if n == 1 else "#8ba0b8")
+                                if col == "Net":
+                                    return "#00c44f" if n >= 4 else ("#81c784" if n >= 1 else "#e53935" if n <= -2 else "#ef9a9a" if n < 0 else "#8ba0b8")
+                            except (TypeError, ValueError):
+                                pass
+                            return "#8ba0b8"
+                        _sc_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;border-bottom:1px solid #1e3a5f;"
+                        _sc_td = "padding:7px 10px;border-bottom:1px solid #12253d;font-size:0.85em;"
+                        _sc_cols_disp = list(_display_sc.columns)
+                        _sc_color_cols = {"Birdies","Eagles","Bogeys","Dbl+","Net"}
+                        _sc_head_html = "".join(f'<th style="{_sc_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in _sc_cols_disp)
+                        _sc_body_html = []
+                        for _scci, _sccr in _display_sc.iterrows():
+                            _scbg = "#0d1a30" if _scci % 2 == 0 else "#0a1525"
+                            _cells = []
+                            for _scc in _sc_cols_disp:
+                                _scv = str(_sccr[_scc])
+                                if _scc == "Player":
+                                    _cells.append(f'<td style="{_sc_td}text-align:left;color:#dde6f5;font-weight:600;">{_scv}</td>')
+                                elif _scc == "Score":
+                                    try:
+                                        _sv = float(_sccr[_scc])
+                                        _svcol = "#00c44f" if _sv < 0 else ("#e74c3c" if _sv > 0 else "#8ba0b8")
+                                    except (TypeError, ValueError):
+                                        _svcol = "#8ba0b8"
+                                    _cells.append(f'<td style="{_sc_td}text-align:center;color:{_svcol};">{_scv}</td>')
+                                elif _scc in _sc_color_cols:
+                                    _vcol = _sc_cell_color(_sccr[_scc], _scc)
+                                    _cells.append(f'<td style="{_sc_td}text-align:center;color:{_vcol};">{_scv}</td>')
+                                else:
+                                    _cells.append(f'<td style="{_sc_td}text-align:center;color:#8ba0b8;">{_scv}</td>')
+                            _sc_body_html.append(f'<tr style="background:{_scbg};">{"".join(_cells)}</tr>')
+                        st.markdown(
+                            f'<div style="overflow-x:auto;overflow-y:auto;max-height:520px;border:1px solid #1e3a5f;border-radius:10px;">'
+                            f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                            f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_sc_head_html}</tr></thead>'
+                            f'<tbody>{"".join(_sc_body_html)}</tbody></table></div>',
+                            unsafe_allow_html=True,
+                        )
 
                         # ── Per-round scoring breakdown ──────────────────────────
                         if _per_rnd and len(_ls_rounds) > 1:
@@ -15951,13 +16016,29 @@ elif page == "🔴 Live":
                                     })
                                 if _sc_rnd_rows:
                                     _sc_rnd_df = pd.DataFrame(_sc_rnd_rows)
-                                    _sc_rnd_styled = _sc_rnd_df.style
-                                    for _sc_col in ["Birdies", "Eagles", "Bogeys", "Dbl+", "Net"]:
-                                        if _sc_col in _sc_rnd_df.columns:
-                                            _sc_rnd_styled = _sc_rnd_styled.map(
-                                                lambda v, c=_sc_col: _color_scoring(v, c), subset=[_sc_col]
-                                            )
-                                    st.dataframe(_sc_rnd_styled, hide_index=True, use_container_width=True)
+                                    _rnd_cols = list(_sc_rnd_df.columns)
+                                    _rnd_body = []
+                                    for _rndi, _rndr in _sc_rnd_df.iterrows():
+                                        _rndbg = "#0d1a30" if _rndi % 2 == 0 else "#0a1525"
+                                        _cells = []
+                                        for _rndc in _rnd_cols:
+                                            _rndv = str(_rndr[_rndc])
+                                            if _rndc == "Round":
+                                                _cells.append(f'<td style="{_sc_td}text-align:center;color:#8ba0b8;font-weight:600;">{_rndv}</td>')
+                                            elif _rndc in _sc_color_cols:
+                                                _vcol = _sc_cell_color(_rndr[_rndc], _rndc)
+                                                _cells.append(f'<td style="{_sc_td}text-align:center;color:{_vcol};">{_rndv}</td>')
+                                            else:
+                                                _cells.append(f'<td style="{_sc_td}text-align:center;color:#8ba0b8;">{_rndv}</td>')
+                                        _rnd_body.append(f'<tr style="background:{_rndbg};">{"".join(_cells)}</tr>')
+                                    _rnd_head_html = "".join(f'<th style="{_sc_th}text-align:center;">{c}</th>' for c in _rnd_cols)
+                                    st.markdown(
+                                        f'<div style="border:1px solid #1e3a5f;border-radius:10px;overflow:hidden;">'
+                                        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                                        f'<thead><tr>{_rnd_head_html}</tr></thead>'
+                                        f'<tbody>{"".join(_rnd_body)}</tbody></table></div>',
+                                        unsafe_allow_html=True,
+                                    )
                     else:
                         st.info("No scoring data available yet.")
 
@@ -16003,8 +16084,47 @@ elif page == "🔴 Live":
                             return ""
 
                         _sg_cols = [c for c in _stats_display.columns if c not in ("Pos", "Player", "Score")]
-                        _styled  = _stats_display.style.map(_color_sg, subset=_sg_cols)
-                        st.dataframe(_styled, hide_index=True, use_container_width=True)
+                        def _sg_html_col(val):
+                            if not isinstance(val, str) or val == "—": return "#8ba0b8"
+                            try:
+                                v = float(val.split(" ")[0])
+                                if v >= 2.0:  return "#00c44f"
+                                if v >= 0.5:  return "#81c784"
+                                if v <= -2.0: return "#e53935"
+                                if v <= -0.5: return "#ef9a9a"
+                            except Exception: pass
+                            return "#8ba0b8"
+                        _sg_th2 = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                        _sg_td2 = "padding:7px 10px;border-bottom:1px solid #12253d;font-size:0.82em;"
+                        _sg_disp_cols = list(_stats_display.columns)
+                        _sg_head2 = "".join(f'<th style="{_sg_th2}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in _sg_disp_cols)
+                        _sg_body2 = []
+                        for _sgci, _sgcr in _stats_display.iterrows():
+                            _sgbg = "#0d1a30" if _sgci % 2 == 0 else "#0a1525"
+                            _cells = []
+                            for _sgcc in _sg_disp_cols:
+                                _sgv = str(_sgcr[_sgcc])
+                                if _sgcc == "Player":
+                                    _cells.append(f'<td style="{_sg_td2}text-align:left;color:#dde6f5;font-weight:600;white-space:nowrap;">{_sgv}</td>')
+                                elif _sgcc == "Score":
+                                    try:
+                                        _sv2 = float(_sgcr[_sgcc])
+                                        _sv2col = "#00c44f" if _sv2 < 0 else ("#e74c3c" if _sv2 > 0 else "#8ba0b8")
+                                    except (TypeError, ValueError):
+                                        _sv2col = "#8ba0b8"
+                                    _cells.append(f'<td style="{_sg_td2}text-align:center;color:{_sv2col};">{_sgv}</td>')
+                                elif _sgcc in _sg_cols:
+                                    _cells.append(f'<td style="{_sg_td2}text-align:center;color:{_sg_html_col(_sgcr[_sgcc])};">{_sgv}</td>')
+                                else:
+                                    _cells.append(f'<td style="{_sg_td2}text-align:center;color:#8ba0b8;">{_sgv}</td>')
+                            _sg_body2.append(f'<tr style="background:{_sgbg};">{"".join(_cells)}</tr>')
+                        st.markdown(
+                            f'<div style="overflow-x:auto;overflow-y:auto;max-height:540px;border:1px solid #1e3a5f;border-radius:10px;">'
+                            f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                            f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_sg_head2}</tr></thead>'
+                            f'<tbody>{"".join(_sg_body2)}</tbody></table></div>',
+                            unsafe_allow_html=True,
+                        )
 
                         if _per_rnd and len(_ls_rounds) > 1:
                             st.markdown("---")
@@ -16034,10 +16154,25 @@ elif page == "🔴 Live":
                                     _rnd_rows.append(_rrow)
                                 if _rnd_rows:
                                     _rnd_df = pd.DataFrame(_rnd_rows)
-                                    st.dataframe(
-                                        _rnd_df.style.map(_color_sg, subset=[c for c in _rnd_df.columns if c != "Round"]),
-                                        hide_index=True,
-                                        use_container_width=True,
+                                    _rnd2_cols = list(_rnd_df.columns)
+                                    _rnd2_body = []
+                                    for _rnd2i, _rnd2r in _rnd_df.iterrows():
+                                        _rnd2bg = "#0d1a30" if _rnd2i % 2 == 0 else "#0a1525"
+                                        _cells = []
+                                        for _rnd2c in _rnd2_cols:
+                                            _rnd2v = str(_rnd2r[_rnd2c])
+                                            if _rnd2c == "Round":
+                                                _cells.append(f'<td style="{_sg_td2}text-align:center;color:#8ba0b8;font-weight:600;">{_rnd2v}</td>')
+                                            else:
+                                                _cells.append(f'<td style="{_sg_td2}text-align:center;color:{_sg_html_col(_rnd2r[_rnd2c])};">{_rnd2v}</td>')
+                                        _rnd2_body.append(f'<tr style="background:{_rnd2bg};">{"".join(_cells)}</tr>')
+                                    _rnd2_head = "".join(f'<th style="{_sg_th2}text-align:center;">{c}</th>' for c in _rnd2_cols)
+                                    st.markdown(
+                                        f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;overflow:hidden;">'
+                                        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                                        f'<thead><tr>{_rnd2_head}</tr></thead>'
+                                        f'<tbody>{"".join(_rnd2_body)}</tbody></table></div>',
+                                        unsafe_allow_html=True,
                                     )
                     pass
 
@@ -16419,29 +16554,51 @@ elif page == "🔴 Live":
                             return ["background-color:#0d2e40"] * len(row)
                         return [""] * len(row)
 
-                    _dg_styled = _dg_display.style.apply(_style_pick_row, axis=1)
-                    if _sg_style_cols:
-                        _dg_styled = _dg_styled.map(_style_sg, subset=_sg_style_cols)
-                    st.dataframe(
-                        _dg_styled,
-                        hide_index=True,
-                        use_container_width=True,
-                        column_config={
-                            "Player":      st.column_config.TextColumn("Player",      width="medium"),
-                            "Pos":         st.column_config.TextColumn("Pos",         width="small"),
-                            "Score":       st.column_config.TextColumn("Score",       width="small"),
-                            "Thru":        st.column_config.NumberColumn("Thru",      format="%d",   width="small"),
-                            "SG Total":    st.column_config.NumberColumn("SG Tot",    format="%+.2f", width="small"),
-                            "OTT":         st.column_config.NumberColumn("OTT",       format="%+.2f", width="small"),
-                            "APP":         st.column_config.NumberColumn("APP",       format="%+.2f", width="small"),
-                            "ARG":         st.column_config.NumberColumn("ARG",       format="%+.2f", width="small"),
-                            "PUTT":        st.column_config.NumberColumn("PUTT",      format="%+.2f", width="small"),
-                            "T2G":         st.column_config.NumberColumn("T2G",       format="%+.2f", width="small"),
-                            "GIR%":        st.column_config.NumberColumn("GIR%",      format="%.1f%%", width="small"),
-                            "Scrambling%": st.column_config.NumberColumn("Scram%",    format="%.1f%%", width="small"),
-                            "Prox FW":     st.column_config.NumberColumn("Prox FW",   format="%.1f'", width="small"),
-                            "Prox RGH":    st.column_config.NumberColumn("Prox RGH",  format="%.1f'", width="small"),
-                        },
+                    def _dg_sg_col(v, col):
+                        if v is None or (isinstance(v, float) and pd.isna(v)): return "#8ba0b8"
+                        try:
+                            f = float(v)
+                            if col in ("SG Total","OTT","APP","ARG","PUTT","T2G"):
+                                if f >= 1.5:  return "#00c44f"
+                                if f >= 0.5:  return "#81c784"
+                                if f >= 0.0:  return "#c8d8ea"
+                                if f >= -0.5: return "#ef9a9a"
+                                return "#e53935"
+                        except Exception: pass
+                        return "#8ba0b8"
+                    _dgl_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                    _dgl_td = "padding:7px 10px;border-bottom:1px solid #12253d;font-size:0.82em;"
+                    _dgl_cols = list(_dg_display.columns)
+                    _dgl_head = "".join(f'<th style="{_dgl_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in _dgl_cols)
+                    _dgl_body = []
+                    for _dgli, _dglr in _dg_show.iterrows():
+                        _is_p = bool(_dglr.get("_is_pick", False))
+                        _dglbg = "#0d2e40" if _is_p else ("#0d1a30" if _dgli % 2 == 0 else "#0a1525")
+                        _cells = []
+                        for _dglc in _dgl_cols:
+                            _dglv = _dglr[_dglc]
+                            _dglvs = str(_dglv) if _dglv is not None else "—"
+                            if _dglc == "Player":
+                                _pcol = "#4cb8ff" if _is_p else "#dde6f5"
+                                _cells.append(f'<td style="{_dgl_td}text-align:left;color:{_pcol};font-weight:600;white-space:nowrap;">{_dglvs}</td>')
+                            elif _dglc == "Score":
+                                try:
+                                    _sv3 = float(_dglv)
+                                    _sv3col = "#00c44f" if _sv3 < 0 else ("#e74c3c" if _sv3 > 0 else "#8ba0b8")
+                                except (TypeError, ValueError):
+                                    _sv3col = "#8ba0b8"
+                                _cells.append(f'<td style="{_dgl_td}text-align:center;color:{_sv3col};">{_dglvs}</td>')
+                            elif _dglc in _sg_style_cols:
+                                _cells.append(f'<td style="{_dgl_td}text-align:center;color:{_dg_sg_col(_dglv, _dglc)};font-weight:{"600" if _dglc=="SG Total" else "400"};">{_dglvs}</td>')
+                            else:
+                                _cells.append(f'<td style="{_dgl_td}text-align:center;color:#8ba0b8;">{_dglvs}</td>')
+                        _dgl_body.append(f'<tr style="background:{_dglbg};">{"".join(_cells)}</tr>')
+                    st.markdown(
+                        f'<div style="overflow-x:auto;overflow-y:auto;max-height:580px;border:1px solid #1e3a5f;border-radius:10px;">'
+                        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                        f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_dgl_head}</tr></thead>'
+                        f'<tbody>{"".join(_dgl_body)}</tbody></table></div>',
+                        unsafe_allow_html=True,
                     )
 
                 else:
