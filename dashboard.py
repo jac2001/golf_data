@@ -15921,120 +15921,140 @@ elif page == "🔴 Live":
 
                     _ip_data = []
                     for _p in _ip_rows:
-                        _pname = _ip_fl(_p.get("player_name", ""))
+                        _pname   = _ip_fl(_p.get("player_name", ""))
                         _is_pick = _pname.lower().strip() in _ip_pick_keys
                         _win  = _p.get("win")
                         _t5   = _p.get("top_5")
                         _t10  = _p.get("top_10")
                         _t20  = _p.get("top_20")
                         _cut  = _p.get("make_cut")
+                        _score_raw = _p.get("current_score")
+                        _today_raw = _p.get("today")
                         _ip_data.append({
-                            "Player":   ("★ " if _is_pick else "") + _pname,
-                            "Pos":      _p.get("current_pos", "—"),
-                            "Score":    _p.get("current_score"),
-                            "Today":    _p.get("today"),
-                            "Thru":     _p.get("thru"),
-                            "R1":       _p.get("R1"),
-                            "R2":       _p.get("R2"),
-                            "Win%":     round(_win * 100, 1) if _win is not None else None,
-                            "Top5%":    round(_t5  * 100, 1) if _t5  is not None else None,
-                            "Top10%":   round(_t10 * 100, 1) if _t10 is not None else None,
-                            "Top20%":   round(_t20 * 100, 1) if _t20 is not None else None,
-                            "Cut%":     round(_cut  * 100, 1) if _cut  is not None else None,
-                            "_is_pick": _is_pick,
+                            "name":     _pname,
+                            "is_pick":  _is_pick,
+                            "pos":      str(_p.get("current_pos", "—")),
+                            "score":    _score_raw,
+                            "today":    _today_raw,
+                            "thru":     _p.get("thru"),
+                            "win":      round(_win * 100, 1) if _win is not None else None,
+                            "top5":     round(_t5  * 100, 1) if _t5  is not None else None,
+                            "top10":    round(_t10 * 100, 1) if _t10 is not None else None,
+                            "top20":    round(_t20 * 100, 1) if _t20 is not None else None,
+                            "cut":      round(_cut  * 100, 1) if _cut  is not None else None,
                             "_win_raw": _win or 0,
                         })
 
-                    _ip_df = (
-                        pd.DataFrame(_ip_data)
-                        .sort_values("_win_raw", ascending=False, na_position="last")
-                        .reset_index(drop=True)
-                    )
+                    _ip_data.sort(key=lambda x: x["_win_raw"], reverse=True)
 
-                    # ── Pick summary cards ──
-                    _ip_picks = _ip_df[_ip_df["_is_pick"]]
-                    if not _ip_picks.empty:
-                        st.markdown("**My picks — live win probabilities**")
+                    # ── My picks summary cards ──────────────────────────────
+                    _ip_picks = [r for r in _ip_data if r["is_pick"]]
+                    if _ip_picks:
+                        st.markdown(
+                            '<div style="font-size:0.72em;font-weight:700;color:#4cb8ff;'
+                            'text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">'
+                            'My Picks — Live Win Probabilities</div>',
+                            unsafe_allow_html=True,
+                        )
                         _ipc = st.columns(max(len(_ip_picks), 1))
-                        for _ci, (_, _pr) in enumerate(_ip_picks.iterrows()):
-                            _win_pct = _pr.get("Win%")
-                            _t10_pct = _pr.get("Top10%")
-                            _win_str = f"{_win_pct:.1f}%" if _win_pct is not None else "—"
-                            _t10_str = f"{_t10_pct:.1f}%" if _t10_pct is not None else "—"
-                            _win_col = "#00c44f" if (_win_pct or 0) >= 10 else ("#ffa726" if (_win_pct or 0) >= 5 else "#dde6f5")
-                            _score_raw = _pr.get("Score")
-                            _score_str = (f"{int(_score_raw):+d}" if _score_raw and _score_raw != 0 else "E") if _score_raw is not None else "—"
-                            _name = str(_pr.get("Player","")).replace("★ ","")
-                            _ipc[_ci].markdown(
-                                f"<div style='background:#0d1a2e;border:1px solid #1e3a5f;"
-                                f"border-top:3px solid #4cb8ff;border-radius:8px;padding:12px 14px;text-align:center'>"
-                                f"<div style='color:#4cb8ff;font-size:11px;font-weight:700;letter-spacing:.5px'>★ {_name.upper()}</div>"
-                                f"<div style='font-size:26px;font-weight:900;color:#eee;line-height:1.1;margin:6px 0'>{_score_str}</div>"
-                                f"<div style='font-size:12px;color:#888;margin-bottom:8px'>{_pr.get('Pos','—')} · thru {_pr.get('Thru','—')}</div>"
-                                f"<div style='display:flex;justify-content:space-around'>"
-                                f"<div><div style='font-size:18px;font-weight:800;color:{_win_col}'>{_win_str}</div>"
-                                f"<div style='font-size:10px;color:#666'>WIN</div></div>"
-                                f"<div><div style='font-size:18px;font-weight:800;color:#81c784'>{_t10_str}</div>"
-                                f"<div style='font-size:10px;color:#666'>TOP 10</div></div>"
-                                f"</div></div>",
-                                unsafe_allow_html=True,
-                            )
-                        st.markdown("")
+                        for _ci, _pr in enumerate(_ip_picks):
+                            _wp  = _pr["win"]
+                            _t10p = _pr["top10"]
+                            _ws  = f"{_wp:.1f}%" if _wp is not None else "—"
+                            _ts  = f"{_t10p:.1f}%" if _t10p is not None else "—"
+                            _wc  = "#00c44f" if (_wp or 0) >= 10 else ("#ffa726" if (_wp or 0) >= 5 else "#dde6f5")
+                            _sc_raw = _pr["score"]
+                            _sc_s = (f"{int(_sc_raw):+d}" if _sc_raw and _sc_raw != 0 else "E") if _sc_raw is not None else "—"
+                            _tod  = _pr["today"]
+                            _tod_s = (f"{int(_tod):+d}" if _tod and _tod != 0 else "E") if _tod is not None else "—"
+                            _tod_c = "#00c44f" if (_tod or 0) < 0 else ("#e53935" if (_tod or 0) > 0 else "#8ba0b8")
+                            _ipc[_ci].markdown(f"""
+<div style="background:#0d1a30;border:1px solid #1e3a5f;border-top:3px solid #4cb8ff;
+            border-radius:10px;padding:14px 16px;text-align:center;">
+  <div style="color:#4cb8ff;font-size:0.7em;font-weight:700;letter-spacing:.08em;margin-bottom:6px;">★ {_pr['name'].upper()}</div>
+  <div style="font-size:1.8em;font-weight:900;color:#dde6f5;line-height:1;">{_sc_s}</div>
+  <div style="font-size:0.78em;color:#8ba0b8;margin:4px 0 10px;">{_pr['pos']} · thru {_pr['thru'] or '—'} · <span style="color:{_tod_c};font-weight:700;">{_tod_s} today</span></div>
+  <div style="display:flex;justify-content:space-around;padding-top:8px;border-top:1px solid #1a2537;">
+    <div><div style="font-size:1.3em;font-weight:800;color:{_wc};">{_ws}</div><div style="font-size:0.65em;color:#8ba0b8;text-transform:uppercase;letter-spacing:.05em;">Win</div></div>
+    <div><div style="font-size:1.3em;font-weight:800;color:#4cb8ff;">{_ts}</div><div style="font-size:0.65em;color:#8ba0b8;text-transform:uppercase;letter-spacing:.05em;">Top 10</div></div>
+  </div>
+</div>""", unsafe_allow_html=True)
+                        st.markdown("<div style='margin-bottom:16px;'></div>", unsafe_allow_html=True)
 
-                    # ── Full table with column config ──
-                    _ip_display = _ip_df.drop(columns=["_is_pick", "_win_raw"])
-                    _ip_prob_cols = [c for c in ["Win%", "Top5%", "Top10%", "Top20%", "Cut%"] if c in _ip_display.columns]
+                    # ── Player prob cards (3-col grid) ──────────────────────
+                    _ip_max_win = max((r["_win_raw"] for r in _ip_data), default=0.01)
+                    _ip_max_t10 = max((r["top10"] or 0 for r in _ip_data), default=1.0)
 
-                    def _style_prob_row(row):
-                        if str(row.get("Player","")).startswith("★"):
-                            return ["background-color:#0d2e40"] * len(row)
-                        return [""] * len(row)
+                    def _ip_card(r):
+                        _n    = r["name"]
+                        _pick = r["is_pick"]
+                        _wp   = r["win"] or 0
+                        _t10p = r["top10"] or 0
+                        _t20p = r["top20"]
+                        _cutp = r["cut"]
+                        _sc_raw = r["score"]
+                        _sc_s = (f"{int(_sc_raw):+d}" if _sc_raw and _sc_raw != 0 else "E") if _sc_raw is not None else "—"
+                        _tod  = r["today"]
+                        _tod_s = (f"{int(_tod):+d}" if _tod and _tod != 0 else "E") if _tod is not None else "—"
+                        _tod_c = "#00c44f" if (_tod or 0) < 0 else ("#e53935" if (_tod or 0) > 0 else "#8ba0b8")
+                        _win_bar = min(100, _wp / (_ip_max_win * 100) * 100) if _ip_max_win > 0 else 0
+                        _t10_bar = min(100, _t10p / _ip_max_t10 * 100) if _ip_max_t10 > 0 else 0
+                        _sc_col  = "#00c44f" if (_sc_raw or 0) < 0 else ("#e53935" if (_sc_raw or 0) > 0 else "#dde6f5")
+                        _border  = "#4cb8ff" if _pick else "#1e3a5f"
+                        _top_border = "border-top:3px solid #4cb8ff;" if _pick else ""
+                        _star    = "★ " if _pick else ""
+                        _t20_str = f"{_t20p:.0f}%" if _t20p is not None else "—"
+                        _cut_str = f"{_cutp:.0f}%" if _cutp is not None else "—"
+                        return f"""
+<div style="background:#0d1a30;border:1px solid {_border};{_top_border}border-radius:10px;padding:12px 14px;margin-bottom:10px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+    <div style="overflow:hidden;">
+      <div style="font-size:0.95em;font-weight:700;color:#dde6f5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{_star}{_n}</div>
+      <div style="font-size:0.72em;color:#8ba0b8;margin-top:1px;">{r['pos']} · thru {r['thru'] or '—'}</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0;margin-left:8px;">
+      <div style="font-size:1.1em;font-weight:800;color:{_sc_col};">{_sc_s}</div>
+      <div style="font-size:0.72em;color:{_tod_c};font-weight:600;">{_tod_s} today</div>
+    </div>
+  </div>
+  <div style="margin-bottom:5px;">
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+      <span style="color:#8ba0b8;font-size:0.68em;width:36px;flex-shrink:0;">Win</span>
+      <div style="flex:1;background:#1a2537;border-radius:3px;height:4px;">
+        <div style="width:{_win_bar:.0f}%;background:#00c44f;border-radius:3px;height:4px;"></div>
+      </div>
+      <span style="color:#00c44f;font-size:0.8em;font-weight:700;width:38px;text-align:right;">{_wp:.1f}%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="color:#8ba0b8;font-size:0.68em;width:36px;flex-shrink:0;">T10</span>
+      <div style="flex:1;background:#1a2537;border-radius:3px;height:4px;">
+        <div style="width:{_t10_bar:.0f}%;background:#4cb8ff;border-radius:3px;height:4px;"></div>
+      </div>
+      <span style="color:#4cb8ff;font-size:0.8em;font-weight:700;width:38px;text-align:right;">{_t10p:.0f}%</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;padding-top:6px;border-top:1px solid #1a2537;">
+    <span style="font-size:0.68em;color:#8ba0b8;">T20 <span style="color:#dde6f5;">{_t20_str}</span></span>
+    <span style="font-size:0.68em;color:#8ba0b8;">Cut <span style="color:#dde6f5;">{_cut_str}</span></span>
+  </div>
+</div>"""
 
-                    def _style_win(val):
-                        try:
-                            v = float(val)
-                            if v >= 15:  return "color:#00c44f; font-weight:800"
-                            if v >= 8:   return "color:#81c784; font-weight:700"
-                            if v >= 3:   return "color:#ccc"
-                            return "color:#555"
-                        except Exception:
-                            return ""
+                    _ip_top   = _ip_data[:21]
+                    _ip_rest  = _ip_data[21:]
 
-                    def _style_t10(val):
-                        try:
-                            v = float(val)
-                            if v >= 50:  return "color:#00c44f; font-weight:700"
-                            if v >= 25:  return "color:#81c784"
-                            if v >= 10:  return "color:#ccc"
-                            return "color:#555"
-                        except Exception:
-                            return ""
+                    for _ii in range(0, len(_ip_top), 3):
+                        _triple = _ip_top[_ii:_ii+3]
+                        _icols  = st.columns(3)
+                        for _ij, _ir in enumerate(_triple):
+                            _icols[_ij].markdown(_ip_card(_ir), unsafe_allow_html=True)
 
-                    _ip_styled = (
-                        _ip_display.style
-                        .apply(_style_prob_row, axis=1)
-                        .map(_style_win, subset=["Win%"])
-                        .map(_style_t10, subset=["Top10%"])
-                    )
-                    st.dataframe(
-                        _ip_styled,
-                        hide_index=True,
-                        use_container_width=True,
-                        column_config={
-                            "Player":  st.column_config.TextColumn("Player",  width="medium"),
-                            "Pos":     st.column_config.TextColumn("Pos",     width="small"),
-                            "Score":   st.column_config.NumberColumn("Score", format="%d", width="small"),
-                            "Today":   st.column_config.NumberColumn("Today", format="%+d", width="small"),
-                            "Thru":    st.column_config.NumberColumn("Thru",  format="%d",  width="small"),
-                            "R1":      st.column_config.NumberColumn("R1",    format="%d",  width="small"),
-                            "R2":      st.column_config.NumberColumn("R2",    format="%d",  width="small"),
-                            "Win%":    st.column_config.NumberColumn("Win%",  format="%.1f%%", width="small"),
-                            "Top5%":   st.column_config.NumberColumn("Top5%", format="%.1f%%", width="small"),
-                            "Top10%":  st.column_config.NumberColumn("Top10%",format="%.1f%%", width="small"),
-                            "Top20%":  st.column_config.NumberColumn("Top20%",format="%.1f%%", width="small"),
-                            "Cut%":    st.column_config.NumberColumn("Cut%",  format="%.1f%%", width="small"),
-                        },
-                    )
+                    if _ip_rest:
+                        with st.expander(f"Show remaining {len(_ip_rest)} players", expanded=False):
+                            for _ii2 in range(0, len(_ip_rest), 3):
+                                _triple2 = _ip_rest[_ii2:_ii2+3]
+                                _icols2  = st.columns(3)
+                                for _ij2, _ir2 in enumerate(_triple2):
+                                    _icols2[_ij2].markdown(_ip_card(_ir2), unsafe_allow_html=True)
                 else:
                     st.info("No in-play data — tournament may not have started yet.")
 
