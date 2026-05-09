@@ -14891,144 +14891,90 @@ elif page == "📊 Predictions":
                         _dg_tab = _dg_tab.sort_values("dg_rank", na_position="last").reset_index(drop=True)
 
                     # ── Controls ──────────────────────────────────────────────
-                    _dg_c1, _dg_c2, _dg_c3 = st.columns([2, 2, 2])
+                    _dg_c1, _dg_c2, _dg_c3 = st.columns([3, 2, 2])
                     with _dg_c1:
-                        _dg_sort = st.selectbox(
-                            "Sort by",
-                            ["DG Rank", "Win %", "Top-10 %", "Make Cut %", "Skill (SG)", "Course Fit"],
-                            key="dg_tab_sort",
-                        )
+                        _dg_search = st.text_input("Filter player", "", key="dg_tab_search", placeholder="Type name to filter...")
                     with _dg_c2:
                         _dg_min_win = st.slider("Min win % shown", 0.0, 5.0, 0.0, 0.1, key="dg_min_win", format="%.1f%%")
                     with _dg_c3:
                         _dg_fit_only = st.checkbox("Positive course fit only", value=False, key="dg_fit_only")
 
-                    _dg_sort_map = {
-                        "DG Rank": ("dg_rank", True), "Win %": ("win", False),
-                        "Top-10 %": ("top_10", False), "Make Cut %": ("make_cut", False),
-                        "Skill (SG)": ("sg_total", False), "Course Fit": ("course_fit_delta", False),
-                    }
-                    _dg_sc, _dg_sa = _dg_sort_map.get(_dg_sort, ("dg_rank", True))
-
                     _dg_show = _dg_tab.copy()
+                    if _dg_search.strip():
+                        _dg_show = _dg_show[_dg_show["player_name"].str.contains(_dg_search.strip(), case=False, na=False)]
                     if _dg_min_win > 0 and "win" in _dg_show.columns:
                         _dg_show = _dg_show[_dg_show["win"].fillna(0) >= _dg_min_win]
                     if _dg_fit_only and "course_fit_delta" in _dg_show.columns:
                         _dg_show = _dg_show[_dg_show["course_fit_delta"].fillna(0) > 0]
-                    if _dg_sc in _dg_show.columns:
-                        _dg_show = _dg_show.sort_values(_dg_sc, ascending=_dg_sa, na_position="last")
 
-                    _dg_max_win = float(_dg_show["win"].max()) if "win" in _dg_show.columns and not _dg_show["win"].isna().all() else 1.0
-                    _dg_max_t10 = float(_dg_show["top_10"].max()) if "top_10" in _dg_show.columns and not _dg_show["top_10"].isna().all() else 1.0
+                    _dg_max_win = float(_dg_show["win"].max()) if "win" in _dg_show.columns and not _dg_show["win"].isna().all() else 10.0
+                    _dg_max_t10 = float(_dg_show["top_10"].max()) if "top_10" in _dg_show.columns and not _dg_show["top_10"].isna().all() else 50.0
 
-                    # ── Player card HTML ──────────────────────────────────────
-                    def _dg_card_html(rank, row):
-                        _n = str(row.get("player_name", ""))
-                        _name = f"{_n.split(', ')[1]} {_n.split(', ')[0]}" if ", " in _n else _n
+                    # ── Build display DataFrame ───────────────────────────────
+                    def _fmt_dgname(n):
+                        s = str(n).strip()
+                        return f"{s.split(', ')[1]} {s.split(', ')[0]}" if ", " in s else s
 
-                        _dg_r  = row.get("dg_rank")
-                        _wr    = row.get("owgr_rank")
-                        _win   = row.get("win")   or 0.0
-                        _t10   = row.get("top_10") or 0.0
-                        _cut   = row.get("make_cut")
-                        _sg    = row.get("sg_total")
-                        _fit   = row.get("course_fit_delta")
-                        _starts = row.get("starts")
-                        _atp   = row.get("avg_to_par")
-                        _csg   = row.get("course_sg_total")
-                        _t10r  = row.get("top10_rate")
+                    _disp = pd.DataFrame()
+                    if "dg_rank" in _dg_show.columns:
+                        _disp["DG#"] = pd.to_numeric(_dg_show["dg_rank"], errors="coerce").apply(
+                            lambda x: int(x) if pd.notna(x) else None
+                        ).astype("Int64")
+                    if "owgr_rank" in _dg_show.columns:
+                        _disp["WR#"] = pd.to_numeric(_dg_show["owgr_rank"], errors="coerce").apply(
+                            lambda x: int(x) if pd.notna(x) and float(x) < 500 else None
+                        ).astype("Int64")
+                    _disp["Player"] = _dg_show["player_name"].apply(_fmt_dgname).values
+                    for _src, _dst in [
+                        ("sg_ott", "OTT"), ("sg_app", "APP"), ("sg_arg", "ARG"),
+                        ("sg_putt", "PUTT"), ("sg_total", "SG Total"), ("course_fit_delta", "Fit"),
+                        ("avg_to_par", "Avg/Par"), ("course_sg_total", "Course SG"),
+                        ("win", "Win%"), ("top_10", "Top-10%"), ("make_cut", "Cut%"),
+                    ]:
+                        if _src in _dg_show.columns:
+                            _disp[_dst] = pd.to_numeric(_dg_show[_src].values, errors="coerce")
+                    if "starts" in _dg_show.columns:
+                        _disp["Starts"] = pd.to_numeric(_dg_show["starts"].values, errors="coerce").apply(
+                            lambda x: int(x) if pd.notna(x) else None
+                        ).astype("Int64")
 
-                        _win_bar = min(100, (_win / _dg_max_win * 100)) if _dg_max_win > 0 else 0
-                        _t10_bar = min(100, (_t10 / _dg_max_t10 * 100)) if _dg_max_t10 > 0 else 0
+                    # Reorder columns logically: rank → name → skill → fit → history → probs
+                    _col_order = ["DG#", "WR#", "Player", "OTT", "APP", "ARG", "PUTT",
+                                  "SG Total", "Fit", "Starts", "Avg/Par", "Course SG",
+                                  "Win%", "Top-10%", "Cut%"]
+                    _disp = _disp[[c for c in _col_order if c in _disp.columns]]
 
-                        _dg_badge = f"DG#{int(_dg_r)}" if pd.notna(_dg_r) else ""
-                        _wr_str   = f"WR #{int(_wr)}" if pd.notna(_wr) and float(_wr) < 400 else ""
+                    _cfg = {
+                        "DG#":      st.column_config.NumberColumn("DG#",      format="%d",    width="small"),
+                        "WR#":      st.column_config.NumberColumn("WR#",      format="%d",    width="small"),
+                        "Player":   st.column_config.TextColumn("Player",                     width="medium"),
+                        "OTT":      st.column_config.NumberColumn("OTT",      format="%.2f",  width="small"),
+                        "APP":      st.column_config.NumberColumn("APP",      format="%.2f",  width="small"),
+                        "ARG":      st.column_config.NumberColumn("ARG",      format="%.2f",  width="small"),
+                        "PUTT":     st.column_config.NumberColumn("PUTT",     format="%.2f",  width="small"),
+                        "SG Total": st.column_config.NumberColumn("SG Total", format="%.2f",  width="small"),
+                        "Fit":      st.column_config.NumberColumn("Fit",      format="%.3f",  width="small"),
+                        "Starts":   st.column_config.NumberColumn("Starts",   format="%d",    width="small"),
+                        "Avg/Par":  st.column_config.NumberColumn("Avg/Par",  format="%.1f",  width="small"),
+                        "Course SG":st.column_config.NumberColumn("Course SG",format="%.2f",  width="small"),
+                        "Win%":     st.column_config.ProgressColumn("Win%",   min_value=0, max_value=_dg_max_win, format="%.1f%%"),
+                        "Top-10%":  st.column_config.ProgressColumn("Top-10%",min_value=0, max_value=_dg_max_t10, format="%.0f%%"),
+                        "Cut%":     st.column_config.NumberColumn("Cut%",     format="%.0f%%", width="small"),
+                    }
 
-                        _sg_str  = f"{float(_sg):+.2f}" if pd.notna(_sg) else "—"
-                        _sg_col  = "#00c44f" if pd.notna(_sg) and float(_sg) > 0 else ("#e74c3c" if pd.notna(_sg) and float(_sg) < 0 else "#8ba0b8")
-                        _cut_str = f"{float(_cut):.0f}%" if pd.notna(_cut) else "—"
-
-                        # Course fit badge
-                        _fit_html = ""
-                        if pd.notna(_fit):
-                            _fv = float(_fit)
-                            _fc = "#00c44f" if _fv > 0.005 else ("#e74c3c" if _fv < -0.005 else "#8ba0b8")
-                            _fa = "+" if _fv >= 0 else ""
-                            _fit_html = f'<span style="background:{_fc}22;color:{_fc};font-size:0.75em;font-weight:700;padding:1px 7px;border-radius:4px;white-space:nowrap;">fit {_fa}{_fv:.3f}</span>'
-
-                        # Course history footer
-                        _hist_parts = []
-                        if pd.notna(_starts):
-                            _hist_parts.append(f"{int(_starts)}st")
-                        if pd.notna(_atp):
-                            _av = float(_atp)
-                            _atp_str = "E" if _av == 0 else (f"+{_av:.1f}" if _av > 0 else f"{_av:.1f}")
-                            _hist_parts.append(f"avg {_atp_str}")
-                        if pd.notna(_t10r) and float(_t10r) > 0:
-                            _hist_parts.append(f"{float(_t10r)*100:.0f}% T10")
-                        if pd.notna(_csg):
-                            _cv = float(_csg)
-                            _csg_col = "#00c44f" if _cv > 0 else "#e74c3c"
-                            _hist_parts.append(f'<span style="color:{_csg_col};">SG {_cv:+.2f}</span>')
-                        _hist_html = (
-                            f'<span style="font-size:0.75em;color:#8ba0b8;">Course: {" · ".join(_hist_parts)}</span>'
-                            if _hist_parts else '<span style="font-size:0.75em;color:#4a5568;">No course history</span>'
-                        )
-
-                        _rank_bg = "#ffd70018" if rank <= 3 else "#00c44f12"
-                        _rank_col = "#ffd700" if rank <= 3 else "#00c44f"
-
-                        return f"""
-<div style="background:#0d1a30;border:1px solid #1e3a5f;border-radius:10px;padding:14px 16px;margin-bottom:10px;">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-    <div style="display:flex;align-items:center;gap:8px;overflow:hidden;">
-      <span style="background:{_rank_bg};color:{_rank_col};font-weight:700;font-size:0.85em;padding:2px 7px;border-radius:4px;flex-shrink:0;">{_dg_badge}</span>
-      <span style="font-size:1.0em;font-weight:600;color:#dde6f5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{_name}</span>
-    </div>
-    <span style="color:#8ba0b8;font-size:0.8em;white-space:nowrap;flex-shrink:0;">{_wr_str}</span>
-  </div>
-  <div style="margin-bottom:8px;">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-      <span style="color:#8ba0b8;font-size:0.75em;width:44px;flex-shrink:0;">Win</span>
-      <div style="flex:1;background:#1a2537;border-radius:3px;height:5px;">
-        <div style="width:{_win_bar:.0f}%;background:#00c44f;border-radius:3px;height:5px;"></div>
-      </div>
-      <span style="color:#00c44f;font-size:0.85em;font-weight:700;width:42px;text-align:right;flex-shrink:0;">{_win:.1f}%</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span style="color:#8ba0b8;font-size:0.75em;width:44px;flex-shrink:0;">Top-10</span>
-      <div style="flex:1;background:#1a2537;border-radius:3px;height:5px;">
-        <div style="width:{_t10_bar:.0f}%;background:#4cb8ff;border-radius:3px;height:5px;"></div>
-      </div>
-      <span style="color:#4cb8ff;font-size:0.85em;font-weight:700;width:42px;text-align:right;flex-shrink:0;">{_t10:.0f}%</span>
-    </div>
-  </div>
-  <div style="display:flex;gap:10px;padding-top:8px;border-top:1px solid #1a2537;flex-wrap:wrap;align-items:center;">
-    <span style="font-size:0.78em;color:#8ba0b8;">Skill <span style="color:{_sg_col};font-weight:600;">{_sg_str}</span></span>
-    <span style="font-size:0.78em;color:#8ba0b8;">Cut <span style="color:#dde6f5;">{_cut_str}</span></span>
-    {_fit_html}
-    <span style="margin-left:auto;">{_hist_html}</span>
-  </div>
-</div>"""
-
-                    # Render top 20 as cards, rest in expander
-                    _dg_rows = list(_dg_show.iterrows())
-                    _dg_top  = _dg_rows[:20]
-                    _dg_rest = _dg_rows[20:]
-
-                    for _di in range(0, len(_dg_top), 2):
-                        _dpair = _dg_top[_di:_di+2]
-                        _dcols = st.columns(2)
-                        for _dgi, (_, _drow) in enumerate(_dpair):
-                            _dcols[_dgi].markdown(_dg_card_html(_di + _dgi + 1, _drow), unsafe_allow_html=True)
-
-                    if _dg_rest:
-                        with st.expander(f"Show remaining {len(_dg_rest)} players", expanded=False):
-                            for _di2 in range(0, len(_dg_rest), 2):
-                                _dpair2 = _dg_rest[_di2:_di2+2]
-                                _dcols2 = st.columns(2)
-                                for _dgi2, (_, _drow2) in enumerate(_dpair2):
-                                    _dcols2[_dgi2].markdown(_dg_card_html(20 + _di2 + _dgi2 + 1, _drow2), unsafe_allow_html=True)
+                    st.caption(
+                        f"{len(_disp)} players · DG baseline_history_fit model · "
+                        "OTT/APP/ARG/PUTT = strokes-gained vs field · "
+                        "Fit = course-fit delta (bhf minus baseline) · "
+                        "Click column headers to sort"
+                    )
+                    st.dataframe(
+                        _disp,
+                        use_container_width=True,
+                        hide_index=True,
+                        height=560,
+                        column_config=_cfg,
+                    )
 
                     # ── Model vs DG comparison ────────────────────────────────
                     if "win" in _dg_tab.columns and "player_name" in df.columns:
