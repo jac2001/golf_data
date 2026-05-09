@@ -1214,16 +1214,44 @@ def render_player_event_history_panel(player_name: str, preds_df: pd.DataFrame, 
         return [base] * len(row)
 
     _display_cols = ["Year", "Tournament", "Finish", "To Par", "SG: Total"]
-    _styled_hist = (
-        _hist_table[_display_cols + ["_finish_num"]]
-        .style.apply(_row_style, axis=1)
-        .format({
-            "Year": lambda x: str(int(x)) if pd.notna(x) else "—",
-            "SG: Total": lambda x: f"{x:+.2f}" if pd.notna(x) else "—",
-        })
-        .hide(axis="columns", subset=["_finish_num"])
+    _hist_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;"
+    _hist_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+    _hist_body = []
+    for _hi, _hr in _hist_table[_display_cols + ["_finish_num"]].iterrows():
+        _fn = _hr["_finish_num"]; _fs = str(_hr["Finish"]).upper()
+        if _fs in ("MC","CUT","WD","DQ"):
+            _hbg, _hcol, _hfw = "#1a0d0d", "#9a6060", "400"
+        elif pd.notna(_fn) and _fn == 1:
+            _hbg, _hcol, _hfw = "#1f1800", "#FFD700", "700"
+        elif pd.notna(_fn) and _fn <= 3:
+            _hbg, _hcol, _hfw = "#0d2010", "#00c44f", "600"
+        elif pd.notna(_fn) and _fn <= 10:
+            _hbg, _hcol, _hfw = "#0d1e10", "#6ddb9a", "400"
+        elif pd.notna(_fn) and _fn <= 20:
+            _hbg, _hcol, _hfw = "#0d1820", "#4cb8ff", "400"
+        else:
+            _hbg, _hcol, _hfw = ("#0d1a30" if _hi % 2 == 0 else "#0a1525"), "#dde6f5", "400"
+        _sg_v = _hr["SG: Total"]
+        _sg_s = f"{float(_sg_v):+.2f}" if pd.notna(_sg_v) else "—"
+        _sg_c = "#00c44f" if pd.notna(_sg_v) and float(_sg_v) > 0 else ("#e74c3c" if pd.notna(_sg_v) and float(_sg_v) < 0 else "#8ba0b8")
+        _yr_s = str(int(_hr["Year"])) if pd.notna(_hr["Year"]) else "—"
+        _hist_body.append(
+            f'<tr style="background:{_hbg};">'
+            f'<td style="{_hist_td}text-align:center;color:#8ba0b8;">{_yr_s}</td>'
+            f'<td style="{_hist_td}text-align:left;color:{_hcol};font-weight:{_hfw};">{_hr["Tournament"]}</td>'
+            f'<td style="{_hist_td}text-align:center;color:{_hcol};font-weight:{_hfw};">{_hr["Finish"]}</td>'
+            f'<td style="{_hist_td}text-align:center;color:#8ba0b8;">{_hr["To Par"]}</td>'
+            f'<td style="{_hist_td}text-align:center;color:{_sg_c};font-weight:600;">{_sg_s}</td>'
+            f'</tr>'
+        )
+    st.markdown(
+        f'<div style="overflow-x:auto;overflow-y:auto;max-height:420px;border:1px solid #1e3a5f;border-radius:10px;">'
+        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+        f'<thead style="position:sticky;top:0;z-index:1;"><tr>'
+        + "".join(f'<th style="{_hist_th}text-align:{"left" if c=="Tournament" else "center"};">{c}</th>' for c in _display_cols)
+        + f'</tr></thead><tbody>{"".join(_hist_body)}</tbody></table></div>',
+        unsafe_allow_html=True,
     )
-    st.dataframe(_styled_hist, hide_index=True, use_container_width=True)
 
 
 
@@ -6217,7 +6245,29 @@ def render_strokes_gained_analysis(df: pd.DataFrame):
         display_cols.update({k: v for k, v in sg_categories.items() if k in available_sg})
         top10_sg = top10_sg.rename(columns=display_cols)
 
-        st.dataframe(top10_sg, hide_index=True, use_container_width=True)
+        _sg10_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;"
+        _sg10_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+        _sg10_cols = list(top10_sg.columns)
+        _sg10_num = {c for c in _sg10_cols if c != "Player"}
+        _sg10_head = "".join(f'<th style="{_sg10_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in _sg10_cols)
+        _sg10_body = []
+        for _sgi, _sgr in top10_sg.iterrows():
+            _sgbg = "#0d1a30" if _sgi % 2 == 0 else "#0a1525"
+            _cells = []
+            for _sgc in _sg10_cols:
+                _sgv = _sgr[_sgc]
+                if _sgc == "Player":
+                    _cells.append(f'<td style="{_sg10_td}text-align:left;color:#dde6f5;font-weight:600;">{_sgv}</td>')
+                else:
+                    _nc = "#00c44f" if pd.notna(_sgv) and float(_sgv) > 0 else ("#e74c3c" if pd.notna(_sgv) and float(_sgv) < 0 else "#8ba0b8")
+                    _cells.append(f'<td style="{_sg10_td}text-align:center;color:{_nc};">{float(_sgv):+.2f}</td>' if pd.notna(_sgv) else f'<td style="{_sg10_td}text-align:center;color:#4a5a6a;">—</td>')
+            _sg10_body.append(f'<tr style="background:{_sgbg};">{"".join(_cells)}</tr>')
+        st.markdown(
+            f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;">'
+            f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+            f'<thead><tr>{_sg10_head}</tr></thead><tbody>{"".join(_sg10_body)}</tbody></table></div>',
+            unsafe_allow_html=True,
+        )
 
     # --- Section 2: SG Breakdown Chart ---
     st.markdown("#### SG Category Breakdown - Top 20 Players")
@@ -6334,7 +6384,28 @@ def render_form_analysis(df: pd.DataFrame):
             hot_players["recent_cuts_pct"] = (hot_players["recent_cuts_pct"] * 100).round(0).astype(str) + "%"
 
         hot_players.columns = ["Player", "Form Trend", "Recent Top-10s", "Cut %"]
-        st.dataframe(hot_players, hide_index=True, use_container_width=True)
+        _form_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;"
+        _form_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+        _form_head = "".join(f'<th style="{_form_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in hot_players.columns)
+        _form_body = []
+        for _fmi, _fmr in hot_players.iterrows():
+            _fmbg = "#0d1a30" if _fmi % 2 == 0 else "#0a1525"
+            _ft = float(_fmr["Form Trend"]) if pd.notna(_fmr["Form Trend"]) else 0
+            _ftcol = "#00c44f" if _ft > 0 else "#e74c3c"
+            _form_body.append(
+                f'<tr style="background:{_fmbg};">'
+                f'<td style="{_form_td}text-align:left;color:#dde6f5;font-weight:600;">{_fmr["Player"]}</td>'
+                f'<td style="{_form_td}text-align:center;color:{_ftcol};font-weight:600;">{_ft:+.2f}</td>'
+                f'<td style="{_form_td}text-align:center;color:#8ba0b8;">{_fmr["Recent Top-10s"]}</td>'
+                f'<td style="{_form_td}text-align:center;color:#4cb8ff;">{_fmr["Cut %"]}</td>'
+                f'</tr>'
+            )
+        st.markdown(
+            f'<div style="border:1px solid #1e3a5f;border-radius:10px;overflow:hidden;">'
+            f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+            f'<thead><tr>{_form_head}</tr></thead><tbody>{"".join(_form_body)}</tbody></table></div>',
+            unsafe_allow_html=True,
+        )
 
     # Cold players
     if "form_trend" in df.columns:
@@ -6348,7 +6419,25 @@ def render_form_analysis(df: pd.DataFrame):
             cold_players["recent_cuts_pct"] = (cold_players["recent_cuts_pct"] * 100).round(0).astype(str) + "%"
 
         cold_players.columns = ["Player", "Form Trend", "Recent Top-10s", "Cut %"]
-        st.dataframe(cold_players, hide_index=True, use_container_width=True)
+        _cold_body = []
+        for _cdi, _cdr in cold_players.iterrows():
+            _cdbg = "#0d1a30" if _cdi % 2 == 0 else "#0a1525"
+            _ct = float(_cdr["Form Trend"]) if pd.notna(_cdr["Form Trend"]) else 0
+            _ctcol = "#00c44f" if _ct > 0 else "#e74c3c"
+            _cold_body.append(
+                f'<tr style="background:{_cdbg};">'
+                f'<td style="{_form_td}text-align:left;color:#dde6f5;font-weight:600;">{_cdr["Player"]}</td>'
+                f'<td style="{_form_td}text-align:center;color:{_ctcol};font-weight:600;">{_ct:+.2f}</td>'
+                f'<td style="{_form_td}text-align:center;color:#8ba0b8;">{_cdr["Recent Top-10s"]}</td>'
+                f'<td style="{_form_td}text-align:center;color:#4cb8ff;">{_cdr["Cut %"]}</td>'
+                f'</tr>'
+            )
+        st.markdown(
+            f'<div style="border:1px solid #1e3a5f;border-radius:10px;overflow:hidden;">'
+            f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+            f'<thead><tr>{_form_head}</tr></thead><tbody>{"".join(_cold_body)}</tbody></table></div>',
+            unsafe_allow_html=True,
+        )
 
     # --- Section 2: Form Distribution ---
     st.markdown("#### Form Distribution")
@@ -6709,16 +6798,47 @@ def render_course_performance_profiles(tournament_name: str, field_player_ids: l
         if pct_col in table_df.columns:
             table_df[pct_col] = pd.to_numeric(table_df[pct_col], errors="coerce").fillna(0) * 100.0
 
-    column_cfg = {
-        "Cut %": st.column_config.ProgressColumn("Cut %", min_value=0.0, max_value=100.0, format="%.0f%%"),
-        "Top-10 %": st.column_config.ProgressColumn("Top-10 %", min_value=0.0, max_value=100.0, format="%.0f%%"),
-        "Win %": st.column_config.ProgressColumn("Win %", min_value=0.0, max_value=100.0, format="%.0f%%"),
-        "Course SG": st.column_config.NumberColumn("Course SG", format="%.3f"),
-        "SG Edge": st.column_config.NumberColumn("SG Edge", format="%+.3f"),
-        "Composite": st.column_config.NumberColumn("Composite", format="%.2f"),
-        "Avg Finish": st.column_config.NumberColumn("Avg Finish", format="%.1f"),
-    }
-    st.dataframe(table_df, hide_index=True, use_container_width=True, column_config=column_cfg)
+    _ch_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+    _ch_td = "padding:7px 10px;border-bottom:1px solid #12253d;font-size:0.84em;"
+    _ch_cols = list(table_df.columns)
+    _ch_pct = {"Cut %","Top-10 %","Win %"}
+    _ch_sg  = {"Course SG","SG Edge"}
+    _ch_head = "".join(f'<th style="{_ch_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in _ch_cols)
+    _ch_body = []
+    for _chi, _chr in table_df.iterrows():
+        _chbg = "#0d1a30" if _chi % 2 == 0 else "#0a1525"
+        _cells = []
+        for _chc in _ch_cols:
+            _chv = _chr[_chc]
+            if _chc == "Player":
+                _cells.append(f'<td style="{_ch_td}text-align:left;color:#dde6f5;font-weight:600;">{_chv}</td>')
+            elif _chc in _ch_pct:
+                _pv = float(_chv) if pd.notna(_chv) else 0
+                _pbar = min(100, _pv)
+                _cells.append(
+                    f'<td style="{_ch_td}padding:4px 10px;">'
+                    f'<div style="display:flex;align-items:center;gap:6px;">'
+                    f'<div style="flex:1;background:#1a2537;border-radius:3px;height:4px;">'
+                    f'<div style="width:{_pbar:.0f}%;background:#4cb8ff;border-radius:3px;height:4px;"></div></div>'
+                    f'<span style="color:#4cb8ff;font-size:0.8em;white-space:nowrap;">{_pv:.0f}%</span>'
+                    f'</div></td>'
+                )
+            elif _chc in _ch_sg:
+                _sv = float(_chv) if pd.notna(_chv) else 0
+                _sc = "#00c44f" if _sv > 0 else ("#e74c3c" if _sv < 0 else "#8ba0b8")
+                _cells.append(f'<td style="{_ch_td}text-align:center;color:{_sc};">{_sv:+.3f}</td>')
+            elif _chc == "Composite":
+                _cells.append(f'<td style="{_ch_td}text-align:center;color:#f4c430;">{float(_chv):.2f}</td>' if pd.notna(_chv) else f'<td style="{_ch_td}text-align:center;color:#4a5a6a;">—</td>')
+            else:
+                _cells.append(f'<td style="{_ch_td}text-align:center;color:#8ba0b8;">{_chv if pd.notna(_chv) else "—"}</td>')
+        _ch_body.append(f'<tr style="background:{_chbg};">{"".join(_cells)}</tr>')
+    st.markdown(
+        f'<div style="overflow-x:auto;overflow-y:auto;max-height:480px;border:1px solid #1e3a5f;border-radius:10px;">'
+        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+        f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_ch_head}</tr></thead>'
+        f'<tbody>{"".join(_ch_body)}</tbody></table></div>',
+        unsafe_allow_html=True,
+    )
 
 
 def render_course_performance_cards(
@@ -7245,12 +7365,45 @@ def render_course_specific_stats(df: pd.DataFrame):
                 r = int(60 + intensity * 140)
                 return f"background-color:rgba({r},20,20,0.25);color:#{'e53935' if abs(v) > _max_abs * 0.5 else 'c47070'}"
 
-        _styled_cf = (
-            _cf_df.style
-            .applymap(_fit_cell, subset=_fit_stat_cols)
-            .format({c: lambda x: f"{x:+.3f}" if pd.notna(x) else "—" for c in _fit_stat_cols})
+        _cfit_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;border-bottom:1px solid #1e3a5f;"
+        _cfit_td = "padding:7px 10px;border-bottom:1px solid #12253d;font-size:0.84em;"
+        _cfit_cols = list(_cf_df.columns)
+        _cfit_head = "".join(f'<th style="{_cfit_th}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in _cfit_cols)
+        _cfit_body = []
+        for _cfiti, _cfitr in _cf_df.iterrows():
+            _cfitbg = "#0d1a30" if _cfiti % 2 == 0 else "#0a1525"
+            _cells = []
+            for _cfitc in _cfit_cols:
+                _cfitv = _cfitr[_cfitc]
+                if _cfitc == "#":
+                    _cells.append(f'<td style="{_cfit_td}text-align:center;color:#8ba0b8;">{int(_cfitv)}</td>')
+                elif _cfitc == "Player":
+                    _cells.append(f'<td style="{_cfit_td}text-align:left;color:#dde6f5;font-weight:600;">{_cfitv}</td>')
+                elif _cfitc in _fit_stat_cols:
+                    if pd.isna(_cfitv):
+                        _cells.append(f'<td style="{_cfit_td}text-align:center;color:#3a4a5a;">—</td>')
+                    else:
+                        _fv2 = float(_cfitv)
+                        _inten = min(abs(_fv2) / _max_abs, 1.0) if _max_abs > 0 else 0
+                        if _fv2 > 0:
+                            _g2 = int(60 + _inten * 140)
+                            _fcol2 = "#00c44f" if _fv2 > _max_abs * 0.5 else "#6ddb9a"
+                            _fbg2 = f"background-color:rgba(0,{_g2},40,0.25);"
+                        else:
+                            _r2 = int(60 + _inten * 140)
+                            _fcol2 = "#e53935" if abs(_fv2) > _max_abs * 0.5 else "#c47070"
+                            _fbg2 = f"background-color:rgba({_r2},20,20,0.25);"
+                        _cells.append(f'<td style="{_cfit_td}{_fbg2}text-align:center;color:{_fcol2};font-weight:{"700" if abs(_fv2) > _max_abs * 0.7 else "400"};">{_fv2:+.3f}</td>')
+                else:
+                    _cells.append(f'<td style="{_cfit_td}text-align:center;color:#8ba0b8;">{_cfitv}</td>')
+            _cfit_body.append(f'<tr style="background:{_cfitbg};">{"".join(_cells)}</tr>')
+        st.markdown(
+            f'<div style="overflow-x:auto;overflow-y:auto;max-height:480px;border:1px solid #1e3a5f;border-radius:10px;">'
+            f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+            f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_cfit_head}</tr></thead>'
+            f'<tbody>{"".join(_cfit_body)}</tbody></table></div>',
+            unsafe_allow_html=True,
         )
-        st.dataframe(_styled_cf, hide_index=True, use_container_width=True, height=480)
 
 
 
@@ -14742,7 +14895,38 @@ elif page == "📊 Predictions":
                 with st.expander("Show picks 11–20", expanded=False):
                     _rest = display_df.iloc[10:].reset_index(drop=True)
                     _rest.index = _rest.index + 11
-                    st.dataframe(_rest, use_container_width=True)
+                    _rth = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                    _rtd = "padding:7px 10px;border-bottom:1px solid #12253d;font-size:0.84em;"
+                    _rcols = list(_rest.columns)
+                    _rhead = "".join(f'<th style="{_rth}text-align:{"left" if c=="Player" else "center"};">{c}</th>' for c in _rcols)
+                    _rbody = []
+                    for _rii, _rir in _rest.iterrows():
+                        _ribg = "#0d1a30" if _rii % 2 == 0 else "#0a1525"
+                        _cells = []
+                        for _rc in _rcols:
+                            _rv = str(_rir[_rc])
+                            if _rc == "Player":
+                                _cells.append(f'<td style="{_rtd}text-align:left;color:#dde6f5;font-weight:600;white-space:nowrap;">{_rv}</td>')
+                            elif _rc in ("Win %","Top-5 %","Top-10 %"):
+                                _cells.append(f'<td style="{_rtd}text-align:center;color:#4cb8ff;">{_rv}</td>')
+                            elif _rc == "Expected Value":
+                                _cells.append(f'<td style="{_rtd}text-align:center;color:#00c44f;">{_rv}</td>')
+                            elif _rc == "SG Total":
+                                try:
+                                    _sfv = float(_rv)
+                                    _sfc = "#00c44f" if _sfv > 0 else ("#e74c3c" if _sfv < 0 else "#8ba0b8")
+                                except (ValueError, TypeError):
+                                    _sfc = "#8ba0b8"
+                                _cells.append(f'<td style="{_rtd}text-align:center;color:{_sfc};">{_rv}</td>')
+                            else:
+                                _cells.append(f'<td style="{_rtd}text-align:center;color:#8ba0b8;">{_rv}</td>')
+                        _rbody.append(f'<tr style="background:{_ribg};">{"".join(_cells)}</tr>')
+                    st.markdown(
+                        f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;">'
+                        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                        f'<thead><tr>{_rhead}</tr></thead><tbody>{"".join(_rbody)}</tbody></table></div>',
+                        unsafe_allow_html=True,
+                    )
                     st.caption("**vs Avg** — strokes vs field avg (negative = better). **Ceiling/Floor** — Q10/Q90 projection range.")
 
             st.markdown("""
@@ -14968,13 +15152,45 @@ elif page == "📊 Predictions":
                         "Dist Rank", "Missing Criteria",
                     ]
 
-                    st.dataframe(
-                        _aug_show,
-                        hide_index=True,
-                        use_container_width=True,
-                        column_config={
-                            "Composite Score": st.column_config.NumberColumn(format="%.3f"),
-                        },
+                    _aug_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                    _aug_td = "padding:7px 10px;border-bottom:1px solid #12253d;font-size:0.84em;"
+                    _aug_cols = list(_aug_show.columns)
+                    _aug_head = "".join(f'<th style="{_aug_th}text-align:{"left" if c in ("Player","Missing Criteria") else "center"};">{c}</th>' for c in _aug_cols)
+                    _aug_body = []
+                    for _augi, _augr in _aug_show.iterrows():
+                        _augbg = "#0d1a30" if _augi % 2 == 0 else "#0a1525"
+                        _qs = int(_augr["Qual (8)"]) if pd.notna(_augr["Qual (8)"]) else 0
+                        _qcol = "#ffd700" if _qs >= 7 else ("#00c44f" if _qs >= 5 else "#4cb8ff" if _qs >= 3 else "#8ba0b8")
+                        _cells = []
+                        for _augc in _aug_cols:
+                            _augv = str(_augr[_augc])
+                            if _augc == "#":
+                                _cells.append(f'<td style="{_aug_td}text-align:center;color:#8ba0b8;">{_augv}</td>')
+                            elif _augc == "Player":
+                                _cells.append(f'<td style="{_aug_td}text-align:left;color:#dde6f5;font-weight:600;white-space:nowrap;">{_augv}</td>')
+                            elif _augc == "Qual (8)":
+                                _cells.append(f'<td style="{_aug_td}text-align:center;color:{_qcol};font-weight:700;">{_augv}/8</td>')
+                            elif _augc == "Composite Score":
+                                _cells.append(f'<td style="{_aug_td}text-align:center;color:#f4c430;">{float(_augr[_augc]):.3f}</td>' if pd.notna(_augr[_augc]) else f'<td style="{_aug_td}text-align:center;color:#4a5a6a;">—</td>')
+                            elif _augc in ("Augusta Avg","SG T2G (L4)"):
+                                _sav = _augv.replace("N/A","—")
+                                try:
+                                    _sf = float(_augv)
+                                    _sc2 = "#00c44f" if _sf < 0 else ("#e74c3c" if _sf > 0 else "#8ba0b8")
+                                except (ValueError, TypeError):
+                                    _sc2 = "#8ba0b8"
+                                _cells.append(f'<td style="{_aug_td}text-align:center;color:{_sc2};">{_sav}</td>')
+                            elif _augc == "Missing Criteria":
+                                _cells.append(f'<td style="{_aug_td}text-align:left;color:#4a5a6a;font-size:0.8em;">{_augv}</td>')
+                            else:
+                                _cells.append(f'<td style="{_aug_td}text-align:center;color:#8ba0b8;">{_augv}</td>')
+                        _aug_body.append(f'<tr style="background:{_augbg};">{"".join(_cells)}</tr>')
+                    st.markdown(
+                        f'<div style="overflow-x:auto;overflow-y:auto;max-height:520px;border:1px solid #1e3a5f;border-radius:10px;">'
+                        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                        f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_aug_head}</tr></thead>'
+                        f'<tbody>{"".join(_aug_body)}</tbody></table></div>',
+                        unsafe_allow_html=True,
                     )
                     st.caption(
                         f"Showing {len(_aug_show)} players with qualifier score >= {_aug_min_q}. "
