@@ -478,9 +478,12 @@ def run_tuesday_evening(dry_run: bool = False):
                          "--field", f"data/fields/field_{tournament_id}.csv",
                          "--use-schedule",
                          "--skip-refresh", "--calibrate", "--lineup"]),
-        # Score bets after predictions are updated, using fresh DG odds
+        # Score bets after predictions are updated, using fresh DG odds.
+        # Lower thresholds so the dashboard slider can filter — saves more candidates.
         ("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
-                             "--tournament-id", tournament_id]),
+                             "--tournament-id", tournament_id,
+                             "--min-edge", "0.75", "--min-confidence", "0.45",
+                             "--max-per-market", "15", "--top-n", "40"]),
     ]
 
     results = []
@@ -619,7 +622,9 @@ def run_wednesday_morning(dry_run: bool = False):
                          "--use-schedule",
                          "--skip-refresh", "--calibrate", "--lineup"]),
         ("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
-                             "--tournament-id", tournament_id]),
+                             "--tournament-id", tournament_id,
+                             "--min-edge", "0.75", "--min-confidence", "0.45",
+                             "--max-per-market", "15", "--top-n", "40"]),
     ]
 
     results = []
@@ -669,7 +674,9 @@ def run_live_refresh(dry_run: bool = False):
         tasks.append(("Refresh Odds", ["python3", "scripts/predictions/refresh_odds.py",
                                        "--tournament-id", tournament_id]))
         tasks.append(("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
-                                         "--tournament-id", tournament_id]))
+                                         "--tournament-id", tournament_id,
+                                         "--min-edge", "0.75", "--min-confidence", "0.45",
+                                         "--max-per-market", "15", "--top-n", "40"]))
         
         # After fetching the fresh leaderboard, immediately blend actual scores 
         # into the predictions so live_projected_score stays current 

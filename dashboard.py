@@ -13323,15 +13323,15 @@ elif page == "🎰 Betting":
                             except Exception:
                                 return str(v)
 
-                        _singles_filtered   = _filtered[_filtered["bet_type"].astype(str) == "single"].head(12)
+                        _singles_filtered   = _filtered[_filtered["bet_type"].astype(str) == "single"].head(20)
                         _parlays_filtered   = _filtered[_filtered["bet_type"].astype(str) == "content_card"].head(6)
                         _all_empty = _singles_filtered.empty and _parlays_filtered.empty
 
                         if _all_empty:
-                            st.info("No bets meet the current filters. Try lowering the edge threshold.")
+                            st.info("No bets meet the current edge threshold. Lower the slider or check back after odds refresh.")
 
                         def _render_card_grid(card_df):
-                            _n_cols = 2
+                            _n_cols = 1
                             for _ci in range(0, len(card_df), _n_cols):
                                 _card_cols = st.columns(_n_cols)
                                 for _cj, (_, _row) in enumerate(
@@ -13747,6 +13747,151 @@ elif page == "🎰 Betting":
                                 f'<tbody>{"".join(_bt_body)}</tbody></table></div>',
                                 unsafe_allow_html=True,
                             )
+
+                    # ── Multi-book scouting table ────────────────────────────
+                    # Always visible — shows model prob vs every DG book's odds
+                    # for the active market filter, sorted by edge vs DK.
+                    _scout_mkt_raw = _sel_mkt if _sel_mkt != "All" else "top10"
+                    _scout_dg_mkt = {
+                        "outright": "win", "top5": "top_5",
+                        "top10": "top_10", "top20": "top_20",
+                    }.get(_scout_mkt_raw)
+                    _dg_path_scout = DATA_DIR / "datagolf" / f"dg_outrights_{prop_tournament_id}.csv"
+
+                    if _scout_dg_mkt and _dg_path_scout.exists():
+                        try:
+                            _dg_raw = pd.read_csv(_dg_path_scout)
+                            _dg_mkt = _dg_raw[
+                                (_dg_raw["market"].astype(str).str.lower() == _scout_dg_mkt) &
+                                (_dg_raw["is_dg_model"].astype(str).str.lower() != "true")
+                            ].copy()
+
+                            if not _dg_mkt.empty and "book" in _dg_mkt.columns:
+                                # Normalize player names "Last, First" → "First Last"
+                                def _flip_dg(n):
+                                    s = str(n).strip()
+                                    return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
+                                _dg_mkt["_pname"] = _dg_mkt["player_name"].apply(_flip_dg)
+                                _dg_mkt["odds_american"] = pd.to_numeric(_dg_mkt["odds_american"], errors="coerce")
+                                _dg_mkt["_book_up"] = _dg_mkt["book"].str.upper()
+
+                                # Books to show (bettable US + sharp reference)
+                                _SCOUT_BOOKS_ORDER = ["DRAFTKINGS", "FANDUEL", "BET365", "BETMGM", "CAESARS", "PINNACLE"]
+                                _books_present = [b for b in _SCOUT_BOOKS_ORDER if b in _dg_mkt["_book_up"].values]
+
+                                # Pivot: one row per player, columns = books
+                                _scout_pivot = _dg_mkt.pivot_table(
+                                    index="_pname", columns="_book_up",
+                                    values="odds_american", aggfunc="first"
+                                ).reset_index()
+                                _scout_pivot.columns.name = None
+
+                                # Merge model probs
+                                if not _vb_preds_df.empty and "player_name" in _vb_preds_df.columns:
+                                    _prob_col = {
+                                        "top10": "top10_prob", "top5": "top5_prob",
+                                        "top20": "top20_prob", "outright": "win_prob",
+                                    }.get(_scout_mkt_raw, "top10_prob")
+                                    if _prob_col not in _vb_preds_df.columns:
+                                        _prob_col = next((c for c in ["top10_prob","top5_prob","win_prob"] if c in _vb_preds_df.columns), None)
+                                    if _prob_col:
+                                        _pred_slim = _vb_preds_df[["player_name", _prob_col]].copy()
+                                        _pred_slim["_pname"] = _pred_slim["player_name"].apply(
+                                            lambda n: f"{n.split(',')[1].strip()} {n.split(',')[0].strip()}".lower()
+                                            if "," in str(n) else str(n).strip().lower()
+                                        )
+                                        _scout_pivot["_pname_lc"] = _scout_pivot["_pname"].str.lower()
+                                        _pred_slim2 = _pred_slim.rename(columns={_prob_col: "_model_prob"})
+                                        _scout_pivot = _scout_pivot.merge(
+                                            _pred_slim2[["_pname", "_model_prob"]],
+                                            left_on="_pname_lc", right_on="_pname", how="left", suffixes=("","_r")
+                                        ).drop(columns=["_pname_r","_pname_lc"], errors="ignore")
+                                    else:
+                                        _scout_pivot["_model_prob"] = float("nan")
+                                else:
+                                    _scout_pivot["_model_prob"] = float("nan")
+
+                                # Compute no-vig edge vs DK (or first available book)
+                                _ref_book = next((b for b in ["DRAFTKINGS","FANDUEL","BET365"] if b in _scout_pivot.columns), None)
+                                if _ref_book:
+                                    _spots = {"top10": 10, "top5": 5, "top20": 20, "outright": 1}.get(_scout_mkt_raw, 10)
+                                    _total_raw = _scout_pivot[_ref_book].apply(
+                                        lambda o: (100/(o+100) if o>0 else abs(o)/(abs(o)+100)) if pd.notna(o) else 0
+                                    ).sum()
+                                    _nv_factor = _total_raw / _spots if _total_raw > 0 else 1.0
+                                    _scout_pivot["_edge_vs_ref"] = _scout_pivot.apply(
+                                        lambda r: (
+                                            float(r["_model_prob"]) -
+                                            ((100/(r[_ref_book]+100) if r[_ref_book]>0 else abs(r[_ref_book])/(abs(r[_ref_book])+100)) / _nv_factor)
+                                        ) * 100
+                                        if pd.notna(r.get("_model_prob")) and pd.notna(r.get(_ref_book)) else float("nan"),
+                                        axis=1
+                                    )
+                                    _scout_pivot = _scout_pivot.sort_values("_edge_vs_ref", ascending=False, na_position="last")
+
+                                # Format odds helper
+                                def _fmt_o(v):
+                                    try:
+                                        n = int(float(v))
+                                        return f"+{n}" if n >= 0 else str(n)
+                                    except Exception:
+                                        return "—"
+
+                                # Build HTML table
+                                _mkt_label_scout = _mkt_labels.get(_scout_mkt_raw, _scout_mkt_raw.title())
+                                _books_cols = [b for b in _books_present if b in _scout_pivot.columns]
+                                _bk_abbr = {"DRAFTKINGS":"DK","FANDUEL":"FD","BET365":"B365","BETMGM":"MGM","CAESARS":"CZR","PINNACLE":"PIN"}
+                                _th_s = "background:#0a1628;color:#8ba0b8;font-size:0.70em;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:7px 10px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+                                _td_s = "padding:6px 10px;border-bottom:1px solid #0f2236;font-size:0.82em;"
+                                _head_cells = (
+                                    f'<th style="{_th_s}text-align:left;">Player</th>'
+                                    f'<th style="{_th_s}text-align:center;">Model%</th>'
+                                    + "".join(f'<th style="{_th_s}text-align:center;">{_bk_abbr.get(b,b[:3])}</th>' for b in _books_cols)
+                                    + f'<th style="{_th_s}text-align:center;">Edge vs {_bk_abbr.get(_ref_book,_ref_book or "Mkt")}</th>'
+                                )
+                                _body_rows = []
+                                for _ri, (_idx, _sr) in enumerate(_scout_pivot.head(40).iterrows()):
+                                    _bg = "#0d1a30" if _ri % 2 == 0 else "#0a1525"
+                                    _mp = _sr.get("_model_prob")
+                                    _mp_s = f"{float(_mp)*100:.1f}%" if pd.notna(_mp) else "—"
+                                    _mp_color = "#00c44f" if pd.notna(_mp) else "#7f8c8d"
+                                    _edge = _sr.get("_edge_vs_ref")
+                                    if pd.notna(_edge):
+                                        _edgef = float(_edge)
+                                        _e_color = "#00c44f" if _edgef > 1 else "#f39c12" if _edgef > 0 else "#7f8c8d"
+                                        _e_str = f'{_edgef:+.1f}pp'
+                                    else:
+                                        _e_color, _e_str = "#7f8c8d", "—"
+                                    _book_cells = ""
+                                    for _bk in _books_cols:
+                                        _odds_v = _sr.get(_bk)
+                                        _odds_s = _fmt_o(_odds_v)
+                                        # Highlight best odds across books (highest positive or least negative)
+                                        _book_cells += f'<td style="{_td_s}text-align:center;color:#dde6f5;">{_odds_s}</td>'
+                                    _body_rows.append(
+                                        f'<tr style="background:{_bg};">'
+                                        f'<td style="{_td_s}text-align:left;color:#dde6f5;font-weight:600;">{_sr["_pname"]}</td>'
+                                        f'<td style="{_td_s}text-align:center;color:{_mp_color};font-weight:700;">{_mp_s}</td>'
+                                        + _book_cells +
+                                        f'<td style="{_td_s}text-align:center;color:{_e_color};font-weight:700;">{_e_str}</td>'
+                                        f'</tr>'
+                                    )
+
+                                with st.expander(
+                                    f"Book Comparison — {_mkt_label_scout} · {len(_scout_pivot)} players · {len(_books_cols)} books",
+                                    expanded=_all_empty
+                                ):
+                                    st.markdown(
+                                        f'<div style="overflow-x:auto;border:1px solid #1e3a5f;border-radius:10px;">'
+                                        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+                                        f'<thead><tr>{_head_cells}</tr></thead>'
+                                        f'<tbody>{"".join(_body_rows)}</tbody>'
+                                        f'</table></div>',
+                                        unsafe_allow_html=True,
+                                    )
+                                    st.caption(f"Sorted by model edge vs {_bk_abbr.get(_ref_book,'')}. No-vig normalized. Sharp books (PIN) shown for reference — not US-bettable.")
+                        except Exception as _scout_err:
+                            pass  # non-fatal
 
                     st.markdown("---")
 
