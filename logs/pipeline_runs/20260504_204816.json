@@ -1,0 +1,32 @@
+{
+  "run_id": "20260504_204816",
+  "run_type": "full_pipeline",
+  "status": "failed",
+  "started_at": "2026-05-04T20:48:16",
+  "ended_at": "2026-05-04T20:48:16",
+  "tournament_name": "Truist Championship",
+  "tournament_id": "R2026480",
+  "step_count": 1,
+  "failed_count": 1,
+  "failed_step_ids": [
+    "step_001"
+  ],
+  "steps": [
+    {
+      "id": "step_001",
+      "name": "Pipeline exception",
+      "command": [],
+      "command_str": "",
+      "timeout_seconds": null,
+      "status": "failed",
+      "started_at": "2026-05-04T20:48:16",
+      "ended_at": "2026-05-04T20:48:16",
+      "duration_seconds": 0.0,
+      "return_code": 1,
+      "stdout_tail": "",
+      "stderr_tail": "",
+      "error": "No field file found. Provide --field or --pga-id so the pipeline can fetch one.\nTraceback (most recent call last):\n  File \"/Users/jacklegnon/Desktop/golf_data/scripts/run_pipeline.py\", line 1085, in run_full_pipeline\n    raise RuntimeError(\n        \"No field file found. Provide --field or --pga-id so the pipeline can fetch one.\"\n    )\nRuntimeError: No field file found. Provide --field or --pga-id so the pipeline can fetch one.\n"
+    }
+  ],
+  "error": "No field file found. Provide --field or --pga-id so the pipeline can fetch one.\nTraceback (most recent call last):\n  File \"/Users/jacklegnon/Desktop/golf_data/scripts/run_pipeline.py\", line 1085, in run_full_pipeline\n    raise RuntimeError(\n        \"No field file found. Provide --field or --pga-id so the pipeline can fetch one.\"\n    )\nRuntimeError: No field file found. Provide --field or --pga-id so the pipeline can fetch one.\n"
+}

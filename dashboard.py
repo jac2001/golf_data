@@ -4525,11 +4525,18 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict, my_picks: list | None 
 
     _my_picks_lower = [p.lower() for p in (my_picks or [])]
 
+    def _clean_thru(v, default="—"):
+        s = str(v).strip()
+        if s.upper() in ("F", "F*"): return s
+        if s in ("nan", "", "None", default): return default
+        try: return str(int(float(s)))
+        except (ValueError, TypeError): return default
+
     for i, (_, player) in enumerate(top3.iterrows()):
         with _leader_cols[i]:
             name    = str(player.get("player_name", "Unknown"))
             country = str(player.get("country", ""))
-            thru    = str(player.get("thru", "-"))
+            thru    = _clean_thru(player.get("thru", "—"))
             _odds_raw = player.get("odds_to_win")
             try:
                 odds = str(int(float(_odds_raw))) if _odds_raw else ""
@@ -4706,24 +4713,7 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict, my_picks: list | None 
             except (ValueError, TypeError): return s
         display_df[_ic] = display_df[_ic].apply(_fmt_int)
 
-    # Color-code score/total columns: under par = green, over par = red, E = default
-    def _color_score(val):
-        try:
-            n = 0 if str(val).strip() == "E" else int(float(val))
-        except (ValueError, TypeError):
-            return ""
-        if n < 0:   return "color:#2ecc71;font-weight:600"
-        elif n > 0: return "color:#e74c3c;font-weight:600"
-        return "color:#aaa"
-
-    _score_style_cols = [c for c in display_df.columns if c in ("Score", "Total", "R1", "R2", "R3", "R4")]
-    try:
-        _styled = display_df.style.map(_color_score, subset=_score_style_cols)
-    except Exception:
-        _styled = display_df
-
-    # ── My Picks summary + row highlighting ──────────────────────────────────
-    # Helper: fuzzy last-name match between a pick string and a leaderboard name
+    # ── My Picks summary ─────────────────────────────────────────────────────
     def _is_my_pick(lb_name: str, picks: list) -> bool:
         lb_lower = str(lb_name).lower()
         for p in picks:
@@ -4733,7 +4723,6 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict, my_picks: list | None 
         return False
 
     if my_picks:
-        # Build a compact "Your picks: Name Pos (Score) · ..." line from full df
         _pick_parts = []
         for _p in my_picks:
             _last = _p.strip().split()[-1].lower()
@@ -4758,38 +4747,70 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict, my_picks: list | None 
             unsafe_allow_html=True,
         )
 
-        # Highlight pick rows in the styled dataframe with a green tint
-        def _highlight_picks_row(row):
-            player_col = "Player" if "Player" in row.index else "Player Name"
-            if _is_my_pick(str(row.get(player_col, "")), my_picks):
-                return [
-                    "background-color:#0b2a0b;font-weight:700;border-left:3px solid #00c44f"
-                ] * len(row)
-            return [""] * len(row)
+    # ── Dark HTML leaderboard table ───────────────────────────────────────────
+    _lb_th = "background:#0a1628;color:#8ba0b8;font-size:0.72em;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:7px 12px;border-bottom:1px solid #1e3a5f;white-space:nowrap;"
+    _lb_td = "padding:7px 12px;border-bottom:1px solid #12253d;font-size:0.85em;"
+    _lb_score_cols = {c for c in display_df.columns if c in ("Score", "Total", "R1", "R2", "R3", "R4")}
+    _lb_player_col = "Player" if "Player" in display_df.columns else "Player Name"
 
-        try:
-            _styled = _styled.apply(_highlight_picks_row, axis=1)
-        except Exception:
-            pass
+    def _lb_cell(val, col, is_pick=False):
+        s = str(val).strip()
+        if s in ("", "nan"): s = "—"
+        if col in _lb_score_cols:
+            try:
+                n = 0 if s == "E" else int(float(s))
+            except (ValueError, TypeError):
+                n = None
+            if s == "—":
+                return f'<td style="{_lb_td}text-align:center;color:#3a5270;">—</td>'
+            clr = ("#00c44f" if n is not None and n < 0 else
+                   "#e53935" if n is not None and n > 0 else "#dde6f5")
+            fw  = "700" if col in ("Score", "Total") else "400"
+            return f'<td style="{_lb_td}text-align:center;color:{clr};font-weight:{fw};">{s}</td>'
+        if col == _lb_player_col:
+            fw = "700" if is_pick else "600"
+            return f'<td style="{_lb_td}color:#dde6f5;font-weight:{fw};">{s}</td>'
+        if col == "Move":
+            clr = ("#00c44f" if "↑" in s else "#e53935" if "↓" in s else "#3a5270")
+            return f'<td style="{_lb_td}text-align:center;color:{clr};font-size:0.88em;">{s}</td>'
+        if col == "Pos":
+            return f'<td style="{_lb_td}text-align:center;color:#8ba0b8;font-weight:700;">{s}</td>'
+        return f'<td style="{_lb_td}text-align:center;color:#8ba0b8;">{s}</td>'
 
-    st.caption("Highlighted rows = your picks · Click a row to view scorecard")
-    _lb_event = st.dataframe(
-        _styled,
-        hide_index=True,
-        use_container_width=True,
-        height=600,
-        on_select="rerun",
-        selection_mode="single-row",
+    _lb_head = "".join(
+        f'<th style="{_lb_th}text-align:{"left" if c == _lb_player_col else "center"};">{c}</th>'
+        for c in display_df.columns
     )
-    # Store selected player name in session_state
-    if _lb_event.selection.rows:
-        _sel_idx  = _lb_event.selection.rows[0]
-        _sel_row  = display_df.iloc[_sel_idx]
-        _sel_name = _sel_row.get("Player Name") or _sel_row.get("Player", "")
-        if _sel_name:
-            st.session_state["live_selected_player"] = str(_sel_name)
-    elif "live_selected_player" not in st.session_state:
-        st.session_state["live_selected_player"] = None
+    _lb_rows = []
+    for _li, (_, _lrow) in enumerate(display_df.iterrows()):
+        _lbg  = "#0d1a30" if _li % 2 == 0 else "#0a1525"
+        _pick = _is_my_pick(str(_lrow.get(_lb_player_col, "")), my_picks) if my_picks else False
+        _lstyle = f"background:{('#0d2a0d' if _pick else _lbg)};{'border-left:3px solid #00c44f;' if _pick else ''}"
+        _cells  = "".join(_lb_cell(str(_lrow[c]), c, _pick) for c in display_df.columns)
+        _lb_rows.append(f'<tr style="{_lstyle}">{_cells}</tr>')
+
+    st.markdown(
+        f'<div style="overflow-x:auto;overflow-y:auto;max-height:600px;border:1px solid #1e3a5f;border-radius:10px;">'
+        f'<table style="width:100%;border-collapse:collapse;background:#0d1a30;">'
+        f'<thead style="position:sticky;top:0;z-index:1;"><tr>{_lb_head}</tr></thead>'
+        f'<tbody>{"".join(_lb_rows)}</tbody></table></div>',
+        unsafe_allow_html=True,
+    )
+
+    # ── Scorecard player selector (replaces row-click) ────────────────────────
+    _raw_names_50 = df["player_name"].head(50).tolist()
+    _sc_options   = [""] + _raw_names_50
+    _prev_sel     = st.session_state.get("live_selected_player", "")
+    _sc_idx       = _sc_options.index(_prev_sel) if _prev_sel in _sc_options else 0
+    _sel_name = st.selectbox(
+        "View scorecard",
+        _sc_options,
+        index=_sc_idx,
+        key="lb_player_select",
+        format_func=lambda x: "— Select player for scorecard —" if x == "" else x,
+        label_visibility="collapsed",
+    )
+    st.session_state["live_selected_player"] = _sel_name if _sel_name else None
 
     # ── Player Scorecard — appears directly below table when row is clicked ──
     _selected_sc_player = st.session_state.get("live_selected_player")
@@ -4803,11 +4824,7 @@ def render_live_leaderboard(df: pd.DataFrame, meta: dict, my_picks: list | None 
             # Summary metrics — round to whole numbers
             _sc_pos  = _sc_r.get("position", "—")
             _sc_odds = _sc_r.get("odds_to_win", "")
-            _thru_raw = _sc_r.get("thru", "—")
-            try:
-                _sc_thru = str(int(float(_thru_raw)))
-            except (ValueError, TypeError):
-                _sc_thru = str(_thru_raw)
+            _sc_thru = _clean_thru(_sc_r.get("thru", "—"))
             try:
                 _sc_tot_num = int(float(_sc_r.get("total", 0)))
                 _sc_total   = "E" if _sc_tot_num == 0 else (f"+{_sc_tot_num}" if _sc_tot_num > 0 else str(_sc_tot_num))
@@ -5270,7 +5287,14 @@ def render_fantasy_lineup_tracker(live_df: pd.DataFrame, live_meta: dict | None 
                 _r      = _row.iloc[0]
                 _pos    = str(_r.get("position", "—"))
                 _total  = str(_r.get("total", "E"))
-                _thru   = str(_r.get("thru", "—"))
+                _s2 = str(_r.get("thru", "")).strip()
+                if _s2.upper() in ("F", "F*"):
+                    _thru = _s2
+                elif _s2 in ("nan", "", "None"):
+                    _thru = "—"
+                else:
+                    try: _thru = str(int(float(_s2)))
+                    except (ValueError, TypeError): _thru = "—"
                 _status = str(_r.get("status", "")).lower()
                 def _rnd(v):
                     try: return int(float(v)) if pd.notna(v) and str(v).strip() not in ("", "—") else "—"
@@ -15620,7 +15644,14 @@ elif page == "🔴 Live":
                 _pos        = _row.get("position", "—")
                 _pname      = _row.get("player_name", "—")
                 _total      = _row.get("total", "E")
-                _thru       = str(_row.get("thru", "—"))
+                _s3 = str(_row.get("thru", "")).strip()
+                if _s3.upper() in ("F", "F*"):
+                    _thru = _s3
+                elif _s3 in ("nan", "", "None"):
+                    _thru = "—"
+                else:
+                    try: _thru = str(int(float(_s3)))
+                    except (ValueError, TypeError): _thru = "—"
                 def _rnd(v):
                     try: return int(float(v)) if pd.notna(v) and str(v).strip() not in ("", "—") else "—"
                     except Exception: return "—"

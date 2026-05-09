@@ -13,19 +13,26 @@ Run:
     python scripts/scrapers/fetch_fantasy_scorecard.py --dry-run
 """
 from pathlib import Path
-import sys, re, json, argparse, csv
+import os, sys, re, json, argparse, csv
 from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    load_dotenv = None
 
 PROJECT_ROOT  = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-SCORECARD_URL = "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133"
-TRACKER_FILE  = PROJECT_ROOT / "data" / "fantasy" / "usage_tracker_2026.json"
-SCHEDULE_FILE = PROJECT_ROOT / "data" / "raw" / "schedule_2026.csv"
-MAX_USES      = 3
+SCORECARD_URL  = "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133"
+WEEKLY_LINEUP_URL = "https://connection.protourfantasygolf.com/weekly_lineup"
+BASE_URL       = "https://connection.protourfantasygolf.com"
+TRACKER_FILE   = PROJECT_ROOT / "data" / "fantasy" / "usage_tracker_2026.json"
+SCHEDULE_FILE  = PROJECT_ROOT / "data" / "raw" / "schedule_2026.csv"
+MAX_USES       = 3
+ENV_FILE       = PROJECT_ROOT / ".env"
 
 
 # ---------------------------------------------------------------------------
@@ -139,6 +146,85 @@ def fetch_scorecard() -> list[dict]:
         })
 
     return rows
+
+
+# ---------------------------------------------------------------------------
+# Current-week pending lineup (logged-in only)
+# ---------------------------------------------------------------------------
+
+def fetch_pending_lineup() -> dict | None:
+    """Fetch the currently selected lineup from /weekly_lineup using auth session.
+
+    Returns dict with keys: week (int), tournament (str), players (list[str]),
+    alternate (str | None) — or None if credentials missing or request fails.
+
+    The scorecard page shows '-- XXXXXXXXX --' placeholders for a submitted-but-
+    unrevealed current-week lineup. This function reads the actual selected options
+    from the lineup form so the tracker reflects the real picks immediately.
+    """
+    if load_dotenv is None:
+        return None
+    if ENV_FILE.exists():
+        load_dotenv(ENV_FILE)
+    email    = os.environ.get("PTFG_EMAIL", "")
+    password = os.environ.get("PTFG_PASSWORD", "")
+    if not email or not password:
+        return None
+
+    try:
+        sess = requests.Session()
+        sess.headers.update({"User-Agent": "Mozilla/5.0"})
+        sess.get(f"{BASE_URL}/login", timeout=15)
+        r = sess.post(
+            f"{BASE_URL}/login",
+            data={"user[login]": email, "user[password]": password, "remember_me": "1"},
+            allow_redirects=True,
+            timeout=15,
+        )
+        if "/login" in r.url:
+            print("[WARN] fetch_pending_lineup: login failed — skipping")
+            return None
+
+        r2   = sess.get(WEEKLY_LINEUP_URL, timeout=15)
+        soup = BeautifulSoup(r2.text, "html.parser")
+
+        # Week + tournament from page heading
+        heading = soup.get_text(separator="\n", strip=True)
+        week_m  = re.search(r"Week\s+(\d+):\s*([^\n(]+)", heading)
+        week_num   = int(week_m.group(1)) if week_m else None
+        tournament = week_m.group(2).strip() if week_m else ""
+
+        def _selected_name(select_name: str) -> str | None:
+            sel = soup.find("select", {"name": select_name})
+            if not sel:
+                return None
+            opt = sel.find("option", selected=True)
+            if not opt:
+                return None
+            # Strip trailing usage count " (N)" from option text
+            text = opt.get_text(strip=True)
+            text = re.sub(r"\s*\(\d+\)\s*$", "", text).strip()
+            return text if text else None
+
+        players   = [n for n in [
+            _selected_name("golfer1[id]"),
+            _selected_name("golfer2[id]"),
+            _selected_name("golfer3[id]"),
+        ] if n]
+        alternate = _selected_name("alternate_golfer[id]")
+
+        if not players:
+            return None
+
+        return {
+            "week":       week_num,
+            "tournament": tournament,
+            "players":    players,   # "Last, First" site format
+            "alternate":  alternate,
+        }
+    except Exception as e:
+        print(f"[WARN] fetch_pending_lineup failed: {e}")
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -339,6 +425,47 @@ def main():
     print(f"[INFO] Fetching scorecard from {SCORECARD_URL}")
     rows = fetch_scorecard()
     print(f"[INFO] Parsed {len(rows)} weeks\n")
+
+    # Patch current-week row if it has placeholder names (picks submitted but unrevealed)
+    print("[INFO] Fetching current-week lineup from /weekly_lineup...")
+    pending = fetch_pending_lineup()
+    if pending and pending.get("players"):
+        week_num = pending["week"]
+        # Find the matching row (by week number) or the one with placeholder names
+        _PLACEHOLDER = re.compile(r"^-+\s*X+\s*-+$")
+        patched = False
+        for r in rows:
+            if r["week"] == week_num:
+                has_placeholder = any(_PLACEHOLDER.match(p["name"]) for p in r["players"])
+                is_empty = not r["players"]
+                if has_placeholder or is_empty:
+                    r["players"] = [
+                        {"name": n, "finish": None, "winner": False, "earnings": 0}
+                        for n in pending["players"]
+                    ]
+                    r["pending"] = True
+                    print(f"  Patched wk {week_num} with live picks: {', '.join(pending['players'])}")
+                    if pending.get("alternate"):
+                        print(f"  Alternate: {pending['alternate']}")
+                    patched = True
+                break
+        if not patched and week_num:
+            # Week not in scorecard yet — inject it
+            sched_info = schedule.get(week_num, {})
+            rows.append({
+                "week":       week_num,
+                "tournament": sched_info.get("tournament_name", pending["tournament"]),
+                "wrp":        None,
+                "players":    [
+                    {"name": n, "finish": None, "winner": False, "earnings": 0}
+                    for n in pending["players"]
+                ],
+                "total":   None,
+                "pending": True,
+            })
+            print(f"  Injected wk {week_num}: {', '.join(pending['players'])}")
+    else:
+        print("  No pending lineup found (credentials missing or picks not yet submitted)")
 
     for r in rows:
         status  = "pending" if r["pending"] else (f"${r['total']:,}" if r["total"] else "no data")

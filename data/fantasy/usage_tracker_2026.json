@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-05-05T06:00:12.902634",
+  "last_updated": "2026-05-06T23:27:00.259671",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -448,8 +448,8 @@
       "total_points": 0
     },
     "M Fitzpatrick": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "RBC Heritage",
@@ -457,6 +457,13 @@
           "date": "2026-04-16",
           "result": "1",
           "earnings": 3600000
+        },
+        {
+          "tournament": "Truist Championship",
+          "week": 14,
+          "date": "2026-05-07",
+          "result": null,
+          "earnings": 0
         }
       ],
       "total_earnings": 3600000,
@@ -564,6 +571,36 @@
         }
       ],
       "total_earnings": 826667,
+      "total_points": 0
+    },
+    "Rory McIlroy": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Truist Championship",
+          "week": 14,
+          "date": "2026-05-07",
+          "result": null,
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Xander Schauffele": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Truist Championship",
+          "week": 14,
+          "date": "2026-05-07",
+          "result": null,
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
       "total_points": 0
     }
   },
@@ -741,7 +778,11 @@
       "tournament": "Truist Championship",
       "week": 14,
       "date": "2026-05-07",
-      "lineup": [],
+      "lineup": [
+        "Rory McIlroy",
+        "M Fitzpatrick",
+        "Xander Schauffele"
+      ],
       "wrp": null,
       "earnings_earned": null,
       "points_earned": null
@@ -893,7 +934,7 @@
   },
   "summary": {
     "total_weeks": 30,
-    "total_players": 36,
+    "total_players": 38,
     "total_earnings": 18895786
   }
 }

@@ -68,5 +68,12 @@
     "status": "POSSIBLE_WD",
     "source": "field_vs_predictions",
     "detected_at": "2026-05-05T06:00:15.890708"
+  },
+  {
+    "player_name": "Knapp, Jake",
+    "player_id": "47420",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-05-06T07:15:58.459072"
   }
 ]

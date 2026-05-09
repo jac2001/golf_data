@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Truist Championship (R2026480)
+Generated: 2026-05-06 07:30
+============================================================
+
+  [OK  ] Field players                  71 rows  (0h ago)
+  [OK  ] Predictions                    71 rows, tid=R2026480  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (695h ago)
+  [OK  ] Expert picks                   6 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (695h old)
