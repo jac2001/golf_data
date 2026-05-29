@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* Force dark mode always — no media query toggle */
+:root {
+  --bg-base:    #070d1a;
+  --bg-card:    #0d1a30;
+  --bg-hover:   #0a1525;
+  --border:     #1e3a5f;
+  --text-main:  #dde6f5;
+  --text-muted: #7f8c8d;
+  --green:      #00c44f;
+  --blue:       #4cb8ff;
+  --gold:       #f4c430;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-base);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Remove default link styling */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Thin scrollbar on webkit browsers */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Responsive layout helpers ────────────────────────────────────────────── */
+
+/* Page-level content wrappers — replace inline maxWidth+margin on every page */
+.page-wrap    { max-width: 1100px; margin: 0 auto; width: 100%; }
+.page-wrap-md { max-width:  900px; margin: 0 auto; width: 100%; }
+.page-wrap-sm { max-width:  680px; margin: 0 auto; width: 100%; }
+
+/* Horizontally scrollable containers (tables, tab bars) */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;  /* smooth momentum on iOS */
+}
+
+/* Tab bars — scroll without showing a scrollbar */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;             /* Firefox */
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+
+/* ── Breakpoint: ≤ 768px (phones + small tablets) ───────────────────────── */
+@media (max-width: 768px) {
+  /* Tighten global page padding */
+  main { padding: 16px 16px 40px !important; }
+
+  /* Page wrappers need no horizontal overflow */
+  .page-wrap, .page-wrap-md, .page-wrap-sm { overflow-x: hidden; }
+
+  /* Show/hide helpers */
+  .mobile-hidden { display: none !important; }
+  .mobile-only   { display: block !important; }
+  .mobile-flex   { display: flex !important; }
+
+  /* Stack flex rows vertically on small screens */
+  .mobile-stack {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  /* Full-width cards / controls */
+  .mobile-full { width: 100% !important; min-width: 0 !important; }
+
+  /* Smaller base font in dense tables */
+  .mobile-dense { font-size: 0.78em !important; }
+}
+
+/* ── Breakpoint: ≥ 769px (desktop) ──────────────────────────────────────── */
+@media (min-width: 769px) {
+  .mobile-only { display: none !important; }
+}
