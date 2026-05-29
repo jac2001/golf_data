@@ -70,7 +70,7 @@ app = FastAPI(title="Golf Data API", version="1.0.0")
 # Allow the Next.js dev server (localhost:3000) to call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://*.vercel.app"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
