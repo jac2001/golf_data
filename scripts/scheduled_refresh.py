@@ -201,6 +201,7 @@ STEP_TIMEOUTS = {
     "Refresh Odds": 120,
     "Recommend Bets": 120,
     "Past Results": 120,
+    "Form Stats": 900,
     # Post-tournament model refresh
     "Calibration Refresh": 120,
     "Training Data Merge": 1800,
@@ -266,6 +267,43 @@ def run_command(cmd: list, description: str, timeout: int = 180) -> bool:
     except Exception as e:
         log(f"  ✗ Error: {e}")
         return False
+
+
+def run_parallel(tasks: list[tuple[str, list]], default_timeout: int = 120) -> list[tuple[str, bool]]:
+    """Run a list of (description, cmd) tasks simultaneously and return results.
+
+    Each task spawns its own subprocess. All run at once; we wait for the slowest.
+    Safe to use when tasks hit different APIs or do independent computation.
+    """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    def _run_one(desc_cmd):
+        desc, cmd = desc_cmd
+        timeout = step_timeout(desc, default_timeout)
+        log(f"  [parallel] Starting: {desc}")
+        try:
+            result = subprocess.run(
+                cmd, cwd=PROJECT_ROOT, capture_output=True, text=True, timeout=timeout
+            )
+            if result.returncode == 0:
+                log(f"  [parallel] ✓ {desc}")
+                return desc, True
+            else:
+                log(f"  [parallel] ✗ {desc}: {result.stderr[:150] if result.stderr else 'failed'}")
+                return desc, False
+        except subprocess.TimeoutExpired:
+            log(f"  [parallel] ✗ {desc}: timeout after {timeout}s")
+            return desc, False
+        except Exception as e:
+            log(f"  [parallel] ✗ {desc}: {e}")
+            return desc, False
+
+    results = []
+    with ThreadPoolExecutor(max_workers=len(tasks)) as pool:
+        futures = {pool.submit(_run_one, t): t[0] for t in tasks}
+        for fut in as_completed(futures):
+            results.append(fut.result())
+    return results
 
 
 def step_timeout(description: str, default: int = 180) -> int:
@@ -484,6 +522,10 @@ def run_tuesday_evening(dry_run: bool = False):
                              "--tournament-id", tournament_id,
                              "--min-edge", "0.75", "--min-confidence", "0.45",
                              "--max-per-market", "15", "--top-n", "40"]),
+        # Generate best bet card + send email notification.
+        ("Best Bet Notification", ["python3", "scripts/notifications/send_best_bet.py",
+                                    "--tournament-id", tournament_id,
+                                    "--send-email"]),
     ]
 
     results = []
@@ -644,62 +686,100 @@ def run_wednesday_morning(dry_run: bool = False):
 
 
 def run_live_refresh(dry_run: bool = False):
-    """Live tournament updates."""
+    """Live tournament updates — runs in three parallel tiers.
+
+    Tier 1 (all independent fetches run simultaneously):
+        Leaderboard, Hole Scores, DG Live Stats (all rounds), DG Betting Odds,
+        DraftKings Odds, League Picks, Live Course Stats
+
+    Tier 2 (depends on Tier 1 data):
+        Refresh Odds (needs fresh leaderboard + DG odds)
+        Live Prediction Update (needs fresh leaderboard)
+
+    Tier 3 (depends on Tier 2 data):
+        Recommend Bets, Live Bet Recommendations
+
+    Sequential total was ~8 min; parallel tiers target ~2-3 min.
+    """
     log("=" * 60)
-    log("LIVE REFRESH - Tournament Updates")
+    log("LIVE REFRESH - Tournament Updates (parallel)")
     log("=" * 60)
 
     tournament = get_current_tournament()
     tournament_id = str(tournament.get("tournament_id", "")) if tournament else ""
 
-    tasks = [
+    results = []
+
+    # ── Tier 1: independent fetches ───────────────────────────────────────────
+    tier1 = [
         ("Live Leaderboard", ["python3", "scripts/scrapers/fetch_live_leaderboard.py"]),
-        ("League Picks", ["python3", "scripts/scrapers/fetch_league_picks.py"]),
+        ("League Picks",     ["python3", "scripts/scrapers/fetch_league_picks.py"]),
     ]
 
     if tournament_id:
-        tasks.append(("Hole Scores", ["python3", "scripts/scrapers/fetch_hole_scores.py",
+        tier1.append(("Hole Scores", ["python3", "scripts/scrapers/fetch_hole_scores.py",
                                       "--tournament-id", tournament_id]))
-        tasks.append(("DG Live Stats", ["python3", "scripts/scrapers/fetch_dg_live_stats.py",
+        tier1.append(("DG Live Stats", ["python3", "scripts/scrapers/fetch_dg_live_stats.py",
                                         "--tournament-id", tournament_id]))
-        tasks.append(("Live Course Stats", ["python3", "scripts/scrapers/fetch_course_stats.py",
+        tier1.append(("Live Course Stats", ["python3", "scripts/scrapers/fetch_course_stats.py",
                                             "--tid", tournament_id]))
-        tasks.append(("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
+        tier1.append(("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
                                           "--tournament-id", tournament_id,
                                           "--max-age-hours", "0.5",
                                           "--fetch-profile", "fast",
                                           "--no-snapshot"]))
-        tasks.append(("DG Betting Odds", ["python3", "scripts/scrapers/fetch_dg_odds.py",
+        tier1.append(("DG Betting Odds", ["python3", "scripts/scrapers/fetch_dg_odds.py",
                                           "--tournament-id", tournament_id, "--market", "all"]))
-        tasks.append(("Refresh Odds", ["python3", "scripts/predictions/refresh_odds.py",
-                                       "--tournament-id", tournament_id]))
-        tasks.append(("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
-                                         "--tournament-id", tournament_id,
-                                         "--min-edge", "0.75", "--min-confidence", "0.45",
-                                         "--max-per-market", "15", "--top-n", "40"]))
-        
-        # After fetching the fresh leaderboard, immediately blend actual scores 
-        # into the predictions so live_projected_score stays current 
-        
-        tasks.append(("Live Prediction Update", ['python3', 'scripts/predictions/live_update_predictions.py',
-                                                 "--tournament_id", tournament_id
-                                                 ]))
-        tasks.append(("Live Bet Recommendations", ['python3', 'scripts/predictions/generate_live_bets.py',
-                                                   "--tid", tournament_id
-                                                   ]))
-        
-        
-        
 
-    results = []
-    for desc, cmd in tasks:
+        # Per-round DG stats (one task per completed/active round)
+        _meta_path = DATA_DIR / "live" / f"leaderboard_{tournament_id.lower()}_meta.json"
+        _current_round = 1
+        if _meta_path.exists():
+            try:
+                with open(_meta_path) as _f:
+                    _current_round = int(json.load(_f).get("current_round") or 1)
+            except Exception:
+                pass
+        for _rnd in range(1, _current_round + 1):
+            tier1.append((f"DG Live Stats R{_rnd}", [
+                "python3", "scripts/scrapers/fetch_dg_live_stats.py",
+                "--tournament-id", tournament_id, "--round", str(_rnd),
+            ]))
+
+    log(f"Tier 1: launching {len(tier1)} fetches in parallel")
+    if dry_run:
+        results += [(desc, True) for desc, _ in tier1]
+    else:
+        results += run_parallel(tier1)
+
+    # ── Tier 2: needs fresh leaderboard + odds ────────────────────────────────
+    if tournament_id:
+        tier2 = [
+            ("Refresh Odds", ["python3", "scripts/predictions/refresh_odds.py",
+                               "--tournament-id", tournament_id]),
+            ("Live Prediction Update", ["python3", "scripts/predictions/live_update_predictions.py",
+                                        "--tournament_id", tournament_id]),
+        ]
+        log(f"Tier 2: launching {len(tier2)} tasks in parallel")
         if dry_run:
-            log(f"[DRY RUN] Would run: {desc}")
-            results.append((desc, True))
+            results += [(desc, True) for desc, _ in tier2]
         else:
-            timeout = step_timeout(desc, 120)
-            success = run_command(cmd, desc, timeout=timeout)
-            results.append((desc, success))
+            results += run_parallel(tier2)
+
+        # ── Tier 3: needs updated predictions + odds ──────────────────────────
+        tier3 = [
+            ("Recommend Bets", ["python3", "scripts/models/recommend_bets.py",
+                                 "--tournament-id", tournament_id,
+                                 "--min-edge", "0.75", "--min-confidence", "0.45",
+                                 "--max-per-market", "15", "--top-n", "40"]),
+            ("Live Bet Recommendations", ["python3", "scripts/predictions/generate_live_bets.py",
+                                          "--tid", tournament_id]),
+        ]
+        log(f"Tier 3: launching {len(tier3)} tasks in parallel")
+        if dry_run:
+            results += [(desc, True) for desc, _ in tier3]
+        else:
+            results += run_parallel(tier3)
 
     # ── Tee times + draw advantage for R3/R4 ─────────────────────────────────
     # R1/R2 tee times are fetched on Tuesday morning (run_tuesday_morning).
@@ -735,6 +815,21 @@ def run_live_refresh(dry_run: bool = False):
     if not dry_run and tournament_id and tournament:
         tournament_name = str(tournament.get("tournament_name", ""))
         save_weather_snapshot(tournament_id, tournament_name)
+
+    # ── Sync live data to DuckDB ──────────────────────────────────────────────
+    if not dry_run and tournament_id:
+        db_counts = sync_live_data_to_db(tournament_id)
+        log(f"[DB] live_stats={db_counts['live_stats']} rows  live_leaderboard={db_counts['live_leaderboard']} rows")
+
+    # ── Sync to Supabase ──────────────────────────────────────────────────────
+    if not dry_run and tournament_id:
+        try:
+            from scripts.database.supabase_sync import sync_leaderboard, sync_predictions, sync_bets
+            sync_leaderboard(tournament_id)
+            sync_predictions(tournament_id)
+            sync_bets(tournament_id)
+        except Exception as e:
+            log(f"[Supabase] sync failed (non-fatal): {e}")
 
     return results
 
@@ -831,21 +926,128 @@ def sync_leaderboard_to_db(tid: str, year: int) -> int:
         return 0
 
 
+def sync_live_data_to_db(tid: str) -> dict:
+    """Upsert live stats + live leaderboard CSVs into DuckDB after each refresh.
+
+    Returns a dict with counts: {live_stats: N, live_leaderboard: N}.
+    Safe to call every refresh cycle — uses DELETE+INSERT per tournament.
+    """
+    counts = {"live_stats": 0, "live_leaderboard": 0}
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "database"))
+        from db import get_conn
+
+        # ── Live SG stats ─────────────────────────────────────────────────────
+        stats_path = DATA_DIR / "datagolf" / f"dg_live_stats_{tid}_latest.csv"
+        if stats_path.exists():
+            df = pd.read_csv(stats_path)
+            if not df.empty:
+                df["tournament_id"] = tid
+                # event_avg stored as round_num=0; actual rounds as 1-4
+                if "round_param" in df.columns:
+                    df["round_num"] = df["round_param"].map({"event_avg": 0}).fillna(
+                        pd.to_numeric(df["round_param"], errors="coerce")
+                    ).fillna(0).astype(int)
+                else:
+                    df["round_num"] = pd.to_numeric(df.get("round", 0), errors="coerce").fillna(0).astype(int)
+                df["thru"] = pd.to_numeric(df["thru"], errors="coerce")
+                df["total"] = pd.to_numeric(df["total"], errors="coerce").fillna(0).astype(int)
+                for col in ["sg_ott","sg_app","sg_arg","sg_putt","sg_t2g","sg_total","driving_dist","driving_acc"]:
+                    if col in df.columns:
+                        df[col] = pd.to_numeric(df[col], errors="coerce")
+                df["dg_id"] = df["dg_id"].astype(str) if "dg_id" in df.columns else ""
+
+                with get_conn() as conn:
+                    conn.register("_live_stats_view", df)
+                    conn.execute(f"DELETE FROM live_stats WHERE tournament_id = '{tid}'")
+                    conn.execute("""
+                        INSERT INTO live_stats
+                            (tournament_id, player_name, dg_id, round_num, position, total, thru,
+                             sg_ott, sg_app, sg_arg, sg_putt, sg_t2g, sg_total,
+                             driving_dist, driving_acc, event_name, last_updated, fetched_at)
+                        SELECT tournament_id, player_name, dg_id, round_num, position, total, thru,
+                               sg_ott, sg_app, sg_arg, sg_putt, sg_t2g, sg_total,
+                               driving_dist, driving_acc, event_name, last_updated, fetched_at
+                        FROM _live_stats_view
+                    """)
+                    counts["live_stats"] = len(df)
+
+        # ── Live leaderboard ──────────────────────────────────────────────────
+        lb_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+        if lb_path.exists():
+            lb = pd.read_csv(lb_path)
+            if not lb.empty:
+                lb["tournament_id"] = tid
+                lb["fetched_at"] = pd.Timestamp.utcnow().isoformat()
+                lb["total_numeric"] = pd.to_numeric(lb.get("total_numeric", 0), errors="coerce").fillna(0).astype(int)
+                lb["current_round"] = pd.to_numeric(lb.get("current_round", 1), errors="coerce").fillna(1).astype(int)
+                for col in ["R1","R2","R3","R4","position_change"]:
+                    if col in lb.columns:
+                        lb[col] = pd.to_numeric(lb[col], errors="coerce")
+                lb["made_cut"] = lb.get("made_cut", True).fillna(True).astype(bool) if "made_cut" in lb.columns else True
+                lb["thru"] = lb["thru"].astype(str) if "thru" in lb.columns else ""
+
+                with get_conn() as conn:
+                    conn.register("_lb_view", lb)
+                    conn.execute(f"DELETE FROM live_leaderboard WHERE tournament_id = '{tid}'")
+                    conn.execute("""
+                        INSERT INTO live_leaderboard
+                            (tournament_id, player_name, position, total_numeric, thru,
+                             current_round, r1, r2, r3, r4, made_cut, fetched_at)
+                        SELECT tournament_id, player_name, position, total_numeric, thru,
+                               current_round,
+                               CAST(R1 AS DOUBLE), CAST(R2 AS DOUBLE),
+                               CAST(R3 AS DOUBLE), CAST(R4 AS DOUBLE),
+                               made_cut, fetched_at
+                        FROM _lb_view
+                    """)
+                    counts["live_leaderboard"] = len(lb)
+
+    except Exception as e:
+        log(f"  [DB] live data sync failed: {e}")
+
+    return counts
+
+
 def is_tournament_official(tid: str) -> bool:
     """Return True if the tournament is fully official: R4 (or later) is complete.
 
     Guards against the R3-official false-positive: after R3 finishes, the API sets
     round_status='Official' for that round. We must also confirm current_round >= 4
     so the sentinel never fires mid-tournament.
+
+    Fallback: if the API never sends 'official' (returns 'R4' instead), check the
+    leaderboard CSV directly — all players showing status='complete' and thru='F'
+    means the round is done regardless of the meta status string.
     """
     meta = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
     if not meta.exists():
         return False
     with open(meta) as f:
         data = json.load(f)
-    status_ok = str(data.get("round_status", "")).lower() == "official"
-    round_ok   = int(data.get("current_round", 0)) >= 4
-    return status_ok and round_ok
+
+    round_ok = int(data.get("current_round", 0)) >= 4
+    if not round_ok:
+        return False
+
+    status = str(data.get("round_status", "")).lower()
+    if "official" in status:
+        return True
+
+    # Fallback: API sometimes returns "R4" instead of "Official" after the round ends.
+    # If every player in the leaderboard CSV is marked complete and finished, trust that.
+    live_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+    if live_path.exists():
+        try:
+            lb = pd.read_csv(live_path)
+            if len(lb) > 0 and "status" in lb.columns and "thru" in lb.columns:
+                if (lb["status"] == "complete").all() and (lb["thru"] == "F").all():
+                    return True
+        except Exception:
+            pass
+
+    return False
 
 
 def append_leaderboard_to_historical(tid: str, tournament_name: str, year: int) -> int:
@@ -1073,6 +1275,8 @@ def run_post_tournament_refresh(dry_run: bool = False):
         ("Fantasy League Usage", ["python3", "scripts/scrapers/fetch_fantasy_usage.py"]),
         ("Backfill Prediction Results", ["python3", "scripts/predictions/backfill_results.py"]),
         ("Grade Bets", ["python3", "scripts/models/grade_recommended_bets.py"]),
+        ("Fantasy Tracker", ["python3", "scripts/post_tournament.py",
+                              "--tournament-id", tid, "--step", "tracker"]),
         ("CLV Tracking", ["python3", "scripts/validation/track_clv.py",
                           "--tournament-id", tid, "--tournament-name", name]),
     ]
@@ -1263,8 +1467,8 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Show what would run without executing")
     parser.add_argument("--watch", action="store_true",
                         help="Continuously refresh live data while a round is in progress")
-    parser.add_argument("--interval", type=int, default=10,
-                        help="Minutes between refreshes in --watch mode (default: 10)")
+    parser.add_argument("--interval", type=int, default=5,
+                        help="Minutes between refreshes in --watch mode (default: 5)")
     args = parser.parse_args()
 
     # Watch mode: run indefinitely, refreshing during active rounds

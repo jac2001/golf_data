@@ -2,24 +2,28 @@
 """
 Post-Tournament Pipeline
 ========================
-Runs all four post-tournament steps in sequence for a completed event:
+Runs all five post-tournament steps in sequence for a completed event:
 
   1. Scrape final leaderboard → leaderboards_{year}.csv
   2. Re-fetch form/SG stats (finalized after tournament)
   3. Backfill prediction_history.csv with actual finishes
   4. Grade recommended_bets_log.csv (mark won/lost, compute P&L)
+  5. Update usage_tracker_2026.json with each player's final result + earnings
 
 Usage:
     python scripts/post_tournament.py --tournament-id R2026014
     python scripts/post_tournament.py --tournament-id R2026014 --dry-run
     python scripts/post_tournament.py --tournament-id R2026014 --skip-scrape
     python scripts/post_tournament.py --tournament-id R2026014 --step grade
+    python scripts/post_tournament.py --tournament-id R2026014 --step tracker
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import re
+import shutil
 import subprocess
 import sys
 import unicodedata
@@ -33,17 +37,26 @@ DATA_DIR     = PROJECT_ROOT / "data"
 HIST_DIR     = DATA_DIR / "historical"
 ODDS_DIR     = DATA_DIR / "odds"
 BETS_LOG     = ODDS_DIR / "recommended_bets_log.csv"
+TRACKER_PATH = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
 
 PYTHON = sys.executable  # same interpreter that launched this script
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
 
+_TRANSLITS = [
+    ("æ", "ae"), ("Æ", "ae"), ("œ", "oe"), ("Œ", "oe"),
+    ("ø", "o"),  ("Ø", "o"),  ("å", "a"),  ("Å", "a"),
+    ("ð", "d"),  ("Ð", "d"),  ("þ", "th"), ("Þ", "th"),
+]
+
 def _norm_name(name) -> str:
     """Lowercase, strip accents, normalise Last/First vs First Last."""
     if pd.isna(name):
         return ""
     s = str(name).strip()
+    for old, new in _TRANSLITS:
+        s = s.replace(old, new)
     s = unicodedata.normalize("NFD", s)
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
     s = s.lower()
@@ -447,6 +460,248 @@ def step_grade_bets(tid: str, dry_run: bool = False) -> dict:
     return summary
 
 
+# ── Step 5: Update fantasy tracker ───────────────────────────────────────────
+
+def _parse_earnings(raw) -> int:
+    """Parse '$1,728,000.00' or '1728000' → int."""
+    if pd.isna(raw):
+        return 0
+    s = str(raw).replace("$", "").replace(",", "").strip()
+    try:
+        return int(float(s))
+    except ValueError:
+        return 0
+
+
+def _match_tracker_to_lb(tracker_name: str, lb_lookup: dict[str, dict]) -> str | None:
+    """
+    Match a short tracker name ('Scheffler', 'B Koepka', 'MW Lee') to a
+    normalized leaderboard key ('scottie scheffler', 'brooks koepka', ...).
+
+    Strategy (in order):
+    1. Direct normalized match
+    2. Last-token match (tracker='Scheffler' → any key ending in 'scheffler')
+    3. Initial + last-token match ('B Koepka' → first initial 'b', last 'koepka')
+    """
+    short = _norm_name(tracker_name)
+    if not short:
+        return None
+
+    if short in lb_lookup:
+        return short
+
+    tokens = short.split()
+    last   = tokens[-1]
+    has_initial = len(tokens) >= 2 and len(tokens[0]) == 1  # 'b koepka'
+
+    candidates = []
+    for key in lb_lookup:
+        key_tokens = key.split()
+        if not key_tokens or key_tokens[-1] != last:
+            continue
+        if has_initial:
+            if key_tokens[0][0] == tokens[0]:
+                candidates.append(key)
+        else:
+            candidates.append(key)
+
+    return candidates[0] if len(candidates) == 1 else None
+
+
+def step_update_tracker(tid: str, dry_run: bool = False) -> dict:
+    """
+    Update usage_tracker_2026.json with each player's final result + earnings.
+
+    - Reads leaderboards_{year}.csv for positions and earnings
+    - Finds the matching weekly_lineups entry by tournament name
+    - Appends to picks[player].tournaments_used (idempotent — skips if week already logged)
+    - Sets weekly_lineups.week_N.earnings_earned to sum of the three players' earnings
+    - wrp (weekly rank) is left null — must be entered manually from the league site
+    """
+    print(f"\n{'='*60}")
+    print(f"  STEP 5 — Update fantasy tracker for {tid}")
+    print(f"{'='*60}")
+
+    # ── Load leaderboard ──────────────────────────────────────────────────────
+    year_match = re.search(r"R(\d{4})", tid.upper())
+    year = int(year_match.group(1)) if year_match else 2026
+    lb_path = HIST_DIR / f"leaderboards_{year}.csv"
+
+    if not lb_path.exists():
+        print(f"  Leaderboard not found: {lb_path.name}  (run step 1 first)")
+        return {}
+
+    lb = pd.read_csv(lb_path, dtype=str)
+    lb_tid = lb[lb["tournament_id"].str.upper() == tid.upper()].copy()
+
+    if lb_tid.empty:
+        print(f"  No rows for {tid} in {lb_path.name}")
+        return {}
+
+    # Tournament display name for matching + storage
+    tourney_name = lb_tid["tournament_name"].iloc[0] if "tournament_name" in lb_tid.columns else None
+    earnings_col = next((c for c in ("earnings", "prize_money", "money") if c in lb_tid.columns), None)
+
+    lb_tid["_name_key"] = lb_tid["player_name"].apply(_norm_name)
+
+    # Build name_key → {pos_raw, pos_int, earnings}
+    lb_lookup: dict[str, dict] = {}
+    for _, row in lb_tid.iterrows():
+        key = row["_name_key"]
+        if key and key not in lb_lookup:
+            lb_lookup[key] = {
+                "pos_raw": str(row.get("position", "")).strip(),
+                "pos_int": _parse_pos(row.get("position")),
+                "earnings": _parse_earnings(row[earnings_col]) if earnings_col else 0,
+            }
+
+    print(f"  Leaderboard: {len(lb_lookup)} players for {tid}" +
+          (f" ({tourney_name})" if tourney_name else ""))
+
+    # ── Load tracker ──────────────────────────────────────────────────────────
+    if not TRACKER_PATH.exists():
+        print(f"  Tracker not found: {TRACKER_PATH}")
+        return {}
+
+    with open(TRACKER_PATH) as f:
+        tracker = json.load(f)
+
+    weekly_lineups = tracker.get("weekly_lineups", {})
+    picks          = tracker.get("picks", {})
+    max_uses       = tracker.get("max_uses_per_player", 3)
+
+    # ── Find matching week ────────────────────────────────────────────────────
+    week_key   = None
+    week_entry = None
+
+    _stop = {"the", "of", "in", "at", "a", "an", "classic", "championship",
+              "open", "invitational", "tournament", "pro", "am"}
+
+    def _name_words(s: str) -> set[str]:
+        return {w for w in _norm_name(s).split() if w not in _stop and len(w) > 2}
+
+    tn_words = _name_words(tourney_name or "")
+
+    for k, v in weekly_lineups.items():
+        if not v.get("lineup"):
+            continue
+        tn_norm    = _norm_name(tourney_name or "")
+        entry_norm = _norm_name(v.get("tournament", ""))
+        # Try exact substring first, then key-word overlap (≥1 non-generic word)
+        if tn_norm and entry_norm and (entry_norm in tn_norm or tn_norm in entry_norm):
+            week_key, week_entry = k, v
+            break
+        ev_words = _name_words(v.get("tournament", ""))
+        if tn_words and ev_words and tn_words & ev_words:
+            week_key, week_entry = k, v
+            break
+
+    # Fallback: first unfilled week that has a lineup
+    if week_entry is None:
+        for k, v in sorted(weekly_lineups.items()):
+            if v.get("lineup") and v.get("earnings_earned") is None:
+                week_key, week_entry = k, v
+                print(f"  Warning: tournament name not matched; assuming {k} ({v.get('tournament')})")
+                break
+
+    if week_entry is None:
+        print(f"  Could not find matching week for {tid}")
+        return {}
+
+    lineup   = week_entry.get("lineup", [])
+    week_num = week_entry.get("week", int(week_key.replace("week_", "")))
+    week_date = week_entry.get("date", "")
+    tourney_display = week_entry.get("tournament", tourney_name or tid)
+
+    print(f"  {week_key} — {tourney_display} — lineup: {lineup}")
+
+    # ── Resolve each player ───────────────────────────────────────────────────
+    total_earnings = 0
+    player_results: list[dict] = []
+
+    for tracker_name in lineup:
+        lb_key = _match_tracker_to_lb(tracker_name, lb_lookup)
+        if lb_key is None:
+            print(f"  WARNING: '{tracker_name}' not found in leaderboard")
+            player_results.append({"tracker_name": tracker_name, "pos_raw": "?", "earnings": 0, "matched": False})
+            continue
+        data     = lb_lookup[lb_key]
+        earnings = data["earnings"]
+        total_earnings += earnings
+        print(f"  {tracker_name:<18} → {lb_key:<28} {data['pos_raw']:<6}  ${earnings:>12,}")
+        player_results.append({
+            "tracker_name": tracker_name,
+            "lb_key":       lb_key,
+            "pos_raw":      data["pos_raw"],
+            "earnings":     earnings,
+            "matched":      True,
+        })
+
+    if dry_run:
+        print(f"\n[DRY RUN] Would write:")
+        print(f"  {week_key}.earnings_earned = ${total_earnings:,}")
+        for pr in player_results:
+            print(f"  picks['{pr['tracker_name']}'] week={week_num} result={pr['pos_raw']} earnings=${pr['earnings']:,}")
+        print(f"  wrp stays null — set manually from league site")
+        return {"updated": sum(1 for p in player_results if p["matched"]), "week": week_key}
+
+    # ── Apply to picks[] ──────────────────────────────────────────────────────
+    for pr in player_results:
+        name = pr["tracker_name"]
+        if name not in picks:
+            picks[name] = {
+                "times_used": 0,
+                "remaining_uses": max_uses,
+                "tournaments_used": [],
+                "total_earnings": 0,
+                "total_points": 0,
+            }
+
+        entry = picks[name]
+
+        # Idempotent: skip if this week is already logged
+        if any(t.get("week") == week_num for t in entry.get("tournaments_used", [])):
+            print(f"  {name}: week {week_num} already in tracker — skipping")
+            continue
+
+        entry["tournaments_used"].append({
+            "tournament": tourney_display,
+            "week":       week_num,
+            "date":       week_date,
+            "result":     pr["pos_raw"],
+            "earnings":   pr["earnings"],
+        })
+        entry["times_used"]      = len(entry["tournaments_used"])
+        entry["remaining_uses"]  = max_uses - entry["times_used"]
+        entry["total_earnings"]  = sum(t.get("earnings", 0) for t in entry["tournaments_used"])
+
+    # ── Update weekly_lineups entry ───────────────────────────────────────────
+    week_entry["earnings_earned"] = total_earnings
+    week_entry["points_earned"]   = total_earnings
+    # wrp intentionally left null — requires the league standings page
+
+    # ── Recompute summary ─────────────────────────────────────────────────────
+    tracker["summary"]["total_earnings"] = sum(
+        p.get("total_earnings", 0) for p in picks.values()
+    )
+    tracker["last_updated"] = pd.Timestamp.now().isoformat(timespec="seconds")
+
+    # ── Save ─────────────────────────────────────────────────────────────────
+    backup = TRACKER_PATH.with_suffix(".bak.json")
+    shutil.copy(TRACKER_PATH, backup)
+    with open(TRACKER_PATH, "w") as f:
+        json.dump(tracker, f, indent=2)
+
+    print(f"\n  Saved → {TRACKER_PATH.name}  (backup → {backup.name})")
+    print(f"  {week_key}.earnings_earned = ${total_earnings:,}")
+    print(f"  Note: set wrp manually after checking the league site.")
+    return {
+        "updated":        sum(1 for p in player_results if p["matched"]),
+        "week":           week_key,
+        "earnings_earned": total_earnings,
+    }
+
+
 # ── Aggregate P&L report ──────────────────────────────────────────────────────
 
 def pnl_report(tid: str) -> None:
@@ -502,7 +757,9 @@ def main():
                         help="Skip step 2 (form stats re-fetch)")
     parser.add_argument("--skip-backfill", action="store_true",
                         help="Skip step 3 (prediction history backfill)")
-    parser.add_argument("--step", choices=["scrape", "stats", "backfill", "grade"],
+    parser.add_argument("--skip-tracker", action="store_true",
+                        help="Skip step 5 (fantasy tracker update)")
+    parser.add_argument("--step", choices=["scrape", "stats", "backfill", "grade", "tracker"],
                         help="Run only one specific step")
     args = parser.parse_args()
 
@@ -528,6 +785,9 @@ def main():
         step_grade_bets(tid, dry_run=dry)
         pnl_report(tid)
         return
+    if args.step == "tracker":
+        step_update_tracker(tid, dry_run=dry)
+        return
 
     # Full pipeline
     ok = True
@@ -540,6 +800,27 @@ def main():
     if ok:
         step_grade_bets(tid, dry_run=dry)
         pnl_report(tid)
+    if ok and not args.skip_tracker:
+        step_update_tracker(tid, dry_run=dry)
+
+    # Generate post-tournament recap narrative (non-fatal if it fails)
+    if ok:
+        print(f"\n[Step 6] Generating recap narrative...")
+        try:
+            from scripts.notifications.generate_recap import generate_recap
+            generate_recap(tid, dry_run=dry)
+        except Exception as e:
+            print(f"  Recap generation failed (non-fatal): {e}")
+
+        # Sync recap + bets to Supabase
+        if not dry:
+            print(f"\n[Step 7] Syncing to Supabase...")
+            try:
+                from scripts.database.supabase_sync import sync_recap, sync_bets
+                sync_recap(tid)
+                sync_bets(tid)
+            except Exception as e:
+                print(f"  Supabase sync failed (non-fatal): {e}")
 
     print(f"\n{'='*60}")
     print(f"  Pipeline {'complete' if ok else 'FAILED'}.")
