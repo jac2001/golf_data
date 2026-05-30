@@ -1,0 +1,68 @@
+{
+  "tournament_id": "R2026012",
+  "tournament_name": "RBC Heritage",
+  "winner": "Matt Fitzpatrick",
+  "winner_score": "-18",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Matt Fitzpatrick",
+      "to_par": "-18"
+    },
+    {
+      "position": "2",
+      "player": "Scottie Scheffler",
+      "to_par": "-18"
+    },
+    {
+      "position": "3",
+      "player": "Si Woo Kim",
+      "to_par": "-16"
+    },
+    {
+      "position": "T4",
+      "player": "Collin Morikawa",
+      "to_par": "-13"
+    },
+    {
+      "position": "T4",
+      "player": "Harris English",
+      "to_par": "-13"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "\u00c5berg, Ludvig",
+      "model_rank": null,
+      "actual_pos": "4.0",
+      "win_prob": null
+    },
+    {
+      "player": "Berger, Daniel",
+      "model_rank": null,
+      "actual_pos": "42.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bhatia, Akshay",
+      "model_rank": null,
+      "actual_pos": "16.0",
+      "win_prob": null
+    },
+    {
+      "player": "Blanchet, Chandler",
+      "model_rank": null,
+      "actual_pos": "33.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bradley, Keegan",
+      "model_rank": null,
+      "actual_pos": "12.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": null,
+  "narrative": "Matt Fitzpatrick edged Scottie Scheffler in a playoff, a stunning result given Scheffler's dominance this season\u2014the world No. 1 entered as the betting favorite and couldn't convert another win. Si Woo Kim's -16 finish showed the model's depth picks delivered, though neither Fitzpatrick nor Scheffler were consensus preseason chalks. The playoff result crushed parlays favoring Scheffler and created value for contrarian bettors who rostered Fitzpatrick's mid-tier odds, while Kim's top-10 landed for GPP players seeking leverage.",
+  "generated_at": "2026-05-29T00:48:46.867629+00:00"
+}

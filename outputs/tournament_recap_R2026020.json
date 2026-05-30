@@ -1,0 +1,73 @@
+{
+  "tournament_id": "R2026020",
+  "tournament_name": "Texas Children's Houston Open",
+  "winner": "Gary Woodland",
+  "winner_score": "-21",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Gary Woodland",
+      "to_par": "-21"
+    },
+    {
+      "position": "2",
+      "player": "Nicolai H\u00f8jgaard",
+      "to_par": "-16"
+    },
+    {
+      "position": "T3",
+      "player": "Johnny Keefer",
+      "to_par": "-15"
+    },
+    {
+      "position": "T3",
+      "player": "Min Woo Lee",
+      "to_par": "-15"
+    },
+    {
+      "position": "5",
+      "player": "Sam Stevens",
+      "to_par": "-14"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "Bauchou, Zach",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bezuidenhout, Christiaan",
+      "model_rank": null,
+      "actual_pos": "51.0",
+      "win_prob": null
+    },
+    {
+      "player": "Blanchet, Chandler",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Brennan, Michael",
+      "model_rank": null,
+      "actual_pos": "28.0",
+      "win_prob": null
+    },
+    {
+      "player": "Brown, Dan",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": {
+    "bets": 90,
+    "wins": 23,
+    "roi_pct": -24.1,
+    "pnl": -21.68
+  },
+  "narrative": "Gary Woodland's wire-to-wire domination (-21, five-shot cushion) was the year's biggest chalk victory, yet the model hemorrhaged value with just 23/90 wins and -24.1% ROI. Top-10 locks like Scheffler and Burns missed the cut entirely, while undervalued mid-tier plays like Keefer (T3, +3000) went completely under the radar. The 21.68-unit loss signals model weakness on shorter courses favoring ball-strikers over name recognition\u2014a costly lesson for Houston's tight fairways.",
+  "generated_at": "2026-05-29T00:48:41.392417+00:00"
+}

@@ -1,0 +1,68 @@
+{
+  "tournament_id": "R2026480",
+  "tournament_name": "Truist Championship",
+  "winner": "Kristoffer Reitan",
+  "winner_score": "-15.0",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Kristoffer Reitan",
+      "to_par": "-15.0"
+    },
+    {
+      "position": "T2",
+      "player": "Rickie Fowler",
+      "to_par": "-13.0"
+    },
+    {
+      "position": "T2",
+      "player": "Nicolai H\u00f8jgaard",
+      "to_par": "-13.0"
+    },
+    {
+      "position": "4",
+      "player": "Alex Fitzpatrick",
+      "to_par": "-12.0"
+    },
+    {
+      "position": "T5",
+      "player": "Tommy Fleetwood",
+      "to_par": "-11.0"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "McIlroy, Rory",
+      "model_rank": null,
+      "actual_pos": "19.0",
+      "win_prob": null
+    },
+    {
+      "player": "Young, Cameron",
+      "model_rank": null,
+      "actual_pos": "10.0",
+      "win_prob": null
+    },
+    {
+      "player": "Fitzpatrick, Matt",
+      "model_rank": null,
+      "actual_pos": "52.0",
+      "win_prob": null
+    },
+    {
+      "player": "Schauffele, Xander",
+      "model_rank": null,
+      "actual_pos": "60.0",
+      "win_prob": null
+    },
+    {
+      "player": "Aberg, Ludvig",
+      "model_rank": null,
+      "actual_pos": "8.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": null,
+  "narrative": "Kristoffer Reitan's wire-to-wire victory at -15 was a mild upset\u2014the Norwegian wasn't among consensus chalk but executed flawlessly over 54 holes. Model whiffed on star power (Fowler T2, Fleetwood T5 underperformed expectations), while Reitan's consistency in strokes-gained approach proved decisive. Bettors who caught Reitan at longer odds cashed; fantasy players banking on Fowler's form got burned. The scoring environment stayed soft, rewarding ball-strikers over ball-hitters.",
+  "generated_at": "2026-05-29T00:48:49.859446+00:00"
+}

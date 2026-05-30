@@ -1,85 +1,102 @@
 {
-  "generated_at": "2026-05-06T23:29:10.604670+00:00",
-  "tournament": "Truist Championship",
-  "tournament_week": 14,
+  "generated_at": "2026-05-28T03:25:09.110227+00:00",
+  "tournament": "Charles Schwab Challenge",
+  "tournament_id": "R2026021",
+  "tournament_week": 17,
   "lineup": [
-    "Fitzpatrick, Matt",
-    "McIlroy, Rory",
-    "Schauffele, Xander"
+    "Aberg, Ludvig",
+    "Henley, Russell",
+    "Thomas, Justin"
   ],
-  "weekly_narrative": "This week at Truist, you should deploy Rory McIlroy, Matt Fitzpatrick, and Xander Schauffele as your optimal lineup generates 748k in combined expected value. McIlroy is the centerpiece here with a 9.5% win probability and 33.4% top-10 odds, plus he's shown course form with a +1.04 strokes gained advantage, making his 287k EV the week's best risk-reward. Fitzpatrick and Schauffele provide steady support with solid cut probabilities around 91% and 28-26% top-10 chances respectively, giving you three legitimate contenders in a high-value $20M purse event. The critical save this week is Scottie Scheffler\u2014he has 2 uses remaining and a far superior event coming with 1.39M EV, which is 28% better than playing him here, making this the clearest case for banking a use. With 17 weeks left and 69 uses to allocate, preserving Scheffler for his peak opportunity is worth more than his middling prospects this week, so trust the optimizer and let him ride on the sidelines.",
+  "weekly_narrative": "This week at Colonial you want to ride Ludvig Aberg's exceptional hot streak\u2014he's averaging 69.8 with three top-10s in recent starts and hasn't missed a cut in his last five tournaments, posting a solid +0.44 total SG with elite driving at +0.43. Russell Henley makes sense as your second pick despite the missed cut last week because his overall profile remains strong at world number nine, he's hitting his approach shots at plus-0.33 SG, and while his one prior start here resulted in a T16, he's still a quality course-dependent player worth deploying now rather than saving for marginal future upside. Justin Thomas rounds out your trio as a reasonable third selection given he's made four of his last five cuts and his putting rank of plus-0.55 SG could prove valuable on a greens-focused track, even though his recent form has cooled slightly to 71.7 scoring and his lone Colonial appearance netted a T40. The critical save this week is McIlroy with one use remaining\u2014he projects 82 percent more value at the U.S. Open where his historical SG edge of plus-1.50 combined with major championship equity makes that an incomparably better deployment of your final use than chasing speculative value here.",
   "players": {
-    "Fitzpatrick, Matt": {
+    "Aberg, Ludvig": {
       "recommendation": "USE NOW",
       "tier": "good",
-      "uses_left": 2,
-      "this_week_ev": 504810,
+      "uses_left": 1,
+      "this_week_ev": 117164,
       "in_field": true,
       "narrative": ""
     },
-    "McIlroy, Rory": {
+    "Henley, Russell": {
       "recommendation": "USE NOW",
       "tier": "good",
       "uses_left": 2,
-      "this_week_ev": 640003,
+      "this_week_ev": 95987,
       "in_field": true,
       "narrative": ""
     },
-    "Schauffele, Xander": {
+    "Thomas, Justin": {
       "recommendation": "USE NOW",
       "tier": "good",
       "uses_left": 2,
-      "this_week_ev": 506105,
+      "this_week_ev": 75539,
       "in_field": true,
       "narrative": ""
+    },
+    "McIlroy": {
+      "recommendation": "SAVE",
+      "tier": "elite",
+      "uses_left": 1,
+      "this_week_ev": 263512,
+      "in_field": false,
+      "narrative": "McIlroy is an elite talent with world-class consistency and a demonstrated +1.50 strokes gained advantage at U.S. Open venues, making him a premium asset worth deploying strategically. He's not competing in this week's Charles Schwab Challenge field, so there's no decision to make here anyway, but more importantly, holding his final use for the U.S. Open in three weeks gives you a chance to capture $21.5M in purse value with a player who historically outperforms at that specific major championship\u2014a far better return on your last use than settling for a standard-tier event. With only one use left, you need McIlroy to count, and that U.S. Open window is tailor-made for him."
     },
     "Scheffler": {
       "recommendation": "SAVE",
       "tier": "elite",
-      "uses_left": 2,
-      "this_week_ev": 998851,
+      "uses_left": 1,
+      "this_week_ev": 264071,
       "in_field": false,
-      "narrative": "With Scheffler not even in this week's field, there's no decision to make on a competitive basis, but the economics strongly favor preserving his remaining uses for premium events ahead. He has just 2 uses left for the entire season, and the U.S. Open in week 20 offers $21.5M in prize money with an expected value of 1,386,060\u2014roughly 387,209 more EV than deploying him at lower-tier events now. Banking this use lets you maximize the value of his elite tier status where it matters most, against the year's strongest fields and largest purses."
+      "narrative": "Scheffler's elite status and commanding world ranking make him one of your most valuable assets, but he's not competing this week at the Charles Schwab Challenge, so you have no decision to make. When he returns to competition, you should preserve his final use for the U.S. Open in three weeks, where the $21.5M purse offers substantially more value than this $9.4M standard event, even accounting for the modest +0.33 SG course fit at that major versus the stronger +1.09 here."
     },
     "Morikawa": {
       "recommendation": "SAVE",
       "tier": "good",
       "uses_left": 1,
-      "this_week_ev": 932431,
+      "this_week_ev": 248904,
       "in_field": false,
-      "narrative": "You should save Morikawa's final use for the U.S. Open in week 20, where he projects to earn $1,331,256 in expected value compared to his opportunity cost of $398,825 if used this week\u2014a 30% value premium that makes waiting strategically sound. Since Morikawa isn't even in the field this week at Truist, there's no downside to banking the use for a major championship where his elite ball-striking (evidenced by his #6 ranking) typically shines. With only one use remaining, deploying it at a $21.5M purse event rather than letting it expire unused is the highest-leverage decision available."
+      "narrative": "Morikawa is a world top-5 talent with excellent form who typically gains strokes at his venues, making him a premium asset to deploy strategically rather than waste on standard events. While he'd pick up a solid +0.35 SG boost at this week's Charles Schwab Challenge, his true value window opens in three weeks at the U.S. Open, where he gains +0.62 SG historically and the $21.5M purse dwarfs this week's $9.4M\u2014meaning you'd be trading a $1.3M EV opportunity for a substantially larger one by waiting. Save his final use for that major championship where his game peaks and the prize pool justifies his talent."
     },
     "DeChambeau": {
       "recommendation": "SAVE",
       "tier": "good",
       "uses_left": 2,
-      "this_week_ev": 869604,
+      "this_week_ev": 229902,
       "in_field": false,
-      "narrative": "DeChambeau isn't even in this week's field, so you have no choice but to save the use. More importantly, his best upcoming opportunity at The Memorial Tournament in four weeks offers 936,216 EV compared to just 66,612 EV of opportunity cost, meaning you'd be sacrificing roughly 7% additional value by using him now instead of waiting for that major event with an identical $20.0M purse but significantly better course fit as evidenced by his +0.77 strokes gained advantage."
+      "narrative": "DeChambeau is a world-class ball-striker whose elite driving and iron play align perfectly with The Memorial's demanding setup, where he has historically gained +0.77 strokes and projects for $936k in expected value. Since he's not even in this week's Charles Schwab Challenge field, there's no decision to make\u2014you should absolutely bank this use for next week's $20M purse event where his strengths play directly into the course characteristics and prize pool size."
     },
-    "Henley": {
-      "recommendation": "SAVE",
-      "tier": "good",
-      "uses_left": 2,
-      "this_week_ev": 851440,
-      "in_field": false,
-      "narrative": "Henley isn't even in this week's field, making this an easy decision to preserve his remaining two uses. His best upcoming opportunity is the Travelers Championship in 7 weeks, which offers $886,401 in expected value\u2014a figure that's 4% higher than using him now would provide. Banking this use keeps a world top-10 player available for a major purse event where he has demonstrated course fit, rather than wasting eligibility on a week he can't even play."
-    },
-    "Aberg": {
+    "Fleetwood": {
       "recommendation": "SAVE",
       "tier": "good",
       "uses_left": 1,
-      "this_week_ev": 435856,
-      "in_field": true,
-      "narrative": "Aberg has just one use remaining and should be saved for the Truist Championship next week, where he's projected to generate 831,865 EV compared to only 435,856 EV this week\u2014nearly doubling his expected value. With a course fit advantage of +0.76 strokes gained and only 0.1 weeks away, the opportunity cost of using him now is substantial at 396,009 EV (48% more value if you wait). Since this is a high-tier $20.0M event and you can't afford to waste his final use on a weaker spot, banking it for next week is the optimal play."
+      "this_week_ev": 236675,
+      "in_field": false,
+      "narrative": "Fleetwood is a world top-10 talent with proven consistency across quality fields, making him a valuable asset worth deploying strategically. He's not even in this week's Charles Schwab Challenge field, so there's no opportunity cost to holding, and his elite ball-striking should thrive at Travelers Championship in four weeks where the course setup (+0.30 SG) aligns perfectly with his strengths and the $20M purse offers substantially more value than the $9.4M standard event you're in now. Banking this use preserves optionality for a spot where his world ranking and skill set will face premium competition with a larger prize pool to maximize."
     },
-    "J Thomas": {
+    "Gotterup": {
       "recommendation": "SAVE",
       "tier": "good",
       "uses_left": 2,
-      "this_week_ev": 289649,
-      "in_field": true,
-      "narrative": "J Thomas has exceptional value at his best future event, the Truist Championship itself, where his expected value jumps to 781,880 compared to just 289,649 this week\u2014a 170% increase that represents 492,231 EV in opportunity cost. Since you're already at week 14 and the Truist Championship is only 0.1 weeks away, you can safely bank this use and deploy him at his optimal venue where his course fit of +0.46 SG will be amplified by the $20.0M purse. With 2 uses remaining, saving him now is a high-conviction play given the dramatic value differential and minimal wait time until his premium event."
+      "this_week_ev": 236956,
+      "in_field": false,
+      "narrative": "Gotterup is a top-10 ranked player with solid form that makes him a reliable asset for premium events, but he's not even in this week's Charles Schwab Challenge field, so there's no decision to make here beyond holding him. With The Memorial Tournament arriving in just one week at a $20.0M purse\u2014nearly double this week's $9.4M\u2014you'd be wasting precious uses by forcing him into standard-tier events when he should be saved for that higher-value opportunity where his tier-good status can generate maximum EV."
+    },
+    "Schauffele": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 1,
+      "this_week_ev": 230542,
+      "in_field": false,
+      "narrative": "Schauffele is a world-class talent with excellent form who represents a valuable asset in your remaining uses, making him worth deploying strategically. He's not in this week's field at the Charles Schwab Challenge, which alone eliminates any consideration, but more importantly his elite skill set is perfectly positioned for The Memorial Tournament next week\u2014a $20M major-tier event where his game typically thrives on premium courses. Holding this use for Memorial maximizes the expected value of his remaining availability, as the combination of higher purse, better course fit, and his demonstrated form there makes it substantially more valuable than settling for this week's standard-tier event."
+    },
+    "Hovland": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 200641,
+      "in_field": false,
+      "narrative": "Hovland is a strong asset with elite ball-striking and a history of performing well at course-fit events, making him a valuable player to deploy strategically. He's not in this week's Charles Schwab Challenge field, so there's no decision to make here anyway, but more importantly, his best remaining opportunity is the Travelers Championship in four weeks\u2014a $20.0M purse event where he has significant positive course history (+1.15 SG). Saving this use for Travelers gives you a chance to capitalize on both a premium event and a course that genuinely suits his game, rather than settling for a standard-tier event where he might not even be competing."
     }
   }
 }

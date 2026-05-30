@@ -1,0 +1,408 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Johnson, Dustin","Jaeger, Stephan",12422,16394,void,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Jaeger, Stephan",12422,16394,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Pendrith, Taylor",15856,17780,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Pendrith, Taylor",15856,17780,void,datagolf,+137,-137,0.421941,0.578059,0.421941,0.578059,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Potgieter, Aldrich",5716,27900,void,bet365,+125,-150,0.444444,0.6,0.425532,0.574468,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Potgieter, Aldrich",5716,27900,void,datagolf,+167,-167,0.374532,0.625468,0.374532,0.625468,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Hojgaard, Nicolai",14139,23602,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Hojgaard, Nicolai",14139,23602,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Hojgaard, Nicolai",14139,23602,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Hojgaard, Nicolai",14139,23602,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","Young, Cameron",12965,26651,void,bet365,+125,-150,0.444444,0.6,0.425532,0.574468,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","Young, Cameron",12965,26651,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","Young, Cameron",12965,26651,void,datagolf,+142,-142,0.413223,0.586777,0.413223,0.586777,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Reed, Patrick",14609,14838,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Reed, Patrick",14609,14838,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Reed, Patrick",14609,14838,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Hillier, Daniel","Novak, Andrew",21362,23475,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Hillier, Daniel","Novak, Andrew",21362,23475,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Kim, Michael",8117,17543,void,bet365,+140,-165,0.416667,0.622642,0.400908,0.599092,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Kim, Michael",8117,17543,void,datagolf,+167,-167,0.374532,0.625468,0.374532,0.625468,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,datagolf,+136,-136,0.423729,0.576271,0.423729,0.576271,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Puig, David",18554,28984,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Puig, David",18554,28984,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Gotterup, Chris",16243,27774,void,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Gotterup, Chris",16243,27774,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Gotterup, Chris",16243,27774,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,bet365,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Niemann, Joaquin",13562,18079,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Niemann, Joaquin",13562,18079,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Niemann, Joaquin",13562,18079,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Aberg, Ludvig",6093,23950,void,bet365,+130,-155,0.434783,0.607843,0.417007,0.582993,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Aberg, Ludvig",6093,23950,void,bovada,+130,-155,0.434783,0.607843,0.417007,0.582993,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Aberg, Ludvig",6093,23950,void,datagolf,+158,-158,0.387597,0.612403,0.387597,0.612403,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McNealy, Maverick","Reitan, Kristoffer",18634,21407,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"McNealy, Maverick","Reitan, Kristoffer",18634,21407,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Schmid, Matti",12423,20722,void,bet365,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Schmid, Matti",12423,20722,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rahm, Jon","Schauffele, Xander",19195,19895,void,bet365,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rahm, Jon","Schauffele, Xander",19195,19895,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rahm, Jon","Schauffele, Xander",19195,19895,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,bet365,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,separate bet offered,bet365,-143,+160,0.588477,0.384615,0.60475,0.39525,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,separate bet offered,datagolf,-119,+182,0.543379,0.35461,0.605107,0.394893,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,separate bet offered,pointsbet,-150,+155,0.6,0.392157,0.604743,0.395257,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,void,betmgm,-182,+145,0.64539,0.408163,0.612584,0.387416,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,void,bovada,-175,+145,0.636364,0.408163,0.609236,0.390764,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,void,caesars,-190,+150,0.655172,0.4,0.620915,0.379085,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,void,datagolf,-153,+153,0.604743,0.395257,0.604743,0.395257,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,void,draftkings,-184,+146,0.647887,0.406504,0.614466,0.385534,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,void,fanduel,-188,+150,0.652778,0.4,0.620053,0.379947,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Hoey, Rico",14636,23504,void,unibet,-175,+135,0.636364,0.425532,0.599271,0.400729,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,separate bet offered,bet365,+125,-115,0.444444,0.534884,0.453826,0.546174,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,separate bet offered,datagolf,+144,+104,0.409836,0.490196,0.455357,0.544643,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,separate bet offered,pointsbet,+120,-110,0.454545,0.52381,0.464602,0.535398,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,void,betmgm,+105,-133,0.487805,0.570815,0.460793,0.539207,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,void,bovada,+115,-135,0.465116,0.574468,0.447406,0.552594,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,void,draftkings,-102,-124,0.50495,0.553571,0.477034,0.522966,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Jaeger, Stephan","Pendrith, Taylor",16394,17780,void,unibet,+110,-139,0.47619,0.58159,0.450179,0.549821,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,separate bet offered,bet365,-150,+162,0.6,0.381679,0.611198,0.388802,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,separate bet offered,datagolf,-121,+181,0.547511,0.355872,0.606068,0.393932,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,separate bet offered,pointsbet,-140,+155,0.583333,0.392157,0.59799,0.40201,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,void,betmgm,-182,+145,0.64539,0.408163,0.612584,0.387416,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,void,bovada,-170,+140,0.62963,0.416667,0.60177,0.39823,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,void,caesars,-180,+140,0.642857,0.416667,0.606742,0.393258,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,void,datagolf,-154,+154,0.606299,0.393701,0.606299,0.393701,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,void,draftkings,-178,+142,0.640288,0.413223,0.607766,0.392234,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Potgieter, Aldrich",14139,27900,void,unibet,-180,+140,0.642857,0.416667,0.606742,0.393258,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,separate bet offered,bet365,+145,-134,0.408163,0.57265,0.416148,0.583852,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,separate bet offered,datagolf,+179,-116,0.358423,0.537037,0.400267,0.599733,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,separate bet offered,pointsbet,+140,-135,0.416667,0.574468,0.420394,0.579606,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,betcris,+121,-152,0.452489,0.603175,0.42863,0.57137,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,betmgm,+130,-167,0.434783,0.625468,0.410075,0.589925,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,datagolf,+150,-150,0.4,0.6,0.4,0.6,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,draftkings,+132,-166,0.431034,0.62406,0.408527,0.591473,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,pinnacle,+127,-153,0.440529,0.604743,0.421449,0.578551,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,unibet,+130,-167,0.434783,0.625468,0.410075,0.589925,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,separate bet offered,datagolf,+124,+124,0.446429,0.446429,0.5,0.5,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,separate bet offered,pointsbet,+115,-105,0.465116,0.512195,0.475914,0.524086,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,void,draftkings,-105,-120,0.512195,0.545455,0.484277,0.515723,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Novak, Andrew",14704,23475,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,separate bet offered,bet365,-105,+115,0.512195,0.465116,0.524086,0.475914,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,separate bet offered,datagolf,+123,+122,0.44843,0.45045,0.498876,0.501124,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,separate bet offered,pointsbet,+110,-105,0.47619,0.512195,0.481786,0.518214,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,draftkings,-132,+106,0.568966,0.485437,0.539609,0.460391,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,pinnacle,-114,-104,0.53271,0.509804,0.510986,0.489014,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Hillier, Daniel",12422,21362,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,separate bet offered,datagolf,+153,-102,0.395257,0.50495,0.439073,0.560927,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,separate bet offered,pointsbet,+135,-125,0.425532,0.555556,0.433735,0.566265,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,void,betmgm,+120,-149,0.454545,0.598394,0.431692,0.568308,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,void,caesars,+122,-155,0.45045,0.607843,0.425638,0.574362,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,void,datagolf,+128,-128,0.438596,0.561404,0.438596,0.561404,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,void,fanduel,+110,-150,0.47619,0.6,0.442478,0.557522,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harrington, Padraig","Hoge, Tom",5716,15575,void,unibet,+108,-136,0.480769,0.576271,0.454826,0.545174,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,separate bet offered,bet365,+162,-143,0.381679,0.588477,0.39342,0.60658,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,separate bet offered,datagolf,+177,-117,0.361011,0.539171,0.401042,0.598958,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,separate bet offered,pointsbet,+150,-140,0.4,0.583333,0.40678,0.59322,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,betcris,+131,-165,0.4329,0.622642,0.410121,0.589879,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,betmgm,+140,-175,0.416667,0.636364,0.395683,0.604317,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,bovada,+140,-170,0.416667,0.62963,0.39823,0.60177,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,caesars,+140,-180,0.416667,0.642857,0.393258,0.606742,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,datagolf,+150,-150,0.4,0.6,0.4,0.6,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,draftkings,+130,-162,0.434783,0.618321,0.412858,0.587142,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,pinnacle,+140,-169,0.416667,0.628253,0.398755,0.601245,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kim, Michael","Hojgaard, Nicolai",17543,23602,void,unibet,+145,-186,0.408163,0.65035,0.385601,0.614399,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,separate bet offered,bet365,-250,+275,0.714286,0.266667,0.728155,0.271845,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,separate bet offered,datagolf,-199,+306,0.665552,0.246305,0.729886,0.270114,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,separate bet offered,pointsbet,-230,+240,0.69697,0.294118,0.703237,0.296763,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,void,betmgm,-357,+260,0.781182,0.277778,0.737688,0.262312,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,void,bovada,-350,+280,0.777778,0.263158,0.747191,0.252809,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,void,caesars,-320,+240,0.761905,0.294118,0.721485,0.278515,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,void,datagolf,-270,+270,0.72973,0.27027,0.72973,0.27027,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,void,draftkings,-370,+280,0.787234,0.263158,0.749467,0.250533,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,void,fanduel,-333,+225,0.769053,0.307692,0.714239,0.285761,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,void,pinnacle,-299,+230,0.749373,0.30303,0.712059,0.287941,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Puig, David",18417,28984,void,unibet,-305,+225,0.753086,0.307692,0.709937,0.290063,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,separate bet offered,datagolf,+105,+146,0.487805,0.406504,0.545455,0.454545,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,betmgm,-143,+115,0.588477,0.465116,0.558543,0.441457,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,caesars,-145,+115,0.591837,0.465116,0.559946,0.440054,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,draftkings,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,pinnacle,-129,+108,0.563319,0.480769,0.539532,0.460468,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","English, Harris",12965,14577,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,separate bet offered,datagolf,+127,+119,0.440529,0.456621,0.491031,0.508969,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,separate bet offered,pointsbet,-125,+135,0.555556,0.425532,0.566265,0.433735,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,void,draftkings,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Burns, Sam",16243,19483,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,separate bet offered,datagolf,+109,+138,0.478469,0.420168,0.532438,0.467562,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,separate bet offered,pointsbet,-120,+125,0.545455,0.444444,0.55102,0.44898,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,betcris,-141,+111,0.585062,0.473934,0.552469,0.447531,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,betmgm,-143,+115,0.588477,0.465116,0.558543,0.441457,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,bovada,-145,+120,0.591837,0.454545,0.565603,0.434397,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,draftkings,-150,+118,0.6,0.458716,0.566724,0.433276,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,pinnacle,-137,+115,0.578059,0.465116,0.554134,0.445866,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Lindberg, Mikael",8825,20084,void,unibet,-125,-103,0.555556,0.507389,0.522657,0.477343,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,separate bet offered,bet365,+120,-110,0.454545,0.52381,0.464602,0.535398,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,separate bet offered,datagolf,+135,+112,0.425532,0.471698,0.474273,0.525727,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,separate bet offered,pointsbet,+100,+105,0.5,0.487805,0.506173,0.493827,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,betcris,-104,-126,0.509804,0.557522,0.477646,0.522354,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,draftkings,-118,-108,0.541284,0.519231,0.510398,0.489602,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,pinnacle,+103,-123,0.492611,0.55157,0.471768,0.528232,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,unibet,-107,-120,0.516908,0.545455,0.486565,0.513435,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,separate bet offered,bet365,-150,+162,0.6,0.381679,0.611198,0.388802,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,separate bet offered,datagolf,-132,+199,0.568966,0.334448,0.629795,0.370205,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,separate bet offered,pointsbet,-160,+160,0.615385,0.384615,0.615385,0.384615,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,void,betmgm,-182,+145,0.64539,0.408163,0.612584,0.387416,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,void,bovada,-175,+145,0.636364,0.408163,0.609236,0.390764,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,void,caesars,-195,+155,0.661017,0.392157,0.627643,0.372357,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,void,datagolf,-170,+170,0.62963,0.37037,0.62963,0.37037,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,void,draftkings,-178,+142,0.640288,0.413223,0.607766,0.392234,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,void,fanduel,-200,+150,0.666667,0.4,0.625,0.375,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,void,pinnacle,-181,+149,0.644128,0.401606,0.615958,0.384042,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Greyserman, Max",16841,23465,void,unibet,-186,+145,0.65035,0.408163,0.614399,0.385601,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,separate bet offered,bet365,+175,-160,0.363636,0.615385,0.371429,0.628571,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,separate bet offered,datagolf,+188,-122,0.347222,0.54955,0.387191,0.612809,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,separate bet offered,pointsbet,+125,-125,0.444444,0.555556,0.444444,0.555556,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,betmgm,+125,-154,0.444444,0.606299,0.422981,0.577019,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,bovada,+120,-145,0.454545,0.591837,0.434397,0.565603,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,datagolf,+158,-158,0.387597,0.612403,0.387597,0.612403,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,draftkings,+112,-142,0.471698,0.586777,0.445639,0.554361,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,fanduel,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,pinnacle,+145,-176,0.408163,0.637681,0.390271,0.609729,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,separate bet offered,bet365,+190,-175,0.344828,0.636364,0.351438,0.648562,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,separate bet offered,datagolf,+218,-144,0.314465,0.590164,0.347618,0.652382,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,separate bet offered,pointsbet,+170,-160,0.37037,0.615385,0.375723,0.624277,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,void,betmgm,+155,-200,0.392157,0.666667,0.37037,0.62963,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,void,bovada,+180,-215,0.357143,0.68254,0.343511,0.656489,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,void,caesars,+165,-210,0.377358,0.677419,0.357761,0.642239,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,void,datagolf,+187,-187,0.348432,0.651568,0.348432,0.651568,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,void,draftkings,+160,-200,0.384615,0.666667,0.365854,0.634146,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,void,fanduel,+162,-200,0.381679,0.666667,0.364078,0.635922,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,void,pinnacle,+185,-231,0.350877,0.697885,0.334563,0.665437,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Cauley, Bud",8117,14502,void,unibet,+155,-200,0.392157,0.666667,0.37037,0.62963,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,separate bet offered,datagolf,+133,+113,0.429185,0.469484,0.477578,0.522422,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,draftkings,-124,-102,0.553571,0.50495,0.522966,0.477034,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,pinnacle,-105,-113,0.512195,0.530516,0.491215,0.508785,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Niemann, Joaquin",6093,18079,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,separate bet offered,bet365,+150,-138,0.4,0.579832,0.408233,0.591767,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,separate bet offered,datagolf,+176,-115,0.362319,0.534884,0.403832,0.596168,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,betcris,+127,-160,0.440529,0.615385,0.417202,0.582798,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,betmgm,+135,-167,0.425532,0.625468,0.404883,0.595117,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,bovada,+140,-165,0.416667,0.622642,0.400908,0.599092,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,datagolf,+148,-148,0.403226,0.596774,0.403226,0.596774,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,draftkings,+125,-156,0.444444,0.609375,0.421746,0.578254,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,pinnacle,+129,-155,0.436681,0.607843,0.418067,0.581933,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Reitan, Kristoffer",12423,21407,void,unibet,+145,-186,0.408163,0.65035,0.385601,0.614399,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,separate bet offered,datagolf,+130,+118,0.434783,0.458716,0.486607,0.513393,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,betcris,+100,-130,0.5,0.565217,0.469388,0.530612,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,betonline,-108,-112,0.519231,0.528302,0.49567,0.50433,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,draftkings,-126,+100,0.557522,0.5,0.527197,0.472803,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,fanduel,-120,-111,0.545455,0.526066,0.509047,0.490953,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,pinnacle,-113,-106,0.530516,0.514563,0.507633,0.492367,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Reed, Patrick","McNealy, Maverick",14838,18634,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,separate bet offered,datagolf,+109,+137,0.478469,0.421941,0.53139,0.46861,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,betcris,-134,+104,0.57265,0.490196,0.538789,0.461211,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,betonline,-140,+117,0.583333,0.460829,0.558661,0.441339,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,bovada,-145,+120,0.591837,0.454545,0.565603,0.434397,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,draftkings,-144,+116,0.590164,0.462963,0.560392,0.439608,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,pinnacle,-129,+108,0.563319,0.480769,0.539532,0.460468,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,separate bet offered,bet365,+180,-163,0.357143,0.619772,0.365582,0.634418,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,separate bet offered,datagolf,+243,-158,0.291545,0.612403,0.322524,0.677476,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,void,betmgm,+175,-222,0.363636,0.689441,0.345308,0.654692,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,void,bovada,+165,-200,0.377358,0.666667,0.361446,0.638554,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,void,caesars,+175,-230,0.363636,0.69697,0.342857,0.657143,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,void,datagolf,+210,-210,0.322581,0.677419,0.322581,0.677419,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,void,draftkings,+168,-210,0.373134,0.677419,0.355179,0.644821,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,void,fanduel,+162,-225,0.381679,0.692308,0.355385,0.644615,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,void,pinnacle,+181,-225,0.355872,0.692308,0.339514,0.660486,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Aberg, Ludvig",18554,23950,void,unibet,+170,-220,0.37037,0.6875,0.350109,0.649891,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,separate bet offered,bet365,+200,-180,0.333333,0.642857,0.341463,0.658537,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,separate bet offered,datagolf,+232,-151,0.301205,0.601594,0.333635,0.666365,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,void,betmgm,+200,-250,0.333333,0.714286,0.318182,0.681818,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,void,bovada,+180,-220,0.357143,0.6875,0.34188,0.65812,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,void,caesars,+180,-240,0.357143,0.705882,0.335968,0.664032,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,void,datagolf,+200,-200,0.333333,0.666667,0.333333,0.666667,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,void,draftkings,+192,-240,0.342466,0.705882,0.326672,0.673328,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,void,fanduel,+188,-225,0.347222,0.692308,0.334018,0.665982,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,void,pinnacle,+174,-215,0.364964,0.68254,0.348413,0.651587,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rahm, Jon",13126,19195,void,unibet,+170,-220,0.37037,0.6875,0.350109,0.649891,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,separate bet offered,bet365,-134,+150,0.57265,0.4,0.588752,0.411248,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,separate bet offered,datagolf,-103,+156,0.507389,0.390625,0.565012,0.434988,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,bovada,-145,+120,0.591837,0.454545,0.565603,0.434397,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,caesars,-155,+122,0.607843,0.45045,0.574362,0.425638,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,draftkings,-144,+115,0.590164,0.465116,0.559249,0.440751,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,fanduel,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,pinnacle,-149,+124,0.598394,0.446429,0.572723,0.427277,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Smalley, Alex","Schmid, Matti",18474,20722,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,betonline,+131,-158,0.4329,0.612403,0.414138,0.585862,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Spieth, Jordan","Young, Cameron",14636,26651,void,datagolf,+150,-150,0.4,0.6,0.4,0.6,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Pendrith, Taylor",14704,17780,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Putnam, Andrew","Pendrith, Taylor",14704,17780,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Hoge, Tom","Jaeger, Stephan",15575,16394,void,betonline,+121,-145,0.452489,0.591837,0.433283,0.566717,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Hoge, Tom","Jaeger, Stephan",15575,16394,void,datagolf,+146,-146,0.406504,0.593496,0.406504,0.593496,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Novak, Andrew","Potgieter, Aldrich",23475,27900,void,betonline,-135,+113,0.574468,0.469484,0.550282,0.449718,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Novak, Andrew","Potgieter, Aldrich",23475,27900,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","Kim, Si Woo",12965,14609,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fowler, Rickie","Kim, Si Woo",12965,14609,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Kim, Michael",12422,17543,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Johnson, Dustin","Kim, Michael",12422,17543,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Puig, David",8825,28984,void,betonline,+110,-132,0.47619,0.568966,0.455617,0.544383,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Harman, Brian","Puig, David",8825,28984,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Scheffler, Scottie",16243,18417,void,betonline,+197,-240,0.3367,0.705882,0.322948,0.677052,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Scheffler, Scottie",16243,18417,void,datagolf,+223,-223,0.309598,0.690402,0.309598,0.690402,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Burns, Sam","Gotterup, Chris",19483,27774,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Burns, Sam","Gotterup, Chris",19483,27774,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Greyserman, Max",12423,23465,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kirk, Chris","Greyserman, Max",12423,23465,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Lee, Min Woo",6093,16841,void,betonline,+110,-132,0.47619,0.568966,0.455617,0.544383,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rose, Justin","Lee, Min Woo",6093,16841,void,datagolf,+131,-131,0.4329,0.5671,0.4329,0.5671,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Cauley, Bud","Smith, Cameron",14502,15856,void,betonline,-155,+129,0.607843,0.436681,0.581933,0.418067,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Cauley, Bud","Smith, Cameron",14502,15856,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Niemann, Joaquin","Reitan, Kristoffer",18079,21407,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Niemann, Joaquin","Reitan, Kristoffer",18079,21407,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Schmid, Matti",18554,20722,void,betonline,-150,+125,0.6,0.444444,0.574468,0.425532,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rai, Aaron","Schmid, Matti",18554,20722,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rahm, Jon","Aberg, Ludvig",19195,23950,void,betcris,-139,+109,0.58159,0.478469,0.548639,0.451361,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Rahm, Jon","Aberg, Ludvig",19195,23950,void,betonline,-128,+107,0.561404,0.483092,0.537488,0.462512,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Rahm, Jon","Aberg, Ludvig",19195,23950,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Parry, John","Lowry, Shane",13764,13900,void,caesars,+140,-180,0.416667,0.642857,0.393258,0.606742,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Parry, John","Lowry, Shane",13764,13900,void,datagolf,+136,-136,0.423729,0.576271,0.423729,0.576271,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Parry, John","Lowry, Shane",13764,13900,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Donald, Luke","Kern, Ben",4163,25439,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Donald, Luke","Kern, Ben",4163,25439,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Donald, Luke","Kern, Ben",4163,25439,void,fanduel,-110,-125,0.52381,0.555556,0.485294,0.514706,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Wallace, Matt","Fitzpatrick, Alex",20706,25362,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Wallace, Matt","Fitzpatrick, Alex",20706,25362,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Wallace, Matt","Fitzpatrick, Alex",20706,25362,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Brennan, Michael","Keefer, Johnny",29197,32457,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Brennan, Michael","Keefer, Johnny",29197,32457,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Brennan, Michael","Keefer, Johnny",29197,32457,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Conners, Corey","Hisatsune, Ryo",17576,22760,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Conners, Corey","Hisatsune, Ryo",17576,22760,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Conners, Corey","Hisatsune, Ryo",17576,22760,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fox, Ryan","Vegas, Jhonattan",11889,13508,void,caesars,-145,+115,0.591837,0.465116,0.559946,0.440054,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fox, Ryan","Vegas, Jhonattan",11889,13508,void,datagolf,-140,+140,0.583333,0.416667,0.583333,0.416667,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fox, Ryan","Vegas, Jhonattan",11889,13508,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Mitchell, Keith","Stevens, Sam",17365,25569,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Mitchell, Keith","Stevens, Sam",17365,25569,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Mitchell, Keith","Stevens, Sam",17365,25569,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Day, Jason","Gerard, Ryan",9771,29767,void,caesars,-145,-110,0.591837,0.52381,0.530488,0.469512,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Day, Jason","Gerard, Ryan",9771,29767,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Day, Jason","Gerard, Ryan",9771,29767,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fitzpatrick, Matt","Theegala, Sahith",17646,23014,void,caesars,-200,+160,0.666667,0.384615,0.634146,0.365854,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fitzpatrick, Matt","Theegala, Sahith",17646,23014,void,datagolf,-171,+171,0.630996,0.369004,0.630996,0.369004,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Fitzpatrick, Matt","Theegala, Sahith",17646,23014,void,fanduel,-200,+150,0.666667,0.4,0.625,0.375,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McCarthy, Denny","Blanchet, Chandler",19870,24956,void,caesars,-165,+127,0.622642,0.440529,0.585646,0.414354,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McCarthy, Denny","Blanchet, Chandler",19870,24956,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"McCarthy, Denny","Blanchet, Chandler",19870,24956,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Morikawa, Collin","Smylie, Elvis",22085,24200,void,caesars,-240,+180,0.705882,0.357143,0.664032,0.335968,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Morikawa, Collin","Smylie, Elvis",22085,24200,void,datagolf,-207,+207,0.674267,0.325733,0.674267,0.325733,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Morikawa, Collin","Smylie, Elvis",22085,24200,void,fanduel,-225,+175,0.692308,0.363636,0.655629,0.344371,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Noren, Alex","Cantlay, Patrick",10419,15466,void,caesars,+140,-180,0.416667,0.642857,0.393258,0.606742,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Noren, Alex","Cantlay, Patrick",10419,15466,void,datagolf,+145,-145,0.408163,0.591837,0.408163,0.591837,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Noren, Alex","Cantlay, Patrick",10419,15466,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kitayama, Kurt","Neergaard-Petersen, Rasmus",21891,23841,void,caesars,-170,+130,0.62963,0.434783,0.591528,0.408472,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kitayama, Kurt","Neergaard-Petersen, Rasmus",21891,23841,void,datagolf,-162,+162,0.618321,0.381679,0.618321,0.381679,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kitayama, Kurt","Neergaard-Petersen, Rasmus",21891,23841,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Berger, Daniel","Brown, Dan",17606,20766,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Berger, Daniel","Brown, Dan",17606,20766,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Berger, Daniel","Brown, Dan",17606,20766,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Bezuidenhout, Christiaan","Mouw, William",18103,29770,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Bezuidenhout, Christiaan","Mouw, William",18103,29770,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Bezuidenhout, Christiaan","Mouw, William",18103,29770,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Valimaki, Sami","Hojgaard, Rasmus",23816,23838,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Valimaki, Sami","Hojgaard, Rasmus",23816,23838,void,datagolf,+140,-140,0.416667,0.583333,0.416667,0.583333,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Valimaki, Sami","Hojgaard, Rasmus",23816,23838,void,fanduel,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Li, Haotong","Higa, Kazuki",15310,15756,void,caesars,-240,+180,0.705882,0.357143,0.664032,0.335968,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Li, Haotong","Higa, Kazuki",15310,15756,void,datagolf,-187,+187,0.651568,0.348432,0.651568,0.348432,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Li, Haotong","Higa, Kazuki",15310,15756,void,fanduel,-225,+175,0.692308,0.363636,0.655629,0.344371,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Li, Haotong","Higa, Kazuki",15310,15756,void,unibet,-220,+165,0.6875,0.377358,0.645626,0.354374,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Campbell, Brian","Jarvis, Casey",18628,26947,void,caesars,+150,-190,0.4,0.655172,0.379085,0.620915,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Campbell, Brian","Jarvis, Casey",18628,26947,void,datagolf,+185,-185,0.350877,0.649123,0.350877,0.649123,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Campbell, Brian","Jarvis, Casey",18628,26947,void,fanduel,+138,-188,0.420168,0.652778,0.391602,0.608398,False,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Li, Haotong","Potgieter, Aldrich",15310,27900,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Li, Haotong","Potgieter, Aldrich",15310,27900,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Pendrith, Taylor","Hoey, Rico",17780,23504,void,betcris,-146,+116,0.593496,0.462963,0.561779,0.438221,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Pendrith, Taylor","Hoey, Rico",17780,23504,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Puig, David",16243,28984,void,betcris,-127,-103,0.559471,0.507389,0.524409,0.475591,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Koepka, Brooks","Puig, David",16243,28984,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Burns, Sam",18417,19483,void,betcris,-245,+190,0.710145,0.344828,0.673141,0.326859,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Scheffler, Scottie","Burns, Sam",18417,19483,void,datagolf,-212,+212,0.679487,0.320513,0.679487,0.320513,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Cauley, Bud","Greyserman, Max",14502,23465,void,betcris,-131,+101,0.5671,0.497512,0.532682,0.467318,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Cauley, Bud","Greyserman, Max",14502,23465,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Griffin, Ben",16841,24968,void,betcris,-141,+111,0.585062,0.473934,0.552469,0.447531,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Lee, Min Woo","Griffin, Ben",16841,24968,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Smith, Cameron",8117,15856,void,betcris,+113,-143,0.469484,0.588477,0.443763,0.556237,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Kaymer, Martin","Smith, Cameron",8117,15856,void,datagolf,+142,-142,0.413223,0.586777,0.413223,0.586777,True,False,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rai, Aaron",13126,18554,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,PGA Championship,2026-05-17 14:31:00 UTC
+"Taylor, Nick","Rai, Aaron",13126,18554,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,PGA Championship,2026-05-17 14:31:00 UTC

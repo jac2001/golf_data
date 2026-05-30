@@ -1,29 +1,29 @@
 weekly_rank,season_rank,team_name,player_1,earnings_1,player_2,earnings_2,player_3,earnings_3,total_earnings,week
-1,2,JoeBuckYourself,"Lee, MW",260600,Scheffler,2160000,"Young, Cam",3600000,6020600,current
-T-2,10,Green Jackets,Burns,72182,Scheffler,2160000,"Young, Cam",3600000,5832182,current
-T-2,13,HUBBERS,Gotterup,72182,Scheffler,2160000,"Young, Cam",3600000,5832182,current
-T-4,8,GoForeYourself,Morikawa,41500,Scheffler,2160000,"Young, Cam",3600000,5801500,current
-T-4,9,Team OGG,Morikawa,41500,Scheffler,2160000,"Young, Cam",3600000,5801500,current
-T-4,15,GOLOWORGOHOME,Morikawa,41500,Scheffler,2160000,"Young, Cam",3600000,5801500,current
-T-4,18,SMETHPORT GOLFER,Morikawa,41500,Scheffler,2160000,"Young, Cam",3600000,5801500,current
-8,12,Birdie Bandits,Hovland,72182,Scott,826667,"Young, Cam",3600000,4498849,current
-9,17,Rmr617,Rose,39083,Scott,826667,"Young, Cam",3600000,4465750,current
-T-10,3,Andrew Sisson,Gotterup,72182,"Lee, MW",260600,"Young, Cam",3600000,3932782,current
-T-10,7,TimmyD,Hovland,72182,"Lee, MW",260600,"Young, Cam",3600000,3932782,current
-12,1,Wildcats,"Hojgaard, N",167143,Matsuyama,46000,"Young, Cam",3600000,3813143,current
-13,16,Dimpled Balls,Fleetwood,167143,Morikawa,41500,"Young, Cam",3600000,3808643,current
-14,6,MikeKett,Burns,72182,Gotterup,72182,"Young, Cam",3600000,3744364,current
-15,22,Jlemoine,Hovland,72182,Morikawa,41500,"Young, Cam",3600000,3713682,current
-16,20,Yanks His Putz,Gotterup,72182,Rose,39083,"Young, Cam",3600000,3711265,current
-17,21,NLA Boys,"Kim, SW",826667,Morikawa,41500,Scott,826667,1694834,current
-18,5,WineTime,Fleetwood,167143,"Kim, SW",826667,Morikawa,41500,1035310,current
-19,4,EagleEash,Bhatia,167143,Bridgeman,39083,"Kim, SW",826667,1032893,current
-20,28,CARL SPACKLER,"Bradley, K",48500,Rose,39083,Scott,826667,914250,current
-21,23,Davemc410,English,44500,Kitayama,500000,Woodland,72182,616682,current
-22,27,Chest Rockwell,Matsuyama,46000,Spieth,260600,"Thomas, J",167143,473743,current
-23,24,Danny Noonan,Burns,72182,"Lee, MW",260600,NO SHOW,0,332782,current
-24,11,Buck Foursome,Burns,72182,Gotterup,72182,Matsuyama,46000,190364,current
-25,19,COMER,Henley,48500,McNealy,114625,NO SHOW,0,163125,current
-26,26,MacDaddy,Henley,48500,Hovland,72182,Morikawa,41500,162182,current
-27,14,Caddyshark,Henley,48500,Matsuyama,46000,Rose,39083,133583,current
-28,25,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current
+1,2,MikeKett,"Clark, W",1854000,"Kim, SW",1122700,"Koepka, B",187975,3164675,current
+2,11,Dimpled Balls,"Clark, W",1854000,"Kim, SW",1122700,Spieth,100596,3077296,current
+3,20,MacDaddy,"Clark, W",1854000,"Kim, SW",1122700,"Kim, Tom",23999,3000699,current
+4,9,Buck Foursome,"Clark, W",1854000,"Coody, Pier",100596,Thorbjornsen,0,1954596,current
+T-5,18,Danny Noonan,"Coody, Pier",100596,Jaeger,260075,"Kim, SW",1122700,1483371,current
+T-5,25,Chest Rockwell,Hisatsune,100596,Im,260075,"Kim, SW",1122700,1483371,current
+T-7,1,Andrew Sisson,"Kim, SW",1122700,"Koepka, B",187975,Spieth,100596,1411271,current
+T-7,8,GoForeYourself,Hisatsune,100596,"Kim, SW",1122700,"Koepka, B",187975,1411271,current
+T-7,19,Yanks His Putz,Hisatsune,100596,"Kim, SW",1122700,"Koepka, B",187975,1411271,current
+10,5,EagleEash,"Hojgaard, R",22454,"Kim, SW",1122700,"Koepka, B",187975,1333129,current
+T-11,6,WineTime,Hisatsune,100596,"Kim, SW",1122700,Spieth,100596,1323892,current
+T-11,7,Team OGG,Hisatsune,100596,"Kim, SW",1122700,Spieth,100596,1323892,current
+T-11,14,Caddyshark,Hisatsune,100596,"Kim, SW",1122700,Spieth,100596,1323892,current
+T-11,23,NLA Boys,"Kim, SW",1122700,Spieth,100596,van Rooyen,100596,1323892,current
+15,4,JoeBuckYourself,"Kim, SW",1122700,Spieth,100596,"Thompson, D",0,1223296,current
+16,21,COMER,Hisatsune,100596,Mitchell,422300,Pendrith,26971,549867,current
+17,22,SMETHPORT GOLFER,Finau,347625,Spieth,100596,NO SHOW,0,448221,current
+T-18,3,Wildcats,Hisatsune,100596,"Koepka, B",187975,Spieth,100596,389167,current
+T-18,12,TimmyD,"Coody, Pier",100596,"Koepka, B",187975,Spieth,100596,389167,current
+20,13,Birdie Bandits,Cole,58930,"Koepka, B",187975,Spieth,100596,347501,current
+21,16,GOLOWORGOHOME,"Coody, Pier",100596,Hisatsune,100596,Spieth,100596,301788,current
+22,10,Green Jackets,"Coody, Pier",100596,"Koepka, B",187975,Thorbjornsen,0,288571,current
+23,15,HUBBERS,Hisatsune,100596,"Hojgaard, R",22454,Spieth,100596,223646,current
+24,28,CARL SPACKLER,Grillo,47895,Spieth,100596,NO SHOW,0,148491,current
+25,24,Jlemoine,Brennan,0,Spieth,100596,"Thompson, D",0,100596,current
+26,26,Davemc410,Eckroat,38625,"Kim, Tom",23999,Vegas,0,62624,current
+T-27,17,Rmr617,"Thompson, D",0,"Walker, D",0,NO SHOW,0,0,current
+T-27,27,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current

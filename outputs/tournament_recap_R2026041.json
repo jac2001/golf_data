@@ -1,0 +1,73 @@
+{
+  "tournament_id": "R2026041",
+  "tournament_name": "Valero Texas Open",
+  "winner": "J.J. Spaun",
+  "winner_score": "-17.0",
+  "top5": [
+    {
+      "position": "1",
+      "player": "J.J. Spaun",
+      "to_par": "-17.0"
+    },
+    {
+      "position": "T2",
+      "player": "Matt Wallace",
+      "to_par": "-16.0"
+    },
+    {
+      "position": "T2",
+      "player": "Michael Kim",
+      "to_par": "-16.0"
+    },
+    {
+      "position": "T2",
+      "player": "Robert MacIntyre",
+      "to_par": "-16.0"
+    },
+    {
+      "position": "T5",
+      "player": "Andrew Putnam",
+      "to_par": "-15.0"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "\u00c5berg, Ludvig",
+      "model_rank": null,
+      "actual_pos": "5.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bauchou, Zach",
+      "model_rank": null,
+      "actual_pos": "28.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bezuidenhout, Christiaan",
+      "model_rank": null,
+      "actual_pos": "39.0",
+      "win_prob": null
+    },
+    {
+      "player": "Blanchet, Chandler",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Brown, Dan",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": {
+    "bets": 120,
+    "wins": 25,
+    "roi_pct": -13.1,
+    "pnl": -15.74
+  },
+  "narrative": "J.J. Spaun's one-shot victory was methodical rather than spectacular\u2014he held off three players at -16 in a bunched finish typical of this course. The model struggled badly (25/120 hits, -13.1% ROI), missing on Wallace and Kim who both finished T2 despite minimal pre-tournament buzz. Spaun wasn't a notable model pick, suggesting the algorithm undervalued consistency on Valero's narrow fairways. The -15.74u loss signals the model needs recalibration for this particular setup.",
+  "generated_at": "2026-05-29T00:48:44.020571+00:00"
+}

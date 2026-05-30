@@ -1,0 +1,20 @@
+{
+  "alerts": {
+    "mac_notifications": false,
+    "web_toasts": true,
+    "events": {
+      "my_pick_leads": true,
+      "my_pick_top5": true,
+      "my_pick_top10": true,
+      "my_pick_bigmove": true,
+      "leader_change": true
+    },
+    "bigmove_threshold": 5,
+    "min_severity": "low"
+  },
+  "live": {
+    "default_tab": "leaderboard",
+    "default_sg_round": "event_avg",
+    "poll_interval_secs": 60
+  }
+}

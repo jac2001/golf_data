@@ -1,0 +1,16 @@
+[
+  {
+    "player_name": "Cameron Champ",
+    "player_id": "52372",
+    "status": "WITHDRAWN",
+    "source": "leaderboard",
+    "detected_at": "2026-05-26T07:13:55.546062"
+  },
+  {
+    "player_name": "Cauley, Bud",
+    "player_id": "34021",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-05-27T06:29:46.586820"
+  }
+]

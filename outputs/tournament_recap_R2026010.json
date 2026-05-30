@@ -1,0 +1,73 @@
+{
+  "tournament_id": "R2026010",
+  "tournament_name": "Cognizant Classic",
+  "winner": "Nico Echavarria",
+  "winner_score": "-17",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Nico Echavarria",
+      "to_par": "-17"
+    },
+    {
+      "position": "T2",
+      "player": "Taylor Moore",
+      "to_par": "-15"
+    },
+    {
+      "position": "T2",
+      "player": "Shane Lowry",
+      "to_par": "-15"
+    },
+    {
+      "position": "T2",
+      "player": "Austin Smotherman",
+      "to_par": "-15"
+    },
+    {
+      "position": "5",
+      "player": "Ricky Castillo",
+      "to_par": "-13"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "Bauchou, Zach",
+      "model_rank": null,
+      "actual_pos": "23.0",
+      "win_prob": null
+    },
+    {
+      "player": "Berger, Daniel",
+      "model_rank": null,
+      "actual_pos": "32.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bezuidenhout, Christiaan",
+      "model_rank": null,
+      "actual_pos": "37.0",
+      "win_prob": null
+    },
+    {
+      "player": "Blanchet, Chandler",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Brennan, Michael",
+      "model_rank": null,
+      "actual_pos": "52.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": {
+    "bets": 137,
+    "wins": 16,
+    "roi_pct": -37.7,
+    "pnl": -51.61
+  },
+  "narrative": "Nico Echavarria ran away with the Cognizant Classic at -17, a two-shot victory that came as a relative surprise given his 80-1 odds. The model whiffed badly here: only 16 of 137 bets cashed (11.7% win rate) with -37.7% ROI, suggesting significant mispricing across the board. Taylor Moore, Shane Lowry, and Austin Smotherman all T2'd at -15, but none were among the model's heavy leans. The -51.61u loss signals the field was tighter than projected; chalk struggles and contrarian positioning both failed.",
+  "generated_at": "2026-05-29T00:48:29.176279+00:00"
+}

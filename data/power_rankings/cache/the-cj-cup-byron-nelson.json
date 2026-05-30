@@ -1,0 +1,353 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "THE CJ CUP Byron Nelson",
+      "tableTitle": "Power Rankings for THE CJ CUP Byron Nelson",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "59836",
+            "firstName": "Pierceson",
+            "lastName": "Coody",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59836.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He\u2019s cooled after a strong start what with top 20s in five of his first six starts, but the native and resident of nearby Plano, Texas, made his PGA TOUR debut at TPC Craig Ranch in 2021, so you know he\u2019s comfy in these confines."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "36824",
+            "firstName": "Paul",
+            "lastName": "Peterson",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36824.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 37-year-old lefty opened the year deep in the pecking order but he\u2019s cashed for a T5 and a T11 in four starts. He\u2019s also connected for a trio of top 20s on the Korn Ferry Tour, including a T7 last week in South Carolina."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "48867",
+            "firstName": "Matti",
+            "lastName": "Schmid",
+            "countryFlag": "GER",
+            "countryName": "Germany",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48867.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He went 0-for-3 before the renovation and it\u2019s fair to wonder how much he has left in the tank after holding on for a T4 at the PGA Championship "
+                },
+                {
+                  "value": "(that yielded starts in two majors),"
+                },
+                {
+                  "value": " but he tends to keep the pedal down when hot."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "36801",
+            "firstName": "Mark",
+            "lastName": "Hubbard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36801.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Had a week to lick his wounds after his latest close call at the ONEflight Myrtle Beach Classic where he was the 54-hole leader. Despite the one-shot loss, it presents as potential momentum for the proven streaky veteran."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "39971",
+            "firstName": "Sungjae",
+            "lastName": "Im",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39971.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Will the real Sungjae Im please step forward? Since returning from an injured right wrist, he\u2019s 7-for-10 worldwide with two top fives but nothing else inside a top 35. Flashes matter but the inconsistency is uncharacteristic."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "57362",
+            "firstName": "Austin",
+            "lastName": "Eckroat",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57362.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "A co-runner-up on the pre-renovation track of 2023, he strides in having gone T10-T6-T19 in his last three. And that was after a six-month drought without a top-35 finish. Much improved work from tee to green is being rewarded."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "39335",
+            "firstName": "Kevin",
+            "lastName": "Roy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39335.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s hard to putt as well as he did at Dunes Golf and Beach Club two weeks ago and not wind up holding the trophy, but he won\u2019t reject the T3. It\u2019s the latest and best of eight straight paydays. Sits 24th in adjusted scoring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "47591",
+            "firstName": "Eric",
+            "lastName": "Cole",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47591.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After opening the season without a top 25 in nine starts, he\u2019s recaptured the electric form with which he\u2019s associated with signature strong putting. After igniting for a T14 at the Valero Texas Open, he\u2019s added a pair of T6s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "66417",
+            "firstName": "Blades",
+            "lastName": "Brown",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66417.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Fresh off a T16 at the Colonial Life Charity Classic to climb to ninth on the Korn Ferry Tour Points List. Now he needs no worse than a solo 21st at TPC Craig Ranch to achieve Special Temporary Membership on the "
+                },
+                {
+                  "value": "PGA TOUR."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "58168",
+            "firstName": "Davis",
+            "lastName": "Thompson",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_58168.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a quiet open to the season, a reconnection with his tee-to-green strengths paved the way for respective results of T14, T6 and T13 in his last three. It\u2019s exactly what the learning curve of this week\u2019s renovation rewards."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "36689",
+            "firstName": "Brooks",
+            "lastName": "Koepka",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36689.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The PGA Championship didn\u2019t go his way (T55) but smaller greens at TPC Craig Ranch should allow his tee-to-green game to pop more than it did at Aronimink despite solid work in that area. Top 20s in five of previous six starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "51287",
+            "firstName": "Ryo",
+            "lastName": "Hisatsune",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51287.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 23-year-old arrives for his third appearance having cashed in 13 straight, five of which for a top 15, including a T8 at the Valero Texas Open when the PGA TOUR last stopped in the Lone Star State. T17 in the all-around."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "34046",
+            "firstName": "Jordan",
+            "lastName": "Spieth",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His pursuit of the career Grand Slam will extend another year after a T18 at Aronimink. Returns home with 11 straight paydays, six for a top 20. Never a winner of this event but had three top 10s pre-redo of TPC Craig Ranch."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The local resident hasn\u2019t missed an edition of the tournament since TPC Craig Ranch took the reins in 2021. He came within a stroke of forcing a playoff in 2023 but his dynamite 2026 props him up prominently for the renovation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "As explained below, his tournament record at TPC Craig Ranch is likely safe but he\u2019s back to defend his title, anyway. This home game preceded the PGA Championship last year, so the cadence is different. He doesn\u2019t care."
+                }
+              ]
+            },
+            {
+              "__typename": "NewsArticleLineBreak",
+              "breakValue": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

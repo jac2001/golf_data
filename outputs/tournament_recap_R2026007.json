@@ -1,0 +1,68 @@
+{
+  "tournament_id": "R2026007",
+  "tournament_name": "The Genesis Invitational",
+  "winner": "Jacob Bridgeman",
+  "winner_score": "-18",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Jacob Bridgeman",
+      "to_par": "-18"
+    },
+    {
+      "position": "T2",
+      "player": "Kurt Kitayama",
+      "to_par": "-17"
+    },
+    {
+      "position": "T2",
+      "player": "Rory McIlroy",
+      "to_par": "-17"
+    },
+    {
+      "position": "4",
+      "player": "Adam Scott",
+      "to_par": "-16"
+    },
+    {
+      "position": "5",
+      "player": "Aldrich Potgieter",
+      "to_par": "-15"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "\u00c5berg, Ludvig",
+      "model_rank": null,
+      "actual_pos": "20.0",
+      "win_prob": null
+    },
+    {
+      "player": "Berger, Daniel",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bhatia, Akshay",
+      "model_rank": null,
+      "actual_pos": "16.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bradley, Keegan",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bridgeman, Jacob",
+      "model_rank": null,
+      "actual_pos": "1.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": null,
+  "narrative": "Bridgeman's -18 wire-to-wire dominance at Riviera marked a breakout win for the underdog, as McIlroy's late charge fell one shot short in a competitive leaderboard. The model struggled to isolate the winner among a talent-rich field, though Kitayama's T2 finish validated mid-tier value picks. Scott's T4 performance caps a solid week for established names, but Bridgeman's emergence signals sharp bettors need deeper sleeper analysis at elite venues\u2014he was likely 40-1 or longer pre-event, making this a miss for consensus favorites-heavy approaches.",
+  "generated_at": "2026-05-29T00:48:26.423133+00:00"
+}

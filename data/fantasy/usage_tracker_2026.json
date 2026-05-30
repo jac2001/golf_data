@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-05-06T23:27:00.259671",
+  "last_updated": "2026-05-26T06:42:08.666952",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -223,8 +223,8 @@
       "total_points": 0
     },
     "McIlroy": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Arnold Palmer Invitational",
@@ -232,14 +232,21 @@
           "date": "2026-03-05",
           "result": "WD",
           "earnings": 0
+        },
+        {
+          "tournament": "Truist Championship",
+          "week": 14,
+          "date": "2026-05-07",
+          "result": "T19",
+          "earnings": 242100
         }
       ],
-      "total_earnings": 0,
+      "total_earnings": 242100,
       "total_points": 0
     },
     "Scheffler": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "THE PLAYERS Championship",
@@ -247,9 +254,16 @@
           "date": "2026-03-12",
           "result": "T22",
           "earnings": 271250
+        },
+        {
+          "tournament": "PGA Championship",
+          "week": 15,
+          "date": "2026-05-14",
+          "result": "T14",
+          "earnings": 364763
         }
       ],
-      "total_earnings": 271250,
+      "total_earnings": 636013,
       "total_points": 0
     },
     "Scott": {
@@ -343,8 +357,8 @@
       "total_points": 0
     },
     "B Koepka": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Texas Children's Houston Open",
@@ -352,9 +366,16 @@
           "date": "2026-03-26",
           "result": "CUT",
           "earnings": 0
+        },
+        {
+          "tournament": "PGA Championship",
+          "week": 15,
+          "date": "2026-05-14",
+          "result": "T55",
+          "earnings": 34186
         }
       ],
-      "total_earnings": 0,
+      "total_earnings": 34186,
       "total_points": 0
     },
     "MW Lee": {
@@ -388,8 +409,8 @@
       "total_points": 0
     },
     "Spieth": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Valero Texas Open",
@@ -397,9 +418,16 @@
           "date": "2026-04-02",
           "result": "T63",
           "earnings": 21364
+        },
+        {
+          "tournament": "The CJ Cup Byron Nelson",
+          "week": 16,
+          "date": "2026-05-21",
+          "result": "T19",
+          "earnings": 100596
         }
       ],
-      "total_earnings": 21364,
+      "total_earnings": 121960,
       "total_points": 0
     },
     "Yellamaraju": {
@@ -433,8 +461,8 @@
       "total_points": 0
     },
     "Schauffele": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "The Masters",
@@ -442,9 +470,16 @@
           "date": "2026-04-09",
           "result": "T9",
           "earnings": 630000
+        },
+        {
+          "tournament": "Truist Championship",
+          "week": 14,
+          "date": "2026-05-07",
+          "result": "T60",
+          "earnings": 42500
         }
       ],
-      "total_earnings": 630000,
+      "total_earnings": 672500,
       "total_points": 0
     },
     "M Fitzpatrick": {
@@ -462,11 +497,11 @@
           "tournament": "Truist Championship",
           "week": 14,
           "date": "2026-05-07",
-          "result": null,
-          "earnings": 0
+          "result": "T52",
+          "earnings": 45188
         }
       ],
-      "total_earnings": 3600000,
+      "total_earnings": 3645188,
       "total_points": 0
     },
     "Fleetwood": {
@@ -559,8 +594,8 @@
       "total_points": 0
     },
     "SW Kim": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Cadillac Championship",
@@ -568,39 +603,46 @@
           "date": "2026-04-30",
           "result": "T4",
           "earnings": 826667
+        },
+        {
+          "tournament": "The CJ Cup Byron Nelson",
+          "week": 16,
+          "date": "2026-05-21",
+          "result": "2",
+          "earnings": 1122700
         }
       ],
-      "total_earnings": 826667,
+      "total_earnings": 1949367,
       "total_points": 0
     },
-    "Rory McIlroy": {
+    "Rahm": {
       "times_used": 1,
       "remaining_uses": 2,
       "tournaments_used": [
         {
-          "tournament": "Truist Championship",
-          "week": 14,
-          "date": "2026-05-07",
-          "result": null,
-          "earnings": 0
+          "tournament": "PGA Championship",
+          "week": 15,
+          "date": "2026-05-14",
+          "result": "T2",
+          "earnings": 1804000
         }
       ],
-      "total_earnings": 0,
+      "total_earnings": 1804000,
       "total_points": 0
     },
-    "Xander Schauffele": {
+    "Hisatsune": {
       "times_used": 1,
       "remaining_uses": 2,
       "tournaments_used": [
         {
-          "tournament": "Truist Championship",
-          "week": 14,
-          "date": "2026-05-07",
-          "result": null,
-          "earnings": 0
+          "tournament": "The CJ Cup Byron Nelson",
+          "week": 16,
+          "date": "2026-05-21",
+          "result": "T19",
+          "earnings": 100596
         }
       ],
-      "total_earnings": 0,
+      "total_earnings": 100596,
       "total_points": 0
     }
   },
@@ -779,31 +821,39 @@
       "week": 14,
       "date": "2026-05-07",
       "lineup": [
-        "Rory McIlroy",
         "M Fitzpatrick",
-        "Xander Schauffele"
+        "McIlroy",
+        "Schauffele"
       ],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "wrp": 23,
+      "earnings_earned": 329788,
+      "points_earned": 329788
     },
     "week_15": {
       "tournament": "PGA Championship",
       "week": 15,
       "date": "2026-05-14",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "B Koepka",
+        "Rahm",
+        "Scheffler"
+      ],
+      "wrp": 5,
+      "earnings_earned": 2202949,
+      "points_earned": 2202949
     },
     "week_16": {
       "tournament": "The CJ Cup Byron Nelson",
       "week": 16,
       "date": "2026-05-21",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Hisatsune",
+        "SW Kim",
+        "Spieth"
+      ],
+      "wrp": 11,
+      "earnings_earned": 1323892,
+      "points_earned": 1323892
     },
     "week_17": {
       "tournament": "Charles Schwab Challenge",
@@ -935,6 +985,6 @@
   "summary": {
     "total_weeks": 30,
     "total_players": 38,
-    "total_earnings": 18895786
+    "total_earnings": 22752415
   }
 }

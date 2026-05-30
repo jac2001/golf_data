@@ -1,0 +1,73 @@
+{
+  "tournament_id": "R2026475",
+  "tournament_name": "Valspar Championship",
+  "winner": "Matt Fitzpatrick",
+  "winner_score": "-11",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Matt Fitzpatrick",
+      "to_par": "-11"
+    },
+    {
+      "position": "2",
+      "player": "David Lipsky",
+      "to_par": "-10"
+    },
+    {
+      "position": "3",
+      "player": "Jordan Smith",
+      "to_par": "-9"
+    },
+    {
+      "position": "T4",
+      "player": "Marco Penge",
+      "to_par": "-8"
+    },
+    {
+      "position": "T4",
+      "player": "Sungjae Im",
+      "to_par": "-8"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "Bauchou, Zach",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bezuidenhout, Christiaan",
+      "model_rank": null,
+      "actual_pos": "30.0",
+      "win_prob": null
+    },
+    {
+      "player": "Blair, Zac",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Blanchet, Chandler",
+      "model_rank": null,
+      "actual_pos": "18.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bradley, Keegan",
+      "model_rank": null,
+      "actual_pos": "55.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": {
+    "bets": 46,
+    "wins": 13,
+    "roi_pct": -25.7,
+    "pnl": -11.8
+  },
+  "narrative": "Matt Fitzpatrick cruised to victory at -11, a wire-to-wire performance that felt inevitable rather than shocking given his form. The model whiffed badly\u2014only 13/46 picks cashed and ROI tanked at -25.7%, suggesting it overweighted some chalk names who faded. Lipsky's runner-up finish and Im's T4 were bright spots, but the -11.80u loss stings. This one should've been closer to evens; the model needs recalibration on Valspar's specific setup.",
+  "generated_at": "2026-05-29T00:48:38.698805+00:00"
+}

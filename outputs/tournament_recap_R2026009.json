@@ -1,0 +1,73 @@
+{
+  "tournament_id": "R2026009",
+  "tournament_name": "Arnold Palmer Invitational",
+  "winner": "Akshay Bhatia",
+  "winner_score": "-15",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Akshay Bhatia",
+      "to_par": "-15"
+    },
+    {
+      "position": "2",
+      "player": "Daniel Berger",
+      "to_par": "-15"
+    },
+    {
+      "position": "T3",
+      "player": "Cameron Young",
+      "to_par": "-12"
+    },
+    {
+      "position": "T3",
+      "player": "Ludvig \u00c5berg",
+      "to_par": "-12"
+    },
+    {
+      "position": "5",
+      "player": "Collin Morikawa",
+      "to_par": "-11"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "\u00c5berg, Ludvig",
+      "model_rank": null,
+      "actual_pos": "3.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bennett, Daniel",
+      "model_rank": null,
+      "actual_pos": "47.0",
+      "win_prob": null
+    },
+    {
+      "player": "Berger, Daniel",
+      "model_rank": null,
+      "actual_pos": "2.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bhatia, Akshay",
+      "model_rank": null,
+      "actual_pos": "1.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bradley, Keegan",
+      "model_rank": null,
+      "actual_pos": "MC/WD",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": {
+    "bets": 169,
+    "wins": 47,
+    "roi_pct": -18.9,
+    "pnl": -31.86
+  },
+  "narrative": "Akshay Bhatia edged Daniel Berger in a tight finish at Bay Hill, both finishing -15 in what felt like a coin-flip result rather than a dominant performance. The pre-tournament model misfired badly\u201447/169 winners with -18.9% ROI is brutal\u2014suggesting the field was tighter than projected or key chalk underperformed. Cameron Young and Ludvig \u00c5berg's T3 finishes signal value existed in the mid-tier, but the model failed to identify it. Moving forward, recalibrate for Bay Hill's volatility and tighter scoring spreads.",
+  "generated_at": "2026-05-29T00:48:32.038001+00:00"
+}

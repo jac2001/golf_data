@@ -1,0 +1,68 @@
+{
+  "tournament_id": "R2026033",
+  "tournament_name": "PGA Championship",
+  "winner": "Aaron Rai",
+  "winner_score": "-9.0",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Aaron Rai",
+      "to_par": "-9.0"
+    },
+    {
+      "position": "T2",
+      "player": "Jon Rahm",
+      "to_par": "-6.0"
+    },
+    {
+      "position": "T2",
+      "player": "Alex Smalley",
+      "to_par": "-6.0"
+    },
+    {
+      "position": "T4",
+      "player": "Justin Thomas",
+      "to_par": "-5.0"
+    },
+    {
+      "position": "T4",
+      "player": "Ludvig \u00c5berg",
+      "to_par": "-5.0"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "Scheffler, Scottie",
+      "model_rank": null,
+      "actual_pos": "14.0",
+      "win_prob": null
+    },
+    {
+      "player": "Rahm, Jon",
+      "model_rank": null,
+      "actual_pos": "2.0",
+      "win_prob": null
+    },
+    {
+      "player": "Young, Cameron",
+      "model_rank": null,
+      "actual_pos": "26.0",
+      "win_prob": null
+    },
+    {
+      "player": "McIlroy, Rory",
+      "model_rank": null,
+      "actual_pos": "7.0",
+      "win_prob": null
+    },
+    {
+      "player": "Fitzpatrick, Matt",
+      "model_rank": null,
+      "actual_pos": "14.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": null,
+  "narrative": "Aaron Rai's surprise -9 victory marks a major upset\u2014the Indian pro wasn't among pre-tournament favorites but capitalized on pristine ball-striking when it mattered most. Jon Rahm and Alex Smalley's T2 finishes suggest the model caught some middle-tier value, though Rai's emergence signals weakness in identifying breakout performances. Justin Thomas and Ludvig \u00c5berg underperformed expectations at T4, costing contrarian bets. Key takeaway: Rai's win at generous odds rewards those who spotted early form signals the model missed.",
+  "generated_at": "2026-05-29T00:48:52.654060+00:00"
+}

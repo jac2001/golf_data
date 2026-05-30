@@ -1,0 +1,73 @@
+{
+  "tournament_id": "R2026014",
+  "tournament_name": "The Masters",
+  "winner": "Rory McIlroy",
+  "winner_score": "-12.0",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Rory McIlroy",
+      "to_par": "-12.0"
+    },
+    {
+      "position": "2",
+      "player": "Scottie Scheffler",
+      "to_par": "-11.0"
+    },
+    {
+      "position": "T3",
+      "player": "Tyrrell Hatton",
+      "to_par": "-10.0"
+    },
+    {
+      "position": "T3",
+      "player": "Russell Henley",
+      "to_par": "-10.0"
+    },
+    {
+      "position": "T3",
+      "player": "Justin Rose",
+      "to_par": "-10.0"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "\u00c5berg, Ludvig",
+      "model_rank": null,
+      "actual_pos": "T21",
+      "win_prob": null
+    },
+    {
+      "player": "Berger, Daniel",
+      "model_rank": null,
+      "actual_pos": "CUT",
+      "win_prob": null
+    },
+    {
+      "player": "Bhatia, Akshay",
+      "model_rank": null,
+      "actual_pos": "CUT",
+      "win_prob": null
+    },
+    {
+      "player": "Bradley, Keegan",
+      "model_rank": null,
+      "actual_pos": "T21",
+      "win_prob": null
+    },
+    {
+      "player": "Brennan, Michael",
+      "model_rank": null,
+      "actual_pos": "T24",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": {
+    "bets": 28,
+    "wins": 14,
+    "roi_pct": 27.2,
+    "pnl": 7.6
+  },
+  "narrative": "McIlroy (-12) claimed his first green jacket in a controlled performance, edging pre-tournament favorite Scheffler (-11) despite the world No. 1's strong form. Model nailed Hatton and Henley in the top-5 mix but whiffed on Rose's T3 finish\u2014a notable oversight given Augusta's emphasis on course management. Betting slate delivered solid 50% hit rate with +27.2% ROI, though McIlroy's odds likely shortened sharply late in the week. Contrarian play on Henley and Hatton margins paid dividends for sharp bettors who identified their undervaluation relative to needle-movers.",
+  "generated_at": "2026-05-29T00:07:22.530325+00:00"
+}

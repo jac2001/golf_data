@@ -1,15 +1,21 @@
 # Golf Model — Season Context
-_Updated: 2026-04-20 08:05_
+_Updated: 2026-05-17 21:06_
 
 ## Season Summary (2026 PGA Tour)
-- Tournaments tracked: **11**
-- Tournaments with results: **11**
-- Top pick finished top 10: **7/11** (64%)
+- Tournaments tracked: **12**
+- Tournaments with results: **12**
+- Top pick finished top 10: **7/12** (58%)
 - Top-5 predictions → top-10 rate: **45%** (expected: ~33%)
-- Average rank of actual winner in our presets: **#19.5**
+- Average rank of actual winner in our presets: **#20.8**
 - Times our #1 pick won: **2**
 
 ## Recent Tournament Results (Last 4)
+
+### Truist Championship (R2026480)
+- **Winner**: Kristoffer Reitan
+- Winner was our **#35** ranked player pre-tournament
+- Our **#1 pick**: Rory McIlroy — finished #19
+- Top-10 predictions hit: **4/10** finished inside top 10
 
 ### RBC Heritage (R2026012)
 - **Winner**: Matt Fitzpatrick
@@ -29,12 +35,6 @@ _Updated: 2026-04-20 08:05_
 - Our **#1 pick**: Ludvig Åberg — finished #5
 - Top-10 predictions hit: **4/10** finished inside top 10
 
-### Texas Children's Houston Open (R2026020)
-- **Winner**: Gary Woodland
-- Winner was our **#56** ranked player pre-tournament
-- Our **#1 pick**: Chris Gotterup — finished #6
-- Top-10 predictions hit: **4/10** finished inside top 10
-
 ## Bet Performance (Recommended Bets — Priced Only)
 Season totals: **4069 bets**, **674 wins** (17%), ROI **-39.6%**
 
@@ -50,9 +50,9 @@ Note: Most bets are outright/top-10/top-20 markets. High volume because the syst
 
 ## Closing Line Value (CLV)
 CLV measures whether our model priced players better than the closing market. Positive CLV = we got value; negative = we were wrong about the price.
-- Tournaments with CLV data: **8**
-- Average CLV: **+0.13pp** (percentage points vs closing line)
-- % of picks with positive CLV: **73%**
+- Tournaments with CLV data: **9**
+- Average CLV: **+0.16pp** (percentage points vs closing line)
+- % of picks with positive CLV: **75%**
 
 **Best CLV picks this season:**
   - Scottie Scheffler (Cognizant Classic): +39.4pp
@@ -64,16 +64,16 @@ What the model weighs most when ranking players this week:
 
 | # | Feature | Importance |
 |---|---|---|
-| 1 | Approach play (SG:APP season avg) | 12.4% |
-| 2 | Recent form trend | 9.1% |
-| 3 | season_sg_app_field_pct | 5.9% |
-| 4 | Has SG history at this course | 5.3% |
-| 5 | has_made_cut_here | 3.9% |
-| 6 | season_sg_ott_vs_field | 3.8% |
-| 7 | Recent SG (weighted last 5 events) | 3.7% |
-| 8 | recent_par3_scoring_field_pct | 3.3% |
-| 9 | Off-the-tee (SG:OTT season avg) | 2.9% |
-| 10 | hist_times_played | 2.6% |
+| 1 | recent_r4_avg_field_pct | 10.4% |
+| 2 | Putting (SG:PUTT season avg) | 7.2% |
+| 3 | hist_top5s | 5.6% |
+| 4 | season_sg_app_vs_field | 3.5% |
+| 5 | recent_sg_ott_weighted | 2.9% |
+| 6 | dg_win | 2.8% |
+| 7 | Recent SG (weighted last 5 events) | 2.6% |
+| 8 | World ranking (log-scaled) | 2.5% |
+| 9 | has_course_history | 2.4% |
+| 10 | recent_par4_scoring_field_pct | 2.4% |
 
 ## Model Architecture Notes
 - 4 XGBoost models: win, top-5, top-10, top-20 probability

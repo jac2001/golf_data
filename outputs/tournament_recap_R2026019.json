@@ -1,0 +1,68 @@
+{
+  "tournament_id": "R2026019",
+  "tournament_name": "The CJ Cup Byron Nelson",
+  "winner": "Wyndham Clark",
+  "winner_score": "-30.0",
+  "top5": [
+    {
+      "position": "1",
+      "player": "Wyndham Clark",
+      "to_par": "-30.0"
+    },
+    {
+      "position": "2",
+      "player": "Si Woo Kim",
+      "to_par": "-27.0"
+    },
+    {
+      "position": "3",
+      "player": "Scottie Scheffler",
+      "to_par": "-25.0"
+    },
+    {
+      "position": "4",
+      "player": "Jackson Suber",
+      "to_par": "-23.0"
+    },
+    {
+      "position": "5",
+      "player": "Keith Mitchell",
+      "to_par": "-22.0"
+    }
+  ],
+  "model_top5": [
+    {
+      "player": "Scheffler, Scottie",
+      "model_rank": null,
+      "actual_pos": "3.0",
+      "win_prob": null
+    },
+    {
+      "player": "Kim, Si Woo",
+      "model_rank": null,
+      "actual_pos": "2.0",
+      "win_prob": null
+    },
+    {
+      "player": "Spieth, Jordan",
+      "model_rank": null,
+      "actual_pos": "19.0",
+      "win_prob": null
+    },
+    {
+      "player": "Bezuidenhout, Christiaan",
+      "model_rank": null,
+      "actual_pos": "999.0",
+      "win_prob": null
+    },
+    {
+      "player": "Meissner, Mac",
+      "model_rank": null,
+      "actual_pos": "31.0",
+      "win_prob": null
+    }
+  ],
+  "bet_summary": null,
+  "narrative": "Wyndham Clark ran away with the CJ Cup Byron Nelson at -30, finishing three clear of Si Woo Kim in a dominant wire-to-wire performance. Scottie Scheffler, despite being the betting favorite, faded to third at -25\u2014a rare miss for the world No. 1. Clark's explosive scoring wasn't universally predicted; the pre-tournament model undervalued his form, though his ball-striking metrics suggested upside. Heavy favorites in betting took a hit, making this a humbling week for chalk-heavy portfolios.",
+  "generated_at": "2026-05-29T00:48:56.410035+00:00"
+}
