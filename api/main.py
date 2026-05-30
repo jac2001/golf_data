@@ -57,13 +57,32 @@ ODDS_DIR     = DATA_DIR / "odds"
 DG_DIR       = DATA_DIR / "datagolf"
 REASONS_CACHE_PATH = DATA_DIR / "betting_reasons_cache.json"
 
-# ── DB helper ────────────────────────────────────────────────────────────────
+# ── DuckDB helper ────────────────────────────────────────────────────────────
 sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "database"))
 try:
     from db import get_conn as _get_db_conn
     _DB_AVAILABLE = True
 except Exception:
     _DB_AVAILABLE = False
+
+# ── Supabase helper ───────────────────────────────────────────────────────────
+_sb_client = None
+
+def _get_sb():
+    """Return a cached Supabase client, or None if not configured."""
+    global _sb_client
+    if _sb_client is not None:
+        return _sb_client
+    url = os.environ.get("SUPABASE_URL", "")
+    key = os.environ.get("SUPABASE_SERVICE_KEY", "")
+    if not url or not key:
+        return None
+    try:
+        from supabase import create_client
+        _sb_client = create_client(url, key)
+    except Exception:
+        pass
+    return _sb_client
 
 app = FastAPI(title="Golf Data API", version="1.0.0")
 
@@ -1015,19 +1034,34 @@ def get_tournament() -> dict:
 
     result: dict[str, Any] = {"tournament_id": tid}
 
-    # Pull name + week from schedule
-    sched_path = DATA_DIR / "raw" / "schedule_2026.csv"
-    if sched_path.exists():
+    # Pull name + week from Supabase → fallback to CSV
+    _loaded_sched = False
+    sb = _get_sb()
+    if sb:
         try:
-            sched = pd.read_csv(sched_path)
-            row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
-            if not row.empty:
-                result["name"]       = str(row.iloc[0].get("tournament_name", ""))
-                result["start_date"] = str(row.iloc[0].get("start_date", ""))
-                result["end_date"]   = str(row.iloc[0].get("end_date", ""))
-                result["purse"]      = _safe(row.iloc[0].get("purse"))
+            rows = sb.table("tournaments").select("*").eq("tournament_id", tid).execute().data
+            if rows:
+                r = rows[0]
+                result["name"]       = str(r.get("tournament_name", ""))
+                result["start_date"] = str(r.get("start_date", ""))
+                result["end_date"]   = str(r.get("end_date", ""))
+                result["purse"]      = r.get("purse")
+                _loaded_sched = True
         except Exception:
             pass
+    if not _loaded_sched:
+        sched_path = DATA_DIR / "raw" / "schedule_2026.csv"
+        if sched_path.exists():
+            try:
+                sched = pd.read_csv(sched_path)
+                row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+                if not row.empty:
+                    result["name"]       = str(row.iloc[0].get("tournament_name", ""))
+                    result["start_date"] = str(row.iloc[0].get("start_date", ""))
+                    result["end_date"]   = str(row.iloc[0].get("end_date", ""))
+                    result["purse"]      = _safe(row.iloc[0].get("purse"))
+            except Exception:
+                pass
 
     # Detect phase from live meta
     meta_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
@@ -1421,13 +1455,26 @@ def get_odds_comparison(market: str = "top10") -> dict:
 
 @app.get("/api/predictions")
 def get_predictions(limit: int = 50) -> dict:
-    """Top N players from latest_predictions.csv."""
-    pred_path = OUTPUTS_DIR / "latest_predictions.csv"
-    if not pred_path.exists():
-        raise HTTPException(status_code=404, detail="No predictions file found")
-
-    df = pd.read_csv(pred_path)
+    """Top N players — Supabase first, CSV fallback."""
     tid = _get_tournament_id()
+    df  = None
+
+    # Try Supabase first
+    sb = _get_sb()
+    if sb and tid:
+        try:
+            rows = sb.table("predictions").select("*").eq("tournament_id", tid).execute().data
+            if rows:
+                df = pd.DataFrame(rows)
+        except Exception:
+            pass
+
+    # Fallback to CSV
+    if df is None or df.empty:
+        pred_path = OUTPUTS_DIR / "latest_predictions.csv"
+        if not pred_path.exists():
+            raise HTTPException(status_code=404, detail="No predictions file found")
+        df = pd.read_csv(pred_path)
 
     keep_cols = [c for c in [
         "player_name", "world_rank", "win_prob", "top5_prob", "top10_prob",
@@ -1526,16 +1573,31 @@ def get_predictions(limit: int = 50) -> dict:
 
 @app.get("/api/leaderboard")
 def get_leaderboard() -> dict:
-    """Live leaderboard with round scores, movement, and cut status."""
-    tid = _get_tournament_id()
+    """Live leaderboard — Supabase first, CSV fallback."""
+    tid      = _get_tournament_id()
     live_dir = DATA_DIR / "live"
+    df       = None
 
-    lb_files = sorted(live_dir.glob("leaderboard_r*.csv"),
-                      key=lambda p: p.stat().st_mtime, reverse=True)
-    if not lb_files:
-        raise HTTPException(status_code=404, detail="No leaderboard found")
+    # Try Supabase first
+    sb = _get_sb()
+    if sb and tid:
+        try:
+            rows = sb.table("live_leaderboard").select("*").eq("tournament_id", tid.upper()).execute().data
+            if rows:
+                df = pd.DataFrame(rows)
+                for col in ["r1", "r2", "r3", "r4"]:
+                    if col in df.columns:
+                        df = df.rename(columns={col: col.upper()})
+        except Exception:
+            pass
 
-    df = pd.read_csv(lb_files[0])
+    # Fallback to CSV
+    if df is None or df.empty:
+        lb_files = sorted(live_dir.glob("leaderboard_r*.csv"),
+                          key=lambda p: p.stat().st_mtime, reverse=True)
+        if not lb_files:
+            raise HTTPException(status_code=404, detail="No leaderboard found")
+        df = pd.read_csv(lb_files[0])
 
     # Numeric coercions
     for col in ["total_numeric", "R1", "R2", "R3", "R4", "position_change"]:
@@ -4241,15 +4303,24 @@ def history_tournaments() -> dict:
     purse_map  = dict(zip(schedule["tournament_id"].astype(str), schedule["purse"]))
     name_map   = dict(zip(schedule["tournament_id"].astype(str), schedule["tournament_name"]))
 
-    # Pre-load all recap files into a dict keyed by tournament_id
+    # Load recaps — Supabase first, JSON files fallback
     recap_map: dict[str, str] = {}
-    for recap_file in (PROJECT_ROOT / "outputs").glob("tournament_recap_*.json"):
+    sb = _get_sb()
+    if sb:
         try:
-            with open(recap_file) as f:
-                r = json.load(f)
-            recap_map[r["tournament_id"].upper()] = r.get("narrative", "")
+            rows = sb.table("recaps").select("tournament_id,narrative").execute().data
+            for r in rows:
+                recap_map[str(r["tournament_id"]).upper()] = r.get("narrative", "")
         except Exception:
             pass
+    if not recap_map:
+        for recap_file in (PROJECT_ROOT / "outputs").glob("tournament_recap_*.json"):
+            try:
+                with open(recap_file) as f:
+                    r = json.load(f)
+                recap_map[r["tournament_id"].upper()] = r.get("narrative", "")
+            except Exception:
+                pass
 
     tournaments = []
     for tid, grp in df.groupby("tournament_id"):

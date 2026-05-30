@@ -333,6 +333,171 @@ CREATE_STATEMENTS = [
         PRIMARY KEY (event_name, round_num, course_key, hole)
     )
     """,
+
+    # -------------------------------------------------------------------------
+    # prediction_history: per-tournament per-player model predictions + results
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS prediction_history (
+        tournament_id        VARCHAR,
+        tournament_name      VARCHAR,
+        tournament_date      VARCHAR,
+        player_name          VARCHAR,
+        player_id            VARCHAR,
+        predicted_win_prob   DOUBLE,
+        predicted_top5_prob  DOUBLE,
+        predicted_top10_prob DOUBLE,
+        predicted_top20_prob DOUBLE,
+        predicted_ev         DOUBLE,
+        world_rank           DOUBLE,
+        course_fit           DOUBLE,
+        actual_position      VARCHAR,
+        actual_won           BOOLEAN,
+        actual_top5          BOOLEAN,
+        actual_top10         BOOLEAN,
+        actual_top20         BOOLEAN,
+        result_recorded      BOOLEAN,
+        PRIMARY KEY (tournament_id, player_name)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # recommended_bets_log: all recommended bets + graded outcomes
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS recommended_bets_log (
+        recommendation_id    VARCHAR PRIMARY KEY,
+        run_id               VARCHAR,
+        recommended_at       VARCHAR,
+        tournament_id        VARCHAR,
+        recommendation_rank  INTEGER,
+        bet_type             VARCHAR,
+        market               VARCHAR,
+        book                 VARCHAR,
+        player_name          VARCHAR,
+        selection_label      VARCHAR,
+        card_id              VARCHAR,
+        title                VARCHAR,
+        selection_count      INTEGER,
+        priced_legs          INTEGER,
+        unpriced_legs        INTEGER,
+        selection_labels     VARCHAR,
+        selection_labels_json VARCHAR,
+        odds_american        INTEGER,
+        book_prob            DOUBLE,
+        model_prob           DOUBLE,
+        edge_pts             DOUBLE,
+        ev_per_1             DOUBLE,
+        confidence           DOUBLE,
+        status               VARCHAR,
+        stake_units          DOUBLE,
+        outcome_status       VARCHAR,
+        outcome_win          BOOLEAN,
+        pnl_per_1            DOUBLE,
+        roi_pct              DOUBLE,
+        closing_odds_american DOUBLE,
+        closing_implied_prob DOUBLE,
+        clv_pts              DOUBLE,
+        graded_at            VARCHAR,
+        grade_reason         VARCHAR,
+        kelly_fraction       DOUBLE,
+        corroboration_score  DOUBLE,
+        corroborated         BOOLEAN,
+        group_members        VARCHAR,
+        tournament_phase     VARCHAR,
+        reasoning            TEXT,
+        raw_model_prob       DOUBLE,
+        leg_prob_summary     DOUBLE,
+        weakest_leg          DOUBLE,
+        weakest_leg_prob     DOUBLE
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # live_stats: DG live SG stats per player per tournament per round
+    # Upserted on every scheduled refresh during a tournament.
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS live_stats (
+        tournament_id    VARCHAR,
+        player_name      VARCHAR,
+        dg_id            VARCHAR,
+        round_num        INTEGER,
+        position         VARCHAR,
+        total            INTEGER,
+        thru             DOUBLE,
+        sg_ott           DOUBLE,
+        sg_app           DOUBLE,
+        sg_arg           DOUBLE,
+        sg_putt          DOUBLE,
+        sg_t2g           DOUBLE,
+        sg_total         DOUBLE,
+        driving_dist     DOUBLE,
+        driving_acc      DOUBLE,
+        event_name       VARCHAR,
+        last_updated     VARCHAR,
+        fetched_at       VARCHAR,
+        PRIMARY KEY (tournament_id, player_name, round_num)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # live_leaderboard: latest live leaderboard snapshot per player per tournament
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS live_leaderboard (
+        tournament_id    VARCHAR,
+        player_name      VARCHAR,
+        position         VARCHAR,
+        total_numeric    INTEGER,
+        thru             VARCHAR,
+        current_round    INTEGER,
+        r1               DOUBLE,
+        r2               DOUBLE,
+        r3               DOUBLE,
+        r4               DOUBLE,
+        today            DOUBLE,
+        made_cut         BOOLEAN,
+        win_prob         DOUBLE,
+        top10_prob       DOUBLE,
+        fetched_at       VARCHAR,
+        PRIMARY KEY (tournament_id, player_name)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # live_pulse: LLM-generated tournament narratives (one per round per tournament)
+    # player_synopses: LLM-generated player analyses cached per tournament
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS live_pulse (
+        tournament_id    VARCHAR,
+        round_num        INTEGER,
+        generated_at     VARCHAR,
+        headline         TEXT,
+        leaders_text     TEXT,
+        on_fire_json     TEXT,
+        to_watch_json    TEXT,
+        your_picks_text  TEXT,
+        round_story      TEXT,
+        raw_json         TEXT,
+        PRIMARY KEY (tournament_id, round_num)
+    )
+    """,
+
+    """
+    CREATE TABLE IF NOT EXISTS player_synopses (
+        tournament_id    VARCHAR,
+        player_name      VARCHAR,
+        generated_at     VARCHAR,
+        form_text        TEXT,
+        course_fit_text  TEXT,
+        betting_angle    TEXT,
+        fantasy_text     TEXT,
+        raw_json         TEXT,
+        PRIMARY KEY (tournament_id, player_name)
+    )
+    """,
 ]
 
 
