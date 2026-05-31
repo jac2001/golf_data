@@ -554,10 +554,15 @@ def run_predictions(
             timeout=120,
         )
         run_command(
-      ["python3", str(SCRIPTS_DIR / "validation" / "monte_carlo.py")],
-      description="Run Monte Carlo simulation",
-      timeout=60,
-  )
+            ["python3", str(SCRIPTS_DIR / "validation" / "monte_carlo.py")],
+            description="Run Monte Carlo simulation",
+            timeout=60,
+        )
+        run_command(
+            ["python3", str(SCRIPTS_DIR / "predictions" / "simulate_tournament.py")],
+            description="Physics-based simulation (DG)",
+            timeout=120,
+        )
         run_command(
             ["python3", str(SCRIPTS_DIR / "validation" / "player_similarity.py")],
             description="Player Similarity",
@@ -568,6 +573,13 @@ def run_predictions(
             description="Generate player card explanations",
             timeout=30,
         )
+        # Sync fresh predictions to Supabase
+        try:
+            from scripts.database.supabase_sync import sync_predictions, sync_tournaments
+            sync_predictions(tournament_id)
+            sync_tournaments()
+        except Exception as e:
+            print(f"  [Supabase] sync failed (non-fatal): {e}")
         return output_path
 
     if _ACTIVE_TRACKER is not None and success and (not output_path.exists()):

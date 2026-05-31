@@ -216,6 +216,13 @@ SCORE_FEATURES = [
     "dg_win",                # DG pre-tournament win probability
     "dg_top10",              # DG pre-tournament top-10 probability
     "dg_make_cut",           # DG pre-tournament make-cut probability
+    # Weather features — tournament-level signal (same value for all players in a tournament).
+    # The model learns how conditions affect scoring variance and player-type advantages.
+    # Added 2026-05: activate after retraining with weather in master training data.
+    "wind_mph_avg",          # mean daytime wind during tournament (most predictive)
+    "wind_mph_max",          # peak wind hour (captures "brutal day" signal)
+    "precip_mm",             # total precipitation over 4 rounds
+    "temp_f_avg",            # mean daytime temperature
     # DG inference-only features (no historical equivalents — activate after architecture change)
     # "approach_skill_sg",
     # "final_pred",            # DG's full course-adjusted prediction
@@ -2540,14 +2547,69 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
             features_df = features_df.merge(_fit_lookup, on="_nk", how="left")
             features_df.drop(columns=["_nk"], inplace=True, errors="ignore")
             _m_fit = features_df["dg_course_fit_delta"].notna().sum()
-            print(f"  DG course fit merged: {_m_fit}/{len(features_df)} players (dg_course_fit_delta)")                  
-        else:                                             
-            print("  DG course fit: not found — run fetch_dg_pre_tournament.py")                                      
-    except Exception as _fit_e:                                                                                       
+            print(f"  DG course fit merged: {_m_fit}/{len(features_df)} players (dg_course_fit_delta)")
+        else:
+            print("  DG course fit: not found — run fetch_dg_pre_tournament.py")
+    except Exception as _fit_e:
         print(f"  DG course fit merge skipped: {_fit_e}")
 
+    # ADD WEATHER FEATURES (tournament-level — same value for every player)
+    # Strategy: check tournament_weather.csv first (historical + recent archive).
+    # For the current active tournament (archive has ~7-day lag), fall back to
+    # parsing the PGA Tour weather JSON we already fetch during live refresh.
+    try:
+        _tid_str = str(tournament_id).upper() if tournament_id else ""
+        _weather_added = False
 
+        # 1. Try pre-computed tournament_weather.csv (most consistent with training)
+        _tw_path = DATA_DIR / "weather" / "tournament_weather.csv"
+        if _tw_path.exists() and _tid_str:
+            _tw = pd.read_csv(_tw_path)
+            _tw["tournament_id"] = _tw["tournament_id"].astype(str).str.upper()
+            _row = _tw[_tw["tournament_id"] == _tid_str]
+            if not _row.empty:
+                for _col in ["wind_mph_avg", "wind_mph_max", "precip_mm", "temp_f_avg"]:
+                    features_df[_col] = float(_row.iloc[0].get(_col, float("nan")))
+                print(f"  Weather (archive): wind={_row.iloc[0]['wind_mph_avg']:.1f}mph  "
+                      f"precip={_row.iloc[0]['precip_mm']:.1f}mm  temp={_row.iloc[0]['temp_f_avg']}°F")
+                _weather_added = True
 
+        # 2. Fall back to PGA Tour weather JSON (current tournament forecast)
+        if not _weather_added and _tid_str:
+            _wj_path = DATA_DIR / "weather" / f"{_tid_str}.json"
+            if _wj_path.exists():
+                import json as _json
+                _wdata = _json.loads(_wj_path.read_text())
+                _daily = _wdata.get("daily", [])
+                # Filter to tournament rounds (Thu–Sun) if available, else use all
+                _round_days = {"Thu", "Fri", "Sat", "Sun"}
+                _round_entries = [d for d in _daily if d.get("title", "") in _round_days] or _daily
+                _winds, _temps = [], []
+                for _d in _round_entries:
+                    try:
+                        _winds.append(float(_d.get("windSpeedMPH", 0) or 0))
+                    except (ValueError, TypeError):
+                        pass
+                    try:
+                        _hi = float(str(_d.get("temperature", {}).get("maxTempF", "")).replace("°F", "") or 0)
+                        _lo = float(str(_d.get("temperature", {}).get("minTempF", "")).replace("°F", "") or 0)
+                        if _hi and _lo:
+                            _temps.append((_hi + _lo) / 2)
+                    except (ValueError, TypeError):
+                        pass
+                if _winds:
+                    features_df["wind_mph_avg"] = round(sum(_winds) / len(_winds), 2)
+                    features_df["wind_mph_max"] = round(max(_winds), 2)
+                    features_df["temp_f_avg"]   = round(sum(_temps) / len(_temps), 1) if _temps else float("nan")
+                    features_df["precip_mm"]    = float("nan")  # PGA Tour weather has % not mm
+                    print(f"  Weather (forecast JSON): wind={features_df['wind_mph_avg'].iloc[0]:.1f}mph  "
+                          f"temp={features_df['temp_f_avg'].iloc[0]}°F")
+                    _weather_added = True
+
+        if not _weather_added:
+            print("  Weather: no data available — wind features will be NaN (XGBoost handles gracefully)")
+    except Exception as _we:
+        print(f"  Weather merge skipped: {_we}")
 
 
 

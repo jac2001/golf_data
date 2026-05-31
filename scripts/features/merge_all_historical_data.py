@@ -1269,6 +1269,31 @@ except Exception as _e:
     merged.drop(columns=["_name_key", "_evt_key"], errors="ignore", inplace=True)
 
 # ============================================================================
+# STEP 5b: Merge tournament weather features
+# ============================================================================
+# Weather is a tournament-level feature — every player in the same tournament
+# gets the same wind/precip/temp values. The model can then learn patterns
+# like "in high-wind weeks, SG:OTT matters more" through split interactions.
+try:
+    _weather_path = DATA_DIR / "weather" / "tournament_weather.csv"
+    if _weather_path.exists():
+        _weather = pd.read_csv(_weather_path, usecols=[
+            "tournament_id", "wind_mph_avg", "wind_mph_max", "precip_mm", "temp_f_avg"
+        ])
+        _weather["tournament_id"] = _weather["tournament_id"].astype(str)
+        merged["tournament_id"] = merged["tournament_id"].astype(str)
+        before_cols = len(merged.columns)
+        merged = merged.merge(_weather, on="tournament_id", how="left")
+        coverage = merged["wind_mph_avg"].notna().mean() * 100
+        print(f"\n  [weather] Merged {len(_weather)} tournament weather records")
+        print(f"    wind_mph_avg coverage: {coverage:.1f}% of training rows")
+        print(f"    mean wind: {merged['wind_mph_avg'].mean():.1f} mph")
+    else:
+        print("\n  [weather] tournament_weather.csv not found — run fetch_historical_weather.py first")
+except Exception as _e:
+    print(f"\n  [warn] Weather merge failed: {_e}")
+
+# ============================================================================
 # STEP 6: Save processed dataset
 # ============================================================================
 print("\n" + "="*60)

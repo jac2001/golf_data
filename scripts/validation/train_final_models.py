@@ -166,12 +166,49 @@ else:
 course_sg_features = []
 print("ℹ️  EXCLUDING course_sg_* features - confirmed 0% importance across all models")
 
+weather_features = [c for c in ['wind_mph_avg', 'wind_mph_max', 'precip_mm', 'temp_f_avg'] if c in df.columns]
+if weather_features:
+    cov = df['wind_mph_avg'].notna().mean() if 'wind_mph_avg' in df.columns else 0
+    print(f"✓  Including {len(weather_features)} weather features ({cov:.0%} coverage): {weather_features}")
+else:
+    print("⚠️  No weather features found - run fetch_historical_weather.py + merge script first")
+
 # Combine all features (WITHOUT leaky features, WITHOUT zero-importance course SG)
 # Note: has_won_here is already in hist_features (starts with 'has_'), so don't add it again
-all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features + dg_archive_features  
+all_features = season_sg_features + hist_features + venue_features + field_features + rank_features + form_features + dg_fit_features + dg_archive_features + weather_features
 # Deduplicate while preserving order (some cols like season_sg_*_field_pct match multiple groups)
 _seen = set()
 all_features = [f for f in all_features if f not in _seen and not _seen.add(f)]
+
+# ── Feature pruning (confirmed via importance analysis + correlation check) ──
+# *_vs_field variants are r=0.96-0.99 correlated with raw values (just mean-shifted).
+# They add no new information but give the model redundant levers that inflate the
+# win model train-test gap.  Keep raw + field_pct (r=0.84-0.89, more independent).
+#
+# The near-zero importance features (< 0.002 win importance) were confirmed dead
+# weight across multiple training runs and don't help top5/top10/top20 either.
+PRUNE_FEATURES = {
+    # SG vs_field variants — redundant with raw (r >= 0.965)
+    "season_sg_arg_vs_field",
+    "season_sg_ott_vs_field",
+    "season_sg_app_vs_field",
+    "season_sg_putt_vs_field",
+    "season_sg_total_vs_field",
+    # Near-zero importance — confirmed dead weight (win importance < 0.002)
+    "has_course_sg_history",  # 0.000
+    "hist_wins",              # 0.000145
+    "has_won_here",           # 0.000471
+    "has_course_history",     # 0.000504
+    "hist_missed_cuts",       # 0.000760
+    "has_made_cut_here",      # 0.001008
+    "finish_consistency",     # 0.001289
+    "hist_times_played",      # 0.001327
+    "hist_top10s",            # 0.001607
+}
+pruned = [f for f in all_features if f in PRUNE_FEATURES]
+all_features = [f for f in all_features if f not in PRUNE_FEATURES]
+print(f"✂️  Pruned {len(pruned)} redundant/dead-weight features → {len(all_features)} remaining")
+print(f"    Pruned: {pruned}")
 
 # Filter to only existing features that have coverage in training years
 available_features = [
