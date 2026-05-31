@@ -1314,7 +1314,8 @@ Examples:
             print("Error: Could not find a tournament for the current date in schedule.")
             return
         args.tournament = row.get("tournament_name")
-        args.purse = int(row.get("purse") or 0)
+        raw_purse = str(row.get("purse") or "0").replace("$", "").replace(",", "").split(".")[0]
+        args.purse = int(raw_purse or 0)
         if row.get("tournament_type"):
             args.tournament_type = str(row.get("tournament_type")).title()
         if row.get("tournament_id"):
