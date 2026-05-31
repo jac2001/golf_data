@@ -7803,6 +7803,8 @@ def build_context(
         sections.append("")
         # Lean: web search adds latency and is rarely decisive for single-player questions
         if not lean:
+            sections.append(_web_intel_player_block(intent["players"], tournament_id))
+            sections.append("")
             sections.append(_fetch_player_news(intent["players"], _active_t_name))
             sections.append("")
         if tournament_id:
@@ -7841,6 +7843,9 @@ def build_context(
             sections.append("")
         sections.append(_expert_picks_block())
         sections.append("")
+        if not lean:
+            sections.append(_web_intel_alerts_block(_effective_tid or tournament_id))
+            sections.append("")
 
     elif intent.get("is_strategy"):
         # Season usage strategy — when/where to spend remaining uses
@@ -7929,6 +7934,8 @@ def build_context(
         if not lean:
             sections.append(_fetch_tournament_news(_active_t_name))
             sections.append("")
+            sections.append(_web_intel_alerts_block(_effective_tid or tournament_id))
+            sections.append("")
 
     elif intent.get("is_intel"):
         # Tournament intel: curated facts + historical stats + course profile + field experience
@@ -7955,6 +7962,8 @@ def build_context(
         if _intel_players:
             sections.append(_fetch_player_news(_intel_players, _active_t_name))
             sections.append("")
+        sections.append(_web_intel_alerts_block(_effective_tid or tournament_id))
+        sections.append("")
         sections.append(_fetch_tournament_news(_active_t_name))
         sections.append("")
 
@@ -7982,6 +7991,8 @@ def build_context(
             sections.append(_player_form_context_block(top_n=15))
             sections.append("")
         if not lean:
+            sections.append(_web_intel_alerts_block(tournament_id))
+            sections.append("")
             sections.append(_fetch_tournament_news(_active_t_name))
         sections.append("")
 
@@ -8011,6 +8022,8 @@ def build_context(
         # Lean: skip tournament intel (historical course facts, 5-8K) — course fit reasoning covers it
         if not lean:
             sections.append(_tournament_intel_block(tournament_id, _active_t_name))
+            sections.append("")
+            sections.append(_web_intel_alerts_block(_tid_eff))
             sections.append("")
         sections.append(_my_picks_block())
         sections.append("")
@@ -8048,6 +8061,8 @@ def build_context(
         # Lean: skip tournament intel — course fit reasoning covers the key course facts
         if not lean:
             sections.append(_tournament_intel_block(tournament_id, _active_t_name))
+            sections.append("")
+            sections.append(_web_intel_alerts_block(tournament_id))
             sections.append("")
         sections.append(_my_picks_block())
         sections.append("")
@@ -8128,6 +8143,8 @@ def build_context(
             sections.append(_weather_block(tournament_id))
             sections.append("")
         if not lean:
+            sections.append(_web_intel_alerts_block(tournament_id))
+            sections.append("")
             sections.append(_fetch_tournament_news(_active_t_name))
             sections.append("")
 
@@ -8220,6 +8237,8 @@ def build_context(
             sections.append(_weather_block(tournament_id))
             sections.append("")
             sections.append(_course_profile_block(tournament_id))
+            sections.append("")
+            sections.append(_web_intel_alerts_block(tournament_id))
             sections.append("")
         sections.append(_field_overview_block(top_n=10))
         sections.append("")
