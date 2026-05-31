@@ -14,6 +14,7 @@ Usage:
 
 from __future__ import annotations
 
+import os
 import time
 import threading
 from collections import deque
@@ -21,10 +22,17 @@ from pathlib import Path
 
 import requests
 
+# Load .env if present (local dev)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parents[2] / ".env")
+except ImportError:
+    pass
+
 # ── Config ────────────────────────────────────────────────────────────────────
 
 DG_BASE    = "https://feeds.datagolf.com"
-DG_API_KEY = "299bc52db9d01131b23e9d299639"
+DG_API_KEY = os.environ.get("DG_API_KEY", "")
 
 _WINDOW_SECS  = 60          # sliding window duration
 _MAX_REQUESTS = 30          # conservative: DG bursts at ~30/min in practice

@@ -533,17 +533,17 @@ def canonical_market(raw: Any) -> str:
 
 def market_prob_from_prediction(row: dict, market: str) -> tuple[float, bool]:
     market = canonical_market(market)
+    # Live columns (updated by live_update_predictions.py after each round) are
+    # preferred when available — they blend actual scores into model probabilities.
     pref_cols: dict[str, list[str]] = {
-        "outright": ["win_prob_calibrated", "win_prob", "win_prob_raw"],
-        "top5": ["top5_prob_calibrated", "top5_prob", "top5_prob_raw"],
-        "top10": ["top10_prob_calibrated", "top10_prob", "top10_prob_raw"],
-        "top20": ["top20_prob", "top20_prob_raw"],  # calibrated version over-inflates (~1.85x); use raw
-        "top30": ["top30_prob", "top20_prob"],
+        "outright": ["live_win_prob",   "win_prob_calibrated", "win_prob", "win_prob_raw"],
+        "top5":     ["live_top5_prob",  "top5_prob_calibrated", "top5_prob", "top5_prob_raw"],
+        "top10":    ["live_top10_prob", "top10_prob_calibrated", "top10_prob", "top10_prob_raw"],
+        "top20":    ["live_top20_prob", "top20_prob", "top20_prob_raw"],
+        "top30":    ["top30_prob", "top20_prob"],
         "make_cut": ["make_cut_prob", "cut_prob"],
         "miss_cut": ["miss_cut_prob"],
-        # Round-leader prop — no dedicated prediction column; win_prob is the
-        # best available proxy (better players more likely to lead after any round).
-        "r2_leader": ["win_prob_calibrated", "win_prob", "win_prob_raw"],
+        "r2_leader": ["live_win_prob",  "win_prob_calibrated", "win_prob", "win_prob_raw"],
     }
 
     cols = pref_cols.get(market, [])
@@ -1178,6 +1178,10 @@ def _dg_outright_model_lookup(tid: str) -> dict[tuple[str, str], float]:
     Returns {(normalized_player_name, canonical_market): dg_model_prob} for use
     in score_single_markets to override our own model's pool-market probability
     estimates (which are less calibrated than DG's model).
+
+    Returns empty dict if the file was updated after the tournament started —
+    that means it contains live in-round probabilities (e.g. 98% top10 for a
+    leader in R4), which are useless and misleading for pre-tournament bets.
     """
     _MKT_MAP = {"win": "outright", "top_5": "top5", "top_10": "top10",
                 "top_20": "top20", "make_cut": "make_cut"}
@@ -1186,6 +1190,26 @@ def _dg_outright_model_lookup(tid: str) -> dict[tuple[str, str], float]:
         return {}
     try:
         df = pd.read_csv(path)
+
+        # Stale-data guard: if the file has any last_updated AFTER the
+        # tournament's start date, it was refreshed during live play.
+        # Fall back to own model so live probabilities don't corrupt edges.
+        if "last_updated" in df.columns:
+            try:
+                from datetime import timezone
+                sched = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+                row = sched[sched["tournament_id"].astype(str) == tid]
+                if not row.empty:
+                    start_date = pd.to_datetime(row.iloc[0]["start_date"]).tz_localize("UTC")
+                    max_updated = pd.to_datetime(df["last_updated"], utc=True).max()
+                    if pd.notna(max_updated) and max_updated >= start_date:
+                        print(f"  DG outrights for {tid} are live data "
+                              f"(updated {max_updated.date()} >= start {start_date.date()}) "
+                              f"— skipping, using own model probs")
+                        return {}
+            except Exception:
+                pass
+
         dg = df[df["is_dg_model"].astype(str).str.lower() == "true"].copy()
         lookup: dict[tuple[str, str], float] = {}
         for _, row in dg.iterrows():
@@ -1200,11 +1224,12 @@ def _dg_outright_model_lookup(tid: str) -> dict[tuple[str, str], float]:
         return {}
 
 
-def _dg_matchups_to_prop_lines(tid: str) -> pd.DataFrame:
+def _dg_matchups_to_prop_lines(tid: str, round_num: int = 1) -> pd.DataFrame:
     """Convert dg_matchups_{tid}.csv (non-DG-model rows) into h2h prop_lines format.
 
     Includes all available books (sharp: Pinnacle/Betcris/Bet365 + US books).
-    Sets round_num=1 so they score as h2h_r1 (pre-tournament round matchups).
+    round_num is passed in from get_tournament_phase() so matchups score as
+    h2h_r1/r2/r3/r4 matching the actual current round.
     """
     _ALL_BOOKS = {
         "fanduel", "draftkings", "betmgm", "caesars", "pointsbet",
@@ -1235,7 +1260,7 @@ def _dg_matchups_to_prop_lines(tid: str) -> pd.DataFrame:
                 "odds_b":      o2,
                 "market":      "h2h",
                 "book":        str(r.get("book", "")).upper(),
-                "round_num":   1,
+                "round_num":   round_num,
                 "bet_group_id": gid,
             })
         return pd.DataFrame(rows)
@@ -1334,7 +1359,8 @@ def _get_score_diff_before(name_a: str, name_b: str, round_num: int,
     cum_b = row_b.get(cum_key)
     if pd.isna(cum_a) or pd.isna(cum_b):
         return 0.0
-    return float(cum_a) - float(cum_b)
+    # Model was trained with positive = A ahead (B has more strokes = worse score)
+    return float(cum_b) - float(cum_a)
 
 
 def score_h2h_markets(
@@ -1488,11 +1514,13 @@ def score_h2h_markets(
         return _k * (wp_a / denom) + 0.15, _k * (wp_b / denom) + 0.15
 
     # ── Known-book filter ─────────────────────────────────────────────────────
-    # Include DG-sourced matchup books (BET365, Bovada, BetOnline, Unibet)
-    # alongside standard US books — DG doesn't provide DK/FD matchup odds.
+    # Include DG-sourced matchup books (BET365, Bovada, BetOnline, Unibet,
+    # BetCris) alongside standard US books — DG doesn't provide DK/FD matchup
+    # odds directly. BetCris is a sharp Latin American book with low vig,
+    # included here because it's the source of DG's H2H matchup feed.
     _KNOWN_BOOKS = {
         "DRAFTKINGS", "FANDUEL", "BETMGM", "CAESARS", "POINTSBET",
-        "BET365", "BOVADA", "BETONLINE", "UNIBET", "PINNACLE",
+        "BET365", "BOVADA", "BETONLINE", "UNIBET", "PINNACLE", "BETCRIS",
     }
     if "book" in h2h_lines.columns:
         h2h_lines = h2h_lines[
@@ -1562,11 +1590,14 @@ def score_h2h_markets(
         dec_b = american_to_decimal(odds_b)
         if pd.isna(dec_a) or pd.isna(dec_b) or dec_a <= 0 or dec_b <= 0:
             continue
-        # book_prob = 1/decimal: break-even probability at actual odds.
-        # DG round matchup probs are no-vig (sum to 1 per pair), so
-        # EV = DG_prob × decimal - 1 is directly correct.
-        book_a = 1.0 / dec_a
-        book_b = 1.0 / dec_b
+        # DG model probs are no-vig. Remove vig from book side so the comparison
+        # is apples-to-apples. Raw 1/decimal inflates book_prob by ~2-2.5pp per
+        # side on typical H2H markets, which systematically kills edge detection.
+        _raw_a = 1.0 / dec_a
+        _raw_b = 1.0 / dec_b
+        _total_implied = _raw_a + _raw_b
+        book_a = _raw_a / _total_implied
+        book_b = _raw_b / _total_implied
         book_str = str(line.get("book", "DRAFTKINGS") or "DRAFTKINGS")
         round_num = line.get("round_num")
         mkt_label = f"h2h_r{int(round_num)}" if pd.notna(round_num) else "h2h"
@@ -1959,16 +1990,68 @@ def get_tournament_phase(tid: str) -> str:
             if _rnd == 0:
                 return "pre"
             if _rnd == 1:
+                # Check whether Round 1 is actually complete by looking at DG live stats.
+                # When the median 'thru' across all players equals 18, the round is
+                # done and R2 lines are already posted — step the phase forward.
+                _dg_latest = DATA_DIR / "datagolf" / f"dg_live_stats_{tid}_latest.csv"
+                if _dg_latest.exists():
+                    try:
+                        _dg = pd.read_csv(_dg_latest)
+                        _is_r1 = (
+                            pd.to_numeric(_dg.get("round_param", pd.Series()), errors="coerce")
+                            .dropna()
+                            .eq(1)
+                            .all()
+                        )
+                        _median_thru = (
+                            pd.to_numeric(_dg.get("thru", pd.Series()), errors="coerce")
+                            .median()
+                        )
+                        if _is_r1 and _median_thru >= 17:
+                            return "r2"
+                    except Exception:
+                        pass
                 return "r1"
             if _rnd == 2:
-                # Cut is confirmed when round 2 is "official" OR many players
-                # have been eliminated from the leaderboard (safely_out > 10).
-                if "official" in _status or _s_out >= 10:
+                # r2_postcut only when R2 is truly complete — check DG live stats
+                # median thru (same approach as R1→R2 transition).
+                # Do NOT use safely_out from cut_projection — that fires mid-round.
+                _dg_latest = DATA_DIR / "datagolf" / f"dg_live_stats_{tid}_latest.csv"
+                if _dg_latest.exists():
+                    try:
+                        _dg2 = pd.read_csv(_dg_latest)
+                        _is_r2 = (
+                            pd.to_numeric(_dg2.get("round_param", pd.Series()), errors="coerce")
+                            .dropna().eq(2).all()
+                        )
+                        _median_thru2 = (
+                            pd.to_numeric(_dg2.get("thru", pd.Series()), errors="coerce")
+                            .median()
+                        )
+                        if _is_r2 and _median_thru2 >= 17:
+                            return "r2_postcut"
+                    except Exception:
+                        pass
+                if "official" in _status:
                     return "r2_postcut"
                 return "r2"
             if _rnd == 3:
                 return "r3"
             if _rnd >= 4:
+                # Use DG live stats median thru — post only when all 18 holes done
+                _dg_latest4 = DATA_DIR / "datagolf" / f"dg_live_stats_{tid}_latest.csv"
+                if _dg_latest4.exists():
+                    try:
+                        _dg4 = pd.read_csv(_dg_latest4)
+                        _median_thru4 = (
+                            pd.to_numeric(_dg4.get("thru", pd.Series()), errors="coerce")
+                            .median()
+                        )
+                        if pd.notna(_median_thru4) and _median_thru4 >= 17:
+                            return "post"
+                        return "r4"
+                    except Exception:
+                        pass
                 return "r4" if "in progress" in _status else "post"
         except Exception:
             pass  # fall through to schedule-based detection
@@ -2589,12 +2672,12 @@ def main() -> int:
     parser.add_argument("--prop-lines", default="", help="Path to prop lines CSV")
     parser.add_argument("--cards", default="", help="Path to DK content cards CSV")
 
-    parser.add_argument("--min-confidence", type=float, default=0.60)
-    parser.add_argument("--min-edge-points", type=float, default=1.50)
+    parser.add_argument("--min-confidence", type=float, default=0.45)
+    parser.add_argument("--min-edge-points", type=float, default=0.75)
     parser.add_argument("--min-ev", type=float, default=0.01)
     parser.add_argument("--max-abs-odds", type=int, default=5000)   # fixed: was 10000
-    parser.add_argument("--max-per-market", type=int, default=5)
-    parser.add_argument("--top-n", type=int, default=20)
+    parser.add_argument("--max-per-market", type=int, default=15)
+    parser.add_argument("--top-n", type=int, default=40)
     parser.add_argument("--top-n-cards", type=int, default=8)
     parser.add_argument("--no-cards", action="store_true", help="Disable content-card recommendations")
     parser.add_argument("--include-partial-cards", action="store_true")
@@ -2643,6 +2726,13 @@ def main() -> int:
         except Exception as _dg_err:
             print(f"  [warn] DG fetch failed: {_dg_err}")
 
+    # Detect phase early so we can pass the correct round to DG matchup lines.
+    _phase_early = args.phase
+    if _phase_early == "auto":
+        _phase_early = get_tournament_phase(tid)
+    _phase_round_map = {"r1": 1, "r2": 2, "r2_postcut": 2, "r3": 3, "r4": 4}
+    _current_round = _phase_round_map.get(_phase_early, 1)
+
     # Build lines_df: DG outrights are the primary source for outright/top5/top10/top20.
     # prop_lines (DK scraper) is dropped for markets DG covers — DG is fresher and
     # includes 10+ books (Pinnacle, Betcris, Bet365, etc.) vs DK-only from the scraper.
@@ -2662,24 +2752,13 @@ def main() -> int:
             print("No lines available (DG outrights empty and no prop_lines file).")
             return 1
 
-    # Add FanDuel markets from pga_market_odds_{tid}.csv — but only markets that
-    # DG doesn't cover (make_cut, h2h, group_winner, wire_to_wire, etc.).
-    pga_market_lines = load_pga_market_odds(tid)
-    if not pga_market_lines.empty:
-        pga_extra = pga_market_lines[
-            ~pga_market_lines["market"].astype(str).str.lower().apply(canonical_market).isin(_DG_MARKETS)
-        ]
-        if not pga_extra.empty:
-            lines_df = pd.concat([lines_df, pga_extra], ignore_index=True)
-            mkt_counts = pga_extra["market"].value_counts().to_dict()
-            print(f"  FanDuel non-DG markets added: {mkt_counts}")
-
-    # Augment with DataGolf round matchup lines (all books incl. Pinnacle/Betcris)
-    dg_matchup_lines = _dg_matchups_to_prop_lines(tid)
+    # DataGolf round matchup lines — primary H2H source (all books incl. Pinnacle/Betcris).
+    # Pass current round so matchups score as h2h_r1/r2/r3/r4 correctly.
+    dg_matchup_lines = _dg_matchups_to_prop_lines(tid, round_num=_current_round)
     if not dg_matchup_lines.empty:
         lines_df = pd.concat([lines_df, dg_matchup_lines], ignore_index=True)
         n_books = dg_matchup_lines["book"].nunique()
-        print(f"  Merged {len(dg_matchup_lines)//2} DG matchups ({n_books} books)")
+        print(f"  DG matchups (R{_current_round}): {len(dg_matchup_lines)//2} pairs, {n_books} books")
 
     if not lines_df.empty and "player_name" in lines_df.columns and "market" in lines_df.columns:
         # Dedup single-market rows only (player_name + market + book).
@@ -2713,9 +2792,7 @@ def main() -> int:
 
 
     # ── Phase detection ───────────────────────────────────────────────────────
-    _phase = args.phase
-    if _phase == "auto":
-        _phase = get_tournament_phase(tid)
+    _phase = _phase_early  # already detected above before lines_df was built
     print(f"  Tournament phase: {_phase}")
 
     cfg = RecommendationConfig(

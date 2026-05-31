@@ -61,6 +61,78 @@ def _load_api_key() -> str:
 
 # ── Prompt builders ────────────────────────────────────────────────────────────
 
+def _fmt_player_profile(p: dict) -> str:
+    """Build a short golf-stats profile for one player from the predictions row."""
+    lines = []
+
+    def _fv(key, decimals=1):
+        v = p.get(key)
+        if v is None: return None
+        try: return round(float(v), decimals)
+        except (TypeError, ValueError): return None
+
+    def _sv(key):
+        v = p.get(key)
+        if v is None: return None
+        s = str(v).strip()
+        return s if s not in ("", "nan", "None") else None
+
+    wr = _fv("world_rank", 0)
+    if wr: lines.append(f"World #{int(wr)}")
+
+    # Season SG
+    sg_t  = _fv("season_sg_total", 2)
+    sg_app = _fv("season_sg_app", 2)
+    sg_ott = _fv("season_sg_ott", 2)
+    sg_p  = _fv("season_sg_putt", 2)
+    if sg_t is not None:
+        sg_parts = [f"SG {sg_t:+.2f} total"]
+        if sg_app is not None: sg_parts.append(f"approach {sg_app:+.2f}")
+        if sg_ott is not None: sg_parts.append(f"driving {sg_ott:+.2f}")
+        if sg_p  is not None: sg_parts.append(f"putting {sg_p:+.2f}")
+        lines.append(", ".join(sg_parts))
+
+    # Recent form
+    scoring = _fv("recent_scoring_avg", 1)
+    top10s  = _fv("recent_top10s", 0)
+    birdies = _fv("recent_birdie_avg", 1)
+    cuts    = _fv("recent_cuts_made", 0)
+    last_pos = _fv("last_start_position", 0)
+    momentum = _sv("momentum_trend")
+    missed   = _fv("missed_cut_last_start", 0)
+    form_parts = []
+    if scoring is not None: form_parts.append(f"scoring avg {scoring}")
+    if top10s  is not None: form_parts.append(f"{int(top10s)} top-10s in recent starts")
+    if birdies is not None: form_parts.append(f"{birdies} birdies/round")
+    if cuts    is not None: form_parts.append(f"{int(cuts)}/5 cuts made")
+    if form_parts: lines.append("Recent: " + "; ".join(form_parts))
+    if missed == 1:
+        lines.append("Last start: missed cut")
+    elif last_pos is not None:
+        lines.append(f"Last start: T{int(last_pos)}")
+    if momentum and momentum.upper() in ("HOT", "COLD"):
+        lines.append(f"Form momentum: {momentum.upper()}")
+
+    # Course history (from lineup_rows — course_sg/course_sig already injected)
+    c_sg    = p.get("course_sg")
+    c_sig   = p.get("course_sig", False)
+    c_starts = _fv("course_starts", 0)
+    c_best   = _fv("course_best_finish", 0)
+    c_avg    = _fv("course_avg_to_par", 1)
+    c_t10r   = _fv("course_top_10_rate", 2)
+    if c_starts and c_starts > 0:
+        cp = [f"{int(c_starts)} starts here"]
+        if c_best is not None: cp.append(f"best T{int(c_best)}")
+        if c_avg  is not None: cp.append(f"avg {c_avg:+.1f}/tournament")
+        if c_t10r is not None: cp.append(f"{int(c_t10r*100)}% top-10 rate")
+        if c_sg and c_sig: cp.append(f"SG {float(c_sg):+.2f} vs field here")
+        lines.append("Course history: " + "; ".join(cp))
+    elif c_sg and c_sig:
+        lines.append(f"Course SG estimate: {float(c_sg):+.2f} vs field")
+
+    return "\n    ".join(lines) if lines else "No profile data"
+
+
 def _lineup_prompt(
     lineup_rows: list[dict],
     save_players: list[dict],
@@ -68,37 +140,28 @@ def _lineup_prompt(
     budget: dict,
 ) -> str:
     """Build the prompt for the single weekly lineup narrative."""
-    ev_total = sum(int(p.get("prize_ev", 0)) for p in lineup_rows)
 
     picks_str = ""
     for i, p in enumerate(lineup_rows, 1):
-        name   = p["player_name"]
-        ev     = int(p.get("prize_ev", 0))
-        win    = round(float(p.get("win_prob", 0)) * 100, 1)
-        t10    = round(float(p.get("top10_prob", 0)) * 100, 1)
-        cut    = round(float(p.get("cut_prob", 0)) * 100, 1)
-        uses   = int(p.get("remaining_uses", 3))
-        c_sg   = p.get("course_sg", 0.0)
-        c_sig  = p.get("course_sig", False)
-        venue  = f", {c_sg:+.2f} SG at this course" if c_sig and abs(c_sg) >= 0.25 else ""
-        picks_str += (
-            f"  {i}. {name} — {ev:,} EV | {win}% win | {t10}% top-10 | "
-            f"{cut}% cut | {uses} uses left{venue}\n"
-        )
+        name    = p["player_name"]
+        uses    = int(p.get("remaining_uses", 3))
+        profile = _fmt_player_profile(p)
+        picks_str += f"  {i}. {name} ({uses} uses left)\n    {profile}\n\n"
 
     saves_str = ""
-    for p in save_players[:4]:
+    for p in save_players[:3]:
         name     = p["name"]
-        best_ev  = int(p.get("best_future_ev", 0))
-        best_evt = p.get("best_event_name", "")
+        best_evt = p.get("best_event_name", "a future event")
         opp_pct  = p.get("opportunity_cost_pct", 0)
         uses     = p.get("uses_left", 0)
         c_sg     = p.get("current_course_sg", 0.0)
         c_sig    = p.get("current_course_sig", False)
-        venue    = f" (venue miss: {c_sg:+.2f} SG)" if c_sig and c_sg < -0.2 else ""
+        reason   = p.get("reason", "")
+        venue_note = f" (poor course fit: {c_sg:+.2f} SG)" if c_sig and c_sg < -0.2 else ""
+        reason_note = f" Reason: {reason}" if reason else ""
         saves_str += (
-            f"  - {name}: {uses} uses left | best event: {best_evt} "
-            f"({best_ev:,} EV, {opp_pct:.0f}% more than this week){venue}\n"
+            f"  - {name}: {uses} uses left | better spot at {best_evt} "
+            f"({int(opp_pct)}% more value){venue_note}.{reason_note}\n"
         )
 
     return f"""{LEAGUE_CONTEXT}
@@ -110,16 +173,18 @@ tier={current_event.get('tier', 'standard')})
 Budget: {budget.get('uses_remaining')} total uses remaining | \
 {budget.get('weeks_remaining')} weeks left in season
 
-Optimal lineup (chosen by combinatorial optimizer, combined EV {ev_total:,}):
+Recommended lineup:
 {picks_str.rstrip()}
 
-Notable players to save this week:
+Players to save this week:
 {saves_str.rstrip()}
 
-Write 4-6 sentences as a weekly lineup recommendation. Cover: why each of the 3 \
-picks makes sense this week (reference their specific numbers), and briefly note \
-the most important save and why. Plain prose only — no headers, no bullets, \
-no markdown, no bold text. Speak directly to the manager."""
+Write 4-6 sentences as a weekly lineup recommendation addressed directly to the manager. \
+Lead with what makes each pick compelling from a golf standpoint — their current form, \
+course fit, and recent results. Reference specific stats from the profiles above (scoring \
+averages, SG categories, course history) so it sounds like real analysis. Mention the \
+most important save and why briefly at the end. \
+Plain prose only — no headers, no bullets, no markdown, no bold."""
 
 
 def _save_prompt(name: str, data: dict, current_event: dict) -> str:
@@ -128,49 +193,54 @@ def _save_prompt(name: str, data: dict, current_event: dict) -> str:
     wr       = data.get("world_rank", 0)
     tier     = data.get("tier", "").upper()
     best_evs = data.get("best_events", [])
-    best_ev  = int(data.get("best_future_ev", 0))
-    opp_cost = int(data.get("opportunity_cost_ev", 0))
-    opp_pct  = data.get("opportunity_cost_pct", 0)
     c_sg     = data.get("current_course_sg", 0.0)
     c_sig    = data.get("current_course_sig", False)
     c_rnds   = data.get("current_course_rounds", 0)
+    is_hot   = data.get("is_hot_streak", False)
+    reason   = data.get("reason", "")   # season_strategy natural-language reason
 
     in_field = data.get("in_field", False)
-    probs    = data.get("this_week_probs") or {}
-    win      = round(probs.get("win_prob", 0) * 100, 1)
-    t10      = round(probs.get("top10_prob", 0) * 100, 1)
-    tw_ev    = int(data.get("this_week_ev", 0))
+    opp_pct  = data.get("opportunity_cost_pct", 0)
 
-    venue_line = ""
-    if c_sig:
-        direction = "strong fit" if c_sg > 0 else "poor fit"
-        venue_line = f"\n  Venue: {c_sg:+.2f} SG at this course ({c_rnds} rounds) — {direction}"
-
-    best_line = ""
+    # Best future event
+    best_evt_name = ""
+    best_evt_detail = ""
     if best_evs:
         b = best_evs[0]
-        best_line = (
-            f"\n  Best future event: {b['name']} "
-            f"(week {b['week']}, {b['weeks_away']:.1f}w away, "
-            f"${b['purse']/1e6:.1f}M, {best_ev:,} EV"
-            + (f", course_sg={b['course_sg']:+.2f}" if b.get("course_sg") else "")
+        best_evt_name = b.get("name", "")
+        weeks_away = b.get("weeks_away", 0)
+        purse = b.get("purse", 0)
+        b_csg = b.get("course_sg")
+        best_evt_detail = (
+            f"{best_evt_name} in {weeks_away:.0f} weeks (${purse/1e6:.1f}M purse"
+            + (f", course SG {b_csg:+.2f}" if b_csg else "")
             + ")"
         )
 
-    this_week_line = (
-        f"\n  This week: {tw_ev:,} EV | {win}% win | {t10}% top-10"
-        if in_field else "\n  This week: NOT IN FIELD"
-    )
+    # This week's course fit context
+    course_note = ""
+    if c_sig and c_sg < -0.2:
+        course_note = f"This week's course is a poor fit ({c_sg:+.2f} SG over {c_rnds} rounds)."
+    elif c_sig and c_sg > 0.2:
+        course_note = f"This week the course suits them ({c_sg:+.2f} SG), but a bigger purse is coming."
 
-    context = (
-        f"Player: {name}\n"
-        f"  World rank: #{wr} | Tier: {tier} | Uses left: {uses}/3"
-        f"{this_week_line}"
-        f"{venue_line}"
-        f"{best_line}"
-        + (f"\n  Opportunity cost of using now: {opp_cost:,} EV ({opp_pct:.0f}% more value later)"
-           if opp_cost > 0 else "")
-    )
+    context_lines = [
+        f"Player: {name} | World #{wr} | Tier: {tier} | {uses}/3 uses remaining",
+    ]
+    if is_hot:
+        context_lines.append("Currently on a hot streak.")
+    if reason:
+        context_lines.append(f"Strategy note: {reason}")
+    if course_note:
+        context_lines.append(course_note)
+    if in_field:
+        context_lines.append(f"Is in the field this week but saving earns ~{int(opp_pct)}% more value.")
+    else:
+        context_lines.append("Not in the field this week.")
+    if best_evt_detail:
+        context_lines.append(f"Best future spot: {best_evt_detail}")
+
+    context = "\n".join(context_lines)
 
     return f"""{LEAGUE_CONTEXT}
 
@@ -181,8 +251,10 @@ tier={current_event.get('tier', 'standard')})
 
 {context}
 
-Write 2-3 sentences explaining why to save this player this week. Reference the \
-specific numbers. Plain prose — no headers, bullets, bold, or markdown."""
+Write 2-3 sentences explaining why to save this player's use for a better spot. \
+Lead with what makes them a strong asset overall (their game/form), then explain \
+why this week isn't the right spot. Reference specific details. \
+Plain prose — no headers, bullets, bold, or markdown."""
 
 
 # ── Core generation ────────────────────────────────────────────────────────────
@@ -278,16 +350,32 @@ def generate_reasoning(
     # Normalize lineup names to last-name keys for strategy dict lookups
     lineup_keys = {_last_key(n) for n in lineup_names}
 
-    # Attach course fit from strategy to lineup rows
+    # Attach course fit + form columns to lineup rows
+    FORM_COLS = [
+        "season_sg_total", "season_sg_app", "season_sg_ott", "season_sg_putt",
+        "recent_scoring_avg", "recent_top10s", "recent_birdie_avg",
+        "recent_cuts_made", "last_start_position", "missed_cut_last_start",
+        "momentum_trend", "course_starts", "course_best_finish",
+        "course_avg_to_par", "course_top_10_rate", "world_rank",
+    ]
     for r in lineup_rows:
         pn_key = _last_key(r.get("player_name", ""))
         sp = next(
             (d for sn, d in player_strategy.items() if _last_key(sn) == pn_key),
             {}
         )
-        r["course_sg"]  = sp.get("current_course_sg", 0.0)
-        r["course_sig"] = sp.get("current_course_sig", False)
+        r["course_sg"]      = sp.get("current_course_sg", 0.0)
+        r["course_sig"]     = sp.get("current_course_sig", False)
         r["remaining_uses"] = sp.get("uses_left", r.get("remaining_uses", 3))
+        # Back-fill any form columns missing from candidate_pool with preds_df
+        prow = preds_df[preds_df["player_name"].str.lower().str.contains(
+            _last_key(r.get("player_name", "")), na=False
+        )]
+        if not prow.empty:
+            pdata = prow.iloc[0]
+            for col in FORM_COLS:
+                if col not in r or r.get(col) is None:
+                    r[col] = pdata.get(col)
 
     # Top SAVE players: not in lineup, not USE NOW, sorted by best_future_ev
     save_players = sorted(
@@ -373,9 +461,19 @@ def generate_reasoning(
             time.sleep(0.3)
 
     # ── Save ──────────────────────────────────────────────────────────────────
+    # Read tournament_id from latest_predictions.csv so the API can detect staleness
+    _tid = ""
+    try:
+        import pandas as _pd
+        _pred = _pd.read_csv(OUTPUTS_DIR / "latest_predictions.csv", nrows=1)
+        _tid = str(_pred["tournament_id"].iloc[0]) if "tournament_id" in _pred.columns else ""
+    except Exception:
+        pass
+
     output = {
         "generated_at":    datetime.now(timezone.utc).isoformat(),
         "tournament":      current_event.get("name", ""),
+        "tournament_id":   _tid,
         "tournament_week": current_event.get("week", 0),
         "lineup":          lineup_names,
         "weekly_narrative": weekly_narrative,

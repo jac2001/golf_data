@@ -533,6 +533,26 @@ def main() -> int:
     # Persist updated log.
     log_df.to_csv(log_path, index=False)
 
+    # Sync full log to DuckDB.
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "database"))
+        from db import get_conn
+        sync_df = log_df.copy()
+        for _bc in ["outcome_win", "corroborated"]:
+            if _bc in sync_df.columns:
+                sync_df[_bc] = sync_df[_bc].astype(str).str.lower().map(
+                    {"true": True, "false": False, "1": True, "0": False}
+                )
+        with get_conn() as conn:
+            conn.register("sync_view", sync_df)
+            conn.execute("DELETE FROM recommended_bets_log")
+            conn.execute("INSERT INTO recommended_bets_log SELECT * FROM sync_view")
+            n_db = conn.execute("SELECT COUNT(*) FROM recommended_bets_log").fetchone()[0]
+        print(f"DB sync: {n_db} rows in recommended_bets_log")
+    except Exception as _e:
+        print(f"[WARN] DB sync failed (CSV is authoritative): {_e}")
+
     # Persist results ledger.
     graded_df = pd.DataFrame(graded_rows)
     if results_path.exists():

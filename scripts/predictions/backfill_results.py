@@ -253,6 +253,41 @@ def backfill(dry_run: bool = False) -> dict:
         shutil.copy(PRED_HIST, backup)
         out.to_csv(PRED_HIST, index=False)
         print(f"\nSaved → {PRED_HIST}  (backup → {backup.name})")
+
+        # Upsert into DuckDB
+        try:
+            import sys as _sys
+            _sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "database"))
+            from db import get_conn
+
+            upsert = out.copy()
+            upsert["player_id"] = upsert["player_id"].astype(str)
+            for _bc in ["actual_won", "actual_top5", "actual_top10", "actual_top20", "result_recorded"]:
+                if _bc in upsert.columns:
+                    upsert[_bc] = upsert[_bc].astype(str).str.lower().map(
+                        {"true": True, "false": False, "1": True, "0": False}
+                    )
+
+            with get_conn() as conn:
+                conn.register("upsert_view", upsert)
+                conn.execute("DELETE FROM prediction_history")
+                conn.execute("""
+                    INSERT INTO prediction_history
+                    SELECT tournament_id, tournament_name, tournament_date, player_name, player_id,
+                           predicted_win_prob, predicted_top5_prob, predicted_top10_prob,
+                           predicted_top20_prob, predicted_ev, world_rank, course_fit,
+                           CAST(actual_position AS VARCHAR),
+                           CAST(actual_won AS BOOLEAN),
+                           CAST(actual_top5 AS BOOLEAN),
+                           CAST(actual_top10 AS BOOLEAN),
+                           CAST(actual_top20 AS BOOLEAN),
+                           CAST(result_recorded AS BOOLEAN)
+                    FROM upsert_view
+                """)
+                n_db = conn.execute("SELECT COUNT(*) FROM prediction_history").fetchone()[0]
+            print(f"DB upsert: {n_db} rows in prediction_history")
+        except Exception as _e:
+            print(f"[WARN] DB upsert failed (CSV is authoritative): {_e}")
     else:
         print("\n[DRY RUN] No files written.")
 

@@ -2401,6 +2401,27 @@ def _predictions_block(top_n: int = 15, supplement_odds_tid: str | None = None) 
         df = df.sort_values("win_prob", ascending=False).head(top_n).reset_index(drop=True)
         df["player_name"] = df["player_name"].apply(_fmt_name)
 
+        # Build WD set from withdrawals file so withdrawn players are clearly flagged
+        def _wd_key(n: str) -> str:
+            return re.sub(r"[^a-z]", "", n.lower())
+
+        _wd_names: set[str] = set()
+        _wd_tid = supplement_odds_tid or _detect_tournament_id()
+        if _wd_tid:
+            _wd_path = DATA / "news" / f"withdrawals_{_wd_tid}.json"
+            if _wd_path.exists():
+                try:
+                    _wd_list = json.loads(_wd_path.read_text())
+                    for _w in _wd_list:
+                        if str(_w.get("status", "")).upper() == "WITHDRAWN":
+                            _wd_names.add(_wd_key(str(_w.get("player_name", ""))))
+                except Exception:
+                    pass
+        if _wd_names:
+            df["player_name"] = df["player_name"].apply(
+                lambda n: f"{n} (WD)" if _wd_key(n) in _wd_names else n
+            )
+
         # Supplement with sportsbook odds when predictions odds columns are null
         _dk_odds_map: dict[str, float] = {}
         if supplement_odds_tid:
@@ -4636,6 +4657,37 @@ def _round_recap_block(tid: str | None, round_num: int | None = None) -> str:
     return "\n".join(lines)
 
 
+def _leaderboard_age_minutes(tid: str) -> int | None:
+    """Return how many minutes old the local leaderboard CSV is, or None if it doesn't exist."""
+    import time as _time
+    path = DATA / "live" / f"leaderboard_{tid.lower()}.csv"
+    if not path.exists():
+        return None
+    return int((_time.time() - path.stat().st_mtime) / 60)
+
+
+def _web_live_scores_block(tournament_name: str) -> str:
+    """Search the web for a current leaderboard when local CSV data is stale.
+
+    Used as a real-time fallback: if the scheduler hasn't refreshed in >60 min
+    the model gets live scores from DuckDuckGo snippets rather than stale CSV data.
+    Returns a formatted block to prepend to the system prompt.
+    """
+    if not tournament_name:
+        return ""
+    search_query = f"{tournament_name} leaderboard scores 2026 live"
+    raw = _execute_web_search(search_query, max_results=4)
+    if not raw or raw.startswith("Search failed") or raw.startswith("No results"):
+        return ""
+    return (
+        "## WEB LIVE SCORES (real-time search — use this when local data is stale)\n"
+        "The following web results contain the most current available leaderboard info. "
+        "Scores, positions, and names come from third-party sources and may not be perfectly "
+        "formatted — extract the key standings as best you can.\n\n"
+        + raw
+    )
+
+
 def _live_leaderboard_block(tid: str) -> str:
     """Live leaderboard top 20. Only shown if at least 1 round is complete."""
     if not tid:
@@ -4645,6 +4697,14 @@ def _live_leaderboard_block(tid: str) -> str:
     if not path.exists():
         return ""
     try:
+        # Freshness: how old is the data?
+        import time as _time
+        _age_min = int((_time.time() - path.stat().st_mtime) / 60)
+        if _age_min > 90:
+            _freshness = f"⚠️ DATA IS {_age_min} MINUTES OLD — may not reflect current standings"
+        else:
+            _freshness = f"Updated {_age_min} min ago"
+
         df = pd.read_csv(path)
         if df.empty:
             return ""
@@ -4693,7 +4753,7 @@ def _live_leaderboard_block(tid: str) -> str:
         df.columns = [c.replace("_", " ").title() for c in df.columns]
 
         status_label = f" — {round_status}" if round_status else ""
-        header = f"## LIVE LEADERBOARD — Round {rounds_complete} of 4{status_label}"
+        header = f"## LIVE LEADERBOARD — Round {rounds_complete} of 4{status_label} [{_freshness}]"
         return header + "\n" + df.to_markdown(index=False) + cut_info
     except Exception as e:
         return f"## LIVE LEADERBOARD\n(unavailable: {e})"
@@ -5192,6 +5252,118 @@ def _tournament_intel_block(tid: str | None, tournament_name: str = "") -> str:
     return "\n".join(lines)
 
 
+def _web_intel_player_block(player_names: list[str], tid: str | None) -> str:
+    """Pull pre-computed web intel for specific players from data/intel/tournament_intel_R{tid}.json."""
+    if not tid or not player_names:
+        return ""
+    path = DATA / "intel" / f"tournament_intel_{tid}.json"
+    if not path.exists():
+        return ""
+    try:
+        data = json.loads(path.read_text())
+    except Exception:
+        return ""
+
+    players = data.get("players", [])
+    # Build lookup: normalize both sides to "first last" lowercase for matching
+    def _norm(n: str) -> str:
+        n = str(n).strip().lower()
+        if ", " in n:
+            last, first = n.split(", ", 1)
+            return f"{first} {last}"
+        return n
+
+    lookup = {_norm(p["player_name"]): p for p in players if "player_name" in p}
+
+    lines = ["## WEB INTEL (pre-tournament agent)"]
+    found = False
+    for name in player_names:
+        record = lookup.get(_norm(name))
+        if not record or "error" in record:
+            continue
+        found = True
+        lines.append(f"\n### {_fmt_name(record['player_name'])}")
+        if record.get("injury_flag"):
+            lines.append(f"INJURY ALERT: {record.get('injury_detail', 'injury reported')}")
+        sentiment_label = {"positive": "trending positive", "negative": "trending negative"}.get(
+            record.get("sentiment", ""), "neutral"
+        )
+        lines.append(f"Sentiment: {sentiment_label}")
+        if record.get("recent_form_summary"):
+            lines.append(f"Form: {record['recent_form_summary']}")
+        if record.get("key_quote"):
+            lines.append(f'Quote: "{record["key_quote"]}"')
+
+    if not found:
+        return ""
+
+    generated_at = data.get("generated_at", "")
+    if generated_at:
+        lines.append(f"\n_Intel generated: {generated_at[:10]}_")
+
+    return "\n".join(lines)
+
+
+def _web_intel_alerts_block(tid: str | None) -> str:
+    """Compact injury + course conditions block for bet/general queries."""
+    if not tid:
+        return ""
+    path = DATA / "intel" / f"tournament_intel_{tid}.json"
+    if not path.exists():
+        return ""
+    try:
+        data = json.loads(path.read_text())
+    except Exception:
+        return ""
+
+    lines = ["## WEB INTEL ALERTS"]
+
+    # Injury flags
+    injured = [
+        p for p in data.get("players", [])
+        if p.get("injury_flag") and "error" not in p
+    ]
+    if injured:
+        lines.append("\n### Injury / Withdrawal Flags")
+        for p in injured:
+            name = _fmt_name(p["player_name"])
+            detail = p.get("injury_detail") or "injury reported"
+            lines.append(f"- **{name}**: {detail}")
+    else:
+        lines.append("\nNo injury flags among top predicted players.")
+
+    # Negative sentiment players (excluding injured — already listed)
+    injured_names = {p["player_name"] for p in injured}
+    negative = [
+        p for p in data.get("players", [])
+        if p.get("sentiment") == "negative" and p["player_name"] not in injured_names
+        and "error" not in p
+    ]
+    if negative:
+        lines.append("\n### Negative Form Signals")
+        for p in negative[:3]:
+            lines.append(f"- **{_fmt_name(p['player_name'])}**: {p.get('recent_form_summary', '')}")
+
+    # Course conditions
+    course = data.get("course_conditions", {})
+    if course and "error" not in course:
+        lines.append("\n### Course Conditions")
+        if course.get("rough_length"):
+            lines.append(f"- Rough: {course['rough_length']}")
+        if course.get("green_speed"):
+            lines.append(f"- Greens: {course['green_speed']}")
+        if course.get("setup_notes"):
+            lines.append(f"- Setup: {course['setup_notes']}")
+        if course.get("scoring_outlook"):
+            lines.append(f"- Scoring outlook: {course['scoring_outlook']}")
+
+    generated_at = data.get("generated_at", "")
+    if generated_at:
+        lines.append(f"\n_Intel generated: {generated_at[:10]}_")
+
+    return "\n".join(lines)
+
+
 def _course_profile_block(tid: str) -> str:
     """Course summary + hardest/easiest holes."""
     if not tid:
@@ -5406,6 +5578,8 @@ def _lineup_eligible_block(tid: str | None) -> str:
             import json as _json
             wds = _json.loads(wd_path.read_text())
             for entry in (wds if isinstance(wds, list) else [wds]):
+                if entry.get("status") != "WITHDRAWN":
+                    continue
                 pn = entry.get("player_name") or entry.get("name", "")
                 if pn:
                     wd_keys.add(_nk(str(pn)))
@@ -5646,8 +5820,12 @@ def _my_picks_block() -> str:
         return f"## MY PICKS\n(unavailable: {e})"
 
 
-def _season_strategy_block(player_names: list[str] | None = None) -> str:
-    """Season usage strategy for tracked players (or specific players if named)."""
+def _season_strategy_block(player_names: list[str] | None = None, lean: bool = False) -> str:
+    """Season usage strategy for tracked players (or specific players if named).
+
+    lean: if True, omit the full season plan and conflict tables (saves ~15K chars).
+    The per-player verdict cards are always included — those are the useful part.
+    """
     try:
         from scripts.predictions.season_strategy import get_season_strategy
         strategy = get_season_strategy()
@@ -5760,7 +5938,8 @@ def _season_strategy_block(player_names: list[str] | None = None) -> str:
 
     # ── Season allocation plan ────────────────────────────────────────────────
     # Only show full plan when no specific player was filtered (i.e. general query)
-    if not player_names and season_plan:
+    # Skip in lean mode — the per-player verdicts above are sufficient for lineup questions.
+    if not player_names and season_plan and not lean:
         lines.append("## OPTIMAL SEASON PLAN")
         lines.append("Greedy allocation: highest-EV assignment made first, max 3 players/week.")
         lines.append("")
@@ -5778,7 +5957,7 @@ def _season_strategy_block(player_names: list[str] | None = None) -> str:
         lines.append("")
 
     # ── Conflict warnings ─────────────────────────────────────────────────────
-    if not player_names and plan_conflicts:
+    if not player_names and plan_conflicts and not lean:
         lines.append("## SCHEDULING CONFLICTS")
         lines.append("Events where more than 3 of your players peak — you'll need to make hard choices:")
         lines.append("")
@@ -6413,6 +6592,58 @@ def _season_context_block() -> str:
         return content
     except Exception:
         return ""
+
+
+def _recent_recaps_block(n: int = 6) -> str:
+    """Load the most recent N tournament recap narratives from outputs/tournament_recap_*.json.
+
+    Returns a compact block listing each tournament and its AI-generated recap,
+    sorted newest first. Used to give the LLM quick recall of recent results
+    without having to read full leaderboard CSVs.
+    """
+    import json as _json
+    recap_dir = OUTPUTS
+    recap_files = sorted(recap_dir.glob("tournament_recap_R*.json"), reverse=True)
+    if not recap_files:
+        return ""
+
+    sched_map: dict[str, str] = {}
+    date_map:  dict[str, str] = {}
+    try:
+        sched = pd.read_csv(PROJECT_ROOT / "data" / "raw" / "schedule_2026.csv")
+        sched_map = dict(zip(sched["tournament_id"].astype(str), sched["tournament_name"]))
+        date_map  = dict(zip(sched["tournament_id"].astype(str), sched["start_date"]))
+    except Exception:
+        pass
+
+    entries: list[tuple[str, str, str]] = []  # (date, tid, narrative)
+    for f in recap_files:
+        try:
+            data = _json.loads(f.read_text())
+            tid       = data.get("tournament_id", "").upper()
+            narrative = data.get("narrative", "").strip()
+            winner    = data.get("winner", "")
+            t_name    = sched_map.get(tid) or data.get("tournament_name", tid)
+            t_date    = date_map.get(tid, "")
+            if narrative:
+                entries.append((t_date, tid, t_name, winner, narrative))
+        except Exception:
+            continue
+
+    # Sort by date descending, take most recent n
+    entries.sort(key=lambda x: x[0], reverse=True)
+    entries = entries[:n]
+
+    if not entries:
+        return ""
+
+    lines = ["## RECENT TOURNAMENT RECAPS"]
+    for t_date, tid, t_name, winner, narrative in entries:
+        date_str = str(t_date)[:10] if t_date else ""
+        lines.append(f"\n**{t_name}** ({date_str}) — Winner: {winner}")
+        lines.append(narrative)
+
+    return "\n".join(lines)
 
 
 def _season_performance_block() -> str:
@@ -7229,6 +7460,7 @@ def build_context(
     tournament_id: str | None = None,
     last_players: list[str] | None = None,
     cached_base: str | None = None,
+    lean: bool = False,
 ) -> str:
     """Assemble context relevant to the user's query.
 
@@ -7248,6 +7480,11 @@ def build_context(
     cached_base: if provided, skip rebuilding the stable session context and only
     build the intent-specific dynamic layer. The two are combined with a <!-- SPLIT -->
     marker so _build_cached_system() can put them in separate caching blocks.
+
+    lean: if True, use reduced top_n values (20→10) for large blocks and skip
+    the web news search. Used by the FastAPI chat endpoint to keep the system
+    prompt under ~45K characters so Haiku's effective attention window isn't
+    wasted on duplicate or low-value data.
     """
     if tournament_id is None:
         tournament_id = _detect_tournament_id()
@@ -7373,6 +7610,11 @@ def build_context(
         _t_name = _tournament_state(_effective_tid).get("name", "") if _effective_tid else ""
         sections.append(_tournament_intel_block(_effective_tid, _t_name))
         sections.append("")
+        # Recent tournament recaps — gives the model factual results context
+        _recaps = _recent_recaps_block(6)
+        if _recaps:
+            sections.append(_recaps)
+            sections.append("")
 
         # Fallback: if no year specified treat as "last year"
         if not hist_year:
@@ -7448,10 +7690,14 @@ def build_context(
         if tournament_id:
             sections.append(_course_fit_reasoning_block(tournament_id))
             sections.append("")
-        sections.append(_player_form_context_block(top_n=15))
-        sections.append("")
-        sections.append(_fetch_player_news(intent["players"], _active_t_name))
-        sections.append("")
+        # Lean: deep dive already has full stats for all compared players
+        if not lean:
+            sections.append(_player_form_context_block(top_n=15))
+            sections.append("")
+        # Lean: comparing players is data-driven — skip web news search
+        if not lean:
+            sections.append(_fetch_player_news(intent["players"], _active_t_name))
+            sections.append("")
         if _is_bet_q:
             sections.append(_recommended_bets_block(top_n=8))
             sections.append("")
@@ -7476,8 +7722,10 @@ def build_context(
         sections.append("")
         sections.append(_season_context_block())
         sections.append("")
-
-
+        _recaps = _recent_recaps_block(6)
+        if _recaps:
+            sections.append(_recaps)
+            sections.append("")
 
     elif intent["is_pick_reason"]:
         # "Why should I pick X?" — enriched analysis with verdict
@@ -7496,6 +7744,8 @@ def build_context(
             sections.append("")
         sections.append(_expert_picks_block())
         sections.append("")
+        sections.append(_web_intel_player_block(intent["players"], tournament_id))
+        sections.append("")
         sections.append(_fetch_player_news(intent["players"], _active_t_name))
         sections.append("")
 
@@ -7513,12 +7763,18 @@ def build_context(
         if tournament_id:
             sections.append(_course_fit_reasoning_block(tournament_id))
             sections.append("")
-        sections.append(_player_form_context_block(top_n=15))
-        sections.append("")
+        # Lean: deep dive already has full stats for both players — field-wide form is redundant
+        if not lean:
+            sections.append(_player_form_context_block(top_n=15))
+            sections.append("")
         sections.append(_fanduel_markets_block(_effective_tid or tournament_id, player_names=intent["players"]))
         sections.append("")
-        sections.append(_fetch_player_news(intent["players"], _active_t_name))
-        sections.append("")
+        # Lean: skip news for H2H — data-driven comparison, not news-driven
+        if not lean:
+            sections.append(_web_intel_player_block(intent["players"], tournament_id))
+            sections.append("")
+            sections.append(_fetch_player_news(intent["players"], _active_t_name))
+            sections.append("")
         if tournament_id:
             sections.append(_weather_block(tournament_id))
             sections.append("")
@@ -7536,14 +7792,19 @@ def build_context(
         if tournament_id:
             sections.append(_course_fit_reasoning_block(tournament_id))
             sections.append("")
-        sections.append(_player_form_context_block(top_n=15))
-        sections.append("")
-        sections.append(_field_overview_block(top_n=10))
+        # Lean: skip field-wide form — deep dive already has all stats for the queried player(s)
+        if not lean:
+            sections.append(_player_form_context_block(top_n=15))
+            sections.append("")
+        # Lean: 5 players gives enough "where does this player rank" context without 10K overhead
+        sections.append(_field_overview_block(top_n=5 if lean else 10))
         sections.append("")
         sections.append(_fanduel_markets_block(_effective_tid or tournament_id, player_names=intent["players"]))
         sections.append("")
-        sections.append(_fetch_player_news(intent["players"], _active_t_name))
-        sections.append("")
+        # Lean: web search adds latency and is rarely decisive for single-player questions
+        if not lean:
+            sections.append(_fetch_player_news(intent["players"], _active_t_name))
+            sections.append("")
         if tournament_id:
             sections.append(_weather_block(tournament_id))
             sections.append("")
@@ -7564,16 +7825,19 @@ def build_context(
             "End with one player to avoid. No headers in your response — flowing paragraphs."
         )
         sections.append("")
-        sections.append(_field_tiers_block(top_n=35))
+        # Lean: 20 players for tiering is plenty; field tiers block already has the full picture
+        sections.append(_field_tiers_block(top_n=20 if lean else 35))
         sections.append("")
-        _dg_fs = _dg_field_stats_block(tournament_id)
-        if _dg_fs:
-            sections.append(_dg_fs)
-            sections.append("")
-        sections.append(_player_form_context_block(top_n=20))
+        # Lean: skip DG field stats — field tiers + DG course fit covers the same ground
+        if not lean:
+            _dg_fs = _dg_field_stats_block(tournament_id)
+            if _dg_fs:
+                sections.append(_dg_fs)
+                sections.append("")
+        sections.append(_player_form_context_block(top_n=10 if lean else 20))
         sections.append("")
         if tournament_id:
-            sections.append(_dg_course_fit_block(tournament_id, top_n=15))
+            sections.append(_dg_course_fit_block(tournament_id, top_n=10 if lean else 15))
             sections.append("")
         sections.append(_expert_picks_block())
         sections.append("")
@@ -7620,22 +7884,24 @@ def build_context(
         if _elig:
             sections.append(_elig)
             sections.append("")
-        sections.append(_field_overview_block(top_n=20))
+        _ln_top_n = 10 if lean else 20
+        sections.append(_field_overview_block(top_n=_ln_top_n))
         sections.append("")
-        _dg_fs_ln = _dg_field_stats_block(tournament_id)
-        if _dg_fs_ln:
-            sections.append(_dg_fs_ln)
-            sections.append("")
+        if not lean:
+            _dg_fs_ln = _dg_field_stats_block(tournament_id)
+            if _dg_fs_ln:
+                sections.append(_dg_fs_ln)
+                sections.append("")
         if tournament_id:
             sections.append(_course_fit_reasoning_block(tournament_id))
             sections.append("")
-            sections.append(_course_fit_players_block(tournament_id, top_n=20))
+            sections.append(_course_fit_players_block(tournament_id, top_n=_ln_top_n))
             sections.append("")
             _cf = _dg_course_fit_block(tournament_id)
             if _cf:
                 sections.append(_cf)
                 sections.append("")
-        sections.append(_player_form_context_block(top_n=20))
+        sections.append(_player_form_context_block(top_n=_ln_top_n))
         sections.append("")
         sections.append(_top_markets_summary_block(_effective_tid or tournament_id))
         sections.append("")
@@ -7656,12 +7922,13 @@ def build_context(
                 "who have uses remaining. Any player showing SAVE in the season strategy should "
                 "be reconsidered as a USE at a major unless they have an injury concern or 0 uses left.\n"
             )
-        sections.append(_season_strategy_block())
+        sections.append(_season_strategy_block(lean=lean))
         sections.append("")
         sections.append(_league_context_block())
         sections.append("")
-        sections.append(_fetch_tournament_news(_active_t_name))
-        sections.append("")
+        if not lean:
+            sections.append(_fetch_tournament_news(_active_t_name))
+            sections.append("")
 
     elif intent.get("is_intel"):
         # Tournament intel: curated facts + historical stats + course profile + field experience
@@ -7700,7 +7967,7 @@ def build_context(
         if tournament_id:
             sections.append(_course_fit_reasoning_block(tournament_id))
             sections.append("")
-            sections.append(_course_fit_players_block(tournament_id, top_n=20))
+            sections.append(_course_fit_players_block(tournament_id, top_n=12 if lean else 20))
             sections.append("")
             sections.append(_live_course_stats_block(tournament_id))
             sections.append("")
@@ -7708,11 +7975,14 @@ def build_context(
             sections.append("")
             sections.append(_weather_block(tournament_id))
             sections.append("")
-        sections.append(_field_overview_block(top_n=15))
+        sections.append(_field_overview_block(top_n=10 if lean else 15))
         sections.append("")
-        sections.append(_player_form_context_block(top_n=15))
-        sections.append("")
-        sections.append(_fetch_tournament_news(_active_t_name))
+        # Lean: course fit players already shows form-weighted rankings — full form block redundant
+        if not lean:
+            sections.append(_player_form_context_block(top_n=15))
+            sections.append("")
+        if not lean:
+            sections.append(_fetch_tournament_news(_active_t_name))
         sections.append("")
 
     elif intent.get("market_focus") and (intent["is_bet"] or intent["is_value"] or intent["is_daily_bet"]):
@@ -7726,19 +7996,20 @@ def build_context(
         # Player quality first
         sections.append(_masters_qualifiers_block(_tid_eff))
         sections.append("")
-        sections.append(_field_overview_block(top_n=15))
+        sections.append(_field_overview_block(top_n=10 if lean else 15))
         sections.append("")
-        sections.append(_player_form_context_block(top_n=15))
+        sections.append(_player_form_context_block(top_n=10 if lean else 15))
         sections.append("")
         if tournament_id:
             sections.append(_course_fit_reasoning_block(tournament_id))
             sections.append("")
-            sections.append(_course_fit_players_block(tournament_id, top_n=15))
+            sections.append(_course_fit_players_block(tournament_id, top_n=10 if lean else 15))
             sections.append("")
-        # Expert consensus + intel (depth data)
+        # Expert consensus always included — key signal for market bets
         sections.append(_expert_picks_block())
         sections.append("")
-        if tournament_id:
+        # Lean: skip tournament intel (historical course facts, 5-8K) — course fit reasoning covers it
+        if not lean:
             sections.append(_tournament_intel_block(tournament_id, _active_t_name))
             sections.append("")
         sections.append(_my_picks_block())
@@ -7762,19 +8033,20 @@ def build_context(
         # Player quality data FIRST — this is what drives the recommendation
         sections.append(_masters_qualifiers_block(_effective_tid or tournament_id))
         sections.append("")
-        sections.append(_field_overview_block(top_n=15))
+        sections.append(_field_overview_block(top_n=10 if lean else 15))
         sections.append("")
-        sections.append(_player_form_context_block(top_n=15))
+        sections.append(_player_form_context_block(top_n=10 if lean else 15))
         sections.append("")
         if tournament_id:
             sections.append(_course_fit_reasoning_block(tournament_id))
             sections.append("")
-            sections.append(_course_fit_players_block(tournament_id, top_n=15))
+            sections.append(_course_fit_players_block(tournament_id, top_n=10 if lean else 15))
             sections.append("")
-        # Expert consensus + intel — depth
+        # Expert consensus always — key signal
         sections.append(_expert_picks_block())
         sections.append("")
-        if tournament_id:
+        # Lean: skip tournament intel — course fit reasoning covers the key course facts
+        if not lean:
             sections.append(_tournament_intel_block(tournament_id, _active_t_name))
             sections.append("")
         sections.append(_my_picks_block())
@@ -7797,16 +8069,17 @@ def build_context(
             sections.append("")
             sections.append(_live_course_stats_block(tournament_id))
             sections.append("")
-            sections.append(_course_fit_reasoning_block(tournament_id))
-            sections.append("")
             sections.append(_weather_block(tournament_id))
             sections.append("")
-        sections.append(_expert_picks_block())
-        sections.append("")
-        sections.append(_my_picks_block())
-        sections.append("")
-        sections.append(_fetch_tournament_news(_active_t_name))
-        sections.append("")
+        # Lean: expert_picks and my_picks already added above — skip duplicate
+        if not lean:
+            sections.append(_expert_picks_block())
+            sections.append("")
+            sections.append(_my_picks_block())
+            sections.append("")
+        if not lean:
+            sections.append(_fetch_tournament_news(_active_t_name))
+            sections.append("")
 
     elif intent["is_bet"] or intent["is_value"]:
         # Player quality first, market reference second
@@ -7815,21 +8088,23 @@ def build_context(
         # Player quality data first
         sections.append(_masters_qualifiers_block(_effective_tid or tournament_id))
         sections.append("")
-        sections.append(_field_tiers_block(top_n=30))
+        # Lean: 15 players covers the relevant betting tier range without full field
+        sections.append(_field_tiers_block(top_n=15 if lean else 30))
         sections.append("")
-        sections.append(_field_overview_block(top_n=12))
+        sections.append(_field_overview_block(top_n=10 if lean else 12))
         sections.append("")
-        sections.append(_player_form_context_block(top_n=12))
+        sections.append(_player_form_context_block(top_n=10 if lean else 12))
         sections.append("")
         if tournament_id:
             sections.append(_course_fit_reasoning_block(tournament_id))
             sections.append("")
-            sections.append(_course_fit_players_block(tournament_id, top_n=12))
+            sections.append(_course_fit_players_block(tournament_id, top_n=10 if lean else 12))
             sections.append("")
-        # Expert + intel depth before market reference
+        # Expert picks always — key signal for value identification
         sections.append(_expert_picks_block())
         sections.append("")
-        if tournament_id:
+        # Lean: skip tournament intel — saves 5-8K, course fit reasoning covers the essentials
+        if not lean:
             sections.append(_tournament_intel_block(tournament_id, _active_t_name))
             sections.append("")
         sections.append(_my_picks_block())
@@ -7852,8 +8127,9 @@ def build_context(
             sections.append("")
             sections.append(_weather_block(tournament_id))
             sections.append("")
-        sections.append(_fetch_tournament_news(_active_t_name))
-        sections.append("")
+        if not lean:
+            sections.append(_fetch_tournament_news(_active_t_name))
+            sections.append("")
 
     elif intent.get("is_scoring_prop"):
         # Prop questions: birdie leaders, bogey-free, eagles, scoring efficiency
@@ -7883,6 +8159,12 @@ def build_context(
         _pt_summary = _post_tournament_summary_block(_rr_tid)
         if _pt_summary:
             sections.append(_pt_summary)
+            sections.append("")
+        # Include recent tournament recaps — especially useful when asking
+        # "what happened at X" about a past event
+        _recaps = _recent_recaps_block(6)
+        if _recaps:
+            sections.append(_recaps)
             sections.append("")
         sections.append(_my_picks_block())
         sections.append("")
@@ -7918,16 +8200,20 @@ def build_context(
             sections.append("")
             sections.append(_live_odds_context_block(tournament_id))
             sections.append("")
-        sections.append(_field_overview_block(top_n=15))
-        sections.append("")
-        sections.append(_player_form_context_block(top_n=10))
-        sections.append("")
+        # In lean mode: field overview and form are pre-tournament data — drop them
+        # for live queries. The leaderboard above is the only authoritative source.
+        if not lean:
+            sections.append(_field_overview_block(top_n=15))
+            sections.append("")
+            sections.append(_player_form_context_block(top_n=10))
+            sections.append("")
         sections.append(_my_picks_block())
         sections.append("")
-        sections.append(_league_context_block())
-        sections.append("")
-        sections.append(_fetch_tournament_news(_active_t_name))
-        sections.append("")
+        if not lean:
+            sections.append(_league_context_block())
+            sections.append("")
+            sections.append(_fetch_tournament_news(_active_t_name))
+            sections.append("")
 
     elif intent["is_weather"] or intent["is_course"]:
         if tournament_id:
@@ -7943,9 +8229,9 @@ def build_context(
     else:
         # General: full overview — skip stable blocks when cached_base provided
         if not cached_base:
-            sections.append(_field_overview_block(top_n=15))
+            sections.append(_field_overview_block(top_n=10 if lean else 15))
             sections.append("")
-            sections.append(_player_form_context_block(top_n=15))
+            sections.append(_player_form_context_block(top_n=10 if lean else 15))
             sections.append("")
             if tournament_id:
                 sections.append(_course_profile_block(tournament_id))
@@ -7962,12 +8248,17 @@ def build_context(
             sections.append("")
             sections.append(_season_context_block())
             sections.append("")
+            _recaps = _recent_recaps_block(6)
+            if _recaps:
+                sections.append(_recaps)
+                sections.append("")
         # Live leaderboard and news are always dynamic (change frequently)
         if tournament_id:
             sections.append(_live_leaderboard_block(tournament_id))
             sections.append("")
-        sections.append(_fetch_tournament_news(_active_t_name))
-        sections.append("")
+        if not lean:
+            sections.append(_fetch_tournament_news(_active_t_name))
+            sections.append("")
 
     # Schedule: skip when cached_base already has it
     if not cached_base:
@@ -8069,9 +8360,13 @@ def build_base_context(tournament_id: str | None = None) -> str:
         sections.append(_sr)
         sections.append("")
 
-    # Season-level context
+    # Season-level context + recent tournament recaps
     sections.append(_season_context_block())
     sections.append("")
+    _recaps = _recent_recaps_block(6)
+    if _recaps:
+        sections.append(_recaps)
+        sections.append("")
 
     # Augusta qualifier scoring (Masters only — tid ending in "014")
     if tournament_id and tournament_id.upper().endswith("014"):

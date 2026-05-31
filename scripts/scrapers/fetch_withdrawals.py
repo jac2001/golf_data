@@ -273,14 +273,7 @@ def fetch_withdrawals(
     else:
         print("  No leaderboard file found — skipping leaderboard check")
 
-    # Source 2: field vs predictions (late WDs after predictions were run)
-    field_wds = _detect_from_field_vs_predictions(tournament_id)
-    existing_ids = {w["player_id"] for w in all_wds if w["player_id"]}
-    for w in field_wds:
-        if w["player_id"] not in existing_ids:
-            all_wds.append(w)
-    if field_wds:
-        print(f"  Field comparison: {len(field_wds)} possible WD(s) detected")
+    # Source 2: field vs predictions — removed (generated too many false positives)
 
     # Source 3: PGA Tour GraphQL field API (pre-tournament WDs)
     if tournament_id:
