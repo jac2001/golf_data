@@ -22,12 +22,12 @@ type Props = {
   players: PlayerPrediction[];
 };
 
-type SortCol = "world_rank" | "win_prob" | "top10_prob" | "cut_prob" | "season_sg_total" | "form_trend" | "model_vs_vegas_edge";
+type SortCol = "world_rank" | "win_prob_sim" | "win_prob" | "top10_prob_sim" | "top10_prob" | "cut_prob" | "season_sg_total" | "form_trend" | "model_vs_vegas_edge";
 
 // Maps each column to a label and whether higher = better (for coloring)
 const COLS: { key: SortCol; label: string; higherBetter: boolean }[] = [
-  { key: "win_prob",           label: "Win%",     higherBetter: true  },
-  { key: "top10_prob",         label: "Top 10%",  higherBetter: true  },
+  { key: "win_prob_sim",       label: "Win%",     higherBetter: true  },
+  { key: "top10_prob_sim",     label: "Top 10%",  higherBetter: true  },
   { key: "cut_prob",           label: "Cut%",     higherBetter: true  },
   { key: "world_rank",         label: "OWGR",     higherBetter: false },
   { key: "season_sg_total",    label: "SG Total", higherBetter: true  },
@@ -40,7 +40,7 @@ const DRIFT_ARROW: Record<string, string> = {
 };
 
 export default function PredictionsTable({ players }: Props) {
-  const [sortCol, setSortCol]   = useState<SortCol>("win_prob");
+  const [sortCol, setSortCol]   = useState<SortCol>("win_prob_sim");
   const [sortDir, setSortDir]   = useState<"asc" | "desc">("desc");
   const [search, setSearch]     = useState("");
 
@@ -165,16 +165,44 @@ export default function PredictionsTable({ players }: Props) {
                     )}
                   </td>
 
-                  {/* Win% */}
+                  {/* Win% — sim primary, xgb subscript */}
                   <td style={{ ...td, textAlign: "center" }}>
-                    <span style={{ color: "#00c44f", fontWeight: 700, fontSize: "0.88em" }}>
-                      {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
-                    </span>
+                    {p.win_prob_sim != null ? (
+                      <div>
+                        <span style={{ color: "#00c44f", fontWeight: 700, fontSize: "0.88em" }}>
+                          {(p.win_prob_sim * 100).toFixed(1)}%
+                        </span>
+                        {p.win_prob != null && (
+                          <div style={{ color: "#2a5040", fontSize: "0.68em", marginTop: 1 }}>
+                            xgb {(p.win_prob * 100).toFixed(1)}%
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span style={{ color: "#00c44f", fontWeight: 700, fontSize: "0.88em" }}>
+                        {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
+                      </span>
+                    )}
                   </td>
 
-                  {/* Top 10% */}
-                  <td style={{ ...td, textAlign: "center", color: "#4cb8ff", fontSize: "0.85em", fontWeight: 600 }}>
-                    {p.top10_prob != null ? `${(p.top10_prob * 100).toFixed(1)}%` : "—"}
+                  {/* Top 10% — sim primary, xgb subscript */}
+                  <td style={{ ...td, textAlign: "center" }}>
+                    {p.top10_prob_sim != null ? (
+                      <div>
+                        <span style={{ color: "#4cb8ff", fontWeight: 600, fontSize: "0.85em" }}>
+                          {(p.top10_prob_sim * 100).toFixed(1)}%
+                        </span>
+                        {p.top10_prob != null && (
+                          <div style={{ color: "#1a3050", fontSize: "0.68em", marginTop: 1 }}>
+                            xgb {(p.top10_prob * 100).toFixed(1)}%
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span style={{ color: "#4cb8ff", fontSize: "0.85em", fontWeight: 600 }}>
+                        {p.top10_prob != null ? `${(p.top10_prob * 100).toFixed(1)}%` : "—"}
+                      </span>
+                    )}
                   </td>
 
                   {/* Cut% */}

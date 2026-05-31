@@ -115,6 +115,12 @@ export type PlayerPrediction = {
   form_trend: number | null;
   odds_to_win: number | null;
   dk_odds_direction: string | null;
+  // Physics-based simulation probs (DataGolf-style Monte Carlo)
+  win_prob_sim: number | null;
+  top5_prob_sim: number | null;
+  top10_prob_sim: number | null;
+  top20_prob_sim: number | null;
+  make_cut_prob_sim: number | null;
   uses_remaining: number;       // 0–3 from usage tracker (default 3)
   badge: string;                // "USE" | "SAVE" | "MAXED" | ""
   recommendation: string;
