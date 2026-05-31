@@ -47,7 +47,9 @@ def _parse_json(text: str) -> dict:
 
 def load_top_players(n=20) -> list[dict]:
     preds = pd.read_csv(PROJECT_ROOT / "outputs" / "latest_predictions.csv")
-    top = preds.nlargest(n, "win_prob")[["player_name", "win_prob", "world_rank"]]
+    sort_col = "win_prob_sim" if "win_prob_sim" in preds.columns and preds["win_prob_sim"].notna().any() else "win_prob"
+    keep = [c for c in ["player_name", "win_prob_sim", "win_prob", "world_rank"] if c in preds.columns]
+    top = preds.nlargest(n, sort_col)[keep]
     return top.to_dict("records")
 
 
