@@ -4699,6 +4699,78 @@ def course_fit() -> dict:
 
 
 
+@app.get("/api/intel")
+def get_intel() -> dict:
+    """Pre-tournament player intel + course conditions from fetch_tournament_intel.py."""
+    tid = _get_tournament_id()
+    if not tid:
+        raise HTTPException(status_code=404, detail="No active tournament")
+    path = DATA_DIR / "intel" / f"tournament_intel_{tid}.json"
+    if not path.exists():
+        raise HTTPException(status_code=404, detail=f"No intel for {tid}. Run fetch_tournament_intel.py.")
+    data = json.loads(path.read_text())
+
+    # Normalize player names to "First Last" to match predictions endpoint
+    def _flip(n: str) -> str:
+        s = str(n).strip()
+        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
+
+    for p in data.get("players", []):
+        p["player_name"] = _flip(p.get("player_name", ""))
+
+    # Attach staleness
+    try:
+        gen = datetime.fromisoformat(data.get("generated_at", "").replace("Z", ""))
+        data["age_hours"] = round((datetime.utcnow() - gen).total_seconds() / 3600, 1)
+    except Exception:
+        data["age_hours"] = None
+
+    return data
+
+
+@app.post("/api/refresh-intel")
+def refresh_intel(top_n: int = 20) -> dict:
+    """Trigger fetch_tournament_intel.py for the current tournament."""
+    tid = _get_tournament_id()
+    if not tid:
+        raise HTTPException(status_code=404, detail="No active tournament")
+
+    # Resolve tournament name + course name from schedule + characteristics
+    tournament_name = tid
+    course_name = ""
+    try:
+        sched = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+        row = sched[sched["tournament_id"].astype(str) == str(tid)]
+        if not row.empty:
+            tournament_name = str(row.iloc[0].get("tournament_name", tid))
+    except Exception:
+        pass
+    try:
+        chars = pd.read_csv(DATA_DIR / "course_characteristics" / "all_courses_2026.csv",
+                            usecols=["tournament_id", "course_name", "is_host_course"])
+        host = chars[(chars["tournament_id"].astype(str) == str(tid)) &
+                     (chars["is_host_course"] == True)]
+        if host.empty:
+            host = chars[chars["tournament_id"].astype(str) == str(tid)]
+        if not host.empty:
+            course_name = str(host.iloc[0]["course_name"])
+    except Exception:
+        pass
+
+    cmd = [
+        "python3", str(PROJECT_ROOT / "scripts" / "intel" / "fetch_tournament_intel.py"),
+        "--tid", tid,
+        "--tournament", tournament_name,
+        "--top-n", str(top_n),
+    ]
+    if course_name:
+        cmd += ["--course", course_name]
+
+    subprocess.Popen(cmd, cwd=PROJECT_ROOT,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return {"ok": True, "message": f"Intel fetch started for {tournament_name} ({top_n} players)"}
+
+
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok", "timestamp": datetime.utcnow().isoformat() + "Z"}

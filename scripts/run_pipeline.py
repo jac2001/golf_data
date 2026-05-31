@@ -999,6 +999,21 @@ def fetch_tournament_assets(
     return odds_path
 
 
+def _get_course_name(tid: str) -> str:
+    """Look up the host course name from course characteristics CSV."""
+    try:
+        chars_path = DATA_DIR / "course_characteristics" / "all_courses_2026.csv"
+        if not chars_path.exists():
+            return ""
+        df = pd.read_csv(chars_path, usecols=["tournament_id", "course_name", "is_host_course"])
+        host = df[(df["tournament_id"].astype(str) == str(tid)) & (df["is_host_course"] == True)]
+        if host.empty:
+            host = df[df["tournament_id"].astype(str) == str(tid)]
+        return str(host.iloc[0]["course_name"]) if not host.empty else ""
+    except Exception:
+        return ""
+
+
 def run_full_pipeline(
     tournament_name: str,
     purse: int,
@@ -1021,6 +1036,7 @@ def run_full_pipeline(
     calibrate: bool = False,
     generate_bet_recs: bool = True,
     generate_reasoning: bool = False,
+    fetch_intel: bool = False,
 ):
     """Run the full prediction pipeline."""
     global _ACTIVE_TRACKER
@@ -1114,7 +1130,21 @@ def run_full_pipeline(
         if recommend_lineup:
             run_lineup_recommendation(tournament_name, predictions_path)
 
-        # Stage 6b: LLM strategy reasoning (optional, requires API key)
+        # Stage 6b: Pre-tournament intel (optional — makes Claude API calls per player)
+        if fetch_intel and pga_id:
+            print_header("TOURNAMENT INTEL", "-")
+            course_name = _get_course_name(pga_id)
+            intel_cmd = [
+                "python3", str(SCRIPTS_DIR / "intel" / "fetch_tournament_intel.py"),
+                "--tid", pga_id,
+                "--tournament", tournament_name,
+                "--top-n", "20",
+            ]
+            if course_name:
+                intel_cmd += ["--course", course_name]
+            run_command(intel_cmd, description="Fetch tournament intel", timeout=300)
+
+        # Stage 6c: LLM strategy reasoning (optional, requires API key)
         if generate_reasoning:
             print_header("LLM STRATEGY REASONING", "-")
             try:
@@ -1255,6 +1285,8 @@ Examples:
                        help='Generate strategic lineup recommendation')
     parser.add_argument('--reasoning', action='store_true',
                        help='Generate LLM strategy reasoning narratives (requires API key)')
+    parser.add_argument('--intel', action='store_true',
+                       help='Fetch pre-tournament player intel via web search (uses Claude API, ~20 calls)')
     parser.add_argument('--save-tracking', action='store_true',
                        help='Save predictions to tracking system')
     parser.add_argument('--calibrate', action='store_true',
@@ -1354,6 +1386,7 @@ Examples:
         fetch_expert_picks=(not args.skip_expert_picks),
         generate_bet_recs=(not args.skip_bet_recs),
         generate_reasoning=args.reasoning,
+        fetch_intel=args.intel,
         fetch_articles=args.fetch_articles,
         article_template=args.article_template,
         calibrate=args.calibrate,

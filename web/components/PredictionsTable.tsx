@@ -16,10 +16,11 @@
  */
 
 import { useState, useMemo } from "react";
-import { PlayerPrediction } from "@/lib/api";
+import { PlayerPrediction, PlayerIntel } from "@/lib/api";
 
 type Props = {
   players: PlayerPrediction[];
+  intel?: PlayerIntel[];   // optional — only present when intel has been fetched
 };
 
 type SortCol = "world_rank" | "win_prob_sim" | "win_prob" | "top10_prob_sim" | "top10_prob" | "cut_prob" | "season_sg_total" | "form_trend" | "model_vs_vegas_edge";
@@ -39,7 +40,19 @@ const DRIFT_ARROW: Record<string, string> = {
   UP: "▲", DOWN: "▼", CONSTANT: "→",
 };
 
-export default function PredictionsTable({ players }: Props) {
+const SENTIMENT_DOT: Record<string, string> = {
+  positive: "#00c44f",
+  neutral:  "#4a6080",
+  negative: "#e74c3c",
+};
+
+export default function PredictionsTable({ players, intel = [] }: Props) {
+  // Build a lowercase name → intel lookup so we can match "First Last" from either source
+  const intelMap = useMemo(() => {
+    const m = new Map<string, PlayerIntel>();
+    for (const p of intel) m.set(p.player_name.toLowerCase(), p);
+    return m;
+  }, [intel]);
   const [sortCol, setSortCol]   = useState<SortCol>("win_prob_sim");
   const [sortDir, setSortDir]   = useState<"asc" | "desc">("desc");
   const [search, setSearch]     = useState("");
@@ -151,16 +164,30 @@ export default function PredictionsTable({ players }: Props) {
               const odds = p.odds_to_win;
               const oddsStr = odds == null ? "—" : odds >= 0 ? `+${Math.round(odds)}` : String(Math.round(odds));
 
+              const playerIntel = intelMap.get(p.player_name.toLowerCase());
               return (
                 <tr key={p.player_name ?? `row-${i}`}>
                   <td style={{ ...td, color: "#3a5060", textAlign: "center", fontSize: "0.78em" }}>{i + 1}</td>
 
-                  {/* Player name + explanation */}
+                  {/* Player name + explanation + intel indicators */}
                   <td style={{ ...td, fontSize: "0.85em" }}>
-                    <div style={{ color: "#dde6f5", fontWeight: 600, whiteSpace: "nowrap" }}>{p.player_name}</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span style={{ color: "#dde6f5", fontWeight: 600, whiteSpace: "nowrap" }}>{p.player_name}</span>
+                      {playerIntel?.injury_flag && (
+                        <span title={playerIntel.injury_detail ?? "Injury flag"} style={{ color: "#e74c3c", fontSize: "0.8em", fontWeight: 800, cursor: "help" }}>!</span>
+                      )}
+                      {playerIntel?.sentiment && !playerIntel.injury_flag && (
+                        <span style={{ width: 6, height: 6, borderRadius: "50%", background: SENTIMENT_DOT[playerIntel.sentiment] ?? "#4a6080", display: "inline-block", flexShrink: 0 }} title={playerIntel.sentiment} />
+                      )}
+                    </div>
                     {p.explanation && (
                       <div style={{ color: "#3a5a70", fontSize: "0.75em", marginTop: 2, whiteSpace: "nowrap" }}>
                         {p.explanation}
+                      </div>
+                    )}
+                    {playerIntel?.recent_form_summary && (
+                      <div style={{ color: "#2a4a60", fontSize: "0.72em", marginTop: 2, maxWidth: 260, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} title={playerIntel.recent_form_summary}>
+                        {playerIntel.recent_form_summary}
                       </div>
                     )}
                   </td>

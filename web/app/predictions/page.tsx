@@ -17,10 +17,10 @@
 import { useState, useEffect } from "react";
 import {
   getTournament, getPredictions, getLineup, getTeeTimes, getCourse, getModelComparison,
-  getWeather, getWithdrawals,
+  getWeather, getWithdrawals, getIntel, refreshIntel,
   Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
   ModelCompPlayer, WeatherResponse, WithdrawalsResponse, CourseFitResponse,
-  getCourseFit, PlayerPrediction,
+  getCourseFit, PlayerPrediction, IntelResponse,
 } from "@/lib/api";
 import PredictionsTable from "@/components/PredictionsTable";
 import LineupCards from "@/components/LineupCards";
@@ -63,6 +63,7 @@ export default function PredictionsPage() {
   const [dgComp, setDgComp]           = useState<ModelCompPlayer[] | null>(null);
   const [weather, setWeather]         = useState<WeatherResponse | null>(null);
   const [wds, setWds]                 = useState<WithdrawalsResponse | null>(null);
+  const [intel, setIntel]             = useState<IntelResponse | null>(null);
 
   const [loadingField, setLoadingField]       = useState(true);
   const [loadingLineup, setLoadingLineup]     = useState(false);
@@ -85,6 +86,7 @@ export default function PredictionsPage() {
         getLineup().then(setLineup).catch(() => {});
         getWeather().then(setWeather).catch(() => {});
         getWithdrawals().then(setWds).catch(() => {});
+        getIntel().then(setIntel).catch(() => {});
       } catch {
         setError("Could not connect to the API. Is FastAPI running on port 8000?");
       } finally {
@@ -204,6 +206,9 @@ export default function PredictionsPage() {
         <WeatherStrip days={weather.days} savedAt={weather.saved_at} />
       )}
 
+      {/* ── Course conditions + intel ─────────────────────────────────────── */}
+      {intel && <CourseConditionsCard intel={intel} />}
+
       {/* ── Weekly narrative ─────────────────────────────────────────────── */}
       {preds && (
         <WeeklyNarrative
@@ -244,7 +249,7 @@ export default function PredictionsPage() {
         loadingField
           ? <Spinner />
           : preds
-            ? <PredictionsTable players={preds.players} />
+            ? <PredictionsTable players={preds.players} intel={intel?.players ?? []} />
             : <Empty text="No predictions available." />
       )}
 
@@ -418,6 +423,74 @@ function GlanceCard({ label, value, sub }: { label: string; value: string; sub?:
         {value}
       </div>
       {sub && <div style={{ fontSize: "0.65em", color: "#4a6080", marginTop: 2 }}>{sub}</div>}
+    </div>
+  );
+}
+
+function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const [msg, setMsg] = useState("");
+  const cc = intel.course_conditions;
+  const outlookColor = cc.scoring_outlook === "low" ? "#00c44f" : cc.scoring_outlook === "high" ? "#e74c3c" : "#f39c12";
+  const injuredCount = intel.players.filter(p => p.injury_flag).length;
+
+  async function handleRefresh() {
+    setRefreshing(true);
+    setMsg("");
+    try {
+      const d = await refreshIntel(20);
+      setMsg(d.message);
+    } catch {
+      setMsg("Failed to start refresh.");
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
+  return (
+    <div style={{ background: "#080f1e", border: "1px solid #1e3a5f", borderLeft: "3px solid #4cb8ff", borderRadius: 8, padding: "14px 18px", marginBottom: 16 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 8 }}>
+        <div>
+          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>
+            Course Intel · {cc.course_name}
+            {intel.age_hours != null && (
+              <span style={{ marginLeft: 10, color: "#2a3a4a" }}>as of {intel.age_hours.toFixed(0)}h ago</span>
+            )}
+          </div>
+          <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 8 }}>
+            {cc.rough_length && (
+              <span style={{ fontSize: "0.8em", color: "#8ba0b8" }}>
+                <span style={{ color: "#4a6080" }}>Rough </span>{cc.rough_length}
+              </span>
+            )}
+            {cc.green_speed && (
+              <span style={{ fontSize: "0.8em", color: "#8ba0b8" }}>
+                <span style={{ color: "#4a6080" }}>Greens </span>{cc.green_speed}
+              </span>
+            )}
+            <span style={{ fontSize: "0.8em" }}>
+              <span style={{ color: "#4a6080" }}>Scoring </span>
+              <span style={{ color: outlookColor, fontWeight: 600, textTransform: "capitalize" }}>{cc.scoring_outlook}</span>
+            </span>
+            {injuredCount > 0 && (
+              <span style={{ fontSize: "0.8em", color: "#e74c3c", fontWeight: 600 }}>
+                {injuredCount} injury flag{injuredCount > 1 ? "s" : ""}
+              </span>
+            )}
+          </div>
+          {cc.setup_notes && (
+            <p style={{ color: "#7a90a8", fontSize: "0.82em", lineHeight: 1.6, margin: 0 }}>{cc.setup_notes}</p>
+          )}
+        </div>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          style={{ background: "none", border: "1px solid #1e3a5f", borderRadius: 5, color: refreshing ? "#4a6080" : "#7a9ab8", fontSize: "0.75em", padding: "3px 10px", cursor: refreshing ? "default" : "pointer", whiteSpace: "nowrap" }}
+        >
+          {refreshing ? "Running…" : "Refresh Intel"}
+        </button>
+      </div>
+      {msg && <p style={{ color: "#f0c040", fontSize: "0.78em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
     </div>
   );
 }

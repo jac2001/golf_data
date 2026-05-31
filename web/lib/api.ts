@@ -69,6 +69,34 @@ export type BetsResponse = {
   count: number;
 };
 
+export type PlayerIntel = {
+  player_name: string;          // "First Last" — normalized by API
+  injury_flag: boolean;
+  injury_detail: string | null;
+  recent_form_summary: string;
+  key_quote: string | null;
+  sentiment: "positive" | "neutral" | "negative";
+  sources: string[];
+};
+
+export type CourseConditions = {
+  course_name: string;
+  rough_length: string | null;
+  green_speed: string | null;
+  setup_notes: string;
+  scoring_outlook: "low" | "moderate" | "high";
+  sources: string[];
+};
+
+export type IntelResponse = {
+  tid: string;
+  tournament_name: string;
+  generated_at: string;
+  age_hours: number | null;
+  course_conditions: CourseConditions;
+  players: PlayerIntel[];
+};
+
 // ── API functions ─────────────────────────────────────────────────────────────
 // Each function calls one FastAPI endpoint and returns typed data.
 // `async` means "this might take a moment — wait for it."
@@ -1285,5 +1313,17 @@ export type BestBet = {
 export async function getBestBet(): Promise<BestBet> {
   const res = await fetch(`${API_BASE}/api/bets/best`, { cache: "no-store" });
   if (!res.ok) throw new Error(`best-bet ${res.status}`);
+  return res.json();
+}
+
+export async function getIntel(): Promise<IntelResponse> {
+  const res = await fetch(`${API_BASE}/api/intel`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`intel ${res.status}`);
+  return res.json();
+}
+
+export async function refreshIntel(topN = 20): Promise<{ ok: boolean; message: string }> {
+  const res = await fetch(`${API_BASE}/api/refresh-intel?top_n=${topN}`, { method: "POST" });
+  if (!res.ok) throw new Error(`refresh-intel ${res.status}`);
   return res.json();
 }
