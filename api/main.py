@@ -1480,15 +1480,19 @@ def get_predictions(limit: int = 50) -> dict:
         "player_name", "world_rank", "win_prob", "top5_prob", "top10_prob",
         "top20_prob", "cut_prob", "season_sg_total", "model_vs_vegas_edge",
         "form_trend", "odds_to_win", "dk_odds_direction",
+        "win_prob_sim", "top5_prob_sim", "top10_prob_sim",
+        "top20_prob_sim", "make_cut_prob_sim",
     ] if c in df.columns]
 
     df = df[keep_cols].copy()
     for col in ["win_prob", "top5_prob", "top10_prob", "top20_prob",
-                "cut_prob", "world_rank", "season_sg_total", "model_vs_vegas_edge", "form_trend"]:
+                "cut_prob", "world_rank", "season_sg_total", "model_vs_vegas_edge", "form_trend",
+                "win_prob_sim", "top5_prob_sim", "top10_prob_sim", "top20_prob_sim", "make_cut_prob_sim"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    df = df.sort_values("win_prob", ascending=False).head(limit)
+    sort_col = "win_prob_sim" if "win_prob_sim" in df.columns and df["win_prob_sim"].notna().any() else "win_prob"
+    df = df.sort_values(sort_col, ascending=False).head(limit)
 
     # Normalize "Last, First" → "First Last"
     def _flip(n: str) -> str:
