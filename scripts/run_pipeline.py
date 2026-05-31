@@ -34,6 +34,7 @@ import argparse
 import subprocess
 import sys
 import os
+import time
 from pathlib import Path
 from datetime import datetime
 import json
@@ -1130,19 +1131,32 @@ def run_full_pipeline(
         if recommend_lineup:
             run_lineup_recommendation(tournament_name, predictions_path)
 
-        # Stage 6b: Pre-tournament intel (optional — makes Claude API calls per player)
-        if fetch_intel and pga_id:
-            print_header("TOURNAMENT INTEL", "-")
-            course_name = _get_course_name(pga_id)
-            intel_cmd = [
-                "python3", str(SCRIPTS_DIR / "intel" / "fetch_tournament_intel.py"),
-                "--tid", pga_id,
-                "--tournament", tournament_name,
-                "--top-n", "20",
-            ]
-            if course_name:
-                intel_cmd += ["--course", course_name]
-            run_command(intel_cmd, description="Fetch tournament intel", timeout=300)
+        # Stage 6b: Pre-tournament intel
+        # Auto-runs when file is missing or >48h old; --intel forces a re-run.
+        if pga_id:
+            intel_file = DATA_DIR / "intel" / f"tournament_intel_{pga_id}.json"
+            intel_age_h = (
+                (time.time() - intel_file.stat().st_mtime) / 3600
+                if intel_file.exists() else float("inf")
+            )
+            run_intel = fetch_intel or intel_age_h > 48
+            if run_intel:
+                print_header("TOURNAMENT INTEL", "-")
+                if not fetch_intel:
+                    age_str = "missing" if intel_age_h == float("inf") else f"{intel_age_h:.0f}h old"
+                    print(f"  Auto-running intel ({age_str})")
+                course_name = _get_course_name(pga_id)
+                intel_cmd = [
+                    "python3", str(SCRIPTS_DIR / "intel" / "fetch_tournament_intel.py"),
+                    "--tid", pga_id,
+                    "--tournament", tournament_name,
+                    "--top-n", "20",
+                ]
+                if course_name:
+                    intel_cmd += ["--course", course_name]
+                run_command(intel_cmd, description="Fetch tournament intel", timeout=300)
+            else:
+                print(f"\n  Intel: cached ({intel_age_h:.0f}h old, skipping)")
 
         # Stage 6c: LLM strategy reasoning (optional, requires API key)
         if generate_reasoning:
