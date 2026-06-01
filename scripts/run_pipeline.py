@@ -431,7 +431,7 @@ def refresh_data(force: bool = False, max_age_hours: int = 24):
                 # Use 5 years of history for better course performance data
                 years = [str(now_year - i) for i in range(5, -1, -1)]  # 5 years back + current
                 cmd.extend(["--years"] + years)
-            timeout = 300 if stage_name in {"tournament_stats", "course_form_features"} else 180
+            timeout = 300 if stage_name in {"tournament_stats", "course_form_features", "form_stats"} else 180
             success = run_command(cmd, description=stage["description"], timeout=timeout)
             if success:
                 print(f"  Done")
@@ -971,7 +971,7 @@ def fetch_tournament_assets(
         ]
         if odds_path and odds_path.exists():
             bp_cmd.extend(["--odds-csv", str(odds_path)])
-        run_command(bp_cmd, description="Fetch betting profiles", timeout=60)
+        run_command(bp_cmd, description="Fetch betting profiles", timeout=120)
     stage_idx += 1
 
     print_stage(stage_idx, total_stages, "Fetch power rankings")
