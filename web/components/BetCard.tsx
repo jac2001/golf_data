@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import {
-  Bet, fmtOdds, MARKET_COLORS, MARKET_LABELS, BOOK_ABBR,
-  getBetReason, getBetLines, BetLinesResponse,
-} from "@/lib/api";
+    Bet, fmtOdds, MARKET_COLORS, MARKET_LABELS, BOOK_ABBR,
+    getBetReason, getBetLines, BetLinesResponse, addToBetSlip,
+  } from "@/lib/api";
 
 type Props = {
   bet: Bet;
@@ -35,6 +35,30 @@ export default function BetCard({ bet, bankroll }: Props) {
   const [reason,        setReason]        = useState<string | null>(null);
   const [reasonLoading, setReasonLoading] = useState(false);
   const [reasonOpen,    setReasonOpen]    = useState(false);
+  const [tracked,       setTracked]       = useState(false);
+  const [tracking,      setTracking]      = useState(false);
+
+
+  async function handleTrack() {
+    if (tracked || tracking) return;
+    setTracking(true);
+    try {
+      const res = await addToBetSlip({
+        recommendation_id: bet.recommendation_id ?? null,
+        tournament_id:     bet.tournament_id ?? "",
+        player_name:       bet.player_name,
+        market:            bet.market,
+        selection_label:   bet.selection_label ?? bet.player_name,
+        odds_american:     bet.odds_american,
+        stake_units:       1.0,
+      });
+      if (res.ok || res.message?.includes("Already")) setTracked(true);
+    } catch {
+      // silently fail — don't disrupt the UI
+    } finally {
+      setTracking(false);
+    }
+  }
 
   const opponent = (() => {
     if (!bet.group_members || !bet.market.startsWith("h2h")) return undefined;
@@ -207,6 +231,22 @@ export default function BetCard({ bet, bankroll }: Props) {
           </button>
 
           <LineShopButton player={bet.player_name} market={bet.market} />
+            <button
+              onClick={handleTrack}
+              disabled={tracked || tracking}
+              style={{
+                background: tracked ? "#0c1f14" : "transparent",
+                border: `1px solid ${tracked ? "#00c44f44" : "#2a4f7f"}`,
+                borderRadius: 5,
+                color: tracked ? "#00c44f" : "#8ba0b8",
+                fontSize: "0.75em",
+                fontWeight: 600,
+                padding: "4px 10px",
+                cursor: tracked ? "default" : "pointer",
+              }}
+            >
+              {tracking ? "Adding…" : tracked ? "Tracked ✓" : "Track Bet"}
+            </button>
         </div>
 
         {reasonOpen && (

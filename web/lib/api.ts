@@ -17,6 +17,8 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 // Like Python dataclasses — they help catch mistakes before you run the code.
 
 export type Bet = {
+  recommendation_id: string | null;
+  tournament_id: string | null;
   player_name: string;
   market: string;
   book: string;
@@ -1325,5 +1327,79 @@ export async function getIntel(): Promise<IntelResponse> {
 export async function refreshIntel(topN = 20): Promise<{ ok: boolean; message: string }> {
   const res = await fetch(`${API_BASE}/api/refresh-intel?top_n=${topN}`, { method: "POST" });
   if (!res.ok) throw new Error(`refresh-intel ${res.status}`);
+  return res.json();
+}
+// ── Bet Slip ──────────────────────────────────────────────────────────────────
+
+  // A single bet you've chosen to track
+export type SlipBet = {
+    id: string;
+    recommendation_id: string | null;
+    tournament_id: string;
+    player_name: string;
+    market: string;
+    selection_label: string;
+    odds_american: number;
+    stake_units: number;
+    placed_at: string;
+    // Filled in automatically after the tournament settles:
+    outcome_status: "pending" | "won" | "lost";
+    outcome_win: boolean | null;
+    pnl_per_unit: number | null;
+    pnl_usd: number | null;
+};
+  
+
+
+
+// Season-wide summary stats
+export type SlipStats = {
+  total_bets: number;
+  graded: number;
+  pending: number;
+  won: number;
+  lost: number;
+  total_staked: number;
+  total_pnl: number;
+  roi_pct: number | null;
+  hit_rate: number | null;
+};
+
+export type BetSlipResponse = {
+  bets: SlipBet[];
+  stats: SlipStats;
+};
+
+// What we send to the API when adding a bet
+export type BetSlipEntry = {
+  recommendation_id?: string | null;
+  tournament_id: string;
+  player_name: string;
+  market: string;
+  selection_label: string;
+  odds_american: number;
+  stake_units?: number;
+};
+
+export async function getBetSlip(): Promise<BetSlipResponse> {
+  const res = await fetch(`${API_BASE}/api/bet-slip`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`bet-slip ${res.status}`);
+  return res.json();
+}
+
+
+export async function addToBetSlip(entry: BetSlipEntry): Promise<{ ok: boolean; id?: string; message?: string }> {
+  const res = await fetch(`${API_BASE}/api/bet-slip`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(entry),
+  });
+  if (!res.ok) throw new Error(`add-slip ${res.status}`);
+  return res.json();
+}
+
+export async function removeFromBetSlip(id: string): Promise<{ ok: boolean }> {
+  const res = await fetch(`${API_BASE}/api/bet-slip/${id}`, { method: "DELETE" });
+  if (!res.ok) throw new Error(`remove-slip ${res.status}`);
   return res.json();
 }

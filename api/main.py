@@ -1018,7 +1018,14 @@ def _load_bets(tid: str) -> pd.DataFrame:
     if not candidates:
         return pd.DataFrame()
     try:
-        return pd.read_csv(candidates[0])
+        df = pd.read_csv(candidates[0])
+        # Drop rows with no identifiable player (content cards score as NaN player)
+        if "player_name" in df.columns:
+            df = df[df["player_name"].notna() & (df["player_name"].astype(str).str.lower() != "nan")]
+        # Drop content_card market — DK branded parlays, not individual player bets
+        if "market" in df.columns:
+            df = df[df["market"].astype(str) != "content_card"]
+        return df
     except Exception:
         return pd.DataFrame()
 
@@ -4776,3 +4783,139 @@ def health() -> dict:
     return {"status": "ok", "timestamp": datetime.utcnow().isoformat() + "Z"}
 
 
+ # ── Bet Slip ──────────────────────────────────────────────────────────────────
+
+SLIP_PATH = DATA_DIR / "bets" / "slip.json"
+
+
+class BetSlipEntry(BaseModel):
+    recommendation_id: str | None = None
+    tournament_id: str
+    player_name: str
+    market: str
+    selection_label: str
+    odds_american: float
+    stake_units: float = 1.0
+
+
+def _load_slip() -> list[dict]:
+    if not SLIP_PATH.exists():
+        return []
+    try:
+        return json.loads(SLIP_PATH.read_text()).get("bets", [])
+    except Exception:
+        return []
+
+
+def _save_slip(bets: list[dict]) -> None:
+    SLIP_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SLIP_PATH.write_text(json.dumps({"bets": bets}, indent=2))
+
+
+def _merge_outcomes(bets: list[dict]) -> list[dict]:
+    """Cross-reference slip entries against graded results to fill outcomes."""
+    results_path = DATA_DIR / "odds" / "recommended_bets_results.csv"
+    if not results_path.exists():
+        return bets
+    try:
+        results = pd.read_csv(results_path, low_memory=False)
+        by_rec_id: dict[str, Any] = {}
+        if "recommendation_id" in results.columns:
+            for _, r in results.iterrows():
+                by_rec_id[str(r["recommendation_id"])] = r
+        by_key: dict[tuple, Any] = {}
+        for _, r in results.iterrows():
+            if str(r.get("outcome_status", "")) in ("won", "lost"):
+                key = (str(r.get("tournament_id", "")),
+                        str(r.get("player_name", "")).lower().strip(),
+                        str(r.get("market", "")))
+                by_key[key] = r
+    except Exception:
+        return bets
+
+    merged = []
+    for bet in bets:
+        b = dict(bet)
+        result = None
+        if b.get("recommendation_id") and b["recommendation_id"] in by_rec_id:
+            result = by_rec_id[b["recommendation_id"]]
+        else:
+            key = (str(b.get("tournament_id", "")),
+                    str(b.get("player_name", "")).lower().strip(),
+                    str(b.get("market", "")))
+            result = by_key.get(key)
+
+        if result is not None and str(result.get("outcome_status", "")) in ("won", "lost"):
+            b["outcome_status"] = str(result["outcome_status"])
+            b["outcome_win"] = bool(result.get("outcome_win", False))
+            pnl = result.get("pnl_per_1")
+            b["pnl_per_unit"] = float(pnl) if pd.notna(pnl) else None
+            b["pnl_usd"] = round(float(b["stake_units"]) * float(pnl), 2) if pd.notna(pnl) else None
+        else:
+            b.setdefault("outcome_status", "pending")
+            b["outcome_win"] = None
+            b["pnl_per_unit"] = None
+            b["pnl_usd"] = None
+        merged.append(b)
+    return merged
+
+
+def _slip_stats(bets: list[dict]) -> dict:
+    graded = [b for b in bets if b.get("outcome_status") in ("won", "lost")]
+    won    = [b for b in graded if b.get("outcome_status") == "won"]
+    total_staked = sum(b.get("stake_units", 1.0) for b in graded)
+    total_pnl    = sum(b.get("pnl_usd") or 0 for b in graded)
+    return {
+        "total_bets":  len(bets),
+        "graded":      len(graded),
+        "pending":     len(bets) - len(graded),
+        "won":         len(won),
+        "lost":        len(graded) - len(won),
+        "total_staked": round(total_staked, 2),
+        "total_pnl":    round(total_pnl, 2),
+        "roi_pct":  round(total_pnl / total_staked * 100, 1) if total_staked > 0 else None,
+        "hit_rate": round(len(won) / len(graded) * 100, 1)   if graded         else None,
+    }
+
+
+@app.get("/api/bet-slip")
+def get_bet_slip() -> dict:
+    bets = _merge_outcomes(_load_slip())
+    return {"bets": bets, "stats": _slip_stats(bets)}
+
+
+@app.post("/api/bet-slip")
+def add_to_bet_slip(entry: BetSlipEntry) -> dict:
+    import uuid
+    bets = _load_slip()
+    for b in bets:
+        if entry.recommendation_id and b.get("recommendation_id") == entry.recommendation_id:
+            return {"ok": False, "message": "Already tracking this bet"}
+        if (b.get("tournament_id") == entry.tournament_id
+                and b.get("player_name") == entry.player_name
+                and b.get("market") == entry.market):
+            return {"ok": False, "message": "Already tracking this bet"}
+    bet = {
+        "id": uuid.uuid4().hex[:12],
+        "recommendation_id": entry.recommendation_id,
+        "tournament_id": entry.tournament_id,
+        "player_name": entry.player_name,
+        "market": entry.market,
+        "selection_label": entry.selection_label,
+        "odds_american": entry.odds_american,
+        "stake_units": entry.stake_units,
+        "placed_at": datetime.utcnow().isoformat() + "Z",
+    }
+    bets.append(bet)
+    _save_slip(bets)
+    return {"ok": True, "id": bet["id"]}
+
+
+@app.delete("/api/bet-slip/{bet_id}")
+def remove_from_bet_slip(bet_id: str) -> dict:
+    bets = _load_slip()
+    filtered = [b for b in bets if b.get("id") != bet_id]
+    if len(filtered) == len(bets):
+        raise HTTPException(status_code=404, detail="Bet not found")
+    _save_slip(filtered)
+    return {"ok": True}
