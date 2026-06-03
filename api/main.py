@@ -4810,6 +4810,115 @@ def _load_slip() -> list[dict]:
         return []
 
 
+def _name_sort_key(name: str) -> str:
+    """Normalize 'First Last' or 'Last, First' to a sorted-token key for matching."""
+    return " ".join(sorted(name.replace(",", "").lower().split()))
+
+
+_ON_TRACK_THRESHOLDS: dict[str, tuple[int, int]] = {
+    "outright": (5, 12),
+    "top5":     (5, 8),
+    "top10":    (10, 14),
+    "top20":    (20, 25),
+    "top30":    (30, 37),
+}
+
+
+def _attach_live_context(bets: list[dict]) -> list[dict]:
+    """For each pending bet, attach live leaderboard position/score data."""
+    pending_tids = {b["tournament_id"] for b in bets
+                    if b.get("outcome_status") == "pending" and b.get("tournament_id")}
+    if not pending_tids:
+        return bets
+
+    lb_cache: dict[str, pd.DataFrame] = {}
+    cut_cache: dict[str, float | None] = {}
+
+    for tid in pending_tids:
+        lb_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+        if not lb_path.exists():
+            continue
+        try:
+            df = pd.read_csv(lb_path, low_memory=False)
+            df["_name_key"] = df["player_name"].fillna("").apply(_name_sort_key)
+            lb_cache[tid] = df
+        except Exception:
+            pass
+
+        meta_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
+        projected_cut = None
+        if meta_path.exists():
+            try:
+                meta = json.loads(meta_path.read_text())
+                projected_cut = meta.get("cut_projection", {}).get("projected_cut_score")
+            except Exception:
+                pass
+        cut_cache[tid] = projected_cut
+
+    enriched = []
+    for bet in bets:
+        b = dict(bet)
+        tid = b.get("tournament_id", "")
+
+        if b.get("outcome_status") != "pending" or tid not in lb_cache:
+            enriched.append(b)
+            continue
+
+        df = lb_cache[tid]
+        player_key = _name_sort_key(b.get("player_name", ""))
+        rows = df[df["_name_key"] == player_key]
+
+        if rows.empty:
+            enriched.append(b)
+            continue
+
+        row = rows.iloc[0]
+
+        def _str(col: str) -> str | None:
+            v = row.get(col)
+            s = str(v).strip() if pd.notna(v) else None
+            return None if not s or s in ("nan", "") else s
+
+        b["live_position"] = _str("position")
+        b["live_total"]    = _str("total")
+        b["live_thru"]     = _str("thru")
+        b["live_r1"]       = _str("R1")
+        b["live_r2"]       = _str("R2")
+        b["live_r3"]       = _str("R3")
+        b["live_r4"]       = _str("R4")
+
+        pos_str = b["live_position"] or ""
+        thru    = b["live_thru"] or ""
+        market  = b.get("market", "")
+
+        pos_num: int | None = None
+        try:
+            pos_num = int(pos_str.lstrip("Tt"))
+        except (ValueError, AttributeError):
+            pass
+
+        live_status: str | None = None
+
+        if thru == "F" and str(row.get("status", "")).lower() in ("complete", "wd", "cut"):
+            live_status = "finished"
+        elif market in _ON_TRACK_THRESHOLDS and pos_num is not None:
+            on_t, margin_t = _ON_TRACK_THRESHOLDS[market]
+            live_status = "on_track" if pos_num <= on_t else "marginal" if pos_num <= margin_t else "off_track"
+        elif market == "make_cut":
+            total_numeric = row.get("total_numeric")
+            projected_cut = cut_cache.get(tid)
+            if pd.notna(total_numeric) and projected_cut is not None:
+                diff = float(total_numeric) - float(projected_cut)
+                live_status = "on_track" if diff <= 0 else "marginal" if diff <= 2 else "off_track"
+        elif market.startswith("h2h") or market in ("matchup", "group_winner"):
+            live_status = "tracking"
+
+        b["live_status"] = live_status
+        enriched.append(b)
+
+    return enriched
+
+
 def _save_slip(bets: list[dict]) -> None:
     SLIP_PATH.parent.mkdir(parents=True, exist_ok=True)
     SLIP_PATH.write_text(json.dumps({"bets": bets}, indent=2))
@@ -4863,27 +4972,69 @@ def _merge_outcomes(bets: list[dict]) -> list[dict]:
     return merged
 
 
+BANKROLL_PATH = DATA_DIR / "bets" / "bankroll.json"
+
+
+def _load_bankroll() -> dict:
+    try:
+        return json.loads(BANKROLL_PATH.read_text()) if BANKROLL_PATH.exists() else {}
+    except Exception:
+        return {}
+
+
 def _slip_stats(bets: list[dict]) -> dict:
     graded = [b for b in bets if b.get("outcome_status") in ("won", "lost")]
     won    = [b for b in graded if b.get("outcome_status") == "won"]
     total_staked = sum(b.get("stake_units", 1.0) for b in graded)
-    total_pnl    = sum(b.get("pnl_usd") or 0 for b in graded)
+    # pnl_usd in slip is already stake_units * pnl_per_unit (unit-based P&L)
+    total_pnl_units = sum(b.get("pnl_usd") or 0 for b in graded)
+
+    bankroll = _load_bankroll()
+    starting  = float(bankroll.get("starting_bankroll", 0))
+    unit_size = float(bankroll.get("unit_size", 1))
+
+    # Convert unit P&L to real dollars
+    total_pnl_dollars = round(total_pnl_units * unit_size, 2)
+    current_bankroll  = round(starting + total_pnl_dollars, 2) if starting else None
+
+    # P&L grouped by tournament (for the mini breakdown table)
+    by_tid: dict[str, dict] = {}
+    for b in graded:
+        tid = b.get("tournament_id", "unknown")
+        if tid not in by_tid:
+            by_tid[tid] = {"won": 0, "total": 0, "pnl_units": 0.0}
+        by_tid[tid]["total"] += 1
+        if b.get("outcome_status") == "won":
+            by_tid[tid]["won"] += 1
+        by_tid[tid]["pnl_units"] += b.get("pnl_usd") or 0
+
     return {
-        "total_bets":  len(bets),
-        "graded":      len(graded),
-        "pending":     len(bets) - len(graded),
-        "won":         len(won),
-        "lost":        len(graded) - len(won),
+        "total_bets":   len(bets),
+        "graded":       len(graded),
+        "pending":      len(bets) - len(graded),
+        "won":          len(won),
+        "lost":         len(graded) - len(won),
         "total_staked": round(total_staked, 2),
-        "total_pnl":    round(total_pnl, 2),
-        "roi_pct":  round(total_pnl / total_staked * 100, 1) if total_staked > 0 else None,
-        "hit_rate": round(len(won) / len(graded) * 100, 1)   if graded         else None,
+        "total_pnl":    round(total_pnl_units, 2),       # in units
+        "total_pnl_dollars": total_pnl_dollars,          # in real $
+        "roi_pct":  round(total_pnl_units / total_staked * 100, 1) if total_staked > 0 else None,
+        "hit_rate": round(len(won) / len(graded) * 100, 1) if graded else None,
+        # Bankroll
+        "starting_bankroll": starting or None,
+        "unit_size":         unit_size,
+        "current_bankroll":  current_bankroll,
+        # Per-tournament breakdown
+        "by_tournament": [
+            {"tid": tid, **vals, "pnl_dollars": round(vals["pnl_units"] * unit_size, 2)}
+            for tid, vals in by_tid.items()
+        ],
     }
 
 
 @app.get("/api/bet-slip")
 def get_bet_slip() -> dict:
     bets = _merge_outcomes(_load_slip())
+    bets = _attach_live_context(bets)
     return {"bets": bets, "stats": _slip_stats(bets)}
 
 

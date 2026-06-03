@@ -1,0 +1,341 @@
+{
+  "tid": "R2026023",
+  "tournament_name": "The Memorial Tournament",
+  "generated_at": "2026-06-02T07:06:50.793373",
+  "course_conditions": {
+    "course_name": "Muirfield Village Golf Club",
+    "rough_length": "4 inches (Kentucky Bluegrass with Ryegrass/Fescue)",
+    "green_speed": "Tournament stimp ~11 ft (firm and fast Bentgrass)",
+    "setup_notes": "The course plays as a 7,569-yard par 72 with thick, penal Kentucky Bluegrass rough and firm, fast undulating Bentgrass greens that are difficult to hold on approach. Jack Nicklaus, who oversees setup personally, favors firm conditions and penal rough as a major-style test, with three of the four toughest holes being the closing stretch. Generous fairways narrow in landing areas, and the greenside bunkers produce the longest proximity-to-hole lengths of any course in the regular rotation.",
+    "scoring_outlook": "moderate",
+    "sources": [
+      "https://www.golfbettingsystem.co.uk/the-memorial-tournament-tips-2026/",
+      "https://dknetwork.draftkings.com/2026/06/01/draftkings-dfs-fantasy-golf-cheat-sheet-2026-pga-tour-memorial-tournament-picks/",
+      "https://www.racingpost.com/sport/golf-tips/pga-tour/memorial-tournament-muirfield-village-course-guide-start-time-odds-and-how-to-watch-aJqbO3W2on3Q/"
+    ]
+  },
+  "players": [
+    {
+      "player_name": "Scheffler, Scottie",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Scheffler is the two-time defending champion and prohibitive favorite, coming off a solo third-place finish at the CJ Cup Byron Nelson after three consecutive runner-up finishes at the Masters, RBC Heritage, and Cadillac Championship. He has one win and multiple top-five finishes in 2026 and has not finished outside the top three at Muirfield Village in his last four starts.",
+      "key_quote": "I think I'm always my own biggest critic.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfchannel.com/pga-tour/news/memorial-tournament-2026-scottie-scheffler-odds-to-three-peat",
+        "https://golf.com/news/2026-memorial-odds-scottie-scheffler-betting-favorite/",
+        "https://www.tsn.ca/golf/pga-tour/article/scheffler-chases-three-peat-mcilroy-eyes-first-win-at-muirfield-village-as-the-memorial-tees-off-on-tsn-tsn/",
+        "https://www.thememorialtournament.com/media/news/world-no-1-scottie-scheffler-to-go-for-three-wins-in-a-row-at-the-memorial-tournament-presented-by-workday/"
+      ],
+      "win_prob": 0.028086493890142,
+      "world_rank": 1
+    },
+    {
+      "player_name": "McIlroy, Rory",
+      "injury_flag": false,
+      "injury_detail": "Dealt with a blister under the nail of his right pinky toe in mid-May around the PGA Championship (forced him to cut short a practice round and remove the toenail), but he said it was healing and would not hamper him. No current injury concerns reported entering the Memorial.",
+      "recent_form_summary": "McIlroy is making his first start since the PGA Championship (May 14-17), where he finished four-under after a final-round 69, five shots behind champion Aaron Rai (reported variously as T7/T19). He has finished outside the top 20 only once all season and won his second straight Masters in April.",
+      "key_quote": "Yeah, I'm just not driving the ball well enough. It's been a problem all year for the most part ... Like I miss it right, and then I want to try to correct it. And then I'll overdo it, and I'll miss it left.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.pgatour.com/article/news/betting-profile/2026/the-memorial-tournament-presented-by-workday/rory-mcilroy-pga-tour-betting-profile-the-memorial-tournament-presented-by-workday-2026",
+        "https://www.tsn.ca/golf/pga-tour/article/scheffler-chases-three-peat-mcilroy-eyes-first-win-at-muirfield-village-as-the-memorial-tees-off-on-tsn-tsn/",
+        "https://www.golfmagic.com/tour/pga-tour/rory-mcilroy-schedule-2026",
+        "https://www.skysports.com/golf/news/12176/13543303/pga-championship-2026-rory-mcilroys-pre-major-practice-round-cut-short-due-to-blister-injury-on-toe-at-aronimink",
+        "https://www.pgatour.com/article/news/latest/2026/05/17/rory-mcilroy-2026-pga-championship-aronimink-final-round-69",
+        "https://www.aol.com/articles/world-no-2-golfer-rory-234043993.html"
+      ],
+      "win_prob": 0.0528157576508042,
+      "world_rank": 2
+    },
+    {
+      "player_name": "Aberg, Ludvig",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Aberg finished T17 at the Charles Schwab Challenge (May 28-31) and was a top-10 contender at the PGA Championship; he has recorded six top-10 finishes in 2026 and enters the Memorial as one of the betting favorites at +1800.",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://www.espn.com/golf/player/scorecards/_/id/4375972/ludvig-aberg",
+        "https://www.pgatour.com/player/52955/ludvig-aberg/results",
+        "https://www.foxsports.com/golf/ludvig-aberg-player"
+      ],
+      "win_prob": 0.0326935146134762,
+      "world_rank": 13
+    },
+    {
+      "player_name": "Henley, Russell",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Henley enters The Memorial in excellent form, having just won the Charles Schwab Challenge on May 31 by birdieing his final three holes to force a playoff with Eric Cole, then winning with a fourth straight birdie. Earlier this season he posted a career-best T-3 at the Masters and has four top-10 finishes in 2026.",
+      "key_quote": "I just kept telling myself I want to win. I want to be here, make these putts and be in contention, and this is why I practice hard.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfmagic.com/tour/pga-tour/russell-henley-birdies-last-three-holes-and-first-extra-hole-win-charles-schwab",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://www.thememorialtournament.com/media/news/highly-ranked-players-cameron-young-ludvig-berg-akshay-bhatia-chris-gotterup-and-russell-henley-set-to-compete-in-the-50th-anniversary-of-the-memorial-/",
+        "https://www.pgatour.com/article/news/betting-profile/2026/the-memorial-tournament-presented-by-workday/russell-henley-pga-tour-betting-profile-the-memorial-tournament-presented-by-workday-2026"
+      ],
+      "win_prob": 0.0196785717723856,
+      "world_rank": 12
+    },
+    {
+      "player_name": "Young, Cameron",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Young won the Cadillac Championship in early May and finished T10 at the Truist Championship, but his streak of seven straight top-25 finishes ended at the PGA Championship; he tees off at the Memorial for the first time in three weeks. He has a strong 2026 overall with three top-10 finishes including wins at The Players and Cadillac Championship.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://www.thememorialtournament.com/media/news/highly-ranked-players-cameron-young-ludvig-berg-akshay-bhatia-chris-gotterup-and-russell-henley-set-to-compete-in-the-50th-anniversary-of-the-memorial-/"
+      ],
+      "win_prob": 0.0310954022217669,
+      "world_rank": 3
+    },
+    {
+      "player_name": "Schauffele, Xander",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Schauffele finished T5 at the PGA Championship in mid-May (his best recent major result), then sat out the Charles Schwab Challenge before the Memorial. Analysts note he has been in strong form over the last couple of months and ranks among the best in course history at Muirfield Village.",
+      "key_quote": "Xander has a decent record here, and he's been in great form over the last couple of months.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://thegolfnewsnet.com/golfnewsnetteam/2026/06/01/2026-the-memorial-tournament-expert-picks-pga-tour-field-rankings-and-fantasy-golf-tips-143124/",
+        "https://sports.betmgm.com/en/blog/pga/the-memorial-tournament-2026-odds-past-winners-best-course-history-bm10/",
+        "https://www.espn.com/golf/player/scorecards/_/id/10140/xander-schauffele"
+      ],
+      "win_prob": 0.0236284309064936,
+      "world_rank": 8
+    },
+    {
+      "player_name": "Kim, Si Woo",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Kim is enjoying one of his best seasons, finishing runner-up at the CJ Cup Byron Nelson in late May after shooting a 60 (just missing a 59) in round two, then placing T35 at the PGA Championship before that. He enters the Memorial as a strong horse-for-course pick with +2200/+2250 odds.",
+      "key_quote": "I hit it great and putted great. So everything was perfect, other than the last hole.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.espn.com/golf/story/_/id/48847464/si-woo-kim-just-misses-history-byron-nelson-settles-60-bogey-final-hole",
+        "https://www.pgatour.com/article/news/latest/2026/05/22/si-woo-kim-round-2-60-scares-59-at-the-cj-cup-byron-nelson-takes-lead-scores-results",
+        "https://thegolfnewsnet.com/golfnewsnetteam/2026/06/01/2026-the-memorial-tournament-expert-picks-pga-tour-field-rankings-and-fantasy-golf-tips-143124/",
+        "https://www.hardrock.bet/news/2026-memorial-tournament-pga-tour-betting-odds-full-field/"
+      ],
+      "win_prob": 0.0249844987056886,
+      "world_rank": 19
+    },
+    {
+      "player_name": "Fitzpatrick, Matt",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Fitzpatrick is enjoying a career year in 2026 with three PGA Tour wins (Valspar, RBC Heritage, and the Zurich Classic team event with brother Alex) plus a runner-up at The Players Championship, though his form cooled slightly with a disappointing PGA Championship a few weeks ago. He enters the Memorial as the world No. 4 with a solid course history at Muirfield Village.",
+      "key_quote": "Poor iron play was part of the problem for Fitzpatrick at the PGA Championship, but in his two starts before that he ranked 12th and 1st in SG Approach",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.yardbarker.com/golf/articles/memorial_tournament_adds_star_power_with_fitzpatrick_rose_and_snedeker_for_50th_anniversary/s1_16931_43896480",
+        "https://www.nbc4i.com/sports/pga/the-memorial/matt-fitzpatrick-and-justin-rose-added-to-memorial-field-as-tournament-approaches/",
+        "https://thegolfnewsnet.com/golfnewsnetteam/2026/06/01/2026-the-memorial-tournament-expert-picks-pga-tour-field-rankings-and-fantasy-golf-tips-143124/",
+        "https://www.todays-golfer.com/news-and-events/tour-news/2026-the-memorial-tournament-betting-tips/"
+      ],
+      "win_prob": 0.0643074698953395,
+      "world_rank": 4
+    },
+    {
+      "player_name": "Fleetwood, Tommy",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Fleetwood is in solid form in 2026 with five top-10 finishes, including a T5 at the Truist Championship at Quail Hollow, though he missed the cut at the PGA Championship at Aronimink. He has a strong record at Muirfield Village with a T20 in 2024 and T16 in 2025.",
+      "key_quote": "I think it's easy for anybody to say that they are resilient, that they bounce back, that they have fight. It's different when you actually have to prove it.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.hardrock.bet/news/2026-memorial-tournament-pga-tour-betting-odds-full-field/",
+        "https://www.golfshake.com/news/view/22827/the_Memorial_Tournament_2026_preview_picks_analysis.html",
+        "https://www.foxsports.com/golf/tommy-fleetwood-player",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/"
+      ],
+      "win_prob": 0.014889473805869,
+      "world_rank": 7
+    },
+    {
+      "player_name": "Thomas, Justin",
+      "injury_flag": false,
+      "injury_detail": "Underwent microdiscectomy back surgery in November 2025 and was sidelined into early 2026, but was cleared for full golf activity in February and has been competing without issue since his March return. No current/active injury reported ahead of the Memorial.",
+      "recent_form_summary": "Thomas finished T13 at the Charles Schwab Challenge last week, hitting the ball well (2nd in SG: Tee to Green) but not contending. Earlier in the season he posted a T4 at THE PLAYERS and a T23 at the Cadillac Championship, showing solid ball-striking form upon returning from back surgery.",
+      "key_quote": "I bet on Justin Thomas last week, and while he didn't get close enough to contending in Texas, he hit the ball fantastically, ranking 2nd in SG Tee to Green",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.pgatour.com/article/news/betting-profile/2026/the-memorial-tournament-presented-by-workday/justin-thomas-pga-tour-betting-profile-the-memorial-tournament-presented-by-workday-2026",
+        "https://www.todays-golfer.com/news-and-events/tour-news/2026-the-memorial-tournament-betting-tips/",
+        "https://www.cbssports.com/golf/news/justin-thomas-injury-update-back-pga-tour-return/",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://www.foxsports.com/golf/justin-thomas-player"
+      ],
+      "win_prob": 0.015087839590775,
+      "world_rank": 16
+    },
+    {
+      "player_name": "Cantlay, Patrick",
+      "injury_flag": false,
+      "injury_detail": "No current injury reported. Earlier in the 2026 season he withdrew from the Cadillac Championship (Doral) due to illness, but returned the following week and has played continuously since.",
+      "recent_form_summary": "Cantlay arrived at the PGA Championship on the back of four straight top-12 finishes and has ranked inside the top-20 for Strokes Gained Tee-to-Green in four consecutive events, though he hasn't won since the 2022 BMW Championship and has only about three top-10s this season. He is a two-time Memorial champion (2019, 2021) with strong course history, finishing T12 last year.",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://www.todays-golfer.com/news-and-events/tour-news/2026-the-memorial-tournament-betting-tips/",
+        "https://www.hardrock.bet/news/2026-memorial-tournament-pga-tour-betting-odds-full-field/",
+        "https://www.foxsports.com/golf/patrick-cantlay-player",
+        "https://www.golfshake.com/news/view/22827/the_Memorial_Tournament_2026_preview_picks_analysis.html",
+        "https://mygolfessentials.com/the-memorial-tournament-2026/"
+      ],
+      "win_prob": 0.0232636802032241,
+      "world_rank": 33
+    },
+    {
+      "player_name": "Spaun, J.J.",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Spaun is in strong form, finishing 5th at the Truist Championship and 6th at last week's Charles Schwab Challenge, where he was the second-best player tee-to-green. He won the Valero Texas Open in early April and ranks 6th on Tour in Strokes Gained: Approach this season.",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://insights.betfred.com/golf/pga-tour/the-memorial-tournament-2026-betting-tips/",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://www.pgatour.com/player/39324/j.j-spaun/results",
+        "https://en.wikipedia.org/wiki/J._J._Spaun"
+      ],
+      "win_prob": 0.0160353781987911,
+      "world_rank": 9
+    },
+    {
+      "player_name": "Griffin, Ben",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Griffin is in strong form heading into the Memorial, finishing third at the Charles Schwab Challenge (one shot out of a playoff) and third at the Cadillac Championship, with a top-10 at TPC Louisiana and a T14 at the PGA Championship. He was also runner-up to Scottie Scheffler at Muirfield Village last year.",
+      "key_quote": "Today was definitely a pretty close to A with the exception of one hole. Just got out of my rhythm and game plan a little bit on 11. But other than that I hit some really high quality shots.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.hitc.com/ben-griffin-taking-similar-approach-to-tiger-woods-as-he-suggests-how-he-creates-his-pga-tour-schedule/",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://www.hardrock.bet/news/2026-memorial-tournament-pga-tour-betting-odds-full-field/",
+        "https://en.wikipedia.org/wiki/Ben_Griffin_(golfer)"
+      ],
+      "win_prob": 0.0084036305988725,
+      "world_rank": 17
+    },
+    {
+      "player_name": "Lee, Min Woo",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Lee has been playing solid if unspectacular golf, posting three top-20 finishes in his last three starts (including a T18 at the PGA Championship), and has three top-10s this season highlighted by a T2 at the AT&T Pebble Beach Pro-Am. He qualified for the Memorial via the Aon Next 10 standings, which he led entering Colonial.",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://thegolfnewsnet.com/golfnewsnetteam/2026/06/01/2026-the-memorial-tournament-expert-picks-pga-tour-field-rankings-and-fantasy-golf-tips-143124/",
+        "https://www.sportsbettingdime.com/news/golf/memorial-tournament-picks-predictions-odds-2026/",
+        "https://www.pgatour.com/article/news/aon-better-decisions/2026/05/31/who-earned-signature-event-starts-at-2026-the-memorial-tournament-via-aon-next-10-aon-swing-5",
+        "https://www.golfchannel.com/pga-tour/news/memorial-tournament-2026-scottie-scheffler-odds-to-three-peat"
+      ],
+      "win_prob": 0.0184270738920432,
+      "world_rank": 30
+    },
+    {
+      "player_name": "Spieth, Jordan",
+      "injury_flag": false,
+      "injury_detail": "No current active injury for the Memorial. Spieth underwent left wrist surgery in August 2024 and had a one-time neck/upper-back muscular issue that forced a Travelers WD in June 2025, but he reported his body feeling good entering 2026 and the wrist is no longer a performance variable.",
+      "recent_form_summary": "Spieth finished T19 at the CJ Cup Byron Nelson (May 21-24), highlighted by a Friday 62 before a Saturday 73 dropped him back. His 2026 has been steady-but-unspectacular with six top-25s and four T11/T12 finishes, but zero top-10s and a T18 at the PGA Championship.",
+      "key_quote": "I got pretty off for a long time. I've been trying to build it back, and then I'd compensate and do what worked. This last offseason I said no more compensating because, to be consistent, I've got to get it back to a certain place.",
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.foxsports.com/golf/jordan-spieth-player",
+        "https://www.espn.com/golf/player/scorecards/_/id/5467/jordan-spieth",
+        "https://golf.com/news/jordan-spieth-frustrating-lately/",
+        "https://www.10tv.com/article/sports/golf/pga/memorial-tournament/2026-memorial-tournament-final-field/530-12c9baf9-5182-4398-9132-667b25699384"
+      ],
+      "win_prob": 0.009094699097783,
+      "world_rank": 46
+    },
+    {
+      "player_name": "Matsuyama, Hideki",
+      "injury_flag": false,
+      "injury_detail": "No current/active injury reported for the Memorial. Has a documented history of lower back and neck issues over the past few years (most notably a lower-back WD from the 2024 BMW Championship), but no new health concern reported in the last 7 days.",
+      "recent_form_summary": "Matsuyama was in contention at the Charles Schwab Challenge (Colonial), sitting at 9-under and three back entering Sunday before fading on the final day. He has multiple top-25s in 2026 but, per recent reporting, had not cracked the top 10 since a T8 at Pebble Beach.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.cbssports.com/golf/news/charles-schwab-challenge-leaderboard-2026-hideki-matsuyama-round-2/",
+        "https://www.pgatour.com/article/news/latest/2026/05/30/how-to-watch-charles-schwab-challenge-colonial-country-club-tv-times-live-scores-leaderboards-coverage-details-round-4-moving-day",
+        "https://www.foxsports.com/golf/hideki-matsuyama-player",
+        "https://heavy.com/sports/golf/2026-memorial-tournament-field-player-list/",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/"
+      ],
+      "win_prob": 0.0127494150882951,
+      "world_rank": 20
+    },
+    {
+      "player_name": "Gotterup, Chris",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Gotterup has been one of the top performers in 2026 with wins at the Sony Open and WM Phoenix Open, sitting at World No. 10 and FedExCup No. 7, though he cooled somewhat after his early-season victories. His most recent notable result was a strong showing at the PGA Championship, where he posted a second-round 65 to make the weekend.",
+      "key_quote": "I'm just having such a good time playing right now. I know everyone at home is watching, and this is just so awesome.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.thememorialtournament.com/media/news/highly-ranked-players-cameron-young-ludvig-berg-akshay-bhatia-chris-gotterup-and-russell-henley-set-to-compete-in-the-50th-anniversary-of-the-memorial-/",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://www.foxsports.com/golf/chris-gotterup-player",
+        "https://www.nbcsports.com/watch/golf/pga-tour/chris-gotterup-finding-his-flow-at-pga-championship-after-second-round-65"
+      ],
+      "win_prob": 0.0360941727341095,
+      "world_rank": 10
+    },
+    {
+      "player_name": "Smalley, Alex",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Smalley is in excellent form, having finished runner-up at the PGA Championship (tied with Jon Rahm after leading by two through 54 holes) and then contending again at the Charles Schwab Challenge at Colonial, where he opened with a bogey-free 65. He has been on a six-tournament run of finishing 21st or better.",
+      "key_quote": "To have no bogeys on the scorecard anywhere is nice, especially here.",
+      "sentiment": "positive",
+      "sources": [
+        "https://thegolfnewsnet.com/golfnewsnetteam/2026/06/01/2026-the-memorial-tournament-expert-picks-pga-tour-field-rankings-and-fantasy-golf-tips-143124/",
+        "https://www.pgatour.com/article/news/daily-wrapup/2026/05/28/round-1-charles-schwab-challenge-colonial-country-club-scores-leaderboard-results-alex-smalley-tom-kim",
+        "https://www.bostonglobe.com/2026/05/28/sports/pga-tour-alex-smalley/",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/"
+      ],
+      "win_prob": 0.0168036146973657,
+      "world_rank": 41
+    },
+    {
+      "player_name": "MacIntyre, Robert",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "MacIntyre is in solid form in 2026, finishing fourth at The Players Championship and tied for second at the Valero Texas Open earlier in the season, and is currently ranked No. 17 in the world with three top-10s. He comes into the Memorial as the lone player priced at 40-1 (+4000).",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://www.hardrock.bet/news/2026-memorial-tournament-pga-tour-betting-odds-full-field/",
+        "https://www.10tv.com/article/sports/golf/pga/memorial-tournament/2026-memorial-tournament-final-field/530-12c9baf9-5182-4398-9132-667b25699384",
+        "https://www.foxsports.com/golf/robert-macintyre-player",
+        "https://www.pgatour.com/player/52215/robert-macintyre"
+      ],
+      "win_prob": 0.0079133037522224,
+      "world_rank": 15
+    },
+    {
+      "player_name": "Straka, Sepp",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Straka's 2026 season has been up and down, with strong contending finishes (2nd at Pebble Beach, 8th at The Players, 4th at the Cadillac Championship) offset by volatility, including a missed cut at the PGA Championship and several finishes outside the top 40. He played the Alpine Austrian Open last week as the home favorite before heading to The Memorial.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.todays-golfer.com/news-and-events/tour-news/2026-the-memorial-tournament-betting-tips/",
+        "https://www.cbssports.com/golf/news/2026-memorial-tournament-odds-picks-predictions/",
+        "https://www.foxsports.com/golf/sepp-straka-player"
+      ],
+      "win_prob": 0.0125402820038964,
+      "world_rank": 18
+    }
+  ]
+}

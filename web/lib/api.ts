@@ -1347,12 +1347,29 @@ export type SlipBet = {
     outcome_win: boolean | null;
     pnl_per_unit: number | null;
     pnl_usd: number | null;
+    // Live tournament context (null if pre-tournament or not yet on course):
+    live_position: string | null;
+    live_total:    string | null;
+    live_thru:     string | null;
+    live_r1:       string | null;
+    live_r2:       string | null;
+    live_r3:       string | null;
+    live_r4:       string | null;
+    live_status:   "on_track" | "marginal" | "off_track" | "finished" | "tracking" | null;
 };
   
 
 
 
 // Season-wide summary stats
+export type TournamentPnl = {
+  tid: string;
+  won: number;
+  total: number;
+  pnl_units: number;
+  pnl_dollars: number;
+};
+
 export type SlipStats = {
   total_bets: number;
   graded: number;
@@ -1360,9 +1377,15 @@ export type SlipStats = {
   won: number;
   lost: number;
   total_staked: number;
-  total_pnl: number;
+  total_pnl: number;          // in units
+  total_pnl_dollars: number;  // in real $
   roi_pct: number | null;
   hit_rate: number | null;
+  // Bankroll
+  starting_bankroll: number | null;
+  unit_size: number;
+  current_bankroll: number | null;
+  by_tournament: TournamentPnl[];
 };
 
 export type BetSlipResponse = {

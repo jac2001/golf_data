@@ -7770,11 +7770,12 @@ def build_context(
         sections.append(_fanduel_markets_block(_effective_tid or tournament_id, player_names=intent["players"]))
         sections.append("")
         # Lean: skip news for H2H — data-driven comparison, not news-driven
+        sections.append(_web_intel_player_block(intent["players"], tournament_id))
+        sections.append("")
         if not lean:
-            sections.append(_web_intel_player_block(intent["players"], tournament_id))
-            sections.append("")
             sections.append(_fetch_player_news(intent["players"], _active_t_name))
             sections.append("")
+        
         if tournament_id:
             sections.append(_weather_block(tournament_id))
             sections.append("")
@@ -7802,9 +7803,9 @@ def build_context(
         sections.append(_fanduel_markets_block(_effective_tid or tournament_id, player_names=intent["players"]))
         sections.append("")
         # Lean: web search adds latency and is rarely decisive for single-player questions
+        sections.append(_web_intel_player_block(intent["players"], tournament_id))
+        sections.append("")
         if not lean:
-            sections.append(_web_intel_player_block(intent["players"], tournament_id))
-            sections.append("")
             sections.append(_fetch_player_news(intent["players"], _active_t_name))
             sections.append("")
         if tournament_id:

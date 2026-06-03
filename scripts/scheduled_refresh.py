@@ -526,6 +526,8 @@ def run_tuesday_evening(dry_run: bool = False):
         ("Best Bet Notification", ["python3", "scripts/notifications/send_best_bet.py",
                                     "--tournament-id", tournament_id,
                                     "--send-email"]),
+        # Check tracked bets + fantasy picks for status changes; push + email if anything flipped.
+        ("Bet Alerts", ["python3", "scripts/notifications/check_bet_alerts.py"]),
     ]
 
     results = []

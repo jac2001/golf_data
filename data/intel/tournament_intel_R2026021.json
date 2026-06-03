@@ -1,0 +1,67 @@
+{
+  "tid": "R2026021",
+  "tournament_name": "Charles Schwab Challenge",
+  "generated_at": "2026-05-31T11:52:09.952988",
+  "course_conditions": {
+    "course_name": "Colonial Country Club",
+    "rough_length": "2.5 inches (TifTuf 419 Bermudagrass)",
+    "green_speed": "12 ft (tournament stimp)",
+    "setup_notes": "Colonial is a tight, classical 7,289-yard par-70 following the 2023 Gil Hanse renovation, featuring 007XL Bentgrass greens averaging 5,000 sq ft and fairways narrowing to 25-30 yards at the 300-yard mark. Soft, calm early conditions produced the lowest cut at Colonial in more than 40 years, though windy weather on Moving Day helped tighten scoring. The course rewards positional play and shot-shaping over distance.",
+    "scoring_outlook": "low",
+    "sources": [
+      "https://www.golfbettingsystem.co.uk/charles-schwab-challenge-tips-2026/",
+      "https://www.cbssports.com/golf/news/charles-schwab-challenge-leaderboard-2026-hideki-matsuyama-round-2/"
+    ]
+  },
+  "players": [
+    {
+      "player_name": "Thomas, Justin",
+      "injury_flag": false,
+      "injury_detail": "Underwent a microdiscectomy in November 2025 to repair a herniated disc in his lower back, which sidelined him until March 2026. He has fully returned to competition with no current injury concerns; recent results suggest the surgery has paid off as expected.",
+      "recent_form_summary": "Thomas finished T-4 at the PGA Championship at Aronimink two weeks ago with a closing 65 and has placed inside the top 25 at a pair of recent signature events. At this week's Charles Schwab Challenge, he made the cut after a Friday 67 to reach 4-under but sits well off the lead.",
+      "key_quote": "It didn't necessarily feel like I was 'in contention,' but I very much was. But to go out there and play the round I did when I knew I needed to was great.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfchannel.com/pga-tour/news/justin-thomas-college-football-expansion-2026-charles-schwab-challenge",
+        "https://www.pgatour.com/article/news/latest/2026/05/29/round-2-charles-schwab-challenge-colonial-country-club-scores-leaderboard-results-cutline-tony-finau",
+        "https://www.hitc.com/justin-thomas-confirms-what-hes-been-working-on-in-practice-since-his-top-five-finish-at-the-pga-championship/",
+        "https://www.cbssports.com/golf/news/pga-championship-2026-takeaways-justin-thomas-ludvig-aberg/"
+      ],
+      "win_prob": 0.0476432490681668,
+      "world_rank": 16.0
+    },
+    {
+      "player_name": "Fowler, Rickie",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Fowler missed the cut at this week's Charles Schwab Challenge after a disastrous final nine holes left him five shots off the cutline, ending a strong stretch that included a T2 at the Truist Championship and prior top-10s, followed by a T60 at the PGA Championship.",
+      "key_quote": null,
+      "sentiment": "negative",
+      "sources": [
+        "https://sports.yahoo.com/articles/rickie-fowler-suffers-disastrous-final-010535440.html",
+        "https://sports.yahoo.com/articles/notables-missed-cut-2026-charles-232959672.html",
+        "https://golf.com/news/2026-charles-schwab-challenge-thursday-tee-times-round-1/",
+        "https://www.cbssports.com/golf/news/charles-schwab-challenge-2026-predictions-odds-picks-field-rankings-pga-tour-preview/",
+        "https://sports.yahoo.com/articles/rickie-fowler-lands-massive-u-205109952.html"
+      ],
+      "win_prob": 0.0366293140801983,
+      "world_rank": 37.0
+    },
+    {
+      "player_name": "Henley, Russell",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Henley is in contention at the Charles Schwab Challenge, sitting T6 heading into the final round at 12th in the world. Coming in, his recent form had dipped slightly with a top-25 at the RBC Heritage, a T49 at the Cadillac Championship (Doral), and a missed cut at the PGA Championship.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.cbssports.com/golf/news/charles-schwab-challenge-2026-predictions-odds-picks-field-rankings-pga-tour-preview/",
+        "https://www.golfchannel.com/pga-tour/news/charles-schwab-challenge-2026-round-3-tee-times-pairings-and-how-to-watch",
+        "https://golf.com/news/2026-charles-schwab-challenge-sunday-tee-times-final-round/",
+        "https://www.foxsports.com/golf/russell-henley-player"
+      ],
+      "win_prob": 0.0333421389250789,
+      "world_rank": 9.0
+    }
+  ]
+}

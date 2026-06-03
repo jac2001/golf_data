@@ -5,7 +5,7 @@ import {
   getHistoryTournaments, getHistoryModel, getHistoryBets,
   getBetSlip, removeFromBetSlip,
   HistoryTournament, HistoryModelRow, HistoryBetsResponse,
-  SlipBet, SlipStats,
+  SlipBet, SlipStats, TournamentPnl,
 } from "@/lib/api";
 
 type Tab = "results" | "model" | "bets" | "slip";
@@ -249,26 +249,98 @@ const MARKET_LABELS: Record<string, string> = {
 };
 
 function SlipStatsStrip({ stats }: { stats: SlipStats }) {
+  const hasBankroll = stats.starting_bankroll != null;
+  const pnlDollars  = stats.total_pnl_dollars ?? 0;
+
+  const statItems = [
+    { label: "Tracked",  value: String(stats.total_bets) },
+    { label: "Pending",  value: String(stats.pending) },
+    { label: "Won",      value: `${stats.won} / ${stats.graded}`, color: stats.won > 0 ? "#00c44f" : undefined },
+    { label: "P&L",
+      value: stats.total_pnl != null ? `${stats.total_pnl >= 0 ? "+" : ""}${stats.total_pnl.toFixed(2)}u` : "—",
+      color: stats.total_pnl != null ? pnlColor(stats.total_pnl) : undefined },
+    { label: "ROI",
+      value: stats.roi_pct != null ? `${stats.roi_pct >= 0 ? "+" : ""}${stats.roi_pct.toFixed(1)}%` : "—",
+      color: stats.roi_pct != null ? pnlColor(stats.roi_pct) : undefined },
+    { label: "Hit Rate", value: stats.hit_rate != null ? `${stats.hit_rate.toFixed(0)}%` : "—" },
+  ];
+
   return (
-    <div style={{
-      display: "flex", gap: 16, flexWrap: "wrap",
-      padding: "14px 16px", marginBottom: 20,
-      background: "#0a1720", borderRadius: 8, border: "1px solid #1e3a5f",
-    }}>
-      {[
-        { label: "Tracked",  value: String(stats.total_bets) },
-        { label: "Pending",  value: String(stats.pending) },
-        { label: "Won",      value: `${stats.won} / ${stats.graded}`, color: stats.won > 0 ? "#00c44f" : undefined },
-        { label: "P&L",      value: stats.total_pnl != null ? `${stats.total_pnl >= 0 ? "+" : ""}${stats.total_pnl.toFixed(2)}u` : "—", color: stats.total_pnl != null ? pnlColor(stats.total_pnl) : undefined },
-        { label: "ROI",      value: stats.roi_pct != null ? `${stats.roi_pct >= 0 ? "+" : ""}${stats.roi_pct.toFixed(1)}%` : "—", color: stats.roi_pct != null ? pnlColor(stats.roi_pct) : undefined },
-        { label: "Hit Rate", value: stats.hit_rate != null ? `${stats.hit_rate.toFixed(0)}%` : "—" },
-      ].map(s => (
-        <div key={s.label} style={{ minWidth: 70 }}>
-          <div style={{ color: "#7a9ab8", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{s.label}</div>
-          <div style={{ color: s.color ?? "#dde6f5", fontWeight: 700, fontSize: "1.05em" }}>{s.value}</div>
+    <div style={{ marginBottom: 20 }}>
+      {/* Main stats row */}
+      <div style={{
+        display: "flex", gap: 16, flexWrap: "wrap",
+        padding: "14px 16px",
+        background: "#0a1720", borderRadius: hasBankroll ? "8px 8px 0 0" : 8,
+        border: "1px solid #1e3a5f", borderBottom: hasBankroll ? "none" : undefined,
+      }}>
+        {statItems.map(s => (
+          <div key={s.label} style={{ minWidth: 70 }}>
+            <div style={{ color: "#7a9ab8", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{s.label}</div>
+            <div style={{ color: s.color ?? "#dde6f5", fontWeight: 700, fontSize: "1.05em" }}>{s.value}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Bankroll row — only shown when configured */}
+      {hasBankroll && (
+        <div style={{
+          display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap",
+          padding: "10px 16px",
+          background: "#070f18", borderRadius: "0 0 8px 8px",
+          border: "1px solid #1e3a5f", borderTop: "1px solid #0d2030",
+        }}>
+          <div>
+            <span style={{ color: "#4a6080", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
+            {" "}
+            <span style={{ color: "#7a9ab8", fontSize: "0.82em" }}>${stats.starting_bankroll?.toLocaleString()}</span>
+            <span style={{ color: "#2a4060", fontSize: "0.82em", margin: "0 6px" }}>→</span>
+            <span style={{ color: pnlColor(pnlDollars), fontWeight: 700, fontSize: "1.05em" }}>
+              ${stats.current_bankroll?.toLocaleString()}
+            </span>
+          </div>
+          <div style={{ color: pnlColor(pnlDollars), fontSize: "0.88em", fontWeight: 600 }}>
+            {pnlDollars >= 0 ? "+" : ""}${pnlDollars.toFixed(2)} season
+          </div>
+          <div style={{ color: "#3a5060", fontSize: "0.75em" }}>
+            ${stats.unit_size}/unit
+          </div>
+
+          {/* Per-tournament mini breakdown */}
+          {stats.by_tournament.length > 0 && (
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginLeft: "auto" }}>
+              {stats.by_tournament.map((t: TournamentPnl) => (
+                <span key={t.tid} style={{
+                  background: "#0d1929", border: "1px solid #1e3a5f",
+                  borderRadius: 5, padding: "3px 8px", fontSize: "0.75em",
+                }}>
+                  <span style={{ color: "#4a6080" }}>{t.tid.replace("R2026", "")}</span>
+                  {" "}
+                  <span style={{ color: pnlColor(t.pnl_dollars), fontWeight: 600 }}>
+                    {t.pnl_dollars >= 0 ? "+" : ""}${t.pnl_dollars.toFixed(0)}
+                  </span>
+                  <span style={{ color: "#2a4060" }}> {t.won}/{t.total}</span>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
-      ))}
+      )}
     </div>
+  );
+}
+
+function LiveStatusDot({ status }: { status: SlipBet["live_status"] }) {
+  if (!status) return null;
+  const color = status === "on_track"  ? "#00c44f"
+              : status === "marginal"  ? "#f39c12"
+              : status === "off_track" ? "#e05555"
+              : "#5a7a9a"; // tracking / finished
+  return (
+    <span style={{
+      display: "inline-block", width: 7, height: 7, borderRadius: "50%",
+      background: color, marginRight: 5, verticalAlign: "middle", flexShrink: 0,
+    }} />
   );
 }
 
@@ -277,19 +349,52 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
   const isWon     = bet.outcome_status === "won";
   const isLost    = bet.outcome_status === "lost";
 
-  const statusColor = isPending ? "#f39c12" : isWon ? "#00c44f" : "#e05555";
-  const statusLabel = isPending ? "Pending" : isWon ? "Won" : "Lost";
+  const hasLive   = isPending && !!bet.live_position;
+  const scoreNum  = bet.live_total ? parseFloat(bet.live_total) : null;
+  const scoreColor = scoreNum != null && scoreNum < 0 ? "#00c44f"
+                   : scoreNum != null && scoreNum > 0 ? "#e05555"
+                   : "#dde6f5";
+
+  const rowBg = isWon    ? "#071410"
+              : isLost   ? "#130a0a"
+              : hasLive && bet.live_status === "on_track"  ? "#071a10"
+              : hasLive && bet.live_status === "off_track" ? "#180a0a"
+              : "transparent";
+
   const odds = bet.odds_american >= 0 ? `+${bet.odds_american}` : String(bet.odds_american);
 
   return (
-    <tr style={{ background: isWon ? "#071410" : isLost ? "#130a0a" : "transparent" }}>
+    <tr style={{ background: rowBg }}>
       <td style={cell}>{bet.tournament_id?.replace("R2026", "") ?? "—"}</td>
       <td style={{ ...cell, color: "#dde6f5", fontWeight: 600, maxWidth: 180, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
         {bet.player_name}
       </td>
       <td style={cell}>{MARKET_LABELS[bet.market] ?? bet.market}</td>
       <td style={{ ...cell, color: "#8ba0b8" }}>{odds}</td>
-      <td style={{ ...cell, fontWeight: 700, color: statusColor }}>{statusLabel}</td>
+
+      {/* Result column: live context for pending bets, or Won/Lost */}
+      <td style={cell}>
+        {isWon  && <span style={{ color: "#00c44f", fontWeight: 700 }}>Won</span>}
+        {isLost && <span style={{ color: "#e05555", fontWeight: 700 }}>Lost</span>}
+        {isPending && hasLive && (
+          <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+            <LiveStatusDot status={bet.live_status} />
+            <span style={{ color: "#dde6f5", fontWeight: 700, fontSize: "0.95em" }}>
+              {bet.live_position}
+            </span>
+            <span style={{ color: scoreColor, fontWeight: 700, fontSize: "0.95em" }}>
+              {bet.live_total ?? "E"}
+            </span>
+            <span style={{ color: "#4a6080", fontSize: "0.82em" }}>
+              {bet.live_thru === "F" ? "F" : bet.live_thru ? `thru ${bet.live_thru}` : ""}
+            </span>
+          </div>
+        )}
+        {isPending && !hasLive && (
+          <span style={{ color: "#f39c12" }}>Pending</span>
+        )}
+      </td>
+
       <td style={{ ...cell, color: bet.pnl_usd != null ? pnlColor(bet.pnl_usd) : "#4a6080" }}>
         {bet.pnl_usd != null ? `${bet.pnl_usd >= 0 ? "+" : ""}${bet.pnl_usd.toFixed(2)}u` : "—"}
       </td>
@@ -311,23 +416,36 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
   );
 }
 
-function MySlipTab() {
-  const [bets,    setBets]    = useState<SlipBet[]>([]);
-  const [stats,   setStats]   = useState<SlipStats | null>(null);
-  const [loading, setLoading] = useState(true);
+const REFRESH_MS = 2 * 60 * 1000; // 2 minutes
 
-  function load() {
-    setLoading(true);
+function MySlipTab() {
+  const [bets,      setBets]      = useState<SlipBet[]>([]);
+  const [stats,     setStats]     = useState<SlipStats | null>(null);
+  const [loading,   setLoading]   = useState(true);
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
+
+  // Silently refresh without showing full loading state (avoids flicker on interval)
+  function refresh(showLoader = false) {
+    if (showLoader) setLoading(true);
     getBetSlip()
-      .then(r => { setBets(r.bets); setStats(r.stats); })
+      .then(r => { setBets(r.bets); setStats(r.stats); setUpdatedAt(new Date()); })
       .finally(() => setLoading(false));
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    refresh(true); // initial load shows spinner
+
+    // Poll every 2 min, but only when the tab is visible
+    const id = setInterval(() => {
+      if (document.visibilityState === "visible") refresh();
+    }, REFRESH_MS);
+
+    return () => clearInterval(id); // cleanup when component unmounts
+  }, []);
 
   async function handleRemove(id: string) {
     await removeFromBetSlip(id);
-    load();
+    refresh();
   }
 
   if (loading) return <p style={{ color: "#7a9ab8", padding: 24 }}>Loading…</p>;
@@ -350,6 +468,14 @@ function MySlipTab() {
   return (
     <div>
       {stats && <SlipStatsStrip stats={stats} />}
+
+      {/* Last updated indicator */}
+      {updatedAt && (
+        <div style={{ fontSize: "0.72em", color: "#2a4060", marginBottom: 12, paddingLeft: 2 }}>
+          Live · updated {updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          <span style={{ color: "#1e3050", marginLeft: 8 }}>auto-refreshes every 2 min</span>
+        </div>
+      )}
 
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>

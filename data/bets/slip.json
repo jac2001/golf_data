@@ -1,0 +1,26 @@
+{
+  "bets": [
+    {
+      "id": "a097391dd9e7",
+      "recommendation_id": "1e67e55210b7ed04",
+      "tournament_id": "R2026023",
+      "player_name": "Alex Noren",
+      "market": "make_cut",
+      "selection_label": "Alex Noren to Make Cut",
+      "odds_american": -325.0,
+      "stake_units": 1.0,
+      "placed_at": "2026-06-03T00:21:50.874305Z"
+    },
+    {
+      "id": "a2a0c0277c13",
+      "recommendation_id": "525d40d8f0d8391d",
+      "tournament_id": "R2026023",
+      "player_name": "Fitzpatrick, Alex",
+      "market": "h2h_r1",
+      "selection_label": "Fitzpatrick, Alex to beat Bridgeman, Jacob (R1)",
+      "odds_american": 120.0,
+      "stake_units": 1.0,
+      "placed_at": "2026-06-03T00:28:13.787412Z"
+    }
+  ]
+}
