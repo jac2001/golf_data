@@ -2709,6 +2709,61 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None, inc
                     season_parts.append(f"scoring avg {float(r_scoring):.2f}/round")
                 lines.append(f"**This season**: {' · '.join(season_parts)}")
 
+            # --- Recent results with tournament names (Tier 2: named events) ---
+            try:
+                _lb_path = DATA / "historical" / "leaderboards_2026.csv"
+                if _lb_path.exists():
+                    _lb = pd.read_csv(_lb_path)
+                    # Build schedule tid→name lookup for rows missing tournament_name
+                    _sched_name: dict[str, str] = {}
+                    _sched_path = DATA / "raw" / "schedule_2026.csv"
+                    if _sched_path.exists():
+                        try:
+                            _sched = pd.read_csv(_sched_path)
+                            _sched_name = dict(zip(
+                                _sched["tournament_id"].astype(str),
+                                _sched["tournament_name"].astype(str),
+                            ))
+                        except Exception:
+                            pass
+                    # Match by full name first, fall back to last name
+                    _actual_lower = actual.lower()
+                    _lb_match = _lb[_lb["player_name"].str.lower() == _actual_lower]
+                    if _lb_match.empty:
+                        _last_token = _actual_lower.split()[-1]
+                        _lb_match = _lb[_lb["player_name"].str.lower().str.split().str[-1] == _last_token]
+                    if not _lb_match.empty:
+                        _lb_match = _lb_match.sort_values("tournament_id", ascending=False).head(5)
+                        _recent = []
+                        for _, _lr in _lb_match.iterrows():
+                            _pos = str(_lr.get("position", "?")).strip()
+                            if _pos.upper() in ("CUT", "MC", "WD", "DQ"):
+                                _pos_str = _pos.upper()
+                            elif _pos == "1":
+                                _pos_str = "WIN"
+                            elif _pos.upper().startswith("T"):
+                                _pos_str = _pos.upper()
+                            else:
+                                try:
+                                    _pos_str = f"T{int(float(_pos))}"
+                                except (ValueError, TypeError):
+                                    _pos_str = _pos
+                            _topar = _lr.get("to_par")
+                            try:
+                                _topar_int = int(float(_topar))
+                                _topar_str = f" ({_topar_int:+d})" if _topar_int != 999 else ""
+                            except (ValueError, TypeError):
+                                _topar_str = ""
+                            _tname = str(_lr.get("tournament_name", "")).strip()
+                            if not _tname or _tname.lower() == "nan":
+                                _tid_str = str(_lr.get("tournament_id", "")).strip()
+                                _tname = _sched_name.get(_tid_str, _tid_str)
+                            _recent.append(f"{_pos_str} at {_tname}{_topar_str}")
+                        if _recent:
+                            lines.append(f"**Last {len(_recent)} starts**: {' · '.join(_recent)}")
+            except Exception:
+                pass
+
             form_parts = []
             if mc_last:
                 form_parts.append("missed the cut last start")
@@ -7258,6 +7313,23 @@ SG FIELD RANK SCALE (~120-130 player field):
 - #81–110 = Below average.
 - #111+ = Significant weakness.
 
+SG PLAIN-ENGLISH TRANSLATIONS — always pair the number with a human interpretation:
+- +1.5+ /round in a category: "one of the best in the field" / "elite-level"
+- +0.8 to +1.5: "well above average" / "top quarter of the field"
+- +0.3 to +0.8: "slightly above average" — fine, not a strength
+- −0.3 to +0.3: "essentially average" — not worth citing unless it's a surprise
+- −0.3 to −0.8: "a concern" / "below average"
+- below −0.8: "a real weakness" / "bottom third of the field"
+Example: "approach: +0.87/round (#23) — well above average with the irons, comfortably in the top quarter of the field"
+
+ODDS PLAIN-ENGLISH RULE — always translate odds or probabilities into a readable format:
+- Never just say "+1300" or "implied probability: 7.7%"
+- Always add the readable version: "+1300 (roughly 1-in-14, a real longshot)" or "+400 (about a 1-in-5 shot)"
+- For model probabilities: "our model has him at about a 1-in-12 chance" not "win_prob: 8.3%"
+- For edges: never say "+4.2pp edge" — say "we like him meaningfully more than the books" or "the books are underpricing him"
+- For make-cut lines: "-160 means the market expects him to make the cut about 62% of the time"
+- Skip the math when the user hasn't asked about odds — it's background signal, not the story
+
 WEB NEWS RULES — read this carefully:
 - If RECENT NEWS (web) or TOURNAMENT NEWS (web) appears in context, you MUST reference relevant items.
 - Lead with news when it changes the analysis: a withdrawal, injury report, or practice-round story matters more than a routine SG comparison.
@@ -7487,16 +7559,20 @@ Not "he's world #2." Not always course history. Ask: what's the most actionable 
 
 FORMAT (4 paragraphs max, no headers, no bullet lists):
   P1: The headline angle — what's most relevant about him this week. One or two sharp sentences.
-  P2: Stats that support or complicate the angle. SG breakdown + DG skill ratings + approach detail
-      if relevant. Round tendencies (R1–R4 vs field) if there's a pattern worth naming.
-  P3: Course fit. Cite course history avg to par, wins/top-10s, and the DG course-fit delta.
-      Then map his SG strengths to what this course demands.
+  P2: Form and recent results first, THEN the numbers. Start by naming his last 3–5 events and
+      finishing positions in plain English ("won at Colonial two weeks ago, T6 at Charles Schwab
+      before that, missed the cut at Wells Fargo"). Then add the 2–3 SG stats that explain WHY —
+      always with a plain-English interpretation alongside the number (see SG PLAIN-ENGLISH
+      TRANSLATIONS). Skip SG categories that are average and don't drive the story.
+  P3: Course fit. Cite course history in plain English ("3 starts here, best finish T4, averages
+      about 4 under per tournament"). Then map his SG strengths to what this course demands.
   P4: Verdict — one confident sentence. "He's going to contend." "Fade him." "Save the use."
 
 RULES:
 - Every stat must come from the PLAYER SPOTLIGHT or FORM block verbatim. No estimates.
 - Never start with world ranking or generic bio.
 - Never write "it's worth noting," "here's the thing," or "the lean is."
+- Never lead with odds or model probabilities for a general player question — those are footnotes.
 - If multiple players asked about: P1–P4 for each, then one sentence comparing them at the end."""
 
 _STRUCT_STRATEGY = """SEASON USAGE STRATEGY FORMAT — follow exactly:
