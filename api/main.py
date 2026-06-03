@@ -2714,11 +2714,13 @@ def refresh_dg_odds() -> dict:
 
 
 @app.get("/api/model-comparison")
-def get_model_comparison(limit: int = 30) -> dict:
+def get_model_comparison() -> dict:
     """
-    Side-by-side comparison of our model ranks vs DataGolf's ranks.
-    Returns top `limit` players sorted by our model win_prob.
+    Compare our model predictions vs DataGolf's pre-tournament predictions.
+    Returns Spearman ρ by market, top-10 picks side-by-side, and largest disagreements.
     """
+    from scipy.stats import spearmanr
+
     tid = _get_tournament_id()
 
     # Load our predictions
@@ -2730,54 +2732,129 @@ def get_model_comparison(limit: int = 30) -> dict:
     for col in ["win_prob", "top10_prob"]:
         if col in preds.columns:
             preds[col] = pd.to_numeric(preds[col], errors="coerce")
-
-    preds = preds.sort_values("win_prob", ascending=False).reset_index(drop=True)
-    preds["our_rank"] = preds.index + 1
-
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
+    preds = preds.dropna(subset=["win_prob"])
 
     # Load DG pre-tournament probabilities
     dg_path = DG_DIR / f"dg_pre_tournament_{tid}.csv"
     if not dg_path.exists():
         dg_path = DG_DIR / "dg_pre_tournament_latest.csv"
+    if not dg_path.exists():
+        raise HTTPException(status_code=404, detail="No DG pre-tournament file found")
 
-    dg_map: dict[str, dict] = {}
-    if dg_path.exists():
-        dg = pd.read_csv(dg_path)
-        dg = dg.sort_values("win", ascending=False).reset_index(drop=True)
-        dg["dg_rank"] = dg.index + 1
-        for _, row in dg.iterrows():
-            name_key = _flip(str(row["player_name"]).strip()).lower()
-            dg_map[name_key] = {
-                "dg_rank":    int(row["dg_rank"]),
-                "dg_win":     _safe(row.get("win")),
-                "dg_top10":   _safe(row.get("top_10")),
-            }
+    dg = pd.read_csv(dg_path)
+    if "model" in dg.columns:
+        dg = dg[dg["model"] == "baseline"]
+    dg = dg.dropna(subset=["win"])
 
-    players = []
-    for _, row in preds.head(limit).iterrows():
-        name = _flip(str(row["player_name"]).strip())
-        dg   = dg_map.get(name.lower(), {})
-        our_rank = int(row["our_rank"])
-        dg_rank  = dg.get("dg_rank")
-        delta    = (dg_rank - our_rank) if dg_rank else None  # positive = DG ranks higher than us
+    tournament_name = str(dg["event_name"].iloc[0]) if "event_name" in dg.columns and len(dg) > 0 else ""
 
-        our_win  = _safe(row.get("win_prob"))
-        our_t10  = _safe(row.get("top10_prob"))
-        players.append({
-            "player":    name,
-            "our_rank":  our_rank,
-            "dg_rank":   dg_rank,
-            "delta":     delta,            # DG rank minus our rank (+ve = DG higher, -ve = we're higher)
-            "our_win":   round(float(our_win)  * 100, 1) if our_win  else None,
-            "dg_win":    round(float(dg.get("dg_win", 0) or 0) * 100, 1) if dg.get("dg_win") else None,
-            "our_top10": round(float(our_t10)  * 100, 1) if our_t10  else None,
-            "dg_top10":  round(float(dg.get("dg_top10", 0) or 0) * 100, 1) if dg.get("dg_top10") else None,
+    # Sort-key normalization: both files use "Last, First" — alphabetise tokens so format
+    # differences (comma vs no comma, capitalisation) don't block the join
+    def _name_key(n: str) -> str:
+        return " ".join(sorted(str(n).replace(",", "").lower().split()))
+
+    preds["_key"] = preds["player_name"].apply(_name_key)
+    dg["_key"]    = dg["player_name"].apply(_name_key)
+
+    merged = preds.merge(dg[["_key", "win", "top_10"]], on="_key", how="inner")
+
+    if len(merged) < 5:
+        raise HTTPException(status_code=404, detail="Not enough players matched between our model and DG")
+
+    # Spearman ρ per market
+    markets: list[dict] = []
+    for our_col, dg_col, label in [
+        ("win_prob",   "win",    "Win"),
+        ("top10_prob", "top_10", "Top 10"),
+    ]:
+        if our_col in merged.columns:
+            sub = merged[[our_col, dg_col]].dropna()
+            if len(sub) >= 5:
+                rho, _ = spearmanr(sub[our_col], sub[dg_col])
+                markets.append({"market": label, "spearman_rho": round(float(rho), 3)})
+
+    overall_rho = markets[0]["spearman_rho"] if markets else None
+
+    # Our top 10 by win_prob
+    our_top10 = [
+        {"player": str(r["player_name"]).strip(), "prob": round(float(r["win_prob"]) * 100, 1)}
+        for _, r in preds.sort_values("win_prob", ascending=False).head(10).iterrows()
+    ]
+
+    # DG top 10 by win
+    dg_top10 = [
+        {"player": str(r["player_name"]).strip(), "prob": round(float(r["win"]) * 100, 1)}
+        for _, r in dg.sort_values("win", ascending=False).head(10).iterrows()
+    ]
+
+    # Disagreements — adaptive threshold: at least 2pp, or 75th-percentile of abs diffs
+    merged["our_win_pct"] = merged["win_prob"] * 100
+    merged["dg_win_pct"]  = merged["win"] * 100
+    merged["diff_pp"]     = merged["our_win_pct"] - merged["dg_win_pct"]
+    thresh = max(2.0, float(merged["diff_pp"].abs().quantile(0.75)))
+
+    disagreements: list[dict] = []
+    for _, r in (
+        merged[merged["diff_pp"].abs() >= thresh]
+        .sort_values("diff_pp", key=abs, ascending=False)
+        .head(10)
+        .iterrows()
+    ):
+        diff = float(r["diff_pp"])
+        t10  = r.get("top10_prob")
+        dt10 = r.get("top_10")
+        disagreements.append({
+            "player_name": str(r["player_name"]).strip(),
+            "our_win_pct": round(float(r["our_win_pct"]), 1),
+            "dg_win_pct":  round(float(r["dg_win_pct"]),  1),
+            "diff_pp":     round(diff, 1),
+            "our_top10":   round(float(t10)  * 100, 1) if pd.notna(t10)  else None,
+            "dg_top10":    round(float(dt10) * 100, 1) if pd.notna(dt10) else None,
+            "direction":   "higher" if diff > 0 else "lower",
         })
 
-    return {"tournament_id": tid, "players": players}
+    # Full ranked player list for the side-by-side comparison table
+    def _flip(n: str) -> str:
+        s = str(n).strip()
+        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
+
+    merged_sorted = merged.sort_values("win_prob", ascending=False).reset_index(drop=True)
+    merged_sorted["our_rank"] = merged_sorted.index + 1
+    dg_sorted = dg.sort_values("win", ascending=False).reset_index(drop=True)
+    dg_sorted["dg_rank"] = dg_sorted.index + 1
+    dg_rank_map = {_name_key(str(r["player_name"])): int(r["dg_rank"]) for _, r in dg_sorted.iterrows()}
+
+    players_list: list[dict] = []
+    for _, r in merged_sorted.iterrows():
+        our_rank = int(r["our_rank"])
+        dg_rank  = dg_rank_map.get(r["_key"])
+        delta    = (dg_rank - our_rank) if dg_rank else None
+        our_win  = _safe(r.get("win_prob"))
+        our_t10  = _safe(r.get("top10_prob"))
+        dg_win   = _safe(r.get("win"))
+        dg_t10   = _safe(r.get("top_10"))
+        players_list.append({
+            "player":    _flip(str(r["player_name"])),
+            "our_rank":  our_rank,
+            "dg_rank":   dg_rank,
+            "delta":     delta,
+            "our_win":   round(float(our_win) * 100, 1) if our_win else None,
+            "dg_win":    round(float(dg_win)  * 100, 1) if dg_win  else None,
+            "our_top10": round(float(our_t10) * 100, 1) if our_t10 else None,
+            "dg_top10":  round(float(dg_t10)  * 100, 1) if dg_t10  else None,
+        })
+
+    return {
+        "tournament_id":        tid,
+        "tournament_name":      tournament_name,
+        "players_compared":     len(merged),
+        "overall_spearman_rho": overall_rho,
+        "markets":              markets,
+        "our_top10":            our_top10,
+        "dg_top10":             dg_top10,
+        "disagreements":        disagreements,
+        "players":              players_list,
+    }
 
 
 @app.get("/api/lineup")

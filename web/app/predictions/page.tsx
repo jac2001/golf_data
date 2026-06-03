@@ -61,6 +61,7 @@ export default function PredictionsPage() {
   const [teeTimes, setTeeTimes]       = useState<TeeTimesResponse | null>(null);
   const [course, setCourse]           = useState<CourseResponse | null>(null);
   const [dgComp, setDgComp]           = useState<ModelCompPlayer[] | null>(null);
+  const [dgMeta, setDgMeta]           = useState<{ tournament_name: string; players_compared: number } | null>(null);
   const [weather, setWeather]         = useState<WeatherResponse | null>(null);
   const [wds, setWds]                 = useState<WithdrawalsResponse | null>(null);
   const [intel, setIntel]             = useState<IntelResponse | null>(null);
@@ -123,18 +124,9 @@ export default function PredictionsPage() {
     setLoadingDg(true);
     getModelComparison()
       .then(d => {
-        if (!d?.disagreements?.length) return;
-        const players = d.disagreements.map((dis, i) => ({
-          player:    dis.player_name,
-          our_rank:  i + 1,
-          dg_rank:   null,
-          delta:     dis.diff_pp,
-          our_win:   dis.our_win_pct,
-          dg_win:    dis.dg_win_pct,
-          our_top10: dis.our_top10,
-          dg_top10:  dis.dg_top10,
-        }));
-        setDgComp(players);
+        if (!d?.players?.length) return;
+        setDgComp(d.players);
+        setDgMeta({ tournament_name: d.tournament_name, players_compared: d.players_compared });
       })
       .catch(() => null)
       .finally(() => setLoadingDg(false));
@@ -297,7 +289,19 @@ export default function PredictionsPage() {
         loadingDg
           ? <Spinner />
           : dgComp
-            ? <ModelComparison players={dgComp} />
+            ? (
+              <div>
+                {dgMeta && (
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14 }}>
+                    <span style={{ color: "#dde6f5", fontWeight: 700, fontSize: "1em" }}>
+                      vs DataGolf — {dgMeta.tournament_name}
+                    </span>
+                    <span style={{ color: "#4a6080", fontSize: "0.78em" }}>{dgMeta.players_compared} players matched</span>
+                  </div>
+                )}
+                <ModelComparison players={dgComp} />
+              </div>
+            )
             : <Empty text="No DG comparison data available." />
       )}
 

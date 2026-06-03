@@ -1447,6 +1447,7 @@ export type ModelComparison = {
   our_top10: { player: string; prob: number }[];
   dg_top10:  { player: string; prob: number }[];
   disagreements: ModelDisagreement[];
+  players: ModelCompPlayer[];
 };
 
 export async function getModelComparison(): Promise<ModelComparison> {
