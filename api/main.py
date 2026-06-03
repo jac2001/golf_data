@@ -1329,7 +1329,10 @@ def get_best_bet() -> dict:
     try:
         import json
         data = json.loads(path.read_text())
-        if not data.get("player_name"):
+        player = str(data.get("player_name", "") or "")
+        if not player or player.lower() in ("nan", "none", ""):
+            return {"available": False}
+        if data.get("market") == "content_card":
             return {"available": False}
         # Stale check: must match current tournament
         current_tid = _get_tournament_id()

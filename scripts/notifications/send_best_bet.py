@@ -75,6 +75,12 @@ def load_best_bet(tid: str) -> dict | None:
         print(f"  Recommended bets file is empty for {tid}")
         return None
 
+    # Filter out content cards (DK branded parlays) and unidentified players
+    if "market" in df.columns:
+        df = df[df["market"].astype(str) != "content_card"]
+    if "player_name" in df.columns:
+        df = df[df["player_name"].notna() & (df["player_name"].astype(str).str.lower() != "nan")]
+
     # Filter out extreme longshots
     df = df[df["odds_american"].abs() <= MAX_ODDS].copy()
     if df.empty:
