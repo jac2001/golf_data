@@ -121,20 +121,23 @@ export default function PredictionsPage() {
   useEffect(() => {
     if (!loaded.has("dg") || dgComp) return;
     setLoadingDg(true);
-    getModelComparison().then(d => {
-      // Adapt new rich response to ModelCompPlayer[] shape for this table
-      const players = d.disagreements.map((dis, i) => ({
-        player:   dis.player_name,
-        our_rank: i + 1,
-        dg_rank:  null,
-        delta:    dis.diff_pp,
-        our_win:  dis.our_win_pct,
-        dg_win:   dis.dg_win_pct,
-        our_top10: dis.our_top10,
-        dg_top10:  dis.dg_top10,
-      }));
-      setDgComp(players);
-    }).finally(() => setLoadingDg(false));
+    getModelComparison()
+      .then(d => {
+        if (!d?.disagreements?.length) return;
+        const players = d.disagreements.map((dis, i) => ({
+          player:    dis.player_name,
+          our_rank:  i + 1,
+          dg_rank:   null,
+          delta:     dis.diff_pp,
+          our_win:   dis.our_win_pct,
+          dg_win:    dis.dg_win_pct,
+          our_top10: dis.our_top10,
+          dg_top10:  dis.dg_top10,
+        }));
+        setDgComp(players);
+      })
+      .catch(() => null)
+      .finally(() => setLoadingDg(false));
   }, [loaded]);
 
   // ── Lazy load: withdrawals (full list — count already loaded on mount) ────────
