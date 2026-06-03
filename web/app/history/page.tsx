@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from "react";
 import {
   getHistoryTournaments, getHistoryModel, getHistoryBets,
-  getBetSlip, removeFromBetSlip,
+  getBetSlip, removeFromBetSlip, getModelComparison,
   HistoryTournament, HistoryModelRow, HistoryBetsResponse,
-  SlipBet, SlipStats, TournamentPnl,
+  SlipBet, SlipStats, TournamentPnl, ModelComparison, ModelDisagreement,
 } from "@/lib/api";
 
 type Tab = "results" | "model" | "bets" | "slip";
@@ -99,17 +99,115 @@ function ResultsTab() {
   );
 }
 
+// ── Model vs DG Comparison ────────────────────────────────────────────────────
+function ModelVsDG({ data }: { data: ModelComparison }) {
+  const rhoColor = (r: number) => r >= 0.85 ? "#00c44f" : r >= 0.70 ? "#f0c040" : "#e05555";
+  const diffColor = (d: number) => d > 0 ? "#00c44f" : "#e05555";
+
+  return (
+    <div style={{ marginBottom: 28 }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14 }}>
+        <span style={{ color: "#dde6f5", fontWeight: 700, fontSize: "1em" }}>
+          vs DataGolf — {data.tournament_name}
+        </span>
+        <span style={{ color: "#4a6080", fontSize: "0.78em" }}>{data.players_compared} players matched</span>
+      </div>
+
+      {/* Market correlations */}
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 18 }}>
+        {data.markets.map(m => (
+          <div key={m.market} style={{
+            background: "#0a1720", border: "1px solid #1e3a5f",
+            borderRadius: 7, padding: "8px 14px", minWidth: 80, textAlign: "center",
+          }}>
+            <div style={{ color: "#4a6080", fontSize: "0.68em", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 4 }}>
+              {m.market.replace("_", " ")}
+            </div>
+            <div style={{ color: rhoColor(m.spearman_rho), fontWeight: 800, fontSize: "1.1em" }}>
+              {m.spearman_rho.toFixed(3)}
+            </div>
+            <div style={{ color: "#2a4060", fontSize: "0.65em", marginTop: 2 }}>Spearman ρ</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Side-by-side top-10 picks */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 18 }}>
+        {[
+          { label: "Our Model", picks: data.our_top10, color: "#00c44f" },
+          { label: "DataGolf",  picks: data.dg_top10,  color: "#4cb8ff" },
+        ].map(col => (
+          <div key={col.label} style={{ background: "#0a1720", border: "1px solid #1e3a5f", borderRadius: 7, overflow: "hidden" }}>
+            <div style={{ padding: "7px 12px", borderBottom: "1px solid #1e3a5f", color: col.color, fontWeight: 700, fontSize: "0.78em" }}>
+              {col.label} — Top 10 Win Prob
+            </div>
+            {col.picks.map((p, i) => (
+              <div key={p.player} style={{
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                padding: "5px 12px", borderBottom: i < 9 ? "1px solid #0d1929" : "none",
+              }}>
+                <span style={{ color: i < 3 ? "#dde6f5" : "#7a9ab8", fontSize: "0.82em", fontWeight: i < 3 ? 600 : 400 }}>
+                  {i + 1}. {p.player.includes(",") ? p.player.split(",").reverse().join(" ").trim() : p.player}
+                </span>
+                <span style={{ color: col.color, fontWeight: 700, fontSize: "0.82em" }}>{p.prob}%</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* Disagreements */}
+      {data.disagreements.length > 0 && (
+        <div>
+          <div style={{ color: "#7a9ab8", fontSize: "0.75em", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>
+            Notable Disagreements — where our model diverges from DG
+          </div>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.82em" }}>
+            <thead>
+              <tr>
+                {["Player", "Our Win%", "DG Win%", "Diff", "Our Top10%", "DG Top10%"].map(h => (
+                  <th key={h} style={{ ...hdr, fontSize: "0.75em" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.disagreements.map((d: ModelDisagreement) => (
+                <tr key={d.player_name}>
+                  <td style={{ ...cell, color: "#dde6f5", fontWeight: 600 }}>
+                    {d.player_name.includes(",") ? d.player_name.split(",").reverse().join(" ").trim() : d.player_name}
+                  </td>
+                  <td style={{ ...cell, color: d.direction === "higher" ? "#00c44f" : "#e05555" }}>{d.our_win_pct}%</td>
+                  <td style={{ ...cell, color: "#7a9ab8" }}>{d.dg_win_pct}%</td>
+                  <td style={{ ...cell, color: diffColor(d.diff_pp), fontWeight: 700 }}>
+                    {d.diff_pp > 0 ? "+" : ""}{d.diff_pp}pp
+                  </td>
+                  <td style={{ ...cell, color: "#8ba0b8" }}>{d.our_top10 ?? "—"}%</td>
+                  <td style={{ ...cell, color: "#4a6080" }}>{d.dg_top10}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Model Tab ─────────────────────────────────────────────────────────────────
 function ModelTab() {
-  const [data, setData]   = useState<HistoryModelRow[] | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [data,       setData]       = useState<HistoryModelRow[] | null>(null);
+  const [comparison, setComparison] = useState<ModelComparison | null>(null);
+  const [loading,    setLoading]    = useState(true);
 
   useEffect(() => {
-    getHistoryModel().then(setData).finally(() => setLoading(false));
+    Promise.all([
+      getHistoryModel().then(setData),
+      getModelComparison().then(setComparison).catch(() => null),
+    ]).finally(() => setLoading(false));
   }, []);
 
   if (loading) return <p style={{ color: "#7a9ab8", padding: 24 }}>Loading...</p>;
-  if (!data?.length) return <p style={{ color: "#7a9ab8", padding: 24 }}>No model results yet.</p>;
+  if (!data?.length && !comparison) return <p style={{ color: "#7a9ab8", padding: 24 }}>No model results yet.</p>;
 
   function calibBadge(pred: number, actual: number | null) {
     if (actual === null) return <span style={{ color: "#7a9ab8" }}>—</span>;
@@ -120,6 +218,10 @@ function ModelTab() {
 
   return (
     <div>
+      {comparison && <ModelVsDG data={comparison} />}
+
+      {data?.length ? (
+      <>
       <p style={{ color: "#7a9ab8", fontSize: "0.82em", padding: "8px 0 16px", marginTop: 0 }}>
         Calibration ratio: 1.0x = perfect. Actual% / Predicted%. Green = within 15%.
       </p>
@@ -148,6 +250,8 @@ function ModelTab() {
           ))}
         </tbody>
       </table>
+      </>
+      ) : null}
     </div>
   );
 }

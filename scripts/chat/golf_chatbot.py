@@ -749,6 +749,12 @@ def _classify_query(query: str) -> dict:
             "how is aberg doing", "how is åberg doing", "how is schauffele doing",
             "how is bryson doing", "my picks today", "picks today",
         ]),
+        "is_model_vs_dg":    any(w in q for w in [
+            "compare to datagolf", "vs datagolf", "vs data golf", "datagolf comparison",
+            "model comparison", "how does my model compare", "our model vs", "datagolf vs",
+            "disagree with datagolf", "where do we differ", "model edge", "datagolf edge",
+            "model accuracy", "how accurate", "model vs dg", "model benchmark",
+        ]),
         "is_weather":        any(w in q for w in ["weather", "wind", "rain", "forecast", "conditions", "temperature", "temp"]),
         "is_course":         any(w in q for w in ["course", "hole", "layout", "yardage", "field", "green", "fairway", "rough", "setup"]),
         "is_value":          any(w in q for w in ["value", "underdog", "long shot", "longshot", "undervalued", "sharp"]),
@@ -5364,6 +5370,73 @@ def _web_intel_alerts_block(tid: str | None) -> str:
     return "\n".join(lines)
 
 
+def _model_vs_dg_block(tid: str | None) -> str:
+    """
+    Comparison context for 'how does my model compare to DataGolf?'
+    Reads both CSVs directly. Returns markdown for LLM injection.
+    """
+    preds_path = OUTPUTS / "latest_predictions.csv"
+    dg_path    = DATA / "datagolf" / "dg_pre_tournament_latest.csv"
+
+    if not preds_path.exists() or not dg_path.exists():
+        return ""
+
+    try:
+        from scipy.stats import spearmanr
+
+        our = pd.read_csv(preds_path, low_memory=False)
+        dg  = pd.read_csv(dg_path, low_memory=False)
+
+        if "model" in dg.columns:
+            dg = dg[dg["model"] == "baseline"]
+
+        def _key(n: str) -> str:
+            return " ".join(sorted(str(n).replace(",", "").lower().split()))
+
+        our["_key"] = our["player_name"].fillna("").apply(_key)
+        dg["_key"]  = dg["player_name"].fillna("").apply(_key)
+
+        our_win = "win_prob_calibrated" if "win_prob_calibrated" in our.columns else "win_prob"
+        our_t10 = "top10_prob_calibrated" if "top10_prob_calibrated" in our.columns else "top10_prob"
+
+        merged = our.merge(dg[["_key", "win", "top_10"]], on="_key", how="inner")
+        if merged.empty:
+            return ""
+
+        rho_win, _ = spearmanr(merged[our_win].fillna(0), merged["win"].fillna(0))
+        rho_t10, _ = spearmanr(merged[our_t10].fillna(0), merged["top_10"].fillna(0))
+
+        merged["diff_pp"] = (merged[our_win].fillna(0) - merged["win"].fillna(0)) * 100
+        top_diffs = merged[merged["diff_pp"].abs() > 4].sort_values("diff_pp", key=abs, ascending=False).head(10)
+
+        lines = ["## MODEL vs DATAGOLF COMPARISON"]
+        lines.append(f"\nSpearman ρ — win: {rho_win:.3f}  |  top10: {rho_t10:.3f}")
+        lines.append(f"Players compared: {len(merged)}")
+        lines.append("ρ close to 1.0 = strong agreement on rankings. Disagreements = potential edges.")
+
+        if not top_diffs.empty:
+            lines.append("\n### Key Disagreements (>4pp on win%)")
+            for _, row in top_diffs.iterrows():
+                diff = row["diff_pp"]
+                sign = "+" if diff > 0 else ""
+                lines.append(
+                    f"- **{_fmt_name(row['player_name'])}**: us {row[our_win]*100:.1f}% vs DG {row['win']*100:.1f}% "
+                    f"({sign}{diff:.1f}pp) — {'we are more bullish' if diff > 0 else 'DG is more bullish'}"
+                )
+
+        lines.append("\n### Our Top 5 Win Picks")
+        for _, r in merged.nlargest(5, our_win).iterrows():
+            lines.append(f"- {_fmt_name(r['player_name'])}: {r[our_win]*100:.1f}% (DG: {r['win']*100:.1f}%)")
+
+        lines.append("\n### DG Top 5 Win Picks")
+        for _, r in merged.nlargest(5, "win").iterrows():
+            lines.append(f"- {_fmt_name(r['player_name'])}: {r['win']*100:.1f}% (Us: {r[our_win]*100:.1f}%)")
+
+        return "\n".join(lines)
+    except Exception:
+        return ""
+
+
 def _course_profile_block(tid: str) -> str:
     """Course summary + hardest/easiest holes."""
     if not tid:
@@ -8232,6 +8305,14 @@ def build_context(
             sections.append("")
             sections.append(_fetch_tournament_news(_active_t_name))
             sections.append("")
+
+    elif intent.get("is_model_vs_dg"):
+        sections.append("## MODEL COMPARISON REQUEST")
+        sections.append("")
+        sections.append(_model_vs_dg_block(_effective_tid or tournament_id))
+        sections.append("")
+        sections.append(_field_overview_block(top_n=10))
+        sections.append("")
 
     elif intent["is_weather"] or intent["is_course"]:
         if tournament_id:

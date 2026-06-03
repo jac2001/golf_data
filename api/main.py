@@ -4097,6 +4097,71 @@ def _select_model(query: str) -> str:
     return "claude-haiku-4-5-20251001"
 
 
+# ── Response cache ────────────────────────────────────────────────────────────
+# Caches full LLM responses in-memory. Keyed by normalized query + tournament +
+# data freshness so it auto-invalidates when the pipeline updates predictions.
+# Resets on server restart (intentional — stale responses from prior pipeline
+# runs should never be served after a restart).
+
+import hashlib as _hashlib
+
+_RESPONSE_CACHE: dict[str, dict] = {}
+
+# Queries about real-time state — never cache these
+_LIVE_CACHE_SKIP = {
+    "leaderboard", "right now", "currently", "score", "thru", "who's winning",
+    "who is winning", "live", "in progress", "hole", "round score",
+}
+
+def _response_cache_key(query: str, tid: str | None) -> str:
+    """Stable key: normalized query + tournament + predictions file bucket (10-min windows)."""
+    q = re.sub(r"[^\w\s]", "", query.lower().strip())
+    q = re.sub(r"\s+", " ", q)
+    preds = OUTPUTS_DIR / "latest_predictions.csv"
+    mtime_bucket = int(preds.stat().st_mtime // 600) if preds.exists() else 0
+    raw = f"{tid}:{mtime_bucket}:{q}"
+    return _hashlib.md5(raw.encode()).hexdigest()[:20]
+
+
+def _cache_ttl(intent: dict, query: str) -> int:
+    """Return TTL in seconds. 0 = do not cache."""
+    q = query.lower()
+    if any(s in q for s in _LIVE_CACHE_SKIP):
+        return 0
+    if intent.get("is_leaderboard") or intent.get("is_live"):
+        return 0
+    if intent.get("is_bet") or intent.get("is_value") or intent.get("is_daily_bet"):
+        return 20 * 60   # 20 min — odds refresh every 30 min
+    if intent.get("is_field_overview") or intent.get("is_course"):
+        return 45 * 60   # 45 min — stable pre-tournament
+    if intent.get("is_player") or intent.get("is_h2h"):
+        return 30 * 60   # 30 min — player form is relatively stable
+    return 15 * 60       # 15 min default
+
+
+def _cache_get(key: str) -> str | None:
+    entry = _RESPONSE_CACHE.get(key)
+    if not entry:
+        return None
+    if time.time() - entry["ts"] > entry["ttl"]:
+        del _RESPONSE_CACHE[key]
+        return None
+    return entry["text"]
+
+
+def _cache_set(key: str, text: str, ttl: int) -> None:
+    if ttl > 0 and text:
+        _RESPONSE_CACHE[key] = {"text": text, "ts": time.time(), "ttl": ttl}
+
+
+def _stream_from_cache(text: str):
+    """Replay a cached response as a fake SSE stream (chunked so it feels live)."""
+    chunk = 30
+    for i in range(0, len(text), chunk):
+        yield f"data: {json.dumps({'text': text[i:i+chunk], 'cached': True})}\n\n"
+    yield "data: [DONE]\n\n"
+
+
 def _select_temperature(query: str) -> float:
     """Lower temperature for factual queries (precise stat citation); higher for conversation."""
     q = query.lower()
@@ -4189,7 +4254,24 @@ def chat_endpoint(body: ChatRequest, request: Request):
     max_tokens = 3000 if model == "claude-sonnet-4-6" else 1500
     temperature = _select_temperature(body.query)
 
+    # ── Response cache check ──────────────────────────────────────────────────
+    # Only cache single-turn questions (no conversation history) — follow-ups
+    # are contextual and can't be replayed safely.
+    _can_cache  = len(body.messages) == 0
+    _cache_key  = _response_cache_key(body.query, tid) if _can_cache else ""
+    _ttl        = _cache_ttl(_q_intent, body.query)    if _can_cache else 0
+
+    if _can_cache and _ttl > 0:
+        cached_text = _cache_get(_cache_key)
+        if cached_text:
+            return StreamingResponse(
+                _stream_from_cache(cached_text),
+                media_type="text/event-stream",
+                headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+            )
+
     def _stream():
+        buf: list[str] = []
         try:
             from anthropic import Anthropic  # type: ignore
             client = Anthropic(api_key=api_key)
@@ -4203,9 +4285,15 @@ def chat_endpoint(body: ChatRequest, request: Request):
                 extra_headers={"anthropic-beta": "prompt-caching-2024-07-31"},
             ) as stream:
                 for text in stream.text_stream:
+                    buf.append(text)
                     yield f"data: {json.dumps({'text': text})}\n\n"
         except Exception as e:
             yield f"data: {json.dumps({'text': f'\\n\\n*(Error: {e})*'})}\n\n"
+
+        # Store full response after stream completes
+        if _can_cache and _ttl > 0:
+            _cache_set(_cache_key, "".join(buf), _ttl)
+
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(
@@ -4213,6 +4301,113 @@ def chat_endpoint(body: ChatRequest, request: Request):
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+@app.get("/api/model-comparison")
+def get_model_comparison() -> dict:
+    """
+    Compare our model's pre-tournament probabilities vs DataGolf's published predictions.
+
+    Returns:
+      - rank_correlation: Spearman ρ between our win_prob ranks and DG's win ranks
+      - disagreements: players where our prob differs from DG by >5pp (potential edges)
+      - our_top10 / dg_top10: each model's top-10 predicted finishers
+      - markets: per-market correlation (win, top5, top10, top20, make_cut)
+    """
+    from scipy.stats import spearmanr  # type: ignore
+
+    preds_path = OUTPUTS_DIR / "latest_predictions.csv"
+    dg_path    = DG_DIR / "dg_pre_tournament_latest.csv"
+
+    if not preds_path.exists():
+        raise HTTPException(status_code=404, detail="No predictions found")
+    if not dg_path.exists():
+        raise HTTPException(status_code=404, detail="No DataGolf pre-tournament data found")
+
+    our  = pd.read_csv(preds_path, low_memory=False)
+    dg   = pd.read_csv(dg_path,    low_memory=False)
+
+    # ── Name normalization ────────────────────────────────────────────────────
+    def _sort_key(name: str) -> str:
+        return " ".join(sorted(str(name).replace(",", "").lower().split()))
+
+    our["_key"] = our["player_name"].fillna("").apply(_sort_key)
+    # DG has two model variants — use baseline only
+    if "model" in dg.columns:
+        dg = dg[dg["model"] == "baseline"]
+    dg["_key"] = dg["player_name"].fillna("").apply(_sort_key)
+
+    # Use calibrated probabilities if available, fall back to raw
+    our_win   = "win_prob_calibrated"   if "win_prob_calibrated"   in our.columns else "win_prob"
+    our_top5  = "top5_prob_calibrated"  if "top5_prob_calibrated"  in our.columns else "top5_prob"
+    our_top10 = "top10_prob_calibrated" if "top10_prob_calibrated" in our.columns else "top10_prob"
+    our_top20 = "top20_prob_calibrated" if "top20_prob_calibrated" in our.columns else "top20_prob"
+
+    # ── Merge on sort key ─────────────────────────────────────────────────────
+    merged = our.merge(
+        dg[["_key", "win", "top_5", "top_10", "top_20", "make_cut"]],
+        on="_key", how="inner"
+    )
+    if merged.empty:
+        raise HTTPException(status_code=404, detail="No player overlap between our predictions and DataGolf")
+
+    # ── Per-market Spearman rank correlations ─────────────────────────────────
+    markets: list[dict] = []
+    market_map = [
+        ("win",      our_win,   "win"),
+        ("top5",     our_top5,  "top_5"),
+        ("top10",    our_top10, "top_10"),
+        ("top20",    our_top20, "top_20"),
+        ("make_cut", "make_cut_prob" if "make_cut_prob" in our.columns else our_win, "make_cut"),
+    ]
+    for label, our_col, dg_col in market_map:
+        if our_col not in merged.columns or dg_col not in merged.columns:
+            continue
+        rho, _ = spearmanr(merged[our_col].fillna(0), merged[dg_col].fillna(0))
+        markets.append({"market": label, "spearman_rho": round(float(rho), 3)})
+
+    # Overall win-prob correlation
+    overall_rho = next((m["spearman_rho"] for m in markets if m["market"] == "win"), None)
+
+    # ── Disagreements: players where win prob differs by >4pp ─────────────────
+    merged["diff_pp"] = (merged[our_win].fillna(0) - merged["win"].fillna(0)) * 100
+    disagreements: list[dict] = []
+    for _, row in merged[merged["diff_pp"].abs() > 4].sort_values("diff_pp", key=abs, ascending=False).head(15).iterrows():
+        disagreements.append({
+            "player_name":  row["player_name"],
+            "our_win_pct":  round(float(row[our_win]) * 100, 1),
+            "dg_win_pct":   round(float(row["win"]) * 100, 1),
+            "diff_pp":      round(float(row["diff_pp"]), 1),
+            "our_top10":    round(float(row[our_top10]) * 100, 1) if our_top10 in row else None,
+            "dg_top10":     round(float(row["top_10"]) * 100, 1),
+            "direction":    "higher" if row["diff_pp"] > 0 else "lower",
+        })
+
+    # ── Top-10 predicted finishers for each model ─────────────────────────────
+    def _top10_list(df: pd.DataFrame, prob_col: str, name_col: str) -> list[dict]:
+        return [
+            {"player": r[name_col], "prob": round(float(r[prob_col]) * 100, 1)}
+            for _, r in df.nlargest(10, prob_col).iterrows()
+            if pd.notna(r.get(prob_col))
+        ]
+
+    our_top10_list = _top10_list(merged, our_win, "player_name")
+    dg_top10_list  = _top10_list(merged, "win",   "player_name")
+
+    # Tournament context
+    tid  = _get_tournament_id() or ""
+    name = _get_tournament_name(tid) or "Current Tournament"
+
+    return {
+        "tournament_id":   tid,
+        "tournament_name": name,
+        "players_compared": len(merged),
+        "overall_spearman_rho": overall_rho,
+        "markets":         markets,
+        "our_top10":       our_top10_list,
+        "dg_top10":        dg_top10_list,
+        "disagreements":   disagreements,
+    }
 
 
 @app.get("/api/weather")

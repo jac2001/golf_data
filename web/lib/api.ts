@@ -258,18 +258,12 @@ export type ModelCompPlayer = {
   player: string;
   our_rank: number;
   dg_rank: number | null;
-  delta: number | null;    // DG rank minus our rank: positive = DG has them higher, negative = we have them higher
+  delta: number | null;
   our_win: number | null;
   dg_win: number | null;
   our_top10: number | null;
   dg_top10: number | null;
 };
-
-export async function getModelComparison(limit = 30): Promise<{ tournament_id: string; players: ModelCompPlayer[] }> {
-  const res = await fetch(`${API_BASE}/api/model-comparison?limit=${limit}`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load model comparison");
-  return res.json();
-}
 
 export async function getCourse(): Promise<CourseResponse> {
   const res = await fetch(`${API_BASE}/api/course`, { cache: "no-store" });
@@ -1424,5 +1418,39 @@ export async function addToBetSlip(entry: BetSlipEntry): Promise<{ ok: boolean; 
 export async function removeFromBetSlip(id: string): Promise<{ ok: boolean }> {
   const res = await fetch(`${API_BASE}/api/bet-slip/${id}`, { method: "DELETE" });
   if (!res.ok) throw new Error(`remove-slip ${res.status}`);
+  return res.json();
+}
+
+// ── Model vs DataGolf comparison (rich endpoint) ──────────────────────────────
+
+export type MarketCorrelation = {
+  market: string;
+  spearman_rho: number;
+};
+
+export type ModelDisagreement = {
+  player_name: string;
+  our_win_pct: number;
+  dg_win_pct: number;
+  diff_pp: number;
+  our_top10: number | null;
+  dg_top10: number;
+  direction: "higher" | "lower";
+};
+
+export type ModelComparison = {
+  tournament_id: string;
+  tournament_name: string;
+  players_compared: number;
+  overall_spearman_rho: number;
+  markets: MarketCorrelation[];
+  our_top10: { player: string; prob: number }[];
+  dg_top10:  { player: string; prob: number }[];
+  disagreements: ModelDisagreement[];
+};
+
+export async function getModelComparison(): Promise<ModelComparison> {
+  const res = await fetch(`${API_BASE}/api/model-comparison`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`model-comparison ${res.status}`);
   return res.json();
 }
