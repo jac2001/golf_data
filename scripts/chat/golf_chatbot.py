@@ -2345,7 +2345,7 @@ def _field_tiers_block(top_n: int = 30) -> str:
         def _fmt_row(r, show_edge: bool = False) -> str:
             name   = r["player_name"]
             wp     = float(r["win_prob"]) * 100
-            t10    = r.get("top10_prob_calibrated") or r.get("top10_prob")
+            t10    = r.get("top10_prob") or r.get("top10_prob_calibrated")
             t10_s  = f"{float(t10)*100:.0f}% T10" if pd.notna(t10) else ""
             mi     = r.get("_market_implied")
             odds_s = _fmt_odds(r.get(odds_col)) if odds_col else ""
@@ -2733,7 +2733,22 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None, inc
                         _last_token = _actual_lower.split()[-1]
                         _lb_match = _lb[_lb["player_name"].str.lower().str.split().str[-1] == _last_token]
                     if not _lb_match.empty:
-                        _lb_match = _lb_match.sort_values("tournament_id", ascending=False).head(5)
+                        # Sort by actual calendar date — tournament IDs are NOT sequential by week
+                        _sched_date_map: dict[str, str] = {}
+                        if _sched_path.exists():
+                            try:
+                                _sched2 = pd.read_csv(_sched_path)
+                                _sched_date_map = dict(zip(
+                                    _sched2["tournament_id"].astype(str),
+                                    _sched2["start_date"].astype(str),
+                                ))
+                            except Exception:
+                                pass
+                        _lb_match = _lb_match.copy()
+                        _lb_match["_start_date"] = _lb_match["tournament_id"].astype(str).map(
+                            lambda t: _sched_date_map.get(t, "1900-01-01")
+                        )
+                        _lb_match = _lb_match.sort_values("_start_date", ascending=False).head(5)
                         _recent = []
                         for _, _lr in _lb_match.iterrows():
                             _pos = str(_lr.get("position", "?")).strip()
@@ -3624,7 +3639,7 @@ def _player_form_context_block(top_n: int = 20, tid: str | None = None) -> str:
             wr     = row.get("world_rank")
             wr_str = f"World #{int(wr)}" if pd.notna(wr) else ""
             model_rank = row.get("model_rank") or row.name + 1
-            top10p = row.get("top10_prob_calibrated") or row.get("top10_prob")
+            top10p = row.get("top10_prob") or row.get("top10_prob_calibrated")
             top10_str = f"{float(top10p)*100:.0f}% top-10 prob" if pd.notna(top10p) else ""
             last   = _last_result(row)
             streak = _form_streak(row)
@@ -7663,6 +7678,10 @@ def build_context(
         sections: list[str] = [cached_base, "", "<!-- SPLIT -->", ""]
     else:
         sections = [_SYSTEM_PROMPT, ""]
+
+    # Inject current date so LLM can reason about timing ("Masters two weeks ago" etc.)
+    sections.append(f"TODAY'S DATE: {datetime.now().strftime('%B %d, %Y')} — use this when referencing how long ago an event was.")
+    sections.append("")
 
     # ── Resolve effective tournament ID ──────────────────────────────────────
     # When the query explicitly names an event (e.g. "Masters", "Augusta"),
