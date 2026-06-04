@@ -4347,8 +4347,45 @@ def chat_endpoint(body: ChatRequest, request: Request):
                 headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
             )
 
+    groq_key = os.environ.get("GROQ_API_KEY", "")
+
+    def _stream_groq_fallback(buf: list[str]):
+        """Groq/Llama fallback — used when Anthropic credits are exhausted."""
+        from groq import Groq, RateLimitError  # type: ignore
+        _GROQ_PRIMARY  = "llama-3.3-70b-versatile"
+        _GROQ_FALLBACK = "llama-3.1-8b-instant"
+        # Flatten system blocks back to a single string for Groq
+        system_text = context if isinstance(context, str) else "\n\n".join(
+            b.get("text", "") if isinstance(b, dict) else str(b) for b in context
+        )
+        groq_messages = [{"role": "system", "content": system_text}, *conv]
+        client = Groq(api_key=groq_key)
+
+        def _call(model_name: str):
+            return client.chat.completions.create(
+                model=model_name, messages=groq_messages,
+                stream=True, temperature=0.6, max_tokens=max_tokens,
+            )
+
+        try:
+            for chunk in _call(_GROQ_PRIMARY):
+                delta = chunk.choices[0].delta.content or ""
+                if delta:
+                    buf.append(delta)
+                    yield f"data: {json.dumps({'text': delta})}\n\n"
+        except RateLimitError:
+            notice = "\n\n*(Switching to backup model)*\n\n"
+            buf.append(notice)
+            yield f"data: {json.dumps({'text': notice})}\n\n"
+            for chunk in _call(_GROQ_FALLBACK):
+                delta = chunk.choices[0].delta.content or ""
+                if delta:
+                    buf.append(delta)
+                    yield f"data: {json.dumps({'text': delta})}\n\n"
+
     def _stream():
         buf: list[str] = []
+        anthropic_failed = False
         try:
             from anthropic import Anthropic  # type: ignore
             client = Anthropic(api_key=api_key)
@@ -4365,10 +4402,16 @@ def chat_endpoint(body: ChatRequest, request: Request):
                     buf.append(text)
                     yield f"data: {json.dumps({'text': text})}\n\n"
         except Exception as e:
-            yield f"data: {json.dumps({'text': f'\\n\\n*(Error: {e})*'})}\n\n"
+            err_str = str(e).lower()
+            # Credit exhaustion or auth error → try Groq silently
+            if groq_key and any(x in err_str for x in ["credit", "billing", "quota", "balance", "429", "overloaded"]):
+                anthropic_failed = True
+                yield from _stream_groq_fallback(buf)
+            else:
+                yield f"data: {json.dumps({'text': f'\\n\\n*(Error: {e})*'})}\n\n"
 
         # Store full response after stream completes
-        if _can_cache and _ttl > 0:
+        if _can_cache and _ttl > 0 and buf:
             _cache_set(_cache_key, "".join(buf), _ttl)
 
         yield "data: [DONE]\n\n"

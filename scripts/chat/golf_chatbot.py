@@ -1991,18 +1991,17 @@ _MAJOR_SUFFIXES = {"014", "026", "047", "100"}
 
 # LIV players who qualify for Majors — keyed by "Last, First" to match predictions CSV
 _LIV_PLAYER_NOTES = {
-    "Rahm, Jon":          "2023 Masters champion, ranked #29 OWGR",
-    "DeChambeau, Bryson": "2024 US Open champion, ranked #24 OWGR",
-    "Koepka, Brooks":     "5-time major champion (2023 PGA, 2x US Open, 2x PGA)",
-    "Johnson, Dustin":    "2020 Masters champion; ranked #585 OWGR (SG data is zeroed — treat as unknown)",
-    "Mickelson, Phil":    "3-time Masters champion; check news for withdrawal status",
-    "Reed, Patrick":      "2018 Masters champion",
-    "Garcia, Sergio":     "2017 Masters champion",
-    "Smith, Cameron":     "2022 Open champion",
-    "Stenson, Henrik":    "2016 Open champion",
-    "Gooch, Talor":       "LIV, no recent PGA Tour SG",
-    "Niemann, Joaquin":   "LIV, no recent PGA Tour SG",
-    "Ancer, Abraham":     "LIV, no recent PGA Tour SG",
+    "Rahm, Jon":          "LIV Golf player. 2023 Masters champion, ranked #29 OWGR",
+    "DeChambeau, Bryson": "LIV Golf player. 2024 US Open champion, ranked #24 OWGR",
+    "Johnson, Dustin":    "LIV Golf player. 2020 Masters champion; ranked #585 OWGR (SG data is zeroed — treat as unknown)",
+    "Mickelson, Phil":    "LIV Golf player. 3-time Masters champion; check news for withdrawal status",
+    "Reed, Patrick":      "LIV Golf player. 2018 Masters champion",
+    "Garcia, Sergio":     "LIV Golf player. 2017 Masters champion",
+    "Smith, Cameron":     "LIV Golf player. 2022 Open champion",
+    "Stenson, Henrik":    "LIV Golf player. 2016 Open champion",
+    "Gooch, Talor":       "LIV Golf player. No recent PGA Tour SG data",
+    "Niemann, Joaquin":   "LIV Golf player. No recent PGA Tour SG data",
+    "Ancer, Abraham":     "LIV Golf player. No recent PGA Tour SG data",
 }
 
 
@@ -5963,11 +5962,11 @@ def _my_picks_block() -> str:
         return f"## MY PICKS\n(unavailable: {e})"
 
 
-def _season_strategy_block(player_names: list[str] | None = None, lean: bool = False) -> str:
+def _season_strategy_block(player_names: list[str] | None = None, lean: bool = False, ultra_lean: bool = False) -> str:
     """Season usage strategy for tracked players (or specific players if named).
 
-    lean: if True, omit the full season plan and conflict tables (saves ~15K chars).
-    The per-player verdict cards are always included — those are the useful part.
+    lean: omit season plan and conflict tables.
+    ultra_lean: only verdict + uses + in_field per player — for Groq free tier.
     """
     try:
         from scripts.predictions.season_strategy import get_season_strategy
@@ -6022,7 +6021,15 @@ def _season_strategy_block(player_names: list[str] | None = None, lean: bool = F
         best_events     = info.get("best_events", [])
         probs           = info.get("this_week_probs", {}) or {}
 
-        hot_tag = " [HOT STREAK]" if is_hot else ""
+        hot_tag = " [HOT]" if is_hot else ""
+        verdict_word = "USE THIS WEEK (hot streak)" if hot_override else "USE THIS WEEK" if use_this_week else "SAVE"
+        field_word   = "IN FIELD" if in_field else "not in field"
+
+        if ultra_lean:
+            # Bare essentials only — fits Groq free tier
+            lines.append(f"{player}{hot_tag} | {uses_left}/3 uses | {field_word} | {verdict_word} — {reason}")
+            continue
+
         lines.append(f"### {player}{hot_tag}")
         lines.append(f"Uses: {uses_left}/3 remaining | Tier: {tier} | WR #{world_rank or '?'} | Eff Rank #{int(eff_rank) if eff_rank else '?'}")
 
@@ -6070,13 +6077,7 @@ def _season_strategy_block(player_names: list[str] | None = None, lean: bool = F
                 lines.append(f"  · {ev_name}{date_str} — EV {ev_score}/10 [{ev_type}]{csg_str}{qual_flag}{urgency}")
 
         # Verdict
-        if hot_override:
-            verdict = "USE THIS WEEK (hot streak override)"
-        elif use_this_week:
-            verdict = "USE THIS WEEK"
-        else:
-            verdict = "SAVE"
-        lines.append(f"Verdict: {verdict} — {reason}")
+        lines.append(f"Verdict: {verdict_word} — {reason}")
         lines.append("")
 
     # ── Season allocation plan ────────────────────────────────────────────────
@@ -7588,7 +7589,13 @@ RULES:
 - Never start with world ranking or generic bio.
 - Never write "it's worth noting," "here's the thing," or "the lean is."
 - Never lead with odds or model probabilities for a general player question — those are footnotes.
-- If multiple players asked about: P1–P4 for each, then one sentence comparing them at the end."""
+- If multiple players asked about: P1–P4 for each, then one sentence comparing them at the end.
+
+HARD FIELD BOUNDARY — CRITICAL:
+- ONLY discuss players who appear in the data blocks below. Never invent or assume a player is in the field.
+- If a player is NOT in the FIELD OVERVIEW or PLAYER SPOTLIGHT blocks, say "he's not in this week's field" — do not fabricate stats or picks for them.
+- LIV Golf players (Rahm, DeChambeau, Koepka, Johnson, etc.) ONLY appear at the 4 major championships. They are NOT in regular PGA Tour events. Do not mention them for non-major tournaments.
+- Never invent a player's stats, ranking, or odds. If the data isn't in the context, say you don't have that data."""
 
 _STRUCT_STRATEGY = """SEASON USAGE STRATEGY FORMAT — follow exactly:
   AI RECOMMENDATION BLOCK: If an "AI LINEUP RECOMMENDATION" block is present, use the
@@ -8048,57 +8055,65 @@ def build_context(
         sections.append("")
         sections.append("## LINEUP BUILD REQUEST")
         sections.append("")
-        # Pre-generated optimizer recommendation — reference this first
-        _sr_lineup = _strategy_reasoning_block()
-        if _sr_lineup:
-            sections.append(_sr_lineup)
-            sections.append("")
-        # Field eligibility check FIRST — hard boundary on who can be recommended
-        _elig = _lineup_eligible_block(_effective_tid or tournament_id)
-        if _elig:
-            sections.append(_elig)
-            sections.append("")
-        _ln_top_n = 10 if lean else 20
-        sections.append(_field_overview_block(top_n=_ln_top_n))
-        sections.append("")
         if not lean:
+            # Pre-generated optimizer recommendation — skip in lean to save 2.8K tokens
+            _sr_lineup = _strategy_reasoning_block()
+            if _sr_lineup:
+                sections.append(_sr_lineup)
+                sections.append("")
+            # Field eligibility check — skip in lean (season_strategy already flags in_field)
+            _elig = _lineup_eligible_block(_effective_tid or tournament_id)
+            if _elig:
+                sections.append(_elig)
+                sections.append("")
+        if lean:
+            # Ultra-lean lineup: season strategy verdicts + bare field overview
+            sections.append(_field_overview_block(top_n=5))
+            sections.append("")
+            sections.append(_my_picks_block())
+            sections.append("")
+            sections.append(_season_strategy_block(lean=True, ultra_lean=True))
+        else:
+            _ln_top_n = 20
+            sections.append(_field_overview_block(top_n=_ln_top_n))
+            sections.append("")
             _dg_fs_ln = _dg_field_stats_block(tournament_id)
             if _dg_fs_ln:
                 sections.append(_dg_fs_ln)
                 sections.append("")
-        if tournament_id:
-            sections.append(_course_fit_reasoning_block(tournament_id))
-            sections.append("")
-            sections.append(_course_fit_players_block(tournament_id, top_n=_ln_top_n))
-            sections.append("")
-            _cf = _dg_course_fit_block(tournament_id)
-            if _cf:
-                sections.append(_cf)
+            if tournament_id:
+                sections.append(_course_fit_reasoning_block(tournament_id))
                 sections.append("")
-        sections.append(_player_form_context_block(top_n=_ln_top_n))
-        sections.append("")
-        sections.append(_top_markets_summary_block(_effective_tid or tournament_id))
-        sections.append("")
-        sections.append(_masters_qualifiers_block(_effective_tid or tournament_id))
-        sections.append("")
-        sections.append(_expert_picks_block())
-        sections.append("")
-        sections.append(_my_picks_block())
-        sections.append("")
-        _eff_tid_for_major = _effective_tid or tournament_id or ""
-        _is_major_lineup = any(_eff_tid_for_major.endswith(s) for s in _MAJOR_SUFFIXES)
-        if _is_major_lineup:
-            sections.append(
-                "## MAJOR CHAMPIONSHIP CONTEXT\n"
-                "This is a MAJOR championship. The season strategy 'SAVE' recommendations below "
-                "are based on regular-event EV optimization and DO NOT apply here. At a major, "
-                "the optimal lineup picks the highest-probability players with the best course fit "
-                "who have uses remaining. Any player showing SAVE in the season strategy should "
-                "be reconsidered as a USE at a major unless they have an injury concern or 0 uses left.\n"
-            )
-        sections.append(_season_strategy_block(lean=lean))
-        sections.append("")
-        sections.append(_league_context_block())
+                sections.append(_course_fit_players_block(tournament_id, top_n=_ln_top_n))
+                sections.append("")
+                _cf = _dg_course_fit_block(tournament_id)
+                if _cf:
+                    sections.append(_cf)
+                    sections.append("")
+            sections.append(_player_form_context_block(top_n=_ln_top_n))
+            sections.append("")
+            sections.append(_top_markets_summary_block(_effective_tid or tournament_id))
+            sections.append("")
+            sections.append(_masters_qualifiers_block(_effective_tid or tournament_id))
+            sections.append("")
+            sections.append(_expert_picks_block())
+            sections.append("")
+            sections.append(_my_picks_block())
+            sections.append("")
+            _eff_tid_for_major = _effective_tid or tournament_id or ""
+            _is_major_lineup = any(_eff_tid_for_major.endswith(s) for s in _MAJOR_SUFFIXES)
+            if _is_major_lineup:
+                sections.append(
+                    "## MAJOR CHAMPIONSHIP CONTEXT\n"
+                    "This is a MAJOR championship. The season strategy 'SAVE' recommendations below "
+                    "are based on regular-event EV optimization and DO NOT apply here. At a major, "
+                    "the optimal lineup picks the highest-probability players with the best course fit "
+                    "who have uses remaining. Any player showing SAVE in the season strategy should "
+                    "be reconsidered as a USE at a major unless they have an injury concern or 0 uses left.\n"
+                )
+            sections.append(_season_strategy_block(lean=False))
+            sections.append("")
+            sections.append(_league_context_block())
         sections.append("")
         if not lean:
             sections.append(_fetch_tournament_news(_active_t_name))
@@ -8173,37 +8188,40 @@ def build_context(
         sections.append("")
         sections.append(f"## {_mkt.upper().replace('_',' ')} MARKET — BEST BETS")
         sections.append("")
-        # Player quality first
         sections.append(_masters_qualifiers_block(_tid_eff))
         sections.append("")
-        sections.append(_field_overview_block(top_n=10 if lean else 15))
-        sections.append("")
-        sections.append(_player_form_context_block(top_n=10 if lean else 15))
-        sections.append("")
-        if tournament_id:
-            sections.append(_course_fit_reasoning_block(tournament_id))
+        if lean:
+            # Ultra-lean: field overview + market mechanics + top bets
+            sections.append(_field_overview_block(top_n=5))
             sections.append("")
-            sections.append(_course_fit_players_block(tournament_id, top_n=10 if lean else 15))
+            sections.append(_market_deep_block(_mkt, _tid_eff))
             sections.append("")
-        # Expert consensus always included — key signal for market bets
-        sections.append(_expert_picks_block())
-        sections.append("")
-        # Lean: skip tournament intel (historical course facts, 5-8K) — course fit reasoning covers it
-        if not lean:
+            sections.append(_recommended_bets_block(top_n=5))
+        else:
+            sections.append(_field_overview_block(top_n=15))
+            sections.append("")
+            sections.append(_player_form_context_block(top_n=15))
+            sections.append("")
+            if tournament_id:
+                sections.append(_course_fit_reasoning_block(tournament_id))
+                sections.append("")
+                sections.append(_course_fit_players_block(tournament_id, top_n=15))
+                sections.append("")
+            sections.append(_expert_picks_block())
+            sections.append("")
             sections.append(_tournament_intel_block(tournament_id, _active_t_name))
             sections.append("")
             sections.append(_web_intel_alerts_block(_tid_eff))
             sections.append("")
-        sections.append(_my_picks_block())
-        sections.append("")
-        # Market mechanics last — model logic, edge reference
-        sections.append(_market_deep_block(_mkt, _tid_eff))
-        sections.append("")
-        sections.append(_recommended_bets_block(top_n=10))
-        sections.append("")
-        sections.append(_top_markets_summary_block(_tid_eff))
-        sections.append("")
-        sections.append(_odds_movement_block())
+            sections.append(_my_picks_block())
+            sections.append("")
+            sections.append(_market_deep_block(_mkt, _tid_eff))
+            sections.append("")
+            sections.append(_recommended_bets_block(top_n=10))
+            sections.append("")
+            sections.append(_top_markets_summary_block(_tid_eff))
+            sections.append("")
+            sections.append(_odds_movement_block())
         sections.append("")
 
     elif intent["is_daily_bet"]:
@@ -8236,11 +8254,12 @@ def build_context(
         sections.append(_my_picks_block())
         sections.append("")
         # Market reference LAST — confirms price, not starting point
-        sections.append(_recommended_bets_block(top_n=15))
+        sections.append(_recommended_bets_block(top_n=5 if lean else 15))
         sections.append("")
-        sections.append(_top_markets_summary_block(_effective_tid or tournament_id))
-        sections.append("")
-        sections.append(_odds_movement_block())
+        if not lean:
+            sections.append(_top_markets_summary_block(_effective_tid or tournament_id))
+            sections.append("")
+            sections.append(_odds_movement_block())
         sections.append("")
         if tournament_id:
             _ts = _tournament_state(tournament_id)
@@ -8272,34 +8291,36 @@ def build_context(
         # Player quality data first
         sections.append(_masters_qualifiers_block(_effective_tid or tournament_id))
         sections.append("")
-        # Lean: 15 players covers the relevant betting tier range without full field
-        sections.append(_field_tiers_block(top_n=15 if lean else 30))
-        sections.append("")
-        sections.append(_field_overview_block(top_n=10 if lean else 12))
-        sections.append("")
-        sections.append(_player_form_context_block(top_n=10 if lean else 12))
-        sections.append("")
-        if tournament_id:
-            sections.append(_course_fit_reasoning_block(tournament_id))
+        if lean:
+            # Ultra-lean: bare essentials only — field overview + top bets
+            sections.append(_field_overview_block(top_n=5))
             sections.append("")
-            sections.append(_course_fit_players_block(tournament_id, top_n=10 if lean else 12))
+            sections.append(_recommended_bets_block(top_n=5))
+        else:
+            sections.append(_field_tiers_block(top_n=30))
             sections.append("")
-        # Expert picks always — key signal for value identification
-        sections.append(_expert_picks_block())
-        sections.append("")
-        # Lean: skip tournament intel — saves 5-8K, course fit reasoning covers the essentials
-        if not lean:
+            sections.append(_field_overview_block(top_n=12))
+            sections.append("")
+            sections.append(_player_form_context_block(top_n=12))
+            sections.append("")
+            if tournament_id:
+                sections.append(_course_fit_reasoning_block(tournament_id))
+                sections.append("")
+                sections.append(_course_fit_players_block(tournament_id, top_n=12))
+                sections.append("")
+            sections.append(_expert_picks_block())
+            sections.append("")
             sections.append(_tournament_intel_block(tournament_id, _active_t_name))
             sections.append("")
-        sections.append(_my_picks_block())
+            sections.append(_my_picks_block())
+            sections.append("")
+            sections.append(_recommended_bets_block(top_n=15))
         sections.append("")
-        # Market reference last
-        sections.append(_recommended_bets_block(top_n=15))
-        sections.append("")
-        sections.append(_top_markets_summary_block(_effective_tid or tournament_id))
-        sections.append("")
-        sections.append(_odds_movement_block())
-        sections.append("")
+        if not lean:
+            sections.append(_top_markets_summary_block(_effective_tid or tournament_id))
+            sections.append("")
+            sections.append(_odds_movement_block())
+            sections.append("")
         if tournament_id:
             _ts = _tournament_state(tournament_id)
             if _ts["phase"] not in ("pre_tournament", "complete"):
@@ -8307,10 +8328,11 @@ def build_context(
                 sections.append("")
                 sections.append(_live_leaderboard_block(tournament_id))
                 sections.append("")
-            sections.append(_live_course_stats_block(tournament_id))
-            sections.append("")
-            sections.append(_weather_block(tournament_id))
-            sections.append("")
+            if not lean:
+                sections.append(_live_course_stats_block(tournament_id))
+                sections.append("")
+                sections.append(_weather_block(tournament_id))
+                sections.append("")
         if not lean:
             sections.append(_web_intel_alerts_block(tournament_id))
             sections.append("")
@@ -8855,17 +8877,38 @@ def _stream_groq(messages: list[dict], api_key: str) -> Iterator[str]:
             max_tokens=3000,
         )
 
-    try:
-        for chunk in _stream(_GROQ_PRIMARY):
-            delta = chunk.choices[0].delta.content or ""
-            if delta:
-                yield delta
-    except RateLimitError:
-        yield f"*(Daily limit reached for {_GROQ_PRIMARY} — switching to {_GROQ_FALLBACK})*\n\n"
-        for chunk in _stream(_GROQ_FALLBACK):
-            delta = chunk.choices[0].delta.content or ""
-            if delta:
-                yield delta
+    import time as _time
+
+    def _is_rate_limit(e) -> bool:
+        s = str(e).lower()
+        return "rate_limit" in s or isinstance(e, RateLimitError)
+
+    def _is_too_large(e) -> bool:
+        s = str(e).lower()
+        return "413" in s or ("token" in s and "limit" in s and not _is_rate_limit(e))
+
+    # Try primary model with one TPM-backoff retry
+    for attempt in range(2):
+        try:
+            for chunk in _stream(_GROQ_PRIMARY):
+                delta = chunk.choices[0].delta.content or ""
+                if delta:
+                    yield delta
+            return
+        except Exception as e:
+            if _is_rate_limit(e) and attempt == 0:
+                # TPM window resets every ~20s — wait and retry once
+                _time.sleep(20)
+                continue
+            elif _is_too_large(e):
+                # Context too large even for primary — nothing to retry
+                yield f"\n\n*(Context too large for Groq free tier. Try a more specific question.)*"
+                return
+            else:
+                yield f"\n\n*(Groq error: {e})*"
+                return
+
+    yield "\n\n*(Groq rate limit reached — please wait a minute and try again.)*"
 
 
 def extract_mentioned_players(text: str) -> list[str]:
