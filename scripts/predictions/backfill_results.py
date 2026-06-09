@@ -31,6 +31,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data"
 TRACKING_DIR = DATA_DIR / "prediction_tracking"
 PRED_HIST = TRACKING_DIR / "prediction_history.csv"
+PRED_HIST_OUTPUTS = PROJECT_ROOT / "outputs" / "prediction_history.csv"
 LB_FILE = DATA_DIR / "historical" / "leaderboards_2026.csv"
 SCHED_FILE = DATA_DIR / "raw" / "schedule_2026.csv"
 
@@ -252,7 +253,10 @@ def backfill(dry_run: bool = False) -> dict:
         import shutil
         shutil.copy(PRED_HIST, backup)
         out.to_csv(PRED_HIST, index=False)
+        # Mirror to outputs/ so dashboard and chatbot pick it up
+        shutil.copy(PRED_HIST, PRED_HIST_OUTPUTS)
         print(f"\nSaved → {PRED_HIST}  (backup → {backup.name})")
+        print(f"Mirrored → {PRED_HIST_OUTPUTS}")
 
         # Upsert into DuckDB
         try:
