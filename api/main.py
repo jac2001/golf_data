@@ -4431,6 +4431,34 @@ def chat_endpoint(body: ChatRequest, request: Request):
     )
 
 
+class RateRequest(BaseModel):
+    query: str
+    response: str
+    rating: str   # "up" or "down"
+    tid: str = ""
+
+
+@app.post("/api/chat/rate")
+def rate_chat(body: RateRequest):
+    """Log a thumbs-up or thumbs-down rating for a chat response."""
+    import json as _json
+    from datetime import datetime, timezone
+    if body.rating not in ("up", "down"):
+        raise HTTPException(status_code=400, detail="rating must be 'up' or 'down'")
+    feedback_dir = DATA_DIR / "feedback"
+    feedback_dir.mkdir(exist_ok=True)
+    entry = {
+        "ts":       datetime.now(timezone.utc).isoformat(),
+        "tid":      body.tid,
+        "rating":   body.rating,
+        "query":    body.query,
+        "response": body.response,
+    }
+    with open(feedback_dir / "chat_ratings.jsonl", "a") as fh:
+        fh.write(_json.dumps(entry) + "\n")
+    return {"ok": True}
+
+
 @app.get("/api/model-comparison")
 def get_model_comparison() -> dict:
     """

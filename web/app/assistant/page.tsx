@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { streamChat, ChatMessage } from "@/lib/api";
+import { streamChat, rateChat, ChatMessage } from "@/lib/api";
 
 const QUICK_QUESTIONS = [
   "Best bets this week?",
@@ -26,7 +26,52 @@ function MarkdownText({ text }: { text: string }) {
   return <span dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
-function MessageBubble({ msg, isStreaming }: { msg: ChatMessage; isStreaming?: boolean }) {
+function RatingButtons({
+  onRate, rated,
+}: {
+  onRate: (r: "up" | "down") => void;
+  rated: "up" | "down" | null;
+}) {
+  if (rated) {
+    return (
+      <div style={{ marginTop: 6, fontSize: "0.7em", color: "#2a6040" }}>
+        {rated === "up" ? "👍 Thanks" : "👎 Noted"}
+      </div>
+    );
+  }
+  return (
+    <div style={{ marginTop: 6, display: "flex", gap: 6 }}>
+      {(["up", "down"] as const).map(r => (
+        <button
+          key={r}
+          onClick={() => onRate(r)}
+          title={r === "up" ? "Good response" : "Bad response"}
+          style={{
+            background: "transparent",
+            border: "1px solid #1e3a5f",
+            borderRadius: 6,
+            color: "#4a6080",
+            padding: "2px 8px",
+            fontSize: "0.78em",
+            cursor: "pointer",
+            lineHeight: 1.4,
+          }}
+        >
+          {r === "up" ? "👍" : "👎"}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function MessageBubble({
+  msg, isStreaming, onRate, rated,
+}: {
+  msg: ChatMessage;
+  isStreaming?: boolean;
+  onRate?: (r: "up" | "down") => void;
+  rated?: "up" | "down" | null;
+}) {
   const isUser = msg.role === "user";
   return (
     <div style={{
@@ -45,21 +90,25 @@ function MessageBubble({ msg, isStreaming }: { msg: ChatMessage; isStreaming?: b
           G
         </div>
       )}
-      <div style={{
-        maxWidth: "78%",
-        background: isUser ? "#1e3a5f" : "#0d1a30",
-        border: `1px solid ${isUser ? "#2a4f7f" : "#1e3a5f"}`,
-        borderRadius: isUser ? "16px 16px 4px 16px" : "4px 16px 16px 16px",
-        padding: "10px 14px",
-        fontSize: "0.88em",
-        color: "#dde6f5",
-        lineHeight: 1.65,
-      }}>
-        {msg.content ? (
-          <MarkdownText text={msg.content} />
-        ) : isStreaming ? (
-          <span style={{ color: "#4a6080" }}>▋</span>
-        ) : null}
+      <div style={{ maxWidth: "78%" }}>
+        <div style={{
+          background: isUser ? "#1e3a5f" : "#0d1a30",
+          border: `1px solid ${isUser ? "#2a4f7f" : "#1e3a5f"}`,
+          borderRadius: isUser ? "16px 16px 4px 16px" : "4px 16px 16px 16px",
+          padding: "10px 14px",
+          fontSize: "0.88em",
+          color: "#dde6f5",
+          lineHeight: 1.65,
+        }}>
+          {msg.content ? (
+            <MarkdownText text={msg.content} />
+          ) : isStreaming ? (
+            <span style={{ color: "#4a6080" }}>▋</span>
+          ) : null}
+        </div>
+        {!isUser && !isStreaming && msg.content && onRate !== undefined && (
+          <RatingButtons onRate={onRate} rated={rated ?? null} />
+        )}
       </div>
     </div>
   );
@@ -71,6 +120,7 @@ export default function AssistantPage() {
   const [streaming, setStreaming]       = useState(false);
   const [lastPlayers, setLastPlayers]   = useState<string[]>([]);
   const [error, setError]               = useState<string | null>(null);
+  const [ratings, setRatings]           = useState<Record<number, "up" | "down">>({});
   const bottomRef   = useRef<HTMLDivElement>(null);
   const inputRef    = useRef<HTMLTextAreaElement>(null);
   const cancelRef   = useRef<(() => void) | null>(null);
@@ -130,12 +180,22 @@ export default function AssistantPage() {
     }
   }
 
+  function handleRate(msgIndex: number, r: "up" | "down") {
+    setRatings(prev => ({ ...prev, [msgIndex]: r }));
+    const assistantMsg = messages[msgIndex];
+    const userMsg = messages[msgIndex - 1];
+    if (assistantMsg && userMsg) {
+      rateChat(userMsg.content, assistantMsg.content, r).catch(() => {});
+    }
+  }
+
   function clear() {
     if (cancelRef.current) { cancelRef.current(); cancelRef.current = null; }
     setMessages([]);
     setLastPlayers([]);
     setStreaming(false);
     setError(null);
+    setRatings({});
   }
 
   const showLimitWarning = userMsgCount >= SOFT_LIMIT;
@@ -210,6 +270,8 @@ export default function AssistantPage() {
             key={i}
             msg={msg}
             isStreaming={streaming && i === messages.length - 1 && msg.role === "assistant"}
+            onRate={msg.role === "assistant" ? (r) => handleRate(i, r) : undefined}
+            rated={msg.role === "assistant" ? (ratings[i] ?? null) : undefined}
           />
         ))}
 

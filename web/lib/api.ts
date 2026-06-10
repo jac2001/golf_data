@@ -1011,6 +1011,19 @@ export function streamChat(
   return () => controller.abort();
 }
 
+export async function rateChat(
+  query: string,
+  response: string,
+  rating: "up" | "down",
+  tid: string = "",
+): Promise<void> {
+  await fetch(`${API_BASE}/api/chat/rate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, response, rating, tid }),
+  });
+}
+
 // ── Formatting helpers ────────────────────────────────────────────────────────
 // Small utility functions used by multiple components.
 
