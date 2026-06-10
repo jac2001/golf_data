@@ -32,8 +32,12 @@ DATA_DIR = PROJECT_ROOT / "data"
 TRACKING_DIR = DATA_DIR / "prediction_tracking"
 PRED_HIST = TRACKING_DIR / "prediction_history.csv"
 PRED_HIST_OUTPUTS = PROJECT_ROOT / "outputs" / "prediction_history.csv"
-LB_FILE = DATA_DIR / "historical" / "leaderboards_2026.csv"
-SCHED_FILE = DATA_DIR / "raw" / "schedule_2026.csv"
+
+import sys as _sys
+_sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+from config import leaderboards_csv, schedule_csv  # noqa: E402
+LB_FILE   = leaderboards_csv()
+SCHED_FILE = schedule_csv()
 
 
 # ── Name normalisation ─────────────────────────────────────────────────────────

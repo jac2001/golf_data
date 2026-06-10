@@ -26,6 +26,15 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA = PROJECT_ROOT / "data"
 OUTPUTS = PROJECT_ROOT / "outputs"
 
+import sys as _sys
+_sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+from config import (  # noqa: E402
+    SEASON, schedule_csv, usage_tracker_json, leaderboards_csv
+)
+_SCHED_CSV    = schedule_csv()
+_TRACKER_JSON = usage_tracker_json()
+_LB_CSV       = leaderboards_csv()
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -318,7 +327,7 @@ def _detect_tournament_id() -> str | None:
             pass
 
     # 2. Schedule — find this week's tournament by date
-    sched_path = DATA / "raw" / "schedule_2026.csv"
+    sched_path = _SCHED_CSV
     if sched_path.exists():
         try:
             sched = pd.read_csv(sched_path)
@@ -1995,7 +2004,6 @@ _LIV_PLAYER_NOTES = {
     "DeChambeau, Bryson": "LIV Golf player. 2024 US Open champion, ranked #24 OWGR",
     "Johnson, Dustin":    "LIV Golf player. 2020 Masters champion; ranked #585 OWGR (SG data is zeroed — treat as unknown)",
     "Mickelson, Phil":    "LIV Golf player. 3-time Masters champion; check news for withdrawal status",
-    "Reed, Patrick":      "LIV Golf player. 2018 Masters champion",
     "Garcia, Sergio":     "LIV Golf player. 2017 Masters champion",
     "Smith, Cameron":     "LIV Golf player. 2022 Open champion",
     "Stenson, Henrik":    "LIV Golf player. 2016 Open champion",
@@ -2710,12 +2718,12 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None, inc
 
             # --- Recent results with tournament names (Tier 2: named events) ---
             try:
-                _lb_path = DATA / "historical" / "leaderboards_2026.csv"
+                _lb_path = _LB_CSV
                 if _lb_path.exists():
                     _lb = pd.read_csv(_lb_path)
                     # Build schedule tid→name lookup for rows missing tournament_name
                     _sched_name: dict[str, str] = {}
-                    _sched_path = DATA / "raw" / "schedule_2026.csv"
+                    _sched_path = _SCHED_CSV
                     if _sched_path.exists():
                         try:
                             _sched = pd.read_csv(_sched_path)
@@ -3157,7 +3165,7 @@ def _pick_reason_context_block(player_names: list[str], tid: str | None = None) 
 
         # Usage tracker — my team's uses remaining per player
         usage_data: dict[str, dict] = {}
-        usage_path = DATA / "fantasy" / "usage_tracker_2026.json"
+        usage_path = _TRACKER_JSON
         if usage_path.exists():
             try:
                 import json
@@ -3168,7 +3176,7 @@ def _pick_reason_context_block(player_names: list[str], tid: str | None = None) 
 
         # Recent results map: normalized name → [(position, tournament_name), ...]
         recent_results_map: dict[str, list] = {}
-        lb_2026 = DATA / "historical" / "leaderboards_2026.csv"
+        lb_2026 = _LB_CSV
         if lb_2026.exists():
             try:
                 lb = pd.read_csv(lb_2026)
@@ -4156,7 +4164,7 @@ def _my_picks_live_block(tid: str | None) -> str:
         return ""
 
     # Load this week's picks from usage tracker
-    usage_path = DATA / "fantasy" / "usage_tracker_2026.json"
+    usage_path = _TRACKER_JSON
     this_week_picks: list[str] = []
     if usage_path.exists():
         try:
@@ -4628,7 +4636,7 @@ def _round_recap_block(tid: str | None, round_num: int | None = None) -> str:
     # ── User picks status ─────────────────────────────────────────────────────
     picks_info = ""
     try:
-        usage_path = DATA / "fantasy" / "usage_tracker_2026.json"
+        usage_path = _TRACKER_JSON
         if usage_path.exists():
             import json as _json2
             tracker = _json2.loads(usage_path.read_text())
@@ -5729,7 +5737,7 @@ def _lineup_eligible_block(tid: str | None) -> str:
             pass
 
     # Load usage tracker
-    usage_path = DATA / "fantasy" / "usage_tracker_2026.json"
+    usage_path = _TRACKER_JSON
     max_uses = 3
     used_map: dict[str, int] = {}  # nk → times_used
     if usage_path.exists():
@@ -5853,7 +5861,7 @@ def _lineup_eligible_block(tid: str | None) -> str:
 
 def _my_picks_block() -> str:
     """Current week picks + remaining uses."""
-    path = DATA / "fantasy" / "usage_tracker_2026.json"
+    path = _TRACKER_JSON
     if not path.exists():
         return ""
     try:
@@ -5876,7 +5884,7 @@ def _my_picks_block() -> str:
 
         # Detect current tournament to flag stale lineup data
         current_tid = _detect_tournament_id()
-        sched_path = DATA / "raw" / "schedule_2026.csv"
+        sched_path = _SCHED_CSV
         current_tournament_name = None
         if current_tid and sched_path.exists():
             try:
@@ -6156,7 +6164,7 @@ def _league_context_block() -> str:
 
             # Determine which tournament this weekly data represents
             current_tid = _detect_tournament_id()
-            sched_path = DATA / "raw" / "schedule_2026.csv"
+            sched_path = _SCHED_CSV
             current_tname = None
             if current_tid and sched_path.exists():
                 try:
@@ -6168,7 +6176,7 @@ def _league_context_block() -> str:
                     pass
 
             # Infer weekly data tournament from usage_tracker last lineup
-            usage_path2 = DATA / "fantasy" / "usage_tracker_2026.json"
+            usage_path2 = _TRACKER_JSON
             weekly_data_tname = None
             if usage_path2.exists():
                 try:
@@ -6274,7 +6282,7 @@ def _tournament_state(tid: str) -> dict:
     if not meta_path.exists():
         # Try to get name from schedule CSV
         try:
-            sched = pd.read_csv(DATA / "raw" / "schedule_2026.csv", dtype=str)
+            sched = pd.read_csv(_SCHED_CSV, dtype=str)
             match = sched[sched["tournament_id"].str.upper() == tid.upper()]
             if not match.empty:
                 state["name"] = str(match.iloc[0].get("tournament_name", _fallback_name))
@@ -6754,7 +6762,7 @@ def _recent_recaps_block(n: int = 6) -> str:
     sched_map: dict[str, str] = {}
     date_map:  dict[str, str] = {}
     try:
-        sched = pd.read_csv(PROJECT_ROOT / "data" / "raw" / "schedule_2026.csv")
+        sched = pd.read_csv(_SCHED_CSV)
         sched_map = dict(zip(sched["tournament_id"].astype(str), sched["tournament_name"]))
         date_map  = dict(zip(sched["tournament_id"].astype(str), sched["start_date"]))
     except Exception:
@@ -6890,7 +6898,7 @@ def _season_performance_block() -> str:
 
 def _schedule_block(current_tid: str | None = None) -> str:
     """Season schedule: completed, current, and next 3 upcoming."""
-    path = DATA / "raw" / "schedule_2026.csv"
+    path = _SCHED_CSV
     if not path.exists():
         return ""
     try:

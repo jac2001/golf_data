@@ -37,7 +37,10 @@ DATA_DIR     = PROJECT_ROOT / "data"
 HIST_DIR     = DATA_DIR / "historical"
 ODDS_DIR     = DATA_DIR / "odds"
 BETS_LOG     = ODDS_DIR / "recommended_bets_log.csv"
-TRACKER_PATH = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+
+sys.path.insert(0, str(SCRIPTS_DIR))
+from config import usage_tracker_json  # noqa: E402
+TRACKER_PATH = usage_tracker_json()
 
 PYTHON = sys.executable  # same interpreter that launched this script
 

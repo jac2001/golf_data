@@ -53,6 +53,14 @@ from pydantic import BaseModel
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR     = PROJECT_ROOT / "data"
 OUTPUTS_DIR  = PROJECT_ROOT / "outputs"
+
+sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+from config import (  # noqa: E402
+    SEASON, schedule_csv, usage_tracker_json, leaderboards_csv
+)
+_SCHED_CSV   = schedule_csv()
+_TRACKER_JSON = usage_tracker_json()
+_LB_CSV      = leaderboards_csv()
 ODDS_DIR     = DATA_DIR / "odds"
 DG_DIR       = DATA_DIR / "datagolf"
 REASONS_CACHE_PATH = DATA_DIR / "betting_reasons_cache.json"
@@ -631,8 +639,8 @@ def _my_lineup_full_names(rows: list[dict], tid: str) -> list[str]:
     Reads usage_tracker_2026.json, finds the right week, then fuzzy-matches
     short tracker names ('Scheffler') to full leaderboard names ('Scottie Scheffler').
     """
-    tracker_path = PROJECT_ROOT / "data" / "fantasy" / "usage_tracker_2026.json"
-    sched_path   = PROJECT_ROOT / "data" / "raw" / "schedule_2026.csv"
+    tracker_path = _TRACKER_JSON
+    sched_path   = _SCHED_CSV
     try:
         with open(tracker_path) as f:
             tracker = json.load(f)
@@ -974,7 +982,7 @@ def _df_to_records(df: pd.DataFrame) -> list[dict]:
 
 def _get_tournament_name(tid: str) -> str:
     """Look up the human-readable name for a tournament ID from the schedule CSV."""
-    sched_path = DATA_DIR / "raw" / "schedule_2026.csv"
+    sched_path = _SCHED_CSV
     if not sched_path.exists() or not tid:
         return ""
     try:
@@ -1057,7 +1065,7 @@ def get_tournament() -> dict:
         except Exception:
             pass
     if not _loaded_sched:
-        sched_path = DATA_DIR / "raw" / "schedule_2026.csv"
+        sched_path = _SCHED_CSV
         if sched_path.exists():
             try:
                 sched = pd.read_csv(sched_path)
@@ -1513,7 +1521,7 @@ def get_predictions(limit: int = 50) -> dict:
 
     # Merge uses_remaining from usage tracker
     uses_map: dict[str, int] = {}
-    tracker_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+    tracker_path = _TRACKER_JSON
     if tracker_path.exists():
         try:
             with open(tracker_path) as f:
@@ -1728,12 +1736,12 @@ def get_my_lineup_live() -> dict:
 
     # 1. Try tracker weekly_lineups for current week (most reliable source of actual picks)
     try:
-        sched = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+        sched = pd.read_csv(_SCHED_CSV)
         sched_row = sched[sched["tournament_id"].astype(str) == tid]
         if not sched_row.empty:
             current_week = int(sched_row["week"].iloc[0])
             tournament_name = str(sched_row["tournament_name"].iloc[0])
-            tracker_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+            tracker_path = _TRACKER_JSON
             if tracker_path.exists():
                 tracker = json.loads(tracker_path.read_text())
                 week_key = f"week_{current_week}"
@@ -2427,7 +2435,7 @@ def get_live_pulse(force: bool = False) -> dict:
     # Fantasy picks
     fantasy_picks: list[dict] = []
     try:
-        tracker_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+        tracker_path = _TRACKER_JSON
         if tracker_path.exists():
             tracker = json.loads(tracker_path.read_text())
             def _ln(n): s = str(n).strip(); return s.split(",")[0].strip().lower() if "," in s else s.split()[-1].lower()
@@ -2443,7 +2451,7 @@ def get_live_pulse(force: bool = False) -> dict:
     # Tournament name
     tournament_name = tid
     try:
-        sched = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+        sched = pd.read_csv(_SCHED_CSV)
         row = sched[sched["tournament_id"].astype(str) == tid]
         if not row.empty:
             tournament_name = str(row["tournament_name"].iloc[0])
@@ -3796,7 +3804,7 @@ def get_player_synopsis(player: str, force: bool = False) -> dict:
     # Fantasy uses remaining
     uses_remaining = 3
     try:
-        tracker_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+        tracker_path = _TRACKER_JSON
         if tracker_path.exists():
             tracker = json.loads(tracker_path.read_text())
             def _lname(n):
@@ -3814,7 +3822,7 @@ def get_player_synopsis(player: str, force: bool = False) -> dict:
     tournament_name = "this week's tournament"
     course_name = "the course"
     try:
-        sched = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+        sched = pd.read_csv(_SCHED_CSV)
         row = sched[sched["tournament_id"].astype(str) == tid]
         if not row.empty:
             tournament_name = str(row["tournament_name"].iloc[0])
@@ -3990,9 +3998,9 @@ def get_field_stats() -> dict:
 @app.get("/api/mypicks")
 def get_my_picks() -> dict:
     """Season usage tracker — weekly lineups + player roster."""
-    path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+    path = _TRACKER_JSON
     if not path.exists():
-        raise HTTPException(status_code=404, detail="usage_tracker_2026.json not found")
+        raise HTTPException(status_code=404, detail=f"usage_tracker_{SEASON}.json not found")
 
     with open(path) as f:
         raw = json.load(f)
@@ -4620,14 +4628,14 @@ def generate_analysis() -> dict:
 @app.get("/api/history/tournaments")
 def history_tournaments() -> dict:
     """Past tournament results — winners, top 10, field size, earnings, recap."""
-    hist_path = DATA_DIR / "historical" / "leaderboards_2026.csv"
+    hist_path = _LB_CSV
     if not hist_path.exists():
         return {"tournaments": []}
 
     df = pd.read_csv(hist_path)
     df["position_num"] = pd.to_numeric(df["position"].astype(str).str.extract(r"(\d+)")[0], errors="coerce")
 
-    schedule = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+    schedule = pd.read_csv(_SCHED_CSV)
     sched_map = dict(zip(schedule["tournament_id"].astype(str), schedule["start_date"]))
     purse_map  = dict(zip(schedule["tournament_id"].astype(str), schedule["purse"]))
     name_map   = dict(zip(schedule["tournament_id"].astype(str), schedule["tournament_name"]))
@@ -4775,7 +4783,7 @@ def history_bets() -> dict:
     # Schedule name map
     name_map: dict = {}
     try:
-        sched = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+        sched = pd.read_csv(_SCHED_CSV)
         name_map = dict(zip(sched["tournament_id"].astype(str), sched["tournament_name"]))
     except Exception:
         pass
@@ -4851,7 +4859,7 @@ def course_fit() -> dict:
     # -- Tournament metadata -------------------------------------------
     tid = str(df['tournament_id'].iloc[0]) if "tournament_id" in df.columns else "" 
     try:
-        sched = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+        sched = pd.read_csv(_SCHED_CSV)
         sched_row = sched[sched["tournament_id"].astype(str) == tid]
         _VENUE_MAP = {
             "R2026033": "Aronimink Golf Club",
@@ -4941,7 +4949,7 @@ def course_fit() -> dict:
     # ── Usage tracker — remaining uses per player ─────────────────────────────
     usage_map: dict[str, int] = {}
     try:
-        tracker_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+        tracker_path = _TRACKER_JSON
         if tracker_path.exists():
             import json as _json
             tracker = _json.loads(tracker_path.read_text())
@@ -5064,7 +5072,7 @@ def refresh_intel(top_n: int = 20) -> dict:
     tournament_name = tid
     course_name = ""
     try:
-        sched = pd.read_csv(DATA_DIR / "raw" / "schedule_2026.csv")
+        sched = pd.read_csv(_SCHED_CSV)
         row = sched[sched["tournament_id"].astype(str) == str(tid)]
         if not row.empty:
             tournament_name = str(row.iloc[0].get("tournament_name", tid))
