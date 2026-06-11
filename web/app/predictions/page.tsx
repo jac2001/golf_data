@@ -17,9 +17,9 @@
 import { useState, useEffect } from "react";
 import {
   getTournament, getPredictions, getLineup, getTeeTimes, getCourse, getModelComparison,
-  getWeather, getWithdrawals, getIntel, refreshIntel,
+  getWeather, getIntel, refreshIntel,
   Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
-  ModelCompPlayer, WeatherResponse, WithdrawalsResponse, CourseFitResponse,
+  ModelCompPlayer, WeatherResponse, CourseFitResponse,
   getCourseFit, PlayerPrediction, IntelResponse,
 } from "@/lib/api";
 import PredictionsTable from "@/components/PredictionsTable";
@@ -28,18 +28,17 @@ import TeeTimesGrid from "@/components/TeeTimesGrid";
 import CourseCard from "@/components/CourseCard";
 import ModelComparison from "@/components/ModelComparison";
 import WeatherStrip from "@/components/WeatherStrip";
-import WithdrawalsTab from "@/components/WithdrawalsTab";
 import CourseFitTab from "@/components/CourseFitTab";
-type Tab = "field" | "lineup" | "teetimes" | "course" | "dg" | "wd" | "coursefit";
+type Tab = "field" | "lineup" | "teetimes" | "course" | "dg" | "coursefit";
 
-const TABS_BASE: { key: Tab; label: string }[] = [
-    { key: "field",      label: "Field" },
-    { key: "lineup",     label: "Lineup" },
-    { key: "teetimes",   label: "Tee Times" },
-    { key: "course",     label: "Course" },
-    { key: "dg",         label: "vs DG Model" },
-    { key: "coursefit",  label: "Course Fit" },   // ← add this
-  ];
+const TABS: { key: Tab; label: string }[] = [
+  { key: "field",     label: "Field"       },
+  { key: "lineup",    label: "Lineup"      },
+  { key: "teetimes",  label: "Tee Times"   },
+  { key: "course",    label: "Course"      },
+  { key: "dg",        label: "vs DG Model" },
+  { key: "coursefit", label: "Course Fit"  },
+];
 
 export default function PredictionsPage() {
 
@@ -63,7 +62,6 @@ export default function PredictionsPage() {
   const [dgComp, setDgComp]           = useState<ModelCompPlayer[] | null>(null);
   const [dgMeta, setDgMeta]           = useState<{ tournament_name: string; players_compared: number } | null>(null);
   const [weather, setWeather]         = useState<WeatherResponse | null>(null);
-  const [wds, setWds]                 = useState<WithdrawalsResponse | null>(null);
   const [intel, setIntel]             = useState<IntelResponse | null>(null);
 
   const [loadingField, setLoadingField]       = useState(true);
@@ -71,7 +69,6 @@ export default function PredictionsPage() {
   const [loadingTT, setLoadingTT]             = useState(false);
   const [loadingCourse, setLoadingCourse]     = useState(false);
   const [loadingDg, setLoadingDg]             = useState(false);
-  const [loadingWd, setLoadingWd] = useState(false);
   const [courseFit, setCourseFit] = useState<CourseFitResponse | null>(null);
   const [loadingCourseFit, setLoadingCourseFit] = useState(false);
   const [error, setError]                     = useState<string | null>(null);
@@ -83,10 +80,9 @@ export default function PredictionsPage() {
         const [t, p] = await Promise.all([getTournament(), getPredictions(200)]);
         setTournament(t);
         setPreds(p);
-        // Lineup, weather, and withdrawals load alongside — failures are non-fatal
+        // Lineup, weather, intel load alongside — failures are non-fatal
         getLineup().then(setLineup).catch(() => {});
         getWeather().then(setWeather).catch(() => {});
-        getWithdrawals().then(setWds).catch(() => {});
         getIntel().then(setIntel).catch(() => {});
       } catch {
         setError("Could not connect to the API. Is FastAPI running on port 8000?");
@@ -132,28 +128,12 @@ export default function PredictionsPage() {
       .finally(() => setLoadingDg(false));
   }, [loaded]);
 
-  // ── Lazy load: withdrawals (full list — count already loaded on mount) ────────
-  useEffect(() => {
-    if (!loaded.has("wd") || wds) return;
-    setLoadingWd(true);
-    getWithdrawals().then(setWds).finally(() => setLoadingWd(false));
-  }, [loaded]);
-
   useEffect(() => {
     if (!loaded.has("coursefit") || courseFit) return;
     setLoadingCourseFit(true);
     getCourseFit().then(setCourseFit).finally(() => setLoadingCourseFit(false));
   }, [loaded]);
 
-  // Build tab list with dynamic WD badge
-  const confirmedWds = wds?.confirmed_count ?? 0;
-  const TABS = [
-    ...TABS_BASE,
-    {
-      key: "wd" as Tab,
-      label: confirmedWds > 0 ? `Withdrawals (${confirmedWds})` : "Withdrawals",
-    },
-  ];
 
   // ── Error / loading screens ───────────────────────────────────────────────────
   if (error) {
@@ -227,28 +207,22 @@ export default function PredictionsPage() {
 
       {/* ── Tab switcher ─────────────────────────────────────────────────── */}
       <div style={{ display: "flex", gap: 4, marginBottom: 20, borderBottom: "1px solid #1e3a5f", paddingBottom: 0, flexWrap: "wrap" }}>
-        {TABS.map(tab => {
-          const isActive = activeTab === tab.key;
-          const isWdAlert = tab.key === "wd" && confirmedWds > 0;
-          const labelColor = isActive ? "#dde6f5" : isWdAlert ? "#e74c3c" : "#7f8c8d";
-          const borderColor = isActive ? (isWdAlert ? "#e74c3c" : "#00c44f") : "transparent";
-          return (
-            <button
-              key={tab.key}
-              onClick={() => activateTab(tab.key)}
-              style={{
-                background: "transparent", border: "none",
-                borderBottom: `2px solid ${borderColor}`,
-                color: labelColor,
-                padding: "8px 16px", fontSize: "0.88em",
-                fontWeight: isActive ? 700 : 500,
-                cursor: "pointer", marginBottom: -1, transition: "color 0.15s",
-              }}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
+        {TABS.map(tab => (
+          <button
+            key={tab.key}
+            onClick={() => activateTab(tab.key)}
+            style={{
+              background: "transparent", border: "none",
+              borderBottom: `2px solid ${activeTab === tab.key ? "#00c44f" : "transparent"}`,
+              color: activeTab === tab.key ? "#dde6f5" : "#7f8c8d",
+              padding: "8px 16px", fontSize: "0.88em",
+              fontWeight: activeTab === tab.key ? 700 : 500,
+              cursor: "pointer", marginBottom: -1, transition: "color 0.15s",
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* ── Tab content ──────────────────────────────────────────────────── */}
@@ -303,14 +277,6 @@ export default function PredictionsPage() {
               </div>
             )
             : <Empty text="No DG comparison data available." />
-      )}
-
-      {activeTab === "wd" && (
-        loadingWd
-          ? <Spinner />
-          : wds
-            ? <WithdrawalsTab withdrawals={wds.withdrawals} />
-            : <Empty text="No withdrawal data available." />
       )}
 
       {activeTab === "coursefit" && (

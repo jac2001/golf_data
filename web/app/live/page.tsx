@@ -14,9 +14,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   getTournament, getInPlay, getVsPredictions, getMyLineupLive, getSgStats, getHoleScores,
-  refreshHoleScores, getLivePulse, getHoleStats, getSettings,
+  refreshHoleScores, getLivePulse, getHoleStats, getSettings, getWithdrawals,
   Tournament, InPlayResponse, VsPredPlayer, MyLineupResponse, SgStatsResponse, HoleScoresResponse,
-  HoleStatsResponse, LivePulse as LivePulseData,
+  HoleStatsResponse, LivePulse as LivePulseData, WithdrawalsResponse,
 } from "@/lib/api";
 import InPlayLeaderboard from "@/components/InPlayLeaderboard";
 import VsPredictions from "@/components/VsPredictions";
@@ -60,6 +60,7 @@ export default function LivePage() {
   const [holeStatsData, setHoleStatsData] = useState<HoleStatsResponse | null>(null);
   const [loadingHoles,  setLoadingHoles]  = useState(false);
 
+  const [wds,           setWds]           = useState<WithdrawalsResponse | null>(null);
   const [pulse,         setPulse]         = useState<LivePulseData | null>(null);
   const [pulseLoading,  setPulseLoading]  = useState(false);
   const [pulseError,    setPulseError]    = useState<string | null>(null);
@@ -102,6 +103,7 @@ export default function LivePage() {
         const [t, ip, hs, settings] = await Promise.all([
           getTournament(), getInPlay(), getHoleScores(), getSettings(),
         ]);
+        getWithdrawals().then(setWds).catch(() => {});
         setTournament(t);
         setInPlay(ip);
         setHoleScores(hs);
@@ -302,6 +304,16 @@ export default function LivePage() {
               onGenerate={() => fetchPulse(false)}
               onRefresh={() => fetchPulse(true)}
             />
+            {wds && wds.count > 0 && (
+              <div style={{
+                marginBottom: 12, padding: "6px 12px",
+                background: "#1a0a00", border: "1px solid #7a3a00",
+                borderRadius: 6, fontSize: "0.8em", color: "#e09040",
+              }}>
+                <span style={{ fontWeight: 700 }}>WD this week: </span>
+                {wds.withdrawals.map(w => w.player_name).join(", ")}
+              </div>
+            )}
             <InPlayLeaderboard
               players={inPlay.players}
               currentRound={inPlay.current_round}

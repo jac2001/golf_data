@@ -4761,6 +4761,8 @@ def get_withdrawals() -> dict:
         s = str(n).strip()
         return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
+    # Only real WDs — exclude pga_field_api_missing (just "not in this week's field")
+    _REAL_SOURCES = {"leaderboard", "pga_field_api", "field_vs_predictions"}
     entries = [
         {
             "player_name": _fmt_name(w.get("player_name", "")),
@@ -4769,7 +4771,7 @@ def get_withdrawals() -> dict:
             "detected_at": w.get("detected_at", ""),
         }
         for w in raw
-        if w.get("status") == "WITHDRAWN"
+        if w.get("status") == "WITHDRAWN" and w.get("source") in _REAL_SOURCES
     ]
 
     return {
