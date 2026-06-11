@@ -2951,7 +2951,17 @@ _PGAT_HEADERS = {
 _PGAT_COURSE_STATS_Q = """
 query CourseStats($tournamentId: ID!) {
   courseStats(tournamentId: $tournamentId) {
-    courses { courseId courseName par yardage }
+    courses {
+      courseId courseName par yardage
+      roundHoleStats {
+        roundNum
+        holeStats {
+          ... on CourseHoleStats {
+            courseHoleNum parValue yards scoringAverage
+          }
+        }
+      }
+    }
   }
 }
 """
@@ -3209,6 +3219,19 @@ def get_course() -> dict:
         _yrd = str(course.get("yardage") or "").replace(",", "")
         yardage     = int(_yrd) if _yrd.isdigit() else None
 
+        # Build par/yards lookup from roundHoleStats (historical hole data)
+        hole_info: dict[int, dict] = {}
+        for rnd in course.get("roundHoleStats", []):
+            for h in rnd.get("holeStats", []):
+                hn = h.get("courseHoleNum")
+                if hn is None:
+                    continue  # skip SummaryRow entries
+                hole_info[int(hn)] = {
+                    "hole_par":   _safe(h.get("parValue")),
+                    "hole_yards": _safe(h.get("yards")),
+                }
+            break  # only need one round for structural data
+
         r2 = _req.post(_PGAT_URL, headers=_PGAT_HEADERS, json={
             "operationName": "CourseHolesStats",
             "query": _PGAT_HOLE_STATS_Q,
@@ -3219,11 +3242,13 @@ def get_course() -> dict:
 
         holes = []
         for i, h in enumerate(raw_holes):
+            hn = h.get("holeNum") or (i + 1)
+            info = hole_info.get(int(hn), {})
             sa = h.get("scoringAverage")
             holes.append({
-                "hole_num":        h.get("holeNum") or (i + 1),
-                "hole_par":        None,
-                "hole_yards":      None,
+                "hole_num":        hn,
+                "hole_par":        info.get("hole_par"),
+                "hole_yards":      info.get("hole_yards"),
                 "scoring_avg":     _safe(_parse_diff(sa)),
                 "scoring_diff":    _safe(_parse_diff(sa)),
                 "difficulty_rank": None,
