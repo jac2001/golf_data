@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   getPlayerList,
   getPlayerProfile,
@@ -361,8 +362,11 @@ function SynopsisCard({
 
 type PageTab = "lookup" | "h2h" | "stats";
 
-export default function PlayersPage() {
-  const [pageTab, setPageTab]       = useState<PageTab>("lookup");
+function PlayersPageInner() {
+  const searchParams = useSearchParams();
+  const deepLinkPlayer = searchParams.get("player") ?? undefined;
+
+  const [pageTab, setPageTab]       = useState<PageTab>(deepLinkPlayer ? "lookup" : "lookup");
   const [players, setPlayers]       = useState<string[]>([]);
   const [listLoading, setListLoading] = useState(true);
 
@@ -405,7 +409,7 @@ export default function PlayersPage() {
         {listLoading ? (
           <p style={{ color: MUTED }}>Loading players…</p>
         ) : pageTab === "lookup" ? (
-          <LookupTab players={players} />
+          <LookupTab players={players} defaultPlayer={deepLinkPlayer} />
         ) : pageTab === "h2h" ? (
           <H2HTab players={players} />
         ) : (
@@ -416,10 +420,18 @@ export default function PlayersPage() {
   );
 }
 
+export default function PlayersPage() {
+  return (
+    <Suspense>
+      <PlayersPageInner />
+    </Suspense>
+  );
+}
+
 // ── Lookup tab ────────────────────────────────────────────────────────────────
 
-function LookupTab({ players }: { players: string[] }) {
-  const [selected, setSelected]         = useState("");
+function LookupTab({ players, defaultPlayer }: { players: string[]; defaultPlayer?: string }) {
+  const [selected, setSelected]         = useState(defaultPlayer ?? "");
   const [profile, setProfile]           = useState<PlayerProfile | null>(null);
   const [loading, setLoading]           = useState(false);
   const [error, setError]               = useState<string | null>(null);
@@ -440,6 +452,11 @@ function LookupTab({ players }: { players: string[] }) {
       .catch(() => setError("Failed to load player profile."))
       .finally(() => setLoading(false));
   }, []);
+
+  // Auto-load when arriving from a deep link (e.g. ?player=Name)
+  useEffect(() => {
+    if (defaultPlayer) fetchProfile(defaultPlayer);
+  }, [defaultPlayer, fetchProfile]);
 
   function handleSelect(name: string) {
     setSelected(name);

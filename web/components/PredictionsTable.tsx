@@ -16,6 +16,7 @@
  */
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { PlayerPrediction, PlayerIntel } from "@/lib/api";
 
 type Props = {
@@ -172,7 +173,14 @@ export default function PredictionsTable({ players, intel = [] }: Props) {
                   {/* Player name + explanation + intel indicators */}
                   <td style={{ ...td, fontSize: "0.85em" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <span style={{ color: "#dde6f5", fontWeight: 600, whiteSpace: "nowrap" }}>{p.player_name}</span>
+                      <Link
+                        href={`/players?player=${encodeURIComponent(p.player_name)}`}
+                        style={{ color: "#dde6f5", fontWeight: 600, whiteSpace: "nowrap", textDecoration: "none" }}
+                        onMouseEnter={e => (e.currentTarget.style.color = "#00c44f")}
+                        onMouseLeave={e => (e.currentTarget.style.color = "#dde6f5")}
+                      >
+                        {p.player_name}
+                      </Link>
                       {playerIntel?.injury_flag && (
                         <span title={playerIntel.injury_detail ?? "Injury flag"} style={{ color: "#e74c3c", fontSize: "0.8em", fontWeight: 800, cursor: "help" }}>!</span>
                       )}
