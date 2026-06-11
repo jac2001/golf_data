@@ -2939,6 +2939,30 @@ def get_lineup() -> dict:
 _tee_times_cache: dict = {"ts": 0.0, "data": None}
 _TEE_TIMES_TTL = 300  # 5 minutes — tee times don't change often
 
+_course_cache: dict = {"ts": 0.0, "data": None}
+_COURSE_TTL = 300
+
+_PGAT_URL = "https://orchestrator.pgatour.com/graphql"
+_PGAT_HEADERS = {
+    "x-pgat-platform": "web",
+    "x-api-key": "da2-gsrx5bibzbb4njvhl7t37wqyl4",
+    "content-type": "application/json",
+}
+_PGAT_COURSE_STATS_Q = """
+query CourseStats($tournamentId: ID!) {
+  courseStats(tournamentId: $tournamentId) {
+    courses { courseId courseName par yardage }
+  }
+}
+"""
+_PGAT_HOLE_STATS_Q = """
+query CourseHolesStats($tournamentId: ID!, $courseId: ID!) {
+  courseHolesStats(tournamentId: $tournamentId, courseId: $courseId) {
+    holeNum scoringAverage birdiesPercent bogeysPercent
+  }
+}
+"""
+
 @app.get("/api/tee-times")
 def get_tee_times() -> dict:
     """
@@ -3149,48 +3173,78 @@ def get_course() -> dict:
         except Exception:
             pass
 
-    # Fall back: try to get course_name at minimum from DG field-updates
+    # Fall back: call PGA Tour GraphQL directly (5-min cache)
+    now = time.time()
+    cached = _course_cache.get("data")
+    if cached and now - _course_cache["ts"] < _COURSE_TTL and cached.get("tournament_id") == tid:
+        return cached
+
+    def _parse_diff(v) -> float | None:
+        try:
+            return float(str(v).replace("+", ""))
+        except Exception:
+            return None
+
+    def _parse_pct(v) -> float | None:
+        try:
+            return float(str(v).replace("%", ""))
+        except Exception:
+            return None
+
     try:
-        import sys as _sys
-        _sys.path.insert(0, str(PROJECT_ROOT))
-        from scripts.scrapers.dg_client import dg_get as _dg_get  # type: ignore
-        _raw = _dg_get("/field-updates", {"tour": "pga", "file_format": "json"})
-        if _raw.get("course_name"):
-            return {
-                "tournament_id": tid,
-                "course_name":   _raw["course_name"],
-                "par":           None,
-                "yardage":       None,
-                "holes":         [],
-            }
+        import requests as _req
+        r1 = _req.post(_PGAT_URL, headers=_PGAT_HEADERS, json={
+            "operationName": "CourseStats",
+            "query": _PGAT_COURSE_STATS_Q,
+            "variables": {"tournamentId": tid},
+        }, timeout=10)
+        r1.raise_for_status()
+        courses = r1.json().get("data", {}).get("courseStats", {}).get("courses", [])
+        if not courses:
+            raise ValueError("no courses")
+        course = courses[0]
+        course_id   = course["courseId"]
+        course_name = course.get("courseName", "")
+        par         = _safe(course.get("par"))
+        _yrd = str(course.get("yardage") or "").replace(",", "")
+        yardage     = int(_yrd) if _yrd.isdigit() else None
+
+        r2 = _req.post(_PGAT_URL, headers=_PGAT_HEADERS, json={
+            "operationName": "CourseHolesStats",
+            "query": _PGAT_HOLE_STATS_Q,
+            "variables": {"tournamentId": tid, "courseId": course_id},
+        }, timeout=10)
+        r2.raise_for_status()
+        raw_holes = r2.json().get("data", {}).get("courseHolesStats", [])
+
+        holes = []
+        for i, h in enumerate(raw_holes):
+            sa = h.get("scoringAverage")
+            holes.append({
+                "hole_num":        h.get("holeNum") or (i + 1),
+                "hole_par":        None,
+                "hole_yards":      None,
+                "scoring_avg":     _safe(_parse_diff(sa)),
+                "scoring_diff":    _safe(_parse_diff(sa)),
+                "difficulty_rank": None,
+                "birdies":         _safe(_parse_pct(h.get("birdiesPercent"))),
+                "bogeys":          _safe(_parse_pct(h.get("bogeysPercent"))),
+            })
+
+        result = {
+            "tournament_id": tid,
+            "course_name":   course_name,
+            "par":           par,
+            "yardage":       yardage,
+            "holes":         holes,
+        }
+        _course_cache["ts"]   = now
+        _course_cache["data"] = result
+        return result
     except Exception:
         pass
 
     raise HTTPException(status_code=404, detail=f"No course data for {tid}")
-
-    df_tid = df_tid.sort_values("hole_num")
-    meta = df_tid.iloc[0]
-
-    holes = []
-    for _, row in df_tid.iterrows():
-        holes.append({
-            "hole_num":        int(row["hole_num"]),
-            "hole_par":        int(row["hole_par"]),
-            "hole_yards":      _safe(row.get("hole_yards")),
-            "scoring_avg":     _safe(row.get("scoring_avg")),
-            "scoring_diff":    _safe(row.get("scoring_diff")),
-            "difficulty_rank": _safe(row.get("difficulty_rank")),
-            "birdies":         _safe(row.get("birdies")),
-            "bogeys":          _safe(row.get("bogeys")),
-        })
-
-    return {
-        "tournament_id": tid,
-        "course_name":   str(meta.get("course_name", "")),
-        "par":           _safe(meta.get("course_par")),
-        "yardage":       _safe(meta.get("course_yardage")),
-        "holes":         holes,
-    }
 
 
 @app.get("/api/matchups")
