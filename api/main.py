@@ -2936,26 +2936,71 @@ def get_lineup() -> dict:
     }
 
 
+_tee_times_cache: dict = {"ts": 0.0, "data": None}
+_TEE_TIMES_TTL = 300  # 5 minutes — tee times don't change often
+
 @app.get("/api/tee-times")
 def get_tee_times() -> dict:
     """
-    Tee times for the most recent round available, merged with model ranks.
+    Tee times for the current round, pulled live from DG /field-updates.
+    Cached 5 minutes to avoid hammering DG. Falls back to CSV if DG is unavailable.
     """
-    tid = _get_tournament_id()
-    live_dir = DATA_DIR / "live"
+    import sys as _sys
+    _sys.path.insert(0, str(PROJECT_ROOT))
+    from scripts.scrapers.dg_client import dg_get as _dg_get  # type: ignore
 
-    # Find the latest tee times file for this tournament
-    tt_files = sorted(
-        live_dir.glob(f"tee_times_{tid}_r*.csv"),
-        key=lambda p: p.stat().st_mtime, reverse=True,
-    )
-    if not tt_files:
+    tid = _get_tournament_id()
+
+    # Return cached result if fresh
+    if time.time() - _tee_times_cache["ts"] < _TEE_TIMES_TTL and _tee_times_cache["data"]:
+        cached = _tee_times_cache["data"]
+        if cached.get("tournament_id") == tid:
+            return cached
+
+    # Fetch from DG — try pga (current week) first
+    raw = None
+    for _tour in ("pga", "upcoming_pga"):
+        try:
+            _r = _dg_get("/field-updates", {"tour": _tour, "file_format": "json"})
+            if _r.get("field"):
+                raw = _r
+                break
+        except Exception:
+            pass
+
+    if not raw:
         return {"tournament_id": tid, "round": None, "groups": []}
 
-    df = pd.read_csv(tt_files[0])
-    round_num = int(tt_files[0].stem.split("_r")[-1])
+    current_round = int(raw.get("current_round") or 1)
+    field = raw.get("field", [])
 
-    # Load model ranks from predictions
+    # Build rows: one per player, for current_round
+    rows = []
+    for p in field:
+        for tt in p.get("teetimes", []):
+            if int(tt.get("round_num", 0)) != current_round:
+                continue
+            raw_tt = str(tt.get("teetime", "")).strip()  # "2026-06-11 14:27" local
+            try:
+                from datetime import datetime as _dt
+                local_dt = _dt.strptime(raw_tt, "%Y-%m-%d %H:%M")
+                tee_time_str = local_dt.strftime("%-I:%M %p")
+                tee_time_local = local_dt.isoformat()
+            except Exception:
+                tee_time_str = raw_tt
+                tee_time_local = raw_tt
+            rows.append({
+                "player_name": p.get("player_name", ""),
+                "player_num":  p.get("player_num"),
+                "owgr_rank":   p.get("owgr_rank"),
+                "tee_time_str": tee_time_str,
+                "tee_time_local": tee_time_local,
+                "start_tee": tt.get("start_hole", 1),
+            })
+
+    round_num = current_round
+
+    # Load model ranks from predictions CSV
     rank_map: dict = {}
     pred_path = OUTPUTS_DIR / "latest_predictions.csv"
     if pred_path.exists():
@@ -2969,7 +3014,6 @@ def get_tee_times() -> dict:
         def _flip_name(n: str) -> str:
             s = str(n).strip()
             return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
-
         for _, row in preds.iterrows():
             raw_name = str(row["player_name"]).strip()
             entry = {
@@ -2982,7 +3026,6 @@ def get_tee_times() -> dict:
                 "edge":        _safe(row["model_vs_vegas_edge"]),
                 "drift":       str(row.get("dk_odds_direction") or ""),
             }
-            # Store under both "Last, First" and "First Last" so lookups work either way
             rank_map[raw_name] = entry
             rank_map[_flip_name(raw_name)] = entry
 
@@ -2992,8 +3035,8 @@ def get_tee_times() -> dict:
 
     # Group by tee time
     groups: dict[str, list] = {}
-    for _, row in df.iterrows():
-        tt = str(row.get("tee_time_str", row.get("tee_time_local", ""))).strip()
+    for row in rows:
+        tt = str(row.get("tee_time_str") or row.get("tee_time_local") or "").strip()
         if not tt or tt == "nan":
             tt = "TBD"
         raw_name = str(row.get("player_name", "")).strip()
@@ -3001,11 +3044,12 @@ def get_tee_times() -> dict:
         pinfo    = rank_map.get(raw_name, {})
         wp  = pinfo.get("win_prob")
         t10 = pinfo.get("top10_prob")
+        world_rank = pinfo.get("world_rank") or _safe(row.get("owgr_rank"))
         player = {
             "name":        display,
-            "start_tee":   _safe(row.get("start_tee")),
+            "start_tee":   row.get("start_tee"),
             "model_rank":  pinfo.get("model_rank"),
-            "world_rank":  pinfo.get("world_rank"),
+            "world_rank":  world_rank,
             "win_prob":    round(float(wp) * 100, 1) if wp is not None else None,
             "top10_prob":  round(float(t10) * 100, 1) if t10 is not None else None,
             "form_trend":  pinfo.get("form_trend"),
@@ -3035,7 +3079,10 @@ def get_tee_times() -> dict:
         for tt, players in sorted(groups.items(), key=lambda x: _tt_sort_key(x[0]))
     ]
 
-    return {"tournament_id": tid, "round": round_num, "groups": sorted_groups}
+    result = {"tournament_id": tid, "round": round_num, "groups": sorted_groups}
+    _tee_times_cache["ts"]   = time.time()
+    _tee_times_cache["data"] = result
+    return result
 
 
 @app.get("/api/course")
@@ -3102,15 +3149,24 @@ def get_course() -> dict:
         except Exception:
             pass
 
-    # Fall back to all_courses_2026.csv
-    cc_path = DATA_DIR / "course_characteristics" / "all_courses_2026.csv"
-    if not cc_path.exists():
-        raise HTTPException(status_code=404, detail="No course data found")
+    # Fall back: try to get course_name at minimum from DG field-updates
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(PROJECT_ROOT))
+        from scripts.scrapers.dg_client import dg_get as _dg_get  # type: ignore
+        _raw = _dg_get("/field-updates", {"tour": "pga", "file_format": "json"})
+        if _raw.get("course_name"):
+            return {
+                "tournament_id": tid,
+                "course_name":   _raw["course_name"],
+                "par":           None,
+                "yardage":       None,
+                "holes":         [],
+            }
+    except Exception:
+        pass
 
-    df = pd.read_csv(cc_path)
-    df_tid = df[df["tournament_id"].astype(str).str.upper() == tid.upper()].copy()
-    if df_tid.empty:
-        raise HTTPException(status_code=404, detail=f"No course data for {tid}")
+    raise HTTPException(status_code=404, detail=f"No course data for {tid}")
 
     df_tid = df_tid.sort_values("hole_num")
     meta = df_tid.iloc[0]

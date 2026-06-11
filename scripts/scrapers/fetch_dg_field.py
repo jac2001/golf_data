@@ -72,15 +72,19 @@ def fetch_field(tour: str) -> dict:
 
 
 def fetch_field_auto() -> tuple[dict, str]:
-    """Try upcoming_pga first; fall back to pga. Returns (raw, tour_used)."""
-    for tour in ("upcoming_pga", "pga"):
+    """Try pga (current week) first; fall back to upcoming_pga. Returns (raw, tour_used).
+
+    pga is preferred because upcoming_pga returns the NEXT event during tournament week,
+    which would give us the wrong field and no tee times.
+    """
+    for tour in ("pga", "upcoming_pga"):
         try:
             raw = fetch_field(tour)
             if raw.get("field"):
                 return raw, tour
         except Exception as e:
             print(f"[WARN] {tour} failed: {e}")
-    raise RuntimeError("Both upcoming_pga and pga fetch attempts failed")
+    raise RuntimeError("Both pga and upcoming_pga fetch attempts failed")
 
 
 # ── Flatten ───────────────────────────────────────────────────────────────────
@@ -236,6 +240,10 @@ def main():
     # Save pipeline-compatible field CSV
     write_pipeline_field(df, tid)
 
+    # Export tee times to data/live/tee_times_{tid}_r{n}.csv
+    tz_offset = float(raw.get("tz_offset") or 0)
+    write_tee_times_csv(df, tid, tz_offset=tz_offset)
+
     # Print top 15
     print(f"\nTop 15 by DG rank  [{event_name}]:")
     print(f"  {'Player':<28} {'DG':>4} {'WR':>4} {'Tour':>5}  {'R1 Tee':>12}  {'R2 Tee':>12}  {'R3 Tee':>12}")
@@ -251,6 +259,68 @@ def main():
     if args.merge_predictions:
         print()
         merge_into_predictions(df)
+
+
+def write_tee_times_csv(df: pd.DataFrame, tid: str, tz_offset: float = 0.0) -> list[Path]:
+    """Export r1/r2/r3/r4 tee times from the DG field DataFrame.
+
+    DG stores teetime as local time strings ('2026-06-11 14:27').
+    We write data/live/tee_times_{tid}_r{n}.csv matching the format
+    expected by the API's /api/tee-times endpoint.
+    """
+    from datetime import timedelta
+
+    live_dir = DATA_DIR / "live"
+    live_dir.mkdir(exist_ok=True)
+    written = []
+
+    rounds_present = set()
+    for col in df.columns:
+        if col.startswith("r") and col.endswith("_teetime"):
+            try:
+                rn = int(col[1])
+                rounds_present.add(rn)
+            except ValueError:
+                pass
+
+    for rn in sorted(rounds_present):
+        tt_col  = f"r{rn}_teetime"
+        wv_col  = f"r{rn}_wave"
+        sh_col  = f"r{rn}_starthole"
+        sub = df[df[tt_col].notna() & (df[tt_col] != "")].copy()
+        if sub.empty:
+            continue
+
+        rows = []
+        for _, r in sub.iterrows():
+            raw_tt = str(r[tt_col]).strip()  # "2026-06-11 14:27" local
+            try:
+                local_dt = datetime.strptime(raw_tt, "%Y-%m-%d %H:%M")
+                utc_dt   = local_dt - timedelta(hours=tz_offset)
+                tee_time_local = local_dt.isoformat()
+                tee_time_utc   = utc_dt.replace(tzinfo=timezone.utc).isoformat()
+                tee_time_str   = local_dt.strftime("%-I:%M %p")
+            except Exception:
+                tee_time_local = raw_tt
+                tee_time_utc   = raw_tt
+                tee_time_str   = raw_tt
+
+            rows.append({
+                "player_id":     int(r["player_num"]) if pd.notna(r.get("player_num")) else "",
+                "player_name":   r.get("player_name_dg", ""),
+                "round":         rn,
+                "tee_time_str":  tee_time_str,
+                "tee_time_utc":  tee_time_utc,
+                "tee_time_local": tee_time_local,
+                "start_tee":     int(r[sh_col]) if pd.notna(r.get(sh_col)) and r.get(sh_col) != "" else 1,
+            })
+
+        out = live_dir / f"tee_times_{tid}_r{rn}.csv"
+        pd.DataFrame(rows).sort_values("tee_time_local").to_csv(out, index=False)
+        print(f"[OK] Tee times R{rn} → {out}  ({len(rows)} players)")
+        written.append(out)
+
+    return written
 
 
 if __name__ == "__main__":
