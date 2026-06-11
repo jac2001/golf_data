@@ -172,21 +172,24 @@ export default function PredictionsPage() {
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}
       {preds && !loadingField && (
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-          <GlanceCard label="Field Size" value={String(preds.count)} />
+          <GlanceCard label="Field Size" value={String(preds.count)} accent="#4cb8ff" />
           <GlanceCard
             label="Model Favorite"
             value={preds.players[0]?.player_name ?? "—"}
             sub={preds.players[0]?.win_prob != null ? `${(preds.players[0].win_prob * 100).toFixed(1)}% win` : ""}
+            accent="#f1c40f"
           />
           <GlanceCard
             label="Avg Win Prob"
             value={`${(preds.players.reduce((s, p) => s + (p.win_prob ?? 0), 0) / preds.players.length * 100).toFixed(1)}%`}
             sub="field average"
+            accent="#00c44f"
           />
           <GlanceCard
             label="Lineup Picks"
             value={lineup?.picks.map(p => p.player_name.split(" ").pop()).join(", ") ?? "—"}
             sub="this week's selections"
+            accent="#9b59b6"
           />
           <FieldStrengthCard players={preds.players} />
         </div>
@@ -418,38 +421,51 @@ function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
   const { label, color, top10, top25, top50, medRank } = fieldStrength(players);
   return (
     <div style={{
-      background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 8,
-      padding: "10px 16px", flex: "1 1 160px", minWidth: 150,
+      background: `linear-gradient(180deg, ${color}12 0%, #0d1a30 55%)`,
+      border: "1px solid #1e3a5f",
+      borderTop: `3px solid ${color}`,
+      borderRadius: 8,
+      padding: "12px 16px",
+      flex: "1 1 160px", minWidth: 150,
+      position: "relative", overflow: "hidden",
     }}>
-      <div style={{ fontSize: "0.65em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ fontSize: "0.62em", color: `${color}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
         Field Strength
       </div>
-      <div style={{ fontSize: "1em", fontWeight: 700, color, marginTop: 2 }}>
+      <div style={{ fontSize: "1.1em", fontWeight: 800, color, marginTop: 4 }}>
         {label}
       </div>
-      <div style={{ fontSize: "0.65em", color: "#4a6080", marginTop: 3 }}>
+      <div style={{ fontSize: "0.66em", color: "#4a6080", marginTop: 3 }}>
         {top10} top-10 · {top25} top-25 · {top50} top-50
       </div>
-      <div style={{ fontSize: "0.65em", color: "#4a6080", marginTop: 1 }}>
+      <div style={{ fontSize: "0.66em", color: "#3a5060", marginTop: 1 }}>
         Median rank #{medRank}
       </div>
     </div>
   );
 }
 
-function GlanceCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
+function GlanceCard({ label, value, sub, accent = "#4cb8ff" }: { label: string; value: string; sub?: string; accent?: string }) {
   return (
     <div style={{
-      background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 8,
-      padding: "10px 16px", flex: "1 1 140px", minWidth: 130,
+      background: `linear-gradient(180deg, ${accent}12 0%, #0d1a30 55%)`,
+      border: "1px solid #1e3a5f",
+      borderTop: `3px solid ${accent}`,
+      borderRadius: 8,
+      padding: "12px 16px",
+      flex: "1 1 140px", minWidth: 130,
+      position: "relative", overflow: "hidden",
     }}>
-      <div style={{ fontSize: "0.65em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ fontSize: "0.62em", color: `${accent}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
         {label}
       </div>
-      <div style={{ fontSize: "1em", fontWeight: 700, color: "#dde6f5", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+      <div style={{
+        fontSize: "1.1em", fontWeight: 800, color: "#dde6f5",
+        marginTop: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+      }}>
         {value}
       </div>
-      {sub && <div style={{ fontSize: "0.65em", color: "#4a6080", marginTop: 2 }}>{sub}</div>}
+      {sub && <div style={{ fontSize: "0.66em", color: "#4a6080", marginTop: 3 }}>{sub}</div>}
     </div>
   );
 }
