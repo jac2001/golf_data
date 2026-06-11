@@ -1278,9 +1278,9 @@ export interface CourseFitPlayer {
   dg_win:              number | null;
   dg_top10:            number | null;
   world_rank:          number | null;
-  pga_starts:          number;
-  pga_top10s:          number;
-  pga_wins:            number;
+  venue_starts:        number;
+  venue_top10s:        number;
+  venue_wins:          number;
   uses_remaining:      number | null;   // null = not in your fantasy roster
   // DG decomposition fields
   dg_timing_adj:       number | null;   // current form adjustment
@@ -1293,6 +1293,7 @@ export interface CourseFitPlayer {
 export interface CourseFitResponse {
   tournament_id:        string;
   course_name:          string;
+  venue_label:          string;
   course_history_type:  "venue" | "tournament";
   course_profile:       CourseFitProfile;
   players:              CourseFitPlayer[];

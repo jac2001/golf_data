@@ -5092,18 +5092,29 @@ def course_fit() -> dict:
     except Exception:
         pass
 
-    # ── PGA Championship history from leaderboards DB ─────────────────────────
-    pga_history: dict[str, dict] = {}
-    if _DB_AVAILABLE:
+    # ── Venue history from leaderboards DB — dynamic per current tournament ──────
+    event_code = tid[-3:] if len(tid) >= 3 else ""  # e.g. "R2026032" → "032"
+    venue_label = ""
+    try:
+        sched = pd.read_csv(_SCHED_CSV)
+        sched_row = sched[sched["tournament_id"].astype(str) == tid]
+        if not sched_row.empty:
+            venue_label = str(sched_row.iloc[0].get("tournament_name", "")).strip()
+    except Exception:
+        pass
+
+    venue_history: dict[str, dict] = {}
+    if _DB_AVAILABLE and event_code:
         try:
             with _get_db_conn() as conn:
                 lb = conn.execute(
-                    "SELECT player_name, position FROM leaderboards WHERE tournament_id LIKE '%033'"
+                    "SELECT player_name, position FROM leaderboards WHERE tournament_id LIKE ?",
+                    [f"%{event_code}"],
                 ).df()
             for _, r in lb.iterrows():
                 key = _last_name(r["player_name"])
                 pos = _parse_pos(r["position"])
-                entry = pga_history.setdefault(key, {"starts": 0, "top10s": 0, "top5s": 0, "wins": 0, "cuts": 0})
+                entry = venue_history.setdefault(key, {"starts": 0, "top10s": 0, "top5s": 0, "wins": 0, "cuts": 0})
                 entry["starts"] += 1
                 if pos is not None:
                     entry["top10s"] += 1 if pos <= 10 else 0
@@ -5131,7 +5142,7 @@ def course_fit() -> dict:
     players = []
     for _, row in df.iterrows():
         lname = _last_name(row["player_name"])
-        pga   = pga_history.get(lname, {})
+        venue = venue_history.get(lname, {})
         dec   = dec_map.get(lname, {})
         players.append({
             "player_name":          row["player_name"],
@@ -5158,10 +5169,10 @@ def course_fit() -> dict:
             "dg_win":               _safe(row.get("dg_win"), 4),
             "dg_top10":             _safe(row.get("dg_top10"), 4),
             "world_rank":           _safe(row.get("world_rank"), 0),
-            # PGA Championship-specific record (real, per-venue)
-            "pga_starts":           pga.get("starts", 0),
-            "pga_top10s":           pga.get("top10s", 0),
-            "pga_wins":             pga.get("wins", 0),
+            # Venue history — dynamically queried for current tournament event code
+            "venue_starts":         venue.get("starts", 0),
+            "venue_top10s":         venue.get("top10s", 0),
+            "venue_wins":           venue.get("wins", 0),
             # Fantasy uses remaining (None = not in your tracker)
             "uses_remaining":       usage_map.get(lname, None),
             # DG decomposition adjustments
@@ -5193,6 +5204,7 @@ def course_fit() -> dict:
     return {
         "tournament_id":       tid,
         "course_name":         course_name,
+        "venue_label":         venue_label,
         "course_history_type": course_history_type,
         "course_profile":      course_profile,
         "players":             players,

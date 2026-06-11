@@ -291,17 +291,17 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
           </div>
         </td>
 
-        {/* PGA Championship record */}
+        {/* Venue / tournament history record */}
         <td style={{ ...cell, textAlign: "center" }}>
-          {p.pga_starts > 0 ? (
+          {p.venue_starts > 0 ? (
             <div style={{ fontSize: "0.82em" }}>
-              <span style={{ color: "#7a9ab8" }}>{p.pga_starts} {historyType === "tournament" ? "PGA" : "starts"}</span>
-              {p.pga_top10s > 0 && (
+              <span style={{ color: "#7a9ab8" }}>{p.venue_starts} starts</span>
+              {p.venue_top10s > 0 && (
                 <span style={{ marginLeft: 6, color: "#f0c040", fontWeight: 600 }}>
-                  T10×{p.pga_top10s}
+                  T10×{p.venue_top10s}
                 </span>
               )}
-              {p.pga_wins > 0 && (
+              {p.venue_wins > 0 && (
                 <span style={{ marginLeft: 4, color: "#00c44f", fontWeight: 700 }}>W</span>
               )}
             </div>
@@ -396,6 +396,7 @@ function SectionHeader({ label, count, color }: { label: string; count: number; 
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
+  const venueLabel = data.venue_label || "Venue";
   const [sortMode, setSortMode]   = useState<SortMode>("boost");
   const [search, setSearch]       = useState("");
   const [minStarts, setMinStarts] = useState(1);
@@ -471,7 +472,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
           borderRadius: 8, padding: "10px 16px", marginBottom: 16,
           fontSize: "0.82em", color: "#c09040", lineHeight: 1.6,
         }}>
-          <strong>Note:</strong> "Tourney Record" reflects PGA Championship history across all venues — Quail Hollow (2025), Valhalla (2024), Oak Hill (2023), etc. The SG vs avg values and course boost are based on that same multi-venue history. Real Aronimink-specific data will only exist after this week.
+          <strong>Note:</strong> "Venue Record" shows {venueLabel} history across all years in our database. The SG vs avg values and course boost reflect that same multi-year history.
         </div>
       )}
 
@@ -531,7 +532,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
             <tr>
               <th style={hdr}>#</th>
               <th style={hdr}>Player</th>
-              <th style={{ ...hdr, textAlign: "center" }}>PGA Champ.</th>
+              <th style={{ ...hdr, textAlign: "center" }}>{venueLabel}</th>
               <th style={{ ...hdr, textAlign: "center" }}>Avg Score</th>
               <th style={{ ...hdr, textAlign: "center" }}>OTT</th>
               <th style={{ ...hdr, textAlign: "center" }}>APP</th>
