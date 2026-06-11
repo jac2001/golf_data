@@ -193,7 +193,15 @@ export type LineupResponse = {
   generated_at: string;
   weekly_narrative: string;
   picks: LineupPick[];
+  stale: boolean;
+  stale_tournament: string;
 };
+
+export async function generateLineup(): Promise<{ status: string; message?: string }> {
+  const res = await fetch(`${API_BASE}/api/generate-analysis`, { method: "POST", cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to start lineup generation");
+  return res.json();
+}
 
 export type TeeTimePlayer = {
   name: string;

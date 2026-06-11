@@ -2927,12 +2927,17 @@ def get_lineup() -> dict:
             "drift":         str(preds_info.get("dk_odds_direction") or ""),
         })
 
+    sr_tid = str(sr.get("tournament_id", ""))
+    stale  = bool(sr_tid and sr_tid != tid)
+
     return {
         "tournament_id":    tid,
         "tournament":       sr.get("tournament", ""),
         "generated_at":     sr.get("generated_at", ""),
         "weekly_narrative": sr.get("weekly_narrative", ""),
-        "picks":            picks,
+        "picks":            [] if stale else picks,
+        "stale":            stale,
+        "stale_tournament": sr.get("tournament", "") if stale else "",
     }
 
 

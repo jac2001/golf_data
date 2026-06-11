@@ -17,7 +17,7 @@
 import { useState, useEffect } from "react";
 import {
   getTournament, getPredictions, getLineup, getTeeTimes, getCourse, getModelComparison,
-  getWeather, getIntel, refreshIntel,
+  getWeather, getIntel, refreshIntel, generateLineup,
   Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
   ModelCompPlayer, WeatherResponse, CourseFitResponse,
   getCourseFit, PlayerPrediction, IntelResponse,
@@ -63,6 +63,9 @@ export default function PredictionsPage() {
   const [dgMeta, setDgMeta]           = useState<{ tournament_name: string; players_compared: number } | null>(null);
   const [weather, setWeather]         = useState<WeatherResponse | null>(null);
   const [intel, setIntel]             = useState<IntelResponse | null>(null);
+
+  const [generatingLineup, setGeneratingLineup] = useState(false);
+  const [generateMsg, setGenerateMsg]           = useState<string | null>(null);
 
   const [loadingField, setLoadingField]       = useState(true);
   const [loadingLineup, setLoadingLineup]     = useState(false);
@@ -236,11 +239,49 @@ export default function PredictionsPage() {
       )}
 
       {activeTab === "lineup" && (
-        loadingLineup
-          ? <Spinner />
-          : lineup
-            ? <LineupCards picks={lineup.picks} narrative={lineup.weekly_narrative} generatedAt={lineup.generated_at} />
-            : <Empty text="No lineup data. Run the season strategy pipeline." />
+        loadingLineup ? <Spinner /> :
+        lineup?.stale ? (
+          <div style={{ padding: "32px 24px", textAlign: "center", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+            <div style={{ color: "#7a9ab8", fontSize: "0.95em", marginBottom: 8 }}>
+              No lineup generated for this tournament yet.
+            </div>
+            <div style={{ color: "#4a6080", fontSize: "0.8em", marginBottom: 20 }}>
+              Last generated for: <span style={{ color: "#5a7090" }}>{lineup.stale_tournament}</span>
+            </div>
+            <button
+              onClick={async () => {
+                setGeneratingLineup(true);
+                setGenerateMsg(null);
+                try {
+                  const r = await generateLineup();
+                  setGenerateMsg(r.message ?? "Running in background — reload in ~30 seconds.");
+                } catch {
+                  setGenerateMsg("Failed to start. Is the API running?");
+                } finally {
+                  setGeneratingLineup(false);
+                }
+              }}
+              disabled={generatingLineup}
+              style={{
+                background: generatingLineup ? "#0d1929" : "#0a1f3a",
+                border: "1px solid #1e5a3f", borderRadius: 6,
+                color: generatingLineup ? "#4a6080" : "#00c44f",
+                padding: "8px 20px", fontSize: "0.85em", fontWeight: 700,
+                cursor: generatingLineup ? "default" : "pointer",
+              }}
+            >
+              {generatingLineup ? "Starting…" : "Generate Lineup"}
+            </button>
+            {generateMsg && (
+              <div style={{ marginTop: 12, color: "#f0c040", fontSize: "0.78em" }}>{generateMsg}</div>
+            )}
+          </div>
+        ) :
+        lineup ? (
+          <LineupCards picks={lineup.picks} narrative={lineup.weekly_narrative} generatedAt={lineup.generated_at} />
+        ) : (
+          <Empty text="No lineup data. Run the season strategy pipeline." />
+        )
       )}
 
       {activeTab === "teetimes" && (
