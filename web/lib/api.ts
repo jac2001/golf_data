@@ -38,6 +38,8 @@ export type Bet = {
   live_r1:       string | null;
   live_r2:       string | null;
   live_r3:       string | null;
+  // Intel warning from fetch_tournament_intel.py (empty string = no flag)
+  intel_warning: string | null;
 };
 
 export type OddsPlayer = {

@@ -783,6 +783,36 @@ def run_live_refresh(dry_run: bool = False):
         else:
             results += run_parallel(tier3)
 
+    # ── Daily intel refresh (player news + trends) ───────────────────────────
+    # Runs at most once per day — skipped if the file is <24h old.
+    # Uses Claude web_search (~$1/run for 20 players) so we gate it carefully.
+    if not dry_run and tournament_id:
+        import time as _time_mod
+        _intel_path = DATA_DIR / "intel" / f"tournament_intel_{tournament_id}.json"
+        _intel_age_hours = 999.0
+        if _intel_path.exists():
+            _intel_age_hours = (_time_mod.time() - _intel_path.stat().st_mtime) / 3600
+        if _intel_age_hours > 24:
+            _tournament_name = str(tournament.get("tournament_name", "")) if tournament else ""
+            _course_name = _tournament_name  # fallback; schedule may have course field
+            try:
+                import pandas as _pd
+                _sched = _pd.read_csv(DATA_DIR / "raw" / f"schedule_{datetime.now().year}.csv", dtype=str)
+                _row = _sched[_sched["tournament_id"].str.upper() == tournament_id.upper()]
+                if not _row.empty and "course_name" in _sched.columns:
+                    _course_name = str(_row["course_name"].iloc[0])
+            except Exception:
+                pass
+            log(f"Intel refresh: file is {_intel_age_hours:.0f}h old — re-running")
+            run_command(
+                ["python3", "scripts/intel/fetch_tournament_intel.py",
+                 "--tid", tournament_id,
+                 "--tournament", _tournament_name,
+                 "--course", _course_name],
+                "Intel Refresh",
+                timeout=300,
+            )
+
     # ── Tee times + draw advantage for R3/R4 ─────────────────────────────────
     # R1/R2 tee times are fetched on Tuesday morning (run_tuesday_morning).
     # R3/R4 pairings are announced Friday evening after the cut — we fetch them

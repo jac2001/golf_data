@@ -4393,10 +4393,13 @@ def chat_endpoint(body: ChatRequest, request: Request):
 
     def _stream():
         buf: list[str] = []
-        anthropic_failed = False
         try:
+            import httpx as _httpx
             from anthropic import Anthropic  # type: ignore
-            client = Anthropic(api_key=api_key)
+            client = Anthropic(
+                api_key=api_key,
+                timeout=_httpx.Timeout(connect=10.0, read=300.0, write=30.0, pool=10.0),
+            )
             system_blocks = _build_cached_system(context)
             with client.messages.stream(
                 model=model,
@@ -4411,9 +4414,11 @@ def chat_endpoint(body: ChatRequest, request: Request):
                     yield f"data: {json.dumps({'text': text})}\n\n"
         except Exception as e:
             err_str = str(e).lower()
-            # Credit exhaustion or auth error → try Groq silently
-            if groq_key and any(x in err_str for x in ["credit", "billing", "quota", "balance", "429", "overloaded"]):
-                anthropic_failed = True
+            # Fall back to Groq on: credit exhaustion, overload, or stream timeout
+            if groq_key and any(x in err_str for x in [
+                "credit", "billing", "quota", "balance", "429", "overloaded",
+                "timeout", "idle", "stream",
+            ]):
                 yield from _stream_groq_fallback(buf)
             else:
                 yield f"data: {json.dumps({'text': f'\\n\\n*(Error: {e})*'})}\n\n"

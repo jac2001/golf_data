@@ -57,25 +57,20 @@ def load_top_players(n=20) -> list[dict]:
   # Uses Claude's built-in web_search tool (no external API key needed)
 
 PLAYER_SEARCH_PROMPT = """
-  Search for recent news (last 7 days) about {player_name} in the context of
-  PGA Tour golf and this week's {tournament_name} tournament. Look for:
-  - Injury or health concerns
-  - Recent form (last 2-3 tournament results)
-  - Any quotes about their game or this course
-  - Withdrawal risk
+Search for recent news (last 14 days) about {player_name} in the context of
+PGA Tour golf and this week's {tournament_name} tournament. Look for:
+- Injury or health concerns
+- Last 3 tournament results with finish positions (e.g. "T4 at Memorial", "MC at Charles Schwab")
+- Whether their form is improving, declining, or flat across those results
+- Any quotes about their game or this course
+- Withdrawal risk
 
-  Return a JSON object with these exact keys:
-  {{
-    "player_name": "{player_name}",
-    "injury_flag": true/false,
-    "injury_detail": "string or null",
-    "recent_form_summary": "1-2 sentences",
-    "key_quote": "direct quote if found, else null",
-    "sentiment": "positive" | "neutral" | "negative",
-    "sources": ["url1", "url2"]
-  }}
-  Only return the JSON, nothing else.
-  """
+Return ONLY this JSON object with no explanation, no markdown, no backticks:
+{{"player_name": "{player_name}", "injury_flag": false, "injury_detail": null, "recent_form_summary": "1-2 sentences", "last_3_results": ["result1", "result2", "result3"], "trend": "trending_up", "key_quote": null, "sentiment": "neutral", "sources": ["url1"]}}
+
+trend must be exactly one of: "trending_up", "trending_down", "stable"
+Only return the JSON, nothing else.
+"""
 
 
 

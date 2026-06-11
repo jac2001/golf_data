@@ -2811,6 +2811,41 @@ def main() -> int:
 
     recs_df = build_recommendations(tid, preds_df, lines_df, cards_df, cfg)
 
+    # ── Annotate with intel flags ─────────────────────────────────────────────
+    intel_path = DATA_DIR / "intel" / f"tournament_intel_{tid}.json"
+    if not recs_df.empty and intel_path.exists():
+        try:
+            import json as _json
+            intel = _json.loads(intel_path.read_text())
+            # Build lookup: normalised last name → intel row
+            def _nk(n):
+                s = str(n).strip().lower()
+                return s.split(",")[0].strip() if "," in s else s.split()[-1]
+            intel_by_lname = {}
+            for p in intel.get("players", []):
+                intel_by_lname[_nk(p.get("player_name", ""))] = p
+
+            warnings_col = []
+            for _, row in recs_df.iterrows():
+                p = intel_by_lname.get(_nk(row.get("player_name", "")), {})
+                if p.get("injury_flag"):
+                    warnings_col.append("injury risk")
+                elif p.get("trend") == "trending_down" and p.get("sentiment") == "negative":
+                    warnings_col.append("poor form + negative news")
+                elif p.get("trend") == "trending_down":
+                    warnings_col.append("form declining")
+                elif p.get("sentiment") == "negative":
+                    warnings_col.append("negative news")
+                else:
+                    warnings_col.append("")
+            recs_df = recs_df.copy()
+            recs_df["intel_warning"] = warnings_col
+            flagged = sum(1 for w in warnings_col if w)
+            if flagged:
+                print(f"  Intel flags: {flagged} bets have warnings")
+        except Exception as _ie:
+            print(f"  [warn] Intel annotation failed: {_ie}")
+
     # Persist outputs even if empty to keep pipeline deterministic.
     out_path = ODDS_DIR / f"recommended_bets_{tid}.csv"
     latest_path = ODDS_DIR / "recommended_bets_latest.csv"

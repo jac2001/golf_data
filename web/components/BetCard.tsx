@@ -116,6 +116,18 @@ export default function BetCard({ bet, bankroll }: Props) {
             </div>
           )}
 
+          {/* ── Intel warning ── */}
+          {bet.intel_warning && (
+            <div style={{
+              marginTop: 5, fontSize: "0.68em", fontWeight: 600,
+              color: "#f39c12", background: "#1a1200",
+              border: "1px solid #5f4a0044", borderRadius: 4,
+              padding: "2px 7px", display: "inline-block",
+            }}>
+              ⚠ {bet.intel_warning}
+            </div>
+          )}
+
           {/* ── Live tournament context ── */}
           {bet.live_position && (() => {
             const isLeader = bet.live_position === "1" || bet.live_position === "T1";
