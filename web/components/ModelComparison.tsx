@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ModelCompPlayer } from "@/lib/api";
 
 type Props = { players: ModelCompPlayer[] };
@@ -9,6 +10,17 @@ const BLUE   = "#4cb8ff";
 const BORDER = "#1e3a5f";
 const MUTED  = "#4a6080";
 const TEXT   = "#dde6f5";
+
+const playerLink = (name: string, style?: React.CSSProperties) => (
+  <Link
+    href={`/players?player=${encodeURIComponent(name)}`}
+    style={{ textDecoration: "none", color: "inherit", ...style }}
+    onMouseEnter={e => (e.currentTarget.style.color = "#00c44f")}
+    onMouseLeave={e => (e.currentTarget.style.color = style?.color ?? TEXT)}
+  >
+    {name}
+  </Link>
+);
 
 // Returns [fillA, fillB] as percentages that always sum to ~100
 function splitBar(a: number | null, b: number | null): [number, number] {
@@ -45,7 +57,7 @@ export default function ModelComparison({ players }: Props) {
             </div>
             {wePrefer.map(p => (
               <div key={p.player} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                <span style={{ fontSize: "0.82em", color: TEXT, fontWeight: 600 }}>{p.player}</span>
+                <span style={{ fontSize: "0.82em", fontWeight: 600 }}>{playerLink(p.player)}</span>
                 <span style={{ fontSize: "0.75em" }}>
                   <span style={{ color: GREEN }}>Us #{p.our_rank}</span>
                   <span style={{ color: MUTED, margin: "0 5px" }}>vs</span>
@@ -62,7 +74,7 @@ export default function ModelComparison({ players }: Props) {
             </div>
             {dgPrefers.map(p => (
               <div key={p.player} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                <span style={{ fontSize: "0.82em", color: TEXT, fontWeight: 600 }}>{p.player}</span>
+                <span style={{ fontSize: "0.82em", fontWeight: 600 }}>{playerLink(p.player)}</span>
                 <span style={{ fontSize: "0.75em" }}>
                   <span style={{ color: GREEN }}>Us #{p.our_rank}</span>
                   <span style={{ color: MUTED, margin: "0 5px" }}>vs</span>
@@ -122,8 +134,8 @@ export default function ModelComparison({ players }: Props) {
                 <tr key={`${p.player}-${i}`}>
                   <td style={{ ...td, textAlign: "center", color: MUTED, fontSize: "0.75em" }}>{i + 1}</td>
 
-                  <td style={{ ...td, textAlign: "left", color: TEXT, fontWeight: 600, whiteSpace: "nowrap" }}>
-                    {p.player}
+                  <td style={{ ...td, textAlign: "left", fontWeight: 600, whiteSpace: "nowrap" }}>
+                    {playerLink(p.player)}
                   </td>
 
                   <td style={{ ...td, textAlign: "center", color: GREEN, fontWeight: 700 }}>

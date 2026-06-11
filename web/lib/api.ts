@@ -78,6 +78,8 @@ export type PlayerIntel = {
   injury_flag: boolean;
   injury_detail: string | null;
   recent_form_summary: string;
+  last_3_results: string[] | null;
+  trend: "trending_up" | "trending_down" | "stable" | null;
   key_quote: string | null;
   sentiment: "positive" | "neutral" | "negative";
   sources: string[];

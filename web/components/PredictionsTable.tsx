@@ -170,9 +170,10 @@ export default function PredictionsTable({ players, intel = [] }: Props) {
                 <tr key={p.player_name ?? `row-${i}`}>
                   <td style={{ ...td, color: "#3a5060", textAlign: "center", fontSize: "0.78em" }}>{i + 1}</td>
 
-                  {/* Player name + explanation + intel indicators */}
-                  <td style={{ ...td, fontSize: "0.85em" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  {/* Player name + intel */}
+                  <td style={{ ...td, fontSize: "0.85em", maxWidth: 280 }}>
+                    {/* Row 1: name + badges */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                       <Link
                         href={`/players?player=${encodeURIComponent(p.player_name)}`}
                         style={{ color: "#dde6f5", fontWeight: 600, whiteSpace: "nowrap", textDecoration: "none" }}
@@ -182,20 +183,58 @@ export default function PredictionsTable({ players, intel = [] }: Props) {
                         {p.player_name}
                       </Link>
                       {playerIntel?.injury_flag && (
-                        <span title={playerIntel.injury_detail ?? "Injury flag"} style={{ color: "#e74c3c", fontSize: "0.8em", fontWeight: 800, cursor: "help" }}>!</span>
+                        <span style={{
+                          fontSize: "0.68em", fontWeight: 700, color: "#e74c3c",
+                          background: "#1a0808", border: "1px solid #5f1e1e44",
+                          borderRadius: 4, padding: "1px 6px", whiteSpace: "nowrap",
+                        }}>
+                          {playerIntel.injury_detail
+                            ? playerIntel.injury_detail.length > 30
+                              ? playerIntel.injury_detail.slice(0, 30) + "…"
+                              : playerIntel.injury_detail
+                            : "injury risk"}
+                        </span>
                       )}
-                      {playerIntel?.sentiment && !playerIntel.injury_flag && (
-                        <span style={{ width: 6, height: 6, borderRadius: "50%", background: SENTIMENT_DOT[playerIntel.sentiment] ?? "#4a6080", display: "inline-block", flexShrink: 0 }} title={playerIntel.sentiment} />
+                      {playerIntel?.trend === "trending_up" && (
+                        <span style={{
+                          fontSize: "0.68em", fontWeight: 700, color: "#00c44f",
+                          background: "#0d2e18", border: "1px solid #00c44f44",
+                          borderRadius: 4, padding: "1px 6px",
+                        }}>↑ hot</span>
+                      )}
+                      {playerIntel?.trend === "trending_down" && (
+                        <span style={{
+                          fontSize: "0.68em", fontWeight: 700, color: "#f39c12",
+                          background: "#1a1200", border: "1px solid #5f4a0044",
+                          borderRadius: 4, padding: "1px 6px",
+                        }}>↓ cold</span>
                       )}
                     </div>
+
+                    {/* Row 2: model explanation */}
                     {p.explanation && (
-                      <div style={{ color: "#3a5a70", fontSize: "0.75em", marginTop: 2, whiteSpace: "nowrap" }}>
+                      <div style={{ color: "#3a5a70", fontSize: "0.75em", marginTop: 3 }}>
                         {p.explanation}
                       </div>
                     )}
+
+                    {/* Row 3: intel form summary */}
                     {playerIntel?.recent_form_summary && (
-                      <div style={{ color: "#2a4a60", fontSize: "0.72em", marginTop: 2, maxWidth: 260, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} title={playerIntel.recent_form_summary}>
+                      <div style={{ color: "#4a6a80", fontSize: "0.72em", marginTop: 3, lineHeight: 1.4 }}>
                         {playerIntel.recent_form_summary}
+                      </div>
+                    )}
+
+                    {/* Row 4: last 3 results chips */}
+                    {playerIntel?.last_3_results?.length && (
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 4 }}>
+                        {playerIntel.last_3_results.slice(0, 3).map((r, ri) => (
+                          <span key={ri} style={{
+                            fontSize: "0.65em", color: "#4a6080",
+                            background: "#0a1520", border: "1px solid #1e3a5f",
+                            borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
+                          }}>{r}</span>
+                        ))}
                       </div>
                     )}
                   </td>
