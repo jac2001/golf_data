@@ -166,6 +166,7 @@ export type PredictionsResponse = {
   tournament_id: string;
   players: PlayerPrediction[];
   count: number;
+  field_size: number;
   weekly_narrative: string;
   analysis_generated_at: string;
 };

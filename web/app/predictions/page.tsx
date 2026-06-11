@@ -14,7 +14,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   getTournament, getPredictions, getLineup, getTeeTimes, getCourse, getModelComparison,
   getWeather, getIntel, refreshIntel, generateLineup,
@@ -75,26 +75,36 @@ export default function PredictionsPage() {
   const [courseFit, setCourseFit] = useState<CourseFitResponse | null>(null);
   const [loadingCourseFit, setLoadingCourseFit] = useState(false);
   const [error, setError]                     = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated]         = useState<Date | null>(null);
 
-  // ── Initial load: tournament + field + weather + withdrawals count ───────────
-  useEffect(() => {
-    async function load() {
-      try {
-        const [t, p] = await Promise.all([getTournament(), getPredictions(200)]);
-        setTournament(t);
-        setPreds(p);
-        // Lineup, weather, intel load alongside — failures are non-fatal
+  const REFRESH_MS = 5 * 60 * 1000; // 5 minutes
+  const pollTimer  = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // ── Core data fetch (called on mount + every 5 min) ──────────────────────────
+  const fetchCore = useCallback(async (silent = false) => {
+    try {
+      const [t, p] = await Promise.all([getTournament(), getPredictions(200)]);
+      setTournament(t);
+      setPreds(p);
+      setLastUpdated(new Date());
+      if (!silent) {
         getLineup().then(setLineup).catch(() => {});
         getWeather().then(setWeather).catch(() => {});
         getIntel().then(setIntel).catch(() => {});
-      } catch {
-        setError("Could not connect to the API. Is FastAPI running on port 8000?");
-      } finally {
-        setLoadingField(false);
       }
+    } catch {
+      if (!silent) setError("Could not connect to the API. Is FastAPI running on port 8000?");
+    } finally {
+      if (!silent) setLoadingField(false);
     }
-    load();
   }, []);
+
+  // ── Initial load + auto-refresh every 5 minutes ──────────────────────────────
+  useEffect(() => {
+    fetchCore(false);
+    pollTimer.current = setInterval(() => fetchCore(true), REFRESH_MS);
+    return () => { if (pollTimer.current) clearInterval(pollTimer.current); };
+  }, [fetchCore]);
 
   // ── Lazy load: lineup (no-op if already loaded eagerly on mount) ─────────────
   useEffect(() => {
@@ -163,6 +173,11 @@ export default function PredictionsPage() {
             {tournament.round_status && ` · ${tournament.round_status}`}
             {tournament.leader_name  && ` · Leader: ${tournament.leader_name}`}
             {tournament.leader_score != null && ` (${tournament.leader_score > 0 ? "+" : ""}${tournament.leader_score})`}
+            {lastUpdated && (
+              <span style={{ color: "#2a3a50", marginLeft: 10 }}>
+                · updated {lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              </span>
+            )}
           </p>
         ) : (
           <p style={{ color: "#3a5060", fontSize: "0.85em", margin: "4px 0 0" }}>Loading tournament…</p>
@@ -172,7 +187,7 @@ export default function PredictionsPage() {
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}
       {preds && !loadingField && (
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-          <GlanceCard label="Field Size" value={String(preds.count)} accent="#4cb8ff" />
+          <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)} accent="#4cb8ff" />
           <GlanceCard
             label="Model Favorite"
             value={preds.players[0]?.player_name ?? "—"}

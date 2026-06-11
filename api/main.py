@@ -1584,11 +1584,31 @@ def get_predictions(limit: int = 50) -> dict:
         entry["explanation"]    = explanation_map.get(name, "")
         records.append(entry)
 
+    # Actual field size from DG /field-updates (reuse tee-times cache if warm)
+    field_size = len(records)
+    try:
+        cached_tt = _tee_times_cache.get("data")
+        if cached_tt and cached_tt.get("tournament_id") == tid:
+            field_size = cached_tt.get("field_size", field_size)
+        else:
+            from scripts.scrapers.dg_client import dg_get as _dg_get  # type: ignore
+            for _tour in ("pga", "upcoming_pga"):
+                try:
+                    _raw = _dg_get("/field-updates", {"tour": _tour, "file_format": "json"})
+                    if _raw.get("field"):
+                        field_size = len(_raw["field"])
+                        break
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
     return {
-        "tournament_id":    tid,
-        "players":          records,
-        "count":            len(records),
-        "weekly_narrative": weekly_narrative,
+        "tournament_id":         tid,
+        "players":               records,
+        "count":                 len(records),
+        "field_size":            field_size,
+        "weekly_narrative":      weekly_narrative,
         "analysis_generated_at": analysis_generated_at,
     }
 
@@ -3012,6 +3032,7 @@ def get_tee_times() -> dict:
 
     current_round = int(raw.get("current_round") or 1)
     field = raw.get("field", [])
+    total_players = len(field)
 
     # Build rows: one per player, for current_round
     rows = []
@@ -3118,7 +3139,7 @@ def get_tee_times() -> dict:
         for tt, players in sorted(groups.items(), key=lambda x: _tt_sort_key(x[0]))
     ]
 
-    result = {"tournament_id": tid, "round": round_num, "groups": sorted_groups}
+    result = {"tournament_id": tid, "round": round_num, "groups": sorted_groups, "field_size": total_players}
     _tee_times_cache["ts"]   = time.time()
     _tee_times_cache["data"] = result
     return result
