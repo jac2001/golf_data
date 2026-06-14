@@ -1,0 +1,667 @@
+[
+  {
+    "player_name": "Scheffler, Scottie",
+    "player_id": "46046",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916434"
+  },
+  {
+    "player_name": "McIlroy, Rory",
+    "player_id": "28237",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916455"
+  },
+  {
+    "player_name": "Rahm, Jon",
+    "player_id": "46970",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916458"
+  },
+  {
+    "player_name": "Young, Cameron",
+    "player_id": "57366",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916459"
+  },
+  {
+    "player_name": "Schauffele, Xander",
+    "player_id": "48081",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916461"
+  },
+  {
+    "player_name": "Aberg, Ludvig",
+    "player_id": "52955",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916462"
+  },
+  {
+    "player_name": "Henley, Russell",
+    "player_id": "34098",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916463"
+  },
+  {
+    "player_name": "Kim, Si Woo",
+    "player_id": "37455",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916465"
+  },
+  {
+    "player_name": "Cantlay, Patrick",
+    "player_id": "35450",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916466"
+  },
+  {
+    "player_name": "Spaun, J.J.",
+    "player_id": "39324",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916467"
+  },
+  {
+    "player_name": "McNealy, Maverick",
+    "player_id": "46442",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916469"
+  },
+  {
+    "player_name": "Gotterup, Chris",
+    "player_id": "59095",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916470"
+  },
+  {
+    "player_name": "English, Harris",
+    "player_id": "34099",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916471"
+  },
+  {
+    "player_name": "Thomas, Justin",
+    "player_id": "33448",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916473"
+  },
+  {
+    "player_name": "DeChambeau, Bryson",
+    "player_id": "47959",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916474"
+  },
+  {
+    "player_name": "Scott, Adam",
+    "player_id": "24502",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916475"
+  },
+  {
+    "player_name": "Knapp, Jake",
+    "player_id": "47420",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916476"
+  },
+  {
+    "player_name": "Griffin, Ben",
+    "player_id": "54591",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916478"
+  },
+  {
+    "player_name": "Kitayama, Kurt",
+    "player_id": "48117",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916479"
+  },
+  {
+    "player_name": "Gerard, Ryan",
+    "player_id": "59018",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916480"
+  },
+  {
+    "player_name": "Lee, Min Woo",
+    "player_id": "37378",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916481"
+  },
+  {
+    "player_name": "Matsuyama, Hideki",
+    "player_id": "32839",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916483"
+  },
+  {
+    "player_name": "Reed, Patrick",
+    "player_id": "34360",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916484"
+  },
+  {
+    "player_name": "Smalley, Alex",
+    "player_id": "46340",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916485"
+  },
+  {
+    "player_name": "Hatton, Tyrrell",
+    "player_id": "34363",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916486"
+  },
+  {
+    "player_name": "Bradley, Keegan",
+    "player_id": "33141",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916488"
+  },
+  {
+    "player_name": "Spieth, Jordan",
+    "player_id": "34046",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916489"
+  },
+  {
+    "player_name": "Bhatia, Akshay",
+    "player_id": "56630",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916490"
+  },
+  {
+    "player_name": "Puig, David",
+    "player_id": "61193",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916491"
+  },
+  {
+    "player_name": "Poston, J.T.",
+    "player_id": "49771",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916493"
+  },
+  {
+    "player_name": "Woodland, Gary",
+    "player_id": "31323",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916494"
+  },
+  {
+    "player_name": "Fowler, Rickie",
+    "player_id": "32102",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916495"
+  },
+  {
+    "player_name": "Straka, Sepp",
+    "player_id": "49960",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916496"
+  },
+  {
+    "player_name": "Koivun, Jackson",
+    "player_id": "66701",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916498"
+  },
+  {
+    "player_name": "Niemann, Joaquin",
+    "player_id": "45486",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916499"
+  },
+  {
+    "player_name": "Day, Jason",
+    "player_id": "28089",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916500"
+  },
+  {
+    "player_name": "McCarty, Matt",
+    "player_id": "59141",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916501"
+  },
+  {
+    "player_name": "Harman, Brian",
+    "player_id": "27644",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916503"
+  },
+  {
+    "player_name": "Kim, Michael",
+    "player_id": "39975",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916504"
+  },
+  {
+    "player_name": "Berger, Daniel",
+    "player_id": "40026",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916505"
+  },
+  {
+    "player_name": "Coody, Pierceson",
+    "player_id": "59836",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916507"
+  },
+  {
+    "player_name": "Schaper, Jayden",
+    "player_id": "57737",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916508"
+  },
+  {
+    "player_name": "Johnson, Dustin",
+    "player_id": "30925",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916509"
+  },
+  {
+    "player_name": "Novak, Andrew",
+    "player_id": "51997",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916510"
+  },
+  {
+    "player_name": "Smith, Cameron",
+    "player_id": "35891",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916512"
+  },
+  {
+    "player_name": "Stevens, Sam",
+    "player_id": "55893",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916513"
+  },
+  {
+    "player_name": "Im, Sungjae",
+    "player_id": "39971",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916514"
+  },
+  {
+    "player_name": "Herbert, Lucas",
+    "player_id": "39058",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916515"
+  },
+  {
+    "player_name": "Hisatsune, Ryo",
+    "player_id": "51287",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916516"
+  },
+  {
+    "player_name": "Echavarria, Nico",
+    "player_id": "51349",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916518"
+  },
+  {
+    "player_name": "Rodgers, Patrick",
+    "player_id": "36699",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916519"
+  },
+  {
+    "player_name": "Dossey, Cooper",
+    "player_id": "58600",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916520"
+  },
+  {
+    "player_name": "Ortiz, Carlos",
+    "player_id": "33667",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916521"
+  },
+  {
+    "player_name": "Penge, Marco",
+    "player_id": "51003",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916522"
+  },
+  {
+    "player_name": "Kohles, Ben",
+    "player_id": "36884",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916524"
+  },
+  {
+    "player_name": "Coussaud, Ugo",
+    "player_id": "48936",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916525"
+  },
+  {
+    "player_name": "Blair, Zac",
+    "player_id": "40058",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916526"
+  },
+  {
+    "player_name": "Stout, Preston",
+    "player_id": "66416",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916527"
+  },
+  {
+    "player_name": "Kimsey, Nathan",
+    "player_id": "45426",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916529"
+  },
+  {
+    "player_name": "Saddier, Adrien",
+    "player_id": "34371",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916530"
+  },
+  {
+    "player_name": "Jordan, Matthew",
+    "player_id": "55955",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916531"
+  },
+  {
+    "player_name": "Canter, Laurie",
+    "player_id": "34362",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916532"
+  },
+  {
+    "player_name": "Surratt, Caleb",
+    "player_id": "64054",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916533"
+  },
+  {
+    "player_name": "Hammer, Cole",
+    "player_id": "47987",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916534"
+  },
+  {
+    "player_name": "Russell, Miles",
+    "player_id": "66290",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916536"
+  },
+  {
+    "player_name": "Montgomery, Taylor",
+    "player_id": "55789",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916537"
+  },
+  {
+    "player_name": "Uihlein, Peter",
+    "player_id": "29484",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916538"
+  },
+  {
+    "player_name": "Sato, Taihei",
+    "player_id": "33908",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916539"
+  },
+  {
+    "player_name": "Nicholas, James",
+    "player_id": "58188",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916541"
+  },
+  {
+    "player_name": "Norgaard, Niklas",
+    "player_id": "35706",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916542"
+  },
+  {
+    "player_name": "Hardy, Nick",
+    "player_id": "47988",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916543"
+  },
+  {
+    "player_name": "Yuan, Carl",
+    "player_id": "55454",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916544"
+  },
+  {
+    "player_name": "McDowell, Graeme",
+    "player_id": "25572",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916545"
+  },
+  {
+    "player_name": "Robles, Matt",
+    "player_id": "0",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916547"
+  },
+  {
+    "player_name": "Van Paris, Jackson",
+    "player_id": "57864",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916548"
+  },
+  {
+    "player_name": "Celli, Filippo",
+    "player_id": "52444",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916549"
+  },
+  {
+    "player_name": "Fang, Ethan",
+    "player_id": "68932",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916550"
+  },
+  {
+    "player_name": "Herrington, Jackson",
+    "player_id": "70148",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916551"
+  },
+  {
+    "player_name": "Hidalgo Portillo, Angel",
+    "player_id": "64594",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916553"
+  },
+  {
+    "player_name": "Higgins, Robbie",
+    "player_id": "65460",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916554"
+  },
+  {
+    "player_name": "Holmes, J.B.",
+    "player_id": "27141",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916555"
+  },
+  {
+    "player_name": "Holtz, Brandon",
+    "player_id": "70147",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916556"
+  },
+  {
+    "player_name": "Howell, Mason",
+    "player_id": "68607",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916557"
+  },
+  {
+    "player_name": "Kim, T.K.",
+    "player_id": "46155",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916559"
+  },
+  {
+    "player_name": "Leach, Greyson",
+    "player_id": "67358",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916560"
+  },
+  {
+    "player_name": "Oiwa, Ryuichi",
+    "player_id": "48933",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916561"
+  },
+  {
+    "player_name": "Onishi, Kaito",
+    "player_id": "55623",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916562"
+  },
+  {
+    "player_name": "Ormond, Jackson",
+    "player_id": "70296",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916563"
+  },
+  {
+    "player_name": "Peacock, Jake",
+    "player_id": "66035",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916565"
+  },
+  {
+    "player_name": "Puebla, Giuseppe",
+    "player_id": "68009",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916566"
+  },
+  {
+    "player_name": "Pulcini, Mateo",
+    "player_id": "70145",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916567"
+  },
+  {
+    "player_name": "Repetto Taylor, Rocco Paolo",
+    "player_id": "65229",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916568"
+  },
+  {
+    "player_name": "Shah, Manav",
+    "player_id": "47687",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916569"
+  },
+  {
+    "player_name": "Sollon, Jake",
+    "player_id": "60879",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916571"
+  },
+  {
+    "player_name": "Wu, Brandon",
+    "player_id": "52374",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-09T06:05:08.916572"
+  }
+]

@@ -189,22 +189,33 @@ export default function PredictionsPage() {
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
           <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)} accent="#4cb8ff" />
           <GlanceCard
-            label="Model Favorite"
-            value={preds.players[0]?.player_name ?? "—"}
-            sub={preds.players[0]?.win_prob != null ? `${(preds.players[0].win_prob * 100).toFixed(1)}% win` : ""}
+            label="Location"
+            value={tournament?.location || "—"}
+            accent="#7ecf9e"
+          />
+          <GlanceCard
+            label="Purse"
+            value={(() => {
+              const p = tournament?.purse;
+              if (p == null) return "—";
+              const s = String(p).replace(/[$,]/g, "").replace(/\.00$/, "");
+              const n = parseFloat(s);
+              return isNaN(n) ? String(p) : `$${Math.round(n).toLocaleString()}`;
+            })()}
             accent="#f1c40f"
           />
           <GlanceCard
-            label="Avg Win Prob"
-            value={`${(preds.players.reduce((s, p) => s + (p.win_prob ?? 0), 0) / preds.players.length * 100).toFixed(1)}%`}
-            sub="field average"
-            accent="#00c44f"
+            label="Defending Champ"
+            value={tournament?.defending_champion || "—"}
+            sub={tournament?.defending_champion_year ? `${tournament.defending_champion_year} winner` : undefined}
+            accent="#e67e22"
           />
           <GlanceCard
             label="Lineup Picks"
-            value={lineup?.picks.map(p => p.player_name.split(" ").pop()).join(", ") ?? "—"}
-            sub="this week's selections"
+            value={lineup?.confirmed && lineup.picks.length ? lineup.picks.map(p => p.player_name.split(" ").pop()).join(", ") : "Not set"}
+            sub={lineup?.confirmed ? "confirmed this week" : "no picks confirmed yet"}
             accent="#9b59b6"
+            onClick={() => setActiveTab("lineup")}
           />
           <FieldStrengthCard players={preds.players} />
         </div>
@@ -460,17 +471,26 @@ function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
   );
 }
 
-function GlanceCard({ label, value, sub, accent = "#4cb8ff" }: { label: string; value: string; sub?: string; accent?: string }) {
+function GlanceCard({ label, value, sub, accent = "#4cb8ff", onClick }: {
+  label: string; value: string; sub?: string; accent?: string; onClick?: () => void;
+}) {
   return (
-    <div style={{
-      background: `linear-gradient(180deg, ${accent}12 0%, #0d1a30 55%)`,
-      border: "1px solid #1e3a5f",
-      borderTop: `3px solid ${accent}`,
-      borderRadius: 8,
-      padding: "12px 16px",
-      flex: "1 1 140px", minWidth: 130,
-      position: "relative", overflow: "hidden",
-    }}>
+    <div
+      onClick={onClick}
+      style={{
+        background: `linear-gradient(180deg, ${accent}12 0%, #0d1a30 55%)`,
+        border: "1px solid #1e3a5f",
+        borderTop: `3px solid ${accent}`,
+        borderRadius: 8,
+        padding: "12px 16px",
+        flex: "1 1 140px", minWidth: 130,
+        position: "relative", overflow: "hidden",
+        cursor: onClick ? "pointer" : "default",
+        transition: onClick ? "border-color 0.15s, background 0.15s" : undefined,
+      }}
+      onMouseEnter={onClick ? e => (e.currentTarget.style.borderColor = accent) : undefined}
+      onMouseLeave={onClick ? e => (e.currentTarget.style.borderColor = "#1e3a5f") : undefined}
+    >
       <div style={{ fontSize: "0.62em", color: `${accent}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
         {label}
       </div>
@@ -481,6 +501,7 @@ function GlanceCard({ label, value, sub, accent = "#4cb8ff" }: { label: string; 
         {value}
       </div>
       {sub && <div style={{ fontSize: "0.66em", color: "#4a6080", marginTop: 3 }}>{sub}</div>}
+      {onClick && <div style={{ fontSize: "0.6em", color: `${accent}66`, marginTop: 4 }}>click to view</div>}
     </div>
   );
 }

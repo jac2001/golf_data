@@ -65,6 +65,10 @@ export type Tournament = {
   round_status?: string;
   leader_score?: number;
   leader_name?: string;
+  location?: string;
+  purse?: number | string | null;
+  defending_champion?: string;
+  defending_champion_year?: string;
 };
 
 export type BetsResponse = {
@@ -196,6 +200,7 @@ export type LineupResponse = {
   picks: LineupPick[];
   stale: boolean;
   stale_tournament: string;
+  confirmed: boolean;
 };
 
 export async function generateLineup(): Promise<{ status: string; message?: string }> {
@@ -820,6 +825,29 @@ export type MyPicksResponse = {
 export async function getMyPicks(): Promise<MyPicksResponse> {
   const res = await fetch(`${API_BASE}/api/mypicks`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load my picks");
+  return res.json();
+}
+
+export async function setMyPicks(tournamentId: string, picks: string[]): Promise<{ status: string; tournament: string; picks: string[] }> {
+  const res = await fetch(`${API_BASE}/api/picks`, {
+    method: "POST", cache: "no-store",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tournament_id: tournamentId, picks }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: "Unknown error" }));
+    throw new Error(err.detail ?? "Failed to set picks");
+  }
+  return res.json();
+}
+
+export async function clearMyPicks(tournamentId: string): Promise<{ status: string; removed: string[] }> {
+  const res = await fetch(`${API_BASE}/api/picks`, {
+    method: "DELETE", cache: "no-store",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tournament_id: tournamentId }),
+  });
+  if (!res.ok) throw new Error("Failed to clear picks");
   return res.json();
 }
 

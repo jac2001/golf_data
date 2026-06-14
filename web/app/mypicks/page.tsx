@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import {
-  getMyPicks,
-  MyPicksResponse, WeeklyLineup, RosterPlayer,
+  getMyPicks, getTournament, setMyPicks, clearMyPicks,
+  MyPicksResponse, WeeklyLineup, RosterPlayer, Tournament,
 } from "@/lib/api";
 
 type Tab = "log" | "roster";
@@ -164,14 +164,23 @@ function RosterRow({ player, maxUses }: { player: RosterPlayer; maxUses: number 
 
 export default function MyPicksPage() {
   const [activeTab, setActiveTab] = useState<Tab>("log");
-  const [data, setData]   = useState<MyPicksResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]   = useState<string | null>(null);
+  const [data, setData]           = useState<MyPicksResponse | null>(null);
+  const [tournament, setTournament] = useState<Tournament | null>(null);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState<string | null>(null);
+
+  const reload = () => {
+    getMyPicks().then(setData).catch(() => {});
+  };
 
   useEffect(() => {
-    getMyPicks()
-      .then(setData)
-      .catch(() => setError("Could not load My Picks. Is FastAPI running?"))
+    Promise.all([
+      getMyPicks(),
+      getTournament(),
+    ]).then(([picks, tourn]) => {
+      setData(picks);
+      setTournament(tourn);
+    }).catch(() => setError("Could not load My Picks. Is FastAPI running?"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -189,6 +198,12 @@ export default function MyPicksPage() {
   }
 
   const { weeks, roster, summary, max_uses } = data;
+
+  // Current week = most recent week matching tournament name (or first empty one)
+  const currentWeek = tournament
+    ? weeks.find(w => w.tournament === tournament.name) ?? weeks[0]
+    : weeks[0];
+  const currentLineup = currentWeek?.lineup ?? [];
 
   const TABS: { key: Tab; label: string }[] = [
     { key: "log",    label: `Season Log (${weeks.length})` },
@@ -222,6 +237,15 @@ export default function MyPicksPage() {
           />
         )}
       </div>
+
+      {/* ── Current week picks entry ─────────────────────────────────────── */}
+      {tournament && (
+        <SetPicksPanel
+          tournament={tournament}
+          currentLineup={currentLineup}
+          onSaved={reload}
+        />
+      )}
 
       {/* ── Tab switcher ─────────────────────────────────────────────────── */}
       <div style={{ display: "flex", gap: 4, marginBottom: 20, borderBottom: "1px solid #1e3a5f" }}>
@@ -271,6 +295,123 @@ export default function MyPicksPage() {
         </div>
       )}
 
+    </div>
+  );
+}
+
+function SetPicksPanel({
+  tournament, currentLineup, onSaved,
+}: {
+  tournament: Tournament;
+  currentLineup: string[];
+  onSaved: () => void;
+}) {
+  const maxPicks = 3;
+  const haspicks = currentLineup.length > 0;
+  const [inputs, setInputs] = useState<string[]>(["", "", ""]);
+  const [saving, setSaving] = useState(false);
+  const [clearing, setClearing] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  const handleSubmit = async () => {
+    const picks = inputs.map(s => s.trim()).filter(Boolean);
+    if (picks.length !== maxPicks) { setMsg(`Enter all ${maxPicks} picks`); return; }
+    setSaving(true); setMsg(null);
+    try {
+      await setMyPicks(tournament.tournament_id, picks);
+      setMsg("Picks saved!");
+      onSaved();
+    } catch (e: unknown) {
+      setMsg(e instanceof Error ? e.message : "Error saving picks");
+    } finally { setSaving(false); }
+  };
+
+  const handleClear = async () => {
+    setClearing(true); setMsg(null);
+    try {
+      await clearMyPicks(tournament.tournament_id);
+      setMsg("Picks cleared.");
+      onSaved();
+    } catch { setMsg("Error clearing picks"); }
+    finally { setClearing(false); }
+  };
+
+  return (
+    <div style={{
+      background: "#080f1e", border: "1px solid #1e4a2f",
+      borderLeft: "3px solid #00c44f", borderRadius: 8,
+      padding: "16px 20px", marginBottom: 20,
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <div>
+          <div style={{ fontWeight: 700, color: "#dde6f5", fontSize: "0.95em" }}>
+            {tournament.name ?? "This Week"} — Set Picks
+          </div>
+          <div style={{ fontSize: "0.7em", color: "#4a6080", marginTop: 2 }}>
+            Enter player names exactly as stored in the tracker (e.g. "N Taylor", "A Fitzpatrick", "W Clark")
+          </div>
+        </div>
+        {haspicks && (
+          <button
+            onClick={handleClear}
+            disabled={clearing}
+            style={{
+              background: "transparent", border: "1px solid #5f1e1e",
+              color: "#e74c3c", borderRadius: 5, padding: "4px 12px",
+              fontSize: "0.75em", cursor: clearing ? "default" : "pointer",
+            }}
+          >
+            {clearing ? "Clearing…" : "Clear Picks"}
+          </button>
+        )}
+      </div>
+
+      {haspicks ? (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {currentLineup.map(name => (
+            <span key={name} style={{
+              background: "#0d1f15", border: "1px solid #1e4a2f",
+              color: "#00c44f", borderRadius: 4, padding: "4px 12px",
+              fontSize: "0.85em", fontWeight: 600,
+            }}>{name}</span>
+          ))}
+        </div>
+      ) : (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-end" }}>
+          {inputs.map((v, i) => (
+            <input
+              key={i}
+              value={v}
+              onChange={e => { const a = [...inputs]; a[i] = e.target.value; setInputs(a); }}
+              placeholder={`Player ${i + 1}`}
+              style={{
+                background: "#0d1a30", border: "1px solid #1e3a5f",
+                borderRadius: 5, color: "#dde6f5", padding: "7px 12px",
+                fontSize: "0.85em", width: 150, outline: "none",
+              }}
+            />
+          ))}
+          <button
+            onClick={handleSubmit}
+            disabled={saving}
+            style={{
+              background: saving ? "#0d1929" : "#0a1f3a",
+              border: "1px solid #1e5a3f", borderRadius: 5,
+              color: saving ? "#4a6080" : "#00c44f",
+              padding: "7px 20px", fontSize: "0.85em", fontWeight: 700,
+              cursor: saving ? "default" : "pointer",
+            }}
+          >
+            {saving ? "Saving…" : "Confirm Picks"}
+          </button>
+        </div>
+      )}
+
+      {msg && (
+        <div style={{ marginTop: 10, fontSize: "0.8em", color: msg.includes("Error") || msg.includes("Enter") ? "#e74c3c" : "#00c44f" }}>
+          {msg}
+        </div>
+      )}
     </div>
   );
 }

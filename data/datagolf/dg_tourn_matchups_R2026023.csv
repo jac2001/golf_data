@@ -1,0 +1,348 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"English, Harris","Spieth, Jordan",14577,14636,separate bet offered,bet365,+115,-138,0.465116,0.579832,0.445109,0.554891,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,separate bet offered,datagolf,+122,-103,0.45045,0.507389,0.470278,0.529722,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Gotterup, Chris",6430,27774,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Gotterup, Chris",6430,27774,separate bet offered,datagolf,+113,+104,0.469484,0.490196,0.489209,0.510791,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Gotterup, Chris",6430,27774,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Gotterup, Chris",6430,27774,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Gotterup, Chris",6430,27774,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Gotterup, Chris",6430,27774,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Smalley, Alex",14139,18474,separate bet offered,bet365,-134,+110,0.57265,0.47619,0.545984,0.454016,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Smalley, Alex",14139,18474,separate bet offered,datagolf,+103,+115,0.492611,0.465116,0.514354,0.485646,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Smalley, Alex",14139,18474,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Smalley, Alex",14139,18474,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,separate bet offered,bet365,-134,+110,0.57265,0.47619,0.545984,0.454016,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,separate bet offered,datagolf,-113,+132,0.530516,0.431034,0.55173,0.44827,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,void,bovada,-145,+110,0.591837,0.47619,0.55414,0.44586,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,void,draftkings,-124,-105,0.553571,0.512195,0.519412,0.480588,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","McNealy, Maverick",17536,18634,separate bet offered,bet365,-150,+125,0.6,0.444444,0.574468,0.425532,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","McNealy, Maverick",17536,18634,separate bet offered,datagolf,-130,+152,0.565217,0.396825,0.587518,0.412482,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","McNealy, Maverick",17536,18634,void,bovada,-145,+110,0.591837,0.47619,0.55414,0.44586,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","McNealy, Maverick",17536,18634,void,datagolf,-142,+142,0.586777,0.413223,0.586777,0.413223,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,separate bet offered,datagolf,+122,-103,0.45045,0.507389,0.470278,0.529722,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,void,pinnacle,+102,-122,0.49505,0.54955,0.473913,0.526087,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,separate bet offered,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,separate bet offered,datagolf,+137,-116,0.421941,0.537037,0.43999,0.56001,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,datagolf,+127,-127,0.440529,0.559471,0.440529,0.559471,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,separate bet offered,bet365,+110,-134,0.47619,0.57265,0.454016,0.545984,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,separate bet offered,datagolf,+110,+107,0.47619,0.483092,0.496403,0.503597,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,betcris,-131,+101,0.5671,0.497512,0.532682,0.467318,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,caesars,-110,-145,0.52381,0.591837,0.469512,0.530488,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,bet365,+230,-275,0.30303,0.733333,0.292398,0.707602,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,datagolf,+240,-200,0.294118,0.666667,0.306122,0.693878,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betcris,+207,-269,0.325733,0.728997,0.308831,0.691169,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betonline,+229,-280,0.303951,0.736842,0.292038,0.707962,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,bovada,+200,-275,0.333333,0.733333,0.3125,0.6875,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,caesars,+200,-260,0.333333,0.722222,0.315789,0.684211,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,datagolf,+227,-227,0.30581,0.69419,0.30581,0.69419,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,fanduel,+188,-250,0.347222,0.714286,0.327103,0.672897,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,pinnacle,+186,-232,0.34965,0.698795,0.333494,0.666506,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Aberg, Ludvig",14609,23950,separate bet offered,bet365,+120,-143,0.454545,0.588477,0.435796,0.564204,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Aberg, Ludvig",14609,23950,separate bet offered,datagolf,+113,+106,0.469484,0.485437,0.491647,0.508353,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Aberg, Ludvig",14609,23950,void,bovada,+110,-145,0.47619,0.591837,0.44586,0.55414,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Aberg, Ludvig",14609,23950,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Cantlay, Patrick","Griffin, Ben",15466,24968,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Cantlay, Patrick","Griffin, Ben",15466,24968,separate bet offered,datagolf,+101,+118,0.497512,0.458716,0.520286,0.479714,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Cantlay, Patrick","Griffin, Ben",15466,24968,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Cantlay, Patrick","Griffin, Ben",15466,24968,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Lee, Min Woo",14578,16841,separate bet offered,bet365,-180,+150,0.642857,0.4,0.616438,0.383562,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Lee, Min Woo",14578,16841,separate bet offered,datagolf,-157,+187,0.610895,0.348432,0.636795,0.363205,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Lee, Min Woo",14578,16841,void,bovada,-200,+150,0.666667,0.4,0.625,0.375,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Lee, Min Woo",14578,16841,void,datagolf,-176,+176,0.637681,0.362319,0.637681,0.362319,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Meissner, Mac","Coody, Pierceson",28159,28309,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Meissner, Mac","Coody, Pierceson",28159,28309,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Meissner, Mac","Coody, Pierceson",28159,28309,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Vegas, Jhonattan","Campbell, Brian",13508,18628,void,betcris,-165,+131,0.622642,0.4329,0.589879,0.410121,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Vegas, Jhonattan","Campbell, Brian",13508,18628,void,betonline,-162,+134,0.618321,0.42735,0.591315,0.408685,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Vegas, Jhonattan","Campbell, Brian",13508,18628,void,datagolf,-140,+140,0.583333,0.416667,0.583333,0.416667,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fox, Ryan","Fitzpatrick, Alex",11889,25362,void,betcris,+105,-135,0.487805,0.574468,0.459209,0.540791,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fox, Ryan","Fitzpatrick, Alex",11889,25362,void,betonline,+115,-138,0.465116,0.579832,0.445109,0.554891,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fox, Ryan","Fitzpatrick, Alex",11889,25362,void,datagolf,+133,-133,0.429185,0.570815,0.429185,0.570815,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fox, Ryan","Fitzpatrick, Alex",11889,25362,void,pinnacle,+120,-144,0.454545,0.590164,0.435093,0.564907,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Finau, Tony","Berger, Daniel",11676,17606,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Finau, Tony","Berger, Daniel",11676,17606,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Finau, Tony","Berger, Daniel",11676,17606,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,betcris,-127,-103,0.559471,0.507389,0.524409,0.475591,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,betonline,-132,+110,0.568966,0.47619,0.544383,0.455617,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Day, Jason","Noren, Alex",9771,10419,void,betcris,+124,-155,0.446429,0.607843,0.423447,0.576553,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Day, Jason","Noren, Alex",9771,10419,void,betonline,+120,-144,0.454545,0.590164,0.435093,0.564907,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Day, Jason","Noren, Alex",9771,10419,void,datagolf,+150,-150,0.4,0.6,0.4,0.6,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Cole, Eric","Stevens, Sam",21756,25569,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Cole, Eric","Stevens, Sam",21756,25569,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Cole, Eric","Stevens, Sam",21756,25569,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Cole, Eric","Stevens, Sam",21756,25569,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kuchar, Matt","Horschel, Billy",6169,11276,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kuchar, Matt","Horschel, Billy",6169,11276,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kuchar, Matt","Horschel, Billy",6169,11276,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hisatsune, Ryo","Theegala, Sahith",22760,23014,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hisatsune, Ryo","Theegala, Sahith",22760,23014,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hisatsune, Ryo","Theegala, Sahith",22760,23014,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hisatsune, Ryo","Theegala, Sahith",22760,23014,void,pinnacle,-121,+102,0.547511,0.49505,0.52516,0.47484,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Poston, J.T.","Hall, Harry",21554,27194,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Poston, J.T.","Hall, Harry",21554,27194,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Poston, J.T.","Hall, Harry",21554,27194,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","Smalley, Alex",6093,18474,void,betcris,+116,-146,0.462963,0.593496,0.438221,0.561779,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","Smalley, Alex",6093,18474,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","Smalley, Alex",6093,18474,void,datagolf,+141,-141,0.414938,0.585062,0.414938,0.585062,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Taylor, Nick","Gerard, Ryan",13126,29767,void,betcris,-117,-113,0.539171,0.530516,0.504045,0.495955,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Taylor, Nick","Gerard, Ryan",13126,29767,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Taylor, Nick","Gerard, Ryan",13126,29767,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rodgers, Patrick","Echavarria, Nico",16283,22833,void,betcris,-144,+114,0.590164,0.46729,0.558099,0.441901,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rodgers, Patrick","Echavarria, Nico",16283,22833,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rodgers, Patrick","Echavarria, Nico",16283,22833,void,datagolf,-126,+126,0.557522,0.442478,0.557522,0.442478,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Bradley, Keegan","Bridgeman, Jacob",13872,29433,void,betcris,-148,+118,0.596774,0.458716,0.5654,0.4346,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Bradley, Keegan","Bridgeman, Jacob",13872,29433,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Bradley, Keegan","Bridgeman, Jacob",13872,29433,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Bradley, Keegan","Bridgeman, Jacob",13872,29433,void,pinnacle,-136,+114,0.576271,0.46729,0.552216,0.447784,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,betcris,-140,+110,0.583333,0.47619,0.550562,0.449438,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,betonline,-127,+106,0.559471,0.485437,0.535426,0.464574,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,pinnacle,-115,-104,0.534884,0.509804,0.512003,0.487997,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,betonline,-104,-116,0.509804,0.537037,0.486993,0.513007,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Michael","Novak, Andrew",17543,23475,void,betcris,+100,-130,0.5,0.565217,0.469388,0.530612,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Michael","Novak, Andrew",17543,23475,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Michael","Novak, Andrew",17543,23475,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lowry, Shane","Straka, Sepp",13900,17511,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lowry, Shane","Straka, Sepp",13900,17511,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lowry, Shane","Straka, Sepp",13900,17511,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Im, Sungjae","McCarty, Matt",17488,28635,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Im, Sungjae","McCarty, Matt",17488,28635,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Im, Sungjae","McCarty, Matt",17488,28635,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","Burns, Sam",16841,19483,void,pinnacle,-124,+104,0.553571,0.490196,0.530359,0.469641,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hojgaard, Nicolai","Bhatia, Akshay",23602,26096,void,betcris,-140,+110,0.583333,0.47619,0.550562,0.449438,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hojgaard, Nicolai","Bhatia, Akshay",23602,26096,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hojgaard, Nicolai","Bhatia, Akshay",23602,26096,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hojgaard, Nicolai","Bhatia, Akshay",23602,26096,void,pinnacle,-126,+106,0.557522,0.485437,0.534558,0.465442,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Kitayama, Kurt",17536,21891,void,betcris,-154,+123,0.606299,0.44843,0.574838,0.425162,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Kitayama, Kurt",17536,21891,void,betonline,-148,+123,0.596774,0.44843,0.570964,0.429036,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Kitayama, Kurt",17536,21891,void,datagolf,-146,+146,0.593496,0.406504,0.593496,0.406504,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Clark, Wyndham",12577,23604,void,betcris,-111,-119,0.526066,0.543379,0.491906,0.508094,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Clark, Wyndham",12577,23604,void,betonline,-111,-109,0.526066,0.521531,0.502165,0.497835,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Clark, Wyndham",12577,23604,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,betcris,+121,-151,0.452489,0.601594,0.429273,0.570727,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,betonline,+120,-144,0.454545,0.590164,0.435093,0.564907,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,datagolf,+146,-146,0.406504,0.593496,0.406504,0.593496,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Kim, Si Woo",12294,14609,void,pinnacle,+123,-147,0.44843,0.595142,0.429707,0.570293,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Harman, Brian","Cauley, Bud",8825,14502,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Harman, Brian","Cauley, Bud",8825,14502,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Harman, Brian","Cauley, Bud",8825,14502,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Harman, Brian","Cauley, Bud",8825,14502,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hoge, Tom","Hubbard, Mark",15575,16333,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hoge, Tom","Hubbard, Mark",15575,16333,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hoge, Tom","Hubbard, Mark",15575,16333,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rai, Aaron","Yellamaraju, Sudarshan",18554,29925,void,betonline,-165,+137,0.622642,0.421941,0.596067,0.403933,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rai, Aaron","Yellamaraju, Sudarshan",18554,29925,void,datagolf,-158,+158,0.612403,0.387597,0.612403,0.387597,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Pendrith, Taylor","McCarthy, Denny",17780,19870,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Pendrith, Taylor","McCarthy, Denny",17780,19870,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Pendrith, Taylor","McCarthy, Denny",17780,19870,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Glover, Lucas","Snedeker, Brandt",7399,8820,void,betcris,-111,-119,0.526066,0.543379,0.491906,0.508094,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Glover, Lucas","Snedeker, Brandt",7399,8820,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Glover, Lucas","Snedeker, Brandt",7399,8820,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,betcris,-165,+131,0.622642,0.4329,0.589879,0.410121,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,betonline,-150,+125,0.6,0.444444,0.574468,0.425532,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,datagolf,-138,+138,0.579832,0.420168,0.579832,0.420168,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,draftkings,-140,+106,0.583333,0.485437,0.545799,0.454201,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,pinnacle,-141,+118,0.585062,0.458716,0.560524,0.439476,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Aberg, Ludvig",17646,23950,void,betcris,-104,-126,0.509804,0.557522,0.477646,0.522354,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Aberg, Ludvig",17646,23950,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Aberg, Ludvig",17646,23950,void,caesars,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Aberg, Ludvig",17646,23950,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Aberg, Ludvig",17646,23950,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Novak, Andrew","Coody, Pierceson",23475,28309,void,betcris,-103,-127,0.507389,0.559471,0.475591,0.524409,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Novak, Andrew","Coody, Pierceson",23475,28309,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Novak, Andrew","Coody, Pierceson",23475,28309,void,pinnacle,-104,-114,0.509804,0.53271,0.489014,0.510986,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Im, Sungjae","Berger, Daniel",17488,17606,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Im, Sungjae","Berger, Daniel",17488,17606,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Im, Sungjae","Berger, Daniel",17488,17606,void,pinnacle,-102,-116,0.50495,0.537037,0.484603,0.515397,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Day, Jason","Clark, Wyndham",9771,23604,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Day, Jason","Clark, Wyndham",9771,23604,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Day, Jason","Clark, Wyndham",9771,23604,void,pinnacle,+115,-138,0.465116,0.579832,0.445109,0.554891,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spieth, Jordan","Gotterup, Chris",14636,27774,void,betcris,-142,+112,0.586777,0.471698,0.554361,0.445639,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spieth, Jordan","Gotterup, Chris",14636,27774,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spieth, Jordan","Gotterup, Chris",14636,27774,void,pinnacle,-116,-103,0.537037,0.507389,0.514193,0.485807,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Horschel, Billy","Pendrith, Taylor",11276,17780,void,betcris,+129,-162,0.436681,0.618321,0.413915,0.586085,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Horschel, Billy","Pendrith, Taylor",11276,17780,void,datagolf,+151,-151,0.398406,0.601594,0.398406,0.601594,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Horschel, Billy","Pendrith, Taylor",11276,17780,void,pinnacle,+135,-163,0.425532,0.619772,0.407089,0.592911,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Smalley, Alex","Gotterup, Chris",18474,27774,void,betcris,-131,+101,0.5671,0.497512,0.532682,0.467318,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Smalley, Alex","Gotterup, Chris",18474,27774,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Smalley, Alex","Gotterup, Chris",18474,27774,void,pinnacle,-121,+102,0.547511,0.49505,0.52516,0.47484,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Smalley, Alex","Gotterup, Chris",18474,27774,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,void,betcris,-133,+103,0.570815,0.492611,0.53677,0.46323,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Woodland, Gary",6430,12577,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Taylor, Nick","Lowry, Shane",13126,13900,void,betcris,+101,-131,0.497512,0.5671,0.467318,0.532682,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Taylor, Nick","Lowry, Shane",13126,13900,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Taylor, Nick","Lowry, Shane",13126,13900,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hoge, Tom","Echavarria, Nico",15575,22833,void,betcris,-127,-103,0.559471,0.507389,0.524409,0.475591,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hoge, Tom","Echavarria, Nico",15575,22833,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Hoge, Tom","Echavarria, Nico",15575,22833,void,pinnacle,+104,-124,0.490196,0.553571,0.469641,0.530359,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","MacIntyre, Robert",13562,23323,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","MacIntyre, Robert",13562,23323,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Matsuyama, Hideki","MacIntyre, Robert",13562,23323,void,pinnacle,-115,-103,0.534884,0.507389,0.51319,0.48681,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Burns, Sam",12965,19483,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Burns, Sam",12965,19483,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Burns, Sam",12965,19483,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Burns, Sam",12965,19483,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Burns, Sam",12965,19483,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Burns, Sam",12965,19483,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,betcris,+114,-144,0.46729,0.590164,0.441901,0.558099,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,pinnacle,+112,-134,0.471698,0.57265,0.451668,0.548332,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,pinnacle,-117,-102,0.539171,0.50495,0.516387,0.483613,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","English, Harris",6093,14577,void,betcris,+111,-141,0.473934,0.585062,0.447531,0.552469,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","English, Harris",6093,14577,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","English, Harris",6093,14577,void,pinnacle,+110,-131,0.47619,0.5671,0.456432,0.543568,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,betcris,-139,+109,0.58159,0.478469,0.548639,0.451361,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,pinnacle,-122,+103,0.54955,0.492611,0.527318,0.472682,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Thomas, Justin",12294,14139,void,betcris,-127,-103,0.559471,0.507389,0.524409,0.475591,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Thomas, Justin",12294,14139,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Thomas, Justin",12294,14139,void,draftkings,-138,+106,0.579832,0.485437,0.544306,0.455694,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Thomas, Justin",12294,14139,void,pinnacle,-132,+111,0.568966,0.473934,0.545561,0.454439,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Thomas, Justin",12294,14139,void,unibet,-137,+105,0.578059,0.487805,0.542339,0.457661,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Aberg, Ludvig",10091,23950,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Aberg, Ludvig",10091,23950,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Aberg, Ludvig",10091,23950,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Aberg, Ludvig",10091,23950,void,pinnacle,-114,-104,0.53271,0.509804,0.510986,0.489014,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,betcris,-117,-113,0.539171,0.530516,0.504045,0.495955,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Noren, Alex","Gerard, Ryan",10419,29767,void,betcris,-141,+111,0.585062,0.473934,0.552469,0.447531,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Noren, Alex","Gerard, Ryan",10419,29767,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Noren, Alex","Gerard, Ryan",10419,29767,void,pinnacle,-115,-103,0.534884,0.507389,0.51319,0.48681,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Finau, Tony","Hall, Harry",11676,27194,void,betcris,-103,-127,0.507389,0.559471,0.475591,0.524409,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Finau, Tony","Hall, Harry",11676,27194,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Finau, Tony","Hall, Harry",11676,27194,void,pinnacle,+108,-129,0.480769,0.563319,0.460468,0.539532,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,betcris,-158,+126,0.612403,0.442478,0.580542,0.419458,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,datagolf,-137,+137,0.578059,0.421941,0.578059,0.421941,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,pinnacle,-152,+127,0.603175,0.440529,0.577918,0.422082,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,betcris,-142,+112,0.586777,0.471698,0.554361,0.445639,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Schauffele, Xander",14578,19895,void,pinnacle,-129,+108,0.563319,0.480769,0.539532,0.460468,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Meissner, Mac","McCarty, Matt",28159,28635,void,betcris,-134,+104,0.57265,0.490196,0.538789,0.461211,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Meissner, Mac","McCarty, Matt",28159,28635,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Meissner, Mac","McCarty, Matt",28159,28635,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Rai, Aaron",12577,18554,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Rai, Aaron",12577,18554,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Rai, Aaron",12577,18554,void,draftkings,-105,-124,0.512195,0.553571,0.480588,0.519412,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Rai, Aaron",12577,18554,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","McNealy, Maverick",6430,18634,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","McNealy, Maverick",6430,18634,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","McNealy, Maverick",6430,18634,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","Gotterup, Chris",14577,27774,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","Gotterup, Chris",14577,27774,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"English, Harris","Gotterup, Chris",14577,27774,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Smalley, Alex",17536,18474,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Smalley, Alex",17536,18474,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spaun, J.J.","Smalley, Alex",17536,18474,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Poston, J.T.","Gerard, Ryan",21554,29767,void,caesars,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Poston, J.T.","Gerard, Ryan",21554,29767,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Poston, J.T.","Gerard, Ryan",21554,29767,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Reitan, Kristoffer","Hisatsune, Ryo",21407,22760,void,caesars,-119,-127,0.543379,0.559471,0.492704,0.507296,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Reitan, Kristoffer","Hisatsune, Ryo",21407,22760,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Reitan, Kristoffer","Hisatsune, Ryo",21407,22760,void,fanduel,-111,-120,0.526066,0.545455,0.490953,0.509047,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","MacIntyre, Robert",16841,23323,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","MacIntyre, Robert",16841,23323,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","MacIntyre, Robert",16841,23323,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","MacIntyre, Robert",16841,23323,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lee, Min Woo","MacIntyre, Robert",16841,23323,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Cantlay, Patrick",12294,15466,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Cantlay, Patrick",12294,15466,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Cantlay, Patrick",12294,15466,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fleetwood, Tommy","Cantlay, Patrick",12294,15466,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scheffler, Scottie","Aberg, Ludvig",18417,23950,void,datagolf,-223,+223,0.690402,0.309598,0.690402,0.309598,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scheffler, Scottie","Aberg, Ludvig",18417,23950,void,draftkings,-310,+230,0.756098,0.30303,0.713887,0.286113,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scheffler, Scottie","Aberg, Ludvig",18417,23950,void,unibet,-250,+188,0.714286,0.347222,0.672897,0.327103,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Young, Cameron",10091,26651,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Young, Cameron",10091,26651,void,draftkings,-138,+105,0.579832,0.487805,0.543098,0.456902,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McIlroy, Rory","Young, Cameron",10091,26651,void,unibet,-134,+100,0.57265,0.5,0.533865,0.466135,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Schauffele, Xander",17646,19895,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Schauffele, Xander",17646,19895,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Schauffele, Xander",17646,19895,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fitzpatrick, Matt","Schauffele, Xander",17646,19895,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","Lowry, Shane",6093,13900,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","Lowry, Shane",6093,13900,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kitayama, Kurt","Hojgaard, Nicolai",21891,23602,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kitayama, Kurt","Hojgaard, Nicolai",21891,23602,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Bradley, Keegan","Clark, Wyndham",13872,23604,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Bradley, Keegan","Clark, Wyndham",13872,23604,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Noren, Alex","Straka, Sepp",10419,17511,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Noren, Alex","Straka, Sepp",10419,17511,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Bhatia, Akshay",6430,26096,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Scott, Adam","Bhatia, Akshay",6430,26096,void,unibet,-134,+100,0.57265,0.5,0.533865,0.466135,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rai, Aaron","McNealy, Maverick",18554,18634,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rai, Aaron","McNealy, Maverick",18554,18634,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spieth, Jordan","Spaun, J.J.",14636,17536,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Spieth, Jordan","Spaun, J.J.",14636,17536,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Straka, Sepp","Smalley, Alex",17511,18474,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Straka, Sepp","Smalley, Alex",17511,18474,void,draftkings,-106,-124,0.514563,0.553571,0.48174,0.51826,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,void,draftkings,-116,-112,0.537037,0.528302,0.5041,0.4959,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Gotterup, Chris",12965,27774,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Gotterup, Chris",12965,27774,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lowry, Shane","Kitayama, Kurt",13900,21891,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Lowry, Shane","Kitayama, Kurt",13900,21891,void,draftkings,-104,-125,0.509804,0.555556,0.478528,0.521472,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Clark, Wyndham","Bhatia, Akshay",23604,26096,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Clark, Wyndham","Bhatia, Akshay",23604,26096,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Noren, Alex","English, Harris",10419,14577,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Noren, Alex","English, Harris",10419,14577,void,draftkings,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McNealy, Maverick","Hojgaard, Nicolai",18634,23602,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"McNealy, Maverick","Hojgaard, Nicolai",18634,23602,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,draftkings,-102,-128,0.50495,0.561404,0.47353,0.52647,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Griffin, Ben",14609,24968,void,datagolf,-149,+149,0.598394,0.401606,0.598394,0.401606,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Kim, Si Woo","Griffin, Ben",14609,24968,void,draftkings,-162,+124,0.618321,0.446429,0.580719,0.419281,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Young, Cameron",14578,26651,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Henley, Russell","Young, Cameron",14578,26651,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"MacIntyre, Robert","Gotterup, Chris",23323,27774,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"MacIntyre, Robert","Gotterup, Chris",23323,27774,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Smalley, Alex",12965,18474,void,betmgm,+105,-133,0.487805,0.570815,0.460793,0.539207,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Fowler, Rickie","Smalley, Alex",12965,18474,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Reitan, Kristoffer",12577,21407,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC
+"Woodland, Gary","Reitan, Kristoffer",12577,21407,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,the Memorial Tournament presented by Workday,2026-06-04 10:33:00 UTC

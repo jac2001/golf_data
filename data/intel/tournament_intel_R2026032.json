@@ -1,0 +1,326 @@
+{
+  "tid": "R2026032",
+  "tournament_name": "RBC Canadian Open",
+  "generated_at": "2026-06-09T07:19:47.419725",
+  "course_conditions": {
+    "course_name": "TPC Toronto at Osprey Valley - North Course (Caledon, Ontario)",
+    "rough_length": "3.75 inches (Kentucky Bluegrass with Tall Fescue)",
+    "green_speed": null,
+    "setup_notes": "The 7,389-yard par-70 features wide, generous fairways but penal rough, with undulating bentgrass/poa greens that have steep runoffs and springy first bounces, putting a premium on iron distance control. Officials had prepped for a firm, fast, first-bounce setup, though forecast rain could soften the course into more of a 'target golf' test. Players note the renovation added significant length, with six par-4s over 480 yards and two long par-3s over 225 yards, while pins can be tucked into hidden locations if conditions firm up.",
+    "scoring_outlook": "moderate",
+    "sources": [
+      "https://www.golfbettingsystem.co.uk/rbc-canadian-open-tips-2026/",
+      "https://www.covers.com/golf/rbc-canadian-open-odds-picks-best-bets-2026",
+      "https://mayomedia.substack.com/p/2026-rbc-canadian-open-picks-rankings",
+      "https://www.golfdigest.com/story/rbc-canadian-dfs-picks-2026"
+    ]
+  },
+  "players": [
+    {
+      "player_name": "Fitzpatrick, Matt",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Fitzpatrick is the only three-time PGA Tour winner of 2026 (Valspar, RBC Heritage, Zurich Classic) and a Players Championship runner-up, but has cooled since late April with a quieter run of T52-T14-T36. He enters the RBC Canadian Open as a co-favorite (+1200) and world No. 4, ranking top-five on Tour in Strokes Gained Tee-to-Green, Approach and Around-the-Green.",
+      "key_quote": "I've enjoyed playing the golf course out there today for sure, and I think that's always a nice feeling to have going into a tournament",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.pgatour.com/article/news/betting-dfs/2026/06/08/odds-outlook-RBC-Canadian-open-TPC-Toronto-at-Osprey-Valley%20-odds-betting-fantasy-picks-bets-advice",
+        "https://golf.com/news/2026-rbc-canadian-open-odds-euro-ryder-cuppers-favored/",
+        "https://www.golfdigest.com/story/rbc-canadian-open-2026-power-rankings",
+        "https://www.golfmagic.com/tour/pga-tour/rbc-canadian-open-2026-field-confirmed-four-world-top-10-stars-set-tpc-toronto"
+      ],
+      "win_prob": 0.0873616211742686,
+      "world_rank": 4.0
+    },
+    {
+      "player_name": "Morikawa, Collin",
+      "injury_flag": true,
+      "injury_detail": "Lingering back injury concerns. Morikawa first tweaked his back at THE PLAYERS Championship in March 2026 (withdrawing after one hole) and has battled back discomfort for much of the season. Recent RBC Canadian Open previews note injury concerns are still 'lingering,' though there is no new acute injury reported this week.",
+      "recent_form_summary": "Morikawa is making his first start since the PGA Championship, having skipped the Memorial. Earlier in 2026 he won the AT&T Pebble Beach Pro-Am and posted strong results (5th at Arnold Palmer, T7 at the Masters, T4 at RBC Heritage), but he has been less sharp in his most recent starts and his putting (123rd in SG: Putting) remains a weakness.",
+      "key_quote": "I wish I was 100 percent healthy. The body doesn't feel bad, just it's uncomfortable, and there's a trust factor I'm kind of having to deal with.",
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.golfdigest.com/story/rbc-canadian-open-2026-power-rankings",
+        "https://www.golfmagic.com/tour/pga-tour/rbc-canadian-open-2026-field-confirmed-four-world-top-10-stars-set-tpc-toronto",
+        "https://roundtable.io/sports/golf/pga-tour/rbc-canadian-open-odds-reveal-sneaky-morikawa-value",
+        "https://www.pgatour.com/article/news/betting-profile/2026/rbc-canadian-open/collin-morikawa-pga-tour-betting-profile-rbc-canadian-open-2026",
+        "https://www.golfdigest.com/story/pga-championship-2026-collin-morikawa-back-injury",
+        "https://www.golfshake.com/news/view/22849/RBC_Canadian_Open_2026_preview_picks_analysis.html"
+      ],
+      "win_prob": 0.0849207227880074,
+      "world_rank": 7.0
+    },
+    {
+      "player_name": "Hojgaard, Nicolai",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Hojgaard missed the cut last week at the Memorial Tournament at Muirfield Village, but earlier in 2026 he posted strong results including a runner-up at Quail Hollow, a T2/T3 at TPC Scottsdale in February, and four top-10 finishes overall. He is widely viewed as close to a breakthrough first PGA Tour win, with elite driving suiting TPC Toronto.",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfdigest.com/story/rbc-canadian-open-2026-power-rankings",
+        "https://dknetwork.draftkings.com/2026/06/08/draftkings-dfs-fantasy-golf-cheat-sheet-2026-pga-tour-rbc-canadian-open-picks/",
+        "https://www.rbccanadianopen.com/2026/",
+        "https://www.pgatour.com/player/52453/nicolai-hjgaard"
+      ],
+      "win_prob": 0.0438547677324568,
+      "world_rank": 29.0
+    },
+    {
+      "player_name": "Burns, Sam",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Burns entered the Memorial in strong form, having made the cut in seven straight tournaments with top-40 finishes in each, and sat inside the top five through two rounds at Muirfield Village before a costly double bogey (hitting the same tree twice) in round three; he was in solo third heading into Sunday. He is one of the betting favorites for the RBC Canadian Open at +1500, where he finished runner-up (lost in a playoff to Ryan Fox) at the 2025 edition.",
+      "key_quote": "My game's trending, I feel healthy, and I'm excited for the second half of the year.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.newsweek.com/sports/golf/sam-burns-hit-same-tree-twice-en-route-to-costly-double-bogey-12041515",
+        "https://golf.com/news/memorial-contender-hits-same-tree-twice-costly/",
+        "https://www.cbssports.com/golf/news/2026-rbc-canadian-open-odds-picks-pga-predictions-field/",
+        "https://sports.yahoo.com/articles/rbc-canadian-open-predictions-picks-155800717.html",
+        "https://www.rbccanadianopen.com/2026/06/05/final-field-released-for-the-2026-rbc-canadian-open/"
+      ],
+      "win_prob": 0.0405136614143081,
+      "world_rank": 34.0
+    },
+    {
+      "player_name": "Mitchell, Keith",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Mitchell has been making cuts consistently this season with three top-15 finishes, including a T14 at the Texas Children's Houston Open and a strong off-the-tee performance at the CJ Cup Byron Nelson, though his short game and putting have lagged. He is listed in the RBC Canadian Open field at +4000 with no signs of withdrawal.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.cbssports.com/golf/news/2026-rbc-canadian-open-odds-picks-pga-predictions-field/",
+        "https://www.hardrock.bet/news/2026-rbc-canadian-open-pga-tour-betting-odds-full-field/",
+        "https://www.foxsports.com/golf/keith-mitchell-player",
+        "https://golfnews.global/players/keith-mitchell"
+      ],
+      "win_prob": 0.0393477291583864,
+      "world_rank": 99.0
+    },
+    {
+      "player_name": "Rose, Justin",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Rose enters in solid form, finishing tied for 12th at the Memorial Tournament last week and a top-10 (T10) at the PGA Championship in May. After a runner-up-caliber third at the Masters and a couple of disappointing events, he appears sharp again and is ranked World No. 6.",
+      "key_quote": "I've played so many different sets of irons in the last five years that I just don't think that it's a big deal.",
+      "sentiment": "positive",
+      "sources": [
+        "https://betting.betfair.com/golf/golf-form-guide/rbc-canadian-open-toronto-2026-players-form-guide-this-week-pga-tour-event-toronto-030626-779.html",
+        "https://www.foxsports.com/golf/justin-rose-player",
+        "https://www.pgatour.com/article/news/latest/2026/05/11/justin-rose-ahead-of-2026-pga-championship-45-years-old-aronimink-golf-club",
+        "https://www.golfdigest.com/story/pgachampionship2026-justin-rose-equipment-club-switch-struggles",
+        "https://www.rbccanadianopen.com/2026/"
+      ],
+      "win_prob": 0.036727314677326,
+      "world_rank": 6.0
+    },
+    {
+      "player_name": "Fleetwood, Tommy",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Fleetwood enters as the betting co-favorite after a strong week at the Memorial Tournament, where he was tied for the lead late on Sunday at Muirfield Village. This season he has recorded one top-five, four top-10s and five top-25s, ranking sixth in bogey avoidance and leading the TOUR in Strokes Gained: Around-the-Green.",
+      "key_quote": "I didn't say I liked it.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfchannel.com/pga-tour/news/rbc-canadian-open-2026-odds-favorites-for-tpc-toronto",
+        "https://www.pgatour.com/article/news/betting-profile/2026/rbc-canadian-open/tommy-fleetwood-pga-tour-betting-profile-rbc-canadian-open-2026",
+        "https://www.golfmonthly.com/features/rbc-canadian-open-2026-betting-tips",
+        "https://www.cbssports.com/golf/news/memorial-tournament-2026-leaderboard-tommy-fleetwood-rory-mcilroy-round-1/"
+      ],
+      "win_prob": 0.0333294908539411,
+      "world_rank": 8.0
+    },
+    {
+      "player_name": "Fox, Ryan",
+      "error": " The quote about the course is from his 2025 appearance, included as the most relevant available course commentary. No current injury or withdrawal risk was reported in the last 7 days.",
+      "win_prob": 0.0307903892888321,
+      "world_rank": 58.0
+    },
+    {
+      "player_name": "Lowry, Shane",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Lowry played the Memorial Tournament in early June 2026 (his first start since the PGA Championship), opening with a two-under 70 and posting a strong back-nine charge with multiple birdies to gain momentum. He finished T13 at last year's RBC Canadian Open and is averaging 0.473 Strokes Gained: Total over his past five starts.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.pgatour.com/article/news/betting-profile/2026/rbc-canadian-open/shane-lowry-pga-tour-betting-profile-rbc-canadian-open-2026",
+        "https://www.irishtimes.com/sport/golf/2026/06/04/shane-lowry-and-rory-mcilroy-recover-from-rocky-starts-to-finish-under-par-at-memorial-tournament/",
+        "https://www.dailyclubgolf.com/news/multiple-pros-withdraws-from-nine-eightm-pga-tour-event-a-week-before-the-u-s-open/",
+        "https://www.rbccanadianopen.com/2026/"
+      ],
+      "win_prob": 0.029528179191235,
+      "world_rank": 41.0
+    },
+    {
+      "player_name": "Bridgeman, Jacob",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Bridgeman won his first PGA Tour title at the 2026 Genesis Invitational in February and has three top-fives and four top-10s on the season, but his form cooled mid-spring with a stretch of T41-T33-T65-T52-MC, including his first missed cut of the season at the PGA Championship. He enters the RBC Canadian Open ranked around No. 19-27 in the world and is making his second appearance after finishing T14 in 2024.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.rbccanadianopen.com/2026/05/04/matt-fitzpatrick-collin-morikawa-tommy-fleetwood-brooks-koepka-tony-finau-and-more-top-players-join-field-for-2026-rbc-canadian-open/",
+        "https://www.foxsports.com/golf/jacob-bridgeman-player",
+        "https://www.rotowire.com/golf/player/jacob-bridgeman-2132",
+        "https://en.wikipedia.org/wiki/Jacob_Bridgeman"
+      ],
+      "win_prob": 0.0286709502744237,
+      "world_rank": 24.0
+    },
+    {
+      "player_name": "Koepka, Brooks",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Koepka finished T14 at the CJ Cup Byron Nelson (rounds of 63-69-66-68, 18-under) and T12 at the Masters, recording six top-20 finishes in 11 starts since returning to the PGA Tour. He withdrew from the Charles Schwab Challenge for a planned rest, not injury, and skipped the Memorial, making the RBC Canadian Open his return to action.",
+      "key_quote": "Home is in a much better place. It's easier to come out to work when everything at home lines up.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfmagic.com/tour/pga-tour/brooks-koepka-withdraws-charles-schwab-challenge-colonial",
+        "https://heavy.com/sports/golf/brooks-koepka-withdraw-charles-schwab-challenge/",
+        "https://www.aol.com/articles/brooks-koepka-withdraws-9-9m-110334000.html",
+        "https://www.rbccanadianopen.com/2026/06/05/final-field-released-for-the-2026-rbc-canadian-open/"
+      ],
+      "win_prob": 0.0277356312050995,
+      "world_rank": 107.0
+    },
+    {
+      "player_name": "Conners, Corey",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Form has been middling in 2026; he finished poorly at last week's Memorial Tournament (+18 overall) but is the highest-ranked Canadian in the field (roughly world No. 53) and is listed by some previews as in 'good form' and a candidate to contend on home soil. His earlier-season highlights included top-15s at THE PLAYERS and the Valspar Championship, though his putting has lagged.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.lineups.com/betting/2026-rbc-canadian-open-odds-betting-preview-everything-to-know-about-tpc-toronto-at-osprey-valley/",
+        "https://www.cbssports.com/golf/news/memorial-tournament-leaderboard-2026-live-updates-round-3-scores-coverage/live/",
+        "https://www.rbccanadianopen.com/2026/06/05/final-field-released-for-the-2026-rbc-canadian-open/",
+        "https://www.foxsports.com/golf/corey-conners-player"
+      ],
+      "win_prob": 0.0266312330893192,
+      "world_rank": 53.0
+    },
+    {
+      "player_name": "Hovland, Viktor",
+      "injury_flag": true,
+      "injury_detail": "Possible recurrence of a nagging neck injury (disc bulge) that first flared at the 2025 Travelers Championship and 2025 Ryder Cup; however, no official reason was given for his Memorial withdrawal, and it may instead be rest/poor form rather than injury. He remains in the RBC Canadian Open field with no confirmed injury this week.",
+      "recent_form_summary": "Hovland is having a rollercoaster 2026 with just one top-10 finish (T10 at the WM Phoenix Open) and two missed cuts (Valspar and PGA Championship) in 11 starts, and has not won since March 2025. He abruptly withdrew from the Memorial Tournament before making a late commitment to the RBC Canadian Open, his Canadian Open debut.",
+      "key_quote": null,
+      "sentiment": "negative",
+      "sources": [
+        "https://www.rbccanadianopen.com/2026/06/05/final-field-released-for-the-2026-rbc-canadian-open/",
+        "https://heavy.com/sports/golf/brandt-snedeker-withdraw-viktor-hovland-canadian-open/",
+        "https://www.essentiallysports.com/golf-news-viktor-hovlands-first-twenty-twentysix-withdrawal-comes-right-after-painful-pga-championship-miss/",
+        "https://www.golfmagic.com/tour/pga-tour/multiple-pga-tour-winner-withdraws-jack-nicklaus-hosted-memorial-tournament",
+        "https://www.newsweek.com/sports/golf/viktor-hovland-makes-surprise-decision-on-memorial-tournament-12011637",
+        "https://www.hardrock.bet/news/2026-rbc-canadian-open-pga-tour-betting-odds-full-field/"
+      ],
+      "win_prob": 0.0264695526492682,
+      "world_rank": 32.0
+    },
+    {
+      "player_name": "Brennan, Michael",
+      "error": "\n\nI set `key_quote` to null because no direct quote from Brennan himself about his game or this specific course appeared in the available results (the quotes found were from analysts or from Ryan Fox about the course).",
+      "win_prob": 0.0263309304498765,
+      "world_rank": 54.0
+    },
+    {
+      "player_name": "Keefer, Johnny",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Keefer is enjoying a strong rookie PGA Tour season with two top-10 finishes, including a T9 at the CJ Cup Byron Nelson where he fired a closing 63, and a T3 at the Texas Children's Houston Open in late March. He ranks among the top 25 in the field in strokes gained off the tee entering the RBC Canadian Open.",
+      "key_quote": "I look at it from a growth perspective for me.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfbettingsystem.co.uk/rbc-canadian-open-tips-2026/",
+        "https://wacotrib.com/sports/college/baylor/article_7939955f-1049-4385-8930-def83b80250e.html",
+        "https://heavy.com/sports/golf/rbc-canadian-open-field-2026-players/",
+        "https://www.cbssports.com/golf/news/2026-rbc-canadian-open-odds-picks-pga-predictions-field/"
+      ],
+      "win_prob": 0.0231214002481539,
+      "world_rank": 75.0
+    },
+    {
+      "player_name": "Yellamaraju, Sudarshan",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Yellamaraju is having a strong PGA Tour rookie season, making the cut in 11 of 12 events with five top-25s and two top-10s, including a breakout T-5 at The Players Championship. Multiple previews list him as being in good form and capable of contending at TPC Toronto.",
+      "key_quote": "I'm pretty pumped to be playing on the PGA Tour, so I guess that helps too.",
+      "sentiment": "positive",
+      "sources": [
+        "https://globalnews.ca/news/11830221/former-winnipeg-resident-2026-rbc-canadian-open/",
+        "https://www.lineups.com/betting/2026-rbc-canadian-open-odds-betting-preview-everything-to-know-about-tpc-toronto-at-osprey-valley/",
+        "https://www.rbccanadianopen.com/2026/06/05/final-field-released-for-the-2026-rbc-canadian-open/",
+        "https://www.thefriedegg.com/articles/pga-tour-rookie-sudarshan-yellamaraju-bio-facts"
+      ],
+      "win_prob": 0.0214866635126162,
+      "world_rank": 111.0
+    },
+    {
+      "player_name": "Rai, Aaron",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Rai is in excellent form, with results of first, fifth, and 19th in his last three starts, including his maiden major win at the 2026 PGA Championship at Aronimink. He continued strong ball-striking at the Memorial, though his putter struggled on Muirfield's quick greens.",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfdigest.com/story/rbc-canadian-open-2026-power-rankings",
+        "https://sports.betmgm.com/en/blog/pga/best-pga-picks-this-week-rbc-canadian-open-bm16/",
+        "https://sports.betmgm.com/en/blog/pga/one-and-done-golf-picks-rbc-canadian-open-bm16/",
+        "https://www.rbccanadianopen.com/2026/"
+      ],
+      "win_prob": 0.0204165313428416,
+      "world_rank": 13.0
+    },
+    {
+      "player_name": "Reitan, Kristoffer",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Reitan is in excellent form, having made the cut in seven straight tournaments with three top-10 finishes plus his win at the Truist Championship; most recently he finished T-6 at the Memorial Tournament at Muirfield Village last week. He has been among the best ball-strikers on Tour, ranking near the top in strokes gained tee-to-green over his past 12 rounds.",
+      "key_quote": "It's going to be a very, very fun year",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfchannel.com/pga-tour/news/rbc-canadian-open-2026-odds-favorites-for-tpc-toronto",
+        "https://www.golfdigest.com/story/rbc-canadian-dfs-picks-2026",
+        "https://sports.yahoo.com/articles/rbc-canadian-open-dfs-picks-201559926.html",
+        "https://www.rbccanadianopen.com/2026/06/05/final-field-released-for-the-2026-rbc-canadian-open/"
+      ],
+      "win_prob": 0.0202344007744845,
+      "world_rank": 25.0
+    },
+    {
+      "player_name": "Mouw, William",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Form has been spotty recently; Mouw missed the cut at the Charles Schwab Challenge (May 28-31, 2026) at 1-over par. On the season he has made 4 of 7 cuts with one top-10 finish and roughly $595,807 in earnings.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://heavy.com/sports/golf/rbc-canadian-open-field-2026-players/",
+        "https://www.espn.com/golf/player/scorecards/_/id/5076025/william-mouw",
+        "https://www.pgatour.com/player/63121/william-mouw/results"
+      ],
+      "win_prob": 0.0193747909802522,
+      "world_rank": 142.0
+    },
+    {
+      "player_name": "McGreevy, Max",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "McGreevy is confirmed in the 2026 RBC Canadian Open field, having qualified via the top 100 on the prior season's FedExCup Fall points list. Earlier in the 2026 season he was inconsistent, making the cut in seven of ten Tour events, with his best result being a T19 (-9) at the Texas Children's Houston Open and a runner-up finish at the RSM Classic in November 2025.",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://heavy.com/sports/golf/rbc-canadian-open-field-2026-players/",
+        "https://www.pgatour.com/article/news/betting-dfs/2026/betting-profile/pga-tour-betting-odds-stats-rbc-canadian-open-2026",
+        "https://www.foxsports.com/golf/max-mcgreevy-player",
+        "https://www.pgatour.com/article/news/betting-profile/2026/the-players-championship/max-mcgreevy-pga-tour-betting-stats-the-players-championship-2026",
+        "https://golfnews.global/players/max-mcgreevy"
+      ],
+      "win_prob": 0.019066561831179,
+      "world_rank": 97.0
+    }
+  ]
+}

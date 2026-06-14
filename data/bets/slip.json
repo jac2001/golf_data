@@ -21,6 +21,39 @@
       "odds_american": 120.0,
       "stake_units": 1.0,
       "placed_at": "2026-06-03T00:28:13.787412Z"
+    },
+    {
+      "id": "665a16133ef0",
+      "recommendation_id": "73bf1b2499f126cc",
+      "tournament_id": "R2026023",
+      "player_name": "Nicolai Hojgaard",
+      "market": "top20",
+      "selection_label": "Nicolai Hojgaard Top 20",
+      "odds_american": 340.0,
+      "stake_units": 1.0,
+      "placed_at": "2026-06-05T13:32:43.868219Z"
+    },
+    {
+      "id": "f12d9a30ee05",
+      "recommendation_id": "427475d692a40b21",
+      "tournament_id": "R2026023",
+      "player_name": "Matt Fitzpatrick",
+      "market": "top20",
+      "selection_label": "Matt Fitzpatrick Top 20",
+      "odds_american": 230.0,
+      "stake_units": 1.0,
+      "placed_at": "2026-06-05T13:32:47.653075Z"
+    },
+    {
+      "id": "ac3231133f0a",
+      "recommendation_id": "de149d93a66d4d1f",
+      "tournament_id": "R2026023",
+      "player_name": "Chris Gotterup",
+      "market": "top10",
+      "selection_label": "Chris Gotterup Top 10",
+      "odds_american": 700.0,
+      "stake_units": 1.0,
+      "placed_at": "2026-06-05T13:32:51.021664Z"
     }
   ]
 }

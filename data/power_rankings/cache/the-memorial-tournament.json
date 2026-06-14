@@ -1,0 +1,346 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "the Memorial Tournament presented by Workday",
+      "tableTitle": "Power Rankings for the Memorial Tournament presented by Workday",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "32102",
+            "firstName": "Rickie",
+            "lastName": "Fowler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32102.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His torrid pace was halted at the PGA Championship (T60), but last week\u2019s missed cut at Colonial was a surprise given recent success on the course. His slate at Muirfield Village is even better. Five top 10s including last year\u2019s T7."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Now that he\u2019s fully formed as a touring professional, it\u2019s going to be entertaining to watch him adapt to Muirfield Village after missing the cut in both prior trips (2023, 2024). Profiles similarly to the tournament host."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "49960",
+            "firstName": "Sepp",
+            "lastName": "Straka",
+            "countryFlag": "AUT",
+            "countryName": "Austria",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49960.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His balanced bag can travel, but he\u2019s retreated into his original archetype of a guy who will pop occasionally instead of sustaining brilliant form. Fresh off a T12 in his native Austria, he\u2019s gone T15-T5-third here since 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "51766",
+            "firstName": "Wyndham",
+            "lastName": "Clark",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51766.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Until his lights-out putting at TPC Craig Ranch en route to victory two weeks ago, his once-fantastic stroke graded out as a liability even as he was turning a corner. An extension of the trend underscores this endorsement."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "46340",
+            "firstName": "Alex",
+            "lastName": "Smalley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46340.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Good things happen to those who wait and to those who are, well, good. Across his last seven starts, he has three podiums and no worse than a T21. That includes a T2 at the PGA Championship, where par was as valuable as it is here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Keeps on keepin\u2019 on, albeit with limitless expectations after statement wins at TPC Sawgrass and the Blue Monster. Also has a pair of T3s among six top 10s in 2026. Still looking to get over on Muirfield Village (T25, 2025)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Hasn\u2019t missed an edition since his breakthrough win at Muirfield Village in 2014. Why would he? He\u2019s added three top 10s and another two top 20s since. Still a force from tee to green, but improved putting is this year\u2019s wrinkle."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With three wins in 2026, including the Zurich Classic of New Orleans with his brother, Alex, it\u2019d be natural to celebrate indefinitely, so balancing that with staying sharp is the challenge. Three top 10s at Muirfield Village."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "54591",
+            "firstName": "Ben",
+            "lastName": "Griffin",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_54591.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Two top threes in his last four starts upon arrival. It was at this time last year that he found his stride as a PGA TOUR winner, and he held at least a share of the lead here after each of the first two rounds en route to a solo second."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019d be surprising only if he didn\u2019t populate the Power Rankings. Recorded a top 25 in each of the last seven editions of the Memorial, and he has five top 10s among eight top 25s this year. T7 in his last at the PGA Championship."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "34098",
+            "firstName": "Russell",
+            "lastName": "Henley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Now "
+                },
+                {
+                  "value": "that"
+                },
+                {
+                  "value": " is how you win a golf tournament! His phenomenal flourish to conclude the Charles Schwab is what winners do. Tenth start at the Memorial; personal-best T5 last year. No. 1 on TOUR in fairways hit and scrambling."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Didn\u2019t contend at Colonial, but a T17 extended his top-25 streak to nine. Six of his previous seven were top 10s. While efficiently equipped throughout his bag for Muirfield Village, his composure has fueled a T5 and a T16."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "28237",
+            "firstName": "Rory",
+            "lastName": "McIlroy",
+            "countryFlag": "NIR",
+            "countryName": "Northern Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28237.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He completed the career Grand Slam last year, but this is his first appearance at the Memorial since joining host Jack Nicklaus in that pantheon. Now a two-time Masters champ, McIlroy has no better than a T4 here in 13 tries."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "At fifth in the FedExCup, he\u2019s highest among this year\u2019s non-winners, but he\u2019s already hung up a career-best seven top 10s, four of which on podiums. Also nails in 10 trips to the Memorial with five straight top 20s through 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Another opportunity to prove that the third time is the charm. This is his third chance to win three consecutive editions of the same tournament (he\u2019s 0-for-2). Threes also are wild, as he also has a pair of solo thirds here."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

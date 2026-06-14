@@ -1,0 +1,346 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "RBC Canadian Open",
+      "tableTitle": "Power Rankings for the RBC Canadian Open",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "48001",
+            "firstName": "Zach",
+            "lastName": "Bauchou",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48001.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Continues to exemplify what you get when you combine the skill set of elite ball-striking with the wisdom of a 30-year-old in his rookie season. It\u2019s yielded one top 10 among seven top 25s, including in each of his last four."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "29936",
+            "firstName": "Ryan",
+            "lastName": "Fox",
+            "countryFlag": "NZL",
+            "countryName": "New Zealand",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_29936.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "TPC Toronto is the site of his second TOUR title, but this is the first one he\u2019s defended after leveling up to the Signature Events in 2026. The Kiwi has been steady but not spectacular against stiffer competition on the regular."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "46464",
+            "firstName": "Jordan",
+            "lastName": "Smith",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46464.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 36-hole leader of the Charles Schwab Challenge was upended by a third-round 74 en route to a T13, so you know he\u2019s eager to put four rounds together again. The phenomenal ball-striker has four top 20s in his rookie season."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "33204",
+            "firstName": "Shane",
+            "lastName": "Lowry",
+            "countryFlag": "IRL",
+            "countryName": "Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33204.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": " Known to endure his quiet stretches. Of course, that\u2019s relative to expectations given his career success, but he\u2019s also known to burst back on the scene without notice. Top 25s in two of his last three starts; T13 here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "36689",
+            "firstName": "Brooks",
+            "lastName": "Koepka",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36689.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although his putting has given him fits at times, he\u2019s second on TOUR in greens hit, 13th in proximity to the hole and sixth in Strokes Gained: Tee-to-Green, so the building blocks are made of stone. Six top 20s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "22405",
+            "firstName": "Justin",
+            "lastName": "Rose",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_22405.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Back to reverse the outcome during a rough patch a year ago. That\u2019s not the case now after having cashed in six straight with four top 15s, including in his last two. With the U.S. Open on deck, it\u2019s a planned trajectory."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "46414",
+            "firstName": "Aaron",
+            "lastName": "Rai",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46414.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "In his first start as the reigning PGA champion, acquitted himself nicely for a T19 at the Memorial Tournament presented by Workday. It was a plug-and-play performance for the ball-striker who now has four straight top 25s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "47591",
+            "firstName": "Eric",
+            "lastName": "Cole",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47591.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "So distraught was he about losing in a playoff at Colonial Country Club that he responded with a personal-best solo eighth at Muirfield Village, but he\u2019s been percolating for two months. Four top 10s and a T14 in his last six."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "25493",
+            "firstName": "Nick",
+            "lastName": "Taylor",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_25493.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "While he has nothing to prove to fellow Canadians, who are too polite to demand a second title in their national open, the 38-year-old would love nothing more than to give it to them. Humming along of late. T13 here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a torrid stretch through March and April during which he won twice and settled for second at THE PLAYERS Championship, the Brit has cooled, but he\u2019s still a big fish in his debut at TPC Toronto. Tee-to-green monster."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "49855",
+            "firstName": "Kristoffer",
+            "lastName": "Reitan",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49855.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 28-year-old from Norway not only paces all rookies in the FedExCup ("
+                },
+                {
+                  "value": "13th"
+                },
+                {
+                  "value": "), but is also 24th in OWGR. He\u2019s best among all fellow countrymen. Has a win and a T2 among five top 15s in his last seven starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "55721",
+            "firstName": "Alex",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55721.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Hasn\u2019t eased off the throttle since taking the title with brother Matt at the Zurich Classic of New Orleans with top 10s in each of the last three Signature Events, but Alex already was dialed in abroad before that. Machine."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Forever the fall guy and footnote when Nick Taylor became a national hero in 2023, the Brit could only smile in disbelief in that playoff, but now he\u2019s the reigning FedExCup champ. Top fives in two of his last three starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "47504",
+            "firstName": "Sam",
+            "lastName": "Burns",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47504.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "In the center of converging trends, but his class always has been permanent. Still seeking his first victory since 2023. Lost in the playoff here last year; T4 last week at the Memorial."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "51766",
+            "firstName": "Wyndham",
+            "lastName": "Clark",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51766.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His midseason, massive improvement in putting is the story worth retelling because it\u2019s been so lucrative for him. It\u2019s also a reconnection with his DNA that elevated him over time, and he\u2019s showing zero signs of relenting."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

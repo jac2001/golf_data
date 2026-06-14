@@ -1075,8 +1075,39 @@ def get_tournament() -> dict:
                     result["start_date"] = str(row.iloc[0].get("start_date", ""))
                     result["end_date"]   = str(row.iloc[0].get("end_date", ""))
                     result["purse"]      = _safe(row.iloc[0].get("purse"))
+                    result["location"]   = str(row.iloc[0].get("location", ""))
             except Exception:
                 pass
+
+    # Add location from schedule if not yet set (Supabase path may have it)
+    if "location" not in result:
+        try:
+            sched = pd.read_csv(_SCHED_CSV)
+            row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+            if not row.empty:
+                result["location"] = str(row.iloc[0].get("location", ""))
+        except Exception:
+            pass
+
+    # Defending champion — winner of same event code last year
+    event_code = tid[-3:]
+    try:
+        if _DB_AVAILABLE:
+            with _get_db_conn() as conn:
+                rows = conn.execute(
+                    "SELECT player_name, tournament_id FROM leaderboards "
+                    "WHERE tournament_id LIKE ? AND position = '1' "
+                    "ORDER BY tournament_id DESC LIMIT 1",
+                    [f"%{event_code}"],
+                ).fetchall()
+                if rows:
+                    champ_name, champ_tid = rows[0]
+                    champ_year = champ_tid[1:5] if len(champ_tid) >= 5 else ""
+                    if champ_tid != tid:  # don't show current year
+                        result["defending_champion"] = str(champ_name)
+                        result["defending_champion_year"] = champ_year
+    except Exception:
+        pass
 
     # Detect phase from live meta
     meta_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
@@ -2921,6 +2952,30 @@ def get_lineup() -> dict:
         s = str(n).strip()
         return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
+    def _lookup_tracker_name(short: str) -> tuple[dict, str]:
+        """Match tracker short name ('N Taylor', 'Fleetwood') to (prob_map entry, matched key)."""
+        s = short.strip()
+        if s in prob_map:
+            return prob_map[s], s
+        parts = s.split()
+        if len(parts) >= 2:
+            last = parts[-1].lower()
+            initial = parts[0][0].lower()
+            for key in prob_map:
+                if "," in key:
+                    lp, fp = key.split(",", 1)
+                    if lp.strip().lower() == last and fp.strip().lower().startswith(initial):
+                        return prob_map[key], key
+            for key in prob_map:
+                if "," in key and key.split(",")[0].strip().lower() == last:
+                    return prob_map[key], key
+        else:
+            last = s.lower()
+            for key in prob_map:
+                if "," in key and key.split(",")[0].strip().lower() == last:
+                    return prob_map[key], key
+        return {}, short
+
     lineup_names: list[str] = sr.get("lineup", [])
     players_data: dict = sr.get("players", {})
 
@@ -2950,14 +3005,80 @@ def get_lineup() -> dict:
     sr_tid = str(sr.get("tournament_id", ""))
     stale  = bool(sr_tid and sr_tid != tid)
 
+    # Check usage tracker for confirmed picks this week
+    confirmed = False
+    confirmed_names: list[str] = []
+    tracker_uses: dict[str, int] = {}
+    tracker_path = _TRACKER_JSON
+    tour_name = sr.get("tournament", "")
+    try:
+        with open(tracker_path) as f:
+            tracker = json.load(f)
+        for wk_data in tracker.get("weekly_lineups", {}).values():
+            if wk_data.get("tournament", "") == tour_name and wk_data.get("lineup"):
+                confirmed = True
+                confirmed_names = wk_data["lineup"]
+                break
+        # Build uses_left lookup from picks section
+        for pname, pdata in tracker.get("picks", {}).items():
+            tracker_uses[pname.lower()] = int(pdata.get("remaining_uses", 0))
+    except Exception:
+        pass
+
+    def _uses_left(short: str) -> int | None:
+        """Look up remaining uses for a tracker short name."""
+        s = short.strip().lower()
+        if s in tracker_uses:
+            return tracker_uses[s]
+        parts = s.split()
+        if len(parts) >= 2:
+            last = parts[-1]
+            for k, v in tracker_uses.items():
+                if k.split()[-1] == last:
+                    return v
+        else:
+            for k, v in tracker_uses.items():
+                if k.split()[-1] == s:
+                    return v
+        return None
+
+    # If confirmed picks exist in tracker, build pick objects from those names
+    if confirmed and confirmed_names:
+        confirmed_picks = []
+        for raw_name in confirmed_names:
+            preds_info, matched_key = _lookup_tracker_name(raw_name)
+            full_name = _flip(matched_key) if matched_key != raw_name else _flip(raw_name)
+            wp  = preds_info.get("win_prob")
+            t10 = preds_info.get("top10_prob")
+            confirmed_picks.append({
+                "player_name":   full_name,
+                "recommendation": "CONFIRMED",
+                "tier":          "",
+                "uses_left":     _uses_left(raw_name),
+                "in_field":      True,
+                "narrative":     "",
+                "this_week_ev":  None,
+                "win_prob":      round(float(wp) * 100, 1) if wp is not None else None,
+                "top10_prob":    round(float(t10) * 100, 1) if t10 is not None else None,
+                "world_rank":    preds_info.get("world_rank"),
+                "odds_to_win":   _fmt_odds(preds_info.get("odds_to_win")),
+                "form_trend":    _safe(preds_info.get("form_trend")),
+                "season_sg":     _safe(preds_info.get("season_sg_total")),
+                "drift":         str(preds_info.get("dk_odds_direction") or ""),
+            })
+        final_picks = confirmed_picks
+    else:
+        final_picks = [] if stale else picks
+
     return {
         "tournament_id":    tid,
-        "tournament":       sr.get("tournament", ""),
+        "tournament":       tour_name,
         "generated_at":     sr.get("generated_at", ""),
         "weekly_narrative": sr.get("weekly_narrative", ""),
-        "picks":            [] if stale else picks,
+        "picks":            final_picks,
         "stale":            stale,
-        "stale_tournament": sr.get("tournament", "") if stale else "",
+        "stale_tournament": tour_name if stale else "",
+        "confirmed":        confirmed,
     }
 
 
@@ -4166,16 +4287,57 @@ def get_my_picks() -> dict:
     with open(path) as f:
         raw = json.load(f)
 
+    # ── Name expansion: tracker short names → full "First Last" names ─────────
+    # Build lookup from predictions + historical leaderboards
+    _name_map: dict[str, str] = {}
+    try:
+        pred_path = OUTPUTS_DIR / "latest_predictions.csv"
+        if pred_path.exists():
+            pdf = pd.read_csv(pred_path, usecols=["player_name"])
+            for n in pdf["player_name"].dropna():
+                n = str(n).strip()
+                if "," in n:
+                    last, first = n.split(",", 1)
+                    full = f"{first.strip()} {last.strip()}"
+                    last_l = last.strip().lower()
+                    init = first.strip()[0].lower() if first.strip() else ""
+                    _name_map[last_l] = full          # last-name key
+                    if init:
+                        _name_map[f"{init} {last_l}"] = full   # "n taylor" key
+                        _name_map[f"{init}{last_l}"] = full    # "ntaylor" key
+    except Exception:
+        pass
+
+    def _expand(short: str) -> str:
+        s = short.strip()
+        parts = s.split()
+        # Try "X LastName" pattern (e.g. "N Taylor", "SW Kim")
+        if len(parts) >= 2:
+            last = parts[-1].lower()
+            init = parts[0][0].lower()
+            key = f"{init} {last}"
+            if key in _name_map:
+                return _name_map[key]
+            if last in _name_map:
+                return _name_map[last]
+        elif len(parts) == 1:
+            last = parts[0].lower()
+            if last in _name_map:
+                return _name_map[last]
+        # Return original if no match (already readable or unknown)
+        return s
+
     # ── Weekly log (most recent first) ───────────────────────────────────────
     weekly_lineups = raw.get("weekly_lineups", {})
     weeks = []
     for key, wl in weekly_lineups.items():
         earnings = wl.get("earnings_earned") or wl.get("points_earned") or 0
+        raw_lineup = wl.get("lineup", [])
         weeks.append({
             "week":          wl.get("week"),
             "tournament":    wl.get("tournament", ""),
             "date":          wl.get("date", ""),
-            "lineup":        wl.get("lineup", []),
+            "lineup":        [_expand(n) for n in raw_lineup],
             "finish":        wl.get("wrp"),
             "earnings":      int(earnings) if earnings else 0,
         })
@@ -4186,7 +4348,7 @@ def get_my_picks() -> dict:
     roster = []
     for name, p in picks.items():
         roster.append({
-            "player_name":    name,
+            "player_name":    _expand(name),
             "times_used":     p.get("times_used", 0),
             "remaining_uses": p.get("remaining_uses", 3),
             "total_earnings": int(p.get("total_earnings", 0)),
@@ -4213,6 +4375,134 @@ def get_my_picks() -> dict:
             "avg_earnings":    int(total_earnings / len(weeks)) if weeks else 0,
         },
     }
+
+
+@app.post("/api/picks")
+def set_picks(payload: dict) -> dict:
+    """
+    Confirm this week's lineup picks.
+    Body: { "tournament_id": "R2026032", "picks": ["N Taylor", "A Fitzpatrick", "W Clark"] }
+    Updates weekly_lineups and picks usage counts in usage_tracker_2026.json.
+    """
+    picks_in: list[str] = payload.get("picks", [])
+    tid: str = str(payload.get("tournament_id", _get_tournament_id())).upper()
+
+    if not picks_in:
+        raise HTTPException(status_code=400, detail="picks list is required")
+    if len(picks_in) > 5:
+        raise HTTPException(status_code=400, detail="too many picks")
+
+    path = _TRACKER_JSON
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="usage_tracker not found")
+
+    with open(path) as f:
+        tracker = json.load(f)
+
+    # Resolve tournament name + week from schedule
+    tour_name = tid
+    tour_week = None
+    tour_date = None
+    try:
+        sched = pd.read_csv(_SCHED_CSV)
+        row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+        if not row.empty:
+            tour_name = str(row.iloc[0].get("tournament_name", tid))
+            tour_week = _safe(row.iloc[0].get("week"))
+            tour_date = str(row.iloc[0].get("start_date", ""))
+    except Exception:
+        pass
+
+    # Find matching week key in weekly_lineups
+    wl = tracker.setdefault("weekly_lineups", {})
+    target_key = None
+    for k, v in wl.items():
+        if v.get("tournament") == tour_name or (tour_week and v.get("week") == tour_week):
+            target_key = k
+            break
+    if target_key is None:
+        # Create entry
+        week_num = int(tour_week) if tour_week else len(wl) + 1
+        target_key = f"week_{week_num}"
+        wl[target_key] = {
+            "tournament": tour_name, "week": week_num,
+            "date": tour_date, "lineup": [],
+            "wrp": None, "earnings_earned": None, "points_earned": None,
+        }
+
+    existing = wl[target_key].get("lineup", [])
+    if existing:
+        raise HTTPException(status_code=409, detail=f"Picks already set: {existing}. Remove them first.")
+
+    wl[target_key]["lineup"] = picks_in
+
+    # Update usage counts for each player
+    picks_store = tracker.setdefault("picks", {})
+    max_uses = tracker.get("max_uses_per_player", 3)
+    for name in picks_in:
+        entry = picks_store.setdefault(name, {
+            "times_used": 0, "remaining_uses": max_uses,
+            "tournaments_used": [], "total_earnings": 0, "total_points": 0,
+        })
+        entry["times_used"] = entry.get("times_used", 0) + 1
+        entry["remaining_uses"] = max(0, entry.get("remaining_uses", max_uses) - 1)
+        entry.setdefault("tournaments_used", []).append({
+            "tournament": tour_name, "week": tour_week,
+            "date": tour_date, "result": None, "earnings": 0,
+        })
+
+    tracker["last_updated"] = pd.Timestamp.now().isoformat()
+
+    with open(path, "w") as f:
+        json.dump(tracker, f, indent=2, default=str)
+
+    return {"status": "ok", "tournament": tour_name, "picks": picks_in}
+
+
+@app.delete("/api/picks")
+def clear_picks(payload: dict) -> dict:
+    """Remove picks for a tournament so they can be re-entered. Body: { 'tournament_id': '...' }"""
+    tid: str = str(payload.get("tournament_id", _get_tournament_id())).upper()
+    path = _TRACKER_JSON
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="usage_tracker not found")
+
+    with open(path) as f:
+        tracker = json.load(f)
+
+    tour_name = tid
+    try:
+        sched = pd.read_csv(_SCHED_CSV)
+        row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+        if not row.empty:
+            tour_name = str(row.iloc[0].get("tournament_name", tid))
+    except Exception:
+        pass
+
+    wl = tracker.get("weekly_lineups", {})
+    removed = []
+    for k, v in wl.items():
+        if v.get("tournament") == tour_name:
+            removed = v.get("lineup", [])
+            v["lineup"] = []
+            break
+
+    # Roll back usage counts
+    picks_store = tracker.get("picks", {})
+    max_uses = tracker.get("max_uses_per_player", 3)
+    for name in removed:
+        entry = picks_store.get(name)
+        if entry:
+            entry["times_used"] = max(0, entry.get("times_used", 1) - 1)
+            entry["remaining_uses"] = min(max_uses, entry.get("remaining_uses", 0) + 1)
+            tu = entry.get("tournaments_used", [])
+            entry["tournaments_used"] = [t for t in tu if t.get("tournament") != tour_name]
+
+    tracker["last_updated"] = pd.Timestamp.now().isoformat()
+    with open(path, "w") as f:
+        json.dump(tracker, f, indent=2, default=str)
+
+    return {"status": "ok", "removed": removed}
 
 
 @app.get("/api/expert-picks")

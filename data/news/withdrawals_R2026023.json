@@ -1,0 +1,16 @@
+[
+  {
+    "player_name": "Stephan Jaeger",
+    "player_id": "36799",
+    "status": "WITHDRAWN",
+    "source": "leaderboard",
+    "detected_at": "2026-06-02T06:53:10.543372"
+  },
+  {
+    "player_name": "Knapp, Jake",
+    "player_id": "47420",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-06-03T06:16:05.927420"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "bets": {
+    "a097391dd9e7": {
+      "status": "finished",
+      "position": "9"
+    },
+    "a2a0c0277c13": {
+      "status": "finished",
+      "position": "T6"
+    },
+    "665a16133ef0": {},
+    "f12d9a30ee05": {
+      "status": "off_track",
+      "position": "T36"
+    },
+    "ac3231133f0a": {
+      "status": "finished",
+      "position": "T27"
+    }
+  },
+  "last_checked": "2026-06-10T23:05:14.127610Z"
+}

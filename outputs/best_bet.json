@@ -1,7 +1,19 @@
 {
-  "tournament_id": "R2026021",
-  "tournament_name": "Charles Schwab Challenge",
-  "player_name": null,
-  "reasoning": null,
-  "generated_at": "2026-05-28T01:08:19.578449+00:00"
+  "tournament_id": "R2026032",
+  "tournament_name": "RBC Canadian Open",
+  "player_name": "Zach Bauchou",
+  "market": "make_cut",
+  "market_label": "Make Cut",
+  "selection_label": "Zach Bauchou to Make Cut",
+  "book": "DRAFTKINGS",
+  "odds_american": -134,
+  "odds_str": "-134",
+  "edge_pts": 2.9,
+  "ev_per_1": 0.0505,
+  "ev_pct": 5.1,
+  "model_prob": 60.2,
+  "book_prob": 57.3,
+  "confidence": 0.85,
+  "reasoning": "Model shows +2.9pp edge on make_cut market.",
+  "generated_at": "2026-06-10T23:05:13.806531+00:00"
 }

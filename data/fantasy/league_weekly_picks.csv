@@ -1,29 +1,29 @@
 weekly_rank,season_rank,team_name,player_1,earnings_1,player_2,earnings_2,player_3,earnings_3,total_earnings,week
-1,2,MikeKett,"Clark, W",1854000,"Kim, SW",1122700,"Koepka, B",187975,3164675,current
-2,11,Dimpled Balls,"Clark, W",1854000,"Kim, SW",1122700,Spieth,100596,3077296,current
-3,20,MacDaddy,"Clark, W",1854000,"Kim, SW",1122700,"Kim, Tom",23999,3000699,current
-4,9,Buck Foursome,"Clark, W",1854000,"Coody, Pier",100596,Thorbjornsen,0,1954596,current
-T-5,18,Danny Noonan,"Coody, Pier",100596,Jaeger,260075,"Kim, SW",1122700,1483371,current
-T-5,25,Chest Rockwell,Hisatsune,100596,Im,260075,"Kim, SW",1122700,1483371,current
-T-7,1,Andrew Sisson,"Kim, SW",1122700,"Koepka, B",187975,Spieth,100596,1411271,current
-T-7,8,GoForeYourself,Hisatsune,100596,"Kim, SW",1122700,"Koepka, B",187975,1411271,current
-T-7,19,Yanks His Putz,Hisatsune,100596,"Kim, SW",1122700,"Koepka, B",187975,1411271,current
-10,5,EagleEash,"Hojgaard, R",22454,"Kim, SW",1122700,"Koepka, B",187975,1333129,current
-T-11,6,WineTime,Hisatsune,100596,"Kim, SW",1122700,Spieth,100596,1323892,current
-T-11,7,Team OGG,Hisatsune,100596,"Kim, SW",1122700,Spieth,100596,1323892,current
-T-11,14,Caddyshark,Hisatsune,100596,"Kim, SW",1122700,Spieth,100596,1323892,current
-T-11,23,NLA Boys,"Kim, SW",1122700,Spieth,100596,van Rooyen,100596,1323892,current
-15,4,JoeBuckYourself,"Kim, SW",1122700,Spieth,100596,"Thompson, D",0,1223296,current
-16,21,COMER,Hisatsune,100596,Mitchell,422300,Pendrith,26971,549867,current
-17,22,SMETHPORT GOLFER,Finau,347625,Spieth,100596,NO SHOW,0,448221,current
-T-18,3,Wildcats,Hisatsune,100596,"Koepka, B",187975,Spieth,100596,389167,current
-T-18,12,TimmyD,"Coody, Pier",100596,"Koepka, B",187975,Spieth,100596,389167,current
-20,13,Birdie Bandits,Cole,58930,"Koepka, B",187975,Spieth,100596,347501,current
-21,16,GOLOWORGOHOME,"Coody, Pier",100596,Hisatsune,100596,Spieth,100596,301788,current
-22,10,Green Jackets,"Coody, Pier",100596,"Koepka, B",187975,Thorbjornsen,0,288571,current
-23,15,HUBBERS,Hisatsune,100596,"Hojgaard, R",22454,Spieth,100596,223646,current
-24,28,CARL SPACKLER,Grillo,47895,Spieth,100596,NO SHOW,0,148491,current
-25,24,Jlemoine,Brennan,0,Spieth,100596,"Thompson, D",0,100596,current
-26,26,Davemc410,Eckroat,38625,"Kim, Tom",23999,Vegas,0,62624,current
-T-27,17,Rmr617,"Thompson, D",0,"Walker, D",0,NO SHOW,0,0,current
-T-27,27,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current
+1,2,MikeKett,Fleetwood,920000,Spaun,401800,"Thomas, J",269333,1591133,current
+2,7,Buck Foursome,"Kim, SW",535000,McIlroy,401800,Spaun,401800,1338600,current
+3,20,NLA Boys,Burns,920000,"Griffin, B",0,Scheffler,401800,1321800,current
+4,3,WineTime,Burns,920000,Cantlay,319000,Matsuyama,70000,1309000,current
+5,1,Andrew Sisson,Cantlay,319000,Scheffler,401800,Spaun,401800,1122600,current
+6,6,EagleEash,Aberg,90000,Burns,920000,"Fitzpatrick, M",99000,1109000,current
+7,8,Team OGG,"Griffin, B",0,"Kim, SW",535000,Scheffler,401800,936800,current
+8,14,Birdie Bandits,"Griffin, B",0,"Kim, SW",535000,"Thomas, J",269333,804333,current
+9,25,Davemc410,McIlroy,401800,Scheffler,401800,Spieth,0,803600,current
+10,28,CARL SPACKLER,Aberg,90000,"Bradley, K",269333,McIlroy,401800,761133,current
+11,18,Danny Noonan,Cantlay,319000,"Griffin, B",0,McIlroy,401800,720800,current
+12,10,GOLOWORGOHOME,"Fitzpatrick, M",99000,"Griffin, B",0,"Kim, SW",535000,634000,current
+13,5,Wildcats,Cantlay,319000,Henley,200200,Matsuyama,70000,589200,current
+14,12,Green Jackets,Aberg,90000,Rose,401800,Straka,82000,573800,current
+15,26,Chest Rockwell,Aberg,90000,McIlroy,401800,"Young, Cam",58667,550467,current
+16,23,Jlemoine,Aberg,90000,"Griffin, B",0,Scheffler,401800,491800,current
+17,21,SMETHPORT GOLFER,Henley,200200,Lowry,200200,Meissner,58667,459067,current
+18,15,Caddyshark,Bhatia,0,"Taylor, N",70000,"Thomas, J",269333,339333,current
+19,4,JoeBuckYourself,Cantlay,319000,"Griffin, B",0,Smalley,0,319000,current
+20,13,Dimpled Balls,Aberg,90000,"Griffin, B",0,Henley,200200,290200,current
+21,9,GoForeYourself,Matsuyama,70000,Schauffele,140000,"Young, Cam",58667,268667,current
+22,19,Yanks His Putz,"Fitzpatrick, M",99000,Matsuyama,70000,Straka,82000,251000,current
+23,22,MacDaddy,"Fitzpatrick, M",99000,Straka,82000,"Young, Cam",58667,239667,current
+24,24,COMER,"Fitzpatrick, M",99000,"Hojgaard, N",0,Theegala,122500,221500,current
+25,17,Rmr617,Aberg,90000,"Fitzpatrick, M",99000,Horschel,0,189000,current
+26,16,HUBBERS,Aberg,90000,Matsuyama,70000,Smalley,0,160000,current
+27,11,TimmyD,"Griffin, B",0,Matsuyama,70000,Smalley,0,70000,current
+28,27,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current

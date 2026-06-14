@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { LineupPick } from "@/lib/api";
 
 type Props = {
@@ -114,9 +115,18 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
       </div>
 
       {/* Player name */}
-      <div style={{ fontSize: "1.3em", fontWeight: 800, color: "#dde6f5", lineHeight: 1.15, marginBottom: 6 }}>
+      <Link
+        href={`/players?player=${encodeURIComponent(pick.player_name)}`}
+        style={{
+          display: "block", fontSize: "1.3em", fontWeight: 800,
+          color: "#dde6f5", lineHeight: 1.15, marginBottom: 6,
+          textDecoration: "none",
+        }}
+        onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+        onMouseLeave={e => (e.currentTarget.style.color = "#dde6f5")}
+      >
         {pick.player_name}
-      </div>
+      </Link>
 
       {/* Sub-info: rank · odds · drift */}
       <div style={{ fontSize: "0.72em", color: "#5a7090", display: "flex", gap: 8, alignItems: "center", marginBottom: 14, flexWrap: "wrap" }}>

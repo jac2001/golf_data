@@ -1,0 +1,7 @@
+{
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://golf-app-a3yw.onrender.com"
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next"
+}

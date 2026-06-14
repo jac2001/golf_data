@@ -1,0 +1,2 @@
+tournament_id,tournament_name,course_id,course_name,course_par,course_yardage,is_host_course,total_scoring_avg,avg_hole_difficulty,total_eagles,total_birdies,total_pars,total_bogeys,total_double_bogeys,birdie_pct,bogey_pct,par3_count,par4_count,par5_count,hardest_holes,easiest_holes
+R2026021,R2026021,021,Colonial Country Club,70,"7,289",True,69.72500000000001,-0.015277777777777057,19,1317,4585,1040,99,18.704729441840648,14.770629171992613,4,12,2,"[5, 4, 7]","[1, 11, 2]"
