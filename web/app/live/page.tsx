@@ -349,6 +349,7 @@ export default function LivePage() {
             updated={sgData.updated}
             onRoundChange={handleRoundChange}
             holeScores={holeScores?.by_player}
+            myPicks={myPicks}
           />
         ) : (
           <SgStatsTable
@@ -357,6 +358,7 @@ export default function LivePage() {
             updated={null}
             onRoundChange={handleRoundChange}
             holeScores={holeScores?.by_player}
+            myPicks={myPicks}
           />
         )
       )}

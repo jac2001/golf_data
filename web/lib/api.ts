@@ -493,10 +493,9 @@ export type MyLineupResponse = {
 
 export type SgStatPlayer = {
   player: string;
-  position: number | null;
+  position: string | null;  // "1", "T3", "WD" etc.
   total: number | null;
-  thru: string | null;
-  round: string | null;
+  thru: number | null;      // holes played; 18 = finished
   sg_total: number | null;
   sg_ott: number | null;
   sg_app: number | null;
