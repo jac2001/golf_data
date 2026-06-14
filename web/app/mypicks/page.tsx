@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   getMyPicks, getTournament, setMyPicks, clearMyPicks,
   MyPicksResponse, WeeklyLineup, RosterPlayer, Tournament,
@@ -75,16 +76,20 @@ function WeekCard({ week }: { week: WeeklyLineup }) {
       {/* Lineup */}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {week.lineup.map(name => (
-          <span
+          <Link
             key={name}
+            href={`/players?player=${encodeURIComponent(name)}`}
             style={{
               fontSize: "0.78em", fontWeight: 600, color: "#9ab0c8",
               background: "#080f1e", border: "1px solid #1e3a5f",
-              borderRadius: 4, padding: "3px 10px",
+              borderRadius: 4, padding: "3px 10px", textDecoration: "none",
+              display: "inline-block",
             }}
+            onMouseEnter={e => { e.currentTarget.style.color = "#4cb8ff"; e.currentTarget.style.borderColor = "#2a5080"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "#9ab0c8"; e.currentTarget.style.borderColor = "#1e3a5f"; }}
           >
             {name}
-          </span>
+          </Link>
         ))}
       </div>
     </div>
@@ -113,12 +118,19 @@ function RosterRow({ player, maxUses }: { player: RosterPlayer; maxUses: number 
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
           <UsePips used={player.times_used} max={maxUses} />
-          <span style={{
-            fontWeight: 700, fontSize: "0.9em", color: depleted ? "#5f3a1e" : "#dde6f5",
-            whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-          }}>
+          <Link
+            href={`/players?player=${encodeURIComponent(player.player_name)}`}
+            onClick={e => e.stopPropagation()}
+            style={{
+              fontWeight: 700, fontSize: "0.9em", color: depleted ? "#5f3a1e" : "#dde6f5",
+              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+              textDecoration: "none",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+            onMouseLeave={e => (e.currentTarget.style.color = depleted ? "#5f3a1e" : "#dde6f5")}
+          >
             {player.player_name}
-          </span>
+          </Link>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 20, flexShrink: 0 }}>
           <span style={{

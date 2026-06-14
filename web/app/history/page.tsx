@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   getHistoryTournaments, getHistoryModel, getHistoryBets,
   getBetSlip, removeFromBetSlip,
@@ -57,7 +58,11 @@ function ResultsTab() {
               >
                 <td style={cell}>{t.start_date?.slice(0, 10) ?? ""}</td>
                 <td style={{ ...cell, color: "#dde6f5", fontWeight: 600 }}>{t.name}</td>
-                <td style={{ ...cell, color: "#00c44f" }}>{t.winner}</td>
+                <td style={{ ...cell, color: "#00c44f" }}>
+                  <Link href={`/players?player=${encodeURIComponent(t.winner ?? "")}`} style={{ color: "#00c44f", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")} onMouseLeave={e => (e.currentTarget.style.color = "#00c44f")}>
+                    {t.winner}
+                  </Link>
+                </td>
                 <td style={{ ...cell, color: "#f0c040" }}>{t.winner_score}</td>
                 <td style={cell}>{t.winner_earnings}</td>
                 <td style={cell}>{t.field_size}</td>
@@ -78,14 +83,21 @@ function ResultsTab() {
                     <p style={{ color: "#7a9ab8", fontSize: "0.8em", marginBottom: 8 }}>Top 10</p>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                       {t.top10.map((p, i) => (
-                        <span key={i} style={{
-                          background: i === 0 ? "#0d2e18" : "#111e2c",
-                          border: `1px solid ${i === 0 ? "#00c44f" : "#1e3a5f"}`,
-                          borderRadius: 6, padding: "4px 10px",
-                          fontSize: "0.82em", color: i === 0 ? "#00c44f" : "#c8d8e8",
-                        }}>
+                        <Link
+                          key={i}
+                          href={`/players?player=${encodeURIComponent(p.player)}`}
+                          style={{
+                            background: i === 0 ? "#0d2e18" : "#111e2c",
+                            border: `1px solid ${i === 0 ? "#00c44f" : "#1e3a5f"}`,
+                            borderRadius: 6, padding: "4px 10px",
+                            fontSize: "0.82em", color: i === 0 ? "#00c44f" : "#c8d8e8",
+                            textDecoration: "none", display: "inline-block",
+                          }}
+                          onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+                          onMouseLeave={e => (e.currentTarget.style.color = i === 0 ? "#00c44f" : "#c8d8e8")}
+                        >
                           {p.position} {p.player} <span style={{ color: "#f0c040" }}>{p.to_par}</span>
-                        </span>
+                        </Link>
                       ))}
                     </div>
                   </td>

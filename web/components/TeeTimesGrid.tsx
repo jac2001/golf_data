@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { TeeTimesResponse } from "@/lib/api";
 
-type Props = { data: TeeTimesResponse };
+type Props = { data: TeeTimesResponse; myPicks?: string[] };
 
 const DRIFT_ARROW: Record<string, { s: string; c: string }> = {
   UP:       { s: "▲", c: "#e74c3c" },
@@ -19,7 +20,12 @@ function rankColor(rank: number | null): string {
   return "#3a5060";
 }
 
-export default function TeeTimesGrid({ data }: Props) {
+function normName(n: string) {
+  return n.toLowerCase().replace(",", "").split(/\s+/).sort().join(" ");
+}
+
+export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
+  const myPicksNorm = new Set(myPicks.map(normName));
   if (!data.groups.length) {
     return (
       <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
@@ -103,6 +109,7 @@ export default function TeeTimesGrid({ data }: Props) {
               {group.players.map((p, i) => {
                 const drift = DRIFT_ARROW[p.drift] ?? null;
                 const isEdge = p.edge != null && p.edge > 3;
+                const isPick = myPicksNorm.has(normName(p.name));
                 const formColor = (p.form_trend ?? 0) > 0.2 ? "#00c44f"
                   : (p.form_trend ?? 0) < -0.1 ? "#e74c3c" : "#4a6080";
                 const rColor = rankColor(p.model_rank);
@@ -113,8 +120,8 @@ export default function TeeTimesGrid({ data }: Props) {
                   <div key={p.name} style={{
                     padding: "8px 12px",
                     borderBottom: i < group.players.length - 1 ? "1px solid #0f2236" : "none",
-                    borderLeft: isEdge ? "2px solid #00c44f" : "2px solid transparent",
-                    background: isEdge ? "#0a1a10" : "transparent",
+                    borderLeft: isPick ? "2px solid #00c44f" : isEdge ? "2px solid #f1c40f" : "2px solid transparent",
+                    background: isPick ? "#091a0f" : isEdge ? "#0a1a10" : "transparent",
                     display: "flex", justifyContent: "space-between", alignItems: "center",
                   }}>
                     {/* Left: rank badge + name */}
@@ -128,8 +135,28 @@ export default function TeeTimesGrid({ data }: Props) {
                         #{p.model_rank ?? "—"}
                       </span>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ color: isEdge ? "#dde6f5" : "#c0cce0", fontWeight: isEdge ? 700 : 600, fontSize: "0.85em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                          {p.name}
+                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                          <Link
+                            href={`/players?player=${encodeURIComponent(p.name)}`}
+                            style={{
+                              color: isPick ? "#00c44f" : isEdge ? "#dde6f5" : "#c0cce0",
+                              fontWeight: isPick || isEdge ? 700 : 600,
+                              fontSize: "0.85em",
+                              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                              textDecoration: "none",
+                            }}
+                            onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+                            onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : isEdge ? "#dde6f5" : "#c0cce0")}
+                          >
+                            {p.name}
+                          </Link>
+                          {isPick && (
+                            <span style={{
+                              fontSize: "0.58em", fontWeight: 800, color: "#00c44f",
+                              background: "#0d2e18", border: "1px solid #00c44f44",
+                              borderRadius: 3, padding: "1px 4px", whiteSpace: "nowrap", flexShrink: 0,
+                            }}>MY PICK</span>
+                          )}
                         </div>
                         <div style={{ color: "#3a5060", fontSize: "0.64em", marginTop: 1 }}>
                           OWGR #{p.world_rank ?? "—"}

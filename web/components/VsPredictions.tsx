@@ -1,10 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { VsPredPlayer } from "@/lib/api";
 
-type Props = { players: VsPredPlayer[] };
+type Props = { players: VsPredPlayer[]; myPicks?: string[] };
 
-export default function VsPredictions({ players }: Props) {
+function normName(n: string) {
+  return n.toLowerCase().replace(",", "").split(/\s+/).sort().join(" ");
+}
+
+export default function VsPredictions({ players, myPicks = [] }: Props) {
+  const myPicksNorm = new Set(myPicks.map(normName));
   if (!players.length) {
     return (
       <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
@@ -39,7 +45,9 @@ export default function VsPredictions({ players }: Props) {
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {overPerf.map(p => (
                   <div key={p.player} style={{ background: "#0d2218", border: "1px solid #00c44f33", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
-                    <div style={{ color: "#dde6f5", fontWeight: 700, fontSize: "0.85em" }}>{p.player}</div>
+                    <div style={{ color: "#dde6f5", fontWeight: 700, fontSize: "0.85em" }}>
+                      <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "#dde6f5", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")} onMouseLeave={e => (e.currentTarget.style.color = "#dde6f5")}>{p.player}</Link>
+                    </div>
                     <div style={{ fontSize: "0.72em", marginTop: 3 }}>
                       <span style={{ color: "#00c44f" }}>Live #{p.position ?? "?"}</span>
                       <span style={{ color: "#3a5060", margin: "0 5px" }}>vs</span>
@@ -59,7 +67,9 @@ export default function VsPredictions({ players }: Props) {
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {underPerf.map(p => (
                   <div key={p.player} style={{ background: "#1a0d0d", border: "1px solid #e74c3c33", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
-                    <div style={{ color: "#dde6f5", fontWeight: 700, fontSize: "0.85em" }}>{p.player}</div>
+                    <div style={{ color: "#dde6f5", fontWeight: 700, fontSize: "0.85em" }}>
+                      <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "#dde6f5", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")} onMouseLeave={e => (e.currentTarget.style.color = "#dde6f5")}>{p.player}</Link>
+                    </div>
                     <div style={{ fontSize: "0.72em", marginTop: 3 }}>
                       <span style={{ color: "#e74c3c" }}>Live #{p.position ?? "?"}</span>
                       <span style={{ color: "#3a5060", margin: "0 5px" }}>vs</span>
@@ -90,7 +100,8 @@ export default function VsPredictions({ players }: Props) {
           </thead>
           <tbody>
             {players.map((p, i) => {
-              const bg = i % 2 === 0 ? "#0d1a30" : "#0a1525";
+              const isPick = myPicksNorm.has(normName(p.player));
+              const bg = isPick ? "#091a0f" : i % 2 === 0 ? "#0d1a30" : "#0a1525";
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid #0f2236",
                 background: bg, textAlign: "center", fontSize: "0.85em",
@@ -101,16 +112,27 @@ export default function VsPredictions({ players }: Props) {
               const diffColor = diff > 5 ? "#00c44f" : diff < -5 ? "#e74c3c" : diff !== 0 ? "#f39c12" : "#3a5060";
               const diffStr   = diff === 0 ? "=" : diff > 0 ? `+${diff}` : String(diff);
 
-              // score color
               const totalColor = p.total_numeric == null ? "#7f8c8d"
                 : p.total_numeric < 0 ? "#00c44f"
                 : p.total_numeric > 0 ? "#e74c3c"
                 : "#8ba0b8";
 
               return (
-                <tr key={`vsp-${i}`} style={{ opacity: isCut ? 0.55 : 1 }}>
-                  <td style={{ ...td, textAlign: "left", color: isCut ? "#3a5060" : "#dde6f5", fontWeight: 600, whiteSpace: "nowrap" }}>
-                    {p.player}
+                <tr key={`vsp-${i}`} style={{ opacity: isCut ? 0.55 : 1, borderLeft: isPick ? "2px solid #00c44f" : "2px solid transparent" }}>
+                  <td style={{ ...td, textAlign: "left", fontWeight: 600, whiteSpace: "nowrap" }}>
+                    <Link
+                      href={`/players?player=${encodeURIComponent(p.player)}`}
+                      style={{ color: isPick ? "#00c44f" : isCut ? "#3a5060" : "#dde6f5", textDecoration: "none", fontWeight: isPick ? 700 : 600 }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+                      onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : isCut ? "#3a5060" : "#dde6f5")}
+                    >
+                      {p.player}
+                    </Link>
+                    {isPick && (
+                      <span style={{ fontSize: "0.58em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", border: "1px solid #00c44f44", borderRadius: 3, padding: "1px 4px", marginLeft: 6 }}>
+                        MY PICK
+                      </span>
+                    )}
                     {isCut && <span style={{ fontSize: "0.7em", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>}
                   </td>
                   <td style={{ ...td, color: "#8ba0b8", fontWeight: 700 }}>{p.position ?? "—"}</td>

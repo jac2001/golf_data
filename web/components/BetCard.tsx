@@ -1,17 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
     Bet, fmtOdds, MARKET_COLORS, MARKET_LABELS, BOOK_ABBR,
     getBetReason, getBetLines, BetLinesResponse, addToBetSlip,
   } from "@/lib/api";
 
+function normName(n: string) {
+  return n.toLowerCase().replace(",", "").split(/\s+/).sort().join(" ");
+}
+
 type Props = {
   bet: Bet;
   bankroll: number;
+  myPicks?: string[];
 };
 
-export default function BetCard({ bet, bankroll }: Props) {
+export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
+  const isPick     = new Set(myPicks.map(normName)).has(normName(bet.player_name));
   const color      = MARKET_COLORS[bet.market] ?? "#4a90d9";
   const marketLbl  = MARKET_LABELS[bet.market]  ?? bet.market;
   const bookLbl    = BOOK_ABBR[bet.book.toUpperCase()] ?? bet.book.slice(0, 3);
@@ -83,8 +90,8 @@ export default function BetCard({ bet, bankroll }: Props) {
 
   return (
     <div style={{
-      background: "#0d1a30",
-      border: "1px solid #1e3a5f",
+      background: isPick ? "#060e09" : "#0d1a30",
+      border: isPick ? "1px solid #00c44f33" : "1px solid #1e3a5f",
       borderLeft: `4px solid ${color}`,
       borderRadius: 10,
       padding: "16px 18px",
@@ -107,12 +114,32 @@ export default function BetCard({ bet, bankroll }: Props) {
             </span>
           </div>
 
-          <div style={{ fontSize: "1.05em", fontWeight: 700, color: "#dde6f5", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {bet.player_name}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+            <Link
+              href={`/players?player=${encodeURIComponent(bet.player_name)}`}
+              style={{ fontSize: "1.05em", fontWeight: 700, color: isPick ? "#00c44f" : "#dde6f5", textDecoration: "none", whiteSpace: "nowrap" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+              onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : "#dde6f5")}
+            >
+              {bet.player_name}
+            </Link>
+            {isPick && (
+              <span style={{ fontSize: "0.58em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", border: "1px solid #00c44f44", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
+                MY PICK
+              </span>
+            )}
           </div>
           {opponent && (
             <div style={{ fontSize: "0.80em", color: "#6a8aaa", marginTop: 3, fontWeight: 500 }}>
-              vs {opponent}
+              vs{" "}
+              <Link
+                href={`/players?player=${encodeURIComponent(opponent)}`}
+                style={{ color: "#6a8aaa", textDecoration: "none" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+                onMouseLeave={e => (e.currentTarget.style.color = "#6a8aaa")}
+              >
+                {opponent}
+              </Link>
             </div>
           )}
 

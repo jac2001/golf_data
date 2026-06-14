@@ -556,7 +556,8 @@ export type HoleData = {
   hole: number;
   strokes: number | null;
   par: number | null;
-  rel: number | null;  // relative to par: -2=eagle, -1=birdie, 0=par, 1=bogey, 2+=double
+  rel: number | null;      // relative to par: -2=eagle, -1=birdie, 0=par, 1=bogey, 2+=double
+  running?: string | null; // cumulative score vs par after this hole, e.g. "-3", "E", "+1"
 };
 
 export type HoleScoresResponse = {

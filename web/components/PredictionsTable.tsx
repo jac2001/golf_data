@@ -21,7 +21,8 @@ import { PlayerPrediction, PlayerIntel } from "@/lib/api";
 
 type Props = {
   players: PlayerPrediction[];
-  intel?: PlayerIntel[];   // optional — only present when intel has been fetched
+  intel?: PlayerIntel[];
+  myPicks?: string[];  // confirmed pick names in "First Last" format
 };
 
 type SortCol = "world_rank" | "win_prob_sim" | "win_prob" | "top10_prob_sim" | "top10_prob" | "cut_prob" | "season_sg_total" | "form_trend" | "model_vs_vegas_edge";
@@ -47,7 +48,13 @@ const SENTIMENT_DOT: Record<string, string> = {
   negative: "#e74c3c",
 };
 
-export default function PredictionsTable({ players, intel = [] }: Props) {
+function normName(n: string) {
+  // Normalize "Last, First" or "First Last" → sorted lowercase tokens for matching
+  return n.toLowerCase().replace(",", "").split(/\s+/).sort().join(" ");
+}
+
+export default function PredictionsTable({ players, intel = [], myPicks = [] }: Props) {
+  const myPicksNorm = useMemo(() => new Set(myPicks.map(normName)), [myPicks]);
   // Build a lowercase name → intel lookup so we can match "First Last" from either source
   const intelMap = useMemo(() => {
     const m = new Map<string, PlayerIntel>();
@@ -145,10 +152,9 @@ export default function PredictionsTable({ players, intel = [] }: Props) {
           <tbody>
             {sorted.map((p, i) => { // eslint-disable-line
               const isUse = p.badge === "USE";
-              const bg = isUse ? "#0c1f14" : i % 2 === 0 ? "#0d1a30" : "#0a1525";
+              const bg = i % 2 === 0 ? "#0d1a30" : "#0a1525";
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid #0f2236", background: bg,
-                borderLeft: isUse ? "2px solid #00c44f" : undefined,
               };
 
               const formVal  = p.form_trend ?? 0;
@@ -166,8 +172,12 @@ export default function PredictionsTable({ players, intel = [] }: Props) {
               const oddsStr = odds == null ? "—" : odds >= 0 ? `+${Math.round(odds)}` : String(Math.round(odds));
 
               const playerIntel = intelMap.get(p.player_name.toLowerCase());
+              const isPick = myPicksNorm.has(normName(p.player_name));
               return (
-                <tr key={p.player_name ?? `row-${i}`}>
+                <tr key={p.player_name ?? `row-${i}`} style={isPick ? {
+                  background: "#0a1e12",
+                  borderLeft: "2px solid #00c44f",
+                } : undefined}>
                   <td style={{ ...td, color: "#3a5060", textAlign: "center", fontSize: "0.78em" }}>{i + 1}</td>
 
                   {/* Player name + intel */}
@@ -176,12 +186,19 @@ export default function PredictionsTable({ players, intel = [] }: Props) {
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                       <Link
                         href={`/players?player=${encodeURIComponent(p.player_name)}`}
-                        style={{ color: "#dde6f5", fontWeight: 600, whiteSpace: "nowrap", textDecoration: "none" }}
-                        onMouseEnter={e => (e.currentTarget.style.color = "#00c44f")}
-                        onMouseLeave={e => (e.currentTarget.style.color = "#dde6f5")}
+                        style={{ color: isPick ? "#00c44f" : "#dde6f5", fontWeight: isPick ? 700 : 600, whiteSpace: "nowrap", textDecoration: "none" }}
+                        onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+                        onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : "#dde6f5")}
                       >
                         {p.player_name}
                       </Link>
+                      {isPick && (
+                        <span style={{
+                          fontSize: "0.6em", fontWeight: 800, color: "#00c44f",
+                          background: "#0d2e18", border: "1px solid #00c44f44",
+                          borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
+                        }}>MY PICK</span>
+                      )}
                       {playerIntel?.injury_flag && (
                         <span style={{
                           fontSize: "0.68em", fontWeight: 700, color: "#e74c3c",

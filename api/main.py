@@ -2162,14 +2162,17 @@ def get_hole_scores() -> dict:
         rnd  = str(int(float(row["round"]))) if pd.notna(row.get("round")) else "1"
         holes = []
         for h in range(1, 19):
-            st  = _safe(row.get(f"h{h}"))
-            par = _safe(row.get(f"h{h}_par"))
-            rel = _safe(row.get(f"h{h}_rel"))
+            st      = _safe(row.get(f"h{h}"))
+            par     = _safe(row.get(f"h{h}_par"))
+            rel     = _safe(row.get(f"h{h}_rel"))
+            running = row.get(f"h{h}_running")
+            running = str(running).strip() if pd.notna(running) and str(running).strip() not in ("", "nan") else None
             holes.append({
                 "hole":    h,
                 "strokes": int(st)  if st  is not None else None,
                 "par":     int(par) if par is not None else None,
                 "rel":     int(rel) if rel is not None else None,
+                "running": running,
             })
         if name not in by_player:
             by_player[name] = {}

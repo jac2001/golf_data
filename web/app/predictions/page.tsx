@@ -263,7 +263,11 @@ export default function PredictionsPage() {
         loadingField
           ? <Spinner />
           : preds
-            ? <PredictionsTable players={preds.players} intel={intel?.players ?? []} />
+            ? <PredictionsTable
+                players={preds.players}
+                intel={intel?.players ?? []}
+                myPicks={lineup?.confirmed ? lineup.picks.map(p => p.player_name) : []}
+              />
             : <Empty text="No predictions available." />
       )}
 
@@ -317,7 +321,10 @@ export default function PredictionsPage() {
         loadingTT
           ? <Spinner />
           : teeTimes
-            ? <TeeTimesGrid data={teeTimes} />
+            ? <TeeTimesGrid
+                data={teeTimes}
+                myPicks={lineup?.confirmed ? lineup.picks.map(p => p.player_name) : []}
+              />
             : <Empty text="No tee times available." />
       )}
 

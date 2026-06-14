@@ -14,7 +14,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   getTournament, getInPlay, getVsPredictions, getMyLineupLive, getSgStats, getHoleScores,
-  refreshHoleScores, getLivePulse, getHoleStats, getSettings, getWithdrawals,
+  refreshHoleScores, getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
   Tournament, InPlayResponse, VsPredPlayer, MyLineupResponse, SgStatsResponse, HoleScoresResponse,
   HoleStatsResponse, LivePulse as LivePulseData, WithdrawalsResponse,
 } from "@/lib/api";
@@ -60,6 +60,7 @@ export default function LivePage() {
   const [holeStatsData, setHoleStatsData] = useState<HoleStatsResponse | null>(null);
   const [loadingHoles,  setLoadingHoles]  = useState(false);
 
+  const [myPicks,       setMyPicks]       = useState<string[]>([]);
   const [wds,           setWds]           = useState<WithdrawalsResponse | null>(null);
   const [pulse,         setPulse]         = useState<LivePulseData | null>(null);
   const [pulseLoading,  setPulseLoading]  = useState(false);
@@ -104,6 +105,9 @@ export default function LivePage() {
           getTournament(), getInPlay(), getHoleScores(), getSettings(),
         ]);
         getWithdrawals().then(setWds).catch(() => {});
+        getLineup().then(l => {
+          if (l.confirmed) setMyPicks(l.picks.map(p => p.player_name));
+        }).catch(() => {});
         setTournament(t);
         setInPlay(ip);
         setHoleScores(hs);
@@ -319,6 +323,7 @@ export default function LivePage() {
               currentRound={inPlay.current_round}
               lastUpdate={inPlay.last_update}
               holeScores={holeScores?.by_player}
+              myPicks={myPicks}
             />
           </>
         ) : <Empty text="No leaderboard data. Tournament may not have started." />
@@ -326,13 +331,13 @@ export default function LivePage() {
 
       {activeTab === "vspred" && (
         loadingVs ? <Spinner /> : vsData ? (
-          <VsPredictions players={vsData} />
+          <VsPredictions players={vsData} myPicks={myPicks} />
         ) : <Empty text="No comparison data available." />
       )}
 
       {activeTab === "mylineup" && (
         loadingLineup ? <Spinner /> : lineupData ? (
-          <MyLineupLive picks={lineupData.picks} tournament={lineupData.tournament} />
+          <MyLineupLive picks={lineupData.picks} tournament={lineupData.tournament} holeScores={holeScores?.by_player} />
         ) : <Empty text="No lineup found. Run the season strategy pipeline." />
       )}
 

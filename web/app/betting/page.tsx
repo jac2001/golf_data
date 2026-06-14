@@ -17,9 +17,10 @@
 
 import { useState, useEffect } from "react";
 import {
-  getBets, getOddsComparison, getTournament, refreshBets, getExpertPicks, getBestBet,
+  getBets, getOddsComparison, getTournament, refreshBets, getExpertPicks, getBestBet, getLineup,
   Bet, OddsComparison, Tournament, MARKET_LABELS, ExpertPicksResponse, BestBet,
 } from "@/lib/api";
+import Link from "next/link";
 import BetCard from "@/components/BetCard";
 import BookTable from "@/components/BookTable";
 import MatchupsTab from "@/components/MatchupsTab";
@@ -59,6 +60,7 @@ export default function BettingPage() {
   const [loadingExpert, setLoadingExpert] = useState(false);
   const [error, setError]             = useState<string | null>(null);
   const [bestBet, setBestBet]         = useState<BestBet | null>(null);
+  const [myPicks, setMyPicks]         = useState<string[]>([]);
 
   // ── Data fetching ──────────────────────────────────────────────────────────
   // useEffect(fn, [deps]) runs `fn` after render, when any value in `deps` changes.
@@ -77,6 +79,9 @@ export default function BettingPage() {
         setBets(b.bets);
         setOddsData(o);
         if (bb?.available) setBestBet(bb);
+        getLineup().then(l => {
+          if (l.confirmed) setMyPicks(l.picks.map(p => p.player_name));
+        }).catch(() => {});
       } catch (e) {
         setError("Could not connect to the API. Make sure FastAPI is running on port 8000.");
       } finally {
@@ -182,7 +187,7 @@ export default function BettingPage() {
       {activeTab === "bets" && <>
 
       {/* ── Best Bet featured card ── */}
-      {bestBet && <BestBetCard bet={bestBet} />}
+      {bestBet && <BestBetCard bet={bestBet} myPicks={myPicks} />}
 
       {/* ── Filter bar ── */}
       <div style={{
@@ -281,9 +286,7 @@ export default function BettingPage() {
         <div style={{ marginBottom: 24 }}>
           <SectionLabel>Singles · {filteredBets.length} bets</SectionLabel>
           {filteredBets.map((bet, i) => (
-            // `key` is required when rendering a list — it helps React track which
-            // item is which when the list updates. Like a dict key.
-            <BetCard key={`${bet.player_name}-${bet.market}-${bet.book}-${i}`} bet={bet} bankroll={bankroll} />
+            <BetCard key={`${bet.player_name}-${bet.market}-${bet.book}-${i}`} bet={bet} bankroll={bankroll} myPicks={myPicks} />
           ))}
         </div>
       )}
@@ -378,11 +381,16 @@ function LoadingScreen() {
   );
 }
 
-function BestBetCard({ bet }: { bet: BestBet }) {
+function normName(n: string) {
+  return n.toLowerCase().replace(",", "").split(/\s+/).sort().join(" ");
+}
+
+function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }) {
+  const isPick = new Set(myPicks.map(normName)).has(normName(bet.player_name));
   return (
     <div style={{
-      background: "#060f1a",
-      border: "1px solid #00c44f44",
+      background: isPick ? "#040e09" : "#060f1a",
+      border: isPick ? "1px solid #00c44f55" : "1px solid #00c44f44",
       borderLeft: "3px solid #00c44f",
       borderRadius: 10,
       padding: "16px 20px",
@@ -414,11 +422,21 @@ function BestBetCard({ bet }: { bet: BestBet }) {
       </div>
 
       {/* Bet details */}
-      <div style={{ marginBottom: 12 }}>
-        <span style={{ fontSize: "1.05em", fontWeight: 800, color: "#dde6f5" }}>
+      <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        <Link
+          href={`/players?player=${encodeURIComponent(bet.player_name)}`}
+          style={{ fontSize: "1.05em", fontWeight: 800, color: isPick ? "#00c44f" : "#dde6f5", textDecoration: "none" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+          onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : "#dde6f5")}
+        >
           {bet.player_name}
-        </span>
-        <span style={{ fontSize: "0.88em", color: "#7f8c8d", marginLeft: 8 }}>
+        </Link>
+        {isPick && (
+          <span style={{ fontSize: "0.58em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", border: "1px solid #00c44f44", borderRadius: 3, padding: "2px 5px" }}>
+            MY PICK
+          </span>
+        )}
+        <span style={{ fontSize: "0.88em", color: "#7f8c8d" }}>
           {bet.market_label} · {bet.odds_str} · {bet.book}
         </span>
       </div>
