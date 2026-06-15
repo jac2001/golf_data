@@ -1148,6 +1148,25 @@ export type HistoryBetsResponse = {
   overall: { bets: number; wins: number; pnl: number; roi: number };
 };
 
+export type TournamentLeaderboardRow = {
+  position: string;
+  player_name: string;
+  total_score: number | null;
+  to_par: string;
+  r1: number | null;
+  r2: number | null;
+  r3: number | null;
+  r4: number | null;
+  earnings: string | null;
+};
+
+export async function getTournamentLeaderboard(tid: string): Promise<TournamentLeaderboardRow[]> {
+  const r = await fetch(`${API_BASE}/api/history/tournament/${encodeURIComponent(tid)}`);
+  if (!r.ok) throw new Error("Failed to load leaderboard");
+  const d = await r.json();
+  return d.players;
+}
+
 export async function getHistoryTournaments(): Promise<HistoryTournament[]> {
   const r = await fetch(`${API_BASE}/api/history/tournaments`);
   if (!r.ok) throw new Error("Failed to load tournament history");

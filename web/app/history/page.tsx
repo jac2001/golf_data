@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   getHistoryTournaments, getHistoryModel, getHistoryBets,
+  getTournamentLeaderboard, getLineup,
   getBetSlip, removeFromBetSlip,
   HistoryTournament, HistoryModelRow, HistoryBetsResponse,
+  TournamentLeaderboardRow,
   SlipBet, SlipStats, TournamentPnl,
 } from "@/lib/api";
 
@@ -27,17 +29,139 @@ function corrColor(v: number | null) {
 }
 
 // ── Results Tab ───────────────────────────────────────────────────────────────
+
+function normName(n: string): string {
+  return n.toLowerCase().split(/[\s,]+/).filter(Boolean).sort().join(" ");
+}
+
+function toParColor(v: string): string {
+  if (!v) return "#c8d8e8";
+  const s = v.trim();
+  if (s === "E" || s === "0") return "#c8d8e8";
+  return s.startsWith("-") ? "#00c44f" : "#e05555";
+}
+
+function posColor(pos: string): string {
+  const n = parseInt(pos, 10);
+  if (isNaN(n)) return "#7a9ab8";
+  if (n === 1) return "#f0c040";
+  if (n <= 5) return "#00c44f";
+  if (n <= 10) return "#4cb8ff";
+  return "#c8d8e8";
+}
+
+type TournamentCache = Record<string, TournamentLeaderboardRow[] | "loading">;
+
+function TournamentLeaderboard({
+  tid, myPicksNorm,
+}: {
+  tid: string;
+  myPicksNorm: Set<string>;
+}) {
+  const [rows, setRows] = useState<TournamentLeaderboardRow[] | null>(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    getTournamentLeaderboard(tid)
+      .then(setRows)
+      .catch(() => setError(true));
+  }, [tid]);
+
+  if (error) return <p style={{ color: "#e05555", fontSize: "0.82em" }}>Failed to load results.</p>;
+  if (!rows) return <p style={{ color: "#7a9ab8", fontSize: "0.82em" }}>Loading results…</p>;
+  if (!rows.length) return <p style={{ color: "#7a9ab8", fontSize: "0.82em" }}>No results found.</p>;
+
+  // Detect which rounds have data
+  const hasR3 = rows.some(r => r.r3 != null);
+  const hasR4 = rows.some(r => r.r4 != null);
+  const hasEarnings = rows.some(r => r.earnings != null);
+
+  const thStyle: React.CSSProperties = {
+    padding: "6px 10px", background: "#081220", fontSize: "0.7em", fontWeight: 700,
+    color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.05em",
+    borderBottom: "1px solid #1e3a5f", whiteSpace: "nowrap", textAlign: "center",
+  };
+  const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid #0d1e2e", textAlign: "center", fontSize: "0.83em" };
+
+  return (
+    <div style={{ overflowX: "auto", borderRadius: 8, border: "1px solid #1e3a5f" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", background: "#0a1525" }}>
+        <thead>
+          <tr>
+            <th style={{ ...thStyle, textAlign: "left", width: 40 }}>Pos</th>
+            <th style={{ ...thStyle, textAlign: "left" }}>Player</th>
+            <th style={thStyle}>R1</th>
+            <th style={thStyle}>R2</th>
+            {hasR3 && <th style={thStyle}>R3</th>}
+            {hasR4 && <th style={thStyle}>R4</th>}
+            <th style={thStyle}>Total</th>
+            {hasEarnings && <th style={{ ...thStyle, textAlign: "right" }}>Earnings</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => {
+            const isPick = myPicksNorm.has(normName(r.player_name));
+            const rowBg = isPick ? "#060e09" : i % 2 === 0 ? "#0a1525" : "#091422";
+            return (
+              <tr key={i} style={{ background: rowBg }}>
+                <td style={{ ...tdBase, textAlign: "left", fontWeight: 700, color: posColor(r.position), borderLeft: isPick ? "2px solid #00c44f" : undefined }}>
+                  {r.position}
+                </td>
+                <td style={{ ...tdBase, textAlign: "left", whiteSpace: "nowrap", fontWeight: isPick ? 700 : 500 }}>
+                  <Link
+                    href={`/players?player=${encodeURIComponent(r.player_name)}`}
+                    style={{ color: isPick ? "#00c44f" : "#dde6f5", textDecoration: "none" }}
+                  >
+                    {r.player_name}
+                  </Link>
+                  {isPick && (
+                    <span style={{
+                      marginLeft: 7, fontSize: "0.65em", fontWeight: 800,
+                      color: "#00c44f", background: "#00c44f18", border: "1px solid #00c44f33",
+                      borderRadius: 4, padding: "1px 5px",
+                    }}>MY PICK</span>
+                  )}
+                </td>
+                <td style={{ ...tdBase, color: "#c8d8e8" }}>{r.r1 ?? "—"}</td>
+                <td style={{ ...tdBase, color: "#c8d8e8" }}>{r.r2 ?? "—"}</td>
+                {hasR3 && <td style={{ ...tdBase, color: "#c8d8e8" }}>{r.r3 ?? "—"}</td>}
+                {hasR4 && <td style={{ ...tdBase, color: "#c8d8e8" }}>{r.r4 ?? "—"}</td>}
+                <td style={{ ...tdBase, fontWeight: 700, color: toParColor(r.to_par) }}>{r.to_par || "—"}</td>
+                {hasEarnings && (
+                  <td style={{ ...tdBase, textAlign: "right", color: "#7a9ab8", fontSize: "0.78em" }}>
+                    {r.earnings ?? "—"}
+                  </td>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function ResultsTab() {
-  const [data, setData]     = useState<HistoryTournament[] | null>(null);
+  const [data, setData]         = useState<HistoryTournament[] | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [loading, setLoading]   = useState(true);
+  const [myPicks, setMyPicks]   = useState<string[]>([]);
 
   useEffect(() => {
     getHistoryTournaments().then(setData).finally(() => setLoading(false));
+    getLineup()
+      .then(l => { if (l.confirmed) setMyPicks(l.picks.map(p => p.player_name)); })
+      .catch(() => {});
   }, []);
+
+  const myPicksNorm = React.useMemo(() => new Set(myPicks.map(normName)), [myPicks]);
 
   if (loading) return <p style={{ color: "#7a9ab8", padding: 24 }}>Loading...</p>;
   if (!data?.length) return <p style={{ color: "#7a9ab8", padding: 24 }}>No results yet.</p>;
+
+  function toggle(tid: string) {
+    setExpanded(prev => prev === tid ? null : tid);
+  }
 
   return (
     <div>
@@ -54,10 +178,17 @@ function ResultsTab() {
             <React.Fragment key={t.tournament_id}>
               <tr
                 style={{ cursor: "pointer", background: expanded === t.tournament_id ? "#0f1e2e" : "transparent" }}
-                onClick={() => setExpanded(expanded === t.tournament_id ? null : t.tournament_id)}
+                onClick={() => toggle(t.tournament_id)}
               >
                 <td style={cell}>{t.start_date?.slice(0, 10) ?? ""}</td>
-                <td style={{ ...cell, color: "#dde6f5", fontWeight: 600 }}>{t.name}</td>
+                <td style={{ ...cell, color: "#dde6f5", fontWeight: 600 }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    {t.name}
+                    <span style={{ fontSize: "0.72em", color: expanded === t.tournament_id ? "#4cb8ff" : "#2a4060" }}>
+                      {expanded === t.tournament_id ? "▲" : "▼"}
+                    </span>
+                  </span>
+                </td>
                 <td style={{ ...cell, color: "#00c44f" }}>
                   <Link href={`/players?player=${encodeURIComponent(t.winner ?? "")}`} style={{ color: "#00c44f", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")} onMouseLeave={e => (e.currentTarget.style.color = "#00c44f")}>
                     {t.winner}
@@ -69,37 +200,18 @@ function ResultsTab() {
               </tr>
               {expanded === t.tournament_id && (
                 <tr>
-                  <td colSpan={6} style={{ background: "#0a1720", padding: "12px 24px" }}>
+                  <td colSpan={6} style={{ background: "#091525", padding: "16px 20px" }}>
                     {/* Recap narrative */}
                     {t.recap && (
                       <p style={{
                         color: "#b0c8e0", fontSize: "0.85em", lineHeight: 1.6,
-                        margin: "0 0 14px", borderLeft: "2px solid #00c44f",
+                        margin: "0 0 16px", borderLeft: "2px solid #00c44f",
                         paddingLeft: 12, fontStyle: "italic",
                       }}>
                         {t.recap}
                       </p>
                     )}
-                    <p style={{ color: "#7a9ab8", fontSize: "0.8em", marginBottom: 8 }}>Top 10</p>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                      {t.top10.map((p, i) => (
-                        <Link
-                          key={i}
-                          href={`/players?player=${encodeURIComponent(p.player)}`}
-                          style={{
-                            background: i === 0 ? "#0d2e18" : "#111e2c",
-                            border: `1px solid ${i === 0 ? "#00c44f" : "#1e3a5f"}`,
-                            borderRadius: 6, padding: "4px 10px",
-                            fontSize: "0.82em", color: i === 0 ? "#00c44f" : "#c8d8e8",
-                            textDecoration: "none", display: "inline-block",
-                          }}
-                          onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-                          onMouseLeave={e => (e.currentTarget.style.color = i === 0 ? "#00c44f" : "#c8d8e8")}
-                        >
-                          {p.position} {p.player} <span style={{ color: "#f0c040" }}>{p.to_par}</span>
-                        </Link>
-                      ))}
-                    </div>
+                    <TournamentLeaderboard tid={t.tournament_id} myPicksNorm={myPicksNorm} />
                   </td>
                 </tr>
               )}

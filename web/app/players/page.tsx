@@ -3,11 +3,13 @@
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import {
   getPlayerList,
   getPlayerProfile,
   getFieldStats,
   getPlayerSynopsis,
+  getLineup,
   PlayerProfile,
   PlayerDecompositions,
   PlayerSkillRatings,
@@ -178,6 +180,10 @@ function posColor(pos: string): string {
   if (n <= 5) return GREEN;
   if (n <= 10) return BLUE;
   return MUTED;
+}
+
+function normName(n: string): string {
+  return n.toLowerCase().split(/[\s,]+/).filter(Boolean).sort().join(" ");
 }
 
 // ── Player select helper (reused by both tabs) ────────────────────────────────
@@ -369,11 +375,15 @@ function PlayersPageInner() {
   const [pageTab, setPageTab]       = useState<PageTab>(deepLinkPlayer ? "lookup" : "lookup");
   const [players, setPlayers]       = useState<string[]>([]);
   const [listLoading, setListLoading] = useState(true);
+  const [myPicks, setMyPicks]       = useState<string[]>([]);
 
   useEffect(() => {
     getPlayerList()
       .then(d => setPlayers(d.players))
       .finally(() => setListLoading(false));
+    getLineup()
+      .then(l => { if (l.confirmed) setMyPicks(l.picks.map(p => p.player_name)); })
+      .catch(() => {});
   }, []);
 
   const tabBtn = (key: PageTab, label: string) => (
@@ -413,7 +423,7 @@ function PlayersPageInner() {
         ) : pageTab === "h2h" ? (
           <H2HTab players={players} />
         ) : (
-          <StatsTab />
+          <StatsTab myPicks={myPicks} />
         )}
       </div>
     </main>
@@ -518,7 +528,9 @@ function rankColor(rank: number | null): string {
   return MUTED;
 }
 
-function StatsTab() {
+function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
+  const myPicksNorm = useMemo(() => new Set(myPicks.map(normName)), [myPicks]);
+
   const [view, setView]     = useState<StatsView>("sg");
   const [players, setPlayers] = useState<FieldStatsPlayer[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -675,11 +687,25 @@ function StatsTab() {
             </tr>
           </thead>
           <tbody>
-            {sorted.map((p, i) => (
-              <tr key={p.player_name}>
-                <td style={{ ...tdStyle(i), textAlign: "center", color: LABEL, fontSize: "0.75em" }}>{i + 1}</td>
-                <td style={{ ...tdStyle(i), fontSize: "0.85em", fontWeight: 600, color: TEXT, whiteSpace: "nowrap" }}>
-                  {p.player_name}
+            {sorted.map((p, i) => {
+              const isPick = myPicksNorm.has(normName(p.player_name));
+              return (
+              <tr key={p.player_name} style={isPick ? { background: "#060e09" } : undefined}>
+                <td style={{ ...tdStyle(i), textAlign: "center", color: LABEL, fontSize: "0.75em", ...(isPick ? { background: "#060e09" } : {}) }}>{i + 1}</td>
+                <td style={{ ...tdStyle(i), fontSize: "0.85em", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid #00c44f" : undefined, ...(isPick ? { background: "#060e09" } : {}) }}>
+                  <Link
+                    href={`/players?player=${encodeURIComponent(p.player_name)}`}
+                    style={{ color: isPick ? GREEN : TEXT, textDecoration: "none" }}
+                  >
+                    {p.player_name}
+                  </Link>
+                  {isPick && (
+                    <span style={{
+                      marginLeft: 8, fontSize: "0.65em", fontWeight: 800,
+                      color: GREEN, background: "#00c44f18", border: "1px solid #00c44f33",
+                      borderRadius: 4, padding: "1px 6px", letterSpacing: "0.07em",
+                    }}>MY PICK</span>
+                  )}
                 </td>
 
                 {view === "sg" && <>
@@ -751,7 +777,7 @@ function StatsTab() {
                   </td>
                 </>}
               </tr>
-            ))}
+            );})}
           </tbody>
         </table>
       </div>
@@ -878,13 +904,18 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
       background: CARD_BG, border: `1px solid ${accent}44`,
       borderRadius: 12, padding: "18px 16px", textAlign: "center",
     }}>
-      <div style={{ fontSize: "1.25em", fontWeight: 800, color: TEXT, marginBottom: 2 }}>
-        {profile.player_name.split(" ").slice(-1)[0]}
-      </div>
-      <div style={{ fontSize: "0.72em", color: LABEL, marginBottom: 12 }}>
-        {profile.player_name}
-        {m.world_rank != null && ` · #${Math.round(m.world_rank)} World`}
-      </div>
+      <Link
+        href={`/players?player=${encodeURIComponent(profile.player_name)}`}
+        style={{ textDecoration: "none" }}
+      >
+        <div style={{ fontSize: "1.25em", fontWeight: 800, color: TEXT, marginBottom: 2 }}>
+          {profile.player_name.split(" ").slice(-1)[0]}
+        </div>
+        <div style={{ fontSize: "0.72em", color: LABEL, marginBottom: 12 }}>
+          {profile.player_name}
+          {m.world_rank != null && ` · #${Math.round(m.world_rank)} World`}
+        </div>
+      </Link>
       <div style={{ display: "flex", justifyContent: "space-around", marginBottom: 10 }}>
         {[
           ["WIN", m.win_prob != null ? `${(m.win_prob * 100).toFixed(1)}%` : "—"],

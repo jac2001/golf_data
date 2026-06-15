@@ -5178,6 +5178,58 @@ def history_tournaments() -> dict:
     return {"tournaments": tournaments}
 
 
+@app.get("/api/history/tournament/{tid}")
+def history_tournament_detail(tid: str) -> dict:
+    """Full leaderboard for a single settled tournament."""
+    hist_path = _LB_CSV
+    if not hist_path.exists():
+        return {"players": []}
+
+    df = pd.read_csv(hist_path)
+    df["tournament_id"] = df["tournament_id"].astype(str).str.upper()
+    grp = df[df["tournament_id"] == tid.upper()].copy()
+    if grp.empty:
+        return {"players": []}
+
+    grp["position_num"] = pd.to_numeric(
+        grp["position"].astype(str).str.extract(r"(\d+)")[0], errors="coerce"
+    )
+    grp = grp.sort_values("position_num", na_position="last")
+
+    def _safe_int(v):
+        try:
+            return int(v) if pd.notna(v) else None
+        except Exception:
+            return None
+
+    def _fmt_earnings(v):
+        if pd.isna(v) or v == "" or str(v) in ("nan", "None"):
+            return None
+        s = str(v).strip()
+        if s.startswith("$"):
+            return s
+        try:
+            return f"${int(float(s)):,}"
+        except Exception:
+            return s
+
+    players = []
+    for _, r in grp.iterrows():
+        players.append({
+            "position":    str(r.get("position", "")).strip(),
+            "player_name": str(r.get("player_name", "")).strip(),
+            "total_score": _safe_int(r.get("total_score")),
+            "to_par":      str(r.get("to_par", "")).strip(),
+            "r1":          _safe_int(r.get("r1_score")),
+            "r2":          _safe_int(r.get("r2_score")),
+            "r3":          _safe_int(r.get("r3_score")),
+            "r4":          _safe_int(r.get("r4_score")),
+            "earnings":    _fmt_earnings(r.get("earnings")),
+        })
+
+    return {"players": players}
+
+
 @app.get("/api/history/model")
 def history_model() -> dict:
     """Model prediction accuracy by tournament — reads from DuckDB."""
