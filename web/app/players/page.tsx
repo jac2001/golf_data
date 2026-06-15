@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +9,8 @@ import {
   getPlayerProfile,
   getFieldStats,
   getPlayerSynopsis,
+  getPlayerCareer,
+  getTournamentLeaderboard,
   getLineup,
   PlayerProfile,
   PlayerDecompositions,
@@ -17,6 +19,9 @@ import {
   PlayerOurModel,
   FieldStatsPlayer,
   PlayerSynopsis,
+  PlayerCareer,
+  CareerResult,
+  CareerYearSummary,
 } from "@/lib/api";
 
 const BG       = "#0d1a30";
@@ -1028,6 +1033,289 @@ function H2HRow({
   );
 }
 
+// ── Career card ───────────────────────────────────────────────────────────────
+
+function posColor2(pos: string): string {
+  const n = parseInt(pos, 10);
+  if (isNaN(n)) return MUTED;
+  if (n === 1) return GOLD;
+  if (n <= 5)  return GREEN;
+  if (n <= 10) return BLUE;
+  return TEXT;
+}
+
+function sgColor2(v: number | null): string {
+  if (v == null) return MUTED;
+  return v >= 0 ? GREEN : RED;
+}
+
+function fmtSg(v: number | null): string {
+  if (v == null) return "—";
+  return `${v >= 0 ? "+" : ""}${v.toFixed(2)}`;
+}
+
+function toParColor2(v: string | null): string {
+  if (!v) return MUTED;
+  if (v.startsWith("-")) return GREEN;
+  if (v === "0" || v === "E") return MUTED;
+  return RED;
+}
+
+// Inline leaderboard for an expanded tournament row in Recent Starts
+function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlightPlayer: string }) {
+  const [rows, setRows]   = useState<import("@/lib/api").TournamentLeaderboardRow[] | null>(null);
+  const [error, setError] = useState(false);
+  const highlightKey      = normName(highlightPlayer);
+
+  useEffect(() => {
+    getTournamentLeaderboard(tid)
+      .then(setRows)
+      .catch(() => setError(true));
+  }, [tid]);
+
+  if (error) return <p style={{ color: RED, fontSize: "0.8em", margin: "8px 0 0" }}>Failed to load.</p>;
+  if (!rows)  return <p style={{ color: MUTED, fontSize: "0.8em", margin: "8px 0 0" }}>Loading leaderboard…</p>;
+
+  const hasEarnings = rows.some(r => r.earnings != null);
+
+  const thS: React.CSSProperties = {
+    padding: "5px 8px", background: "#060f1c", fontSize: "0.67em", fontWeight: 700,
+    color: LABEL, textTransform: "uppercase", letterSpacing: "0.05em",
+    borderBottom: `1px solid ${BORDER}`,
+  };
+  const tdS = (isPick: boolean, i: number): React.CSSProperties => ({
+    padding: "4px 8px", fontSize: "0.8em",
+    borderBottom: "1px solid #0a1828",
+    background: isPick ? "#060e09" : i % 2 === 0 ? "#081220" : "#091828",
+  });
+
+  return (
+    <div style={{ overflowX: "auto", borderRadius: 6, border: `1px solid ${BORDER}`, marginTop: 10 }}>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th style={{ ...thS, textAlign: "left", width: 40 }}>Pos</th>
+            <th style={{ ...thS, textAlign: "left" }}>Player</th>
+            <th style={{ ...thS, textAlign: "center" }}>R1</th>
+            <th style={{ ...thS, textAlign: "center" }}>R2</th>
+            <th style={{ ...thS, textAlign: "center" }}>R3</th>
+            <th style={{ ...thS, textAlign: "center" }}>R4</th>
+            <th style={{ ...thS, textAlign: "center" }}>Total</th>
+            {hasEarnings && <th style={{ ...thS, textAlign: "right" }}>Earnings</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => {
+            const isPick = normName(r.player_name) === highlightKey;
+            return (
+              <tr key={i}>
+                <td style={{ ...tdS(isPick, i), fontWeight: 700, color: posColor2(r.position), borderLeft: isPick ? "2px solid #00c44f" : undefined }}>
+                  {r.position}
+                </td>
+                <td style={{ ...tdS(isPick, i), whiteSpace: "nowrap" }}>
+                  <Link href={`/players?player=${encodeURIComponent(r.player_name)}`}
+                    onClick={e => e.stopPropagation()}
+                    style={{ color: isPick ? GREEN : TEXT, textDecoration: "none", fontWeight: isPick ? 700 : 400 }}>
+                    {r.player_name}
+                  </Link>
+                </td>
+                <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{r.r1 ?? "—"}</td>
+                <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{r.r2 ?? "—"}</td>
+                <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{r.r3 ?? "—"}</td>
+                <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{r.r4 ?? "—"}</td>
+                <td style={{ ...tdS(isPick, i), textAlign: "center", fontWeight: 600, color: toParColor2(r.to_par) }}>
+                  {r.to_par || "—"}
+                </td>
+                {hasEarnings && (
+                  <td style={{ ...tdS(isPick, i), textAlign: "right", color: MUTED, fontSize: "0.75em" }}>
+                    {r.earnings ?? "—"}
+                  </td>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function CareerCard({ playerName }: { playerName: string }) {
+  const [career, setCareer]       = useState<PlayerCareer | null>(null);
+  const [loading, setLoading]     = useState(false);
+  const [loaded, setLoaded]       = useState(false);
+  const [view, setView]           = useState<"recent" | "yearly">("yearly");
+  // tracks which tournament row is expanded in Recent Starts
+  const [expandedTid, setExpandedTid] = useState<string | null>(null);
+
+  function load() {
+    setLoading(true);
+    getPlayerCareer(playerName)
+      .then(d => { setCareer(d); setLoaded(true); })
+      .catch(() => setLoaded(true))
+      .finally(() => setLoading(false));
+  }
+
+  const thStyle: React.CSSProperties = {
+    padding: "6px 10px", background: "#081220", fontSize: "0.68em", fontWeight: 700,
+    color: LABEL, textTransform: "uppercase", letterSpacing: "0.05em",
+    borderBottom: `1px solid ${BORDER}`, whiteSpace: "nowrap",
+  };
+  const tdBase = (i: number): React.CSSProperties => ({
+    padding: "5px 10px", borderBottom: `1px solid #0d1e2e`, fontSize: "0.83em",
+    background: i % 2 === 0 ? "#091525" : "#0a1628",
+  });
+
+  return (
+    <div style={card}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <p style={{ ...sectionLabel, margin: 0 }}>Career Stats</p>
+        {!loaded && !loading && (
+          <button onClick={load} style={{
+            background: BLUE + "22", border: `1px solid ${BLUE}44`,
+            color: BLUE, borderRadius: 7, padding: "5px 14px",
+            fontSize: "0.78em", fontWeight: 700, cursor: "pointer",
+          }}>
+            Load Career Stats
+          </button>
+        )}
+        {loaded && (
+          <div style={{ display: "flex", gap: 6 }}>
+            {(["yearly", "recent"] as const).map(v => (
+              <button key={v} onClick={() => setView(v)} style={{
+                background: view === v ? GREEN + "22" : "transparent",
+                border: `1px solid ${view === v ? GREEN : BORDER}`,
+                borderRadius: 6, color: view === v ? GREEN : MUTED,
+                padding: "4px 12px", fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
+              }}>
+                {v === "yearly" ? "By Year" : "Recent Starts"}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {loading && <p style={{ color: MUTED, fontSize: "0.85em" }}>Loading…</p>}
+
+      {/* ── By Year view ─────────────────────────────────────────────────── */}
+      {loaded && career && view === "yearly" && (
+        <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}` }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", background: "#091525" }}>
+            <thead>
+              <tr>
+                {[
+                  ["Year", "left"], ["Events", "center"], ["Wins", "center"],
+                  ["Top 10", "center"], ["Top 25", "center"], ["Cuts", "center"],
+                  ["Avg Score", "center"], ["SG Tot", "center"],
+                  ["SG OTT", "center"], ["SG APP", "center"], ["SG Putt", "center"],
+                ].map(([h, align]) => (
+                  <th key={h} style={{ ...thStyle, textAlign: align as "left" | "center" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {career.by_year.map((y, i) => (
+                <tr key={y.year} style={{ background: i % 2 === 0 ? "#091525" : "#0a1628" }}>
+                  <td style={{ ...tdBase(i), fontWeight: 700, color: TEXT }}>{y.year}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{y.starts}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", fontWeight: y.wins > 0 ? 800 : 400, color: y.wins > 0 ? GOLD : MUTED }}>
+                    {y.wins || "—"}
+                  </td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: y.top10s > 0 ? GREEN : MUTED }}>{y.top10s || "—"}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{y.top25s || "—"}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{y.cuts_made}/{y.starts}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                    {y.avg_scoring != null ? y.avg_scoring.toFixed(1) : "—"}
+                  </td>
+                  <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: sgColor2(y.avg_sg_total) }}>
+                    {fmtSg(y.avg_sg_total)}
+                  </td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_ott) }}>{fmtSg(y.avg_sg_ott)}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_app) }}>{fmtSg(y.avg_sg_app)}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_putt) }}>{fmtSg(y.avg_sg_putt)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* ── Recent Starts view ───────────────────────────────────────────── */}
+      {loaded && career && view === "recent" && (
+        <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}` }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", background: "#091525" }}>
+            <thead>
+              <tr>
+                {[
+                  ["Tournament", "left"], ["Year", "left"], ["Pos", "center"],
+                  ["Score", "center"], ["SG Tot", "center"], ["OTT", "center"],
+                  ["APP", "center"], ["Putt", "center"], ["Earnings", "right"],
+                ].map(([h, align]) => (
+                  <th key={h} style={{ ...thStyle, textAlign: align as "left" | "center" | "right" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {career.recent.map((r, i) => {
+                const isExpanded = expandedTid === r.tournament_id;
+                // Only show tournament leaderboard if we have a settled tournament ID
+                // (IDs starting with R and year <= current — not future events)
+                const canExpand = !!r.tournament_id;
+                return (
+                  <React.Fragment key={`${r.tournament_id}-${i}`}>
+                    <tr
+                      onClick={() => canExpand && setExpandedTid(isExpanded ? null : r.tournament_id)}
+                      style={{ cursor: canExpand ? "pointer" : "default", background: i % 2 === 0 ? "#091525" : "#0a1628" }}
+                    >
+                      <td style={{ ...tdBase(i), maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <span style={{ color: TEXT }}>{r.tournament_name}</span>
+                          {canExpand && (
+                            <span style={{ fontSize: "0.7em", color: isExpanded ? BLUE : "#2a4060" }}>
+                              {isExpanded ? "▲" : "▼"}
+                            </span>
+                          )}
+                        </span>
+                      </td>
+                      <td style={{ ...tdBase(i), color: MUTED }}>{r.year}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 700, color: posColor2(r.position) }}>
+                        {r.position}
+                      </td>
+                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: toParColor2(r.to_par) }}>
+                        {r.to_par ?? "—"}
+                      </td>
+                      <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: sgColor2(r.sg_total) }}>
+                        {fmtSg(r.sg_total)}
+                      </td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_ott) }}>{fmtSg(r.sg_ott)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_app) }}>{fmtSg(r.sg_app)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_putt) }}>{fmtSg(r.sg_putt)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "right", color: MUTED, fontSize: "0.78em" }}>
+                        {r.earnings ?? "—"}
+                      </td>
+                    </tr>
+                    {isExpanded && (
+                      <tr>
+                        <td colSpan={9} style={{ background: "#07101c", padding: "10px 16px", borderBottom: "1px solid #0d1e2e" }}>
+                          <TournamentResultsPanel tid={r.tournament_id} highlightPlayer={playerName} />
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {loaded && !loading && (!career || (!career.recent.length && !career.by_year.length)) && (
+        <p style={{ color: MUTED, fontSize: "0.83em" }}>No career data found.</p>
+      )}
+    </div>
+  );
+}
+
 // ── Profile view ──────────────────────────────────────────────────────────────
 
 function ProfileView({ profile }: { profile: PlayerProfile }) {
@@ -1117,7 +1405,10 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
         </div>
       </div>
 
-      {/* Section 3: DG Tournament Prediction */}
+      {/* Section 3: Career Stats */}
+      <CareerCard playerName={profile.player_name} />
+
+      {/* Section 4: DG Tournament Prediction */}
       {profile.dg_prediction && (
         <div style={card}>
           <p style={sectionLabel}>DG Tournament Prediction</p>

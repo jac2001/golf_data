@@ -3945,6 +3945,192 @@ def get_player_profile(player: str) -> dict:
     }
 
 
+@app.get("/api/players/career")
+def get_player_career(player: str) -> dict:
+    """
+    Career stats for a player pulled from DuckDB.
+    Returns recent tournament results and year-by-year summary.
+    `player` is 'First Last' format.
+    """
+    if not _DB_AVAILABLE:
+        return {"recent": [], "by_year": []}
+
+    # Normalise: same sort-tokens approach as _name_key()
+    player_key = " ".join(sorted(player.strip().lower().split()))
+
+    try:
+        with _get_db_conn() as conn:
+
+            # ── Step 1: find the player_id(s) that match this name ───────────
+            # We load all distinct (player_id, player_name) pairs from leaderboards
+            # and match on the sorted-token key. This handles minor name variations.
+            candidates = conn.execute(
+                "SELECT DISTINCT player_id, player_name FROM leaderboards"
+            ).fetchdf()
+            candidates["_key"] = candidates["player_name"].apply(
+                lambda n: " ".join(sorted(str(n).strip().lower().split()))
+            )
+            matched = candidates[candidates["_key"] == player_key]
+            if matched.empty:
+                return {"recent": [], "by_year": []}
+            player_ids = matched["player_id"].astype(str).tolist()
+            # Use canonical name from DB for display
+            canonical_name = matched["player_name"].iloc[0]
+
+            ids_sql = ", ".join(f"'{pid}'" for pid in player_ids)
+
+            # ── Pre-aggregate all SG stats: one row per (player_id, tournament_id) ─
+            # Pivot the long-format tournament_stats table into columns using CASE WHEN.
+            # All four stats live in the same table, so one pass with four expressions
+            # is more efficient than four separate joins.
+            sg_subquery = f"""
+                (SELECT player_id, tournament_id,
+                    AVG(CASE WHEN stat_id = '2567' THEN stat_value END) AS sg_total,
+                    AVG(CASE WHEN stat_id = '2568' THEN stat_value END) AS sg_ott,
+                    AVG(CASE WHEN stat_id = '2569' THEN stat_value END) AS sg_app,
+                    AVG(CASE WHEN stat_id = '2564' THEN stat_value END) AS sg_putt,
+                    AVG(CASE WHEN stat_id = '2674' THEN stat_value END) AS sg_t2g
+                 FROM tournament_stats
+                 WHERE player_id IN ({ids_sql})
+                 GROUP BY player_id, tournament_id)
+            """
+
+            # Scoring average from form_stats (stat_id 120) — same pivot pattern
+            form_subquery = f"""
+                (SELECT player_id, tournament_id,
+                    AVG(CASE WHEN stat_id = '120' THEN stat_value END) AS scoring_avg,
+                    AVG(CASE WHEN stat_id = '108' THEN stat_value END) AS birdie_pct,
+                    AVG(CASE WHEN stat_id = '103' THEN stat_value END) AS gir_pct
+                 FROM form_stats
+                 WHERE player_id IN ({ids_sql})
+                 GROUP BY player_id, tournament_id)
+            """
+
+            # ── Step 2: recent results ────────────────────────────────────────
+            recent_df = conn.execute(f"""
+                SELECT
+                    l.tournament_id,
+                    l.tournament_name,
+                    l.year,
+                    l.position,
+                    l.to_par,
+                    l.total_score,
+                    l.earnings,
+                    l.rounds_played,
+                    l.r1, l.r2, l.r3, l.r4,
+                    sg.sg_total,
+                    sg.sg_ott,
+                    sg.sg_app,
+                    sg.sg_putt,
+                    f.scoring_avg,
+                    f.birdie_pct,
+                    f.gir_pct
+                FROM leaderboards l
+                LEFT JOIN {sg_subquery} sg
+                    ON sg.player_id = l.player_id
+                    AND sg.tournament_id = l.tournament_id
+                LEFT JOIN {form_subquery} f
+                    ON f.player_id = l.player_id
+                    AND f.tournament_id = l.tournament_id
+                WHERE l.player_id IN ({ids_sql})
+                ORDER BY l.year DESC, l.tournament_id DESC
+                LIMIT 50
+            """).fetchdf()
+
+            # ── Step 3: year-by-year summary ──────────────────────────────────
+            yearly_df = conn.execute(f"""
+                SELECT
+                    l.year,
+                    COUNT(*)                                                       AS starts,
+                    SUM(CASE WHEN TRY_CAST(REGEXP_EXTRACT(l.position, '[0-9]+', 0) AS INTEGER) = 1 THEN 1 ELSE 0 END) AS wins,
+                    SUM(CASE WHEN TRY_CAST(REGEXP_EXTRACT(l.position, '[0-9]+', 0) AS INTEGER) <= 10 THEN 1 ELSE 0 END) AS top10s,
+                    SUM(CASE WHEN TRY_CAST(REGEXP_EXTRACT(l.position, '[0-9]+', 0) AS INTEGER) <= 25 THEN 1 ELSE 0 END) AS top25s,
+                    SUM(CASE WHEN l.rounds_played >= 4                   THEN 1 ELSE 0 END) AS cuts_made,
+                    ROUND(AVG(sg.sg_total), 3) AS avg_sg_total,
+                    ROUND(AVG(sg.sg_ott),   3) AS avg_sg_ott,
+                    ROUND(AVG(sg.sg_app),   3) AS avg_sg_app,
+                    ROUND(AVG(sg.sg_putt),  3) AS avg_sg_putt,
+                    ROUND(AVG(f.scoring_avg), 2) AS avg_scoring
+                FROM leaderboards l
+                LEFT JOIN {sg_subquery} sg
+                    ON sg.player_id = l.player_id
+                    AND sg.tournament_id = l.tournament_id
+                LEFT JOIN {form_subquery} f
+                    ON f.player_id = l.player_id
+                    AND f.tournament_id = l.tournament_id
+                WHERE l.player_id IN ({ids_sql})
+                GROUP BY l.year
+                ORDER BY l.year DESC
+            """).fetchdf()
+
+    except Exception as e:
+        return {"recent": [], "by_year": [], "error": str(e)}
+
+    def _fmt_topar(v) -> str | None:
+        s = str(v).strip() if pd.notna(v) else ""
+        if not s or s in ("nan", "999", "999.0"):
+            return None
+        try:
+            return str(int(float(s)))
+        except Exception:
+            return s
+
+    def _safe_f(v) -> float | None:
+        try:
+            f = float(v)
+            return None if (f != f) else round(f, 3)
+        except Exception:
+            return None
+
+    def _safe_earnings(v) -> str | None:
+        s = str(v).strip() if pd.notna(v) else ""
+        return s if s and s not in ("nan", "None") else None
+
+    recent = [
+        {
+            "tournament_id":   str(r["tournament_id"]),
+            "tournament_name": str(r["tournament_name"]),
+            "year":            int(r["year"]),
+            "position":        str(r["position"]).strip(),
+            "to_par":          _fmt_topar(r["to_par"]),
+            "total_score":     int(r["total_score"]) if pd.notna(r.get("total_score")) else None,
+            "earnings":        _safe_earnings(r.get("earnings")),
+            "rounds_played":   int(r["rounds_played"]) if pd.notna(r.get("rounds_played")) else None,
+            "r1":              _safe_f(r.get("r1")),
+            "r2":              _safe_f(r.get("r2")),
+            "r3":              _safe_f(r.get("r3")),
+            "r4":              _safe_f(r.get("r4")),
+            "sg_total":        _safe_f(r.get("sg_total")),
+            "sg_ott":          _safe_f(r.get("sg_ott")),
+            "sg_app":          _safe_f(r.get("sg_app")),
+            "sg_putt":         _safe_f(r.get("sg_putt")),
+            "scoring_avg":     _safe_f(r.get("scoring_avg")),
+            "birdie_pct":      _safe_f(r.get("birdie_pct")),
+            "gir_pct":         _safe_f(r.get("gir_pct")),
+        }
+        for _, r in recent_df.iterrows()
+    ]
+
+    by_year = [
+        {
+            "year":          int(r["year"]),
+            "starts":        int(r["starts"]),
+            "wins":          int(r["wins"]),
+            "top10s":        int(r["top10s"]),
+            "top25s":        int(r["top25s"]),
+            "cuts_made":     int(r["cuts_made"]),
+            "avg_sg_total":  _safe_f(r.get("avg_sg_total")),
+            "avg_sg_ott":    _safe_f(r.get("avg_sg_ott")),
+            "avg_sg_app":    _safe_f(r.get("avg_sg_app")),
+            "avg_sg_putt":   _safe_f(r.get("avg_sg_putt")),
+            "avg_scoring":   _safe_f(r.get("avg_scoring")),
+        }
+        for _, r in yearly_df.iterrows()
+    ]
+
+    return {"recent": recent, "by_year": by_year}
+
+
 @app.get("/api/players/synopsis")
 def get_player_synopsis(player: str, force: bool = False) -> dict:
     """
@@ -5180,32 +5366,35 @@ def history_tournaments() -> dict:
 
 @app.get("/api/history/tournament/{tid}")
 def history_tournament_detail(tid: str) -> dict:
-    """Full leaderboard for a single settled tournament."""
-    hist_path = _LB_CSV
-    if not hist_path.exists():
+    """Full leaderboard for a single settled tournament — reads from DuckDB."""
+    if not _DB_AVAILABLE:
         return {"players": []}
 
-    df = pd.read_csv(hist_path)
-    df["tournament_id"] = df["tournament_id"].astype(str).str.upper()
-    grp = df[df["tournament_id"] == tid.upper()].copy()
-    if grp.empty:
+    try:
+        with _get_db_conn() as conn:
+            df = conn.execute("""
+                SELECT position, player_name, total_score, to_par,
+                       r1, r2, r3, r4, earnings
+                FROM leaderboards
+                WHERE UPPER(tournament_id) = ?
+                ORDER BY TRY_CAST(REGEXP_EXTRACT(position, '(\d+)', 1) AS INTEGER) NULLS LAST
+            """, [tid.upper()]).fetchdf()
+    except Exception:
         return {"players": []}
 
-    grp["position_num"] = pd.to_numeric(
-        grp["position"].astype(str).str.extract(r"(\d+)")[0], errors="coerce"
-    )
-    grp = grp.sort_values("position_num", na_position="last")
+    if df.empty:
+        return {"players": []}
 
-    def _safe_int(v):
+    def _safe_int(v) -> int | None:
         try:
             return int(v) if pd.notna(v) else None
         except Exception:
             return None
 
-    def _fmt_earnings(v):
-        if pd.isna(v) or v == "" or str(v) in ("nan", "None"):
+    def _fmt_earnings(v) -> str | None:
+        s = str(v).strip() if pd.notna(v) else ""
+        if not s or s in ("nan", "None"):
             return None
-        s = str(v).strip()
         if s.startswith("$"):
             return s
         try:
@@ -5213,20 +5402,20 @@ def history_tournament_detail(tid: str) -> dict:
         except Exception:
             return s
 
-    players = []
-    for _, r in grp.iterrows():
-        players.append({
-            "position":    str(r.get("position", "")).strip(),
-            "player_name": str(r.get("player_name", "")).strip(),
+    players = [
+        {
+            "position":    str(r["position"]).strip(),
+            "player_name": str(r["player_name"]).strip(),
             "total_score": _safe_int(r.get("total_score")),
-            "to_par":      str(r.get("to_par", "")).strip(),
-            "r1":          _safe_int(r.get("r1_score")),
-            "r2":          _safe_int(r.get("r2_score")),
-            "r3":          _safe_int(r.get("r3_score")),
-            "r4":          _safe_int(r.get("r4_score")),
+            "to_par":      str(r["to_par"]).strip() if pd.notna(r.get("to_par")) else "",
+            "r1":          _safe_int(r.get("r1")),
+            "r2":          _safe_int(r.get("r2")),
+            "r3":          _safe_int(r.get("r3")),
+            "r4":          _safe_int(r.get("r4")),
             "earnings":    _fmt_earnings(r.get("earnings")),
-        })
-
+        }
+        for _, r in df.iterrows()
+    ]
     return {"players": players}
 
 

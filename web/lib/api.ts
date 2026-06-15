@@ -1167,6 +1167,51 @@ export async function getTournamentLeaderboard(tid: string): Promise<TournamentL
   return d.players;
 }
 
+// ── Player career stats ───────────────────────────────────────────────────────
+
+export type CareerResult = {
+  tournament_id: string;
+  tournament_name: string;
+  year: number;
+  position: string;
+  to_par: string | null;
+  total_score: number | null;
+  earnings: string | null;
+  rounds_played: number | null;
+  sg_total: number | null;
+  sg_ott: number | null;
+  sg_app: number | null;
+  sg_putt: number | null;
+  scoring_avg: number | null;
+  birdie_pct: number | null;
+  gir_pct: number | null;
+};
+
+export type CareerYearSummary = {
+  year: number;
+  starts: number;
+  wins: number;
+  top10s: number;
+  top25s: number;
+  cuts_made: number;
+  avg_sg_total: number | null;
+  avg_sg_ott: number | null;
+  avg_sg_app: number | null;
+  avg_sg_putt: number | null;
+  avg_scoring: number | null;
+};
+
+export type PlayerCareer = {
+  recent: CareerResult[];
+  by_year: CareerYearSummary[];
+};
+
+export async function getPlayerCareer(player: string): Promise<PlayerCareer> {
+  const r = await fetch(`${API_BASE}/api/players/career?player=${encodeURIComponent(player)}`);
+  if (!r.ok) throw new Error("Failed to load career stats");
+  return r.json();
+}
+
 export async function getHistoryTournaments(): Promise<HistoryTournament[]> {
   const r = await fetch(`${API_BASE}/api/history/tournaments`);
   if (!r.ok) throw new Error("Failed to load tournament history");

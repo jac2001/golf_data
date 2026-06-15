@@ -39,8 +39,15 @@ ODDS_DIR     = DATA_DIR / "odds"
 BETS_LOG     = ODDS_DIR / "recommended_bets_log.csv"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
+sys.path.insert(0, str(SCRIPTS_DIR / "database"))
 from config import usage_tracker_json  # noqa: E402
 TRACKER_PATH = usage_tracker_json()
+
+try:
+    from db import get_conn as _get_db_conn  # noqa: E402
+    _DB_AVAILABLE = True
+except ImportError:
+    _DB_AVAILABLE = False
 
 PYTHON = sys.executable  # same interpreter that launched this script
 
@@ -157,6 +164,90 @@ def step_scrape(tid: str, dry_run: bool = False) -> bool:
         return True
 
     return _run(cmd, label)
+
+
+# ── Step 1b: Sync leaderboard rows into DuckDB ────────────────────────────────
+
+def step_sync_db(tid: str, dry_run: bool = False) -> int:
+    """
+    Upsert the settled leaderboard rows for `tid` into DuckDB's leaderboards table,
+    including r1/r2/r3/r4 round scores.
+
+    Must run after step_scrape() so the CSV exists.
+    Returns the number of rows upserted.
+    """
+    print(f"\n{'='*60}")
+    print(f"  STEP 1b — Sync leaderboard to DuckDB ({tid})")
+    print(f"{'='*60}")
+
+    if not _DB_AVAILABLE:
+        print("  DuckDB not available — skipping DB sync")
+        return 0
+
+    year_match = re.search(r"R(\d{4})", tid.upper())
+    year = int(year_match.group(1)) if year_match else 2026
+    lb_path = HIST_DIR / f"leaderboards_{year}.csv"
+
+    if not lb_path.exists():
+        print(f"  Leaderboard file not found: {lb_path.name}  (run step 1 first)")
+        return 0
+
+    lb = pd.read_csv(lb_path, dtype=str)
+    rows = lb[lb["tournament_id"].str.upper() == tid.upper()].copy()
+
+    if rows.empty:
+        print(f"  No rows found for {tid} in {lb_path.name}")
+        return 0
+
+    print(f"  Found {len(rows)} rows for {tid}")
+
+    if dry_run:
+        print(f"  [DRY RUN] Would upsert {len(rows)} rows into DuckDB leaderboards table")
+        return len(rows)
+
+    def _safe_float(v):
+        try:
+            return float(v) if v not in (None, "", "nan", "-") else None
+        except (TypeError, ValueError):
+            return None
+
+    def _safe_int(v):
+        try:
+            return int(float(v)) if v not in (None, "", "nan", "-") else None
+        except (TypeError, ValueError):
+            return None
+
+    records = []
+    for _, r in rows.iterrows():
+        records.append((
+            str(r.get("tournament_id", "") or "").upper(),
+            str(r.get("tournament_name", "") or ""),
+            _safe_int(r.get("year")),
+            str(r.get("player_id", "") or ""),
+            str(r.get("player_name", "") or ""),
+            str(r.get("position", "") or ""),
+            _safe_float(r.get("total_score")),
+            str(r.get("to_par", "") or ""),
+            str(r.get("earnings", "") or ""),
+            _safe_int(r.get("rounds_played")),
+            _safe_float(r.get("fedex_points")),
+            _safe_float(r.get("r1_score")),
+            _safe_float(r.get("r2_score")),
+            _safe_float(r.get("r3_score")),
+            _safe_float(r.get("r4_score")),
+        ))
+
+    with _get_db_conn() as conn:
+        conn.executemany("""
+            INSERT OR REPLACE INTO leaderboards
+                (tournament_id, tournament_name, year, player_id, player_name,
+                 position, total_score, to_par, earnings, rounds_played, fedex_points,
+                 r1, r2, r3, r4)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, records)
+
+    print(f"  Upserted {len(records)} rows into DuckDB leaderboards")
+    return len(records)
 
 
 # ── Step 2: Re-fetch form/SG stats ────────────────────────────────────────────
@@ -762,7 +853,7 @@ def main():
                         help="Skip step 3 (prediction history backfill)")
     parser.add_argument("--skip-tracker", action="store_true",
                         help="Skip step 5 (fantasy tracker update)")
-    parser.add_argument("--step", choices=["scrape", "stats", "backfill", "grade", "tracker"],
+    parser.add_argument("--step", choices=["scrape", "sync_db", "stats", "backfill", "grade", "tracker"],
                         help="Run only one specific step")
     args = parser.parse_args()
 
@@ -777,6 +868,9 @@ def main():
 
     if args.step == "scrape":
         step_scrape(tid, dry_run=dry)
+        return
+    if args.step == "sync_db":
+        step_sync_db(tid, dry_run=dry)
         return
     if args.step == "stats":
         step_form_stats(tid, dry_run=dry)
@@ -796,6 +890,8 @@ def main():
     ok = True
     if not args.skip_scrape:
         ok = step_scrape(tid, dry_run=dry)
+    if ok:
+        step_sync_db(tid, dry_run=dry)
     if ok and not args.skip_stats:
         ok = step_form_stats(tid, dry_run=dry)
     if ok and not args.skip_backfill:

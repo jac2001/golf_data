@@ -60,6 +60,10 @@ CREATE_STATEMENTS = [
         earnings         VARCHAR,
         rounds_played    INTEGER,
         fedex_points     DOUBLE,
+        r1               DOUBLE,
+        r2               DOUBLE,
+        r3               DOUBLE,
+        r4               DOUBLE,
         PRIMARY KEY (player_id, tournament_id)
     )
     """,
