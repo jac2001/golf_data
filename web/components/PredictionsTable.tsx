@@ -15,7 +15,7 @@
  *    If you click the same column twice, sortDir flips between "asc"/"desc".
  */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { PlayerPrediction, PlayerIntel } from "@/lib/api";
 
@@ -27,16 +27,55 @@ type Props = {
 
 type SortCol = "world_rank" | "win_prob_sim" | "win_prob" | "top10_prob_sim" | "top10_prob" | "cut_prob" | "season_sg_total" | "form_trend" | "model_vs_vegas_edge";
 
-// Maps each column to a label and whether higher = better (for coloring)
-const COLS: { key: SortCol; label: string; higherBetter: boolean }[] = [
-  { key: "win_prob_sim",       label: "Win%",     higherBetter: true  },
-  { key: "top10_prob_sim",     label: "Top 10%",  higherBetter: true  },
-  { key: "cut_prob",           label: "Cut%",     higherBetter: true  },
-  { key: "world_rank",         label: "OWGR",     higherBetter: false },
-  { key: "season_sg_total",    label: "SG Total", higherBetter: true  },
-  { key: "form_trend",         label: "Form",     higherBetter: true  },
-  { key: "model_vs_vegas_edge",label: "Edge",     higherBetter: true  },
+// Every column that can be shown/hidden, sortable or not (DataGolf-style
+// "add columns" picker). `default: true` = visible out of the box; the rest
+// are opt-in, since the unfiltered table was too dense to scan at a glance.
+type ColKey = "win" | "top10" | "cut" | "owgr" | "sg" | "form" | "edge" | "odds" | "move" | "ev" | "uses" | "pick";
+
+// Maps each sortable column to a label, sort direction, and the ColKey that
+// controls its visibility in the picker.
+const COLS: { key: SortCol; label: string; higherBetter: boolean; toggleKey: ColKey }[] = [
+  { key: "win_prob_sim",       label: "Win%",     higherBetter: true,  toggleKey: "win"   },
+  { key: "top10_prob_sim",     label: "Top 10%",  higherBetter: true,  toggleKey: "top10" },
+  { key: "cut_prob",           label: "Cut%",     higherBetter: true,  toggleKey: "cut"   },
+  { key: "world_rank",         label: "OWGR",     higherBetter: false, toggleKey: "owgr"  },
+  { key: "season_sg_total",    label: "SG Total", higherBetter: true,  toggleKey: "sg"    },
+  { key: "form_trend",         label: "Form",     higherBetter: true,  toggleKey: "form"  },
+  { key: "model_vs_vegas_edge",label: "Edge",     higherBetter: true,  toggleKey: "edge"  },
 ];
+const TOGGLE_COLS: { key: ColKey; label: string; default: boolean }[] = [
+  { key: "win",   label: "Win%",     default: true  },
+  { key: "top10", label: "Top 10%",  default: true  },
+  { key: "odds",  label: "Odds",     default: true  },
+  { key: "uses",  label: "Uses",     default: true  },
+  { key: "pick",  label: "Pick",     default: true  },
+  { key: "cut",   label: "Cut%",     default: false },
+  { key: "owgr",  label: "OWGR",     default: false },
+  { key: "sg",    label: "SG Total", default: false },
+  { key: "form",  label: "Form",     default: false },
+  { key: "edge",  label: "Edge",     default: false },
+  { key: "move",  label: "Move",     default: false },
+  { key: "ev",    label: "EV",       default: false },
+];
+const DEFAULT_VISIBLE_COLS: ColKey[] = TOGGLE_COLS.filter(c => c.default).map(c => c.key);
+const ALL_COL_KEYS = new Set<string>(TOGGLE_COLS.map(c => c.key));
+const COLS_STORAGE_KEY = "fieldTableVisibleCols";
+
+function loadVisibleCols(): Set<ColKey> {
+  if (typeof window === "undefined") return new Set(DEFAULT_VISIBLE_COLS);
+  try {
+    const raw = window.localStorage.getItem(COLS_STORAGE_KEY);
+    if (!raw) return new Set(DEFAULT_VISIBLE_COLS);
+    const parsed = JSON.parse(raw);
+    // Validate shape before trusting it — a corrupt/outdated value should
+    // fall back to defaults quietly, not render a table with zero columns.
+    if (!Array.isArray(parsed) || parsed.length === 0) return new Set(DEFAULT_VISIBLE_COLS);
+    const valid = parsed.filter((k): k is ColKey => typeof k === "string" && ALL_COL_KEYS.has(k));
+    return valid.length ? new Set(valid) : new Set(DEFAULT_VISIBLE_COLS);
+  } catch {
+    return new Set(DEFAULT_VISIBLE_COLS);
+  }
+}
 
 const DRIFT_ARROW: Record<string, string> = {
   UP: "▲", DOWN: "▼", CONSTANT: "→",
@@ -64,6 +103,32 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
   const [sortCol, setSortCol]   = useState<SortCol>("win_prob_sim");
   const [sortDir, setSortDir]   = useState<"asc" | "desc">("desc");
   const [search, setSearch]     = useState("");
+
+  // Column visibility — defaults are read once on first render; localStorage
+  // is only touched client-side (loadVisibleCols guards on `typeof window`),
+  // so this is safe under SSR/hydration.
+  const [visibleCols, setVisibleCols] = useState<Set<ColKey>>(() => loadVisibleCols());
+  const [pickerOpen, setPickerOpen]   = useState(false);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(COLS_STORAGE_KEY, JSON.stringify([...visibleCols]));
+    } catch {
+      // localStorage unavailable (private browsing, quota, etc.) — the
+      // picker still works for this session, it just won't persist.
+    }
+  }, [visibleCols]);
+
+  function toggleCol(key: ColKey) {
+    setVisibleCols(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      // Never allow zero columns — that would render a table with just
+      // the # and Player columns and no obvious way back without knowing
+      // to reopen the picker on an apparently-empty table.
+      return next.size === 0 ? prev : next;
+    });
+  }
 
   // Handle column header click — flip direction if same col, reset to desc if new col
   function handleSort(col: SortCol) {
@@ -107,8 +172,8 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
 
   return (
     <div>
-      {/* Search */}
-      <div style={{ marginBottom: 12 }}>
+      {/* Search + column picker */}
+      <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 12, position: "relative" }}>
         <input
           placeholder="Search player…"
           value={search}
@@ -119,9 +184,45 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
             outline: "none", width: 200,
           }}
         />
-        <span style={{ color: "#4a6080", fontSize: "0.75em", marginLeft: 12 }}>
+        <button
+          onClick={() => setPickerOpen(o => !o)}
+          style={{
+            background: pickerOpen ? "#0d2e18" : "#0a1525",
+            border: `1px solid ${pickerOpen ? "#00c44f44" : "#1e3a5f"}`,
+            borderRadius: 6, color: pickerOpen ? "#00c44f" : "#7a9ab8",
+            padding: "6px 12px", fontSize: "0.8em", fontWeight: 600, cursor: "pointer",
+          }}
+        >
+          + Columns
+        </button>
+        <span style={{ color: "#4a6080", fontSize: "0.75em" }}>
           {sorted.length} players · click column to sort
         </span>
+
+        {pickerOpen && (
+          <div style={{
+            position: "absolute", top: "calc(100% + 6px)", left: 212, zIndex: 20,
+            background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 8,
+            padding: 10, boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+            display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px",
+          }}>
+            {TOGGLE_COLS.map(c => (
+              <label key={c.key} style={{
+                display: "flex", alignItems: "center", gap: 6,
+                fontSize: "0.8em", color: "#c8d8e8", cursor: "pointer",
+                padding: "3px 4px", whiteSpace: "nowrap",
+              }}>
+                <input
+                  type="checkbox"
+                  checked={visibleCols.has(c.key)}
+                  onChange={() => toggleCol(c.key)}
+                  style={{ accentColor: "#00c44f", cursor: "pointer" }}
+                />
+                {c.label}
+              </label>
+            ))}
+          </div>
+        )}
       </div>
 
       <div style={{ overflowX: "auto", border: "1px solid #1e3a5f", borderRadius: 10 }}>
@@ -130,7 +231,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
             <tr>
               <th style={{ ...th, textAlign: "center", width: 36 }}>#</th>
               <th style={{ ...th, textAlign: "left", minWidth: 160 }}>Player</th>
-              {COLS.map(c => (
+              {COLS.filter(c => visibleCols.has(c.toggleKey)).map(c => (
                 <th
                   key={c.key}
                   style={sortCol === c.key ? { ...thActive, textAlign: "center" } : { ...th, textAlign: "center" }}
@@ -142,11 +243,11 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   )}
                 </th>
               ))}
-              <th style={{ ...th, textAlign: "center" }}>Odds</th>
-              <th style={{ ...th, textAlign: "center" }}>Move</th>
-              <th style={{ ...th, textAlign: "center", color: "#f1c40f" }}>EV</th>
-              <th style={{ ...th, textAlign: "center" }}>Uses</th>
-              <th style={{ ...th, textAlign: "center" }}>Pick</th>
+              {visibleCols.has("odds") && <th style={{ ...th, textAlign: "center" }}>Odds</th>}
+              {visibleCols.has("move") && <th style={{ ...th, textAlign: "center" }}>Move</th>}
+              {visibleCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "#f1c40f" }}>EV</th>}
+              {visibleCols.has("uses") && <th style={{ ...th, textAlign: "center" }}>Uses</th>}
+              {visibleCols.has("pick") && <th style={{ ...th, textAlign: "center" }}>Pick</th>}
             </tr>
           </thead>
           <tbody>
@@ -257,6 +358,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   </td>
 
                   {/* Win% — sim primary, xgb subscript */}
+                  {visibleCols.has("win") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.win_prob_sim != null ? (
                       <div>
@@ -275,8 +377,10 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       </span>
                     )}
                   </td>
+                  )}
 
                   {/* Top 10% — sim primary, xgb subscript */}
+                  {visibleCols.has("top10") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.top10_prob_sim != null ? (
                       <div>
@@ -295,43 +399,59 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       </span>
                     )}
                   </td>
+                  )}
 
                   {/* Cut% */}
+                  {visibleCols.has("cut") && (
                   <td style={{ ...td, textAlign: "center", color: "#8ba0b8", fontSize: "0.85em" }}>
                     {p.cut_prob != null ? `${(p.cut_prob * 100).toFixed(0)}%` : "—"}
                   </td>
+                  )}
 
                   {/* OWGR */}
+                  {visibleCols.has("owgr") && (
                   <td style={{ ...td, textAlign: "center", color: "#7f8c8d", fontSize: "0.82em" }}>
                     {p.world_rank ?? "—"}
                   </td>
+                  )}
 
                   {/* SG Total */}
+                  {visibleCols.has("sg") && (
                   <td style={{ ...td, textAlign: "center", color: "#8ba0b8", fontSize: "0.82em" }}>
                     {p.season_sg_total != null ? (p.season_sg_total > 0 ? `+${p.season_sg_total.toFixed(2)}` : p.season_sg_total.toFixed(2)) : "—"}
                   </td>
+                  )}
 
                   {/* Form */}
+                  {visibleCols.has("form") && (
                   <td style={{ ...td, textAlign: "center", color: formColor, fontWeight: 600, fontSize: "0.82em" }}>
                     {formStr}
                   </td>
+                  )}
 
                   {/* Edge vs Vegas */}
+                  {visibleCols.has("edge") && (
                   <td style={{ ...td, textAlign: "center", color: edgeColor, fontWeight: edgeVal && edgeVal > 3 ? 700 : 400, fontSize: "0.82em" }}>
                     {edgeVal != null ? `${edgeVal > 0 ? "+" : ""}${edgeVal.toFixed(1)}pp` : "—"}
                   </td>
+                  )}
 
                   {/* Odds */}
+                  {visibleCols.has("odds") && (
                   <td style={{ ...td, textAlign: "center", color: "#7f8c8d", fontSize: "0.82em" }}>
                     {oddsStr}
                   </td>
+                  )}
 
                   {/* Drift */}
+                  {visibleCols.has("move") && (
                   <td style={{ ...td, textAlign: "center", color: driftColor, fontWeight: 700, fontSize: "0.88em" }}>
                     {DRIFT_ARROW[drift] ?? "—"}
                   </td>
+                  )}
 
                   {/* Season EV */}
+                  {visibleCols.has("ev") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.this_week_ev != null ? (
                       <span style={{ fontSize: "0.72em", color: "#f1c40f", fontWeight: 600 }}>
@@ -341,8 +461,10 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       </span>
                     ) : <span style={{ color: "#3a5060", fontSize: "0.72em" }}>—</span>}
                   </td>
+                  )}
 
                   {/* Uses remaining — pip dots */}
+                  {visibleCols.has("uses") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     <div style={{ display: "flex", gap: 3, justifyContent: "center" }}>
                       {[0,1,2].map(idx => (
@@ -353,8 +475,10 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       ))}
                     </div>
                   </td>
+                  )}
 
                   {/* Badge: USE / SAVE / MAXED */}
+                  {visibleCols.has("pick") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.badge === "USE" && (
                       <span style={{ fontSize: "0.62em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", padding: "2px 6px", borderRadius: 3, border: "1px solid #00c44f44" }}>USE</span>
@@ -366,6 +490,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       <span style={{ fontSize: "0.62em", fontWeight: 800, color: "#4a6080", background: "#0a1220", padding: "2px 6px", borderRadius: 3, border: "1px solid #1e3a5f" }}>MAXED</span>
                     )}
                   </td>
+                  )}
                 </tr>
               );
             })}

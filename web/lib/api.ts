@@ -244,12 +244,29 @@ export type CourseHole = {
   bogeys: number | null;
 };
 
+export type CourseWinningScore = {
+  year: number;
+  tournament_id: string;
+  winner_name: string;
+  to_par: string;
+};
+
+export type CourseHistory = {
+  course_name: string;
+  editions: number;
+  years: number[];
+  avg_score_by_round: { r1: number | null; r2: number | null; r3: number | null; r4: number | null };
+  scoring_distribution: { avg_birdies: number | null; avg_bogeys: number | null; avg_eagles: number | null };
+  winning_scores: CourseWinningScore[];
+};
+
 export type CourseResponse = {
   tournament_id: string;
   course_name: string;
   par: number | null;
   yardage: number | null;
   holes: CourseHole[];
+  history: CourseHistory | null;
 };
 
 // ── This Week fetch functions ──────────────────────────────────────────────────
@@ -732,6 +749,12 @@ export async function getPlayerList(): Promise<{ players: string[] }> {
   return res.json();
 }
 
+export async function getAllPlayers(): Promise<{ players: string[] }> {
+  const res = await fetch(`${API_BASE}/api/players/all`, { cache: "no-store" });
+  if (!res.ok) return { players: [] };
+  return res.json();
+}
+
 export type FieldStatsPlayer = {
   player_name: string;
   world_rank: number | null;
@@ -1158,6 +1181,15 @@ export type TournamentLeaderboardRow = {
   r3: number | null;
   r4: number | null;
   earnings: string | null;
+  sg_total: number | null;
+  sg_ott: number | null;
+  sg_app: number | null;
+  sg_arg: number | null;
+  sg_putt: number | null;
+  driving_dist: number | null;
+  driving_acc: number | null;
+  gir_pct: number | null;
+  scrambling: number | null;
 };
 
 export async function getTournamentLeaderboard(tid: string): Promise<TournamentLeaderboardRow[]> {
@@ -1169,6 +1201,31 @@ export async function getTournamentLeaderboard(tid: string): Promise<TournamentL
 
 // ── Player career stats ───────────────────────────────────────────────────────
 
+export type RoundStat = {
+  round_num: number;
+  score: number | null;
+  course_par: number | null;
+  sg_total: number | null;
+  sg_ott: number | null;
+  sg_app: number | null;
+  sg_arg: number | null;
+  sg_putt: number | null;
+  sg_t2g: number | null;
+  driving_dist: number | null;
+  driving_acc: number | null;
+  gir: number | null;
+  scrambling: number | null;
+  birdies: number | null;
+  bogies: number | null;
+  pars: number | null;
+  eagles_or_better: number | null;
+  doubles_or_worse: number | null;
+  great_shots: number | null;
+  poor_shots: number | null;
+  prox_fw: number | null;
+  prox_rgh: number | null;
+};
+
 export type CareerResult = {
   tournament_id: string;
   tournament_name: string;
@@ -1178,13 +1235,22 @@ export type CareerResult = {
   total_score: number | null;
   earnings: string | null;
   rounds_played: number | null;
+  r1: number | null;
+  r2: number | null;
+  r3: number | null;
+  r4: number | null;
   sg_total: number | null;
   sg_ott: number | null;
   sg_app: number | null;
+  sg_arg: number | null;
   sg_putt: number | null;
+  driving_dist: number | null;
+  driving_acc: number | null;
+  gir_pct: number | null;
+  scrambling: number | null;
   scoring_avg: number | null;
   birdie_pct: number | null;
-  gir_pct: number | null;
+  rounds: RoundStat[];
 };
 
 export type CareerYearSummary = {
@@ -1197,7 +1263,12 @@ export type CareerYearSummary = {
   avg_sg_total: number | null;
   avg_sg_ott: number | null;
   avg_sg_app: number | null;
+  avg_sg_arg: number | null;
   avg_sg_putt: number | null;
+  avg_driving_dist: number | null;
+  avg_driving_acc: number | null;
+  avg_gir_pct: number | null;
+  avg_scrambling: number | null;
   avg_scoring: number | null;
 };
 
@@ -1209,6 +1280,47 @@ export type PlayerCareer = {
 export async function getPlayerCareer(player: string): Promise<PlayerCareer> {
   const r = await fetch(`${API_BASE}/api/players/career?player=${encodeURIComponent(player)}`);
   if (!r.ok) throw new Error("Failed to load career stats");
+  return r.json();
+}
+
+// Note: distinct from CourseFitProfile/CourseFitPlayer/CourseFitResponse
+// below, which back the Predictions page's course-fit view (variance-based
+// importance across the current field + DG decomposition). This one backs
+// the Players page's Course Fit tab — SG-category importance derived from
+// real historical regression (scripts/features/course_weight_model.py),
+// stored in DuckDB, generated for any course rather than just the current week.
+export type CourseFitWeightProfile = {
+  ott_pct: number;
+  app_pct: number;
+  arg_pct: number;
+  putt_pct: number;
+};
+
+export type CourseFitRankedPlayer = {
+  player_name: string;
+  world_rank: number | null;
+  fit_ott: number;
+  fit_app: number;
+  fit_arg: number;
+  fit_putt: number;
+  fit_total: number;
+  win_prob: number | null;
+};
+
+export type CourseFitWeights = {
+  tournament_id: string | null;
+  tournament_name: string;
+  course_name: string | null;
+  is_default: boolean;
+  confidence: number;
+  n_players_in_derivation: number;
+  profile: CourseFitWeightProfile;
+  players: CourseFitRankedPlayer[];
+};
+
+export async function getCourseFitWeights(): Promise<CourseFitWeights> {
+  const r = await fetch(`${API_BASE}/api/players/course-fit`, { cache: "no-store" });
+  if (!r.ok) throw new Error("Failed to load course fit");
   return r.json();
 }
 

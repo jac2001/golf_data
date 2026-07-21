@@ -42,7 +42,9 @@ function WeekCard({ week }: { week: WeeklyLineup }) {
   return (
     <div style={{
       background: "#0d1a30",
-      border: `1px solid ${hasEarnings ? "#1a3a20" : "#1e3a5f"}`,
+      borderTop: `1px solid ${hasEarnings ? "#1a3a20" : "#1e3a5f"}`,
+      borderRight: `1px solid ${hasEarnings ? "#1a3a20" : "#1e3a5f"}`,
+      borderBottom: `1px solid ${hasEarnings ? "#1a3a20" : "#1e3a5f"}`,
       borderLeft: `3px solid ${hasEarnings ? "#00c44f" : "#1e3a5f"}`,
       borderRadius: 8, padding: "14px 18px",
     }}>
@@ -104,7 +106,9 @@ function RosterRow({ player, maxUses }: { player: RosterPlayer; maxUses: number 
   return (
     <div style={{
       background: "#0d1a30",
-      border: `1px solid ${depleted ? "#2a1a0a" : "#1e3a5f"}`,
+      borderTop: `1px solid ${depleted ? "#2a1a0a" : "#1e3a5f"}`,
+      borderRight: `1px solid ${depleted ? "#2a1a0a" : "#1e3a5f"}`,
+      borderBottom: `1px solid ${depleted ? "#2a1a0a" : "#1e3a5f"}`,
       borderLeft: `3px solid ${depleted ? "#5f3a1e" : remaining === maxUses ? "#1e3a5f" : "#00c44f"}`,
       borderRadius: 8, marginBottom: 6,
     }}>
@@ -268,7 +272,7 @@ export default function MyPicksPage() {
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               style={{
-                background: "transparent", border: "none",
+                background: "transparent", borderTop: "none", borderLeft: "none", borderRight: "none",
                 borderBottom: `2px solid ${isActive ? "#00c44f" : "transparent"}`,
                 color: isActive ? "#dde6f5" : "#7f8c8d",
                 padding: "8px 16px", fontSize: "0.88em",
@@ -350,7 +354,8 @@ function SetPicksPanel({
 
   return (
     <div style={{
-      background: "#080f1e", border: "1px solid #1e4a2f",
+      background: "#080f1e",
+      borderTop: "1px solid #1e4a2f", borderRight: "1px solid #1e4a2f", borderBottom: "1px solid #1e4a2f",
       borderLeft: "3px solid #00c44f", borderRadius: 8,
       padding: "16px 20px", marginBottom: 20,
     }}>

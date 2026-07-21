@@ -1,0 +1,16 @@
+[
+  {
+    "player_name": "Potgieter, Aldrich",
+    "player_id": "63343",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-07-14T06:00:21.024871"
+  },
+  {
+    "player_name": "Duval, David",
+    "player_id": "9011",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-07-14T06:00:21.024887"
+  }
+]

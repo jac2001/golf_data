@@ -91,7 +91,9 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
   return (
     <div style={{
       background: isPick ? "#060e09" : "#0d1a30",
-      border: isPick ? "1px solid #00c44f33" : "1px solid #1e3a5f",
+      borderTop: isPick ? "1px solid #00c44f33" : "1px solid #1e3a5f",
+      borderRight: isPick ? "1px solid #00c44f33" : "1px solid #1e3a5f",
+      borderBottom: isPick ? "1px solid #00c44f33" : "1px solid #1e3a5f",
       borderLeft: `4px solid ${color}`,
       borderRadius: 10,
       padding: "16px 18px",
@@ -238,8 +240,8 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
 
         {/* Stats row: edge / EV / kelly */}
         <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-          <Stat label="Edge" value={`+${bet.edge_pts.toFixed(1)}pp`} color={color} />
-          <Stat label="EV / $1" value={`$${bet.ev_per_1.toFixed(2)}`} color="#00c44f" />
+          <Stat label="Edge" value={bet.edge_pts != null ? `+${bet.edge_pts.toFixed(1)}pp` : "—"} color={color} />
+          <Stat label="EV / $1" value={bet.ev_per_1 != null ? `$${bet.ev_per_1.toFixed(2)}` : "—"} color="#00c44f" />
           {kellyDollar && (
             <Stat
               label="Kelly"

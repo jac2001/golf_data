@@ -124,7 +124,7 @@ export default function PredictionsPage() {
   useEffect(() => {
     if (!loaded.has("course") || course) return;
     setLoadingCourse(true);
-    getCourse().then(setCourse).catch(() => setCourse({ tournament_id: "", course_name: "", par: null, yardage: null, holes: [] })).finally(() => setLoadingCourse(false));
+    getCourse().then(setCourse).catch(() => setCourse({ tournament_id: "", course_name: "", par: null, yardage: null, holes: [], history: null })).finally(() => setLoadingCourse(false));
   }, [loaded]);
 
   // ── Lazy load: DG model comparison ───────────────────────────────────────────
@@ -226,9 +226,6 @@ export default function PredictionsPage() {
         <WeatherStrip days={weather.days} savedAt={weather.saved_at} />
       )}
 
-      {/* ── Course conditions + intel ─────────────────────────────────────── */}
-      {intel && <CourseConditionsCard intel={intel} />}
-
       {/* ── Weekly narrative ─────────────────────────────────────────────── */}
       {preds && (
         <WeeklyNarrative
@@ -244,7 +241,7 @@ export default function PredictionsPage() {
             key={tab.key}
             onClick={() => activateTab(tab.key)}
             style={{
-              background: "transparent", border: "none",
+              background: "transparent", borderTop: "none", borderLeft: "none", borderRight: "none",
               borderBottom: `2px solid ${activeTab === tab.key ? "#00c44f" : "transparent"}`,
               color: activeTab === tab.key ? "#dde6f5" : "#7f8c8d",
               padding: "8px 16px", fontSize: "0.88em",
@@ -329,11 +326,14 @@ export default function PredictionsPage() {
       )}
 
       {activeTab === "course" && (
-        loadingCourse
-          ? <Spinner />
-          : course
-            ? <CourseCard data={course} />
-            : <Empty text="No course data available." />
+        <>
+          {intel && <CourseConditionsCard intel={intel} />}
+          {loadingCourse
+            ? <Spinner />
+            : course
+              ? <CourseCard data={course} />
+              : <Empty text="No course data available." />}
+        </>
       )}
 
       {activeTab === "dg" && (
@@ -391,7 +391,7 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
   return (
     <div style={{
       background: "#080f1e",
-      border: "1px solid #1e3a5f",
+      borderTop: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
       borderLeft: `3px solid ${text ? "#00c44f" : "#2a3a4a"}`,
       borderRadius: 8,
       padding: "14px 18px",
@@ -455,7 +455,7 @@ function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
   return (
     <div style={{
       background: `linear-gradient(180deg, ${color}12 0%, #0d1a30 55%)`,
-      border: "1px solid #1e3a5f",
+      borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
       borderTop: `3px solid ${color}`,
       borderRadius: 8,
       padding: "12px 16px",
@@ -486,7 +486,7 @@ function GlanceCard({ label, value, sub, accent = "#4cb8ff", onClick }: {
       onClick={onClick}
       style={{
         background: `linear-gradient(180deg, ${accent}12 0%, #0d1a30 55%)`,
-        border: "1px solid #1e3a5f",
+        borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
         borderTop: `3px solid ${accent}`,
         borderRadius: 8,
         padding: "12px 16px",
@@ -534,7 +534,7 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
   }
 
   return (
-    <div style={{ background: "#080f1e", border: "1px solid #1e3a5f", borderLeft: "3px solid #4cb8ff", borderRadius: 8, padding: "14px 18px", marginBottom: 16 }}>
+    <div style={{ background: "#080f1e", borderTop: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f", borderLeft: "3px solid #4cb8ff", borderRadius: 8, padding: "14px 18px", marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 8 }}>
         <div>
           <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>

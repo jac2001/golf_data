@@ -75,7 +75,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
   return (
     <div style={{
       background: "#0d1a30",
-      border: `1px solid #1e3a5f`,
+      borderLeft: `1px solid #1e3a5f`, borderRight: `1px solid #1e3a5f`, borderBottom: `1px solid #1e3a5f`,
       borderTop: `3px solid ${color}`,
       borderRadius: 10,
       padding: "16px 18px",
@@ -197,7 +197,8 @@ export default function LineupCards({ picks, narrative, generatedAt }: Props) {
       {/* Weekly narrative */}
       {narrative && (
         <div style={{
-          background: "#080f1e", border: "1px solid #1e3a5f",
+          background: "#080f1e",
+          borderTop: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
           borderLeft: "3px solid #00c44f",
           borderRadius: 10, padding: "14px 18px",
         }}>

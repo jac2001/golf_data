@@ -1,0 +1,574 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Fox, Ryan","Conners, Corey",11889,17576,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Fox, Ryan","Conners, Corey",11889,17576,separate bet offered,datagolf,+118,+101,0.458716,0.497512,0.479714,0.520286,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Aberg, Ludvig",23323,23950,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Aberg, Ludvig",23323,23950,separate bet offered,datagolf,-106,+126,0.514563,0.442478,0.53766,0.46234,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Aberg, Ludvig",23323,23950,void,betcris,-137,+107,0.578059,0.483092,0.544747,0.455253,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Aberg, Ludvig",23323,23950,void,betonline,-127,+106,0.559471,0.485437,0.535426,0.464574,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Aberg, Ludvig",23323,23950,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Aberg, Ludvig",23323,23950,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Aberg, Ludvig",23323,23950,void,pinnacle,-123,+105,0.55157,0.487805,0.530675,0.469325,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Alex",15466,25362,separate bet offered,bet365,+100,-105,0.5,0.512195,0.493976,0.506024,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Alex",15466,25362,separate bet offered,datagolf,+114,+104,0.46729,0.490196,0.488038,0.511962,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Alex",15466,25362,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Alex",15466,25362,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Knapp, Jake","Keefer, Johnny",19396,32457,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Knapp, Jake","Keefer, Johnny",19396,32457,separate bet offered,datagolf,+109,+109,0.478469,0.478469,0.5,0.5,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Perez, Victor","Gerard, Ryan",20730,29767,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Perez, Victor","Gerard, Ryan",20730,29767,separate bet offered,datagolf,+108,+111,0.480769,0.473934,0.50358,0.49642,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Reitan, Kristoffer",14577,21407,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Reitan, Kristoffer",14577,21407,separate bet offered,datagolf,-120,+143,0.545455,0.411523,0.569977,0.430023,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","Lee, Min Woo",14636,16841,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","Lee, Min Woo",14636,16841,separate bet offered,datagolf,+158,-133,0.387597,0.570815,0.404416,0.595584,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","Lee, Min Woo",14636,16841,void,bovada,+110,-145,0.47619,0.591837,0.44586,0.55414,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","Lee, Min Woo",14636,16841,void,datagolf,+147,-147,0.404858,0.595142,0.404858,0.595142,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,separate bet offered,datagolf,+129,-109,0.436681,0.521531,0.455725,0.544275,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,separate bet offered,datagolf,+137,-116,0.421941,0.537037,0.43999,0.56001,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,void,betcris,+107,-137,0.483092,0.578059,0.455253,0.544747,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,void,betonline,+106,-127,0.485437,0.559471,0.464574,0.535426,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,void,datagolf,+127,-127,0.440529,0.559471,0.440529,0.559471,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,void,pinnacle,+114,-134,0.46729,0.57265,0.449343,0.550657,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Burns, Sam",14578,19483,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Burns, Sam",14578,19483,separate bet offered,datagolf,+102,+116,0.49505,0.462963,0.516746,0.483254,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Burns, Sam",14578,19483,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Burns, Sam",14578,19483,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Burns, Sam",14578,19483,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Burns, Sam",14578,19483,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Burns, Sam",14578,19483,void,pinnacle,-115,-102,0.534884,0.50495,0.514393,0.485607,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Clark, Wyndham",6093,23604,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Clark, Wyndham",6093,23604,separate bet offered,datagolf,+107,+110,0.483092,0.47619,0.503597,0.496403,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Clark, Wyndham",6093,23604,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Clark, Wyndham",6093,23604,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Clark, Wyndham",6093,23604,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Clark, Wyndham",6093,23604,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Clark, Wyndham",6093,23604,void,pinnacle,-102,-115,0.50495,0.534884,0.485607,0.514393,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Thomas, Justin",13900,14139,separate bet offered,bet365,+100,-105,0.5,0.512195,0.493976,0.506024,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Thomas, Justin",13900,14139,separate bet offered,datagolf,+101,+118,0.497512,0.458716,0.520286,0.479714,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Thomas, Justin",13900,14139,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Thomas, Justin",13900,14139,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,bet365,+100,-105,0.5,0.512195,0.493976,0.506024,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,datagolf,+149,-125,0.401606,0.555556,0.41958,0.58042,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betcris,+126,-158,0.442478,0.612403,0.419458,0.580542,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betmgm,+110,-133,0.47619,0.570815,0.454812,0.545188,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betonline,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,bovada,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,caesars,+120,-190,0.454545,0.655172,0.409605,0.590395,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,datagolf,+138,-138,0.420168,0.579832,0.420168,0.579832,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,pinnacle,+124,-145,0.446429,0.591837,0.429975,0.570025,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,separate bet offered,datagolf,+106,+113,0.485437,0.469484,0.508353,0.491647,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,pinnacle,-109,-107,0.521531,0.516908,0.502226,0.497774,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Gotterup, Chris",19195,27774,separate bet offered,bet365,-120,+110,0.545455,0.47619,0.533898,0.466102,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Gotterup, Chris",19195,27774,separate bet offered,datagolf,-129,+153,0.563319,0.395257,0.587662,0.412338,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Gotterup, Chris",19195,27774,void,bovada,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Gotterup, Chris",19195,27774,void,datagolf,-143,+143,0.588477,0.411523,0.588477,0.411523,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Hojgaard, Nicolai",8825,23602,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Hojgaard, Nicolai",8825,23602,separate bet offered,datagolf,+114,+104,0.46729,0.490196,0.488038,0.511962,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Hojgaard, Nicolai",8825,23602,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Hojgaard, Nicolai",8825,23602,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Rai, Aaron",14609,18554,separate bet offered,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Rai, Aaron",14609,18554,separate bet offered,datagolf,-108,+128,0.519231,0.438596,0.542092,0.457908,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Rai, Aaron",14609,18554,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Rai, Aaron",14609,18554,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Straka, Sepp","Puig, David",17511,28984,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Straka, Sepp","Puig, David",17511,28984,separate bet offered,datagolf,-100,+119,0.5,0.456621,0.522673,0.477327,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Kim, Tom",14838,24766,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Kim, Tom",14838,24766,separate bet offered,datagolf,+117,+102,0.460829,0.49505,0.4821,0.5179,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Kim, Tom",14838,24766,void,betcris,-117,-113,0.539171,0.530516,0.504045,0.495955,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Kim, Tom",14838,24766,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Kim, Tom",14838,24766,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Kim, Tom",14838,24766,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Kim, Tom",14838,24766,void,pinnacle,+105,-122,0.487805,0.54955,0.470239,0.529761,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","Morikawa, Collin",19895,22085,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","Morikawa, Collin",19895,22085,separate bet offered,datagolf,-109,+129,0.521531,0.436681,0.544275,0.455725,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","Morikawa, Collin",19895,22085,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","Morikawa, Collin",19895,22085,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Detry, Thomas","Neergaard-Petersen, Rasmus",14181,23841,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Detry, Thomas","Neergaard-Petersen, Rasmus",14181,23841,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Detry, Thomas","Neergaard-Petersen, Rasmus",14181,23841,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Detry, Thomas","Neergaard-Petersen, Rasmus",14181,23841,void,pinnacle,-121,+104,0.547511,0.490196,0.527616,0.472384,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Parry, John","Hillier, Daniel",13764,21362,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Parry, John","Hillier, Daniel",13764,21362,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Parry, John","Hillier, Daniel",13764,21362,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Michael","McCarty, Matt",17543,28635,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Michael","McCarty, Matt",17543,28635,void,betonline,-122,+102,0.54955,0.49505,0.526087,0.473913,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Michael","McCarty, Matt",17543,28635,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Canter, Laurie","Sullivan, Andy",14795,15326,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Canter, Laurie","Sullivan, Andy",14795,15326,void,betonline,-122,+102,0.54955,0.49505,0.526087,0.473913,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Canter, Laurie","Sullivan, Andy",14795,15326,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Fox, Ryan",10419,11889,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Fox, Ryan",10419,11889,void,betonline,-122,+102,0.54955,0.49505,0.526087,0.473913,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Fox, Ryan",10419,11889,void,bovada,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Fox, Ryan",10419,11889,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Fox, Ryan",10419,11889,void,pinnacle,-123,+105,0.55157,0.487805,0.530675,0.469325,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Novak, Andrew","Coody, Pierceson",23475,28309,void,betcris,-117,-113,0.539171,0.530516,0.504045,0.495955,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Novak, Andrew","Coody, Pierceson",23475,28309,void,betonline,-117,-103,0.539171,0.507389,0.515184,0.484816,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Novak, Andrew","Coody, Pierceson",23475,28309,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Brown, Dan","Jordan, Matthew",20766,25601,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Brown, Dan","Jordan, Matthew",20766,25601,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Brown, Dan","Jordan, Matthew",20766,25601,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Homa, Max",9771,17538,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Homa, Max",9771,17538,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Homa, Max",9771,17538,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rai, Aaron","Fitzpatrick, Alex",18554,25362,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rai, Aaron","Fitzpatrick, Alex",18554,25362,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rai, Aaron","Fitzpatrick, Alex",18554,25362,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rai, Aaron","Fitzpatrick, Alex",18554,25362,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fowler, Rickie","Reitan, Kristoffer",12965,21407,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Fowler, Rickie","Reitan, Kristoffer",12965,21407,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fowler, Rickie","Reitan, Kristoffer",12965,21407,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fowler, Rickie","Reitan, Kristoffer",12965,21407,void,pinnacle,-122,+105,0.54955,0.487805,0.529761,0.470239,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Im, Sungjae","Jarvis, Casey",17488,26947,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Im, Sungjae","Jarvis, Casey",17488,26947,void,betonline,+102,-122,0.49505,0.54955,0.473913,0.526087,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Im, Sungjae","Jarvis, Casey",17488,26947,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Jordan","Perez, Victor",18586,20730,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Jordan","Perez, Victor",18586,20730,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Jordan","Perez, Victor",18586,20730,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Jordan","Perez, Victor",18586,20730,void,pinnacle,-103,-113,0.507389,0.530516,0.488859,0.511141,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Jordan","Perez, Victor",18586,20730,void,unibet,+105,-137,0.487805,0.578059,0.457661,0.542339,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Straka, Sepp","Knapp, Jake",17511,19396,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Straka, Sepp","Knapp, Jake",17511,19396,void,betonline,-112,-108,0.528302,0.519231,0.50433,0.49567,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Straka, Sepp","Knapp, Jake",17511,19396,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Woodland, Gary","Berger, Daniel",12577,17606,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Woodland, Gary","Berger, Daniel",12577,17606,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Woodland, Gary","Berger, Daniel",12577,17606,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Woodland, Gary","Berger, Daniel",12577,17606,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Woodland, Gary","Berger, Daniel",12577,17606,void,pinnacle,-118,+101,0.541284,0.497512,0.521069,0.478931,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Schaper, Jayden",22322,26991,void,betcris,-170,+135,0.62963,0.425532,0.596714,0.403286,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Schaper, Jayden",22322,26991,void,betonline,-153,+127,0.604743,0.440529,0.578551,0.421449,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Schaper, Jayden",22322,26991,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Wiesberger, Bernd","Du Plessis, Hennie",9531,19421,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Wiesberger, Bernd","Du Plessis, Hennie",9531,19421,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Wiesberger, Bernd","Du Plessis, Hennie",9531,19421,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Puig, David","Ayora, Angel",28984,30445,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Puig, David","Ayora, Angel",28984,30445,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Puig, David","Ayora, Angel",28984,30445,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Puig, David","Ayora, Angel",28984,30445,void,pinnacle,-107,-109,0.516908,0.521531,0.497774,0.502226,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Puig, David","Ayora, Angel",28984,30445,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,betonline,+102,-122,0.49505,0.54955,0.473913,0.526087,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,pinnacle,+105,-123,0.487805,0.55157,0.469325,0.530675,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Herbert, Lucas","Hisatsune, Ryo",17064,22760,void,betcris,+115,-145,0.465116,0.591837,0.440054,0.559946,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Herbert, Lucas","Hisatsune, Ryo",17064,22760,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Herbert, Lucas","Hisatsune, Ryo",17064,22760,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,betonline,-117,-103,0.539171,0.507389,0.515184,0.484816,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,bovada,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Taylor, Nick","Smalley, Alex",13126,18474,void,pinnacle,-115,-102,0.534884,0.50495,0.514393,0.485607,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","English, Harris",13562,14577,void,betcris,-104,-126,0.509804,0.557522,0.477646,0.522354,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","English, Harris",13562,14577,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","English, Harris",13562,14577,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Bhatia, Akshay",17576,26096,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Bhatia, Akshay",17576,26096,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Bhatia, Akshay",17576,26096,void,bovada,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Bhatia, Akshay",17576,26096,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Bhatia, Akshay",17576,26096,void,pinnacle,-111,-105,0.526066,0.512195,0.50668,0.49332,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hojgaard, Rasmus","Chacarra, Eugenio",23838,26745,void,betcris,+119,-149,0.456621,0.598394,0.43281,0.56719,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hojgaard, Rasmus","Chacarra, Eugenio",23838,26745,void,betonline,+120,-144,0.454545,0.590164,0.435093,0.564907,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hojgaard, Rasmus","Chacarra, Eugenio",23838,26745,void,datagolf,+154,-154,0.393701,0.606299,0.393701,0.606299,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Lee, Min Woo",13900,16841,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Lee, Min Woo",13900,16841,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Lee, Min Woo",13900,16841,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Lee, Min Woo",13900,16841,void,pinnacle,-105,-112,0.512195,0.528302,0.49226,0.50774,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,betcris,+141,-178,0.414938,0.640288,0.393222,0.606778,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,betonline,+137,-165,0.421941,0.622642,0.403933,0.596067,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Griffin, Ben",15856,24968,void,datagolf,+165,-165,0.377358,0.622642,0.377358,0.622642,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Young, Cameron",14578,26651,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Young, Cameron",14578,26651,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Young, Cameron",14578,26651,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Young, Cameron",14578,26651,void,pinnacle,-113,-104,0.530516,0.509804,0.509955,0.490045,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Koepka, Brooks",14139,16243,void,betcris,-170,+135,0.62963,0.425532,0.596714,0.403286,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Koepka, Brooks",14139,16243,void,betonline,-169,+140,0.628253,0.416667,0.601245,0.398755,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Koepka, Brooks",14139,16243,void,datagolf,-158,+158,0.612403,0.387597,0.612403,0.387597,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","DeChambeau, Bryson",18079,19841,void,betcris,-140,+110,0.583333,0.47619,0.550562,0.449438,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","DeChambeau, Bryson",18079,19841,void,betonline,-147,+122,0.595142,0.45045,0.569191,0.430809,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","DeChambeau, Bryson",18079,19841,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Schauffele, Xander",19195,19895,void,betcris,-140,+110,0.583333,0.47619,0.550562,0.449438,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Schauffele, Xander",19195,19895,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Schauffele, Xander",19195,19895,void,betonline,-135,+113,0.574468,0.469484,0.550282,0.449718,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Schauffele, Xander",19195,19895,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Schauffele, Xander",19195,19895,void,pinnacle,-133,+113,0.570815,0.469484,0.548703,0.451297,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","Cantlay, Patrick",14636,15466,void,betcris,+108,-138,0.480769,0.579832,0.453299,0.546701,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","Cantlay, Patrick",14636,15466,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","Cantlay, Patrick",14636,15466,void,datagolf,+144,-144,0.409836,0.590164,0.409836,0.590164,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,betcris,-127,-103,0.559471,0.507389,0.524409,0.475591,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,betonline,-129,+108,0.563319,0.480769,0.539532,0.460468,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Spaun, J.J.",8825,17536,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Spaun, J.J.",8825,17536,void,betonline,+104,-124,0.490196,0.553571,0.469641,0.530359,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Spaun, J.J.",8825,17536,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Spaun, J.J.",8825,17536,void,pinnacle,+112,-132,0.471698,0.568966,0.453267,0.546733,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,betcris,-101,-129,0.502488,0.563319,0.471462,0.528538,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,betonline,-102,-118,0.50495,0.541284,0.482636,0.517364,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,draftkings,+104,-136,0.490196,0.576271,0.459645,0.540355,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,pinnacle,+108,-126,0.480769,0.557522,0.463039,0.536961,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Horschel, Billy","Cole, Eric",11276,21756,void,betcris,+117,-147,0.460829,0.595142,0.436403,0.563597,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Horschel, Billy","Cole, Eric",11276,21756,void,betonline,+135,-163,0.425532,0.619772,0.407089,0.592911,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Horschel, Billy","Cole, Eric",11276,21756,void,datagolf,+153,-153,0.395257,0.604743,0.395257,0.604743,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Wallace, Matt","Penge, Marco",20706,22465,void,betcris,-160,+127,0.615385,0.440529,0.582798,0.417202,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Wallace, Matt","Penge, Marco",20706,22465,void,betonline,-157,+130,0.610895,0.434783,0.58421,0.41579,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Wallace, Matt","Penge, Marco",20706,22465,void,datagolf,-161,+161,0.616858,0.383142,0.616858,0.383142,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cauley, Bud","Greyserman, Max",14502,23465,void,betcris,-129,-101,0.563319,0.502488,0.528538,0.471462,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Cauley, Bud","Greyserman, Max",14502,23465,void,betonline,-121,+101,0.547511,0.497512,0.523922,0.476078,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cauley, Bud","Greyserman, Max",14502,23465,void,bovada,-145,+110,0.591837,0.47619,0.55414,0.44586,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cauley, Bud","Greyserman, Max",14502,23465,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cauley, Bud","Greyserman, Max",14502,23465,void,pinnacle,-116,+100,0.537037,0.5,0.517857,0.482143,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Poston, J.T.","Theegala, Sahith",21554,23014,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Poston, J.T.","Theegala, Sahith",21554,23014,void,betonline,-108,-112,0.519231,0.528302,0.49567,0.50433,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Poston, J.T.","Theegala, Sahith",21554,23014,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Brennan, Michael","Suber, Jackson",29197,29279,void,betcris,-129,-101,0.563319,0.502488,0.528538,0.471462,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Brennan, Michael","Suber, Jackson",29197,29279,void,betonline,-117,-103,0.539171,0.507389,0.515184,0.484816,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Brennan, Michael","Suber, Jackson",29197,29279,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bradley, Keegan","Mitchell, Keith",13872,17365,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Bradley, Keegan","Mitchell, Keith",13872,17365,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bradley, Keegan","Mitchell, Keith",13872,17365,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bradley, Keegan","Mitchell, Keith",13872,17365,void,pinnacle,-129,+110,0.563319,0.47619,0.541908,0.458092,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Echavarria, Nico","Valimaki, Sami",22833,23816,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Echavarria, Nico","Valimaki, Sami",22833,23816,void,betonline,-102,-118,0.50495,0.541284,0.482636,0.517364,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Echavarria, Nico","Valimaki, Sami",22833,23816,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Li, Haotong","Hall, Harry",15310,27194,void,betcris,+110,-140,0.47619,0.583333,0.449438,0.550562,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Li, Haotong","Hall, Harry",15310,27194,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Li, Haotong","Hall, Harry",15310,27194,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bridgeman, Jacob","Keefer, Johnny",29433,32457,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Bridgeman, Jacob","Keefer, Johnny",29433,32457,void,betonline,-117,-103,0.539171,0.507389,0.515184,0.484816,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bridgeman, Jacob","Keefer, Johnny",29433,32457,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,pinnacle,-104,-112,0.509804,0.528302,0.491091,0.508909,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Hojgaard, Nicolai",6430,23602,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Hojgaard, Nicolai",6430,23602,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Hojgaard, Nicolai",6430,23602,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Hojgaard, Nicolai",6430,23602,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Hojgaard, Nicolai",6430,23602,void,pinnacle,-103,-113,0.507389,0.530516,0.488859,0.511141,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Hojgaard, Nicolai",6430,23602,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Michael","Cole, Eric",17543,21756,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Michael","Cole, Eric",17543,21756,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Michael","Cole, Eric",17543,21756,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Michael","Cole, Eric",17543,21756,void,pinnacle,-104,-112,0.509804,0.528302,0.491091,0.508909,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Herbert, Lucas","Hillier, Daniel",17064,21362,void,betcris,+109,-139,0.478469,0.58159,0.451361,0.548639,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Herbert, Lucas","Hillier, Daniel",17064,21362,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Herbert, Lucas","Hillier, Daniel",17064,21362,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Herbert, Lucas","Hillier, Daniel",17064,21362,void,pinnacle,-103,-113,0.507389,0.530516,0.488859,0.511141,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Homa, Max","Theegala, Sahith",17538,23014,void,betcris,-103,-127,0.507389,0.559471,0.475591,0.524409,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Homa, Max","Theegala, Sahith",17538,23014,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Homa, Max","Theegala, Sahith",17538,23014,void,pinnacle,-108,-108,0.519231,0.519231,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Tom","Fitzpatrick, Alex",24766,25362,void,betcris,+101,-131,0.497512,0.5671,0.467318,0.532682,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Tom","Fitzpatrick, Alex",24766,25362,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Tom","Fitzpatrick, Alex",24766,25362,void,pinnacle,-108,-108,0.519231,0.519231,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","MacIntyre, Robert",19895,23323,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","MacIntyre, Robert",19895,23323,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","MacIntyre, Robert",19895,23323,void,pinnacle,-104,-112,0.509804,0.528302,0.491091,0.508909,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","Fitzpatrick, Alex",18079,25362,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","Fitzpatrick, Alex",18079,25362,void,caesars,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","Fitzpatrick, Alex",18079,25362,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","Fitzpatrick, Alex",18079,25362,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","Fitzpatrick, Alex",18079,25362,void,pinnacle,+100,-117,0.5,0.539171,0.481153,0.518847,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Im, Sungjae","Penge, Marco",17488,22465,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Im, Sungjae","Penge, Marco",17488,22465,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Im, Sungjae","Penge, Marco",17488,22465,void,pinnacle,-119,+102,0.543379,0.49505,0.52327,0.47673,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,betcris,-127,-103,0.559471,0.507389,0.524409,0.475591,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,bovada,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Knapp, Jake",9771,19396,void,pinnacle,-121,+103,0.547511,0.492611,0.526391,0.473609,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Bridgeman, Jacob",22322,29433,void,betcris,-142,+112,0.586777,0.471698,0.554361,0.445639,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Bridgeman, Jacob",22322,29433,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Bridgeman, Jacob",22322,29433,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Bridgeman, Jacob",22322,29433,void,pinnacle,-135,+115,0.574468,0.465116,0.552594,0.447406,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Du Plessis, Hennie","Svensson, Jesper",19421,26850,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Du Plessis, Hennie","Svensson, Jesper",19421,26850,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Du Plessis, Hennie","Svensson, Jesper",19421,26850,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Du Plessis, Hennie","Svensson, Jesper",19421,26850,void,pinnacle,-121,+104,0.547511,0.490196,0.527616,0.472384,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Stevens, Sam","Brennan, Michael",25569,29197,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Stevens, Sam","Brennan, Michael",25569,29197,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Stevens, Sam","Brennan, Michael",25569,29197,void,pinnacle,-110,-106,0.52381,0.514563,0.504452,0.495548,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hisatsune, Ryo","Hall, Harry",22760,27194,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hisatsune, Ryo","Hall, Harry",22760,27194,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hisatsune, Ryo","Hall, Harry",22760,27194,void,pinnacle,+104,-121,0.490196,0.547511,0.472384,0.527616,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hojgaard, Rasmus","Jarvis, Casey",23838,26947,void,betcris,-101,-129,0.502488,0.563319,0.471462,0.528538,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hojgaard, Rasmus","Jarvis, Casey",23838,26947,void,bovada,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hojgaard, Rasmus","Jarvis, Casey",23838,26947,void,datagolf,+133,-133,0.429185,0.570815,0.429185,0.570815,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hojgaard, Rasmus","Jarvis, Casey",23838,26947,void,pinnacle,+109,-128,0.478469,0.561404,0.460123,0.539877,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,draftkings,-105,-124,0.512195,0.553571,0.480588,0.519412,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Griffin, Ben",14577,24968,void,pinnacle,-108,-108,0.519231,0.519231,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Koepka, Brooks",13562,16243,void,betcris,-160,+127,0.615385,0.440529,0.582798,0.417202,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Koepka, Brooks",13562,16243,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Koepka, Brooks",13562,16243,void,pinnacle,-152,+129,0.603175,0.436681,0.580056,0.419944,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,pinnacle,-118,+101,0.541284,0.497512,0.521069,0.478931,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Hovland, Viktor",6093,18841,void,betcris,+110,-140,0.47619,0.583333,0.449438,0.550562,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Hovland, Viktor",6093,18841,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Hovland, Viktor",6093,18841,void,datagolf,+132,-132,0.431034,0.568966,0.431034,0.568966,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Hovland, Viktor",6093,18841,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Hovland, Viktor",6093,18841,void,pinnacle,+114,-133,0.46729,0.570815,0.450137,0.549863,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,betcris,+100,-130,0.5,0.565217,0.469388,0.530612,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,pinnacle,+104,-122,0.490196,0.54955,0.471458,0.528542,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,pinnacle,-107,-109,0.516908,0.521531,0.497774,0.502226,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Clark, Wyndham",14796,23604,void,betcris,-132,+102,0.568966,0.49505,0.534734,0.465266,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Clark, Wyndham",14796,23604,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Clark, Wyndham",14796,23604,void,pinnacle,-120,+103,0.545455,0.492611,0.525453,0.474547,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","DeChambeau, Bryson",14636,19841,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","DeChambeau, Bryson",14636,19841,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","DeChambeau, Bryson",14636,19841,void,draftkings,-102,-128,0.50495,0.561404,0.47353,0.52647,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Spieth, Jordan","DeChambeau, Bryson",14636,19841,void,pinnacle,-107,-109,0.516908,0.521531,0.497774,0.502226,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,betcris,+135,-170,0.425532,0.62963,0.403286,0.596714,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,datagolf,+134,-134,0.42735,0.57265,0.42735,0.57265,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,pinnacle,+138,-163,0.420168,0.619772,0.404031,0.595969,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Fleetwood, Tommy",10091,12294,void,betcris,-116,-114,0.537037,0.53271,0.502022,0.497978,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Fleetwood, Tommy",10091,12294,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Fleetwood, Tommy",10091,12294,void,pinnacle,-112,-104,0.528302,0.509804,0.508909,0.491091,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Aberg, Ludvig",19195,23950,void,betcris,-155,+124,0.607843,0.446429,0.576553,0.423447,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Aberg, Ludvig",19195,23950,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rahm, Jon","Aberg, Ludvig",19195,23950,void,pinnacle,-143,+122,0.588477,0.45045,0.566428,0.433572,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Wallace, Matt","Chacarra, Eugenio",20706,26745,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Wallace, Matt","Chacarra, Eugenio",20706,26745,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Wallace, Matt","Chacarra, Eugenio",20706,26745,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Wallace, Matt","Chacarra, Eugenio",20706,26745,void,pinnacle,-114,-102,0.53271,0.50495,0.513376,0.486624,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Straka, Sepp",15856,17511,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Straka, Sepp",15856,17511,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Straka, Sepp",15856,17511,void,pinnacle,-109,-107,0.521531,0.516908,0.502226,0.497774,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Niemann, Joaquin",14838,18079,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Niemann, Joaquin",14838,18079,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Niemann, Joaquin",14838,18079,void,pinnacle,-103,-114,0.507389,0.53271,0.487828,0.512172,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Niemann, Joaquin",14838,18079,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Poston, J.T.","Keefer, Johnny",21554,32457,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Poston, J.T.","Keefer, Johnny",21554,32457,void,bovada,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Poston, J.T.","Keefer, Johnny",21554,32457,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Poston, J.T.","Keefer, Johnny",21554,32457,void,pinnacle,-106,-110,0.514563,0.52381,0.495548,0.504452,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Burns, Sam","Gotterup, Chris",19483,27774,void,betcris,-107,-123,0.516908,0.55157,0.48378,0.51622,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Burns, Sam","Gotterup, Chris",19483,27774,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Burns, Sam","Gotterup, Chris",19483,27774,void,pinnacle,-107,-109,0.516908,0.521531,0.497774,0.502226,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Spaun, J.J.","Rai, Aaron",17536,18554,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Spaun, J.J.","Rai, Aaron",17536,18554,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Spaun, J.J.","Rai, Aaron",17536,18554,void,draftkings,-104,-128,0.509804,0.561404,0.475915,0.524085,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Spaun, J.J.","Rai, Aaron",17536,18554,void,pinnacle,+105,-123,0.487805,0.55157,0.469325,0.530675,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Young, Cameron",22085,26651,void,betcris,-141,+111,0.585062,0.473934,0.552469,0.447531,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Young, Cameron",22085,26651,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Young, Cameron",22085,26651,void,pinnacle,-126,+108,0.557522,0.480769,0.536961,0.463039,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Cantlay, Patrick",13900,15466,void,betcris,-133,+103,0.570815,0.492611,0.53677,0.46323,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Cantlay, Patrick",13900,15466,void,caesars,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Cantlay, Patrick",13900,15466,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Cantlay, Patrick",13900,15466,void,draftkings,-115,-114,0.534884,0.53271,0.501018,0.498982,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Cantlay, Patrick",13900,15466,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Cantlay, Patrick",13900,15466,void,pinnacle,-118,+101,0.541284,0.497512,0.521069,0.478931,False,True,The Open Championship,2026-07-16 04:37:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,caesars,-155,+122,0.607843,0.45045,0.574362,0.425638,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,datagolf,-129,+129,0.563319,0.436681,0.563319,0.436681,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,fanduel,-150,+110,0.6,0.47619,0.557522,0.442478,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rai, Aaron","Hojgaard, Nicolai",18554,23602,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rai, Aaron","Hojgaard, Nicolai",18554,23602,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rai, Aaron","Hojgaard, Nicolai",18554,23602,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,datagolf,-148,+148,0.596774,0.403226,0.596774,0.403226,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,fanduel,-150,+110,0.6,0.47619,0.557522,0.442478,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,caesars,-155,+122,0.607843,0.45045,0.574362,0.425638,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,fanduel,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Fowler, Rickie",6430,12965,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Fowler, Rickie",6430,12965,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Scott, Adam","Fowler, Rickie",6430,12965,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Koepka, Brooks","McNealy, Maverick",16243,18634,void,caesars,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Koepka, Brooks","McNealy, Maverick",16243,18634,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Koepka, Brooks","McNealy, Maverick",16243,18634,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Young, Cameron",23323,26651,void,caesars,-180,+115,0.642857,0.465116,0.58021,0.41979,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Young, Cameron",23323,26651,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Young, Cameron",23323,26651,void,fanduel,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","DeChambeau, Bryson",14838,19841,void,caesars,-165,-103,0.622642,0.507389,0.550995,0.449005,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","DeChambeau, Bryson",14838,19841,void,datagolf,-129,+129,0.563319,0.436681,0.563319,0.436681,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","DeChambeau, Bryson",14838,19841,void,fanduel,-138,+100,0.579832,0.5,0.536965,0.463035,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Reitan, Kristoffer",15856,21407,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Reitan, Kristoffer",15856,21407,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Reitan, Kristoffer",15856,21407,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Clark, Wyndham","Aberg, Ludvig",23604,23950,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Clark, Wyndham","Aberg, Ludvig",23604,23950,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Clark, Wyndham","Aberg, Ludvig",23604,23950,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Burns, Sam",14796,19483,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Burns, Sam",14796,19483,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","Burns, Sam",14796,19483,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Kim, Tom",14578,24766,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Kim, Tom",14578,24766,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Kim, Tom",14578,24766,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,datagolf,-141,+141,0.585062,0.414938,0.585062,0.414938,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Spieth, Jordan",14139,14636,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Scheffler, Scottie",12294,18417,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Scheffler, Scottie",12294,18417,void,draftkings,+130,-174,0.434783,0.635036,0.406408,0.593592,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fleetwood, Tommy","Scheffler, Scottie",12294,18417,void,unibet,+115,-150,0.465116,0.6,0.436681,0.563319,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,draftkings,-138,+102,0.579832,0.49505,0.539438,0.460562,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Young, Cameron","Gotterup, Chris",26651,27774,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Young, Cameron","Gotterup, Chris",26651,27774,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,betmgm,-110,-110,0.52381,0.52381,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Thomas, Justin",6093,14139,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Thomas, Justin",6093,14139,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,unibet,+110,-143,0.47619,0.588477,0.447267,0.552733,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McNealy, Maverick","Griffin, Ben",18634,24968,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McNealy, Maverick","Griffin, Ben",18634,24968,void,unibet,+105,-137,0.487805,0.578059,0.457661,0.542339,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Lee, Min Woo",14577,16841,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Lee, Min Woo",14577,16841,void,unibet,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Rai, Aaron",13900,18554,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Rai, Aaron",13900,18554,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fitzpatrick, Alex","Bhatia, Akshay",25362,26096,void,datagolf,-150,+150,0.6,0.4,0.6,0.4,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fitzpatrick, Alex","Bhatia, Akshay",25362,26096,void,unibet,-175,+130,0.636364,0.434783,0.594096,0.405904,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Fowler, Rickie",10419,12965,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Fowler, Rickie",10419,12965,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Taylor, Nick",8825,13126,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Taylor, Nick",8825,13126,void,unibet,-132,+100,0.568966,0.5,0.532258,0.467742,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Chacarra, Eugenio","Puig, David",26745,28984,void,datagolf,-134,+134,0.57265,0.42735,0.57265,0.42735,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Chacarra, Eugenio","Puig, David",26745,28984,void,unibet,-159,+120,0.6139,0.454545,0.574573,0.425427,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Koepka, Brooks",15856,16243,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Koepka, Brooks",15856,16243,void,unibet,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Theegala, Sahith",17576,23014,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Theegala, Sahith",17576,23014,void,unibet,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Perez, Victor","Thorbjornsen, Michael",20730,26649,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Perez, Victor","Thorbjornsen, Michael",20730,26649,void,unibet,-143,+110,0.588477,0.47619,0.552733,0.447267,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Straka, Sepp","Wallace, Matt",17511,20706,void,datagolf,+134,-134,0.42735,0.57265,0.42735,0.57265,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Straka, Sepp","Wallace, Matt",17511,20706,void,unibet,+120,-159,0.454545,0.6139,0.425427,0.574573,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Neergaard-Petersen, Rasmus","Schaper, Jayden",23841,26991,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Neergaard-Petersen, Rasmus","Schaper, Jayden",23841,26991,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hillier, Daniel","McKibbin, Tom",21362,22322,void,datagolf,+130,-130,0.434783,0.565217,0.434783,0.565217,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hillier, Daniel","McKibbin, Tom",21362,22322,void,unibet,+115,-150,0.465116,0.6,0.436681,0.563319,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Fox, Ryan",9771,11889,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Fox, Ryan",9771,11889,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Day, Jason","Fox, Ryan",9771,11889,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Detry, Thomas","Ayora, Angel",14181,30445,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Detry, Thomas","Ayora, Angel",14181,30445,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,void,draftkings,+110,-146,0.47619,0.593496,0.445168,0.554832,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Hatton, Tyrrell",6093,14796,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Hatton, Tyrrell",6093,14796,void,draftkings,-104,-125,0.509804,0.555556,0.478528,0.521472,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","Hatton, Tyrrell",6093,14796,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","MacIntyre, Robert",14609,23323,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Si Woo","MacIntyre, Robert",14609,23323,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Lee, Min Woo",14139,16841,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Lee, Min Woo",14139,16841,void,draftkings,-114,-114,0.53271,0.53271,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Lee, Min Woo",14139,16841,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","DeChambeau, Bryson",14578,19841,void,datagolf,-141,+141,0.585062,0.414938,0.585062,0.414938,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","DeChambeau, Bryson",14578,19841,void,unibet,-159,+120,0.6139,0.454545,0.574573,0.425427,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Fitzpatrick, Alex",14577,25362,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"English, Harris","Fitzpatrick, Alex",14577,25362,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Spieth, Jordan",13562,14636,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Bhatia, Akshay",8825,26096,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Bhatia, Akshay",8825,26096,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Homa, Max","Thorbjornsen, Michael",17538,26649,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Homa, Max","Thorbjornsen, Michael",17538,26649,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smalley, Alex","Gerard, Ryan",18474,29767,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smalley, Alex","Gerard, Ryan",18474,29767,void,unibet,+110,-143,0.47619,0.588477,0.447267,0.552733,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,void,unibet,-132,+100,0.568966,0.5,0.532258,0.467742,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cantlay, Patrick","Kim, Tom",15466,24766,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cantlay, Patrick","Kim, Tom",15466,24766,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Spaun, J.J.",14838,17536,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Spaun, J.J.",14838,17536,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Koepka, Brooks","Keefer, Johnny",16243,32457,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Koepka, Brooks","Keefer, Johnny",16243,32457,void,unibet,-137,+105,0.578059,0.487805,0.542339,0.457661,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Nakajima, Keita",15856,21074,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smith, Cameron","Nakajima, Keita",15856,21074,void,unibet,-137,+105,0.578059,0.487805,0.542339,0.457661,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reitan, Kristoffer","Kitayama, Kurt",21407,21891,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reitan, Kristoffer","Kitayama, Kurt",21407,21891,void,unibet,+105,-137,0.487805,0.578059,0.457661,0.542339,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Chacarra, Eugenio",17576,26745,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Chacarra, Eugenio",17576,26745,void,unibet,-132,+100,0.568966,0.5,0.532258,0.467742,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bradley, Keegan","Wallace, Matt",13872,20706,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Bradley, Keegan","Wallace, Matt",13872,20706,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cole, Eric","Bridgeman, Jacob",21756,29433,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Cole, Eric","Bridgeman, Jacob",21756,29433,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Homa, Max","McKibbin, Tom",17538,22322,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Homa, Max","McKibbin, Tom",17538,22322,void,draftkings,-112,-116,0.528302,0.537037,0.4959,0.5041,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fowler, Rickie","Thorbjornsen, Michael",12965,26649,void,datagolf,-129,+129,0.563319,0.436681,0.563319,0.436681,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Fowler, Rickie","Thorbjornsen, Michael",12965,26649,void,draftkings,-134,+102,0.57265,0.49505,0.53634,0.46366,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Fitzpatrick, Alex",23323,25362,void,datagolf,-129,+129,0.563319,0.436681,0.563319,0.436681,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"MacIntyre, Robert","Fitzpatrick, Alex",23323,25362,void,draftkings,-144,+110,0.590164,0.47619,0.553441,0.446559,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,void,draftkings,-130,-102,0.565217,0.50495,0.528158,0.471842,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,draftkings,-112,-116,0.528302,0.537037,0.4959,0.5041,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Noren, Alex",8825,10419,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Noren, Alex",8825,10419,void,draftkings,-114,-115,0.53271,0.534884,0.498982,0.501018,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Chacarra, Eugenio","Gerard, Ryan",26745,29767,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Chacarra, Eugenio","Gerard, Ryan",26745,29767,void,draftkings,-122,-108,0.54955,0.519231,0.514184,0.485816,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","Kim, Tom",18079,24766,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Niemann, Joaquin","Kim, Tom",18079,24766,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Koepka, Brooks",14838,16243,void,datagolf,-152,+152,0.603175,0.396825,0.603175,0.396825,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Koepka, Brooks",14838,16243,void,draftkings,-142,+106,0.586777,0.485437,0.547257,0.452743,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","Gotterup, Chris",19895,27774,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schauffele, Xander","Gotterup, Chris",19895,27774,void,draftkings,-130,-102,0.565217,0.50495,0.528158,0.471842,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Clark, Wyndham",22085,23604,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Morikawa, Collin","Clark, Wyndham",22085,23604,void,draftkings,-124,-106,0.553571,0.514563,0.51826,0.48174,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,draftkings,-110,-118,0.52381,0.541284,0.491797,0.508203,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Mitchell, Keith","Homa, Max",17365,17538,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Mitchell, Keith","Homa, Max",17365,17538,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Puig, David",22322,28984,void,caesars,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"McKibbin, Tom","Puig, David",22322,28984,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Chacarra, Eugenio","Ayora, Angel",26745,30445,void,caesars,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Chacarra, Eugenio","Ayora, Angel",26745,30445,void,datagolf,-129,+129,0.563319,0.436681,0.563319,0.436681,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smalley, Alex","Bridgeman, Jacob",18474,29433,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Smalley, Alex","Bridgeman, Jacob",18474,29433,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","English, Harris",8825,14577,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","English, Harris",8825,14577,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,caesars,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Bradley, Keegan",10419,13872,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Noren, Alex","Bradley, Keegan",10419,13872,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Kitayama, Kurt",17576,21891,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Conners, Corey","Kitayama, Kurt",17576,21891,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schaper, Jayden","Potgieter, Aldrich",26991,27900,void,caesars,-145,+115,0.591837,0.465116,0.559946,0.440054,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Schaper, Jayden","Potgieter, Aldrich",26991,27900,void,datagolf,-149,+149,0.598394,0.401606,0.598394,0.401606,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","MacIntyre, Robert",6093,23323,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Rose, Justin","MacIntyre, Robert",6093,23323,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Tom","Young, Cameron",24766,26651,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Kim, Tom","Young, Cameron",24766,26651,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Lee, Min Woo",14838,16841,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Reed, Patrick","Lee, Min Woo",14838,16841,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Niemann, Joaquin",14139,18079,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Thomas, Justin","Niemann, Joaquin",14139,18079,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Perez, Victor",13900,20730,void,betmgm,-143,+115,0.588477,0.465116,0.558543,0.441457,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Lowry, Shane","Perez, Victor",13900,20730,void,datagolf,-143,+143,0.588477,0.411523,0.588477,0.411523,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Koepka, Brooks","DeChambeau, Bryson",16243,19841,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Koepka, Brooks","DeChambeau, Bryson",16243,19841,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Thorbjornsen, Michael",8825,26649,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,The Open Championship,2026-07-16 04:37:00 UTC
+"Harman, Brian","Thorbjornsen, Michael",8825,26649,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,The Open Championship,2026-07-16 04:37:00 UTC

@@ -1,0 +1,359 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Lee, Min Woo","Rai, Aaron",16841,18554,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Rai, Aaron",16841,18554,separate bet offered,datagolf,-121,+145,0.547511,0.408163,0.572906,0.427094,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Rai, Aaron",16841,18554,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Rai, Aaron",16841,18554,void,datagolf,-135,+135,0.574468,0.425532,0.574468,0.425532,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Hovland, Viktor",15466,18841,separate bet offered,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Hovland, Viktor",15466,18841,separate bet offered,datagolf,+112,+107,0.471698,0.483092,0.494033,0.505967,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Hovland, Viktor",15466,18841,void,bovada,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Hovland, Viktor",15466,18841,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Fitzpatrick, Alex",21407,25362,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Fitzpatrick, Alex",21407,25362,separate bet offered,datagolf,+132,-110,0.431034,0.52381,0.451419,0.548581,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Fitzpatrick, Alex",21407,25362,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Fitzpatrick, Alex",21407,25362,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,separate bet offered,bet365,-120,+110,0.545455,0.47619,0.533898,0.466102,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,separate bet offered,datagolf,+106,+112,0.485437,0.471698,0.507177,0.492823,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Schauffele, Xander","Aberg, Ludvig",19895,23950,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Spaun, J.J.",14577,17536,separate bet offered,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Spaun, J.J.",14577,17536,separate bet offered,datagolf,+108,+112,0.480769,0.471698,0.504762,0.495238,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Spaun, J.J.",14577,17536,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Spaun, J.J.",14577,17536,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,separate bet offered,bet365,+100,-105,0.5,0.512195,0.493976,0.506024,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,separate bet offered,datagolf,+131,-109,0.4329,0.521531,0.453569,0.546431,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,betonline,+104,-124,0.490196,0.553571,0.469641,0.530359,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,draftkings,-108,-120,0.519231,0.545455,0.487685,0.512315,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,pinnacle,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,separate bet offered,datagolf,+108,+112,0.480769,0.471698,0.504762,0.495238,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,betcris,+102,-132,0.49505,0.568966,0.465266,0.534734,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,draftkings,-122,-108,0.54955,0.519231,0.514184,0.485816,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","MacIntyre, Robert",14796,23323,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,bet365,+125,-152,0.444444,0.603175,0.424242,0.575758,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,datagolf,+152,-128,0.396825,0.561404,0.414124,0.585876,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betcris,+135,-170,0.425532,0.62963,0.403286,0.596714,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betmgm,+110,-139,0.47619,0.58159,0.450179,0.549821,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betonline,+126,-152,0.442478,0.603175,0.42316,0.57684,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,bovada,+120,-155,0.454545,0.607843,0.427852,0.572148,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,datagolf,+141,-141,0.414938,0.585062,0.414938,0.585062,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,pinnacle,+127,-152,0.440529,0.603175,0.422082,0.577918,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,separate bet offered,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,separate bet offered,datagolf,-103,+123,0.507389,0.44843,0.530842,0.469158,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,separate bet offered,datagolf,+100,+120,0.5,0.454545,0.52381,0.47619,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Kim, Tom",6430,24766,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Kim, Tom",6430,24766,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Kim, Tom",6430,24766,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Kim, Tom",6430,24766,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fox, Ryan","Ayora, Angel",11889,30445,void,betcris,-103,-127,0.507389,0.559471,0.475591,0.524409,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fox, Ryan","Ayora, Angel",11889,30445,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fox, Ryan","Ayora, Angel",11889,30445,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fox, Ryan","Ayora, Angel",11889,30445,void,pinnacle,+104,-124,0.490196,0.553571,0.469641,0.530359,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Penge, Marco",14838,22465,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Penge, Marco",14838,22465,void,betonline,-119,-101,0.543379,0.502488,0.519549,0.480451,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Penge, Marco",14838,22465,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Knapp, Jake",14502,19396,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Knapp, Jake",14502,19396,void,betonline,+102,-122,0.49505,0.54955,0.473913,0.526087,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Knapp, Jake",14502,19396,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wallace, Matt","Hall, Harry",20706,27194,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wallace, Matt","Hall, Harry",20706,27194,void,betonline,-108,-112,0.519231,0.528302,0.49567,0.50433,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wallace, Matt","Hall, Harry",20706,27194,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Smalley, Alex","Cole, Eric",18474,21756,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Smalley, Alex","Cole, Eric",18474,21756,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Smalley, Alex","Cole, Eric",18474,21756,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Smalley, Alex","Cole, Eric",18474,21756,void,pinnacle,-104,-114,0.509804,0.53271,0.489014,0.510986,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Michael","Svensson, Jesper",17543,26850,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Michael","Svensson, Jesper",17543,26850,void,betonline,-113,-107,0.530516,0.516908,0.506496,0.493504,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Michael","Svensson, Jesper",17543,26850,void,datagolf,-126,+126,0.557522,0.442478,0.557522,0.442478,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wiesberger, Bernd","Jarvis, Casey",9531,26947,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wiesberger, Bernd","Jarvis, Casey",9531,26947,void,betonline,-113,-107,0.530516,0.516908,0.506496,0.493504,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wiesberger, Bernd","Jarvis, Casey",9531,26947,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,betonline,-123,+103,0.55157,0.492611,0.528232,0.471768,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Lee, Min Woo",14609,16841,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Koepka, Brooks","Spaun, J.J.",16243,17536,void,betcris,+131,-165,0.4329,0.622642,0.410121,0.589879,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Koepka, Brooks","Spaun, J.J.",16243,17536,void,betonline,+140,-169,0.416667,0.628253,0.398755,0.601245,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Koepka, Brooks","Spaun, J.J.",16243,17536,void,datagolf,+142,-142,0.413223,0.586777,0.413223,0.586777,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,betcris,-147,+117,0.595142,0.460829,0.563597,0.436403,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,betonline,-132,+110,0.568966,0.47619,0.544383,0.455617,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Hojgaard, Nicolai",21407,23602,void,betcris,+104,-134,0.490196,0.57265,0.461211,0.538789,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Hojgaard, Nicolai",21407,23602,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Hojgaard, Nicolai",21407,23602,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Hojgaard, Nicolai",21407,23602,void,pinnacle,+108,-129,0.480769,0.563319,0.460468,0.539532,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Brennan, Michael",26649,29197,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Brennan, Michael",26649,29197,void,betonline,+114,-136,0.46729,0.576271,0.447784,0.552216,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Brennan, Michael",26649,29197,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Brennan, Michael",26649,29197,void,pinnacle,+115,-138,0.465116,0.579832,0.445109,0.554891,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,betcris,-141,+111,0.585062,0.473934,0.552469,0.447531,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,betonline,-138,+115,0.579832,0.465116,0.554891,0.445109,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,caesars,-145,+115,0.591837,0.465116,0.559946,0.440054,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,pinnacle,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Kitayama, Kurt",14577,21891,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Kitayama, Kurt",14577,21891,void,betonline,-107,-113,0.516908,0.530516,0.493504,0.506496,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Kitayama, Kurt",14577,21891,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hojgaard, Rasmus","Neergaard-Petersen, Rasmus",23838,23841,void,betcris,-140,+110,0.583333,0.47619,0.550562,0.449438,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hojgaard, Rasmus","Neergaard-Petersen, Rasmus",23838,23841,void,betonline,-132,+110,0.568966,0.47619,0.544383,0.455617,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hojgaard, Rasmus","Neergaard-Petersen, Rasmus",23838,23841,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hojgaard, Rasmus","Neergaard-Petersen, Rasmus",23838,23841,void,pinnacle,-116,-103,0.537037,0.507389,0.514193,0.485807,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Rai, Aaron",13900,18554,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Rai, Aaron",13900,18554,void,betonline,-124,+104,0.553571,0.490196,0.530359,0.469641,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Rai, Aaron",13900,18554,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Rai, Aaron",13900,18554,void,pinnacle,-128,+107,0.561404,0.483092,0.537488,0.462512,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Straka, Sepp","Hillier, Daniel",17511,21362,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Straka, Sepp","Hillier, Daniel",17511,21362,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Straka, Sepp","Hillier, Daniel",17511,21362,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Potgieter, Aldrich","Yellamaraju, Sudarshan",27900,29925,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Potgieter, Aldrich","Yellamaraju, Sudarshan",27900,29925,void,betonline,-117,-103,0.539171,0.507389,0.515184,0.484816,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Potgieter, Aldrich","Yellamaraju, Sudarshan",27900,29925,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","Aberg, Ludvig",18841,23950,void,betcris,+131,-165,0.4329,0.622642,0.410121,0.589879,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","Aberg, Ludvig",18841,23950,void,betonline,+124,-149,0.446429,0.598394,0.427277,0.572723,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","Aberg, Ludvig",18841,23950,void,datagolf,+143,-143,0.411523,0.588477,0.411523,0.588477,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Chacarra, Eugenio",10419,26745,void,betcris,-101,-129,0.502488,0.563319,0.471462,0.528538,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Chacarra, Eugenio",10419,26745,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Chacarra, Eugenio",10419,26745,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Perez, Victor","McKibbin, Tom",20730,22322,void,betcris,-103,-127,0.507389,0.559471,0.475591,0.524409,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Perez, Victor","McKibbin, Tom",20730,22322,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Perez, Victor","McKibbin, Tom",20730,22322,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Li, Haotong","Yu, Kevin",15310,17881,void,betcris,+100,-130,0.5,0.565217,0.469388,0.530612,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Li, Haotong","Yu, Kevin",15310,17881,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Li, Haotong","Yu, Kevin",15310,17881,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Coody, Pierceson","Gerard, Ryan",28309,29767,void,betcris,+115,-145,0.465116,0.591837,0.440054,0.559946,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Coody, Pierceson","Gerard, Ryan",28309,29767,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Coody, Pierceson","Gerard, Ryan",28309,29767,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Coody, Pierceson","Gerard, Ryan",28309,29767,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Coody, Pierceson","Gerard, Ryan",28309,29767,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Coody, Pierceson","Gerard, Ryan",28309,29767,void,pinnacle,+110,-131,0.47619,0.5671,0.456432,0.543568,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Stevens, Sam","Keefer, Johnny",25569,32457,void,betcris,-150,+120,0.6,0.454545,0.568966,0.431034,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Stevens, Sam","Keefer, Johnny",25569,32457,void,betonline,-138,+115,0.579832,0.465116,0.554891,0.445109,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Stevens, Sam","Keefer, Johnny",25569,32457,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Harman, Brian","Ghim, Doug",8825,24550,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Harman, Brian","Ghim, Doug",8825,24550,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Harman, Brian","Ghim, Doug",8825,24550,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Harman, Brian","Ghim, Doug",8825,24550,void,pinnacle,-105,-113,0.512195,0.530516,0.491215,0.508785,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Alex","Puig, David",25362,28984,void,betcris,-137,+107,0.578059,0.483092,0.544747,0.455253,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Alex","Puig, David",25362,28984,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Alex","Puig, David",25362,28984,void,datagolf,-138,+138,0.579832,0.420168,0.579832,0.420168,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Du Plessis, Hennie","Schaper, Jayden",19421,26991,void,betcris,-137,+107,0.578059,0.483092,0.544747,0.455253,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Du Plessis, Hennie","Schaper, Jayden",19421,26991,void,betonline,-138,+115,0.579832,0.465116,0.554891,0.445109,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Du Plessis, Hennie","Schaper, Jayden",19421,26991,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Conners, Corey","Theegala, Sahith",17576,23014,void,betcris,-133,+103,0.570815,0.492611,0.53677,0.46323,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Conners, Corey","Theegala, Sahith",17576,23014,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Conners, Corey","Theegala, Sahith",17576,23014,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Conners, Corey","Theegala, Sahith",17576,23014,void,pinnacle,-107,-111,0.516908,0.526066,0.49561,0.50439,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,void,pinnacle,-107,-111,0.516908,0.526066,0.49561,0.50439,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,betcris,-104,-126,0.509804,0.557522,0.477646,0.522354,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Rahm, Jon",17646,19195,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Horschel, Billy","Couvra, Martin",11276,27811,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Horschel, Billy","Couvra, Martin",11276,27811,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Horschel, Billy","Couvra, Martin",11276,27811,void,pinnacle,-117,-101,0.539171,0.502488,0.517608,0.482392,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Knapp, Jake","Penge, Marco",19396,22465,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Knapp, Jake","Penge, Marco",19396,22465,void,pinnacle,+103,-122,0.492611,0.54955,0.472682,0.527318,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wallace, Matt","Perez, Victor",20706,20730,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wallace, Matt","Perez, Victor",20706,20730,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wallace, Matt","Perez, Victor",20706,20730,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wallace, Matt","Perez, Victor",20706,20730,void,unibet,-125,-106,0.555556,0.514563,0.519153,0.480847,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Puig, David",14502,28984,void,betcris,+115,-145,0.465116,0.591837,0.440054,0.559946,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Puig, David",14502,28984,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Puig, David",14502,28984,void,pinnacle,+108,-129,0.480769,0.563319,0.460468,0.539532,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wiesberger, Bernd","Straka, Sepp",9531,17511,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wiesberger, Bernd","Straka, Sepp",9531,17511,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Wiesberger, Bernd","Straka, Sepp",9531,17511,void,pinnacle,-104,-114,0.509804,0.53271,0.489014,0.510986,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Michael","Du Plessis, Hennie",17543,19421,void,betcris,+110,-140,0.47619,0.583333,0.449438,0.550562,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Michael","Du Plessis, Hennie",17543,19421,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Michael","Du Plessis, Hennie",17543,19421,void,pinnacle,+111,-132,0.473934,0.568966,0.454439,0.545561,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Koepka, Brooks",14838,16243,void,betcris,-150,+120,0.6,0.454545,0.568966,0.431034,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Koepka, Brooks",14838,16243,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Koepka, Brooks",14838,16243,void,pinnacle,-131,+110,0.5671,0.47619,0.543568,0.456432,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kirk, Chris","Canter, Laurie",12423,14795,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kirk, Chris","Canter, Laurie",12423,14795,void,pinnacle,+107,-127,0.483092,0.559471,0.463369,0.536631,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Fitzpatrick, Alex",16841,25362,void,betcris,+110,-140,0.47619,0.583333,0.449438,0.550562,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Fitzpatrick, Alex",16841,25362,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Fitzpatrick, Alex",16841,25362,void,pinnacle,+101,-120,0.497512,0.545455,0.477016,0.522984,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Alex",15466,25362,void,betcris,+107,-137,0.483092,0.578059,0.455253,0.544747,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Alex",15466,25362,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Alex",15466,25362,void,pinnacle,-102,-116,0.50495,0.537037,0.484603,0.515397,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","MacIntyre, Robert",15466,23323,void,betcris,+120,-150,0.454545,0.6,0.431034,0.568966,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","MacIntyre, Robert",15466,23323,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","MacIntyre, Robert",15466,23323,void,pinnacle,+116,-139,0.462963,0.58159,0.443216,0.556784,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","MacIntyre, Robert",15466,23323,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,betcris,-170,+135,0.62963,0.425532,0.596714,0.403286,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,datagolf,-128,+128,0.561404,0.438596,0.561404,0.438596,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,draftkings,-166,+126,0.62406,0.442478,0.585127,0.414873,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,pinnacle,-161,+133,0.616858,0.429185,0.589707,0.410293,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,unibet,-162,+120,0.618321,0.454545,0.576326,0.423674,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Spaun, J.J.","Kitayama, Kurt",17536,21891,void,betcris,+105,-135,0.487805,0.574468,0.459209,0.540791,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Spaun, J.J.","Kitayama, Kurt",17536,21891,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Spaun, J.J.","Kitayama, Kurt",17536,21891,void,pinnacle,+104,-124,0.490196,0.553571,0.469641,0.530359,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Li, Haotong","Hillier, Daniel",15310,21362,void,betcris,+106,-136,0.485437,0.576271,0.457223,0.542777,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Li, Haotong","Hillier, Daniel",15310,21362,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Li, Haotong","Hillier, Daniel",15310,21362,void,pinnacle,+101,-120,0.497512,0.545455,0.477016,0.522984,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,pinnacle,-104,-114,0.509804,0.53271,0.489014,0.510986,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McKibbin, Tom","Potgieter, Aldrich",22322,27900,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"McKibbin, Tom","Potgieter, Aldrich",22322,27900,void,pinnacle,-123,+103,0.55157,0.492611,0.528232,0.471768,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,betcris,-127,-103,0.559471,0.507389,0.524409,0.475591,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,pinnacle,+102,-122,0.49505,0.54955,0.473913,0.526087,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","Hovland, Viktor",14796,18841,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Chacarra, Eugenio",14577,26745,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Chacarra, Eugenio",14577,26745,void,pinnacle,-120,+101,0.545455,0.497512,0.522984,0.477016,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Hall, Harry",10419,27194,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Hall, Harry",10419,27194,void,pinnacle,-104,-114,0.509804,0.53271,0.489014,0.510986,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Hatton, Tyrrell",14139,14796,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Hatton, Tyrrell",14139,14796,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Hatton, Tyrrell",14139,14796,void,pinnacle,-102,-117,0.50495,0.539171,0.483613,0.516387,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Im, Sungjae","Yellamaraju, Sudarshan",17488,29925,void,betcris,-148,+118,0.596774,0.458716,0.5654,0.4346,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Im, Sungjae","Yellamaraju, Sudarshan",17488,29925,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Im, Sungjae","Yellamaraju, Sudarshan",17488,29925,void,pinnacle,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Novak, Andrew","Stevens, Sam",23475,25569,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Novak, Andrew","Stevens, Sam",23475,25569,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Novak, Andrew","Stevens, Sam",23475,25569,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Aberg, Ludvig",17646,23950,void,betcris,-133,+103,0.570815,0.492611,0.53677,0.46323,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Aberg, Ludvig",17646,23950,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fitzpatrick, Matt","Aberg, Ludvig",17646,23950,void,pinnacle,-116,-102,0.537037,0.50495,0.515397,0.484603,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scheffler, Scottie","Rahm, Jon",18417,19195,void,betcris,-181,+143,0.644128,0.411523,0.610172,0.389828,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scheffler, Scottie","Rahm, Jon",18417,19195,void,datagolf,-176,+176,0.637681,0.362319,0.637681,0.362319,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scheffler, Scottie","Rahm, Jon",18417,19195,void,draftkings,-210,+162,0.677419,0.381679,0.639619,0.360381,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scheffler, Scottie","Rahm, Jon",18417,19195,void,pinnacle,-193,+158,0.658703,0.387597,0.629555,0.370445,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scheffler, Scottie","Rahm, Jon",18417,19195,void,unibet,-225,+163,0.692308,0.380228,0.645487,0.354513,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,betcris,-140,+110,0.583333,0.47619,0.550562,0.449438,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,draftkings,-122,-108,0.54955,0.519231,0.514184,0.485816,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,pinnacle,-124,+104,0.553571,0.490196,0.530359,0.469641,False,True,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Chacarra, Eugenio",26649,26745,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Chacarra, Eugenio",26649,26745,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Chacarra, Eugenio",26649,26745,void,fanduel,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Penge, Marco","Kim, Tom",22465,24766,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Penge, Marco","Kim, Tom",22465,24766,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Penge, Marco","Kim, Tom",22465,24766,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Koepka, Brooks",6430,16243,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Koepka, Brooks",6430,16243,void,datagolf,-141,+141,0.585062,0.414938,0.585062,0.414938,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Koepka, Brooks",6430,16243,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Conners, Corey",10419,17576,void,caesars,-145,-110,0.591837,0.52381,0.530488,0.469512,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Conners, Corey",10419,17576,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Conners, Corey",10419,17576,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cole, Eric","Ghim, Doug",21756,24550,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cole, Eric","Ghim, Doug",21756,24550,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cole, Eric","Ghim, Doug",21756,24550,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Knapp, Jake",13900,19396,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Knapp, Jake",13900,19396,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Rai, Aaron","Fitzpatrick, Alex",18554,25362,void,caesars,+115,-145,0.465116,0.591837,0.440054,0.559946,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Rai, Aaron","Fitzpatrick, Alex",18554,25362,void,datagolf,+139,-139,0.41841,0.58159,0.41841,0.58159,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Rai, Aaron","Fitzpatrick, Alex",18554,25362,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Reed, Patrick",14502,14838,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Reed, Patrick",14502,14838,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Reed, Patrick",14502,14838,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Reitan, Kristoffer",14577,21407,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Reitan, Kristoffer",14577,21407,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Reitan, Kristoffer",14577,21407,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Spaun, J.J.",14139,17536,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Spaun, J.J.",14139,17536,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Spaun, J.J.",14139,17536,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hojgaard, Nicolai","Puig, David",23602,28984,void,caesars,-145,+115,0.591837,0.465116,0.559946,0.440054,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hojgaard, Nicolai","Puig, David",23602,28984,void,datagolf,-128,+128,0.561404,0.438596,0.561404,0.438596,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hojgaard, Nicolai","Puig, David",23602,28984,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Aberg, Ludvig","Gotterup, Chris",23950,27774,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Aberg, Ludvig","Gotterup, Chris",23950,27774,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Aberg, Ludvig","Gotterup, Chris",23950,27774,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Aberg, Ludvig","Gotterup, Chris",23950,27774,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","Clark, Wyndham",18841,23604,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","Clark, Wyndham",18841,23604,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","Clark, Wyndham",18841,23604,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","Clark, Wyndham",18841,23604,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hovland, Viktor","Clark, Wyndham",18841,23604,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","Gotterup, Chris",14796,27774,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Hatton, Tyrrell","Gotterup, Chris",14796,27774,void,unibet,+100,-134,0.5,0.57265,0.466135,0.533865,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Rai, Aaron",10419,18554,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Noren, Alex","Rai, Aaron",10419,18554,void,unibet,+120,-162,0.454545,0.618321,0.423674,0.576326,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kitayama, Kurt","Hojgaard, Nicolai",21891,23602,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kitayama, Kurt","Hojgaard, Nicolai",21891,23602,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Reitan, Kristoffer",16841,21407,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Reitan, Kristoffer",16841,21407,void,unibet,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Penge, Marco",13900,22465,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Penge, Marco",13900,22465,void,unibet,-125,-106,0.555556,0.514563,0.519153,0.480847,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Spaun, J.J.","Kim, Tom",17536,24766,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Spaun, J.J.","Kim, Tom",17536,24766,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Koepka, Brooks","Lindell, Oliver",16243,20085,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Koepka, Brooks","Lindell, Oliver",16243,20085,void,unibet,-134,+100,0.57265,0.5,0.533865,0.466135,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Cauley, Bud",6430,14502,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Cauley, Bud",6430,14502,void,unibet,-137,+105,0.578059,0.487805,0.542339,0.457661,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Conners, Corey",14838,17576,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Conners, Corey",14838,17576,void,unibet,-125,-106,0.555556,0.514563,0.519153,0.480847,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Coody, Pierceson",26649,28309,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thorbjornsen, Michael","Coody, Pierceson",26649,28309,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Kim, Si Woo",14577,14609,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Kim, Si Woo",14577,14609,void,unibet,+105,-137,0.487805,0.578059,0.457661,0.542339,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Fitzpatrick, Alex",14139,25362,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Fitzpatrick, Alex",14139,25362,void,unibet,-125,-106,0.555556,0.514563,0.519153,0.480847,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Knapp, Jake","Puig, David",19396,28984,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Knapp, Jake","Puig, David",19396,28984,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Harman, Brian","Hall, Harry",8825,27194,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Harman, Brian","Hall, Harry",8825,27194,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Kim, Tom",14502,24766,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cauley, Bud","Kim, Tom",14502,24766,void,draftkings,-114,-115,0.53271,0.534884,0.498982,0.501018,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Koepka, Brooks","Penge, Marco",16243,22465,void,datagolf,+125,-125,0.444444,0.555556,0.444444,0.555556,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Koepka, Brooks","Penge, Marco",16243,22465,void,draftkings,-114,-116,0.53271,0.537037,0.497978,0.502022,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Hovland, Viktor",16841,18841,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Hovland, Viktor",16841,18841,void,draftkings,-104,-126,0.509804,0.557522,0.477646,0.522354,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Hojgaard, Nicolai",15466,23602,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cantlay, Patrick","Hojgaard, Nicolai",15466,23602,void,draftkings,-132,+100,0.568966,0.5,0.532258,0.467742,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Kitayama, Kurt",21407,21891,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Kitayama, Kurt",21407,21891,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reitan, Kristoffer","Kitayama, Kurt",21407,21891,void,draftkings,-105,-124,0.512195,0.553571,0.480588,0.519412,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Rai, Aaron",6430,18554,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Scott, Adam","Rai, Aaron",6430,18554,void,draftkings,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Spaun, J.J.",13900,17536,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Spaun, J.J.",13900,17536,void,draftkings,-116,-112,0.537037,0.528302,0.5041,0.4959,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Chacarra, Eugenio","Coody, Pierceson",26745,28309,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Chacarra, Eugenio","Coody, Pierceson",26745,28309,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Puig, David",14838,28984,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Reed, Patrick","Puig, David",14838,28984,void,draftkings,-116,-112,0.537037,0.528302,0.5041,0.4959,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Knapp, Jake",14577,19396,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"English, Harris","Knapp, Jake",14577,19396,void,draftkings,-126,-104,0.557522,0.509804,0.522354,0.477646,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cole, Eric","Gerard, Ryan",21756,29767,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Cole, Eric","Gerard, Ryan",21756,29767,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Fitzpatrick, Alex",14609,25362,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Kim, Si Woo","Fitzpatrick, Alex",14609,25362,void,draftkings,-114,-116,0.53271,0.537037,0.497978,0.502022,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Fitzpatrick, Matt",14139,17646,void,datagolf,+141,-141,0.414938,0.585062,0.414938,0.585062,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Thomas, Justin","Fitzpatrick, Matt",14139,17646,void,draftkings,+116,-152,0.462963,0.603175,0.434243,0.565757,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Hojgaard, Nicolai",16841,23602,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lee, Min Woo","Hojgaard, Nicolai",16841,23602,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Fitzpatrick, Alex",13900,25362,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC
+"Lowry, Shane","Fitzpatrick, Alex",13900,25362,void,datagolf,+125,-125,0.444444,0.555556,0.444444,0.555556,True,False,Genesis Scottish Open,2026-07-09 04:34:00 UTC

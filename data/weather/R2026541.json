@@ -1,0 +1,290 @@
+{
+  "success": true,
+  "source": "pgatour",
+  "title": "Weather",
+  "daily": [
+    {
+      "title": "Sun",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "20",
+      "windSpeedMPH": "13",
+      "humidity": "74%",
+      "precipitation": "5%",
+      "temperature": {
+        "__typename": "RangeWeatherTemp",
+        "minTempC": "11\u00b0C",
+        "minTempF": "53\u00b0F",
+        "maxTempC": "15\u00b0C",
+        "maxTempF": "60\u00b0F"
+      }
+    },
+    {
+      "title": "Mon",
+      "condition": "DAY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "19",
+      "windSpeedMPH": "12",
+      "humidity": "80%",
+      "precipitation": "7%",
+      "temperature": {
+        "__typename": "RangeWeatherTemp",
+        "minTempC": "11\u00b0C",
+        "minTempF": "53\u00b0F",
+        "maxTempC": "16\u00b0C",
+        "maxTempF": "61\u00b0F"
+      }
+    },
+    {
+      "title": "Tue",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "19",
+      "windSpeedMPH": "12",
+      "humidity": "78%",
+      "precipitation": "20%",
+      "temperature": {
+        "__typename": "RangeWeatherTemp",
+        "minTempC": "11\u00b0C",
+        "minTempF": "53\u00b0F",
+        "maxTempC": "16\u00b0C",
+        "maxTempF": "61\u00b0F"
+      }
+    },
+    {
+      "title": "Wed",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "17",
+      "windSpeedMPH": "11",
+      "humidity": "80%",
+      "precipitation": "20%",
+      "temperature": {
+        "__typename": "RangeWeatherTemp",
+        "minTempC": "11\u00b0C",
+        "minTempF": "52\u00b0F",
+        "maxTempC": "17\u00b0C",
+        "maxTempF": "64\u00b0F"
+      }
+    },
+    {
+      "title": "Thu",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "17",
+      "windSpeedMPH": "11",
+      "humidity": "76%",
+      "precipitation": "6%",
+      "temperature": {
+        "__typename": "RangeWeatherTemp",
+        "minTempC": "12\u00b0C",
+        "minTempF": "54\u00b0F",
+        "maxTempC": "17\u00b0C",
+        "maxTempF": "63\u00b0F"
+      }
+    },
+    {
+      "title": "Fri",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "19",
+      "windSpeedMPH": "12",
+      "humidity": "74%",
+      "precipitation": "6%",
+      "temperature": {
+        "__typename": "RangeWeatherTemp",
+        "minTempC": "12\u00b0C",
+        "minTempF": "55\u00b0F",
+        "maxTempC": "17\u00b0C",
+        "maxTempF": "63\u00b0F"
+      }
+    },
+    {
+      "title": "Sat",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "17",
+      "windSpeedMPH": "11",
+      "humidity": "71%",
+      "precipitation": "6%",
+      "temperature": {
+        "__typename": "RangeWeatherTemp",
+        "minTempC": "12\u00b0C",
+        "minTempF": "54\u00b0F",
+        "maxTempC": "17\u00b0C",
+        "maxTempF": "63\u00b0F"
+      }
+    }
+  ],
+  "hourly": [
+    {
+      "title": "2AM",
+      "condition": "NIGHT_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "11",
+      "windSpeedMPH": "7",
+      "humidity": "92%",
+      "precipitation": "3%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "54\u00b0F"
+      }
+    },
+    {
+      "title": "3AM",
+      "condition": "NIGHT_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "11",
+      "windSpeedMPH": "7",
+      "humidity": "91%",
+      "precipitation": "3%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "54\u00b0F"
+      }
+    },
+    {
+      "title": "4AM",
+      "condition": "NIGHT_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "12",
+      "windSpeedMPH": "8",
+      "humidity": "90%",
+      "precipitation": "2%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "54\u00b0F"
+      }
+    },
+    {
+      "title": "5AM",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "12",
+      "windSpeedMPH": "8",
+      "humidity": "89%",
+      "precipitation": "2%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "54\u00b0F"
+      }
+    },
+    {
+      "title": "6AM",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "14",
+      "windSpeedMPH": "9",
+      "humidity": "87%",
+      "precipitation": "2%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "55\u00b0F"
+      }
+    },
+    {
+      "title": "7AM",
+      "condition": "DAY_MOSTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "14",
+      "windSpeedMPH": "9",
+      "humidity": "84%",
+      "precipitation": "2%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "56\u00b0F"
+      }
+    },
+    {
+      "title": "8AM",
+      "condition": "DAY_MOSTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "16",
+      "windSpeedMPH": "10",
+      "humidity": "81%",
+      "precipitation": "3%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "57\u00b0F"
+      }
+    },
+    {
+      "title": "9AM",
+      "condition": "DAY_MOSTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "16",
+      "windSpeedMPH": "10",
+      "humidity": "78%",
+      "precipitation": "5%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "57\u00b0F"
+      }
+    },
+    {
+      "title": "10AM",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "17",
+      "windSpeedMPH": "11",
+      "humidity": "76%",
+      "precipitation": "4%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "58\u00b0F"
+      }
+    },
+    {
+      "title": "11AM",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "19",
+      "windSpeedMPH": "12",
+      "humidity": "73%",
+      "precipitation": "4%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "59\u00b0F"
+      }
+    },
+    {
+      "title": "12PM",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "19",
+      "windSpeedMPH": "12",
+      "humidity": "72%",
+      "precipitation": "4%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "59\u00b0F"
+      }
+    },
+    {
+      "title": "1PM",
+      "condition": "DAY_PARTLY_CLOUDY",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "20",
+      "windSpeedMPH": "13",
+      "humidity": "71%",
+      "precipitation": "4%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "12\u00b0C",
+        "tempF": "60\u00b0F"
+      }
+    }
+  ],
+  "saved_at": "2026-07-12T20:00:45.496511"
+}

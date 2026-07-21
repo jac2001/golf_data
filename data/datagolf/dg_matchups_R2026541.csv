@@ -1,0 +1,135 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Armitage, Marcus","Meissner, Mac",17813,28159,void,bet365,+125,-152,0.444444,0.603175,0.424242,0.575758,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Armitage, Marcus","Meissner, Mac",17813,28159,void,datagolf,+146,-146,0.406504,0.593496,0.406504,0.593496,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kitayama, Kurt","Brennan, Michael",21891,29197,separate bet offered,betmgm,-120,+130,0.545455,0.434783,0.556452,0.443548,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kitayama, Kurt","Brennan, Michael",21891,29197,separate bet offered,datagolf,+101,+148,0.497512,0.403226,0.552339,0.447661,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kitayama, Kurt","Brennan, Michael",21891,29197,void,bet365,-141,+120,0.585062,0.454545,0.562772,0.437228,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kitayama, Kurt","Brennan, Michael",21891,29197,void,betcris,-145,+115,0.591837,0.465116,0.559946,0.440054,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kitayama, Kurt","Brennan, Michael",21891,29197,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Canter, Laurie","Echavarria, Nico",14795,22833,separate bet offered,betmgm,+110,+100,0.47619,0.5,0.487805,0.512195,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Canter, Laurie","Echavarria, Nico",14795,22833,separate bet offered,datagolf,+141,+108,0.414938,0.480769,0.463252,0.536748,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Canter, Laurie","Echavarria, Nico",14795,22833,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Canter, Laurie","Echavarria, Nico",14795,22833,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Conners, Corey","Hojgaard, Rasmus",17576,23838,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Conners, Corey","Hojgaard, Rasmus",17576,23838,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Conners, Corey","Hojgaard, Rasmus",17576,23838,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kruyswijk, Jacques","Davis, Cam",16896,17786,separate bet offered,betmgm,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kruyswijk, Jacques","Davis, Cam",16896,17786,separate bet offered,datagolf,+120,+125,0.454545,0.444444,0.505618,0.494382,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kruyswijk, Jacques","Davis, Cam",16896,17786,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kruyswijk, Jacques","Davis, Cam",16896,17786,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindell, Oliver","Del Rey, Alejandro",20085,22259,separate bet offered,betmgm,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindell, Oliver","Del Rey, Alejandro",20085,22259,separate bet offered,datagolf,+108,+139,0.480769,0.41841,0.534676,0.465324,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindell, Oliver","Del Rey, Alejandro",20085,22259,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindell, Oliver","Del Rey, Alejandro",20085,22259,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Eckroat, Austin","Svensson, Jesper",26653,26850,separate bet offered,betmgm,+135,-125,0.425532,0.555556,0.433735,0.566265,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Eckroat, Austin","Svensson, Jesper",26653,26850,separate bet offered,datagolf,+155,-104,0.392157,0.509804,0.434783,0.565217,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Eckroat, Austin","Svensson, Jesper",26653,26850,void,bet365,+125,-152,0.444444,0.603175,0.424242,0.575758,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Eckroat, Austin","Svensson, Jesper",26653,26850,void,datagolf,+130,-130,0.434783,0.565217,0.434783,0.565217,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fox, Ryan","Lindberg, Mikael",11889,20084,separate bet offered,betmgm,-111,+120,0.526066,0.454545,0.536467,0.463533,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fox, Ryan","Lindberg, Mikael",11889,20084,separate bet offered,datagolf,-104,+158,0.509804,0.387597,0.568089,0.431911,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fox, Ryan","Lindberg, Mikael",11889,20084,void,bet365,-132,+110,0.568966,0.47619,0.544383,0.455617,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fox, Ryan","Lindberg, Mikael",11889,20084,void,datagolf,-131,+131,0.5671,0.4329,0.5671,0.4329,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Harman, Brian","Novak, Andrew",8825,23475,separate bet offered,betmgm,+105,+105,0.487805,0.487805,0.5,0.5,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Harman, Brian","Novak, Andrew",8825,23475,separate bet offered,datagolf,+136,+112,0.423729,0.471698,0.473214,0.526786,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Harman, Brian","Novak, Andrew",8825,23475,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Harman, Brian","Novak, Andrew",8825,23475,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Harman, Brian","Novak, Andrew",8825,23475,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fleetwood, Tommy","Hatton, Tyrrell",12294,14796,separate bet offered,betmgm,-120,+130,0.545455,0.434783,0.556452,0.443548,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fleetwood, Tommy","Hatton, Tyrrell",12294,14796,separate bet offered,datagolf,-102,+157,0.50495,0.389105,0.564786,0.435214,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fleetwood, Tommy","Hatton, Tyrrell",12294,14796,void,bet365,-135,+115,0.574468,0.465116,0.552594,0.447406,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fleetwood, Tommy","Hatton, Tyrrell",12294,14796,void,betonline,-153,+127,0.604743,0.440529,0.578551,0.421449,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fleetwood, Tommy","Hatton, Tyrrell",12294,14796,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fleetwood, Tommy","Hatton, Tyrrell",12294,14796,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Schmid, Matti","Jarvis, Casey",20722,26947,separate bet offered,betmgm,+105,+105,0.487805,0.487805,0.5,0.5,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Schmid, Matti","Jarvis, Casey",20722,26947,separate bet offered,datagolf,+119,+127,0.456621,0.440529,0.508969,0.491031,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Schmid, Matti","Jarvis, Casey",20722,26947,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Schmid, Matti","Jarvis, Casey",20722,26947,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Neergaard-Petersen, Rasmus","Keefer, Johnny",23841,32457,separate bet offered,betmgm,+105,+105,0.487805,0.487805,0.5,0.5,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Neergaard-Petersen, Rasmus","Keefer, Johnny",23841,32457,separate bet offered,datagolf,+118,+128,0.458716,0.438596,0.511211,0.488789,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Neergaard-Petersen, Rasmus","Keefer, Johnny",23841,32457,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Neergaard-Petersen, Rasmus","Keefer, Johnny",23841,32457,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,separate bet offered,betmgm,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,separate bet offered,datagolf,+113,+134,0.469484,0.42735,0.52349,0.47651,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Spaun, J.J.","McKibbin, Tom",17536,22322,separate bet offered,betmgm,-115,+125,0.534884,0.444444,0.546174,0.453826,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Spaun, J.J.","McKibbin, Tom",17536,22322,separate bet offered,datagolf,+104,+148,0.490196,0.403226,0.548673,0.451327,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Spaun, J.J.","McKibbin, Tom",17536,22322,void,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Spaun, J.J.","McKibbin, Tom",17536,22322,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Spaun, J.J.","McKibbin, Tom",17536,22322,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Molinari, Francesco","Castillo, Ricky",7655,27819,separate bet offered,betmgm,+125,-115,0.444444,0.534884,0.453826,0.546174,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Molinari, Francesco","Castillo, Ricky",7655,27819,separate bet offered,datagolf,+143,+107,0.411523,0.483092,0.46,0.54,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Molinari, Francesco","Castillo, Ricky",7655,27819,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Molinari, Francesco","Castillo, Ricky",7655,27819,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kirk, Chris","Putnam, Andrew",12423,14704,separate bet offered,betmgm,+110,+100,0.47619,0.5,0.487805,0.512195,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kirk, Chris","Putnam, Andrew",12423,14704,separate bet offered,datagolf,+132,+116,0.431034,0.462963,0.482143,0.517857,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kirk, Chris","Putnam, Andrew",12423,14704,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kirk, Chris","Putnam, Andrew",12423,14704,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kirk, Chris","Putnam, Andrew",12423,14704,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kirk, Chris","Putnam, Andrew",12423,14704,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,separate bet offered,betmgm,+115,-105,0.465116,0.512195,0.475914,0.524086,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,separate bet offered,datagolf,+139,+109,0.41841,0.478469,0.466518,0.533482,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,void,betonline,+115,-138,0.465116,0.579832,0.445109,0.554891,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hovland, Viktor","Rahm, Jon",18841,19195,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Saddier, Adrien","Du Plessis, Hennie",14792,19421,separate bet offered,betmgm,+115,-105,0.465116,0.512195,0.475914,0.524086,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Saddier, Adrien","Du Plessis, Hennie",14792,19421,separate bet offered,datagolf,+149,+101,0.401606,0.497512,0.446667,0.553333,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Saddier, Adrien","Du Plessis, Hennie",14792,19421,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Saddier, Adrien","Du Plessis, Hennie",14792,19421,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Sullivan, Andy","Hill, Calum",15326,25131,separate bet offered,betmgm,+125,-115,0.444444,0.534884,0.453826,0.546174,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Sullivan, Andy","Hill, Calum",15326,25131,separate bet offered,datagolf,+153,-101,0.395257,0.502488,0.440278,0.559722,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Sullivan, Andy","Hill, Calum",15326,25131,void,bet365,+110,-132,0.47619,0.568966,0.455617,0.544383,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Sullivan, Andy","Hill, Calum",15326,25131,void,datagolf,+127,-127,0.440529,0.559471,0.440529,0.559471,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,separate bet offered,betmgm,+115,-105,0.465116,0.512195,0.475914,0.524086,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,separate bet offered,datagolf,+133,+114,0.429185,0.46729,0.478747,0.521253,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Taylor, Nick","Greyserman, Max",13126,23465,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Theegala, Sahith","Chacarra, Eugenio",23014,26745,separate bet offered,betmgm,+125,-115,0.444444,0.534884,0.453826,0.546174,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Theegala, Sahith","Chacarra, Eugenio",23014,26745,separate bet offered,datagolf,+137,+111,0.421941,0.473934,0.470982,0.529018,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Theegala, Sahith","Chacarra, Eugenio",23014,26745,void,bet365,+110,-132,0.47619,0.568966,0.455617,0.544383,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Theegala, Sahith","Chacarra, Eugenio",23014,26745,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Scott, Adam","Chacarra, Eugenio",6430,26745,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Scott, Adam","Chacarra, Eugenio",6430,26745,void,betonline,+108,-129,0.480769,0.563319,0.460468,0.539532,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Scott, Adam","Chacarra, Eugenio",6430,26745,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Theegala, Sahith","Brennan, Michael",23014,29197,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Theegala, Sahith","Brennan, Michael",23014,29197,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Harman, Brian","Conners, Corey",8825,17576,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Harman, Brian","Conners, Corey",8825,17576,void,betonline,-102,-118,0.50495,0.541284,0.482636,0.517364,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Harman, Brian","Conners, Corey",8825,17576,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Greyserman, Max","Hojgaard, Rasmus",23465,23838,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Greyserman, Max","Hojgaard, Rasmus",23465,23838,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hill, Calum","Svensson, Jesper",25131,26850,void,betonline,+102,-122,0.49505,0.54955,0.473913,0.526087,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hill, Calum","Svensson, Jesper",25131,26850,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Spaun, J.J.",14139,17536,void,betonline,-128,+107,0.561404,0.483092,0.537488,0.462512,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Spaun, J.J.",14139,17536,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fox, Ryan","McKibbin, Tom",11889,22322,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fox, Ryan","McKibbin, Tom",11889,22322,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindell, Oliver","Schmid, Matti",20085,20722,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindell, Oliver","Schmid, Matti",20085,20722,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Elvira Mijares, Ignacio","Saddier, Adrien",12988,14792,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Elvira Mijares, Ignacio","Saddier, Adrien",12988,14792,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Schmid, Matti","Del Rey, Alejandro",20722,22259,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Schmid, Matti","Del Rey, Alejandro",20722,22259,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Taylor, Nick","Sullivan, Andy",13126,15326,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Taylor, Nick","Sullivan, Andy",13126,15326,void,datagolf,-128,+128,0.561404,0.438596,0.561404,0.438596,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindell, Oliver","Jarvis, Casey",20085,26947,void,betcris,-135,+105,0.574468,0.487805,0.540791,0.459209,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindell, Oliver","Jarvis, Casey",20085,26947,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"McKibbin, Tom","Svensson, Jesper",22322,26850,void,betcris,-140,+110,0.583333,0.47619,0.550562,0.449438,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"McKibbin, Tom","Svensson, Jesper",22322,26850,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Rahm, Jon",14139,19195,void,betcris,+117,-147,0.460829,0.595142,0.436403,0.563597,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Thomas, Justin","Rahm, Jon",14139,19195,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Canter, Laurie","Greyserman, Max",14795,23465,void,betcris,+105,-135,0.487805,0.574468,0.459209,0.540791,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Canter, Laurie","Greyserman, Max",14795,23465,void,datagolf,+137,-137,0.421941,0.578059,0.421941,0.578059,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindberg, Mikael","Eckroat, Austin",20084,26653,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Lindberg, Mikael","Eckroat, Austin",20084,26653,void,datagolf,-126,+126,0.557522,0.442478,0.557522,0.442478,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fox, Ryan","Hill, Calum",11889,25131,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Fox, Ryan","Hill, Calum",11889,25131,void,datagolf,-128,+128,0.561404,0.438596,0.561404,0.438596,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Du Plessis, Hennie","Theegala, Sahith",19421,23014,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Du Plessis, Hennie","Theegala, Sahith",19421,23014,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kim, Si Woo","Spaun, J.J.",14609,17536,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Kim, Si Woo","Spaun, J.J.",14609,17536,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hovland, Viktor","Hojgaard, Rasmus",18841,23838,void,betcris,-163,+130,0.619772,0.434783,0.58771,0.41229,False,True,Genesis Scottish Open,2026-07-12 07:31:00 UTC
+"Hovland, Viktor","Hojgaard, Rasmus",18841,23838,void,datagolf,-168,+168,0.626866,0.373134,0.626866,0.373134,True,False,Genesis Scottish Open,2026-07-12 07:31:00 UTC

@@ -1,0 +1,361 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"MacIntyre, Robert","Gotterup, Chris",23323,27774,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"MacIntyre, Robert","Gotterup, Chris",23323,27774,separate bet offered,datagolf,+128,+116,0.438596,0.462963,0.486486,0.513514,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"MacIntyre, Robert","Gotterup, Chris",23323,27774,void,bet365,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"MacIntyre, Robert","Gotterup, Chris",23323,27774,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"MacIntyre, Robert","Gotterup, Chris",23323,27774,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Spieth, Jordan","Griffin, Ben",14636,24968,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Spieth, Jordan","Griffin, Ben",14636,24968,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Niemann, Joaquin",12422,18079,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Niemann, Joaquin",12422,18079,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Niemann, Joaquin",12422,18079,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Niemann, Joaquin",12422,18079,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,bet365,+110,-130,0.47619,0.565217,0.457256,0.542744,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,bovada,+120,-145,0.454545,0.591837,0.434397,0.565603,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McGreevy, Max","Mouw, William",23505,29770,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"McGreevy, Max","Mouw, William",23505,29770,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"McGreevy, Max","Mouw, William",23505,29770,void,betonline,-112,-108,0.528302,0.519231,0.50433,0.49567,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McGreevy, Max","Mouw, William",23505,29770,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McGreevy, Max","Mouw, William",23505,29770,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","Hatton, Tyrrell",6093,14796,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","Hatton, Tyrrell",6093,14796,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","Hatton, Tyrrell",6093,14796,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Bhatia, Akshay",12577,26096,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Bhatia, Akshay",12577,26096,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Bhatia, Akshay",12577,26096,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Fleetwood, Tommy",10091,12294,void,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Fleetwood, Tommy",10091,12294,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Fleetwood, Tommy",10091,12294,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,separate bet offered,bet365,+120,-110,0.454545,0.52381,0.464602,0.535398,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,separate bet offered,datagolf,+153,-103,0.395257,0.507389,0.437887,0.562113,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,separate bet offered,pointsbet,+135,-125,0.425532,0.555556,0.433735,0.566265,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,void,betcris,+111,-141,0.473934,0.585062,0.447531,0.552469,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,void,caesars,+122,-155,0.45045,0.607843,0.425638,0.574362,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,void,datagolf,+128,-128,0.438596,0.561404,0.438596,0.561404,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,void,draftkings,+106,-134,0.485437,0.57265,0.458788,0.541212,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,void,pinnacle,+115,-138,0.465116,0.579832,0.445109,0.554891,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","McNealy, Maverick",8825,18634,void,unibet,+110,-139,0.47619,0.58159,0.450179,0.549821,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kim, Michael","Blair, Zac",17543,17639,void,bet365,-135,+115,0.574468,0.465116,0.552594,0.447406,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Kim, Michael","Blair, Zac",17543,17639,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kim, Michael","Blair, Zac",17543,17639,void,datagolf,-148,+148,0.596774,0.403226,0.596774,0.403226,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,datagolf,+132,-132,0.431034,0.568966,0.431034,0.568966,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Parry, John",12808,13764,void,bet365,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Parry, John",12808,13764,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Parry, John",12808,13764,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Conners, Corey","Fitzpatrick, Alex",17576,25362,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Conners, Corey","Fitzpatrick, Alex",17576,25362,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Conners, Corey","Fitzpatrick, Alex",17576,25362,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Mitchell, Keith",13872,17365,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Mitchell, Keith",13872,17365,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Mitchell, Keith",13872,17365,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Morikawa, Collin","Clark, Wyndham",22085,23604,void,bet365,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Morikawa, Collin","Clark, Wyndham",22085,23604,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Morikawa, Collin","Clark, Wyndham",22085,23604,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,bet365,-160,+135,0.615385,0.425532,0.591195,0.408805,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,bovada,-160,+135,0.615385,0.425532,0.591195,0.408805,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,datagolf,-138,+138,0.579832,0.420168,0.579832,0.420168,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kim, Tom","Stevens, Sam",24766,25569,void,bet365,-110,-110,0.52381,0.52381,0.5,0.5,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Kim, Tom","Stevens, Sam",24766,25569,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kim, Tom","Stevens, Sam",24766,25569,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Wu, Dylan","Nicholas, James",25002,27598,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Wu, Dylan","Nicholas, James",25002,27598,separate bet offered,datagolf,+105,+140,0.487805,0.416667,0.539326,0.460674,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Wu, Dylan","Nicholas, James",25002,27598,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Wu, Dylan","Nicholas, James",25002,27598,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Uihlein, Peter","Henley, Russell",11357,14578,separate bet offered,bet365,+225,-210,0.307692,0.677419,0.312343,0.687657,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Uihlein, Peter","Henley, Russell",11357,14578,separate bet offered,datagolf,+359,-235,0.217865,0.701493,0.236975,0.763025,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Uihlein, Peter","Henley, Russell",11357,14578,void,caesars,+240,-320,0.294118,0.761905,0.278515,0.721485,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Uihlein, Peter","Henley, Russell",11357,14578,void,datagolf,+322,-322,0.236967,0.763033,0.236967,0.763033,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rodgers, Patrick","Lee, Eric",16283,30035245,separate bet offered,bet365,-130,+145,0.565217,0.408163,0.580675,0.419325,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Rodgers, Patrick","Lee, Eric",16283,30035245,separate bet offered,datagolf,-126,+185,0.557522,0.350877,0.613741,0.386259,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rodgers, Patrick","Lee, Eric",16283,30035245,void,caesars,-170,+130,0.62963,0.434783,0.591528,0.408472,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rodgers, Patrick","Lee, Eric",16283,30035245,void,datagolf,-159,+159,0.6139,0.3861,0.6139,0.3861,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Matsuyama, Hideki","Shipley, Neal",13562,32055,separate bet offered,bet365,-143,+162,0.588477,0.381679,0.60658,0.39342,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Matsuyama, Hideki","Shipley, Neal",13562,32055,separate bet offered,datagolf,-132,+197,0.568966,0.3367,0.628229,0.371771,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Matsuyama, Hideki","Shipley, Neal",13562,32055,void,caesars,-200,+160,0.666667,0.384615,0.634146,0.365854,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Matsuyama, Hideki","Shipley, Neal",13562,32055,void,datagolf,-169,+169,0.628253,0.371747,0.628253,0.371747,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Dumont De Chassart, Adrien","Echavarria, Nico",22002,22833,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Dumont De Chassart, Adrien","Echavarria, Nico",22002,22833,separate bet offered,datagolf,+127,+116,0.440529,0.462963,0.487585,0.512415,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Dumont De Chassart, Adrien","Echavarria, Nico",22002,22833,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Dumont De Chassart, Adrien","Echavarria, Nico",22002,22833,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"James, Ben","Surratt, Caleb",29827,30463,separate bet offered,bet365,-105,+115,0.512195,0.465116,0.524086,0.475914,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"James, Ben","Surratt, Caleb",29827,30463,separate bet offered,datagolf,-107,+158,0.516908,0.387597,0.571482,0.428518,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"James, Ben","Surratt, Caleb",29827,30463,void,caesars,-145,+115,0.591837,0.465116,0.559946,0.440054,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"James, Ben","Surratt, Caleb",29827,30463,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Tibbits, Spencer","Van Paris, Jackson",26650,31955,separate bet offered,bet365,+125,-120,0.444444,0.545455,0.44898,0.55102,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Tibbits, Spencer","Van Paris, Jackson",26650,31955,separate bet offered,datagolf,+229,-159,0.303951,0.6139,0.331155,0.668845,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Tibbits, Spencer","Van Paris, Jackson",26650,31955,void,caesars,+140,-230,0.416667,0.69697,0.37415,0.62585,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Tibbits, Spencer","Van Paris, Jackson",26650,31955,void,datagolf,+202,-202,0.331126,0.668874,0.331126,0.668874,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kitayama, Kurt","Greyserman, Max",21891,23465,separate bet offered,bet365,-115,+125,0.534884,0.444444,0.546174,0.453826,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Kitayama, Kurt","Greyserman, Max",21891,23465,separate bet offered,datagolf,-104,+152,0.509804,0.396825,0.562307,0.437693,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kitayama, Kurt","Greyserman, Max",21891,23465,void,caesars,-155,+122,0.607843,0.45045,0.574362,0.425638,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Kitayama, Kurt","Greyserman, Max",21891,23465,void,datagolf,-129,+129,0.563319,0.436681,0.563319,0.436681,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bridgeman, Jacob","Fleming, Marek",29433,30042928,separate bet offered,bet365,-210,+225,0.677419,0.307692,0.687657,0.312343,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Bridgeman, Jacob","Fleming, Marek",29433,30042928,separate bet offered,datagolf,-312,+462,0.757282,0.177936,0.809738,0.190262,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bridgeman, Jacob","Fleming, Marek",29433,30042928,void,caesars,-425,+290,0.809524,0.25641,0.75945,0.24055,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bridgeman, Jacob","Fleming, Marek",29433,30042928,void,datagolf,-425,+425,0.809524,0.190476,0.809524,0.190476,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Aberg, Ludvig","Keefer, Johnny",23950,32457,separate bet offered,bet365,-163,+180,0.619772,0.357143,0.634418,0.365582,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Aberg, Ludvig","Keefer, Johnny",23950,32457,separate bet offered,datagolf,-147,+220,0.595142,0.3125,0.655701,0.344299,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Aberg, Ludvig","Keefer, Johnny",23950,32457,void,caesars,-230,+175,0.69697,0.363636,0.657143,0.342857,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Aberg, Ludvig","Keefer, Johnny",23950,32457,void,datagolf,-190,+190,0.655172,0.344828,0.655172,0.344828,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fox, Ryan","Hidalgo Portillo, Angel",11889,24127,separate bet offered,bet365,-138,+150,0.579832,0.4,0.591767,0.408233,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fox, Ryan","Hidalgo Portillo, Angel",11889,24127,separate bet offered,datagolf,-150,+222,0.6,0.310559,0.658936,0.341064,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fox, Ryan","Hidalgo Portillo, Angel",11889,24127,void,caesars,-220,+170,0.6875,0.37037,0.649891,0.350109,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fox, Ryan","Hidalgo Portillo, Angel",11889,24127,void,datagolf,-193,+193,0.658703,0.341297,0.658703,0.341297,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Russell, Miles","Koivun, Jackson",32064,32319,separate bet offered,bet365,+150,-140,0.4,0.583333,0.40678,0.59322,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Russell, Miles","Koivun, Jackson",32064,32319,separate bet offered,datagolf,+194,-131,0.340136,0.5671,0.374915,0.625085,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Higgs, Harry","Putnam, Andrew",14140,14704,separate bet offered,bet365,+150,-138,0.4,0.579832,0.408233,0.591767,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Higgs, Harry","Putnam, Andrew",14140,14704,separate bet offered,datagolf,+209,-140,0.323625,0.583333,0.356824,0.643176,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Higgs, Harry","Putnam, Andrew",14140,14704,void,caesars,+150,-190,0.4,0.655172,0.379085,0.620915,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Higgs, Harry","Putnam, Andrew",14140,14704,void,datagolf,+181,-181,0.355872,0.644128,0.355872,0.644128,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Spieth, Jordan","Brennan, Michael",14636,29197,separate bet offered,bet365,-130,+145,0.565217,0.408163,0.580675,0.419325,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Spieth, Jordan","Brennan, Michael",14636,29197,separate bet offered,datagolf,-110,+165,0.52381,0.377358,0.581256,0.418744,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Spieth, Jordan","Brennan, Michael",14636,29197,void,caesars,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Spieth, Jordan","Brennan, Michael",14636,29197,void,datagolf,-139,+139,0.58159,0.41841,0.58159,0.41841,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,separate bet offered,bet365,-138,+150,0.579832,0.4,0.591767,0.408233,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,separate bet offered,datagolf,-110,+166,0.52381,0.37594,0.582173,0.417827,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,separate bet offered,pointsbet,-135,+140,0.574468,0.416667,0.579606,0.420394,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,betmgm,-167,+135,0.625468,0.425532,0.595117,0.404883,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,bovada,-155,+130,0.607843,0.434783,0.582993,0.417007,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,caesars,-170,+130,0.62963,0.434783,0.591528,0.408472,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,datagolf,-139,+139,0.58159,0.41841,0.58159,0.41841,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,draftkings,-168,+134,0.626866,0.42735,0.594627,0.405373,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,unibet,-162,+128,0.618321,0.438596,0.585023,0.414977,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,separate bet offered,datagolf,+165,-111,0.377358,0.526066,0.417698,0.582302,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,separate bet offered,pointsbet,+135,-130,0.425532,0.565217,0.429505,0.570495,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,void,betcris,+122,-153,0.45045,0.604743,0.426889,0.573111,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,void,betmgm,+135,-167,0.425532,0.625468,0.404883,0.595117,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,void,caesars,+122,-155,0.45045,0.607843,0.425638,0.574362,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,void,datagolf,+139,-139,0.41841,0.58159,0.41841,0.58159,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,void,draftkings,+134,-168,0.42735,0.626866,0.405373,0.594627,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,void,pinnacle,+123,-147,0.44843,0.595142,0.429707,0.570293,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Niemann, Joaquin","Young, Cameron",18079,26651,void,unibet,+118,-152,0.458716,0.603175,0.43198,0.56802,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,separate bet offered,bet365,-160,+175,0.615385,0.363636,0.628571,0.371429,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,separate bet offered,datagolf,-144,+214,0.590164,0.318471,0.649506,0.350494,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,separate bet offered,pointsbet,-190,+185,0.655172,0.350877,0.651233,0.348767,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,void,betmgm,-227,+180,0.69419,0.357143,0.660295,0.339705,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,void,bovada,-200,+165,0.666667,0.377358,0.638554,0.361446,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,void,caesars,-280,+170,0.736842,0.37037,0.665493,0.334507,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,void,datagolf,-186,+186,0.65035,0.34965,0.65035,0.34965,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,void,draftkings,-230,+184,0.69697,0.352113,0.664361,0.335639,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Thomas, Justin","Canter, Laurie",14139,14795,void,unibet,-220,+170,0.6875,0.37037,0.649891,0.350109,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,separate bet offered,bet365,+120,-110,0.454545,0.52381,0.464602,0.535398,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,separate bet offered,datagolf,+175,-118,0.363636,0.541284,0.401843,0.598157,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,separate bet offered,pointsbet,+135,-130,0.425532,0.565217,0.429505,0.570495,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,void,betmgm,+130,-161,0.434783,0.616858,0.413433,0.586567,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,void,bovada,+120,-145,0.454545,0.591837,0.434397,0.565603,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,void,caesars,+122,-155,0.45045,0.607843,0.425638,0.574362,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,void,datagolf,+149,-149,0.401606,0.598394,0.401606,0.598394,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,void,draftkings,+128,-160,0.438596,0.615385,0.416133,0.583867,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,void,pinnacle,+131,-157,0.4329,0.610895,0.414737,0.585263,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Mouw, William",15676,29770,void,unibet,+135,-175,0.425532,0.636364,0.400729,0.599271,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,separate bet offered,bet365,-143,+162,0.588477,0.381679,0.60658,0.39342,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,separate bet offered,datagolf,-109,+163,0.521531,0.380228,0.578348,0.421652,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,separate bet offered,pointsbet,-135,+140,0.574468,0.416667,0.579606,0.420394,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,void,betmgm,-167,+135,0.625468,0.425532,0.595117,0.404883,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,void,bovada,-175,+145,0.636364,0.408163,0.609236,0.390764,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,void,caesars,-170,+130,0.62963,0.434783,0.591528,0.408472,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,void,datagolf,-137,+137,0.578059,0.421941,0.578059,0.421941,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,void,draftkings,-174,+138,0.635036,0.420168,0.601814,0.398186,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,void,pinnacle,-139,+116,0.58159,0.462963,0.556784,0.443216,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","McGreevy, Max",6093,23505,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,separate bet offered,datagolf,+132,+113,0.431034,0.469484,0.478652,0.521348,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,separate bet offered,pointsbet,-105,+105,0.512195,0.487805,0.512195,0.487805,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,draftkings,-128,+102,0.561404,0.49505,0.531404,0.468596,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Hatton, Tyrrell","Griffin, Ben",14796,24968,void,unibet,-105,-122,0.512195,0.54955,0.482409,0.517591,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,separate bet offered,bet365,-115,+125,0.534884,0.444444,0.546174,0.453826,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,separate bet offered,datagolf,+104,+141,0.490196,0.414938,0.541573,0.458427,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,separate bet offered,pointsbet,-115,+115,0.534884,0.465116,0.534884,0.465116,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,void,bovada,-130,+110,0.565217,0.47619,0.542744,0.457256,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,void,draftkings,-122,-104,0.54955,0.509804,0.518759,0.481241,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,void,pinnacle,-131,+110,0.5671,0.47619,0.543568,0.456432,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Johnson, Dustin","Coody, Pierceson",12422,28309,void,unibet,-122,-105,0.54955,0.512195,0.517591,0.482409,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,separate bet offered,bet365,-110,+120,0.52381,0.454545,0.535398,0.464602,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,separate bet offered,datagolf,+117,+126,0.460829,0.442478,0.510158,0.489842,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,separate bet offered,pointsbet,-110,+110,0.52381,0.47619,0.52381,0.47619,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,void,draftkings,-128,+102,0.561404,0.49505,0.531404,0.468596,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,void,pinnacle,-120,+101,0.545455,0.497512,0.522984,0.477016,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","Hisatsune, Ryo",12577,22760,void,unibet,-117,-109,0.539171,0.521531,0.508315,0.491685,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,separate bet offered,bet365,-188,+210,0.652778,0.322581,0.66927,0.33073,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,separate bet offered,datagolf,-127,+187,0.559471,0.348432,0.616223,0.383777,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,separate bet offered,pointsbet,-160,+160,0.615385,0.384615,0.615385,0.384615,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,void,betmgm,-222,+175,0.689441,0.363636,0.654692,0.345308,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,void,bovada,-210,+175,0.677419,0.363636,0.650704,0.349296,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,void,caesars,-200,+160,0.666667,0.384615,0.634146,0.365854,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,void,datagolf,-161,+161,0.616858,0.383142,0.616858,0.383142,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,void,draftkings,-225,+178,0.692308,0.359712,0.658075,0.341925,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,void,pinnacle,-186,+153,0.65035,0.395257,0.621983,0.378017,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Bhatia, Akshay",10091,26096,void,unibet,-186,+150,0.65035,0.4,0.619174,0.380826,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,separate bet offered,bet365,+162,-150,0.381679,0.6,0.388802,0.611198,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,separate bet offered,datagolf,+215,-142,0.31746,0.586777,0.351081,0.648919,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,separate bet offered,pointsbet,+170,-160,0.37037,0.615385,0.375723,0.624277,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,void,betmgm,+145,-182,0.408163,0.64539,0.387416,0.612584,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,void,bovada,+155,-185,0.392157,0.649123,0.376611,0.623389,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,void,caesars,+160,-200,0.384615,0.666667,0.365854,0.634146,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,void,datagolf,+185,-185,0.350877,0.649123,0.350877,0.649123,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,void,draftkings,+154,-192,0.393701,0.657534,0.374513,0.625487,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,void,pinnacle,+168,-208,0.373134,0.675325,0.355888,0.644112,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Blair, Zac","Rai, Aaron",17639,18554,void,unibet,+165,-220,0.377358,0.6875,0.354374,0.645626,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,separate bet offered,datagolf,+175,-117,0.363636,0.539171,0.402784,0.597216,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,separate bet offered,pointsbet,+135,-130,0.425532,0.565217,0.429505,0.570495,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,void,betmgm,+125,-154,0.444444,0.606299,0.422981,0.577019,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,void,bovada,+120,-145,0.454545,0.591837,0.434397,0.565603,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,void,caesars,+122,-155,0.45045,0.607843,0.425638,0.574362,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,void,datagolf,+148,-148,0.403226,0.596774,0.403226,0.596774,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,void,draftkings,+128,-160,0.438596,0.615385,0.416133,0.583867,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,void,pinnacle,+134,-162,0.42735,0.618321,0.408685,0.591315,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Poston, J.T.",13764,21554,void,unibet,+135,-175,0.425532,0.636364,0.400729,0.599271,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,separate bet offered,datagolf,+127,+117,0.440529,0.460829,0.488739,0.511261,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,separate bet offered,pointsbet,+100,+100,0.5,0.5,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,draftkings,-120,-104,0.545455,0.509804,0.516892,0.483108,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,unibet,-109,-117,0.521531,0.539171,0.491685,0.508315,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,separate bet offered,bet365,-200,+220,0.666667,0.3125,0.680851,0.319149,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,separate bet offered,datagolf,-172,+254,0.632353,0.282486,0.691218,0.308782,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,separate bet offered,pointsbet,-220,+200,0.6875,0.333333,0.673469,0.326531,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,void,bovada,-250,+200,0.714286,0.333333,0.681818,0.318182,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,void,caesars,-260,+200,0.722222,0.333333,0.684211,0.315789,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,void,datagolf,-223,+223,0.690402,0.309598,0.690402,0.309598,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,void,draftkings,-240,+190,0.705882,0.344828,0.671815,0.328185,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,void,pinnacle,-242,+192,0.707602,0.342466,0.673863,0.326137,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Alex","Cowan, Ryder",25362,30035557,void,unibet,-265,+200,0.726027,0.333333,0.685345,0.314655,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,separate bet offered,datagolf,+106,+140,0.485437,0.416667,0.538117,0.461883,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,separate bet offered,pointsbet,+100,+100,0.5,0.5,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,betcris,-144,+114,0.590164,0.46729,0.558099,0.441901,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,draftkings,-108,-118,0.519231,0.541284,0.489602,0.510398,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,pinnacle,-126,+106,0.557522,0.485437,0.534558,0.465442,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Conners, Corey",13872,17576,void,unibet,-129,+102,0.563319,0.49505,0.532252,0.467748,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,separate bet offered,datagolf,+108,+138,0.480769,0.420168,0.533632,0.466368,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,void,draftkings,-132,+105,0.568966,0.487805,0.5384,0.4616,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,void,pinnacle,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fitzpatrick, Matt","Morikawa, Collin",17646,22085,void,unibet,-136,+106,0.576271,0.485437,0.542777,0.457223,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,separate bet offered,datagolf,+119,+126,0.456621,0.442478,0.507865,0.492135,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,draftkings,-105,-120,0.512195,0.545455,0.484277,0.515723,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,unibet,-117,-109,0.539171,0.521531,0.508315,0.491685,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,separate bet offered,bet365,+150,-138,0.4,0.579832,0.408233,0.591767,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,separate bet offered,datagolf,+174,-117,0.364964,0.539171,0.403661,0.596339,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,void,betcris,+126,-158,0.442478,0.612403,0.419458,0.580542,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,void,bovada,+130,-155,0.434783,0.607843,0.417007,0.582993,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,void,caesars,+145,-185,0.408163,0.649123,0.386048,0.613952,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,void,datagolf,+148,-148,0.403226,0.596774,0.403226,0.596774,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,void,draftkings,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,void,pinnacle,+128,-154,0.438596,0.606299,0.419751,0.580249,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Burns, Sam",17365,19483,void,unibet,+135,-175,0.425532,0.636364,0.400729,0.599271,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,separate bet offered,datagolf,+136,+110,0.423729,0.47619,0.470852,0.529148,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,void,draftkings,+102,-128,0.49505,0.561404,0.468596,0.531404,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,void,pinnacle,+103,-122,0.492611,0.54955,0.472682,0.527318,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Stevens, Sam",12808,25569,void,unibet,-105,-122,0.512195,0.54955,0.482409,0.517591,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,separate bet offered,bet365,-105,+115,0.512195,0.465116,0.524086,0.475914,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,separate bet offered,datagolf,+114,+129,0.46729,0.436681,0.51693,0.48307,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,void,draftkings,-112,-112,0.528302,0.528302,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,void,pinnacle,-118,-101,0.541284,0.502488,0.518585,0.481415,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Theegala, Sahith","Kim, Tom",23014,24766,void,unibet,-122,-105,0.54955,0.512195,0.517591,0.482409,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,separate bet offered,bet365,-200,+220,0.666667,0.3125,0.680851,0.319149,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,separate bet offered,datagolf,-159,+239,0.6139,0.294985,0.675443,0.324557,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,void,betcris,-320,+241,0.761905,0.293255,0.722075,0.277925,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,void,betonline,-284,+232,0.739583,0.301205,0.710599,0.289401,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,void,bovada,-270,+220,0.72973,0.3125,0.700162,0.299838,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,void,caesars,-335,+195,0.770115,0.338983,0.694361,0.305639,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,void,datagolf,-208,+208,0.675325,0.324675,0.675325,0.324675,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,void,draftkings,-290,+230,0.74359,0.30303,0.710468,0.289532,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,void,pinnacle,-282,+219,0.73822,0.31348,0.70193,0.29807,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Scheffler, Scottie","Clark, Wyndham",18417,23604,void,unibet,-265,+205,0.726027,0.327869,0.688898,0.311102,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Spieth, Jordan",14502,14636,void,betcris,+107,-137,0.483092,0.578059,0.455253,0.544747,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Spieth, Jordan",14502,14636,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Cauley, Bud","Spieth, Jordan",14502,14636,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","Thomas, Justin",6093,14139,void,betcris,+107,-137,0.483092,0.578059,0.455253,0.544747,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","Thomas, Justin",6093,14139,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rose, Justin","Thomas, Justin",6093,14139,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Coody, Pierceson",15676,28309,void,betonline,+129,-155,0.436681,0.607843,0.418067,0.581933,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Norgaard, Niklas","Coody, Pierceson",15676,28309,void,datagolf,+152,-152,0.396825,0.603175,0.396825,0.603175,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","McNealy, Maverick",12577,18634,void,betonline,+121,-145,0.452489,0.591837,0.433283,0.566717,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Woodland, Gary","McNealy, Maverick",12577,18634,void,datagolf,+137,-137,0.421941,0.578059,0.421941,0.578059,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Hisatsune, Ryo",17488,22760,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Im, Sungjae","Hisatsune, Ryo",17488,22760,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rai, Aaron","Bhatia, Akshay",18554,26096,void,betonline,-127,+106,0.559471,0.485437,0.535426,0.464574,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Rai, Aaron","Bhatia, Akshay",18554,26096,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Fitzpatrick, Matt",10091,17646,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","Poston, J.T.",8825,21554,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Harman, Brian","Poston, J.T.",8825,21554,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Blair, Zac",13764,17639,void,betcris,-133,+103,0.570815,0.492611,0.53677,0.46323,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Blair, Zac",13764,17639,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Parry, John","Blair, Zac",13764,17639,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Fitzpatrick, Alex",13872,25362,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Bradley, Keegan","Fitzpatrick, Alex",13872,25362,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Conners, Corey",12808,17576,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Grillo, Emiliano","Conners, Corey",12808,17576,void,datagolf,+137,-137,0.421941,0.578059,0.421941,0.578059,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Stevens, Sam",17365,25569,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Mitchell, Keith","Stevens, Sam",17365,25569,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Canter, Laurie","Norgaard, Niklas",14795,15676,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Canter, Laurie","Norgaard, Niklas",14795,15676,void,datagolf,-128,+128,0.561404,0.438596,0.561404,0.438596,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Rai, Aaron",10091,18554,void,betcris,-203,+160,0.669967,0.384615,0.635291,0.364709,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"McIlroy, Rory","Rai, Aaron",10091,18554,void,datagolf,-150,+150,0.6,0.4,0.6,0.4,True,False,U.S. Open,2026-06-21 14:31:00 UTC
+"Poston, J.T.","Fitzpatrick, Alex",21554,25362,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,U.S. Open,2026-06-21 14:31:00 UTC
+"Poston, J.T.","Fitzpatrick, Alex",21554,25362,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,U.S. Open,2026-06-21 14:31:00 UTC

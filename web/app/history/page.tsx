@@ -75,6 +75,11 @@ function TournamentLeaderboard({
   const hasR3 = rows.some(r => r.r3 != null);
   const hasR4 = rows.some(r => r.r4 != null);
   const hasEarnings = rows.some(r => r.earnings != null);
+  const hasSg = rows.some(r => r.sg_total != null);
+
+  const sgColor = (v: number | null) => v == null ? "#4a6080" : v >= 0 ? "#00c44f" : "#e05555";
+  const fmtSg = (v: number | null) => v == null ? "—" : `${v >= 0 ? "+" : ""}${v.toFixed(2)}`;
+  const fmtPct = (v: number | null) => v == null ? "—" : `${v.toFixed(0)}%`;
 
   const thStyle: React.CSSProperties = {
     padding: "6px 10px", background: "#081220", fontSize: "0.7em", fontWeight: 700,
@@ -95,6 +100,19 @@ function TournamentLeaderboard({
             {hasR3 && <th style={thStyle}>R3</th>}
             {hasR4 && <th style={thStyle}>R4</th>}
             <th style={thStyle}>Total</th>
+            {hasSg && (
+              <>
+                <th style={thStyle}>SG Tot</th>
+                <th style={thStyle}>OTT</th>
+                <th style={thStyle}>APP</th>
+                <th style={thStyle}>ARG</th>
+                <th style={thStyle}>Putt</th>
+                <th style={thStyle}>Dist</th>
+                <th style={thStyle}>Acc%</th>
+                <th style={thStyle}>GIR%</th>
+                <th style={thStyle}>Scrmb%</th>
+              </>
+            )}
             {hasEarnings && <th style={{ ...thStyle, textAlign: "right" }}>Earnings</th>}
           </tr>
         </thead>
@@ -127,6 +145,19 @@ function TournamentLeaderboard({
                 {hasR3 && <td style={{ ...tdBase, color: "#c8d8e8" }}>{r.r3 ?? "—"}</td>}
                 {hasR4 && <td style={{ ...tdBase, color: "#c8d8e8" }}>{r.r4 ?? "—"}</td>}
                 <td style={{ ...tdBase, fontWeight: 700, color: toParColor(r.to_par) }}>{r.to_par || "—"}</td>
+                {hasSg && (
+                  <>
+                    <td style={{ ...tdBase, fontWeight: 700, color: sgColor(r.sg_total) }}>{fmtSg(r.sg_total)}</td>
+                    <td style={{ ...tdBase, color: sgColor(r.sg_ott) }}>{fmtSg(r.sg_ott)}</td>
+                    <td style={{ ...tdBase, color: sgColor(r.sg_app) }}>{fmtSg(r.sg_app)}</td>
+                    <td style={{ ...tdBase, color: sgColor(r.sg_arg) }}>{fmtSg(r.sg_arg)}</td>
+                    <td style={{ ...tdBase, color: sgColor(r.sg_putt) }}>{fmtSg(r.sg_putt)}</td>
+                    <td style={{ ...tdBase, color: "#c8d8e8" }}>{r.driving_dist != null ? r.driving_dist.toFixed(0) : "—"}</td>
+                    <td style={{ ...tdBase, color: "#c8d8e8" }}>{fmtPct(r.driving_acc)}</td>
+                    <td style={{ ...tdBase, color: "#c8d8e8" }}>{fmtPct(r.gir_pct)}</td>
+                    <td style={{ ...tdBase, color: "#c8d8e8" }}>{fmtPct(r.scrambling)}</td>
+                  </>
+                )}
                 {hasEarnings && (
                   <td style={{ ...tdBase, textAlign: "right", color: "#7a9ab8", fontSize: "0.78em" }}>
                     {r.earnings ?? "—"}
@@ -401,7 +432,8 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
         display: "flex", gap: 16, flexWrap: "wrap",
         padding: "14px 16px",
         background: "#0a1720", borderRadius: hasBankroll ? "8px 8px 0 0" : 8,
-        border: "1px solid #1e3a5f", borderBottom: hasBankroll ? "none" : undefined,
+        borderTop: "1px solid #1e3a5f", borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f",
+        borderBottom: hasBankroll ? "none" : "1px solid #1e3a5f",
       }}>
         {statItems.map(s => (
           <div key={s.label} style={{ minWidth: 70 }}>
@@ -417,7 +449,8 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
           display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap",
           padding: "10px 16px",
           background: "#070f18", borderRadius: "0 0 8px 8px",
-          border: "1px solid #1e3a5f", borderTop: "1px solid #0d2030",
+          borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
+          borderTop: "1px solid #0d2030",
         }}>
           <div>
             <span style={{ color: "#4a6080", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
@@ -667,7 +700,7 @@ export default function HistoryPage() {
             key={t.key}
             onClick={() => setTab(t.key)}
             style={{
-              background: "none", border: "none", cursor: "pointer",
+              background: "none", borderTop: "none", borderLeft: "none", borderRight: "none", cursor: "pointer",
               padding: "8px 16px", fontSize: "0.88em", fontWeight: tab === t.key ? 700 : 500,
               color: tab === t.key ? "#dde6f5" : "#7a9ab8",
               borderBottom: `2px solid ${tab === t.key ? "#00c44f" : "transparent"}`,

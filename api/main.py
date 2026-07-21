@@ -144,7 +144,25 @@ def _flip_to_first_last(n: str) -> str:
 
 
 def _name_key(n: str) -> str:
-    return " ".join(sorted(str(n).strip().lower().split()))
+    """Sorted-token key for format-agnostic name matching ('Last, First' ==
+    'First Last'). Strips the comma before splitting — without that, "Last,"
+    keeps its comma as part of the token and never matches the same name in
+    'First Last' form, defeating the entire point of this function."""
+    return " ".join(sorted(str(n).replace(",", "").strip().lower().split()))
+
+
+def _last_name(n: str) -> str:
+    """Normalize to lowercase last name for cross-format tracker matching
+    (tracker keys are last-name-only or 'Initial Last', e.g. 'McIlroy' / 'B Griffin')."""
+    s = str(n).strip()
+    return s.split(",")[0].strip().lower() if "," in s else s.split()[-1].lower()
+
+
+# Short alias — used throughout this file under this name. Previously ~16
+# endpoints each defined their own identical local copy of this exact
+# function; consolidated to one implementation so a future fix only has to
+# happen once instead of (maybe) being applied to one of N copies.
+_flip = _flip_to_first_last
 
 
 # ── Live alert engine ────────────────────────────────────────────────────────
@@ -1418,9 +1436,6 @@ def get_odds_comparison(market: str = "top10") -> dict:
         return {"tournament_id": tid, "market": market, "players": [], "books": []}
 
     # Normalize "Last, First" → "First Last"
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     dg_mkt_df["player_name_display"] = dg_mkt_df["player_name"].apply(_flip)
     dg_mkt_df["odds_american"]       = pd.to_numeric(dg_mkt_df["odds_american"], errors="coerce")
@@ -1544,13 +1559,14 @@ def get_predictions(limit: int = 50) -> dict:
     df = df.sort_values(sort_col, ascending=False).head(limit)
 
     # Normalize "Last, First" → "First Last"
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     df["player_name"] = df["player_name"].apply(lambda n: _flip(str(n)))
 
-    # Merge uses_remaining from usage tracker
+    # Merge uses_remaining from usage tracker. Tracker keys are last-name-only
+    # or "Initial Last" (e.g. "McIlroy", "B Griffin") — never the full "First
+    # Last" name predictions use, so a direct dict lookup by full name never
+    # matches and silently falls back to the default of 3 every time. Key by
+    # last name instead via the shared _last_name() helper.
     uses_map: dict[str, int] = {}
     tracker_path = _TRACKER_JSON
     if tracker_path.exists():
@@ -1559,7 +1575,7 @@ def get_predictions(limit: int = 50) -> dict:
                 tracker = json.load(f)
             picks = tracker.get("picks", {})
             for name, info in picks.items():
-                uses_map[str(name).strip()] = int(info.get("remaining_uses", 3))
+                uses_map[_last_name(name)] = int(info.get("remaining_uses", 3))
         except Exception:
             pass
 
@@ -1603,7 +1619,7 @@ def get_predictions(limit: int = 50) -> dict:
     records = []
     for _, row in df.iterrows():
         name = str(row["player_name"])
-        uses = uses_map.get(name, 3)
+        uses = uses_map.get(_last_name(name), 3)
         rec  = rec_map.get(name, "")
         badge = "MAXED" if uses == 0 else ("USE" if "USE" in rec.upper() else ("SAVE" if "SAVE" in rec.upper() else ""))
         entry = {k: _safe(row[k]) for k in keep_cols if k != "player_name"}
@@ -1728,10 +1744,6 @@ def get_live_vs_predictions() -> dict:
         preds = preds.sort_values("win_prob", ascending=False).reset_index(drop=True)
         preds["model_rank"] = preds.index + 1
 
-        def _flip(n: str) -> str:
-            s = str(n).strip()
-            return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
-
         for _, row in preds.iterrows():
             display = _flip(str(row["player_name"]))
             entry = {
@@ -1778,9 +1790,6 @@ def get_my_lineup_live() -> dict:
     tid = _get_tournament_id()
     live_dir = DATA_DIR / "live"
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     picks: list[str] = []
     tournament_name = ""
@@ -1968,9 +1977,6 @@ def get_live_sg_stats(round_param: str = "event_avg") -> dict:
     tid = _get_tournament_id()
     round_num = _ROUND_PARAM_TO_NUM.get(round_param, 0)
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     # Check DB freshness
     stale = True
@@ -2152,9 +2158,6 @@ def get_hole_scores() -> dict:
 
     df = pd.read_csv(path)
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     by_player: dict = {}
     for _, row in df.iterrows():
@@ -2207,9 +2210,6 @@ def get_inplay() -> dict:
     info    = raw.get("info", {})
     players = raw.get("data", [])
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     def _pos(p: dict) -> str | None:
         pos = p.get("current_pos")
@@ -2449,11 +2449,8 @@ def get_live_pulse(force: bool = False) -> dict:
                           "last_start_position","missed_cut_last_start","world_rank"]:
                 if col in preds.columns:
                     preds[col] = pd.to_numeric(preds[col], errors="coerce") if col != "momentum_trend" else preds[col]
-            def _ln(n): 
-                return str(n).split(",")[0].strip().lower() if "," in str(n) else str(n).strip().split()[-1].lower()
-
             for _, row in preds.iterrows():
-                key = _ln(str(row.get("player_name","")))
+                key = _last_name(str(row.get("player_name","")))
                 pred_ctx[key] = {
                 "season_sg": round(float(row["season_sg_total"]), 2) if pd.notna(row.get("season_sg_total")) else None,
                       "sg_app": round(float(row["season_sg_app"]), 2) if pd.notna(row.get("season_sg_app")) else None,
@@ -2492,10 +2489,9 @@ def get_live_pulse(force: bool = False) -> dict:
         tracker_path = _TRACKER_JSON
         if tracker_path.exists():
             tracker = json.loads(tracker_path.read_text())
-            def _ln(n): s = str(n).strip(); return s.split(",")[0].strip().lower() if "," in s else s.split()[-1].lower()
-            pick_lnames = {_ln(k): k for k in tracker.get("picks", {})}
+            pick_lnames = {_last_name(k): k for k in tracker.get("picks", {})}
             for p in inplay_players:
-                ln = _ln(p["name"])
+                ln = _last_name(p["name"])
                 if ln in pick_lnames:
                     uses = tracker["picks"][pick_lnames[ln]].get("remaining_uses", 3)
                     fantasy_picks.append({**p, "uses_remaining": uses})
@@ -2810,11 +2806,6 @@ def get_model_comparison() -> dict:
 
     tournament_name = str(dg["event_name"].iloc[0]) if "event_name" in dg.columns and len(dg) > 0 else ""
 
-    # Sort-key normalization: both files use "Last, First" — alphabetise tokens so format
-    # differences (comma vs no comma, capitalisation) don't block the join
-    def _name_key(n: str) -> str:
-        return " ".join(sorted(str(n).replace(",", "").lower().split()))
-
     preds["_key"] = preds["player_name"].apply(_name_key)
     dg["_key"]    = dg["player_name"].apply(_name_key)
 
@@ -2876,9 +2867,6 @@ def get_model_comparison() -> dict:
         })
 
     # Full ranked player list for the side-by-side comparison table
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     merged_sorted = merged.sort_values("win_prob", ascending=False).reset_index(drop=True)
     merged_sorted["our_rank"] = merged_sorted.index + 1
@@ -2951,9 +2939,6 @@ def get_lineup() -> dict:
                 "dk_odds_direction", "model_vs_vegas_edge",
             ]}
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     def _lookup_tracker_name(short: str) -> tuple[dict, str]:
         """Match tracker short name ('N Taylor', 'Fleetwood') to (prob_map entry, matched key)."""
@@ -3005,8 +2990,10 @@ def get_lineup() -> dict:
             "drift":         str(preds_info.get("dk_odds_direction") or ""),
         })
 
+    # A missing tournament_id means an old, unversioned file — treat that as
+    # stale too (same convention as /api/predictions), not just a mismatch.
     sr_tid = str(sr.get("tournament_id", ""))
-    stale  = bool(sr_tid and sr_tid != tid)
+    stale  = (not sr_tid) or (sr_tid != tid)
 
     # Check usage tracker for confirmed picks this week
     confirmed = False
@@ -3045,8 +3032,15 @@ def get_lineup() -> dict:
                     return v
         return None
 
-    # If confirmed picks exist in tracker, build pick objects from those names
-    if confirmed and confirmed_names:
+    # If confirmed picks exist in tracker, build pick objects from those names.
+    # Must check `stale` first — `confirmed` only matches tracker weekly_lineups
+    # against sr's OWN tournament name, which is itself a stale value when
+    # strategy_reasoning.json hasn't been regenerated for the current week yet.
+    # Without this, a confirmed lineup from a past tournament (e.g. last week's
+    # picks, still sitting in the tracker) gets shown as if it were this week's.
+    if stale:
+        final_picks = []
+    elif confirmed and confirmed_names:
         confirmed_picks = []
         for raw_name in confirmed_names:
             preds_info, matched_key = _lookup_tracker_name(raw_name)
@@ -3071,7 +3065,7 @@ def get_lineup() -> dict:
             })
         final_picks = confirmed_picks
     else:
-        final_picks = [] if stale else picks
+        final_picks = picks
 
     return {
         "tournament_id":    tid,
@@ -3213,9 +3207,6 @@ def get_tee_times() -> dict:
             rank_map[raw_name] = entry
             rank_map[_flip_name(raw_name)] = entry
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     # Group by tee time
     groups: dict[str, list] = {}
@@ -3269,10 +3260,130 @@ def get_tee_times() -> dict:
     return result
 
 
+def _build_course_history(tid: str) -> dict | None:
+    """Course-level historical scoring trends from real DataGolf-backfilled
+    per-round data: round-by-round average scores, scoring distribution
+    (birdies/bogeys/eagles per round), and a winning-score trend across past
+    editions at this venue. Distinct from course_fit_weights (which SG
+    category matters here) and the Players page's per-player course history
+    (how one player has done here) — this is course-wide and round-level.
+    """
+    if not _DB_AVAILABLE:
+        return None
+
+    tournament_name = _get_tournament_name(tid) or ""
+    if not tournament_name:
+        return None
+
+    # Same shared resolver course_fit_weights and the Course Fit tab use, so
+    # this view and that one can never disagree about which course a
+    # tournament name maps to.
+    try:
+        if str(PROJECT_ROOT) not in sys.path:
+            sys.path.insert(0, str(PROJECT_ROOT))
+        from scripts.features.course_weight_model import resolve_course_name
+        course_name = resolve_course_name(tournament_name) or tournament_name
+    except Exception:
+        course_name = tournament_name
+
+    hist_tids: list[str] = []
+    try:
+        with _get_db_conn() as conn:
+            row = conn.execute(
+                "SELECT source_tournament_ids FROM course_fit_weights WHERE LOWER(course_name) = LOWER(?)",
+                [course_name],
+            ).fetchone()
+        if row and row[0]:
+            hist_tids = [t for t in row[0].split(",") if t.strip().upper() != tid.upper()]
+    except Exception:
+        pass
+
+    # Fall back to an exact tournament-name match if this course hasn't been
+    # derived into course_fit_weights yet (e.g. too little historical data
+    # to clear MIN_PLAYERS) — still useful even without that table's row.
+    if not hist_tids:
+        try:
+            with _get_db_conn() as conn:
+                df = conn.execute(
+                    "SELECT DISTINCT tournament_id FROM leaderboards "
+                    "WHERE LOWER(tournament_name) = LOWER(?) AND UPPER(tournament_id) != ?",
+                    [tournament_name, tid.upper()],
+                ).fetchdf()
+            hist_tids = df["tournament_id"].astype(str).tolist()
+        except Exception:
+            pass
+
+    if not hist_tids:
+        return None
+
+    try:
+        with _get_db_conn() as conn:
+            ids_sql = ",".join(f"'{t}'" for t in hist_tids)
+
+            rounds_df = conn.execute(f"""
+                SELECT year, AVG(r1) AS r1, AVG(r2) AS r2, AVG(r3) AS r3, AVG(r4) AS r4
+                FROM leaderboards
+                WHERE tournament_id IN ({ids_sql})
+                GROUP BY year
+            """).fetchdf()
+
+            dist_df = conn.execute(f"""
+                SELECT
+                    AVG(CASE WHEN stat_id = '2571' THEN stat_value END) AS avg_birdies,
+                    AVG(CASE WHEN stat_id = '2572' THEN stat_value END) AS avg_bogeys,
+                    AVG(CASE WHEN stat_id = '2574' THEN stat_value END) AS avg_eagles
+                FROM tournament_stats
+                WHERE tournament_id IN ({ids_sql})
+            """).fetchdf()
+
+            wins_df = conn.execute(f"""
+                SELECT year, tournament_id, player_name, to_par
+                FROM leaderboards
+                WHERE tournament_id IN ({ids_sql}) AND position = '1'
+                ORDER BY year
+            """).fetchdf()
+    except Exception:
+        return None
+
+    avg_score_by_round = {
+        "r1": _safe(round(float(rounds_df["r1"].mean()), 2)) if not rounds_df.empty else None,
+        "r2": _safe(round(float(rounds_df["r2"].mean()), 2)) if not rounds_df.empty else None,
+        "r3": _safe(round(float(rounds_df["r3"].mean()), 2)) if not rounds_df.empty else None,
+        "r4": _safe(round(float(rounds_df["r4"].mean()), 2)) if not rounds_df.empty else None,
+    }
+
+    scoring_distribution = {}
+    if not dist_df.empty:
+        scoring_distribution = {
+            "avg_birdies": _safe(round(float(dist_df["avg_birdies"].iloc[0]), 2)) if pd.notna(dist_df["avg_birdies"].iloc[0]) else None,
+            "avg_bogeys":  _safe(round(float(dist_df["avg_bogeys"].iloc[0]), 2)) if pd.notna(dist_df["avg_bogeys"].iloc[0]) else None,
+            "avg_eagles":  _safe(round(float(dist_df["avg_eagles"].iloc[0]), 2)) if pd.notna(dist_df["avg_eagles"].iloc[0]) else None,
+        }
+
+    winning_scores = []
+    for _, r in wins_df.iterrows():
+        winning_scores.append({
+            "year":         int(r["year"]),
+            "tournament_id": str(r["tournament_id"]),
+            "winner_name":  _flip_to_first_last(str(r["player_name"])),
+            "to_par":       str(r["to_par"]).strip() if pd.notna(r.get("to_par")) else "",
+        })
+
+    return {
+        "course_name":         course_name,
+        "editions":            len(hist_tids),
+        "years":               sorted(int(y) for y in rounds_df["year"]) if not rounds_df.empty else [],
+        "avg_score_by_round":  avg_score_by_round,
+        "scoring_distribution": scoring_distribution,
+        "winning_scores":      winning_scores[-8:],
+    }
+
+
 @app.get("/api/course")
 def get_course() -> dict:
     """Hole-by-hole course layout for the current tournament."""
     tid = _get_tournament_id()
+    history = _build_course_history(tid)
 
     # Try course_stats JSON first (live data)
     cs_path = DATA_DIR / "live" / f"course_stats_{tid}.json"
@@ -3295,33 +3406,57 @@ def get_course() -> dict:
             holes = []
             for i, h in enumerate(cs.get("holes", [])):
                 sa = h.get("scoringAverage") or h.get("scoring_avg")
+                # No score-distribution fields on a hole sum to zero until at
+                # least one player has finished it. Without this check, an
+                # unplayed hole reports a real-looking "0.0 avg / 0% birdies"
+                # instead of "no data yet" — easy to mistake for an actual
+                # neutral/boring hole rather than simply not reached yet.
+                played = sum(h.get(k, 0) or 0 for k in
+                             ("pars", "birdies", "bogeys", "eagles", "doubleBogeys")) > 0
                 holes.append({
                     "hole_num":        h.get("holeNum") or h.get("holeNumber") or h.get("hole_num") or (i + 1),
                     "hole_par":        h.get("par") or h.get("hole_par"),
                     "hole_yards":      h.get("yardage") or h.get("hole_yards"),
-                    "scoring_avg":     _safe(_parse_diff(sa)),
-                    "scoring_diff":    _safe(_parse_diff(sa)),
+                    "scoring_avg":     _safe(_parse_diff(sa)) if played else None,
+                    "scoring_diff":    _safe(_parse_diff(sa)) if played else None,
                     "difficulty_rank": _safe(h.get("difficulty_rank")),
-                    "birdies":         _safe(_parse_pct(h.get("birdiesPercent") or h.get("birdies"))),
-                    "bogeys":          _safe(_parse_pct(h.get("bogeysPercent") or h.get("bogeys"))),
+                    "birdies":         _safe(_parse_pct(h.get("birdiesPercent") or h.get("birdies"))) if played else None,
+                    "bogeys":          _safe(_parse_pct(h.get("bogeysPercent") or h.get("bogeys"))) if played else None,
                 })
-            # Supplement with CSV data (par/yards per hole) if available
-            cc_path = DATA_DIR / "course_characteristics" / "all_courses_2026.csv"
-            if cc_path.exists():
+            # Supplement with CSV data (par/yards per hole). The physical
+            # course layout almost never changes year to year, so if this
+            # year's file doesn't have it yet (e.g. early season, before
+            # this week's course_characteristics has been scraped), fall
+            # back to the same numbered event in a prior year — same
+            # tournament_id scheme (R{year}{event_id:03d}), just an older
+            # edition at the same venue.
+            m = re.match(r"R(\d{4})(\d+)$", tid.upper())
+            csv_tid_candidates = [tid.upper()]
+            if m:
+                year0, eid = int(m.group(1)), m.group(2)
+                csv_tid_candidates = [f"R{y}{eid}" for y in range(year0, year0 - 5, -1)]
+
+            for cand_tid in csv_tid_candidates:
+                cand_year = cand_tid[1:5]
+                cc_path = DATA_DIR / "course_characteristics" / f"all_courses_{cand_year}.csv"
+                if not cc_path.exists():
+                    continue
                 try:
                     csv_df = pd.read_csv(cc_path)
-                    csv_tid = csv_df[csv_df["tournament_id"].astype(str).str.upper() == tid.upper()]
-                    if not csv_tid.empty:
-                        csv_map = {int(r["hole_num"]): r for _, r in csv_tid.iterrows()}
-                        for h in holes:
-                            hn = h.get("hole_num")
-                            if hn and int(hn) in csv_map:
-                                r = csv_map[int(hn)]
-                                h["hole_par"]   = h["hole_par"]   or _safe(r.get("hole_par"))
-                                h["hole_yards"] = h["hole_yards"] or _safe(r.get("hole_yards"))
-                                h["difficulty_rank"] = h["difficulty_rank"] or _safe(r.get("difficulty_rank"))
+                    csv_tid = csv_df[csv_df["tournament_id"].astype(str).str.upper() == cand_tid]
+                    if csv_tid.empty:
+                        continue
+                    csv_map = {int(r["hole_num"]): r for _, r in csv_tid.iterrows()}
+                    for h in holes:
+                        hn = h.get("hole_num")
+                        if hn and int(hn) in csv_map:
+                            r = csv_map[int(hn)]
+                            h["hole_par"]   = h["hole_par"]   or _safe(r.get("hole_par"))
+                            h["hole_yards"] = h["hole_yards"] or _safe(r.get("hole_yards"))
+                            h["difficulty_rank"] = h["difficulty_rank"] or _safe(r.get("difficulty_rank"))
+                    break  # found a usable layout — no need to check older years too
                 except Exception:
-                    pass
+                    continue
 
             return {
                 "tournament_id": tid,
@@ -3329,6 +3464,7 @@ def get_course() -> dict:
                 "par":           cs.get("par"),
                 "yardage":       cs.get("yardage"),
                 "holes":         holes,
+                "history":       history,
             }
         except Exception:
             pass
@@ -3412,6 +3548,7 @@ def get_course() -> dict:
             "par":           par,
             "yardage":       yardage,
             "holes":         holes,
+            "history":       history,
         }
         _course_cache["ts"]   = now
         _course_cache["data"] = result
@@ -3467,9 +3604,6 @@ def get_matchups(
     avail_books = [b for b in BOOK_PREF if b in book_rows["book"].unique()]
     avail_books += [b for b in book_rows["book"].unique() if b not in BOOK_PREF]
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     def _to_dec(o) -> float | None:
         try:
@@ -3562,9 +3696,6 @@ def get_3ball() -> dict:
     if df.empty:
         return {"tournament_id": tid, "pairings": [], "updated": None}
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     pairings = []
     for _, r in df.iterrows():
@@ -3625,9 +3756,6 @@ def get_odds_explorer(market: str = "top_10") -> dict:
 
     dg_prob_map = dict(zip(model_rows["player_name"], model_rows["implied_prob"].astype(float)))
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     def _to_dec(o) -> float | None:
         try:
@@ -3695,12 +3823,24 @@ def get_player_list() -> dict:
     except Exception:
         raise HTTPException(status_code=500, detail="Failed to read predictions")
 
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     names = sorted(set(df["player_name"].dropna().apply(lambda n: _flip(str(n)))))
     return {"players": names}
+
+
+@app.get("/api/players/all")
+def get_all_players() -> dict:
+    """All players ever in DuckDB leaderboards (~1,700), sorted alphabetically."""
+    if not _DB_AVAILABLE:
+        return {"players": []}
+    try:
+        with _get_db_conn() as conn:
+            df = conn.execute(
+                "SELECT DISTINCT player_name FROM leaderboards ORDER BY player_name"
+            ).fetchdf()
+        return {"players": df["player_name"].dropna().tolist()}
+    except Exception:
+        return {"players": []}
 
 
 @app.get("/api/players/profile")
@@ -3955,9 +4095,9 @@ def get_player_career(player: str) -> dict:
     if not _DB_AVAILABLE:
         return {"recent": [], "by_year": []}
 
-    # Normalise: same sort-tokens approach as _name_key()
-    player_key = " ".join(sorted(player.strip().lower().split()))
+    player_key = _name_key(player)
 
+    rounds_df = None
     try:
         with _get_db_conn() as conn:
 
@@ -3981,26 +4121,38 @@ def get_player_career(player: str) -> dict:
 
             # ── Pre-aggregate all SG stats: one row per (player_id, tournament_id) ─
             # Pivot the long-format tournament_stats table into columns using CASE WHEN.
-            # All four stats live in the same table, so one pass with four expressions
-            # is more efficient than four separate joins.
+            # All stats live in the same table, so one pass with several expressions
+            # is more efficient than separate joins per category.
+            #
+            # sg_arg (2570), driving_dist/acc/gir/scrambling (101/102/103/130) are
+            # new — backfilled from DataGolf's historical-raw-data across every
+            # year 2010-2026 (see fetch_dg_historical_results.py). Before this,
+            # there was no dedicated around-the-green SG category at all (T2G was
+            # just OTT+APP+ARG summed together), and no driving/GIR/scrambling
+            # data of any kind in tournament_stats.
             sg_subquery = f"""
                 (SELECT player_id, tournament_id,
                     AVG(CASE WHEN stat_id = '2567' THEN stat_value END) AS sg_total,
                     AVG(CASE WHEN stat_id = '2568' THEN stat_value END) AS sg_ott,
                     AVG(CASE WHEN stat_id = '2569' THEN stat_value END) AS sg_app,
+                    AVG(CASE WHEN stat_id = '2570' THEN stat_value END) AS sg_arg,
                     AVG(CASE WHEN stat_id = '2564' THEN stat_value END) AS sg_putt,
-                    AVG(CASE WHEN stat_id = '2674' THEN stat_value END) AS sg_t2g
+                    AVG(CASE WHEN stat_id = '2674' THEN stat_value END) AS sg_t2g,
+                    AVG(CASE WHEN stat_id = '101'  THEN stat_value END) AS driving_dist,
+                    AVG(CASE WHEN stat_id = '102'  THEN stat_value END) AS driving_acc,
+                    AVG(CASE WHEN stat_id = '103'  THEN stat_value END) AS gir_pct,
+                    AVG(CASE WHEN stat_id = '130'  THEN stat_value END) AS scrambling
                  FROM tournament_stats
                  WHERE player_id IN ({ids_sql})
                  GROUP BY player_id, tournament_id)
             """
 
-            # Scoring average from form_stats (stat_id 120) — same pivot pattern
+            # Scoring average + birdie % still come from form_stats — DataGolf's
+            # historical-raw-data doesn't give us those directly.
             form_subquery = f"""
                 (SELECT player_id, tournament_id,
                     AVG(CASE WHEN stat_id = '120' THEN stat_value END) AS scoring_avg,
-                    AVG(CASE WHEN stat_id = '108' THEN stat_value END) AS birdie_pct,
-                    AVG(CASE WHEN stat_id = '103' THEN stat_value END) AS gir_pct
+                    AVG(CASE WHEN stat_id = '108' THEN stat_value END) AS birdie_pct
                  FROM form_stats
                  WHERE player_id IN ({ids_sql})
                  GROUP BY player_id, tournament_id)
@@ -4021,10 +4173,14 @@ def get_player_career(player: str) -> dict:
                     sg.sg_total,
                     sg.sg_ott,
                     sg.sg_app,
+                    sg.sg_arg,
                     sg.sg_putt,
+                    sg.driving_dist,
+                    sg.driving_acc,
+                    sg.gir_pct,
+                    sg.scrambling,
                     f.scoring_avg,
-                    f.birdie_pct,
-                    f.gir_pct
+                    f.birdie_pct
                 FROM leaderboards l
                 LEFT JOIN {sg_subquery} sg
                     ON sg.player_id = l.player_id
@@ -4049,7 +4205,12 @@ def get_player_career(player: str) -> dict:
                     ROUND(AVG(sg.sg_total), 3) AS avg_sg_total,
                     ROUND(AVG(sg.sg_ott),   3) AS avg_sg_ott,
                     ROUND(AVG(sg.sg_app),   3) AS avg_sg_app,
+                    ROUND(AVG(sg.sg_arg),   3) AS avg_sg_arg,
                     ROUND(AVG(sg.sg_putt),  3) AS avg_sg_putt,
+                    ROUND(AVG(sg.driving_dist), 1) AS avg_driving_dist,
+                    ROUND(AVG(sg.driving_acc),  1) AS avg_driving_acc,
+                    ROUND(AVG(sg.gir_pct),      1) AS avg_gir_pct,
+                    ROUND(AVG(sg.scrambling),   1) AS avg_scrambling,
                     ROUND(AVG(f.scoring_avg), 2) AS avg_scoring
                 FROM leaderboards l
                 LEFT JOIN {sg_subquery} sg
@@ -4063,8 +4224,62 @@ def get_player_career(player: str) -> dict:
                 ORDER BY l.year DESC
             """).fetchdf()
 
+            # ── Step 4: per-round stats ───────────────────────────────────────
+            # Pull from round_stats (populated by fetch_dg_historical_results.py).
+            # Outer-try so a missing table doesn't break the whole career response.
+            try:
+                rounds_df = conn.execute(f"""
+                    SELECT tournament_id, round_num, score, course_par,
+                           sg_total, sg_ott, sg_app, sg_arg, sg_putt, sg_t2g,
+                           driving_dist, driving_acc, gir, scrambling,
+                           birdies, bogies, pars, eagles_or_better, doubles_or_worse,
+                           great_shots, poor_shots, prox_fw, prox_rgh
+                    FROM round_stats
+                    WHERE player_id IN ({ids_sql})
+                    ORDER BY tournament_id, round_num
+                """).fetchdf()
+            except Exception:
+                rounds_df = None
+
     except Exception as e:
         return {"recent": [], "by_year": [], "error": str(e)}
+
+    def _safe_float(v) -> float | None:
+        try:
+            f = float(v)
+            return None if (f != f) else round(f, 3)
+        except Exception:
+            return None
+
+    # Build tournament_id -> [round rows] lookup
+    rounds_by_tid: dict[str, list[dict]] = {}
+    if rounds_df is not None and not rounds_df.empty:
+        for _, rr in rounds_df.iterrows():
+            tid_key = str(rr["tournament_id"])
+            rounds_by_tid.setdefault(tid_key, []).append({
+                "round_num":       int(rr["round_num"]),
+                "score":           int(rr["score"]) if pd.notna(rr.get("score")) else None,
+                "course_par":      int(rr["course_par"]) if pd.notna(rr.get("course_par")) else None,
+                "sg_total":        _safe_float(rr.get("sg_total")),
+                "sg_ott":          _safe_float(rr.get("sg_ott")),
+                "sg_app":          _safe_float(rr.get("sg_app")),
+                "sg_arg":          _safe_float(rr.get("sg_arg")),
+                "sg_putt":         _safe_float(rr.get("sg_putt")),
+                "sg_t2g":          _safe_float(rr.get("sg_t2g")),
+                "driving_dist":    _safe_float(rr.get("driving_dist")),
+                "driving_acc":     _safe_float(rr.get("driving_acc")),
+                "gir":             _safe_float(rr.get("gir")),
+                "scrambling":      _safe_float(rr.get("scrambling")),
+                "birdies":         int(rr["birdies"]) if pd.notna(rr.get("birdies")) else None,
+                "bogies":          int(rr["bogies"]) if pd.notna(rr.get("bogies")) else None,
+                "pars":            int(rr["pars"]) if pd.notna(rr.get("pars")) else None,
+                "eagles_or_better": int(rr["eagles_or_better"]) if pd.notna(rr.get("eagles_or_better")) else None,
+                "doubles_or_worse": int(rr["doubles_or_worse"]) if pd.notna(rr.get("doubles_or_worse")) else None,
+                "great_shots":     int(rr["great_shots"]) if pd.notna(rr.get("great_shots")) else None,
+                "poor_shots":      int(rr["poor_shots"]) if pd.notna(rr.get("poor_shots")) else None,
+                "prox_fw":         _safe_float(rr.get("prox_fw")),
+                "prox_rgh":        _safe_float(rr.get("prox_rgh")),
+            })
 
     def _fmt_topar(v) -> str | None:
         s = str(v).strip() if pd.notna(v) else ""
@@ -4075,12 +4290,7 @@ def get_player_career(player: str) -> dict:
         except Exception:
             return s
 
-    def _safe_f(v) -> float | None:
-        try:
-            f = float(v)
-            return None if (f != f) else round(f, 3)
-        except Exception:
-            return None
+    _safe_f = _safe_float
 
     def _safe_earnings(v) -> str | None:
         s = str(v).strip() if pd.notna(v) else ""
@@ -4103,10 +4313,15 @@ def get_player_career(player: str) -> dict:
             "sg_total":        _safe_f(r.get("sg_total")),
             "sg_ott":          _safe_f(r.get("sg_ott")),
             "sg_app":          _safe_f(r.get("sg_app")),
+            "sg_arg":          _safe_f(r.get("sg_arg")),
             "sg_putt":         _safe_f(r.get("sg_putt")),
+            "driving_dist":    _safe_f(r.get("driving_dist")),
+            "driving_acc":     _safe_f(r.get("driving_acc")),
+            "gir_pct":         _safe_f(r.get("gir_pct")),
+            "scrambling":      _safe_f(r.get("scrambling")),
             "scoring_avg":     _safe_f(r.get("scoring_avg")),
             "birdie_pct":      _safe_f(r.get("birdie_pct")),
-            "gir_pct":         _safe_f(r.get("gir_pct")),
+            "rounds":          rounds_by_tid.get(str(r["tournament_id"]), []),
         }
         for _, r in recent_df.iterrows()
     ]
@@ -4122,7 +4337,12 @@ def get_player_career(player: str) -> dict:
             "avg_sg_total":  _safe_f(r.get("avg_sg_total")),
             "avg_sg_ott":    _safe_f(r.get("avg_sg_ott")),
             "avg_sg_app":    _safe_f(r.get("avg_sg_app")),
+            "avg_sg_arg":    _safe_f(r.get("avg_sg_arg")),
             "avg_sg_putt":   _safe_f(r.get("avg_sg_putt")),
+            "avg_driving_dist": _safe_f(r.get("avg_driving_dist")),
+            "avg_driving_acc":  _safe_f(r.get("avg_driving_acc")),
+            "avg_gir_pct":      _safe_f(r.get("avg_gir_pct")),
+            "avg_scrambling":   _safe_f(r.get("avg_scrambling")),
             "avg_scoring":   _safe_f(r.get("avg_scoring")),
         }
         for _, r in yearly_df.iterrows()
@@ -4147,12 +4367,19 @@ def get_player_synopsis(player: str, force: bool = False) -> dict:
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_file = cache_dir / f"{slug}.json"
 
-    # Return cached if fresh and not forced
+    # Return cached if fresh and not forced. "Fresh" means: under the 24h
+    # ceiling AND the predictions file hasn't been rewritten since this
+    # synopsis was generated — ties cache life to actual data changes
+    # instead of a blind wall-clock guess, so a stable pre-tournament week
+    # doesn't re-burn Haiku calls every 6 hours for no reason.
     if not force and cache_file.exists():
         try:
             cached = json.loads(cache_file.read_text())
-            age_h = (time.time() - cached.get("generated_ts", 0)) / 3600
-            if age_h < 6:
+            generated_ts = cached.get("generated_ts", 0)
+            age_h = (time.time() - generated_ts) / 3600
+            preds_path = OUTPUTS_DIR / "latest_predictions.csv"
+            preds_changed = preds_path.exists() and preds_path.stat().st_mtime > generated_ts
+            if age_h < 24 and not preds_changed:
                 cached["cached"] = True
                 return cached
         except Exception:
@@ -4245,51 +4472,8 @@ def get_player_synopsis(player: str, force: bool = False) -> dict:
         except Exception:
             pass
 
-    # Course history (PGA Championship from DB)
-    pga_starts = pga_top10s = pga_wins = 0
-    avg_to_par = cut_rate = None
-    if _DB_AVAILABLE:
-        try:
-            with _get_db_conn() as conn:
-                lb = conn.execute(
-                    "SELECT player_name, position FROM leaderboards WHERE tournament_id LIKE '%033'"
-                ).df()
-            def _ln(n):
-                s = str(n).strip()
-                return s.split(",")[0].strip().lower() if "," in s else s.strip().split()[-1].lower()
-            target_ln = _ln(player)
-            pga_rows = lb[lb["player_name"].apply(_ln) == target_ln]
-            pga_starts = len(pga_rows)
-            if pga_starts:
-                def _parse_pos_num(p):
-                    s = str(p).strip().upper().lstrip("T")
-                    if s in {"CUT","MC","WD","DQ","MDF","RTD",""}: return None
-                    try: return int(float(s))
-                    except: return None
-                positions = pga_rows["position"].apply(_parse_pos_num).dropna()
-                pga_top10s = int((positions <= 10).sum())
-                pga_wins   = int((positions == 1).sum())
-        except Exception:
-            pass
-
-    # Fantasy uses remaining
-    uses_remaining = 3
-    try:
-        tracker_path = _TRACKER_JSON
-        if tracker_path.exists():
-            tracker = json.loads(tracker_path.read_text())
-            def _lname(n):
-                s = str(n).strip()
-                return s.split(",")[0].strip().lower() if "," in s else s.strip().split()[-1].lower()
-            target_ln = _lname(player)
-            for short_name, pdata in tracker.get("picks", {}).items():
-                if _lname(short_name) == target_ln:
-                    uses_remaining = int(pdata.get("remaining_uses", 0))
-                    break
-    except Exception:
-        pass
-
-    # Tournament & course info
+    # Tournament & course info — resolved before course history so the
+    # history query below can match on the actual current event name.
     tournament_name = "this week's tournament"
     course_name = "the course"
     try:
@@ -4301,6 +4485,50 @@ def get_player_synopsis(player: str, force: bool = False) -> dict:
                 "R2026033": "Aronimink Golf Club",
                 "R2026014": "Augusta National Golf Club",
             }.get(tid, str(row["location"].iloc[0]))
+    except Exception:
+        pass
+
+    # Course history — matches by the CURRENT event's tournament_name across
+    # all years in DuckDB. For recurring single-venue events (Memorial,
+    # Colonial) this is exact course history. For rotating majors (U.S. Open,
+    # Open Championship) it's "history at this event" rather than "at this
+    # specific course" — still meaningfully more correct than the previous
+    # hardcoded PGA Championship lookup, which silently mislabeled stats for
+    # every other tournament.
+    course_starts = course_top10s = course_wins = 0
+    if _DB_AVAILABLE and tournament_name != "this week's tournament":
+        try:
+            with _get_db_conn() as conn:
+                lb = conn.execute(
+                    "SELECT player_name, position FROM leaderboards WHERE LOWER(tournament_name) = LOWER(?)",
+                    [tournament_name],
+                ).df()
+            target_ln = _last_name(player)
+            hist_rows = lb[lb["player_name"].apply(_last_name) == target_ln]
+            course_starts = len(hist_rows)
+            if course_starts:
+                def _parse_pos_num(p):
+                    s = str(p).strip().upper().lstrip("T")
+                    if s in {"CUT","MC","WD","DQ","MDF","RTD",""}: return None
+                    try: return int(float(s))
+                    except: return None
+                positions = hist_rows["position"].apply(_parse_pos_num).dropna()
+                course_top10s = int((positions <= 10).sum())
+                course_wins   = int((positions == 1).sum())
+        except Exception:
+            pass
+
+    # Fantasy uses remaining
+    uses_remaining = 3
+    try:
+        tracker_path = _TRACKER_JSON
+        if tracker_path.exists():
+            tracker = json.loads(tracker_path.read_text())
+            target_ln = _last_name(player)
+            for short_name, pdata in tracker.get("picks", {}).items():
+                if _last_name(short_name) == target_ln:
+                    uses_remaining = int(pdata.get("remaining_uses", 0))
+                    break
     except Exception:
         pass
 
@@ -4325,6 +4553,13 @@ def get_player_synopsis(player: str, force: bool = False) -> dict:
     prompt = f"""You are a sharp PGA Tour analyst. Write a concise player analysis for {player} ahead of the {tournament_name} at {course_name}.
 
 Use ONLY the data below. Do not invent stats or results not provided.
+
+WRITING STYLE — readable for a casual fan, not a stats analyst:
+- Never cite a number on its own. Every stat needs a plain-English read next to it: "+0.65 SG off the tee" should land as "one of the better drivers in the field," not just the raw figure.
+- Spell out category meanings when you cite them: OTT = off the tee/driving, APP = approach/iron play, ARG = short game around the green, PUTT = putting.
+- Translate probabilities into everyday odds-talk: "32%" reads as "roughly a 1-in-3 shot," not the bare percentage.
+- Don't just list a stat — say why it matters for this week and this course. Connect the number to what it means for his chances.
+- Write like a PGA Tour analyst explaining the numbers to a fan who watches every week but doesn't know strokes-gained math.
 
 --- PLAYER DATA ---
 World Rank: {rank_str}
@@ -4351,8 +4586,8 @@ DG Adjustments for {tournament_name}:
   Driving Accuracy fit: {_adj(stats.get('driving_accuracy_adjustment'))}
   DG Baseline SG: {_sg(stats.get('baseline_pred'))} | DG Final SG: {_sg(stats.get('final_pred'))}
 
-PGA Championship history:
-  Starts: {pga_starts} | Top 10s: {pga_top10s} | Wins: {pga_wins}
+{tournament_name} history:
+  Starts: {course_starts} | Top 10s: {course_top10s} | Wins: {course_wins}
 
 Fantasy uses: {uses_remaining}/3 remaining this season
 
@@ -4422,6 +4657,122 @@ Respond with JSON only, no markdown. Exactly this structure:
             pass
 
     return result
+
+
+@app.get("/api/players/course-fit")
+def get_course_fit() -> dict:
+    """
+    Course fit breakdown for the Players page's Course Fit tab. Distinct from
+    /api/course-fit (the Predictions page's course-fit view, which derives
+    "importance" from variance across the current field + DG decomposition
+    data). This endpoint's importance profile (DuckDB course_fit_weights)
+    is derived from a regression against real historical results — see
+    scripts/features/course_weight_model.py — plus the full field ranked by
+    fit, computed fresh from each player's current season SG so the numbers
+    never go stale between prediction runs.
+    """
+    tid = _get_tournament_id()
+    if not tid:
+        return {"course_name": None, "is_default": True, "profile": {}, "players": []}
+
+    tournament_name = _get_tournament_name(tid) or ""
+
+    # Resolve this year's actual course — same shared resolver the batch
+    # backfill uses, so the two can never disagree on what a tournament name
+    # maps to. Falls back to the tournament name itself (matches the
+    # backfill's fallback for tournament names with no mapping entry).
+    try:
+        if str(PROJECT_ROOT) not in sys.path:
+            sys.path.insert(0, str(PROJECT_ROOT))
+        from scripts.features.course_weight_model import resolve_course_name
+        course_name = resolve_course_name(tournament_name) or tournament_name or None
+    except Exception:
+        course_name = tournament_name or None
+
+    # Weights come ONLY from DuckDB course_fit_weights — never a static CSV.
+    # Falls back to field-average defaults for any course we haven't derived yet.
+    weights = {"ott_sg": 0.020, "app_sg": 0.020, "arg_sg": 0.025, "putt_sg": 0.005}
+    is_default = True
+    confidence = 0.0
+    n_players_derivation = 0
+
+    if _DB_AVAILABLE and course_name:
+        try:
+            with _get_db_conn() as conn:
+                row = conn.execute(
+                    "SELECT ott_sg, app_sg, arg_sg, putt_sg, n_players, confidence "
+                    "FROM course_fit_weights WHERE LOWER(course_name) = LOWER(?)",
+                    [course_name],
+                ).fetchone()
+            if row:
+                weights = {"ott_sg": row[0], "app_sg": row[1], "arg_sg": row[2], "putt_sg": row[3]}
+                n_players_derivation = int(row[4])
+                confidence = float(row[5])
+                is_default = False
+        except Exception:
+            pass
+
+    # Course profile as % of total — easier to read than raw weight magnitudes
+    total_weight = sum(weights.values()) or 1.0
+    profile = {
+        "ott_pct":  round(weights["ott_sg"]  / total_weight * 100, 1),
+        "app_pct":  round(weights["app_sg"]  / total_weight * 100, 1),
+        "arg_pct":  round(weights["arg_sg"]  / total_weight * 100, 1),
+        "putt_pct": round(weights["putt_sg"] / total_weight * 100, 1),
+    }
+
+    # Player fit scores — recomputed fresh from each player's CURRENT season
+    # SG (the live pipeline output, not a stale lookup) crossed with the
+    # weights above, so results stay correct even if predict_tournament.py
+    # last ran before this course's weights existed.
+    pred_path = OUTPUTS_DIR / "latest_predictions.csv"
+    players: list[dict] = []
+    if pred_path.exists():
+        try:
+            df = pd.read_csv(pred_path)
+            for col in ["season_sg_ott", "season_sg_app", "season_sg_arg", "season_sg_putt"]:
+                if col not in df.columns:
+                    df[col] = 0.0
+                df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0.0)
+
+            scale = 10.0
+            df["fit_ott"]  = df["season_sg_ott"]  * weights["ott_sg"]  * scale
+            df["fit_app"]  = df["season_sg_app"]  * weights["app_sg"]  * scale
+            df["fit_arg"]  = df["season_sg_arg"]  * weights["arg_sg"]  * scale
+            df["fit_putt"] = df["season_sg_putt"] * weights["putt_sg"] * scale
+
+            # DataGolf predictive coefficients: OTT=1.2, APP=1.0, ARG=0.9, PUTT=0.6
+            dg_total = 3.7
+            df["fit_total"] = (
+                df["fit_ott"] * 1.2 + df["fit_app"] * 1.0 +
+                df["fit_arg"] * 0.9 + df["fit_putt"] * 0.6
+            ) / dg_total
+            df = df.sort_values("fit_total", ascending=False)
+
+            for _, r in df.iterrows():
+                players.append({
+                    "player_name": _flip(r.get("player_name", "")),
+                    "world_rank":  int(r["world_rank"]) if pd.notna(r.get("world_rank")) else None,
+                    "fit_ott":     round(float(r["fit_ott"]), 3),
+                    "fit_app":     round(float(r["fit_app"]), 3),
+                    "fit_arg":     round(float(r["fit_arg"]), 3),
+                    "fit_putt":    round(float(r["fit_putt"]), 3),
+                    "fit_total":   round(float(r["fit_total"]), 3),
+                    "win_prob":    float(r["win_prob"]) if pd.notna(r.get("win_prob")) else None,
+                })
+        except Exception:
+            pass
+
+    return {
+        "tournament_id": tid,
+        "tournament_name": tournament_name,
+        "course_name": course_name,
+        "is_default": is_default,
+        "confidence": confidence,
+        "n_players_in_derivation": n_players_derivation,
+        "profile": profile,
+        "players": players,
+    }
 
 
 @app.get("/api/players/stats")
@@ -4823,14 +5174,35 @@ def _select_model(query: str) -> str:
 
 
 # ── Response cache ────────────────────────────────────────────────────────────
-# Caches full LLM responses in-memory. Keyed by normalized query + tournament +
-# data freshness so it auto-invalidates when the pipeline updates predictions.
-# Resets on server restart (intentional — stale responses from prior pipeline
-# runs should never be served after a restart).
+# Caches full LLM responses, keyed by normalized query + tournament + data
+# freshness so entries auto-invalidate when the pipeline updates predictions.
+# Persisted to disk so accumulated cache hits survive server restarts (the
+# dev --reload server restarts on every code edit, which used to wipe an
+# in-memory-only cache constantly).
 
 import hashlib as _hashlib
 
-_RESPONSE_CACHE: dict[str, dict] = {}
+_CACHE_FILE = DATA_DIR / "cache" / "chat_response_cache.json"
+
+
+def _load_response_cache() -> dict:
+    if _CACHE_FILE.exists():
+        try:
+            return json.loads(_CACHE_FILE.read_text())
+        except Exception:
+            return {}
+    return {}
+
+
+def _persist_response_cache() -> None:
+    try:
+        _CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _CACHE_FILE.write_text(json.dumps(_RESPONSE_CACHE))
+    except Exception:
+        pass  # cache persistence is best-effort, never block a response on it
+
+
+_RESPONSE_CACHE: dict[str, dict] = _load_response_cache()
 
 # Queries about real-time state — never cache these
 _LIVE_CACHE_SKIP = {
@@ -4877,6 +5249,7 @@ def _cache_get(key: str) -> str | None:
 def _cache_set(key: str, text: str, ttl: int) -> None:
     if ttl > 0 and text:
         _RESPONSE_CACHE[key] = {"text": text, "ts": time.time(), "ttl": ttl}
+        _persist_response_cache()
 
 
 def _stream_from_cache(text: str):
@@ -4980,9 +5353,12 @@ def chat_endpoint(body: ChatRequest, request: Request):
     temperature = _select_temperature(body.query)
 
     # ── Response cache check ──────────────────────────────────────────────────
-    # Only cache single-turn questions (no conversation history) — follow-ups
-    # are contextual and can't be replayed safely.
-    _can_cache  = len(body.messages) == 0
+    # Only cache single-turn questions (no PRIOR conversation history) — follow-ups
+    # are contextual and can't be replayed safely. The frontend always includes the
+    # current question in body.messages (see assistant/page.tsx: `[...messages, userMsg]`),
+    # so a fresh conversation arrives with length 1, never 0 — checking for 0 here
+    # meant this cache could never fire.
+    _can_cache  = len(body.messages) <= 1
     _cache_key  = _response_cache_key(body.query, tid) if _can_cache else ""
     _ttl        = _cache_ttl(_q_intent, body.query)    if _can_cache else 0
 
@@ -5366,19 +5742,41 @@ def history_tournaments() -> dict:
 
 @app.get("/api/history/tournament/{tid}")
 def history_tournament_detail(tid: str) -> dict:
-    """Full leaderboard for a single settled tournament — reads from DuckDB."""
+    """Full leaderboard for a single settled tournament — reads from DuckDB.
+
+    Same SG-pivot pattern as /api/players/career, just inverted: that endpoint
+    holds one player_id fixed and varies tournament_id; this one holds one
+    tournament_id fixed and varies player_id (the whole field).
+    """
     if not _DB_AVAILABLE:
         return {"players": []}
 
     try:
         with _get_db_conn() as conn:
             df = conn.execute("""
-                SELECT position, player_name, total_score, to_par,
-                       r1, r2, r3, r4, earnings
-                FROM leaderboards
-                WHERE UPPER(tournament_id) = ?
-                ORDER BY TRY_CAST(REGEXP_EXTRACT(position, '(\d+)', 1) AS INTEGER) NULLS LAST
-            """, [tid.upper()]).fetchdf()
+                SELECT l.position, l.player_name, l.total_score, l.to_par,
+                       l.r1, l.r2, l.r3, l.r4, l.earnings,
+                       sg.sg_total, sg.sg_ott, sg.sg_app, sg.sg_arg, sg.sg_putt,
+                       sg.driving_dist, sg.driving_acc, sg.gir_pct, sg.scrambling
+                FROM leaderboards l
+                LEFT JOIN (
+                    SELECT player_id, tournament_id,
+                        AVG(CASE WHEN stat_id = '2567' THEN stat_value END) AS sg_total,
+                        AVG(CASE WHEN stat_id = '2568' THEN stat_value END) AS sg_ott,
+                        AVG(CASE WHEN stat_id = '2569' THEN stat_value END) AS sg_app,
+                        AVG(CASE WHEN stat_id = '2570' THEN stat_value END) AS sg_arg,
+                        AVG(CASE WHEN stat_id = '2564' THEN stat_value END) AS sg_putt,
+                        AVG(CASE WHEN stat_id = '101'  THEN stat_value END) AS driving_dist,
+                        AVG(CASE WHEN stat_id = '102'  THEN stat_value END) AS driving_acc,
+                        AVG(CASE WHEN stat_id = '103'  THEN stat_value END) AS gir_pct,
+                        AVG(CASE WHEN stat_id = '130'  THEN stat_value END) AS scrambling
+                    FROM tournament_stats
+                    WHERE UPPER(tournament_id) = ?
+                    GROUP BY player_id, tournament_id
+                ) sg ON sg.player_id = l.player_id AND sg.tournament_id = l.tournament_id
+                WHERE UPPER(l.tournament_id) = ?
+                ORDER BY TRY_CAST(REGEXP_EXTRACT(l.position, '[0-9]+', 0) AS INTEGER) NULLS LAST
+            """, [tid.upper(), tid.upper()]).fetchdf()
     except Exception:
         return {"players": []}
 
@@ -5388,6 +5786,13 @@ def history_tournament_detail(tid: str) -> dict:
     def _safe_int(v) -> int | None:
         try:
             return int(v) if pd.notna(v) else None
+        except Exception:
+            return None
+
+    def _safe_f(v) -> float | None:
+        try:
+            f = float(v)
+            return None if (f != f) else round(f, 3)
         except Exception:
             return None
 
@@ -5404,15 +5809,24 @@ def history_tournament_detail(tid: str) -> dict:
 
     players = [
         {
-            "position":    str(r["position"]).strip(),
-            "player_name": str(r["player_name"]).strip(),
-            "total_score": _safe_int(r.get("total_score")),
-            "to_par":      str(r["to_par"]).strip() if pd.notna(r.get("to_par")) else "",
-            "r1":          _safe_int(r.get("r1")),
-            "r2":          _safe_int(r.get("r2")),
-            "r3":          _safe_int(r.get("r3")),
-            "r4":          _safe_int(r.get("r4")),
-            "earnings":    _fmt_earnings(r.get("earnings")),
+            "position":     str(r["position"]).strip(),
+            "player_name":  str(r["player_name"]).strip(),
+            "total_score":  _safe_int(r.get("total_score")),
+            "to_par":       str(r["to_par"]).strip() if pd.notna(r.get("to_par")) else "",
+            "r1":           _safe_int(r.get("r1")),
+            "r2":           _safe_int(r.get("r2")),
+            "r3":           _safe_int(r.get("r3")),
+            "r4":           _safe_int(r.get("r4")),
+            "earnings":     _fmt_earnings(r.get("earnings")),
+            "sg_total":     _safe_f(r.get("sg_total")),
+            "sg_ott":       _safe_f(r.get("sg_ott")),
+            "sg_app":       _safe_f(r.get("sg_app")),
+            "sg_arg":       _safe_f(r.get("sg_arg")),
+            "sg_putt":      _safe_f(r.get("sg_putt")),
+            "driving_dist": _safe_f(r.get("driving_dist")),
+            "driving_acc":  _safe_f(r.get("driving_acc")),
+            "gir_pct":      _safe_f(r.get("gir_pct")),
+            "scrambling":   _safe_f(r.get("scrambling")),
         }
         for _, r in df.iterrows()
     ]
@@ -5620,13 +6034,6 @@ def course_fit() -> dict:
         except Exception:
             return None
 
-    def _last_name(name: str) -> str:
-        """Normalize to lowercase last name for cross-format matching."""
-        n = str(name).strip()
-        if "," in n:
-            return n.split(",")[0].strip().lower()
-        return n.strip().split()[-1].lower()
-
     def _parse_pos(pos) -> int | None:
         s = str(pos).strip().upper().lstrip("T")
         if s in {"CUT", "MC", "WD", "DQ", "MDF", "RTD", ""}:
@@ -5786,9 +6193,6 @@ def get_intel() -> dict:
     data = json.loads(path.read_text())
 
     # Normalize player names to "First Last" to match predictions endpoint
-    def _flip(n: str) -> str:
-        s = str(n).strip()
-        return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
 
     for p in data.get("players", []):
         p["player_name"] = _flip(p.get("player_name", ""))

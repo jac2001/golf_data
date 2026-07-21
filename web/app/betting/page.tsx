@@ -106,7 +106,7 @@ export default function BettingPage() {
   // ── Derived values (computed from state — like @property in Python) ────────
   const filteredBets = bets
     .filter((b) => market === "all" || b.market === market)
-    .filter((b) => b.edge_pts >= minEdge)
+    .filter((b) => b.edge_pts != null && b.edge_pts >= minEdge)
     .sort((a, b) => b.edge_pts - a.edge_pts);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
@@ -156,7 +156,7 @@ export default function BettingPage() {
             onClick={() => setActiveTab(tab)}
             style={{
               background: "transparent",
-              border: "none",
+              borderTop: "none", borderLeft: "none", borderRight: "none",
               borderBottom: `2px solid ${activeTab === tab ? "#00c44f" : "transparent"}`,
               color: activeTab === tab ? "#dde6f5" : "#7f8c8d",
               padding: "8px 16px",
@@ -390,7 +390,9 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
   return (
     <div style={{
       background: isPick ? "#040e09" : "#060f1a",
-      border: isPick ? "1px solid #00c44f55" : "1px solid #00c44f44",
+      borderTop: isPick ? "1px solid #00c44f55" : "1px solid #00c44f44",
+      borderRight: isPick ? "1px solid #00c44f55" : "1px solid #00c44f44",
+      borderBottom: isPick ? "1px solid #00c44f55" : "1px solid #00c44f44",
       borderLeft: "3px solid #00c44f",
       borderRadius: 10,
       padding: "16px 20px",

@@ -90,7 +90,8 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div style={{
-      background: "#0d1a30", border: "1px solid #1e3a5f",
+      background: "#0d1a30",
+      borderTop: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
       borderLeft: expert.winner_pick ? "3px solid #f1c40f" : "3px solid #1e3a5f",
       borderRadius: 8, marginBottom: 8,
     }}>

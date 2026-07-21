@@ -19,6 +19,7 @@ venv/
 # data/historical/*.csv
 # data/models/*.pkl
 data/golf_data.db
+data/processed/
 
 # Temp files
 *.tmp
@@ -31,3 +32,5 @@ golf_data/
 data/config/assistant.json
 config.json
 .env
+.vercel
+.env*

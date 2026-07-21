@@ -1,6 +1,6 @@
 "use client";
 
-import { CourseResponse, CourseHole } from "@/lib/api";
+import { CourseResponse, CourseHole, CourseHistory } from "@/lib/api";
 
 type Props = { data: CourseResponse };
 
@@ -150,8 +150,12 @@ export default function CourseCard({ data }: Props) {
   const hardest = sorted[0];
   const easiest = sorted[sorted.length - 1];
 
+  const unplayedCount = data.holes.filter(h => h.scoring_avg == null).length;
+
   return (
     <div>
+      {data.history && <CourseHistorySection history={data.history} unplayedCount={unplayedCount} />}
+
       {/* Header strip */}
       <div style={{
         background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: "10px 10px 0 0",
@@ -183,7 +187,7 @@ export default function CourseCard({ data }: Props) {
       </div>
 
       {/* Table */}
-      <div style={{ overflowX: "auto", border: "1px solid #1e3a5f", borderTop: "none", borderRadius: "0 0 10px 10px" }}>
+      <div style={{ overflowX: "auto", borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f", borderTop: "none", borderRadius: "0 0 10px 10px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
           <thead>
             <tr style={{ background: "#0a1628" }}>
@@ -214,6 +218,102 @@ export default function CourseCard({ data }: Props) {
       <p style={{ color: "#3a5060", fontSize: "0.68em", marginTop: 6 }}>
         vs Par = avg strokes above/below par · Rank 1 = hardest hole on course
       </p>
+    </div>
+  );
+}
+
+function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseHistory; unplayedCount?: number }) {
+  const { avg_score_by_round: r, scoring_distribution: sd, winning_scores } = history;
+  const roundVals = [r.r1, r.r2, r.r3, r.r4].filter((v): v is number => v != null);
+  const minR = roundVals.length ? Math.min(...roundVals) : null;
+  const maxR = roundVals.length ? Math.max(...roundVals) : null;
+
+  // Color a round's average relative to the other 3 rounds at this course —
+  // not vs par, since we don't have reliable per-round par history here.
+  function roundColor(v: number | null): string {
+    if (v == null || minR == null || maxR == null || minR === maxR) return "#8ba0b8";
+    const t = (v - minR) / (maxR - minR); // 0 = easiest round, 1 = toughest
+    return t > 0.66 ? "#e74c3c" : t > 0.33 ? "#f39c12" : "#00c44f";
+  }
+
+  return (
+    <div style={{ marginBottom: 16, background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10, padding: "16px 18px" }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+        <span style={{ color: "#dde6f5", fontWeight: 800, fontSize: "0.95em" }}>Course History</span>
+        <span style={{ color: "#4a6080", fontSize: "0.75em" }}>
+          {history.editions} past edition{history.editions !== 1 ? "s" : ""}
+          {history.years.length > 0 && ` · ${history.years[0]}–${history.years[history.years.length - 1]}`}
+        </span>
+      </div>
+
+      {unplayedCount > 0 && (
+        <div style={{
+          background: "#0a1525", border: "1px solid #1e3a5f", borderRadius: 6,
+          padding: "6px 10px", marginBottom: 14, fontSize: "0.75em", color: "#7a9ab8",
+        }}>
+          {unplayedCount} hole{unplayedCount > 1 ? "s" : ""} below {unplayedCount > 1 ? "haven't" : "hasn't"} been played yet this week (showing —) —
+          the trends here are how this course has played across {history.editions} past edition{history.editions !== 1 ? "s" : ""} in the meantime.
+        </div>
+      )}
+
+      <div style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
+        {/* Round-by-round average score */}
+        <div style={{ minWidth: 220 }}>
+          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+            Avg Score by Round
+          </div>
+          <div style={{ display: "flex", gap: 14 }}>
+            {([["R1", r.r1], ["R2", r.r2], ["R3", r.r3], ["R4", r.r4]] as const).map(([label, v]) => (
+              <div key={label} style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "0.65em", color: "#5a7090", marginBottom: 2 }}>{label}</div>
+                <div style={{ fontSize: "1.05em", fontWeight: 800, color: roundColor(v) }}>{v != null ? v.toFixed(1) : "—"}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Scoring distribution */}
+        <div style={{ minWidth: 220 }}>
+          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+            Avg Per Round
+          </div>
+          <div style={{ display: "flex", gap: 18 }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "0.65em", color: "#00c44f", marginBottom: 2 }}>Birdies</div>
+              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "#00c44f" }}>{sd.avg_birdies != null ? sd.avg_birdies.toFixed(2) : "—"}</div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "0.65em", color: "#e74c3c", marginBottom: 2 }}>Bogeys</div>
+              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "#e74c3c" }}>{sd.avg_bogeys != null ? sd.avg_bogeys.toFixed(2) : "—"}</div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "0.65em", color: "#f1c40f", marginBottom: 2 }}>Eagles</div>
+              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "#f1c40f" }}>{sd.avg_eagles != null ? sd.avg_eagles.toFixed(2) : "—"}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Winning score trend */}
+      {winning_scores.length > 0 && (
+        <div style={{ marginTop: 18 }}>
+          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+            Winning Score by Year
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {winning_scores.map(w => (
+              <div key={w.year} style={{
+                background: "#081220", border: "1px solid #1e3a5f", borderRadius: 6,
+                padding: "6px 10px", minWidth: 86, textAlign: "center",
+              }}>
+                <div style={{ fontSize: "0.62em", color: "#4a6080" }}>{w.year}</div>
+                <div style={{ fontSize: "0.95em", fontWeight: 800, color: "#00c44f", marginTop: 2 }}>{w.to_par || "—"}</div>
+                <div style={{ fontSize: "0.65em", color: "#7f8c8d", marginTop: 2, whiteSpace: "nowrap" }}>{w.winner_name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

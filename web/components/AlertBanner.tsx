@@ -90,7 +90,9 @@ export default function AlertBanner() {
         return (
           <div key={toast.id} style={{
             background:   colors.bg,
-            border:       `1px solid ${colors.border}`,
+            borderTop:    `1px solid ${colors.border}`,
+            borderRight:  `1px solid ${colors.border}`,
+            borderBottom: `1px solid ${colors.border}`,
             borderLeft:   `3px solid ${colors.border}`,
             borderRadius: 8,
             padding:      "10px 14px",

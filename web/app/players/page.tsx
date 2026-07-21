@@ -6,12 +6,14 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   getPlayerList,
+  getAllPlayers,
   getPlayerProfile,
   getFieldStats,
   getPlayerSynopsis,
   getPlayerCareer,
   getTournamentLeaderboard,
   getLineup,
+  getCourseFitWeights,
   PlayerProfile,
   PlayerDecompositions,
   PlayerSkillRatings,
@@ -22,6 +24,9 @@ import {
   PlayerCareer,
   CareerResult,
   CareerYearSummary,
+  RoundStat,
+  CourseFitWeights,
+  CourseFitRankedPlayer,
 } from "@/lib/api";
 
 const BG       = "#0d1a30";
@@ -371,7 +376,7 @@ function SynopsisCard({
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 
-type PageTab = "lookup" | "h2h" | "stats";
+type PageTab = "lookup" | "h2h" | "stats" | "course-fit";
 
 function PlayersPageInner() {
   const searchParams = useSearchParams();
@@ -383,7 +388,7 @@ function PlayersPageInner() {
   const [myPicks, setMyPicks]       = useState<string[]>([]);
 
   useEffect(() => {
-    getPlayerList()
+    getAllPlayers()
       .then(d => setPlayers(d.players))
       .finally(() => setListLoading(false));
     getLineup()
@@ -391,12 +396,20 @@ function PlayersPageInner() {
       .catch(() => {});
   }, []);
 
+  // Jump to the Lookup tab whenever a ?player= link is followed — needed
+  // because clicking a player link while already on /players (e.g. from the
+  // Course Fit or Stats tab) only changes the URL; it doesn't remount this
+  // component, so pageTab wouldn't otherwise follow.
+  useEffect(() => {
+    if (deepLinkPlayer) setPageTab("lookup");
+  }, [deepLinkPlayer]);
+
   const tabBtn = (key: PageTab, label: string) => (
     <button
       key={key}
       onClick={() => setPageTab(key)}
       style={{
-        background: "transparent", border: "none", cursor: "pointer",
+        background: "transparent", borderTop: "none", borderLeft: "none", borderRight: "none", cursor: "pointer",
         padding: "8px 16px", fontSize: "0.88em", fontWeight: pageTab === key ? 700 : 500,
         color: pageTab === key ? TEXT : MUTED,
         borderBottom: `2px solid ${pageTab === key ? GREEN : "transparent"}`,
@@ -416,9 +429,10 @@ function PlayersPageInner() {
 
         {/* Tab bar */}
         <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${BORDER}`, marginBottom: 24 }}>
-          {tabBtn("lookup", "Lookup")}
-          {tabBtn("h2h",    "Head-to-Head")}
-          {tabBtn("stats",  "Stats")}
+          {tabBtn("lookup",      "Lookup")}
+          {tabBtn("h2h",         "Head-to-Head")}
+          {tabBtn("stats",       "Stats")}
+          {tabBtn("course-fit",  "Course Fit")}
         </div>
 
         {listLoading ? (
@@ -427,8 +441,10 @@ function PlayersPageInner() {
           <LookupTab players={players} defaultPlayer={deepLinkPlayer} />
         ) : pageTab === "h2h" ? (
           <H2HTab players={players} />
-        ) : (
+        ) : pageTab === "stats" ? (
           <StatsTab myPicks={myPicks} />
+        ) : (
+          <CourseFitWeightsTab myPicks={myPicks} />
         )}
       </div>
     </main>
@@ -790,6 +806,207 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
   );
 }
 
+// ── Course Fit tab ───────────────────────────────────────────────────────────
+
+const FIT_CATEGORIES: { key: keyof CourseFitRankedPlayer; label: string; color: string }[] = [
+  { key: "fit_ott",  label: "Off the Tee",      color: BLUE },
+  { key: "fit_app",  label: "Approach",          color: GREEN },
+  { key: "fit_arg",  label: "Around the Green",  color: GOLD },
+  { key: "fit_putt", label: "Putting",           color: "#c77dff" },
+];
+
+function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
+  const myPicksNorm = useMemo(() => new Set(myPicks.map(normName)), [myPicks]);
+
+  const [data, setData]       = useState<CourseFitWeights | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError]     = useState<string | null>(null);
+  const [search, setSearch]   = useState("");
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  useEffect(() => {
+    getCourseFitWeights()
+      .then(setData)
+      .catch(() => setError("Failed to load course fit."))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = useMemo(() => {
+    if (!data) return [];
+    const q = search.trim().toLowerCase();
+    return data.players.filter(p => !q || p.player_name.toLowerCase().includes(q));
+  }, [data, search]);
+
+  if (loading) return <p style={{ color: MUTED }}>Loading course fit…</p>;
+  if (error || !data) return <p style={{ color: RED }}>{error ?? "Failed to load course fit."}</p>;
+
+  const { profile } = data;
+  // Find the biggest fit_total magnitude in the field so every player's mini
+  // breakdown bars share one consistent scale.
+  const maxAbsFit = Math.max(
+    0.05,
+    ...data.players.flatMap(p => FIT_CATEGORIES.map(c => Math.abs(p[c.key] as number)))
+  );
+
+  return (
+    <>
+      {/* ── Course profile card ──────────────────────────────────────────── */}
+      <div style={{ ...card, marginBottom: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10 }}>
+          <div>
+            <p style={{ ...sectionLabel, margin: "0 0 4px" }}>Course Profile</p>
+            <h2 style={{ margin: 0, fontSize: "1.3em", fontWeight: 800, color: TEXT }}>
+              {data.course_name ?? data.tournament_name}
+            </h2>
+            <p style={{ margin: "2px 0 0", fontSize: "0.82em", color: MUTED }}>{data.tournament_name}</p>
+          </div>
+          {data.is_default ? (
+            <span style={{
+              fontSize: "0.72em", fontWeight: 700, color: GOLD, background: "#2a1f00",
+              border: "1px solid #f1c40f44", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
+            }}>
+              No course-specific data yet — showing field-average importance
+            </span>
+          ) : (
+            <span style={{
+              fontSize: "0.72em", fontWeight: 700, color: GREEN, background: "#0d2e18",
+              border: "1px solid #00c44f44", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
+            }}>
+              Derived from {data.n_players_in_derivation} historical results · {(data.confidence * 100).toFixed(0)}% confidence
+            </span>
+          )}
+        </div>
+
+        <div style={{ marginTop: 18 }}>
+          {([
+            ["Off the Tee",      profile.ott_pct,  BLUE],
+            ["Approach",         profile.app_pct,  GREEN],
+            ["Around the Green", profile.arg_pct,  GOLD],
+            ["Putting",          profile.putt_pct, "#c77dff"],
+          ] as const).map(([label, pct, color]) => (
+            <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <span style={{ width: 140, fontSize: "0.8em", color: MUTED, flexShrink: 0 }}>{label}</span>
+              <div style={{ flex: 1, background: "#0d1a30", borderRadius: 4, height: 10, border: `1px solid ${BORDER}` }}>
+                <div style={{ width: `${pct}%`, background: color, borderRadius: 4, height: 10 }} />
+              </div>
+              <span style={{ width: 46, textAlign: "right", fontSize: "0.85em", fontWeight: 700, color }}>
+                {pct.toFixed(0)}%
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Ranked field ─────────────────────────────────────────────────── */}
+      <input
+        placeholder="Filter player..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        style={{
+          background: CARD_BG, border: `1px solid ${BORDER}`, borderRadius: 6,
+          color: TEXT, padding: "7px 12px", marginBottom: 12, width: 200, fontSize: "0.85em",
+          outline: "none",
+        }}
+      />
+      <p style={{ fontSize: "0.75em", color: LABEL, margin: "0 0 10px" }}>
+        {filtered.length} players · ranked by fit to this course · click a row for the breakdown
+      </p>
+
+      <div style={{ overflowX: "auto", border: `1px solid ${BORDER}`, borderRadius: 10 }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+          <thead>
+            <tr>
+              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
+              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "left", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Player</th>
+              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>World Rank</th>
+              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Fit Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((p, i) => {
+              const isPick = myPicksNorm.has(normName(p.player_name));
+              const isExpanded = expanded === p.player_name;
+              return (
+                <React.Fragment key={p.player_name}>
+                  <tr
+                    onClick={() => setExpanded(isExpanded ? null : p.player_name)}
+                    style={{
+                      cursor: "pointer",
+                      background: isPick ? "#060e09" : (i % 2 === 0 ? "#0d1a30" : "#0a1525"),
+                      borderLeft: isPick ? `2px solid ${GREEN}` : undefined,
+                    }}
+                  >
+                    <td style={{ padding: "6px 10px", textAlign: "center", color: LABEL, fontSize: "0.8em", borderBottom: "1px solid #0f2236" }}>
+                      {i + 1}
+                    </td>
+                    <td style={{ padding: "6px 10px", borderBottom: "1px solid #0f2236" }}>
+                      <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <span style={{ fontSize: "0.7em", color: isExpanded ? BLUE : "#2a4060" }}>
+                          {isExpanded ? "▲" : "▼"}
+                        </span>
+                        <span style={{ color: isPick ? GREEN : TEXT, fontWeight: isPick ? 700 : 500, fontSize: "0.88em" }}>
+                          {p.player_name}
+                        </span>
+                        {isPick && (
+                          <span style={{ fontSize: "0.58em", fontWeight: 800, color: GREEN, background: "#0d2e18", border: `1px solid ${GREEN}44`, borderRadius: 3, padding: "2px 5px" }}>
+                            MY PICK
+                          </span>
+                        )}
+                      </span>
+                    </td>
+                    <td style={{ padding: "6px 10px", textAlign: "center", color: MUTED, fontSize: "0.85em", borderBottom: "1px solid #0f2236" }}>
+                      {p.world_rank != null ? `#${p.world_rank}` : "—"}
+                    </td>
+                    <td style={{ padding: "6px 10px", textAlign: "center", fontWeight: 700, fontSize: "0.9em", borderBottom: "1px solid #0f2236",
+                        color: p.fit_total >= 0 ? GREEN : RED }}>
+                      {p.fit_total >= 0 ? "+" : ""}{p.fit_total.toFixed(2)}
+                    </td>
+                  </tr>
+                  {isExpanded && (
+                    <tr>
+                      <td colSpan={4} style={{ background: "#07101c", padding: "14px 16px", borderBottom: "1px solid #0f2236" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 6, maxWidth: 480 }}>
+                          {FIT_CATEGORIES.map(c => {
+                            const val = p[c.key] as number;
+                            const pct = Math.min(100, Math.abs(val) / maxAbsFit * 100);
+                            return (
+                              <div key={c.key} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                <span style={{ width: 130, fontSize: "0.78em", color: MUTED, flexShrink: 0 }}>{c.label}</span>
+                                <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6 }}>
+                                  <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+                                    {val < 0 && <div style={{ width: `${pct}%`, height: 7, borderRadius: 2, background: RED, maxWidth: "100%" }} />}
+                                  </div>
+                                  <div style={{ width: 1, height: 12, background: BORDER, flexShrink: 0 }} />
+                                  <div style={{ flex: 1 }}>
+                                    {val >= 0 && <div style={{ width: `${pct}%`, height: 7, borderRadius: 2, background: c.color, maxWidth: "100%" }} />}
+                                  </div>
+                                </div>
+                                <span style={{ width: 50, textAlign: "right", fontSize: "0.78em", fontWeight: 600, color: val >= 0 ? c.color : RED }}>
+                                  {val >= 0 ? "+" : ""}{val.toFixed(2)}
+                                </span>
+                              </div>
+                            );
+                          })}
+                          <Link
+                            href={`/players?player=${encodeURIComponent(p.player_name)}`}
+                            style={{ marginTop: 6, fontSize: "0.78em", color: BLUE, textDecoration: "none", fontWeight: 600 }}
+                          >
+                            View full profile →
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+}
+
 // ── H2H tab ───────────────────────────────────────────────────────────────────
 
 function H2HTab({ players }: { players: string[] }) {
@@ -1033,6 +1250,100 @@ function H2HRow({
   );
 }
 
+// ── Per-round SG breakdown (shown in expanded Recent Starts row) ──────────────
+
+function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
+  const BG    = "#060e1a";
+  const CELL  = "#0a1525";
+  const BORD  = "#1e3a5f";
+  const MUT   = "#4a6080";
+  const GRN   = "#00c44f";
+  const RED   = "#e74c3c";
+  const GOLD  = "#f1c40f";
+
+  function sgColor(v: number | null) {
+    if (v == null) return MUT;
+    return v >= 0 ? GRN : RED;
+  }
+
+  function fmtSg(v: number | null) {
+    if (v == null) return "—";
+    return v >= 0 ? `+${v.toFixed(2)}` : v.toFixed(2);
+  }
+
+  function fmtScore(score: number | null, par: number | null) {
+    if (score == null) return "—";
+    if (par == null) return String(score);
+    const diff = score - par;
+    const sign = diff > 0 ? "+" : diff < 0 ? "" : "E";
+    const label = diff === 0 ? "E" : `${sign}${diff}`;
+    return `${score} (${label})`;
+  }
+
+  const th: React.CSSProperties = {
+    padding: "5px 10px", fontSize: "0.68em", fontWeight: 700,
+    color: MUT, textTransform: "uppercase", letterSpacing: "0.05em",
+    background: BG, textAlign: "center", whiteSpace: "nowrap",
+    borderBottom: `1px solid ${BORD}`,
+  };
+  const label: React.CSSProperties = {
+    padding: "5px 10px", fontSize: "0.75em", color: MUT,
+    background: BG, borderRight: `1px solid ${BORD}`,
+    borderBottom: `1px solid ${BORD}`, whiteSpace: "nowrap",
+  };
+  function cell(i: number): React.CSSProperties {
+    return {
+      padding: "5px 10px", fontSize: "0.8em", textAlign: "center",
+      background: i % 2 === 0 ? CELL : "#091520",
+      borderBottom: `1px solid ${BORD}`,
+    };
+  }
+
+  const rows: { key: string; label: string; fmt: (r: RoundStat) => React.ReactNode }[] = [
+    { key: "score",    label: "Score",    fmt: r => <span style={{ color: "#dde6f5", fontWeight: 700 }}>{fmtScore(r.score, r.course_par)}</span> },
+    { key: "sg_total", label: "SG Total", fmt: r => <span style={{ color: sgColor(r.sg_total), fontWeight: 700 }}>{fmtSg(r.sg_total)}</span> },
+    { key: "sg_ott",   label: "SG OTT",   fmt: r => <span style={{ color: sgColor(r.sg_ott) }}>{fmtSg(r.sg_ott)}</span> },
+    { key: "sg_app",   label: "SG APP",   fmt: r => <span style={{ color: sgColor(r.sg_app) }}>{fmtSg(r.sg_app)}</span> },
+    { key: "sg_arg",   label: "SG ARG",   fmt: r => <span style={{ color: sgColor(r.sg_arg) }}>{fmtSg(r.sg_arg)}</span> },
+    { key: "sg_putt",  label: "SG Putt",  fmt: r => <span style={{ color: sgColor(r.sg_putt) }}>{fmtSg(r.sg_putt)}</span> },
+    { key: "birdies",  label: "Birdies",  fmt: r => <span style={{ color: r.birdies ? GRN : MUT }}>{r.birdies || "—"}</span> },
+    { key: "bogies",   label: "Bogies",   fmt: r => <span style={{ color: r.bogies ? RED : MUT }}>{r.bogies || "—"}</span> },
+    { key: "eagles",   label: "Eagles",   fmt: r => <span style={{ color: r.eagles_or_better ? GOLD : MUT }}>{r.eagles_or_better || "—"}</span> },
+    { key: "dist",     label: "Drive",    fmt: r => <span style={{ color: MUT }}>{r.driving_dist != null ? `${r.driving_dist.toFixed(0)} yds` : "—"}</span> },
+    { key: "prox_fw",  label: "Prox FW",  fmt: r => <span style={{ color: MUT }}>{r.prox_fw != null ? `${r.prox_fw.toFixed(1)} ft` : "—"}</span> },
+  ];
+
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <p style={{ fontSize: "0.7em", color: MUT, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
+        Round-by-Round Breakdown
+      </p>
+      <div style={{ overflowX: "auto", border: `1px solid ${BORD}`, borderRadius: 8 }}>
+        <table style={{ borderCollapse: "collapse", background: BG }}>
+          <thead>
+            <tr>
+              <th style={{ ...th, textAlign: "left", minWidth: 80 }}></th>
+              {rounds.map(r => (
+                <th key={r.round_num} style={{ ...th, minWidth: 120 }}>Round {r.round_num}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={row.key}>
+                <td style={{ ...label, background: i % 2 === 0 ? CELL : "#091520" }}>{row.label}</td>
+                {rounds.map(r => (
+                  <td key={r.round_num} style={cell(i)}>{row.fmt(r)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 // ── Career card ───────────────────────────────────────────────────────────────
 
 function posColor2(pos: string): string {
@@ -1077,6 +1388,10 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
   if (!rows)  return <p style={{ color: MUTED, fontSize: "0.8em", margin: "8px 0 0" }}>Loading leaderboard…</p>;
 
   const hasEarnings = rows.some(r => r.earnings != null);
+  const hasSg = rows.some(r => r.sg_total != null);
+  const sgColor3 = (v: number | null) => v == null ? MUTED : v >= 0 ? GREEN : RED;
+  const fmtSg3 = (v: number | null) => v == null ? "—" : `${v >= 0 ? "+" : ""}${v.toFixed(2)}`;
+  const fmtPct3 = (v: number | null) => v == null ? "—" : `${v.toFixed(0)}%`;
 
   const thS: React.CSSProperties = {
     padding: "5px 8px", background: "#060f1c", fontSize: "0.67em", fontWeight: 700,
@@ -1101,6 +1416,19 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
             <th style={{ ...thS, textAlign: "center" }}>R3</th>
             <th style={{ ...thS, textAlign: "center" }}>R4</th>
             <th style={{ ...thS, textAlign: "center" }}>Total</th>
+            {hasSg && (
+              <>
+                <th style={{ ...thS, textAlign: "center" }}>SG Tot</th>
+                <th style={{ ...thS, textAlign: "center" }}>OTT</th>
+                <th style={{ ...thS, textAlign: "center" }}>APP</th>
+                <th style={{ ...thS, textAlign: "center" }}>ARG</th>
+                <th style={{ ...thS, textAlign: "center" }}>Putt</th>
+                <th style={{ ...thS, textAlign: "center" }}>Dist</th>
+                <th style={{ ...thS, textAlign: "center" }}>Acc%</th>
+                <th style={{ ...thS, textAlign: "center" }}>GIR%</th>
+                <th style={{ ...thS, textAlign: "center" }}>Scrmb%</th>
+              </>
+            )}
             {hasEarnings && <th style={{ ...thS, textAlign: "right" }}>Earnings</th>}
           </tr>
         </thead>
@@ -1126,6 +1454,19 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
                 <td style={{ ...tdS(isPick, i), textAlign: "center", fontWeight: 600, color: toParColor2(r.to_par) }}>
                   {r.to_par || "—"}
                 </td>
+                {hasSg && (
+                  <>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", fontWeight: 700, color: sgColor3(r.sg_total) }}>{fmtSg3(r.sg_total)}</td>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", color: sgColor3(r.sg_ott) }}>{fmtSg3(r.sg_ott)}</td>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", color: sgColor3(r.sg_app) }}>{fmtSg3(r.sg_app)}</td>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", color: sgColor3(r.sg_arg) }}>{fmtSg3(r.sg_arg)}</td>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", color: sgColor3(r.sg_putt) }}>{fmtSg3(r.sg_putt)}</td>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{r.driving_dist != null ? r.driving_dist.toFixed(0) : "—"}</td>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{fmtPct3(r.driving_acc)}</td>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{fmtPct3(r.gir_pct)}</td>
+                    <td style={{ ...tdS(isPick, i), textAlign: "center", color: MUTED }}>{fmtPct3(r.scrambling)}</td>
+                  </>
+                )}
                 {hasEarnings && (
                   <td style={{ ...tdS(isPick, i), textAlign: "right", color: MUTED, fontSize: "0.75em" }}>
                     {r.earnings ?? "—"}
@@ -1140,13 +1481,21 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
   );
 }
 
+const MAJOR_KEYWORDS = ["masters", "u.s. open", "us open", "open championship", "pga championship"];
+function isMajor(name: string): boolean {
+  const n = name.toLowerCase();
+  return MAJOR_KEYWORDS.some(k => n.includes(k));
+}
+
 function CareerCard({ playerName }: { playerName: string }) {
   const [career, setCareer]       = useState<PlayerCareer | null>(null);
   const [loading, setLoading]     = useState(false);
   const [loaded, setLoaded]       = useState(false);
   const [view, setView]           = useState<"recent" | "yearly">("yearly");
-  // tracks which tournament row is expanded in Recent Starts
+  const [majorsOnly, setMajorsOnly] = useState(false);
+  // tracks which tournament row is expanded in Recent Starts, and which tab is active
   const [expandedTid, setExpandedTid] = useState<string | null>(null);
+  const [expandedTab, setExpandedTab] = useState<"rounds" | "leaderboard">("rounds");
 
   function load() {
     setLoading(true);
@@ -1180,9 +1529,9 @@ function CareerCard({ playerName }: { playerName: string }) {
           </button>
         )}
         {loaded && (
-          <div style={{ display: "flex", gap: 6 }}>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {(["yearly", "recent"] as const).map(v => (
-              <button key={v} onClick={() => setView(v)} style={{
+              <button key={v} onClick={() => { setView(v); if (v !== "recent") setMajorsOnly(false); }} style={{
                 background: view === v ? GREEN + "22" : "transparent",
                 border: `1px solid ${view === v ? GREEN : BORDER}`,
                 borderRadius: 6, color: view === v ? GREEN : MUTED,
@@ -1191,6 +1540,16 @@ function CareerCard({ playerName }: { playerName: string }) {
                 {v === "yearly" ? "By Year" : "Recent Starts"}
               </button>
             ))}
+            {view === "recent" && (
+              <button onClick={() => setMajorsOnly(m => !m)} style={{
+                background: majorsOnly ? GOLD + "22" : "transparent",
+                border: `1px solid ${majorsOnly ? GOLD : BORDER}`,
+                borderRadius: 6, color: majorsOnly ? GOLD : MUTED,
+                padding: "4px 12px", fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
+              }}>
+                Majors Only
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -1207,7 +1566,8 @@ function CareerCard({ playerName }: { playerName: string }) {
                   ["Year", "left"], ["Events", "center"], ["Wins", "center"],
                   ["Top 10", "center"], ["Top 25", "center"], ["Cuts", "center"],
                   ["Avg Score", "center"], ["SG Tot", "center"],
-                  ["SG OTT", "center"], ["SG APP", "center"], ["SG Putt", "center"],
+                  ["SG OTT", "center"], ["SG APP", "center"], ["SG ARG", "center"], ["SG Putt", "center"],
+                  ["Dist", "center"], ["Acc%", "center"], ["GIR%", "center"], ["Scrmb%", "center"],
                 ].map(([h, align]) => (
                   <th key={h} style={{ ...thStyle, textAlign: align as "left" | "center" }}>{h}</th>
                 ))}
@@ -1232,7 +1592,20 @@ function CareerCard({ playerName }: { playerName: string }) {
                   </td>
                   <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_ott) }}>{fmtSg(y.avg_sg_ott)}</td>
                   <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_app) }}>{fmtSg(y.avg_sg_app)}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_arg) }}>{fmtSg(y.avg_sg_arg)}</td>
                   <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(y.avg_sg_putt) }}>{fmtSg(y.avg_sg_putt)}</td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                    {y.avg_driving_dist != null ? y.avg_driving_dist.toFixed(0) : "—"}
+                  </td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                    {y.avg_driving_acc != null ? `${y.avg_driving_acc.toFixed(0)}%` : "—"}
+                  </td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                    {y.avg_gir_pct != null ? `${y.avg_gir_pct.toFixed(0)}%` : "—"}
+                  </td>
+                  <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                    {y.avg_scrambling != null ? `${y.avg_scrambling.toFixed(0)}%` : "—"}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -1248,15 +1621,18 @@ function CareerCard({ playerName }: { playerName: string }) {
               <tr>
                 {[
                   ["Tournament", "left"], ["Year", "left"], ["Pos", "center"],
-                  ["Score", "center"], ["SG Tot", "center"], ["OTT", "center"],
-                  ["APP", "center"], ["Putt", "center"], ["Earnings", "right"],
+                  ["Score", "center"], ["R1", "center"], ["R2", "center"], ["R3", "center"], ["R4", "center"],
+                  ["SG Tot", "center"], ["OTT", "center"],
+                  ["APP", "center"], ["ARG", "center"], ["Putt", "center"],
+                  ["Dist", "center"], ["Acc%", "center"], ["GIR%", "center"], ["Scrmb%", "center"],
+                  ["Earnings", "right"],
                 ].map(([h, align]) => (
                   <th key={h} style={{ ...thStyle, textAlign: align as "left" | "center" | "right" }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {career.recent.map((r, i) => {
+              {career.recent.filter(r => !majorsOnly || isMajor(r.tournament_name)).map((r, i) => {
                 const isExpanded = expandedTid === r.tournament_id;
                 // Only show tournament leaderboard if we have a settled tournament ID
                 // (IDs starting with R and year <= current — not future events)
@@ -1264,7 +1640,15 @@ function CareerCard({ playerName }: { playerName: string }) {
                 return (
                   <React.Fragment key={`${r.tournament_id}-${i}`}>
                     <tr
-                      onClick={() => canExpand && setExpandedTid(isExpanded ? null : r.tournament_id)}
+                      onClick={() => {
+                        if (!canExpand) return;
+                        if (isExpanded) {
+                          setExpandedTid(null);
+                        } else {
+                          setExpandedTid(r.tournament_id);
+                          setExpandedTab(r.rounds.length > 0 ? "rounds" : "leaderboard");
+                        }
+                      }}
                       style={{ cursor: canExpand ? "pointer" : "default", background: i % 2 === 0 ? "#091525" : "#0a1628" }}
                     >
                       <td style={{ ...tdBase(i), maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -1284,20 +1668,70 @@ function CareerCard({ playerName }: { playerName: string }) {
                       <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: toParColor2(r.to_par) }}>
                         {r.to_par ?? "—"}
                       </td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{r.r1 ?? "—"}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{r.r2 ?? "—"}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{r.r3 ?? "—"}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{r.r4 ?? "—"}</td>
                       <td style={{ ...tdBase(i), textAlign: "center", fontWeight: 600, color: sgColor2(r.sg_total) }}>
                         {fmtSg(r.sg_total)}
                       </td>
                       <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_ott) }}>{fmtSg(r.sg_ott)}</td>
                       <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_app) }}>{fmtSg(r.sg_app)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_arg) }}>{fmtSg(r.sg_arg)}</td>
                       <td style={{ ...tdBase(i), textAlign: "center", color: sgColor2(r.sg_putt) }}>{fmtSg(r.sg_putt)}</td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                        {r.driving_dist != null ? r.driving_dist.toFixed(0) : "—"}
+                      </td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                        {r.driving_acc != null ? `${r.driving_acc.toFixed(0)}%` : "—"}
+                      </td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                        {r.gir_pct != null ? `${r.gir_pct.toFixed(0)}%` : "—"}
+                      </td>
+                      <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
+                        {r.scrambling != null ? `${r.scrambling.toFixed(0)}%` : "—"}
+                      </td>
                       <td style={{ ...tdBase(i), textAlign: "right", color: MUTED, fontSize: "0.78em" }}>
                         {r.earnings ?? "—"}
                       </td>
                     </tr>
                     {isExpanded && (
                       <tr>
-                        <td colSpan={9} style={{ background: "#07101c", padding: "10px 16px", borderBottom: "1px solid #0d1e2e" }}>
-                          <TournamentResultsPanel tid={r.tournament_id} highlightPlayer={playerName} />
+                        <td colSpan={18} style={{ background: "#07101c", padding: "12px 16px", borderBottom: "1px solid #0d1e2e" }}>
+                          {/* Tab bar */}
+                          <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+                            {r.rounds.length > 0 && (
+                              <button
+                                onClick={e => { e.stopPropagation(); setExpandedTab("rounds"); }}
+                                style={{
+                                  background: expandedTab === "rounds" ? "#0d2e18" : "transparent",
+                                  border: `1px solid ${expandedTab === "rounds" ? GREEN : "#1e3a5f"}`,
+                                  color: expandedTab === "rounds" ? GREEN : "#4a6080",
+                                  borderRadius: 6, padding: "4px 14px",
+                                  fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
+                                }}>
+                                My Rounds
+                              </button>
+                            )}
+                            <button
+                              onClick={e => { e.stopPropagation(); setExpandedTab("leaderboard"); }}
+                              style={{
+                                background: expandedTab === "leaderboard" ? "#0d1e38" : "transparent",
+                                border: `1px solid ${expandedTab === "leaderboard" ? BLUE : "#1e3a5f"}`,
+                                color: expandedTab === "leaderboard" ? BLUE : "#4a6080",
+                                borderRadius: 6, padding: "4px 14px",
+                                fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
+                              }}>
+                              Leaderboard
+                            </button>
+                          </div>
+                          {/* Tab content */}
+                          {expandedTab === "rounds" && r.rounds.length > 0 && (
+                            <RoundBreakdownPanel rounds={r.rounds} />
+                          )}
+                          {expandedTab === "leaderboard" && (
+                            <TournamentResultsPanel tid={r.tournament_id} highlightPlayer={playerName} />
+                          )}
                         </td>
                       </tr>
                     )}

@@ -1,0 +1,130 @@
+{
+  "tid": "R2026034",
+  "tournament_name": "Travelers Championship",
+  "generated_at": "2026-06-28T14:00:30.083904",
+  "course_conditions": {
+    "error": "API call failed"
+  },
+  "players": [
+    {
+      "player_name": "Scheffler, Scottie",
+      "error": "API call failed",
+      "win_prob": 0.0661226519759173,
+      "world_rank": 1.0
+    },
+    {
+      "player_name": "Fleetwood, Tommy",
+      "error": "API call failed",
+      "win_prob": 0.0353580002453506,
+      "world_rank": 8.0
+    },
+    {
+      "player_name": "Schauffele, Xander",
+      "error": "API call failed",
+      "win_prob": 0.0231756719417984,
+      "world_rank": 10.0
+    },
+    {
+      "player_name": "Aberg, Ludvig",
+      "error": "API call failed",
+      "win_prob": 0.014182354936093,
+      "world_rank": 15.0
+    },
+    {
+      "player_name": "Kim, Si Woo",
+      "error": "API call failed",
+      "win_prob": 0.0187000476344406,
+      "world_rank": 19.0
+    },
+    {
+      "player_name": "Fitzpatrick, Matt",
+      "error": "API call failed",
+      "win_prob": 0.0216640274977568,
+      "world_rank": 4.0
+    },
+    {
+      "player_name": "Young, Cameron",
+      "error": "API call failed",
+      "win_prob": 0.02197700037586,
+      "world_rank": 3.0
+    },
+    {
+      "player_name": "Burns, Sam",
+      "error": "API call failed",
+      "win_prob": 0.0226350667670409,
+      "world_rank": 34.0
+    },
+    {
+      "player_name": "Cantlay, Patrick",
+      "error": "API call failed",
+      "win_prob": 0.0353941251599013,
+      "world_rank": 33.0
+    },
+    {
+      "player_name": "Henley, Russell",
+      "error": "API call failed",
+      "win_prob": 0.0297402616586701,
+      "world_rank": 5.0
+    },
+    {
+      "player_name": "Thomas, Justin",
+      "error": "API call failed",
+      "win_prob": 0.0325154677247507,
+      "world_rank": 16.0
+    },
+    {
+      "player_name": "Spaun, J.J.",
+      "error": "API call failed",
+      "win_prob": 0.0150785575686689,
+      "world_rank": 9.0
+    },
+    {
+      "player_name": "Morikawa, Collin",
+      "error": "API call failed",
+      "win_prob": 0.0191781854241471,
+      "world_rank": 7.0
+    },
+    {
+      "player_name": "Rai, Aaron",
+      "error": "API call failed",
+      "win_prob": 0.0282323207428485,
+      "world_rank": 13.0
+    },
+    {
+      "player_name": "Kitayama, Kurt",
+      "error": "API call failed",
+      "win_prob": 0.0095027836122397,
+      "world_rank": 30.0
+    },
+    {
+      "player_name": "Bradley, Keegan",
+      "error": "API call failed",
+      "win_prob": 0.024377543255611,
+      "world_rank": 37.0
+    },
+    {
+      "player_name": "Lee, Min Woo",
+      "error": "API call failed",
+      "win_prob": 0.0102475404347592,
+      "world_rank": 31.0
+    },
+    {
+      "player_name": "Hovland, Viktor",
+      "error": "API call failed",
+      "win_prob": 0.0178466034564957,
+      "world_rank": 32.0
+    },
+    {
+      "player_name": "Clark, Wyndham",
+      "error": "API call failed",
+      "win_prob": 0.0262967592289675,
+      "world_rank": 45.0
+    },
+    {
+      "player_name": "Gotterup, Chris",
+      "error": "API call failed",
+      "win_prob": 0.0159508380975,
+      "world_rank": 11.0
+    }
+  ]
+}

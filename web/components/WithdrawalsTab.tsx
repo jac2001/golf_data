@@ -20,7 +20,8 @@ function fmtDate(iso: string): string {
 function WdRow({ w }: { w: Withdrawal }) {
   return (
     <div style={{
-      background: "#1a0d0d", border: "1px solid #5f1e1e",
+      background: "#1a0d0d",
+      borderTop: "1px solid #5f1e1e", borderRight: "1px solid #5f1e1e", borderBottom: "1px solid #5f1e1e",
       borderLeft: "3px solid #e74c3c",
       borderRadius: 7, padding: "10px 14px",
       display: "flex", justifyContent: "space-between", alignItems: "center",

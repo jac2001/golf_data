@@ -1,96 +1,108 @@
 player_name,times_used,util_pct
-Aberg,46,54.8
+Aberg,61,72.6
+Bauchou,1,1.2
 Berger,10,11.9
 Bezuidenhout,1,1.2
-Bhatia,13,15.5
-"Bradley, K",3,3.6
-Brennan,1,1.2
-Bridgeman,17,20.2
-"Brown, B",2,2.4
-Burns,24,28.6
-Cantlay,29,34.5
+Bhatia,20,23.8
+"Bradley, K",13,15.5
+Brennan,3,3.6
+Bridgeman,18,21.4
+"Brown, B",4,4.8
+Burns,49,58.3
+"Campbell, B",2,2.4
+Cantlay,39,46.4
 Clanton,1,1.2
-"Clark, W",8,9.5
-Cole,1,1.2
-Conners,7,8.3
-"Coody, Pier",5,6.0
-Dahmen,1,1.2
+"Clark, W",33,39.3
+Cole,7,8.3
+Conners,10,11.9
+"Coody, Pier",12,14.3
+Dahmen,2,2.4
 "Day, J",8,9.5
-DeChambeau,21,25.0
-Echavarria,1,1.2
-English,4,4.8
-Finau,3,3.6
-"Fitzpatrick, A",17,20.2
-"Fitzpatrick, M",47,56.0
-Fleetwood,40,47.6
-Fowler,19,22.6
+DeChambeau,23,27.4
+Echavarria,2,2.4
+Eckroat,1,1.2
+English,5,6.0
+Ewart,1,1.2
+Finau,7,8.3
+"Fitzpatrick, A",27,32.1
+"Fitzpatrick, M",63,75.0
+Fleetwood,57,67.9
+Fowler,28,33.3
 Fox,1,1.2
-Gerard,15,17.9
-Gotterup,38,45.2
-Greyserman,2,2.4
-"Griffin, B",16,19.0
-Hall,1,1.2
-Harman,5,6.0
-Hatton,2,2.4
-Henley,37,44.0
-Hisatsune,12,14.3
-"Hojgaard, N",27,32.1
-"Hojgaard, R",7,8.3
-Homa,4,4.8
-Horschel,3,3.6
-Hovland,28,33.3
+Gerard,16,19.0
+Gotterup,47,56.0
+Greyserman,3,3.6
+"Griffin, B",49,58.3
+Grillo,2,2.4
+Hall,2,2.4
+Harman,14,16.7
+Hatton,4,4.8
+Henley,48,57.1
+Hisatsune,24,28.6
+"Hojgaard, N",28,33.3
+"Hojgaard, R",9,10.7
+Homa,5,6.0
+Horschel,4,4.8
+Hovland,30,35.7
 Hughes,1,1.2
-Im,1,1.2
-Jaeger,4,4.8
-Keefer,2,2.4
+Im,6,7.1
+Jaeger,5,6.0
+Keefer,3,3.6
 "Kim, M",1,1.2
-"Kim, SW",35,41.7
-Kitayama,9,10.7
-Knapp,17,20.2
-"Koepka, B",32,38.1
-"Lee, MW",22,26.2
+"Kim, SW",57,67.9
+"Kim, Tom",6,7.1
+Kitayama,10,11.9
+Knapp,18,21.4
+"Koepka, B",44,52.4
+Koivun,8,9.5
+"Lee, MW",23,27.4
 List,1,1.2
-Lowry,26,31.0
-MacIntyre,17,20.2
-Matsuyama,27,32.1
-McCarthy,1,1.2
+Lowry,28,33.3
+MacIntyre,24,28.6
+Matsuyama,36,42.9
+McCarthy,9,10.7
 McGreevy,1,1.2
-McIlroy,37,44.0
+McIlroy,51,60.7
 McNealy,28,33.3
-Mitchell,7,8.3
+Meissner,1,1.2
+Mitchell,17,20.2
 "Moore, T",2,2.4
-Morikawa,24,28.6
-Noren,2,2.4
+Morikawa,31,36.9
+Noren,4,4.8
 Novak,5,6.0
+Pendrith,1,1.2
 Penge,6,7.1
-Poston,2,2.4
+Poston,9,10.7
+Potgieter,1,1.2
 Power,3,3.6
 "Putnam, A",1,1.2
-Rahm,25,29.8
-Rai,9,10.7
-Reed,3,3.6
-Reitan,1,1.2
+Rahm,37,44.0
+Rai,14,16.7
+Reed,8,9.5
+Reitan,6,7.1
 Rodgers,1,1.2
-Rose,29,34.5
+Rose,31,36.9
 Ryder,2,2.4
-Schauffele,49,58.3
-Scheffler,53,63.1
+Schauffele,58,69.0
+Scheffler,69,82.1
 Scott,9,10.7
-Smalley,2,2.4
+Smalley,14,16.7
 "Smith, J",1,1.2
 Smotherman,5,6.0
 Snedeker,2,2.4
-Spaun,4,4.8
-Spieth,29,34.5
-Straka,18,21.4
-"Taylor, N",5,6.0
-Theegala,13,15.5
-"Thomas, J",22,26.2
-"Thompson, D",1,1.2
-Thorbjornsen,18,21.4
+Spaun,19,22.6
+Spieth,50,59.5
+Straka,21,25.0
+"Taylor, N",9,10.7
+Theegala,15,17.9
+"Thomas, J",46,54.8
+"Thompson, D",4,4.8
+Thorbjornsen,22,26.2
 Tosti,1,1.2
-van Rooyen,1,1.2
+van Rooyen,2,2.4
+Vegas,1,1.2
 Vilips,7,8.3
+"Walker, D",1,1.2
 Woodland,4,4.8
 Yellamaraju,8,9.5
-"Young, Cam",51,60.7
+"Young, Cam",63,75.0

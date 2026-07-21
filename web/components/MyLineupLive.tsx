@@ -198,7 +198,8 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
             <div key={p.player} style={{
               flex: hasCards ? "1 1 100%" : "1 1 260px",
               minWidth: hasCards ? 0 : 220,
-              background: "#0d1a30", border: `1px solid #1e3a5f`,
+              background: "#0d1a30",
+              borderLeft: `1px solid #1e3a5f`, borderRight: `1px solid #1e3a5f`, borderBottom: `1px solid #1e3a5f`,
               borderTop: `3px solid ${borderColor}`,
               borderRadius: 10, padding: "16px 18px",
             }}>

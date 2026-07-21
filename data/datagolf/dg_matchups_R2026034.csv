@@ -1,0 +1,519 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Hojgaard, Nicolai",12965,23602,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Hojgaard, Nicolai",12965,23602,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Hojgaard, Nicolai",12965,23602,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","McCarty, Matt",15575,28635,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","McCarty, Matt",15575,28635,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","McCarty, Matt",15575,28635,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Hisatsune, Ryo",14502,22760,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Hisatsune, Ryo",14502,22760,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Hisatsune, Ryo",14502,22760,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Henley, Russell",12294,14578,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Henley, Russell",12294,14578,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Henley, Russell",12294,14578,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Henley, Russell",12294,14578,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,separate bet offered,datagolf,+122,+126,0.45045,0.442478,0.504464,0.495536,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,separate bet offered,pointsbet,+100,+105,0.5,0.487805,0.506173,0.493827,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,betcris,-136,+106,0.576271,0.485437,0.542777,0.457223,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,draftkings,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,pinnacle,-116,-103,0.537037,0.507389,0.514193,0.485807,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"McCarthy, Denny","Echavarria, Nico",19870,22833,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,separate bet offered,datagolf,+119,+127,0.456621,0.440529,0.508969,0.491031,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,separate bet offered,pointsbet,+105,+100,0.487805,0.5,0.493827,0.506173,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,draftkings,-105,-120,0.512195,0.545455,0.484277,0.515723,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,pinnacle,-112,-106,0.528302,0.514563,0.506587,0.493413,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Conners, Corey","Reitan, Kristoffer",17576,21407,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Spaun, J.J.","Rai, Aaron",17536,18554,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Spaun, J.J.","Rai, Aaron",17536,18554,void,betcris,-117,-113,0.539171,0.530516,0.504045,0.495955,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Spaun, J.J.","Rai, Aaron",17536,18554,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Spaun, J.J.","Rai, Aaron",17536,18554,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Mitchell, Keith",13562,17365,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Mitchell, Keith",13562,17365,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Mitchell, Keith",13562,17365,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"MacIntyre, Robert","Fitzpatrick, Alex",23323,25362,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"MacIntyre, Robert","Fitzpatrick, Alex",23323,25362,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"MacIntyre, Robert","Fitzpatrick, Alex",23323,25362,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","Gotterup, Chris",14139,27774,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Griffin, Ben",6093,24968,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Griffin, Ben",6093,24968,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Griffin, Ben",6093,24968,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Harman, Brian","Lowry, Shane",8825,13900,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Harman, Brian","Lowry, Shane",8825,13900,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Harman, Brian","Lowry, Shane",8825,13900,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,void,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cole, Eric","Bhatia, Akshay",21756,26096,void,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cole, Eric","Bhatia, Akshay",21756,26096,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cole, Eric","Bhatia, Akshay",21756,26096,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,bet365,+155,-185,0.392157,0.649123,0.376611,0.623389,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,bovada,+165,-200,0.377358,0.666667,0.361446,0.638554,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,datagolf,+153,-153,0.395257,0.604743,0.395257,0.604743,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Hovland, Viktor",15466,18841,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Hovland, Viktor",15466,18841,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Hovland, Viktor",15466,18841,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,separate bet offered,datagolf,+105,+143,0.487805,0.411523,0.542411,0.457589,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,separate bet offered,pointsbet,-105,+110,0.512195,0.47619,0.518214,0.481786,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,draftkings,-128,+102,0.561404,0.49505,0.531404,0.468596,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Woodland, Gary","Straka, Sepp",12577,17511,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,separate bet offered,datagolf,+146,+104,0.406504,0.490196,0.453333,0.546667,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,separate bet offered,pointsbet,+125,-120,0.444444,0.545455,0.44898,0.55102,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,void,betmgm,+105,-130,0.487805,0.565217,0.463243,0.536757,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,void,draftkings,+108,-134,0.480769,0.57265,0.456389,0.543611,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Spieth, Jordan",11889,14636,void,unibet,+108,-136,0.480769,0.576271,0.454826,0.545174,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,separate bet offered,bet365,-116,+125,0.537037,0.444444,0.54717,0.45283,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,separate bet offered,datagolf,+109,+140,0.478469,0.416667,0.534521,0.465479,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,separate bet offered,pointsbet,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,void,betcris,-136,+106,0.576271,0.485437,0.542777,0.457223,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,void,draftkings,-106,-118,0.514563,0.541284,0.487346,0.512654,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Glover, Lucas","Hubbard, Mark",7399,16333,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,separate bet offered,datagolf,+147,+103,0.404858,0.492611,0.451111,0.548889,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,separate bet offered,pointsbet,+125,-120,0.444444,0.545455,0.44898,0.55102,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,void,betcris,+118,-148,0.458716,0.596774,0.4346,0.5654,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,void,betmgm,+105,-130,0.487805,0.565217,0.463243,0.536757,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,void,bovada,+130,-155,0.434783,0.607843,0.417007,0.582993,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,void,draftkings,+100,-126,0.5,0.557522,0.472803,0.527197,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lee, Min Woo","Young, Cameron",16841,26651,void,unibet,+108,-136,0.480769,0.576271,0.454826,0.545174,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,separate bet offered,bet365,+115,-105,0.465116,0.512195,0.475914,0.524086,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,separate bet offered,datagolf,+122,+124,0.45045,0.446429,0.502242,0.497758,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,separate bet offered,pointsbet,+105,+100,0.487805,0.5,0.493827,0.506173,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,void,bovada,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,void,draftkings,-118,-108,0.541284,0.519231,0.510398,0.489602,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Smalley, Alex","Stevens, Sam",18474,25569,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,separate bet offered,datagolf,+141,+108,0.414938,0.480769,0.463252,0.536748,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,void,betcris,-107,-123,0.516908,0.55157,0.48378,0.51622,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,void,betmgm,+105,-130,0.487805,0.565217,0.463243,0.536757,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,void,bovada,+120,-145,0.454545,0.591837,0.434397,0.565603,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,void,draftkings,+104,-130,0.490196,0.565217,0.464459,0.535541,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Pendrith, Taylor","Theegala, Sahith",17780,23014,void,unibet,+104,-132,0.490196,0.568966,0.462815,0.537185,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,separate bet offered,bet365,+180,-161,0.357143,0.616858,0.366676,0.633324,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,separate bet offered,datagolf,+226,-149,0.306748,0.598394,0.338895,0.661105,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,separate bet offered,pointsbet,+160,-160,0.384615,0.615385,0.384615,0.615385,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,void,betmgm,+165,-208,0.377358,0.675325,0.358473,0.641527,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,void,bovada,+155,-190,0.392157,0.655172,0.374435,0.625565,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,void,caesars,+160,-200,0.384615,0.666667,0.365854,0.634146,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,void,datagolf,+195,-195,0.338983,0.661017,0.338983,0.661017,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,void,draftkings,+140,-176,0.416667,0.637681,0.395189,0.604811,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,void,fanduel,+162,-200,0.381679,0.666667,0.364078,0.635922,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Vegas, Jhonattan","Gerard, Ryan",13508,29767,void,unibet,+155,-200,0.392157,0.666667,0.37037,0.62963,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,separate bet offered,bet365,+170,-152,0.37037,0.603175,0.380435,0.619565,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,separate bet offered,datagolf,+191,-126,0.343643,0.557522,0.381332,0.618668,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,separate bet offered,pointsbet,+155,-150,0.392157,0.6,0.395257,0.604743,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,void,betmgm,+145,-182,0.408163,0.64539,0.387416,0.612584,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,void,bovada,+165,-200,0.377358,0.666667,0.361446,0.638554,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,void,caesars,+150,-190,0.4,0.655172,0.379085,0.620915,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,void,datagolf,+162,-162,0.381679,0.618321,0.381679,0.618321,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,void,draftkings,+156,-196,0.390625,0.662162,0.371039,0.628961,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,void,fanduel,+138,-188,0.420168,0.652778,0.391602,0.608398,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Aberg, Ludvig",23475,23950,void,unibet,+145,-186,0.408163,0.65035,0.385601,0.614399,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,separate bet offered,datagolf,+118,+129,0.458716,0.436681,0.512304,0.487696,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,separate bet offered,pointsbet,+105,+105,0.487805,0.487805,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,draftkings,-122,-104,0.54955,0.509804,0.518759,0.481241,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,separate bet offered,datagolf,+134,+114,0.42735,0.46729,0.477679,0.522321,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,separate bet offered,pointsbet,+125,-120,0.444444,0.545455,0.44898,0.55102,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,void,draftkings,-104,-120,0.509804,0.545455,0.483108,0.516892,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Noren, Alex","Poston, J.T.",10419,21554,void,unibet,-103,-125,0.507389,0.555556,0.477343,0.522657,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,separate bet offered,datagolf,+118,+129,0.458716,0.436681,0.512304,0.487696,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,separate bet offered,pointsbet,-105,+110,0.512195,0.47619,0.518214,0.481786,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,void,betcris,-127,-103,0.559471,0.507389,0.524409,0.475591,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,void,draftkings,-118,-106,0.541284,0.514563,0.512654,0.487346,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Day, Jason","Hall, Harry",9771,27194,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,separate bet offered,bet365,+160,-141,0.384615,0.585062,0.396643,0.603357,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,separate bet offered,datagolf,+151,+102,0.398406,0.49505,0.445916,0.554084,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,separate bet offered,pointsbet,+120,-115,0.454545,0.534884,0.459402,0.540598,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,void,betmgm,+120,-149,0.454545,0.598394,0.431692,0.568308,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Snedeker, Brandt","Knapp, Jake",8820,19396,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,separate bet offered,bet365,+180,-164,0.357143,0.621212,0.365044,0.634956,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,separate bet offered,datagolf,+219,-146,0.31348,0.593496,0.345632,0.654368,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,separate bet offered,pointsbet,+190,-190,0.344828,0.655172,0.344828,0.655172,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,void,betmgm,+165,-208,0.377358,0.675325,0.358473,0.641527,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,void,bovada,+165,-200,0.377358,0.666667,0.361446,0.638554,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,void,caesars,+200,-260,0.333333,0.722222,0.315789,0.684211,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,void,datagolf,+189,-189,0.346021,0.653979,0.346021,0.653979,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,void,draftkings,+180,-225,0.357143,0.692308,0.340314,0.659686,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,void,fanduel,+188,-250,0.347222,0.714286,0.327103,0.672897,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Schauffele, Xander",11676,19895,void,unibet,+155,-200,0.392157,0.666667,0.37037,0.62963,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,separate bet offered,bet365,+190,-172,0.344828,0.632353,0.35288,0.64712,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,separate bet offered,datagolf,+209,-136,0.323625,0.576271,0.359625,0.640375,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,separate bet offered,pointsbet,+155,-150,0.392157,0.6,0.395257,0.604743,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,void,betmgm,+145,-182,0.408163,0.64539,0.387416,0.612584,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,void,bovada,+165,-200,0.377358,0.666667,0.361446,0.638554,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,void,caesars,+150,-190,0.4,0.655172,0.379085,0.620915,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,void,datagolf,+178,-178,0.359712,0.640288,0.359712,0.640288,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,void,draftkings,+152,-190,0.396825,0.655172,0.377211,0.622789,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,void,fanduel,+150,-188,0.4,0.652778,0.379947,0.620053,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Campbell, Brian","Hojgaard, Nicolai",18628,23602,void,unibet,+155,-200,0.392157,0.666667,0.37037,0.62963,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,separate bet offered,datagolf,+111,+136,0.473934,0.423729,0.527964,0.472036,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,separate bet offered,pointsbet,-105,+110,0.512195,0.47619,0.518214,0.481786,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,void,draftkings,-118,-106,0.541284,0.514563,0.512654,0.487346,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Michael","James, Ben",17543,29827,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,separate bet offered,datagolf,+113,+135,0.469484,0.425532,0.524554,0.475446,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,separate bet offered,pointsbet,-115,+120,0.534884,0.454545,0.540598,0.459402,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,void,draftkings,-134,+106,0.57265,0.485437,0.541212,0.458788,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Meissner, Mac",12965,28159,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,separate bet offered,bet365,+125,-116,0.444444,0.537037,0.45283,0.54717,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,separate bet offered,datagolf,+148,+103,0.403226,0.492611,0.450111,0.549889,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,separate bet offered,pointsbet,+150,-135,0.4,0.574468,0.41048,0.58952,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,void,betcris,+111,-141,0.473934,0.585062,0.447531,0.552469,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,void,betmgm,+110,-135,0.47619,0.574468,0.45323,0.54677,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,void,bovada,+110,-130,0.47619,0.565217,0.457256,0.542744,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,void,caesars,+122,-155,0.45045,0.607843,0.425638,0.574362,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,void,draftkings,+114,-142,0.46729,0.586777,0.443321,0.556679,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,void,fanduel,+125,-163,0.444444,0.619772,0.417626,0.582374,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","McNealy, Maverick",13126,18634,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,separate bet offered,datagolf,+131,+116,0.4329,0.462963,0.483221,0.516779,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,separate bet offered,pointsbet,+100,+105,0.5,0.487805,0.506173,0.493827,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,draftkings,-115,-110,0.534884,0.52381,0.50523,0.49477,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,unibet,-103,-125,0.507389,0.555556,0.477343,0.522657,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,separate bet offered,bet365,+120,-111,0.454545,0.526066,0.463533,0.536467,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,separate bet offered,datagolf,+163,-108,0.380228,0.519231,0.42273,0.57727,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,separate bet offered,pointsbet,+140,-135,0.416667,0.574468,0.420394,0.579606,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,void,betcris,+112,-142,0.471698,0.586777,0.445639,0.554361,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,void,betmgm,+120,-149,0.454545,0.598394,0.431692,0.568308,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,void,bovada,+115,-135,0.465116,0.574468,0.447406,0.552594,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,void,datagolf,+136,-136,0.423729,0.576271,0.423729,0.576271,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,void,draftkings,+122,-152,0.45045,0.603175,0.427524,0.572476,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,void,fanduel,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","Berger, Daniel",15575,17606,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,separate bet offered,bet365,-111,+120,0.526066,0.454545,0.536467,0.463533,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,separate bet offered,datagolf,+110,+138,0.47619,0.420168,0.53125,0.46875,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,separate bet offered,pointsbet,-115,+120,0.534884,0.454545,0.540598,0.459402,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,betcris,-122,-108,0.54955,0.519231,0.514184,0.485816,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,betmgm,-135,+110,0.574468,0.47619,0.54677,0.45323,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,draftkings,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,pinnacle,-123,+103,0.55157,0.492611,0.528232,0.471768,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hisatsune, Ryo","McCarty, Matt",22760,28635,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,separate bet offered,bet365,-125,+140,0.555556,0.416667,0.571429,0.428571,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,separate bet offered,datagolf,-110,+167,0.52381,0.374532,0.583085,0.416915,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,separate bet offered,pointsbet,-135,+135,0.574468,0.425532,0.574468,0.425532,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,void,betmgm,-143,+115,0.588477,0.465116,0.558543,0.441457,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,void,bovada,-145,+120,0.591837,0.454545,0.565603,0.434397,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,void,caesars,-165,+127,0.622642,0.440529,0.585646,0.414354,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,void,datagolf,-140,+140,0.583333,0.416667,0.583333,0.416667,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,void,draftkings,-146,+116,0.593496,0.462963,0.561779,0.438221,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,void,fanduel,-150,+125,0.6,0.444444,0.574468,0.425532,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,void,pinnacle,-149,+124,0.598394,0.446429,0.572723,0.427277,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fleetwood, Tommy","Kitayama, Kurt",12294,21891,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,separate bet offered,bet365,+145,-132,0.408163,0.568966,0.417717,0.582283,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,separate bet offered,datagolf,+161,-104,0.383142,0.509804,0.429076,0.570924,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,separate bet offered,pointsbet,+135,-120,0.425532,0.545455,0.438247,0.561753,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,void,betmgm,+110,-135,0.47619,0.574468,0.45323,0.54677,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,void,bovada,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,void,caesars,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,void,datagolf,+133,-133,0.429185,0.570815,0.429185,0.570815,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,void,draftkings,+112,-140,0.471698,0.583333,0.447094,0.552906,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,void,pinnacle,+122,-146,0.45045,0.593496,0.431488,0.568512,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Henley, Russell",14502,14578,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,separate bet offered,datagolf,+180,-115,0.357143,0.534884,0.400372,0.599628,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,separate bet offered,pointsbet,+140,-135,0.416667,0.574468,0.420394,0.579606,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,betmgm,+115,-143,0.465116,0.588477,0.441457,0.558543,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,bovada,+120,-140,0.454545,0.583333,0.437956,0.562044,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,datagolf,+150,-150,0.4,0.6,0.4,0.6,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,draftkings,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,fanduel,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,pinnacle,+131,-158,0.4329,0.612403,0.414138,0.585862,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Rai, Aaron",17488,18554,void,unibet,+130,-167,0.434783,0.625468,0.410075,0.589925,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,separate bet offered,datagolf,+142,+107,0.413223,0.483092,0.461024,0.538976,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,separate bet offered,pointsbet,+125,-120,0.444444,0.545455,0.44898,0.55102,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,betmgm,+110,-135,0.47619,0.574468,0.45323,0.54677,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,bovada,+110,-130,0.47619,0.565217,0.457256,0.542744,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,draftkings,+114,-142,0.46729,0.586777,0.443321,0.556679,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,pinnacle,+103,-123,0.492611,0.55157,0.471768,0.528232,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Spaun, J.J.",13562,17536,void,unibet,+104,-132,0.490196,0.568966,0.462815,0.537185,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,separate bet offered,datagolf,-104,+157,0.509804,0.389105,0.567136,0.432864,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,separate bet offered,pointsbet,-120,+125,0.545455,0.444444,0.55102,0.44898,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,betmgm,-135,+110,0.574468,0.47619,0.54677,0.45323,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,caesars,-145,+115,0.591837,0.465116,0.559946,0.440054,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,datagolf,-131,+131,0.5671,0.4329,0.5671,0.4329,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,draftkings,-144,+115,0.590164,0.465116,0.559249,0.440751,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,pinnacle,-142,+119,0.586777,0.456621,0.562371,0.437629,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","MacIntyre, Robert",14139,23323,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,separate bet offered,bet365,-132,+145,0.568966,0.408163,0.582283,0.417717,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,separate bet offered,datagolf,-123,+186,0.55157,0.34965,0.612025,0.387975,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,separate bet offered,pointsbet,-140,+150,0.583333,0.4,0.59322,0.40678,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,void,bovada,-145,+120,0.591837,0.454545,0.565603,0.434397,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,void,caesars,-180,+140,0.642857,0.416667,0.606742,0.393258,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,void,datagolf,-158,+158,0.612403,0.387597,0.612403,0.387597,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,void,draftkings,-152,+122,0.603175,0.45045,0.572476,0.427524,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,void,pinnacle,-166,+138,0.62406,0.420168,0.597628,0.402372,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Alex","Suber, Jackson",25362,29279,void,unibet,-167,+130,0.625468,0.434783,0.589925,0.410075,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,separate bet offered,datagolf,-108,+164,0.519231,0.378788,0.578196,0.421804,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,separate bet offered,pointsbet,-125,+125,0.555556,0.444444,0.555556,0.444444,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,bovada,-130,+110,0.565217,0.47619,0.542744,0.457256,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,caesars,-145,+115,0.591837,0.465116,0.559946,0.440054,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,datagolf,-137,+137,0.578059,0.421941,0.578059,0.421941,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,draftkings,-130,+102,0.565217,0.49505,0.53309,0.46691,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,pinnacle,-139,+116,0.58159,0.462963,0.556784,0.443216,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Morikawa, Collin","Gotterup, Chris",22085,27774,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,separate bet offered,datagolf,+144,+105,0.409836,0.487805,0.45657,0.54343,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,separate bet offered,pointsbet,+105,+100,0.487805,0.5,0.493827,0.506173,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,void,draftkings,-124,-102,0.553571,0.50495,0.522966,0.477034,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,void,pinnacle,-101,-118,0.502488,0.541284,0.481415,0.518585,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Harman, Brian",6093,8825,void,unibet,+104,-132,0.490196,0.568966,0.462815,0.537185,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,separate bet offered,datagolf,+118,+130,0.458716,0.434783,0.513393,0.486607,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,draftkings,-112,-112,0.528302,0.528302,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,pinnacle,-112,-106,0.528302,0.514563,0.506587,0.493413,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,separate bet offered,bet365,-111,+120,0.526066,0.454545,0.536467,0.463533,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,separate bet offered,datagolf,+100,+151,0.5,0.398406,0.556541,0.443459,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,void,draftkings,-130,+104,0.565217,0.490196,0.535541,0.464459,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,void,pinnacle,-130,+109,0.565217,0.478469,0.541559,0.458441,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Cole, Eric",17365,21756,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,separate bet offered,bet365,-116,+125,0.537037,0.444444,0.54717,0.45283,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,separate bet offered,datagolf,-101,+157,0.502488,0.389105,0.563584,0.436416,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,void,betmgm,-135,+110,0.574468,0.47619,0.54677,0.45323,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,void,bovada,-130,+110,0.565217,0.47619,0.542744,0.457256,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,void,datagolf,-129,+129,0.563319,0.436681,0.563319,0.436681,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,void,draftkings,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,void,pinnacle,-135,+113,0.574468,0.469484,0.550282,0.449718,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fitzpatrick, Matt","Griffin, Ben",17646,24968,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,separate bet offered,bet365,+115,-105,0.465116,0.512195,0.475914,0.524086,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,separate bet offered,datagolf,+119,+128,0.456621,0.438596,0.510067,0.489933,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,bovada,+110,-130,0.47619,0.565217,0.457256,0.542744,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,draftkings,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Clark, Wyndham",13900,23604,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,separate bet offered,bet365,-125,+137,0.555556,0.421941,0.568345,0.431655,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,separate bet offered,datagolf,-109,+166,0.521531,0.37594,0.581112,0.418888,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,bovada,-145,+120,0.591837,0.454545,0.565603,0.434397,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,datagolf,-139,+139,0.58159,0.41841,0.58159,0.41841,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,draftkings,-154,+124,0.606299,0.446429,0.575932,0.424068,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,pinnacle,-149,+125,0.598394,0.444444,0.573813,0.426187,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cantlay, Patrick","Bhatia, Akshay",15466,26096,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,separate bet offered,bet365,-164,+180,0.621212,0.357143,0.634956,0.365044,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,separate bet offered,datagolf,-140,+216,0.583333,0.316456,0.6483,0.3517,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,betcris,-274,+210,0.73262,0.322581,0.694295,0.305705,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,betmgm,-227,+180,0.69419,0.357143,0.660295,0.339705,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,betonline,-240,+197,0.705882,0.3367,0.677052,0.322948,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,bovada,-225,+185,0.692308,0.350877,0.663648,0.336352,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,caesars,-260,+200,0.722222,0.333333,0.684211,0.315789,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,datagolf,-184,+184,0.647887,0.352113,0.647887,0.352113,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,draftkings,-245,+194,0.710145,0.340136,0.676148,0.323852,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,fanduel,-225,+188,0.692308,0.347222,0.665982,0.334018,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,pinnacle,-236,+189,0.702381,0.346021,0.669954,0.330046,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scheffler, Scottie","Hovland, Viktor",18417,18841,void,unibet,-220,+170,0.6875,0.37037,0.649891,0.350109,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Aberg, Ludvig","Gerard, Ryan",23950,29767,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Aberg, Ludvig","Gerard, Ryan",23950,29767,void,datagolf,-139,+139,0.58159,0.41841,0.58159,0.41841,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Knapp, Jake","Poston, J.T.",19396,21554,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Knapp, Jake","Poston, J.T.",19396,21554,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Meissner, Mac",11676,28159,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Meissner, Mac",11676,28159,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"English, Harris","Schauffele, Xander",14577,19895,void,betonline,+121,-145,0.452489,0.591837,0.433283,0.566717,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"English, Harris","Schauffele, Xander",14577,19895,void,datagolf,+134,-134,0.42735,0.57265,0.42735,0.57265,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hojgaard, Nicolai","James, Ben",23602,29827,void,betonline,-113,-107,0.530516,0.516908,0.506496,0.493504,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hojgaard, Nicolai","James, Ben",23602,29827,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","Kim, Michael",13126,17543,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Taylor, Nick","Kim, Michael",13126,17543,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Hisatsune, Ryo",12965,22760,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Hisatsune, Ryo",12965,22760,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","McNealy, Maverick",13872,18634,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Bradley, Keegan","McNealy, Maverick",13872,18634,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Berger, Daniel","McCarty, Matt",17606,28635,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Berger, Daniel","McCarty, Matt",17606,28635,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Hoge, Tom","McCarthy, Denny",15575,19870,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rai, Aaron","Kitayama, Kurt",18554,21891,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rai, Aaron","Kitayama, Kurt",18554,21891,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Conners, Corey",14502,17576,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Conners, Corey",14502,17576,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cauley, Bud","Conners, Corey",14502,17576,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Reitan, Kristoffer",13562,21407,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Reitan, Kristoffer",13562,21407,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Suber, Jackson",17488,29279,void,betonline,-122,+102,0.54955,0.49505,0.526087,0.473913,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Suber, Jackson",17488,29279,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Spaun, J.J.","Gotterup, Chris",17536,27774,void,betonline,-127,+106,0.559471,0.485437,0.535426,0.464574,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Spaun, J.J.","Gotterup, Chris",17536,27774,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","Morikawa, Collin",14139,22085,void,betonline,-113,-107,0.530516,0.516908,0.506496,0.493504,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Thomas, Justin","Morikawa, Collin",14139,22085,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","MacIntyre, Robert",17365,23323,void,betonline,+102,-122,0.49505,0.54955,0.473913,0.526087,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","MacIntyre, Robert",17365,23323,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Harman, Brian","Fitzpatrick, Alex",8825,25362,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Harman, Brian","Fitzpatrick, Alex",8825,25362,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Burns, Sam",6093,19483,void,betonline,+129,-155,0.436681,0.607843,0.418067,0.581933,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Burns, Sam",6093,19483,void,datagolf,+132,-132,0.431034,0.568966,0.431034,0.568966,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Fitzpatrick, Matt",14609,17646,void,betcris,-129,-101,0.563319,0.502488,0.528538,0.471462,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Fitzpatrick, Matt",14609,17646,void,betonline,-119,-101,0.543379,0.502488,0.519549,0.480451,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Kim, Si Woo","Fitzpatrick, Matt",14609,17646,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cole, Eric","Griffin, Ben",21756,24968,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Cole, Eric","Griffin, Ben",21756,24968,void,datagolf,+136,-136,0.423729,0.576271,0.423729,0.576271,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Spieth, Jordan","Straka, Sepp",14636,17511,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Spieth, Jordan","Straka, Sepp",14636,17511,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Woodland, Gary",11889,12577,void,betcris,+102,-132,0.49505,0.568966,0.465266,0.534734,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fox, Ryan","Woodland, Gary",11889,12577,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Gerard, Ryan",23475,29767,void,betcris,+106,-136,0.485437,0.576271,0.457223,0.542777,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Novak, Andrew","Gerard, Ryan",23475,29767,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Aberg, Ludvig","Bridgeman, Jacob",23950,29433,void,betcris,-159,+127,0.6139,0.440529,0.582211,0.417789,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Aberg, Ludvig","Bridgeman, Jacob",23950,29433,void,datagolf,-143,+143,0.588477,0.411523,0.588477,0.411523,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Noren, Alex",6430,10419,void,betcris,-111,-119,0.526066,0.543379,0.491906,0.508094,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Scott, Adam","Noren, Alex",6430,10419,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Schauffele, Xander","Poston, J.T.",19895,21554,void,betcris,-150,+120,0.6,0.454545,0.568966,0.431034,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Schauffele, Xander","Poston, J.T.",19895,21554,void,datagolf,-146,+146,0.593496,0.406504,0.593496,0.406504,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Hojgaard, Nicolai",11676,23602,void,betcris,-116,-114,0.537037,0.53271,0.502022,0.497978,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Finau, Tony","Hojgaard, Nicolai",11676,23602,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Meissner, Mac","James, Ben",28159,29827,void,betcris,+106,-136,0.485437,0.576271,0.457223,0.542777,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Meissner, Mac","James, Ben",28159,29827,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Kim, Michael",12965,17543,void,betcris,-107,-123,0.516908,0.55157,0.48378,0.51622,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Fowler, Rickie","Kim, Michael",12965,17543,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Henley, Russell","Kitayama, Kurt",14578,21891,void,betcris,-166,+132,0.62406,0.431034,0.591473,0.408527,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Henley, Russell","Kitayama, Kurt",14578,21891,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Reitan, Kristoffer",17488,21407,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Im, Sungjae","Reitan, Kristoffer",17488,21407,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Thomas, Justin",13562,14139,void,betcris,+110,-140,0.47619,0.583333,0.449438,0.550562,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Matsuyama, Hideki","Thomas, Justin",13562,14139,void,datagolf,+139,-139,0.41841,0.58159,0.41841,0.58159,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"MacIntyre, Robert","Suber, Jackson",23323,29279,void,betcris,-169,+134,0.628253,0.42735,0.59516,0.40484,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"MacIntyre, Robert","Suber, Jackson",23323,29279,void,datagolf,-135,+135,0.574468,0.425532,0.574468,0.425532,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Fitzpatrick, Alex",6093,25362,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Rose, Justin","Fitzpatrick, Alex",6093,25362,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Harman, Brian","Gotterup, Chris",8825,27774,void,betcris,-141,+111,0.585062,0.473934,0.552469,0.447531,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Harman, Brian","Gotterup, Chris",8825,27774,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Bhatia, Akshay",17365,26096,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Mitchell, Keith","Bhatia, Akshay",17365,26096,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Clark, Wyndham","Griffin, Ben",23604,24968,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Clark, Wyndham","Griffin, Ben",23604,24968,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Cantlay, Patrick",13900,15466,void,betcris,+111,-141,0.473934,0.585062,0.447531,0.552469,False,True,Travelers Championship,2026-06-28 12:32:00 UTC
+"Lowry, Shane","Cantlay, Patrick",13900,15466,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Travelers Championship,2026-06-28 12:32:00 UTC

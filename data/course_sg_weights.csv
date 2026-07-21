@@ -1,61 +1,62 @@
 tournament_name,course_name,ott_sg,app_sg,arg_sg,putt_sg,fw_width,rgh_diff,miss_fw_pen_frac,yardage,par
-Arnold Palmer Invitational presented by Mastercard,Arnold Palmer's Bay Hill Club & Lodge,0.036,0.048,0.005,0.001,34.1,0.36,0.0572,7349,72
-Barbasol Championship,Keene Trace Golf Club (Champion Trace),0.038,0.037,0.019,0.002,34.6,0.24,0.0447,7148,72
-Cadence Bank Houston Open,Memorial Park Golf Course,0.011,0.004,0.014,0.002,32.3,0.22,0.0218,7106,70
-Cognizant Classic in The Palm Beaches,PGA National Resort (The Champion),0.041,0.054,0.019,0.004,29.5,0.24,0.0451,7020,70
-Farmers Insurance Open,Torrey Pines Golf Course (South Course),0.026,0.0,0.005,0.02,26.7,0.31,0.0172,7589,72
-Fortinet Championship,Silverado Resort (North Course),0.012,0.003,0.017,0.005,26.3,0.26,0.0181,7094,72
-Houston Open,Memorial Park Golf Course,0.011,0.004,0.014,0.002,32.3,0.22,0.0218,7106,70
-ISCO Championship,Keene Trace Golf Club (Champion Trace),0.038,0.037,0.019,0.002,34.6,0.24,0.0447,7148,72
-John Deere Classic,TPC Deere Run,0.046,0.026,0.009,0.012,37.9,0.4,0.0264,7133,71
-Mexico Open at Vidanta,Vidanta Vallarta,0.031,0.022,0.057,0.006,41.4,0.2,0.0734,7336,71
-Mexico Open at VidantaWorld,Vidanta Vallarta,0.031,0.022,0.057,0.006,41.4,0.2,0.0734,7336,71
-Myrtle Beach Classic,Dunes Golf and Beach Club,0.007,0.021,0.038,0.001,34.0,0.21,0.008,7135,71
-ONEflight Myrtle Beach Classic,Dunes Golf and Beach Club,0.007,0.021,0.038,0.001,34.0,0.21,0.008,7135,71
-Procore Championship,Silverado Resort (North Course),0.012,0.003,0.017,0.005,26.3,0.26,0.0181,7094,72
-RBC Canadian Open,Hamilton Golf & Country Club,0.006,0.009,0.002,0.01,33.2,0.33,0.0193,6925,70
-Rocket Mortgage Classic,Detroit Golf Club,0.046,0.03,0.016,0.005,35.7,0.27,0.0095,7326,72
-Sanderson Farms Championship,The Country Club of Jackson,0.004,0.015,0.022,0.003,28.9,0.26,0.0186,7218,72
-Shriners Children's Open,TPC Summerlin,0.053,0.013,0.048,0.005,34.5,0.32,0.0215,7073,71
-Shriners Hospitals for Children Open,TPC Summerlin,0.053,0.013,0.048,0.005,34.5,0.32,0.0215,7073,71
-Sony Open in Hawaii,Waialae Country Club,0.013,0.03,0.035,0.002,35.2,0.29,0.0365,7025,70
-THE CJ CUP Byron Nelson,TPC Craig Ranch,0.032,0.046,0.047,0.009,38.5,0.23,0.0268,7250,72
-TOUR Championship,East Lake Golf Club,0.002,0.018,0.005,0.014,25.0,0.43,0.0188,7279,70
-The RSM Classic,Sea Island Golf Club (Seaside Course),0.006,0.028,0.025,0.005,42.3,0.16,0.1014,6883,70
-Travelers Championship,TPC River Highlands,0.005,0.014,0.057,0.002,37.0,0.31,0.0743,6800,70
-U.S. Open,Pinehurst Resort & Country Club (Course No. 2),0.037,0.028,0.087,0.006,35.0,0.39,0.0042,7513,70
-U.S. Open (2020),Winged Foot GC,0.069,0.016,0.072,0.029,31.9,0.35,0.0032,7392,70
-U.S. Open (2021),Torrey Pines South (U.S. Open),0.003,0.027,0.02,0.014,28.9,0.27,0.0111,7635,71
-Valero Texas Open,TPC San Antonio (Oaks Course),0.024,0.03,0.002,0.002,30.5,0.11,0.0228,7331,72
-Valspar Championship,Innisbrook Resort (Copperhead Course),0.067,0.025,0.02,0.003,27.7,0.24,0.0223,7082,71
-Wyndham Championship,Sedgefield Country Club,0.021,0.069,0.037,0.009,29.5,0.33,0.0476,6958,70
-the Memorial Tournament presented by Workday,Muirfield Village Golf Club (Workday),0.007,0.018,0.052,0.003,32.9,0.38,0.0706,7311,72
-3M Open,TPC Twin Cities,0.008,0.024,0.014,0.014,35.2,0.25,0.0721,7220,71
-The American Express,PGA West (Palmer),0.012,0.021,0.045,0.001,34.9,0.14,0.0827,6844,72
-WM Phoenix Open,TPC Scottsdale (Stadium Course),0.017,0.001,0.006,0.006,31.4,0.19,0.0782,7275,71
-The Genesis Invitational,The Riviera Country Club,0.029,0.007,0.009,0.017,34.0,0.15,0.0064,7245,71
-The Masters,Augusta National Golf Club,0.019,0.055,0.079,0.023,52.2,0.25,0.0252,7479,72
-PGA Championship,Quail Hollow Club (PGA Championship),0.038,0.024,0.031,0.018,31.2,0.34,0.0447,7526,71
-The Open Championship,Royal Troon,0.115,0.058,0.003,0.001,33.0,0.2,0.0638,7323,71
-BMW Championship,Olympia Fields Country Club (North Course),0.031,0.004,0.007,0.004,26.4,0.36,0.0238,7283,70
-FedEx St. Jude Championship,TPC Southwind,0.004,0.012,0.009,0.01,29.3,0.37,0.0421,7097,70
-AT&T Pebble Beach Pro-Am,Pebble Beach Golf Links,0.027,0.041,0.029,0.015,40.5,0.16,0.0487,6888,72
-RBC Heritage,Harbour Town Golf Links,0.052,0.026,0.043,0.0,32.5,0.14,0.0336,6980,71
-Wells Fargo Championship,Quail Hollow Club,0.024,0.022,0.004,0.009,31.3,0.21,0.0419,7418,71
-Charles Schwab Challenge,Colonial Country Club,0.044,0.017,0.029,0.004,28.0,0.35,0.0171,7014,70
-the Memorial Tournament,Muirfield Village Golf Club,0.018,0.049,0.055,0.001,33.7,0.44,0.0561,7366,72
-The Sentry,Plantation Course at Kapalua,0.087,0.021,0.01,0.004,48.8,0.15,0.0641,7371,73
-Zurich Classic of New Orleans,TPC Louisiana,0.002,0.054,0.015,0.009,34.7,0.2,0.0515,7293,72
-RBC Canadian Open,St. George's G&CC,0.019,0.011,0.019,0.007,31.3,0.43,0.0162,7006,70
-Palmetto Championship at Congaree,Congaree Golf Club,0.066,-0.009,-0.041,-0.005,51.4,0.3,0.0346,7364,71
-THE CJ CUP in South Carolina,Congaree Golf Club,0.066,-0.009,-0.041,-0.005,51.4,0.3,0.0346,7364,71
-THE CJ CUP @ SHADOW CREEK,Shadow Creek Golf Course,0.006,0.007,-0.077,0.006,30.8,0.44,0.0411,7361,72
-THE CJ CUP @ SUMMIT,The Summit Club,0.056,0.085,0.048,0.0,37.0,0.16,0.0543,7359,72
-Genesis Scottish Open,The Renaissance Club,-0.008,0.008,0.067,-0.016,32.2,0.22,0.0082,7113,70
-THE PLAYERS Championship,TPC Sawgrass (THE PLAYERS Stadium Course),-0.047,-0.044,-0.032,-0.005,30.6,0.35,0.0573,7135,72
-THE NORTHERN TRUST,Liberty National Golf Club,-0.023,0.015,0.019,0.008,36.8,0.2,0.1028,7201,71
-ZOZO CHAMPIONSHIP,ACCORDIA GOLF Narashino Country Club,-0.014,0.055,0.001,0.013,30.0,0.33,0.0306,7032,70
-ZOZO CHAMPIONSHIP @ SHERWOOD,Sherwood Country Club,-0.034,0.007,0.021,0.017,35.9,0.47,0.0632,6986,72
-Black Desert Championship,Black Desert Resort,0.122,0.033,-0.018,-0.011,48.8,0.28,0.1618,7236,71
-Bank of Utah Championship,Oakridge Country Club,0.02,0.02,0.025,0.005,,,
-Truist Championship,Unknown Course,0.02,0.02,0.025,0.005,,,
+Arnold Palmer Invitational presented by Mastercard,Arnold Palmer's Bay Hill Club & Lodge,0.036,0.048,0.005,0.001,34.1,0.36,0.0572,7349.0,72.0
+Barbasol Championship,Keene Trace Golf Club (Champion Trace),0.038,0.037,0.019,0.002,34.6,0.24,0.0447,7148.0,72.0
+Cadence Bank Houston Open,Memorial Park Golf Course,0.011,0.004,0.014,0.002,32.3,0.22,0.0218,7106.0,70.0
+Cognizant Classic in The Palm Beaches,PGA National Resort (The Champion),0.041,0.054,0.019,0.004,29.5,0.24,0.0451,7020.0,70.0
+Farmers Insurance Open,Torrey Pines Golf Course (South Course),0.026,0.0,0.005,0.02,26.7,0.31,0.0172,7589.0,72.0
+Fortinet Championship,Silverado Resort (North Course),0.012,0.003,0.017,0.005,26.3,0.26,0.0181,7094.0,72.0
+Houston Open,Memorial Park Golf Course,0.011,0.004,0.014,0.002,32.3,0.22,0.0218,7106.0,70.0
+ISCO Championship,Keene Trace Golf Club (Champion Trace),0.038,0.037,0.019,0.002,34.6,0.24,0.0447,7148.0,72.0
+John Deere Classic,TPC Deere Run,0.046,0.026,0.009,0.012,37.9,0.4,0.0264,7133.0,71.0
+Mexico Open at Vidanta,Vidanta Vallarta,0.031,0.022,0.057,0.006,41.4,0.2,0.0734,7336.0,71.0
+Mexico Open at VidantaWorld,Vidanta Vallarta,0.031,0.022,0.057,0.006,41.4,0.2,0.0734,7336.0,71.0
+Myrtle Beach Classic,Dunes Golf and Beach Club,0.007,0.021,0.038,0.001,34.0,0.21,0.008,7135.0,71.0
+ONEflight Myrtle Beach Classic,Dunes Golf and Beach Club,0.007,0.021,0.038,0.001,34.0,0.21,0.008,7135.0,71.0
+Procore Championship,Silverado Resort (North Course),0.012,0.003,0.017,0.005,26.3,0.26,0.0181,7094.0,72.0
+RBC Canadian Open,Hamilton Golf & Country Club,0.006,0.009,0.002,0.01,33.2,0.33,0.0193,6925.0,70.0
+Rocket Mortgage Classic,Detroit Golf Club,0.046,0.03,0.016,0.005,35.7,0.27,0.0095,7326.0,72.0
+Sanderson Farms Championship,The Country Club of Jackson,0.004,0.015,0.022,0.003,28.9,0.26,0.0186,7218.0,72.0
+Shriners Children's Open,TPC Summerlin,0.053,0.013,0.048,0.005,34.5,0.32,0.0215,7073.0,71.0
+Shriners Hospitals for Children Open,TPC Summerlin,0.053,0.013,0.048,0.005,34.5,0.32,0.0215,7073.0,71.0
+Sony Open in Hawaii,Waialae Country Club,0.013,0.03,0.035,0.002,35.2,0.29,0.0365,7025.0,70.0
+THE CJ CUP Byron Nelson,TPC Craig Ranch,0.032,0.046,0.047,0.009,38.5,0.23,0.0268,7250.0,72.0
+TOUR Championship,East Lake Golf Club,0.002,0.018,0.005,0.014,25.0,0.43,0.0188,7279.0,70.0
+The RSM Classic,Sea Island Golf Club (Seaside Course),0.006,0.028,0.025,0.005,42.3,0.16,0.1014,6883.0,70.0
+Travelers Championship,TPC River Highlands,0.005,0.014,0.057,0.002,37.0,0.31,0.0743,6800.0,70.0
+U.S. Open,Pinehurst Resort & Country Club (Course No. 2),0.037,0.028,0.087,0.006,35.0,0.39,0.0042,7513.0,70.0
+U.S. Open (2020),Winged Foot GC,0.069,0.016,0.072,0.029,31.9,0.35,0.0032,7392.0,70.0
+U.S. Open (2021),Torrey Pines South (U.S. Open),0.003,0.027,0.02,0.014,28.9,0.27,0.0111,7635.0,71.0
+Valero Texas Open,TPC San Antonio (Oaks Course),0.024,0.03,0.002,0.002,30.5,0.11,0.0228,7331.0,72.0
+Valspar Championship,Innisbrook Resort (Copperhead Course),0.067,0.025,0.02,0.003,27.7,0.24,0.0223,7082.0,71.0
+Wyndham Championship,Sedgefield Country Club,0.021,0.069,0.037,0.009,29.5,0.33,0.0476,6958.0,70.0
+the Memorial Tournament presented by Workday,Muirfield Village Golf Club (Workday),0.007,0.018,0.052,0.003,32.9,0.38,0.0706,7311.0,72.0
+3M Open,TPC Twin Cities,0.008,0.024,0.014,0.014,35.2,0.25,0.0721,7220.0,71.0
+The American Express,PGA West (Palmer),0.012,0.021,0.045,0.001,34.9,0.14,0.0827,6844.0,72.0
+WM Phoenix Open,TPC Scottsdale (Stadium Course),0.017,0.001,0.006,0.006,31.4,0.19,0.0782,7275.0,71.0
+The Genesis Invitational,The Riviera Country Club,0.029,0.007,0.009,0.017,34.0,0.15,0.0064,7245.0,71.0
+The Masters,Augusta National Golf Club,0.019,0.055,0.079,0.023,52.2,0.25,0.0252,7479.0,72.0
+PGA Championship,Quail Hollow Club (PGA Championship),0.038,0.024,0.031,0.018,31.2,0.34,0.0447,7526.0,71.0
+The Open Championship,Royal Troon,0.115,0.058,0.003,0.001,33.0,0.2,0.0638,7323.0,71.0
+BMW Championship,Olympia Fields Country Club (North Course),0.031,0.004,0.007,0.004,26.4,0.36,0.0238,7283.0,70.0
+FedEx St. Jude Championship,TPC Southwind,0.004,0.012,0.009,0.01,29.3,0.37,0.0421,7097.0,70.0
+AT&T Pebble Beach Pro-Am,Pebble Beach Golf Links,0.027,0.041,0.029,0.015,40.5,0.16,0.0487,6888.0,72.0
+RBC Heritage,Harbour Town Golf Links,0.052,0.026,0.043,0.0,32.5,0.14,0.0336,6980.0,71.0
+Wells Fargo Championship,Quail Hollow Club,0.024,0.022,0.004,0.009,31.3,0.21,0.0419,7418.0,71.0
+Charles Schwab Challenge,Colonial Country Club,0.044,0.017,0.029,0.004,28.0,0.35,0.0171,7014.0,70.0
+the Memorial Tournament,Muirfield Village Golf Club,0.018,0.049,0.055,0.001,33.7,0.44,0.0561,7366.0,72.0
+The Sentry,Plantation Course at Kapalua,0.087,0.021,0.01,0.004,48.8,0.15,0.0641,7371.0,73.0
+Zurich Classic of New Orleans,TPC Louisiana,0.002,0.054,0.015,0.009,34.7,0.2,0.0515,7293.0,72.0
+RBC Canadian Open,St. George's G&CC,0.019,0.011,0.019,0.007,31.3,0.43,0.0162,7006.0,70.0
+Palmetto Championship at Congaree,Congaree Golf Club,0.066,-0.009,-0.041,-0.005,51.4,0.3,0.0346,7364.0,71.0
+THE CJ CUP in South Carolina,Congaree Golf Club,0.066,-0.009,-0.041,-0.005,51.4,0.3,0.0346,7364.0,71.0
+THE CJ CUP @ SHADOW CREEK,Shadow Creek Golf Course,0.006,0.007,-0.077,0.006,30.8,0.44,0.0411,7361.0,72.0
+THE CJ CUP @ SUMMIT,The Summit Club,0.056,0.085,0.048,0.0,37.0,0.16,0.0543,7359.0,72.0
+Genesis Scottish Open,The Renaissance Club,-0.008,0.008,0.067,-0.016,32.2,0.22,0.0082,7113.0,70.0
+THE PLAYERS Championship,TPC Sawgrass (THE PLAYERS Stadium Course),-0.047,-0.044,-0.032,-0.005,30.6,0.35,0.0573,7135.0,72.0
+THE NORTHERN TRUST,Liberty National Golf Club,-0.023,0.015,0.019,0.008,36.8,0.2,0.1028,7201.0,71.0
+ZOZO CHAMPIONSHIP,ACCORDIA GOLF Narashino Country Club,-0.014,0.055,0.001,0.013,30.0,0.33,0.0306,7032.0,70.0
+ZOZO CHAMPIONSHIP @ SHERWOOD,Sherwood Country Club,-0.034,0.007,0.021,0.017,35.9,0.47,0.0632,6986.0,72.0
+Black Desert Championship,Black Desert Resort,0.122,0.033,-0.018,-0.011,48.8,0.28,0.1618,7236.0,71.0
+Bank of Utah Championship,Oakridge Country Club,0.02,0.02,0.025,0.005,,,,,
+Truist Championship,Unknown Course,0.02,0.02,0.025,0.005,,,,,
+U.S. Open,Shinnecock Hills Golf Club,0.01,0.026,0.017,0.02,,,,,

@@ -1,0 +1,346 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "3M Open",
+      "tableTitle": "Power Rankings for the 3M Open",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "39997",
+            "firstName": "Corey",
+            "lastName": "Conners",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39997.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "First appearance since the tournament launched in 2019 but the Canadian will feel at home among the northern locals. Amid a quiet season relative to expectations but he logged top 25s in three of his last four starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "54628",
+            "firstName": "Lee",
+            "lastName": "Hodges",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_54628.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Inconsistency is shrouding his firepower. The 54-hole co-leader of the John Deere Classic settled for a share of third. While he sandwiched it with missed cuts, he\u2019s back where he broke through for his PGA TOUR title in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "66701",
+            "firstName": "Jackson",
+            "lastName": "Koivun",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66701.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Proving to be a quick study, after missing the cut in his professional debut at the John Deere Classic, he got on the board with a fulfilling T10 at the ISCO Championship with a steady performance that showcased his short game."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "39971",
+            "firstName": "Sungjae",
+            "lastName": "Im",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39971.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "When he\u2019s on, TPC Twin Cities can be a personal playground for the patented scorer, as it was in his first two appearances (T15, 2019; T2, 2022). His form has sagged gradually but he\u2019s fresh off a T14 at The Open Championship."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "39546",
+            "firstName": "Keith",
+            "lastName": "Mitchell",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39546.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Ball-striker. Scorer. The fixture at TPC Twin Cities has been rewarded for his loyalty with a pair of fifth-place finishes (2021, 2023), so he knows his skill set plays here. Two top fives in his last seven starts upon arrival."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "49964",
+            "firstName": "Aaron",
+            "lastName": "Wise",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49964.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 30-year-old hasn\u2019t pegged it in four consecutive weeks since his run to the TOUR Championship in 2022, but there\u2019s merit to keeping his rally rolling. He\u2019s gone T39-T3-T15 with nine sub-70s in July using a variety of weapons."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "36884",
+            "firstName": "Ben",
+            "lastName": "Kohles",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36884.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Chased his T3 at the John Deere Classic with a T15 at the ISCO Championship. They anchored a stretch of 10 consecutive weeks on the road that also included a win on the Korn Ferry Tour. Top 25s the last two years at the 3M Open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "48867",
+            "firstName": "Matti",
+            "lastName": "Schmid",
+            "countryFlag": "GER",
+            "countryName": "Germany",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48867.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The upshot for being the first man on the outside looking into the field at Royal Birkdale is a week of rest and prep for his fourth appearance at TPC Twin Cities (3-for-3, two top 20s). Top 25s in previous two starts worldwide."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "31646",
+            "firstName": "Emiliano",
+            "lastName": "Grillo",
+            "countryFlag": "ARG",
+            "countryName": "Argentina",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_31646.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Sat out the last two Additional Events following the birth of his son on July 6. Returns to a place that he loves almost as much in TPC Twin Cities, where he\u2019s 5-for-6 with a pair of podium finishes; scoring average = 68.05."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "57869",
+            "firstName": "Ben",
+            "lastName": "James",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57869.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "So much for a learning curve. After a T4 at Corales Puntacana, the reigning No. 1 in PGA TOUR University is now 5-for-5 with three top 25s as a professional. Appeared in 2024 3M Open (MC) on a sponsor exemption."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "31323",
+            "firstName": "Gary",
+            "lastName": "Woodland",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_31323.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Since his inspiring win at the Texas Children\u2019s Houston Open, he\u2019s added three top 10s and a T17. The force off the tee has two top 20s in four tries at TPC Twin Cities with a scoring average of 68.25 in his last eight rounds."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "25900",
+            "firstName": "Lucas",
+            "lastName": "Glover",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_25900.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "All he\u2019s done lately is hold at least a share of the lead after each of the first three rounds at the John Deere Classic and ISCO Championship. While he didn\u2019t slam the door en route to a respective T3 and T5, he\u2019s locked in."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "55182",
+            "firstName": "Tom",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55182.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Failed to piggyback his win at the Genesis Scottish Open with a missed cut at Royal Birkdale, but that\u2019s the way it\u2019s gone for the 24-year-old of late, and that\u2019s OK. Confidence is recharged, and he\u2019s 2-for-2 at TPC Twin Cities."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "48117",
+            "firstName": "Kurt",
+            "lastName": "Kitayama",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48117.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Paid off a course-record-tying 60 in his third round last year with a victory. While timely and lucrative, he placed T6 in his debut in 2024 and his scoring average in his other seven rounds here is 67.43, so he\u2019s a thoroughbred."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Who let "
+                },
+                {
+                  "value": "this"
+                },
+                {
+                  "value": " guy play?! Hey, if winning was that easy, he\u2019d have more than one victory in 2026 back in his season debut. Since, he\u2019s \u201csettled\u201d for four seconds, two thirds and three T4s. The tournament trend favors others, too!"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

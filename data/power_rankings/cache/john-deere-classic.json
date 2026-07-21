@@ -1,0 +1,346 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "John Deere Classic",
+      "tableTitle": "Power Rankings for the John Deere Classic",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "33141",
+            "firstName": "Keegan",
+            "lastName": "Bradley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33141.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "First appearance in a decade and fresh off a T14 at his de facto home game at the Travelers, where he was the defending champion. Five top 25s since the Masters. His tee-to-green proficiency will generate scoring opportunities."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "66417",
+            "firstName": "Blades",
+            "lastName": "Brown",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66417.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The Korn Ferry Tour is off this week, so the 19-year-old can pad his non-member equivalent of FedExCup points. (He\u2019d rank 97th among members.) Since a T3 at the Puerto Rico Open, he\u2019s 10-for-11 with eight top 20s across both tours."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "51696",
+            "firstName": "Rico",
+            "lastName": "Hoey",
+            "countryFlag": "PHI",
+            "countryName": "Philippines",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51696.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Regressed analytically this year, but he\u2019s forever streaky. With two top 20s in his last three starts, that\u2019s enough mojo to elevate expectations at TPC Deere Run, where he\u2019s averaged 67.25 in eight rounds for a T26 and a T11."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "31646",
+            "firstName": "Emiliano",
+            "lastName": "Grillo",
+            "countryFlag": "ARG",
+            "countryName": "Argentina",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_31646.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Good for a podium finish almost every season, and he\u2019s still without one in 2026. Twice a groomsman in three starts at TPC Deere Run (2022, 2025) but never the fella posing with the trophy at the end. T20-T23 in the last two starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "52513",
+            "firstName": "Carson",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52513.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "TPC Deere Run\u2019s greens aren\u2019t paspalum on which he\u2019s had so much success, but he still managed to place T5 in both 2024 and 2025. His scoring average in those eight rounds was 66.125. T17-T8-T13 on the Korn Ferry Tour this month."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "60386",
+            "firstName": "Sudarshan",
+            "lastName": "Yellamaraju",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60386.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s not unusual for rookies to get beat up a bit in the spring, but he still injected a T8 at the RBC Canadian Open into a five-start stretch that lacked another highlight. So controlled from tee to green, but can also score."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "66701",
+            "firstName": "Jackson",
+            "lastName": "Koivun",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66701.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After having accepted PGA TOUR membership via "
+                },
+                {
+                  "value": "PGA TOUR University Accelerated,"
+                },
+                {
+                  "value": " the 21-year-old is making his professional debut this week, but it\u2019s not his first appearance at TPC Deere Run (T11, 2025). T23 at the U.S. Open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "59836",
+            "firstName": "Pierceson",
+            "lastName": "Coody",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59836.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Enjoying a fruitful with, count \u2018em, 10 top 25s among 13 paydays. Among the rising stars for whom a breakthrough victory is imminent. Balanced throughout his bag and slots, 18th in converting greens hit into par breakers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Notched his first top-five finish on the PGA TOUR at TPC Deere Run in 2022 and added a T21 last year, so he\u2019s already laid the groundwork ahead of what is a breakout season in 2026. Sits 12th in adjusted scoring, best in the field."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "58168",
+            "firstName": "Davis",
+            "lastName": "Thompson",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_58168.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Back at the site of his lone PGA TOUR title in 2024. Led outright after three rounds in his defense last year before backpedaling into a T18. Overall, he\u2019s 3-for-3 with a scoring average of 66.58 in 12 rounds at TPC Deere Run."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "47993",
+            "firstName": "Denny",
+            "lastName": "McCarthy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47993.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It took all eight Signature Events for him to record his first top 25 in the series this season, but now the T14 at the Travelers serves as a springboard to remain hot at TPC Deere, where he\u2019s gone T6-T6-T6-T11 since 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "39546",
+            "firstName": "Keith",
+            "lastName": "Mitchell",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39546.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Piecing together a fine season with three top 10s and another trio of top 25s. T4-T22 the last two weeks. His tee-to-green game remains elite, but he\u2019s also 23rd in converting greens hit into par breakers. Two top 25s here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "49771",
+            "firstName": "J.T.",
+            "lastName": "Poston",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49771.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "One septuple bogey does not make an entire experience, so set aside the 12 he scored on the 13th hole at TPC River Highlands on Sunday. He just won at Muirfield Village and prevailed here in 2022. Also placed T4 at the U.S. Open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "55182",
+            "firstName": "Tom",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55182.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Circled the wagons at the U.S. Open for a solo third. After a pedestrian few months to open the season, he\u2019s rallied for three top-15 finishes in his last five starts, so he had momentum when he arrived at Shinnecock Hills."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "54591",
+            "firstName": "Ben",
+            "lastName": "Griffin",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_54591.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Proof that no one is safe in a shootout. T5 in his debut in 2024 and arrived on a heater with two wins in advance of last year\u2019s return, only to miss the cut. A pair of thirds, two T10s and another two top 20s in the last two months."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

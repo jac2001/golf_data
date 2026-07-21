@@ -280,7 +280,7 @@ export default function LivePage() {
             onClick={() => activateTab(tab.key)}
             style={{
               background: "transparent",
-              border: "none",
+              borderTop: "none", borderLeft: "none", borderRight: "none",
               borderBottom: `2px solid ${activeTab === tab.key ? "#00c44f" : "transparent"}`,
               color: activeTab === tab.key ? "#dde6f5" : "#7f8c8d",
               padding: "8px 16px",

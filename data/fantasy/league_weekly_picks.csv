@@ -1,29 +1,29 @@
 weekly_rank,season_rank,team_name,player_1,earnings_1,player_2,earnings_2,player_3,earnings_3,total_earnings,week
-1,2,MikeKett,Fleetwood,920000,Spaun,401800,"Thomas, J",269333,1591133,current
-2,7,Buck Foursome,"Kim, SW",535000,McIlroy,401800,Spaun,401800,1338600,current
-3,20,NLA Boys,Burns,920000,"Griffin, B",0,Scheffler,401800,1321800,current
-4,3,WineTime,Burns,920000,Cantlay,319000,Matsuyama,70000,1309000,current
-5,1,Andrew Sisson,Cantlay,319000,Scheffler,401800,Spaun,401800,1122600,current
-6,6,EagleEash,Aberg,90000,Burns,920000,"Fitzpatrick, M",99000,1109000,current
-7,8,Team OGG,"Griffin, B",0,"Kim, SW",535000,Scheffler,401800,936800,current
-8,14,Birdie Bandits,"Griffin, B",0,"Kim, SW",535000,"Thomas, J",269333,804333,current
-9,25,Davemc410,McIlroy,401800,Scheffler,401800,Spieth,0,803600,current
-10,28,CARL SPACKLER,Aberg,90000,"Bradley, K",269333,McIlroy,401800,761133,current
-11,18,Danny Noonan,Cantlay,319000,"Griffin, B",0,McIlroy,401800,720800,current
-12,10,GOLOWORGOHOME,"Fitzpatrick, M",99000,"Griffin, B",0,"Kim, SW",535000,634000,current
-13,5,Wildcats,Cantlay,319000,Henley,200200,Matsuyama,70000,589200,current
-14,12,Green Jackets,Aberg,90000,Rose,401800,Straka,82000,573800,current
-15,26,Chest Rockwell,Aberg,90000,McIlroy,401800,"Young, Cam",58667,550467,current
-16,23,Jlemoine,Aberg,90000,"Griffin, B",0,Scheffler,401800,491800,current
-17,21,SMETHPORT GOLFER,Henley,200200,Lowry,200200,Meissner,58667,459067,current
-18,15,Caddyshark,Bhatia,0,"Taylor, N",70000,"Thomas, J",269333,339333,current
-19,4,JoeBuckYourself,Cantlay,319000,"Griffin, B",0,Smalley,0,319000,current
-20,13,Dimpled Balls,Aberg,90000,"Griffin, B",0,Henley,200200,290200,current
-21,9,GoForeYourself,Matsuyama,70000,Schauffele,140000,"Young, Cam",58667,268667,current
-22,19,Yanks His Putz,"Fitzpatrick, M",99000,Matsuyama,70000,Straka,82000,251000,current
-23,22,MacDaddy,"Fitzpatrick, M",99000,Straka,82000,"Young, Cam",58667,239667,current
-24,24,COMER,"Fitzpatrick, M",99000,"Hojgaard, N",0,Theegala,122500,221500,current
-25,17,Rmr617,Aberg,90000,"Fitzpatrick, M",99000,Horschel,0,189000,current
-26,16,HUBBERS,Aberg,90000,Matsuyama,70000,Smalley,0,160000,current
-27,11,TimmyD,"Griffin, B",0,Matsuyama,70000,Smalley,0,70000,current
-28,27,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current
+1,26,16,CARL SPACKLER,0,"$827,500",0,"$51,707",0,1842000,current
+2,14,14,Dimpled Balls,0,"$164,575",0,"$164,575",0,1842000,current
+T-3,1,3,GoForeYourself,0,"$827,500",0,"$164,575",0,164575,current
+T-3,2,4,WineTime,0,"$827,500",0,"$164,575",0,164575,current
+T-5,17,1,Caddyshark,0,"$827,500",0,"$69,750",0,164575,current
+T-5,21,11,MacDaddy,0,"$164,575",0,"$69,750",0,827500,current
+7,11,6,Danny Noonan,0,"$827,500",0,"$40,800",0,69750,current
+8,8,15,GOLOWORGOHOME,0,$0,0,"$827,500",0,69750,current
+T-9,6,5,Wildcats,0,$0,0,"$51,707",0,827500,current
+T-9,10,17,Buck Foursome,0,$0,0,"$827,500",0,51707,current
+T-9,15,19,TimmyD,0,"$827,500",0,$0,0,51707,current
+12,13,18,Birdie Bandits,0,"$827,500",0,$0,0,0,current
+13,20,20,Jlemoine,0,"$336,380",0,"$164,575",0,0,current
+14,9,13,Green Jackets,0,$0,0,"$336,380",0,102817,current
+15,23,28,SMETHPORT GOLFER,0,"$336,380",0,$0,0,0,current
+16,24,25,Chest Rockwell,0,"$234,325",0,"$69,750",0,0,current
+17,12,21,Team OGG,0,"$40,800",0,"$102,817",0,51707,current
+T-18,4,23,Andrew Sisson,0,$0,0,"$102,817",0,69750,current
+T-18,18,26,HUBBERS,0,$0,0,"$102,817",0,69750,current
+20,25,24,Davemc410,0,$0,0,$0,0,164575,current
+21,3,2,MikeKett,0,"$102,817",0,"$51,707",0,0,current
+22,22,27,Yanks His Putz,0,$0,0,"$40,800",0,102817,current
+23,27,10,COMER,0,"$40,450",0,"$43,025",0,51707,current
+24,7,7,EagleEash,0,$0,0,"$69,750",0,0,current
+25,16,22,NLA Boys,0,$0,0,"$40,800",0,0,current
+T-26,5,9,JoeBuckYourself,0,$0,0,$0,0,0,current
+T-26,19,12,Rmr617,0,$0,0,$0,0,0,current
+T-26,28,8,Good Good?,0,$0,0,$0,0,0,current

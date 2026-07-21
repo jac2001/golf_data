@@ -1,0 +1,344 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Genesis Scottish Open",
+      "tableTitle": "Power Rankings for the Genesis Scottish Open",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "57492",
+            "firstName": "Eugenio",
+            "lastName": "Chacarra",
+            "countryFlag": "ESP",
+            "countryName": "Spain",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57492.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "\u00a1En fuego! The 26-year-old Spaniard prevailed in consecutive starts on the DP World Tour in June and now sits third in the Race to Dubai with another pair of podium finishes contributing. Second start at The Renaissance Club."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "51003",
+            "firstName": "Marco",
+            "lastName": "Penge",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51003.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After taking six weeks off to address physical discomfort, he returned with a T9 in Germany last week, citing strong iron play that surprised him. With rest that prefaced it, he can piggyback a T2 in his debut here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "52453",
+            "firstName": "Nicolai",
+            "lastName": "H\u00f8jgaard",
+            "countryFlag": "DEN",
+            "countryName": "Denmark",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52453.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His hit and miss can translate into a fruitful season overall but it thwarts regular attention in the Power Rankings. Appears now after a T14 at the Travelers and with a pair of top 10 at The Renaissance Club (2023, 2025)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "52215",
+            "firstName": "Robert",
+            "lastName": "MacIntyre",
+            "countryFlag": "SCO",
+            "countryName": "Scotland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52215.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "No doubt thrilled to be back in his homeland and where he rose to victory in 2024. After a quiet stretch this spring, the lefty rebounded with a T15 in Canada and a T10 at the Travelers. Also the runner-up here in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "A bit hot and cold of late but invariably comfortable here. The 2022 champ first appeared at The Renaissance Club in 2021 and finished T10, and he hasn\u2019t missed an edition since. Tacked on a T15 in 2024 and a T8 last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "55721",
+            "firstName": "Alex",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55721.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The younger of the brothers has been unflappable since splashing alongside Matt for victory at the Zurich Classic of New Orleans, adding four top 10s in Signature Events. Also opened 2026 with gusto on the DP World Tour."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "34363",
+            "firstName": "Tyrrell",
+            "lastName": "Hatton",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34363.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Returns to the site of four of his top 25s on the DP World Tour in as many trips. His last in 2023 yielded a personal-best T6 when he spun a 62 in the second round. Rested since a T7 at the U.S. Open. T3 previously at the Masters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a heater into mid-May, he\u2019s gone four starts without a top 15. The drought won\u2019t last given his tee-to-green proficiency. Finished T4 here in 2024 and T8 last year when he paced the field in total distance of putts holed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "46717",
+            "firstName": "Viktor",
+            "lastName": "Hovland",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46717.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Rested after upending Scottie Scheffler in a playoff at the Travelers. Two weeks prior, Hovland placed third in Canada. The irony is that his improved short game is neutralized at The Renaissance Club. T11 last year."
+                }
+              ]
+            },
+            {
+              "__typename": "NewsArticleLineBreak",
+              "breakValue": null
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With nine top 15s in 14 starts this year, he\u2019s been a cornerstone of the Power Rankings all season. It\u2019s no different this week at The Renaissance Club where he debuted with a P2 in 2020. It\u2019s one of three top 10s in six starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "28237",
+            "firstName": "Rory",
+            "lastName": "McIlroy",
+            "countryFlag": "NIR",
+            "countryName": "Northern Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28237.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His current form isn\u2019t tiptop but he\u2019s excelled on tracks where he has before despite a whiff of a question mark upon arrival. After winning here in 2023, he added a T4 and a T2. His scoring average in those 12 rounds is 66.50."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The defending champ rode a course-record-tying 61 in the second round to a two-shot margin of victory. It was a statement win that he\u2019s validated over and over. His balanced attack (outlined below) has him sixth in the all-around."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "So, how is he not going to win again this week? Credit the invisible line between domination and greatness for his \u201cstruggles,\u201d but don\u2019t overlook the opposition playing up to the challenge. Still No. 1 in the FedExCup, though."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "51766",
+            "firstName": "Wyndham",
+            "lastName": "Clark",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51766.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With his recent reconnection with elite putting, the winner of THE CJ CUP Byron Nelson and the U.S. Open has been performing like he\u2019s playing a video game in basic mode. He\u2019s also finished T16-T25-T10-T12 here since 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His outrageous 2026 was further bolstered by a solo fourth at the Travelers Championship in his last start. Showing no signs of letting up and now poised for The Renaissance Club where he\u2019s recorded three top 10s since 2021."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
