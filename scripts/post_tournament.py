@@ -148,10 +148,45 @@ def _run(cmd: list[str], label: str) -> bool:
 # ── Step 1: Scrape final leaderboard ──────────────────────────────────────────
 
 def step_scrape(tid: str, dry_run: bool = False) -> bool:
-    """Fetch the final leaderboard from PGA Tour and append to leaderboards_{year}.csv."""
+    """
+    Fetch the final leaderboard. Tries DataGolf's historical-raw-data first —
+    it writes directly to DuckDB (no CSV involved), has richer per-round stats
+    (driving distance/accuracy, GIR, scrambling, a real sg_arg category) than
+    the PGA Tour scrape ever had, and isn't exposed to PGA Tour's webpage
+    structure changing under us. Falls back to the PGA Tour scrape only if DG
+    has no data yet for this tournament (e.g. team-format events, or DG hasn't
+    ingested it yet).
+    """
+    m = re.match(r"R(\d{4})(\d+)$", tid.upper())
+    if not m:
+        print(f"  Could not parse year/event_id from tournament_id: {tid} — using PGA Tour scrape")
+        return _step_scrape_pga(tid, dry_run)
+
+    year_str, event_id_str = m.group(1), m.group(2)
+    label = f"STEP 1 — Fetch final results via DataGolf ({tid}, {year_str})"
+
+    cmd = [
+        PYTHON, str(SCRIPTS_DIR / "scrapers" / "fetch_dg_historical_results.py"),
+        "--year", year_str,
+        "--event-id", str(int(event_id_str)),
+    ]
+
+    if dry_run:
+        print(f"\n[DRY RUN] Would run: {' '.join(cmd)}")
+        return True
+
+    if _run(cmd, label):
+        return True
+
+    print("  DataGolf had no data for this tournament yet — falling back to PGA Tour scrape")
+    return _step_scrape_pga(tid, dry_run)
+
+
+def _step_scrape_pga(tid: str, dry_run: bool = False) -> bool:
+    """Fallback: fetch the final leaderboard from PGA Tour and append to leaderboards_{year}.csv."""
     year = re.search(r"R(\d{4})", tid.upper())
     year_str = year.group(1) if year else "current"
-    label = f"STEP 1 — Scrape final leaderboard ({tid}, {year_str})"
+    label = f"STEP 1 (fallback) — Scrape final leaderboard via PGA Tour ({tid}, {year_str})"
 
     cmd = [
         PYTHON, str(SCRIPTS_DIR / "scrapers" / "fetch_past_results.py"),
@@ -164,6 +199,74 @@ def step_scrape(tid: str, dry_run: bool = False) -> bool:
         return True
 
     return _run(cmd, label)
+
+
+# ── Step 1a: Export DuckDB leaderboard rows to the season CSV ─────────────────
+
+def step_export_csv(tid: str, dry_run: bool = False) -> int:
+    """
+    The DataGolf scrape path writes straight to DuckDB and never touches
+    leaderboards_{year}.csv — but backfill, bet grading, and the fantasy tracker
+    all read the CSV. Export this tournament's rows DB → CSV so those steps see
+    them. No-op when DuckDB has no rows (the PGA fallback already wrote the CSV).
+    Returns the number of rows written.
+    """
+    print(f"\n{'='*60}")
+    print(f"  STEP 1a — Export leaderboard to CSV ({tid})")
+    print(f"{'='*60}")
+
+    if not _DB_AVAILABLE:
+        print("  DuckDB not available — skipping CSV export")
+        return 0
+
+    year_match = re.search(r"R(\d{4})", tid.upper())
+    year = int(year_match.group(1)) if year_match else 2026
+    lb_path = HIST_DIR / f"leaderboards_{year}.csv"
+
+    with _get_db_conn(read_only=True) as conn:
+        db_rows = conn.execute(
+            "SELECT * FROM leaderboards WHERE UPPER(tournament_id) = ?", [tid.upper()]
+        ).df()
+
+    if db_rows.empty:
+        print(f"  No rows for {tid} in DuckDB — nothing to export")
+        return 0
+
+    out = pd.DataFrame({
+        "tournament_id":   db_rows["tournament_id"].str.upper(),
+        "year":            db_rows["year"],
+        "player_id":       db_rows["player_id"],
+        "player_name":     db_rows["player_name"],
+        "position":        db_rows["position"],
+        "total_score":     db_rows["total_score"],
+        "to_par":          db_rows["to_par"],
+        "fedex_points":    db_rows["fedex_points"],
+        "earnings":        db_rows["earnings"],
+        "rounds_played":   db_rows["rounds_played"],
+        "r1_score":        db_rows["r1"],
+        "r2_score":        db_rows["r2"],
+        "r3_score":        db_rows["r3"],
+        "r4_score":        db_rows["r4"],
+        "tournament_name": db_rows["tournament_name"],
+    })
+
+    if lb_path.exists():
+        lb = pd.read_csv(lb_path, dtype=str)
+        existing = lb[lb["tournament_id"].str.upper() == tid.upper()]
+        if not existing.empty:
+            print(f"  {len(existing)} rows for {tid} already in {lb_path.name} — replacing")
+            lb = lb[lb["tournament_id"].str.upper() != tid.upper()]
+        combined = pd.concat([lb, out], ignore_index=True)
+    else:
+        combined = out
+
+    if dry_run:
+        print(f"  [DRY RUN] Would write {len(out)} rows for {tid} to {lb_path.name}")
+        return len(out)
+
+    combined.to_csv(lb_path, index=False)
+    print(f"  Wrote {len(out)} rows for {tid} to {lb_path.name} ({len(combined)} total)")
+    return len(out)
 
 
 # ── Step 1b: Sync leaderboard rows into DuckDB ────────────────────────────────
@@ -676,19 +779,29 @@ def step_update_tracker(tid: str, dry_run: bool = False) -> dict:
 
     tn_words = _name_words(tourney_name or "")
 
+    # Pass 1: exact substring match across ALL weeks. Pass 2 (only if pass 1
+    # found nothing): best key-word overlap. A single shared word like "genesis"
+    # must not beat a full-name match later in the dict (Genesis Invitational
+    # vs Genesis Scottish Open).
+    tn_norm = _norm_name(tourney_name or "")
     for k, v in weekly_lineups.items():
         if not v.get("lineup"):
             continue
-        tn_norm    = _norm_name(tourney_name or "")
         entry_norm = _norm_name(v.get("tournament", ""))
-        # Try exact substring first, then key-word overlap (≥1 non-generic word)
         if tn_norm and entry_norm and (entry_norm in tn_norm or tn_norm in entry_norm):
             week_key, week_entry = k, v
             break
-        ev_words = _name_words(v.get("tournament", ""))
-        if tn_words and ev_words and tn_words & ev_words:
-            week_key, week_entry = k, v
-            break
+
+    if week_entry is None:
+        best_overlap = 0
+        for k, v in weekly_lineups.items():
+            if not v.get("lineup"):
+                continue
+            ev_words = _name_words(v.get("tournament", ""))
+            overlap = len(tn_words & ev_words)
+            if overlap > best_overlap:
+                best_overlap = overlap
+                week_key, week_entry = k, v
 
     # Fallback: first unfilled week that has a lineup
     if week_entry is None:
@@ -770,8 +883,14 @@ def step_update_tracker(tid: str, dry_run: bool = False) -> dict:
         entry["total_earnings"]  = sum(t.get("earnings", 0) for t in entry["tournaments_used"])
 
     # ── Update weekly_lineups entry ───────────────────────────────────────────
-    week_entry["earnings_earned"] = total_earnings
-    week_entry["points_earned"]   = total_earnings
+    # DG-sourced leaderboards carry no earnings — never clobber a value the
+    # league-site sync already filled in with a $0 total.
+    if total_earnings > 0 or not week_entry.get("earnings_earned"):
+        week_entry["earnings_earned"] = total_earnings
+        week_entry["points_earned"]   = total_earnings
+    else:
+        print(f"  Leaderboard had no earnings data — keeping existing "
+              f"{week_key}.earnings_earned = ${week_entry['earnings_earned']:,}")
     # wrp intentionally left null — requires the league standings page
 
     # ── Recompute summary ─────────────────────────────────────────────────────
@@ -853,7 +972,7 @@ def main():
                         help="Skip step 3 (prediction history backfill)")
     parser.add_argument("--skip-tracker", action="store_true",
                         help="Skip step 5 (fantasy tracker update)")
-    parser.add_argument("--step", choices=["scrape", "sync_db", "stats", "backfill", "grade", "tracker"],
+    parser.add_argument("--step", choices=["scrape", "export_csv", "sync_db", "stats", "backfill", "grade", "tracker"],
                         help="Run only one specific step")
     args = parser.parse_args()
 
@@ -868,6 +987,9 @@ def main():
 
     if args.step == "scrape":
         step_scrape(tid, dry_run=dry)
+        return
+    if args.step == "export_csv":
+        step_export_csv(tid, dry_run=dry)
         return
     if args.step == "sync_db":
         step_sync_db(tid, dry_run=dry)
@@ -891,6 +1013,7 @@ def main():
     if not args.skip_scrape:
         ok = step_scrape(tid, dry_run=dry)
     if ok:
+        step_export_csv(tid, dry_run=dry)
         step_sync_db(tid, dry_run=dry)
     if ok and not args.skip_stats:
         ok = step_form_stats(tid, dry_run=dry)

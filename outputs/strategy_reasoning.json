@@ -1,36 +1,36 @@
 {
-  "generated_at": "2026-06-11T12:37:23.549682+00:00",
-  "tournament": "RBC Canadian Open",
-  "tournament_id": "R2026032",
-  "tournament_week": 19,
+  "generated_at": "2026-06-25T02:50:53.176072+00:00",
+  "tournament": "Travelers Championship",
+  "tournament_id": "R2026034",
+  "tournament_week": 21,
   "lineup": [
+    "Scheffler, Scottie",
     "Fleetwood, Tommy",
-    "Fitzpatrick, Matt",
-    "Morikawa, Collin"
+    "Schauffele, Xander"
   ],
   "weekly_narrative": "",
   "players": {
+    "Scheffler, Scottie": {
+      "recommendation": "USE NOW",
+      "tier": "",
+      "uses_left": 0,
+      "this_week_ev": 0,
+      "in_field": true,
+      "narrative": ""
+    },
     "Fleetwood, Tommy": {
       "recommendation": "USE NOW",
       "tier": "good",
       "uses_left": 1,
-      "this_week_ev": 131561,
+      "this_week_ev": 455067,
       "in_field": true,
       "narrative": ""
     },
-    "Fitzpatrick, Matt": {
+    "Schauffele, Xander": {
       "recommendation": "USE NOW",
       "tier": "good",
       "uses_left": 1,
-      "this_week_ev": 130049,
-      "in_field": true,
-      "narrative": ""
-    },
-    "Morikawa, Collin": {
-      "recommendation": "USE NOW",
-      "tier": "good",
-      "uses_left": 1,
-      "this_week_ev": 128090,
+      "this_week_ev": 441279,
       "in_field": true,
       "narrative": ""
     },
@@ -38,64 +38,64 @@
       "recommendation": "SAVE",
       "tier": "elite",
       "uses_left": 1,
-      "this_week_ev": 275742,
-      "in_field": false,
-      "narrative": ""
-    },
-    "Scheffler": {
-      "recommendation": "SAVE",
-      "tier": "elite",
-      "uses_left": 1,
-      "this_week_ev": 275451,
+      "this_week_ev": 1000423,
       "in_field": false,
       "narrative": ""
     },
     "Rahm": {
       "recommendation": "SAVE",
       "tier": "good",
-      "uses_left": 2,
-      "this_week_ev": 260992,
+      "uses_left": 1,
+      "this_week_ev": 946911,
       "in_field": false,
       "narrative": ""
     },
-    "Aberg": {
+    "Morikawa": {
       "recommendation": "SAVE",
       "tier": "good",
       "uses_left": 1,
-      "this_week_ev": 244003,
-      "in_field": false,
+      "this_week_ev": 396844,
+      "in_field": true,
       "narrative": ""
     },
-    "Henley": {
-      "recommendation": "SAVE",
-      "tier": "good",
-      "uses_left": 1,
-      "this_week_ev": 238249,
-      "in_field": false,
-      "narrative": ""
-    },
-    "Schauffele": {
-      "recommendation": "SAVE",
-      "tier": "good",
-      "uses_left": 1,
-      "this_week_ev": 242048,
-      "in_field": false,
-      "narrative": ""
-    },
-    "J Thomas": {
-      "recommendation": "SAVE",
-      "tier": "good",
-      "uses_left": 1,
-      "this_week_ev": 227166,
-      "in_field": false,
-      "narrative": ""
-    },
-    "Gotterup": {
+    "McNealy": {
       "recommendation": "SAVE",
       "tier": "good",
       "uses_left": 2,
-      "this_week_ev": 243536,
-      "in_field": false,
+      "this_week_ev": 315941,
+      "in_field": true,
+      "narrative": ""
+    },
+    "Gerard": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 229870,
+      "in_field": true,
+      "narrative": ""
+    },
+    "W Clark": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 291661,
+      "in_field": true,
+      "narrative": ""
+    },
+    "Burns": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 296997,
+      "in_field": true,
+      "narrative": ""
+    },
+    "Hovland": {
+      "recommendation": "SAVE",
+      "tier": "good",
+      "uses_left": 2,
+      "this_week_ev": 292941,
+      "in_field": true,
       "narrative": ""
     }
   }

@@ -1,0 +1,16 @@
+[
+  {
+    "player_name": "Patton Kizzire",
+    "player_id": "32757",
+    "status": "WITHDRAWN",
+    "source": "leaderboard",
+    "detected_at": "2026-07-28T06:00:18.957400"
+  },
+  {
+    "player_name": "Koepka, Brooks",
+    "player_id": "36689",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-07-29T06:47:11.252278"
+  }
+]

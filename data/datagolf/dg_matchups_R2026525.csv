@@ -1,0 +1,416 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Smith, Jordan","Knapp, Jake",18586,19396,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Knapp, Jake",18586,19396,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Knapp, Jake",18586,19396,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Knapp, Jake",18586,19396,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Whaley, Vince","Shipley, Neal",25908,32055,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Whaley, Vince","Shipley, Neal",25908,32055,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Whaley, Vince","Shipley, Neal",25908,32055,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,separate bet offered,datagolf,-106,+161,0.514563,0.383142,0.573199,0.426801,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,separate bet offered,pointsbet,-135,+150,0.574468,0.4,0.58952,0.41048,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,void,bet365,-132,+110,0.568966,0.47619,0.544383,0.455617,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,void,betmgm,-154,+125,0.606299,0.444444,0.577019,0.422981,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,void,bovada,-140,+115,0.583333,0.465116,0.556377,0.443623,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,void,datagolf,-134,+134,0.57265,0.42735,0.57265,0.42735,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,void,draftkings,-156,+125,0.609375,0.444444,0.578254,0.421746,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bauchou, Zach",17576,19846,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,separate bet offered,bet365,-105,+115,0.512195,0.465116,0.524086,0.475914,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,separate bet offered,datagolf,-102,+155,0.50495,0.392157,0.562865,0.437135,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,separate bet offered,pointsbet,-110,+115,0.52381,0.465116,0.529675,0.470325,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,void,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,void,datagolf,-128,+128,0.561404,0.438596,0.561404,0.438596,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,void,draftkings,-132,+105,0.568966,0.487805,0.5384,0.4616,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Svensson, Jesper",18103,26850,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Yu, Kevin",15470,17881,void,bet365,-132,+110,0.568966,0.47619,0.544383,0.455617,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Yu, Kevin",15470,17881,void,bovada,-130,+110,0.565217,0.47619,0.542744,0.457256,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Yu, Kevin",15470,17881,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Neergaard-Petersen, Rasmus",15651,23841,void,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Neergaard-Petersen, Rasmus",15651,23841,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Neergaard-Petersen, Rasmus",15651,23841,void,datagolf,+131,-131,0.4329,0.5671,0.4329,0.5671,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Smotherman, Austin","VanDerLaan, John",22985,25319,void,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Smotherman, Austin","VanDerLaan, John",22985,25319,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Smotherman, Austin","VanDerLaan, John",22985,25319,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Hubbard, Mark",13367,16333,void,bet365,+115,-135,0.465116,0.574468,0.447406,0.552594,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Hubbard, Mark",13367,16333,void,bovada,+115,-135,0.465116,0.574468,0.447406,0.552594,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Hubbard, Mark",13367,16333,void,datagolf,+137,-137,0.421941,0.578059,0.421941,0.578059,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Roy, Kevin","Jarvis, Casey",18424,26947,void,bet365,+120,-141,0.454545,0.585062,0.437228,0.562772,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Roy, Kevin","Jarvis, Casey",18424,26947,void,bovada,+120,-145,0.454545,0.591837,0.434397,0.565603,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Roy, Kevin","Jarvis, Casey",18424,26947,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Scheffler, Scottie","Kitayama, Kurt",18417,21891,void,bet365,-233,+190,0.6997,0.344828,0.669872,0.330128,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Scheffler, Scottie","Kitayama, Kurt",18417,21891,void,bovada,-235,+190,0.701493,0.344828,0.670438,0.329562,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Scheffler, Scottie","Kitayama, Kurt",18417,21891,void,datagolf,-183,+183,0.646643,0.353357,0.646643,0.353357,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Thompson, Davis",12577,27364,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Thompson, Davis",12577,27364,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Thompson, Davis",12577,27364,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Blair, Zac",10104,17639,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Blair, Zac",10104,17639,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Blair, Zac",10104,17639,void,datagolf,+121,-121,0.452489,0.547511,0.452489,0.547511,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Koivun, Jackson",13562,32319,void,bet365,-132,+110,0.568966,0.47619,0.544383,0.455617,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Koivun, Jackson",13562,32319,void,bovada,-130,+110,0.565217,0.47619,0.542744,0.457256,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Koivun, Jackson",13562,32319,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Brennan, Michael",8825,29197,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Brennan, Michael",8825,29197,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Brennan, Michael",8825,29197,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kim, Michael","McCarthy, Denny",17543,19870,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kim, Michael","McCarthy, Denny",17543,19870,void,betcris,-118,-112,0.541284,0.528302,0.506069,0.493931,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kim, Michael","McCarthy, Denny",17543,19870,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kim, Michael","McCarthy, Denny",17543,19870,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Phillips, Chandler",11276,27164,void,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Phillips, Chandler",11276,27164,void,betcris,-145,+115,0.591837,0.465116,0.559946,0.440054,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Phillips, Chandler",11276,27164,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Phillips, Chandler",11276,27164,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Kohles, Ben",12808,16395,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Kohles, Ben",12808,16395,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Kohles, Ben",12808,16395,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,separate bet offered,datagolf,+109,+138,0.478469,0.420168,0.532438,0.467562,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,separate bet offered,pointsbet,-115,+120,0.534884,0.454545,0.540598,0.459402,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,void,draftkings,-128,+102,0.561404,0.49505,0.531404,0.468596,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Griffin, Lanto","Kang, Jeffrey",15330,21889,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,separate bet offered,datagolf,+101,+149,0.497512,0.401606,0.553333,0.446667,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,separate bet offered,pointsbet,-115,+120,0.534884,0.454545,0.540598,0.459402,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,void,betmgm,-143,+115,0.588477,0.465116,0.558543,0.441457,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,void,draftkings,-148,+118,0.596774,0.458716,0.5654,0.4346,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Nyholm, Pontus",15310,25475,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,separate bet offered,bet365,-111,+120,0.526066,0.454545,0.536467,0.463533,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,separate bet offered,datagolf,+107,+142,0.483092,0.413223,0.538976,0.461024,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,separate bet offered,pointsbet,-115,+120,0.534884,0.454545,0.540598,0.459402,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,void,betcris,-136,+106,0.576271,0.485437,0.542777,0.457223,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,void,draftkings,-115,-110,0.534884,0.52381,0.50523,0.49477,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Ewart, A.J.",20722,21883,void,unibet,-132,+104,0.568966,0.490196,0.537185,0.462815,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,separate bet offered,bet365,+115,-105,0.465116,0.512195,0.475914,0.524086,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,separate bet offered,datagolf,+138,+111,0.420168,0.473934,0.469933,0.530067,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,separate bet offered,pointsbet,+110,-105,0.47619,0.512195,0.481786,0.518214,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,void,bovada,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,void,draftkings,-104,-122,0.509804,0.54955,0.481241,0.518759,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Greyserman, Max",7399,23465,void,unibet,-103,-125,0.507389,0.555556,0.477343,0.522657,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,separate bet offered,bet365,-111,+120,0.526066,0.454545,0.536467,0.463533,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,separate bet offered,datagolf,+106,+144,0.485437,0.409836,0.542222,0.457778,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,separate bet offered,pointsbet,-115,+125,0.534884,0.444444,0.546174,0.453826,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,void,betcris,-129,-101,0.563319,0.502488,0.528538,0.471462,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,void,betmgm,-130,+105,0.565217,0.487805,0.536757,0.463243,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,void,bovada,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,void,draftkings,-128,+102,0.561404,0.49505,0.531404,0.468596,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Eckroat, Austin",13764,26653,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,separate bet offered,bet365,+140,-125,0.416667,0.555556,0.428571,0.571429,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,separate bet offered,datagolf,+157,-105,0.389105,0.512195,0.431715,0.568285,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,separate bet offered,pointsbet,+140,-135,0.416667,0.574468,0.420394,0.579606,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,void,betmgm,+105,-130,0.487805,0.565217,0.463243,0.536757,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,void,bovada,+120,-145,0.454545,0.591837,0.434397,0.565603,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,void,datagolf,+131,-131,0.4329,0.5671,0.4329,0.5671,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,void,draftkings,+108,-134,0.480769,0.57265,0.456389,0.543611,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,void,fanduel,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Crowe, Trace",9171,27780,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,separate bet offered,bet365,+130,-120,0.434783,0.545455,0.443548,0.556452,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,separate bet offered,datagolf,+138,+110,0.420168,0.47619,0.46875,0.53125,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,separate bet offered,pointsbet,+135,-125,0.425532,0.555556,0.433735,0.566265,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,void,betmgm,+110,-135,0.47619,0.574468,0.45323,0.54677,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,void,bovada,+115,-140,0.465116,0.583333,0.443623,0.556377,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,void,draftkings,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Knapp, Jake",15556,19396,void,unibet,-103,-125,0.507389,0.555556,0.477343,0.522657,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,separate bet offered,bet365,-172,+200,0.632353,0.333333,0.654822,0.345178,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,separate bet offered,datagolf,-163,+249,0.619772,0.286533,0.683845,0.316155,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,separate bet offered,pointsbet,-175,+185,0.636364,0.350877,0.644588,0.355412,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,void,betmgm,-200,+160,0.666667,0.384615,0.634146,0.365854,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,void,bovada,-205,+165,0.672131,0.377358,0.640436,0.359564,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,void,datagolf,-216,+216,0.683544,0.316456,0.683544,0.316456,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,void,draftkings,-190,+152,0.655172,0.396825,0.622789,0.377211,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,void,fanduel,-225,+175,0.692308,0.363636,0.655629,0.344371,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Smith, Jordan","Stanger, Jimmy",18586,23048,void,unibet,-220,+170,0.6875,0.37037,0.649891,0.350109,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,separate bet offered,datagolf,+112,+134,0.471698,0.42735,0.524664,0.475336,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,separate bet offered,pointsbet,-110,+115,0.52381,0.465116,0.529675,0.470325,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,void,betcris,-128,-102,0.561404,0.50495,0.52647,0.47353,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,void,draftkings,-118,-106,0.541284,0.514563,0.512654,0.487346,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dahmen, Joel","Shipley, Neal",14509,32055,void,unibet,-125,-103,0.555556,0.507389,0.522657,0.477343,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,separate bet offered,datagolf,+119,+128,0.456621,0.438596,0.510067,0.489933,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,separate bet offered,pointsbet,+105,+100,0.487805,0.5,0.493827,0.506173,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,void,betcris,-125,-105,0.555556,0.512195,0.520305,0.479695,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,void,draftkings,-112,-112,0.528302,0.528302,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Streelman, Kevin","Whaley, Vince",8480,25908,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,separate bet offered,datagolf,+125,+121,0.444444,0.452489,0.495516,0.504484,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,separate bet offered,pointsbet,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,void,betcris,-101,-129,0.502488,0.563319,0.471462,0.528538,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,void,draftkings,-114,-112,0.53271,0.528302,0.502077,0.497923,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Kim, Tom",17365,24766,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,separate bet offered,datagolf,+122,+124,0.45045,0.446429,0.502242,0.497758,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,separate bet offered,pointsbet,+110,+100,0.47619,0.5,0.487805,0.512195,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,void,draftkings,-110,-114,0.52381,0.53271,0.495788,0.504212,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Neergaard-Petersen, Rasmus",15470,23841,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,separate bet offered,datagolf,+114,+131,0.46729,0.4329,0.519101,0.480899,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,separate bet offered,pointsbet,-105,+110,0.512195,0.47619,0.518214,0.481786,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,void,betcris,-116,-114,0.537037,0.53271,0.502022,0.497978,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,void,draftkings,-124,+100,0.553571,0.5,0.525424,0.474576,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Fishburn, Patrick",15651,25094,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,separate bet offered,bet365,+140,-125,0.416667,0.555556,0.428571,0.571429,False,True,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,separate bet offered,datagolf,+169,-112,0.371747,0.528302,0.41303,0.58697,True,False,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,separate bet offered,pointsbet,+140,-130,0.416667,0.565217,0.424354,0.575646,False,False,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,void,betmgm,+125,-154,0.444444,0.606299,0.422981,0.577019,False,False,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,void,bovada,+120,-145,0.454545,0.591837,0.434397,0.565603,False,False,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,void,datagolf,+142,-142,0.413223,0.586777,0.413223,0.586777,True,False,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,void,draftkings,+125,-156,0.444444,0.609375,0.421746,0.578254,False,False,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,void,fanduel,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,3M Open,2026-07-26 12:32:00 UTC
+"VanDerLaan, John","Castillo, Ricky",25319,27819,void,unibet,+120,-152,0.454545,0.603175,0.429741,0.570259,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,separate bet offered,datagolf,+126,+121,0.442478,0.452489,0.494407,0.505593,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,separate bet offered,pointsbet,+110,-105,0.47619,0.512195,0.481786,0.518214,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,void,draftkings,+105,-132,0.487805,0.568966,0.4616,0.5384,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,void,fanduel,-110,-125,0.52381,0.555556,0.485294,0.514706,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Smotherman, Austin",16333,22985,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,separate bet offered,datagolf,+132,+115,0.431034,0.465116,0.480984,0.519016,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,separate bet offered,pointsbet,+120,-115,0.454545,0.534884,0.459402,0.540598,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,void,bovada,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,void,draftkings,-114,-110,0.53271,0.52381,0.504212,0.495788,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Dou, Zecheng","Roy, Kevin",16757,18424,void,unibet,-107,-120,0.516908,0.545455,0.486565,0.513435,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,separate bet offered,bet365,-116,+125,0.537037,0.444444,0.54717,0.45283,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,separate bet offered,datagolf,-105,+158,0.512195,0.387597,0.569237,0.430763,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,separate bet offered,pointsbet,-125,+135,0.555556,0.425532,0.566265,0.433735,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,void,betcris,-163,+130,0.619772,0.434783,0.58771,0.41229,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,void,bovada,-130,+110,0.565217,0.47619,0.542744,0.457256,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,void,draftkings,-152,+122,0.603175,0.45045,0.572476,0.427524,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,void,pinnacle,-140,+117,0.583333,0.460829,0.558661,0.441339,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Jarvis, Casey",21891,26947,void,unibet,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,separate bet offered,bet365,-125,+137,0.555556,0.421941,0.568345,0.431655,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,separate bet offered,datagolf,+103,+148,0.492611,0.403226,0.549889,0.450111,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,separate bet offered,pointsbet,-130,+135,0.565217,0.425532,0.570495,0.429505,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,void,betcris,-144,+114,0.590164,0.46729,0.558099,0.441901,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,void,betmgm,-149,+120,0.598394,0.454545,0.568308,0.431692,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,void,bovada,-145,+120,0.591837,0.454545,0.565603,0.434397,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,void,draftkings,-152,+120,0.603175,0.454545,0.570259,0.429741,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,void,fanduel,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,void,pinnacle,-136,+114,0.576271,0.46729,0.552216,0.447784,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Lebioda, Hank",12423,21943,void,unibet,-136,+108,0.576271,0.480769,0.545174,0.454826,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,separate bet offered,datagolf,-105,+159,0.512195,0.3861,0.570186,0.429814,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,separate bet offered,pointsbet,-125,+135,0.555556,0.425532,0.566265,0.433735,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,void,betmgm,-154,+125,0.606299,0.444444,0.577019,0.422981,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,void,draftkings,-176,+142,0.637681,0.413223,0.606793,0.393207,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,void,fanduel,-163,+125,0.619772,0.444444,0.582374,0.417626,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,void,pinnacle,-146,+122,0.593496,0.45045,0.568512,0.431488,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blanchet, Chandler",12577,24956,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,separate bet offered,bet365,+160,-141,0.384615,0.585062,0.396643,0.603357,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,separate bet offered,datagolf,+203,-132,0.330033,0.568966,0.367112,0.632888,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,separate bet offered,pointsbet,+155,-150,0.392157,0.6,0.395257,0.604743,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,void,betmgm,+140,-175,0.416667,0.636364,0.395683,0.604317,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,void,bovada,+140,-165,0.416667,0.622642,0.400908,0.599092,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,void,datagolf,+172,-172,0.367647,0.632353,0.367647,0.632353,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,void,draftkings,+132,-166,0.431034,0.62406,0.408527,0.591473,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,void,fanduel,+150,-188,0.4,0.652778,0.379947,0.620053,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,void,pinnacle,+149,-181,0.401606,0.644128,0.384042,0.615958,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blair, Zac",13367,17639,void,unibet,+145,-186,0.408163,0.65035,0.385601,0.614399,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,separate bet offered,bet365,-105,+115,0.512195,0.465116,0.524086,0.475914,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,separate bet offered,datagolf,+109,+142,0.478469,0.413223,0.536585,0.463415,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,separate bet offered,pointsbet,-110,+120,0.52381,0.454545,0.535398,0.464602,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,void,betcris,-117,-113,0.539171,0.530516,0.504045,0.495955,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,void,betmgm,-143,+115,0.588477,0.465116,0.558543,0.441457,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,void,bovada,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,void,draftkings,-144,+115,0.590164,0.465116,0.559249,0.440751,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,void,pinnacle,-122,+103,0.54955,0.492611,0.527318,0.472682,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Yu, Kevin","Chatfield, Davis",17881,30620,void,unibet,-125,-103,0.555556,0.507389,0.522657,0.477343,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,separate bet offered,datagolf,-116,+177,0.537037,0.361011,0.598005,0.401995,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,separate bet offered,pointsbet,-130,+135,0.565217,0.425532,0.570495,0.429505,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,void,bovada,-140,+115,0.583333,0.465116,0.556377,0.443623,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,void,datagolf,-149,+149,0.598394,0.401606,0.598394,0.401606,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,void,draftkings,-166,+132,0.62406,0.431034,0.591473,0.408527,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,void,fanduel,-150,+120,0.6,0.454545,0.568966,0.431034,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,void,pinnacle,-173,+143,0.6337,0.411523,0.606282,0.393718,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Hodges, Lee",13562,25157,void,unibet,-167,+130,0.625468,0.434783,0.589925,0.410075,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,separate bet offered,bet365,+260,-233,0.277778,0.6997,0.284178,0.715822,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,separate bet offered,datagolf,+288,-186,0.257732,0.65035,0.28382,0.71618,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,separate bet offered,pointsbet,+260,-240,0.277778,0.705882,0.282392,0.717608,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,void,bovada,+220,-275,0.3125,0.733333,0.298805,0.701195,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,void,datagolf,+252,-252,0.284091,0.715909,0.284091,0.715909,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,void,draftkings,+270,-340,0.27027,0.772727,0.259128,0.740872,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,void,fanduel,+240,-333,0.294118,0.769053,0.276642,0.723358,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,void,pinnacle,+202,-256,0.331126,0.719101,0.31529,0.68471,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Scheffler, Scottie",8825,18417,void,unibet,+245,-335,0.289855,0.770115,0.273456,0.726544,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,separate bet offered,datagolf,+153,-101,0.395257,0.502488,0.440278,0.559722,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,separate bet offered,pointsbet,+125,-120,0.444444,0.545455,0.44898,0.55102,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,void,betonline,+106,-127,0.485437,0.559471,0.464574,0.535426,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,void,datagolf,+127,-127,0.440529,0.559471,0.440529,0.559471,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,void,draftkings,-102,-124,0.50495,0.553571,0.477034,0.522966,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,void,pinnacle,+113,-135,0.469484,0.574468,0.449718,0.550282,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Power, Seamus","Thompson, Davis",10104,27364,void,unibet,+112,-143,0.471698,0.588477,0.444925,0.555075,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,separate bet offered,datagolf,+144,+106,0.409836,0.485437,0.457778,0.542222,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,void,betonline,-102,-118,0.50495,0.541284,0.482636,0.517364,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,void,bovada,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,void,draftkings,-104,-122,0.509804,0.54955,0.481241,0.518759,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,void,pinnacle,-107,-111,0.516908,0.526066,0.49561,0.50439,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Kim, Michael",11276,17543,void,unibet,+104,-132,0.490196,0.568966,0.462815,0.537185,False,False,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,separate bet offered,datagolf,-103,+160,0.507389,0.384615,0.568819,0.431181,True,False,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,void,bovada,-135,+115,0.574468,0.465116,0.552594,0.447406,False,False,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,void,draftkings,-150,+118,0.6,0.458716,0.566724,0.433276,False,False,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,void,pinnacle,-132,+111,0.568966,0.473934,0.545561,0.454439,False,True,3M Open,2026-07-26 12:32:00 UTC
+"McCarthy, Denny","Phillips, Chandler",19870,27164,void,unibet,-143,+112,0.588477,0.471698,0.555075,0.444925,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,separate bet offered,datagolf,+114,+132,0.46729,0.431034,0.520179,0.479821,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,betonline,-128,+107,0.561404,0.483092,0.537488,0.462512,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,bovada,-110,-110,0.52381,0.52381,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,draftkings,-114,-110,0.53271,0.52381,0.504212,0.495788,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,pinnacle,-112,-106,0.528302,0.514563,0.506587,0.493413,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kohles, Ben","Brennan, Michael",16395,29197,void,unibet,-120,-107,0.545455,0.516908,0.513435,0.486565,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Ewart, A.J.",15310,21883,void,betonline,-121,+101,0.547511,0.497512,0.523922,0.476078,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Ewart, A.J.",15310,21883,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Nyholm, Pontus","Eckroat, Austin",25475,26653,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Nyholm, Pontus","Eckroat, Austin",25475,26653,void,datagolf,+127,-127,0.440529,0.559471,0.440529,0.559471,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Greyserman, Max",20722,23465,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Schmid, Matti","Greyserman, Max",20722,23465,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Parry, John",7399,13764,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Glover, Lucas","Parry, John",7399,13764,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Knapp, Jake",17576,19396,void,betonline,-117,-103,0.539171,0.507389,0.515184,0.484816,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Knapp, Jake",17576,19396,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Smith, Jordan",15556,18586,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Smith, Jordan",15556,18586,void,datagolf,+125,-125,0.444444,0.555556,0.444444,0.555556,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Bauchou, Zach",15470,19846,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hossler, Beau","Bauchou, Zach",15470,19846,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Bezuidenhout, Christiaan",17365,18103,void,betonline,-137,+114,0.578059,0.46729,0.552982,0.447018,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Mitchell, Keith","Bezuidenhout, Christiaan",17365,18103,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Svensson, Jesper",15651,26850,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Ventura, Kristoffer","Svensson, Jesper",15651,26850,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Kim, Tom",21891,24766,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kitayama, Kurt","Kim, Tom",21891,24766,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Neergaard-Petersen, Rasmus","Castillo, Ricky",23841,27819,void,betonline,-135,+113,0.574468,0.469484,0.550282,0.449718,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Neergaard-Petersen, Rasmus","Castillo, Ricky",23841,27819,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Fishburn, Patrick",16333,25094,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Fishburn, Patrick",16333,25094,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","Fishburn, Patrick",16333,25094,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Smotherman, Austin",12423,22985,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Smotherman, Austin",12423,22985,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Jarvis, Casey",12577,26947,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Jarvis, Casey",12577,26947,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Blanchet, Chandler","Chatfield, Davis",24956,30620,void,betonline,-102,-118,0.50495,0.541284,0.482636,0.517364,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Blanchet, Chandler","Chatfield, Davis",24956,30620,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Blair, Zac","Yu, Kevin",17639,17881,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Blair, Zac","Yu, Kevin",17639,17881,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Scheffler, Scottie",13562,18417,void,betcris,+194,-250,0.340136,0.714286,0.322581,0.677419,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Scheffler, Scottie",13562,18417,void,betonline,+185,-225,0.350877,0.692308,0.336352,0.663648,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Matsuyama, Hideki","Scheffler, Scottie",13562,18417,void,datagolf,+187,-187,0.348432,0.651568,0.348432,0.651568,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Hodges, Lee",8825,25157,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Hodges, Lee",8825,25157,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Harman, Brian","Hodges, Lee",8825,25157,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Koivun, Jackson",12808,32319,void,betcris,+104,-134,0.490196,0.57265,0.461211,0.538789,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Koivun, Jackson",12808,32319,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Koivun, Jackson",12808,32319,void,bovada,+110,-130,0.47619,0.565217,0.457256,0.542744,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Koivun, Jackson",12808,32319,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Koivun, Jackson",12808,32319,void,draftkings,+112,-140,0.471698,0.583333,0.447094,0.552906,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Koivun, Jackson",12808,32319,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Koivun, Jackson",12808,32319,void,pinnacle,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Grillo, Emiliano","Koivun, Jackson",12808,32319,void,unibet,+104,-132,0.490196,0.568966,0.462815,0.537185,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Hodges, Lee",11276,25157,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Horschel, Billy","Hodges, Lee",11276,25157,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Hughes, Mackenzie",13764,15556,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Parry, John","Hughes, Mackenzie",13764,15556,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Thompson, Davis","Brennan, Michael",27364,29197,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Thompson, Davis","Brennan, Michael",27364,29197,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Roy, Kevin","Castillo, Ricky",18424,27819,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Roy, Kevin","Castillo, Ricky",18424,27819,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Ewart, A.J.","Eckroat, Austin",21883,26653,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Ewart, A.J.","Eckroat, Austin",21883,26653,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blair, Zac",12577,17639,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blair, Zac",12577,17639,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Woodland, Gary","Blair, Zac",12577,17639,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Neergaard-Petersen, Rasmus",18103,23841,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Bezuidenhout, Christiaan","Neergaard-Petersen, Rasmus",18103,23841,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Kim, Tom",17576,24766,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Kim, Tom",17576,24766,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Ventura, Kristoffer",12423,15651,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kirk, Chris","Ventura, Kristoffer",12423,15651,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Griffin, Lanto",15310,15330,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Li, Haotong","Griffin, Lanto",15310,15330,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Kang, Jeffrey","Nyholm, Pontus",21889,25475,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Kang, Jeffrey","Nyholm, Pontus",21889,25475,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Stanger, Jimmy",9171,23048,void,betcris,-107,-123,0.516908,0.55157,0.48378,0.51622,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Villegas, Camilo","Stanger, Jimmy",9171,23048,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Crowe, Trace",15556,27780,void,betcris,-139,+109,0.58159,0.478469,0.548639,0.451361,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Hughes, Mackenzie","Crowe, Trace",15556,27780,void,datagolf,-139,+139,0.58159,0.41841,0.58159,0.41841,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bezuidenhout, Christiaan",17576,18103,void,betcris,-118,-112,0.541284,0.528302,0.506069,0.493931,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Conners, Corey","Bezuidenhout, Christiaan",17576,18103,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Bauchou, Zach","Svensson, Jesper",19846,26850,void,betcris,-134,+104,0.57265,0.490196,0.538789,0.461211,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Bauchou, Zach","Svensson, Jesper",19846,26850,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Smotherman, Austin","Castillo, Ricky",22985,27819,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Smotherman, Austin","Castillo, Ricky",22985,27819,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","VanDerLaan, John",16333,25319,void,betcris,-143,+113,0.588477,0.469484,0.556237,0.443763,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Hubbard, Mark","VanDerLaan, John",16333,25319,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blanchet, Chandler",13367,24956,void,betcris,+124,-155,0.446429,0.607843,0.423447,0.576553,False,True,3M Open,2026-07-26 12:32:00 UTC
+"Merritt, Troy","Blanchet, Chandler",13367,24956,void,datagolf,+133,-133,0.429185,0.570815,0.429185,0.570815,True,False,3M Open,2026-07-26 12:32:00 UTC

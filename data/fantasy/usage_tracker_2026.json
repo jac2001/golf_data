@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-07-21T06:30:37.635527",
+  "last_updated": "2026-07-30T07:04:55.317910",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -21,8 +21,8 @@
       "total_points": 0
     },
     "Gotterup": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "Waste Management Phoenix Open",
@@ -37,6 +37,13 @@
           "date": "2026-07-02",
           "result": "1",
           "earnings": 1584000
+        },
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": null,
+          "earnings": 0
         }
       ],
       "total_earnings": 3312000,
@@ -147,8 +154,8 @@
       "total_points": 0
     },
     "Matsuyama": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "The Genesis Invitational",
@@ -163,9 +170,16 @@
           "date": "2026-06-04",
           "result": "T43",
           "earnings": 70000
+        },
+        {
+          "tournament": "3M Open",
+          "week": 25,
+          "date": "2026-07-23",
+          "result": "T3",
+          "earnings": 429550
         }
       ],
-      "total_earnings": 206500,
+      "total_earnings": 636050,
       "total_points": 0
     },
     "Gerard": {
@@ -398,8 +412,8 @@
       "total_points": 0
     },
     "Knapp": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Texas Children's Houston Open",
@@ -407,6 +421,13 @@
           "date": "2026-03-26",
           "result": "T6",
           "earnings": 322988
+        },
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": null,
+          "earnings": 0
         }
       ],
       "total_earnings": 322988,
@@ -832,14 +853,21 @@
       "total_points": 0
     },
     "Koivun": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "John Deere Classic",
           "week": 22,
           "date": "2026-07-02",
           "result": "CUT",
+          "earnings": 0
+        },
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": null,
           "earnings": 0
         }
       ],
@@ -859,6 +887,81 @@
         }
       ],
       "total_earnings": 431888,
+      "total_points": 0
+    },
+    "Homa": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "3M Open",
+          "week": 25,
+          "date": "2026-07-23",
+          "result": "CUT",
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Tom Kim": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "3M Open",
+          "week": 25,
+          "date": "2026-07-23",
+          "result": "T20",
+          "earnings": 103840
+        }
+      ],
+      "total_earnings": 103840,
+      "total_points": 0
+    },
+    "Jackson Koivun": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": null,
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Jake Knapp": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": null,
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Chris Gotterup": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": null,
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
       "total_points": 0
     }
   },
@@ -1179,16 +1282,24 @@
       "tournament": "3M Open",
       "week": 25,
       "date": "2026-07-23",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Homa",
+        "Tom Kim",
+        "Matsuyama"
+      ],
+      "wrp": 7,
+      "earnings_earned": 533390,
+      "points_earned": 533390
     },
     "week_26": {
       "tournament": "Rocket Classic",
       "week": 26,
       "date": "2026-07-30",
-      "lineup": [],
+      "lineup": [
+        "Jackson Koivun",
+        "Jake Knapp",
+        "Chris Gotterup"
+      ],
       "wrp": null,
       "earnings_earned": null,
       "points_earned": null
@@ -1232,7 +1343,7 @@
   },
   "summary": {
     "total_weeks": 30,
-    "total_players": 44,
-    "total_earnings": 31594614
+    "total_players": 49,
+    "total_earnings": 32128004
   }
 }

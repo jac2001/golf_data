@@ -1,0 +1,340 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Rocket Classic",
+      "tableTitle": "Power Rankings for Rocket Classic",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "45522",
+            "firstName": "Christiaan",
+            "lastName": "Bezuidenhout",
+            "countryFlag": "RSA",
+            "countryName": "South Africa",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_45522.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Steady as he goes, the South African with an exquisite short game is riding a consecutive cuts-made streak of six with top 25s in three of his last four starts. T5 on the PGA TOUR with 48 red numbers and third in bogey avoidance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "32102",
+            "firstName": "Rickie",
+            "lastName": "Fowler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32102.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Captured the most recent of six PGA TOUR titles here in 2023, so no matter the test, it\u2019s always a special visit. He\u2019s delivered in spurts as he progressed in his career. Currently in one now with a T15 and a T18 in his last two. "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "52689",
+            "firstName": "Rasmus",
+            "lastName": "Neergaard-Petersen",
+            "countryFlag": "DEN",
+            "countryName": "Denmark",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52689.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After splashing with fanfare as a PGA TOUR rookie in January, the Dane needed 10 starts to crack a top 35. Now he debuts at Detroit Golf Club with a T9 (The Open) and a T20 (3M Open) in tow, so he\u2019s settling in at a great time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "36884",
+            "firstName": "Ben",
+            "lastName": "Kohles",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36884.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Resilient since falling short at the John Deere Classic (T3), he\u2019s added a T15 (ISCO Championship) and a solo ninth (3M Open). Those finishes chased a Korn Ferry Tour win and other successes. Foundations were laid by taut ball-striking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "59018",
+            "firstName": "Ryan",
+            "lastName": "Gerard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "As balanced throughout his bag as anyone but needs to hit greens to hang when scoring is low. With Detroit Golf Club pushing back post-restoration, his ball-striking can take the wheel. Rested since a T9 at Royal Birkdale."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "31646",
+            "firstName": "Emiliano",
+            "lastName": "Grillo",
+            "countryFlag": "ARG",
+            "countryName": "Argentina",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_31646.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Jackson Koivun\u2019s playing partner at the 3M Open acquitted himself nicely for a season-best-tying T7 with patently efficient ball-striking. The streaky Argentine has cashed in six straight with top 25s in three of his last four."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "66701",
+            "firstName": "Jackson",
+            "lastName": "Koivun",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66701.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The TOUR\u2019s latest first-time winner is suddenly a problem for others as he elbows his way into contention for a spot in the FedExCup Playoffs at 70th in points. Already proven that the hype at this level is legit. Enjoy the show."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Arrives for his tournament debut with just two top 25s in five starts, and neither was a top 10. It\u2019s a small sample size but when expectations are way up there, the absence of noise is noticeable. Never truly slumps, though."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "47420",
+            "firstName": "Jake",
+            "lastName": "Knapp",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47420.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Nap time ended at the 3M Open where he spun a field-low 62 in the finale to finish T13. It was his fifth start since returning from an injured left thumb. He was dialed in with his short irons and co-led the field in par breakers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Snapped out of a funk in a big way with a solo second at The Open Championship. Defaulting as consistently strong from tee to green works pretty much everywhere but especially on unfamiliar tracks like this week\u2019s new look."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although the 34-year-old has lost a little bit of mojo from tee to green, his floor is still higher relative to others, but his touch around greens remains elite. Now he\u2019s on the bounce of a T3 at the 3M Open after a pair of T14s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "51766",
+            "firstName": "Wyndham",
+            "lastName": "Clark",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51766.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Royal Birkdale interrupted his flow state but the U.S. Open champion will reconnect. Prior to missing the cut at The Open, he went 6-for-6 with two wins and no worse than a T13. No. 1 in converting greens hit into par breakers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "34098",
+            "firstName": "Russell",
+            "lastName": "Henley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The TOUR\u2019s most accurate off the tee also ranks fourth in scrambling, so spots of bothers and moments of stress are rare. Also a scorer, he\u2019s enjoying a fruitful season with a win among five top 10s. T9 in his last at The Open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Back in action after going T11-T18 across the fortnight in the U.K. Prevailed previously at the John Deere Classic with a closing 62. His muscle is an enhancement to his overall game, and it will be played up again this week."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "In the zone. Set personal bests at the Genesis Scottish Open (T9) and The Open (T6) to reach 10 top 10s on the season, doubling his previous high. Pacing the TOUR with 54 red numbers and co-leads with 43 sub-70s."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

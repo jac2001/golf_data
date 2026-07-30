@@ -2469,3 +2469,897 @@ R2026034,2026,49771,J.T. Poston,69,281.0,1.0,6.0,"$38,000.00",4,67.0,67.0,71.0,7
 R2026034,2026,36801,Mark Hubbard,70,282.0,2.0,5.75,"$37,500.00",4,69.0,71.0,72.0,70.0,-1.0,1.0,2.0,0.0,
 R2026034,2026,31323,Gary Woodland,71,285.0,5.0,5.5,"$37,000.00",4,69.0,70.0,74.0,72.0,-1.0,0.0,4.0,2.0,
 R2026034,2026,49960,Sepp Straka,72,290.0,10.0,5.25,"$36,000.00",4,73.0,72.0,73.0,72.0,3.0,2.0,3.0,2.0,
+R2026018,2026,40098,"Fitzpatrick, Matt",1,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,55721,"Fitzpatrick, Alex",1,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,49855,"Reitan, Kristoffer",T2,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,35658,"Ventura, Kris",T2,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,46340,"Smalley, Alex",T2,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,50484,"Springer, Hayden",T2,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,52514,"Crowe, Trace",T4,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,52689,"Neergaard-Petersen, Rasmus",T4,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,55965,"Olesen, Jacob Skov",T4,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,33413,"Martin, Ben",T4,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,29420,"Horschel, Billy",T6,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,58168,"Thompson, Davis",T6,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,47591,"Cole, Eric",T6,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,35532,"Hoge, Tom",T6,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,49766,"Lebioda, Hank",T6,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,47393,"Kang, Jeffrey",T6,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,57362,"Eckroat, Austin",T6,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,52375,"Ghim, Doug",T6,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,59143,"Meissner, Mac",T10,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,48867,"Schmid, Matti",T10,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54591,"Griffin, Ben",T10,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,28252,"Power, Seamus",T10,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51997,"Novak, Andrew",T10,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,59141,"McCarty, Matt",T10,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,48001,"Bauchou, Zach",T13,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,57259,"Brown, Dan",T13,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54304,"Vilips, Karl",T13,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,35310,"Griffin, Lanto",T13,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,57364,"Thorbjornsen, Michael",T13,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,36884,"Kohles, Ben",T13,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,55893,"Stevens, Sam",T13,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,28723,"Parry, John",T13,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,40006,"Van Rooyen, Erik",T17,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,59866,"Dunlap, Nick",T17,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,50497,"Dumont De Chassart, Adrien",T17,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,45522,"Bezuidenhout, Christiaan",T17,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,59006,"Chatfield, Davis",T17,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,64442,"Sargent, Gordon",T17,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51766,"Clark, Wyndham",T20,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,48153,"Pavon, Matthieu",T20,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,47995,"Riley, Davis",T20,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,57688,"Jarvis, Casey",T20,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,60073,"Couvra, Martin",T20,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,47988,"Hardy, Nick",T20,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,49947,"Moore, Taylor",T20,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,50286,"Ewart, A.J.",T20,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,46414,"Rai, Aaron",T24,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54628,"Hodges, Lee",T24,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,29535,"Garnett, Brice",T24,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51634,"Theegala, Sahith",T24,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,63121,"Mouw, William",T26,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,36326,"Lipsky, David",T26,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,40115,"Svensson, Adam",T26,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,66417,"Brown, Blades",T26,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,47917,"Kanaya, Takumi",T26,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51696,"Hoey, Rico",T26,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,66743,"Clanton, Luke",T26,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,33399,"Hadwin, Adam",T26,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,39546,"Mitchell, Keith",T30,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,48887,"Wallace, Matt",T30,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51003,"Penge, Marco",T30,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,27649,"Snedeker, Brandt",T30,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,47983,"Ramey, Chad",T32,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,39335,"Roy, Kevin",T32,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51950,"McGreevy, Max",T32,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,40162,"Lower, Justin",T32,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,59018,"Gerard, Ryan",34,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,60386,"Yellamaraju, Sudarshan",34,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,52513,"Young, Carson",35,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,57900,"Phillips, Chandler",35,,,,,4,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51894,"Whaley, Vince",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,46464,"Smith, Jordan",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,37338,"Dou, Zecheng",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,25686,"Dufner, Jason",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,30163,"Norlander, Henrik",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54788,"Blanchet, Chandler",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51977,"Greyserman, Max",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,33204,"Lowry, Shane",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54576,"Fishburn, Patrick",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,50095,"Smotherman, Austin",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,45157,"Davis, Cam",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,37275,"Ryder, Sam",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,37076,"Rozo, Marcelo",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,32070,"Campos, Rafael",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,56762,"Gordon, Will",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,33597,"Higgs, Harry",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,36801,"Hubbard, Mark",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51600,"Stanger, Jimmy",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,25818,"Piercy, Scott",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,29725,"Finau, Tony",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,47347,"Schenk, Adam",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,33122,"Knox, Russell",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,34256,"Putnam, Andrew",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,35506,"Hughes, Mackenzie",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,26476,"Reavie, Chez",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,38991,"Tosti, Alejandro",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,57586,"Svensson, Jesper",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,60019,"Suber, Jackson",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54422,"Lamprecht, Christo",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,55789,"Montgomery, Taylor",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,27139,"Skinns, David",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,12716,"Hoffman, Charley",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,46601,"Mullinax, Trey",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,30926,"Kirk, Chris",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,36689,"Koepka, Brooks",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,34466,"Malnati, Peter",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,61522,"Brennan, Michael",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,52372,"Champ, Cameron",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,50582,"Paul, Jeremy",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,22046,"Ogilvy, Geoff",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,55851,"Nyholm, Pontus",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,23320,"Palmer, Ryan",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,28420,"Brehm, Ryan",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,36824,"Peterson, Paul",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,45609,"Duncan, Tyler",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,51890,"Sigg, Greyson",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,34076,"Dahmen, Joel",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,27214,"Streelman, Kevin",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,49120,"Hirata, Kensei",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,63454,"Keefer, Johnny",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,35461,"Hossler, Beau",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,32640,"Merritt, Troy",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,40250,"Pendrith, Taylor",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,40058,"Blair, Zac",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,32448,"Hahn, James",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54783,"Wu, Dylan",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,55573,"VanDerLaan, John",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,49228,"Nakajima, Keita",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,36799,"Jaeger, Stephan",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,63807,"Shipley, Neal",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,34587,"Kim, Chan",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,55182,"Kim, Tom",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,34431,"Streb, Robert",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,45242,"Yu, Kevin",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,27770,"Villegas, Camilo",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,30110,"Stanley, Kyle",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,46435,"Cook, Austin",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54421,"Higgo, Garrick",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,27095,"Watney, Nick",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,23108,"Kuchar, Matt",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,55165,"Goodwin, Noah",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,35296,"Li, Haotong",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,27129,"List, Luke",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,32757,"Kizzire, Patton",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,49590,"Capan III, Frankie",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,39327,"Silverman, Ben",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,54607,"Walker, Danny",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026018,2026,24925,"Byrd, Jonathan",CUT,,,,,2,,,,,,,,,Zurich Classic of New Orleans
+R2026032,2026,34021,"Cauley, Bud",1,263.0,-17,,,4,69.0,63.0,66.0,65.0,,,,,RBC Canadian Open
+R2026032,2026,40098,"Fitzpatrick, Matt",2,265.0,-15,,,4,67.0,68.0,66.0,64.0,,,,,RBC Canadian Open
+R2026032,2026,46717,"Hovland, Viktor",3,266.0,-14,,,4,68.0,69.0,64.0,65.0,,,,,RBC Canadian Open
+R2026032,2026,29535,"Garnett, Brice",T4,267.0,-13,,,4,65.0,67.0,67.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,60019,"Suber, Jackson",T4,267.0,-13,,,4,66.0,65.0,66.0,70.0,,,,,RBC Canadian Open
+R2026032,2026,57586,"Svensson, Jesper",T4,267.0,-13,,,4,66.0,65.0,68.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,51600,"Stanger, Jimmy",T4,267.0,-13,,,4,65.0,67.0,68.0,67.0,,,,,RBC Canadian Open
+R2026032,2026,29936,"Fox, Ryan",T8,268.0,-12,,,4,66.0,66.0,68.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,60386,"Yellamaraju, Sudarshan",T8,268.0,-12,,,4,69.0,66.0,65.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,63343,"Potgieter, Aldrich",T8,268.0,-12,,,4,66.0,67.0,70.0,65.0,,,,,RBC Canadian Open
+R2026032,2026,57321,"Anderson, Matthew",T11,269.0,-11,,,4,64.0,69.0,69.0,67.0,,,,,RBC Canadian Open
+R2026032,2026,51766,"Clark, Wyndham",T11,269.0,-11,,,4,68.0,68.0,63.0,70.0,,,,,RBC Canadian Open
+R2026032,2026,30911,"Fleetwood, Tommy",T11,269.0,-11,,,4,67.0,65.0,67.0,70.0,,,,,RBC Canadian Open
+R2026032,2026,60004,"Bridgeman, Jacob",T11,269.0,-11,,,4,70.0,67.0,64.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,55182,"Kim, Tom",T15,270.0,-10,,,4,67.0,69.0,68.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,52215,"MacIntyre, Robert",T15,270.0,-10,,,4,68.0,66.0,67.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,29420,"Horschel, Billy",T15,270.0,-10,,,4,66.0,70.0,64.0,70.0,,,,,RBC Canadian Open
+R2026032,2026,57900,"Phillips, Chandler",T15,270.0,-10,,,4,67.0,68.0,69.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,52375,"Ghim, Doug",T15,270.0,-10,,,4,65.0,69.0,69.0,67.0,,,,,RBC Canadian Open
+R2026032,2026,47504,"Burns, Sam",T20,271.0,-9,,,4,64.0,67.0,69.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,48153,"Pavon, Matthieu",T20,271.0,-9,,,4,67.0,71.0,67.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,31646,"Grillo, Emiliano",T20,271.0,-9,,,4,64.0,69.0,72.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,39977,"Homa, Max",T20,271.0,-9,,,4,68.0,67.0,67.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,27139,"Skinns, David",T20,271.0,-9,,,4,65.0,71.0,65.0,70.0,,,,,RBC Canadian Open
+R2026032,2026,55721,"Fitzpatrick, Alex",T20,271.0,-9,,,4,68.0,67.0,70.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,40006,"van Rooyen, Erik",T20,271.0,-9,,,4,65.0,71.0,69.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,49228,"Nakajima, Keita",T20,271.0,-9,,,4,71.0,66.0,70.0,64.0,,,,,RBC Canadian Open
+R2026032,2026,63121,"Mouw, William",T20,271.0,-9,,,4,68.0,66.0,68.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,66562,"Matthews, Justin",T29,272.0,-8,,,4,67.0,70.0,66.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,39546,"Mitchell, Keith",T29,272.0,-8,,,4,67.0,64.0,72.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,47917,"Kanaya, Takumi",T29,272.0,-8,,,4,68.0,69.0,69.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,54576,"Fishburn, Patrick",T29,272.0,-8,,,4,65.0,69.0,73.0,65.0,,,,,RBC Canadian Open
+R2026032,2026,50525,"Morikawa, Collin",T29,272.0,-8,,,4,70.0,65.0,68.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,40250,"Pendrith, Taylor",T29,272.0,-8,,,4,66.0,67.0,70.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,36884,"Kohles, Ben",T29,272.0,-8,,,4,67.0,71.0,66.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,45242,"Yu, Kevin",T29,272.0,-8,,,4,69.0,66.0,69.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,50286,"Ewart, A.J.",T29,272.0,-8,,,4,69.0,68.0,69.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,33204,"Lowry, Shane",T29,272.0,-8,,,4,65.0,69.0,67.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,52689,"Neergaard-Petersen, Rasmus",39,273.0,-7,,,4,69.0,69.0,67.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,33399,"Hadwin, Adam",T40,274.0,-6,,,4,69.0,68.0,66.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,29725,"Finau, Tony",T40,274.0,-6,,,4,65.0,73.0,66.0,70.0,,,,,RBC Canadian Open
+R2026032,2026,38991,"Tosti, Alejandro",T40,274.0,-6,,,4,66.0,69.0,68.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,57975,"Hall, Harry",T40,274.0,-6,,,4,66.0,67.0,72.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,49947,"Moore, Taylor",T40,274.0,-6,,,4,67.0,70.0,66.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,58168,"Thompson, Davis",T45,275.0,-5,,,4,68.0,68.0,69.0,70.0,,,,,RBC Canadian Open
+R2026032,2026,54783,"Wu, Dylan",T45,275.0,-5,,,4,68.0,68.0,71.0,68.0,,,,,RBC Canadian Open
+R2026032,2026,51634,"Theegala, Sahith",T45,275.0,-5,,,4,64.0,69.0,68.0,74.0,,,,,RBC Canadian Open
+R2026032,2026,59440,"Castillo, Ricky",T45,275.0,-5,,,4,65.0,71.0,72.0,67.0,,,,,RBC Canadian Open
+R2026032,2026,37275,"Ryder, Sam",T45,275.0,-5,,,4,65.0,73.0,66.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,35461,"Hossler, Beau",T45,275.0,-5,,,4,68.0,69.0,68.0,70.0,,,,,RBC Canadian Open
+R2026032,2026,63454,"Keefer, Johnny",T51,276.0,-4,,,4,66.0,68.0,73.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,51950,"McGreevy, Max",T51,276.0,-4,,,4,66.0,68.0,70.0,72.0,,,,,RBC Canadian Open
+R2026032,2026,63807,"Shipley, Neal",T51,276.0,-4,,,4,68.0,70.0,66.0,72.0,,,,,RBC Canadian Open
+R2026032,2026,45522,"Bezuidenhout, Christiaan",T54,277.0,-3,,,4,67.0,70.0,69.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,66743,"Clanton, Luke",T54,277.0,-3,,,4,69.0,66.0,67.0,75.0,,,,,RBC Canadian Open
+R2026032,2026,39327,"Silverman, Ben",T54,277.0,-3,,,4,68.0,69.0,69.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,57869,"James, Ben",T54,277.0,-3,,,4,67.0,63.0,78.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,57364,"Thorbjornsen, Michael",T54,277.0,-3,,,4,69.0,68.0,69.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,DG35395,"Sanderson, Calen",59,278.0,-2,,,4,70.0,68.0,74.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,35310,"Griffin, Lanto",T60,279.0,-1,,,4,68.0,70.0,75.0,66.0,,,,,RBC Canadian Open
+R2026032,2026,47993,"McCarthy, Denny",T60,279.0,-1,,,4,69.0,69.0,70.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,40115,"Svensson, Adam",T60,279.0,-1,,,4,65.0,72.0,71.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,49855,"Reitan, Kristoffer",T60,279.0,-1,,,4,68.0,70.0,70.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,35296,"Li, Haotong",T60,279.0,-1,,,4,67.0,64.0,79.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,25493,"Taylor, Nick",T65,280.0,+0,,,4,67.0,71.0,78.0,64.0,,,,,RBC Canadian Open
+R2026032,2026,51894,"Whaley, Vince",T65,280.0,+0,,,4,67.0,71.0,71.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,36824,"Peterson, Paul",T67,281.0,+1,,,4,67.0,70.0,73.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,55592,"Savoie, Joey",T67,281.0,+1,,,4,69.0,69.0,72.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,54788,"Blanchet, Chandler",T67,281.0,+1,,,4,65.0,70.0,77.0,69.0,,,,,RBC Canadian Open
+R2026032,2026,60067,"Highsmith, Joe",70,282.0,+2,,,4,70.0,68.0,72.0,72.0,,,,,RBC Canadian Open
+R2026032,2026,39335,"Roy, Kevin",T71,283.0,+3,,,4,70.0,64.0,72.0,77.0,,,,,RBC Canadian Open
+R2026032,2026,49120,"Hirata, Kensei",T71,283.0,+3,,,4,69.0,68.0,72.0,74.0,,,,,RBC Canadian Open
+R2026032,2026,57362,"Eckroat, Austin",73,285.0,+5,,,4,67.0,67.0,80.0,71.0,,,,,RBC Canadian Open
+R2026032,2026,50582,"Paul, Jeremy",74,287.0,+7,,,4,70.0,68.0,76.0,73.0,,,,,RBC Canadian Open
+R2026032,2026,30926,"Kirk, Chris",CUT,139.0,-1,,,2,71.0,68.0,,,,,,,RBC Canadian Open
+R2026032,2026,36326,"Lipsky, David",CUT,139.0,-1,,,2,69.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,48887,"Wallace, Matt",CUT,139.0,-1,,,2,66.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,48867,"Schmid, Matti",CUT,139.0,-1,,,2,67.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,27064,"Vegas, Jhonattan",CUT,139.0,-1,,,2,67.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,32139,"Willett, Danny",CUT,139.0,-1,,,2,66.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,57259,"Brown, Dan",CUT,139.0,-1,,,2,67.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,54421,"Higgo, Garrick",CUT,139.0,-1,,,2,67.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,35532,"Hoge, Tom",CUT,139.0,-1,,,2,70.0,69.0,,,,,,,RBC Canadian Open
+R2026032,2026,32982,"Covello, Vince",CUT,139.0,-1,,,2,69.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,28252,"Power, Seamus",CUT,139.0,-1,,,2,71.0,68.0,,,,,,,RBC Canadian Open
+R2026032,2026,DG30717,"O'Donovan, Declan",CUT,139.0,-1,,,2,70.0,69.0,,,,,,,RBC Canadian Open
+R2026032,2026,46414,"Rai, Aaron",CUT,139.0,-1,,,2,69.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,33486,"Sloan, Roger",CUT,139.0,-1,,,2,68.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,47591,"Cole, Eric",CUT,140.0,+0,,,2,64.0,76.0,,,,,,,RBC Canadian Open
+R2026032,2026,39997,"Conners, Corey",CUT,140.0,+0,,,2,71.0,69.0,,,,,,,RBC Canadian Open
+R2026032,2026,DG13412,"Olesen, Thorbjorn",CUT,140.0,+0,,,2,71.0,69.0,,,,,,,RBC Canadian Open
+R2026032,2026,47995,"Riley, Davis",CUT,140.0,+0,,,2,66.0,74.0,,,,,,,RBC Canadian Open
+R2026032,2026,35658,"Ventura, Kris",CUT,140.0,+0,,,2,69.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,51977,"Greyserman, Max",CUT,140.0,+0,,,2,69.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,59409,"McCulloch, Ashton",CUT,140.0,+0,,,2,70.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,54304,"Vilips, Karl",CUT,140.0,+0,,,2,69.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,50497,"Dumont de Chassart, Adrien",CUT,141.0,+1,,,2,71.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,37076,"Rozo, Marcelo",CUT,141.0,+1,,,2,70.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,50095,"Smotherman, Austin",CUT,141.0,+1,,,2,71.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,34076,"Dahmen, Joel",CUT,141.0,+1,,,2,73.0,68.0,,,,,,,RBC Canadian Open
+R2026032,2026,37338,"Dou, Zecheng",CUT,141.0,+1,,,2,72.0,69.0,,,,,,,RBC Canadian Open
+R2026032,2026,49766,"Lebioda, Hank",CUT,141.0,+1,,,2,70.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,DG35463,"Zhao, Eric",CUT,141.0,+1,,,2,68.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,54628,"Hodges, Lee",CUT,141.0,+1,,,2,72.0,69.0,,,,,,,RBC Canadian Open
+R2026032,2026,59006,"Chatfield, Davis",CUT,141.0,+1,,,2,70.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,47347,"Schenk, Adam",CUT,141.0,+1,,,2,67.0,74.0,,,,,,,RBC Canadian Open
+R2026032,2026,52514,"Crowe, Trace",CUT,141.0,+1,,,2,67.0,74.0,,,,,,,RBC Canadian Open
+R2026032,2026,48001,"Bauchou, Zach",CUT,141.0,+1,,,2,69.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,33413,"Martin, Ben",CUT,141.0,+1,,,2,73.0,68.0,,,,,,,RBC Canadian Open
+R2026032,2026,51696,"Hoey, Rico",CUT,141.0,+1,,,2,67.0,74.0,,,,,,,RBC Canadian Open
+R2026032,2026,27770,"Villegas, Camilo",CUT,142.0,+2,,,2,68.0,74.0,,,,,,,RBC Canadian Open
+R2026032,2026,52453,"Hojgaard, Nicolai",CUT,142.0,+2,,,2,69.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,59143,"Meissner, Mac",CUT,142.0,+2,,,2,69.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,25900,"Glover, Lucas",CUT,142.0,+2,,,2,69.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,46443,"Campbell, Brian",CUT,142.0,+2,,,2,72.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,24140,"O'Hair, Sean",CUT,142.0,+2,,,2,70.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,28723,"Parry, John",CUT,142.0,+2,,,2,71.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,35506,"Hughes, Mackenzie",CUT,142.0,+2,,,2,69.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,46464,"Smith, Jordan",CUT,142.0,+2,,,2,70.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,22405,"Rose, Justin",CUT,142.0,+2,,,2,70.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,34256,"Putnam, Andrew",CUT,142.0,+2,,,2,74.0,68.0,,,,,,,RBC Canadian Open
+R2026032,2026,47983,"Ramey, Chad",CUT,143.0,+3,,,2,70.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,DG29702,"Sihota, Jeevan",CUT,143.0,+3,,,2,71.0,72.0,,,,,,,RBC Canadian Open
+R2026032,2026,20766,"Harrington, Padraig",CUT,143.0,+3,,,2,73.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,54607,"Walker, Danny",CUT,143.0,+3,,,2,74.0,69.0,,,,,,,RBC Canadian Open
+R2026032,2026,54422,"Lamprecht, Christo",CUT,144.0,+4,,,2,69.0,75.0,,,,,,,RBC Canadian Open
+R2026032,2026,DG35422,"Lew, Dawson",CUT,144.0,+4,,,2,70.0,74.0,,,,,,,RBC Canadian Open
+R2026032,2026,40162,"Lower, Justin",CUT,144.0,+4,,,2,71.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,45157,"Davis, Cam",CUT,144.0,+4,,,2,68.0,76.0,,,,,,,RBC Canadian Open
+R2026032,2026,50484,"Springer, Hayden",CUT,144.0,+4,,,2,71.0,73.0,,,,,,,RBC Canadian Open
+R2026032,2026,57123,"Fisk, Steven",CUT,144.0,+4,,,2,69.0,75.0,,,,,,,RBC Canadian Open
+R2026032,2026,55851,"Nyholm, Pontus",CUT,144.0,+4,,,2,73.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,61522,"Brennan, Michael",CUT,144.0,+4,,,2,70.0,74.0,,,,,,,RBC Canadian Open
+R2026032,2026,27349,"Noren, Alex",CUT,145.0,+5,,,2,70.0,75.0,,,,,,,RBC Canadian Open
+R2026032,2026,59866,"Dunlap, Nick",CUT,145.0,+5,,,2,75.0,70.0,,,,,,,RBC Canadian Open
+R2026032,2026,DG9457,"Benson, Yohann",CUT,145.0,+5,,,2,74.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,45729,"Nesbitt, Drew",CUT,146.0,+6,,,2,70.0,76.0,,,,,,,RBC Canadian Open
+R2026032,2026,32070,"Campos, Rafael",CUT,146.0,+6,,,2,71.0,75.0,,,,,,,RBC Canadian Open
+R2026032,2026,DG31347,"Desmarchais, Laurent",CUT,146.0,+6,,,2,71.0,75.0,,,,,,,RBC Canadian Open
+R2026032,2026,32757,"Kizzire, Patton",CUT,147.0,+7,,,2,70.0,77.0,,,,,,,RBC Canadian Open
+R2026032,2026,12716,"Hoffman, Charley",CUT,147.0,+7,,,2,76.0,71.0,,,,,,,RBC Canadian Open
+R2026032,2026,10423,"Weir, Mike",CUT,147.0,+7,,,2,70.0,77.0,,,,,,,RBC Canadian Open
+R2026032,2026,55573,"VanDerLaan, John",CUT,148.0,+8,,,2,73.0,75.0,,,,,,,RBC Canadian Open
+R2026032,2026,34466,"Malnati, Peter",CUT,148.0,+8,,,2,69.0,79.0,,,,,,,RBC Canadian Open
+R2026032,2026,36799,"Jaeger, Stephan",CUT,150.0,+10,,,2,73.0,77.0,,,,,,,RBC Canadian Open
+R2026032,2026,36689,"Koepka, Brooks",WD,204.0,-6,,,3,64.0,68.0,72.0,,,,,,RBC Canadian Open
+R2026030,2026,59095,"Gotterup, Chris",1,264.0,-20,,,4,66.0,68.0,68.0,62.0,,,,,John Deere Classic
+R2026030,2026,39977,"Homa, Max",2,265.0,-19,,,4,67.0,66.0,68.0,64.0,,,,,John Deere Classic
+R2026030,2026,36884,"Kohles, Ben",T3,266.0,-18,,,4,65.0,67.0,66.0,68.0,,,,,John Deere Classic
+R2026030,2026,25900,"Glover, Lucas",T3,266.0,-18,,,4,63.0,65.0,69.0,69.0,,,,,John Deere Classic
+R2026030,2026,54628,"Hodges, Lee",T3,266.0,-18,,,4,64.0,66.0,67.0,69.0,,,,,John Deere Classic
+R2026030,2026,60019,"Suber, Jackson",T6,267.0,-17,,,4,68.0,64.0,66.0,69.0,,,,,John Deere Classic
+R2026030,2026,59143,"Meissner, Mac",T6,267.0,-17,,,4,67.0,70.0,66.0,64.0,,,,,John Deere Classic
+R2026030,2026,52375,"Ghim, Doug",T6,267.0,-17,,,4,69.0,65.0,65.0,68.0,,,,,John Deere Classic
+R2026030,2026,24024,"Johnson, Zach",T9,268.0,-16,,,4,64.0,70.0,66.0,68.0,,,,,John Deere Classic
+R2026030,2026,40058,"Blair, Zac",T9,268.0,-16,,,4,63.0,68.0,67.0,70.0,,,,,John Deere Classic
+R2026030,2026,51287,"Hisatsune, Ryo",T9,268.0,-16,,,4,67.0,65.0,69.0,67.0,,,,,John Deere Classic
+R2026030,2026,45522,"Bezuidenhout, Christiaan",T12,269.0,-15,,,4,68.0,68.0,68.0,65.0,,,,,John Deere Classic
+R2026030,2026,66417,"Brown, Blades",T12,269.0,-15,,,4,69.0,66.0,67.0,67.0,,,,,John Deere Classic
+R2026030,2026,45609,"Duncan, Tyler",T12,269.0,-15,,,4,66.0,66.0,71.0,66.0,,,,,John Deere Classic
+R2026030,2026,45242,"Yu, Kevin",T15,270.0,-14,,,4,66.0,72.0,66.0,66.0,,,,,John Deere Classic
+R2026030,2026,23108,"Kuchar, Matt",T15,270.0,-14,,,4,72.0,66.0,65.0,67.0,,,,,John Deere Classic
+R2026030,2026,36799,"Jaeger, Stephan",T15,270.0,-14,,,4,64.0,72.0,68.0,66.0,,,,,John Deere Classic
+R2026030,2026,57900,"Phillips, Chandler",T15,270.0,-14,,,4,69.0,67.0,65.0,69.0,,,,,John Deere Classic
+R2026030,2026,66416,"Stout, Preston",T15,270.0,-14,,,4,66.0,69.0,66.0,69.0,,,,,John Deere Classic
+R2026030,2026,32102,"Fowler, Rickie",T15,270.0,-14,,,4,70.0,69.0,63.0,68.0,,,,,John Deere Classic
+R2026030,2026,32640,"Merritt, Troy",T21,271.0,-13,,,4,66.0,66.0,70.0,69.0,,,,,John Deere Classic
+R2026030,2026,33597,"Higgs, Harry",T21,271.0,-13,,,4,67.0,68.0,69.0,67.0,,,,,John Deere Classic
+R2026030,2026,54591,"Griffin, Ben",T21,271.0,-13,,,4,69.0,65.0,70.0,67.0,,,,,John Deere Classic
+R2026030,2026,37338,"Dou, Zecheng",T21,271.0,-13,,,4,67.0,69.0,68.0,67.0,,,,,John Deere Classic
+R2026030,2026,36326,"Lipsky, David",T21,271.0,-13,,,4,67.0,65.0,71.0,68.0,,,,,John Deere Classic
+R2026030,2026,60004,"Bridgeman, Jacob",T26,272.0,-12,,,4,67.0,70.0,68.0,67.0,,,,,John Deere Classic
+R2026030,2026,33141,"Bradley, Keegan",T26,272.0,-12,,,4,70.0,69.0,69.0,64.0,,,,,John Deere Classic
+R2026030,2026,31646,"Grillo, Emiliano",T26,272.0,-12,,,4,70.0,66.0,67.0,69.0,,,,,John Deere Classic
+R2026030,2026,40006,"van Rooyen, Erik",T26,272.0,-12,,,4,70.0,69.0,64.0,69.0,,,,,John Deere Classic
+R2026030,2026,58168,"Thompson, Davis",T26,272.0,-12,,,4,69.0,69.0,66.0,68.0,,,,,John Deere Classic
+R2026030,2026,63121,"Mouw, William",T26,272.0,-12,,,4,66.0,68.0,68.0,70.0,,,,,John Deere Classic
+R2026030,2026,55851,"Nyholm, Pontus",T26,272.0,-12,,,4,68.0,66.0,69.0,69.0,,,,,John Deere Classic
+R2026030,2026,61522,"Brennan, Michael",T33,273.0,-11,,,4,66.0,68.0,72.0,67.0,,,,,John Deere Classic
+R2026030,2026,48887,"Wallace, Matt",T33,273.0,-11,,,4,67.0,71.0,70.0,65.0,,,,,John Deere Classic
+R2026030,2026,59866,"Dunlap, Nick",T33,273.0,-11,,,4,67.0,72.0,67.0,67.0,,,,,John Deere Classic
+R2026030,2026,35532,"Hoge, Tom",T33,273.0,-11,,,4,73.0,64.0,67.0,69.0,,,,,John Deere Classic
+R2026030,2026,59006,"Chatfield, Davis",T33,273.0,-11,,,4,69.0,66.0,70.0,68.0,,,,,John Deere Classic
+R2026030,2026,27139,"Skinns, David",T33,273.0,-11,,,4,72.0,67.0,66.0,68.0,,,,,John Deere Classic
+R2026030,2026,35461,"Hossler, Beau",T39,274.0,-10,,,4,70.0,67.0,66.0,71.0,,,,,John Deere Classic
+R2026030,2026,59836,"Coody, Pierceson",T39,274.0,-10,,,4,69.0,68.0,67.0,70.0,,,,,John Deere Classic
+R2026030,2026,47591,"Cole, Eric",T39,274.0,-10,,,4,76.0,63.0,70.0,65.0,,,,,John Deere Classic
+R2026030,2026,49964,"Wise, Aaron",T39,274.0,-10,,,4,66.0,69.0,67.0,72.0,,,,,John Deere Classic
+R2026030,2026,54304,"Vilips, Karl",T39,274.0,-10,,,4,72.0,65.0,68.0,69.0,,,,,John Deere Classic
+R2026030,2026,52514,"Crowe, Trace",T39,274.0,-10,,,4,69.0,69.0,69.0,67.0,,,,,John Deere Classic
+R2026030,2026,35310,"Griffin, Lanto",T39,274.0,-10,,,4,67.0,72.0,69.0,66.0,,,,,John Deere Classic
+R2026030,2026,49228,"Nakajima, Keita",T46,275.0,-9,,,4,70.0,69.0,68.0,68.0,,,,,John Deere Classic
+R2026030,2026,34076,"Dahmen, Joel",T46,275.0,-9,,,4,66.0,71.0,71.0,67.0,,,,,John Deere Classic
+R2026030,2026,36801,"Hubbard, Mark",T46,275.0,-9,,,4,72.0,67.0,68.0,68.0,,,,,John Deere Classic
+R2026030,2026,35506,"Hughes, Mackenzie",T46,275.0,-9,,,4,72.0,67.0,70.0,66.0,,,,,John Deere Classic
+R2026030,2026,55182,"Kim, Tom",T46,275.0,-9,,,4,67.0,68.0,69.0,71.0,,,,,John Deere Classic
+R2026030,2026,34256,"Putnam, Andrew",T51,276.0,-8,,,4,67.0,68.0,67.0,74.0,,,,,John Deere Classic
+R2026030,2026,DG32683,"Gutschewski, Luke",T51,276.0,-8,,,4,67.0,68.0,72.0,69.0,,,,,John Deere Classic
+R2026030,2026,51950,"McGreevy, Max",T51,276.0,-8,,,4,71.0,68.0,69.0,68.0,,,,,John Deere Classic
+R2026030,2026,39546,"Mitchell, Keith",T51,276.0,-8,,,4,73.0,66.0,69.0,68.0,,,,,John Deere Classic
+R2026030,2026,49771,"Poston, J.T.",T51,276.0,-8,,,4,68.0,69.0,71.0,68.0,,,,,John Deere Classic
+R2026030,2026,50497,"Dumont de Chassart, Adrien",T51,276.0,-8,,,4,72.0,67.0,71.0,66.0,,,,,John Deere Classic
+R2026030,2026,34587,"Kim, Chan",T51,276.0,-8,,,4,68.0,67.0,71.0,70.0,,,,,John Deere Classic
+R2026030,2026,57362,"Eckroat, Austin",T58,277.0,-7,,,4,71.0,67.0,69.0,70.0,,,,,John Deere Classic
+R2026030,2026,50484,"Springer, Hayden",T58,277.0,-7,,,4,66.0,68.0,71.0,72.0,,,,,John Deere Classic
+R2026030,2026,34046,"Spieth, Jordan",T58,277.0,-7,,,4,70.0,69.0,69.0,69.0,,,,,John Deere Classic
+R2026030,2026,29725,"Finau, Tony",T58,277.0,-7,,,4,70.0,68.0,68.0,71.0,,,,,John Deere Classic
+R2026030,2026,34466,"Malnati, Peter",T58,277.0,-7,,,4,71.0,66.0,69.0,71.0,,,,,John Deere Classic
+R2026030,2026,50095,"Smotherman, Austin",T58,277.0,-7,,,4,66.0,69.0,70.0,72.0,,,,,John Deere Classic
+R2026030,2026,56762,"Gordon, Will",64,278.0,-6,,,4,70.0,69.0,71.0,68.0,,,,,John Deere Classic
+R2026030,2026,47995,"Riley, Davis",T65,279.0,-5,,,4,65.0,72.0,71.0,71.0,,,,,John Deere Classic
+R2026030,2026,27770,"Villegas, Camilo",T65,279.0,-5,,,4,71.0,67.0,73.0,68.0,,,,,John Deere Classic
+R2026030,2026,57123,"Fisk, Steven",T67,280.0,-4,,,4,68.0,68.0,73.0,71.0,,,,,John Deere Classic
+R2026030,2026,32070,"Campos, Rafael",T67,280.0,-4,,,4,66.0,71.0,72.0,71.0,,,,,John Deere Classic
+R2026030,2026,54576,"Fishburn, Patrick",T67,280.0,-4,,,4,65.0,71.0,71.0,73.0,,,,,John Deere Classic
+R2026030,2026,48001,"Bauchou, Zach",T67,280.0,-4,,,4,69.0,70.0,72.0,69.0,,,,,John Deere Classic
+R2026030,2026,50286,"Ewart, A.J.",T71,281.0,-3,,,4,67.0,72.0,70.0,72.0,,,,,John Deere Classic
+R2026030,2026,24925,"Byrd, Jonathan",T71,281.0,-3,,,4,69.0,70.0,72.0,70.0,,,,,John Deere Classic
+R2026030,2026,39971,"Im, Sungjae",T71,281.0,-3,,,4,68.0,69.0,68.0,76.0,,,,,John Deere Classic
+R2026030,2026,57124,"Feagles, Michael",T74,282.0,-2,,,4,69.0,70.0,74.0,69.0,,,,,John Deere Classic
+R2026030,2026,37278,"Lindheim, Nicholas",T74,282.0,-2,,,4,69.0,68.0,76.0,69.0,,,,,John Deere Classic
+R2026030,2026,28679,"Gomez, Fabian",T74,282.0,-2,,,4,72.0,67.0,75.0,68.0,,,,,John Deere Classic
+R2026030,2026,DG35545,"Voois, Ryan",77,284.0,+0,,,4,68.0,70.0,72.0,74.0,,,,,John Deere Classic
+R2026030,2026,64442,"Sargent, Gordon",78,286.0,+2,,,4,67.0,69.0,74.0,76.0,,,,,John Deere Classic
+R2026030,2026,28420,"Brehm, Ryan",79,288.0,+4,,,4,68.0,69.0,77.0,74.0,,,,,John Deere Classic
+R2026030,2026,46435,"Cook, Austin",CUT,140.0,-2,,,2,71.0,69.0,,,,,,,John Deere Classic
+R2026030,2026,40115,"Svensson, Adam",CUT,140.0,-2,,,2,70.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,47393,"Kang, Jeffrey",CUT,140.0,-2,,,2,71.0,69.0,,,,,,,John Deere Classic
+R2026030,2026,60386,"Yellamaraju, Sudarshan",CUT,140.0,-2,,,2,70.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,29221,"Simpson, Webb",CUT,140.0,-2,,,2,70.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,51696,"Hoey, Rico",CUT,140.0,-2,,,2,68.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,63807,"Shipley, Neal",CUT,140.0,-2,,,2,72.0,68.0,,,,,,,John Deere Classic
+R2026030,2026,47917,"Kanaya, Takumi",CUT,140.0,-2,,,2,70.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,47988,"Hardy, Nick",CUT,140.0,-2,,,2,74.0,66.0,,,,,,,John Deere Classic
+R2026030,2026,40026,"Berger, Daniel",CUT,140.0,-2,,,2,68.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,51600,"Stanger, Jimmy",CUT,140.0,-2,,,2,72.0,68.0,,,,,,,John Deere Classic
+R2026030,2026,27214,"Streelman, Kevin",CUT,140.0,-2,,,2,70.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,63454,"Keefer, Johnny",CUT,140.0,-2,,,2,71.0,69.0,,,,,,,John Deere Classic
+R2026030,2026,51977,"Greyserman, Max",CUT,140.0,-2,,,2,71.0,69.0,,,,,,,John Deere Classic
+R2026030,2026,57364,"Thorbjornsen, Michael",CUT,140.0,-2,,,2,68.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,49766,"Lebioda, Hank",CUT,141.0,-1,,,2,71.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,36824,"Peterson, Paul",CUT,141.0,-1,,,2,72.0,69.0,,,,,,,John Deere Classic
+R2026030,2026,35296,"Li, Haotong",CUT,141.0,-1,,,2,67.0,74.0,,,,,,,John Deere Classic
+R2026030,2026,29970,"Frittelli, Dylan",CUT,141.0,-1,,,2,70.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,60067,"Highsmith, Joe",CUT,141.0,-1,,,2,74.0,67.0,,,,,,,John Deere Classic
+R2026030,2026,30927,"Todd, Brendon",CUT,141.0,-1,,,2,70.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,54783,"Wu, Dylan",CUT,141.0,-1,,,2,72.0,69.0,,,,,,,John Deere Classic
+R2026030,2026,49120,"Hirata, Kensei",CUT,141.0,-1,,,2,68.0,73.0,,,,,,,John Deere Classic
+R2026030,2026,29535,"Garnett, Brice",CUT,141.0,-1,,,2,72.0,69.0,,,,,,,John Deere Classic
+R2026030,2026,49947,"Moore, Taylor",CUT,141.0,-1,,,2,70.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,66743,"Clanton, Luke",CUT,141.0,-1,,,2,69.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,DG35576,"Adler, Patrick",CUT,141.0,-1,,,2,70.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,54421,"Higgo, Garrick",CUT,142.0,+0,,,2,71.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,63343,"Potgieter, Aldrich",CUT,142.0,+0,,,2,74.0,68.0,,,,,,,John Deere Classic
+R2026030,2026,46443,"Campbell, Brian",CUT,142.0,+0,,,2,70.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,37076,"Rozo, Marcelo",CUT,142.0,+0,,,2,72.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,40162,"Lower, Justin",CUT,142.0,+0,,,2,72.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,39335,"Roy, Kevin",CUT,142.0,+0,,,2,69.0,73.0,,,,,,,John Deere Classic
+R2026030,2026,34431,"Streb, Robert",CUT,142.0,+0,,,2,71.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,27936,"Laird, Martin",CUT,142.0,+0,,,2,72.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,52513,"Young, Carson",CUT,142.0,+0,,,2,73.0,69.0,,,,,,,John Deere Classic
+R2026030,2026,33413,"Martin, Ben",CUT,142.0,+0,,,2,72.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,51894,"Whaley, Vince",CUT,142.0,+0,,,2,75.0,67.0,,,,,,,John Deere Classic
+R2026030,2026,39975,"Kim, Michael",CUT,142.0,+0,,,2,72.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,47993,"McCarthy, Denny",CUT,142.0,+0,,,2,71.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,48153,"Pavon, Matthieu",CUT,142.0,+0,,,2,72.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,40250,"Pendrith, Taylor",CUT,143.0,+1,,,2,68.0,75.0,,,,,,,John Deere Classic
+R2026030,2026,66701,"Koivun, Jackson",CUT,143.0,+1,,,2,73.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,55165,"Goodwin, Noah",CUT,143.0,+1,,,2,68.0,75.0,,,,,,,John Deere Classic
+R2026030,2026,32757,"Kizzire, Patton",CUT,143.0,+1,,,2,71.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,51997,"Novak, Andrew",CUT,143.0,+1,,,2,72.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,35658,"Ventura, Kris",CUT,143.0,+1,,,2,69.0,74.0,,,,,,,John Deere Classic
+R2026030,2026,36724,"Nunez, Augusto",CUT,144.0,+2,,,2,73.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,33399,"Hadwin, Adam",CUT,144.0,+2,,,2,73.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,38991,"Tosti, Alejandro",CUT,144.0,+2,,,2,74.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,27129,"List, Luke",CUT,144.0,+2,,,2,74.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,52372,"Champ, Cameron",CUT,144.0,+2,,,2,72.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,55573,"VanDerLaan, John",CUT,144.0,+2,,,2,74.0,70.0,,,,,,,John Deere Classic
+R2026030,2026,39327,"Silverman, Ben",CUT,144.0,+2,,,2,73.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,47347,"Schenk, Adam",CUT,144.0,+2,,,2,71.0,73.0,,,,,,,John Deere Classic
+R2026030,2026,47983,"Ramey, Chad",CUT,146.0,+4,,,2,73.0,73.0,,,,,,,John Deere Classic
+R2026030,2026,29289,"Noh, S.Y.",CUT,146.0,+4,,,2,74.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,DG13412,"Olesen, Thorbjorn",CUT,146.0,+4,,,2,75.0,71.0,,,,,,,John Deere Classic
+R2026030,2026,68607,"Howell, Mason",CUT,147.0,+5,,,2,72.0,75.0,,,,,,,John Deere Classic
+R2026030,2026,54788,"Blanchet, Chandler",CUT,147.0,+5,,,2,70.0,77.0,,,,,,,John Deere Classic
+R2026030,2026,54422,"Lamprecht, Christo",CUT,149.0,+7,,,2,77.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,50582,"Paul, Jeremy",CUT,149.0,+7,,,2,72.0,77.0,,,,,,,John Deere Classic
+R2026030,2026,54607,"Walker, Danny",CUT,153.0,+11,,,2,81.0,72.0,,,,,,,John Deere Classic
+R2026030,2026,52497,"Fisher, Darin",CUT,156.0,+14,,,2,78.0,78.0,,,,,,,John Deere Classic
+R2026030,2026,28252,"Power, Seamus",WD,77.0,+6,,,1,77.0,,,,,,,,John Deere Classic
+R2026541,2026,55182,"Kim, Tom",1,263.0,-17,,,4,65.0,66.0,68.0,64.0,,,,,Genesis Scottish Open
+R2026541,2026,37378,"Lee, Min Woo",2,265.0,-15,,,4,66.0,66.0,66.0,67.0,,,,,Genesis Scottish Open
+R2026541,2026,52215,"MacIntyre, Robert",T3,267.0,-13,,,4,67.0,66.0,65.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,40098,"Fitzpatrick, Matt",T3,267.0,-13,,,4,67.0,65.0,66.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,49228,"Nakajima, Keita",T3,267.0,-13,,,4,67.0,66.0,67.0,67.0,,,,,Genesis Scottish Open
+R2026541,2026,63454,"Keefer, Johnny",T3,267.0,-13,,,4,68.0,68.0,64.0,67.0,,,,,Genesis Scottish Open
+R2026541,2026,57364,"Thorbjornsen, Michael",T7,268.0,-12,,,4,66.0,68.0,65.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,28237,"McIlroy, Rory",T7,268.0,-12,,,4,65.0,66.0,73.0,64.0,,,,,Genesis Scottish Open
+R2026541,2026,47679,"Perez, Victor",T9,269.0,-11,,,4,69.0,64.0,70.0,66.0,,,,,Genesis Scottish Open
+R2026541,2026,37455,"Kim, Si Woo",T9,269.0,-11,,,4,70.0,67.0,66.0,66.0,,,,,Genesis Scottish Open
+R2026541,2026,39335,"Roy, Kevin",T11,270.0,-10,,,4,67.0,68.0,65.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,59095,"Gotterup, Chris",T11,270.0,-10,,,4,68.0,65.0,66.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,30911,"Fleetwood, Tommy",T13,271.0,-9,,,4,67.0,70.0,66.0,68.0,,,,,Genesis Scottish Open
+R2026541,2026,51766,"Clark, Wyndham",T13,271.0,-9,,,4,67.0,67.0,66.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,34360,"Reed, Patrick",T13,271.0,-9,,,4,68.0,67.0,68.0,68.0,,,,,Genesis Scottish Open
+R2026541,2026,46717,"Hovland, Viktor",T13,271.0,-9,,,4,68.0,70.0,69.0,64.0,,,,,Genesis Scottish Open
+R2026541,2026,34363,"Hatton, Tyrrell",T17,272.0,-8,,,4,70.0,66.0,67.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,50762,"Del Rey, Alejandro",T17,272.0,-8,,,4,72.0,66.0,65.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,25198,"Molinari, Francesco",T17,272.0,-8,,,4,68.0,69.0,67.0,68.0,,,,,Genesis Scottish Open
+R2026541,2026,28300,"Luiten, Joost",T17,272.0,-8,,,4,67.0,66.0,70.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,48867,"Schmid, Matti",T21,273.0,-7,,,4,68.0,69.0,67.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,57688,"Jarvis, Casey",T21,273.0,-7,,,4,68.0,68.0,68.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,32139,"Willett, Danny",T21,273.0,-7,,,4,67.0,67.0,67.0,72.0,,,,,Genesis Scottish Open
+R2026541,2026,45157,"Davis, Cam",T21,273.0,-7,,,4,70.0,66.0,70.0,67.0,,,,,Genesis Scottish Open
+R2026541,2026,46464,"Smith, Jordan",T21,273.0,-7,,,4,68.0,63.0,72.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,59018,"Gerard, Ryan",T26,274.0,-6,,,4,68.0,67.0,68.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,25493,"Taylor, Nick",T26,274.0,-6,,,4,70.0,67.0,69.0,68.0,,,,,Genesis Scottish Open
+R2026541,2026,45194,"Armitage, Marcus",T26,274.0,-6,,,4,68.0,67.0,67.0,72.0,,,,,Genesis Scottish Open
+R2026541,2026,52453,"Hojgaard, Nicolai",T26,274.0,-6,,,4,68.0,66.0,70.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,29936,"Fox, Ryan",T30,275.0,-5,,,4,71.0,65.0,69.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,57362,"Eckroat, Austin",T30,275.0,-5,,,4,70.0,66.0,69.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,35314,"Sullivan, Andy",T30,275.0,-5,,,4,68.0,68.0,69.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,54304,"Vilips, Karl",T30,275.0,-5,,,4,70.0,64.0,68.0,73.0,,,,,Genesis Scottish Open
+R2026541,2026,50823,"McKibbin, Tom",T30,275.0,-5,,,4,67.0,71.0,67.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,59143,"Meissner, Mac",T30,275.0,-5,,,4,71.0,67.0,64.0,73.0,,,,,Genesis Scottish Open
+R2026541,2026,26328,"Norris, Shaun",T36,276.0,-4,,,4,68.0,70.0,71.0,67.0,,,,,Genesis Scottish Open
+R2026541,2026,46970,"Rahm, Jon",T36,276.0,-4,,,4,73.0,65.0,68.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,DG20085,"Lindell, Oliver",T36,276.0,-4,,,4,66.0,69.0,69.0,72.0,,,,,Genesis Scottish Open
+R2026541,2026,52689,"Neergaard-Petersen, Rasmus",T36,276.0,-4,,,4,68.0,68.0,65.0,75.0,,,,,Genesis Scottish Open
+R2026541,2026,51977,"Greyserman, Max",T36,276.0,-4,,,4,69.0,69.0,69.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,51349,"Echavarria, Nico",T36,276.0,-4,,,4,68.0,70.0,69.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,27644,"Harman, Brian",T36,276.0,-4,,,4,70.0,68.0,70.0,68.0,,,,,Genesis Scottish Open
+R2026541,2026,52686,"Hojgaard, Rasmus",T36,276.0,-4,,,4,65.0,73.0,70.0,68.0,,,,,Genesis Scottish Open
+R2026541,2026,32659,"Van Driel, Darius",T44,277.0,-3,,,4,70.0,65.0,70.0,72.0,,,,,Genesis Scottish Open
+R2026541,2026,39324,"Spaun, J.J.",T44,277.0,-3,,,4,68.0,70.0,67.0,72.0,,,,,Genesis Scottish Open
+R2026541,2026,48293,"Lindberg, Mikael",T44,277.0,-3,,,4,69.0,68.0,68.0,72.0,,,,,Genesis Scottish Open
+R2026541,2026,59440,"Castillo, Ricky",T44,277.0,-3,,,4,70.0,66.0,70.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,48126,"Hill, Calum",T44,277.0,-3,,,4,67.0,69.0,69.0,72.0,,,,,Genesis Scottish Open
+R2026541,2026,48117,"Kitayama, Kurt",T44,277.0,-3,,,4,66.0,72.0,71.0,68.0,,,,,Genesis Scottish Open
+R2026541,2026,34362,"Canter, Laurie",T50,278.0,-2,,,4,69.0,68.0,70.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,33448,"Thomas, Justin",T50,278.0,-2,,,4,69.0,67.0,69.0,73.0,,,,,Genesis Scottish Open
+R2026541,2026,34256,"Putnam, Andrew",T52,279.0,-1,,,4,71.0,65.0,70.0,73.0,,,,,Genesis Scottish Open
+R2026541,2026,61522,"Brennan, Michael",T52,279.0,-1,,,4,67.0,71.0,71.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,57586,"Svensson, Jesper",T52,279.0,-1,,,4,70.0,68.0,67.0,74.0,,,,,Genesis Scottish Open
+R2026541,2026,39997,"Conners, Corey",T52,279.0,-1,,,4,67.0,70.0,71.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,60386,"Yellamaraju, Sudarshan",T52,279.0,-1,,,4,68.0,65.0,69.0,77.0,,,,,Genesis Scottish Open
+R2026541,2026,57492,"Chacarra, Eugenio",T52,279.0,-1,,,4,70.0,68.0,73.0,68.0,,,,,Genesis Scottish Open
+R2026541,2026,50743,"Von Dellingshausen, Nicolai",T52,279.0,-1,,,4,69.0,64.0,72.0,74.0,,,,,Genesis Scottish Open
+R2026541,2026,37446,"Kruyswijk, Jacques",T59,280.0,+0,,,4,69.0,69.0,69.0,73.0,,,,,Genesis Scottish Open
+R2026541,2026,39834,"Migliozzi, Guido",T59,280.0,+0,,,4,68.0,67.0,70.0,75.0,,,,,Genesis Scottish Open
+R2026541,2026,47497,"Du Plessis, Hennie",T61,281.0,+1,,,4,70.0,66.0,75.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,30926,"Kirk, Chris",T61,281.0,+1,,,4,70.0,67.0,69.0,75.0,,,,,Genesis Scottish Open
+R2026541,2026,34371,"Saddier, Adrien",T61,281.0,+1,,,4,72.0,66.0,72.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,51997,"Novak, Andrew",T61,281.0,+1,,,4,66.0,71.0,73.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,48632,"Katsuragawa, Yuto",T61,281.0,+1,,,4,71.0,67.0,73.0,70.0,,,,,Genesis Scottish Open
+R2026541,2026,51634,"Theegala, Sahith",T66,282.0,+2,,,4,70.0,67.0,74.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,24502,"Scott, Adam",T66,282.0,+2,,,4,69.0,69.0,75.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,39201,"Elvira, Nacho",68,283.0,+3,,,4,69.0,69.0,72.0,73.0,,,,,Genesis Scottish Open
+R2026541,2026,47995,"Riley, Davis",69,284.0,+4,,,4,68.0,70.0,75.0,71.0,,,,,Genesis Scottish Open
+R2026541,2026,47591,"Cole, Eric",70,286.0,+6,,,4,71.0,67.0,79.0,69.0,,,,,Genesis Scottish Open
+R2026541,2026,31138,"Jamieson, Scott",71,288.0,+8,,,4,69.0,69.0,76.0,74.0,,,,,Genesis Scottish Open
+R2026541,2026,29970,"Frittelli, Dylan",CUT,139.0,-1,,,2,70.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,34099,"English, Harris",CUT,139.0,-1,,,2,71.0,68.0,,,,,,,Genesis Scottish Open
+R2026541,2026,46646,"Rozner, Antoine",CUT,139.0,-1,,,2,69.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,63459,"Bradbury, Dan",CUT,139.0,-1,,,2,71.0,68.0,,,,,,,Genesis Scottish Open
+R2026541,2026,49960,"Straka, Sepp",CUT,139.0,-1,,,2,70.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,35450,"Cantlay, Patrick",CUT,139.0,-1,,,2,65.0,74.0,,,,,,,Genesis Scottish Open
+R2026541,2026,52955,"Aberg, Ludvig",CUT,139.0,-1,,,2,68.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,59141,"McCarty, Matt",CUT,139.0,-1,,,2,67.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,57737,"Schaper, Jayden",CUT,139.0,-1,,,2,68.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,61193,"Puig, David",CUT,139.0,-1,,,2,75.0,64.0,,,,,,,Genesis Scottish Open
+R2026541,2026,51003,"Penge, Marco",CUT,139.0,-1,,,2,70.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,50223,"Ferguson, Ewen",CUT,139.0,-1,,,2,70.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,48001,"Bauchou, Zach",CUT,139.0,-1,,,2,67.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,33204,"Lowry, Shane",CUT,140.0,+0,,,2,71.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,51950,"McGreevy, Max",CUT,140.0,+0,,,2,69.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,57259,"Brown, Dan",CUT,140.0,+0,,,2,73.0,67.0,,,,,,,Genesis Scottish Open
+R2026541,2026,63343,"Potgieter, Aldrich",CUT,140.0,+0,,,2,70.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,39975,"Kim, Michael",CUT,140.0,+0,,,2,68.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,52375,"Ghim, Doug",CUT,140.0,+0,,,2,71.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,37066,"Forrest, Grant",CUT,140.0,+0,,,2,69.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,34317,"Lagergren, Joakim",CUT,140.0,+0,,,2,70.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,46340,"Smalley, Alex",CUT,140.0,+0,,,2,72.0,68.0,,,,,,,Genesis Scottish Open
+R2026541,2026,40006,"van Rooyen, Erik",CUT,140.0,+0,,,2,71.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,35706,"Norgaard, Niklas",CUT,140.0,+0,,,2,71.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,51989,"Gumberg, Jordan",CUT,140.0,+0,,,2,72.0,68.0,,,,,,,Genesis Scottish Open
+R2026541,2026,46046,"Scheffler, Scottie",CUT,140.0,+0,,,2,68.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,64052,"Ayora, Angel",CUT,140.0,+0,,,2,66.0,74.0,,,,,,,Genesis Scottish Open
+R2026541,2026,36689,"Koepka, Brooks",CUT,140.0,+0,,,2,66.0,74.0,,,,,,,Genesis Scottish Open
+R2026541,2026,33674,"Meronk, Adrian",CUT,140.0,+0,,,2,69.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,DG13412,"Olesen, Thorbjorn",CUT,140.0,+0,,,2,70.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,60067,"Highsmith, Joe",CUT,140.0,+0,,,2,71.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,55721,"Fitzpatrick, Alex",CUT,141.0,+1,,,2,71.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,46414,"Rai, Aaron",CUT,141.0,+1,,,2,71.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,48640,"Veerman, Johannes",CUT,141.0,+1,,,2,73.0,68.0,,,,,,,Genesis Scottish Open
+R2026541,2026,28340,"Guerrier, Julien",CUT,141.0,+1,,,2,71.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,57975,"Hall, Harry",CUT,141.0,+1,,,2,71.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,29420,"Horschel, Billy",CUT,141.0,+1,,,2,74.0,67.0,,,,,,,Genesis Scottish Open
+R2026541,2026,31113,"Waring, Paul",CUT,141.0,+1,,,2,71.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,64594,"Hidalgo, Angel",CUT,141.0,+1,,,2,68.0,73.0,,,,,,,Genesis Scottish Open
+R2026541,2026,33199,"Manassero, Matteo",CUT,141.0,+1,,,2,72.0,69.0,,,,,,,Genesis Scottish Open
+R2026541,2026,47420,"Knapp, Jake",CUT,142.0,+2,,,2,72.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,63617,"Johnston, Ryggs",CUT,142.0,+2,,,2,72.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,54190,"Mansell, Richard",CUT,142.0,+2,,,2,70.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,33023,"Strydom, Ockie",CUT,142.0,+2,,,2,69.0,73.0,,,,,,,Genesis Scottish Open
+R2026541,2026,47505,"Naidoo, Dylan",CUT,142.0,+2,,,2,70.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,48887,"Wallace, Matt",CUT,142.0,+2,,,2,70.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,55893,"Stevens, Sam",CUT,143.0,+3,,,2,68.0,75.0,,,,,,,Genesis Scottish Open
+R2026541,2026,49855,"Reitan, Kristoffer",CUT,143.0,+3,,,2,71.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,29454,"Wiesberger, Bernd",CUT,143.0,+3,,,2,65.0,78.0,,,,,,,Genesis Scottish Open
+R2026541,2026,47056,"Hoshino, Rikuya",CUT,143.0,+3,,,2,71.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,59836,"Coody, Pierceson",CUT,143.0,+3,,,2,71.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,35296,"Li, Haotong",CUT,143.0,+3,,,2,68.0,75.0,,,,,,,Genesis Scottish Open
+R2026541,2026,29670,"Larrazabal, Pablo",CUT,143.0,+3,,,2,71.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,47443,"Lee, Junghwan",CUT,143.0,+3,,,2,72.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,48081,"Schauffele, Xander",CUT,143.0,+3,,,2,69.0,74.0,,,,,,,Genesis Scottish Open
+R2026541,2026,27349,"Noren, Alex",CUT,144.0,+4,,,2,69.0,75.0,,,,,,,Genesis Scottish Open
+R2026541,2026,36801,"Hubbard, Mark",CUT,144.0,+4,,,2,70.0,74.0,,,,,,,Genesis Scottish Open
+R2026541,2026,45523,"Lawrence, Thriston",CUT,144.0,+4,,,2,71.0,73.0,,,,,,,Genesis Scottish Open
+R2026541,2026,57342,"Choi, Seungbin",CUT,144.0,+4,,,2,71.0,73.0,,,,,,,Genesis Scottish Open
+R2026541,2026,20766,"Harrington, Padraig",CUT,144.0,+4,,,2,74.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,33870,"Wu, Ashun",CUT,144.0,+4,,,2,73.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,DG27149,"Rodrigues, Daniel",CUT,145.0,+5,,,2,72.0,73.0,,,,,,,Genesis Scottish Open
+R2026541,2026,12716,"Hoffman, Charley",CUT,145.0,+5,,,2,74.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,39971,"Im, Sungjae",CUT,145.0,+5,,,2,72.0,73.0,,,,,,,Genesis Scottish Open
+R2026541,2026,45242,"Yu, Kevin",CUT,145.0,+5,,,2,75.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,27649,"Snedeker, Brandt",CUT,145.0,+5,,,2,69.0,76.0,,,,,,,Genesis Scottish Open
+R2026541,2026,50584,"Syme, Connor",CUT,145.0,+5,,,2,75.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,34575,"Otaegui, Adrian",CUT,146.0,+6,,,2,76.0,70.0,,,,,,,Genesis Scottish Open
+R2026541,2026,46443,"Campbell, Brian",CUT,146.0,+6,,,2,72.0,74.0,,,,,,,Genesis Scottish Open
+R2026541,2026,48153,"Pavon, Matthieu",CUT,146.0,+6,,,2,70.0,76.0,,,,,,,Genesis Scottish Open
+R2026541,2026,50095,"Smotherman, Austin",CUT,146.0,+6,,,2,74.0,72.0,,,,,,,Genesis Scottish Open
+R2026541,2026,61148,"Kaneko, Kota",CUT,146.0,+6,,,2,71.0,75.0,,,,,,,Genesis Scottish Open
+R2026541,2026,52287,"Ravetto, David",CUT,146.0,+6,,,2,73.0,73.0,,,,,,,Genesis Scottish Open
+R2026541,2026,28723,"Parry, John",CUT,146.0,+6,,,2,75.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,49813,"Hillier, Daniel",CUT,146.0,+6,,,2,75.0,71.0,,,,,,,Genesis Scottish Open
+R2026541,2026,60073,"Couvra, Martin",CUT,147.0,+7,,,2,73.0,74.0,,,,,,,Genesis Scottish Open
+R2026541,2026,DG25890,"Premlall, Yurav",CUT,147.0,+7,,,2,71.0,76.0,,,,,,,Genesis Scottish Open
+R2026541,2026,49947,"Moore, Taylor",CUT,147.0,+7,,,2,70.0,77.0,,,,,,,Genesis Scottish Open
+R2026541,2026,23481,"Siem, Marcel",CUT,148.0,+8,,,2,69.0,79.0,,,,,,,Genesis Scottish Open
+R2026541,2026,24459,"Sterne, Richard",CUT,148.0,+8,,,2,72.0,76.0,,,,,,,Genesis Scottish Open
+R2026541,2026,52585,"LaCroix, Frederic",CUT,148.0,+8,,,2,73.0,75.0,,,,,,,Genesis Scottish Open
+R2026541,2026,DG27759,"Kim, Baekjun",CUT,149.0,+9,,,2,75.0,74.0,,,,,,,Genesis Scottish Open
+R2026541,2026,34021,"Cauley, Bud",CUT,149.0,+9,,,2,73.0,76.0,,,,,,,Genesis Scottish Open
+R2026541,2026,DG21072,"Ok, Taehoon",CUT,150.0,+10,,,2,72.0,78.0,,,,,,,Genesis Scottish Open
+R2026541,2026,58690,"Schott, Freddy",CUT,153.0,+13,,,2,85.0,68.0,,,,,,,Genesis Scottish Open
+R2026100,2026,29936,"Fox, Ryan",1,270.0,-10,,,4,72.0,68.0,62.0,68.0,,,,,The Open Championship
+R2026100,2026,57366,"Young, Cameron",2,271.0,-9,,,4,67.0,67.0,73.0,64.0,,,,,The Open Championship
+R2026100,2026,47504,"Burns, Sam",3,272.0,-8,,,4,73.0,62.0,65.0,72.0,,,,,The Open Championship
+R2026100,2026,46046,"Scheffler, Scottie",T4,273.0,-7,,,4,68.0,68.0,70.0,67.0,,,,,The Open Championship
+R2026100,2026,30911,"Fleetwood, Tommy",T4,273.0,-7,,,4,69.0,67.0,69.0,68.0,,,,,The Open Championship
+R2026100,2026,39058,"Herbert, Lucas",T6,274.0,-6,,,4,70.0,62.0,71.0,71.0,,,,,The Open Championship
+R2026100,2026,37455,"Kim, Si Woo",T6,274.0,-6,,,4,68.0,67.0,67.0,72.0,,,,,The Open Championship
+R2026100,2026,57688,"Jarvis, Casey",T6,274.0,-6,,,4,73.0,67.0,68.0,66.0,,,,,The Open Championship
+R2026100,2026,24502,"Scott, Adam",T9,275.0,-5,,,4,72.0,66.0,71.0,66.0,,,,,The Open Championship
+R2026100,2026,52689,"Neergaard-Petersen, Rasmus",T9,275.0,-5,,,4,72.0,66.0,67.0,70.0,,,,,The Open Championship
+R2026100,2026,34098,"Henley, Russell",T9,275.0,-5,,,4,70.0,71.0,68.0,66.0,,,,,The Open Championship
+R2026100,2026,59018,"Gerard, Ryan",T9,275.0,-5,,,4,67.0,67.0,69.0,72.0,,,,,The Open Championship
+R2026100,2026,52955,"Aberg, Ludvig",T9,275.0,-5,,,4,71.0,66.0,67.0,71.0,,,,,The Open Championship
+R2026100,2026,32839,"Matsuyama, Hideki",T14,276.0,-4,,,4,72.0,67.0,67.0,70.0,,,,,The Open Championship
+R2026100,2026,39997,"Conners, Corey",T14,276.0,-4,,,4,71.0,67.0,71.0,67.0,,,,,The Open Championship
+R2026100,2026,39971,"Im, Sungjae",T14,276.0,-4,,,4,66.0,72.0,69.0,69.0,,,,,The Open Championship
+R2026100,2026,47959,"DeChambeau, Bryson",T14,276.0,-4,,,4,67.0,68.0,69.0,72.0,,,,,The Open Championship
+R2026100,2026,50525,"Morikawa, Collin",T18,277.0,-3,,,4,68.0,70.0,70.0,69.0,,,,,The Open Championship
+R2026100,2026,32102,"Fowler, Rickie",T18,277.0,-3,,,4,71.0,69.0,71.0,66.0,,,,,The Open Championship
+R2026100,2026,34021,"Cauley, Bud",T18,277.0,-3,,,4,68.0,68.0,73.0,68.0,,,,,The Open Championship
+R2026100,2026,48081,"Schauffele, Xander",T18,277.0,-3,,,4,71.0,69.0,66.0,71.0,,,,,The Open Championship
+R2026100,2026,46464,"Smith, Jordan",T18,277.0,-3,,,4,68.0,70.0,70.0,69.0,,,,,The Open Championship
+R2026100,2026,49855,"Reitan, Kristoffer",T18,277.0,-3,,,4,69.0,71.0,68.0,69.0,,,,,The Open Championship
+R2026100,2026,27349,"Noren, Alex",T18,277.0,-3,,,4,71.0,69.0,69.0,68.0,,,,,The Open Championship
+R2026100,2026,57259,"Brown, Dan",T18,277.0,-3,,,4,66.0,71.0,69.0,71.0,,,,,The Open Championship
+R2026100,2026,59095,"Gotterup, Chris",T18,277.0,-3,,,4,70.0,68.0,72.0,67.0,,,,,The Open Championship
+R2026100,2026,51003,"Penge, Marco",T18,277.0,-3,,,4,72.0,68.0,69.0,68.0,,,,,The Open Championship
+R2026100,2026,39977,"Homa, Max",T28,278.0,-2,,,4,71.0,69.0,67.0,71.0,,,,,The Open Championship
+R2026100,2026,35450,"Cantlay, Patrick",T28,278.0,-2,,,4,71.0,68.0,71.0,68.0,,,,,The Open Championship
+R2026100,2026,36689,"Koepka, Brooks",T28,278.0,-2,,,4,70.0,71.0,69.0,68.0,,,,,The Open Championship
+R2026100,2026,28723,"Parry, John",T28,278.0,-2,,,4,71.0,68.0,73.0,66.0,,,,,The Open Championship
+R2026100,2026,47679,"Perez, Victor",T28,278.0,-2,,,4,68.0,69.0,73.0,68.0,,,,,The Open Championship
+R2026100,2026,59836,"Coody, Pierceson",T28,278.0,-2,,,4,67.0,70.0,72.0,69.0,,,,,The Open Championship
+R2026100,2026,54621,"Kobori, Kazuma",T28,278.0,-2,,,4,70.0,69.0,67.0,72.0,,,,,The Open Championship
+R2026100,2026,60004,"Bridgeman, Jacob",T28,278.0,-2,,,4,70.0,69.0,68.0,71.0,,,,,The Open Championship
+R2026100,2026,33204,"Lowry, Shane",T28,278.0,-2,,,4,69.0,68.0,69.0,72.0,,,,,The Open Championship
+R2026100,2026,52215,"MacIntyre, Robert",T28,278.0,-2,,,4,67.0,69.0,71.0,71.0,,,,,The Open Championship
+R2026100,2026,60019,"Suber, Jackson",T28,278.0,-2,,,4,65.0,69.0,70.0,74.0,,,,,The Open Championship
+R2026100,2026,DG19390,"John, Cameron",T28,278.0,-2,,,4,70.0,67.0,69.0,72.0,,,,,The Open Championship
+R2026100,2026,33653,"Detry, Thomas",T40,279.0,-1,,,4,67.0,69.0,74.0,69.0,,,,,The Open Championship
+R2026100,2026,39324,"Spaun, J.J.",T40,279.0,-1,,,4,70.0,67.0,73.0,69.0,,,,,The Open Championship
+R2026100,2026,57364,"Thorbjornsen, Michael",T40,279.0,-1,,,4,70.0,68.0,71.0,70.0,,,,,The Open Championship
+R2026100,2026,48887,"Wallace, Matt",T40,279.0,-1,,,4,69.0,67.0,72.0,71.0,,,,,The Open Championship
+R2026100,2026,28237,"McIlroy, Rory",T40,279.0,-1,,,4,72.0,67.0,69.0,71.0,,,,,The Open Championship
+R2026100,2026,48117,"Kitayama, Kurt",T40,279.0,-1,,,4,69.0,71.0,70.0,69.0,,,,,The Open Championship
+R2026100,2026,34360,"Reed, Patrick",T46,280.0,+0,,,4,72.0,66.0,71.0,71.0,,,,,The Open Championship
+R2026100,2026,60165,"Ballester, Jose Luis",T46,280.0,+0,,,4,71.0,70.0,66.0,73.0,,,,,The Open Championship
+R2026100,2026,57492,"Chacarra, Eugenio",T46,280.0,+0,,,4,70.0,70.0,71.0,69.0,,,,,The Open Championship
+R2026100,2026,25198,"Molinari, Francesco",T46,280.0,+0,,,4,67.0,69.0,72.0,72.0,,,,,The Open Championship
+R2026100,2026,35174,"Southgate, Matthew",T46,280.0,+0,,,4,69.0,69.0,76.0,66.0,,,,,The Open Championship
+R2026100,2026,46970,"Rahm, Jon",T46,280.0,+0,,,4,69.0,67.0,70.0,74.0,,,,,The Open Championship
+R2026100,2026,47497,"Du Plessis, Hennie",T46,280.0,+0,,,4,70.0,69.0,69.0,72.0,,,,,The Open Championship
+R2026100,2026,46340,"Smalley, Alex",T53,281.0,+1,,,4,67.0,73.0,67.0,74.0,,,,,The Open Championship
+R2026100,2026,51287,"Hisatsune, Ryo",T53,281.0,+1,,,4,68.0,73.0,71.0,69.0,,,,,The Open Championship
+R2026100,2026,47591,"Cole, Eric",T53,281.0,+1,,,4,76.0,64.0,66.0,75.0,,,,,The Open Championship
+R2026100,2026,26328,"Norris, Shaun",T53,281.0,+1,,,4,69.0,70.0,70.0,72.0,,,,,The Open Championship
+R2026100,2026,61522,"Brennan, Michael",T53,281.0,+1,,,4,72.0,68.0,70.0,71.0,,,,,The Open Championship
+R2026100,2026,51634,"Theegala, Sahith",T53,281.0,+1,,,4,71.0,69.0,68.0,73.0,,,,,The Open Championship
+R2026100,2026,54591,"Griffin, Ben",T59,282.0,+2,,,4,69.0,70.0,74.0,69.0,,,,,The Open Championship
+R2026100,2026,63343,"Potgieter, Aldrich",T59,282.0,+2,,,4,69.0,72.0,71.0,70.0,,,,,The Open Championship
+R2026100,2026,46879,"Kataoka, Naoyuki",T59,282.0,+2,,,4,73.0,68.0,70.0,71.0,,,,,The Open Championship
+R2026100,2026,63454,"Keefer, Johnny",T59,282.0,+2,,,4,70.0,68.0,71.0,73.0,,,,,The Open Championship
+R2026100,2026,25493,"Taylor, Nick",T59,282.0,+2,,,4,68.0,71.0,72.0,71.0,,,,,The Open Championship
+R2026100,2026,37378,"Lee, Min Woo",T59,282.0,+2,,,4,70.0,71.0,71.0,70.0,,,,,The Open Championship
+R2026100,2026,29484,"Uihlein, Peter",T65,283.0,+3,,,4,73.0,68.0,72.0,70.0,,,,,The Open Championship
+R2026100,2026,33448,"Thomas, Justin",T65,283.0,+3,,,4,70.0,69.0,68.0,76.0,,,,,The Open Championship
+R2026100,2026,49960,"Straka, Sepp",T67,284.0,+4,,,4,68.0,70.0,74.0,72.0,,,,,The Open Championship
+R2026100,2026,51349,"Echavarria, Nico",T67,284.0,+4,,,4,71.0,67.0,69.0,77.0,,,,,The Open Championship
+R2026100,2026,34363,"Hatton, Tyrrell",T69,285.0,+5,,,4,69.0,68.0,74.0,74.0,,,,,The Open Championship
+R2026100,2026,35314,"Sullivan, Andy",T69,285.0,+5,,,4,70.0,69.0,73.0,73.0,,,,,The Open Championship
+R2026100,2026,34362,"Canter, Laurie",T71,286.0,+6,,,4,69.0,71.0,74.0,72.0,,,,,The Open Championship
+R2026100,2026,39067,"Daffue, MJ",T71,286.0,+6,,,4,67.0,72.0,72.0,75.0,,,,,The Open Championship
+R2026100,2026,55721,"Fitzpatrick, Alex",T71,286.0,+6,,,4,69.0,67.0,73.0,77.0,,,,,The Open Championship
+R2026100,2026,33141,"Bradley, Keegan",T74,287.0,+7,,,4,69.0,72.0,74.0,72.0,,,,,The Open Championship
+R2026100,2026,DG29716,"Plunkett, Marcus",T74,287.0,+7,,,4,70.0,71.0,71.0,75.0,,,,,The Open Championship
+R2026100,2026,35778,"Higa, Kazuki",T74,287.0,+7,,,4,73.0,68.0,72.0,74.0,,,,,The Open Championship
+R2026100,2026,DG16372,"McDonald, Jack",77,288.0,+8,,,4,70.0,71.0,73.0,74.0,,,,,The Open Championship
+R2026100,2026,57586,"Svensson, Jesper",78,289.0,+9,,,4,73.0,66.0,77.0,73.0,,,,,The Open Championship
+R2026100,2026,51997,"Novak, Andrew",CUT,142.0,+2,,,2,73.0,69.0,,,,,,,The Open Championship
+R2026100,2026,55893,"Stevens, Sam",CUT,142.0,+2,,,2,71.0,71.0,,,,,,,The Open Championship
+R2026100,2026,46646,"Rozner, Antoine",CUT,142.0,+2,,,2,69.0,73.0,,,,,,,The Open Championship
+R2026100,2026,34099,"English, Harris",CUT,142.0,+2,,,2,73.0,69.0,,,,,,,The Open Championship
+R2026100,2026,29454,"Wiesberger, Bernd",CUT,142.0,+2,,,2,71.0,71.0,,,,,,,The Open Championship
+R2026100,2026,49771,"Poston, J.T.",CUT,142.0,+2,,,2,71.0,71.0,,,,,,,The Open Championship
+R2026100,2026,52453,"Hojgaard, Nicolai",CUT,142.0,+2,,,2,72.0,70.0,,,,,,,The Open Championship
+R2026100,2026,57737,"Schaper, Jayden",CUT,142.0,+2,,,2,70.0,72.0,,,,,,,The Open Championship
+R2026100,2026,49813,"Hillier, Daniel",CUT,142.0,+2,,,2,72.0,70.0,,,,,,,The Open Championship
+R2026100,2026,21528,"Stenson, Henrik",CUT,142.0,+2,,,2,68.0,74.0,,,,,,,The Open Championship
+R2026100,2026,50823,"McKibbin, Tom",CUT,142.0,+2,,,2,71.0,71.0,,,,,,,The Open Championship
+R2026100,2026,46414,"Rai, Aaron",CUT,142.0,+2,,,2,71.0,71.0,,,,,,,The Open Championship
+R2026100,2026,35891,"Smith, Cameron",CUT,142.0,+2,,,2,73.0,69.0,,,,,,,The Open Championship
+R2026100,2026,47420,"Knapp, Jake",CUT,142.0,+2,,,2,71.0,71.0,,,,,,,The Open Championship
+R2026100,2026,59141,"McCarty, Matt",CUT,142.0,+2,,,2,75.0,67.0,,,,,,,The Open Championship
+R2026100,2026,34317,"Lagergren, Joakim",CUT,142.0,+2,,,2,68.0,74.0,,,,,,,The Open Championship
+R2026100,2026,29420,"Horschel, Billy",CUT,142.0,+2,,,2,71.0,71.0,,,,,,,The Open Championship
+R2026100,2026,68607,"Howell, Mason",CUT,142.0,+2,,,2,73.0,69.0,,,,,,,The Open Championship
+R2026100,2026,52666,"Valimaki, Sami",CUT,142.0,+2,,,2,70.0,72.0,,,,,,,The Open Championship
+R2026100,2026,28521,"Nagano, Ryutaro",CUT,143.0,+3,,,2,71.0,72.0,,,,,,,The Open Championship
+R2026100,2026,DG33657,"Howard, David",CUT,143.0,+3,,,2,74.0,69.0,,,,,,,The Open Championship
+R2026100,2026,55182,"Kim, Tom",CUT,143.0,+3,,,2,70.0,73.0,,,,,,,The Open Championship
+R2026100,2026,64052,"Ayora, Angel",CUT,143.0,+3,,,2,72.0,71.0,,,,,,,The Open Championship
+R2026100,2026,DG19232,"Smyth, Trav",CUT,143.0,+3,,,2,71.0,72.0,,,,,,,The Open Championship
+R2026100,2026,51766,"Clark, Wyndham",CUT,143.0,+3,,,2,73.0,70.0,,,,,,,The Open Championship
+R2026100,2026,49228,"Nakajima, Keita",CUT,143.0,+3,,,2,73.0,70.0,,,,,,,The Open Championship
+R2026100,2026,46442,"McNealy, Maverick",CUT,143.0,+3,,,2,71.0,72.0,,,,,,,The Open Championship
+R2026100,2026,22405,"Rose, Justin",CUT,143.0,+3,,,2,75.0,68.0,,,,,,,The Open Championship
+R2026100,2026,39546,"Mitchell, Keith",CUT,143.0,+3,,,2,72.0,71.0,,,,,,,The Open Championship
+R2026100,2026,46717,"Hovland, Viktor",CUT,144.0,+4,,,2,70.0,74.0,,,,,,,The Open Championship
+R2026100,2026,DG33707,"Ruiter, Nevill",CUT,144.0,+4,,,2,76.0,68.0,,,,,,,The Open Championship
+R2026100,2026,37094,"Dean, Joe",CUT,144.0,+4,,,2,72.0,72.0,,,,,,,The Open Championship
+R2026100,2026,70145,"Pulcini, Mateo",CUT,144.0,+4,,,2,75.0,69.0,,,,,,,The Open Championship
+R2026100,2026,56630,"Bhatia, Akshay",CUT,144.0,+4,,,2,71.0,73.0,,,,,,,The Open Championship
+R2026100,2026,57975,"Hall, Harry",CUT,144.0,+4,,,2,77.0,67.0,,,,,,,The Open Championship
+R2026100,2026,45486,"Niemann, Joaquin",CUT,144.0,+4,,,2,76.0,68.0,,,,,,,The Open Championship
+R2026100,2026,DG22489,"Skogen, Baard",CUT,144.0,+4,,,2,73.0,71.0,,,,,,,The Open Championship
+R2026100,2026,28089,"Day, Jason",CUT,144.0,+4,,,2,73.0,71.0,,,,,,,The Open Championship
+R2026100,2026,52585,"LaCroix, Frederic",CUT,144.0,+4,,,2,72.0,72.0,,,,,,,The Open Championship
+R2026100,2026,DG24055,"Sloman, Tom",CUT,144.0,+4,,,2,71.0,73.0,,,,,,,The Open Championship
+R2026100,2026,DG15993,"Hollick, Michael",CUT,144.0,+4,,,2,72.0,72.0,,,,,,,The Open Championship
+R2026100,2026,40098,"Fitzpatrick, Matt",CUT,144.0,+4,,,2,72.0,72.0,,,,,,,The Open Championship
+R2026100,2026,51977,"Greyserman, Max",CUT,145.0,+5,,,2,76.0,69.0,,,,,,,The Open Championship
+R2026100,2026,DG31844,"Buchanan, Jack",CUT,145.0,+5,,,2,73.0,72.0,,,,,,,The Open Championship
+R2026100,2026,51680,"Docherty, Alistair",CUT,145.0,+5,,,2,73.0,72.0,,,,,,,The Open Championship
+R2026100,2026,39975,"Kim, Michael",CUT,145.0,+5,,,2,73.0,72.0,,,,,,,The Open Championship
+R2026100,2026,35296,"Li, Haotong",CUT,145.0,+5,,,2,72.0,73.0,,,,,,,The Open Championship
+R2026100,2026,DG29810,"De Castro Piera, Alejandro",CUT,146.0,+6,,,2,73.0,73.0,,,,,,,The Open Championship
+R2026100,2026,40026,"Berger, Daniel",CUT,146.0,+6,,,2,76.0,70.0,,,,,,,The Open Championship
+R2026100,2026,DG29973,"Wiedemeyer, Tim",CUT,146.0,+6,,,2,73.0,73.0,,,,,,,The Open Championship
+R2026100,2026,52686,"Hojgaard, Rasmus",CUT,146.0,+6,,,2,71.0,75.0,,,,,,,The Open Championship
+R2026100,2026,DG22633,"Grehan, Stuart",CUT,146.0,+6,,,2,77.0,69.0,,,,,,,The Open Championship
+R2026100,2026,34371,"Saddier, Adrien",CUT,146.0,+6,,,2,77.0,69.0,,,,,,,The Open Championship
+R2026100,2026,64054,"Surratt, Caleb",CUT,147.0,+7,,,2,72.0,75.0,,,,,,,The Open Championship
+R2026100,2026,60369,"Bairstow, Sam",CUT,147.0,+7,,,2,72.0,75.0,,,,,,,The Open Championship
+R2026100,2026,DG29461,"Grinberg, Lev",CUT,147.0,+7,,,2,71.0,76.0,,,,,,,The Open Championship
+R2026100,2026,19825,"Clarke, Darren",CUT,147.0,+7,,,2,73.0,74.0,,,,,,,The Open Championship
+R2026100,2026,60073,"Couvra, Martin",CUT,147.0,+7,,,2,74.0,73.0,,,,,,,The Open Championship
+R2026100,2026,32622,"Baldwin, Matthew",CUT,147.0,+7,,,2,72.0,75.0,,,,,,,The Open Championship
+R2026100,2026,DG14419,"Yang, Jiho",CUT,147.0,+7,,,2,77.0,70.0,,,,,,,The Open Championship
+R2026100,2026,20229,"Cink, Stewart",CUT,148.0,+8,,,2,74.0,74.0,,,,,,,The Open Championship
+R2026100,2026,34126,"Vincent, Scott",CUT,148.0,+8,,,2,75.0,73.0,,,,,,,The Open Championship
+R2026100,2026,34607,"Laporta, Francesco",CUT,149.0,+9,,,2,74.0,75.0,,,,,,,The Open Championship
+R2026100,2026,55955,"Jordan, Matthew",CUT,149.0,+9,,,2,77.0,72.0,,,,,,,The Open Championship
+R2026100,2026,27644,"Harman, Brian",CUT,149.0,+9,,,2,74.0,75.0,,,,,,,The Open Championship
+R2026100,2026,31323,"Woodland, Gary",CUT,149.0,+9,,,2,78.0,71.0,,,,,,,The Open Championship
+R2026100,2026,20766,"Harrington, Padraig",CUT,149.0,+9,,,2,80.0,69.0,,,,,,,The Open Championship
+R2026100,2026,46724,"Ham, Jeong Woo",CUT,149.0,+9,,,2,77.0,72.0,,,,,,,The Open Championship
+R2026100,2026,61148,"Kaneko, Kota",CUT,149.0,+9,,,2,72.0,77.0,,,,,,,The Open Championship
+R2026100,2026,63459,"Bradbury, Dan",CUT,149.0,+9,,,2,74.0,75.0,,,,,,,The Open Championship
+R2026100,2026,9011,"Duval, David",CUT,150.0,+10,,,2,73.0,77.0,,,,,,,The Open Championship
+R2026100,2026,DG31123,"Christensen, Tiger",CUT,150.0,+10,,,2,75.0,75.0,,,,,,,The Open Championship
+R2026100,2026,34046,"Spieth, Jordan",CUT,150.0,+10,,,2,73.0,77.0,,,,,,,The Open Championship
+R2026100,2026,61193,"Puig, David",CUT,151.0,+11,,,2,74.0,77.0,,,,,,,The Open Championship
+R2026100,2026,45733,"Truslow, Austen",CUT,153.0,+13,,,2,79.0,74.0,,,,,,,The Open Championship
+R2026100,2026,56100,"Yonezawa, Ren",CUT,155.0,+15,,,2,76.0,79.0,,,,,,,The Open Championship
+R2026100,2026,70146,"Laopakdee, Fifa",CUT,155.0,+15,,,2,75.0,80.0,,,,,,,The Open Championship
+R2026100,2026,58188,"Nicholas, James",WD,75.0,+5,,,1,75.0,,,,,,,,The Open Championship
+R2026525,2026,66701,"Koivun, Jackson",1,259.0,-25,,,4,64.0,68.0,61.0,66.0,,,,,3M Open
+R2026525,2026,46046,"Scheffler, Scottie",2,262.0,-22,,,4,65.0,70.0,64.0,63.0,,,,,3M Open
+R2026525,2026,57900,"Phillips, Chandler",T3,264.0,-20,,,4,66.0,65.0,66.0,67.0,,,,,3M Open
+R2026525,2026,47993,"McCarthy, Denny",T3,264.0,-20,,,4,66.0,68.0,64.0,66.0,,,,,3M Open
+R2026525,2026,32839,"Matsuyama, Hideki",T3,264.0,-20,,,4,70.0,65.0,65.0,64.0,,,,,3M Open
+R2026525,2026,27644,"Harman, Brian",T3,264.0,-20,,,4,69.0,64.0,66.0,65.0,,,,,3M Open
+R2026525,2026,31646,"Grillo, Emiliano",T7,265.0,-19,,,4,64.0,67.0,65.0,69.0,,,,,3M Open
+R2026525,2026,58168,"Thompson, Davis",T7,265.0,-19,,,4,68.0,68.0,63.0,66.0,,,,,3M Open
+R2026525,2026,36884,"Kohles, Ben",9,266.0,-18,,,4,62.0,69.0,65.0,70.0,,,,,3M Open
+R2026525,2026,31323,"Woodland, Gary",T10,267.0,-17,,,4,64.0,71.0,67.0,65.0,,,,,3M Open
+R2026525,2026,39975,"Kim, Michael",T10,267.0,-17,,,4,69.0,59.0,70.0,69.0,,,,,3M Open
+R2026525,2026,28252,"Power, Seamus",T10,267.0,-17,,,4,68.0,68.0,63.0,68.0,,,,,3M Open
+R2026525,2026,40058,"Blair, Zac",T13,268.0,-16,,,4,68.0,65.0,68.0,67.0,,,,,3M Open
+R2026525,2026,29420,"Horschel, Billy",T13,268.0,-16,,,4,67.0,66.0,65.0,70.0,,,,,3M Open
+R2026525,2026,47420,"Knapp, Jake",T13,268.0,-16,,,4,68.0,70.0,68.0,62.0,,,,,3M Open
+R2026525,2026,45242,"Yu, Kevin",T16,269.0,-15,,,4,69.0,66.0,66.0,68.0,,,,,3M Open
+R2026525,2026,59006,"Chatfield, Davis",T16,269.0,-15,,,4,69.0,68.0,64.0,68.0,,,,,3M Open
+R2026525,2026,54576,"Fishburn, Patrick",T16,269.0,-15,,,4,70.0,68.0,66.0,65.0,,,,,3M Open
+R2026525,2026,37338,"Dou, Zecheng",T16,269.0,-15,,,4,67.0,69.0,67.0,66.0,,,,,3M Open
+R2026525,2026,55182,"Kim, Tom",T20,270.0,-14,,,4,68.0,69.0,67.0,66.0,,,,,3M Open
+R2026525,2026,52689,"Neergaard-Petersen, Rasmus",T20,270.0,-14,,,4,66.0,72.0,66.0,66.0,,,,,3M Open
+R2026525,2026,54628,"Hodges, Lee",T20,270.0,-14,,,4,68.0,67.0,65.0,70.0,,,,,3M Open
+R2026525,2026,45522,"Bezuidenhout, Christiaan",T20,270.0,-14,,,4,68.0,67.0,69.0,66.0,,,,,3M Open
+R2026525,2026,54788,"Blanchet, Chandler",T24,271.0,-13,,,4,67.0,68.0,67.0,69.0,,,,,3M Open
+R2026525,2026,50095,"Smotherman, Austin",T24,271.0,-13,,,4,68.0,67.0,68.0,68.0,,,,,3M Open
+R2026525,2026,27214,"Streelman, Kevin",T24,271.0,-13,,,4,67.0,68.0,69.0,67.0,,,,,3M Open
+R2026525,2026,48117,"Kitayama, Kurt",T24,271.0,-13,,,4,68.0,69.0,66.0,68.0,,,,,3M Open
+R2026525,2026,61522,"Brennan, Michael",T24,271.0,-13,,,4,65.0,69.0,63.0,74.0,,,,,3M Open
+R2026525,2026,49766,"Lebioda, Hank",T24,271.0,-13,,,4,69.0,69.0,65.0,68.0,,,,,3M Open
+R2026525,2026,28723,"Parry, John",T24,271.0,-13,,,4,69.0,69.0,69.0,64.0,,,,,3M Open
+R2026525,2026,51977,"Greyserman, Max",T31,272.0,-12,,,4,69.0,70.0,69.0,64.0,,,,,3M Open
+R2026525,2026,30926,"Kirk, Chris",T31,272.0,-12,,,4,70.0,69.0,64.0,69.0,,,,,3M Open
+R2026525,2026,39335,"Roy, Kevin",T31,272.0,-12,,,4,65.0,70.0,68.0,69.0,,,,,3M Open
+R2026525,2026,DG33994,"Donohue, Muzzy",T34,273.0,-11,,,4,73.0,63.0,73.0,64.0,,,,,3M Open
+R2026525,2026,46442,"McNealy, Maverick",T34,273.0,-11,,,4,71.0,66.0,72.0,64.0,,,,,3M Open
+R2026525,2026,51894,"Whaley, Vince",T34,273.0,-11,,,4,67.0,69.0,68.0,69.0,,,,,3M Open
+R2026525,2026,36801,"Hubbard, Mark",T34,273.0,-11,,,4,70.0,69.0,65.0,69.0,,,,,3M Open
+R2026525,2026,34076,"Dahmen, Joel",T34,273.0,-11,,,4,70.0,69.0,66.0,68.0,,,,,3M Open
+R2026525,2026,46464,"Smith, Jordan",T39,274.0,-10,,,4,71.0,68.0,67.0,68.0,,,,,3M Open
+R2026525,2026,39997,"Conners, Corey",T39,274.0,-10,,,4,70.0,69.0,66.0,69.0,,,,,3M Open
+R2026525,2026,32640,"Merritt, Troy",T39,274.0,-10,,,4,66.0,66.0,69.0,73.0,,,,,3M Open
+R2026525,2026,55573,"VanDerLaan, John",T39,274.0,-10,,,4,67.0,71.0,66.0,70.0,,,,,3M Open
+R2026525,2026,55851,"Nyholm, Pontus",T39,274.0,-10,,,4,68.0,69.0,71.0,66.0,,,,,3M Open
+R2026525,2026,48001,"Bauchou, Zach",T44,275.0,-9,,,4,70.0,69.0,66.0,70.0,,,,,3M Open
+R2026525,2026,48867,"Schmid, Matti",T44,275.0,-9,,,4,67.0,72.0,69.0,67.0,,,,,3M Open
+R2026525,2026,63807,"Shipley, Neal",T44,275.0,-9,,,4,70.0,69.0,66.0,70.0,,,,,3M Open
+R2026525,2026,57586,"Svensson, Jesper",T44,275.0,-9,,,4,65.0,69.0,70.0,71.0,,,,,3M Open
+R2026525,2026,59440,"Castillo, Ricky",T44,275.0,-9,,,4,71.0,68.0,65.0,71.0,,,,,3M Open
+R2026525,2026,35506,"Hughes, Mackenzie",T44,275.0,-9,,,4,71.0,67.0,68.0,69.0,,,,,3M Open
+R2026525,2026,39546,"Mitchell, Keith",T44,275.0,-9,,,4,68.0,69.0,67.0,71.0,,,,,3M Open
+R2026525,2026,51600,"Stanger, Jimmy",T51,276.0,-8,,,4,69.0,70.0,67.0,70.0,,,,,3M Open
+R2026525,2026,DG15651,"Ventura, Kristoffer",T51,276.0,-8,,,4,72.0,66.0,66.0,72.0,,,,,3M Open
+R2026525,2026,57688,"Jarvis, Casey",T51,276.0,-8,,,4,71.0,66.0,66.0,73.0,,,,,3M Open
+R2026525,2026,27770,"Villegas, Camilo",T51,276.0,-8,,,4,69.0,69.0,69.0,69.0,,,,,3M Open
+R2026525,2026,50286,"Ewart, A.J.",55,277.0,-7,,,4,69.0,69.0,70.0,69.0,,,,,3M Open
+R2026525,2026,35461,"Hossler, Beau",56,278.0,-6,,,4,69.0,68.0,67.0,74.0,,,,,3M Open
+R2026525,2026,35296,"Li, Haotong",T57,279.0,-5,,,4,68.0,68.0,72.0,71.0,,,,,3M Open
+R2026525,2026,25900,"Glover, Lucas",T57,279.0,-5,,,4,65.0,70.0,72.0,72.0,,,,,3M Open
+R2026525,2026,57362,"Eckroat, Austin",T57,279.0,-5,,,4,69.0,67.0,71.0,72.0,,,,,3M Open
+R2026525,2026,55893,"Stevens, Sam",T60,280.0,-4,,,4,68.0,69.0,73.0,70.0,,,,,3M Open
+R2026525,2026,56762,"Gordon, Will",T60,280.0,-4,,,4,68.0,70.0,72.0,70.0,,,,,3M Open
+R2026525,2026,52514,"Crowe, Trace",T62,281.0,-3,,,4,67.0,72.0,68.0,74.0,,,,,3M Open
+R2026525,2026,51696,"Hoey, Rico",T62,281.0,-3,,,4,67.0,72.0,71.0,71.0,,,,,3M Open
+R2026525,2026,47393,"Kang, Jeffrey",T64,282.0,-2,,,4,67.0,70.0,72.0,73.0,,,,,3M Open
+R2026525,2026,35310,"Griffin, Lanto",T64,282.0,-2,,,4,70.0,68.0,71.0,73.0,,,,,3M Open
+R2026525,2026,28679,"Gomez, Fabian",66,285.0,+1,,,4,71.0,67.0,72.0,75.0,,,,,3M Open
+R2026525,2026,50497,"Dumont de Chassart, Adrien",CUT,140.0,-2,,,2,69.0,71.0,,,,,,,3M Open
+R2026525,2026,64442,"Sargent, Gordon",CUT,140.0,-2,,,2,73.0,67.0,,,,,,,3M Open
+R2026525,2026,59143,"Meissner, Mac",CUT,140.0,-2,,,2,73.0,67.0,,,,,,,3M Open
+R2026525,2026,33597,"Higgs, Harry",CUT,140.0,-2,,,2,69.0,71.0,,,,,,,3M Open
+R2026525,2026,49228,"Nakajima, Keita",CUT,140.0,-2,,,2,67.0,73.0,,,,,,,3M Open
+R2026525,2026,51950,"McGreevy, Max",CUT,140.0,-2,,,2,74.0,66.0,,,,,,,3M Open
+R2026525,2026,66743,"Clanton, Luke",CUT,140.0,-2,,,2,72.0,68.0,,,,,,,3M Open
+R2026525,2026,47347,"Schenk, Adam",CUT,140.0,-2,,,2,70.0,70.0,,,,,,,3M Open
+R2026525,2026,45609,"Duncan, Tyler",CUT,140.0,-2,,,2,70.0,70.0,,,,,,,3M Open
+R2026525,2026,37076,"Rozo, Marcelo",CUT,140.0,-2,,,2,67.0,73.0,,,,,,,3M Open
+R2026525,2026,28420,"Brehm, Ryan",CUT,140.0,-2,,,2,74.0,66.0,,,,,,,3M Open
+R2026525,2026,39327,"Silverman, Ben",CUT,140.0,-2,,,2,69.0,71.0,,,,,,,3M Open
+R2026525,2026,46443,"Campbell, Brian",CUT,140.0,-2,,,2,69.0,71.0,,,,,,,3M Open
+R2026525,2026,36799,"Jaeger, Stephan",CUT,140.0,-2,,,2,70.0,70.0,,,,,,,3M Open
+R2026525,2026,50484,"Springer, Hayden",CUT,140.0,-2,,,2,71.0,69.0,,,,,,,3M Open
+R2026525,2026,63121,"Mouw, William",CUT,140.0,-2,,,2,71.0,69.0,,,,,,,3M Open
+R2026525,2026,66416,"Stout, Preston",CUT,140.0,-2,,,2,69.0,71.0,,,,,,,3M Open
+R2026525,2026,52686,"Hojgaard, Rasmus",CUT,140.0,-2,,,2,69.0,71.0,,,,,,,3M Open
+R2026525,2026,52375,"Ghim, Doug",CUT,141.0,-1,,,2,69.0,72.0,,,,,,,3M Open
+R2026525,2026,39971,"Im, Sungjae",CUT,141.0,-1,,,2,71.0,70.0,,,,,,,3M Open
+R2026525,2026,27129,"List, Luke",CUT,141.0,-1,,,2,71.0,70.0,,,,,,,3M Open
+R2026525,2026,49947,"Moore, Taylor",CUT,141.0,-1,,,2,70.0,71.0,,,,,,,3M Open
+R2026525,2026,70695,"Cowan, Ryder",CUT,141.0,-1,,,2,73.0,68.0,,,,,,,3M Open
+R2026525,2026,57869,"James, Ben",CUT,141.0,-1,,,2,70.0,71.0,,,,,,,3M Open
+R2026525,2026,57123,"Fisk, Steven",CUT,141.0,-1,,,2,70.0,71.0,,,,,,,3M Open
+R2026525,2026,48153,"Pavon, Matthieu",CUT,141.0,-1,,,2,72.0,69.0,,,,,,,3M Open
+R2026525,2026,63343,"Potgieter, Aldrich",CUT,142.0,+0,,,2,77.0,65.0,,,,,,,3M Open
+R2026525,2026,40115,"Svensson, Adam",CUT,142.0,+0,,,2,68.0,74.0,,,,,,,3M Open
+R2026525,2026,60067,"Highsmith, Joe",CUT,142.0,+0,,,2,71.0,71.0,,,,,,,3M Open
+R2026525,2026,12716,"Hoffman, Charley",CUT,142.0,+0,,,2,73.0,69.0,,,,,,,3M Open
+R2026525,2026,47983,"Ramey, Chad",CUT,142.0,+0,,,2,72.0,70.0,,,,,,,3M Open
+R2026525,2026,40006,"van Rooyen, Erik",CUT,142.0,+0,,,2,74.0,68.0,,,,,,,3M Open
+R2026525,2026,54783,"Wu, Dylan",CUT,142.0,+0,,,2,75.0,67.0,,,,,,,3M Open
+R2026525,2026,47917,"Kanaya, Takumi",CUT,142.0,+0,,,2,73.0,69.0,,,,,,,3M Open
+R2026525,2026,33399,"Hadwin, Adam",CUT,142.0,+0,,,2,69.0,73.0,,,,,,,3M Open
+R2026525,2026,DG29710,"Wood, Griffin",CUT,142.0,+0,,,2,72.0,70.0,,,,,,,3M Open
+R2026525,2026,63454,"Keefer, Johnny",CUT,142.0,+0,,,2,76.0,66.0,,,,,,,3M Open
+R2026525,2026,DG35632,"Sandhu, Sihan",CUT,142.0,+0,,,2,71.0,71.0,,,,,,,3M Open
+R2026525,2026,59866,"Dunlap, Nick",CUT,143.0,+1,,,2,73.0,70.0,,,,,,,3M Open
+R2026525,2026,29725,"Finau, Tony",CUT,143.0,+1,,,2,74.0,69.0,,,,,,,3M Open
+R2026525,2026,29535,"Garnett, Brice",CUT,143.0,+1,,,2,73.0,70.0,,,,,,,3M Open
+R2026525,2026,54422,"Lamprecht, Christo",CUT,143.0,+1,,,2,70.0,73.0,,,,,,,3M Open
+R2026525,2026,36326,"Lipsky, David",CUT,143.0,+1,,,2,70.0,73.0,,,,,,,3M Open
+R2026525,2026,34256,"Putnam, Andrew",CUT,143.0,+1,,,2,69.0,74.0,,,,,,,3M Open
+R2026525,2026,60019,"Suber, Jackson",CUT,143.0,+1,,,2,68.0,75.0,,,,,,,3M Open
+R2026525,2026,60386,"Yellamaraju, Sudarshan",CUT,143.0,+1,,,2,71.0,72.0,,,,,,,3M Open
+R2026525,2026,52372,"Champ, Cameron",CUT,143.0,+1,,,2,72.0,71.0,,,,,,,3M Open
+R2026525,2026,33413,"Martin, Ben",CUT,143.0,+1,,,2,72.0,71.0,,,,,,,3M Open
+R2026525,2026,54421,"Higgo, Garrick",CUT,143.0,+1,,,2,72.0,71.0,,,,,,,3M Open
+R2026525,2026,40162,"Lower, Justin",CUT,143.0,+1,,,2,70.0,73.0,,,,,,,3M Open
+R2026525,2026,35532,"Hoge, Tom",CUT,144.0,+2,,,2,68.0,76.0,,,,,,,3M Open
+R2026525,2026,DG13412,"Olesen, Thorbjorn",CUT,144.0,+2,,,2,69.0,75.0,,,,,,,3M Open
+R2026525,2026,40250,"Pendrith, Taylor",CUT,144.0,+2,,,2,70.0,74.0,,,,,,,3M Open
+R2026525,2026,DG20844,"Mazzoli, Stefano",CUT,144.0,+2,,,2,75.0,69.0,,,,,,,3M Open
+R2026525,2026,45157,"Davis, Cam",CUT,144.0,+2,,,2,71.0,73.0,,,,,,,3M Open
+R2026525,2026,47995,"Riley, Davis",CUT,144.0,+2,,,2,76.0,68.0,,,,,,,3M Open
+R2026525,2026,36824,"Peterson, Paul",CUT,144.0,+2,,,2,72.0,72.0,,,,,,,3M Open
+R2026525,2026,54304,"Vilips, Karl",CUT,144.0,+2,,,2,69.0,75.0,,,,,,,3M Open
+R2026525,2026,47988,"Hardy, Nick",CUT,144.0,+2,,,2,71.0,73.0,,,,,,,3M Open
+R2026525,2026,32070,"Campos, Rafael",CUT,145.0,+3,,,2,72.0,73.0,,,,,,,3M Open
+R2026525,2026,50582,"Paul, Jeremy",CUT,145.0,+3,,,2,75.0,70.0,,,,,,,3M Open
+R2026525,2026,38991,"Tosti, Alejandro",CUT,145.0,+3,,,2,75.0,70.0,,,,,,,3M Open
+R2026525,2026,54607,"Walker, Danny",CUT,145.0,+3,,,2,72.0,73.0,,,,,,,3M Open
+R2026525,2026,27139,"Skinns, David",CUT,145.0,+3,,,2,75.0,70.0,,,,,,,3M Open
+R2026525,2026,DG34058,"Fahrny, Brannon",CUT,146.0,+4,,,2,72.0,74.0,,,,,,,3M Open
+R2026525,2026,36699,"Rodgers, Patrick",CUT,146.0,+4,,,2,77.0,69.0,,,,,,,3M Open
+R2026525,2026,39977,"Homa, Max",CUT,146.0,+4,,,2,72.0,74.0,,,,,,,3M Open
+R2026525,2026,DG31250,"Schultz, Cooper",CUT,147.0,+5,,,2,71.0,76.0,,,,,,,3M Open
+R2026525,2026,23108,"Kuchar, Matt",CUT,147.0,+5,,,2,75.0,72.0,,,,,,,3M Open
+R2026525,2026,DG29702,"Sihota, Jeevan",CUT,148.0,+6,,,2,71.0,77.0,,,,,,,3M Open
+R2026525,2026,59836,"Coody, Pierceson",CUT,148.0,+6,,,2,69.0,79.0,,,,,,,3M Open
+R2026525,2026,46238,"Campbell, Thomas",CUT,148.0,+6,,,2,72.0,76.0,,,,,,,3M Open
+R2026525,2026,34466,"Malnati, Peter",CUT,149.0,+7,,,2,72.0,77.0,,,,,,,3M Open
+R2026525,2026,49964,"Wise, Aaron",CUT,149.0,+7,,,2,72.0,77.0,,,,,,,3M Open
+R2026525,2026,27649,"Snedeker, Brandt",CUT,150.0,+8,,,2,76.0,74.0,,,,,,,3M Open
+R2026525,2026,49120,"Hirata, Kensei",CUT,150.0,+8,,,2,78.0,72.0,,,,,,,3M Open
+R2026525,2026,37278,"Lindheim, Nicholas",CUT,152.0,+10,,,2,75.0,77.0,,,,,,,3M Open
+R2026525,2026,32757,"Kizzire, Patton",WD,77.0,+6,,,1,77.0,,,,,,,,3M Open

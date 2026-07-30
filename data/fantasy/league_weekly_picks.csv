@@ -1,29 +1,29 @@
 weekly_rank,season_rank,team_name,player_1,earnings_1,player_2,earnings_2,player_3,earnings_3,total_earnings,week
-1,26,16,CARL SPACKLER,0,"$827,500",0,"$51,707",0,1842000,current
-2,14,14,Dimpled Balls,0,"$164,575",0,"$164,575",0,1842000,current
-T-3,1,3,GoForeYourself,0,"$827,500",0,"$164,575",0,164575,current
-T-3,2,4,WineTime,0,"$827,500",0,"$164,575",0,164575,current
-T-5,17,1,Caddyshark,0,"$827,500",0,"$69,750",0,164575,current
-T-5,21,11,MacDaddy,0,"$164,575",0,"$69,750",0,827500,current
-7,11,6,Danny Noonan,0,"$827,500",0,"$40,800",0,69750,current
-8,8,15,GOLOWORGOHOME,0,$0,0,"$827,500",0,69750,current
-T-9,6,5,Wildcats,0,$0,0,"$51,707",0,827500,current
-T-9,10,17,Buck Foursome,0,$0,0,"$827,500",0,51707,current
-T-9,15,19,TimmyD,0,"$827,500",0,$0,0,51707,current
-12,13,18,Birdie Bandits,0,"$827,500",0,$0,0,0,current
-13,20,20,Jlemoine,0,"$336,380",0,"$164,575",0,0,current
-14,9,13,Green Jackets,0,$0,0,"$336,380",0,102817,current
-15,23,28,SMETHPORT GOLFER,0,"$336,380",0,$0,0,0,current
-16,24,25,Chest Rockwell,0,"$234,325",0,"$69,750",0,0,current
-17,12,21,Team OGG,0,"$40,800",0,"$102,817",0,51707,current
-T-18,4,23,Andrew Sisson,0,$0,0,"$102,817",0,69750,current
-T-18,18,26,HUBBERS,0,$0,0,"$102,817",0,69750,current
-20,25,24,Davemc410,0,$0,0,$0,0,164575,current
-21,3,2,MikeKett,0,"$102,817",0,"$51,707",0,0,current
-22,22,27,Yanks His Putz,0,$0,0,"$40,800",0,102817,current
-23,27,10,COMER,0,"$40,450",0,"$43,025",0,51707,current
-24,7,7,EagleEash,0,$0,0,"$69,750",0,0,current
-25,16,22,NLA Boys,0,$0,0,"$40,800",0,0,current
-T-26,5,9,JoeBuckYourself,0,$0,0,$0,0,0,current
-T-26,19,12,Rmr617,0,$0,0,$0,0,0,current
-T-26,28,8,Good Good?,0,$0,0,$0,0,0,current
+1,22,Davemc410,Keefer,0,Koivun,1584000,Matsuyama,429550,2013550,current
+2,17,HUBBERS,Koivun,1584000,McNealy,45848,Suber,0,1629848,current
+3,9,Green Jackets,Kitayama,70086,Matsuyama,429550,Woodland,222200,721836,current
+T-4,1,GoForeYourself,"Kim, Tom",103840,Kitayama,70086,Matsuyama,429550,603476,current
+T-4,8,GOLOWORGOHOME,"Kim, Tom",103840,Kitayama,70086,Matsuyama,429550,603476,current
+6,4,Andrew Sisson,"Kim, Tom",103840,Matsuyama,429550,McNealy,45848,579238,current
+7,2,WineTime,Homa,0,"Kim, Tom",103840,Matsuyama,429550,533390,current
+8,3,MikeKett,Homa,0,Matsuyama,429550,McNealy,45848,475398,current
+9,23,SMETHPORT GOLFER,Homa,0,Im,0,Matsuyama,429550,429550,current
+10,18,Caddyshark,Conners,36520,Kitayama,70086,Woodland,222200,328806,current
+11,20,Jlemoine,Brennan,70086,James,0,Kohles,257400,327486,current
+T-12,7,EagleEash,Homa,0,"Kim, Tom",103840,Woodland,222200,326040,current
+T-12,27,COMER,Homa,0,"Kim, Tom",103840,Woodland,222200,326040,current
+14,10,Danny Noonan,James,0,Kohles,257400,Suber,0,257400,current
+15,6,Wildcats,"Kim, Tom",103840,Kitayama,70086,McNealy,45848,219774,current
+16,26,CARL SPACKLER,Finau,0,Knapp,172333,McNealy,45848,218181,current
+17,12,Team OGG,Glover,20152,"Kim, Tom",103840,Kitayama,70086,194078,current
+18,16,NLA Boys,Im,0,"Kim, Tom",103840,Kitayama,70086,173926,current
+19,15,TimmyD,Conners,36520,Fisk,0,"Kim, Tom",103840,140360,current
+20,19,Rmr617,"Coody, Pier",0,Jarvis,21428,"Kim, Tom",103840,125268,current
+T-21,11,Buck Foursome,Finau,0,Kitayama,70086,McNealy,45848,115934,current
+T-21,13,Dimpled Balls,Kitayama,70086,McNealy,45848,Sargent,0,115934,current
+T-21,25,Chest Rockwell,"Hojgaard, R",0,Kitayama,70086,McNealy,45848,115934,current
+24,5,JoeBuckYourself,Ghim,0,Kitayama,70086,Mitchell,26413,96499,current
+25,24,Yanks His Putz,Glover,20152,Greyserman,55000,Im,0,75152,current
+26,21,MacDaddy,Homa,0,Im,0,Kitayama,70086,70086,current
+T-27,14,Birdie Bandits,James,0,Keefer,0,Suber,0,0,current
+T-27,28,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current

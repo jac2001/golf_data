@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-06-23T06:00:20.987594",
+  "last_updated": "2026-07-30T07:03:12",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -21,8 +21,8 @@
       "total_points": 0
     },
     "Gotterup": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Waste Management Phoenix Open",
@@ -30,14 +30,21 @@
           "date": "2026-02-05",
           "result": "1",
           "earnings": 1728000
+        },
+        {
+          "tournament": "John Deere Classic",
+          "week": 22,
+          "date": "2026-07-02",
+          "result": "1",
+          "earnings": 1584000
         }
       ],
-      "total_earnings": 1728000,
+      "total_earnings": 3312000,
       "total_points": 0
     },
     "B Griffin": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Waste Management Phoenix Open",
@@ -45,9 +52,16 @@
           "date": "2026-02-05",
           "result": "T28",
           "earnings": 62949
+        },
+        {
+          "tournament": "John Deere Classic",
+          "week": 22,
+          "date": "2026-07-02",
+          "result": "T21",
+          "earnings": 100056
         }
       ],
-      "total_earnings": 62949,
+      "total_earnings": 163005,
       "total_points": 0
     },
     "J Day": {
@@ -133,8 +147,8 @@
       "total_points": 0
     },
     "Matsuyama": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "The Genesis Invitational",
@@ -149,9 +163,16 @@
           "date": "2026-06-04",
           "result": "T43",
           "earnings": 70000
+        },
+        {
+          "tournament": "3M Open",
+          "week": 25,
+          "date": "2026-07-23",
+          "result": "T3",
+          "earnings": 429550
         }
       ],
-      "total_earnings": 206500,
+      "total_earnings": 636050,
       "total_points": 0
     },
     "Gerard": {
@@ -222,8 +243,8 @@
       "total_points": 0
     },
     "Henley": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "Arnold Palmer Invitational",
@@ -238,9 +259,16 @@
           "date": "2026-05-28",
           "result": "1",
           "earnings": 1782000
+        },
+        {
+          "tournament": "Travelers Championship",
+          "week": 21,
+          "date": "2026-06-25",
+          "result": "T12",
+          "earnings": 440000
         }
       ],
-      "total_earnings": 2484000,
+      "total_earnings": 2924000,
       "total_points": 0
     },
     "McIlroy": {
@@ -451,8 +479,8 @@
       "total_points": 0
     },
     "Spieth": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "Valero Texas Open",
@@ -467,9 +495,16 @@
           "date": "2026-05-21",
           "result": "T19",
           "earnings": 100596
+        },
+        {
+          "tournament": "Travelers Championship",
+          "week": 21,
+          "date": "2026-06-25",
+          "result": "T66",
+          "earnings": 39500
         }
       ],
-      "total_earnings": 121960,
+      "total_earnings": 161460,
       "total_points": 0
     },
     "Yellamaraju": {
@@ -503,8 +538,8 @@
       "total_points": 0
     },
     "Schauffele": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "The Masters",
@@ -519,9 +554,16 @@
           "date": "2026-05-07",
           "result": "T60",
           "earnings": 42500
+        },
+        {
+          "tournament": "The Open Championship",
+          "week": 24,
+          "date": "2026-07-16",
+          "result": "T18",
+          "earnings": 164575
         }
       ],
-      "total_earnings": 672500,
+      "total_earnings": 837075,
       "total_points": 0
     },
     "M Fitzpatrick": {
@@ -554,8 +596,8 @@
       "total_points": 0
     },
     "Fleetwood": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "RBC Heritage",
@@ -570,14 +612,21 @@
           "date": "2026-04-30",
           "result": "T23",
           "earnings": 167143
+        },
+        {
+          "tournament": "The Open Championship",
+          "week": 24,
+          "date": "2026-07-16",
+          "result": "T4",
+          "earnings": 827500
         }
       ],
-      "total_earnings": 210643,
+      "total_earnings": 1038143,
       "total_points": 0
     },
     "Morikawa": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "RBC Heritage",
@@ -592,9 +641,16 @@
           "date": "2026-04-30",
           "result": "T62",
           "earnings": 41500
+        },
+        {
+          "tournament": "The Open Championship",
+          "week": 24,
+          "date": "2026-07-16",
+          "result": "T18",
+          "earnings": 164575
         }
       ],
-      "total_earnings": 864833,
+      "total_earnings": 1029408,
       "total_points": 0
     },
     "Brennan": {
@@ -672,8 +728,8 @@
       "total_points": 0
     },
     "Rahm": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "PGA Championship",
@@ -688,9 +744,16 @@
           "date": "2026-06-18",
           "result": "CUT",
           "earnings": 0
+        },
+        {
+          "tournament": "Genesis Scottish Open",
+          "week": 23,
+          "date": "2026-07-09",
+          "result": "T36",
+          "earnings": 49978
         }
       ],
-      "total_earnings": 1804000,
+      "total_earnings": 1853978,
       "total_points": 0
     },
     "Hisatsune": {
@@ -724,8 +787,8 @@
       "total_points": 0
     },
     "W Clark": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "RBC Canadian Open",
@@ -733,9 +796,16 @@
           "date": "2026-06-11",
           "result": "T11",
           "earnings": 218050
+        },
+        {
+          "tournament": "Genesis Scottish Open",
+          "week": 23,
+          "date": "2026-07-09",
+          "result": "T13",
+          "earnings": 153450
         }
       ],
-      "total_earnings": 218050,
+      "total_earnings": 371500,
       "total_points": 0
     },
     "N Taylor": {
@@ -751,6 +821,81 @@
         }
       ],
       "total_earnings": 21168,
+      "total_points": 0
+    },
+    "Rai": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Travelers Championship",
+          "week": 21,
+          "date": "2026-06-25",
+          "result": "T30",
+          "earnings": 114625
+        }
+      ],
+      "total_earnings": 114625,
+      "total_points": 0
+    },
+    "Koivun": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "John Deere Classic",
+          "week": 22,
+          "date": "2026-07-02",
+          "result": "CUT",
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "MacIntyre": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Genesis Scottish Open",
+          "week": 23,
+          "date": "2026-07-09",
+          "result": "T3",
+          "earnings": 431888
+        }
+      ],
+      "total_earnings": 431888,
+      "total_points": 0
+    },
+    "Homa": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "3M Open",
+          "week": 25,
+          "date": "2026-07-23",
+          "result": "CUT",
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Tom Kim": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "3M Open",
+          "week": 25,
+          "date": "2026-07-23",
+          "result": "T20",
+          "earnings": 103840
+        }
+      ],
+      "total_earnings": 103840,
       "total_points": 0
     }
   },
@@ -791,8 +936,8 @@
         "Matsuyama"
       ],
       "wrp": 26,
-      "earnings_earned": 306750,
-      "points_earned": 306750
+      "earnings_earned": 0,
+      "points_earned": 0
     },
     "week_4": {
       "tournament": "Cognizant Classic",
@@ -895,8 +1040,8 @@
         "Morikawa"
       ],
       "wrp": 2,
-      "earnings_earned": 4466833,
-      "points_earned": 4466833
+      "earnings_earned": 0,
+      "points_earned": 0
     },
     "week_12": {
       "tournament": "Zurich Classic of New Orleans",
@@ -908,8 +1053,8 @@
         "Lowry"
       ],
       "wrp": 16,
-      "earnings_earned": 1372750,
-      "points_earned": 1372750
+      "earnings_earned": 0,
+      "points_earned": 0
     },
     "week_13": {
       "tournament": "Cadillac Championship",
@@ -1019,46 +1164,66 @@
       "tournament": "Travelers Championship",
       "week": 21,
       "date": "2026-06-25",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Henley",
+        "Rai",
+        "Spieth"
+      ],
+      "wrp": 22,
+      "earnings_earned": 594125,
+      "points_earned": 594125
     },
     "week_22": {
       "tournament": "John Deere Classic",
       "week": 22,
       "date": "2026-07-02",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Gotterup",
+        "B Griffin",
+        "Koivun"
+      ],
+      "wrp": 6,
+      "earnings_earned": 0,
+      "points_earned": 0
     },
     "week_23": {
       "tournament": "Genesis Scottish Open",
       "week": 23,
       "date": "2026-07-09",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "W Clark",
+        "MacIntyre",
+        "Rahm"
+      ],
+      "wrp": 7,
+      "earnings_earned": 635316,
+      "points_earned": 635316
     },
     "week_24": {
       "tournament": "The Open Championship",
       "week": 24,
       "date": "2026-07-16",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Fleetwood",
+        "Morikawa",
+        "Schauffele"
+      ],
+      "wrp": 3,
+      "earnings_earned": 0,
+      "points_earned": 0
     },
     "week_25": {
       "tournament": "3M Open",
       "week": 25,
       "date": "2026-07-23",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Homa",
+        "Tom Kim",
+        "Matsuyama"
+      ],
+      "wrp": 7,
+      "earnings_earned": 533390,
+      "points_earned": 533390
     },
     "week_26": {
       "tournament": "Rocket Classic",
@@ -1108,7 +1273,7 @@
   },
   "summary": {
     "total_weeks": 30,
-    "total_players": 41,
-    "total_earnings": 27524467
+    "total_players": 46,
+    "total_earnings": 32128004
   }
 }
