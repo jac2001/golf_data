@@ -1,299 +1,348 @@
 p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
-"Fowler, Rickie","Bridgeman, Jacob",12965,29433,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Bridgeman, Jacob",12965,29433,separate bet offered,datagolf,+116,+104,0.462963,0.490196,0.485714,0.514286,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Bridgeman, Jacob",12965,29433,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Bridgeman, Jacob",12965,29433,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,separate bet offered,datagolf,+123,-102,0.44843,0.50495,0.470358,0.529642,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,void,draftkings,+105,-138,0.487805,0.579832,0.456902,0.543098,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Brennan, Michael",14577,29197,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Brennan, Michael",14577,29197,separate bet offered,datagolf,-109,+131,0.521531,0.4329,0.546431,0.453569,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Brennan, Michael",14577,29197,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Brennan, Michael",14577,29197,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Brennan, Michael",14577,29197,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,separate bet offered,datagolf,-119,+144,0.543379,0.409836,0.570049,0.429951,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,void,pinnacle,-141,+118,0.585062,0.458716,0.560524,0.439476,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Griffin, Ben",14578,24968,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Griffin, Ben",14578,24968,separate bet offered,datagolf,+118,+103,0.458716,0.492611,0.482185,0.517815,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Griffin, Ben",14578,24968,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Griffin, Ben",14578,24968,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Griffin, Ben",14578,24968,void,pinnacle,-101,-118,0.502488,0.541284,0.481415,0.518585,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Clark, Wyndham",14609,23604,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Clark, Wyndham",14609,23604,separate bet offered,datagolf,-107,+129,0.516908,0.436681,0.542066,0.457934,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Clark, Wyndham",14609,23604,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Clark, Wyndham",14609,23604,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Clark, Wyndham",14609,23604,void,pinnacle,-129,+108,0.563319,0.480769,0.539532,0.460468,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Knapp, Jake","Bhatia, Akshay",19396,26096,separate bet offered,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Knapp, Jake","Bhatia, Akshay",19396,26096,separate bet offered,datagolf,-103,+124,0.507389,0.446429,0.531956,0.468044,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Knapp, Jake","Bhatia, Akshay",19396,26096,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Knapp, Jake","Bhatia, Akshay",19396,26096,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Gerard, Ryan",17536,29767,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Gerard, Ryan",17536,29767,separate bet offered,datagolf,-106,+128,0.514563,0.438596,0.53985,0.46015,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Gerard, Ryan",17536,29767,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Gerard, Ryan",17536,29767,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,separate bet offered,datagolf,+109,+110,0.478469,0.47619,0.501193,0.498807,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,separate bet offered,bet365,+125,-152,0.444444,0.603175,0.424242,0.575758,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,separate bet offered,datagolf,+146,-121,0.406504,0.547511,0.426098,0.573902,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,betmgm,+110,-139,0.47619,0.58159,0.450179,0.549821,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,bovada,+115,-150,0.465116,0.6,0.436681,0.563319,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,datagolf,+134,-134,0.42735,0.57265,0.42735,0.57265,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,pinnacle,+106,-126,0.485437,0.557522,0.465442,0.534558,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bradley, Keegan","Cole, Eric",13872,21756,void,betcris,-158,+126,0.612403,0.442478,0.580542,0.419458,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bradley, Keegan","Cole, Eric",13872,21756,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bradley, Keegan","Cole, Eric",13872,21756,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bradley, Keegan","Cole, Eric",13872,21756,void,pinnacle,-141,+118,0.585062,0.458716,0.560524,0.439476,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Michael","Potgieter, Aldrich",17543,27900,void,betcris,-142,+112,0.586777,0.471698,0.554361,0.445639,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Michael","Potgieter, Aldrich",17543,27900,void,betonline,-133,+111,0.570815,0.473934,0.546366,0.453634,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Michael","Potgieter, Aldrich",17543,27900,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Michael","Potgieter, Aldrich",17543,27900,void,pinnacle,-127,+106,0.559471,0.485437,0.535426,0.464574,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Grillo, Emiliano","Bezuidenhout, Christiaan",12808,18103,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Grillo, Emiliano","Bezuidenhout, Christiaan",12808,18103,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Grillo, Emiliano","Bezuidenhout, Christiaan",12808,18103,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Power, Seamus","Horschel, Billy",10104,11276,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Power, Seamus","Horschel, Billy",10104,11276,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Power, Seamus","Horschel, Billy",10104,11276,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Power, Seamus","Horschel, Billy",10104,11276,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Svensson, Jesper","Phillips, Chandler",26850,27164,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Svensson, Jesper","Phillips, Chandler",26850,27164,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Svensson, Jesper","Phillips, Chandler",26850,27164,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cantlay, Patrick","Clark, Wyndham",15466,23604,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cantlay, Patrick","Clark, Wyndham",15466,23604,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cantlay, Patrick","Clark, Wyndham",15466,23604,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Finau, Tony","Yellamaraju, Sudarshan",11676,29925,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Finau, Tony","Yellamaraju, Sudarshan",11676,29925,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Finau, Tony","Yellamaraju, Sudarshan",11676,29925,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Glover, Lucas","Kirk, Chris",7399,12423,void,betcris,+121,-152,0.452489,0.603175,0.42863,0.57137,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Glover, Lucas","Kirk, Chris",7399,12423,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Glover, Lucas","Kirk, Chris",7399,12423,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Taylor, Nick","Novak, Andrew",13126,23475,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Taylor, Nick","Novak, Andrew",13126,23475,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Taylor, Nick","Novak, Andrew",13126,23475,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Taylor, Nick","Novak, Andrew",13126,23475,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Kim, Si Woo",14578,14609,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Kim, Si Woo",14578,14609,void,betonline,-107,-113,0.516908,0.530516,0.493504,0.506496,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Kim, Si Woo",14578,14609,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Yu, Kevin","Ghim, Doug",17881,24550,void,betcris,+111,-141,0.473934,0.585062,0.447531,0.552469,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Yu, Kevin","Ghim, Doug",17881,24550,void,betonline,+108,-129,0.480769,0.563319,0.460468,0.539532,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Yu, Kevin","Ghim, Doug",17881,24550,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fisk, Steven","Mouw, William",26657,29770,void,betcris,-107,-123,0.516908,0.55157,0.48378,0.51622,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fisk, Steven","Mouw, William",26657,29770,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fisk, Steven","Mouw, William",26657,29770,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,pinnacle,-101,-118,0.502488,0.541284,0.481415,0.518585,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Thompson, Davis","Brennan, Michael",27364,29197,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Thompson, Davis","Brennan, Michael",27364,29197,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Thompson, Davis","Brennan, Michael",27364,29197,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Thompson, Davis","Brennan, Michael",27364,29197,void,pinnacle,-119,+100,0.543379,0.5,0.520788,0.479212,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hossler, Beau","Hall, Harry",15470,27194,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hossler, Beau","Hall, Harry",15470,27194,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hossler, Beau","Hall, Harry",15470,27194,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hughes, Mackenzie","Echavarria, Nico",15556,22833,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hughes, Mackenzie","Echavarria, Nico",15556,22833,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hughes, Mackenzie","Echavarria, Nico",15556,22833,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Wallace, Matt","Coody, Pierceson",20706,28309,void,betcris,-129,-101,0.563319,0.502488,0.528538,0.471462,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Wallace, Matt","Coody, Pierceson",20706,28309,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Wallace, Matt","Coody, Pierceson",20706,28309,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Wallace, Matt","Coody, Pierceson",20706,28309,void,pinnacle,-128,+107,0.561404,0.483092,0.537488,0.462512,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Stevens, Sam","McCarty, Matt",25569,28635,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Stevens, Sam","McCarty, Matt",25569,28635,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Stevens, Sam","McCarty, Matt",25569,28635,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Nakajima, Keita","Hodges, Lee",21074,25157,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Nakajima, Keita","Hodges, Lee",21074,25157,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Nakajima, Keita","Hodges, Lee",21074,25157,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Suber, Jackson","Keefer, Johnny",29279,32457,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Suber, Jackson","Keefer, Johnny",29279,32457,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Suber, Jackson","Keefer, Johnny",29279,32457,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Neergaard-Petersen, Rasmus","James, Ben",23841,29827,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Neergaard-Petersen, Rasmus","James, Ben",23841,29827,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Neergaard-Petersen, Rasmus","James, Ben",23841,29827,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Neergaard-Petersen, Rasmus","James, Ben",23841,29827,void,pinnacle,-112,-106,0.528302,0.514563,0.506587,0.493413,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"McCarthy, Denny","Meissner, Mac",19870,28159,void,betcris,+102,-132,0.49505,0.568966,0.465266,0.534734,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"McCarthy, Denny","Meissner, Mac",19870,28159,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"McCarthy, Denny","Meissner, Mac",19870,28159,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hisatsune, Ryo","Greyserman, Max",22760,23465,void,betcris,-156,+124,0.609375,0.446429,0.577167,0.422833,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hisatsune, Ryo","Greyserman, Max",22760,23465,void,betonline,-144,+120,0.590164,0.454545,0.564907,0.435093,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hisatsune, Ryo","Greyserman, Max",22760,23465,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hisatsune, Ryo","Greyserman, Max",22760,23465,void,pinnacle,-139,+116,0.58159,0.462963,0.556784,0.443216,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Smith, Jordan",14636,18586,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Smith, Jordan",14636,18586,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Smith, Jordan",14636,18586,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Knapp, Jake",17536,19396,void,betcris,-135,+105,0.574468,0.487805,0.540791,0.459209,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Knapp, Jake",17536,19396,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Knapp, Jake",17536,19396,void,datagolf,-126,+126,0.557522,0.442478,0.557522,0.442478,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Knapp, Jake",17536,19396,void,pinnacle,-141,+118,0.585062,0.458716,0.560524,0.439476,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Penge, Marco",17576,22465,void,betcris,-145,+115,0.591837,0.465116,0.559946,0.440054,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Penge, Marco",17576,22465,void,betonline,-142,+118,0.586777,0.458716,0.561244,0.438756,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Penge, Marco",17576,22465,void,datagolf,-138,+138,0.579832,0.420168,0.579832,0.420168,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Hojgaard, Nicolai",14577,23602,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Hojgaard, Nicolai",14577,23602,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Hojgaard, Nicolai",14577,23602,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Hojgaard, Nicolai",14577,23602,void,pinnacle,-105,-113,0.512195,0.530516,0.491215,0.508785,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Ventura, Kristoffer","Pendrith, Taylor",15651,17780,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Ventura, Kristoffer","Pendrith, Taylor",15651,17780,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Ventura, Kristoffer","Pendrith, Taylor",15651,17780,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hoey, Rico","McGreevy, Max",23504,23505,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hoey, Rico","McGreevy, Max",23504,23505,void,pinnacle,+100,-119,0.5,0.543379,0.479212,0.520788,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Grillo, Emiliano","Kohles, Ben",12808,16395,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Grillo, Emiliano","Kohles, Ben",12808,16395,void,pinnacle,+100,-119,0.5,0.543379,0.479212,0.520788,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hughes, Mackenzie","Bezuidenhout, Christiaan",15556,18103,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hughes, Mackenzie","Bezuidenhout, Christiaan",15556,18103,void,pinnacle,+101,-120,0.497512,0.545455,0.477016,0.522984,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Glover, Lucas","Blair, Zac",7399,17639,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Glover, Lucas","Blair, Zac",7399,17639,void,pinnacle,-104,-114,0.509804,0.53271,0.489014,0.510986,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schmid, Matti","Smotherman, Austin",20722,22985,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schmid, Matti","Smotherman, Austin",20722,22985,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kirk, Chris","Hodges, Lee",12423,25157,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kirk, Chris","Hodges, Lee",12423,25157,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Finau, Tony","Keefer, Johnny",11676,32457,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Finau, Tony","Keefer, Johnny",11676,32457,void,pinnacle,-112,-106,0.528302,0.514563,0.506587,0.493413,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Clark, Wyndham","Koivun, Jackson",23604,32319,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Clark, Wyndham","Koivun, Jackson",23604,32319,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Clark, Wyndham","Koivun, Jackson",23604,32319,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Clark, Wyndham","Koivun, Jackson",23604,32319,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Clark, Wyndham","Koivun, Jackson",23604,32319,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Castillo, Ricky","McCarty, Matt",27819,28635,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Castillo, Ricky","McCarty, Matt",27819,28635,void,pinnacle,-116,-102,0.537037,0.50495,0.515397,0.484603,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Schauffele, Xander",14609,19895,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Schauffele, Xander",14609,19895,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Schauffele, Xander",14609,19895,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Young, Cameron","Gotterup, Chris",26651,27774,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Young, Cameron","Gotterup, Chris",26651,27774,void,pinnacle,-138,+116,0.579832,0.462963,0.556036,0.443964,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Brennan, Michael",12965,29197,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Brennan, Michael",12965,29197,void,pinnacle,-120,+101,0.545455,0.497512,0.522984,0.477016,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,pinnacle,-120,+101,0.545455,0.497512,0.522984,0.477016,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Yu, Kevin","Svensson, Jesper",17881,26850,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Yu, Kevin","Svensson, Jesper",17881,26850,void,pinnacle,-127,+106,0.559471,0.485437,0.535426,0.464574,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hossler, Beau","Mouw, William",15470,29770,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hossler, Beau","Mouw, William",15470,29770,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bhatia, Akshay","Bridgeman, Jacob",26096,29433,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bhatia, Akshay","Bridgeman, Jacob",26096,29433,void,pinnacle,-116,-102,0.537037,0.50495,0.515397,0.484603,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Griffin, Ben","Gerard, Ryan",24968,29767,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Griffin, Ben","Gerard, Ryan",24968,29767,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Griffin, Ben","Gerard, Ryan",24968,29767,void,pinnacle,-121,+102,0.547511,0.49505,0.52516,0.47484,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Thompson, Davis",17576,27364,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Thompson, Davis",17576,27364,void,pinnacle,-107,-111,0.516908,0.526066,0.49561,0.50439,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"McCarthy, Denny","Hall, Harry",19870,27194,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"McCarthy, Denny","Hall, Harry",19870,27194,void,pinnacle,-140,+118,0.583333,0.458716,0.559795,0.440205,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hisatsune, Ryo","Ghim, Doug",22760,24550,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hisatsune, Ryo","Ghim, Doug",22760,24550,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Pendrith, Taylor","Yellamaraju, Sudarshan",17780,29925,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Pendrith, Taylor","Yellamaraju, Sudarshan",17780,29925,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Smith, Jordan",17576,18586,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Smith, Jordan",17576,18586,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Im, Sungjae","Smith, Jordan",17488,18586,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Im, Sungjae","Smith, Jordan",17488,18586,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Im, Sungjae","Greyserman, Max",17488,23465,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Im, Sungjae","Greyserman, Max",17488,23465,void,pinnacle,-126,+106,0.557522,0.485437,0.534558,0.465442,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Knapp, Jake",13562,19396,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Knapp, Jake",13562,19396,void,pinnacle,-119,+100,0.543379,0.5,0.520788,0.479212,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Henley, Russell",13562,14578,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Henley, Russell",13562,14578,void,pinnacle,-104,-114,0.509804,0.53271,0.489014,0.510986,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Moore, Taylor","Fisk, Steven",21944,26657,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Moore, Taylor","Fisk, Steven",21944,26657,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cantlay, Patrick","Spaun, J.J.",15466,17536,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cantlay, Patrick","Spaun, J.J.",15466,17536,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Penge, Marco",14636,22465,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Penge, Marco",14636,22465,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Penge, Marco",14636,22465,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Penge, Marco",14636,22465,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"Meissner, Mac","Suber, Jackson",28159,29279,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Meissner, Mac","Suber, Jackson",28159,29279,void,pinnacle,-121,+101,0.547511,0.497512,0.523922,0.476078,False,True,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Bhatia, Akshay",14577,26096,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Bhatia, Akshay",14577,26096,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Bhatia, Akshay",14577,26096,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cole, Eric","Suber, Jackson",21756,29279,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cole, Eric","Suber, Jackson",21756,29279,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cole, Eric","Suber, Jackson",21756,29279,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Thorbjornsen, Michael","Bridgeman, Jacob",26649,29433,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Thorbjornsen, Michael","Bridgeman, Jacob",26649,29433,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Thorbjornsen, Michael","Bridgeman, Jacob",26649,29433,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Im, Sungjae","Kim, Michael",17488,17543,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Im, Sungjae","Kim, Michael",17488,17543,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Im, Sungjae","Kim, Michael",17488,17543,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Gotterup, Chris",14609,27774,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Gotterup, Chris",14609,27774,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Gotterup, Chris",14609,27774,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Gotterup, Chris",14609,27774,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cantlay, Patrick","Young, Cameron",15466,26651,void,datagolf,+149,-149,0.401606,0.598394,0.401606,0.598394,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cantlay, Patrick","Young, Cameron",15466,26651,void,unibet,+130,-175,0.434783,0.636364,0.405904,0.594096,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Knapp, Jake",14578,19396,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Knapp, Jake",14578,19396,void,unibet,-125,-106,0.555556,0.514563,0.519153,0.480847,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Smith, Jordan","Bridgeman, Jacob",18586,29433,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Smith, Jordan","Bridgeman, Jacob",18586,29433,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Hisatsune, Ryo",17576,22760,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Conners, Corey","Hisatsune, Ryo",17576,22760,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Gotterup, Chris",19895,27774,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Schauffele, Xander","Gotterup, Chris",19895,27774,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Gerard, Ryan",14609,29767,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Kim, Si Woo","Gerard, Ryan",14609,29767,void,unibet,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Bhatia, Akshay",12965,26096,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Bhatia, Akshay",12965,26096,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Bhatia, Akshay",12965,26096,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Ghim, Doug","Thompson, Davis",24550,27364,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Ghim, Doug","Thompson, Davis",24550,27364,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bradley, Keegan","Kim, Michael",13872,17543,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bradley, Keegan","Kim, Michael",13872,17543,void,unibet,-137,+105,0.578059,0.487805,0.542339,0.457661,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cole, Eric","James, Ben",21756,29827,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Cole, Eric","James, Ben",21756,29827,void,unibet,-125,-106,0.555556,0.514563,0.519153,0.480847,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Clark, Wyndham","Gotterup, Chris",23604,27774,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Clark, Wyndham","Gotterup, Chris",23604,27774,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bradley, Keegan","Ghim, Doug",13872,24550,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bradley, Keegan","Ghim, Doug",13872,24550,void,draftkings,-134,+102,0.57265,0.49505,0.53634,0.46366,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Koivun, Jackson",12965,32319,void,datagolf,+134,-134,0.42735,0.57265,0.42735,0.57265,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Fowler, Rickie","Koivun, Jackson",12965,32319,void,draftkings,+115,-150,0.465116,0.6,0.436681,0.563319,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bhatia, Akshay","Gerard, Ryan",26096,29767,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Bhatia, Akshay","Gerard, Ryan",26096,29767,void,draftkings,-106,-122,0.514563,0.54955,0.483561,0.516439,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Ruffels, Ryan","Dalke, Brad",17169,21501,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Ruffels, Ryan","Dalke, Brad",17169,21501,void,draftkings,+108,-152,0.480769,0.603175,0.443537,0.556463,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Knapp, Jake","Thorbjornsen, Michael",19396,26649,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Knapp, Jake","Thorbjornsen, Michael",19396,26649,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Young, Cameron",14578,26651,void,datagolf,+166,-166,0.37594,0.62406,0.37594,0.62406,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Young, Cameron",14578,26651,void,draftkings,+140,-184,0.416667,0.647887,0.3914,0.6086,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Griffin, Ben",17536,24968,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Griffin, Ben",17536,24968,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Brennan, Michael",14636,29197,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spieth, Jordan","Brennan, Michael",14636,29197,void,draftkings,-112,-116,0.528302,0.537037,0.4959,0.5041,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hojgaard, Nicolai","Bridgeman, Jacob",23602,29433,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Hojgaard, Nicolai","Bridgeman, Jacob",23602,29433,void,draftkings,-112,-116,0.528302,0.537037,0.4959,0.5041,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Koivun, Jackson",14578,32319,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Henley, Russell","Koivun, Jackson",14578,32319,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Knapp, Jake","Clark, Wyndham",19396,23604,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Knapp, Jake","Clark, Wyndham",19396,23604,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Hojgaard, Nicolai",17536,23602,void,betmgm,-139,+110,0.58159,0.47619,0.549821,0.450179,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"Spaun, J.J.","Hojgaard, Nicolai",17536,23602,void,datagolf,-135,+135,0.574468,0.425532,0.574468,0.425532,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Bridgeman, Jacob",14577,29433,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Rocket Classic,2026-07-29 21:34:00 UTC
-"English, Harris","Bridgeman, Jacob",14577,29433,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Rocket Classic,2026-07-29 21:34:00 UTC
+"Fowler, Rickie","Bridgeman, Jacob",12965,29433,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Bridgeman, Jacob",12965,29433,separate bet offered,datagolf,+116,+104,0.462963,0.490196,0.485714,0.514286,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Bridgeman, Jacob",12965,29433,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Bridgeman, Jacob",12965,29433,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,separate bet offered,datagolf,+123,-102,0.44843,0.50495,0.470358,0.529642,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Cantlay, Patrick",13562,15466,void,draftkings,+105,-138,0.487805,0.579832,0.456902,0.543098,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Brennan, Michael",14577,29197,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Brennan, Michael",14577,29197,separate bet offered,datagolf,-109,+131,0.521531,0.4329,0.546431,0.453569,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Brennan, Michael",14577,29197,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Brennan, Michael",14577,29197,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Brennan, Michael",14577,29197,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,separate bet offered,datagolf,-119,+144,0.543379,0.409836,0.570049,0.429951,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,void,pinnacle,-141,+118,0.585062,0.458716,0.560524,0.439476,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Griffin, Ben",14578,24968,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Griffin, Ben",14578,24968,separate bet offered,datagolf,+118,+103,0.458716,0.492611,0.482185,0.517815,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Griffin, Ben",14578,24968,void,betcris,-118,-112,0.541284,0.528302,0.506069,0.493931,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Griffin, Ben",14578,24968,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Griffin, Ben",14578,24968,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Griffin, Ben",14578,24968,void,pinnacle,-101,-118,0.502488,0.541284,0.481415,0.518585,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,separate bet offered,datagolf,-107,+129,0.516908,0.436681,0.542066,0.457934,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,void,betcris,-142,+112,0.586777,0.471698,0.554361,0.445639,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Clark, Wyndham",14609,23604,void,pinnacle,-129,+108,0.563319,0.480769,0.539532,0.460468,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Knapp, Jake","Bhatia, Akshay",19396,26096,separate bet offered,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Knapp, Jake","Bhatia, Akshay",19396,26096,separate bet offered,datagolf,-103,+124,0.507389,0.446429,0.531956,0.468044,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Knapp, Jake","Bhatia, Akshay",19396,26096,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Knapp, Jake","Bhatia, Akshay",19396,26096,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Gerard, Ryan",17536,29767,separate bet offered,bet365,-105,+100,0.512195,0.5,0.506024,0.493976,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Gerard, Ryan",17536,29767,separate bet offered,datagolf,-106,+128,0.514563,0.438596,0.53985,0.46015,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Gerard, Ryan",17536,29767,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Gerard, Ryan",17536,29767,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,separate bet offered,datagolf,+109,+110,0.478469,0.47619,0.501193,0.498807,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,betcris,-118,-112,0.541284,0.528302,0.506069,0.493931,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Thorbjornsen, Michael",23602,26649,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,separate bet offered,bet365,+125,-152,0.444444,0.603175,0.424242,0.575758,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,separate bet offered,datagolf,+146,-121,0.406504,0.547511,0.426098,0.573902,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,betmgm,+110,-139,0.47619,0.58159,0.450179,0.549821,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,bovada,+115,-150,0.465116,0.6,0.436681,0.563319,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,datagolf,+134,-134,0.42735,0.57265,0.42735,0.57265,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,pinnacle,+107,-127,0.483092,0.559471,0.463369,0.536631,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Cole, Eric",13872,21756,void,betcris,-158,+126,0.612403,0.442478,0.580542,0.419458,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Cole, Eric",13872,21756,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Cole, Eric",13872,21756,void,bovada,-155,+120,0.607843,0.454545,0.572148,0.427852,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Cole, Eric",13872,21756,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Cole, Eric",13872,21756,void,pinnacle,-147,+123,0.595142,0.44843,0.570293,0.429707,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Michael","Potgieter, Aldrich",17543,27900,void,betcris,-142,+112,0.586777,0.471698,0.554361,0.445639,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Michael","Potgieter, Aldrich",17543,27900,void,betonline,-133,+111,0.570815,0.473934,0.546366,0.453634,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Michael","Potgieter, Aldrich",17543,27900,void,bovada,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Michael","Potgieter, Aldrich",17543,27900,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Michael","Potgieter, Aldrich",17543,27900,void,pinnacle,-126,+106,0.557522,0.485437,0.534558,0.465442,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Grillo, Emiliano","Bezuidenhout, Christiaan",12808,18103,void,betcris,+102,-132,0.49505,0.568966,0.465266,0.534734,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Grillo, Emiliano","Bezuidenhout, Christiaan",12808,18103,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Grillo, Emiliano","Bezuidenhout, Christiaan",12808,18103,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Power, Seamus","Horschel, Billy",10104,11276,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Power, Seamus","Horschel, Billy",10104,11276,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Power, Seamus","Horschel, Billy",10104,11276,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Power, Seamus","Horschel, Billy",10104,11276,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Power, Seamus","Horschel, Billy",10104,11276,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Svensson, Jesper","Phillips, Chandler",26850,27164,void,betcris,-113,-117,0.530516,0.539171,0.495955,0.504045,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Svensson, Jesper","Phillips, Chandler",26850,27164,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Svensson, Jesper","Phillips, Chandler",26850,27164,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cantlay, Patrick","Clark, Wyndham",15466,23604,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cantlay, Patrick","Clark, Wyndham",15466,23604,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cantlay, Patrick","Clark, Wyndham",15466,23604,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Finau, Tony","Yellamaraju, Sudarshan",11676,29925,void,betcris,-120,-110,0.545455,0.52381,0.510121,0.489879,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Finau, Tony","Yellamaraju, Sudarshan",11676,29925,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Finau, Tony","Yellamaraju, Sudarshan",11676,29925,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Glover, Lucas","Kirk, Chris",7399,12423,void,betcris,+121,-152,0.452489,0.603175,0.42863,0.57137,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Glover, Lucas","Kirk, Chris",7399,12423,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Glover, Lucas","Kirk, Chris",7399,12423,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Taylor, Nick","Novak, Andrew",13126,23475,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Taylor, Nick","Novak, Andrew",13126,23475,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Taylor, Nick","Novak, Andrew",13126,23475,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Taylor, Nick","Novak, Andrew",13126,23475,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Taylor, Nick","Novak, Andrew",13126,23475,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,betonline,-107,-113,0.516908,0.530516,0.493504,0.506496,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Thorbjornsen, Michael",26096,26649,void,pinnacle,-116,-103,0.537037,0.507389,0.514193,0.485807,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Yu, Kevin","Ghim, Doug",17881,24550,void,betcris,+111,-141,0.473934,0.585062,0.447531,0.552469,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Yu, Kevin","Ghim, Doug",17881,24550,void,betonline,+108,-129,0.480769,0.563319,0.460468,0.539532,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Yu, Kevin","Ghim, Doug",17881,24550,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fisk, Steven","Mouw, William",26657,29770,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fisk, Steven","Mouw, William",26657,29770,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fisk, Steven","Mouw, William",26657,29770,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,pinnacle,+100,-119,0.5,0.543379,0.479212,0.520788,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Jaeger, Stephan","Hojgaard, Rasmus",16394,23838,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Thompson, Davis","Brennan, Michael",27364,29197,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Thompson, Davis","Brennan, Michael",27364,29197,void,betonline,-113,-107,0.530516,0.516908,0.506496,0.493504,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Thompson, Davis","Brennan, Michael",27364,29197,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Thompson, Davis","Brennan, Michael",27364,29197,void,pinnacle,-119,+100,0.543379,0.5,0.520788,0.479212,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hossler, Beau","Hall, Harry",15470,27194,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hossler, Beau","Hall, Harry",15470,27194,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hossler, Beau","Hall, Harry",15470,27194,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hughes, Mackenzie","Echavarria, Nico",15556,22833,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hughes, Mackenzie","Echavarria, Nico",15556,22833,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hughes, Mackenzie","Echavarria, Nico",15556,22833,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Wallace, Matt","Coody, Pierceson",20706,28309,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Wallace, Matt","Coody, Pierceson",20706,28309,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Wallace, Matt","Coody, Pierceson",20706,28309,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Wallace, Matt","Coody, Pierceson",20706,28309,void,pinnacle,-128,+107,0.561404,0.483092,0.537488,0.462512,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Stevens, Sam","McCarty, Matt",25569,28635,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Stevens, Sam","McCarty, Matt",25569,28635,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Stevens, Sam","McCarty, Matt",25569,28635,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Nakajima, Keita","Hodges, Lee",21074,25157,void,betcris,-102,-128,0.50495,0.561404,0.47353,0.52647,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Nakajima, Keita","Hodges, Lee",21074,25157,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Nakajima, Keita","Hodges, Lee",21074,25157,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Suber, Jackson","Keefer, Johnny",29279,32457,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Suber, Jackson","Keefer, Johnny",29279,32457,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Suber, Jackson","Keefer, Johnny",29279,32457,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Neergaard-Petersen, Rasmus","James, Ben",23841,29827,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Neergaard-Petersen, Rasmus","James, Ben",23841,29827,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Neergaard-Petersen, Rasmus","James, Ben",23841,29827,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Neergaard-Petersen, Rasmus","James, Ben",23841,29827,void,pinnacle,-112,-106,0.528302,0.514563,0.506587,0.493413,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"McCarthy, Denny","Meissner, Mac",19870,28159,void,betcris,+102,-132,0.49505,0.568966,0.465266,0.534734,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"McCarthy, Denny","Meissner, Mac",19870,28159,void,betonline,-108,-112,0.519231,0.528302,0.49567,0.50433,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"McCarthy, Denny","Meissner, Mac",19870,28159,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hisatsune, Ryo","Greyserman, Max",22760,23465,void,betcris,-156,+124,0.609375,0.446429,0.577167,0.422833,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hisatsune, Ryo","Greyserman, Max",22760,23465,void,betonline,-144,+120,0.590164,0.454545,0.564907,0.435093,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hisatsune, Ryo","Greyserman, Max",22760,23465,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hisatsune, Ryo","Greyserman, Max",22760,23465,void,pinnacle,-139,+116,0.58159,0.462963,0.556784,0.443216,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Smith, Jordan",14636,18586,void,betcris,+106,-136,0.485437,0.576271,0.457223,0.542777,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Smith, Jordan",14636,18586,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Smith, Jordan",14636,18586,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Knapp, Jake",17536,19396,void,betcris,-135,+105,0.574468,0.487805,0.540791,0.459209,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Knapp, Jake",17536,19396,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Knapp, Jake",17536,19396,void,datagolf,-126,+126,0.557522,0.442478,0.557522,0.442478,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Knapp, Jake",17536,19396,void,pinnacle,-146,+122,0.593496,0.45045,0.568512,0.431488,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Penge, Marco",17576,22465,void,betcris,-145,+115,0.591837,0.465116,0.559946,0.440054,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Penge, Marco",17576,22465,void,betonline,-142,+118,0.586777,0.458716,0.561244,0.438756,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Penge, Marco",17576,22465,void,datagolf,-138,+138,0.579832,0.420168,0.579832,0.420168,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Hojgaard, Nicolai",14577,23602,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Hojgaard, Nicolai",14577,23602,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Hojgaard, Nicolai",14577,23602,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Hojgaard, Nicolai",14577,23602,void,pinnacle,-103,-115,0.507389,0.534884,0.48681,0.51319,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Ventura, Kristoffer","Pendrith, Taylor",15651,17780,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Ventura, Kristoffer","Pendrith, Taylor",15651,17780,void,betonline,-104,-116,0.509804,0.537037,0.486993,0.513007,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Ventura, Kristoffer","Pendrith, Taylor",15651,17780,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hoey, Rico","McGreevy, Max",23504,23505,void,betcris,-106,-124,0.514563,0.553571,0.48174,0.51826,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hoey, Rico","McGreevy, Max",23504,23505,void,bovada,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hoey, Rico","McGreevy, Max",23504,23505,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hoey, Rico","McGreevy, Max",23504,23505,void,pinnacle,+100,-119,0.5,0.543379,0.479212,0.520788,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hughes, Mackenzie","Bezuidenhout, Christiaan",15556,18103,void,betcris,+117,-147,0.460829,0.595142,0.436403,0.563597,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hughes, Mackenzie","Bezuidenhout, Christiaan",15556,18103,void,bovada,+120,-155,0.454545,0.607843,0.427852,0.572148,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hughes, Mackenzie","Bezuidenhout, Christiaan",15556,18103,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hughes, Mackenzie","Bezuidenhout, Christiaan",15556,18103,void,pinnacle,+117,-140,0.460829,0.583333,0.441339,0.558661,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Grillo, Emiliano","Kohles, Ben",12808,16395,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Grillo, Emiliano","Kohles, Ben",12808,16395,void,bovada,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Grillo, Emiliano","Kohles, Ben",12808,16395,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Grillo, Emiliano","Kohles, Ben",12808,16395,void,pinnacle,+100,-119,0.5,0.543379,0.479212,0.520788,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Glover, Lucas","Blair, Zac",7399,17639,void,betcris,-121,-109,0.547511,0.521531,0.512151,0.487849,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Glover, Lucas","Blair, Zac",7399,17639,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Glover, Lucas","Blair, Zac",7399,17639,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Glover, Lucas","Blair, Zac",7399,17639,void,pinnacle,-116,-103,0.537037,0.507389,0.514193,0.485807,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schmid, Matti","Smotherman, Austin",20722,22985,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schmid, Matti","Smotherman, Austin",20722,22985,void,bovada,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schmid, Matti","Smotherman, Austin",20722,22985,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schmid, Matti","Smotherman, Austin",20722,22985,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Finau, Tony","Keefer, Johnny",11676,32457,void,betcris,-107,-123,0.516908,0.55157,0.48378,0.51622,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Finau, Tony","Keefer, Johnny",11676,32457,void,bovada,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Finau, Tony","Keefer, Johnny",11676,32457,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Finau, Tony","Keefer, Johnny",11676,32457,void,pinnacle,-112,-106,0.528302,0.514563,0.506587,0.493413,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Castillo, Ricky","McCarty, Matt",27819,28635,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Castillo, Ricky","McCarty, Matt",27819,28635,void,bovada,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Castillo, Ricky","McCarty, Matt",27819,28635,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Castillo, Ricky","McCarty, Matt",27819,28635,void,pinnacle,-116,-102,0.537037,0.50495,0.515397,0.484603,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Clark, Wyndham","Koivun, Jackson",23604,32319,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Clark, Wyndham","Koivun, Jackson",23604,32319,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Clark, Wyndham","Koivun, Jackson",23604,32319,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Clark, Wyndham","Koivun, Jackson",23604,32319,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Clark, Wyndham","Koivun, Jackson",23604,32319,void,pinnacle,-102,-116,0.50495,0.537037,0.484603,0.515397,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Clark, Wyndham","Koivun, Jackson",23604,32319,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kirk, Chris","Hodges, Lee",12423,25157,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kirk, Chris","Hodges, Lee",12423,25157,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kirk, Chris","Hodges, Lee",12423,25157,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kirk, Chris","Hodges, Lee",12423,25157,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Young, Cameron","Gotterup, Chris",26651,27774,void,betcris,-129,-101,0.563319,0.502488,0.528538,0.471462,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Young, Cameron","Gotterup, Chris",26651,27774,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Young, Cameron","Gotterup, Chris",26651,27774,void,pinnacle,-126,+106,0.557522,0.485437,0.534558,0.465442,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Brennan, Michael",12965,29197,void,betcris,-139,+109,0.58159,0.478469,0.548639,0.451361,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Brennan, Michael",12965,29197,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Brennan, Michael",12965,29197,void,pinnacle,-120,+101,0.545455,0.497512,0.522984,0.477016,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Schauffele, Xander",14609,19895,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Schauffele, Xander",14609,19895,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Schauffele, Xander",14609,19895,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Schauffele, Xander",14609,19895,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hossler, Beau","Mouw, William",15470,29770,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hossler, Beau","Mouw, William",15470,29770,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hossler, Beau","Mouw, William",15470,29770,void,datagolf,-103,+103,0.507389,0.492611,0.507389,0.492611,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hossler, Beau","Mouw, William",15470,29770,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Bridgeman, Jacob",26096,29433,void,betcris,-116,-114,0.537037,0.53271,0.502022,0.497978,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Bridgeman, Jacob",26096,29433,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Bridgeman, Jacob",26096,29433,void,pinnacle,-127,+106,0.559471,0.485437,0.535426,0.464574,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Yu, Kevin","Svensson, Jesper",17881,26850,void,betcris,-139,+109,0.58159,0.478469,0.548639,0.451361,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Yu, Kevin","Svensson, Jesper",17881,26850,void,bovada,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Yu, Kevin","Svensson, Jesper",17881,26850,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Yu, Kevin","Svensson, Jesper",17881,26850,void,pinnacle,-127,+106,0.559471,0.485437,0.535426,0.464574,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Cantlay, Patrick",14609,15466,void,pinnacle,-120,+101,0.545455,0.497512,0.522984,0.477016,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,betcris,-147,+117,0.595142,0.460829,0.563597,0.436403,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,pinnacle,-142,+119,0.586777,0.456621,0.562371,0.437629,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"McCarthy, Denny","Hall, Harry",19870,27194,void,betcris,-156,+124,0.609375,0.446429,0.577167,0.422833,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"McCarthy, Denny","Hall, Harry",19870,27194,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"McCarthy, Denny","Hall, Harry",19870,27194,void,pinnacle,-140,+118,0.583333,0.458716,0.559795,0.440205,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Thompson, Davis",17576,27364,void,betcris,-108,-122,0.519231,0.54955,0.485816,0.514184,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Thompson, Davis",17576,27364,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Thompson, Davis",17576,27364,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Thompson, Davis",17576,27364,void,pinnacle,-107,-111,0.516908,0.526066,0.49561,0.50439,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hisatsune, Ryo","Ghim, Doug",22760,24550,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hisatsune, Ryo","Ghim, Doug",22760,24550,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hisatsune, Ryo","Ghim, Doug",22760,24550,void,pinnacle,-129,+108,0.563319,0.480769,0.539532,0.460468,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Pendrith, Taylor","Yellamaraju, Sudarshan",17780,29925,void,betcris,-107,-123,0.516908,0.55157,0.48378,0.51622,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Pendrith, Taylor","Yellamaraju, Sudarshan",17780,29925,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Pendrith, Taylor","Yellamaraju, Sudarshan",17780,29925,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Smith, Jordan",17488,18586,void,betcris,-114,-116,0.53271,0.537037,0.497978,0.502022,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Smith, Jordan",17488,18586,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Smith, Jordan",17488,18586,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Smith, Jordan",17576,18586,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Smith, Jordan",17576,18586,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Smith, Jordan",17576,18586,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Knapp, Jake",13562,19396,void,betcris,-135,+105,0.574468,0.487805,0.540791,0.459209,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Knapp, Jake",13562,19396,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Knapp, Jake",13562,19396,void,pinnacle,-119,+100,0.543379,0.5,0.520788,0.479212,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Greyserman, Max",17488,23465,void,betcris,-135,+105,0.574468,0.487805,0.540791,0.459209,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Greyserman, Max",17488,23465,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Greyserman, Max",17488,23465,void,pinnacle,-126,+106,0.557522,0.485437,0.534558,0.465442,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Henley, Russell",13562,14578,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Henley, Russell",13562,14578,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Henley, Russell",13562,14578,void,pinnacle,-104,-114,0.509804,0.53271,0.489014,0.510986,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Moore, Taylor","Fisk, Steven",21944,26657,void,betcris,-103,-127,0.507389,0.559471,0.475591,0.524409,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Moore, Taylor","Fisk, Steven",21944,26657,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Moore, Taylor","Fisk, Steven",21944,26657,void,pinnacle,-108,-110,0.519231,0.52381,0.497805,0.502195,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cantlay, Patrick","Spaun, J.J.",15466,17536,void,betcris,-119,-111,0.543379,0.526066,0.508094,0.491906,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cantlay, Patrick","Spaun, J.J.",15466,17536,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cantlay, Patrick","Spaun, J.J.",15466,17536,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Penge, Marco",14636,22465,void,betcris,-126,-104,0.557522,0.509804,0.522354,0.477646,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Penge, Marco",14636,22465,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Penge, Marco",14636,22465,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Penge, Marco",14636,22465,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Penge, Marco",14636,22465,void,pinnacle,-110,-108,0.52381,0.519231,0.502195,0.497805,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Meissner, Mac","Suber, Jackson",28159,29279,void,betcris,-146,+116,0.593496,0.462963,0.561779,0.438221,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"Meissner, Mac","Suber, Jackson",28159,29279,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Meissner, Mac","Suber, Jackson",28159,29279,void,pinnacle,-136,+114,0.576271,0.46729,0.552216,0.447784,False,True,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Bhatia, Akshay",14577,26096,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Bhatia, Akshay",14577,26096,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Bhatia, Akshay",14577,26096,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cole, Eric","Suber, Jackson",21756,29279,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cole, Eric","Suber, Jackson",21756,29279,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cole, Eric","Suber, Jackson",21756,29279,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Thorbjornsen, Michael","Bridgeman, Jacob",26649,29433,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Thorbjornsen, Michael","Bridgeman, Jacob",26649,29433,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Thorbjornsen, Michael","Bridgeman, Jacob",26649,29433,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Im, Sungjae","Kim, Michael",17488,17543,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cantlay, Patrick","Young, Cameron",15466,26651,void,datagolf,+149,-149,0.401606,0.598394,0.401606,0.598394,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cantlay, Patrick","Young, Cameron",15466,26651,void,unibet,+130,-175,0.434783,0.636364,0.405904,0.594096,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Knapp, Jake",14578,19396,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Knapp, Jake",14578,19396,void,unibet,-125,-106,0.555556,0.514563,0.519153,0.480847,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Smith, Jordan","Bridgeman, Jacob",18586,29433,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Smith, Jordan","Bridgeman, Jacob",18586,29433,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Hisatsune, Ryo",17576,22760,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Conners, Corey","Hisatsune, Ryo",17576,22760,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Gotterup, Chris",19895,27774,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Schauffele, Xander","Gotterup, Chris",19895,27774,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Gerard, Ryan",14609,29767,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Kim, Si Woo","Gerard, Ryan",14609,29767,void,unibet,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Bhatia, Akshay",12965,26096,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Bhatia, Akshay",12965,26096,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Bhatia, Akshay",12965,26096,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Ghim, Doug","Thompson, Davis",24550,27364,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Ghim, Doug","Thompson, Davis",24550,27364,void,unibet,-106,-125,0.514563,0.555556,0.480847,0.519153,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Kim, Michael",13872,17543,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Kim, Michael",13872,17543,void,unibet,-137,+105,0.578059,0.487805,0.542339,0.457661,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cole, Eric","James, Ben",21756,29827,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Cole, Eric","James, Ben",21756,29827,void,unibet,-125,-106,0.555556,0.514563,0.519153,0.480847,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Ghim, Doug",13872,24550,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bradley, Keegan","Ghim, Doug",13872,24550,void,draftkings,-134,+102,0.57265,0.49505,0.53634,0.46366,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Koivun, Jackson",12965,32319,void,datagolf,+134,-134,0.42735,0.57265,0.42735,0.57265,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Fowler, Rickie","Koivun, Jackson",12965,32319,void,draftkings,+115,-150,0.465116,0.6,0.436681,0.563319,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Gerard, Ryan",26096,29767,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Bhatia, Akshay","Gerard, Ryan",26096,29767,void,draftkings,-106,-122,0.514563,0.54955,0.483561,0.516439,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Ruffels, Ryan","Dalke, Brad",17169,21501,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Ruffels, Ryan","Dalke, Brad",17169,21501,void,draftkings,-126,-112,0.557522,0.528302,0.513455,0.486545,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Knapp, Jake","Thorbjornsen, Michael",19396,26649,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Knapp, Jake","Thorbjornsen, Michael",19396,26649,void,draftkings,-124,-105,0.553571,0.512195,0.519412,0.480588,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Young, Cameron",14578,26651,void,datagolf,+166,-166,0.37594,0.62406,0.37594,0.62406,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Young, Cameron",14578,26651,void,draftkings,+140,-184,0.416667,0.647887,0.3914,0.6086,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Brennan, Michael",14636,29197,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spieth, Jordan","Brennan, Michael",14636,29197,void,draftkings,-112,-116,0.528302,0.537037,0.4959,0.5041,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Bridgeman, Jacob",23602,29433,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Hojgaard, Nicolai","Bridgeman, Jacob",23602,29433,void,draftkings,-112,-116,0.528302,0.537037,0.4959,0.5041,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Koivun, Jackson",14578,32319,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Henley, Russell","Koivun, Jackson",14578,32319,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Knapp, Jake","Clark, Wyndham",19396,23604,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Knapp, Jake","Clark, Wyndham",19396,23604,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Hojgaard, Nicolai",17536,23602,void,betmgm,-139,+110,0.58159,0.47619,0.549821,0.450179,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"Spaun, J.J.","Hojgaard, Nicolai",17536,23602,void,datagolf,-135,+135,0.574468,0.425532,0.574468,0.425532,True,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Bridgeman, Jacob",14577,29433,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Rocket Classic,2026-07-30 10:34:00 UTC
+"English, Harris","Bridgeman, Jacob",14577,29433,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Rocket Classic,2026-07-30 10:34:00 UTC

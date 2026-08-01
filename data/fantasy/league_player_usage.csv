@@ -2,8 +2,8 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 107,Andrew Sisson,Aberg,1,2,600000,[600000]
 107,Andrew Sisson,Bridgeman,1,2,161525,[161525]
 107,Andrew Sisson,Burns,2,1,96857,"[0, 96857]"
-107,Andrew Sisson,Cantlay,2,1,411250,"[92250, 319000]"
-107,Andrew Sisson,"Clark, W",1,2,218050,[218050]
+107,Andrew Sisson,Cantlay,3,0,411250,"[92250, 319000, 0]"
+107,Andrew Sisson,"Clark, W",2,1,218050,"[218050, 0]"
 107,Andrew Sisson,DeChambeau,2,1,0,"[0, 0]"
 107,Andrew Sisson,"Fitzpatrick, A",2,1,1372750,"[1372750, 0]"
 107,Andrew Sisson,"Fitzpatrick, M",3,0,4020750,"[342750, 78000, 3600000]"
@@ -38,7 +38,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 107,Andrew Sisson,Schauffele,3,0,1221158,"[235000, 603200, 382958]"
 107,Andrew Sisson,Scheffler,2,1,558800,"[157000, 401800]"
 107,Andrew Sisson,Scott,1,2,156643,[156643]
-107,Andrew Sisson,Spaun,2,1,1025133,"[401800, 623333]"
+107,Andrew Sisson,Spaun,3,0,1025133,"[401800, 623333, 0]"
 107,Andrew Sisson,Spieth,2,1,121960,"[21364, 100596]"
 107,Andrew Sisson,"Thomas, J",2,1,245017,"[51142, 193875]"
 107,Andrew Sisson,Yellamaraju,1,2,19475,[19475]
@@ -57,7 +57,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 108,Birdie Bandits,Fleetwood,2,1,949000,"[121500, 827500]"
 108,Birdie Bandits,Fowler,1,2,0,[0]
 108,Birdie Bandits,Gerard,1,2,77600,[77600]
-108,Birdie Bandits,Gotterup,1,2,322988,[322988]
+108,Birdie Bandits,Gotterup,2,1,322988,"[322988, 0]"
 108,Birdie Bandits,"Griffin, B",2,1,41250,"[41250, 0]"
 108,Birdie Bandits,Harman,1,2,154500,[154500]
 108,Birdie Bandits,Hatton,1,2,123750,[123750]
@@ -70,6 +70,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 108,Birdie Bandits,"Kim, SW",3,0,653083,"[57000, 61083, 535000]"
 108,Birdie Bandits,"Kim, Tom",1,2,26206,[26206]
 108,Birdie Bandits,Kitayama,2,1,343320,"[82320, 261000]"
+108,Birdie Bandits,Knapp,1,2,0,[0]
 108,Birdie Bandits,"Koepka, B",1,2,187975,[187975]
 108,Birdie Bandits,"Lee, MW",1,2,584100,[584100]
 108,Birdie Bandits,MacIntyre,2,1,1173421,"[741533, 431888]"
@@ -90,6 +91,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 108,Birdie Bandits,Straka,2,1,51500,"[51500, 0]"
 108,Birdie Bandits,Suber,1,2,0,[0]
 108,Birdie Bandits,"Thomas, J",3,0,773208,"[193875, 269333, 310000]"
+108,Birdie Bandits,Thorbjornsen,1,2,0,[0]
 108,Birdie Bandits,Yellamaraju,1,2,19475,[19475]
 108,Birdie Bandits,"Young, Cam",2,1,3725523,"[3600000, 125523]"
 109,Buck Foursome,Aberg,2,1,1525000,"[925000, 600000]"
@@ -98,7 +100,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 109,Buck Foursome,Bridgeman,1,2,161525,[161525]
 109,Buck Foursome,Burns,2,1,169039,"[72182, 96857]"
 109,Buck Foursome,Cantlay,2,1,355219,"[276413, 78806]"
-109,Buck Foursome,"Clark, W",1,2,1854000,[1854000]
+109,Buck Foursome,"Clark, W",2,1,1854000,"[1854000, 0]"
 109,Buck Foursome,"Coody, Pier",2,1,192996,"[100596, 92400]"
 109,Buck Foursome,DeChambeau,2,1,0,"[0, 0]"
 109,Buck Foursome,Finau,1,2,0,[0]
@@ -115,9 +117,10 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 109,Buck Foursome,"Hojgaard, R",1,2,252000,[252000]
 109,Buck Foursome,Hovland,1,2,78000,[78000]
 109,Buck Foursome,Jaeger,1,2,62949,[62949]
-109,Buck Foursome,"Kim, SW",1,2,535000,[535000]
+109,Buck Foursome,"Kim, SW",2,1,535000,"[535000, 0]"
 109,Buck Foursome,Kitayama,3,0,352965,"[261000, 21879, 70086]"
 109,Buck Foursome,"Koepka, B",1,2,0,[0]
+109,Buck Foursome,Koivun,1,2,0,[0]
 109,Buck Foursome,MacIntyre,3,0,516954,"[55300, 29766, 431888]"
 109,Buck Foursome,Matsuyama,2,1,561000,"[515000, 46000]"
 109,Buck Foursome,McCarthy,2,1,0,"[0, 0]"
@@ -141,6 +144,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 111,Caddyshark,Bhatia,1,2,0,[0]
 111,Caddyshark,Burns,2,1,536525,"[96525, 440000]"
 111,Caddyshark,Cantlay,2,1,647250,"[92250, 555000]"
+111,Caddyshark,"Clark, W",1,2,0,[0]
 111,Caddyshark,Conners,2,1,36520,"[0, 36520]"
 111,Caddyshark,"Coody, Pier",1,2,49250,[49250]
 111,Caddyshark,"Fitzpatrick, A",1,2,96857,[96857]
@@ -159,6 +163,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 111,Caddyshark,Keefer,1,2,0,[0]
 111,Caddyshark,"Kim, SW",2,1,1162950,"[40250, 1122700]"
 111,Caddyshark,Kitayama,1,2,70086,[70086]
+111,Caddyshark,Knapp,1,2,0,[0]
 111,Caddyshark,"Koepka, B",1,2,0,[0]
 111,Caddyshark,Koivun,1,2,0,[0]
 111,Caddyshark,Lowry,1,2,726400,[726400]
@@ -177,7 +182,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 111,Caddyshark,Scheffler,3,0,3445645,"[2160000, 364763, 920882]"
 111,Caddyshark,Scott,1,2,493000,[493000]
 111,Caddyshark,Smalley,1,2,524700,[524700]
-111,Caddyshark,Spaun,2,1,322988,"[0, 322988]"
+111,Caddyshark,Spaun,3,0,322988,"[0, 322988, 0]"
 111,Caddyshark,Spieth,1,2,100596,[100596]
 111,Caddyshark,"Taylor, N",1,2,70000,[70000]
 111,Caddyshark,Theegala,2,1,122720,"[122720, 0]"
@@ -192,8 +197,10 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 112,CARL SPACKLER,Bridgeman,1,2,161525,[161525]
 112,CARL SPACKLER,Burns,2,1,338882,"[256694, 82188]"
 112,CARL SPACKLER,Cantlay,1,2,500000,[500000]
+112,CARL SPACKLER,Clanton,1,2,0,[0]
 112,CARL SPACKLER,"Clark, W",1,2,39750,[39750]
 112,CARL SPACKLER,Dahmen,1,2,29766,[29766]
+112,CARL SPACKLER,Davis,1,2,0,[0]
 112,CARL SPACKLER,DeChambeau,2,1,0,"[0, 0]"
 112,CARL SPACKLER,English,2,1,238810,"[156643, 82167]"
 112,CARL SPACKLER,Finau,2,1,24676,"[24676, 0]"
@@ -230,10 +237,10 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 112,CARL SPACKLER,Scott,1,2,826667,[826667]
 112,CARL SPACKLER,Spieth,3,0,333535,"[211575, 21364, 100596]"
 112,CARL SPACKLER,"Taylor, N",1,2,62949,[62949]
-112,CARL SPACKLER,Thorbjornsen,1,2,69492,[69492]
+112,CARL SPACKLER,Thorbjornsen,2,1,69492,"[69492, 0]"
 112,CARL SPACKLER,"Young, Cam",2,1,2922000,"[1080000, 1842000]"
 113,Chest Rockwell,Aberg,3,0,1368375,"[78375, 1200000, 90000]"
-113,Chest Rockwell,Bhatia,1,2,69300,[69300]
+113,Chest Rockwell,Bhatia,2,1,69300,"[69300, 0]"
 113,Chest Rockwell,"Clark, W",3,0,387694,"[39750, 91250, 256694]"
 113,Chest Rockwell,DeChambeau,3,0,234325,"[0, 0, 234325]"
 113,Chest Rockwell,"Fitzpatrick, M",3,0,2987000,"[280800, 1638000, 1068200]"
@@ -247,6 +254,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 113,Chest Rockwell,Im,3,0,277939,"[260075, 0, 17864]"
 113,Chest Rockwell,"Kim, SW",3,0,1583550,"[237650, 1122700, 223200]"
 113,Chest Rockwell,Kitayama,1,2,70086,[70086]
+113,Chest Rockwell,Knapp,1,2,0,[0]
 113,Chest Rockwell,"Koepka, B",3,0,461686,"[427500, 34186, 0]"
 113,Chest Rockwell,Lowry,3,0,844879,"[726400, 59625, 58854]"
 113,Chest Rockwell,Matsuyama,3,0,393000,"[46000, 37000, 310000]"
@@ -257,7 +265,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 113,Chest Rockwell,Rose,2,1,78375,"[78375, 0]"
 113,Chest Rockwell,Schauffele,3,0,692450,"[603200, 42500, 46750]"
 113,Chest Rockwell,Scheffler,3,0,843250,"[415000, 157000, 271250]"
-113,Chest Rockwell,Spaun,1,2,0,[0]
+113,Chest Rockwell,Spaun,2,1,0,"[0, 0]"
 113,Chest Rockwell,Spieth,3,0,392544,"[92444, 260600, 39500]"
 113,Chest Rockwell,"Thomas, J",3,0,198143,"[0, 31000, 167143]"
 113,Chest Rockwell,Thorbjornsen,1,2,69492,[69492]
@@ -265,6 +273,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 113,Chest Rockwell,"Young, Cam",3,0,165339,"[34080, 58667, 72592]"
 114,COMER,Aberg,2,1,1303525,"[925000, 378525]"
 114,COMER,Berger,1,2,54816,[54816]
+114,COMER,Bhatia,1,2,0,[0]
 114,COMER,"Bradley, K",1,2,310000,[310000]
 114,COMER,Burns,2,1,96525,"[0, 96525]"
 114,COMER,"Clark, W",2,1,218050,"[0, 218050]"
@@ -278,6 +287,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 114,COMER,Fox,1,2,65363,[65363]
 114,COMER,Gerard,1,2,77600,[77600]
 114,COMER,Gotterup,2,1,496708,"[0, 496708]"
+114,COMER,Greyserman,1,2,0,[0]
 114,COMER,"Griffin, B",1,2,62949,[62949]
 114,COMER,Hall,2,1,59625,"[59625, 0]"
 114,COMER,Henley,2,1,488500,"[48500, 440000]"
@@ -298,7 +308,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 114,COMER,McNealy,2,1,239825,"[125200, 114625]"
 114,COMER,Mitchell,2,1,443659,"[422300, 21359]"
 114,COMER,Noren,1,2,0,[0]
-114,COMER,Pendrith,1,2,26971,[26971]
+114,COMER,Pendrith,2,1,26971,"[26971, 0]"
 114,COMER,Poston,1,2,21359,[21359]
 114,COMER,Rahm,2,1,51707,"[0, 51707]"
 114,COMER,Reitan,1,2,21854,[21854]
@@ -319,6 +329,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 115,Danny Noonan,Bauchou,1,2,92400,[92400]
 115,Danny Noonan,Berger,2,1,107566,"[54816, 52750]"
 115,Danny Noonan,"Bradley, K",1,2,310000,[310000]
+115,Danny Noonan,Brennan,1,2,0,[0]
 115,Danny Noonan,Bridgeman,1,2,122720,[122720]
 115,Danny Noonan,"Brown, B",1,2,22111,[22111]
 115,Danny Noonan,Burns,3,0,2502182,"[0, 72182, 2430000]"
@@ -330,6 +341,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 115,Danny Noonan,"Fitzpatrick, M",2,1,1683188,"[1638000, 45188]"
 115,Danny Noonan,Fleetwood,3,0,1005000,"[56000, 121500, 827500]"
 115,Danny Noonan,Fowler,3,0,1880468,"[91250, 1760000, 29218]"
+115,Danny Noonan,Gerard,1,2,0,[0]
 115,Danny Noonan,Gotterup,2,1,512663,"[322988, 189675]"
 115,Danny Noonan,"Griffin, B",2,1,524700,"[524700, 0]"
 115,Danny Noonan,Hatton,2,1,164550,"[123750, 40800]"
@@ -342,7 +354,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 115,Danny Noonan,Knapp,2,1,1060000,"[300000, 760000]"
 115,Danny Noonan,"Koepka, B",1,2,252000,[252000]
 115,Danny Noonan,Kohles,1,2,257400,[257400]
-115,Danny Noonan,Koivun,1,2,0,[0]
+115,Danny Noonan,Koivun,2,1,0,"[0, 0]"
 115,Danny Noonan,"Lee, MW",1,2,260600,[260600]
 115,Danny Noonan,Lowry,1,2,0,[0]
 115,Danny Noonan,MacIntyre,2,1,900783,"[741533, 159250]"
@@ -379,9 +391,10 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 116,Davemc410,Fox,1,2,0,[0]
 116,Davemc410,Gerard,1,2,64000,[64000]
 116,Davemc410,Gotterup,1,2,322988,[322988]
-116,Davemc410,"Griffin, B",2,1,620056,"[520000, 100056]"
+116,Davemc410,"Griffin, B",3,0,620056,"[520000, 100056, 0]"
 116,Davemc410,Harman,1,2,154500,[154500]
 116,Davemc410,Hatton,1,2,123750,[123750]
+116,Davemc410,Henley,1,2,0,[0]
 116,Davemc410,Hisatsune,2,1,290942,"[51142, 239800]"
 116,Davemc410,"Hojgaard, N",1,2,157000,[157000]
 116,Davemc410,Hovland,2,1,39750,"[39750, 0]"
@@ -403,7 +416,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 116,Davemc410,Rai,1,2,77600,[77600]
 116,Davemc410,Reed,1,2,0,[0]
 116,Davemc410,Rose,1,2,78375,[78375]
-116,Davemc410,Schauffele,1,2,42500,[42500]
+116,Davemc410,Schauffele,2,1,42500,"[42500, 0]"
 116,Davemc410,Scheffler,3,0,3482682,"[2160000, 401800, 920882]"
 116,Davemc410,Scott,1,2,1000000,[1000000]
 116,Davemc410,Smalley,1,2,524700,[524700]
@@ -423,7 +436,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 117,Dimpled Balls,"Bradley, K",1,2,66189,[66189]
 117,Dimpled Balls,Burns,3,0,193382,"[0, 96525, 96857]"
 117,Dimpled Balls,Cantlay,3,0,1141413,"[276413, 555000, 310000]"
-117,Dimpled Balls,"Clark, W",2,1,2072050,"[1854000, 218050]"
+117,Dimpled Balls,"Clark, W",3,0,2072050,"[1854000, 218050, 0]"
 117,Dimpled Balls,"Coody, Pier",1,2,49250,[49250]
 117,Dimpled Balls,DeChambeau,2,1,0,"[0, 0]"
 117,Dimpled Balls,"Fitzpatrick, A",2,1,1396943,"[1372750, 24193]"
@@ -438,9 +451,10 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 117,Dimpled Balls,Hisatsune,1,2,515000,[515000]
 117,Dimpled Balls,"Hojgaard, N",1,2,324000,[324000]
 117,Dimpled Balls,Horschel,1,2,373200,[373200]
-117,Dimpled Balls,"Kim, SW",2,1,1186700,"[1122700, 64000]"
+117,Dimpled Balls,"Kim, SW",3,0,1186700,"[1122700, 64000, 0]"
 117,Dimpled Balls,Kitayama,1,2,70086,[70086]
 117,Dimpled Balls,"Koepka, B",1,2,0,[0]
+117,Dimpled Balls,Koivun,1,2,0,[0]
 117,Dimpled Balls,"Lee, MW",1,2,584100,[584100]
 117,Dimpled Balls,Lowry,1,2,726400,[726400]
 117,Dimpled Balls,MacIntyre,1,2,55300,[55300]
@@ -472,7 +486,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 118,EagleEash,"Fitzpatrick, M",3,0,1782188,"[1638000, 45188, 99000]"
 118,EagleEash,Fleetwood,3,0,913200,"[603200, 0, 310000]"
 118,EagleEash,Fowler,1,2,0,[0]
-118,EagleEash,Gotterup,1,2,1584000,[1584000]
+118,EagleEash,Gotterup,2,1,1584000,"[1584000, 0]"
 118,EagleEash,"Griffin, B",1,2,100056,[100056]
 118,EagleEash,Henley,2,1,409028,"[409028, 0]"
 118,EagleEash,"Hojgaard, N",1,2,324000,[324000]
@@ -484,9 +498,11 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 118,EagleEash,"Kim, Tom",1,2,103840,[103840]
 118,EagleEash,Knapp,1,2,760000,[760000]
 118,EagleEash,"Koepka, B",3,0,296265,"[108290, 0, 187975]"
+118,EagleEash,Koivun,1,2,0,[0]
 118,EagleEash,"Lee, MW",2,1,999100,"[415000, 584100]"
 118,EagleEash,Lowry,1,2,59625,[59625]
 118,EagleEash,MacIntyre,2,1,1173421,"[741533, 431888]"
+118,EagleEash,Matsuyama,1,2,0,[0]
 118,EagleEash,McIlroy,3,0,706800,"[0, 637050, 69750]"
 118,EagleEash,Rahm,2,1,101250,"[101250, 0]"
 118,EagleEash,Rai,2,1,25555,"[25555, 0]"
@@ -503,6 +519,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 118,EagleEash,Woodland,1,2,222200,[222200]
 118,EagleEash,"Young, Cam",2,1,4572592,"[4500000, 72592]"
 119,GoForeYourself,Aberg,3,0,993075,"[252000, 600000, 141075]"
+119,GoForeYourself,Bhatia,1,2,0,[0]
 119,GoForeYourself,Bridgeman,1,2,161525,[161525]
 119,GoForeYourself,Burns,3,0,633382,"[96525, 96857, 440000]"
 119,GoForeYourself,Cantlay,1,2,0,[0]
@@ -523,8 +540,9 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 119,GoForeYourself,"Kim, SW",3,0,1602630,"[439680, 40250, 1122700]"
 119,GoForeYourself,"Kim, Tom",1,2,103840,[103840]
 119,GoForeYourself,Kitayama,1,2,70086,[70086]
-119,GoForeYourself,Knapp,2,1,1082988,"[760000, 322988]"
+119,GoForeYourself,Knapp,3,0,1082988,"[760000, 322988, 0]"
 119,GoForeYourself,"Koepka, B",2,1,187975,"[0, 187975]"
+119,GoForeYourself,Koivun,1,2,0,[0]
 119,GoForeYourself,Lowry,1,2,726400,[726400]
 119,GoForeYourself,MacIntyre,2,1,591138,"[159250, 431888]"
 119,GoForeYourself,Matsuyama,2,1,499550,"[70000, 429550]"
@@ -547,7 +565,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 136,GOLOWORGOHOME,Bhatia,1,2,409028,[409028]
 136,GOLOWORGOHOME,Bridgeman,1,2,161525,[161525]
 136,GOLOWORGOHOME,Burns,2,1,536857,"[96857, 440000]"
-136,GOLOWORGOHOME,Cantlay,2,1,865000,"[555000, 310000]"
+136,GOLOWORGOHOME,Cantlay,3,0,865000,"[555000, 310000, 0]"
 136,GOLOWORGOHOME,"Clark, W",1,2,218050,[218050]
 136,GOLOWORGOHOME,"Coody, Pier",1,2,100596,[100596]
 136,GOLOWORGOHOME,DeChambeau,1,2,0,[0]
@@ -557,13 +575,14 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 136,GOLOWORGOHOME,Gotterup,3,0,1985363,"[78375, 322988, 1584000]"
 136,GOLOWORGOHOME,"Griffin, B",2,1,100056,"[0, 100056]"
 136,GOLOWORGOHOME,Hatton,2,1,123750,"[0, 123750]"
-136,GOLOWORGOHOME,Henley,2,1,1782000,"[0, 1782000]"
+136,GOLOWORGOHOME,Henley,3,0,1782000,"[0, 1782000, 0]"
 136,GOLOWORGOHOME,Hisatsune,1,2,100596,[100596]
 136,GOLOWORGOHOME,"Hojgaard, N",2,1,402750,"[324000, 78750]"
 136,GOLOWORGOHOME,Hovland,2,1,55300,"[0, 55300]"
 136,GOLOWORGOHOME,"Kim, SW",3,0,1031680,"[439680, 57000, 535000]"
 136,GOLOWORGOHOME,"Kim, Tom",1,2,103840,[103840]
 136,GOLOWORGOHOME,Kitayama,2,1,224586,"[154500, 70086]"
+136,GOLOWORGOHOME,Knapp,1,2,0,[0]
 136,GOLOWORGOHOME,"Koepka, B",1,2,0,[0]
 136,GOLOWORGOHOME,Koivun,1,2,0,[0]
 136,GOLOWORGOHOME,Lowry,1,2,726400,[726400]
@@ -606,7 +625,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 120,Good Good?,"Young, Cam",3,0,4659603,"[34080, 4500000, 125523]"
 121,Green Jackets,Aberg,3,0,1267000,"[925000, 252000, 90000]"
 121,Green Jackets,Bezuidenhout,1,2,51142,[51142]
-121,Green Jackets,Bhatia,2,1,478328,"[409028, 69300]"
+121,Green Jackets,Bhatia,3,0,478328,"[409028, 69300, 0]"
 121,Green Jackets,Bridgeman,1,2,161525,[161525]
 121,Green Jackets,Burns,3,0,425733,"[256694, 72182, 96857]"
 121,Green Jackets,Cantlay,1,2,92250,[92250]
@@ -624,12 +643,12 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 121,Green Jackets,Hovland,1,2,3600000,[3600000]
 121,Green Jackets,"Kim, SW",2,1,97250,"[57000, 40250]"
 121,Green Jackets,Kitayama,1,2,70086,[70086]
-121,Green Jackets,Knapp,1,2,322988,[322988]
+121,Green Jackets,Knapp,2,1,322988,"[322988, 0]"
 121,Green Jackets,"Koepka, B",2,1,187975,"[0, 187975]"
 121,Green Jackets,"Lee, MW",1,2,128250,[128250]
 121,Green Jackets,Lowry,1,2,55300,[55300]
 121,Green Jackets,MacIntyre,1,2,102817,[102817]
-121,Green Jackets,Matsuyama,2,1,623425,"[193875, 429550]"
+121,Green Jackets,Matsuyama,3,0,623425,"[193875, 429550, 0]"
 121,Green Jackets,McCarthy,1,2,0,[0]
 121,Green Jackets,McIlroy,3,0,2170856,"[1800000, 242100, 128756]"
 121,Green Jackets,Morikawa,1,2,823333,[823333]
@@ -662,12 +681,13 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 122,HUBBERS,Greyserman,1,2,0,[0]
 122,HUBBERS,"Griffin, B",2,1,565950,"[41250, 524700]"
 122,HUBBERS,Henley,3,0,844750,"[702000, 0, 142750]"
-122,HUBBERS,Hisatsune,1,2,100596,[100596]
+122,HUBBERS,Hisatsune,2,1,100596,"[100596, 0]"
 122,HUBBERS,"Hojgaard, N",1,2,324000,[324000]
 122,HUBBERS,"Hojgaard, R",1,2,22454,[22454]
 122,HUBBERS,Hovland,1,2,39750,[39750]
 122,HUBBERS,"Kim, SW",3,0,334900,"[57000, 237650, 40250]"
 122,HUBBERS,"Kim, Tom",1,2,26206,[26206]
+122,HUBBERS,Knapp,1,2,0,[0]
 122,HUBBERS,"Koepka, B",2,1,0,"[0, 0]"
 122,HUBBERS,Koivun,1,2,1584000,[1584000]
 122,HUBBERS,"Lee, MW",1,2,584100,[584100]
@@ -687,7 +707,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 122,HUBBERS,Scheffler,3,0,3014680,"[439680, 415000, 2160000]"
 122,HUBBERS,Smalley,1,2,0,[0]
 122,HUBBERS,Smotherman,1,2,0,[0]
-122,HUBBERS,Spaun,1,2,322988,[322988]
+122,HUBBERS,Spaun,2,1,322988,"[322988, 0]"
 122,HUBBERS,Spieth,1,2,100596,[100596]
 122,HUBBERS,Straka,1,2,0,[0]
 122,HUBBERS,Suber,1,2,0,[0]
@@ -704,8 +724,8 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 135,Jlemoine,"Fitzpatrick, A",1,2,96857,[96857]
 135,Jlemoine,"Fitzpatrick, M",2,1,509888,"[78000, 431888]"
 135,Jlemoine,Fleetwood,2,1,821250,"[603200, 218050]"
-135,Jlemoine,Gerard,1,2,77600,[77600]
-135,Jlemoine,Gotterup,2,1,1906988,"[322988, 1584000]"
+135,Jlemoine,Gerard,2,1,77600,"[77600, 0]"
+135,Jlemoine,Gotterup,3,0,1906988,"[322988, 1584000, 0]"
 135,Jlemoine,Greyserman,1,2,0,[0]
 135,Jlemoine,"Griffin, B",1,2,0,[0]
 135,Jlemoine,Harman,1,2,154500,[154500]
@@ -722,7 +742,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 135,Jlemoine,"Koepka, B",2,1,108290,"[108290, 0]"
 135,Jlemoine,Kohles,1,2,257400,[257400]
 135,Jlemoine,MacIntyre,2,1,796833,"[741533, 55300]"
-135,Jlemoine,Matsuyama,1,2,136500,[136500]
+135,Jlemoine,Matsuyama,2,1,136500,"[136500, 0]"
 135,Jlemoine,McIlroy,2,1,242100,"[0, 242100]"
 135,Jlemoine,McNealy,2,1,444694,"[188000, 256694]"
 135,Jlemoine,Mitchell,1,2,0,[0]
@@ -744,6 +764,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 135,Jlemoine,Yellamaraju,1,2,19475,[19475]
 135,Jlemoine,"Young, Cam",2,1,3725523,"[3600000, 125523]"
 123,JoeBuckYourself,Aberg,3,0,2020867,"[925000, 252000, 843867]"
+123,JoeBuckYourself,Bhatia,1,2,0,[0]
 123,JoeBuckYourself,Bridgeman,1,2,161525,[161525]
 123,JoeBuckYourself,Burns,1,2,96857,[96857]
 123,JoeBuckYourself,Cantlay,3,0,966250,"[92250, 555000, 319000]"
@@ -767,10 +788,11 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 123,JoeBuckYourself,Kitayama,1,2,70086,[70086]
 123,JoeBuckYourself,Knapp,2,1,622988,"[300000, 322988]"
 123,JoeBuckYourself,"Koepka, B",2,1,0,"[0, 0]"
-123,JoeBuckYourself,Koivun,1,2,0,[0]
+123,JoeBuckYourself,Koivun,2,1,0,"[0, 0]"
 123,JoeBuckYourself,"Lee, MW",2,1,388850,"[128250, 260600]"
 123,JoeBuckYourself,Lowry,1,2,726400,[726400]
 123,JoeBuckYourself,MacIntyre,2,1,1173421,"[741533, 431888]"
+123,JoeBuckYourself,Matsuyama,1,2,0,[0]
 123,JoeBuckYourself,McCarthy,1,2,0,[0]
 123,JoeBuckYourself,McIlroy,2,1,370856,"[242100, 128756]"
 123,JoeBuckYourself,Mitchell,1,2,26413,[26413]
@@ -794,11 +816,12 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 124,MacDaddy,Burns,2,1,353551,"[256694, 96857]"
 124,MacDaddy,Cantlay,2,1,402250,"[92250, 310000]"
 124,MacDaddy,"Clark, W",2,1,2072050,"[1854000, 218050]"
+124,MacDaddy,Davis,1,2,0,[0]
 124,MacDaddy,DeChambeau,2,1,0,"[0, 0]"
 124,MacDaddy,"Fitzpatrick, A",2,1,1469607,"[1372750, 96857]"
 124,MacDaddy,"Fitzpatrick, M",3,0,608888,"[78000, 99000, 431888]"
 124,MacDaddy,Fleetwood,2,1,646700,"[603200, 43500]"
-124,MacDaddy,Fowler,1,2,0,[0]
+124,MacDaddy,Fowler,2,1,0,"[0, 0]"
 124,MacDaddy,Gerard,1,2,77600,[77600]
 124,MacDaddy,Gotterup,2,1,242950,"[78375, 164575]"
 124,MacDaddy,"Griffin, B",1,2,100056,[100056]
@@ -815,6 +838,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 124,MacDaddy,Kitayama,1,2,70086,[70086]
 124,MacDaddy,Knapp,1,2,300000,[300000]
 124,MacDaddy,"Koepka, B",2,1,108290,"[108290, 0]"
+124,MacDaddy,Koivun,1,2,0,[0]
 124,MacDaddy,Lowry,1,2,726400,[726400]
 124,MacDaddy,MacIntyre,1,2,29766,[29766]
 124,MacDaddy,Matsuyama,1,2,136500,[136500]
@@ -851,7 +875,9 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 125,MikeKett,Hovland,1,2,0,[0]
 125,MikeKett,Im,1,2,0,[0]
 125,MikeKett,"Kim, SW",3,0,1247783,"[61083, 1122700, 64000]"
+125,MikeKett,Knapp,1,2,0,[0]
 125,MikeKett,"Koepka, B",2,1,187975,"[0, 187975]"
+125,MikeKett,Koivun,1,2,0,[0]
 125,MikeKett,"Lee, MW",1,2,584100,[584100]
 125,MikeKett,Lowry,1,2,0,[0]
 125,MikeKett,MacIntyre,2,1,844350,"[741533, 102817]"
@@ -864,7 +890,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 125,MikeKett,Rose,2,1,1080000,"[1080000, 0]"
 125,MikeKett,Schauffele,3,0,582458,"[157000, 382958, 42500]"
 125,MikeKett,Scheffler,3,0,2951763,"[157000, 2430000, 364763]"
-125,MikeKett,Spaun,1,2,401800,[401800]
+125,MikeKett,Spaun,2,1,401800,"[401800, 0]"
 125,MikeKett,Spieth,3,0,252827,"[211575, 21364, 19888]"
 125,MikeKett,Straka,1,2,0,[0]
 125,MikeKett,Theegala,1,2,25555,[25555]
@@ -891,9 +917,10 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 126,NLA Boys,Homa,1,2,959200,[959200]
 126,NLA Boys,Hovland,2,1,448778,"[39750, 409028]"
 126,NLA Boys,Im,1,2,0,[0]
-126,NLA Boys,"Kim, SW",2,1,1949367,"[826667, 1122700]"
+126,NLA Boys,"Kim, SW",3,0,1949367,"[826667, 1122700, 0]"
 126,NLA Boys,"Kim, Tom",1,2,103840,[103840]
 126,NLA Boys,Kitayama,1,2,70086,[70086]
+126,NLA Boys,Knapp,1,2,0,[0]
 126,NLA Boys,"Koepka, B",1,2,252000,[252000]
 126,NLA Boys,Lowry,2,1,55300,"[0, 55300]"
 126,NLA Boys,MacIntyre,2,1,431888,"[0, 431888]"
@@ -916,7 +943,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 126,NLA Boys,Thorbjornsen,1,2,0,[0]
 126,NLA Boys,van Rooyen,1,2,100596,[100596]
 126,NLA Boys,Woodland,1,2,1782000,[1782000]
-126,NLA Boys,"Young, Cam",1,2,142750,[142750]
+126,NLA Boys,"Young, Cam",2,1,142750,"[142750, 0]"
 127,Rmr617,Aberg,2,1,231075,"[141075, 90000]"
 127,Rmr617,Bhatia,2,1,1169028,"[409028, 760000]"
 127,Rmr617,"Bradley, K",1,2,20657,[20657]
@@ -933,7 +960,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 127,Rmr617,"Fitzpatrick, M",1,2,99000,[99000]
 127,Rmr617,Fleetwood,2,1,293650,"[56000, 237650]"
 127,Rmr617,Gerard,1,2,77600,[77600]
-127,Rmr617,Gotterup,1,2,189675,[189675]
+127,Rmr617,Gotterup,2,1,189675,"[189675, 0]"
 127,Rmr617,"Griffin, B",1,2,62949,[62949]
 127,Rmr617,Henley,2,1,142750,"[0, 142750]"
 127,Rmr617,Hisatsune,1,2,51142,[51142]
@@ -946,7 +973,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 127,Rmr617,"Kim, SW",2,1,496680,"[439680, 57000]"
 127,Rmr617,"Kim, Tom",1,2,103840,[103840]
 127,Rmr617,"Koepka, B",2,1,0,"[0, 0]"
-127,Rmr617,Koivun,1,2,0,[0]
+127,Rmr617,Koivun,2,1,0,"[0, 0]"
 127,Rmr617,Lowry,1,2,726400,[726400]
 127,Rmr617,MacIntyre,2,1,1173421,"[741533, 431888]"
 127,Rmr617,Matsuyama,1,2,136500,[136500]
@@ -954,6 +981,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 127,Rmr617,McNealy,1,2,188000,[188000]
 127,Rmr617,Morikawa,1,2,603200,[603200]
 127,Rmr617,Penge,1,2,0,[0]
+127,Rmr617,Phillips,1,2,0,[0]
 127,Rmr617,Rahm,2,1,1853978,"[1804000, 49978]"
 127,Rmr617,Rose,1,2,39083,[39083]
 127,Rmr617,Schauffele,2,1,2124250,"[1725000, 399250]"
@@ -982,7 +1010,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 128,SMETHPORT GOLFER,Fleetwood,1,2,56000,[56000]
 128,SMETHPORT GOLFER,Fowler,1,2,0,[0]
 128,SMETHPORT GOLFER,Gerard,1,2,77600,[77600]
-128,SMETHPORT GOLFER,Gotterup,2,1,247675,"[58000, 189675]"
+128,SMETHPORT GOLFER,Gotterup,3,0,247675,"[58000, 189675, 0]"
 128,SMETHPORT GOLFER,"Griffin, B",2,1,565950,"[41250, 524700]"
 128,SMETHPORT GOLFER,Harman,1,2,35809,[35809]
 128,SMETHPORT GOLFER,Henley,1,2,200200,[200200]
@@ -1009,8 +1037,9 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 128,SMETHPORT GOLFER,Scheffler,3,0,2317000,"[157000, 2160000, 0]"
 128,SMETHPORT GOLFER,Smalley,1,2,310000,[310000]
 128,SMETHPORT GOLFER,Snedeker,1,2,20805,[20805]
+128,SMETHPORT GOLFER,Spaun,1,2,0,[0]
 128,SMETHPORT GOLFER,Spieth,2,1,120484,"[100596, 19888]"
-128,SMETHPORT GOLFER,"Young, Cam",2,1,3652000,"[3600000, 52000]"
+128,SMETHPORT GOLFER,"Young, Cam",3,0,3652000,"[3600000, 52000, 0]"
 130,Team OGG,Aberg,2,1,1525000,"[925000, 600000]"
 130,Team OGG,"Bradley, K",1,2,310000,[310000]
 130,Team OGG,Bridgeman,1,2,161525,[161525]
@@ -1023,7 +1052,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 130,Team OGG,"Fitzpatrick, A",1,2,1372750,[1372750]
 130,Team OGG,"Fitzpatrick, M",3,0,909983,"[315000, 364763, 230220]"
 130,Team OGG,Fleetwood,2,1,756650,"[603200, 153450]"
-130,Team OGG,Fowler,1,2,0,[0]
+130,Team OGG,Fowler,2,1,0,"[0, 0]"
 130,Team OGG,Gerard,1,2,77600,[77600]
 130,Team OGG,Glover,1,2,20152,[20152]
 130,Team OGG,Gotterup,2,1,512663,"[322988, 189675]"
@@ -1037,8 +1066,9 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 130,Team OGG,"Kim, SW",3,0,1718783,"[61083, 1122700, 535000]"
 130,Team OGG,"Kim, Tom",1,2,103840,[103840]
 130,Team OGG,Kitayama,1,2,70086,[70086]
-130,Team OGG,Knapp,2,1,300000,"[300000, 0]"
+130,Team OGG,Knapp,3,0,300000,"[300000, 0, 0]"
 130,Team OGG,"Koepka, B",1,2,0,[0]
+130,Team OGG,Koivun,1,2,0,[0]
 130,Team OGG,"Lee, MW",1,2,584100,[584100]
 130,Team OGG,Lowry,1,2,726400,[726400]
 130,Team OGG,MacIntyre,1,2,102817,[102817]
@@ -1062,7 +1092,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 131,TimmyD,Bhatia,1,2,280966,[280966]
 131,TimmyD,Burns,1,2,440000,[440000]
 131,TimmyD,"Clark, W",1,2,218050,[218050]
-131,TimmyD,Cole,2,1,82120,"[45600, 36520]"
+131,TimmyD,Cole,3,0,82120,"[45600, 36520, 0]"
 131,TimmyD,Conners,1,2,36520,[36520]
 131,TimmyD,"Coody, Pier",1,2,100596,[100596]
 131,TimmyD,Echavarria,2,1,2050988,"[1728000, 322988]"
@@ -1083,7 +1113,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 131,TimmyD,"Kim, Tom",1,2,103840,[103840]
 131,TimmyD,Kitayama,1,2,261000,[261000]
 131,TimmyD,"Koepka, B",2,1,296265,"[108290, 187975]"
-131,TimmyD,Koivun,1,2,0,[0]
+131,TimmyD,Koivun,2,1,0,"[0, 0]"
 131,TimmyD,"Lee, MW",2,1,844700,"[584100, 260600]"
 131,TimmyD,Lowry,1,2,0,[0]
 131,TimmyD,MacIntyre,1,2,741533,[741533]
@@ -1102,7 +1132,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 131,TimmyD,Straka,2,1,55300,"[0, 55300]"
 131,TimmyD,Theegala,1,2,259875,[259875]
 131,TimmyD,"Thomas, J",1,2,51142,[51142]
-131,TimmyD,Thorbjornsen,1,2,170775,[170775]
+131,TimmyD,Thorbjornsen,2,1,170775,"[170775, 0]"
 131,TimmyD,Vilips,1,2,69492,[69492]
 131,TimmyD,Woodland,1,2,310000,[310000]
 131,TimmyD,Yellamaraju,1,2,159250,[159250]
@@ -1118,14 +1148,14 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 132,Wildcats,Fleetwood,3,0,2211950,"[877500, 603200, 731250]"
 132,Wildcats,Fowler,1,2,0,[0]
 132,Wildcats,Gerard,1,2,77600,[77600]
-132,Wildcats,Gotterup,2,1,1906988,"[322988, 1584000]"
+132,Wildcats,Gotterup,3,0,1906988,"[322988, 1584000, 0]"
 132,Wildcats,"Griffin, B",1,2,100056,[100056]
 132,Wildcats,Hatton,1,2,123750,[123750]
 132,Wildcats,Henley,3,0,577950,"[235000, 142750, 200200]"
 132,Wildcats,Hisatsune,1,2,100596,[100596]
 132,Wildcats,"Hojgaard, N",3,0,648143,"[324000, 157000, 167143]"
 132,Wildcats,Hovland,1,2,153450,[153450]
-132,Wildcats,"Kim, SW",1,2,57000,[57000]
+132,Wildcats,"Kim, SW",2,1,57000,"[57000, 0]"
 132,Wildcats,"Kim, Tom",1,2,103840,[103840]
 132,Wildcats,Kitayama,2,1,331086,"[261000, 70086]"
 132,Wildcats,"Koepka, B",2,1,187975,"[0, 187975]"
@@ -1143,7 +1173,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 132,Wildcats,Spieth,1,2,100596,[100596]
 132,Wildcats,Theegala,1,2,122720,[122720]
 132,Wildcats,"Thomas, J",2,1,245017,"[51142, 193875]"
-132,Wildcats,"Young, Cam",2,1,3725523,"[3600000, 125523]"
+132,Wildcats,"Young, Cam",3,0,3725523,"[3600000, 125523, 0]"
 133,WineTime,Aberg,2,1,1452000,"[1200000, 252000]"
 133,WineTime,Brennan,1,2,0,[0]
 133,WineTime,Bridgeman,1,2,161525,[161525]
@@ -1158,7 +1188,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 133,WineTime,Fleetwood,3,0,1038143,"[43500, 167143, 827500]"
 133,WineTime,Fowler,2,1,0,"[0, 0]"
 133,WineTime,Gerard,1,2,77600,[77600]
-133,WineTime,Gotterup,2,1,3312000,"[1728000, 1584000]"
+133,WineTime,Gotterup,3,0,3312000,"[1728000, 1584000, 0]"
 133,WineTime,"Griffin, B",2,1,163005,"[62949, 100056]"
 133,WineTime,Henley,3,0,2924000,"[702000, 1782000, 440000]"
 133,WineTime,Hisatsune,1,2,100596,[100596]
@@ -1167,9 +1197,9 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 133,WineTime,Hovland,1,2,78000,[78000]
 133,WineTime,"Kim, SW",2,1,1949367,"[826667, 1122700]"
 133,WineTime,"Kim, Tom",1,2,103840,[103840]
-133,WineTime,Knapp,1,2,322988,[322988]
+133,WineTime,Knapp,2,1,322988,"[322988, 0]"
 133,WineTime,"Koepka, B",2,1,34186,"[0, 34186]"
-133,WineTime,Koivun,1,2,0,[0]
+133,WineTime,Koivun,2,1,0,"[0, 0]"
 133,WineTime,"Lee, MW",1,2,584100,[584100]
 133,WineTime,Lowry,1,2,0,[0]
 133,WineTime,MacIntyre,1,2,431888,[431888]
@@ -1203,10 +1233,12 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 134,Yanks His Putz,"Fitzpatrick, M",3,0,177000,"[78000, 99000, 0]"
 134,Yanks His Putz,Fleetwood,2,1,1009062,"[603200, 405862]"
 134,Yanks His Putz,Fowler,1,2,29218,[29218]
+134,Yanks His Putz,Gerard,1,2,0,[0]
 134,Yanks His Putz,Glover,1,2,20152,[20152]
 134,Yanks His Putz,Gotterup,2,1,395170,"[322988, 72182]"
 134,Yanks His Putz,Greyserman,1,2,55000,[55000]
 134,Yanks His Putz,"Griffin, B",2,1,587649,"[62949, 524700]"
+134,Yanks His Putz,Grillo,1,2,0,[0]
 134,Yanks His Putz,Hatton,2,1,40800,"[0, 40800]"
 134,Yanks His Putz,Henley,2,1,44938,"[0, 44938]"
 134,Yanks His Putz,Hisatsune,2,1,151738,"[51142, 100596]"
@@ -1215,6 +1247,7 @@ team_id,team_name,player,times_used,uses_left,total_earned,earnings_by_use
 134,Yanks His Putz,Im,1,2,0,[0]
 134,Yanks His Putz,"Kim, SW",2,1,1562380,"[439680, 1122700]"
 134,Yanks His Putz,"Koepka, B",3,0,187975,"[0, 0, 187975]"
+134,Yanks His Putz,Koivun,1,2,0,[0]
 134,Yanks His Putz,"Lee, MW",1,2,128250,[128250]
 134,Yanks His Putz,Lowry,1,2,726400,[726400]
 134,Yanks His Putz,MacIntyre,2,1,259817,"[157000, 102817]"
