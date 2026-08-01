@@ -56,6 +56,7 @@ Cron Examples (add to crontab -e):
 """
 
 import argparse
+import re
 import subprocess
 import sys
 import time
@@ -266,6 +267,57 @@ def run_command(cmd: list, description: str, timeout: int = 180) -> bool:
         return False
     except Exception as e:
         log(f"  ✗ Error: {e}")
+        return False
+
+
+def deploy_site(reason: str, dry_run: bool = False) -> bool:
+    """Commit refreshed data/outputs and push so Render redeploys the live site.
+
+    Only stages data/ and outputs/ — never source code. No-op when nothing
+    changed. Never raises: a git failure must not sink the pipeline.
+    """
+    log("-" * 40)
+    log(f"Deploy Site ({reason})")
+
+    if dry_run:
+        log("[DRY RUN] Would commit data/ + outputs/ and push to origin main")
+        return True
+
+    def _git(*args, timeout=120):
+        return subprocess.run(
+            ["git", "-C", str(PROJECT_ROOT), *args],
+            capture_output=True, text=True, timeout=timeout,
+        )
+
+    try:
+        # Bail if a rebase/merge is mid-flight or we're not on main
+        branch = _git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
+        if branch != "main":
+            log(f"  [warn] On branch '{branch}', not main — skipping deploy")
+            return False
+
+        _git("add", "data/", "outputs/")
+
+        staged = _git("diff", "--cached", "--quiet")
+        if staged.returncode == 0:
+            log("  No data changes to deploy")
+            return True
+
+        msg = f"Auto-deploy: {reason} ({datetime.now().strftime('%Y-%m-%d %H:%M')})"
+        commit = _git("commit", "-m", msg)
+        if commit.returncode != 0:
+            log(f"  [warn] Commit failed: {commit.stderr[:200]}")
+            return False
+
+        push = _git("push", "origin", "main", timeout=300)
+        if push.returncode != 0:
+            log(f"  [warn] Push failed: {push.stderr[:200]}")
+            return False
+
+        log("  ✓ Pushed — Render redeploy triggered")
+        return True
+    except Exception as e:
+        log(f"  [warn] Deploy failed: {e}")
         return False
 
 
@@ -1297,6 +1349,22 @@ def run_post_tournament_refresh(dry_run: bool = False):
             log(f"  Synced {n_db} rows to DuckDB leaderboards table")
             sentinel.touch()
 
+    # DG historical sync — runs before form stats so that round_stats,
+    # tournament_stats, and leaderboard rows are all updated from DG's
+    # finalized data (driving dist/acc, GIR, scrambling, real sg_arg, etc.)
+    # before anything downstream reads those tables.
+    m = re.match(r"R(\d{4})(\d+)$", tid.upper())
+    if m:
+        dg_event_id = str(int(m.group(2)))  # strip leading zeros e.g. "034" → "34"
+        dg_cmd = [
+            "python3", "scripts/scrapers/fetch_dg_historical_results.py",
+            "--year", str(year), "--event-id", dg_event_id,
+        ]
+        if dry_run:
+            log(f"[DRY RUN] Would run: DG Historical Sync ({tid})")
+        else:
+            run_command(dg_cmd, f"DG Historical Sync ({tid})", timeout=180)
+
     # Steps 6-10: remaining scrapers (idempotent by design)
     tasks = [
         ("Tournament SG Stats", ["python3", "scripts/scrapers/fetch_tournament_stats.py",
@@ -1541,6 +1609,13 @@ def main():
     else:
         log("No schedule to run.")
         return
+
+    # Deploy: weekly runs push refreshed data so Render redeploys the live
+    # site. Live refresh is excluded — it fires every 10 minutes and would
+    # keep the site in a permanent rebuild loop.
+    if schedule != "live" and results:
+        deploy_ok = deploy_site(schedule, dry_run=args.dry_run)
+        results.append(("Deploy Site", deploy_ok))
 
     # Summary
     log("")
