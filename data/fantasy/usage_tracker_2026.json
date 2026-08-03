@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-07-30T07:04:55.317910",
+  "last_updated": "2026-08-02T23:08:19.769004",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -18,7 +18,7 @@
         }
       ],
       "total_earnings": 242400,
-      "total_points": 0
+      "total_points": 242400
     },
     "Gotterup": {
       "times_used": 3,
@@ -47,7 +47,7 @@
         }
       ],
       "total_earnings": 3312000,
-      "total_points": 0
+      "total_points": 3312000
     },
     "B Griffin": {
       "times_used": 2,
@@ -69,7 +69,7 @@
         }
       ],
       "total_earnings": 163005,
-      "total_points": 0
+      "total_points": 163005
     },
     "J Day": {
       "times_used": 1,
@@ -84,7 +84,7 @@
         }
       ],
       "total_earnings": 162000,
-      "total_points": 0
+      "total_points": 162000
     },
     "McNealy": {
       "times_used": 1,
@@ -99,7 +99,7 @@
         }
       ],
       "total_earnings": 125200,
-      "total_points": 0
+      "total_points": 125200
     },
     "Rose": {
       "times_used": 1,
@@ -114,7 +114,7 @@
         }
       ],
       "total_earnings": 78375,
-      "total_points": 0
+      "total_points": 78375
     },
     "Cantlay": {
       "times_used": 2,
@@ -136,7 +136,7 @@
         }
       ],
       "total_earnings": 411250,
-      "total_points": 0
+      "total_points": 411250
     },
     "Hovland": {
       "times_used": 1,
@@ -151,7 +151,7 @@
         }
       ],
       "total_earnings": 78000,
-      "total_points": 0
+      "total_points": 78000
     },
     "Matsuyama": {
       "times_used": 3,
@@ -180,7 +180,7 @@
         }
       ],
       "total_earnings": 636050,
-      "total_points": 0
+      "total_points": 636050
     },
     "Gerard": {
       "times_used": 1,
@@ -195,7 +195,7 @@
         }
       ],
       "total_earnings": 77600,
-      "total_points": 0
+      "total_points": 77600
     },
     "N Hojgaard": {
       "times_used": 1,
@@ -210,7 +210,7 @@
         }
       ],
       "total_earnings": 324000,
-      "total_points": 0
+      "total_points": 324000
     },
     "Thorbjornsen": {
       "times_used": 1,
@@ -247,7 +247,7 @@
         }
       ],
       "total_earnings": 1452000,
-      "total_points": 0
+      "total_points": 1452000
     },
     "Henley": {
       "times_used": 3,
@@ -276,7 +276,7 @@
         }
       ],
       "total_earnings": 2924000,
-      "total_points": 0
+      "total_points": 2924000
     },
     "McIlroy": {
       "times_used": 2,
@@ -298,7 +298,7 @@
         }
       ],
       "total_earnings": 242100,
-      "total_points": 0
+      "total_points": 242100
     },
     "Scheffler": {
       "times_used": 3,
@@ -327,7 +327,7 @@
         }
       ],
       "total_earnings": 1556895,
-      "total_points": 0
+      "total_points": 1556895
     },
     "Scott": {
       "times_used": 1,
@@ -342,7 +342,7 @@
         }
       ],
       "total_earnings": 58000,
-      "total_points": 0
+      "total_points": 58000
     },
     "Cam Young": {
       "times_used": 1,
@@ -357,7 +357,7 @@
         }
       ],
       "total_earnings": 4500000,
-      "total_points": 0
+      "total_points": 4500000
     },
     "Bridgeman": {
       "times_used": 1,
@@ -372,7 +372,7 @@
         }
       ],
       "total_earnings": 161525,
-      "total_points": 0
+      "total_points": 161525
     },
     "Theegala": {
       "times_used": 1,
@@ -409,7 +409,7 @@
         }
       ],
       "total_earnings": 245017,
-      "total_points": 0
+      "total_points": 245017
     },
     "Knapp": {
       "times_used": 2,
@@ -431,7 +431,7 @@
         }
       ],
       "total_earnings": 322988,
-      "total_points": 0
+      "total_points": 322988
     },
     "B Koepka": {
       "times_used": 2,
@@ -453,7 +453,7 @@
         }
       ],
       "total_earnings": 34186,
-      "total_points": 0
+      "total_points": 34186
     },
     "MW Lee": {
       "times_used": 1,
@@ -468,7 +468,7 @@
         }
       ],
       "total_earnings": 584100,
-      "total_points": 0
+      "total_points": 584100
     },
     "Fowler": {
       "times_used": 2,
@@ -519,7 +519,7 @@
         }
       ],
       "total_earnings": 161460,
-      "total_points": 0
+      "total_points": 161460
     },
     "Yellamaraju": {
       "times_used": 1,
@@ -534,7 +534,7 @@
         }
       ],
       "total_earnings": 159250,
-      "total_points": 0
+      "total_points": 159250
     },
     "DeChambeau": {
       "times_used": 1,
@@ -578,7 +578,7 @@
         }
       ],
       "total_earnings": 837075,
-      "total_points": 0
+      "total_points": 837075
     },
     "M Fitzpatrick": {
       "times_used": 3,
@@ -607,7 +607,7 @@
         }
       ],
       "total_earnings": 3875408,
-      "total_points": 0
+      "total_points": 3875408
     },
     "Fleetwood": {
       "times_used": 3,
@@ -636,7 +636,7 @@
         }
       ],
       "total_earnings": 1038143,
-      "total_points": 0
+      "total_points": 1038143
     },
     "Morikawa": {
       "times_used": 3,
@@ -665,7 +665,7 @@
         }
       ],
       "total_earnings": 1029408,
-      "total_points": 0
+      "total_points": 1029408
     },
     "Brennan": {
       "times_used": 1,
@@ -702,7 +702,7 @@
         }
       ],
       "total_earnings": 1469607,
-      "total_points": 0
+      "total_points": 1469607
     },
     "Lowry": {
       "times_used": 1,
@@ -739,7 +739,7 @@
         }
       ],
       "total_earnings": 1949367,
-      "total_points": 0
+      "total_points": 1949367
     },
     "Rahm": {
       "times_used": 3,
@@ -768,7 +768,7 @@
         }
       ],
       "total_earnings": 1853978,
-      "total_points": 0
+      "total_points": 1853978
     },
     "Hisatsune": {
       "times_used": 1,
@@ -783,7 +783,7 @@
         }
       ],
       "total_earnings": 100596,
-      "total_points": 0
+      "total_points": 100596
     },
     "Burns": {
       "times_used": 1,
@@ -798,7 +798,7 @@
         }
       ],
       "total_earnings": 920000,
-      "total_points": 0
+      "total_points": 920000
     },
     "W Clark": {
       "times_used": 2,
@@ -820,7 +820,7 @@
         }
       ],
       "total_earnings": 371500,
-      "total_points": 0
+      "total_points": 371500
     },
     "N Taylor": {
       "times_used": 1,
@@ -835,7 +835,7 @@
         }
       ],
       "total_earnings": 21168,
-      "total_points": 0
+      "total_points": 21168
     },
     "Rai": {
       "times_used": 1,
@@ -850,7 +850,7 @@
         }
       ],
       "total_earnings": 114625,
-      "total_points": 0
+      "total_points": 114625
     },
     "Koivun": {
       "times_used": 2,
@@ -887,7 +887,7 @@
         }
       ],
       "total_earnings": 431888,
-      "total_points": 0
+      "total_points": 431888
     },
     "Homa": {
       "times_used": 1,
@@ -917,7 +917,7 @@
         }
       ],
       "total_earnings": 103840,
-      "total_points": 0
+      "total_points": 103840
     },
     "Jackson Koivun": {
       "times_used": 1,
@@ -927,12 +927,14 @@
           "tournament": "Rocket Classic",
           "week": 26,
           "date": "2026-07-30",
-          "result": null,
-          "earnings": 0
+          "result": "1",
+          "earnings": 22,
+          "points": 22,
+          "result_source": "pga_past_results"
         }
       ],
-      "total_earnings": 0,
-      "total_points": 0
+      "total_earnings": 22,
+      "total_points": 22
     },
     "Jake Knapp": {
       "times_used": 1,
@@ -942,8 +944,10 @@
           "tournament": "Rocket Classic",
           "week": 26,
           "date": "2026-07-30",
-          "result": null,
-          "earnings": 0
+          "result": "CUT",
+          "earnings": 0,
+          "points": 0,
+          "result_source": "pga_past_results"
         }
       ],
       "total_earnings": 0,
@@ -957,8 +961,10 @@
           "tournament": "Rocket Classic",
           "week": 26,
           "date": "2026-07-30",
-          "result": null,
-          "earnings": 0
+          "result": "T38",
+          "earnings": 0,
+          "points": 0,
+          "result_source": "pga_past_results"
         }
       ],
       "total_earnings": 0,
@@ -1301,8 +1307,8 @@
         "Chris Gotterup"
       ],
       "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "earnings_earned": 22,
+      "points_earned": 22
     },
     "week_27": {
       "tournament": "Wyndham Championship",
@@ -1344,6 +1350,7 @@
   "summary": {
     "total_weeks": 30,
     "total_players": 49,
-    "total_earnings": 32128004
+    "total_earnings": 32128026,
+    "total_points": 32128026
   }
 }
