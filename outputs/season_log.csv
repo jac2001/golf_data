@@ -1,31 +1,31 @@
-week,date,tournament,pick1,pick2,pick3,result1,result2,result3,points,league_rank,notes,rank1,rank2,rank3,avg_model_rank
-1,2026-02-05,Waste Management Phoenix Open,Pier Coody,Gotterup,B Griffin,T10,1,T28,2033349,,,,,,
-10,2026-04-09,The Masters,Aberg,DeChambeau,Schauffele,T21,CUT,T9,882000,,,,,,
-11,2026-04-16,RBC Heritage,M Fitzpatrick,Fleetwood,Morikawa,1,T52,T4,4466833,,,,,,
-12,2026-04-23,Zurich Classic of New Orleans,Brennan,A Fitzpatrick,Lowry,CUT,1,CUT,1372750,,,,,,
-13,2026-04-30,Cadillac Championship,Fleetwood,SW Kim,Morikawa,T23,T4,T62,1035310,,,,,,
-14,2026-05-07,Truist Championship,M Fitzpatrick,McIlroy,Schauffele,T52,T19,T60,329788,,,,,,
-15,2026-05-14,PGA Championship,B Koepka,Rahm,Scheffler,T55,T2,T14,2202949,,,,,,
-16,2026-05-21,The CJ Cup Byron Nelson,Hisatsune,SW Kim,Spieth,T19,2,T19,1323892,,,,,,
-17,2026-05-28,Charles Schwab Challenge,Fowler,Henley,J Thomas,CUT,1,T13,1975875,,,,,,
-18,2026-06-04,The Memorial Tournament,Burns,Cantlay,Matsuyama,T4,T17,T43,1309000,,,,,,
-19,2026-06-11,RBC Canadian Open,W Clark,A Fitzpatrick,N Taylor,T11,T20,T65,336075,,,,,,
-2,2026-02-12,AT&T Pebble Beach Pro-Am,J Day,McNealy,Rose,T24,T29,T37,365575,,,,,,
-20,2026-06-18,U.S. Open,M Fitzpatrick,Rahm,Scheffler,22,CUT,T4,1151102,,,,,,
-21,2026-06-25,Travelers Championship,Henley,Rai,Spieth,T12,T30,T66,594125,,,,,,
-22,2026-07-02,John Deere Classic,Gotterup,B Griffin,Koivun,1,T21,CUT,1684056,,,,,,
-23,2026-07-09,Genesis Scottish Open,W Clark,MacIntyre,Rahm,T13,T3,T36,635316,,,,,,
-24,2026-07-16,The Open Championship,Fleetwood,Morikawa,Schauffele,T4,T18,T18,1156650,,,,,,
-25,2026-07-23,3M Open,Homa,Tom Kim,Matsuyama,CUT,T20,T3,533390,,,,,,
-26,2026-07-30,Rocket Classic,Jackson Koivun,Jake Knapp,Chris Gotterup,1,CUT,T38,22,,,,,,
-27,2026-08-06,Wyndham Championship,,,,,,,,,,,,,
-28,2026-08-13,FedEx St. Jude Invitational,,,,,,,,,,,,,
-29,2026-08-20,BMW Championship,,,,,,,,,,,,,
-3,2026-02-19,The Genesis Invitational,Cantlay,Hovland,Matsuyama,T37,T41,T28,306750,,,,,,
-30,2026-08-27,TOUR Championship,,,,,,,,,,,,,
-4,2026-02-26,Cognizant Classic,Gerard,N Hojgaard,Thorbjornsen,T23,T6,CUT,401600,,,,,,
-5,2026-03-05,Arnold Palmer Invitational,Aberg,Henley,McIlroy,T3,T6,WD,1902000,,,,,,
-6,2026-03-12,THE PLAYERS Championship,Scheffler,Scott,Cam Young,T22,T56,1,4829250,,,,,,
-7,2026-03-19,Valspar Championship,Bridgeman,Theegala,J Thomas,T14,CUT,T30,212667,,,,,,
-8,2026-03-26,Texas Children's Houston Open,Knapp,B Koepka,MW Lee,T6,CUT,T3,907088,,,,,,
-9,2026-04-02,Valero Texas Open,Fowler,Spieth,Yellamaraju,CUT,T63,T14,180614,,,,,,
+week,tournament,wrp,player_1,result_1,earnings_1,player_2,result_2,earnings_2,player_3,result_3,earnings_3,total_earnings
+1,Waste Management Phoenix Open,2,Pier Coody,T10,242400,Gotterup,1,1728000,B Griffin,T28,62949,2033349
+2,AT&T Pebble Beach Pro-Am,15,J Day,T24,162000,McNealy,T29,125200,Rose,T37,78375,365575
+3,The Genesis Invitational,26,Cantlay,T37,92250,Hovland,T41,78000,Matsuyama,T28,136500,306750
+4,Cognizant Classic,24,Gerard,T23,77600,N Hojgaard,T6,324000,Thorbjornsen,CUT,0,401600
+5,Arnold Palmer Invitational,2,Aberg,T3,1200000,Henley,T6,702000,McIlroy,WD,0,1902000
+6,THE PLAYERS Championship,4,Scheffler,T22,271250,Scott,T56,58000,Cam Young,1,4500000,4829250
+7,Valspar Championship,18,Bridgeman,T14,161525,Theegala,CUT,0,J Thomas,T30,51142,212667
+8,Texas Children's Houston Open,5,Knapp,T6,322988,B Koepka,CUT,0,MW Lee,T3,584100,907088
+9,Valero Texas Open,18,Fowler,CUT,0,Spieth,T63,21364,Yellamaraju,T14,159250,180614
+10,The Masters,20,Aberg,T21,252000,DeChambeau,CUT,0,Schauffele,T9,630000,882000
+11,RBC Heritage,2,M Fitzpatrick,1,3600000,Fleetwood,T52,43500,Morikawa,T4,823333,4466833
+12,Zurich Classic of New Orleans,16,Brennan,CUT,0,A Fitzpatrick,1,1372750,Lowry,CUT,0,1372750
+13,Cadillac Championship,18,Fleetwood,T23,167143,SW Kim,T4,826667,Morikawa,T62,41500,1035310
+14,Truist Championship,23,M Fitzpatrick,T52,45188,McIlroy,T19,242100,Schauffele,T60,42500,329788
+15,PGA Championship,5,B Koepka,T55,34186,Rahm,T2,1804000,Scheffler,T14,364763,2202949
+16,The CJ Cup Byron Nelson,11,Hisatsune,T19,100596,SW Kim,2,1122700,Spieth,T19,100596,1323892
+17,Charles Schwab Challenge,2,Fowler,CUT,0,Henley,1,1782000,J Thomas,T13,193875,1975875
+18,The Memorial Tournament,4,Burns,T4,920000,Cantlay,T17,319000,Matsuyama,T43,70000,1309000
+19,RBC Canadian Open,16,W Clark,T11,218050,A Fitzpatrick,T20,96857,N Taylor,T65,21168,336075
+20,U.S. Open,13,M Fitzpatrick,22,230220,Rahm,CUT,0,Scheffler,T4,920882,1151102
+21,Travelers Championship,22,Henley,T12,440000,Rai,T30,114625,Spieth,T66,39500,594125
+22,John Deere Classic,6,Gotterup,1,1584000,B Griffin,T21,100056,Koivun,CUT,0,1684056
+23,Genesis Scottish Open,7,W Clark,T13,153450,MacIntyre,T3,431888,Rahm,T36,49978,635316
+24,The Open Championship,3,Fleetwood,T4,827500,Morikawa,T18,164575,Schauffele,T18,164575,1156650
+25,3M Open,7,Homa,CUT,0,Tom Kim,T20,103840,Matsuyama,T3,429550,533390
+26,Rocket Classic,21,Gotterup,CUT,0,Knapp,CUT,0,Koivun,T31,57214,57214
+27,Wyndham Championship,,,,0,,,0,,,0,
+28,FedEx St. Jude Invitational,,,,0,,,0,,,0,
+29,BMW Championship,,,,0,,,0,,,0,
+30,TOUR Championship,,,,0,,,0,,,0,

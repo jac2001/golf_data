@@ -1,149 +1,148 @@
 player_name_dg,player_name,dg_id,player_num,dg_rank,owgr_rank,tour_rank,country,am,pageviews,event_name,event_id,course_name,current_round,last_updated,fetched_at
-"Fitzpatrick, Matt",Matt Fitzpatrick,17646,40098,7.0,7.0,5,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Lowry, Shane",Shane Lowry,13900,33204,28.0,34.0,36,IRL,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Griffin, Ben",Ben Griffin,24968,54591,29.0,16.0,72,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Gerard, Ryan",Ryan Gerard,29767,59018,37.0,32.0,20,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Stevens, Sam",Sam Stevens,25569,55893,41.0,45.0,39,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Theegala, Sahith",Sahith Theegala,23014,51634,43.0,73.0,26,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Mitchell, Keith",Keith Mitchell,17365,39546,50.0,107.0,56,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Smalley, Alex",Alex Smalley,18474,46340,53.0,106.0,63,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Thorbjornsen, Michael",Michael Thorbjornsen,26649,57364,54.0,59.0,52,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Bezuidenhout, Christiaan",Christiaan Bezuidenhout,18103,45522,56.0,91.0,96,RSA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"McCarty, Matt",Matt McCarty,28635,59141,57.0,48.0,44,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Parry, John",John Parry,13764,28723,60.0,83.0,76,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"McGreevy, Max",Max McGreevy,23505,51950,62.0,75.0,93,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Smith, Jordan",Jordan Smith,18586,46464,69.0,68.0,51,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Clark, Wyndham",Wyndham Clark,23604,51766,71.0,71.0,82,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Putnam, Andrew",Andrew Putnam,14704,34256,73.0,92.0,43,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Koepka, Brooks",Brooks Koepka,16243,36689,75.0,129.0,53,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Reitan, Kristoffer",Kristoffer Reitan,21407,49855,76.0,46.0,85,NOR,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Jarvis, Casey",Casey Jarvis,26947,57688,80.0,69.0,,RSA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Meissner, Mac",Mac Meissner,28159,59143,82.0,116.0,108,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Wallace, Matt",Matt Wallace,20706,48887,84.0,67.0,65,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Pendrith, Taylor",Taylor Pendrith,17780,40250,85.0,77.0,88,CAN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Rai, Aaron",Aaron Rai,18554,46414,86.0,41.0,119,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Thompson, Davis",Davis Thompson,27364,58168,87.0,119.0,90,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Penge, Marco",Marco Penge,22465,51003,88.0,37.0,62,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Kirk, Chris",Chris Kirk,12423,30926,90.0,98.0,121,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Dumont De Chassart, Adrien",Adrien Dumont De Chassart,22002,50497,91.0,146.0,75,BEL,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Cole, Eric",Eric Cole,21756,47591,95.0,118.0,91,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Brennan, Michael",Michael Brennan,29197,61522,97.0,47.0,111,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Fitzpatrick, Alex",Alex Fitzpatrick,25362,55721,98.0,141.0,,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Li, Haotong",Haotong Li,15310,35296,99.0,78.0,77,CHN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Jaeger, Stephan",Stephan Jaeger,16394,36799,102.0,99.0,61,GER,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Finau, Tony",Tony Finau,11676,29725,104.0,110.0,68,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hoey, Rico",Rico Hoey,23504,51696,105.0,80.0,102,PHI,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Ramey, Chad",Chad Ramey,19840,47983,106.0,145.0,80,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Novak, Andrew",Andrew Novak,23475,51997,107.0,53.0,73,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Smotherman, Austin",Austin Smotherman,22985,50095,111.0,86.0,40,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Yu, Kevin",Kevin Yu,17881,45242,112.0,105.0,107,TPE,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Eckroat, Austin",Austin Eckroat,26653,57362,117.0,158.0,114,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Roy, Kevin",Kevin Roy,18424,39335,118.0,137.0,78,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Ghim, Doug",Doug Ghim,24550,52375,119.0,181.0,133,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Whaley, Vince",Vince Whaley,25908,51894,120.0,124.0,134,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Neergaard-Petersen, Rasmus",Rasmus Neergaard-Petersen,23841,52689,121.0,70.0,153,DEN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Power, Seamus",Seamus Power,10104,28252,122.0,169.0,106,IRL,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Greyserman, Max",Max Greyserman,23465,51977,124.0,65.0,104,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Kim, Tom",Tom Kim,24766,55182,126.0,134.0,105,KOR,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Mouw, William",William Mouw,29770,63121,127.0,122.0,94,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Horschel, Billy",Billy Horschel,11276,29420,129.0,97.0,92,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hodges, Lee",Lee Hodges,25157,54628,130.0,133.0,95,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hughes, Mackenzie",Mackenzie Hughes,15556,35506,132.0,123.0,118,CAN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Dou, Zecheng",Zecheng Dou,16757,37338,138.0,188.0,89,CHN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Moore, Taylor",Taylor Moore,21944,49947,140.0,147.0,59,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Blanchet, Chandler",Chandler Blanchet,24956,54788,141.0,115.0,70,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Kuchar, Matt",Matt Kuchar,6169,23108,143.0,166.0,174,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hossler, Beau",Beau Hossler,15470,35461,144.0,163.0,122,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Lipsky, David",David Lipsky,15980,36326,146.0,88.0,42,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Keefer, Johnny",Johnny Keefer,32457,63454,147.0,66.0,69,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Schmid, Matti",Matti Schmid,20722,48867,152.0,89.0,74,GER,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Bauchou, Zach",Zach Bauchou,19846,48001,153.0,170.0,87,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Brown, Dan",Dan Brown,20766,57259,154.0,94.0,125,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Blair, Zac",Zac Blair,17639,40058,155.0,243.0,145,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Ventura, Kris",Kris Ventura,15651,35658,158.0,244.0,156,NOR,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Kanaya, Takumi",Takumi Kanaya,19729,47917,159.0,128.0,117,JPN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Dahmen, Joel",Joel Dahmen,14509,34076,164.0,180.0,83,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Ryder, Sam",Sam Ryder,16715,37275,166.0,216.0,127,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Olesen, Jacob Skov",Jacob Skov Olesen,25611,55965,167.0,140.0,,DEN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Kohles, Ben",Ben Kohles,16395,36884,171.0,284.0,182,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Crowe, Trace",Trace Crowe,27780,52514,174.0,191.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Ford, David",David Ford,31343,65256,175.0,251.0,103,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Couvra, Martin",Martin Couvra,27811,60073,186.0,143.0,,FRA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Montgomery, Taylor",Taylor Montgomery,25442,55789,193.0,174.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Wu, Dylan",Dylan Wu,25002,54783,194.0,338.0,130,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Snedeker, Brandt",Brandt Snedeker,8820,27649,197.0,261.0,137,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Sigg, Greyson",Greyson Sigg,23482,51890,199.0,290.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Lebioda, Hank",Hank Lebioda,21943,49766,200.0,205.0,126,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Ewart, A.J.",A.J. Ewart,21883,50286,201.0,214.0,71,CAN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Brown, Blades",Blades Brown,32152,66417,209.0,173.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Pavon, Matthieu",Matthieu Pavon,19960,48153,210.0,233.0,86,FRA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Young, Carson",Carson Young,23656,52513,211.0,167.0,171,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Phillips, Chandler",Chandler Phillips,27164,57900,213.0,157.0,98,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Nakajima, Keita",Keita Nakajima,21074,49228,214.0,126.0,181,JPN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Higgo, Garrick",Garrick Higgo,24342,54421,216.0,85.0,165,RSA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Vilips, Karl",Karl Vilips,24304,54304,217.0,154.0,113,AUS,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Springer, Hayden",Hayden Springer,21995,50484,218.0,238.0,T172,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"VanDerLaan, John",John VanDerLaan,25319,55573,223.0,270.0,142,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Svensson, Adam",Adam Svensson,13997,40115,224.0,368.0,148,CAN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hoge, Tom",Tom Hoge,15575,35532,228.0,111.0,81,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Griffin, Lanto",Lanto Griffin,15330,35310,232.0,220.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Goodwin, Noah",Noah Goodwin,24837,55165,233.0,297.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Nyholm, Pontus",Pontus Nyholm,25475,55851,239.0,231.0,99,SWE,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Svensson, Jesper",Jesper Svensson,26850,57586,242.0,186.0,149,SWE,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hubbard, Mark",Mark Hubbard,16333,36801,243.0,152.0,139,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Skinns, David",David Skinns,10873,27139,245.0,252.0,136,ENG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Fishburn, Patrick",Patrick Fishburn,25094,54576,249.0,175.0,169,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Chatfield, Davis",Davis Chatfield,30620,59006,250.0,271.0,164,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hadwin, Adam",Adam Hadwin,13965,33399,251.0,240.0,163,CAN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Champ, Cameron",Cameron Champ,23542,52372,254.0,294.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Shipley, Neal",Neal Shipley,32055,63807,256.0,160.0,191,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Peterson, Paul",Paul Peterson,16341,36824,262.0,239.0,135,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Kim, Chan",Chan Kim,15004,34587,273.0,287.0,166,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Suber, Jackson",Jackson Suber,29279,60019,274.0,206.0,158,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Silverman, Ben",Ben Silverman,17381,39327,276.0,246.0,150,CAN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Walker, Danny",Danny Walker,25003,54607,283.0,215.0,123,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Streelman, Kevin",Kevin Streelman,8480,27214,284.0,377.0,128,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Kizzire, Patton",Patton Kizzire,13470,32757,285.0,273.0,120,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Lamprecht, Christo",Christo Lamprecht,24343,54422,296.0,201.0,168,RSA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Paul, Jeremy",Jeremy Paul,22087,50582,299.0,312.0,155,GER,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Van Rooyen, Erik",Erik Van Rooyen,17550,40006,301.0,164.0,175,RSA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Clanton, Luke",Luke Clanton,32330,66743,319.0,210.0,132,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Norlander, Henrik",Henrik Norlander,11657,30163,323.0,339.0,183,SWE,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hirata, Kensei",Kensei Hirata,20954,49120,333.0,204.0,140,JPN,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Duncan, Tyler",Tyler Duncan,18187,45609,337.0,488.0,T187,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Martin, Ben",Ben Martin,14007,33413,339.0,422.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Lower, Justin",Justin Lower,17723,40162,340.0,208.0,160,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Mullinax, Trey",Trey Mullinax,18761,46601,343.0,405.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Malnati, Peter",Peter Malnati,14926,34466,354.0,,162,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Knox, Russell",Russell Knox,13831,33122,359.0,370.0,,SCO,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Kang, Jeffrey",Jeffrey Kang,21889,47393,361.0,242.0,170,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Garnett, Brice",Brice Garnett,11451,29535,362.0,411.0,159,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Schenk, Adam",Adam Schenk,19477,47347,367.0,150.0,124,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hardy, Nick",Nick Hardy,19865,47988,371.0,493.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Stanger, Jimmy",Jimmy Stanger,23048,51600,375.0,,131,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Higgs, Harry",Harry Higgs,14140,33597,379.0,280.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hoffman, Charley",Charley Hoffman,5768,12716,393.0,400.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Byrd, Jonathan",Jonathan Byrd,6931,24925,396.0,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Villegas, Camilo",Camilo Villegas,9171,27770,412.0,464.0,192,COL,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Dunlap, Nick",Nick Dunlap,28270,59866,421.0,265.0,186,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Merritt, Troy",Troy Merritt,13367,32640,433.0,498.0,194,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Tosti, Alejandro",Alejandro Tosti,17032,38991,451.0,317.0,167,ARG,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Rozo, Marcelo",Marcelo Rozo,16591,37076,453.0,490.0,184,COL,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Riley, Davis",Davis Riley,19872,47995,470.0,121.0,116,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"List, Luke",Luke List,7960,27129,491.0,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Reavie, Chez",Chez Reavie,7961,26476,493.0,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Gordon, Will",Will Gordon,26660,56762,496.0,349.0,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Brehm, Ryan",Ryan Brehm,10423,28420,,,T172,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Campos, Rafael",Rafael Campos,12909,32070,,437.0,154,PUR,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Capan III, Frankie",Frankie Capan III,21412,49590,,314.0,T187,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Cook, Austin",Austin Cook,18579,46435,,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Davis, Cam",Cam Davis,17786,45157,,211.0,185,AUS,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Dufner, Jason",Jason Dufner,7301,25686,,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Hahn, James",James Hahn,11374,32448,,,193,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Ogilvy, Geoff",Geoff Ogilvy,5698,22046,,,,AUS,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Palmer, Ryan",Ryan Palmer,7820,23320,,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Piercy, Scott",Scott Piercy,7899,25818,,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Sargent, Gordon",Gordon Sargent,30814,64442,,,146,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Stanley, Kyle",Kyle Stanley,12069,30110,,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Streb, Robert",Robert Streb,14852,34431,,,T189,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
-"Watney, Nick",Nick Watney,7955,27095,,,,USA,0,0,Zurich Classic of New Orleans,18,TPC Louisiana,1,2026-04-18 15:00:27 UTC,2026-04-18T15:06:04.088776+00:00
+"Young, Cameron",Cameron Young,26651,57366,6.0,3.0,3,USA,0,1432,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Matsuyama, Hideki",Hideki Matsuyama,13562,32839,18.0,24.0,24,JPN,0,1720,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Gerard, Ryan",Ryan Gerard,29767,59018,21.0,25.0,16,USA,0,1629,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Griffin, Ben",Ben Griffin,24968,54591,23.0,20.0,36,USA,0,1370,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Thomas, Justin",Justin Thomas,14139,33448,24.0,22.0,40,USA,0,1106,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"McNealy, Maverick",Maverick McNealy,18634,46442,25.0,44.0,50,USA,0,605,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Koivun, Jackson",Jackson Koivun,32319,66701,26.0,70.0,70,USA,0,1612,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Bradley, Keegan",Keegan Bradley,13872,33141,34.0,45.0,72,USA,0,767,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Fitzpatrick, Alex",Alex Fitzpatrick,25362,55721,37.0,68.0,19,ENG,0,1024,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Rai, Aaron",Aaron Rai,18554,46414,40.0,19.0,35,ENG,0,1419,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"English, Harris",Harris English,14577,34099,44.0,36.0,49,USA,0,615,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Noren, Alex",Alex Noren,10419,27349,45.0,27.0,48,SWE,0,744,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Kim, Tom",Tom Kim,24766,55182,46.0,33.0,34,KOR,0,1374,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Cauley, Bud",Bud Cauley,14502,34021,49.0,42.0,33,USA,0,792,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Meissner, Mac",Mac Meissner,28159,59143,50.0,85.0,71,USA,0,1121,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Wallace, Matt",Matt Wallace,20706,48887,52.0,62.0,80,ENG,0,631,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Mitchell, Keith",Keith Mitchell,17365,39546,53.0,72.0,47,USA,0,358,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Smalley, Alex",Alex Smalley,18474,46340,54.0,46.0,25,USA,0,780,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Harman, Brian",Brian Harman,8825,27644,56.0,60.0,63,USA,0,845,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Kohles, Ben",Ben Kohles,16395,36884,57.0,108.0,95,USA,0,1219,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Taylor, Nick",Nick Taylor,13126,25493,58.0,73.0,61,CAN,0,502,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Kim, Michael",Michael Kim,17543,39975,59.0,51.0,59,USA,0,784,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Thompson, Davis",Davis Thompson,27364,58168,60.0,123.0,81,USA,0,1238,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Poston, J.T.",J.T. Poston,21554,49771,62.0,35.0,29,USA,0,740,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Cole, Eric",Eric Cole,21756,47591,63.0,74.0,45,USA,0,493,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Ghim, Doug",Doug Ghim,24550,52375,64.0,155.0,97,USA,0,686,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Smith, Jordan",Jordan Smith,18586,46464,65.0,76.0,68,ENG,0,569,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Brennan, Michael",Michael Brennan,29197,61522,67.0,58.0,105,USA,0,572,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Koepka, Brooks",Brooks Koepka,16243,36689,69.0,114.0,86,USA,0,498,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Bezuidenhout, Christiaan",Christiaan Bezuidenhout,18103,45522,71.0,98.0,92,RSA,0,546,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Theegala, Sahith",Sahith Theegala,23014,51634,72.0,82.0,43,USA,0,459,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Brown, Blades",Blades Brown,32152,66417,73.0,94.0,,USA,0,993,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hisatsune, Ryo",Ryo Hisatsune,22760,51287,74.0,66.0,42,JPN,0,795,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"McCarthy, Denny",Denny McCarthy,19870,47993,76.0,92.0,84,USA,0,601,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Day, Jason",Jason Day,9771,28089,77.0,61.0,75,AUS,0,260,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Grillo, Emiliano",Emiliano Grillo,12808,31646,79.0,99.0,104,ARG,0,813,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Spieth, Jordan",Jordan Spieth,14636,34046,82.0,57.0,55,USA,0,784,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Blair, Zac",Zac Blair,17639,40058,86.0,143.0,117,USA,0,588,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"McCarty, Matt",Matt McCarty,28635,59141,87.0,69.0,46,USA,0,522,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Neergaard-Petersen, Rasmus",Rasmus Neergaard-Petersen,23841,52689,88.0,80.0,94,DEN,0,313,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Im, Sungjae",Sungjae Im,17488,39971,89.0,75.0,57,KOR,0,1105,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Castillo, Ricky",Ricky Castillo,27819,59440,90.0,96.0,66,USA,0,336,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hall, Harry",Harry Hall,27194,57975,92.0,88.0,62,ENG,0,240,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hojgaard, Rasmus",Rasmus Hojgaard,23838,52686,93.0,77.0,103,DEN,0,415,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Yu, Kevin",Kevin Yu,17881,45242,96.0,126.0,111,TPE,0,297,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"James, Ben",Ben James,29827,57869,98.0,353.0,141,USA,0,545,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Suber, Jackson",Jackson Suber,29279,60019,100.0,109.0,82,USA,0,470,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Keefer, Johnny",Johnny Keefer,32457,63454,101.0,65.0,74,USA,0,293,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Kirk, Chris",Chris Kirk,12423,30926,102.0,105.0,127,USA,0,891,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Greyserman, Max",Max Greyserman,23465,51977,103.0,84.0,99,USA,0,282,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Berger, Daniel",Daniel Berger,17606,40026,105.0,56.0,58,USA,0,448,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Penge, Marco",Marco Penge,22465,51003,106.0,52.0,109,ENG,0,264,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Coody, Pierceson",Pierceson Coody,28309,59836,108.0,64.0,53,USA,0,188,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Straka, Sepp",Sepp Straka,17511,49960,109.0,26.0,37,AUT,0,651,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Bauchou, Zach",Zach Bauchou,19846,48001,110.0,159.0,93,USA,0,202,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Echavarria, Nico",Nico Echavarria,22833,51349,111.0,59.0,44,COL,0,503,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Putnam, Andrew",Andrew Putnam,14704,34256,113.0,101.0,73,USA,0,341,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Parry, John",John Parry,13764,28723,115.0,91.0,87,ENG,0,256,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Ventura, Kristoffer",Kristoffer Ventura,15651,35658,119.0,192.0,102,NOR,0,425,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hodges, Lee",Lee Hodges,25157,54628,120.0,130.0,101,USA,0,292,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hughes, Mackenzie",Mackenzie Hughes,15556,35506,122.0,150.0,120,CAN,0,184,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"McGreevy, Max",Max McGreevy,23505,51950,124.0,111.0,121,USA,0,251,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Jaeger, Stephan",Stephan Jaeger,16394,36799,125.0,104.0,77,GER,0,206,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Horschel, Billy",Billy Horschel,11276,29420,126.0,176.0,107,USA,0,847,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Mouw, William",William Mouw,29770,63121,132.0,136.0,114,USA,0,273,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Kuchar, Matt",Matt Kuchar,6169,23108,133.0,182.0,142,USA,0,256,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hoey, Rico",Rico Hoey,23504,51696,134.0,103.0,112,PHI,0,236,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Stevens, Sam",Sam Stevens,25569,55893,135.0,55.0,52,USA,0,204,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Roy, Kevin",Kevin Roy,18424,39335,136.0,118.0,88,USA,0,230,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hossler, Beau",Beau Hossler,15470,35461,137.0,165.0,122,USA,0,197,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Dou, Zecheng",Zecheng Dou,16757,37338,138.0,189.0,115,CHN,0,153,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Novak, Andrew",Andrew Novak,23475,51997,141.0,78.0,91,USA,0,243,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Power, Seamus",Seamus Power,10104,28252,142.0,190.0,110,IRL,0,183,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Olesen, Thorbjorn",Thorbjorn Olesen,13412,33968,144.0,152.0,166,DEN,0,154,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Schmid, Matti",Matti Schmid,20722,48867,147.0,83.0,67,GER,0,191,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Dumont De Chassart, Adrien",Adrien Dumont De Chassart,22002,50497,149.0,180.0,123,BEL,0,131,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Eckroat, Austin",Austin Eckroat,26653,57362,150.0,187.0,118,USA,0,252,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Pendrith, Taylor",Taylor Pendrith,17780,40250,151.0,95.0,85,CAN,0,162,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Finau, Tony",Tony Finau,11676,29725,154.0,134.0,89,USA,0,221,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Phillips, Chandler",Chandler Phillips,27164,57900,156.0,135.0,90,USA,0,292,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Potgieter, Aldrich",Aldrich Potgieter,27900,63343,157.0,89.0,65,RSA,0,154,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Fisk, Steven",Steven Fisk,26657,57123,158.0,86.0,69,USA,0,136,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Ewart, A.J.",A.J. Ewart,21883,50286,163.0,183.0,100,CAN,0,178,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Lipsky, David",David Lipsky,15980,36326,164.0,115.0,78,USA,0,183,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Moore, Taylor",Taylor Moore,21944,49947,166.0,158.0,98,USA,0,152,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Fishburn, Patrick",Patrick Fishburn,25094,54576,170.0,209.0,145,USA,0,251,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Glover, Lucas",Lucas Glover,7399,25900,172.0,100.0,96,USA,0,631,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Snedeker, Brandt",Brandt Snedeker,8820,27649,179.0,127.0,83,USA,0,329,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hoge, Tom",Tom Hoge,15575,35532,185.0,124.0,79,USA,0,256,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Dahmen, Joel",Joel Dahmen,14509,34076,188.0,211.0,119,USA,0,312,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Kanaya, Takumi",Takumi Kanaya,19729,47917,189.0,171.0,143,JPN,0,140,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Van Rooyen, Erik",Erik Van Rooyen,17550,40006,190.0,198.0,146,RSA,0,98,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Svensson, Jesper",Jesper Svensson,26850,57586,194.0,169.0,124,SWE,0,100,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Blanchet, Chandler",Chandler Blanchet,24956,54788,201.0,119.0,106,USA,0,304,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hubbard, Mark",Mark Hubbard,16333,36801,203.0,138.0,116,USA,0,398,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Chatfield, Davis",Davis Chatfield,30620,59006,206.0,249.0,138,USA,0,494,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Li, Haotong",Haotong Li,15310,35296,207.0,112.0,129,CHN,0,160,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Whaley, Vince",Vince Whaley,25908,51894,209.0,184.0,169,USA,0,106,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Vilips, Karl",Karl Vilips,24304,54304,213.0,197.0,128,AUS,0,179,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Simpson, Webb",Webb Simpson,11049,29221,221.0,,181,USA,0,309,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Rodgers, Patrick",Patrick Rodgers,16283,36699,224.0,102.0,64,USA,0,348,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Smotherman, Austin",Austin Smotherman,22985,50095,225.0,107.0,76,USA,0,388,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Saddier, Adrien",Adrien Saddier,14792,34371,227.0,140.0,179,FRA,0,115,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Pavon, Matthieu",Matthieu Pavon,19960,48153,232.0,293.0,125,FRA,0,145,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Shipley, Neal",Neal Shipley,32055,63807,233.0,207.0,184,USA,0,252,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Clanton, Luke",Luke Clanton,32330,66743,235.0,269.0,147,USA,0,515,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Lebioda, Hank",Hank Lebioda,21943,49766,244.0,246.0,137,USA,0,108,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Silverman, Ben",Ben Silverman,17381,39327,250.0,228.0,136,CAN,0,76,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Higgo, Garrick",Garrick Higgo,24342,54421,251.0,117.0,163,RSA,0,90,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Ramey, Chad",Chad Ramey,19840,47983,254.0,191.0,132,USA,0,89,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Crowe, Trace",Trace Crowe,27780,52514,266.0,247.0,156,USA,0,240,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Springer, Hayden",Hayden Springer,21995,50484,268.0,309.0,134,USA,0,107,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Streelman, Kevin",Kevin Streelman,8480,27214,276.0,407.0,153,USA,0,122,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Griffin, Lanto",Lanto Griffin,15330,35310,277.0,233.0,155,USA,0,78,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Wu, Dylan",Dylan Wu,25002,54783,286.0,389.0,160,USA,0,91,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Garnett, Brice",Brice Garnett,11451,29535,303.0,265.0,131,USA,0,155,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Nyholm, Pontus",Pontus Nyholm,25475,55851,308.0,259.0,133,SWE,0,82,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Riley, Davis",Davis Riley,19872,47995,313.0,116.0,108,USA,0,383,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Lower, Justin",Justin Lower,17723,40162,321.0,285.0,174,USA,0,141,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"VanDerLaan, John",John VanDerLaan,25319,55573,322.0,297.0,168,USA,0,81,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Svensson, Adam",Adam Svensson,13997,40115,330.0,475.0,176,CAN,0,156,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Highsmith, Joe",Joe Highsmith,28469,60067,331.0,194.0,150,USA,0,124,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Dunlap, Nick",Nick Dunlap,28270,59866,341.0,386.0,165,USA,0,108,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Akina, Kihei",Kihei Akina,32652,67118,342.0,,,USA,1,110,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Pan, C.T.",C.T. Pan,15475,29908,348.0,,,TPE,0,128,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Campbell, Brian",Brian Campbell,18628,46443,354.0,149.0,161,USA,0,423,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Mazzoli, Stefano",Stefano Mazzoli,20844,49037,359.0,208.0,,ITA,0,127,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Kang, Jeffrey",Jeffrey Kang,21889,47393,380.0,275.0,162,USA,0,59,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Villegas, Camilo",Camilo Villegas,9171,27770,389.0,473.0,194,COL,0,59,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"List, Luke",Luke List,7960,27129,424.0,,190,USA,0,70,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Malnati, Peter",Peter Malnati,14926,34466,429.0,,170,USA,0,245,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Wise, Aaron",Aaron Wise,22051,49964,432.0,460.0,149,USA,0,163,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Schenk, Adam",Adam Schenk,19477,47347,444.0,187.0,157,USA,0,113,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Sargent, Gordon",Gordon Sargent,30814,64442,451.0,326.0,130,USA,0,151,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hirata, Kensei",Kensei Hirata,20954,49120,490.0,323.0,167,JPN,0,105,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Campos, Rafael",Rafael Campos,12909,32070,,,175,PUR,0,102,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Collet, Tyler",Tyler Collet,28077,59570,,,,USA,0,64,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Davis, Cam",Cam Davis,17786,45157,,317.0,191,AUS,0,138,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Hrabak, Cooper",Cooper Hrabak,35195,66830,,,,USA,0,35,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Huskey, Keenan",Keenan Huskey,26597,56926,,,,USA,0,47,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Kizzire, Patton",Patton Kizzire,13470,32757,,447.0,164,USA,0,81,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Lamprecht, Christo",Christo Lamprecht,24343,54422,,300.0,198,RSA,0,77,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"McGirt, William",William McGirt,12477,31202,,,219,USA,0,49,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Rodriguez, Lorenzo",Lorenzo Rodriguez,30043173,71059,,,,USA,1,34,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Rozo, Marcelo",Marcelo Rozo,16591,37076,,,201,COL,0,95,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Tosti, Alejandro",Alejandro Tosti,17032,38991,,410.0,186,ARG,0,111,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00
+"Walker, Danny",Danny Walker,25003,54607,,284.0,159,USA,0,69,Wyndham Championship,13,Sedgefield Country Club,1,2026-08-04 12:01:00 UTC,2026-08-04T12:09:11.179825+00:00

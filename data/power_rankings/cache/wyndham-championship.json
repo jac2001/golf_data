@@ -1,0 +1,343 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Wyndham Championship",
+      "tableTitle": "Power Rankings for Wyndham Championship",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "34021",
+            "firstName": "Bud",
+            "lastName": "Cauley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34021.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Author of one of the feel-good stories of the year with his breakthrough title at the RBC Canadian Open, the 36 year old has persisted with a pair of top 20s in four starts since. He\u2019s 5-for-10 at Sedgefield with three top 15s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "66417",
+            "firstName": "Blades",
+            "lastName": "Brown",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66417.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Methodically climbing the ranks at ninth on the Korn Ferry Tour Points List and 94th in the Official World Golf Ranking, the 19 year old has cashed in 12 straight starts across two tours. Ten were top 20s. T5-T6 in the last two."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "35658",
+            "firstName": "Kristoffer",
+            "lastName": "Ventura",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35658.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "In a bit of cosmic alignment, he gained entry when Zurich Classic of New Orleans partner Kristoffer Reitan withdrew, but Ventura would\u2019ve been in via his top 10 in Detroit (T5), anyway. Three top 15s in his last four starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "39975",
+            "firstName": "Michael",
+            "lastName": "Kim",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39975.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He didn\u2019t parlay a second-round 59 at the 3M Open into something better than a T10, but he kept the pedal down for a consistently strong T8 at the Rocket Classic. Now sits, coincidentally, at 59th in the FedExCup. T5 here in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "58168",
+            "firstName": "Davis",
+            "lastName": "Thompson",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_58168.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Top 10s the last two weeks. It\u2019s the first time since early 2025 that he gained strokes on consecutive fields with his putter. Since 2023, he\u2019s finished no worse than T22 here and gained strokes with his putter in the last two."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "59018",
+            "firstName": "Ryan",
+            "lastName": "Gerard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The native of the Tar Heel State is 0-for-2 at Sedgefield, but he\u2019s on the upslope of his career bell curve, so that presents as valuable experience. With top 10s in his last two starts, the third time is poised to be the charm."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "33448",
+            "firstName": "Justin",
+            "lastName": "Thomas",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33448.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Rested since a fortnight in the U.K. where he was over par in both final rounds (after scoring par or better in the other six rounds), this is a plum opportunity to reignite with previously solid form. T12 in his last trip in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "39971",
+            "firstName": "Sungjae",
+            "lastName": "Im",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39971.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The only entrant with as many as six appearances without missing a cut, and he\u2019s 7-for-7 with three top 10s among five top 25s. His scoring average in 28 rounds is 67.07. Returns with two top 15s in his last three starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "49771",
+            "firstName": "J.T.",
+            "lastName": "Poston",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49771.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Navigated all 72 holes at Sedgefield in bogey-free 22 under in 2022 for his breakthrough victory on the TOUR. He\u2019s followed it up with a T17 and another pair of top 25s. Now just two months removed from his win at the Memorial."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "46414",
+            "firstName": "Aaron",
+            "lastName": "Rai",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46414.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The soft-spoken PGA champion has been similarly quiet inside the ropes since lifting the Wanamaker Trophy at Aronimink Golf Club, but he still logged two top 20s. Broke through at Sedgefield in 2024 and finished T5 last year in defense."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "66701",
+            "firstName": "Jackson",
+            "lastName": "Koivun",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66701.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The breakthrough winner of the 3M Open settled for a T31 at the Rocket Classic but broke par in every round to extend his streak of red numbers to 13. With that reset out of the way, he can tap into his T5 at Sedgefield Country Club last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "54591",
+            "firstName": "Ben",
+            "lastName": "Griffin",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_54591.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The North Carolina kid \u2013 OK, he\u2019s 30, but it still has a nice ring to it \u2013 hasn\u2019t lived up to the expectations set by a mammoth 2025, but he\u2019s 36th in the FedExCup. He\u2019s also 3-for-4 at Sedgefield Country Club with a fourth, a T7 and a T11."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Fresh off consecutive top 10s for the first time in a while, and both were top fives at the 3M Open and the Rocket Classic, he\u2019s rolling into his 10th start at Sedgefield with a head of steam. All four paydays here were top 20s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "55182",
+            "firstName": "Tom",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55182.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a win at the Genesis Scottish Open and another three top 20s in his last six starts, including a T20 in his last at the 3M Open where he connected four sub-70 rounds, the 2022 Wyndham champ is surging when everyone wants to."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Finally"
+                },
+                {
+                  "value": " returns to the site of his maiden PGA TOUR title. What a 12-month cycle it\u2019s been. Twice a winner this year with a pair of podium finishes in the majors. Now he\u2019s fresh off a T8 in Detroit, where he spun a second-round 61."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
