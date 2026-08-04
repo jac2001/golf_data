@@ -1,112 +1,334 @@
 p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
-"Bradley, Keegan","Meissner, Mac",13872,28159,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Bradley, Keegan","Meissner, Mac",13872,28159,separate bet offered,datagolf,+114,+106,0.46729,0.485437,0.490476,0.509524,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"English, Harris","Spieth, Jordan",14577,14636,separate bet offered,bet365,-139,+115,0.58159,0.465116,0.555638,0.444362,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"English, Harris","Spieth, Jordan",14577,14636,separate bet offered,datagolf,-135,+163,0.574468,0.380228,0.601729,0.398271,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Fitzpatrick, Alex","Thompson, Davis",25362,27364,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Fitzpatrick, Alex","Thompson, Davis",25362,27364,separate bet offered,datagolf,+101,+119,0.497512,0.456621,0.521429,0.478571,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Griffin, Ben","Gerard, Ryan",24968,29767,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Griffin, Ben","Gerard, Ryan",24968,29767,separate bet offered,datagolf,+110,+110,0.47619,0.47619,0.5,0.5,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Kohles, Ben","Ghim, Doug",16395,24550,separate bet offered,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Kohles, Ben","Ghim, Doug",16395,24550,separate bet offered,datagolf,+124,-103,0.446429,0.507389,0.468044,0.531956,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Rai, Aaron","Kim, Tom",18554,24766,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Rai, Aaron","Kim, Tom",18554,24766,separate bet offered,datagolf,-104,+126,0.509804,0.442478,0.53535,0.46465,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Rai, Aaron","Kim, Tom",18554,24766,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Rai, Aaron","Kim, Tom",18554,24766,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Koepka, Brooks","Brennan, Michael",16243,29197,separate bet offered,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Koepka, Brooks","Brennan, Michael",16243,29197,separate bet offered,datagolf,+114,+106,0.46729,0.485437,0.490476,0.509524,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Koepka, Brooks","Brennan, Michael",16243,29197,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Koepka, Brooks","Brennan, Michael",16243,29197,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Mitchell, Keith","Brown, Blades",17365,32152,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Mitchell, Keith","Brown, Blades",17365,32152,separate bet offered,datagolf,+105,+115,0.487805,0.465116,0.511905,0.488095,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Harman, Brian","Noren, Alex",8825,10419,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Harman, Brian","Noren, Alex",8825,10419,separate bet offered,datagolf,+103,+117,0.492611,0.460829,0.516667,0.483333,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Thomas, Justin","McNealy, Maverick",14139,18634,separate bet offered,bet365,-133,+110,0.570815,0.47619,0.545188,0.454812,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Thomas, Justin","McNealy, Maverick",14139,18634,separate bet offered,datagolf,-105,+126,0.512195,0.442478,0.536514,0.463486,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Young, Cameron","Koivun, Jackson",26651,32319,separate bet offered,bet365,-182,+150,0.64539,0.4,0.617368,0.382632,False,True,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Young, Cameron","Koivun, Jackson",26651,32319,separate bet offered,datagolf,-142,+172,0.586777,0.367647,0.614797,0.385203,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Young, Cameron","Koivun, Jackson",26651,32319,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Young, Cameron","Koivun, Jackson",26651,32319,void,datagolf,-159,+159,0.6139,0.3861,0.6139,0.3861,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,betonline,-123,+103,0.55157,0.492611,0.528232,0.471768,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Thomas, Justin","Griffin, Ben",14139,24968,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Thomas, Justin","Griffin, Ben",14139,24968,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Fitzpatrick, Alex","Mouw, William",25362,29770,void,betonline,-175,+145,0.636364,0.408163,0.609236,0.390764,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Fitzpatrick, Alex","Mouw, William",25362,29770,void,datagolf,-186,+186,0.65035,0.34965,0.65035,0.34965,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Ghim, Doug","Thompson, Davis",24550,27364,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Ghim, Doug","Thompson, Davis",24550,27364,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"English, Harris","McNealy, Maverick",14577,18634,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"English, Harris","McNealy, Maverick",14577,18634,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Bradley, Keegan","Im, Sungjae",13872,17488,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Bradley, Keegan","Im, Sungjae",13872,17488,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Bradley, Keegan","Im, Sungjae",13872,17488,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Meissner, Mac","Brennan, Michael",28159,29197,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Meissner, Mac","Brennan, Michael",28159,29197,void,datagolf,-151,+151,0.601594,0.398406,0.601594,0.398406,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Harman, Brian","Kohles, Ben",8825,16395,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Harman, Brian","Kohles, Ben",8825,16395,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Smith, Jordan","Poston, J.T.",18586,21554,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Smith, Jordan","Poston, J.T.",18586,21554,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Cauley, Bud","Koepka, Brooks",14502,16243,void,betonline,-140,+117,0.583333,0.460829,0.558661,0.441339,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Cauley, Bud","Koepka, Brooks",14502,16243,void,datagolf,-145,+145,0.591837,0.408163,0.591837,0.408163,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Smalley, Alex","Hisatsune, Ryo",18474,22760,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Smalley, Alex","Hisatsune, Ryo",18474,22760,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Kirk, Chris","Brown, Blades",12423,32152,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Kirk, Chris","Brown, Blades",12423,32152,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Mitchell, Keith","Wallace, Matt",17365,20706,void,betonline,+103,-123,0.492611,0.55157,0.471768,0.528232,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Mitchell, Keith","Wallace, Matt",17365,20706,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Noren, Alex","Kim, Michael",10419,17543,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Noren, Alex","Kim, Michael",10419,17543,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Spieth, Jordan","James, Ben",14636,29827,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Spieth, Jordan","James, Ben",14636,29827,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Bezuidenhout, Christiaan","Neergaard-Petersen, Rasmus",18103,23841,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Bezuidenhout, Christiaan","Neergaard-Petersen, Rasmus",18103,23841,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Grillo, Emiliano","Cole, Eric",12808,21756,void,betonline,-123,+103,0.55157,0.492611,0.528232,0.471768,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Grillo, Emiliano","Cole, Eric",12808,21756,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Taylor, Nick","Suber, Jackson",13126,29279,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Taylor, Nick","Suber, Jackson",13126,29279,void,datagolf,-127,+127,0.559471,0.440529,0.559471,0.440529,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Horschel, Billy","Hojgaard, Rasmus",11276,23838,void,betonline,-135,+113,0.574468,0.469484,0.550282,0.449718,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Horschel, Billy","Hojgaard, Rasmus",11276,23838,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Penge, Marco","Echavarria, Nico",22465,22833,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Penge, Marco","Echavarria, Nico",22465,22833,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Straka, Sepp","Keefer, Johnny",17511,32457,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Straka, Sepp","Keefer, Johnny",17511,32457,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Theegala, Sahith","McCarty, Matt",23014,28635,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Theegala, Sahith","McCarty, Matt",23014,28635,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"McCarthy, Denny","Novak, Andrew",19870,23475,void,betonline,-135,+113,0.574468,0.469484,0.550282,0.449718,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"McCarthy, Denny","Novak, Andrew",19870,23475,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Ventura, Kristoffer","Greyserman, Max",15651,23465,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Ventura, Kristoffer","Greyserman, Max",15651,23465,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Blair, Zac","Castillo, Ricky",17639,27819,void,betonline,-102,-118,0.50495,0.541284,0.482636,0.517364,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Blair, Zac","Castillo, Ricky",17639,27819,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Yu, Kevin","Clanton, Luke",17881,32330,void,betonline,-155,+129,0.607843,0.436681,0.581933,0.418067,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Yu, Kevin","Clanton, Luke",17881,32330,void,datagolf,-144,+144,0.590164,0.409836,0.590164,0.409836,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Hossler, Beau","Jaeger, Stephan",15470,16394,void,betonline,-140,+117,0.583333,0.460829,0.558661,0.441339,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Hossler, Beau","Jaeger, Stephan",15470,16394,void,datagolf,-124,+124,0.553571,0.446429,0.553571,0.446429,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Glover, Lucas","Day, Jason",7399,9771,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Glover, Lucas","Day, Jason",7399,9771,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Putnam, Andrew","Silverman, Ben",14704,17381,void,betonline,-175,+145,0.636364,0.408163,0.609236,0.390764,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Putnam, Andrew","Silverman, Ben",14704,17381,void,datagolf,-189,+189,0.653979,0.346021,0.653979,0.346021,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Riley, Davis","Hodges, Lee",19872,25157,void,betonline,+177,-215,0.361011,0.68254,0.345945,0.654055,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Riley, Davis","Hodges, Lee",19872,25157,void,datagolf,+230,-230,0.30303,0.69697,0.30303,0.69697,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Berger, Daniel","McGreevy, Max",17606,23505,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Berger, Daniel","McGreevy, Max",17606,23505,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Roy, Kevin","Hoey, Rico",18424,23504,void,betonline,-122,+102,0.54955,0.49505,0.526087,0.473913,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Roy, Kevin","Hoey, Rico",18424,23504,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Stevens, Sam","Coody, Pierceson",25569,28309,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Stevens, Sam","Coody, Pierceson",25569,28309,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Thomas, Justin","Rai, Aaron",14139,18554,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Thomas, Justin","Rai, Aaron",14139,18554,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Hisatsune, Ryo","Thompson, Davis",22760,27364,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Hisatsune, Ryo","Thompson, Davis",22760,27364,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Spieth, Jordan","Brown, Blades",14636,32152,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Spieth, Jordan","Brown, Blades",14636,32152,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"English, Harris","Ghim, Doug",14577,24550,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"English, Harris","Ghim, Doug",14577,24550,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"McNealy, Maverick","Fitzpatrick, Alex",18634,25362,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"McNealy, Maverick","Fitzpatrick, Alex",18634,25362,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Kohles, Ben","Meissner, Mac",16395,28159,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Kohles, Ben","Meissner, Mac",16395,28159,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Gerard, Ryan","Koivun, Jackson",29767,32319,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Wyndham Championship,2026-08-04 09:31:00 UTC
-"Gerard, Ryan","Koivun, Jackson",29767,32319,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Wyndham Championship,2026-08-04 09:31:00 UTC
+"Bradley, Keegan","Meissner, Mac",13872,28159,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Meissner, Mac",13872,28159,separate bet offered,datagolf,+117,+104,0.460829,0.490196,0.484561,0.515439,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Meissner, Mac",13872,28159,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Meissner, Mac",13872,28159,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,separate bet offered,bet365,-152,+125,0.603175,0.444444,0.575758,0.424242,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,separate bet offered,datagolf,-136,+164,0.576271,0.378788,0.603388,0.396612,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,void,bovada,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,void,datagolf,-152,+152,0.603175,0.396825,0.603175,0.396825,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Brennan, Michael",16243,29197,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Brennan, Michael",16243,29197,separate bet offered,datagolf,+114,+106,0.46729,0.485437,0.490476,0.509524,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Brennan, Michael",16243,29197,void,bovada,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Brennan, Michael",16243,29197,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Brennan, Michael",16243,29197,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Brennan, Michael",16243,29197,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Brennan, Michael",16243,29197,void,pinnacle,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Thompson, Davis",25362,27364,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Thompson, Davis",25362,27364,separate bet offered,datagolf,+101,+120,0.497512,0.454545,0.522565,0.477435,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Thompson, Davis",25362,27364,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Thompson, Davis",25362,27364,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","McNealy, Maverick",14139,18634,separate bet offered,bet365,-133,+110,0.570815,0.47619,0.545188,0.454812,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","McNealy, Maverick",14139,18634,separate bet offered,datagolf,-106,+128,0.514563,0.438596,0.53985,0.46015,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","McNealy, Maverick",14139,18634,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","McNealy, Maverick",14139,18634,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Young, Cameron","Koivun, Jackson",26651,32319,separate bet offered,bet365,-172,+137,0.632353,0.421941,0.599788,0.400212,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Young, Cameron","Koivun, Jackson",26651,32319,separate bet offered,datagolf,-141,+170,0.585062,0.37037,0.612353,0.387647,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Young, Cameron","Koivun, Jackson",26651,32319,void,betcris,-112,-118,0.528302,0.541284,0.493931,0.506069,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Young, Cameron","Koivun, Jackson",26651,32319,void,betmgm,-175,+140,0.636364,0.416667,0.604317,0.395683,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Young, Cameron","Koivun, Jackson",26651,32319,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Young, Cameron","Koivun, Jackson",26651,32319,void,bovada,-185,+140,0.649123,0.416667,0.609053,0.390947,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Young, Cameron","Koivun, Jackson",26651,32319,void,datagolf,-158,+158,0.612403,0.387597,0.612403,0.387597,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Young, Cameron","Koivun, Jackson",26651,32319,void,pinnacle,-178,+144,0.640288,0.409836,0.609726,0.390274,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Kim, Tom",18554,24766,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Kim, Tom",18554,24766,separate bet offered,datagolf,-103,+125,0.507389,0.444444,0.533065,0.466935,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Kim, Tom",18554,24766,void,betcris,-116,-114,0.537037,0.53271,0.502022,0.497978,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Kim, Tom",18554,24766,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Kim, Tom",18554,24766,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Kim, Tom",18554,24766,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Kim, Tom",18554,24766,void,draftkings,-125,-104,0.555556,0.509804,0.521472,0.478528,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Ghim, Doug",16395,24550,separate bet offered,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Ghim, Doug",16395,24550,separate bet offered,datagolf,+125,-103,0.444444,0.507389,0.466935,0.533065,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Ghim, Doug",16395,24550,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Ghim, Doug",16395,24550,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Mitchell, Keith","Brown, Blades",17365,32152,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Mitchell, Keith","Brown, Blades",17365,32152,separate bet offered,datagolf,+102,+118,0.49505,0.458716,0.519048,0.480952,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Mitchell, Keith","Brown, Blades",17365,32152,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Mitchell, Keith","Brown, Blades",17365,32152,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Noren, Alex",8825,10419,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Noren, Alex",8825,10419,separate bet offered,datagolf,+104,+117,0.490196,0.460829,0.515439,0.484561,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Noren, Alex",8825,10419,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Noren, Alex",8825,10419,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,separate bet offered,datagolf,+111,+110,0.473934,0.47619,0.498812,0.501188,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,draftkings,-120,-108,0.545455,0.519231,0.512315,0.487685,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,pinnacle,-111,-109,0.526066,0.521531,0.502165,0.497835,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Griffin, Ben","Gerard, Ryan",24968,29767,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,betcris,-158,+126,0.612403,0.442478,0.580542,0.419458,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Gerard, Ryan",13562,29767,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,betcris,+104,-134,0.490196,0.57265,0.461211,0.538789,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Griffin, Ben",14139,24968,void,pinnacle,+101,-123,0.497512,0.55157,0.474236,0.525764,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Mouw, William",25362,29770,void,betcris,-169,+134,0.628253,0.42735,0.59516,0.40484,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Mouw, William",25362,29770,void,betonline,-170,+141,0.62963,0.414938,0.602766,0.397234,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Mouw, William",25362,29770,void,datagolf,-184,+184,0.647887,0.352113,0.647887,0.352113,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ghim, Doug","Thompson, Davis",24550,27364,void,betcris,-116,-114,0.537037,0.53271,0.502022,0.497978,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ghim, Doug","Thompson, Davis",24550,27364,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ghim, Doug","Thompson, Davis",24550,27364,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,betcris,-130,+100,0.565217,0.5,0.530612,0.469388,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,draftkings,-125,-104,0.555556,0.509804,0.521472,0.478528,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","McNealy, Maverick",14577,18634,void,pinnacle,-125,+103,0.555556,0.492611,0.530026,0.469974,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Im, Sungjae",13872,17488,void,betcris,-109,-121,0.521531,0.547511,0.487849,0.512151,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Im, Sungjae",13872,17488,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Im, Sungjae",13872,17488,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Im, Sungjae",13872,17488,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Im, Sungjae",13872,17488,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Meissner, Mac","Brennan, Michael",28159,29197,void,betcris,-177,+140,0.638989,0.416667,0.605301,0.394699,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Meissner, Mac","Brennan, Michael",28159,29197,void,betonline,-160,+133,0.615385,0.429185,0.589128,0.410872,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Meissner, Mac","Brennan, Michael",28159,29197,void,datagolf,-157,+157,0.610895,0.389105,0.610895,0.389105,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Kohles, Ben",8825,16395,void,betcris,-118,-112,0.541284,0.528302,0.506069,0.493931,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Kohles, Ben",8825,16395,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Kohles, Ben",8825,16395,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smith, Jordan","Poston, J.T.",18586,21554,void,betcris,-111,-119,0.526066,0.543379,0.491906,0.508094,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smith, Jordan","Poston, J.T.",18586,21554,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smith, Jordan","Poston, J.T.",18586,21554,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Koepka, Brooks",14502,16243,void,betcris,-172,+137,0.632353,0.421941,0.599788,0.400212,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Koepka, Brooks",14502,16243,void,betonline,-159,+132,0.6139,0.431034,0.587501,0.412499,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Koepka, Brooks",14502,16243,void,datagolf,-142,+142,0.586777,0.413223,0.586777,0.413223,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smalley, Alex","Hisatsune, Ryo",18474,22760,void,betcris,+103,-133,0.492611,0.570815,0.46323,0.53677,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smalley, Alex","Hisatsune, Ryo",18474,22760,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smalley, Alex","Hisatsune, Ryo",18474,22760,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kirk, Chris","Brown, Blades",12423,32152,void,betcris,-123,-107,0.55157,0.516908,0.51622,0.48378,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kirk, Chris","Brown, Blades",12423,32152,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kirk, Chris","Brown, Blades",12423,32152,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Mitchell, Keith","Wallace, Matt",17365,20706,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Mitchell, Keith","Wallace, Matt",17365,20706,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Mitchell, Keith","Wallace, Matt",17365,20706,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","Kim, Michael",10419,17543,void,betcris,-103,-127,0.507389,0.559471,0.475591,0.524409,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","Kim, Michael",10419,17543,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","Kim, Michael",10419,17543,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","James, Ben",14636,29827,void,betcris,-111,-119,0.526066,0.543379,0.491906,0.508094,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","James, Ben",14636,29827,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","James, Ben",14636,29827,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bezuidenhout, Christiaan","Neergaard-Petersen, Rasmus",18103,23841,void,betcris,-138,+108,0.579832,0.480769,0.546701,0.453299,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bezuidenhout, Christiaan","Neergaard-Petersen, Rasmus",18103,23841,void,betonline,-128,+107,0.561404,0.483092,0.537488,0.462512,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bezuidenhout, Christiaan","Neergaard-Petersen, Rasmus",18103,23841,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Grillo, Emiliano","Cole, Eric",12808,21756,void,betcris,-157,+126,0.610895,0.442478,0.579942,0.420058,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Grillo, Emiliano","Cole, Eric",12808,21756,void,betonline,-138,+115,0.579832,0.465116,0.554891,0.445109,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Grillo, Emiliano","Cole, Eric",12808,21756,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Taylor, Nick","Suber, Jackson",13126,29279,void,betcris,-153,+122,0.604743,0.45045,0.573111,0.426889,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Taylor, Nick","Suber, Jackson",13126,29279,void,betonline,-140,+117,0.583333,0.460829,0.558661,0.441339,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Taylor, Nick","Suber, Jackson",13126,29279,void,datagolf,-131,+131,0.5671,0.4329,0.5671,0.4329,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Horschel, Billy","Hojgaard, Rasmus",11276,23838,void,betcris,-132,+102,0.568966,0.49505,0.534734,0.465266,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Horschel, Billy","Hojgaard, Rasmus",11276,23838,void,betonline,-135,+113,0.574468,0.469484,0.550282,0.449718,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Horschel, Billy","Hojgaard, Rasmus",11276,23838,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Penge, Marco","Echavarria, Nico",22465,22833,void,betcris,-105,-125,0.512195,0.555556,0.479695,0.520305,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Penge, Marco","Echavarria, Nico",22465,22833,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Penge, Marco","Echavarria, Nico",22465,22833,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Straka, Sepp","Keefer, Johnny",17511,32457,void,betcris,-118,-112,0.541284,0.528302,0.506069,0.493931,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Straka, Sepp","Keefer, Johnny",17511,32457,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Straka, Sepp","Keefer, Johnny",17511,32457,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Theegala, Sahith","McCarty, Matt",23014,28635,void,betcris,+104,-134,0.490196,0.57265,0.461211,0.538789,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Theegala, Sahith","McCarty, Matt",23014,28635,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Theegala, Sahith","McCarty, Matt",23014,28635,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McCarthy, Denny","Novak, Andrew",19870,23475,void,betcris,-152,+121,0.603175,0.452489,0.57137,0.42863,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McCarthy, Denny","Novak, Andrew",19870,23475,void,betonline,-136,+114,0.576271,0.46729,0.552216,0.447784,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McCarthy, Denny","Novak, Andrew",19870,23475,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ventura, Kristoffer","Greyserman, Max",15651,23465,void,betcris,-170,+135,0.62963,0.425532,0.596714,0.403286,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ventura, Kristoffer","Greyserman, Max",15651,23465,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ventura, Kristoffer","Greyserman, Max",15651,23465,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Blair, Zac","Castillo, Ricky",17639,27819,void,betcris,-110,-120,0.52381,0.545455,0.489879,0.510121,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Blair, Zac","Castillo, Ricky",17639,27819,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Blair, Zac","Castillo, Ricky",17639,27819,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Yu, Kevin","Clanton, Luke",17881,32330,void,betcris,-155,+124,0.607843,0.446429,0.576553,0.423447,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Yu, Kevin","Clanton, Luke",17881,32330,void,betonline,-155,+129,0.607843,0.436681,0.581933,0.418067,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Yu, Kevin","Clanton, Luke",17881,32330,void,datagolf,-151,+151,0.601594,0.398406,0.601594,0.398406,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hossler, Beau","Jaeger, Stephan",15470,16394,void,betcris,-147,+117,0.595142,0.460829,0.563597,0.436403,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hossler, Beau","Jaeger, Stephan",15470,16394,void,betonline,-135,+113,0.574468,0.469484,0.550282,0.449718,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hossler, Beau","Jaeger, Stephan",15470,16394,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Glover, Lucas","Day, Jason",7399,9771,void,betcris,-124,-106,0.553571,0.514563,0.51826,0.48174,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Glover, Lucas","Day, Jason",7399,9771,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Glover, Lucas","Day, Jason",7399,9771,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Glover, Lucas","Day, Jason",7399,9771,void,pinnacle,-133,+109,0.570815,0.478469,0.544005,0.455995,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Putnam, Andrew","Silverman, Ben",14704,17381,void,betcris,-203,+160,0.669967,0.384615,0.635291,0.364709,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Putnam, Andrew","Silverman, Ben",14704,17381,void,betonline,-180,+149,0.642857,0.401606,0.61549,0.38451,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Putnam, Andrew","Silverman, Ben",14704,17381,void,datagolf,-191,+191,0.656357,0.343643,0.656357,0.343643,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Riley, Davis","Hodges, Lee",19872,25157,void,betcris,+171,-218,0.369004,0.685535,0.34992,0.65008,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Riley, Davis","Hodges, Lee",19872,25157,void,betonline,+177,-215,0.361011,0.68254,0.345945,0.654055,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Riley, Davis","Hodges, Lee",19872,25157,void,datagolf,+223,-223,0.309598,0.690402,0.309598,0.690402,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Roy, Kevin","Hoey, Rico",18424,23504,void,betcris,-115,-115,0.534884,0.534884,0.5,0.5,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Roy, Kevin","Hoey, Rico",18424,23504,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Roy, Kevin","Hoey, Rico",18424,23504,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Stevens, Sam","Coody, Pierceson",25569,28309,void,betcris,-132,+102,0.568966,0.49505,0.534734,0.465266,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Stevens, Sam","Coody, Pierceson",25569,28309,void,betonline,-130,+109,0.565217,0.478469,0.541559,0.458441,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Stevens, Sam","Coody, Pierceson",25569,28309,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,void,pinnacle,-102,-119,0.50495,0.543379,0.481672,0.518328,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smalley, Alex","Wallace, Matt",18474,20706,void,unibet,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Castillo, Ricky","Suber, Jackson",27819,29279,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Castillo, Ricky","Suber, Jackson",27819,29279,void,pinnacle,-119,-102,0.543379,0.50495,0.518328,0.481672,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Im, Sungjae","Ghim, Doug",17488,24550,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Im, Sungjae","Ghim, Doug",17488,24550,void,pinnacle,-103,-118,0.507389,0.541284,0.483839,0.516161,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Pendrith, Taylor","Potgieter, Aldrich",17780,27900,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Pendrith, Taylor","Potgieter, Aldrich",17780,27900,void,pinnacle,-123,+102,0.55157,0.49505,0.527001,0.472999,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Horschel, Billy","Theegala, Sahith",11276,23014,void,pinnacle,-117,-103,0.539171,0.507389,0.515184,0.484816,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","Meissner, Mac",22760,28159,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","Meissner, Mac",22760,28159,void,pinnacle,-101,-120,0.502488,0.545455,0.479499,0.520501,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Putnam, Andrew","Roy, Kevin",14704,18424,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Putnam, Andrew","Roy, Kevin",14704,18424,void,pinnacle,-125,+103,0.555556,0.492611,0.530026,0.469974,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Thompson, Davis",13872,27364,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Thompson, Davis",13872,27364,void,pinnacle,-113,-107,0.530516,0.516908,0.506496,0.493504,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Young, Cameron",13562,26651,void,datagolf,+156,-156,0.390625,0.609375,0.390625,0.609375,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Young, Cameron",13562,26651,void,pinnacle,+142,-175,0.413223,0.636364,0.393701,0.606299,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Penge, Marco","Keefer, Johnny",22465,32457,void,pinnacle,-108,-112,0.519231,0.528302,0.49567,0.50433,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fishburn, Patrick","Svensson, Jesper",25094,26850,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fishburn, Patrick","Svensson, Jesper",25094,26850,void,pinnacle,-121,+100,0.547511,0.5,0.522678,0.477322,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Cauley, Bud",8825,14502,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Cauley, Bud",8825,14502,void,pinnacle,-108,-112,0.519231,0.528302,0.49567,0.50433,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Greyserman, Max","Hojgaard, Rasmus",23465,23838,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Greyserman, Max","Hojgaard, Rasmus",23465,23838,void,pinnacle,-113,-107,0.530516,0.516908,0.506496,0.493504,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Blair, Zac","Mouw, William",17639,29770,void,datagolf,-125,+125,0.555556,0.444444,0.555556,0.444444,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Blair, Zac","Mouw, William",17639,29770,void,pinnacle,-138,+114,0.579832,0.46729,0.553739,0.446261,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hall, Harry","Coody, Pierceson",27194,28309,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hall, Harry","Coody, Pierceson",27194,28309,void,pinnacle,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Smith, Jordan",16395,18586,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Smith, Jordan",16395,18586,void,pinnacle,-114,-106,0.53271,0.514563,0.508664,0.491336,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Poston, J.T.","James, Ben",21554,29827,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Poston, J.T.","James, Ben",21554,29827,void,pinnacle,-118,-102,0.541284,0.50495,0.517364,0.482636,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Im, Sungjae","Fitzpatrick, Alex",17488,25362,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Im, Sungjae","Fitzpatrick, Alex",17488,25362,void,pinnacle,-107,-113,0.516908,0.530516,0.493504,0.506496,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thompson, Davis","Meissner, Mac",27364,28159,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thompson, Davis","Meissner, Mac",27364,28159,void,pinnacle,-107,-113,0.516908,0.530516,0.493504,0.506496,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","Kim, Michael",14636,17543,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","Kim, Michael",14636,17543,void,pinnacle,-111,-109,0.526066,0.521531,0.502165,0.497835,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Grillo, Emiliano","Brown, Blades",12808,32152,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Grillo, Emiliano","Brown, Blades",12808,32152,void,pinnacle,-113,-107,0.530516,0.516908,0.506496,0.493504,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kirk, Chris","McCarthy, Denny",12423,19870,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kirk, Chris","McCarthy, Denny",12423,19870,void,pinnacle,-124,+102,0.553571,0.49505,0.527904,0.472096,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Koivun, Jackson",13562,32319,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Koivun, Jackson",13562,32319,void,draftkings,-104,-128,0.509804,0.561404,0.475915,0.524085,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Koivun, Jackson",13562,32319,void,pinnacle,+100,-121,0.5,0.547511,0.477322,0.522678,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Koivun, Jackson",13562,32319,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McNealy, Maverick","Fitzpatrick, Alex",18634,25362,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McNealy, Maverick","Fitzpatrick, Alex",18634,25362,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McNealy, Maverick","Fitzpatrick, Alex",18634,25362,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McNealy, Maverick","Fitzpatrick, Alex",18634,25362,void,pinnacle,+101,-123,0.497512,0.55157,0.474236,0.525764,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Bradley, Keegan",8825,13872,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Bradley, Keegan",8825,13872,void,pinnacle,+108,-131,0.480769,0.5671,0.458807,0.541193,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Novak, Andrew","McCarty, Matt",23475,28635,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Novak, Andrew","McCarty, Matt",23475,28635,void,pinnacle,-106,-114,0.514563,0.53271,0.491336,0.508664,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Moore, Taylor","Clanton, Luke",21944,32330,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Moore, Taylor","Clanton, Luke",21944,32330,void,pinnacle,-111,-109,0.526066,0.521531,0.502165,0.497835,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cole, Eric","Neergaard-Petersen, Rasmus",21756,23841,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cole, Eric","Neergaard-Petersen, Rasmus",21756,23841,void,pinnacle,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Rai, Aaron",14577,18554,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Rai, Aaron",14577,18554,void,pinnacle,-103,-117,0.507389,0.539171,0.484816,0.515184,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hoey, Rico","Stevens, Sam",23504,25569,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hoey, Rico","Stevens, Sam",23504,25569,void,pinnacle,-107,-113,0.516908,0.530516,0.493504,0.506496,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Ghim, Doug",18554,24550,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Ghim, Doug",18554,24550,void,pinnacle,-124,+103,0.553571,0.492611,0.529135,0.470865,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Finau, Tony","Jaeger, Stephan",11676,16394,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Finau, Tony","Jaeger, Stephan",11676,16394,void,pinnacle,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ventura, Kristoffer","McGreevy, Max",15651,23505,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ventura, Kristoffer","McGreevy, Max",15651,23505,void,pinnacle,+110,-133,0.47619,0.570815,0.454812,0.545188,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Hisatsune, Ryo",14502,22760,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Hisatsune, Ryo",14502,22760,void,pinnacle,-110,-110,0.52381,0.52381,0.5,0.5,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Taylor, Nick","Bezuidenhout, Christiaan",13126,18103,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Taylor, Nick","Bezuidenhout, Christiaan",13126,18103,void,pinnacle,-109,-111,0.521531,0.526066,0.497835,0.502165,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","Mitchell, Keith",10419,17365,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","Mitchell, Keith",10419,17365,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","Mitchell, Keith",10419,17365,void,pinnacle,-114,-106,0.53271,0.514563,0.508664,0.491336,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Echavarria, Nico","Hodges, Lee",22833,25157,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Echavarria, Nico","Hodges, Lee",22833,25157,void,pinnacle,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smotherman, Austin","Eckroat, Austin",22985,26653,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smotherman, Austin","Eckroat, Austin",22985,26653,void,pinnacle,-108,-112,0.519231,0.528302,0.49567,0.50433,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kim, Tom","Gerard, Ryan",24766,29767,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kim, Tom","Gerard, Ryan",24766,29767,void,pinnacle,+104,-126,0.490196,0.557522,0.46787,0.53213,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Straka, Sepp","Yu, Kevin",17511,17881,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Straka, Sepp","Yu, Kevin",17511,17881,void,pinnacle,+100,-121,0.5,0.547511,0.477322,0.522678,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Kim, Tom",14139,24766,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Kim, Tom",14139,24766,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Kim, Tom",14139,24766,void,pinnacle,-114,-106,0.53271,0.514563,0.508664,0.491336,False,True,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Rai, Aaron",14139,18554,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Rai, Aaron",14139,18554,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Rai, Aaron",14139,18554,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Rai, Aaron",14139,18554,void,unibet,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","Thompson, Davis",22760,27364,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","Thompson, Davis",22760,27364,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","Thompson, Davis",22760,27364,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","Brown, Blades",14636,32152,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","Brown, Blades",14636,32152,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","Brown, Blades",14636,32152,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","Brown, Blades",14636,32152,void,unibet,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Ghim, Doug",14577,24550,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Ghim, Doug",14577,24550,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"English, Harris","Ghim, Doug",14577,24550,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Meissner, Mac",16395,28159,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Meissner, Mac",16395,28159,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Meissner, Mac",16395,28159,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kohles, Ben","Meissner, Mac",16395,28159,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Matsuyama, Hideki","Griffin, Ben",13562,24968,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Gerard, Ryan","Koivun, Jackson",29767,32319,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Gerard, Ryan","Koivun, Jackson",29767,32319,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Gerard, Ryan","Koivun, Jackson",29767,32319,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kim, Tom","Young, Cameron",24766,26651,void,datagolf,+197,-197,0.3367,0.6633,0.3367,0.6633,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kim, Tom","Young, Cameron",24766,26651,void,unibet,+170,-235,0.37037,0.701493,0.345539,0.654461,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","English, Harris",13872,14577,void,unibet,+110,-143,0.47619,0.588477,0.447267,0.552733,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McNealy, Maverick","Brennan, Michael",18634,29197,void,datagolf,-143,+143,0.588477,0.411523,0.588477,0.411523,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McNealy, Maverick","Brennan, Michael",18634,29197,void,unibet,-167,+125,0.625468,0.444444,0.584597,0.415403,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Meissner, Mac",25362,28159,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Fitzpatrick, Alex","Meissner, Mac",25362,28159,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Im, Sungjae",16243,17488,void,datagolf,+157,-157,0.389105,0.610895,0.389105,0.610895,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Koepka, Brooks","Im, Sungjae",16243,17488,void,unibet,+138,-186,0.420168,0.65035,0.392491,0.607509,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smith, Jordan","Thompson, Davis",18586,27364,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smith, Jordan","Thompson, Davis",18586,27364,void,draftkings,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Smith, Jordan","Thompson, Davis",18586,27364,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Kohles, Ben",14502,16395,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","Ghim, Doug",22760,24550,void,datagolf,+123,-123,0.44843,0.55157,0.44843,0.55157,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","Ghim, Doug",22760,24550,void,unibet,+110,-143,0.47619,0.588477,0.447267,0.552733,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Mitchell, Keith",8825,17365,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Mitchell, Keith",8825,17365,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","James, Ben",10419,29827,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","James, Ben",10419,29827,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Im, Sungjae","Meissner, Mac",17488,28159,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Im, Sungjae","Meissner, Mac",17488,28159,void,draftkings,-115,-114,0.534884,0.53271,0.501018,0.498982,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Penge, Marco","Brennan, Michael",22465,29197,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Penge, Marco","Brennan, Michael",22465,29197,void,draftkings,-114,-115,0.53271,0.534884,0.498982,0.501018,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Fitzpatrick, Alex",13872,25362,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Fitzpatrick, Alex",13872,25362,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,datagolf,+188,-188,0.347222,0.652778,0.347222,0.652778,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Thomas, Justin","Young, Cameron",14139,26651,void,draftkings,+168,-220,0.373134,0.6875,0.351803,0.648197,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bezuidenhout, Christiaan","Poston, J.T.",18103,21554,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bezuidenhout, Christiaan","Poston, J.T.",18103,21554,void,draftkings,-114,-115,0.53271,0.534884,0.498982,0.501018,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Neergaard-Petersen, Rasmus","Suber, Jackson",23841,29279,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Neergaard-Petersen, Rasmus","Suber, Jackson",23841,29279,void,draftkings,-122,-108,0.54955,0.519231,0.514184,0.485816,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ghim, Doug","Brown, Blades",24550,32152,void,datagolf,-152,+152,0.603175,0.396825,0.603175,0.396825,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ghim, Doug","Brown, Blades",24550,32152,void,draftkings,-138,+105,0.579832,0.487805,0.543098,0.456902,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","Wallace, Matt",10419,20706,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Noren, Alex","Wallace, Matt",10419,20706,void,draftkings,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","Mitchell, Keith",14636,17365,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Spieth, Jordan","Mitchell, Keith",14636,17365,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kirk, Chris","Kim, Michael",12423,17543,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Kirk, Chris","Kim, Michael",12423,17543,void,draftkings,-114,-114,0.53271,0.53271,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Grillo, Emiliano","Taylor, Nick",12808,13126,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Grillo, Emiliano","Taylor, Nick",12808,13126,void,draftkings,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cole, Eric","Theegala, Sahith",21756,23014,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cole, Eric","Theegala, Sahith",21756,23014,void,draftkings,-124,-106,0.553571,0.514563,0.51826,0.48174,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Smalley, Alex",8825,18474,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Harman, Brian","Smalley, Alex",8825,18474,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","James, Ben",22760,29827,void,datagolf,-120,+120,0.545455,0.454545,0.545455,0.454545,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Hisatsune, Ryo","James, Ben",22760,29827,void,draftkings,-122,-108,0.54955,0.519231,0.514184,0.485816,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Gerard, Ryan",18554,29767,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Rai, Aaron","Gerard, Ryan",18554,29767,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McNealy, Maverick","Thompson, Davis",18634,27364,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"McNealy, Maverick","Thompson, Davis",18634,27364,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ghim, Doug","Fitzpatrick, Alex",24550,25362,void,betmgm,-111,-111,0.526066,0.526066,0.5,0.5,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Ghim, Doug","Fitzpatrick, Alex",24550,25362,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Smalley, Alex",14502,18474,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Cauley, Bud","Smalley, Alex",14502,18474,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Smith, Jordan",13872,18586,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,Wyndham Championship,2026-08-04 21:32:00 UTC
+"Bradley, Keegan","Smith, Jordan",13872,18586,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,Wyndham Championship,2026-08-04 21:32:00 UTC
