@@ -12,5 +12,12 @@
     "status": "WITHDRAWN",
     "source": "pga_field_api_missing",
     "detected_at": "2026-08-04T06:55:54.497180"
+  },
+  {
+    "player_name": "Berger, Daniel",
+    "player_id": "40026",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-08-05T06:44:41.269308"
   }
 ]

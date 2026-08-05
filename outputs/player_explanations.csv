@@ -49,7 +49,6 @@ player_name,explanation
 "Keefer, Johnny",Elite driving · Fading form
 "Kirk, Chris",Approach advantage · Trending up
 "Greyserman, Max",Weak ball striking · Fading form
-"Berger, Daniel",Approach advantage · Hot recent form
 "Penge, Marco",Cold recent form · Below-avg sg
 "Coody, Pierceson",Approach advantage · Good course fit
 "Straka, Sepp",Elite ball striking · Improving form
@@ -71,12 +70,12 @@ player_name,explanation
 "Hossler, Beau",Improving form · Elite putter
 "Dou, Zecheng",Approach advantage · Good course fit
 "Novak, Andrew",Balanced profile
-"Power, Seamus",Elite putter · Fading form
+"Power, Seamus",Elite putter · Elite overall sg
 "Olesen, Thorbjorn",Balanced profile
 "Schmid, Matti",Improving form · Elite putter
 "Dumont De Chassart, Adrien",Balanced profile
-"Eckroat, Austin",Trending up · Struggles off tee
-"Pendrith, Taylor",Elite driving · Strong sg profile
+"Eckroat, Austin",Improving form · Struggles off tee
+"Pendrith, Taylor",Strong sg profile · Good course fit
 "Finau, Tony",Fading form
 "Phillips, Chandler",Cold recent form · Weak ball striking
 "Potgieter, Aldrich",Elite driving · Fading form
@@ -99,7 +98,6 @@ player_name,explanation
 "Whaley, Vince",Elite putter · Weak ball striking
 "Vilips, Karl",Elite putter · Weak ball striking
 "Simpson, Webb",Weak ball striking · Fading form
-"Rodgers, Patrick",Hot recent form · Elite overall sg
 "Smotherman, Austin",Improving form · Elite approach
 "Saddier, Adrien",Trending up · Elite putter
 "Pavon, Matthieu",Elite putter · Trending up
@@ -107,9 +105,8 @@ player_name,explanation
 "Clanton, Luke",Weak putter · Cold recent form
 "Lebioda, Hank",Cold recent form · Weak around greens
 "Silverman, Ben",Improving form
-"Higgo, Garrick",Cold recent form · Weak ball striking
 "Ramey, Chad",Hot recent form · Elite putter
-"Crowe, Trace",Elite putter · Fading form
+"Crowe, Trace",Elite putter
 "Springer, Hayden",Hot recent form
 "Streelman, Kevin",Elite putter · Weak ball striking
 "Griffin, Lanto",Elite short game · Weak putter
