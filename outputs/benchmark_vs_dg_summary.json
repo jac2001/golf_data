@@ -1,0 +1,130 @@
+{
+  "events": 14,
+  "tournaments": [
+    "R2026018",
+    "R2026019",
+    "R2026021",
+    "R2026023",
+    "R2026026",
+    "R2026030",
+    "R2026032",
+    "R2026033",
+    "R2026034",
+    "R2026100",
+    "R2026480",
+    "R2026525",
+    "R2026541",
+    "R2026556"
+  ],
+  "markets": {
+    "win": {
+      "ours": {
+        "log_loss": 0.04625,
+        "brier": 0.00853,
+        "pred_rate": 0.0086,
+        "actual_rate": 0.0087,
+        "calibration": 1.017,
+        "n": 1492
+      },
+      "dg_baseline": {
+        "log_loss": 0.04415,
+        "brier": 0.00855,
+        "pred_rate": 0.0084,
+        "actual_rate": 0.0087,
+        "calibration": 1.04,
+        "n": 1492
+      },
+      "dg_baseline_history_fit": {
+        "log_loss": 0.04425,
+        "brier": 0.00855,
+        "pred_rate": 0.0084,
+        "actual_rate": 0.0087,
+        "calibration": 1.04,
+        "n": 1492
+      }
+    },
+    "top5": {
+      "ours": {
+        "log_loss": 0.16959,
+        "brier": 0.04281,
+        "pred_rate": 0.0429,
+        "actual_rate": 0.0476,
+        "calibration": 1.109,
+        "n": 1492
+      },
+      "dg_baseline": {
+        "log_loss": 0.16235,
+        "brier": 0.04139,
+        "pred_rate": 0.0416,
+        "actual_rate": 0.0476,
+        "calibration": 1.145,
+        "n": 1492
+      },
+      "dg_baseline_history_fit": {
+        "log_loss": 0.16169,
+        "brier": 0.04131,
+        "pred_rate": 0.0416,
+        "actual_rate": 0.0476,
+        "calibration": 1.145,
+        "n": 1492
+      }
+    },
+    "top10": {
+      "ours": {
+        "log_loss": 0.28692,
+        "brier": 0.08246,
+        "pred_rate": 0.0858,
+        "actual_rate": 0.0979,
+        "calibration": 1.141,
+        "n": 1492
+      },
+      "dg_baseline": {
+        "log_loss": 0.27606,
+        "brier": 0.08049,
+        "pred_rate": 0.0828,
+        "actual_rate": 0.0979,
+        "calibration": 1.182,
+        "n": 1492
+      },
+      "dg_baseline_history_fit": {
+        "log_loss": 0.27488,
+        "brier": 0.08022,
+        "pred_rate": 0.0828,
+        "actual_rate": 0.0979,
+        "calibration": 1.182,
+        "n": 1492
+      }
+    },
+    "top20": {
+      "ours": {
+        "log_loss": 0.43078,
+        "brier": 0.13744,
+        "pred_rate": 0.1716,
+        "actual_rate": 0.1917,
+        "calibration": 1.117,
+        "n": 1492
+      },
+      "dg_baseline": {
+        "log_loss": 0.41544,
+        "brier": 0.13329,
+        "pred_rate": 0.1648,
+        "actual_rate": 0.1917,
+        "calibration": 1.163,
+        "n": 1492
+      },
+      "dg_baseline_history_fit": {
+        "log_loss": 0.41231,
+        "brier": 0.13216,
+        "pred_rate": 0.1648,
+        "actual_rate": 0.1917,
+        "calibration": 1.163,
+        "n": 1492
+      }
+    }
+  },
+  "rank_corr": {
+    "ours": 0.3095,
+    "dg_baseline": 0.3701,
+    "dg_baseline_history_fit": 0.378
+  }
+}
