@@ -1,0 +1,19 @@
+{
+  "tournament_id": "R2026013",
+  "tournament_name": "R2026013",
+  "current_round": 4,
+  "round_status": "R4",
+  "cut_line": {
+    "cutScore": "",
+    "cutCount": ""
+  },
+  "cut_projection": {
+    "projected_cut_score": -4,
+    "projected_cut_position": "T61",
+    "bubble_count": 18,
+    "safely_in": 53,
+    "safely_out": 74
+  },
+  "fetched_at": "2026-08-10T04:25:04.708649+00:00",
+  "player_count": 147
+}
