@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-08-04T06:55:40.917863",
+  "last_updated": "2026-08-11T06:00:25.149462",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -87,8 +87,8 @@
       "total_points": 0
     },
     "McNealy": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "AT&T Pebble Beach Pro-Am",
@@ -96,9 +96,16 @@
           "date": "2026-02-12",
           "result": "T29",
           "earnings": 125200
+        },
+        {
+          "tournament": "Wyndham Championship",
+          "week": 27,
+          "date": "2026-08-06",
+          "result": "T25",
+          "earnings": 68213
         }
       ],
-      "total_earnings": 125200,
+      "total_earnings": 193413,
       "total_points": 0
     },
     "Rose": {
@@ -183,8 +190,8 @@
       "total_points": 0
     },
     "Gerard": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Cognizant Classic",
@@ -192,6 +199,13 @@
           "date": "2026-02-26",
           "result": "T23",
           "earnings": 77600
+        },
+        {
+          "tournament": "Wyndham Championship",
+          "week": 27,
+          "date": "2026-08-06",
+          "result": "CUT",
+          "earnings": 0
         }
       ],
       "total_earnings": 77600,
@@ -918,6 +932,21 @@
       ],
       "total_earnings": 103840,
       "total_points": 0
+    },
+    "Straka": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Wyndham Championship",
+          "week": 27,
+          "date": "2026-08-06",
+          "result": "CUT",
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
     }
   },
   "weekly_lineups": {
@@ -1263,10 +1292,14 @@
       "tournament": "Wyndham Championship",
       "week": 27,
       "date": "2026-08-06",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Gerard",
+        "McNealy",
+        "Straka"
+      ],
+      "wrp": 26,
+      "earnings_earned": 68213,
+      "points_earned": 68213
     },
     "week_28": {
       "tournament": "FedEx St. Jude Invitational",
@@ -1298,7 +1331,7 @@
   },
   "summary": {
     "total_weeks": 30,
-    "total_players": 46,
-    "total_earnings": 32185218
+    "total_players": 47,
+    "total_earnings": 32253431
   }
 }

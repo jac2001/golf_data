@@ -1,29 +1,29 @@
 weekly_rank,season_rank,team_name,player_1,earnings_1,player_2,earnings_2,player_3,earnings_3,total_earnings,week
-1,25,CARL SPACKLER,Clanton,109500,Davis,0,Thorbjornsen,1800000,1909500,current
-2,13,TimmyD,Cole,0,Koivun,57214,Thorbjornsen,1800000,1857214,current
-3,10,Birdie Bandits,Gotterup,0,Knapp,0,Thorbjornsen,1800000,1800000,current
-4,21,Davemc410,"Griffin, B",0,Henley,109500,Schauffele,1090000,1199500,current
-5,20,Jlemoine,Gerard,252500,Gotterup,0,Matsuyama,370000,622500,current
-6,11,Danny Noonan,Brennan,162500,Gerard,252500,Koivun,57214,472214,current
-T-7,5,JoeBuckYourself,Bhatia,0,Koivun,57214,Matsuyama,370000,427214,current
-T-7,7,EagleEash,Gotterup,0,Koivun,57214,Matsuyama,370000,427214,current
-9,9,Green Jackets,Bhatia,0,Knapp,0,Matsuyama,370000,370000,current
-10,23,Yanks His Putz,Gerard,252500,Grillo,57214,Koivun,57214,366928,current
-11,8,GOLOWORGOHOME,Cantlay,252500,Henley,109500,Knapp,0,362000,current
-T-12,14,Team OGG,Fowler,252500,Knapp,0,Koivun,57214,309714,current
-T-12,22,MacDaddy,Davis,0,Fowler,252500,Koivun,57214,309714,current
-T-14,6,Wildcats,Gotterup,0,"Kim, SW",37500,"Young, Cam",252500,290000,current
-T-14,16,NLA Boys,"Kim, SW",37500,Knapp,0,"Young, Cam",252500,290000,current
-T-16,4,Andrew Sisson,Cantlay,252500,"Clark, W",0,Spaun,23860,276360,current
-T-16,24,SMETHPORT GOLFER,Gotterup,0,Spaun,23860,"Young, Cam",252500,276360,current
-T-18,12,Buck Foursome,"Clark, W",0,"Kim, SW",37500,Koivun,57214,94714,current
-T-18,15,Dimpled Balls,"Clark, W",0,"Kim, SW",37500,Koivun,57214,94714,current
-20,3,MikeKett,Knapp,0,Koivun,57214,Spaun,23860,81074,current
-T-21,1,GoForeYourself,Bhatia,0,Knapp,0,Koivun,57214,57214,current
-T-21,2,WineTime,Gotterup,0,Knapp,0,Koivun,57214,57214,current
-T-21,19,Rmr617,Gotterup,0,Koivun,57214,Phillips,0,57214,current
-24,17,HUBBERS,Hisatsune,23860,Knapp,0,Spaun,23860,47720,current
-T-25,18,Caddyshark,"Clark, W",0,Knapp,0,Spaun,23860,23860,current
-T-25,26,Chest Rockwell,Bhatia,0,Knapp,0,Spaun,23860,23860,current
-T-25,27,COMER,Bhatia,0,Greyserman,23860,Pendrith,0,23860,current
-28,28,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current
+1,16,HUBBERS,Brennan,1530000,Koivun,51047,Spieth,112625,1693672,current
+2,26,COMER,Brennan,1530000,Kohles,51047,Koivun,51047,1632094,current
+3,22,MacDaddy,"Kim, Tom",328313,Matsuyama,249475,"Thomas, J",146625,724413,current
+4,8,GOLOWORGOHOME,Im,146625,"Kim, Tom",328313,Rai,51047,525985,current
+5,13,TimmyD,Gerard,0,Matsuyama,249475,Noren,249475,498950,current
+6,25,CARL SPACKLER,"Kim, M",19635,"Kim, Tom",328313,"Thomas, J",146625,494573,current
+7,24,SMETHPORT GOLFER,"Kim, Tom",328313,Koivun,51047,Spieth,112625,491985,current
+8,15,Dimpled Balls,Koivun,51047,Matsuyama,249475,"Thomas, J",146625,447147,current
+9,23,Yanks His Putz,"Kim, Tom",328313,Koivun,51047,Rai,51047,430407,current
+10,17,NLA Boys,Cauley,19635,Matsuyama,249475,"Thomas, J",146625,415735,current
+T-11,6,Wildcats,"Griffin, B",0,"Kim, Tom",328313,Rai,51047,379360,current
+T-11,14,Team OGG,"Brown, B",0,"Kim, Tom",328313,Koivun,51047,379360,current
+T-11,20,Davemc410,English,0,"Kim, Tom",328313,Kohles,51047,379360,current
+14,18,Caddyshark,Gerard,0,"Kim, Tom",328313,Mitchell,31906,360219,current
+15,2,MikeKett,Koivun,51047,Matsuyama,249475,Rai,51047,351569,current
+16,10,Birdie Bandits,Gerard,0,"Griffin, B",0,"Kim, Tom",328313,328313,current
+T-17,4,Andrew Sisson,Gerard,0,Koivun,51047,Matsuyama,249475,300522,current
+T-17,5,JoeBuckYourself,"Griffin, B",0,Koivun,51047,Matsuyama,249475,300522,current
+T-17,12,Buck Foursome,Gerard,0,Koivun,51047,Matsuyama,249475,300522,current
+T-20,1,GoForeYourself,Gerard,0,Rai,51047,"Thomas, J",146625,197672,current
+T-20,9,Green Jackets,"Griffin, B",0,Rai,51047,"Thomas, J",146625,197672,current
+22,21,Jlemoine,Gerard,0,"Thompson, D",146625,"Young, Cam",18530,165155,current
+23,27,Chest Rockwell,"Fitzpatrick, A",18530,Koivun,51047,Rai,51047,120624,current
+24,7,EagleEash,"Bradley, K",21403,Gerard,0,Rai,51047,72450,current
+25,11,Danny Noonan,Gerard,0,Koivun,51047,"Young, Cam",18530,69577,current
+26,3,WineTime,Gerard,0,McNealy,68213,Straka,0,68213,current
+T-27,19,Rmr617,VACANT,0,VACANT,0,VACANT,0,0,current
+T-27,28,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current

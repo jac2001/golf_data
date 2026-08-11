@@ -1,0 +1,340 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "FedEx St. Jude Championship",
+      "tableTitle": "Power Rankings for Fedex St. Jude Championship",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Now that he\u2019s experienced the obligations of defending a title for the first time (at the Wyndham Championship), he can reset and pick up where he left off after a T5 at TPC Southwind last year. His closing 64 was the field low."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "51766",
+            "firstName": "Wyndham",
+            "lastName": "Clark",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51766.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Finally cooled after a blistering two-month stretch that was highlighted by two wins, including his second U.S. Open victory. Guaranteed four rounds this week, he can showcase his firepower once again. T7 here in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "32102",
+            "firstName": "Rickie",
+            "lastName": "Fowler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32102.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He was last year\u2019s early \u201cCinder-fella story\u201d with a T6 at TPC Southwind. Opening at 64th in the FedExCup, he was the lowest among the five to crash the top 50. Splashes at 28th this year with a T15-T18-T8 surge this summer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "50525",
+            "firstName": "Collin",
+            "lastName": "Morikawa",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50525.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Didn\u2019t disappear after winning the AT&T Pebble Beach Pro-Am in February, but a sore back and the birth of his first child quelled his impact. With a T17-third-T18 stretch since the U.S. Open, he's proved that he\u2019s a force again."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "34098",
+            "firstName": "Russell",
+            "lastName": "Henley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The consummate threat with a high floor and adaptability for every challenge. At 15th in points, he\u2019s poised to reach the TOUR Championship for the fourth straight year. Top 20s in his last three starts; two top 20s here since 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "28237",
+            "firstName": "Rory",
+            "lastName": "McIlroy",
+            "countryFlag": "NIR",
+            "countryName": "Northern Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28237.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Arrives slotted 12th in the FedExCup and rested since The Open. Although he\u2019s limited his schedule worldwide to just 13 starts thus far, three resulted in a podium finish. Rallied for a T3 at TPC Southwind in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It can be easy to take his talent for granted but he has been a problem most of the time, anyway. Last pegged it at The Open, where he finished T9 for his seventh top 10 in 13 starts. Also logged a T9 at TPC Southwind last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "55182",
+            "firstName": "Tom",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55182.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After failing to qualify for the Playoffs last year, he\u2019s back and at 26th in points. He\u2019s also surging. His last two months yielded a win at the Genesis Scottish Open, a solo third at the U.S. Open, a T5, a T15 and a T20."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "35450",
+            "firstName": "Patrick",
+            "lastName": "Cantlay",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35450.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Stayed sharp with a T8 at the Rocket Classic, but he\u2019s still after his first top five since a T2 at last year\u2019s TOUR Championship. TPC Southwind could be the spot. Since 2023, he\u2019s gone P2-T12-T9 with a scoring average of 67.25."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "For all of his success, he\u2019s been a monster in the FedExCup Playoffs, but he\u2019s even hungrier after falling short of the TOUR Championship for the first time last year. Solo second in his last start in Detroit; P2 here in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 2025 FedExCup champ opens his title defense at No. 9 in points despite the absence of a podium finish. Fittingly, he logged a T3 here in both 2023 and as the ignitor for last year\u2019s Playoffs. Off since a T4 at The Open."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "47504",
+            "firstName": "Sam",
+            "lastName": "Burns",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47504.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "A wild July opened with the birth of his second child and featured an up-and-down solo third at The Open, where he spun a 62 in the second round. Solid record at TPC Southwind includes a P2 in 2021 and a T5 in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With three wins, two seconds and a T3, it\u2019s absurd that he\u2019s almost 800 points behind one-time winner Scottie Scheffler, but the Brit can flip the script in the Playoffs. He has three top 10s in seven starts at TPC Southwind."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Refuses to relent ... and tire. Since a T14 at The Open, he\u2019s added a T3, a T5 and a T7 in consecutive weeks, so this is five in a row. Won at TPC Southwind in 2024 and lost in a playoff in 2021. Five top 20s in all."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The FedExCup points leader cannot be passed for the top spot at TPC Southwind, but he still arrives with a chip on his shoulder after \u201csettling\u201d for five runner-up finishes this season. Solo fourth here in 2024, T3 last year."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
