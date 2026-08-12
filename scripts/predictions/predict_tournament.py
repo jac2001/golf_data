@@ -505,7 +505,7 @@ def get_prior_year_sg_stats(player_id, prior_stats_df: pd.DataFrame) -> dict:
 
     if prior_stats_df.empty:
         return {
-             'prior_sg_total': np.nan,
+            'prior_sg_total': np.nan,
             'prior_sg_ott': np.nan,
             'prior_sg_app': np.nan,
             'prior_sg_putt': np.nan,
@@ -531,19 +531,22 @@ def get_prior_year_sg_stats(player_id, prior_stats_df: pd.DataFrame) -> dict:
             'prior_sg_arg': np.nan,
         }
 
-    # Stat ID mapping — use strings to match DB/CSV string stat_ids
+    # Stat ID mapping — use strings to match DB/CSV string stat_ids.
+    # 2570 (sg_arg) is real DataGolf data now (see fetch_dg_historical_results.py)
+    # — previously there was no slot for it at all and it was always estimated.
     stat_mapping = {
         '2567': 'prior_sg_total',
         '2568': 'prior_sg_ott',
         '2569': 'prior_sg_app',
+        '2570': 'prior_sg_arg',
         '2564': 'prior_sg_putt',
         '2674': 'prior_sg_t2g'
     }
-    
-    #Pivot to get season averages 
+
+    #Pivot to get season averages
     stats_pivot = player_stats.pivot_table(
-        index='player_id', 
-        columns='stat_id', 
+        index='player_id',
+        columns='stat_id',
         values='stat_value',
         aggfunc='mean'
     )
@@ -552,13 +555,15 @@ def get_prior_year_sg_stats(player_id, prior_stats_df: pd.DataFrame) -> dict:
         if stat_id in stats_pivot.columns:
             result[stat_name] = stats_pivot[stat_id].iloc[0]
         else:
-            result[stat_name] = np.nan 
-    #Calculate prior_sg_arg from prior_sg_t2g - prior_sg_app
-    if not np.isnan(result.get('prior_sg_t2g', np.nan)) and not np.isnan(result.get('prior_sg_app', np.nan)):
-        result['prior_sg_arg'] = result['prior_sg_t2g'] - result['prior_sg_app']
-    else:
-        result['prior_sg_arg'] = np.nan
-    
+            result[stat_name] = np.nan
+    # Fallback estimate only if the real value is missing (e.g. a gap in
+    # DG's backfill) — don't overwrite a real value that's already there.
+    if np.isnan(result.get('prior_sg_arg', np.nan)):
+        if not np.isnan(result.get('prior_sg_t2g', np.nan)) and not np.isnan(result.get('prior_sg_app', np.nan)):
+            result['prior_sg_arg'] = result['prior_sg_t2g'] - result['prior_sg_app']
+        else:
+            result['prior_sg_arg'] = np.nan
+
     return result
 
 
@@ -641,13 +646,22 @@ def get_recent_sg_stats(
         Dict with sg_total, sg_ott, sg_app, sg_putt, sg_t2g, season_sg_* stats
         (blended with prior year if enabled)
     """
-    # Stat ID mapping — use strings to match DB/CSV string stat_ids
+    # Stat ID mapping — use strings to match DB/CSV string stat_ids.
+    # 2570 (sg_arg) and 101/102/103/130 (driving dist/acc, GIR, scrambling)
+    # are real DataGolf-backfilled categories (see fetch_dg_historical_results.py)
+    # — previously sg_arg had no dedicated id at all and was always estimated
+    # as sg_t2g - sg_app below; the other four didn't exist anywhere.
     stat_mapping = {
         '2567': 'sg_total',
         '2568': 'sg_ott',
         '2569': 'sg_app',
+        '2570': 'sg_arg',
         '2564': 'sg_putt',
-        '2674': 'sg_t2g'
+        '2674': 'sg_t2g',
+        '101':  'driving_dist',
+        '102':  'driving_acc',
+        '103':  'gir_pct',
+        '130':  'scrambling',
     }
 
     # Normalize player_id type to match stats_df (which stores as str)
@@ -670,12 +684,20 @@ def get_recent_sg_stats(
             'sg_arg': np.nan,
             'sg_putt': np.nan,
             'sg_t2g': np.nan,
+            'driving_dist': np.nan,
+            'driving_acc': np.nan,
+            'gir_pct': np.nan,
+            'scrambling': np.nan,
             'season_sg_total': np.nan,
             'season_sg_ott': np.nan,
             'season_sg_app': np.nan,
             'season_sg_putt': np.nan,
             'season_sg_t2g': np.nan,
             'season_sg_arg': np.nan,
+            'season_driving_dist': np.nan,
+            'season_driving_acc': np.nan,
+            'season_gir_pct': np.nan,
+            'season_scrambling': np.nan,
         }
         # Still compute recent form from prior-year data if available
         if prior_stats_df is not None and not prior_stats_df.empty:
@@ -755,21 +777,24 @@ def get_recent_sg_stats(
             else:
                 recent_stats[season_key] = np.nan
 
-        # Calculate sg_arg
-        sg_t2g = recent_stats.get('sg_t2g', np.nan)
-        sg_app = recent_stats.get('sg_app', np.nan)
-        if not np.isnan(sg_t2g) and not np.isnan(sg_app):
-            recent_stats['sg_arg'] = sg_t2g - sg_app
-        else:
-            recent_stats['sg_arg'] = np.nan
+        # sg_arg: real data now comes from stat_mapping (2570) above. Only
+        # estimate as a fallback when that's actually missing (e.g. a gap
+        # in DG's backfill) — don't clobber a real value that's already there.
+        if np.isnan(recent_stats.get('sg_arg', np.nan)):
+            sg_t2g = recent_stats.get('sg_t2g', np.nan)
+            sg_app = recent_stats.get('sg_app', np.nan)
+            if not np.isnan(sg_t2g) and not np.isnan(sg_app):
+                recent_stats['sg_arg'] = sg_t2g - sg_app
+            else:
+                recent_stats['sg_arg'] = np.nan
 
-        # Calculate season_sg_arg
-        season_t2g = recent_stats.get('season_sg_t2g', np.nan)
-        season_app = recent_stats.get('season_sg_app', np.nan)
-        if not np.isnan(season_t2g) and not np.isnan(season_app):
-            recent_stats['season_sg_arg'] = season_t2g - season_app
-        else:
-            recent_stats['season_sg_arg'] = np.nan
+        if np.isnan(recent_stats.get('season_sg_arg', np.nan)):
+            season_t2g = recent_stats.get('season_sg_t2g', np.nan)
+            season_app = recent_stats.get('season_sg_app', np.nan)
+            if not np.isnan(season_t2g) and not np.isnan(season_app):
+                recent_stats['season_sg_arg'] = season_t2g - season_app
+            else:
+                recent_stats['season_sg_arg'] = np.nan
 
         # ── Recent form: exponential decay + trend ─────────────────────────
         # Mirrors the training-data computation in merge_all_historical_data.py.
@@ -875,30 +900,60 @@ def add_course_fit_features(features_df, tournament_name):
     # Default weights for tournaments not in mapping
     default_weights = {'ott_sg': 0.020, 'app_sg': 0.020, 'arg_sg': 0.025, 'putt_sg': 0.005}
 
+    # Resolve the ACTUAL course being played this year. This matters for majors
+    # that rotate venues (U.S. Open, Open Championship, PGA Championship) —
+    # "U.S. Open" maps to a different course every year, but course_sg_weights.csv
+    # only has a handful of one-off historical rows under that name (e.g.
+    # Pinehurst). A plain tournament-name match would silently apply a past
+    # year's course weights to this year's different course.
+    course_info = get_course_for_tournament(tournament_name)
+    course_name = course_info.get("course_name", "Unknown")
+
     # Look up weights for this tournament
     weights = default_weights.copy()
+    matched_on = None
     if not course_weights.empty:
-        match = course_weights[course_weights['tournament_name'] == tournament_name]
-        if len(match) == 0:
-            # Substring fallback (same logic as insights section)
-            search_term = tournament_name.lower().replace('the ', '')
-            match = course_weights[
-                course_weights['tournament_name'].str.lower().str.contains(search_term, na=False)
+        # 1) Prefer matching by the actual course name — that's what physically
+        #    determines scoring demands, and it's immune to venue rotation.
+        if course_name != "Unknown":
+            course_match = course_weights[
+                course_weights['course_name'].str.lower() == course_name.lower()
             ]
+            if len(course_match) > 0:
+                row = course_match.iloc[0]
+                weights = {
+                    'ott_sg': row['ott_sg'], 'app_sg': row['app_sg'],
+                    'arg_sg': row['arg_sg'], 'putt_sg': row['putt_sg'],
+                }
+                matched_on = f"course '{course_name}'"
+
+        # 2) Fall back to tournament-name match — safe for the vast majority
+        #    of events that are always played at the same venue. Guarded: if
+        #    we know this year's real course and the matched row is for a
+        #    different course, it's a stale/wrong-year row — skip it rather
+        #    than silently using the wrong course's numbers.
+        if matched_on is None:
+            match = course_weights[course_weights['tournament_name'] == tournament_name]
+            if len(match) == 0:
+                search_term = tournament_name.lower().replace('the ', '')
+                match = course_weights[
+                    course_weights['tournament_name'].str.lower().str.contains(search_term, na=False)
+                ]
             if len(match) > 0:
-                print(f"    Fuzzy-matched course weights: '{match.iloc[0]['tournament_name']}'")
-        if len(match) > 0:
-            row = match.iloc[0]
-            weights = {
-                'ott_sg': row['ott_sg'],
-                'app_sg': row['app_sg'],
-                'arg_sg': row['arg_sg'],
-                'putt_sg': row['putt_sg']
-            }
-            if match.iloc[0]['tournament_name'] == tournament_name:
-                print(f"    Found course weights for {tournament_name}")
-        else:
-            print(f"    Using default weights (tournament '{tournament_name}' not in mapping)")
+                matched_row_course = str(match.iloc[0]['course_name'])
+                if course_name == "Unknown" or matched_row_course.lower() == course_name.lower():
+                    row = match.iloc[0]
+                    weights = {
+                        'ott_sg': row['ott_sg'], 'app_sg': row['app_sg'],
+                        'arg_sg': row['arg_sg'], 'putt_sg': row['putt_sg'],
+                    }
+                    matched_on = f"tournament name '{tournament_name}'"
+
+    if matched_on:
+        print(f"    Found course weights via {matched_on}")
+    else:
+        print(f"    Using default weights — no course-specific data for "
+              f"'{course_name if course_name != 'Unknown' else tournament_name}'")
 
     # Calculate season_sg_arg if not present
     if 'season_sg_arg' not in features_df.columns:
@@ -4239,7 +4294,7 @@ Examples:
     parser.add_argument('--field', required=True, help='Path to field CSV')
     parser.add_argument('--output', default=None, help='Output file (optional)')
     parser.add_argument('--tournament-type', default='Standard',
-                   choices=['Standard', 'Signature', 'Major'],
+                   choices=['Standard', 'Signature', 'Major', 'Playoff'],
                    help='Tournament type (default: Standard)')
     parser.add_argument('--sg-method', default='last_5',
                        choices=['season_avg', 'last_5', 'weighted'],

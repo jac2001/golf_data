@@ -1188,6 +1188,11 @@ def run_full_pipeline(
             _ACTIVE_TRACKER.finalize(success=pipeline_success, error=pipeline_error)
         _ACTIVE_TRACKER = None
 
+    # Exit non-zero so schedulers (scheduled_refresh.py run_command) see the
+    # failure — otherwise a crashed prediction stage logs as "✓ Predictions".
+    if not pipeline_success:
+        raise SystemExit(1)
+
 
 def weekly_refresh():
     """Run weekly data refresh for all sources."""

@@ -1,0 +1,130 @@
+{
+  "tid": "R2026027",
+  "tournament_name": "FedEx St. Jude Invitational",
+  "generated_at": "2026-08-12T15:56:30.095510",
+  "course_conditions": {
+    "error": "API call failed"
+  },
+  "players": [
+    {
+      "player_name": "Scheffler, Scottie",
+      "error": "API call failed",
+      "win_prob": 0.0650592683765643,
+      "world_rank": 1
+    },
+    {
+      "player_name": "McIlroy, Rory",
+      "error": "API call failed",
+      "win_prob": 0.0434166522791222,
+      "world_rank": 2
+    },
+    {
+      "player_name": "Young, Cameron",
+      "error": "API call failed",
+      "win_prob": 0.0375525138444279,
+      "world_rank": 3
+    },
+    {
+      "player_name": "Schauffele, Xander",
+      "error": "API call failed",
+      "win_prob": 0.031765585823839,
+      "world_rank": 14
+    },
+    {
+      "player_name": "Fleetwood, Tommy",
+      "error": "API call failed",
+      "win_prob": 0.0321220808720486,
+      "world_rank": 9
+    },
+    {
+      "player_name": "Fitzpatrick, Matt",
+      "error": "API call failed",
+      "win_prob": 0.0267362057625054,
+      "world_rank": 4
+    },
+    {
+      "player_name": "Burns, Sam",
+      "error": "API call failed",
+      "win_prob": 0.0139884533874011,
+      "world_rank": 17
+    },
+    {
+      "player_name": "Thomas, Justin",
+      "error": "API call failed",
+      "win_prob": 0.0081053721749546,
+      "world_rank": 18
+    },
+    {
+      "player_name": "Cantlay, Patrick",
+      "error": "API call failed",
+      "win_prob": 0.0273306747553773,
+      "world_rank": 36
+    },
+    {
+      "player_name": "Aberg, Ludvig",
+      "error": "API call failed",
+      "win_prob": 0.0331854265270287,
+      "world_rank": 19
+    },
+    {
+      "player_name": "Kim, Si Woo",
+      "error": "API call failed",
+      "win_prob": 0.0353543789292416,
+      "world_rank": 22
+    },
+    {
+      "player_name": "Matsuyama, Hideki",
+      "error": "API call failed",
+      "win_prob": 0.0105518426261541,
+      "world_rank": 30
+    },
+    {
+      "player_name": "Morikawa, Collin",
+      "error": "API call failed",
+      "win_prob": 0.0334485356742528,
+      "world_rank": 6
+    },
+    {
+      "player_name": "Gotterup, Chris",
+      "error": "API call failed",
+      "win_prob": 0.0291645349721649,
+      "world_rank": 7
+    },
+    {
+      "player_name": "Hovland, Viktor",
+      "error": "API call failed",
+      "win_prob": 0.0155458632939099,
+      "world_rank": 13
+    },
+    {
+      "player_name": "Henley, Russell",
+      "error": "API call failed",
+      "win_prob": 0.0303407162237393,
+      "world_rank": 5
+    },
+    {
+      "player_name": "Gerard, Ryan",
+      "error": "API call failed",
+      "win_prob": 0.0148535948759579,
+      "world_rank": 28
+    },
+    {
+      "player_name": "McNealy, Maverick",
+      "error": "API call failed",
+      "win_prob": 0.0132960747251324,
+      "world_rank": 37
+    },
+    {
+      "player_name": "Kim, Tom",
+      "error": "API call failed",
+      "win_prob": 0.0043220647775551,
+      "world_rank": 66
+    },
+    {
+      "player_name": "Griffin, Ben",
+      "error": "API call failed",
+      "win_prob": 0.0143163376532784,
+      "world_rank": 15
+    }
+  ]
+}

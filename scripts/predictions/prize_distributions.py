@@ -104,6 +104,9 @@ DISTRIBUTIONS = {
     'Standard': STANDARD_DISTRIBUTION,
     'Signature': SIGNATURE_DISTRIBUTION,
     'Major': MAJOR_DISTRIBUTION,
+    # FedEx Cup playoff events: small no-cut elite fields with Signature-scale
+    # purses, so the Signature payout curve is the closest fit.
+    'Playoff': SIGNATURE_DISTRIBUTION,
 }
 
 # ============================================================================
