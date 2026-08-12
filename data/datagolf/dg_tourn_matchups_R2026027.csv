@@ -1,285 +1,300 @@
 p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
-"Cantlay, Patrick","Gotterup, Chris",15466,27774,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Gotterup, Chris",15466,27774,separate bet offered,datagolf,-109,+133,0.521531,0.429185,0.548567,0.451433,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,betonline,-139,+116,0.58159,0.462963,0.556784,0.443216,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,bovada,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,caesars,-145,-110,0.591837,0.52381,0.530488,0.469512,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,pinnacle,-133,+110,0.570815,0.47619,0.545188,0.454812,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Griffin, Ben",21891,24968,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Griffin, Ben",21891,24968,separate bet offered,datagolf,+147,-119,0.404858,0.543379,0.426959,0.573041,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Griffin, Ben",21891,24968,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Griffin, Ben",21891,24968,void,datagolf,+135,-135,0.425532,0.574468,0.425532,0.574468,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Tom",14578,24766,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Tom",14578,24766,separate bet offered,datagolf,+101,+123,0.497512,0.44843,0.525943,0.474057,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Tom",14578,24766,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Tom",14578,24766,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","Koivun, Jackson",18841,32319,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","Koivun, Jackson",18841,32319,separate bet offered,datagolf,-103,+126,0.507389,0.442478,0.534169,0.465831,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","Koivun, Jackson",18841,32319,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","Koivun, Jackson",18841,32319,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Kim, Si Woo",14139,14609,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Kim, Si Woo",14139,14609,separate bet offered,datagolf,+107,+115,0.483092,0.465116,0.509479,0.490521,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Kim, Si Woo",14139,14609,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Kim, Si Woo",14139,14609,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Clark, Wyndham",23323,23604,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Clark, Wyndham",23323,23604,separate bet offered,datagolf,-106,+130,0.514563,0.434783,0.542019,0.457981,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,pinnacle,-126,+104,0.557522,0.490196,0.53213,0.46787,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Burns, Sam",13562,19483,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Burns, Sam",13562,19483,separate bet offered,datagolf,+116,+105,0.462963,0.487805,0.486936,0.513064,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Burns, Sam",13562,19483,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Burns, Sam",13562,19483,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Aberg, Ludvig",22085,23950,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Aberg, Ludvig",22085,23950,separate bet offered,datagolf,+110,+112,0.47619,0.471698,0.50237,0.49763,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,pinnacle,-112,-108,0.528302,0.519231,0.50433,0.49567,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Fowler, Rickie",6093,12965,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Fowler, Rickie",6093,12965,separate bet offered,datagolf,+115,+106,0.465116,0.485437,0.489311,0.510689,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Fowler, Rickie",6093,12965,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Fowler, Rickie",6093,12965,void,caesars,-110,-145,0.52381,0.591837,0.469512,0.530488,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Fowler, Rickie",6093,12965,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Schauffele, Xander",12294,19895,separate bet offered,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Schauffele, Xander",12294,19895,separate bet offered,datagolf,+104,+118,0.490196,0.458716,0.516588,0.483412,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,bet365,+175,-222,0.363636,0.689441,0.345308,0.654692,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,datagolf,+205,-166,0.327869,0.62406,0.344426,0.655574,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betonline,+177,-215,0.361011,0.68254,0.345945,0.654055,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,bovada,+160,-210,0.384615,0.677419,0.36215,0.63785,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,caesars,+180,-240,0.357143,0.705882,0.335968,0.664032,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,datagolf,+191,-191,0.343643,0.656357,0.343643,0.656357,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,draftkings,+162,-215,0.381679,0.68254,0.358647,0.641353,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,fanduel,+162,-200,0.381679,0.666667,0.364078,0.635922,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,pinnacle,+173,-219,0.3663,0.68652,0.347923,0.652077,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,unibet,+170,-235,0.37037,0.701493,0.345539,0.654461,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","McNealy, Maverick",17536,18634,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","McNealy, Maverick",17536,18634,separate bet offered,datagolf,+120,+103,0.454545,0.492611,0.479905,0.520095,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","McNealy, Maverick",17536,18634,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","McNealy, Maverick",17536,18634,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,separate bet offered,datagolf,+126,-102,0.442478,0.50495,0.46703,0.53297,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fitzpatrick, Matt","Young, Cameron",17646,26651,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fitzpatrick, Matt","Young, Cameron",17646,26651,separate bet offered,datagolf,+120,+102,0.454545,0.49505,0.478673,0.521327,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Tom","Koivun, Jackson",24766,32319,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Tom","Koivun, Jackson",24766,32319,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Tom","Koivun, Jackson",24766,32319,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Tom","Koivun, Jackson",24766,32319,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Tom","Koivun, Jackson",24766,32319,void,pinnacle,+106,-129,0.485437,0.563319,0.462869,0.537131,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Stevens, Sam","Castillo, Ricky",25569,27819,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Stevens, Sam","Castillo, Ricky",25569,27819,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Stevens, Sam","Castillo, Ricky",25569,27819,void,pinnacle,+100,-121,0.5,0.547511,0.477322,0.522678,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Coody, Pierceson","Yellamaraju, Sudarshan",28309,29925,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Coody, Pierceson","Yellamaraju, Sudarshan",28309,29925,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Coody, Pierceson","Yellamaraju, Sudarshan",28309,29925,void,pinnacle,-103,-118,0.507389,0.541284,0.483839,0.516161,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","McNealy, Maverick",6093,18634,void,betonline,+125,-150,0.444444,0.6,0.425532,0.574468,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","McNealy, Maverick",6093,18634,void,datagolf,+135,-135,0.425532,0.574468,0.425532,0.574468,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Scott, Adam","English, Harris",6430,14577,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Scott, Adam","English, Harris",6430,14577,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Noren, Alex","Rai, Aaron",10419,18554,void,betonline,+112,-134,0.471698,0.57265,0.451668,0.548332,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Noren, Alex","Rai, Aaron",10419,18554,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Noren, Alex","Rai, Aaron",10419,18554,void,pinnacle,+110,-133,0.47619,0.570815,0.454812,0.545188,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Harman, Brian","Cole, Eric",8825,21756,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Harman, Brian","Cole, Eric",8825,21756,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Harman, Brian","Cole, Eric",8825,21756,void,pinnacle,-106,-114,0.514563,0.53271,0.491336,0.508664,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hisatsune, Ryo","Echavarria, Nico",22760,22833,void,betonline,-145,+121,0.591837,0.452489,0.566717,0.433283,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hisatsune, Ryo","Echavarria, Nico",22760,22833,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hisatsune, Ryo","Echavarria, Nico",22760,22833,void,pinnacle,-135,+111,0.574468,0.473934,0.547947,0.452053,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fowler, Rickie","Thorbjornsen, Michael",12965,26649,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fowler, Rickie","Thorbjornsen, Michael",12965,26649,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fowler, Rickie","Thorbjornsen, Michael",12965,26649,void,pinnacle,+107,-129,0.483092,0.563319,0.461666,0.538334,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Taylor, Nick","Straka, Sepp",13126,17511,void,betonline,-123,+103,0.55157,0.492611,0.528232,0.471768,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Taylor, Nick","Straka, Sepp",13126,17511,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Young, Cameron",12294,26651,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Young, Cameron",12294,26651,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Young, Cameron",12294,26651,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,caesars,-112,-125,0.528302,0.555556,0.487427,0.512573,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,pinnacle,+100,-122,0.5,0.54955,0.476395,0.523605,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spieth, Jordan","Smalley, Alex",14636,18474,void,betonline,-113,-107,0.530516,0.516908,0.506496,0.493504,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spieth, Jordan","Smalley, Alex",14636,18474,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Woodland, Gary","Cauley, Bud",12577,14502,void,betonline,+118,-142,0.458716,0.586777,0.438756,0.561244,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Woodland, Gary","Cauley, Bud",12577,14502,void,datagolf,+144,-144,0.409836,0.590164,0.409836,0.590164,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Poston, J.T.","Hall, Harry",21554,27194,void,betonline,-129,+108,0.563319,0.480769,0.539532,0.460468,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Poston, J.T.","Hall, Harry",21554,27194,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Poston, J.T.","Hall, Harry",21554,27194,void,pinnacle,-114,-106,0.53271,0.514563,0.508664,0.491336,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,betonline,+122,-147,0.45045,0.595142,0.430809,0.569191,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,datagolf,+149,-149,0.401606,0.598394,0.401606,0.598394,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Knapp, Jake","Reitan, Kristoffer",19396,21407,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Knapp, Jake","Reitan, Kristoffer",19396,21407,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,pinnacle,-109,-111,0.521531,0.526066,0.497835,0.502165,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lowry, Shane","Hojgaard, Nicolai",13900,23602,void,betonline,-150,+125,0.6,0.444444,0.574468,0.425532,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lowry, Shane","Hojgaard, Nicolai",13900,23602,void,datagolf,-134,+134,0.57265,0.42735,0.57265,0.42735,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lowry, Shane","Hojgaard, Nicolai",13900,23602,void,pinnacle,-143,+117,0.588477,0.460829,0.560825,0.439175,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Si Woo",14578,14609,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Si Woo",14578,14609,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Si Woo",14578,14609,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Si Woo",14578,14609,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Kim, Si Woo",14578,14609,void,pinnacle,+101,-123,0.497512,0.55157,0.474236,0.525764,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Clark, Wyndham",14139,23604,void,betonline,-182,+150,0.64539,0.4,0.617368,0.382632,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Clark, Wyndham",14139,23604,void,datagolf,-161,+161,0.616858,0.383142,0.616858,0.383142,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Smith, Jordan","Fitzpatrick, Alex",18586,25362,void,betonline,+110,-132,0.47619,0.568966,0.455617,0.544383,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Smith, Jordan","Fitzpatrick, Alex",18586,25362,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Smith, Jordan","Fitzpatrick, Alex",18586,25362,void,pinnacle,+109,-132,0.478469,0.568966,0.456801,0.543199,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fox, Ryan","Conners, Corey",11889,17576,void,betonline,+145,-175,0.408163,0.636364,0.390764,0.609236,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fox, Ryan","Conners, Corey",11889,17576,void,datagolf,+150,-150,0.4,0.6,0.4,0.6,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Homa, Max","McCarty, Matt",17538,28635,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Homa, Max","McCarty, Matt",17538,28635,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Homa, Max","McCarty, Matt",17538,28635,void,pinnacle,-102,-119,0.50495,0.543379,0.481672,0.518328,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Mitchell, Keith","Im, Sungjae",17365,17488,void,betonline,+103,-123,0.492611,0.55157,0.471768,0.528232,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Mitchell, Keith","Im, Sungjae",17365,17488,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Mitchell, Keith","Im, Sungjae",17365,17488,void,pinnacle,+106,-128,0.485437,0.561404,0.463716,0.536284,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","Griffin, Ben",17536,24968,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","Griffin, Ben",17536,24968,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","Griffin, Ben",17536,24968,void,draftkings,-110,-118,0.52381,0.541284,0.491797,0.508203,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","Griffin, Ben",17536,24968,void,pinnacle,+100,-121,0.5,0.547511,0.477322,0.522678,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spaun, J.J.","Griffin, Ben",17536,24968,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Bhatia, Akshay","Brennan, Michael",26096,29197,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Bhatia, Akshay","Brennan, Michael",26096,29197,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Bhatia, Akshay","Brennan, Michael",26096,29197,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Bhatia, Akshay","Brennan, Michael",26096,29197,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Burns, Sam","Schauffele, Xander",19483,19895,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Burns, Sam","Schauffele, Xander",19483,19895,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Burns, Sam","Schauffele, Xander",19483,19895,void,pinnacle,+104,-126,0.490196,0.557522,0.46787,0.53213,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Burns, Sam","Schauffele, Xander",19483,19895,void,unibet,+105,-137,0.487805,0.578059,0.457661,0.542339,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Michael","Theegala, Sahith",17543,23014,void,betonline,-123,+103,0.55157,0.492611,0.528232,0.471768,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Michael","Theegala, Sahith",17543,23014,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Michael","Theegala, Sahith",17543,23014,void,pinnacle,-124,+102,0.553571,0.49505,0.527904,0.472096,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rodgers, Patrick","Potgieter, Aldrich",16283,27900,void,betonline,-107,-113,0.516908,0.530516,0.493504,0.506496,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rodgers, Patrick","Potgieter, Aldrich",16283,27900,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McNealy, Maverick","Gerard, Ryan",18634,29767,void,caesars,-109,-150,0.521531,0.6,0.465017,0.534983,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McNealy, Maverick","Gerard, Ryan",18634,29767,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McNealy, Maverick","Gerard, Ryan",18634,29767,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McNealy, Maverick","Gerard, Ryan",18634,29767,void,pinnacle,-105,-115,0.512195,0.534884,0.489166,0.510834,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Reitan, Kristoffer","Bhatia, Akshay",21407,26096,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Reitan, Kristoffer","Bhatia, Akshay",21407,26096,void,pinnacle,+101,-122,0.497512,0.54955,0.475151,0.524849,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Cantlay, Patrick",14139,15466,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Cantlay, Patrick",14139,15466,void,pinnacle,-117,-103,0.539171,0.507389,0.515184,0.484816,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"English, Harris","Conners, Corey",14577,17576,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"English, Harris","Conners, Corey",14577,17576,void,pinnacle,-110,-110,0.52381,0.52381,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spieth, Jordan","Knapp, Jake",14636,19396,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Spieth, Jordan","Knapp, Jake",14636,19396,void,pinnacle,-122,+101,0.54955,0.497512,0.524849,0.475151,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Si Woo","McNealy, Maverick",14609,18634,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Si Woo","McNealy, Maverick",14609,18634,void,pinnacle,-146,+119,0.593496,0.456621,0.565171,0.434829,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fox, Ryan","Woodland, Gary",11889,12577,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fox, Ryan","Woodland, Gary",11889,12577,void,pinnacle,-118,-103,0.541284,0.507389,0.516161,0.483839,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Schauffele, Xander",10091,19895,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Schauffele, Xander",10091,19895,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McIlroy, Rory","Schauffele, Xander",10091,19895,void,pinnacle,-122,+101,0.54955,0.497512,0.524849,0.475151,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Morikawa, Collin",13562,22085,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Morikawa, Collin",13562,22085,void,pinnacle,-113,-107,0.530516,0.516908,0.506496,0.493504,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","Gotterup, Chris",18841,27774,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","Gotterup, Chris",18841,27774,void,pinnacle,-118,-103,0.541284,0.507389,0.516161,0.483839,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Aberg, Ludvig",14139,23950,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Aberg, Ludvig",14139,23950,void,pinnacle,-115,-105,0.534884,0.512195,0.510834,0.489166,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Aberg, Ludvig",14139,23950,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Scott, Adam","Bridgeman, Jacob",6430,29433,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Scott, Adam","Bridgeman, Jacob",6430,29433,void,pinnacle,-107,-113,0.516908,0.530516,0.493504,0.506496,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","Kim, Tom",18841,24766,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Hovland, Viktor","Kim, Tom",18841,24766,void,pinnacle,-140,+115,0.583333,0.465116,0.556377,0.443623,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Burns, Sam","Young, Cameron",19483,26651,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Burns, Sam","Young, Cameron",19483,26651,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Burns, Sam","Young, Cameron",19483,26651,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Burns, Sam","Young, Cameron",19483,26651,void,pinnacle,+102,-124,0.49505,0.553571,0.472096,0.527904,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cauley, Bud","Smalley, Alex",14502,18474,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cauley, Bud","Smalley, Alex",14502,18474,void,pinnacle,-102,-118,0.50495,0.541284,0.482636,0.517364,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,pinnacle,-120,-101,0.545455,0.502488,0.520501,0.479499,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Brennan, Michael",6093,29197,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Brennan, Michael",6093,29197,void,pinnacle,-103,-118,0.507389,0.541284,0.483839,0.516161,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Koivun, Jackson",14578,32319,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Koivun, Jackson",14578,32319,void,pinnacle,-124,+102,0.553571,0.49505,0.527904,0.472096,False,True,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","Koivun, Jackson",14578,32319,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Hovland, Viktor",14139,18841,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Hovland, Viktor",14139,18841,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Hovland, Viktor",14139,18841,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lee, Min Woo","Spaun, J.J.",16841,17536,void,caesars,+115,-145,0.465116,0.591837,0.440054,0.559946,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lee, Min Woo","Spaun, J.J.",16841,17536,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lee, Min Woo","Spaun, J.J.",16841,17536,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Brennan, Michael",21891,29197,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Brennan, Michael",21891,29197,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Brennan, Michael",21891,29197,void,fanduel,-111,-120,0.526066,0.545455,0.490953,0.509047,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Griffin, Ben","Thorbjornsen, Michael",24968,26649,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Griffin, Ben","Thorbjornsen, Michael",24968,26649,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Griffin, Ben","Thorbjornsen, Michael",24968,26649,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Matsuyama, Hideki",12294,13562,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Matsuyama, Hideki",12294,13562,void,unibet,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Si Woo","Hovland, Viktor",14609,18841,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Si Woo","Hovland, Viktor",14609,18841,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Si Woo","Hovland, Viktor",14609,18841,void,draftkings,-130,-102,0.565217,0.50495,0.528158,0.471842,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Si Woo","Hovland, Viktor",14609,18841,void,unibet,-132,+100,0.568966,0.5,0.532258,0.467742,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Kim, Tom",23323,24766,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Kim, Tom",23323,24766,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"MacIntyre, Robert","Kim, Tom",23323,24766,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,unibet,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Young, Cameron",22085,26651,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Morikawa, Collin","Young, Cameron",22085,26651,void,unibet,+110,-143,0.47619,0.588477,0.447267,0.552733,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Fitzpatrick, Matt",15466,17646,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Fitzpatrick, Matt",15466,17646,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Clark, Wyndham","Gotterup, Chris",23604,27774,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Clark, Wyndham","Gotterup, Chris",23604,27774,void,unibet,+110,-143,0.47619,0.588477,0.447267,0.552733,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Lee, Min Woo",6093,16841,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Lee, Min Woo",6093,16841,void,unibet,+105,-137,0.487805,0.578059,0.457661,0.542339,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Gotterup, Chris","Koivun, Jackson",27774,32319,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fowler, Rickie","McNealy, Maverick",12965,18634,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fowler, Rickie","McNealy, Maverick",12965,18634,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"English, Harris","Spieth, Jordan",14577,14636,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"English, Harris","Spieth, Jordan",14577,14636,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Noren, Alex","Smalley, Alex",10419,18474,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Noren, Alex","Smalley, Alex",10419,18474,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Tom","Thorbjornsen, Michael",24766,26649,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kim, Tom","Thorbjornsen, Michael",24766,26649,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,draftkings,-138,+106,0.579832,0.485437,0.544306,0.455694,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","MacIntyre, Robert",14578,23323,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Henley, Russell","MacIntyre, Robert",14578,23323,void,draftkings,-136,+104,0.576271,0.490196,0.540355,0.459645,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Gerard, Ryan",21891,29767,void,datagolf,+135,-135,0.425532,0.574468,0.425532,0.574468,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Kitayama, Kurt","Gerard, Ryan",21891,29767,void,draftkings,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Thomas, Justin",13562,14139,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Thomas, Justin",13562,14139,void,draftkings,-128,-104,0.561404,0.509804,0.524085,0.475915,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lowry, Shane","Knapp, Jake",13900,19396,void,datagolf,-137,+137,0.578059,0.421941,0.578059,0.421941,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lowry, Shane","Knapp, Jake",13900,19396,void,draftkings,-140,+106,0.583333,0.485437,0.545799,0.454201,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Mitchell, Keith",6093,17365,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rose, Justin","Mitchell, Keith",6093,17365,void,draftkings,-132,+100,0.568966,0.5,0.532258,0.467742,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lee, Min Woo","Clark, Wyndham",16841,23604,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Lee, Min Woo","Clark, Wyndham",16841,23604,void,draftkings,-112,-116,0.528302,0.537037,0.4959,0.5041,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,draftkings,-116,-114,0.537037,0.53271,0.502022,0.497978,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rai, Aaron","Bridgeman, Jacob",18554,29433,void,datagolf,-139,+139,0.58159,0.41841,0.58159,0.41841,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Rai, Aaron","Bridgeman, Jacob",18554,29433,void,draftkings,-134,+102,0.57265,0.49505,0.53634,0.46366,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Schauffele, Xander","Young, Cameron",19895,26651,void,draftkings,-116,-112,0.537037,0.528302,0.5041,0.4959,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Aberg, Ludvig",13562,23950,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Matsuyama, Hideki","Aberg, Ludvig",13562,23950,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Henley, Russell",14139,14578,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Thomas, Justin","Henley, Russell",14139,14578,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fowler, Rickie","Brennan, Michael",12965,29197,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
-"Fowler, Rickie","Brennan, Michael",12965,29197,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,FedEx St. Jude Championship,2026-08-11 23:32:00 UTC
+"Cantlay, Patrick","Gotterup, Chris",15466,27774,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Gotterup, Chris",15466,27774,separate bet offered,datagolf,-109,+133,0.521531,0.429185,0.548567,0.451433,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,betonline,-139,+116,0.58159,0.462963,0.556784,0.443216,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,bovada,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,caesars,-145,-110,0.591837,0.52381,0.530488,0.469512,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Gotterup, Chris",15466,27774,void,pinnacle,-132,+110,0.568966,0.47619,0.544383,0.455617,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Griffin, Ben",21891,24968,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Griffin, Ben",21891,24968,separate bet offered,datagolf,+147,-119,0.404858,0.543379,0.426959,0.573041,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Griffin, Ben",21891,24968,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Griffin, Ben",21891,24968,void,datagolf,+135,-135,0.425532,0.574468,0.425532,0.574468,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Tom",14578,24766,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Tom",14578,24766,separate bet offered,datagolf,+101,+123,0.497512,0.44843,0.525943,0.474057,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Tom",14578,24766,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Tom",14578,24766,void,datagolf,-111,+111,0.526066,0.473934,0.526066,0.473934,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","Koivun, Jackson",18841,32319,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","Koivun, Jackson",18841,32319,separate bet offered,datagolf,-103,+126,0.507389,0.442478,0.534169,0.465831,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","Koivun, Jackson",18841,32319,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","Koivun, Jackson",18841,32319,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,separate bet offered,datagolf,+107,+115,0.483092,0.465116,0.509479,0.490521,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Kim, Si Woo",14139,14609,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Clark, Wyndham",23323,23604,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Clark, Wyndham",23323,23604,separate bet offered,datagolf,-106,+130,0.514563,0.434783,0.542019,0.457981,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,caesars,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Clark, Wyndham",23323,23604,void,pinnacle,-147,+122,0.595142,0.45045,0.569191,0.430809,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,separate bet offered,datagolf,+116,+105,0.462963,0.487805,0.486936,0.513064,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,separate bet offered,datagolf,+110,+112,0.47619,0.471698,0.50237,0.49763,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,caesars,-121,-121,0.547511,0.547511,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Aberg, Ludvig",22085,23950,void,pinnacle,-111,-107,0.526066,0.516908,0.50439,0.49561,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Fowler, Rickie",6093,12965,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Fowler, Rickie",6093,12965,separate bet offered,datagolf,+115,+106,0.465116,0.485437,0.489311,0.510689,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Fowler, Rickie",6093,12965,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Fowler, Rickie",6093,12965,void,caesars,-110,-145,0.52381,0.591837,0.469512,0.530488,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Fowler, Rickie",6093,12965,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,separate bet offered,bet365,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,separate bet offered,datagolf,+104,+118,0.490196,0.458716,0.516588,0.483412,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,datagolf,-107,+107,0.516908,0.483092,0.516908,0.483092,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,bet365,+175,-222,0.363636,0.689441,0.345308,0.654692,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,datagolf,+205,-166,0.327869,0.62406,0.344426,0.655574,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betonline,+177,-215,0.361011,0.68254,0.345945,0.654055,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,bovada,+160,-210,0.384615,0.677419,0.36215,0.63785,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,caesars,+180,-240,0.357143,0.705882,0.335968,0.664032,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,datagolf,+191,-191,0.343643,0.656357,0.343643,0.656357,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,draftkings,+162,-215,0.381679,0.68254,0.358647,0.641353,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,fanduel,+162,-200,0.381679,0.666667,0.364078,0.635922,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,pinnacle,+182,-226,0.35461,0.693252,0.338413,0.661587,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,unibet,+170,-235,0.37037,0.701493,0.345539,0.654461,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","McNealy, Maverick",17536,18634,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","McNealy, Maverick",17536,18634,separate bet offered,datagolf,+120,+103,0.454545,0.492611,0.479905,0.520095,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","McNealy, Maverick",17536,18634,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","McNealy, Maverick",17536,18634,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,separate bet offered,datagolf,+126,-102,0.442478,0.50495,0.46703,0.53297,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,bovada,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thorbjornsen, Michael","Gerard, Ryan",26649,29767,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,separate bet offered,datagolf,+120,+102,0.454545,0.49505,0.478673,0.521327,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Tom","Koivun, Jackson",24766,32319,void,betonline,+107,-128,0.483092,0.561404,0.462512,0.537488,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Tom","Koivun, Jackson",24766,32319,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Tom","Koivun, Jackson",24766,32319,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Tom","Koivun, Jackson",24766,32319,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Tom","Koivun, Jackson",24766,32319,void,pinnacle,+107,-127,0.483092,0.559471,0.463369,0.536631,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Stevens, Sam","Castillo, Ricky",25569,27819,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Stevens, Sam","Castillo, Ricky",25569,27819,void,bovada,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Stevens, Sam","Castillo, Ricky",25569,27819,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Stevens, Sam","Castillo, Ricky",25569,27819,void,pinnacle,+102,-121,0.49505,0.547511,0.47484,0.52516,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Coody, Pierceson","Yellamaraju, Sudarshan",28309,29925,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Coody, Pierceson","Yellamaraju, Sudarshan",28309,29925,void,bovada,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Coody, Pierceson","Yellamaraju, Sudarshan",28309,29925,void,datagolf,+107,-107,0.483092,0.516908,0.483092,0.516908,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Coody, Pierceson","Yellamaraju, Sudarshan",28309,29925,void,pinnacle,-102,-116,0.50495,0.537037,0.484603,0.515397,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","McNealy, Maverick",6093,18634,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","McNealy, Maverick",6093,18634,void,datagolf,+135,-135,0.425532,0.574468,0.425532,0.574468,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Scott, Adam","English, Harris",6430,14577,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Scott, Adam","English, Harris",6430,14577,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Noren, Alex","Rai, Aaron",10419,18554,void,betonline,+112,-134,0.471698,0.57265,0.451668,0.548332,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Noren, Alex","Rai, Aaron",10419,18554,void,bovada,+110,-145,0.47619,0.591837,0.44586,0.55414,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Noren, Alex","Rai, Aaron",10419,18554,void,datagolf,+122,-122,0.45045,0.54955,0.45045,0.54955,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Noren, Alex","Rai, Aaron",10419,18554,void,pinnacle,+110,-132,0.47619,0.568966,0.455617,0.544383,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Harman, Brian","Cole, Eric",8825,21756,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Harman, Brian","Cole, Eric",8825,21756,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Harman, Brian","Cole, Eric",8825,21756,void,datagolf,+102,-102,0.49505,0.50495,0.49505,0.50495,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Harman, Brian","Cole, Eric",8825,21756,void,pinnacle,-105,-113,0.512195,0.530516,0.491215,0.508785,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hisatsune, Ryo","Echavarria, Nico",22760,22833,void,betonline,-140,+117,0.583333,0.460829,0.558661,0.441339,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hisatsune, Ryo","Echavarria, Nico",22760,22833,void,bovada,-145,+110,0.591837,0.47619,0.55414,0.44586,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hisatsune, Ryo","Echavarria, Nico",22760,22833,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hisatsune, Ryo","Echavarria, Nico",22760,22833,void,pinnacle,-134,+112,0.57265,0.471698,0.548332,0.451668,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fowler, Rickie","Thorbjornsen, Michael",12965,26649,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fowler, Rickie","Thorbjornsen, Michael",12965,26649,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fowler, Rickie","Thorbjornsen, Michael",12965,26649,void,pinnacle,+107,-128,0.483092,0.561404,0.462512,0.537488,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Taylor, Nick","Straka, Sepp",13126,17511,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Taylor, Nick","Straka, Sepp",13126,17511,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Young, Cameron",12294,26651,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Young, Cameron",12294,26651,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Young, Cameron",12294,26651,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,caesars,-112,-125,0.528302,0.555556,0.487427,0.512573,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,datagolf,+114,-114,0.46729,0.53271,0.46729,0.53271,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Fitzpatrick, Matt",13562,17646,void,pinnacle,+102,-121,0.49505,0.547511,0.47484,0.52516,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spieth, Jordan","Smalley, Alex",14636,18474,void,betonline,-113,-107,0.530516,0.516908,0.506496,0.493504,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spieth, Jordan","Smalley, Alex",14636,18474,void,datagolf,+112,-112,0.471698,0.528302,0.471698,0.528302,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Woodland, Gary","Cauley, Bud",12577,14502,void,betonline,+118,-142,0.458716,0.586777,0.438756,0.561244,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Woodland, Gary","Cauley, Bud",12577,14502,void,datagolf,+144,-144,0.409836,0.590164,0.409836,0.590164,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,datagolf,-117,+117,0.539171,0.460829,0.539171,0.460829,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Poston, J.T.","Hall, Harry",21554,27194,void,betonline,-129,+108,0.563319,0.480769,0.539532,0.460468,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Poston, J.T.","Hall, Harry",21554,27194,void,bovada,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Poston, J.T.","Hall, Harry",21554,27194,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Poston, J.T.","Hall, Harry",21554,27194,void,pinnacle,-113,-105,0.530516,0.512195,0.508785,0.491215,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,betonline,+122,-147,0.45045,0.595142,0.430809,0.569191,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Bridgeman, Jacob","Gerard, Ryan",29433,29767,void,datagolf,+149,-149,0.401606,0.598394,0.401606,0.598394,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Knapp, Jake","Reitan, Kristoffer",19396,21407,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Knapp, Jake","Reitan, Kristoffer",19396,21407,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lee, Min Woo","Kitayama, Kurt",16841,21891,void,pinnacle,-107,-111,0.516908,0.526066,0.49561,0.50439,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lowry, Shane","Hojgaard, Nicolai",13900,23602,void,betonline,-140,+117,0.583333,0.460829,0.558661,0.441339,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lowry, Shane","Hojgaard, Nicolai",13900,23602,void,bovada,-155,+120,0.607843,0.454545,0.572148,0.427852,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lowry, Shane","Hojgaard, Nicolai",13900,23602,void,datagolf,-134,+134,0.57265,0.42735,0.57265,0.42735,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lowry, Shane","Hojgaard, Nicolai",13900,23602,void,pinnacle,-141,+118,0.585062,0.458716,0.560524,0.439476,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Kim, Si Woo",14578,14609,void,pinnacle,+101,-120,0.497512,0.545455,0.477016,0.522984,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Clark, Wyndham",14139,23604,void,betonline,-170,+141,0.62963,0.414938,0.602766,0.397234,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Clark, Wyndham",14139,23604,void,datagolf,-161,+161,0.616858,0.383142,0.616858,0.383142,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Smith, Jordan","Fitzpatrick, Alex",18586,25362,void,betonline,+110,-132,0.47619,0.568966,0.455617,0.544383,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Smith, Jordan","Fitzpatrick, Alex",18586,25362,void,bovada,+110,-145,0.47619,0.591837,0.44586,0.55414,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Smith, Jordan","Fitzpatrick, Alex",18586,25362,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Smith, Jordan","Fitzpatrick, Alex",18586,25362,void,pinnacle,+110,-131,0.47619,0.5671,0.456432,0.543568,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fox, Ryan","Conners, Corey",11889,17576,void,betonline,+145,-175,0.408163,0.636364,0.390764,0.609236,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fox, Ryan","Conners, Corey",11889,17576,void,datagolf,+150,-150,0.4,0.6,0.4,0.6,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Homa, Max","McCarty, Matt",17538,28635,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Homa, Max","McCarty, Matt",17538,28635,void,bovada,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Homa, Max","McCarty, Matt",17538,28635,void,datagolf,+111,-111,0.473934,0.526066,0.473934,0.526066,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Homa, Max","McCarty, Matt",17538,28635,void,pinnacle,-101,-118,0.502488,0.541284,0.481415,0.518585,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Mitchell, Keith","Im, Sungjae",17365,17488,void,betonline,+103,-123,0.492611,0.55157,0.471768,0.528232,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Mitchell, Keith","Im, Sungjae",17365,17488,void,bovada,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Mitchell, Keith","Im, Sungjae",17365,17488,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Mitchell, Keith","Im, Sungjae",17365,17488,void,pinnacle,+106,-126,0.485437,0.557522,0.465442,0.534558,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,draftkings,-110,-118,0.52381,0.541284,0.491797,0.508203,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,pinnacle,+100,-119,0.5,0.543379,0.479212,0.520788,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spaun, J.J.","Griffin, Ben",17536,24968,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Bhatia, Akshay","Brennan, Michael",26096,29197,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Bhatia, Akshay","Brennan, Michael",26096,29197,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Bhatia, Akshay","Brennan, Michael",26096,29197,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Bhatia, Akshay","Brennan, Michael",26096,29197,void,unibet,-114,-114,0.53271,0.53271,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Burns, Sam","Schauffele, Xander",19483,19895,void,betonline,+109,-130,0.478469,0.565217,0.458441,0.541559,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Burns, Sam","Schauffele, Xander",19483,19895,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Burns, Sam","Schauffele, Xander",19483,19895,void,pinnacle,+105,-125,0.487805,0.555556,0.467532,0.532468,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Burns, Sam","Schauffele, Xander",19483,19895,void,unibet,+105,-137,0.487805,0.578059,0.457661,0.542339,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Michael","Theegala, Sahith",17543,23014,void,betonline,-123,+103,0.55157,0.492611,0.528232,0.471768,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Michael","Theegala, Sahith",17543,23014,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Michael","Theegala, Sahith",17543,23014,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Michael","Theegala, Sahith",17543,23014,void,pinnacle,-122,+103,0.54955,0.492611,0.527318,0.472682,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rodgers, Patrick","Potgieter, Aldrich",16283,27900,void,betonline,-107,-113,0.516908,0.530516,0.493504,0.506496,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rodgers, Patrick","Potgieter, Aldrich",16283,27900,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Scott, Adam","Bridgeman, Jacob",6430,29433,void,pinnacle,-106,-112,0.514563,0.528302,0.493413,0.506587,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Koivun, Jackson",14578,32319,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Koivun, Jackson",14578,32319,void,pinnacle,-124,+104,0.553571,0.490196,0.530359,0.469641,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","Koivun, Jackson",14578,32319,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,betmgm,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,pinnacle,-120,+101,0.545455,0.497512,0.522984,0.477016,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cauley, Bud","Smalley, Alex",14502,18474,void,bovada,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cauley, Bud","Smalley, Alex",14502,18474,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cauley, Bud","Smalley, Alex",14502,18474,void,pinnacle,-102,-117,0.50495,0.539171,0.483613,0.516387,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McNealy, Maverick","Gerard, Ryan",18634,29767,void,caesars,-109,-150,0.521531,0.6,0.465017,0.534983,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McNealy, Maverick","Gerard, Ryan",18634,29767,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McNealy, Maverick","Gerard, Ryan",18634,29767,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McNealy, Maverick","Gerard, Ryan",18634,29767,void,pinnacle,-122,+102,0.54955,0.49505,0.526087,0.473913,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Brennan, Michael",6093,29197,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Brennan, Michael",6093,29197,void,pinnacle,-103,-115,0.507389,0.534884,0.48681,0.51319,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,pinnacle,-119,+100,0.543379,0.5,0.520788,0.479212,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Burns, Sam","Young, Cameron",19483,26651,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Burns, Sam","Young, Cameron",19483,26651,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Burns, Sam","Young, Cameron",19483,26651,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Burns, Sam","Young, Cameron",19483,26651,void,pinnacle,+102,-121,0.49505,0.547511,0.47484,0.52516,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"English, Harris","Conners, Corey",14577,17576,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"English, Harris","Conners, Corey",14577,17576,void,pinnacle,-109,-109,0.521531,0.521531,0.5,0.5,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fox, Ryan","Woodland, Gary",11889,12577,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fox, Ryan","Woodland, Gary",11889,12577,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fox, Ryan","Woodland, Gary",11889,12577,void,pinnacle,-118,-101,0.541284,0.502488,0.518585,0.481415,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spieth, Jordan","Knapp, Jake",14636,19396,void,bovada,-130,+100,0.565217,0.5,0.530612,0.469388,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spieth, Jordan","Knapp, Jake",14636,19396,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Spieth, Jordan","Knapp, Jake",14636,19396,void,pinnacle,-121,+102,0.547511,0.49505,0.52516,0.47484,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Reitan, Kristoffer","Bhatia, Akshay",21407,26096,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Reitan, Kristoffer","Bhatia, Akshay",21407,26096,void,pinnacle,+102,-121,0.49505,0.547511,0.47484,0.52516,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Cantlay, Patrick",14139,15466,void,pinnacle,-115,-103,0.534884,0.507389,0.51319,0.48681,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,datagolf,-110,+110,0.52381,0.47619,0.52381,0.47619,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,pinnacle,-116,-102,0.537037,0.50495,0.515397,0.484603,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,pinnacle,-114,-104,0.53271,0.509804,0.510986,0.489014,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Aberg, Ludvig",14139,23950,void,unibet,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Morikawa, Collin",13562,22085,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Morikawa, Collin",13562,22085,void,pinnacle,-112,-106,0.528302,0.514563,0.506587,0.493413,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","Kim, Tom",18841,24766,void,datagolf,-115,+115,0.534884,0.465116,0.534884,0.465116,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Hovland, Viktor","Kim, Tom",18841,24766,void,pinnacle,-122,+103,0.54955,0.492611,0.527318,0.472682,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Si Woo","McNealy, Maverick",14609,18634,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Si Woo","McNealy, Maverick",14609,18634,void,pinnacle,-144,+121,0.590164,0.452489,0.566022,0.433978,False,True,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Hovland, Viktor",14139,18841,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Hovland, Viktor",14139,18841,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Hovland, Viktor",14139,18841,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,caesars,+115,-145,0.465116,0.591837,0.440054,0.559946,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Brennan, Michael",21891,29197,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Brennan, Michael",21891,29197,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Brennan, Michael",21891,29197,void,fanduel,-111,-120,0.526066,0.545455,0.490953,0.509047,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Griffin, Ben","Thorbjornsen, Michael",24968,26649,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Griffin, Ben","Thorbjornsen, Michael",24968,26649,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Griffin, Ben","Thorbjornsen, Michael",24968,26649,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Matsuyama, Hideki",12294,13562,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Matsuyama, Hideki",12294,13562,void,unibet,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,draftkings,-130,-102,0.565217,0.50495,0.528158,0.471842,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,unibet,-132,+100,0.568966,0.5,0.532258,0.467742,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Kim, Tom",23323,24766,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Kim, Tom",23323,24766,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"MacIntyre, Robert","Kim, Tom",23323,24766,void,unibet,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"McNealy, Maverick","Kitayama, Kurt",18634,21891,void,unibet,-150,+115,0.6,0.465116,0.563319,0.436681,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Young, Cameron",22085,26651,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Morikawa, Collin","Young, Cameron",22085,26651,void,unibet,+110,-143,0.47619,0.588477,0.447267,0.552733,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Matt",15466,17646,void,datagolf,+115,-115,0.465116,0.534884,0.465116,0.534884,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Fitzpatrick, Matt",15466,17646,void,unibet,+100,-132,0.5,0.568966,0.467742,0.532258,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,unibet,+110,-143,0.47619,0.588477,0.447267,0.552733,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Lee, Min Woo",6093,16841,void,datagolf,+119,-119,0.456621,0.543379,0.456621,0.543379,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Lee, Min Woo",6093,16841,void,unibet,+105,-137,0.487805,0.578059,0.457661,0.542339,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Gotterup, Chris","Koivun, Jackson",27774,32319,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fowler, Rickie","McNealy, Maverick",12965,18634,void,datagolf,+129,-129,0.436681,0.563319,0.436681,0.563319,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fowler, Rickie","McNealy, Maverick",12965,18634,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"English, Harris","Spieth, Jordan",14577,14636,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Noren, Alex","Smalley, Alex",10419,18474,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Noren, Alex","Smalley, Alex",10419,18474,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Tom","Thorbjornsen, Michael",24766,26649,void,datagolf,-112,+112,0.528302,0.471698,0.528302,0.471698,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kim, Tom","Thorbjornsen, Michael",24766,26649,void,draftkings,-118,-112,0.541284,0.528302,0.506069,0.493931,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,datagolf,-133,+133,0.570815,0.429185,0.570815,0.429185,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,draftkings,-138,+106,0.579832,0.485437,0.544306,0.455694,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","MacIntyre, Robert",14578,23323,void,datagolf,-113,+113,0.530516,0.469484,0.530516,0.469484,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Henley, Russell","MacIntyre, Robert",14578,23323,void,draftkings,-136,+104,0.576271,0.490196,0.540355,0.459645,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Gerard, Ryan",21891,29767,void,datagolf,+135,-135,0.425532,0.574468,0.425532,0.574468,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Kitayama, Kurt","Gerard, Ryan",21891,29767,void,draftkings,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Thomas, Justin",13562,14139,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Thomas, Justin",13562,14139,void,draftkings,-128,-104,0.561404,0.509804,0.524085,0.475915,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lowry, Shane","Knapp, Jake",13900,19396,void,datagolf,-137,+137,0.578059,0.421941,0.578059,0.421941,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lowry, Shane","Knapp, Jake",13900,19396,void,draftkings,-140,+106,0.583333,0.485437,0.545799,0.454201,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Mitchell, Keith",6093,17365,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rose, Justin","Mitchell, Keith",6093,17365,void,draftkings,-132,+100,0.568966,0.5,0.532258,0.467742,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lee, Min Woo","Clark, Wyndham",16841,23604,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Lee, Min Woo","Clark, Wyndham",16841,23604,void,draftkings,-112,-116,0.528302,0.537037,0.4959,0.5041,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,betmgm,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fitzpatrick, Matt","Burns, Sam",17646,19483,void,draftkings,-116,-114,0.537037,0.53271,0.502022,0.497978,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rai, Aaron","Bridgeman, Jacob",18554,29433,void,datagolf,-139,+139,0.58159,0.41841,0.58159,0.41841,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Rai, Aaron","Bridgeman, Jacob",18554,29433,void,draftkings,-134,+102,0.57265,0.49505,0.53634,0.46366,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,void,draftkings,-116,-112,0.537037,0.528302,0.5041,0.4959,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Aberg, Ludvig",13562,23950,void,betmgm,-105,-118,0.512195,0.541284,0.486194,0.513806,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Matsuyama, Hideki","Aberg, Ludvig",13562,23950,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Henley, Russell",14139,14578,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Thomas, Justin","Henley, Russell",14139,14578,void,datagolf,-121,+121,0.547511,0.452489,0.547511,0.452489,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fowler, Rickie","Brennan, Michael",12965,29197,void,betmgm,-118,-105,0.541284,0.512195,0.513806,0.486194,False,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
+"Fowler, Rickie","Brennan, Michael",12965,29197,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,FedEx St. Jude Championship,2026-08-12 09:32:00 UTC
