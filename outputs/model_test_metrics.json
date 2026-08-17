@@ -1,0 +1,62 @@
+{
+  "evaluated": "2026-08-14",
+  "note": "2025 = validation year (used during tuning); 2026 = true out-of-sample holdout",
+  "metrics": {
+    "win": {
+      "2025": {
+        "auc": 0.8374,
+        "brier": 0.00791,
+        "n": 4662,
+        "positives": 38
+      },
+      "2026": {
+        "auc": 0.8088,
+        "brier": 0.0087,
+        "n": 2470,
+        "positives": 22
+      }
+    },
+    "top5": {
+      "2025": {
+        "auc": 0.7496,
+        "brier": 0.04603,
+        "n": 4662,
+        "positives": 236
+      },
+      "2026": {
+        "auc": 0.7688,
+        "brier": 0.04631,
+        "n": 2470,
+        "positives": 125
+      }
+    },
+    "top10": {
+      "2025": {
+        "auc": 0.7331,
+        "brier": 0.07837,
+        "n": 4662,
+        "positives": 432
+      },
+      "2026": {
+        "auc": 0.7316,
+        "brier": 0.08528,
+        "n": 2470,
+        "positives": 250
+      }
+    },
+    "top20": {
+      "2025": {
+        "auc": 0.7359,
+        "brier": 0.1339,
+        "n": 4662,
+        "positives": 863
+      },
+      "2026": {
+        "auc": 0.7055,
+        "brier": 0.14573,
+        "n": 2470,
+        "positives": 493
+      }
+    }
+  }
+}
