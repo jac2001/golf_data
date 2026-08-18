@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-08-18 06:04
+Generated: 2026-08-18 18:07
 
 | Column | Description |
 |--------|-------------|
@@ -247,14 +247,14 @@ Generated: 2026-08-18 06:04
 | dg_make_cut | No description available |
 | dg_course_fit_delta | No description available |
 | dg_course_fit_delta_pct | No description available |
+| wind_mph_avg | No description available |
+| wind_mph_max | No description available |
+| temp_f_avg | No description available |
+| precip_mm | No description available |
 | recent_par3_scoring_field_pct | No description available |
 | recent_par4_scoring_field_pct | No description available |
 | recent_par5_scoring_field_pct | No description available |
 | recent_sg_arg_weighted | No description available |
-| wind_mph_avg | No description available |
-| wind_mph_max | No description available |
-| precip_mm | No description available |
-| temp_f_avg | No description available |
 | win_prob | Predicted win probability (0-1) |
 | top5_prob | Predicted top-5 probability (0-1) |
 | top10_prob | Predicted top-10 probability (0-1) |
@@ -288,4 +288,15 @@ Generated: 2026-08-18 06:04
 | cut_risk | Cut risk category: LOW (>85%), MEDIUM (65-85%), ELEVATED (45-65%), HIGH (<45%) |
 | miss_cut_prob | Probability of missing the cut (1 - cut_prob) |
 | expected_value | Expected earnings value based on purse + probabilities (USD) |
+| vegas_prob | No description available |
+| odds_to_win | No description available |
+| odds_numeric | No description available |
+| odds_rank | No description available |
+| ensemble_win_prob | No description available |
+| ensemble_win_prob_normalized | No description available |
+| model_vs_vegas_edge | No description available |
+| is_value_bet | No description available |
+| odds_drift_flag | No description available |
+| odds_drift_level | No description available |
+| expert_pct | No description available |
 | dfs_ownership_proj | No description available |
