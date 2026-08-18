@@ -1,0 +1,122 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Matsuyama, Hideki","Burns, Sam",13562,19483,separate bet offered,bet365,+110,-133,0.47619,0.570815,0.454812,0.545188,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Matsuyama, Hideki","Burns, Sam",13562,19483,separate bet offered,datagolf,+128,-103,0.438596,0.507389,0.46364,0.53636,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cantlay, Patrick","Clark, Wyndham",15466,23604,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Cantlay, Patrick","Clark, Wyndham",15466,23604,separate bet offered,datagolf,-108,+132,0.519231,0.431034,0.546406,0.453594,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Fitzpatrick, Matt",14609,17646,separate bet offered,bet365,+110,-133,0.47619,0.570815,0.454812,0.545188,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Fitzpatrick, Matt",14609,17646,separate bet offered,datagolf,+121,+103,0.452489,0.492611,0.478774,0.521226,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,separate bet offered,datagolf,+119,+103,0.456621,0.492611,0.481043,0.518957,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Henley, Russell","McNealy, Maverick",14578,18634,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Henley, Russell","McNealy, Maverick",14578,18634,separate bet offered,datagolf,+116,+107,0.462963,0.483092,0.489362,0.510638,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,separate bet offered,bet365,-120,+100,0.545455,0.5,0.521739,0.478261,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,separate bet offered,datagolf,+120,+103,0.454545,0.492611,0.479905,0.520095,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Hovland, Viktor","Gotterup, Chris",18841,27774,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Noren, Alex","Kim, Tom",10419,24766,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Noren, Alex","Kim, Tom",10419,24766,separate bet offered,datagolf,+145,-117,0.408163,0.539171,0.430855,0.569145,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kitayama, Kurt","Gerard, Ryan",21891,29767,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Kitayama, Kurt","Gerard, Ryan",21891,29767,separate bet offered,datagolf,+115,+108,0.465116,0.480769,0.491726,0.508274,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kitayama, Kurt","Gerard, Ryan",21891,29767,void,caesars,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kitayama, Kurt","Gerard, Ryan",21891,29767,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kitayama, Kurt","Gerard, Ryan",21891,29767,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,separate bet offered,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Schauffele, Xander","Young, Cameron",19895,26651,separate bet offered,datagolf,-104,+127,0.509804,0.440529,0.536448,0.463552,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,bet365,+280,-357,0.263158,0.781182,0.251985,0.748015,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,separate bet offered,datagolf,+251,-202,0.2849,0.668874,0.298708,0.701292,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,betonline,+225,-275,0.307692,0.733333,0.295567,0.704433,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"McIlroy, Rory","Scheffler, Scottie",10091,18417,void,datagolf,+235,-235,0.298507,0.701493,0.298507,0.701493,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Scott, Adam","Spaun, J.J.",6430,17536,separate bet offered,bet365,+100,-120,0.5,0.545455,0.478261,0.521739,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Scott, Adam","Spaun, J.J.",6430,17536,separate bet offered,datagolf,+130,-105,0.434783,0.512195,0.459127,0.540873,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Scott, Adam","Spaun, J.J.",6430,17536,void,betonline,+115,-138,0.465116,0.579832,0.445109,0.554891,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Scott, Adam","Spaun, J.J.",6430,17536,void,datagolf,+118,-118,0.458716,0.541284,0.458716,0.541284,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Thomas, Justin","Morikawa, Collin",14139,22085,separate bet offered,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,BMW Championship,2026-08-18 09:31:00 UTC
+"Thomas, Justin","Morikawa, Collin",14139,22085,separate bet offered,datagolf,+113,+109,0.469484,0.478469,0.495261,0.504739,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Scheffler, Scottie","Burns, Sam",18417,19483,void,betonline,-300,+245,0.75,0.289855,0.721254,0.278746,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Scheffler, Scottie","Burns, Sam",18417,19483,void,datagolf,-281,+281,0.737533,0.262467,0.737533,0.262467,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"McIlroy, Rory","Burns, Sam",10091,19483,void,betonline,-118,-102,0.541284,0.50495,0.517364,0.482636,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"McIlroy, Rory","Burns, Sam",10091,19483,void,datagolf,-118,+118,0.541284,0.458716,0.541284,0.458716,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fleetwood, Tommy","Schauffele, Xander",12294,19895,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,betonline,-115,-105,0.534884,0.512195,0.510834,0.489166,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fitzpatrick, Matt","Schauffele, Xander",17646,19895,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fitzpatrick, Matt","Schauffele, Xander",17646,19895,void,datagolf,+116,-116,0.462963,0.537037,0.462963,0.537037,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Aberg, Ludvig","Young, Cameron",23950,26651,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Young, Cameron",14609,26651,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Aberg, Ludvig",14609,23950,void,betonline,+106,-127,0.485437,0.559471,0.464574,0.535426,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Aberg, Ludvig",14609,23950,void,datagolf,+124,-124,0.446429,0.553571,0.446429,0.553571,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Matsuyama, Hideki","Hovland, Viktor",13562,18841,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Matsuyama, Hideki","Hovland, Viktor",13562,18841,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Matsuyama, Hideki","Gotterup, Chris",13562,27774,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,betonline,-108,-112,0.519231,0.528302,0.49567,0.50433,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cantlay, Patrick","Morikawa, Collin",15466,22085,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Henley, Russell","Morikawa, Collin",14578,22085,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Henley, Russell","Morikawa, Collin",14578,22085,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,betonline,+113,-135,0.469484,0.574468,0.449718,0.550282,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,datagolf,+130,-130,0.434783,0.565217,0.434783,0.565217,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Knapp, Jake","Clark, Wyndham",19396,23604,void,betonline,+105,-125,0.487805,0.555556,0.467532,0.532468,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Knapp, Jake","Clark, Wyndham",19396,23604,void,datagolf,+113,-113,0.469484,0.530516,0.469484,0.530516,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Clark, Wyndham","Kim, Tom",23604,24766,void,betonline,-120,+100,0.545455,0.5,0.521739,0.478261,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Clark, Wyndham","Kim, Tom",23604,24766,void,datagolf,-106,+106,0.514563,0.485437,0.514563,0.485437,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Knapp, Jake","Kim, Tom",19396,24766,void,betonline,-105,-115,0.512195,0.534884,0.489166,0.510834,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Knapp, Jake","Kim, Tom",19396,24766,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Thomas, Justin","Kitayama, Kurt",14139,21891,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Thomas, Justin","Kitayama, Kurt",14139,21891,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"McNealy, Maverick","Thorbjornsen, Michael",18634,26649,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"McNealy, Maverick","Thorbjornsen, Michael",18634,26649,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fowler, Rickie","MacIntyre, Robert",12965,23323,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Rose, Justin","Lee, Min Woo",6093,16841,void,betonline,+117,-140,0.460829,0.583333,0.441339,0.558661,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Rose, Justin","Lee, Min Woo",6093,16841,void,datagolf,+139,-139,0.41841,0.58159,0.41841,0.58159,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Brennan, Michael","Gerard, Ryan",29197,29767,void,betonline,+108,-129,0.480769,0.563319,0.460468,0.539532,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Brennan, Michael","Gerard, Ryan",29197,29767,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Noren, Alex","Im, Sungjae",10419,17488,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Noren, Alex","Im, Sungjae",10419,17488,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Smalley, Alex","Griffin, Ben",18474,24968,void,betonline,+122,-147,0.45045,0.595142,0.430809,0.569191,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Smalley, Alex","Griffin, Ben",18474,24968,void,datagolf,+126,-126,0.442478,0.557522,0.442478,0.557522,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Hojgaard, Nicolai","Bridgeman, Jacob",23602,29433,void,betonline,-125,+105,0.555556,0.487805,0.532468,0.467532,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Hojgaard, Nicolai","Bridgeman, Jacob",23602,29433,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Woodland, Gary","Reitan, Kristoffer",12577,21407,void,betonline,-110,-110,0.52381,0.52381,0.5,0.5,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Woodland, Gary","Reitan, Kristoffer",12577,21407,void,datagolf,+117,-117,0.460829,0.539171,0.460829,0.539171,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Poston, J.T.","Fitzpatrick, Alex",21554,25362,void,betonline,+115,-138,0.465116,0.579832,0.445109,0.554891,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Poston, J.T.","Fitzpatrick, Alex",21554,25362,void,datagolf,+137,-137,0.421941,0.578059,0.421941,0.578059,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cauley, Bud","Rai, Aaron",14502,18554,void,betonline,-128,+107,0.561404,0.483092,0.537488,0.462512,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cauley, Bud","Rai, Aaron",14502,18554,void,datagolf,-132,+132,0.568966,0.431034,0.568966,0.431034,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Echavarria, Nico","Bhatia, Akshay",22833,26096,void,datagolf,+109,-109,0.478469,0.521531,0.478469,0.521531,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cole, Eric","Hisatsune, Ryo",21756,22760,void,betonline,+100,-120,0.5,0.545455,0.478261,0.521739,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cole, Eric","Hisatsune, Ryo",21756,22760,void,datagolf,+105,-105,0.487805,0.512195,0.487805,0.512195,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fox, Ryan","Theegala, Sahith",11889,23014,void,betonline,-147,+122,0.595142,0.45045,0.569191,0.430809,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fox, Ryan","Theegala, Sahith",11889,23014,void,datagolf,-141,+141,0.585062,0.414938,0.585062,0.414938,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Straka, Sepp","McCarty, Matt",17511,28635,void,betonline,-138,+115,0.579832,0.465116,0.554891,0.445109,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Straka, Sepp","McCarty, Matt",17511,28635,void,datagolf,-119,+119,0.543379,0.456621,0.543379,0.456621,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cantlay, Patrick","Knapp, Jake",15466,19396,void,caesars,-140,+110,0.583333,0.47619,0.550562,0.449438,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cantlay, Patrick","Knapp, Jake",15466,19396,void,datagolf,-137,+137,0.578059,0.421941,0.578059,0.421941,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Cantlay, Patrick","Knapp, Jake",15466,19396,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,void,caesars,-165,+127,0.622642,0.440529,0.585646,0.414354,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,void,datagolf,-129,+129,0.563319,0.436681,0.563319,0.436681,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Matsuyama, Hideki","McNealy, Maverick",13562,18634,void,fanduel,-150,+125,0.6,0.444444,0.574468,0.425532,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Im, Sungjae","Morikawa, Collin",17488,22085,void,caesars,+127,-165,0.440529,0.622642,0.414354,0.585646,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Im, Sungjae","Morikawa, Collin",17488,22085,void,datagolf,+147,-147,0.404858,0.595142,0.404858,0.595142,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Im, Sungjae","Morikawa, Collin",17488,22085,void,fanduel,+120,-150,0.454545,0.6,0.431034,0.568966,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Reitan, Kristoffer","Thorbjornsen, Michael",21407,26649,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Reitan, Kristoffer","Thorbjornsen, Michael",21407,26649,void,datagolf,+138,-138,0.420168,0.579832,0.420168,0.579832,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Reitan, Kristoffer","Thorbjornsen, Michael",21407,26649,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Burns, Sam","Aberg, Ludvig",19483,23950,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Burns, Sam","Aberg, Ludvig",19483,23950,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Burns, Sam","Aberg, Ludvig",19483,23950,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Scott, Adam","Bhatia, Akshay",6430,26096,void,caesars,-155,+122,0.607843,0.45045,0.574362,0.425638,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Scott, Adam","Bhatia, Akshay",6430,26096,void,datagolf,-145,+145,0.591837,0.408163,0.591837,0.408163,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Scott, Adam","Bhatia, Akshay",6430,26096,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,datagolf,-116,+116,0.537037,0.462963,0.537037,0.462963,True,False,BMW Championship,2026-08-18 09:31:00 UTC
+"Kim, Si Woo","Hovland, Viktor",14609,18841,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,BMW Championship,2026-08-18 09:31:00 UTC

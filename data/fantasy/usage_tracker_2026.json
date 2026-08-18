@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-08-11T06:00:25.149462",
+  "last_updated": "2026-08-18T06:00:19.597863",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -124,8 +124,8 @@
       "total_points": 0
     },
     "Cantlay": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "The Genesis Invitational",
@@ -140,9 +140,16 @@
           "date": "2026-06-04",
           "result": "T17",
           "earnings": 319000
+        },
+        {
+          "tournament": "FedEx St. Jude Invitational",
+          "week": 28,
+          "date": "2026-08-13",
+          "result": "T12",
+          "earnings": 368571
         }
       ],
-      "total_earnings": 411250,
+      "total_earnings": 779821,
       "total_points": 0
     },
     "Hovland": {
@@ -359,8 +366,8 @@
       "total_points": 0
     },
     "Cam Young": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "THE PLAYERS Championship",
@@ -368,9 +375,16 @@
           "date": "2026-03-12",
           "result": "1",
           "earnings": 4500000
+        },
+        {
+          "tournament": "FedEx St. Jude Invitational",
+          "week": 28,
+          "date": "2026-08-13",
+          "result": "T39",
+          "earnings": 86000
         }
       ],
-      "total_earnings": 4500000,
+      "total_earnings": 4586000,
       "total_points": 0
     },
     "Bridgeman": {
@@ -800,8 +814,8 @@
       "total_points": 0
     },
     "Burns": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "The Memorial Tournament",
@@ -809,9 +823,16 @@
           "date": "2026-06-04",
           "result": "T4",
           "earnings": 920000
+        },
+        {
+          "tournament": "FedEx St. Jude Invitational",
+          "week": 28,
+          "date": "2026-08-13",
+          "result": "T3",
+          "earnings": 1160000
         }
       ],
-      "total_earnings": 920000,
+      "total_earnings": 2080000,
       "total_points": 0
     },
     "W Clark": {
@@ -1305,10 +1326,14 @@
       "tournament": "FedEx St. Jude Invitational",
       "week": 28,
       "date": "2026-08-13",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Burns",
+        "Cantlay",
+        "Cam Young"
+      ],
+      "wrp": 15,
+      "earnings_earned": 1614571,
+      "points_earned": 1614571
     },
     "week_29": {
       "tournament": "BMW Championship",
@@ -1332,6 +1357,6 @@
   "summary": {
     "total_weeks": 30,
     "total_players": 47,
-    "total_earnings": 32253431
+    "total_earnings": 33868002
   }
 }
