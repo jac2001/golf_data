@@ -6,14 +6,14 @@
   "market_label": "Top 20",
   "selection_label": "Ben Griffin Top 20",
   "book": "FANDUEL",
-  "odds_american": 160,
-  "odds_str": "+160",
-  "edge_pts": 2.9,
-  "ev_per_1": 0.0744,
-  "ev_pct": 7.4,
+  "odds_american": 155,
+  "odds_str": "+155",
+  "edge_pts": 2.1,
+  "ev_per_1": 0.0537,
+  "ev_pct": 5.4,
   "model_prob": 41.3,
-  "book_prob": 38.5,
+  "book_prob": 39.2,
   "confidence": 0.9,
-  "reasoning": "Model shows +2.9pp edge on top20 market.",
-  "generated_at": "2026-08-18T23:07:41.047075+00:00"
+  "reasoning": "Model shows +2.1pp edge on top20 market.",
+  "generated_at": "2026-08-19T23:02:48.551380+00:00"
 }
