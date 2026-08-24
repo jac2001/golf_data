@@ -1,1000 +1,1000 @@
 player_id,player_name,first_name,last_name,country,world_rank,is_active,fetched_date
-46046,Scottie Scheffler,Scottie,Scheffler,United States,1.0,True,2026-08-17
-28237,Rory McIlroy,Rory,McIlroy,Northern Ireland,2.0,True,2026-08-17
-57366,Cameron Young,Cameron,Young,United States,3.0,True,2026-08-17
-40098,Matt Fitzpatrick,Matt,Fitzpatrick,England,4.0,True,2026-08-17
-34098,Russell Henley,Russell,Henley,United States,5.0,True,2026-08-17
-30911,Tommy Fleetwood,Tommy,Fleetwood,England,6.0,True,2026-08-17
-59095,Chris Gotterup,Chris,Gotterup,United States,7.0,True,2026-08-17
-51766,Wyndham Clark,Wyndham,Clark,United States,8.0,True,2026-08-17
-48081,Xander Schauffele,Xander,Schauffele,United States,9.0,True,2026-08-17
-50525,Collin Morikawa,Collin,Morikawa,United States,10.0,True,2026-08-17
-47504,Sam Burns,Sam,Burns,United States,11.0,True,2026-08-17
-22405,Justin Rose,Justin,Rose,England,12.0,True,2026-08-17
-46970,Jon Rahm,Jon,Rahm,Spain,13.0,True,2026-08-17
-46717,Viktor Hovland,Viktor,Hovland,Norway,14.0,True,2026-08-17
-39324,J.J. Spaun,J.J.,Spaun,United States,15.0,True,2026-08-17
-52955,Ludvig Åberg,Ludvig,Åberg,Sweden,16.0,True,2026-08-17
-52215,Robert MacIntyre,Robert,MacIntyre,Scotland,17.0,True,2026-08-17
-37455,Si Woo Kim,Si,Woo Kim,Republic of Korea,18.0,True,2026-08-17
-46414,Aaron Rai,Aaron,Rai,England,19.0,True,2026-08-17
-54591,Ben Griffin,Ben,Griffin,United States,20.0,True,2026-08-17
-34363,Tyrrell Hatton,Tyrrell,Hatton,England,21.0,True,2026-08-17
-29936,Ryan Fox,Ryan,Fox,New Zealand,22.0,True,2026-08-17
-33448,Justin Thomas,Justin,Thomas,United States,23.0,True,2026-08-17
-32839,Hideki Matsuyama,Hideki,Matsuyama,Japan,24.0,True,2026-08-17
-59018,Ryan Gerard,Ryan,Gerard,United States,25.0,True,2026-08-17
-27349,Alex Noren,Alex,Noren,Sweden,26.0,True,2026-08-17
-37378,Min Woo Lee,Min,Woo Lee,Australia,27.0,True,2026-08-17
-49855,Kristoffer Reitan,Kristoffer,Reitan,Norway,28.0,True,2026-08-17
-49960,Sepp Straka,Sepp,Straka,Austria,29.0,True,2026-08-17
-55182,Tom Kim,Tom,Kim,Republic of Korea,30.0,True,2026-08-17
-60004,Jacob Bridgeman,Jacob,Bridgeman,United States,31.0,True,2026-08-17
-34360,Patrick Reed,Patrick,Reed,United States,32.0,True,2026-08-17
-56630,Akshay Bhatia,Akshay,Bhatia,United States,33.0,True,2026-08-17
-47959,Bryson DeChambeau,Bryson,DeChambeau,United States,34.0,True,2026-08-17
-61522,Michael Brennan,Michael,Brennan,United States,35.0,True,2026-08-17
-49771,J.T. Poston,J.T.,Poston,United States,36.0,True,2026-08-17
-48117,Kurt Kitayama,Kurt,Kitayama,United States,37.0,True,2026-08-17
-34099,Harris English,Harris,English,United States,38.0,True,2026-08-17
-57364,Michael Thorbjornsen,Michael,Thorbjornsen,United States,39.0,True,2026-08-17
-52453,Nicolai Højgaard,Nicolai,Højgaard,Denmark,40.0,True,2026-08-17
-35450,Patrick Cantlay,Patrick,Cantlay,United States,41.0,True,2026-08-17
-45486,Joaquin Niemann,Joaquin,Niemann,Chile,42.0,True,2026-08-17
-34021,Bud Cauley,Bud,Cauley,United States,43.0,True,2026-08-17
-32102,Rickie Fowler,Rickie,Fowler,United States,44.0,True,2026-08-17
-31323,Gary Woodland,Gary,Woodland,United States,45.0,True,2026-08-17
-46340,Alex Smalley,Alex,Smalley,United States,46.0,True,2026-08-17
-46442,Maverick McNealy,Maverick,McNealy,United States,47.0,True,2026-08-17
-33141,Keegan Bradley,Keegan,Bradley,United States,48.0,True,2026-08-17
-39058,Lucas Herbert,Lucas,Herbert,Australia,49.0,True,2026-08-17
-47420,Jake Knapp,Jake,Knapp,United States,50.0,True,2026-08-17
-33204,Shane Lowry,Shane,Lowry,Ireland,51.0,True,2026-08-17
-39997,Corey Conners,Corey,Conners,Canada,52.0,True,2026-08-17
-51003,Marco Penge,Marco,Penge,England,53.0,True,2026-08-17
-24502,Adam Scott,Adam,Scott,Australia,54.0,True,2026-08-17
-40026,Daniel Berger,Daniel,Berger,United States,55.0,True,2026-08-17
-51349,Nico Echavarria,Nico,Echavarria,Colombia,56.0,True,2026-08-17
-34046,Jordan Spieth,Jordan,Spieth,United States,57.0,True,2026-08-17
-55893,Sam Stevens,Sam,Stevens,United States,58.0,True,2026-08-17
-39975,Michael Kim,Michael,Kim,United States,59.0,True,2026-08-17
-48887,Matt Wallace,Matt,Wallace,England,60.0,True,2026-08-17
-27644,Brian Harman,Brian,Harman,United States,61.0,True,2026-08-17
-28089,Jason Day,Jason,Day,Australia,62.0,True,2026-08-17
-57492,Eugenio Chacarra,Eugenio,Chacarra,Spain,63.0,True,2026-08-17
-59836,Pierceson Coody,Pierceson,Coody,United States,64.0,True,2026-08-17
-63454,Johnny Keefer,Johnny,Keefer,United States,65.0,True,2026-08-17
-51287,Ryo Hisatsune,Ryo,Hisatsune,Japan,66.0,True,2026-08-17
-57688,Casey Jarvis,Casey,Jarvis,South Africa,67.0,True,2026-08-17
-55721,Alex Fitzpatrick,Alex,Fitzpatrick,England,68.0,True,2026-08-17
-66701,Jackson Koivun,Jackson,Koivun,United States,69.0,True,2026-08-17
-59141,Matt McCarty,Matt,McCarty,United States,70.0,True,2026-08-17
-51997,Andrew Novak,Andrew,Novak,United States,71.0,True,2026-08-17
-46464,Jordan Smith,Jordan,Smith,England,72.0,True,2026-08-17
-39971,Sungjae Im,Sungjae,Im,Republic of Korea,73.0,True,2026-08-17
-39546,Keith Mitchell,Keith,Mitchell,United States,74.0,True,2026-08-17
-47591,Eric Cole,Eric,Cole,United States,75.0,True,2026-08-17
-61193,David Puig,David,Puig,Spain,76.0,True,2026-08-17
-57975,Harry Hall,Harry,Hall,England,77.0,True,2026-08-17
-25493,Nick Taylor,Nick,Taylor,Canada,78.0,True,2026-08-17
-52686,Rasmus Højgaard,Rasmus,Højgaard,Denmark,79.0,True,2026-08-17
-39977,Max Homa,Max,Homa,United States,80.0,True,2026-08-17
-52689,Rasmus Neergaard-Petersen,Rasmus,Neergaard-Petersen,Denmark,81.0,True,2026-08-17
-52666,Sami Valimaki,Sami,Valimaki,Finland,82.0,True,2026-08-17
-48867,Matti Schmid,Matti,Schmid,Germany,83.0,True,2026-08-17
-51634,Sahith Theegala,Sahith,Theegala,United States,84.0,True,2026-08-17
-57123,Steven Fisk,Steven,Fisk,United States,85.0,True,2026-08-17
-59143,Mac Meissner,Mac,Meissner,United States,86.0,True,2026-08-17
-51977,Max Greyserman,Max,Greyserman,United States,87.0,True,2026-08-17
-33653,Thomas Detry,Thomas,Detry,Belgium,88.0,True,2026-08-17
-63343,Aldrich Potgieter,Aldrich,Potgieter,South Africa,89.0,True,2026-08-17
-47993,Denny McCarthy,Denny,McCarthy,United States,90.0,True,2026-08-17
-57737,Jayden Schaper,Jayden,Schaper,South Africa,91.0,True,2026-08-17
-35461,Beau Hossler,Beau,Hossler,United States,92.0,True,2026-08-17
-28723,John Parry,John,Parry,England,93.0,True,2026-08-17
-45242,Kevin Yu,Kevin,Yu,Chinese Taipei,94.0,True,2026-08-17
-49228,Keita Nakajima,Keita,Nakajima,Japan,95.0,True,2026-08-17
-59440,Ricky Castillo,Ricky,Castillo,United States,96.0,True,2026-08-17
-45522,Christiaan Bezuidenhout,Christiaan,Bezuidenhout,South Africa,97.0,True,2026-08-17
-40250,Taylor Pendrith,Taylor,Pendrith,Canada,98.0,True,2026-08-17
-26328,Shaun Norris,Shaun,Norris,South Africa,99.0,True,2026-08-17
-34256,Andrew Putnam,Andrew,Putnam,United States,100.0,True,2026-08-17
-66417,Blades Brown,Blades,Brown,United States,101.0,True,2026-08-17
-31646,Emiliano Grillo,Emiliano,Grillo,Argentina,102.0,True,2026-08-17
-25900,Lucas Glover,Lucas,Glover,United States,103.0,True,2026-08-17
-51696,Rico Hoey,Rico,Hoey,Philippines,104.0,True,2026-08-17
-36699,Patrick Rodgers,Patrick,Rodgers,United States,105.0,True,2026-08-17
-36884,Ben Kohles,Ben,Kohles,United States,106.0,True,2026-08-17
-60019,Jackson Suber,Jackson,Suber,United States,107.0,True,2026-08-17
-60386,Sudarshan Yellamaraju,Sudarshan,Yellamaraju,Canada,108.0,True,2026-08-17
-36799,Stephan Jaeger,Stephan,Jaeger,Germany,109.0,True,2026-08-17
-53165,Doc Redman,Doc,Redman,United States,110.0,True,2026-08-17
-50095,Austin Smotherman,Austin,Smotherman,United States,111.0,True,2026-08-17
-39335,Kevin Roy,Kevin,Roy,United States,112.0,True,2026-08-17
-30926,Chris Kirk,Chris,Kirk,United States,113.0,True,2026-08-17
-58168,Davis Thompson,Davis,Thompson,United States,114.0,True,2026-08-17
-61148,Kota Kaneko,Kota,Kaneko,Japan,115.0,True,2026-08-17
-51950,Max McGreevy,Max,McGreevy,United States,116.0,True,2026-08-17
-36689,Brooks Koepka,Brooks,Koepka,United States,117.0,True,2026-08-17
-49813,Daniel Hillier,Daniel,Hillier,New Zealand,118.0,True,2026-08-17
-35296,Haotong Li,Haotong,Li,People’s Rep of China,119.0,True,2026-08-17
-54421,Garrick Higgo,Garrick,Higgo,South Africa,120.0,True,2026-08-17
-47995,Davis Riley,Davis,Riley,United States,121.0,True,2026-08-17
-36326,David Lipsky,David,Lipsky,United States,122.0,True,2026-08-17
-35532,Tom Hoge,Tom,Hoge,United States,123.0,True,2026-08-17
-47497,Hennie Du Plessis,Hennie,Du Plessis,South Africa,124.0,True,2026-08-17
-48237,Oliver Lindell,Oliver,Lindell,Finland,125.0,True,2026-08-17
-64052,Angel Ayora,Angel,Ayora,Spain,126.0,True,2026-08-17
-54788,Chandler Blanchet,Chandler,Blanchet,United States,127.0,True,2026-08-17
-27649,Brandt Snedeker,Brandt,Snedeker,United States,128.0,True,2026-08-17
-57900,Chandler Phillips,Chandler,Phillips,United States,129.0,True,2026-08-17
-35891,Cameron Smith,Cameron,Smith,Australia,130.0,True,2026-08-17
-54628,Lee Hodges,Lee,Hodges,United States,131.0,True,2026-08-17
-57259,Dan Brown,Dan,Brown,England,132.0,True,2026-08-17
-63455,Ross Steelman,Ross,Steelman,United States,133.0,True,2026-08-17
-60165,Jose Luis Ballester,Jose,Luis Ballester,Spain,134.0,True,2026-08-17
-35314,Andy Sullivan,Andy,Sullivan,England,135.0,True,2026-08-17
-54185,Elvis Smylie,Elvis,Smylie,Australia,136.0,True,2026-08-17
-24459,Richard Sterne,Richard,Sterne,South Africa,137.0,True,2026-08-17
-63121,William Mouw,William,Mouw,United States,138.0,True,2026-08-17
-29725,Tony Finau,Tony,Finau,United States,139.0,True,2026-08-17
-34371,Adrien Saddier,Adrien,Saddier,France,140.0,True,2026-08-17
-36801,Mark Hubbard,Mark,Hubbard,United States,141.0,True,2026-08-17
-34126,Scott Vincent,Scott,Vincent,Zimbabwe,142.0,True,2026-08-17
-48293,Mikael Lindberg,Mikael,Lindberg,Sweden,143.0,True,2026-08-17
-50823,Tom McKibbin,Tom,McKibbin,Northern Ireland,144.0,True,2026-08-17
-55965,Jacob Skov Olesen,Jacob,Skov Olesen,Denmark,145.0,True,2026-08-17
-48001,Zach Bauchou,Zach,Bauchou,United States,146.0,True,2026-08-17
-40058,Zac Blair,Zac,Blair,United States,147.0,True,2026-08-17
-52375,Doug Ghim,Doug,Ghim,United States,148.0,True,2026-08-17
-35506,Mackenzie Hughes,Mackenzie,Hughes,Canada,149.0,True,2026-08-17
-55707,Calum Hill,Calum,Hill,Scotland,150.0,True,2026-08-17
-39201,Nacho Elvira,Nacho,Elvira,Spain,151.0,True,2026-08-17
-54525,Ian Holt,Ian,Holt,United States,152.0,True,2026-08-17
-29420,Billy Horschel,Billy,Horschel,United States,153.0,True,2026-08-17
-34362,Laurie Canter,Laurie,Canter,England,154.0,True,2026-08-17
-65496,Cole Sherwood,Cole,Sherwood,United States,155.0,True,2026-08-17
-46443,Brian Campbell,Brian,Campbell,United States,156.0,True,2026-08-17
-33968,Thorbjørn Olesen,Thorbjørn,Olesen,Denmark,157.0,True,2026-08-17
-45847,JC Ritchie,JC,Ritchie,South Africa,158.0,True,2026-08-17
-49947,Taylor Moore,Taylor,Moore,United States,159.0,True,2026-08-17
-36344,Michael Hollick,Michael,Hollick,South Africa,160.0,True,2026-08-17
-47679,Victor Perez,Victor,Perez,France,161.0,True,2026-08-17
-51680,Alistair Docherty,Alistair,Docherty,United States,162.0,True,2026-08-17
-45194,Marcus Armitage,Marcus,Armitage,England,163.0,True,2026-08-17
-50188,S.H. Kim,S.H.,Kim,Republic of Korea,164.0,True,2026-08-17
-47078,Travis Smyth,Travis,Smyth,Australia,165.0,True,2026-08-17
-29454,Bernd Wiesberger,Bernd,Wiesberger,Austria,166.0,True,2026-08-17
-57869,Ben James,Ben,James,United States,167.0,True,2026-08-17
-33667,Carlos Ortiz,Carlos,Ortiz,Mexico,168.0,True,2026-08-17
-63459,Dan Bradbury,Dan,Bradbury,England,169.0,True,2026-08-17
-64624,Tommy Morrison,Tommy,Morrison,United States,170.0,True,2026-08-17
-60495,Davis Bryant,Davis,Bryant,United States,171.0,True,2026-08-17
-59125,Davis Lamb,Davis,Lamb,United States,172.0,True,2026-08-17
-63125,Dylan Menante,Dylan,Menante,United States,173.0,True,2026-08-17
-57586,Jesper Svensson,Jesper,Svensson,Sweden,174.0,True,2026-08-17
-47917,Takumi Kanaya,Takumi,Kanaya,Japan,175.0,True,2026-08-17
-34317,Joakim Lagergren,Joakim,Lagergren,Sweden,176.0,True,2026-08-17
-21209,Sergio Garcia,Sergio,Garcia,Spain,177.0,True,2026-08-17
-46823,Jeremy Gandon,Jeremy,Gandon,France,178.0,True,2026-08-17
-45523,Thriston Lawrence,Thriston,Lawrence,South Africa,179.0,True,2026-08-17
-27064,Jhonattan Vegas,Jhonattan,Vegas,Venezuela,180.0,True,2026-08-17
-60073,Martin Couvra,Martin,Couvra,France,181.0,True,2026-08-17
-35778,Kazuki Higa,Kazuki,Higa,Japan,182.0,True,2026-08-17
-50497,Adrien Dumont de Chassart,Adrien,Dumont de Chassart,Belgium,183.0,True,2026-08-17
-57362,Austin Eckroat,Austin,Eckroat,United States,184.0,True,2026-08-17
-23108,Matt Kuchar,Matt,Kuchar,United States,185.0,True,2026-08-17
-47983,Chad Ramey,Chad,Ramey,United States,186.0,True,2026-08-17
-32367,Jorge Campillo,Jorge,Campillo,Spain,187.0,True,2026-08-17
-35658,Kristoffer Ventura,Kristoffer,Ventura,Norway,188.0,True,2026-08-17
-51894,Vince Whaley,Vince,Whaley,United States,189.0,True,2026-08-17
-50286,A.J. Ewart,A.J.,Ewart,Canada,190.0,True,2026-08-17
-52513,Carson Young,Carson,Young,United States,191.0,True,2026-08-17
-37338,Zecheng Dou,Zecheng,Dou,People’s Rep of China,192.0,True,2026-08-17
-47347,Adam Schenk,Adam,Schenk,United States,193.0,True,2026-08-17
-28252,Seamus Power,Seamus,Power,Ireland,194.0,True,2026-08-17
-45526,Abraham Ancer,Abraham,Ancer,Mexico,195.0,True,2026-08-17
-33948,Byeong Hun An,Byeong,Hun An,Republic of Korea,196.0,True,2026-08-17
-60067,Joe Highsmith,Joe,Highsmith,United States,197.0,True,2026-08-17
-29484,Peter Uihlein,Peter,Uihlein,United States,197.0,True,2026-08-17
-33974,Dean Burmester,Dean,Burmester,South Africa,199.0,True,2026-08-17
-40006,Erik van Rooyen,Erik,van Rooyen,South Africa,200.0,True,2026-08-17
-54621,Kazuma Kobori,Kazuma,Kobori,New Zealand,201.0,True,2026-08-17
-54304,Karl Vilips,Karl,Vilips,Australia,202.0,True,2026-08-17
-45729,Drew Nesbitt,Drew,Nesbitt,Canada,203.0,True,2026-08-17
-51151,Todd Clements,Todd,Clements,England,204.0,True,2026-08-17
-54794,Jay Card III,Jay,Card III,United States,205.0,True,2026-08-17
-34076,Joel Dahmen,Joel,Dahmen,United States,206.0,True,2026-08-17
-60531,Derek Hitchner,Derek,Hitchner,United States,207.0,True,2026-08-17
-58999,Hunter Eichhorn,Hunter,Eichhorn,United States,208.0,True,2026-08-17
-63807,Neal Shipley,Neal,Shipley,United States,209.0,True,2026-08-17
-50223,Ewen Ferguson,Ewen,Ferguson,Scotland,210.0,True,2026-08-17
-49037,Stefano Mazzoli,Stefano,Mazzoli,Italy,211.0,True,2026-08-17
-28340,Julien Guerrier,Julien,Guerrier,France,212.0,True,2026-08-17
-54576,Patrick Fishburn,Patrick,Fishburn,United States,213.0,True,2026-08-17
-34643,Michael Johnson,Michael,Johnson,United States,214.0,True,2026-08-17
-31109,Richard Lee,Richard,Lee,Canada,215.0,True,2026-08-17
-29718,Anthony Kim,Anthony,Kim,United States,216.0,True,2026-08-17
-50762,Alejandro Del Rey,Alejandro,Del Rey,Spain,217.0,True,2026-08-17
-59567,Emilio Gonzalez,Emilio,Gonzalez,Mexico,218.0,True,2026-08-17
-58690,Freddy Schott,Freddy,Schott,Germany,219.0,True,2026-08-17
-30925,Dustin Johnson,Dustin,Johnson,United States,220.0,True,2026-08-17
-28300,Joost Luiten,Joost,Luiten,Netherlands,221.0,True,2026-08-17
-29974,Branden Grace,Branden,Grace,South Africa,222.0,True,2026-08-17
-37189,Harold Varner III,Harold,Varner III,United States,223.0,True,2026-08-17
-47463,Cameron John,Cameron,John,Australia,224.0,True,2026-08-17
-39852,Doyeob Mun,Doyeob,Mun,Republic of Korea,225.0,True,2026-08-17
-25198,Francesco Molinari,Francesco,Molinari,Italy,226.0,True,2026-08-17
-39067,MJ Daffue,MJ,Daffue,South Africa,227.0,True,2026-08-17
-59798,Oihan Guillamoundeguy,Oihan,Guillamoundeguy,France,228.0,True,2026-08-17
-58600,Cooper Dossey,Cooper,Dossey,United States,229.0,True,2026-08-17
-57593,Ian Gilligan,Ian,Gilligan,United States,230.0,True,2026-08-17
-63196,Wenyi Ding,Wenyi,Ding,People’s Rep of China,231.0,True,2026-08-17
-59875,Jang Yu Bin,Jang,Yu Bin,Republic of Korea,231.0,True,2026-08-17
-37275,Sam Ryder,Sam,Ryder,United States,233.0,True,2026-08-17
-37066,Grant Forrest,Grant,Forrest,Scotland,234.0,True,2026-08-17
-52514,Trace Crowe,Trace,Crowe,United States,235.0,True,2026-08-17
-59006,Davis Chatfield,Davis,Chatfield,United States,236.0,True,2026-08-17
-39327,Ben Silverman,Ben,Silverman,Canada,237.0,True,2026-08-17
-39262,Alvaro Ortiz,Alvaro,Ortiz,Mexico,238.0,True,2026-08-17
-32659,Darius Van Driel,Darius,Van Driel,Netherlands,239.0,True,2026-08-17
-48936,Ugo Coussaud,Ugo,Coussaud,France,240.0,True,2026-08-17
-59160,John Pak,John,Pak,United States,241.0,True,2026-08-17
-46646,Antoine Rozner,Antoine,Rozner,France,242.0,True,2026-08-17
-50198,Maximilian Steinlech,Maximilian,Steinlech,Austria,243.0,True,2026-08-17
-45426,Nathan Kimsey,Nathan,Kimsey,England,244.0,True,2026-08-17
-54299,Taichi Kho,Taichi,Kho,Hong Kong,245.0,True,2026-08-17
-35310,Lanto Griffin,Lanto,Griffin,United States,246.0,True,2026-08-17
-61431,Yanhan Zhou,Yanhan,Zhou,People’s Rep of China,247.0,True,2026-08-17
-34607,Francesco Laporta,Francesco,Laporta,Italy,248.0,True,2026-08-17
-63541,Thomas Ponder,Thomas,Ponder,United States,249.0,True,2026-08-17
-46594,Ricardo Gouveia,Ricardo,Gouveia,Portugal,250.0,True,2026-08-17
-26499,Rafa Cabrera Bello,Rafa,Cabrera Bello,Spain,251.0,True,2026-08-17
-26851,Marc Leishman,Marc,Leishman,Australia,252.0,True,2026-08-17
-49766,Hank Lebioda,Hank,Lebioda,United States,253.0,True,2026-08-17
-57942,Daniel Da Costa Rodrigues,Daniel,Da Costa Rodrigues,Portugal,254.0,True,2026-08-17
-60015,Logan McAllister,Logan,McAllister,United States,255.0,True,2026-08-17
-65443,Caleb VanArragon,Caleb,VanArragon,United States,256.0,True,2026-08-17
-55789,Taylor Montgomery,Taylor,Montgomery,United States,257.0,True,2026-08-17
-50414,Tatsunori Shogenji,Tatsunori,Shogenji,Japan,258.0,True,2026-08-17
-34587,Chan Kim,Chan,Kim,United States,259.0,True,2026-08-17
-27139,David Skinns,David,Skinns,England,260.0,True,2026-08-17
-33293,Thomas Pieters,Thomas,Pieters,Belgium,261.0,True,2026-08-17
-39834,Guido Migliozzi,Guido,Migliozzi,Italy,262.0,True,2026-08-17
-55851,Pontus Nyholm,Pontus,Nyholm,Sweden,263.0,True,2026-08-17
-64054,Caleb Surratt,Caleb,Surratt,United States,264.0,True,2026-08-17
-35181,Daniel van Tonder,Daniel,van Tonder,South Africa,265.0,True,2026-08-17
-37446,Jacques Kruyswijk,Jacques,Kruyswijk,South Africa,266.0,True,2026-08-17
-36824,Paul Peterson,Paul,Peterson,United States,267.0,True,2026-08-17
-56100,Ren Yonezawa,Ren,Yonezawa,Japan,268.0,True,2026-08-17
-50743,Nicolai Von Dellingshausen,Nicolai,Von Dellingshausen,Germany,269.0,True,2026-08-17
-51690,Taylor Dickson,Taylor,Dickson,United States,270.0,True,2026-08-17
-56643,Manuel Elvira,Manuel,Elvira,Spain,271.0,True,2026-08-17
-29535,Brice Garnett,Brice,Garnett,United States,272.0,True,2026-08-17
-57277,Gregorio De Leo,Gregorio,De Leo,Italy,273.0,True,2026-08-17
-56267,Yurav Premlall,Yurav,Premlall,South Africa,274.0,True,2026-08-17
-66743,Luke Clanton,Luke,Clanton,United States,275.0,True,2026-08-17
-67197,Pablo Ereno Perez,Pablo,Ereno Perez,Spain,276.0,True,2026-08-17
-49226,Taehoon Ok,Taehoon,Ok,Republic of Korea,277.0,True,2026-08-17
-34364,David Law,David,Law,Scotland,278.0,True,2026-08-17
-60882,Thomas Rosenmueller,Thomas,Rosenmueller,Germany,279.0,True,2026-08-17
-47393,Jeffrey Kang,Jeffrey,Kang,United States,280.0,True,2026-08-17
-34575,Adrian Otaegui,Adrian,Otaegui,United Arab Emirates,281.0,True,2026-08-17
-54607,Danny Walker,Danny,Walker,United States,282.0,True,2026-08-17
-54190,Richard Mansell,Richard,Mansell,England,283.0,True,2026-08-17
-52585,Frederic LaCroix,Frederic,LaCroix,France,284.0,True,2026-08-17
-46441,Robby Shelton,Robby,Shelton,United States,285.0,True,2026-08-17
-52576,Sandy Scott,Sandy,Scott,Scotland,286.0,True,2026-08-17
-37094,Joe Dean,Joe,Dean,England,287.0,True,2026-08-17
-47987,Cole Hammer,Cole,Hammer,United States,288.0,True,2026-08-17
-40162,Justin Lower,Justin,Lower,United States,289.0,True,2026-08-17
-50484,Hayden Springer,Hayden,Springer,United States,290.0,True,2026-08-17
-58869,Julien Sale,Julien,Sale,France,291.0,True,2026-08-17
-31242,Marcel Schneider,Marcel,Schneider,Germany,292.0,True,2026-08-17
-61107,Lars Van Der Vight,Lars,Van Der Vight,Netherlands,293.0,True,2026-08-17
-22000,Chris Wood,Chris,Wood,England,294.0,True,2026-08-17
-37157,Renato Paratore,Renato,Paratore,Italy,295.0,True,2026-08-17
-30852,Ryo Ishikawa,Ryo,Ishikawa,Japan,296.0,True,2026-08-17
-33399,Adam Hadwin,Adam,Hadwin,Canada,297.0,True,2026-08-17
-65374,Brandon Robinson Thompson,Brandon,Robinson Thompson,England,298.0,True,2026-08-17
-55165,Noah Goodwin,Noah,Goodwin,United States,299.0,True,2026-08-17
-56584,Ian Snyman,Ian,Snyman,South Africa,300.0,True,2026-08-17
-48153,Matthieu Pavon,Matthieu,Pavon,France,301.0,True,2026-08-17
-60006,Ben Carr,Ben,Carr,United States,302.0,True,2026-08-17
-34255,Joseph Bramlett,Joseph,Bramlett,United States,303.0,True,2026-08-17
-55573,John VanDerLaan,John,VanDerLaan,United States,304.0,True,2026-08-17
-36735,Jorge Fernández Valdés,Jorge,Fernández Valdés,Argentina,305.0,True,2026-08-17
-58188,James Nicholas,James,Nicholas,United States,306.0,True,2026-08-17
-56376,Mitchell Meissner,Mitchell,Meissner,United States,307.0,True,2026-08-17
-54422,Christo Lamprecht,Christo,Lamprecht,South Africa,308.0,True,2026-08-17
-56165,Yusaku Hoson,Yusaku,Hoson,Japan,309.0,True,2026-08-17
-68606,Frankie Harris,Frankie,Harris,United States,310.0,True,2026-08-17
-48585,Charlie Lindh,Charlie,Lindh,Sweden,311.0,True,2026-08-17
-35709,Jeff Winther,Jeff,Winther,Denmark,312.0,True,2026-08-17
-57708,Adam Wallin,Adam,Wallin,Sweden,313.0,True,2026-08-17
-35706,Niklas Nørgaard,Niklas,Nørgaard,Denmark,314.0,True,2026-08-17
-34225,Lee Jung-hwan,Lee,Jung-hwan,Republic of Korea,315.0,True,2026-08-17
-59281,Minhyuk Song,Minhyuk,Song,Republic of Korea,316.0,True,2026-08-17
-58601,Davis Shore,Davis,Shore,United States,317.0,True,2026-08-17
-65408,Barend Botha,Barend,Botha,South Africa,318.0,True,2026-08-17
-59198,Hugo Townsend,Hugo,Townsend,Sweden,319.0,True,2026-08-17
-48640,Johannes Veerman,Johannes,Veerman,United States,319.0,True,2026-08-17
-50582,Jeremy Paul,Jeremy,Paul,Germany,321.0,True,2026-08-17
-52370,Mason Andersen,Mason,Andersen,United States,322.0,True,2026-08-17
-57625,Trent Phillips,Trent,Phillips,United States,323.0,True,2026-08-17
-65256,David Ford,David,Ford,United States,324.0,True,2026-08-17
-49120,Kensei Hirata,Kensei,Hirata,Japan,325.0,True,2026-08-17
-39412,Zack Fischer,Zack,Fischer,United States,326.0,True,2026-08-17
-56781,Isaiah Salinda,Isaiah,Salinda,United States,327.0,True,2026-08-17
-34500,Ryosuke Kinoshita,Ryosuke,Kinoshita,Japan,328.0,True,2026-08-17
-35564,Joel Girrbach,Joel,Girrbach,Switzerland,329.0,True,2026-08-17
-64442,Gordon Sargent,Gordon,Sargent,United States,330.0,True,2026-08-17
-34656,Mikumu Horikawa,Mikumu,Horikawa,Japan,331.0,True,2026-08-17
-45478,Julian Suri,Julian,Suri,United States,332.0,True,2026-08-17
-45157,Cam Davis,Cam,Davis,Australia,333.0,True,2026-08-17
-36521,Young-han Song,Young-han,Song,Republic of Korea,334.0,True,2026-08-17
-33870,Ashun Wu,Ashun,Wu,People’s Rep of China,335.0,True,2026-08-17
-51734,Nicolo Galletti,Nicolo,Galletti,United States,336.0,True,2026-08-17
-33597,Harry Higgs,Harry,Higgs,United States,337.0,True,2026-08-17
-46405,Sebastian Soderberg,Sebastian,Soderberg,Sweden,338.0,True,2026-08-17
-51600,Jimmy Stanger,Jimmy,Stanger,United States,339.0,True,2026-08-17
-55955,Matthew Jordan,Matthew,Jordan,England,340.0,True,2026-08-17
-37250,Romain Langasque,Romain,Langasque,France,341.0,True,2026-08-17
-30978,Kiradech Aphibarnrat,Kiradech,Aphibarnrat,Thailand,342.0,True,2026-08-17
-55908,Tomohiro Ishizaka,Tomohiro,Ishizaka,Japan,343.0,True,2026-08-17
-20396,Lee Westwood,Lee,Westwood,England,344.0,True,2026-08-17
-52411,Kyle Westmoreland,Kyle,Westmoreland,United States,345.0,True,2026-08-17
-59827,Tom Vaillant,Tom,Vaillant,France,346.0,True,2026-08-17
-47888,Taiga Semikawa,Taiga,Semikawa,Japan,347.0,True,2026-08-17
-64576,Nick Gabrelcik,Nick,Gabrelcik,United States,348.0,True,2026-08-17
-47894,Wei-Hsuan Wang,Wei-Hsuan,Wang,Taiwan,349.0,True,2026-08-17
-48370,Christofer Blomstrand,Christofer,Blomstrand,Sweden,350.0,True,2026-08-17
-54218,Yuta Sugiura,Yuta,Sugiura,Japan,351.0,True,2026-08-17
-49453,Trevor Cone,Trevor,Cone,United States,352.0,True,2026-08-17
-50672,Hamish Brown,Hamish,Brown,Denmark,353.0,True,2026-08-17
-56762,Will Gordon,Will,Gordon,United States,354.0,True,2026-08-17
-58547,Austin Hitt,Austin,Hitt,United States,355.0,True,2026-08-17
-32394,Tapio Pulkkanen,Tapio,Pulkkanen,Finland,356.0,True,2026-08-17
-36529,S.T. Lee,S.T.,Lee,Republic of Korea,357.0,True,2026-08-17
-31395,Yosuke Asaji,Yosuke,Asaji,Japan,358.0,True,2026-08-17
-46402,Talor Gooch,Talor,Gooch,United States,359.0,True,2026-08-17
-24024,Zach Johnson,Zach,Johnson,United States,360.0,True,2026-08-17
-32139,Danny Willett,Danny,Willett,England,361.0,True,2026-08-17
-45734,John Catlin,John,Catlin,United States,362.0,True,2026-08-17
-37008,Danthai Boonma,Danthai,Boonma,Thailand,363.0,True,2026-08-17
-29268,Bronson Burgoon,Bronson,Burgoon,United States,363.0,True,2026-08-17
-51989,Jordan Gumberg,Jordan,Gumberg,United States,365.0,True,2026-08-17
-50000,Kieran Vincent,Kieran,Vincent,Zimbabwe,366.0,True,2026-08-17
-67143,Carson Bacha,Carson,Bacha,United States,367.0,True,2026-08-17
-47238,Jazz Janewattananond,Jazz,Janewattananond,Thailand,368.0,True,2026-08-17
-46673,Tomoyo Ikemura,Tomoyo,Ikemura,Japan,369.0,True,2026-08-17
-29289,S.Y. Noh,S.Y.,Noh,Republic of Korea,370.0,True,2026-08-17
-56490,Travis Trace,Travis,Trace,United States,370.0,True,2026-08-17
-53488,Angel Hidalgo Jordan,Angel,Hidalgo Jordan,Spain,372.0,True,2026-08-17
-52372,Cameron Champ,Cameron,Champ,United States,373.0,True,2026-08-17
-48119,Ben Taylor,Ben,Taylor,England,374.0,True,2026-08-17
-27214,Kevin Streelman,Kevin,Streelman,United States,374.0,True,2026-08-17
-58854,Rory Franssen,Rory,Franssen,Scotland,376.0,True,2026-08-17
-30756,Andrea Pavan,Andrea,Pavan,Italy,376.0,True,2026-08-17
-65410,John Marshall Butler,John,Marshall Butler,United States,378.0,True,2026-08-17
-58060,Ben Schmidt,Ben,Schmidt,England,379.0,True,2026-08-17
-55892,Étienne Papineau,Étienne,Papineau,Canada,380.0,True,2026-08-17
-33199,Matteo Manassero,Matteo,Manassero,Italy,381.0,True,2026-08-17
-46879,Naoyuki Kataoka,Naoyuki,Kataoka,Japan,382.0,True,2026-08-17
-34709,Eddie Pepperell,Eddie,Pepperell,England,383.0,True,2026-08-17
-58933,Will Chandler,Will,Chandler,United States,384.0,True,2026-08-17
-39958,Jeunghun Wang,Jeunghun,Wang,Republic of Korea,384.0,True,2026-08-17
-32640,Troy Merritt,Troy,Merritt,United States,386.0,True,2026-08-17
-32775,Shugo Imahira,Shugo,Imahira,Japan,387.0,True,2026-08-17
-46404,Marcus Kinhult,Marcus,Kinhult,Sweden,388.0,True,2026-08-17
-51366,Riki Kawamoto,Riki,Kawamoto,Japan,389.0,True,2026-08-17
-51890,Greyson Sigg,Greyson,Sigg,United States,390.0,True,2026-08-17
-49562,Suteepat Prateeptienchai,Suteepat,Prateeptienchai,Thailand,391.0,True,2026-08-17
-31678,Oliver Bekker,Oliver,Bekker,South Africa,392.0,True,2026-08-17
-48018,Sadom Kaewkanjana,Sadom,Kaewkanjana,Thailand,393.0,True,2026-08-17
-27747,Hiroshi Iwata,Hiroshi,Iwata,Japan,394.0,True,2026-08-17
-54655,Patrick Flavin,Patrick,Flavin,United States,395.0,True,2026-08-17
-29833,Yoshinori Fujimoto,Yoshinori,Fujimoto,Japan,396.0,True,2026-08-17
-45609,Tyler Duncan,Tyler,Duncan,United States,397.0,True,2026-08-17
-54783,Dylan Wu,Dylan,Wu,United States,398.0,True,2026-08-17
-57321,Matthew Anderson,Matthew,Anderson,Canada,399.0,True,2026-08-17
-47663,Kevin Dougherty,Kevin,Dougherty,United States,400.0,True,2026-08-17
-59866,Nick Dunlap,Nick,Dunlap,United States,401.0,True,2026-08-17
-32816,Satoshi Kodaira,Satoshi,Kodaira,Japan,402.0,True,2026-08-17
-31113,Paul Waring,Paul,Waring,England,403.0,True,2026-08-17
-57871,Samuel Simpson,Samuel,Simpson,South Africa,404.0,True,2026-08-17
-59743,Aguri Iwasaki,Aguri,Iwasaki,Japan,405.0,True,2026-08-17
-29976,P. Tangkamolpraser,P.,Tangkamolpraser,Thailand,406.0,True,2026-08-17
-48129,Corey Pereira,Corey,Pereira,United States,407.0,True,2026-08-17
-51567,Will Cannon,Will,Cannon,United States,408.0,True,2026-08-17
-50493,Justin Suh,Justin,Suh,United States,409.0,True,2026-08-17
-31569,Jason Scrivener,Jason,Scrivener,Australia,410.0,True,2026-08-17
-48632,Yuto Katsuragawa,Yuto,Katsuragawa,Japan,411.0,True,2026-08-17
-33232,Sang-hee Lee,Sang-hee,Lee,Republic of Korea,412.0,True,2026-08-17
-35261,Miguel Tabuena,Miguel,Tabuena,Philippines,413.0,True,2026-08-17
-52075,Will Enefer,Will,Enefer,England,414.0,True,2026-08-17
-50584,Connor Syme,Connor,Syme,Scotland,415.0,True,2026-08-17
-38991,Alejandro Tosti,Alejandro,Tosti,Argentina,416.0,True,2026-08-17
-48933,Ryuichi Oiwa,Ryuichi,Oiwa,Japan,417.0,True,2026-08-17
-51303,Ryo Katsumata,Ryo,Katsumata,Japan,418.0,True,2026-08-17
-65229,Rocco Repetto Taylor,Rocco,Repetto Taylor,Spain,419.0,True,2026-08-17
-65479,Jack Lundin,Jack,Lundin,United States,420.0,True,2026-08-17
-35174,Matthew Southgate,Matthew,Southgate,England,421.0,True,2026-08-17
-45733,Austen Truslow,Austen,Truslow,United States,422.0,True,2026-08-17
-57342,Seungbin Choi,Seungbin,Choi,Republic of Korea,423.0,True,2026-08-17
-25804,Bubba Watson,Bubba,Watson,United States,424.0,True,2026-08-17
-53189,Nick Voke,Nick,Voke,New Zealand,425.0,True,2026-08-17
-33486,Roger Sloan,Roger,Sloan,Canada,426.0,True,2026-08-17
-49590,Frankie Capan III,Frankie,Capan III,United States,427.0,True,2026-08-17
-48061,Daniel Young,Daniel,Young,Scotland,428.0,True,2026-08-17
-60369,Sam Bairstow,Sam,Bairstow,England,429.0,True,2026-08-17
-29256,James Morrison,James,Morrison,England,430.0,True,2026-08-17
-52287,David Ravetto,David,Ravetto,France,431.0,True,2026-08-17
-33908,Taihei Sato,Taihei,Sato,Japan,432.0,True,2026-08-17
-66248,Justin Hastings,Justin,Hastings,Cayman Islands,433.0,True,2026-08-17
-34514,Filip Mruzek,Filip,Mruzek,Czechia,434.0,True,2026-08-17
-56555,Myles Creighton,Myles,Creighton,Canada,435.0,True,2026-08-17
-34542,Rattanon Wannasrichan,Rattanon,Wannasrichan,Thailand,436.0,True,2026-08-17
-28679,Fabián Gómez,Fabián,Gómez,Argentina,437.0,True,2026-08-17
-52444,Filippo Celli,Filippo,Celli,Italy,438.0,True,2026-08-17
-40226,Andreas Halvorsen,Andreas,Halvorsen,Norway,439.0,True,2026-08-17
-29531,Richie Ramsay,Richie,Ramsay,Scotland,440.0,True,2026-08-17
-55660,Anton Albers,Anton,Albers,Germany,441.0,True,2026-08-17
-46724,Jeong Woo Ham,Jeong,Woo Ham,Republic of Korea,442.0,True,2026-08-17
-32757,Patton Kizzire,Patton,Kizzire,United States,443.0,True,2026-08-17
-52507,Sarit Suwannarut,Sarit,Suwannarut,Thailand,444.0,True,2026-08-17
-57263,John Gough,John,Gough,England,445.0,True,2026-08-17
-64779,Donghyun Moon,Donghyun,Moon,Republic of Korea,446.0,True,2026-08-17
-49315,Austin Bautista,Austin,Bautista,Australia,447.0,True,2026-08-17
-26329,Louis Oosthuizen,Louis,Oosthuizen,South Africa,447.0,True,2026-08-17
-58605,Quade Cummins,Quade,Cummins,United States,449.0,True,2026-08-17
-29970,Dylan Frittelli,Dylan,Frittelli,South Africa,450.0,True,2026-08-17
-59629,Ryan van Velzen,Ryan,van Velzen,South Africa,451.0,True,2026-08-17
-30909,David Horsey,David,Horsey,England,452.0,True,2026-08-17
-55708,Hayden Buckley,Hayden,Buckley,United States,453.0,True,2026-08-17
-48098,Sebastian Garcia Rodriguez,Sebastian,Garcia Rodriguez,Spain,454.0,True,2026-08-17
-58696,Peter Kuest,Peter,Kuest,United States,454.0,True,2026-08-17
-50992,Brett White,Brett,White,United States,456.0,True,2026-08-17
-46270,Takashi Ogiso,Takashi,Ogiso,Japan,457.0,True,2026-08-17
-56987,Jeong Weon Ko,Jeong,Weon Ko,France,458.0,True,2026-08-17
-31138,Scott Jamieson,Scott,Jamieson,Scotland,459.0,True,2026-08-17
-37447,Zander Lombard,Zander,Lombard,South Africa,460.0,True,2026-08-17
-46368,Stuart Macdonald,Stuart,Macdonald,Canada,461.0,True,2026-08-17
-66742,Jackson Buchanan,Jackson,Buchanan,United States,462.0,True,2026-08-17
-35225,Brandon Stone,Brandon,Stone,South Africa,462.0,True,2026-08-17
-33122,Russell Knox,Russell,Knox,Scotland,464.0,True,2026-08-17
-60021,Patrick Welch,Patrick,Welch,United States,465.0,True,2026-08-17
-27330,Josh Teater,Josh,Teater,United States,466.0,True,2026-08-17
-49964,Aaron Wise,Aaron,Wise,United States,467.0,True,2026-08-17
-54901,Theo Humphrey,Theo,Humphrey,United States,468.0,True,2026-08-17
-21961,Charles Howell III,Charles,Howell III,United States,469.0,True,2026-08-17
-65422,Drew Doyle,Drew,Doyle,United States,470.0,True,2026-08-17
-30163,Henrik Norlander,Henrik,Norlander,Sweden,471.0,True,2026-08-17
-63818,Jonathan Broomhead,Jonathan,Broomhead,South Africa,472.0,True,2026-08-17
-29221,Webb Simpson,Webb,Simpson,United States,473.0,True,2026-08-17
-34541,Poom Saksansin,Poom,Saksansin,Thailand,474.0,True,2026-08-17
-33459,Jens Dantorp,Jens,Dantorp,Sweden,475.0,True,2026-08-17
-46732,Rick Lamb,Rick,Lamb,United States,476.0,True,2026-08-17
-23481,Marcel Siem,Marcel,Siem,Germany,477.0,True,2026-08-17
-49399,Shad Tuten,Shad,Tuten,United States,478.0,True,2026-08-17
-26341,Wade Ormsby,Wade,Ormsby,Australia,479.0,True,2026-08-17
-27770,Camilo Villegas,Camilo,Villegas,Colombia,480.0,True,2026-08-17
-57864,Jackson Van Paris,Jackson,Van Paris,United States,481.0,True,2026-08-17
-49230,Taiki Yoshida,Taiki,Yoshida,Japan,482.0,True,2026-08-17
-56320,Bryson Nimmer,Bryson,Nimmer,United States,483.0,True,2026-08-17
-63451,Bryce Lewis,Bryce,Lewis,United States,484.0,True,2026-08-17
-47483,Will Zalatoris,Will,Zalatoris,United States,485.0,True,2026-08-17
-47759,Mathinus Viljoen,Mathinus,Viljoen,South Africa,486.0,True,2026-08-17
-40115,Adam Svensson,Adam,Svensson,Canada,487.0,True,2026-08-17
-49223,Chan Choi,Chan,Choi,Republic of Korea,488.0,True,2026-08-17
-34579,Alexander Levy,Alexander,Levy,France,488.0,True,2026-08-17
-57940,Euan Walker,Euan,Walker,Scotland,490.0,True,2026-08-17
-56278,Matthew Wolff,Matthew,Wolff,United States,491.0,True,2026-08-17
-55592,Joey Savoie,Joey,Savoie,Canada,492.0,True,2026-08-17
-54328,Norman Xiong,Norman,Xiong,United States,493.0,True,2026-08-17
-49174,Yusuke Sakamoto,Yusuke,Sakamoto,Japan,494.0,True,2026-08-17
-39871,Takanori Konishi,Takanori,Konishi,Japan,495.0,True,2026-08-17
-54625,Dawson Armstrong,Dawson,Armstrong,United States,496.0,True,2026-08-17
-59243,Connor Howe,Connor,Howe,United States,497.0,True,2026-08-17
-47378,Hanmil Jung,Hanmil,Jung,Republic of Korea,498.0,True,2026-08-17
-56266,Deon Germishuys,Deon,Germishuys,South Africa,499.0,True,2026-08-17
-59841,Bael Jun Kim,Bael,Jun Kim,Republic of Korea,500.0,True,2026-08-17
-54420,Louis Albertse,Louis,Albertse,South Africa,501.0,True,2026-08-17
-54278,Mateo Fernández de Oliveira,Mateo,Fernández de Oliveira,Argentina,502.0,True,2026-08-17
-60767,"Blaine Hale, Jr.",Blaine,"Hale, Jr.",United States,503.0,True,2026-08-17
-59212,Hunter Wolcott,Hunter,Wolcott,United States,504.0,True,2026-08-17
-56349,Chris Korte,Chris,Korte,United States,505.0,True,2026-08-17
-20721,Darren Fichardt,Darren,Fichardt,South Africa,506.0,True,2026-08-17
-64693,Matthew Riedel,Matthew,Riedel,United States,507.0,True,2026-08-17
-47125,Matt Atkins,Matt,Atkins,United States,508.0,True,2026-08-17
-34708,Jack Senior,Jack,Senior,England,509.0,True,2026-08-17
-65469,Riley Lewis,Riley,Lewis,United States,510.0,True,2026-08-17
-36789,Patrick Newcomb,Patrick,Newcomb,United States,511.0,True,2026-08-17
-38995,Dominic Foos,Dominic,Foos,Germany,512.0,True,2026-08-17
-28521,Ryutaro Nagano,Ryutaro,Nagano,Japan,513.0,True,2026-08-17
-35287,Yuwa Kosaihira,Yuwa,Kosaihira,Japan,514.0,True,2026-08-17
-48970,Seungtaek Oh,Seungtaek,Oh,Republic of Korea,515.0,True,2026-08-17
-27129,Luke List,Luke,List,United States,516.0,True,2026-08-17
-57860,Maxwell Moldovan,Maxwell,Moldovan,United States,516.0,True,2026-08-17
-58043,Suguru Shimoke,Suguru,Shimoke,Japan,518.0,True,2026-08-17
-66583,Taisei Shimizu,Taisei,Shimizu,Japan,519.0,True,2026-08-17
-59085,Chris Francoeur,Chris,Francoeur,United States,520.0,True,2026-08-17
-47056,Rikuya Hoshino,Rikuya,Hoshino,Japan,521.0,True,2026-08-17
-55940,Andrew Wilson,Andrew,Wilson,England,522.0,True,2026-08-17
-56190,Wooyoung Cho,Wooyoung,Cho,Republic of Korea,523.0,True,2026-08-17
-28166,Pedro Figueiredo,Pedro,Figueiredo,Portugal,523.0,True,2026-08-17
-47461,Andrew Kozan,Andrew,Kozan,United States,525.0,True,2026-08-17
-27936,Martin Laird,Martin,Laird,Scotland,526.0,True,2026-08-17
-57711,Mason Williams,Mason,Williams,United States,527.0,True,2026-08-17
-39524,Sean Crocker,Sean,Crocker,United States,528.0,True,2026-08-17
-47847,Ivan Cantero Gutierrez,Ivan,Cantero Gutierrez,Spain,529.0,True,2026-08-17
-51314,Julian Perico,Julian,Perico,Peru,530.0,True,2026-08-17
-51787,Yuvraj Sandhu,Yuvraj,Sandhu,India,531.0,True,2026-08-17
-33413,Ben Martin,Ben,Martin,United States,532.0,True,2026-08-17
-35912,Haydn Porteous,Haydn,Porteous,South Africa,532.0,True,2026-08-17
-66552,Rayhan Thomas,Rayhan,Thomas,India,534.0,True,2026-08-17
-55838,Jack Thompson,Jack,Thompson,Australia,534.0,True,2026-08-17
-57461,Petr Hruby,Petr,Hruby,Czechia,536.0,True,2026-08-17
-59467,Dan Erickson,Dan,Erickson,United States,537.0,True,2026-08-17
-25799,Niklas Lemke,Niklas,Lemke,Sweden,538.0,True,2026-08-17
-55468,Felix Mory,Felix,Mory,France,539.0,True,2026-08-17
-36391,Ricardo Celia,Ricardo,Celia,Colombia,540.0,True,2026-08-17
-61520,Santiago de la Fuente,Santiago,de la Fuente,Mexico,540.0,True,2026-08-17
-33963,Yang Ji-ho,Yang,Ji-ho,Republic of Korea,542.0,True,2026-08-17
-60736,Tobias Jonsson,Tobias,Jonsson,Sweden,543.0,True,2026-08-17
-32797,Sanghyun Park,Sanghyun,Park,Republic of Korea,544.0,True,2026-08-17
-36351,Pieter Moolman,Pieter,Moolman,South Africa,545.0,True,2026-08-17
-47472,MJ Maguire,MJ,Maguire,United States,546.0,True,2026-08-17
-29939,Fabrizio Zanotti,Fabrizio,Zanotti,Paraguay,547.0,True,2026-08-17
-56003,Yongjun Bae,Yongjun,Bae,Republic of Korea,548.0,True,2026-08-17
-57474,Maxence Giboudot,Maxence,Giboudot,France,549.0,True,2026-08-17
-57504,Sampson Zheng,Sampson,Zheng,People’s Rep of China,550.0,True,2026-08-17
-61276,Christiaan Maas,Christiaan,Maas,South Africa,551.0,True,2026-08-17
-35752,Mikiya Akutsu,Mikiya,Akutsu,Japan,552.0,True,2026-08-17
-46955,Haydn Barron,Haydn,Barron,Australia,553.0,True,2026-08-17
-48032,Chanwoo Kim,Chanwoo,Kim,Republic of Korea,553.0,True,2026-08-17
-34314,Sebastian Cappelen,Sebastian,Cappelen,Denmark,555.0,True,2026-08-17
-33115,Jinho Choi,Jinho,Choi,Republic of Korea,556.0,True,2026-08-17
-57843,Taiga Nagano,Taiga,Nagano,Japan,556.0,True,2026-08-17
-34466,Peter Malnati,Peter,Malnati,United States,558.0,True,2026-08-17
-52132,Phichaksn Maichon,Phichaksn,Maichon,Thailand,559.0,True,2026-08-17
-65825,Joshua Berry,Joshua,Berry,England,560.0,True,2026-08-17
-46601,Trey Mullinax,Trey,Mullinax,United States,561.0,True,2026-08-17
-34128,Eun Shin Park,Eun,Shin Park,Republic of Korea,562.0,True,2026-08-17
-24925,Jonathan Byrd,Jonathan,Byrd,United States,563.0,True,2026-08-17
-39859,Cristobal Del Solar,Cristobal,Del Solar,Chile,564.0,True,2026-08-17
-57505,Ryunosuke Furukawa,Ryunosuke,Furukawa,Japan,565.0,True,2026-08-17
-50731,Clement Charmasson,Clement,Charmasson,France,566.0,True,2026-08-17
-40181,Clément Sordet,Clément,Sordet,France,567.0,True,2026-08-17
-56272,Wilco Nienaber,Wilco,Nienaber,South Africa,568.0,True,2026-08-17
-59533,Joe Weiler,Joe,Weiler,United States,569.0,True,2026-08-17
-52646,Mats Ege,Mats,Ege,Norway,570.0,True,2026-08-17
-57743,Callum Farr,Callum,Farr,England,571.0,True,2026-08-17
-36693,Bjorn Hellgren,Bjorn,Hellgren,Sweden,571.0,True,2026-08-17
-48822,Sebastián Muñoz,Sebastián,Muñoz,Colombia,573.0,True,2026-08-17
-37052,Martin Simonsen,Martin,Simonsen,Denmark,573.0,True,2026-08-17
-54998,Luke Brown,Luke,Brown,South Africa,575.0,True,2026-08-17
-63162,Quim Vidal,Quim,Vidal,Spain,576.0,True,2026-08-17
-51137,Kevin Yuan,Kevin,Yuan,Australia,577.0,True,2026-08-17
-47988,Nick Hardy,Nick,Hardy,United States,578.0,True,2026-08-17
-37076,Marcelo Rozo,Marcelo,Rozo,Colombia,579.0,True,2026-08-17
-52134,Runchanapong Youprayong,Runchanapong,Youprayong,Thailand,580.0,True,2026-08-17
-58189,Billy Tom Sargent,Billy,Tom Sargent,United States,581.0,True,2026-08-17
-51313,Andrea Romano(June-2000),Andrea,Romano(June-2000),Italy,582.0,True,2026-08-17
-49460,Herman Loubser,Herman,Loubser,South Africa,583.0,True,2026-08-17
-45403,Hong-taek Kim,Hong-taek,Kim,Republic of Korea,584.0,True,2026-08-17
-60499,Luis Carrera,Luis,Carrera,Mexico,585.0,True,2026-08-17
-29806,Hung Chien-yao,Hung,Chien-yao,Chinese Taipei,586.0,True,2026-08-17
-55454,Carl Yuan,Carl,Yuan,People’s Rep of China,587.0,True,2026-08-17
-20766,Padraig Harrington,Padraig,Harrington,Ireland,588.0,True,2026-08-17
-47505,Dylan Naidoo,Dylan,Naidoo,South Africa,588.0,True,2026-08-17
-47706,Wang Wei Lun,Wang,Wei Lun,Chinese Taipei,590.0,True,2026-08-17
-46798,Anthony Quayle,Anthony,Quayle,Australia,591.0,True,2026-08-17
-49356,Tanapat Pichaikool,Tanapat,Pichaikool,Thailand,592.0,True,2026-08-17
-32070,Rafael Campos,Rafael,Campos,Puerto Rico,593.0,True,2026-08-17
-59025,David Perkins,David,Perkins,United States,594.0,True,2026-08-17
-58856,Chad Sewell,Chad,Sewell,United States,595.0,True,2026-08-17
-34017,Jhared Hack,Jhared,Hack,United States,596.0,True,2026-08-17
-63342,Barclay Brown,Barclay,Brown,England,597.0,True,2026-08-17
-48051,Yannik Paul,Yannik,Paul,Germany,597.0,True,2026-08-17
-55470,Calum Fyfe,Calum,Fyfe,Scotland,599.0,True,2026-08-17
-34168,Soomin Lee,Soomin,Lee,Republic of Korea,600.0,True,2026-08-17
-52477,Albin Bergstro,Albin,Bergstro,Sweden,601.0,True,2026-08-17
-45166,Yujiro Ohori,Yujiro,Ohori,Japan,601.0,True,2026-08-17
-63544,Patrick Sheehan,Patrick,Sheehan,United States,603.0,True,2026-08-17
-58164,Kohei Okada,Kohei,Okada,Japan,604.0,True,2026-08-17
-52242,Ekpharit Wu,Ekpharit,Wu,Thailand,605.0,True,2026-08-17
-28775,Nate Lashley,Nate,Lashley,United States,606.0,True,2026-08-17
-56214,Martin Vorster,Martin,Vorster,South Africa,607.0,True,2026-08-17
-33408,Tyson Alexander,Tyson,Alexander,United States,608.0,True,2026-08-17
-58989,Brandon Berry,Brandon,Berry,United States,609.0,True,2026-08-17
-59837,Cole Anderson,Cole,Anderson,United States,610.0,True,2026-08-17
-59195,Saptak Talwar,Saptak,Talwar,India,611.0,True,2026-08-17
-56974,Christiaan Burke,Christiaan,Burke,South Africa,612.0,True,2026-08-17
-31420,Anirban Lahiri,Anirban,Lahiri,India,613.0,True,2026-08-17
-48586,Per Langfors,Per,Langfors,Sweden,614.0,True,2026-08-17
-37015,Kristian Johannessen,Kristian,Johannessen,Norway,615.0,True,2026-08-17
-35557,Aaron Cockerill,Aaron,Cockerill,Canada,616.0,True,2026-08-17
-35133,Bryce Easton,Bryce,Easton,South Africa,616.0,True,2026-08-17
-65432,Mason Greene,Mason,Greene,United States,618.0,True,2026-08-17
-50063,Galam Jeon,Galam,Jeon,Republic of Korea,619.0,True,2026-08-17
-46410,Jamie Rutherford,Jamie,Rutherford,England,620.0,True,2026-08-17
-58849,Turk Pettit,Turk,Pettit,United States,621.0,True,2026-08-17
-56149,Wilson Furr,Wilson,Furr,United States,622.0,True,2026-08-17
-51430,Veer Ahlawat,Veer,Ahlawat,India,623.0,True,2026-08-17
-56174,Will Florimo,Will,Florimo,Australia,624.0,True,2026-08-17
-12716,Charley Hoffman,Charley,Hoffman,United States,625.0,True,2026-08-17
-60365,Charles Porter,Charles,Porter,United States,626.0,True,2026-08-17
-27140,Justin Walters,Justin,Walters,South Africa,627.0,True,2026-08-17
-67145,Cameron Adam,Cameron,Adam,Scotland,628.0,True,2026-08-17
-59164,James Piot,James,Piot,United States,628.0,True,2026-08-17
-36871,Matt NeSmith,Matt,NeSmith,United States,630.0,True,2026-08-17
-34661,Sangyeop Lee,Sangyeop,Lee,Republic of Korea,631.0,True,2026-08-17
-35862,Min-Jun Kim,Min-Jun,Kim,Republic of Korea,632.0,True,2026-08-17
-65529,Liam Nolan,Liam,Nolan,Ireland,633.0,True,2026-08-17
-48979,MK Kim,MK,Kim,Republic of Korea,634.0,True,2026-08-17
-33125,Jaewoong Eom,Jaewoong,Eom,Republic of Korea,635.0,True,2026-08-17
-59636,Samuel Anderson,Samuel,Anderson,United States,636.0,True,2026-08-17
-58670,Zach James,Zach,James,United States,637.0,True,2026-08-17
-26476,Chez Reavie,Chez,Reavie,United States,638.0,True,2026-08-17
-47102,David Micheluzzi,David,Micheluzzi,Australia,639.0,True,2026-08-17
-52683,Jonathan Goth-Rasmussen,Jonathan,Goth-Rasmussen,Denmark,640.0,True,2026-08-17
-35087,Bio Kim,Bio,Kim,Republic of Korea,641.0,True,2026-08-17
-35736,Sung -Kug Park,Sung,-Kug Park,Republic of Korea,642.0,True,2026-08-17
-48699,Callum Tarren,Callum,Tarren,England,642.0,True,2026-08-17
-48814,Taichiro Ideriha,Taichiro,Ideriha,Japan,644.0,True,2026-08-17
-33803,Lucas Bjerregaard,Lucas,Bjerregaard,Denmark,645.0,True,2026-08-17
-39838,Jacopo Vecchi Fossa,Jacopo,Vecchi Fossa,Italy,645.0,True,2026-08-17
-54994,Vicente Marzilio,Vicente,Marzilio,Argentina,647.0,True,2026-08-17
-25132,Cho Min-jun,Cho,Min-jun,Republic of Korea,647.0,True,2026-08-17
-25841,Marc Warren,Marc,Warren,Scotland,649.0,True,2026-08-17
-57298,Preston Summerhays,Preston,Summerhays,United States,650.0,True,2026-08-17
-51038,Alfie Plant,Alfie,Plant,England,651.0,True,2026-08-17
-27896,Ross Fisher,Ross,Fisher,England,652.0,True,2026-08-17
-26331,Charl Schwartzel,Charl,Schwartzel,South Africa,653.0,True,2026-08-17
-58132,Kieron van Wyk,Kieron,van Wyk,South Africa,654.0,True,2026-08-17
-63617,Ryggs Johnston,Ryggs,Johnston,United States,655.0,True,2026-08-17
-34133,Yosuke Tsukada,Yosuke,Tsukada,Japan,656.0,True,2026-08-17
-48366,Jeppe Kristian Andersen,Jeppe,Kristian Andersen,Denmark,657.0,True,2026-08-17
-36724,Augusto Núñez,Augusto,Núñez,Argentina,658.0,True,2026-08-17
-48929,Santiago Tarrio,Santiago,Tarrio,Spain,659.0,True,2026-08-17
-57862,Brett Roberts,Brett,Roberts,United States,660.0,True,2026-08-17
-64526,Declan O'Donovan,Declan,O'Donovan,Australia,661.0,True,2026-08-17
-33419,Cameron Tringale,Cameron,Tringale,United States,662.0,True,2026-08-17
-61434,Sarut Vongchaisit,Sarut,Vongchaisit,Thailand,662.0,True,2026-08-17
-48319,Tom Whitney,Tom,Whitney,United States,662.0,True,2026-08-17
-29334,Jaco Ahlers,Jaco,Ahlers,South Africa,665.0,True,2026-08-17
-45985,Jacobus Prinsloo,Jacobus,Prinsloo,South Africa,666.0,True,2026-08-17
-60005,Ryan Burnett,Ryan,Burnett,United States,667.0,True,2026-08-17
-49481,Tae Hee Lee,Tae,Hee Lee,Republic of Korea,668.0,True,2026-08-17
-36514,Yuki Inamori,Yuki,Inamori,Japan,669.0,True,2026-08-17
-39916,Tobias Eden,Tobias,Eden,Sweden,670.0,True,2026-08-17
-66063,Altin van der Merwe,Altin,van der Merwe,South Africa,671.0,True,2026-08-17
-45836,Richard Bland,Richard,Bland,England,672.0,True,2026-08-17
-30944,Jason Kokrak,Jason,Kokrak,United States,673.0,True,2026-08-17
-46113,Ryan McCormick,Ryan,McCormick,United States,674.0,True,2026-08-17
-53196,Robin Williams,Robin,Williams,South Africa,675.0,True,2026-08-17
-27958,Ryan Blaum,Ryan,Blaum,United States,676.0,True,2026-08-17
-29670,Pablo Larrazabal,Pablo,Larrazabal,Spain,676.0,True,2026-08-17
-40028,Justin Shin,Justin,Shin,Canada,678.0,True,2026-08-17
-54210,Matthew Cheung,Matthew,Cheung,Hong Kong,679.0,True,2026-08-17
-67142,Drew Goodman,Drew,Goodman,United States,680.0,True,2026-08-17
-46017,Matt Killen,Matt,Killen,England,681.0,True,2026-08-17
-65110,Brendan Valdes,Brendan,Valdes,United States,681.0,True,2026-08-17
-54480,Justin De Los Santos,Justin,De Los Santos,Philippines,683.0,True,2026-08-17
-56019,Matteo Cristoni,Matteo,Cristoni,Italy,684.0,True,2026-08-17
-32344,Lukas Nemecz,Lukas,Nemecz,Austria,685.0,True,2026-08-17
-35201,Benjamin Follett-Smith,Benjamin,Follett-Smith,Zimbabwe,685.0,True,2026-08-17
-33689,Jinichiro Kozuma,Jinichiro,Kozuma,Japan,687.0,True,2026-08-17
-35106,Ryan Peake,Ryan,Peake,Australia,688.0,True,2026-08-17
-26503,Alfredo Garcia-Heredia,Alfredo,Garcia-Heredia,Spain,689.0,True,2026-08-17
-46684,Song-Gyu Yoo,Song-Gyu,Yoo,Republic of Korea,689.0,True,2026-08-17
-56731,Evan Knight,Evan,Knight,United States,691.0,True,2026-08-17
-29518,Brendan Steele,Brendan,Steele,United States,691.0,True,2026-08-17
-59211,Trey Winstead,Trey,Winstead,United States,691.0,True,2026-08-17
-31016,Tomoharu Otsuki,Tomoharu,Otsuki,Japan,694.0,True,2026-08-17
-25364,Paul Casey,Paul,Casey,England,695.0,True,2026-08-17
-68991,William Sides,William,Sides,United States,696.0,True,2026-08-17
-34242,Andrew Johnston,Andrew,Johnston,England,697.0,True,2026-08-17
-52144,Braden Thornberry,Braden,Thornberry,United States,698.0,True,2026-08-17
-55074,Sebastian Friedrichsen,Sebastian,Friedrichsen,Denmark,699.0,True,2026-08-17
-59954,Teddy Tetak,Teddy,Tetak,Slovakia,700.0,True,2026-08-17
-63554,Dillon Stewart,Dillon,Stewart,United States,701.0,True,2026-08-17
-47889,Kosuke Sunagawa,Kosuke,Sunagawa,Japan,702.0,True,2026-08-17
-46248,Tirawat Kaewsiribandt,Tirawat,Kaewsiribandt,Thailand,703.0,True,2026-08-17
-48037,Atiruj Winaicharoenc,Atiruj,Winaicharoenc,Thailand,704.0,True,2026-08-17
-27778,Julien Quesne,Julien,Quesne,France,705.0,True,2026-08-17
-54813,Philip Knowles,Philip,Knowles,United States,706.0,True,2026-08-17
-64033,Luis Masaveu,Luis,Masaveu,Spain,707.0,True,2026-08-17
-50888,Anders Elite Ejlersen,Anders,Elite Ejlersen,Denmark,708.0,True,2026-08-17
-32290,Satoshi Hara,Satoshi,Hara,Japan,709.0,True,2026-08-17
-51783,Karandeep Kochhar,Karandeep,Kochhar,India,709.0,True,2026-08-17
-51024,Bard Bjornevik Skogen,Bard,Bjornevik Skogen,Norway,711.0,True,2026-08-17
-67513,Javier Barcos Garbayo,Javier,Barcos Garbayo,Spain,712.0,True,2026-08-17
-46501,Ollie Schniederjans,Ollie,Schniederjans,United States,713.0,True,2026-08-17
-50575,Bo Peng,Bo,Peng,People’s Rep of China,714.0,True,2026-08-17
-35834,Hyungjoon Lee,Hyungjoon,Lee,Republic of Korea,715.0,True,2026-08-17
-58666,Tripp Kinney,Tripp,Kinney,United States,716.0,True,2026-08-17
-55509,Hurly Long,Hurly,Long,Germany,717.0,True,2026-08-17
-58986,Zihao Jin,Zihao,Jin,People’s Rep of China,717.0,True,2026-08-17
-57912,David Langley,David,Langley,England,719.0,True,2026-08-17
-30812,Benjamin Hebert,Benjamin,Hebert,France,720.0,True,2026-08-17
-58232,Jack Buchanan,Jack,Buchanan,Australia,721.0,True,2026-08-17
-65115,Shu Fukuzumi,Shu,Fukuzumi,Japan,722.0,True,2026-08-17
-65466,Max Kennedy,Max,Kennedy,Ireland,723.0,True,2026-08-17
-51921,Jannik De Bruyn,Jannik,De Bruyn,Germany,724.0,True,2026-08-17
-45719,Suradit Yongcharoenchai,Suradit,Yongcharoenchai,Thailand,725.0,True,2026-08-17
-62747,Sejung Hiramoto,Sejung,Hiramoto,Japan,726.0,True,2026-08-17
-47132,James Marchesani,James,Marchesani,Australia,726.0,True,2026-08-17
-67202,Luke Gutschewski,Luke,Gutschewski,United States,728.0,True,2026-08-17
-49036,Lorenzo Scalise,Lorenzo,Scalise,Italy,728.0,True,2026-08-17
-63371,Chanmin Jung,Chanmin,Jung,Republic of Korea,730.0,True,2026-08-17
-39436,Joshua Creel,Joshua,Creel,United States,731.0,True,2026-08-17
-23814,Edoardo Molinari,Edoardo,Molinari,Italy,732.0,True,2026-08-17
-69020,Luke Potter,Luke,Potter,United States,733.0,True,2026-08-17
-63457,Palmer Jackson,Palmer,Jackson,United States,734.0,True,2026-08-17
-55028,Teayang Jung,Teayang,Jung,Republic of Korea,734.0,True,2026-08-17
-69503,Tyler Wilkes,Tyler,Wilkes,United States,736.0,True,2026-08-17
-59613,Marcus Plunkett,Marcus,Plunkett,United States,737.0,True,2026-08-17
-59203,Joey Vrzich,Joey,Vrzich,United States,737.0,True,2026-08-17
-27942,Rob Oppenheim,Rob,Oppenheim,United States,739.0,True,2026-08-17
-55415,Ryan Lumsden,Ryan,Lumsden,Scotland,740.0,True,2026-08-17
-65426,Caden Fioroni,Caden,Fioroni,United States,741.0,True,2026-08-17
-59957,Warwick Purchase,Warwick,Purchase,South Africa,742.0,True,2026-08-17
-39185,Jake McLeod,Jake,McLeod,Australia,743.0,True,2026-08-17
-37183,Chiehpo Lee,Chiehpo,Lee,Chinese Taipei,744.0,True,2026-08-17
-48577,Anton Karlsson,Anton,Karlsson,Sweden,745.0,True,2026-08-17
-22400,Hennie Otto,Hennie,Otto,South Africa,746.0,True,2026-08-17
-60978,James Meyer de Beco,James,Meyer de Beco,Belgium,747.0,True,2026-08-17
-37029,Taichi Nabetani,Taichi,Nabetani,Japan,748.0,True,2026-08-17
-59811,Kazuki Yasumori,Kazuki,Yasumori,Japan,749.0,True,2026-08-17
-55694,Quentin Debove,Quentin,Debove,France,750.0,True,2026-08-17
-68614,Lance Simpson,Lance,Simpson,United States,751.0,True,2026-08-17
-52583,Sanghun Shin,Sanghun,Shin,Republic of Korea,752.0,True,2026-08-17
-37380,Curtis Luck,Curtis,Luck,Australia,753.0,True,2026-08-17
-32058,José de Jesús Rodríguez,José,de Jesús Rodríguez,Mexico,754.0,True,2026-08-17
-58418,Zach Smith,Zach,Smith,United States,755.0,True,2026-08-17
-53210,Ching-hung Su,Ching-hung,Su,Chinese Taipei,755.0,True,2026-08-17
-52374,Brandon Wu,Brandon,Wu,United States,757.0,True,2026-08-17
-54292,Kerry Mountcastle,Kerry,Mountcastle,New Zealand,758.0,True,2026-08-17
-55077,Frederik Kjettrup,Frederik,Kjettrup,Denmark,759.0,True,2026-08-17
-61220,Alex Goff,Alex,Goff,United States,760.0,True,2026-08-17
-35104,Tom Lewis,Tom,Lewis,England,761.0,True,2026-08-17
-51563,Jovan Rebula,Jovan,Rebula,South Africa,761.0,True,2026-08-17
-28938,Justin Harding,Justin,Harding,South Africa,763.0,True,2026-08-17
-53914,Connor McKinney,Connor,McKinney,Australia,764.0,True,2026-08-17
-29930,Mike Hendry,Mike,Hendry,New Zealand,764.0,True,2026-08-17
-67139,Justin Biwer,Justin,Biwer,United States,766.0,True,2026-08-17
-57815,Ronan Kleu,Ronan,Kleu,Switzerland,766.0,True,2026-08-17
-52348,Victor H Sidal Svendsen,Victor,H Sidal Svendsen,Denmark,768.0,True,2026-08-17
-66095,Bowen Chai,Bowen,Chai,People’s Rep of China,769.0,True,2026-08-17
-25883,Kyung Nam Kang,Kyung,Nam Kang,Republic of Korea,770.0,True,2026-08-17
-32356,Poosit Supupramai,Poosit,Supupramai,Thailand,771.0,True,2026-08-17
-52176,Tomas Melo Gouvei,Tomas,Melo Gouvei,Portugal,772.0,True,2026-08-17
-37091,Jae-Ho Kim,Jae-Ho,Kim,Republic of Korea,773.0,True,2026-08-17
-56199,Quinnton Croker,Quinnton,Croker,Australia,774.0,True,2026-08-17
-59108,Harry Hillier,Harry,Hillier,New Zealand,775.0,True,2026-08-17
-67304,Nathan Franks,Nathan,Franks,United States,776.0,True,2026-08-17
-47996,Jack Maguire,Jack,Maguire,United States,776.0,True,2026-08-17
-60068,Khavish Varadan,Khavish,Varadan,United States,776.0,True,2026-08-17
-23452,Nicolas Colsaerts,Nicolas,Colsaerts,Belgium,779.0,True,2026-08-17
-48052,Max Rottluff,Max,Rottluff,Germany,780.0,True,2026-08-17
-50648,Ryota Wakahara,Ryota,Wakahara,Japan,781.0,True,2026-08-17
-54652,David Kocher,David,Kocher,United States,782.0,True,2026-08-17
-47960,Simon Forsström,Simon,Forsström,Sweden,783.0,True,2026-08-17
-57330,Matthis Besard,Matthis,Besard,Belgium,784.0,True,2026-08-17
-66290,Miles Russell,Miles,Russell,United States,784.0,True,2026-08-17
-47081,Daniel Gale,Daniel,Gale,Australia,786.0,True,2026-08-17
-52655,Herman Wibe Sekne,Herman,Wibe Sekne,Norway,787.0,True,2026-08-17
-54996,Ray Kraivixien,Ray,Kraivixien,Thailand,788.0,True,2026-08-17
-49039,Michele Ortolani,Michele,Ortolani,Italy,788.0,True,2026-08-17
-27408,Martin Kaymer,Martin,Kaymer,Germany,790.0,True,2026-08-17
-29675,Dan McCarthy,Dan,McCarthy,United States,791.0,True,2026-08-17
-55434,Nopparat Panichphol,Nopparat,Panichphol,Thailand,792.0,True,2026-08-17
-68228,Agustin Segundo Oliva DO NOT USE Pinto,Agustin,Segundo Oliva DO NOT USE Pinto,Argentina,793.0,True,2026-08-17
-46002,Settee Prakongvech,Settee,Prakongvech,Thailand,794.0,True,2026-08-17
-58816,Marcus Byrd,Marcus,Byrd,United States,795.0,True,2026-08-17
-56046,Koshiro Maeda,Koshiro,Maeda,Japan,796.0,True,2026-08-17
-31997,Steve Lewton,Steve,Lewton,England,797.0,True,2026-08-17
-64738,Jan Schneider,Jan,Schneider,Germany,798.0,True,2026-08-17
-49576,Paul Chaplet,Paul,Chaplet,Costa Rica,799.0,True,2026-08-17
-55376,Albin Tiden,Albin,Tiden,Sweden,800.0,True,2026-08-17
-46988,Taikou Nishiyama,Taikou,Nishiyama,Japan,801.0,True,2026-08-17
-48853,Michael Hirmer,Michael,Hirmer,Germany,802.0,True,2026-08-17
-33023,Ockie Strydom,Ockie,Strydom,South Africa,803.0,True,2026-08-17
-49241,Jordan Doull,Jordan,Doull,Australia,804.0,True,2026-08-17
-32865,Shunyat Hak,Shunyat,Hak,Hong Kong,805.0,True,2026-08-17
-52304,Chonlatit Chuenboonngam,Chonlatit,Chuenboonngam,Thailand,806.0,True,2026-08-17
-55874,Gerhard Pepler,Gerhard,Pepler,South Africa,807.0,True,2026-08-17
-51342,Jay Mackenzie,Jay,Mackenzie,Australia,808.0,True,2026-08-17
-64487,Danny Fisher,Danny,Fisher,United States,809.0,True,2026-08-17
-25067,Lu Wei-chih,Lu,Wei-chih,Chinese Taipei,810.0,True,2026-08-17
-53902,Gyumin Lee,Gyumin,Lee,Republic of Korea,811.0,True,2026-08-17
-32622,Matthew Baldwin,Matthew,Baldwin,England,811.0,True,2026-08-17
-23821,Yusaku Miyazato,Yusaku,Miyazato,Japan,813.0,True,2026-08-17
-70695,Ryder Cowan,Ryder,Cowan,United States,814.0,True,2026-08-17
-46181,Stuart Krog,Stuart,Krog,Zimbabwe,815.0,True,2026-08-17
-52636,Paul McBride,Paul,McBride,Ireland,816.0,True,2026-08-17
-58658,Peter Knade,Peter,Knade,United States,817.0,True,2026-08-17
-49773,Chase Koepka,Chase,Koepka,United States,818.0,True,2026-08-17
-54300,Nathan Barbieri,Nathan,Barbieri,Australia,819.0,True,2026-08-17
-56512,Conor Purcell,Conor,Purcell,Ireland,819.0,True,2026-08-17
-26908,Yuta Ikeda,Yuta,Ikeda,Japan,821.0,True,2026-08-17
-27466,Spencer Levin,Spencer,Levin,United States,821.0,True,2026-08-17
-29078,Chan Shih-chang,Chan,Shih-chang,Chinese Taipei,823.0,True,2026-08-17
-34554,Jung-gon Hwang,Jung-gon,Hwang,Republic of Korea,824.0,True,2026-08-17
-50083,Genki Okada,Genki,Okada,Japan,825.0,True,2026-08-17
-54871,Grant Booth,Grant,Booth,Australia,826.0,True,2026-08-17
-55460,Sam Choi,Sam,Choi,United States,827.0,True,2026-08-17
-52956,Kyle Barker,Kyle,Barker,South Africa,827.0,True,2026-08-17
-49104,Daiki Imano,Daiki,Imano,Japan,829.0,True,2026-08-17
-33227,Hyun-woo Ryu,Hyun-woo,Ryu,Republic of Korea,830.0,True,2026-08-17
-35524,Wouter De Vries,Wouter,De Vries,Netherlands,831.0,True,2026-08-17
-52552,Maxime Legros,Maxime,Legros,France,832.0,True,2026-08-17
-51631,Marc Hammer,Marc,Hammer,Germany,833.0,True,2026-08-17
-52502,Ryan Brooks,Ryan,Brooks,England,834.0,True,2026-08-17
-61143,Austin Greaser,Austin,Greaser,United States,834.0,True,2026-08-17
-48953,Tawit Polthai,Tawit,Polthai,Thailand,836.0,True,2026-08-17
-67055,Harry Lord,Harry,Lord,England,837.0,True,2026-08-17
-36995,Lauri Ruuska,Lauri,Ruuska,Finland,838.0,True,2026-08-17
-55293,Taiga Yamamoto,Taiga,Yamamoto,Japan,839.0,True,2026-08-17
-35539,Luke Guthrie,Luke,Guthrie,United States,840.0,True,2026-08-17
-50706,Ashton Van Horne,Ashton,Van Horne,United States,840.0,True,2026-08-17
-58669,Jacob Solomon,Jacob,Solomon,United States,842.0,True,2026-08-17
-34632,Choi Min-Chel,Choi,Min-Chel,Republic of Korea,843.0,True,2026-08-17
-53122,Mark Power,Mark,Power,Ireland,844.0,True,2026-08-17
-35356,Yuto Katsumata,Yuto,Katsumata,Japan,845.0,True,2026-08-17
-51336,Maverick Antcliff,Maverick,Antcliff,Australia,846.0,True,2026-08-17
-60750,Mark Goetz,Mark,Goetz,United States,847.0,True,2026-08-17
-59327,Algot Kleen,Algot,Kleen,Sweden,847.0,True,2026-08-17
-28475,Jeff Overton,Jeff,Overton,United States,847.0,True,2026-08-17
-45992,Matias Sanchez,Matias,Sanchez,Australia,850.0,True,2026-08-17
-33674,Adrian Meronk,Adrian,Meronk,Poland,851.0,True,2026-08-17
-46204,Ervin Chang,Ervin,Chang,Malaysia,852.0,True,2026-08-17
-29485,Brett Stegmaier,Brett,Stegmaier,United States,853.0,True,2026-08-17
-50382,Changtai Sudsom,Changtai,Sudsom,Thailand,854.0,True,2026-08-17
-65373,Alex Maguire,Alex,Maguire,Ireland,855.0,True,2026-08-17
-59448,Griffin Barela,Griffin,Barela,United States,856.0,True,2026-08-17
-20802,Jean Hugo,Jean,Hugo,South Africa,857.0,True,2026-08-17
-58652,Sam Jones,Sam,Jones,New Zealand,858.0,True,2026-08-17
-35956,Graham Van der Merwe,Graham,Van der Merwe,South Africa,859.0,True,2026-08-17
-46827,Xiao Bowen,Xiao,Bowen,People’s Rep of China,860.0,True,2026-08-17
-29303,Hur In-hoi,Hur,In-hoi,Republic of Korea,860.0,True,2026-08-17
-46928,Taiga Sugihara,Taiga,Sugihara,Japan,862.0,True,2026-08-17
-30763,Woo-Hyun Kim,Woo-Hyun,Kim,,863.0,True,2026-08-17
-52096,Adri Arnaus,Adri,Arnaus,Spain,864.0,True,2026-08-17
-36872,Jack McDonald,Jack,McDonald,Scotland,864.0,True,2026-08-17
-51712,Robin Petersson,Robin,Petersson,Sweden,864.0,True,2026-08-17
-48629,Jesper Sandborg,Jesper,Sandborg,Sweden,867.0,True,2026-08-17
-54237,Ahmad Baig,Ahmad,Baig,Pakistan,868.0,True,2026-08-17
-46435,Austin Cook,Austin,Cook,United States,868.0,True,2026-08-17
-63613,Jake Mcgoldrick,Jake,Mcgoldrick,England,868.0,True,2026-08-17
-28697,Gaganjeet Bhullar,Gaganjeet,Bhullar,India,871.0,True,2026-08-17
-29314,Lee Dai-han,Lee,Dai-han,Republic of Korea,872.0,True,2026-08-17
-55623,Kaito Onishi,Kaito,Onishi,Japan,873.0,True,2026-08-17
-56448,Nick Carlson,Nick,Carlson,United States,873.0,True,2026-08-17
-61452,Ryan Ang,Ryan,Ang,Singapore,875.0,True,2026-08-17
-49557,James Leow,James,Leow,Singapore,876.0,True,2026-08-17
-36439,Nicklaus Chiam,Nicklaus,Chiam,Singapore,877.0,True,2026-08-17
-67198,Sebastian Moss,Sebastian,Moss,United States,877.0,True,2026-08-17
-45227,Lars Van Meijel,Lars,Van Meijel,Netherlands,879.0,True,2026-08-17
-53188,Kosuke Suzuki,Kosuke,Suzuki,Japan,880.0,True,2026-08-17
-68989,Jase Summy,Jase,Summy,United States,881.0,True,2026-08-17
-50488,Chris Crawford,Chris,Crawford,United States,882.0,True,2026-08-17
-51532,Jonathan De Los Reyes,Jonathan,De Los Reyes,United States,883.0,True,2026-08-17
-30957,Max Kieffer,Max,Kieffer,Germany,884.0,True,2026-08-17
-58619,Kevin Velo,Kevin,Velo,United States,885.0,True,2026-08-17
-50586,Martin Eriksson,Martin,Eriksson,Sweden,886.0,True,2026-08-17
-25818,Scott Piercy,Scott,Piercy,United States,887.0,True,2026-08-17
-35437,Carter Jenkins,Carter,Jenkins,United States,888.0,True,2026-08-17
-29903,Brett Rankin,Brett,Rankin,Australia,889.0,True,2026-08-17
-57353,George Bloor,George,Bloor,England,890.0,True,2026-08-17
-28937,George Coetzee,George,Coetzee,South Africa,891.0,True,2026-08-17
-45158,Cory Crawford,Cory,Crawford,Australia,891.0,True,2026-08-17
-35477,Yushi Ito,Yushi,Ito,Japan,893.0,True,2026-08-17
-65418,Charlie Crockett,Charlie,Crockett,England,894.0,True,2026-08-17
-50808,Shotaro Ban,Shotaro,Ban,United States,895.0,True,2026-08-17
-30966,Allen John,Allen,John,Germany,896.0,True,2026-08-17
-28259,Sangmoon Bae,Sangmoon,Bae,Republic of Korea,897.0,True,2026-08-17
-58251,Beau Breault,Beau,Breault,United States,898.0,True,2026-08-17
-34300,Daijiro Izumida,Daijiro,Izumida,Japan,899.0,True,2026-08-17
-48924,Juan Salma,Juan,Salma,,900.0,True,2026-08-17
-59153,Charlie Nikitas,Charlie,Nikitas,United States,901.0,True,2026-08-17
-27909,Wil Besseling,Wil,Besseling,Netherlands,902.0,True,2026-08-17
-54468,Joshua Lee,Joshua,Lee,United States,902.0,True,2026-08-17
-65502,Tyran Snyders,Tyran,Snyders,South Africa,904.0,True,2026-08-17
-49884,Cody Blick,Cody,Blick,United States,905.0,True,2026-08-17
-36837,Julien Brun,Julien,Brun,France,906.0,True,2026-08-17
-51264,Jediah Morgan,Jediah,Morgan,Australia,907.0,True,2026-08-17
-46003,N Thangaraja,N,Thangaraja,Sri Lanka,908.0,True,2026-08-17
-35230,Nelson Ledesma,Nelson,Ledesma,Argentina,909.0,True,2026-08-17
-56938,Jorge Garcia,Jorge,Garcia,Venezuela,910.0,True,2026-08-17
-47128,Richy Werenski,Richy,Werenski,United States,911.0,True,2026-08-17
-55072,Jacob W. Agerschou,Jacob,W. Agerschou,Denmark,912.0,True,2026-08-17
-46422,Micah Shin,Micah,Shin,United States,912.0,True,2026-08-17
-51077,Jonathan Wijono,Jonathan,Wijono,Indonesia,914.0,True,2026-08-17
-62704,Shaurya Bhattacharya,Shaurya,Bhattacharya,India,915.0,True,2026-08-17
-53125,Thomas Sloman,Thomas,Sloman,England,916.0,True,2026-08-17
-54288,Harrison Crowe,Harrison,Crowe,Australia,917.0,True,2026-08-17
-57535,Jonas Baumgartner,Jonas,Baumgartner,Germany,917.0,True,2026-08-17
-31273,Gavin Green,Gavin,Green,Malaysia,919.0,True,2026-08-17
-46525,Gary Hurley,Gary,Hurley,Ireland,919.0,True,2026-08-17
-58077,Tsubasa Ukita,Tsubasa,Ukita,Japan,921.0,True,2026-08-17
-63158,Brandon Kewalramani,Brandon,Kewalramani,United States,922.0,True,2026-08-17
-51641,Haraldur Magnus,Haraldur,Magnus,Iceland,922.0,True,2026-08-17
-47493,Yuichi Teruya,Yuichi,Teruya,Japan,922.0,True,2026-08-17
-34563,Chesson Hadley,Chesson,Hadley,United States,925.0,True,2026-08-17
-63350,Albert Boneta,Albert,Boneta,Spain,926.0,True,2026-08-17
-50154,Joseph Winslow,Joseph,Winslow,United States,927.0,True,2026-08-17
-29655,Björn Åkesson,Björn,Åkesson,Sweden,928.0,True,2026-08-17
-35099,Khalin Joshi,Khalin,Joshi,India,929.0,True,2026-08-17
-39113,Shubhankar Sharma,Shubhankar,Sharma,India,930.0,True,2026-08-17
-63808,Carl Jano Corpus,Carl,Jano Corpus,Philippines,930.0,True,2026-08-17
-51008,Sebastian Eidaether Syr,Sebastian,Eidaether Syr,Norway,932.0,True,2026-08-17
-33117,Dale Whitnell,Dale,Whitnell,England,933.0,True,2026-08-17
-53501,Victor Pastor Rufian,Victor,Pastor Rufian,Spain,933.0,True,2026-08-17
-50159,Oliver Gillberg,Oliver,Gillberg,Switzerland,935.0,True,2026-08-17
-52639,Adam Blomme,Adam,Blomme,Sweden,936.0,True,2026-08-17
-26300,Matt Jones,Matt,Jones,Australia,937.0,True,2026-08-17
-36343,Christopher Wood,Christopher,Wood,Australia,938.0,True,2026-08-17
-51190,Guntaek Koh,Guntaek,Koh,Republic of Korea,939.0,True,2026-08-17
-29022,Netipong Sritonginn,Netipong,Sritonginn,Thailand,939.0,True,2026-08-17
-67125,Enrique Dimayuga,Enrique,Dimayuga,Philippines,941.0,True,2026-08-17
-60795,Frank Kennedy,Frank,Kennedy,England,941.0,True,2026-08-17
-61081,Rintaro Nakano,Rintaro,Nakano,Japan,943.0,True,2026-08-17
-33102,Jason Roets,Jason,Roets,South Africa,943.0,True,2026-08-17
-66071,Sean Jean Ramos,Sean,Jean Ramos,Philippines,945.0,True,2026-08-17
-57292,Hiroki Tanaka,Hiroki,Tanaka,Japan,945.0,True,2026-08-17
-59131,Luke Long,Luke,Long,United States,947.0,True,2026-08-17
-57721,Bradley Bawden,Bradley,Bawden,England,948.0,True,2026-08-17
-34235,Shunya Takeyasu,Shunya,Takeyasu,Japan,949.0,True,2026-08-17
-58584,Charles Huntzinger,Charles,Huntzinger,United States,950.0,True,2026-08-17
-24461,Thomas Aiken,Thomas,Aiken,South Africa,951.0,True,2026-08-17
-33017,Keenan Davidse,Keenan,Davidse,South Africa,952.0,True,2026-08-17
-63806,Hunter Logan,Hunter,Logan,United States,953.0,True,2026-08-17
-57257,Filip Jakubcik,Filip,Jakubcik,Czechia,954.0,True,2026-08-17
-66416,Preston Stout,Preston,Stout,United States,955.0,True,2026-08-17
-58970,Eric McIntosh,Eric,McIntosh,Scotland,956.0,True,2026-08-17
-63624,John Vogelpohl,John,Vogelpohl,United States,957.0,True,2026-08-17
-58385,Jakkanat Inmee,Jakkanat,Inmee,Thailand,958.0,True,2026-08-17
-57633,Ollie Osborne,Ollie,Osborne,United States,959.0,True,2026-08-17
-25885,Kim Tae-hoon,Kim,Tae-hoon,Republic of Korea,959.0,True,2026-08-17
-60262,Pierre Viallaneix,Pierre,Viallaneix,France,959.0,True,2026-08-17
-49348,Aidric Chan,Aidric,Chan,Philippines,962.0,True,2026-08-17
-60065,Ryan Hall,Ryan,Hall,United States,962.0,True,2026-08-17
-54423,Malcolm Mitchell,Malcolm,Mitchell,South Africa,964.0,True,2026-08-17
-56501,Pukhraj Singh Gill,Pukhraj,Singh Gill,India,965.0,True,2026-08-17
-39831,Bobby Bai,Bobby,Bai,People’s Rep of China,965.0,True,2026-08-17
-33769,Thanyakorn Khrongpha,Thanyakorn,Khrongpha,Thailand,967.0,True,2026-08-17
-56001,Jean Bekirian,Jean,Bekirian,Armenia,968.0,True,2026-08-17
-36760,Yun-seok Gang,Yun-seok,Gang,Republic of Korea,968.0,True,2026-08-17
-58827,Ryan Grider,Ryan,Grider,United States,970.0,True,2026-08-17
-48372,Marcus Helligkilde,Marcus,Helligkilde,Denmark,971.0,True,2026-08-17
-28092,D.H. Lee,D.H.,Lee,Republic of Korea,971.0,True,2026-08-17
-58583,OJ Farrell,OJ,Farrell,England,973.0,True,2026-08-17
-55930,Fred Biondi,Fred,Biondi,Brazil,974.0,True,2026-08-17
-67360,Brantley Scott,Brantley,Scott,United States,975.0,True,2026-08-17
-64471,Minhyeok Yang,Minhyeok,Yang,Republic of Korea,976.0,True,2026-08-17
-32618,Rhein Gibson,Rhein,Gibson,Australia,976.0,True,2026-08-17
-58714,Nick Infanti,Nick,Infanti,United States,976.0,True,2026-08-17
-32519,Benjamin Rusch,Benjamin,Rusch,Switzerland,976.0,True,2026-08-17
-23063,Scott Hend,Scott,Hend,Australia,980.0,True,2026-08-17
-53136,Jack Davidson,Jack,Davidson,Wales,981.0,True,2026-08-17
-53013,Josh Hilleard,Josh,Hilleard,England,981.0,True,2026-08-17
-39943,Woosuk Hwang,Woosuk,Hwang,Republic of Korea,983.0,True,2026-08-17
-34707,Siddikur Rahman,Siddikur,Rahman,Bangladesh,984.0,True,2026-08-17
-25834,Daniel Summerhays,Daniel,Summerhays,United States,985.0,True,2026-08-17
-30959,Alexander Knappe,Alexander,Knappe,Germany,986.0,True,2026-08-17
-35913,Michael Stewart,Michael,Stewart,Scotland,986.0,True,2026-08-17
-33921,Ben Campbell,Ben,Campbell,New Zealand,988.0,True,2026-08-17
-33446,Mathieu Decottignies-Lafon,Mathieu,Decottignies-Lafon,France,989.0,True,2026-08-17
-52398,Estiaan Conradie,Estiaan,Conradie,South Africa,990.0,True,2026-08-17
-52428,Heemin Chang,Heemin,Chang,Republic of Korea,991.0,True,2026-08-17
-48156,Robin Sciot-Siegrist,Robin,Sciot-Siegrist,France,992.0,True,2026-08-17
-63764,Tyler Leach,Tyler,Leach,United States,993.0,True,2026-08-17
-59137,RJ Manke,RJ,Manke,United States,994.0,True,2026-08-17
-59839,Nikhil Rama,Nikhil,Rama,South Africa,994.0,True,2026-08-17
-49067,Pierre Pineau,Pierre,Pineau,France,996.0,True,2026-08-17
-49099,Denzel Ieremia,Denzel,Ieremia,New Zealand,996.0,True,2026-08-17
-45569,Marcos Montenegro,Marcos,Montenegro,Argentina,998.0,True,2026-08-17
-,,,,,,True,2026-08-17
+46046,Scottie Scheffler,Scottie,Scheffler,United States,1.0,True,2026-08-24
+28237,Rory McIlroy,Rory,McIlroy,Northern Ireland,2.0,True,2026-08-24
+57366,Cameron Young,Cameron,Young,United States,3.0,True,2026-08-24
+40098,Matt Fitzpatrick,Matt,Fitzpatrick,England,4.0,True,2026-08-24
+30911,Tommy Fleetwood,Tommy,Fleetwood,England,5.0,True,2026-08-24
+34098,Russell Henley,Russell,Henley,United States,6.0,True,2026-08-24
+47504,Sam Burns,Sam,Burns,United States,7.0,True,2026-08-24
+51766,Wyndham Clark,Wyndham,Clark,United States,8.0,True,2026-08-24
+59095,Chris Gotterup,Chris,Gotterup,United States,9.0,True,2026-08-24
+48081,Xander Schauffele,Xander,Schauffele,United States,10.0,True,2026-08-24
+50525,Collin Morikawa,Collin,Morikawa,United States,11.0,True,2026-08-24
+22405,Justin Rose,Justin,Rose,England,12.0,True,2026-08-24
+37455,Si Woo Kim,Si,Woo Kim,Republic of Korea,13.0,True,2026-08-24
+46717,Viktor Hovland,Viktor,Hovland,Norway,14.0,True,2026-08-24
+46970,Jon Rahm,Jon,Rahm,Spain,15.0,True,2026-08-24
+39324,J.J. Spaun,J.J.,Spaun,United States,16.0,True,2026-08-24
+52955,Ludvig Åberg,Ludvig,Åberg,Sweden,17.0,True,2026-08-24
+27349,Alex Noren,Alex,Noren,Sweden,18.0,True,2026-08-24
+52215,Robert MacIntyre,Robert,MacIntyre,Scotland,19.0,True,2026-08-24
+46414,Aaron Rai,Aaron,Rai,England,20.0,True,2026-08-24
+54591,Ben Griffin,Ben,Griffin,United States,21.0,True,2026-08-24
+34363,Tyrrell Hatton,Tyrrell,Hatton,England,22.0,True,2026-08-24
+33448,Justin Thomas,Justin,Thomas,United States,23.0,True,2026-08-24
+29936,Ryan Fox,Ryan,Fox,New Zealand,24.0,True,2026-08-24
+32839,Hideki Matsuyama,Hideki,Matsuyama,Japan,25.0,True,2026-08-24
+59018,Ryan Gerard,Ryan,Gerard,United States,26.0,True,2026-08-24
+37378,Min Woo Lee,Min,Woo Lee,Australia,27.0,True,2026-08-24
+55182,Tom Kim,Tom,Kim,Republic of Korea,28.0,True,2026-08-24
+49855,Kristoffer Reitan,Kristoffer,Reitan,Norway,29.0,True,2026-08-24
+49960,Sepp Straka,Sepp,Straka,Austria,30.0,True,2026-08-24
+60004,Jacob Bridgeman,Jacob,Bridgeman,United States,31.0,True,2026-08-24
+34360,Patrick Reed,Patrick,Reed,United States,32.0,True,2026-08-24
+56630,Akshay Bhatia,Akshay,Bhatia,United States,33.0,True,2026-08-24
+61522,Michael Brennan,Michael,Brennan,United States,34.0,True,2026-08-24
+49771,J.T. Poston,J.T.,Poston,United States,35.0,True,2026-08-24
+47959,Bryson DeChambeau,Bryson,DeChambeau,United States,36.0,True,2026-08-24
+48117,Kurt Kitayama,Kurt,Kitayama,United States,37.0,True,2026-08-24
+35450,Patrick Cantlay,Patrick,Cantlay,United States,38.0,True,2026-08-24
+34099,Harris English,Harris,English,United States,39.0,True,2026-08-24
+52453,Nicolai Højgaard,Nicolai,Højgaard,Denmark,40.0,True,2026-08-24
+57364,Michael Thorbjornsen,Michael,Thorbjornsen,United States,41.0,True,2026-08-24
+34021,Bud Cauley,Bud,Cauley,United States,42.0,True,2026-08-24
+45486,Joaquin Niemann,Joaquin,Niemann,Chile,43.0,True,2026-08-24
+32102,Rickie Fowler,Rickie,Fowler,United States,44.0,True,2026-08-24
+46340,Alex Smalley,Alex,Smalley,United States,45.0,True,2026-08-24
+46442,Maverick McNealy,Maverick,McNealy,United States,46.0,True,2026-08-24
+31323,Gary Woodland,Gary,Woodland,United States,47.0,True,2026-08-24
+47420,Jake Knapp,Jake,Knapp,United States,48.0,True,2026-08-24
+33141,Keegan Bradley,Keegan,Bradley,United States,49.0,True,2026-08-24
+39058,Lucas Herbert,Lucas,Herbert,Australia,50.0,True,2026-08-24
+24502,Adam Scott,Adam,Scott,Australia,51.0,True,2026-08-24
+39997,Corey Conners,Corey,Conners,Canada,52.0,True,2026-08-24
+33204,Shane Lowry,Shane,Lowry,Ireland,53.0,True,2026-08-24
+51003,Marco Penge,Marco,Penge,England,54.0,True,2026-08-24
+34046,Jordan Spieth,Jordan,Spieth,United States,55.0,True,2026-08-24
+51349,Nico Echavarria,Nico,Echavarria,Colombia,56.0,True,2026-08-24
+40026,Daniel Berger,Daniel,Berger,United States,57.0,True,2026-08-24
+55893,Sam Stevens,Sam,Stevens,United States,58.0,True,2026-08-24
+48887,Matt Wallace,Matt,Wallace,England,59.0,True,2026-08-24
+39975,Michael Kim,Michael,Kim,United States,60.0,True,2026-08-24
+27644,Brian Harman,Brian,Harman,United States,61.0,True,2026-08-24
+39971,Sungjae Im,Sungjae,Im,Republic of Korea,62.0,True,2026-08-24
+28089,Jason Day,Jason,Day,Australia,63.0,True,2026-08-24
+57492,Eugenio Chacarra,Eugenio,Chacarra,Spain,64.0,True,2026-08-24
+66701,Jackson Koivun,Jackson,Koivun,United States,65.0,True,2026-08-24
+59836,Pierceson Coody,Pierceson,Coody,United States,66.0,True,2026-08-24
+63454,Johnny Keefer,Johnny,Keefer,United States,67.0,True,2026-08-24
+57688,Casey Jarvis,Casey,Jarvis,South Africa,68.0,True,2026-08-24
+51287,Ryo Hisatsune,Ryo,Hisatsune,Japan,69.0,True,2026-08-24
+55721,Alex Fitzpatrick,Alex,Fitzpatrick,England,70.0,True,2026-08-24
+59141,Matt McCarty,Matt,McCarty,United States,71.0,True,2026-08-24
+46464,Jordan Smith,Jordan,Smith,England,72.0,True,2026-08-24
+52686,Rasmus Højgaard,Rasmus,Højgaard,Denmark,73.0,True,2026-08-24
+51997,Andrew Novak,Andrew,Novak,United States,74.0,True,2026-08-24
+47591,Eric Cole,Eric,Cole,United States,75.0,True,2026-08-24
+57975,Harry Hall,Harry,Hall,England,76.0,True,2026-08-24
+39546,Keith Mitchell,Keith,Mitchell,United States,77.0,True,2026-08-24
+61193,David Puig,David,Puig,Spain,78.0,True,2026-08-24
+25493,Nick Taylor,Nick,Taylor,Canada,79.0,True,2026-08-24
+39977,Max Homa,Max,Homa,United States,80.0,True,2026-08-24
+52666,Sami Valimaki,Sami,Valimaki,Finland,81.0,True,2026-08-24
+52689,Rasmus Neergaard-Petersen,Rasmus,Neergaard-Petersen,Denmark,82.0,True,2026-08-24
+57123,Steven Fisk,Steven,Fisk,United States,83.0,True,2026-08-24
+48867,Matti Schmid,Matti,Schmid,Germany,84.0,True,2026-08-24
+63455,Ross Steelman,Ross,Steelman,United States,85.0,True,2026-08-24
+51634,Sahith Theegala,Sahith,Theegala,United States,86.0,True,2026-08-24
+59143,Mac Meissner,Mac,Meissner,United States,87.0,True,2026-08-24
+51977,Max Greyserman,Max,Greyserman,United States,88.0,True,2026-08-24
+33653,Thomas Detry,Thomas,Detry,Belgium,89.0,True,2026-08-24
+63343,Aldrich Potgieter,Aldrich,Potgieter,South Africa,90.0,True,2026-08-24
+47993,Denny McCarthy,Denny,McCarthy,United States,91.0,True,2026-08-24
+57737,Jayden Schaper,Jayden,Schaper,South Africa,92.0,True,2026-08-24
+35461,Beau Hossler,Beau,Hossler,United States,93.0,True,2026-08-24
+28723,John Parry,John,Parry,England,94.0,True,2026-08-24
+49228,Keita Nakajima,Keita,Nakajima,Japan,95.0,True,2026-08-24
+40250,Taylor Pendrith,Taylor,Pendrith,Canada,96.0,True,2026-08-24
+45242,Kevin Yu,Kevin,Yu,Chinese Taipei,97.0,True,2026-08-24
+59440,Ricky Castillo,Ricky,Castillo,United States,98.0,True,2026-08-24
+36699,Patrick Rodgers,Patrick,Rodgers,United States,99.0,True,2026-08-24
+45522,Christiaan Bezuidenhout,Christiaan,Bezuidenhout,South Africa,100.0,True,2026-08-24
+31646,Emiliano Grillo,Emiliano,Grillo,Argentina,101.0,True,2026-08-24
+66417,Blades Brown,Blades,Brown,United States,102.0,True,2026-08-24
+26328,Shaun Norris,Shaun,Norris,South Africa,103.0,True,2026-08-24
+34256,Andrew Putnam,Andrew,Putnam,United States,104.0,True,2026-08-24
+51696,Rico Hoey,Rico,Hoey,Philippines,105.0,True,2026-08-24
+60019,Jackson Suber,Jackson,Suber,United States,106.0,True,2026-08-24
+25900,Lucas Glover,Lucas,Glover,United States,107.0,True,2026-08-24
+36884,Ben Kohles,Ben,Kohles,United States,108.0,True,2026-08-24
+60386,Sudarshan Yellamaraju,Sudarshan,Yellamaraju,Canada,109.0,True,2026-08-24
+36799,Stephan Jaeger,Stephan,Jaeger,Germany,110.0,True,2026-08-24
+48237,Oliver Lindell,Oliver,Lindell,Finland,111.0,True,2026-08-24
+53165,Doc Redman,Doc,Redman,United States,112.0,True,2026-08-24
+30926,Chris Kirk,Chris,Kirk,United States,113.0,True,2026-08-24
+58168,Davis Thompson,Davis,Thompson,United States,114.0,True,2026-08-24
+50095,Austin Smotherman,Austin,Smotherman,United States,115.0,True,2026-08-24
+39335,Kevin Roy,Kevin,Roy,United States,116.0,True,2026-08-24
+61148,Kota Kaneko,Kota,Kaneko,Japan,117.0,True,2026-08-24
+51950,Max McGreevy,Max,McGreevy,United States,118.0,True,2026-08-24
+36689,Brooks Koepka,Brooks,Koepka,United States,119.0,True,2026-08-24
+49813,Daniel Hillier,Daniel,Hillier,New Zealand,120.0,True,2026-08-24
+35296,Haotong Li,Haotong,Li,People’s Rep of China,121.0,True,2026-08-24
+54421,Garrick Higgo,Garrick,Higgo,South Africa,122.0,True,2026-08-24
+47995,Davis Riley,Davis,Riley,United States,123.0,True,2026-08-24
+36326,David Lipsky,David,Lipsky,United States,124.0,True,2026-08-24
+35532,Tom Hoge,Tom,Hoge,United States,125.0,True,2026-08-24
+54788,Chandler Blanchet,Chandler,Blanchet,United States,126.0,True,2026-08-24
+47497,Hennie Du Plessis,Hennie,Du Plessis,South Africa,127.0,True,2026-08-24
+64052,Angel Ayora,Angel,Ayora,Spain,128.0,True,2026-08-24
+27649,Brandt Snedeker,Brandt,Snedeker,United States,129.0,True,2026-08-24
+57900,Chandler Phillips,Chandler,Phillips,United States,130.0,True,2026-08-24
+57259,Dan Brown,Dan,Brown,England,131.0,True,2026-08-24
+35891,Cameron Smith,Cameron,Smith,Australia,132.0,True,2026-08-24
+54628,Lee Hodges,Lee,Hodges,United States,133.0,True,2026-08-24
+60165,Jose Luis Ballester,Jose,Luis Ballester,Spain,134.0,True,2026-08-24
+35314,Andy Sullivan,Andy,Sullivan,England,135.0,True,2026-08-24
+40058,Zac Blair,Zac,Blair,United States,136.0,True,2026-08-24
+29725,Tony Finau,Tony,Finau,United States,137.0,True,2026-08-24
+54185,Elvis Smylie,Elvis,Smylie,Australia,138.0,True,2026-08-24
+63121,William Mouw,William,Mouw,United States,139.0,True,2026-08-24
+55965,Jacob Skov Olesen,Jacob,Skov Olesen,Denmark,140.0,True,2026-08-24
+24459,Richard Sterne,Richard,Sterne,South Africa,141.0,True,2026-08-24
+34371,Adrien Saddier,Adrien,Saddier,France,142.0,True,2026-08-24
+50823,Tom McKibbin,Tom,McKibbin,Northern Ireland,143.0,True,2026-08-24
+36801,Mark Hubbard,Mark,Hubbard,United States,144.0,True,2026-08-24
+48293,Mikael Lindberg,Mikael,Lindberg,Sweden,145.0,True,2026-08-24
+34126,Scott Vincent,Scott,Vincent,Zimbabwe,146.0,True,2026-08-24
+48001,Zach Bauchou,Zach,Bauchou,United States,147.0,True,2026-08-24
+35506,Mackenzie Hughes,Mackenzie,Hughes,Canada,148.0,True,2026-08-24
+52375,Doug Ghim,Doug,Ghim,United States,149.0,True,2026-08-24
+55707,Calum Hill,Calum,Hill,Scotland,150.0,True,2026-08-24
+65496,Cole Sherwood,Cole,Sherwood,United States,151.0,True,2026-08-24
+39201,Nacho Elvira,Nacho,Elvira,Spain,152.0,True,2026-08-24
+54525,Ian Holt,Ian,Holt,United States,153.0,True,2026-08-24
+29420,Billy Horschel,Billy,Horschel,United States,154.0,True,2026-08-24
+36344,Michael Hollick,Michael,Hollick,South Africa,155.0,True,2026-08-24
+47679,Victor Perez,Victor,Perez,France,156.0,True,2026-08-24
+49947,Taylor Moore,Taylor,Moore,United States,157.0,True,2026-08-24
+46443,Brian Campbell,Brian,Campbell,United States,158.0,True,2026-08-24
+34362,Laurie Canter,Laurie,Canter,England,159.0,True,2026-08-24
+45194,Marcus Armitage,Marcus,Armitage,England,160.0,True,2026-08-24
+45847,JC Ritchie,JC,Ritchie,South Africa,161.0,True,2026-08-24
+51680,Alistair Docherty,Alistair,Docherty,United States,162.0,True,2026-08-24
+33968,Thorbjørn Olesen,Thorbjørn,Olesen,Denmark,163.0,True,2026-08-24
+29454,Bernd Wiesberger,Bernd,Wiesberger,Austria,164.0,True,2026-08-24
+57869,Ben James,Ben,James,United States,165.0,True,2026-08-24
+47078,Travis Smyth,Travis,Smyth,Australia,166.0,True,2026-08-24
+50188,S.H. Kim,S.H.,Kim,Republic of Korea,167.0,True,2026-08-24
+64624,Tommy Morrison,Tommy,Morrison,United States,168.0,True,2026-08-24
+46823,Jeremy Gandon,Jeremy,Gandon,France,169.0,True,2026-08-24
+63459,Dan Bradbury,Dan,Bradbury,England,170.0,True,2026-08-24
+33667,Carlos Ortiz,Carlos,Ortiz,Mexico,171.0,True,2026-08-24
+60495,Davis Bryant,Davis,Bryant,United States,172.0,True,2026-08-24
+63125,Dylan Menante,Dylan,Menante,United States,173.0,True,2026-08-24
+59125,Davis Lamb,Davis,Lamb,United States,174.0,True,2026-08-24
+57586,Jesper Svensson,Jesper,Svensson,Sweden,175.0,True,2026-08-24
+47917,Takumi Kanaya,Takumi,Kanaya,Japan,176.0,True,2026-08-24
+21209,Sergio Garcia,Sergio,Garcia,Spain,177.0,True,2026-08-24
+34317,Joakim Lagergren,Joakim,Lagergren,Sweden,178.0,True,2026-08-24
+27064,Jhonattan Vegas,Jhonattan,Vegas,Venezuela,179.0,True,2026-08-24
+35709,Jeff Winther,Jeff,Winther,Denmark,180.0,True,2026-08-24
+45523,Thriston Lawrence,Thriston,Lawrence,South Africa,181.0,True,2026-08-24
+60073,Martin Couvra,Martin,Couvra,France,182.0,True,2026-08-24
+35778,Kazuki Higa,Kazuki,Higa,Japan,183.0,True,2026-08-24
+50497,Adrien Dumont de Chassart,Adrien,Dumont de Chassart,Belgium,184.0,True,2026-08-24
+57362,Austin Eckroat,Austin,Eckroat,United States,185.0,True,2026-08-24
+35658,Kristoffer Ventura,Kristoffer,Ventura,Norway,186.0,True,2026-08-24
+50286,A.J. Ewart,A.J.,Ewart,Canada,187.0,True,2026-08-24
+58999,Hunter Eichhorn,Hunter,Eichhorn,United States,188.0,True,2026-08-24
+23108,Matt Kuchar,Matt,Kuchar,United States,189.0,True,2026-08-24
+32367,Jorge Campillo,Jorge,Campillo,Spain,190.0,True,2026-08-24
+37338,Zecheng Dou,Zecheng,Dou,People’s Rep of China,190.0,True,2026-08-24
+47983,Chad Ramey,Chad,Ramey,United States,192.0,True,2026-08-24
+52513,Carson Young,Carson,Young,United States,193.0,True,2026-08-24
+51894,Vince Whaley,Vince,Whaley,United States,194.0,True,2026-08-24
+45526,Abraham Ancer,Abraham,Ancer,Mexico,195.0,True,2026-08-24
+47347,Adam Schenk,Adam,Schenk,United States,196.0,True,2026-08-24
+28252,Seamus Power,Seamus,Power,Ireland,197.0,True,2026-08-24
+33948,Byeong Hun An,Byeong,Hun An,Republic of Korea,198.0,True,2026-08-24
+50223,Ewen Ferguson,Ewen,Ferguson,Scotland,199.0,True,2026-08-24
+54304,Karl Vilips,Karl,Vilips,Australia,200.0,True,2026-08-24
+33974,Dean Burmester,Dean,Burmester,South Africa,201.0,True,2026-08-24
+29484,Peter Uihlein,Peter,Uihlein,United States,202.0,True,2026-08-24
+54794,Jay Card III,Jay,Card III,United States,203.0,True,2026-08-24
+61431,Yanhan Zhou,Yanhan,Zhou,People’s Rep of China,204.0,True,2026-08-24
+60067,Joe Highsmith,Joe,Highsmith,United States,205.0,True,2026-08-24
+54621,Kazuma Kobori,Kazuma,Kobori,New Zealand,206.0,True,2026-08-24
+40006,Erik van Rooyen,Erik,van Rooyen,South Africa,206.0,True,2026-08-24
+45729,Drew Nesbitt,Drew,Nesbitt,Canada,208.0,True,2026-08-24
+51151,Todd Clements,Todd,Clements,England,209.0,True,2026-08-24
+60531,Derek Hitchner,Derek,Hitchner,United States,210.0,True,2026-08-24
+34076,Joel Dahmen,Joel,Dahmen,United States,211.0,True,2026-08-24
+28340,Julien Guerrier,Julien,Guerrier,France,212.0,True,2026-08-24
+49037,Stefano Mazzoli,Stefano,Mazzoli,Italy,213.0,True,2026-08-24
+58690,Freddy Schott,Freddy,Schott,Germany,214.0,True,2026-08-24
+63807,Neal Shipley,Neal,Shipley,United States,215.0,True,2026-08-24
+57593,Ian Gilligan,Ian,Gilligan,United States,216.0,True,2026-08-24
+34643,Michael Johnson,Michael,Johnson,United States,217.0,True,2026-08-24
+54576,Patrick Fishburn,Patrick,Fishburn,United States,218.0,True,2026-08-24
+28300,Joost Luiten,Joost,Luiten,Netherlands,219.0,True,2026-08-24
+29718,Anthony Kim,Anthony,Kim,United States,220.0,True,2026-08-24
+50762,Alejandro Del Rey,Alejandro,Del Rey,Spain,221.0,True,2026-08-24
+31109,Richard Lee,Richard,Lee,Canada,221.0,True,2026-08-24
+30925,Dustin Johnson,Dustin,Johnson,United States,223.0,True,2026-08-24
+46441,Robby Shelton,Robby,Shelton,United States,224.0,True,2026-08-24
+37189,Harold Varner III,Harold,Varner III,United States,225.0,True,2026-08-24
+59567,Emilio Gonzalez,Emilio,Gonzalez,Mexico,226.0,True,2026-08-24
+29974,Branden Grace,Branden,Grace,South Africa,227.0,True,2026-08-24
+59798,Oihan Guillamoundeguy,Oihan,Guillamoundeguy,France,228.0,True,2026-08-24
+47463,Cameron John,Cameron,John,Australia,229.0,True,2026-08-24
+25198,Francesco Molinari,Francesco,Molinari,Italy,230.0,True,2026-08-24
+39067,MJ Daffue,MJ,Daffue,South Africa,231.0,True,2026-08-24
+39852,Doyeob Mun,Doyeob,Mun,Republic of Korea,232.0,True,2026-08-24
+59006,Davis Chatfield,Davis,Chatfield,United States,233.0,True,2026-08-24
+58600,Cooper Dossey,Cooper,Dossey,United States,234.0,True,2026-08-24
+59875,Jang Yu Bin,Jang,Yu Bin,Republic of Korea,235.0,True,2026-08-24
+39262,Alvaro Ortiz,Alvaro,Ortiz,Mexico,236.0,True,2026-08-24
+46646,Antoine Rozner,Antoine,Rozner,France,237.0,True,2026-08-24
+32659,Darius Van Driel,Darius,Van Driel,Netherlands,238.0,True,2026-08-24
+37275,Sam Ryder,Sam,Ryder,United States,239.0,True,2026-08-24
+52514,Trace Crowe,Trace,Crowe,United States,240.0,True,2026-08-24
+37066,Grant Forrest,Grant,Forrest,Scotland,241.0,True,2026-08-24
+39327,Ben Silverman,Ben,Silverman,Canada,242.0,True,2026-08-24
+63196,Wenyi Ding,Wenyi,Ding,People’s Rep of China,243.0,True,2026-08-24
+59160,John Pak,John,Pak,United States,244.0,True,2026-08-24
+48936,Ugo Coussaud,Ugo,Coussaud,France,245.0,True,2026-08-24
+46594,Ricardo Gouveia,Ricardo,Gouveia,Portugal,246.0,True,2026-08-24
+58601,Davis Shore,Davis,Shore,United States,247.0,True,2026-08-24
+50198,Maximilian Steinlech,Maximilian,Steinlech,Austria,248.0,True,2026-08-24
+45426,Nathan Kimsey,Nathan,Kimsey,England,249.0,True,2026-08-24
+54299,Taichi Kho,Taichi,Kho,Hong Kong,250.0,True,2026-08-24
+63541,Thomas Ponder,Thomas,Ponder,United States,251.0,True,2026-08-24
+65443,Caleb VanArragon,Caleb,VanArragon,United States,252.0,True,2026-08-24
+34607,Francesco Laporta,Francesco,Laporta,Italy,253.0,True,2026-08-24
+64054,Caleb Surratt,Caleb,Surratt,United States,254.0,True,2026-08-24
+35310,Lanto Griffin,Lanto,Griffin,United States,255.0,True,2026-08-24
+49766,Hank Lebioda,Hank,Lebioda,United States,256.0,True,2026-08-24
+26499,Rafa Cabrera Bello,Rafa,Cabrera Bello,Spain,257.0,True,2026-08-24
+26851,Marc Leishman,Marc,Leishman,Australia,258.0,True,2026-08-24
+60015,Logan McAllister,Logan,McAllister,United States,259.0,True,2026-08-24
+57942,Daniel Da Costa Rodrigues,Daniel,Da Costa Rodrigues,Portugal,260.0,True,2026-08-24
+55789,Taylor Montgomery,Taylor,Montgomery,United States,261.0,True,2026-08-24
+34587,Chan Kim,Chan,Kim,United States,262.0,True,2026-08-24
+50414,Tatsunori Shogenji,Tatsunori,Shogenji,Japan,263.0,True,2026-08-24
+27139,David Skinns,David,Skinns,England,264.0,True,2026-08-24
+33293,Thomas Pieters,Thomas,Pieters,Belgium,265.0,True,2026-08-24
+55851,Pontus Nyholm,Pontus,Nyholm,Sweden,266.0,True,2026-08-24
+39834,Guido Migliozzi,Guido,Migliozzi,Italy,267.0,True,2026-08-24
+37446,Jacques Kruyswijk,Jacques,Kruyswijk,South Africa,268.0,True,2026-08-24
+60882,Thomas Rosenmueller,Thomas,Rosenmueller,Germany,269.0,True,2026-08-24
+36824,Paul Peterson,Paul,Peterson,United States,270.0,True,2026-08-24
+50743,Nicolai Von Dellingshausen,Nicolai,Von Dellingshausen,Germany,271.0,True,2026-08-24
+35181,Daniel van Tonder,Daniel,van Tonder,South Africa,272.0,True,2026-08-24
+56100,Ren Yonezawa,Ren,Yonezawa,Japan,273.0,True,2026-08-24
+51690,Taylor Dickson,Taylor,Dickson,United States,274.0,True,2026-08-24
+56643,Manuel Elvira,Manuel,Elvira,Spain,275.0,True,2026-08-24
+29535,Brice Garnett,Brice,Garnett,United States,276.0,True,2026-08-24
+67197,Pablo Ereno Perez,Pablo,Ereno Perez,Spain,277.0,True,2026-08-24
+55955,Matthew Jordan,Matthew,Jordan,England,278.0,True,2026-08-24
+56267,Yurav Premlall,Yurav,Premlall,South Africa,279.0,True,2026-08-24
+57277,Gregorio De Leo,Gregorio,De Leo,Italy,280.0,True,2026-08-24
+47987,Cole Hammer,Cole,Hammer,United States,281.0,True,2026-08-24
+34575,Adrian Otaegui,Adrian,Otaegui,United Arab Emirates,282.0,True,2026-08-24
+47393,Jeffrey Kang,Jeffrey,Kang,United States,283.0,True,2026-08-24
+66743,Luke Clanton,Luke,Clanton,United States,284.0,True,2026-08-24
+34364,David Law,David,Law,Scotland,285.0,True,2026-08-24
+54607,Danny Walker,Danny,Walker,United States,286.0,True,2026-08-24
+49226,Taehoon Ok,Taehoon,Ok,Republic of Korea,287.0,True,2026-08-24
+52576,Sandy Scott,Sandy,Scott,Scotland,288.0,True,2026-08-24
+54190,Richard Mansell,Richard,Mansell,England,289.0,True,2026-08-24
+37094,Joe Dean,Joe,Dean,England,290.0,True,2026-08-24
+52585,Frederic LaCroix,Frederic,LaCroix,France,291.0,True,2026-08-24
+58869,Julien Sale,Julien,Sale,France,292.0,True,2026-08-24
+61107,Lars Van Der Vight,Lars,Van Der Vight,Netherlands,293.0,True,2026-08-24
+33399,Adam Hadwin,Adam,Hadwin,Canada,294.0,True,2026-08-24
+68606,Frankie Harris,Frankie,Harris,United States,295.0,True,2026-08-24
+22000,Chris Wood,Chris,Wood,England,296.0,True,2026-08-24
+31242,Marcel Schneider,Marcel,Schneider,Germany,297.0,True,2026-08-24
+50484,Hayden Springer,Hayden,Springer,United States,298.0,True,2026-08-24
+40162,Justin Lower,Justin,Lower,United States,299.0,True,2026-08-24
+37157,Renato Paratore,Renato,Paratore,Italy,299.0,True,2026-08-24
+30852,Ryo Ishikawa,Ryo,Ishikawa,Japan,301.0,True,2026-08-24
+58188,James Nicholas,James,Nicholas,United States,302.0,True,2026-08-24
+55165,Noah Goodwin,Noah,Goodwin,United States,303.0,True,2026-08-24
+55573,John VanDerLaan,John,VanDerLaan,United States,304.0,True,2026-08-24
+65374,Brandon Robinson Thompson,Brandon,Robinson Thompson,England,305.0,True,2026-08-24
+60006,Ben Carr,Ben,Carr,United States,306.0,True,2026-08-24
+34255,Joseph Bramlett,Joseph,Bramlett,United States,307.0,True,2026-08-24
+35564,Joel Girrbach,Joel,Girrbach,Switzerland,308.0,True,2026-08-24
+56584,Ian Snyman,Ian,Snyman,South Africa,309.0,True,2026-08-24
+37250,Romain Langasque,Romain,Langasque,France,310.0,True,2026-08-24
+48153,Matthieu Pavon,Matthieu,Pavon,France,311.0,True,2026-08-24
+54422,Christo Lamprecht,Christo,Lamprecht,South Africa,312.0,True,2026-08-24
+45478,Julian Suri,Julian,Suri,United States,313.0,True,2026-08-24
+48585,Charlie Lindh,Charlie,Lindh,Sweden,314.0,True,2026-08-24
+56376,Mitchell Meissner,Mitchell,Meissner,United States,315.0,True,2026-08-24
+56165,Yusaku Hoson,Yusaku,Hoson,Japan,316.0,True,2026-08-24
+65408,Barend Botha,Barend,Botha,South Africa,317.0,True,2026-08-24
+57708,Adam Wallin,Adam,Wallin,Sweden,318.0,True,2026-08-24
+36735,Jorge Fernández Valdés,Jorge,Fernández Valdés,Argentina,319.0,True,2026-08-24
+47894,Wei-Hsuan Wang,Wei-Hsuan,Wang,Taiwan,320.0,True,2026-08-24
+34225,Lee Jung-hwan,Lee,Jung-hwan,Republic of Korea,321.0,True,2026-08-24
+59281,Minhyuk Song,Minhyuk,Song,Republic of Korea,322.0,True,2026-08-24
+56490,Travis Trace,Travis,Trace,United States,323.0,True,2026-08-24
+52370,Mason Andersen,Mason,Andersen,United States,324.0,True,2026-08-24
+35706,Niklas Nørgaard,Niklas,Nørgaard,Denmark,325.0,True,2026-08-24
+59198,Hugo Townsend,Hugo,Townsend,Sweden,326.0,True,2026-08-24
+50582,Jeremy Paul,Jeremy,Paul,Germany,327.0,True,2026-08-24
+39412,Zack Fischer,Zack,Fischer,United States,328.0,True,2026-08-24
+65256,David Ford,David,Ford,United States,329.0,True,2026-08-24
+57625,Trent Phillips,Trent,Phillips,United States,330.0,True,2026-08-24
+64442,Gordon Sargent,Gordon,Sargent,United States,331.0,True,2026-08-24
+51734,Nicolo Galletti,Nicolo,Galletti,United States,332.0,True,2026-08-24
+49120,Kensei Hirata,Kensei,Hirata,Japan,333.0,True,2026-08-24
+34500,Ryosuke Kinoshita,Ryosuke,Kinoshita,Japan,334.0,True,2026-08-24
+64576,Nick Gabrelcik,Nick,Gabrelcik,United States,335.0,True,2026-08-24
+45157,Cam Davis,Cam,Davis,Australia,336.0,True,2026-08-24
+56781,Isaiah Salinda,Isaiah,Salinda,United States,337.0,True,2026-08-24
+34656,Mikumu Horikawa,Mikumu,Horikawa,Japan,338.0,True,2026-08-24
+58547,Austin Hitt,Austin,Hitt,United States,339.0,True,2026-08-24
+48640,Johannes Veerman,Johannes,Veerman,United States,340.0,True,2026-08-24
+52444,Filippo Celli,Filippo,Celli,Italy,341.0,True,2026-08-24
+36521,Young-han Song,Young-han,Song,Republic of Korea,342.0,True,2026-08-24
+51600,Jimmy Stanger,Jimmy,Stanger,United States,343.0,True,2026-08-24
+33870,Ashun Wu,Ashun,Wu,People’s Rep of China,344.0,True,2026-08-24
+52411,Kyle Westmoreland,Kyle,Westmoreland,United States,345.0,True,2026-08-24
+33597,Harry Higgs,Harry,Higgs,United States,346.0,True,2026-08-24
+20396,Lee Westwood,Lee,Westwood,England,347.0,True,2026-08-24
+30978,Kiradech Aphibarnrat,Kiradech,Aphibarnrat,Thailand,348.0,True,2026-08-24
+55908,Tomohiro Ishizaka,Tomohiro,Ishizaka,Japan,348.0,True,2026-08-24
+46405,Sebastian Soderberg,Sebastian,Soderberg,Sweden,350.0,True,2026-08-24
+49453,Trevor Cone,Trevor,Cone,United States,351.0,True,2026-08-24
+59827,Tom Vaillant,Tom,Vaillant,France,352.0,True,2026-08-24
+47888,Taiga Semikawa,Taiga,Semikawa,Japan,353.0,True,2026-08-24
+48370,Christofer Blomstrand,Christofer,Blomstrand,Sweden,354.0,True,2026-08-24
+32394,Tapio Pulkkanen,Tapio,Pulkkanen,Finland,355.0,True,2026-08-24
+54218,Yuta Sugiura,Yuta,Sugiura,Japan,356.0,True,2026-08-24
+32139,Danny Willett,Danny,Willett,England,357.0,True,2026-08-24
+56762,Will Gordon,Will,Gordon,United States,358.0,True,2026-08-24
+29289,S.Y. Noh,S.Y.,Noh,Republic of Korea,359.0,True,2026-08-24
+46402,Talor Gooch,Talor,Gooch,United States,360.0,True,2026-08-24
+37008,Danthai Boonma,Danthai,Boonma,Thailand,361.0,True,2026-08-24
+57321,Matthew Anderson,Matthew,Anderson,Canada,362.0,True,2026-08-24
+31395,Yosuke Asaji,Yosuke,Asaji,Japan,363.0,True,2026-08-24
+50672,Hamish Brown,Hamish,Brown,Denmark,364.0,True,2026-08-24
+24024,Zach Johnson,Zach,Johnson,United States,365.0,True,2026-08-24
+51989,Jordan Gumberg,Jordan,Gumberg,United States,366.0,True,2026-08-24
+36529,S.T. Lee,S.T.,Lee,Republic of Korea,367.0,True,2026-08-24
+29268,Bronson Burgoon,Bronson,Burgoon,United States,368.0,True,2026-08-24
+66742,Jackson Buchanan,Jackson,Buchanan,United States,369.0,True,2026-08-24
+49315,Austin Bautista,Austin,Bautista,Australia,370.0,True,2026-08-24
+58854,Rory Franssen,Rory,Franssen,Scotland,371.0,True,2026-08-24
+67143,Carson Bacha,Carson,Bacha,United States,372.0,True,2026-08-24
+45734,John Catlin,John,Catlin,United States,373.0,True,2026-08-24
+47238,Jazz Janewattananond,Jazz,Janewattananond,Thailand,374.0,True,2026-08-24
+30756,Andrea Pavan,Andrea,Pavan,Italy,375.0,True,2026-08-24
+46673,Tomoyo Ikemura,Tomoyo,Ikemura,Japan,376.0,True,2026-08-24
+53488,Angel Hidalgo Jordan,Angel,Hidalgo Jordan,Spain,377.0,True,2026-08-24
+58060,Ben Schmidt,Ben,Schmidt,England,378.0,True,2026-08-24
+50000,Kieran Vincent,Kieran,Vincent,Zimbabwe,379.0,True,2026-08-24
+65410,John Marshall Butler,John,Marshall Butler,United States,380.0,True,2026-08-24
+48119,Ben Taylor,Ben,Taylor,England,381.0,True,2026-08-24
+27214,Kevin Streelman,Kevin,Streelman,United States,382.0,True,2026-08-24
+55892,Étienne Papineau,Étienne,Papineau,Canada,383.0,True,2026-08-24
+52372,Cameron Champ,Cameron,Champ,United States,384.0,True,2026-08-24
+25804,Bubba Watson,Bubba,Watson,United States,385.0,True,2026-08-24
+45609,Tyler Duncan,Tyler,Duncan,United States,386.0,True,2026-08-24
+33199,Matteo Manassero,Matteo,Manassero,Italy,386.0,True,2026-08-24
+46404,Marcus Kinhult,Marcus,Kinhult,Sweden,388.0,True,2026-08-24
+58933,Will Chandler,Will,Chandler,United States,389.0,True,2026-08-24
+39958,Jeunghun Wang,Jeunghun,Wang,Republic of Korea,390.0,True,2026-08-24
+46879,Naoyuki Kataoka,Naoyuki,Kataoka,Japan,390.0,True,2026-08-24
+32640,Troy Merritt,Troy,Merritt,United States,390.0,True,2026-08-24
+34709,Eddie Pepperell,Eddie,Pepperell,England,393.0,True,2026-08-24
+31678,Oliver Bekker,Oliver,Bekker,South Africa,394.0,True,2026-08-24
+51366,Riki Kawamoto,Riki,Kawamoto,Japan,395.0,True,2026-08-24
+32775,Shugo Imahira,Shugo,Imahira,Japan,396.0,True,2026-08-24
+52075,Will Enefer,Will,Enefer,England,397.0,True,2026-08-24
+31569,Jason Scrivener,Jason,Scrivener,Australia,398.0,True,2026-08-24
+54655,Patrick Flavin,Patrick,Flavin,United States,399.0,True,2026-08-24
+29833,Yoshinori Fujimoto,Yoshinori,Fujimoto,Japan,400.0,True,2026-08-24
+27747,Hiroshi Iwata,Hiroshi,Iwata,Japan,401.0,True,2026-08-24
+51890,Greyson Sigg,Greyson,Sigg,United States,402.0,True,2026-08-24
+49562,Suteepat Prateeptienchai,Suteepat,Prateeptienchai,Thailand,403.0,True,2026-08-24
+35174,Matthew Southgate,Matthew,Southgate,England,404.0,True,2026-08-24
+29976,P. Tangkamolpraser,P.,Tangkamolpraser,Thailand,405.0,True,2026-08-24
+59866,Nick Dunlap,Nick,Dunlap,United States,405.0,True,2026-08-24
+54783,Dylan Wu,Dylan,Wu,United States,407.0,True,2026-08-24
+48018,Sadom Kaewkanjana,Sadom,Kaewkanjana,Thailand,408.0,True,2026-08-24
+57871,Samuel Simpson,Samuel,Simpson,South Africa,409.0,True,2026-08-24
+48129,Corey Pereira,Corey,Pereira,United States,410.0,True,2026-08-24
+32816,Satoshi Kodaira,Satoshi,Kodaira,Japan,411.0,True,2026-08-24
+59743,Aguri Iwasaki,Aguri,Iwasaki,Japan,412.0,True,2026-08-24
+50493,Justin Suh,Justin,Suh,United States,413.0,True,2026-08-24
+47663,Kevin Dougherty,Kevin,Dougherty,United States,414.0,True,2026-08-24
+51567,Will Cannon,Will,Cannon,United States,415.0,True,2026-08-24
+60369,Sam Bairstow,Sam,Bairstow,England,416.0,True,2026-08-24
+33232,Sang-hee Lee,Sang-hee,Lee,Republic of Korea,417.0,True,2026-08-24
+31113,Paul Waring,Paul,Waring,England,418.0,True,2026-08-24
+48632,Yuto Katsuragawa,Yuto,Katsuragawa,Japan,419.0,True,2026-08-24
+52287,David Ravetto,David,Ravetto,France,420.0,True,2026-08-24
+50584,Connor Syme,Connor,Syme,Scotland,421.0,True,2026-08-24
+65479,Jack Lundin,Jack,Lundin,United States,422.0,True,2026-08-24
+35261,Miguel Tabuena,Miguel,Tabuena,Philippines,423.0,True,2026-08-24
+51303,Ryo Katsumata,Ryo,Katsumata,Japan,424.0,True,2026-08-24
+48933,Ryuichi Oiwa,Ryuichi,Oiwa,Japan,425.0,True,2026-08-24
+33486,Roger Sloan,Roger,Sloan,Canada,426.0,True,2026-08-24
+66248,Justin Hastings,Justin,Hastings,Cayman Islands,427.0,True,2026-08-24
+38991,Alejandro Tosti,Alejandro,Tosti,Argentina,428.0,True,2026-08-24
+45733,Austen Truslow,Austen,Truslow,United States,428.0,True,2026-08-24
+57342,Seungbin Choi,Seungbin,Choi,Republic of Korea,430.0,True,2026-08-24
+54420,Louis Albertse,Louis,Albertse,South Africa,431.0,True,2026-08-24
+53189,Nick Voke,Nick,Voke,New Zealand,432.0,True,2026-08-24
+46368,Stuart Macdonald,Stuart,Macdonald,Canada,433.0,True,2026-08-24
+28679,Fabián Gómez,Fabián,Gómez,Argentina,434.0,True,2026-08-24
+56555,Myles Creighton,Myles,Creighton,Canada,435.0,True,2026-08-24
+55660,Anton Albers,Anton,Albers,Germany,436.0,True,2026-08-24
+48061,Daniel Young,Daniel,Young,Scotland,437.0,True,2026-08-24
+34514,Filip Mruzek,Filip,Mruzek,Czechia,438.0,True,2026-08-24
+29256,James Morrison,James,Morrison,England,439.0,True,2026-08-24
+65229,Rocco Repetto Taylor,Rocco,Repetto Taylor,Spain,439.0,True,2026-08-24
+33908,Taihei Sato,Taihei,Sato,Japan,441.0,True,2026-08-24
+30909,David Horsey,David,Horsey,England,442.0,True,2026-08-24
+49590,Frankie Capan III,Frankie,Capan III,United States,443.0,True,2026-08-24
+28938,Justin Harding,Justin,Harding,South Africa,444.0,True,2026-08-24
+35225,Brandon Stone,Brandon,Stone,South Africa,444.0,True,2026-08-24
+58605,Quade Cummins,Quade,Cummins,United States,446.0,True,2026-08-24
+29531,Richie Ramsay,Richie,Ramsay,Scotland,447.0,True,2026-08-24
+34542,Rattanon Wannasrichan,Rattanon,Wannasrichan,Thailand,448.0,True,2026-08-24
+40226,Andreas Halvorsen,Andreas,Halvorsen,Norway,449.0,True,2026-08-24
+57263,John Gough,John,Gough,England,450.0,True,2026-08-24
+64779,Donghyun Moon,Donghyun,Moon,Republic of Korea,451.0,True,2026-08-24
+46724,Jeong Woo Ham,Jeong,Woo Ham,Republic of Korea,452.0,True,2026-08-24
+52507,Sarit Suwannarut,Sarit,Suwannarut,Thailand,453.0,True,2026-08-24
+26329,Louis Oosthuizen,Louis,Oosthuizen,South Africa,454.0,True,2026-08-24
+37447,Zander Lombard,Zander,Lombard,South Africa,455.0,True,2026-08-24
+59629,Ryan van Velzen,Ryan,van Velzen,South Africa,456.0,True,2026-08-24
+55708,Hayden Buckley,Hayden,Buckley,United States,457.0,True,2026-08-24
+29970,Dylan Frittelli,Dylan,Frittelli,South Africa,458.0,True,2026-08-24
+32757,Patton Kizzire,Patton,Kizzire,United States,459.0,True,2026-08-24
+48098,Sebastian Garcia Rodriguez,Sebastian,Garcia Rodriguez,Spain,460.0,True,2026-08-24
+58696,Peter Kuest,Peter,Kuest,United States,461.0,True,2026-08-24
+50992,Brett White,Brett,White,United States,462.0,True,2026-08-24
+56987,Jeong Weon Ko,Jeong,Weon Ko,France,463.0,True,2026-08-24
+60021,Patrick Welch,Patrick,Welch,United States,464.0,True,2026-08-24
+31138,Scott Jamieson,Scott,Jamieson,Scotland,465.0,True,2026-08-24
+46270,Takashi Ogiso,Takashi,Ogiso,Japan,466.0,True,2026-08-24
+23481,Marcel Siem,Marcel,Siem,Germany,467.0,True,2026-08-24
+49964,Aaron Wise,Aaron,Wise,United States,468.0,True,2026-08-24
+33459,Jens Dantorp,Jens,Dantorp,Sweden,469.0,True,2026-08-24
+33122,Russell Knox,Russell,Knox,Scotland,470.0,True,2026-08-24
+21961,Charles Howell III,Charles,Howell III,United States,471.0,True,2026-08-24
+65422,Drew Doyle,Drew,Doyle,United States,472.0,True,2026-08-24
+54901,Theo Humphrey,Theo,Humphrey,United States,473.0,True,2026-08-24
+51314,Julian Perico,Julian,Perico,Peru,474.0,True,2026-08-24
+27330,Josh Teater,Josh,Teater,United States,475.0,True,2026-08-24
+34708,Jack Senior,Jack,Senior,England,476.0,True,2026-08-24
+46732,Rick Lamb,Rick,Lamb,United States,477.0,True,2026-08-24
+29221,Webb Simpson,Webb,Simpson,United States,478.0,True,2026-08-24
+63818,Jonathan Broomhead,Jonathan,Broomhead,South Africa,479.0,True,2026-08-24
+30163,Henrik Norlander,Henrik,Norlander,Sweden,480.0,True,2026-08-24
+34541,Poom Saksansin,Poom,Saksansin,Thailand,480.0,True,2026-08-24
+49399,Shad Tuten,Shad,Tuten,United States,482.0,True,2026-08-24
+59085,Chris Francoeur,Chris,Francoeur,United States,483.0,True,2026-08-24
+57864,Jackson Van Paris,Jackson,Van Paris,United States,484.0,True,2026-08-24
+59212,Hunter Wolcott,Hunter,Wolcott,United States,485.0,True,2026-08-24
+26341,Wade Ormsby,Wade,Ormsby,Australia,486.0,True,2026-08-24
+47759,Mathinus Viljoen,Mathinus,Viljoen,South Africa,487.0,True,2026-08-24
+27770,Camilo Villegas,Camilo,Villegas,Colombia,488.0,True,2026-08-24
+49230,Taiki Yoshida,Taiki,Yoshida,Japan,489.0,True,2026-08-24
+49223,Chan Choi,Chan,Choi,Republic of Korea,490.0,True,2026-08-24
+63451,Bryce Lewis,Bryce,Lewis,United States,490.0,True,2026-08-24
+57860,Maxwell Moldovan,Maxwell,Moldovan,United States,490.0,True,2026-08-24
+56320,Bryson Nimmer,Bryson,Nimmer,United States,493.0,True,2026-08-24
+34579,Alexander Levy,Alexander,Levy,France,494.0,True,2026-08-24
+40115,Adam Svensson,Adam,Svensson,Canada,495.0,True,2026-08-24
+55592,Joey Savoie,Joey,Savoie,Canada,496.0,True,2026-08-24
+54625,Dawson Armstrong,Dawson,Armstrong,United States,497.0,True,2026-08-24
+56278,Matthew Wolff,Matthew,Wolff,United States,497.0,True,2026-08-24
+64693,Matthew Riedel,Matthew,Riedel,United States,499.0,True,2026-08-24
+47378,Hanmil Jung,Hanmil,Jung,Republic of Korea,500.0,True,2026-08-24
+54328,Norman Xiong,Norman,Xiong,United States,501.0,True,2026-08-24
+39871,Takanori Konishi,Takanori,Konishi,Japan,502.0,True,2026-08-24
+47483,Will Zalatoris,Will,Zalatoris,United States,502.0,True,2026-08-24
+59243,Connor Howe,Connor,Howe,United States,504.0,True,2026-08-24
+49174,Yusuke Sakamoto,Yusuke,Sakamoto,Japan,505.0,True,2026-08-24
+54278,Mateo Fernández de Oliveira,Mateo,Fernández de Oliveira,Argentina,506.0,True,2026-08-24
+57940,Euan Walker,Euan,Walker,Scotland,507.0,True,2026-08-24
+59841,Bael Jun Kim,Bael,Jun Kim,Republic of Korea,508.0,True,2026-08-24
+38995,Dominic Foos,Dominic,Foos,Germany,509.0,True,2026-08-24
+56349,Chris Korte,Chris,Korte,United States,510.0,True,2026-08-24
+56266,Deon Germishuys,Deon,Germishuys,South Africa,511.0,True,2026-08-24
+60767,"Blaine Hale, Jr.",Blaine,"Hale, Jr.",United States,512.0,True,2026-08-24
+20721,Darren Fichardt,Darren,Fichardt,South Africa,513.0,True,2026-08-24
+47125,Matt Atkins,Matt,Atkins,United States,514.0,True,2026-08-24
+65469,Riley Lewis,Riley,Lewis,United States,515.0,True,2026-08-24
+36789,Patrick Newcomb,Patrick,Newcomb,United States,516.0,True,2026-08-24
+25799,Niklas Lemke,Niklas,Lemke,Sweden,517.0,True,2026-08-24
+48970,Seungtaek Oh,Seungtaek,Oh,Republic of Korea,518.0,True,2026-08-24
+55940,Andrew Wilson,Andrew,Wilson,England,519.0,True,2026-08-24
+28521,Ryutaro Nagano,Ryutaro,Nagano,Japan,520.0,True,2026-08-24
+35287,Yuwa Kosaihira,Yuwa,Kosaihira,Japan,521.0,True,2026-08-24
+47461,Andrew Kozan,Andrew,Kozan,United States,522.0,True,2026-08-24
+58043,Suguru Shimoke,Suguru,Shimoke,Japan,523.0,True,2026-08-24
+57461,Petr Hruby,Petr,Hruby,Czechia,524.0,True,2026-08-24
+28166,Pedro Figueiredo,Pedro,Figueiredo,Portugal,525.0,True,2026-08-24
+27129,Luke List,Luke,List,United States,526.0,True,2026-08-24
+47056,Rikuya Hoshino,Rikuya,Hoshino,Japan,527.0,True,2026-08-24
+55468,Felix Mory,Felix,Mory,France,528.0,True,2026-08-24
+57711,Mason Williams,Mason,Williams,United States,528.0,True,2026-08-24
+66583,Taisei Shimizu,Taisei,Shimizu,Japan,530.0,True,2026-08-24
+56190,Wooyoung Cho,Wooyoung,Cho,Republic of Korea,531.0,True,2026-08-24
+35912,Haydn Porteous,Haydn,Porteous,South Africa,531.0,True,2026-08-24
+33413,Ben Martin,Ben,Martin,United States,533.0,True,2026-08-24
+66552,Rayhan Thomas,Rayhan,Thomas,India,534.0,True,2026-08-24
+27936,Martin Laird,Martin,Laird,Scotland,535.0,True,2026-08-24
+46955,Haydn Barron,Haydn,Barron,Australia,536.0,True,2026-08-24
+47847,Ivan Cantero Gutierrez,Ivan,Cantero Gutierrez,Spain,537.0,True,2026-08-24
+51787,Yuvraj Sandhu,Yuvraj,Sandhu,India,538.0,True,2026-08-24
+59467,Dan Erickson,Dan,Erickson,United States,539.0,True,2026-08-24
+55838,Jack Thompson,Jack,Thompson,Australia,539.0,True,2026-08-24
+33963,Yang Ji-ho,Yang,Ji-ho,Republic of Korea,541.0,True,2026-08-24
+36391,Ricardo Celia,Ricardo,Celia,Colombia,542.0,True,2026-08-24
+61520,Santiago de la Fuente,Santiago,de la Fuente,Mexico,543.0,True,2026-08-24
+39524,Sean Crocker,Sean,Crocker,United States,544.0,True,2026-08-24
+60736,Tobias Jonsson,Tobias,Jonsson,Sweden,545.0,True,2026-08-24
+32797,Sanghyun Park,Sanghyun,Park,Republic of Korea,546.0,True,2026-08-24
+36351,Pieter Moolman,Pieter,Moolman,South Africa,547.0,True,2026-08-24
+57474,Maxence Giboudot,Maxence,Giboudot,France,548.0,True,2026-08-24
+61276,Christiaan Maas,Christiaan,Maas,South Africa,549.0,True,2026-08-24
+56003,Yongjun Bae,Yongjun,Bae,Republic of Korea,550.0,True,2026-08-24
+47472,MJ Maguire,MJ,Maguire,United States,551.0,True,2026-08-24
+34466,Peter Malnati,Peter,Malnati,United States,552.0,True,2026-08-24
+59533,Joe Weiler,Joe,Weiler,United States,552.0,True,2026-08-24
+57504,Sampson Zheng,Sampson,Zheng,People’s Rep of China,554.0,True,2026-08-24
+55454,Carl Yuan,Carl,Yuan,People’s Rep of China,555.0,True,2026-08-24
+37052,Martin Simonsen,Martin,Simonsen,Denmark,556.0,True,2026-08-24
+48032,Chanwoo Kim,Chanwoo,Kim,Republic of Korea,557.0,True,2026-08-24
+39859,Cristobal Del Solar,Cristobal,Del Solar,Chile,558.0,True,2026-08-24
+52132,Phichaksn Maichon,Phichaksn,Maichon,Thailand,559.0,True,2026-08-24
+35752,Mikiya Akutsu,Mikiya,Akutsu,Japan,560.0,True,2026-08-24
+50731,Clement Charmasson,Clement,Charmasson,France,561.0,True,2026-08-24
+29939,Fabrizio Zanotti,Fabrizio,Zanotti,Paraguay,562.0,True,2026-08-24
+33115,Jinho Choi,Jinho,Choi,Republic of Korea,563.0,True,2026-08-24
+57843,Taiga Nagano,Taiga,Nagano,Japan,564.0,True,2026-08-24
+34314,Sebastian Cappelen,Sebastian,Cappelen,Denmark,565.0,True,2026-08-24
+56214,Martin Vorster,Martin,Vorster,South Africa,566.0,True,2026-08-24
+34128,Eun Shin Park,Eun,Shin Park,Republic of Korea,567.0,True,2026-08-24
+49460,Herman Loubser,Herman,Loubser,South Africa,568.0,True,2026-08-24
+24925,Jonathan Byrd,Jonathan,Byrd,United States,569.0,True,2026-08-24
+65825,Joshua Berry,Joshua,Berry,England,570.0,True,2026-08-24
+52646,Mats Ege,Mats,Ege,Norway,571.0,True,2026-08-24
+40181,Clément Sordet,Clément,Sordet,France,572.0,True,2026-08-24
+56272,Wilco Nienaber,Wilco,Nienaber,South Africa,573.0,True,2026-08-24
+46601,Trey Mullinax,Trey,Mullinax,United States,574.0,True,2026-08-24
+57505,Ryunosuke Furukawa,Ryunosuke,Furukawa,Japan,575.0,True,2026-08-24
+54998,Luke Brown,Luke,Brown,South Africa,576.0,True,2026-08-24
+29806,Hung Chien-yao,Hung,Chien-yao,Chinese Taipei,577.0,True,2026-08-24
+57743,Callum Farr,Callum,Farr,England,578.0,True,2026-08-24
+37076,Marcelo Rozo,Marcelo,Rozo,Colombia,579.0,True,2026-08-24
+48822,Sebastián Muñoz,Sebastián,Muñoz,Colombia,580.0,True,2026-08-24
+36693,Bjorn Hellgren,Bjorn,Hellgren,Sweden,581.0,True,2026-08-24
+51137,Kevin Yuan,Kevin,Yuan,Australia,582.0,True,2026-08-24
+63162,Quim Vidal,Quim,Vidal,Spain,583.0,True,2026-08-24
+47988,Nick Hardy,Nick,Hardy,United States,584.0,True,2026-08-24
+67145,Cameron Adam,Cameron,Adam,Scotland,585.0,True,2026-08-24
+51313,Andrea Romano(June-2000),Andrea,Romano(June-2000),Italy,586.0,True,2026-08-24
+58189,Billy Tom Sargent,Billy,Tom Sargent,United States,587.0,True,2026-08-24
+52134,Runchanapong Youprayong,Runchanapong,Youprayong,Thailand,588.0,True,2026-08-24
+60499,Luis Carrera,Luis,Carrera,Mexico,589.0,True,2026-08-24
+45403,Hong-taek Kim,Hong-taek,Kim,Republic of Korea,590.0,True,2026-08-24
+47706,Wang Wei Lun,Wang,Wei Lun,Chinese Taipei,591.0,True,2026-08-24
+35133,Bryce Easton,Bryce,Easton,South Africa,592.0,True,2026-08-24
+36724,Augusto Núñez,Augusto,Núñez,Argentina,593.0,True,2026-08-24
+32070,Rafael Campos,Rafael,Campos,Puerto Rico,594.0,True,2026-08-24
+20766,Padraig Harrington,Padraig,Harrington,Ireland,594.0,True,2026-08-24
+63342,Barclay Brown,Barclay,Brown,England,596.0,True,2026-08-24
+49356,Tanapat Pichaikool,Tanapat,Pichaikool,Thailand,597.0,True,2026-08-24
+46798,Anthony Quayle,Anthony,Quayle,Australia,598.0,True,2026-08-24
+47505,Dylan Naidoo,Dylan,Naidoo,South Africa,599.0,True,2026-08-24
+58856,Chad Sewell,Chad,Sewell,United States,600.0,True,2026-08-24
+59025,David Perkins,David,Perkins,United States,601.0,True,2026-08-24
+34017,Jhared Hack,Jhared,Hack,United States,602.0,True,2026-08-24
+52242,Ekpharit Wu,Ekpharit,Wu,Thailand,603.0,True,2026-08-24
+63544,Patrick Sheehan,Patrick,Sheehan,United States,604.0,True,2026-08-24
+52477,Albin Bergstro,Albin,Bergstro,Sweden,605.0,True,2026-08-24
+55470,Calum Fyfe,Calum,Fyfe,Scotland,606.0,True,2026-08-24
+48586,Per Langfors,Per,Langfors,Sweden,607.0,True,2026-08-24
+45166,Yujiro Ohori,Yujiro,Ohori,Japan,608.0,True,2026-08-24
+48051,Yannik Paul,Yannik,Paul,Germany,609.0,True,2026-08-24
+34168,Soomin Lee,Soomin,Lee,Republic of Korea,610.0,True,2026-08-24
+58164,Kohei Okada,Kohei,Okada,Japan,611.0,True,2026-08-24
+59837,Cole Anderson,Cole,Anderson,United States,612.0,True,2026-08-24
+59195,Saptak Talwar,Saptak,Talwar,India,613.0,True,2026-08-24
+56974,Christiaan Burke,Christiaan,Burke,South Africa,614.0,True,2026-08-24
+37015,Kristian Johannessen,Kristian,Johannessen,Norway,615.0,True,2026-08-24
+33408,Tyson Alexander,Tyson,Alexander,United States,616.0,True,2026-08-24
+46410,Jamie Rutherford,Jamie,Rutherford,England,617.0,True,2026-08-24
+31420,Anirban Lahiri,Anirban,Lahiri,India,618.0,True,2026-08-24
+28775,Nate Lashley,Nate,Lashley,United States,618.0,True,2026-08-24
+35557,Aaron Cockerill,Aaron,Cockerill,Canada,620.0,True,2026-08-24
+39916,Tobias Eden,Tobias,Eden,Sweden,621.0,True,2026-08-24
+33803,Lucas Bjerregaard,Lucas,Bjerregaard,Denmark,622.0,True,2026-08-24
+65529,Liam Nolan,Liam,Nolan,Ireland,623.0,True,2026-08-24
+65432,Mason Greene,Mason,Greene,United States,624.0,True,2026-08-24
+36871,Matt NeSmith,Matt,NeSmith,United States,625.0,True,2026-08-24
+58989,Brandon Berry,Brandon,Berry,United States,626.0,True,2026-08-24
+58849,Turk Pettit,Turk,Pettit,United States,627.0,True,2026-08-24
+50063,Galam Jeon,Galam,Jeon,Republic of Korea,628.0,True,2026-08-24
+27140,Justin Walters,Justin,Walters,South Africa,628.0,True,2026-08-24
+51430,Veer Ahlawat,Veer,Ahlawat,India,630.0,True,2026-08-24
+59636,Samuel Anderson,Samuel,Anderson,United States,631.0,True,2026-08-24
+56174,Will Florimo,Will,Florimo,Australia,632.0,True,2026-08-24
+60365,Charles Porter,Charles,Porter,United States,633.0,True,2026-08-24
+35862,Min-Jun Kim,Min-Jun,Kim,Republic of Korea,634.0,True,2026-08-24
+34661,Sangyeop Lee,Sangyeop,Lee,Republic of Korea,635.0,True,2026-08-24
+57298,Preston Summerhays,Preston,Summerhays,United States,635.0,True,2026-08-24
+59164,James Piot,James,Piot,United States,637.0,True,2026-08-24
+52683,Jonathan Goth-Rasmussen,Jonathan,Goth-Rasmussen,Denmark,638.0,True,2026-08-24
+26476,Chez Reavie,Chez,Reavie,United States,639.0,True,2026-08-24
+48979,MK Kim,MK,Kim,Republic of Korea,639.0,True,2026-08-24
+48319,Tom Whitney,Tom,Whitney,United States,641.0,True,2026-08-24
+33125,Jaewoong Eom,Jaewoong,Eom,Republic of Korea,642.0,True,2026-08-24
+25841,Marc Warren,Marc,Warren,Scotland,642.0,True,2026-08-24
+56149,Wilson Furr,Wilson,Furr,United States,644.0,True,2026-08-24
+12716,Charley Hoffman,Charley,Hoffman,United States,645.0,True,2026-08-24
+58670,Zach James,Zach,James,United States,646.0,True,2026-08-24
+35736,Sung -Kug Park,Sung,-Kug Park,Republic of Korea,647.0,True,2026-08-24
+39838,Jacopo Vecchi Fossa,Jacopo,Vecchi Fossa,Italy,647.0,True,2026-08-24
+48814,Taichiro Ideriha,Taichiro,Ideriha,Japan,649.0,True,2026-08-24
+35087,Bio Kim,Bio,Kim,Republic of Korea,650.0,True,2026-08-24
+54994,Vicente Marzilio,Vicente,Marzilio,Argentina,650.0,True,2026-08-24
+25132,Cho Min-jun,Cho,Min-jun,Republic of Korea,650.0,True,2026-08-24
+47102,David Micheluzzi,David,Micheluzzi,Australia,653.0,True,2026-08-24
+27896,Ross Fisher,Ross,Fisher,England,654.0,True,2026-08-24
+63617,Ryggs Johnston,Ryggs,Johnston,United States,655.0,True,2026-08-24
+58132,Kieron van Wyk,Kieron,van Wyk,South Africa,656.0,True,2026-08-24
+48699,Callum Tarren,Callum,Tarren,England,657.0,True,2026-08-24
+29334,Jaco Ahlers,Jaco,Ahlers,South Africa,658.0,True,2026-08-24
+48366,Jeppe Kristian Andersen,Jeppe,Kristian Andersen,Denmark,659.0,True,2026-08-24
+26331,Charl Schwartzel,Charl,Schwartzel,South Africa,659.0,True,2026-08-24
+51038,Alfie Plant,Alfie,Plant,England,661.0,True,2026-08-24
+34133,Yosuke Tsukada,Yosuke,Tsukada,Japan,662.0,True,2026-08-24
+48929,Santiago Tarrio,Santiago,Tarrio,Spain,663.0,True,2026-08-24
+57862,Brett Roberts,Brett,Roberts,United States,664.0,True,2026-08-24
+64526,Declan O'Donovan,Declan,O'Donovan,Australia,665.0,True,2026-08-24
+45985,Jacobus Prinsloo,Jacobus,Prinsloo,South Africa,666.0,True,2026-08-24
+61434,Sarut Vongchaisit,Sarut,Vongchaisit,Thailand,666.0,True,2026-08-24
+35106,Ryan Peake,Ryan,Peake,Australia,668.0,True,2026-08-24
+33419,Cameron Tringale,Cameron,Tringale,United States,669.0,True,2026-08-24
+60005,Ryan Burnett,Ryan,Burnett,United States,669.0,True,2026-08-24
+49481,Tae Hee Lee,Tae,Hee Lee,Republic of Korea,671.0,True,2026-08-24
+53196,Robin Williams,Robin,Williams,South Africa,671.0,True,2026-08-24
+36514,Yuki Inamori,Yuki,Inamori,Japan,673.0,True,2026-08-24
+66063,Altin van der Merwe,Altin,van der Merwe,South Africa,674.0,True,2026-08-24
+35201,Benjamin Follett-Smith,Benjamin,Follett-Smith,Zimbabwe,675.0,True,2026-08-24
+59954,Teddy Tetak,Teddy,Tetak,Slovakia,676.0,True,2026-08-24
+55074,Sebastian Friedrichsen,Sebastian,Friedrichsen,Denmark,677.0,True,2026-08-24
+45836,Richard Bland,Richard,Bland,England,678.0,True,2026-08-24
+67142,Drew Goodman,Drew,Goodman,United States,679.0,True,2026-08-24
+56019,Matteo Cristoni,Matteo,Cristoni,Italy,680.0,True,2026-08-24
+27958,Ryan Blaum,Ryan,Blaum,United States,681.0,True,2026-08-24
+30944,Jason Kokrak,Jason,Kokrak,United States,681.0,True,2026-08-24
+32344,Lukas Nemecz,Lukas,Nemecz,Austria,683.0,True,2026-08-24
+33446,Mathieu Decottignies-Lafon,Mathieu,Decottignies-Lafon,France,684.0,True,2026-08-24
+40028,Justin Shin,Justin,Shin,Canada,684.0,True,2026-08-24
+39436,Joshua Creel,Joshua,Creel,United States,686.0,True,2026-08-24
+46017,Matt Killen,Matt,Killen,England,687.0,True,2026-08-24
+54210,Matthew Cheung,Matthew,Cheung,Hong Kong,688.0,True,2026-08-24
+29518,Brendan Steele,Brendan,Steele,United States,689.0,True,2026-08-24
+56731,Evan Knight,Evan,Knight,United States,690.0,True,2026-08-24
+68991,William Sides,William,Sides,United States,691.0,True,2026-08-24
+54480,Justin De Los Santos,Justin,De Los Santos,Philippines,692.0,True,2026-08-24
+65110,Brendan Valdes,Brendan,Valdes,United States,692.0,True,2026-08-24
+46684,Song-Gyu Yoo,Song-Gyu,Yoo,Republic of Korea,694.0,True,2026-08-24
+29670,Pablo Larrazabal,Pablo,Larrazabal,Spain,695.0,True,2026-08-24
+25364,Paul Casey,Paul,Casey,England,696.0,True,2026-08-24
+33689,Jinichiro Kozuma,Jinichiro,Kozuma,Japan,697.0,True,2026-08-24
+46113,Ryan McCormick,Ryan,McCormick,United States,697.0,True,2026-08-24
+31016,Tomoharu Otsuki,Tomoharu,Otsuki,Japan,699.0,True,2026-08-24
+48372,Marcus Helligkilde,Marcus,Helligkilde,Denmark,700.0,True,2026-08-24
+59211,Trey Winstead,Trey,Winstead,United States,701.0,True,2026-08-24
+48037,Atiruj Winaicharoenc,Atiruj,Winaicharoenc,Thailand,702.0,True,2026-08-24
+26503,Alfredo Garcia-Heredia,Alfredo,Garcia-Heredia,Spain,703.0,True,2026-08-24
+34242,Andrew Johnston,Andrew,Johnston,England,704.0,True,2026-08-24
+30812,Benjamin Hebert,Benjamin,Hebert,France,705.0,True,2026-08-24
+46248,Tirawat Kaewsiribandt,Tirawat,Kaewsiribandt,Thailand,706.0,True,2026-08-24
+63554,Dillon Stewart,Dillon,Stewart,United States,707.0,True,2026-08-24
+55509,Hurly Long,Hurly,Long,Germany,708.0,True,2026-08-24
+52144,Braden Thornberry,Braden,Thornberry,United States,709.0,True,2026-08-24
+54813,Philip Knowles,Philip,Knowles,United States,710.0,True,2026-08-24
+47889,Kosuke Sunagawa,Kosuke,Sunagawa,Japan,710.0,True,2026-08-24
+51783,Karandeep Kochhar,Karandeep,Kochhar,India,712.0,True,2026-08-24
+67202,Luke Gutschewski,Luke,Gutschewski,United States,713.0,True,2026-08-24
+27778,Julien Quesne,Julien,Quesne,France,714.0,True,2026-08-24
+51024,Bard Bjornevik Skogen,Bard,Bjornevik Skogen,Norway,715.0,True,2026-08-24
+64033,Luis Masaveu,Luis,Masaveu,Spain,716.0,True,2026-08-24
+50888,Anders Elite Ejlersen,Anders,Elite Ejlersen,Denmark,717.0,True,2026-08-24
+58232,Jack Buchanan,Jack,Buchanan,Australia,718.0,True,2026-08-24
+67513,Javier Barcos Garbayo,Javier,Barcos Garbayo,Spain,719.0,True,2026-08-24
+50575,Bo Peng,Bo,Peng,People’s Rep of China,720.0,True,2026-08-24
+32290,Satoshi Hara,Satoshi,Hara,Japan,721.0,True,2026-08-24
+35834,Hyungjoon Lee,Hyungjoon,Lee,Republic of Korea,722.0,True,2026-08-24
+55415,Ryan Lumsden,Ryan,Lumsden,Scotland,723.0,True,2026-08-24
+51921,Jannik De Bruyn,Jannik,De Bruyn,Germany,724.0,True,2026-08-24
+58666,Tripp Kinney,Tripp,Kinney,United States,725.0,True,2026-08-24
+58986,Zihao Jin,Zihao,Jin,People’s Rep of China,726.0,True,2026-08-24
+65115,Shu Fukuzumi,Shu,Fukuzumi,Japan,727.0,True,2026-08-24
+69020,Luke Potter,Luke,Potter,United States,728.0,True,2026-08-24
+57912,David Langley,David,Langley,England,729.0,True,2026-08-24
+46501,Ollie Schniederjans,Ollie,Schniederjans,United States,730.0,True,2026-08-24
+69503,Tyler Wilkes,Tyler,Wilkes,United States,730.0,True,2026-08-24
+62747,Sejung Hiramoto,Sejung,Hiramoto,Japan,732.0,True,2026-08-24
+45719,Suradit Yongcharoenchai,Suradit,Yongcharoenchai,Thailand,733.0,True,2026-08-24
+49036,Lorenzo Scalise,Lorenzo,Scalise,Italy,734.0,True,2026-08-24
+47132,James Marchesani,James,Marchesani,Australia,735.0,True,2026-08-24
+63371,Chanmin Jung,Chanmin,Jung,Republic of Korea,736.0,True,2026-08-24
+65466,Max Kennedy,Max,Kennedy,Ireland,737.0,True,2026-08-24
+55028,Teayang Jung,Teayang,Jung,Republic of Korea,738.0,True,2026-08-24
+61220,Alex Goff,Alex,Goff,United States,739.0,True,2026-08-24
+59613,Marcus Plunkett,Marcus,Plunkett,United States,740.0,True,2026-08-24
+53914,Connor McKinney,Connor,McKinney,Australia,741.0,True,2026-08-24
+63457,Palmer Jackson,Palmer,Jackson,United States,742.0,True,2026-08-24
+65426,Caden Fioroni,Caden,Fioroni,United States,743.0,True,2026-08-24
+59203,Joey Vrzich,Joey,Vrzich,United States,744.0,True,2026-08-24
+23814,Edoardo Molinari,Edoardo,Molinari,Italy,745.0,True,2026-08-24
+48577,Anton Karlsson,Anton,Karlsson,Sweden,746.0,True,2026-08-24
+27942,Rob Oppenheim,Rob,Oppenheim,United States,746.0,True,2026-08-24
+59957,Warwick Purchase,Warwick,Purchase,South Africa,748.0,True,2026-08-24
+22400,Hennie Otto,Hennie,Otto,South Africa,749.0,True,2026-08-24
+68614,Lance Simpson,Lance,Simpson,United States,750.0,True,2026-08-24
+39185,Jake McLeod,Jake,McLeod,Australia,751.0,True,2026-08-24
+60978,James Meyer de Beco,James,Meyer de Beco,Belgium,752.0,True,2026-08-24
+55694,Quentin Debove,Quentin,Debove,France,753.0,True,2026-08-24
+52583,Sanghun Shin,Sanghun,Shin,Republic of Korea,754.0,True,2026-08-24
+37029,Taichi Nabetani,Taichi,Nabetani,Japan,755.0,True,2026-08-24
+35104,Tom Lewis,Tom,Lewis,England,756.0,True,2026-08-24
+59811,Kazuki Yasumori,Kazuki,Yasumori,Japan,756.0,True,2026-08-24
+58418,Zach Smith,Zach,Smith,United States,758.0,True,2026-08-24
+37183,Chiehpo Lee,Chiehpo,Lee,Chinese Taipei,759.0,True,2026-08-24
+32058,José de Jesús Rodríguez,José,de Jesús Rodríguez,Mexico,760.0,True,2026-08-24
+37380,Curtis Luck,Curtis,Luck,Australia,761.0,True,2026-08-24
+53210,Ching-hung Su,Ching-hung,Su,Chinese Taipei,761.0,True,2026-08-24
+54292,Kerry Mountcastle,Kerry,Mountcastle,New Zealand,763.0,True,2026-08-24
+67139,Justin Biwer,Justin,Biwer,United States,764.0,True,2026-08-24
+51563,Jovan Rebula,Jovan,Rebula,South Africa,765.0,True,2026-08-24
+57330,Matthis Besard,Matthis,Besard,Belgium,766.0,True,2026-08-24
+55077,Frederik Kjettrup,Frederik,Kjettrup,Denmark,767.0,True,2026-08-24
+52374,Brandon Wu,Brandon,Wu,United States,768.0,True,2026-08-24
+29930,Mike Hendry,Mike,Hendry,New Zealand,769.0,True,2026-08-24
+66095,Bowen Chai,Bowen,Chai,People’s Rep of China,770.0,True,2026-08-24
+57815,Ronan Kleu,Ronan,Kleu,Switzerland,770.0,True,2026-08-24
+52348,Victor H Sidal Svendsen,Victor,H Sidal Svendsen,Denmark,772.0,True,2026-08-24
+25883,Kyung Nam Kang,Kyung,Nam Kang,Republic of Korea,773.0,True,2026-08-24
+54652,David Kocher,David,Kocher,United States,774.0,True,2026-08-24
+52176,Tomas Melo Gouvei,Tomas,Melo Gouvei,Portugal,775.0,True,2026-08-24
+56199,Quinnton Croker,Quinnton,Croker,Australia,776.0,True,2026-08-24
+60068,Khavish Varadan,Khavish,Varadan,United States,777.0,True,2026-08-24
+37091,Jae-Ho Kim,Jae-Ho,Kim,Republic of Korea,778.0,True,2026-08-24
+32356,Poosit Supupramai,Poosit,Supupramai,Thailand,779.0,True,2026-08-24
+58584,Charles Huntzinger,Charles,Huntzinger,United States,780.0,True,2026-08-24
+49039,Michele Ortolani,Michele,Ortolani,Italy,781.0,True,2026-08-24
+67304,Nathan Franks,Nathan,Franks,United States,782.0,True,2026-08-24
+66290,Miles Russell,Miles,Russell,United States,783.0,True,2026-08-24
+54996,Ray Kraivixien,Ray,Kraivixien,Thailand,784.0,True,2026-08-24
+50648,Ryota Wakahara,Ryota,Wakahara,Japan,784.0,True,2026-08-24
+59108,Harry Hillier,Harry,Hillier,New Zealand,786.0,True,2026-08-24
+53122,Mark Power,Mark,Power,Ireland,787.0,True,2026-08-24
+47996,Jack Maguire,Jack,Maguire,United States,788.0,True,2026-08-24
+46002,Settee Prakongvech,Settee,Prakongvech,Thailand,789.0,True,2026-08-24
+48052,Max Rottluff,Max,Rottluff,Germany,789.0,True,2026-08-24
+52655,Herman Wibe Sekne,Herman,Wibe Sekne,Norway,789.0,True,2026-08-24
+55434,Nopparat Panichphol,Nopparat,Panichphol,Thailand,792.0,True,2026-08-24
+47960,Simon Forsström,Simon,Forsström,Sweden,793.0,True,2026-08-24
+47081,Daniel Gale,Daniel,Gale,Australia,794.0,True,2026-08-24
+27408,Martin Kaymer,Martin,Kaymer,Germany,795.0,True,2026-08-24
+33023,Ockie Strydom,Ockie,Strydom,South Africa,796.0,True,2026-08-24
+68228,Agustin Segundo Oliva DO NOT USE Pinto,Agustin,Segundo Oliva DO NOT USE Pinto,Argentina,797.0,True,2026-08-24
+29675,Dan McCarthy,Dan,McCarthy,United States,798.0,True,2026-08-24
+25067,Lu Wei-chih,Lu,Wei-chih,Chinese Taipei,799.0,True,2026-08-24
+55376,Albin Tiden,Albin,Tiden,Sweden,800.0,True,2026-08-24
+58816,Marcus Byrd,Marcus,Byrd,United States,801.0,True,2026-08-24
+56046,Koshiro Maeda,Koshiro,Maeda,Japan,801.0,True,2026-08-24
+49576,Paul Chaplet,Paul,Chaplet,Costa Rica,803.0,True,2026-08-24
+64738,Jan Schneider,Jan,Schneider,Germany,804.0,True,2026-08-24
+23452,Nicolas Colsaerts,Nicolas,Colsaerts,Belgium,805.0,True,2026-08-24
+48853,Michael Hirmer,Michael,Hirmer,Germany,805.0,True,2026-08-24
+31997,Steve Lewton,Steve,Lewton,England,807.0,True,2026-08-24
+46988,Taikou Nishiyama,Taikou,Nishiyama,Japan,808.0,True,2026-08-24
+55874,Gerhard Pepler,Gerhard,Pepler,South Africa,808.0,True,2026-08-24
+32865,Shunyat Hak,Shunyat,Hak,Hong Kong,810.0,True,2026-08-24
+70695,Ryder Cowan,Ryder,Cowan,United States,811.0,True,2026-08-24
+51342,Jay Mackenzie,Jay,Mackenzie,Australia,812.0,True,2026-08-24
+64487,Danny Fisher,Danny,Fisher,United States,812.0,True,2026-08-24
+52304,Chonlatit Chuenboonngam,Chonlatit,Chuenboonngam,Thailand,814.0,True,2026-08-24
+49241,Jordan Doull,Jordan,Doull,Australia,815.0,True,2026-08-24
+53902,Gyumin Lee,Gyumin,Lee,Republic of Korea,815.0,True,2026-08-24
+32622,Matthew Baldwin,Matthew,Baldwin,England,817.0,True,2026-08-24
+46181,Stuart Krog,Stuart,Krog,Zimbabwe,818.0,True,2026-08-24
+27466,Spencer Levin,Spencer,Levin,United States,819.0,True,2026-08-24
+23821,Yusaku Miyazato,Yusaku,Miyazato,Japan,820.0,True,2026-08-24
+52636,Paul McBride,Paul,McBride,Ireland,821.0,True,2026-08-24
+58658,Peter Knade,Peter,Knade,United States,822.0,True,2026-08-24
+36995,Lauri Ruuska,Lauri,Ruuska,Finland,823.0,True,2026-08-24
+55460,Sam Choi,Sam,Choi,United States,824.0,True,2026-08-24
+35524,Wouter De Vries,Wouter,De Vries,Netherlands,825.0,True,2026-08-24
+26908,Yuta Ikeda,Yuta,Ikeda,Japan,825.0,True,2026-08-24
+49773,Chase Koepka,Chase,Koepka,United States,825.0,True,2026-08-24
+67055,Harry Lord,Harry,Lord,England,828.0,True,2026-08-24
+52552,Maxime Legros,Maxime,Legros,France,829.0,True,2026-08-24
+54300,Nathan Barbieri,Nathan,Barbieri,Australia,830.0,True,2026-08-24
+49104,Daiki Imano,Daiki,Imano,Japan,830.0,True,2026-08-24
+54871,Grant Booth,Grant,Booth,Australia,832.0,True,2026-08-24
+29078,Chan Shih-chang,Chan,Shih-chang,Chinese Taipei,832.0,True,2026-08-24
+52502,Ryan Brooks,Ryan,Brooks,England,834.0,True,2026-08-24
+50083,Genki Okada,Genki,Okada,Japan,834.0,True,2026-08-24
+51631,Marc Hammer,Marc,Hammer,Germany,836.0,True,2026-08-24
+52956,Kyle Barker,Kyle,Barker,South Africa,837.0,True,2026-08-24
+28475,Jeff Overton,Jeff,Overton,United States,838.0,True,2026-08-24
+34554,Jung-gon Hwang,Jung-gon,Hwang,Republic of Korea,839.0,True,2026-08-24
+59327,Algot Kleen,Algot,Kleen,Sweden,840.0,True,2026-08-24
+58652,Sam Jones,Sam,Jones,New Zealand,841.0,True,2026-08-24
+61143,Austin Greaser,Austin,Greaser,United States,842.0,True,2026-08-24
+55293,Taiga Yamamoto,Taiga,Yamamoto,Japan,843.0,True,2026-08-24
+50706,Ashton Van Horne,Ashton,Van Horne,United States,844.0,True,2026-08-24
+58669,Jacob Solomon,Jacob,Solomon,United States,844.0,True,2026-08-24
+48953,Tawit Polthai,Tawit,Polthai,Thailand,846.0,True,2026-08-24
+33227,Hyun-woo Ryu,Hyun-woo,Ryu,Republic of Korea,847.0,True,2026-08-24
+35539,Luke Guthrie,Luke,Guthrie,United States,848.0,True,2026-08-24
+34632,Choi Min-Chel,Choi,Min-Chel,Republic of Korea,848.0,True,2026-08-24
+35356,Yuto Katsumata,Yuto,Katsumata,Japan,850.0,True,2026-08-24
+50382,Changtai Sudsom,Changtai,Sudsom,Thailand,851.0,True,2026-08-24
+56512,Conor Purcell,Conor,Purcell,Ireland,852.0,True,2026-08-24
+60750,Mark Goetz,Mark,Goetz,United States,853.0,True,2026-08-24
+45992,Matias Sanchez,Matias,Sanchez,Australia,854.0,True,2026-08-24
+29485,Brett Stegmaier,Brett,Stegmaier,United States,855.0,True,2026-08-24
+51336,Maverick Antcliff,Maverick,Antcliff,Australia,856.0,True,2026-08-24
+35956,Graham Van der Merwe,Graham,Van der Merwe,South Africa,857.0,True,2026-08-24
+33674,Adrian Meronk,Adrian,Meronk,Poland,858.0,True,2026-08-24
+46204,Ervin Chang,Ervin,Chang,Malaysia,859.0,True,2026-08-24
+65373,Alex Maguire,Alex,Maguire,Ireland,860.0,True,2026-08-24
+59448,Griffin Barela,Griffin,Barela,United States,861.0,True,2026-08-24
+27909,Wil Besseling,Wil,Besseling,Netherlands,862.0,True,2026-08-24
+20802,Jean Hugo,Jean,Hugo,South Africa,863.0,True,2026-08-24
+46435,Austin Cook,Austin,Cook,United States,864.0,True,2026-08-24
+32791,K.H. Lee,K.H.,Lee,Republic of Korea,865.0,True,2026-08-24
+46827,Xiao Bowen,Xiao,Bowen,People’s Rep of China,866.0,True,2026-08-24
+46928,Taiga Sugihara,Taiga,Sugihara,Japan,867.0,True,2026-08-24
+29303,Hur In-hoi,Hur,In-hoi,Republic of Korea,868.0,True,2026-08-24
+55072,Jacob W. Agerschou,Jacob,W. Agerschou,Denmark,869.0,True,2026-08-24
+30763,Woo-Hyun Kim,Woo-Hyun,Kim,,870.0,True,2026-08-24
+36872,Jack McDonald,Jack,McDonald,Scotland,871.0,True,2026-08-24
+51712,Robin Petersson,Robin,Petersson,Sweden,871.0,True,2026-08-24
+48629,Jesper Sandborg,Jesper,Sandborg,Sweden,871.0,True,2026-08-24
+63613,Jake Mcgoldrick,Jake,Mcgoldrick,England,874.0,True,2026-08-24
+52096,Adri Arnaus,Adri,Arnaus,Spain,874.0,True,2026-08-24
+54237,Ahmad Baig,Ahmad,Baig,Pakistan,876.0,True,2026-08-24
+67198,Sebastian Moss,Sebastian,Moss,United States,877.0,True,2026-08-24
+57353,George Bloor,George,Bloor,England,878.0,True,2026-08-24
+61452,Ryan Ang,Ryan,Ang,Singapore,879.0,True,2026-08-24
+55623,Kaito Onishi,Kaito,Onishi,Japan,879.0,True,2026-08-24
+56448,Nick Carlson,Nick,Carlson,United States,881.0,True,2026-08-24
+36439,Nicklaus Chiam,Nicklaus,Chiam,Singapore,881.0,True,2026-08-24
+60795,Frank Kennedy,Frank,Kennedy,England,881.0,True,2026-08-24
+49557,James Leow,James,Leow,Singapore,881.0,True,2026-08-24
+68989,Jase Summy,Jase,Summy,United States,885.0,True,2026-08-24
+28697,Gaganjeet Bhullar,Gaganjeet,Bhullar,India,886.0,True,2026-08-24
+29314,Lee Dai-han,Lee,Dai-han,Republic of Korea,887.0,True,2026-08-24
+45227,Lars Van Meijel,Lars,Van Meijel,Netherlands,888.0,True,2026-08-24
+59137,RJ Manke,RJ,Manke,United States,889.0,True,2026-08-24
+53188,Kosuke Suzuki,Kosuke,Suzuki,Japan,890.0,True,2026-08-24
+50488,Chris Crawford,Chris,Crawford,United States,891.0,True,2026-08-24
+51532,Jonathan De Los Reyes,Jonathan,De Los Reyes,United States,892.0,True,2026-08-24
+50586,Martin Eriksson,Martin,Eriksson,Sweden,893.0,True,2026-08-24
+58619,Kevin Velo,Kevin,Velo,United States,894.0,True,2026-08-24
+29903,Brett Rankin,Brett,Rankin,Australia,895.0,True,2026-08-24
+30957,Max Kieffer,Max,Kieffer,Germany,896.0,True,2026-08-24
+35477,Yushi Ito,Yushi,Ito,Japan,897.0,True,2026-08-24
+65418,Charlie Crockett,Charlie,Crockett,England,898.0,True,2026-08-24
+25818,Scott Piercy,Scott,Piercy,United States,899.0,True,2026-08-24
+28259,Sangmoon Bae,Sangmoon,Bae,Republic of Korea,900.0,True,2026-08-24
+50808,Shotaro Ban,Shotaro,Ban,United States,900.0,True,2026-08-24
+45158,Cory Crawford,Cory,Crawford,Australia,902.0,True,2026-08-24
+30966,Allen John,Allen,John,Germany,902.0,True,2026-08-24
+48924,Juan Salma,Juan,Salma,,904.0,True,2026-08-24
+28937,George Coetzee,George,Coetzee,South Africa,904.0,True,2026-08-24
+35437,Carter Jenkins,Carter,Jenkins,United States,906.0,True,2026-08-24
+62704,Shaurya Bhattacharya,Shaurya,Bhattacharya,India,907.0,True,2026-08-24
+54468,Joshua Lee,Joshua,Lee,United States,908.0,True,2026-08-24
+59153,Charlie Nikitas,Charlie,Nikitas,United States,908.0,True,2026-08-24
+58251,Beau Breault,Beau,Breault,United States,910.0,True,2026-08-24
+34300,Daijiro Izumida,Daijiro,Izumida,Japan,911.0,True,2026-08-24
+67352,Shubham Jaglan,Shubham,Jaglan,India,911.0,True,2026-08-24
+35230,Nelson Ledesma,Nelson,Ledesma,Argentina,913.0,True,2026-08-24
+36837,Julien Brun,Julien,Brun,France,914.0,True,2026-08-24
+69069,Mahanth Chirravuri,Mahanth,Chirravuri,United States,914.0,True,2026-08-24
+56938,Jorge Garcia,Jorge,Garcia,Venezuela,916.0,True,2026-08-24
+46003,N Thangaraja,N,Thangaraja,Sri Lanka,916.0,True,2026-08-24
+61013,Giles Evans,Giles,Evans,England,918.0,True,2026-08-24
+49884,Cody Blick,Cody,Blick,United States,919.0,True,2026-08-24
+46525,Gary Hurley,Gary,Hurley,Ireland,920.0,True,2026-08-24
+51264,Jediah Morgan,Jediah,Morgan,Australia,921.0,True,2026-08-24
+46422,Micah Shin,Micah,Shin,United States,922.0,True,2026-08-24
+65502,Tyran Snyders,Tyran,Snyders,South Africa,922.0,True,2026-08-24
+53125,Thomas Sloman,Thomas,Sloman,England,924.0,True,2026-08-24
+51077,Jonathan Wijono,Jonathan,Wijono,Indonesia,924.0,True,2026-08-24
+47128,Richy Werenski,Richy,Werenski,United States,926.0,True,2026-08-24
+57535,Jonas Baumgartner,Jonas,Baumgartner,Germany,927.0,True,2026-08-24
+55930,Fred Biondi,Fred,Biondi,Brazil,928.0,True,2026-08-24
+58077,Tsubasa Ukita,Tsubasa,Ukita,Japan,928.0,True,2026-08-24
+63158,Brandon Kewalramani,Brandon,Kewalramani,United States,930.0,True,2026-08-24
+47493,Yuichi Teruya,Yuichi,Teruya,Japan,930.0,True,2026-08-24
+35099,Khalin Joshi,Khalin,Joshi,India,932.0,True,2026-08-24
+51641,Haraldur Magnus,Haraldur,Magnus,Iceland,932.0,True,2026-08-24
+50154,Joseph Winslow,Joseph,Winslow,United States,934.0,True,2026-08-24
+63624,John Vogelpohl,John,Vogelpohl,United States,935.0,True,2026-08-24
+54288,Harrison Crowe,Harrison,Crowe,Australia,936.0,True,2026-08-24
+52639,Adam Blomme,Adam,Blomme,Sweden,936.0,True,2026-08-24
+29655,Björn Åkesson,Björn,Åkesson,Sweden,938.0,True,2026-08-24
+63808,Carl Jano Corpus,Carl,Jano Corpus,Philippines,938.0,True,2026-08-24
+34563,Chesson Hadley,Chesson,Hadley,United States,940.0,True,2026-08-24
+39113,Shubhankar Sharma,Shubhankar,Sharma,India,941.0,True,2026-08-24
+29022,Netipong Sritonginn,Netipong,Sritonginn,Thailand,942.0,True,2026-08-24
+53501,Victor Pastor Rufian,Victor,Pastor Rufian,Spain,943.0,True,2026-08-24
+36343,Christopher Wood,Christopher,Wood,Australia,943.0,True,2026-08-24
+26300,Matt Jones,Matt,Jones,Australia,945.0,True,2026-08-24
+50159,Oliver Gillberg,Oliver,Gillberg,Switzerland,946.0,True,2026-08-24
+67125,Enrique Dimayuga,Enrique,Dimayuga,Philippines,947.0,True,2026-08-24
+51008,Sebastian Eidaether Syr,Sebastian,Eidaether Syr,Norway,947.0,True,2026-08-24
+48156,Robin Sciot-Siegrist,Robin,Sciot-Siegrist,France,947.0,True,2026-08-24
+57292,Hiroki Tanaka,Hiroki,Tanaka,Japan,950.0,True,2026-08-24
+61081,Rintaro Nakano,Rintaro,Nakano,Japan,951.0,True,2026-08-24
+63350,Albert Boneta,Albert,Boneta,Spain,951.0,True,2026-08-24
+58385,Jakkanat Inmee,Jakkanat,Inmee,Thailand,953.0,True,2026-08-24
+33117,Dale Whitnell,Dale,Whitnell,England,953.0,True,2026-08-24
+66071,Sean Jean Ramos,Sean,Jean Ramos,Philippines,955.0,True,2026-08-24
+33102,Jason Roets,Jason,Roets,South Africa,956.0,True,2026-08-24
+57257,Filip Jakubcik,Filip,Jakubcik,Czechia,957.0,True,2026-08-24
+66416,Preston Stout,Preston,Stout,United States,958.0,True,2026-08-24
+59131,Luke Long,Luke,Long,United States,959.0,True,2026-08-24
+60262,Pierre Viallaneix,Pierre,Viallaneix,France,959.0,True,2026-08-24
+63806,Hunter Logan,Hunter,Logan,United States,961.0,True,2026-08-24
+31273,Gavin Green,Gavin,Green,Malaysia,962.0,True,2026-08-24
+56501,Pukhraj Singh Gill,Pukhraj,Singh Gill,India,963.0,True,2026-08-24
+51190,Guntaek Koh,Guntaek,Koh,Republic of Korea,963.0,True,2026-08-24
+25885,Kim Tae-hoon,Kim,Tae-hoon,Republic of Korea,965.0,True,2026-08-24
+33017,Keenan Davidse,Keenan,Davidse,South Africa,966.0,True,2026-08-24
+34235,Shunya Takeyasu,Shunya,Takeyasu,Japan,967.0,True,2026-08-24
+58970,Eric McIntosh,Eric,McIntosh,Scotland,967.0,True,2026-08-24
+57721,Bradley Bawden,Bradley,Bawden,England,969.0,True,2026-08-24
+32333,Kevin Tway,Kevin,Tway,United States,970.0,True,2026-08-24
+57633,Ollie Osborne,Ollie,Osborne,United States,971.0,True,2026-08-24
+32519,Benjamin Rusch,Benjamin,Rusch,Switzerland,971.0,True,2026-08-24
+54423,Malcolm Mitchell,Malcolm,Mitchell,South Africa,973.0,True,2026-08-24
+24461,Thomas Aiken,Thomas,Aiken,South Africa,974.0,True,2026-08-24
+35913,Michael Stewart,Michael,Stewart,Scotland,975.0,True,2026-08-24
+56001,Jean Bekirian,Jean,Bekirian,Armenia,976.0,True,2026-08-24
+49348,Aidric Chan,Aidric,Chan,Philippines,977.0,True,2026-08-24
+39831,Bobby Bai,Bobby,Bai,People’s Rep of China,978.0,True,2026-08-24
+33769,Thanyakorn Khrongpha,Thanyakorn,Khrongpha,Thailand,978.0,True,2026-08-24
+53013,Josh Hilleard,Josh,Hilleard,England,980.0,True,2026-08-24
+60065,Ryan Hall,Ryan,Hall,United States,981.0,True,2026-08-24
+58583,OJ Farrell,OJ,Farrell,England,982.0,True,2026-08-24
+67668,Charlie Forster,Charlie,Forster,England,983.0,True,2026-08-24
+28092,D.H. Lee,D.H.,Lee,Republic of Korea,984.0,True,2026-08-24
+67360,Brantley Scott,Brantley,Scott,United States,984.0,True,2026-08-24
+35185,MD Zamal Hossain,MD,Zamal Hossain,Bangladesh,984.0,True,2026-08-24
+36760,Yun-seok Gang,Yun-seok,Gang,Republic of Korea,987.0,True,2026-08-24
+64471,Minhyeok Yang,Minhyeok,Yang,Republic of Korea,988.0,True,2026-08-24
+53136,Jack Davidson,Jack,Davidson,Wales,989.0,True,2026-08-24
+58827,Ryan Grider,Ryan,Grider,United States,990.0,True,2026-08-24
+58714,Nick Infanti,Nick,Infanti,United States,991.0,True,2026-08-24
+32618,Rhein Gibson,Rhein,Gibson,Australia,992.0,True,2026-08-24
+23063,Scott Hend,Scott,Hend,Australia,993.0,True,2026-08-24
+34707,Siddikur Rahman,Siddikur,Rahman,Bangladesh,993.0,True,2026-08-24
+51035,Jack Yule,Jack,Yule,England,993.0,True,2026-08-24
+52398,Estiaan Conradie,Estiaan,Conradie,South Africa,996.0,True,2026-08-24
+39943,Woosuk Hwang,Woosuk,Hwang,Republic of Korea,997.0,True,2026-08-24
+30959,Alexander Knappe,Alexander,Knappe,Germany,998.0,True,2026-08-24
+,,,,,,True,2026-08-24
