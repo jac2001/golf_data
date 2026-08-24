@@ -1,38 +1,38 @@
 # Golf Model — Season Context
-_Updated: 2026-07-06 12:19_
+_Updated: 2026-08-24 08:13_
 
 ## Season Summary (2026 PGA Tour)
-- Tournaments tracked: **19**
-- Tournaments with results: **19**
-- Top pick finished top 10: **10/19** (53%)
-- Top-5 predictions → top-10 rate: **40%** (expected: ~33%)
-- Average rank of actual winner in our presets: **#26.5**
-- Times our #1 pick won: **3**
+- Tournaments tracked: **26**
+- Tournaments with results: **26**
+- Top pick finished top 10: **14/26** (54%)
+- Top-5 predictions → top-10 rate: **38%** (expected: ~33%)
+- Average rank of actual winner in our presets: **#24.9**
+- Times our #1 pick won: **4**
 
 ## Recent Tournament Results (Last 4)
 
-### Travelers Championship (R2026034)
-- **Winner**: Viktor Hovland
-- Winner was our **#1** ranked player pre-tournament
-- Our **#1 pick**: Scottie Scheffler — finished #1
-- Top-10 predictions hit: **2/10** finished inside top 10
-
-### U.S. Open (R2026026)
+### BMW Championship (R2026028)
 - **Winner**: Wyndham Clark
-- Winner was our **#67** ranked player pre-tournament
-- Our **#1 pick**: Rory McIlroy — finished #32
-- Top-10 predictions hit: **1/10** finished inside top 10
+- Winner was our **#13** ranked player pre-tournament
+- Our **#1 pick**: Scottie Scheffler — finished #12
+- Top-10 predictions hit: **4/10** finished inside top 10
 
-### The Memorial Tournament (R2026023)
-- **Winner**: J.T. Poston
-- Winner was our **#50** ranked player pre-tournament
-- Our **#1 pick**: Rory McIlroy — finished #12
-- Top-10 predictions hit: **1/10** finished inside top 10
+### 3M Open (R2026525)
+- **Winner**: Jackson Koivun
+- Winner was our **#17** ranked player pre-tournament
+- Our **#1 pick**: Scottie Scheffler — finished #2
+- Top-10 predictions hit: **3/10** finished inside top 10
 
-### Charles Schwab Challenge (R2026021)
-- **Winner**: Russell Henley
-- Winner was our **#4** ranked player pre-tournament
-- Our **#1 pick**: Justin Thomas — finished #13
+### The Open Championship (R2026100)
+- **Winner**: Ryan Fox
+- Winner was our **#57** ranked player pre-tournament
+- Our **#1 pick**: Rory McIlroy — finished #40
+- Top-10 predictions hit: **4/10** finished inside top 10
+
+### Genesis Scottish Open (R2026541)
+- **Winner**: Tom Kim
+- Winner was our **#28** ranked player pre-tournament
+- Our **#1 pick**: Rory McIlroy — finished #7
 - Top-10 predictions hit: **3/10** finished inside top 10
 
 ## Bet Performance (Recommended Bets — Priced Only)
@@ -50,9 +50,9 @@ Note: Most bets are outright/top-10/top-20 markets. High volume because the syst
 
 ## Closing Line Value (CLV)
 CLV measures whether our model priced players better than the closing market. Positive CLV = we got value; negative = we were wrong about the price.
-- Tournaments with CLV data: **10**
-- Average CLV: **+0.11pp** (percentage points vs closing line)
-- % of picks with positive CLV: **72%**
+- Tournaments with CLV data: **11**
+- Average CLV: **+0.07pp** (percentage points vs closing line)
+- % of picks with positive CLV: **71%**
 
 **Best CLV picks this season:**
   - Scottie Scheffler (Cognizant Classic): +39.4pp
@@ -64,16 +64,16 @@ What the model weighs most when ranking players this week:
 
 | # | Feature | Importance |
 |---|---|---|
-| 1 | recent_r4_avg_field_pct | 12.1% |
-| 2 | season_sg_ott_field_pct | 7.7% |
-| 3 | field_avg_season_sg_ott | 6.1% |
-| 4 | dg_top10 | 5.0% |
-| 5 | Off-the-tee (SG:OTT season avg) | 4.5% |
-| 6 | recent_par5_scoring_field_pct | 4.4% |
-| 7 | hist_avg_finish | 4.4% |
-| 8 | Recent form trend | 3.9% |
-| 9 | wind_mph_avg | 3.5% |
-| 10 | recent_sg_ott_weighted | 3.2% |
+| 1 | dg_fit_arg | 13.3% |
+| 2 | recent_sg_arg_weighted | 9.6% |
+| 3 | field_avg_season_sg_putt | 6.1% |
+| 4 | recent_sg_trend | 4.5% |
+| 5 | recent_sg_ott_weighted | 3.9% |
+| 6 | field_avg_season_sg_ott | 2.9% |
+| 7 | recent_par3_scoring_field_pct | 2.5% |
+| 8 | hist_top5s | 2.3% |
+| 9 | wind_mph_avg | 2.3% |
+| 10 | dg_fit_putt | 2.2% |
 
 ## Model Architecture Notes
 - 4 XGBoost models: win, top-5, top-10, top-20 probability
