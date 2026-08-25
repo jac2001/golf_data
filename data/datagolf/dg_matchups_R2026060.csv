@@ -1,0 +1,161 @@
+p1_name,p2_name,p1_dg_id,p2_dg_id,ties,book,p1_odds,p2_odds,p1_prob,p2_prob,p1_novig,p2_novig,is_dg_model,is_sharp,event_name,last_updated
+"Fox, Ryan","Smalley, Alex",11889,18474,void,bet365,+110,-132,0.47619,0.568966,0.455617,0.544383,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Smalley, Alex",11889,18474,void,datagolf,+127,-127,0.440529,0.559471,0.440529,0.559471,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Scott, Adam","Kim, Tom",6430,24766,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Scott, Adam","Kim, Tom",6430,24766,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","MacIntyre, Robert",6093,23323,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","MacIntyre, Robert",6093,23323,void,datagolf,+104,-104,0.490196,0.509804,0.490196,0.509804,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Spaun, J.J.","Hovland, Viktor",17536,18841,void,bet365,+120,-141,0.454545,0.585062,0.437228,0.562772,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Spaun, J.J.","Hovland, Viktor",17536,18841,void,datagolf,+133,-133,0.429185,0.570815,0.429185,0.570815,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Reitan, Kristoffer","Fitzpatrick, Alex",21407,25362,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Reitan, Kristoffer","Fitzpatrick, Alex",21407,25362,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Reitan, Kristoffer","Fitzpatrick, Alex",21407,25362,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Gerard, Ryan",16841,29767,void,bet365,-105,-116,0.512195,0.537037,0.488162,0.511838,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Gerard, Ryan",16841,29767,void,datagolf,+110,-110,0.47619,0.52381,0.47619,0.52381,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,bet365,+110,-132,0.47619,0.568966,0.455617,0.544383,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Cantlay, Patrick",14578,15466,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Bhatia, Akshay",12577,26096,void,bet365,-125,+105,0.555556,0.487805,0.532468,0.467532,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Bhatia, Akshay",12577,26096,void,datagolf,-114,+114,0.53271,0.46729,0.53271,0.46729,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bridgeman, Jacob",13562,29433,void,bet365,-152,+125,0.603175,0.444444,0.575758,0.424242,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bridgeman, Jacob",13562,29433,void,datagolf,-142,+142,0.586777,0.413223,0.586777,0.413223,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Aberg, Ludvig",10091,23950,void,bet365,-135,+115,0.574468,0.465116,0.552594,0.447406,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Aberg, Ludvig",10091,23950,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Aberg, Ludvig",10091,23950,void,draftkings,-136,+104,0.576271,0.490196,0.540355,0.459645,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,bet365,-152,+125,0.603175,0.444444,0.575758,0.424242,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,datagolf,-137,+137,0.578059,0.421941,0.578059,0.421941,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Scheffler, Scottie","Schauffele, Xander",18417,19895,void,draftkings,-178,+136,0.640288,0.423729,0.601765,0.398235,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Fitzpatrick, Matt",12294,17646,void,datagolf,-105,+105,0.512195,0.487805,0.512195,0.487805,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,bet365,-111,-111,0.526066,0.526066,0.5,0.5,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Burns, Sam",14609,19483,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Morikawa, Collin","Young, Cameron",22085,26651,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Morikawa, Collin","Young, Cameron",22085,26651,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,bet365,-116,-105,0.537037,0.512195,0.511838,0.488162,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Gotterup, Chris",23604,27774,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Kim, Tom",11889,24766,separate bet offered,bet365,+137,-125,0.421941,0.555556,0.431655,0.568345,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Kim, Tom",11889,24766,separate bet offered,datagolf,+172,-111,0.367647,0.526066,0.41137,0.58863,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Kim, Tom",11889,24766,separate bet offered,pointsbet,+135,-120,0.425532,0.545455,0.438247,0.561753,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Kim, Tom",11889,24766,void,caesars,+110,-140,0.47619,0.583333,0.449438,0.550562,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Kim, Tom",11889,24766,void,datagolf,+143,-143,0.411523,0.588477,0.411523,0.588477,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Kim, Tom",11889,24766,void,draftkings,+115,-144,0.465116,0.590164,0.440751,0.559249,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Kim, Tom",11889,24766,void,fanduel,+110,-138,0.47619,0.579832,0.450928,0.549072,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,separate bet offered,datagolf,+131,+117,0.4329,0.460829,0.484375,0.515625,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,separate bet offered,pointsbet,+110,+100,0.47619,0.5,0.487805,0.512195,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,void,draftkings,-114,-110,0.53271,0.52381,0.504212,0.495788,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Scott, Adam",6093,6430,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,separate bet offered,bet365,-111,+120,0.526066,0.454545,0.536467,0.463533,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,separate bet offered,datagolf,+103,+150,0.492611,0.4,0.551876,0.448124,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,separate bet offered,pointsbet,-110,+120,0.52381,0.454545,0.535398,0.464602,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,datagolf,-123,+123,0.55157,0.44843,0.55157,0.44843,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,draftkings,-126,+100,0.557522,0.5,0.527197,0.472803,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Hovland, Viktor","MacIntyre, Robert",18841,23323,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Smalley, Alex","Fitzpatrick, Alex",18474,25362,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Smalley, Alex","Fitzpatrick, Alex",18474,25362,separate bet offered,datagolf,+115,+135,0.465116,0.425532,0.522222,0.477778,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Smalley, Alex","Fitzpatrick, Alex",18474,25362,separate bet offered,pointsbet,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Smalley, Alex","Fitzpatrick, Alex",18474,25362,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Smalley, Alex","Fitzpatrick, Alex",18474,25362,void,datagolf,-109,+109,0.521531,0.478469,0.521531,0.478469,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Smalley, Alex","Fitzpatrick, Alex",18474,25362,void,draftkings,-124,-102,0.553571,0.50495,0.522966,0.477034,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Smalley, Alex","Fitzpatrick, Alex",18474,25362,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,separate bet offered,datagolf,+122,+124,0.45045,0.446429,0.502242,0.497758,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,caesars,+105,-135,0.487805,0.574468,0.459209,0.540791,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,draftkings,-112,-112,0.528302,0.528302,0.5,0.5,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Spaun, J.J.",16841,17536,void,fanduel,+100,-125,0.5,0.555556,0.473684,0.526316,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Reitan, Kristoffer",15466,21407,separate bet offered,bet365,-152,+162,0.603175,0.381679,0.612451,0.387549,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Reitan, Kristoffer",15466,21407,separate bet offered,datagolf,-122,+189,0.54955,0.346021,0.613631,0.386369,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Reitan, Kristoffer",15466,21407,separate bet offered,pointsbet,-140,+155,0.583333,0.392157,0.59799,0.40201,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Reitan, Kristoffer",15466,21407,void,caesars,-190,+150,0.655172,0.4,0.620915,0.379085,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Reitan, Kristoffer",15466,21407,void,datagolf,-159,+159,0.6139,0.3861,0.6139,0.3861,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Reitan, Kristoffer",15466,21407,void,draftkings,-174,+140,0.635036,0.416667,0.603817,0.396183,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Reitan, Kristoffer",15466,21407,void,fanduel,-188,+138,0.652778,0.420168,0.608398,0.391602,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Gerard, Ryan",12577,29767,separate bet offered,bet365,+105,+105,0.487805,0.487805,0.5,0.5,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Gerard, Ryan",12577,29767,separate bet offered,datagolf,+146,+105,0.406504,0.487805,0.454545,0.545455,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Gerard, Ryan",12577,29767,void,caesars,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Gerard, Ryan",12577,29767,void,datagolf,+120,-120,0.454545,0.545455,0.454545,0.545455,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Gerard, Ryan",12577,29767,void,draftkings,-104,-120,0.509804,0.545455,0.483108,0.516892,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Gerard, Ryan",12577,29767,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,separate bet offered,bet365,-139,+150,0.58159,0.4,0.592498,0.407502,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,separate bet offered,datagolf,-123,+191,0.55157,0.343643,0.616133,0.383867,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,separate bet offered,pointsbet,-130,+140,0.565217,0.416667,0.575646,0.424354,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,void,caesars,-165,+127,0.622642,0.440529,0.585646,0.414354,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,void,datagolf,-161,+161,0.616858,0.383142,0.616858,0.383142,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,void,draftkings,-152,+122,0.603175,0.45045,0.572476,0.427524,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","Bhatia, Akshay",13562,26096,void,fanduel,-150,+125,0.6,0.444444,0.574468,0.425532,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Bridgeman, Jacob",14578,29433,separate bet offered,bet365,-120,+130,0.545455,0.434783,0.556452,0.443548,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Bridgeman, Jacob",14578,29433,separate bet offered,datagolf,-102,+158,0.50495,0.387597,0.565741,0.434259,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Bridgeman, Jacob",14578,29433,separate bet offered,pointsbet,-110,+125,0.52381,0.444444,0.540984,0.459016,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Bridgeman, Jacob",14578,29433,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Bridgeman, Jacob",14578,29433,void,datagolf,-130,+130,0.565217,0.434783,0.565217,0.434783,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Bridgeman, Jacob",14578,29433,void,draftkings,-140,+112,0.583333,0.471698,0.552906,0.447094,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Bridgeman, Jacob",14578,29433,void,fanduel,-138,+110,0.579832,0.47619,0.549072,0.450928,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,separate bet offered,bet365,-105,+115,0.512195,0.465116,0.524086,0.475914,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,separate bet offered,datagolf,+123,+124,0.44843,0.446429,0.501119,0.498881,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,separate bet offered,pointsbet,-105,+115,0.512195,0.465116,0.524086,0.475914,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,caesars,-135,+105,0.574468,0.487805,0.540791,0.459209,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,datagolf,-101,+101,0.502488,0.497512,0.502488,0.497512,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,draftkings,-128,+102,0.561404,0.49505,0.531404,0.468596,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"McIlroy, Rory","Schauffele, Xander",10091,19895,void,fanduel,-125,+100,0.555556,0.5,0.526316,0.473684,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,separate bet offered,datagolf,+123,+123,0.44843,0.44843,0.5,0.5,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,separate bet offered,pointsbet,+110,+100,0.47619,0.5,0.487805,0.512195,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,draftkings,-108,-118,0.519231,0.541284,0.489602,0.510398,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Aberg, Ludvig",12294,23950,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,separate bet offered,bet365,+110,+100,0.47619,0.5,0.487805,0.512195,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,separate bet offered,datagolf,+124,+124,0.446429,0.446429,0.5,0.5,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,separate bet offered,pointsbet,+105,+105,0.487805,0.487805,0.5,0.5,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,void,caesars,-115,-115,0.534884,0.534884,0.5,0.5,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,void,datagolf,+100,-100,0.5,0.5,0.5,0.5,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,void,draftkings,-124,-102,0.553571,0.50495,0.522966,0.477034,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Burns, Sam","Morikawa, Collin",19483,22085,void,fanduel,-111,-111,0.526066,0.526066,0.5,0.5,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,separate bet offered,datagolf,+122,+127,0.45045,0.440529,0.505568,0.494432,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,separate bet offered,pointsbet,+110,+100,0.47619,0.5,0.487805,0.512195,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,void,caesars,-105,-125,0.512195,0.555556,0.479695,0.520305,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,void,datagolf,-102,+102,0.50495,0.49505,0.50495,0.49505,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,void,draftkings,-110,-114,0.52381,0.53271,0.495788,0.504212,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Gotterup, Chris",14609,27774,void,fanduel,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,separate bet offered,bet365,+100,+110,0.5,0.47619,0.512195,0.487805,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,separate bet offered,datagolf,+126,+120,0.442478,0.454545,0.493274,0.506726,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,separate bet offered,pointsbet,+100,+110,0.5,0.47619,0.512195,0.487805,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,void,caesars,-125,-105,0.555556,0.512195,0.520305,0.479695,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,void,draftkings,-110,-115,0.52381,0.534884,0.49477,0.50523,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Clark, Wyndham","Young, Cameron",23604,26651,void,fanduel,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,separate bet offered,bet365,+187,-172,0.348432,0.632353,0.355258,0.644742,False,True,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,separate bet offered,datagolf,+210,-135,0.322581,0.574468,0.359602,0.640398,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,separate bet offered,pointsbet,+175,-160,0.363636,0.615385,0.371429,0.628571,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,caesars,+165,-210,0.377358,0.677419,0.357761,0.642239,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,datagolf,+178,-178,0.359712,0.640288,0.359712,0.640288,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,draftkings,+164,-205,0.378788,0.672131,0.360435,0.639565,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Scheffler, Scottie",17646,18417,void,fanduel,+162,-200,0.381679,0.666667,0.364078,0.635922,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Bhatia, Akshay",11889,26096,void,datagolf,+108,-108,0.480769,0.519231,0.480769,0.519231,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fox, Ryan","Bhatia, Akshay",11889,26096,void,draftkings,-110,-120,0.52381,0.545455,0.489879,0.510121,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Kim, Tom",16841,24766,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Lee, Min Woo","Kim, Tom",16841,24766,void,draftkings,-114,-116,0.53271,0.537037,0.497978,0.502022,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Scott, Adam","Gerard, Ryan",6430,29767,void,datagolf,+101,-101,0.497512,0.502488,0.497512,0.502488,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Scott, Adam","Gerard, Ryan",6430,29767,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Hovland, Viktor",6093,18841,void,datagolf,+127,-127,0.440529,0.559471,0.440529,0.559471,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Rose, Justin","Hovland, Viktor",6093,18841,void,draftkings,+100,-130,0.5,0.565217,0.469388,0.530612,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","MacIntyre, Robert",13562,23323,void,datagolf,-122,+122,0.54955,0.45045,0.54955,0.45045,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Matsuyama, Hideki","MacIntyre, Robert",13562,23323,void,draftkings,-125,-104,0.555556,0.509804,0.521472,0.478528,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Spaun, J.J.","Smalley, Alex",17536,18474,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Spaun, J.J.","Smalley, Alex",17536,18474,void,draftkings,-120,-110,0.545455,0.52381,0.510121,0.489879,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Burns, Sam",15466,19483,void,datagolf,-104,+104,0.509804,0.490196,0.509804,0.490196,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Cantlay, Patrick","Burns, Sam",15466,19483,void,draftkings,-114,-115,0.53271,0.534884,0.498982,0.501018,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Bridgeman, Jacob",12577,29433,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Woodland, Gary","Bridgeman, Jacob",12577,29433,void,draftkings,-116,-114,0.537037,0.53271,0.502022,0.497978,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Gotterup, Chris",14578,27774,void,datagolf,+106,-106,0.485437,0.514563,0.485437,0.514563,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Henley, Russell","Gotterup, Chris",14578,27774,void,draftkings,-108,-122,0.519231,0.54955,0.485816,0.514184,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Clark, Wyndham",12294,23604,void,datagolf,-108,+108,0.519231,0.480769,0.519231,0.480769,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fleetwood, Tommy","Clark, Wyndham",12294,23604,void,draftkings,-116,-114,0.537037,0.53271,0.502022,0.497978,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Morikawa, Collin",14609,22085,void,datagolf,+103,-103,0.492611,0.507389,0.492611,0.507389,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Kim, Si Woo","Morikawa, Collin",14609,22085,void,draftkings,-112,-118,0.528302,0.541284,0.493931,0.506069,False,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,datagolf,-100,+100,0.5,0.5,0.5,0.5,True,False,TOUR Championship,2026-08-25 09:32:00 UTC
+"Fitzpatrick, Matt","Young, Cameron",17646,26651,void,draftkings,-108,-120,0.519231,0.545455,0.487685,0.512315,False,False,TOUR Championship,2026-08-25 09:32:00 UTC

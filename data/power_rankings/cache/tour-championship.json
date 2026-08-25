@@ -1,0 +1,682 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "TOUR Championship",
+      "tableTitle": "Power Rankings for TOUR Championship",
+      "powerRankingsTableRow": [
+        {
+          "rank": 30,
+          "player": {
+            "id": "29936",
+            "firstName": "Ryan",
+            "lastName": "Fox",
+            "countryFlag": "NZL",
+            "countryName": "New Zealand",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_29936.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The last man in the field didn\u2019t record a top 45 in the first two legs but it\u2019s understandable if his feet haven\u2019t returned to Earth since his major breakthrough at Royal Birkdale at age 39. One of six first-timers at East Lake."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 29,
+          "player": {
+            "id": "55721",
+            "firstName": "Alex",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55721.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "One of two PGA TOUR rookies in the "
+                },
+                {
+                  "value": "field"
+                },
+                {
+                  "value": ". He wasn\u2019t eligible for the FedExCup until he won the Zurich Classic of New Orleans alongside his older brother, Matt. After a torrid run, Alex has gone five starts without a top 40."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 28,
+          "player": {
+            "id": "49855",
+            "firstName": "Kristoffer",
+            "lastName": "Reitan",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49855.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The PGA TOUR rookie from Norway splashes at 20th in the FedExCup. Pretty much everything since his breakthrough victory at the Truist Championship has been gravy. It\u2019s included a T6 among four top 25s. T22 last week at Bellerive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 27,
+          "player": {
+            "id": "37378",
+            "firstName": "Min Woo",
+            "lastName": "Lee",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37378.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He\u2019s in just his third season on the PGA TOUR but it feels overdue that he\u2019s making his East Lake debut. Found himself on three podiums in what\u2019s been a balanced season. Scorer\u2019s mentality supersedes tee-to-green inconsistency."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 26,
+          "player": {
+            "id": "39324",
+            "firstName": "J.J.",
+            "lastName": "Spaun",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39324.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "J.J. Spaun ... It was a tall task to come close to last year\u2019s career season but he\u2019s back! Scuffled until winning the Valero Texas Open and didn\u2019t waste it with five top 15s since. In position to pay off lessons learned here a year ago (T25)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 25,
+          "player": {
+            "id": "46340",
+            "firstName": "Alex",
+            "lastName": "Smalley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46340.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The only non-PGA TOUR winner in the field is attempting to match what previous non-winner Tommy Fleetwood accomplished here a year ago. Smalley also is a first-timer at East Lake but arrives with three straight top 25s."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 24,
+          "player": {
+            "id": "57366",
+            "firstName": "Cameron",
+            "lastName": "Young",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57366.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Given his mini-skid ahead of his third appearance, it wouldn\u2019t hurt for him to tap into how he got around East Lake in only 62 strokes in last year\u2019s second round. He paid it off with a T4. Quite simply, his putting must improve."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 23,
+          "player": {
+            "id": "59018",
+            "firstName": "Ryan",
+            "lastName": "Gerard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Although the debutant has been inside the top 30 for most of the year, he didn\u2019t display consistently strong form until the second half, but that\u2019s when he matters most. Rolls in with two top 10s among four top 25s in five starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 22,
+          "player": {
+            "id": "31323",
+            "firstName": "Gary",
+            "lastName": "Woodland",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_31323.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Highlighting his play pales in comparison to the daily triumphs he experiences but he\u2019s chasing success just like everyone else. And you knew that he\u2019d box out to return to East Lake this year. It\u2019s his first look since 2019."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 21,
+          "player": {
+            "id": "56630",
+            "firstName": "Akshay",
+            "lastName": "Bhatia",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_56630.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Unusually as inconsistent as he is a threat, so he presents as a wild card in an elite field in his third start at East Lake. Connected four sub-70s here last year and settled for a T13. Also fresh off a steady T12 at Bellerive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 20,
+          "player": {
+            "id": "22405",
+            "firstName": "Justin",
+            "lastName": "Rose",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_22405.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a five-year hiatus, he\u2019s now made consecutive TOUR Championship starts. T21 last year. As it concerns his prospects, form over time is overrated, but absence of a drought isn\u2019t. Poised to pop any time. T22 last week."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 19,
+          "player": {
+            "id": "52215",
+            "firstName": "Robert",
+            "lastName": "MacIntyre",
+            "countryFlag": "SCO",
+            "countryName": "Scotland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52215.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Clutch. With a T7 at the BMW Championship, he became the first in Playoffs history to withdraw during an early event \u2013 as he did from the FedEx St Jude with a sore knee \u2013 and then climb into the top 30 at the penultimate leg."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 18,
+          "player": {
+            "id": "60004",
+            "firstName": "Jacob",
+            "lastName": "Bridgeman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60004.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "One of the two PGA TOUR non-winners at East Lake last year and placed T27. Returns as the winner of The Genesis Invitational and the circuit\u2019s best putter. He\u2019s also fresh off a clinic with his short irons at Bellerive (ninth)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 17,
+          "player": {
+            "id": "24502",
+            "firstName": "Adam",
+            "lastName": "Scott",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_24502.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "In addition to his return to East Lake for the first time since 2024 (T4), he\u2019s celebrating the 20th anniversary of his win here (in the last edition before the FedExCup Playoffs launched). Three straight top 20s upon arrival."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 16,
+          "player": {
+            "id": "46717",
+            "firstName": "Viktor",
+            "lastName": "Hovland",
+            "countryFlag": "NOR",
+            "countryName": "Norway",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46717.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It\u2019s been a minute since he\u2019s settled into a groove but he\u2019s 7-for-7 in advancing to the TOUR Championship in his career. Took the title (and the FedExCup) at East Lake in 2023. Popped for a win two months ago. Two top 20s since."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 15,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The fixture at East Lake hasn\u2019t made noise here since a T4 in 2018. However, he\u2019s gone all-in on his schedule in pursuit of the FedExCup. This is his seventh straight week on the road. Went T3-T5-T7-T7 until a T28 at Bellerive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "55182",
+            "firstName": "Tom",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_55182.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He\u2019s only 24 but it\u2019s been a long three years for his East Lake return after his 2023 debut. No doubt he appreciates the rigors of this climb as he settles into his fully formed self. That makes him as dangerous as his skill set."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "59095",
+            "firstName": "Chris",
+            "lastName": "Gotterup",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Adapts to challenges with ease. The three-time winner this year just logged a T4 at Bellerive where his short game, of all things, was sublime. That can only fortify his confidence in his second start at East Lake (T10, 2025)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After missing the TOUR Championship for the first time last year, he launched his revenge campaign with a victory in his next start at the Baycurrent Classic. Has a win (2017) and three seconds among six top fives at East Lake."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "34098",
+            "firstName": "Russell",
+            "lastName": "Henley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_34098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The Georgia native is right at home at East Lake. Closed out a T4 in 2024 with a 62 and then opened last year with a 61 en route to a co-runner-up. Also placed T3 way back in 2017. Four top 20s in last five starts. Never slumps."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "52955",
+            "firstName": "Ludvig",
+            "lastName": "\u00c5berg",
+            "countryFlag": "SWE",
+            "countryName": "Sweden",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52955.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Three full seasons, three trips to East Lake. The Swede continues to fight round-to-round inconsistency despite rising for eight top 10s this season. He\u2019s also one of only five in the field with top 20s in the first two legs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "40098",
+            "firstName": "Matt",
+            "lastName": "Fitzpatrick",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40098.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After just missing out on a berth to tee it up at East Lake the last two years, he\u2019s been a lock for months, with three wins across four starts into April. No top 10s in his last three, but the Brit\u2019s firepower is undeniable."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "37455",
+            "firstName": "Si Woo",
+            "lastName": "Kim",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37455.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "No matter the sport, playoffs reveal surprise performers. He doesn\u2019t sneak up on anyone what with five podium finishes among 11 top 10s this year, but this is just his third start at East Lake, so he could be a unexpected problem."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "35450",
+            "firstName": "Patrick",
+            "lastName": "Cantlay",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35450.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Lowest opening seed of the Playoffs (42nd) to qualify. Ninth trip in 10 years. The 2021 FedExCup champ arrives with solid form \u2013 T8-T12-second across his last three \u2013 and he\u2019s a horse at East Lake. Four top sevens since 2021."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "50525",
+            "firstName": "Collin",
+            "lastName": "Morikawa",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50525.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "En route to a T4 at Bellerive, he capitalized on his default strength from tee to green on a course with unfamiliar putting surfaces, but his stroke also was solid. He\u2019s never missed a TOUR Championship. Low aggregate in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "30911",
+            "firstName": "Tommy",
+            "lastName": "Fleetwood",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_30911.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Becoming the first to successfully defend a FedExCup title is a cool narrative, but he wouldn\u2019t mind the kind of sharper form upon arrival that he enjoyed ahead of last year\u2019s PGA TOUR breakthrough. Always a menace, though"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "47504",
+            "firstName": "Sam",
+            "lastName": "Burns",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_47504.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With three podium finishes in his prior four starts that bridged the birth of his second child, a T28 at the BMW Championship hits as a hiccup, but now he\u2019s back on familiar greens where he went sub-70 in his last nine rounds."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "28237",
+            "firstName": "Rory",
+            "lastName": "McIlroy",
+            "countryFlag": "NIR",
+            "countryName": "Northern Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28237.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He didn\u2019t conclude the BMW Championship as he wanted but the solo third is exactly what he needed to feel after the third-to-last-place finish at the FedEx St. Jude. Already the winningest FedExCup champion with three titles."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "46046",
+            "firstName": "Scottie",
+            "lastName": "Scheffler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46046.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Despite the malady that dogged him at the "
+                },
+                {
+                  "value": "BMW Championship"
+                },
+                {
+                  "value": ", he placed 12th. Now he has a few days to recover, reset and restart for a run at his second FedExCup title (2024). Opened the Playoffs with victory at the FedEx St. Jude."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "51766",
+            "firstName": "Wyndham",
+            "lastName": "Clark",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51766.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His trio of mid-range birdies to walk off victory at the BMW Championship was a microcosm of his strength that he renewed midseason. It feeds his confidence that yields success. Possesses momentum precisely when he wants it."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

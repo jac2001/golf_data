@@ -1,491 +1,301 @@
 player_name,similar_player,similarity_score,similar_rank,similar_win_prob,similar_world_rank
-"Scheffler, Scottie","Fleetwood, Tommy",0.8979,1,0.02944,9
-"Scheffler, Scottie","McIlroy, Rory",0.8956,2,0.05224,2
-"Scheffler, Scottie","Fitzpatrick, Matt",0.7522,3,0.03461,4
-"Scheffler, Scottie","Young, Cameron",0.6991,4,0.03062,3
-"Scheffler, Scottie","McNealy, Maverick",0.6485,5,0.01796,37
-"Scheffler, Scottie","Kim, Si Woo",0.6071,6,0.06926,22
-"Scheffler, Scottie","Schauffele, Xander",0.6044,7,0.05052,14
-"Scheffler, Scottie","Morikawa, Collin",0.5782,8,0.03226,6
-"Scheffler, Scottie","Clark, Wyndham",0.5611,9,0.02787,8
-"Scheffler, Scottie","Fitzpatrick, Alex",0.5248,10,0.01737,62
-"Fleetwood, Tommy","Scheffler, Scottie",0.8979,1,0.09375,1
-"Fleetwood, Tommy","McNealy, Maverick",0.8204,2,0.01796,37
-"Fleetwood, Tommy","Fitzpatrick, Matt",0.7592,3,0.03461,4
-"Fleetwood, Tommy","McIlroy, Rory",0.7569,4,0.05224,2
-"Fleetwood, Tommy","Clark, Wyndham",0.5483,5,0.02787,8
-"Fleetwood, Tommy","Young, Cameron",0.4914,6,0.03062,3
-"Fleetwood, Tommy","Theegala, Sahith",0.4701,7,0.01549,76
-"Fleetwood, Tommy","Matsuyama, Hideki",0.4214,8,0.01784,30
-"Fleetwood, Tommy","Kim, Si Woo",0.4015,9,0.06926,22
-"Fleetwood, Tommy","Fitzpatrick, Alex",0.3981,10,0.01737,62
-"Burns, Sam","Bridgeman, Jacob",0.9609,1,0.01566,27
-"Burns, Sam","Knapp, Jake",0.9471,2,0.02438,44
-"Burns, Sam","Gerard, Ryan",0.862,3,0.01302,28
-"Burns, Sam","McCarty, Matt",0.7089,4,0.00183,57
-"Burns, Sam","Henley, Russell",0.6913,5,0.02595,5
-"Burns, Sam","Hojgaard, Nicolai",0.6017,6,0.00916,34
-"Burns, Sam","Woodland, Gary",0.5651,7,0.01644,42
-"Burns, Sam","Noren, Alex",0.5157,8,0.0128,24
-"Burns, Sam","Bhatia, Akshay",0.5002,9,0.00471,26
-"Burns, Sam","Straka, Sepp",0.4892,10,0.00742,23
-"Fitzpatrick, Matt","Kim, Si Woo",0.7917,1,0.06926,22
-"Fitzpatrick, Matt","Fleetwood, Tommy",0.7592,2,0.02944,9
-"Fitzpatrick, Matt","Clark, Wyndham",0.7568,3,0.02787,8
-"Fitzpatrick, Matt","Scheffler, Scottie",0.7522,4,0.09375,1
-"Fitzpatrick, Matt","Cantlay, Patrick",0.7346,5,0.03936,36
-"Fitzpatrick, Matt","Young, Cameron",0.6896,6,0.03062,3
-"Fitzpatrick, Matt","McIlroy, Rory",0.6725,7,0.05224,2
-"Fitzpatrick, Matt","Fitzpatrick, Alex",0.6536,8,0.01737,62
-"Fitzpatrick, Matt","Matsuyama, Hideki",0.5949,9,0.01784,30
-"Fitzpatrick, Matt","Morikawa, Collin",0.5881,10,0.03226,6
-"McIlroy, Rory","Young, Cameron",0.9022,1,0.03062,3
-"McIlroy, Rory","Scheffler, Scottie",0.8956,2,0.09375,1
-"McIlroy, Rory","Gotterup, Chris",0.8149,3,0.03454,7
-"McIlroy, Rory","Fitzpatrick, Alex",0.8014,4,0.01737,62
-"McIlroy, Rory","Schauffele, Xander",0.76,5,0.05052,14
-"McIlroy, Rory","Fleetwood, Tommy",0.7569,6,0.02944,9
-"McIlroy, Rory","Kim, Si Woo",0.7524,7,0.06926,22
-"McIlroy, Rory","Fitzpatrick, Matt",0.6725,8,0.03461,4
-"McIlroy, Rory","Morikawa, Collin",0.6541,9,0.03226,6
-"McIlroy, Rory","Cantlay, Patrick",0.5347,10,0.03936,36
-"Kim, Si Woo","Young, Cameron",0.9409,1,0.03062,3
-"Kim, Si Woo","Fitzpatrick, Alex",0.9119,2,0.01737,62
-"Kim, Si Woo","Schauffele, Xander",0.9,3,0.05052,14
-"Kim, Si Woo","Morikawa, Collin",0.8924,4,0.03226,6
-"Kim, Si Woo","Gotterup, Chris",0.8194,5,0.03454,7
-"Kim, Si Woo","Fitzpatrick, Matt",0.7917,6,0.03461,4
-"Kim, Si Woo","Cantlay, Patrick",0.7733,7,0.03936,36
-"Kim, Si Woo","McIlroy, Rory",0.7524,8,0.05224,2
-"Kim, Si Woo","Scott, Adam",0.7484,9,0.02794,55
-"Kim, Si Woo","Rose, Justin",0.6365,10,0.02398,10
-"Schauffele, Xander","Morikawa, Collin",0.9709,1,0.03226,6
-"Schauffele, Xander","Young, Cameron",0.9119,2,0.03062,3
-"Schauffele, Xander","Kim, Si Woo",0.9,3,0.06926,22
-"Schauffele, Xander","Gotterup, Chris",0.8799,4,0.03454,7
-"Schauffele, Xander","Scott, Adam",0.8758,5,0.02794,55
-"Schauffele, Xander","Fitzpatrick, Alex",0.7982,6,0.01737,62
-"Schauffele, Xander","McIlroy, Rory",0.76,7,0.05224,2
-"Schauffele, Xander","Henley, Russell",0.6969,8,0.02595,5
-"Schauffele, Xander","Scheffler, Scottie",0.6044,9,0.09375,1
-"Schauffele, Xander","Aberg, Ludvig",0.5947,10,0.03111,19
-"Aberg, Ludvig","Brennan, Michael",0.8556,1,0.01098,61
-"Aberg, Ludvig","Scott, Adam",0.8141,2,0.02794,55
-"Aberg, Ludvig","Gotterup, Chris",0.7457,3,0.03454,7
-"Aberg, Ludvig","Woodland, Gary",0.6964,4,0.01644,42
-"Aberg, Ludvig","Kitayama, Kurt",0.6317,5,0.01131,33
-"Aberg, Ludvig","Hisatsune, Ryo",0.6001,6,0.00932,60
-"Aberg, Ludvig","Schauffele, Xander",0.5947,7,0.05052,14
-"Aberg, Ludvig","Young, Cameron",0.4891,8,0.03062,3
-"Aberg, Ludvig","Fitzpatrick, Alex",0.4841,9,0.01737,62
-"Aberg, Ludvig","Gerard, Ryan",0.4585,10,0.01302,28
-"Henley, Russell","Gerard, Ryan",0.8664,1,0.01302,28
-"Henley, Russell","Bridgeman, Jacob",0.8042,2,0.01566,27
-"Henley, Russell","Straka, Sepp",0.748,3,0.00742,23
-"Henley, Russell","Morikawa, Collin",0.7413,4,0.03226,6
-"Henley, Russell","Schauffele, Xander",0.6969,5,0.05052,14
-"Henley, Russell","Burns, Sam",0.6913,6,0.02364,17
-"Henley, Russell","Knapp, Jake",0.6359,7,0.02438,44
-"Henley, Russell","Scott, Adam",0.5875,8,0.02794,55
-"Henley, Russell","Aberg, Ludvig",0.4542,9,0.03111,19
-"Henley, Russell","Scheffler, Scottie",0.4037,10,0.09375,1
-"Cantlay, Patrick","Fitzpatrick, Alex",0.8615,1,0.01737,62
-"Cantlay, Patrick","Hisatsune, Ryo",0.7928,2,0.00932,60
-"Cantlay, Patrick","Rai, Aaron",0.7793,3,0.0114,16
-"Cantlay, Patrick","Kim, Si Woo",0.7733,4,0.06926,22
-"Cantlay, Patrick","Spaun, J.J.",0.768,5,0.01411,12
-"Cantlay, Patrick","Fitzpatrick, Matt",0.7346,6,0.03461,4
-"Cantlay, Patrick","Young, Cameron",0.7165,7,0.03062,3
-"Cantlay, Patrick","Lee, Min Woo",0.6496,8,0.00731,39
-"Cantlay, Patrick","Gotterup, Chris",0.6042,9,0.03454,7
-"Cantlay, Patrick","McIlroy, Rory",0.5347,10,0.05224,2
-"Young, Cameron","Fitzpatrick, Alex",0.9564,1,0.01737,62
-"Young, Cameron","Kim, Si Woo",0.9409,2,0.06926,22
-"Young, Cameron","Gotterup, Chris",0.9404,3,0.03454,7
-"Young, Cameron","Schauffele, Xander",0.9119,4,0.05052,14
-"Young, Cameron","McIlroy, Rory",0.9022,5,0.05224,2
-"Young, Cameron","Morikawa, Collin",0.8309,6,0.03226,6
-"Young, Cameron","Scott, Adam",0.735,7,0.02794,55
-"Young, Cameron","Cantlay, Patrick",0.7165,8,0.03936,36
-"Young, Cameron","Scheffler, Scottie",0.6991,9,0.09375,1
-"Young, Cameron","Fitzpatrick, Matt",0.6896,10,0.03461,4
-"Matsuyama, Hideki","Clark, Wyndham",0.9534,1,0.02787,8
-"Matsuyama, Hideki","Theegala, Sahith",0.8878,2,0.01549,76
-"Matsuyama, Hideki","Hovland, Viktor",0.8796,3,0.02558,13
-"Matsuyama, Hideki","Cole, Eric",0.6885,4,0.00323,67
-"Matsuyama, Hideki","Griffin, Ben",0.6508,5,0.01336,15
-"Matsuyama, Hideki","Fitzpatrick, Matt",0.5949,6,0.03461,4
-"Matsuyama, Hideki","Thomas, Justin",0.5353,7,0.00694,18
-"Matsuyama, Hideki","Fleetwood, Tommy",0.4214,8,0.02944,9
-"Matsuyama, Hideki","Noren, Alex",0.3699,9,0.0128,24
-"Matsuyama, Hideki","Kim, Tom",0.3691,10,0.00552,66
-"Morikawa, Collin","Schauffele, Xander",0.9709,1,0.05052,14
-"Morikawa, Collin","Kim, Si Woo",0.8924,2,0.06926,22
-"Morikawa, Collin","Scott, Adam",0.8331,3,0.02794,55
-"Morikawa, Collin","Young, Cameron",0.8309,4,0.03062,3
-"Morikawa, Collin","Gotterup, Chris",0.7479,5,0.03454,7
-"Morikawa, Collin","Henley, Russell",0.7413,6,0.02595,5
-"Morikawa, Collin","Fitzpatrick, Alex",0.6991,7,0.01737,62
-"Morikawa, Collin","Rose, Justin",0.6756,8,0.02398,10
-"Morikawa, Collin","McIlroy, Rory",0.6541,9,0.05224,2
-"Morikawa, Collin","Straka, Sepp",0.5974,10,0.00742,23
-"Clark, Wyndham","Matsuyama, Hideki",0.9534,1,0.01784,30
-"Clark, Wyndham","Hovland, Viktor",0.8178,2,0.02558,13
-"Clark, Wyndham","Theegala, Sahith",0.8129,3,0.01549,76
-"Clark, Wyndham","Fitzpatrick, Matt",0.7568,4,0.03461,4
-"Clark, Wyndham","Scheffler, Scottie",0.5611,5,0.09375,1
-"Clark, Wyndham","Fleetwood, Tommy",0.5483,6,0.02944,9
-"Clark, Wyndham","Cole, Eric",0.4718,7,0.00323,67
-"Clark, Wyndham","Griffin, Ben",0.4509,8,0.01336,15
-"Clark, Wyndham","Rose, Justin",0.4276,9,0.02398,10
-"Clark, Wyndham","Morikawa, Collin",0.4083,10,0.03226,6
-"Gotterup, Chris","Young, Cameron",0.9404,1,0.03062,3
-"Gotterup, Chris","Fitzpatrick, Alex",0.9218,2,0.01737,62
-"Gotterup, Chris","Schauffele, Xander",0.8799,3,0.05052,14
-"Gotterup, Chris","Scott, Adam",0.8305,4,0.02794,55
-"Gotterup, Chris","Kim, Si Woo",0.8194,5,0.06926,22
-"Gotterup, Chris","McIlroy, Rory",0.8149,6,0.05224,2
-"Gotterup, Chris","Morikawa, Collin",0.7479,7,0.03226,6
-"Gotterup, Chris","Aberg, Ludvig",0.7457,8,0.03111,19
-"Gotterup, Chris","Hisatsune, Ryo",0.7428,9,0.00932,60
-"Gotterup, Chris","Brennan, Michael",0.683,10,0.01098,61
-"Hovland, Viktor","Matsuyama, Hideki",0.8796,1,0.01784,30
-"Hovland, Viktor","Clark, Wyndham",0.8178,2,0.02787,8
-"Hovland, Viktor","Rose, Justin",0.6762,3,0.02398,10
-"Hovland, Viktor","Cole, Eric",0.6428,4,0.00323,67
-"Hovland, Viktor","Theegala, Sahith",0.626,5,0.01549,76
-"Hovland, Viktor","Kim, Tom",0.5591,6,0.00552,66
-"Hovland, Viktor","Thomas, Justin",0.4954,7,0.00694,18
-"Hovland, Viktor","Bhatia, Akshay",0.458,8,0.00471,26
-"Hovland, Viktor","Fitzpatrick, Matt",0.4498,9,0.03461,4
-"Hovland, Viktor","Griffin, Ben",0.3789,10,0.01336,15
-"Gerard, Ryan","Henley, Russell",0.8664,1,0.02595,5
-"Gerard, Ryan","Burns, Sam",0.862,2,0.02364,17
-"Gerard, Ryan","Straka, Sepp",0.8581,3,0.00742,23
-"Gerard, Ryan","Bridgeman, Jacob",0.8408,4,0.01566,27
-"Gerard, Ryan","Hojgaard, Nicolai",0.7499,5,0.00916,34
-"Gerard, Ryan","Knapp, Jake",0.6983,6,0.02438,44
-"Gerard, Ryan","Smalley, Alex",0.4908,7,0.00759,43
-"Gerard, Ryan","Bhatia, Akshay",0.4873,8,0.00471,26
-"Gerard, Ryan","Aberg, Ludvig",0.4585,9,0.03111,19
-"Gerard, Ryan","Scott, Adam",0.4488,10,0.02794,55
-"Spaun, J.J.","Rai, Aaron",0.9271,1,0.0114,16
-"Spaun, J.J.","Hisatsune, Ryo",0.7982,2,0.00932,60
-"Spaun, J.J.","Kim, Tom",0.7802,3,0.00552,66
-"Spaun, J.J.","Cantlay, Patrick",0.768,4,0.03936,36
-"Spaun, J.J.","Kitayama, Kurt",0.6819,5,0.01131,33
-"Spaun, J.J.","Lee, Min Woo",0.6641,6,0.00731,39
-"Spaun, J.J.","Cauley, Bud",0.6238,7,0.00766,38
-"Spaun, J.J.","Thorbjornsen, Michael",0.5338,8,0.01121,83
-"Spaun, J.J.","Fitzpatrick, Alex",0.4881,9,0.01737,62
-"Spaun, J.J.","Brennan, Michael",0.4664,10,0.01098,61
-"McNealy, Maverick","Fleetwood, Tommy",0.8204,1,0.02944,9
-"McNealy, Maverick","Scheffler, Scottie",0.6485,2,0.09375,1
-"McNealy, Maverick","Griffin, Ben",0.5713,3,0.01336,15
-"McNealy, Maverick","Theegala, Sahith",0.5058,4,0.01549,76
-"McNealy, Maverick","Fox, Ryan",0.4868,5,0.00983,56
-"McNealy, Maverick","Im, Sungjae",0.474,6,0.0214,80
-"McNealy, Maverick","McIlroy, Rory",0.4563,7,0.05224,2
-"McNealy, Maverick","Noren, Alex",0.3875,8,0.0128,24
-"McNealy, Maverick","Knapp, Jake",0.3282,9,0.02438,44
-"McNealy, Maverick","Fitzpatrick, Matt",0.2623,10,0.03461,4
-"Noren, Alex","Cole, Eric",0.8594,1,0.00323,67
-"Noren, Alex","Fox, Ryan",0.8373,2,0.00983,56
-"Noren, Alex","Bhatia, Akshay",0.7183,3,0.00471,26
-"Noren, Alex","Griffin, Ben",0.7144,4,0.01336,15
-"Noren, Alex","Theegala, Sahith",0.6948,5,0.01549,76
-"Noren, Alex","McCarty, Matt",0.635,6,0.00183,57
-"Noren, Alex","Poston, J.T.",0.5947,7,0.00782,32
-"Noren, Alex","Knapp, Jake",0.5716,8,0.02438,44
-"Noren, Alex","Burns, Sam",0.5157,9,0.02364,17
-"Noren, Alex","Im, Sungjae",0.4962,10,0.0214,80
-"Kitayama, Kurt","Scott, Adam",0.7897,1,0.02794,55
-"Kitayama, Kurt","Hisatsune, Ryo",0.7252,2,0.00932,60
-"Kitayama, Kurt","Rose, Justin",0.7193,3,0.02398,10
-"Kitayama, Kurt","Spaun, J.J.",0.6819,4,0.01411,12
-"Kitayama, Kurt","Aberg, Ludvig",0.6317,5,0.03111,19
-"Kitayama, Kurt","Brennan, Michael",0.6201,6,0.01098,61
-"Kitayama, Kurt","Straka, Sepp",0.5884,7,0.00742,23
-"Kitayama, Kurt","Gotterup, Chris",0.4694,8,0.03454,7
-"Kitayama, Kurt","Fitzpatrick, Alex",0.4615,9,0.01737,62
-"Kitayama, Kurt","Kim, Si Woo",0.4497,10,0.06926,22
-"Thomas, Justin","Cauley, Bud",0.8777,1,0.00766,38
-"Thomas, Justin","Thorbjornsen, Michael",0.8296,2,0.01121,83
-"Thomas, Justin","Griffin, Ben",0.8174,3,0.01336,15
-"Thomas, Justin","Kim, Tom",0.8125,4,0.00552,66
-"Thomas, Justin","Rai, Aaron",0.624,5,0.0114,16
-"Thomas, Justin","Cole, Eric",0.5982,6,0.00323,67
-"Thomas, Justin","Matsuyama, Hideki",0.5353,7,0.01784,30
-"Thomas, Justin","Im, Sungjae",0.5005,8,0.0214,80
-"Thomas, Justin","Hovland, Viktor",0.4954,9,0.02558,13
-"Thomas, Justin","Theegala, Sahith",0.4301,10,0.01549,76
-"Kim, Tom","Rai, Aaron",0.9084,1,0.0114,16
-"Kim, Tom","Cauley, Bud",0.8227,2,0.00766,38
-"Kim, Tom","Thomas, Justin",0.8125,3,0.00694,18
-"Kim, Tom","Spaun, J.J.",0.7802,4,0.01411,12
-"Kim, Tom","Thorbjornsen, Michael",0.7078,5,0.01121,83
-"Kim, Tom","Hovland, Viktor",0.5591,6,0.02558,13
-"Kim, Tom","Cantlay, Patrick",0.5004,7,0.03936,36
-"Kim, Tom","Rose, Justin",0.4125,8,0.02398,10
-"Kim, Tom","Lee, Min Woo",0.4121,9,0.00731,39
-"Kim, Tom","Matsuyama, Hideki",0.3691,10,0.01784,30
-"Rose, Justin","Straka, Sepp",0.7233,1,0.00742,23
-"Rose, Justin","Kitayama, Kurt",0.7193,2,0.01131,33
-"Rose, Justin","Hovland, Viktor",0.6762,3,0.02558,13
-"Rose, Justin","Morikawa, Collin",0.6756,4,0.03226,6
-"Rose, Justin","Scott, Adam",0.6395,5,0.02794,55
-"Rose, Justin","Kim, Si Woo",0.6365,6,0.06926,22
-"Rose, Justin","Schauffele, Xander",0.5386,7,0.05052,14
-"Rose, Justin","Spaun, J.J.",0.4522,8,0.01411,12
-"Rose, Justin","Clark, Wyndham",0.4276,9,0.02787,8
-"Rose, Justin","Cantlay, Patrick",0.4185,10,0.03936,36
-"Griffin, Ben","Thomas, Justin",0.8174,1,0.00694,18
-"Griffin, Ben","Theegala, Sahith",0.7781,2,0.01549,76
-"Griffin, Ben","Cole, Eric",0.7528,3,0.00323,67
-"Griffin, Ben","Noren, Alex",0.7144,4,0.0128,24
-"Griffin, Ben","Fox, Ryan",0.6533,5,0.00983,56
-"Griffin, Ben","Matsuyama, Hideki",0.6508,6,0.01784,30
-"Griffin, Ben","Im, Sungjae",0.5813,7,0.0214,80
-"Griffin, Ben","Cauley, Bud",0.5781,8,0.00766,38
-"Griffin, Ben","Thorbjornsen, Michael",0.5719,9,0.01121,83
-"Griffin, Ben","McNealy, Maverick",0.5713,10,0.01796,37
-"Fowler, Rickie","Echavarria, Nico",0.9356,1,0.00298,53
-"Fowler, Rickie","McCarty, Matt",0.9317,2,0.00183,57
-"Fowler, Rickie","Reitan, Kristoffer",0.9285,3,0.00577,25
-"Fowler, Rickie","Poston, J.T.",0.8645,4,0.00782,32
-"Fowler, Rickie","Fox, Ryan",0.7676,5,0.00983,56
-"Fowler, Rickie","Im, Sungjae",0.721,6,0.0214,80
-"Fowler, Rickie","Woodland, Gary",0.6559,7,0.01644,42
-"Fowler, Rickie","Smalley, Alex",0.5146,8,0.00759,43
-"Fowler, Rickie","Noren, Alex",0.4774,9,0.0128,24
-"Fowler, Rickie","Hojgaard, Nicolai",0.4508,10,0.00916,34
-"Knapp, Jake","Bridgeman, Jacob",0.9639,1,0.01566,27
-"Knapp, Jake","Burns, Sam",0.9471,2,0.02364,17
-"Knapp, Jake","Gerard, Ryan",0.6983,3,0.01302,28
-"Knapp, Jake","Henley, Russell",0.6359,4,0.02595,5
-"Knapp, Jake","McCarty, Matt",0.6275,5,0.00183,57
-"Knapp, Jake","Woodland, Gary",0.5917,6,0.01644,42
-"Knapp, Jake","Noren, Alex",0.5716,7,0.0128,24
-"Knapp, Jake","Fox, Ryan",0.4322,8,0.00983,56
-"Knapp, Jake","Fowler, Rickie",0.3877,9,0.00552,41
-"Knapp, Jake","McNealy, Maverick",0.3282,10,0.01796,37
-"Scott, Adam","Schauffele, Xander",0.8758,1,0.05052,14
-"Scott, Adam","Morikawa, Collin",0.8331,2,0.03226,6
-"Scott, Adam","Gotterup, Chris",0.8305,3,0.03454,7
-"Scott, Adam","Aberg, Ludvig",0.8141,4,0.03111,19
-"Scott, Adam","Kitayama, Kurt",0.7897,5,0.01131,33
-"Scott, Adam","Kim, Si Woo",0.7484,6,0.06926,22
-"Scott, Adam","Young, Cameron",0.735,7,0.03062,3
-"Scott, Adam","Fitzpatrick, Alex",0.7099,8,0.01737,62
-"Scott, Adam","Straka, Sepp",0.6513,9,0.00742,23
-"Scott, Adam","Hisatsune, Ryo",0.6433,10,0.00932,60
-"Bridgeman, Jacob","Knapp, Jake",0.9639,1,0.02438,44
-"Bridgeman, Jacob","Burns, Sam",0.9609,2,0.02364,17
-"Bridgeman, Jacob","Gerard, Ryan",0.8408,3,0.01302,28
-"Bridgeman, Jacob","Henley, Russell",0.8042,4,0.02595,5
-"Bridgeman, Jacob","McCarty, Matt",0.5099,5,0.00183,57
-"Bridgeman, Jacob","Noren, Alex",0.4756,6,0.0128,24
-"Bridgeman, Jacob","Straka, Sepp",0.4671,7,0.00742,23
-"Bridgeman, Jacob","Woodland, Gary",0.4653,8,0.01644,42
-"Bridgeman, Jacob","Hojgaard, Nicolai",0.4199,9,0.00916,34
-"Bridgeman, Jacob","Bhatia, Akshay",0.3606,10,0.00471,26
-"Smalley, Alex","Hojgaard, Nicolai",0.9257,1,0.00916,34
-"Smalley, Alex","Bhatia, Akshay",0.9108,2,0.00471,26
-"Smalley, Alex","Poston, J.T.",0.8522,3,0.00782,32
-"Smalley, Alex","Echavarria, Nico",0.669,4,0.00298,53
-"Smalley, Alex","McCarty, Matt",0.6455,5,0.00183,57
-"Smalley, Alex","Cole, Eric",0.5536,6,0.00323,67
-"Smalley, Alex","Straka, Sepp",0.5476,7,0.00742,23
-"Smalley, Alex","Fowler, Rickie",0.5146,8,0.00552,41
-"Smalley, Alex","Gerard, Ryan",0.4908,9,0.01302,28
-"Smalley, Alex","Noren, Alex",0.4142,10,0.0128,24
-"Lee, Min Woo","Thorbjornsen, Michael",0.7454,1,0.01121,83
-"Lee, Min Woo","Cauley, Bud",0.7323,2,0.00766,38
-"Lee, Min Woo","Rai, Aaron",0.6963,3,0.0114,16
-"Lee, Min Woo","Hisatsune, Ryo",0.6643,4,0.00932,60
-"Lee, Min Woo","Spaun, J.J.",0.6641,5,0.01411,12
-"Lee, Min Woo","Cantlay, Patrick",0.6496,6,0.03936,36
-"Lee, Min Woo","Brennan, Michael",0.5204,7,0.01098,61
-"Lee, Min Woo","Im, Sungjae",0.4962,8,0.0214,80
-"Lee, Min Woo","Fitzpatrick, Alex",0.4375,9,0.01737,62
-"Lee, Min Woo","Kim, Tom",0.4121,10,0.00552,66
-"Thorbjornsen, Michael","Cauley, Bud",0.9691,1,0.00766,38
-"Thorbjornsen, Michael","Thomas, Justin",0.8296,2,0.00694,18
-"Thorbjornsen, Michael","Im, Sungjae",0.7484,3,0.0214,80
-"Thorbjornsen, Michael","Lee, Min Woo",0.7454,4,0.00731,39
-"Thorbjornsen, Michael","Kim, Tom",0.7078,5,0.00552,66
-"Thorbjornsen, Michael","Rai, Aaron",0.7076,6,0.0114,16
-"Thorbjornsen, Michael","Griffin, Ben",0.5719,7,0.01336,15
-"Thorbjornsen, Michael","Spaun, J.J.",0.5338,8,0.01411,12
-"Thorbjornsen, Michael","Reitan, Kristoffer",0.5094,9,0.00577,25
-"Thorbjornsen, Michael","Echavarria, Nico",0.4985,10,0.00298,53
-"Brennan, Michael","Aberg, Ludvig",0.8556,1,0.03111,19
-"Brennan, Michael","Hisatsune, Ryo",0.8372,2,0.00932,60
-"Brennan, Michael","Gotterup, Chris",0.683,3,0.03454,7
-"Brennan, Michael","Woodland, Gary",0.6396,4,0.01644,42
-"Brennan, Michael","Kitayama, Kurt",0.6201,5,0.01131,33
-"Brennan, Michael","Scott, Adam",0.599,6,0.02794,55
-"Brennan, Michael","Fitzpatrick, Alex",0.5551,7,0.01737,62
-"Brennan, Michael","Lee, Min Woo",0.5204,8,0.00731,39
-"Brennan, Michael","Spaun, J.J.",0.4664,9,0.01411,12
-"Brennan, Michael","Reitan, Kristoffer",0.4628,10,0.00577,25
-"Cauley, Bud","Thorbjornsen, Michael",0.9691,1,0.01121,83
-"Cauley, Bud","Thomas, Justin",0.8777,2,0.00694,18
-"Cauley, Bud","Rai, Aaron",0.8264,3,0.0114,16
-"Cauley, Bud","Kim, Tom",0.8227,4,0.00552,66
-"Cauley, Bud","Lee, Min Woo",0.7323,5,0.00731,39
-"Cauley, Bud","Spaun, J.J.",0.6238,6,0.01411,12
-"Cauley, Bud","Im, Sungjae",0.5807,7,0.0214,80
-"Cauley, Bud","Griffin, Ben",0.5781,8,0.01336,15
-"Cauley, Bud","Cantlay, Patrick",0.432,9,0.03936,36
-"Cauley, Bud","Echavarria, Nico",0.3035,10,0.00298,53
-"Hojgaard, Nicolai","Smalley, Alex",0.9257,1,0.00759,43
-"Hojgaard, Nicolai","Bhatia, Akshay",0.7922,2,0.00471,26
-"Hojgaard, Nicolai","Straka, Sepp",0.7618,3,0.00742,23
-"Hojgaard, Nicolai","Gerard, Ryan",0.7499,4,0.01302,28
-"Hojgaard, Nicolai","Poston, J.T.",0.7146,5,0.00782,32
-"Hojgaard, Nicolai","McCarty, Matt",0.6375,6,0.00183,57
-"Hojgaard, Nicolai","Burns, Sam",0.6017,7,0.02364,17
-"Hojgaard, Nicolai","Echavarria, Nico",0.5046,8,0.00298,53
-"Hojgaard, Nicolai","Fowler, Rickie",0.4508,9,0.00552,41
-"Hojgaard, Nicolai","Kitayama, Kurt",0.4466,10,0.01131,33
-"Fox, Ryan","Im, Sungjae",0.8754,1,0.0214,80
-"Fox, Ryan","Noren, Alex",0.8373,2,0.0128,24
-"Fox, Ryan","Fowler, Rickie",0.7676,3,0.00552,41
-"Fox, Ryan","McCarty, Matt",0.7391,4,0.00183,57
-"Fox, Ryan","Echavarria, Nico",0.727,5,0.00298,53
-"Fox, Ryan","Poston, J.T.",0.6705,6,0.00782,32
-"Fox, Ryan","Griffin, Ben",0.6533,7,0.01336,15
-"Fox, Ryan","Reitan, Kristoffer",0.6092,8,0.00577,25
-"Fox, Ryan","Cole, Eric",0.542,9,0.00323,67
-"Fox, Ryan","McNealy, Maverick",0.4868,10,0.01796,37
-"Reitan, Kristoffer","Fowler, Rickie",0.9285,1,0.00552,41
-"Reitan, Kristoffer","Echavarria, Nico",0.9124,2,0.00298,53
-"Reitan, Kristoffer","Poston, J.T.",0.7541,3,0.00782,32
-"Reitan, Kristoffer","Im, Sungjae",0.7451,4,0.0214,80
-"Reitan, Kristoffer","McCarty, Matt",0.7398,5,0.00183,57
-"Reitan, Kristoffer","Fox, Ryan",0.6092,6,0.00983,56
-"Reitan, Kristoffer","Woodland, Gary",0.6072,7,0.01644,42
-"Reitan, Kristoffer","Thorbjornsen, Michael",0.5094,8,0.01121,83
-"Reitan, Kristoffer","Brennan, Michael",0.4628,9,0.01098,61
-"Reitan, Kristoffer","Lee, Min Woo",0.3997,10,0.00731,39
-"Rai, Aaron","Spaun, J.J.",0.9271,1,0.01411,12
-"Rai, Aaron","Kim, Tom",0.9084,2,0.00552,66
-"Rai, Aaron","Cauley, Bud",0.8264,3,0.00766,38
-"Rai, Aaron","Cantlay, Patrick",0.7793,4,0.03936,36
-"Rai, Aaron","Thorbjornsen, Michael",0.7076,5,0.01121,83
-"Rai, Aaron","Lee, Min Woo",0.6963,6,0.00731,39
-"Rai, Aaron","Thomas, Justin",0.624,7,0.00694,18
-"Rai, Aaron","Hisatsune, Ryo",0.5947,8,0.00932,60
-"Rai, Aaron","Fitzpatrick, Matt",0.3963,9,0.03461,4
-"Rai, Aaron","Kitayama, Kurt",0.391,10,0.01131,33
-"Im, Sungjae","Fox, Ryan",0.8754,1,0.00983,56
-"Im, Sungjae","Thorbjornsen, Michael",0.7484,2,0.01121,83
-"Im, Sungjae","Reitan, Kristoffer",0.7451,3,0.00577,25
-"Im, Sungjae","Fowler, Rickie",0.721,4,0.00552,41
-"Im, Sungjae","Echavarria, Nico",0.718,5,0.00298,53
-"Im, Sungjae","Griffin, Ben",0.5813,6,0.01336,15
-"Im, Sungjae","Cauley, Bud",0.5807,7,0.00766,38
-"Im, Sungjae","Poston, J.T.",0.5213,8,0.00782,32
-"Im, Sungjae","McCarty, Matt",0.5187,9,0.00183,57
-"Im, Sungjae","Thomas, Justin",0.5005,10,0.00694,18
-"Fitzpatrick, Alex","Young, Cameron",0.9564,1,0.03062,3
-"Fitzpatrick, Alex","Gotterup, Chris",0.9218,2,0.03454,7
-"Fitzpatrick, Alex","Kim, Si Woo",0.9119,3,0.06926,22
-"Fitzpatrick, Alex","Cantlay, Patrick",0.8615,4,0.03936,36
-"Fitzpatrick, Alex","Hisatsune, Ryo",0.8167,5,0.00932,60
-"Fitzpatrick, Alex","McIlroy, Rory",0.8014,6,0.05224,2
-"Fitzpatrick, Alex","Schauffele, Xander",0.7982,7,0.05052,14
-"Fitzpatrick, Alex","Scott, Adam",0.7099,8,0.02794,55
-"Fitzpatrick, Alex","Morikawa, Collin",0.6991,9,0.03226,6
-"Fitzpatrick, Alex","Fitzpatrick, Matt",0.6536,10,0.03461,4
-"Poston, J.T.","Echavarria, Nico",0.9465,1,0.00298,53
-"Poston, J.T.","McCarty, Matt",0.8841,2,0.00183,57
-"Poston, J.T.","Fowler, Rickie",0.8645,3,0.00552,41
-"Poston, J.T.","Smalley, Alex",0.8522,4,0.00759,43
-"Poston, J.T.","Bhatia, Akshay",0.7985,5,0.00471,26
-"Poston, J.T.","Reitan, Kristoffer",0.7541,6,0.00577,25
-"Poston, J.T.","Hojgaard, Nicolai",0.7146,7,0.00916,34
-"Poston, J.T.","Fox, Ryan",0.6705,8,0.00983,56
-"Poston, J.T.","Noren, Alex",0.5947,9,0.0128,24
-"Poston, J.T.","Im, Sungjae",0.5213,10,0.0214,80
-"Bhatia, Akshay","Smalley, Alex",0.9108,1,0.00759,43
-"Bhatia, Akshay","Cole, Eric",0.8274,2,0.00323,67
-"Bhatia, Akshay","Poston, J.T.",0.7985,3,0.00782,32
-"Bhatia, Akshay","Hojgaard, Nicolai",0.7922,4,0.00916,34
-"Bhatia, Akshay","Noren, Alex",0.7183,5,0.0128,24
-"Bhatia, Akshay","McCarty, Matt",0.6418,6,0.00183,57
-"Bhatia, Akshay","Echavarria, Nico",0.5731,7,0.00298,53
-"Bhatia, Akshay","Burns, Sam",0.5002,8,0.02364,17
-"Bhatia, Akshay","Gerard, Ryan",0.4873,9,0.01302,28
-"Bhatia, Akshay","Hovland, Viktor",0.458,10,0.02558,13
-"Woodland, Gary","Aberg, Ludvig",0.6964,1,0.03111,19
-"Woodland, Gary","Fowler, Rickie",0.6559,2,0.00552,41
-"Woodland, Gary","Brennan, Michael",0.6396,3,0.01098,61
-"Woodland, Gary","McCarty, Matt",0.6158,4,0.00183,57
-"Woodland, Gary","Reitan, Kristoffer",0.6072,5,0.00577,25
-"Woodland, Gary","Knapp, Jake",0.5917,6,0.02438,44
-"Woodland, Gary","Burns, Sam",0.5651,7,0.02364,17
-"Woodland, Gary","Bridgeman, Jacob",0.4653,8,0.01566,27
-"Woodland, Gary","Echavarria, Nico",0.3708,9,0.00298,53
-"Woodland, Gary","Gerard, Ryan",0.3144,10,0.01302,28
-"Echavarria, Nico","Poston, J.T.",0.9465,1,0.00782,32
-"Echavarria, Nico","Fowler, Rickie",0.9356,2,0.00552,41
-"Echavarria, Nico","Reitan, Kristoffer",0.9124,3,0.00577,25
-"Echavarria, Nico","McCarty, Matt",0.8425,4,0.00183,57
-"Echavarria, Nico","Fox, Ryan",0.727,5,0.00983,56
-"Echavarria, Nico","Im, Sungjae",0.718,6,0.0214,80
-"Echavarria, Nico","Smalley, Alex",0.669,7,0.00759,43
-"Echavarria, Nico","Bhatia, Akshay",0.5731,8,0.00471,26
-"Echavarria, Nico","Hojgaard, Nicolai",0.5046,9,0.00916,34
-"Echavarria, Nico","Thorbjornsen, Michael",0.4985,10,0.01121,83
-"Cole, Eric","Noren, Alex",0.8594,1,0.0128,24
-"Cole, Eric","Bhatia, Akshay",0.8274,2,0.00471,26
-"Cole, Eric","Theegala, Sahith",0.7931,3,0.01549,76
-"Cole, Eric","Griffin, Ben",0.7528,4,0.01336,15
-"Cole, Eric","Matsuyama, Hideki",0.6885,5,0.01784,30
-"Cole, Eric","Hovland, Viktor",0.6428,6,0.02558,13
-"Cole, Eric","Thomas, Justin",0.5982,7,0.00694,18
-"Cole, Eric","Smalley, Alex",0.5536,8,0.00759,43
-"Cole, Eric","Fox, Ryan",0.542,9,0.00983,56
-"Cole, Eric","Poston, J.T.",0.5122,10,0.00782,32
-"Hisatsune, Ryo","Brennan, Michael",0.8372,1,0.01098,61
-"Hisatsune, Ryo","Fitzpatrick, Alex",0.8167,2,0.01737,62
-"Hisatsune, Ryo","Spaun, J.J.",0.7982,3,0.01411,12
-"Hisatsune, Ryo","Cantlay, Patrick",0.7928,4,0.03936,36
-"Hisatsune, Ryo","Gotterup, Chris",0.7428,5,0.03454,7
-"Hisatsune, Ryo","Kitayama, Kurt",0.7252,6,0.01131,33
-"Hisatsune, Ryo","Lee, Min Woo",0.6643,7,0.00731,39
-"Hisatsune, Ryo","Scott, Adam",0.6433,8,0.02794,55
-"Hisatsune, Ryo","Young, Cameron",0.6353,9,0.03062,3
-"Hisatsune, Ryo","Aberg, Ludvig",0.6001,10,0.03111,19
-"McCarty, Matt","Fowler, Rickie",0.9317,1,0.00552,41
-"McCarty, Matt","Poston, J.T.",0.8841,2,0.00782,32
-"McCarty, Matt","Echavarria, Nico",0.8425,3,0.00298,53
-"McCarty, Matt","Reitan, Kristoffer",0.7398,4,0.00577,25
-"McCarty, Matt","Fox, Ryan",0.7391,5,0.00983,56
-"McCarty, Matt","Burns, Sam",0.7089,6,0.02364,17
-"McCarty, Matt","Smalley, Alex",0.6455,7,0.00759,43
-"McCarty, Matt","Bhatia, Akshay",0.6418,8,0.00471,26
-"McCarty, Matt","Hojgaard, Nicolai",0.6375,9,0.00916,34
-"McCarty, Matt","Noren, Alex",0.635,10,0.0128,24
-"Theegala, Sahith","Matsuyama, Hideki",0.8878,1,0.01784,30
-"Theegala, Sahith","Clark, Wyndham",0.8129,2,0.02787,8
-"Theegala, Sahith","Cole, Eric",0.7931,3,0.00323,67
-"Theegala, Sahith","Griffin, Ben",0.7781,4,0.01336,15
-"Theegala, Sahith","Noren, Alex",0.6948,5,0.0128,24
-"Theegala, Sahith","Hovland, Viktor",0.626,6,0.02558,13
-"Theegala, Sahith","McNealy, Maverick",0.5058,7,0.01796,37
-"Theegala, Sahith","Fleetwood, Tommy",0.4701,8,0.02944,9
-"Theegala, Sahith","Thomas, Justin",0.4301,9,0.00694,18
-"Theegala, Sahith","Scheffler, Scottie",0.3801,10,0.09375,1
-"Straka, Sepp","Gerard, Ryan",0.8581,1,0.01302,28
-"Straka, Sepp","Hojgaard, Nicolai",0.7618,2,0.00916,34
-"Straka, Sepp","Henley, Russell",0.748,3,0.02595,5
-"Straka, Sepp","Rose, Justin",0.7233,4,0.02398,10
-"Straka, Sepp","Scott, Adam",0.6513,5,0.02794,55
-"Straka, Sepp","Morikawa, Collin",0.5974,6,0.03226,6
-"Straka, Sepp","Kitayama, Kurt",0.5884,7,0.01131,33
-"Straka, Sepp","Smalley, Alex",0.5476,8,0.00759,43
-"Straka, Sepp","Burns, Sam",0.4892,9,0.02364,17
-"Straka, Sepp","Schauffele, Xander",0.4834,10,0.05052,14
+"Scheffler, Scottie","McIlroy, Rory",0.8962,1,0.05715,2
+"Scheffler, Scottie","Fleetwood, Tommy",0.7967,2,0.04117,7
+"Scheffler, Scottie","Fitzpatrick, Matt",0.7748,3,0.05484,4
+"Scheffler, Scottie","Schauffele, Xander",0.6522,4,0.05393,11
+"Scheffler, Scottie","Kim, Si Woo",0.5569,5,0.05011,13
+"Scheffler, Scottie","Morikawa, Collin",0.5271,6,0.04864,10
+"Scheffler, Scottie","Young, Cameron",0.4853,7,0.04116,3
+"Scheffler, Scottie","Fitzpatrick, Alex",0.3925,8,0.02833,68
+"Scheffler, Scottie","Gotterup, Chris",0.3853,9,0.04202,8
+"Scheffler, Scottie","Henley, Russell",0.2477,10,0.04158,6
+"McIlroy, Rory","Scheffler, Scottie",0.8962,1,0.08625,1
+"McIlroy, Rory","Schauffele, Xander",0.8412,2,0.05393,11
+"McIlroy, Rory","Fleetwood, Tommy",0.7862,3,0.04117,7
+"McIlroy, Rory","Gotterup, Chris",0.7074,4,0.04202,8
+"McIlroy, Rory","Young, Cameron",0.695,5,0.04116,3
+"McIlroy, Rory","Fitzpatrick, Alex",0.5818,6,0.02833,68
+"McIlroy, Rory","Fitzpatrick, Matt",0.5438,7,0.05484,4
+"McIlroy, Rory","Kim, Si Woo",0.5273,8,0.05011,13
+"McIlroy, Rory","Morikawa, Collin",0.4146,9,0.04864,10
+"McIlroy, Rory","Aberg, Ludvig",0.3076,10,0.04261,17
+"Burns, Sam","Bridgeman, Jacob",0.9904,1,0.01455,28
+"Burns, Sam","Gerard, Ryan",0.9061,2,0.01769,27
+"Burns, Sam","Henley, Russell",0.8489,3,0.04158,6
+"Burns, Sam","Smalley, Alex",0.7019,4,0.01435,46
+"Burns, Sam","Bhatia, Akshay",0.6325,5,0.01111,33
+"Burns, Sam","Fox, Ryan",0.5376,6,0.01403,25
+"Burns, Sam","MacIntyre, Robert",0.3876,7,0.02013,18
+"Burns, Sam","Woodland, Gary",0.3747,8,0.01458,42
+"Burns, Sam","Reitan, Kristoffer",0.1792,9,0.01748,30
+"Burns, Sam","Clark, Wyndham",0.1107,10,0.02873,5
+"Fitzpatrick, Matt","Scheffler, Scottie",0.7748,1,0.08625,1
+"Fitzpatrick, Matt","Fleetwood, Tommy",0.7172,2,0.04117,7
+"Fitzpatrick, Matt","Kim, Si Woo",0.6801,3,0.05011,13
+"Fitzpatrick, Matt","Cantlay, Patrick",0.6218,4,0.03947,26
+"Fitzpatrick, Matt","Hovland, Viktor",0.6184,5,0.03858,15
+"Fitzpatrick, Matt","Matsuyama, Hideki",0.5982,6,0.0345,24
+"Fitzpatrick, Matt","McIlroy, Rory",0.5438,7,0.05715,2
+"Fitzpatrick, Matt","Clark, Wyndham",0.4559,8,0.02873,5
+"Fitzpatrick, Matt","Young, Cameron",0.4302,9,0.04116,3
+"Fitzpatrick, Matt","Morikawa, Collin",0.3199,10,0.04864,10
+"Fleetwood, Tommy","Scheffler, Scottie",0.7967,1,0.08625,1
+"Fleetwood, Tommy","McIlroy, Rory",0.7862,2,0.05715,2
+"Fleetwood, Tommy","Fitzpatrick, Matt",0.7172,3,0.05484,4
+"Fleetwood, Tommy","Young, Cameron",0.4,4,0.04116,3
+"Fleetwood, Tommy","Schauffele, Xander",0.3298,5,0.05393,11
+"Fleetwood, Tommy","Cantlay, Patrick",0.3256,6,0.03947,26
+"Fleetwood, Tommy","Clark, Wyndham",0.3226,7,0.02873,5
+"Fleetwood, Tommy","Kim, Si Woo",0.2715,8,0.05011,13
+"Fleetwood, Tommy","Matsuyama, Hideki",0.2488,9,0.0345,24
+"Fleetwood, Tommy","Gotterup, Chris",0.1909,10,0.04202,8
+"Cantlay, Patrick","Spaun, J.J.",0.8253,1,0.04223,16
+"Cantlay, Patrick","Kim, Si Woo",0.7196,2,0.05011,13
+"Cantlay, Patrick","Young, Cameron",0.6701,3,0.04116,3
+"Cantlay, Patrick","Fitzpatrick, Matt",0.6218,4,0.05484,4
+"Cantlay, Patrick","Scott, Adam",0.533,5,0.01381,51
+"Cantlay, Patrick","Lee, Min Woo",0.5175,6,0.01471,31
+"Cantlay, Patrick","Kim, Tom",0.456,7,0.015,29
+"Cantlay, Patrick","Hovland, Viktor",0.4019,8,0.03858,15
+"Cantlay, Patrick","Aberg, Ludvig",0.3543,9,0.04261,17
+"Cantlay, Patrick","Fitzpatrick, Alex",0.3289,10,0.02833,68
+"Clark, Wyndham","Matsuyama, Hideki",0.9462,1,0.0345,24
+"Clark, Wyndham","Hovland, Viktor",0.6068,2,0.03858,15
+"Clark, Wyndham","Bhatia, Akshay",0.5144,3,0.01111,33
+"Clark, Wyndham","Fitzpatrick, Matt",0.4559,4,0.05484,4
+"Clark, Wyndham","Fleetwood, Tommy",0.3226,5,0.04117,7
+"Clark, Wyndham","Kim, Tom",0.3132,6,0.015,29
+"Clark, Wyndham","Fox, Ryan",0.2742,7,0.01403,25
+"Clark, Wyndham","Scheffler, Scottie",0.2414,8,0.08625,1
+"Clark, Wyndham","Rose, Justin",0.1537,9,0.03058,14
+"Clark, Wyndham","Henley, Russell",0.1158,10,0.04158,6
+"Schauffele, Xander","Gotterup, Chris",0.9342,1,0.04202,8
+"Schauffele, Xander","Fitzpatrick, Alex",0.8649,2,0.02833,68
+"Schauffele, Xander","McIlroy, Rory",0.8412,3,0.05715,2
+"Schauffele, Xander","Young, Cameron",0.7365,4,0.04116,3
+"Schauffele, Xander","Morikawa, Collin",0.6704,5,0.04864,10
+"Schauffele, Xander","Scheffler, Scottie",0.6522,6,0.08625,1
+"Schauffele, Xander","Aberg, Ludvig",0.6398,7,0.04261,17
+"Schauffele, Xander","Kim, Si Woo",0.5656,8,0.05011,13
+"Schauffele, Xander","Henley, Russell",0.3549,9,0.04158,6
+"Schauffele, Xander","Fleetwood, Tommy",0.3298,10,0.04117,7
+"Morikawa, Collin","Fitzpatrick, Alex",0.7218,1,0.02833,68
+"Morikawa, Collin","Kim, Si Woo",0.6837,2,0.05011,13
+"Morikawa, Collin","Schauffele, Xander",0.6704,3,0.05393,11
+"Morikawa, Collin","Henley, Russell",0.5694,4,0.04158,6
+"Morikawa, Collin","Scheffler, Scottie",0.5271,5,0.08625,1
+"Morikawa, Collin","Gotterup, Chris",0.4466,6,0.04202,8
+"Morikawa, Collin","McIlroy, Rory",0.4146,7,0.05715,2
+"Morikawa, Collin","Young, Cameron",0.411,8,0.04116,3
+"Morikawa, Collin","Fitzpatrick, Matt",0.3199,9,0.05484,4
+"Morikawa, Collin","Aberg, Ludvig",0.3184,10,0.04261,17
+"Aberg, Ludvig","Fitzpatrick, Alex",0.8595,1,0.02833,68
+"Aberg, Ludvig","Gotterup, Chris",0.8001,2,0.04202,8
+"Aberg, Ludvig","Young, Cameron",0.7924,3,0.04116,3
+"Aberg, Ludvig","Scott, Adam",0.6979,4,0.01381,51
+"Aberg, Ludvig","Schauffele, Xander",0.6398,5,0.05393,11
+"Aberg, Ludvig","Kim, Si Woo",0.5236,6,0.05011,13
+"Aberg, Ludvig","Woodland, Gary",0.4233,7,0.01458,42
+"Aberg, Ludvig","Spaun, J.J.",0.3834,8,0.04223,16
+"Aberg, Ludvig","Cantlay, Patrick",0.3543,9,0.03947,26
+"Aberg, Ludvig","Morikawa, Collin",0.3184,10,0.04864,10
+"Kim, Si Woo","Young, Cameron",0.836,1,0.04116,3
+"Kim, Si Woo","Fitzpatrick, Alex",0.7835,2,0.02833,68
+"Kim, Si Woo","Cantlay, Patrick",0.7196,3,0.03947,26
+"Kim, Si Woo","Morikawa, Collin",0.6837,4,0.04864,10
+"Kim, Si Woo","Fitzpatrick, Matt",0.6801,5,0.05484,4
+"Kim, Si Woo","Schauffele, Xander",0.5656,6,0.05393,11
+"Kim, Si Woo","Scheffler, Scottie",0.5569,7,0.08625,1
+"Kim, Si Woo","McIlroy, Rory",0.5273,8,0.05715,2
+"Kim, Si Woo","Aberg, Ludvig",0.5236,9,0.04261,17
+"Kim, Si Woo","Spaun, J.J.",0.456,10,0.04223,16
+"Henley, Russell","Bridgeman, Jacob",0.8633,1,0.01455,28
+"Henley, Russell","Burns, Sam",0.8489,2,0.0307,9
+"Henley, Russell","Gerard, Ryan",0.7144,3,0.01769,27
+"Henley, Russell","Morikawa, Collin",0.5694,4,0.04864,10
+"Henley, Russell","Schauffele, Xander",0.3549,5,0.05393,11
+"Henley, Russell","Smalley, Alex",0.302,6,0.01435,46
+"Henley, Russell","Bhatia, Akshay",0.2671,7,0.01111,33
+"Henley, Russell","Scheffler, Scottie",0.2477,8,0.08625,1
+"Henley, Russell","Gotterup, Chris",0.2112,9,0.04202,8
+"Henley, Russell","McIlroy, Rory",0.1336,10,0.05715,2
+"Gotterup, Chris","Schauffele, Xander",0.9342,1,0.05393,11
+"Gotterup, Chris","Fitzpatrick, Alex",0.841,2,0.02833,68
+"Gotterup, Chris","Aberg, Ludvig",0.8001,3,0.04261,17
+"Gotterup, Chris","Young, Cameron",0.7292,4,0.04116,3
+"Gotterup, Chris","McIlroy, Rory",0.7074,5,0.05715,2
+"Gotterup, Chris","Morikawa, Collin",0.4466,6,0.04864,10
+"Gotterup, Chris","Woodland, Gary",0.4278,7,0.01458,42
+"Gotterup, Chris","Kim, Si Woo",0.4023,8,0.05011,13
+"Gotterup, Chris","Scheffler, Scottie",0.3853,9,0.08625,1
+"Gotterup, Chris","Henley, Russell",0.2112,10,0.04158,6
+"Matsuyama, Hideki","Clark, Wyndham",0.9462,1,0.02873,5
+"Matsuyama, Hideki","Hovland, Viktor",0.8274,2,0.03858,15
+"Matsuyama, Hideki","Fitzpatrick, Matt",0.5982,3,0.05484,4
+"Matsuyama, Hideki","Kim, Tom",0.4399,4,0.015,29
+"Matsuyama, Hideki","Bhatia, Akshay",0.417,5,0.01111,33
+"Matsuyama, Hideki","Rose, Justin",0.406,6,0.03058,14
+"Matsuyama, Hideki","Fleetwood, Tommy",0.2488,7,0.04117,7
+"Matsuyama, Hideki","Scheffler, Scottie",0.2436,8,0.08625,1
+"Matsuyama, Hideki","Cantlay, Patrick",0.1039,9,0.03947,26
+"Matsuyama, Hideki","Fox, Ryan",0.0759,10,0.01403,25
+"Young, Cameron","Fitzpatrick, Alex",0.864,1,0.02833,68
+"Young, Cameron","Kim, Si Woo",0.836,2,0.05011,13
+"Young, Cameron","Aberg, Ludvig",0.7924,3,0.04261,17
+"Young, Cameron","Schauffele, Xander",0.7365,4,0.05393,11
+"Young, Cameron","Gotterup, Chris",0.7292,5,0.04202,8
+"Young, Cameron","McIlroy, Rory",0.695,6,0.05715,2
+"Young, Cameron","Cantlay, Patrick",0.6701,7,0.03947,26
+"Young, Cameron","Scheffler, Scottie",0.4853,8,0.08625,1
+"Young, Cameron","Fitzpatrick, Matt",0.4302,9,0.05484,4
+"Young, Cameron","Scott, Adam",0.4178,10,0.01381,51
+"Hovland, Viktor","Matsuyama, Hideki",0.8274,1,0.0345,24
+"Hovland, Viktor","Rose, Justin",0.7812,2,0.03058,14
+"Hovland, Viktor","Fitzpatrick, Matt",0.6184,3,0.05484,4
+"Hovland, Viktor","Clark, Wyndham",0.6068,4,0.02873,5
+"Hovland, Viktor","Kim, Tom",0.5202,5,0.015,29
+"Hovland, Viktor","Cantlay, Patrick",0.4019,6,0.03947,26
+"Hovland, Viktor","Spaun, J.J.",0.3949,7,0.04223,16
+"Hovland, Viktor","Kim, Si Woo",0.3861,8,0.05011,13
+"Hovland, Viktor","Morikawa, Collin",0.2822,9,0.04864,10
+"Hovland, Viktor","Bhatia, Akshay",0.216,10,0.01111,33
+"Gerard, Ryan","Bridgeman, Jacob",0.9143,1,0.01455,28
+"Gerard, Ryan","Burns, Sam",0.9061,2,0.0307,9
+"Gerard, Ryan","Smalley, Alex",0.856,3,0.01435,46
+"Gerard, Ryan","Henley, Russell",0.7144,4,0.04158,6
+"Gerard, Ryan","Bhatia, Akshay",0.6826,5,0.01111,33
+"Gerard, Ryan","Fox, Ryan",0.5079,6,0.01403,25
+"Gerard, Ryan","Woodland, Gary",0.3613,7,0.01458,42
+"Gerard, Ryan","Rose, Justin",0.2592,8,0.03058,14
+"Gerard, Ryan","Reitan, Kristoffer",0.232,9,0.01748,30
+"Gerard, Ryan","Morikawa, Collin",0.1725,10,0.04864,10
+"Spaun, J.J.","Scott, Adam",0.844,1,0.01381,51
+"Spaun, J.J.","Cantlay, Patrick",0.8253,2,0.03947,26
+"Spaun, J.J.","Kim, Tom",0.7136,3,0.015,29
+"Spaun, J.J.","Rose, Justin",0.6117,4,0.03058,14
+"Spaun, J.J.","Lee, Min Woo",0.5732,5,0.01471,31
+"Spaun, J.J.","Kim, Si Woo",0.456,6,0.05011,13
+"Spaun, J.J.","Hovland, Viktor",0.3949,7,0.03858,15
+"Spaun, J.J.","Aberg, Ludvig",0.3834,8,0.04261,17
+"Spaun, J.J.","Young, Cameron",0.369,9,0.04116,3
+"Spaun, J.J.","Fitzpatrick, Alex",0.1798,10,0.02833,68
+"MacIntyre, Robert","Woodland, Gary",0.7216,1,0.01458,42
+"MacIntyre, Robert","Reitan, Kristoffer",0.6988,2,0.01748,30
+"MacIntyre, Robert","Fox, Ryan",0.6554,3,0.01403,25
+"MacIntyre, Robert","Burns, Sam",0.3876,4,0.0307,9
+"MacIntyre, Robert","Bridgeman, Jacob",0.3664,5,0.01455,28
+"MacIntyre, Robert","Lee, Min Woo",0.3322,6,0.01471,31
+"MacIntyre, Robert","Bhatia, Akshay",0.2222,7,0.01111,33
+"MacIntyre, Robert","Smalley, Alex",0.2145,8,0.01435,46
+"MacIntyre, Robert","Fleetwood, Tommy",0.1858,9,0.04117,7
+"MacIntyre, Robert","Gerard, Ryan",0.1207,10,0.01769,27
+"Bridgeman, Jacob","Burns, Sam",0.9904,1,0.0307,9
+"Bridgeman, Jacob","Gerard, Ryan",0.9143,2,0.01769,27
+"Bridgeman, Jacob","Henley, Russell",0.8633,3,0.04158,6
+"Bridgeman, Jacob","Smalley, Alex",0.6676,4,0.01435,46
+"Bridgeman, Jacob","Bhatia, Akshay",0.5441,5,0.01111,33
+"Bridgeman, Jacob","Fox, Ryan",0.4658,6,0.01403,25
+"Bridgeman, Jacob","Woodland, Gary",0.4346,7,0.01458,42
+"Bridgeman, Jacob","MacIntyre, Robert",0.3664,8,0.02013,18
+"Bridgeman, Jacob","Reitan, Kristoffer",0.1971,9,0.01748,30
+"Bridgeman, Jacob","Morikawa, Collin",0.1776,10,0.04864,10
+"Rose, Justin","Hovland, Viktor",0.7812,1,0.03858,15
+"Rose, Justin","Kim, Tom",0.6133,2,0.015,29
+"Rose, Justin","Spaun, J.J.",0.6117,3,0.04223,16
+"Rose, Justin","Scott, Adam",0.5661,4,0.01381,51
+"Rose, Justin","Matsuyama, Hideki",0.406,5,0.0345,24
+"Rose, Justin","Smalley, Alex",0.3951,6,0.01435,46
+"Rose, Justin","Bhatia, Akshay",0.3767,7,0.01111,33
+"Rose, Justin","Cantlay, Patrick",0.2773,8,0.03947,26
+"Rose, Justin","Gerard, Ryan",0.2592,9,0.01769,27
+"Rose, Justin","Morikawa, Collin",0.2482,10,0.04864,10
+"Kim, Tom","Spaun, J.J.",0.7136,1,0.04223,16
+"Kim, Tom","Rose, Justin",0.6133,2,0.03058,14
+"Kim, Tom","Lee, Min Woo",0.58,3,0.01471,31
+"Kim, Tom","Hovland, Viktor",0.5202,4,0.03858,15
+"Kim, Tom","Cantlay, Patrick",0.456,5,0.03947,26
+"Kim, Tom","Matsuyama, Hideki",0.4399,6,0.0345,24
+"Kim, Tom","Bhatia, Akshay",0.4318,7,0.01111,33
+"Kim, Tom","Fox, Ryan",0.3805,8,0.01403,25
+"Kim, Tom","Scott, Adam",0.375,9,0.01381,51
+"Kim, Tom","Clark, Wyndham",0.3132,10,0.02873,5
+"Scott, Adam","Spaun, J.J.",0.844,1,0.04223,16
+"Scott, Adam","Aberg, Ludvig",0.6979,2,0.04261,17
+"Scott, Adam","Rose, Justin",0.5661,3,0.03058,14
+"Scott, Adam","Cantlay, Patrick",0.533,4,0.03947,26
+"Scott, Adam","Fitzpatrick, Alex",0.4697,5,0.02833,68
+"Scott, Adam","Kim, Si Woo",0.427,6,0.05011,13
+"Scott, Adam","Young, Cameron",0.4178,7,0.04116,3
+"Scott, Adam","Kim, Tom",0.375,8,0.015,29
+"Scott, Adam","Lee, Min Woo",0.3458,9,0.01471,31
+"Scott, Adam","Reitan, Kristoffer",0.2258,10,0.01748,30
+"Smalley, Alex","Bhatia, Akshay",0.8975,1,0.01111,33
+"Smalley, Alex","Gerard, Ryan",0.856,2,0.01769,27
+"Smalley, Alex","Fox, Ryan",0.8054,3,0.01403,25
+"Smalley, Alex","Burns, Sam",0.7019,4,0.0307,9
+"Smalley, Alex","Bridgeman, Jacob",0.6676,5,0.01455,28
+"Smalley, Alex","Reitan, Kristoffer",0.4823,6,0.01748,30
+"Smalley, Alex","Rose, Justin",0.3951,7,0.03058,14
+"Smalley, Alex","Woodland, Gary",0.3707,8,0.01458,42
+"Smalley, Alex","Kim, Tom",0.313,9,0.015,29
+"Smalley, Alex","Henley, Russell",0.302,10,0.04158,6
+"Reitan, Kristoffer","Woodland, Gary",0.8913,1,0.01458,42
+"Reitan, Kristoffer","MacIntyre, Robert",0.6988,2,0.02013,18
+"Reitan, Kristoffer","Fox, Ryan",0.687,3,0.01403,25
+"Reitan, Kristoffer","Lee, Min Woo",0.6481,4,0.01471,31
+"Reitan, Kristoffer","Smalley, Alex",0.4823,5,0.01435,46
+"Reitan, Kristoffer","Bhatia, Akshay",0.2657,6,0.01111,33
+"Reitan, Kristoffer","Gerard, Ryan",0.232,7,0.01769,27
+"Reitan, Kristoffer","Scott, Adam",0.2258,8,0.01381,51
+"Reitan, Kristoffer","Aberg, Ludvig",0.2248,9,0.04261,17
+"Reitan, Kristoffer","Kim, Tom",0.2116,10,0.015,29
+"Woodland, Gary","Reitan, Kristoffer",0.8913,1,0.01748,30
+"Woodland, Gary","MacIntyre, Robert",0.7216,2,0.02013,18
+"Woodland, Gary","Fox, Ryan",0.4808,3,0.01403,25
+"Woodland, Gary","Bridgeman, Jacob",0.4346,4,0.01455,28
+"Woodland, Gary","Gotterup, Chris",0.4278,5,0.04202,8
+"Woodland, Gary","Aberg, Ludvig",0.4233,6,0.04261,17
+"Woodland, Gary","Burns, Sam",0.3747,7,0.0307,9
+"Woodland, Gary","Smalley, Alex",0.3707,8,0.01435,46
+"Woodland, Gary","Gerard, Ryan",0.3613,9,0.01769,27
+"Woodland, Gary","Lee, Min Woo",0.3498,10,0.01471,31
+"Lee, Min Woo","Reitan, Kristoffer",0.6481,1,0.01748,30
+"Lee, Min Woo","Kim, Tom",0.58,2,0.015,29
+"Lee, Min Woo","Spaun, J.J.",0.5732,3,0.04223,16
+"Lee, Min Woo","Cantlay, Patrick",0.5175,4,0.03947,26
+"Lee, Min Woo","Woodland, Gary",0.3498,5,0.01458,42
+"Lee, Min Woo","Scott, Adam",0.3458,6,0.01381,51
+"Lee, Min Woo","MacIntyre, Robert",0.3322,7,0.02013,18
+"Lee, Min Woo","Fox, Ryan",0.2609,8,0.01403,25
+"Lee, Min Woo","Aberg, Ludvig",0.2178,9,0.04261,17
+"Lee, Min Woo","Young, Cameron",0.1794,10,0.04116,3
+"Bhatia, Akshay","Smalley, Alex",0.8975,1,0.01435,46
+"Bhatia, Akshay","Fox, Ryan",0.8459,2,0.01403,25
+"Bhatia, Akshay","Gerard, Ryan",0.6826,3,0.01769,27
+"Bhatia, Akshay","Burns, Sam",0.6325,4,0.0307,9
+"Bhatia, Akshay","Bridgeman, Jacob",0.5441,5,0.01455,28
+"Bhatia, Akshay","Clark, Wyndham",0.5144,6,0.02873,5
+"Bhatia, Akshay","Kim, Tom",0.4318,7,0.015,29
+"Bhatia, Akshay","Matsuyama, Hideki",0.417,8,0.0345,24
+"Bhatia, Akshay","Rose, Justin",0.3767,9,0.03058,14
+"Bhatia, Akshay","Henley, Russell",0.2671,10,0.04158,6
+"Fox, Ryan","Bhatia, Akshay",0.8459,1,0.01111,33
+"Fox, Ryan","Smalley, Alex",0.8054,2,0.01435,46
+"Fox, Ryan","Reitan, Kristoffer",0.687,3,0.01748,30
+"Fox, Ryan","MacIntyre, Robert",0.6554,4,0.02013,18
+"Fox, Ryan","Burns, Sam",0.5376,5,0.0307,9
+"Fox, Ryan","Gerard, Ryan",0.5079,6,0.01769,27
+"Fox, Ryan","Woodland, Gary",0.4808,7,0.01458,42
+"Fox, Ryan","Bridgeman, Jacob",0.4658,8,0.01455,28
+"Fox, Ryan","Kim, Tom",0.3805,9,0.015,29
+"Fox, Ryan","Clark, Wyndham",0.2742,10,0.02873,5
+"Fitzpatrick, Alex","Schauffele, Xander",0.8649,1,0.05393,11
+"Fitzpatrick, Alex","Young, Cameron",0.864,2,0.04116,3
+"Fitzpatrick, Alex","Aberg, Ludvig",0.8595,3,0.04261,17
+"Fitzpatrick, Alex","Gotterup, Chris",0.841,4,0.04202,8
+"Fitzpatrick, Alex","Kim, Si Woo",0.7835,5,0.05011,13
+"Fitzpatrick, Alex","Morikawa, Collin",0.7218,6,0.04864,10
+"Fitzpatrick, Alex","McIlroy, Rory",0.5818,7,0.05715,2
+"Fitzpatrick, Alex","Scott, Adam",0.4697,8,0.01381,51
+"Fitzpatrick, Alex","Scheffler, Scottie",0.3925,9,0.08625,1
+"Fitzpatrick, Alex","Cantlay, Patrick",0.3289,10,0.03947,26

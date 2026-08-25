@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-08-18T06:00:19.597863",
+  "last_updated": "2026-08-25T06:00:19.732741",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -249,8 +249,8 @@
       "total_points": 0
     },
     "Aberg": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "Arnold Palmer Invitational",
@@ -265,9 +265,16 @@
           "date": "2026-04-09",
           "result": "T21",
           "earnings": 252000
+        },
+        {
+          "tournament": "BMW Championship",
+          "week": 29,
+          "date": "2026-08-20",
+          "result": "T16",
+          "earnings": 312000
         }
       ],
-      "total_earnings": 1452000,
+      "total_earnings": 1764000,
       "total_points": 0
     },
     "Henley": {
@@ -814,8 +821,8 @@
       "total_points": 0
     },
     "Burns": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "The Memorial Tournament",
@@ -830,14 +837,21 @@
           "date": "2026-08-13",
           "result": "T3",
           "earnings": 1160000
+        },
+        {
+          "tournament": "BMW Championship",
+          "week": 29,
+          "date": "2026-08-20",
+          "result": "T28",
+          "earnings": 153000
         }
       ],
-      "total_earnings": 2080000,
+      "total_earnings": 2233000,
       "total_points": 0
     },
     "W Clark": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "RBC Canadian Open",
@@ -852,9 +866,16 @@
           "date": "2026-07-09",
           "result": "T13",
           "earnings": 153450
+        },
+        {
+          "tournament": "BMW Championship",
+          "week": 29,
+          "date": "2026-08-20",
+          "result": "1",
+          "earnings": 3600000
         }
       ],
-      "total_earnings": 371500,
+      "total_earnings": 3971500,
       "total_points": 0
     },
     "N Taylor": {
@@ -1339,10 +1360,14 @@
       "tournament": "BMW Championship",
       "week": 29,
       "date": "2026-08-20",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Aberg",
+        "Burns",
+        "W Clark"
+      ],
+      "wrp": 4,
+      "earnings_earned": 4065000,
+      "points_earned": 4065000
     },
     "week_30": {
       "tournament": "TOUR Championship",
@@ -1357,6 +1382,6 @@
   "summary": {
     "total_weeks": 30,
     "total_players": 47,
-    "total_earnings": 33868002
+    "total_earnings": 37933002
   }
 }

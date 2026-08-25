@@ -1,0 +1,6 @@
+recommendation_id,tournament_id,snapshot_type,snapped_at,player_name,market,book,rec_odds_american,rec_implied_prob,current_odds_american,current_implied_prob,model_prob,edge_pts_at_rec,confidence,clv_pts
+346377045ef1e5ad,R2026060,open,2026-08-25T11:03:51.269509+00:00,"Gerard, Ryan",h2h_r1,FANDUEL,-110,0.52381,2200.0,0.043478,0.545455,5.5576457489878495,0.7,
+5c6aff806ca1b0b3,R2026060,open,2026-08-25T11:03:51.269509+00:00,"Lee, Min Woo",h2h_r1,CAESARS,105,0.487805,,,0.502488,4.32794020517831,0.7,
+0c435c742312819f,R2026060,open,2026-08-25T11:03:51.269509+00:00,"Matsuyama, Hideki",h2h_r1,FANDUEL,-150,0.6,2200.0,0.043478,0.616858,4.238991489361698,0.7,
+1c5c6e80fa20bcf8,R2026060,open,2026-08-25T11:03:51.269509+00:00,"Kim, Tom",h2h_r1,FANDUEL,-138,0.579832,3000.0,0.032258,0.588477,3.9405381962864694,0.7,
+e4f89d25adc84eb3,R2026060,open,2026-08-25T11:03:51.269509+00:00,"Schauffele, Xander",h2h_r1,CAESARS,105,0.487805,,,0.497512,3.8303402051783064,0.7,
