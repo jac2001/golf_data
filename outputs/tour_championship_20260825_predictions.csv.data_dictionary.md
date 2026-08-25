@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-08-25 06:03
+Generated: 2026-08-25 18:08
 
 | Column | Description |
 |--------|-------------|
@@ -246,14 +246,14 @@ Generated: 2026-08-25 06:03
 | dg_make_cut | No description available |
 | dg_course_fit_delta | No description available |
 | dg_course_fit_delta_pct | No description available |
+| wind_mph_avg | No description available |
+| wind_mph_max | No description available |
+| temp_f_avg | No description available |
+| precip_mm | No description available |
 | recent_par3_scoring_field_pct | No description available |
 | recent_par4_scoring_field_pct | No description available |
 | recent_par5_scoring_field_pct | No description available |
 | recent_sg_arg_weighted | No description available |
-| wind_mph_avg | No description available |
-| wind_mph_max | No description available |
-| precip_mm | No description available |
-| temp_f_avg | No description available |
 | win_prob | Predicted win probability (0-1) |
 | top5_prob | Predicted top-5 probability (0-1) |
 | top10_prob | Predicted top-10 probability (0-1) |
