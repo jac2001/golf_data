@@ -1,5 +1,5 @@
 # Golf Model — Season Context
-_Updated: 2026-08-24 08:13_
+_Updated: 2026-08-30 21:21_
 
 ## Season Summary (2026 PGA Tour)
 - Tournaments tracked: **26**
@@ -51,8 +51,8 @@ Note: Most bets are outright/top-10/top-20 markets. High volume because the syst
 ## Closing Line Value (CLV)
 CLV measures whether our model priced players better than the closing market. Positive CLV = we got value; negative = we were wrong about the price.
 - Tournaments with CLV data: **11**
-- Average CLV: **+0.07pp** (percentage points vs closing line)
-- % of picks with positive CLV: **71%**
+- Average CLV: **+0.09pp** (percentage points vs closing line)
+- % of picks with positive CLV: **72%**
 
 **Best CLV picks this season:**
   - Scottie Scheffler (Cognizant Classic): +39.4pp
@@ -64,14 +64,14 @@ What the model weighs most when ranking players this week:
 
 | # | Feature | Importance |
 |---|---|---|
-| 1 | dg_fit_arg | 13.3% |
-| 2 | recent_sg_arg_weighted | 9.6% |
-| 3 | field_avg_season_sg_putt | 6.1% |
-| 4 | recent_sg_trend | 4.5% |
-| 5 | recent_sg_ott_weighted | 3.9% |
-| 6 | field_avg_season_sg_ott | 2.9% |
-| 7 | recent_par3_scoring_field_pct | 2.5% |
-| 8 | hist_top5s | 2.3% |
+| 1 | dg_fit_arg | 13.2% |
+| 2 | recent_sg_arg_weighted | 9.7% |
+| 3 | field_avg_season_sg_putt | 6.0% |
+| 4 | recent_sg_trend | 5.4% |
+| 5 | recent_sg_ott_weighted | 3.4% |
+| 6 | hist_top5s | 2.6% |
+| 7 | field_avg_season_sg_ott | 2.6% |
+| 8 | recent_par3_scoring_field_pct | 2.4% |
 | 9 | wind_mph_avg | 2.3% |
 | 10 | dg_fit_putt | 2.2% |
 

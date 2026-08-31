@@ -1,19 +1,19 @@
 player_name,times_used,util_pct
-Aberg,74,88.1
+Aberg,75,89.3
 Bauchou,1,1.2
 Berger,11,13.1
 Bezuidenhout,1,1.2
 Bhatia,27,32.1
 "Bradley, K",14,16.7
 Brennan,8,9.5
-Bridgeman,18,21.4
+Bridgeman,19,22.6
 "Brown, B",5,6.0
-Burns,67,79.8
+Burns,68,81.0
 "Campbell, B",2,2.4
-Cantlay,49,58.3
+Cantlay,55,65.5
 Cauley,1,1.2
 Clanton,2,2.4
-"Clark, W",60,71.4
+"Clark, W",69,82.1
 Cole,8,9.5
 Conners,13,15.5
 "Coody, Pier",13,15.5
@@ -27,28 +27,28 @@ English,6,7.1
 Ewart,1,1.2
 Finau,9,10.7
 Fisk,1,1.2
-"Fitzpatrick, A",31,36.9
-"Fitzpatrick, M",74,88.1
-Fleetwood,72,85.7
+"Fitzpatrick, A",32,38.1
+"Fitzpatrick, M",75,89.3
+Fleetwood,74,88.1
 Fowler,30,35.7
 Fox,2,2.4
 Gerard,29,34.5
 Ghim,1,1.2
 Glover,2,2.4
-Gotterup,64,76.2
+Gotterup,70,83.3
 Greyserman,5,6.0
 "Griffin, B",54,64.3
 Grillo,3,3.6
 Hall,2,2.4
 Harman,14,16.7
 Hatton,21,25.0
-Henley,54,64.3
+Henley,57,67.9
 Hisatsune,25,29.8
 "Hojgaard, N",33,39.3
 "Hojgaard, R",10,11.9
 Homa,11,13.1
 Horschel,4,4.8
-Hovland,53,63.1
+Hovland,58,69.0
 Hughes,1,1.2
 Im,15,17.9
 Jaeger,5,6.0
@@ -56,7 +56,7 @@ James,3,3.6
 Jarvis,1,1.2
 Keefer,5,6.0
 "Kim, M",2,2.4
-"Kim, SW",66,78.6
+"Kim, SW",68,81.0
 "Kim, Tom",35,41.7
 Kitayama,22,26.2
 Knapp,35,41.7
@@ -66,16 +66,16 @@ Koivun,37,44.0
 "Lee, MW",24,28.6
 List,1,1.2
 Lowry,31,36.9
-MacIntyre,45,53.6
-Matsuyama,70,83.3
+MacIntyre,47,56.0
+Matsuyama,71,84.5
 McCarthy,9,10.7
 McGreevy,1,1.2
-McIlroy,67,79.8
+McIlroy,79,94.0
 McNealy,37,44.0
 Meissner,1,1.2
 Mitchell,19,22.6
 "Moore, T",2,2.4
-Morikawa,47,56.0
+Morikawa,54,64.3
 Niemann,1,1.2
 Noren,7,8.3
 Novak,5,6.0
@@ -91,11 +91,11 @@ Rai,22,26.2
 Reed,13,15.5
 Reitan,6,7.1
 Rodgers,1,1.2
-Rose,39,46.4
+Rose,41,48.8
 Ryder,2,2.4
 Sargent,1,1.2
-Schauffele,75,89.3
-Scheffler,76,90.5
+Schauffele,77,91.7
+Scheffler,82,97.6
 Scott,10,11.9
 Smalley,14,16.7
 "Smith, J",1,1.2
@@ -115,6 +115,6 @@ van Rooyen,2,2.4
 Vegas,1,1.2
 Vilips,7,8.3
 "Walker, D",1,1.2
-Woodland,8,9.5
+Woodland,13,15.5
 Yellamaraju,8,9.5
-"Young, Cam",73,86.9
+"Young, Cam",78,92.9

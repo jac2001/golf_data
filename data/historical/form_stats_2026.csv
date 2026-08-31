@@ -1,4 +1,33 @@
 player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament_name,year,stat_value_numeric
+46046,Scottie Scheffler,1,120,Scoring Average,67.975,R2026060,TOUR Championship,2026,67.975
+46717,Viktor Hovland,2,120,Scoring Average,68.725,R2026060,TOUR Championship,2026,68.725
+59018,Ryan Gerard,3,120,Scoring Average,68.975,R2026060,TOUR Championship,2026,68.975
+52955,Ludvig Åberg,4,120,Scoring Average,69.225,R2026060,TOUR Championship,2026,69.225
+60004,Jacob Bridgeman,4,120,Scoring Average,69.225,R2026060,TOUR Championship,2026,69.225
+55721,Alex Fitzpatrick,4,120,Scoring Average,69.225,R2026060,TOUR Championship,2026,69.225
+59095,Chris Gotterup,4,120,Scoring Average,69.225,R2026060,TOUR Championship,2026,69.225
+34098,Russell Henley,4,120,Scoring Average,69.225,R2026060,TOUR Championship,2026,69.225
+37378,Min Woo Lee,4,120,Scoring Average,69.225,R2026060,TOUR Championship,2026,69.225
+28237,Rory McIlroy,4,120,Scoring Average,69.225,R2026060,TOUR Championship,2026,69.225
+30911,Tommy Fleetwood,11,120,Scoring Average,69.475,R2026060,TOUR Championship,2026,69.475
+24502,Adam Scott,11,120,Scoring Average,69.475,R2026060,TOUR Championship,2026,69.475
+57366,Cameron Young,11,120,Scoring Average,69.475,R2026060,TOUR Championship,2026,69.475
+37455,Si Woo Kim,14,120,Scoring Average,69.725,R2026060,TOUR Championship,2026,69.725
+55182,Tom Kim,14,120,Scoring Average,69.725,R2026060,TOUR Championship,2026,69.725
+50525,Collin Morikawa,14,120,Scoring Average,69.725,R2026060,TOUR Championship,2026,69.725
+48081,Xander Schauffele,14,120,Scoring Average,69.725,R2026060,TOUR Championship,2026,69.725
+56630,Akshay Bhatia,18,120,Scoring Average,70.225,R2026060,TOUR Championship,2026,70.225
+47504,Sam Burns,18,120,Scoring Average,70.225,R2026060,TOUR Championship,2026,70.225
+22405,Justin Rose,18,120,Scoring Average,70.225,R2026060,TOUR Championship,2026,70.225
+35450,Patrick Cantlay,21,120,Scoring Average,70.725,R2026060,TOUR Championship,2026,70.725
+51766,Wyndham Clark,21,120,Scoring Average,70.725,R2026060,TOUR Championship,2026,70.725
+40098,Matt Fitzpatrick,21,120,Scoring Average,70.725,R2026060,TOUR Championship,2026,70.725
+32839,Hideki Matsuyama,21,120,Scoring Average,70.725,R2026060,TOUR Championship,2026,70.725
+49855,Kristoffer Reitan,25,120,Scoring Average,71.225,R2026060,TOUR Championship,2026,71.225
+29936,Ryan Fox,26,120,Scoring Average,71.475,R2026060,TOUR Championship,2026,71.475
+46340,Alex Smalley,27,120,Scoring Average,71.725,R2026060,TOUR Championship,2026,71.725
+52215,Robert MacIntyre,28,120,Scoring Average,71.975,R2026060,TOUR Championship,2026,71.975
+31323,Gary Woodland,29,120,Scoring Average,72.475,R2026060,TOUR Championship,2026,72.475
 51766,Wyndham Clark,1,120,Scoring Average,66.900,R2026028,BMW Championship,2026,66.9
 35450,Patrick Cantlay,2,120,Scoring Average,67.650,R2026028,BMW Championship,2026,67.65
 28237,Rory McIlroy,3,120,Scoring Average,67.900,R2026028,BMW Championship,2026,67.9
@@ -2470,6 +2499,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47983,Chad Ramey,71,120,Scoring Average,71.033,R2026006,Sony Open in Hawaii,2026,71.033
 61148,Kota Kaneko,73,120,Scoring Average,71.533,R2026006,Sony Open in Hawaii,2026,71.533
 29420,Billy Horschel,74,120,Scoring Average,71.783,R2026006,Sony Open in Hawaii,2026,71.783
+28237,Rory McIlroy,1,156,Birdie Average,5.75,R2026060,TOUR Championship,2026,5.75
+52955,Ludvig Åberg,2,156,Birdie Average,5.25,R2026060,TOUR Championship,2026,5.25
+46046,Scottie Scheffler,2,156,Birdie Average,5.25,R2026060,TOUR Championship,2026,5.25
+60004,Jacob Bridgeman,4,156,Birdie Average,5.00,R2026060,TOUR Championship,2026,5.0
+46717,Viktor Hovland,4,156,Birdie Average,5.00,R2026060,TOUR Championship,2026,5.0
+59095,Chris Gotterup,6,156,Birdie Average,4.75,R2026060,TOUR Championship,2026,4.75
+37378,Min Woo Lee,6,156,Birdie Average,4.75,R2026060,TOUR Championship,2026,4.75
+57366,Cameron Young,6,156,Birdie Average,4.75,R2026060,TOUR Championship,2026,4.75
+55721,Alex Fitzpatrick,9,156,Birdie Average,4.50,R2026060,TOUR Championship,2026,4.5
+59018,Ryan Gerard,9,156,Birdie Average,4.50,R2026060,TOUR Championship,2026,4.5
+48081,Xander Schauffele,9,156,Birdie Average,4.50,R2026060,TOUR Championship,2026,4.5
+56630,Akshay Bhatia,12,156,Birdie Average,4.25,R2026060,TOUR Championship,2026,4.25
+29936,Ryan Fox,12,156,Birdie Average,4.25,R2026060,TOUR Championship,2026,4.25
+50525,Collin Morikawa,12,156,Birdie Average,4.25,R2026060,TOUR Championship,2026,4.25
+51766,Wyndham Clark,15,156,Birdie Average,4.00,R2026060,TOUR Championship,2026,4.0
+34098,Russell Henley,15,156,Birdie Average,4.00,R2026060,TOUR Championship,2026,4.0
+55182,Tom Kim,15,156,Birdie Average,4.00,R2026060,TOUR Championship,2026,4.0
+30911,Tommy Fleetwood,18,156,Birdie Average,3.75,R2026060,TOUR Championship,2026,3.75
+37455,Si Woo Kim,18,156,Birdie Average,3.75,R2026060,TOUR Championship,2026,3.75
+32839,Hideki Matsuyama,18,156,Birdie Average,3.75,R2026060,TOUR Championship,2026,3.75
+22405,Justin Rose,18,156,Birdie Average,3.75,R2026060,TOUR Championship,2026,3.75
+24502,Adam Scott,18,156,Birdie Average,3.75,R2026060,TOUR Championship,2026,3.75
+47504,Sam Burns,23,156,Birdie Average,3.50,R2026060,TOUR Championship,2026,3.5
+35450,Patrick Cantlay,23,156,Birdie Average,3.50,R2026060,TOUR Championship,2026,3.5
+40098,Matt Fitzpatrick,23,156,Birdie Average,3.50,R2026060,TOUR Championship,2026,3.5
+49855,Kristoffer Reitan,23,156,Birdie Average,3.50,R2026060,TOUR Championship,2026,3.5
+46340,Alex Smalley,27,156,Birdie Average,3.25,R2026060,TOUR Championship,2026,3.25
+31323,Gary Woodland,28,156,Birdie Average,3.00,R2026060,TOUR Championship,2026,3.0
+52215,Robert MacIntyre,29,156,Birdie Average,2.50,R2026060,TOUR Championship,2026,2.5
 35450,Patrick Cantlay,1,156,Birdie Average,6.25,R2026028,BMW Championship,2026,6.25
 51766,Wyndham Clark,2,156,Birdie Average,5.25,R2026028,BMW Championship,2026,5.25
 50525,Collin Morikawa,2,156,Birdie Average,5.25,R2026028,BMW Championship,2026,5.25
@@ -4941,6 +4999,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47917,Takumi Kanaya,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
 46464,Jordan Smith,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
 29420,Billy Horschel,74,156,Birdie Average,2.25,R2026006,Sony Open in Hawaii,2026,2.25
+28237,Rory McIlroy,1,352,Bogey Avoidance,33.33%,R2026060,TOUR Championship,2026,33.33
+52955,Ludvig Åberg,2,352,Bogey Avoidance,29.17%,R2026060,TOUR Championship,2026,29.17
+46046,Scottie Scheffler,2,352,Bogey Avoidance,29.17%,R2026060,TOUR Championship,2026,29.17
+60004,Jacob Bridgeman,4,352,Bogey Avoidance,27.78%,R2026060,TOUR Championship,2026,27.78
+46717,Viktor Hovland,4,352,Bogey Avoidance,27.78%,R2026060,TOUR Championship,2026,27.78
+57366,Cameron Young,4,352,Bogey Avoidance,27.78%,R2026060,TOUR Championship,2026,27.78
+59095,Chris Gotterup,7,352,Bogey Avoidance,26.39%,R2026060,TOUR Championship,2026,26.39
+37378,Min Woo Lee,7,352,Bogey Avoidance,26.39%,R2026060,TOUR Championship,2026,26.39
+55721,Alex Fitzpatrick,9,352,Bogey Avoidance,25.00%,R2026060,TOUR Championship,2026,25.0
+29936,Ryan Fox,9,352,Bogey Avoidance,25.00%,R2026060,TOUR Championship,2026,25.0
+59018,Ryan Gerard,9,352,Bogey Avoidance,25.00%,R2026060,TOUR Championship,2026,25.0
+48081,Xander Schauffele,9,352,Bogey Avoidance,25.00%,R2026060,TOUR Championship,2026,25.0
+56630,Akshay Bhatia,13,352,Bogey Avoidance,23.61%,R2026060,TOUR Championship,2026,23.61
+50525,Collin Morikawa,13,352,Bogey Avoidance,23.61%,R2026060,TOUR Championship,2026,23.61
+51766,Wyndham Clark,15,352,Bogey Avoidance,22.22%,R2026060,TOUR Championship,2026,22.22
+30911,Tommy Fleetwood,15,352,Bogey Avoidance,22.22%,R2026060,TOUR Championship,2026,22.22
+34098,Russell Henley,15,352,Bogey Avoidance,22.22%,R2026060,TOUR Championship,2026,22.22
+37455,Si Woo Kim,15,352,Bogey Avoidance,22.22%,R2026060,TOUR Championship,2026,22.22
+55182,Tom Kim,15,352,Bogey Avoidance,22.22%,R2026060,TOUR Championship,2026,22.22
+22405,Justin Rose,15,352,Bogey Avoidance,22.22%,R2026060,TOUR Championship,2026,22.22
+32839,Hideki Matsuyama,21,352,Bogey Avoidance,20.83%,R2026060,TOUR Championship,2026,20.83
+24502,Adam Scott,21,352,Bogey Avoidance,20.83%,R2026060,TOUR Championship,2026,20.83
+47504,Sam Burns,23,352,Bogey Avoidance,19.44%,R2026060,TOUR Championship,2026,19.44
+35450,Patrick Cantlay,23,352,Bogey Avoidance,19.44%,R2026060,TOUR Championship,2026,19.44
+40098,Matt Fitzpatrick,23,352,Bogey Avoidance,19.44%,R2026060,TOUR Championship,2026,19.44
+49855,Kristoffer Reitan,23,352,Bogey Avoidance,19.44%,R2026060,TOUR Championship,2026,19.44
+46340,Alex Smalley,27,352,Bogey Avoidance,18.06%,R2026060,TOUR Championship,2026,18.06
+31323,Gary Woodland,27,352,Bogey Avoidance,18.06%,R2026060,TOUR Championship,2026,18.06
+52215,Robert MacIntyre,29,352,Bogey Avoidance,16.67%,R2026060,TOUR Championship,2026,16.67
 35450,Patrick Cantlay,1,352,Bogey Avoidance,34.72%,R2026028,BMW Championship,2026,34.72
 51766,Wyndham Clark,2,352,Bogey Avoidance,30.56%,R2026028,BMW Championship,2026,30.56
 50525,Collin Morikawa,2,352,Bogey Avoidance,30.56%,R2026028,BMW Championship,2026,30.56
@@ -7412,6 +7499,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 36801,Mark Hubbard,72,352,Bogey Avoidance,15.28%,R2026006,Sony Open in Hawaii,2026,15.28
 46464,Jordan Smith,73,352,Bogey Avoidance,13.89%,R2026006,Sony Open in Hawaii,2026,13.89
 29420,Billy Horschel,74,352,Bogey Avoidance,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+46046,Scottie Scheffler,1,103,GIR Percentage,79.17%,R2026060,TOUR Championship,2026,79.17
+59095,Chris Gotterup,2,103,GIR Percentage,75.00%,R2026060,TOUR Championship,2026,75.0
+34098,Russell Henley,2,103,GIR Percentage,75.00%,R2026060,TOUR Championship,2026,75.0
+59018,Ryan Gerard,4,103,GIR Percentage,73.61%,R2026060,TOUR Championship,2026,73.61
+28237,Rory McIlroy,4,103,GIR Percentage,73.61%,R2026060,TOUR Championship,2026,73.61
+52955,Ludvig Åberg,6,103,GIR Percentage,72.22%,R2026060,TOUR Championship,2026,72.22
+48081,Xander Schauffele,6,103,GIR Percentage,72.22%,R2026060,TOUR Championship,2026,72.22
+47504,Sam Burns,8,103,GIR Percentage,70.83%,R2026060,TOUR Championship,2026,70.83
+30911,Tommy Fleetwood,8,103,GIR Percentage,70.83%,R2026060,TOUR Championship,2026,70.83
+24502,Adam Scott,8,103,GIR Percentage,70.83%,R2026060,TOUR Championship,2026,70.83
+35450,Patrick Cantlay,11,103,GIR Percentage,69.44%,R2026060,TOUR Championship,2026,69.44
+31323,Gary Woodland,11,103,GIR Percentage,69.44%,R2026060,TOUR Championship,2026,69.44
+60004,Jacob Bridgeman,13,103,GIR Percentage,68.06%,R2026060,TOUR Championship,2026,68.06
+55182,Tom Kim,13,103,GIR Percentage,68.06%,R2026060,TOUR Championship,2026,68.06
+22405,Justin Rose,13,103,GIR Percentage,68.06%,R2026060,TOUR Championship,2026,68.06
+56630,Akshay Bhatia,16,103,GIR Percentage,66.67%,R2026060,TOUR Championship,2026,66.67
+46717,Viktor Hovland,16,103,GIR Percentage,66.67%,R2026060,TOUR Championship,2026,66.67
+37455,Si Woo Kim,16,103,GIR Percentage,66.67%,R2026060,TOUR Championship,2026,66.67
+46340,Alex Smalley,16,103,GIR Percentage,66.67%,R2026060,TOUR Championship,2026,66.67
+37378,Min Woo Lee,20,103,GIR Percentage,65.28%,R2026060,TOUR Championship,2026,65.28
+57366,Cameron Young,20,103,GIR Percentage,65.28%,R2026060,TOUR Championship,2026,65.28
+52215,Robert MacIntyre,22,103,GIR Percentage,63.89%,R2026060,TOUR Championship,2026,63.89
+49855,Kristoffer Reitan,22,103,GIR Percentage,63.89%,R2026060,TOUR Championship,2026,63.89
+55721,Alex Fitzpatrick,24,103,GIR Percentage,62.50%,R2026060,TOUR Championship,2026,62.5
+50525,Collin Morikawa,24,103,GIR Percentage,62.50%,R2026060,TOUR Championship,2026,62.5
+51766,Wyndham Clark,26,103,GIR Percentage,59.72%,R2026060,TOUR Championship,2026,59.72
+29936,Ryan Fox,26,103,GIR Percentage,59.72%,R2026060,TOUR Championship,2026,59.72
+32839,Hideki Matsuyama,26,103,GIR Percentage,59.72%,R2026060,TOUR Championship,2026,59.72
+40098,Matt Fitzpatrick,29,103,GIR Percentage,55.56%,R2026060,TOUR Championship,2026,55.56
 52215,Robert MacIntyre,1,103,GIR Percentage,80.56%,R2026028,BMW Championship,2026,80.56
 46340,Alex Smalley,2,103,GIR Percentage,79.17%,R2026028,BMW Championship,2026,79.17
 24502,Adam Scott,3,103,GIR Percentage,77.78%,R2026028,BMW Championship,2026,77.78
@@ -9883,6 +9999,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39335,Kevin Roy,71,103,GIR Percentage,61.11%,R2026006,Sony Open in Hawaii,2026,61.11
 48153,Matthieu Pavon,73,103,GIR Percentage,58.33%,R2026006,Sony Open in Hawaii,2026,58.33
 32757,Patton Kizzire,74,103,GIR Percentage,55.56%,R2026006,Sony Open in Hawaii,2026,55.56
+28237,Rory McIlroy,1,101,Driving Distance,333.6,R2026060,TOUR Championship,2026,333.6
+59095,Chris Gotterup,2,101,Driving Distance,327.8,R2026060,TOUR Championship,2026,327.8
+37378,Min Woo Lee,3,101,Driving Distance,327.4,R2026060,TOUR Championship,2026,327.4
+55721,Alex Fitzpatrick,4,101,Driving Distance,325.3,R2026060,TOUR Championship,2026,325.3
+48081,Xander Schauffele,5,101,Driving Distance,325.0,R2026060,TOUR Championship,2026,325.0
+51766,Wyndham Clark,6,101,Driving Distance,324.4,R2026060,TOUR Championship,2026,324.4
+60004,Jacob Bridgeman,7,101,Driving Distance,323.0,R2026060,TOUR Championship,2026,323.0
+59018,Ryan Gerard,8,101,Driving Distance,322.3,R2026060,TOUR Championship,2026,322.3
+57366,Cameron Young,9,101,Driving Distance,321.4,R2026060,TOUR Championship,2026,321.4
+35450,Patrick Cantlay,10,101,Driving Distance,320.6,R2026060,TOUR Championship,2026,320.6
+37455,Si Woo Kim,11,101,Driving Distance,320.3,R2026060,TOUR Championship,2026,320.3
+49855,Kristoffer Reitan,12,101,Driving Distance,320.0,R2026060,TOUR Championship,2026,320.0
+46046,Scottie Scheffler,13,101,Driving Distance,316.4,R2026060,TOUR Championship,2026,316.4
+29936,Ryan Fox,14,101,Driving Distance,314.5,R2026060,TOUR Championship,2026,314.5
+22405,Justin Rose,14,101,Driving Distance,314.5,R2026060,TOUR Championship,2026,314.5
+24502,Adam Scott,16,101,Driving Distance,314.3,R2026060,TOUR Championship,2026,314.3
+52955,Ludvig Åberg,17,101,Driving Distance,312.9,R2026060,TOUR Championship,2026,312.9
+30911,Tommy Fleetwood,18,101,Driving Distance,312.6,R2026060,TOUR Championship,2026,312.6
+50525,Collin Morikawa,19,101,Driving Distance,311.8,R2026060,TOUR Championship,2026,311.8
+47504,Sam Burns,20,101,Driving Distance,311.0,R2026060,TOUR Championship,2026,311.0
+34098,Russell Henley,21,101,Driving Distance,310.9,R2026060,TOUR Championship,2026,310.9
+40098,Matt Fitzpatrick,22,101,Driving Distance,309.5,R2026060,TOUR Championship,2026,309.5
+56630,Akshay Bhatia,23,101,Driving Distance,308.5,R2026060,TOUR Championship,2026,308.5
+32839,Hideki Matsuyama,24,101,Driving Distance,307.5,R2026060,TOUR Championship,2026,307.5
+55182,Tom Kim,25,101,Driving Distance,306.3,R2026060,TOUR Championship,2026,306.3
+46717,Viktor Hovland,26,101,Driving Distance,302.9,R2026060,TOUR Championship,2026,302.9
+31323,Gary Woodland,27,101,Driving Distance,302.8,R2026060,TOUR Championship,2026,302.8
+52215,Robert MacIntyre,28,101,Driving Distance,301.6,R2026060,TOUR Championship,2026,301.6
+46340,Alex Smalley,29,101,Driving Distance,300.8,R2026060,TOUR Championship,2026,300.8
 52453,Nicolai Højgaard,1,101,Driving Distance,342.9,R2026028,BMW Championship,2026,342.9
 28237,Rory McIlroy,2,101,Driving Distance,342.6,R2026028,BMW Championship,2026,342.6
 37378,Min Woo Lee,3,101,Driving Distance,342.3,R2026028,BMW Championship,2026,342.3
@@ -12354,6 +12499,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 6567,Vijay Singh,72,101,Driving Distance,287.0,R2026006,Sony Open in Hawaii,2026,287.0
 40058,Zac Blair,73,101,Driving Distance,285.6,R2026006,Sony Open in Hawaii,2026,285.6
 47995,Davis Riley,74,101,Driving Distance,278.4,R2026006,Sony Open in Hawaii,2026,278.4
+34098,Russell Henley,1,102,Driving Accuracy,85.71%,R2026060,TOUR Championship,2026,85.71
+55182,Tom Kim,2,102,Driving Accuracy,80.36%,R2026060,TOUR Championship,2026,80.36
+57366,Cameron Young,3,102,Driving Accuracy,73.21%,R2026060,TOUR Championship,2026,73.21
+50525,Collin Morikawa,4,102,Driving Accuracy,71.43%,R2026060,TOUR Championship,2026,71.43
+46717,Viktor Hovland,5,102,Driving Accuracy,69.64%,R2026060,TOUR Championship,2026,69.64
+31323,Gary Woodland,6,102,Driving Accuracy,67.86%,R2026060,TOUR Championship,2026,67.86
+60004,Jacob Bridgeman,7,102,Driving Accuracy,66.07%,R2026060,TOUR Championship,2026,66.07
+30911,Tommy Fleetwood,7,102,Driving Accuracy,66.07%,R2026060,TOUR Championship,2026,66.07
+59018,Ryan Gerard,7,102,Driving Accuracy,66.07%,R2026060,TOUR Championship,2026,66.07
+59095,Chris Gotterup,7,102,Driving Accuracy,66.07%,R2026060,TOUR Championship,2026,66.07
+48081,Xander Schauffele,7,102,Driving Accuracy,66.07%,R2026060,TOUR Championship,2026,66.07
+52955,Ludvig Åberg,12,102,Driving Accuracy,64.29%,R2026060,TOUR Championship,2026,64.29
+24502,Adam Scott,12,102,Driving Accuracy,64.29%,R2026060,TOUR Championship,2026,64.29
+46340,Alex Smalley,12,102,Driving Accuracy,64.29%,R2026060,TOUR Championship,2026,64.29
+51766,Wyndham Clark,15,102,Driving Accuracy,62.50%,R2026060,TOUR Championship,2026,62.5
+49855,Kristoffer Reitan,15,102,Driving Accuracy,62.50%,R2026060,TOUR Championship,2026,62.5
+46046,Scottie Scheffler,15,102,Driving Accuracy,62.50%,R2026060,TOUR Championship,2026,62.5
+47504,Sam Burns,18,102,Driving Accuracy,60.71%,R2026060,TOUR Championship,2026,60.71
+37378,Min Woo Lee,18,102,Driving Accuracy,60.71%,R2026060,TOUR Championship,2026,60.71
+56630,Akshay Bhatia,20,102,Driving Accuracy,58.93%,R2026060,TOUR Championship,2026,58.93
+28237,Rory McIlroy,20,102,Driving Accuracy,58.93%,R2026060,TOUR Championship,2026,58.93
+55721,Alex Fitzpatrick,22,102,Driving Accuracy,57.14%,R2026060,TOUR Championship,2026,57.14
+29936,Ryan Fox,22,102,Driving Accuracy,57.14%,R2026060,TOUR Championship,2026,57.14
+37455,Si Woo Kim,24,102,Driving Accuracy,55.36%,R2026060,TOUR Championship,2026,55.36
+52215,Robert MacIntyre,24,102,Driving Accuracy,55.36%,R2026060,TOUR Championship,2026,55.36
+32839,Hideki Matsuyama,26,102,Driving Accuracy,53.57%,R2026060,TOUR Championship,2026,53.57
+40098,Matt Fitzpatrick,27,102,Driving Accuracy,50.00%,R2026060,TOUR Championship,2026,50.0
+22405,Justin Rose,28,102,Driving Accuracy,48.21%,R2026060,TOUR Championship,2026,48.21
+35450,Patrick Cantlay,29,102,Driving Accuracy,46.43%,R2026060,TOUR Championship,2026,46.43
 46414,Aaron Rai,1,102,Driving Accuracy,76.79%,R2026028,BMW Championship,2026,76.79
 47591,Eric Cole,2,102,Driving Accuracy,73.21%,R2026028,BMW Championship,2026,73.21
 32102,Rickie Fowler,3,102,Driving Accuracy,71.43%,R2026028,BMW Championship,2026,71.43
@@ -14825,6 +14999,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 32757,Patton Kizzire,70,102,Driving Accuracy,50.00%,R2026006,Sony Open in Hawaii,2026,50.0
 59866,Nick Dunlap,73,102,Driving Accuracy,48.21%,R2026006,Sony Open in Hawaii,2026,48.21
 36801,Mark Hubbard,74,102,Driving Accuracy,46.43%,R2026006,Sony Open in Hawaii,2026,46.43
+31323,Gary Woodland,1,331,Proximity to Hole,"30' 3""",R2026060,TOUR Championship,2026,
+46046,Scottie Scheffler,2,331,Proximity to Hole,"30' 4""",R2026060,TOUR Championship,2026,
+28237,Rory McIlroy,3,331,Proximity to Hole,"32' 7""",R2026060,TOUR Championship,2026,
+34098,Russell Henley,4,331,Proximity to Hole,"32' 10""",R2026060,TOUR Championship,2026,
+55182,Tom Kim,5,331,Proximity to Hole,"33' 0""",R2026060,TOUR Championship,2026,
+47504,Sam Burns,6,331,Proximity to Hole,"33' 3""",R2026060,TOUR Championship,2026,
+46717,Viktor Hovland,7,331,Proximity to Hole,"33' 6""",R2026060,TOUR Championship,2026,
+48081,Xander Schauffele,8,331,Proximity to Hole,"34' 4""",R2026060,TOUR Championship,2026,
+51766,Wyndham Clark,9,331,Proximity to Hole,"34' 7""",R2026060,TOUR Championship,2026,
+56630,Akshay Bhatia,10,331,Proximity to Hole,"34' 8""",R2026060,TOUR Championship,2026,
+52955,Ludvig Åberg,11,331,Proximity to Hole,"34' 10""",R2026060,TOUR Championship,2026,
+59018,Ryan Gerard,12,331,Proximity to Hole,"35' 1""",R2026060,TOUR Championship,2026,
+50525,Collin Morikawa,13,331,Proximity to Hole,"35' 2""",R2026060,TOUR Championship,2026,
+37455,Si Woo Kim,14,331,Proximity to Hole,"35' 9""",R2026060,TOUR Championship,2026,
+32839,Hideki Matsuyama,14,331,Proximity to Hole,"35' 9""",R2026060,TOUR Championship,2026,
+49855,Kristoffer Reitan,16,331,Proximity to Hole,"36' 0""",R2026060,TOUR Championship,2026,
+57366,Cameron Young,17,331,Proximity to Hole,"36' 1""",R2026060,TOUR Championship,2026,
+37378,Min Woo Lee,18,331,Proximity to Hole,"36' 5""",R2026060,TOUR Championship,2026,
+35450,Patrick Cantlay,19,331,Proximity to Hole,"36' 8""",R2026060,TOUR Championship,2026,
+59095,Chris Gotterup,20,331,Proximity to Hole,"37' 1""",R2026060,TOUR Championship,2026,
+52215,Robert MacIntyre,21,331,Proximity to Hole,"37' 4""",R2026060,TOUR Championship,2026,
+24502,Adam Scott,22,331,Proximity to Hole,"37' 5""",R2026060,TOUR Championship,2026,
+60004,Jacob Bridgeman,23,331,Proximity to Hole,"37' 9""",R2026060,TOUR Championship,2026,
+55721,Alex Fitzpatrick,23,331,Proximity to Hole,"37' 9""",R2026060,TOUR Championship,2026,
+22405,Justin Rose,25,331,Proximity to Hole,"38' 3""",R2026060,TOUR Championship,2026,
+30911,Tommy Fleetwood,26,331,Proximity to Hole,"38' 9""",R2026060,TOUR Championship,2026,
+46340,Alex Smalley,27,331,Proximity to Hole,"39' 5""",R2026060,TOUR Championship,2026,
+40098,Matt Fitzpatrick,28,331,Proximity to Hole,"40' 6""",R2026060,TOUR Championship,2026,
+29936,Ryan Fox,28,331,Proximity to Hole,"40' 6""",R2026060,TOUR Championship,2026,
 47420,Jake Knapp,1,331,Proximity to Hole,"27' 5""",R2026028,BMW Championship,2026,
 51766,Wyndham Clark,2,331,Proximity to Hole,"28' 5""",R2026028,BMW Championship,2026,
 24502,Adam Scott,3,331,Proximity to Hole,"29' 2""",R2026028,BMW Championship,2026,
@@ -17096,6 +17299,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 59567,Emilio Gonzalez,72,331,Proximity to Hole,"40' 9""",R2026006,Sony Open in Hawaii,2026,
 48153,Matthieu Pavon,73,331,Proximity to Hole,"43' 10""",R2026006,Sony Open in Hawaii,2026,
 37338,Zecheng Dou,74,331,Proximity to Hole,"45' 1""",R2026006,Sony Open in Hawaii,2026,
+34098,Russell Henley,1,130,Scrambling,83.33%,R2026060,TOUR Championship,2026,83.33
+37378,Min Woo Lee,2,130,Scrambling,80.00%,R2026060,TOUR Championship,2026,80.0
+46717,Viktor Hovland,3,130,Scrambling,79.17%,R2026060,TOUR Championship,2026,79.17
+59018,Ryan Gerard,4,130,Scrambling,78.95%,R2026060,TOUR Championship,2026,78.95
+24502,Adam Scott,5,130,Scrambling,76.19%,R2026060,TOUR Championship,2026,76.19
+37455,Si Woo Kim,6,130,Scrambling,75.00%,R2026060,TOUR Championship,2026,75.0
+55721,Alex Fitzpatrick,7,130,Scrambling,74.07%,R2026060,TOUR Championship,2026,74.07
+50525,Collin Morikawa,7,130,Scrambling,74.07%,R2026060,TOUR Championship,2026,74.07
+49855,Kristoffer Reitan,9,130,Scrambling,73.08%,R2026060,TOUR Championship,2026,73.08
+40098,Matt Fitzpatrick,10,130,Scrambling,71.88%,R2026060,TOUR Championship,2026,71.88
+47504,Sam Burns,11,130,Scrambling,71.43%,R2026060,TOUR Championship,2026,71.43
+55182,Tom Kim,12,130,Scrambling,69.57%,R2026060,TOUR Championship,2026,69.57
+51766,Wyndham Clark,13,130,Scrambling,68.97%,R2026060,TOUR Championship,2026,68.97
+32839,Hideki Matsuyama,13,130,Scrambling,68.97%,R2026060,TOUR Championship,2026,68.97
+30911,Tommy Fleetwood,15,130,Scrambling,66.67%,R2026060,TOUR Championship,2026,66.67
+59095,Chris Gotterup,15,130,Scrambling,66.67%,R2026060,TOUR Championship,2026,66.67
+46046,Scottie Scheffler,15,130,Scrambling,66.67%,R2026060,TOUR Championship,2026,66.67
+60004,Jacob Bridgeman,18,130,Scrambling,65.22%,R2026060,TOUR Championship,2026,65.22
+22405,Justin Rose,18,130,Scrambling,65.22%,R2026060,TOUR Championship,2026,65.22
+31323,Gary Woodland,20,130,Scrambling,63.64%,R2026060,TOUR Championship,2026,63.64
+56630,Akshay Bhatia,21,130,Scrambling,62.50%,R2026060,TOUR Championship,2026,62.5
+46340,Alex Smalley,21,130,Scrambling,62.50%,R2026060,TOUR Championship,2026,62.5
+52215,Robert MacIntyre,23,130,Scrambling,61.54%,R2026060,TOUR Championship,2026,61.54
+48081,Xander Schauffele,24,130,Scrambling,60.00%,R2026060,TOUR Championship,2026,60.0
+57366,Cameron Young,24,130,Scrambling,60.00%,R2026060,TOUR Championship,2026,60.0
+35450,Patrick Cantlay,26,130,Scrambling,59.09%,R2026060,TOUR Championship,2026,59.09
+52955,Ludvig Åberg,27,130,Scrambling,55.00%,R2026060,TOUR Championship,2026,55.0
+29936,Ryan Fox,28,130,Scrambling,48.28%,R2026060,TOUR Championship,2026,48.28
+28237,Rory McIlroy,29,130,Scrambling,47.37%,R2026060,TOUR Championship,2026,47.37
 59095,Chris Gotterup,1,130,Scrambling,80.77%,R2026028,BMW Championship,2026,80.77
 31323,Gary Woodland,2,130,Scrambling,78.95%,R2026028,BMW Championship,2026,78.95
 51766,Wyndham Clark,3,130,Scrambling,76.47%,R2026028,BMW Championship,2026,76.47
@@ -19567,6 +19799,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 63454,Johnny Keefer,72,130,Scrambling,43.75%,R2026006,Sony Open in Hawaii,2026,43.75
 48001,Zach Bauchou,73,130,Scrambling,42.11%,R2026006,Sony Open in Hawaii,2026,42.11
 54783,Dylan Wu,74,130,Scrambling,40.00%,R2026006,Sony Open in Hawaii,2026,40.0
+29936,Ryan Fox,1,111,Sand Save Percentage,100.00%,R2026060,TOUR Championship,2026,100.0
+50525,Collin Morikawa,1,111,Sand Save Percentage,100.00%,R2026060,TOUR Championship,2026,100.0
+35450,Patrick Cantlay,3,111,Sand Save Percentage,87.50%,R2026060,TOUR Championship,2026,87.5
+40098,Matt Fitzpatrick,4,111,Sand Save Percentage,80.00%,R2026060,TOUR Championship,2026,80.0
+48081,Xander Schauffele,4,111,Sand Save Percentage,80.00%,R2026060,TOUR Championship,2026,80.0
+55721,Alex Fitzpatrick,6,111,Sand Save Percentage,75.00%,R2026060,TOUR Championship,2026,75.0
+30911,Tommy Fleetwood,6,111,Sand Save Percentage,75.00%,R2026060,TOUR Championship,2026,75.0
+37378,Min Woo Lee,8,111,Sand Save Percentage,71.43%,R2026060,TOUR Championship,2026,71.43
+24502,Adam Scott,8,111,Sand Save Percentage,71.43%,R2026060,TOUR Championship,2026,71.43
+46340,Alex Smalley,8,111,Sand Save Percentage,71.43%,R2026060,TOUR Championship,2026,71.43
+49855,Kristoffer Reitan,11,111,Sand Save Percentage,66.67%,R2026060,TOUR Championship,2026,66.67
+22405,Justin Rose,11,111,Sand Save Percentage,66.67%,R2026060,TOUR Championship,2026,66.67
+46046,Scottie Scheffler,11,111,Sand Save Percentage,66.67%,R2026060,TOUR Championship,2026,66.67
+46717,Viktor Hovland,14,111,Sand Save Percentage,62.50%,R2026060,TOUR Championship,2026,62.5
+59095,Chris Gotterup,15,111,Sand Save Percentage,60.00%,R2026060,TOUR Championship,2026,60.0
+52215,Robert MacIntyre,15,111,Sand Save Percentage,60.00%,R2026060,TOUR Championship,2026,60.0
+56630,Akshay Bhatia,17,111,Sand Save Percentage,57.14%,R2026060,TOUR Championship,2026,57.14
+37455,Si Woo Kim,17,111,Sand Save Percentage,57.14%,R2026060,TOUR Championship,2026,57.14
+34098,Russell Henley,19,111,Sand Save Percentage,50.00%,R2026060,TOUR Championship,2026,50.0
+55182,Tom Kim,19,111,Sand Save Percentage,50.00%,R2026060,TOUR Championship,2026,50.0
+28237,Rory McIlroy,21,111,Sand Save Percentage,44.44%,R2026060,TOUR Championship,2026,44.44
+52955,Ludvig Åberg,22,111,Sand Save Percentage,42.86%,R2026060,TOUR Championship,2026,42.86
+32839,Hideki Matsuyama,23,111,Sand Save Percentage,41.67%,R2026060,TOUR Championship,2026,41.67
+59018,Ryan Gerard,24,111,Sand Save Percentage,40.00%,R2026060,TOUR Championship,2026,40.0
+51766,Wyndham Clark,25,111,Sand Save Percentage,37.50%,R2026060,TOUR Championship,2026,37.5
+60004,Jacob Bridgeman,26,111,Sand Save Percentage,33.33%,R2026060,TOUR Championship,2026,33.33
+47504,Sam Burns,26,111,Sand Save Percentage,33.33%,R2026060,TOUR Championship,2026,33.33
+57366,Cameron Young,26,111,Sand Save Percentage,33.33%,R2026060,TOUR Championship,2026,33.33
+31323,Gary Woodland,29,111,Sand Save Percentage,16.67%,R2026060,TOUR Championship,2026,16.67
 34021,Bud Cauley,1,111,Sand Save Percentage,100.00%,R2026028,BMW Championship,2026,100.0
 59018,Ryan Gerard,1,111,Sand Save Percentage,100.00%,R2026028,BMW Championship,2026,100.0
 59095,Chris Gotterup,1,111,Sand Save Percentage,100.00%,R2026028,BMW Championship,2026,100.0
@@ -22008,6 +22269,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 60004,Jacob Bridgeman,72,111,Sand Save Percentage,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
 47993,Denny McCarthy,73,111,Sand Save Percentage,16.67%,R2026006,Sony Open in Hawaii,2026,16.67
 63454,Johnny Keefer,74,111,Sand Save Percentage,0.00%,R2026006,Sony Open in Hawaii,2026,0.0
+29936,Ryan Fox,1,104,Putts Per Round,1.581,R2026060,TOUR Championship,2026,1.581
+57366,Cameron Young,2,104,Putts Per Round,1.596,R2026060,TOUR Championship,2026,1.596
+28237,Rory McIlroy,3,104,Putts Per Round,1.642,R2026060,TOUR Championship,2026,1.642
+46717,Viktor Hovland,4,104,Putts Per Round,1.646,R2026060,TOUR Championship,2026,1.646
+56630,Akshay Bhatia,5,104,Putts Per Round,1.667,R2026060,TOUR Championship,2026,1.667
+50525,Collin Morikawa,5,104,Putts Per Round,1.667,R2026060,TOUR Championship,2026,1.667
+52955,Ludvig Åberg,7,104,Putts Per Round,1.673,R2026060,TOUR Championship,2026,1.673
+60004,Jacob Bridgeman,7,104,Putts Per Round,1.673,R2026060,TOUR Championship,2026,1.673
+48081,Xander Schauffele,7,104,Putts Per Round,1.673,R2026060,TOUR Championship,2026,1.673
+40098,Matt Fitzpatrick,10,104,Putts Per Round,1.675,R2026060,TOUR Championship,2026,1.675
+37378,Min Woo Lee,11,104,Putts Per Round,1.681,R2026060,TOUR Championship,2026,1.681
+46046,Scottie Scheffler,12,104,Putts Per Round,1.684,R2026060,TOUR Championship,2026,1.684
+37455,Si Woo Kim,13,104,Putts Per Round,1.688,R2026060,TOUR Championship,2026,1.688
+55182,Tom Kim,14,104,Putts Per Round,1.694,R2026060,TOUR Championship,2026,1.694
+51766,Wyndham Clark,15,104,Putts Per Round,1.698,R2026060,TOUR Championship,2026,1.698
+30911,Tommy Fleetwood,16,104,Putts Per Round,1.706,R2026060,TOUR Championship,2026,1.706
+55721,Alex Fitzpatrick,17,104,Putts Per Round,1.711,R2026060,TOUR Championship,2026,1.711
+22405,Justin Rose,18,104,Putts Per Round,1.714,R2026060,TOUR Championship,2026,1.714
+34098,Russell Henley,19,104,Putts Per Round,1.722,R2026060,TOUR Championship,2026,1.722
+59018,Ryan Gerard,20,104,Putts Per Round,1.736,R2026060,TOUR Championship,2026,1.736
+59095,Chris Gotterup,21,104,Putts Per Round,1.741,R2026060,TOUR Championship,2026,1.741
+32839,Hideki Matsuyama,22,104,Putts Per Round,1.744,R2026060,TOUR Championship,2026,1.744
+24502,Adam Scott,23,104,Putts Per Round,1.745,R2026060,TOUR Championship,2026,1.745
+35450,Patrick Cantlay,24,104,Putts Per Round,1.760,R2026060,TOUR Championship,2026,1.76
+49855,Kristoffer Reitan,25,104,Putts Per Round,1.761,R2026060,TOUR Championship,2026,1.761
+47504,Sam Burns,26,104,Putts Per Round,1.765,R2026060,TOUR Championship,2026,1.765
+52215,Robert MacIntyre,27,104,Putts Per Round,1.826,R2026060,TOUR Championship,2026,1.826
+46340,Alex Smalley,28,104,Putts Per Round,1.854,R2026060,TOUR Championship,2026,1.854
+31323,Gary Woodland,29,104,Putts Per Round,1.900,R2026060,TOUR Championship,2026,1.9
 50525,Collin Morikawa,1,104,Putts Per Round,1.600,R2026028,BMW Championship,2026,1.6
 47591,Eric Cole,2,104,Putts Per Round,1.628,R2026028,BMW Championship,2026,1.628
 39324,J.J. Spaun,2,104,Putts Per Round,1.628,R2026028,BMW Championship,2026,1.628
@@ -24479,6 +24769,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 56100,Ren Yonezawa,72,104,Putts Per Round,1.897,R2026006,Sony Open in Hawaii,2026,1.897
 46414,Aaron Rai,73,104,Putts Per Round,1.907,R2026006,Sony Open in Hawaii,2026,1.907
 65256,David Ford,74,104,Putts Per Round,1.911,R2026006,Sony Open in Hawaii,2026,1.911
+40098,Matt Fitzpatrick,1,413,3-Putt Avoidance,54.17%,R2026060,TOUR Championship,2026,54.17
+37378,Min Woo Lee,1,413,3-Putt Avoidance,54.17%,R2026060,TOUR Championship,2026,54.17
+57366,Cameron Young,3,413,3-Putt Avoidance,52.78%,R2026060,TOUR Championship,2026,52.78
+46717,Viktor Hovland,4,413,3-Putt Avoidance,51.39%,R2026060,TOUR Championship,2026,51.39
+51766,Wyndham Clark,5,413,3-Putt Avoidance,50.00%,R2026060,TOUR Championship,2026,50.0
+50525,Collin Morikawa,5,413,3-Putt Avoidance,50.00%,R2026060,TOUR Championship,2026,50.0
+28237,Rory McIlroy,7,413,3-Putt Avoidance,48.61%,R2026060,TOUR Championship,2026,48.61
+49855,Kristoffer Reitan,7,413,3-Putt Avoidance,48.61%,R2026060,TOUR Championship,2026,48.61
+37455,Si Woo Kim,9,413,3-Putt Avoidance,45.83%,R2026060,TOUR Championship,2026,45.83
+56630,Akshay Bhatia,10,413,3-Putt Avoidance,44.44%,R2026060,TOUR Championship,2026,44.44
+55182,Tom Kim,10,413,3-Putt Avoidance,44.44%,R2026060,TOUR Championship,2026,44.44
+60004,Jacob Bridgeman,12,413,3-Putt Avoidance,43.06%,R2026060,TOUR Championship,2026,43.06
+55721,Alex Fitzpatrick,12,413,3-Putt Avoidance,43.06%,R2026060,TOUR Championship,2026,43.06
+29936,Ryan Fox,12,413,3-Putt Avoidance,43.06%,R2026060,TOUR Championship,2026,43.06
+59018,Ryan Gerard,12,413,3-Putt Avoidance,43.06%,R2026060,TOUR Championship,2026,43.06
+34098,Russell Henley,12,413,3-Putt Avoidance,43.06%,R2026060,TOUR Championship,2026,43.06
+32839,Hideki Matsuyama,12,413,3-Putt Avoidance,43.06%,R2026060,TOUR Championship,2026,43.06
+22405,Justin Rose,18,413,3-Putt Avoidance,41.67%,R2026060,TOUR Championship,2026,41.67
+24502,Adam Scott,18,413,3-Putt Avoidance,41.67%,R2026060,TOUR Championship,2026,41.67
+52955,Ludvig Åberg,20,413,3-Putt Avoidance,40.28%,R2026060,TOUR Championship,2026,40.28
+47504,Sam Burns,20,413,3-Putt Avoidance,40.28%,R2026060,TOUR Championship,2026,40.28
+30911,Tommy Fleetwood,20,413,3-Putt Avoidance,40.28%,R2026060,TOUR Championship,2026,40.28
+52215,Robert MacIntyre,20,413,3-Putt Avoidance,40.28%,R2026060,TOUR Championship,2026,40.28
+48081,Xander Schauffele,20,413,3-Putt Avoidance,40.28%,R2026060,TOUR Championship,2026,40.28
+46046,Scottie Scheffler,25,413,3-Putt Avoidance,38.89%,R2026060,TOUR Championship,2026,38.89
+35450,Patrick Cantlay,26,413,3-Putt Avoidance,37.50%,R2026060,TOUR Championship,2026,37.5
+59095,Chris Gotterup,27,413,3-Putt Avoidance,36.11%,R2026060,TOUR Championship,2026,36.11
+31323,Gary Woodland,27,413,3-Putt Avoidance,36.11%,R2026060,TOUR Championship,2026,36.11
+46340,Alex Smalley,29,413,3-Putt Avoidance,34.72%,R2026060,TOUR Championship,2026,34.72
 47591,Eric Cole,1,413,3-Putt Avoidance,50.00%,R2026028,BMW Championship,2026,50.0
 39324,J.J. Spaun,1,413,3-Putt Avoidance,50.00%,R2026028,BMW Championship,2026,50.0
 59095,Chris Gotterup,3,413,3-Putt Avoidance,48.61%,R2026028,BMW Championship,2026,48.61
@@ -26950,6 +27269,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 65256,David Ford,72,413,3-Putt Avoidance,26.39%,R2026006,Sony Open in Hawaii,2026,26.39
 56100,Ren Yonezawa,72,413,3-Putt Avoidance,26.39%,R2026006,Sony Open in Hawaii,2026,26.39
 49120,Kensei Hirata,74,413,3-Putt Avoidance,25.00%,R2026006,Sony Open in Hawaii,2026,25.0
+40098,Matt Fitzpatrick,1,119,1-Putt Percentage,26.25,R2026060,TOUR Championship,2026,26.25
+57366,Cameron Young,2,119,1-Putt Percentage,26.50,R2026060,TOUR Championship,2026,26.5
+55721,Alex Fitzpatrick,3,119,1-Putt Percentage,26.75,R2026060,TOUR Championship,2026,26.75
+46717,Viktor Hovland,3,119,1-Putt Percentage,26.75,R2026060,TOUR Championship,2026,26.75
+32839,Hideki Matsuyama,5,119,1-Putt Percentage,27.00,R2026060,TOUR Championship,2026,27.0
+50525,Collin Morikawa,5,119,1-Putt Percentage,27.00,R2026060,TOUR Championship,2026,27.0
+51766,Wyndham Clark,7,119,1-Putt Percentage,27.25,R2026060,TOUR Championship,2026,27.25
+37378,Min Woo Lee,7,119,1-Putt Percentage,27.25,R2026060,TOUR Championship,2026,27.25
+56630,Akshay Bhatia,9,119,1-Putt Percentage,27.50,R2026060,TOUR Championship,2026,27.5
+29936,Ryan Fox,9,119,1-Putt Percentage,27.50,R2026060,TOUR Championship,2026,27.5
+37455,Si Woo Kim,9,119,1-Putt Percentage,27.50,R2026060,TOUR Championship,2026,27.5
+28237,Rory McIlroy,9,119,1-Putt Percentage,27.50,R2026060,TOUR Championship,2026,27.5
+60004,Jacob Bridgeman,13,119,1-Putt Percentage,27.75,R2026060,TOUR Championship,2026,27.75
+55182,Tom Kim,13,119,1-Putt Percentage,27.75,R2026060,TOUR Championship,2026,27.75
+59018,Ryan Gerard,15,119,1-Putt Percentage,28.00,R2026060,TOUR Championship,2026,28.0
+49855,Kristoffer Reitan,15,119,1-Putt Percentage,28.00,R2026060,TOUR Championship,2026,28.0
+34098,Russell Henley,17,119,1-Putt Percentage,28.50,R2026060,TOUR Championship,2026,28.5
+22405,Justin Rose,17,119,1-Putt Percentage,28.50,R2026060,TOUR Championship,2026,28.5
+24502,Adam Scott,17,119,1-Putt Percentage,28.50,R2026060,TOUR Championship,2026,28.5
+52955,Ludvig Åberg,20,119,1-Putt Percentage,28.75,R2026060,TOUR Championship,2026,28.75
+47504,Sam Burns,20,119,1-Putt Percentage,28.75,R2026060,TOUR Championship,2026,28.75
+30911,Tommy Fleetwood,20,119,1-Putt Percentage,28.75,R2026060,TOUR Championship,2026,28.75
+48081,Xander Schauffele,20,119,1-Putt Percentage,28.75,R2026060,TOUR Championship,2026,28.75
+52215,Robert MacIntyre,24,119,1-Putt Percentage,29.00,R2026060,TOUR Championship,2026,29.0
+46046,Scottie Scheffler,24,119,1-Putt Percentage,29.00,R2026060,TOUR Championship,2026,29.0
+35450,Patrick Cantlay,26,119,1-Putt Percentage,29.25,R2026060,TOUR Championship,2026,29.25
+59095,Chris Gotterup,26,119,1-Putt Percentage,29.25,R2026060,TOUR Championship,2026,29.25
+46340,Alex Smalley,28,119,1-Putt Percentage,30.00,R2026060,TOUR Championship,2026,30.0
+31323,Gary Woodland,29,119,1-Putt Percentage,31.25,R2026060,TOUR Championship,2026,31.25
 59141,Matt McCarty,1,119,1-Putt Percentage,26.25,R2026028,BMW Championship,2026,26.25
 39324,J.J. Spaun,1,119,1-Putt Percentage,26.25,R2026028,BMW Championship,2026,26.25
 47591,Eric Cole,3,119,1-Putt Percentage,26.50,R2026028,BMW Championship,2026,26.5
@@ -29421,6 +29769,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 63454,Johnny Keefer,72,119,1-Putt Percentage,32.00,R2026006,Sony Open in Hawaii,2026,32.0
 65256,David Ford,73,119,1-Putt Percentage,32.25,R2026006,Sony Open in Hawaii,2026,32.25
 49120,Kensei Hirata,73,119,1-Putt Percentage,32.25,R2026006,Sony Open in Hawaii,2026,32.25
+37455,Si Woo Kim,1,160,Bounce Back,66.67%,R2026060,TOUR Championship,2026,66.67
+28237,Rory McIlroy,2,160,Bounce Back,46.15%,R2026060,TOUR Championship,2026,46.15
+56630,Akshay Bhatia,3,160,Bounce Back,44.44%,R2026060,TOUR Championship,2026,44.44
+35450,Patrick Cantlay,3,160,Bounce Back,44.44%,R2026060,TOUR Championship,2026,44.44
+50525,Collin Morikawa,5,160,Bounce Back,42.86%,R2026060,TOUR Championship,2026,42.86
+46046,Scottie Scheffler,6,160,Bounce Back,40.00%,R2026060,TOUR Championship,2026,40.0
+48081,Xander Schauffele,7,160,Bounce Back,37.50%,R2026060,TOUR Championship,2026,37.5
+29936,Ryan Fox,8,160,Bounce Back,33.33%,R2026060,TOUR Championship,2026,33.33
+57366,Cameron Young,8,160,Bounce Back,33.33%,R2026060,TOUR Championship,2026,33.33
+60004,Jacob Bridgeman,10,160,Bounce Back,28.57%,R2026060,TOUR Championship,2026,28.57
+55721,Alex Fitzpatrick,10,160,Bounce Back,28.57%,R2026060,TOUR Championship,2026,28.57
+34098,Russell Henley,12,160,Bounce Back,25.00%,R2026060,TOUR Championship,2026,25.0
+52955,Ludvig Åberg,13,160,Bounce Back,22.22%,R2026060,TOUR Championship,2026,22.22
+32839,Hideki Matsuyama,14,160,Bounce Back,20.00%,R2026060,TOUR Championship,2026,20.0
+22405,Justin Rose,14,160,Bounce Back,20.00%,R2026060,TOUR Championship,2026,20.0
+31323,Gary Woodland,14,160,Bounce Back,20.00%,R2026060,TOUR Championship,2026,20.0
+52215,Robert MacIntyre,17,160,Bounce Back,18.18%,R2026060,TOUR Championship,2026,18.18
+37378,Min Woo Lee,18,160,Bounce Back,16.67%,R2026060,TOUR Championship,2026,16.67
+46340,Alex Smalley,18,160,Bounce Back,16.67%,R2026060,TOUR Championship,2026,16.67
+30911,Tommy Fleetwood,20,160,Bounce Back,14.29%,R2026060,TOUR Championship,2026,14.29
+59095,Chris Gotterup,20,160,Bounce Back,14.29%,R2026060,TOUR Championship,2026,14.29
+46717,Viktor Hovland,20,160,Bounce Back,14.29%,R2026060,TOUR Championship,2026,14.29
+55182,Tom Kim,20,160,Bounce Back,14.29%,R2026060,TOUR Championship,2026,14.29
+40098,Matt Fitzpatrick,24,160,Bounce Back,11.11%,R2026060,TOUR Championship,2026,11.11
+49855,Kristoffer Reitan,24,160,Bounce Back,11.11%,R2026060,TOUR Championship,2026,11.11
+51766,Wyndham Clark,26,160,Bounce Back,10.00%,R2026060,TOUR Championship,2026,10.0
+47504,Sam Burns,27,160,Bounce Back,.00%,R2026060,TOUR Championship,2026,0.0
+59018,Ryan Gerard,27,160,Bounce Back,.00%,R2026060,TOUR Championship,2026,0.0
+24502,Adam Scott,27,160,Bounce Back,.00%,R2026060,TOUR Championship,2026,0.0
 46340,Alex Smalley,1,160,Bounce Back,66.67%,R2026028,BMW Championship,2026,66.67
 35450,Patrick Cantlay,2,160,Bounce Back,60.00%,R2026028,BMW Championship,2026,60.0
 34098,Russell Henley,2,160,Bounce Back,60.00%,R2026028,BMW Championship,2026,60.0
@@ -31892,6 +32269,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 50188,S.H. Kim,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
 39335,Kevin Roy,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
 51894,Vince Whaley,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
+34098,Russell Henley,1,02414,Bogey Avoidance,5.56%,R2026060,TOUR Championship,2026,5.56
+59018,Ryan Gerard,2,02414,Bogey Avoidance,6.94%,R2026060,TOUR Championship,2026,6.94
+46046,Scottie Scheffler,2,02414,Bogey Avoidance,6.94%,R2026060,TOUR Championship,2026,6.94
+24502,Adam Scott,2,02414,Bogey Avoidance,6.94%,R2026060,TOUR Championship,2026,6.94
+47504,Sam Burns,5,02414,Bogey Avoidance,8.33%,R2026060,TOUR Championship,2026,8.33
+37378,Min Woo Lee,5,02414,Bogey Avoidance,8.33%,R2026060,TOUR Championship,2026,8.33
+55721,Alex Fitzpatrick,7,02414,Bogey Avoidance,9.72%,R2026060,TOUR Championship,2026,9.72
+30911,Tommy Fleetwood,7,02414,Bogey Avoidance,9.72%,R2026060,TOUR Championship,2026,9.72
+59095,Chris Gotterup,7,02414,Bogey Avoidance,9.72%,R2026060,TOUR Championship,2026,9.72
+46717,Viktor Hovland,7,02414,Bogey Avoidance,9.72%,R2026060,TOUR Championship,2026,9.72
+37455,Si Woo Kim,7,02414,Bogey Avoidance,9.72%,R2026060,TOUR Championship,2026,9.72
+55182,Tom Kim,7,02414,Bogey Avoidance,9.72%,R2026060,TOUR Championship,2026,9.72
+50525,Collin Morikawa,7,02414,Bogey Avoidance,9.72%,R2026060,TOUR Championship,2026,9.72
+60004,Jacob Bridgeman,14,02414,Bogey Avoidance,11.11%,R2026060,TOUR Championship,2026,11.11
+48081,Xander Schauffele,14,02414,Bogey Avoidance,11.11%,R2026060,TOUR Championship,2026,11.11
+52955,Ludvig Åberg,16,02414,Bogey Avoidance,12.50%,R2026060,TOUR Championship,2026,12.5
+56630,Akshay Bhatia,16,02414,Bogey Avoidance,12.50%,R2026060,TOUR Championship,2026,12.5
+35450,Patrick Cantlay,16,02414,Bogey Avoidance,12.50%,R2026060,TOUR Championship,2026,12.5
+40098,Matt Fitzpatrick,16,02414,Bogey Avoidance,12.50%,R2026060,TOUR Championship,2026,12.5
+49855,Kristoffer Reitan,16,02414,Bogey Avoidance,12.50%,R2026060,TOUR Championship,2026,12.5
+51766,Wyndham Clark,21,02414,Bogey Avoidance,13.89%,R2026060,TOUR Championship,2026,13.89
+32839,Hideki Matsuyama,21,02414,Bogey Avoidance,13.89%,R2026060,TOUR Championship,2026,13.89
+22405,Justin Rose,21,02414,Bogey Avoidance,13.89%,R2026060,TOUR Championship,2026,13.89
+31323,Gary Woodland,21,02414,Bogey Avoidance,13.89%,R2026060,TOUR Championship,2026,13.89
+57366,Cameron Young,21,02414,Bogey Avoidance,13.89%,R2026060,TOUR Championship,2026,13.89
+52215,Robert MacIntyre,26,02414,Bogey Avoidance,16.67%,R2026060,TOUR Championship,2026,16.67
+46340,Alex Smalley,26,02414,Bogey Avoidance,16.67%,R2026060,TOUR Championship,2026,16.67
+28237,Rory McIlroy,28,02414,Bogey Avoidance,18.06%,R2026060,TOUR Championship,2026,18.06
+29936,Ryan Fox,29,02414,Bogey Avoidance,20.83%,R2026060,TOUR Championship,2026,20.83
 51766,Wyndham Clark,1,02414,Bogey Avoidance,6.94%,R2026028,BMW Championship,2026,6.94
 59095,Chris Gotterup,1,02414,Bogey Avoidance,6.94%,R2026028,BMW Championship,2026,6.94
 28237,Rory McIlroy,1,02414,Bogey Avoidance,6.94%,R2026028,BMW Championship,2026,6.94
@@ -34363,6 +34769,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39324,J.J. Spaun,69,02414,Bogey Avoidance,19.44%,R2026006,Sony Open in Hawaii,2026,19.44
 48001,Zach Bauchou,73,02414,Bogey Avoidance,20.83%,R2026006,Sony Open in Hawaii,2026,20.83
 61148,Kota Kaneko,74,02414,Bogey Avoidance,23.61%,R2026006,Sony Open in Hawaii,2026,23.61
+34098,Russell Henley,1,02419,Bogey Average,0.75,R2026060,TOUR Championship,2026,0.75
+59018,Ryan Gerard,2,02419,Bogey Average,1.00,R2026060,TOUR Championship,2026,1.0
+47504,Sam Burns,3,02419,Bogey Average,1.25,R2026060,TOUR Championship,2026,1.25
+37378,Min Woo Lee,3,02419,Bogey Average,1.25,R2026060,TOUR Championship,2026,1.25
+46046,Scottie Scheffler,3,02419,Bogey Average,1.25,R2026060,TOUR Championship,2026,1.25
+24502,Adam Scott,3,02419,Bogey Average,1.25,R2026060,TOUR Championship,2026,1.25
+31323,Gary Woodland,3,02419,Bogey Average,1.25,R2026060,TOUR Championship,2026,1.25
+59095,Chris Gotterup,8,02419,Bogey Average,1.50,R2026060,TOUR Championship,2026,1.5
+37455,Si Woo Kim,8,02419,Bogey Average,1.50,R2026060,TOUR Championship,2026,1.5
+50525,Collin Morikawa,8,02419,Bogey Average,1.50,R2026060,TOUR Championship,2026,1.5
+60004,Jacob Bridgeman,11,02419,Bogey Average,1.75,R2026060,TOUR Championship,2026,1.75
+55721,Alex Fitzpatrick,11,02419,Bogey Average,1.75,R2026060,TOUR Championship,2026,1.75
+30911,Tommy Fleetwood,11,02419,Bogey Average,1.75,R2026060,TOUR Championship,2026,1.75
+46717,Viktor Hovland,11,02419,Bogey Average,1.75,R2026060,TOUR Championship,2026,1.75
+55182,Tom Kim,11,02419,Bogey Average,1.75,R2026060,TOUR Championship,2026,1.75
+49855,Kristoffer Reitan,11,02419,Bogey Average,1.75,R2026060,TOUR Championship,2026,1.75
+48081,Xander Schauffele,11,02419,Bogey Average,1.75,R2026060,TOUR Championship,2026,1.75
+52955,Ludvig Åberg,18,02419,Bogey Average,2.00,R2026060,TOUR Championship,2026,2.0
+56630,Akshay Bhatia,18,02419,Bogey Average,2.00,R2026060,TOUR Championship,2026,2.0
+35450,Patrick Cantlay,20,02419,Bogey Average,2.25,R2026060,TOUR Championship,2026,2.25
+51766,Wyndham Clark,20,02419,Bogey Average,2.25,R2026060,TOUR Championship,2026,2.25
+40098,Matt Fitzpatrick,20,02419,Bogey Average,2.25,R2026060,TOUR Championship,2026,2.25
+57366,Cameron Young,20,02419,Bogey Average,2.25,R2026060,TOUR Championship,2026,2.25
+52215,Robert MacIntyre,24,02419,Bogey Average,2.50,R2026060,TOUR Championship,2026,2.5
+32839,Hideki Matsuyama,24,02419,Bogey Average,2.50,R2026060,TOUR Championship,2026,2.5
+22405,Justin Rose,24,02419,Bogey Average,2.50,R2026060,TOUR Championship,2026,2.5
+28237,Rory McIlroy,27,02419,Bogey Average,3.00,R2026060,TOUR Championship,2026,3.0
+46340,Alex Smalley,27,02419,Bogey Average,3.00,R2026060,TOUR Championship,2026,3.0
+29936,Ryan Fox,29,02419,Bogey Average,3.25,R2026060,TOUR Championship,2026,3.25
 51766,Wyndham Clark,1,02419,Bogey Average,1.00,R2026028,BMW Championship,2026,1.0
 31323,Gary Woodland,1,02419,Bogey Average,1.00,R2026028,BMW Championship,2026,1.0
 59095,Chris Gotterup,3,02419,Bogey Average,1.25,R2026028,BMW Championship,2026,1.25
@@ -36834,6 +37269,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39546,Keith Mitchell,71,02419,Bogey Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
 39324,J.J. Spaun,71,02419,Bogey Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
 48001,Zach Bauchou,74,02419,Bogey Average,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+46046,Scottie Scheffler,1,108,Birdie or Better %,66.00,R2026060,TOUR Championship,2026,66.0
+46717,Viktor Hovland,2,108,Birdie or Better %,66.75,R2026060,TOUR Championship,2026,66.75
+59018,Ryan Gerard,3,108,Birdie or Better %,67.00,R2026060,TOUR Championship,2026,67.0
+52955,Ludvig Åberg,4,108,Birdie or Better %,67.25,R2026060,TOUR Championship,2026,67.25
+60004,Jacob Bridgeman,4,108,Birdie or Better %,67.25,R2026060,TOUR Championship,2026,67.25
+55721,Alex Fitzpatrick,4,108,Birdie or Better %,67.25,R2026060,TOUR Championship,2026,67.25
+59095,Chris Gotterup,4,108,Birdie or Better %,67.25,R2026060,TOUR Championship,2026,67.25
+34098,Russell Henley,4,108,Birdie or Better %,67.25,R2026060,TOUR Championship,2026,67.25
+37378,Min Woo Lee,4,108,Birdie or Better %,67.25,R2026060,TOUR Championship,2026,67.25
+28237,Rory McIlroy,4,108,Birdie or Better %,67.25,R2026060,TOUR Championship,2026,67.25
+30911,Tommy Fleetwood,11,108,Birdie or Better %,67.50,R2026060,TOUR Championship,2026,67.5
+24502,Adam Scott,11,108,Birdie or Better %,67.50,R2026060,TOUR Championship,2026,67.5
+57366,Cameron Young,11,108,Birdie or Better %,67.50,R2026060,TOUR Championship,2026,67.5
+37455,Si Woo Kim,14,108,Birdie or Better %,67.75,R2026060,TOUR Championship,2026,67.75
+55182,Tom Kim,14,108,Birdie or Better %,67.75,R2026060,TOUR Championship,2026,67.75
+50525,Collin Morikawa,14,108,Birdie or Better %,67.75,R2026060,TOUR Championship,2026,67.75
+48081,Xander Schauffele,14,108,Birdie or Better %,67.75,R2026060,TOUR Championship,2026,67.75
+56630,Akshay Bhatia,18,108,Birdie or Better %,68.25,R2026060,TOUR Championship,2026,68.25
+47504,Sam Burns,18,108,Birdie or Better %,68.25,R2026060,TOUR Championship,2026,68.25
+22405,Justin Rose,18,108,Birdie or Better %,68.25,R2026060,TOUR Championship,2026,68.25
+35450,Patrick Cantlay,21,108,Birdie or Better %,68.75,R2026060,TOUR Championship,2026,68.75
+51766,Wyndham Clark,21,108,Birdie or Better %,68.75,R2026060,TOUR Championship,2026,68.75
+40098,Matt Fitzpatrick,21,108,Birdie or Better %,68.75,R2026060,TOUR Championship,2026,68.75
+32839,Hideki Matsuyama,21,108,Birdie or Better %,68.75,R2026060,TOUR Championship,2026,68.75
+49855,Kristoffer Reitan,25,108,Birdie or Better %,69.25,R2026060,TOUR Championship,2026,69.25
+29936,Ryan Fox,26,108,Birdie or Better %,69.50,R2026060,TOUR Championship,2026,69.5
+46340,Alex Smalley,27,108,Birdie or Better %,69.75,R2026060,TOUR Championship,2026,69.75
+52215,Robert MacIntyre,28,108,Birdie or Better %,70.00,R2026060,TOUR Championship,2026,70.0
+31323,Gary Woodland,29,108,Birdie or Better %,70.50,R2026060,TOUR Championship,2026,70.5
 51766,Wyndham Clark,1,108,Birdie or Better %,65.75,R2026028,BMW Championship,2026,65.75
 35450,Patrick Cantlay,2,108,Birdie or Better %,66.50,R2026028,BMW Championship,2026,66.5
 28237,Rory McIlroy,3,108,Birdie or Better %,66.75,R2026028,BMW Championship,2026,66.75
@@ -39305,6 +39769,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47983,Chad Ramey,71,108,Birdie or Better %,70.25,R2026006,Sony Open in Hawaii,2026,70.25
 61148,Kota Kaneko,73,108,Birdie or Better %,70.75,R2026006,Sony Open in Hawaii,2026,70.75
 29420,Billy Horschel,74,108,Birdie or Better %,71.00,R2026006,Sony Open in Hawaii,2026,71.0
+37378,Min Woo Lee,1,299,Par 3 Scoring,62,R2026060,TOUR Championship,2026,62.0
+57366,Cameron Young,1,299,Par 3 Scoring,62,R2026060,TOUR Championship,2026,62.0
+52215,Robert MacIntyre,3,299,Par 3 Scoring,63,R2026060,TOUR Championship,2026,63.0
+28237,Rory McIlroy,3,299,Par 3 Scoring,63,R2026060,TOUR Championship,2026,63.0
+59095,Chris Gotterup,5,299,Par 3 Scoring,64,R2026060,TOUR Championship,2026,64.0
+46717,Viktor Hovland,5,299,Par 3 Scoring,64,R2026060,TOUR Championship,2026,64.0
+50525,Collin Morikawa,5,299,Par 3 Scoring,64,R2026060,TOUR Championship,2026,64.0
+52955,Ludvig Åberg,8,299,Par 3 Scoring,65,R2026060,TOUR Championship,2026,65.0
+56630,Akshay Bhatia,8,299,Par 3 Scoring,65,R2026060,TOUR Championship,2026,65.0
+59018,Ryan Gerard,8,299,Par 3 Scoring,65,R2026060,TOUR Championship,2026,65.0
+34098,Russell Henley,8,299,Par 3 Scoring,65,R2026060,TOUR Championship,2026,65.0
+37455,Si Woo Kim,8,299,Par 3 Scoring,65,R2026060,TOUR Championship,2026,65.0
+22405,Justin Rose,8,299,Par 3 Scoring,65,R2026060,TOUR Championship,2026,65.0
+46046,Scottie Scheffler,8,299,Par 3 Scoring,65,R2026060,TOUR Championship,2026,65.0
+24502,Adam Scott,8,299,Par 3 Scoring,65,R2026060,TOUR Championship,2026,65.0
+60004,Jacob Bridgeman,16,299,Par 3 Scoring,66,R2026060,TOUR Championship,2026,66.0
+47504,Sam Burns,16,299,Par 3 Scoring,66,R2026060,TOUR Championship,2026,66.0
+55721,Alex Fitzpatrick,16,299,Par 3 Scoring,66,R2026060,TOUR Championship,2026,66.0
+40098,Matt Fitzpatrick,16,299,Par 3 Scoring,66,R2026060,TOUR Championship,2026,66.0
+30911,Tommy Fleetwood,16,299,Par 3 Scoring,66,R2026060,TOUR Championship,2026,66.0
+29936,Ryan Fox,16,299,Par 3 Scoring,66,R2026060,TOUR Championship,2026,66.0
+48081,Xander Schauffele,16,299,Par 3 Scoring,66,R2026060,TOUR Championship,2026,66.0
+31323,Gary Woodland,16,299,Par 3 Scoring,66,R2026060,TOUR Championship,2026,66.0
+51766,Wyndham Clark,24,299,Par 3 Scoring,67,R2026060,TOUR Championship,2026,67.0
+55182,Tom Kim,24,299,Par 3 Scoring,67,R2026060,TOUR Championship,2026,67.0
+32839,Hideki Matsuyama,24,299,Par 3 Scoring,67,R2026060,TOUR Championship,2026,67.0
+46340,Alex Smalley,24,299,Par 3 Scoring,67,R2026060,TOUR Championship,2026,67.0
+35450,Patrick Cantlay,28,299,Par 3 Scoring,68,R2026060,TOUR Championship,2026,68.0
+49855,Kristoffer Reitan,28,299,Par 3 Scoring,68,R2026060,TOUR Championship,2026,68.0
 46717,Viktor Hovland,1,299,Par 3 Scoring,63,R2026028,BMW Championship,2026,63.0
 51766,Wyndham Clark,2,299,Par 3 Scoring,64,R2026028,BMW Championship,2026,64.0
 59095,Chris Gotterup,2,299,Par 3 Scoring,64,R2026028,BMW Championship,2026,64.0
@@ -41776,6 +42269,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 29420,Billy Horschel,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
 36801,Mark Hubbard,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
 63121,William Mouw,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
+22405,Justin Rose,1,142,Par 4 Scoring,2.63,R2026060,TOUR Championship,2026,2.63
+60004,Jacob Bridgeman,2,142,Par 4 Scoring,2.75,R2026060,TOUR Championship,2026,2.75
+40098,Matt Fitzpatrick,3,142,Par 4 Scoring,2.81,R2026060,TOUR Championship,2026,2.81
+55721,Alex Fitzpatrick,4,142,Par 4 Scoring,2.88,R2026060,TOUR Championship,2026,2.88
+46046,Scottie Scheffler,4,142,Par 4 Scoring,2.88,R2026060,TOUR Championship,2026,2.88
+57366,Cameron Young,4,142,Par 4 Scoring,2.88,R2026060,TOUR Championship,2026,2.88
+30911,Tommy Fleetwood,7,142,Par 4 Scoring,2.94,R2026060,TOUR Championship,2026,2.94
+59018,Ryan Gerard,7,142,Par 4 Scoring,2.94,R2026060,TOUR Championship,2026,2.94
+46717,Viktor Hovland,7,142,Par 4 Scoring,2.94,R2026060,TOUR Championship,2026,2.94
+37378,Min Woo Lee,7,142,Par 4 Scoring,2.94,R2026060,TOUR Championship,2026,2.94
+52955,Ludvig Åberg,11,142,Par 4 Scoring,3.00,R2026060,TOUR Championship,2026,3.0
+47504,Sam Burns,11,142,Par 4 Scoring,3.00,R2026060,TOUR Championship,2026,3.0
+29936,Ryan Fox,11,142,Par 4 Scoring,3.00,R2026060,TOUR Championship,2026,3.0
+32839,Hideki Matsuyama,11,142,Par 4 Scoring,3.00,R2026060,TOUR Championship,2026,3.0
+48081,Xander Schauffele,11,142,Par 4 Scoring,3.00,R2026060,TOUR Championship,2026,3.0
+51766,Wyndham Clark,16,142,Par 4 Scoring,3.06,R2026060,TOUR Championship,2026,3.06
+55182,Tom Kim,16,142,Par 4 Scoring,3.06,R2026060,TOUR Championship,2026,3.06
+28237,Rory McIlroy,16,142,Par 4 Scoring,3.06,R2026060,TOUR Championship,2026,3.06
+49855,Kristoffer Reitan,16,142,Par 4 Scoring,3.06,R2026060,TOUR Championship,2026,3.06
+24502,Adam Scott,16,142,Par 4 Scoring,3.06,R2026060,TOUR Championship,2026,3.06
+56630,Akshay Bhatia,21,142,Par 4 Scoring,3.13,R2026060,TOUR Championship,2026,3.13
+35450,Patrick Cantlay,21,142,Par 4 Scoring,3.13,R2026060,TOUR Championship,2026,3.13
+59095,Chris Gotterup,21,142,Par 4 Scoring,3.13,R2026060,TOUR Championship,2026,3.13
+34098,Russell Henley,21,142,Par 4 Scoring,3.13,R2026060,TOUR Championship,2026,3.13
+37455,Si Woo Kim,21,142,Par 4 Scoring,3.13,R2026060,TOUR Championship,2026,3.13
+50525,Collin Morikawa,21,142,Par 4 Scoring,3.13,R2026060,TOUR Championship,2026,3.13
+46340,Alex Smalley,21,142,Par 4 Scoring,3.13,R2026060,TOUR Championship,2026,3.13
+31323,Gary Woodland,21,142,Par 4 Scoring,3.13,R2026060,TOUR Championship,2026,3.13
+52215,Robert MacIntyre,29,142,Par 4 Scoring,3.25,R2026060,TOUR Championship,2026,3.25
 51766,Wyndham Clark,1,142,Par 4 Scoring,2.75,R2026028,BMW Championship,2026,2.75
 28237,Rory McIlroy,1,142,Par 4 Scoring,2.75,R2026028,BMW Championship,2026,2.75
 59095,Chris Gotterup,3,142,Par 4 Scoring,2.81,R2026028,BMW Championship,2026,2.81
@@ -44247,6 +44769,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 34046,Jordan Spieth,70,142,Par 4 Scoring,3.25,R2026006,Sony Open in Hawaii,2026,3.25
 35296,Haotong Li,73,142,Par 4 Scoring,3.31,R2026006,Sony Open in Hawaii,2026,3.31
 59143,Mac Meissner,74,142,Par 4 Scoring,3.38,R2026006,Sony Open in Hawaii,2026,3.38
+34098,Russell Henley,1,143,Par 5 Scoring,3.81,R2026060,TOUR Championship,2026,3.81
+46046,Scottie Scheffler,1,143,Par 5 Scoring,3.81,R2026060,TOUR Championship,2026,3.81
+24502,Adam Scott,3,143,Par 5 Scoring,3.83,R2026060,TOUR Championship,2026,3.83
+59018,Ryan Gerard,4,143,Par 5 Scoring,3.85,R2026060,TOUR Championship,2026,3.85
+59095,Chris Gotterup,4,143,Par 5 Scoring,3.85,R2026060,TOUR Championship,2026,3.85
+46717,Viktor Hovland,4,143,Par 5 Scoring,3.85,R2026060,TOUR Championship,2026,3.85
+37455,Si Woo Kim,4,143,Par 5 Scoring,3.85,R2026060,TOUR Championship,2026,3.85
+55182,Tom Kim,4,143,Par 5 Scoring,3.85,R2026060,TOUR Championship,2026,3.85
+37378,Min Woo Lee,9,143,Par 5 Scoring,3.88,R2026060,TOUR Championship,2026,3.88
+56630,Akshay Bhatia,10,143,Par 5 Scoring,3.90,R2026060,TOUR Championship,2026,3.9
+55721,Alex Fitzpatrick,10,143,Par 5 Scoring,3.90,R2026060,TOUR Championship,2026,3.9
+28237,Rory McIlroy,10,143,Par 5 Scoring,3.90,R2026060,TOUR Championship,2026,3.9
+50525,Collin Morikawa,10,143,Par 5 Scoring,3.90,R2026060,TOUR Championship,2026,3.9
+52955,Ludvig Åberg,14,143,Par 5 Scoring,3.92,R2026060,TOUR Championship,2026,3.92
+60004,Jacob Bridgeman,14,143,Par 5 Scoring,3.92,R2026060,TOUR Championship,2026,3.92
+48081,Xander Schauffele,14,143,Par 5 Scoring,3.92,R2026060,TOUR Championship,2026,3.92
+47504,Sam Burns,17,143,Par 5 Scoring,3.96,R2026060,TOUR Championship,2026,3.96
+35450,Patrick Cantlay,17,143,Par 5 Scoring,3.96,R2026060,TOUR Championship,2026,3.96
+32839,Hideki Matsuyama,17,143,Par 5 Scoring,3.96,R2026060,TOUR Championship,2026,3.96
+57366,Cameron Young,17,143,Par 5 Scoring,3.96,R2026060,TOUR Championship,2026,3.96
+51766,Wyndham Clark,21,143,Par 5 Scoring,3.98,R2026060,TOUR Championship,2026,3.98
+30911,Tommy Fleetwood,21,143,Par 5 Scoring,3.98,R2026060,TOUR Championship,2026,3.98
+29936,Ryan Fox,23,143,Par 5 Scoring,4.00,R2026060,TOUR Championship,2026,4.0
+52215,Robert MacIntyre,23,143,Par 5 Scoring,4.00,R2026060,TOUR Championship,2026,4.0
+49855,Kristoffer Reitan,23,143,Par 5 Scoring,4.00,R2026060,TOUR Championship,2026,4.0
+46340,Alex Smalley,26,143,Par 5 Scoring,4.02,R2026060,TOUR Championship,2026,4.02
+40098,Matt Fitzpatrick,27,143,Par 5 Scoring,4.06,R2026060,TOUR Championship,2026,4.06
+22405,Justin Rose,28,143,Par 5 Scoring,4.08,R2026060,TOUR Championship,2026,4.08
+31323,Gary Woodland,29,143,Par 5 Scoring,4.10,R2026060,TOUR Championship,2026,4.1
 35450,Patrick Cantlay,1,143,Par 5 Scoring,3.79,R2026028,BMW Championship,2026,3.79
 50525,Collin Morikawa,1,143,Par 5 Scoring,3.79,R2026028,BMW Championship,2026,3.79
 34098,Russell Henley,3,143,Par 5 Scoring,3.85,R2026028,BMW Championship,2026,3.85
@@ -46718,6 +47269,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39324,J.J. Spaun,70,143,Par 5 Scoring,4.10,R2026006,Sony Open in Hawaii,2026,4.1
 61148,Kota Kaneko,73,143,Par 5 Scoring,4.13,R2026006,Sony Open in Hawaii,2026,4.13
 63121,William Mouw,74,143,Par 5 Scoring,4.17,R2026006,Sony Open in Hawaii,2026,4.17
+46046,Scottie Scheffler,1,02675,SG: Total,2.026,R2026060,TOUR Championship,2026,2.026
+46717,Viktor Hovland,2,02675,SG: Total,1.276,R2026060,TOUR Championship,2026,1.276
+59018,Ryan Gerard,3,02675,SG: Total,1.026,R2026060,TOUR Championship,2026,1.026
+52955,Ludvig Åberg,4,02675,SG: Total,0.776,R2026060,TOUR Championship,2026,0.776
+60004,Jacob Bridgeman,4,02675,SG: Total,0.776,R2026060,TOUR Championship,2026,0.776
+55721,Alex Fitzpatrick,4,02675,SG: Total,0.776,R2026060,TOUR Championship,2026,0.776
+59095,Chris Gotterup,4,02675,SG: Total,0.776,R2026060,TOUR Championship,2026,0.776
+34098,Russell Henley,4,02675,SG: Total,0.776,R2026060,TOUR Championship,2026,0.776
+37378,Min Woo Lee,4,02675,SG: Total,0.776,R2026060,TOUR Championship,2026,0.776
+28237,Rory McIlroy,4,02675,SG: Total,0.776,R2026060,TOUR Championship,2026,0.776
+30911,Tommy Fleetwood,11,02675,SG: Total,0.526,R2026060,TOUR Championship,2026,0.526
+24502,Adam Scott,11,02675,SG: Total,0.526,R2026060,TOUR Championship,2026,0.526
+57366,Cameron Young,11,02675,SG: Total,0.526,R2026060,TOUR Championship,2026,0.526
+37455,Si Woo Kim,14,02675,SG: Total,0.276,R2026060,TOUR Championship,2026,0.276
+55182,Tom Kim,14,02675,SG: Total,0.276,R2026060,TOUR Championship,2026,0.276
+50525,Collin Morikawa,14,02675,SG: Total,0.276,R2026060,TOUR Championship,2026,0.276
+48081,Xander Schauffele,14,02675,SG: Total,0.276,R2026060,TOUR Championship,2026,0.276
+56630,Akshay Bhatia,18,02675,SG: Total,-0.224,R2026060,TOUR Championship,2026,-0.224
+47504,Sam Burns,18,02675,SG: Total,-0.224,R2026060,TOUR Championship,2026,-0.224
+22405,Justin Rose,18,02675,SG: Total,-0.224,R2026060,TOUR Championship,2026,-0.224
+35450,Patrick Cantlay,21,02675,SG: Total,-0.724,R2026060,TOUR Championship,2026,-0.724
+51766,Wyndham Clark,21,02675,SG: Total,-0.724,R2026060,TOUR Championship,2026,-0.724
+40098,Matt Fitzpatrick,21,02675,SG: Total,-0.724,R2026060,TOUR Championship,2026,-0.724
+32839,Hideki Matsuyama,21,02675,SG: Total,-0.724,R2026060,TOUR Championship,2026,-0.724
+49855,Kristoffer Reitan,25,02675,SG: Total,-1.224,R2026060,TOUR Championship,2026,-1.224
+29936,Ryan Fox,26,02675,SG: Total,-1.474,R2026060,TOUR Championship,2026,-1.474
+46340,Alex Smalley,27,02675,SG: Total,-1.724,R2026060,TOUR Championship,2026,-1.724
+52215,Robert MacIntyre,28,02675,SG: Total,-1.974,R2026060,TOUR Championship,2026,-1.974
+31323,Gary Woodland,29,02675,SG: Total,-2.474,R2026060,TOUR Championship,2026,-2.474
 51766,Wyndham Clark,1,02675,SG: Total,3.100,R2026028,BMW Championship,2026,3.1
 35450,Patrick Cantlay,2,02675,SG: Total,2.350,R2026028,BMW Championship,2026,2.35
 28237,Rory McIlroy,3,02675,SG: Total,2.100,R2026028,BMW Championship,2026,2.1
@@ -48989,6 +49569,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47983,Chad Ramey,71,02675,SG: Total,-1.032,R2026006,Sony Open in Hawaii,2026,-1.032
 61148,Kota Kaneko,73,02675,SG: Total,-1.532,R2026006,Sony Open in Hawaii,2026,-1.532
 29420,Billy Horschel,74,02675,SG: Total,-1.782,R2026006,Sony Open in Hawaii,2026,-1.782
+57366,Cameron Young,1,02567,SG: Off the Tee,0.928,R2026060,TOUR Championship,2026,0.928
+59095,Chris Gotterup,2,02567,SG: Off the Tee,0.849,R2026060,TOUR Championship,2026,0.849
+34098,Russell Henley,3,02567,SG: Off the Tee,0.846,R2026060,TOUR Championship,2026,0.846
+28237,Rory McIlroy,3,02567,SG: Off the Tee,0.846,R2026060,TOUR Championship,2026,0.846
+48081,Xander Schauffele,5,02567,SG: Off the Tee,0.692,R2026060,TOUR Championship,2026,0.692
+59018,Ryan Gerard,6,02567,SG: Off the Tee,0.504,R2026060,TOUR Championship,2026,0.504
+50525,Collin Morikawa,7,02567,SG: Off the Tee,0.396,R2026060,TOUR Championship,2026,0.396
+51766,Wyndham Clark,8,02567,SG: Off the Tee,0.345,R2026060,TOUR Championship,2026,0.345
+24502,Adam Scott,9,02567,SG: Off the Tee,0.341,R2026060,TOUR Championship,2026,0.341
+31323,Gary Woodland,10,02567,SG: Off the Tee,0.268,R2026060,TOUR Championship,2026,0.268
+46046,Scottie Scheffler,11,02567,SG: Off the Tee,0.267,R2026060,TOUR Championship,2026,0.267
+55182,Tom Kim,12,02567,SG: Off the Tee,0.102,R2026060,TOUR Championship,2026,0.102
+47504,Sam Burns,13,02567,SG: Off the Tee,0.097,R2026060,TOUR Championship,2026,0.097
+46717,Viktor Hovland,14,02567,SG: Off the Tee,0.076,R2026060,TOUR Championship,2026,0.076
+52955,Ludvig Åberg,15,02567,SG: Off the Tee,0.014,R2026060,TOUR Championship,2026,0.014
+60004,Jacob Bridgeman,16,02567,SG: Off the Tee,-0.117,R2026060,TOUR Championship,2026,-0.117
+46340,Alex Smalley,17,02567,SG: Off the Tee,-0.132,R2026060,TOUR Championship,2026,-0.132
+30911,Tommy Fleetwood,18,02567,SG: Off the Tee,-0.169,R2026060,TOUR Championship,2026,-0.169
+49855,Kristoffer Reitan,19,02567,SG: Off the Tee,-0.207,R2026060,TOUR Championship,2026,-0.207
+55721,Alex Fitzpatrick,20,02567,SG: Off the Tee,-0.283,R2026060,TOUR Championship,2026,-0.283
+35450,Patrick Cantlay,21,02567,SG: Off the Tee,-0.305,R2026060,TOUR Championship,2026,-0.305
+37378,Min Woo Lee,22,02567,SG: Off the Tee,-0.341,R2026060,TOUR Championship,2026,-0.341
+29936,Ryan Fox,23,02567,SG: Off the Tee,-0.349,R2026060,TOUR Championship,2026,-0.349
+32839,Hideki Matsuyama,24,02567,SG: Off the Tee,-0.523,R2026060,TOUR Championship,2026,-0.523
+37455,Si Woo Kim,25,02567,SG: Off the Tee,-0.535,R2026060,TOUR Championship,2026,-0.535
+56630,Akshay Bhatia,26,02567,SG: Off the Tee,-0.594,R2026060,TOUR Championship,2026,-0.594
+52215,Robert MacIntyre,27,02567,SG: Off the Tee,-0.630,R2026060,TOUR Championship,2026,-0.63
+22405,Justin Rose,28,02567,SG: Off the Tee,-0.961,R2026060,TOUR Championship,2026,-0.961
+40098,Matt Fitzpatrick,29,02567,SG: Off the Tee,-1.429,R2026060,TOUR Championship,2026,-1.429
 61522,Michael Brennan,1,02567,SG: Off the Tee,0.936,R2026028,BMW Championship,2026,0.936
 48081,Xander Schauffele,2,02567,SG: Off the Tee,0.749,R2026028,BMW Championship,2026,0.749
 28237,Rory McIlroy,3,02567,SG: Off the Tee,0.725,R2026028,BMW Championship,2026,0.725
@@ -51260,6 +51869,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 61148,Kota Kaneko,72,02567,SG: Off the Tee,-1.057,R2026006,Sony Open in Hawaii,2026,-1.057
 39975,Michael Kim,73,02567,SG: Off the Tee,-1.462,R2026006,Sony Open in Hawaii,2026,-1.462
 59866,Nick Dunlap,74,02567,SG: Off the Tee,-1.733,R2026006,Sony Open in Hawaii,2026,-1.733
+46046,Scottie Scheffler,1,02568,SG: Approach,1.760,R2026060,TOUR Championship,2026,1.76
+35450,Patrick Cantlay,2,02568,SG: Approach,1.184,R2026060,TOUR Championship,2026,1.184
+37455,Si Woo Kim,3,02568,SG: Approach,0.831,R2026060,TOUR Championship,2026,0.831
+55182,Tom Kim,4,02568,SG: Approach,0.804,R2026060,TOUR Championship,2026,0.804
+31323,Gary Woodland,5,02568,SG: Approach,0.645,R2026060,TOUR Championship,2026,0.645
+22405,Justin Rose,6,02568,SG: Approach,0.628,R2026060,TOUR Championship,2026,0.628
+28237,Rory McIlroy,7,02568,SG: Approach,0.448,R2026060,TOUR Championship,2026,0.448
+48081,Xander Schauffele,8,02568,SG: Approach,0.411,R2026060,TOUR Championship,2026,0.411
+30911,Tommy Fleetwood,9,02568,SG: Approach,0.341,R2026060,TOUR Championship,2026,0.341
+52955,Ludvig Åberg,10,02568,SG: Approach,0.239,R2026060,TOUR Championship,2026,0.239
+60004,Jacob Bridgeman,11,02568,SG: Approach,0.162,R2026060,TOUR Championship,2026,0.162
+37378,Min Woo Lee,12,02568,SG: Approach,0.149,R2026060,TOUR Championship,2026,0.149
+59018,Ryan Gerard,13,02568,SG: Approach,0.076,R2026060,TOUR Championship,2026,0.076
+49855,Kristoffer Reitan,14,02568,SG: Approach,0.058,R2026060,TOUR Championship,2026,0.058
+56630,Akshay Bhatia,15,02568,SG: Approach,0.005,R2026060,TOUR Championship,2026,0.005
+59095,Chris Gotterup,16,02568,SG: Approach,0.001,R2026060,TOUR Championship,2026,0.001
+34098,Russell Henley,17,02568,SG: Approach,-0.073,R2026060,TOUR Championship,2026,-0.073
+46340,Alex Smalley,18,02568,SG: Approach,-0.134,R2026060,TOUR Championship,2026,-0.134
+24502,Adam Scott,19,02568,SG: Approach,-0.183,R2026060,TOUR Championship,2026,-0.183
+46717,Viktor Hovland,20,02568,SG: Approach,-0.187,R2026060,TOUR Championship,2026,-0.187
+55721,Alex Fitzpatrick,21,02568,SG: Approach,-0.402,R2026060,TOUR Championship,2026,-0.402
+57366,Cameron Young,22,02568,SG: Approach,-0.456,R2026060,TOUR Championship,2026,-0.456
+51766,Wyndham Clark,23,02568,SG: Approach,-0.505,R2026060,TOUR Championship,2026,-0.505
+29936,Ryan Fox,24,02568,SG: Approach,-0.550,R2026060,TOUR Championship,2026,-0.55
+32839,Hideki Matsuyama,25,02568,SG: Approach,-0.781,R2026060,TOUR Championship,2026,-0.781
+47504,Sam Burns,26,02568,SG: Approach,-0.786,R2026060,TOUR Championship,2026,-0.786
+40098,Matt Fitzpatrick,27,02568,SG: Approach,-0.904,R2026060,TOUR Championship,2026,-0.904
+50525,Collin Morikawa,28,02568,SG: Approach,-1.014,R2026060,TOUR Championship,2026,-1.014
+52215,Robert MacIntyre,29,02568,SG: Approach,-1.769,R2026060,TOUR Championship,2026,-1.769
 35450,Patrick Cantlay,1,02568,SG: Approach,1.757,R2026028,BMW Championship,2026,1.757
 51766,Wyndham Clark,2,02568,SG: Approach,1.411,R2026028,BMW Championship,2026,1.411
 48117,Kurt Kitayama,3,02568,SG: Approach,1.171,R2026028,BMW Championship,2026,1.171
@@ -53531,6 +54169,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 59567,Emilio Gonzalez,72,02568,SG: Approach,-1.081,R2026006,Sony Open in Hawaii,2026,-1.081
 52375,Doug Ghim,73,02568,SG: Approach,-1.084,R2026006,Sony Open in Hawaii,2026,-1.084
 61148,Kota Kaneko,74,02568,SG: Approach,-1.613,R2026006,Sony Open in Hawaii,2026,-1.613
+32839,Hideki Matsuyama,1,02569,SG: Around Green,1.208,R2026060,TOUR Championship,2026,1.208
+55721,Alex Fitzpatrick,2,02569,SG: Around Green,0.965,R2026060,TOUR Championship,2026,0.965
+40098,Matt Fitzpatrick,3,02569,SG: Around Green,0.821,R2026060,TOUR Championship,2026,0.821
+37455,Si Woo Kim,4,02569,SG: Around Green,0.633,R2026060,TOUR Championship,2026,0.633
+59095,Chris Gotterup,5,02569,SG: Around Green,0.618,R2026060,TOUR Championship,2026,0.618
+22405,Justin Rose,6,02569,SG: Around Green,0.295,R2026060,TOUR Championship,2026,0.295
+34098,Russell Henley,7,02569,SG: Around Green,0.281,R2026060,TOUR Championship,2026,0.281
+60004,Jacob Bridgeman,8,02569,SG: Around Green,0.247,R2026060,TOUR Championship,2026,0.247
+56630,Akshay Bhatia,9,02569,SG: Around Green,0.183,R2026060,TOUR Championship,2026,0.183
+29936,Ryan Fox,10,02569,SG: Around Green,0.100,R2026060,TOUR Championship,2026,0.1
+37378,Min Woo Lee,11,02569,SG: Around Green,0.048,R2026060,TOUR Championship,2026,0.048
+52955,Ludvig Åberg,12,02569,SG: Around Green,-0.006,R2026060,TOUR Championship,2026,-0.006
+52215,Robert MacIntyre,13,02569,SG: Around Green,-0.014,R2026060,TOUR Championship,2026,-0.014
+46340,Alex Smalley,14,02569,SG: Around Green,-0.015,R2026060,TOUR Championship,2026,-0.015
+30911,Tommy Fleetwood,15,02569,SG: Around Green,-0.018,R2026060,TOUR Championship,2026,-0.018
+51766,Wyndham Clark,16,02569,SG: Around Green,-0.038,R2026060,TOUR Championship,2026,-0.038
+46046,Scottie Scheffler,17,02569,SG: Around Green,-0.077,R2026060,TOUR Championship,2026,-0.077
+59018,Ryan Gerard,18,02569,SG: Around Green,-0.087,R2026060,TOUR Championship,2026,-0.087
+47504,Sam Burns,19,02569,SG: Around Green,-0.119,R2026060,TOUR Championship,2026,-0.119
+46717,Viktor Hovland,20,02569,SG: Around Green,-0.165,R2026060,TOUR Championship,2026,-0.165
+24502,Adam Scott,21,02569,SG: Around Green,-0.186,R2026060,TOUR Championship,2026,-0.186
+55182,Tom Kim,22,02569,SG: Around Green,-0.279,R2026060,TOUR Championship,2026,-0.279
+49855,Kristoffer Reitan,23,02569,SG: Around Green,-0.317,R2026060,TOUR Championship,2026,-0.317
+50525,Collin Morikawa,24,02569,SG: Around Green,-0.470,R2026060,TOUR Championship,2026,-0.47
+35450,Patrick Cantlay,25,02569,SG: Around Green,-0.494,R2026060,TOUR Championship,2026,-0.494
+48081,Xander Schauffele,26,02569,SG: Around Green,-0.514,R2026060,TOUR Championship,2026,-0.514
+28237,Rory McIlroy,27,02569,SG: Around Green,-0.776,R2026060,TOUR Championship,2026,-0.776
+57366,Cameron Young,28,02569,SG: Around Green,-0.816,R2026060,TOUR Championship,2026,-0.816
+31323,Gary Woodland,29,02569,SG: Around Green,-1.006,R2026060,TOUR Championship,2026,-1.006
 46046,Scottie Scheffler,1,02569,SG: Around Green,1.053,R2026028,BMW Championship,2026,1.053
 35450,Patrick Cantlay,2,02569,SG: Around Green,0.880,R2026028,BMW Championship,2026,0.88
 49771,J.T. Poston,3,02569,SG: Around Green,0.806,R2026028,BMW Championship,2026,0.806
@@ -55802,6 +56469,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 63454,Johnny Keefer,72,02569,SG: Around Green,-0.758,R2026006,Sony Open in Hawaii,2026,-0.758
 63121,William Mouw,73,02569,SG: Around Green,-0.842,R2026006,Sony Open in Hawaii,2026,-0.842
 59141,Matt McCarty,74,02569,SG: Around Green,-0.979,R2026006,Sony Open in Hawaii,2026,-0.979
+46717,Viktor Hovland,1,02564,SG: Putting,1.553,R2026060,TOUR Championship,2026,1.553
+50525,Collin Morikawa,2,02564,SG: Putting,1.363,R2026060,TOUR Championship,2026,1.363
+37378,Min Woo Lee,3,02564,SG: Putting,0.920,R2026060,TOUR Championship,2026,0.92
+57366,Cameron Young,4,02564,SG: Putting,0.870,R2026060,TOUR Championship,2026,0.87
+40098,Matt Fitzpatrick,5,02564,SG: Putting,0.788,R2026060,TOUR Championship,2026,0.788
+47504,Sam Burns,6,02564,SG: Putting,0.583,R2026060,TOUR Championship,2026,0.583
+24502,Adam Scott,7,02564,SG: Putting,0.554,R2026060,TOUR Championship,2026,0.554
+59018,Ryan Gerard,8,02564,SG: Putting,0.532,R2026060,TOUR Championship,2026,0.532
+52955,Ludvig Åberg,9,02564,SG: Putting,0.529,R2026060,TOUR Championship,2026,0.529
+55721,Alex Fitzpatrick,10,02564,SG: Putting,0.496,R2026060,TOUR Championship,2026,0.496
+60004,Jacob Bridgeman,11,02564,SG: Putting,0.484,R2026060,TOUR Championship,2026,0.484
+52215,Robert MacIntyre,12,02564,SG: Putting,0.438,R2026060,TOUR Championship,2026,0.438
+30911,Tommy Fleetwood,13,02564,SG: Putting,0.371,R2026060,TOUR Championship,2026,0.371
+28237,Rory McIlroy,14,02564,SG: Putting,0.257,R2026060,TOUR Championship,2026,0.257
+56630,Akshay Bhatia,15,02564,SG: Putting,0.182,R2026060,TOUR Championship,2026,0.182
+46046,Scottie Scheffler,16,02564,SG: Putting,0.075,R2026060,TOUR Championship,2026,0.075
+22405,Justin Rose,17,02564,SG: Putting,-0.186,R2026060,TOUR Championship,2026,-0.186
+34098,Russell Henley,18,02564,SG: Putting,-0.278,R2026060,TOUR Championship,2026,-0.278
+48081,Xander Schauffele,19,02564,SG: Putting,-0.313,R2026060,TOUR Championship,2026,-0.313
+55182,Tom Kim,20,02564,SG: Putting,-0.352,R2026060,TOUR Championship,2026,-0.352
+51766,Wyndham Clark,21,02564,SG: Putting,-0.527,R2026060,TOUR Championship,2026,-0.527
+32839,Hideki Matsuyama,22,02564,SG: Putting,-0.629,R2026060,TOUR Championship,2026,-0.629
+37455,Si Woo Kim,23,02564,SG: Putting,-0.653,R2026060,TOUR Championship,2026,-0.653
+29936,Ryan Fox,24,02564,SG: Putting,-0.675,R2026060,TOUR Championship,2026,-0.675
+59095,Chris Gotterup,25,02564,SG: Putting,-0.692,R2026060,TOUR Championship,2026,-0.692
+49855,Kristoffer Reitan,26,02564,SG: Putting,-0.758,R2026060,TOUR Championship,2026,-0.758
+35450,Patrick Cantlay,27,02564,SG: Putting,-1.109,R2026060,TOUR Championship,2026,-1.109
+46340,Alex Smalley,28,02564,SG: Putting,-1.443,R2026060,TOUR Championship,2026,-1.443
+31323,Gary Woodland,29,02564,SG: Putting,-2.381,R2026060,TOUR Championship,2026,-2.381
 39971,Sungjae Im,1,02564,SG: Putting,1.391,R2026028,BMW Championship,2026,1.391
 46442,Maverick McNealy,2,02564,SG: Putting,1.354,R2026028,BMW Championship,2026,1.354
 59141,Matt McCarty,3,02564,SG: Putting,1.299,R2026028,BMW Championship,2026,1.299
@@ -58073,6 +58769,35 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 56100,Ren Yonezawa,72,02564,SG: Putting,-0.871,R2026006,Sony Open in Hawaii,2026,-0.871
 35296,Haotong Li,73,02564,SG: Putting,-1.091,R2026006,Sony Open in Hawaii,2026,-1.091
 37455,Si Woo Kim,74,02564,SG: Putting,-1.176,R2026006,Sony Open in Hawaii,2026,-1.176
+31323,Gary Woodland,1,02401,Club Head Speed,128.11,R2026060,TOUR Championship,2026,128.11
+57366,Cameron Young,2,02401,Club Head Speed,126.77,R2026060,TOUR Championship,2026,126.77
+59095,Chris Gotterup,3,02401,Club Head Speed,124.72,R2026060,TOUR Championship,2026,124.72
+48081,Xander Schauffele,4,02401,Club Head Speed,124.54,R2026060,TOUR Championship,2026,124.54
+28237,Rory McIlroy,5,02401,Club Head Speed,123.35,R2026060,TOUR Championship,2026,123.35
+37378,Min Woo Lee,6,02401,Club Head Speed,123.20,R2026060,TOUR Championship,2026,123.2
+46046,Scottie Scheffler,7,02401,Club Head Speed,121.93,R2026060,TOUR Championship,2026,121.93
+24502,Adam Scott,8,02401,Club Head Speed,121.85,R2026060,TOUR Championship,2026,121.85
+52955,Ludvig Åberg,9,02401,Club Head Speed,121.19,R2026060,TOUR Championship,2026,121.19
+47504,Sam Burns,10,02401,Club Head Speed,120.93,R2026060,TOUR Championship,2026,120.93
+59018,Ryan Gerard,11,02401,Club Head Speed,120.50,R2026060,TOUR Championship,2026,120.5
+29936,Ryan Fox,12,02401,Club Head Speed,120.37,R2026060,TOUR Championship,2026,120.37
+55721,Alex Fitzpatrick,13,02401,Club Head Speed,120.36,R2026060,TOUR Championship,2026,120.36
+51766,Wyndham Clark,14,02401,Club Head Speed,120.19,R2026060,TOUR Championship,2026,120.19
+52215,Robert MacIntyre,15,02401,Club Head Speed,119.48,R2026060,TOUR Championship,2026,119.48
+35450,Patrick Cantlay,16,02401,Club Head Speed,119.15,R2026060,TOUR Championship,2026,119.15
+40098,Matt Fitzpatrick,17,02401,Club Head Speed,118.55,R2026060,TOUR Championship,2026,118.55
+60004,Jacob Bridgeman,18,02401,Club Head Speed,117.84,R2026060,TOUR Championship,2026,117.84
+46717,Viktor Hovland,19,02401,Club Head Speed,117.34,R2026060,TOUR Championship,2026,117.34
+56630,Akshay Bhatia,20,02401,Club Head Speed,116.97,R2026060,TOUR Championship,2026,116.97
+22405,Justin Rose,21,02401,Club Head Speed,116.57,R2026060,TOUR Championship,2026,116.57
+49855,Kristoffer Reitan,22,02401,Club Head Speed,116.28,R2026060,TOUR Championship,2026,116.28
+46340,Alex Smalley,23,02401,Club Head Speed,115.80,R2026060,TOUR Championship,2026,115.8
+50525,Collin Morikawa,24,02401,Club Head Speed,115.40,R2026060,TOUR Championship,2026,115.4
+30911,Tommy Fleetwood,25,02401,Club Head Speed,115.01,R2026060,TOUR Championship,2026,115.01
+32839,Hideki Matsuyama,26,02401,Club Head Speed,114.76,R2026060,TOUR Championship,2026,114.76
+37455,Si Woo Kim,27,02401,Club Head Speed,113.98,R2026060,TOUR Championship,2026,113.98
+55182,Tom Kim,28,02401,Club Head Speed,112.92,R2026060,TOUR Championship,2026,112.92
+34098,Russell Henley,29,02401,Club Head Speed,110.61,R2026060,TOUR Championship,2026,110.61
 31323,Gary Woodland,1,02401,Club Head Speed,127.77,R2026028,BMW Championship,2026,127.77
 57366,Cameron Young,2,02401,Club Head Speed,126.61,R2026028,BMW Championship,2026,126.61
 61522,Michael Brennan,3,02401,Club Head Speed,126.41,R2026028,BMW Championship,2026,126.41
