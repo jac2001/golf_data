@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-08-25T06:00:19.732741",
+  "last_updated": "2026-09-01T17:57:14.850479",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -153,8 +153,8 @@
       "total_points": 0
     },
     "Hovland": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "The Genesis Invitational",
@@ -162,9 +162,16 @@
           "date": "2026-02-19",
           "result": "T41",
           "earnings": 78000
+        },
+        {
+          "tournament": "TOUR Championship",
+          "week": 30,
+          "date": "2026-08-27",
+          "result": "2",
+          "earnings": 2180000
         }
       ],
-      "total_earnings": 78000,
+      "total_earnings": 2258000,
       "total_points": 0
     },
     "Matsuyama": {
@@ -307,8 +314,8 @@
       "total_points": 0
     },
     "McIlroy": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "Arnold Palmer Invitational",
@@ -323,9 +330,16 @@
           "date": "2026-05-07",
           "result": "T19",
           "earnings": 242100
+        },
+        {
+          "tournament": "TOUR Championship",
+          "week": 30,
+          "date": "2026-08-27",
+          "result": "T4",
+          "earnings": 707857
         }
       ],
-      "total_earnings": 242100,
+      "total_earnings": 949957,
       "total_points": 0
     },
     "Scheffler": {
@@ -373,8 +387,8 @@
       "total_points": 0
     },
     "Cam Young": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "THE PLAYERS Championship",
@@ -389,9 +403,16 @@
           "date": "2026-08-13",
           "result": "T39",
           "earnings": 86000
+        },
+        {
+          "tournament": "TOUR Championship",
+          "week": 30,
+          "date": "2026-08-27",
+          "result": "T11",
+          "earnings": 464999
         }
       ],
-      "total_earnings": 4586000,
+      "total_earnings": 5050999,
       "total_points": 0
     },
     "Bridgeman": {
@@ -989,6 +1010,36 @@
       ],
       "total_earnings": 0,
       "total_points": 0
+    },
+    "Rory McIlroy": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "TOUR Championship",
+          "week": 30,
+          "date": "2026-08-27",
+          "result": null,
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
+    },
+    "Viktor Hovland": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "TOUR Championship",
+          "week": 30,
+          "date": "2026-08-27",
+          "result": null,
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
     }
   },
   "weekly_lineups": {
@@ -1373,7 +1424,11 @@
       "tournament": "TOUR Championship",
       "week": 30,
       "date": "2026-08-27",
-      "lineup": [],
+      "lineup": [
+        "Rory McIlroy",
+        "Cam Young",
+        "Viktor Hovland"
+      ],
       "wrp": null,
       "earnings_earned": null,
       "points_earned": null
@@ -1381,7 +1436,7 @@
   },
   "summary": {
     "total_weeks": 30,
-    "total_players": 47,
+    "total_players": 49,
     "total_earnings": 37933002
   }
 }

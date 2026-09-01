@@ -2,7 +2,7 @@
   "season": "2026",
   "max_uses_per_player": 3,
   "players_per_lineup": 3,
-  "last_updated": "2026-07-30T07:03:12",
+  "last_updated": "2026-09-01T17:45:23",
   "last_synced_from": "https://connection.protourfantasygolf.com/scorecard/individual/2026/0/133",
   "picks": {
     "Pier Coody": {
@@ -21,8 +21,8 @@
       "total_points": 0
     },
     "Gotterup": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "Waste Management Phoenix Open",
@@ -37,6 +37,13 @@
           "date": "2026-07-02",
           "result": "1",
           "earnings": 1584000
+        },
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": "CUT",
+          "earnings": 0
         }
       ],
       "total_earnings": 3312000,
@@ -80,8 +87,8 @@
       "total_points": 0
     },
     "McNealy": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "AT&T Pebble Beach Pro-Am",
@@ -89,9 +96,16 @@
           "date": "2026-02-12",
           "result": "T29",
           "earnings": 125200
+        },
+        {
+          "tournament": "Wyndham Championship",
+          "week": 27,
+          "date": "2026-08-06",
+          "result": "T25",
+          "earnings": 68213
         }
       ],
-      "total_earnings": 125200,
+      "total_earnings": 193413,
       "total_points": 0
     },
     "Rose": {
@@ -110,8 +124,8 @@
       "total_points": 0
     },
     "Cantlay": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "The Genesis Invitational",
@@ -126,9 +140,16 @@
           "date": "2026-06-04",
           "result": "T17",
           "earnings": 319000
+        },
+        {
+          "tournament": "FedEx St. Jude Invitational",
+          "week": 28,
+          "date": "2026-08-13",
+          "result": "T12",
+          "earnings": 368571
         }
       ],
-      "total_earnings": 411250,
+      "total_earnings": 779821,
       "total_points": 0
     },
     "Hovland": {
@@ -176,8 +197,8 @@
       "total_points": 0
     },
     "Gerard": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Cognizant Classic",
@@ -185,6 +206,13 @@
           "date": "2026-02-26",
           "result": "T23",
           "earnings": 77600
+        },
+        {
+          "tournament": "Wyndham Championship",
+          "week": 27,
+          "date": "2026-08-06",
+          "result": "CUT",
+          "earnings": 0
         }
       ],
       "total_earnings": 77600,
@@ -221,8 +249,8 @@
       "total_points": 0
     },
     "Aberg": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "Arnold Palmer Invitational",
@@ -237,9 +265,16 @@
           "date": "2026-04-09",
           "result": "T21",
           "earnings": 252000
+        },
+        {
+          "tournament": "BMW Championship",
+          "week": 29,
+          "date": "2026-08-20",
+          "result": "T16",
+          "earnings": 312000
         }
       ],
-      "total_earnings": 1452000,
+      "total_earnings": 1764000,
       "total_points": 0
     },
     "Henley": {
@@ -338,8 +373,8 @@
       "total_points": 0
     },
     "Cam Young": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "THE PLAYERS Championship",
@@ -347,9 +382,16 @@
           "date": "2026-03-12",
           "result": "1",
           "earnings": 4500000
+        },
+        {
+          "tournament": "FedEx St. Jude Invitational",
+          "week": 28,
+          "date": "2026-08-13",
+          "result": "T39",
+          "earnings": 86000
         }
       ],
-      "total_earnings": 4500000,
+      "total_earnings": 4586000,
       "total_points": 0
     },
     "Bridgeman": {
@@ -405,8 +447,8 @@
       "total_points": 0
     },
     "Knapp": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "Texas Children's Houston Open",
@@ -414,6 +456,13 @@
           "date": "2026-03-26",
           "result": "T6",
           "earnings": 322988
+        },
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": "CUT",
+          "earnings": 0
         }
       ],
       "total_earnings": 322988,
@@ -772,8 +821,8 @@
       "total_points": 0
     },
     "Burns": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "The Memorial Tournament",
@@ -781,14 +830,28 @@
           "date": "2026-06-04",
           "result": "T4",
           "earnings": 920000
+        },
+        {
+          "tournament": "FedEx St. Jude Invitational",
+          "week": 28,
+          "date": "2026-08-13",
+          "result": "T3",
+          "earnings": 1160000
+        },
+        {
+          "tournament": "BMW Championship",
+          "week": 29,
+          "date": "2026-08-20",
+          "result": "T28",
+          "earnings": 153000
         }
       ],
-      "total_earnings": 920000,
+      "total_earnings": 2233000,
       "total_points": 0
     },
     "W Clark": {
-      "times_used": 2,
-      "remaining_uses": 1,
+      "times_used": 3,
+      "remaining_uses": 0,
       "tournaments_used": [
         {
           "tournament": "RBC Canadian Open",
@@ -803,9 +866,16 @@
           "date": "2026-07-09",
           "result": "T13",
           "earnings": 153450
+        },
+        {
+          "tournament": "BMW Championship",
+          "week": 29,
+          "date": "2026-08-20",
+          "result": "1",
+          "earnings": 3600000
         }
       ],
-      "total_earnings": 371500,
+      "total_earnings": 3971500,
       "total_points": 0
     },
     "N Taylor": {
@@ -839,8 +909,8 @@
       "total_points": 0
     },
     "Koivun": {
-      "times_used": 1,
-      "remaining_uses": 2,
+      "times_used": 2,
+      "remaining_uses": 1,
       "tournaments_used": [
         {
           "tournament": "John Deere Classic",
@@ -848,9 +918,16 @@
           "date": "2026-07-02",
           "result": "CUT",
           "earnings": 0
+        },
+        {
+          "tournament": "Rocket Classic",
+          "week": 26,
+          "date": "2026-07-30",
+          "result": "T31",
+          "earnings": 57214
         }
       ],
-      "total_earnings": 0,
+      "total_earnings": 57214,
       "total_points": 0
     },
     "MacIntyre": {
@@ -897,6 +974,21 @@
       ],
       "total_earnings": 103840,
       "total_points": 0
+    },
+    "Straka": {
+      "times_used": 1,
+      "remaining_uses": 2,
+      "tournaments_used": [
+        {
+          "tournament": "Wyndham Championship",
+          "week": 27,
+          "date": "2026-08-06",
+          "result": "CUT",
+          "earnings": 0
+        }
+      ],
+      "total_earnings": 0,
+      "total_points": 0
     }
   },
   "weekly_lineups": {
@@ -936,8 +1028,8 @@
         "Matsuyama"
       ],
       "wrp": 26,
-      "earnings_earned": 0,
-      "points_earned": 0
+      "earnings_earned": 306750,
+      "points_earned": 306750
     },
     "week_4": {
       "tournament": "Cognizant Classic",
@@ -1040,8 +1132,8 @@
         "Morikawa"
       ],
       "wrp": 2,
-      "earnings_earned": 0,
-      "points_earned": 0
+      "earnings_earned": 4466833,
+      "points_earned": 4466833
     },
     "week_12": {
       "tournament": "Zurich Classic of New Orleans",
@@ -1053,8 +1145,8 @@
         "Lowry"
       ],
       "wrp": 16,
-      "earnings_earned": 0,
-      "points_earned": 0
+      "earnings_earned": 1372750,
+      "points_earned": 1372750
     },
     "week_13": {
       "tournament": "Cadillac Championship",
@@ -1183,8 +1275,8 @@
         "Koivun"
       ],
       "wrp": 6,
-      "earnings_earned": 0,
-      "points_earned": 0
+      "earnings_earned": 1684056,
+      "points_earned": 1684056
     },
     "week_23": {
       "tournament": "Genesis Scottish Open",
@@ -1209,8 +1301,8 @@
         "Schauffele"
       ],
       "wrp": 3,
-      "earnings_earned": 0,
-      "points_earned": 0
+      "earnings_earned": 1156650,
+      "points_earned": 1156650
     },
     "week_25": {
       "tournament": "3M Open",
@@ -1229,37 +1321,53 @@
       "tournament": "Rocket Classic",
       "week": 26,
       "date": "2026-07-30",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Gotterup",
+        "Knapp",
+        "Koivun"
+      ],
+      "wrp": 21,
+      "earnings_earned": 57214,
+      "points_earned": 57214
     },
     "week_27": {
       "tournament": "Wyndham Championship",
       "week": 27,
       "date": "2026-08-06",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Gerard",
+        "McNealy",
+        "Straka"
+      ],
+      "wrp": 26,
+      "earnings_earned": 68213,
+      "points_earned": 68213
     },
     "week_28": {
       "tournament": "FedEx St. Jude Invitational",
       "week": 28,
       "date": "2026-08-13",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Burns",
+        "Cantlay",
+        "Cam Young"
+      ],
+      "wrp": 15,
+      "earnings_earned": 1614571,
+      "points_earned": 1614571
     },
     "week_29": {
       "tournament": "BMW Championship",
       "week": 29,
       "date": "2026-08-20",
-      "lineup": [],
-      "wrp": null,
-      "earnings_earned": null,
-      "points_earned": null
+      "lineup": [
+        "Aberg",
+        "Burns",
+        "W Clark"
+      ],
+      "wrp": 4,
+      "earnings_earned": 4065000,
+      "points_earned": 4065000
     },
     "week_30": {
       "tournament": "TOUR Championship",
@@ -1273,7 +1381,7 @@
   },
   "summary": {
     "total_weeks": 30,
-    "total_players": 46,
-    "total_earnings": 32128004
+    "total_players": 47,
+    "total_earnings": 37933002
   }
 }
