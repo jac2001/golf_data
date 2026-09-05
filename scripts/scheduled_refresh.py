@@ -395,7 +395,11 @@ def get_last_tournament() -> dict:
     df["end_dt"] = pd.to_datetime(df["end_date"])
     today = pd.to_datetime(datetime.now().strftime("%Y-%m-%d"))
 
-    past = df[df["end_dt"] < today].sort_values("end_dt", ascending=False)
+    # <= so the Sunday-night run sees the tournament that ended TODAY —
+    # strict < resolved last week's event and delayed settlement to Monday.
+    # If the event isn't actually finished (rain delay), is_tournament_official()
+    # returns False and the run retries later, which is the correct behavior.
+    past = df[df["end_dt"] <= today].sort_values("end_dt", ascending=False)
     if not past.empty:
         return past.iloc[0].to_dict()
 
@@ -1126,7 +1130,16 @@ def is_tournament_official(tid: str) -> bool:
         try:
             lb = pd.read_csv(live_path)
             if len(lb) > 0 and "status" in lb.columns and "thru" in lb.columns:
-                if (lb["status"] == "complete").all() and (lb["thru"] == "F").all():
+                # WD/DQ/cut are terminal — a withdrawal must not hold the
+                # tournament "unofficial" forever. Official = nobody is still
+                # playing: every player is either finished (complete + thru=F)
+                # or out of the event entirely.
+                status = lb["status"].astype(str).str.lower()
+                done_playing = (status == "complete") & (lb["thru"].astype(str) == "F")
+                out_of_event = status.isin(["withdrawn", "disqualified", "cut", "wd", "dq"])
+                if "position" in lb.columns:
+                    out_of_event |= lb["position"].astype(str).str.upper() == "CUT"
+                if (done_playing | out_of_event).all() and done_playing.any():
                     return True
         except Exception:
             pass
