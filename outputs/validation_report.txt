@@ -4,7 +4,7 @@
 ======================================================================
 
 DATASET SUMMARY:
-  Total Records: 48,591
+  Total Records: 49,781
   Training Records: 41,459 (2020-2024)
   Test Records: 4,662 (2025)
   Features Used: 61
@@ -18,17 +18,17 @@ MODEL PERFORMANCE:
 ----------------------------------------------------------------------
 Model      Train AUC    Test AUC     Gap        Status         
 ----------------------------------------------------------------------
-win        0.9055       0.8373       0.0681     ⚠️  Moderate   
-top5       0.7920       0.7494       0.0425     ✅ Good         
-top10      0.7628       0.7334       0.0294     ✅ Good         
-top20      0.7342       0.7358       -0.0015    ✅ Good         
+win        0.9057       0.8384       0.0673     ⚠️  Moderate   
+top5       0.7921       0.7491       0.0430     ✅ Good         
+top10      0.7627       0.7332       0.0295     ✅ Good         
+top20      0.7341       0.7351       -0.0009    ✅ Good         
 
 PROBABILITY CALIBRATION:
 ----------------------------------------------------------------------
 Model      Brier      Pred Avg     Actual     Ratio      Status         
 ----------------------------------------------------------------------
-win        0.0079     0.84      % 0.76    % 1.10      x ✅ Calibrated   
-top5       0.0461     5.06      % 4.59    % 1.10      x ✅ Calibrated   
+win        0.0079     0.83      % 0.76    % 1.10      x ✅ Calibrated   
+top5       0.0460     5.06      % 4.59    % 1.10      x ✅ Calibrated   
 top10      0.0784     9.84      % 8.80    % 1.12      x ✅ Calibrated   
 top20      0.1339     17.81     % 17.11   % 1.04      x ✅ Calibrated   
 
@@ -47,15 +47,15 @@ INTERPRETATION:
 
 TOP 10 FEATURES:
 ----------------------------------------------------------------------
-  world_rank_log                 0.1529
-  recent_sg_weighted             0.0905
-  season_sg_total                0.0647
-  recent_cuts_pct                0.0620
-  season_sg_t2g                  0.0566
-  predictive_sg_weighted         0.0508
-  recent_sg_ott_weighted         0.0461
+  world_rank_log                 0.1531
+  recent_sg_weighted             0.0903
+  season_sg_total                0.0646
+  recent_cuts_pct                0.0621
+  season_sg_t2g                  0.0567
+  predictive_sg_weighted         0.0507
+  recent_sg_ott_weighted         0.0462
   recent_top10s                  0.0347
-  season_sg_ott                  0.0237
+  season_sg_ott                  0.0238
   dg_fit_total                   0.0228
 
 ======================================================================

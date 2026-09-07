@@ -1,5 +1,5 @@
 # Golf Model — Season Context
-_Updated: 2026-09-07 09:09_
+_Updated: 2026-09-07 09:13_
 
 ## Season Summary (2026 PGA Tour)
 - Tournaments tracked: **29**
