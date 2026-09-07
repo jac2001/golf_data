@@ -3629,32 +3629,33 @@ R2026027,2026,28237,"McIlroy, Rory",66,288.0,+8,,,4,74.0,70.0,72.0,72.0,,,,,FedE
 R2026027,2026,51634,"Theegala, Sahith",67,291.0,+11,,,4,69.0,72.0,79.0,71.0,,,,,FedEx St. Jude Championship
 R2026027,2026,56630,"Bhatia, Akshay",68,293.0,+13,,,4,72.0,72.0,73.0,76.0,,,,,FedEx St. Jude Championship
 R2026027,2026,52215,"MacIntyre, Robert",WD,82.0,+12,,,1,82.0,,,,,,,,FedEx St. Jude Championship
-R2026060,2026,46046,"Scheffler, Scottie",1,264.0,-16,,,4,65.0,67.0,66.0,66.0,,,,,TOUR Championship
-R2026060,2026,46717,"Hovland, Viktor",2,267.0,-13,,,4,64.0,66.0,65.0,72.0,,,,,TOUR Championship
-R2026060,2026,59018,"Gerard, Ryan",3,268.0,-12,,,4,65.0,65.0,66.0,72.0,,,,,TOUR Championship
-R2026060,2026,28237,"McIlroy, Rory",T4,269.0,-11,,,4,68.0,69.0,63.0,69.0,,,,,TOUR Championship
-R2026060,2026,37378,"Lee, Min Woo",T4,269.0,-11,,,4,62.0,73.0,66.0,68.0,,,,,TOUR Championship
-R2026060,2026,55721,"Fitzpatrick, Alex",T4,269.0,-11,,,4,68.0,68.0,67.0,66.0,,,,,TOUR Championship
-R2026060,2026,60004,"Bridgeman, Jacob",T4,269.0,-11,,,4,68.0,67.0,66.0,68.0,,,,,TOUR Championship
-R2026060,2026,52955,"Aberg, Ludvig",T4,269.0,-11,,,4,65.0,68.0,65.0,71.0,,,,,TOUR Championship
-R2026060,2026,34098,"Henley, Russell",T4,269.0,-11,,,4,70.0,65.0,66.0,68.0,,,,,TOUR Championship
-R2026060,2026,59095,"Gotterup, Chris",T4,269.0,-11,,,4,64.0,67.0,67.0,71.0,,,,,TOUR Championship
-R2026060,2026,30911,"Fleetwood, Tommy",T11,270.0,-10,,,4,66.0,70.0,67.0,67.0,,,,,TOUR Championship
-R2026060,2026,24502,"Scott, Adam",T11,270.0,-10,,,4,66.0,67.0,65.0,72.0,,,,,TOUR Championship
-R2026060,2026,57366,"Young, Cameron",T11,270.0,-10,,,4,70.0,62.0,68.0,70.0,,,,,TOUR Championship
-R2026060,2026,48081,"Schauffele, Xander",T14,271.0,-9,,,4,67.0,71.0,67.0,66.0,,,,,TOUR Championship
-R2026060,2026,37455,"Kim, Si Woo",T14,271.0,-9,,,4,69.0,68.0,65.0,69.0,,,,,TOUR Championship
-R2026060,2026,50525,"Morikawa, Collin",T14,271.0,-9,,,4,64.0,67.0,72.0,68.0,,,,,TOUR Championship
-R2026060,2026,55182,"Kim, Tom",T14,271.0,-9,,,4,67.0,68.0,68.0,68.0,,,,,TOUR Championship
-R2026060,2026,22405,"Rose, Justin",T18,273.0,-7,,,4,68.0,65.0,69.0,71.0,,,,,TOUR Championship
-R2026060,2026,56630,"Bhatia, Akshay",T18,273.0,-7,,,4,65.0,69.0,71.0,68.0,,,,,TOUR Championship
-R2026060,2026,47504,"Burns, Sam",T18,273.0,-7,,,4,66.0,68.0,67.0,72.0,,,,,TOUR Championship
-R2026060,2026,35450,"Cantlay, Patrick",T21,275.0,-5,,,4,68.0,70.0,68.0,69.0,,,,,TOUR Championship
-R2026060,2026,32839,"Matsuyama, Hideki",T21,275.0,-5,,,4,69.0,70.0,67.0,69.0,,,,,TOUR Championship
-R2026060,2026,40098,"Fitzpatrick, Matt",T21,275.0,-5,,,4,66.0,67.0,69.0,73.0,,,,,TOUR Championship
-R2026060,2026,51766,"Clark, Wyndham",T21,275.0,-5,,,4,67.0,69.0,67.0,72.0,,,,,TOUR Championship
-R2026060,2026,49855,"Reitan, Kristoffer",25,277.0,-3,,,4,70.0,69.0,68.0,70.0,,,,,TOUR Championship
-R2026060,2026,29936,"Fox, Ryan",26,278.0,-2,,,4,66.0,68.0,70.0,74.0,,,,,TOUR Championship
-R2026060,2026,46340,"Smalley, Alex",27,279.0,-1,,,4,67.0,68.0,72.0,72.0,,,,,TOUR Championship
-R2026060,2026,52215,"MacIntyre, Robert",28,280.0,+0,,,4,67.0,76.0,63.0,74.0,,,,,TOUR Championship
-R2026060,2026,31323,"Woodland, Gary",29,282.0,+2,,,4,66.0,68.0,71.0,77.0,,,,,TOUR Championship
+R2026060,2026,46046,Scottie Scheffler,1,264.0,-16,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,46717,Viktor Hovland,2,267.0,-13,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,59018,Ryan Gerard,3,268.0,-12,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,55721,Alex Fitzpatrick,T4,269.0,-11,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,59095,Chris Gotterup,T4,269.0,-11,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,60004,Jacob Bridgeman,T4,269.0,-11,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,52955,Ludvig Åberg,T4,269.0,-11,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,37378,Min Woo Lee,T4,269.0,-11,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,28237,Rory McIlroy,T4,269.0,-11,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,34098,Russell Henley,T4,269.0,-11,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,24502,Adam Scott,T11,270.0,-10,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,57366,Cameron Young,T11,270.0,-10,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,30911,Tommy Fleetwood,T11,270.0,-10,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,50525,Collin Morikawa,T14,271.0,-9,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,37455,Si Woo Kim,T14,271.0,-9,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,55182,Tom Kim,T14,271.0,-9,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,48081,Xander Schauffele,T14,271.0,-9,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,56630,Akshay Bhatia,T18,273.0,-7,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,22405,Justin Rose,T18,273.0,-7,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,47504,Sam Burns,T18,273.0,-7,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,32839,Hideki Matsuyama,T21,275.0,-5,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,40098,Matt Fitzpatrick,T21,275.0,-5,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,35450,Patrick Cantlay,T21,275.0,-5,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,51766,Wyndham Clark,T21,275.0,-5,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,49855,Kristoffer Reitan,25,277.0,-3,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,29936,Ryan Fox,26,278.0,-2,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,46340,Alex Smalley,27,279.0,-1,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,52215,Robert MacIntyre,28,280.0,0,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,31323,Gary Woodland,29,282.0,2,,,4,,,,,,,,,TOUR Championship
+R2026060,2026,39324,J.J. Spaun,WD,0.0,999,0.0,,-1,,,,,,,,,TOUR Championship
