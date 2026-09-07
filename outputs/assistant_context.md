@@ -1,15 +1,21 @@
 # Golf Model — Season Context
-_Updated: 2026-08-30 21:21_
+_Updated: 2026-09-07 09:09_
 
 ## Season Summary (2026 PGA Tour)
-- Tournaments tracked: **26**
-- Tournaments with results: **26**
-- Top pick finished top 10: **14/26** (54%)
-- Top-5 predictions → top-10 rate: **38%** (expected: ~33%)
-- Average rank of actual winner in our presets: **#24.9**
-- Times our #1 pick won: **4**
+- Tournaments tracked: **29**
+- Tournaments with results: **29**
+- Top pick finished top 10: **16/29** (55%)
+- Top-5 predictions → top-10 rate: **37%** (expected: ~33%)
+- Average rank of actual winner in our presets: **#23.2**
+- Times our #1 pick won: **6**
 
 ## Recent Tournament Results (Last 4)
+
+### TOUR Championship (R2026060)
+- **Winner**: Scottie Scheffler
+- Winner was our **#1** ranked player pre-tournament
+- Our **#1 pick**: Scottie Scheffler — finished #1
+- Top-10 predictions hit: **5/10** finished inside top 10
 
 ### BMW Championship (R2026028)
 - **Winner**: Wyndham Clark
@@ -17,23 +23,17 @@ _Updated: 2026-08-30 21:21_
 - Our **#1 pick**: Scottie Scheffler — finished #12
 - Top-10 predictions hit: **4/10** finished inside top 10
 
-### 3M Open (R2026525)
-- **Winner**: Jackson Koivun
-- Winner was our **#17** ranked player pre-tournament
-- Our **#1 pick**: Scottie Scheffler — finished #2
-- Top-10 predictions hit: **3/10** finished inside top 10
+### FedEx St. Jude Invitational (R2026027)
+- **Winner**: Scottie Scheffler
+- Winner was our **#1** ranked player pre-tournament
+- Our **#1 pick**: Scottie Scheffler — finished #1
+- Top-10 predictions hit: **5/10** finished inside top 10
 
-### The Open Championship (R2026100)
-- **Winner**: Ryan Fox
-- Winner was our **#57** ranked player pre-tournament
-- Our **#1 pick**: Rory McIlroy — finished #40
-- Top-10 predictions hit: **4/10** finished inside top 10
-
-### Genesis Scottish Open (R2026541)
-- **Winner**: Tom Kim
-- Winner was our **#28** ranked player pre-tournament
-- Our **#1 pick**: Rory McIlroy — finished #7
-- Top-10 predictions hit: **3/10** finished inside top 10
+### Wyndham Championship (R2026013)
+- **Winner**: Michael Brennan
+- Winner was our **#27** ranked player pre-tournament
+- Our **#1 pick**: Cameron Young — finished #61
+- Top-10 predictions hit: **2/10** finished inside top 10
 
 ## Bet Performance (Recommended Bets — Priced Only)
 Season totals: **4069 bets**, **674 wins** (17%), ROI **-39.6%**
@@ -50,8 +50,8 @@ Note: Most bets are outright/top-10/top-20 markets. High volume because the syst
 
 ## Closing Line Value (CLV)
 CLV measures whether our model priced players better than the closing market. Positive CLV = we got value; negative = we were wrong about the price.
-- Tournaments with CLV data: **11**
-- Average CLV: **+0.09pp** (percentage points vs closing line)
+- Tournaments with CLV data: **12**
+- Average CLV: **+0.07pp** (percentage points vs closing line)
 - % of picks with positive CLV: **72%**
 
 **Best CLV picks this season:**
