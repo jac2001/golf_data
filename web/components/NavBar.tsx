@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { href: "/mypicks",     label: "My Picks" },
   { href: "/history",     label: "History" },
   { href: "/assistant",   label: "Assistant" },
+  { href: "/methodology", label: "Methodology" },
 ];
 
 export default function NavBar() {
