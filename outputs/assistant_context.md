@@ -1,5 +1,5 @@
 # Golf Model — Season Context
-_Updated: 2026-09-07 09:13_
+_Updated: 2026-09-13 21:28_
 
 ## Season Summary (2026 PGA Tour)
 - Tournaments tracked: **29**
@@ -64,16 +64,16 @@ What the model weighs most when ranking players this week:
 
 | # | Feature | Importance |
 |---|---|---|
-| 1 | dg_fit_arg | 13.2% |
-| 2 | recent_sg_arg_weighted | 9.7% |
-| 3 | field_avg_season_sg_putt | 6.0% |
-| 4 | recent_sg_trend | 5.4% |
-| 5 | recent_sg_ott_weighted | 3.4% |
-| 6 | hist_top5s | 2.6% |
-| 7 | field_avg_season_sg_ott | 2.6% |
-| 8 | recent_par3_scoring_field_pct | 2.4% |
-| 9 | wind_mph_avg | 2.3% |
-| 10 | dg_fit_putt | 2.2% |
+| 1 | dg_fit_arg | 12.2% |
+| 2 | recent_sg_arg_weighted | 10.2% |
+| 3 | field_avg_season_sg_putt | 5.8% |
+| 4 | recent_sg_ott_weighted | 3.4% |
+| 5 | closing_delta_field_pct | 2.8% |
+| 6 | Recent SG (weighted last 5 events) | 2.7% |
+| 7 | field_avg_season_sg_total | 2.6% |
+| 8 | recent_par3_scoring_field_pct | 2.5% |
+| 9 | field_avg_season_sg_ott | 2.4% |
+| 10 | dg_fit_putt | 2.3% |
 
 ## Model Architecture Notes
 - 4 XGBoost models: win, top-5, top-10, top-20 probability
