@@ -96,7 +96,7 @@ def prep_xy(rows: pd.DataFrame, features: list[str], label: str,
 
 # ── TODO(you) #1 ──────────────────────────────────────────────────────────────
 
-def make_folds(years: list[int], first_test_year: int) -> list[tuple[list[int], int]]:
+def make_folds(years: list[int], first_test_year: int, window: int = None) -> list[tuple[list[int], int]]:
     """Return the walk-forward folds as (train_years, test_year) pairs.
 
     Example with years=[2016..2022], first_test_year=2020:
@@ -111,13 +111,14 @@ def make_folds(years: list[int], first_test_year: int) -> list[tuple[list[int], 
 
     Hint: one loop and a list comprehension (or slice) is enough.
     """
-    return [(list(range(min(years), test_year)), test_year) for test_year in sorted(set(years) & set(range(first_test_year, max(years) + 1)))]
+    return [(list(range(max(min(years), test_year - window) if window is not None else min(years), test_year)), test_year) for test_year in sorted(set(years) & set(range(first_test_year, max(years) + 1)))]
 
 
 # ── TODO(you) #2 ──────────────────────────────────────────────────────────────
 
 def run_fold(df: pd.DataFrame, features: list[str], label: str,
-             train_years: list[int], test_year: int) -> dict:
+             train_years: list[int], test_year: int,
+             half_life: float | None = None) -> dict:
     """Train on train_years, evaluate on test_year. Return a metrics dict:
 
         {"test_year": ..., "n_train": ..., "n_test": ..., "positives": ...,
@@ -142,7 +143,15 @@ def run_fold(df: pd.DataFrame, features: list[str], label: str,
     X_test, y_test = prep_xy(df_test, features, label, medians)
     
     model = build_model()
-    model.fit(X_train, y_train)
+    if half_life is not None:
+        # Recency weighting: a row half_life years old counts half as much as
+        # a current one. Keeps ALL rows (calibration stability) while letting
+        # recent seasons dominate the learned relationships.
+        age = (test_year - df_train["year"]).clip(lower=1)
+        weights = (0.5 ** (age / half_life)).values
+        model.fit(X_train, y_train, sample_weight=weights)
+    else:
+        model.fit(X_train, y_train)
     y_pred = model.predict_proba(X_test)[:, 1]
 
     auc = roc_auc_score(y_test, y_pred)
@@ -189,21 +198,27 @@ def main():
                     help="Single market (default: all four)")
     ap.add_argument("--first-test-year", type=int, default=2020,
                     help="Earliest test year (needs >= a few train years before it)")
+    ap.add_argument('--window', type=int, default=None, help='Train on only the last N years (default: expanding window)')
+    ap.add_argument('--half-life', type=float, default=None,
+                    help='Recency-weight training rows: a row this many years old counts half')
     args = ap.parse_args()
 
     df, features = load_data()
     years = sorted(df["year"].dropna().astype(int).unique())
     print(f"Loaded {len(df):,} rows, {len(features)} features, years {years[0]}–{years[-1]}")
 
-    folds = make_folds(years, args.first_test_year)
+    folds = make_folds(years, args.first_test_year, window=args.window)
     print(f"{len(folds)} folds: test years {[t for _, t in folds]}")
 
     markets = {args.market: MARKETS[args.market]} if args.market else MARKETS
     rows = []
     for market, label in markets.items():
         for train_years, test_year in folds:
-            r = run_fold(df, features, label, train_years, test_year)
+            r = run_fold(df, features, label, train_years, test_year,
+                         half_life=args.half_life)
             r["market"] = market
+            r['window'] = args.window or 0
+            r['half_life'] = args.half_life or 0
             rows.append(r)
             print(f"  {market:<6} {test_year}: AUC={r['auc']:.3f}  Brier={r['brier']:.4f}  "
                   f"log_loss={r['log_loss']:.4f}  (n={r['n_test']}, +{r['positives']})")
