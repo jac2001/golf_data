@@ -2655,13 +2655,17 @@ def append_log(log_path: Path, recs_df: pd.DataFrame) -> pd.DataFrame:
 
     if "recommendation_id" in combined.columns:
         combined = combined.drop_duplicates(subset=["recommendation_id"], keep="last")
-    
+
     _dedup_cols = ['tournament_id', 'player_name', 'market']
     if all(c in combined.columns for c in _dedup_cols):
-        # Sort oldest first so keep="first" preserves the original recommendation                                         
-      if "recommended_at" in combined.columns:                                                                          
-          combined = combined.sort_values("recommended_at", ascending=True)                                             
-      combined = combined.drop_duplicates(subset=_dedup_cols, keep="first")
+        # Sort oldest first so keep="first" preserves the original recommendation
+        if "recommended_at" in combined.columns:
+            combined = combined.sort_values("recommended_at", ascending=True)
+        combined = combined.drop_duplicates(subset=_dedup_cols, keep="first")
+
+    # The write IS the append — this function silently stopped persisting the
+    # log for ~15 weeks (April-Aug 2026) when a dedup refactor dropped it.
+    combined.to_csv(log_path, index=False)
     return combined
 
 
