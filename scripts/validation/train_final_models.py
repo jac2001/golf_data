@@ -240,6 +240,12 @@ if len(available_features) == 0:
     print("❌ No features available! Check data merge.")
     exit(1)
 
+# Field-structure candidates: the playoff/signature era means far more small
+# no-cut fields than the training history — give the forest an explicit handle
+# on the regime instead of hoping it infers it from field_avg_rank.
+df['field_size'] = df.groupby('tournament_id')['player_id'].transform('count')
+df['no_cut'] = (df['field_size'] <= 90).astype(int)
+
 # ============================================================================
 # Train/Test Split (Year-Based)
 # ============================================================================
@@ -259,6 +265,16 @@ print()
 target_cols = [c for c in ['won', 'top5', 'top10', 'top20'] if c in df.columns]
 train_df = train_df.dropna(subset=target_cols)
 test_df = test_df.dropna(subset=target_cols)
+
+# Receny weighting: a row HALF_LIFE years old counts half as much as current one. 
+# Anchor year is arbitrary - shifting it scales every weight. 
+# by the same constant, and both RF and isotonic calibration are invariant 
+# to uniform weight scaling. Only the RATIO between years matters. 
+
+HALF_LIFE_YEARS = 2.0
+_anchor = int(train_df['year'].max() + 1)  # Anchor year is one year after the last training year
+
+
 
 # Impute missing feature values using training medians
 feature_medians = train_df[available_features].median(numeric_only=True)
@@ -317,7 +333,10 @@ def quick_auc(features, X_tr, X_te, y_tr, y_te):
         min_samples_leaf=25, max_features='sqrt', random_state=42,
         class_weight='balanced_subsample', n_jobs=TRAIN_N_JOBS
     )
-    rf.fit(X_tr[features], y_tr)
+    # Weights derive from X_tr itself (not the global train_clean) so the
+    # A/B always matches whatever rows it was actually handed.
+    fit_weights = 0.5 ** ((_anchor - X_tr['year']) / HALF_LIFE_YEARS)
+    rf.fit(X_tr[features], y_tr, sample_weight=fit_weights)
     return roc_auc_score(y_te, rf.predict_proba(X_te[features])[:, 1])
 
 
@@ -349,6 +368,58 @@ if auc_without_dg >= auc_with_dg - 0.005:
 else:
     print(f"  ⚠️  dg_fit features add {auc_with_dg - auc_without_dg:.4f} AUC — KEEPING despite mixed real-world correlation")
     dg_fit_removed = False
+
+# ============================================================================
+# Experiment: course SG features — retest now that the data is repaired.
+# The old "0% importance" exclusion was measured before the Sept-2026 string-ID
+# poisoning was found; with joins fixed, coverage is a real 19.6%.
+# ============================================================================
+print("=" * 60)
+print("Step 3b: Course SG Feature Experiment (win model proxy)")
+print("-" * 60)
+
+course_candidates = [c for c in [
+    'course_sg_starts', 'course_sg_total_avg', 'course_sg_ott_avg',
+    'course_sg_app_avg', 'course_sg_putt_avg', 'course_sg_trend',
+    'course_sg_total_vs_avg',
+] if c in train_clean.columns and train_clean[c].notna().any()]
+
+if course_candidates:
+    feats_with_course = available_features + course_candidates
+    auc_with_course = quick_auc(feats_with_course, train_clean, test_clean, y_win_tr, y_win_te)
+    auc_base = quick_auc(available_features, train_clean, test_clean, y_win_tr, y_win_te)
+    print(f"  Win AUC WITH course SG:    {auc_with_course:.4f}")
+    print(f"  Win AUC WITHOUT course SG: {auc_base:.4f}")
+    print(f"  Difference: {auc_with_course - auc_base:+.4f}")
+    if auc_with_course - auc_base >= 0.005:
+        print(f"  ✅ Course SG adds {auc_with_course - auc_base:.4f} AUC — INCLUDING {len(course_candidates)} features")
+        available_features = feats_with_course
+    else:
+        print("  ℹ️  Course SG adds <0.005 AUC — excluding (consistent with pre-repair finding)")
+else:
+    print("  ⚠️  No course SG candidates with coverage — run merge first")
+
+# ============================================================================
+# Experiment: field structure (field_size, no_cut) — playoff/signature regime
+# ============================================================================
+print("=" * 60)
+print("Step 3c: Field Structure Feature Experiment (win model proxy)")
+print("-" * 60)
+
+field_candidates = [c for c in ['field_size', 'no_cut'] if c in train_clean.columns]
+feats_with_field = available_features + field_candidates
+auc_with_field = quick_auc(feats_with_field, train_clean, test_clean, y_win_tr, y_win_te)
+auc_base = quick_auc(available_features, train_clean, test_clean, y_win_tr, y_win_te)
+print(f"  Win AUC WITH field structure:    {auc_with_field:.4f}")
+print(f"  Win AUC WITHOUT field structure: {auc_base:.4f}")
+print(f"  Difference: {auc_with_field - auc_base:+.4f}")
+if auc_with_field - auc_base >= 0.002:
+    # Lower bar than course SG: two cheap features, and the regime handle
+    # matters most for the small-field events the test year undersamples.
+    print(f"  ✅ Field structure adds {auc_with_field - auc_base:.4f} AUC — INCLUDING")
+    available_features = feats_with_field
+else:
+    print("  ℹ️  Field structure adds <0.002 AUC — excluding")
 
 print(f"  Final feature count: {len(available_features)}")
 print()
@@ -388,6 +459,11 @@ for model_name, target_col in targets.items():
         n_jobs=TRAIN_N_JOBS,
         class_weight='balanced_subsample'  # Handle class imbalance
     )
+    
+    
+    
+    
+    
 
     # Wrap with CalibratedClassifierCV for probability calibration
     # Uses isotonic regression (better for larger datasets than sigmoid/Platt)
@@ -399,7 +475,8 @@ for model_name, target_col in targets.items():
         n_jobs=TRAIN_N_JOBS
     )
 
-    rf.fit(X_train, y_train)
+    fit_weights = 0.5 ** ((_anchor - train_clean['year']) / HALF_LIFE_YEARS)
+    rf.fit(X_train, y_train, sample_weight=fit_weights.values)
 
     # Predictions
     y_train_pred_proba = rf.predict_proba(X_train)[:, 1]

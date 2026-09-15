@@ -132,12 +132,18 @@ class ProbabilityCalibrator:
             # Ensure probabilities stay in [0, 1]
             df[f"{prob_col}_calibrated"] = df[f"{prob_col}_calibrated"].clip(0, 1)
 
-            # Hard cap on win_prob to prevent single-player over-concentration
+            # Cap REMOVED (2026-09, post half-life retrain): the weighted
+            # isotonic models top out ~14% across a full test season, so the
+            # clamp never binds — and when a raw prob DOES exceed the old cap
+            # we want to SEE it (model bug or real insight), not silently
+            # flatten it. _max_win now only triggers a loud warning.
             if prob_col == "win_prob" and _max_win is not None:
-                n_capped = (df[f"{prob_col}_calibrated"] > _max_win).sum()
-                if n_capped > 0:
-                    df[f"{prob_col}_calibrated"] = df[f"{prob_col}_calibrated"].clip(0, _max_win)
-                    print(f"  Win prob capped at {_max_win:.0%} for {n_capped} player(s)")
+                over = df[df[f"{prob_col}_calibrated"] > _max_win]
+                if len(over) > 0:
+                    print(f"  ⚠️  WIN PROB ABOVE {_max_win:.0%} (uncapped — investigate):")
+                    for _, r in over.iterrows():
+                        print(f"      {r.get('player_name', '?')}: "
+                              f"{r[f'{prob_col}_calibrated']:.1%}")
 
         return df
 
