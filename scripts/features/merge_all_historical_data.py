@@ -609,6 +609,7 @@ print("-" * 60)
 course_form_file = PROCESSED_DIR / "player_tournament_course_form.csv"
 if course_form_file.exists():
     course_form = pd.read_csv(course_form_file)
+    course_form['player_id'] = course_form['player_id'].map(_canon_pid)
     print(f"  ✓ Loaded course form data: {len(course_form):,} records")
 
     # Calculate course SG features for each row (using only PRIOR tournaments)

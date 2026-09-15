@@ -266,7 +266,40 @@ def step_export_csv(tid: str, dry_run: bool = False) -> int:
 
     combined.to_csv(lb_path, index=False)
     print(f"  Wrote {len(out)} rows for {tid} to {lb_path.name} ({len(combined)} total)")
+
+    _export_stats_csv(tid, year)
     return len(out)
+
+
+def _export_stats_csv(tid: str, year: int) -> int:
+    """Mirror this tournament's DB tournament_stats rows into
+    tournament_stats_{year}.csv — the training-data merge reads the CSV, and
+    the DG sync path only writes the DB. Same gap that silently starved
+    season_sg_* features for every DG-settled 2026 event.
+    """
+    stats_path = HIST_DIR / f"tournament_stats_{year}.csv"
+    with _get_db_conn(read_only=True) as conn:
+        db_rows = conn.execute(
+            "SELECT * FROM tournament_stats WHERE UPPER(tournament_id) = ?", [tid.upper()]
+        ).df()
+    if db_rows.empty:
+        print(f"  No tournament_stats rows for {tid} in DuckDB — skipping stats export")
+        return 0
+
+    if stats_path.exists():
+        csv_df = pd.read_csv(stats_path)
+        for col in csv_df.columns:          # e.g. 'rank' exists in CSV, not in DB
+            if col not in db_rows.columns:
+                db_rows[col] = pd.NA
+        db_rows = db_rows[csv_df.columns.tolist()]
+        csv_df = csv_df[csv_df["tournament_id"].astype(str).str.upper() != tid.upper()]
+        combined = pd.concat([csv_df, db_rows], ignore_index=True)
+    else:
+        combined = db_rows
+
+    combined.to_csv(stats_path, index=False)
+    print(f"  Wrote {len(db_rows)} stat rows for {tid} to {stats_path.name}")
+    return len(db_rows)
 
 
 # ── Step 1b: Sync leaderboard rows into DuckDB ────────────────────────────────
