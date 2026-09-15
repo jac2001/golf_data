@@ -1,5 +1,5 @@
 # Golf Model — Season Context
-_Updated: 2026-09-14 08:40_
+_Updated: 2026-09-15 16:05_
 
 ## Season Summary (2026 PGA Tour)
 - Tournaments tracked: **29**
@@ -36,15 +36,15 @@ _Updated: 2026-09-14 08:40_
 - Top-10 predictions hit: **2/10** finished inside top 10
 
 ## Bet Performance (Recommended Bets — Priced Only)
-Season totals: **4069 bets**, **674 wins** (17%), ROI **-39.6%**
+Season totals: **4105 bets**, **689 wins** (17%), ROI **-38.7%**
 
 | Tournament | Bets | Wins | Win% | ROI |
 |---|---|---|---|---|
+| R2026060 | 8 | 6 | 75.0% | +403.9% |
+| R2026028 | 3 | 0 | 0.0% | -100.0% |
+| R2026027 | 9 | 3 | 33.3% | -40.6% |
+| R2026524 | 16 | 6 | 37.5% | -17.0% |
 | R2026014 | 28 | 14 | 50.0% | +27.2% |
-| R2026041 | 641 | 143 | 22.3% | -34.6% |
-| R2026020 | 235 | 56 | 23.8% | -33.7% |
-| R2026475 | 363 | 64 | 17.6% | -64.0% |
-| R2026011 | 934 | 155 | 16.6% | -21.1% |
 
 Note: Most bets are outright/top-10/top-20 markets. High volume because the system prices many combinations; actual staked bets are a subset.
 
