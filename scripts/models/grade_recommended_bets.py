@@ -180,6 +180,13 @@ def _parse_card_leg_label(label: str) -> dict[str, str]:
         return {"market": "miss_cut", "player": player, "raw": s}
 
     if re.search(r"\bto\s+win\b", low):
+        # "to Win Wire to Wire" (lead after every round), "to Win the Front
+        # Nine", etc. are NOT the outright market — grading them as plain
+        # outright settled a lost +1900 wire-to-wire card as won. Anything
+        # qualified after "to win" stays unknown → card goes to manual review.
+        tail = re.split(r"\bto\s+win\b", low, maxsplit=1)[1].strip()
+        if tail:
+            return {"market": "unknown", "player": "", "raw": s}
         player = re.sub(r"\s+to\s+win.*$", "", s, flags=re.I).strip()
         return {"market": "outright", "player": player, "raw": s}
 
