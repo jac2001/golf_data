@@ -54,6 +54,77 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR     = PROJECT_ROOT / "data"
 OUTPUTS_DIR  = PROJECT_ROOT / "outputs"
 
+# ── Fetch-on-demand freshness layer (pull, not push) ──────────────────────────
+# The public deployment's data was historically only as fresh as the last local
+# pipeline push. With CLOUD_FETCH=1 (set on Render), live endpoints refresh
+# their own backing files straight from the source APIs when stale — freshness
+# is driven by the request, so there is no scheduler to fail. A fetch failure
+# falls back to the newest existing file (served with its honest timestamp).
+CLOUD_FETCH = os.environ.get("CLOUD_FETCH", "") == "1"
+
+# kind → (newest-file glob under data/, TTL seconds, command builder)
+_FRESHEN_SPECS: dict[str, dict] = {
+    "leaderboard": {
+        "glob": "live/leaderboard_r*.csv",
+        "ttl": 300,
+        "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_live_leaderboard.py",
+                            "--tournament-id", tid],
+        "timeout": 60,
+    },
+    "odds": {
+        "glob": "datagolf/dg_outrights_R*.csv",
+        "ttl": 900,
+        "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_dg_odds.py",
+                            "--tournament-id", tid, "--market", "all"],
+        "timeout": 90,
+    },
+    "weather": {
+        "glob": "weather/R*.json",
+        "ttl": 3 * 3600,
+        "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_weather_openmetro.py",
+                            "--tid", tid],
+        "timeout": 45,
+    },
+}
+
+_freshen_lock = threading.Lock()
+_freshen_last_attempt: dict[str, float] = {}
+_FRESHEN_RETRY_COOLDOWN = 60  # seconds between fetch attempts after a failure
+
+
+def _freshen(kind: str) -> None:
+    """If `kind`'s newest backing file is older than its TTL, refetch it now.
+
+    Never raises: endpoints must serve the stale file rather than 500 on a
+    source-API hiccup. A module-level lock plus attempt cooldown prevents a
+    thundering herd when many viewers hit an expired cache simultaneously.
+    """
+    if not CLOUD_FETCH:
+        return
+    spec = _FRESHEN_SPECS.get(kind)
+    if spec is None:
+        return
+    try:
+        files = sorted(DATA_DIR.glob(spec["glob"]),
+                       key=lambda p: p.stat().st_mtime, reverse=True)
+        age = (time.time() - files[0].stat().st_mtime) if files else float("inf")
+        if age <= spec["ttl"]:
+            return
+        now = time.time()
+        with _freshen_lock:
+            if now - _freshen_last_attempt.get(kind, 0) < _FRESHEN_RETRY_COOLDOWN:
+                return               # someone just tried; serve what we have
+            _freshen_last_attempt[kind] = now
+            tid = _get_tournament_id()
+            if not tid:
+                return
+            subprocess.run(
+                spec["cmd"](tid), cwd=PROJECT_ROOT,
+                capture_output=True, timeout=spec["timeout"],
+            )
+    except Exception:
+        pass  # stale-but-served beats fresh-but-crashed
+
 sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 from config import (  # noqa: E402
     SEASON, schedule_csv, usage_tracker_json, leaderboards_csv
@@ -1409,6 +1480,7 @@ def get_odds_comparison(market: str = "top10") -> dict:
 
     market: top10 | top5 | top20 | outright
     """
+    _freshen("odds")
     tid = _get_tournament_id()
     if not tid:
         raise HTTPException(status_code=404, detail="No active tournament")
@@ -1663,6 +1735,7 @@ def get_predictions(limit: int = 50) -> dict:
 @app.get("/api/leaderboard")
 def get_leaderboard() -> dict:
     """Live leaderboard — Supabase first, CSV fallback."""
+    _freshen("leaderboard")     # pull-based: refetch if stale (no-op unless CLOUD_FETCH=1)
     tid      = _get_tournament_id()
     live_dir = DATA_DIR / "live"
     df       = None
@@ -5590,6 +5663,7 @@ def get_model_comparison() -> dict:
 @app.get("/api/weather")
 def get_weather() -> dict:
     """Thu–Sun forecast from data/weather/{tid}.json (written by scheduler)."""
+    _freshen("weather")
     tid = _get_tournament_id()
     path = DATA_DIR / "weather" / f"{tid}.json"
     if not path.exists():
