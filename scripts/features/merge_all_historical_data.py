@@ -52,6 +52,21 @@ YEARS = [y for y in _all_candidate_years
          and (HISTORICAL_DIR / f"tournament_stats_{y}.csv").exists()]
 print(f"Detected years with full data: {YEARS}")
 
+def _canon_pid(v):
+    """Canonical player_id string: 51349 / '51349' / 51349.0 → '51349'.
+
+    DuckDB-exported leaderboards carry player_id as VARCHAR (a few DG-sourced
+    rows are non-numeric), while rankings/stats CSVs carry int64 — a silent
+    join-killer: every 2026 row lost its world_rank this way. Normalize every
+    frame at load so joins always compare str to str.
+    """
+    s = str(v).strip()
+    try:
+        return str(int(float(s)))
+    except ValueError:
+        return s
+
+
 # Configuration options
 DROP_MISSED_CUTS = True  # Drop missed cuts from training (better SG coverage, cleaner signal)
      # Add season-level SG averages as additional features
@@ -79,6 +94,7 @@ if not all_leaderboards:
     exit(1)
 
 leaderboards = pd.concat(all_leaderboards, ignore_index=True)
+leaderboards['player_id'] = leaderboards['player_id'].map(_canon_pid)
 print(f"\n📊 Combined leaderboards: {len(leaderboards):,} total records")
 print(f"   Years: {sorted(leaderboards['year'].unique())}")
 print(f"   Tournaments: {leaderboards['tournament_id'].nunique()}")
@@ -107,6 +123,8 @@ if not all_stats:
     tournament_stats = None
 else:
     tournament_stats = pd.concat(all_stats, ignore_index=True)
+    if 'player_id' in tournament_stats.columns:
+        tournament_stats['player_id'] = tournament_stats['player_id'].map(_canon_pid)
     print(f"\n📊 Combined stats: {len(tournament_stats):,} total records")
 
     # Filter to just "Avg" component for SG stats
@@ -134,11 +152,22 @@ else:
     }
     stats_pivot.columns = [stat_mapping.get(col, str(col)) for col in stats_pivot.columns]
 
-    # Calculate sg_arg (Around the Green) from sg_t2g - sg_app
-    # Note: stat_id 2570 (sg_arg) is not in API data, must be derived
+    # sg_arg (Around the Green): real data now exists under stat_id 2570
+    # (backfilled from DataGolf's historical-raw-data, 2010-2026 — see
+    # fetch_dg_historical_results.py). Before that backfill this stat_id
+    # never had any rows, so it was always estimated as sg_t2g - sg_app.
+    # Use the real value wherever it exists; only fall back to the estimate
+    # for genuine gaps (years/events outside the DG backfill).
     if 'sg_t2g' in stats_pivot.columns and 'sg_app' in stats_pivot.columns:
-        stats_pivot['sg_arg'] = stats_pivot['sg_t2g'] - stats_pivot['sg_app']
-        print(f"   ✓ Calculated sg_arg = sg_t2g - sg_app")
+        estimated = stats_pivot['sg_t2g'] - stats_pivot['sg_app']
+        if 'sg_arg' in stats_pivot.columns:
+            n_real = stats_pivot['sg_arg'].notna().sum()
+            n_filled = stats_pivot['sg_arg'].isna().sum()
+            stats_pivot['sg_arg'] = stats_pivot['sg_arg'].fillna(estimated)
+            print(f"   ✓ sg_arg: {n_real:,} real (DataGolf) + {n_filled:,} estimated (sg_t2g - sg_app) for gaps")
+        else:
+            stats_pivot['sg_arg'] = estimated
+            print(f"   ✓ Calculated sg_arg = sg_t2g - sg_app (no direct sg_arg data available)")
     else:
         print(f"   ⚠️ Cannot calculate sg_arg: missing sg_t2g or sg_app")
 
@@ -171,6 +200,7 @@ if all_rankings:
     
     # Keep only needed columns
     rankings_df = rankings_df[['player_id', 'world_rank', 'year']].copy()
+    rankings_df['player_id'] = rankings_df['player_id'].map(_canon_pid)
     # Merge rankings into leaderboards (before merge with stats)
     # This adds world rank at the time of the tournament
     leaderboards = leaderboards.merge(
@@ -205,6 +235,13 @@ if tournament_stats is not None:
     print(leaderboards.columns)
     print(f"    Stats pivot: {len(stats_pivot):,} records")
     print(stats_pivot.columns)
+    # player_id must match dtype on both sides. stats_pivot's player_id is
+    # string (DataGolf-sourced rows for brand-new players use "DG{dg_id}"
+    # IDs, which forces the whole column to object dtype), while
+    # leaderboards' player_id loads as int64 from CSV. Cast both to string
+    # before merging, or pandas raises on the dtype mismatch.
+    leaderboards['player_id'] = leaderboards['player_id'].astype(str)
+    stats_pivot['player_id'] = stats_pivot['player_id'].astype(str)
     merged = leaderboards.merge(
         stats_pivot,
         on=['tournament_id', 'player_id'],
@@ -278,7 +315,11 @@ if ADD_SEASON_SG and tournament_stats is not None:
         2564: 'season_sg_putt',
         2674: 'season_sg_t2g'
     }
-    season_sg_pivot.columns = [season_stat_mapping.get(col, col) for col in season_sg_pivot.columns]
+    # Default must be str(col), not col — unmapped stat_ids (e.g. the new
+    # driving_dist/acc/gir/scrambling: 101/102/103/130) would otherwise stay
+    # as raw int64, and later column filters like `c.startswith('season_sg_')`
+    # crash on a non-string column.
+    season_sg_pivot.columns = [season_stat_mapping.get(col, str(col)) for col in season_sg_pivot.columns]
 
     # Merge season SG into main data
     merged = merged.merge(
@@ -793,6 +834,8 @@ if ADD_FORM_FEATURES:
 
         if all_form_stats:
             form_stats_df = pd.concat(all_form_stats, ignore_index=True)
+            if 'player_id' in form_stats_df.columns:
+                form_stats_df['player_id'] = form_stats_df['player_id'].map(_canon_pid)
             # Normalize player_id to str — merged['player_id'] is cast to str at line ~389
             # (astype(str) for the decay features merge). Keeping both as str ensures the
             # player_id filter in the form loop always matches.
