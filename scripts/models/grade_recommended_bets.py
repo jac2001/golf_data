@@ -287,42 +287,37 @@ def evaluate_market_outcome(
 
 
 def resolve_closing_odds_maps(tournament_id: str) -> tuple[dict[tuple[str, str], int], dict[str, int]]:
+    """Closing odds come ONLY from the pre-R1 'closing' snapshot taken by
+    log_closing_line.py. Never fall back to prop_lines_{tid}.csv — that file is
+    overwritten by every props refetch, including in-play, so its odds reflect
+    the live state (e.g. -20000 for a player already inside the top 10). Using
+    it made clv_pts measure "did the bet win", not line movement — the source
+    of the bogus +12pt season CLV. Missing snapshot → CLV stays NaN, honestly.
+    """
     single_map: dict[tuple[str, str], int] = {}
     card_map: dict[str, int] = {}
 
-    prop_path = ODDS_DIR / f"prop_lines_{tournament_id}.csv"
-    if prop_path.exists():
+    close_path = ODDS_DIR / f"closing_lines_{tournament_id}.csv"
+    if close_path.exists():
         try:
-            lines = pd.read_csv(prop_path)
+            lines = pd.read_csv(close_path)
+            lines = lines[lines["snapshot_type"] == "closing"]
             for _, row in lines.iterrows():
                 market = canonical_market(row.get("market", ""))
                 player = normalize_name_key(row.get("player_name", ""))
                 if not market or not player:
                     continue
                 try:
-                    odds = int(float(row.get("odds")))
+                    odds = int(float(row.get("current_odds_american")))
                 except Exception:
                     continue
                 single_map[(market, player)] = odds
         except Exception:
             pass
 
-    cards_path = ODDS_DIR / f"dk_content_cards_{tournament_id}.csv"
-    if cards_path.exists():
-        try:
-            cards = pd.read_csv(cards_path)
-            for _, row in cards.iterrows():
-                cid = str(row.get("card_id", "") or "").strip()
-                if not cid:
-                    continue
-                try:
-                    odds = int(float(row.get("odds_american")))
-                except Exception:
-                    continue
-                card_map[cid] = odds
-        except Exception:
-            pass
-
+    # Content cards: dk_content_cards_{tid}.csv is live-overwritten the same
+    # way prop_lines is, so it cannot supply closing odds either. Until the
+    # closing snapshot covers cards, card CLV stays NaN rather than lying.
     return single_map, card_map
 
 

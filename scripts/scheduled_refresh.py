@@ -768,6 +768,23 @@ def run_live_refresh(dry_run: bool = False):
 
     results = []
 
+    # ── Closing-line snapshot (once per tournament, first live run) ──────────
+    # CLV needs the odds as they stood at R1 tee-off. The first live refresh of
+    # tournament week fires before/at the first tee — snapshot then, guarded by
+    # a sentinel so later runs (with in-play odds) can never overwrite it.
+    if tournament_id and not dry_run:
+        closing_sentinel = LOGS_DIR / f"closing_snapshot_{tournament_id}.done"
+        if not closing_sentinel.exists():
+            ok = run_command(
+                ["python3", "scripts/predictions/log_closing_line.py",
+                 "--tournament-id", tournament_id, "--type", "closing"],
+                f"Closing Line Snapshot ({tournament_id})",
+                timeout=120,
+            )
+            if ok:
+                closing_sentinel.touch()
+            results.append(("Closing Line Snapshot", ok))
+
     # ── Tier 1: independent fetches ───────────────────────────────────────────
     tier1 = [
         ("Live Leaderboard", ["python3", "scripts/scrapers/fetch_live_leaderboard.py"]),
