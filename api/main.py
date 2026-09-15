@@ -1740,8 +1740,10 @@ def get_leaderboard() -> dict:
     live_dir = DATA_DIR / "live"
     df       = None
 
-    # Try Supabase first
-    sb = _get_sb()
+    # Try Supabase first — but not when CLOUD_FETCH is on: _freshen just
+    # updated the CSV from the source API, and Supabase (fed by the local
+    # Mac's push sync) may be staler. Serving it would undo the fresh fetch.
+    sb = None if CLOUD_FETCH else _get_sb()
     if sb and tid:
         try:
             rows = sb.table("live_leaderboard").select("*").eq("tournament_id", tid.upper()).execute().data
