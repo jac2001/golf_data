@@ -168,7 +168,7 @@ export default function MethodologyPage() {
         staked by half-Kelly.
       </p>
       <p style={p}>
-        The 2026 results are the best lesson in the whole project — 740 graded bets:
+        The 2026 results are the best lesson in the whole project — 776 graded bets:
       </p>
       <table style={{ borderCollapse: "collapse", width: "100%", margin: "8px 0" }}>
         <thead><tr>
@@ -177,9 +177,9 @@ export default function MethodologyPage() {
         <tbody>
           <tr><td style={cellL}>Make cut</td><td style={cell}>10/10</td><td style={{ ...cell, ...good }}>+52.9%</td></tr>
           <tr><td style={cellL}>Head-to-head, round 4</td><td style={cell}>25/58</td><td style={{ ...cell, ...good }}>+4.1%</td></tr>
-          <tr><td style={cellL}>Head-to-head, rounds 1–3</td><td style={cell}>71/215</td><td style={{ ...cell, ...bad }}>−25% to −41%</td></tr>
-          <tr><td style={cellL}>Group / placement / outright</td><td style={cell}>53/467</td><td style={{ ...cell, ...bad }}>−8% to −100%</td></tr>
-          <tr><td style={cellL}><b>Total</b></td><td style={cell}><b>160/740</b></td><td style={{ ...cell, ...bad }}><b>−22.3%</b></td></tr>
+          <tr><td style={cellL}>Head-to-head, rounds 1–3</td><td style={cell}>80/239</td><td style={{ ...cell, ...bad }}>−24% to −41%</td></tr>
+          <tr><td style={cellL}>Group / placement / outright</td><td style={cell}>56/463</td><td style={{ ...cell, ...bad }}>−8% to −100%</td></tr>
+          <tr><td style={cellL}><b>Total</b></td><td style={cell}><b>174/776</b></td><td style={{ ...cell, ...bad }}><b>−20.9%</b></td></tr>
         </tbody>
       </table>
       <p style={p}>
@@ -208,15 +208,20 @@ export default function MethodologyPage() {
       <h2 style={h2}>8 · Known limitations</h2>
       <div style={note}>
         <b>Things I would tell a reviewer before they found them:</b><br />
-        · Validation is a single temporal split, not walk-forward cross-validation — the
-        top offseason priority.<br />
+        · Validation has been upgraded from a single temporal split to walk-forward CV
+        (train on all years before Y, test on Y, for seven seasons) — the tables above
+        show single-split numbers; the walk-forward view adds a ±0.03–0.08 year-to-year
+        spread and revealed a real multi-season decline in predictability that DataGolf&apos;s
+        model shares (rising parity).<br />
         · The 0.20 cap on win probability is a heuristic patch for over-confident favorites,
         not a modeled fix.<br />
         · Small no-cut fields (playoffs, signature events) use a model trained mostly on
         144-player cut events, and the simulator hard-codes a 65-player cut.<br />
-        · Bet logging silently stopped in April; the last ~15 weeks of recommendations were
-        never graded. The recorded +12.2pt average closing-line value contradicts the −22%
-        ROI and is under audit — until then it doesn&apos;t get cited.<br />
+        · Closing-line value was never actually measured in 2026: an audit found the
+        recorded &quot;+12.2pt average CLV&quot; compared bet prices against in-play odds on a
+        winner-biased 6% sample. True closing snapshots are now captured pre-R1 for 2027.
+        A 15-week bet-logging gap was likewise found and recovered from per-tournament
+        files — the P&amp;L above includes it.<br />
         · Player-name matching across five data sources is fuzzy by nature; normalizers
         handle most of it, manual mappings catch the rest.
       </div>

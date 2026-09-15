@@ -26,29 +26,34 @@ weaker at rank ordering (Spearman 0.310 vs 0.378). Full detail:
 
 ## Betting results (the honest section)
 
-740 graded recommendations, Feb 23 – Apr 11:
+776 graded recommendations, full season (Feb 23 – Aug 30). The log originally
+stopped at April 11 — an `append_log` refactor dropped the file write — and was
+recovered in September from the surviving per-tournament files, then graded.
 
 | Market | Record | ROI |
 |---|---|---|
 | make_cut | 10/10 | **+52.9%** |
 | h2h_r4 | 25/58 | +4.1% |
-| content_card | 1/3 | +308% (tiny sample) |
-| h2h (r1–r3, tournament) | 71/215 | −25% to −41% |
+| content_card | 3/6 | +336% (tiny sample; every card leg manually verified) |
+| h2h (r1–r3, tournament) | 80/239 | −24% to −41% |
 | group_winner | 34/194 | −18.4% |
-| top 5/10/20 | 15/187 | −8% to −33% |
+| top 5/10/20 | 18/196 | −8% to −34% |
 | outright | 0/11 | −100% |
-| **TOTAL** | **160/740** | **−22.3%** |
+| **TOTAL** | **174/776** | **−20.9%** |
 
 Takeaways:
 - A well-calibrated model is necessary but not sufficient — the vig plus market
   efficiency ate the theoretical edge everywhere except make_cut, where books
   price laziest.
-- Round-4 H2H (+4.1%) vs rounds 1–3 (−25% to −35%) suggests our live/late-week
+- Round-4 H2H (+4.1%) vs rounds 1–3 (−24% to −35%) suggests our live/late-week
   data pipeline adds real information the books lag on.
-- The recorded avg CLV of +12.2pts is inconsistent with −22% ROI and needs a
-  methodology audit before being cited anywhere.
-- **Gap:** bet logging stopped April 11 — recommendations from the last ~15
-  weeks of the season were never logged/graded. Fix before 2027.
+- The season's recorded "+12.2pt average CLV" was audited and confirmed to be
+  an artifact: grading read in-play odds as "closing" lines on a 6% winner-
+  biased sample. True 2026 CLV is unknowable (closing snapshots were never
+  captured); the 2027 pipeline now snapshots real closing lines pre-R1.
+- One +1900 card ("to Win Wire to Wire") was initially misgraded as won by a
+  leg parser that ignored the qualifier — caught in audit, corrected, parser
+  fixed. Numbers above reflect the correction.
 
 ## Fantasy league (WineTime)
 
