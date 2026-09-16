@@ -196,6 +196,16 @@ def expected_earnings(player_rows: pd.DataFrame, event: str,
     return (n * event_avg + K * overall_avg) / (n + K)
 
 
+def expected_finish_pct(player_rows: pd.DataFrame, event: str, overall_fp: float) -> float:
+    at_event = player_rows[(player_rows['event'] == event) & 
+                           (player_rows['year'] >= 2018)]
+    n = len(at_event)
+    if n == 0:
+        return overall_fp # No starts at this event, return overall average
+    K = 3 
+    return (n * at_event['finish_pct'].mean() + K * overall_fp) / (n + K)
+
+
 # ── TODO(you) #3 ──────────────────────────────────────────────────────────────
 
 def score_projection(proj: pd.DataFrame, actual: pd.DataFrame,
@@ -232,7 +242,7 @@ def score_projection(proj: pd.DataFrame, actual: pd.DataFrame,
         base_rhos.append(rho_b)
     
     proj_rhos, base_rhos = np.array(proj_rhos), np.array(base_rhos)
-    beats = (proj_rhos > base_rhos).sum()
+    beats = (proj_rhos > base_rhos).mean()
     
     print(f"\n{'='*60}")
     print(f" VERDICT - {len(proj_rhos)} players scored (>=8 events each)")
@@ -301,6 +311,37 @@ def main():
     actual_2025 = df[df["year"] == 2025][["player_id", "event", "earn", "finish_pct"]]
     score_projection(proj, target[["player_id", "event", "earn", "finish_pct"]],
                      baseline_purse, actual_2025)
+    
+        # ── Finish-pct test: multi-year shrinkage vs one-year memory ─────────────
+    overall_fp = (train[train["year"] >= 2022]
+                  .groupby("player_id")["finish_pct"].mean().to_dict())
+    fp_rows = [{"player_id": pid, "event": ev,
+                "proj_fp": expected_finish_pct(train[train["player_id"] == pid], ev,
+                                               overall_fp.get(pid, 0.3))}
+               for pid in active for ev in events_2026]
+    proj_fp = pd.DataFrame(fp_rows)
+
+    prior = df[df["year"] == 2025][["player_id", "event", "finish_pct"]] \
+              .rename(columns={"finish_pct": "fp_prior"})
+    m = (target[["player_id", "event", "finish_pct"]]
+         .merge(proj_fp, on=["player_id", "event"], how="inner")
+         .merge(prior, on=["player_id", "event"], how="inner"))   # same pairs for both
+
+    ours, memory = [], []
+    for pid, g in m.groupby("player_id"):
+        if len(g) < 8 or g["finish_pct"].nunique() < 2:
+            continue
+        r1 = spearmanr(g["proj_fp"], g["finish_pct"])[0]
+        r2 = spearmanr(g["fp_prior"], g["finish_pct"])[0]
+        if np.isnan(r1) or np.isnan(r2):
+            continue
+        ours.append(r1); memory.append(r2)
+
+    ours, memory = np.array(ours), np.array(memory)
+    print(f"\n  FINISH-PCT HEAD-TO-HEAD ({len(ours)} players, same event pairs)")
+    print(f"  multi-year shrinkage: mean rho={ours.mean():+.3f}")
+    print(f"  one-year memory:      mean rho={memory.mean():+.3f}")
+    print(f"  shrinkage beats memory for {(ours > memory).mean():.0%} of players")
     
     
     
