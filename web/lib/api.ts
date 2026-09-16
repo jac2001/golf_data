@@ -1710,3 +1710,22 @@ export async function getFantasyStrategy(): Promise<FantasyStrategy> {
   if (!res.ok) throw new Error("Failed to load fantasy strategy");
   return res.json();
 }
+
+// ── Home (Broadcast landing) ──────────────────────────────────────────────────
+
+export interface HomeData {
+  hero: { tid: string; name: string; start_date: string; end_date: string;
+          course: string; location: string; type: string; is_live: boolean } | null;
+  season_start: string | null;
+  board: { player: string; win_prob: number; top10_prob: number | null; why: string }[];
+  board_event: string | null;
+  board_is_hero: boolean;
+  storylines: { tag: string; color: string; headline: string; sub: string }[];
+  trust: Record<string, { value: string; label: string }>;
+}
+
+export async function getHome(): Promise<HomeData> {
+  const res = await fetch(`${API_BASE}/api/home`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load home");
+  return res.json();
+}

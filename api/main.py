@@ -6680,3 +6680,110 @@ def get_fantasy_strategy() -> dict:
     out["trio_status"] = ("offseason — the Tuesday re-solve activates when "
                           "2027 predictions begin")
     return out
+
+
+# ── Home (Broadcast landing) ─────────────────────────────────────────────────
+
+@app.get("/api/home")
+def get_home() -> dict:
+    """One call for the landing page: hero tournament (current or next,
+    across season CSVs), model top-3 with plain-English reasons, three
+    computed storylines, and the trust-strip numbers. Degrades honestly
+    in the offseason: predictions are labeled with their own event."""
+    today = pd.Timestamp.now().normalize()
+
+    # Hero: newest schedule first (2027 preseason), else current season
+    hero, season_start = None, None
+    for yr in (2027, 2026):
+        sp = DATA_DIR / "raw" / f"schedule_{yr}.csv"
+        if not sp.exists():
+            continue
+        sched = pd.read_csv(sp)
+        sched["_s"] = pd.to_datetime(sched["start_date"], errors="coerce")
+        sched["_e"] = pd.to_datetime(sched.get("end_date", sched["start_date"]), errors="coerce")
+        live = sched[(sched["_s"] - pd.Timedelta(days=2) <= today) & (today <= sched["_e"])]
+        upcoming = sched[sched["_s"] > today].sort_values("_s")
+        row = live.iloc[0] if len(live) else (upcoming.iloc[0] if len(upcoming) else None)
+        if row is not None:
+            hero = {
+                "tid": str(row["tournament_id"]),
+                "name": str(row["tournament_name"]),
+                "start_date": str(row["start_date"]), "end_date": str(row.get("end_date", "")),
+                "course": str(row.get("course", "") or "").split(";")[0],
+                "location": str(row.get("location", "") or ""),
+                "type": str(row.get("tournament_type", "") or ""),
+                "is_live": bool(len(live)),
+            }
+            season_start = str(sched["_s"].min().date())
+            break
+
+    # Model board: latest predictions, honestly labeled with their own event
+    board, board_event, board_is_hero = [], None, False
+    lp = OUTPUTS_DIR / "latest_predictions.csv"
+    if lp.exists():
+        df = pd.read_csv(lp)
+        board_tid = str(df["tournament_id"].iloc[0]) if len(df) else ""
+        board_is_hero = bool(hero and board_tid.upper() == hero["tid"].upper())
+        sp26 = DATA_DIR / "raw" / "schedule_2026.csv"
+        if sp26.exists():
+            s26 = pd.read_csv(sp26)
+            m = s26[s26["tournament_id"].astype(str).str.upper() == board_tid.upper()]
+            board_event = str(m["tournament_name"].iloc[0]) if len(m) else board_tid
+        top = df.nlargest(3, "win_prob")
+
+        def _why(r) -> str:
+            bits = []
+            if pd.notna(r.get("recent_sg_trend")) and r["recent_sg_trend"] > 0.3:
+                bits.append("in form")
+            if pd.notna(r.get("course_sg_total_weighted")) and r["course_sg_total_weighted"] > 0.4:
+                bits.append("strong course history")
+            if pd.notna(r.get("world_rank")) and r["world_rank"] <= 5:
+                bits.append(f"world No. {int(r['world_rank'])}")
+            if pd.notna(r.get("recent_sg_app_weighted")) and r["recent_sg_app_weighted"] > 0.6:
+                bits.append("elite approach play")
+            return " · ".join(bits[:2]) if bits else "model favorite"
+
+        for _, r in top.iterrows():
+            board.append({
+                "player": str(r["player_name"]),
+                "win_prob": round(float(r["win_prob"]), 4),
+                "top10_prob": round(float(r.get("top10_prob", float("nan"))), 4)
+                              if pd.notna(r.get("top10_prob")) else None,
+                "why": _why(r),
+            })
+
+        # Storylines from the same frame (top-40 by win prob)
+        pool = df.nlargest(min(40, len(df)), "win_prob")
+        stories = []
+        if "recent_sg_trend" in pool and pool["recent_sg_trend"].notna().any():
+            h = pool.loc[pool["recent_sg_trend"].idxmax()]
+            stories.append({"tag": "In form", "color": "yellow",
+                            "headline": f"{h['player_name'].split(',')[0].strip()} is the field's hottest player",
+                            "sub": "Biggest strokes-gained riser over recent starts."})
+        if "course_sg_total_weighted" in pool and pool["course_sg_total_weighted"].notna().any():
+            h = pool.loc[pool["course_sg_total_weighted"].idxmax()]
+            stories.append({"tag": "Course DNA", "color": "green",
+                            "headline": f"{h['player_name'].split(',')[0].strip()} owns this course",
+                            "sub": "Best course history in the field, weighted for recency."})
+        val_col = next((c for c in ("dk_fair_prob", "dk_implied_prob") if c in pool.columns), None)
+        if val_col and pool[val_col].notna().any():
+            vp = pool.dropna(subset=[val_col]).copy()
+            vp["_gap"] = vp["win_prob"] - vp[val_col]
+            h = vp.loc[vp["_gap"].idxmax()]
+            stories.append({"tag": "Sharp price", "color": "orange",
+                            "headline": f"{h['player_name'].split(',')[0].strip()} is the board's best value",
+                            "sub": "Largest gap between our chance and the book price."})
+    else:
+        stories = []
+
+    return {
+        "hero": hero,
+        "season_start": season_start,
+        "board": board, "board_event": board_event, "board_is_hero": board_is_hero,
+        "storylines": stories[:3],
+        "trust": {
+            "calibration": {"value": "10.5%", "label": "actual top-10 rate when we said 10%"},
+            "seasons": {"value": "7", "label": "seasons of walk-forward testing"},
+            "benchmark": {"value": "±5%", "label": "of the industry-leading model"},
+        },
+    }
