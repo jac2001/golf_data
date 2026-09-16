@@ -164,11 +164,18 @@ def load_model_weeks() -> list[dict]:
     ph = pd.read_csv(PRED_HISTORY)
     ph["player_id"] = ph["player_id"].apply(_canon)
     ph["event"] = ph["tournament_id"].str[5:]
+    # One week per TOURNAMENT: predictions were saved on multiple dates per
+    # event, and grouping by (tid, date) minted 32 phantom weeks from 30
+    # tournaments — duplicate weeks then consumed tracker entries downstream.
+    # Keep each player's latest prediction; the week's date is the earliest.
+    ph = ph.sort_values("tournament_date")
     weeks = []
-    for (tid, date), g in sorted(ph.groupby(["tournament_id", "tournament_date"]),
-                                 key=lambda kv: kv[0][1]):
-        weeks.append({"tid": tid, "event": g["event"].iloc[0], "date": date,
-                      "model_ev": dict(zip(g["player_id"], g["predicted_ev"]))})
+    for tid, g in ph.groupby("tournament_id"):
+        g_last = g.drop_duplicates("player_id", keep="last")
+        weeks.append({"tid": tid, "event": g["event"].iloc[0],
+                      "date": g["tournament_date"].min(),
+                      "model_ev": dict(zip(g_last["player_id"], g_last["predicted_ev"]))})
+    weeks.sort(key=lambda w: w["date"])
     return weeks
 
 

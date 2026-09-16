@@ -23,6 +23,7 @@ import re
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -94,13 +95,20 @@ def main():
 
         # Jack's picks: tid -> schedule tournament name -> tracker entry by
         # word overlap. Each tracker entry is consumed once (del after match).
-        sched_name = TID_TO_NAME.get(wk["tid"], "")
-        sched_words = set(re.findall(r"\w{4,}", sched_name.lower()))
-        tr_key = next((name for name in lineups
-                       if sched_words & set(re.findall(r"\w{4,}", name.lower()))), None)
+        # Match by DATE, not name: names collide ("...Invitational" x3), dates
+        # don't. Nearest unconsumed tracker entry within 8 days; pop = use once.
+        wk_date = pd.Timestamp(wk["date"])
         jack_names, jack_total, tr = [], None, None
-        if tr_key is not None:
-            tr = lineups.pop(tr_key)
+        best_key, best_gap = None, pd.Timedelta(days=9)
+        for name, v in lineups.items():
+            try:
+                gap = abs(pd.Timestamp(str(v.get("date", ""))) - wk_date)
+            except (ValueError, TypeError):
+                continue
+            if gap < best_gap:
+                best_key, best_gap = name, gap
+        if best_key is not None:
+            tr = lineups.pop(best_key)
         matched = {}
         if tr:
             matched = match_picks_to_field(tr["lineup"], field)
@@ -126,7 +134,9 @@ def main():
 
     df = pd.DataFrame(rows)
     df["delta_vs_replay"] = df["jack_earn"] - df["replay_earn"]
-    df["capture_pct"] = (df["jack_earn"] / df["best3_earn"] * 100).round(1)
+    # Guard: a week with $0 best-trio (earnings data absent) has no defined
+    # capture — NaN, not inf, so means/plots stay sane.
+    df["capture_pct"] = (df["jack_earn"] / df["best3_earn"].replace(0, np.nan) * 100).round(1)
     df.to_csv(OUT_CSV, index=False)
 
     jack_wins = (df["delta_vs_replay"] > 0).sum()
