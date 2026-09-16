@@ -35,25 +35,25 @@ type ColKey = "win" | "top10" | "cut" | "owgr" | "sg" | "form" | "edge" | "odds"
 // Maps each sortable column to a label, sort direction, and the ColKey that
 // controls its visibility in the picker.
 const COLS: { key: SortCol; label: string; higherBetter: boolean; toggleKey: ColKey }[] = [
-  { key: "win_prob_sim",       label: "Win%",     higherBetter: true,  toggleKey: "win"   },
-  { key: "top10_prob_sim",     label: "Top 10%",  higherBetter: true,  toggleKey: "top10" },
-  { key: "cut_prob",           label: "Cut%",     higherBetter: true,  toggleKey: "cut"   },
-  { key: "world_rank",         label: "OWGR",     higherBetter: false, toggleKey: "owgr"  },
-  { key: "season_sg_total",    label: "SG Total", higherBetter: true,  toggleKey: "sg"    },
+  { key: "win_prob_sim",       label: "Win chance",     higherBetter: true,  toggleKey: "win"   },
+  { key: "top10_prob_sim",     label: "Top-10 chance",  higherBetter: true,  toggleKey: "top10" },
+  { key: "cut_prob",           label: "Makes cut",     higherBetter: true,  toggleKey: "cut"   },
+  { key: "world_rank",         label: "World rank",     higherBetter: false, toggleKey: "owgr"  },
+  { key: "season_sg_total",    label: "Strokes gained", higherBetter: true,  toggleKey: "sg"    },
   { key: "form_trend",         label: "Form",     higherBetter: true,  toggleKey: "form"  },
-  { key: "model_vs_vegas_edge",label: "Edge",     higherBetter: true,  toggleKey: "edge"  },
+  { key: "model_vs_vegas_edge",label: "Our edge",     higherBetter: true,  toggleKey: "edge"  },
 ];
 const TOGGLE_COLS: { key: ColKey; label: string; default: boolean }[] = [
-  { key: "win",   label: "Win%",     default: true  },
-  { key: "top10", label: "Top 10%",  default: true  },
+  { key: "win",   label: "Win chance",     default: true  },
+  { key: "top10", label: "Top-10 chance",  default: true  },
   { key: "odds",  label: "Odds",     default: true  },
   { key: "uses",  label: "Uses",     default: true  },
   { key: "pick",  label: "Pick",     default: true  },
-  { key: "cut",   label: "Cut%",     default: false },
-  { key: "owgr",  label: "OWGR",     default: false },
-  { key: "sg",    label: "SG Total", default: false },
+  { key: "cut",   label: "Makes cut",     default: false },
+  { key: "owgr",  label: "World rank",     default: false },
+  { key: "sg",    label: "Strokes gained", default: false },
   { key: "form",  label: "Form",     default: false },
-  { key: "edge",  label: "Edge",     default: false },
+  { key: "edge",  label: "Our edge",     default: false },
   { key: "move",  label: "Move",     default: false },
   { key: "ev",    label: "EV",       default: false },
 ];
@@ -82,9 +82,9 @@ const DRIFT_ARROW: Record<string, string> = {
 };
 
 const SENTIMENT_DOT: Record<string, string> = {
-  positive: "#00c44f",
-  neutral:  "#4a6080",
-  negative: "#e74c3c",
+  positive: "var(--bc-green)",
+  neutral:  "var(--bc-muted)",
+  negative: "var(--bc-red)",
 };
 
 function normName(n: string) {
@@ -161,14 +161,14 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
   }, [players, sortCol, sortDir, search]);
 
   const th: React.CSSProperties = {
-    padding: "7px 10px", borderBottom: "1px solid #1e3a5f",
-    fontSize: "0.68em", fontWeight: 700, color: "#5a7090",
+    padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
+    fontSize: "0.68em", fontWeight: 700, color: "var(--bc-muted)",
     textTransform: "uppercase", letterSpacing: "0.05em",
     background: "#0a1628", whiteSpace: "nowrap", cursor: "pointer",
     userSelect: "none",
   };
 
-  const thActive: React.CSSProperties = { ...th, color: "#00c44f" };
+  const thActive: React.CSSProperties = { ...th, color: "var(--bc-green)" };
 
   return (
     <div>
@@ -179,44 +179,44 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{
-            background: "#0a1525", border: "1px solid #1e3a5f", borderRadius: 6,
-            color: "#dde6f5", padding: "7px 12px", fontSize: "0.85em",
+            background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
+            color: "var(--bc-text)", padding: "7px 12px", fontSize: "0.85em",
             outline: "none", width: 200,
           }}
         />
         <button
           onClick={() => setPickerOpen(o => !o)}
           style={{
-            background: pickerOpen ? "#0d2e18" : "#0a1525",
-            border: `1px solid ${pickerOpen ? "#00c44f44" : "#1e3a5f"}`,
-            borderRadius: 6, color: pickerOpen ? "#00c44f" : "#7a9ab8",
+            background: pickerOpen ? "var(--bc-card)" : "var(--bc-panel)",
+            border: `1px solid ${pickerOpen ? "var(--bc-green)44" : "var(--bc-line)"}`,
+            borderRadius: 6, color: pickerOpen ? "var(--bc-green)" : "var(--bc-muted)",
             padding: "6px 12px", fontSize: "0.8em", fontWeight: 600, cursor: "pointer",
           }}
         >
           + Columns
         </button>
-        <span style={{ color: "#4a6080", fontSize: "0.75em" }}>
+        <span style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
           {sorted.length} players · click column to sort
         </span>
 
         {pickerOpen && (
           <div style={{
             position: "absolute", top: "calc(100% + 6px)", left: 212, zIndex: 20,
-            background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 8,
+            background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
             padding: 10, boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
             display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px",
           }}>
             {TOGGLE_COLS.map(c => (
               <label key={c.key} style={{
                 display: "flex", alignItems: "center", gap: 6,
-                fontSize: "0.8em", color: "#c8d8e8", cursor: "pointer",
+                fontSize: "0.8em", color: "var(--bc-text)", cursor: "pointer",
                 padding: "3px 4px", whiteSpace: "nowrap",
               }}>
                 <input
                   type="checkbox"
                   checked={visibleCols.has(c.key)}
                   onChange={() => toggleCol(c.key)}
-                  style={{ accentColor: "#00c44f", cursor: "pointer" }}
+                  style={{ accentColor: "var(--bc-green)", cursor: "pointer" }}
                 />
                 {c.label}
               </label>
@@ -225,8 +225,8 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
         )}
       </div>
 
-      <div style={{ overflowX: "auto", border: "1px solid #1e3a5f", borderRadius: 10 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+      <div style={{ overflowX: "auto", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
               <th style={{ ...th, textAlign: "center", width: 36 }}>#</th>
@@ -245,7 +245,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
               ))}
               {visibleCols.has("odds") && <th style={{ ...th, textAlign: "center" }}>Odds</th>}
               {visibleCols.has("move") && <th style={{ ...th, textAlign: "center" }}>Move</th>}
-              {visibleCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "#f1c40f" }}>EV</th>}
+              {visibleCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "var(--bc-yellow)" }}>EV</th>}
               {visibleCols.has("uses") && <th style={{ ...th, textAlign: "center" }}>Uses</th>}
               {visibleCols.has("pick") && <th style={{ ...th, textAlign: "center" }}>Pick</th>}
             </tr>
@@ -253,20 +253,20 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
           <tbody>
             {sorted.map((p, i) => { // eslint-disable-line
               const isUse = p.badge === "USE";
-              const bg = i % 2 === 0 ? "#0d1a30" : "#0a1525";
+              const bg = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid #0f2236", background: bg,
               };
 
               const formVal  = p.form_trend ?? 0;
-              const formColor = formVal > 0.3 ? "#00c44f" : formVal > 0 ? "#8ba0b8" : "#e74c3c";
+              const formColor = formVal > 0.3 ? "var(--bc-green)" : formVal > 0 ? "var(--bc-muted)" : "var(--bc-red)";
               const formStr   = formVal > 0 ? `+${formVal.toFixed(2)}` : formVal.toFixed(2);
 
               const edgeVal   = p.model_vs_vegas_edge;
-              const edgeColor = edgeVal == null ? "#4a6080" : edgeVal > 3 ? "#00c44f" : edgeVal > 0 ? "#f39c12" : "#4a6080";
+              const edgeColor = edgeVal == null ? "var(--bc-muted)" : edgeVal > 3 ? "var(--bc-green)" : edgeVal > 0 ? "var(--bc-orange)" : "var(--bc-muted)";
 
               const drift    = String(p.dk_odds_direction ?? "");
-              const driftColor = drift === "UP" ? "#e74c3c" : drift === "DOWN" ? "#00c44f" : "#4a6080";
+              const driftColor = drift === "UP" ? "var(--bc-red)" : drift === "DOWN" ? "var(--bc-green)" : "var(--bc-muted)";
 
               // Format odds: large numbers stay as-is with + prefix
               const odds = p.odds_to_win;
@@ -277,9 +277,9 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
               return (
                 <tr key={p.player_name ?? `row-${i}`} style={isPick ? {
                   background: "#0a1e12",
-                  borderLeft: "2px solid #00c44f",
+                  borderLeft: "2px solid var(--bc-green)",
                 } : undefined}>
-                  <td style={{ ...td, color: "#3a5060", textAlign: "center", fontSize: "0.78em" }}>{i + 1}</td>
+                  <td style={{ ...td, color: "var(--bc-muted)", textAlign: "center", fontSize: "0.78em" }}>{i + 1}</td>
 
                   {/* Player name + intel */}
                   <td style={{ ...td, fontSize: "0.85em", maxWidth: 280 }}>
@@ -287,22 +287,22 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                       <Link
                         href={`/players?player=${encodeURIComponent(p.player_name)}`}
-                        style={{ color: isPick ? "#00c44f" : "#dde6f5", fontWeight: isPick ? 700 : 600, whiteSpace: "nowrap", textDecoration: "none" }}
-                        onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-                        onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : "#dde6f5")}
+                        style={{ color: isPick ? "var(--bc-green)" : "var(--bc-text)", fontWeight: isPick ? 700 : 600, whiteSpace: "nowrap", textDecoration: "none" }}
+                        onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
+                        onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : "var(--bc-text)")}
                       >
                         {p.player_name}
                       </Link>
                       {isPick && (
                         <span style={{
-                          fontSize: "0.6em", fontWeight: 800, color: "#00c44f",
-                          background: "#0d2e18", border: "1px solid #00c44f44",
+                          fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)",
+                          background: "var(--bc-card)", border: "1px solid var(--bc-green)44",
                           borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
                         }}>MY PICK</span>
                       )}
                       {playerIntel?.injury_flag && (
                         <span style={{
-                          fontSize: "0.68em", fontWeight: 700, color: "#e74c3c",
+                          fontSize: "0.68em", fontWeight: 700, color: "var(--bc-red)",
                           background: "#1a0808", border: "1px solid #5f1e1e44",
                           borderRadius: 4, padding: "1px 6px", whiteSpace: "nowrap",
                         }}>
@@ -315,14 +315,14 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       )}
                       {playerIntel?.trend === "trending_up" && (
                         <span style={{
-                          fontSize: "0.68em", fontWeight: 700, color: "#00c44f",
-                          background: "#0d2e18", border: "1px solid #00c44f44",
+                          fontSize: "0.68em", fontWeight: 700, color: "var(--bc-green)",
+                          background: "var(--bc-card)", border: "1px solid var(--bc-green)44",
                           borderRadius: 4, padding: "1px 6px",
                         }}>↑ hot</span>
                       )}
                       {playerIntel?.trend === "trending_down" && (
                         <span style={{
-                          fontSize: "0.68em", fontWeight: 700, color: "#f39c12",
+                          fontSize: "0.68em", fontWeight: 700, color: "var(--bc-orange)",
                           background: "#1a1200", border: "1px solid #5f4a0044",
                           borderRadius: 4, padding: "1px 6px",
                         }}>↓ cold</span>
@@ -348,8 +348,8 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 4 }}>
                         {playerIntel.last_3_results.slice(0, 3).map((r, ri) => (
                           <span key={ri} style={{
-                            fontSize: "0.65em", color: "#4a6080",
-                            background: "#0a1520", border: "1px solid #1e3a5f",
+                            fontSize: "0.65em", color: "var(--bc-muted)",
+                            background: "#0a1520", border: "1px solid var(--bc-line)",
                             borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
                           }}>{r}</span>
                         ))}
@@ -362,17 +362,17 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.win_prob_sim != null ? (
                       <div>
-                        <span style={{ color: "#00c44f", fontWeight: 700, fontSize: "0.88em" }}>
+                        <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "0.88em" }}>
                           {(p.win_prob_sim * 100).toFixed(1)}%
                         </span>
                         {p.win_prob != null && (
                           <div style={{ color: "#2a5040", fontSize: "0.68em", marginTop: 1 }}>
-                            xgb {(p.win_prob * 100).toFixed(1)}%
+                            model {(p.win_prob * 100).toFixed(1)}%
                           </div>
                         )}
                       </div>
                     ) : (
-                      <span style={{ color: "#00c44f", fontWeight: 700, fontSize: "0.88em" }}>
+                      <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "0.88em" }}>
                         {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
                       </span>
                     )}
@@ -384,17 +384,17 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.top10_prob_sim != null ? (
                       <div>
-                        <span style={{ color: "#4cb8ff", fontWeight: 600, fontSize: "0.85em" }}>
+                        <span style={{ color: "var(--bc-yellow)", fontWeight: 600, fontSize: "0.85em" }}>
                           {(p.top10_prob_sim * 100).toFixed(1)}%
                         </span>
                         {p.top10_prob != null && (
-                          <div style={{ color: "#1a3050", fontSize: "0.68em", marginTop: 1 }}>
-                            xgb {(p.top10_prob * 100).toFixed(1)}%
+                          <div style={{ color: "var(--bc-card)", fontSize: "0.68em", marginTop: 1 }}>
+                            model {(p.top10_prob * 100).toFixed(1)}%
                           </div>
                         )}
                       </div>
                     ) : (
-                      <span style={{ color: "#4cb8ff", fontSize: "0.85em", fontWeight: 600 }}>
+                      <span style={{ color: "var(--bc-yellow)", fontSize: "0.85em", fontWeight: 600 }}>
                         {p.top10_prob != null ? `${(p.top10_prob * 100).toFixed(1)}%` : "—"}
                       </span>
                     )}
@@ -403,21 +403,21 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
 
                   {/* Cut% */}
                   {visibleCols.has("cut") && (
-                  <td style={{ ...td, textAlign: "center", color: "#8ba0b8", fontSize: "0.85em" }}>
+                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.85em" }}>
                     {p.cut_prob != null ? `${(p.cut_prob * 100).toFixed(0)}%` : "—"}
                   </td>
                   )}
 
                   {/* OWGR */}
                   {visibleCols.has("owgr") && (
-                  <td style={{ ...td, textAlign: "center", color: "#7f8c8d", fontSize: "0.82em" }}>
+                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.82em" }}>
                     {p.world_rank ?? "—"}
                   </td>
                   )}
 
                   {/* SG Total */}
                   {visibleCols.has("sg") && (
-                  <td style={{ ...td, textAlign: "center", color: "#8ba0b8", fontSize: "0.82em" }}>
+                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.82em" }}>
                     {p.season_sg_total != null ? (p.season_sg_total > 0 ? `+${p.season_sg_total.toFixed(2)}` : p.season_sg_total.toFixed(2)) : "—"}
                   </td>
                   )}
@@ -438,7 +438,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
 
                   {/* Odds */}
                   {visibleCols.has("odds") && (
-                  <td style={{ ...td, textAlign: "center", color: "#7f8c8d", fontSize: "0.82em" }}>
+                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.82em" }}>
                     {oddsStr}
                   </td>
                   )}
@@ -454,12 +454,12 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   {visibleCols.has("ev") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.this_week_ev != null ? (
-                      <span style={{ fontSize: "0.72em", color: "#f1c40f", fontWeight: 600 }}>
+                      <span style={{ fontSize: "0.72em", color: "var(--bc-yellow)", fontWeight: 600 }}>
                         {p.this_week_ev >= 1000
                           ? `${(p.this_week_ev / 1000).toFixed(0)}k`
                           : String(p.this_week_ev)}
                       </span>
-                    ) : <span style={{ color: "#3a5060", fontSize: "0.72em" }}>—</span>}
+                    ) : <span style={{ color: "var(--bc-muted)", fontSize: "0.72em" }}>—</span>}
                   </td>
                   )}
 
@@ -470,7 +470,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       {[0,1,2].map(idx => (
                         <div key={idx} style={{
                           width: 7, height: 7, borderRadius: "50%",
-                          background: idx < (p.uses_remaining ?? 3) ? "#00c44f" : "#1a3050",
+                          background: idx < (p.uses_remaining ?? 3) ? "var(--bc-green)" : "var(--bc-card)",
                         }} />
                       ))}
                     </div>
@@ -481,13 +481,13 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   {visibleCols.has("pick") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.badge === "USE" && (
-                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", padding: "2px 6px", borderRadius: 3, border: "1px solid #00c44f44" }}>USE</span>
+                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-green)", background: "var(--bc-card)", padding: "2px 6px", borderRadius: 3, border: "1px solid var(--bc-green)44" }}>USE</span>
                     )}
                     {p.badge === "SAVE" && (
-                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "#f39c12", background: "#2a1f0a", padding: "2px 6px", borderRadius: 3, border: "1px solid #f39c1244" }}>SAVE</span>
+                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-orange)", background: "#2a1f0a", padding: "2px 6px", borderRadius: 3, border: "1px solid var(--bc-orange)44" }}>SAVE</span>
                     )}
                     {p.badge === "MAXED" && (
-                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "#4a6080", background: "#0a1220", padding: "2px 6px", borderRadius: 3, border: "1px solid #1e3a5f" }}>MAXED</span>
+                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-muted)", background: "var(--bc-panel)", padding: "2px 6px", borderRadius: 3, border: "1px solid var(--bc-line)" }}>MAXED</span>
                     )}
                   </td>
                   )}

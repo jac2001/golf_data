@@ -9,20 +9,20 @@ type SortMode = "model" | "boost" | "history";
 
 const cell: React.CSSProperties = {
   padding: "8px 12px",
-  borderBottom: "1px solid #1a2a3a",
+  borderBottom: "1px solid var(--bc-line)",
   fontSize: "0.83em",
-  color: "#c8d8e8",
+  color: "var(--bc-text)",
   textAlign: "left",
 };
 
 const hdr: React.CSSProperties = {
   ...cell,
-  color: "#7a9ab8",
+  color: "var(--bc-muted)",
   fontWeight: 600,
   fontSize: "0.76em",
   textTransform: "uppercase",
   letterSpacing: "0.04em",
-  borderBottom: "1px solid #1e3a5f",
+  borderBottom: "1px solid var(--bc-line)",
   whiteSpace: "nowrap",
 };
 
@@ -36,35 +36,35 @@ function fmtPct(v: number | null, decimals = 1): string {
 }
 
 function sgColor(v: number | null): string {
-  if (v == null) return "#4a6080";
-  if (v >= 0.3)  return "#00c44f";
-  if (v >= 0.1)  return "#7ecf9e";
-  if (v <= -0.3) return "#e05555";
+  if (v == null) return "var(--bc-muted)";
+  if (v >= 0.3)  return "var(--bc-green)";
+  if (v >= 0.1)  return "var(--bc-green)";
+  if (v <= -0.3) return "var(--bc-red)";
   if (v <= -0.1) return "#c08888";
-  return "#7a9ab8";
+  return "var(--bc-muted)";
 }
 
 function adjColor(v: number | null): string {
-  if (v == null) return "#4a6080";
-  if (v >= 0.08)  return "#00c44f";
-  if (v >= 0.02)  return "#7ecf9e";
-  if (v <= -0.08) return "#e05555";
+  if (v == null) return "var(--bc-muted)";
+  if (v >= 0.08)  return "var(--bc-green)";
+  if (v >= 0.02)  return "var(--bc-green)";
+  if (v <= -0.08) return "var(--bc-red)";
   if (v <= -0.02) return "#c08888";
-  return "#7a9ab8";
+  return "var(--bc-muted)";
 }
 
 function shiftColor(v: number | null): string {
-  if (v == null) return "#7a9ab8";
-  if (v > 0.004)  return "#00c44f";
-  if (v < -0.004) return "#e05555";
-  return "#7a9ab8";
+  if (v == null) return "var(--bc-muted)";
+  if (v > 0.004)  return "var(--bc-green)";
+  if (v < -0.004) return "var(--bc-red)";
+  return "var(--bc-muted)";
 }
 
 function usesColor(n: number | null): string {
   if (n == null) return "#3a5060";
-  if (n >= 2) return "#00c44f";
-  if (n === 1) return "#f0c040";
-  return "#e05555";
+  if (n >= 2) return "var(--bc-green)";
+  if (n === 1) return "var(--bc-yellow)";
+  return "var(--bc-red)";
 }
 
 function fmtAdj(v: number | null): string {
@@ -115,21 +115,21 @@ function CourseProfile({ profile }: { profile: CourseFitResponse["course_profile
   ].sort((a, b) => profile[b.key] - profile[a.key]);
 
   return (
-    <div style={{ background: "#080f1e", border: "1px solid #1e3a5f", borderRadius: 8, padding: "14px 18px", marginBottom: 20 }}>
-      <div style={{ fontSize: "0.65em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 12 }}>
+    <div style={{ background: "#080f1e", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "14px 18px", marginBottom: 20 }}>
+      <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 12 }}>
         Course Demand Profile — what this course rewards most
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {ITEMS.map(({ key, label, desc }) => {
           const val = profile[key];
-          const barColor = val > 0.3 ? "#00c44f" : val > 0.18 ? "#f0c040" : "#2a5a7a";
+          const barColor = val > 0.3 ? "var(--bc-green)" : val > 0.18 ? "var(--bc-yellow)" : "#2a5a7a";
           return (
             <div key={key} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ width: 110, fontSize: "0.82em", color: "#c8d8e8", flexShrink: 0 }}>{label}</div>
+              <div style={{ width: 110, fontSize: "0.82em", color: "var(--bc-text)", flexShrink: 0 }}>{label}</div>
               <div style={{ flex: 1, height: 8, background: "#0d1929", borderRadius: 4, overflow: "hidden" }}>
                 <div style={{ width: `${val * 100}%`, height: "100%", background: barColor, borderRadius: 4, transition: "width 0.3s ease" }} />
               </div>
-              <div style={{ width: 36, fontSize: "0.82em", color: "#7a9ab8", textAlign: "right", flexShrink: 0 }}>{Math.round(val * 100)}%</div>
+              <div style={{ width: 36, fontSize: "0.82em", color: "var(--bc-muted)", textAlign: "right", flexShrink: 0 }}>{Math.round(val * 100)}%</div>
               <div style={{ width: 200, fontSize: "0.72em", color: "#3a5060" }}>{desc}</div>
             </div>
           );
@@ -162,7 +162,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
   }
 
   const steps: { label: string; value: number | null; color?: string }[] = [
-    { label: "Skill baseline", value: base,   color: "#7a9ab8" },
+    { label: "Skill baseline", value: base,   color: "var(--bc-muted)" },
     { label: "+ Timing / form", value: timing, color: adjColor(timing) },
     { label: "+ Course fit",    value: fit,    color: adjColor(fit) },
     { label: "+ History",       value: hist,   color: adjColor(hist) },
@@ -174,15 +174,15 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
 
   return (
     <tr>
-      <td colSpan={COL_SPAN} style={{ background: "#060d1a", padding: "10px 20px 14px 48px", borderBottom: "1px solid #1e3a5f" }}>
+      <td colSpan={COL_SPAN} style={{ background: "#060d1a", padding: "10px 20px 14px 48px", borderBottom: "1px solid var(--bc-line)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 0, flexWrap: "wrap", rowGap: 6 }}>
           {steps.map((s, idx) => (
             <span key={idx} style={{ display: "flex", alignItems: "center", gap: 6 }}>
               {idx > 0 && <span style={{ color: "#2a4060", margin: "0 6px" }}>→</span>}
-              <span style={{ fontSize: "0.74em", color: "#4a6080" }}>{s.label}</span>
+              <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>{s.label}</span>
               <span style={{
                 fontSize: "0.82em", fontWeight: 600,
-                color: idx === 0 ? "#7a9ab8" : adjColor(s.value),
+                color: idx === 0 ? "var(--bc-muted)" : adjColor(s.value),
               }}>
                 {idx === 0
                   ? (s.value != null ? (s.value >= 0 ? "+" : "") + s.value.toFixed(2) : "—")
@@ -194,7 +194,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
           {remaining != null && Math.abs(remaining) > 0.005 && (
             <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <span style={{ color: "#2a4060", margin: "0 6px" }}>→</span>
-              <span style={{ fontSize: "0.74em", color: "#4a6080" }}>+ other</span>
+              <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>+ other</span>
               <span style={{ fontSize: "0.82em", fontWeight: 600, color: adjColor(remaining) }}>
                 {fmtAdj(remaining)}
               </span>
@@ -202,26 +202,26 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
           )}
           <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <span style={{ color: "#2a4060", margin: "0 6px" }}>→</span>
-            <span style={{ fontSize: "0.74em", color: "#4a6080" }}>DG final</span>
+            <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>DG final</span>
             <span style={{
               fontSize: "0.88em", fontWeight: 700,
-              color: final >= 1.5 ? "#00c44f" : final >= 0 ? "#7ecf9e" : "#7a9ab8",
+              color: final >= 1.5 ? "var(--bc-green)" : final >= 0 ? "var(--bc-green)" : "var(--bc-muted)",
             }}>
               {(final >= 0 ? "+" : "") + final.toFixed(2)} SG
             </span>
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 20 }}>
-            <span style={{ fontSize: "0.74em", color: "#4a6080" }}>DG win%</span>
+            <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>DG win%</span>
             <span style={{
               fontSize: "0.88em", fontWeight: 700,
-              color: (p.dg_win ?? 0) > 0.08 ? "#00c44f" : (p.dg_win ?? 0) > 0.03 ? "#f0c040" : "#7a9ab8",
+              color: (p.dg_win ?? 0) > 0.08 ? "var(--bc-green)" : (p.dg_win ?? 0) > 0.03 ? "var(--bc-yellow)" : "var(--bc-muted)",
             }}>
               {p.dg_win != null ? fmtPct(p.dg_win) : "—"}
             </span>
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 8 }}>
-            <span style={{ fontSize: "0.74em", color: "#4a6080" }}>Model win%</span>
-            <span style={{ fontSize: "0.88em", fontWeight: 700, color: "#7a9ab8" }}>
+            <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>Model win%</span>
+            <span style={{ fontSize: "0.88em", fontWeight: 700, color: "var(--bc-muted)" }}>
               {p.win_prob != null ? fmtPct(p.win_prob) : "—"}
             </span>
           </span>
@@ -248,7 +248,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
     ? p.player_name.split(",").reverse().join(" ").trim()
     : p.player_name;
 
-  const rowBg = expanded ? "#0a1525" : (i % 2 === 0 ? "transparent" : "#050c18");
+  const rowBg = expanded ? "var(--bc-panel)" : (i % 2 === 0 ? "transparent" : "#050c18");
 
   return (
     <>
@@ -259,12 +259,12 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
       >
 
         {/* Rank */}
-        <td style={{ ...cell, color: "#4a6080", width: 32 }}>{p.overall_rank}</td>
+        <td style={{ ...cell, color: "var(--bc-muted)", width: 32 }}>{p.overall_rank}</td>
 
         {/* Player name + uses badge */}
         <td style={{ ...cell, minWidth: 170 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ color: "#dde6f5", fontWeight: 600, fontSize: "0.88em" }}>{name}</span>
+            <span style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.88em" }}>{name}</span>
             {p.uses_remaining != null && (
               <span style={{
                 fontSize: "0.68em", fontWeight: 700,
@@ -275,13 +275,13 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
                 {p.uses_remaining}u
               </span>
             )}
-            <span style={{ fontSize: "0.68em", color: expanded ? "#00c44f" : "#2a4060", marginLeft: 2 }}>
+            <span style={{ fontSize: "0.68em", color: expanded ? "var(--bc-green)" : "#2a4060", marginLeft: 2 }}>
               {expanded ? "▲" : "▼"}
             </span>
           </div>
           <div style={{ display: "flex", gap: 4, marginTop: 2, flexWrap: "wrap" }}>
             {p.world_rank != null && (
-              <span style={{ fontSize: "0.7em", color: "#4a6080" }}>#{p.world_rank}</span>
+              <span style={{ fontSize: "0.7em", color: "var(--bc-muted)" }}>#{p.world_rank}</span>
             )}
             {!p.has_history && (
               <span style={{ fontSize: "0.68em", color: "#4a5060", background: "#0d1520", border: "1px solid #1e2a3a", borderRadius: 3, padding: "1px 5px" }}>
@@ -295,14 +295,14 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
         <td style={{ ...cell, textAlign: "center" }}>
           {p.venue_starts > 0 ? (
             <div style={{ fontSize: "0.82em" }}>
-              <span style={{ color: "#7a9ab8" }}>{p.venue_starts} starts</span>
+              <span style={{ color: "var(--bc-muted)" }}>{p.venue_starts} starts</span>
               {p.venue_top10s > 0 && (
-                <span style={{ marginLeft: 6, color: "#f0c040", fontWeight: 600 }}>
+                <span style={{ marginLeft: 6, color: "var(--bc-yellow)", fontWeight: 600 }}>
                   T10×{p.venue_top10s}
                 </span>
               )}
               {p.venue_wins > 0 && (
-                <span style={{ marginLeft: 4, color: "#00c44f", fontWeight: 700 }}>W</span>
+                <span style={{ marginLeft: 4, color: "var(--bc-green)", fontWeight: 700 }}>W</span>
               )}
             </div>
           ) : (
@@ -315,12 +315,12 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
           {p.has_history && p.course_starts != null ? (
             <div style={{ fontSize: "0.82em" }}>
               {p.avg_to_par != null && (
-                <span style={{ fontWeight: 600, color: p.avg_to_par < 0 ? "#00c44f" : "#e05555" }}>
+                <span style={{ fontWeight: 600, color: p.avg_to_par < 0 ? "var(--bc-green)" : "var(--bc-red)" }}>
                   {p.avg_to_par > 0 ? "+" : ""}{p.avg_to_par}
                 </span>
               )}
               {p.cut_rate != null && (
-                <span style={{ marginLeft: 6, fontSize: "0.85em", color: "#4a6080" }}>
+                <span style={{ marginLeft: 6, fontSize: "0.85em", color: "var(--bc-muted)" }}>
                   {Math.round(p.cut_rate * 100)}% cut
                 </span>
               )}
@@ -349,14 +349,14 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
         <td style={{ ...cell, textAlign: "right" }}>
           <span style={{
             fontSize: "0.88em", fontWeight: 600,
-            color: (p.dg_win ?? 0) > 0.08 ? "#00c44f" : (p.dg_win ?? 0) > 0.03 ? "#f0c040" : "#7a9ab8",
+            color: (p.dg_win ?? 0) > 0.08 ? "var(--bc-green)" : (p.dg_win ?? 0) > 0.03 ? "var(--bc-yellow)" : "var(--bc-muted)",
           }}>
             {p.dg_win != null ? fmtPct(p.dg_win) : "—"}
           </span>
         </td>
 
         {/* Model Win% */}
-        <td style={{ ...cell, textAlign: "right", fontWeight: 600, color: "#dde6f5" }}>
+        <td style={{ ...cell, textAlign: "right", fontWeight: 600, color: "var(--bc-text)" }}>
           {fmtPct(p.win_prob)}
         </td>
 
@@ -481,8 +481,8 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
         {(["boost", "model", "history"] as SortMode[]).map(mode => (
           <button key={mode} onClick={() => setSortMode(mode)} style={{
             background: sortMode === mode ? "#1a3a5f" : "#0d1929",
-            border: `1px solid ${sortMode === mode ? "#00c44f" : "#1e3a5f"}`,
-            color: sortMode === mode ? "#dde6f5" : "#7a9ab8",
+            border: `1px solid ${sortMode === mode ? "var(--bc-green)" : "var(--bc-line)"}`,
+            color: sortMode === mode ? "var(--bc-text)" : "var(--bc-muted)",
             borderRadius: 6, padding: "5px 12px", fontSize: "0.8em", cursor: "pointer",
           }}>
             {SORT_LABELS[mode]}
@@ -493,8 +493,8 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{
-            background: "#0d1929", border: "1px solid #1e3a5f", borderRadius: 6,
-            color: "#c8d8e8", padding: "5px 10px", fontSize: "0.8em",
+            background: "#0d1929", border: "1px solid var(--bc-line)", borderRadius: 6,
+            color: "var(--bc-text)", padding: "5px 10px", fontSize: "0.8em",
             outline: "none", marginLeft: "auto",
           }}
         />
@@ -502,12 +502,12 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
 
       {/* Min starts + uses legend */}
       <div style={{ display: "flex", gap: 6, marginBottom: 16, alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: "0.75em", color: "#4a6080", marginRight: 4 }}>Min starts:</span>
+        <span style={{ fontSize: "0.75em", color: "var(--bc-muted)", marginRight: 4 }}>Min starts:</span>
         {startCounts.map(({ n, count }) => (
           <button key={n} onClick={() => setMinStarts(n)} style={{
             background: minStarts === n ? "#1a2a40" : "#0d1929",
-            border: `1px solid ${minStarts === n ? "#7a9ab8" : "#1e3a5f"}`,
-            color: minStarts === n ? "#dde6f5" : "#4a6080",
+            border: `1px solid ${minStarts === n ? "var(--bc-muted)" : "var(--bc-line)"}`,
+            color: minStarts === n ? "var(--bc-text)" : "var(--bc-muted)",
             borderRadius: 5, padding: "3px 10px", fontSize: "0.77em", cursor: "pointer",
           }}>
             {n === 0 ? "All" : `${n}+`}
@@ -515,7 +515,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
           </button>
         ))}
         <div style={{ marginLeft: "auto", display: "flex", gap: 10, fontSize: "0.72em", alignItems: "center" }}>
-          <span style={{ color: "#4a6080" }}>Uses:</span>
+          <span style={{ color: "var(--bc-muted)" }}>Uses:</span>
           {[{ n: 2, label: "2 left" }, { n: 1, label: "1 left" }, { n: 0, label: "0 left" }].map(({ n, label }) => (
             <span key={n} style={{ color: usesColor(n) }}>
               <span style={{ fontWeight: 700 }}>{n}u</span> {label}
@@ -547,7 +547,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
           <tbody>
             {showSplit ? (
               <>
-                <SectionHeader label="Course suits" count={risers.length} color="#00c44f" />
+                <SectionHeader label="Course suits" count={risers.length} color="var(--bc-green)" />
                 {risers.map((p, i) => (
                   <PlayerRow
                     key={p.player_name} player={p} index={i}
@@ -556,7 +556,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
                     onToggle={() => toggleExpand(p.player_name)}
                   />
                 ))}
-                <SectionHeader label="Course hurts / no data" count={fallers.length} color="#e05555" />
+                <SectionHeader label="Course hurts / no data" count={fallers.length} color="var(--bc-red)" />
                 {fallers.map((p, i) => (
                   <PlayerRow
                     key={p.player_name} player={p} index={i}

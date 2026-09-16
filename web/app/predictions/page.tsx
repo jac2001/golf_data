@@ -29,15 +29,16 @@ import CourseCard from "@/components/CourseCard";
 import ModelComparison from "@/components/ModelComparison";
 import WeatherStrip from "@/components/WeatherStrip";
 import CourseFitTab from "@/components/CourseFitTab";
+import { PageHead, SubTabs } from "@/components/broadcast";
 type Tab = "field" | "lineup" | "teetimes" | "course" | "dg" | "coursefit";
 
-const TABS: { key: Tab; label: string }[] = [
-  { key: "field",     label: "Field"       },
-  { key: "lineup",    label: "Lineup"      },
-  { key: "teetimes",  label: "Tee Times"   },
-  { key: "course",    label: "Course"      },
-  { key: "dg",        label: "vs DG Model" },
-  { key: "coursefit", label: "Course Fit"  },
+const TABS: { id: Tab; label: string }[] = [
+  { id: "field",     label: "Field"        },
+  { id: "lineup",    label: "Lineup"       },
+  { id: "teetimes",  label: "Tee Times"    },
+  { id: "course",    label: "Course"       },
+  { id: "dg",        label: "Model vs DG"  },
+  { id: "coursefit", label: "Course Fit"   },
 ];
 
 export default function PredictionsPage() {
@@ -151,7 +152,7 @@ export default function PredictionsPage() {
   // ── Error / loading screens ───────────────────────────────────────────────────
   if (error) {
     return (
-      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 10, color: "#e74c3c" }}>
+      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 10, color: "var(--bc-red)" }}>
         <strong>Error</strong>
         <p style={{ margin: "8px 0 0", color: "#c0392b", fontSize: "0.9em" }}>{error}</p>
       </div>
@@ -162,36 +163,25 @@ export default function PredictionsPage() {
     <div className="page-wrap">
 
       {/* ── Tournament header ────────────────────────────────────────────── */}
-      <div style={{ marginBottom: 20 }}>
-        <h1 style={{ fontSize: "1.4em", fontWeight: 800, color: "#dde6f5", margin: 0 }}>
-          This Week
-        </h1>
-        {tournament ? (
-          <p style={{ color: "#7f8c8d", fontSize: "0.88em", margin: "4px 0 0" }}>
-            {tournament.name}
-            {tournament.current_round && ` · Round ${tournament.current_round}`}
-            {tournament.round_status && ` · ${tournament.round_status}`}
-            {tournament.leader_name  && ` · Leader: ${tournament.leader_name}`}
-            {tournament.leader_score != null && ` (${tournament.leader_score > 0 ? "+" : ""}${tournament.leader_score})`}
-            {lastUpdated && (
-              <span style={{ color: "#2a3a50", marginLeft: 10 }}>
-                · updated {lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-              </span>
-            )}
-          </p>
-        ) : (
-          <p style={{ color: "#3a5060", fontSize: "0.85em", margin: "4px 0 0" }}>Loading tournament…</p>
-        )}
-      </div>
+      <PageHead
+        kicker={[
+          tournament?.name ?? "Loading tournament…",
+          tournament?.current_round ? `Round ${tournament.current_round}` : null,
+          tournament?.round_status ?? null,
+          tournament?.leader_name ? `Leader: ${tournament.leader_name}` : null,
+          lastUpdated ? `updated ${lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : null,
+        ].filter(Boolean).join(" · ")}
+        title="Field Forecast"
+      />
 
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}
       {preds && !loadingField && (
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-          <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)} accent="#4cb8ff" />
+          <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)} accent="var(--bc-yellow)" />
           <GlanceCard
             label="Location"
             value={tournament?.location || "—"}
-            accent="#7ecf9e"
+            accent="var(--bc-green)"
           />
           <GlanceCard
             label="Purse"
@@ -202,19 +192,19 @@ export default function PredictionsPage() {
               const n = parseFloat(s);
               return isNaN(n) ? String(p) : `$${Math.round(n).toLocaleString()}`;
             })()}
-            accent="#f1c40f"
+            accent="var(--bc-yellow)"
           />
           <GlanceCard
             label="Defending Champ"
             value={tournament?.defending_champion || "—"}
             sub={tournament?.defending_champion_year ? `${tournament.defending_champion_year} winner` : undefined}
-            accent="#e67e22"
+            accent="var(--bc-orange)"
           />
           <GlanceCard
             label="Lineup Picks"
             value={lineup?.confirmed && lineup.picks.length ? lineup.picks.map(p => p.player_name.split(" ").pop()).join(", ") : "Not set"}
             sub={lineup?.confirmed ? "confirmed this week" : "no picks confirmed yet"}
-            accent="#9b59b6"
+            accent="var(--bc-orange)"
             onClick={() => setActiveTab("lineup")}
           />
           <FieldStrengthCard players={preds.players} />
@@ -235,24 +225,7 @@ export default function PredictionsPage() {
       )}
 
       {/* ── Tab switcher ─────────────────────────────────────────────────── */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 20, borderBottom: "1px solid #1e3a5f", paddingBottom: 0, flexWrap: "wrap" }}>
-        {TABS.map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => activateTab(tab.key)}
-            style={{
-              background: "transparent", borderTop: "none", borderLeft: "none", borderRight: "none",
-              borderBottom: `2px solid ${activeTab === tab.key ? "#00c44f" : "transparent"}`,
-              color: activeTab === tab.key ? "#dde6f5" : "#7f8c8d",
-              padding: "8px 16px", fontSize: "0.88em",
-              fontWeight: activeTab === tab.key ? 700 : 500,
-              cursor: "pointer", marginBottom: -1, transition: "color 0.15s",
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <SubTabs tabs={TABS} active={activeTab} onChange={activateTab} />
 
       {/* ── Tab content ──────────────────────────────────────────────────── */}
 
@@ -271,12 +244,12 @@ export default function PredictionsPage() {
       {activeTab === "lineup" && (
         loadingLineup ? <Spinner /> :
         lineup?.stale ? (
-          <div style={{ padding: "32px 24px", textAlign: "center", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
-            <div style={{ color: "#7a9ab8", fontSize: "0.95em", marginBottom: 8 }}>
+          <div style={{ padding: "32px 24px", textAlign: "center", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+            <div style={{ color: "var(--bc-muted)", fontSize: "0.95em", marginBottom: 8 }}>
               No lineup generated for this tournament yet.
             </div>
-            <div style={{ color: "#4a6080", fontSize: "0.8em", marginBottom: 20 }}>
-              Last generated for: <span style={{ color: "#5a7090" }}>{lineup.stale_tournament}</span>
+            <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginBottom: 20 }}>
+              Last generated for: <span style={{ color: "var(--bc-muted)" }}>{lineup.stale_tournament}</span>
             </div>
             <button
               onClick={async () => {
@@ -295,7 +268,7 @@ export default function PredictionsPage() {
               style={{
                 background: generatingLineup ? "#0d1929" : "#0a1f3a",
                 border: "1px solid #1e5a3f", borderRadius: 6,
-                color: generatingLineup ? "#4a6080" : "#00c44f",
+                color: generatingLineup ? "var(--bc-muted)" : "var(--bc-green)",
                 padding: "8px 20px", fontSize: "0.85em", fontWeight: 700,
                 cursor: generatingLineup ? "default" : "pointer",
               }}
@@ -303,7 +276,7 @@ export default function PredictionsPage() {
               {generatingLineup ? "Starting…" : "Generate Lineup"}
             </button>
             {generateMsg && (
-              <div style={{ marginTop: 12, color: "#f0c040", fontSize: "0.78em" }}>{generateMsg}</div>
+              <div style={{ marginTop: 12, color: "var(--bc-yellow)", fontSize: "0.78em" }}>{generateMsg}</div>
             )}
           </div>
         ) :
@@ -344,10 +317,10 @@ export default function PredictionsPage() {
               <div>
                 {dgMeta && (
                   <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14 }}>
-                    <span style={{ color: "#dde6f5", fontWeight: 700, fontSize: "1em" }}>
+                    <span style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "1em" }}>
                       vs DataGolf — {dgMeta.tournament_name}
                     </span>
-                    <span style={{ color: "#4a6080", fontSize: "0.78em" }}>{dgMeta.players_compared} players matched</span>
+                    <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>{dgMeta.players_compared} players matched</span>
                   </div>
                 )}
                 <ModelComparison players={dgComp} />
@@ -390,24 +363,24 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
 
   return (
     <div style={{
-      background: "#080f1e",
-      borderTop: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
-      borderLeft: `3px solid ${text ? "#00c44f" : "#2a3a4a"}`,
+      background: "var(--bc-panel)",
+      borderTop: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
+      borderLeft: `3px solid ${text ? "var(--bc-green)" : "var(--bc-line)"}`,
       borderRadius: 8,
       padding: "14px 18px",
       marginBottom: 20,
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: text ? 8 : 0 }}>
-        <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.07em" }}>
+        <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em" }}>
           Weekly Analysis
-          {generatedAt && text && <span style={{ marginLeft: 12, color: "#2a3a4a" }}>{generatedAt}</span>}
+          {generatedAt && text && <span style={{ marginLeft: 12, color: "var(--bc-line)" }}>{generatedAt}</span>}
         </div>
         <button
           onClick={rerun}
           disabled={running}
           style={{
-            background: "none", border: "1px solid #1e3a5f", borderRadius: 5,
-            color: running ? "#4a6080" : "#7a9ab8", fontSize: "0.75em",
+            background: "none", border: "1px solid var(--bc-line)", borderRadius: 5,
+            color: running ? "var(--bc-muted)" : "var(--bc-muted)", fontSize: "0.75em",
             padding: "3px 10px", cursor: running ? "default" : "pointer",
           }}
         >
@@ -415,12 +388,12 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
         </button>
       </div>
       {text
-        ? <p style={{ color: "#9ab0c8", fontSize: "0.88em", lineHeight: 1.65, margin: 0 }}>{text}</p>
-        : <p style={{ color: "#4a6080", fontSize: "0.84em", margin: 0, fontStyle: "italic" }}>
+        ? <p style={{ color: "var(--bc-muted)", fontSize: "0.88em", lineHeight: 1.65, margin: 0 }}>{text}</p>
+        : <p style={{ color: "var(--bc-muted)", fontSize: "0.84em", margin: 0, fontStyle: "italic" }}>
             No analysis for this week yet. Click Rerun to generate (~60 seconds).
           </p>
       }
-      {msg && <p style={{ color: "#f0c040", fontSize: "0.78em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
+      {msg && <p style={{ color: "var(--bc-yellow)", fontSize: "0.78em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
     </div>
   );
 }
@@ -442,11 +415,11 @@ function fieldStrength(players: PlayerPrediction[]): {
   const top50 = ranks.filter(r => r <= 50).length;
   const sorted = [...ranks].sort((a, b) => a - b);
   const medRank = sorted.length > 0 ? sorted[Math.floor(sorted.length / 2)] : 0;
-  let label = "Weak"; let color = "#4a6080";
-  if (top50 >= 40) { label = "Elite";      color = "#ffd700"; }
-  else if (top50 >= 28) { label = "Signature"; color = "#00c44f"; }
-  else if (top50 >= 18) { label = "Strong";    color = "#4cb8ff"; }
-  else if (top50 >= 10) { label = "Average";   color = "#aab8c8"; }
+  let label = "Weak"; let color = "var(--bc-muted)";
+  if (top50 >= 40) { label = "Elite";      color = "var(--bc-yellow)"; }
+  else if (top50 >= 28) { label = "Signature"; color = "var(--bc-green)"; }
+  else if (top50 >= 18) { label = "Strong";    color = "var(--bc-yellow)"; }
+  else if (top50 >= 10) { label = "Average";   color = "var(--bc-muted)"; }
   return { label, color, top10, top25, top50, medRank };
 }
 
@@ -454,8 +427,8 @@ function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
   const { label, color, top10, top25, top50, medRank } = fieldStrength(players);
   return (
     <div style={{
-      background: `linear-gradient(180deg, ${color}12 0%, #0d1a30 55%)`,
-      borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
+      background: `linear-gradient(180deg, ${color}12 0%, var(--bc-panel) 55%)`,
+      borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
       borderTop: `3px solid ${color}`,
       borderRadius: 8,
       padding: "12px 16px",
@@ -468,25 +441,25 @@ function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
       <div style={{ fontSize: "1.1em", fontWeight: 800, color, marginTop: 4 }}>
         {label}
       </div>
-      <div style={{ fontSize: "0.66em", color: "#4a6080", marginTop: 3 }}>
+      <div style={{ fontSize: "0.66em", color: "var(--bc-muted)", marginTop: 3 }}>
         {top10} top-10 · {top25} top-25 · {top50} top-50
       </div>
-      <div style={{ fontSize: "0.66em", color: "#3a5060", marginTop: 1 }}>
+      <div style={{ fontSize: "0.66em", color: "var(--bc-muted)", marginTop: 1 }}>
         Median rank #{medRank}
       </div>
     </div>
   );
 }
 
-function GlanceCard({ label, value, sub, accent = "#4cb8ff", onClick }: {
+function GlanceCard({ label, value, sub, accent = "var(--bc-yellow)", onClick }: {
   label: string; value: string; sub?: string; accent?: string; onClick?: () => void;
 }) {
   return (
     <div
       onClick={onClick}
       style={{
-        background: `linear-gradient(180deg, ${accent}12 0%, #0d1a30 55%)`,
-        borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
+        background: `linear-gradient(180deg, ${accent}12 0%, var(--bc-panel) 55%)`,
+        borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
         borderTop: `3px solid ${accent}`,
         borderRadius: 8,
         padding: "12px 16px",
@@ -496,18 +469,18 @@ function GlanceCard({ label, value, sub, accent = "#4cb8ff", onClick }: {
         transition: onClick ? "border-color 0.15s, background 0.15s" : undefined,
       }}
       onMouseEnter={onClick ? e => (e.currentTarget.style.borderColor = accent) : undefined}
-      onMouseLeave={onClick ? e => (e.currentTarget.style.borderColor = "#1e3a5f") : undefined}
+      onMouseLeave={onClick ? e => (e.currentTarget.style.borderColor = "var(--bc-line)") : undefined}
     >
       <div style={{ fontSize: "0.62em", color: `${accent}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
         {label}
       </div>
       <div style={{
-        fontSize: "1.1em", fontWeight: 800, color: "#dde6f5",
+        fontSize: "1.1em", fontWeight: 800, color: "var(--bc-text)",
         marginTop: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
       }}>
         {value}
       </div>
-      {sub && <div style={{ fontSize: "0.66em", color: "#4a6080", marginTop: 3 }}>{sub}</div>}
+      {sub && <div style={{ fontSize: "0.66em", color: "var(--bc-muted)", marginTop: 3 }}>{sub}</div>}
       {onClick && <div style={{ fontSize: "0.6em", color: `${accent}66`, marginTop: 4 }}>click to view</div>}
     </div>
   );
@@ -517,7 +490,7 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
   const [refreshing, setRefreshing] = useState(false);
   const [msg, setMsg] = useState("");
   const cc = intel.course_conditions;
-  const outlookColor = cc.scoring_outlook === "low" ? "#00c44f" : cc.scoring_outlook === "high" ? "#e74c3c" : "#f39c12";
+  const outlookColor = cc.scoring_outlook === "low" ? "var(--bc-green)" : cc.scoring_outlook === "high" ? "var(--bc-red)" : "var(--bc-orange)";
   const injuredCount = intel.players.filter(p => p.injury_flag).length;
 
   async function handleRefresh() {
@@ -534,60 +507,60 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
   }
 
   return (
-    <div style={{ background: "#080f1e", borderTop: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f", borderLeft: "3px solid #4cb8ff", borderRadius: 8, padding: "14px 18px", marginBottom: 16 }}>
+    <div style={{ background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)", borderLeft: "3px solid var(--bc-yellow)", borderRadius: 8, padding: "14px 18px", marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 8 }}>
         <div>
-          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>
+          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>
             Course Intel · {cc.course_name}
             {intel.age_hours != null && (
-              <span style={{ marginLeft: 10, color: "#2a3a4a" }}>as of {intel.age_hours.toFixed(0)}h ago</span>
+              <span style={{ marginLeft: 10, color: "var(--bc-line)" }}>as of {intel.age_hours.toFixed(0)}h ago</span>
             )}
           </div>
           <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 8 }}>
             {cc.rough_length && (
-              <span style={{ fontSize: "0.8em", color: "#8ba0b8" }}>
-                <span style={{ color: "#4a6080" }}>Rough </span>{cc.rough_length}
+              <span style={{ fontSize: "0.8em", color: "var(--bc-muted)" }}>
+                <span style={{ color: "var(--bc-muted)" }}>Rough </span>{cc.rough_length}
               </span>
             )}
             {cc.green_speed && (
-              <span style={{ fontSize: "0.8em", color: "#8ba0b8" }}>
-                <span style={{ color: "#4a6080" }}>Greens </span>{cc.green_speed}
+              <span style={{ fontSize: "0.8em", color: "var(--bc-muted)" }}>
+                <span style={{ color: "var(--bc-muted)" }}>Greens </span>{cc.green_speed}
               </span>
             )}
             <span style={{ fontSize: "0.8em" }}>
-              <span style={{ color: "#4a6080" }}>Scoring </span>
+              <span style={{ color: "var(--bc-muted)" }}>Scoring </span>
               <span style={{ color: outlookColor, fontWeight: 600, textTransform: "capitalize" }}>{cc.scoring_outlook}</span>
             </span>
             {injuredCount > 0 && (
-              <span style={{ fontSize: "0.8em", color: "#e74c3c", fontWeight: 600 }}>
+              <span style={{ fontSize: "0.8em", color: "var(--bc-red)", fontWeight: 600 }}>
                 {injuredCount} injury flag{injuredCount > 1 ? "s" : ""}
               </span>
             )}
           </div>
           {cc.setup_notes && (
-            <p style={{ color: "#7a90a8", fontSize: "0.82em", lineHeight: 1.6, margin: 0 }}>{cc.setup_notes}</p>
+            <p style={{ color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6, margin: 0 }}>{cc.setup_notes}</p>
           )}
         </div>
         <button
           onClick={handleRefresh}
           disabled={refreshing}
-          style={{ background: "none", border: "1px solid #1e3a5f", borderRadius: 5, color: refreshing ? "#4a6080" : "#7a9ab8", fontSize: "0.75em", padding: "3px 10px", cursor: refreshing ? "default" : "pointer", whiteSpace: "nowrap" }}
+          style={{ background: "none", border: "1px solid var(--bc-line)", borderRadius: 5, color: refreshing ? "var(--bc-muted)" : "var(--bc-muted)", fontSize: "0.75em", padding: "3px 10px", cursor: refreshing ? "default" : "pointer", whiteSpace: "nowrap" }}
         >
           {refreshing ? "Running…" : "Refresh Intel"}
         </button>
       </div>
-      {msg && <p style={{ color: "#f0c040", fontSize: "0.78em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
+      {msg && <p style={{ color: "var(--bc-yellow)", fontSize: "0.78em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
     </div>
   );
 }
 
 function Spinner() {
-  return <div style={{ color: "#7f8c8d", padding: "40px 0", textAlign: "center" }}>Loading…</div>;
+  return <div style={{ color: "var(--bc-muted)", padding: "40px 0", textAlign: "center" }}>Loading…</div>;
 }
 
 function Empty({ text }: { text: string }) {
   return (
-    <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+    <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
       {text}
     </div>
   );

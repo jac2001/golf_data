@@ -6,17 +6,17 @@ import { TeeTimesResponse } from "@/lib/api";
 type Props = { data: TeeTimesResponse; myPicks?: string[] };
 
 const DRIFT_ARROW: Record<string, { s: string; c: string }> = {
-  UP:       { s: "▲", c: "#e74c3c" },
-  DOWN:     { s: "▼", c: "#00c44f" },
+  UP:       { s: "▲", c: "var(--bc-red)" },
+  DOWN:     { s: "▼", c: "var(--bc-green)" },
   CONSTANT: { s: "→", c: "#3a5060" },
 };
 
 // Rank badge color
 function rankColor(rank: number | null): string {
   if (rank == null) return "#3a5060";
-  if (rank <= 5)  return "#f1c40f";
-  if (rank <= 15) return "#00c44f";
-  if (rank <= 30) return "#4cb8ff";
+  if (rank <= 5)  return "var(--bc-yellow)";
+  if (rank <= 15) return "var(--bc-green)";
+  if (rank <= 30) return "var(--bc-yellow)";
   return "#3a5060";
 }
 
@@ -28,7 +28,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
   const myPicksNorm = new Set(myPicks.map(normName));
   if (!data.groups.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No tee times available for Round {data.round ?? "—"}.
       </div>
     );
@@ -42,7 +42,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
   return (
     <div>
       {/* Summary strip */}
-      <div style={{ color: "#4a6080", fontSize: "0.75em", marginBottom: 14, display: "flex", gap: 16, flexWrap: "wrap" }}>
+      <div style={{ color: "var(--bc-muted)", fontSize: "0.75em", marginBottom: 14, display: "flex", gap: 16, flexWrap: "wrap" }}>
         <span>Round {data.round}</span>
         <span>·</span>
         <span>{data.groups.length} tee times</span>
@@ -51,7 +51,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
         {usePlayers.length > 0 && (
           <>
             <span>·</span>
-            <span style={{ color: "#00c44f", fontWeight: 700 }}>
+            <span style={{ color: "var(--bc-green)", fontWeight: 700 }}>
               {usePlayers.length} high-edge player{usePlayers.length !== 1 ? "s" : ""}
             </span>
           </>
@@ -64,18 +64,18 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
           const hasUse = group.players.some(p => p.edge != null && p.edge > 3);
           return (
             <div key={group.tee_time} style={{
-              background: "#0d1a30",
-              border: `1px solid ${hasUse ? "#00c44f44" : "#1e3a5f"}`,
+              background: "var(--bc-panel)",
+              border: `1px solid ${hasUse ? "var(--bc-green)44" : "var(--bc-line)"}`,
               borderRadius: 8, overflow: "hidden",
             }}>
               {/* Tee time header */}
               <div style={{
                 background: hasUse ? "#0a1e14" : "#0a1628",
                 padding: "6px 12px",
-                borderBottom: `1px solid ${hasUse ? "#00c44f33" : "#1e3a5f"}`,
+                borderBottom: `1px solid ${hasUse ? "var(--bc-green)33" : "var(--bc-line)"}`,
                 display: "flex", justifyContent: "space-between", alignItems: "center",
               }}>
-                <span style={{ color: hasUse ? "#00c44f" : "#4cb8ff", fontWeight: 700, fontSize: "0.85em" }}>
+                <span style={{ color: hasUse ? "var(--bc-green)" : "var(--bc-yellow)", fontWeight: 700, fontSize: "0.85em" }}>
                   {group.tee_time}
                 </span>
                 <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -85,7 +85,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                     </span>
                   )}
                   {hasUse && (
-                    <span style={{ fontSize: "0.6em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", padding: "2px 5px", borderRadius: 3, border: "1px solid #00c44f33" }}>
+                    <span style={{ fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", padding: "2px 5px", borderRadius: 3, border: "1px solid var(--bc-green)33" }}>
                       VALUE
                     </span>
                   )}
@@ -110,17 +110,17 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                 const drift = DRIFT_ARROW[p.drift] ?? null;
                 const isEdge = p.edge != null && p.edge > 3;
                 const isPick = myPicksNorm.has(normName(p.name));
-                const formColor = (p.form_trend ?? 0) > 0.2 ? "#00c44f"
-                  : (p.form_trend ?? 0) < -0.1 ? "#e74c3c" : "#4a6080";
+                const formColor = (p.form_trend ?? 0) > 0.2 ? "var(--bc-green)"
+                  : (p.form_trend ?? 0) < -0.1 ? "var(--bc-red)" : "var(--bc-muted)";
                 const rColor = rankColor(p.model_rank);
                 const edgeColor = p.edge == null ? "#3a5060"
-                  : p.edge > 5 ? "#00c44f" : p.edge > 2 ? "#f39c12" : "#3a5060";
+                  : p.edge > 5 ? "var(--bc-green)" : p.edge > 2 ? "#f39c12" : "#3a5060";
 
                 return (
                   <div key={p.name} style={{
                     padding: "8px 12px",
                     borderBottom: i < group.players.length - 1 ? "1px solid #0f2236" : "none",
-                    borderLeft: isPick ? "2px solid #00c44f" : isEdge ? "2px solid #f1c40f" : "2px solid transparent",
+                    borderLeft: isPick ? "2px solid var(--bc-green)" : isEdge ? "2px solid var(--bc-yellow)" : "2px solid transparent",
                     background: isPick ? "#091a0f" : isEdge ? "#0a1a10" : "transparent",
                     display: "flex", justifyContent: "space-between", alignItems: "center",
                   }}>
@@ -128,7 +128,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                     <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
                       <span style={{
                         fontSize: "0.62em", fontWeight: 800, color: rColor,
-                        background: "#0a1220", padding: "2px 5px", borderRadius: 3,
+                        background: "var(--bc-panel)", padding: "2px 5px", borderRadius: 3,
                         minWidth: 28, textAlign: "center", flexShrink: 0,
                         border: `1px solid ${rColor}33`,
                       }}>
@@ -139,21 +139,21 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           <Link
                             href={`/players?player=${encodeURIComponent(p.name)}`}
                             style={{
-                              color: isPick ? "#00c44f" : isEdge ? "#dde6f5" : "#c0cce0",
+                              color: isPick ? "var(--bc-green)" : isEdge ? "var(--bc-text)" : "#c0cce0",
                               fontWeight: isPick || isEdge ? 700 : 600,
                               fontSize: "0.85em",
                               whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                               textDecoration: "none",
                             }}
-                            onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-                            onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : isEdge ? "#dde6f5" : "#c0cce0")}
+                            onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
+                            onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : isEdge ? "var(--bc-text)" : "#c0cce0")}
                           >
                             {p.name}
                           </Link>
                           {isPick && (
                             <span style={{
-                              fontSize: "0.58em", fontWeight: 800, color: "#00c44f",
-                              background: "#0d2e18", border: "1px solid #00c44f44",
+                              fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)",
+                              background: "#0d2e18", border: "1px solid var(--bc-green)44",
                               borderRadius: 3, padding: "1px 4px", whiteSpace: "nowrap", flexShrink: 0,
                             }}>MY PICK</span>
                           )}
@@ -175,11 +175,11 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                     {/* Right: Win% · Top10% · Edge */}
                     <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 8 }}>
                       <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "baseline" }}>
-                        <span style={{ color: "#00c44f", fontWeight: 700, fontSize: "0.82em" }}>
+                        <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "0.82em" }}>
                           {p.win_prob != null ? `${p.win_prob.toFixed(1)}%` : "—"}
                         </span>
                         {p.top10_prob != null && (
-                          <span style={{ color: "#4a6080", fontSize: "0.72em" }}>
+                          <span style={{ color: "var(--bc-muted)", fontSize: "0.72em" }}>
                             {p.top10_prob.toFixed(0)}%
                           </span>
                         )}

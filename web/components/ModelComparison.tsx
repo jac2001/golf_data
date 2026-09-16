@@ -5,17 +5,17 @@ import { ModelCompPlayer } from "@/lib/api";
 
 type Props = { players: ModelCompPlayer[] };
 
-const GREEN  = "#00c44f";
-const BLUE   = "#4cb8ff";
-const BORDER = "#1e3a5f";
-const MUTED  = "#4a6080";
-const TEXT   = "#dde6f5";
+const GREEN  = "var(--bc-green)";
+const BLUE   = "var(--bc-yellow)";
+const BORDER = "var(--bc-line)";
+const MUTED  = "var(--bc-muted)";
+const TEXT   = "var(--bc-text)";
 
 const playerLink = (name: string, style?: React.CSSProperties) => (
   <Link
     href={`/players?player=${encodeURIComponent(name)}`}
     style={{ textDecoration: "none", color: "inherit", ...style }}
-    onMouseEnter={e => (e.currentTarget.style.color = "#00c44f")}
+    onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-green)")}
     onMouseLeave={e => (e.currentTarget.style.color = style?.color ?? TEXT)}
   >
     {name}
@@ -33,7 +33,7 @@ function splitBar(a: number | null, b: number | null): [number, number] {
 export default function ModelComparison({ players }: Props) {
   if (!players.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: `1px solid ${BORDER}`, borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-panel)", border: `1px solid ${BORDER}`, borderRadius: 10 }}>
         No comparison data available.
       </div>
     );
@@ -68,7 +68,7 @@ export default function ModelComparison({ players }: Props) {
             ))}
           </div>
           {/* DG prefers */}
-          <div style={{ background: "#0a1220", border: `1px solid ${BLUE}33`, borderRadius: 8, padding: "12px 14px" }}>
+          <div style={{ background: "var(--bc-panel)", border: `1px solid ${BLUE}33`, borderRadius: 8, padding: "12px 14px" }}>
             <div style={{ fontSize: "0.65em", fontWeight: 700, color: BLUE, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
               DG ranks higher than us
             </div>
@@ -89,7 +89,7 @@ export default function ModelComparison({ players }: Props) {
 
       {/* Main table */}
       <div style={{ overflowX: "auto", border: `1px solid ${BORDER}`, borderRadius: 10 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
               {[
@@ -116,7 +116,7 @@ export default function ModelComparison({ players }: Props) {
           </thead>
           <tbody>
             {players.map((p, i) => {
-              const bg      = i % 2 === 0 ? "#0d1a30" : "#0a1525";
+              const bg      = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
               const delta   = p.delta ?? 0;
               const weUp    = delta > 3;
               const dgUp    = delta < -3;
@@ -157,7 +157,7 @@ export default function ModelComparison({ players }: Props) {
                       </span>
                       <div style={{ display: "grid", gridTemplateColumns: `${wA.toFixed(1)}fr ${wB.toFixed(1)}fr`, height: 7, borderRadius: 4, overflow: "hidden" }}>
                         <div style={{ background: weUp ? GREEN : "#0d2e18" }} />
-                        <div style={{ background: dgUp ? BLUE : "#0d1e30" }} />
+                        <div style={{ background: dgUp ? BLUE : "var(--bc-card)" }} />
                       </div>
                       <span style={{ color: BLUE, fontWeight: dgUp ? 700 : 400, fontSize: "0.88em" }}>
                         {p.dg_win != null ? `${p.dg_win.toFixed(1)}%` : "—"}
@@ -173,7 +173,7 @@ export default function ModelComparison({ players }: Props) {
                       </span>
                       <div style={{ display: "grid", gridTemplateColumns: `${tA.toFixed(1)}fr ${tB.toFixed(1)}fr`, height: 7, borderRadius: 4, overflow: "hidden" }}>
                         <div style={{ background: weUp ? GREEN : "#0d2e18" }} />
-                        <div style={{ background: dgUp ? BLUE : "#0d1e30" }} />
+                        <div style={{ background: dgUp ? BLUE : "var(--bc-card)" }} />
                       </div>
                       <span style={{ color: BLUE, fontWeight: dgUp ? 700 : 400, fontSize: "0.88em" }}>
                         {p.dg_top10 != null ? `${p.dg_top10.toFixed(1)}%` : "—"}

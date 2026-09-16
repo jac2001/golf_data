@@ -6,12 +6,12 @@ type Props = { data: CourseResponse };
 
 // Returns a color based on vs-par difficulty
 function diffColor(diff: number | null): string {
-  if (diff == null) return "#4a6080";
-  if (diff >  0.5)  return "#e74c3c";
+  if (diff == null) return "var(--bc-muted)";
+  if (diff >  0.5)  return "var(--bc-red)";
   if (diff >  0.2)  return "#f39c12";
-  if (diff > -0.1)  return "#5a7090";
+  if (diff > -0.1)  return "var(--bc-muted)";
   if (diff > -0.3)  return "#27ae60";
-  return "#00c44f";
+  return "var(--bc-green)";
 }
 
 function diffLabel(diff: number | null): string {
@@ -44,12 +44,12 @@ function BirdieBogeyBar({ birdies, bogeys }: { birdies: number | null; bogeys: n
     <div style={{ display: "flex", gap: 4, alignItems: "center", width: "100%", minWidth: 120 }}>
       {/* Birdie bar — grows right from center */}
       <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-        <div style={{ width: `${bPct}%`, minWidth: b > 0 ? 4 : 0, height: 6, background: "#00c44f", borderRadius: 3 }} />
+        <div style={{ width: `${bPct}%`, minWidth: b > 0 ? 4 : 0, height: 6, background: "var(--bc-green)", borderRadius: 3 }} />
       </div>
-      <div style={{ width: 1, height: 10, background: "#1e3a5f", flexShrink: 0 }} />
+      <div style={{ width: 1, height: 10, background: "var(--bc-line)", flexShrink: 0 }} />
       {/* Bogey bar — grows left from center */}
       <div style={{ flex: 1 }}>
-        <div style={{ width: `${bgPct}%`, minWidth: bg > 0 ? 4 : 0, height: 6, background: "#e74c3c", borderRadius: 3 }} />
+        <div style={{ width: `${bgPct}%`, minWidth: bg > 0 ? 4 : 0, height: 6, background: "var(--bc-red)", borderRadius: 3 }} />
       </div>
     </div>
   );
@@ -58,7 +58,7 @@ function BirdieBogeyBar({ birdies, bogeys }: { birdies: number | null; bogeys: n
 function HoleRow({ hole, isAlt }: { hole: CourseHole; isAlt: boolean }) {
   const diff = hole.scoring_diff;
   const dColor = diffColor(diff);
-  const bg = isAlt ? "#0a1525" : "#0d1a30";
+  const bg = isAlt ? "var(--bc-panel)" : "var(--bc-panel)";
 
   return (
     <tr style={{ background: bg }}>
@@ -66,22 +66,22 @@ function HoleRow({ hole, isAlt }: { hole: CourseHole; isAlt: boolean }) {
       <td style={{ width: 3, padding: 0, background: dColor }} />
 
       {/* Hole number */}
-      <td style={{ ...cell, color: "#4cb8ff", fontWeight: 700, width: 36 }}>
+      <td style={{ ...cell, color: "var(--bc-yellow)", fontWeight: 700, width: 36 }}>
         {hole.hole_num}
       </td>
 
       {/* Par */}
-      <td style={{ ...cell, color: "#8ba0b8", width: 36 }}>
+      <td style={{ ...cell, color: "var(--bc-muted)", width: 36 }}>
         {hole.hole_par}
       </td>
 
       {/* Yards */}
-      <td style={{ ...cell, color: "#7f8c8d", width: 60 }}>
+      <td style={{ ...cell, color: "var(--bc-muted)", width: 60 }}>
         {hole.hole_yards ?? "—"}
       </td>
 
       {/* Avg score */}
-      <td style={{ ...cell, color: "#dde6f5", width: 72 }}>
+      <td style={{ ...cell, color: "var(--bc-text)", width: 72 }}>
         {fmt(hole.scoring_avg)}
       </td>
 
@@ -98,11 +98,11 @@ function HoleRow({ hole, isAlt }: { hole: CourseHole; isAlt: boolean }) {
       {/* Birdie vs Bogey visual bar */}
       <td style={{ ...cell, minWidth: 160, paddingLeft: 10, paddingRight: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: "0.72em", color: "#00c44f", width: 36, textAlign: "right", flexShrink: 0 }}>
+          <span style={{ fontSize: "0.72em", color: "var(--bc-green)", width: 36, textAlign: "right", flexShrink: 0 }}>
             {hole.birdies != null ? `${hole.birdies.toFixed(0)}%` : "—"}
           </span>
           <BirdieBogeyBar birdies={hole.birdies} bogeys={hole.bogeys} />
-          <span style={{ fontSize: "0.72em", color: "#e74c3c", width: 36, flexShrink: 0 }}>
+          <span style={{ fontSize: "0.72em", color: "var(--bc-red)", width: 36, flexShrink: 0 }}>
             {hole.bogeys != null ? `${hole.bogeys.toFixed(0)}%` : "—"}
           </span>
         </div>
@@ -121,13 +121,13 @@ function NineSubtotal({ holes, label }: { holes: CourseHole[]; label: string }) 
   const par   = holes.reduce((s, h) => s + (h.hole_par   ?? 0), 0);
   const avgSum = holes.reduce((s, h) => s + (h.scoring_avg ?? 0), 0);
   return (
-    <tr style={{ background: "#0a1628", borderTop: "1px solid #1e3a5f" }}>
+    <tr style={{ background: "#0a1628", borderTop: "1px solid var(--bc-line)" }}>
       <td style={{ width: 3, padding: 0 }} />
-      <td colSpan={2} style={{ ...cell, color: "#4a6080", fontWeight: 700, fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <td colSpan={2} style={{ ...cell, color: "var(--bc-muted)", fontWeight: 700, fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </td>
-      <td style={{ ...cell, color: "#7f8c8d", fontWeight: 600 }}>{yards}</td>
-      <td style={{ ...cell, color: "#dde6f5", fontWeight: 600 }}>{fmt(avgSum)}</td>
+      <td style={{ ...cell, color: "var(--bc-muted)", fontWeight: 600 }}>{yards}</td>
+      <td style={{ ...cell, color: "var(--bc-text)", fontWeight: 600 }}>{fmt(avgSum)}</td>
       <td colSpan={4} style={{ ...cell, color: "#3a5060", fontSize: "0.75em" }}>par {par}</td>
     </tr>
   );
@@ -136,7 +136,7 @@ function NineSubtotal({ holes, label }: { holes: CourseHole[]; label: string }) 
 export default function CourseCard({ data }: Props) {
   if (!data.holes.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No course data available.
       </div>
     );
@@ -158,37 +158,37 @@ export default function CourseCard({ data }: Props) {
 
       {/* Header strip */}
       <div style={{
-        background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: "10px 10px 0 0",
+        background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: "10px 10px 0 0",
         padding: "14px 18px", display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start",
       }}>
         <div style={{ flex: 1, minWidth: 160 }}>
-          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.06em" }}>Course</div>
-          <div style={{ color: "#dde6f5", fontWeight: 800, fontSize: "1em", marginTop: 2 }}>{data.course_name || "—"}</div>
-          <div style={{ color: "#5a7090", fontSize: "0.75em", marginTop: 4 }}>
+          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Course</div>
+          <div style={{ color: "var(--bc-text)", fontWeight: 800, fontSize: "1em", marginTop: 2 }}>{data.course_name || "—"}</div>
+          <div style={{ color: "var(--bc-muted)", fontSize: "0.75em", marginTop: 4 }}>
             Par {data.par ?? "—"} &nbsp;·&nbsp; {data.yardage?.toLocaleString() ?? "—"} yards
           </div>
         </div>
 
         {/* Hardest / easiest callouts */}
         {hardest && (
-          <Callout label="Hardest Hole" hole={hardest} color="#e74c3c" />
+          <Callout label="Hardest Hole" hole={hardest} color="var(--bc-red)" />
         )}
         {easiest && (
-          <Callout label="Easiest Hole" hole={easiest} color="#00c44f" />
+          <Callout label="Easiest Hole" hole={easiest} color="var(--bc-green)" />
         )}
 
         {/* Legend */}
         <div style={{ fontSize: "0.65em", color: "#2a4060", display: "flex", gap: 10, alignSelf: "flex-end", flexWrap: "wrap" }}>
-          <span><span style={{ color: "#00c44f" }}>■</span> Birdie%</span>
-          <span><span style={{ color: "#e74c3c" }}>■</span> Bogey%</span>
+          <span><span style={{ color: "var(--bc-green)" }}>■</span> Birdie%</span>
+          <span><span style={{ color: "var(--bc-red)" }}>■</span> Bogey%</span>
           <span><span style={{ color: "#f39c12" }}>■</span> Hard</span>
-          <span><span style={{ color: "#e74c3c" }}>■</span> Very hard</span>
+          <span><span style={{ color: "var(--bc-red)" }}>■</span> Very hard</span>
         </div>
       </div>
 
       {/* Table */}
-      <div style={{ overflowX: "auto", borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f", borderTop: "none", borderRadius: "0 0 10px 10px" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+      <div style={{ overflowX: "auto", borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)", borderTop: "none", borderRadius: "0 0 10px 10px" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr style={{ background: "#0a1628" }}>
               <th style={{ width: 3, padding: 0 }} />
@@ -199,9 +199,9 @@ export default function CourseCard({ data }: Props) {
               <th style={{ ...th }}>vs Par</th>
               <th style={{ ...th }}></th>
               <th style={{ ...th, textAlign: "center", minWidth: 180 }}>
-                <span style={{ color: "#00c44f" }}>Birdie</span>
+                <span style={{ color: "var(--bc-green)" }}>Birdie</span>
                 <span style={{ color: "#3a5060", margin: "0 6px" }}>·</span>
-                <span style={{ color: "#e74c3c" }}>Bogey</span>
+                <span style={{ color: "var(--bc-red)" }}>Bogey</span>
               </th>
               <th style={{ ...th }}>Rank</th>
             </tr>
@@ -231,16 +231,16 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
   // Color a round's average relative to the other 3 rounds at this course —
   // not vs par, since we don't have reliable per-round par history here.
   function roundColor(v: number | null): string {
-    if (v == null || minR == null || maxR == null || minR === maxR) return "#8ba0b8";
+    if (v == null || minR == null || maxR == null || minR === maxR) return "var(--bc-muted)";
     const t = (v - minR) / (maxR - minR); // 0 = easiest round, 1 = toughest
-    return t > 0.66 ? "#e74c3c" : t > 0.33 ? "#f39c12" : "#00c44f";
+    return t > 0.66 ? "var(--bc-red)" : t > 0.33 ? "#f39c12" : "var(--bc-green)";
   }
 
   return (
-    <div style={{ marginBottom: 16, background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10, padding: "16px 18px" }}>
+    <div style={{ marginBottom: 16, background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, padding: "16px 18px" }}>
       <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
-        <span style={{ color: "#dde6f5", fontWeight: 800, fontSize: "0.95em" }}>Course History</span>
-        <span style={{ color: "#4a6080", fontSize: "0.75em" }}>
+        <span style={{ color: "var(--bc-text)", fontWeight: 800, fontSize: "0.95em" }}>Course History</span>
+        <span style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
           {history.editions} past edition{history.editions !== 1 ? "s" : ""}
           {history.years.length > 0 && ` · ${history.years[0]}–${history.years[history.years.length - 1]}`}
         </span>
@@ -248,8 +248,8 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
 
       {unplayedCount > 0 && (
         <div style={{
-          background: "#0a1525", border: "1px solid #1e3a5f", borderRadius: 6,
-          padding: "6px 10px", marginBottom: 14, fontSize: "0.75em", color: "#7a9ab8",
+          background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
+          padding: "6px 10px", marginBottom: 14, fontSize: "0.75em", color: "var(--bc-muted)",
         }}>
           {unplayedCount} hole{unplayedCount > 1 ? "s" : ""} below {unplayedCount > 1 ? "haven't" : "hasn't"} been played yet this week (showing —) —
           the trends here are how this course has played across {history.editions} past edition{history.editions !== 1 ? "s" : ""} in the meantime.
@@ -259,13 +259,13 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
       <div style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
         {/* Round-by-round average score */}
         <div style={{ minWidth: 220 }}>
-          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
             Avg Score by Round
           </div>
           <div style={{ display: "flex", gap: 14 }}>
             {([["R1", r.r1], ["R2", r.r2], ["R3", r.r3], ["R4", r.r4]] as const).map(([label, v]) => (
               <div key={label} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "0.65em", color: "#5a7090", marginBottom: 2 }}>{label}</div>
+                <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginBottom: 2 }}>{label}</div>
                 <div style={{ fontSize: "1.05em", fontWeight: 800, color: roundColor(v) }}>{v != null ? v.toFixed(1) : "—"}</div>
               </div>
             ))}
@@ -274,21 +274,21 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
 
         {/* Scoring distribution */}
         <div style={{ minWidth: 220 }}>
-          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
             Avg Per Round
           </div>
           <div style={{ display: "flex", gap: 18 }}>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "0.65em", color: "#00c44f", marginBottom: 2 }}>Birdies</div>
-              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "#00c44f" }}>{sd.avg_birdies != null ? sd.avg_birdies.toFixed(2) : "—"}</div>
+              <div style={{ fontSize: "0.65em", color: "var(--bc-green)", marginBottom: 2 }}>Birdies</div>
+              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "var(--bc-green)" }}>{sd.avg_birdies != null ? sd.avg_birdies.toFixed(2) : "—"}</div>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "0.65em", color: "#e74c3c", marginBottom: 2 }}>Bogeys</div>
-              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "#e74c3c" }}>{sd.avg_bogeys != null ? sd.avg_bogeys.toFixed(2) : "—"}</div>
+              <div style={{ fontSize: "0.65em", color: "var(--bc-red)", marginBottom: 2 }}>Bogeys</div>
+              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "var(--bc-red)" }}>{sd.avg_bogeys != null ? sd.avg_bogeys.toFixed(2) : "—"}</div>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "0.65em", color: "#f1c40f", marginBottom: 2 }}>Eagles</div>
-              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "#f1c40f" }}>{sd.avg_eagles != null ? sd.avg_eagles.toFixed(2) : "—"}</div>
+              <div style={{ fontSize: "0.65em", color: "var(--bc-yellow)", marginBottom: 2 }}>Eagles</div>
+              <div style={{ fontSize: "1.05em", fontWeight: 800, color: "var(--bc-yellow)" }}>{sd.avg_eagles != null ? sd.avg_eagles.toFixed(2) : "—"}</div>
             </div>
           </div>
         </div>
@@ -297,18 +297,18 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
       {/* Winning score trend */}
       {winning_scores.length > 0 && (
         <div style={{ marginTop: 18 }}>
-          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
             Winning Score by Year
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {winning_scores.map(w => (
               <div key={w.year} style={{
-                background: "#081220", border: "1px solid #1e3a5f", borderRadius: 6,
+                background: "#081220", border: "1px solid var(--bc-line)", borderRadius: 6,
                 padding: "6px 10px", minWidth: 86, textAlign: "center",
               }}>
-                <div style={{ fontSize: "0.62em", color: "#4a6080" }}>{w.year}</div>
-                <div style={{ fontSize: "0.95em", fontWeight: 800, color: "#00c44f", marginTop: 2 }}>{w.to_par || "—"}</div>
-                <div style={{ fontSize: "0.65em", color: "#7f8c8d", marginTop: 2, whiteSpace: "nowrap" }}>{w.winner_name}</div>
+                <div style={{ fontSize: "0.62em", color: "var(--bc-muted)" }}>{w.year}</div>
+                <div style={{ fontSize: "0.95em", fontWeight: 800, color: "var(--bc-green)", marginTop: 2 }}>{w.to_par || "—"}</div>
+                <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginTop: 2, whiteSpace: "nowrap" }}>{w.winner_name}</div>
               </div>
             ))}
           </div>
@@ -321,9 +321,9 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
 function Callout({ label, hole, color }: { label: string; hole: CourseHole; color: string }) {
   return (
     <div style={{ background: `${color}11`, border: `1px solid ${color}33`, borderRadius: 8, padding: "8px 14px", minWidth: 100 }}>
-      <div style={{ fontSize: "0.6em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</div>
+      <div style={{ fontSize: "0.6em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</div>
       <div style={{ fontWeight: 800, color, fontSize: "1.1em", marginTop: 2 }}>Hole {hole.hole_num}</div>
-      <div style={{ fontSize: "0.72em", color: "#7f8c8d", marginTop: 2 }}>
+      <div style={{ fontSize: "0.72em", color: "var(--bc-muted)", marginTop: 2 }}>
         Par {hole.hole_par} · {fmtDiff(hole.scoring_diff)} vs par
       </div>
     </div>
@@ -331,9 +331,9 @@ function Callout({ label, hole, color }: { label: string; hole: CourseHole; colo
 }
 
 const th: React.CSSProperties = {
-  color: "#5a7090", fontSize: "0.65em", fontWeight: 700,
+  color: "var(--bc-muted)", fontSize: "0.65em", fontWeight: 700,
   textTransform: "uppercase", letterSpacing: "0.05em",
-  padding: "6px 8px", borderBottom: "1px solid #1e3a5f",
+  padding: "6px 8px", borderBottom: "1px solid var(--bc-line)",
   textAlign: "center", whiteSpace: "nowrap",
 };
 

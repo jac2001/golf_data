@@ -6,14 +6,14 @@ type Props = { days: WeatherDay[]; savedAt?: string };
 
 // Condition code → short label + color
 function conditionMeta(code: string): { label: string; color: string; icon: string } {
-  if (code.includes("SUNNY"))          return { label: "Sunny",         color: "#f1c40f", icon: "◎" };
+  if (code.includes("SUNNY"))          return { label: "Sunny",         color: "var(--bc-yellow)", icon: "◎" };
   if (code.includes("PARTLY_CLOUDY")) return { label: "Partly Cloudy", color: "#7fb8d4", icon: "◑" };
-  if (code.includes("CLOUDY"))         return { label: "Cloudy",        color: "#7f8c8d", icon: "●" };
-  if (code.includes("RAIN") || code.includes("SHOWER")) return { label: "Rain", color: "#4cb8ff", icon: "↓" };
-  if (code.includes("THUNDER") || code.includes("STORM")) return { label: "Storms", color: "#e74c3c", icon: "!" };
-  if (code.includes("SNOW"))           return { label: "Snow",          color: "#dde6f5", icon: "*" };
-  if (code.includes("FOG"))            return { label: "Foggy",         color: "#5a7090", icon: "~" };
-  return                                      { label: "Mixed",          color: "#8ba0b8", icon: "◌" };
+  if (code.includes("CLOUDY"))         return { label: "Cloudy",        color: "var(--bc-muted)", icon: "●" };
+  if (code.includes("RAIN") || code.includes("SHOWER")) return { label: "Rain", color: "var(--bc-yellow)", icon: "↓" };
+  if (code.includes("THUNDER") || code.includes("STORM")) return { label: "Storms", color: "var(--bc-red)", icon: "!" };
+  if (code.includes("SNOW"))           return { label: "Snow",          color: "var(--bc-text)", icon: "*" };
+  if (code.includes("FOG"))            return { label: "Foggy",         color: "var(--bc-muted)", icon: "~" };
+  return                                      { label: "Mixed",          color: "var(--bc-muted)", icon: "◌" };
 }
 
 // Wind direction → short compass label
@@ -29,8 +29,8 @@ function windLabel(dir: string): string {
 // Precipitation % → color
 function precipColor(pct: string): string {
   const n = parseInt(pct);
-  if (isNaN(n)) return "#4a6080";
-  if (n >= 50) return "#4cb8ff";
+  if (isNaN(n)) return "var(--bc-muted)";
+  if (n >= 50) return "var(--bc-yellow)";
   if (n >= 25) return "#7fb8d4";
   return "#3a5060";
 }
@@ -39,15 +39,15 @@ function DayCard({ day }: { day: WeatherDay }) {
   const { label, color, icon } = conditionMeta(day.condition);
   const pColor = precipColor(day.precip_pct);
   const windNum = parseInt(day.wind_mph);
-  const windColor = windNum >= 15 ? "#f39c12" : windNum >= 10 ? "#8ba0b8" : "#4a6080";
+  const windColor = windNum >= 15 ? "#f39c12" : windNum >= 10 ? "var(--bc-muted)" : "var(--bc-muted)";
 
   return (
     <div style={{
-      background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 8,
+      background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
       padding: "10px 14px", flex: "1 1 100px", minWidth: 90,
     }}>
       {/* Day label */}
-      <div style={{ fontSize: "0.68em", fontWeight: 700, color: "#5a7090", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
+      <div style={{ fontSize: "0.68em", fontWeight: 700, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
         {day.day}
       </div>
 
@@ -58,9 +58,9 @@ function DayCard({ day }: { day: WeatherDay }) {
       </div>
 
       {/* Temp range */}
-      <div style={{ fontSize: "0.82em", fontWeight: 700, color: "#dde6f5", marginBottom: 4 }}>
+      <div style={{ fontSize: "0.82em", fontWeight: 700, color: "var(--bc-text)", marginBottom: 4 }}>
         {day.high_f}
-        <span style={{ color: "#4a6080", fontWeight: 400, fontSize: "0.85em" }}>
+        <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.85em" }}>
           {" "}/{" "}{day.low_f}
         </span>
       </div>

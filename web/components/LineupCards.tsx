@@ -10,17 +10,17 @@ type Props = {
 };
 
 const TIER_COLOR: Record<string, string> = {
-  elite:    "#f1c40f",
-  great:    "#00c44f",
-  good:     "#4cb8ff",
+  elite:    "var(--bc-yellow)",
+  great:    "var(--bc-green)",
+  good:     "var(--bc-yellow)",
   value:    "#9b59b6",
   longshot: "#e67e22",
 };
 
 const DRIFT_ARROW: Record<string, { symbol: string; color: string }> = {
-  UP:       { symbol: "▲", color: "#e74c3c" },
-  DOWN:     { symbol: "▼", color: "#00c44f" },
-  CONSTANT: { symbol: "→", color: "#4a6080" },
+  UP:       { symbol: "▲", color: "var(--bc-red)" },
+  DOWN:     { symbol: "▼", color: "var(--bc-green)" },
+  CONSTANT: { symbol: "→", color: "var(--bc-muted)" },
 };
 
 function UsePips({ count }: { count: number | null }) {
@@ -31,12 +31,12 @@ function UsePips({ count }: { count: number | null }) {
       {Array.from({ length: total }).map((_, i) => (
         <div key={i} style={{
           width: 9, height: 9, borderRadius: "50%",
-          background: i < filled ? "#00c44f" : "#1a3050",
-          border: `1px solid ${i < filled ? "#00c44f88" : "#1e3a5f"}`,
-          boxShadow: i < filled ? "0 0 4px #00c44f44" : "none",
+          background: i < filled ? "var(--bc-green)" : "#1a3050",
+          border: `1px solid ${i < filled ? "var(--bc-green)88" : "var(--bc-line)"}`,
+          boxShadow: i < filled ? "0 0 4px var(--bc-green)44" : "none",
         }} />
       ))}
-      <span style={{ fontSize: "0.65em", color: "#4a6080", marginLeft: 4 }}>
+      <span style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginLeft: 4 }}>
         {count ?? 0} use{count !== 1 ? "s" : ""} left
       </span>
     </div>
@@ -47,12 +47,12 @@ function StatBox({ label, value, color }: { label: string; value: string; color:
   return (
     <div style={{
       background: "#080f1e",
-      border: "1px solid #1a2537",
+      border: "1px solid var(--bc-card)",
       borderRadius: 6,
       padding: "8px 10px",
       textAlign: "center",
     }}>
-      <div style={{ fontSize: "0.58em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 3 }}>
+      <div style={{ fontSize: "0.58em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 3 }}>
         {label}
       </div>
       <div style={{ fontSize: "1.05em", fontWeight: 800, color }}>{value}</div>
@@ -61,7 +61,7 @@ function StatBox({ label, value, color }: { label: string; value: string; color:
 }
 
 function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
-  const color = TIER_COLOR[pick.tier] ?? "#4cb8ff";
+  const color = TIER_COLOR[pick.tier] ?? "var(--bc-yellow)";
   const drift = DRIFT_ARROW[pick.drift] ?? null;
 
   const evStr = pick.this_week_ev != null
@@ -74,8 +74,8 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
 
   return (
     <div style={{
-      background: "#0d1a30",
-      borderLeft: `1px solid #1e3a5f`, borderRight: `1px solid #1e3a5f`, borderBottom: `1px solid #1e3a5f`,
+      background: "var(--bc-panel)",
+      borderLeft: `1px solid var(--bc-line)`, borderRight: `1px solid var(--bc-line)`, borderBottom: `1px solid var(--bc-line)`,
       borderTop: `3px solid ${color}`,
       borderRadius: 10,
       padding: "16px 18px",
@@ -105,9 +105,9 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
           Pick {rank} · {pick.tier}
         </span>
         <span style={{
-          fontSize: "0.6em", fontWeight: 700, color: "#00c44f",
+          fontSize: "0.6em", fontWeight: 700, color: "var(--bc-green)",
           background: "#0d2e18", padding: "2px 7px",
-          borderRadius: 4, border: "1px solid #00c44f30",
+          borderRadius: 4, border: "1px solid var(--bc-green)30",
           whiteSpace: "nowrap",
         }}>
           {pick.recommendation || "USE NOW"}
@@ -119,17 +119,17 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
         href={`/players?player=${encodeURIComponent(pick.player_name)}`}
         style={{
           display: "block", fontSize: "1.3em", fontWeight: 800,
-          color: "#dde6f5", lineHeight: 1.15, marginBottom: 6,
+          color: "var(--bc-text)", lineHeight: 1.15, marginBottom: 6,
           textDecoration: "none",
         }}
-        onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-        onMouseLeave={e => (e.currentTarget.style.color = "#dde6f5")}
+        onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
+        onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}
       >
         {pick.player_name}
       </Link>
 
       {/* Sub-info: rank · odds · drift */}
-      <div style={{ fontSize: "0.72em", color: "#5a7090", display: "flex", gap: 8, alignItems: "center", marginBottom: 14, flexWrap: "wrap" }}>
+      <div style={{ fontSize: "0.72em", color: "var(--bc-muted)", display: "flex", gap: 8, alignItems: "center", marginBottom: 14, flexWrap: "wrap" }}>
         {pick.world_rank != null && <span>World #{pick.world_rank}</span>}
         {pick.odds_to_win && pick.odds_to_win !== "—" && (
           <span style={{ color: "#3a5070" }}>{pick.odds_to_win} to win</span>
@@ -148,10 +148,10 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
         gap: 6,
         marginBottom: 14,
       }}>
-        <StatBox label="Win %" value={pick.win_prob != null ? `${pick.win_prob.toFixed(1)}%` : "—"} color="#00c44f" />
-        <StatBox label="Top 10 %" value={pick.top10_prob != null ? `${pick.top10_prob.toFixed(0)}%` : "—"} color="#4cb8ff" />
-        {sgStr  && <StatBox label="SG Total" value={sgStr}  color="#8ba0b8" />}
-        {evStr  && <StatBox label="EV" value={evStr} color="#f1c40f" />}
+        <StatBox label="Win %" value={pick.win_prob != null ? `${pick.win_prob.toFixed(1)}%` : "—"} color="var(--bc-green)" />
+        <StatBox label="Top 10 %" value={pick.top10_prob != null ? `${pick.top10_prob.toFixed(0)}%` : "—"} color="var(--bc-yellow)" />
+        {sgStr  && <StatBox label="SG Total" value={sgStr}  color="var(--bc-muted)" />}
+        {evStr  && <StatBox label="EV" value={evStr} color="var(--bc-yellow)" />}
       </div>
 
       {/* Uses remaining */}
@@ -161,7 +161,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
       {pick.narrative && (
         <p style={{
           fontSize: "0.74em", color: "#6a8090",
-          lineHeight: 1.55, borderTop: "1px solid #1a2537", paddingTop: 10,
+          lineHeight: 1.55, borderTop: "1px solid var(--bc-card)", paddingTop: 10,
           margin: "12px 0 0",
         }}>
           {pick.narrative}
@@ -174,7 +174,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
 export default function LineupCards({ picks, narrative, generatedAt }: Props) {
   if (!picks.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No lineup data. Run the season strategy pipeline to generate picks.
       </div>
     );
@@ -198,14 +198,14 @@ export default function LineupCards({ picks, narrative, generatedAt }: Props) {
       {narrative && (
         <div style={{
           background: "#080f1e",
-          borderTop: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
-          borderLeft: "3px solid #00c44f",
+          borderTop: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
+          borderLeft: "3px solid var(--bc-green)",
           borderRadius: 10, padding: "14px 18px",
         }}>
-          <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
+          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
             Weekly Analysis
           </div>
-          <p style={{ color: "#8ba0b8", fontSize: "0.85em", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ color: "var(--bc-muted)", fontSize: "0.85em", lineHeight: 1.6, margin: 0 }}>
             {narrative}
           </p>
           {generatedAt && (
