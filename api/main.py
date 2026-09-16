@@ -6618,3 +6618,65 @@ def remove_from_bet_slip(bet_id: str) -> dict:
         raise HTTPException(status_code=404, detail="Bet not found")
     _save_slip(filtered)
     return {"ok": True}
+
+# ── Fantasy Strategy (Tuesday decision-support view) ──────────────────────────
+
+@app.get("/api/fantasy/strategy")
+def get_fantasy_strategy() -> dict:
+    """Data for the Fantasy tab: season ladder context, weekly miss ledger,
+    the upcoming season's map, and (in-season) the suggested trio. Offseason:
+    trio is null with a reason; everything retrospective still renders."""
+    out: dict = {"season": SEASON}
+
+    # Season ladder (from the optimizer evaluation, static findings)
+    out["ladder"] = {
+        "static_plan": 19_154_100,
+        "jack_actual": 37_933_002,
+        "rolling_replay": 26_616_621,
+        "hindsight_ceiling": 111_037_997,
+        "note": "2026 season, same 30 league weeks; replay = strategy mode "
+                "with only that Tuesday's information",
+    }
+
+    # Miss ledger
+    ledger_path = OUTPUTS_DIR / "strategy_miss_analysis_2026.csv"
+    ledger = []
+    if ledger_path.exists():
+        ld = pd.read_csv(ledger_path)
+        ld = ld.replace([np.inf, -np.inf], np.nan)
+        for _, r in ld.iterrows():
+            ledger.append({
+                "tid": r["tid"], "date": str(r["date"])[:10],
+                "jack_picks": r.get("jack_picks", ""),
+                "jack_earn": float(r["jack_earn"]) if pd.notna(r["jack_earn"]) else None,
+                "replay_picks": r.get("replay_picks", ""),
+                "replay_earn": float(r["replay_earn"]) if pd.notna(r["replay_earn"]) else None,
+                "best3_earn": float(r["best3_earn"]) if pd.notna(r["best3_earn"]) else None,
+                "delta": float(r["delta_vs_replay"]) if pd.notna(r["delta_vs_replay"]) else None,
+            })
+    out["ledger"] = ledger
+
+    # Next-season map (schedule_2027.csv from fetch_schedule.py)
+    smap = []
+    sched_path = DATA_DIR / "raw" / "schedule_2027.csv"
+    if sched_path.exists():
+        sd = pd.read_csv(sched_path)
+        for _, r in sd.iterrows():
+            try:
+                purse_val = float(str(r.get("purse", "")).replace("$", "").replace(",", ""))
+            except (TypeError, ValueError):
+                purse_val = None
+            smap.append({
+                "week": int(r["week"]), "start_date": r["start_date"],
+                "name": r["tournament_name"], "type": r["tournament_type"],
+                "course": str(r.get("course", "")).split(";")[0],
+                "purse": purse_val,
+                "purse_source": r.get("purse_source", ""),
+            })
+    out["season_map"] = smap
+
+    # Suggested trio: requires an active season + current predictions
+    out["suggested_trio"] = None
+    out["trio_status"] = ("offseason — the Tuesday re-solve activates when "
+                          "2027 predictions begin")
+    return out

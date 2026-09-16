@@ -1686,3 +1686,27 @@ export async function getModelComparison(): Promise<ModelComparison> {
   if (!res.ok) throw new Error(`model-comparison ${res.status}`);
   return res.json();
 }
+// ── Fantasy Strategy (Tuesday decision-support) ───────────────────────────────
+
+export interface FantasyLedgerRow {
+  tid: string; date: string;
+  jack_picks: string; jack_earn: number | null;
+  replay_picks: string; replay_earn: number | null;
+  best3_earn: number | null; delta: number | null;
+}
+export interface FantasyStrategy {
+  season: number;
+  ladder: { static_plan: number; jack_actual: number; rolling_replay: number;
+            hindsight_ceiling: number; note: string };
+  ledger: FantasyLedgerRow[];
+  season_map: { week: number; start_date: string; name: string; type: string;
+                course: string; purse: number | null; purse_source: string }[];
+  suggested_trio: unknown;
+  trio_status: string;
+}
+
+export async function getFantasyStrategy(): Promise<FantasyStrategy> {
+  const res = await fetch(`${API_BASE}/api/fantasy/strategy`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load fantasy strategy");
+  return res.json();
+}
