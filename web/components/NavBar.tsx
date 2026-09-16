@@ -12,17 +12,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SettingsModal from "@/components/SettingsModal";
 
+// Order follows the golf week: research (Forecast, Board) → watch (Live) →
+// reference (Players) → trust (How It Works) → utility (Assistant).
+// /history stays routable but leaves the nav: its tabs now live on the
+// Betting Board (Ledger, My Slip) and in How It Works (Results).
 const PUBLIC_LINKS = [
   { href: "/",            label: "This Week", exact: true },
-  { href: "/predictions", label: "Forecast" },
+  { href: "/predictions", label: "Field Forecast" },
   { href: "/betting",     label: "Betting Board" },
-  { href: "/players",     label: "Players" },
   { href: "/live",        label: "Live" },
+  { href: "/players",     label: "Players" },
   { href: "/methodology", label: "How It Works" },
-  { href: "/history",     label: "History" },
   { href: "/assistant",   label: "Assistant" },
 ];
 
+// Reserved order for the League zone: Tuesday Call, Season Plan, Star Budget,
+// Miss Ledger, Assistant. Season Plan and Miss Ledger get their slots when
+// their routes land — insert them here in that order, don't append.
 const LEAGUE_LINKS = [
   { href: "/fantasy",   label: "Tuesday Call" },
   { href: "/mypicks",   label: "Star Budget" },

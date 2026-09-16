@@ -37,7 +37,7 @@ export function PageHead({ kicker, title, right, zone = "public" }: {
 
 /* ── Sub-tab row: yellow active pill, outlined idle ──────────────────────── */
 export function SubTabs<T extends string>({ tabs, active, onChange, zone = "public" }: {
-  tabs: { id: T; label: string }[]; active: T; onChange: (t: T) => void; zone?: Zone;
+  tabs: { id: T; label: string; count?: number }[]; active: T; onChange: (t: T) => void; zone?: Zone;
 }) {
   const z = Z[zone];
   const activeFg = zone === "league" ? "#0a0d10" : "#081f14";
@@ -54,6 +54,15 @@ export function SubTabs<T extends string>({ tabs, active, onChange, zone = "publ
           padding: "9px 16px", borderRadius: 4, fontFamily: "inherit",
         }}>
           {t.label}
+          {t.count != null && (
+            <span style={{
+              marginLeft: 8, padding: "1px 7px", borderRadius: 10, fontSize: "0.9em",
+              background: t.id === active ? "rgba(0,0,0,0.18)" : z.line,
+              color:      t.id === active ? activeFg : z.text,
+            }}>
+              {t.count}
+            </span>
+          )}
         </button>
       ))}
     </div>
@@ -108,7 +117,7 @@ export function ScoreTable<Row>({ cols, rows, rowKey, highlight, zone = "public"
     textAlign: c.align ?? "left",
   });
   return (
-    <div style={{ background: z.panel, borderRadius: 8, overflow: "hidden" }}>
+    <div className="tabular" style={{ background: z.panel, borderRadius: 8, overflow: "hidden" }}>
       <div style={{ display: "flex", gap: 14, padding: "12px 22px", background: z.card,
                     fontSize: "0.7em", fontWeight: 700, textTransform: "uppercase",
                     letterSpacing: "0.1em", color: z.muted }}>

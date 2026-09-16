@@ -16,7 +16,20 @@
   --bc-yellow:    #ffd24a;   /* primary accent */
   --bc-green:     #6fd49a;   /* positive / secondary accent */
   --bc-orange:    #ff9d5c;   /* value / warning accent */
-  --bc-red:       #e05555;
+  --bc-red:       #e05555;   /* fills only — 4.1:1 on --bc-bg, fails AA as text */
+  --bc-red-text:  #ff6b6b;   /* red as text on green surfaces (5.6:1) */
+  --bc-hover:     #143d29;   /* row / card hover surface */
+  --bc-focus:     var(--bc-yellow);
+
+  /* Semantic aliases — components read these, not the raw hues, so a
+     palette change is a one-line edit here. */
+  --positive:     var(--bc-green);
+  --negative:     var(--bc-red-text);
+  --warning:      var(--bc-orange);
+  --highlight:    var(--bc-yellow);
+
+  /* Type: Archivo carries display + body; numbers get a mono stack. */
+  --font-mono:    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   /* League zone (My League) */
   --lg-bg:        #101418;
@@ -26,6 +39,8 @@
   --lg-text:      #f2f4f7;
   --lg-muted:     #8b98a5;
   --lg-accent:    #6fd49a;
+  --lg-hover:     #1d252d;
+  --lg-focus:     var(--lg-accent);
 
   /* Legacy navy (pre-redesign pages) */
   --bg-base:    #070d1a;
@@ -64,6 +79,17 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* Keyboard focus: yellow ring in public zone, green in league zone */
+:focus-visible {
+  outline: 2px solid var(--bc-focus);
+  outline-offset: 2px;
+}
+[data-zone="league"] :focus-visible { outline-color: var(--lg-focus); }
+
+/* Numbers that sit in columns must line up: scoreboard tables, odds, prices */
+.tabular, .tabular * { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 
 /* Thin scrollbar on webkit browsers */
 ::-webkit-scrollbar { width: 6px; height: 6px; }

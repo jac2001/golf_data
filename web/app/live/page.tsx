@@ -30,9 +30,9 @@ type Tab = "leaderboard" | "vspred" | "mylineup" | "sg" | "holes";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "leaderboard", label: "Leaderboard"    },
-  { key: "vspred",      label: "vs Predictions" },
+  { key: "vspred",      label: "vs Forecast"    },
   { key: "mylineup",    label: "My Lineup"      },
-  { key: "sg",          label: "Live SG Stats"  },
+  { key: "sg",          label: "Strokes Gained" },
   { key: "holes",       label: "Hole Stats"     },
 ];
 

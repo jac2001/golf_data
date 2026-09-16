@@ -36,8 +36,8 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "field",     label: "Field"        },
   { id: "lineup",    label: "Lineup"       },
   { id: "teetimes",  label: "Tee Times"    },
-  { id: "course",    label: "Course"       },
-  { id: "dg",        label: "Model vs DG"  },
+  { id: "course",    label: "Course Guide" },
+  { id: "dg",        label: "vs DataGolf"  },
   { id: "coursefit", label: "Course Fit"   },
 ];
 

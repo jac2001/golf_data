@@ -429,7 +429,7 @@ function PlayersPageInner() {
 
         {/* Tab bar */}
         <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${BORDER}`, marginBottom: 24 }}>
-          {tabBtn("lookup",      "Lookup")}
+          {tabBtn("lookup",      "Profiles")}
           {tabBtn("h2h",         "Head-to-Head")}
           {tabBtn("stats",       "Stats")}
           {tabBtn("course-fit",  "Course Fit")}

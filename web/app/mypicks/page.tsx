@@ -221,9 +221,9 @@ export default function MyPicksPage() {
     : weeks[0];
   const currentLineup = currentWeek?.lineup ?? [];
 
-  const TABS: { key: Tab; label: string }[] = [
-    { key: "log",    label: `Season Log (${weeks.length})` },
-    { key: "roster", label: `Player Roster (${roster.length})` },
+  const TABS: { key: Tab; label: string; count: number }[] = [
+    { key: "log",    label: "Season Log",    count: weeks.length  },
+    { key: "roster", label: "Player Roster", count: roster.length },
   ];
 
   return (
@@ -281,6 +281,14 @@ export default function MyPicksPage() {
               }}
             >
               {tab.label}
+              <span style={{
+                marginLeft: 8, padding: "1px 7px", borderRadius: 10,
+                fontSize: "0.78em", fontWeight: 700,
+                background: isActive ? "var(--lg-accent)" : "var(--lg-line)",
+                color: isActive ? "#0a0d10" : "var(--lg-muted)",
+              }}>
+                {tab.count}
+              </span>
             </button>
           );
         })}

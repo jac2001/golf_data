@@ -31,11 +31,11 @@ import { PageHead, SubTabs, StatStrip } from "@/components/broadcast";
 
 type BoardTab = "bets" | "matchups" | "odds" | "expert" | "ledger" | "slip";
 const BOARD_TABS: { id: BoardTab; label: string }[] = [
-  { id: "bets",     label: "The Board"     },
+  { id: "bets",     label: "Value Bets"    },
   { id: "matchups", label: "Matchups"      },
   { id: "odds",     label: "Odds Explorer" },
   { id: "expert",   label: "Expert Picks"  },
-  { id: "ledger",   label: "Honest Ledger" },
+  { id: "ledger",   label: "Ledger"        },
   { id: "slip",     label: "My Slip"       },
 ];
 
