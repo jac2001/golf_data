@@ -35,6 +35,12 @@ def normalize_name_key(name: Any) -> str:
             s = f"{parts[1].strip()} {parts[0].strip()}"
     for suffix in [" jr.", " jr", " iii", " ii", " iv"]:
         s = s.replace(suffix, "")
+    # Fold diacritics before stripping: NFKD decomposes å/é/ü, but ø/æ/đ/ł
+    # don't decompose — without the manual map "Højgaard" becomes "h jgaard".
+    import unicodedata
+    for a, b in (("ø", "o"), ("æ", "ae"), ("đ", "d"), ("ł", "l"), ("ß", "ss")):
+        s = s.replace(a, b)
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")
     s = re.sub(r"[^a-z0-9\s]", " ", s)
     return " ".join(s.split())
 
@@ -106,6 +112,26 @@ def load_leaderboard(tournament_id: str) -> pd.DataFrame:
                 return pd.read_csv(p)
             except Exception:
                 continue
+
+    # Live files rotate out between weeks; settled tournaments live on in
+    # DuckDB with positions AND per-round scores. Map to the live-file shape
+    # (R1..R4, status, current_round) so downstream logic is unchanged.
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "database"))
+        from db import get_conn
+        with get_conn(read_only=True) as conn:
+            df = conn.execute(
+                "SELECT player_name, position, r1 AS R1, r2 AS R2, r3 AS R3, r4 AS R4 "
+                "FROM leaderboards WHERE tournament_id = ?",
+                [tournament_id.upper()],
+            ).fetch_df()
+        if not df.empty:
+            df["status"] = "complete"
+            df["current_round"] = 4
+            return df
+    except Exception:
+        pass
     return pd.DataFrame()
 
 
@@ -119,7 +145,7 @@ def leaderboard_complete(lb: pd.DataFrame) -> bool:
     # Must also confirm we are in round 4 or later before declaring the tournament settled.
     if "status" in lb.columns:
         statuses = lb["status"].fillna("").astype(str).str.lower().str.strip()
-        if len(statuses) > 0 and statuses.isin(["complete", "final", "finished", "withdrawn", "wd"]).all():
+        if len(statuses) > 0 and statuses.isin(["complete", "final", "finished", "withdrawn", "wd", "disqualified", "dq", "cut"]).all():
             if pd.isna(round_max) or round_max >= 4:
                 return True
 
@@ -289,6 +315,28 @@ def evaluate_market_outcome(
             if my_score >= opp_score:  # tied or higher strokes = loss
                 return False
         return True
+
+    # Round leader: lowest cumulative strokes through round N. A tied lead is
+    # a dead heat (books reduce the payout) — leave it for manual review
+    # rather than grading a full win or loss.
+    m_leader = re.fullmatch(r"r(\d)_leader", m)
+    if m_leader:
+        rounds = [f"R{i}" for i in range(1, int(m_leader.group(1)) + 1)]
+        totals: dict[str, int] = {}
+        for k, pr in player_results.items():
+            vals = [pr.get(r) for r in rounds]
+            if all(v is not None for v in vals):
+                totals[k] = sum(vals)
+        if not totals:
+            return None
+        my_total = totals.get(player_key)
+        if my_total is None:
+            return False  # WD/DQ before the round ended — never led
+        best = min(totals.values())
+        if my_total > best:
+            return False
+        leaders = [k for k, v in totals.items() if v == best]
+        return True if len(leaders) == 1 else None
 
     return None
 
