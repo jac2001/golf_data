@@ -7,44 +7,55 @@
  * (model_test_metrics.json, benchmark_vs_dg_summary.json, season retrospective).
  */
 
-import React from "react";
+"use client";
 
-export const metadata = { title: "Methodology — Golf Edge" };
+import React, { useState } from "react";
+import { PageHead, SubTabs } from "@/components/broadcast";
+import { ResultsTab, ModelTab } from "@/components/ResultsPanel";
+
+type HiwTab = "how" | "results" | "model";
+const HIW_TABS: { id: HiwTab; label: string }[] = [
+  { id: "how",     label: "How It Works"   },
+  { id: "results", label: "Season Results" },
+  { id: "model",   label: "Model Accuracy" },
+];
 
 const wrap: React.CSSProperties = { maxWidth: 860, margin: "0 auto" };
 const h2: React.CSSProperties = {
-  color: "#e8f0f8", fontSize: "1.25em", marginTop: 42, marginBottom: 10,
-  borderBottom: "1px solid #1e3a5f", paddingBottom: 8,
+  color: "var(--bc-text)", fontSize: "1.25em", marginTop: 42, marginBottom: 10,
+  borderBottom: "1px solid var(--bc-line)", paddingBottom: 8,
 };
-const p: React.CSSProperties = { color: "#c8d8e8", lineHeight: 1.65, margin: "12px 0", fontSize: "0.95em" };
+const p: React.CSSProperties = { color: "var(--bc-text)", lineHeight: 1.65, margin: "12px 0", fontSize: "0.95em" };
 const note: React.CSSProperties = {
-  background: "#0a1525", border: "1px solid #1e3a5f", borderRadius: 8,
-  padding: "12px 16px", margin: "16px 0", color: "#9ab8d0", fontSize: "0.88em", lineHeight: 1.6,
+  background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
+  padding: "12px 16px", margin: "16px 0", color: "var(--bc-muted)", fontSize: "0.88em", lineHeight: 1.6,
 };
 const cell: React.CSSProperties = {
-  padding: "8px 12px", borderBottom: "1px solid #1a2a3a", textAlign: "right",
-  fontSize: "0.86em", color: "#c8d8e8",
+  padding: "8px 12px", borderBottom: "1px solid var(--bc-line)", textAlign: "right",
+  fontSize: "0.86em", color: "var(--bc-text)",
 };
 const cellL: React.CSSProperties = { ...cell, textAlign: "left" };
 const hdr: React.CSSProperties = {
-  ...cell, color: "#7a9ab8", fontWeight: 600, fontSize: "0.76em",
-  textTransform: "uppercase", letterSpacing: "0.04em", borderBottom: "1px solid #1e3a5f",
+  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "0.76em",
+  textTransform: "uppercase", letterSpacing: "0.04em", borderBottom: "1px solid var(--bc-line)",
 };
 const hdrL: React.CSSProperties = { ...hdr, textAlign: "left" };
-const good: React.CSSProperties = { color: "#00c44f" };
-const bad: React.CSSProperties = { color: "#e05555" };
+const good: React.CSSProperties = { color: "var(--bc-green)" };
+const bad: React.CSSProperties = { color: "var(--negative)" };
 const code: React.CSSProperties = {
-  background: "#0d1e30", padding: "1px 6px", borderRadius: 4, fontSize: "0.9em",
-  fontFamily: "ui-monospace, monospace", color: "#9ecbff",
+  background: "var(--bc-card)", padding: "1px 6px", borderRadius: 4, fontSize: "0.9em",
+  fontFamily: "ui-monospace, monospace", color: "var(--bc-yellow)",
 };
 
 export default function MethodologyPage() {
+  const [tab, setTab] = useState<HiwTab>("how");
   return (
     <div style={wrap}>
-      <h1 style={{ color: "#e8f0f8", fontSize: "1.6em", marginBottom: 4 }}>How the System Works</h1>
-      <div style={{ color: "#7a9ab8", fontSize: "0.9em" }}>
-        From raw data to probabilities to bets — with the real 2026 numbers, including the losing ones.
-      </div>
+      <PageHead kicker="The full modeling story — with the losing numbers too" title="How It Works" />
+      <SubTabs tabs={HIW_TABS} active={tab} onChange={setTab} />
+      {tab === "results" && <ResultsTab />}
+      {tab === "model" && <ModelTab />}
+      {tab === "how" && <div>
 
       {/* ── 1. Overview ─────────────────────────────────────────────── */}
       <h2 style={h2}>1 · The pipeline at a glance</h2>
@@ -233,6 +244,7 @@ export default function MethodologyPage() {
         benchmark from <span style={code}>outputs/benchmark_vs_dg_summary.json</span>,
         season results from <span style={code}>outputs/season_2026_retrospective.md</span>.
       </div>
+      </div>}
     </div>
   );
 }

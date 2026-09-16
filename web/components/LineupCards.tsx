@@ -32,8 +32,8 @@ function UsePips({ count }: { count: number | null }) {
         <div key={i} style={{
           width: 9, height: 9, borderRadius: "50%",
           background: i < filled ? "var(--bc-green)" : "#1a3050",
-          border: `1px solid ${i < filled ? "var(--bc-green)88" : "var(--bc-line)"}`,
-          boxShadow: i < filled ? "0 0 4px var(--bc-green)44" : "none",
+          border: `1px solid ${i < filled ? "color-mix(in srgb, var(--bc-green) 53%, transparent)" : "var(--bc-line)"}`,
+          boxShadow: i < filled ? "0 0 4px color-mix(in srgb, var(--bc-green) 27%, transparent)" : "none",
         }} />
       ))}
       <span style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginLeft: 4 }}>
@@ -107,7 +107,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
         <span style={{
           fontSize: "0.6em", fontWeight: 700, color: "var(--bc-green)",
           background: "#0d2e18", padding: "2px 7px",
-          borderRadius: 4, border: "1px solid var(--bc-green)30",
+          borderRadius: 4, border: "1px solid color-mix(in srgb, var(--bc-green) 19%, transparent)",
           whiteSpace: "nowrap",
         }}>
           {pick.recommendation || "USE NOW"}

@@ -107,7 +107,7 @@ export default function AlertBanner() {
                     background: colors.dot, flexShrink: 0,
                     display: "inline-block",
                   }} />
-                  <span style={{ fontSize: "0.82em", fontWeight: 700, color: "#dde6f5" }}>
+                  <span style={{ fontSize: "0.82em", fontWeight: 700, color: "var(--bc-text)" }}>
                     {toast.title}
                   </span>
                 </div>
@@ -118,7 +118,7 @@ export default function AlertBanner() {
               <button
                 onClick={() => dismiss(toast.id)}
                 style={{
-                  background: "none", border: "none", color: "#4a6080",
+                  background: "none", border: "none", color: "var(--bc-muted)",
                   cursor: "pointer", fontSize: "1em", lineHeight: 1,
                   padding: 0, flexShrink: 0, marginTop: 1,
                 }}

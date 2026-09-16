@@ -32,8 +32,8 @@ function BetsTab() {
     getHistoryBets().then(setData).finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p style={{ color: "#7a9ab8", padding: 24 }}>Loading...</p>;
-  if (!data?.tournaments.length) return <p style={{ color: "#7a9ab8", padding: 24 }}>No graded bets yet.</p>;
+  if (loading) return <p style={{ color: "var(--bc-muted)", padding: 24 }}>Loading...</p>;
+  if (!data?.tournaments.length) return <p style={{ color: "var(--bc-muted)", padding: 24 }}>No graded bets yet.</p>;
 
   const ov = data.overall;
 
@@ -42,7 +42,7 @@ function BetsTab() {
       {/* Overall summary strip */}
       <div style={{
         display: "flex", gap: 24, padding: "12px 16px", marginBottom: 20,
-        background: "#0a1720", borderRadius: 8, border: "1px solid #1e3a5f",
+        background: "#0a1720", borderRadius: 8, border: "1px solid var(--bc-line)",
         flexWrap: "wrap",
       }}>
         {[
@@ -52,8 +52,8 @@ function BetsTab() {
           { label: "ROI", value: `${ov.roi >= 0 ? "+" : ""}${ov.roi.toFixed(1)}%`, color: pnlColor(ov.roi) },
         ].map(s => (
           <div key={s.label}>
-            <div style={{ color: "#7a9ab8", fontSize: "0.75em", marginBottom: 2 }}>{s.label}</div>
-            <div style={{ color: s.color ?? "#dde6f5", fontWeight: 700, fontSize: "1.1em" }}>{s.value}</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "0.75em", marginBottom: 2 }}>{s.label}</div>
+            <div style={{ color: s.color ?? "var(--bc-text)", fontWeight: 700, fontSize: "1.1em" }}>{s.value}</div>
           </div>
         ))}
       </div>
@@ -73,7 +73,7 @@ function BetsTab() {
                 style={{ cursor: "pointer", background: expanded === t.tournament_id ? "#0f1e2e" : "transparent" }}
                 onClick={() => setExpanded(expanded === t.tournament_id ? null : t.tournament_id)}
               >
-                <td style={{ ...cell, color: "#dde6f5", fontWeight: 600 }}>{t.name}</td>
+                <td style={{ ...cell, color: "var(--bc-text)", fontWeight: 600 }}>{t.name}</td>
                 <td style={cell}>{t.bets}</td>
                 <td style={cell}>{t.wins}</td>
                 <td style={{ ...cell, color: pnlColor(t.pnl) }}>
@@ -89,10 +89,10 @@ function BetsTab() {
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                       {t.markets.map(m => (
                         <span key={m.market} style={{
-                          background: "#111e2c", border: "1px solid #1e3a5f",
+                          background: "#111e2c", border: "1px solid var(--bc-line)",
                           borderRadius: 6, padding: "4px 10px", fontSize: "0.82em",
                         }}>
-                          <span style={{ color: "#7a9ab8" }}>{m.market}</span>
+                          <span style={{ color: "var(--bc-muted)" }}>{m.market}</span>
                           {" "}{m.wins}/{m.bets}
                           {" "}<span style={{ color: pnlColor(m.pnl) }}>
                             {m.pnl >= 0 ? "+" : ""}{m.pnl.toFixed(2)}u
@@ -142,13 +142,13 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
         display: "flex", gap: 16, flexWrap: "wrap",
         padding: "14px 16px",
         background: "#0a1720", borderRadius: hasBankroll ? "8px 8px 0 0" : 8,
-        borderTop: "1px solid #1e3a5f", borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f",
-        borderBottom: hasBankroll ? "none" : "1px solid #1e3a5f",
+        borderTop: "1px solid var(--bc-line)", borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)",
+        borderBottom: hasBankroll ? "none" : "1px solid var(--bc-line)",
       }}>
         {statItems.map(s => (
           <div key={s.label} style={{ minWidth: 70 }}>
-            <div style={{ color: "#7a9ab8", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{s.label}</div>
-            <div style={{ color: s.color ?? "#dde6f5", fontWeight: 700, fontSize: "1.05em" }}>{s.value}</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{s.label}</div>
+            <div style={{ color: s.color ?? "var(--bc-text)", fontWeight: 700, fontSize: "1.05em" }}>{s.value}</div>
           </div>
         ))}
       </div>
@@ -159,13 +159,13 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
           display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap",
           padding: "10px 16px",
           background: "#070f18", borderRadius: "0 0 8px 8px",
-          borderLeft: "1px solid #1e3a5f", borderRight: "1px solid #1e3a5f", borderBottom: "1px solid #1e3a5f",
+          borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
           borderTop: "1px solid #0d2030",
         }}>
           <div>
-            <span style={{ color: "#4a6080", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
             {" "}
-            <span style={{ color: "#7a9ab8", fontSize: "0.82em" }}>${stats.starting_bankroll?.toLocaleString()}</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>${stats.starting_bankroll?.toLocaleString()}</span>
             <span style={{ color: "#2a4060", fontSize: "0.82em", margin: "0 6px" }}>→</span>
             <span style={{ color: pnlColor(pnlDollars), fontWeight: 700, fontSize: "1.05em" }}>
               ${stats.current_bankroll?.toLocaleString()}
@@ -183,10 +183,10 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginLeft: "auto" }}>
               {stats.by_tournament.map((t: TournamentPnl) => (
                 <span key={t.tid} style={{
-                  background: "#0d1929", border: "1px solid #1e3a5f",
+                  background: "#0d1929", border: "1px solid var(--bc-line)",
                   borderRadius: 5, padding: "3px 8px", fontSize: "0.75em",
                 }}>
-                  <span style={{ color: "#4a6080" }}>{t.tid.replace("R2026", "")}</span>
+                  <span style={{ color: "var(--bc-muted)" }}>{t.tid.replace("R2026", "")}</span>
                   {" "}
                   <span style={{ color: pnlColor(t.pnl_dollars), fontWeight: 600 }}>
                     {t.pnl_dollars >= 0 ? "+" : ""}${t.pnl_dollars.toFixed(0)}
@@ -225,7 +225,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
   const scoreNum  = bet.live_total ? parseFloat(bet.live_total) : null;
   const scoreColor = scoreNum != null && scoreNum < 0 ? "#00c44f"
                    : scoreNum != null && scoreNum > 0 ? "#e05555"
-                   : "#dde6f5";
+                   : "var(--bc-text)";
 
   const rowBg = isWon    ? "#071410"
               : isLost   ? "#130a0a"
@@ -238,7 +238,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
   return (
     <tr style={{ background: rowBg }}>
       <td style={cell}>{bet.tournament_id?.replace("R2026", "") ?? "—"}</td>
-      <td style={{ ...cell, color: "#dde6f5", fontWeight: 600, maxWidth: 180, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+      <td style={{ ...cell, color: "var(--bc-text)", fontWeight: 600, maxWidth: 180, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
         {bet.player_name}
       </td>
       <td style={cell}>{MARKET_LABELS[bet.market] ?? bet.market}</td>
@@ -251,13 +251,13 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
         {isPending && hasLive && (
           <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
             <LiveStatusDot status={bet.live_status} />
-            <span style={{ color: "#dde6f5", fontWeight: 700, fontSize: "0.95em" }}>
+            <span style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "0.95em" }}>
               {bet.live_position}
             </span>
             <span style={{ color: scoreColor, fontWeight: 700, fontSize: "0.95em" }}>
               {bet.live_total ?? "E"}
             </span>
-            <span style={{ color: "#4a6080", fontSize: "0.82em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>
               {bet.live_thru === "F" ? "F" : bet.live_thru ? `thru ${bet.live_thru}` : ""}
             </span>
           </div>
@@ -267,7 +267,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
         )}
       </td>
 
-      <td style={{ ...cell, color: bet.pnl_usd != null ? pnlColor(bet.pnl_usd) : "#4a6080" }}>
+      <td style={{ ...cell, color: bet.pnl_usd != null ? pnlColor(bet.pnl_usd) : "var(--bc-muted)" }}>
         {bet.pnl_usd != null ? `${bet.pnl_usd >= 0 ? "+" : ""}${bet.pnl_usd.toFixed(2)}u` : "—"}
       </td>
       <td style={{ ...cell, textAlign: "center" }}>
@@ -276,7 +276,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
             onClick={() => onRemove(bet.id)}
             style={{
               background: "transparent", border: "1px solid #2a4060",
-              borderRadius: 4, color: "#4a6080", fontSize: "0.72em",
+              borderRadius: 4, color: "var(--bc-muted)", fontSize: "0.72em",
               padding: "2px 8px", cursor: "pointer",
             }}
           >
@@ -320,11 +320,11 @@ function MySlipTab() {
     refresh();
   }
 
-  if (loading) return <p style={{ color: "#7a9ab8", padding: 24 }}>Loading…</p>;
+  if (loading) return <p style={{ color: "var(--bc-muted)", padding: 24 }}>Loading…</p>;
 
   if (!bets.length) return (
-    <div style={{ padding: 40, textAlign: "center", color: "#4a6080" }}>
-      <div style={{ fontSize: "1.1em", marginBottom: 8, color: "#7a9ab8" }}>No tracked bets yet</div>
+    <div style={{ padding: 40, textAlign: "center", color: "var(--bc-muted)" }}>
+      <div style={{ fontSize: "1.1em", marginBottom: 8, color: "var(--bc-muted)" }}>No tracked bets yet</div>
       <div style={{ fontSize: "0.85em" }}>Tap "Track Bet" on any bet card to start logging your picks.</div>
     </div>
   );
@@ -364,7 +364,7 @@ function MySlipTab() {
               <tr>
                 <td colSpan={7} style={{
                   padding: "8px 12px", background: "#081220",
-                  color: "#4a6080", fontSize: "0.75em", fontWeight: 700,
+                  color: "var(--bc-muted)", fontSize: "0.75em", fontWeight: 700,
                   textTransform: "uppercase", letterSpacing: "0.06em",
                   borderBottom: "1px solid #1a2a3a",
                 }}>

@@ -238,7 +238,7 @@ export default function OddsExplorer() {
 }
 
 const btnStyle: React.CSSProperties = {
-  background: "var(--bc-line)", border: "1px solid #2a4f7f", borderRadius: 6,
+  background: "var(--bc-line)", border: "1px solid var(--bc-line)", borderRadius: 6,
   color: "var(--bc-text)", padding: "6px 14px", fontSize: "0.85em",
   fontWeight: 600, cursor: "pointer",
 };

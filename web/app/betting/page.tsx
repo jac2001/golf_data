@@ -390,9 +390,9 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
   return (
     <div style={{
       background: isPick ? "#040e09" : "#060f1a",
-      borderTop: isPick ? "1px solid var(--bc-green)55" : "1px solid var(--bc-green)44",
-      borderRight: isPick ? "1px solid var(--bc-green)55" : "1px solid var(--bc-green)44",
-      borderBottom: isPick ? "1px solid var(--bc-green)55" : "1px solid var(--bc-green)44",
+      borderTop: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 33%, transparent)" : "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
+      borderRight: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 33%, transparent)" : "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
+      borderBottom: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 33%, transparent)" : "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
       borderLeft: "3px solid var(--bc-green)",
       borderRadius: 10,
       padding: "16px 20px",
@@ -404,7 +404,7 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
           <span style={{
             fontSize: "0.62em", fontWeight: 800, color: "var(--bc-green)",
             textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "var(--bc-green)18", border: "1px solid var(--bc-green)33",
+            background: "color-mix(in srgb, var(--bc-green) 9%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)",
             borderRadius: 4, padding: "2px 8px",
           }}>
             Best Bet
@@ -434,7 +434,7 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
           {bet.player_name}
         </Link>
         {isPick && (
-          <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", border: "1px solid var(--bc-green)44", borderRadius: 3, padding: "2px 5px" }}>
+          <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px" }}>
             MY PICK
           </span>
         )}
@@ -479,7 +479,7 @@ const selectStyle: React.CSSProperties = {
 
 const btnStyle: React.CSSProperties = {
   background: "var(--bc-line)",
-  border: "1px solid #2a4f7f",
+  border: "1px solid var(--bc-line)",
   borderRadius: 6,
   color: "var(--bc-text)",
   padding: "7px 14px",

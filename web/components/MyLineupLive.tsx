@@ -22,7 +22,7 @@ function relColor(rel: number | null): string {
 }
 
 function runningColor(s: string | null | undefined): string {
-  if (!s || s === "E") return "#4a6080";
+  if (!s || s === "E") return "var(--bc-muted)";
   return s.startsWith("-") ? "#00c44f" : "#e74c3c";
 }
 
@@ -39,7 +39,7 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
   const totalPar     = frontPar + backPar;
   const vsPar        = (frontPlayed || backPlayed) ? totalStrokes - totalPar : null;
   const vsParStr     = vsPar == null ? "—" : vsPar === 0 ? "E" : vsPar > 0 ? `+${vsPar}` : String(vsPar);
-  const vsParColor   = vsPar == null ? "#4a6080" : vsPar < 0 ? "#00c44f" : vsPar > 0 ? "#e74c3c" : "#8ba0b8";
+  const vsParColor   = vsPar == null ? "var(--bc-muted)" : vsPar < 0 ? "#00c44f" : vsPar > 0 ? "#e74c3c" : "#8ba0b8";
 
   function HCell({ h }: { h: HoleData }) {
     const played = h.strokes != null;
@@ -68,12 +68,12 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
 
   const thStyle: React.CSSProperties = { fontSize: "0.55em", color: "#2a3a50", textAlign: "center", padding: "2px 1px", minWidth: 28, fontWeight: 700 };
   const parStyle: React.CSSProperties = { fontSize: "0.6em", color: "#3a5060", textAlign: "center", padding: "1px 1px" };
-  const subStyle: React.CSSProperties = { fontSize: "0.72em", color: "#8ba0b8", fontWeight: 700, textAlign: "center", padding: "2px 6px", minWidth: 36, borderLeft: "1px solid #1e3a5f" };
+  const subStyle: React.CSSProperties = { fontSize: "0.72em", color: "#8ba0b8", fontWeight: 700, textAlign: "center", padding: "2px 6px", minWidth: 36, borderLeft: "1px solid var(--bc-line)" };
 
   return (
     <div style={{ marginTop: 14, borderTop: "1px solid #0f2236", paddingTop: 10 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-        <span style={{ fontSize: "0.62em", color: "#4a6080", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ fontSize: "0.62em", color: "var(--bc-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
           Round {round}
         </span>
         {(frontPlayed || backPlayed) && (
@@ -106,7 +106,7 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
               <td style={{ ...subStyle }}>
                 {frontPlayed ? frontStrokes : "—"}
                 {frontPlayed && (
-                  <div style={{ fontSize: "0.62em", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? "#00c44f" : v > 0 ? "#e74c3c" : "#4a6080"; })() }}>
+                  <div style={{ fontSize: "0.62em", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? "#00c44f" : v > 0 ? "#e74c3c" : "var(--bc-muted)"; })() }}>
                     {(() => { const v = frontStrokes - frontPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
@@ -115,7 +115,7 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
               <td style={{ ...subStyle }}>
                 {backPlayed ? backStrokes : "—"}
                 {backPlayed && (
-                  <div style={{ fontSize: "0.62em", color: (() => { const v = backStrokes - backPar; return v < 0 ? "#00c44f" : v > 0 ? "#e74c3c" : "#4a6080"; })() }}>
+                  <div style={{ fontSize: "0.62em", color: (() => { const v = backStrokes - backPar; return v < 0 ? "#00c44f" : v > 0 ? "#e74c3c" : "var(--bc-muted)"; })() }}>
                     {(() => { const v = backStrokes - backPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
@@ -143,7 +143,7 @@ function RoundPip({ score, label }: { score: number | null; label: string }) {
   const color = score == null ? "#3a5060" : scoreColor(score);
   return (
     <div style={{ textAlign: "center" }}>
-      <div style={{ fontSize: "0.6em", color: "#4a6080", textTransform: "uppercase", marginBottom: 2 }}>{label}</div>
+      <div style={{ fontSize: "0.6em", color: "var(--bc-muted)", textTransform: "uppercase", marginBottom: 2 }}>{label}</div>
       <div style={{ fontWeight: 700, fontSize: "0.85em", color }}>
         {score == null ? "—" : String(score)}
       </div>
@@ -174,7 +174,7 @@ function MoveDelta({ delta }: { delta: number | null }) {
 export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
   if (!picks.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No lineup found. Run the season strategy pipeline to generate picks.
       </div>
     );
@@ -183,7 +183,7 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
   return (
     <div>
       {tournament && (
-        <p style={{ color: "#4a6080", fontSize: "0.8em", marginBottom: 14 }}>{tournament}</p>
+        <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginBottom: 14 }}>{tournament}</p>
       )}
       <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
         {picks.map((p, i) => {
@@ -198,8 +198,8 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
             <div key={p.player} style={{
               flex: hasCards ? "1 1 100%" : "1 1 260px",
               minWidth: hasCards ? 0 : 220,
-              background: "#0d1a30",
-              borderLeft: `1px solid #1e3a5f`, borderRight: `1px solid #1e3a5f`, borderBottom: `1px solid #1e3a5f`,
+              background: "var(--bc-card)",
+              borderLeft: `1px solid var(--bc-line)`, borderRight: `1px solid var(--bc-line)`, borderBottom: `1px solid var(--bc-line)`,
               borderTop: `3px solid ${borderColor}`,
               borderRadius: 10, padding: "16px 18px",
             }}>
@@ -208,9 +208,9 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
                 <div>
                   <Link
                     href={`/players?player=${encodeURIComponent(p.player)}`}
-                    style={{ color: "#dde6f5", fontWeight: 800, fontSize: "1.05em", textDecoration: "none", display: "block" }}
+                    style={{ color: "var(--bc-text)", fontWeight: 800, fontSize: "1.05em", textDecoration: "none", display: "block" }}
                     onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-                    onMouseLeave={e => (e.currentTarget.style.color = "#dde6f5")}
+                    onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}
                   >
                     {p.player}
                   </Link>
@@ -220,7 +220,7 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
                 </div>
                 <div style={{ textAlign: "right" }}>
                   <div style={{ color: totalColor, fontWeight: 800, fontSize: "1.6em", lineHeight: 1 }}>{totalStr}</div>
-                  <div style={{ color: "#4a6080", fontSize: "0.72em", marginTop: 3 }}>
+                  <div style={{ color: "var(--bc-muted)", fontSize: "0.72em", marginTop: 3 }}>
                     {p.position ? `${p.position}` : "—"}
                     <MoveDelta delta={p.position_change} />
                   </div>

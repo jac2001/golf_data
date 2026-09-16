@@ -28,12 +28,14 @@ import AlertBanner from "@/components/AlertBanner";
 
 type Tab = "leaderboard" | "vspred" | "mylineup" | "sg" | "holes";
 
-const TABS: { key: Tab; label: string }[] = [
-  { key: "leaderboard", label: "Leaderboard"    },
-  { key: "vspred",      label: "vs Forecast"    },
-  { key: "mylineup",    label: "My Lineup"      },
-  { key: "sg",          label: "Strokes Gained" },
-  { key: "holes",       label: "Hole Stats"     },
+import { PageHead, SubTabs } from "@/components/broadcast";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "leaderboard", label: "Leaderboard"    },
+  { id: "vspred",      label: "vs Forecast"    },
+  { id: "mylineup",    label: "My Lineup"      },
+  { id: "sg",          label: "Strokes Gained" },
+  { id: "holes",       label: "Hole Stats"     },
 ];
 
 const POLL_INTERVAL_MS = 60_000; // refresh leaderboard every 60 seconds
@@ -114,7 +116,7 @@ export default function LivePage() {
         setLastPollAt(new Date());
         // Apply saved default tab and SG round from settings
         const defaultTab = (settings.live?.default_tab ?? "leaderboard") as Tab;
-        if (TABS.some(t => t.key === defaultTab)) {
+        if (TABS.some(t => t.id === defaultTab)) {
           setActiveTab(defaultTab);
           setLoaded(prev => new Set([...prev, defaultTab]));
         }
@@ -192,7 +194,7 @@ export default function LivePage() {
   // ── Error screen ──────────────────────────────────────────────────────────────
   if (error) {
     return (
-      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 10, color: "#e74c3c" }}>
+      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 10, color: "var(--negative)" }}>
         <strong>Error</strong>
         <p style={{ margin: "8px 0 0", color: "#c0392b", fontSize: "0.9em" }}>{error}</p>
       </div>
@@ -207,48 +209,37 @@ export default function LivePage() {
       <AlertBanner />
 
       {/* ── Tournament header ────────────────────────────────────────────── */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
-        <div>
-          <h1 style={{ fontSize: "1.4em", fontWeight: 800, color: "#dde6f5", margin: 0 }}>
-            Live
-          </h1>
-          {tournament ? (
-            <p style={{ color: "#7f8c8d", fontSize: "0.88em", margin: "4px 0 0" }}>
-              {inPlay?.event_name || tournament.name}
-              {currentRound && ` · Round ${currentRound}`}
-              {inPlay?.last_update && (
-                <span style={{ color: "#4a6080", marginLeft: 6 }}>· DG {inPlay.last_update}</span>
-              )}
-              {leader && ` · Leader: ${leader.player_name} (${leader.total ?? "E"})`}
-            </p>
-          ) : (
-            <p style={{ color: "#3a5060", fontSize: "0.85em", margin: "4px 0 0" }}>Loading tournament…</p>
-          )}
-        </div>
-
-        {/* ── Refresh controls ──────────────────────────────────────────── */}
-        {!loadingLb && (
-          <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 20 }}>
+      <PageHead
+        kicker={tournament
+          ? [inPlay?.event_name || tournament.name,
+             currentRound ? `Round ${currentRound}` : null,
+             leader ? `Leader: ${leader.player_name} (${leader.total ?? "E"})` : null,
+            ].filter(Boolean).join(" · ")
+          : "Loading tournament…"}
+        title="Live"
+        right={!loadingLb ? (
+          <div style={{ textAlign: "right", flexShrink: 0 }}>
             <button
               onClick={() => fetchLeaderboard(false)}
               disabled={refreshing}
               style={{
-                background: refreshing ? "#0d1a30" : "#0a1f3a",
-                border: "1px solid #1e3a5f", borderRadius: 6,
-                color: refreshing ? "#4a6080" : "#00c44f",
-                padding: "6px 14px", fontSize: "0.78em", fontWeight: 700,
-                cursor: refreshing ? "default" : "pointer",
+                background: refreshing ? "transparent" : "var(--bc-yellow)",
+                border: "1px solid var(--bc-yellow)", borderRadius: 4,
+                color: refreshing ? "var(--bc-muted)" : "#081f14",
+                padding: "9px 16px", fontSize: "0.72em", fontWeight: 900,
+                textTransform: "uppercase", letterSpacing: "0.06em",
+                cursor: refreshing ? "default" : "pointer", fontFamily: "inherit",
               }}
             >
               {refreshing ? "Refreshing…" : "Refresh Now"}
             </button>
-            <div style={{ fontSize: "0.65em", color: "#3a5060", marginTop: 4 }}>
+            <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginTop: 4 }}>
               {lastPollAt && `Updated ${lastPollAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
               {lastPollAt && ` · next in ${nextPollIn}s`}
             </div>
           </div>
-        )}
-      </div>
+        ) : undefined}
+      />
 
       {/* ── At-a-glance strip — only if in-play loaded ──────────────────── */}
       {inPlay && !loadingLb && inPlay.players.length > 0 && (
@@ -273,28 +264,7 @@ export default function LivePage() {
       )}
 
       {/* ── Tab switcher ─────────────────────────────────────────────────── */}
-      <div className="tab-bar" style={{ marginBottom: 20, borderBottom: "1px solid #1e3a5f", paddingBottom: 0 }}>
-        {TABS.map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => activateTab(tab.key)}
-            style={{
-              background: "transparent",
-              borderTop: "none", borderLeft: "none", borderRight: "none",
-              borderBottom: `2px solid ${activeTab === tab.key ? "#00c44f" : "transparent"}`,
-              color: activeTab === tab.key ? "#dde6f5" : "#7f8c8d",
-              padding: "8px 16px",
-              fontSize: "0.88em",
-              fontWeight: activeTab === tab.key ? 700 : 500,
-              cursor: "pointer",
-              marginBottom: -1,
-              transition: "color 0.15s",
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <SubTabs tabs={TABS} active={activeTab} onChange={activateTab} />
 
       {/* ── Tab content ──────────────────────────────────────────────────── */}
 
@@ -312,7 +282,7 @@ export default function LivePage() {
               <div style={{
                 marginBottom: 12, padding: "6px 12px",
                 background: "#1a0a00", border: "1px solid #7a3a00",
-                borderRadius: 6, fontSize: "0.8em", color: "#e09040",
+                borderRadius: 6, fontSize: "0.8em", color: "var(--bc-orange)",
               }}>
                 <span style={{ fontWeight: 700 }}>WD this week: </span>
                 {wds.withdrawals.map(w => w.player_name).join(", ")}
@@ -382,27 +352,27 @@ export default function LivePage() {
 function GlanceCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
     <div style={{
-      background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 8,
+      background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
       padding: "10px 16px", flex: "1 1 140px", minWidth: 120,
     }}>
-      <div style={{ fontSize: "0.65em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </div>
-      <div style={{ fontSize: "1em", fontWeight: 700, color: "#dde6f5", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+      <div style={{ fontSize: "1em", fontWeight: 700, color: "var(--bc-text)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
         {value}
       </div>
-      {sub && <div style={{ fontSize: "0.65em", color: "#4a6080", marginTop: 2 }}>{sub}</div>}
+      {sub && <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginTop: 2 }}>{sub}</div>}
     </div>
   );
 }
 
 function Spinner() {
-  return <div style={{ color: "#7f8c8d", padding: "40px 0", textAlign: "center" }}>Loading…</div>;
+  return <div style={{ color: "var(--bc-muted)", padding: "40px 0", textAlign: "center" }}>Loading…</div>;
 }
 
 function Empty({ text }: { text: string }) {
   return (
-    <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+    <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
       {text}
     </div>
   );

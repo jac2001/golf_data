@@ -167,8 +167,8 @@ export function trendWord(sgTrend: number | null | undefined): { word: string; c
   if (sgTrend == null || isNaN(sgTrend)) return { word: "—", color: "var(--bc-muted)" };
   if (sgTrend > 0.5)  return { word: "Hot",     color: "var(--bc-green)" };
   if (sgTrend > 0.1)  return { word: "Warming", color: "var(--bc-green)" };
-  if (sgTrend < -0.5) return { word: "Cold",    color: "var(--bc-red)" };
-  if (sgTrend < -0.1) return { word: "Cooling", color: "var(--bc-red)" };
+  if (sgTrend < -0.5) return { word: "Cold",    color: "var(--negative)" };
+  if (sgTrend < -0.1) return { word: "Cooling", color: "var(--negative)" };
   return { word: "Steady", color: "var(--bc-muted)" };
 }
 
@@ -177,7 +177,7 @@ export function fitWord(fitSg: number | null | undefined): { word: string; color
   if (fitSg > 0.5)  return { word: "Excellent", color: "var(--bc-green)" };
   if (fitSg > 0.15) return { word: "Good",      color: "var(--bc-green)" };
   if (fitSg > -0.15) return { word: "Average",  color: "var(--bc-muted)" };
-  return { word: "Poor", color: "var(--bc-red)" };
+  return { word: "Poor", color: "var(--negative)" };
 }
 
 /** Plain-language names for strokes-gained categories; jargon in the title attr. */

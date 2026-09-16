@@ -36,7 +36,7 @@ function UsePips({ used, max }: { used: number; max: number }) {
           style={{
             width: 8, height: 8, borderRadius: "50%",
             background: i < used ? "var(--lg-accent)" : "var(--lg-line)",
-            boxShadow: i < used ? "0 0 4px var(--lg-accent)55" : "none",
+            boxShadow: i < used ? "0 0 4px color-mix(in srgb, var(--lg-accent) 33%, transparent)" : "none",
           }}
         />
       ))}

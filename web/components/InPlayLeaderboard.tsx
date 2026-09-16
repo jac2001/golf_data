@@ -39,7 +39,7 @@ function relColor(rel: number | null): string {
 }
 
 function runningColor(s: string | null | undefined): string {
-  if (!s || s === "E") return "#4a6080";
+  if (!s || s === "E") return "var(--bc-muted)";
   if (s.startsWith("-")) return "#00c44f";
   return "#e74c3c";
 }
@@ -100,19 +100,19 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
     textTransform: "uppercase", letterSpacing: "0.03em",
   };
   const parCell: React.CSSProperties = {
-    textAlign: "center", fontSize: "0.7em", color: "#4a6080",
+    textAlign: "center", fontSize: "0.7em", color: "var(--bc-muted)",
     padding: "2px 2px",
   };
   const subtotalCell: React.CSSProperties = {
     textAlign: "center", fontSize: "0.78em", fontWeight: 700,
     color: "#8ba0b8", padding: "3px 6px", minWidth: 40,
-    borderLeft: "1px solid #1e3a5f",
+    borderLeft: "1px solid var(--bc-line)",
   };
 
   return (
     <div style={{ marginBottom: 10 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-        <span style={{ fontSize: "0.65em", color: "#4a6080", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ fontSize: "0.65em", color: "var(--bc-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
           Round {round}
         </span>
         {(frontPlayed || backPlayed) && (
@@ -151,7 +151,7 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
               <td style={{ ...subtotalCell }}>
                 {frontPlayed ? frontStrokes : "—"}
                 {frontPlayed && (
-                  <div style={{ fontSize: "0.62em", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? "#00c44f" : v > 0 ? "#e74c3c" : "#4a6080"; })() }}>
+                  <div style={{ fontSize: "0.62em", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? "#00c44f" : v > 0 ? "#e74c3c" : "var(--bc-muted)"; })() }}>
                     {(() => { const v = frontStrokes - frontPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
@@ -160,7 +160,7 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
               <td style={{ ...subtotalCell }}>
                 {backPlayed ? backStrokes : "—"}
                 {backPlayed && (
-                  <div style={{ fontSize: "0.62em", color: (() => { const v = backStrokes - backPar; return v < 0 ? "#00c44f" : v > 0 ? "#e74c3c" : "#4a6080"; })() }}>
+                  <div style={{ fontSize: "0.62em", color: (() => { const v = backStrokes - backPar; return v < 0 ? "#00c44f" : v > 0 ? "#e74c3c" : "var(--bc-muted)"; })() }}>
                     {(() => { const v = backStrokes - backPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
@@ -185,7 +185,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
 
   if (!players.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No leaderboard data available. Tournament may not have started yet.
       </div>
     );
@@ -208,14 +208,14 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
     background: "#0a1628", color: "#5a7090",
     fontSize: "0.68em", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
-    padding: "7px 10px", borderBottom: "1px solid #1e3a5f",
+    padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     textAlign: "center", whiteSpace: "nowrap",
   };
 
   return (
     <div>
-      <div style={{ overflowX: "auto", border: "1px solid #1e3a5f", borderRadius: 10 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+      <div style={{ overflowX: "auto", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-card)" }}>
           <thead>
             <tr>
               <th style={{ ...th, textAlign: "left", width: 48 }}>Pos</th>
@@ -234,7 +234,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
           <tbody>
             {players.map((p, i) => {
               const isPick = myPicksNorm.has(normName(p.player_name));
-              const bg = isPick ? "#091a0f" : i % 2 === 0 ? "#0d1a30" : "#0a1525";
+              const bg = isPick ? "#091a0f" : i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
               const isCut = p.made_cut === false;
               const isExpanded = expandedPlayer === p.player_name;
               const playerHoles = holeScores ? holeScores[p.player_name] ?? null : null;
@@ -278,17 +278,17 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                         href={`/players?player=${encodeURIComponent(p.player_name)}`}
                         onClick={e => e.stopPropagation()}
                         style={{
-                          color: isPick ? "#00c44f" : isCut ? "#3a5060" : "#dde6f5",
+                          color: isPick ? "#00c44f" : isCut ? "#3a5060" : "var(--bc-text)",
                           textDecoration: "none",
                           fontWeight: isPick ? 700 : 600,
                         }}
                         onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-                        onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : isCut ? "#3a5060" : "#dde6f5")}
+                        onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : isCut ? "#3a5060" : "var(--bc-text)")}
                       >
                         {p.player_name}
                       </Link>
                       {isPick && (
-                        <span style={{ fontSize: "0.58em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", border: "1px solid #00c44f44", borderRadius: 3, padding: "1px 4px", marginLeft: 6, whiteSpace: "nowrap" }}>
+                        <span style={{ fontSize: "0.58em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6, whiteSpace: "nowrap" }}>
                           MY PICK
                         </span>
                       )}
@@ -322,7 +322,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                   {/* Expanded scorecard */}
                   {isExpanded && (
                     <tr>
-                      <td colSpan={totalCols} style={{ background: "#080f1e", borderBottom: "1px solid #1e3a5f", padding: "12px 16px" }}>
+                      <td colSpan={totalCols} style={{ background: "#080f1e", borderBottom: "1px solid var(--bc-line)", padding: "12px 16px" }}>
                         {playerHoles ? (
                           Object.entries(playerHoles)
                             .sort(([a], [b]) => Number(a) - Number(b))

@@ -91,9 +91,9 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
   return (
     <div style={{
       background: isPick ? "#060e09" : "var(--bc-panel)",
-      borderTop: isPick ? "1px solid var(--bc-green)33" : "1px solid var(--bc-line)",
-      borderRight: isPick ? "1px solid var(--bc-green)33" : "1px solid var(--bc-line)",
-      borderBottom: isPick ? "1px solid var(--bc-green)33" : "1px solid var(--bc-line)",
+      borderTop: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" : "1px solid var(--bc-line)",
+      borderRight: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" : "1px solid var(--bc-line)",
+      borderBottom: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" : "1px solid var(--bc-line)",
       borderLeft: `4px solid ${color}`,
       borderRadius: 10,
       padding: "16px 18px",
@@ -107,7 +107,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
             <span style={{
               fontSize: "0.65em", fontWeight: 700, color: "var(--bc-green)",
               background: "#0d2e18", padding: "2px 7px", borderRadius: 4,
-              border: "1px solid var(--bc-green)44",
+              border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
             }}>
               {bookLbl}
             </span>
@@ -126,7 +126,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
               {bet.player_name}
             </Link>
             {isPick && (
-              <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", border: "1px solid var(--bc-green)44", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
                 MY PICK
               </span>
             )}
@@ -150,7 +150,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
             <div style={{
               marginTop: 5, fontSize: "0.68em", fontWeight: 600,
               color: "var(--bc-orange)", background: "#1a1200",
-              border: "1px solid #5f4a0044", borderRadius: 4,
+              border: "1px solid rgba(95,74,0,0.27)", borderRadius: 4,
               padding: "2px 7px", display: "inline-block",
             }}>
               ⚠ {bet.intel_warning}
@@ -176,7 +176,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                     color: isLeader ? "var(--bc-orange)" : "var(--bc-muted)",
                     background: isLeader ? "#2a1f00" : "#0d1e2e",
                     padding: "2px 8px", borderRadius: 4,
-                    border: `1px solid ${isLeader ? "var(--bc-orange)44" : "var(--bc-muted)"}`,
+                    border: `1px solid ${isLeader ? "color-mix(in srgb, var(--bc-orange) 27%, transparent)" : "var(--bc-muted)"}`,
                   }}>
                     {bet.live_position}
                   </span>
@@ -259,7 +259,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
             onClick={handleWhyClick}
             style={{
               background: "transparent",
-              border: "1px solid #2a4f7f",
+              border: "1px solid var(--bc-line)",
               borderRadius: 5,
               color: reasonOpen ? "var(--bc-muted)" : "var(--bc-yellow)",
               fontSize: "0.75em",
@@ -277,7 +277,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
               disabled={tracked || tracking}
               style={{
                 background: tracked ? "#0c1f14" : "transparent",
-                border: `1px solid ${tracked ? "var(--bc-green)44" : "#2a4f7f"}`,
+                border: `1px solid ${tracked ? "color-mix(in srgb, var(--bc-green) 27%, transparent)" : "var(--bc-line)"}`,
                 borderRadius: 5,
                 color: tracked ? "var(--bc-green)" : "var(--bc-muted)",
                 fontSize: "0.75em",
@@ -346,7 +346,7 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
         onClick={handleOpen}
         style={{
           background: "transparent",
-          border: "1px solid #2a4f7f",
+          border: "1px solid var(--bc-line)",
           borderRadius: 5,
           color: open ? "var(--bc-muted)" : "var(--bc-orange)",
           fontSize: "0.75em",

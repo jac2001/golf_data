@@ -45,10 +45,10 @@ function PosDelta({ delta }: { delta: number | null }) {
 }
 
 function holeRelColor(rel: number | null): { bg: string; fg: string } {
-  if (rel == null) return { bg: "#0a1525", fg: "#3a5060"  };  // not played
+  if (rel == null) return { bg: "var(--bc-panel)", fg: "#3a5060"  };  // not played
   if (rel <= -2)   return { bg: "#3a2800", fg: "#f1c40f"  };  // eagle — gold
   if (rel === -1)  return { bg: "#2a0a0a", fg: "#e74c3c"  };  // birdie — red
-  if (rel === 0)   return { bg: "#0d1a30", fg: "#5a7090"  };  // par — muted
+  if (rel === 0)   return { bg: "var(--bc-card)", fg: "#5a7090"  };  // par — muted
   if (rel === 1)   return { bg: "#0d1e38", fg: "#4cb8ff"  };  // bogey — blue
   return             { bg: "#0a0d1a", fg: "#7f5090"  };        // double+ — purple
 }
@@ -77,12 +77,12 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
       <div style={{ fontSize: "0.6em", color: "#3a5060", marginBottom: 4 }}>Round {round}</div>
       <div style={{ display: "flex", gap: 4, alignItems: "flex-end", flexWrap: "wrap" }}>
         {front.map(h => <HoleCell key={h.hole} h={h} />)}
-        <div style={{ minWidth: 28, textAlign: "center", borderLeft: "1px solid #1e3a5f", paddingLeft: 4 }}>
+        <div style={{ minWidth: 28, textAlign: "center", borderLeft: "1px solid var(--bc-line)", paddingLeft: 4 }}>
           <div style={{ fontSize: "0.55em", color: "#3a5060", marginBottom: 1 }}>OUT</div>
           <div style={{ fontSize: "0.8em", fontWeight: 700, color: "#8ba0b8" }}>{frontTotal || "—"}</div>
         </div>
         {back.map(h => <HoleCell key={h.hole} h={h} />)}
-        <div style={{ minWidth: 28, textAlign: "center", borderLeft: "1px solid #1e3a5f", paddingLeft: 4 }}>
+        <div style={{ minWidth: 28, textAlign: "center", borderLeft: "1px solid var(--bc-line)", paddingLeft: 4 }}>
           <div style={{ fontSize: "0.55em", color: "#3a5060", marginBottom: 1 }}>IN</div>
           <div style={{ fontSize: "0.8em", fontWeight: 700, color: "#8ba0b8" }}>{backTotal || "—"}</div>
         </div>
@@ -96,7 +96,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
 
   if (!players.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No leaderboard data available. Tournament may not have started yet.
       </div>
     );
@@ -118,7 +118,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
     background: "#0a1628", color: "#5a7090",
     fontSize: "0.68em", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
-    padding: "7px 10px", borderBottom: "1px solid #1e3a5f",
+    padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     textAlign: "center", whiteSpace: "nowrap",
   };
 
@@ -145,8 +145,8 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
         </p>
       )}
 
-      <div style={{ overflowX: "auto", border: "1px solid #1e3a5f", borderRadius: 10 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+      <div style={{ overflowX: "auto", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-card)" }}>
           <thead>
             <tr>
               <th style={{ ...th, textAlign: "left", width: 48 }}>Pos</th>
@@ -163,7 +163,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
           </thead>
           <tbody>
             {players.map((p, i) => {
-              const bg = i % 2 === 0 ? "#0d1a30" : "#0a1525";
+              const bg = i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid #0f2236",
                 background: bg, textAlign: "center", fontSize: "0.85em",
@@ -184,7 +184,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
                     <td style={{ ...td, textAlign: "left", color: "#7f8c8d", fontWeight: 700 }}>
                       {p.position ?? "—"}
                     </td>
-                    <td style={{ ...td, textAlign: "left", color: isCut ? "#3a5060" : "#dde6f5", fontWeight: 600, whiteSpace: "nowrap" }}>
+                    <td style={{ ...td, textAlign: "left", color: isCut ? "#3a5060" : "var(--bc-text)", fontWeight: 600, whiteSpace: "nowrap" }}>
                       {holeScores && (
                         <span style={{ marginRight: 6, color: isExpanded ? "#00c44f" : "#3a5060", fontSize: "0.8em" }}>
                           {isExpanded ? "▾" : "▸"}
@@ -208,7 +208,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
                   {/* Expanded scorecard row */}
                   {isExpanded && (
                     <tr>
-                      <td colSpan={totalCols} style={{ background: "#080f1e", borderBottom: "1px solid #1e3a5f", padding: "12px 16px" }}>
+                      <td colSpan={totalCols} style={{ background: "#080f1e", borderBottom: "1px solid var(--bc-line)", padding: "12px 16px" }}>
                         {playerHoles ? (
                           Object.entries(playerHoles)
                             .sort(([a], [b]) => Number(a) - Number(b))
@@ -259,10 +259,10 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
 
 function CutChip({ label, value, highlight, dim }: { label: string; value: string; highlight?: boolean; dim?: boolean }) {
   const color = highlight ? "#f39c12" : dim ? "#3a5060" : "#5a7090";
-  const bg    = highlight ? "#2a1f0a" : dim ? "#0a1220" : "#0d1a30";
+  const bg    = highlight ? "#2a1f0a" : dim ? "#0a1220" : "var(--bc-card)";
   return (
-    <div style={{ background: bg, border: "1px solid #1e3a5f", borderRadius: 8, padding: "8px 14px" }}>
-      <div style={{ fontSize: "0.62em", color: "#4a6080", textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
+    <div style={{ background: bg, border: "1px solid var(--bc-line)", borderRadius: 8, padding: "8px 14px" }}>
+      <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
       <div style={{ fontSize: "1em", fontWeight: 700, color, marginTop: 2 }}>{value}</div>
     </div>
   );

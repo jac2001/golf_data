@@ -11,9 +11,9 @@ type Props = {
   updated: string;
 };
 
-const BG     = "#0d1a30";
-const BG_ALT = "#0a1525";
-const BORDER = "#1e3a5f";
+const BG     = "var(--bc-card)";
+const BG_ALT = "var(--bc-panel)";
+const BORDER = "var(--bc-line)";
 const MUTED  = "#5a7090";
 const GREEN  = "#00c44f";
 const RED    = "#e74c3c";
@@ -112,7 +112,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
         <span style={{ fontSize: "0.75em", color: MUTED, marginRight: 4 }}>Wave:</span>
         {(["total", "morning", "afternoon"] as Wave[]).map(w => (
           <button key={w} onClick={() => setWave(w)} style={{
-            background: wave === w ? "#0d2e18" : "#0a1525",
+            background: wave === w ? "#0d2e18" : "var(--bc-panel)",
             border: `1px solid ${wave === w ? GREEN : BORDER}`,
             color: wave === w ? GREEN : MUTED,
             borderRadius: 6, padding: "4px 12px",
@@ -174,9 +174,9 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
 
               return (
                 <tr key={hole.hole}>
-                  <td style={{ ...td, fontWeight: 800, color: "#dde6f5" }}>{hole.hole}</td>
+                  <td style={{ ...td, fontWeight: 800, color: "var(--bc-text)" }}>{hole.hole}</td>
                   <td style={{ ...td, color: MUTED }}>par {hole.par}</td>
-                  <td style={{ ...td, color: "#4a6080" }}>{hole.yardage ?? "—"}</td>
+                  <td style={{ ...td, color: "var(--bc-muted)" }}>{hole.yardage ?? "—"}</td>
                   <td style={{ ...td, color: MUTED }}>{w.players_thru ?? "—"}</td>
                   <td style={{ ...td, color: diffColor(vp), fontWeight: 600 }}>
                     {w.avg_score != null ? w.avg_score.toFixed(3) : "—"}

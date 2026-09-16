@@ -28,18 +28,18 @@ function WdRow({ w }: { w: Withdrawal }) {
       flexWrap: "wrap", gap: 8,
     }}>
       <div>
-        <div style={{ fontWeight: 700, color: "#dde6f5", fontSize: "0.92em" }}>
+        <div style={{ fontWeight: 700, color: "var(--bc-text)", fontSize: "0.92em" }}>
           {w.player_name}
         </div>
-        <div style={{ fontSize: "0.68em", color: "#4a6080", marginTop: 3 }}>
+        <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", marginTop: 3 }}>
           {SOURCE_LABEL[w.source] ?? w.source}
           {w.detected_at && <span style={{ marginLeft: 8 }}>· {fmtDate(w.detected_at)}</span>}
         </div>
       </div>
       <span style={{
         fontSize: "0.65em", fontWeight: 800, color: "#e74c3c",
-        background: "#e74c3c18", padding: "3px 9px",
-        borderRadius: 4, border: "1px solid #e74c3c33",
+        background: "rgba(231,76,60,0.09)", padding: "3px 9px",
+        borderRadius: 4, border: "1px solid rgba(231,76,60,0.2)",
         textTransform: "uppercase", letterSpacing: "0.07em", flexShrink: 0,
       }}>
         Withdrawn
@@ -51,7 +51,7 @@ function WdRow({ w }: { w: Withdrawal }) {
 export default function WithdrawalsTab({ withdrawals }: Props) {
   if (!withdrawals.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No confirmed withdrawals for this tournament.
       </div>
     );

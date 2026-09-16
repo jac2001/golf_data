@@ -4,8 +4,8 @@ import { LivePulse as LivePulseData } from "@/lib/api";
 
 const BG     = "#060d1a";
 const BORDER = "#1a3050";
-const TEXT   = "#dde6f5";
-const MUTED  = "#7a9ab8";
+const TEXT   = "var(--bc-text)";
+const MUTED  = "var(--bc-muted)";
 const LABEL  = "#3a5060";
 const GREEN  = "#00c44f";
 const GOLD   = "#f1c40f";

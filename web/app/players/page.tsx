@@ -29,16 +29,16 @@ import {
   CourseFitRankedPlayer,
 } from "@/lib/api";
 
-const BG       = "#0d1a30";
-const CARD_BG  = "#0f2035";
-const BORDER   = "#1e3a5f";
-const TEXT      = "#dde6f5";
-const MUTED     = "#8ba0b8";
-const LABEL     = "#4a6080";
-const GREEN     = "#00c44f";
-const BLUE      = "#4cb8ff";
-const GOLD      = "#f1c40f";
-const RED       = "#e74c3c";
+const BG       = "var(--bc-bg)";
+const CARD_BG  = "var(--bc-panel)";
+const BORDER   = "var(--bc-line)";
+const TEXT      = "var(--bc-text)";
+const MUTED     = "var(--bc-muted)";
+const LABEL     = "var(--bc-muted)";
+const GREEN     = "var(--bc-green)";
+const BLUE      = "var(--bc-yellow)";  // H2H player B — yellow in Broadcast
+const GOLD      = "var(--bc-yellow)";
+const RED       = "var(--negative)";
 
 function fmt(n: number | null | undefined, decimals = 1): string {
   if (n == null) return "—";
@@ -88,7 +88,7 @@ function Chip({ label, value, color = TEXT }: { label: string; value: string; co
   return (
     <div style={{
       display: "flex", flexDirection: "column", alignItems: "center",
-      background: "#091525", border: `1px solid ${BORDER}`, borderRadius: 8,
+      background: "var(--bc-panel)", border: `1px solid ${BORDER}`, borderRadius: 8,
       padding: "10px 16px", minWidth: 80,
     }}>
       <span style={{ fontSize: "1.15em", fontWeight: 700, color }}>{value}</span>
@@ -147,7 +147,7 @@ function UsePips({ uses }: { uses: number }) {
       {[0, 1, 2].map(i => (
         <div key={i} style={{
           width: 9, height: 9, borderRadius: "50%",
-          background: i < uses ? GREEN : "#1e3a5f",
+          background: i < uses ? GREEN : "var(--bc-line)",
         }} />
       ))}
     </div>
@@ -245,7 +245,7 @@ const SECTION_META: { key: keyof PlayerSynopsis["sections"]; label: string; colo
   { key: "form",          label: "Form",          color: GREEN },
   { key: "course_fit",    label: "Course Fit",    color: BLUE  },
   { key: "betting_angle", label: "Betting Angle", color: GOLD  },
-  { key: "fantasy",       label: "Fantasy",       color: "#c070f0" },
+  { key: "fantasy",       label: "Fantasy",       color: "var(--bc-orange)" },
 ];
 
 function SynopsisCard({
@@ -270,7 +270,7 @@ function SynopsisCard({
       <div style={{
         ...card,
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        background: "#080f1e", border: `1px dashed ${BORDER}`,
+        background: "var(--bc-panel)", border: `1px dashed ${BORDER}`,
       }}>
         <div>
           <div style={{ fontSize: "0.88em", color: TEXT, fontWeight: 600, marginBottom: 2 }}>
@@ -296,7 +296,7 @@ function SynopsisCard({
 
   if (loading) {
     return (
-      <div style={{ ...card, background: "#080f1e", border: `1px dashed ${BORDER}`, textAlign: "center", padding: "28px 20px" }}>
+      <div style={{ ...card, background: "var(--bc-panel)", border: `1px dashed ${BORDER}`, textAlign: "center", padding: "28px 20px" }}>
         <div style={{ fontSize: "0.85em", color: MUTED }}>Generating analysis…</div>
         <div style={{ fontSize: "0.72em", color: LABEL, marginTop: 4 }}>
           Gathering stats and asking Claude for a take
@@ -321,7 +321,7 @@ function SynopsisCard({
   const ts = synopsis.generated_ts ? new Date(synopsis.generated_ts * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
 
   return (
-    <div style={{ ...card, background: "#080f1e", border: `1px solid #1a3a5f`, marginBottom: 16 }}>
+    <div style={{ ...card, background: "var(--bc-panel)", border: `1px solid var(--bc-line)`, marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
         <div>
           <span style={{ fontSize: "0.68em", color: LABEL, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>
@@ -376,7 +376,15 @@ function SynopsisCard({
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 
+import { PageHead, SubTabs } from "@/components/broadcast";
+
 type PageTab = "lookup" | "h2h" | "stats" | "course-fit";
+const PAGE_TABS: { id: PageTab; label: string }[] = [
+  { id: "lookup",     label: "Profiles"     },
+  { id: "h2h",        label: "Head-to-Head" },
+  { id: "stats",      label: "Stats"        },
+  { id: "course-fit", label: "Course Fit"   },
+];
 
 function PlayersPageInner() {
   const searchParams = useSearchParams();
@@ -425,15 +433,10 @@ function PlayersPageInner() {
       <div className="page-wrap-md">
 
         {/* Page header */}
-        <h1 style={{ margin: "0 0 4px", fontSize: "1.4em", fontWeight: 800, color: TEXT }}>Players</h1>
+        <PageHead kicker="Profiles · head-to-head · course fit" title="Players" />
 
         {/* Tab bar */}
-        <div style={{ display: "flex", gap: 4, borderBottom: `1px solid ${BORDER}`, marginBottom: 24 }}>
-          {tabBtn("lookup",      "Profiles")}
-          {tabBtn("h2h",         "Head-to-Head")}
-          {tabBtn("stats",       "Stats")}
-          {tabBtn("course-fit",  "Course Fit")}
-        </div>
+        <SubTabs tabs={PAGE_TABS} active={pageTab} onChange={setPageTab} />
 
         {listLoading ? (
           <p style={{ color: MUTED }}>Loading players…</p>
@@ -599,7 +602,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
       key={col as string}
       onClick={() => handleSort(col)}
       style={{
-        padding: "7px 10px", background: "#0a1628", cursor: "pointer", userSelect: "none",
+        padding: "7px 10px", background: "var(--bc-panel)", cursor: "pointer", userSelect: "none",
         textAlign: align, fontSize: "0.68em", fontWeight: 700, letterSpacing: "0.05em",
         textTransform: "uppercase", whiteSpace: "nowrap",
         color: sortCol === col ? GREEN : LABEL,
@@ -612,8 +615,8 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
 
   const tdStyle = (i: number): React.CSSProperties => ({
     padding: "6px 10px",
-    background: i % 2 === 0 ? "#0d1a30" : "#0a1525",
-    borderBottom: `1px solid #0f2236`,
+    background: i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)",
+    borderBottom: `1px solid var(--bc-card)`,
   });
 
   function sgCell(val: number | null, rank: number | null, i: number) {
@@ -668,10 +671,10 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
       </div>
 
       <div style={{ overflowX: "auto", border: `1px solid ${BORDER}`, borderRadius: 10 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
-              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
               {th("player_name", "Player", "left")}
 
               {view === "sg" && <>
@@ -711,9 +714,9 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
             {sorted.map((p, i) => {
               const isPick = myPicksNorm.has(normName(p.player_name));
               return (
-              <tr key={p.player_name} style={isPick ? { background: "#060e09" } : undefined}>
-                <td style={{ ...tdStyle(i), textAlign: "center", color: LABEL, fontSize: "0.75em", ...(isPick ? { background: "#060e09" } : {}) }}>{i + 1}</td>
-                <td style={{ ...tdStyle(i), fontSize: "0.85em", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid #00c44f" : undefined, ...(isPick ? { background: "#060e09" } : {}) }}>
+              <tr key={p.player_name} style={isPick ? { background: "var(--bc-panel)" } : undefined}>
+                <td style={{ ...tdStyle(i), textAlign: "center", color: LABEL, fontSize: "0.75em", ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>{i + 1}</td>
+                <td style={{ ...tdStyle(i), fontSize: "0.85em", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid var(--bc-green)" : undefined, ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>
                   <Link
                     href={`/players?player=${encodeURIComponent(p.player_name)}`}
                     style={{ color: isPick ? GREEN : TEXT, textDecoration: "none" }}
@@ -723,7 +726,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
                   {isPick && (
                     <span style={{
                       marginLeft: 8, fontSize: "0.65em", fontWeight: 800,
-                      color: GREEN, background: "#00c44f18", border: "1px solid #00c44f33",
+                      color: GREEN, background: "color-mix(in srgb, var(--bc-green) 9%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)",
                       borderRadius: 4, padding: "1px 6px", letterSpacing: "0.07em",
                     }}>MY PICK</span>
                   )}
@@ -812,7 +815,7 @@ const FIT_CATEGORIES: { key: keyof CourseFitRankedPlayer; label: string; color: 
   { key: "fit_ott",  label: "Off the Tee",      color: BLUE },
   { key: "fit_app",  label: "Approach",          color: GREEN },
   { key: "fit_arg",  label: "Around the Green",  color: GOLD },
-  { key: "fit_putt", label: "Putting",           color: "#c77dff" },
+  { key: "fit_putt", label: "Putting",           color: "var(--bc-orange)" },
 ];
 
 function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
@@ -863,14 +866,14 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
           {data.is_default ? (
             <span style={{
               fontSize: "0.72em", fontWeight: 700, color: GOLD, background: "#2a1f00",
-              border: "1px solid #f1c40f44", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
+              border: "1px solid color-mix(in srgb, var(--bc-yellow) 27%, transparent)", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
             }}>
               No course-specific data yet — showing field-average importance
             </span>
           ) : (
             <span style={{
-              fontSize: "0.72em", fontWeight: 700, color: GREEN, background: "#0d2e18",
-              border: "1px solid #00c44f44", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
+              fontSize: "0.72em", fontWeight: 700, color: GREEN, background: "var(--bc-card)",
+              border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
             }}>
               Derived from {data.n_players_in_derivation} historical results · {(data.confidence * 100).toFixed(0)}% confidence
             </span>
@@ -882,11 +885,11 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
             ["Off the Tee",      profile.ott_pct,  BLUE],
             ["Approach",         profile.app_pct,  GREEN],
             ["Around the Green", profile.arg_pct,  GOLD],
-            ["Putting",          profile.putt_pct, "#c77dff"],
+            ["Putting",          profile.putt_pct, "var(--bc-orange)"],
           ] as const).map(([label, pct, color]) => (
             <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
               <span style={{ width: 140, fontSize: "0.8em", color: MUTED, flexShrink: 0 }}>{label}</span>
-              <div style={{ flex: 1, background: "#0d1a30", borderRadius: 4, height: 10, border: `1px solid ${BORDER}` }}>
+              <div style={{ flex: 1, background: "var(--bc-panel)", borderRadius: 4, height: 10, border: `1px solid ${BORDER}` }}>
                 <div style={{ width: `${pct}%`, background: color, borderRadius: 4, height: 10 }} />
               </div>
               <span style={{ width: 46, textAlign: "right", fontSize: "0.85em", fontWeight: 700, color }}>
@@ -913,13 +916,13 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
       </p>
 
       <div style={{ overflowX: "auto", border: `1px solid ${BORDER}`, borderRadius: 10 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
-              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
-              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "left", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Player</th>
-              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>World Rank</th>
-              <th style={{ padding: "7px 10px", background: "#0a1628", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Fit Score</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "left", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Player</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>World Rank</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Fit Score</th>
             </tr>
           </thead>
           <tbody>
@@ -932,39 +935,39 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
                     onClick={() => setExpanded(isExpanded ? null : p.player_name)}
                     style={{
                       cursor: "pointer",
-                      background: isPick ? "#060e09" : (i % 2 === 0 ? "#0d1a30" : "#0a1525"),
+                      background: isPick ? "var(--bc-panel)" : (i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)"),
                       borderLeft: isPick ? `2px solid ${GREEN}` : undefined,
                     }}
                   >
-                    <td style={{ padding: "6px 10px", textAlign: "center", color: LABEL, fontSize: "0.8em", borderBottom: "1px solid #0f2236" }}>
+                    <td style={{ padding: "6px 10px", textAlign: "center", color: LABEL, fontSize: "0.8em", borderBottom: "1px solid var(--bc-card)" }}>
                       {i + 1}
                     </td>
-                    <td style={{ padding: "6px 10px", borderBottom: "1px solid #0f2236" }}>
+                    <td style={{ padding: "6px 10px", borderBottom: "1px solid var(--bc-card)" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ fontSize: "0.7em", color: isExpanded ? BLUE : "#2a4060" }}>
+                        <span style={{ fontSize: "0.7em", color: isExpanded ? BLUE : "var(--bc-line)" }}>
                           {isExpanded ? "▲" : "▼"}
                         </span>
                         <span style={{ color: isPick ? GREEN : TEXT, fontWeight: isPick ? 700 : 500, fontSize: "0.88em" }}>
                           {p.player_name}
                         </span>
                         {isPick && (
-                          <span style={{ fontSize: "0.58em", fontWeight: 800, color: GREEN, background: "#0d2e18", border: `1px solid ${GREEN}44`, borderRadius: 3, padding: "2px 5px" }}>
+                          <span style={{ fontSize: "0.58em", fontWeight: 800, color: GREEN, background: "var(--bc-card)", border: `1px solid ${GREEN}44`, borderRadius: 3, padding: "2px 5px" }}>
                             MY PICK
                           </span>
                         )}
                       </span>
                     </td>
-                    <td style={{ padding: "6px 10px", textAlign: "center", color: MUTED, fontSize: "0.85em", borderBottom: "1px solid #0f2236" }}>
+                    <td style={{ padding: "6px 10px", textAlign: "center", color: MUTED, fontSize: "0.85em", borderBottom: "1px solid var(--bc-card)" }}>
                       {p.world_rank != null ? `#${p.world_rank}` : "—"}
                     </td>
-                    <td style={{ padding: "6px 10px", textAlign: "center", fontWeight: 700, fontSize: "0.9em", borderBottom: "1px solid #0f2236",
+                    <td style={{ padding: "6px 10px", textAlign: "center", fontWeight: 700, fontSize: "0.9em", borderBottom: "1px solid var(--bc-card)",
                         color: p.fit_total >= 0 ? GREEN : RED }}>
                       {p.fit_total >= 0 ? "+" : ""}{p.fit_total.toFixed(2)}
                     </td>
                   </tr>
                   {isExpanded && (
                     <tr>
-                      <td colSpan={4} style={{ background: "#07101c", padding: "14px 16px", borderBottom: "1px solid #0f2236" }}>
+                      <td colSpan={4} style={{ background: "var(--bc-panel)", padding: "14px 16px", borderBottom: "1px solid var(--bc-card)" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: 6, maxWidth: 480 }}>
                           {FIT_CATEGORIES.map(c => {
                             const val = p[c.key] as number;
@@ -1038,7 +1041,7 @@ function H2HTab({ players }: { players: string[] }) {
           <div style={{ ...sectionLabel, marginBottom: 6 }}>Player 1</div>
           <PlayerSelect players={players} value={p1Name} onChange={handleP1} id="h2h-p1" placeholder="Select player 1…" />
         </div>
-        <div style={{ fontSize: "1.1em", fontWeight: 900, color: "#2a3f58", paddingTop: 22 }}>VS</div>
+        <div style={{ fontSize: "1.1em", fontWeight: 900, color: "var(--bc-line)", paddingTop: 22 }}>VS</div>
         <div>
           <div style={{ ...sectionLabel, marginBottom: 6 }}>Player 2</div>
           <PlayerSelect players={players} value={p2Name} onChange={handleP2} id="h2h-p2" placeholder="Select player 2…" />
@@ -1070,7 +1073,7 @@ function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 48px 1fr", gap: 0, marginBottom: 20, alignItems: "stretch" }}>
         <H2HHeaderCard profile={p1} accent={GREEN} />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ fontSize: "0.78em", fontWeight: 900, color: "#2a3f58" }}>VS</span>
+          <span style={{ fontSize: "0.78em", fontWeight: 900, color: "var(--bc-line)" }}>VS</span>
         </div>
         <H2HHeaderCard profile={p2} accent={BLUE} />
       </div>
@@ -1168,7 +1171,7 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
 function H2HSection({ label }: { label: string }) {
   return (
     <div style={{
-      background: "#080f1e", padding: "6px 16px",
+      background: "var(--bc-panel)", padding: "6px 16px",
       fontSize: "0.65em", fontWeight: 700, color: LABEL,
       textTransform: "uppercase", letterSpacing: "0.1em",
       borderTop: `1px solid ${BORDER}`,
@@ -1215,16 +1218,16 @@ function H2HRow({
   const aStr = a != null ? fmtH2H(a, fmt, prefix, suffix) : "—";
   const bStr = b != null ? fmtH2H(b, fmt, prefix, suffix) : "—";
 
-  const aColor = aWins ? GREEN : bWins ? "#4a6080" : TEXT;
-  const bColor = bWins ? BLUE  : aWins ? "#4a6080" : TEXT;
-  const barA   = aWins ? GREEN : "#0d2e18";
-  const barB   = bWins ? BLUE  : "#0d1e30";
+  const aColor = aWins ? GREEN : bWins ? "var(--bc-muted)" : TEXT;
+  const bColor = bWins ? BLUE  : aWins ? "var(--bc-muted)" : TEXT;
+  const barA   = aWins ? GREEN : "var(--bc-card)";
+  const barB   = bWins ? BLUE  : "var(--bc-card)";
 
   return (
     <div>
       {/* Label row */}
       <div style={{
-        textAlign: "center", fontSize: "0.65em", color: "#2e4870",
+        textAlign: "center", fontSize: "0.65em", color: "var(--bc-line)",
         textTransform: "uppercase", letterSpacing: "0.09em", paddingTop: 9,
       }}>
         {label}
@@ -1233,7 +1236,7 @@ function H2HRow({
       <div style={{
         display: "grid", gridTemplateColumns: "auto 1fr auto",
         alignItems: "center", gap: 12, padding: "5px 20px 10px",
-        borderBottom: `1px solid #0a1624`,
+        borderBottom: `1px solid var(--bc-panel)`,
       }}>
         <div style={{ fontSize: "1em", fontWeight: aWins ? 700 : 400, color: aColor, minWidth: 58, textAlign: "right" }}>
           {aStr}
@@ -1253,13 +1256,13 @@ function H2HRow({
 // ── Per-round SG breakdown (shown in expanded Recent Starts row) ──────────────
 
 function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
-  const BG    = "#060e1a";
-  const CELL  = "#0a1525";
-  const BORD  = "#1e3a5f";
-  const MUT   = "#4a6080";
-  const GRN   = "#00c44f";
-  const RED   = "#e74c3c";
-  const GOLD  = "#f1c40f";
+  const BG    = "var(--bc-panel)";
+  const CELL  = "var(--bc-panel)";
+  const BORD  = "var(--bc-line)";
+  const MUT   = "var(--bc-muted)";
+  const GRN   = "var(--bc-green)";
+  const RED   = "var(--negative)";
+  const GOLD  = "var(--bc-yellow)";
 
   function sgColor(v: number | null) {
     if (v == null) return MUT;
@@ -1294,13 +1297,13 @@ function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
   function cell(i: number): React.CSSProperties {
     return {
       padding: "5px 10px", fontSize: "0.8em", textAlign: "center",
-      background: i % 2 === 0 ? CELL : "#091520",
+      background: i % 2 === 0 ? CELL : "var(--bc-panel)",
       borderBottom: `1px solid ${BORD}`,
     };
   }
 
   const rows: { key: string; label: string; fmt: (r: RoundStat) => React.ReactNode }[] = [
-    { key: "score",    label: "Score",    fmt: r => <span style={{ color: "#dde6f5", fontWeight: 700 }}>{fmtScore(r.score, r.course_par)}</span> },
+    { key: "score",    label: "Score",    fmt: r => <span style={{ color: "var(--bc-text)", fontWeight: 700 }}>{fmtScore(r.score, r.course_par)}</span> },
     { key: "sg_total", label: "SG Total", fmt: r => <span style={{ color: sgColor(r.sg_total), fontWeight: 700 }}>{fmtSg(r.sg_total)}</span> },
     { key: "sg_ott",   label: "SG OTT",   fmt: r => <span style={{ color: sgColor(r.sg_ott) }}>{fmtSg(r.sg_ott)}</span> },
     { key: "sg_app",   label: "SG APP",   fmt: r => <span style={{ color: sgColor(r.sg_app) }}>{fmtSg(r.sg_app)}</span> },
@@ -1331,7 +1334,7 @@ function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
           <tbody>
             {rows.map((row, i) => (
               <tr key={row.key}>
-                <td style={{ ...label, background: i % 2 === 0 ? CELL : "#091520" }}>{row.label}</td>
+                <td style={{ ...label, background: i % 2 === 0 ? CELL : "var(--bc-panel)" }}>{row.label}</td>
                 {rounds.map(r => (
                   <td key={r.round_num} style={cell(i)}>{row.fmt(r)}</td>
                 ))}
@@ -1394,14 +1397,14 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
   const fmtPct3 = (v: number | null) => v == null ? "—" : `${v.toFixed(0)}%`;
 
   const thS: React.CSSProperties = {
-    padding: "5px 8px", background: "#060f1c", fontSize: "0.67em", fontWeight: 700,
+    padding: "5px 8px", background: "var(--bc-panel)", fontSize: "0.67em", fontWeight: 700,
     color: LABEL, textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: `1px solid ${BORDER}`,
   };
   const tdS = (isPick: boolean, i: number): React.CSSProperties => ({
     padding: "4px 8px", fontSize: "0.8em",
-    borderBottom: "1px solid #0a1828",
-    background: isPick ? "#060e09" : i % 2 === 0 ? "#081220" : "#091828",
+    borderBottom: "1px solid var(--bc-card)",
+    background: isPick ? "var(--bc-panel)" : i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-card)",
   });
 
   return (
@@ -1437,7 +1440,7 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
             const isPick = normName(r.player_name) === highlightKey;
             return (
               <tr key={i}>
-                <td style={{ ...tdS(isPick, i), fontWeight: 700, color: posColor2(r.position), borderLeft: isPick ? "2px solid #00c44f" : undefined }}>
+                <td style={{ ...tdS(isPick, i), fontWeight: 700, color: posColor2(r.position), borderLeft: isPick ? "2px solid var(--bc-green)" : undefined }}>
                   {r.position}
                 </td>
                 <td style={{ ...tdS(isPick, i), whiteSpace: "nowrap" }}>
@@ -1506,13 +1509,13 @@ function CareerCard({ playerName }: { playerName: string }) {
   }
 
   const thStyle: React.CSSProperties = {
-    padding: "6px 10px", background: "#081220", fontSize: "0.68em", fontWeight: 700,
+    padding: "6px 10px", background: "var(--bc-panel)", fontSize: "0.68em", fontWeight: 700,
     color: LABEL, textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: `1px solid ${BORDER}`, whiteSpace: "nowrap",
   };
   const tdBase = (i: number): React.CSSProperties => ({
-    padding: "5px 10px", borderBottom: `1px solid #0d1e2e`, fontSize: "0.83em",
-    background: i % 2 === 0 ? "#091525" : "#0a1628",
+    padding: "5px 10px", borderBottom: `1px solid var(--bc-card)`, fontSize: "0.83em",
+    background: i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)",
   });
 
   return (
@@ -1559,7 +1562,7 @@ function CareerCard({ playerName }: { playerName: string }) {
       {/* ── By Year view ─────────────────────────────────────────────────── */}
       {loaded && career && view === "yearly" && (
         <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}` }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", background: "#091525" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
             <thead>
               <tr>
                 {[
@@ -1575,7 +1578,7 @@ function CareerCard({ playerName }: { playerName: string }) {
             </thead>
             <tbody>
               {career.by_year.map((y, i) => (
-                <tr key={y.year} style={{ background: i % 2 === 0 ? "#091525" : "#0a1628" }}>
+                <tr key={y.year} style={{ background: i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)" }}>
                   <td style={{ ...tdBase(i), fontWeight: 700, color: TEXT }}>{y.year}</td>
                   <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>{y.starts}</td>
                   <td style={{ ...tdBase(i), textAlign: "center", fontWeight: y.wins > 0 ? 800 : 400, color: y.wins > 0 ? GOLD : MUTED }}>
@@ -1616,7 +1619,7 @@ function CareerCard({ playerName }: { playerName: string }) {
       {/* ── Recent Starts view ───────────────────────────────────────────── */}
       {loaded && career && view === "recent" && (
         <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}` }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", background: "#091525" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
             <thead>
               <tr>
                 {[
@@ -1649,13 +1652,13 @@ function CareerCard({ playerName }: { playerName: string }) {
                           setExpandedTab(r.rounds.length > 0 ? "rounds" : "leaderboard");
                         }
                       }}
-                      style={{ cursor: canExpand ? "pointer" : "default", background: i % 2 === 0 ? "#091525" : "#0a1628" }}
+                      style={{ cursor: canExpand ? "pointer" : "default", background: i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)" }}
                     >
                       <td style={{ ...tdBase(i), maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           <span style={{ color: TEXT }}>{r.tournament_name}</span>
                           {canExpand && (
-                            <span style={{ fontSize: "0.7em", color: isExpanded ? BLUE : "#2a4060" }}>
+                            <span style={{ fontSize: "0.7em", color: isExpanded ? BLUE : "var(--bc-line)" }}>
                               {isExpanded ? "▲" : "▼"}
                             </span>
                           )}
@@ -1697,16 +1700,16 @@ function CareerCard({ playerName }: { playerName: string }) {
                     </tr>
                     {isExpanded && (
                       <tr>
-                        <td colSpan={18} style={{ background: "#07101c", padding: "12px 16px", borderBottom: "1px solid #0d1e2e" }}>
+                        <td colSpan={18} style={{ background: "var(--bc-panel)", padding: "12px 16px", borderBottom: "1px solid var(--bc-card)" }}>
                           {/* Tab bar */}
                           <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
                             {r.rounds.length > 0 && (
                               <button
                                 onClick={e => { e.stopPropagation(); setExpandedTab("rounds"); }}
                                 style={{
-                                  background: expandedTab === "rounds" ? "#0d2e18" : "transparent",
-                                  border: `1px solid ${expandedTab === "rounds" ? GREEN : "#1e3a5f"}`,
-                                  color: expandedTab === "rounds" ? GREEN : "#4a6080",
+                                  background: expandedTab === "rounds" ? "var(--bc-card)" : "transparent",
+                                  border: `1px solid ${expandedTab === "rounds" ? GREEN : "var(--bc-line)"}`,
+                                  color: expandedTab === "rounds" ? GREEN : "var(--bc-muted)",
                                   borderRadius: 6, padding: "4px 14px",
                                   fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
                                 }}>
@@ -1716,9 +1719,9 @@ function CareerCard({ playerName }: { playerName: string }) {
                             <button
                               onClick={e => { e.stopPropagation(); setExpandedTab("leaderboard"); }}
                               style={{
-                                background: expandedTab === "leaderboard" ? "#0d1e38" : "transparent",
-                                border: `1px solid ${expandedTab === "leaderboard" ? BLUE : "#1e3a5f"}`,
-                                color: expandedTab === "leaderboard" ? BLUE : "#4a6080",
+                                background: expandedTab === "leaderboard" ? "var(--bc-card)" : "transparent",
+                                border: `1px solid ${expandedTab === "leaderboard" ? BLUE : "var(--bc-line)"}`,
+                                color: expandedTab === "leaderboard" ? BLUE : "var(--bc-muted)",
                                 borderRadius: 6, padding: "4px 14px",
                                 fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
                               }}>
@@ -1857,7 +1860,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
           {profile.dg_prediction.baseline_win != null && profile.dg_prediction.bhf_win != null && (
             <div style={{
               display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
-              background: "#091525", border: `1px solid ${BORDER}`, borderRadius: 8,
+              background: "var(--bc-panel)", border: `1px solid ${BORDER}`, borderRadius: 8,
               padding: "10px 14px",
             }}>
               <span style={{ fontSize: "0.8em", color: LABEL }}>Course fit</span>
@@ -2032,7 +2035,7 @@ function ApproachCard({ ap }: { ap: PlayerApproachSkill }) {
           const band = ap[key];
           return (
             <div key={key} style={{
-              background: "#091525", borderRadius: 7, padding: "8px 12px",
+              background: "var(--bc-panel)", borderRadius: 7, padding: "8px 12px",
               border: `1px solid ${BORDER}`,
             }}>
               <div style={{ fontSize: "0.7em", color: LABEL, marginBottom: 3 }}>{label}</div>
@@ -2079,7 +2082,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
       {/* Summary narrative */}
       {bp.summary && (
         <div style={{
-          borderLeft: "3px solid #1e3a5f", paddingLeft: 12,
+          borderLeft: "3px solid var(--bc-line)", paddingLeft: 12,
           marginBottom: 16, color: MUTED, fontSize: "0.85em", lineHeight: 1.65,
         }}>
           {bp.summary}
@@ -2096,7 +2099,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
             ["Cuts Made",bp.cuts_made],
           ] as [string, number | null, string?][]).map(([label, val, col]) => val != null ? (
             <div key={label} style={{
-              background: "#091525", border: `1px solid ${BORDER}`, borderRadius: 7,
+              background: "var(--bc-panel)", border: `1px solid ${BORDER}`, borderRadius: 7,
               padding: "8px 14px", textAlign: "center", minWidth: 70,
             }}>
               <div style={{ fontSize: "1.1em", fontWeight: 800, color: col ?? TEXT }}>{val}</div>
@@ -2116,7 +2119,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
           ["SG Putt",   bp.sg_putt,   bp.sg_putt_rank],
         ] as [string, number | null, number | null][]).map(([label, val, rank]) => val != null ? (
           <div key={label} style={{
-            background: "#091525", border: `1px solid ${BORDER}`,
+            background: "var(--bc-panel)", border: `1px solid ${BORDER}`,
             borderRadius: 7, padding: "8px 12px",
           }}>
             <div style={{ fontSize: "0.68em", color: LABEL }}>{label}</div>
@@ -2178,7 +2181,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
         <>
           <p style={{ ...sectionLabel, marginTop: 4 }}>Recent Results</p>
           <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}`, marginBottom: 16 }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", background: "#091525", fontSize: "0.82em" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)", fontSize: "0.82em" }}>
               <thead>
                 <tr>
                   {["Finish", "Tournament", "Score", "Year"].map(h => (
@@ -2186,14 +2189,14 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
                       padding: "6px 10px", textAlign: h === "Finish" ? "center" : "left",
                       fontSize: "0.7em", fontWeight: 700, color: LABEL,
                       textTransform: "uppercase", letterSpacing: "0.05em",
-                      borderBottom: `1px solid ${BORDER}`, background: "#0a1628",
+                      borderBottom: `1px solid ${BORDER}`, background: "var(--bc-panel)",
                     }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {recentResults.slice(0, 8).map((r, i) => (
-                  <tr key={i} style={{ background: i % 2 === 0 ? "#091525" : "#0a1628" }}>
+                  <tr key={i} style={{ background: i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)" }}>
                     <td style={{ padding: "5px 10px", textAlign: "center", fontWeight: 700, color: posColor(r.finish) }}>
                       {r.finish}
                     </td>
@@ -2222,7 +2225,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {course.tournaments.slice(0, 8).map((t, i) => (
                   <div key={i} style={{
-                    fontSize: "0.72em", background: "#0a1628", border: `1px solid ${BORDER}`,
+                    fontSize: "0.72em", background: "var(--bc-panel)", border: `1px solid ${BORDER}`,
                     borderRadius: 5, padding: "3px 8px", display: "flex", gap: 6, alignItems: "center",
                   }}>
                     <span style={{ color: MUTED }}>{t.year}</span>

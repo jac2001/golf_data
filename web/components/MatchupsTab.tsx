@@ -83,7 +83,7 @@ export default function MatchupsTab() {
         {(["tournament", "round", "3ball"] as const).map(t => (
           <button key={t} onClick={() => setSubTab(t)} style={{
             background: subTab === t ? "var(--bc-line)" : "transparent",
-            border: `1px solid ${subTab === t ? "#2a4f7f" : "var(--bc-line)"}`,
+            border: `1px solid ${subTab === t ? "var(--bc-line)" : "var(--bc-line)"}`,
             borderRadius: 6, color: subTab === t ? "var(--bc-text)" : "var(--bc-muted)",
             padding: "6px 14px", fontSize: "0.85em", fontWeight: 600, cursor: "pointer",
           }}>
@@ -338,7 +338,7 @@ function EmptyState({ text }: { text: string }) {
 }
 
 const btnStyle: React.CSSProperties = {
-  background: "var(--bc-line)", border: "1px solid #2a4f7f", borderRadius: 6,
+  background: "var(--bc-line)", border: "1px solid var(--bc-line)", borderRadius: 6,
   color: "var(--bc-text)", padding: "6px 14px", fontSize: "0.82em",
   fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap",
 };

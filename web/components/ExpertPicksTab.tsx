@@ -153,7 +153,7 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
                 {expert.lineup.map(name => (
                   <span key={name} style={{
                     fontSize: "0.78em", color: "var(--bc-text)", background: "#091525",
-                    border: "1px solid var(--bc-green)33", borderRadius: 5, padding: "3px 10px",
+                    border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)", borderRadius: 5, padding: "3px 10px",
                   }}>
                     {name}
                   </span>
@@ -184,7 +184,7 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
                 </div>
                 <span style={{
                   fontSize: "0.78em", fontWeight: 700, color: "var(--bc-yellow)", background: "#1a1200",
-                  border: "1px solid var(--bc-yellow)33", borderRadius: 5, padding: "3px 10px",
+                  border: "1px solid color-mix(in srgb, var(--bc-yellow) 20%, transparent)", borderRadius: 5, padding: "3px 10px",
                 }}>
                   {expert.winner_pick}
                 </span>
@@ -253,7 +253,7 @@ export default function ExpertPicksTab({ experts, consensus, tournament }: Props
             key={v}
             onClick={() => setView(v)}
             style={{
-              background: view === v ? "var(--bc-green)22" : "transparent",
+              background: view === v ? "color-mix(in srgb, var(--bc-green) 13%, transparent)" : "transparent",
               border: `1px solid ${view === v ? "var(--bc-green)" : "var(--bc-line)"}`,
               borderRadius: 6, color: view === v ? "var(--bc-green)" : "var(--bc-muted)",
               padding: "5px 14px", fontSize: "0.82em", fontWeight: 600, cursor: "pointer",

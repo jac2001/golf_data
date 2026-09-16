@@ -4,11 +4,11 @@ import { useState, useEffect, useCallback } from "react";
 import { getSettings, patchSettings, AppSettings } from "@/lib/api";
 
 const BG     = "#0a1220";
-const BG2    = "#0d1a30";
-const BORDER = "#1e3a5f";
+const BG2    = "var(--bc-card)";
+const BORDER = "var(--bc-line)";
 const MUTED  = "#5a7090";
 const GREEN  = "#00c44f";
-const TEXT   = "#dde6f5";
+const TEXT   = "var(--bc-text)";
 
 // ── Small sub-components ──────────────────────────────────────────────────────
 
@@ -18,7 +18,7 @@ function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) => void 
       onClick={() => onChange(!on)}
       style={{
         width: 36, height: 20, borderRadius: 10, border: "none",
-        background: on ? GREEN : "#1e3a5f",
+        background: on ? GREEN : "var(--bc-line)",
         position: "relative", cursor: "pointer", flexShrink: 0,
         transition: "background 0.2s",
       }}

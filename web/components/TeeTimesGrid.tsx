@@ -65,14 +65,14 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
           return (
             <div key={group.tee_time} style={{
               background: "var(--bc-panel)",
-              border: `1px solid ${hasUse ? "var(--bc-green)44" : "var(--bc-line)"}`,
+              border: `1px solid ${hasUse ? "color-mix(in srgb, var(--bc-green) 27%, transparent)" : "var(--bc-line)"}`,
               borderRadius: 8, overflow: "hidden",
             }}>
               {/* Tee time header */}
               <div style={{
                 background: hasUse ? "#0a1e14" : "#0a1628",
                 padding: "6px 12px",
-                borderBottom: `1px solid ${hasUse ? "var(--bc-green)33" : "var(--bc-line)"}`,
+                borderBottom: `1px solid ${hasUse ? "color-mix(in srgb, var(--bc-green) 20%, transparent)" : "var(--bc-line)"}`,
                 display: "flex", justifyContent: "space-between", alignItems: "center",
               }}>
                 <span style={{ color: hasUse ? "var(--bc-green)" : "var(--bc-yellow)", fontWeight: 700, fontSize: "0.85em" }}>
@@ -85,7 +85,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                     </span>
                   )}
                   {hasUse && (
-                    <span style={{ fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", padding: "2px 5px", borderRadius: 3, border: "1px solid var(--bc-green)33" }}>
+                    <span style={{ fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", padding: "2px 5px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" }}>
                       VALUE
                     </span>
                   )}
@@ -153,7 +153,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           {isPick && (
                             <span style={{
                               fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)",
-                              background: "#0d2e18", border: "1px solid var(--bc-green)44",
+                              background: "#0d2e18", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
                               borderRadius: 3, padding: "1px 4px", whiteSpace: "nowrap", flexShrink: 0,
                             }}>MY PICK</span>
                           )}

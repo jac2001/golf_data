@@ -188,7 +188,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
           onClick={() => setPickerOpen(o => !o)}
           style={{
             background: pickerOpen ? "var(--bc-card)" : "var(--bc-panel)",
-            border: `1px solid ${pickerOpen ? "var(--bc-green)44" : "var(--bc-line)"}`,
+            border: `1px solid ${pickerOpen ? "color-mix(in srgb, var(--bc-green) 27%, transparent)" : "var(--bc-line)"}`,
             borderRadius: 6, color: pickerOpen ? "var(--bc-green)" : "var(--bc-muted)",
             padding: "6px 12px", fontSize: "0.8em", fontWeight: 600, cursor: "pointer",
           }}
@@ -296,7 +296,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       {isPick && (
                         <span style={{
                           fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)",
-                          background: "var(--bc-card)", border: "1px solid var(--bc-green)44",
+                          background: "var(--bc-card)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
                           borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
                         }}>MY PICK</span>
                       )}
@@ -316,7 +316,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       {playerIntel?.trend === "trending_up" && (
                         <span style={{
                           fontSize: "0.68em", fontWeight: 700, color: "var(--bc-green)",
-                          background: "var(--bc-card)", border: "1px solid var(--bc-green)44",
+                          background: "var(--bc-card)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
                           borderRadius: 4, padding: "1px 6px",
                         }}>↑ hot</span>
                       )}
@@ -481,10 +481,10 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   {visibleCols.has("pick") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.badge === "USE" && (
-                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-green)", background: "var(--bc-card)", padding: "2px 6px", borderRadius: 3, border: "1px solid var(--bc-green)44" }}>USE</span>
+                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-green)", background: "var(--bc-card)", padding: "2px 6px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)" }}>USE</span>
                     )}
                     {p.badge === "SAVE" && (
-                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-orange)", background: "#2a1f0a", padding: "2px 6px", borderRadius: 3, border: "1px solid var(--bc-orange)44" }}>SAVE</span>
+                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-orange)", background: "#2a1f0a", padding: "2px 6px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-orange) 27%, transparent)" }}>SAVE</span>
                     )}
                     {p.badge === "MAXED" && (
                       <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-muted)", background: "var(--bc-panel)", padding: "2px 6px", borderRadius: 3, border: "1px solid var(--bc-line)" }}>MAXED</span>

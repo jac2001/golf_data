@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { streamChat, rateChat, ChatMessage } from "@/lib/api";
+import { PageHead } from "@/components/broadcast";
 
 const QUICK_QUESTIONS = [
   "Best bets this week?",
@@ -21,7 +22,7 @@ function MarkdownText({ text }: { text: string }) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/`([^`]+)`/g, '<code style="background:#0a1525;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:0.9em;">$1</code>')
+    .replace(/`([^`]+)`/g, '<code style="background:var(--bc-panel);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:0.9em;">$1</code>')
     .replace(/\n/g, "<br />");
   return <span dangerouslySetInnerHTML={{ __html: html }} />;
 }
@@ -34,7 +35,7 @@ function RatingButtons({
 }) {
   if (rated) {
     return (
-      <div style={{ marginTop: 6, fontSize: "0.7em", color: "#2a6040" }}>
+      <div style={{ marginTop: 6, fontSize: "0.7em", color: "var(--bc-green)" }}>
         {rated === "up" ? "👍 Thanks" : "👎 Noted"}
       </div>
     );
@@ -48,9 +49,9 @@ function RatingButtons({
           title={r === "up" ? "Good response" : "Bad response"}
           style={{
             background: "transparent",
-            border: "1px solid #1e3a5f",
+            border: "1px solid var(--bc-line)",
             borderRadius: 6,
-            color: "#4a6080",
+            color: "var(--bc-muted)",
             padding: "2px 8px",
             fontSize: "0.78em",
             cursor: "pointer",
@@ -82,28 +83,28 @@ function MessageBubble({
       {!isUser && (
         <div style={{
           width: 28, height: 28, borderRadius: "50%",
-          background: "#00c44f22", border: "1px solid #00c44f44",
+          background: "rgba(53,197,116,0.13)", border: "1px solid rgba(53,197,116,0.27)",
           display: "flex", alignItems: "center", justifyContent: "center",
           flexShrink: 0, marginRight: 10, marginTop: 2,
-          fontSize: "0.72em", fontWeight: 800, color: "#00c44f",
+          fontSize: "0.72em", fontWeight: 800, color: "var(--bc-green)",
         }}>
           G
         </div>
       )}
       <div style={{ maxWidth: "78%" }}>
         <div style={{
-          background: isUser ? "#1e3a5f" : "#0d1a30",
-          border: `1px solid ${isUser ? "#2a4f7f" : "#1e3a5f"}`,
+          background: isUser ? "var(--bc-line)" : "var(--bc-panel)",
+          border: `1px solid ${isUser ? "var(--bc-line)" : "var(--bc-line)"}`,
           borderRadius: isUser ? "16px 16px 4px 16px" : "4px 16px 16px 16px",
           padding: "10px 14px",
           fontSize: "0.88em",
-          color: "#dde6f5",
+          color: "var(--bc-text)",
           lineHeight: 1.65,
         }}>
           {msg.content ? (
             <MarkdownText text={msg.content} />
           ) : isStreaming ? (
-            <span style={{ color: "#4a6080" }}>▋</span>
+            <span style={{ color: "var(--bc-muted)" }}>▋</span>
           ) : null}
         </div>
         {!isUser && !isStreaming && msg.content && onRate !== undefined && (
@@ -207,27 +208,23 @@ export default function AssistantPage() {
     }}>
 
       {/* ── Header ────────────────────────────────────────────────────────── */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexShrink: 0 }}>
-        <div>
-          <h1 style={{ fontSize: "1.4em", fontWeight: 800, color: "#dde6f5", margin: 0 }}>
-            Assistant
-          </h1>
-          <p style={{ color: "#4a6080", fontSize: "0.78em", margin: "3px 0 0" }}>
-            Golf analytics chatbot · Haiku · context-aware
-          </p>
-        </div>
-        {messages.length > 0 && (
-          <button
-            onClick={clear}
-            style={{
-              background: "transparent", border: "1px solid #1e3a5f",
-              borderRadius: 6, color: "#7f8c8d", padding: "5px 12px",
-              fontSize: "0.78em", cursor: "pointer",
-            }}
-          >
-            Clear chat
-          </button>
-        )}
+      <div style={{ flexShrink: 0 }}>
+        <PageHead
+          kicker="Ask about this week — players, bets, course fit, your lineup"
+          title="Assistant"
+          right={messages.length > 0 ? (
+            <button
+              onClick={clear}
+              style={{
+                background: "transparent", border: "1px solid var(--bc-line)",
+                borderRadius: 6, color: "var(--bc-muted)", padding: "5px 12px",
+                fontSize: "0.78em", cursor: "pointer",
+              }}
+            >
+              Clear chat
+            </button>
+          ) : undefined}
+        />
       </div>
 
       {/* ── Message area ──────────────────────────────────────────────────── */}
@@ -240,7 +237,7 @@ export default function AssistantPage() {
         {messages.length === 0 && (
           <div style={{ margin: "auto 0", paddingBottom: 24 }}>
             <div style={{
-              textAlign: "center", color: "#4a6080",
+              textAlign: "center", color: "var(--bc-muted)",
               fontSize: "0.88em", marginBottom: 24,
             }}>
               Ask anything about this week's tournament, players, bets, or your lineup.
@@ -251,8 +248,8 @@ export default function AssistantPage() {
                   key={q}
                   onClick={() => send(q)}
                   style={{
-                    background: "#0d1a30", border: "1px solid #1e3a5f",
-                    borderRadius: 20, color: "#8ba0b8",
+                    background: "var(--bc-card)", border: "1px solid var(--bc-line)",
+                    borderRadius: 20, color: "var(--bc-muted)",
                     padding: "7px 14px", fontSize: "0.82em",
                     cursor: "pointer", transition: "border-color 0.15s, color 0.15s",
                   }}
@@ -278,8 +275,8 @@ export default function AssistantPage() {
         {/* Error */}
         {error && (
           <div style={{
-            background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 8,
-            padding: "10px 14px", color: "#e74c3c", fontSize: "0.82em", marginBottom: 12,
+            background: "rgba(224,85,85,0.10)", border: "1px solid rgba(224,85,85,0.35)", borderRadius: 8,
+            padding: "10px 14px", color: "var(--bc-red-text)", fontSize: "0.82em", marginBottom: 12,
           }}>
             {error}
           </div>
@@ -288,8 +285,8 @@ export default function AssistantPage() {
         {/* Soft limit warning */}
         {showLimitWarning && (
           <div style={{
-            background: "#1a1200", border: "1px solid #5f4a00", borderRadius: 8,
-            padding: "8px 14px", color: "#f39c12", fontSize: "0.78em",
+            background: "rgba(255,210,74,0.08)", border: "1px solid rgba(255,210,74,0.3)", borderRadius: 8,
+            padding: "8px 14px", color: "var(--warning)", fontSize: "0.78em",
             marginBottom: 12, textAlign: "center",
           }}>
             Long conversation — consider clearing the chat to keep responses fast and costs low.
@@ -301,7 +298,7 @@ export default function AssistantPage() {
 
       {/* ── Input area ────────────────────────────────────────────────────── */}
       <div style={{
-        flexShrink: 0, paddingTop: 12, borderTop: "1px solid #1e3a5f",
+        flexShrink: 0, paddingTop: 12, borderTop: "1px solid var(--bc-line)",
       }}>
         <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
           <textarea
@@ -312,8 +309,8 @@ export default function AssistantPage() {
             placeholder="Ask about bets, players, course fit, lineup…"
             rows={2}
             style={{
-              flex: 1, background: "#0d1a30", border: "1px solid #1e3a5f",
-              borderRadius: 10, color: "#dde6f5", padding: "10px 14px",
+              flex: 1, background: "var(--bc-card)", border: "1px solid var(--bc-line)",
+              borderRadius: 10, color: "var(--bc-text)", padding: "10px 14px",
               fontSize: "0.88em", lineHeight: 1.5, resize: "none",
               outline: "none", fontFamily: "inherit",
             }}
@@ -322,7 +319,7 @@ export default function AssistantPage() {
             onClick={() => send(input)}
             disabled={!input.trim() || streaming}
             style={{
-              background: input.trim() && !streaming ? "#00c44f" : "#1e3a5f",
+              background: input.trim() && !streaming ? "var(--bc-green)" : "var(--bc-line)",
               border: "none", borderRadius: 10, color: "#fff",
               padding: "10px 18px", fontSize: "0.88em", fontWeight: 700,
               cursor: input.trim() && !streaming ? "pointer" : "default",
@@ -332,7 +329,7 @@ export default function AssistantPage() {
             {streaming ? "…" : "Send"}
           </button>
         </div>
-        <div style={{ fontSize: "0.65em", color: "#2a3a4a", marginTop: 6, textAlign: "right" }}>
+        <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginTop: 6, textAlign: "right" }}>
           Enter to send · Shift+Enter for newline
           {userMsgCount > 0 && ` · ${userMsgCount} messages this session`}
         </div>

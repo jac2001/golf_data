@@ -132,6 +132,16 @@ from config import (  # noqa: E402
 _SCHED_CSV   = schedule_csv()
 _TRACKER_JSON = usage_tracker_json()
 _LB_CSV      = leaderboards_csv()
+# Offseason rollover: SEASON's files may not exist yet — fall back to the
+# newest prior-season file so results/history pages keep working.
+if not _LB_CSV.exists():
+    _lb_candidates = sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv"), reverse=True)
+    if _lb_candidates:
+        _LB_CSV = _lb_candidates[0]
+if not _SCHED_CSV.exists():
+    _sched_candidates = sorted((DATA_DIR / "raw").glob("schedule_2*.csv"), reverse=True)
+    if _sched_candidates:
+        _SCHED_CSV = _sched_candidates[0]
 ODDS_DIR     = DATA_DIR / "odds"
 DG_DIR       = DATA_DIR / "datagolf"
 REASONS_CACHE_PATH = DATA_DIR / "betting_reasons_cache.json"
@@ -5770,10 +5780,20 @@ def history_tournaments() -> dict:
     df = pd.read_csv(hist_path)
     df["position_num"] = pd.to_numeric(df["position"].astype(str).str.extract(r"(\d+)")[0], errors="coerce")
 
-    schedule = pd.read_csv(_SCHED_CSV)
-    sched_map = dict(zip(schedule["tournament_id"].astype(str), schedule["start_date"]))
-    purse_map  = dict(zip(schedule["tournament_id"].astype(str), schedule["purse"]))
-    name_map   = dict(zip(schedule["tournament_id"].astype(str), schedule["tournament_name"]))
+    # Merge every season's schedule so R2026 results still resolve after the
+    # SEASON constant rolls to 2027 (ids are unique per year; newest wins).
+    sched_map: dict[str, str] = {}
+    purse_map: dict[str, float] = {}
+    name_map: dict[str, str] = {}
+    for sched_path in sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+        try:
+            schedule = pd.read_csv(sched_path)
+        except Exception:
+            continue
+        tids = schedule["tournament_id"].astype(str)
+        sched_map.update(zip(tids, schedule["start_date"]))
+        purse_map.update(zip(tids, schedule["purse"]))
+        name_map.update(zip(tids, schedule["tournament_name"]))
 
     # Load recaps — Supabase first, JSON files fallback
     recap_map: dict[str, str] = {}
