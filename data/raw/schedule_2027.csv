@@ -1,0 +1,36 @@
+week,start_date,end_date,tournament_name,tournament_type,location,course,course_key,latitude,longitude,purse,purse_source,winner_share,tournament_id,power_slug
+1,2027-01-21,2027-01-24,The American Express,Standard,"La Quinta, CA",Pete Dye Stadium Course;Nicklaus Tournament Course;La Quinta Country Club,704;233;202,33.643,-116.267,"$8,800,000.00",manual,"$1,584,000.00",R2027002,the-american-express
+2,2027-01-27,2027-01-30,The Sentry,Signature,"San Diego, CA",Torrey Pines Golf Course (South Course);Torrey Pines Golf Course (North Course),004;104,32.905,-117.245,"$20,000,000.00",manual,"$3,600,000.00",R2027004,the-sentry
+3,2027-02-04,2027-02-07,AT&T Pebble Beach Pro-Am,Signature,"Pebble Beach, CA",Pebble Beach Golf Links;Spyglass Hill Golf Course,005;205,36.569,-121.951,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027005,at-t-pebble-beach-pro-am
+4,2027-02-11,2027-02-14,WM Phoenix Open,Standard,"Scottsdale, AZ",TPC Scottsdale (Stadium Course),510,33.64,-111.91,"$9,600,000.00",carried_forward,"$1,728,000.00",R2027003,wm-phoenix-open
+5,2027-02-18,2027-02-21,The Genesis Invitational,Signature,"Pacific Palisades, CA",The Riviera Country Club,500,34.05,-118.5,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027007,the-genesis-invitational
+6,2027-02-25,2027-02-28,Cognizant Classic in The Palm Beaches,Standard,"Palm Beach Gardens, FL",PGA National - Champion Course,928,26.829,-80.141,"$9,600,000.00",carried_forward,"$1,728,000.00",R2027010,cognizant-classic-in-the-palm-beaches
+7,2027-03-04,2027-03-07,Cadillac Championship,Signature,"Miami, FL",Trump National Doral - Blue Monster Course,008,25.813,-80.339,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027556,cadillac-championship
+8,2027-03-11,2027-03-14,THE PLAYERS Championship,Major,"Ponte Vedra Beach, FL",TPC Sawgrass - THE PLAYERS Stadium Course,011,30.198,-81.394,"$25,000,000.00",carried_forward,"$4,500,000.00",R2027011,the-players-championship
+9,2027-03-18,2027-03-21,Arnold Palmer Invitational presented by Mastercard,Signature,"Bay Hill, FL",Arnold Palmer's Bay Hill Club & Lodge,009,28.458,-81.511,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027009,arnold-palmer-invitational-presented-by-mastercard
+10,2027-03-25,2027-03-28,Texas Children's Houston Open,Standard,"Houston, TX",Memorial Park Golf Course,897,29.924,-95.261,"$9,900,000.00",carried_forward,"$1,782,000.00",R2027020,texas-children-s-houston-open
+11,2027-04-01,2027-04-04,Valero Texas Open,Standard,"San Antonio, TX",TPC San Antonio - The Oaks Course,770,29.665,-98.4,"$9,800,000.00",carried_forward,"$1,764,000.00",R2027041,valero-texas-open
+12,2027-04-08,2027-04-11,Masters Tournament,Major,"Augusta, GA",Augusta National Golf Club,014,33.5,-82.02,"$21,000,000.00",carried_forward,"$3,780,000.00",R2027014,masters-tournament
+13,2027-04-15,2027-04-18,RBC Heritage,Signature,"Hilton Head Island, SC",Harbour Town Golf Links,012,32.136,-80.81,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027012,rbc-heritage
+14,2027-04-22,2027-04-25,Zurich Classic of New Orleans,Team,"Avondale, LA",TPC Louisiana,714,29.902,-90.19,"$9,500,000.00",carried_forward,"$1,710,000.00",R2027018,zurich-classic-of-new-orleans
+15,2027-04-29,2027-05-02,THE CJ CUP Byron Nelson,Standard,"McKinney, TX",TPC Craig Ranch,944,33.14,-96.72,"$10,300,000.00",carried_forward,"$1,854,000.00",R2027019,the-cj-cup-byron-nelson
+16,2027-05-06,2027-05-09,Valspar Championship,Standard,"Palm Harbor, FL",Innisbrook Resort and Golf Club - Copperhead Course,665,28.11,-82.76,"$9,100,000.00",carried_forward,"$1,638,000.00",R2027475,valspar-championship
+17,2027-05-13,2027-05-16,ONEflight Myrtle Beach Classic,Standard,"Myrtle Beach, SC",Dunes Golf and Beach Club,925,33.758,-78.796,"$4,000,000.00",manual,"$720,000.00",R2027553,oneflight-myrtle-beach-classic
+18,2027-05-13,2027-05-16,Truist Championship,Signature,"Charlotte, NC",Quail Hollow Club,872,35.116,-80.842,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027480,truist-championship
+19,2027-05-20,2027-05-23,PGA Championship,Major,"Frisco, TX",PGA Frisco,948,33.214,-96.855,"$19,000,000.00",carried_forward,"$3,420,000.00",R2027033,pga-championship
+20,2027-05-27,2027-05-30,Charles Schwab Challenge,Standard,"Fort Worth, TX",Colonial Country Club,021,32.717,-97.373,"$9,400,000.00",carried_forward,"$1,692,000.00",R2027021,charles-schwab-challenge
+21,2027-06-03,2027-06-06,the Memorial Tournament presented by Workday,Signature,"Dublin, OH",Muirfield Village Golf Club,023,40.14,-83.141,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027023,the-memorial-tournament-presented-by-workday
+22,2027-06-10,2027-06-13,RBC Canadian Open,Standard,"Alton, ON",TPC Toronto at Osprey Valley - North Course,935,43.849,-80.043,"$9,800,000.00",carried_forward,"$1,764,000.00",R2027032,rbc-canadian-open
+23,2027-06-17,2027-06-20,U.S. Open,Major,"Pebble Beach, CA",Pebble Beach Golf Links,666,36.569,-121.951,"$21,500,000.00",carried_forward,"$3,870,000.00",R2027026,u-s-open
+24,2027-06-24,2027-06-27,Travelers Championship,Signature,"Hartford, CT",TPC River Highlands,503,41.632,-72.639,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027034,travelers-championship
+25,2027-07-01,2027-07-04,John Deere Classic,Standard,"Silvis, IL",TPC Deere Run,669,41.478,-90.392,"$8,800,000.00",carried_forward,"$1,584,000.00",R2027030,john-deere-classic
+26,2027-07-08,2027-07-11,Genesis Scottish Open,Standard,"North Berwick, Scotland",The Renaissance Club,945,56.051,-2.809,"$9,000,000.00",carried_forward,"$1,620,000.00",R2027541,genesis-scottish-open
+27,2027-07-08,2027-07-11,ISCO Championship,Standard,"Louisville, KY",Hurstbourne Country Club,934,38.24,-85.591,"$4,000,000.00",manual,"$720,000.00",R2027518,isco-championship
+28,2027-07-15,2027-07-18,The Open Championship,Major,"Fife, Scotland",St. Andrews Links (Old Course),950,56.343,-2.803,"$17,000,000.00",carried_forward,"$3,060,000.00",R2027100,the-open-championship
+29,2027-07-15,2027-07-18,Corales Puntacana Championship,Standard,"Punta Cana, La Altagracia, Dominican Republic",Puntacana Resort & Club (Corales Golf Course),244,18.565,-68.34,"$4,000,000.00",manual,"$720,000.00",R2027522,corales-puntacana-championship
+30,2027-07-22,2027-07-25,3M Open,Standard,"Blaine, MN",TPC Twin Cities,883,45.177,-93.213,"$8,800,000.00",carried_forward,"$1,584,000.00",R2027525,3m-open
+31,2027-07-29,2027-08-01,Sompo Championship,Standard,"Napa County, CA",Silverado Resort (North Course),909,38.349,-122.264,"$8,000,000.00",manual,"$1,440,000.00",R2027559,sompo-championship
+32,2027-08-05,2027-08-08,GO by Raymond James,Standard,"Greensboro, NC",Sedgefield Country Club,752,36.014,-79.887,"$8,500,000.00",carried_forward,"$1,530,000.00",R2027013,go-by-raymond-james
+33,2027-08-12,2027-08-15,FedEx St. Jude Championship,Playoff,"Memphis, TN",TPC Southwind,513,35.057,-89.779,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027027,fedex-st-jude-championship
+34,2027-08-19,2027-08-22,BMW Championship,Playoff,"Jersey City, NJ",Liberty National Golf Club,886,40.695,-74.074,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027028,bmw-championship
+35,2027-08-26,2027-08-29,TOUR Championship,Playoff,"Atlanta, GA",East Lake Golf Club,688,33.743,-84.303,"$20,000,000.00",carried_forward,"$3,600,000.00",R2027060,tour-championship
