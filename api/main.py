@@ -4894,10 +4894,18 @@ def get_field_stats() -> dict:
 
 @app.get("/api/mypicks")
 def get_my_picks() -> dict:
-    """Season usage tracker — weekly lineups + player roster."""
+    """Season usage tracker — weekly lineups + player roster.
+
+    Offseason: the new season's tracker doesn't exist until the league site
+    opens — fall back to the newest season on disk rather than 404ing the
+    Star Budget page for four months."""
     path = _TRACKER_JSON
     if not path.exists():
-        raise HTTPException(status_code=404, detail=f"usage_tracker_{SEASON}.json not found")
+        candidates = sorted((DATA_DIR / "fantasy").glob("usage_tracker_2*.json"), reverse=True)
+        candidates = [c for c in candidates if ".bak" not in c.name]
+        if not candidates:
+            raise HTTPException(status_code=404, detail=f"usage_tracker_{SEASON}.json not found")
+        path = candidates[0]
 
     with open(path) as f:
         raw = json.load(f)
