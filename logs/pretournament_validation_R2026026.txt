@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — U.S. Open (R2026026)
+Generated: 2026-06-17 06:09
+============================================================
+
+  [OK  ] Field players                  155 rows  (0h ago)
+  [OK  ] Predictions                    155 rows, tid=R2026026  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (1702h ago)
+  [INFO] Expert picks                   MISSING
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (1702h old)

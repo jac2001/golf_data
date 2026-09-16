@@ -1,0 +1,15 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — TOUR Championship (R2026060)
+Generated: 2026-08-26 06:17
+============================================================
+
+  [OK  ] Field players                  30 rows  (24h ago)
+  [OK  ] Predictions                    30 rows, tid=R2026060  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (3382h ago)
+  [INFO] Expert picks                   MISSING
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (2)
+----------------------------------------
+  ! Field players: only 30 rows (expected 50+)
+  ! Odds (multi-book): stale (3382h old)

@@ -152,7 +152,12 @@ def load_tournament_name(tid: str) -> str:
 
 SYSTEM_PROMPT = """You write concise, confident betting analysis for a golf data dashboard.
 Your output is 3-4 sentences only. Focus on WHY the model sees value — game fit, recent form,
-course history, market mispricing. Be specific with numbers. No hedging, no preamble."""
+course history, market mispricing. Be specific with numbers. No hedging, no preamble.
+
+Write for a casual fan, not a stats analyst: never drop a number on its own — pair it with a
+plain-English read ("+0.65 SG off the tee" reads as "one of the best drivers in the field").
+Translate edge/odds into everyday terms ("the books have him too short here") rather than
+percentage-point jargon."""
 
 def build_prompt(bet: dict, ctx: dict, tournament: str) -> str:
     market_label = {

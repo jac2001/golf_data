@@ -1,0 +1,15 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — BMW Championship (R2026028)
+Generated: 2026-08-19 07:18
+============================================================
+
+  [OK  ] Field players                  49 rows  (1h ago)
+  [OK  ] Predictions                    49 rows, tid=R2026028  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (3215h ago)
+  [OK  ] Expert picks                   5 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (2)
+----------------------------------------
+  ! Field players: only 49 rows (expected 50+)
+  ! Odds (multi-book): stale (3215h old)

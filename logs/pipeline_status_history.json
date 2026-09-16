@@ -1256,5 +1256,1077 @@
     "failed_step_ids": [
       "step_001"
     ]
+  },
+  {
+    "run_id": "20260512_071539",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260512_071539.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-05-12T07:15:39",
+    "ended_at": "2026-05-12T07:17:13",
+    "tournament_name": "PGA Championship",
+    "tournament_id": "R2026033",
+    "step_count": 13,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_013"
+    ]
+  },
+  {
+    "run_id": "20260512_180617",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260512_180617.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-12T18:06:17",
+    "ended_at": "2026-05-12T18:07:41",
+    "tournament_name": "PGA Championship",
+    "tournament_id": "R2026033",
+    "step_count": 13,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260513_070035",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260513_070035.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-13T07:00:35",
+    "ended_at": "2026-05-13T07:03:04",
+    "tournament_name": "PGA Championship",
+    "tournament_id": "R2026033",
+    "step_count": 14,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260513_180620",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260513_180620.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-13T18:06:20",
+    "ended_at": "2026-05-13T18:08:46",
+    "tournament_name": "PGA Championship",
+    "tournament_id": "R2026033",
+    "step_count": 14,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260519_060519",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260519_060519.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-05-19T06:05:19",
+    "ended_at": "2026-05-19T06:07:00",
+    "tournament_name": "The CJ Cup Byron Nelson",
+    "tournament_id": "R2026019",
+    "step_count": 13,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_013"
+    ]
+  },
+  {
+    "run_id": "20260519_182958",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260519_182958.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-19T18:29:58",
+    "ended_at": "2026-05-19T18:32:00",
+    "tournament_name": "The CJ Cup Byron Nelson",
+    "tournament_id": "R2026019",
+    "step_count": 14,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260520_060704",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260520_060704.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-20T06:07:04",
+    "ended_at": "2026-05-20T06:09:17",
+    "tournament_name": "The CJ Cup Byron Nelson",
+    "tournament_id": "R2026019",
+    "step_count": 14,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260520_183013",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260520_183013.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-20T18:30:13",
+    "ended_at": "2026-05-20T18:31:34",
+    "tournament_name": "The CJ Cup Byron Nelson",
+    "tournament_id": "R2026019",
+    "step_count": 13,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260526_072544",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260526_072544.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-05-26T07:25:44",
+    "ended_at": "2026-05-26T07:27:22",
+    "tournament_name": "Charles Schwab Challenge",
+    "tournament_id": "R2026021",
+    "step_count": 13,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_013"
+    ]
+  },
+  {
+    "run_id": "20260526_180826",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260526_180826.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-26T18:08:26",
+    "ended_at": "2026-05-26T18:08:45",
+    "tournament_name": "Charles Schwab Challenge",
+    "tournament_id": "R2026021",
+    "step_count": 12,
+    "failed_count": 0,
+    "failed_step_ids": []
+  },
+  {
+    "run_id": "20260527_062948",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260527_062948.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-27T06:29:48",
+    "ended_at": "2026-05-27T07:08:01",
+    "tournament_name": "Charles Schwab Challenge",
+    "tournament_id": "R2026021",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260527_200654",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260527_200654.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-27T20:06:54",
+    "ended_at": "2026-05-27T20:08:18",
+    "tournament_name": "Charles Schwab Challenge",
+    "tournament_id": "R2026021",
+    "step_count": 13,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260531_131304",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260531_131304.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-05-31T13:13:04",
+    "ended_at": "2026-05-31T13:20:32",
+    "tournament_name": "Charles Schwab Challenge",
+    "tournament_id": "R2026021",
+    "step_count": 21,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_003",
+      "step_008",
+      "step_020"
+    ]
+  },
+  {
+    "run_id": "20260602_070101",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260602_070101.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-06-02T07:01:01",
+    "ended_at": "2026-06-02T07:06:50",
+    "tournament_name": "The Memorial Tournament",
+    "tournament_id": "R2026023",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260602_180352",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260602_180352.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-02T18:03:52",
+    "ended_at": "2026-06-02T18:04:57",
+    "tournament_name": "The Memorial Tournament",
+    "tournament_id": "R2026023",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260602_195604",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260602_195604.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-02T19:56:04",
+    "ended_at": "2026-06-02T20:04:58",
+    "tournament_name": "The Memorial Tournament",
+    "tournament_id": "R2026023",
+    "step_count": 20,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_003",
+      "step_007",
+      "step_008"
+    ]
+  },
+  {
+    "run_id": "20260603_061607",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260603_061607.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-03T06:16:07",
+    "ended_at": "2026-06-03T07:23:07",
+    "tournament_name": "The Memorial Tournament",
+    "tournament_id": "R2026023",
+    "step_count": 15,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260603_182624",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260603_182624.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-03T18:26:24",
+    "ended_at": "2026-06-03T18:29:33",
+    "tournament_name": "The Memorial Tournament",
+    "tournament_id": "R2026023",
+    "step_count": 15,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260609_071314",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260609_071314.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-06-09T07:13:14",
+    "ended_at": "2026-06-09T07:19:47",
+    "tournament_name": "RBC Canadian Open",
+    "tournament_id": "R2026032",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260609_190807",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260609_190807.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-09T19:08:07",
+    "ended_at": "2026-06-09T19:09:33",
+    "tournament_name": "RBC Canadian Open",
+    "tournament_id": "R2026032",
+    "step_count": 13,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_010"
+    ]
+  },
+  {
+    "run_id": "20260610_062134",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260610_062134.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-10T06:21:34",
+    "ended_at": "2026-06-10T07:14:04",
+    "tournament_name": "RBC Canadian Open",
+    "tournament_id": "R2026032",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260610_180252",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260610_180252.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-10T18:02:52",
+    "ended_at": "2026-06-10T18:05:11",
+    "tournament_name": "RBC Canadian Open",
+    "tournament_id": "R2026032",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260616_061452",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260616_061452.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-06-16T06:14:52",
+    "ended_at": "2026-06-16T06:16:31",
+    "tournament_name": "U.S. Open",
+    "tournament_id": "R2026026",
+    "step_count": 15,
+    "failed_count": 4,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_014",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260616_180611",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260616_180611.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-16T18:06:11",
+    "ended_at": "2026-06-16T18:07:43",
+    "tournament_name": "U.S. Open",
+    "tournament_id": "R2026026",
+    "step_count": 15,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_014"
+    ]
+  },
+  {
+    "run_id": "20260617_060034",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260617_060034.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-17T06:00:34",
+    "ended_at": "2026-06-17T06:09:04",
+    "tournament_name": "U.S. Open",
+    "tournament_id": "R2026026",
+    "step_count": 16,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_003",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260618_052333",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260618_052333.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-18T05:23:33",
+    "ended_at": "2026-06-18T07:47:39",
+    "tournament_name": "U.S. Open",
+    "tournament_id": "R2026026",
+    "step_count": 16,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260623_060235",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260623_060235.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-06-23T06:02:35",
+    "ended_at": "2026-06-23T06:04:24",
+    "tournament_name": "Travelers Championship",
+    "tournament_id": "R2026034",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260623_182117",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260623_182117.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-23T18:21:17",
+    "ended_at": "2026-06-23T18:23:36",
+    "tournament_name": "Travelers Championship",
+    "tournament_id": "R2026034",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260624_060449",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260624_060449.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-24T06:04:49",
+    "ended_at": "2026-06-24T06:38:34",
+    "tournament_name": "Travelers Championship",
+    "tournament_id": "R2026034",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260624_180445",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260624_180445.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-24T18:04:45",
+    "ended_at": "2026-06-24T18:07:04",
+    "tournament_name": "Travelers Championship",
+    "tournament_id": "R2026034",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260624_212749",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260624_212749.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-24T21:27:49",
+    "ended_at": "2026-06-24T21:30:07",
+    "tournament_name": "Travelers Championship",
+    "tournament_id": "R2026034",
+    "step_count": 13,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260630_071139",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260630_071139.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-06-30T07:11:39",
+    "ended_at": "2026-06-30T07:13:21",
+    "tournament_name": "John Deere Classic",
+    "tournament_id": "R2026030",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260630_181702",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260630_181702.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-06-30T18:17:02",
+    "ended_at": "2026-06-30T18:17:28",
+    "tournament_name": "John Deere Classic",
+    "tournament_id": "R2026030",
+    "step_count": 13,
+    "failed_count": 0,
+    "failed_step_ids": []
+  },
+  {
+    "run_id": "20260701_060458",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260701_060458.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-01T06:04:58",
+    "ended_at": "2026-07-01T07:12:33",
+    "tournament_name": "John Deere Classic",
+    "tournament_id": "R2026030",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260701_184504",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260701_184504.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-01T18:45:04",
+    "ended_at": "2026-07-01T19:46:15",
+    "tournament_name": "John Deere Classic",
+    "tournament_id": "R2026030",
+    "step_count": 15,
+    "failed_count": 0,
+    "failed_step_ids": []
+  },
+  {
+    "run_id": "20260707_073055",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260707_073055.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-07-07T07:30:55",
+    "ended_at": "2026-07-07T07:32:42",
+    "tournament_name": "Genesis Scottish Open",
+    "tournament_id": "R2026541",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260707_180435",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260707_180435.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-07T18:04:35",
+    "ended_at": "2026-07-07T18:04:59",
+    "tournament_name": "Genesis Scottish Open",
+    "tournament_id": "R2026541",
+    "step_count": 13,
+    "failed_count": 0,
+    "failed_step_ids": []
+  },
+  {
+    "run_id": "20260708_071703",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260708_071703.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-08T07:17:03",
+    "ended_at": "2026-07-08T07:33:41",
+    "tournament_name": "Genesis Scottish Open",
+    "tournament_id": "R2026541",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260708_180023",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260708_180023.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-08T18:00:23",
+    "ended_at": "2026-07-08T18:02:49",
+    "tournament_name": "Genesis Scottish Open",
+    "tournament_id": "R2026541",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260714_061115",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260714_061115.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-14T06:11:15",
+    "ended_at": "2026-07-14T06:13:04",
+    "tournament_name": "The Open Championship",
+    "tournament_id": "R2026100",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260714_185440",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260714_185440.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-14T18:54:40",
+    "ended_at": "2026-07-14T18:58:11",
+    "tournament_name": "The Open Championship",
+    "tournament_id": "R2026100",
+    "step_count": 15,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260715_060757",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260715_060757.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-15T06:07:57",
+    "ended_at": "2026-07-15T07:14:36",
+    "tournament_name": "The Open Championship",
+    "tournament_id": "R2026100",
+    "step_count": 15,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260715_180453",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260715_180453.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-15T18:04:53",
+    "ended_at": "2026-07-15T18:08:24",
+    "tournament_name": "The Open Championship",
+    "tournament_id": "R2026100",
+    "step_count": 15,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260721_070527",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260721_070527.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-07-21T07:05:27",
+    "ended_at": "2026-07-21T07:07:18",
+    "tournament_name": "3M Open",
+    "tournament_id": "R2026525",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260721_180728",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260721_180728.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-21T18:07:28",
+    "ended_at": "2026-07-21T18:08:00",
+    "tournament_name": "3M Open",
+    "tournament_id": "R2026525",
+    "step_count": 13,
+    "failed_count": 0,
+    "failed_step_ids": []
+  },
+  {
+    "run_id": "20260722_060016",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260722_060016.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-22T06:00:16",
+    "ended_at": "2026-07-22T06:02:55",
+    "tournament_name": "3M Open",
+    "tournament_id": "R2026525",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260722_180021",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260722_180021.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-22T18:00:21",
+    "ended_at": "2026-07-22T18:02:56",
+    "tournament_name": "3M Open",
+    "tournament_id": "R2026525",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260728_061355",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260728_061355.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-07-28T06:13:55",
+    "ended_at": "2026-07-28T06:15:46",
+    "tournament_name": "Rocket Classic",
+    "tournament_id": "R2026524",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260728_184754",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260728_184754.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-28T18:47:54",
+    "ended_at": "2026-07-28T18:50:36",
+    "tournament_name": "Rocket Classic",
+    "tournament_id": "R2026524",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260729_064723",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260729_064723.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-29T06:47:23",
+    "ended_at": "2026-07-29T06:50:05",
+    "tournament_name": "Rocket Classic",
+    "tournament_id": "R2026524",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260729_180251",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260729_180251.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-07-29T18:02:51",
+    "ended_at": "2026-07-29T18:30:16",
+    "tournament_name": "Rocket Classic",
+    "tournament_id": "R2026524",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260804_070724",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260804_070724.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-08-04T07:07:24",
+    "ended_at": "2026-08-04T07:09:10",
+    "tournament_name": "Wyndham Championship",
+    "tournament_id": "R2026013",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260804_180459",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260804_180459.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-04T18:04:59",
+    "ended_at": "2026-08-04T18:05:42",
+    "tournament_name": "Wyndham Championship",
+    "tournament_id": "R2026013",
+    "step_count": 13,
+    "failed_count": 0,
+    "failed_step_ids": []
+  },
+  {
+    "run_id": "20260805_070547",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260805_070547.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-05T07:05:47",
+    "ended_at": "2026-08-05T07:08:46",
+    "tournament_name": "Wyndham Championship",
+    "tournament_id": "R2026013",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260805_180020",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260805_180020.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-05T18:00:20",
+    "ended_at": "2026-08-05T18:03:09",
+    "tournament_name": "Wyndham Championship",
+    "tournament_id": "R2026013",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260811_060709",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260811_060709.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-08-11T06:07:09",
+    "ended_at": "2026-08-11T06:08:22",
+    "tournament_name": "FedEx St. Jude Invitational",
+    "tournament_id": "R2026027",
+    "step_count": 6,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_006"
+    ]
+  },
+  {
+    "run_id": "20260811_183450",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260811_183450.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-08-11T18:34:50",
+    "ended_at": "2026-08-11T18:37:15",
+    "tournament_name": "FedEx St. Jude Invitational",
+    "tournament_id": "R2026027",
+    "step_count": 6,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_002",
+      "step_006"
+    ]
+  },
+  {
+    "run_id": "20260812_070625",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260812_070625.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-08-12T07:06:25",
+    "ended_at": "2026-08-12T07:09:06",
+    "tournament_name": "FedEx St. Jude Invitational",
+    "tournament_id": "R2026027",
+    "step_count": 7,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_003",
+      "step_007"
+    ]
+  },
+  {
+    "run_id": "20260812_084655",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260812_084655.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-08-12T08:46:55",
+    "ended_at": "2026-08-12T08:49:15",
+    "tournament_name": "FedEx St. Jude Invitational",
+    "tournament_id": "R2026027",
+    "step_count": 5,
+    "failed_count": 2,
+    "failed_step_ids": [
+      "step_001",
+      "step_005"
+    ]
+  },
+  {
+    "run_id": "20260812_153417",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260812_153417.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-12T15:34:17",
+    "ended_at": "2026-08-12T15:56:30",
+    "tournament_name": "FedEx St. Jude Invitational",
+    "tournament_id": "R2026027",
+    "step_count": 16,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260812_180019",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260812_180019.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-12T18:00:19",
+    "ended_at": "2026-08-12T18:02:55",
+    "tournament_name": "FedEx St. Jude Invitational",
+    "tournament_id": "R2026027",
+    "step_count": 13,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260818_060316",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260818_060316.json",
+    "run_type": "full_pipeline",
+    "status": "failed",
+    "started_at": "2026-08-18T06:03:16",
+    "ended_at": "2026-08-18T06:04:58",
+    "tournament_name": "BMW Championship",
+    "tournament_id": "R2026028",
+    "step_count": 15,
+    "failed_count": 3,
+    "failed_step_ids": [
+      "step_001",
+      "step_002",
+      "step_015"
+    ]
+  },
+  {
+    "run_id": "20260818_180520",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260818_180520.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-18T18:05:20",
+    "ended_at": "2026-08-18T18:07:39",
+    "tournament_name": "BMW Championship",
+    "tournament_id": "R2026028",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260819_061448",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260819_061448.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-19T06:14:48",
+    "ended_at": "2026-08-19T07:18:19",
+    "tournament_name": "BMW Championship",
+    "tournament_id": "R2026028",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_003"
+    ]
+  },
+  {
+    "run_id": "20260819_180022",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260819_180022.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-19T18:00:22",
+    "ended_at": "2026-08-19T18:02:46",
+    "tournament_name": "BMW Championship",
+    "tournament_id": "R2026028",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_002"
+    ]
+  },
+  {
+    "run_id": "20260825_060214",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260825_060214.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-25T06:02:14",
+    "ended_at": "2026-08-25T06:03:55",
+    "tournament_name": "TOUR Championship",
+    "tournament_id": "R2026060",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260825_180523",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260825_180523.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-25T18:05:23",
+    "ended_at": "2026-08-25T18:08:28",
+    "tournament_name": "TOUR Championship",
+    "tournament_id": "R2026060",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260826_061437",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260826_061437.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-26T06:14:37",
+    "ended_at": "2026-08-26T06:17:45",
+    "tournament_name": "TOUR Championship",
+    "tournament_id": "R2026060",
+    "step_count": 15,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
+  },
+  {
+    "run_id": "20260826_181016",
+    "run_file": "/Users/jacklegnon/Desktop/golf_data/logs/pipeline_runs/20260826_181016.json",
+    "run_type": "full_pipeline",
+    "status": "success",
+    "started_at": "2026-08-26T18:10:16",
+    "ended_at": "2026-08-26T18:11:43",
+    "tournament_name": "TOUR Championship",
+    "tournament_id": "R2026060",
+    "step_count": 14,
+    "failed_count": 1,
+    "failed_step_ids": [
+      "step_001"
+    ]
   }
 ]

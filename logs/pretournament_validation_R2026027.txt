@@ -1,0 +1,15 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — FedEx St. Jude Invitational (R2026027)
+Generated: 2026-08-12 07:09
+============================================================
+
+  [OK  ] Field players                  68 rows  (1h ago)
+  [WARN] Predictions                    144 rows, tid=R2026013  (25h ago)
+  [WARN] Odds (multi-book)              91 rows  (3047h ago)
+  [INFO] Expert picks                   MISSING
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (2)
+----------------------------------------
+  ! Predictions: tid=R2026013, expected R2026027
+  ! Odds (multi-book): stale (3047h old)

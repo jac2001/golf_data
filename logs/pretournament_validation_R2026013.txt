@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Wyndham Championship (R2026013)
+Generated: 2026-08-05 07:08
+============================================================
+
+  [OK  ] Field players                  144 rows  (0h ago)
+  [OK  ] Predictions                    144 rows, tid=R2026013  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (2879h ago)
+  [INFO] Expert picks                   MISSING
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (2879h old)

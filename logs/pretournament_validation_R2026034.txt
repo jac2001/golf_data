@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Travelers Championship (R2026034)
+Generated: 2026-06-24 06:38
+============================================================
+
+  [OK  ] Field players                  71 rows  (0h ago)
+  [OK  ] Predictions                    71 rows, tid=R2026034  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (1871h ago)
+  [OK  ] Expert picks                   6 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (1871h old)

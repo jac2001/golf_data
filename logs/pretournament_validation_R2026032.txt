@@ -1,0 +1,15 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — RBC Canadian Open (R2026032)
+Generated: 2026-06-10 07:14
+============================================================
+
+  [OK  ] Field players                  46 rows  (0h ago)
+  [OK  ] Predictions                    46 rows, tid=R2026032  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (1535h ago)
+  [OK  ] Expert picks                   6 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (2)
+----------------------------------------
+  ! Field players: only 46 rows (expected 50+)
+  ! Odds (multi-book): stale (1535h old)

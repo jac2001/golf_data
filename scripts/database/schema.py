@@ -502,6 +502,67 @@ CREATE_STATEMENTS = [
         PRIMARY KEY (tournament_id, player_name)
     )
     """,
+
+    # -------------------------------------------------------------------------
+    # round_stats: per-player per-tournament per-round stats from DataGolf
+    # One row per (player, tournament, round). Populated by fetch_dg_historical_results.py.
+    # driving_acc/gir/scrambling stored as 0-100 percentages (DG gives 0-1 fractions).
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS round_stats (
+        player_id        VARCHAR,
+        player_name      VARCHAR,
+        tournament_id    VARCHAR,
+        tournament_name  VARCHAR,
+        year             INTEGER,
+        round_num        INTEGER,
+        score            DOUBLE,
+        course_par       INTEGER,
+        sg_total         DOUBLE,
+        sg_ott           DOUBLE,
+        sg_app           DOUBLE,
+        sg_arg           DOUBLE,
+        sg_putt          DOUBLE,
+        sg_t2g           DOUBLE,
+        driving_dist     DOUBLE,
+        driving_acc      DOUBLE,
+        gir              DOUBLE,
+        scrambling       DOUBLE,
+        birdies          INTEGER,
+        bogies           INTEGER,
+        pars             INTEGER,
+        eagles_or_better INTEGER,
+        doubles_or_worse INTEGER,
+        great_shots      INTEGER,
+        poor_shots       INTEGER,
+        prox_fw          DOUBLE,
+        prox_rgh         DOUBLE,
+        PRIMARY KEY (player_id, tournament_id, round_num)
+    )
+    """,
+
+    # -------------------------------------------------------------------------
+    # course_fit_weights: derived SG-category importance per course
+    # Replaces the manually-curated data/course_sg_weights.csv as the source
+    # of truth — populated by backfill_course_fit_weights.py (all fixed-venue
+    # courses, batch) and derive_course_weights.py (one course at a time,
+    # used for majors that rotate venues).
+    # -------------------------------------------------------------------------
+    """
+    CREATE TABLE IF NOT EXISTS course_fit_weights (
+        course_name           VARCHAR PRIMARY KEY,
+        tournament_name       VARCHAR,
+        ott_sg                DOUBLE,
+        app_sg                DOUBLE,
+        arg_sg                DOUBLE,
+        putt_sg               DOUBLE,
+        n_players             INTEGER,
+        confidence            DOUBLE,
+        source_tournament_ids VARCHAR,
+        is_default            BOOLEAN,
+        computed_at           VARCHAR
+    )
+    """,
 ]
 
 

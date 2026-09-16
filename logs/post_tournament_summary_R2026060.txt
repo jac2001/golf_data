@@ -1,0 +1,43 @@
+============================================================
+POST-TOURNAMENT SUMMARY — TOUR Championship (R2026060)
+Generated: 2026-09-15 16:05
+============================================================
+
+PIPELINE STATUS
+----------------------------------------
+  [OK  ] Tournament SG Stats
+  [OK  ] Form Stats
+  [OK  ] World Rankings
+  [OK  ] Record Results
+  [OK  ] Fantasy League Usage
+  [OK  ] Backfill Prediction Results
+  [OK  ] Grade Bets
+  [OK  ] Fantasy Tracker
+  [OK  ] CLV Tracking
+  [OK  ] Assistant Context
+  [OK  ] Calibration Refresh
+
+  11/11 tasks passed
+
+BET RESULTS
+----------------------------------------
+  Graded: 8  Wins: 6  Pushes: 0  Losses: 2
+  Win rate: 75.0%  |  P&L: +32.31 units  |  ROI: +403.9%
+  By market:
+    content_card            3 bets  3 wins  P&L +30.92
+    h2h_r1                  3 bets  1 wins  P&L -0.95
+    top10                   1 bets  1 wins  P&L +1.75
+    top20                   1 bets  1 wins  P&L +0.59
+
+LEADERBOARD (Top 10)
+----------------------------------------
+  1      Scottie Scheffler          -16
+  2      Viktor Hovland             -13
+  3      Ryan Gerard                -12
+  T4     Alex Fitzpatrick           -11
+  T4     Chris Gotterup             -11
+  T4     Jacob Bridgeman            -11
+  T4     Ludvig Åberg               -11
+  T4     Min Woo Lee                -11
+  T4     Rory McIlroy               -11
+  T4     Russell Henley             -11

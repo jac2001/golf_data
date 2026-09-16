@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — The Memorial Tournament (R2026023)
+Generated: 2026-06-03 07:23
+============================================================
+
+  [OK  ] Field players                  71 rows  (1h ago)
+  [OK  ] Predictions                    71 rows, tid=R2026023  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (1367h ago)
+  [OK  ] Expert picks                   5 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (1367h old)

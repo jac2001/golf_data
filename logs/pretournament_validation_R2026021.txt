@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Charles Schwab Challenge (R2026021)
+Generated: 2026-05-27 07:08
+============================================================
+
+  [OK  ] Field players                  131 rows  (0h ago)
+  [OK  ] Predictions                    131 rows, tid=R2026021  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (1199h ago)
+  [OK  ] Expert picks                   6 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (1199h old)

@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — The Open Championship (R2026100)
+Generated: 2026-07-15 07:14
+============================================================
+
+  [OK  ] Field players                  155 rows  (1h ago)
+  [OK  ] Predictions                    155 rows, tid=R2026100  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (2375h ago)
+  [INFO] Expert picks                   MISSING
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (2375h old)

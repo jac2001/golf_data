@@ -14,6 +14,7 @@ Usage:
 import argparse
 import json
 import re
+import time
 import anthropic
 import pandas as pd
 from dotenv import load_dotenv
@@ -28,6 +29,50 @@ INTEL_DIR.mkdir(exist_ok=True)
 
 
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY
+
+# Haiku is the primary model — cheap enough to run weekly without burning
+# through credits (this script makes ~20 web-search calls per run). One retry
+# with backoff covers transient overload/rate-limit errors; a hard budget
+# error (out of credits) gives up immediately so the pipeline step degrades
+# gracefully instead of crashing.
+_MODEL = "claude-haiku-4-5-20251001"
+
+
+def _is_budget_error(e: Exception) -> bool:
+    s = str(e).lower()
+    return any(x in s for x in ["credit", "billing", "quota", "balance"])
+
+
+def _is_transient_error(e: Exception) -> bool:
+    s = str(e).lower()
+    return any(x in s for x in ["429", "overloaded", "rate_limit", "timeout"])
+
+
+def _call_with_fallback(prompt: str) -> str | None:
+    """Run a web-search prompt against Haiku, retrying once on transient
+    overload/rate-limit errors. Returns the response text, or None if the
+    call failed (budget exhausted, or retry also failed)."""
+    for attempt in range(2):
+        try:
+            response = client.messages.create(
+                model=_MODEL,
+                max_tokens=1024,
+                tools=[{"type": "web_search_20250305", "name": "web_search"}],
+                messages=[{"role": "user", "content": prompt}],
+            )
+            text_blocks = [b.text for b in response.content if b.type == "text"]
+            return text_blocks[-1] if text_blocks else None
+        except Exception as e:
+            if attempt == 0 and _is_transient_error(e):
+                print(" [transient error — retrying in 5s]", end="")
+                time.sleep(5)
+                continue
+            if _is_budget_error(e):
+                print(" [credit balance too low — skipping]", end="")
+            else:
+                print(f" [error: {e}]", end="")
+            return None
+    return None
 
 
 def _parse_json(text: str) -> dict:
@@ -90,38 +135,26 @@ def search_player(player_name: str, tournament_name: str) -> dict:
         player_name=player_name,
         tournament_name=tournament_name,
     )
-    response = client.messages.create(
-        model="claude-opus-4-8",           # web_search needs a capable model
-        max_tokens=1024,
-        tools=[{"type": "web_search_20250305", "name": "web_search"}],
-        messages=[{"role": "user", "content": prompt}],
-    )
-    text_blocks = [b.text for b in response.content if b.type == "text"]
-    if not text_blocks:
-        return {"player_name": player_name, "error": "no text block returned"}
+    text = _call_with_fallback(prompt)
+    if text is None:
+        return {"player_name": player_name, "error": "API call failed"}
     try:
-        return _parse_json(text_blocks[-1])
+        return _parse_json(text)
     except json.JSONDecodeError:
-        return {"player_name": player_name, "error": text_blocks[-1]}
+        return {"player_name": player_name, "error": text}
 
 def search_course_conditions(tournament_name: str, course_name: str) -> dict:
     prompt = COURSE_SEARCH_PROMPT.format(
         tournament_name=tournament_name,
         course_name=course_name,
     )
-    response = client.messages.create(
-        model="claude-opus-4-8",
-        max_tokens=1024,
-        tools=[{"type": "web_search_20250305", "name": "web_search"}],
-        messages=[{"role": "user", "content": prompt}],
-    )
-    text_blocks = [b.text for b in response.content if b.type == "text"]
-    if not text_blocks:
-        return {"error": "no text block returned"}
+    text = _call_with_fallback(prompt)
+    if text is None:
+        return {"error": "API call failed"}
     try:
-        return json.loads(text_blocks[-1])
+        return _parse_json(text)
     except json.JSONDecodeError:
-        return {"error": text_blocks[-1]}
+        return {"error": text}
 
 
 # ── Step 4: Assemble and save ───────────────────────────────────────────────
@@ -133,14 +166,20 @@ def run(tid: str, tournament_name: str, course_name: str, top_n=20):
     player_intel = []
     for p in players:
         print(f"  {p['player_name']}...", end="", flush=True)
-        intel = search_player(p["player_name"], tournament_name)
+        try:
+            intel = search_player(p["player_name"], tournament_name)
+        except Exception as e:
+            intel = {"player_name": p["player_name"], "error": str(e)}
         intel["win_prob"] = p["win_prob"]
         intel["world_rank"] = p["world_rank"]
         player_intel.append(intel)
         print(" done")
 
     print("Fetching course conditions...")
-    course_intel = search_course_conditions(tournament_name, course_name)
+    try:
+        course_intel = search_course_conditions(tournament_name, course_name)
+    except Exception as e:
+        course_intel = {"error": str(e)}
 
     output = {
         "tid": tid,
@@ -150,9 +189,12 @@ def run(tid: str, tournament_name: str, course_name: str, top_n=20):
         "players": player_intel,
     }
 
+    # Always save whatever was gathered — partial intel beats none, and this
+    # keeps the pipeline step from being marked "failed" over one bad player.
     out_path = INTEL_DIR / f"tournament_intel_{tid}.json"
     out_path.write_text(json.dumps(output, indent=2))
-    print(f"Saved → {out_path}")
+    n_ok = sum(1 for p in player_intel if "error" not in p)
+    print(f"Saved → {out_path}  ({n_ok}/{len(player_intel)} players succeeded)")
 
 
 if __name__ == "__main__":

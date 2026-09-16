@@ -1,0 +1,15 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — John Deere Classic (R2026030)
+Generated: 2026-07-01 07:12
+============================================================
+
+  [OK  ] Field players                  143 rows  (1h ago)
+  [OK  ] Predictions                    143 rows, tid=R2026030  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (2039h ago)
+  [OK  ] Expert picks                   4 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (2)
+----------------------------------------
+  ! Odds (multi-book): stale (2039h old)
+  ! Expert picks: only 4 rows (expected 5+)

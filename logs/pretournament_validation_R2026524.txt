@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Rocket Classic (R2026524)
+Generated: 2026-07-29 06:50
+============================================================
+
+  [OK  ] Field players                  145 rows  (0h ago)
+  [OK  ] Predictions                    145 rows, tid=R2026524  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (2711h ago)
+  [OK  ] Expert picks                   5 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (2711h old)

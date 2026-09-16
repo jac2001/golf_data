@@ -130,6 +130,10 @@ entry in a betting journal. Write 3-4 sentences covering:
 
 Keep it under 100 words. Use specific names and numbers. No filler phrases.
 Do NOT start with "The" or the tournament name as the first word.
+
+Write for a casual fan, not a stats analyst: if you cite a win probability or model rank,
+make sure the number reads naturally (e.g. "the model had him 9th" not "model_rank: 9"),
+the way a PGA Tour recap would put it.
 """
 
 def build_prompt(

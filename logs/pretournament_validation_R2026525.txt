@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — 3M Open (R2026525)
+Generated: 2026-07-22 06:02
+============================================================
+
+  [OK  ] Field players                  144 rows  (22h ago)
+  [OK  ] Predictions                    144 rows, tid=R2026525  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (2542h ago)
+  [OK  ] Expert picks                   5 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (2542h old)

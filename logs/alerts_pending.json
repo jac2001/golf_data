@@ -1,0 +1,452 @@
+[
+  {
+    "id": "T10_Matt Fitzpatrick_R2026034_r1",
+    "type": "T10",
+    "title": "Matt Fitzpatrick T10",
+    "body": "Matt Fitzpatrick is T2 at -6 (thru 18)",
+    "ts": "2026-06-25T20:23:20Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Kristoffer Reitan_R2026034_r1",
+    "type": "T5",
+    "title": "Kristoffer Reitan T5",
+    "body": "Kristoffer Reitan is T2 at -6 (thru 18)",
+    "ts": "2026-06-25T20:23:20Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Kristoffer Reitan_R2026034_r1",
+    "type": "T10",
+    "title": "Kristoffer Reitan T10",
+    "body": "Kristoffer Reitan is T2 at -6 (thru 18)",
+    "ts": "2026-06-25T20:23:20Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Nico Echavarria_R2026034_r1",
+    "type": "T5",
+    "title": "Nico Echavarria T5",
+    "body": "Nico Echavarria is T2 at -6 (thru 18)",
+    "ts": "2026-06-25T20:23:20Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Akshay Bhatia_R2026034_r1",
+    "type": "T10",
+    "title": "Akshay Bhatia T10",
+    "body": "Akshay Bhatia is T6 at -5 (thru 17)",
+    "ts": "2026-06-25T20:23:20Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Harris English_R2026034_r1",
+    "type": "T10",
+    "title": "Harris English T10",
+    "body": "Harris English is T6 at -5 (thru 14)",
+    "ts": "2026-06-25T20:23:20Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "leader_Eric Cole_R2026034_r1",
+    "type": "leader_change",
+    "title": "New leader: Eric Cole",
+    "body": "Eric Cole takes the lead at -7",
+    "ts": "2026-06-25T20:23:20Z",
+    "severity": "normal",
+    "read": true
+  },
+  {
+    "id": "T5_Scottie Scheffler_R2026034_r1",
+    "type": "T5",
+    "title": "Scottie Scheffler T5",
+    "body": "Scottie Scheffler is T2 at -6 (thru 18)",
+    "ts": "2026-06-25T22:14:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Scottie Scheffler_R2026034_r1",
+    "type": "T10",
+    "title": "Scottie Scheffler T10",
+    "body": "Scottie Scheffler is T2 at -6 (thru 18)",
+    "ts": "2026-06-25T22:14:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Bud Cauley_R2026034_r1",
+    "type": "T5",
+    "title": "Bud Cauley T5",
+    "body": "Bud Cauley is T2 at -6 (thru 18)",
+    "ts": "2026-06-25T22:14:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Bud Cauley_R2026034_r1",
+    "type": "T10",
+    "title": "Bud Cauley T10",
+    "body": "Bud Cauley is T2 at -6 (thru 18)",
+    "ts": "2026-06-25T22:14:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Viktor Hovland_R2026034_r1",
+    "type": "T10",
+    "title": "Viktor Hovland T10",
+    "body": "Viktor Hovland is T8 at -5 (thru 18)",
+    "ts": "2026-06-25T22:14:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Justin Rose_R2026034_r1",
+    "type": "T10",
+    "title": "Justin Rose T10",
+    "body": "Justin Rose is T8 at -5 (thru 18)",
+    "ts": "2026-06-25T22:14:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Corey Conners_R2026034_r1",
+    "type": "T10",
+    "title": "Corey Conners T10",
+    "body": "Corey Conners is T8 at -5 (thru 18)",
+    "ts": "2026-06-25T22:14:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "leads_Akshay Bhatia_R2026034_r2",
+    "type": "leads",
+    "title": "Akshay Bhatia leads",
+    "body": "Akshay Bhatia is T1 at -9 (thru 10)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Akshay Bhatia_R2026034_r2",
+    "type": "T5",
+    "title": "Akshay Bhatia T5",
+    "body": "Akshay Bhatia is T1 at -9 (thru 10)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Akshay Bhatia_R2026034_r2",
+    "type": "T10",
+    "title": "Akshay Bhatia T10",
+    "body": "Akshay Bhatia is T1 at -9 (thru 10)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "leads_Viktor Hovland_R2026034_r2",
+    "type": "leads",
+    "title": "Viktor Hovland leads",
+    "body": "Viktor Hovland is T1 at -9 (thru 5)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Viktor Hovland_R2026034_r2",
+    "type": "T5",
+    "title": "Viktor Hovland T5",
+    "body": "Viktor Hovland is T1 at -9 (thru 5)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Brian Campbell_R2026034_r2",
+    "type": "T5",
+    "title": "Brian Campbell T5",
+    "body": "Brian Campbell is 3 at -8 (thru 12)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Brian Campbell_R2026034_r2",
+    "type": "T10",
+    "title": "Brian Campbell T10",
+    "body": "Brian Campbell is 3 at -8 (thru 12)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Kurt Kitayama_R2026034_r2",
+    "type": "T5",
+    "title": "Kurt Kitayama T5",
+    "body": "Kurt Kitayama is T4 at -7 (thru 12)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Kurt Kitayama_R2026034_r2",
+    "type": "T10",
+    "title": "Kurt Kitayama T10",
+    "body": "Kurt Kitayama is T4 at -7 (thru 12)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_J.J. Spaun_R2026034_r2",
+    "type": "T5",
+    "title": "J.J. Spaun T5",
+    "body": "J.J. Spaun is T4 at -7 (thru 9)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_J.J. Spaun_R2026034_r2",
+    "type": "T10",
+    "title": "J.J. Spaun T10",
+    "body": "J.J. Spaun is T4 at -7 (thru 9)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Michael Kim_R2026034_r2",
+    "type": "T10",
+    "title": "Michael Kim T10",
+    "body": "Michael Kim is T9 at -6 (thru 13)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Sam Burns_R2026034_r2",
+    "type": "T10",
+    "title": "Sam Burns T10",
+    "body": "Sam Burns is T9 at -6 (thru 3)",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "leader_Akshay Bhatia_R2026034_r2",
+    "type": "leader_change",
+    "title": "New leader: Akshay Bhatia",
+    "body": "Akshay Bhatia takes the lead at -9",
+    "ts": "2026-06-26T15:59:59Z",
+    "severity": "normal",
+    "read": true
+  },
+  {
+    "id": "leads_Scottie Scheffler_R2026034_r2",
+    "type": "leads",
+    "title": "Scottie Scheffler leads",
+    "body": "Scottie Scheffler is T1 at -14 (thru 14)",
+    "ts": "2026-06-26T18:21:46Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Tommy Fleetwood_R2026034_r2",
+    "type": "T10",
+    "title": "Tommy Fleetwood T10",
+    "body": "Tommy Fleetwood is T6 at -9 (thru 13)",
+    "ts": "2026-06-26T18:21:46Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Wyndham Clark_R2026034_r2",
+    "type": "T10",
+    "title": "Wyndham Clark T10",
+    "body": "Wyndham Clark is T6 at -9 (thru 13)",
+    "ts": "2026-06-26T18:21:46Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Harris English_R2026034_r2",
+    "type": "T10",
+    "title": "Harris English T10",
+    "body": "Harris English is T10 at -8 (thru 18)",
+    "ts": "2026-06-26T18:21:46Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "leader_Viktor Hovland_R2026034_r2",
+    "type": "leader_change",
+    "title": "New leader: Viktor Hovland",
+    "body": "Viktor Hovland takes the lead at -14",
+    "ts": "2026-06-26T18:21:46Z",
+    "severity": "normal",
+    "read": true
+  },
+  {
+    "id": "T5_Matt Fitzpatrick_R2026034_r2",
+    "type": "T5",
+    "title": "Matt Fitzpatrick T5",
+    "body": "Matt Fitzpatrick is T5 at -10 (thru 18)",
+    "ts": "2026-06-26T22:49:10Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Matt Fitzpatrick_R2026034_r2",
+    "type": "T10",
+    "title": "Matt Fitzpatrick T10",
+    "body": "Matt Fitzpatrick is T5 at -10 (thru 18)",
+    "ts": "2026-06-26T22:49:10Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Ben Griffin_R2026034_r2",
+    "type": "T5",
+    "title": "Ben Griffin T5",
+    "body": "Ben Griffin is T5 at -10 (thru 18)",
+    "ts": "2026-06-26T22:49:10Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Ben Griffin_R2026034_r2",
+    "type": "T10",
+    "title": "Ben Griffin T10",
+    "body": "Ben Griffin is T5 at -10 (thru 18)",
+    "ts": "2026-06-26T22:49:10Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Patrick Cantlay_R2026034_r2",
+    "type": "T10",
+    "title": "Patrick Cantlay T10",
+    "body": "Patrick Cantlay is T8 at -9 (thru 18)",
+    "ts": "2026-06-26T22:49:10Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Maverick McNealy_R2026034_r2",
+    "type": "T10",
+    "title": "Maverick McNealy T10",
+    "body": "Maverick McNealy is T8 at -9 (thru 18)",
+    "ts": "2026-06-26T22:49:10Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "leader_Scottie Scheffler_R2026034_r2",
+    "type": "leader_change",
+    "title": "New leader: Scottie Scheffler",
+    "body": "Scottie Scheffler takes the lead at -16",
+    "ts": "2026-06-26T22:49:10Z",
+    "severity": "normal",
+    "read": true
+  },
+  {
+    "id": "leads_Viktor Hovland_R2026034_r4",
+    "type": "leads",
+    "title": "Viktor Hovland leads",
+    "body": "Viktor Hovland is 1 at -21 (thru 18)",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Collin Morikawa_R2026034_r4",
+    "type": "T5",
+    "title": "Collin Morikawa T5",
+    "body": "Collin Morikawa is 3 at -20 (thru 18)",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Collin Morikawa_R2026034_r4",
+    "type": "T10",
+    "title": "Collin Morikawa T10",
+    "body": "Collin Morikawa is 3 at -20 (thru 18)",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T5_Wyndham Clark_R2026034_r4",
+    "type": "T5",
+    "title": "Wyndham Clark T5",
+    "body": "Wyndham Clark is T5 at -18 (thru 18)",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Wyndham Clark_R2026034_r4",
+    "type": "T10",
+    "title": "Wyndham Clark T10",
+    "body": "Wyndham Clark is T5 at -18 (thru 18)",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Corey Conners_R2026034_r4",
+    "type": "T10",
+    "title": "Corey Conners T10",
+    "body": "Corey Conners is T7 at -17 (thru 18)",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Alex Fitzpatrick_R2026034_r4",
+    "type": "T10",
+    "title": "Alex Fitzpatrick T10",
+    "body": "Alex Fitzpatrick is T7 at -17 (thru 18)",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "T10_Robert MacIntyre_R2026034_r4",
+    "type": "T10",
+    "title": "Robert MacIntyre T10",
+    "body": "Robert MacIntyre is T10 at -16 (thru 18)",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "low",
+    "read": true
+  },
+  {
+    "id": "bigmove_Russell Henley_R2026034_r4_pos12",
+    "type": "my_pick_bigmove",
+    "title": "Russell Henley moving fast",
+    "body": "Gained 30 spots \u2192 T12 at -15",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "normal",
+    "read": true
+  },
+  {
+    "id": "leader_Viktor Hovland_R2026034_r4",
+    "type": "leader_change",
+    "title": "New leader: Viktor Hovland",
+    "body": "Viktor Hovland takes the lead at -21",
+    "ts": "2026-06-30T12:11:28Z",
+    "severity": "normal",
+    "read": true
+  }
+]

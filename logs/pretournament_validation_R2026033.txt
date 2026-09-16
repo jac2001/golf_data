@@ -1,0 +1,14 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — PGA Championship (R2026033)
+Generated: 2026-05-13 07:03
+============================================================
+
+  [OK  ] Field players                  155 rows  (0h ago)
+  [OK  ] Predictions                    155 rows, tid=R2026033  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (863h ago)
+  [INFO] Expert picks                   MISSING
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (1)
+----------------------------------------
+  ! Odds (multi-book): stale (863h old)

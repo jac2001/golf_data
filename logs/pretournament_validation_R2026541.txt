@@ -1,0 +1,15 @@
+============================================================
+PRE-TOURNAMENT VALIDATION — Genesis Scottish Open (R2026541)
+Generated: 2026-07-08 07:33
+============================================================
+
+  [OK  ] Field players                  156 rows  (24h ago)
+  [OK  ] Predictions                    156 rows, tid=R2026541  (0h ago)
+  [WARN] Odds (multi-book)              91 rows  (2207h ago)
+  [OK  ] Expert picks                   4 rows  (0h ago)
+  [INFO] Betting profiles               MISSING
+
+WARNINGS (2)
+----------------------------------------
+  ! Odds (multi-book): stale (2207h old)
+  ! Expert picks: only 4 rows (expected 5+)

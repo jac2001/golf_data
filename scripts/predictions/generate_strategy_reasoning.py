@@ -41,6 +41,15 @@ prize money earned across the season. Saving a use means banking it for a better
 Premium events (Majors, Signature events) have larger purses and more value per use.
 """.strip()
 
+WRITING_STYLE = """
+WRITING STYLE — readable for a casual fan, not a stats analyst:
+- Never drop a stat without a plain-English read next to it. "SG +0.65 driving" should land
+  as "one of the better drivers in the field," not just sit there as a number.
+- Don't just list stats — explain what they mean for this decision. Connect the number to
+  the actual reasoning, the way a PGA Tour writer would explain it to a fan who watches
+  every week but doesn't know strokes-gained math.
+""".strip()
+
 
 # ── API helpers ────────────────────────────────────────────────────────────────
 
@@ -166,6 +175,8 @@ def _lineup_prompt(
 
     return f"""{LEAGUE_CONTEXT}
 
+{WRITING_STYLE}
+
 Current event: {current_event.get('name')} \
 (week {current_event.get('week')}, \
 ${current_event.get('purse', 0)/1e6:.1f}M purse, \
@@ -243,6 +254,8 @@ def _save_prompt(name: str, data: dict, current_event: dict) -> str:
     context = "\n".join(context_lines)
 
     return f"""{LEAGUE_CONTEXT}
+
+{WRITING_STYLE}
 
 Current event: {current_event.get('name')} \
 (week {current_event.get('week')}, \
