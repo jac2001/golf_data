@@ -17,8 +17,8 @@ import SettingsModal from "@/components/SettingsModal";
 // /history stays routable but leaves the nav: its tabs now live on the
 // Betting Board (Ledger, My Slip) and in How It Works (Results).
 const PUBLIC_LINKS = [
-  { href: "/",            label: "This Week", exact: true },
-  { href: "/predictions", label: "Field Forecast" },
+  { href: "/",            label: "Home", exact: true },
+  { href: "/predictions", label: "This Week" },
   { href: "/betting",     label: "Betting Board" },
   { href: "/live",        label: "Live" },
   { href: "/players",     label: "Players" },
@@ -30,7 +30,7 @@ const PUBLIC_LINKS = [
 // Miss Ledger, Assistant. Season Plan and Miss Ledger get their slots when
 // their routes land — insert them here in that order, don't append.
 const LEAGUE_LINKS = [
-  { href: "/fantasy",   label: "Tuesday Call" },
+  { href: "/fantasy",   label: "The Tuesday Call" },
   { href: "/mypicks",   label: "Star Budget" },
   { href: "/assistant", label: "Assistant" },
 ];

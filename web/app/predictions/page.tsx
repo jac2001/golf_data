@@ -171,7 +171,7 @@ export default function PredictionsPage() {
           tournament?.leader_name ? `Leader: ${tournament.leader_name}` : null,
           lastUpdated ? `updated ${lastUpdated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : null,
         ].filter(Boolean).join(" · ")}
-        title="Field Forecast"
+        title="This Week"
       />
 
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}

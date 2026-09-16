@@ -71,7 +71,7 @@ export default function Home() {
               background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
               textTransform: "uppercase", fontSize: "0.82em", letterSpacing: "0.06em",
               padding: "13px 24px", borderRadius: 4 }}>
-              Full field forecast
+              This week's forecast
             </Link>
             <Link href="/betting" style={{ fontWeight: 700, fontSize: "0.82em",
               textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--bc-yellow)" }}>
