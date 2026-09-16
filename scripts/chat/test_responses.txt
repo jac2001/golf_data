@@ -1,0 +1,27 @@
+# Chat Response Test Run
+# Model:      Groq / Llama 3.3 70B (free)
+# Tournament: R2026023
+# Date:       2026-06-04 07:35
+# Questions:  3
+======================================================================
+
+## Q1 [Player]
+**How is Rory McIlroy looking this week?**
+
+*(Groq error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk4e430verqrn581va2061az` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99122, Requested 6873. Please try again in 1h26m19.68s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}})*
+
+----------------------------------------------------------------------
+
+## Q7 [Bets]
+**What are the best bets this week?**
+
+*(Groq error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk4e430verqrn581va2061az` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99098, Requested 8366. Please try again in 1h47m28.896s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}})*
+
+----------------------------------------------------------------------
+
+## Q12 [Lineup]
+**Who should I use this week for fantasy?**
+
+*(Groq error: Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kk4e430verqrn581va2061az` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99075, Requested 5246. Please try again in 1h2m13.344s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}})*
+
+----------------------------------------------------------------------

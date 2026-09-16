@@ -1,0 +1,10 @@
+web/.next
+web/node_modules
+data/
+outputs/
+logs/
+scripts/
+api/
+*.db
+*.pkl
+*.csv
