@@ -1,0 +1,33 @@
+event,tid,date,jack_picks,jack_earn,replay_picks,replay_earn,best3_picks,best3_earn,delta_vs_replay,capture_pct
+002,R2026002,2026-01-22,,0,"Henley, Russell | Straka, Sepp | Rahm, Jon | Kang, Jeffrey | Bauchou, Zach | Blanchet, Chandler",420440.0,"Scheffler, Scottie | Day, Jason | Gerard, Ryan",2888800.0,-420440.0,0.0
+004,R2026004,2026-01-28,,0,"Penge, Marco | Spaun, J.J. | Homa, Max | Dumont de Chassart, Adrien | van Rooyen, Erik | Rai, Aaron",0.0,"Rose, Justin | Coody, Pierceson | Kim, Si Woo",3180800.0,0.0,0.0
+002,R2026002,2026-01-29,,0,"Henley, Russell | Straka, Sepp | Rahm, Jon | Kang, Jeffrey | Bauchou, Zach | Blanchet, Chandler",420440.0,"Scheffler, Scottie | Day, Jason | Gerard, Ryan",2888800.0,-420440.0,0.0
+004,R2026004,2026-01-29,,0,"Penge, Marco | Spaun, J.J. | Homa, Max | Dumont de Chassart, Adrien | van Rooyen, Erik | Rai, Aaron",0.0,"Rose, Justin | Coody, Pierceson | Kim, Si Woo",3180800.0,0.0,0.0
+007,R2026007,2026-02-19,Cantlay | Hovland | Matsuyama,306750,"Aberg, Ludvig | Homa, Max | Matsuyama, Hideki | Hojgaard, Nicolai | Smotherman, Austin | Thorbjornsen, Michael",488250.0,"Bridgeman, Jacob | Kitayama, Kurt | McIlroy, Rory",7600000.0,-181500.0,4.0
+007,R2026007,2026-03-02,Aberg | Henley | McIlroy,1902000,"Aberg, Ludvig | Homa, Max | Matsuyama, Hideki | Hojgaard, Nicolai | Smotherman, Austin | Thorbjornsen, Michael",488250.0,"Bridgeman, Jacob | Kitayama, Kurt | McIlroy, Rory",7600000.0,1413750.0,25.0
+010,R2026010,2026-03-03,Gerard | N Hojgaard | Thorbjornsen,401600,"Berger, Daniel | Gerard, Ryan | Hojgaard, Nicolai",456416.0,"Echavarria, Nico | Moore, Taylor | Lowry, Shane",3180800.0,-54816.0,12.6
+009,R2026009,2026-03-06,Burns | Cantlay | Cam Young,1614571,"Gotterup, Chris | McIlroy, Rory | Morikawa, Collin",530100.0,"Bhatia, Akshay | Berger, Daniel | Young, Cameron",3329400.0,1084471.0,48.5
+011,R2026011,2026-03-11,Scheffler | Scott | Cam Young,4829250,"Coody, Pierceson | Gotterup, Chris | Morikawa, Collin",75000.0,"Young, Cameron | Fitzpatrick, Matt | Schauffele, Xander",5370000.0,4754250.0,89.9
+475,R2026475,2026-03-18,Bridgeman | Theegala | J Thomas,212667,"Bridgeman, Jacob | Fitzpatrick, Matt | Thomas, Justin",1414500.0,"Fitzpatrick, Matt | Lipsky, David | Smith, Jordan",2470200.0,-1201833.0,8.6
+020,R2026020,2026-03-25,Pier Coody | Gotterup | B Griffin,2033349,"Gotterup, Chris | Lee, Min Woo | Penge, Marco",735000.0,"Woodland, Gary | Hojgaard, Nicolai | Keefer, Johnny",2506000.0,1298349.0,81.1
+041,R2026041,2026-04-01,Knapp | B Koepka | MW Lee,907088,"Aberg, Ludvig | Fleetwood, Tommy | Henley, Russell",616175.0,"Spaun, J.J. | Wallace, Matt | Kim, Michael",3247066.66,290913.0,27.9
+014,R2026014,2026-04-08,Aberg | DeChambeau | Schauffele,882000,"Aberg, Ludvig | Morikawa, Collin | Young, Cameron",2057625.0,"McIlroy, Rory | Scheffler, Scottie | Young, Cameron",8010000.0,-1175625.0,11.0
+012,R2026012,2026-04-15,M Fitzpatrick | Fleetwood | Morikawa,4466833,"Fitzpatrick, Matt | Kim, Si Woo | Young, Cameron",1803400.0,"Fitzpatrick, Matt | Scheffler, Scottie | Kim, Si Woo",2541800.0,2663433.0,175.7
+018,R2026018,2026-04-21,Brennan | A Fitzpatrick | Lowry,1372750,"Fitzpatrick, Matt | Lowry, Shane | Stevens, Sam",1407000.0,"Fitzpatrick, Matt | Fitzpatrick, Alex | Reitan, Kristoffer",3283000.0,-34250.0,41.8
+556,R2026556,2026-04-30,Fleetwood | SW Kim | Morikawa,1035310,"Young, Cameron | Kim, Si Woo | Spaun, J.J.",4776666.67,"Young, Cameron | Scheffler, Scottie | Griffin, Ben",7120000.0,-3741356.67,14.5
+480,R2026480,2026-05-06,M Fitzpatrick | McIlroy | Schauffele,329788,"Schauffele, Xander | Fleetwood, Tommy | Spaun, J.J.",1502500.0,"Reitan, Kristoffer | Hojgaard, Nicolai | Fowler, Rickie",7120000.0,-1172712.0,4.6
+033,R2026033,2026-05-13,B Koepka | Rahm | Scheffler,2202949,"Rahm, Jon | Schauffele, Xander | Kim, Si Woo",2519855.56,"Rai, Aaron | Smalley, Alex | Rahm, Jon",7298000.0,-316906.56000000006,30.2
+019,R2026019,2026-05-20,Hisatsune | SW Kim | Spieth,1323892,"Mitchell, Keith | Hisatsune, Ryo | Coody, Pierceson",623493.34,"Clark, Wyndham | Kim, Si Woo | Scheffler, Scottie",3687400.0,700398.66,35.9
+021,R2026021,2026-05-31,Fowler | Henley | J Thomas,1975875,"Smalley, Alex | Hisatsune, Ryo | Stevens, Sam",575553.0,"Henley, Russell | Cole, Eric | Griffin, Ben",3385800.0,1400322.0,58.4
+023,R2026023,2026-06-03,Burns | Cantlay | Matsuyama,1309000,"Cantlay, Patrick | Scott, Adam | Hojgaard, Nicolai",720800.0,"Poston, J.T. | Gerard, Ryan | Clark, Wyndham",7600000.0,588200.0,17.2
+032,R2026032,2026-06-10,Fowler | Spieth | Yellamaraju,180614,"Burns, Sam | Rose, Justin | Mitchell, Keith",154850.0,"Cauley, Bud | Fitzpatrick, Matt | Hovland, Viktor",2917700.0,25764.0,6.2
+026,R2026026,2026-06-18,W Clark | A Fitzpatrick | N Taylor,336075,"McIlroy, Rory | Rahm, Jon | Reed, Patrick",128756.0,"Clark, Wyndham | Burns, Sam | Kim, Tom",8462530.0,207319.0,4.0
+034,R2026034,2026-06-24,Henley | Rai | Spieth,594125,"Scheffler, Scottie | Cantlay, Patrick | Thomas, Justin",1102600.0,"Hovland, Viktor | Scheffler, Scottie | Morikawa, Collin",2649200.0,-508475.0,22.4
+030,R2026030,2026-07-01,Gotterup | B Griffin | Koivun,1684056,"Griffin, Ben | Poston, J.T. | Meissner, Mac",285200.0,"Gotterup, Chris | Homa, Max | Kohles, Ben",2219600.0,1398856.0,75.9
+541,R2026541,2026-07-08,M Fitzpatrick | Rahm | Scheffler,1151102,"McIlroy, Rory | Schauffele, Xander | Hatton, Tyrrell",446250.0,"Kim, Tom | Lee, Min Woo | MacIntyre, Robert",3132500.0,704852.0,36.7
+100,R2026100,2026-07-15,W Clark | MacIntyre | Rahm,635316,"Scheffler, Scottie | Hovland, Viktor | Hatton, Tyrrell",0.0,"Novak, Andrew | Stevens, Sam | Rozner, Antoine",0.0,635316.0,inf
+525,R2026525,2026-07-22,Fleetwood | Morikawa | Schauffele,1156650,"McNealy, Maverick | Kitayama, Kurt | Mitchell, Keith",112500.0,"Koivun, Jackson | Scheffler, Scottie | Phillips, Chandler",2685000.0,1044150.0,43.1
+013,R2026013,2026-08-05,Gerard | McNealy | Straka,68213,"Gerard, Ryan | Hisatsune, Ryo | Straka, Sepp",0.0,"Brennan, Michael | Hossler, Beau | James, Ben",2291200.0,68213.0,3.0
+027,R2026027,2026-08-12,,0,"Clark, Wyndham | Rose, Justin | Scott, Adam",655500.0,"Scheffler, Scottie | Kim, Si Woo | Noren, Alex",3401000.0,-655500.0,0.0
+028,R2026028,2026-08-19,Aberg | Burns | W Clark,4065000,"Scheffler, Scottie | Clark, Wyndham | Scott, Adam",2099500.0,"Clark, Wyndham | Cantlay, Patrick | McIlroy, Rory",3401000.0,1965500.0,119.5
+060,R2026060,2026-08-26,Rory McIlroy | Cam Young | Viktor Hovland,464999,"Fleetwood, Tommy | Cantlay, Patrick | Henley, Russell",0.0,"Scheffler, Scottie | Hovland, Viktor | Gerard, Ryan",0.0,464999.0,inf
