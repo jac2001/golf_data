@@ -1,7 +1,33 @@
 @import "tailwindcss";
 
-/* Force dark mode always — no media query toggle */
+/* ── Broadcast design system (2027 redesign) ─────────────────────────────
+   Public zone: fairway green + yellow. League zone: charcoal + green.
+   Legacy navy tokens kept below until every page migrates (content map rule:
+   old pages keep working at parity until replaced). */
 :root {
+  /* Public zone */
+  --bc-bg:        #0c2a1c;   /* page background */
+  --bc-panel:     #081f14;   /* nav, deep panels */
+  --bc-card:      #0f3322;   /* cards, table headers */
+  --bc-card-hi:   #12301f;   /* highlighted row */
+  --bc-line:      #1e4a33;   /* borders */
+  --bc-text:      #f2f7f0;
+  --bc-muted:     #9dbfa9;
+  --bc-yellow:    #ffd24a;   /* primary accent */
+  --bc-green:     #6fd49a;   /* positive / secondary accent */
+  --bc-orange:    #ff9d5c;   /* value / warning accent */
+  --bc-red:       #e05555;
+
+  /* League zone (My League) */
+  --lg-bg:        #101418;
+  --lg-panel:     #0a0d10;
+  --lg-card:      #171d23;
+  --lg-line:      #242e38;
+  --lg-text:      #f2f4f7;
+  --lg-muted:     #8b98a5;
+  --lg-accent:    #6fd49a;
+
+  /* Legacy navy (pre-redesign pages) */
   --bg-base:    #070d1a;
   --bg-card:    #0d1a30;
   --bg-hover:   #0a1525;
@@ -21,10 +47,16 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: var(--bg-base);
-  color: var(--text-main);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bc-bg);
+  color: var(--bc-text);
+  font-family: var(--font-archivo), 'Archivo', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* League zone pages set data-zone="league" on their wrapper */
+[data-zone="league"] {
+  background: var(--lg-bg);
+  color: var(--lg-text);
 }
 
 /* Remove default link styling */

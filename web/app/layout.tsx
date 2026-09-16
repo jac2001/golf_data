@@ -9,8 +9,17 @@
  */
 
 import type { Metadata, Viewport } from "next";
+import { Archivo } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+
+// Broadcast display face — variable weight + width axes so headers can use
+// the condensed-900 treatment (font-stretch) from the design system.
+const archivo = Archivo({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  variable: "--font-archivo",
+});
 
 export const metadata: Metadata = {
   title: "Golf Edge",
@@ -27,7 +36,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={archivo.variable}>
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <NavBar />
         <main style={{ flex: 1, padding: "24px 24px 48px" }}>

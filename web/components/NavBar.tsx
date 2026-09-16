@@ -1,84 +1,129 @@
 "use client";
 
+/**
+ * NavBar — Broadcast design system, zone-aware.
+ * Public zone: fairway green bar, 3px yellow rule, yellow active tab.
+ * League zone (/league/*, plus legacy /fantasy /mypicks): charcoal bar,
+ * green rule — so you always know which side of the site you're on.
+ */
+
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SettingsModal from "@/components/SettingsModal";
 
-const NAV_LINKS = [
-  { href: "/betting",     label: "Value Bets" },
-  { href: "/predictions", label: "This Week" },
-  { href: "/live",        label: "Live" },
+const PUBLIC_LINKS = [
+  { href: "/",            label: "This Week", exact: true },
+  { href: "/predictions", label: "Forecast" },
+  { href: "/betting",     label: "Betting Board" },
   { href: "/players",     label: "Players" },
-  { href: "/mypicks",     label: "My Picks" },
-  { href: "/fantasy",     label: "Fantasy" },
+  { href: "/live",        label: "Live" },
+  { href: "/methodology", label: "How It Works" },
   { href: "/history",     label: "History" },
   { href: "/assistant",   label: "Assistant" },
-  { href: "/methodology", label: "Methodology" },
 ];
+
+const LEAGUE_LINKS = [
+  { href: "/fantasy",   label: "Tuesday Call" },
+  { href: "/mypicks",   label: "Star Budget" },
+  { href: "/assistant", label: "Assistant" },
+];
+
+const LEAGUE_PREFIXES = ["/fantasy", "/mypicks", "/league"];
 
 export default function NavBar() {
   const pathname                        = usePathname();
   const [showSettings, setShowSettings] = useState(false);
   const [menuOpen, setMenuOpen]         = useState(false);
 
-  // Close the drawer when navigating
-  function handleNavClick() {
-    setMenuOpen(false);
-  }
+  const inLeague = LEAGUE_PREFIXES.some(p => pathname.startsWith(p));
+  const links    = inLeague ? LEAGUE_LINKS : PUBLIC_LINKS;
+
+  const bar     = inLeague ? "var(--lg-panel)" : "var(--bc-panel)";
+  const rule    = inLeague ? "var(--lg-accent)" : "var(--bc-yellow)";
+  const muted   = inLeague ? "var(--lg-muted)" : "var(--bc-muted)";
+  const text    = inLeague ? "var(--lg-text)" : "var(--bc-text)";
+  const activeBg = rule;
+  const activeFg = inLeague ? "#0a0d10" : "#081f14";
+
+  const isActive = (l: { href: string; exact?: boolean }) =>
+    l.exact ? pathname === l.href : pathname.startsWith(l.href);
+
+  function handleNavClick() { setMenuOpen(false); }
 
   return (
     <>
-      {/* ── Nav bar ─────────────────────────────────────────────────────── */}
       <nav style={{
-        background: "#0a1220",
-        borderBottom: "1px solid #1e3a5f",
-        padding: "0 16px",
+        background: bar,
+        borderBottom: `3px solid ${rule}`,
+        padding: "0 20px",
         display: "flex",
-        alignItems: "center",
-        height: 52,
+        alignItems: "stretch",
+        height: 56,
         position: "sticky",
         top: 0,
         zIndex: 200,
       }}>
-        {/* Logo */}
+        {/* Wordmark */}
         <Link href="/" onClick={handleNavClick} style={{
-          fontWeight: 800, fontSize: "1.05em",
-          color: "#00c44f", letterSpacing: "-0.02em",
-          marginRight: 24, flexShrink: 0,
+          display: "flex", alignItems: "center", gap: 10,
+          fontWeight: 900, fontSize: "1.15em",
+          fontStretch: "115%", textTransform: "uppercase",
+          letterSpacing: "0.02em", color: text,
+          marginRight: 18, flexShrink: 0,
         }}>
-          Golf Edge
+          Golf&nbsp;Edge
+          {inLeague && (
+            <span style={{
+              background: "var(--lg-accent)", color: "#0a0d10",
+              fontSize: "0.55em", fontWeight: 900, letterSpacing: "0.08em",
+              padding: "3px 8px", borderRadius: 3,
+            }}>
+              My League
+            </span>
+          )}
         </Link>
 
-        {/* Desktop links — hidden on mobile via CSS */}
-        <div className="mobile-hidden" style={{ display: "flex", gap: 4, flex: 1 }}>
-          {NAV_LINKS.map(({ href, label }) => {
-            const isActive = pathname.startsWith(href);
-            return (
-              <Link key={href} href={href} style={{
-                color:      isActive ? "#dde6f5" : "#8ba0b8",
-                fontSize:   "0.88em",
-                fontWeight: isActive ? 700 : 500,
-                padding:    "6px 12px",
-                borderRadius: 6,
-                background: isActive ? "#1a2537" : "transparent",
-                transition: "color 0.15s, background 0.15s",
-              }}>
-                {label}
-              </Link>
-            );
-          })}
+        {/* Desktop links */}
+        <div className="mobile-hidden" style={{ display: "flex", gap: 2, flex: 1, alignItems: "stretch" }}>
+          {links.map(l => (
+            <Link key={l.href + l.label} href={l.href} style={{
+              display: "flex", alignItems: "center",
+              padding: "0 12px",
+              color:      isActive(l) ? activeFg : muted,
+              background: isActive(l) ? activeBg : "transparent",
+              fontSize:   "0.8em",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              whiteSpace: "nowrap",
+              transition: "color 0.15s, background 0.15s",
+            }}>
+              {l.label}
+            </Link>
+          ))}
         </div>
 
-        {/* Right-side controls */}
-        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 4 }}>
-          {/* Settings gear */}
+        {/* Right controls */}
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
+          {/* Zone switch */}
+          <Link href={inLeague ? "/" : "/fantasy"} onClick={handleNavClick} style={{
+            ...(inLeague
+              ? { border: "1px solid var(--lg-line)", color: "var(--lg-muted)", background: "transparent" }
+              : { background: "var(--bc-yellow)", color: "#081f14" }),
+            fontWeight: 900, fontSize: "0.72em",
+            textTransform: "uppercase", letterSpacing: "0.05em",
+            padding: "9px 14px", borderRadius: 4,
+          }}>
+            {inLeague ? "← Public site" : "My League"}
+          </Link>
+
           <button
             onClick={() => setShowSettings(true)}
             title="Settings"
             style={{
               background: "none", border: "none",
-              color: "#5a7090", cursor: "pointer",
+              color: muted, cursor: "pointer",
               fontSize: "1.1em", padding: "6px 8px",
               lineHeight: 1, borderRadius: 6,
             }}
@@ -86,14 +131,13 @@ export default function NavBar() {
             ⚙
           </button>
 
-          {/* Hamburger — mobile only */}
           <button
             className="mobile-only"
             onClick={() => setMenuOpen(o => !o)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             style={{
               background: "none", border: "none",
-              color: "#dde6f5", cursor: "pointer",
+              color: text, cursor: "pointer",
               padding: "6px 8px", borderRadius: 6,
               fontSize: "1.2em", lineHeight: 1,
             }}
@@ -103,52 +147,46 @@ export default function NavBar() {
         </div>
       </nav>
 
-      {/* ── Mobile drawer ───────────────────────────────────────────────── */}
-      {/* Slides open below the nav bar; tapping a link closes it.          */}
+      {/* Mobile drawer */}
       {menuOpen && (
         <div
           className="mobile-only"
           style={{
-            position: "fixed",
-            top: 52,
-            left: 0,
-            right: 0,
-            background: "#0a1220",
-            borderBottom: "1px solid #1e3a5f",
+            position: "fixed", top: 56, left: 0, right: 0,
+            background: bar,
+            borderBottom: `1px solid ${inLeague ? "var(--lg-line)" : "var(--bc-line)"}`,
             zIndex: 199,
             padding: "8px 0 16px",
           }}
         >
-          {NAV_LINKS.map(({ href, label }) => {
-            const isActive = pathname.startsWith(href);
-            return (
-              <Link
-                key={href}
-                href={href}
-                onClick={handleNavClick}
-                style={{
-                  display: "block",
-                  padding: "12px 24px",
-                  color:      isActive ? "#00c44f" : "#dde6f5",
-                  fontWeight: isActive ? 700 : 500,
-                  fontSize:   "0.95em",
-                  borderLeft: isActive ? "3px solid #00c44f" : "3px solid transparent",
-                }}
-              >
-                {label}
-              </Link>
-            );
-          })}
+          {links.map(l => (
+            <Link
+              key={l.href + l.label}
+              href={l.href}
+              onClick={handleNavClick}
+              style={{
+                display: "block",
+                padding: "12px 24px",
+                color:      isActive(l) ? rule : text,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                fontSize:   "0.85em",
+                borderLeft: isActive(l) ? `3px solid ${rule}` : "3px solid transparent",
+              }}
+            >
+              {l.label}
+            </Link>
+          ))}
         </div>
       )}
 
-      {/* ── Backdrop (tap outside drawer to close) ──────────────────────── */}
       {menuOpen && (
         <div
           className="mobile-only"
           onClick={() => setMenuOpen(false)}
           style={{
-            position: "fixed", inset: 0, top: 52,
+            position: "fixed", inset: 0, top: 56,
             zIndex: 198,
             background: "rgba(0,0,0,0.4)",
           }}
