@@ -411,9 +411,10 @@ CREATE_STATEMENTS = [
         tournament_phase     VARCHAR,
         reasoning            TEXT,
         raw_model_prob       DOUBLE,
-        leg_prob_summary     DOUBLE,
-        weakest_leg          DOUBLE,
-        weakest_leg_prob     DOUBLE
+        leg_prob_summary     VARCHAR,
+        weakest_leg          VARCHAR,
+        weakest_leg_prob     DOUBLE,
+        intel_warning        VARCHAR
     )
     """,
 

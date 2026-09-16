@@ -33,9 +33,9 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
     : null;
 
   const { confLabel, confColor } = (() => {
-    if (bet.confidence >= 0.80) return { confLabel: "HIGH",     confColor: "#00c44f" };
-    if (bet.confidence >= 0.70) return { confLabel: "MODERATE", confColor: "#f39c12" };
-    return                             { confLabel: "LEAN",     confColor: "#7f8c8d" };
+    if (bet.confidence >= 0.80) return { confLabel: "HIGH",     confColor: "var(--bc-green)" };
+    if (bet.confidence >= 0.70) return { confLabel: "MODERATE", confColor: "var(--bc-orange)" };
+    return                             { confLabel: "LEAN",     confColor: "var(--bc-muted)" };
   })();
 
   // ── Why? state ────────────────────────────────────────────────────────────
@@ -90,10 +90,10 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
 
   return (
     <div style={{
-      background: isPick ? "#060e09" : "#0d1a30",
-      borderTop: isPick ? "1px solid #00c44f33" : "1px solid #1e3a5f",
-      borderRight: isPick ? "1px solid #00c44f33" : "1px solid #1e3a5f",
-      borderBottom: isPick ? "1px solid #00c44f33" : "1px solid #1e3a5f",
+      background: isPick ? "#060e09" : "var(--bc-panel)",
+      borderTop: isPick ? "1px solid var(--bc-green)33" : "1px solid var(--bc-line)",
+      borderRight: isPick ? "1px solid var(--bc-green)33" : "1px solid var(--bc-line)",
+      borderBottom: isPick ? "1px solid var(--bc-green)33" : "1px solid var(--bc-line)",
       borderLeft: `4px solid ${color}`,
       borderRadius: 10,
       padding: "16px 18px",
@@ -105,9 +105,9 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
         <div style={{ flex: 1, minWidth: 0, marginRight: 12 }}>
           <div style={{ marginBottom: 5, display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
             <span style={{
-              fontSize: "0.65em", fontWeight: 700, color: "#00c44f",
+              fontSize: "0.65em", fontWeight: 700, color: "var(--bc-green)",
               background: "#0d2e18", padding: "2px 7px", borderRadius: 4,
-              border: "1px solid #00c44f44",
+              border: "1px solid var(--bc-green)44",
             }}>
               {bookLbl}
             </span>
@@ -119,14 +119,14 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
             <Link
               href={`/players?player=${encodeURIComponent(bet.player_name)}`}
-              style={{ fontSize: "1.05em", fontWeight: 700, color: isPick ? "#00c44f" : "#dde6f5", textDecoration: "none", whiteSpace: "nowrap" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-              onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : "#dde6f5")}
+              style={{ fontSize: "1.05em", fontWeight: 700, color: isPick ? "var(--bc-green)" : "var(--bc-text)", textDecoration: "none", whiteSpace: "nowrap" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
+              onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : "var(--bc-text)")}
             >
               {bet.player_name}
             </Link>
             {isPick && (
-              <span style={{ fontSize: "0.58em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", border: "1px solid #00c44f44", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", border: "1px solid var(--bc-green)44", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
                 MY PICK
               </span>
             )}
@@ -137,7 +137,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
               <Link
                 href={`/players?player=${encodeURIComponent(opponent)}`}
                 style={{ color: "#6a8aaa", textDecoration: "none" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
                 onMouseLeave={e => (e.currentTarget.style.color = "#6a8aaa")}
               >
                 {opponent}
@@ -149,7 +149,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           {bet.intel_warning && (
             <div style={{
               marginTop: 5, fontSize: "0.68em", fontWeight: 600,
-              color: "#f39c12", background: "#1a1200",
+              color: "var(--bc-orange)", background: "#1a1200",
               border: "1px solid #5f4a0044", borderRadius: 4,
               padding: "2px 7px", display: "inline-block",
             }}>
@@ -161,7 +161,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           {bet.live_position && (() => {
             const isLeader = bet.live_position === "1" || bet.live_position === "T1";
             const scoreNum = bet.live_total ? parseFloat(bet.live_total) : null;
-            const scoreColor = scoreNum != null && scoreNum < 0 ? "#00c44f" : scoreNum != null && scoreNum > 0 ? "#e74c3c" : "#dde6f5";
+            const scoreColor = scoreNum != null && scoreNum < 0 ? "var(--bc-green)" : scoreNum != null && scoreNum > 0 ? "var(--bc-red)" : "var(--bc-text)";
             const rounds = [
               bet.live_r1 && `R1 ${bet.live_r1}`,
               bet.live_r2 && `R2 ${bet.live_r2}`,
@@ -173,10 +173,10 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span style={{
                     fontSize: "0.72em", fontWeight: 700,
-                    color: isLeader ? "#f39c12" : "#8ba0b8",
+                    color: isLeader ? "var(--bc-orange)" : "var(--bc-muted)",
                     background: isLeader ? "#2a1f00" : "#0d1e2e",
                     padding: "2px 8px", borderRadius: 4,
-                    border: `1px solid ${isLeader ? "#f39c1244" : "#2a4060"}`,
+                    border: `1px solid ${isLeader ? "var(--bc-orange)44" : "var(--bc-muted)"}`,
                   }}>
                     {bet.live_position}
                   </span>
@@ -184,14 +184,14 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                     {bet.live_total ?? "E"}
                   </span>
                   {bet.live_thru && (
-                    <span style={{ fontSize: "0.72em", color: "#4a6080" }}>
+                    <span style={{ fontSize: "0.72em", color: "var(--bc-muted)" }}>
                       {bet.live_thru === "F" ? "Finished" : `thru ${bet.live_thru}`}
                     </span>
                   )}
                 </div>
                 {/* Round-by-round scores */}
                 {rounds && (
-                  <div style={{ fontSize: "0.68em", color: "#4a6080", letterSpacing: "0.03em" }}>
+                  <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", letterSpacing: "0.03em" }}>
                     {rounds}
                   </div>
                 )}
@@ -214,26 +214,26 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
       </div>
 
       {/* ── Probability bars + stats ── */}
-      <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #1a2537" }}>
+      <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--bc-card)" }}>
 
         {/* Model bar */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-          <span style={{ color: "#8ba0b8", fontSize: "0.72em", width: 52, flexShrink: 0 }}>Model</span>
-          <div style={{ flex: 1, background: "#1a2537", borderRadius: 3, height: 5 }}>
-            <div style={{ width: `${modelBar}%`, background: "#00c44f", borderRadius: 3, height: 5 }} />
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.72em", width: 52, flexShrink: 0 }}>Model</span>
+          <div style={{ flex: 1, background: "var(--bc-card)", borderRadius: 3, height: 5 }}>
+            <div style={{ width: `${modelBar}%`, background: "var(--bc-green)", borderRadius: 3, height: 5 }} />
           </div>
-          <span style={{ color: "#00c44f", fontSize: "0.82em", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
+          <span style={{ color: "var(--bc-green)", fontSize: "0.82em", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
             {modelPct.toFixed(1)}%
           </span>
         </div>
 
         {/* Market bar */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-          <span style={{ color: "#8ba0b8", fontSize: "0.72em", width: 52, flexShrink: 0 }}>Market</span>
-          <div style={{ flex: 1, background: "#1a2537", borderRadius: 3, height: 5 }}>
-            <div style={{ width: `${marketBar}%`, background: "#4cb8ff", borderRadius: 3, height: 5 }} />
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.72em", width: 52, flexShrink: 0 }}>Market</span>
+          <div style={{ flex: 1, background: "var(--bc-card)", borderRadius: 3, height: 5 }}>
+            <div style={{ width: `${marketBar}%`, background: "var(--bc-yellow)", borderRadius: 3, height: 5 }} />
           </div>
-          <span style={{ color: "#4cb8ff", fontSize: "0.82em", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
+          <span style={{ color: "var(--bc-yellow)", fontSize: "0.82em", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
             {marketPct.toFixed(1)}%
           </span>
         </div>
@@ -241,19 +241,19 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
         {/* Stats row: edge / EV / kelly */}
         <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
           <Stat label="Edge" value={bet.edge_pts != null ? `+${bet.edge_pts.toFixed(1)}pp` : "—"} color={color} />
-          <Stat label="EV / $1" value={bet.ev_per_1 != null ? `$${bet.ev_per_1.toFixed(2)}` : "—"} color="#00c44f" />
+          <Stat label="EV / $1" value={bet.ev_per_1 != null ? `$${bet.ev_per_1.toFixed(2)}` : "—"} color="var(--bc-green)" />
           {kellyDollar && (
             <Stat
               label="Kelly"
               value={`${((bet.kelly_fraction ?? 0) * 100).toFixed(1)}% · $${kellyDollar}`}
-              color="#f39c12"
+              color="var(--bc-orange)"
             />
           )}
         </div>
       </div>
 
       {/* ── Why? button + reason panel ── */}
-      <div style={{ marginTop: 12, borderTop: "1px solid #1a2537", paddingTop: 10 }}>
+      <div style={{ marginTop: 12, borderTop: "1px solid var(--bc-card)", paddingTop: 10 }}>
         <div style={{ display: "flex", gap: 8 }}>
           <button
             onClick={handleWhyClick}
@@ -261,7 +261,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
               background: "transparent",
               border: "1px solid #2a4f7f",
               borderRadius: 5,
-              color: reasonOpen ? "#7f8c8d" : "#4cb8ff",
+              color: reasonOpen ? "var(--bc-muted)" : "var(--bc-yellow)",
               fontSize: "0.75em",
               fontWeight: 600,
               padding: "4px 10px",
@@ -277,9 +277,9 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
               disabled={tracked || tracking}
               style={{
                 background: tracked ? "#0c1f14" : "transparent",
-                border: `1px solid ${tracked ? "#00c44f44" : "#2a4f7f"}`,
+                border: `1px solid ${tracked ? "var(--bc-green)44" : "#2a4f7f"}`,
                 borderRadius: 5,
-                color: tracked ? "#00c44f" : "#8ba0b8",
+                color: tracked ? "var(--bc-green)" : "var(--bc-muted)",
                 fontSize: "0.75em",
                 fontWeight: 600,
                 padding: "4px 10px",
@@ -293,7 +293,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
         {reasonOpen && (
           <div style={{ marginTop: 10, fontSize: "0.82em", lineHeight: 1.6, color: "#b0c4d8" }}>
             {reasonLoading
-              ? <span style={{ color: "#4a6080" }}>Generating…</span>
+              ? <span style={{ color: "var(--bc-muted)" }}>Generating…</span>
               : reason}
           </div>
         )}
@@ -308,7 +308,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
 function Stat({ label, value, color }: { label: string; value: string; color: string }) {
   return (
     <div>
-      <div style={{ fontSize: "0.65em", color: "#7f8c8d", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </div>
       <div style={{ fontSize: "1em", fontWeight: 800, color }}>{value}</div>
@@ -348,7 +348,7 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
           background: "transparent",
           border: "1px solid #2a4f7f",
           borderRadius: 5,
-          color: open ? "#7f8c8d" : "#f39c12",
+          color: open ? "var(--bc-muted)" : "var(--bc-orange)",
           fontSize: "0.75em",
           fontWeight: 600,
           padding: "4px 10px",
@@ -361,12 +361,12 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
       {open && (
         <div style={{ marginTop: 10 }}>
           {loading ? (
-            <span style={{ fontSize: "0.8em", color: "#4a6080" }}>Loading…</span>
+            <span style={{ fontSize: "0.8em", color: "var(--bc-muted)" }}>Loading…</span>
           ) : lines ? (
             <>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.78em" }}>
                 <thead>
-                  <tr style={{ color: "#4a6080" }}>
+                  <tr style={{ color: "var(--bc-muted)" }}>
                     <th style={{ paddingBottom: 4, fontWeight: 600, textAlign: "left" }}>Book</th>
                     <th style={{ paddingBottom: 4, fontWeight: 600, textAlign: "right" }}>Odds</th>
                     <th style={{ paddingBottom: 4, fontWeight: 600, textAlign: "right" }}>Implied</th>
@@ -376,18 +376,18 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
                 <tbody>
                   {lines.lines.map((l, i) => {
                     const isBest = l.book === lines.best_book;
-                    const edgeColor = l.edge_pp != null && l.edge_pp > 0 ? "#00c44f"
-                                    : l.edge_pp != null && l.edge_pp < 0 ? "#e74c3c"
-                                    : "#7f8c8d";
+                    const edgeColor = l.edge_pp != null && l.edge_pp > 0 ? "var(--bc-green)"
+                                    : l.edge_pp != null && l.edge_pp < 0 ? "var(--bc-red)"
+                                    : "var(--bc-muted)";
                     return (
-                      <tr key={i} style={{ borderTop: "1px solid #1a2537" }}>
-                        <td style={{ padding: "5px 0", color: isBest ? "#f39c12" : "#8ba0b8", fontWeight: isBest ? 700 : 400 }}>
+                      <tr key={i} style={{ borderTop: "1px solid var(--bc-card)" }}>
+                        <td style={{ padding: "5px 0", color: isBest ? "var(--bc-orange)" : "var(--bc-muted)", fontWeight: isBest ? 700 : 400 }}>
                           {l.book}{isBest ? " ★" : ""}
                         </td>
-                        <td style={{ textAlign: "right", color: isBest ? "#f39c12" : "#dde6f5", fontWeight: isBest ? 700 : 400 }}>
+                        <td style={{ textAlign: "right", color: isBest ? "var(--bc-orange)" : "var(--bc-text)", fontWeight: isBest ? 700 : 400 }}>
                           {l.odds_american}
                         </td>
-                        <td style={{ textAlign: "right", color: "#8ba0b8" }}>
+                        <td style={{ textAlign: "right", color: "var(--bc-muted)" }}>
                           {(l.implied_prob * 100).toFixed(1)}%
                         </td>
                         <td style={{ textAlign: "right", color: edgeColor }}>
@@ -399,13 +399,13 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
                 </tbody>
               </table>
               {lines.last_updated && (
-                <div style={{ fontSize: "0.68em", color: "#3a5060", marginTop: 6 }}>
+                <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", marginTop: 6 }}>
                   DG updated {lines.last_updated}
                 </div>
               )}
             </>
           ) : (
-            <span style={{ fontSize: "0.8em", color: "#e74c3c" }}>No line data available.</span>
+            <span style={{ fontSize: "0.8em", color: "var(--bc-red)" }}>No line data available.</span>
           )}
         </div>
       )}

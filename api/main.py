@@ -5975,19 +5975,31 @@ def history_model() -> dict:
 
 @app.get("/api/history/bets")
 def history_bets() -> dict:
-    """Bet P&L summary by tournament — reads from DuckDB."""
-    if not _DB_AVAILABLE:
-        return {"tournaments": [], "overall": {}}
+    """Bet P&L summary by tournament — DuckDB first, CSV fallback.
 
-    try:
-        with _get_db_conn() as conn:
-            df = conn.execute("""
-                SELECT tournament_id, market, outcome_status, outcome_win, pnl_per_1
-                FROM recommended_bets_log
-                WHERE outcome_status IS NOT NULL AND outcome_status != 'pending'
-            """).df()
-    except Exception:
-        return {"tournaments": [], "overall": {}}
+    The CSV is the authoritative store and the only one that exists on the
+    cloud deployment (the DB file is local-only) — without the fallback the
+    live site's ledger reads permanently empty."""
+    df = None
+    if _DB_AVAILABLE:
+        try:
+            with _get_db_conn() as conn:
+                df = conn.execute("""
+                    SELECT tournament_id, market, outcome_status, outcome_win, pnl_per_1
+                    FROM recommended_bets_log
+                    WHERE outcome_status IS NOT NULL AND outcome_status != 'pending'
+                """).df()
+        except Exception:
+            df = None
+    if df is None or df.empty:
+        csv_path = DATA_DIR / "odds" / "recommended_bets_log.csv"
+        if csv_path.exists():
+            raw = pd.read_csv(csv_path)
+            df = raw[raw["outcome_status"].astype(str).isin(["won", "lost", "manual"])][
+                ["tournament_id", "market", "outcome_status", "outcome_win", "pnl_per_1"]
+            ].copy()
+        else:
+            df = pd.DataFrame()
 
     if df.empty:
         return {"tournaments": [], "overall": {"bets": 0, "wins": 0, "pnl": 0.0, "roi": 0.0}}

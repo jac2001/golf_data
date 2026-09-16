@@ -26,6 +26,18 @@ import BookTable from "@/components/BookTable";
 import MatchupsTab from "@/components/MatchupsTab";
 import OddsExplorer from "@/components/OddsExplorer";
 import ExpertPicksTab from "@/components/ExpertPicksTab";
+import { BetsLedger, BetSlipPanel } from "@/components/BetsPanel";
+import { PageHead, SubTabs, StatStrip } from "@/components/broadcast";
+
+type BoardTab = "bets" | "matchups" | "odds" | "expert" | "ledger" | "slip";
+const BOARD_TABS: { id: BoardTab; label: string }[] = [
+  { id: "bets",     label: "The Board"     },
+  { id: "matchups", label: "Matchups"      },
+  { id: "odds",     label: "Odds Explorer" },
+  { id: "expert",   label: "Expert Picks"  },
+  { id: "ledger",   label: "Honest Ledger" },
+  { id: "slip",     label: "My Slip"       },
+];
 
 // Markets available as filter pills
 const MARKET_PILLS: { key: string; label: string }[] = [
@@ -45,7 +57,7 @@ export default function BettingPage() {
   // ── State ──────────────────────────────────────────────────────────────────
   // useState(initialValue) returns [currentValue, setterFunction].
   // Calling the setter re-renders the component with the new value.
-  const [activeTab, setActiveTab]     = useState<"bets" | "matchups" | "odds" | "expert">("bets");
+  const [activeTab, setActiveTab]     = useState<BoardTab>("bets");
   const [tournament, setTournament]   = useState<Tournament | null>(null);
   const [bets, setBets]               = useState<Bet[]>([]);
   const [oddsData, setOddsData]       = useState<OddsComparison | null>(null);
@@ -134,52 +146,40 @@ export default function BettingPage() {
     <div className="page-wrap-md">
 
       {/* ── Tournament header ── */}
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: "1.4em", fontWeight: 800, color: "#dde6f5", margin: 0 }}>
-          Value Bets
-        </h1>
-        {tournament && (
-          <p style={{ color: "#7f8c8d", fontSize: "0.88em", margin: "4px 0 0" }}>
-            {tournament.name}
-            {tournament.current_round && ` · Round ${tournament.current_round}`}
-            {tournament.leader_name && ` · Leader: ${tournament.leader_name}`}
-            {tournament.leader_score != null && ` (${tournament.leader_score > 0 ? "+" : ""}${tournament.leader_score})`}
-          </p>
-        )}
+      <PageHead
+        kicker={[
+          tournament?.name ?? "Loading tournament…",
+          tournament?.current_round ? `Round ${tournament.current_round}` : null,
+          tournament?.leader_name ? `Leader: ${tournament.leader_name}` : null,
+        ].filter(Boolean).join(" · ")}
+        title="Betting Board"
+      />
+
+      {/* ── Where this model actually wins ── */}
+      <div style={{ marginBottom: 18 }}>
+        <StatStrip
+          title="Where we win"
+          stats={[
+            { value: "10/10", label: "made-the-cut bets, +52.9% (2026)", color: "var(--bc-green)" },
+            { value: "+4.1%", label: "Sunday head-to-heads", color: "var(--bc-green)" },
+            { value: "−20.9%", label: "everything else — we mostly watch", color: "var(--bc-red)" },
+          ]}
+        />
       </div>
 
       {/* ── Tab switcher ── */}
-      <div className="tab-bar" style={{ marginBottom: 24, borderBottom: "1px solid #1e3a5f", paddingBottom: 0 }}>
-        {(["bets", "matchups", "odds", "expert"] as const).map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            style={{
-              background: "transparent",
-              borderTop: "none", borderLeft: "none", borderRight: "none",
-              borderBottom: `2px solid ${activeTab === tab ? "#00c44f" : "transparent"}`,
-              color: activeTab === tab ? "#dde6f5" : "#7f8c8d",
-              padding: "8px 16px",
-              fontSize: "0.88em",
-              fontWeight: activeTab === tab ? 700 : 500,
-              cursor: "pointer",
-              marginBottom: -1,
-              transition: "color 0.15s",
-            }}
-          >
-            {tab === "bets" ? "Value Bets" : tab === "matchups" ? "Matchups" : tab === "odds" ? "Odds Explorer" : "Expert Picks"}
-          </button>
-        ))}
-      </div>
+      <SubTabs tabs={BOARD_TABS} active={activeTab} onChange={setActiveTab} />
 
+      {activeTab === "ledger" && <BetsLedger />}
+      {activeTab === "slip" && <BetSlipPanel />}
       {activeTab === "matchups" && <MatchupsTab />}
       {activeTab === "odds" && <OddsExplorer />}
       {activeTab === "expert" && (
         loadingExpert
-          ? <div style={{ color: "#7f8c8d", padding: "40px 0", textAlign: "center" }}>Loading…</div>
+          ? <div style={{ color: "var(--bc-muted)", padding: "40px 0", textAlign: "center" }}>Loading…</div>
           : expertData
             ? <ExpertPicksTab experts={expertData.experts} consensus={expertData.consensus} tournament={expertData.tournament} />
-            : <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10 }}>
+            : <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
                 No expert picks available yet for this tournament.
               </div>
       )}
@@ -192,7 +192,7 @@ export default function BettingPage() {
       {/* ── Filter bar ── */}
       <div style={{
         marginBottom: 20, padding: "14px 16px",
-        background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10,
+        background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10,
       }}>
         {/* Market pills */}
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
@@ -208,9 +208,9 @@ export default function BettingPage() {
                 style={{
                   padding: "5px 12px", borderRadius: 20, fontSize: "0.78em", fontWeight: 600,
                   cursor: "pointer", transition: "all 0.15s",
-                  background: active ? "#00c44f" : "transparent",
-                  color:      active ? "#000"    : "#8ba0b8",
-                  border:     active ? "1px solid #00c44f" : "1px solid #2a4060",
+                  background: active ? "var(--bc-green)" : "transparent",
+                  color:      active ? "#000"    : "var(--bc-muted)",
+                  border:     active ? "1px solid var(--bc-green)" : "1px solid var(--bc-muted)",
                 }}
               >
                 {label}
@@ -231,7 +231,7 @@ export default function BettingPage() {
               type="range" min={0} max={8} step={0.5}
               value={minEdge}
               onChange={(e) => setMinEdge(Number(e.target.value))}
-              style={{ width: 130, accentColor: "#00c44f" }}
+              style={{ width: 130, accentColor: "var(--bc-green)" }}
             />
           </FilterGroup>
 
@@ -276,8 +276,8 @@ export default function BettingPage() {
       {/* ── Bet cards ── */}
       {filteredBets.length === 0 ? (
         <div style={{
-          padding: "24px", textAlign: "center", color: "#7f8c8d",
-          background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10,
+          padding: "24px", textAlign: "center", color: "var(--bc-muted)",
+          background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10,
           marginBottom: 20,
         }}>
           No bets meet the current filters. Try lowering the edge threshold or changing the market.
@@ -297,7 +297,7 @@ export default function BettingPage() {
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: showTable ? 12 : 0 }}>
           <button
             onClick={() => setShowTable(!showTable)}
-            style={{ ...btnStyle, background: showTable ? "#1e3a5f" : "transparent", fontSize: "0.85em" }}
+            style={{ ...btnStyle, background: showTable ? "var(--bc-line)" : "transparent", fontSize: "0.85em" }}
           >
             {showTable ? "▲ Hide" : "▼ Show"} Book Comparison
           </button>
@@ -315,7 +315,7 @@ export default function BettingPage() {
           )}
 
           {showTable && oddsData && (
-            <span style={{ color: "#7f8c8d", fontSize: "0.78em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>
               {oddsData.players.length} players · {oddsData.books.length} books
             </span>
           )}
@@ -337,7 +337,7 @@ export default function BettingPage() {
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
-      fontSize: "0.70em", fontWeight: 700, color: "#7f8c8d",
+      fontSize: "0.70em", fontWeight: 700, color: "var(--bc-muted)",
       textTransform: "uppercase", letterSpacing: "0.08em",
       marginBottom: 10,
     }}>
@@ -349,13 +349,13 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div style={{
-      background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 8,
+      background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
       padding: "10px 16px", flex: "1 1 120px", minWidth: 100,
     }}>
-      <div style={{ fontSize: "0.68em", color: "#7f8c8d", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </div>
-      <div style={{ fontSize: "1.1em", fontWeight: 700, color: "#dde6f5", marginTop: 2 }}>
+      <div style={{ fontSize: "1.1em", fontWeight: 700, color: "var(--bc-text)", marginTop: 2 }}>
         {value}
       </div>
     </div>
@@ -365,7 +365,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 function FilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div style={{ fontSize: "0.68em", color: "#7f8c8d", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+      <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
         {label}
       </div>
       {children}
@@ -375,7 +375,7 @@ function FilterGroup({ label, children }: { label: string; children: React.React
 
 function LoadingScreen() {
   return (
-    <div style={{ textAlign: "center", padding: 80, color: "#7f8c8d" }}>
+    <div style={{ textAlign: "center", padding: 80, color: "var(--bc-muted)" }}>
       Loading…
     </div>
   );
@@ -390,10 +390,10 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
   return (
     <div style={{
       background: isPick ? "#040e09" : "#060f1a",
-      borderTop: isPick ? "1px solid #00c44f55" : "1px solid #00c44f44",
-      borderRight: isPick ? "1px solid #00c44f55" : "1px solid #00c44f44",
-      borderBottom: isPick ? "1px solid #00c44f55" : "1px solid #00c44f44",
-      borderLeft: "3px solid #00c44f",
+      borderTop: isPick ? "1px solid var(--bc-green)55" : "1px solid var(--bc-green)44",
+      borderRight: isPick ? "1px solid var(--bc-green)55" : "1px solid var(--bc-green)44",
+      borderBottom: isPick ? "1px solid var(--bc-green)55" : "1px solid var(--bc-green)44",
+      borderLeft: "3px solid var(--bc-green)",
       borderRadius: 10,
       padding: "16px 20px",
       marginBottom: 20,
@@ -402,22 +402,22 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{
-            fontSize: "0.62em", fontWeight: 800, color: "#00c44f",
+            fontSize: "0.62em", fontWeight: 800, color: "var(--bc-green)",
             textTransform: "uppercase", letterSpacing: "0.12em",
-            background: "#00c44f18", border: "1px solid #00c44f33",
+            background: "var(--bc-green)18", border: "1px solid var(--bc-green)33",
             borderRadius: 4, padding: "2px 8px",
           }}>
             Best Bet
           </span>
-          <span style={{ fontSize: "0.75em", color: "#5a7090" }}>
+          <span style={{ fontSize: "0.75em", color: "var(--bc-muted)" }}>
             {bet.tournament_name}
           </span>
         </div>
         <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-          <span style={{ fontSize: "0.78em", color: "#00c44f", fontWeight: 700 }}>
+          <span style={{ fontSize: "0.78em", color: "var(--bc-green)", fontWeight: 700 }}>
             +{bet.edge_pts.toFixed(1)}pp edge
           </span>
-          <span style={{ fontSize: "0.78em", color: "#4cb8ff" }}>
+          <span style={{ fontSize: "0.78em", color: "var(--bc-yellow)" }}>
             +{bet.ev_pct.toFixed(1)}% EV
           </span>
         </div>
@@ -427,18 +427,18 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
       <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
         <Link
           href={`/players?player=${encodeURIComponent(bet.player_name)}`}
-          style={{ fontSize: "1.05em", fontWeight: 800, color: isPick ? "#00c44f" : "#dde6f5", textDecoration: "none" }}
-          onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-          onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : "#dde6f5")}
+          style={{ fontSize: "1.05em", fontWeight: 800, color: isPick ? "var(--bc-green)" : "var(--bc-text)", textDecoration: "none" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
+          onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : "var(--bc-text)")}
         >
           {bet.player_name}
         </Link>
         {isPick && (
-          <span style={{ fontSize: "0.58em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", border: "1px solid #00c44f44", borderRadius: 3, padding: "2px 5px" }}>
+          <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", border: "1px solid var(--bc-green)44", borderRadius: 3, padding: "2px 5px" }}>
             MY PICK
           </span>
         )}
-        <span style={{ fontSize: "0.88em", color: "#7f8c8d" }}>
+        <span style={{ fontSize: "0.88em", color: "var(--bc-muted)" }}>
           {bet.market_label} · {bet.odds_str} · {bet.book}
         </span>
       </div>
@@ -458,7 +458,7 @@ function ErrorScreen({ message }: { message: string }) {
     <div style={{
       maxWidth: 600, margin: "40px auto", padding: 24,
       background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 10,
-      color: "#e74c3c",
+      color: "var(--bc-red)",
     }}>
       <strong>Error</strong>
       <p style={{ margin: "8px 0 0", color: "#c0392b", fontSize: "0.9em" }}>{message}</p>
@@ -468,20 +468,20 @@ function ErrorScreen({ message }: { message: string }) {
 
 // ── Shared styles ─────────────────────────────────────────────────────────────
 const selectStyle: React.CSSProperties = {
-  background: "#0a1525",
-  border: "1px solid #1e3a5f",
+  background: "var(--bc-panel)",
+  border: "1px solid var(--bc-line)",
   borderRadius: 6,
-  color: "#dde6f5",
+  color: "var(--bc-text)",
   padding: "6px 10px",
   fontSize: "0.88em",
   outline: "none",
 };
 
 const btnStyle: React.CSSProperties = {
-  background: "#1e3a5f",
+  background: "var(--bc-line)",
   border: "1px solid #2a4f7f",
   borderRadius: 6,
-  color: "#dde6f5",
+  color: "var(--bc-text)",
   padding: "7px 14px",
   fontSize: "0.88em",
   fontWeight: 600,

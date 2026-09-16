@@ -18,19 +18,19 @@ type Props = {
 
 export default function BookTable({ data }: Props) {
   if (!data.players.length) {
-    return <p style={{ color: "#7f8c8d", fontSize: "0.9em" }}>No odds data available.</p>;
+    return <p style={{ color: "var(--bc-muted)", fontSize: "0.9em" }}>No odds data available.</p>;
   }
 
   // Column header style
   const th: React.CSSProperties = {
     background: "#0a1628",
-    color: "#8ba0b8",
+    color: "var(--bc-muted)",
     fontSize: "0.70em",
     fontWeight: 600,
     textTransform: "uppercase",
     letterSpacing: "0.04em",
     padding: "8px 12px",
-    borderBottom: "1px solid #1e3a5f",
+    borderBottom: "1px solid var(--bc-line)",
     whiteSpace: "nowrap",
   };
 
@@ -42,8 +42,8 @@ export default function BookTable({ data }: Props) {
   };
 
   return (
-    <div style={{ overflowX: "auto", border: "1px solid #1e3a5f", borderRadius: 10 }}>
-      <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+    <div style={{ overflowX: "auto", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
         <thead>
           <tr>
             {/* Fixed columns */}
@@ -66,29 +66,29 @@ export default function BookTable({ data }: Props) {
 
         <tbody>
           {data.players.map((p, i) => {
-            const bg = i % 2 === 0 ? "#0d1a30" : "#0a1525";
+            const bg = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
             const edge = p.edge_vs_dk;
             const edgeColor =
-              edge == null ? "#7f8c8d"
-              : edge > 1   ? "#00c44f"
-              : edge > 0   ? "#f39c12"
-              :               "#7f8c8d";
+              edge == null ? "var(--bc-muted)"
+              : edge > 1   ? "var(--bc-green)"
+              : edge > 0   ? "var(--bc-orange)"
+              :               "var(--bc-muted)";
 
             return (
               <tr key={p.player} style={{ background: bg }}>
                 {/* Player name */}
-                <td style={{ ...td, color: "#dde6f5", fontWeight: 600, textAlign: "left" }}>
+                <td style={{ ...td, color: "var(--bc-text)", fontWeight: 600, textAlign: "left" }}>
                   {p.player}
                 </td>
 
                 {/* Model probability */}
-                <td style={{ ...td, color: "#00c44f", fontWeight: 700, textAlign: "center" }}>
+                <td style={{ ...td, color: "var(--bc-green)", fontWeight: 700, textAlign: "center" }}>
                   {p.model_prob != null ? `${p.model_prob.toFixed(1)}%` : "—"}
                 </td>
 
                 {/* Odds per book */}
                 {data.books.map((book) => (
-                  <td key={book} style={{ ...td, color: "#dde6f5", textAlign: "center" }}>
+                  <td key={book} style={{ ...td, color: "var(--bc-text)", textAlign: "center" }}>
                     {p.book_odds[book] ?? "—"}
                   </td>
                 ))}
@@ -103,7 +103,7 @@ export default function BookTable({ data }: Props) {
         </tbody>
       </table>
 
-      <p style={{ color: "#7f8c8d", fontSize: "0.72em", padding: "8px 12px", margin: 0 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "0.72em", padding: "8px 12px", margin: 0 }}>
         Sorted by model edge vs {BOOK_ABBR[data.ref_book] ?? data.ref_book}. No-vig normalized.
         Sharp books (PIN) are shown for reference only — not available in the US.
       </p>

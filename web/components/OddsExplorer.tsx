@@ -59,10 +59,10 @@ export default function OddsExplorer() {
   const booksShown = books.slice(0, 8);
 
   const th: React.CSSProperties = {
-    background: "#0a1628", color: "#5a7090",
+    background: "#0a1628", color: "var(--bc-muted)",
     fontSize: "0.68em", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
-    padding: "7px 10px", borderBottom: "1px solid #1e3a5f",
+    padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     whiteSpace: "nowrap", position: "sticky", top: 0,
   };
 
@@ -71,12 +71,12 @@ export default function OddsExplorer() {
       {/* Controls */}
       <div style={{
         display: "flex", gap: 12, alignItems: "center", marginBottom: 16,
-        padding: "12px 14px", background: "#0d1a30",
-        border: "1px solid #1e3a5f", borderRadius: 8, flexWrap: "wrap",
+        padding: "12px 14px", background: "var(--bc-panel)",
+        border: "1px solid var(--bc-line)", borderRadius: 8, flexWrap: "wrap",
       }}>
         {/* Market select */}
         <div>
-          <div style={{ fontSize: "0.65em", color: "#7f8c8d", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+          <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
             Market
           </div>
           <select
@@ -92,7 +92,7 @@ export default function OddsExplorer() {
 
         {/* Search */}
         <div>
-          <div style={{ fontSize: "0.65em", color: "#7f8c8d", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+          <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
             Search
           </div>
           <input
@@ -104,12 +104,12 @@ export default function OddsExplorer() {
         </div>
 
         {/* Pos EV filter */}
-        <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", color: "#8ba0b8", fontSize: "0.85em", marginTop: 18 }}>
+        <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", color: "var(--bc-muted)", fontSize: "0.85em", marginTop: 18 }}>
           <input
             type="checkbox"
             checked={posEvOnly}
             onChange={e => setPosEvOnly(e.target.checked)}
-            style={{ accentColor: "#00c44f" }}
+            style={{ accentColor: "var(--bc-green)" }}
           />
           Positive EV only
         </label>
@@ -117,7 +117,7 @@ export default function OddsExplorer() {
         {/* Refresh + meta */}
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "flex-end", gap: 12 }}>
           {data?.updated && (
-            <span style={{ color: "#4a6080", fontSize: "0.72em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.72em" }}>
               DG updated: {data.updated}
             </span>
           )}
@@ -126,7 +126,7 @@ export default function OddsExplorer() {
           </button>
         </div>
         {refreshErr && (
-          <span style={{ color: "#e74c3c", fontSize: "0.75em", width: "100%", marginTop: 4 }}>
+          <span style={{ color: "var(--bc-red)", fontSize: "0.75em", width: "100%", marginTop: 4 }}>
             {refreshErr}
           </span>
         )}
@@ -135,26 +135,26 @@ export default function OddsExplorer() {
       {/* Summary strip */}
       {data && !loading && (
         <div style={{ display: "flex", gap: 16, marginBottom: 12 }}>
-          <span style={{ color: "#7f8c8d", fontSize: "0.78em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>
             {players.length} players
           </span>
-          <span style={{ color: "#7f8c8d", fontSize: "0.78em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>
             {players.filter(p => p.has_pos_ev).length} with positive-EV cells
           </span>
-          <span style={{ color: "#7f8c8d", fontSize: "0.78em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>
             {booksShown.length} books
           </span>
         </div>
       )}
 
       {loading && (
-        <div style={{ color: "#7f8c8d", padding: 24, textAlign: "center" }}>Loading…</div>
+        <div style={{ color: "var(--bc-muted)", padding: 24, textAlign: "center" }}>Loading…</div>
       )}
 
       {!loading && data && players.length === 0 && (
         <div style={{
-          padding: 24, textAlign: "center", color: "#7f8c8d",
-          background: "#0d1a30", border: "1px solid #1e3a5f", borderRadius: 10,
+          padding: 24, textAlign: "center", color: "var(--bc-muted)",
+          background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10,
         }}>
           No players match current filters.
         </div>
@@ -162,12 +162,12 @@ export default function OddsExplorer() {
 
       {/* Table */}
       {!loading && players.length > 0 && (
-        <div style={{ overflowX: "auto", border: "1px solid #1e3a5f", borderRadius: 10, maxHeight: 600, overflowY: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", background: "#0d1a30" }}>
+        <div style={{ overflowX: "auto", border: "1px solid var(--bc-line)", borderRadius: 10, maxHeight: 600, overflowY: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
             <thead>
               <tr>
                 <th style={{ ...th, textAlign: "left", minWidth: 140 }}>Player</th>
-                <th style={{ ...th, textAlign: "center", background: "#0a1e38", color: "#4cb8ff", minWidth: 70 }}>
+                <th style={{ ...th, textAlign: "center", background: "#0a1e38", color: "var(--bc-yellow)", minWidth: 70 }}>
                   DG Model
                 </th>
                 {booksShown.map(b => (
@@ -179,14 +179,14 @@ export default function OddsExplorer() {
             </thead>
             <tbody>
               {players.map((p, i) => {
-                const bg = i % 2 === 0 ? "#0d1a30" : "#0a1525";
+                const bg = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
                 const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid #0f2236", background: bg };
                 return (
                   <tr key={p.player}>
-                    <td style={{ ...tdBase, color: "#dde6f5", fontWeight: 500, fontSize: "0.85em", whiteSpace: "nowrap" }}>
+                    <td style={{ ...tdBase, color: "var(--bc-text)", fontWeight: 500, fontSize: "0.85em", whiteSpace: "nowrap" }}>
                       {p.player}
                     </td>
-                    <td style={{ ...tdBase, textAlign: "center", background: i % 2 === 0 ? "#0a1e38" : "#091929", color: "#4cb8ff", fontWeight: 700, fontSize: "0.85em" }}>
+                    <td style={{ ...tdBase, textAlign: "center", background: i % 2 === 0 ? "#0a1e38" : "#091929", color: "var(--bc-yellow)", fontWeight: 700, fontSize: "0.85em" }}>
                       {p.dg_prob != null ? `${p.dg_prob.toFixed(1)}%` : "—"}
                     </td>
                     {booksShown.map(b => {
@@ -197,7 +197,7 @@ export default function OddsExplorer() {
                           {cell?.odds ? (
                             <div>
                               <div style={{
-                                color: isPos ? "#00c44f" : "#4a6080",
+                                color: isPos ? "var(--bc-green)" : "var(--bc-muted)",
                                 fontWeight: isPos ? 700 : 400,
                                 fontSize: "0.85em",
                                 background: isPos ? "rgba(0,196,79,0.12)" : "transparent",
@@ -210,7 +210,7 @@ export default function OddsExplorer() {
                               {cell.ev != null && (
                                 <div style={{
                                   fontSize: "0.68em",
-                                  color: isPos ? "#00c44f" : "#2a4060",
+                                  color: isPos ? "var(--bc-green)" : "var(--bc-muted)",
                                   marginTop: 1,
                                 }}>
                                   {isPos ? `+${cell.ev.toFixed(1)}%` : `${cell.ev.toFixed(1)}%`}
@@ -228,7 +228,7 @@ export default function OddsExplorer() {
               })}
             </tbody>
           </table>
-          <p style={{ color: "#4a6080", fontSize: "0.70em", padding: "6px 12px", margin: 0 }}>
+          <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", padding: "6px 12px", margin: 0 }}>
             EV = DG model probability × decimal odds − 1. Pinnacle shown for reference — not available in US.
           </p>
         </div>
@@ -238,16 +238,16 @@ export default function OddsExplorer() {
 }
 
 const btnStyle: React.CSSProperties = {
-  background: "#1e3a5f", border: "1px solid #2a4f7f", borderRadius: 6,
-  color: "#dde6f5", padding: "6px 14px", fontSize: "0.85em",
+  background: "var(--bc-line)", border: "1px solid #2a4f7f", borderRadius: 6,
+  color: "var(--bc-text)", padding: "6px 14px", fontSize: "0.85em",
   fontWeight: 600, cursor: "pointer",
 };
 
 const selectStyle: React.CSSProperties = {
-  background: "#0a1525",
-  border: "1px solid #1e3a5f",
+  background: "var(--bc-panel)",
+  border: "1px solid var(--bc-line)",
   borderRadius: 6,
-  color: "#dde6f5",
+  color: "var(--bc-text)",
   padding: "6px 10px",
   fontSize: "0.85em",
   outline: "none",
