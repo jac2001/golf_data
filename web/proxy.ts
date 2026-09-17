@@ -8,6 +8,7 @@
  */
 
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
 
 const isProtected = createRouteMatcher([
   "/fantasy(.*)",
@@ -16,7 +17,7 @@ const isProtected = createRouteMatcher([
   "/api/friends(.*)",
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
+const withClerk = clerkMiddleware(async (auth, req) => {
   if (!isProtected(req)) return;
 
   // API routes answer signed-out callers HERE with an uncacheable 401.
@@ -38,6 +39,19 @@ export default clerkMiddleware(async (auth, req) => {
 
   await auth.protect();  // pages: redirect to /sign-in and back
 });
+
+/** Host gate BEFORE Clerk ever sees the request: the old vercel.app URL
+ *  still lives in browsers with pre-migration dev-instance cookies that
+ *  production Clerk rejects as invalid (→ HTML 404s). One canonical
+ *  domain, one cookie jar. 308 keeps the method + path. */
+export default function proxy(req: NextRequest, event: NextFetchEvent) {
+  const host = req.headers.get("host") ?? "";
+  if (host.endsWith(".vercel.app")) {
+    const url = new URL(req.nextUrl.pathname + req.nextUrl.search, "https://playgolfedge.com");
+    return NextResponse.redirect(url, 308);
+  }
+  return withClerk(req, event);
+}
 
 export const config = {
   matcher: [
