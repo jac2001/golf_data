@@ -216,8 +216,11 @@ function PlayerSelect({
         onChange={e => setInputVal(e.target.value)}
         onKeyDown={e => {
           if (e.key === "Enter") {
-            const match = players.find(p => p.toLowerCase() === inputVal.toLowerCase());
-            if (match) onChange(match);
+            const q = inputVal.trim().toLowerCase();
+            if (!q) return;
+            const match = players.find(p => p.toLowerCase() === q)
+              ?? players.find(p => p.toLowerCase().includes(q));
+            if (match) { onChange(match); setInputVal(match); }
           }
         }}
         onBlur={() => {

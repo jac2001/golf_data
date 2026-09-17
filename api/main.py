@@ -3951,7 +3951,13 @@ def get_all_players() -> dict:
         names_set.update(preds["player_name"].dropna())
     except Exception:
         pass
-    return {"players": sorted(names_set)}
+    # Old CSVs use "First Last", newer ones "Last, First" — dedupe on the
+    # token key so each player appears once (prefer the "Last, First" form).
+    by_key: dict[str, str] = {}
+    for n in sorted(names_set, key=lambda x: ("," not in x, x)):
+        key = " ".join(sorted(n.lower().replace(",", "").split()))
+        by_key.setdefault(key, n)
+    return {"players": sorted(by_key.values())}
 
 
 @app.get("/api/players/profile")
