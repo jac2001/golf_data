@@ -3918,17 +3918,40 @@ def get_player_list() -> dict:
 
 @app.get("/api/players/all")
 def get_all_players() -> dict:
-    """All players ever in DuckDB leaderboards (~1,700), sorted alphabetically."""
-    if not _DB_AVAILABLE:
-        return {"players": []}
+    """All players ever in DuckDB leaderboards (~1,700), sorted alphabetically.
+
+    Cloud has no golf_data.db, so fall back to the union of names in the
+    historical leaderboard CSVs + current predictions — search was silently
+    empty on Render without this.
+    """
+    if _DB_AVAILABLE:
+        try:
+            with _get_db_conn() as conn:
+                df = conn.execute(
+                    "SELECT DISTINCT player_name FROM leaderboards ORDER BY player_name"
+                ).fetchdf()
+            names = df["player_name"].dropna().tolist()
+            if names:
+                return {"players": names}
+        except Exception:
+            pass
+
+    names_set: set[str] = set()
+    for lb_path in (DATA_DIR / "historical").glob("leaderboards_2*.csv"):
+        if lb_path.suffix != ".csv":
+            continue
+        try:
+            names_set.update(
+                pd.read_csv(lb_path, usecols=["player_name"])["player_name"].dropna()
+            )
+        except Exception:
+            continue
     try:
-        with _get_db_conn() as conn:
-            df = conn.execute(
-                "SELECT DISTINCT player_name FROM leaderboards ORDER BY player_name"
-            ).fetchdf()
-        return {"players": df["player_name"].dropna().tolist()}
+        preds = pd.read_csv(PROJECT_ROOT / "outputs" / "latest_predictions.csv", usecols=["player_name"])
+        names_set.update(preds["player_name"].dropna())
     except Exception:
-        return {"players": []}
+        pass
+    return {"players": sorted(names_set)}
 
 
 @app.get("/api/players/profile")
