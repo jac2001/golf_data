@@ -61,27 +61,21 @@ const hdr: React.CSSProperties = {
 
 export default function FriendsPage() {
   const [tab, setTab] = useState<GameTab>("picks");
-  const [joinMsg, setJoinMsg] = useState("");
+  const [invited, setInvited] = useState(false);
 
-  // Invite links: /friends?join=CODE auto-joins the group. We read the
-  // param in an effect (client-side, after mount) instead of Next's
-  // useSearchParams because this is a one-shot ACTION, not render state —
-  // and useSearchParams would force a Suspense boundary around the page.
+  // Invite links land here (/friends?invite=1) but deliberately DON'T
+  // auto-join: a link gets forwarded, screenshotted, and re-shared — the
+  // invite CODE, texted separately, stays the actual key. The link's only
+  // job is to get a friend signed in and standing in front of the join
+  // form. (Read in an effect, not useSearchParams — one-shot action, and
+  // the hook would force a Suspense boundary.)
   useEffect(() => {
-    const code = new URLSearchParams(window.location.search).get("join");
-    if (!code) return;
-    // Clean the URL immediately so a refresh doesn't re-join.
-    window.history.replaceState(null, "", "/friends");
-    fetch("/api/friends/groups", {
-      method: "PUT", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ invite_code: code }),
-    })
-      .then(r => r.json())
-      .then(d => {
-        if (d.error) setJoinMsg(d.error);
-        else { setJoinMsg(`You're in "${d.joined.name}"!`); setTab("groups"); }
-      })
-      .catch(() => setJoinMsg("Could not join — try the code manually."));
+    const q = new URLSearchParams(window.location.search);
+    if (q.get("invite") || q.get("join")) {   // ?join= is the old link format
+      window.history.replaceState(null, "", "/friends");
+      setInvited(true);
+      setTab("groups");
+    }
   }, []);
 
   return (
@@ -91,17 +85,18 @@ export default function FriendsPage() {
         title="Friends Game"
       />
       <SubTabs tabs={TABS} active={tab} onChange={setTab} />
-      {joinMsg && (
-        <div style={{ background: "color-mix(in srgb, var(--bc-green) 12%, transparent)",
-          border: "1px solid color-mix(in srgb, var(--bc-green) 35%, transparent)",
+      {invited && (
+        <div style={{ background: "color-mix(in srgb, var(--bc-yellow) 10%, transparent)",
+          border: "1px solid color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
           borderRadius: 8, padding: "10px 14px", marginBottom: 14,
-          color: "var(--bc-green)", fontSize: "0.88em", fontWeight: 600 }}>
-          {joinMsg}
+          color: "var(--bc-yellow)", fontSize: "0.88em", fontWeight: 600 }}>
+          You&apos;ve been invited to a group — type the invite code from your
+          friend&apos;s message below and hit Join.
         </div>
       )}
       {tab === "picks" && <PicksTab />}
       {tab === "standings" && <StandingsTab />}
-      {tab === "groups" && <GroupsTab />}
+      {tab === "groups" && <GroupsTab focusJoin={invited} />}
       {tab === "bets" && <MyBetsTab />}
       {tab === "tails" && <TailsTab />}
     </div>
@@ -467,7 +462,9 @@ const inputStyle: React.CSSProperties = {
   color: "var(--bc-text)", outline: "none",
 };
 
-function GroupsTab() {
+function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
+  const joinRef = React.useRef<HTMLInputElement>(null);
+  useEffect(() => { if (focusJoin) joinRef.current?.focus(); }, [focusJoin]);
   const [groups, setGroups]   = useState<Group[] | null>(null);
   const [open, setOpen]       = useState<number | null>(null);
   const [newName, setNewName] = useState("");
@@ -519,13 +516,13 @@ function GroupsTab() {
       setTimeout(() => setCopied(null), 1500); } catch { /* clipboard blocked */ }
   }
 
-  // The invite link IS the invite flow: friend taps it, signs in (Clerk
-  // bounces them to sign-in and back), and the ?join= effect on this page
-  // joins them automatically. One tap instead of "download, sign up, find
-  // the groups tab, type a code".
+  // Copies a ready-to-text message: the link gets them signed in and onto
+  // the join form; the code in the same message is what they type there.
   function copyLink(g: Group) {
     try {
-      navigator.clipboard.writeText(`${window.location.origin}/friends?join=${g.invite_code}`);
+      navigator.clipboard.writeText(
+        `Join my group "${g.name}" on Golf Edge: ${window.location.origin}/friends?invite=1 — invite code: ${g.invite_code}`
+      );
       setCopied(g.id); setTimeout(() => setCopied(null), 1500);
     } catch { /* clipboard blocked */ }
   }
@@ -542,7 +539,7 @@ function GroupsTab() {
           <button onClick={create} style={btn}>Create</button>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          <input value={code} onChange={e => setCode(e.target.value.toUpperCase())}
+          <input ref={joinRef} value={code} onChange={e => setCode(e.target.value.toUpperCase())}
             placeholder="Invite code…" style={{ ...inputStyle, width: 130,
               textTransform: "uppercase", letterSpacing: "0.1em" }}
             onKeyDown={e => e.key === "Enter" && join()} />
@@ -576,7 +573,7 @@ function GroupsTab() {
               color: copied === g.id ? "var(--bc-green)" : "var(--bc-yellow)",
               borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
             }}>
-              Copy invite link
+              Copy invite
             </button>
             <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
               {g.members.map(m => m.user_name).join(" · ")}
