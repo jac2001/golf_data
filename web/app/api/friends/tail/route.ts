@@ -9,6 +9,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { nameOf } from "@/lib/displayName";
 
 type TailRow = {
   recommendation_id: string; tournament_id: string; bet_label: string;
@@ -32,10 +33,7 @@ export async function POST(req: Request) {
     return Response.json({ tailed: false });
   }
 
-  const user = await currentUser();
-  const displayName =
-    user?.firstName ? `${user.firstName} ${user.lastName ?? ""}`.trim()
-    : user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] ?? "Player";
+  const displayName = nameOf(await currentUser());
 
   await sql`
     INSERT INTO tailed_bets (user_id, user_name, recommendation_id, tournament_id, bet_label, odds_american, stake_units)

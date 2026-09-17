@@ -9,11 +9,10 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql } from "@/lib/db";
+import { nameOf, syncStoredNames } from "@/lib/displayName";
 
 async function displayName(): Promise<string> {
-  const user = await currentUser();
-  return user?.firstName ? `${user.firstName} ${user.lastName ?? ""}`.trim()
-    : user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] ?? "Player";
+  return nameOf(await currentUser());
 }
 
 export async function GET() {
@@ -21,6 +20,9 @@ export async function GET() {
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
   const sql = getSql();
+  // Lazy name refresh: if the user picked/changed a username since their
+  // rows were written, catch the stored copies up now.
+  await syncStoredNames(sql, userId, await displayName());
   const groups = await sql`
     SELECT g.id, g.name, g.invite_code, g.owner_id
     FROM groups g JOIN group_members m ON m.group_id = g.id

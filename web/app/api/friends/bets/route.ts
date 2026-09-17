@@ -13,6 +13,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { nameOf } from "@/lib/displayName";
 
 const OUTCOMES = new Set(["pending", "won", "lost", "void"]);
 
@@ -42,9 +43,7 @@ export async function POST(req: Request) {
     if (res.ok) tid = String((await res.json()).tournament_id ?? "");
   } catch { /* fine — bet just goes unstamped */ }
 
-  const user = await currentUser();
-  const name = user?.firstName ? `${user.firstName} ${user.lastName ?? ""}`.trim()
-    : user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] ?? "Player";
+  const name = nameOf(await currentUser());
 
   const sql = getSql();
   const rows = await sql`

@@ -12,6 +12,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { nameOf } from "@/lib/displayName";
 
 type EventInfo = { tid: string; name: string; locked: boolean; startDate: string };
 
@@ -59,10 +60,7 @@ export async function POST(req: Request) {
   const player = String(body.player_name ?? "").trim();
   if (!player) return Response.json({ error: "player_name required" }, { status: 400 });
 
-  const user = await currentUser();
-  const displayName =
-    user?.firstName ? `${user.firstName} ${user.lastName ?? ""}`.trim()
-    : user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] ?? "Player";
+  const displayName = nameOf(await currentUser());
 
   const sql = getSql();
   const existing = await sql`
