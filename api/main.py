@@ -154,25 +154,6 @@ try:
 except Exception:
     _DB_AVAILABLE = False
 
-# ── Supabase helper ───────────────────────────────────────────────────────────
-_sb_client = None
-
-def _get_sb():
-    """Return a cached Supabase client, or None if not configured."""
-    global _sb_client
-    if _sb_client is not None:
-        return _sb_client
-    url = os.environ.get("SUPABASE_URL", "")
-    key = os.environ.get("SUPABASE_SERVICE_KEY", "")
-    if not url or not key:
-        return None
-    try:
-        from supabase import create_client
-        _sb_client = create_client(url, key)
-    except Exception:
-        pass
-    return _sb_client
-
 app = FastAPI(title="Golf Data API", version="1.0.0")
 
 # Allow the Next.js dev server (localhost:3000) to call this API
@@ -1148,40 +1129,24 @@ def get_tournament() -> dict:
 
     result: dict[str, Any] = {"tournament_id": tid}
 
-    # Pull name + week from Supabase → fallback to CSV
-    _loaded_sched = False
-    sb = _get_sb()
-    if sb:
+    # The active tid can belong to last season (offseason: latest settled
+    # event) while _SCHED_CSV already points at the new year — search every
+    # season's schedule, newest first.
+    for sched_path in sorted((DATA_DIR / "raw").glob("schedule_2*.csv"), reverse=True):
         try:
-            rows = sb.table("tournaments").select("*").eq("tournament_id", tid).execute().data
-            if rows:
-                r = rows[0]
-                result["name"]       = str(r.get("tournament_name", ""))
-                result["start_date"] = str(r.get("start_date", ""))
-                result["end_date"]   = str(r.get("end_date", ""))
-                result["purse"]      = r.get("purse")
-                _loaded_sched = True
+            sched = pd.read_csv(sched_path)
+            row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+            if not row.empty:
+                result["name"]       = str(row.iloc[0].get("tournament_name", ""))
+                result["start_date"] = str(row.iloc[0].get("start_date", ""))
+                result["end_date"]   = str(row.iloc[0].get("end_date", ""))
+                result["purse"]      = _safe(row.iloc[0].get("purse"))
+                result["location"]   = str(row.iloc[0].get("location", ""))
+                break
         except Exception:
-            pass
-    if not _loaded_sched:
-        # The active tid can belong to last season (offseason: latest settled
-        # event) while _SCHED_CSV already points at the new year — search every
-        # season's schedule, newest first.
-        for sched_path in sorted((DATA_DIR / "raw").glob("schedule_2*.csv"), reverse=True):
-            try:
-                sched = pd.read_csv(sched_path)
-                row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
-                if not row.empty:
-                    result["name"]       = str(row.iloc[0].get("tournament_name", ""))
-                    result["start_date"] = str(row.iloc[0].get("start_date", ""))
-                    result["end_date"]   = str(row.iloc[0].get("end_date", ""))
-                    result["purse"]      = _safe(row.iloc[0].get("purse"))
-                    result["location"]   = str(row.iloc[0].get("location", ""))
-                    break
-            except Exception:
-                continue
+            continue
 
-    # Add location from schedule if not yet set (Supabase path may have it)
+    # Add location if the matched schedule row lacked the column
     if "location" not in result:
         try:
             sched = pd.read_csv(_SCHED_CSV)
@@ -1604,26 +1569,12 @@ def get_odds_comparison(market: str = "top10") -> dict:
 
 @app.get("/api/predictions")
 def get_predictions(limit: int = 50) -> dict:
-    """Top N players — Supabase first, CSV fallback."""
+    """Top N players from latest_predictions.csv (the authoritative file)."""
     tid = _get_tournament_id()
-    df  = None
-
-    # Try Supabase first
-    sb = _get_sb()
-    if sb and tid:
-        try:
-            rows = sb.table("predictions").select("*").eq("tournament_id", tid).execute().data
-            if rows:
-                df = pd.DataFrame(rows)
-        except Exception:
-            pass
-
-    # Fallback to CSV
-    if df is None or df.empty:
-        pred_path = OUTPUTS_DIR / "latest_predictions.csv"
-        if not pred_path.exists():
-            raise HTTPException(status_code=404, detail="No predictions file found")
-        df = pd.read_csv(pred_path)
+    pred_path = OUTPUTS_DIR / "latest_predictions.csv"
+    if not pred_path.exists():
+        raise HTTPException(status_code=404, detail="No predictions file found")
+    df = pd.read_csv(pred_path)
 
     keep_cols = [c for c in [
         "player_name", "world_rank", "win_prob", "top5_prob", "top10_prob",
@@ -1747,34 +1698,15 @@ def get_predictions(limit: int = 50) -> dict:
 
 @app.get("/api/leaderboard")
 def get_leaderboard() -> dict:
-    """Live leaderboard — Supabase first, CSV fallback."""
+    """Live leaderboard from the newest CSV (freshened from source when stale)."""
     _freshen("leaderboard")     # pull-based: refetch if stale (no-op unless CLOUD_FETCH=1)
     tid      = _get_tournament_id()
     live_dir = DATA_DIR / "live"
-    df       = None
-
-    # Try Supabase first — but not when CLOUD_FETCH is on: _freshen just
-    # updated the CSV from the source API, and Supabase (fed by the local
-    # Mac's push sync) may be staler. Serving it would undo the fresh fetch.
-    sb = None if CLOUD_FETCH else _get_sb()
-    if sb and tid:
-        try:
-            rows = sb.table("live_leaderboard").select("*").eq("tournament_id", tid.upper()).execute().data
-            if rows:
-                df = pd.DataFrame(rows)
-                for col in ["r1", "r2", "r3", "r4"]:
-                    if col in df.columns:
-                        df = df.rename(columns={col: col.upper()})
-        except Exception:
-            pass
-
-    # Fallback to CSV
-    if df is None or df.empty:
-        lb_files = sorted(live_dir.glob("leaderboard_r*.csv"),
-                          key=lambda p: p.stat().st_mtime, reverse=True)
-        if not lb_files:
-            raise HTTPException(status_code=404, detail="No leaderboard found")
-        df = pd.read_csv(lb_files[0])
+    lb_files = sorted(live_dir.glob("leaderboard_r*.csv"),
+                      key=lambda p: p.stat().st_mtime, reverse=True)
+    if not lb_files:
+        raise HTTPException(status_code=404, detail="No leaderboard found")
+    df = pd.read_csv(lb_files[0])
 
     # Numeric coercions
     for col in ["total_numeric", "R1", "R2", "R3", "R4", "position_change"]:
@@ -5827,24 +5759,15 @@ def history_tournaments() -> dict:
         purse_map.update(zip(tids, schedule["purse"]))
         name_map.update(zip(tids, schedule["tournament_name"]))
 
-    # Load recaps — Supabase first, JSON files fallback
+    # Load recaps from the JSON files (git-tracked, so present on cloud too)
     recap_map: dict[str, str] = {}
-    sb = _get_sb()
-    if sb:
+    for recap_file in (PROJECT_ROOT / "outputs").glob("tournament_recap_*.json"):
         try:
-            rows = sb.table("recaps").select("tournament_id,narrative").execute().data
-            for r in rows:
-                recap_map[str(r["tournament_id"]).upper()] = r.get("narrative", "")
+            with open(recap_file) as f:
+                r = json.load(f)
+            recap_map[r["tournament_id"].upper()] = r.get("narrative", "")
         except Exception:
             pass
-    if not recap_map:
-        for recap_file in (PROJECT_ROOT / "outputs").glob("tournament_recap_*.json"):
-            try:
-                with open(recap_file) as f:
-                    r = json.load(f)
-                recap_map[r["tournament_id"].upper()] = r.get("narrative", "")
-            except Exception:
-                pass
 
     tournaments = []
     for tid, grp in df.groupby("tournament_id"):
