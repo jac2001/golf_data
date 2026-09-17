@@ -1067,16 +1067,6 @@ def main():
         except Exception as e:
             print(f"  Recap generation failed (non-fatal): {e}")
 
-        # Sync recap + bets to Supabase
-        if not dry:
-            print(f"\n[Step 7] Syncing to Supabase...")
-            try:
-                from scripts.database.supabase_sync import sync_recap, sync_bets
-                sync_recap(tid)
-                sync_bets(tid)
-            except Exception as e:
-                print(f"  Supabase sync failed (non-fatal): {e}")
-
     print(f"\n{'='*60}")
     print(f"  Pipeline {'complete' if ok else 'FAILED'}.")
     print(f"{'='*60}\n")

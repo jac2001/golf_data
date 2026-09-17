@@ -926,16 +926,6 @@ def run_live_refresh(dry_run: bool = False):
         db_counts = sync_live_data_to_db(tournament_id)
         log(f"[DB] live_stats={db_counts['live_stats']} rows  live_leaderboard={db_counts['live_leaderboard']} rows")
 
-    # ── Sync to Supabase ──────────────────────────────────────────────────────
-    if not dry_run and tournament_id:
-        try:
-            from scripts.database.supabase_sync import sync_leaderboard, sync_predictions, sync_bets
-            sync_leaderboard(tournament_id)
-            sync_predictions(tournament_id)
-            sync_bets(tournament_id)
-        except Exception as e:
-            log(f"[Supabase] sync failed (non-fatal): {e}")
-
     return results
 
 
