@@ -10,8 +10,21 @@
  */
 
 import React, { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { PageHead, SubTabs } from "@/components/broadcast";
-import { getPlayerList } from "@/lib/api";
+import { getPredictions } from "@/lib/api";
+
+/** Link a player name to their profile page. The profile page already
+ *  reads ?player= (a "deep link" — state carried in the URL, so it
+ *  survives refresh and can be shared). */
+function PlayerLink({ name, style }: { name: string; style?: React.CSSProperties }) {
+  return (
+    <Link href={`/players?player=${encodeURIComponent(name)}`}
+      style={{ color: "inherit", textDecoration: "none", borderBottom: "1px dotted var(--bc-muted)", ...style }}>
+      {name}
+    </Link>
+  );
+}
 
 type GameTab = "picks" | "standings" | "groups" | "bets" | "tails";
 const TABS: { id: GameTab; label: string }[] = [
@@ -48,6 +61,28 @@ const hdr: React.CSSProperties = {
 
 export default function FriendsPage() {
   const [tab, setTab] = useState<GameTab>("picks");
+  const [joinMsg, setJoinMsg] = useState("");
+
+  // Invite links: /friends?join=CODE auto-joins the group. We read the
+  // param in an effect (client-side, after mount) instead of Next's
+  // useSearchParams because this is a one-shot ACTION, not render state —
+  // and useSearchParams would force a Suspense boundary around the page.
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get("join");
+    if (!code) return;
+    // Clean the URL immediately so a refresh doesn't re-join.
+    window.history.replaceState(null, "", "/friends");
+    fetch("/api/friends/groups", {
+      method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ invite_code: code }),
+    })
+      .then(r => r.json())
+      .then(d => {
+        if (d.error) setJoinMsg(d.error);
+        else { setJoinMsg(`You're in "${d.joined.name}"!`); setTab("groups"); }
+      })
+      .catch(() => setJoinMsg("Could not join — try the code manually."));
+  }, []);
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
@@ -56,6 +91,14 @@ export default function FriendsPage() {
         title="Friends Game"
       />
       <SubTabs tabs={TABS} active={tab} onChange={setTab} />
+      {joinMsg && (
+        <div style={{ background: "color-mix(in srgb, var(--bc-green) 12%, transparent)",
+          border: "1px solid color-mix(in srgb, var(--bc-green) 35%, transparent)",
+          borderRadius: 8, padding: "10px 14px", marginBottom: 14,
+          color: "var(--bc-green)", fontSize: "0.88em", fontWeight: 600 }}>
+          {joinMsg}
+        </div>
+      )}
       {tab === "picks" && <PicksTab />}
       {tab === "standings" && <StandingsTab />}
       {tab === "groups" && <GroupsTab />}
@@ -67,10 +110,13 @@ export default function FriendsPage() {
 
 // ── My Picks ─────────────────────────────────────────────────────────────────
 
+type FieldRow = { player_name: string; world_rank: number | null;
+  win_prob: number | null; top10_prob: number | null; cut_prob: number | null };
+
 function PicksTab() {
   const [event, setEvent]   = useState<EventInfo | null>(null);
   const [picks, setPicks]   = useState<string[]>([]);
-  const [field, setField]   = useState<string[]>([]);
+  const [field, setField]   = useState<FieldRow[]>([]);
   const [query, setQuery]   = useState("");
   const [err, setErr]       = useState("");
   const [loading, setLoading] = useState(true);
@@ -88,7 +134,15 @@ function PicksTab() {
 
   useEffect(() => {
     load();
-    getPlayerList().then(d => setField(d.players ?? [])).catch(() => {});
+    // The whole field with model numbers — so picking is informed, not a
+    // blind name search. Sorted by the model's win chance.
+    getPredictions(200)
+      .then(d => setField(
+        (d.players ?? [])
+          .filter((r: FieldRow) => r.player_name)
+          .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0))
+      ))
+      .catch(() => {});
   }, [load]);
 
   async function add(player: string) {
@@ -120,9 +174,11 @@ function PicksTab() {
     </div>
   );
 
-  const suggestions = query.length >= 2
-    ? field.filter(p => p.toLowerCase().includes(query.toLowerCase()) && !picks.includes(p)).slice(0, 8)
-    : [];
+  // Derived state: computed from query + field on every render, never
+  // stored — one source of truth, nothing to keep in sync.
+  const visible = query.length >= 2
+    ? field.filter(r => r.player_name.toLowerCase().includes(query.toLowerCase()))
+    : field;
 
   return (
     <>
@@ -146,7 +202,7 @@ function PicksTab() {
               background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
               borderRadius: 6, padding: "8px 12px", fontSize: "0.9em", fontWeight: 700,
             }}>
-              {p}
+              <PlayerLink name={p} />
               {!event.locked && (
                 <button onClick={() => remove(p)} aria-label={`Remove ${p}`} style={{
                   background: "none", border: "none", color: "var(--bc-muted)",
@@ -160,41 +216,76 @@ function PicksTab() {
           )}
         </div>
 
-        {/* Add pick */}
-        {!event.locked && picks.length < 3 && (
-          <div style={{ position: "relative", marginTop: 14 }}>
+        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
+      </div>
+
+      {/* The field board: browse this week's field with the model's numbers
+          and pick straight from the row. Names link to full profiles. */}
+      {field.length > 0 && (
+        <div style={{ ...card, padding: 0, overflow: "hidden" }}>
+          <div style={{ padding: "14px 16px 0" }}>
             <input
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search this week's field…"
-              style={{
-                width: "100%", padding: "10px 14px", borderRadius: 8, fontSize: "0.9em",
-                background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
-                color: "var(--bc-text)", outline: "none", boxSizing: "border-box",
-              }}
+              placeholder="Filter the field…"
+              style={{ ...inputStyle, width: "100%", boxSizing: "border-box" }}
             />
-            {suggestions.length > 0 && (
-              <div style={{
-                position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
-                background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
-                borderRadius: 8, marginTop: 4, overflow: "hidden",
-              }}>
-                {suggestions.map(p => (
-                  <button key={p} onClick={() => add(p)} style={{
-                    display: "block", width: "100%", textAlign: "left",
-                    background: "none", border: "none", cursor: "pointer",
-                    padding: "9px 14px", color: "var(--bc-text)", fontSize: "0.88em",
-                  }}>
-                    {p}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
-        )}
-
-        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
-      </div>
+          <div style={{ maxHeight: 420, overflowY: "auto", marginTop: 10 }}>
+            <table style={{ borderCollapse: "collapse", width: "100%" }}>
+              <thead><tr>
+                <th style={hdr}>Player</th>
+                <th style={{ ...hdr, textAlign: "right" }}>World rank</th>
+                <th style={{ ...hdr, textAlign: "right" }}>Win chance</th>
+                <th style={{ ...hdr, textAlign: "right" }}>Top-10</th>
+                <th style={{ ...hdr, textAlign: "right" }}>Makes cut</th>
+                <th style={hdr} />
+              </tr></thead>
+              <tbody>
+                {visible.map(r => {
+                  const picked = picks.includes(r.player_name);
+                  return (
+                    <tr key={r.player_name}
+                        style={{ background: picked ? "var(--bc-card-hi)" : "transparent" }}>
+                      <td style={{ ...cell, fontWeight: 600 }}>
+                        <PlayerLink name={r.player_name} />
+                      </td>
+                      <td style={{ ...cell, textAlign: "right", color: "var(--bc-muted)", fontVariantNumeric: "tabular-nums" }}>
+                        {r.world_rank != null ? `#${Math.round(r.world_rank)}` : "—"}
+                      </td>
+                      <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
+                        {r.win_prob != null ? `${(r.win_prob * 100).toFixed(1)}%` : "—"}
+                      </td>
+                      <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums", color: "var(--bc-muted)" }}>
+                        {r.top10_prob != null ? `${(r.top10_prob * 100).toFixed(0)}%` : "—"}
+                      </td>
+                      <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums", color: "var(--bc-muted)" }}>
+                        {r.cut_prob != null ? `${(r.cut_prob * 100).toFixed(0)}%` : "—"}
+                      </td>
+                      <td style={{ ...cell, textAlign: "right" }}>
+                        {picked ? (
+                          !event.locked
+                            ? <button onClick={() => remove(r.player_name)}
+                                style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em", color: "var(--bc-green)" }}>
+                                Picked ✓</button>
+                            : <span style={{ color: "var(--bc-green)", fontSize: "0.78em", fontWeight: 700 }}>Picked ✓</span>
+                        ) : (
+                          <button onClick={() => add(r.player_name)}
+                            disabled={event.locked || picks.length >= 3}
+                            style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em",
+                              opacity: event.locked || picks.length >= 3 ? 0.4 : 1,
+                              cursor: event.locked || picks.length >= 3 ? "default" : "pointer" }}>
+                            Pick</button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       <div style={{ ...card, background: "var(--bc-panel)" }}>
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
@@ -259,9 +350,13 @@ function StandingsTab() {
                   <td style={cell} />
                   <td colSpan={3} style={{ ...cell, background: "var(--bc-panel)", fontSize: "0.8em" }}>
                     <span style={{ color: "var(--bc-muted)" }}>{tid} · </span>
-                    {ev.picks.map(p =>
-                      `${p.player}${p.earnings != null ? ` (${money(p.earnings)})` : " (pending)"}`
-                    ).join(" · ")}
+                    {ev.picks.map((p, pi) => (
+                      <React.Fragment key={p.player}>
+                        {pi > 0 && " · "}
+                        <PlayerLink name={p.player} />
+                        {p.earnings != null ? ` (${money(p.earnings)})` : " (pending)"}
+                      </React.Fragment>
+                    ))}
                     <span style={{ float: "right", fontWeight: 700 }}>
                       {ev.settled ? money(ev.event_total) : "pending"}
                     </span>
@@ -424,6 +519,17 @@ function GroupsTab() {
       setTimeout(() => setCopied(null), 1500); } catch { /* clipboard blocked */ }
   }
 
+  // The invite link IS the invite flow: friend taps it, signs in (Clerk
+  // bounces them to sign-in and back), and the ?join= effect on this page
+  // joins them automatically. One tap instead of "download, sign up, find
+  // the groups tab, type a code".
+  function copyLink(g: Group) {
+    try {
+      navigator.clipboard.writeText(`${window.location.origin}/friends?join=${g.invite_code}`);
+      setCopied(g.id); setTimeout(() => setCopied(null), 1500);
+    } catch { /* clipboard blocked */ }
+  }
+
   if (!groups) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
 
   return (
@@ -464,6 +570,13 @@ function GroupsTab() {
               color: copied === g.id ? "var(--bc-green)" : "var(--bc-muted)",
             }}>
               {copied === g.id ? "Copied!" : g.invite_code}
+            </button>
+            <button onClick={() => copyLink(g)} title="Copy a one-tap invite link" style={{
+              ...btnQuiet, padding: "4px 10px",
+              color: copied === g.id ? "var(--bc-green)" : "var(--bc-yellow)",
+              borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
+            }}>
+              Copy invite link
             </button>
             <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
               {g.members.map(m => m.user_name).join(" · ")}
@@ -536,7 +649,13 @@ function GroupFeed({ groupId }: { groupId: number }) {
           [...byUser.entries()].map(([user, ps]) => (
             <div key={user} style={{ fontSize: "0.86em", padding: "2px 0" }}>
               <span style={{ fontWeight: 600 }}>{user}</span>
-              <span style={{ color: "var(--bc-muted)" }}> — {ps.join(", ")}</span>
+              <span style={{ color: "var(--bc-muted)" }}> — </span>
+              {ps.map((pl, pi) => (
+                <React.Fragment key={pl}>
+                  {pi > 0 && <span style={{ color: "var(--bc-muted)" }}>, </span>}
+                  <PlayerLink name={pl} style={{ color: "var(--bc-muted)" }} />
+                </React.Fragment>
+              ))}
             </div>
           ))
         )}
