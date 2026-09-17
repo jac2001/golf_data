@@ -274,7 +274,12 @@ def _load_tournament_stats_from_db(year: int) -> pd.DataFrame:
 def load_reference_data():
     """Load historical data for feature engineering"""
     # Master data (for course history lookup and venue stats)
-    master_df = pd.read_csv(PROCESSED_DIR / 'master_training_data_2016_2025.csv')
+    # Auto-select the newest master file (the trainer does the same) —
+    # a hardcoded year here broke the first post-retrain pipeline run.
+    _masters = sorted(PROCESSED_DIR.glob('master_training_data_2016_*.csv'), reverse=True)
+    if not _masters:
+        raise FileNotFoundError('No master_training_data_2016_*.csv in data/processed')
+    master_df = pd.read_csv(_masters[0])
 
     def _normalize_stats_df(df):
         """Ensure player_id and stat_id are strings for consistent lookup."""
@@ -3008,7 +3013,8 @@ def apply_kft_adjustment(
 
     # Determine PGA Tour experience for each player
     # Use number of times the player appeared in master training data (a proxy for seasons)
-    master_path = DATA_DIR / "processed" / "master_training_data_2016_2025.csv"
+    _masters = sorted((DATA_DIR / "processed").glob("master_training_data_2016_*.csv"), reverse=True)
+    master_path = _masters[0] if _masters else DATA_DIR / "processed" / "missing"
     pga_seasons = {}
     if master_path.exists():
         master = pd.read_csv(master_path, usecols=["player_name", "year"])

@@ -6745,16 +6745,21 @@ def get_home() -> dict:
     in the offseason: predictions are labeled with their own event."""
     today = pd.Timestamp.now().normalize()
 
-    # Hero: newest schedule first (2027 preseason), else current season
+    # Hero: union of every season's schedule — the fall events live in the
+    # 2026 file while 2027 already exists, so "newest file first" skipped a
+    # tournament that was literally underway. Nearest live-or-upcoming wins.
     hero, season_start = None, None
-    for yr in (2027, 2026):
-        sp = DATA_DIR / "raw" / f"schedule_{yr}.csv"
-        if not sp.exists():
+    frames = []
+    for sp in sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+        try:
+            frames.append(pd.read_csv(sp))
+        except Exception:
             continue
-        sched = pd.read_csv(sp)
+    if frames:
+        sched = pd.concat(frames, ignore_index=True)
         sched["_s"] = pd.to_datetime(sched["start_date"], errors="coerce")
         sched["_e"] = pd.to_datetime(sched.get("end_date", sched["start_date"]), errors="coerce")
-        live = sched[(sched["_s"] - pd.Timedelta(days=2) <= today) & (today <= sched["_e"])]
+        live = sched[(sched["_s"] - pd.Timedelta(days=2) <= today) & (today <= sched["_e"])].sort_values("_s")
         upcoming = sched[sched["_s"] > today].sort_values("_s")
         row = live.iloc[0] if len(live) else (upcoming.iloc[0] if len(upcoming) else None)
         if row is not None:
@@ -6768,7 +6773,6 @@ def get_home() -> dict:
                 "is_live": bool(len(live)),
             }
             season_start = str(sched["_s"].min().date())
-            break
 
     # Model board: latest predictions, honestly labeled with their own event
     board, board_event, board_is_hero = [], None, False

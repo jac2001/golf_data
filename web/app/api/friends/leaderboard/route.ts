@@ -19,13 +19,29 @@ type EarningsResp = {
 const nameKey = (n: string) =>
   n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
-export async function GET() {
+export async function GET(req: Request) {
   const { userId } = await auth();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
   const sql = getSql();
-  const picks = await sql`
-    SELECT user_id, user_name, tournament_id, player_name FROM picks` as PickRow[];
+
+  // ?group_id=N scopes the board to one group's members (membership checked).
+  const groupId = Number(new URL(req.url).searchParams.get("group_id") || 0);
+  let picks: PickRow[];
+  if (groupId) {
+    const members = await sql`
+      SELECT user_id FROM group_members WHERE group_id = ${groupId}` as { user_id: string }[];
+    const ids = members.map(m => m.user_id);
+    if (!ids.includes(userId)) {
+      return Response.json({ error: "Not a member of this group." }, { status: 403 });
+    }
+    picks = await sql`
+      SELECT user_id, user_name, tournament_id, player_name FROM picks
+      WHERE user_id = ANY(${ids})` as PickRow[];
+  } else {
+    picks = await sql`
+      SELECT user_id, user_name, tournament_id, player_name FROM picks` as PickRow[];
+  }
 
   // One earnings fetch per distinct event, not per pick.
   const tids = [...new Set(picks.map(p => p.tournament_id))];

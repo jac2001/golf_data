@@ -13,10 +13,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { PageHead, SubTabs } from "@/components/broadcast";
 import { getPlayerList } from "@/lib/api";
 
-type GameTab = "picks" | "standings" | "tails";
+type GameTab = "picks" | "standings" | "groups" | "bets" | "tails";
 const TABS: { id: GameTab; label: string }[] = [
   { id: "picks",     label: "My Picks" },
   { id: "standings", label: "Standings" },
+  { id: "groups",    label: "Groups" },
+  { id: "bets",      label: "My Bets" },
   { id: "tails",     label: "My Tails" },
 ];
 
@@ -56,6 +58,8 @@ export default function FriendsPage() {
       <SubTabs tabs={TABS} active={tab} onChange={setTab} />
       {tab === "picks" && <PicksTab />}
       {tab === "standings" && <StandingsTab />}
+      {tab === "groups" && <GroupsTab />}
+      {tab === "bets" && <MyBetsTab />}
       {tab === "tails" && <TailsTab />}
     </div>
   );
@@ -341,6 +345,348 @@ function TailsTab() {
           </tbody>
         </table>
       </div>
+    </>
+  );
+}
+
+// ── Groups ───────────────────────────────────────────────────────────────────
+
+type Group = { id: number; name: string; invite_code: string; is_owner: boolean;
+  members: { user_id: string; user_name: string }[] };
+type FeedBet = { user_name: string; description: string; odds_american: number | null;
+  stake_units: number; outcome: string; tournament_id: string };
+type FeedPick = { user_name: string; player_name: string };
+
+const btn: React.CSSProperties = {
+  background: "var(--bc-yellow)", color: "#081f14", border: "none",
+  borderRadius: 6, padding: "9px 16px", fontWeight: 800, fontSize: "0.8em",
+  textTransform: "uppercase", letterSpacing: "0.05em", cursor: "pointer",
+};
+const btnQuiet: React.CSSProperties = {
+  ...btn, background: "transparent", color: "var(--bc-muted)",
+  border: "1px solid var(--bc-line)", fontWeight: 700,
+};
+const inputStyle: React.CSSProperties = {
+  padding: "9px 12px", borderRadius: 6, fontSize: "0.88em",
+  background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
+  color: "var(--bc-text)", outline: "none",
+};
+
+function GroupsTab() {
+  const [groups, setGroups]   = useState<Group[] | null>(null);
+  const [open, setOpen]       = useState<number | null>(null);
+  const [newName, setNewName] = useState("");
+  const [code, setCode]       = useState("");
+  const [err, setErr]         = useState("");
+  const [copied, setCopied]   = useState<number | null>(null);
+
+  const load = useCallback(() => {
+    fetch("/api/friends/groups").then(r => r.json())
+      .then(d => setGroups(d.groups ?? [])).catch(() => setGroups([]));
+  }, []);
+  useEffect(load, [load]);
+
+  async function create() {
+    if (!newName.trim()) return;
+    setErr("");
+    const res = await fetch("/api/friends/groups", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: newName.trim() }),
+    });
+    const d = await res.json();
+    if (d.error) setErr(d.error); else { setNewName(""); load(); }
+  }
+
+  async function join() {
+    if (!code.trim()) return;
+    setErr("");
+    const res = await fetch("/api/friends/groups", {
+      method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ invite_code: code.trim() }),
+    });
+    const d = await res.json();
+    if (d.error) setErr(d.error); else { setCode(""); load(); }
+  }
+
+  async function leave(g: Group) {
+    if (!confirm(g.is_owner
+      ? `Delete "${g.name}" for everyone? This can't be undone.`
+      : `Leave "${g.name}"?`)) return;
+    await fetch("/api/friends/groups", {
+      method: "DELETE", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ group_id: g.id }),
+    });
+    setOpen(null); load();
+  }
+
+  function copyCode(g: Group) {
+    try { navigator.clipboard.writeText(g.invite_code); setCopied(g.id);
+      setTimeout(() => setCopied(null), 1500); } catch { /* clipboard blocked */ }
+  }
+
+  if (!groups) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
+
+  return (
+    <>
+      <div style={{ ...card, display: "flex", gap: 20, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 8 }}>
+          <input value={newName} onChange={e => setNewName(e.target.value)}
+            placeholder="New group name…" style={inputStyle}
+            onKeyDown={e => e.key === "Enter" && create()} />
+          <button onClick={create} style={btn}>Create</button>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <input value={code} onChange={e => setCode(e.target.value.toUpperCase())}
+            placeholder="Invite code…" style={{ ...inputStyle, width: 130,
+              textTransform: "uppercase", letterSpacing: "0.1em" }}
+            onKeyDown={e => e.key === "Enter" && join()} />
+          <button onClick={join} style={btnQuiet}>Join</button>
+        </div>
+        {err && <span style={{ color: "var(--bc-red-text)", fontSize: "0.84em", alignSelf: "center" }}>{err}</span>}
+      </div>
+
+      {groups.length === 0 && (
+        <div style={card}>
+          <p style={{ color: "var(--bc-muted)", margin: 0, fontSize: "0.88em" }}>
+            No groups yet. Create one and text the invite code to your friends —
+            group standings, shared bets, and everyone&apos;s picks (revealed at
+            tee-off) live here.
+          </p>
+        </div>
+      )}
+
+      {groups.map(g => (
+        <div key={g.id} style={card}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+            <span style={{ fontWeight: 800, fontSize: "1.05em" }}>{g.name}</span>
+            <button onClick={() => copyCode(g)} title="Copy invite code" style={{
+              ...btnQuiet, padding: "4px 10px", letterSpacing: "0.1em",
+              color: copied === g.id ? "var(--bc-green)" : "var(--bc-muted)",
+            }}>
+              {copied === g.id ? "Copied!" : g.invite_code}
+            </button>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
+              {g.members.map(m => m.user_name).join(" · ")}
+            </span>
+            <span style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+              <button onClick={() => setOpen(open === g.id ? null : g.id)} style={btnQuiet}>
+                {open === g.id ? "Hide" : "Open"}
+              </button>
+              <button onClick={() => leave(g)} style={{ ...btnQuiet, color: "var(--bc-red-text)" }}>
+                {g.is_owner ? "Delete" : "Leave"}
+              </button>
+            </span>
+          </div>
+          {open === g.id && <GroupFeed groupId={g.id} />}
+        </div>
+      ))}
+    </>
+  );
+}
+
+function GroupFeed({ groupId }: { groupId: number }) {
+  const [feed, setFeed] = useState<{ event: { name: string; locked: boolean } | null;
+    bets: FeedBet[]; picks: FeedPick[] } | null>(null);
+  const [standings, setStandings] = useState<Standing[] | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/friends/feed?group_id=${groupId}`).then(r => r.json())
+      .then(setFeed).catch(() => setFeed({ event: null, bets: [], picks: [] }));
+    fetch(`/api/friends/leaderboard?group_id=${groupId}`).then(r => r.json())
+      .then(d => setStandings(d.standings ?? [])).catch(() => setStandings([]));
+  }, [groupId]);
+
+  if (!feed) return <p style={{ color: "var(--bc-muted)", marginTop: 12 }}>Loading…</p>;
+
+  const byUser = new Map<string, string[]>();
+  for (const p of feed.picks) {
+    byUser.set(p.user_name, [...(byUser.get(p.user_name) ?? []), p.player_name]);
+  }
+
+  return (
+    <div style={{ marginTop: 16, display: "grid", gap: 14 }}>
+      {/* Standings strip */}
+      {standings && standings.length > 0 && (
+        <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
+          <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", fontWeight: 700,
+            textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Standings</div>
+          {standings.map((st, i) => (
+            <div key={st.user_id} style={{ display: "flex", fontSize: "0.86em", padding: "2px 0" }}>
+              <span style={{ color: "var(--bc-yellow)", fontWeight: 800, width: 24 }}>{i + 1}</span>
+              <span style={{ fontWeight: 600 }}>{st.user_name}</span>
+              <span style={{ marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>{money(st.total)}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* This week's picks — revealed at lock */}
+      <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", fontWeight: 700,
+          textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
+          {feed.event ? `Picks · ${feed.event.name}` : "Picks"}
+        </div>
+        {feed.event && !feed.event.locked ? (
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
+            Hidden until tee-off — no copying.
+          </span>
+        ) : byUser.size === 0 ? (
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>No picks this week.</span>
+        ) : (
+          [...byUser.entries()].map(([user, ps]) => (
+            <div key={user} style={{ fontSize: "0.86em", padding: "2px 0" }}>
+              <span style={{ fontWeight: 600 }}>{user}</span>
+              <span style={{ color: "var(--bc-muted)" }}> — {ps.join(", ")}</span>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Shared bets */}
+      <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", fontWeight: 700,
+          textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Shared bets</div>
+        {feed.bets.length === 0 ? (
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
+            Nothing shared yet — log a bet on the My Bets tab and flip it to shared.
+          </span>
+        ) : feed.bets.map((b, i) => (
+          <div key={i} style={{ display: "flex", gap: 8, fontSize: "0.86em", padding: "3px 0", flexWrap: "wrap" }}>
+            <span style={{ fontWeight: 600 }}>{b.user_name}</span>
+            <span>{b.description}</span>
+            {b.odds_american != null && (
+              <span style={{ color: "var(--bc-muted)" }}>
+                {b.odds_american > 0 ? `+${b.odds_american}` : b.odds_american}
+              </span>
+            )}
+            <span style={{ marginLeft: "auto", fontWeight: 700,
+              color: b.outcome === "won" ? "var(--bc-green)"
+                   : b.outcome === "lost" ? "var(--bc-red-text)" : "var(--bc-muted)" }}>
+              {b.outcome}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── My Bets ──────────────────────────────────────────────────────────────────
+
+type UserBet = { id: number; tournament_id: string; description: string;
+  odds_american: number | null; stake_units: number; shared: boolean; outcome: string };
+
+function MyBetsTab() {
+  const [bets, setBets] = useState<UserBet[] | null>(null);
+  const [desc, setDesc]   = useState("");
+  const [odds, setOdds]   = useState("");
+  const [stake, setStake] = useState("1");
+  const [shared, setShared] = useState(true);
+  const [err, setErr] = useState("");
+
+  const load = useCallback(() => {
+    fetch("/api/friends/bets").then(r => r.json())
+      .then(d => setBets(d.bets ?? [])).catch(() => setBets([]));
+  }, []);
+  useEffect(load, [load]);
+
+  async function add() {
+    if (!desc.trim()) return;
+    setErr("");
+    const res = await fetch("/api/friends/bets", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        description: desc.trim(),
+        odds_american: odds.trim() ? parseInt(odds, 10) : null,
+        stake_units: parseFloat(stake) || 1,
+        shared,
+      }),
+    });
+    const d = await res.json();
+    if (d.error) setErr(d.error); else { setDesc(""); setOdds(""); load(); }
+  }
+
+  async function patch(id: number, body: object) {
+    await fetch("/api/friends/bets", {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, ...body }),
+    });
+    load();
+  }
+
+  async function del(id: number) {
+    await fetch("/api/friends/bets", {
+      method: "DELETE", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    load();
+  }
+
+  if (!bets) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
+
+  return (
+    <>
+      <div style={card}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <input value={desc} onChange={e => setDesc(e.target.value)}
+            placeholder='What did you bet? e.g. "Scheffler top 10, DraftKings"'
+            style={{ ...inputStyle, flex: "1 1 280px" }}
+            onKeyDown={e => e.key === "Enter" && add()} />
+          <input value={odds} onChange={e => setOdds(e.target.value)}
+            placeholder="+450" style={{ ...inputStyle, width: 70 }} />
+          <input value={stake} onChange={e => setStake(e.target.value)}
+            placeholder="1" title="Stake (units)" style={{ ...inputStyle, width: 50 }} />
+          <label style={{ display: "flex", alignItems: "center", gap: 6,
+            color: "var(--bc-muted)", fontSize: "0.82em", cursor: "pointer" }}>
+            <input type="checkbox" checked={shared} onChange={e => setShared(e.target.checked)} />
+            share with my groups
+          </label>
+          <button onClick={add} style={btn}>Log bet</button>
+        </div>
+        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", margin: "10px 0 0" }}>{err}</p>}
+      </div>
+
+      {bets.length === 0 ? (
+        <div style={card}>
+          <p style={{ color: "var(--bc-muted)", margin: 0, fontSize: "0.88em" }}>
+            No bets logged. Anything you bet anywhere can live here — mark it
+            shared and your groups see it in their feed.
+          </p>
+        </div>
+      ) : bets.map(b => (
+        <div key={b.id} style={{ ...card, padding: "12px 16px", display: "flex",
+          gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+          <span style={{ fontWeight: 600, fontSize: "0.9em" }}>{b.description}</span>
+          {b.odds_american != null && (
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
+              {b.odds_american > 0 ? `+${b.odds_american}` : b.odds_american}
+            </span>
+          )}
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>{b.stake_units}u</span>
+          <span style={{ marginLeft: "auto", display: "flex", gap: 6, alignItems: "center" }}>
+            {(["won", "lost", "pending"] as const).map(o => (
+              <button key={o} onClick={() => patch(b.id, { outcome: o })} style={{
+                ...btnQuiet, padding: "3px 9px", fontSize: "0.72em",
+                color: b.outcome === o
+                  ? (o === "won" ? "var(--bc-green)" : o === "lost" ? "var(--bc-red-text)" : "var(--bc-yellow)")
+                  : "var(--bc-muted)",
+                borderColor: b.outcome === o ? "currentColor" : "var(--bc-line)",
+              }}>
+                {o}
+              </button>
+            ))}
+            <button onClick={() => patch(b.id, { shared: !b.shared })} title="Visible to your groups?" style={{
+              ...btnQuiet, padding: "3px 9px", fontSize: "0.72em",
+              color: b.shared ? "var(--bc-yellow)" : "var(--bc-muted)",
+              borderColor: b.shared ? "currentColor" : "var(--bc-line)",
+            }}>
+              {b.shared ? "shared" : "private"}
+            </button>
+            <button onClick={() => del(b.id)} aria-label="Delete bet" style={{
+              ...btnQuiet, padding: "3px 9px", fontSize: "0.72em" }}>✕</button>
+          </span>
+        </div>
+      ))}
     </>
   );
 }

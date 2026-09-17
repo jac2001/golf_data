@@ -1,0 +1,355 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Biltmore Championship Asheville",
+      "tableTitle": "Power Rankings for Biltmore Championship Asheville",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "57900",
+            "firstName": "Chandler",
+            "lastName": "Phillips",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57900.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It took him some time but he\u2019d paid off his card-clinching solo second in Bermuda late last season. Currently 91st in the FedExCup with a T3 among five top 25s in his last seven starts. A threat if a putting contest breaks out."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "35461",
+            "firstName": "Beau",
+            "lastName": "Hossler",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35461.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "What doesn\u2019t kill us makes us stronger. At least that\u2019s the positive spin after his runner-up finish in his last start at the Wyndham Championship where he had at least a share of the lead after each of the first three rounds."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "66417",
+            "firstName": "Blades",
+            "lastName": "Brown",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66417.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "At 11th on the Korn Ferry Tour Points List, the 19-year-old is able to squeeze in another start in the big leagues where only a victory would result in better status in 2027. Six top 20s in 10 starts on the PGA Tour this year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "51696",
+            "firstName": "Rico",
+            "lastName": "Hoey",
+            "countryFlag": "PHI",
+            "countryName": "Philippines",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51696.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Nails in both of his first two spins of the FedExCup Fall, he splashes at 113th in points this year with top 25s in his last two starts. His elite ball-striking plays up this week and it\u2019s his birthday. He\u2019ll turn 31 on Saturday."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "51003",
+            "firstName": "Marco",
+            "lastName": "Penge",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51003.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His six-week break to recover from residual effects of a viral infection was worth it. He\u2019s 6-for-7 worldwide since returning with a T6-T18 fortnight most recently on the DP World Tour. Seventh in Strokes Gained: Off-to-Tee."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "52375",
+            "firstName": "Doug",
+            "lastName": "Ghim",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52375.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Always figures out a way. This season, his tee-to-green game has been consistently strong as usual but he\u2019s improved measurably with the putter. Slots third in bogey avoidance and 21st in adjusted scoring. Top 20s in last two starts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "51287",
+            "firstName": "Ryo",
+            "lastName": "Hisatsune",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51287.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He\u2019s what the work looks like. The 24-year-old locked up starts in all Signature Events in 2027, and he was a "
+                },
+                {
+                  "value": "captain\u2019s pick for the Presidents Cup"
+                },
+                {
+                  "value": " in which any of his 11 teammates would love to partner with his ball-striking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "60019",
+            "firstName": "Jackson",
+            "lastName": "Suber",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60019.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "At 79th in the FedExCup, he\u2019s made hay with conditional status thanks in large part to an active 9-for-11 run that included two fourth-place finishes and a T6 among five top 25s. Among the most precise on approach, also a scorer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "52686",
+            "firstName": "Rasmus",
+            "lastName": "H\u00f8jgaard",
+            "countryFlag": "DEN",
+            "countryName": "Denmark",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52686.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Since a solo fourth at the Rocket Classic, he\u2019s 5-for-5 worldwide. Also hung up a T2 in his native Denmark and a T11 in Switzerland, both on the DP World Tour. Needs to throttle back off the tee to let his other skills shine."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "49771",
+            "firstName": "J.T.",
+            "lastName": "Poston",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_49771.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Rested since a T22 at the BMW Championship to cap off a fine run. It\u2019s a busy week for the Western Carolina University product. His alma mater is hosting the J.T. Poston Invitational about 20 miles to the west. It ends on Tuesday."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "45242",
+            "firstName": "Kevin",
+            "lastName": "Yu",
+            "countryFlag": "TPE",
+            "countryName": "Chinese Taipei",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_45242.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "This made-to-order ball-striker ascended rapidly in pursuit of a spot in the Playoffs before falling short. Still, with a solo fourth at the Wyndham Championship and four top 25s in his last six starts, he\u2019s where he needs to be."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "58168",
+            "firstName": "Davis",
+            "lastName": "Thompson",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_58168.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Noisy late with a T7-T8-T14 surge to wrap the regular season to settle at 77th in the FedExCup. The upshot is that he\u2019s in position to pile on as one of the premier ball-strikers in the field. Top 10 in greens hit and proximity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "57869",
+            "firstName": "Ben",
+            "lastName": "James",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57869.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Reached 108th in the FedExCup in only eight starts since turning professional. He cashed in seven of them, four times for a top 25. His best was a solo third in his last start at the Wyndham Championship. A ball-striker and a scorer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "66701",
+            "firstName": "Jackson",
+            "lastName": "Koivun",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66701.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Now that he\u2019s done with school, he no longer has to write a \u201cWhat I Did Last Summer\u201d essay, but it\u2019d make for one heckuva read this year. Won the 3M Open, qualified for the FedExCup Playoffs and "
+                },
+                {
+                  "value": "he\u2019s now in the Presidents Cup."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "60004",
+            "firstName": "Jacob",
+            "lastName": "Bridgeman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60004.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The only qualifier for the TOUR Championship in the field has had himself a month. After polishing off the Playoffs with a solo ninth and a T4, respectively, he was chosen as a "
+                },
+                {
+                  "value": "captain\u2019s pick for the Presidents Cup"
+                },
+                {
+                  "value": ". No. 1 putter."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
