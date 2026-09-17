@@ -1,6 +1,6 @@
 "use client";
 
-import { Show } from "@clerk/nextjs";
+import { Show, useAuth } from "@clerk/nextjs";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -70,6 +70,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
 
   const [tailed, setTailed]   = useState(false);
   const [tailing, setTailing] = useState(false);
+  const { getToken } = useAuth();
 
   // "Tail" = the Friends Game version of Track: logs this bet against YOUR
   // account (Neon), graded later by the honest ledger.
@@ -77,8 +78,13 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
     if (tailing || !bet.recommendation_id) return;
     setTailing(true);
     try {
+      const token = await getToken();
       const res = await fetch("/api/friends/tail", {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           recommendation_id: bet.recommendation_id,
           tournament_id:     bet.tournament_id ?? "",

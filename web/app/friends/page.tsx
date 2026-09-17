@@ -11,6 +11,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 import { PageHead, SubTabs } from "@/components/broadcast";
 import { getPredictions } from "@/lib/api";
 
@@ -26,6 +27,20 @@ function PlayerLink({ name, style }: { name: string; style?: React.CSSProperties
   );
 }
 
+
+function useApi() {
+  const { getToken } = useAuth();
+  return useCallback(async (url: string, init: RequestInit = {}) => {
+    const token = await getToken();
+    return fetchJson(url, {
+      ...init,
+      headers: {
+        ...(init.headers as Record<string, string> | undefined),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+  }, [getToken]);
+}
 
 /** fetch that FAILS LOUDLY: any non-OK response or non-JSON body becomes
  *  an Error whose message says what actually came back — so the UI can
@@ -128,6 +143,7 @@ type FieldRow = { player_name: string; world_rank: number | null;
   win_prob: number | null; top10_prob: number | null; cut_prob: number | null };
 
 function PicksTab() {
+  const api = useApi();
   const [event, setEvent]   = useState<EventInfo | null>(null);
   const [picks, setPicks]   = useState<string[]>([]);
   const [field, setField]   = useState<FieldRow[]>([]);
@@ -136,11 +152,11 @@ function PicksTab() {
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(() => {
-    fetchJson("/api/friends/picks")
+    api("/api/friends/picks")
       .then(d => { setEvent(d.event as EventInfo); setPicks(d.picks as string[]); })
       .catch(e => setErr(`Could not load your picks — ${e.message}`))
       .finally(() => setLoading(false));
-  }, []);
+  }, [api]);
 
   useEffect(() => {
     load();
@@ -157,22 +173,24 @@ function PicksTab() {
 
   async function add(player: string) {
     setErr("");
-    const res = await fetch("/api/friends/picks", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ player_name: player }),
-    });
-    const d = await res.json();
-    if (d.error) setErr(d.error); else { setPicks(d.picks); setQuery(""); }
+    try {
+      const d = await api("/api/friends/picks", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ player_name: player }),
+      });
+      setPicks(d.picks as string[]); setQuery("");
+    } catch (e) { setErr((e as Error).message); }
   }
 
   async function remove(player: string) {
     setErr("");
-    const res = await fetch("/api/friends/picks", {
-      method: "DELETE", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ player_name: player }),
-    });
-    const d = await res.json();
-    if (d.error) setErr(d.error); else setPicks(d.picks);
+    try {
+      const d = await api("/api/friends/picks", {
+        method: "DELETE", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ player_name: player }),
+      });
+      setPicks(d.picks as string[]);
+    } catch (e) { setErr((e as Error).message); }
   }
 
   if (loading) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
@@ -311,16 +329,16 @@ function PicksTab() {
 // ── Standings ────────────────────────────────────────────────────────────────
 
 function StandingsTab() {
+  const api = useApi();
   const [standings, setStandings] = useState<Standing[] | null>(null);
   const [me, setMe] = useState("");
   const [open, setOpen] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/friends/leaderboard")
-      .then(r => r.json())
-      .then(d => { setStandings(d.standings ?? []); setMe(d.me ?? ""); })
+    api("/api/friends/leaderboard")
+      .then(d => { setStandings((d.standings as Standing[]) ?? []); setMe((d.me as string) ?? ""); })
       .catch(() => setStandings([]));
-  }, []);
+  }, [api]);
 
   if (!standings) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
   if (standings.length === 0) return (
@@ -384,15 +402,15 @@ function StandingsTab() {
 // ── My Tails ─────────────────────────────────────────────────────────────────
 
 function TailsTab() {
+  const api = useApi();
   const [tails, setTails] = useState<Tail[] | null>(null);
   const [summary, setSummary] = useState<{ pnl: number; settled: number; won: number } | null>(null);
 
   useEffect(() => {
-    fetch("/api/friends/tail")
-      .then(r => r.json())
-      .then(d => { setTails(d.tails ?? []); setSummary(d.summary ?? null); })
+    api("/api/friends/tail")
+      .then(d => { setTails((d.tails as Tail[]) ?? []); setSummary((d.summary as { pnl: number; settled: number; won: number }) ?? null); })
       .catch(() => setTails([]));
-  }, []);
+  }, [api]);
 
   if (!tails) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
   if (tails.length === 0) return (
@@ -478,6 +496,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
+  const api = useApi();
   const joinRef = React.useRef<HTMLInputElement>(null);
   useEffect(() => { if (focusJoin) joinRef.current?.focus(); }, [focusJoin]);
   const [groups, setGroups]   = useState<Group[] | null>(null);
@@ -488,42 +507,46 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
   const [copied, setCopied]   = useState<number | null>(null);
 
   const load = useCallback(() => {
-    fetchJson("/api/friends/groups")
+    api("/api/friends/groups")
       .then(d => setGroups((d.groups as Group[]) ?? []))
       .catch(e => { setErr(String(e.message)); setGroups([]); });
-  }, []);
+  }, [api]);
   useEffect(load, [load]);
 
   async function create() {
     if (!newName.trim()) return;
     setErr("");
-    const res = await fetch("/api/friends/groups", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newName.trim() }),
-    });
-    const d = await res.json();
-    if (d.error) setErr(d.error); else { setNewName(""); load(); }
+    try {
+      await api("/api/friends/groups", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName.trim() }),
+      });
+      setNewName(""); load();
+    } catch (e) { setErr((e as Error).message); }
   }
 
   async function join() {
     if (!code.trim()) return;
     setErr("");
-    const res = await fetch("/api/friends/groups", {
-      method: "PUT", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ invite_code: code.trim() }),
-    });
-    const d = await res.json();
-    if (d.error) setErr(d.error); else { setCode(""); load(); }
+    try {
+      await api("/api/friends/groups", {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ invite_code: code.trim() }),
+      });
+      setCode(""); load();
+    } catch (e) { setErr((e as Error).message); }
   }
 
   async function leave(g: Group) {
     if (!confirm(g.is_owner
       ? `Delete "${g.name}" for everyone? This can't be undone.`
       : `Leave "${g.name}"?`)) return;
-    await fetch("/api/friends/groups", {
-      method: "DELETE", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ group_id: g.id }),
-    });
+    try {
+      await api("/api/friends/groups", {
+        method: "DELETE", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ group_id: g.id }),
+      });
+    } catch { /* list reload below shows truth either way */ }
     setOpen(null); load();
   }
 
@@ -611,16 +634,19 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
 }
 
 function GroupFeed({ groupId }: { groupId: number }) {
+  const api = useApi();
   const [feed, setFeed] = useState<{ event: { name: string; locked: boolean } | null;
     bets: FeedBet[]; picks: FeedPick[] } | null>(null);
   const [standings, setStandings] = useState<Standing[] | null>(null);
 
   useEffect(() => {
-    fetch(`/api/friends/feed?group_id=${groupId}`).then(r => r.json())
-      .then(setFeed).catch(() => setFeed({ event: null, bets: [], picks: [] }));
-    fetch(`/api/friends/leaderboard?group_id=${groupId}`).then(r => r.json())
-      .then(d => setStandings(d.standings ?? [])).catch(() => setStandings([]));
-  }, [groupId]);
+    api(`/api/friends/feed?group_id=${groupId}`)
+      .then(d => setFeed(d as never))
+      .catch(() => setFeed({ event: null, bets: [], picks: [] }));
+    api(`/api/friends/leaderboard?group_id=${groupId}`)
+      .then(d => setStandings((d.standings as Standing[]) ?? []))
+      .catch(() => setStandings([]));
+  }, [groupId, api]);
 
   if (!feed) return <p style={{ color: "var(--bc-muted)", marginTop: 12 }}>Loading…</p>;
 
@@ -709,6 +735,7 @@ type UserBet = { id: number; tournament_id: string; description: string;
   odds_american: number | null; stake_units: number; shared: boolean; outcome: string };
 
 function MyBetsTab() {
+  const api = useApi();
   const [bets, setBets] = useState<UserBet[] | null>(null);
   const [desc, setDesc]   = useState("");
   const [odds, setOdds]   = useState("");
@@ -717,40 +744,46 @@ function MyBetsTab() {
   const [err, setErr] = useState("");
 
   const load = useCallback(() => {
-    fetch("/api/friends/bets").then(r => r.json())
-      .then(d => setBets(d.bets ?? [])).catch(() => setBets([]));
-  }, []);
+    api("/api/friends/bets")
+      .then(d => setBets((d.bets as UserBet[]) ?? []))
+      .catch(e => { setErr((e as Error).message); setBets([]); });
+  }, [api]);
   useEffect(load, [load]);
 
   async function add() {
     if (!desc.trim()) return;
     setErr("");
-    const res = await fetch("/api/friends/bets", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        description: desc.trim(),
-        odds_american: odds.trim() ? parseInt(odds, 10) : null,
-        stake_units: parseFloat(stake) || 1,
-        shared,
-      }),
-    });
-    const d = await res.json();
-    if (d.error) setErr(d.error); else { setDesc(""); setOdds(""); load(); }
+    try {
+      await api("/api/friends/bets", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          description: desc.trim(),
+          odds_american: odds.trim() ? parseInt(odds, 10) : null,
+          stake_units: parseFloat(stake) || 1,
+          shared,
+        }),
+      });
+      setDesc(""); setOdds(""); load();
+    } catch (e) { setErr((e as Error).message); }
   }
 
   async function patch(id: number, body: object) {
-    await fetch("/api/friends/bets", {
-      method: "PATCH", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, ...body }),
-    });
+    try {
+      await api("/api/friends/bets", {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...body }),
+      });
+    } catch (e) { setErr((e as Error).message); }
     load();
   }
 
   async function del(id: number) {
-    await fetch("/api/friends/bets", {
-      method: "DELETE", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
+    try {
+      await api("/api/friends/bets", {
+        method: "DELETE", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+    } catch (e) { setErr((e as Error).message); }
     load();
   }
 
