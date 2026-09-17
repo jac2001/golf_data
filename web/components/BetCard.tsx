@@ -19,7 +19,7 @@ type Props = {
 
 export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
   const isPick     = new Set(myPicks.map(normName)).has(normName(bet.player_name));
-  const color      = MARKET_COLORS[bet.market] ?? "#4a90d9";
+  const color      = MARKET_COLORS[bet.market] ?? "var(--bc-muted)";
   const marketLbl  = MARKET_LABELS[bet.market]  ?? bet.market;
   const bookLbl    = BOOK_ABBR[bet.book.toUpperCase()] ?? bet.book.slice(0, 3);
   const modelPct   = bet.model_prob * 100;
@@ -174,7 +174,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                   <span style={{
                     fontSize: "0.72em", fontWeight: 700,
                     color: isLeader ? "var(--bc-orange)" : "var(--bc-muted)",
-                    background: isLeader ? "#2a1f00" : "#0d1e2e",
+                    background: isLeader ? "rgba(255,210,74,0.10)" : "var(--bc-panel)",
                     padding: "2px 8px", borderRadius: 4,
                     border: `1px solid ${isLeader ? "color-mix(in srgb, var(--bc-orange) 27%, transparent)" : "var(--bc-muted)"}`,
                   }}>
@@ -291,7 +291,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
         </div>
 
         {reasonOpen && (
-          <div style={{ marginTop: 10, fontSize: "0.82em", lineHeight: 1.6, color: "#b0c4d8" }}>
+          <div style={{ marginTop: 10, fontSize: "0.82em", lineHeight: 1.6, color: "var(--bc-muted)" }}>
             {reasonLoading
               ? <span style={{ color: "var(--bc-muted)" }}>Generating…</span>
               : reason}

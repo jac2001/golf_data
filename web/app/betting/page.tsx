@@ -389,7 +389,7 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
   const isPick = new Set(myPicks.map(normName)).has(normName(bet.player_name));
   return (
     <div style={{
-      background: isPick ? "#040e09" : "#060f1a",
+      background: isPick ? "color-mix(in srgb, var(--bc-green) 6%, var(--bc-panel))" : "var(--bc-panel)",
       borderTop: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 33%, transparent)" : "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
       borderRight: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 33%, transparent)" : "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
       borderBottom: isPick ? "1px solid color-mix(in srgb, var(--bc-green) 33%, transparent)" : "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
@@ -445,7 +445,7 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
 
       {/* Reasoning */}
       {bet.reasoning && (
-        <p style={{ margin: 0, fontSize: "0.84em", color: "#a0b8d0", lineHeight: 1.65 }}>
+        <p style={{ margin: 0, fontSize: "0.84em", color: "var(--bc-muted)", lineHeight: 1.65 }}>
           {bet.reasoning}
         </p>
       )}

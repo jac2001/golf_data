@@ -12,6 +12,30 @@
 // When deployed, this would be your production API URL.
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
+/** fetch with retry for GETs: the API sleeps on Render's free tier and
+ *  restarts on every deploy, so the first request after idle can fail or
+ *  502 for ~30s. Retrying with backoff turns "page hangs on Loading" into
+ *  "page loads a few seconds late". Non-GETs never retry (no duplicates). */
+async function apiFetch(input: string, init?: RequestInit): Promise<Response> {
+  const method = (init?.method ?? "GET").toUpperCase();
+  const attempts = method === "GET" ? 4 : 1;
+  let lastErr: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const res = await fetch(input, init);
+      if (method === "GET" && res.status >= 502 && res.status <= 504 && i < attempts - 1) {
+        await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+        continue;
+      }
+      return res;
+    } catch (e) {
+      lastErr = e;
+      if (i < attempts - 1) await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 // ── TypeScript types ─────────────────────────────────────────────────────────
 // These describe the shape of data coming back from the API.
 // Like Python dataclasses — they help catch mistakes before you run the code.
@@ -112,20 +136,20 @@ export type IntelResponse = {
 // `async` means "this might take a moment — wait for it."
 
 export async function getTournament(): Promise<Tournament> {
-  const res = await fetch(`${API_BASE}/api/tournament`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/tournament`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load tournament");
   return res.json();
 }
 
 export async function getBets(market = "all", minEdge = 0): Promise<BetsResponse> {
   const params = new URLSearchParams({ market, min_edge: String(minEdge) });
-  const res = await fetch(`${API_BASE}/api/bets?${params}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/bets?${params}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load bets");
   return res.json();
 }
 
 export async function getOddsComparison(market = "top10"): Promise<OddsComparison> {
-  const res = await fetch(`${API_BASE}/api/odds/comparison?market=${market}`, {
+  const res = await apiFetch(`${API_BASE}/api/odds/comparison?market=${market}`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to load odds comparison");
@@ -133,7 +157,7 @@ export async function getOddsComparison(market = "top10"): Promise<OddsCompariso
 }
 
 export async function refreshBets(): Promise<BetsResponse> {
-  const res = await fetch(`${API_BASE}/api/refresh-bets`, { method: "POST" });
+  const res = await apiFetch(`${API_BASE}/api/refresh-bets`, { method: "POST" });
   if (!res.ok) throw new Error("Refresh failed");
   return res.json();
 }
@@ -204,7 +228,7 @@ export type LineupResponse = {
 };
 
 export async function generateLineup(): Promise<{ status: string; message?: string }> {
-  const res = await fetch(`${API_BASE}/api/generate-analysis`, { method: "POST", cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/generate-analysis`, { method: "POST", cache: "no-store" });
   if (!res.ok) throw new Error("Failed to start lineup generation");
   return res.json();
 }
@@ -272,19 +296,19 @@ export type CourseResponse = {
 // ── This Week fetch functions ──────────────────────────────────────────────────
 
 export async function getPredictions(limit = 80): Promise<PredictionsResponse> {
-  const res = await fetch(`${API_BASE}/api/predictions?limit=${limit}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/predictions?limit=${limit}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load predictions");
   return res.json();
 }
 
 export async function getLineup(): Promise<LineupResponse> {
-  const res = await fetch(`${API_BASE}/api/lineup`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/lineup`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load lineup");
   return res.json();
 }
 
 export async function getTeeTimes(): Promise<TeeTimesResponse> {
-  const res = await fetch(`${API_BASE}/api/tee-times`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/tee-times`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load tee times");
   return res.json();
 }
@@ -301,7 +325,7 @@ export type ModelCompPlayer = {
 };
 
 export async function getCourse(): Promise<CourseResponse> {
-  const res = await fetch(`${API_BASE}/api/course`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/course`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load course data");
   return res.json();
 }
@@ -381,25 +405,25 @@ export async function getMatchups(
     market, search,
     pos_ev_only: String(posEvOnly),
   });
-  const res = await fetch(`${API_BASE}/api/matchups?${params}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/matchups?${params}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load matchups");
   return res.json();
 }
 
 export async function get3Ball(): Promise<ThreeBallResponse> {
-  const res = await fetch(`${API_BASE}/api/3ball`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/3ball`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load 3-ball pairings");
   return res.json();
 }
 
 export async function getOddsExplorer(market = "top_10"): Promise<OddsExplorerResponse> {
-  const res = await fetch(`${API_BASE}/api/odds/explorer?market=${market}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/odds/explorer?market=${market}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load odds explorer");
   return res.json();
 }
 
 export async function refreshDgOdds(): Promise<{ ok: boolean; updated: string | null }> {
-  const res = await fetch(`${API_BASE}/api/refresh-dg-odds`, { method: "POST" });
+  const res = await apiFetch(`${API_BASE}/api/refresh-dg-odds`, { method: "POST" });
   if (!res.ok) throw new Error("Refresh failed");
   return res.json();
 }
@@ -533,37 +557,37 @@ export type SgStatsResponse = {
 // ── Live fetch functions ───────────────────────────────────────────────────────
 
 export async function getInPlay(): Promise<InPlayResponse> {
-  const res = await fetch(`${API_BASE}/api/live/inplay`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/live/inplay`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load in-play data");
   return res.json();
 }
 
 export async function refreshHoleScores(): Promise<{ ok: boolean; message: string }> {
-  const res = await fetch(`${API_BASE}/api/live/refresh-hole-scores`, { method: "POST" });
+  const res = await apiFetch(`${API_BASE}/api/live/refresh-hole-scores`, { method: "POST" });
   if (!res.ok) throw new Error("Hole scores refresh failed");
   return res.json();
 }
 
 export async function getLeaderboard(): Promise<LeaderboardResponse> {
-  const res = await fetch(`${API_BASE}/api/leaderboard`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/leaderboard`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load leaderboard");
   return res.json();
 }
 
 export async function getVsPredictions(): Promise<{ tournament_id: string; players: VsPredPlayer[] }> {
-  const res = await fetch(`${API_BASE}/api/live/vs-predictions`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/live/vs-predictions`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load vs-predictions");
   return res.json();
 }
 
 export async function getMyLineupLive(): Promise<MyLineupResponse> {
-  const res = await fetch(`${API_BASE}/api/live/my-lineup`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/live/my-lineup`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load my lineup");
   return res.json();
 }
 
 export async function getSgStats(roundParam = "event_avg"): Promise<SgStatsResponse> {
-  const res = await fetch(`${API_BASE}/api/live/sg-stats?round_param=${roundParam}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/live/sg-stats?round_param=${roundParam}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load SG stats");
   return res.json();
 }
@@ -582,7 +606,7 @@ export type HoleScoresResponse = {
 };
 
 export async function getHoleScores(): Promise<HoleScoresResponse> {
-  const res = await fetch(`${API_BASE}/api/live/hole-scores`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/live/hole-scores`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load hole scores");
   return res.json();
 }
@@ -630,7 +654,7 @@ export type HoleStatsResponse = {
 };
 
 export async function getHoleStats(roundParam = "event_avg"): Promise<HoleStatsResponse> {
-  const res = await fetch(`${API_BASE}/api/live/hole-stats?round_param=${roundParam}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/live/hole-stats?round_param=${roundParam}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load hole stats");
   return res.json();
 }
@@ -744,13 +768,13 @@ export type PlayerProfile = {
 };
 
 export async function getPlayerList(): Promise<{ players: string[] }> {
-  const res = await fetch(`${API_BASE}/api/players/list`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/players/list`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load player list");
   return res.json();
 }
 
 export async function getAllPlayers(): Promise<{ players: string[] }> {
-  const res = await fetch(`${API_BASE}/api/players/all`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/players/all`, { cache: "no-store" });
   if (!res.ok) return { players: [] };
   return res.json();
 }
@@ -789,14 +813,14 @@ export type FieldStatsPlayer = {
 };
 
 export async function getFieldStats(): Promise<{ players: FieldStatsPlayer[] }> {
-  const res = await fetch(`${API_BASE}/api/players/stats`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/players/stats`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load field stats");
   return res.json();
 }
 
 export async function getPlayerProfile(name: string): Promise<PlayerProfile> {
   const params = new URLSearchParams({ player: name });
-  const res = await fetch(`${API_BASE}/api/players/profile?${params}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/players/profile?${params}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load player profile");
   return res.json();
 }
@@ -846,13 +870,13 @@ export type MyPicksResponse = {
 };
 
 export async function getMyPicks(): Promise<MyPicksResponse> {
-  const res = await fetch(`${API_BASE}/api/mypicks`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/mypicks`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load my picks");
   return res.json();
 }
 
 export async function setMyPicks(tournamentId: string, picks: string[]): Promise<{ status: string; tournament: string; picks: string[] }> {
-  const res = await fetch(`${API_BASE}/api/picks`, {
+  const res = await apiFetch(`${API_BASE}/api/picks`, {
     method: "POST", cache: "no-store",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tournament_id: tournamentId, picks }),
@@ -865,7 +889,7 @@ export async function setMyPicks(tournamentId: string, picks: string[]): Promise
 }
 
 export async function clearMyPicks(tournamentId: string): Promise<{ status: string; removed: string[] }> {
-  const res = await fetch(`${API_BASE}/api/picks`, {
+  const res = await apiFetch(`${API_BASE}/api/picks`, {
     method: "DELETE", cache: "no-store",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tournament_id: tournamentId }),
@@ -908,13 +932,13 @@ export type WithdrawalsResponse = {
 };
 
 export async function getWeather(): Promise<WeatherResponse> {
-  const res = await fetch(`${API_BASE}/api/weather`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/weather`, { cache: "no-store" });
   if (!res.ok) throw new Error("No weather data");
   return res.json();
 }
 
 export async function getWithdrawals(): Promise<WithdrawalsResponse> {
-  const res = await fetch(`${API_BASE}/api/withdrawals`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/withdrawals`, { cache: "no-store" });
   if (!res.ok) throw new Error("No withdrawals data");
   return res.json();
 }
@@ -947,7 +971,7 @@ export type ExpertPicksResponse = {
 };
 
 export async function getExpertPicks(): Promise<ExpertPicksResponse> {
-  const res = await fetch(`${API_BASE}/api/expert-picks`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/expert-picks`, { cache: "no-store" });
   if (!res.ok) throw new Error("No expert picks data");
   return res.json();
 }
@@ -978,13 +1002,13 @@ export type AppSettings = {
 };
 
 export async function getSettings(): Promise<AppSettings> {
-  const res = await fetch(`${API_BASE}/api/settings`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/settings`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load settings");
   return res.json();
 }
 
 export async function patchSettings(patch: Record<string, unknown>): Promise<AppSettings> {
-  const res = await fetch(`${API_BASE}/api/settings`, {
+  const res = await apiFetch(`${API_BASE}/api/settings`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(patch),
@@ -1011,7 +1035,7 @@ export type AlertsResponse = {
 };
 
 export async function getAlerts(markRead = true): Promise<AlertsResponse> {
-  const res = await fetch(
+  const res = await apiFetch(
     `${API_BASE}/api/alerts?mark_read=${markRead}`,
     { cache: "no-store" },
   );
@@ -1035,7 +1059,7 @@ export function streamChat(
 
   (async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/chat`, {
+      const res = await apiFetch(`${API_BASE}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, messages, last_players: lastPlayers }),
@@ -1081,7 +1105,7 @@ export async function rateChat(
   rating: "up" | "down",
   tid: string = "",
 ): Promise<void> {
-  await fetch(`${API_BASE}/api/chat/rate`, {
+  await apiFetch(`${API_BASE}/api/chat/rate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, response, rating, tid }),
@@ -1114,13 +1138,13 @@ export const MARKET_LABELS: Record<string, string> = {
 
 // Accent colors per market (matches the Streamlit color scheme)
 export const MARKET_COLORS: Record<string, string> = {
-  outright:     "#f1c40f",
-  top5:         "#3498db",
-  top10:        "#00c44f",
-  top20:        "#9b59b6",
-  make_cut:     "#1abc9c",
-  h2h:          "#e67e22",
-  group_winner: "#e74c3c",
+  outright:     "var(--bc-yellow)",
+  top5:         "var(--bc-green)",
+  top10:        "var(--bc-green)",
+  top20:        "var(--bc-green)",
+  make_cut:     "var(--bc-green)",
+  h2h:          "var(--bc-orange)",
+  group_winner: "var(--bc-orange)",
 };
 
 // ── History types ────────────────────────────────────────────────────────────
@@ -1193,7 +1217,7 @@ export type TournamentLeaderboardRow = {
 };
 
 export async function getTournamentLeaderboard(tid: string): Promise<TournamentLeaderboardRow[]> {
-  const r = await fetch(`${API_BASE}/api/history/tournament/${encodeURIComponent(tid)}`);
+  const r = await apiFetch(`${API_BASE}/api/history/tournament/${encodeURIComponent(tid)}`);
   if (!r.ok) throw new Error("Failed to load leaderboard");
   const d = await r.json();
   return d.players;
@@ -1278,7 +1302,7 @@ export type PlayerCareer = {
 };
 
 export async function getPlayerCareer(player: string): Promise<PlayerCareer> {
-  const r = await fetch(`${API_BASE}/api/players/career?player=${encodeURIComponent(player)}`);
+  const r = await apiFetch(`${API_BASE}/api/players/career?player=${encodeURIComponent(player)}`);
   if (!r.ok) throw new Error("Failed to load career stats");
   return r.json();
 }
@@ -1319,27 +1343,27 @@ export type CourseFitWeights = {
 };
 
 export async function getCourseFitWeights(): Promise<CourseFitWeights> {
-  const r = await fetch(`${API_BASE}/api/players/course-fit`, { cache: "no-store" });
+  const r = await apiFetch(`${API_BASE}/api/players/course-fit`, { cache: "no-store" });
   if (!r.ok) throw new Error("Failed to load course fit");
   return r.json();
 }
 
 export async function getHistoryTournaments(): Promise<HistoryTournament[]> {
-  const r = await fetch(`${API_BASE}/api/history/tournaments`);
+  const r = await apiFetch(`${API_BASE}/api/history/tournaments`);
   if (!r.ok) throw new Error("Failed to load tournament history");
   const d = await r.json();
   return d.tournaments;
 }
 
 export async function getHistoryModel(): Promise<HistoryModelRow[]> {
-  const r = await fetch(`${API_BASE}/api/history/model`);
+  const r = await apiFetch(`${API_BASE}/api/history/model`);
   if (!r.ok) throw new Error("Failed to load model history");
   const d = await r.json();
   return d.tournaments;
 }
 
 export async function getHistoryBets(): Promise<HistoryBetsResponse> {
-  const r = await fetch(`${API_BASE}/api/history/bets`);
+  const r = await apiFetch(`${API_BASE}/api/history/bets`);
   if (!r.ok) throw new Error("Failed to load bet history");
   return r.json();
 }
@@ -1348,7 +1372,7 @@ export async function getHistoryBets(): Promise<HistoryBetsResponse> {
 export async function getBetReason(player: string, market: string, opponent?: string): Promise<{ reason: string; cached: boolean }> {
     const params = new URLSearchParams({ player, market });
     if (opponent) params.set("opponent", opponent);
-    const res = await fetch(`${API_BASE}/api/bets/reason?${params}`);
+    const res = await apiFetch(`${API_BASE}/api/bets/reason?${params}`);
     if (!res.ok) throw new Error(await res.text());
     return res.json();
 }
@@ -1390,7 +1414,7 @@ export const BOOK_ABBR: Record<string, string> = {
 
 export async function getBetLines(player: string, market: string): Promise<BetLinesResponse> {
     const params = new URLSearchParams({ player, market });
-    const res = await fetch(`${API_BASE}/api/bets/lines?${params}`);
+    const res = await apiFetch(`${API_BASE}/api/bets/lines?${params}`);
     if (!res.ok) throw new Error(await res.text());
     return res.json();
   }
@@ -1421,7 +1445,7 @@ export interface LivePulse {
 
 export async function getLivePulse(force = false): Promise<LivePulse> {
   const params = new URLSearchParams({ force: String(force) });
-  const res = await fetch(`${API_BASE}/api/live/pulse?${params}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/live/pulse?${params}`, { cache: "no-store" });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error((err as { detail?: string }).detail ?? "Failed to generate live pulse");
@@ -1452,7 +1476,7 @@ export async function getPlayerSynopsis(
   force = false,
 ): Promise<PlayerSynopsis> {
   const params = new URLSearchParams({ player, force: String(force) });
-  const res = await fetch(`${API_BASE}/api/players/synopsis?${params}`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/players/synopsis?${params}`, { cache: "no-store" });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error((err as { detail?: string }).detail ?? "Failed to generate synopsis");
@@ -1513,7 +1537,7 @@ export interface CourseFitResponse {
 }
 
 export async function getCourseFit(): Promise<CourseFitResponse> {
-  const res = await fetch(`${API_BASE}/api/course-fit`);
+  const res = await apiFetch(`${API_BASE}/api/course-fit`);
   if (!res.ok) throw new Error(`course-fit ${res.status}`);
   return res.json();
 }
@@ -1538,19 +1562,19 @@ export type BestBet = {
 };
 
 export async function getBestBet(): Promise<BestBet> {
-  const res = await fetch(`${API_BASE}/api/bets/best`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/bets/best`, { cache: "no-store" });
   if (!res.ok) throw new Error(`best-bet ${res.status}`);
   return res.json();
 }
 
 export async function getIntel(): Promise<IntelResponse> {
-  const res = await fetch(`${API_BASE}/api/intel`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/intel`, { cache: "no-store" });
   if (!res.ok) throw new Error(`intel ${res.status}`);
   return res.json();
 }
 
 export async function refreshIntel(topN = 20): Promise<{ ok: boolean; message: string }> {
-  const res = await fetch(`${API_BASE}/api/refresh-intel?top_n=${topN}`, { method: "POST" });
+  const res = await apiFetch(`${API_BASE}/api/refresh-intel?top_n=${topN}`, { method: "POST" });
   if (!res.ok) throw new Error(`refresh-intel ${res.status}`);
   return res.json();
 }
@@ -1630,14 +1654,14 @@ export type BetSlipEntry = {
 };
 
 export async function getBetSlip(): Promise<BetSlipResponse> {
-  const res = await fetch(`${API_BASE}/api/bet-slip`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/bet-slip`, { cache: "no-store" });
   if (!res.ok) throw new Error(`bet-slip ${res.status}`);
   return res.json();
 }
 
 
 export async function addToBetSlip(entry: BetSlipEntry): Promise<{ ok: boolean; id?: string; message?: string }> {
-  const res = await fetch(`${API_BASE}/api/bet-slip`, {
+  const res = await apiFetch(`${API_BASE}/api/bet-slip`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(entry),
@@ -1647,7 +1671,7 @@ export async function addToBetSlip(entry: BetSlipEntry): Promise<{ ok: boolean; 
 }
 
 export async function removeFromBetSlip(id: string): Promise<{ ok: boolean }> {
-  const res = await fetch(`${API_BASE}/api/bet-slip/${id}`, { method: "DELETE" });
+  const res = await apiFetch(`${API_BASE}/api/bet-slip/${id}`, { method: "DELETE" });
   if (!res.ok) throw new Error(`remove-slip ${res.status}`);
   return res.json();
 }
@@ -1682,7 +1706,7 @@ export type ModelComparison = {
 };
 
 export async function getModelComparison(): Promise<ModelComparison> {
-  const res = await fetch(`${API_BASE}/api/model-comparison`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/model-comparison`, { cache: "no-store" });
   if (!res.ok) throw new Error(`model-comparison ${res.status}`);
   return res.json();
 }
@@ -1706,7 +1730,7 @@ export interface FantasyStrategy {
 }
 
 export async function getFantasyStrategy(): Promise<FantasyStrategy> {
-  const res = await fetch(`${API_BASE}/api/fantasy/strategy`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/fantasy/strategy`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load fantasy strategy");
   return res.json();
 }
@@ -1725,7 +1749,7 @@ export interface HomeData {
 }
 
 export async function getHome(): Promise<HomeData> {
-  const res = await fetch(`${API_BASE}/api/home`, { cache: "no-store" });
+  const res = await apiFetch(`${API_BASE}/api/home`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load home");
   return res.json();
 }

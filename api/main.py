@@ -1164,8 +1164,10 @@ def get_tournament() -> dict:
         except Exception:
             pass
     if not _loaded_sched:
-        sched_path = _SCHED_CSV
-        if sched_path.exists():
+        # The active tid can belong to last season (offseason: latest settled
+        # event) while _SCHED_CSV already points at the new year — search every
+        # season's schedule, newest first.
+        for sched_path in sorted((DATA_DIR / "raw").glob("schedule_2*.csv"), reverse=True):
             try:
                 sched = pd.read_csv(sched_path)
                 row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
@@ -1175,8 +1177,9 @@ def get_tournament() -> dict:
                     result["end_date"]   = str(row.iloc[0].get("end_date", ""))
                     result["purse"]      = _safe(row.iloc[0].get("purse"))
                     result["location"]   = str(row.iloc[0].get("location", ""))
+                    break
             except Exception:
-                pass
+                continue
 
     # Add location from schedule if not yet set (Supabase path may have it)
     if "location" not in result:

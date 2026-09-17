@@ -70,7 +70,7 @@ function BetsTab() {
           {data.tournaments.map(t => (
             <React.Fragment key={t.tournament_id}>
               <tr
-                style={{ cursor: "pointer", background: expanded === t.tournament_id ? "#0f1e2e" : "transparent" }}
+                style={{ cursor: "pointer", background: expanded === t.tournament_id ? "var(--bc-hover)" : "transparent" }}
                 onClick={() => setExpanded(expanded === t.tournament_id ? null : t.tournament_id)}
               >
                 <td style={{ ...cell, color: "var(--bc-text)", fontWeight: 600 }}>{t.name}</td>
@@ -89,7 +89,7 @@ function BetsTab() {
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                       {t.markets.map(m => (
                         <span key={m.market} style={{
-                          background: "#111e2c", border: "1px solid var(--bc-line)",
+                          background: "var(--bc-card)", border: "1px solid var(--bc-line)",
                           borderRadius: 6, padding: "4px 10px", fontSize: "0.82em",
                         }}>
                           <span style={{ color: "var(--bc-muted)" }}>{m.market}</span>
@@ -160,7 +160,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
           padding: "10px 16px",
           background: "#070f18", borderRadius: "0 0 8px 8px",
           borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
-          borderTop: "1px solid #0d2030",
+          borderTop: "1px solid var(--bc-line)",
         }}>
           <div>
             <span style={{ color: "var(--bc-muted)", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
@@ -206,8 +206,8 @@ function LiveStatusDot({ status }: { status: SlipBet["live_status"] }) {
   if (!status) return null;
   const color = status === "on_track"  ? "var(--bc-green)"
               : status === "marginal"  ? "var(--warning)"
-              : status === "off_track" ? "#e05555"
-              : "#5a7a9a"; // tracking / finished
+              : status === "off_track" ? "var(--bc-red)"
+              : "var(--bc-muted)"; // tracking / finished
   return (
     <span style={{
       display: "inline-block", width: 7, height: 7, borderRadius: "50%",
@@ -224,13 +224,13 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
   const hasLive   = isPending && !!bet.live_position;
   const scoreNum  = bet.live_total ? parseFloat(bet.live_total) : null;
   const scoreColor = scoreNum != null && scoreNum < 0 ? "var(--bc-green)"
-                   : scoreNum != null && scoreNum > 0 ? "#e05555"
+                   : scoreNum != null && scoreNum > 0 ? "var(--bc-red)"
                    : "var(--bc-text)";
 
   const rowBg = isWon    ? "#071410"
-              : isLost   ? "#130a0a"
+              : isLost   ? "rgba(224,85,85,0.08)"
               : hasLive && bet.live_status === "on_track"  ? "#071a10"
-              : hasLive && bet.live_status === "off_track" ? "#180a0a"
+              : hasLive && bet.live_status === "off_track" ? "rgba(224,85,85,0.08)"
               : "transparent";
 
   const odds = bet.odds_american >= 0 ? `+${bet.odds_american}` : String(bet.odds_american);
@@ -247,7 +247,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
       {/* Result column: live context for pending bets, or Won/Lost */}
       <td style={cell}>
         {isWon  && <span style={{ color: "var(--bc-green)", fontWeight: 700 }}>Won</span>}
-        {isLost && <span style={{ color: "#e05555", fontWeight: 700 }}>Lost</span>}
+        {isLost && <span style={{ color: "var(--bc-red)", fontWeight: 700 }}>Lost</span>}
         {isPending && hasLive && (
           <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
             <LiveStatusDot status={bet.live_status} />
@@ -345,7 +345,7 @@ function MySlipTab() {
       {updatedAt && (
         <div style={{ fontSize: "0.72em", color: "var(--bc-line)", marginBottom: 12, paddingLeft: 2 }}>
           Live · updated {updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-          <span style={{ color: "#1e3050", marginLeft: 8 }}>auto-refreshes every 2 min</span>
+          <span style={{ color: "var(--bc-muted)", marginLeft: 8 }}>auto-refreshes every 2 min</span>
         </div>
       )}
 
@@ -366,7 +366,7 @@ function MySlipTab() {
                   padding: "8px 12px", background: "#081220",
                   color: "var(--bc-muted)", fontSize: "0.75em", fontWeight: 700,
                   textTransform: "uppercase", letterSpacing: "0.06em",
-                  borderBottom: "1px solid #1a2a3a",
+                  borderBottom: "1px solid var(--bc-line)",
                 }}>
                   {tid}
                   <span style={{ marginLeft: 10, color: "var(--bc-line)", fontWeight: 400 }}>
