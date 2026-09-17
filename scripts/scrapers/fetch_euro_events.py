@@ -166,12 +166,29 @@ def cmd_results(year: int, force: bool = False) -> None:
           f"(winner ~${rows[rows['tournament_id']==tid]['earnings'].max():,.0f} of ${purse:,.0f} est. purse)")
 
 
+def cmd_rounds(year: int) -> None:
+    """Mid-event snapshot of per-round scores -> data/live/rounds_{tid}.csv.
+    Powers the Round Game's grading for euro events; run daily while a
+    euro event is live (results settle still uses --results on Monday)."""
+    tid, name, _ = _current_event(year)
+    live = dg_get("/preds/in-play", {"tour": "euro", "file_format": "json"})
+    data = live.get("data", live) if isinstance(live, dict) else live
+    df = pd.DataFrame(data)
+    if df.empty:
+        raise SystemExit("No in-play data for euro event")
+    keep = [c for c in ["player_name", "current_pos", "current_score", "R1", "R2", "R3", "R4", "thru", "today"] if c in df.columns]
+    out = PROJECT_ROOT / "data" / "live" / f"rounds_{tid}.csv"
+    df[keep].to_csv(out, index=False)
+    print(f"{name} ({tid}): rounds snapshot -> {out.relative_to(PROJECT_ROOT)} ({len(df)} players)")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="DPWT events for the Friends Game")
     ap.add_argument("--year", type=int, default=2026)
     ap.add_argument("--schedule", action="store_true")
     ap.add_argument("--field", action="store_true")
     ap.add_argument("--results", action="store_true")
+    ap.add_argument("--rounds", action="store_true", help="mid-event round-score snapshot")
     ap.add_argument("--force", action="store_true", help="settle even if mid-event")
     args = ap.parse_args()
     if args.schedule:
@@ -180,8 +197,10 @@ def main() -> None:
         cmd_field(args.year)
     if args.results:
         cmd_results(args.year, force=args.force)
-    if not (args.schedule or args.field or args.results):
-        ap.error("pick at least one of --schedule --field --results")
+    if args.rounds:
+        cmd_rounds(args.year)
+    if not (args.schedule or args.field or args.results or args.rounds):
+        ap.error("pick at least one of --schedule --field --results --rounds")
 
 
 if __name__ == "__main__":

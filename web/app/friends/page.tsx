@@ -60,9 +60,10 @@ async function fetchJson(url: string, init?: RequestInit): Promise<Record<string
   }
 }
 
-type GameTab = "picks" | "standings" | "groups" | "bets" | "tails";
+type GameTab = "picks" | "rounds" | "standings" | "groups" | "bets" | "tails";
 const TABS: { id: GameTab; label: string }[] = [
   { id: "picks",     label: "My Picks" },
+  { id: "rounds",    label: "Round Game" },
   { id: "standings", label: "Standings" },
   { id: "groups",    label: "Groups" },
   { id: "bets",      label: "My Bets" },
@@ -129,6 +130,7 @@ export default function FriendsPage() {
         </div>
       )}
       {tab === "picks" && <PicksTab />}
+      {tab === "rounds" && <RoundGameTab />}
       {tab === "standings" && <StandingsTab />}
       {tab === "groups" && <GroupsTab focusJoin={invited} />}
       {tab === "bets" && <MyBetsTab />}
@@ -291,6 +293,16 @@ function PicksTab() {
 
         {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
       </div>
+
+      {field.length === 0 && !event.locked && (
+        <div style={{ ...card, background: "var(--bc-panel)" }}>
+          <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.88em" }}>
+            The field for {event.name} isn&apos;t announced yet — DP World Tour
+            fields publish once the current event finishes (usually Friday).
+            Check back this weekend; picks stay open until Thursday.
+          </p>
+        </div>
+      )}
 
       {/* The field board: browse this week's field with the model's numbers
           and pick straight from the row. Names link to full profiles. */}
@@ -928,6 +940,196 @@ function MyBetsTab() {
           </span>
         </div>
       ))}
+    </>
+  );
+}
+
+// ── Round Game ───────────────────────────────────────────────────────────────
+
+type RoundPicksState = { rounds: Record<string, string | null>; used: string[];
+  locks: Record<string, boolean> };
+type RoundRow = { user_id: string; user_name: string; total: number; scored: number;
+  rounds: Record<string, { player: string; score: number | null; visible: boolean }> };
+
+function RoundGameTab() {
+  const api = useApi();
+  const [events, setEvents] = useState<OpenEvent[]>([]);
+  const [selected, setSelected] = useState("");
+  const [state, setState] = useState<RoundPicksState | null>(null);
+  const [eventName, setEventName] = useState("");
+  const [field, setField] = useState<string[]>([]);
+  const [board, setBoard] = useState<RoundRow[] | null>(null);
+  const [me, setMe] = useState("");
+  const [pickingRound, setPickingRound] = useState<number | null>(null);
+  const [query, setQuery] = useState("");
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    getOpenEvents().then(d => {
+      const evs = d.events ?? [];
+      setEvents(evs);
+      if (evs[0]) setSelected(evs[0].tournament_id);
+    }).catch(() => {});
+  }, []);
+
+  const load = useCallback(() => {
+    if (!selected) return;
+    setErr("");
+    api(`/api/friends/roundpicks?tournament_id=${encodeURIComponent(selected)}`)
+      .then(d => { setState(d as never); setEventName((d.event as EventInfo).name); })
+      .catch(e => setErr(e.message));
+    api(`/api/friends/roundboard?tournament_id=${encodeURIComponent(selected)}`)
+      .then(d => { setBoard((d.standings as RoundRow[]) ?? []); setMe((d.me as string) ?? ""); })
+      .catch(() => setBoard([]));
+    getEventField(selected).then(d => setField(d.players ?? [])).catch(() => setField([]));
+  }, [api, selected]);
+  useEffect(load, [load]);
+
+  async function pick(round: number, player: string) {
+    setErr("");
+    try {
+      const d = await api("/api/friends/roundpicks", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tournament_id: selected, round, player_name: player }),
+      });
+      setState(d as never); setPickingRound(null); setQuery("");
+    } catch (e) { setErr((e as Error).message); }
+  }
+
+  async function clear(round: number) {
+    setErr("");
+    try {
+      const d = await api("/api/friends/roundpicks", {
+        method: "DELETE", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tournament_id: selected, round }),
+      });
+      setState(d as never);
+    } catch (e) { setErr((e as Error).message); }
+  }
+
+  const suggestions = query.length >= 2
+    ? field.filter(pl => pl.toLowerCase().includes(query.toLowerCase())
+        && !(state?.used ?? []).includes(pl)).slice(0, 8)
+    : [];
+
+  const fmt = (v: number) => (v > 0 ? `+${v}` : v === 0 ? "E" : String(v));
+
+  return (
+    <>
+      {events.length > 1 && (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+          {events.map(ev => (
+            <button key={ev.tournament_id} onClick={() => { setSelected(ev.tournament_id); setPickingRound(null); }} style={{
+              ...btnQuiet, padding: "7px 14px",
+              color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
+              background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
+              borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
+            }}>
+              {ev.name}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div style={card}>
+        <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 4 }}>{eventName || selected}</div>
+        <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginBottom: 14 }}>
+          One player per round, each player once per event. Score is their round
+          to par; a missed round costs +{5}. Lowest total wins.
+        </div>
+
+        {[1, 2, 3, 4].map(r => {
+          const locked = !!state?.locks?.[String(r)];
+          const current = state?.rounds?.[String(r)] ?? null;
+          return (
+            <div key={r} style={{ display: "flex", alignItems: "center", gap: 10,
+              padding: "8px 0", borderBottom: "1px solid var(--bc-line)", flexWrap: "wrap" }}>
+              <span style={{ fontWeight: 800, width: 32, color: locked ? "var(--bc-muted)" : "var(--bc-yellow)" }}>R{r}</span>
+              {current
+                ? <span style={{ fontWeight: 600 }}><PlayerLink name={current} /></span>
+                : <span style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>
+                    {locked ? "no pick — +5" : "no pick yet"}
+                  </span>}
+              {!locked && (
+                <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
+                  <button onClick={() => { setPickingRound(pickingRound === r ? null : r); setQuery(""); }}
+                    style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em" }}>
+                    {current ? "Change" : "Pick"}
+                  </button>
+                  {current && (
+                    <button onClick={() => clear(r)} style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em" }}>✕</button>
+                  )}
+                </span>
+              )}
+              {locked && <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: "0.72em" }}>locked</span>}
+              {pickingRound === r && !locked && (
+                <div style={{ flexBasis: "100%", position: "relative" }}>
+                  <input autoFocus value={query} onChange={e => setQuery(e.target.value)}
+                    placeholder={field.length ? "Search the field…" : "Field not announced yet"}
+                    style={{ ...inputStyle, width: "100%", boxSizing: "border-box", marginTop: 6 }} />
+                  {suggestions.length > 0 && (
+                    <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
+                      background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
+                      borderRadius: 8, marginTop: 4, overflow: "hidden" }}>
+                      {suggestions.map(pl => (
+                        <button key={pl} onClick={() => pick(r, pl)} style={{
+                          display: "block", width: "100%", textAlign: "left",
+                          background: "none", border: "none", cursor: "pointer",
+                          padding: "9px 14px", color: "var(--bc-text)", fontSize: "0.88em" }}>
+                          {pl}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
+      </div>
+
+      {/* Event board */}
+      {board && board.length > 0 && (
+        <div style={{ ...card, padding: 0, overflow: "hidden" }}>
+          <table style={{ borderCollapse: "collapse", width: "100%" }}>
+            <thead><tr>
+              <th style={hdr}>#</th><th style={hdr}>Player</th>
+              {[1, 2, 3, 4].map(r => <th key={r} style={{ ...hdr, textAlign: "right" }}>R{r}</th>)}
+              <th style={{ ...hdr, textAlign: "right" }}>Total</th>
+            </tr></thead>
+            <tbody>
+              {board.map((row, i) => (
+                <tr key={row.user_id} style={{ background: row.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
+                  <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
+                  <td style={{ ...cell, fontWeight: 700 }}>
+                    {row.user_name}{row.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
+                  </td>
+                  {[1, 2, 3, 4].map(r => {
+                    const c = row.rounds[String(r)];
+                    return (
+                      <td key={r} style={{ ...cell, textAlign: "right", fontSize: "0.8em" }}>
+                        {!c ? <span style={{ color: "var(--bc-muted)" }}>—</span>
+                          : !c.visible ? <span style={{ color: "var(--bc-muted)" }}>hidden</span>
+                          : <>
+                              <span style={{ color: "var(--bc-muted)" }}>{c.player.split(",")[0]}</span>{" "}
+                              <span style={{ fontWeight: 700, color: c.score == null ? "var(--bc-muted)"
+                                : c.score < 0 ? "var(--bc-green)" : c.score > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
+                                {c.score == null ? "…" : fmt(c.score)}
+                              </span>
+                            </>}
+                      </td>
+                    );
+                  })}
+                  <td style={{ ...cell, textAlign: "right", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>
+                    {row.scored ? fmt(row.total) : "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </>
   );
 }

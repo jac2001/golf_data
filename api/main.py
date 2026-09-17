@@ -3932,6 +3932,57 @@ def events_field(tournament_id: str) -> dict:
         return {"tournament_id": tid, "players": []}
 
 
+@app.get("/api/events/rounds")
+def events_rounds(tournament_id: str) -> dict:
+    """Per-player round scores TO PAR for one event — grades the Round Game.
+
+    PGA (R-ids): the live leaderboard CSV. Euro (E-ids): the rounds
+    snapshot written by fetch_euro_events --rounds. Par isn't in either
+    file, so it's derived per event: strokes minus to-par, divided by
+    rounds played, medianed across finished players.
+    """
+    tid = tournament_id.strip().upper()
+    if tid.startswith("E"):
+        fp = DATA_DIR / "live" / f"rounds_{tid}.csv"
+        if not fp.exists():
+            return {"tournament_id": tid, "rounds_available": 0, "players": {}}
+        df = pd.read_csv(fp)
+        to_par_col = "current_score"
+    else:
+        fp = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+        if not fp.exists():
+            return {"tournament_id": tid, "rounds_available": 0, "players": {}}
+        df = pd.read_csv(fp)
+        to_par_col = "total_numeric"
+
+    for c in ["R1", "R2", "R3", "R4"]:
+        if c not in df.columns:
+            df[c] = pd.NA
+        df[c] = pd.to_numeric(df[c], errors="coerce")
+    df["_to_par"] = pd.to_numeric(df[to_par_col], errors="coerce")
+    df["_strokes"] = df[["R1", "R2", "R3", "R4"]].sum(axis=1, min_count=1)
+    df["_n"] = df[["R1", "R2", "R3", "R4"]].notna().sum(axis=1)
+
+    est = df[(df["_n"] > 0) & df["_to_par"].notna() & df["_strokes"].notna()]
+    pars = ((est["_strokes"] - est["_to_par"]) / est["_n"]).round()
+    par = int(pars.median()) if len(pars) else 72
+
+    players: dict[str, dict] = {}
+    max_round = 0
+    for _, r in df.iterrows():
+        name = str(r.get("player_name", ""))
+        key = " ".join(sorted(name.lower().replace(",", "").split()))
+        rounds = {}
+        for i, c in enumerate(["R1", "R2", "R3", "R4"], start=1):
+            v = r[c]
+            if pd.notna(v):
+                rounds[str(i)] = int(v) - par
+                max_round = max(max_round, i)
+        players[key] = {"player_name": name, "rounds": rounds,
+                        "status": str(r.get("status", r.get("current_pos", "")))}
+    return {"tournament_id": tid, "par": par, "rounds_available": max_round, "players": players}
+
+
 @app.get("/api/results/earnings")
 def results_earnings(tournament_id: str) -> dict:
     """Per-player earnings for one settled event — grades Friends Game picks.
