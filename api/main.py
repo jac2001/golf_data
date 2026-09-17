@@ -3848,6 +3848,64 @@ def get_player_list() -> dict:
     return {"players": names}
 
 
+@app.get("/api/bets/outcomes")
+def bet_outcomes(ids: str = "") -> dict:
+    """Outcome + P&L for specific recommendation_ids (comma-separated) —
+    lets the Friends Game grade tailed bets from the honest ledger CSV."""
+    want = {i.strip() for i in ids.split(",") if i.strip()}
+    if not want:
+        return {"outcomes": {}}
+    log_path = ODDS_DIR / "recommended_bets_log.csv"
+    if not log_path.exists():
+        return {"outcomes": {}}
+    df = pd.read_csv(log_path)
+    df = df[df["recommendation_id"].astype(str).isin(want)]
+    out = {}
+    for _, r in df.iterrows():
+        pnl = r.get("pnl_per_1")
+        out[str(r["recommendation_id"])] = {
+            "outcome_status": str(r.get("outcome_status", "pending")),
+            "pnl_per_1": float(pnl) if pd.notna(pnl) else None,
+            "odds_american": _safe(r.get("odds_american")),
+            "label": str(r.get("selection_label") or r.get("title") or ""),
+        }
+    return {"outcomes": out}
+
+
+@app.get("/api/results/earnings")
+def results_earnings(tournament_id: str) -> dict:
+    """Per-player earnings for one settled event — grades Friends Game picks.
+
+    Reads the historical leaderboard CSVs (git-tracked, cloud-safe). Names
+    come back keyed lowercase-lastname-first-sorted so the caller can match
+    either "Last, First" or "First Last" spellings.
+    """
+    tid = tournament_id.strip().upper()
+    for lb_path in sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv"), reverse=True):
+        if lb_path.suffix != ".csv":
+            continue
+        try:
+            df = pd.read_csv(lb_path)
+        except Exception:
+            continue
+        sub = df[df["tournament_id"].astype(str).str.upper() == tid]
+        if sub.empty:
+            continue
+        out = {}
+        for _, r in sub.iterrows():
+            name = str(r.get("player_name", ""))
+            key = " ".join(sorted(name.lower().replace(",", "").split()))
+            raw = str(r.get("earnings") or "0").replace("$", "").replace(",", "")
+            try:
+                earn = float(raw)
+            except Exception:
+                earn = 0.0
+            out[key] = {"player_name": name, "earnings": earn,
+                        "position": str(r.get("position", ""))}
+        return {"tournament_id": tid, "settled": True, "players": out}
+    return {"tournament_id": tid, "settled": False, "players": {}}
+
+
 @app.get("/api/players/all")
 def get_all_players() -> dict:
     """All players ever in DuckDB leaderboards (~1,700), sorted alphabetically.

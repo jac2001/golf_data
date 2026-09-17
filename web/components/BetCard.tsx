@@ -1,5 +1,6 @@
 "use client";
 
+import { Show } from "@clerk/nextjs";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -64,6 +65,32 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
       // silently fail — don't disrupt the UI
     } finally {
       setTracking(false);
+    }
+  }
+
+  const [tailed, setTailed]   = useState(false);
+  const [tailing, setTailing] = useState(false);
+
+  // "Tail" = the Friends Game version of Track: logs this bet against YOUR
+  // account (Neon), graded later by the honest ledger.
+  async function handleTail() {
+    if (tailing || !bet.recommendation_id) return;
+    setTailing(true);
+    try {
+      const res = await fetch("/api/friends/tail", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recommendation_id: bet.recommendation_id,
+          tournament_id:     bet.tournament_id ?? "",
+          bet_label:         bet.selection_label ?? bet.player_name,
+          odds_american:     bet.odds_american,
+          stake_units:       1.0,
+        }),
+      });
+      const d = await res.json();
+      if (!d.error) setTailed(!!d.tailed);
+    } catch { /* leave button as-is */ } finally {
+      setTailing(false);
     }
   }
 
@@ -288,6 +315,27 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
             >
               {tracking ? "Adding…" : tracked ? "Tracked ✓" : "Track Bet"}
             </button>
+            {bet.recommendation_id && (
+              <Show when="signed-in">
+                <button
+                  onClick={handleTail}
+                  disabled={tailing}
+                  title="Log this bet to your Friends Game record"
+                  style={{
+                    background: tailed ? "color-mix(in srgb, var(--bc-yellow) 12%, transparent)" : "transparent",
+                    border: `1px solid ${tailed ? "color-mix(in srgb, var(--bc-yellow) 40%, transparent)" : "var(--bc-line)"}`,
+                    borderRadius: 5,
+                    color: tailed ? "var(--bc-yellow)" : "var(--bc-muted)",
+                    fontSize: "0.75em",
+                    fontWeight: 600,
+                    padding: "4px 10px",
+                    cursor: "pointer",
+                  }}
+                >
+                  {tailing ? "…" : tailed ? "Tailed ✓" : "Tail"}
+                </button>
+              </Show>
+            )}
         </div>
 
         {reasonOpen && (

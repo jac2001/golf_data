@@ -11,6 +11,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SettingsModal from "@/components/SettingsModal";
+import { Show, UserButton } from "@clerk/nextjs";
 
 // Order follows the golf week: research (Forecast, Board) → watch (Live) →
 // reference (Players) → trust (How It Works) → utility (Assistant).
@@ -22,6 +23,7 @@ const PUBLIC_LINKS = [
   { href: "/betting",     label: "Betting Board" },
   { href: "/live",        label: "Live" },
   { href: "/players",     label: "Players" },
+  { href: "/friends",     label: "Friends Game" },
   { href: "/methodology", label: "How It Works" },
   { href: "/assistant",   label: "Assistant" },
 ];
@@ -123,6 +125,21 @@ export default function NavBar() {
           }}>
             {inLeague ? "← Public site" : "My League"}
           </Link>
+
+          {/* Auth: avatar menu when signed in, quiet link when not */}
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
+          <Show when="signed-out">
+            <Link href="/sign-in" style={{
+              border: `1px solid ${inLeague ? "var(--lg-line)" : "var(--bc-line)"}`,
+              color: muted, fontWeight: 700, fontSize: "0.72em",
+              textTransform: "uppercase", letterSpacing: "0.05em",
+              padding: "8px 12px", borderRadius: 4,
+            }}>
+              Sign in
+            </Link>
+          </Show>
 
           <button
             onClick={() => setShowSettings(true)}

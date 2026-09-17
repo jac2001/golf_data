@@ -10,6 +10,7 @@
 
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 
@@ -36,13 +37,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={archivo.variable}>
-      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-        <NavBar />
-        <main style={{ flex: 1, padding: "24px 24px 48px" }}>
-          {children}
-        </main>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={archivo.variable}>
+        <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+          <NavBar />
+          <main style={{ flex: 1, padding: "24px 24px 48px" }}>
+            {children}
+          </main>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
