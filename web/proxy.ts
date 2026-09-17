@@ -17,9 +17,26 @@ const isProtected = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtected(req)) {
-    await auth.protect();
+  if (!isProtected(req)) return;
+
+  // API routes answer signed-out callers HERE with an uncacheable 401.
+  // Clerk's protect() would 404 instead — and that 404 is the prerendered
+  // static not-found page, which Vercel's CDN happily caches UNDER THE API
+  // PATH. One anonymous GET then poisons the route for every signed-in
+  // user until the next deploy. (CDN cache keys are per-URL; they don't
+  // know one response was auth-dependent unless told via Cache-Control.)
+  if (req.nextUrl.pathname.startsWith("/api/")) {
+    const { userId } = await auth();
+    if (!userId) {
+      return Response.json(
+        { error: "Unauthorized" },
+        { status: 401, headers: { "Cache-Control": "no-store" } },
+      );
+    }
+    return;
   }
+
+  await auth.protect();  // pages: redirect to /sign-in and back
 });
 
 export const config = {
