@@ -555,15 +555,31 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
       setTimeout(() => setCopied(null), 1500); } catch { /* clipboard blocked */ }
   }
 
+  function inviteMessage(g: Group) {
+    return `Join my group "${g.name}" on Golf Edge: ${window.location.origin}/friends?invite=1 — invite code: ${g.invite_code}`;
+  }
+
   // Copies a ready-to-text message: the link gets them signed in and onto
   // the join form; the code in the same message is what they type there.
   function copyLink(g: Group) {
     try {
-      navigator.clipboard.writeText(
-        `Join my group "${g.name}" on Golf Edge: ${window.location.origin}/friends?invite=1 — invite code: ${g.invite_code}`
-      );
+      navigator.clipboard.writeText(inviteMessage(g));
       setCopied(g.id); setTimeout(() => setCopied(null), 1500);
     } catch { /* clipboard blocked */ }
+  }
+
+  // Native share sheet where the platform has one (iMessage/WhatsApp on
+  // phones), clipboard fallback everywhere else. navigator.share exists
+  // only in secure contexts and mostly on mobile — feature-detect, never
+  // assume. A dismissed share sheet rejects with AbortError; that's the
+  // user changing their mind, not an error to surface.
+  async function share(g: Group) {
+    const text = inviteMessage(g);
+    if (typeof navigator.share === "function") {
+      try { await navigator.share({ text }); return; }
+      catch { return; /* dismissed or unsupported payload — no fallback spam */ }
+    }
+    copyLink(g);
   }
 
   if (!groups) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
@@ -607,12 +623,17 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
             }}>
               {copied === g.id ? "Copied!" : g.invite_code}
             </button>
-            <button onClick={() => copyLink(g)} title="Copy a one-tap invite link" style={{
+            <button onClick={() => share(g)} title="Share the invite (message + code)" style={{
+              ...btn, padding: "5px 12px", fontSize: "0.72em",
+            }}>
+              Share
+            </button>
+            <button onClick={() => copyLink(g)} title="Copy the invite message" style={{
               ...btnQuiet, padding: "4px 10px",
               color: copied === g.id ? "var(--bc-green)" : "var(--bc-yellow)",
               borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
             }}>
-              Copy invite
+              {copied === g.id ? "Copied!" : "Copy invite"}
             </button>
             <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
               {g.members.map(m => m.user_name).join(" · ")}
