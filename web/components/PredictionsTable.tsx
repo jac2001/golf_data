@@ -164,7 +164,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     fontSize: "0.68em", fontWeight: 700, color: "var(--bc-muted)",
     textTransform: "uppercase", letterSpacing: "0.05em",
-    background: "#0a1628", whiteSpace: "nowrap", cursor: "pointer",
+    background: "var(--bc-panel)", whiteSpace: "nowrap", cursor: "pointer",
     userSelect: "none",
   };
 
@@ -255,7 +255,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
               const isUse = p.badge === "USE";
               const bg = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
               const td: React.CSSProperties = {
-                padding: "6px 10px", borderBottom: "1px solid #0f2236", background: bg,
+                padding: "6px 10px", borderBottom: "1px solid var(--bc-card)", background: bg,
               };
 
               const formVal  = p.form_trend ?? 0;
@@ -303,7 +303,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       {playerIntel?.injury_flag && (
                         <span style={{
                           fontSize: "0.68em", fontWeight: 700, color: "var(--bc-red)",
-                          background: "#1a0808", border: "1px solid #5f1e1e44",
+                          background: "#1a0808", border: "1px solid rgba(224,85,85,0.35)44",
                           borderRadius: 4, padding: "1px 6px", whiteSpace: "nowrap",
                         }}>
                           {playerIntel.injury_detail
@@ -323,7 +323,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       {playerIntel?.trend === "trending_down" && (
                         <span style={{
                           fontSize: "0.68em", fontWeight: 700, color: "var(--bc-orange)",
-                          background: "#1a1200", border: "1px solid #5f4a0044",
+                          background: "rgba(255,210,74,0.08)", border: "1px solid rgba(255,210,74,0.3)44",
                           borderRadius: 4, padding: "1px 6px",
                         }}>↓ cold</span>
                       )}

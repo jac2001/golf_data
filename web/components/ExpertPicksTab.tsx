@@ -32,7 +32,7 @@ function ConsensusTable({ rows, nExperts }: { rows: ExpertConsensusPlayer[]; nEx
           <tr>
             {["#", "Player", "Lineups", "", "Winner", ""].map((h, i) => (
               <th key={i} style={{
-                padding: "7px 10px", background: "#0a1628",
+                padding: "7px 10px", background: "var(--bc-panel)",
                 fontSize: "0.65em", fontWeight: 700, color: "var(--bc-muted)",
                 textTransform: "uppercase", letterSpacing: "0.05em",
                 borderBottom: "1px solid var(--bc-line)",
@@ -50,7 +50,7 @@ function ConsensusTable({ rows, nExperts }: { rows: ExpertConsensusPlayer[]; nEx
                 <td style={{ padding: "7px 10px", textAlign: "center", color: "var(--bc-muted)", fontSize: "0.75em", width: 32 }}>
                   {i + 1}
                 </td>
-                <td style={{ padding: "7px 12px", fontWeight: 600, fontSize: "0.88em", color: isTopWinner ? "var(--bc-text)" : "#9ab0c8", whiteSpace: "nowrap" }}>
+                <td style={{ padding: "7px 12px", fontWeight: 600, fontSize: "0.88em", color: isTopWinner ? "var(--bc-text)" : "var(--bc-muted)", whiteSpace: "nowrap" }}>
                   {r.player_name}
                 </td>
                 <td style={{ padding: "7px 10px", textAlign: "center", fontSize: "0.82em", color: "var(--bc-green)", fontWeight: 700, width: 60 }}>
@@ -116,8 +116,8 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {expert.lineup.map(name => (
               <span key={name} style={{
-                fontSize: "0.72em", fontWeight: 600, color: "#9ab0c8",
-                background: "#080f1e", border: "1px solid var(--bc-line)",
+                fontSize: "0.72em", fontWeight: 600, color: "var(--bc-muted)",
+                background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
                 borderRadius: 4, padding: "2px 8px",
               }}>
                 {name.split(" ").pop()}
@@ -152,7 +152,7 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                 {expert.lineup.map(name => (
                   <span key={name} style={{
-                    fontSize: "0.78em", color: "var(--bc-text)", background: "#091525",
+                    fontSize: "0.78em", color: "var(--bc-text)", background: "var(--bc-panel)",
                     border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)", borderRadius: 5, padding: "3px 10px",
                   }}>
                     {name}
@@ -168,7 +168,7 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {expert.bench.map(name => (
                     <span key={name} style={{
-                      fontSize: "0.78em", color: "#7f9ab0", background: "#091525",
+                      fontSize: "0.78em", color: "var(--bc-muted)", background: "var(--bc-panel)",
                       border: "1px solid var(--bc-line)", borderRadius: 5, padding: "3px 10px",
                     }}>
                       {name}
@@ -183,7 +183,7 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
                   Winner Pick
                 </div>
                 <span style={{
-                  fontSize: "0.78em", fontWeight: 700, color: "var(--bc-yellow)", background: "#1a1200",
+                  fontSize: "0.78em", fontWeight: 700, color: "var(--bc-yellow)", background: "rgba(255,210,74,0.08)",
                   border: "1px solid color-mix(in srgb, var(--bc-yellow) 20%, transparent)", borderRadius: 5, padding: "3px 10px",
                 }}>
                   {expert.winner_pick}
@@ -197,9 +197,9 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
             <div style={{
               marginTop: 12, padding: "10px 14px",
               borderLeft: "3px solid var(--bc-line)",
-              background: "#080f1e", borderRadius: "0 6px 6px 0",
+              background: "var(--bc-panel)", borderRadius: "0 6px 6px 0",
             }}>
-              <p style={{ margin: 0, fontSize: "0.82em", color: "#7f9ab0", lineHeight: 1.6 }}>
+              <p style={{ margin: 0, fontSize: "0.82em", color: "var(--bc-muted)", lineHeight: 1.6 }}>
                 {expert.comment}
               </p>
             </div>

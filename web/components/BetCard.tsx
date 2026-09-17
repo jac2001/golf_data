@@ -106,7 +106,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           <div style={{ marginBottom: 5, display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
             <span style={{
               fontSize: "0.65em", fontWeight: 700, color: "var(--bc-green)",
-              background: "#0d2e18", padding: "2px 7px", borderRadius: 4,
+              background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", padding: "2px 7px", borderRadius: 4,
               border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
             }}>
               {bookLbl}
@@ -126,19 +126,19 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
               {bet.player_name}
             </Link>
             {isPick && (
-              <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
                 MY PICK
               </span>
             )}
           </div>
           {opponent && (
-            <div style={{ fontSize: "0.80em", color: "#6a8aaa", marginTop: 3, fontWeight: 500 }}>
+            <div style={{ fontSize: "0.80em", color: "var(--bc-muted)", marginTop: 3, fontWeight: 500 }}>
               vs{" "}
               <Link
                 href={`/players?player=${encodeURIComponent(opponent)}`}
-                style={{ color: "#6a8aaa", textDecoration: "none" }}
+                style={{ color: "var(--bc-muted)", textDecoration: "none" }}
                 onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
-                onMouseLeave={e => (e.currentTarget.style.color = "#6a8aaa")}
+                onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-muted)")}
               >
                 {opponent}
               </Link>
@@ -149,7 +149,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           {bet.intel_warning && (
             <div style={{
               marginTop: 5, fontSize: "0.68em", fontWeight: 600,
-              color: "var(--bc-orange)", background: "#1a1200",
+              color: "var(--bc-orange)", background: "rgba(255,210,74,0.08)",
               border: "1px solid rgba(95,74,0,0.27)", borderRadius: 4,
               padding: "2px 7px", display: "inline-block",
             }}>

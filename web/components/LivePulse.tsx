@@ -2,13 +2,13 @@
 
 import { LivePulse as LivePulseData } from "@/lib/api";
 
-const BG     = "#060d1a";
-const BORDER = "#1a3050";
+const BG     = "var(--bc-panel)";
+const BORDER = "var(--bc-line)";
 const TEXT   = "var(--bc-text)";
 const MUTED  = "var(--bc-muted)";
-const LABEL  = "#3a5060";
-const GREEN  = "#00c44f";
-const GOLD   = "#f1c40f";
+const LABEL  = "var(--bc-muted)";
+const GREEN  = "var(--bc-green)";
+const GOLD   = "var(--bc-yellow)";
 const RED    = "#e05555";
 const PURPLE = "#c070f0";
 
@@ -99,7 +99,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "10px 16px", borderBottom: `1px solid ${BORDER}`,
-        background: "#080f1e",
+        background: "var(--bc-panel)",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{

@@ -8,7 +8,7 @@ type Props = { data: CourseResponse };
 function diffColor(diff: number | null): string {
   if (diff == null) return "var(--bc-muted)";
   if (diff >  0.5)  return "var(--bc-red)";
-  if (diff >  0.2)  return "#f39c12";
+  if (diff >  0.2)  return "var(--warning)";
   if (diff > -0.1)  return "var(--bc-muted)";
   if (diff > -0.3)  return "#27ae60";
   return "var(--bc-green)";
@@ -109,7 +109,7 @@ function HoleRow({ hole, isAlt }: { hole: CourseHole; isAlt: boolean }) {
       </td>
 
       {/* Difficulty rank */}
-      <td style={{ ...cell, color: "#3a5060", width: 40 }}>
+      <td style={{ ...cell, color: "var(--bc-muted)", width: 40 }}>
         {hole.difficulty_rank ?? "—"}
       </td>
     </tr>
@@ -121,14 +121,14 @@ function NineSubtotal({ holes, label }: { holes: CourseHole[]; label: string }) 
   const par   = holes.reduce((s, h) => s + (h.hole_par   ?? 0), 0);
   const avgSum = holes.reduce((s, h) => s + (h.scoring_avg ?? 0), 0);
   return (
-    <tr style={{ background: "#0a1628", borderTop: "1px solid var(--bc-line)" }}>
+    <tr style={{ background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line)" }}>
       <td style={{ width: 3, padding: 0 }} />
       <td colSpan={2} style={{ ...cell, color: "var(--bc-muted)", fontWeight: 700, fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </td>
       <td style={{ ...cell, color: "var(--bc-muted)", fontWeight: 600 }}>{yards}</td>
       <td style={{ ...cell, color: "var(--bc-text)", fontWeight: 600 }}>{fmt(avgSum)}</td>
-      <td colSpan={4} style={{ ...cell, color: "#3a5060", fontSize: "0.75em" }}>par {par}</td>
+      <td colSpan={4} style={{ ...cell, color: "var(--bc-muted)", fontSize: "0.75em" }}>par {par}</td>
     </tr>
   );
 }
@@ -178,10 +178,10 @@ export default function CourseCard({ data }: Props) {
         )}
 
         {/* Legend */}
-        <div style={{ fontSize: "0.65em", color: "#2a4060", display: "flex", gap: 10, alignSelf: "flex-end", flexWrap: "wrap" }}>
+        <div style={{ fontSize: "0.65em", color: "var(--bc-line)", display: "flex", gap: 10, alignSelf: "flex-end", flexWrap: "wrap" }}>
           <span><span style={{ color: "var(--bc-green)" }}>■</span> Birdie%</span>
           <span><span style={{ color: "var(--bc-red)" }}>■</span> Bogey%</span>
-          <span><span style={{ color: "#f39c12" }}>■</span> Hard</span>
+          <span><span style={{ color: "var(--warning)" }}>■</span> Hard</span>
           <span><span style={{ color: "var(--bc-red)" }}>■</span> Very hard</span>
         </div>
       </div>
@@ -190,7 +190,7 @@ export default function CourseCard({ data }: Props) {
       <div style={{ overflowX: "auto", borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)", borderTop: "none", borderRadius: "0 0 10px 10px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
-            <tr style={{ background: "#0a1628" }}>
+            <tr style={{ background: "var(--bc-panel)" }}>
               <th style={{ width: 3, padding: 0 }} />
               <th style={{ ...th, textAlign: "center" }}>Hole</th>
               <th style={{ ...th }}>Par</th>
@@ -200,7 +200,7 @@ export default function CourseCard({ data }: Props) {
               <th style={{ ...th }}></th>
               <th style={{ ...th, textAlign: "center", minWidth: 180 }}>
                 <span style={{ color: "var(--bc-green)" }}>Birdie</span>
-                <span style={{ color: "#3a5060", margin: "0 6px" }}>·</span>
+                <span style={{ color: "var(--bc-muted)", margin: "0 6px" }}>·</span>
                 <span style={{ color: "var(--bc-red)" }}>Bogey</span>
               </th>
               <th style={{ ...th }}>Rank</th>
@@ -215,7 +215,7 @@ export default function CourseCard({ data }: Props) {
         </table>
       </div>
 
-      <p style={{ color: "#3a5060", fontSize: "0.68em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "0.68em", marginTop: 6 }}>
         vs Par = avg strokes above/below par · Rank 1 = hardest hole on course
       </p>
     </div>
@@ -233,7 +233,7 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
   function roundColor(v: number | null): string {
     if (v == null || minR == null || maxR == null || minR === maxR) return "var(--bc-muted)";
     const t = (v - minR) / (maxR - minR); // 0 = easiest round, 1 = toughest
-    return t > 0.66 ? "var(--bc-red)" : t > 0.33 ? "#f39c12" : "var(--bc-green)";
+    return t > 0.66 ? "var(--bc-red)" : t > 0.33 ? "var(--warning)" : "var(--bc-green)";
   }
 
   return (
@@ -339,7 +339,7 @@ const th: React.CSSProperties = {
 
 const cell: React.CSSProperties = {
   padding: "6px 8px",
-  borderBottom: "1px solid #0f2236",
+  borderBottom: "1px solid var(--bc-card)",
   fontSize: "0.83em",
   textAlign: "center",
 };

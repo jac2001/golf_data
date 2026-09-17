@@ -59,7 +59,7 @@ export default function OddsExplorer() {
   const booksShown = books.slice(0, 8);
 
   const th: React.CSSProperties = {
-    background: "#0a1628", color: "var(--bc-muted)",
+    background: "var(--bc-panel)", color: "var(--bc-muted)",
     fontSize: "0.68em", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
@@ -180,7 +180,7 @@ export default function OddsExplorer() {
             <tbody>
               {players.map((p, i) => {
                 const bg = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
-                const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid #0f2236", background: bg };
+                const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid var(--bc-card)", background: bg };
                 return (
                   <tr key={p.player}>
                     <td style={{ ...tdBase, color: "var(--bc-text)", fontWeight: 500, fontSize: "0.85em", whiteSpace: "nowrap" }}>
@@ -218,7 +218,7 @@ export default function OddsExplorer() {
                               )}
                             </div>
                           ) : (
-                            <span style={{ color: "#1a3050" }}>—</span>
+                            <span style={{ color: "var(--bc-line)" }}>—</span>
                           )}
                         </td>
                       );

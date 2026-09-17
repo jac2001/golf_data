@@ -13,7 +13,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
   const myPicksNorm = new Set(myPicks.map(normName));
   if (!players.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No data available.
       </div>
     );
@@ -25,7 +25,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
   const underPerf = [...withDiff].sort((a, b) => (a.rank_diff ?? 0) - (b.rank_diff ?? 0)).slice(0, 3);
 
   const th: React.CSSProperties = {
-    background: "#0a1628", color: "#5a7090",
+    background: "var(--bc-panel)", color: "var(--bc-muted)",
     fontSize: "0.68em", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
@@ -46,13 +46,13 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
                 {overPerf.map(p => (
                   <div key={p.player} style={{ background: "#0d2218", border: "1px solid rgba(0,196,79,0.2)", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
                     <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "0.85em" }}>
-                      <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
+                      <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
                     </div>
                     <div style={{ fontSize: "0.72em", marginTop: 3 }}>
-                      <span style={{ color: "#00c44f" }}>Live #{p.position ?? "?"}</span>
-                      <span style={{ color: "#3a5060", margin: "0 5px" }}>vs</span>
+                      <span style={{ color: "var(--bc-green)" }}>Live #{p.position ?? "?"}</span>
+                      <span style={{ color: "var(--bc-muted)", margin: "0 5px" }}>vs</span>
                       <span style={{ color: "var(--bc-muted)" }}>Model #{p.model_rank}</span>
-                      <span style={{ color: "#00c44f", marginLeft: 8 }}>+{p.rank_diff}</span>
+                      <span style={{ color: "var(--bc-green)", marginLeft: 8 }}>+{p.rank_diff}</span>
                     </div>
                   </div>
                 ))}
@@ -66,15 +66,15 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {underPerf.map(p => (
-                  <div key={p.player} style={{ background: "#1a0d0d", border: "1px solid rgba(231,76,60,0.2)", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
+                  <div key={p.player} style={{ background: "rgba(224,85,85,0.10)", border: "1px solid rgba(231,76,60,0.2)", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
                     <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "0.85em" }}>
-                      <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
+                      <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
                     </div>
                     <div style={{ fontSize: "0.72em", marginTop: 3 }}>
-                      <span style={{ color: "#e74c3c" }}>Live #{p.position ?? "?"}</span>
-                      <span style={{ color: "#3a5060", margin: "0 5px" }}>vs</span>
+                      <span style={{ color: "var(--bc-red-text)" }}>Live #{p.position ?? "?"}</span>
+                      <span style={{ color: "var(--bc-muted)", margin: "0 5px" }}>vs</span>
                       <span style={{ color: "var(--bc-muted)" }}>Model #{p.model_rank}</span>
-                      <span style={{ color: "#e74c3c", marginLeft: 8 }}>{p.rank_diff}</span>
+                      <span style={{ color: "var(--bc-red-text)", marginLeft: 8 }}>{p.rank_diff}</span>
                     </div>
                   </div>
                 ))}
@@ -90,12 +90,12 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
             <tr>
               <th style={{ ...th, textAlign: "left", minWidth: 160 }}>Player</th>
               <th style={{ ...th }}>Live Pos</th>
-              <th style={{ ...th, color: "#00c44f" }}>Total</th>
+              <th style={{ ...th, color: "var(--bc-green)" }}>Total</th>
               <th style={{ ...th }}>Thru</th>
               <th style={{ ...th }}>Model #</th>
               <th style={{ ...th }}>Δ Rank</th>
-              <th style={{ ...th, color: "#00c44f" }}>Model Win%</th>
-              <th style={{ ...th, color: "#4cb8ff" }}>Model Top10%</th>
+              <th style={{ ...th, color: "var(--bc-green)" }}>Model Win%</th>
+              <th style={{ ...th, color: "var(--bc-yellow)" }}>Model Top10%</th>
             </tr>
           </thead>
           <tbody>
@@ -103,48 +103,48 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
               const isPick = myPicksNorm.has(normName(p.player));
               const bg = isPick ? "#091a0f" : i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
               const td: React.CSSProperties = {
-                padding: "6px 10px", borderBottom: "1px solid #0f2236",
+                padding: "6px 10px", borderBottom: "1px solid var(--bc-card)",
                 background: bg, textAlign: "center", fontSize: "0.85em",
               };
 
               const isCut = p.made_cut === false;
               const diff  = p.rank_diff ?? 0;
-              const diffColor = diff > 5 ? "#00c44f" : diff < -5 ? "#e74c3c" : diff !== 0 ? "#f39c12" : "#3a5060";
+              const diffColor = diff > 5 ? "var(--bc-green)" : diff < -5 ? "var(--bc-red-text)" : diff !== 0 ? "var(--warning)" : "var(--bc-muted)";
               const diffStr   = diff === 0 ? "=" : diff > 0 ? `+${diff}` : String(diff);
 
-              const totalColor = p.total_numeric == null ? "#7f8c8d"
-                : p.total_numeric < 0 ? "#00c44f"
-                : p.total_numeric > 0 ? "#e74c3c"
-                : "#8ba0b8";
+              const totalColor = p.total_numeric == null ? "var(--bc-muted)"
+                : p.total_numeric < 0 ? "var(--bc-green)"
+                : p.total_numeric > 0 ? "var(--bc-red-text)"
+                : "var(--bc-muted)";
 
               return (
-                <tr key={`vsp-${i}`} style={{ opacity: isCut ? 0.55 : 1, borderLeft: isPick ? "2px solid #00c44f" : "2px solid transparent" }}>
+                <tr key={`vsp-${i}`} style={{ opacity: isCut ? 0.55 : 1, borderLeft: isPick ? "2px solid var(--bc-green)" : "2px solid transparent" }}>
                   <td style={{ ...td, textAlign: "left", fontWeight: 600, whiteSpace: "nowrap" }}>
                     <Link
                       href={`/players?player=${encodeURIComponent(p.player)}`}
-                      style={{ color: isPick ? "#00c44f" : isCut ? "#3a5060" : "var(--bc-text)", textDecoration: "none", fontWeight: isPick ? 700 : 600 }}
-                      onMouseEnter={e => (e.currentTarget.style.color = "#4cb8ff")}
-                      onMouseLeave={e => (e.currentTarget.style.color = isPick ? "#00c44f" : isCut ? "#3a5060" : "var(--bc-text)")}
+                      style={{ color: isPick ? "var(--bc-green)" : isCut ? "var(--bc-muted)" : "var(--bc-text)", textDecoration: "none", fontWeight: isPick ? 700 : 600 }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
+                      onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : isCut ? "var(--bc-muted)" : "var(--bc-text)")}
                     >
                       {p.player}
                     </Link>
                     {isPick && (
-                      <span style={{ fontSize: "0.58em", fontWeight: 800, color: "#00c44f", background: "#0d2e18", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6 }}>
+                      <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6 }}>
                         MY PICK
                       </span>
                     )}
                     {isCut && <span style={{ fontSize: "0.7em", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>}
                   </td>
-                  <td style={{ ...td, color: "#8ba0b8", fontWeight: 700 }}>{p.position ?? "—"}</td>
+                  <td style={{ ...td, color: "var(--bc-muted)", fontWeight: 700 }}>{p.position ?? "—"}</td>
                   <td style={{ ...td, color: totalColor, fontWeight: 700 }}>{p.total ?? "—"}</td>
-                  <td style={{ ...td, color: "#7f8c8d" }}>{p.thru ?? "—"}</td>
-                  <td style={{ ...td, color: "#4cb8ff", fontWeight: 700 }}>{p.model_rank != null ? `#${p.model_rank}` : "—"}</td>
+                  <td style={{ ...td, color: "var(--bc-muted)" }}>{p.thru ?? "—"}</td>
+                  <td style={{ ...td, color: "var(--bc-yellow)", fontWeight: 700 }}>{p.model_rank != null ? `#${p.model_rank}` : "—"}</td>
                   <td style={{ ...td, color: diffColor, fontWeight: Math.abs(diff) > 5 ? 700 : 400 }}
                     title={diff > 0 ? "beating model prediction" : diff < 0 ? "below model prediction" : "on model"}>
                     {diffStr}
                   </td>
-                  <td style={{ ...td, color: "#00c44f" }}>{p.win_prob != null ? `${p.win_prob.toFixed(1)}%` : "—"}</td>
-                  <td style={{ ...td, color: "#4cb8ff" }}>{p.top10_prob != null ? `${p.top10_prob.toFixed(1)}%` : "—"}</td>
+                  <td style={{ ...td, color: "var(--bc-green)" }}>{p.win_prob != null ? `${p.win_prob.toFixed(1)}%` : "—"}</td>
+                  <td style={{ ...td, color: "var(--bc-yellow)" }}>{p.top10_prob != null ? `${p.top10_prob.toFixed(1)}%` : "—"}</td>
                 </tr>
               );
             })}
@@ -152,7 +152,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
         </table>
       </div>
 
-      <p style={{ color: "#3a5060", fontSize: "0.70em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>
         Δ Rank = Live position minus model rank · green = beating prediction · red = below prediction
       </p>
     </div>

@@ -42,7 +42,7 @@ function BetsTab() {
       {/* Overall summary strip */}
       <div style={{
         display: "flex", gap: 24, padding: "12px 16px", marginBottom: 20,
-        background: "#0a1720", borderRadius: 8, border: "1px solid var(--bc-line)",
+        background: "var(--bc-panel)", borderRadius: 8, border: "1px solid var(--bc-line)",
         flexWrap: "wrap",
       }}>
         {[
@@ -85,7 +85,7 @@ function BetsTab() {
               </tr>
               {expanded === t.tournament_id && (
                 <tr>
-                  <td colSpan={5} style={{ background: "#0a1720", padding: "12px 24px" }}>
+                  <td colSpan={5} style={{ background: "var(--bc-panel)", padding: "12px 24px" }}>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                       {t.markets.map(m => (
                         <span key={m.market} style={{
@@ -125,7 +125,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
   const statItems = [
     { label: "Tracked",  value: String(stats.total_bets) },
     { label: "Pending",  value: String(stats.pending) },
-    { label: "Won",      value: `${stats.won} / ${stats.graded}`, color: stats.won > 0 ? "#00c44f" : undefined },
+    { label: "Won",      value: `${stats.won} / ${stats.graded}`, color: stats.won > 0 ? "var(--bc-green)" : undefined },
     { label: "P&L",
       value: stats.total_pnl != null ? `${stats.total_pnl >= 0 ? "+" : ""}${stats.total_pnl.toFixed(2)}u` : "—",
       color: stats.total_pnl != null ? pnlColor(stats.total_pnl) : undefined },
@@ -141,7 +141,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
       <div style={{
         display: "flex", gap: 16, flexWrap: "wrap",
         padding: "14px 16px",
-        background: "#0a1720", borderRadius: hasBankroll ? "8px 8px 0 0" : 8,
+        background: "var(--bc-panel)", borderRadius: hasBankroll ? "8px 8px 0 0" : 8,
         borderTop: "1px solid var(--bc-line)", borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)",
         borderBottom: hasBankroll ? "none" : "1px solid var(--bc-line)",
       }}>
@@ -166,7 +166,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
             <span style={{ color: "var(--bc-muted)", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
             {" "}
             <span style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>${stats.starting_bankroll?.toLocaleString()}</span>
-            <span style={{ color: "#2a4060", fontSize: "0.82em", margin: "0 6px" }}>→</span>
+            <span style={{ color: "var(--bc-line)", fontSize: "0.82em", margin: "0 6px" }}>→</span>
             <span style={{ color: pnlColor(pnlDollars), fontWeight: 700, fontSize: "1.05em" }}>
               ${stats.current_bankroll?.toLocaleString()}
             </span>
@@ -174,7 +174,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
           <div style={{ color: pnlColor(pnlDollars), fontSize: "0.88em", fontWeight: 600 }}>
             {pnlDollars >= 0 ? "+" : ""}${pnlDollars.toFixed(2)} season
           </div>
-          <div style={{ color: "#3a5060", fontSize: "0.75em" }}>
+          <div style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
             ${stats.unit_size}/unit
           </div>
 
@@ -183,7 +183,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginLeft: "auto" }}>
               {stats.by_tournament.map((t: TournamentPnl) => (
                 <span key={t.tid} style={{
-                  background: "#0d1929", border: "1px solid var(--bc-line)",
+                  background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
                   borderRadius: 5, padding: "3px 8px", fontSize: "0.75em",
                 }}>
                   <span style={{ color: "var(--bc-muted)" }}>{t.tid.replace("R2026", "")}</span>
@@ -191,7 +191,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
                   <span style={{ color: pnlColor(t.pnl_dollars), fontWeight: 600 }}>
                     {t.pnl_dollars >= 0 ? "+" : ""}${t.pnl_dollars.toFixed(0)}
                   </span>
-                  <span style={{ color: "#2a4060" }}> {t.won}/{t.total}</span>
+                  <span style={{ color: "var(--bc-line)" }}> {t.won}/{t.total}</span>
                 </span>
               ))}
             </div>
@@ -204,8 +204,8 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
 
 function LiveStatusDot({ status }: { status: SlipBet["live_status"] }) {
   if (!status) return null;
-  const color = status === "on_track"  ? "#00c44f"
-              : status === "marginal"  ? "#f39c12"
+  const color = status === "on_track"  ? "var(--bc-green)"
+              : status === "marginal"  ? "var(--warning)"
               : status === "off_track" ? "#e05555"
               : "#5a7a9a"; // tracking / finished
   return (
@@ -223,7 +223,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
 
   const hasLive   = isPending && !!bet.live_position;
   const scoreNum  = bet.live_total ? parseFloat(bet.live_total) : null;
-  const scoreColor = scoreNum != null && scoreNum < 0 ? "#00c44f"
+  const scoreColor = scoreNum != null && scoreNum < 0 ? "var(--bc-green)"
                    : scoreNum != null && scoreNum > 0 ? "#e05555"
                    : "var(--bc-text)";
 
@@ -242,11 +242,11 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
         {bet.player_name}
       </td>
       <td style={cell}>{MARKET_LABELS[bet.market] ?? bet.market}</td>
-      <td style={{ ...cell, color: "#8ba0b8" }}>{odds}</td>
+      <td style={{ ...cell, color: "var(--bc-muted)" }}>{odds}</td>
 
       {/* Result column: live context for pending bets, or Won/Lost */}
       <td style={cell}>
-        {isWon  && <span style={{ color: "#00c44f", fontWeight: 700 }}>Won</span>}
+        {isWon  && <span style={{ color: "var(--bc-green)", fontWeight: 700 }}>Won</span>}
         {isLost && <span style={{ color: "#e05555", fontWeight: 700 }}>Lost</span>}
         {isPending && hasLive && (
           <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
@@ -263,7 +263,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
           </div>
         )}
         {isPending && !hasLive && (
-          <span style={{ color: "#f39c12" }}>Pending</span>
+          <span style={{ color: "var(--warning)" }}>Pending</span>
         )}
       </td>
 
@@ -275,7 +275,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
           <button
             onClick={() => onRemove(bet.id)}
             style={{
-              background: "transparent", border: "1px solid #2a4060",
+              background: "transparent", border: "1px solid var(--bc-line)",
               borderRadius: 4, color: "var(--bc-muted)", fontSize: "0.72em",
               padding: "2px 8px", cursor: "pointer",
             }}
@@ -343,7 +343,7 @@ function MySlipTab() {
 
       {/* Last updated indicator */}
       {updatedAt && (
-        <div style={{ fontSize: "0.72em", color: "#2a4060", marginBottom: 12, paddingLeft: 2 }}>
+        <div style={{ fontSize: "0.72em", color: "var(--bc-line)", marginBottom: 12, paddingLeft: 2 }}>
           Live · updated {updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           <span style={{ color: "#1e3050", marginLeft: 8 }}>auto-refreshes every 2 min</span>
         </div>
@@ -369,7 +369,7 @@ function MySlipTab() {
                   borderBottom: "1px solid #1a2a3a",
                 }}>
                   {tid}
-                  <span style={{ marginLeft: 10, color: "#2a4060", fontWeight: 400 }}>
+                  <span style={{ marginLeft: 10, color: "var(--bc-line)", fontWeight: 400 }}>
                     {tbets.length} bet{tbets.length !== 1 ? "s" : ""}
                   </span>
                 </td>

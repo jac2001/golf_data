@@ -20,9 +20,9 @@ function fmtDate(iso: string): string {
 function WdRow({ w }: { w: Withdrawal }) {
   return (
     <div style={{
-      background: "#1a0d0d",
-      borderTop: "1px solid #5f1e1e", borderRight: "1px solid #5f1e1e", borderBottom: "1px solid #5f1e1e",
-      borderLeft: "3px solid #e74c3c",
+      background: "rgba(224,85,85,0.10)",
+      borderTop: "1px solid rgba(224,85,85,0.35)", borderRight: "1px solid rgba(224,85,85,0.35)", borderBottom: "1px solid rgba(224,85,85,0.35)",
+      borderLeft: "3px solid var(--bc-red-text)",
       borderRadius: 7, padding: "10px 14px",
       display: "flex", justifyContent: "space-between", alignItems: "center",
       flexWrap: "wrap", gap: 8,
@@ -37,7 +37,7 @@ function WdRow({ w }: { w: Withdrawal }) {
         </div>
       </div>
       <span style={{
-        fontSize: "0.65em", fontWeight: 800, color: "#e74c3c",
+        fontSize: "0.65em", fontWeight: 800, color: "var(--bc-red-text)",
         background: "rgba(231,76,60,0.09)", padding: "3px 9px",
         borderRadius: 4, border: "1px solid rgba(231,76,60,0.2)",
         textTransform: "uppercase", letterSpacing: "0.07em", flexShrink: 0,
@@ -51,7 +51,7 @@ function WdRow({ w }: { w: Withdrawal }) {
 export default function WithdrawalsTab({ withdrawals }: Props) {
   if (!withdrawals.length) {
     return (
-      <div style={{ padding: 24, textAlign: "center", color: "#7f8c8d", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+      <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         No confirmed withdrawals for this tournament.
       </div>
     );
@@ -59,7 +59,7 @@ export default function WithdrawalsTab({ withdrawals }: Props) {
 
   return (
     <div>
-      <div style={{ fontSize: "0.65em", fontWeight: 700, color: "#e74c3c", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>
+      <div style={{ fontSize: "0.65em", fontWeight: 700, color: "var(--bc-red-text)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 10 }}>
         Withdrawals ({withdrawals.length})
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>

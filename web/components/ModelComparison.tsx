@@ -102,7 +102,7 @@ export default function ModelComparison({ players }: Props) {
                 { label: "Top 10 % (Us vs DG)", color: MUTED, align: "center" as const, minWidth: 160 },
               ].map(({ label, color, align, width, minWidth }) => (
                 <th key={label} style={{
-                  padding: "7px 10px", background: "#0a1628",
+                  padding: "7px 10px", background: "var(--bc-panel)",
                   fontSize: "0.68em", fontWeight: 700, color,
                   textTransform: "uppercase", letterSpacing: "0.05em",
                   borderBottom: `1px solid ${BORDER}`,
@@ -127,7 +127,7 @@ export default function ModelComparison({ players }: Props) {
 
               const td: React.CSSProperties = {
                 padding: "6px 10px", background: bg,
-                borderBottom: "1px solid #0f2236", fontSize: "0.85em",
+                borderBottom: "1px solid var(--bc-card)", fontSize: "0.85em",
               };
 
               return (
@@ -156,7 +156,7 @@ export default function ModelComparison({ players }: Props) {
                         {p.our_win != null ? `${p.our_win.toFixed(1)}%` : "—"}
                       </span>
                       <div style={{ display: "grid", gridTemplateColumns: `${wA.toFixed(1)}fr ${wB.toFixed(1)}fr`, height: 7, borderRadius: 4, overflow: "hidden" }}>
-                        <div style={{ background: weUp ? GREEN : "#0d2e18" }} />
+                        <div style={{ background: weUp ? GREEN : "color-mix(in srgb, var(--bc-green) 15%, transparent)" }} />
                         <div style={{ background: dgUp ? BLUE : "var(--bc-card)" }} />
                       </div>
                       <span style={{ color: BLUE, fontWeight: dgUp ? 700 : 400, fontSize: "0.88em" }}>
@@ -172,7 +172,7 @@ export default function ModelComparison({ players }: Props) {
                         {p.our_top10 != null ? `${p.our_top10.toFixed(1)}%` : "—"}
                       </span>
                       <div style={{ display: "grid", gridTemplateColumns: `${tA.toFixed(1)}fr ${tB.toFixed(1)}fr`, height: 7, borderRadius: 4, overflow: "hidden" }}>
-                        <div style={{ background: weUp ? GREEN : "#0d2e18" }} />
+                        <div style={{ background: weUp ? GREEN : "color-mix(in srgb, var(--bc-green) 15%, transparent)" }} />
                         <div style={{ background: dgUp ? BLUE : "var(--bc-card)" }} />
                       </div>
                       <span style={{ color: BLUE, fontWeight: dgUp ? 700 : 400, fontSize: "0.88em" }}>
@@ -187,7 +187,7 @@ export default function ModelComparison({ players }: Props) {
         </table>
       </div>
 
-      <p style={{ color: "#3a5060", fontSize: "0.70em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>
         Δ = DG rank − our rank · <span style={{ color: GREEN }}>green = we rank higher</span> · <span style={{ color: BLUE }}>blue = DG ranks higher</span>
       </p>
     </div>

@@ -152,9 +152,9 @@ export default function PredictionsPage() {
   // ── Error / loading screens ───────────────────────────────────────────────────
   if (error) {
     return (
-      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 10, color: "var(--bc-red)" }}>
+      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, background: "rgba(224,85,85,0.10)", border: "1px solid rgba(224,85,85,0.35)", borderRadius: 10, color: "var(--bc-red)" }}>
         <strong>Error</strong>
-        <p style={{ margin: "8px 0 0", color: "#c0392b", fontSize: "0.9em" }}>{error}</p>
+        <p style={{ margin: "8px 0 0", color: "var(--negative)", fontSize: "0.9em" }}>{error}</p>
       </div>
     );
   }
@@ -266,7 +266,7 @@ export default function PredictionsPage() {
               }}
               disabled={generatingLineup}
               style={{
-                background: generatingLineup ? "#0d1929" : "#0a1f3a",
+                background: generatingLineup ? "var(--bc-panel)" : "#0a1f3a",
                 border: "1px solid #1e5a3f", borderRadius: 6,
                 color: generatingLineup ? "var(--bc-muted)" : "var(--bc-green)",
                 padding: "8px 20px", fontSize: "0.85em", fontWeight: 700,

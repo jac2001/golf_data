@@ -163,7 +163,7 @@ export default function MatchupsTab() {
 
 function MatchupTable({ data }: { data: MatchupsResponse }) {
   const th: React.CSSProperties = {
-    background: "#0a1628", color: "var(--bc-muted)",
+    background: "var(--bc-panel)", color: "var(--bc-muted)",
     fontSize: "0.68em", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
@@ -197,7 +197,7 @@ function MatchupTable({ data }: { data: MatchupsResponse }) {
         <tbody>
           {data.matchups.map((m, i) => {
             const bg = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
-            const td: React.CSSProperties = { padding: "6px 10px", borderBottom: "1px solid #0f2236", background: bg };
+            const td: React.CSSProperties = { padding: "6px 10px", borderBottom: "1px solid var(--bc-card)", background: bg };
 
             return (
               <tr key={`${m.p1}-${m.p2}`}>
@@ -224,12 +224,12 @@ function MatchupTable({ data }: { data: MatchupsResponse }) {
                           {bk.p1_odds ?? "—"}
                           {isPos && <span style={{ fontSize: "0.75em", display: "block", color: "var(--bc-green)" }}>+{ev!.toFixed(1)}%</span>}
                         </span>
-                      ) : <span style={{ color: "#1a3050" }}>—</span>}
+                      ) : <span style={{ color: "var(--bc-line)" }}>—</span>}
                     </td>
                   );
                 })}
                 {/* vs */}
-                <td style={{ ...td, color: "#1a3050", fontWeight: 900, textAlign: "center", fontSize: "0.75em" }}>vs</td>
+                <td style={{ ...td, color: "var(--bc-line)", fontWeight: 900, textAlign: "center", fontSize: "0.75em" }}>vs</td>
                 {/* P2 name */}
                 <td style={{ ...td, color: "var(--bc-text)", fontWeight: 600, whiteSpace: "nowrap", fontSize: "0.85em" }}>{m.p2}</td>
                 {/* DG P2 */}
@@ -253,7 +253,7 @@ function MatchupTable({ data }: { data: MatchupsResponse }) {
                           {bk.p2_odds ?? "—"}
                           {isPos && <span style={{ fontSize: "0.75em", display: "block", color: "var(--bc-green)" }}>+{ev!.toFixed(1)}%</span>}
                         </span>
-                      ) : <span style={{ color: "#1a3050" }}>—</span>}
+                      ) : <span style={{ color: "var(--bc-line)" }}>—</span>}
                     </td>
                   );
                 })}
@@ -273,7 +273,7 @@ function MatchupTable({ data }: { data: MatchupsResponse }) {
 
 function ThreeBallTable({ data }: { data: ThreeBallResponse }) {
   const th: React.CSSProperties = {
-    background: "#0a1628", color: "var(--bc-muted)",
+    background: "var(--bc-panel)", color: "var(--bc-muted)",
     fontSize: "0.68em", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
@@ -302,7 +302,7 @@ function ThreeBallTable({ data }: { data: ThreeBallResponse }) {
         <tbody>
           {data.pairings.map((p, i) => {
             const bg = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
-            const td: React.CSSProperties = { padding: "6px 10px", borderBottom: "1px solid #0f2236", background: bg };
+            const td: React.CSSProperties = { padding: "6px 10px", borderBottom: "1px solid var(--bc-card)", background: bg };
             return (
               <tr key={`${p.teetime}-${p.group}-${i}`}>
                 <td style={{ ...td, color: "var(--bc-muted)", fontSize: "0.80em" }}>{p.teetime}</td>
@@ -310,8 +310,8 @@ function ThreeBallTable({ data }: { data: ThreeBallResponse }) {
                 <td style={{ ...td, color: "var(--bc-orange)", fontWeight: 700, textAlign: "center", fontSize: "0.85em" }}>{p.p1_odds}</td>
                 <td style={{ ...td, color: "var(--bc-text)", fontWeight: 600, fontSize: "0.85em" }}>{p.p2}</td>
                 <td style={{ ...td, color: "var(--bc-orange)", fontWeight: 700, textAlign: "center", fontSize: "0.85em" }}>{p.p2_odds}</td>
-                <td style={{ ...td, color: p.p3 ? "var(--bc-muted)" : "#1a3050", fontSize: "0.85em" }}>{p.p3 ?? "—"}</td>
-                <td style={{ ...td, color: p.p3 ? "var(--bc-orange)" : "#1a3050", textAlign: "center", fontSize: "0.85em" }}>{p.p3_odds ?? "—"}</td>
+                <td style={{ ...td, color: p.p3 ? "var(--bc-muted)" : "var(--bc-line)", fontSize: "0.85em" }}>{p.p3 ?? "—"}</td>
+                <td style={{ ...td, color: p.p3 ? "var(--bc-orange)" : "var(--bc-line)", textAlign: "center", fontSize: "0.85em" }}>{p.p3_odds ?? "—"}</td>
               </tr>
             );
           })}

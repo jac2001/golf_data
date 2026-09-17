@@ -8,16 +8,16 @@ type Props = { data: TeeTimesResponse; myPicks?: string[] };
 const DRIFT_ARROW: Record<string, { s: string; c: string }> = {
   UP:       { s: "▲", c: "var(--bc-red)" },
   DOWN:     { s: "▼", c: "var(--bc-green)" },
-  CONSTANT: { s: "→", c: "#3a5060" },
+  CONSTANT: { s: "→", c: "var(--bc-muted)" },
 };
 
 // Rank badge color
 function rankColor(rank: number | null): string {
-  if (rank == null) return "#3a5060";
+  if (rank == null) return "var(--bc-muted)";
   if (rank <= 5)  return "var(--bc-yellow)";
   if (rank <= 15) return "var(--bc-green)";
   if (rank <= 30) return "var(--bc-yellow)";
-  return "#3a5060";
+  return "var(--bc-muted)";
 }
 
 function normName(n: string) {
@@ -70,7 +70,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
             }}>
               {/* Tee time header */}
               <div style={{
-                background: hasUse ? "#0a1e14" : "#0a1628",
+                background: hasUse ? "#0a1e14" : "var(--bc-panel)",
                 padding: "6px 12px",
                 borderBottom: `1px solid ${hasUse ? "color-mix(in srgb, var(--bc-green) 20%, transparent)" : "var(--bc-line)"}`,
                 display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -80,12 +80,12 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                 </span>
                 <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                   {group.players[0]?.start_tee && (
-                    <span style={{ color: "#3a5060", fontSize: "0.68em" }}>
+                    <span style={{ color: "var(--bc-muted)", fontSize: "0.68em" }}>
                       Hole {group.players[0].start_tee}
                     </span>
                   )}
                   {hasUse && (
-                    <span style={{ fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", padding: "2px 5px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" }}>
+                    <span style={{ fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", padding: "2px 5px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" }}>
                       VALUE
                     </span>
                   )}
@@ -96,10 +96,10 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
               {group.players.some(p => p.edge != null) && (
                 <div style={{
                   display: "grid", gridTemplateColumns: "1fr auto",
-                  padding: "3px 12px", borderBottom: "1px solid #0a1628",
+                  padding: "3px 12px", borderBottom: "1px solid var(--bc-panel)",
                 }}>
-                  <span style={{ fontSize: "0.58em", color: "#2a3a50", textTransform: "uppercase", letterSpacing: "0.05em" }}>Player</span>
-                  <span style={{ fontSize: "0.58em", color: "#2a3a50", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right" }}>
+                  <span style={{ fontSize: "0.58em", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Player</span>
+                  <span style={{ fontSize: "0.58em", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right" }}>
                     Win% · Top10% · Edge
                   </span>
                 </div>
@@ -113,13 +113,13 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                 const formColor = (p.form_trend ?? 0) > 0.2 ? "var(--bc-green)"
                   : (p.form_trend ?? 0) < -0.1 ? "var(--bc-red)" : "var(--bc-muted)";
                 const rColor = rankColor(p.model_rank);
-                const edgeColor = p.edge == null ? "#3a5060"
-                  : p.edge > 5 ? "var(--bc-green)" : p.edge > 2 ? "#f39c12" : "#3a5060";
+                const edgeColor = p.edge == null ? "var(--bc-muted)"
+                  : p.edge > 5 ? "var(--bc-green)" : p.edge > 2 ? "var(--warning)" : "var(--bc-muted)";
 
                 return (
                   <div key={p.name} style={{
                     padding: "8px 12px",
-                    borderBottom: i < group.players.length - 1 ? "1px solid #0f2236" : "none",
+                    borderBottom: i < group.players.length - 1 ? "1px solid var(--bc-card)" : "none",
                     borderLeft: isPick ? "2px solid var(--bc-green)" : isEdge ? "2px solid var(--bc-yellow)" : "2px solid transparent",
                     background: isPick ? "#091a0f" : isEdge ? "#0a1a10" : "transparent",
                     display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -153,12 +153,12 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           {isPick && (
                             <span style={{
                               fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)",
-                              background: "#0d2e18", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
+                              background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
                               borderRadius: 3, padding: "1px 4px", whiteSpace: "nowrap", flexShrink: 0,
                             }}>MY PICK</span>
                           )}
                         </div>
-                        <div style={{ color: "#3a5060", fontSize: "0.64em", marginTop: 1 }}>
+                        <div style={{ color: "var(--bc-muted)", fontSize: "0.64em", marginTop: 1 }}>
                           OWGR #{p.world_rank ?? "—"}
                           {drift && (
                             <span style={{ color: drift.c, marginLeft: 5 }}>{drift.s}</span>

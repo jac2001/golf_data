@@ -32,14 +32,14 @@ function precipColor(pct: string): string {
   if (isNaN(n)) return "var(--bc-muted)";
   if (n >= 50) return "var(--bc-yellow)";
   if (n >= 25) return "#7fb8d4";
-  return "#3a5060";
+  return "var(--bc-muted)";
 }
 
 function DayCard({ day }: { day: WeatherDay }) {
   const { label, color, icon } = conditionMeta(day.condition);
   const pColor = precipColor(day.precip_pct);
   const windNum = parseInt(day.wind_mph);
-  const windColor = windNum >= 15 ? "#f39c12" : windNum >= 10 ? "var(--bc-muted)" : "var(--bc-muted)";
+  const windColor = windNum >= 15 ? "var(--warning)" : windNum >= 10 ? "var(--bc-muted)" : "var(--bc-muted)";
 
   return (
     <div style={{
@@ -83,9 +83,9 @@ export default function WeatherStrip({ days, savedAt }: Props) {
 
   return (
     <div style={{ marginBottom: 20 }}>
-      <div style={{ fontSize: "0.62em", color: "#3a5060", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+      <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
         Round Week Forecast
-        {savedAt && <span style={{ marginLeft: 10, color: "#2a3a50" }}>· {savedAt.slice(0, 10)}</span>}
+        {savedAt && <span style={{ marginLeft: 10, color: "var(--bc-line)" }}>· {savedAt.slice(0, 10)}</span>}
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {days.map(d => <DayCard key={d.day} day={d} />)}

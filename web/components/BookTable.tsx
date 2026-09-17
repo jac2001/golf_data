@@ -23,7 +23,7 @@ export default function BookTable({ data }: Props) {
 
   // Column header style
   const th: React.CSSProperties = {
-    background: "#0a1628",
+    background: "var(--bc-panel)",
     color: "var(--bc-muted)",
     fontSize: "0.70em",
     fontWeight: 600,
@@ -37,7 +37,7 @@ export default function BookTable({ data }: Props) {
   // Cell style
   const td: React.CSSProperties = {
     padding: "7px 12px",
-    borderBottom: "1px solid #0f2236",
+    borderBottom: "1px solid var(--bc-card)",
     fontSize: "0.85em",
   };
 

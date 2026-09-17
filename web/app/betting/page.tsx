@@ -434,7 +434,7 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
           {bet.player_name}
         </Link>
         {isPick && (
-          <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "#0d2e18", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px" }}>
+          <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px" }}>
             MY PICK
           </span>
         )}
@@ -457,11 +457,11 @@ function ErrorScreen({ message }: { message: string }) {
   return (
     <div style={{
       maxWidth: 600, margin: "40px auto", padding: 24,
-      background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 10,
+      background: "rgba(224,85,85,0.10)", border: "1px solid rgba(224,85,85,0.35)", borderRadius: 10,
       color: "var(--bc-red)",
     }}>
       <strong>Error</strong>
-      <p style={{ margin: "8px 0 0", color: "#c0392b", fontSize: "0.9em" }}>{message}</p>
+      <p style={{ margin: "8px 0 0", color: "var(--negative)", fontSize: "0.9em" }}>{message}</p>
     </div>
   );
 }

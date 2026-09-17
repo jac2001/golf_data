@@ -194,9 +194,9 @@ export default function LivePage() {
   // ── Error screen ──────────────────────────────────────────────────────────────
   if (error) {
     return (
-      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, background: "#1a0d0d", border: "1px solid #5f1e1e", borderRadius: 10, color: "var(--negative)" }}>
+      <div style={{ maxWidth: 600, margin: "40px auto", padding: 24, background: "rgba(224,85,85,0.10)", border: "1px solid rgba(224,85,85,0.35)", borderRadius: 10, color: "var(--negative)" }}>
         <strong>Error</strong>
-        <p style={{ margin: "8px 0 0", color: "#c0392b", fontSize: "0.9em" }}>{error}</p>
+        <p style={{ margin: "8px 0 0", color: "var(--negative)", fontSize: "0.9em" }}>{error}</p>
       </div>
     );
   }

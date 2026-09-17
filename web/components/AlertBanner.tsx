@@ -19,9 +19,9 @@ const POLL_MS    = 30_000;
 const DISMISS_MS = 8_000;
 
 const SEV_COLORS: Record<string, { border: string; bg: string; dot: string }> = {
-  high:   { border: "#00c44f", bg: "#061a0e", dot: "#00c44f" },
-  normal: { border: "#4cb8ff", bg: "#061220", dot: "#4cb8ff" },
-  low:    { border: "#3a5060", bg: "#091520", dot: "#3a5060" },
+  high:   { border: "var(--bc-green)", bg: "#061a0e", dot: "var(--bc-green)" },
+  normal: { border: "var(--bc-yellow)", bg: "var(--bc-panel)", dot: "var(--bc-yellow)" },
+  low:    { border: "var(--bc-muted)", bg: "#091520", dot: "var(--bc-muted)" },
 };
 
 type ToastItem = LiveAlert & { expires: number };
@@ -111,7 +111,7 @@ export default function AlertBanner() {
                     {toast.title}
                   </span>
                 </div>
-                <p style={{ margin: 0, fontSize: "0.75em", color: "#7f8c8d", lineHeight: 1.4 }}>
+                <p style={{ margin: 0, fontSize: "0.75em", color: "var(--bc-muted)", lineHeight: 1.4 }}>
                   {toast.body}
                 </p>
               </div>
@@ -127,7 +127,7 @@ export default function AlertBanner() {
               </button>
             </div>
             {/* Progress bar — visually shows time until auto-dismiss */}
-            <div style={{ marginTop: 8, height: 2, background: "#0f2236", borderRadius: 1 }}>
+            <div style={{ marginTop: 8, height: 2, background: "var(--bc-card)", borderRadius: 1 }}>
               <div style={{
                 height: "100%",
                 background: colors.border,

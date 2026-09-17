@@ -31,7 +31,7 @@ function UsePips({ count }: { count: number | null }) {
       {Array.from({ length: total }).map((_, i) => (
         <div key={i} style={{
           width: 9, height: 9, borderRadius: "50%",
-          background: i < filled ? "var(--bc-green)" : "#1a3050",
+          background: i < filled ? "var(--bc-green)" : "var(--bc-line)",
           border: `1px solid ${i < filled ? "color-mix(in srgb, var(--bc-green) 53%, transparent)" : "var(--bc-line)"}`,
           boxShadow: i < filled ? "0 0 4px color-mix(in srgb, var(--bc-green) 27%, transparent)" : "none",
         }} />
@@ -46,7 +46,7 @@ function UsePips({ count }: { count: number | null }) {
 function StatBox({ label, value, color }: { label: string; value: string; color: string }) {
   return (
     <div style={{
-      background: "#080f1e",
+      background: "var(--bc-panel)",
       border: "1px solid var(--bc-card)",
       borderRadius: 6,
       padding: "8px 10px",
@@ -106,7 +106,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
         </span>
         <span style={{
           fontSize: "0.6em", fontWeight: 700, color: "var(--bc-green)",
-          background: "#0d2e18", padding: "2px 7px",
+          background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", padding: "2px 7px",
           borderRadius: 4, border: "1px solid color-mix(in srgb, var(--bc-green) 19%, transparent)",
           whiteSpace: "nowrap",
         }}>
@@ -197,7 +197,7 @@ export default function LineupCards({ picks, narrative, generatedAt }: Props) {
       {/* Weekly narrative */}
       {narrative && (
         <div style={{
-          background: "#080f1e",
+          background: "var(--bc-panel)",
           borderTop: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
           borderLeft: "3px solid var(--bc-green)",
           borderRadius: 10, padding: "14px 18px",
@@ -209,7 +209,7 @@ export default function LineupCards({ picks, narrative, generatedAt }: Props) {
             {narrative}
           </p>
           {generatedAt && (
-            <p style={{ color: "#2a3a50", fontSize: "0.68em", marginTop: 8, marginBottom: 0 }}>
+            <p style={{ color: "var(--bc-line)", fontSize: "0.68em", marginTop: 8, marginBottom: 0 }}>
               Generated: {generatedAt.slice(0, 16)}
             </p>
           )}

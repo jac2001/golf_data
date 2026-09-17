@@ -61,7 +61,7 @@ function shiftColor(v: number | null): string {
 }
 
 function usesColor(n: number | null): string {
-  if (n == null) return "#3a5060";
+  if (n == null) return "var(--bc-muted)";
   if (n >= 2) return "var(--bc-green)";
   if (n === 1) return "var(--bc-yellow)";
   return "var(--bc-red)";
@@ -74,7 +74,7 @@ function fmtAdj(v: number | null): string {
 
 // Mini SG bar (scale ±1.5)
 function SgBar({ value }: { value: number | null }) {
-  if (value == null) return <span style={{ color: "#3a5060" }}>—</span>;
+  if (value == null) return <span style={{ color: "var(--bc-muted)" }}>—</span>;
   const capped = Math.max(-1.5, Math.min(1.5, value));
   const barW   = Math.abs(capped / 1.5) * 28;
   const color  = sgColor(value);
@@ -90,7 +90,7 @@ function SgBar({ value }: { value: number | null }) {
 
 // Mini adjustment bar (scale configurable, default ±0.35)
 function AdjBar({ value, scale = 0.35 }: { value: number | null; scale?: number }) {
-  if (value == null) return <span style={{ color: "#3a5060" }}>—</span>;
+  if (value == null) return <span style={{ color: "var(--bc-muted)" }}>—</span>;
   const capped = Math.max(-scale, Math.min(scale, value));
   const barW   = Math.abs(capped / scale) * 28;
   const color  = adjColor(value);
@@ -115,7 +115,7 @@ function CourseProfile({ profile }: { profile: CourseFitResponse["course_profile
   ].sort((a, b) => profile[b.key] - profile[a.key]);
 
   return (
-    <div style={{ background: "#080f1e", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "14px 18px", marginBottom: 20 }}>
+    <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "14px 18px", marginBottom: 20 }}>
       <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 12 }}>
         Course Demand Profile — what this course rewards most
       </div>
@@ -126,16 +126,16 @@ function CourseProfile({ profile }: { profile: CourseFitResponse["course_profile
           return (
             <div key={key} style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <div style={{ width: 110, fontSize: "0.82em", color: "var(--bc-text)", flexShrink: 0 }}>{label}</div>
-              <div style={{ flex: 1, height: 8, background: "#0d1929", borderRadius: 4, overflow: "hidden" }}>
+              <div style={{ flex: 1, height: 8, background: "var(--bc-panel)", borderRadius: 4, overflow: "hidden" }}>
                 <div style={{ width: `${val * 100}%`, height: "100%", background: barColor, borderRadius: 4, transition: "width 0.3s ease" }} />
               </div>
               <div style={{ width: 36, fontSize: "0.82em", color: "var(--bc-muted)", textAlign: "right", flexShrink: 0 }}>{Math.round(val * 100)}%</div>
-              <div style={{ width: 200, fontSize: "0.72em", color: "#3a5060" }}>{desc}</div>
+              <div style={{ width: 200, fontSize: "0.72em", color: "var(--bc-muted)" }}>{desc}</div>
             </div>
           );
         })}
       </div>
-      <div style={{ marginTop: 10, fontSize: "0.68em", color: "#2a4060" }}>
+      <div style={{ marginTop: 10, fontSize: "0.68em", color: "var(--bc-line)" }}>
         Higher % = this skill is more differentiating at this course vs. an average PGA Tour event.
       </div>
     </div>
@@ -154,7 +154,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
   if (base == null || final == null) {
     return (
       <tr>
-        <td colSpan={COL_SPAN} style={{ ...cell, background: "#060d1a", color: "#3a5060", fontStyle: "italic", fontSize: "0.78em" }}>
+        <td colSpan={COL_SPAN} style={{ ...cell, background: "var(--bc-panel)", color: "var(--bc-muted)", fontStyle: "italic", fontSize: "0.78em" }}>
           No DG decomposition available for this player.
         </td>
       </tr>
@@ -174,11 +174,11 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
 
   return (
     <tr>
-      <td colSpan={COL_SPAN} style={{ background: "#060d1a", padding: "10px 20px 14px 48px", borderBottom: "1px solid var(--bc-line)" }}>
+      <td colSpan={COL_SPAN} style={{ background: "var(--bc-panel)", padding: "10px 20px 14px 48px", borderBottom: "1px solid var(--bc-line)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 0, flexWrap: "wrap", rowGap: 6 }}>
           {steps.map((s, idx) => (
             <span key={idx} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              {idx > 0 && <span style={{ color: "#2a4060", margin: "0 6px" }}>→</span>}
+              {idx > 0 && <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>}
               <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>{s.label}</span>
               <span style={{
                 fontSize: "0.82em", fontWeight: 600,
@@ -193,7 +193,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
           ))}
           {remaining != null && Math.abs(remaining) > 0.005 && (
             <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ color: "#2a4060", margin: "0 6px" }}>→</span>
+              <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>
               <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>+ other</span>
               <span style={{ fontSize: "0.82em", fontWeight: 600, color: adjColor(remaining) }}>
                 {fmtAdj(remaining)}
@@ -201,7 +201,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
             </span>
           )}
           <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ color: "#2a4060", margin: "0 6px" }}>→</span>
+            <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>
             <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>DG final</span>
             <span style={{
               fontSize: "0.88em", fontWeight: 700,
@@ -226,7 +226,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
             </span>
           </span>
         </div>
-        <div style={{ marginTop: 6, fontSize: "0.7em", color: "#2a4060" }}>
+        <div style={{ marginTop: 6, fontSize: "0.7em", color: "var(--bc-line)" }}>
           Baseline = DG skill rating (pure SG, no course context). Positive timing = currently above expected form.
         </div>
       </td>
@@ -275,7 +275,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
                 {p.uses_remaining}u
               </span>
             )}
-            <span style={{ fontSize: "0.68em", color: expanded ? "var(--bc-green)" : "#2a4060", marginLeft: 2 }}>
+            <span style={{ fontSize: "0.68em", color: expanded ? "var(--bc-green)" : "var(--bc-line)", marginLeft: 2 }}>
               {expanded ? "▲" : "▼"}
             </span>
           </div>
@@ -306,7 +306,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
               )}
             </div>
           ) : (
-            <span style={{ color: "#2a3a4a", fontSize: "0.78em" }}>—</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>—</span>
           )}
         </td>
 
@@ -326,7 +326,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
               )}
             </div>
           ) : (
-            <span style={{ color: "#2a3a4a", fontSize: "0.78em" }}>—</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>—</span>
           )}
         </td>
 
@@ -480,7 +480,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
       <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap", alignItems: "center" }}>
         {(["boost", "model", "history"] as SortMode[]).map(mode => (
           <button key={mode} onClick={() => setSortMode(mode)} style={{
-            background: sortMode === mode ? "#1a3a5f" : "#0d1929",
+            background: sortMode === mode ? "#1a3a5f" : "var(--bc-panel)",
             border: `1px solid ${sortMode === mode ? "var(--bc-green)" : "var(--bc-line)"}`,
             color: sortMode === mode ? "var(--bc-text)" : "var(--bc-muted)",
             borderRadius: 6, padding: "5px 12px", fontSize: "0.8em", cursor: "pointer",
@@ -493,7 +493,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
           value={search}
           onChange={e => setSearch(e.target.value)}
           style={{
-            background: "#0d1929", border: "1px solid var(--bc-line)", borderRadius: 6,
+            background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
             color: "var(--bc-text)", padding: "5px 10px", fontSize: "0.8em",
             outline: "none", marginLeft: "auto",
           }}
@@ -505,7 +505,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
         <span style={{ fontSize: "0.75em", color: "var(--bc-muted)", marginRight: 4 }}>Min starts:</span>
         {startCounts.map(({ n, count }) => (
           <button key={n} onClick={() => setMinStarts(n)} style={{
-            background: minStarts === n ? "#1a2a40" : "#0d1929",
+            background: minStarts === n ? "#1a2a40" : "var(--bc-panel)",
             border: `1px solid ${minStarts === n ? "var(--bc-muted)" : "var(--bc-line)"}`,
             color: minStarts === n ? "var(--bc-text)" : "var(--bc-muted)",
             borderRadius: 5, padding: "3px 10px", fontSize: "0.77em", cursor: "pointer",
@@ -521,7 +521,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
               <span style={{ fontWeight: 700 }}>{n}u</span> {label}
             </span>
           ))}
-          <span style={{ color: "#3a5060" }}>— not on roster</span>
+          <span style={{ color: "var(--bc-muted)" }}>— not on roster</span>
         </div>
       </div>
 
@@ -579,7 +579,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
           </tbody>
         </table>
       </div>
-      <div style={{ marginTop: 10, fontSize: "0.72em", color: "#2a4060" }}>
+      <div style={{ marginTop: 10, fontSize: "0.72em", color: "var(--bc-line)" }}>
         Click any row to expand DG decomposition. Timing = DG form adjustment. Fit Adj = course suitability adjustment. DG Win% = DataGolf model.
       </div>
     </div>

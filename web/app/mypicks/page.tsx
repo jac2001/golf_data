@@ -72,7 +72,7 @@ function WeekCard({ week }: { week: WeeklyLineup }) {
               {fmtMoney(week.earnings)}
             </div>
           ) : (
-            <div style={{ color: "#3a5060", fontSize: "0.8em" }}>—</div>
+            <div style={{ color: "var(--lg-muted)", fontSize: "0.8em" }}>—</div>
           )}
           {week.finish != null && (
             <div style={{ fontSize: "0.65em", color: "var(--lg-muted)", marginTop: 2 }}>
@@ -166,7 +166,7 @@ function RosterRow({ player, maxUses }: { player: RosterPlayer; maxUses: number 
               {player.tournaments.map((t, i) => (
                 <div key={i} style={{
                   display: "flex", justifyContent: "space-between",
-                  fontSize: "0.78em", color: "#7f9ab0",
+                  fontSize: "0.78em", color: "var(--lg-muted)",
                 }}>
                   <span>{t.tournament}</span>
                   <div style={{ display: "flex", gap: 16 }}>

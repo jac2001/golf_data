@@ -1781,7 +1781,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
           {/* vs field ranks */}
           <div style={{ display: "flex", gap: 16 }}>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "1.6em", fontWeight: 800, color: GREEN }}>
+              <div style={{ fontSize: "1.6em", fontWeight: 800, color: BLUE }}>
                 {m.win_rank != null ? `#${m.win_rank}` : "—"}
               </div>
               <div style={{ fontSize: "0.68em", color: LABEL }}>WIN RANK</div>
@@ -1800,8 +1800,8 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
       <div style={card}>
         <p style={sectionLabel}>Our Model</p>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
-          <Chip label="Win%" value={fmtPct(m.win_prob)} color={GREEN} />
-          <Chip label="Top 10%" value={fmtPct(m.top10_prob)} color={BLUE} />
+          <Chip label="Win%" value={fmtPct(m.win_prob)} />
+          <Chip label="Top 10%" value={fmtPct(m.top10_prob)} />
           <Chip label="Cut%" value={fmtPct(m.cut_prob)} />
           <Chip label="Season SG" value={fmt(m.season_sg_total, 2)} color={sgColor(m.season_sg_total)} />
           {m.odds_to_win != null && (
@@ -1850,11 +1850,11 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
         <div style={card}>
           <p style={sectionLabel}>DG Tournament Prediction</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
-            <Chip label="DG Win%"    value={fmtPct(profile.dg_prediction.win)}      color={BLUE} />
-            <Chip label="Top 5%"     value={fmtPct(profile.dg_prediction.top_5)}    color={BLUE} />
-            <Chip label="Top 10%"    value={fmtPct(profile.dg_prediction.top_10)}   color={BLUE} />
-            <Chip label="Top 20%"    value={fmtPct(profile.dg_prediction.top_20)}   color={BLUE} />
-            <Chip label="Make Cut%"  value={fmtPct(profile.dg_prediction.make_cut)} color={BLUE} />
+            <Chip label="DG Win%"    value={fmtPct(profile.dg_prediction.win)} />
+            <Chip label="Top 5%"     value={fmtPct(profile.dg_prediction.top_5)} />
+            <Chip label="Top 10%"    value={fmtPct(profile.dg_prediction.top_10)} />
+            <Chip label="Top 20%"    value={fmtPct(profile.dg_prediction.top_20)} />
+            <Chip label="Make Cut%"  value={fmtPct(profile.dg_prediction.make_cut)} />
           </div>
           {/* Course fit context: baseline → adjusted */}
           {profile.dg_prediction.baseline_win != null && profile.dg_prediction.bhf_win != null && (

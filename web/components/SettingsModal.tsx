@@ -6,8 +6,8 @@ import { getSettings, patchSettings, AppSettings } from "@/lib/api";
 const BG     = "#0a1220";
 const BG2    = "var(--bc-card)";
 const BORDER = "var(--bc-line)";
-const MUTED  = "#5a7090";
-const GREEN  = "#00c44f";
+const MUTED  = "var(--bc-muted)";
+const GREEN  = "var(--bc-green)";
 const TEXT   = "var(--bc-text)";
 
 // ── Small sub-components ──────────────────────────────────────────────────────
@@ -167,7 +167,7 @@ export default function SettingsModal({ onClose }: { onClose: () => void }) {
           <div style={{ display: "flex", gap: 4 }}>
             {(["low", "normal", "high"] as const).map(s => (
               <button key={s} onClick={() => setAlert("min_severity", s)} style={{
-                background: a.min_severity === s ? "#0d2e18" : BG2,
+                background: a.min_severity === s ? "color-mix(in srgb, var(--bc-green) 15%, transparent)" : BG2,
                 border: `1px solid ${a.min_severity === s ? GREEN : BORDER}`,
                 color: a.min_severity === s ? GREEN : MUTED,
                 borderRadius: 5, padding: "3px 10px",

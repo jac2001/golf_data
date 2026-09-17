@@ -213,7 +213,7 @@ function ResultsTab() {
                 <td style={{ ...cell, color: "var(--bc-text)", fontWeight: 600 }}>
                   <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     {t.name}
-                    <span style={{ fontSize: "0.72em", color: expanded === t.tournament_id ? "var(--bc-yellow)" : "#2a4060" }}>
+                    <span style={{ fontSize: "0.72em", color: expanded === t.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)" }}>
                       {expanded === t.tournament_id ? "▲" : "▼"}
                     </span>
                   </span>
@@ -229,7 +229,7 @@ function ResultsTab() {
               </tr>
               {expanded === t.tournament_id && (
                 <tr>
-                  <td colSpan={6} style={{ background: "#091525", padding: "16px 20px" }}>
+                  <td colSpan={6} style={{ background: "var(--bc-panel)", padding: "16px 20px" }}>
                     {/* Recap narrative */}
                     {t.recap && (
                       <p style={{
