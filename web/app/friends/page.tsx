@@ -13,7 +13,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { PageHead, SubTabs } from "@/components/broadcast";
-import { getPredictions } from "@/lib/api";
+import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
  *  reads ?player= (a "deep link" — state carried in the URL, so it
@@ -69,7 +69,7 @@ const TABS: { id: GameTab; label: string }[] = [
   { id: "tails",     label: "My Tails" },
 ];
 
-type EventInfo = { tid: string; name: string; locked: boolean; startDate: string };
+type EventInfo = { tid: string; name: string; tour: string; locked: boolean; startDate: string };
 type Standing = {
   user_id: string; user_name: string; total: number;
   events: Record<string, { picks: { player: string; earnings: number | null; position: string | null }[]; event_total: number; settled: boolean }>;
@@ -144,6 +144,8 @@ type FieldRow = { player_name: string; world_rank: number | null;
 
 function PicksTab() {
   const api = useApi();
+  const [events, setEvents] = useState<OpenEvent[]>([]);
+  const [selected, setSelected] = useState<string>("");
   const [event, setEvent]   = useState<EventInfo | null>(null);
   const [picks, setPicks]   = useState<string[]>([]);
   const [field, setField]   = useState<FieldRow[]>([]);
@@ -151,32 +153,58 @@ function PicksTab() {
   const [err, setErr]       = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Which events are pickable this week (PGA + DP World Tour can run
+  // concurrently, so this is a list, not "the" tournament).
+  useEffect(() => {
+    getOpenEvents().then(d => {
+      const evs = d.events ?? [];
+      setEvents(evs);
+      const firstOpen = evs.find(e => !e.locked) ?? evs[0];
+      if (firstOpen) setSelected(firstOpen.tournament_id);
+      else setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
   const load = useCallback(() => {
-    api("/api/friends/picks")
+    if (!selected) return;
+    setLoading(true); setErr("");
+    api(`/api/friends/picks?tournament_id=${encodeURIComponent(selected)}`)
       .then(d => { setEvent(d.event as EventInfo); setPicks(d.picks as string[]); })
       .catch(e => setErr(`Could not load your picks — ${e.message}`))
       .finally(() => setLoading(false));
-  }, [api]);
+  }, [api, selected]);
 
   useEffect(() => {
+    if (!selected) return;
     load();
-    // The whole field with model numbers — so picking is informed, not a
-    // blind name search. Sorted by the model's win chance.
-    getPredictions(200)
-      .then(d => setField(
-        (d.players ?? [])
-          .filter((r: FieldRow) => r.player_name)
-          .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0))
-      ))
-      .catch(() => {});
-  }, [load]);
+    const meta = events.find(e => e.tournament_id === selected);
+    setField([]); setQuery("");
+    if (meta?.has_model) {
+      // PGA current event: the whole field with model numbers, sorted by
+      // the model's win chance — informed picking.
+      getPredictions(200)
+        .then(d => setField(
+          (d.players ?? [])
+            .filter((r: FieldRow) => r.player_name)
+            .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0))
+        ))
+        .catch(() => {});
+    } else {
+      // Euro events have no model (yet) — plain alphabetized field.
+      getEventField(selected)
+        .then(d => setField((d.players ?? []).map(p => ({
+          player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
+        }))))
+        .catch(() => {});
+    }
+  }, [load, selected, events]);
 
   async function add(player: string) {
     setErr("");
     try {
       const d = await api("/api/friends/picks", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ player_name: player }),
+        body: JSON.stringify({ player_name: player, tournament_id: selected }),
       });
       setPicks(d.picks as string[]); setQuery("");
     } catch (e) { setErr((e as Error).message); }
@@ -187,7 +215,7 @@ function PicksTab() {
     try {
       const d = await api("/api/friends/picks", {
         method: "DELETE", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ player_name: player }),
+        body: JSON.stringify({ player_name: player, tournament_id: selected }),
       });
       setPicks(d.picks as string[]);
     } catch (e) { setErr((e as Error).message); }
@@ -210,6 +238,23 @@ function PicksTab() {
 
   return (
     <>
+      {events.length > 1 && (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+          {events.map(ev => (
+            <button key={ev.tournament_id} onClick={() => setSelected(ev.tournament_id)} style={{
+              ...btnQuiet, padding: "7px 14px",
+              color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
+              background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
+              borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
+            }}>
+              {ev.name}
+              <span style={{ marginLeft: 6, fontSize: "0.85em", opacity: 0.75 }}>
+                {ev.tour === "euro" ? "DPWT" : "PGA"}{ev.locked ? " · locked" : ""}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
       <div style={card}>
         <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
           <div>
@@ -317,8 +362,10 @@ function PicksTab() {
 
       <div style={{ ...card, background: "var(--bc-panel)" }}>
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
-          How it works: pick 3 players before the tournament starts. Your week&apos;s
-          score is their combined real prize money. Season standings live on the
+          How it works: pick 3 players per event before it starts. Your score is
+          their combined prize money — real for PGA weeks, estimated from the
+          purse and standard payout table for DP World Tour weeks (DataGolf
+          doesn&apos;t publish euro prize money). Season standings live on the
           next tab — the model plays too, once its Tuesday lineup goes live.
         </p>
       </div>
@@ -478,7 +525,7 @@ type Group = { id: number; name: string; invite_code: string; is_owner: boolean;
   members: { user_id: string; user_name: string }[] };
 type FeedBet = { user_name: string; description: string; odds_american: number | null;
   stake_units: number; outcome: string; tournament_id: string };
-type FeedPick = { user_name: string; player_name: string };
+type FeedPick = { event: string; user_name: string; player_name: string };
 
 const btn: React.CSSProperties = {
   background: "var(--bc-yellow)", color: "#081f14", border: "none",
@@ -656,14 +703,14 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
 
 function GroupFeed({ groupId }: { groupId: number }) {
   const api = useApi();
-  const [feed, setFeed] = useState<{ event: { name: string; locked: boolean } | null;
+  const [feed, setFeed] = useState<{ openNames?: string[];
     bets: FeedBet[]; picks: FeedPick[] } | null>(null);
   const [standings, setStandings] = useState<Standing[] | null>(null);
 
   useEffect(() => {
     api(`/api/friends/feed?group_id=${groupId}`)
       .then(d => setFeed(d as never))
-      .catch(() => setFeed({ event: null, bets: [], picks: [] }));
+      .catch(() => setFeed({ openNames: [], bets: [], picks: [] }));
     api(`/api/friends/leaderboard?group_id=${groupId}`)
       .then(d => setStandings((d.standings as Standing[]) ?? []))
       .catch(() => setStandings([]));
@@ -671,9 +718,12 @@ function GroupFeed({ groupId }: { groupId: number }) {
 
   if (!feed) return <p style={{ color: "var(--bc-muted)", marginTop: 12 }}>Loading…</p>;
 
-  const byUser = new Map<string, string[]>();
+  // Group picks by event, then by user, for the reveal.
+  const byEvent = new Map<string, Map<string, string[]>>();
   for (const p of feed.picks) {
-    byUser.set(p.user_name, [...(byUser.get(p.user_name) ?? []), p.player_name]);
+    const ev = byEvent.get(p.event) ?? new Map<string, string[]>();
+    ev.set(p.user_name, [...(ev.get(p.user_name) ?? []), p.player_name]);
+    byEvent.set(p.event, ev);
   }
 
   return (
@@ -693,28 +743,33 @@ function GroupFeed({ groupId }: { groupId: number }) {
         </div>
       )}
 
-      {/* This week's picks — revealed at lock */}
+      {/* Picks — revealed per event once it locks */}
       <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
         <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", fontWeight: 700,
           textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
-          {feed.event ? `Picks · ${feed.event.name}` : "Picks"}
+          Picks
         </div>
-        {feed.event && !feed.event.locked ? (
+        {byEvent.size === 0 ? (
           <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
-            Hidden until tee-off — no copying.
+            {feed.openNames?.length
+              ? `Hidden until tee-off — picks open for ${feed.openNames.join(", ")}.`
+              : "No locked events with picks yet."}
           </span>
-        ) : byUser.size === 0 ? (
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>No picks this week.</span>
         ) : (
-          [...byUser.entries()].map(([user, ps]) => (
-            <div key={user} style={{ fontSize: "0.86em", padding: "2px 0" }}>
-              <span style={{ fontWeight: 600 }}>{user}</span>
-              <span style={{ color: "var(--bc-muted)" }}> — </span>
-              {ps.map((pl, pi) => (
-                <React.Fragment key={pl}>
-                  {pi > 0 && <span style={{ color: "var(--bc-muted)" }}>, </span>}
-                  <PlayerLink name={pl} style={{ color: "var(--bc-muted)" }} />
-                </React.Fragment>
+          [...byEvent.entries()].map(([evName, byUser]) => (
+            <div key={evName} style={{ marginBottom: 8 }}>
+              <div style={{ color: "var(--bc-yellow)", fontSize: "0.76em", fontWeight: 700 }}>{evName}</div>
+              {[...byUser.entries()].map(([user, ps]) => (
+                <div key={user} style={{ fontSize: "0.86em", padding: "2px 0" }}>
+                  <span style={{ fontWeight: 600 }}>{user}</span>
+                  <span style={{ color: "var(--bc-muted)" }}> — </span>
+                  {ps.map((pl, pi) => (
+                    <React.Fragment key={pl}>
+                      {pi > 0 && <span style={{ color: "var(--bc-muted)" }}>, </span>}
+                      <PlayerLink name={pl} style={{ color: "var(--bc-muted)" }} />
+                    </React.Fragment>
+                  ))}
+                </div>
               ))}
             </div>
           ))

@@ -3872,6 +3872,66 @@ def bet_outcomes(ids: str = "") -> dict:
     return {"outcomes": out}
 
 
+@app.get("/api/events/open")
+def events_open() -> dict:
+    """Events the Friends Game can pick on this week, across tours.
+
+    PGA events come from the schedule files (the model's world); euro
+    events from schedule_euro (picks-only — no predictions). "Open" =
+    starts within the next 10 days or is currently running; locked once
+    its start date arrives.
+    """
+    today = pd.Timestamp.now().normalize()
+    events = []
+    for sp in sorted((DATA_DIR / "raw").glob("schedule*_2*.csv")) + sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+        try:
+            sched = pd.read_csv(sp)
+        except Exception:
+            continue
+        if "tournament_id" not in sched.columns:
+            continue
+        tour = "euro" if "euro" in sp.name else "pga"
+        sched["_s"] = pd.to_datetime(sched["start_date"], errors="coerce")
+        sched["_e"] = pd.to_datetime(sched.get("end_date", sched["start_date"]), errors="coerce")
+        window = sched[(sched["_e"] >= today) & (sched["_s"] <= today + pd.Timedelta(days=10))]
+        for _, r in window.iterrows():
+            tid = str(r["tournament_id"])
+            events.append({
+                "tournament_id": tid,
+                "name": str(r["tournament_name"]),
+                "tour": tour,
+                "start_date": str(r["start_date"]),
+                "end_date": str(r.get("end_date", "")),
+                "locked": bool(r["_s"] <= today),
+                "has_model": tid.startswith("R"),
+                "field_available": (DATA_DIR / "fields" / f"field_{tid}.csv").exists(),
+            })
+    # de-dup (PGA files can overlap seasons) and sort by start
+    seen, out = set(), []
+    for ev in sorted(events, key=lambda e: e["start_date"]):
+        if ev["tournament_id"] in seen:
+            continue
+        seen.add(ev["tournament_id"])
+        out.append(ev)
+    return {"events": out}
+
+
+@app.get("/api/events/field")
+def events_field(tournament_id: str) -> dict:
+    """Player list for any event's field file — powers euro picking, where
+    no predictions exist. Names are returned as-is from the field CSV."""
+    tid = tournament_id.strip().upper()
+    fp = DATA_DIR / "fields" / f"field_{tid}.csv"
+    if not fp.exists():
+        return {"tournament_id": tid, "players": []}
+    try:
+        df = pd.read_csv(fp)
+        col = "player_name" if "player_name" in df.columns else df.columns[0]
+        return {"tournament_id": tid, "players": sorted(df[col].dropna().astype(str).tolist())}
+    except Exception:
+        return {"tournament_id": tid, "players": []}
+
+
 @app.get("/api/results/earnings")
 def results_earnings(tournament_id: str) -> dict:
     """Per-player earnings for one settled event — grades Friends Game picks.
@@ -3881,7 +3941,9 @@ def results_earnings(tournament_id: str) -> dict:
     either "Last, First" or "First Last" spellings.
     """
     tid = tournament_id.strip().upper()
-    for lb_path in sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv"), reverse=True):
+    candidates = sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv"), reverse=True) + \
+                 sorted((DATA_DIR / "historical").glob("leaderboards_euro_2*.csv"), reverse=True)
+    for lb_path in candidates:
         if lb_path.suffix != ".csv":
             continue
         try:

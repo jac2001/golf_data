@@ -30,24 +30,32 @@ export async function GET(req: Request) {
     WHERE shared = true AND user_id = ANY(${memberIds})
     ORDER BY created_at DESC LIMIT 50`;
 
-  // Picks stay hidden until the event locks.
-  let picks: unknown[] = [];
-  let event: { tid: string; name: string; locked: boolean } | null = null;
+  // Picks stay hidden until an event locks; multiple events can be live
+  // the same week (PGA + DP World Tour), so reveal per locked event.
+  let picks: { event: string; user_name: string; player_name: string }[] = [];
+  let openNames: string[] = [];
   try {
-    const res = await fetch(`${MODEL_API}/api/tournament`, { cache: "no-store" });
+    const res = await fetch(`${MODEL_API}/api/events/open`, { next: { revalidate: 120 } });
     if (res.ok) {
-      const t = await res.json();
-      const startDate = String(t.start_date ?? "");
-      const locked = !!startDate && new Date() >= new Date(`${startDate.slice(0, 10)}T00:00:00`);
-      event = { tid: String(t.tournament_id ?? ""), name: String(t.name ?? ""), locked };
-      if (locked && event.tid) {
-        picks = await sql`
-          SELECT user_name, player_name FROM picks
-          WHERE tournament_id = ${event.tid} AND user_id = ANY(${memberIds})
-          ORDER BY user_name, created_at` as { user_name: string; player_name: string }[];
+      const { events } = await res.json();
+      const locked = (events ?? []).filter((e: { locked: boolean }) => e.locked);
+      openNames = (events ?? []).filter((e: { locked: boolean }) => !e.locked)
+        .map((e: { name: string }) => e.name);
+      if (locked.length) {
+        const tids = locked.map((e: { tournament_id: string }) => e.tournament_id);
+        const rows = await sql`
+          SELECT tournament_id, user_name, player_name FROM picks
+          WHERE tournament_id = ANY(${tids}) AND user_id = ANY(${memberIds})
+          ORDER BY user_name, created_at` as
+          { tournament_id: string; user_name: string; player_name: string }[];
+        const nameByTid = new Map(locked.map((e: { tournament_id: string; name: string }) => [e.tournament_id, e.name]));
+        picks = rows.map(r => ({
+          event: String(nameByTid.get(r.tournament_id) ?? r.tournament_id),
+          user_name: r.user_name, player_name: r.player_name,
+        }));
       }
     }
   } catch { /* feed still shows bets */ }
 
-  return Response.json({ event, bets, picks });
+  return Response.json({ openNames, bets, picks });
 }

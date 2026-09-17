@@ -1,43 +1,50 @@
 /**
- * /api/friends/picks — the weekly 3-pick game.
- * =============================================
- * GET    → your picks for the current tournament (plus lock state)
- * POST   → add a pick  { player_name }
- * DELETE → remove one  { player_name }
+ * /api/friends/picks — the weekly 3-pick game, now multi-event.
+ * ==============================================================
+ * PGA and DP World Tour events run the same weeks, so "the" tournament
+ * became "which tournament": every call carries a tournament_id that
+ * must be one of the model API's open events (the server re-checks —
+ * client-supplied ids are never trusted for lock state).
  *
- * Rules mirror Jack's league week: 3 players max, picks lock when the
- * tournament starts. The current event and its start date come from
- * the model API, so this route never invents its own schedule.
+ * GET    ?tournament_id=X → your picks for that event (plus lock state)
+ * POST   { tournament_id, player_name } → add a pick (3 max, pre-lock)
+ * DELETE { tournament_id, player_name } → remove one (pre-lock)
  */
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { nameOf } from "@/lib/displayName";
 
-type EventInfo = { tid: string; name: string; locked: boolean; startDate: string };
+type EventInfo = { tid: string; name: string; tour: string; locked: boolean; startDate: string };
 
-async function currentEvent(): Promise<EventInfo | null> {
+/** Resolve a client-requested event against the model API's open list —
+ *  the server decides what's pickable and when it locks, never the client. */
+async function openEvent(tid: string | null): Promise<EventInfo | null> {
   try {
-    const res = await fetch(`${MODEL_API}/api/tournament`, { cache: "no-store" });
+    const res = await fetch(`${MODEL_API}/api/events/open`, { next: { revalidate: 120 } });
     if (!res.ok) return null;
-    const t = await res.json();
-    if (!t?.tournament_id) return null;
-    const startDate = String(t.start_date ?? "");
-    // Lock at midnight local on the start date — Thursday tee times vary,
-    // Wednesday-night picks are the spirit of the game.
-    const locked = !!startDate && new Date() >= new Date(`${startDate.slice(0, 10)}T00:00:00`);
-    return { tid: String(t.tournament_id), name: String(t.name ?? ""), locked, startDate };
+    const { events } = await res.json();
+    if (!Array.isArray(events) || events.length === 0) return null;
+    const match = tid
+      ? events.find((e: { tournament_id: string }) => e.tournament_id === tid.toUpperCase())
+      : events.find((e: { locked: boolean }) => !e.locked) ?? events[0];
+    if (!match) return null;
+    return {
+      tid: match.tournament_id, name: match.name, tour: match.tour,
+      locked: !!match.locked, startDate: String(match.start_date ?? ""),
+    };
   } catch {
     return null;
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   const { userId } = await auth();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const ev = await currentEvent();
-  if (!ev) return Response.json({ error: "No active tournament" }, { status: 503 });
+  const tid = new URL(req.url).searchParams.get("tournament_id");
+  const ev = await openEvent(tid);
+  if (!ev) return Response.json({ error: "No open tournament" }, { status: 503 });
 
   const sql = getSql();
   const rows = await sql`
@@ -52,11 +59,11 @@ export async function POST(req: Request) {
   const { userId } = await auth();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const ev = await currentEvent();
-  if (!ev) return Response.json({ error: "No active tournament" }, { status: 503 });
+  const body = await req.json().catch(() => ({}));
+  const ev = await openEvent(String(body.tournament_id ?? "") || null);
+  if (!ev) return Response.json({ error: "No open tournament" }, { status: 503 });
   if (ev.locked) return Response.json({ error: "Picks are locked — the tournament has started." }, { status: 409 });
 
-  const body = await req.json().catch(() => ({}));
   const player = String(body.player_name ?? "").trim();
   if (!player) return Response.json({ error: "player_name required" }, { status: 400 });
 
@@ -86,11 +93,11 @@ export async function DELETE(req: Request) {
   const { userId } = await auth();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const ev = await currentEvent();
-  if (!ev) return Response.json({ error: "No active tournament" }, { status: 503 });
+  const body = await req.json().catch(() => ({}));
+  const ev = await openEvent(String(body.tournament_id ?? "") || null);
+  if (!ev) return Response.json({ error: "No open tournament" }, { status: 503 });
   if (ev.locked) return Response.json({ error: "Picks are locked — the tournament has started." }, { status: 409 });
 
-  const body = await req.json().catch(() => ({}));
   const player = String(body.player_name ?? "").trim();
 
   const sql = getSql();

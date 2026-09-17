@@ -295,6 +295,24 @@ export type CourseResponse = {
 
 // ── This Week fetch functions ──────────────────────────────────────────────────
 
+export type OpenEvent = {
+  tournament_id: string; name: string; tour: string;
+  start_date: string; end_date: string; locked: boolean;
+  has_model: boolean; field_available: boolean;
+};
+
+export async function getOpenEvents(): Promise<{ events: OpenEvent[] }> {
+  const res = await apiFetch(`${API_BASE}/api/events/open`, { cache: "no-store" });
+  if (!res.ok) return { events: [] };
+  return res.json();
+}
+
+export async function getEventField(tournamentId: string): Promise<{ players: string[] }> {
+  const res = await apiFetch(`${API_BASE}/api/events/field?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
+  if (!res.ok) return { players: [] };
+  return res.json();
+}
+
 export async function getPredictions(limit = 80): Promise<PredictionsResponse> {
   const res = await apiFetch(`${API_BASE}/api/predictions?limit=${limit}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load predictions");
