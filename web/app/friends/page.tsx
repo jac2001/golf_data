@@ -26,6 +26,25 @@ function PlayerLink({ name, style }: { name: string; style?: React.CSSProperties
   );
 }
 
+
+/** fetch that FAILS LOUDLY: any non-OK response or non-JSON body becomes
+ *  an Error whose message says what actually came back — so the UI can
+ *  show "401 Unauthorized" or "404 <!DOCTYPE html…" instead of a shrug. */
+async function fetchJson(url: string, init?: RequestInit): Promise<Record<string, unknown>> {
+  const res = await fetch(url, init);
+  const text = await res.text();
+  try {
+    const d = JSON.parse(text);
+    if (!res.ok && d?.error) throw new Error(`${res.status}: ${d.error}`);
+    return d;
+  } catch (e) {
+    if (e instanceof SyntaxError) {
+      throw new Error(`${res.status}: non-JSON response (${text.slice(0, 60).replace(/\s+/g, " ")}…)`);
+    }
+    throw e;
+  }
+}
+
 type GameTab = "picks" | "standings" | "groups" | "bets" | "tails";
 const TABS: { id: GameTab; label: string }[] = [
   { id: "picks",     label: "My Picks" },
@@ -117,13 +136,9 @@ function PicksTab() {
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(() => {
-    fetch("/api/friends/picks")
-      .then(r => r.json())
-      .then(d => {
-        if (d.error) { setErr(d.error); return; }
-        setEvent(d.event); setPicks(d.picks);
-      })
-      .catch(() => setErr("Could not load your picks."))
+    fetchJson("/api/friends/picks")
+      .then(d => { setEvent(d.event as EventInfo); setPicks(d.picks as string[]); })
+      .catch(e => setErr(`Could not load your picks — ${e.message}`))
       .finally(() => setLoading(false));
   }, []);
 
@@ -473,8 +488,9 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
   const [copied, setCopied]   = useState<number | null>(null);
 
   const load = useCallback(() => {
-    fetch("/api/friends/groups").then(r => r.json())
-      .then(d => setGroups(d.groups ?? [])).catch(() => setGroups([]));
+    fetchJson("/api/friends/groups")
+      .then(d => setGroups((d.groups as Group[]) ?? []))
+      .catch(e => { setErr(String(e.message)); setGroups([]); });
   }, []);
   useEffect(load, [load]);
 
