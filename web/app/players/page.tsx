@@ -2078,6 +2078,12 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
     !b.startsWith("Responsible") && !b.match(/^[A-Z][a-z]+ (won|finished) this tournament/)
   ).slice(0, 6);
 
+  // A profile row with nothing in it renders as an empty shell with just a
+  // header — hide the card entirely unless something is worth showing.
+  const hasContent = !!bp.summary || keyBullets.length > 0 || courseHistory.length > 0
+    || recentResults.length > 0 || bp.events_played != null || bp.wins != null;
+  if (!hasContent) return null;
+
   return (
     <div style={card}>
       <p style={sectionLabel}>PGA Tour Insights</p>

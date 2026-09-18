@@ -4305,6 +4305,95 @@ def get_player_profile(player: str) -> dict:
     }
 
 
+def _career_from_csvs(player: str) -> dict:
+    """Career from the historical leaderboard CSVs (2012-2026) — the cloud
+    has no DuckDB file, so without this every player's career was empty in
+    production. SG columns aren't in the CSVs and come back null; the UI
+    already renders those as em-dashes."""
+    player_key = _name_key(player)
+    frames = []
+    for lb in sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv")):
+        try:
+            frames.append(pd.read_csv(lb))
+        except Exception:
+            continue
+    if not frames:
+        return {"recent": [], "by_year": []}
+    df = pd.concat(frames, ignore_index=True)
+    df["_key"] = df["player_name"].map(lambda n: _name_key(str(n)))
+    df = df[df["_key"] == player_key]
+    if df.empty:
+        return {"recent": [], "by_year": []}
+
+    def posn(v):
+        sv = str(v).strip().upper()
+        if sv in {"CUT", "WD", "DQ", "DNS", "NAN", ""}:
+            return None
+        try:
+            return int(float(sv.replace("T", "")))
+        except Exception:
+            return None
+
+    def earn(v):
+        try:
+            return float(str(v).replace("$", "").replace(",", ""))
+        except Exception:
+            return None
+
+    df = df.copy()
+    df["_pos"] = df["position"].map(posn)
+    df["_earn"] = df["earnings"].map(earn)
+    if "year" not in df.columns:
+        df["year"] = df["tournament_id"].astype(str).str[1:5].astype(int)
+    df = df.sort_values(["year", "tournament_id"], ascending=False)
+
+    def sf(v):
+        try:
+            f = float(v)
+            return None if f != f else round(f, 3)
+        except Exception:
+            return None
+
+    recent = []
+    for _, r in df.head(25).iterrows():
+        recent.append({
+            "tournament_id": str(r["tournament_id"]),
+            "tournament_name": str(r.get("tournament_name", "")),
+            "year": int(r["year"]),
+            "position": str(r["position"]).strip(),
+            "to_par": str(r.get("to_par", "")),
+            "total_score": int(r["total_score"]) if pd.notna(r.get("total_score")) else None,
+            "earnings": r["_earn"],
+            "rounds_played": int(r["rounds_played"]) if pd.notna(r.get("rounds_played")) else None,
+            "r1": sf(r.get("r1_score", r.get("r1"))), "r2": sf(r.get("r2_score", r.get("r2"))),
+            "r3": sf(r.get("r3_score", r.get("r3"))), "r4": sf(r.get("r4_score", r.get("r4"))),
+            "sg_total": None, "sg_ott": None, "sg_app": None, "sg_arg": None,
+            "sg_putt": None, "driving_dist": None, "driving_acc": None,
+            "gir_pct": None, "scrambling": None, "scoring_avg": None, "birdie_pct": None,
+        })
+
+    by_year = []
+    for yr, g in df.groupby("year"):
+        rounds = pd.concat([pd.to_numeric(g.get(c, g.get(c2)), errors="coerce")
+                            for c, c2 in [("r1_score", "r1"), ("r2_score", "r2"),
+                                          ("r3_score", "r3"), ("r4_score", "r4")]])
+        by_year.append({
+            "year": int(yr),
+            "starts": int(len(g)),
+            "wins": int((g["_pos"] == 1).sum()),
+            "top10s": int((g["_pos"] <= 10).sum()),
+            "top25s": int((g["_pos"] <= 25).sum()),
+            "cuts_made": int(g["_pos"].notna().sum()),
+            "avg_sg_total": None, "avg_sg_ott": None, "avg_sg_app": None,
+            "avg_sg_arg": None, "avg_sg_putt": None,
+            "avg_driving_dist": None, "avg_driving_acc": None,
+            "avg_gir_pct": None, "avg_scrambling": None,
+            "avg_scoring": sf(rounds.mean()),
+        })
+    by_year.sort(key=lambda y: -y["year"])
+    return {"recent": recent, "by_year": by_year}
+
+
 @app.get("/api/players/career")
 def get_player_career(player: str) -> dict:
     """
@@ -4313,7 +4402,7 @@ def get_player_career(player: str) -> dict:
     `player` is 'First Last' format.
     """
     if not _DB_AVAILABLE:
-        return {"recent": [], "by_year": []}
+        return _career_from_csvs(player)
 
     player_key = _name_key(player)
 
@@ -4332,7 +4421,7 @@ def get_player_career(player: str) -> dict:
             )
             matched = candidates[candidates["_key"] == player_key]
             if matched.empty:
-                return {"recent": [], "by_year": []}
+                return _career_from_csvs(player)
             player_ids = matched["player_id"].astype(str).tolist()
             # Use canonical name from DB for display
             canonical_name = matched["player_name"].iloc[0]
@@ -4462,7 +4551,7 @@ def get_player_career(player: str) -> dict:
                 rounds_df = None
 
     except Exception as e:
-        return {"recent": [], "by_year": [], "error": str(e)}
+        return _career_from_csvs(player)
 
     def _safe_float(v) -> float | None:
         try:
