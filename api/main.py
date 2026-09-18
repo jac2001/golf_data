@@ -4279,6 +4279,14 @@ def get_player_profile(player: str) -> dict:
                             "fedex_rank", "fedex_points", "events_played",
                             "wins", "top_10s", "top_25s", "cuts_made"]:
                     betting_profile[col] = _safe(pd.to_numeric(bp_row.get(col), errors="coerce")) if col in bp_df.columns else None
+
+                # The scraped article often lacks the season record (comes back
+                # 0/None) — but our own settled results know it. 0 events with
+                # results on the books is visibly wrong, so backfill from data.
+                if not betting_profile.get("events_played"):
+                    rec = _season_record_from_results(player)
+                    if rec["events_played"]:
+                        betting_profile.update(rec)
                 # String stats
                 for col in ["gir_pct", "scrambling_pct"]:
                     betting_profile[col] = str(bp_row[col]) if col in bp_df.columns and str(bp_row.get(col, "")) not in ("nan", "None", "") else None
@@ -4302,6 +4310,43 @@ def get_player_profile(player: str) -> dict:
         "skill_ratings":  skill_ratings,
         "approach_skill": approach_skill,
         "betting_profile": betting_profile,
+    }
+
+
+def _season_record_from_results(player: str) -> dict:
+    """Current-season events/wins/top-10s/cuts from the settled leaderboard
+    CSVs — trusted source for the profile's season-record chips."""
+    player_key = _name_key(player)
+    out = {"events_played": None, "wins": None, "top_10s": None, "top_25s": None, "cuts_made": None}
+    frames = []
+    for lb in sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv"), reverse=True)[:1]:
+        try:
+            frames.append(pd.read_csv(lb))
+        except Exception:
+            continue
+    if not frames:
+        return out
+    df = frames[0]
+    df = df[df["player_name"].map(lambda n: _name_key(str(n))) == player_key]
+    if df.empty:
+        return out
+
+    def posn(v):
+        sv = str(v).strip().upper()
+        if sv in {"CUT", "WD", "DQ", "DNS", "NAN", ""}:
+            return None
+        try:
+            return int(float(sv.replace("T", "")))
+        except Exception:
+            return None
+
+    pos = df["position"].map(posn)
+    return {
+        "events_played": int(len(df)),
+        "wins": int((pos == 1).sum()),
+        "top_10s": int((pos <= 10).sum()),
+        "top_25s": int((pos <= 25).sum()),
+        "cuts_made": int(pos.notna().sum()),
     }
 
 
@@ -6140,6 +6185,68 @@ def history_tournaments() -> dict:
     return {"tournaments": tournaments}
 
 
+def _tournament_detail_from_export(tid: str) -> dict:
+    """Full-field leaderboard for one event from player_careers.csv —
+    the same rows the DB query returns, so career-row expansion works on
+    the cloud (no golf_data.db there)."""
+    exp = DATA_DIR / "processed" / "player_careers.csv"
+    if not exp.exists():
+        return {"players": []}
+    try:
+        df = pd.read_csv(exp)
+    except Exception:
+        return {"players": []}
+    df = df[df["tournament_id"].astype(str).str.upper() == tid.upper()]
+    if df.empty:
+        return {"players": []}
+
+    def si(v):
+        try:
+            return int(v) if pd.notna(v) else None
+        except Exception:
+            return None
+
+    def sf(v):
+        try:
+            f = float(v)
+            return None if f != f else round(f, 3)
+        except Exception:
+            return None
+
+    def fe(v):
+        try:
+            f = float(str(v).replace("$", "").replace(",", ""))
+            return f"${f:,.0f}"
+        except Exception:
+            return None
+
+    def posk(v):
+        sv = str(v).strip().upper()
+        if sv in {"CUT", "MC"}: return 900
+        if sv in {"WD", "DQ", "DNS"}: return 950
+        try: return int(float(sv.replace("T", "")))
+        except Exception: return 999
+
+    df = df.sort_values("position", key=lambda c: c.map(posk))
+    players = []
+    for _, r in df.iterrows():
+        players.append({
+            "position": str(r["position"]).strip(),
+            "player_name": str(r["player_name"]).strip(),
+            "total_score": si(r.get("total_score")),
+            "to_par": str(r["to_par"]).strip() if pd.notna(r.get("to_par")) else "",
+            "r1": si(r.get("r1")), "r2": si(r.get("r2")),
+            "r3": si(r.get("r3")), "r4": si(r.get("r4")),
+            "earnings": fe(r.get("earnings")),
+            "sg_total": sf(r.get("sg_total")), "sg_ott": sf(r.get("sg_ott")),
+            "sg_app": sf(r.get("sg_app")), "sg_arg": sf(r.get("sg_arg")),
+            "sg_putt": sf(r.get("sg_putt")),
+            "driving_dist": sf(r.get("driving_dist")), "driving_acc": sf(r.get("driving_acc")),
+            "gir_pct": sf(r.get("gir_pct")), "scrambling": sf(r.get("scrambling")),
+        })
+    return {"players": players}
+
+
 @app.get("/api/history/tournament/{tid}")
 def history_tournament_detail(tid: str) -> dict:
     """Full leaderboard for a single settled tournament — reads from DuckDB.
@@ -6149,7 +6256,7 @@ def history_tournament_detail(tid: str) -> dict:
     tournament_id fixed and varies player_id (the whole field).
     """
     if not _DB_AVAILABLE:
-        return {"players": []}
+        return _tournament_detail_from_export(tid)
 
     try:
         with _get_db_conn() as conn:
@@ -6178,10 +6285,10 @@ def history_tournament_detail(tid: str) -> dict:
                 ORDER BY TRY_CAST(REGEXP_EXTRACT(l.position, '[0-9]+', 0) AS INTEGER) NULLS LAST
             """, [tid.upper(), tid.upper()]).fetchdf()
     except Exception:
-        return {"players": []}
+        return _tournament_detail_from_export(tid)
 
     if df.empty:
-        return {"players": []}
+        return _tournament_detail_from_export(tid)
 
     def _safe_int(v) -> int | None:
         try:
