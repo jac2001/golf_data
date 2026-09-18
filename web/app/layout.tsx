@@ -33,6 +33,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,   // allow pinch-zoom but don't lock it
+  themeColor: "#081f14",  // colors the browser/status bar to match the nav
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

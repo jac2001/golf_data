@@ -10,10 +10,20 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
 
+// Signed-in-only. The public storefront stays open: / (home),
+// /methodology (trust), /predictions (top-10 teaser — the page itself
+// truncates for signed-out viewers), sign-in/up. Everything with real
+// edge (full forecast, betting, live, players) or real cost (assistant
+// burns API credits per question) needs the free account.
 const isProtected = createRouteMatcher([
   "/fantasy(.*)",
   "/mypicks(.*)",
   "/friends(.*)",
+  "/betting(.*)",
+  "/live(.*)",
+  "/players(.*)",
+  "/assistant(.*)",
+  "/history(.*)",
   "/api/friends(.*)",
 ]);
 

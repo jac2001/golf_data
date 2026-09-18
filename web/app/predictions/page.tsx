@@ -30,6 +30,8 @@ import ModelComparison from "@/components/ModelComparison";
 import WeatherStrip from "@/components/WeatherStrip";
 import CourseFitTab from "@/components/CourseFitTab";
 import { PageHead, SubTabs } from "@/components/broadcast";
+import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 type Tab = "field" | "lineup" | "teetimes" | "course" | "dg" | "coursefit";
 
 const TABS: { id: Tab; label: string }[] = [
@@ -56,6 +58,9 @@ export default function PredictionsPage() {
 
   // ── Data state ───────────────────────────────────────────────────────────────
   const [tournament, setTournament]   = useState<Tournament | null>(null);
+  // Signed-out visitors get a top-10 teaser of the field tab only — the
+  // free account unlocks the full forecast and the other tabs.
+  const { isSignedIn } = useUser();
   const [preds, setPreds]             = useState<PredictionsResponse | null>(null);
   const [lineup, setLineup]           = useState<LineupResponse | null>(null);
   const [teeTimes, setTeeTimes]       = useState<TeeTimesResponse | null>(null);
@@ -224,8 +229,8 @@ export default function PredictionsPage() {
         />
       )}
 
-      {/* ── Tab switcher ─────────────────────────────────────────────────── */}
-      <SubTabs tabs={TABS} active={activeTab} onChange={activateTab} />
+      {/* ── Tab switcher (full tab set is signed-in only) ────────────────── */}
+      {isSignedIn && <SubTabs tabs={TABS} active={activeTab} onChange={activateTab} />}
 
       {/* ── Tab content ──────────────────────────────────────────────────── */}
 
@@ -233,11 +238,34 @@ export default function PredictionsPage() {
         loadingField
           ? <Spinner />
           : preds
-            ? <PredictionsTable
-                players={preds.players}
-                intel={intel?.players ?? []}
-                myPicks={lineup?.confirmed ? lineup.picks.map(p => p.player_name) : []}
-              />
+            ? <>
+                <PredictionsTable
+                  players={isSignedIn ? preds.players : preds.players.slice(0, 10)}
+                  intel={intel?.players ?? []}
+                  myPicks={lineup?.confirmed ? lineup.picks.map(p => p.player_name) : []}
+                />
+                {!isSignedIn && (
+                  <div style={{
+                    marginTop: 16, padding: "22px 24px", textAlign: "center",
+                    background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10,
+                  }}>
+                    <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 6 }}>
+                      That&apos;s the top 10 of {preds.field_size ?? preds.count} players
+                    </div>
+                    <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "0 0 14px", lineHeight: 1.6 }}>
+                      A free account unlocks the whole field, the betting board,
+                      live tracking, player profiles, and the Friends Game.
+                    </p>
+                    <Link href="/sign-up" style={{
+                      display: "inline-block", background: "var(--bc-yellow)", color: "#081f14",
+                      fontWeight: 900, textTransform: "uppercase", fontSize: "0.8em",
+                      letterSpacing: "0.06em", padding: "12px 22px", borderRadius: 5,
+                    }}>
+                      Create free account
+                    </Link>
+                  </div>
+                )}
+              </>
             : <Empty text="No predictions available." />
       )}
 
