@@ -36,3 +36,6 @@ config.json
 .vercel
 .env*
 Budget-App/
+
+# player_careers.csv is a committed artifact (cloud career pages read it)
+!data/processed/player_careers.csv

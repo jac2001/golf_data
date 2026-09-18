@@ -1067,6 +1067,19 @@ def main():
         except Exception as e:
             print(f"  Recap generation failed (non-fatal): {e}")
 
+    # Refresh the committed career export so the Monday push carries the
+    # settled week's SG rows to the cloud (career pages have no DB there).
+    if ok and not dry:
+        print(f"\n[Step 7] Exporting player careers CSV...")
+        try:
+            import subprocess
+            subprocess.run(
+                [sys.executable, str(Path(__file__).resolve().parent / "database" / "export_player_careers.py")],
+                check=True, timeout=600,
+            )
+        except Exception as e:
+            print(f"  Career export failed (non-fatal): {e}")
+
     print(f"\n{'='*60}")
     print(f"  Pipeline {'complete' if ok else 'FAILED'}.")
     print(f"{'='*60}\n")
