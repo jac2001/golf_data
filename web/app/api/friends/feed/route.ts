@@ -23,6 +23,7 @@ export async function GET(req: Request) {
   if (!memberIds.includes(userId)) {
     return Response.json({ error: "Not a member of this group." }, { status: 403 });
   }
+  memberIds.push("model");  // its picks reveal at lock like anyone's
 
   const bets = await sql`
     SELECT user_name, description, odds_american, stake_units, outcome, tournament_id, created_at

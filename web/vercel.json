@@ -12,5 +12,11 @@
         }
       ]
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/model-sync",
+      "schedule": "0 12 * * *"
+    }
   ]
 }

@@ -3896,12 +3896,17 @@ def events_open() -> dict:
         window = sched[(sched["_e"] >= today) & (sched["_s"] <= today + pd.Timedelta(days=10))]
         for _, r in window.iterrows():
             tid = str(r["tournament_id"])
+            try:
+                purse = float(str(r.get("purse", "")).replace("$", "").replace(",", ""))
+            except Exception:
+                purse = None
             events.append({
                 "tournament_id": tid,
                 "name": str(r["tournament_name"]),
                 "tour": tour,
                 "start_date": str(r["start_date"]),
                 "end_date": str(r.get("end_date", "")),
+                "purse": purse,
                 "locked": bool(r["_s"] <= today),
                 "has_model": tid.startswith("R"),
                 "field_available": (DATA_DIR / "fields" / f"field_{tid}.csv").exists(),

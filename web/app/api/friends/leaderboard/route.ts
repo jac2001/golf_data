@@ -35,6 +35,7 @@ export async function GET(req: Request) {
     if (!ids.includes(userId)) {
       return Response.json({ error: "Not a member of this group." }, { status: 403 });
     }
+    ids.push("model");  // The Model plays in every group
     picks = await sql`
       SELECT user_id, user_name, tournament_id, player_name FROM picks
       WHERE user_id = ANY(${ids})` as PickRow[];

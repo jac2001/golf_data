@@ -94,6 +94,14 @@ const hdr: React.CSSProperties = {
   textTransform: "uppercase", letterSpacing: "0.04em",
 };
 
+const ModelBadge = () => (
+  <span style={{ marginLeft: 6, fontSize: "0.62em", fontWeight: 900, letterSpacing: "0.08em",
+    color: "#081f14", background: "var(--bc-yellow)", borderRadius: 3, padding: "2px 6px",
+    textTransform: "uppercase", verticalAlign: "middle" }}>
+    Model
+  </span>
+);
+
 export default function FriendsPage() {
   const [tab, setTab] = useState<GameTab>("picks");
   const [invited, setInvited] = useState(false);
@@ -423,7 +431,9 @@ function StandingsTab() {
                   style={{ cursor: "pointer", background: s.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
                 <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
                 <td style={{ ...cell, fontWeight: 700 }}>
-                  {s.user_name}{s.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
+                  {s.user_name}
+                  {s.user_id === "model" && <ModelBadge />}
+                  {s.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
                 </td>
                 <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums", fontWeight: 700 }}>
                   {money(s.total)}
@@ -1103,7 +1113,9 @@ function RoundGameTab() {
                 <tr key={row.user_id} style={{ background: row.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
                   <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
                   <td style={{ ...cell, fontWeight: 700 }}>
-                    {row.user_name}{row.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
+                    {row.user_name}
+                    {row.user_id === "model" && <ModelBadge />}
+                    {row.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
                   </td>
                   {[1, 2, 3, 4].map(r => {
                     const c = row.rounds[String(r)];
