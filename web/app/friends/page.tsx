@@ -1335,9 +1335,14 @@ function FadeTab() {
   if (loading) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
   if (!event) return (
     <div style={card}>
-      <p style={{ color: "var(--bc-muted)", margin: 0 }}>
-        {err || "No PGA event to fade right now — the pool needs model numbers, so check back Tuesday of a PGA week."}
+      <p style={{ color: "var(--bc-muted)", margin: 0, lineHeight: 1.6 }}>
+        The Fade Game is off this week. It needs a regular PGA stroke-play
+        event with model numbers — team weeks (Ryder Cup, Presidents Cup)
+        and off-weeks don&apos;t qualify because there&apos;s no individual
+        prize money to fade. It opens back up on Tuesday of the next
+        PGA tournament week.
       </p>
+      {err && <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 10 }}>{err}</p>}
     </div>
   );
 
@@ -1513,9 +1518,11 @@ function FadeTab() {
 
       {!event.locked && pool.length === 0 && (
         <div style={{ ...card, background: "var(--bc-panel)" }}>
-          <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.88em" }}>
-            No fresh model numbers for {event.name} yet — the pool opens once
-            Tuesday&apos;s predictions run.
+          <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.88em", lineHeight: 1.6 }}>
+            The pool for {event.name} isn&apos;t set yet. Fades open once the
+            model&apos;s numbers post for this event — usually Tuesday, when
+            the full field is announced and predictions run. Your 3 fades
+            stay open until tee-off Thursday, so there&apos;s no rush.
           </p>
         </div>
       )}
