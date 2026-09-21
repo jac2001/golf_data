@@ -111,9 +111,28 @@ def cmd_field(year: int) -> None:
     print(f"{name} ({tid}): {len(df)} players -> {out.relative_to(PROJECT_ROOT)}")
 
 
+def _event_from_inplay(year: int, live: dict) -> tuple[str, str]:
+    """Resolve (tid, name) from the in-play payload's OWN event label.
+
+    The field feed flips to next week's event the moment one ends, while
+    in-play still holds the finished event — trusting the field feed once
+    settled BMW PGA's results under the Open de France id. Data must be
+    keyed by what the data says it is, not by what another feed is
+    currently pointing at.
+    """
+    name = str((live.get("info") or {}).get("event_name", ""))
+    if not name:
+        raise SystemExit("in-play payload carries no event_name — refusing to guess")
+    sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
+    row = sched[sched["tournament_name"].str.lower() == name.lower()]
+    if row.empty:
+        raise SystemExit(f"in-play event '{name}' not in schedule_euro_{year}.csv")
+    return str(row.iloc[0]["tournament_id"]), name
+
+
 def cmd_results(year: int, force: bool = False) -> None:
-    tid, name, _ = _current_event(year)
     live = dg_get("/preds/in-play", {"tour": "euro", "file_format": "json"})
+    tid, name = _event_from_inplay(year, live)
     data = live.get("data", live) if isinstance(live, dict) else live
     df = pd.DataFrame(data)
     if df.empty:
@@ -140,8 +159,11 @@ def cmd_results(year: int, force: bool = False) -> None:
     # positions [p, p+ties-1], exactly like the real prize table.
     counts = df["_pos"].value_counts()
     def earnings(p) -> float:
-        if p is None or p > len(PAYOUT_PCT):
+        # _pos is a float64 column (NaN forces the dtype): NaN fails the
+        # None check and floats break range() — normalize first.
+        if p is None or p != p or p > len(PAYOUT_PCT):
             return 0.0
+        p = int(p)
         n = int(counts.get(p, 1))
         slots = [PAYOUT_PCT[i - 1] for i in range(p, min(p + n, len(PAYOUT_PCT) + 1))]
         return round(purse * (sum(slots) / 100.0) / n, 2)
@@ -170,8 +192,8 @@ def cmd_rounds(year: int) -> None:
     """Mid-event snapshot of per-round scores -> data/live/rounds_{tid}.csv.
     Powers the Round Game's grading for euro events; run daily while a
     euro event is live (results settle still uses --results on Monday)."""
-    tid, name, _ = _current_event(year)
     live = dg_get("/preds/in-play", {"tour": "euro", "file_format": "json"})
+    tid, name = _event_from_inplay(year, live)
     data = live.get("data", live) if isinstance(live, dict) else live
     df = pd.DataFrame(data)
     if df.empty:

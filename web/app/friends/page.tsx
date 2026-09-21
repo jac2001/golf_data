@@ -395,6 +395,23 @@ function PicksTab() {
 
 // ── Standings ────────────────────────────────────────────────────────────────
 
+/** Opens the PNG in a new tab; on phones with Web Share, offers the sheet
+ *  with the image attached so it drops straight into a chat. */
+async function shareReceipt(tid: string, uid: string, game: "weekly" | "rounds") {
+  const url = `/api/receipt?tid=${encodeURIComponent(tid)}&u=${encodeURIComponent(uid)}&game=${game}`;
+  if (typeof navigator.share === "function" && typeof navigator.canShare === "function") {
+    try {
+      const blob = await fetch(url).then(r => r.blob());
+      const file = new File([blob], `golf-edge-${tid}.png`, { type: "image/png" });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file] });
+        return;
+      }
+    } catch { /* fall through to opening it */ }
+  }
+  window.open(url, "_blank");
+}
+
 function StandingsTab() {
   const api = useApi();
   const [standings, setStandings] = useState<Standing[] | null>(null);
@@ -446,6 +463,13 @@ function StandingsTab() {
                 <tr key={tid}>
                   <td style={cell} />
                   <td colSpan={3} style={{ ...cell, background: "var(--bc-panel)", fontSize: "0.8em" }}>
+                    <button onClick={() => shareReceipt(tid, s.user_id, "weekly")}
+                      title="Share this week's receipt" style={{
+                        background: "transparent", border: "1px solid var(--bc-line)",
+                        borderRadius: 4, color: "var(--bc-yellow)", cursor: "pointer",
+                        fontSize: "0.9em", padding: "1px 8px", marginRight: 8 }}>
+                      Receipt
+                    </button>
                     <span style={{ color: "var(--bc-muted)" }}>{tid} · </span>
                     {ev.picks.map((p, pi) => (
                       <React.Fragment key={p.player}>
@@ -1135,6 +1159,15 @@ function RoundGameTab() {
                   })}
                   <td style={{ ...cell, textAlign: "right", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>
                     {row.scored ? fmt(row.total) : "—"}
+                    {row.scored > 0 && (
+                      <button onClick={() => shareReceipt(selected, row.user_id, "rounds")}
+                        title="Share receipt" style={{
+                          background: "transparent", border: "1px solid var(--bc-line)",
+                          borderRadius: 4, color: "var(--bc-yellow)", cursor: "pointer",
+                          fontSize: "0.72em", padding: "1px 7px", marginLeft: 8 }}>
+                        ⇪
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

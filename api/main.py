@@ -3988,6 +3988,59 @@ def events_rounds(tournament_id: str) -> dict:
     return {"tournament_id": tid, "par": par, "rounds_available": max_round, "players": players}
 
 
+_PAYOUT_PCT = [
+    18.00, 10.90, 6.90, 4.90, 4.10, 3.63, 3.38, 3.13, 2.93, 2.73,
+    2.53, 2.33, 2.13, 1.93, 1.83, 1.73, 1.63, 1.53, 1.43, 1.33,
+    1.23, 1.15, 1.07, 0.99, 0.91, 0.83, 0.78, 0.75, 0.72, 0.69,
+    0.66, 0.63, 0.60, 0.575, 0.55, 0.525, 0.50, 0.48, 0.46, 0.44,
+    0.42, 0.40, 0.38, 0.36, 0.34, 0.32, 0.30, 0.284, 0.269, 0.261,
+    0.255, 0.249, 0.245, 0.241, 0.239, 0.237, 0.235, 0.233, 0.231, 0.229,
+    0.227, 0.225, 0.223, 0.221, 0.219,
+]
+
+def _estimate_earnings_for_event(sub: pd.DataFrame, tid: str) -> pd.Series:
+    """Purse x standard payout share by finish, dead-heat splits included —
+    used when a settled event's official money hasn't posted yet. Same
+    approach the euro settle uses; flagged estimated in the response."""
+    purse = None
+    for sp in sorted((DATA_DIR / "raw").glob("schedule*_2*.csv")) + sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+        try:
+            sched = pd.read_csv(sp)
+        except Exception:
+            continue
+        row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+        if not row.empty:
+            try:
+                purse = float(str(row.iloc[0]["purse"]).replace("$", "").replace(",", ""))
+            except Exception:
+                purse = None
+            break
+    if not purse:
+        return pd.Series(0.0, index=sub.index)
+
+    def posn(v):
+        sv = str(v).strip().upper()
+        if sv in {"CUT", "WD", "DQ", "DNS", "NAN", ""}:
+            return None
+        try:
+            return int(float(sv.replace("T", "")))
+        except Exception:
+            return None
+
+    pos = sub["position"].map(posn)
+    counts = pos.value_counts()
+
+    def pay(p):
+        if p is None or p != p or p > len(_PAYOUT_PCT):
+            return 0.0
+        p = int(p)
+        n = int(counts.get(p, 1))
+        slots = [_PAYOUT_PCT[i - 1] for i in range(p, min(p + n, len(_PAYOUT_PCT) + 1))]
+        return round(purse * (sum(slots) / 100.0) / n, 2)
+
+    return pos.map(pay)
+
+
 @app.get("/api/results/earnings")
 def results_earnings(tournament_id: str) -> dict:
     """Per-player earnings for one settled event — grades Friends Game picks.
@@ -4009,6 +4062,11 @@ def results_earnings(tournament_id: str) -> dict:
         sub = df[df["tournament_id"].astype(str).str.upper() == tid]
         if sub.empty:
             continue
+        # Official money often posts a day late — estimate from the purse so
+        # games grade Monday morning; real numbers overwrite on refetch.
+        raw_earn = sub["earnings"].map(lambda v: str(v).replace("$", "").replace(",", ""))
+        have_money = pd.to_numeric(raw_earn, errors="coerce").fillna(0).sum() > 0
+        est = None if have_money else _estimate_earnings_for_event(sub, tid)
         out = {}
         for _, r in sub.iterrows():
             name = str(r.get("player_name", ""))
@@ -4018,9 +4076,12 @@ def results_earnings(tournament_id: str) -> dict:
                 earn = float(raw)
             except Exception:
                 earn = 0.0
+            if est is not None:
+                earn = float(est.loc[r.name])
             out[key] = {"player_name": name, "earnings": earn,
                         "position": str(r.get("position", ""))}
-        return {"tournament_id": tid, "settled": True, "players": out}
+        return {"tournament_id": tid, "settled": True,
+                "earnings_estimated": bool(est is not None), "players": out}
     return {"tournament_id": tid, "settled": False, "players": {}}
 
 
