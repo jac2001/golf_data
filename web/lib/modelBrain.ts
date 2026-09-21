@@ -56,3 +56,30 @@ export function modelRoundPick(
     const bestPlayer = availablePlayers.reduce((prev, current) => (prev.win_prob ?? 0) > (current.win_prob ?? 0) ? prev : current);
     return bestPlayer.player_name; 
 }
+
+/** The Fade Game pool: the event's top N by model win chance. */
+export function fadePool(preds: (Probs & { player_name: string })[], n = 20) {
+  // TODO(Jack): return the n players with the highest win_prob.
+    // (Sort a COPY — [...preds] — remember the mutation lesson.)
+    
+const sortedPreds = [...preds].sort((a, b) => (b.win_prob ?? 0) - (a.win_prob ?? 0)); // descending order
+    return sortedPreds.slice(0, n);
+}
+
+/** The model's fade trio: from the pool, the 3 players it expects to
+ *  EARN THE LEAST — the favorites it believes in least. */
+export function modelFadePicks(
+  preds: (Probs & { player_name: string })[],
+  purse: number,
+): string[] {
+  // TODO(Jack):
+  // 1. pool = fadePool(preds)
+  // 2. score each pool player with expectedPayout(purse, p)
+  // 3. return the names of the 3 LOWEST — mind the sort direction!
+    //    (In the weekly trio we sorted b-a for highest; here it flips.)
+    const pool = fadePool(preds);
+    const scoredPool = pool.map(p => ({ player_name: p.player_name, expectedPayout: expectedPayout(purse, p) }));
+    const sortedScoredPool = scoredPool.sort((a, b) => a.expectedPayout - b.expectedPayout); // ascending order
+    return sortedScoredPool.slice(0, 3).map(p => p.player_name);
+
+}

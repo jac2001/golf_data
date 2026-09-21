@@ -1,5 +1,5 @@
 /**
- * /api/receipt?tid=R2026557&u=<user_id>&game=weekly|rounds — receipt cards.
+ * /api/receipt?tid=R2026557&u=<user_id>&game=weekly|rounds|fades — receipt cards.
  * =========================================================================
  * A shareable PNG of one player's week: picks, money (or round scores),
  * rank, and the verdict vs The Model. Rendered server-side with next/og
@@ -35,7 +35,8 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const tid = (url.searchParams.get("tid") ?? "").toUpperCase();
   const uid = url.searchParams.get("u") ?? "";
-  const game = url.searchParams.get("game") === "rounds" ? "rounds" : "weekly";
+  const raw = url.searchParams.get("game");
+  const game = raw === "rounds" ? "rounds" : raw === "fades" ? "fades" : "weekly";
   if (!tid || !uid) return new Response("tid and u required", { status: 400 });
 
   // Locked events only — receipts never leak live picks.
@@ -53,10 +54,17 @@ export async function GET(req: Request) {
   let totalLabel = "", totalValue = "", verdict = "", rankText = "";
   let userName = "";
 
-  if (game === "weekly") {
-    const picks = await sql`
-      SELECT user_id, user_name, player_name FROM picks
-      WHERE tournament_id = ${tid}` as { user_id: string; user_name: string; player_name: string }[];
+  if (game === "weekly" || game === "fades") {
+    // The fade game is the weekly game through a mirror: same earnings
+    // table, but LOW is the win and cashing big is the disaster.
+    const fade = game === "fades";
+    const picks = (fade
+      ? await sql`
+        SELECT user_id, user_name, player_name FROM fade_picks
+        WHERE tournament_id = ${tid}`
+      : await sql`
+        SELECT user_id, user_name, player_name FROM picks
+        WHERE tournament_id = ${tid}`) as { user_id: string; user_name: string; player_name: string }[];
     const mine = picks.filter(p => p.user_id === uid);
     if (!mine.length) return new Response("no picks for this user/event", { status: 404 });
     userName = mine[0].user_name;
@@ -74,23 +82,26 @@ export async function GET(req: Request) {
         label: hit?.position ? `#${hit.position}` : "—",
         player: p.player_name,
         value: hit ? money(hit.earnings) : "$0",
-        color: hit && hit.earnings > 0 ? GREEN : MUTED,
+        // In the fade game a player who cashed is the mistake.
+        color: hit && hit.earnings > 0 ? (fade ? RED : GREEN) : (fade ? GREEN : MUTED),
       };
     });
     const myTotal = scoreOf(mine);
-    totalLabel = estimated ? "Total (est. purse split)" : "Total earnings";
+    totalLabel = fade
+      ? "Fade total — lowest wins"
+      : estimated ? "Total (est. purse split)" : "Total earnings";
     totalValue = money(myTotal);
 
     // Rank across everyone with picks this event
     const totals = new Map<string, number>();
     for (const p of picks) totals.set(p.user_id, (totals.get(p.user_id) ?? 0));
     for (const [u] of totals) totals.set(u, scoreOf(picks.filter(p => p.user_id === u)));
-    const sorted = [...totals.entries()].sort((a, b) => b[1] - a[1]);
+    const sorted = [...totals.entries()].sort((a, b) => fade ? a[1] - b[1] : b[1] - a[1]);
     const rank = sorted.findIndex(([u]) => u === uid) + 1;
     rankText = `#${rank} of ${sorted.length}`;
     const modelTotal = totals.get("model");
     if (modelTotal != null && uid !== "model") {
-      const d = myTotal - modelTotal;
+      const d = fade ? modelTotal - myTotal : myTotal - modelTotal;
       verdict = d >= 0 ? `BEAT THE MODEL BY ${money(d)}` : `MODEL WINS BY ${money(-d)}`;
     }
   } else {

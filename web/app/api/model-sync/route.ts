@@ -5,6 +5,9 @@
  * unlocked, PGA event with fresh predictions the model:
  *   - weekly game: picks its 3 highest EXPECTED-PAYOUT players
  *     (Jack's expectedPayout in lib/modelBrain.ts)
+ *   - fade game: fades the 3 LOWEST expected payouts among its own
+ *     top-20 pool (Jack's modelFadePicks) — the favorites it believes
+ *     in least
  *   - round game: picks its best unused win-chance for the next
  *     unlocked round (Jack's modelRoundPick) — it obeys the
  *     once-per-event rule like everyone else
@@ -17,7 +20,7 @@
  */
 
 import { getSql, MODEL_API } from "@/lib/db";
-import { expectedPayout, modelRoundPick, Probs } from "@/lib/modelBrain";
+import { expectedPayout, modelFadePicks, modelRoundPick, Probs } from "@/lib/modelBrain";
 
 const MODEL_ID = "model";
 const MODEL_NAME = "The Model";
@@ -86,6 +89,22 @@ export async function GET(req: Request) {
             ON CONFLICT (user_id, tournament_id, player_name) DO NOTHING`;
         }
         log.push(`${tid}: weekly trio ${trio.map(t => t.name).join(", ")}`);
+      }
+    }
+
+    // ── Fade trio: the top-20 favorites it believes in least ──
+    if (!ev.locked && ev.purse) {
+      const have = await sql`
+        SELECT 1 FROM fade_picks WHERE user_id = ${MODEL_ID} AND tournament_id = ${tid} LIMIT 1` as unknown[];
+      if (have.length === 0) {
+        const fades = modelFadePicks(preds, ev.purse);
+        for (const name of fades) {
+          await sql`
+            INSERT INTO fade_picks (user_id, user_name, tournament_id, player_name)
+            VALUES (${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${name})
+            ON CONFLICT (user_id, tournament_id, player_name) DO NOTHING`;
+        }
+        log.push(`${tid}: fade trio ${fades.join(", ")}`);
       }
     }
 
