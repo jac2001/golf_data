@@ -1568,12 +1568,26 @@ def get_odds_comparison(market: str = "top10") -> dict:
 
 
 @app.get("/api/predictions")
-def get_predictions(limit: int = 50) -> dict:
-    """Top N players from latest_predictions.csv (the authoritative file)."""
+def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
+    """Top N players from latest_predictions.csv (the authoritative file).
+
+    ?tournament_id=RXXXXXXX serves that event's archived Tuesday numbers
+    (data/prediction_tracking/pred_{tid}.csv) instead, so a past or
+    upcoming event never wears the current week's predictions. The
+    response's tournament_id always names the event actually served.
+    """
     tid = _get_tournament_id()
-    pred_path = OUTPUTS_DIR / "latest_predictions.csv"
-    if not pred_path.exists():
-        raise HTTPException(status_code=404, detail="No predictions file found")
+    req = tournament_id.strip().upper()
+    archived = bool(req) and req != tid
+    if archived:
+        pred_path = DATA_DIR / "prediction_tracking" / f"pred_{req}.csv"
+        if not pred_path.exists():
+            raise HTTPException(status_code=404, detail=f"No predictions saved for {req}")
+        tid = req
+    else:
+        pred_path = OUTPUTS_DIR / "latest_predictions.csv"
+        if not pred_path.exists():
+            raise HTTPException(status_code=404, detail="No predictions file found")
     df = pd.read_csv(pred_path)
 
     keep_cols = [c for c in [
@@ -1621,7 +1635,7 @@ def get_predictions(limit: int = 50) -> dict:
     weekly_narrative = ""
     analysis_generated_at = ""
     sr_path = OUTPUTS_DIR / "strategy_reasoning.json"
-    if sr_path.exists():
+    if not archived and sr_path.exists():
         try:
             with open(sr_path) as f:
                 sr = json.load(f)
@@ -1644,7 +1658,7 @@ def get_predictions(limit: int = 50) -> dict:
     # Merge player explanations from player_explanations.csv
     explanation_map: dict[str, str] = {}
     exp_path = OUTPUTS_DIR / "player_explanations.csv"
-    if exp_path.exists():
+    if not archived and exp_path.exists():
         try:
             exp_df = pd.read_csv(exp_path)
             for _, row in exp_df.iterrows():
@@ -1667,24 +1681,27 @@ def get_predictions(limit: int = 50) -> dict:
         entry["explanation"]    = explanation_map.get(name, "")
         records.append(entry)
 
-    # Actual field size from DG /field-updates (reuse tee-times cache if warm)
+    # Actual field size from DG /field-updates (reuse tee-times cache if
+    # warm) — current week only; DG's live field says nothing about an
+    # archived event.
     field_size = len(records)
-    try:
-        cached_tt = _tee_times_cache.get("data")
-        if cached_tt and cached_tt.get("tournament_id") == tid:
-            field_size = cached_tt.get("field_size", field_size)
-        else:
-            from scripts.scrapers.dg_client import dg_get as _dg_get  # type: ignore
-            for _tour in ("pga", "upcoming_pga"):
-                try:
-                    _raw = _dg_get("/field-updates", {"tour": _tour, "file_format": "json"})
-                    if _raw.get("field"):
-                        field_size = len(_raw["field"])
-                        break
-                except Exception:
-                    pass
-    except Exception:
-        pass
+    if not archived:
+        try:
+            cached_tt = _tee_times_cache.get("data")
+            if cached_tt and cached_tt.get("tournament_id") == tid:
+                field_size = cached_tt.get("field_size", field_size)
+            else:
+                from scripts.scrapers.dg_client import dg_get as _dg_get  # type: ignore
+                for _tour in ("pga", "upcoming_pga"):
+                    try:
+                        _raw = _dg_get("/field-updates", {"tour": _tour, "file_format": "json"})
+                        if _raw.get("field"):
+                            field_size = len(_raw["field"])
+                            break
+                    except Exception:
+                        pass
+        except Exception:
+            pass
 
     return {
         "tournament_id":         tid,

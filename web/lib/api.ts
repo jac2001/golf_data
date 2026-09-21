@@ -314,8 +314,11 @@ export async function getEventField(tournamentId: string): Promise<{ players: st
   return res.json();
 }
 
-export async function getPredictions(limit = 80): Promise<PredictionsResponse> {
-  const res = await apiFetch(`${API_BASE}/api/predictions?limit=${limit}`, { cache: "no-store" });
+/** Optionally ask for one event's archived predictions; the response's
+ *  tournament_id names what was actually served — callers should check it. */
+export async function getPredictions(limit = 80, tournamentId = ""): Promise<PredictionsResponse> {
+  const tidParam = tournamentId ? `&tournament_id=${encodeURIComponent(tournamentId)}` : "";
+  const res = await apiFetch(`${API_BASE}/api/predictions?limit=${limit}${tidParam}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load predictions");
   return res.json();
 }

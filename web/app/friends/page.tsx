@@ -207,15 +207,30 @@ function PicksTab() {
     const meta = events.find(e => e.tournament_id === selected);
     setField([]); setQuery("");
     if (meta?.has_model) {
-      // PGA current event: the whole field with model numbers, sorted by
-      // the model's win chance — informed picking.
-      getPredictions(200)
-        .then(d => setField(
-          (d.players ?? [])
-            .filter((r: FieldRow) => r.player_name)
-            .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0))
-        ))
-        .catch(() => {});
+      // PGA event: the field with THIS event's model numbers — the API
+      // serves archived Tuesday predictions per tournament_id. Trust the
+      // payload's own label, not the request: numbers for the wrong
+      // event are worse than none (the euro-settle lesson).
+      getPredictions(200, selected)
+        .then(d => {
+          if (String(d.tournament_id ?? "").toUpperCase() !== selected.toUpperCase()) {
+            throw new Error("predictions are for a different event");
+          }
+          setField(
+            (d.players ?? [])
+              .filter((r: FieldRow) => r.player_name)
+              .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0))
+          );
+        })
+        .catch(() =>
+          // No predictions saved for this event (pre-Tuesday, or a week
+          // without an archive) — plain field, no numbers.
+          getEventField(selected)
+            .then(d => setField((d.players ?? []).map(p => ({
+              player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
+            }))))
+            .catch(() => {})
+        );
     } else {
       // Euro events have no model (yet) — plain alphabetized field.
       getEventField(selected)

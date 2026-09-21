@@ -48,11 +48,14 @@ async function openEvent(tid: string | null): Promise<EventInfo | null> {
   }
 }
 
-/** The fade pool for an event: Jack's fadePool() over fresh predictions.
- *  Empty when predictions belong to a different event (stale week). */
+/** The fade pool for an event: Jack's fadePool() over that event's own
+ *  predictions (the API serves archived Tuesday numbers per tournament).
+ *  Empty when the payload's label doesn't match — never someone else's pool. */
 async function poolFor(tid: string): Promise<PredRow[]> {
   try {
-    const res = await fetch(`${MODEL_API}/api/predictions?limit=200`, { next: { revalidate: 300 } });
+    const res = await fetch(
+      `${MODEL_API}/api/predictions?limit=200&tournament_id=${encodeURIComponent(tid)}`,
+      { next: { revalidate: 300 } });
     if (!res.ok) return [];
     const d = await res.json();
     if (String(d.tournament_id ?? "").toUpperCase() !== tid.toUpperCase()) return [];
