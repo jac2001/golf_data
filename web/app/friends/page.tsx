@@ -60,6 +60,76 @@ async function fetchJson(url: string, init?: RequestInit): Promise<Record<string
   }
 }
 
+/** Push subscribe wants the VAPID public key as raw bytes, but it ships
+ *  as URL-safe base64 — the standard little decoder. */
+function vapidKeyBytes(b64: string): Uint8Array {
+  const pad = "=".repeat((4 - (b64.length % 4)) % 4);
+  const raw = atob((b64 + pad).replace(/-/g, "+").replace(/_/g, "/"));
+  return Uint8Array.from(raw, c => c.charCodeAt(0));
+}
+
+/** One-line toggle for pick reminders. Renders nothing where push can't
+ *  work (iOS Safari needs the app added to the Home Screen first). */
+function ReminderBell() {
+  const api = useApi();
+  const [state, setState] = useState<"unsupported" | "off" | "on" | "busy">("unsupported");
+
+  useEffect(() => {
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
+    navigator.serviceWorker.register("/sw.js")
+      .then(reg => reg.pushManager.getSubscription())
+      .then(sub => setState(sub ? "on" : "off"))
+      .catch(() => setState("off"));
+  }, []);
+
+  async function toggle() {
+    const prev = state;
+    setState("busy");
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      if (prev === "on") {
+        const sub = await reg.pushManager.getSubscription();
+        if (sub) {
+          await api("/api/friends/reminders", {
+            method: "DELETE", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ endpoint: sub.endpoint }),
+          });
+          await sub.unsubscribe();
+        }
+        setState("off");
+      } else {
+        if ((await Notification.requestPermission()) !== "granted") { setState("off"); return; }
+        const sub = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: vapidKeyBytes(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? "") as BufferSource,
+        });
+        await api("/api/friends/reminders", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ subscription: sub.toJSON() }),
+        });
+        setState("on");
+      }
+    } catch { setState(prev === "busy" ? "off" : prev); }
+  }
+
+  if (state === "unsupported") return null;
+  const on = state === "on";
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14,
+      color: "var(--bc-muted)", fontSize: "0.8em" }}>
+      <span>Pick reminders — a nudge the day before an event locks if your picks aren&apos;t in.</span>
+      <button onClick={toggle} disabled={state === "busy"} style={{
+        ...btnQuiet, padding: "4px 12px", fontSize: "0.9em",
+        color: on ? "#081f14" : "var(--bc-muted)",
+        background: on ? "var(--bc-yellow)" : "transparent",
+        borderColor: on ? "var(--bc-yellow)" : "var(--bc-line)",
+      }}>
+        {state === "busy" ? "…" : on ? "On" : "Off"}
+      </button>
+    </div>
+  );
+}
+
 type GameTab = "games" | "standings" | "groups" | "bets" | "tails";
 const TABS: { id: GameTab; label: string }[] = [
   { id: "games",     label: "Games" },
@@ -79,6 +149,11 @@ type Tail = { recommendation_id: string; label: string; tournament_id: string;
 
 const money = (v: number) =>
   v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
+
+/** Compact board cells show the surname, whichever format the name
+ *  arrived in: "Scheffler, Scottie" and "Scottie Scheffler" → "Scheffler". */
+const lastName = (n: string) =>
+  n.includes(",") ? n.split(",")[0].trim() : (n.trim().split(/\s+/).pop() ?? n);
 
 const card: React.CSSProperties = {
   background: "var(--bc-card)", border: "1px solid var(--bc-line)",
@@ -136,7 +211,7 @@ export default function FriendsPage() {
           friend&apos;s message below and hit Join.
         </div>
       )}
-      {tab === "games" && <GamesTab />}
+      {tab === "games" && <><ReminderBell /><GamesTab /></>}
       {tab === "standings" && <StandingsTab />}
       {tab === "groups" && <GroupsTab focusJoin={invited} />}
       {tab === "bets" && <MyBetsTab />}
@@ -1384,7 +1459,7 @@ function RoundGameTab() {
                         {!c ? <span style={{ color: "var(--bc-muted)" }}>—</span>
                           : !c.visible ? <span style={{ color: "var(--bc-muted)" }}>hidden</span>
                           : <>
-                              <span style={{ color: "var(--bc-muted)" }}>{c.player.split(",")[0]}</span>{" "}
+                              <span style={{ color: "var(--bc-muted)" }}>{lastName(c.player)}</span>{" "}
                               <span style={{ fontWeight: 700, color: c.score == null ? "var(--bc-muted)"
                                 : c.score < 0 ? "var(--bc-green)" : c.score > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
                                 {c.score == null ? "…" : fmt(c.score)}
@@ -1573,7 +1648,7 @@ function FadeTab() {
                   <td style={{ ...cell, fontSize: "0.8em", color: "var(--bc-muted)" }}>
                     {row.fades.map(f => (
                       <span key={f.player} style={{ marginRight: 10, whiteSpace: "nowrap" }}>
-                        {f.player.split(",")[0]}
+                        {lastName(f.player)}
                         {f.earnings != null && (
                           <span style={{ fontWeight: 700, marginLeft: 4,
                             color: f.earnings > 0 ? "var(--bc-red-text)" : "var(--bc-green)" }}>

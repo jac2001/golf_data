@@ -3944,7 +3944,10 @@ def events_open() -> dict:
 @app.get("/api/events/field")
 def events_field(tournament_id: str) -> dict:
     """Player list for any event's field file — powers euro picking, where
-    no predictions exist. Names are returned as-is from the field CSV."""
+    no predictions exist. Field CSVs store "Last, First"; every name
+    leaves the API as "First Last" so the UI never mixes formats.
+    Sorted by the CSV's last-name order (flipping first would
+    alphabetize by first name)."""
     tid = tournament_id.strip().upper()
     fp = DATA_DIR / "fields" / f"field_{tid}.csv"
     if not fp.exists():
@@ -3952,7 +3955,8 @@ def events_field(tournament_id: str) -> dict:
     try:
         df = pd.read_csv(fp)
         col = "player_name" if "player_name" in df.columns else df.columns[0]
-        return {"tournament_id": tid, "players": sorted(df[col].dropna().astype(str).tolist())}
+        names = sorted(df[col].dropna().astype(str).tolist())
+        return {"tournament_id": tid, "players": [_flip_to_first_last(n) for n in names]}
     except Exception:
         return {"tournament_id": tid, "players": []}
 
