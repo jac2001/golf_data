@@ -152,6 +152,21 @@ export default function FriendsPage() {
 type FieldRow = { player_name: string; world_rank: number | null;
   win_prob: number | null; top10_prob: number | null; cut_prob: number | null };
 
+/** Chips order: this week's action first, then history newest-first. */
+function chipOrder(evs: OpenEvent[]): OpenEvent[] {
+  const open = evs.filter(e => !e.finished);
+  const done = evs.filter(e => e.finished)
+    .sort((a, b) => b.start_date.localeCompare(a.start_date));
+  return [...open, ...done];
+}
+
+const chipRow: React.CSSProperties = {
+  display: "flex", gap: 8, marginBottom: 14,
+  overflowX: "auto", flexWrap: "nowrap",
+  paddingBottom: 4,          // keep the scrollbar off the chips
+  WebkitOverflowScrolling: "touch" as never,
+};
+
 function PicksTab() {
   const api = useApi();
   const [events, setEvents] = useState<OpenEvent[]>([]);
@@ -249,10 +264,10 @@ function PicksTab() {
   return (
     <>
       {events.length > 1 && (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
-          {events.map(ev => (
+        <div style={chipRow}>
+          {chipOrder(events).map(ev => (
             <button key={ev.tournament_id} onClick={() => setSelected(ev.tournament_id)} style={{
-              ...btnQuiet, padding: "7px 14px",
+              ...btnQuiet, padding: "7px 14px", whiteSpace: "nowrap", flexShrink: 0,
               color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
               background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
               borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
@@ -1054,15 +1069,16 @@ function RoundGameTab() {
   return (
     <>
       {events.length > 1 && (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
-          {events.map(ev => (
+        <div style={chipRow}>
+          {chipOrder(events).map(ev => (
             <button key={ev.tournament_id} onClick={() => { setSelected(ev.tournament_id); setPickingRound(null); }} style={{
-              ...btnQuiet, padding: "7px 14px",
+              ...btnQuiet, padding: "7px 14px", whiteSpace: "nowrap", flexShrink: 0,
               color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
               background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
               borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
             }}>
               {ev.name}
+              {ev.finished && <span style={{ marginLeft: 6, fontSize: "0.85em", opacity: 0.75 }}>final</span>}
             </button>
           ))}
         </div>
