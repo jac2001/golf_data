@@ -66,10 +66,20 @@ export async function GET(req: Request) {
     }
   } catch { /* handled below by the tid match */ }
 
+  // Early in the week the DG field is a handful of commitments, and
+  // probabilities over a 24-man "field" are junk (they sum to 1 over
+  // whoever has entered). The model never bets off a partial field —
+  // it waits for the real one, like any bettor should.
+  const MIN_FIELD = 50;
+
   for (const ev of events.filter(e => e.has_model)) {
     const tid = ev.tournament_id.toUpperCase();
     if (tid !== predsTid || preds.length === 0) {
       log.push(`${tid}: no fresh predictions (have ${predsTid || "none"})`);
+      continue;
+    }
+    if (preds.length < MIN_FIELD && !ev.locked) {
+      log.push(`${tid}: field too small to bet (${preds.length} players) — waiting for the full field`);
       continue;
     }
 

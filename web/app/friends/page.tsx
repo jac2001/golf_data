@@ -60,11 +60,9 @@ async function fetchJson(url: string, init?: RequestInit): Promise<Record<string
   }
 }
 
-type GameTab = "picks" | "rounds" | "fades" | "standings" | "groups" | "bets" | "tails";
+type GameTab = "games" | "standings" | "groups" | "bets" | "tails";
 const TABS: { id: GameTab; label: string }[] = [
-  { id: "picks",     label: "My Picks" },
-  { id: "rounds",    label: "Round Game" },
-  { id: "fades",     label: "Fade Game" },
+  { id: "games",     label: "Games" },
   { id: "standings", label: "Standings" },
   { id: "groups",    label: "Groups" },
   { id: "bets",      label: "My Bets" },
@@ -104,7 +102,7 @@ const ModelBadge = () => (
 );
 
 export default function FriendsPage() {
-  const [tab, setTab] = useState<GameTab>("picks");
+  const [tab, setTab] = useState<GameTab>("games");
   const [invited, setInvited] = useState(false);
 
   // Invite links land here (/friends?invite=1) but deliberately DON'T
@@ -138,14 +136,68 @@ export default function FriendsPage() {
           friend&apos;s message below and hit Join.
         </div>
       )}
-      {tab === "picks" && <PicksTab />}
-      {tab === "rounds" && <RoundGameTab />}
-      {tab === "fades" && <FadeTab />}
+      {tab === "games" && <GamesTab />}
       {tab === "standings" && <StandingsTab />}
       {tab === "groups" && <GroupsTab focusJoin={invited} />}
       {tab === "bets" && <MyBetsTab />}
       {tab === "tails" && <TailsTab />}
     </div>
+  );
+}
+
+// ── Games: one tab, three modes ──────────────────────────────────────────────
+
+type GameMode = "picks" | "rounds" | "fades";
+const GAME_MODES: { id: GameMode; name: string; tag: string }[] = [
+  { id: "picks",  name: "Weekly 3",   tag: "Pick 3 · most money wins" },
+  { id: "rounds", name: "Round Game", tag: "1 per round · to par" },
+  { id: "fades",  name: "Fade Game",  tag: "Fade 3 stars · least money wins" },
+];
+
+function GamesTab() {
+  // Remembered per device — a convenience, so the page still renders
+  // fine when storage is unavailable (private mode, prerender).
+  const [mode, setMode] = useState<GameMode>(() => {
+    try {
+      const m = localStorage.getItem("friends-game-mode");
+      if (m === "picks" || m === "rounds" || m === "fades") return m;
+    } catch { /* default below */ }
+    return "picks";
+  });
+
+  function pick(m: GameMode) {
+    setMode(m);
+    try { localStorage.setItem("friends-game-mode", m); } catch { /* fine */ }
+  }
+
+  return (
+    <>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+        gap: 8, marginBottom: 16 }}>
+        {GAME_MODES.map(g => {
+          const on = mode === g.id;
+          return (
+            <button key={g.id} onClick={() => pick(g.id)} style={{
+              cursor: "pointer", textAlign: "left", fontFamily: "inherit",
+              background: on ? "color-mix(in srgb, var(--bc-yellow) 10%, var(--bc-card))" : "var(--bc-card)",
+              border: on ? "1px solid var(--bc-yellow)" : "1px solid var(--bc-line)",
+              borderRadius: 8, padding: "10px 12px", minWidth: 0,
+            }}>
+              <div style={{ fontWeight: 900, fontSize: "0.86em", letterSpacing: "0.02em",
+                color: on ? "var(--bc-yellow)" : "var(--bc-text)" }}>
+                {g.name}
+              </div>
+              <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", marginTop: 3, lineHeight: 1.35 }}>
+                {g.tag}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      {mode === "picks" && <PicksTab />}
+      {mode === "rounds" && <RoundGameTab />}
+      {mode === "fades" && <FadeTab />}
+    </>
   );
 }
 
@@ -1228,6 +1280,7 @@ function FadeTab() {
   const [selected, setSelected] = useState<string>("");
   const [event, setEvent] = useState<FadeEvent | null>(null);
   const [pool, setPool]   = useState<FadePoolRow[]>([]);
+  const [partial, setPartial] = useState(false);
   const [fades, setFades] = useState<string[]>([]);
   const [board, setBoard] = useState<{ settled: boolean; earnings_estimated: boolean;
     standings: FadeBoardRow[]; me: string } | null>(null);
@@ -1254,6 +1307,7 @@ function FadeTab() {
         const ev = d.event as FadeEvent;
         setEvent(ev);
         setPool((d.pool as FadePoolRow[]) ?? []);
+        setPartial(!!d.partial);
         setFades((d.fades as string[]) ?? []);
         if (ev.locked) {
           api(`/api/friends/fadeboard?tournament_id=${encodeURIComponent(selected)}`)
@@ -1404,6 +1458,15 @@ function FadeTab() {
               top 20 by model win chance — pick the ones you don&apos;t believe in
             </span>
           </div>
+          {partial && (
+            <div style={{ margin: "4px 16px 0", padding: "8px 12px", borderRadius: 6,
+              background: "color-mix(in srgb, var(--bc-yellow) 10%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
+              color: "var(--bc-yellow)", fontSize: "0.78em", fontWeight: 600 }}>
+              Early field — only the first commitments are in. Numbers and the
+              pool firm up once the full field posts (usually Tuesday).
+            </div>
+          )}
           <table style={{ borderCollapse: "collapse", width: "100%" }}>
             <thead><tr>
               <th style={hdr}>Player</th>

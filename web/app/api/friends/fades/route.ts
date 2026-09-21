@@ -50,18 +50,20 @@ async function openEvent(tid: string | null): Promise<EventInfo | null> {
 
 /** The fade pool for an event: Jack's fadePool() over that event's own
  *  predictions (the API serves archived Tuesday numbers per tournament).
- *  Empty when the payload's label doesn't match — never someone else's pool. */
-async function poolFor(tid: string): Promise<PredRow[]> {
+ *  Empty when the payload's label doesn't match — never someone else's
+ *  pool. fieldSize lets callers flag an early-week partial field. */
+async function poolFor(tid: string): Promise<{ pool: PredRow[]; fieldSize: number }> {
   try {
     const res = await fetch(
       `${MODEL_API}/api/predictions?limit=200&tournament_id=${encodeURIComponent(tid)}`,
       { next: { revalidate: 300 } });
-    if (!res.ok) return [];
+    if (!res.ok) return { pool: [], fieldSize: 0 };
     const d = await res.json();
-    if (String(d.tournament_id ?? "").toUpperCase() !== tid.toUpperCase()) return [];
-    return fadePool((d.players ?? []).filter((p: PredRow) => p.player_name));
+    if (String(d.tournament_id ?? "").toUpperCase() !== tid.toUpperCase()) return { pool: [], fieldSize: 0 };
+    const preds = (d.players ?? []).filter((p: PredRow) => p.player_name);
+    return { pool: fadePool(preds), fieldSize: preds.length };
   } catch {
-    return [];
+    return { pool: [], fieldSize: 0 };
   }
 }
 
@@ -85,9 +87,10 @@ export async function GET(req: Request) {
     return Response.json({ error: "The Fade Game needs model numbers — PGA events only." }, { status: 400 });
   }
 
-  const pool = await poolFor(ev.tid);
+  const { pool, fieldSize } = await poolFor(ev.tid);
   return Response.json({
     event: ev,
+    partial: fieldSize > 0 && fieldSize < 50,
     pool: pool.map(p => ({
       player_name: p.player_name,
       win_prob: p.win_prob,
@@ -114,7 +117,7 @@ export async function POST(req: Request) {
   if (!player) return Response.json({ error: "player_name required" }, { status: 400 });
 
   // The rule of the game, enforced where it can't be bypassed.
-  const pool = await poolFor(ev.tid);
+  const { pool } = await poolFor(ev.tid);
   if (pool.length === 0) {
     return Response.json({ error: "No fresh model numbers for this event yet." }, { status: 503 });
   }
