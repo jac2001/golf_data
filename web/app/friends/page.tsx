@@ -169,7 +169,7 @@ function PicksTab() {
     getOpenEvents().then(d => {
       const evs = d.events ?? [];
       setEvents(evs);
-      const firstOpen = evs.find(e => !e.locked) ?? evs[0];
+      const firstOpen = evs.find(e => !e.locked) ?? evs.find(e => !e.finished) ?? evs[evs.length - 1];
       if (firstOpen) setSelected(firstOpen.tournament_id);
       else setLoading(false);
     }).catch(() => setLoading(false));
@@ -259,7 +259,8 @@ function PicksTab() {
             }}>
               {ev.name}
               <span style={{ marginLeft: 6, fontSize: "0.85em", opacity: 0.75 }}>
-                {ev.tour === "euro" ? "DPWT" : "PGA"}{ev.locked ? " · locked" : ""}
+                {ev.tour === "euro" ? "DPWT" : "PGA"}
+                {ev.finished ? " · final" : ev.locked ? " · live" : ""}
               </span>
             </button>
           ))}
@@ -1002,7 +1003,9 @@ function RoundGameTab() {
     getOpenEvents().then(d => {
       const evs = d.events ?? [];
       setEvents(evs);
-      if (evs[0]) setSelected(evs[0].tournament_id);
+      // Default to this week's action; history stays one chip away.
+      const current = evs.find(e => !e.finished) ?? evs[evs.length - 1];
+      if (current) setSelected(current.tournament_id);
     }).catch(() => {});
   }, []);
 

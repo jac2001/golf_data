@@ -298,6 +298,7 @@ export type CourseResponse = {
 export type OpenEvent = {
   tournament_id: string; name: string; tour: string;
   start_date: string; end_date: string; locked: boolean;
+  finished: boolean; purse: number | null;
   has_model: boolean; field_available: boolean;
 };
 

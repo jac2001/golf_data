@@ -3893,7 +3893,9 @@ def events_open() -> dict:
         tour = "euro" if "euro" in sp.name else "pga"
         sched["_s"] = pd.to_datetime(sched["start_date"], errors="coerce")
         sched["_e"] = pd.to_datetime(sched.get("end_date", sched["start_date"]), errors="coerce")
-        window = sched[(sched["_e"] >= today) & (sched["_s"] <= today + pd.Timedelta(days=10))]
+        # Keep three weeks of history: finished events stay reachable so
+        # boards and receipts don't vanish on Monday morning.
+        window = sched[(sched["_e"] >= today - pd.Timedelta(days=21)) & (sched["_s"] <= today + pd.Timedelta(days=10))]
         for _, r in window.iterrows():
             tid = str(r["tournament_id"])
             try:
@@ -3908,6 +3910,7 @@ def events_open() -> dict:
                 "end_date": str(r.get("end_date", "")),
                 "purse": purse,
                 "locked": bool(r["_s"] <= today),
+                "finished": bool(r["_e"] < today),
                 "has_model": tid.startswith("R"),
                 "field_available": (DATA_DIR / "fields" / f"field_{tid}.csv").exists(),
             })
