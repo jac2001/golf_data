@@ -4117,6 +4117,14 @@ def get_all_players() -> dict:
     historical leaderboard CSVs + current predictions — search was silently
     empty on Render without this.
     """
+    # Every name leaves this endpoint as "First Last" (matching every
+    # other API) but sorted by SURNAME — a directory ordered by first
+    # names is useless. Display format and sort order are independent
+    # choices; conflating them is how "Last, First" lists happen.
+    def _directory(names: list[str]) -> dict:
+        flipped = [_flip_to_first_last(n) for n in names]
+        return {"players": sorted(flipped, key=_flip_to_last_first)}
+
     if _DB_AVAILABLE:
         try:
             with _get_db_conn() as conn:
@@ -4125,7 +4133,7 @@ def get_all_players() -> dict:
                 ).fetchdf()
             names = df["player_name"].dropna().tolist()
             if names:
-                return {"players": names}
+                return _directory(names)
         except Exception:
             pass
 
@@ -4145,12 +4153,12 @@ def get_all_players() -> dict:
     except Exception:
         pass
     # Old CSVs use "First Last", newer ones "Last, First" — dedupe on the
-    # token key so each player appears once (prefer the "Last, First" form).
+    # token key so each player appears once, then normalize the survivors.
     by_key: dict[str, str] = {}
     for n in sorted(names_set, key=lambda x: ("," not in x, x)):
         key = " ".join(sorted(n.lower().replace(",", "").split()))
         by_key.setdefault(key, n)
-    return {"players": sorted(by_key.values())}
+    return _directory(list(by_key.values()))
 
 
 @app.get("/api/players/profile")
