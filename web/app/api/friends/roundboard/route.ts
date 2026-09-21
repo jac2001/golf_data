@@ -11,6 +11,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { visibleUserIds } from "@/lib/gameScope";
 
 const PENALTY = 5;
 const nameKey = (n: string) =>
@@ -34,6 +35,11 @@ export async function GET(req: Request) {
 
   const url = new URL(req.url);
   const tid = url.searchParams.get("tournament_id")?.toUpperCase() ?? null;
+  const groupId = Number(url.searchParams.get("group_id") || 0);
+  const ids = await visibleUserIds(userId, groupId || undefined);
+  if (!ids) {
+    return Response.json({ error: "Not a member of this group." }, { status: 403 });
+  }
   const sql = getSql();
 
   // Which rounds are locked (visible) per event comes from the open list;
@@ -53,9 +59,9 @@ export async function GET(req: Request) {
 
   const picks = (tid
     ? await sql`SELECT user_id, user_name, tournament_id, round, player_name
-                FROM round_picks WHERE tournament_id = ${tid}`
+                FROM round_picks WHERE tournament_id = ${tid} AND user_id = ANY(${ids})`
     : await sql`SELECT user_id, user_name, tournament_id, round, player_name
-                FROM round_picks`) as PickRow[];
+                FROM round_picks WHERE user_id = ANY(${ids})`) as PickRow[];
 
   const tids = [...new Set(picks.map(p => p.tournament_id))];
   const roundsByTid = new Map<string, RoundsResp | null>();

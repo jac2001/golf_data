@@ -14,6 +14,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { visibleUserIds } from "@/lib/gameScope";
 
 type PickRow = { user_id: string; user_name: string; player_name: string };
 type EarningsResp = {
@@ -29,8 +30,14 @@ export async function GET(req: Request) {
   const { userId } = await auth();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
-  const tid = new URL(req.url).searchParams.get("tournament_id")?.toUpperCase();
+  const url = new URL(req.url);
+  const tid = url.searchParams.get("tournament_id")?.toUpperCase();
   if (!tid) return Response.json({ error: "tournament_id required" }, { status: 400 });
+  const groupId = Number(url.searchParams.get("group_id") || 0);
+  const ids = await visibleUserIds(userId, groupId || undefined);
+  if (!ids) {
+    return Response.json({ error: "Not a member of this group." }, { status: 403 });
+  }
 
   // Locked yet? Events off the open list are past, therefore visible.
   let locked = true;
@@ -46,7 +53,7 @@ export async function GET(req: Request) {
   const sql = getSql();
   const picks = await sql`
     SELECT user_id, user_name, player_name FROM fade_picks
-    WHERE tournament_id = ${tid}
+    WHERE tournament_id = ${tid} AND user_id = ANY(${ids})
     ORDER BY user_name, created_at` as PickRow[];
 
   let table: EarningsResp | null = null;

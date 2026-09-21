@@ -9,6 +9,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { visibleUserIds } from "@/lib/gameScope";
 
 type PickRow = { user_id: string; user_name: string; tournament_id: string; player_name: string };
 type EarningsResp = {
@@ -25,24 +26,16 @@ export async function GET(req: Request) {
 
   const sql = getSql();
 
-  // ?group_id=N scopes the board to one group's members (membership checked).
+  // ?group_id=N scopes to one group; no param means "my groupmates",
+  // never the whole site (visibleUserIds is the page's privacy model).
   const groupId = Number(new URL(req.url).searchParams.get("group_id") || 0);
-  let picks: PickRow[];
-  if (groupId) {
-    const members = await sql`
-      SELECT user_id FROM group_members WHERE group_id = ${groupId}` as { user_id: string }[];
-    const ids = members.map(m => m.user_id);
-    if (!ids.includes(userId)) {
-      return Response.json({ error: "Not a member of this group." }, { status: 403 });
-    }
-    ids.push("model");  // The Model plays in every group
-    picks = await sql`
-      SELECT user_id, user_name, tournament_id, player_name FROM picks
-      WHERE user_id = ANY(${ids})` as PickRow[];
-  } else {
-    picks = await sql`
-      SELECT user_id, user_name, tournament_id, player_name FROM picks` as PickRow[];
+  const ids = await visibleUserIds(userId, groupId || undefined);
+  if (!ids) {
+    return Response.json({ error: "Not a member of this group." }, { status: 403 });
   }
+  const picks = await sql`
+    SELECT user_id, user_name, tournament_id, player_name FROM picks
+    WHERE user_id = ANY(${ids})` as PickRow[];
 
   // One earnings fetch per distinct event, not per pick.
   const tids = [...new Set(picks.map(p => p.tournament_id))];
