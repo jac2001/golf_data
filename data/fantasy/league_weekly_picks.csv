@@ -1,1 +1,29 @@
-
+weekly_rank,season_rank,team_name,player_1,earnings_1,player_2,earnings_2,player_3,earnings_3,total_earnings,week
+T-1,2,Wildcats,"Clark, W",3600000,Hovland,124500,Morikawa,856667,4581167,current
+T-1,3,GoForeYourself,"Clark, W",3600000,Hovland,124500,Morikawa,856667,4581167,current
+3,4,Birdie Bandits,Aberg,312000,"Clark, W",3600000,Schauffele,177500,4089500,current
+T-4,1,WineTime,Aberg,312000,Burns,153000,"Clark, W",3600000,4065000,current
+T-4,13,Caddyshark,Aberg,312000,"Clark, W",3600000,"Fitzpatrick, M",153000,4065000,current
+6,8,GOLOWORGOHOME,"Clark, W",3600000,Knapp,92000,"Thomas, J",312000,4004000,current
+7,14,HUBBERS,Burns,153000,"Clark, W",3600000,Schauffele,177500,3930500,current
+8,5,JoeBuckYourself,Burns,153000,"Clark, W",3600000,Matsuyama,153000,3906000,current
+9,21,Davemc410,"Clark, W",3600000,Hovland,124500,Schauffele,177500,3902000,current
+10,20,Rmr617,Aberg,312000,Cantlay,2160000,McIlroy,1360000,3832000,current
+11,22,Jlemoine,"Clark, W",3600000,Knapp,92000,Noren,106000,3798000,current
+12,27,Chest Rockwell,Cantlay,2160000,Hovland,124500,Morikawa,856667,3141167,current
+13,7,MikeKett,Cantlay,2160000,Hovland,124500,Im,540000,2824500,current
+14,24,COMER,"Kim, Tom",153000,MacIntyre,667500,McIlroy,1360000,2180500,current
+15,12,Buck Foursome,"Fitzpatrick, M",153000,McIlroy,1360000,Scheffler,426250,1939250,current
+T-16,17,CARL SPACKLER,Matsuyama,153000,McIlroy,1360000,Schauffele,177500,1690500,current
+T-16,19,TimmyD,Burns,153000,McIlroy,1360000,Schauffele,177500,1690500,current
+18,6,Andrew Sisson,Aberg,312000,Gotterup,856667,Scheffler,426250,1594917,current
+19,11,EagleEash,Hovland,124500,Morikawa,856667,"Thomas, J",312000,1293167,current
+20,9,Green Jackets,Henley,426250,Hovland,124500,MacIntyre,667500,1218250,current
+21,26,SMETHPORT GOLFER,Brennan,540000,Henley,426250,"Kim, SW",124500,1090750,current
+22,16,NLA Boys,Aberg,312000,Im,540000,"Kim, Tom",153000,1005000,current
+23,23,Yanks His Putz,Aberg,312000,"Kim, SW",124500,Scheffler,426250,862750,current
+24,25,MacDaddy,Fleetwood,70000,Hovland,124500,Im,540000,734500,current
+25,15,Team OGG,Aberg,312000,Burns,153000,Hovland,124500,589500,current
+26,18,Dimpled Balls,Hovland,124500,Knapp,92000,Matsuyama,153000,369500,current
+27,10,Danny Noonan,Knapp,92000,Matsuyama,153000,"Young, Cam",106000,351000,current
+28,28,Good Good?,VACANT,0,VACANT,0,VACANT,0,0,current
