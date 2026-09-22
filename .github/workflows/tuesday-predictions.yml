@@ -1,0 +1,96 @@
+# Tuesday Predictions — the full weekly pipeline, off the Mac.
+# =============================================================
+# Runs after the tuesday-morning data refresh: fetches the field, runs
+# the model, saves the per-event archive (--save-tracking), commits the
+# outputs, then nudges model-sync so the model takes its picks the same
+# morning (the daily noon-UTC cron fires BEFORE these predictions exist,
+# so without the nudge the model would lag a day).
+#
+# The pipeline's sanity checks can fail on missing odds files (DK often
+# posts late, or blocks datacenter IPs) — that must not discard fresh
+# predictions. So: run tolerantly, then gate the commit on one question
+# only — did latest_predictions.csv actually regenerate?
+
+name: Tuesday Predictions
+
+on:
+  schedule:
+    - cron: '30 12 * * 2'   # Tue 07:30 CT (after the 06:00 CT refresh)
+  workflow_dispatch:
+
+concurrency:
+  group: tuesday-predictions
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  TZ: America/Chicago
+  DG_API_KEY: ${{ secrets.DG_API_KEY }}
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-api.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-api.txt shap
+
+      - name: Run weekly pipeline
+        run: |
+          python3 scripts/run_pipeline.py \
+            --auto-weekly --lineup --calibrate --save-tracking \
+            2>&1 | tee pipeline.log || true
+          tail -30 pipeline.log >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify predictions regenerated
+        run: |
+          python3 - <<'EOF'
+          import sys, time, os
+          p = "outputs/latest_predictions.csv"
+          age = time.time() - os.path.getmtime(p)
+          print(f"latest_predictions.csv age: {age/60:.1f} min")
+          if age > 3600:
+              sys.exit("Predictions were NOT regenerated — refusing to commit stale outputs.")
+          EOF
+
+      - name: Commit and push outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ outputs/
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto-deploy: tuesday predictions (Actions)"
+          fi
+          git pull --rebase --autostash origin main
+          git push origin main
+
+      - name: Wait for Render, then let the model take its turn
+        run: |
+          for i in $(seq 1 20); do
+            sleep 60
+            fresh=$(curl -s "https://golf-app-a3yw.onrender.com/api/predictions?limit=1" \
+              | python3 -c "import sys,json,datetime; d=json.load(sys.stdin); print(d.get('tournament_id',''))" 2>/dev/null || true)
+            open_tid=$(curl -s "https://golf-app-a3yw.onrender.com/api/events/open" \
+              | python3 -c "
+          import sys,json
+          evs=[e for e in json.load(sys.stdin).get('events',[]) if e.get('has_model') and not e.get('locked')]
+          print(evs[0]['tournament_id'] if evs else '')" 2>/dev/null || true)
+            echo "render serves: $fresh · open PGA event: $open_tid"
+            if [ -n "$fresh" ] && [ "$fresh" = "$open_tid" ]; then
+              echo "Render is serving this week's predictions — running model-sync."
+              curl -s "https://playgolfedge.com/api/model-sync" | tee -a "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          done
+          echo "Render never caught up within 20 min — the daily noon cron will cover tomorrow." | tee -a "$GITHUB_STEP_SUMMARY"

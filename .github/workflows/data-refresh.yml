@@ -110,5 +110,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "Auto-deploy: ${{ steps.pick.outputs.schedule }} (Actions)"
           fi
-          git pull --rebase origin main
+          # --autostash: the refresh writes tracked files under logs/ we
+          # don't commit; rebase refuses unstaged changes without it.
+          git pull --rebase --autostash origin main
           git push origin main
