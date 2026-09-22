@@ -463,7 +463,10 @@ function EuroWeek() {
       setEventName(ev.name);
       getPredictions(200, ev.tournament_id)
         .then(p => setRows(p.players ?? []))
-        .catch(() => { setErr("Numbers for this event haven't posted yet."); setRows([]); });
+        .catch(() => {
+          setErr("DP World Tour model numbers are paused while we sort out data licensing — fields and Friends Game picks still work.");
+          setRows([]);
+        });
     }).catch(() => { setErr("Could not load events."); setRows([]); });
   }, []);
 

@@ -109,7 +109,7 @@ def dg_get(
             time.sleep(wait)
             continue
 
-        resp.raise_for_status()
+        _raise_redacted(resp)
 
         # Empty body = endpoint returned no data (e.g. archive not available for year)
         if not resp.text.strip():
@@ -118,5 +118,20 @@ def dg_get(
         return resp.json()
 
     # All retries exhausted
-    resp.raise_for_status()
+    _raise_redacted(resp)
     return {}
+
+
+def _raise_redacted(resp) -> None:
+    """raise_for_status, with the API key stripped from the error.
+
+    requests embeds the full request URL — key and all — in HTTPError
+    messages, which is how secrets end up in logs (including PUBLIC
+    GitHub Actions logs on this repo). No error path may ever carry
+    the key.
+    """
+    try:
+        resp.raise_for_status()
+    except requests.HTTPError as e:
+        msg = str(e).replace(DG_API_KEY, "[REDACTED]") if DG_API_KEY else str(e)
+        raise requests.HTTPError(msg, response=resp) from None

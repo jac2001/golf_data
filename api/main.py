@@ -1580,10 +1580,16 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     req = tournament_id.strip().upper()
 
     # DP World Tour (E-ids): OUR model doesn't cover the euro tour yet
-    # (January retrain) — DataGolf's euro model powers those boards,
-    # served from dg_preds_{tid}.csv (fetch_euro_events --preds, keyed
-    # by the payload's own event name) and labeled source=datagolf.
+    # (January retrain). DataGolf's euro model CAN power these boards,
+    # but displaying their predictions publicly needs written permission
+    # (their terms §13 limit API content to personal, non-commercial
+    # use) — so the display is OFF unless SHOW_DG_EURO_PREDS=1 is set,
+    # which should only happen once DataGolf authorizes it in writing.
     if req.startswith("E"):
+        if os.environ.get("SHOW_DG_EURO_PREDS", "0") != "1":
+            raise HTTPException(
+                status_code=404,
+                detail="DP World Tour model numbers are paused pending data licensing.")
         dg_path = DATA_DIR / "datagolf" / f"dg_preds_{req}.csv"
         if not dg_path.exists():
             raise HTTPException(status_code=404, detail=f"No DataGolf predictions saved for {req}")
@@ -3984,6 +3990,53 @@ def events_field(tournament_id: str) -> dict:
         return {"tournament_id": tid, "players": [_flip_to_first_last(n) for n in names]}
     except Exception:
         return {"tournament_id": tid, "players": []}
+
+
+@app.get("/api/colleges/field")
+def colleges_field(tournament_id: str) -> dict:
+    """The College Game's board: which schools have alumni in this event's
+    field, and who they are. Only schools with at least one alumnus
+    present exist that week — players whose bio lists no school (most
+    internationals) belong to no college and count for nobody.
+
+    School names are normalized lightly ("University of Texas" and
+    "Texas" are one school) so picks and grading always agree.
+    """
+    tid = tournament_id.strip().upper()
+    col_path = DATA_DIR / "players" / "player_colleges.csv"
+    field_path = DATA_DIR / "fields" / f"field_{tid}.csv"
+    if not col_path.exists() or not field_path.exists():
+        return {"tournament_id": tid, "schools": []}
+    try:
+        colleges = pd.read_csv(col_path)
+        field = pd.read_csv(field_path)
+    except Exception:
+        return {"tournament_id": tid, "schools": []}
+
+    def norm_school(s: str) -> str:
+        s = str(s or "").strip()
+        for pre in ("University of ", "The University of "):
+            if s.startswith(pre):
+                s = s[len(pre):]
+        for suf in (" University", " College"):
+            if s.endswith(suf) and len(s) > len(suf) + 2:
+                s = s[: -len(suf)]
+        return s.strip()
+
+    key = lambda n: " ".join(sorted(str(n).lower().replace(",", "").split()))
+    colleges["_k"] = colleges["player_name"].map(key)
+    colleges["_school"] = colleges["school"].map(norm_school)
+    by_key = {r["_k"]: r["_school"] for _, r in colleges.iterrows() if r["_school"]}
+
+    col = "player_name" if "player_name" in field.columns else field.columns[0]
+    schools: dict[str, list[str]] = {}
+    for n in field[col].dropna().astype(str):
+        sch = by_key.get(key(n))
+        if sch:
+            schools.setdefault(sch, []).append(_flip_to_first_last(n))
+    out = [{"school": s, "players": sorted(ps)} for s, ps in schools.items()]
+    out.sort(key=lambda x: (-len(x["players"]), x["school"]))
+    return {"tournament_id": tid, "schools": out}
 
 
 @app.get("/api/events/rounds")
@@ -7305,9 +7358,10 @@ def _home_euro(today: pd.Timestamp) -> dict:
             }
             season_start = str(sched["_s"].min().date())
 
-    # Board: DataGolf's euro model for the hero event, when fetched.
+    # Board: DataGolf's euro model for the hero event — display gated
+    # behind written permission (see /api/predictions E-branch).
     board, board_event, board_is_hero = [], None, False
-    if hero:
+    if hero and os.environ.get("SHOW_DG_EURO_PREDS", "0") == "1":
         dg_path = DATA_DIR / "datagolf" / f"dg_preds_{hero['tid']}.csv"
         if dg_path.exists():
             try:

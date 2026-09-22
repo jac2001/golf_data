@@ -222,11 +222,12 @@ export default function FriendsPage() {
 
 // ── Games: one tab, three modes ──────────────────────────────────────────────
 
-type GameMode = "picks" | "rounds" | "fades";
+type GameMode = "picks" | "rounds" | "fades" | "college";
 const GAME_MODES: { id: GameMode; name: string; tag: string }[] = [
-  { id: "picks",  name: "Weekly 3",   tag: "Pick 3 · most money wins" },
-  { id: "rounds", name: "Round Game", tag: "1 per round · to par" },
-  { id: "fades",  name: "Fade Game",  tag: "Fade 3 stars · least money wins" },
+  { id: "picks",   name: "Weekly 3",     tag: "Pick 3 · most money wins" },
+  { id: "rounds",  name: "Round Game",   tag: "1 per round · to par" },
+  { id: "fades",   name: "Fade Game",    tag: "Fade 3 stars · least money wins" },
+  { id: "college", name: "College Game", tag: "Claim a school · best 2 alumni count" },
 ];
 
 function GamesTab() {
@@ -235,7 +236,7 @@ function GamesTab() {
   const [mode, setMode] = useState<GameMode>(() => {
     try {
       const m = localStorage.getItem("friends-game-mode");
-      if (m === "picks" || m === "rounds" || m === "fades") return m;
+      if (m === "picks" || m === "rounds" || m === "fades" || m === "college") return m;
     } catch { /* default below */ }
     return "picks";
   });
@@ -272,6 +273,7 @@ function GamesTab() {
       {mode === "picks" && <PicksTab />}
       {mode === "rounds" && <RoundGameTab />}
       {mode === "fades" && <FadeTab />}
+      {mode === "college" && <CollegeTab />}
     </>
   );
 }
@@ -480,8 +482,8 @@ function PicksTab() {
         <div style={{ ...card, padding: 0, overflow: "hidden" }}>
           {numbersSource === "datagolf" && (
             <div style={{ padding: "12px 16px 0", color: "var(--bc-muted)", fontSize: "0.76em" }}>
-              Numbers by DataGolf&apos;s euro model — ours covers the DP World
-              Tour after the January retrain.
+              Numbers by DataGolf&apos;s euro model, displayed with permission —
+              ours covers the DP World Tour after the January retrain.
             </div>
           )}
           <div style={{ padding: "14px 16px 0" }}>
@@ -585,10 +587,10 @@ function StandingsTab() {
   // Round Game is per-tournament by design (its whole-event board
   // lives on the Games tab), so no "rounds" pill here and a
   // remembered "rounds" mode falls back to picks.
-  const [mode, setMode] = useState<"picks" | "fades">(() => {
+  const [mode, setMode] = useState<"picks" | "fades" | "college">(() => {
     try {
       const m = localStorage.getItem("friends-game-mode");
-      if (m === "picks" || m === "fades") return m;
+      if (m === "picks" || m === "fades" || m === "college") return m;
     } catch { /* default below */ }
     return "picks";
   });
@@ -599,7 +601,7 @@ function StandingsTab() {
         {GAME_MODES.filter(g => g.id !== "rounds").map(g => {
           const on = mode === g.id;
           return (
-            <button key={g.id} onClick={() => setMode(g.id as "picks" | "fades")} style={{
+            <button key={g.id} onClick={() => setMode(g.id as "picks" | "fades" | "college")} style={{
               ...btnQuiet, padding: "7px 14px",
               color: on ? "#081f14" : "var(--bc-muted)",
               background: on ? "var(--bc-yellow)" : "transparent",
@@ -612,6 +614,7 @@ function StandingsTab() {
       </div>
       {mode === "picks" && <WeeklyStandings />}
       {mode === "fades" && <FadeStandings />}
+      {mode === "college" && <CollegeStandings />}
     </>
   );
 }
@@ -781,6 +784,230 @@ function FadeStandings() {
         Weekly boards live inside the Fade Game on the Games tab.
       </p>
     </>
+  );
+}
+
+// ── College Game ─────────────────────────────────────────────────────────────
+
+type CollegeSchool = { school: string; players: string[] };
+type CollegeBoardRow = { user_id: string; user_name: string; school: string;
+  total: number | null; counted: { player: string; earnings: number; position: string }[] };
+
+function CollegeTab() {
+  const api = useApi();
+  const [events, setEvents] = useState<OpenEvent[]>([]);
+  const [selected, setSelected] = useState("");
+  const [event, setEvent] = useState<(EventInfo & { finished?: boolean }) | null>(null);
+  const [schools, setSchools] = useState<CollegeSchool[]>([]);
+  const [pick, setPick] = useState<string | null>(null);
+  const [board, setBoard] = useState<{ settled: boolean; projected: boolean; standings: CollegeBoardRow[]; me: string } | null>(null);
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getOpenEvents().then(d => {
+      const evs = (d.events ?? []).filter(e => e.tour !== "euro");
+      setEvents(evs);
+      const first = evs.find(e => !e.locked) ?? evs.find(e => !e.finished) ?? evs[evs.length - 1];
+      if (first) setSelected(first.tournament_id);
+      else setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (!selected) return;
+    setLoading(true); setErr(""); setBoard(null);
+    api(`/api/friends/collegepicks?tournament_id=${encodeURIComponent(selected)}`)
+      .then(d => {
+        const ev = d.event as EventInfo & { finished?: boolean };
+        setEvent(ev);
+        setSchools((d.schools as CollegeSchool[]) ?? []);
+        setPick((d.pick as string | null) ?? null);
+        if (ev.locked) {
+          api(`/api/friends/collegeboard?tournament_id=${encodeURIComponent(selected)}`)
+            .then(b => setBoard(b as never)).catch(() => {});
+        }
+      })
+      .catch(e => setErr(`Could not load the college game — ${e.message}`))
+      .finally(() => setLoading(false));
+  }, [api, selected]);
+
+  async function choose(school: string) {
+    setErr("");
+    try {
+      const d = await api("/api/friends/collegepicks", {
+        method: pick === school ? "DELETE" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(pick === school ? { tournament_id: selected } : { tournament_id: selected, school }),
+      });
+      setPick((d.pick as string | null) ?? null);
+    } catch (e) { setErr((e as Error).message); }
+  }
+
+  if (loading) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
+  if (!event) return (
+    <div style={card}>
+      <p style={{ color: "var(--bc-muted)", margin: 0 }}>
+        {err || "No event to claim a school for right now."}
+      </p>
+    </div>
+  );
+
+  return (
+    <>
+      {events.length > 1 && (
+        <div style={chipRow}>
+          {chipOrder(events).map(ev => (
+            <button key={ev.tournament_id} onClick={() => setSelected(ev.tournament_id)} style={{
+              ...btnQuiet, padding: "7px 14px", whiteSpace: "nowrap", flexShrink: 0,
+              color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
+              background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
+              borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
+            }}>
+              {ev.name}
+              <span style={{ marginLeft: 6, fontSize: "0.85em", opacity: 0.75 }}>
+                {ev.finished ? "final" : ev.locked ? "live" : ""}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div style={card}>
+        <div style={{ fontWeight: 800, fontSize: "1.05em" }}>{event.name || event.tid}</div>
+        <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 2 }}>
+          {event.locked
+            ? (event.finished ? "Final — graded below." : "Schools are locked — tournament underway.")
+            : pick
+              ? <>Your school: <strong style={{ color: "var(--bc-yellow)" }}>{pick}</strong> · best 2 alumni checks count</>
+              : "Claim one school before tee-off · its best 2 finishers score for you"}
+        </div>
+        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
+      </div>
+
+      {board && board.standings.length > 0 && (
+        <div style={{ ...card, padding: 0, overflow: "hidden" }}>
+          <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>
+            School board
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.78em", marginLeft: 8 }}>
+              best 2 alumni · highest wins{board.projected && !board.settled ? " · live projected" : ""}
+            </span>
+          </div>
+          <table style={{ borderCollapse: "collapse", width: "100%" }}>
+            <tbody>
+              {board.standings.map((r, i) => (
+                <tr key={r.user_id} style={{ background: r.user_id === board.me ? "var(--bc-card-hi)" : "transparent" }}>
+                  <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)", width: 34 }}>{i + 1}</td>
+                  <td style={{ ...cell, fontWeight: 700 }}>
+                    {r.user_name}
+                    {r.user_id === board.me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
+                    <div style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.82em" }}>
+                      {r.school}{r.counted.length > 0 &&
+                        ` — ${r.counted.map(c => `${lastName(c.player)} ${c.position}`).join(", ")}`}
+                    </div>
+                  </td>
+                  <td style={{ ...cell, textAlign: "right", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>
+                    {r.total != null ? money(r.total) : "…"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {!event.locked && (
+        <div style={{ ...card, padding: 0, overflow: "hidden" }}>
+          <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>
+            Schools in this field
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.78em", marginLeft: 8 }}>
+              {schools.length} with alumni playing
+            </span>
+          </div>
+          {schools.length === 0 && (
+            <p style={{ padding: "0 16px 14px", color: "var(--bc-muted)", fontSize: "0.85em" }}>
+              No field (or no college data) for this event yet — check back
+              once the field posts.
+            </p>
+          )}
+          <div style={{ maxHeight: 460, overflowY: "auto" }}>
+            {schools.map(s => {
+              const mine = pick === s.school;
+              return (
+                <button key={s.school} onClick={() => choose(s.school)} style={{
+                  display: "block", width: "100%", textAlign: "left", cursor: "pointer",
+                  fontFamily: "inherit", background: mine ? "var(--bc-card-hi)" : "none",
+                  border: "none", borderBottom: "1px solid var(--bc-line)", padding: "10px 16px",
+                }}>
+                  <span style={{ fontWeight: 800, fontSize: "0.9em",
+                    color: mine ? "var(--bc-yellow)" : "var(--bc-text)" }}>
+                    {s.school}{mine && " ✓"}
+                  </span>
+                  <span style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginLeft: 8 }}>
+                    {s.players.map(lastName).join(" · ")}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <div style={{ ...card, background: "var(--bc-panel)" }}>
+        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
+          How it works: claim ONE school per event before tee-off — only
+          schools with alumni in the field exist that week. Your score is the
+          combined prize money of your school&apos;s best two finishers
+          (best-ball, so depth doesn&apos;t auto-win). Highest total takes the
+          week; the season counts event wins. Schools stay hidden until lock.
+        </p>
+      </div>
+    </>
+  );
+}
+
+function CollegeStandings() {
+  const api = useApi();
+  const [rows, setRows] = useState<{ user_id: string; user_name: string; wins: number; entered: number }[] | null>(null);
+  const [me, setMe] = useState("");
+
+  useEffect(() => {
+    api("/api/friends/collegeboard")
+      .then(d => { setRows((d.standings as never) ?? []); setMe((d.me as string) ?? ""); })
+      .catch(() => setRows([]));
+  }, [api]);
+
+  if (!rows) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
+  if (rows.length === 0) return (
+    <div style={card}>
+      <p style={{ color: "var(--bc-muted)", margin: 0 }}>
+        No schools claimed yet — grab yours on the Games tab.
+      </p>
+    </div>
+  );
+  return (
+    <div style={{ ...card, padding: 0, overflow: "hidden" }}>
+      <table style={{ borderCollapse: "collapse", width: "100%" }}>
+        <thead><tr>
+          <th style={hdr}>#</th><th style={hdr}>Player</th>
+          <th style={{ ...hdr, textAlign: "right" }}>Event wins</th>
+          <th style={{ ...hdr, textAlign: "right" }}>Entered</th>
+        </tr></thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={r.user_id} style={{ background: r.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
+              <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
+              <td style={{ ...cell, fontWeight: 700 }}>
+                {r.user_name}
+                {r.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
+              </td>
+              <td style={{ ...cell, textAlign: "right", fontWeight: 800 }}>{r.wins}</td>
+              <td style={{ ...cell, textAlign: "right", color: "var(--bc-muted)" }}>{r.entered}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -967,6 +1194,24 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
     copyLink(g);
   }
 
+  /** The Sunday recap PNG for this group's latest settled event —
+   *  built to be dropped straight into the group chat. */
+  async function shareRecap(g: Group) {
+    const url = `/api/recap?group_id=${g.id}`;
+    if (typeof navigator.share === "function" && typeof navigator.canShare === "function") {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) { window.open(url, "_blank"); return; }
+        const file = new File([await res.blob()], `golf-edge-recap.png`, { type: "image/png" });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file] });
+          return;
+        }
+      } catch { /* fall through to opening it */ }
+    }
+    window.open(url, "_blank");
+  }
+
   if (!groups) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
 
   return (
@@ -1012,6 +1257,13 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
               ...btn, padding: "5px 12px", fontSize: "0.72em",
             }}>
               Share
+            </button>
+            <button onClick={() => shareRecap(g)}
+              title="Share this group's Sunday recap card" style={{
+              ...btnQuiet, padding: "4px 10px", color: "var(--bc-yellow)",
+              borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
+            }}>
+              Sunday recap
             </button>
             <button onClick={() => copyLink(g)} title="Copy the invite message" style={{
               ...btnQuiet, padding: "4px 10px",
