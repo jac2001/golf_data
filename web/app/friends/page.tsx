@@ -142,7 +142,7 @@ const TABS: { id: GameTab; label: string }[] = [
 type EventInfo = { tid: string; name: string; tour: string; locked: boolean; startDate: string };
 type Standing = {
   user_id: string; user_name: string; total: number;
-  events: Record<string, { picks: { player: string; earnings: number | null; position: string | null }[]; event_total: number; settled: boolean }>;
+  events: Record<string, { picks: { player: string; earnings: number | null; position: string | null }[]; event_total: number; settled: boolean; projected: boolean }>;
 };
 type Tail = { recommendation_id: string; label: string; tournament_id: string;
   odds_american: number | null; stake_units: number; outcome: string; pnl: number | null };
@@ -198,7 +198,7 @@ export default function FriendsPage() {
   return (
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
       <PageHead
-        kicker="Pick 3 · graded by real earnings · bragging rights only"
+        kicker="Graded by real prize money (DPWT estimated from the purse) · bragging rights only"
         title="Friends Game"
       />
       <SubTabs tabs={TABS} active={tab} onChange={setTab} />
@@ -421,7 +421,9 @@ function PicksTab() {
             <div style={{ fontWeight: 800, fontSize: "1.05em" }}>{event.name || event.tid}</div>
             <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 2 }}>
               {event.locked
-                ? "Picks are locked — tournament underway."
+                ? (events.find(e => e.tournament_id === selected)?.finished
+                    ? "Final — graded below."
+                    : "Picks are locked — tournament underway.")
                 : `Picks lock ${event.startDate?.slice(0, 10) || "at tee-off"} · ${3 - picks.length} of 3 remaining`}
             </div>
           </div>
@@ -448,6 +450,16 @@ function PicksTab() {
             <span style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>No picks yet.</span>
           )}
         </div>
+
+        {/* The anti-chalk fact, surfaced when it applies: matching the
+            model's exact trio caps you at a TIE with it, never a win. */}
+        {!event.locked && picks.length === 3 && field.length >= 3 && field[0].win_prob != null &&
+          field.slice(0, 3).every(f => picks.includes(f.player_name)) && (
+          <p style={{ color: "var(--bc-yellow)", fontSize: "0.8em", marginTop: 10, fontWeight: 600 }}>
+            That&apos;s the model&apos;s exact trio — you can tie it, never beat
+            it. Swapping even one pick is your only path to the win.
+          </p>
+        )}
 
         {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
       </div>
@@ -625,7 +637,33 @@ function WeeklyStandings() {
     </div>
   );
 
+  // The rivalry line: where you stand and exactly what it takes.
+  const anyLive = standings.some(s => Object.values(s.events).some(e => e.projected));
+  const myIdx = standings.findIndex(s => s.user_id === me);
+  const rivalry = (() => {
+    if (myIdx < 0 || standings.length < 2) return "";
+    if (myIdx === 0) {
+      const chaser = standings[1];
+      return `You lead — ${chaser.user_name} is ${money(standings[0].total - chaser.total)} back.`;
+    }
+    const ahead = standings[myIdx - 1];
+    return `You're #${myIdx + 1} — ${money(ahead.total - standings[myIdx].total)} behind ${ahead.user_name}.`;
+  })();
+
   return (
+    <>
+    {rivalry && (
+      <div style={{ ...card, padding: "12px 18px", display: "flex", alignItems: "center", gap: 10,
+        border: "1px solid color-mix(in srgb, var(--bc-yellow) 40%, transparent)" }}>
+        <span style={{ fontWeight: 800, fontSize: "0.92em" }}>{rivalry}</span>
+        {anyLive && (
+          <span style={{ marginLeft: "auto", color: "var(--bc-yellow)", fontSize: "0.72em",
+            fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            live · projected
+          </span>
+        )}
+      </div>
+    )}
     <div style={{ ...card, padding: 0, overflow: "hidden" }}>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead><tr>
@@ -671,7 +709,8 @@ function WeeklyStandings() {
                       </React.Fragment>
                     ))}
                     <span style={{ float: "right", fontWeight: 700 }}>
-                      {ev.settled ? money(ev.event_total) : "pending"}
+                      {ev.settled ? money(ev.event_total)
+                        : ev.projected ? `${money(ev.event_total)} projected` : "pending"}
                     </span>
                   </td>
                 </tr>
@@ -681,6 +720,7 @@ function WeeklyStandings() {
         </tbody>
       </table>
     </div>
+    </>
   );
 }
 
@@ -1458,6 +1498,20 @@ function RoundGameTab() {
           </table>
         </div>
       )}
+
+      <div style={{ ...card, background: "var(--bc-panel)" }}>
+        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
+          How it works: one pick per round, each player only once per event,
+          scored by that round&apos;s score to par — lowest event total wins.
+          Round 1 locks at midnight the night before Thursday&apos;s tee-off;
+          each later round locks at midnight before its own day. The +5: if
+          your pick doesn&apos;t post a score for a locked round — missed the
+          cut, withdrew, or never teed off — you take +5 for it, but only
+          once the field has finished that round (until then it just shows
+          pending). Boards hide everyone&apos;s pick for a round until that
+          round locks.
+        </p>
+      </div>
     </>
   );
 }
@@ -1565,7 +1619,9 @@ function FadeTab() {
         <div style={{ fontWeight: 800, fontSize: "1.05em" }}>{event.name || event.tid}</div>
         <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 2 }}>
           {event.locked
-            ? "Fades are locked — tournament underway."
+            ? (events.find(e => e.tournament_id === selected)?.finished
+                ? "Final — the fadeboard below is graded."
+                : "Fades are locked — tournament underway.")
             : `Pick 3 top-20 players you think will FLOP · lowest combined earnings wins · ${3 - fades.length} of 3 remaining`}
         </div>
 
@@ -1589,6 +1645,20 @@ function FadeTab() {
             <span style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>No fades yet.</span>
           )}
         </div>
+
+        {/* Same anti-chalk fact for fades: the 3 lowest expected earners
+            are the model's own fades — matching them can only tie it. */}
+        {!event.locked && fades.length === 3 && pool.length >= 3 && (() => {
+          const obvious = [...pool]
+            .sort((a, b) => (a.expected_earnings ?? 0) - (b.expected_earnings ?? 0))
+            .slice(0, 3).map(p => p.player_name);
+          return obvious.every(n => fades.includes(n));
+        })() && (
+          <p style={{ color: "var(--bc-yellow)", fontSize: "0.8em", marginTop: 10, fontWeight: 600 }}>
+            These are the model&apos;s own three fades — you can tie it, never
+            beat it. Your edge is a favorite the model still believes in.
+          </p>
+        )}
 
         {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
       </div>

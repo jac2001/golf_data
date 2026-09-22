@@ -4091,12 +4091,18 @@ def _estimate_earnings_for_event(sub: pd.DataFrame, tid: str) -> pd.Series:
 
 
 @app.get("/api/results/earnings")
-def results_earnings(tournament_id: str) -> dict:
+def results_earnings(tournament_id: str, projected: int = 0) -> dict:
     """Per-player earnings for one settled event — grades Friends Game picks.
 
     Reads the historical leaderboard CSVs (git-tracked, cloud-safe). Names
     come back keyed lowercase-lastname-first-sorted so the caller can match
     either "Last, First" or "First Last" spellings.
+
+    ?projected=1: for an UNSETTLED event with a live leaderboard, return
+    purse-split estimates from CURRENT positions (settled=false,
+    projected=true) — the mid-tournament "who leads the group right now"
+    numbers. Never mixed with settled results; a settled event ignores
+    the flag.
     """
     tid = tournament_id.strip().upper()
     candidates = sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv"), reverse=True) + \
@@ -4131,6 +4137,26 @@ def results_earnings(tournament_id: str) -> dict:
                         "position": str(r.get("position", ""))}
         return {"tournament_id": tid, "settled": True,
                 "earnings_estimated": bool(est is not None), "players": out}
+
+    if projected:
+        live = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+        if live.exists():
+            try:
+                sub = pd.read_csv(live)
+                if "position" in sub.columns and len(sub):
+                    est = _estimate_earnings_for_event(sub, tid)
+                    if est is not None:
+                        out = {}
+                        for _, r in sub.iterrows():
+                            name = str(r.get("player_name", ""))
+                            key = " ".join(sorted(name.lower().replace(",", "").split()))
+                            out[key] = {"player_name": name,
+                                        "earnings": float(est.loc[r.name]),
+                                        "position": str(r.get("position", ""))}
+                        return {"tournament_id": tid, "settled": False, "projected": True,
+                                "earnings_estimated": True, "players": out}
+            except Exception:
+                pass
     return {"tournament_id": tid, "settled": False, "players": {}}
 
 

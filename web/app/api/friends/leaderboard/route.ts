@@ -14,6 +14,7 @@ import { visibleUserIds } from "@/lib/gameScope";
 type PickRow = { user_id: string; user_name: string; tournament_id: string; player_name: string };
 type EarningsResp = {
   settled: boolean;
+  projected?: boolean;
   players: Record<string, { player_name: string; earnings: number; position: string }>;
 };
 
@@ -37,31 +38,38 @@ export async function GET(req: Request) {
     SELECT user_id, user_name, tournament_id, player_name FROM picks
     WHERE user_id = ANY(${ids})` as PickRow[];
 
-  // One earnings fetch per distinct event, not per pick.
+  // One earnings fetch per distinct event, not per pick. projected=1
+  // gives mid-tournament purse-split estimates from live positions —
+  // the "who leads the group right now" numbers (rows say which).
   const tids = [...new Set(picks.map(p => p.tournament_id))];
   const earningsByTid = new Map<string, EarningsResp>();
   await Promise.all(tids.map(async tid => {
     try {
-      const res = await fetch(`${MODEL_API}/api/results/earnings?tournament_id=${tid}`,
-        { next: { revalidate: 300 } });
+      const res = await fetch(`${MODEL_API}/api/results/earnings?tournament_id=${tid}&projected=1`,
+        { next: { revalidate: 120 } });
       if (res.ok) earningsByTid.set(tid, await res.json());
     } catch { /* event stays pending */ }
   }));
 
   type UserRow = {
     user_id: string; user_name: string; total: number;
-    events: Record<string, { picks: { player: string; earnings: number | null; position: string | null }[]; event_total: number; settled: boolean }>;
+    events: Record<string, { picks: { player: string; earnings: number | null; position: string | null }[]; event_total: number; settled: boolean; projected: boolean }>;
   };
   const users = new Map<string, UserRow>();
 
   for (const p of picks) {
     const u = users.get(p.user_id) ?? { user_id: p.user_id, user_name: p.user_name, total: 0, events: {} };
-    const ev = u.events[p.tournament_id] ?? { picks: [], event_total: 0, settled: false };
+    const ev = u.events[p.tournament_id] ?? { picks: [], event_total: 0, settled: false, projected: false };
     const table = earningsByTid.get(p.tournament_id);
     const hit = table?.players?.[nameKey(p.player_name)];
-    const earnings = table?.settled ? (hit?.earnings ?? 0) : null;
+    const gradable = !!(table?.settled || table?.projected);
+    const earnings = gradable ? (hit?.earnings ?? 0) : null;
     ev.picks.push({ player: p.player_name, earnings, position: hit?.position ?? null });
-    if (earnings != null) { ev.event_total += earnings; u.total += earnings; ev.settled = true; }
+    if (earnings != null) {
+      ev.event_total += earnings; u.total += earnings;
+      if (table?.settled) ev.settled = true;
+      if (table?.projected) ev.projected = true;
+    }
     u.events[p.tournament_id] = ev;
     users.set(p.user_id, u);
   }
