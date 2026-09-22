@@ -1,0 +1,114 @@
+# Data Refresh — the pipeline's heartbeat, off the Mac.
+# ======================================================
+# Ports the launchd agents to GitHub Actions. Each cron slot maps to one
+# scheduled_refresh.py schedule (the script commits data/+outputs/ and
+# pushes itself via deploy_site(), which redeploys Render + Vercel).
+# Times are UTC mirrors of the Central-time launchd slots — they drift
+# an hour when DST flips, which every job here tolerates.
+#
+# Euro (DPWT) ops aren't in scheduled_refresh, so they're steps here:
+# Monday settles last week's euro event + fetches the new field; the
+# evening slots snapshot euro rounds during euro events.
+#
+# Live-tab data needs no job at all: Render self-freshens (CLOUD_FETCH).
+
+name: Data Refresh
+
+on:
+  schedule:
+    - cron: '0 11 * * 1'      # Mon 06:00 CT — monday refresh (+ euro settle/field)
+    - cron: '0 13 * * 1'      # Mon 08:00 CT — post-tournament re-settle
+    - cron: '0 2 * * 1'       # Sun 21:00 CT — post-tournament settle
+    - cron: '0 4 * * 1'       # Sun 23:00 CT — record results
+    - cron: '0 11 * * 2'      # Tue 06:00 CT — tuesday-morning
+    - cron: '0 23 * * 2'      # Tue 18:00 CT — tuesday-evening
+    - cron: '0 11 * * 3'      # Wed 06:00 CT — wednesday-morning
+    - cron: '0 23 * * 3'      # Wed 18:00 CT — wednesday-evening
+    - cron: '0 1 * * 5,6,0,1' # Thu–Sun 20:00 CT — euro rounds snapshot
+  workflow_dispatch:
+    inputs:
+      schedule:
+        description: Which schedule to run
+        type: choice
+        default: auto
+        options: [auto, monday, tuesday-morning, tuesday-evening, wednesday-morning, wednesday-evening, record, post-tournament, euro-rounds]
+      dry_run:
+        description: Dry run (log what would happen, change nothing)
+        type: boolean
+        default: false
+
+# Never two refreshes at once — they'd race each other's git pushes.
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  TZ: America/Chicago
+  DG_API_KEY: ${{ secrets.DG_API_KEY }}
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-api.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-api.txt
+
+      - name: Git identity (deploy_site commits as the Actions bot)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Pick schedule for this trigger
+        id: pick
+        run: |
+          case "${{ github.event.schedule }}" in
+            "0 13 * * 1"|"0 2 * * 1")  S=post-tournament ;;
+            "0 4 * * 1")               S=record ;;
+            "0 1 * * 5,6,0,1")         S=euro-rounds ;;
+            "")                        S="${{ inputs.schedule }}" ;;  # manual dispatch
+            *)                         S=auto ;;                      # mon/tue/wed slots
+          esac
+          echo "schedule=$S" >> "$GITHUB_OUTPUT"
+          echo "Running schedule: $S"
+
+      - name: Run scheduled refresh
+        if: steps.pick.outputs.schedule != 'euro-rounds'
+        run: |
+          python3 scripts/scheduled_refresh.py \
+            --schedule "${{ steps.pick.outputs.schedule }}" \
+            ${{ inputs.dry_run == true && '--dry-run' || '' }}
+
+      - name: Euro settle + new field (Mondays)
+        if: (github.event.schedule == '0 11 * * 1' || inputs.schedule == 'monday') && inputs.dry_run != true
+        run: |
+          python3 scripts/scrapers/fetch_euro_events.py --results || true
+          python3 scripts/scrapers/fetch_euro_events.py --field   || true
+
+      - name: Euro rounds snapshot (tournament evenings)
+        if: steps.pick.outputs.schedule == 'euro-rounds' && inputs.dry_run != true
+        run: python3 scripts/scrapers/fetch_euro_events.py --rounds || true
+
+      - name: Commit euro output; push anything stranded
+        if: inputs.dry_run != true
+        # Also rescues a commit deploy_site made but failed to push (race
+        # with another push): the rebase+push below is a no-op when in sync.
+        run: |
+          git add data/ outputs/
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto-deploy: ${{ steps.pick.outputs.schedule }} (Actions)"
+          fi
+          git pull --rebase origin main
+          git push origin main
