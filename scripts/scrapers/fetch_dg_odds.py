@@ -293,6 +293,41 @@ def main():
         out_df.to_csv(out_path, index=False)
         print(f"[OK] Outrights CSV → {out_path}  ({len(out_df)} rows)")
 
+        # Per-player WIN odds for the prediction ensemble — DG is the
+        # only odds source now, so this derivative replaces the old
+        # pga_odds_{tid}.csv. One row per player: implied_prob averaged
+        # across sharp books (DG's own model line excluded — it's a
+        # model, not a market), all books when no sharp line exists.
+        # data/odds/odds_{tid}.csv is a name add_odds_to_predictions
+        # already looks for.
+        win = out_df[(out_df["market"] == "win") & (~out_df["is_dg_model"])].copy()
+        win["implied_prob"] = pd.to_numeric(win["implied_prob"], errors="coerce")
+        win = win.dropna(subset=["implied_prob"])
+        if not win.empty:
+            sharp = win[win["is_sharp"]]
+            src = (sharp if not sharp.empty else win).copy()
+
+            # Consensus per player; the representative american line is
+            # the book sitting closest to that consensus.
+            src["_mean"] = src.groupby("player_name")["implied_prob"].transform("mean")
+            src["_dist"] = (src["implied_prob"] - src["_mean"]).abs()
+            src["_n_books"] = src.groupby("player_name")["book"].transform("nunique")
+            rep = (src.sort_values("_dist")
+                      .groupby("player_name", as_index=False).first())
+            per_player = pd.DataFrame({
+                "player_name": rep["player_name"],
+                "dg_id": rep["dg_id"],
+                "implied_prob": rep["_mean"],
+                "odds_american": rep["odds_american"],
+                "book": rep["book"],
+                "n_books": rep["_n_books"],
+            })
+            odds_dir = DATA_DIR / "odds"
+            odds_dir.mkdir(parents=True, exist_ok=True)
+            win_path = odds_dir / f"odds_{tid}.csv"
+            per_player.to_csv(win_path, index=False)
+            print(f"[OK] Win odds (per player) → {win_path}  ({len(per_player)} players)")
+
     if not df_m.empty:
         m_path = DG_DIR / f"dg_matchups_{tid}.csv"
         df_m.to_csv(m_path, index=False)

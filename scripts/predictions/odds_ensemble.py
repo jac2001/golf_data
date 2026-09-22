@@ -371,10 +371,12 @@ def add_odds_to_predictions(predictions_df: pd.DataFrame,
     elif tournament_id:
         odds_dir = Path("data/odds")
         preferred = [
+            # DG-derived win odds first — the only source still fetched;
+            # the legacy names below only exist for pre-cutover events.
+            odds_dir / f"odds_{tournament_id}.csv",
             odds_dir / f"pga_odds_{tournament_id}.csv",
             odds_dir / f"fanduel_odds_{tournament_id}.csv",
             odds_dir / f"multi_book_odds_{tournament_id}.csv",
-            odds_dir / f"odds_{tournament_id}.csv",
         ]
         for p in preferred:
             if p.exists():

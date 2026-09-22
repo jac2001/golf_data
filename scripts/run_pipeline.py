@@ -830,23 +830,24 @@ def run_post_run_sanity_checks(
     else:
         notes.append(f"✓ Dashboard latest predictions updated: {latest_preds}")
 
-    # 4) Tournament odds existence check (if tournament context available).
+    # 4) Tournament odds existence check — DataGolf is the only odds
+    #    source (DK fetchers are out of the weekly path).
     if tid:
-        pga_odds_file = DATA_DIR / "odds" / f"pga_odds_{tid}.csv"
-        dk_props_file = DATA_DIR / "odds" / f"prop_lines_{tid}.csv"
-        has_odds = pga_odds_file.exists() or dk_props_file.exists()
+        win_odds_file = DATA_DIR / "odds" / f"odds_{tid}.csv"
+        outrights_file = DATA_DIR / "datagolf" / f"dg_outrights_{tid}.csv"
+        has_odds = win_odds_file.exists() or outrights_file.exists()
         if not has_odds:
             failures.append(
-                f"No tournament odds files found for {tid} "
-                f"(expected one of: {pga_odds_file.name}, {dk_props_file.name})"
+                f"No DataGolf odds files found for {tid} "
+                f"(expected one of: {win_odds_file.name}, {outrights_file.name})"
             )
         else:
-            if pga_odds_file.exists():
-                age = _artifact_age_hours(pga_odds_file)
-                notes.append(f"✓ PGA odds: {pga_odds_file.name} (age {age:.1f}h)")
-            if dk_props_file.exists():
-                age = _artifact_age_hours(dk_props_file)
-                notes.append(f"✓ DK props: {dk_props_file.name} (age {age:.1f}h)")
+            if win_odds_file.exists():
+                age = _artifact_age_hours(win_odds_file)
+                notes.append(f"✓ DG win odds: {win_odds_file.name} (age {age:.1f}h)")
+            if outrights_file.exists():
+                age = _artifact_age_hours(outrights_file)
+                notes.append(f"✓ DG outrights: {outrights_file.name} (age {age:.1f}h)")
 
     # 5) Tournament-scoped latest file should exist for the requested tournament.
     safe_tournament = re.sub(r"[^a-z0-9]+", "_", str(tournament_name).lower()).strip("_")
@@ -903,51 +904,30 @@ def fetch_tournament_assets(
         except Exception:
             return False
 
-    total_stages = 5
+    total_stages = 4
     if fetch_expert_picks and pga_id:
         total_stages += 1
     if fetch_articles and article_template:
         total_stages += 1
 
     stage_idx = 1
-    dk_props_path = None
-    if pga_id:
-        dk_props_path = DATA_DIR / "odds" / f"prop_lines_{pga_id}.csv"
-        dk_cards_path = DATA_DIR / "odds" / f"dk_content_cards_{pga_id}.csv"
-        print_stage(stage_idx, total_stages, "Fetch DraftKings props")
-        props_fresh = check_file_fresh(dk_props_path, max_age_hours=dk_props_max_age_hours)
-        cards_fresh = check_file_fresh(dk_cards_path, max_age_hours=dk_props_max_age_hours)
-        cards_non_empty = _csv_has_rows(dk_cards_path)
-        if (not force_dk_props_refresh) and props_fresh and cards_fresh and cards_non_empty:
-            print(
-                "  Skipping DraftKings props - fresh prop + content-card files exist "
-                f"({dk_props_path.name}, {dk_cards_path.name}, <= {dk_props_max_age_hours:.1f}h old)"
-            )
-        else:
-            run_command([
-                "python3",
-                str(SCRIPTS_DIR / "scrapers" / "fetch_draftkings_props.py"),
-                "--tournament-id",
-                pga_id,
-                "--no-snapshot",
-                "--fetch-profile",
-                "fast",
-            ], description="Fetch DraftKings props", timeout=45)
-            if not dk_props_path.exists():
-                print("  Info: DK odds not live yet — try again Wednesday/Thursday")
-        stage_idx += 1
-
+    # All odds come from the DataGolf API — DK fetchers (blocked from
+    # cloud IPs, and a source we've dropped) are no longer in the weekly
+    # path. fetch_dg_odds --market all writes dg_odds_{tid}.json,
+    # dg_outrights_{tid}.csv and dg_matchups_{tid}.csv.
     odds_path = None
     if pga_id:
-        odds_path = DATA_DIR / "odds" / f"pga_odds_{pga_id}.csv"
-        print_stage(stage_idx, total_stages, "Fetch betting odds")
+        # fetch_dg_odds derives this per-player win-odds file for the
+        # prediction ensemble alongside the full outrights CSV.
+        odds_path = DATA_DIR / "odds" / f"odds_{pga_id}.csv"
+        print_stage(stage_idx, total_stages, "Fetch DataGolf odds")
         if (not force_odds_refresh) and check_file_fresh(odds_path, max_age_hours=odds_max_age_hours):
             print(f"  Skipping odds fetch - fresh file exists ({odds_path.name}, <= {odds_max_age_hours:.1f}h old)")
         else:
-            run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_pga_odds.py"),
+            run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_dg_odds.py"),
                          "--tournament-id", pga_id,
-                         "--output", str(odds_path)],
-                        description="Fetch PGA odds", timeout=60)
+                         "--market", "all"],
+                        description="Fetch DataGolf odds", timeout=120)
         stage_idx += 1
 
     print_stage(stage_idx, total_stages, "Fetch betting profiles")
@@ -962,8 +942,7 @@ def fetch_tournament_assets(
             "--field", str(field_path),
             "--output", str(bp_out),
         ]
-        if odds_path and odds_path.exists():
-            bp_cmd.extend(["--odds-csv", str(odds_path)])
+        # (no --odds-csv: profiles key on PGA player_id, DG rows carry dg_id)
         run_command(bp_cmd, description="Fetch betting profiles", timeout=120)
     stage_idx += 1
 

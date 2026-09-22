@@ -3527,12 +3527,16 @@ def apply_market_cut_blend(
     Only adjusts players where we have a market line.  Players without a line
     keep their model cut_prob unchanged.
 
-    Source file: data/odds/pga_market_odds_{tid}.csv
-    Market: PLAYER_PROPS / "To Make The Cut"
+    Source file: data/datagolf/dg_outrights_{tid}.csv (market=make_cut) —
+    DataGolf is the only odds source; the old FanDuel prop file
+    (pga_market_odds_{tid}.csv) still works as a fallback for
+    pre-cutover events.
     """
-    odds_path = Path("data/odds") / f"pga_market_odds_{tid}.csv"
+    dg_path = Path("data/datagolf") / f"dg_outrights_{tid}.csv"
+    legacy_path = Path("data/odds") / f"pga_market_odds_{tid}.csv"
+    odds_path = dg_path if dg_path.exists() else legacy_path
     if not odds_path.exists():
-        print(f"    Market cut blend skipped (no file: pga_market_odds_{tid}.csv)")
+        print(f"    Market cut blend skipped (no file: {dg_path.name})")
         return df
 
     try:
@@ -3542,11 +3546,23 @@ def apply_market_cut_blend(
         return df
 
     # Filter to make_cut rows only
-    cut_rows = mkt[
-        mkt["submarket_name"].str.lower().str.contains("make the cut", na=False)
-    ].copy()
+    if "market" in mkt.columns:
+        # DG outrights: real sportsbook lines only (DG's own line is a
+        # model, not a market), sharp books when any carry the market.
+        cut_rows = mkt[(mkt["market"] == "make_cut") & (~mkt["is_dg_model"].astype(bool))].copy()
+        sharp = cut_rows[cut_rows["is_sharp"].astype(bool)]
+        if not sharp.empty:
+            cut_rows = sharp
+        # One line per player: consensus across whatever books remain.
+        cut_rows["implied_prob"] = pd.to_numeric(cut_rows["implied_prob"], errors="coerce")
+        cut_rows = (cut_rows.dropna(subset=["implied_prob"])
+                    .groupby("player_name", as_index=False)["implied_prob"].mean())
+    else:
+        cut_rows = mkt[
+            mkt["submarket_name"].str.lower().str.contains("make the cut", na=False)
+        ].copy()
     if cut_rows.empty:
-        print("    Market cut blend skipped (no 'To Make The Cut' rows in market odds)")
+        print("    Market cut blend skipped (no make-cut rows in market odds)")
         return df
 
     # Vig removal: apply flat 5% factor (binary two-way market, not a pool)
