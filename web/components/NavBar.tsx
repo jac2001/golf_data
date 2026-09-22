@@ -141,18 +141,31 @@ export default function NavBar() {
             </Link>
           </Show>
 
-          <button
-            onClick={() => setShowSettings(true)}
-            title="Settings"
-            style={{
-              background: "none", border: "none",
-              color: muted, cursor: "pointer",
-              fontSize: "1.1em", padding: "6px 8px",
-              lineHeight: 1, borderRadius: 6,
-            }}
-          >
-            ⚙
-          </button>
+          {/* League zone keeps the dashboard alert modal; the public
+              site's gear goes to the account settings page. */}
+          {inLeague ? (
+            <button
+              onClick={() => setShowSettings(true)}
+              title="Dashboard settings"
+              style={{
+                background: "none", border: "none",
+                color: muted, cursor: "pointer",
+                fontSize: "1.1em", padding: "6px 8px",
+                lineHeight: 1, borderRadius: 6,
+              }}
+            >
+              ⚙
+            </button>
+          ) : (
+            <Show when="signed-in">
+              <Link href="/settings" title="Settings" style={{
+                color: muted, fontSize: "1.1em", padding: "6px 8px",
+                lineHeight: 1, borderRadius: 6,
+              }}>
+                ⚙
+              </Link>
+            </Show>
+          )}
 
           <button
             className="mobile-only"

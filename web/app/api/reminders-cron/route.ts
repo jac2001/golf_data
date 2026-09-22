@@ -78,6 +78,12 @@ export async function GET(req: Request) {
     SELECT user_id, endpoint, p256dh, auth FROM push_subscriptions` as SubRow[];
   if (subs.length === 0) return Response.json({ ok: true, log: ["no subscribers"] });
 
+  // Per-account preferences: absent row = both reminders on.
+  const prefRows = await sql`
+    SELECT user_id, remind_weekly, remind_fades FROM user_prefs` as
+    { user_id: string; remind_weekly: boolean; remind_fades: boolean }[];
+  const prefs = new Map(prefRows.map(p => [p.user_id, p]));
+
   const log: string[] = [];
   for (const ev of soon) {
     const tid = ev.tournament_id.toUpperCase();
@@ -91,10 +97,13 @@ export async function GET(req: Request) {
     const nFades = new Map(fades.map(r => [r.user_id, r.n]));
 
     for (const sub of subs) {
+      const pref = prefs.get(sub.user_id);
       const missing: string[] = [];
       const p = nPicks.get(sub.user_id) ?? 0;
-      if (p < 3) missing.push(`${3 - p} pick${3 - p === 1 ? "" : "s"}`);
-      if (ev.has_model) {
+      if ((pref?.remind_weekly ?? true) && p < 3) {
+        missing.push(`${3 - p} pick${3 - p === 1 ? "" : "s"}`);
+      }
+      if (ev.has_model && (pref?.remind_fades ?? true)) {
         const f = nFades.get(sub.user_id) ?? 0;
         if (f < 3) missing.push(`${3 - f} fade${3 - f === 1 ? "" : "s"}`);
       }

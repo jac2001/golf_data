@@ -32,7 +32,10 @@ function fmtDates(start: string, end: string): string {
 
 export default function Home() {
   const [data, setData] = useState<HomeData | null>(null);
-  const [tour, setTour] = useState<"pga" | "euro">("pga");
+  const [tour, setTour] = useState<"pga" | "euro">(() => {
+    try { return localStorage.getItem("favorite-tour") === "euro" ? "euro" : "pga"; }
+    catch { return "pga"; }
+  });
   const [err, setErr]   = useState("");
 
   useEffect(() => { getHome(tour).then(setData).catch(e => setErr(String(e))); }, [tour]);

@@ -1,6 +1,7 @@
 /**
  * /api/friends/reminders — push-reminder subscriptions.
  * ======================================================
+ * GET    → this account's subscriptions (endpoint + created_at)
  * POST   { subscription } → save this browser's push endpoint
  * DELETE { endpoint }     → forget it
  *
@@ -15,6 +16,16 @@ import { auth } from "@clerk/nextjs/server";
 import { getSql } from "@/lib/db";
 
 type Sub = { endpoint: string; keys: { p256dh: string; auth: string } };
+
+export async function GET() {
+  const { userId } = await auth();
+  if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const sql = getSql();
+  const rows = await sql`
+    SELECT endpoint, created_at FROM push_subscriptions
+    WHERE user_id = ${userId} ORDER BY created_at` as { endpoint: string; created_at: string }[];
+  return Response.json({ subscriptions: rows });
+}
 
 export async function POST(req: Request) {
   const { userId } = await auth();

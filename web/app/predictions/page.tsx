@@ -47,7 +47,10 @@ export default function PredictionsPage() {
 
   // ── Tab state ────────────────────────────────────────────────────────────────
   const [activeTab, setActiveTab] = useState<Tab>("field");
-  const [tour, setTour] = useState<"pga" | "euro">("pga");
+  const [tour, setTour] = useState<"pga" | "euro">(() => {
+    try { return localStorage.getItem("favorite-tour") === "euro" ? "euro" : "pga"; }
+    catch { return "pga"; }
+  });
 
   // Track which tabs have ever been activated (so we only fetch each once)
   const [loaded, setLoaded] = useState<Set<Tab>>(new Set(["field"]));
