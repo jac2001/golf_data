@@ -119,7 +119,9 @@ def cmd_preds(year: int) -> None:
     Keyed by the payload's OWN event_name like everything euro: a feed
     that serves "the current event" never gets to pick its label.
     """
-    raw = dg_get("/preds/pre-tournament", {"tour": "euro", "file_format": "json"})
+    # dead_heat=yes: top-N probabilities adjusted for ties — matches the
+    # raw feed Jack reads, so the site and the feed never disagree.
+    raw = dg_get("/preds/pre-tournament", {"tour": "euro", "dead_heat": "yes", "file_format": "json"})
     name = str(raw.get("event_name", ""))
     sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
     row = sched[sched["tournament_name"].str.lower() == name.lower()]
