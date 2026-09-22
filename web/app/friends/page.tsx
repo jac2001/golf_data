@@ -573,12 +573,14 @@ async function shareReceipt(tid: string, uid: string, game: "weekly" | "rounds" 
 }
 
 function StandingsTab() {
-  // Same three games as the Games tab, same remembered choice — the
-  // season picture should open on the game you were just playing.
-  const [mode, setMode] = useState<GameMode>(() => {
+  // Season standings exist for the weekly and fade games only — the
+  // Round Game is per-tournament by design (its whole-event board
+  // lives on the Games tab), so no "rounds" pill here and a
+  // remembered "rounds" mode falls back to picks.
+  const [mode, setMode] = useState<"picks" | "fades">(() => {
     try {
       const m = localStorage.getItem("friends-game-mode");
-      if (m === "picks" || m === "rounds" || m === "fades") return m;
+      if (m === "picks" || m === "fades") return m;
     } catch { /* default below */ }
     return "picks";
   });
@@ -586,10 +588,10 @@ function StandingsTab() {
   return (
     <>
       <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
-        {GAME_MODES.map(g => {
+        {GAME_MODES.filter(g => g.id !== "rounds").map(g => {
           const on = mode === g.id;
           return (
-            <button key={g.id} onClick={() => setMode(g.id)} style={{
+            <button key={g.id} onClick={() => setMode(g.id as "picks" | "fades")} style={{
               ...btnQuiet, padding: "7px 14px",
               color: on ? "#081f14" : "var(--bc-muted)",
               background: on ? "var(--bc-yellow)" : "transparent",
@@ -601,7 +603,6 @@ function StandingsTab() {
         })}
       </div>
       {mode === "picks" && <WeeklyStandings />}
-      {mode === "rounds" && <RoundStandings />}
       {mode === "fades" && <FadeStandings />}
     </>
   );
@@ -680,59 +681,6 @@ function WeeklyStandings() {
                 </tr>
               ))}
             </React.Fragment>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-/** Round Game season: total to par across every locked round, lower wins. */
-function RoundStandings() {
-  const api = useApi();
-  const [rows, setRows] = useState<RoundRow[] | null>(null);
-  const [me, setMe] = useState("");
-  const fmt = (v: number) => (v > 0 ? `+${v}` : v === 0 ? "E" : String(v));
-
-  useEffect(() => {
-    api("/api/friends/roundboard")
-      .then(d => { setRows((d.standings as RoundRow[]) ?? []); setMe((d.me as string) ?? ""); })
-      .catch(() => setRows([]));
-  }, [api]);
-
-  if (!rows) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
-  if (rows.length === 0) return (
-    <div style={card}>
-      <p style={{ color: "var(--bc-muted)", margin: 0 }}>
-        No round picks yet — grab one on the Games tab.
-      </p>
-    </div>
-  );
-
-  return (
-    <div style={{ ...card, padding: 0, overflow: "hidden" }}>
-      <table style={{ borderCollapse: "collapse", width: "100%" }}>
-        <thead><tr>
-          <th style={hdr}>#</th><th style={hdr}>Player</th>
-          <th style={{ ...hdr, textAlign: "right" }}>Rounds scored</th>
-          <th style={{ ...hdr, textAlign: "right" }}>Season to par</th>
-        </tr></thead>
-        <tbody>
-          {rows.map((r, i) => (
-            <tr key={r.user_id} style={{ background: r.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
-              <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
-              <td style={{ ...cell, fontWeight: 700 }}>
-                {r.user_name}
-                {r.user_id === "model" && <ModelBadge />}
-                {r.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
-              </td>
-              <td style={{ ...cell, textAlign: "right", color: "var(--bc-muted)" }}>{r.scored}</td>
-              <td style={{ ...cell, textAlign: "right", fontWeight: 800, fontVariantNumeric: "tabular-nums",
-                color: r.scored === 0 ? "var(--bc-muted)"
-                  : r.total < 0 ? "var(--bc-green)" : r.total > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
-                {r.scored ? fmt(r.total) : "—"}
-              </td>
-            </tr>
           ))}
         </tbody>
       </table>

@@ -1,12 +1,14 @@
 /**
  * /api/friends/roundboard — Round Game leaderboards.
  * ===================================================
- * ?tournament_id → that event's board: everyone's picks per LOCKED round
- * (unlocked rounds stay hidden — same anti-copy rule as the 3-pick game)
- * with to-par scores from the model API's rounds table. A locked round
- * with a score missing (cut, WD, snapshot not settled) shows the +5
- * penalty only once the round is complete for the field.
- * No param → season totals across all events.
+ * ?tournament_id (required) → that event's board: everyone's picks per
+ * LOCKED round (unlocked rounds stay hidden — same anti-copy rule as
+ * the 3-pick game) with to-par scores from the model API's rounds
+ * table. A locked round with a score missing (cut, WD, snapshot not
+ * settled) shows the +5 penalty only once the round is complete for
+ * the field. The Round Game is PER TOURNAMENT by design — cumulative
+ * to-par sums aren't comparable across different round counts, so
+ * there is deliberately no season view.
  */
 
 import { auth } from "@clerk/nextjs/server";
@@ -34,7 +36,8 @@ export async function GET(req: Request) {
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
   const url = new URL(req.url);
-  const tid = url.searchParams.get("tournament_id")?.toUpperCase() ?? null;
+  const tid = url.searchParams.get("tournament_id")?.toUpperCase();
+  if (!tid) return Response.json({ error: "tournament_id required" }, { status: 400 });
   const groupId = Number(url.searchParams.get("group_id") || 0);
   const ids = await visibleUserIds(userId, groupId || undefined);
   if (!ids) {
@@ -57,11 +60,9 @@ export async function GET(req: Request) {
     }
   } catch { /* events not in the open list are past -> fully visible */ }
 
-  const picks = (tid
-    ? await sql`SELECT user_id, user_name, tournament_id, round, player_name
-                FROM round_picks WHERE tournament_id = ${tid} AND user_id = ANY(${ids})`
-    : await sql`SELECT user_id, user_name, tournament_id, round, player_name
-                FROM round_picks WHERE user_id = ANY(${ids})`) as PickRow[];
+  const picks = await sql`
+    SELECT user_id, user_name, tournament_id, round, player_name
+    FROM round_picks WHERE tournament_id = ${tid} AND user_id = ANY(${ids})` as PickRow[];
 
   const tids = [...new Set(picks.map(p => p.tournament_id))];
   const roundsByTid = new Map<string, RoundsResp | null>();
@@ -86,8 +87,7 @@ export async function GET(req: Request) {
       else if (p.round < avail || (p.round <= avail && maxLocked > p.round)) score = PENALTY;
     }
     const u = users.get(p.user_id) ?? { user_id: p.user_id, user_name: p.user_name, total: 0, scored: 0, rounds: {} };
-    const key = tid ? String(p.round) : `${p.tournament_id}·R${p.round}`;
-    u.rounds[key] = { player: visible ? p.player_name : "hidden", score, visible };
+    u.rounds[String(p.round)] = { player: visible ? p.player_name : "hidden", score, visible };
     if (score != null) { u.total += score; u.scored += 1; }
     users.set(p.user_id, u);
   }
