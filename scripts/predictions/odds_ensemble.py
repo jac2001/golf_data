@@ -404,7 +404,7 @@ def add_odds_to_predictions(predictions_df: pd.DataFrame,
                 odds_file = matches[0]
             else:
                 print(f"  No odds file found for {tournament_id}")
-                print(f"  Run: python scripts/scrapers/fetch_pga_odds.py --tournament-id {tournament_id}")
+                print(f"  Run: python scripts/scrapers/fetch_dg_odds.py --tournament-id {tournament_id} --market all")
                 return predictions_df
     else:
         print("  No odds file specified")

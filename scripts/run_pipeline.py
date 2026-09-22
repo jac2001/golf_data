@@ -473,18 +473,30 @@ def find_field_file(tournament_name: str, tournament_id: str = None) -> Path:
 
 
 def fetch_field_from_pga(tournament_name: str, tournament_id: str = None) -> Path:
-    """Fetch field from PGA TOUR if possible."""
-    print("\n  Attempting to fetch field from PGA TOUR...")
+    """Fetch the field from DataGolf (the PGA TOUR fetcher is long gone —
+    this was a stub that always returned None, leaving a misleading
+    'Attempting to fetch from PGA TOUR' in every log).
 
-    # If no tournament_id provided, we can't fetch
+    fetch_dg_field validates the payload's OWN event_name against the
+    schedule (event_guard) and refuses to write a mislabeled field, so
+    a refusal here means DG isn't serving this event yet — an honest
+    early exit, not an error to route around.
+    """
     if not tournament_id:
-        print("  No PGA TOUR tournament ID provided, cannot auto-fetch field")
+        print("  No tournament ID provided, cannot auto-fetch field")
         return None
 
-    # Always use canonical ID-based path to avoid stale name-based files
+    print(f"\n  Fetching field from DataGolf for {tournament_id}...")
     output_path = DATA_DIR / "fields" / f"field_{tournament_id}.csv"
-
-    return None
+    result = subprocess.run(
+        ["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_dg_field.py"),
+         "--tournament-id", tournament_id],
+        capture_output=True, text=True, timeout=120,
+    )
+    tail = (result.stdout + result.stderr).strip().splitlines()
+    for line in tail[-3:]:
+        print(f"  {line}")
+    return output_path if output_path.exists() else None
 
 
 def run_predictions(
@@ -886,8 +898,6 @@ def fetch_tournament_assets(
     power_slug: str = None,
     odds_max_age_hours: float = 6.0,
     force_odds_refresh: bool = False,
-    dk_props_max_age_hours: float = 6.0,
-    force_dk_props_refresh: bool = False,
     fetch_expert_picks: bool = True,
     fetch_articles: bool = False,
     article_template: str = None,
@@ -1001,8 +1011,6 @@ def run_full_pipeline(
     power_slug: str = None,
     odds_max_age_hours: float = 6.0,
     force_odds_refresh: bool = False,
-    dk_props_max_age_hours: float = 6.0,
-    force_dk_props_refresh: bool = False,
     fetch_expert_picks: bool = True,
     fetch_articles: bool = False,
     article_template: str = None,
@@ -1069,8 +1077,6 @@ def run_full_pipeline(
                 power_slug=power_slug,
                 odds_max_age_hours=odds_max_age_hours,
                 force_odds_refresh=force_odds_refresh,
-                dk_props_max_age_hours=dk_props_max_age_hours,
-                force_dk_props_refresh=force_dk_props_refresh,
                 fetch_expert_picks=fetch_expert_picks,
                 fetch_articles=fetch_articles,
                 article_template=article_template,
@@ -1245,10 +1251,6 @@ Examples:
                        help='Skip PGA odds refresh if existing odds file is newer than this many hours (default: 6)')
     parser.add_argument('--force-odds-refresh', action='store_true',
                        help='Force PGA odds refresh even if cached odds are fresh')
-    parser.add_argument('--dk-max-age-hours', type=float, default=6.0,
-                       help='Skip DraftKings props refresh if existing props file is newer than this many hours (default: 6)')
-    parser.add_argument('--force-dk-refresh', action='store_true',
-                       help='Force DraftKings props refresh even if cached props are fresh')
     parser.add_argument('--skip-expert-picks', action='store_true',
                        help='Skip expert picks fetch in tournament assets stage')
     parser.add_argument('--skip-bet-recs', action='store_true',
@@ -1373,8 +1375,6 @@ Examples:
         power_slug=args.power_slug,
         odds_max_age_hours=args.odds_max_age_hours,
         force_odds_refresh=args.force_odds_refresh,
-        dk_props_max_age_hours=args.dk_max_age_hours,
-        force_dk_props_refresh=args.force_dk_refresh,
         fetch_expert_picks=(not args.skip_expert_picks),
         generate_bet_recs=(not args.skip_bet_recs),
         generate_reasoning=args.reasoning,
