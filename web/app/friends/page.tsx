@@ -1243,7 +1243,7 @@ function RoundGameTab() {
   const [selected, setSelected] = useState("");
   const [state, setState] = useState<RoundPicksState | null>(null);
   const [eventName, setEventName] = useState("");
-  const [field, setField] = useState<string[]>([]);
+  const [field, setField] = useState<FieldRow[]>([]);
   const [board, setBoard] = useState<RoundRow[] | null>(null);
   const [me, setMe] = useState("");
   const [pickingRound, setPickingRound] = useState<number | null>(null);
@@ -1269,7 +1269,23 @@ function RoundGameTab() {
     api(`/api/friends/roundboard?tournament_id=${encodeURIComponent(selected)}`)
       .then(d => { setBoard((d.standings as RoundRow[]) ?? []); setMe((d.me as string) ?? ""); })
       .catch(() => setBoard([]));
-    getEventField(selected).then(d => setField(d.players ?? [])).catch(() => setField([]));
+    // Field with numbers when the event has them (our model or DG's
+    // euro model), plain names otherwise — same pattern as PicksTab.
+    getPredictions(200, selected)
+      .then(d => {
+        if (String(d.tournament_id ?? "").toUpperCase() !== selected.toUpperCase()) {
+          throw new Error("wrong event");
+        }
+        setField((d.players ?? [])
+          .filter((r: FieldRow) => r.player_name)
+          .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0)));
+      })
+      .catch(() =>
+        getEventField(selected)
+          .then(d => setField((d.players ?? []).map(p => ({
+            player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
+          }))))
+          .catch(() => setField([])));
   }, [api, selected]);
   useEffect(load, [load]);
 
@@ -1295,10 +1311,9 @@ function RoundGameTab() {
     } catch (e) { setErr((e as Error).message); }
   }
 
-  const suggestions = query.length >= 2
-    ? field.filter(pl => pl.toLowerCase().includes(query.toLowerCase())
-        && !(state?.used ?? []).includes(pl)).slice(0, 8)
-    : [];
+  // The whole field, always browsable — filter narrows, never gates.
+  const visibleField = field.filter(r =>
+    !query || r.player_name.toLowerCase().includes(query.toLowerCase()));
 
   const fmt = (v: number) => (v > 0 ? `+${v}` : v === 0 ? "E" : String(v));
 
@@ -1352,22 +1367,35 @@ function RoundGameTab() {
               )}
               {locked && <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: "0.72em" }}>locked</span>}
               {pickingRound === r && !locked && (
-                <div style={{ flexBasis: "100%", position: "relative" }}>
+                <div style={{ flexBasis: "100%" }}>
                   <input autoFocus value={query} onChange={e => setQuery(e.target.value)}
-                    placeholder={field.length ? "Search the field…" : "Field not announced yet"}
+                    placeholder={field.length ? "Filter the field…" : "Field not announced yet"}
                     style={{ ...inputStyle, width: "100%", boxSizing: "border-box", marginTop: 6 }} />
-                  {suggestions.length > 0 && (
-                    <div style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50,
+                  {visibleField.length > 0 && (
+                    <div style={{ maxHeight: 280, overflowY: "auto", marginTop: 6,
                       background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
-                      borderRadius: 8, marginTop: 4, overflow: "hidden" }}>
-                      {suggestions.map(pl => (
-                        <button key={pl} onClick={() => pick(r, pl)} style={{
-                          display: "block", width: "100%", textAlign: "left",
-                          background: "none", border: "none", cursor: "pointer",
-                          padding: "9px 14px", color: "var(--bc-text)", fontSize: "0.88em" }}>
-                          {pl}
-                        </button>
-                      ))}
+                      borderRadius: 8, WebkitOverflowScrolling: "touch" as never }}>
+                      {visibleField.map(row => {
+                        const used = (state?.used ?? []).includes(row.player_name);
+                        return (
+                          <button key={row.player_name} disabled={used}
+                            onClick={() => pick(r, row.player_name)} style={{
+                              display: "flex", alignItems: "center", width: "100%", textAlign: "left",
+                              background: "none", border: "none", cursor: used ? "default" : "pointer",
+                              padding: "9px 14px", fontSize: "0.88em",
+                              color: used ? "var(--bc-muted)" : "var(--bc-text)",
+                              borderBottom: "1px solid var(--bc-line)" }}>
+                            <span style={{ fontWeight: 600 }}>{row.player_name}</span>
+                            {used && <span style={{ marginLeft: 8, fontSize: "0.78em" }}>· used</span>}
+                            {row.win_prob != null && (
+                              <span style={{ marginLeft: "auto", color: "var(--bc-muted)",
+                                fontVariantNumeric: "tabular-nums" }}>
+                                {(row.win_prob * 100).toFixed(1)}%
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
                     </div>
                   )}
                 </div>

@@ -1771,8 +1771,8 @@ export interface HomeData {
   trust: Record<string, { value: string; label: string }>;
 }
 
-export async function getHome(): Promise<HomeData> {
-  const res = await apiFetch(`${API_BASE}/api/home`, { cache: "no-store" });
+export async function getHome(tour: "pga" | "euro" = "pga"): Promise<HomeData> {
+  const res = await apiFetch(`${API_BASE}/api/home?tour=${tour}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load home");
   return res.json();
 }

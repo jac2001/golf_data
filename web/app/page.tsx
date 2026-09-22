@@ -32,9 +32,10 @@ function fmtDates(start: string, end: string): string {
 
 export default function Home() {
   const [data, setData] = useState<HomeData | null>(null);
+  const [tour, setTour] = useState<"pga" | "euro">("pga");
   const [err, setErr]   = useState("");
 
-  useEffect(() => { getHome().then(setData).catch(e => setErr(String(e))); }, []);
+  useEffect(() => { getHome(tour).then(setData).catch(e => setErr(String(e))); }, [tour]);
 
   if (err)   return <div style={{ color: "var(--bc-red)", padding: 24 }}>Failed to load: {err}</div>;
   if (!data) return <div style={{ color: "var(--bc-muted)", padding: 24 }}>Loading…</div>;
@@ -44,8 +45,24 @@ export default function Home() {
   return (
     <div style={{ maxWidth: 1180, margin: "0 auto" }}>
 
+      {/* ── Tour switch: PGA is home, the DPWT one tap away ─────────────── */}
+      <div style={{ display: "flex", gap: 8, paddingTop: 20 }}>
+        {([["pga", "PGA Tour"], ["euro", "DP World Tour"]] as const).map(([id, label]) => (
+          <button key={id} onClick={() => setTour(id)} style={{
+            cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
+            textTransform: "uppercase", letterSpacing: "0.06em",
+            padding: "7px 15px", borderRadius: 4,
+            color: tour === id ? "#081f14" : "var(--bc-muted)",
+            background: tour === id ? "var(--bc-yellow)" : "transparent",
+            border: `1px solid ${tour === id ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+          }}>
+            {label}
+          </button>
+        ))}
+      </div>
+
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <div style={{ display: "flex", gap: 48, padding: "44px 0 30px", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 48, padding: "24px 0 30px", flexWrap: "wrap" }}>
         <div style={{ flex: "1 1 480px", display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ fontSize: "0.82em", fontWeight: 700, letterSpacing: "0.16em",
                         textTransform: "uppercase", color: "var(--bc-yellow)" }}>

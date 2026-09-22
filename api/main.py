@@ -7250,13 +7250,83 @@ def get_fantasy_strategy() -> dict:
 
 # ── Home (Broadcast landing) ─────────────────────────────────────────────────
 
+def _home_euro(today: pd.Timestamp) -> dict:
+    """The landing payload for ?tour=euro — same shape as the PGA one so
+    the page renders either without branching on structure."""
+    hero, season_start = None, None
+    frames = []
+    for sp in sorted((DATA_DIR / "raw").glob("schedule_euro_*.csv")):
+        try:
+            frames.append(pd.read_csv(sp))
+        except Exception:
+            continue
+    if frames:
+        sched = pd.concat(frames, ignore_index=True)
+        sched["_s"] = pd.to_datetime(sched["start_date"], errors="coerce")
+        sched["_e"] = pd.to_datetime(sched.get("end_date", sched["start_date"]), errors="coerce")
+        live = sched[(sched["_s"] - pd.Timedelta(days=2) <= today) & (today <= sched["_e"])].sort_values("_s")
+        upcoming = sched[sched["_s"] > today].sort_values("_s")
+        row = live.iloc[0] if len(live) else (upcoming.iloc[0] if len(upcoming) else None)
+        if row is not None:
+            hero = {
+                "tid": str(row["tournament_id"]),
+                "name": str(row["tournament_name"]),
+                "start_date": str(row["start_date"]), "end_date": str(row.get("end_date", "")),
+                "course": str(row.get("course", "") or "").split(";")[0],
+                "location": str(row.get("location", "") or ""),
+                "type": "DP World Tour",
+                "is_live": bool(len(live)),
+            }
+            season_start = str(sched["_s"].min().date())
+
+    # Board: DataGolf's euro model for the hero event, when fetched.
+    board, board_event, board_is_hero = [], None, False
+    if hero:
+        dg_path = DATA_DIR / "datagolf" / f"dg_preds_{hero['tid']}.csv"
+        if dg_path.exists():
+            try:
+                df = pd.read_csv(dg_path)
+                df["win_prob"] = pd.to_numeric(df["win_prob"], errors="coerce")
+                for _, r in df.nlargest(3, "win_prob").iterrows():
+                    board.append({
+                        "player": _flip_to_first_last(str(r["player_name"])),
+                        "win_prob": round(float(r["win_prob"]), 4),
+                        "top10_prob": round(float(r["top10_prob"]), 4) if pd.notna(r.get("top10_prob")) else None,
+                        "why": "DataGolf euro model favorite",
+                    })
+                board_event, board_is_hero = hero["name"], True
+            except Exception:
+                pass
+
+    return {
+        "hero": hero,
+        "season_start": season_start,
+        "board": board, "board_event": board_event, "board_is_hero": board_is_hero,
+        "source": "datagolf",
+        "storylines": [],
+        "trust": {
+            "calibration": {"value": "10.5%", "label": "actual top-10 rate when we said 10%"},
+            "seasons": {"value": "7", "label": "seasons of walk-forward testing"},
+            "benchmark": {"value": "±5%", "label": "of the industry-leading model"},
+        },
+    }
+
+
 @app.get("/api/home")
-def get_home() -> dict:
+def get_home(tour: str = "pga") -> dict:
     """One call for the landing page: hero tournament (current or next,
     across season CSVs), model top-3 with plain-English reasons, three
     computed storylines, and the trust-strip numbers. Degrades honestly
-    in the offseason: predictions are labeled with their own event."""
+    in the offseason: predictions are labeled with their own event.
+
+    ?tour=euro: hero from the DPWT schedule, board from DataGolf's euro
+    model (source=datagolf) — ours joins after the January retrain.
+    """
     today = pd.Timestamp.now().normalize()
+    tour = tour.strip().lower()
+
+    if tour == "euro":
+        return _home_euro(today)
 
     # Hero: union of every season's schedule — the fall events live in the
     # 2026 file while 2027 already exists, so "newest file first" skipped a

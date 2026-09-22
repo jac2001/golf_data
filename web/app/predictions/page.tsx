@@ -20,7 +20,7 @@ import {
   getWeather, getIntel, refreshIntel, generateLineup,
   Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
   ModelCompPlayer, WeatherResponse, CourseFitResponse,
-  getCourseFit, PlayerPrediction, IntelResponse,
+  getCourseFit, getOpenEvents, PlayerPrediction, IntelResponse,
 } from "@/lib/api";
 import PredictionsTable from "@/components/PredictionsTable";
 import LineupCards from "@/components/LineupCards";
@@ -47,6 +47,7 @@ export default function PredictionsPage() {
 
   // ── Tab state ────────────────────────────────────────────────────────────────
   const [activeTab, setActiveTab] = useState<Tab>("field");
+  const [tour, setTour] = useState<"pga" | "euro">("pga");
 
   // Track which tabs have ever been activated (so we only fetch each once)
   const [loaded, setLoaded] = useState<Set<Tab>>(new Set(["field"]));
@@ -164,6 +165,19 @@ export default function PredictionsPage() {
     );
   }
 
+  if (tour === "euro") {
+    return (
+      <div className="page-wrap">
+        <PageHead
+          kicker="DP World Tour · numbers by DataGolf's euro model until the January retrain"
+          title="This Week"
+        />
+        <TourPills tour={tour} setTour={setTour} />
+        <EuroWeek />
+      </div>
+    );
+  }
+
   return (
     <div className="page-wrap">
 
@@ -178,6 +192,8 @@ export default function PredictionsPage() {
         ].filter(Boolean).join(" · ")}
         title="This Week"
       />
+
+      <TourPills tour={tour} setTour={setTour} />
 
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}
       {preds && !loadingField && (
@@ -370,6 +386,98 @@ export default function PredictionsPage() {
 }
 
 // ── Small helper components ───────────────────────────────────────────────────
+
+function TourPills({ tour, setTour }: {
+  tour: "pga" | "euro"; setTour: (t: "pga" | "euro") => void;
+}) {
+  return (
+    <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+      {([["pga", "PGA Tour"], ["euro", "DP World Tour"]] as const).map(([id, label]) => (
+        <button key={id} onClick={() => setTour(id)} style={{
+          cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
+          textTransform: "uppercase", letterSpacing: "0.06em",
+          padding: "7px 15px", borderRadius: 4,
+          color: tour === id ? "#081f14" : "var(--bc-muted)",
+          background: tour === id ? "var(--bc-yellow)" : "transparent",
+          border: `1px solid ${tour === id ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+        }}>
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** The DPWT week at a glance: the current euro event's full probability
+ *  board from DataGolf's model (ours joins after the January retrain). */
+function EuroWeek() {
+  const [eventName, setEventName] = useState("");
+  const [rows, setRows] = useState<PlayerPrediction[] | null>(null);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    getOpenEvents().then(d => {
+      const ev = (d.events ?? []).filter(e => e.tour === "euro")
+        .find(e => !e.finished) ?? (d.events ?? []).filter(e => e.tour === "euro")[0];
+      if (!ev) { setErr("No DP World Tour event this week."); setRows([]); return; }
+      setEventName(ev.name);
+      getPredictions(200, ev.tournament_id)
+        .then(p => setRows(p.players ?? []))
+        .catch(() => { setErr("Numbers for this event haven't posted yet."); setRows([]); });
+    }).catch(() => { setErr("Could not load events."); setRows([]); });
+  }, []);
+
+  const pct = (v: number | null | undefined, d = 1) =>
+    v != null ? `${(v * 100).toFixed(d)}%` : "—";
+
+  if (rows === null) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
+  if (rows.length === 0) return <p style={{ color: "var(--bc-muted)" }}>{err}</p>;
+
+  return (
+    <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",
+      borderRadius: 10, overflow: "hidden" }}>
+      <div style={{ padding: "16px 18px 6px", fontWeight: 800, fontSize: "1.05em" }}>
+        {eventName}
+        <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 10 }}>
+          {rows.length} players · DataGolf euro model
+        </span>
+      </div>
+      <div style={{ maxHeight: 560, overflowY: "auto" }}>
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead><tr>
+            {["Player", "Win", "Top 5", "Top 10", "Top 20", "Makes cut"].map((hcol, i) => (
+              <th key={hcol} style={{ padding: "8px 14px", fontSize: "0.7em", color: "var(--bc-muted)",
+                textTransform: "uppercase", letterSpacing: "0.04em", fontWeight: 600,
+                textAlign: i === 0 ? "left" : "right",
+                borderBottom: "1px solid var(--bc-line)", position: "sticky", top: 0,
+                background: "var(--bc-card)" }}>{hcol}</th>
+            ))}
+          </tr></thead>
+          <tbody>
+            {rows.map(r => (
+              <tr key={r.player_name}>
+                <td style={{ padding: "7px 14px", fontWeight: 600, fontSize: "0.86em",
+                  borderBottom: "1px solid var(--bc-line)" }}>
+                  <Link href={`/players?player=${encodeURIComponent(r.player_name)}`}
+                    style={{ color: "inherit", textDecoration: "none" }}>
+                    {r.player_name}
+                  </Link>
+                </td>
+                {[r.win_prob, r.top5_prob, r.top10_prob, r.top20_prob, r.cut_prob].map((v, i) => (
+                  <td key={i} style={{ padding: "7px 14px", textAlign: "right", fontSize: "0.84em",
+                    fontVariantNumeric: "tabular-nums", borderBottom: "1px solid var(--bc-line)",
+                    color: i === 0 ? "var(--bc-text)" : "var(--bc-muted)" }}>
+                    {pct(v, i === 0 ? 1 : 0)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
 
 function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: string }) {
   const [running, setRunning] = useState(false);
