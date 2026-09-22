@@ -555,11 +555,6 @@ def run_tuesday_evening(dry_run: bool = False):
         return []
 
     tasks = [
-        ("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                             "--tournament-id", tournament_id,
-                             "--max-age-hours", "2",
-                             "--fetch-profile", "fast",
-                             "--no-snapshot"]),
         # DG publishes pre-tournament predictions Tue/Wed evening — fetch and re-run
         ("DG Pre-Tournament", ["python3", "scripts/scrapers/fetch_dg_pre_tournament.py",
                                 "--tournament-id", tournament_id]),
@@ -798,11 +793,6 @@ def run_live_refresh(dry_run: bool = False):
                                         "--tournament-id", tournament_id]))
         tier1.append(("Live Course Stats", ["python3", "scripts/scrapers/fetch_course_stats.py",
                                             "--tid", tournament_id]))
-        tier1.append(("DraftKings Odds", ["python3", "scripts/scrapers/fetch_draftkings_props.py",
-                                          "--tournament-id", tournament_id,
-                                          "--max-age-hours", "0.5",
-                                          "--fetch-profile", "fast",
-                                          "--no-snapshot"]))
         tier1.append(("DG Betting Odds", ["python3", "scripts/scrapers/fetch_dg_odds.py",
                                           "--tournament-id", tournament_id, "--market", "all"]))
 

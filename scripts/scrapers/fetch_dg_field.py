@@ -71,20 +71,30 @@ def fetch_field(tour: str) -> dict:
     return dg_get("/field-updates", {"tour": tour, "file_format": "json"})
 
 
-def fetch_field_auto() -> tuple[dict, str]:
-    """Try pga (current week) first; fall back to upcoming_pga. Returns (raw, tour_used).
+def fetch_field_auto(expected: str) -> tuple[dict, str]:
+    """Return the (payload, tour) whose OWN event_name matches `expected`.
 
-    pga is preferred because upcoming_pga returns the NEXT event during tournament week,
-    which would give us the wrong field and no tee times.
+    Both DG feeds serve "whatever event DG is on" — during a team week
+    the pga feed is the Presidents Cup and upcoming_pga may be empty.
+    The payload's label decides which (if either) is the event we asked
+    for; a non-matching payload is never used, however full its field.
     """
+    from event_guard import names_match
+    seen = []
     for tour in ("pga", "upcoming_pga"):
         try:
             raw = fetch_field(tour)
             if raw.get("field"):
-                return raw, tour
+                if names_match(raw.get("event_name", ""), expected):
+                    return raw, tour
+                seen.append(f"{tour}='{raw.get('event_name')}'")
         except Exception as e:
             print(f"[WARN] {tour} failed: {e}")
-    raise RuntimeError("Both pga and upcoming_pga fetch attempts failed")
+    raise RuntimeError(
+        f"No DG feed carries the requested event (wanted '{expected}'; "
+        f"feeds serve: {', '.join(seen) or 'nothing'}). Refusing to write "
+        f"a mislabeled field."
+    )
 
 
 # ── Flatten ───────────────────────────────────────────────────────────────────
@@ -211,15 +221,24 @@ def main():
     args = parser.parse_args()
     tid = args.tournament_id.upper()
 
-    print(f"[INFO] Fetching DG field (tour={args.tour})...")
+    from event_guard import expected_name, names_match
+    expected = expected_name(tid)
+
+    print(f"[INFO] Fetching DG field (tour={args.tour}, expecting '{expected}')...")
     if args.tour == "auto":
-        raw, tour_used = fetch_field_auto()
+        raw, tour_used = fetch_field_auto(expected)
         print(f"[INFO] Using tour={tour_used}")
     else:
         raw = fetch_field(args.tour)
         tour_used = args.tour
 
     event_name = raw.get("event_name", "unknown")
+    if not names_match(event_name, expected):
+        raise SystemExit(
+            f"[REFUSED] DG {tour_used} feed serves '{event_name}', not "
+            f"'{expected}' ({tid}) — writing it under {tid} would mislabel "
+            f"another event's field."
+        )
     print(f"[INFO] Event: {event_name}  |  Round: {raw.get('current_round')}  |  Updated: {raw.get('last_updated')}")
 
     df = flatten_field(raw)

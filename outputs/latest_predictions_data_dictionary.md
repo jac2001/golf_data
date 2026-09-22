@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-09-21 21:04
+Generated: 2026-09-17 07:51
 
 | Column | Description |
 |--------|-------------|
@@ -212,6 +212,12 @@ Generated: 2026-09-21 21:04
 | win_prob | Predicted win probability (0-1) |
 | top5_prob | Predicted top-5 probability (0-1) |
 | top10_prob | Predicted top-10 probability (0-1) |
+| projected_score | Regression model: predicted 4-round to-par total (e.g. -12.5) |
+| projected_score_vs_field | No description available |
+| score_rank | Field rank by projected_score (1 = best/lowest projected score) |
+| proj_ceiling | No description available |
+| proj_median | No description available |
+| proj_floor | No description available |
 | top20_prob_raw | No description available |
 | top20_prob | No description available |
 | win_prob_calibrated | No description available |
@@ -231,6 +237,9 @@ Generated: 2026-09-21 21:04
 | miss_cut_prob | Probability of missing the cut (1 - cut_prob) |
 | expected_value | Expected earnings value based on purse + probabilities (USD) |
 | vegas_prob | No description available |
+| odds_to_win | No description available |
+| odds_numeric | No description available |
+| odds_rank | No description available |
 | ensemble_win_prob | No description available |
 | ensemble_win_prob_normalized | No description available |
 | model_vs_vegas_edge | No description available |

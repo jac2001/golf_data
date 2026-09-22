@@ -375,26 +375,35 @@ def main():
         slug = args.slug or Path(fragment_path).stem.replace("-", "_")
 
     data = fetch_graphql_with_retry(fragment_path) if fragment_path else None
-    if data is None and args.allow_fail:
-        data = load_cache_json(slug)
-    if data is None:
-        raise SystemExit("Power rankings unavailable (live + cache both failed)")
 
-    # Cache raw JSON if live fetch succeeded
+    # Cache raw JSON only AFTER it parses: a 200 response can carry
+    # GraphQL errors (article not published yet), and caching that
+    # poisons the cache the fallback below relies on.
+    df = None
+    parse_err = None
     if data:
-        save_cache_json(slug, data)
+        try:
+            df = parse_table(data)
+            save_cache_json(slug, data)
+        except Exception as e:
+            parse_err = e
 
-    try:
-        df = parse_table(data)
-    except Exception as e:
-        if args.allow_fail:
-            cached = load_cache_json(slug)
-            if cached:
+    if df is None:
+        cached = load_cache_json(slug)
+        if cached:
+            try:
                 df = parse_table(cached)
-            else:
-                raise SystemExit(f"Parsing failed and no cache available: {e}")
-        else:
-            raise SystemExit(f"Parsing failed: {e}")
+                print("  Using cached power rankings (live fetch unusable)")
+            except Exception:
+                pass  # poisoned or stale cache — fall through
+
+    if df is None:
+        msg = f"Power rankings unavailable ({parse_err or 'no live data or cache'})"
+        if args.allow_fail:
+            # Normal early in the week — the article simply isn't up yet.
+            print(f"⚠️ {str(msg)[:160]} — skipping (article likely not published yet).")
+            return
+        raise SystemExit(msg)
 
     out_dir = DATA_DIR
     out_dir.mkdir(parents=True, exist_ok=True)

@@ -25,11 +25,8 @@ from datetime import datetime
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
-# Add scrapers dir to path — same pattern used across all scripts in this project.
-# This lets us import fetch_pga_odds by filename rather than as a package path,
-# which avoids the "No module named 'scripts'" error when scripts/ has no __init__.py
-sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "scrapers"))
-from fetch_pga_odds import fetch_and_merge_odds, fetch_all_market_odds
+# DataGolf is the only odds source — the DK/PGA-GraphQL fetchers
+# (fetch_pga_odds) are no longer imported or called anywhere.
 
 
 def get_current_tournament_id() -> str | None:
@@ -162,50 +159,55 @@ def refresh_odds(tournament_id: str) -> bool:
     # Load predictions first — needed for fallback name matching
     preds = pd.read_csv(preds_path)
 
-    print(f"  Fetching fresh odds for {tournament_id} ...")
+    print(f"  Refreshing odds for {tournament_id} from DataGolf ...")
 
-    # Fetch all markets first so we can save pga_market_odds and pass to merge
+    # Freshen the DG files (fetch_dg_odds also derives the per-player
+    # win-consensus file data/odds/odds_{tid}.csv). A fetch failure is
+    # fine — we fall through to whatever cached files exist.
+    import subprocess as _sp
     try:
-        all_markets_df = fetch_all_market_odds(tournament_id)
-        if not all_markets_df.empty:
-            _mkt_path = PROJECT_ROOT / "data" / "odds" / f"pga_market_odds_{tournament_id}.csv"
-            all_markets_df.to_csv(_mkt_path, index=False)
-            print(f"  Saved all PGA markets to {_mkt_path.name}")
+        _sp.run(["python3", str(PROJECT_ROOT / "scripts" / "scrapers" / "fetch_dg_odds.py"),
+                 "--tournament-id", tournament_id, "--market", "all"],
+                capture_output=True, timeout=180, cwd=PROJECT_ROOT)
     except Exception as _e:
-        print(f"  PGA market fetch skipped: {_e}")
-        all_markets_df = None
+        print(f"  DG odds fetch skipped ({_e}) — using cached files")
 
-    odds_df = fetch_and_merge_odds(tournament_id,
-                                   all_markets_df=all_markets_df if all_markets_df is not None and not all_markets_df.empty else None)
-
-    if odds_df.empty:
-        print("  DK API returned empty — trying prop_lines fallback...")
-        odds_df = _fallback_odds_from_prop_lines(tournament_id, preds)
-        if odds_df.empty:
-            print("ERROR: No odds data from API or prop_lines fallback.")
-            return False
-
-    print(f"  Got odds for {len(odds_df)} players.")
-
-    # ── Match odds → predictions by player_id (most reliable) ──────────
-    preds["player_id"]   = preds["player_id"].astype(str)
-    odds_df["player_id"] = odds_df["player_id"].astype(str)
-
-    # Keep only the columns we need from odds_df
-    odds_slim = odds_df[["player_id", "odds_to_win", "odds_numeric"]].copy()
-    odds_slim.columns = ["player_id", "new_odds_to_win", "new_odds_numeric"]
-
-    merged = preds.merge(odds_slim, on="player_id", how="left")
-
-    # Fill in new odds where available, keep old value where not
-    # Guard: columns may not exist on a fresh predictions file
+    # ── Match odds → predictions BY NAME: DG rows carry dg_id, not the
+    #    PGA player_id predictions use, so the id merge is impossible.
+    win_path = PROJECT_ROOT / "data" / "odds" / f"odds_{tournament_id}.csv"
+    merged = preds.copy()
     if "odds_to_win" not in merged.columns:
         merged["odds_to_win"] = np.nan
     if "odds_numeric" not in merged.columns:
         merged["odds_numeric"] = np.nan
-    merged["odds_to_win"]  = merged["new_odds_to_win"].combine_first(merged["odds_to_win"])
-    merged["odds_numeric"] = merged["new_odds_numeric"].combine_first(merged["odds_numeric"])
-    merged = merged.drop(columns=["new_odds_to_win", "new_odds_numeric"])
+
+    if win_path.exists():
+        try:
+            dgw = pd.read_csv(win_path)
+
+            def _key(n: str) -> str:
+                n = str(n)
+                if "," in n:
+                    last, _, first = n.partition(",")
+                    n = f"{first.strip()} {last.strip()}"
+                n = _normalize_name(n)
+                return _NICKNAME_MAP.get(n, n)
+
+            dgw["_nk"] = dgw["player_name"].apply(_key)
+            dgw["_numeric"] = pd.to_numeric(
+                dgw["odds_american"].astype(str).str.replace("+", "", regex=False),
+                errors="coerce")
+            odds_map = dict(zip(dgw["_nk"], dgw["odds_american"].astype(str)))
+            num_map  = dict(zip(dgw["_nk"], dgw["_numeric"]))
+
+            nk = merged["player_name"].apply(_key)
+            merged["odds_to_win"]  = nk.map(odds_map).combine_first(merged["odds_to_win"])
+            merged["odds_numeric"] = nk.map(num_map).combine_first(merged["odds_numeric"])
+            print(f"  DG win odds merged: {int(nk.map(num_map).notna().sum())}/{len(merged)} players")
+        except Exception as _e:
+            print(f"  DG win odds merge skipped: {_e}")
+    else:
+        print(f"  No {win_path.name} — odds columns keep their previous values")
     
     
     

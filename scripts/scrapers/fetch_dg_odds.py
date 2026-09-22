@@ -223,8 +223,18 @@ def main():
     fetch_tourn_matchups_flag     = args.market in ("tournament_matchups", "all")
     specific_market               = args.market if args.market in OUTRIGHT_MARKETS else None
 
+    # DG's betting-tools feeds serve THE CURRENT EVENT and take no
+    # tournament parameter — after a tournament ends they keep serving
+    # its market until the next one posts. Every payload names its own
+    # event; anything not matching the requested tid is refused, or
+    # last week's odds get written under this week's label.
+    from event_guard import expected_name, names_match
+    expected = expected_name(tid)
+    print(f"[INFO] Expecting event '{expected}' for {tid}")
+
     combined: dict = {"tournament_id": tid, "fetched_at": datetime.now(timezone.utc).isoformat()}
     outright_frames: list[pd.DataFrame] = []
+    refused: list[str] = []
 
     # ── Outrights ──
     markets_to_fetch = [specific_market] if specific_market else OUTRIGHT_MARKETS
@@ -233,6 +243,10 @@ def main():
             print(f"[INFO] Fetching outrights: {mkt}...")
             try:
                 raw = fetch_outrights(mkt)
+                if not names_match(raw.get("event_name", ""), expected):
+                    refused.append(f"{mkt}='{raw.get('event_name')}'")
+                    print(f"  [REFUSED] {mkt}: feed serves '{raw.get('event_name')}', not '{expected}'")
+                    continue
                 combined[f"outrights_{mkt}"] = raw
                 df = flatten_outrights(raw, mkt)
                 if df.empty:
@@ -251,6 +265,8 @@ def main():
         print("[INFO] Fetching round matchups (3-ball)...")
         try:
             raw_m = fetch_matchups("round_matchups")
+            if not names_match(raw_m.get("event_name", ""), expected):
+                raise ValueError(f"feed serves '{raw_m.get('event_name')}', not '{expected}'")
             combined["matchups"] = raw_m
             match_list = raw_m.get("match_list", [])
             if not isinstance(match_list, list):
@@ -269,6 +285,8 @@ def main():
         print("[INFO] Fetching tournament matchups (H2H)...")
         try:
             raw_tm = fetch_matchups("tournament_matchups")
+            if not names_match(raw_tm.get("event_name", ""), expected):
+                raise ValueError(f"feed serves '{raw_tm.get('event_name')}', not '{expected}'")
             combined["tournament_matchups"] = raw_tm
             match_list_tm = raw_tm.get("match_list", [])
             if not isinstance(match_list_tm, list):
@@ -280,6 +298,12 @@ def main():
                 print(f"  → {n_tm} tournament matchups | Books: {book_counts_tm}")
         except Exception as e:
             print(f"  [WARN] tournament matchups failed: {e}")
+
+    if not outright_frames and df_m.empty and df_tm.empty:
+        raise SystemExit(
+            f"[REFUSED] No DG feed matched '{expected}' ({tid}) — wrote "
+            f"nothing. Feeds served: {', '.join(refused) or 'no data'}"
+        )
 
     # ── Save ──
     combined_path = DG_DIR / f"dg_odds_{tid}.json"
