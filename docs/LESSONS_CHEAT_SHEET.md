@@ -1,6 +1,6 @@
 # ML Lessons Cheat Sheet — Golf Project
 
-Six core lessons + the debugging/evaluation instincts, with the real numbers
+Ten core lessons + the debugging/evaluation instincts, with the real numbers
 from this project. Every claim here traces to a file in the repo.
 
 ---
@@ -202,6 +202,141 @@ artifact (within-event identical), training staleness (no recency recipe moved
 2026). Then `dg_trend_check.py` (mine): **DG slid in lockstep 2023–25** →
 rising parity, the game itself got harder. The 2026 extra gap was our own data
 rot (string-ID join bug) — fixed, 0.684→0.735, dead even with DG's 0.725.
+
+---
+
+## Lesson 7 — Probability Ladders → Dollars (expectedPayout)
+
+**The setup.** The model outputs a CUMULATIVE ladder per player:
+win ⊆ top5 ⊆ top10 ⊆ top20 ⊆ cut — each rung contains the ones above it.
+Prize money is paid by DISJOINT bucket (winner, 2nd–5th, 6th–10th, …), so
+expected earnings needs the conversion (`web/lib/modelBrain.ts` — I wrote it):
+
+- **Disjoint from cumulative = adjacent differences.** P(2nd–5th) =
+  P(top5) − P(win). Every rung is "at least this good", so subtracting the
+  rung above leaves exactly the band between them.
+- **Clamp each difference at ≥ 0.** Calibration adjusts each market
+  independently, so a corrected top5 can dip *below* the corrected win —
+  mathematically impossible for true probabilities, routine for calibrated
+  ones. Without the clamp, a crossing pays negative money.
+- **Null-fill from the rung below, in ladder order, on a COPY.** Code review
+  found three seams in my first draft: `find(k => k > key)` filled rungs in
+  *alphabetical* order (top10 borrowed from top20, top5 from win — behavior
+  decided by spelling); the fill mutated the caller's object; and a
+  half-applied patch computed `filled` but still read `probs` — dead code
+  wearing a fix's name.
+- **Payout table** (avg % of purse): win 18.0, 2–5 6.6, 6–10 3.0,
+  11–20 1.6, made-cut-rest 0.45. EV = purse × Σ bucketProb × pct.
+
+**First live outing:** the model's Round-3 pick, Jacob Bridgeman (5.5% win,
+highest in field), shot −7 and won the tournament — model finished #1 of 3
+in the Round Game. One week, zero evidential weight (see Lesson 5), maximum
+bragging rights.
+
+**Explain-back prompts (answer, then mark verified):**
+- Why can a calibrated top5 drop below a calibrated win, and why can't a
+  true top5?
+- What breaks if you sort the ladder alphabetically? Which pair of rungs
+  silently swaps its fill source?
+- Why does `modelFadePicks` reusing `expectedPayout` mean a payout-table
+  change can't desynchronize the two games?
+
+---
+
+## Lesson 8 — Label Provenance (key data by its OWN label)
+
+**The failure, twice, months apart, different feeds:**
+
+1. **Euro settle:** the DPWT field feed flips to the *next* event the moment
+   one finishes. Settling BMW PGA off it wrote the results under the Open de
+   France id at a $3M purse — the winner "earned" $499,800 instead of ~$1.5M
+   of the real $9M purse. Corrupted rows, purged and resettled.
+2. **DataGolf feeds:** `/field-updates` and `/betting-tools` serve THE
+   CURRENT EVENT and take no tournament parameter. A Monday fetch during a
+   team week saved the **Presidents Cup roster (24 = two 12-man teams) as
+   Bank of Utah's field**, and Biltmore's week-old odds as its market. A full
+   junk prediction run shipped before a name-merge matching only 4/24 players
+   exposed it.
+
+**The rule:** a feed that serves "the current X" is a landmine. The tid you
+*request* is a hope; the `event_name` the *payload carries* is a fact. Key
+data by the payload's own label or refuse to write.
+
+**The mechanism** (`scripts/scrapers/event_guard.py`): distinctive-token
+overlap between payload event name and the schedule's name for the requested
+id — stopwords ("championship", "open", "cup") stripped so 'Bank of Utah
+Championship' vs 'Presidents Cup' shares nothing while 'THE CJ CUP Byron
+Nelson' still matches 'CJ Cup Byron Nelson'. **Fails closed**: unknown
+schedule name = no write. A red pipeline saying "feed serves Presidents Cup"
+beats a green one shipping fiction.
+
+**Explain-back prompts:**
+- Why is failing closed right here, when most fetchers in this repo
+  deliberately degrade gracefully?
+- The bogus field had *fuller-looking* data than the truth (24 stars vs no
+  field at all). Which instinct from the list below does that rhyme with?
+
+---
+
+## Lesson 9 — Guards, Idempotency, and Rules the App Can't Break
+
+**Constraints ARE the rules.** The friends games' rules live as database
+constraints, not application checks: UNIQUE(user, event, player) = "can't
+pick the same player twice"; UNIQUE(user, event, round) = "one pick per
+round". `ON CONFLICT DO NOTHING` makes every write idempotent — a retry, a
+double-tap, a replayed cron all land as no-ops. The app enforces politeness;
+the schema enforces law.
+
+**Re-running is a test.** The model-sync cron is supposed to be idempotent,
+so I ran it twice as a check — and run #2 picked Round 4 a day early. The
+bug (no "never pick more than one round ahead" guard) was invisible in any
+single run. If a job claims idempotency, running it again is the cheapest
+integration test you own.
+
+**Don't bet a rumor.** Early-week DG fields are partial (24 commitments of
+~130). Probabilities normalize over whoever showed up, so a 24-man "field"
+inflates everyone — Scheffler at 13.8% was an artifact of the denominator.
+The model refuses to place picks under 50 players ("field too small to bet")
+and the UI banners the pool as provisional. Same shape as the win cap and
+`min_samples_leaf`: a guard that says *this estimate's inputs don't support
+acting on it yet.*
+
+**At-most-once by claiming first.** Push reminders insert into a
+UNIQUE(endpoint, event) table with `RETURNING` *before* sending — an empty
+return means some earlier run already claimed the send. Claim-then-act turns
+"probably won't double-send" into "can't".
+
+**Explain-back prompts:**
+- Why is the UNIQUE constraint stronger than the same check in the API
+  route? Name a path that bypasses the route but not the constraint.
+- What's the analogy between the 50-player floor and `min_samples_leaf=25`?
+
+---
+
+## Lesson 10 — Incentive Design (the score function IS the game)
+
+**Ask "what's the laziest way to win?" before shipping any scoring rule.**
+
+- **Naive Fade Game** (pick 3 flops, lowest combined earnings wins) is
+  broken on arrival: pick three 500-to-1 club pros, they miss every cut,
+  everyone ties at $0 forever. The fix isn't policing — it's making the
+  degenerate strategy unavailable: you may only fade from the model's top 20
+  by win chance. Now the question is genuinely hard (*which favorite
+  flops?*) and fading the eventual champion costs you his whole check.
+- **Season aggregation inverts too.** Summing a lowest-wins score across a
+  season makes *not entering* the optimal strategy — skip every week, sum
+  $0, win the season. Fixed by counting EVENT WINS per settled event (ties
+  all credited): the incentive points back at playing and winning.
+- Same family as the optimizer's *spend-now bias* (Instincts): whenever a
+  score function and the behavior you want diverge, participants — human or
+  algorithmic — drift toward the score, not the intent.
+
+**Explain-back prompts:**
+- The weekly game sums earnings across a season and is NOT broken. What
+  property of "higher is better" makes summation safe there and fatal in
+  the fade game?
+- Design a season format for the Round Game that stays fair for someone
+  who joins mid-season. What does it trade away?
 
 ---
 
