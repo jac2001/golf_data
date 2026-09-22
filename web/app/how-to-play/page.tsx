@@ -11,8 +11,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
-import { getPredictions, getOpenEvents, PlayerPrediction } from "@/lib/api";
+import { getPredictions, getOpenEvents, getEventEarnings, PlayerPrediction, EarningsTable } from "@/lib/api";
 import { expectedPayout } from "@/lib/modelBrain";
+
+const nameKey = (n: string) =>
+  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 const card: React.CSSProperties = {
   background: "var(--bc-card)", border: "1px solid var(--bc-line)",
@@ -32,30 +35,60 @@ export default function HowToPlayPage() {
   const [purse, setPurse] = useState(6_000_000);
   const [eventName, setEventName] = useState("");
   const [picks, setPicks] = useState<string[]>([]);
+  // "history" = pick against a finished event's Tuesday board, then
+  // reveal Sunday's REAL results — the honest demo, because beating the
+  // model there requires actually disagreeing with it. "ev" = fallback
+  // (no settled event with an archived board): expected-value compare.
+  const [mode, setMode] = useState<"history" | "ev">("ev");
+  const [earnings, setEarnings] = useState<EarningsTable | null>(null);
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
-    getPredictions(20).then(d => {
+    getOpenEvents().then(async o => {
+      const evs = o.events ?? [];
+      const done = evs.find(e => e.finished && e.has_model);
+      if (done) {
+        try {
+          const [preds, earn] = await Promise.all([
+            getPredictions(20, done.tournament_id),
+            getEventEarnings(done.tournament_id),
+          ]);
+          if (earn.settled && (preds.players ?? []).length >= 6) {
+            setMode("history");
+            setEventName(done.name);
+            setField((preds.players ?? []).filter(p => p.player_name));
+            setEarnings(earn);
+            return;
+          }
+        } catch { /* fall through to EV mode */ }
+      }
+      const d = await getPredictions(20);
       setField((d.players ?? []).filter(p => p.player_name));
-      getOpenEvents().then(o => {
-        const ev = (o.events ?? []).find(e =>
-          e.tournament_id.toUpperCase() === String(d.tournament_id ?? "").toUpperCase());
-        if (ev?.purse) setPurse(ev.purse);
-        setEventName(ev?.name ?? String(d.tournament_id ?? ""));
-      }).catch(() => setEventName(String(d.tournament_id ?? "")));
+      const ev = evs.find(e => e.tournament_id.toUpperCase() === String(d.tournament_id ?? "").toUpperCase());
+      if (ev?.purse) setPurse(ev.purse);
+      setEventName(ev?.name ?? String(d.tournament_id ?? ""));
     }).catch(() => {});
   }, []);
 
+  const realEarn = (name: string) => earnings?.players?.[nameKey(name)]?.earnings ?? 0;
+  const realPos = (name: string) => earnings?.players?.[nameKey(name)]?.position ?? "—";
+
   const trioValue = useMemo(() =>
     picks.reduce((s, name) => {
+      if (mode === "history") return s + realEarn(name);
       const p = field.find(f => f.player_name === name);
       return p ? s + expectedPayout(purse, p) : s;
-    }, 0), [picks, field, purse]);
+    }, 0), [picks, field, purse, mode, earnings]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   const modelTrio = field.slice(0, 3);
   const modelValue = useMemo(() =>
-    modelTrio.reduce((s, p) => s + expectedPayout(purse, p), 0), [modelTrio, purse]);
+    modelTrio.reduce((s, p) => s + (mode === "history" ? realEarn(p.player_name) : expectedPayout(purse, p)), 0),
+    [modelTrio, purse, mode, earnings]);  // eslint-disable-line react-hooks/exhaustive-deps
+
+  const matchedModel = picks.length === 3 && modelTrio.every(p => picks.includes(p.player_name));
 
   function toggle(name: string) {
+    if (revealed) return;
     setPicks(ps => ps.includes(name) ? ps.filter(p => p !== name)
       : ps.length >= 3 ? ps : [...ps, name]);
   }
@@ -92,11 +125,11 @@ export default function HowToPlayPage() {
       <div style={card}>
         <div style={{ fontWeight: 800, marginBottom: 8 }}>Scoring, in one example</div>
         <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", lineHeight: 1.6, margin: 0 }}>
-          Say your Weekly 3 are Scheffler, Bridgeman and Poston. Scheffler
-          finishes 2nd (<strong style={{ color: "var(--bc-text)" }}>$1.09M</strong>),
-          Bridgeman wins (<strong style={{ color: "var(--bc-text)" }}>$1.08M</strong>),
+          Say your Weekly 3 are Bridgeman, Scheffler and Poston. Bridgeman
+          wins (<strong style={{ color: "var(--bc-text)" }}>$1.08M</strong>),
+          Scheffler ties 5th (<strong style={{ color: "var(--bc-text)" }}>$245K</strong>),
           Poston misses the cut (<strong style={{ color: "var(--bc-text)" }}>$0</strong>).
-          Your week: <strong style={{ color: "var(--bc-yellow)" }}>$2.17M</strong>.
+          Your week: <strong style={{ color: "var(--bc-yellow)" }}>$1.33M</strong>.
           Highest total in your group takes the week; season standings add up
           every week you play. Everyone&apos;s picks stay hidden until tee-off,
           so nobody copies.
@@ -129,25 +162,28 @@ export default function HowToPlayPage() {
         </table>
       </div>
 
-      {/* Live demo */}
+      {/* The demo. History mode: a finished event's Tuesday board, real
+          Sunday results revealed after you commit — beating the model
+          means having disagreed with it. */}
       {field.length > 0 && (
         <div style={card}>
           <div style={{ fontWeight: 800 }}>
             Try it — no account needed
             <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.76em", marginLeft: 8 }}>
-              {eventName} · model win chances shown
+              {eventName}{mode === "history" ? " · as the board stood Tuesday" : " · model win chances shown"}
             </span>
           </div>
           <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", margin: "6px 0 12px" }}>
-            Tap three. We&apos;ll price your trio with the model&apos;s expected
-            prize money and stack it against the model&apos;s own picks.
+            {mode === "history"
+              ? "This tournament already happened. Pick three off the Tuesday board, lock them, and see Sunday's real money — against the model's three favorites."
+              : "Tap three. We'll price your trio with the model's expected prize money against its own three favorites."}
           </p>
-          <div style={{ display: "grid", gap: 6, gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))" }}>
-            {field.map(p => {
+          <div style={{ display: "grid", gap: 6, gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
+            {field.map((p, i) => {
               const on = picks.includes(p.player_name);
               return (
                 <button key={p.player_name} onClick={() => toggle(p.player_name)} style={{
-                  cursor: "pointer", fontFamily: "inherit", textAlign: "left",
+                  cursor: revealed ? "default" : "pointer", fontFamily: "inherit", textAlign: "left",
                   display: "flex", alignItems: "center", gap: 8,
                   padding: "8px 12px", borderRadius: 6, fontSize: "0.84em",
                   color: on ? "#081f14" : "var(--bc-text)",
@@ -156,37 +192,76 @@ export default function HowToPlayPage() {
                 }}>
                   <span style={{ fontWeight: 700, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {p.player_name}
+                    {mode === "history" && i < 3 && revealed && (
+                      <span style={{ marginLeft: 6, fontSize: "0.72em", opacity: 0.8 }}>· model</span>
+                    )}
                   </span>
                   <span style={{ marginLeft: "auto", fontVariantNumeric: "tabular-nums",
                     color: on ? "#081f14" : "var(--bc-muted)" }}>
-                    {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
+                    {revealed && mode === "history"
+                      ? `${realPos(p.player_name)} · ${money(realEarn(p.player_name))}`
+                      : p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
                   </span>
                 </button>
               );
             })}
           </div>
-          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 16, marginTop: 14 }}>
-            <div style={{ fontSize: "0.88em" }}>
-              <span style={{ color: "var(--bc-muted)" }}>Your trio ({picks.length}/3): </span>
-              <strong>{picks.length ? money(trioValue) : "—"}</strong>
-              <span style={{ color: "var(--bc-muted)" }}> expected</span>
-            </div>
-            <div style={{ fontSize: "0.88em" }}>
-              <span style={{ color: "var(--bc-muted)" }}>The model&apos;s trio: </span>
-              <strong>{money(modelValue)}</strong>
-            </div>
-            {picks.length === 3 && (
-              <div style={{ fontSize: "0.88em", fontWeight: 800,
-                color: trioValue >= modelValue ? "var(--bc-green)" : "var(--bc-red-text)" }}>
-                {trioValue >= modelValue
-                  ? `You'd out-project the model by ${money(trioValue - modelValue)}`
-                  : `Model projects ${money(modelValue - trioValue)} ahead — prove it wrong`}
+
+          {/* Matching the model gets its own message — before any reveal. */}
+          {matchedModel && !revealed && (
+            <p style={{ color: "var(--bc-yellow)", fontSize: "0.82em", fontWeight: 700, marginTop: 12, marginBottom: 0 }}>
+              You matched the model&apos;s picks. Can you find a trio you like better?
+            </p>
+          )}
+
+          {mode === "history" && picks.length === 3 && !revealed && !matchedModel && (
+            <button onClick={() => setRevealed(true)} style={{
+              marginTop: 12, cursor: "pointer", fontFamily: "inherit",
+              background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+              textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
+              padding: "10px 18px", borderRadius: 4, border: "none" }}>
+              Lock picks · reveal Sunday&apos;s results
+            </button>
+          )}
+
+          {(revealed || (mode === "ev" && picks.length === 3 && !matchedModel)) && (
+            <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 16, marginTop: 14 }}>
+              <div style={{ fontSize: "0.88em" }}>
+                <span style={{ color: "var(--bc-muted)" }}>Your trio: </span>
+                <strong>{money(trioValue)}</strong>
+                {mode === "ev" && <span style={{ color: "var(--bc-muted)" }}> expected</span>}
               </div>
-            )}
-          </div>
+              <div style={{ fontSize: "0.88em" }}>
+                <span style={{ color: "var(--bc-muted)" }}>The model&apos;s trio: </span>
+                <strong>{money(modelValue)}</strong>
+              </div>
+              <div style={{ fontSize: "0.88em", fontWeight: 800,
+                color: trioValue > modelValue ? "var(--bc-green)"
+                  : trioValue < modelValue ? "var(--bc-red-text)" : "var(--bc-yellow)" }}>
+                {trioValue > modelValue
+                  ? (mode === "history"
+                      ? `You beat the model by ${money(trioValue - modelValue)} — with real results.`
+                      : `You'd out-project the model by ${money(trioValue - modelValue)}.`)
+                  : trioValue < modelValue
+                    ? (mode === "history"
+                        ? `The model took this one by ${money(modelValue - trioValue)}. Different week, different answer.`
+                        : `Model projects ${money(modelValue - trioValue)} ahead — prove it wrong.`)
+                    : "Dead even with the model."}
+              </div>
+              {mode === "history" && (
+                <button onClick={() => { setRevealed(false); setPicks([]); }} style={{
+                  cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "0.76em",
+                  padding: "6px 13px", borderRadius: 5, background: "transparent",
+                  color: "var(--bc-muted)", border: "1px solid var(--bc-line)" }}>
+                  Pick again
+                </button>
+              )}
+            </div>
+          )}
           <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", marginTop: 10, marginBottom: 0 }}>
-            Expected value is pre-tournament projection; real games grade on the
-            actual purse Sunday night.
+            {mode === "history"
+              ? "Real event, real prize money — the win chances are exactly what the model published before Thursday's tee-off."
+              : "Expected value is pre-tournament projection; real games grade on the actual purse Sunday night."}
           </p>
         </div>
       )}

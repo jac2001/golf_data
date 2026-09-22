@@ -315,6 +315,18 @@ export async function getEventField(tournamentId: string): Promise<{ players: st
   return res.json();
 }
 
+export type EarningsTable = {
+  tournament_id: string; settled: boolean; earnings_estimated?: boolean;
+  players: Record<string, { player_name: string; earnings: number; position: string }>;
+};
+
+/** Settled per-player earnings for one event (keys are sorted-token name keys). */
+export async function getEventEarnings(tournamentId: string): Promise<EarningsTable> {
+  const res = await apiFetch(`${API_BASE}/api/results/earnings?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load earnings");
+  return res.json();
+}
+
 /** Optionally ask for one event's archived predictions; the response's
  *  tournament_id names what was actually served — callers should check it. */
 export async function getPredictions(limit = 80, tournamentId = ""): Promise<PredictionsResponse> {
