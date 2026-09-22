@@ -192,6 +192,7 @@ export type PlayerPrediction = {
 
 export type PredictionsResponse = {
   tournament_id: string;
+  source?: string;  // "datagolf" on DP World Tour events (our model is PGA-only until the January retrain)
   players: PlayerPrediction[];
   count: number;
   field_size: number;

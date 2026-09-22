@@ -1578,6 +1578,31 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     """
     tid = _get_tournament_id()
     req = tournament_id.strip().upper()
+
+    # DP World Tour (E-ids): OUR model doesn't cover the euro tour yet
+    # (January retrain) — DataGolf's euro model powers those boards,
+    # served from dg_preds_{tid}.csv (fetch_euro_events --preds, keyed
+    # by the payload's own event name) and labeled source=datagolf.
+    if req.startswith("E"):
+        dg_path = DATA_DIR / "datagolf" / f"dg_preds_{req}.csv"
+        if not dg_path.exists():
+            raise HTTPException(status_code=404, detail=f"No DataGolf predictions saved for {req}")
+        df = pd.read_csv(dg_path)
+        for col in ["win_prob", "top5_prob", "top10_prob", "top20_prob", "cut_prob"]:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+        df = df.sort_values("win_prob", ascending=False).head(limit)
+        players = [{
+            "player_name": _flip_to_first_last(str(r["player_name"])),
+            "win_prob": _safe(r["win_prob"]), "top5_prob": _safe(r["top5_prob"]),
+            "top10_prob": _safe(r["top10_prob"]), "top20_prob": _safe(r["top20_prob"]),
+            "cut_prob": _safe(r["cut_prob"]), "world_rank": None,
+        } for _, r in df.iterrows()]
+        return {
+            "tournament_id": req, "players": players, "count": len(players),
+            "field_size": len(players), "source": "datagolf",
+            "weekly_narrative": "", "analysis_generated_at": "",
+        }
+
     archived = bool(req) and req != tid
     if archived:
         pred_path = DATA_DIR / "prediction_tracking" / f"pred_{req}.csv"

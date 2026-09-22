@@ -303,6 +303,7 @@ function PicksTab() {
   const [event, setEvent]   = useState<EventInfo | null>(null);
   const [picks, setPicks]   = useState<string[]>([]);
   const [field, setField]   = useState<FieldRow[]>([]);
+  const [numbersSource, setNumbersSource] = useState("");
   const [query, setQuery]   = useState("");
   const [err, setErr]       = useState("");
   const [loading, setLoading] = useState(true);
@@ -331,42 +332,31 @@ function PicksTab() {
   useEffect(() => {
     if (!selected) return;
     load();
-    const meta = events.find(e => e.tournament_id === selected);
-    setField([]); setQuery("");
-    if (meta?.has_model) {
-      // PGA event: the field with THIS event's model numbers — the API
-      // serves archived Tuesday predictions per tournament_id. Trust the
-      // payload's own label, not the request: numbers for the wrong
-      // event are worse than none (the euro-settle lesson).
-      getPredictions(200, selected)
-        .then(d => {
-          if (String(d.tournament_id ?? "").toUpperCase() !== selected.toUpperCase()) {
-            throw new Error("predictions are for a different event");
-          }
-          setField(
-            (d.players ?? [])
-              .filter((r: FieldRow) => r.player_name)
-              .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0))
-          );
-        })
-        .catch(() =>
-          // No predictions saved for this event (pre-Tuesday, or a week
-          // without an archive) — plain field, no numbers.
-          getEventField(selected)
-            .then(d => setField((d.players ?? []).map(p => ({
-              player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
-            }))))
-            .catch(() => {})
+    setField([]); setQuery(""); setNumbersSource("");
+    // Every event gets the same treatment: ask for its predictions (our
+    // model for PGA, DataGolf's euro model for DPWT — the API labels
+    // the source), trust the payload's own tournament label, and fall
+    // back to the plain field list when no numbers exist yet.
+    getPredictions(200, selected)
+      .then(d => {
+        if (String(d.tournament_id ?? "").toUpperCase() !== selected.toUpperCase()) {
+          throw new Error("predictions are for a different event");
+        }
+        setNumbersSource(d.source ?? "model");
+        setField(
+          (d.players ?? [])
+            .filter((r: FieldRow) => r.player_name)
+            .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0))
         );
-    } else {
-      // Euro events have no model (yet) — plain alphabetized field.
-      getEventField(selected)
-        .then(d => setField((d.players ?? []).map(p => ({
-          player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
-        }))))
-        .catch(() => {});
-    }
-  }, [load, selected, events]);
+      })
+      .catch(() =>
+        getEventField(selected)
+          .then(d => setField((d.players ?? []).map(p => ({
+            player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
+          }))))
+          .catch(() => {})
+      );
+  }, [load, selected]);
 
   async function add(player: string) {
     setErr("");
@@ -476,6 +466,12 @@ function PicksTab() {
           and pick straight from the row. Names link to full profiles. */}
       {field.length > 0 && (
         <div style={{ ...card, padding: 0, overflow: "hidden" }}>
+          {numbersSource === "datagolf" && (
+            <div style={{ padding: "12px 16px 0", color: "var(--bc-muted)", fontSize: "0.76em" }}>
+              Numbers by DataGolf&apos;s euro model — ours covers the DP World
+              Tour after the January retrain.
+            </div>
+          )}
           <div style={{ padding: "14px 16px 0" }}>
             <input
               value={query}

@@ -94,3 +94,5 @@ jobs:
             fi
           done
           echo "Render never caught up within 20 min — the daily noon cron will cover tomorrow." | tee -a "$GITHUB_STEP_SUMMARY"
+
+# schedule re-registration nudge: 2026-09-22

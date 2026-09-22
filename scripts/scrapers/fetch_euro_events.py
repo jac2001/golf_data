@@ -111,6 +111,44 @@ def cmd_field(year: int) -> None:
     print(f"{name} ({tid}): {len(df)} players -> {out.relative_to(PROJECT_ROOT)}")
 
 
+def cmd_preds(year: int) -> None:
+    """DataGolf's pre-tournament predictions for the current euro event.
+
+    Our model doesn't cover the DPWT (January retrain) — until it does,
+    DG's euro model powers the picks board, clearly labeled as DG's.
+    Keyed by the payload's OWN event_name like everything euro: a feed
+    that serves "the current event" never gets to pick its label.
+    """
+    raw = dg_get("/preds/pre-tournament", {"tour": "euro", "file_format": "json"})
+    name = str(raw.get("event_name", ""))
+    sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
+    row = sched[sched["tournament_name"].str.lower() == name.lower()]
+    if row.empty:
+        raise SystemExit(f"preds event '{name}' not in schedule_euro_{year}.csv — refusing to write")
+    tid = str(row.iloc[0]["tournament_id"])
+
+    players = raw.get("baseline_history_fit") or raw.get("baseline") or []
+    df = pd.DataFrame([{
+        "tournament_id": tid,
+        "player_name": p.get("player_name", ""),
+        "dg_id": p.get("dg_id"),
+        "win_prob": p.get("win"),
+        "top5_prob": p.get("top_5"),
+        "top10_prob": p.get("top_10"),
+        "top20_prob": p.get("top_20"),
+        "cut_prob": p.get("make_cut"),
+    } for p in players if p.get("player_name")])
+    if df.empty:
+        raise SystemExit(f"DG served no euro predictions for '{name}'")
+    df = df.sort_values("win_prob", ascending=False)
+
+    dg_dir = PROJECT_ROOT / "data" / "datagolf"
+    dg_dir.mkdir(parents=True, exist_ok=True)
+    out = dg_dir / f"dg_preds_{tid}.csv"
+    df.to_csv(out, index=False)
+    print(f"{name} ({tid}): DG euro predictions for {len(df)} players -> {out.relative_to(PROJECT_ROOT)}")
+
+
 def _event_from_inplay(year: int, live: dict) -> tuple[str, str]:
     """Resolve (tid, name) from the in-play payload's OWN event label.
 
@@ -211,6 +249,7 @@ def main() -> None:
     ap.add_argument("--field", action="store_true")
     ap.add_argument("--results", action="store_true")
     ap.add_argument("--rounds", action="store_true", help="mid-event round-score snapshot")
+    ap.add_argument("--preds", action="store_true", help="DataGolf pre-tournament predictions for the current euro event")
     ap.add_argument("--force", action="store_true", help="settle even if mid-event")
     args = ap.parse_args()
     if args.schedule:
@@ -221,8 +260,10 @@ def main() -> None:
         cmd_results(args.year, force=args.force)
     if args.rounds:
         cmd_rounds(args.year)
-    if not (args.schedule or args.field or args.results or args.rounds):
-        ap.error("pick at least one of --schedule --field --results --rounds")
+    if args.preds:
+        cmd_preds(args.year)
+    if not (args.schedule or args.field or args.results or args.rounds or args.preds):
+        ap.error("pick at least one of --schedule --field --results --rounds --preds")
 
 
 if __name__ == "__main__":
