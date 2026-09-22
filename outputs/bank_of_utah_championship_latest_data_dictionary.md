@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-09-21 16:21
+Generated: 2026-09-21 20:58
 
 | Column | Description |
 |--------|-------------|
@@ -212,12 +212,6 @@ Generated: 2026-09-21 16:21
 | win_prob | Predicted win probability (0-1) |
 | top5_prob | Predicted top-5 probability (0-1) |
 | top10_prob | Predicted top-10 probability (0-1) |
-| projected_score | Regression model: predicted 4-round to-par total (e.g. -12.5) |
-| projected_score_vs_field | No description available |
-| score_rank | Field rank by projected_score (1 = best/lowest projected score) |
-| proj_ceiling | No description available |
-| proj_median | No description available |
-| proj_floor | No description available |
 | top20_prob_raw | No description available |
 | top20_prob | No description available |
 | win_prob_calibrated | No description available |
