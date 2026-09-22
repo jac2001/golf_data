@@ -53,16 +53,19 @@ jobs:
             2>&1 | tee pipeline.log || true
           tail -30 pipeline.log >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Verify predictions regenerated
+      - name: Verify the pipeline actually produced predictions
+        # NOT an mtime check: git checkout stamps every file with checkout
+        # time, so on CI "the file is 3 minutes old" is always true and
+        # means nothing. The pipeline's own verdict is the truth — its
+        # sanity stage prints "Pipeline failed:" on any refusal (including
+        # the event guard refusing a mislabeled field, which must make
+        # this run RED, not quietly green).
         run: |
-          python3 - <<'EOF'
-          import sys, time, os
-          p = "outputs/latest_predictions.csv"
-          age = time.time() - os.path.getmtime(p)
-          print(f"latest_predictions.csv age: {age/60:.1f} min")
-          if age > 3600:
-              sys.exit("Predictions were NOT regenerated — refusing to commit stale outputs.")
-          EOF
+          if grep -q "Pipeline failed:" pipeline.log; then
+            echo "::error::run_pipeline reported failure — see the log tail in the step summary."
+            exit 1
+          fi
+          echo "Pipeline reported success."
 
       - name: Commit and push outputs
         run: |
