@@ -10,6 +10,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { getHome, HomeData } from "@/lib/api";
+import { Show } from "@clerk/nextjs";
 import { Panel, SectionTag, StatStrip, pct } from "@/components/broadcast";
 
 const STORY_COLORS: Record<string, string> = {
@@ -47,6 +48,32 @@ export default function Home() {
 
   return (
     <div style={{ maxWidth: 1180, margin: "0 auto" }}>
+
+      {/* ── New visitor? The game comes before the forecast. ────────────── */}
+      <Show when="signed-out">
+        <div style={{ marginTop: 24, padding: "22px 26px", borderRadius: 10,
+          background: "var(--bc-card)", border: "1px solid var(--bc-yellow)",
+          display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+          <div style={{ flex: "1 1 380px" }}>
+            <div style={{ fontWeight: 900, fontSize: "1.25em", lineHeight: 1.3 }}>
+              Pick your golfers. Challenge your friends.{" "}
+              <span style={{ color: "var(--bc-yellow)" }}>Beat the model.</span>
+            </div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "0.86em", marginTop: 6, lineHeight: 1.55 }}>
+              A weekly picks game graded by real prize money — thirty seconds
+              to play, all Sunday to trash-talk. Try a pick before you sign up.
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <Link href="/how-to-play" style={{
+              background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+              textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
+              padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap" }}>
+              How to play · try a demo
+            </Link>
+          </div>
+        </div>
+      </Show>
 
       {/* ── Tour switch: PGA is home, the DPWT one tap away ─────────────── */}
       <div style={{ display: "flex", gap: 8, paddingTop: 20 }}>

@@ -24,7 +24,7 @@ const PUBLIC_LINKS = [
   { href: "/live",        label: "Live" },
   { href: "/players",     label: "Players" },
   { href: "/friends",     label: "Friends Game" },
-  { href: "/methodology", label: "How It Works" },
+  { href: "/how-to-play", label: "How to Play" },
   { href: "/assistant",   label: "Assistant" },
 ];
 
@@ -114,7 +114,10 @@ export default function NavBar() {
 
         {/* Right controls */}
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
-          {/* Zone switch */}
+          {/* Zone switch — the league is Jack's private zone; a brand-new
+              visitor clicking "My League" hits a wall, so it waits for
+              sign-in. */}
+          <Show when="signed-in">
           <Link href={inLeague ? "/" : "/fantasy"} onClick={handleNavClick} style={{
             ...(inLeague
               ? { border: "1px solid var(--lg-line)", color: "var(--lg-muted)", background: "transparent" }
@@ -125,6 +128,7 @@ export default function NavBar() {
           }}>
             {inLeague ? "← Public site" : "My League"}
           </Link>
+          </Show>
 
           {/* Auth: avatar menu when signed in, quiet link when not */}
           <Show when="signed-in">

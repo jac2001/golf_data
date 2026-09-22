@@ -10,6 +10,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { PageHead, SubTabs } from "@/components/broadcast";
 import { ResultsTab, ModelTab } from "@/components/ResultsPanel";
 
@@ -51,7 +52,16 @@ export default function MethodologyPage() {
   const [tab, setTab] = useState<HiwTab>("how");
   return (
     <div style={wrap}>
-      <PageHead kicker="The full modeling story — with the losing numbers too" title="How It Works" />
+      <PageHead kicker="The full modeling story — with the losing numbers too" title="How the Model Works" />
+      <div style={{ marginBottom: 14, padding: "10px 14px", borderRadius: 8,
+        background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
+        color: "var(--bc-muted)", fontSize: "0.84em" }}>
+        This page is the machine-learning story. Looking for how to{" "}
+        <em>play</em>?{" "}
+        <Link href="/how-to-play" style={{ color: "var(--bc-yellow)", fontWeight: 700 }}>
+          The games, in plain words →
+        </Link>
+      </div>
       <SubTabs tabs={HIW_TABS} active={tab} onChange={setTab} />
       {tab === "results" && <ResultsTab />}
       {tab === "model" && <ModelTab />}

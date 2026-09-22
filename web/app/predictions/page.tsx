@@ -51,6 +51,7 @@ export default function PredictionsPage() {
     try { return localStorage.getItem("favorite-tour") === "euro" ? "euro" : "pga"; }
     catch { return "pga"; }
   });
+  const [eventState, setEventState] = useState<{ finished: boolean; nextName: string; nextStart: string } | null>(null);
 
   // Track which tabs have ever been activated (so we only fetch each once)
   const [loaded, setLoaded] = useState<Set<Tab>>(new Set(["field"]));
@@ -67,6 +68,24 @@ export default function PredictionsPage() {
   const { isSignedIn } = useUser();
   const [preds, setPreds]             = useState<PredictionsResponse | null>(null);
   const [lineup, setLineup]           = useState<LineupResponse | null>(null);
+
+  // Between tournaments this page shows the LAST completed event (its
+  // predictions are the newest that exist) — say so explicitly, and say
+  // what's next, instead of letting round-4 weather imply it's live.
+  useEffect(() => {
+    const tid = preds?.tournament_id;
+    if (!tid) return;
+    getOpenEvents().then(d => {
+      const evs = d.events ?? [];
+      const cur = evs.find(e => e.tournament_id.toUpperCase() === tid.toUpperCase());
+      const next = evs.find(e => !e.finished && e.tour !== "euro");
+      setEventState({
+        finished: !!cur?.finished,
+        nextName: next?.name ?? "",
+        nextStart: next?.start_date?.slice(0, 10) ?? "",
+      });
+    }).catch(() => {});
+  }, [preds?.tournament_id]);
   const [teeTimes, setTeeTimes]       = useState<TeeTimesResponse | null>(null);
   const [course, setCourse]           = useState<CourseResponse | null>(null);
   const [dgComp, setDgComp]           = useState<ModelCompPlayer[] | null>(null);
@@ -197,6 +216,24 @@ export default function PredictionsPage() {
       />
 
       <TourPills tour={tour} setTour={setTour} />
+
+      {eventState?.finished && (
+        <div style={{ marginBottom: 16, padding: "12px 16px", borderRadius: 8,
+          background: "color-mix(in srgb, var(--bc-yellow) 10%, transparent)",
+          border: "1px solid color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
+          color: "var(--bc-yellow)", fontSize: "0.86em", fontWeight: 600 }}>
+          Final — this tournament is over; you&apos;re viewing its last
+          predictions and results.
+          {eventState.nextName && (
+            <> Next up: <strong>{eventState.nextName}</strong>
+            {eventState.nextStart && ` (starts ${eventState.nextStart})`} — fresh
+            predictions land Tuesday, and picks are open now on the{" "}
+            <Link href="/friends" style={{ color: "var(--bc-yellow)", textDecoration: "underline" }}>
+              Friends Game
+            </Link>.</>
+          )}
+        </div>
+      )}
 
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}
       {preds && !loadingField && (
