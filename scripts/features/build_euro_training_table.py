@@ -61,11 +61,26 @@ def parse_finish(fin: str) -> float:
 # Watch: sample sizes (a 3-round history "mean" is noise — consider
 # returning the count too, so the model can learn to distrust it).
 
-def rolling_form_features(prior_rounds: pd.DataFrame) -> dict:
-    # TODO(Jack): replace this stub. Plumbing runs with it; the model
-    # just won't have form features until you do.
+def rolling_form_features(prior_rounds: pd.DataFrame, event_date: pd.Timestamp) -> dict:
+    # (Jack wrote this; review fixed two seams: the activity window is
+    # anchored to EVENT_DATE, not the player's own last round — a window
+    # anchored to the data's own extent can't see a layoff — and
+    # bogey_avoid was renamed bogey_rate because it counts bogeys,
+    # higher = worse, and names are contracts.)
+    prior_rounds = prior_rounds.sort_values("date", ascending=False)
+
+    sg5 = prior_rounds["sg_total"].head(5).mean()
+    sg20 = prior_rounds["sg_total"].head(20).mean()
+
     return {
         "prior_rounds_count": len(prior_rounds),
+        "sg_last5": sg5,
+        "sg_last20": sg20,
+        "sg_trend": sg5 - sg20,
+        "score_vs_par_last10": (prior_rounds["score"] - prior_rounds["course_par"]).head(10).mean(),
+        "birdie_rate_last10": prior_rounds["birdies"].head(10).mean(),
+        "bogey_rate_last10": (prior_rounds["bogies"] + prior_rounds["doubles_or_worse"]).head(10).mean(),
+        "rounds_played_365d": int((prior_rounds["date"] >= event_date - pd.Timedelta(days=365)).sum()),
     }
 
 
@@ -121,7 +136,7 @@ def main() -> None:
             "won": r["won"], "top5": r["top5"], "top10": r["top10"],
             "top20": r["top20"], "made_cut": r["made_cut"],
         }
-        row.update(rolling_form_features(prior))
+        row.update(rolling_form_features(prior, r["event_date"]))
         mk = market.index.isin([(r["event_id"], r["calendar_year"], r["dg_id"])])
         if mk.any():
             m = market[mk].iloc[0]
