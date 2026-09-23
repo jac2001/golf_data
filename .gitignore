@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 *.pkl
+# Serving artifacts ride with the repo (PGA set was force-added; euro set gets the honest exception):
+!data/models/euro/*.pkl
 .venv/
 venv/
 
