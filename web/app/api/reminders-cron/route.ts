@@ -36,28 +36,9 @@ export async function GET(req: Request) {
   if (!pub || !priv) return Response.json({ error: "VAPID keys not configured" }, { status: 500 });
   webpush.setVapidDetails(process.env.VAPID_SUBJECT ?? "mailto:admin@playgolfedge.com", pub, priv);
 
-  const sqlEarly = getSql();
-
-  // ?test=1 — pushes a hello to every subscription so a fresh device
-  // can be verified without waiting for a real lock window. No dedupe
-  // on purpose: a test should always arrive.
-  if (new URL(req.url).searchParams.get("test")) {
-    const subs = await sqlEarly`
-      SELECT user_id, endpoint, p256dh, auth FROM push_subscriptions` as SubRow[];
-    const log: string[] = [];
-    for (const sub of subs) {
-      try {
-        await webpush.sendNotification(
-          { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
-          JSON.stringify({ title: "Golf Edge", body: "Reminders are working on this device.", url: "/friends" }),
-        );
-        log.push(`test pushed to ${sub.user_id}`);
-      } catch (e) {
-        log.push(`test failed for ${sub.user_id} (${(e as { statusCode?: number }).statusCode ?? "unknown"})`);
-      }
-    }
-    return Response.json({ ok: true, log: log.length ? log : ["no subscribers yet"] });
-  }
+  // (The old public ?test=1 blast is gone — an unauthenticated URL that
+  // pushed to EVERY subscriber was an abuse vector. The settings page's
+  // authed POST /api/friends/reminders/test covers device testing.)
 
   let events: OpenEvent[] = [];
   try {

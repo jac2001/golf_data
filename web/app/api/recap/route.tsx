@@ -7,10 +7,16 @@
  * the product's whole retention bet in one image.
  *
  * tid omitted → the most recent SETTLED event this group has picks in.
- * Settled events only (the receipt rule: nothing leaks early). Public
- * by design, like receipts — a recap exists to leave the app.
+ * Settled events only (the receipt rule: nothing leaks early).
+ *
+ * MEMBERS ONLY, unlike receipts: a receipt URL carries an unguessable
+ * user id, but group ids are sequential ints — a public recap would be
+ * enumerable by anyone. Sharing still works because shareRecap fetches
+ * the PNG with the member's session and shares the FILE into the chat;
+ * recipients get the image, never the URL.
  */
 
+import { auth } from "@clerk/nextjs/server";
 import { ImageResponse } from "next/og";
 import { getSql, MODEL_API } from "@/lib/db";
 
@@ -32,6 +38,9 @@ async function modelApi(path: string): Promise<Record<string, unknown> | null> {
 }
 
 export async function GET(req: Request) {
+  const { userId } = await auth();
+  if (!userId) return new Response("Unauthorized", { status: 401 });
+
   const url = new URL(req.url);
   const groupId = Number(url.searchParams.get("group_id") || 0);
   let tid = (url.searchParams.get("tid") ?? "").toUpperCase();
@@ -43,6 +52,7 @@ export async function GET(req: Request) {
   const members = await sql`
     SELECT user_id FROM group_members WHERE group_id = ${groupId}` as { user_id: string }[];
   const ids = members.map(m => m.user_id);
+  if (!ids.includes(userId)) return new Response("Not a member of this group.", { status: 403 });
   ids.push("model");
 
   // Which settled events does this group have picks in?
