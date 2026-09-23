@@ -11,7 +11,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { getFantasyStrategy, FantasyStrategy } from "@/lib/api";
+import { getFantasyStrategy, FantasyStrategy, getSeasonWrap, SeasonWrap } from "@/lib/api";
 import { PageHead } from "@/components/broadcast";
 
 /** Full-bleed charcoal zone: cancels main's padding, repaints, restores it. */
@@ -72,6 +72,8 @@ export default function FantasyPage() {
         kicker="Tuesday decision support · the model advises, you decide"
         title="The Tuesday Call"
       />
+
+      <SeasonWrapPanel />
 
       {/* Suggested trio: in-season panel / offseason notice */}
       <div style={{ ...card, marginBottom: 20 }}>
@@ -172,5 +174,130 @@ export default function FantasyPage() {
       </div>
     </div>
     </div>
+  );
+}
+
+// ── Season Wrap ──────────────────────────────────────────────────────────────
+
+/** The championship banner + how the season was actually built: the
+ *  weekly climb, the final table, hall-of-fame picks, star efficiency,
+ *  and the bust ledger. Renders from the usage tracker + final league
+ *  standings — the headline fact this page's mid-study ladder predates:
+ *  WineTime finished FIRST. */
+function SeasonWrapPanel() {
+  const [w, setW] = useState<SeasonWrap | null>(null);
+  useEffect(() => { getSeasonWrap().then(setW).catch(() => {}); }, []);
+  if (!w || !w.my_team) return null;
+
+  const money = (v: number) =>
+    v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
+  const champion = w.my_team.place === "1st";
+
+  // Cumulative climb as a simple SVG polyline.
+  const W = 900, H = 120, pad = 4;
+  const maxCum = Math.max(...w.weekly.map(p => p.cumulative), 1);
+  const pts = w.weekly.map((p, i) => {
+    const x = pad + (i / Math.max(w.weekly.length - 1, 1)) * (W - 2 * pad);
+    const y = H - pad - (p.cumulative / maxCum) * (H - 2 * pad);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  const best = w.best_week;
+
+  return (
+    <>
+      {/* Championship banner */}
+      <div style={{ ...card, marginBottom: 20, border: "1px solid var(--lg-accent)",
+        background: "color-mix(in srgb, var(--lg-accent) 7%, var(--lg-card))" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 14, flexWrap: "wrap" }}>
+          <span style={{ fontSize: "0.72em", fontWeight: 800, letterSpacing: "0.14em",
+            textTransform: "uppercase", color: "var(--lg-accent)" }}>
+            {w.season} Season Wrap
+          </span>
+          {champion && <span style={{ fontSize: "0.72em", fontWeight: 800, letterSpacing: "0.1em",
+            color: "#0a0d10", background: "var(--lg-accent)", borderRadius: 3, padding: "2px 8px",
+            textTransform: "uppercase" }}>League Champions</span>}
+        </div>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 8, flexWrap: "wrap" }}>
+          <span style={{ fontSize: "2em", fontWeight: 900, color: "var(--lg-text)" }}>{w.my_team.team}</span>
+          <span style={{ fontSize: "1.4em", fontWeight: 800, color: "var(--lg-accent)",
+            fontVariantNumeric: "tabular-nums" }}>{money(w.total)}</span>
+          {champion && w.margin != null && (
+            <span style={{ color: "var(--lg-muted)", fontSize: "0.88em" }}>
+              won by {money(Math.abs(w.margin))}
+            </span>
+          )}
+        </div>
+        <div style={{ color: "var(--lg-muted)", fontSize: "0.84em", marginTop: 6, lineHeight: 1.5 }}>
+          {w.weeks} weeks · {w.total_uses} uses · {money(w.per_use)} per use ·
+          {" "}{w.bust_count} busts — and {w.wins === 0
+            ? "not a single weekly win: a championship built entirely on never having a bad Sunday."
+            : `${w.wins} weekly win${w.wins === 1 ? "" : "s"}.`}
+        </div>
+      </div>
+
+      {/* The climb */}
+      <div style={{ ...card, marginBottom: 20 }}>
+        <div style={{ color: "var(--lg-text)", fontWeight: 600, marginBottom: 2 }}>The Climb</div>
+        <div style={{ color: "var(--lg-muted)", fontSize: "0.78em", marginBottom: 10 }}>
+          cumulative earnings, week 1 → {w.weeks}
+          {best && <> · biggest week: {best.tournament} ({money(best.earnings)})</>}
+        </div>
+        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto", display: "block" }}>
+          <polyline points={pts} fill="none" stroke="var(--lg-accent)" strokeWidth="2.5"
+            strokeLinejoin="round" strokeLinecap="round" />
+          {w.weekly.map((p, i) => p.week === best?.week ? (
+            <circle key={i} r="4" fill="var(--bc-yellow)"
+              cx={pad + (i / Math.max(w.weekly.length - 1, 1)) * (W - 2 * pad)}
+              cy={H - pad - (p.cumulative / maxCum) * (H - 2 * pad)} />
+          ) : null)}
+        </svg>
+      </div>
+
+      <div style={{ display: "grid", gap: 20, gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", marginBottom: 20 }}>
+        {/* Final table */}
+        <div style={{ ...card, marginBottom: 0 }}>
+          <div style={{ color: "var(--lg-text)", fontWeight: 600, marginBottom: 8 }}>Final Table</div>
+          <table style={{ borderCollapse: "collapse", width: "100%" }}>
+            <tbody>
+              {w.standings.map(s => (
+                <tr key={s.team} style={{ background: s.team === w.my_team!.team
+                  ? "color-mix(in srgb, var(--lg-accent) 12%, transparent)" : "transparent" }}>
+                  <td style={{ padding: "5px 8px", color: "var(--lg-muted)", fontSize: "0.8em", width: 36 }}>{s.place}</td>
+                  <td style={{ padding: "5px 8px", color: "var(--lg-text)", fontSize: "0.84em", fontWeight: 600 }}>
+                    {s.team} <span style={{ color: "var(--lg-muted)", fontWeight: 400, fontSize: "0.85em" }}>{s.owner}</span>
+                  </td>
+                  <td style={{ padding: "5px 8px", textAlign: "right", color: "var(--lg-text)",
+                    fontSize: "0.84em", fontVariantNumeric: "tabular-nums" }}>{money(s.earnings)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Hall of fame + stars */}
+        <div style={{ ...card, marginBottom: 0 }}>
+          <div style={{ color: "var(--lg-text)", fontWeight: 600, marginBottom: 8 }}>Hall of Fame Picks</div>
+          {w.best_picks.map(p => (
+            <div key={p.player + p.week} style={{ display: "flex", gap: 8, fontSize: "0.84em",
+              padding: "4px 0", borderBottom: "1px solid var(--lg-line)" }}>
+              <span style={{ color: "var(--lg-text)", fontWeight: 600 }}>{p.player}</span>
+              <span style={{ color: "var(--lg-muted)" }}>{p.tournament} · {p.result}</span>
+              <span style={{ marginLeft: "auto", color: "var(--lg-accent)", fontWeight: 700,
+                fontVariantNumeric: "tabular-nums" }}>{money(p.earnings)}</span>
+            </div>
+          ))}
+          <div style={{ color: "var(--lg-text)", fontWeight: 600, margin: "14px 0 8px" }}>Stars, by the numbers</div>
+          {w.stars.slice(0, 5).map(s => (
+            <div key={s.player} style={{ display: "flex", gap: 8, fontSize: "0.82em", padding: "3px 0" }}>
+              <span style={{ color: "var(--lg-text)" }}>{s.player}</span>
+              <span style={{ color: "var(--lg-muted)" }}>{s.uses} use{s.uses === 1 ? "" : "s"}</span>
+              <span style={{ marginLeft: "auto", color: "var(--lg-muted)", fontVariantNumeric: "tabular-nums" }}>
+                {money(s.earnings)} · {money(s.per_use)}/use
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }

@@ -3992,6 +3992,79 @@ def events_field(tournament_id: str) -> dict:
         return {"tournament_id": tid, "players": []}
 
 
+@app.get("/api/league/season-wrap")
+def league_season_wrap() -> dict:
+    """The league zone's season wrap: final standings, our team's weekly
+    climb, hall-of-fame picks, star efficiency, and the bust ledger —
+    all computed from the usage tracker + league standings CSV."""
+    tracker_path = DATA_DIR / "fantasy" / "usage_tracker_2026.json"
+    standings_path = DATA_DIR / "fantasy" / "league_standings.csv"
+    if not tracker_path.exists():
+        raise HTTPException(status_code=404, detail="No usage tracker")
+    with open(tracker_path) as f:
+        tracker = json.load(f)
+
+    my_total = int(tracker.get("summary", {}).get("total_earnings", 0))
+
+    standings, my_team, margin = [], None, None
+    if standings_path.exists():
+        df = pd.read_csv(standings_path)
+        for _, r in df.iterrows():
+            standings.append({
+                "place": str(r["place"]), "team": str(r["team_name"]),
+                "owner": str(r["owner"]), "earnings": int(r["earnings_num"]),
+            })
+        # Our row is the one whose season total matches the tracker's —
+        # identity by the data itself, not a hardcoded team name.
+        mine = [s for s in standings if s["earnings"] == my_total]
+        if mine:
+            my_team = mine[0]
+            idx = standings.index(my_team)
+            margin = (standings[idx + 1]["earnings"] - my_total) * -1 if idx == 0 and len(standings) > 1 \
+                else standings[0]["earnings"] - my_total
+
+    weekly = []
+    cumulative = 0
+    for wk in sorted(tracker.get("weekly_lineups", {}).values(), key=lambda w: w.get("week", 0)):
+        cumulative += int(wk.get("earnings_earned", 0))
+        weekly.append({
+            "week": wk.get("week"), "tournament": wk.get("tournament", ""),
+            "earnings": int(wk.get("earnings_earned", 0)), "cumulative": cumulative,
+            "lineup": wk.get("lineup", []), "rank": wk.get("wrp"),
+        })
+
+    # Every individual use, flattened — the raw material for fame and shame.
+    uses = []
+    for player, info in tracker.get("picks", {}).items():
+        for t in info.get("tournaments_used", []):
+            uses.append({
+                "player": player, "tournament": t.get("tournament", ""),
+                "week": t.get("week"), "result": str(t.get("result", "")),
+                "earnings": int(t.get("earnings", 0) or 0),
+            })
+    best_picks = sorted(uses, key=lambda u: -u["earnings"])[:5]
+    busts = [u for u in uses if u["earnings"] == 0]
+
+    stars = sorted((
+        {"player": p, "uses": info.get("times_used", 0),
+         "earnings": int(info.get("total_earnings", 0) or 0),
+         "per_use": int((info.get("total_earnings", 0) or 0) / max(info.get("times_used", 1), 1))}
+        for p, info in tracker.get("picks", {}).items() if info.get("times_used", 0) > 0
+    ), key=lambda s: -s["earnings"])[:8]
+
+    total_uses = sum(1 for _ in uses)
+    return {
+        "season": tracker.get("season"),
+        "my_team": my_team, "margin": margin, "standings": standings[:10],
+        "total": my_total, "weeks": len(weekly), "weekly": weekly,
+        "best_picks": best_picks, "stars": stars,
+        "bust_count": len(busts), "total_uses": total_uses,
+        "per_use": int(my_total / total_uses) if total_uses else 0,
+        "wins": sum(1 for w in weekly if w.get("rank") == 1),
+        "best_week": max(weekly, key=lambda w: w["earnings"]) if weekly else None,
+    }
+
+
 @app.get("/api/colleges/field")
 def colleges_field(tournament_id: str) -> dict:
     """The College Game's board: which schools have alumni in this event's

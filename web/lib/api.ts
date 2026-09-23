@@ -1764,6 +1764,25 @@ export interface FantasyStrategy {
   trio_status: string;
 }
 
+export type SeasonWrap = {
+  season: string | number;
+  my_team: { place: string; team: string; owner: string; earnings: number } | null;
+  margin: number | null;
+  standings: { place: string; team: string; owner: string; earnings: number }[];
+  total: number; weeks: number; wins: number;
+  weekly: { week: number; tournament: string; earnings: number; cumulative: number; lineup: string[]; rank: number | null }[];
+  best_picks: { player: string; tournament: string; week: number; result: string; earnings: number }[];
+  stars: { player: string; uses: number; earnings: number; per_use: number }[];
+  bust_count: number; total_uses: number; per_use: number;
+  best_week: { week: number; tournament: string; earnings: number } | null;
+};
+
+export async function getSeasonWrap(): Promise<SeasonWrap> {
+  const res = await apiFetch(`${API_BASE}/api/league/season-wrap`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load season wrap");
+  return res.json();
+}
+
 export async function getFantasyStrategy(): Promise<FantasyStrategy> {
   const res = await apiFetch(`${API_BASE}/api/fantasy/strategy`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load fantasy strategy");
