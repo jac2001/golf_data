@@ -58,5 +58,62 @@ export async function GET(req: Request) {
     }
   } catch { /* feed still shows bets */ }
 
-  return Response.json({ openNames, bets, picks });
+  // ── The Model speaks: its moves for locked events, with one line of
+  //    reasoning from its own numbers. Reveal-at-lock applies to it
+  //    like anyone — before lock it says nothing.
+  type ModelMove = { event: string; game: string; text: string };
+  const modelMoves: ModelMove[] = [];
+  try {
+    const res = await fetch(`${MODEL_API}/api/events/open`, { next: { revalidate: 120 } });
+    if (res.ok) {
+      const { events } = await res.json();
+      const locked = (events ?? []).filter((e: { locked: boolean }) => e.locked);
+      for (const ev of locked.slice(0, 3)) {
+        const tid = ev.tournament_id;
+        // The model's numbers for this event, for the "why" line.
+        let why = new Map<string, string>();
+        try {
+          const p = await fetch(`${MODEL_API}/api/predictions?limit=200&tournament_id=${tid}`,
+            { next: { revalidate: 600 } });
+          if (p.ok) {
+            const d = await p.json();
+            if (String(d.tournament_id ?? "").toUpperCase() === tid.toUpperCase()) {
+              why = new Map((d.players ?? []).map((r: { player_name: string; win_prob: number | null }) =>
+                [r.player_name, r.win_prob != null ? `${(r.win_prob * 100).toFixed(1)}% to win` : ""]));
+            }
+          }
+        } catch { /* moves still listed, just without numbers */ }
+        const say = (name: string) => {
+          const w = why.get(name);
+          return w ? `${name} (${w})` : name;
+        };
+
+        const weekly = await sql`
+          SELECT player_name FROM picks WHERE user_id = 'model' AND tournament_id = ${tid}
+          ORDER BY created_at` as { player_name: string }[];
+        if (weekly.length) modelMoves.push({ event: ev.name, game: "Weekly 3",
+          text: `Backing ${weekly.map(w => say(w.player_name)).join(", ")}.` });
+
+        const fades = await sql`
+          SELECT player_name FROM fade_picks WHERE user_id = 'model' AND tournament_id = ${tid}
+          ORDER BY created_at` as { player_name: string }[];
+        if (fades.length) modelMoves.push({ event: ev.name, game: "Fade Game",
+          text: `Fading ${fades.map(f => say(f.player_name)).join(", ")} — the favorites it believes in least.` });
+
+        const college = await sql`
+          SELECT school FROM college_picks WHERE user_id = 'model' AND tournament_id = ${tid}` as
+          { school: string }[];
+        if (college.length) modelMoves.push({ event: ev.name, game: "College Game",
+          text: `Claiming ${college[0].school} — best two-alumni expected value in the field.` });
+
+        const rounds = await sql`
+          SELECT round, player_name FROM round_picks WHERE user_id = 'model' AND tournament_id = ${tid}
+          ORDER BY round` as { round: number; player_name: string }[];
+        for (const r of rounds) modelMoves.push({ event: ev.name, game: `Round ${r.round}`,
+          text: `Riding ${say(r.player_name)}.` });
+      }
+    }
+  } catch { /* feed still works without the model's commentary */ }
+
+  return Response.json({ openNames, bets, picks, modelMoves });
 }

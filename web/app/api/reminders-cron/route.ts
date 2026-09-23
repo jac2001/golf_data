@@ -22,7 +22,7 @@ const WINDOW_H = 40;
 
 type OpenEvent = {
   tournament_id: string; name: string; start_date: string;
-  locked: boolean; has_model: boolean;
+  locked: boolean; has_model: boolean; finished: boolean;
 };
 type SubRow = { user_id: string; endpoint: string; p256dh: string; auth: string };
 
@@ -65,18 +65,55 @@ export async function GET(req: Request) {
     if (res.ok) events = (await res.json()).events ?? [];
   } catch { /* nothing to remind about */ }
 
+  const sql = getSql();
+  const subs = await sql`
+    SELECT user_id, endpoint, p256dh, auth FROM push_subscriptions` as SubRow[];
+  if (subs.length === 0) return Response.json({ ok: true, log: ["no subscribers"] });
+
+  const log: string[] = [];
+
+  // ── Sunday recap ready: newest finished-and-settled event with any
+  //    weekly picks → one push per device, "recap_{tid}" dedupe key.
+  const finished = events.filter(e => e.finished)
+    .sort((a, b) => b.start_date.localeCompare(a.start_date));
+  for (const ev of finished.slice(0, 1)) {
+    const tid = ev.tournament_id.toUpperCase();
+    const anyPicks = await sql`
+      SELECT 1 FROM picks WHERE tournament_id = ${tid} LIMIT 1` as unknown[];
+    if (!anyPicks.length) continue;
+    let settled = false;
+    try {
+      const res = await fetch(`${MODEL_API}/api/results/earnings?tournament_id=${tid}`, { cache: "no-store" });
+      settled = res.ok && !!(await res.json()).settled;
+    } catch { /* not settled yet */ }
+    if (!settled) continue;
+    for (const sub of subs) {
+      const claim = await sql`
+        INSERT INTO reminders_sent (endpoint, tournament_id)
+        VALUES (${sub.endpoint}, ${"recap_" + tid})
+        ON CONFLICT DO NOTHING RETURNING 1` as unknown[];
+      if (claim.length === 0) continue;
+      try {
+        await webpush.sendNotification(
+          { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
+          JSON.stringify({
+            title: `${ev.name} is final`,
+            body: "The Sunday recap is ready — see who took the week and whether anyone beat the model.",
+            url: "/friends",
+          }),
+        );
+        log.push(`recap ${tid}: pushed to ${sub.user_id}`);
+      } catch { /* dead endpoints get pruned by the reminder path */ }
+    }
+  }
+
   const soon = events.filter(e => {
     if (e.locked) return false;
     const start = new Date(`${String(e.start_date).slice(0, 10)}T00:00:00`).getTime();
     const hours = (start - Date.now()) / 3_600_000;
     return hours > 0 && hours <= WINDOW_H;
   });
-  if (soon.length === 0) return Response.json({ ok: true, log: ["no events locking soon"] });
-
-  const sql = getSql();
-  const subs = await sql`
-    SELECT user_id, endpoint, p256dh, auth FROM push_subscriptions` as SubRow[];
-  if (subs.length === 0) return Response.json({ ok: true, log: ["no subscribers"] });
+  if (soon.length === 0) return Response.json({ ok: true, log: [...log, "no events locking soon"] });
 
   // Per-account preferences: absent row = both reminders on.
   const prefRows = await sql`
@@ -84,7 +121,6 @@ export async function GET(req: Request) {
     { user_id: string; remind_weekly: boolean; remind_fades: boolean }[];
   const prefs = new Map(prefRows.map(p => [p.user_id, p]));
 
-  const log: string[] = [];
   for (const ev of soon) {
     const tid = ev.tournament_id.toUpperCase();
     const picks = await sql`

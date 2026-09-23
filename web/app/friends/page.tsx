@@ -1294,7 +1294,8 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
 function GroupFeed({ groupId }: { groupId: number }) {
   const api = useApi();
   const [feed, setFeed] = useState<{ openNames?: string[];
-    bets: FeedBet[]; picks: FeedPick[] } | null>(null);
+    bets: FeedBet[]; picks: FeedPick[];
+    modelMoves?: { event: string; game: string; text: string }[] } | null>(null);
   const [standings, setStandings] = useState<Standing[] | null>(null);
 
   useEffect(() => {
@@ -1318,6 +1319,25 @@ function GroupFeed({ groupId }: { groupId: number }) {
 
   return (
     <div style={{ marginTop: 16, display: "grid", gap: 14 }}>
+      {/* The Model's week — its locked-in moves, in its own voice. */}
+      {(feed.modelMoves ?? []).length > 0 && (
+        <div style={{ ...card, marginBottom: 0,
+          border: "1px solid color-mix(in srgb, var(--bc-yellow) 35%, transparent)" }}>
+          <div style={{ fontWeight: 800, marginBottom: 8 }}>
+            The Model&apos;s week <ModelBadge />
+          </div>
+          <div style={{ display: "grid", gap: 6 }}>
+            {(feed.modelMoves ?? []).map((m, i) => (
+              <div key={i} style={{ fontSize: "0.84em", lineHeight: 1.5 }}>
+                <span style={{ color: "var(--bc-yellow)", fontWeight: 700 }}>{m.game}</span>
+                <span style={{ color: "var(--bc-muted)" }}> · {m.event} — </span>
+                {m.text}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Standings strip */}
       {standings && standings.length > 0 && (
         <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
