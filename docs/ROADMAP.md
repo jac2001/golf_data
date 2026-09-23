@@ -20,9 +20,14 @@ honest states).
 The first complete production week. Nothing new ships that isn't
 needed for it.
 
-- [ ] **Watch DG roll over** to Bank of Utah (field + odds feeds pass
-      the event guard). Then: Tuesday pipeline green, model places
+- [ ] **Watch DG roll over** to Bank of Utah (Presidents Cup ends
+      Sunday; expect the flip Sun night/Mon — checked 9/23: field=PC,
+      odds=stale Biltmore). Then: Tuesday pipeline green, model places
       weekly trio + fade trio + school + R1 automatically.
+- [ ] **Start the euro model** (moved up from January — see Next):
+      training-table builder scaffolded; Jack writes the rolling-form
+      feature functions. A PC week has no PGA game ops — perfect
+      build week.
 - [ ] **Jack + Rick play the week** (weekly picks minimum; fades and
       a school make the boards interesting).
 - [ ] **First real Sunday recap** renders, gets shared, recap push
@@ -34,10 +39,23 @@ needed for it.
 
 ## Next (October)
 
-1. **DataGolf licensing resolution.** Their reply gates: euro numbers
-   back on (`SHOW_DG_EURO_PREDS`), any public growth, and the wording
-   of every attribution. If no reply in 2 weeks, follow up; the hold
-   stays until written permission.
+1. **Euro model, built now** (rescheduled 2026-09-23 — Jack: "golf is
+   always happening"; the DPWT plays weekly all fall, so an early
+   model gets live DG-benchmark reps every week instead of launching
+   cold in January). Data is banked; sequence: training table →
+   train + walk-forward → live weekly benchmark vs DG → earns
+   `source: "model"` for E-events. Building our own model on DG
+   features matches existing live PGA practice; the licensing letter's
+   clarifications remain pending but gate only DG-prediction DISPLAY.
+2. **Phase 2 — Let It Ride, built now, shaken down this fall**: the
+   customizable-season design means an October–December "Fall Series"
+   league (PGA fall + DPWT) is the format's beta season before the
+   family league's 2027 stakes. Design after the euro training table
+   is underway.
+3. **DataGolf licensing resolution.** Reply timing unknown; follow up
+   after 2 weeks. It gates: euro DG-prediction display
+   (`SHOW_DG_EURO_PREDS`) and any public growth — NOT our own model
+   work. The hold on their displays stays until written permission.
 2. **Season formats that need weeks to accumulate**: watch pick
    diversity (do real groups converge on chalk?) before inventing
    mechanics; College/Fade season boards earn their first real rows.
@@ -48,7 +66,13 @@ needed for it.
 4. **Onboarding polish** driven by the next playtest: first-run
    pointers on the six tabs; invite-flow friction.
 
-## Later (January window — the two big builds, designed together)
+## Later
+
+- **January retrain of the PGA model** (2025-26 data in, Tuesday trio
+  wiring, calibration drift check) — this one genuinely waits for the
+  season boundary.
+
+## The two big builds (moved to Next, 2026-09-23)
 
 ### Euro model (data is banked)
 
