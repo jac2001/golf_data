@@ -13,6 +13,7 @@ import { Archivo } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+import UpdateToast from "@/components/UpdateToast";
 
 // Broadcast display face — variable weight + width axes so headers can use
 // the condensed-900 treatment (font-stretch) from the design system.
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main style={{ flex: 1, padding: "24px 24px 48px" }}>
             {children}
           </main>
+          <UpdateToast />
         </body>
       </html>
     </ClerkProvider>
