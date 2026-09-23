@@ -24,6 +24,7 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import log_loss, roc_auc_score
 from xgboost import XGBClassifier
 
@@ -96,19 +97,18 @@ def main() -> None:
         if s["model"]:
             print(f"  {t:>6}: model {np.mean(s['model']):.4f} | market {np.mean(s['market']):.4f} | blend {np.mean(s['blend']):.4f}")
 
-    # ── Final models on ALL data, for live euro weeks ──
+    # ── Final CALIBRATED models on ALL data, for live euro weeks ──
+    # Isotonic on 5 folds, same as the PGA pattern: the forest ranks,
+    # the calibrator makes 10% mean 10% — games price these as dollars.
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
     for target in TARGETS:
-        m = XGBClassifier(**PARAMS)
+        m = CalibratedClassifierCV(XGBClassifier(**PARAMS), method="isotonic", cv=5)
         m.fit(df[FEATURES], df[target])
-        out = MODEL_DIR / f"euro_{target}_model.pkl"
-        joblib.dump({"model": m, "features": FEATURES}, out)
-    print(f"\nfinal models (all data) -> {MODEL_DIR.relative_to(PROJECT_ROOT)}/")
-
-    # Feature importances from the win model — do the features look like golf?
-    m = joblib.load(MODEL_DIR / "euro_won_model.pkl")["model"]
-    imp = sorted(zip(FEATURES, m.feature_importances_), key=lambda x: -x[1])
-    print("win-model importances:", ", ".join(f"{f}={v:.2f}" for f, v in imp))
+        p = m.predict_proba(df[FEATURES])[:, 1]
+        joblib.dump({"model": m, "features": FEATURES}, MODEL_DIR / f"euro_{target}_model.pkl")
+        print(f"  {target:>9}: predicted mean {p.mean():.4f} vs actual {df[target].mean():.4f} "
+              f"(ratio {p.mean() / max(df[target].mean(), 1e-9):.2f}x)")
+    print(f"final calibrated models -> {MODEL_DIR.relative_to(PROJECT_ROOT)}/")
 
 
 if __name__ == "__main__":

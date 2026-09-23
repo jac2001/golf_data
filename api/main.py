@@ -1579,17 +1579,32 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     tid = _get_tournament_id()
     req = tournament_id.strip().upper()
 
-    # DP World Tour (E-ids): OUR model doesn't cover the euro tour yet
-    # (January retrain). DataGolf's euro model CAN power these boards,
-    # but displaying their predictions publicly needs written permission
-    # (their terms §13 limit API content to personal, non-commercial
-    # use) — so the display is OFF unless SHOW_DG_EURO_PREDS=1 is set,
-    # which should only happen once DataGolf authorizes it in writing.
+    # DP World Tour (E-ids): OUR calibrated euro model serves these
+    # boards (source=model, ungated — our numbers, same standing as the
+    # PGA model's). DataGolf's euro predictions remain a fallback
+    # BEHIND the licensing flag only.
     if req.startswith("E"):
+        our_path = DATA_DIR / "predictions_euro" / f"euro_model_{req}.csv"
+        if our_path.exists():
+            df = pd.read_csv(our_path)
+            for col in ["win_prob", "top5_prob", "top10_prob", "top20_prob", "cut_prob"]:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+            df = df.sort_values("win_prob", ascending=False).head(limit)
+            players = [{
+                "player_name": _flip_to_first_last(str(r["player_name"])),
+                "win_prob": _safe(r["win_prob"]), "top5_prob": _safe(r["top5_prob"]),
+                "top10_prob": _safe(r["top10_prob"]), "top20_prob": _safe(r["top20_prob"]),
+                "cut_prob": _safe(r["cut_prob"]), "world_rank": None,
+            } for _, r in df.iterrows()]
+            return {
+                "tournament_id": req, "players": players, "count": len(players),
+                "field_size": len(players), "source": "model",
+                "weekly_narrative": "", "analysis_generated_at": "",
+            }
         if os.environ.get("SHOW_DG_EURO_PREDS", "0") != "1":
             raise HTTPException(
                 status_code=404,
-                detail="DP World Tour model numbers are paused pending data licensing.")
+                detail="No euro model predictions for this event yet.")
         dg_path = DATA_DIR / "datagolf" / f"dg_preds_{req}.csv"
         if not dg_path.exists():
             raise HTTPException(status_code=404, detail=f"No DataGolf predictions saved for {req}")
@@ -3959,7 +3974,11 @@ def events_open() -> dict:
                 "purse": purse,
                 "locked": bool(r["_s"] <= today),
                 "finished": bool(r["_e"] < today),
-                "has_model": tid.startswith("R"),
+                # PGA always; euro once OUR calibrated model has served
+                # that event (the DPWT stopped being numbers-free the
+                # day predict_euro shipped).
+                "has_model": tid.startswith("R")
+                             or (DATA_DIR / "predictions_euro" / f"euro_model_{tid}.csv").exists(),
                 "field_available": (DATA_DIR / "fields" / f"field_{tid}.csv").exists(),
             })
     # de-dup (PGA files can overlap seasons) and sort by start

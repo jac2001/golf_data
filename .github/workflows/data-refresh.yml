@@ -91,18 +91,20 @@ jobs:
             --schedule "${{ steps.pick.outputs.schedule }}" \
             ${{ inputs.dry_run == true && '--dry-run' || '' }}
 
-      - name: Euro settle + new field + DG predictions (Mondays)
+      - name: Euro settle + new field + OUR model predictions (Mondays)
         if: (github.event.schedule == '0 11 * * 1' || inputs.schedule == 'monday') && inputs.dry_run != true
         run: |
           python3 scripts/scrapers/fetch_euro_events.py --results || true
           python3 scripts/scrapers/fetch_euro_events.py --field   || true
           python3 scripts/scrapers/fetch_euro_events.py --preds   || true
+          python3 scripts/predictions/predict_euro.py             || true
 
-      - name: Euro rounds snapshot + fresh DG predictions (tournament evenings)
+      - name: Euro rounds snapshot + refreshed predictions (tournament evenings)
         if: steps.pick.outputs.schedule == 'euro-rounds' && inputs.dry_run != true
         run: |
           python3 scripts/scrapers/fetch_euro_events.py --rounds || true
           python3 scripts/scrapers/fetch_euro_events.py --preds  || true
+          python3 scripts/predictions/predict_euro.py            || true
 
       - name: Commit euro output; push anything stranded
         if: inputs.dry_run != true
