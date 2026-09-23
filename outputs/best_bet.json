@@ -1,19 +1,7 @@
 {
-  "tournament_id": "R2026060",
-  "tournament_name": "TOUR Championship",
-  "player_name": "Gerard, Ryan",
-  "market": "h2h_r1",
-  "market_label": "R1 H2H",
-  "selection_label": "Gerard, Ryan to beat Woodland, Gary (R1)",
-  "book": "BET365",
-  "odds_american": 105,
-  "odds_str": "+105",
-  "edge_pts": 4.5,
-  "ev_per_1": 0.1182,
-  "ev_pct": 11.8,
-  "model_prob": 54.5,
-  "book_prob": 50.0,
-  "confidence": 0.7,
-  "reasoning": "Model shows +4.5pp edge on h2h_r1 market.",
-  "generated_at": "2026-08-26T23:11:45.741566+00:00"
+  "tournament_id": "R2026554",
+  "tournament_name": "Bank of Utah Championship",
+  "player_name": null,
+  "reasoning": null,
+  "generated_at": "2026-09-23T01:10:12.474671+00:00"
 }
