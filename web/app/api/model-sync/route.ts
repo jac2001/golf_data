@@ -20,7 +20,7 @@
  */
 
 import { getSql, MODEL_API } from "@/lib/db";
-import { expectedPayout, modelFadePicks, modelRoundPick, Probs } from "@/lib/modelBrain";
+import { expectedPayout, modelCollegePick, modelFadePicks, modelRoundPick, Probs } from "@/lib/modelBrain";
 
 const MODEL_ID = "model";
 const MODEL_NAME = "The Model";
@@ -115,6 +115,26 @@ export async function GET(req: Request) {
             ON CONFLICT (user_id, tournament_id, player_name) DO NOTHING`;
         }
         log.push(`${tid}: fade trio ${fades.join(", ")}`);
+      }
+    }
+
+    // ── College Game: claim the school with the best top-two EV ──
+    if (!ev.locked && ev.purse) {
+      const have = await sql`
+        SELECT 1 FROM college_picks WHERE user_id = ${MODEL_ID} AND tournament_id = ${tid} LIMIT 1` as unknown[];
+      if (have.length === 0) {
+        try {
+          const res = await fetch(`${MODEL_API}/api/colleges/field?tournament_id=${tid}`, { cache: "no-store" });
+          const schools = res.ok ? ((await res.json()).schools ?? []) : [];
+          const school = modelCollegePick(preds, ev.purse!, schools);
+          if (school) {
+            await sql`
+              INSERT INTO college_picks (user_id, user_name, tournament_id, school)
+              VALUES (${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${school})
+              ON CONFLICT (user_id, tournament_id) DO NOTHING`;
+            log.push(`${tid}: college → ${school}`);
+          }
+        } catch { /* no college data — the game just has no model this week */ }
       }
     }
 

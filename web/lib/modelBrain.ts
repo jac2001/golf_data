@@ -66,6 +66,17 @@ const sortedPreds = [...preds].sort((a, b) => (b.win_prob ?? 0) - (a.win_prob ??
     return sortedPreds.slice(0, n);
 }
 
+
+
+
+
+
+
+
+
+
+
+
 /** The model's fade trio: from the pool, the 3 players it expects to
  *  EARN THE LEAST — the favorites it believes in least. */
 export function modelFadePicks(
@@ -82,4 +93,45 @@ export function modelFadePicks(
     const sortedScoredPool = scoredPool.sort((a, b) => a.expectedPayout - b.expectedPayout); // ascending order
     return sortedScoredPool.slice(0, 3).map(p => p.player_name);
 
+}
+
+/** Canonical key for name joins: lowercase sorted tokens, so
+ *  "Last, First" / "First Last" / stray punctuation all collide.
+ *  Raw-string joins fail SILENTLY (a mismatched player prices at $0). */
+const nameKey = (n: string) =>
+  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
+
+/** College Game: the school whose BEST TWO alumni carry the highest
+ *  combined expected payout — the model optimizes the game's actual
+ *  score function (best-2), never roster depth. (Jack wrote this;
+ *  review fixed one seam: the EV lookup is keyed by nameKey, not raw
+ *  spelling.) */
+export function modelCollegePick(
+  preds: (Probs & { player_name: string })[],
+  purse: number,
+  schools: { school: string; players: string[] }[],
+): string | null {
+  if (schools.length === 0) {
+    return null;
+  }
+
+  const nameToEV: Record<string, number> = {};
+  for (const p of preds) {
+    nameToEV[nameKey(p.player_name)] = expectedPayout(purse, p);
+  }
+
+  let bestSchool: string | null = null;
+  let bestSum = -1;
+
+  for (const school of schools) {
+    const evs = school.players.map(player => nameToEV[nameKey(player)] ?? 0);
+    evs.sort((a, b) => b - a); // descending order
+    const topTwoSum = evs.slice(0, 2).reduce((sum, ev) => sum + ev, 0);
+    if (topTwoSum > bestSum) {
+      bestSum = topTwoSum;
+      bestSchool = school.school;
+    }
+  }
+
+  return bestSchool;
 }
