@@ -4015,6 +4015,11 @@ def colleges_field(tournament_id: str) -> dict:
 
     def norm_school(s: str) -> str:
         s = str(s or "").strip()
+        # A missing school reads back from pandas as float NaN, whose
+        # str() is "nan" — which then survives every prefix rule and
+        # becomes a 27-alumni school called nan. Empty means empty.
+        if s.lower() in ("nan", "none", ""):
+            return ""
         for pre in ("University of ", "The University of "):
             if s.startswith(pre):
                 s = s[len(pre):]
