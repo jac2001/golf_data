@@ -19,22 +19,22 @@ export default async function LeagueGate({ children }: { children: React.ReactNo
   if (isOwner) return <>{children}</>;
 
   return (
-    <div data-zone="league" style={{
+    <div style={{
       margin: "-24px -24px -48px", padding: "24px 24px 48px",
       minHeight: "calc(100vh - 56px)",
       display: "flex", alignItems: "center", justifyContent: "center",
     }}>
       <div style={{
-        background: "var(--lg-card)", border: "1px solid var(--lg-line)",
+        background: "var(--bc-card)", border: "1px solid var(--bc-line)",
         borderRadius: 10, padding: "36px 40px", maxWidth: 440, textAlign: "center",
       }}>
         <div style={{
           fontWeight: 900, fontSize: "1.3em", textTransform: "uppercase",
-          letterSpacing: "0.04em", color: "var(--lg-text)", marginBottom: 10,
+          letterSpacing: "0.04em", color: "var(--bc-text)", marginBottom: 10,
         }}>
           League members only
         </div>
-        <p style={{ color: "var(--lg-muted)", fontSize: "0.9em", lineHeight: 1.6, margin: 0 }}>
+        <p style={{ color: "var(--bc-muted)", fontSize: "0.9em", lineHeight: 1.6, margin: 0 }}>
           This zone holds one team&apos;s weekly strategy — and you might be the
           competition. The public side of the site (predictions, betting board,
           live) is all yours, and the Friends Game is coming soon.

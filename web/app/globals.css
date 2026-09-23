@@ -31,17 +31,6 @@
   /* Type: Archivo carries display + body; numbers get a mono stack. */
   --font-mono:    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* League zone (My League) */
-  --lg-bg:        #101418;
-  --lg-panel:     #0a0d10;
-  --lg-card:      #171d23;
-  --lg-line:      #242e38;
-  --lg-text:      #f2f4f7;
-  --lg-muted:     #8b98a5;
-  --lg-accent:    #6fd49a;
-  --lg-hover:     #1d252d;
-  --lg-focus:     var(--lg-accent);
-
   /* Legacy navy (pre-redesign pages) */
   --bg-base:    #070d1a;
   --bg-card:    #0d1a30;
@@ -68,11 +57,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* League zone pages set data-zone="league" on their wrapper */
-[data-zone="league"] {
-  background: var(--lg-bg);
-  color: var(--lg-text);
-}
 
 /* Remove default link styling */
 a {
@@ -85,7 +69,6 @@ a {
   outline: 2px solid var(--bc-focus);
   outline-offset: 2px;
 }
-[data-zone="league"] :focus-visible { outline-color: var(--lg-focus); }
 
 /* Numbers that sit in columns must line up: scoreboard tables, odds, prices */
 .tabular, .tabular * { font-variant-numeric: tabular-nums; }

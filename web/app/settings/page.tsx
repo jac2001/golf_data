@@ -240,6 +240,11 @@ export default function SettingsPage() {
           something deleted? Leave your groups and remove devices here, or
           ask Jack to purge your rows.
         </p>
+        <p style={{ margin: "10px 0 0", fontSize: "0.78em" }}>
+          <a href="/history/league" style={{ color: "var(--bc-muted)" }}>
+            2026 family-league archive →
+          </a>
+        </p>
       </div>
     </div>
   );

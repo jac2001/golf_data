@@ -16,8 +16,6 @@ import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server
 // edge (full forecast, betting, live, players) or real cost (assistant
 // burns API credits per question) needs the free account.
 const isProtected = createRouteMatcher([
-  "/fantasy(.*)",
-  "/mypicks(.*)",
   "/friends(.*)",
   "/betting(.*)",
   "/live(.*)",
