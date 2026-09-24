@@ -176,6 +176,65 @@ def main() -> None:
     if "vegas_prob" in out.columns:
         out["model_vs_vegas_edge"] = (out["win_prob"] - out["vegas_prob"]).round(4)
 
+    # Odds drift vs OUR OWN previous run of this event (the file we are
+    # about to overwrite is the baseline — read it first). DOWN means the
+    # price shortened: the market moved toward the player.
+    out["dk_odds_direction"] = None
+    prior_path = OUT_DIR / f"euro_model_{tid}.csv"
+    if prior_path.exists() and "odds_to_win" in out.columns:
+        try:
+            prior = pd.read_csv(prior_path)
+            if "odds_to_win" in prior.columns:
+                prev = dict(zip(prior["dg_id"], pd.to_numeric(prior["odds_to_win"], errors="coerce")))
+                def _direction(r):
+                    old, new = prev.get(r["dg_id"]), r["odds_to_win"]
+                    if pd.isna(old) or pd.isna(new):
+                        return None
+                    if abs(new - old) / abs(old) < 0.05:
+                        return "CONSTANT"
+                    return "DOWN" if new < old else "UP"
+                out["dk_odds_direction"] = out.apply(_direction, axis=1)
+        except Exception as e:
+            print(f"drift skipped: {type(e).__name__}: {e}")
+
+    # PGA-style nugget: 1-2 terse fragments, field-relative. The crossover
+    # rule is why OWGR earns a line here — a top-125 player with a thin
+    # euro-rounds year isn't inactive, he's playing the PGA Tour, and the
+    # euro history alone can't see that.
+    for col in ("birdie_rate_last10", "bogey_rate_last10", "rounds_played_365d"):
+        out[col] = fdf[col]
+    sg_pct = out["season_sg_total"].rank(pct=True)
+    bird_pct = out["birdie_rate_last10"].rank(pct=True)
+    bog_pct = out["bogey_rate_last10"].rank(pct=True)
+
+    def _nugget(i, r):
+        bits = []
+        wr, eur_rounds = r.get("world_rank"), r.get("rounds_played_365d")
+        if pd.notna(wr) and wr <= 125 and pd.notna(eur_rounds) and eur_rounds < 12:
+            bits.append("Splits time on the PGA Tour")
+        trend = r.get("form_trend")
+        if pd.notna(trend):
+            if trend > 0.5:
+                bits.append("Hot recent form")
+            elif trend > 0.2:
+                bits.append("Improving form")
+            elif trend < -0.5:
+                bits.append("Cooling off")
+        if sg_pct.loc[i] >= 0.9:
+            bits.append("Elite overall sg")
+        elif sg_pct.loc[i] >= 0.75:
+            bits.append("Strong sg profile")
+        if len(bits) < 2 and bird_pct.loc[i] >= 0.9:
+            bits.append("Birdie machine")
+        if len(bits) < 2 and bog_pct.loc[i] <= 0.1:
+            bits.append("Avoids bogeys")
+        if pd.notna(wr) and wr <= 50 and len(bits) < 2:
+            bits.append(f"World #{int(wr)}")
+        return " · ".join(bits[:2]) if bits else "Balanced profile"
+
+    out["explanation"] = [_nugget(i, r) for i, r in out.iterrows()]
+    out = out.drop(columns=["birdie_rate_last10", "bogey_rate_last10", "rounds_played_365d"])
+
     out.insert(0, "tournament_id", tid)
     out = out.sort_values("win_prob", ascending=False)
     OUT_DIR.mkdir(parents=True, exist_ok=True)

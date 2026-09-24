@@ -1601,6 +1601,8 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
                 "odds_to_win": _safe(r.get("odds_to_win")),
                 "vegas_prob": _safe(r.get("vegas_prob")),
                 "model_vs_vegas_edge": _safe(r.get("model_vs_vegas_edge")),
+                "dk_odds_direction": _safe(r.get("dk_odds_direction")),
+                "explanation": _safe(r.get("explanation"), ""),
             } for _, r in df.iterrows()]
             return {
                 "tournament_id": req, "players": players, "count": len(players),

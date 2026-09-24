@@ -503,13 +503,16 @@ function EuroWeek() {
   }));
 
   // Euro rows through the PGA table: alias the sim/sort fields the
-  // component expects onto the probabilities we have.
+  // component expects onto the probabilities we have. The model fields
+  // are then nulled — one model, one number; leaving them would render
+  // the same percentage twice ("6.3%" over "model 6.3%").
   const tableRows = rows.map(r => ({
     ...r,
     win_prob_sim: r.win_prob, top5_prob_sim: r.top5_prob,
     top10_prob_sim: r.top10_prob, top20_prob_sim: r.top20_prob,
     make_cut_prob_sim: r.cut_prob,
-  })) as PlayerPrediction[];
+    win_prob: null, top5_prob: null, top10_prob: null, top20_prob: null,
+  })) as unknown as PlayerPrediction[];
 
   const liveRows = live ? Object.values(live.players)
     .map(p => {
