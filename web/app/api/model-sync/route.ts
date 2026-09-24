@@ -53,18 +53,21 @@ export async function GET(req: Request) {
     if (res.ok) events = (await res.json()).events ?? [];
   } catch { /* no events, nothing to do */ }
 
-  // Predictions exist only for the current PGA event; the response says
-  // which tournament they belong to, so we never pick off stale numbers.
-  let preds: PredRow[] = [];
-  let predsTid = "";
-  try {
-    const res = await fetch(`${MODEL_API}/api/predictions?limit=200`, { cache: "no-store" });
-    if (res.ok) {
+  // Per-EVENT predictions: the API serves each tournament's own numbers
+  // (PGA archives, euro model files). We ask per event and trust only a
+  // payload whose label matches — the single-fetch era ended when the
+  // euro model started serving E-events alongside the PGA current week.
+  async function predsFor(tid: string): Promise<PredRow[]> {
+    try {
+      const res = await fetch(
+        `${MODEL_API}/api/predictions?limit=200&tournament_id=${encodeURIComponent(tid)}`,
+        { cache: "no-store" });
+      if (!res.ok) return [];
       const d = await res.json();
-      predsTid = String(d.tournament_id ?? "").toUpperCase();
-      preds = (d.players ?? []).filter((p: PredRow) => p.player_name);
-    }
-  } catch { /* handled below by the tid match */ }
+      if (String(d.tournament_id ?? "").toUpperCase() !== tid.toUpperCase()) return [];
+      return (d.players ?? []).filter((p: PredRow) => p.player_name);
+    } catch { return []; }
+  }
 
   // Early in the week the DG field is a handful of commitments, and
   // probabilities over a 24-man "field" are junk (they sum to 1 over
@@ -74,8 +77,9 @@ export async function GET(req: Request) {
 
   for (const ev of events.filter(e => e.has_model)) {
     const tid = ev.tournament_id.toUpperCase();
-    if (tid !== predsTid || preds.length === 0) {
-      log.push(`${tid}: no fresh predictions (have ${predsTid || "none"})`);
+    const preds = await predsFor(tid);
+    if (preds.length === 0) {
+      log.push(`${tid}: no fresh predictions`);
       continue;
     }
     if (preds.length < MIN_FIELD && !ev.locked) {
