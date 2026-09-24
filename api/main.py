@@ -4121,7 +4121,9 @@ def euro_week(tournament_id: str) -> dict:
             geo = _rq.get("https://geocoding-api.open-meteo.com/v1/search",
                           params={"name": loc, "count": 1}, timeout=10).json()
             hits = geo.get("results") or []
-            if hits:
+            if not hits:
+                weather_error = f"geocode: no hits for '{loc}'"
+            else:
                 lat, lon = hits[0]["latitude"], hits[0]["longitude"]
                 fc = _rq.get("https://api.open-meteo.com/v1/forecast", params={
                     "latitude": lat, "longitude": lon,
@@ -4136,8 +4138,11 @@ def euro_week(tournament_id: str) -> dict:
                     "precip_pct": d["precipitation_probability_max"][i],
                     "wind_mph": d["wind_speed_10m_max"][i],
                 } for i in range(len(d.get("time", [])))]
-                cache_path.parent.mkdir(parents=True, exist_ok=True)
-                json.dump(weather, open(cache_path, "w"))
+                if weather:
+                    cache_path.parent.mkdir(parents=True, exist_ok=True)
+                    json.dump(weather, open(cache_path, "w"))
+                else:
+                    weather_error = f"forecast: empty daily for ({lat},{lon}) {r['start_date']}..{r['end_date']}"
     except Exception as e:
         weather = []
         weather_error = f"{type(e).__name__}: {str(e)[:120]}"
