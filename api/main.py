@@ -1594,7 +1594,13 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
                 "player_name": _flip_to_first_last(str(r["player_name"])),
                 "win_prob": _safe(r["win_prob"]), "top5_prob": _safe(r["top5_prob"]),
                 "top10_prob": _safe(r["top10_prob"]), "top20_prob": _safe(r["top20_prob"]),
-                "cut_prob": _safe(r["cut_prob"]), "world_rank": None,
+                "cut_prob": _safe(r["cut_prob"]),
+                "world_rank": int(r["world_rank"]) if pd.notna(r.get("world_rank")) else None,
+                "season_sg_total": _safe(r.get("season_sg_total")),
+                "form_trend": _safe(r.get("form_trend")),
+                "odds_to_win": _safe(r.get("odds_to_win")),
+                "vegas_prob": _safe(r.get("vegas_prob")),
+                "model_vs_vegas_edge": _safe(r.get("model_vs_vegas_edge")),
             } for _, r in df.iterrows()]
             return {
                 "tournament_id": req, "players": players, "count": len(players),

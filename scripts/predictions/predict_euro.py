@@ -31,7 +31,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "scrapers"))
 
+import unicodedata
+
 from dg_client import dg_get  # noqa: E402
+from event_guard import names_match  # noqa: E402
+from fetch_dg_odds import american_to_prob  # noqa: E402
 from scripts.features.build_euro_training_table import rolling_form_features  # noqa: E402
 
 MODEL_DIR = PROJECT_ROOT / "data" / "models" / "euro"
@@ -112,6 +116,52 @@ def main() -> None:
 
     out = fdf[["player_name", "dg_id"] + list(TARGETS.values())].copy()
 
+    # Display columns the This Week table shows for both tours. The model
+    # never sees these two renames — they are the serve-time aliases of
+    # features it already computed: sg_last20 is per-round SG, the same
+    # units as the PGA board's season_sg_total.
+    out["season_sg_total"] = fdf["sg_last20"].round(3)
+    out["form_trend"] = fdf["sg_trend"].round(3)
+
+    owgr_path = PROJECT_ROOT / "data" / "rankings" / f"owgr_{event_start.year}.csv"
+    if owgr_path.exists():
+        owgr = pd.read_csv(owgr_path)
+        # NFKD-strip diacritics before keying: OWGR spells Åberg and
+        # Højgaard with accents, DG without — raw keys never match them.
+        namekey = lambda n: " ".join(sorted(
+            unicodedata.normalize("NFKD", str(n)).encode("ascii", "ignore")
+            .decode().lower().replace(",", " ").split()))
+        ranks = dict(zip(owgr["player_name"].map(namekey), owgr["world_rank"]))
+        out["world_rank"] = out["player_name"].map(lambda n: ranks.get(namekey(n)))
+
+    # Odds + edge from DG's euro outrights — the same source the PGA
+    # board displays, joined on dg_id (two DG feeds share ids; name keys
+    # would only add a failure mode). Guarded: DG serves "the current
+    # euro event", so the payload's own label must match ours.
+    try:
+        raw = dg_get("/betting-tools/outrights",
+                     {"tour": "euro", "market": "win", "odds_format": "american"})
+        if not names_match(raw.get("event_name", ""), name):
+            print(f"odds skipped: DG payload is '{raw.get('event_name')}', not '{name}'")
+        else:
+            odds_rows = {}
+            for p in raw.get("odds", []) or []:
+                for book in ("bet365", "skybet", "williamhill", "betfair",
+                             "draftkings", "fanduel"):
+                    v = p.get(book)
+                    if v is not None and str(v).strip().lower() not in ("", "null"):
+                        odds_rows[p.get("dg_id")] = float(str(v).replace("+", ""))
+                        break
+            out["odds_to_win"] = out["dg_id"].map(odds_rows)
+            implied = out["odds_to_win"].map(
+                lambda a: american_to_prob(int(a)) if pd.notna(a) else None)
+            implied = pd.to_numeric(implied, errors="coerce")
+            total = implied.sum()
+            out["vegas_prob"] = implied / total if total > 0 else implied
+            print(f"odds merged for {out['odds_to_win'].notna().sum()}/{len(out)} players")
+    except Exception as e:
+        print(f"odds skipped: {type(e).__name__}: {e}")
+
     # Field-level identities: exactly 1 winner, 5 top-5s, etc. Per-player
     # calibration knows the POPULATION rate, not this field's arithmetic —
     # scale each cumulative column to its identity (rank-preserving).
@@ -120,6 +170,11 @@ def main() -> None:
         s = out[col].sum()
         if s > 0:
             out[col] = (out[col] * (k / s)).clip(upper=0.99)
+
+    # Edge is model minus market — computed AFTER normalization, so both
+    # sides are field-identity probabilities that sum to 1.
+    if "vegas_prob" in out.columns:
+        out["model_vs_vegas_edge"] = (out["win_prob"] - out["vegas_prob"]).round(4)
 
     out.insert(0, "tournament_id", tid)
     out = out.sort_values("win_prob", ascending=False)
