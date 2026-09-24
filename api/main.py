@@ -4142,7 +4142,7 @@ def euro_week(tournament_id: str) -> dict:
                     cache_path.parent.mkdir(parents=True, exist_ok=True)
                     json.dump(weather, open(cache_path, "w"))
                 else:
-                    weather_error = f"forecast: empty daily for ({lat},{lon}) {r['start_date']}..{r['end_date']}"
+                    weather_error = f"forecast empty; response: {str(fc)[:180]}"
     except Exception as e:
         weather = []
         weather_error = f"{type(e).__name__}: {str(e)[:120]}"
