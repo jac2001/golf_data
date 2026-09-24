@@ -4169,6 +4169,88 @@ def euro_week(tournament_id: str) -> dict:
     }
 
 
+@app.get("/api/euro/teetimes")
+def euro_teetimes(tournament_id: str) -> dict:
+    """Tee times for a DPWT event, grouped by round. Long-format CSV
+    written by fetch_euro_events --teetimes (Monday + tournament-evening
+    slots); DG publishes each round's times the day before."""
+    tid = tournament_id.strip().upper()
+    path = DATA_DIR / "live" / f"teetimes_{tid}.csv"
+    if not path.exists():
+        return {"tournament_id": tid, "rounds": {}, "count": 0}
+    df = pd.read_csv(path)
+    rounds: dict[str, list] = {}
+    for rnum, grp in df.groupby("round_num"):
+        rounds[str(int(rnum))] = [{
+            "player_name": _flip_to_first_last(str(g["player_name"])),
+            "teetime": str(g["teetime"]),
+            "start_hole": int(g["start_hole"]) if pd.notna(g["start_hole"]) else None,
+            "wave": str(g.get("wave", "") or ""),
+            "course_name": str(g.get("course_name", "") or ""),
+        } for _, g in grp.sort_values("teetime").iterrows()]
+    return {"tournament_id": tid, "rounds": rounds, "count": len(df)}
+
+
+@app.get("/api/euro/course")
+def euro_course(tournament_id: str) -> dict:
+    """Course guide for a DPWT event, from our committed euro history
+    derivation (data/euro_course_history/, built locally from DuckDB).
+    Keyed by NORMALIZED COURSE NAME — DG's course_num changes every
+    edition, so the name is the only stable key. Course horses are
+    history rows joined to the CURRENT field by dg_id."""
+    tid = tournament_id.strip().upper()
+    tt_path = DATA_DIR / "live" / f"teetimes_{tid}.csv"
+    course_name = ""
+    if tt_path.exists():
+        try:
+            names = pd.read_csv(tt_path)["course_name"].dropna()
+            if len(names):
+                course_name = str(names.mode().iloc[0])
+        except Exception:
+            pass
+    if not course_name:
+        sched_path = DATA_DIR / "raw" / "schedule_euro_2026.csv"
+        if sched_path.exists():
+            sched = pd.read_csv(sched_path)
+            row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+            if not row.empty:
+                course_name = str(row.iloc[0].get("course", "") or "")
+    if not course_name:
+        raise HTTPException(status_code=404, detail=f"No course known for {tid}")
+    key = course_name.strip().lower()
+
+    hist_dir = DATA_DIR / "euro_course_history"
+    years_path, players_path = hist_dir / "course_years.csv", hist_dir / "player_course.csv"
+    years, horses = [], []
+    par = None
+    if years_path.exists():
+        y = pd.read_csv(years_path)
+        y = y[y["course_key"] == key].sort_values("calendar_year", ascending=False)
+        par = int(y["par"].max()) if len(y) else None
+        years = [{
+            "year": int(r["calendar_year"]), "event_name": str(r["event_name"]),
+            "avg_score": _safe(r["avg_score"]),
+            "champion": _flip_to_first_last(str(r["champion"])) if pd.notna(r["champion"]) else None,
+        } for _, r in y.iterrows()]
+    field_path = DATA_DIR / "fields" / f"field_{tid}.csv"
+    if players_path.exists() and field_path.exists():
+        pc = pd.read_csv(players_path)
+        field_ids = set(pd.read_csv(field_path)["dg_id"].dropna().astype(int))
+        pc = pc[(pc["course_key"] == key) & pc["dg_id"].isin(field_ids) & (pc["rounds"] >= 6)]
+        pc = pc.sort_values("avg_vs_par").head(10)
+        horses = [{
+            "player_name": _flip_to_first_last(str(r["player_name"])),
+            "rounds": int(r["rounds"]), "avg_vs_par": _safe(r["avg_vs_par"]),
+            "avg_sg": _safe(r["avg_sg"]),
+            "best_finish": int(r["best_finish"]) if pd.notna(r["best_finish"]) else None,
+            "last_year": int(r["last_year"]) if pd.notna(r["last_year"]) else None,
+        } for _, r in pc.iterrows()]
+    return {
+        "tournament_id": tid, "course": course_name, "par": par,
+        "years": years, "horses": horses,
+    }
+
+
 @app.get("/api/colleges/field")
 def colleges_field(tournament_id: str) -> dict:
     """The College Game's board: which schools have alumni in this event's

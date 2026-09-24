@@ -123,8 +123,16 @@ def main() -> None:
     out["season_sg_total"] = fdf["sg_last20"].round(3)
     out["form_trend"] = fdf["sg_trend"].round(3)
 
+    # World rank: DG's own owgr_rank in the field file first (full
+    # coverage, dg_id-keyed by construction), our OWGR csv as fallback
+    # for older field files that predate the column.
+    if "owgr_rank" in field.columns:
+        out["world_rank"] = out["dg_id"].map(
+            dict(zip(field["dg_id"], pd.to_numeric(field["owgr_rank"], errors="coerce"))))
+    else:
+        out["world_rank"] = pd.NA
     owgr_path = PROJECT_ROOT / "data" / "rankings" / f"owgr_{event_start.year}.csv"
-    if owgr_path.exists():
+    if out["world_rank"].isna().any() and owgr_path.exists():
         owgr = pd.read_csv(owgr_path)
         # NFKD-strip diacritics before keying: OWGR spells Åberg and
         # Højgaard with accents, DG without — raw keys never match them.
@@ -132,7 +140,8 @@ def main() -> None:
             unicodedata.normalize("NFKD", str(n)).encode("ascii", "ignore")
             .decode().lower().replace(",", " ").split()))
         ranks = dict(zip(owgr["player_name"].map(namekey), owgr["world_rank"]))
-        out["world_rank"] = out["player_name"].map(lambda n: ranks.get(namekey(n)))
+        fallback = out["player_name"].map(lambda n: ranks.get(namekey(n)))
+        out["world_rank"] = out["world_rank"].fillna(pd.Series(fallback, index=out.index))
 
     # Odds + edge from DG's euro outrights — the same source the PGA
     # board displays, joined on dg_id (two DG feeds share ids; name keys
@@ -206,6 +215,11 @@ def main() -> None:
     sg_pct = out["season_sg_total"].rank(pct=True)
     bird_pct = out["birdie_rate_last10"].rank(pct=True)
     bog_pct = out["bogey_rate_last10"].rank(pct=True)
+    # form_trend is a 5-round mean minus a 20-round mean; its field std
+    # is ~1.0, so absolute thresholds near 0.5 label noise (a third of
+    # this field got "Cooling off"). Tags mark the tails: a field
+    # percentile AND an absolute floor bigger than the stat's noise.
+    trend_pct = out["form_trend"].rank(pct=True)
 
     def _nugget(i, r):
         bits = []
@@ -214,11 +228,11 @@ def main() -> None:
             bits.append("Splits time on the PGA Tour")
         trend = r.get("form_trend")
         if pd.notna(trend):
-            if trend > 0.5:
+            if trend_pct.loc[i] >= 0.9 and trend > 1.0:
                 bits.append("Hot recent form")
-            elif trend > 0.2:
+            elif trend_pct.loc[i] >= 0.8 and trend > 0.6:
                 bits.append("Improving form")
-            elif trend < -0.5:
+            elif trend_pct.loc[i] <= 0.1 and trend < -1.2:
                 bits.append("Cooling off")
         if sg_pct.loc[i] >= 0.9:
             bits.append("Elite overall sg")

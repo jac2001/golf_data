@@ -103,12 +103,38 @@ def _current_event(year: int) -> tuple[str, str, dict]:
 
 def cmd_field(year: int) -> None:
     tid, name, raw = _current_event(year)
-    players = [{"player_name": p.get("player_name", ""), "dg_id": p.get("dg_id")}
+    players = [{"player_name": p.get("player_name", ""), "dg_id": p.get("dg_id"),
+                "owgr_rank": p.get("owgr_rank"), "country": p.get("country", "")}
                for p in raw.get("field", [])]
     df = pd.DataFrame(players)
     out = FIELDS_DIR / f"field_{tid}.csv"
     df.to_csv(out, index=False)
     print(f"{name} ({tid}): {len(df)} players -> {out.relative_to(PROJECT_ROOT)}")
+
+
+def cmd_teetimes(year: int) -> None:
+    """Per-player tee times from the same field-updates payload — long
+    format, one row per (player, round). Refreshed by the Monday and
+    tournament-evening slots; DG publishes each round's times the day
+    before, so the file grows across the week."""
+    tid, name, raw = _current_event(year)
+    rows = []
+    for p in raw.get("field", []):
+        for t in p.get("teetimes") or []:
+            rows.append({
+                "dg_id": p.get("dg_id"), "player_name": p.get("player_name", ""),
+                "round_num": t.get("round_num"), "teetime": t.get("teetime"),
+                "start_hole": t.get("start_hole"), "wave": t.get("wave", ""),
+                "course_name": t.get("course_name", ""),
+            })
+    if not rows:
+        print(f"{name} ({tid}): no tee times published yet — nothing written")
+        return
+    df = pd.DataFrame(rows).sort_values(["round_num", "teetime"])
+    out = PROJECT_ROOT / "data" / "live" / f"teetimes_{tid}.csv"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(out, index=False)
+    print(f"{name} ({tid}): {len(df)} tee times ({df['round_num'].nunique()} rounds) -> {out.relative_to(PROJECT_ROOT)}")
 
 
 def cmd_preds(year: int) -> None:
@@ -149,6 +175,42 @@ def cmd_preds(year: int) -> None:
     out = dg_dir / f"dg_preds_{tid}.csv"
     df.to_csv(out, index=False)
     print(f"{name} ({tid}): DG euro predictions for {len(df)} players -> {out.relative_to(PROJECT_ROOT)}")
+
+
+def cmd_weather(year: int) -> None:
+    """Open-Meteo forecast for the current euro event → the cache file
+    /api/euro/week serves. Fetched HERE (Actions/local, quiet IPs) and
+    committed, because Render's shared egress IP exhausts Open-Meteo's
+    per-IP free quota on other tenants' traffic — request-time fetching
+    from the server can never be reliable there."""
+    import requests
+    tid, name, raw = _current_event(year)
+    sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
+    row = sched[sched["tournament_id"] == tid].iloc[0]
+    loc = str(row.get("location", "")).split(",")[0].strip()
+
+    geo = requests.get("https://geocoding-api.open-meteo.com/v1/search",
+                       params={"name": loc, "count": 1}, timeout=10).json()
+    hits = geo.get("results") or []
+    if not hits:
+        raise SystemExit(f"no geocode hits for '{loc}'")
+    fc = requests.get("https://api.open-meteo.com/v1/forecast", params={
+        "latitude": hits[0]["latitude"], "longitude": hits[0]["longitude"],
+        "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max",
+        "temperature_unit": "fahrenheit", "wind_speed_unit": "mph",
+        "start_date": str(row["start_date"]), "end_date": str(row["end_date"]),
+    }, timeout=10).json()
+    d = fc.get("daily", {})
+    if not d.get("time"):
+        raise SystemExit(f"forecast empty: {str(fc)[:150]}")
+    weather = [{"date": d["time"][i], "tmax": d["temperature_2m_max"][i],
+                "tmin": d["temperature_2m_min"][i],
+                "precip_pct": d["precipitation_probability_max"][i],
+                "wind_mph": d["wind_speed_10m_max"][i]} for i in range(len(d["time"]))]
+    out = PROJECT_ROOT / "data" / "weather" / f"{tid}_openmeteo.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    json.dump(weather, open(out, "w"))
+    print(f"{name} ({tid}): {len(weather)} forecast days -> {out.relative_to(PROJECT_ROOT)}")
 
 
 def _event_from_inplay(year: int, live: dict) -> tuple[str, str]:
@@ -252,6 +314,7 @@ def main() -> None:
     ap.add_argument("--results", action="store_true")
     ap.add_argument("--rounds", action="store_true", help="mid-event round-score snapshot")
     ap.add_argument("--preds", action="store_true", help="DataGolf pre-tournament predictions for the current euro event")
+    ap.add_argument("--teetimes", action="store_true", help="per-player tee times for the current euro event")
     ap.add_argument("--force", action="store_true", help="settle even if mid-event")
     args = ap.parse_args()
     if args.schedule:
@@ -264,8 +327,10 @@ def main() -> None:
         cmd_rounds(args.year)
     if args.preds:
         cmd_preds(args.year)
-    if not (args.schedule or args.field or args.results or args.rounds or args.preds):
-        ap.error("pick at least one of --schedule --field --results --rounds --preds")
+    if args.teetimes:
+        cmd_teetimes(args.year)
+    if not (args.schedule or args.field or args.results or args.rounds or args.preds or args.teetimes):
+        ap.error("pick at least one of --schedule --field --results --rounds --preds --teetimes")
 
 
 if __name__ == "__main__":

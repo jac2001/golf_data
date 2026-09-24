@@ -328,6 +328,32 @@ export async function getEuroWeek(tournamentId: string): Promise<EuroWeekMeta> {
   return res.json();
 }
 
+export type EuroTeeTime = {
+  player_name: string; teetime: string; start_hole: number | null;
+  wave: string; course_name: string;
+};
+export type EuroTeeTimes = {
+  tournament_id: string; rounds: Record<string, EuroTeeTime[]>; count: number;
+};
+
+export async function getEuroTeeTimes(tournamentId: string): Promise<EuroTeeTimes> {
+  const res = await apiFetch(`${API_BASE}/api/euro/teetimes?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load tee times");
+  return res.json();
+}
+
+export type EuroCourseGuide = {
+  tournament_id: string; course: string; par: number | null;
+  years: { year: number; event_name: string; avg_score: number | null; champion: string | null }[];
+  horses: { player_name: string; rounds: number; avg_vs_par: number | null; avg_sg: number | null; best_finish: number | null; last_year: number | null }[];
+};
+
+export async function getEuroCourse(tournamentId: string): Promise<EuroCourseGuide> {
+  const res = await apiFetch(`${API_BASE}/api/euro/course?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load course guide");
+  return res.json();
+}
+
 export type EventRounds = {
   tournament_id: string; rounds_available: number;
   players: Record<string, { player_name: string; rounds: Record<string, number> }>;

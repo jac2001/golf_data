@@ -21,6 +21,7 @@ import {
   Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
   ModelCompPlayer, WeatherResponse, CourseFitResponse,
   getCourseFit, getOpenEvents, getEuroWeek, getEventRounds, EuroWeekMeta, EventRounds, PlayerPrediction, IntelResponse,
+  getEuroTeeTimes, getEuroCourse, EuroTeeTimes, EuroTeeTime, EuroCourseGuide,
 } from "@/lib/api";
 import PredictionsTable from "@/components/PredictionsTable";
 import LineupCards from "@/components/LineupCards";
@@ -464,6 +465,8 @@ function EuroWeek() {
   const [rows, setRows] = useState<PlayerPrediction[] | null>(null);
   const [meta, setMeta] = useState<EuroWeekMeta | null>(null);
   const [live, setLive] = useState<EventRounds | null>(null);
+  const [teeTimes, setTeeTimes] = useState<EuroTeeTimes | null>(null);
+  const [courseGuide, setCourseGuide] = useState<EuroCourseGuide | null>(null);
   const [tab, setTab] = useState<EuroTab>("field");
   const [src, setSrc] = useState("");
   const [err, setErr] = useState("");
@@ -477,6 +480,8 @@ function EuroWeek() {
       getEuroWeek(ev.tournament_id).then(setMeta).catch(() => {});
       getEventRounds(ev.tournament_id)
         .then(r => { if (r.rounds_available > 0) setLive(r); }).catch(() => {});
+      getEuroTeeTimes(ev.tournament_id).then(setTeeTimes).catch(() => {});
+      getEuroCourse(ev.tournament_id).then(setCourseGuide).catch(() => {});
       getPredictions(200, ev.tournament_id)
         .then(p => { setRows(p.players ?? []); setSrc(p.source ?? "model"); })
         .catch(() => {
@@ -580,11 +585,156 @@ function EuroWeek() {
       {tab === "field" && (rows.length > 0
         ? <PredictionsTable players={tableRows} />
         : <p style={{ color: "var(--bc-muted)" }}>{err}</p>)}
-      {tab === "teetimes" && emptyTab("Tee times",
-        "the DP World Tour feed publishes them closer to each round; they land here when a source exists.")}
-      {tab === "course" && emptyTab("The course guide",
-        "hole-by-hole data has no DPWT source yet. The essentials live in the cards above.")}
+      {tab === "teetimes" && (
+        teeTimes && Object.keys(teeTimes.rounds).length > 0
+          ? <EuroTeeTimesView data={teeTimes} />
+          : emptyTab("Tee times", "the tour publishes each round's times the day before — check back closer to the round.")
+      )}
+      {tab === "course" && (
+        courseGuide && (courseGuide.years.length > 0 || courseGuide.horses.length > 0)
+          ? <EuroCourseGuideView data={courseGuide} />
+          : emptyTab("The course guide", "no past DP World Tour editions at this course in our history yet.")
+      )}
     </>
+  );
+}
+
+/** Tee times grouped into actual pairings: players sharing a time and a
+ *  starting hole are one group off the tee. */
+function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
+  const roundNums = Object.keys(data.rounds).sort((a, b) => Number(a) - Number(b));
+  const [round, setRound] = useState(roundNums[roundNums.length - 1]);
+  const times = data.rounds[round] ?? [];
+
+  const groups = new Map<string, EuroTeeTime[]>();
+  for (const t of times) {
+    const k = `${t.teetime}|${t.start_hole}`;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k)!.push(t);
+  }
+  const rows = [...groups.values()];
+
+  return (
+    <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
+      <div style={{ display: "flex", gap: 8, padding: "14px 18px", alignItems: "center" }}>
+        {roundNums.map(rn => (
+          <button key={rn} onClick={() => setRound(rn)} style={{
+            background: round === rn ? "#0a1f3a" : "var(--bc-panel)",
+            border: `1px solid ${round === rn ? "#1e5a3f" : "var(--bc-line)"}`,
+            borderRadius: 5, color: round === rn ? "var(--bc-green)" : "var(--bc-muted)",
+            padding: "5px 14px", fontSize: "0.8em", fontWeight: 700, cursor: "pointer",
+          }}>R{rn}</button>
+        ))}
+        <span style={{ color: "var(--bc-muted)", fontSize: "0.75em", marginLeft: "auto" }}>
+          {rows.length} groups · times local to the course
+        </span>
+      </div>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <tbody>
+          {rows.map((g, i) => (
+            <tr key={i}>
+              <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", whiteSpace: "nowrap", fontWeight: 700, fontSize: "0.85em", fontVariantNumeric: "tabular-nums", width: 90 }}>
+                {g[0].teetime.slice(11)}
+              </td>
+              <td style={{ padding: "7px 10px", borderTop: "1px solid var(--bc-line)", color: "var(--bc-muted)", fontSize: "0.78em", whiteSpace: "nowrap", width: 70 }}>
+                Hole {g[0].start_hole ?? "—"}
+              </td>
+              <td style={{ padding: "7px 18px 7px 10px", borderTop: "1px solid var(--bc-line)", fontSize: "0.86em" }}>
+                {g.map(p => p.player_name).join(" · ")}
+              </td>
+              <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", textAlign: "right", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em", width: 70,
+                color: g[0].wave === "early" ? "var(--bc-yellow)" : "var(--bc-muted)" }}>
+                {g[0].wave}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function EuroCourseGuideView({ data }: { data: EuroCourseGuide }) {
+  const th: React.CSSProperties = {
+    padding: "7px 14px", borderBottom: "1px solid var(--bc-line)", fontSize: "0.68em",
+    fontWeight: 700, color: "var(--bc-muted)", textTransform: "uppercase",
+    letterSpacing: "0.05em", textAlign: "left", whiteSpace: "nowrap",
+  };
+  const td: React.CSSProperties = {
+    padding: "7px 14px", borderBottom: "1px solid var(--bc-line)", fontSize: "0.84em",
+  };
+  return (
+    <div style={{ display: "grid", gap: 16 }}>
+      <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
+        <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
+          {data.course}
+          <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
+            {data.par != null ? `par ${data.par} · ` : ""}{data.years.length} DP World Tour editions in our history
+          </span>
+        </div>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead><tr>
+            <th style={th}>Year</th><th style={th}>Event</th>
+            <th style={{ ...th, textAlign: "right" }}>Field avg</th><th style={th}>Champion</th>
+          </tr></thead>
+          <tbody>
+            {data.years.map(y => (
+              <tr key={y.year}>
+                <td style={{ ...td, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{y.year}</td>
+                <td style={{ ...td, color: "var(--bc-muted)" }}>{y.event_name}</td>
+                <td style={{ ...td, textAlign: "right", fontVariantNumeric: "tabular-nums",
+                  color: data.par != null && y.avg_score != null && y.avg_score < data.par ? "var(--bc-green)" : "var(--bc-text)" }}>
+                  {y.avg_score != null && data.par != null
+                    ? `${y.avg_score.toFixed(1)} (${y.avg_score - data.par > 0 ? "+" : ""}${(y.avg_score - data.par).toFixed(1)})`
+                    : y.avg_score?.toFixed(1) ?? "—"}
+                </td>
+                <td style={{ ...td, fontWeight: 600, color: "var(--bc-yellow)" }}>{y.champion ?? "—"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {data.horses.length > 0 && (
+        <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
+          <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
+            Course horses in this field
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
+              best career scoring here, minimum 6 rounds
+            </span>
+          </div>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead><tr>
+              <th style={th}>Player</th>
+              <th style={{ ...th, textAlign: "right" }}>Rounds</th>
+              <th style={{ ...th, textAlign: "right" }}>Avg vs par</th>
+              <th style={{ ...th, textAlign: "right" }}>Avg SG</th>
+              <th style={{ ...th, textAlign: "right" }}>Best finish</th>
+              <th style={{ ...th, textAlign: "right" }}>Last played</th>
+            </tr></thead>
+            <tbody>
+              {data.horses.map((h, i) => (
+                <tr key={i}>
+                  <td style={{ ...td, fontWeight: 700 }}>{h.player_name}</td>
+                  <td style={{ ...td, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{h.rounds}</td>
+                  <td style={{ ...td, textAlign: "right", fontVariantNumeric: "tabular-nums", fontWeight: 700,
+                    color: (h.avg_vs_par ?? 0) < 0 ? "var(--bc-green)" : "var(--bc-red-text)" }}>
+                    {h.avg_vs_par != null ? (h.avg_vs_par > 0 ? `+${h.avg_vs_par.toFixed(2)}` : h.avg_vs_par.toFixed(2)) : "—"}
+                  </td>
+                  <td style={{ ...td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: "var(--bc-muted)" }}>
+                    {h.avg_sg != null ? (h.avg_sg > 0 ? `+${h.avg_sg.toFixed(2)}` : h.avg_sg.toFixed(2)) : "—"}
+                  </td>
+                  <td style={{ ...td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: h.best_finish === 1 ? "var(--bc-yellow)" : "var(--bc-text)" }}>
+                    {h.best_finish != null ? (h.best_finish === 1 ? "WIN" : `T${h.best_finish}`) : "—"}
+                  </td>
+                  <td style={{ ...td, textAlign: "right", fontVariantNumeric: "tabular-nums", color: "var(--bc-muted)" }}>{h.last_year ?? "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }
 
