@@ -1156,7 +1156,10 @@ def get_tournament() -> dict:
         except Exception:
             pass
 
-    # Defending champion — winner of same event code last year
+    # Defending champion — winner of same event code last year. DB first;
+    # the DB is local-only, so on Render the committed leaderboard CSVs
+    # (newest season first) answer instead — without this the card was
+    # silently blank in prod all season.
     event_code = tid[-3:]
     try:
         if _DB_AVAILABLE:
@@ -1171,10 +1174,26 @@ def get_tournament() -> dict:
                     champ_name, champ_tid = rows[0]
                     champ_year = champ_tid[1:5] if len(champ_tid) >= 5 else ""
                     if champ_tid != tid:  # don't show current year
-                        result["defending_champion"] = str(champ_name)
+                        result["defending_champion"] = _flip_to_first_last(str(champ_name))
                         result["defending_champion_year"] = champ_year
     except Exception:
         pass
+    if "defending_champion" not in result:
+        try:
+            for lb_path in sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv"), reverse=True):
+                if "euro" in lb_path.name:
+                    continue
+                lb = pd.read_csv(lb_path, usecols=["tournament_id", "player_name", "position"])
+                hit = lb[(lb["tournament_id"].astype(str).str.endswith(event_code))
+                         & (lb["tournament_id"].astype(str).str.upper() != tid)
+                         & (lb["position"].astype(str) == "1")]
+                if not hit.empty:
+                    champ_tid = str(hit.iloc[0]["tournament_id"])
+                    result["defending_champion"] = _flip_to_first_last(str(hit.iloc[0]["player_name"]))
+                    result["defending_champion_year"] = champ_tid[1:5]
+                    break
+        except Exception:
+            pass
 
     # Detect phase from live meta
     meta_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
