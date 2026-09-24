@@ -448,14 +448,23 @@ function TourPills({ tour, setTour }: {
   );
 }
 
-/** The DPWT week: event meta, weather at the course, live scores once
- *  play posts, and OUR euro model's full probability board — the same
- *  information story the PGA view tells, from euro-shaped sources. */
+/** The DPWT week — the SAME UI as the PGA view, euro data underneath:
+ *  GlanceCards, WeatherStrip, SubTabs, and the same PredictionsTable
+ *  (sorting, search, column toggles included). Tabs whose euro data
+ *  sources don't exist yet say so inside the same chrome. */
+type EuroTab = "field" | "course" | "teetimes";
+const EURO_TABS: { id: EuroTab; label: string }[] = [
+  { id: "field",    label: "Field"        },
+  { id: "teetimes", label: "Tee Times"    },
+  { id: "course",   label: "Course Guide" },
+];
+
 function EuroWeek() {
   const [eventName, setEventName] = useState("");
   const [rows, setRows] = useState<PlayerPrediction[] | null>(null);
   const [meta, setMeta] = useState<EuroWeekMeta | null>(null);
   const [live, setLive] = useState<EventRounds | null>(null);
+  const [tab, setTab] = useState<EuroTab>("field");
   const [src, setSrc] = useState("");
   const [err, setErr] = useState("");
 
@@ -477,18 +486,31 @@ function EuroWeek() {
     }).catch(() => { setErr("Could not load events."); setRows([]); });
   }, []);
 
-  const pct = (v: number | null | undefined, d = 1) =>
-    v != null ? `${(v * 100).toFixed(d)}%` : "—";
-
   if (rows === null) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
   if (rows.length === 0 && !meta) return <p style={{ color: "var(--bc-muted)" }}>{err}</p>;
 
   const money = (v: number) =>
     v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(1)}M` : `$${Math.round(v).toLocaleString()}`;
-  const glance: React.CSSProperties = { background: "var(--bc-card)", border: "1px solid var(--bc-line)",
-    borderRadius: 10, padding: "12px 16px", minWidth: 130 };
 
-  // Live scores: total to par across posted rounds, best first.
+  // Open-Meteo days dressed as the PGA WeatherStrip's shape — same
+  // component, so the two tours' forecasts can never look different.
+  const weatherDays = (meta?.weather ?? []).map(w => ({
+    day: new Date(w.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "short" }),
+    condition: w.precip_pct >= 50 ? "DAY_RAIN" : w.precip_pct >= 25 ? "DAY_PARTLY_CLOUDY" : "DAY_SUNNY",
+    wind_mph: String(Math.round(w.wind_mph)), wind_dir: "",
+    precip_pct: String(w.precip_pct), humidity: "",
+    high_f: String(Math.round(w.tmax)), low_f: String(Math.round(w.tmin)),
+  }));
+
+  // Euro rows through the PGA table: alias the sim/sort fields the
+  // component expects onto the probabilities we have.
+  const tableRows = rows.map(r => ({
+    ...r,
+    win_prob_sim: r.win_prob, top5_prob_sim: r.top5_prob,
+    top10_prob_sim: r.top10_prob, top20_prob_sim: r.top20_prob,
+    make_cut_prob_sim: r.cut_prob,
+  })) as PlayerPrediction[];
+
   const liveRows = live ? Object.values(live.players)
     .map(p => {
       const scores = Object.entries(p.rounds).sort(([a], [b]) => Number(a) - Number(b));
@@ -497,113 +519,68 @@ function EuroWeek() {
     .filter(p => p.scores.length > 0)
     .sort((a, b) => a.total - b.total).slice(0, 10) : [];
 
+  const emptyTab = (what: string, why: string) => (
+    <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",
+      borderRadius: 10, padding: 24, color: "var(--bc-muted)", fontSize: "0.88em", lineHeight: 1.6 }}>
+      <strong style={{ color: "var(--bc-text)" }}>{what}</strong> isn&apos;t available for
+      DP World Tour events yet — {why}
+    </div>
+  );
+
   return (
     <>
-    {meta && (
-      <>
-        <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
-          <div style={glance}><div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Course</div>
-            <div style={{ fontWeight: 800, marginTop: 2 }}>{meta.course}</div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.76em" }}>{meta.location}</div></div>
-          <div style={glance}><div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Dates</div>
-            <div style={{ fontWeight: 800, marginTop: 2 }}>{meta.start_date.slice(5)} → {meta.end_date.slice(5)}</div></div>
-          <div style={glance}><div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Field</div>
-            <div style={{ fontWeight: 800, marginTop: 2 }}>{meta.field_size || rows.length}</div></div>
+      {meta && (
+        <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+          <GlanceCard label="Course" value={meta.course} sub={meta.location} accent="var(--bc-yellow)" />
+          <GlanceCard label="Dates" value={`${meta.start_date.slice(5)} → ${meta.end_date.slice(5)}`} accent="var(--bc-yellow)" />
+          <GlanceCard label="Field Size" value={String(meta.field_size || rows.length)} accent="var(--bc-yellow)" />
           {meta.purse != null && (
-            <div style={glance}><div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Purse</div>
-              <div style={{ fontWeight: 800, marginTop: 2 }}>{money(meta.purse)}{meta.purse_estimated && <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em" }}> est.</span>}</div></div>
+            <GlanceCard label="Purse" value={money(meta.purse)}
+              sub={meta.purse_estimated ? "estimated" : undefined} accent="var(--bc-yellow)" />
           )}
+          <GlanceCard label="Model" value={src === "model" ? "Golf Edge euro" : "DataGolf"} accent="var(--bc-yellow)" />
         </div>
+      )}
 
-        {meta.weather.length > 0 && (
-          <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
-            {meta.weather.map(w => (
-              <div key={w.date} style={{ ...glance, minWidth: 118 }}>
-                <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                  {new Date(w.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "short" })} {w.date.slice(5)}
-                </div>
-                <div style={{ fontWeight: 800, marginTop: 2 }}>{Math.round(w.tmax)}° <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}>/ {Math.round(w.tmin)}°</span></div>
-                <div style={{ color: "var(--bc-muted)", fontSize: "0.76em" }}>{Math.round(w.wind_mph)} mph wind · {w.precip_pct}% rain</div>
-              </div>
-            ))}
+      {weatherDays.length > 0 && <WeatherStrip days={weatherDays} />}
+
+      {liveRows.length > 0 && (
+        <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",
+          borderRadius: 10, overflow: "hidden", marginBottom: 16 }}>
+          <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
+            {eventName} — live
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
+              {live!.rounds_available} round{live!.rounds_available === 1 ? "" : "s"} posted · top 10 to par
+            </span>
           </div>
-        )}
-      </>
-    )}
-
-    {liveRows.length > 0 && (
-      <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",
-        borderRadius: 10, overflow: "hidden", marginBottom: 14 }}>
-        <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
-          Live scores
-          <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
-            {live!.rounds_available} round{live!.rounds_available === 1 ? "" : "s"} posted · top 10 to par
-          </span>
-        </div>
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
-          <tbody>
-            {liveRows.map((p, i) => (
-              <tr key={i}>
-                <td style={{ padding: "6px 18px", fontWeight: 600, fontSize: "0.86em", borderBottom: "1px solid var(--bc-line)" }}>{p.name || "—"}</td>
-                <td style={{ padding: "6px 18px", textAlign: "right", fontSize: "0.84em", color: "var(--bc-muted)", borderBottom: "1px solid var(--bc-line)" }}>
-                  {p.scores.map(([r, v]) => `R${r} ${v > 0 ? "+" + v : v === 0 ? "E" : v}`).join(" · ")}
-                </td>
-                <td style={{ padding: "6px 18px", textAlign: "right", fontWeight: 800, fontVariantNumeric: "tabular-nums", borderBottom: "1px solid var(--bc-line)",
-                  color: p.total < 0 ? "var(--bc-green)" : p.total > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
-                  {p.total > 0 ? "+" + p.total : p.total === 0 ? "E" : p.total}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    )}
-
-    {rows.length === 0 && <p style={{ color: "var(--bc-muted)" }}>{err}</p>}
-    {rows.length > 0 && (
-    <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",
-      borderRadius: 10, overflow: "hidden" }}>
-      <div style={{ padding: "16px 18px 6px", fontWeight: 800, fontSize: "1.05em" }}>
-        {eventName}
-        <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 10 }}>
-          {rows.length} players · {src === "model" ? "our euro model" : "DataGolf euro model"}
-        </span>
-      </div>
-      <div style={{ maxHeight: 560, overflowY: "auto" }}>
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
-          <thead><tr>
-            {["Player", "Win", "Top 5", "Top 10", "Top 20", "Makes cut"].map((hcol, i) => (
-              <th key={hcol} style={{ padding: "8px 14px", fontSize: "0.7em", color: "var(--bc-muted)",
-                textTransform: "uppercase", letterSpacing: "0.04em", fontWeight: 600,
-                textAlign: i === 0 ? "left" : "right",
-                borderBottom: "1px solid var(--bc-line)", position: "sticky", top: 0,
-                background: "var(--bc-card)" }}>{hcol}</th>
-            ))}
-          </tr></thead>
-          <tbody>
-            {rows.map(r => (
-              <tr key={r.player_name}>
-                <td style={{ padding: "7px 14px", fontWeight: 600, fontSize: "0.86em",
-                  borderBottom: "1px solid var(--bc-line)" }}>
-                  <Link href={`/players?player=${encodeURIComponent(r.player_name)}`}
-                    style={{ color: "inherit", textDecoration: "none" }}>
-                    {r.player_name}
-                  </Link>
-                </td>
-                {[r.win_prob, r.top5_prob, r.top10_prob, r.top20_prob, r.cut_prob].map((v, i) => (
-                  <td key={i} style={{ padding: "7px 14px", textAlign: "right", fontSize: "0.84em",
-                    fontVariantNumeric: "tabular-nums", borderBottom: "1px solid var(--bc-line)",
-                    color: i === 0 ? "var(--bc-text)" : "var(--bc-muted)" }}>
-                    {pct(v, i === 0 ? 1 : 0)}
+          <table style={{ borderCollapse: "collapse", width: "100%" }}>
+            <tbody>
+              {liveRows.map((p, i) => (
+                <tr key={i}>
+                  <td style={{ padding: "6px 18px", fontWeight: 600, fontSize: "0.86em", borderBottom: "1px solid var(--bc-line)" }}>{p.name}</td>
+                  <td style={{ padding: "6px 18px", textAlign: "right", fontSize: "0.84em", color: "var(--bc-muted)", borderBottom: "1px solid var(--bc-line)" }}>
+                    {p.scores.map(([r, v]) => `R${r} ${v > 0 ? "+" + v : v === 0 ? "E" : v}`).join(" · ")}
                   </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-    )}
+                  <td style={{ padding: "6px 18px", textAlign: "right", fontWeight: 800, fontVariantNumeric: "tabular-nums", borderBottom: "1px solid var(--bc-line)",
+                    color: p.total < 0 ? "var(--bc-green)" : p.total > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
+                    {p.total > 0 ? "+" + p.total : p.total === 0 ? "E" : p.total}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <SubTabs tabs={EURO_TABS} active={tab} onChange={setTab} />
+
+      {tab === "field" && (rows.length > 0
+        ? <PredictionsTable players={tableRows} />
+        : <p style={{ color: "var(--bc-muted)" }}>{err}</p>)}
+      {tab === "teetimes" && emptyTab("Tee times",
+        "the DP World Tour feed publishes them closer to each round; they land here when a source exists.")}
+      {tab === "course" && emptyTab("The course guide",
+        "hole-by-hole data has no DPWT source yet. The essentials live in the cards above.")}
     </>
   );
 }

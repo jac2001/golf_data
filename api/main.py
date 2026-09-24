@@ -4110,6 +4110,7 @@ def euro_week(tournament_id: str) -> dict:
 
     # Weather: geocode the schedule's location, forecast the event days.
     weather = []
+    weather_error = ""
     cache_path = DATA_DIR / "weather" / f"{tid}_openmeteo.json"
     try:
         if cache_path.exists() and (time.time() - cache_path.stat().st_mtime) < 12 * 3600:
@@ -4137,12 +4138,14 @@ def euro_week(tournament_id: str) -> dict:
                 } for i in range(len(d.get("time", [])))]
                 cache_path.parent.mkdir(parents=True, exist_ok=True)
                 json.dump(weather, open(cache_path, "w"))
-    except Exception:
+    except Exception as e:
         weather = []
+        weather_error = f"{type(e).__name__}: {str(e)[:120]}"
 
     return {
         "tournament_id": tid,
         "name": str(r["tournament_name"]),
+        "weather_error": weather_error,
         "start_date": str(r["start_date"]), "end_date": str(r["end_date"]),
         "location": str(r.get("location", "") or ""),
         "course": str(r.get("course", "") or ""),
