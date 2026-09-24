@@ -4084,6 +4084,75 @@ def league_season_wrap() -> dict:
     }
 
 
+@app.get("/api/euro/week")
+def euro_week(tournament_id: str) -> dict:
+    """This Week parity for DPWT events: event meta from the euro
+    schedule (location, course, purse), field size, and a geocoded
+    Open-Meteo forecast for the event days. Weather caches per event
+    for 12h; geocode failures degrade to no-weather, never an error."""
+    tid = tournament_id.strip().upper()
+    sched_path = DATA_DIR / "raw" / "schedule_euro_2026.csv"
+    if not sched_path.exists():
+        raise HTTPException(status_code=404, detail="No euro schedule")
+    sched = pd.read_csv(sched_path)
+    row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+    if row.empty:
+        raise HTTPException(status_code=404, detail=f"{tid} not in euro schedule")
+    r = row.iloc[0]
+
+    field_path = DATA_DIR / "fields" / f"field_{tid}.csv"
+    field_size = 0
+    if field_path.exists():
+        try:
+            field_size = len(pd.read_csv(field_path))
+        except Exception:
+            pass
+
+    # Weather: geocode the schedule's location, forecast the event days.
+    weather = []
+    cache_path = DATA_DIR / "weather" / f"{tid}_openmeteo.json"
+    try:
+        if cache_path.exists() and (time.time() - cache_path.stat().st_mtime) < 12 * 3600:
+            weather = json.load(open(cache_path))
+        else:
+            import requests as _rq
+            loc = str(r.get("location", "")).split(",")[0].strip()
+            geo = _rq.get("https://geocoding-api.open-meteo.com/v1/search",
+                          params={"name": loc, "count": 1}, timeout=10).json()
+            hits = geo.get("results") or []
+            if hits:
+                lat, lon = hits[0]["latitude"], hits[0]["longitude"]
+                fc = _rq.get("https://api.open-meteo.com/v1/forecast", params={
+                    "latitude": lat, "longitude": lon,
+                    "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max",
+                    "temperature_unit": "fahrenheit", "wind_speed_unit": "mph",
+                    "start_date": str(r["start_date"]), "end_date": str(r["end_date"]),
+                }, timeout=10).json()
+                d = fc.get("daily", {})
+                weather = [{
+                    "date": d["time"][i], "tmax": d["temperature_2m_max"][i],
+                    "tmin": d["temperature_2m_min"][i],
+                    "precip_pct": d["precipitation_probability_max"][i],
+                    "wind_mph": d["wind_speed_10m_max"][i],
+                } for i in range(len(d.get("time", [])))]
+                cache_path.parent.mkdir(parents=True, exist_ok=True)
+                json.dump(weather, open(cache_path, "w"))
+    except Exception:
+        weather = []
+
+    return {
+        "tournament_id": tid,
+        "name": str(r["tournament_name"]),
+        "start_date": str(r["start_date"]), "end_date": str(r["end_date"]),
+        "location": str(r.get("location", "") or ""),
+        "course": str(r.get("course", "") or ""),
+        "purse": float(r["purse"]) if pd.notna(r.get("purse")) else None,
+        "purse_estimated": str(r.get("purse_source", "")) == "estimate",
+        "field_size": field_size,
+        "weather": weather,
+    }
+
+
 @app.get("/api/colleges/field")
 def colleges_field(tournament_id: str) -> dict:
     """The College Game's board: which schools have alumni in this event's

@@ -20,7 +20,7 @@ import {
   getWeather, getIntel, refreshIntel, generateLineup,
   Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
   ModelCompPlayer, WeatherResponse, CourseFitResponse,
-  getCourseFit, getOpenEvents, PlayerPrediction, IntelResponse,
+  getCourseFit, getOpenEvents, getEuroWeek, getEventRounds, EuroWeekMeta, EventRounds, PlayerPrediction, IntelResponse,
 } from "@/lib/api";
 import PredictionsTable from "@/components/PredictionsTable";
 import LineupCards from "@/components/LineupCards";
@@ -448,11 +448,15 @@ function TourPills({ tour, setTour }: {
   );
 }
 
-/** The DPWT week at a glance: the current euro event's full probability
- *  board from DataGolf's model (ours joins after the January retrain). */
+/** The DPWT week: event meta, weather at the course, live scores once
+ *  play posts, and OUR euro model's full probability board — the same
+ *  information story the PGA view tells, from euro-shaped sources. */
 function EuroWeek() {
   const [eventName, setEventName] = useState("");
   const [rows, setRows] = useState<PlayerPrediction[] | null>(null);
+  const [meta, setMeta] = useState<EuroWeekMeta | null>(null);
+  const [live, setLive] = useState<EventRounds | null>(null);
+  const [src, setSrc] = useState("");
   const [err, setErr] = useState("");
 
   useEffect(() => {
@@ -461,10 +465,13 @@ function EuroWeek() {
         .find(e => !e.finished) ?? (d.events ?? []).filter(e => e.tour === "euro")[0];
       if (!ev) { setErr("No DP World Tour event this week."); setRows([]); return; }
       setEventName(ev.name);
+      getEuroWeek(ev.tournament_id).then(setMeta).catch(() => {});
+      getEventRounds(ev.tournament_id)
+        .then(r => { if (r.rounds_available > 0) setLive(r); }).catch(() => {});
       getPredictions(200, ev.tournament_id)
-        .then(p => setRows(p.players ?? []))
+        .then(p => { setRows(p.players ?? []); setSrc(p.source ?? "model"); })
         .catch(() => {
-          setErr("DP World Tour model numbers are paused while we sort out data licensing — fields and Friends Game picks still work.");
+          setErr("Model numbers for this event haven't posted yet — fields and Friends Game picks still work.");
           setRows([]);
         });
     }).catch(() => { setErr("Could not load events."); setRows([]); });
@@ -474,15 +481,92 @@ function EuroWeek() {
     v != null ? `${(v * 100).toFixed(d)}%` : "—";
 
   if (rows === null) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
-  if (rows.length === 0) return <p style={{ color: "var(--bc-muted)" }}>{err}</p>;
+  if (rows.length === 0 && !meta) return <p style={{ color: "var(--bc-muted)" }}>{err}</p>;
+
+  const money = (v: number) =>
+    v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(1)}M` : `$${Math.round(v).toLocaleString()}`;
+  const glance: React.CSSProperties = { background: "var(--bc-card)", border: "1px solid var(--bc-line)",
+    borderRadius: 10, padding: "12px 16px", minWidth: 130 };
+
+  // Live scores: total to par across posted rounds, best first.
+  const liveRows = live ? Object.values(live.players)
+    .map(p => {
+      const scores = Object.entries(p.rounds).sort(([a], [b]) => Number(a) - Number(b));
+      return { name: p.player_name, scores, total: scores.reduce((s, [, v]) => s + v, 0) };
+    })
+    .filter(p => p.scores.length > 0)
+    .sort((a, b) => a.total - b.total).slice(0, 10) : [];
 
   return (
+    <>
+    {meta && (
+      <>
+        <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+          <div style={glance}><div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Course</div>
+            <div style={{ fontWeight: 800, marginTop: 2 }}>{meta.course}</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "0.76em" }}>{meta.location}</div></div>
+          <div style={glance}><div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Dates</div>
+            <div style={{ fontWeight: 800, marginTop: 2 }}>{meta.start_date.slice(5)} → {meta.end_date.slice(5)}</div></div>
+          <div style={glance}><div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Field</div>
+            <div style={{ fontWeight: 800, marginTop: 2 }}>{meta.field_size || rows.length}</div></div>
+          {meta.purse != null && (
+            <div style={glance}><div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Purse</div>
+              <div style={{ fontWeight: 800, marginTop: 2 }}>{money(meta.purse)}{meta.purse_estimated && <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em" }}> est.</span>}</div></div>
+          )}
+        </div>
+
+        {meta.weather.length > 0 && (
+          <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+            {meta.weather.map(w => (
+              <div key={w.date} style={{ ...glance, minWidth: 118 }}>
+                <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  {new Date(w.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "short" })} {w.date.slice(5)}
+                </div>
+                <div style={{ fontWeight: 800, marginTop: 2 }}>{Math.round(w.tmax)}° <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}>/ {Math.round(w.tmin)}°</span></div>
+                <div style={{ color: "var(--bc-muted)", fontSize: "0.76em" }}>{Math.round(w.wind_mph)} mph wind · {w.precip_pct}% rain</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </>
+    )}
+
+    {liveRows.length > 0 && (
+      <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",
+        borderRadius: 10, overflow: "hidden", marginBottom: 14 }}>
+        <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
+          Live scores
+          <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
+            {live!.rounds_available} round{live!.rounds_available === 1 ? "" : "s"} posted · top 10 to par
+          </span>
+        </div>
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <tbody>
+            {liveRows.map((p, i) => (
+              <tr key={i}>
+                <td style={{ padding: "6px 18px", fontWeight: 600, fontSize: "0.86em", borderBottom: "1px solid var(--bc-line)" }}>{p.name || "—"}</td>
+                <td style={{ padding: "6px 18px", textAlign: "right", fontSize: "0.84em", color: "var(--bc-muted)", borderBottom: "1px solid var(--bc-line)" }}>
+                  {p.scores.map(([r, v]) => `R${r} ${v > 0 ? "+" + v : v === 0 ? "E" : v}`).join(" · ")}
+                </td>
+                <td style={{ padding: "6px 18px", textAlign: "right", fontWeight: 800, fontVariantNumeric: "tabular-nums", borderBottom: "1px solid var(--bc-line)",
+                  color: p.total < 0 ? "var(--bc-green)" : p.total > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
+                  {p.total > 0 ? "+" + p.total : p.total === 0 ? "E" : p.total}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+
+    {rows.length === 0 && <p style={{ color: "var(--bc-muted)" }}>{err}</p>}
+    {rows.length > 0 && (
     <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",
       borderRadius: 10, overflow: "hidden" }}>
       <div style={{ padding: "16px 18px 6px", fontWeight: 800, fontSize: "1.05em" }}>
         {eventName}
         <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 10 }}>
-          {rows.length} players · DataGolf euro model
+          {rows.length} players · {src === "model" ? "our euro model" : "DataGolf euro model"}
         </span>
       </div>
       <div style={{ maxHeight: 560, overflowY: "auto" }}>
@@ -519,6 +603,8 @@ function EuroWeek() {
         </table>
       </div>
     </div>
+    )}
+    </>
   );
 }
 

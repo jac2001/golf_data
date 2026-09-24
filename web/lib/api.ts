@@ -315,6 +315,30 @@ export async function getEventField(tournamentId: string): Promise<{ players: st
   return res.json();
 }
 
+export type EuroWeekMeta = {
+  tournament_id: string; name: string; start_date: string; end_date: string;
+  location: string; course: string; purse: number | null; purse_estimated: boolean;
+  field_size: number;
+  weather: { date: string; tmax: number; tmin: number; precip_pct: number; wind_mph: number }[];
+};
+
+export async function getEuroWeek(tournamentId: string): Promise<EuroWeekMeta> {
+  const res = await apiFetch(`${API_BASE}/api/euro/week?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load euro week");
+  return res.json();
+}
+
+export type EventRounds = {
+  tournament_id: string; rounds_available: number;
+  players: Record<string, { player_name: string; rounds: Record<string, number> }>;
+};
+
+export async function getEventRounds(tournamentId: string): Promise<EventRounds> {
+  const res = await apiFetch(`${API_BASE}/api/events/rounds?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load rounds");
+  return res.json();
+}
+
 export type EarningsTable = {
   tournament_id: string; settled: boolean; earnings_estimated?: boolean;
   players: Record<string, { player_name: string; earnings: number; position: string }>;
