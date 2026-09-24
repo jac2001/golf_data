@@ -319,6 +319,7 @@ export type EuroWeekMeta = {
   tournament_id: string; name: string; start_date: string; end_date: string;
   location: string; course: string; purse: number | null; purse_estimated: boolean;
   field_size: number;
+  defending_champion: string | null; defending_champion_year: number | null;
   weather: { date: string; tmax: number; tmin: number; precip_pct: number; wind_mph: number }[];
 };
 
@@ -1845,7 +1846,7 @@ export interface HomeData {
   hero: { tid: string; name: string; start_date: string; end_date: string;
           course: string; location: string; type: string; is_live: boolean } | null;
   season_start: string | null;
-  board: { player: string; win_prob: number; top10_prob: number | null; why: string }[];
+  board: { player: string; win_prob: number; top10_prob: number | null; why: string; finish?: string | null }[];
   board_event: string | null;
   board_is_hero: boolean;
   storylines: { tag: string; color: string; headline: string; sub: string }[];

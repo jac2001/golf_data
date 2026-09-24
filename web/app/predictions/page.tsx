@@ -192,7 +192,7 @@ export default function PredictionsPage() {
     return (
       <div className="page-wrap">
         <PageHead
-          kicker="DP World Tour · numbers by DataGolf's euro model until the January retrain"
+          kicker="DP World Tour · Golf Edge euro model — form-based, market-benchmarked"
           title="This Week"
         />
         <TourPills tour={tour} setTour={setTour} />
@@ -545,6 +545,11 @@ function EuroWeek() {
           {meta.purse != null && (
             <GlanceCard label="Purse" value={money(meta.purse)}
               sub={meta.purse_estimated ? "estimated" : undefined} accent="var(--bc-yellow)" />
+          )}
+          {meta.defending_champion && (
+            <GlanceCard label="Defending Champ" value={meta.defending_champion}
+              sub={meta.defending_champion_year ? `${meta.defending_champion_year} winner` : undefined}
+              accent="var(--bc-orange)" />
           )}
           <GlanceCard label="Model" value={src === "model" ? "Golf Edge euro" : "DataGolf"} accent="var(--bc-yellow)" />
         </div>

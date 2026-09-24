@@ -4116,6 +4116,23 @@ def euro_week(tournament_id: str) -> dict:
         except Exception:
             pass
 
+    # Defending champion follows the EVENT, not the course (the 2025
+    # Open de France moved venues — its champion is Michael Kim, not the
+    # last Golf National winner). Exact normalized event-name match; a
+    # sponsor rename breaks lineage and honestly shows no champion.
+    defending_champion, defending_year = None, None
+    ev_path = DATA_DIR / "euro_course_history" / "event_years.csv"
+    if ev_path.exists():
+        try:
+            ev = pd.read_csv(ev_path)
+            mine = ev[(ev["event_key"] == str(r["tournament_name"]).strip().lower())
+                      & ev["champion"].notna()].sort_values("calendar_year", ascending=False)
+            if not mine.empty:
+                defending_champion = _flip_to_first_last(str(mine.iloc[0]["champion"]))
+                defending_year = int(mine.iloc[0]["calendar_year"])
+        except Exception:
+            pass
+
     # Weather: geocode the schedule's location, forecast the event days.
     weather = []
     weather_error = ""
@@ -4165,6 +4182,8 @@ def euro_week(tournament_id: str) -> dict:
         "purse": float(r["purse"]) if pd.notna(r.get("purse")) else None,
         "purse_estimated": str(r.get("purse_source", "")) == "estimate",
         "field_size": field_size,
+        "defending_champion": defending_champion,
+        "defending_champion_year": defending_year,
         "weather": weather,
     }
 
@@ -7715,6 +7734,29 @@ def get_home(tour: str = "pga") -> dict:
             board_event = str(m["tournament_name"].iloc[0]) if len(m) else board_tid
         top = df.nlargest(3, "win_prob")
 
+        # Between events the board is a RECAP, not a forecast: pre-event
+        # win chances styled like live picks read as this week's board.
+        # Join the settled leaderboard so each pick carries its finish.
+        results: dict[str, str] = {}
+        if not board_is_hero and len(board_tid) >= 5:
+            lb_path = DATA_DIR / "historical" / f"leaderboards_{board_tid[1:5]}.csv"
+            if lb_path.exists():
+                try:
+                    lb = pd.read_csv(lb_path)
+                    lb = lb[lb["tournament_id"].astype(str).str.upper() == board_tid.upper()]
+                    results = dict(zip(lb["player_name"].astype(str),
+                                       lb["position"].astype(str)))
+                except Exception:
+                    results = {}
+
+        def _finish(name: str) -> str | None:
+            if not results:
+                return None  # not settled yet — no finish column at all
+            pos = results.get(name)
+            if pos is None:
+                return "MC"  # settled leaderboards carry finishers only
+            return "WON" if pos in ("1", "T1") else pos
+
         def _why(r) -> str:
             bits = []
             if pd.notna(r.get("recent_sg_trend")) and r["recent_sg_trend"] > 0.3:
@@ -7734,23 +7776,47 @@ def get_home(tour: str = "pga") -> dict:
                 "top10_prob": round(float(r.get("top10_prob", float("nan"))), 4)
                               if pd.notna(r.get("top10_prob")) else None,
                 "why": _why(r),
+                "finish": _finish(str(r["player_name"])),
             })
 
-        # Storylines from the same frame (top-40 by win prob)
+        # Storylines from the same frame (top-40 by win prob). Only when
+        # the board IS this week's event — present-tense field stories
+        # ("hottest player in the field") mislead once the event is over.
         pool = df.nlargest(min(40, len(df)), "win_prob")
         stories = []
-        if "recent_sg_trend" in pool and pool["recent_sg_trend"].notna().any():
+        if not board_is_hero:
+            winner = next((n for n, p in results.items() if p in ("1", "T1")), None)
+            if winner:
+                wrow = df[df["player_name"].astype(str) == winner]
+                first = winner.split(",")[-1].strip() + " " + winner.split(",")[0].strip() \
+                    if "," in winner else winner
+                if len(wrow):
+                    wp = float(wrow["win_prob"].iloc[0])
+                    wrank = int((df["win_prob"] > wp).sum()) + 1
+                    if wrank == 1:
+                        stories.append({"tag": "Model hit", "color": "green",
+                                        "headline": f"{first} won — the model's No. 1 pick",
+                                        "sub": f"Pre-tournament favorite at {wp*100:.1f}% — the field's best number."})
+                    else:
+                        stories.append({"tag": "Last week", "color": "yellow",
+                                        "headline": f"{first} won the {board_event}",
+                                        "sub": f"The model had him No. {wrank} pre-tournament at {wp*100:.1f}% to win."})
+                else:
+                    stories.append({"tag": "Last week", "color": "yellow",
+                                    "headline": f"{first} won the {board_event}",
+                                    "sub": "Outside the model's pre-tournament board."})
+        elif "recent_sg_trend" in pool and pool["recent_sg_trend"].notna().any():
             h = pool.loc[pool["recent_sg_trend"].idxmax()]
             stories.append({"tag": "In form", "color": "yellow",
                             "headline": f"{h['player_name'].split(',')[0].strip()} is the field's hottest player",
                             "sub": "Biggest strokes-gained riser over recent starts."})
-        if "course_sg_total_weighted" in pool and pool["course_sg_total_weighted"].notna().any():
+        if board_is_hero and "course_sg_total_weighted" in pool and pool["course_sg_total_weighted"].notna().any():
             h = pool.loc[pool["course_sg_total_weighted"].idxmax()]
             stories.append({"tag": "Course DNA", "color": "green",
                             "headline": f"{h['player_name'].split(',')[0].strip()} owns this course",
                             "sub": "Best course history in the field, weighted for recency."})
         val_col = next((c for c in ("dk_fair_prob", "dk_implied_prob") if c in pool.columns), None)
-        if val_col and pool[val_col].notna().any():
+        if board_is_hero and val_col and pool[val_col].notna().any():
             vp = pool.dropna(subset=[val_col]).copy()
             vp["_gap"] = vp["win_prob"] - vp[val_col]
             h = vp.loc[vp["_gap"].idxmax()]

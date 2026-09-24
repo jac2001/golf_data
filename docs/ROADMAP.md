@@ -77,6 +77,15 @@ needed for it.
 - **January retrain of the PGA model** (2025-26 data in, Tuesday trio
   wiring, calibration drift check) — this one genuinely waits for the
   season boundary.
+- **January euro retrain: add course fit** (added 2026-09-24). The euro
+  model is pure form; `data/euro_course_history/player_course.csv`
+  already holds per-player course records (avg_vs_par, avg_sg, rounds),
+  and the France course-horses table (Yannik Paul −2.67, Bradbury,
+  Winther) is exactly who a course-fit feature would boost. Build it as
+  a training-table feature keyed by normalized course name with the same
+  leakage wall (prior editions only), then retrain and re-benchmark vs
+  the market. Also consider a world-rank/class prior — the other gap the
+  Gerard-vs-Åberg week exposed.
 
 ## The two big builds (moved to Next, 2026-09-23)
 

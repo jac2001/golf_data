@@ -8,6 +8,13 @@ key that survives):
 
   data/euro_course_history/course_years.csv   one row per course-edition
   data/euro_course_history/player_course.csv  one row per (player, course)
+  data/euro_course_history/event_years.csv    one row per event-edition
+
+event_years is keyed by NORMALIZED EVENT NAME (event_id is year-prefixed
+and the trailing number moves yearly — E2026137 was 2025131 last year).
+It exists for event lineage: the defending champion follows the EVENT,
+not the course — the 2025 Open de France moved to Saint-Nom-la-Bretèche,
+so its champion is Michael Kim, not the last Golf National winner.
 
 Course history moves once a year per course, so a local run after
 settling events keeps these fresh; the API only ever reads them.
@@ -68,8 +75,22 @@ def main() -> None:
     """).df()
     players.to_csv(OUT_DIR / "player_course.csv", index=False)
 
+    events = con.execute("""
+        select trim(lower(event_name)) as event_key,
+               any_value(event_name) as event_name,
+               calendar_year,
+               any_value(course_name) as course_name,
+               any_value(case when fin_text = '1' then player_name end) as champion
+        from euro_rounds
+        where event_name is not null and event_name != ''
+        group by event_key, calendar_year
+        order by event_key, calendar_year desc
+    """).df()
+    events.to_csv(OUT_DIR / "event_years.csv", index=False)
+
     print(f"{years['course_key'].nunique()} courses, {len(years)} editions -> course_years.csv")
     print(f"{len(players)} (player, course) rows -> player_course.csv")
+    print(f"{events['event_key'].nunique()} events, {len(events)} editions -> event_years.csv")
 
 
 if __name__ == "__main__":

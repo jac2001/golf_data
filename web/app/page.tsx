@@ -110,7 +110,9 @@ export default function Home() {
             {h?.is_live
               ? "Rounds in progress — live board, model vs reality, and your lineup tracker are running."
               : h
-                ? `The ${h.type.toLowerCase() === "signature" ? "season's first signature event" : "season opener"} at ${h.course || h.location}. Predictions go live the Tuesday of tournament week.`
+                ? h.start_date === data.season_start
+                  ? `The season opener at ${h.course || h.location}. Predictions go live the Tuesday of tournament week.`
+                  : `The tour heads to ${h.course || h.location} next. Predictions go live the Tuesday of tournament week.`
                 : "The model is in the offseason lab."}
           </div>
           <div style={{ display: "flex", gap: 14, alignItems: "center", marginTop: 8 }}>
@@ -140,10 +142,22 @@ export default function Home() {
                   <div style={{ fontWeight: 700, fontSize: "1em" }}>{b.player}</div>
                   <div style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>{b.why}</div>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontWeight: 900, fontSize: "1.15em" }}>{pct(b.win_prob)}</div>
-                  <div style={{ fontSize: "0.72em", color: "var(--bc-muted)" }}>win chance</div>
-                </div>
+                {/* Finished event: the pick's actual result leads, the
+                    pre-event number demotes to context. */}
+                {b.finish ? (
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontWeight: 900, fontSize: "1.15em",
+                      color: b.finish === "WON" ? "var(--bc-yellow)" : b.finish === "MC" ? "var(--bc-muted)" : "var(--bc-text)" }}>
+                      {b.finish}
+                    </div>
+                    <div style={{ fontSize: "0.72em", color: "var(--bc-muted)" }}>picked at {pct(b.win_prob)}</div>
+                  </div>
+                ) : (
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontWeight: 900, fontSize: "1.15em" }}>{pct(b.win_prob)}</div>
+                    <div style={{ fontSize: "0.72em", color: "var(--bc-muted)" }}>win chance</div>
+                  </div>
+                )}
               </div>
             ))}
             {data.board.length === 0 && (
