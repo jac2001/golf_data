@@ -340,6 +340,41 @@ return means some earlier run already claimed the send. Claim-then-act turns
 
 ---
 
+## Lesson 11 — Field Arithmetic (per-player models vs the event's identities)
+
+**The bug that taught it:** the euro model's first served field summed
+its win probabilities to **1.253** — a 25% overbook. Every individual
+number was properly calibrated; jointly they described a tournament
+with 1.25 winners.
+
+**Why calibration can't see it:** isotonic calibration teaches each
+player-level classifier the POPULATION base rate ("of player-weeks
+like this, X% won"). It knows nothing about which players share a
+field. But a field has hard identities — exactly 1 winner, exactly 5
+top-5s, exactly 10 top-10s — and independent binaries have no
+mechanism to respect them. A strong field overbooks; a weak field
+underbooks.
+
+**The fix:** rank-preserving normalization at serve time — scale each
+cumulative column to its identity (win → sums to 1, top-N → sums to
+N). `made_cut` deliberately stays raw: ties move the cut line, so
+there is no fixed count to normalize to — know which columns HAVE an
+identity before enforcing one.
+
+**The rhyme:** this is Lesson 7's clamp one level up. There:
+pointwise-calibrated markets crossed the ladder (top5 < win). Here:
+pointwise-calibrated players broke the field's arithmetic. Same law —
+**individually optimal estimates don't automatically satisfy joint
+constraints; enforce the constraint explicitly where it lives.**
+
+**Explain-back prompts:**
+- Why does a strong field overbook and a weak field underbook, given
+  every player's number is individually calibrated?
+- The PGA pipeline normalizes too, buried in post-processing. What's
+  the argument for doing it at SERVE time instead of TRAIN time?
+
+---
+
 ## The Instincts (cross-cutting — these impress most)
 
 - **Audit numbers that are too good.** Every flattering anomaly we checked was
@@ -370,6 +405,22 @@ return means some earlier run already claimed the send. Claim-then-act turns
 - **Silent failures wear green checkmarks.** Pipelines that exit 0 after
   failing, `append_log` that never wrote, a WD blocking settlement forever.
   Assert on status; grep for the call you meant to change; verify the artifact.
+- **Anchor every clock to the moment of decision.** Three instances, one
+  disease: a 365-day form window anchored to the player's own last round
+  (couldn't see layoffs), CI freshness by file mtime (checkout resets it),
+  and game locks at midnight UTC (PGA picks quietly closed at 7pm ET).
+  Time anchored to the data's own extent, the machine's clock, or the
+  wrong timezone always LOOKS right on the happy path.
+- **Designs fossilize around cardinality assumptions.** model-sync fetched
+  predictions ONCE because "only one event has numbers" was true the day
+  it was written — the euro model's debut broke it precisely where the
+  one became many. When a count assumption (one tournament, one tour, one
+  user) quietly underpins a design, it fails on the day of success.
+- **Integrity outranks participation.** The model missed France's weekly
+  lock by 20 minutes of deploy latency; we did NOT backfill its picks,
+  though the numbers were public pre-lock. Nobody picks after tee-off —
+  not even the house's own model, not even sympathetically late — because
+  one exception makes every board's reveal-at-lock promise negotiable.
 - **The optimizer ladder** (2026): static plan $19.2M < rolling replay $27.0M
   < me $37.9M < hindsight-perfect $111M. Live information is worth +34%;
   humans still beat the machine (flat future EV can't price option value —
