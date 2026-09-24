@@ -30,7 +30,7 @@ type SortCol = "world_rank" | "win_prob_sim" | "win_prob" | "top10_prob_sim" | "
 // Every column that can be shown/hidden, sortable or not (DataGolf-style
 // "add columns" picker). `default: true` = visible out of the box; the rest
 // are opt-in, since the unfiltered table was too dense to scan at a glance.
-type ColKey = "win" | "top10" | "cut" | "owgr" | "sg" | "form" | "edge" | "odds" | "move" | "ev" | "uses" | "pick";
+type ColKey = "win" | "top10" | "cut" | "owgr" | "sg" | "form" | "edge" | "odds" | "move" | "ev";
 
 // Maps each sortable column to a label, sort direction, and the ColKey that
 // controls its visibility in the picker.
@@ -47,8 +47,6 @@ const TOGGLE_COLS: { key: ColKey; label: string; default: boolean }[] = [
   { key: "win",   label: "Win chance",     default: true  },
   { key: "top10", label: "Top-10 chance",  default: true  },
   { key: "odds",  label: "Odds",     default: true  },
-  { key: "uses",  label: "Uses",     default: true  },
-  { key: "pick",  label: "Pick",     default: true  },
   { key: "cut",   label: "Makes cut",     default: false },
   { key: "owgr",  label: "World rank",     default: false },
   { key: "sg",    label: "Strokes gained", default: false },
@@ -246,13 +244,10 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
               {visibleCols.has("odds") && <th style={{ ...th, textAlign: "center" }}>Odds</th>}
               {visibleCols.has("move") && <th style={{ ...th, textAlign: "center" }}>Move</th>}
               {visibleCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "var(--bc-yellow)" }}>EV</th>}
-              {visibleCols.has("uses") && <th style={{ ...th, textAlign: "center" }}>Uses</th>}
-              {visibleCols.has("pick") && <th style={{ ...th, textAlign: "center" }}>Pick</th>}
             </tr>
           </thead>
           <tbody>
             {sorted.map((p, i) => { // eslint-disable-line
-              const isUse = p.badge === "USE";
               const bg = i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)";
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid var(--bc-card)", background: bg,
@@ -463,34 +458,6 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   </td>
                   )}
 
-                  {/* Uses remaining — pip dots */}
-                  {visibleCols.has("uses") && (
-                  <td style={{ ...td, textAlign: "center" }}>
-                    <div style={{ display: "flex", gap: 3, justifyContent: "center" }}>
-                      {[0,1,2].map(idx => (
-                        <div key={idx} style={{
-                          width: 7, height: 7, borderRadius: "50%",
-                          background: idx < (p.uses_remaining ?? 3) ? "var(--bc-green)" : "var(--bc-card)",
-                        }} />
-                      ))}
-                    </div>
-                  </td>
-                  )}
-
-                  {/* Badge: USE / SAVE / MAXED */}
-                  {visibleCols.has("pick") && (
-                  <td style={{ ...td, textAlign: "center" }}>
-                    {p.badge === "USE" && (
-                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-green)", background: "var(--bc-card)", padding: "2px 6px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)" }}>USE</span>
-                    )}
-                    {p.badge === "SAVE" && (
-                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-orange)", background: "#2a1f0a", padding: "2px 6px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-orange) 27%, transparent)" }}>SAVE</span>
-                    )}
-                    {p.badge === "MAXED" && (
-                      <span style={{ fontSize: "0.62em", fontWeight: 800, color: "var(--bc-muted)", background: "var(--bc-panel)", padding: "2px 6px", borderRadius: 3, border: "1px solid var(--bc-line)" }}>MAXED</span>
-                    )}
-                  </td>
-                  )}
                 </tr>
               );
             })}

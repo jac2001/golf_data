@@ -60,13 +60,6 @@ function shiftColor(v: number | null): string {
   return "var(--bc-muted)";
 }
 
-function usesColor(n: number | null): string {
-  if (n == null) return "var(--bc-muted)";
-  if (n >= 2) return "var(--bc-green)";
-  if (n === 1) return "var(--bc-yellow)";
-  return "var(--bc-red)";
-}
-
 function fmtAdj(v: number | null): string {
   if (v == null) return "—";
   return (v >= 0 ? "+" : "") + v.toFixed(2);
@@ -265,16 +258,6 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
         <td style={{ ...cell, minWidth: 170 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <span style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.88em" }}>{name}</span>
-            {p.uses_remaining != null && (
-              <span style={{
-                fontSize: "0.68em", fontWeight: 700,
-                color: usesColor(p.uses_remaining),
-                background: "#0a1520", border: `1px solid ${usesColor(p.uses_remaining)}40`,
-                borderRadius: 4, padding: "1px 6px",
-              }}>
-                {p.uses_remaining}u
-              </span>
-            )}
             <span style={{ fontSize: "0.68em", color: expanded ? "var(--bc-green)" : "var(--bc-line)", marginLeft: 2 }}>
               {expanded ? "▲" : "▼"}
             </span>
@@ -514,15 +497,6 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
             <span style={{ marginLeft: 4, color: "#3a5070" }}>({count})</span>
           </button>
         ))}
-        <div style={{ marginLeft: "auto", display: "flex", gap: 10, fontSize: "0.72em", alignItems: "center" }}>
-          <span style={{ color: "var(--bc-muted)" }}>Uses:</span>
-          {[{ n: 2, label: "2 left" }, { n: 1, label: "1 left" }, { n: 0, label: "0 left" }].map(({ n, label }) => (
-            <span key={n} style={{ color: usesColor(n) }}>
-              <span style={{ fontWeight: 700 }}>{n}u</span> {label}
-            </span>
-          ))}
-          <span style={{ color: "var(--bc-muted)" }}>— not on roster</span>
-        </div>
       </div>
 
       {/* Table */}

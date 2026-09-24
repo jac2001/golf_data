@@ -142,36 +142,6 @@ function AdjBar({ label, value, maxAbs }: { label: string; value: number | null;
 }
 
 
-// ── Pip dots for uses remaining ───────────────────────────────────────────────
-
-function UsePips({ uses }: { uses: number }) {
-  return (
-    <div style={{ display: "flex", gap: 5 }}>
-      {[0, 1, 2].map(i => (
-        <div key={i} style={{
-          width: 9, height: 9, borderRadius: "50%",
-          background: i < uses ? GREEN : "var(--bc-line)",
-        }} />
-      ))}
-    </div>
-  );
-}
-
-// ── Badge ─────────────────────────────────────────────────────────────────────
-
-function Badge({ badge }: { badge: string }) {
-  const color = badge === "USE" ? GREEN : badge === "SAVE" ? GOLD : badge === "MAXED" ? RED : "transparent";
-  if (!badge) return null;
-  return (
-    <span style={{
-      padding: "3px 10px", borderRadius: 5, fontSize: "0.72em", fontWeight: 800,
-      letterSpacing: "0.08em", background: color + "22", color, border: `1px solid ${color}44`,
-    }}>
-      {badge}
-    </span>
-  );
-}
-
 // ── Course history parser ─────────────────────────────────────────────────────
 
 type CourseResult = { tournament: string; year: number; position: string; to_par: string };
@@ -1243,8 +1213,6 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
             {m.odds_to_win >= 0 ? "+" : ""}{Math.round(m.odds_to_win)}
           </span>
         )}
-        <UsePips uses={m.uses_remaining} />
-        {m.badge && <Badge badge={m.badge} />}
       </div>
     </div>
   );
@@ -1852,14 +1820,11 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               <h1 style={{ margin: 0, fontSize: "1.6em", fontWeight: 800, letterSpacing: "-0.02em" }}>
                 {profile.player_name}
               </h1>
-              <Badge badge={m.badge} />
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 6 }}>
               <span style={{ fontSize: "0.82em", color: MUTED }}>
                 {m.world_rank != null ? `World #${Math.round(m.world_rank)}` : "World rank —"}
               </span>
-              <UsePips uses={m.uses_remaining} />
-              <span style={{ fontSize: "0.72em", color: MUTED }}>{m.uses_remaining}/3 uses left</span>
             </div>
           </div>
           {/* vs field ranks */}
