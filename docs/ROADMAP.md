@@ -63,7 +63,13 @@ needed for it.
    assessment): ToS/privacy pages, Sentry, rate limiting on public
    endpoints, CRON_SECRET set, Render league endpoints behind a
    shared secret if anyone outside the family gets a link.
-4. **Onboarding polish** driven by the next playtest: first-run
+4. **Timezone-aware locks** (found 2026-09-23 during the model's euro
+   debut, which missed France's weekly window by ~20 min of deploy
+   latency): locks evaluate at midnight UTC — right-ish for euro
+   events (~2am CET), but PGA picks quietly lock ~7-8pm ET the
+   evening BEFORE. Fix: lock at event-local midnight (store tz per
+   event, or lock at a fixed offset from first tee time).
+5. **Onboarding polish** driven by the next playtest: first-run
    pointers on the six tabs; invite-flow friction.
 
 ## Later
