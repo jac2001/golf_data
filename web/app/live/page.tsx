@@ -391,11 +391,18 @@ function TourPills({ tour, setTour }: {
 /** DPWT live leaderboard from the in-play snapshot — honest about its
  *  freshness (age + which round the scores cover come from the API,
  *  the same computation the assistant's context uses). */
+type EuroLiveTab = "leaderboard" | "holes";
+const EURO_LIVE_TABS: { id: EuroLiveTab; label: string }[] = [
+  { id: "leaderboard", label: "Leaderboard"  },
+  { id: "holes",       label: "Hole by Hole" },
+];
+
 function EuroLiveView() {
   const [eventName, setEventName] = useState("");
   const [data, setData] = useState<EuroLive | null>(null);
   const [holes, setHoles] = useState<HoleStatsResponse | null>(null);
   const [holeRound, setHoleRound] = useState("event_avg");
+  const [tab, setTab] = useState<EuroLiveTab>("leaderboard");
   const [err, setErr] = useState("");
 
   useEffect(() => {
@@ -447,6 +454,8 @@ function EuroLiveView() {
 
   return (
     <>
+    <SubTabs tabs={EURO_LIVE_TABS} active={tab} onChange={setTab} />
+    {tab === "leaderboard" && (
     <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
       <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
         {eventName}
@@ -488,24 +497,30 @@ function EuroLiveView() {
           </tbody>
         </table>
       </div>
-      </div>
+    </div>
+    )}
 
-      {holes && holes.holes.length > 0 && (
-        <div style={{ marginTop: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-            <span style={{ fontWeight: 800 }}>Hole by hole</span>
-            {["event_avg", "1", "2", "3", "4"].map(r => (
-              <button key={r} onClick={() => setHoleRound(r)} style={{
-                background: holeRound === r ? "#0a1f3a" : "var(--bc-panel)",
-                border: `1px solid ${holeRound === r ? "#1e5a3f" : "var(--bc-line)"}`,
-                borderRadius: 5, color: holeRound === r ? "var(--bc-green)" : "var(--bc-muted)",
-                padding: "4px 12px", fontSize: "0.76em", fontWeight: 700, cursor: "pointer",
-              }}>{r === "event_avg" ? "Current" : `R${r}`}</button>
-            ))}
+    {tab === "holes" && (
+      holes && holes.holes.length > 0 ? (
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
+            <span style={{ fontWeight: 800 }}>{eventName}</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>hole scoring by round</span>
+            <div style={{ display: "flex", gap: 8, marginLeft: "auto" }}>
+              {["event_avg", "1", "2", "3", "4"].map(r => (
+                <button key={r} onClick={() => setHoleRound(r)} style={{
+                  background: holeRound === r ? "#0a1f3a" : "var(--bc-panel)",
+                  border: `1px solid ${holeRound === r ? "#1e5a3f" : "var(--bc-line)"}`,
+                  borderRadius: 5, color: holeRound === r ? "var(--bc-green)" : "var(--bc-muted)",
+                  padding: "4px 12px", fontSize: "0.76em", fontWeight: 700, cursor: "pointer",
+                }}>{r === "event_avg" ? "Current" : `R${r}`}</button>
+              ))}
+            </div>
           </div>
           <HoleStatsTable holes={holes.holes} round={holes.round} updated={holes.updated} />
         </div>
-      )}
+      ) : <Empty text="Hole stats land once the round is underway." />
+    )}
     </>
   );
 }
