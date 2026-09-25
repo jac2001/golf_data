@@ -4033,8 +4033,16 @@ def events_open() -> dict:
     PGA events come from the schedule files (the model's world); euro
     events from schedule_euro (picks-only — no predictions). "Open" =
     starts within the next 10 days or is currently running; locked once
-    its start date arrives.
+    its start date arrives IN THE TOUR'S OWN TIMEZONE. The server runs
+    UTC, and a naive `now()` locked PGA picks at 7-8pm ET the evening
+    before the first tee. ET for the PGA, London for the DPWT (within
+    an hour of its CET venues) — dates flip when the tour's day does.
     """
+    from zoneinfo import ZoneInfo
+    _tour_today = {
+        "pga":  pd.Timestamp(datetime.now(ZoneInfo("America/New_York")).date()),
+        "euro": pd.Timestamp(datetime.now(ZoneInfo("Europe/London")).date()),
+    }
     today = pd.Timestamp.now().normalize()
     events = []
     for sp in sorted((DATA_DIR / "raw").glob("schedule*_2*.csv")) + sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
@@ -4063,8 +4071,8 @@ def events_open() -> dict:
                 "start_date": str(r["start_date"]),
                 "end_date": str(r.get("end_date", "")),
                 "purse": purse,
-                "locked": bool(r["_s"] <= today),
-                "finished": bool(r["_e"] < today),
+                "locked": bool(r["_s"] <= _tour_today[tour]),
+                "finished": bool(r["_e"] < _tour_today[tour]),
                 # PGA always; euro once OUR calibrated model has served
                 # that event (the DPWT stopped being numbers-free the
                 # day predict_euro shipped).

@@ -47,7 +47,7 @@ needed for it.
       Hovland vs course horse Winther).
 - [ ] Cross-group 403 check with Rick's session (60 seconds, closes
       the last untested auth path).
-- [ ] **Timezone-aware locks** (promoted from Next #4 — trust bug in
+- [x] **Timezone-aware locks** (fixed 2026-09-25 — was a trust bug in
       launch week): locks evaluate at UTC midnight, so PGA picks
       quietly close ~7-8pm ET the evening before. Lock at event-local
       midnight or a fixed offset from first tee time.
