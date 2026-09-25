@@ -6435,7 +6435,16 @@ def _euro_week_block() -> str:
                     rounds_path.stat().st_mtime)).total_seconds() / 3600
                 lb["_score"] = pd.to_numeric(lb["current_score"], errors="coerce")
                 top = lb.dropna(subset=["_score"]).nsmallest(10, "_score")
-                lines.append(f"LIVE LEADERBOARD (snapshot ~{age_h:.0f}h old — top 10):")
+                # Which round the scores cover: the last Rx column with
+                # posted scores is complete; the next one is likely underway.
+                done = max((i for i in (1, 2, 3, 4)
+                            if f"R{i}" in lb.columns
+                            and pd.to_numeric(lb[f"R{i}"], errors="coerce").notna().sum() > 10),
+                           default=0)
+                round_note = (f"scores complete through R{done}"
+                              + (f"; R{done + 1} is likely underway and NOT reflected here"
+                                 if done < 4 else "")) if done else "round coverage unknown"
+                lines.append(f"LIVE LEADERBOARD (snapshot ~{age_h:.0f}h old, {round_note} — top 10):")
                 for _, r in top.iterrows():
                     sc = int(r["_score"])
                     lines.append(f"  {r['current_pos']} {r['player_name']}: "
