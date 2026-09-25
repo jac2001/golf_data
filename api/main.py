@@ -2212,19 +2212,22 @@ _HOLE_STATS_CACHE: dict = {}
 _HOLE_STATS_TTL = 300  # 5-minute cache
 
 @app.get("/api/live/hole-stats")
-def get_live_hole_stats(round_param: str = "event_avg") -> dict:
+def get_live_hole_stats(round_param: str = "event_avg", tour: str = "pga") -> dict:
     """
     Per-hole scoring stats from DG (avg score, vs par, birdie/bogey/double counts, morning/afternoon wave).
     round_param: event_avg | 1 | 2 | 3 | 4 (event_avg returns current round)
+    tour: pga | euro — the same DG endpoint covers both.
     """
-    cache_key = round_param
+    if tour not in ("pga", "euro"):
+        tour = "pga"
+    cache_key = f"{tour}:{round_param}"
     cached = _HOLE_STATS_CACHE.get(cache_key)
     if cached and time.time() - cached["_ts"] < _HOLE_STATS_TTL:
         return cached
 
     try:
         from scripts.scrapers.dg_client import dg_get
-        params: dict = {"tour": "pga"}
+        params: dict = {"tour": tour}
         if round_param not in ("event_avg", ""):
             params["round"] = round_param
         raw = dg_get("/preds/live-hole-stats", params)
@@ -2241,7 +2244,15 @@ def get_live_hole_stats(round_param: str = "event_avg") -> dict:
     if not rounds_data:
         return {"event_name": raw.get("event_name", ""), "round": raw.get("current_round"), "holes": [], "updated": raw.get("last_update", "")}
 
-    round_obj = rounds_data[0]
+    # Prefer the CURRENT round when no explicit round was asked for —
+    # rounds_data[0] silently served R1 all week (multi-round payloads).
+    round_obj = next(
+        (r for r in rounds_data if r.get("round_num") == raw.get("current_round")),
+        rounds_data[-1])
+    if round_param not in ("event_avg", ""):
+        round_obj = next(
+            (r for r in rounds_data if str(r.get("round_num")) == str(round_param)),
+            round_obj)
     holes_raw = round_obj.get("holes", [])
 
     holes = []
@@ -2298,7 +2309,7 @@ def get_live_hole_stats(round_param: str = "event_avg") -> dict:
 
     result = {
         "event_name": raw.get("event_name", ""),
-        "round":      raw.get("current_round"),
+        "round":      round_obj.get("round_num", raw.get("current_round")),
         "holes":      holes,
         "updated":    raw.get("last_update", ""),
         "_ts":        time.time(),

@@ -758,8 +758,8 @@ export type HoleStatsResponse = {
   updated:    string;
 };
 
-export async function getHoleStats(roundParam = "event_avg"): Promise<HoleStatsResponse> {
-  const res = await apiFetch(`${API_BASE}/api/live/hole-stats?round_param=${roundParam}`, { cache: "no-store" });
+export async function getHoleStats(roundParam = "event_avg", tour: "pga" | "euro" = "pga"): Promise<HoleStatsResponse> {
+  const res = await apiFetch(`${API_BASE}/api/live/hole-stats?round_param=${roundParam}&tour=${tour}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load hole stats");
   return res.json();
 }

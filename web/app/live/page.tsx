@@ -394,7 +394,13 @@ function TourPills({ tour, setTour }: {
 function EuroLiveView() {
   const [eventName, setEventName] = useState("");
   const [data, setData] = useState<EuroLive | null>(null);
+  const [holes, setHoles] = useState<HoleStatsResponse | null>(null);
+  const [holeRound, setHoleRound] = useState("event_avg");
   const [err, setErr] = useState("");
+
+  useEffect(() => {
+    getHoleStats(holeRound, "euro").then(setHoles).catch(() => {});
+  }, [holeRound]);
 
   useEffect(() => {
     let timer: ReturnType<typeof setInterval> | null = null;
@@ -440,6 +446,7 @@ function EuroLiveView() {
   };
 
   return (
+    <>
     <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
       <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
         {eventName}
@@ -481,7 +488,25 @@ function EuroLiveView() {
           </tbody>
         </table>
       </div>
-    </div>
+      </div>
+
+      {holes && holes.holes.length > 0 && (
+        <div style={{ marginTop: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+            <span style={{ fontWeight: 800 }}>Hole by hole</span>
+            {["event_avg", "1", "2", "3", "4"].map(r => (
+              <button key={r} onClick={() => setHoleRound(r)} style={{
+                background: holeRound === r ? "#0a1f3a" : "var(--bc-panel)",
+                border: `1px solid ${holeRound === r ? "#1e5a3f" : "var(--bc-line)"}`,
+                borderRadius: 5, color: holeRound === r ? "var(--bc-green)" : "var(--bc-muted)",
+                padding: "4px 12px", fontSize: "0.76em", fontWeight: 700, cursor: "pointer",
+              }}>{r === "event_avg" ? "Current" : `R${r}`}</button>
+            ))}
+          </div>
+          <HoleStatsTable holes={holes.holes} round={holes.round} updated={holes.updated} />
+        </div>
+      )}
+    </>
   );
 }
 
