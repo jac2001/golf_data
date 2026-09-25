@@ -6437,7 +6437,13 @@ def chat_endpoint(body: ChatRequest, request: Request):
     def _stream():
         buf: list[str] = []
         try:
-            import httpx as _httpx
+            # Newer anthropic SDKs run on httpx2 and reject httpx.Timeout;
+            # older ones (local dev) predate httpx2. Import whichever the
+            # installed SDK actually uses.
+            try:
+                import httpx2 as _httpx  # type: ignore
+            except ImportError:
+                import httpx as _httpx  # type: ignore
             from anthropic import Anthropic  # type: ignore
             client = Anthropic(
                 api_key=api_key,
