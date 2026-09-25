@@ -20,22 +20,37 @@ honest states).
 The first complete production week. Nothing new ships that isn't
 needed for it.
 
-- [ ] **Watch DG roll over** to Bank of Utah (Presidents Cup ends
-      Sunday; expect the flip Sun night/Mon — checked 9/23: field=PC,
-      odds=stale Biltmore). Then: Tuesday pipeline green, model places
-      weekly trio + fade trio + school + R1 automatically.
-- [ ] **Start the euro model** (moved up from January — see Next):
-      training-table builder scaffolded; Jack writes the rolling-form
-      feature functions. A PC week has no PGA game ops — perfect
-      build week.
+- [x] **Euro model** — built, calibrated, serving `source: "model"`
+      (2026-09-23, way ahead of the January plan). This Week/Live/chat
+      all euro-aware; France is its live benchmark week (Gerard T2
+      through 36 as the #1 pick).
+- [x] **Bank of Utah preflight** (2026-09-24): schedule/weather/course
+      history verified, defending-champ CSV fallback fixed (was
+      DB-only, blank on prod all season). DG rolls over Monday;
+      Tuesday pipeline takes it from there.
+- [x] **LLM spend protection** (2026-09-24/25): key split by
+      workspace, chat behind Clerk + proxy secret, per-user 15/day,
+      per-IP regen quotas, global daily breaker, generate-analysis
+      owner-only. Externally probed. Assistant live on prod.
+- [x] **Between-events + euro chat context** (2026-09-25): stale-board
+      guard, standing DPWT block with live leaderboard, snapshot age,
+      round coverage, priors-vs-live framing.
+- [x] **Live euro on the Live page** (2026-09-25): PGA/DPWT pills,
+      snapshot leaderboard with age + round coverage + pre-event win%.
 - [ ] **Jack + Rick play the week** (weekly picks minimum; fades and
       a school make the boards interesting).
 - [ ] **First real Sunday recap** renders, gets shared, recap push
       fires Monday. Fix whatever the first real settle exposes.
 - [ ] **France settles** Sunday (euro --results Monday cron) — first
-      graded euro week for the Round Game + weekly picks.
+      graded euro week for the Round Game + weekly picks; grades the
+      euro model's debut (form pick Gerard vs class picks Åberg/
+      Hovland vs course horse Winther).
 - [ ] Cross-group 403 check with Rick's session (60 seconds, closes
       the last untested auth path).
+- [ ] **Timezone-aware locks** (promoted from Next #4 — trust bug in
+      launch week): locks evaluate at UTC midnight, so PGA picks
+      quietly close ~7-8pm ET the evening before. Lock at event-local
+      midnight or a fixed offset from first tee time.
 
 ## Next (October)
 

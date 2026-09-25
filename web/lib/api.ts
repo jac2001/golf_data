@@ -356,6 +356,22 @@ export async function getEuroCourse(tournamentId: string): Promise<EuroCourseGui
   return res.json();
 }
 
+export type EuroLivePlayer = {
+  position: string; player_name: string; total: number | null;
+  today: number | null; thru: string; rounds: (number | null)[];
+  win_prob: number | null;
+};
+export type EuroLive = {
+  tournament_id: string; players: EuroLivePlayer[];
+  snapshot_age_minutes: number | null; rounds_complete: number;
+};
+
+export async function getEuroLive(tournamentId: string): Promise<EuroLive> {
+  const res = await apiFetch(`${API_BASE}/api/euro/live?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to load euro live");
+  return res.json();
+}
+
 export type EventRounds = {
   tournament_id: string; rounds_available: number;
   players: Record<string, { player_name: string; rounds: Record<string, number> }>;

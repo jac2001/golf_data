@@ -17,6 +17,7 @@ import {
   refreshHoleScores, getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
   Tournament, InPlayResponse, VsPredPlayer, MyLineupResponse, SgStatsResponse, HoleScoresResponse,
   HoleStatsResponse, LivePulse as LivePulseData, WithdrawalsResponse,
+  getOpenEvents, getEuroLive, EuroLive,
 } from "@/lib/api";
 import InPlayLeaderboard from "@/components/InPlayLeaderboard";
 import VsPredictions from "@/components/VsPredictions";
@@ -42,6 +43,10 @@ const POLL_INTERVAL_MS = 60_000; // refresh leaderboard every 60 seconds
 
 export default function LivePage() {
 
+  const [tour, setTour] = useState<"pga" | "euro">(() => {
+    try { return localStorage.getItem("favorite-tour") === "euro" ? "euro" : "pga"; }
+    catch { return "pga"; }
+  });
   const [activeTab, setActiveTab] = useState<Tab>("leaderboard");
   const [loaded, setLoaded] = useState<Set<Tab>>(new Set(["leaderboard"]));
   const [settingsLoaded, setSettingsLoaded] = useState(false);
@@ -204,6 +209,17 @@ export default function LivePage() {
   const currentRound = inPlay?.current_round ?? null;
   const leader = inPlay?.players?.[0] ?? null;
 
+  if (tour === "euro") {
+    return (
+      <div className="page-wrap">
+        <AlertBanner />
+        <PageHead kicker="DP World Tour" title="Live" />
+        <TourPills tour={tour} setTour={setTour} />
+        <EuroLiveView />
+      </div>
+    );
+  }
+
   return (
     <div className="page-wrap">
       <AlertBanner />
@@ -240,6 +256,8 @@ export default function LivePage() {
           </div>
         ) : undefined}
       />
+
+      <TourPills tour={tour} setTour={setTour} />
 
       {/* ── At-a-glance strip — only if in-play loaded ──────────────────── */}
       {inPlay && !loadingLb && inPlay.players.length > 0 && (
@@ -348,6 +366,114 @@ export default function LivePage() {
 }
 
 // ── Small helpers ─────────────────────────────────────────────────────────────
+
+function TourPills({ tour, setTour }: {
+  tour: "pga" | "euro"; setTour: (t: "pga" | "euro") => void;
+}) {
+  return (
+    <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+      {([["pga", "PGA Tour"], ["euro", "DP World Tour"]] as const).map(([id, label]) => (
+        <button key={id} onClick={() => setTour(id)} style={{
+          cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
+          textTransform: "uppercase", letterSpacing: "0.06em",
+          padding: "7px 15px", borderRadius: 4,
+          color: tour === id ? "#081f14" : "var(--bc-muted)",
+          background: tour === id ? "var(--bc-yellow)" : "transparent",
+          border: `1px solid ${tour === id ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+        }}>
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** DPWT live leaderboard from the in-play snapshot — honest about its
+ *  freshness (age + which round the scores cover come from the API,
+ *  the same computation the assistant's context uses). */
+function EuroLiveView() {
+  const [eventName, setEventName] = useState("");
+  const [data, setData] = useState<EuroLive | null>(null);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    getOpenEvents().then(d => {
+      const ev = (d.events ?? []).filter(e => e.tour === "euro")
+        .find(e => !e.finished) ?? (d.events ?? []).filter(e => e.tour === "euro")[0];
+      if (!ev) { setErr("No DP World Tour event this week."); return; }
+      setEventName(ev.name);
+      getEuroLive(ev.tournament_id).then(setData)
+        .catch(() => setErr("Could not load the euro leaderboard."));
+    }).catch(() => setErr("Could not load events."));
+  }, []);
+
+  if (err) return <Empty text={err} />;
+  if (!data) return <Spinner />;
+  if (data.players.length === 0) {
+    return <Empty text="No live scores yet — the first snapshot lands once play starts." />;
+  }
+
+  const fmtScore = (v: number | null) =>
+    v == null ? "—" : v > 0 ? `+${v}` : v === 0 ? "E" : String(v);
+  const age = data.snapshot_age_minutes;
+  const ageStr = age == null ? "" : age < 90 ? `${age} min ago` : `${Math.round(age / 60)}h ago`;
+  const coverage = data.rounds_complete
+    ? `scores through R${data.rounds_complete}${data.rounds_complete < 4 ? ` · R${data.rounds_complete + 1} may be underway` : " · final"}`
+    : "";
+  const th: React.CSSProperties = {
+    padding: "7px 12px", borderBottom: "1px solid var(--bc-line)", fontSize: "0.68em",
+    fontWeight: 700, color: "var(--bc-muted)", textTransform: "uppercase",
+    letterSpacing: "0.05em", whiteSpace: "nowrap", textAlign: "right",
+  };
+  const td: React.CSSProperties = {
+    padding: "6px 12px", borderBottom: "1px solid var(--bc-card)",
+    fontSize: "0.85em", textAlign: "right", fontVariantNumeric: "tabular-nums",
+  };
+
+  return (
+    <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
+      <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
+        {eventName}
+        <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
+          snapshot {ageStr}{coverage ? ` · ${coverage}` : ""}
+        </span>
+      </div>
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead><tr>
+            <th style={{ ...th, textAlign: "center", width: 46 }}>Pos</th>
+            <th style={{ ...th, textAlign: "left", minWidth: 160 }}>Player</th>
+            <th style={th}>Total</th>
+            <th style={th}>Today</th>
+            <th style={th}>Thru</th>
+            <th style={th}>R1</th><th style={th}>R2</th><th style={th}>R3</th><th style={th}>R4</th>
+            <th style={th}>Pre-event win%</th>
+          </tr></thead>
+          <tbody>
+            {data.players.map((p, i) => (
+              <tr key={i}>
+                <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.78em" }}>{p.position || "—"}</td>
+                <td style={{ ...td, textAlign: "left", fontWeight: i < 3 ? 700 : 600 }}>{p.player_name}</td>
+                <td style={{ ...td, fontWeight: 800,
+                  color: (p.total ?? 0) < 0 ? "var(--bc-green)" : (p.total ?? 0) > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
+                  {fmtScore(p.total)}
+                </td>
+                <td style={{ ...td, color: "var(--bc-muted)" }}>{fmtScore(p.today)}</td>
+                <td style={{ ...td, color: "var(--bc-muted)" }}>{p.thru || "—"}</td>
+                {p.rounds.map((r, ri) => (
+                  <td key={ri} style={{ ...td, color: "var(--bc-muted)" }}>{r != null ? Math.round(r) : "—"}</td>
+                ))}
+                <td style={{ ...td, color: "var(--bc-yellow)", fontSize: "0.8em" }}>
+                  {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
 
 function GlanceCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (

@@ -4353,6 +4353,54 @@ def euro_course(tournament_id: str) -> dict:
     }
 
 
+@app.get("/api/euro/live")
+def euro_live(tournament_id: str) -> dict:
+    """Live leaderboard for a DPWT event from the in-play snapshot
+    (data/live/rounds_{tid}.csv, refreshed by the noon + evening euro
+    slots). Honest about freshness: snapshot age and which round the
+    scores cover come with the data, computed the same way the chat
+    guard computes them. Model win% joins by player_name — both files
+    are DG feeds sharing the exact 'Last, First' spelling."""
+    tid = tournament_id.strip().upper()
+    path = DATA_DIR / "live" / f"rounds_{tid}.csv"
+    if not path.exists():
+        return {"tournament_id": tid, "players": [], "snapshot_age_minutes": None,
+                "rounds_complete": 0}
+    df = pd.read_csv(path)
+    age_min = int((time.time() - path.stat().st_mtime) / 60)
+    rounds_complete = max(
+        (i for i in (1, 2, 3, 4)
+         if f"R{i}" in df.columns
+         and pd.to_numeric(df[f"R{i}"], errors="coerce").notna().sum() > 10),
+        default=0)
+
+    model_probs: dict[str, float] = {}
+    ep = DATA_DIR / "predictions_euro" / f"euro_model_{tid}.csv"
+    if ep.exists():
+        try:
+            em = pd.read_csv(ep)
+            model_probs = dict(zip(em["player_name"].astype(str),
+                                   pd.to_numeric(em["win_prob"], errors="coerce")))
+        except Exception:
+            pass
+
+    df["_score"] = pd.to_numeric(df["current_score"], errors="coerce")
+    df = df.sort_values("_score", na_position="last")
+    players = [{
+        "position": str(r.get("current_pos", "") or ""),
+        "player_name": _flip_to_first_last(str(r["player_name"])),
+        "total": _safe(r["_score"]),
+        "today": _safe(pd.to_numeric(r.get("today"), errors="coerce")),
+        "thru": str(r.get("thru", "") or ""),
+        "rounds": [_safe(pd.to_numeric(r.get(f"R{i}"), errors="coerce")) for i in (1, 2, 3, 4)],
+        "win_prob": _safe(model_probs.get(str(r["player_name"]))),
+    } for _, r in df.iterrows()]
+    return {
+        "tournament_id": tid, "players": players,
+        "snapshot_age_minutes": age_min, "rounds_complete": rounds_complete,
+    }
+
+
 @app.get("/api/colleges/field")
 def colleges_field(tournament_id: str) -> dict:
     """The College Game's board: which schools have alumni in this event's
