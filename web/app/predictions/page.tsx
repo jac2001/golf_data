@@ -751,7 +751,7 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
     setRunning(true);
     setMsg("");
     try {
-      const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/api/generate-analysis`, { method: "POST" });
+      const r = await fetch(`/api/generate-analysis`, { method: "POST" });
       const d = await r.json();
       setMsg(d.message ?? "Started.");
     } catch {

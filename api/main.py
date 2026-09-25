@@ -215,6 +215,15 @@ def _llm_budget_ok(cost: int = 1) -> bool:
         return True
 
 
+def _regen_ok(request) -> bool:
+    """Per-IP quota on anonymous cache regenerations (pulse/synopsis/bet
+    reasons). The global breaker bounds the day's total, but without this
+    one stranger could curl the whole budget away in a minute and starve
+    the assistant. 10 regenerations per IP per day; cached reads stay
+    unlimited. Checked BEFORE the budget so a refused regen spends nothing."""
+    return _rate_limit_ok(f"regen-ip:{_client_ip(request)}", max_n=10)
+
+
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 def _fmt_odds(v) -> str:
@@ -880,7 +889,7 @@ def _detect_alerts(rows: list[dict], tid: str, current_round) -> None:
 
 
 @app.get("/api/bets/reason")
-def get_bet_reason(player: str, market: str, opponent: str = "") -> dict:
+def get_bet_reason(request: Request, player: str, market: str, opponent: str = "") -> dict:
     tid = _get_tournament_id()
     key = f"{player}|{market}" + (f"|{opponent}" if opponent else "")
     cache = _load_reasons_cache()
@@ -1036,6 +1045,8 @@ def get_bet_reason(player: str, market: str, opponent: str = "") -> dict:
                 pass
 
     # ── Generate + cache ──────────────────────────────────────────────────────
+    if not _regen_ok(request):  # cache misses are still LLM spend
+        raise HTTPException(status_code=429, detail="Daily regeneration limit reached")
     try:
         reason = _generate_bet_reason(player, market, stats)
     except Exception as e:
@@ -2506,7 +2517,7 @@ def refresh_hole_scores() -> dict:
 
 
 @app.get("/api/live/pulse")
-def get_live_pulse(force: bool = False) -> dict:
+def get_live_pulse(request: Request, force: bool = False) -> dict:
     """
     LLM-generated live tournament narrative: leaders, players on fire,
     players to watch, your picks status, round story.
@@ -2536,9 +2547,10 @@ def get_live_pulse(force: bool = False) -> dict:
             pass
 
     # Regeneration (including force=true, which anyone can pass) spends an
-    # LLM call — it draws on the shared daily budget. Serve the stale
-    # cache once the breaker trips; only 429 when there's nothing at all.
-    if not _llm_budget_ok():
+    # LLM call — it draws on the per-IP regen quota, then the shared daily
+    # budget. Serve the stale cache when either refuses; only 429 when
+    # there's nothing at all.
+    if not (_regen_ok(request) and _llm_budget_ok()):
         if cache_file.exists():
             try:
                 cached = json.loads(cache_file.read_text())
@@ -5343,7 +5355,7 @@ def get_player_career(player: str) -> dict:
 
 
 @app.get("/api/players/synopsis")
-def get_player_synopsis(player: str, force: bool = False) -> dict:
+def get_player_synopsis(request: Request, player: str, force: bool = False) -> dict:
     """
     Generate an LLM-powered player analysis synopsis using all available stats.
     Cached per player per tournament for 6 hours. Pass force=true to regenerate.
@@ -5377,9 +5389,9 @@ def get_player_synopsis(player: str, force: bool = False) -> dict:
             pass
 
     # Regeneration (cache miss or force=true, both visitor-reachable)
-    # spends an LLM call against the shared daily budget. When the
-    # breaker has tripped, a stale synopsis beats none.
-    if not _llm_budget_ok():
+    # spends an LLM call — per-IP regen quota first, then the shared
+    # daily budget. When either refuses, a stale synopsis beats none.
+    if not (_regen_ok(request) and _llm_budget_ok()):
         if cache_file.exists():
             try:
                 cached = json.loads(cache_file.read_text())
@@ -6317,11 +6329,13 @@ def chat_endpoint(body: ChatRequest, request: Request):
 
     model = _select_model(body.query)
 
+    _t_ctx = time.time()
     context = build_context(
         query=body.query,
         last_players=body.last_players or [],
         lean=True,  # web API: keep context under ~45K chars
     )
+    _ctx_ms = int((time.time() - _t_ctx) * 1000)
 
     # ── Live data handling ────────────────────────────────────────────────────
     # Three scenarios:
@@ -6472,8 +6486,15 @@ def chat_endpoint(body: ChatRequest, request: Request):
                     if dropped is None:
                         raise
                     stream_kwargs.pop(dropped)
+            _t_first = None
             with stream_cm as stream:
                 for text in stream.text_stream:
+                    if _t_first is None:
+                        _t_first = time.time()
+                        # One line per chat in Render logs: where the time went.
+                        print(f"[chat] model={model} ctx={_ctx_ms}ms "
+                              f"ctx_chars={len(context)} ttft={int((_t_first - _t_ctx) * 1000)}ms",
+                              flush=True)
                     buf.append(text)
                     yield f"data: {json.dumps({'text': text})}\n\n"
         except Exception as e:
@@ -6713,8 +6734,16 @@ def get_withdrawals() -> dict:
 
 
 @app.post("/api/generate-analysis")
-def generate_analysis() -> dict:
-    """Trigger generate_strategy_reasoning.py in the background. Returns immediately."""
+def generate_analysis(request: Request) -> dict:
+    """Trigger generate_strategy_reasoning.py in the background. Returns immediately.
+
+    This kicks a BATCH of LLM calls — the most expensive single action on
+    the server, and it was anonymously triggerable. Owner-only now: the
+    site's server route checks the owner email, then relays with the
+    proxy secret; the raw endpoint refuses everything else."""
+    proxy_secret = os.environ.get("CHAT_PROXY_SECRET", "")
+    if proxy_secret and request.headers.get("x-chat-proxy-secret") != proxy_secret:
+        raise HTTPException(status_code=403, detail="Analysis reruns must come through the site")
     import threading
     def _run():
         subprocess.run(

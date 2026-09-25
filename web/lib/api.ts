@@ -229,7 +229,8 @@ export type LineupResponse = {
 };
 
 export async function generateLineup(): Promise<{ status: string; message?: string }> {
-  const res = await apiFetch(`${API_BASE}/api/generate-analysis`, { method: "POST", cache: "no-store" });
+  // Same-origin: the owner-gated relay holds the proxy secret.
+  const res = await apiFetch(`/api/generate-analysis`, { method: "POST", cache: "no-store" });
   if (!res.ok) throw new Error("Failed to start lineup generation");
   return res.json();
 }
