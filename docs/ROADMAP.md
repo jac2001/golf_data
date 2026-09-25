@@ -91,7 +91,12 @@ needed for it.
 
 - **January retrain of the PGA model** (2025-26 data in, Tuesday trio
   wiring, calibration drift check) — this one genuinely waits for the
-  season boundary.
+  season boundary. NEW (2026-09-25): the DG plan verifiably includes
+  `/historical-raw-data/rounds` (per-player round-level SG splits,
+  2016+) — the "no historical access" note was about prediction
+  archives only. The retrain can train on DG historical SG, and the
+  old plan to replace fetch_tournament_stats/fetch_form_stats with DG
+  feeds is unblocked.
 - **January euro retrain: add course fit** (added 2026-09-24). The euro
   model is pure form; `data/euro_course_history/player_course.csv`
   already holds per-player course records (avg_vs_par, avg_sg, rounds),
