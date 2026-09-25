@@ -25,6 +25,7 @@ on:
     - cron: '0 11 * * 3'      # Wed 06:00 CT — wednesday-morning
     - cron: '0 23 * * 3'      # Wed 18:00 CT — wednesday-evening
     - cron: '0 1 * * 5,6,0,1' # Thu–Sun 20:00 CT — euro rounds snapshot
+    - cron: '0 17 * * 4,5,6,0' # Thu–Sun 12:00 CT — midday euro rounds (chat leaderboard freshness)
   workflow_dispatch:
     inputs:
       schedule:
@@ -78,6 +79,7 @@ jobs:
             "0 13 * * 1"|"0 2 * * 1")  S=post-tournament ;;
             "0 4 * * 1")               S=record ;;
             "0 1 * * 5,6,0,1")         S=euro-rounds ;;
+            "0 17 * * 4,5,6,0")        S=euro-rounds ;;
             "")                        S="${{ inputs.schedule }}" ;;  # manual dispatch
             *)                         S=auto ;;                      # mon/tue/wed slots
           esac
