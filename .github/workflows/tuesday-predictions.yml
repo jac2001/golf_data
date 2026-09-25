@@ -28,6 +28,9 @@ permissions:
 env:
   TZ: America/Chicago
   DG_API_KEY: ${{ secrets.DG_API_KEY }}
+  # golf-pipeline workspace key — powers the intel fetch; the step
+  # skips gracefully when the secret is unset or out of credits.
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   PYTHONUNBUFFERED: "1"
 
 jobs:
