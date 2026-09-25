@@ -15,8 +15,13 @@ scikit-learn>=1.3.0
 joblib>=1.3.0
 xgboost>=2.0.0
 
-# LLM / chat
+# LLM / chat — httpx is anthropic's transitive dep but the chat stream
+# imports it directly, and groq is the credit-exhaustion fallback:
+# all three explicit, because "transitively present" is how the first
+# real prod chat request ever made found a missing module.
 anthropic>=0.20.0
+httpx>=0.25.0
+groq>=0.4.0
 
 # Scrapers / data fetch
 requests>=2.31.0
