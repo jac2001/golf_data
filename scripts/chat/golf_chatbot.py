@@ -6389,6 +6389,71 @@ def _event_status_block(tid: str) -> str:
         return ""
 
 
+def _euro_week_block() -> str:
+    """DP World Tour context: injected whenever a euro event is live or
+    starts within 3 days — not only between PGA events. Golf is always
+    happening; without this, euro questions during a normal PGA week had
+    literally nothing to draw on. Compact: meta, defending champ, OUR
+    model's top ten with market odds and edge, and the course horses."""
+    try:
+        today = pd.Timestamp.now().normalize()
+        esched = pd.read_csv(DATA / "raw" / f"schedule_euro_{today.year}.csv")
+        starts = pd.to_datetime(esched["start_date"], errors="coerce")
+        ends = pd.to_datetime(esched["end_date"], errors="coerce")
+        cur = esched[(starts <= today + pd.Timedelta(days=3)) & (today <= ends)]
+        if cur.empty:
+            return ""
+        e = cur.sort_values("start_date").iloc[0]
+        tid = str(e["tournament_id"])
+        live = pd.to_datetime(e["start_date"]) <= today
+
+        lines = [
+            "## DP WORLD TOUR THIS WEEK",
+            f"{e['tournament_name']} at {str(e.get('course', '') or '')}, "
+            f"{str(e.get('location', '') or '')} — {e['start_date']} to {e['end_date']}"
+            f" ({'IN PROGRESS' if live else 'upcoming'}).",
+        ]
+
+        ey_path = DATA / "euro_course_history" / "event_years.csv"
+        if ey_path.exists():
+            ey = pd.read_csv(ey_path)
+            mine = ey[(ey["event_key"] == str(e["tournament_name"]).strip().lower())
+                      & ey["champion"].notna()].sort_values("calendar_year", ascending=False)
+            if not mine.empty:
+                lines.append(f"Defending champion: {mine.iloc[0]['champion']} "
+                             f"({int(mine.iloc[0]['calendar_year'])}).")
+
+        ep = DATA / "predictions_euro" / f"euro_model_{tid}.csv"
+        if ep.exists():
+            top = pd.read_csv(ep).nlargest(10, "win_prob")
+            lines.append("Our euro model's board (win% / top-10% / odds / edge vs market):")
+            for _, r in top.iterrows():
+                odds = f"+{int(r['odds_to_win'])}" if pd.notna(r.get("odds_to_win")) else "—"
+                edge = (f"{r['model_vs_vegas_edge']*100:+.1f}pp"
+                        if pd.notna(r.get("model_vs_vegas_edge")) else "—")
+                lines.append(f"  {r['player_name']}: {r['win_prob']*100:.1f}% / "
+                             f"{r['top10_prob']*100:.1f}% / {odds} / {edge}")
+
+        course_key = str(e.get("course", "") or "").strip().lower()
+        pc_path = DATA / "euro_course_history" / "player_course.csv"
+        field_path = DATA / "fields" / f"field_{tid}.csv"
+        if course_key and pc_path.exists() and field_path.exists():
+            pc = pd.read_csv(pc_path)
+            ids = set(pd.read_csv(field_path)["dg_id"].dropna().astype(int))
+            horses = pc[(pc["course_key"] == course_key) & pc["dg_id"].isin(ids)
+                        & (pc["rounds"] >= 6)].nsmallest(5, "avg_vs_par")
+            if not horses.empty:
+                lines.append("Course horses in this field (career avg vs par here): " + ", ".join(
+                    f"{r['player_name']} {r['avg_vs_par']:+.2f} ({int(r['rounds'])} rds)"
+                    for _, r in horses.iterrows()) + ".")
+
+        lines.append("This is a separate event from the PGA Tour board — never mix "
+                     "the two fields or present PGA predictions as euro ones.")
+        return "\n".join(lines)
+    except Exception:
+        return ""
+
+
 def _tournament_state_block(tid: str) -> str:
     """Inject tournament state header so the LLM knows how to frame responses."""
     ts    = _tournament_state(tid)
@@ -7776,6 +7841,13 @@ def build_context(
     _status = _event_status_block(tournament_id)
     if _status:
         sections.append(_status)
+        sections.append("")
+
+    # DP World Tour week block: euro questions get real answers whenever
+    # a euro event is on, not only when the PGA board happens to be stale.
+    _euro = _euro_week_block()
+    if _euro:
+        sections.append(_euro)
         sections.append("")
 
     # ── Resolve effective tournament ID ──────────────────────────────────────
