@@ -364,6 +364,8 @@ export type EuroLivePlayer = {
 export type EuroLive = {
   tournament_id: string; players: EuroLivePlayer[];
   snapshot_age_minutes: number | null; rounds_complete: number;
+  source?: "live" | "snapshot" | "none";
+  current_round?: number | null;
 };
 
 export async function getEuroLive(tournamentId: string): Promise<EuroLive> {

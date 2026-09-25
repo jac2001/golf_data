@@ -4361,21 +4361,67 @@ def euro_course(tournament_id: str) -> dict:
     }
 
 
+_euro_live_cache: dict = {"tid": None, "ts": 0.0, "df": None}
+
+
 @app.get("/api/euro/live")
 def euro_live(tournament_id: str) -> dict:
-    """Live leaderboard for a DPWT event from the in-play snapshot
-    (data/live/rounds_{tid}.csv, refreshed by the noon + evening euro
-    slots). Honest about freshness: snapshot age and which round the
-    scores cover come with the data, computed the same way the chat
-    guard computes them. Model win% joins by player_name — both files
-    are DG feeds sharing the exact 'Last, First' spelling."""
+    """Live leaderboard for a DPWT event — DG's in-play feed, fetched
+    server-side with a 5-minute cache (DG itself updates about that
+    often), guarded by the payload's own event name. Falls back to the
+    committed cron snapshot when the live fetch can't serve (no
+    DG_API_KEY on the server, DG serving a different event, network).
+    Scores and positions only — DG's live win probabilities are model
+    output and euro DG-prediction display is licensing-gated. Our own
+    pre-event win% joins by player_name (two DG feeds, same spelling)."""
     tid = tournament_id.strip().upper()
-    path = DATA_DIR / "live" / f"rounds_{tid}.csv"
-    if not path.exists():
-        return {"tournament_id": tid, "players": [], "snapshot_age_minutes": None,
-                "rounds_complete": 0}
-    df = pd.read_csv(path)
-    age_min = int((time.time() - path.stat().st_mtime) / 60)
+    df, age_min, source = None, None, "snapshot"
+
+    now = time.time()
+    if _euro_live_cache["tid"] == tid and now - _euro_live_cache["ts"] < 300:
+        df = _euro_live_cache["df"]
+        age_min = int((now - _euro_live_cache["ts"]) / 60)
+        source = "live"
+    else:
+        try:
+            scrapers = str(PROJECT_ROOT / "scripts" / "scrapers")
+            if scrapers not in sys.path:
+                sys.path.insert(0, scrapers)
+            from dg_client import dg_get  # type: ignore
+            from event_guard import names_match  # type: ignore
+            live = dg_get("/preds/in-play", {"tour": "euro", "file_format": "json"})
+            info = live.get("info", {}) if isinstance(live, dict) else {}
+            sched = pd.read_csv(DATA_DIR / "raw" / f"schedule_euro_{tid[1:5]}.csv")
+            row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+            expected = str(row.iloc[0]["tournament_name"]) if not row.empty else ""
+            if expected and names_match(str(info.get("event_name", "")), expected):
+                data = live.get("data", live) if isinstance(live, dict) else live
+                ldf = pd.DataFrame(data)
+                if len(ldf) and "current_score" in ldf.columns:
+                    df = ldf
+                    _euro_live_cache.update({"tid": tid, "ts": now, "df": ldf,
+                                             "round": _safe(info.get("current_round"))})
+                    age_min, source = 0, "live"
+                    # Refresh the snapshot file too: the assistant's euro
+                    # leaderboard block reads it, so chat answers inherit
+                    # this fetch's freshness (age = file mtime).
+                    try:
+                        keep = [c for c in ["player_name", "current_pos", "current_score",
+                                            "R1", "R2", "R3", "R4", "thru", "today"]
+                                if c in ldf.columns]
+                        ldf[keep].to_csv(DATA_DIR / "live" / f"rounds_{tid}.csv", index=False)
+                    except Exception:
+                        pass
+        except Exception:
+            df = None  # fall through to the snapshot
+
+    if df is None:
+        path = DATA_DIR / "live" / f"rounds_{tid}.csv"
+        if not path.exists():
+            return {"tournament_id": tid, "players": [], "snapshot_age_minutes": None,
+                    "rounds_complete": 0, "source": "none"}
+        df = pd.read_csv(path)
+        age_min = int((time.time() - path.stat().st_mtime) / 60)
     rounds_complete = max(
         (i for i in (1, 2, 3, 4)
          if f"R{i}" in df.columns
@@ -4406,6 +4452,8 @@ def euro_live(tournament_id: str) -> dict:
     return {
         "tournament_id": tid, "players": players,
         "snapshot_age_minutes": age_min, "rounds_complete": rounds_complete,
+        "source": source,
+        "current_round": _euro_live_cache.get("round") if source == "live" else None,
     }
 
 

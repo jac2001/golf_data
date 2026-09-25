@@ -397,14 +397,20 @@ function EuroLiveView() {
   const [err, setErr] = useState("");
 
   useEffect(() => {
+    let timer: ReturnType<typeof setInterval> | null = null;
     getOpenEvents().then(d => {
       const ev = (d.events ?? []).filter(e => e.tour === "euro")
         .find(e => !e.finished) ?? (d.events ?? []).filter(e => e.tour === "euro")[0];
       if (!ev) { setErr("No DP World Tour event this week."); return; }
       setEventName(ev.name);
-      getEuroLive(ev.tournament_id).then(setData)
+      const load = () => getEuroLive(ev.tournament_id).then(setData)
         .catch(() => setErr("Could not load the euro leaderboard."));
+      load();
+      // The server caches DG's feed for 5 min; polling at 2 keeps the
+      // page within a couple minutes of it without extra DG calls.
+      timer = setInterval(load, 120_000);
     }).catch(() => setErr("Could not load events."));
+    return () => { if (timer) clearInterval(timer); };
   }, []);
 
   if (err) return <Empty text={err} />;
@@ -417,9 +423,12 @@ function EuroLiveView() {
     v == null ? "—" : v > 0 ? `+${v}` : v === 0 ? "E" : String(v);
   const age = data.snapshot_age_minutes;
   const ageStr = age == null ? "" : age < 90 ? `${age} min ago` : `${Math.round(age / 60)}h ago`;
-  const coverage = data.rounds_complete
-    ? `scores through R${data.rounds_complete}${data.rounds_complete < 4 ? ` · R${data.rounds_complete + 1} may be underway` : " · final"}`
-    : "";
+  const isLiveFeed = data.source === "live";
+  const coverage = isLiveFeed
+    ? (data.current_round ? `Round ${data.current_round}` : "")
+    : data.rounds_complete
+      ? `scores through R${data.rounds_complete}${data.rounds_complete < 4 ? ` · R${data.rounds_complete + 1} may be underway` : " · final"}`
+      : "";
   const th: React.CSSProperties = {
     padding: "7px 12px", borderBottom: "1px solid var(--bc-line)", fontSize: "0.68em",
     fontWeight: 700, color: "var(--bc-muted)", textTransform: "uppercase",
@@ -434,8 +443,9 @@ function EuroLiveView() {
     <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
       <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
         {eventName}
-        <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
-          snapshot {ageStr}{coverage ? ` · ${coverage}` : ""}
+        <span style={{ color: isLiveFeed ? "var(--bc-green)" : "var(--bc-muted)", fontWeight: isLiveFeed ? 700 : 400, fontSize: "0.72em", marginLeft: 8 }}>
+          {isLiveFeed ? `LIVE · updated ${age === 0 ? "just now" : ageStr}` : `snapshot ${ageStr}`}
+          {coverage ? ` · ${coverage}` : ""}
         </span>
       </div>
       <div style={{ overflowX: "auto" }}>
