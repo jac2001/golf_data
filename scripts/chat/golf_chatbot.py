@@ -6316,6 +6316,79 @@ def _tournament_state(tid: str) -> dict:
     return state
 
 
+def _event_status_block(tid: str) -> str:
+    """Between-events hard guard. The prediction table always holds SOME
+    event, and between tournaments that event is finished — without this
+    block the model presents last week's pre-tournament board as "this
+    week" (the Biltmore/Augusta mashup of 2026-09-24). Calendar truth,
+    not meta phase: if the board event's end_date is past, say so, name
+    the real winner, point at the next PGA event, and hand over the live
+    DP World Tour event our euro model actually covers. Returns "" during
+    a normal tournament week."""
+    if not tid:
+        return ""
+    try:
+        today = pd.Timestamp.now().normalize()
+        frames = [pd.read_csv(p) for p in sorted((DATA / "raw").glob("schedule_2*.csv"))]
+        sched = pd.concat(frames, ignore_index=True)
+        row = sched[sched["tournament_id"].astype(str).str.upper() == tid.upper()]
+        if row.empty:
+            return ""
+        end = pd.to_datetime(row.iloc[0].get("end_date"), errors="coerce")
+        if pd.isna(end) or end >= today:
+            return ""  # the board's event is current or upcoming — no guard
+
+        name = str(row.iloc[0].get("tournament_name", tid))
+        lines = [
+            "## EVENT STATUS — READ BEFORE ANSWERING",
+            f"The {name} ENDED on {end.date()}. Every model prediction, win "
+            "probability, and field table below belongs to that FINISHED event's "
+            "pre-tournament board. NEVER present those numbers as this week's "
+            "forecast, and never invent live scores for it.",
+        ]
+
+        lb_path = DATA / "historical" / f"leaderboards_{str(tid)[1:5]}.csv"
+        if lb_path.exists():
+            lb = pd.read_csv(lb_path)
+            win = lb[(lb["tournament_id"].astype(str).str.upper() == tid.upper())
+                     & (lb["position"].astype(str) == "1")]
+            if not win.empty:
+                lines.append(f"Final result: {win.iloc[0]['player_name']} won the {name}.")
+
+        nxt = sched[pd.to_datetime(sched["start_date"], errors="coerce") > today]
+        if not nxt.empty:
+            n = nxt.sort_values("start_date").iloc[0]
+            lines.append(
+                f"Next PGA Tour event: {n['tournament_name']} at "
+                f"{str(n.get('course', '') or n.get('location', ''))}, starting "
+                f"{n['start_date']}. Its predictions post the Tuesday of tournament week.")
+
+        try:
+            esched = pd.read_csv(DATA / "raw" / f"schedule_euro_{today.year}.csv")
+            live = esched[(pd.to_datetime(esched["start_date"], errors="coerce") <= today)
+                          & (today <= pd.to_datetime(esched["end_date"], errors="coerce"))]
+            if not live.empty:
+                e = live.iloc[0]
+                lines.append(
+                    f"LIVE RIGHT NOW on the DP World Tour: {e['tournament_name']} "
+                    f"at {str(e.get('course', '') or '')} ({e['start_date']} to {e['end_date']}).")
+                ep = DATA / "predictions_euro" / f"euro_model_{e['tournament_id']}.csv"
+                if ep.exists():
+                    top = pd.read_csv(ep).nlargest(5, "win_prob")
+                    picks = ", ".join(
+                        f"{r['player_name']} {r['win_prob']*100:.1f}%" for _, r in top.iterrows())
+                    lines.append(f"Our euro model's top five there: {picks}.")
+                lines.append(
+                    "When asked about 'this week', lead with this DP World Tour "
+                    "event and the next PGA event — not the finished board below.")
+        except Exception:
+            pass
+
+        return "\n".join(lines)
+    except Exception:
+        return ""
+
+
 def _tournament_state_block(tid: str) -> str:
     """Inject tournament state header so the LLM knows how to frame responses."""
     ts    = _tournament_state(tid)
@@ -7697,6 +7770,13 @@ def build_context(
     # Inject current date so LLM can reason about timing ("Masters two weeks ago" etc.)
     sections.append(f"TODAY'S DATE: {datetime.now().strftime('%B %d, %Y')} — use this when referencing how long ago an event was.")
     sections.append("")
+
+    # Between-events hard guard: when the board's event is finished, say
+    # so up top — before any block can present its numbers as current.
+    _status = _event_status_block(tournament_id)
+    if _status:
+        sections.append(_status)
+        sections.append("")
 
     # ── Resolve effective tournament ID ──────────────────────────────────────
     # When the query explicitly names an event (e.g. "Masters", "Augusta"),
