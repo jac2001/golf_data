@@ -6450,14 +6450,29 @@ def chat_endpoint(body: ChatRequest, request: Request):
                 timeout=_httpx.Timeout(connect=10.0, read=300.0, write=30.0, pool=10.0),
             )
             system_blocks = _build_cached_system(context)
-            with client.messages.stream(
+            # Newer SDKs prune kwargs the old one took (temperature went
+            # first; prompt caching stopped needing its beta header long
+            # ago). Try the full call, then shed whatever the installed
+            # SDK names in its TypeError — one code path, every version.
+            stream_kwargs = dict(
                 model=model,
                 max_tokens=max_tokens,
                 temperature=temperature,
                 system=system_blocks,
                 messages=conv,
                 extra_headers={"anthropic-beta": "prompt-caching-2024-07-31"},
-            ) as stream:
+            )
+            for _ in range(len(stream_kwargs)):
+                try:
+                    stream_cm = client.messages.stream(**stream_kwargs)
+                    break
+                except TypeError as te:
+                    dropped = next((k for k in list(stream_kwargs)
+                                    if f"'{k}'" in str(te)), None)
+                    if dropped is None:
+                        raise
+                    stream_kwargs.pop(dropped)
+            with stream_cm as stream:
                 for text in stream.text_stream:
                     buf.append(text)
                     yield f"data: {json.dumps({'text': text})}\n\n"
