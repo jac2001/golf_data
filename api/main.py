@@ -171,14 +171,47 @@ _rl_store: dict[str, list[float]] = defaultdict(list)
 _RL_MAX    = 20     # requests allowed per window
 _RL_WINDOW = 86400  # 24 hours in seconds
 
-def _rate_limit_ok(ip: str) -> bool:
+def _rate_limit_ok(key: str, max_n: int | None = None) -> bool:
     now    = time.time()
     cutoff = now - _RL_WINDOW
+    limit  = max_n if max_n is not None else _RL_MAX
     with _rl_lock:
-        _rl_store[ip] = [t for t in _rl_store[ip] if t > cutoff]
-        if len(_rl_store[ip]) >= _RL_MAX:
+        _rl_store[key] = [t for t in _rl_store[key] if t > cutoff]
+        if len(_rl_store[key]) >= limit:
             return False
-        _rl_store[ip].append(now)
+        _rl_store[key].append(now)
+        return True
+
+
+def _client_ip(request) -> str:
+    """Real client IP behind Render's proxy. request.client.host there is
+    the proxy itself, which put EVERY visitor in one rate-limit bucket."""
+    fwd = request.headers.get("x-forwarded-for", "")
+    if fwd:
+        return fwd.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+
+# ── Global LLM budget ────────────────────────────────────────────────────────
+# One daily circuit breaker across every visitor-triggered Anthropic call
+# (chat, live pulse, synopses, bet reasons). Per-user quotas bound one
+# person; this bounds everyone at once, so a shared site can never spend
+# more than LLM_DAILY_CAP calls a day. In-memory: a deploy resets the
+# count, which only ever errs generous. Cached responses keep serving
+# after the breaker trips.
+_llm_day = {"date": "", "count": 0}
+_llm_day_lock = threading.Lock()
+_LLM_DAILY_CAP = int(os.environ.get("LLM_DAILY_CAP", "200"))
+
+
+def _llm_budget_ok(cost: int = 1) -> bool:
+    today = time.strftime("%Y-%m-%d")
+    with _llm_day_lock:
+        if _llm_day["date"] != today:
+            _llm_day["date"], _llm_day["count"] = today, 0
+        if _llm_day["count"] + cost > _LLM_DAILY_CAP:
+            return False
+        _llm_day["count"] += cost
         return True
 
 
@@ -368,6 +401,9 @@ def _get_live_player_stats(tid: str, player: str) -> dict:
 def _generate_bet_reason(player: str, market: str, stats: dict) -> str:
     """Call Claude Haiku to generate a 2-3 sentence betting reason grounded in golf form and results."""
     import anthropic
+
+    if not _llm_budget_ok():
+        return ""  # breaker tripped — callers already treat empty as "no reason"
 
     def _f(v, default=0.0):
         try: return float(v)
@@ -1005,6 +1041,8 @@ def get_bet_reason(player: str, market: str, opponent: str = "") -> dict:
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"Claude error: {e}")
 
+    if not reason:  # budget breaker — don't cache the absence
+        raise HTTPException(status_code=429, detail="Daily LLM budget reached")
     cache.setdefault(tid, {})[key] = reason
     _save_reasons_cache(cache)
     return {"reason": reason, "cached": False}
@@ -2496,6 +2534,20 @@ def get_live_pulse(force: bool = False) -> dict:
                 return cached
         except Exception:
             pass
+
+    # Regeneration (including force=true, which anyone can pass) spends an
+    # LLM call — it draws on the shared daily budget. Serve the stale
+    # cache once the breaker trips; only 429 when there's nothing at all.
+    if not _llm_budget_ok():
+        if cache_file.exists():
+            try:
+                cached = json.loads(cache_file.read_text())
+                cached["cached"] = True
+                cached["stale"] = True
+                return cached
+            except Exception:
+                pass
+        raise HTTPException(status_code=429, detail="Daily LLM budget reached — cached pulse unavailable")
 
     # ── Load live data ────────────────────────────────────────────────────────
     # In-play leaderboard
@@ -5324,6 +5376,20 @@ def get_player_synopsis(player: str, force: bool = False) -> dict:
         except Exception:
             pass
 
+    # Regeneration (cache miss or force=true, both visitor-reachable)
+    # spends an LLM call against the shared daily budget. When the
+    # breaker has tripped, a stale synopsis beats none.
+    if not _llm_budget_ok():
+        if cache_file.exists():
+            try:
+                cached = json.loads(cache_file.read_text())
+                cached["cached"] = True
+                cached["stale"] = True
+                return cached
+            except Exception:
+                pass
+        raise HTTPException(status_code=429, detail="Daily LLM budget reached — synopsis unavailable")
+
     # ── Gather stats ─────────────────────────────────────────────────────────
     def _find(df: pd.DataFrame, col: str = "player_name") -> pd.Series | None:
         lf = _flip_to_last_first(player)
@@ -6218,9 +6284,23 @@ def _select_temperature(query: str) -> float:
 @app.post("/api/chat")
 def chat_endpoint(body: ChatRequest, request: Request):
     """Stream an assistant response via SSE. Routes to Haiku (simple) or Sonnet (complex)."""
-    client_ip = request.client.host if request.client else "unknown"
-    if not _rate_limit_ok(client_ip):
+    # When CHAT_PROXY_SECRET is set, chat only accepts requests relayed by
+    # the site's own server route (which requires a Clerk sign-in and
+    # forwards the user id) — the raw endpoint stops being spendable by
+    # anyone with the URL. Unset, behavior is unchanged (local dev).
+    proxy_secret = os.environ.get("CHAT_PROXY_SECRET", "")
+    if proxy_secret:
+        if request.headers.get("x-chat-proxy-secret") != proxy_secret:
+            raise HTTPException(status_code=403, detail="Assistant requests must come through the site")
+        user_id = request.headers.get("x-user-id", "").strip()
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Sign in to use the assistant")
+        if not _rate_limit_ok(f"chat-user:{user_id}", max_n=15):
+            raise HTTPException(status_code=429, detail="Daily assistant limit reached (15 messages) — resets in 24 hours")
+    if not _rate_limit_ok(f"chat-ip:{_client_ip(request)}"):
         raise HTTPException(status_code=429, detail="Rate limit: 20 chat requests per 24 hours")
+    if not _llm_budget_ok():
+        raise HTTPException(status_code=429, detail="The assistant hit its daily budget — back tomorrow")
 
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
     if not api_key:

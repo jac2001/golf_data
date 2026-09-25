@@ -1145,7 +1145,9 @@ export function streamChat(
 
   (async () => {
     try {
-      const res = await apiFetch(`${API_BASE}/api/chat`, {
+      // Same-origin: our own /api/chat route (Clerk-authed) relays to
+      // Render with the proxy secret — the raw API is not spendable.
+      const res = await apiFetch(`/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, messages, last_players: lastPlayers }),
