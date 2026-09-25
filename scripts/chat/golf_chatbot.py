@@ -6423,6 +6423,34 @@ def _euro_week_block() -> str:
                 lines.append(f"Defending champion: {mine.iloc[0]['champion']} "
                              f"({int(mine.iloc[0]['calendar_year'])}).")
 
+        # Live leaderboard snapshot — the answer to "who is winning" once
+        # play starts is THIS, never the pre-tournament model board. The
+        # snapshot refreshes on the evening cron, so its age is stated and
+        # the model is told not to invent fresher thru-hole scores.
+        rounds_path = DATA / "live" / f"rounds_{tid}.csv"
+        if live and rounds_path.exists():
+            try:
+                lb = pd.read_csv(rounds_path)
+                age_h = (pd.Timestamp.now() - pd.Timestamp.fromtimestamp(
+                    rounds_path.stat().st_mtime)).total_seconds() / 3600
+                lb["_score"] = pd.to_numeric(lb["current_score"], errors="coerce")
+                top = lb.dropna(subset=["_score"]).nsmallest(10, "_score")
+                lines.append(f"LIVE LEADERBOARD (snapshot ~{age_h:.0f}h old — top 10):")
+                for _, r in top.iterrows():
+                    sc = int(r["_score"])
+                    lines.append(f"  {r['current_pos']} {r['player_name']}: "
+                                 f"{'+' + str(sc) if sc > 0 else 'E' if sc == 0 else sc}"
+                                 f" (thru {r.get('thru', '?')})")
+                lines.append(
+                    "When asked who IS WINNING or leading, answer from this "
+                    "leaderboard and say how old the snapshot is. The model board "
+                    "below holds PRE-TOURNAMENT win probabilities (priors, not live "
+                    "chances) while the market odds ARE live — so mid-event 'edge' "
+                    "numbers mostly reflect scores the model hasn't seen; do not "
+                    "pitch them as value. Never invent scores fresher than the snapshot.")
+            except Exception:
+                pass
+
         ep = DATA / "predictions_euro" / f"euro_model_{tid}.csv"
         if ep.exists():
             top = pd.read_csv(ep).nlargest(10, "win_prob")
