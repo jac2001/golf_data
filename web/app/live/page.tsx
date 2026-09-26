@@ -17,7 +17,7 @@ import {
   refreshHoleScores, getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
   Tournament, InPlayResponse, VsPredPlayer, MyLineupResponse, SgStatsResponse, HoleScoresResponse,
   HoleStatsResponse, LivePulse as LivePulseData, WithdrawalsResponse,
-  getOpenEvents, getEuroLive, EuroLive,
+  getOpenEvents, getEuroLive, EuroLive, getEuroCourse,
 } from "@/lib/api";
 import InPlayLeaderboard from "@/components/InPlayLeaderboard";
 import VsPredictions from "@/components/VsPredictions";
@@ -391,10 +391,11 @@ function TourPills({ tour, setTour }: {
 /** DPWT live leaderboard from the in-play snapshot — honest about its
  *  freshness (age + which round the scores cover come from the API,
  *  the same computation the assistant's context uses). */
-type EuroLiveTab = "leaderboard" | "holes";
+type EuroLiveTab = "leaderboard" | "holes" | "scorecards";
 const EURO_LIVE_TABS: { id: EuroLiveTab; label: string }[] = [
   { id: "leaderboard", label: "Leaderboard"  },
   { id: "holes",       label: "Hole by Hole" },
+  { id: "scorecards",  label: "Scorecards"   },
 ];
 
 function EuroLiveView() {
@@ -403,6 +404,8 @@ function EuroLiveView() {
   const [holes, setHoles] = useState<HoleStatsResponse | null>(null);
   const [holeRound, setHoleRound] = useState("event_avg");
   const [tab, setTab] = useState<EuroLiveTab>("leaderboard");
+  const [par, setPar] = useState<number | null>(null);
+  const [cardSearch, setCardSearch] = useState("");
   const [err, setErr] = useState("");
 
   useEffect(() => {
@@ -416,6 +419,7 @@ function EuroLiveView() {
         .find(e => !e.finished) ?? (d.events ?? []).filter(e => e.tour === "euro")[0];
       if (!ev) { setErr("No DP World Tour event this week."); return; }
       setEventName(ev.name);
+      getEuroCourse(ev.tournament_id).then(c => setPar(c.par)).catch(() => {});
       const load = () => getEuroLive(ev.tournament_id).then(setData)
         .catch(() => setErr("Could not load the euro leaderboard."));
       load();
@@ -520,6 +524,60 @@ function EuroLiveView() {
           <HoleStatsTable holes={holes.holes} round={holes.round} updated={holes.updated} />
         </div>
       ) : <Empty text="Hole stats land once the round is underway." />
+    )}
+
+    {tab === "scorecards" && (
+      <div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, flexWrap: "wrap" }}>
+          <input
+            placeholder="Search player…"
+            value={cardSearch}
+            onChange={e => setCardSearch(e.target.value)}
+            style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
+              color: "var(--bc-text)", padding: "7px 12px", fontSize: "0.85em", outline: "none", width: 200 }}
+          />
+          <span style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
+            Round scores{par != null ? ` · par ${par}` : ""} — hole-level detail has no DP World Tour source,
+            so these are round cards, not hole cards.
+          </span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12 }}>
+          {data.players
+            .filter(p => p.player_name.toLowerCase().includes(cardSearch.toLowerCase()))
+            .map((p, i) => (
+              <div key={i} style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "12px 14px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+                  <span style={{ fontWeight: 700, fontSize: "0.9em" }}>{p.player_name}</span>
+                  <span style={{ fontWeight: 800, fontSize: "0.9em", fontVariantNumeric: "tabular-nums",
+                    color: (p.total ?? 0) < 0 ? "var(--bc-green)" : (p.total ?? 0) > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
+                    {p.position || "—"} · {fmtScore(p.total)}
+                  </span>
+                </div>
+                <div style={{ display: "flex", gap: 6 }}>
+                  {p.rounds.map((r, ri) => {
+                    const vs = r != null && par != null ? Math.round(r) - par : null;
+                    return (
+                      <div key={ri} style={{ flex: 1, textAlign: "center", borderRadius: 5, padding: "6px 0",
+                        background: vs == null ? "var(--bc-panel)" : vs < 0 ? "#0a1e12" : vs > 0 ? "#1e0d0d" : "var(--bc-panel)",
+                        border: `1px solid ${vs == null ? "var(--bc-line)" : vs < 0 ? "#1e5a3f" : vs > 0 ? "#5a2a2a" : "var(--bc-line)"}` }}>
+                        <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase" }}>R{ri + 1}</div>
+                        <div style={{ fontWeight: 800, fontSize: "0.92em", fontVariantNumeric: "tabular-nums",
+                          color: vs == null ? "var(--bc-muted)" : vs < 0 ? "var(--bc-green)" : vs > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
+                          {r != null ? Math.round(r) : "—"}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {p.thru && p.thru !== "—" && p.today != null && (
+                  <div style={{ marginTop: 6, fontSize: "0.72em", color: "var(--bc-muted)" }}>
+                    today {fmtScore(p.today)} · thru {p.thru}
+                  </div>
+                )}
+              </div>
+            ))}
+        </div>
+      </div>
     )}
     </>
   );
