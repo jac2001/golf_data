@@ -4674,9 +4674,16 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
 
     if projected:
         live = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+        if not live.exists():
+            # Euro events keep their live state in rounds_{tid}.csv with
+            # current_pos — without this the France weekend's group
+            # standings were blank while PGA weekends had numbers.
+            live = DATA_DIR / "live" / f"rounds_{tid}.csv"
         if live.exists():
             try:
                 sub = pd.read_csv(live)
+                if "position" not in sub.columns and "current_pos" in sub.columns:
+                    sub = sub.rename(columns={"current_pos": "position"})
                 if "position" in sub.columns and len(sub):
                     est = _estimate_earnings_for_event(sub, tid)
                     if est is not None:
