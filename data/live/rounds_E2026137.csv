@@ -1,145 +1,145 @@
 player_name,current_pos,current_score,R1,R2,R3,R4,thru,today
-"Fitzpatrick, Matt",1,-19,65.0,64.0,65.0,,18,-6
-"Vaillant, Tom",2,-14,67.0,65.0,67.0,,18,-4
-"Reitan, Kristoffer",T3,-13,65.0,69.0,66.0,,18,-5
-"Chacarra, Eugenio",T3,-13,70.0,68.0,62.0,,18,-9
-"Winther, Jeff",T3,-13,66.0,64.0,70.0,,18,-1
-"Stone, Brandon",T3,-13,66.0,71.0,63.0,,18,-8
-"Hidalgo, Angel",T3,-13,67.0,66.0,67.0,,18,-4
-"Kim, Michael",T8,-12,63.0,68.0,70.0,,18,-1
-"Migliozzi, Guido",T8,-12,69.0,69.0,63.0,,18,-8
-"Siem, Marcel",T8,-12,69.0,64.0,68.0,,18,-3
-"Dean, Joe",T11,-11,70.0,66.0,66.0,,18,-5
-"Bairstow, Sam",T11,-11,65.0,71.0,66.0,,18,-5
-"De Leo, Gregorio",T11,-11,65.0,68.0,69.0,,18,-2
-"Gerard, Ryan",T17,-9,67.0,65.0,72.0,,18,1
-"Laporta, Francesco",T14,-10,68.0,67.0,68.0,,18,-3
-"Lawrence, Thriston",T14,-10,65.0,68.0,70.0,,18,-1
-"Scrivener, Jason",T14,-10,65.0,70.0,68.0,,18,-3
-"Hovland, Viktor",T20,-8,67.0,68.0,70.0,,18,-1
-"Aberg, Ludvig",T28,-7,71.0,66.0,69.0,,18,-2
-"Pavon, Matthieu",T20,-8,66.0,72.0,67.0,,18,-4
-"Kimsey, Nathan",T20,-8,70.0,67.0,68.0,,18,-3
-"Manassero, Matteo",T20,-8,65.0,70.0,70.0,,18,-1
-"Sandhu, Yuvraj Singh",T17,-9,67.0,68.0,69.0,,18,-2
-"Katsuragawa, Yuto",T20,-8,68.0,70.0,67.0,,18,-4
-"Guerrier, Julien",T20,-8,66.0,70.0,69.0,,18,-2
-"Saddier, Adrien",T28,-7,67.0,71.0,68.0,,18,-3
-"Ferguson, Ewen",T28,-7,68.0,70.0,68.0,,18,-3
-"Rozner, Antoine",T28,-7,67.0,68.0,71.0,,18,0
-"Detry, Thomas",T28,-7,70.0,68.0,68.0,,18,-3
-"Luiten, Joost",T28,-7,70.0,67.0,69.0,,18,-2
-"Zhou, Yanhan",T20,-8,66.0,70.0,69.0,,18,-2
-"Couvra, Martin",T28,-7,70.0,69.0,67.0,,18,-4
-"Guillamoundeguy, Oihan",T28,-7,71.0,68.0,67.0,,18,-4
-"Elvira Mijares, Ignacio",T46,-5,68.0,69.0,71.0,,18,0
-"Veerman, Johannes",T20,-8,71.0,67.0,67.0,,18,-4
-"Strydom, Ockie",T17,-9,67.0,69.0,68.0,,18,-3
-"Lee, Junghwan",T38,-6,68.0,69.0,70.0,,18,-1
-"Molinari, Edoardo",T28,-7,66.0,70.0,70.0,,18,-1
-"Otaegui, Adrian",T38,-6,70.0,69.0,68.0,,18,-3
-"Girrbach, Joel",T38,-6,69.0,67.0,71.0,,18,0
-"Naidoo, Dylan",T38,-6,68.0,68.0,71.0,,18,0
-"Tarren, Callum",T38,-6,71.0,67.0,69.0,,18,-2
-"Follet-Smith, Benjamin",T38,-6,68.0,71.0,68.0,,18,-3
-"Bradbury, Dan",T55,-3,68.0,71.0,71.0,,18,0
+"Fitzpatrick, Matt",1,-20,65.0,64.0,65.0,70.0,18,-1
+"Hill, Calum",CUT,0,67.0,75.0,,,0,0
+"Morrison, James",CUT,0,71.0,71.0,,,0,0
+"Hidalgo, Angel",2,-17,67.0,66.0,67.0,67.0,18,-4
+"Chacarra, Eugenio",T3,-15,70.0,68.0,62.0,69.0,18,-2
+"Pavon, Matthieu",T3,-15,66.0,72.0,67.0,64.0,18,-7
+"Reitan, Kristoffer",T3,-15,65.0,69.0,66.0,69.0,18,-2
+"Bradbury, Dan",T14,-10,68.0,71.0,71.0,64.0,18,-7
+"Vaillant, Tom",T3,-15,67.0,65.0,67.0,70.0,18,-1
+"Migliozzi, Guido",T7,-14,69.0,69.0,63.0,69.0,18,-2
+"Stone, Brandon",T7,-14,66.0,71.0,63.0,70.0,18,-1
+"Winther, Jeff",10,-13,66.0,64.0,70.0,71.0,18,0
+"Aberg, Ludvig",T11,-12,71.0,66.0,69.0,66.0,18,-5
+"Dean, Joe",T11,-12,70.0,66.0,66.0,70.0,18,-1
+"Sandhu, Yuvraj Singh",13,-11,67.0,68.0,69.0,69.0,18,-2
+"Kim, Michael",T7,-14,63.0,68.0,70.0,69.0,18,-2
+"Debove, Quentin",T33,-7,67.0,72.0,70.0,68.0,18,-3
 "Elvira, Manuel",CUT,12,80.0,74.0,,,0,0
-"Ayora, Angel",T38,-6,70.0,67.0,70.0,,18,-1
-"Wu, Ashun",T46,-5,70.0,68.0,70.0,,18,-1
-"Clements, Todd",T46,-5,71.0,68.0,69.0,,18,-2
-"Kaneko, Kota",T46,-5,72.0,66.0,70.0,,18,-1
-"Jamieson, Scott",T50,-4,67.0,69.0,73.0,,18,2
-"Perez, Victor",CUT,-2,69.0,71.0,,,0,0
-"Celli, Filippo",T38,-6,72.0,64.0,71.0,,18,0
+"Bairstow, Sam",T14,-10,65.0,71.0,66.0,72.0,18,1
+"Ferguson, Ewen",T14,-10,68.0,70.0,68.0,68.0,18,-3
+"Rozner, Antoine",T20,-9,67.0,68.0,71.0,69.0,18,-2
+"Siem, Marcel",T14,-10,69.0,64.0,68.0,73.0,18,2
+"Celli, Filippo",T20,-9,72.0,64.0,71.0,68.0,18,-3
+"Couvra, Martin",T20,-9,70.0,69.0,67.0,69.0,18,-2
+"Detry, Thomas",T20,-9,70.0,68.0,68.0,69.0,18,-2
+"Laporta, Francesco",T20,-9,68.0,67.0,68.0,72.0,18,1
+"Gerard, Ryan",T14,-10,67.0,65.0,72.0,70.0,18,-1
+"Veerman, Johannes",T20,-9,71.0,67.0,67.0,70.0,18,-1
+"Manassero, Matteo",T28,-8,65.0,70.0,70.0,71.0,18,0
+"Wu, Ashun",T20,-9,70.0,68.0,70.0,67.0,18,-4
+"Ayora, Angel",T28,-8,70.0,67.0,70.0,69.0,18,-2
+"De Leo, Gregorio",T28,-8,65.0,68.0,69.0,74.0,18,3
+"Katsuragawa, Yuto",T28,-8,68.0,70.0,67.0,71.0,18,0
+"Lawrence, Thriston",T28,-8,65.0,68.0,70.0,73.0,18,2
+"Scrivener, Jason",T20,-9,65.0,70.0,68.0,72.0,18,1
+"Hovland, Viktor",T33,-7,67.0,68.0,70.0,72.0,18,1
+"Molinari, Edoardo",T33,-7,66.0,70.0,70.0,71.0,18,0
+"Quayle, Anthony",T50,-3,66.0,72.0,72.0,71.0,18,0
+"Du Plessis, Hennie",T44,-4,72.0,67.0,71.0,70.0,18,-1
+"Tarren, Callum",T37,-6,71.0,67.0,69.0,71.0,18,0
+"Von Dellingshausen, Nicolai",T37,-6,70.0,69.0,70.0,69.0,18,-2
 "Fleetwood, Tommy",WD,-6,69.0,67.0,,,0,0
-"Quayle, Anthony",T55,-3,66.0,72.0,72.0,,18,1
-"Gallegos, Andres",T59,-2,67.0,70.0,74.0,,18,3
-"Yule, Jack",T55,-3,70.0,68.0,72.0,,18,1
-"Du Plessis, Hennie",T55,-3,72.0,67.0,71.0,,18,0
-"Pieters, Thomas",T59,-2,69.0,67.0,75.0,,18,4
-"Paul, Jeremy",T28,-7,69.0,70.0,67.0,,18,-4
-"Meronk, Adrian",T59,-2,67.0,71.0,73.0,,18,2
-"Debove, Quentin",T50,-4,67.0,72.0,70.0,,18,-1
-"Law, David",T59,-2,72.0,67.0,72.0,,18,1
-"Lemke, Niklas",CUT,-2,73.0,67.0,,,0,0
-"Paul, Yannik",T50,-4,69.0,67.0,73.0,,18,2
+"Kaneko, Kota",T41,-5,72.0,66.0,70.0,71.0,18,0
+"Luiten, Joost",T41,-5,70.0,67.0,69.0,73.0,18,2
+"Strydom, Ockie",T41,-5,67.0,69.0,68.0,75.0,18,4
+"Kimsey, Nathan",T44,-4,70.0,67.0,68.0,75.0,18,4
+"Paul, Jeremy",T33,-7,69.0,70.0,67.0,71.0,18,0
+"Law, David",T44,-4,72.0,67.0,72.0,69.0,18,-2
+"Otaegui, Adrian",T44,-4,70.0,69.0,68.0,73.0,18,2
+"Saddier, Adrien",T44,-4,67.0,71.0,68.0,74.0,18,3
+"Zhou, Yanhan",T44,-4,66.0,70.0,69.0,75.0,18,4
+"Arnaus, Adri",T50,-3,69.0,68.0,74.0,70.0,18,-1
 "Norris, Shaun",CUT,-2,69.0,71.0,,,0,0
+"Girrbach, Joel",T37,-6,69.0,67.0,71.0,71.0,18,0
+"Guillamoundeguy, Oihan",WD,-3,71.0,68.0,67.0,,0,0
+"Young, Daniel",T50,-3,69.0,70.0,70.0,72.0,18,1
+"Charmasson, Clement",CUT,-2,70.0,70.0,,,0,0
+"Aphibarnrat, Kiradech",T56,-2,69.0,70.0,74.0,69.0,18,-2
+"Follet-Smith, Benjamin",T56,-2,68.0,71.0,68.0,75.0,18,4
+"Gallegos, Andres",T56,-2,67.0,70.0,74.0,71.0,18,0
+"Lee, Junghwan",T56,-2,68.0,69.0,70.0,75.0,18,4
+"Paul, Yannik",T50,-3,69.0,67.0,73.0,72.0,18,1
+"Buchanan, Jack",CUT,-2,69.0,71.0,,,0,0
+"Coussaud, Ugo",CUT,-2,71.0,69.0,,,0,0
+"Jamieson, Scott",T50,-3,67.0,69.0,73.0,72.0,18,1
 "Fisher, Ross",CUT,-2,71.0,69.0,,,0,0
-"Van Driel, Darius",CUT,-2,70.0,70.0,,,0,0
-"Cauley, Bud",CUT,-2,70.0,70.0,,,0,0
-"Arnaus, Adri",T59,-2,69.0,68.0,74.0,,18,3
-"Von Dellingshausen, Nicolai",T50,-4,70.0,69.0,70.0,,18,-1
-"Young, Daniel",T50,-4,69.0,70.0,70.0,,18,-1
-"Armitage, Marcus",CUT,0,72.0,70.0,,,0,0
 "Kinhult, Marcus",CUT,-2,72.0,68.0,,,0,0
-"Van Tonder, Daniel",CUT,0,71.0,71.0,,,0,0
-"Bergstrom, Albin",CUT,-1,68.0,73.0,,,0,0
 "Legros, Maxime",CUT,-2,72.0,68.0,,,0,0
+"Lemke, Niklas",CUT,-2,73.0,67.0,,,0,0
+"Cauley, Bud",CUT,-2,70.0,70.0,,,0,0
+"Meronk, Adrian",T50,-3,67.0,71.0,73.0,70.0,18,-1
+"Guerrier, Julien",T14,-10,66.0,70.0,69.0,69.0,18,-2
+"Mory, Felix",CUT,-2,69.0,71.0,,,0,0
+"Clements, Todd",T37,-6,71.0,68.0,69.0,70.0,18,-1
+"Sale, Julien",CUT,-1,72.0,69.0,,,0,0
+"Bergstrom, Albin",CUT,-1,68.0,73.0,,,0,0
 "Garcia-Heredia, Alfredo",CUT,-1,73.0,68.0,,,0,0
 "Gouveia, Ricardo",CUT,-1,67.0,74.0,,,0,0
-"Rosenmueller, Thomas",CUT,-1,73.0,68.0,,,0,0
-"Hebert, Benjamin",CUT,0,70.0,72.0,,,0,0
 "Hoshino, Rikuya",CUT,-1,72.0,69.0,,,0,0
-"Sale, Julien",CUT,-1,72.0,69.0,,,0,0
-"Buchanan, Jack",CUT,-2,69.0,71.0,,,0,0
 "Robinson Thompson, Brandon",CUT,-1,70.0,71.0,,,0,0
-"Aphibarnrat, Kiradech",T64,0,69.0,70.0,74.0,,18,3
-"Pineau, Pierre",T64,0,72.0,67.0,74.0,,18,3
-"Waring, Paul",CUT,0,72.0,70.0,,,0,0
+"Rosenmueller, Thomas",CUT,-1,73.0,68.0,,,0,0
 "Toorop, Mike",CUT,-1,70.0,71.0,,,0,0
-"Ravetto, David",CUT,1,68.0,75.0,,,0,0
-"Charmasson, Clement",CUT,-2,70.0,70.0,,,0,0
-"Morrison, James",CUT,0,71.0,71.0,,,0,0
-"Repetto Taylor, Rocco",CUT,1,74.0,69.0,,,0,0
-"Berry, Joshua",CUT,0,71.0,71.0,,,0,0
-"Paratore, Renato",CUT,0,73.0,69.0,,,0,0
-"Cantero Gutierrez, Ivan",CUT,0,70.0,72.0,,,0,0
-"Crocker, Sean",CUT,0,72.0,70.0,,,0,0
-"Hill, Calum",CUT,0,67.0,75.0,,,0,0
+"Elvira Mijares, Ignacio",T60,-1,68.0,69.0,71.0,75.0,18,4
+"Naidoo, Dylan",62,0,68.0,68.0,71.0,77.0,18,6
+"Armitage, Marcus",CUT,0,72.0,70.0,,,0,0
 "Beauvy, Paul",CUT,0,73.0,69.0,,,0,0
+"Berry, Joshua",CUT,0,71.0,71.0,,,0,0
+"Crocker, Sean",CUT,0,72.0,70.0,,,0,0
+"Repetto Taylor, Rocco",CUT,1,74.0,69.0,,,0,0
+"Yule, Jack",T60,-1,70.0,68.0,72.0,73.0,18,2
+"Ravetto, David",CUT,1,68.0,75.0,,,0,0
+"Trolio, Cohen",CUT,1,73.0,70.0,,,0,0
+"Gumberg, Jordan",CUT,1,72.0,71.0,,,0,0
+"Paratore, Renato",CUT,0,73.0,69.0,,,0,0
+"Schmidt, Ben",CUT,0,72.0,70.0,,,0,0
+"Van Tonder, Daniel",CUT,0,71.0,71.0,,,0,0
+"Waring, Paul",CUT,0,72.0,70.0,,,0,0
 "Langasque, Romain",CUT,1,70.0,73.0,,,0,0
 "Dantorp, Jens",CUT,1,69.0,74.0,,,0,0
-"Mory, Felix",CUT,-2,69.0,71.0,,,0,0
-"Ortiz, Carlos",CUT,1,71.0,72.0,,,0,0
 "Mazzoli, Stefano",CUT,1,71.0,72.0,,,0,0
-"Gumberg, Jordan",CUT,1,72.0,71.0,,,0,0
-"Schott, Freddy",CUT,1,70.0,73.0,,,0,0
-"Schmidt, Ben",CUT,0,72.0,70.0,,,0,0
+"Cantero Gutierrez, Ivan",CUT,0,70.0,72.0,,,0,0
+"Ortiz, Carlos",CUT,1,71.0,72.0,,,0,0
+"Peake, Ryan",CUT,1,68.0,75.0,,,0,0
+"Hebert, Benjamin",CUT,0,70.0,72.0,,,0,0
+"Pieters, Thomas",63,1,69.0,67.0,75.0,74.0,18,3
 "Forsstrom, Simon",CUT,0,71.0,71.0,,,0,0
+"Van Driel, Darius",CUT,-2,70.0,70.0,,,0,0
 "Townsend, Hugo",CUT,10,76.0,76.0,,,0,0
 "Zanotti, Fabrizio",CUT,5,68.0,79.0,,,0,0
-"Coussaud, Ugo",CUT,-2,71.0,69.0,,,0,0
-"Forrest, Grant",CUT,3,76.0,69.0,,,0,0
-"Malcor, Ugo",CUT,2,72.0,72.0,,,0,0
-"Jonsson, Tobias",CUT,2,69.0,75.0,,,0,0
-"Kobori, Kazuma",CUT,2,71.0,73.0,,,0,0
-"Sautron, Rudy",CUT,2,76.0,68.0,,,0,0
-"Decottignies-Lafon, Mathieu",CUT,3,74.0,71.0,,,0,0
-"Levy, Alexander",CUT,3,69.0,76.0,,,0,0
+"Perez, Victor",CUT,-2,69.0,71.0,,,0,0
 "LaCroix, Frederic",CUT,3,75.0,70.0,,,0,0
-"Trolio, Cohen",CUT,1,73.0,70.0,,,0,0
-"Adam, Cameron",CUT,3,73.0,72.0,,,0,0
-"Sharma, Shubhankar",CUT,4,72.0,74.0,,,0,0
-"Halvorsen, Andreas",CUT,4,71.0,75.0,,,0,0
-"Walker, Euan",CUT,4,73.0,73.0,,,0,0
-"Vidal, Quim",CUT,4,73.0,73.0,,,0,0
-"Peake, Ryan",CUT,1,68.0,75.0,,,0,0
+"Malcor, Ugo",CUT,2,72.0,72.0,,,0,0
+"Sautron, Rudy",CUT,2,76.0,68.0,,,0,0
 "Smith, Cameron",CUT,2,72.0,72.0,,,0,0
+"Adam, Cameron",CUT,3,73.0,72.0,,,0,0
+"Decottignies-Lafon, Mathieu",CUT,3,74.0,71.0,,,0,0
+"Forrest, Grant",CUT,3,76.0,69.0,,,0,0
+"Levy, Alexander",CUT,3,69.0,76.0,,,0,0
+"Jonsson, Tobias",CUT,2,69.0,75.0,,,0,0
+"Biondi, Fred",CUT,4,77.0,69.0,,,0,0
+"Halvorsen, Andreas",CUT,4,71.0,75.0,,,0,0
+"Johnston, Ryggs",CUT,4,78.0,68.0,,,0,0
 "McKinney, Connor",CUT,4,72.0,74.0,,,0,0
-"Garcia Rodriguez, Sebastian",CUT,5,73.0,74.0,,,0,0
+"Sharma, Shubhankar",CUT,4,72.0,74.0,,,0,0
+"Schott, Freddy",CUT,1,70.0,73.0,,,0,0
+"Kobori, Kazuma",CUT,2,71.0,73.0,,,0,0
+"Vidal, Quim",CUT,4,73.0,73.0,,,0,0
+"Pineau, Pierre",64,6,72.0,67.0,74.0,77.0,18,6
 "Sullivan, Andy",WD,8,,,,,0,0
 "Kieffer, Max",CUT,6,72.0,76.0,,,0,0
 "Micheluzzi, David",CUT,6,76.0,72.0,,,0,0
 "Smylie, Elvis",CUT,6,72.0,76.0,,,0,0
 "Lombard, Zander",CUT,7,71.0,78.0,,,0,0
-"Gavins, Daniel",WD,4,,,,,0,0
-"Senior, Jack",CUT,8,73.0,77.0,,,0,0
-"Baldwin, Matthew",CUT,9,75.0,76.0,,,0,0
-"Johnston, Ryggs",CUT,4,78.0,68.0,,,0,0
-"Ko, Jeong Weon",CUT,9,70.0,81.0,,,0,0
-"Rodrigues, Daniel",CUT,9,75.0,76.0,,,0,0
-"Mjaaseth, Michael",CUT,9,78.0,73.0,,,0,0
-"Steinlechner, Maximilian",CUT,-2,67.0,73.0,,,0,0
+"Garcia Rodriguez, Sebastian",CUT,5,73.0,74.0,,,0,0
 "Pemerika, Tao",CUT,8,73.0,77.0,,,0,0
-"Biondi, Fred",CUT,4,77.0,69.0,,,0,0
+"Baldwin, Matthew",CUT,9,75.0,76.0,,,0,0
+"Walker, Euan",CUT,4,73.0,73.0,,,0,0
+"Ko, Jeong Weon",CUT,9,70.0,81.0,,,0,0
+"Mjaaseth, Michael",CUT,9,78.0,73.0,,,0,0
+"Rodrigues, Daniel",CUT,9,75.0,76.0,,,0,0
+"Steinlechner, Maximilian",CUT,-2,67.0,73.0,,,0,0
+"Senior, Jack",CUT,8,73.0,77.0,,,0,0
+"Gavins, Daniel",WD,4,,,,,0,0
 "Capan III, Frankie",CUT,19,82.0,79.0,,,0,0
