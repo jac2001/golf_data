@@ -254,6 +254,14 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     path = OUT_DIR / f"euro_model_{tid}.csv"
     out.to_csv(path, index=False)
+
+    # The live file keeps refreshing odds mid-event (the Move column needs
+    # that), which destroyed France's pre-tournament market benchmark.
+    # Freeze a grading copy: every pre-event run overwrites it, so the
+    # last run before the first tee wins; mid-event runs never touch it.
+    if pd.Timestamp.now().normalize() < event_start:
+        out.to_csv(OUT_DIR / f"euro_model_{tid}_pre.csv", index=False)
+        print(f"pre-event benchmark frozen -> euro_model_{tid}_pre.csv")
     print(f"{len(out)} players -> {path.relative_to(PROJECT_ROOT)}")
     print(out.head(5)[["player_name", "win_prob", "top10_prob"]].to_string(index=False))
     print(f"win probs sum: {out['win_prob'].sum():.3f} (a sane field sums near 1)")
