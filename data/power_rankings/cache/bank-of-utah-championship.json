@@ -1,0 +1,352 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Bank of Utah Championship",
+      "tableTitle": "Power Rankings for Bank of Utah Championship",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "37338",
+            "firstName": "Zecheng",
+            "lastName": "Dou",
+            "countryFlag": "CHN",
+            "countryName": "People's Republic of China",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37338.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He doesn\u2019t cash often, but when he does, it results in a top 25 regularly. Five of his last six paydays qualify, including a season-best T7 in his last at the Biltmore Championship Asheville. Balanced bag. Dangerous putter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "46442",
+            "firstName": "Maverick",
+            "lastName": "McNealy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46442.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Walked off the FedExCup season T25-T19-T7 to finish 42nd in points, so he\u2019s equipped with starts in all 2027 Signature Events. Black Desert is a short drive from Las Vegas, where he resides. A threat in every putting contest."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "52375",
+            "firstName": "Doug",
+            "lastName": "Ghim",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52375.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Fairways and greens can be classified as boring, but the combo sure is lucrative. Sits third in ball-striking, fifth in proximity and 21st in adjusted scoring with three consecutive top 20s upon arrival and five in his last seven."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "60019",
+            "firstName": "Jackson",
+            "lastName": "Suber",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60019.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The sharpshooter opened the FedExCup Fall with a T15. It was his second straight top 25 and another in a handful of impressive performances over recent months. Debuted at Black Desert with a T15 last year despite average ball-striking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "35296",
+            "firstName": "Haotong",
+            "lastName": "Li",
+            "countryFlag": "CHN",
+            "countryName": "People's Republic of China",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_35296.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a T10 at the Biltmore Championship, "
+                },
+                {
+                  "value": "he delivered on the prospect of a top 20 as a Sleeper"
+                },
+                {
+                  "value": ". It was the latest evidence of his improvement, sparked by a return to the DP World Tour. Irons are his strongest attribute."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "36884",
+            "firstName": "Ben",
+            "lastName": "Kohles",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36884.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "At 17th on the Korn Ferry Tour Points List, he can sit out that circuit for now, but he\u2019s also 90th in the FedExCup after a T15 in Asheville. Since winning the BMW Charity Pro-Am, he\u2019s 13-for-13 with five top 15s across both tours."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "51003",
+            "firstName": "Marco",
+            "lastName": "Penge",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51003.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Proving that what can feel like a long year also can be a blessing. A T10 at the Biltmore Championship was his third top 10 of five top-20 finishes in his last eight starts worldwide, all of which came after time off to get healthy."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "45242",
+            "firstName": "Kevin",
+            "lastName": "Yu",
+            "countryFlag": "TPE",
+            "countryName": "Chinese Taipei",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_45242.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Played from behind after a rough start to the season, but he\u2019s inside the top-100 bubble of the FedExCup at 93rd with five straight cuts made, four of which were top-25 finishes. The ball-striker finished T15 in his debut here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "63454",
+            "firstName": "Johnny",
+            "lastName": "Keefer",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_63454.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He ranks third on the PGA Tour in greens in regulation. While that strength is neutralized on the larger targets at Black Desert, he\u2019s also 16th in proximity and he\u2019s fresh off a T7 in Asheville where his putting was on point."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "48887",
+            "firstName": "Matt",
+            "lastName": "Wallace",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48887.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a quiet first half of 2026, he posted five top 10s and another two top 15s in his last 10 starts worldwide. Top 15s in his last six. The mojo has the Brit 76th in the FedExCup and 54th in the Official World Golf Ranking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "39977",
+            "firstName": "Max",
+            "lastName": "Homa",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39977.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The 35-year-old has flashed grit all year. It\u2019s yielded six top 25s, the most recent a T24 in his last start at the FedEx St. Jude Championship. Short of a win, he seeks to fortify his FedExCup rank (53rd), where he was T9 last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "59141",
+            "firstName": "Matt",
+            "lastName": "McCarty",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59141.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After a T3 in his defense of his breakthrough title in the inaugural and with a scoring average of 66.125, the lefty\u2019s confidence at Black Desert is unwavering. Free to pile on after securing starts in all 2027 Signature Events."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "61522",
+            "firstName": "Michael",
+            "lastName": "Brennan",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_61522.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "It was a year ago today that he bagged the Fortinet Cup on PGA Tour Americas. He then won at Black Desert in his next start and again at the Wyndham Championship in early August. T10 in his last start at the BMW Championship."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "57869",
+            "firstName": "Ben",
+            "lastName": "James",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57869.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With podium finishes in his last two starts and a T4 in July, he\u2019s 66th in the FedExCup, but "
+                },
+                {
+                  "value": "he\u2019s not officially a rookie until this week"
+                },
+                {
+                  "value": ". If eligible for official stats, he\u2019d lead the PGA Tour in both fairways and greens hit."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "66701",
+            "firstName": "Jackson",
+            "lastName": "Koivun",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_66701.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The only undefeated Presidents Cupper, en route to 2\u00bd points, remains as advertised. It shouldn\u2019t be taken for granted, but while seemingly inevitable, the unflappable 21-year-old still is chasing exemptions into premier events."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

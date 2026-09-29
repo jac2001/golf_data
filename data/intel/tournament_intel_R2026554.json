@@ -1,0 +1,130 @@
+{
+  "tid": "R2026554",
+  "tournament_name": "Bank of Utah Championship",
+  "generated_at": "2026-09-29T11:57:14.479852",
+  "course_conditions": {
+    "error": "API call failed"
+  },
+  "players": [
+    {
+      "player_name": "Koivun, Jackson",
+      "error": "API call failed",
+      "win_prob": 0.0447565465890853,
+      "world_rank": 57.0
+    },
+    {
+      "player_name": "Brennan, Michael",
+      "error": "API call failed",
+      "win_prob": 0.0388721887752598,
+      "world_rank": 32.0
+    },
+    {
+      "player_name": "James, Ben",
+      "error": "API call failed",
+      "win_prob": 0.0182094554360918,
+      "world_rank": 93.0
+    },
+    {
+      "player_name": "Ghim, Doug",
+      "error": "API call failed",
+      "win_prob": 0.02003702593393,
+      "world_rank": 153.0
+    },
+    {
+      "player_name": "McNealy, Maverick",
+      "error": "API call failed",
+      "win_prob": 0.0426132135663663,
+      "world_rank": 48.0
+    },
+    {
+      "player_name": "Wallace, Matt",
+      "error": "API call failed",
+      "win_prob": 0.0368812009239454,
+      "world_rank": 54.0
+    },
+    {
+      "player_name": "Penge, Marco",
+      "error": "API call failed",
+      "win_prob": 0.0325494321255993,
+      "world_rank": 53.0
+    },
+    {
+      "player_name": "Smith, Jordan",
+      "error": "API call failed",
+      "win_prob": 0.0345597967066688,
+      "world_rank": 73.0
+    },
+    {
+      "player_name": "Suber, Jackson",
+      "error": "API call failed",
+      "win_prob": 0.0099874666649966,
+      "world_rank": 94.0
+    },
+    {
+      "player_name": "Yu, Kevin",
+      "error": "API call failed",
+      "win_prob": 0.0220713712760901,
+      "world_rank": 105.0
+    },
+    {
+      "player_name": "Thompson, Davis",
+      "error": "API call failed",
+      "win_prob": 0.0252957737452891,
+      "world_rank": 123.0
+    },
+    {
+      "player_name": "Keefer, Johnny",
+      "error": "API call failed",
+      "win_prob": 0.0313057716366766,
+      "world_rank": 66.0
+    },
+    {
+      "player_name": "Cole, Eric",
+      "error": "API call failed",
+      "win_prob": 0.0097216093269301,
+      "world_rank": 78.0
+    },
+    {
+      "player_name": "Hossler, Beau",
+      "error": "API call failed",
+      "win_prob": 0.0126967876857522,
+      "world_rank": 97.0
+    },
+    {
+      "player_name": "Meissner, Mac",
+      "error": "API call failed",
+      "win_prob": 0.0113919964588962,
+      "world_rank": 88.0
+    },
+    {
+      "player_name": "Coody, Pierceson",
+      "error": "API call failed",
+      "win_prob": 0.0179016755611424,
+      "world_rank": 69.0
+    },
+    {
+      "player_name": "Ventura, Kristoffer",
+      "error": "API call failed",
+      "win_prob": 0.0032702293340385,
+      "world_rank": 193.0
+    },
+    {
+      "player_name": "Hoey, Rico",
+      "error": "API call failed",
+      "win_prob": 0.0165719375062052,
+      "world_rank": 111.0
+    },
+    {
+      "player_name": "Hall, Harry",
+      "error": "API call failed",
+      "win_prob": 0.0185717530515863,
+      "world_rank": 68.0
+    },
+    {
+      "player_name": "Kirk, Chris",
+      "error": "API call failed",
+      "win_prob": 0.0211927110619246,
+      "world_rank": 107.0
+    }
+  ]
+}
