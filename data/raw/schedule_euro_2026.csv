@@ -1,7 +1,7 @@
 start_date,end_date,tournament_name,tour,location,course,purse,purse_source,tournament_id
 2025-11-27,2025-11-30,BMW Australian PGA Championship,euro,"Brisbane, Australia",Royal Queensland GC,3000000,estimate,E2026100
-2025-12-04,2025-12-07,Nedbank Golf Challenge in honour of Gary Player,euro,"Sun City, South Africa",Gary Player CC,3000000,estimate,E2026102
 2025-12-04,2025-12-07,Crown Australian Open,euro,"Black Rock, Australia",Royal Melbourne GC,3000000,estimate,E2026101
+2025-12-04,2025-12-07,Nedbank Golf Challenge in honour of Gary Player,euro,"Sun City, South Africa",Gary Player CC,3000000,estimate,E2026102
 2025-12-11,2025-12-14,Alfred Dunhill Championship,euro,"Johannesburg, South Africa",Royal Johannesburg East Course;Royal Johannesburg East Course (Par 70),3000000,estimate,E2026103
 2025-12-18,2025-12-21,AfrAsia Bank Mauritius Open,euro,"Bel Ombre, Mauritius",La Reserve GC,3000000,estimate,E2026104
 2026-01-15,2026-01-18,Dubai Invitational,euro,"Dubai, UAE",Dubai Creek Resort,3000000,estimate,E2026105
@@ -26,5 +26,7 @@ start_date,end_date,tournament_name,tour,location,course,purse,purse_source,tour
 2026-08-27,2026-08-30,Husqvarna British Masters hosted by Sir Nick Faldo,euro,"Sutton Coldfield, England",Brabazon Course At The Belfry,3000000,estimate,E2026133
 2026-09-03,2026-09-06,Omega European Masters,euro,"Crans-Montana, Switzerland",Crans-Sur-Sierre GC,3000000,estimate,E2026134
 2026-09-10,2026-09-13,Amgen Irish Open,euro,"Doonbeg, Ireland",Trump International Golf Links & Hotel Ireland,3000000,estimate,E2026135
-2026-09-17,2026-09-20,BMW PGA Championship,euro,"Virgina Water, Surrey, England",Wentworth Club,9000000,estimate,E2026136
+2026-09-17,2026-09-20,BMW PGA Championship,euro,"Virgina Water, Surrey, England",Wentworth Golf Club,9000000,estimate,E2026136
 2026-09-24,2026-09-27,FedEx Open de France,euro,"Guyancourt, France",Le Golf National,3000000,estimate,E2026137
+2026-10-01,2026-10-04,Alfred Dunhill Links Championship,euro,"Fife, Scotland",Old Course St. Andrews;Carnoustie;Kingsbarns Golf Links,5000000,estimate,E2026144
+2026-10-08,2026-10-11,Open de Espana presented by Madrid,euro,"Madrid, Spain",Club de Campo Villa de Madrid,3000000,estimate,E2026139
