@@ -62,7 +62,7 @@ needed for it.
    `source: "model"` for E-events. Building our own model on DG
    features matches existing live PGA practice; the licensing letter's
    clarifications remain pending but gate only DG-prediction DISPLAY.
-2. **Phase 2 — Let It Ride, built now, shaken down this fall**: the
+2. **Phase 2 — Let It Ride, built now, shaken down this fall** (design in `docs/PHASE2_DESIGN.md`, 2026-09-28 — group mode, game first, 3/3, Fall Series opens Oct 8): the
    customizable-season design means an October–December "Fall Series"
    league (PGA fall + DPWT) is the format's beta season before the
    family league's 2027 stakes. Design after the euro training table
