@@ -42,7 +42,7 @@ CREATE TABLE leagues (
   group_id         int  NOT NULL REFERENCES groups(id),
   name             text NOT NULL,
   season_start     date NOT NULL,
-  season_end       date NOT NULL,
+  season_end       date,                 -- NULL = open-ended season
   tours            text[] NOT NULL DEFAULT '{pga,euro}',
   uses_per_player  int  NOT NULL DEFAULT 3,
   players_per_week int  NOT NULL DEFAULT 3,
@@ -113,21 +113,15 @@ Neon). That refactor is the whole preservation plan for the optimizer.
 
 Target: steps 1–5 live before the Oct 8 lock.
 
-## OPEN questions
+## Resolved (Jack, 2026-09-30)
 
-1. **How do DPWT weeks count?** Earnings scoring means a DPWT winner
-   (~$500K from a ~$3M purse) is worth less than a PGA top-5, so in a
-   combined pick pool the DPWT is mostly a trap. Options:
-   - (a) one combined pool each week, raw earnings — DPWT picks are a
-     rare strategic play;
-   - (b) the league plays ONE event per week: the PGA event when there
-     is one, the DPWT event in PGA off weeks (Oct 15) — clean, and the
-     DPWT fills gaps rather than competing;
-   - (c) purse-normalized scoring (earnings ÷ purse) — tour-neutral, but
-     no longer "real money".
-2. **Season end:** RSM (Nov 22) or include the Hero (Dec 3, 20-man
-   field — every member picking from 20 golfers is a very different
-   week)?
-3. **Uses counter across tours:** if a golfer plays both tours this fall
-   (Åberg, Hovland), does one use cover him on either tour? (Recommend
-   yes: uses belong to the golfer, not the tour.)
+1. **The tours are separate slates.** Each week a member makes one set
+   of picks for the PGA event and a separate set for the DPWT event —
+   3 golfers per slate. Since the two events have different
+   `tournament_id`s, "golfers per week" is enforced per tournament, and
+   standings show a PGA total, a DPWT total, and the combined total.
+2. **No season end yet.** `season_end` is nullable; the Fall Series runs
+   open-ended and the owner closes the season when the group decides.
+3. **A use belongs to the golfer, across tours.** Uses are counted per
+   `(league, member, golfer)` over every tournament — picking Åberg in
+   Spain spends the same budget as picking him at a PGA event.
