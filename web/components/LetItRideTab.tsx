@@ -11,7 +11,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { getOpenEvents, getEventField, getPredictions, OpenEvent } from "@/lib/api";
+import { getEventField, getPredictions, OpenEvent } from "@/lib/api";
 import { nameKey } from "@/lib/names";
 
 type Group = { id: number; name: string; is_owner: boolean };
@@ -171,8 +171,22 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
   );
 }
 
+type Week = {
+  tournament_id: string; name: string; tour: "pga" | "euro"; start_date: string;
+  status: "open" | "live" | "completed" | "upcoming";
+};
+const STATUS_LABEL: Record<Week["status"], string> = {
+  open: "Picks open", live: "Live", completed: "Final", upcoming: "Opens soon",
+};
+const STATUS_COLOR: Record<Week["status"], string> = {
+  open: "var(--bc-green)", live: "var(--bc-yellow)", completed: "var(--bc-muted)", upcoming: "var(--bc-muted)",
+};
+const shortDate = (d: string) =>
+  new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
 function Season({ league }: { league: League }) {
-  const [events, setEvents] = useState<OpenEvent[]>([]);
+  const [weeks, setWeeks] = useState<Week[] | null>(null);
+  const [tour, setTour] = useState<"pga" | "euro">(league.tours.includes("pga") ? "pga" : "euro");
   const [tid, setTid] = useState("");
   const [standings, setStandings] = useState<Standing[]>([]);
   const [myUses, setMyUses] = useState<Record<string, number>>({});
@@ -188,19 +202,32 @@ function Season({ league }: { league: League }) {
     }).catch(() => {});
   }, [league.id]);
 
+  // Land on the week that needs you: an open slate first, else a live
+  // one, else the most recent final — on the tour that has it.
   useEffect(() => {
-    getOpenEvents().then(d => {
-      const evs = (d.events ?? []).filter(e =>
-        league.tours.includes(e.tour) && e.start_date >= league.season_start
-        && (!league.season_end || e.start_date <= league.season_end));
-      setEvents(evs);
-      const first = evs.find(e => !e.locked) ?? evs[evs.length - 1];
-      if (first) setTid(first.tournament_id);
-    }).catch(() => {});
+    call(`/api/leagues/${league.id}/weeks`).then(d => {
+      const ws = (d.weeks as Week[]) ?? [];
+      setWeeks(ws);
+      const land = ws.find(w => w.status === "open") ?? ws.find(w => w.status === "live")
+        ?? [...ws].reverse().find(w => w.status === "completed") ?? ws[0];
+      if (land) { setTour(land.tour); setTid(land.tournament_id); }
+    }).catch(() => setWeeks([]));
     loadStandings();
-  }, [league, loadStandings]);
+  }, [league.id, loadStandings]);
 
-  const ev = events.find(e => e.tournament_id === tid);
+  const tourWeeks = (weeks ?? []).filter(w => w.tour === tour);
+  const idx = tourWeeks.findIndex(w => w.tournament_id === tid);
+  const week = idx >= 0 ? tourWeeks[idx] : undefined;
+
+  function switchTour(t: "pga" | "euro") {
+    setTour(t);
+    const ws = (weeks ?? []).filter(w => w.tour === t);
+    const land = ws.find(w => w.status === "open") ?? ws.find(w => w.status === "live")
+      ?? [...ws].reverse().find(w => w.status === "completed") ?? ws[0];
+    setTid(land?.tournament_id ?? "");
+  }
+
+  const tourNames = league.tours.map(t => t === "euro" ? "DP World Tour" : "PGA Tour").join(" + ");
 
   return (
     <>
@@ -208,30 +235,122 @@ function Season({ league }: { league: League }) {
         <div>
           <div style={{ fontWeight: 900, fontSize: "1.1em" }}>{league.name}</div>
           <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginTop: 2 }}>
-            {league.players_per_week} golfers per event · {league.uses_per_player} uses per golfer, all season,
-            both tours · since {league.season_start}
+            {league.players_per_week} golfers per event · {league.uses_per_player} uses per golfer all
+            season · {tourNames} · since {league.season_start}
           </div>
         </div>
       </div>
 
-      {events.length === 0 ? (
-        <div style={card}>No events open for picks right now — the next one appears here the week before it starts.</div>
-      ) : (
-        <>
-          <div style={{ display: "flex", gap: 8, marginBottom: 14, overflowX: "auto" }}>
-            {events.map(e => (
-              <button key={e.tournament_id} onClick={() => setTid(e.tournament_id)} style={{ ...btn(e.tournament_id === tid), whiteSpace: "nowrap" }}>
-                {e.tour === "euro" ? "DPWT · " : "PGA · "}{e.name}{e.locked ? " (locked)" : ""}
-              </button>
-            ))}
-          </div>
-          {ev && <Slate key={ev.tournament_id} league={league} ev={ev} myUses={myUses} me={me} onChange={loadStandings}
-            winners={(winners[ev.tournament_id] ?? []).map(id => standings.find(s => s.user_id === id)?.user_name ?? "")} />}
-        </>
+      {league.tours.length > 1 && (
+        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+          {(["pga", "euro"] as const).filter(t => league.tours.includes(t)).map(t => (
+            <button key={t} onClick={() => switchTour(t)} style={btn(tour === t)}>
+              {t === "euro" ? "DP World Tour" : "PGA Tour"}
+            </button>
+          ))}
+        </div>
       )}
+
+      {weeks === null ? <p style={{ color: "var(--bc-muted)" }}>Loading…</p>
+        : tourWeeks.length === 0 ? (
+          <div style={card}>No {tour === "euro" ? "DP World Tour" : "PGA Tour"} events in this season yet.</div>
+        ) : (
+          <>
+            <WeekNav weeks={tourWeeks} idx={idx} onPick={setTid} winners={winners} />
+            {week && (week.status === "upcoming" ? (
+              <div style={card}>
+                <strong>{week.name}</strong>
+                <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "6px 0 0" }}>
+                  Starts {shortDate(week.start_date)}. Picks open the week before, once the field is set.
+                </p>
+              </div>
+            ) : (
+              <Slate key={week.tournament_id} league={league} me={me} myUses={myUses} onChange={loadStandings}
+                ev={{ tournament_id: week.tournament_id, name: week.name, tour: week.tour,
+                      start_date: week.start_date, end_date: "", locked: week.status !== "open",
+                      finished: week.status === "completed", purse: null, has_model: true, field_available: true }}
+                winners={(winners[week.tournament_id] ?? []).map(id => standings.find(s => s.user_id === id)?.user_name ?? "")} />
+            ))}
+          </>
+        )}
 
       <SeasonStandings standings={standings} me={me} />
     </>
+  );
+}
+
+/** Prev/next through one tour's weeks, plus a scrollable strip grouped
+ *  Completed | This week | Upcoming that keeps the selection in view. */
+function WeekNav({ weeks, idx, onPick, winners }: {
+  weeks: Week[]; idx: number; onPick: (tid: string) => void; winners: Record<string, string[]>;
+}) {
+  const stripRef = React.useRef<HTMLDivElement | null>(null);
+  const selRef = React.useRef<HTMLButtonElement | null>(null);
+  useEffect(() => {
+    selRef.current?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  }, [idx]);
+
+  const cur = weeks[idx];
+  const arrow = (dir: -1 | 1) => {
+    const target = weeks[idx + dir];
+    return (
+      <button onClick={() => target && onPick(target.tournament_id)} disabled={!target}
+        aria-label={dir < 0 ? "Previous event" : "Next event"}
+        style={{ ...btn(false), padding: "7px 11px", opacity: target ? 1 : 0.35 }}>
+        {dir < 0 ? "‹" : "›"}
+      </button>
+    );
+  };
+  const group = (w: Week) => w.status === "completed" ? "Completed" : w.status === "upcoming" ? "Upcoming" : "This week";
+
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+        {arrow(-1)}
+        <div style={{ flex: 1, textAlign: "center", minWidth: 0 }}>
+          <div style={{ fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {cur?.name ?? "—"}
+          </div>
+          {cur && (
+            <div style={{ fontSize: "0.72em", fontWeight: 700, color: STATUS_COLOR[cur.status] }}>
+              {STATUS_LABEL[cur.status]} · {shortDate(cur.start_date)}
+            </div>
+          )}
+        </div>
+        {arrow(1)}
+      </div>
+      <div ref={stripRef} style={{ display: "flex", gap: 6, overflowX: "auto", scrollSnapType: "x mandatory",
+        paddingBottom: 4, WebkitOverflowScrolling: "touch" as never }}>
+        {weeks.map((w, i) => {
+          const first = i === 0 || group(weeks[i - 1]) !== group(w);
+          const on = i === idx;
+          return (
+            <React.Fragment key={w.tournament_id}>
+              {first && (
+                <span style={{ alignSelf: "center", fontSize: "0.62em", fontWeight: 800, color: "var(--bc-muted)",
+                  textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap",
+                  marginLeft: i === 0 ? 0 : 8 }}>{group(w)}</span>
+              )}
+              <button ref={on ? selRef : undefined} onClick={() => onPick(w.tournament_id)} style={{
+                scrollSnapAlign: "center", flexShrink: 0, cursor: "pointer", fontFamily: "inherit",
+                textAlign: "left", borderRadius: 6, padding: "6px 10px", minWidth: 118,
+                background: on ? "color-mix(in srgb, var(--bc-yellow) 12%, var(--bc-card))" : "var(--bc-card)",
+                border: `1px solid ${on ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+              }}>
+                <div style={{ fontSize: "0.62em", fontWeight: 700, color: STATUS_COLOR[w.status] }}>
+                  {shortDate(w.start_date)} · {STATUS_LABEL[w.status]}
+                  {winners[w.tournament_id]?.length ? <span style={{ color: "var(--bc-yellow)", marginLeft: 4 }}><Star /></span> : null}
+                </div>
+                <div style={{ fontSize: "0.78em", fontWeight: 700, color: on ? "var(--bc-text)" : "var(--bc-muted)",
+                  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 150 }}>
+                  {w.name}
+                </div>
+              </button>
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

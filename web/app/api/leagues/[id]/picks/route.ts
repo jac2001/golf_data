@@ -14,6 +14,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { validateLeaguePick } from "@/lib/leagueRules";
 import { nameKey } from "@/lib/names";
+import { openEventLocks } from "@/lib/eventLocks";
 
 type League = {
   id: number; group_id: number; season_start: string; season_end: string | null;
@@ -51,8 +52,14 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   if (!league) return Response.json({ error: "Not your league" }, { status: 403 });
 
   const tid = (new URL(req.url).searchParams.get("tid") ?? "").toUpperCase();
-  const s = tid ? await slate(tid) : null;
-  if (!s) return Response.json({ error: "Unknown or closed event" }, { status: 404 });
+  if (!tid) return Response.json({ error: "tid required" }, { status: 400 });
+  // Reading is allowed for past slates too (a season outlives the open
+  // window). Lock status comes from the fail-closed rule: an event off an
+  // AVAILABLE open list is past, so locked; an unavailable list shows
+  // only my own picks.
+  const locks = await openEventLocks();
+  const s = await slate(tid) ?? { tid, tour: tid.startsWith("E") ? "euro" : "pga",
+    locked: locks ? (locks.get(tid) ?? true) : false, startDate: "" };
 
   const sql = getSql();
   const rows = s.locked
