@@ -41,7 +41,7 @@ print("━━━━━━━━━━━━━━━━━━━━━━━━�
 print()
 
 # Define paths
-DATA_DIR = Path("/Users/jacklegnon/Desktop/golf_data/data")
+DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 HISTORICAL_DIR = DATA_DIR / "historical"
 PROCESSED_DIR = DATA_DIR / "processed"
 PROCESSED_DIR.mkdir(exist_ok=True)

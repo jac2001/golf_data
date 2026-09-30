@@ -35,7 +35,7 @@ class PredictionTracker:
     """Track predictions and compare against actual results."""
 
     def __init__(self, data_dir: Optional[Path] = None, tracking_dir: Optional[Path] = None):
-        self.data_dir = data_dir or Path("/Users/jacklegnon/Desktop/golf_data/data")
+        self.data_dir = data_dir or Path(__file__).resolve().parents[2] / "data"
         self.tracking_dir = tracking_dir or (self.data_dir / "prediction_tracking")
         self.tracking_dir.mkdir(exist_ok=True)
 

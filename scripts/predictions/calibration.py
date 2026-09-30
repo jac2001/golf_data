@@ -72,7 +72,7 @@ class ProbabilityCalibrator:
             calibration_file: Optional JSON file with custom calibration factors.
                              If not provided, uses DEFAULT_CALIBRATION.
         """
-        self.calibration_dir = Path("/Users/jacklegnon/Desktop/golf_data/data/prediction_tracking")
+        self.calibration_dir = Path(__file__).resolve().parents[2] / "data" / "prediction_tracking"
         self.calibration_file = calibration_file or self.calibration_dir / "calibration_factors.json"
 
         # Load calibration factors

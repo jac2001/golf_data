@@ -95,7 +95,7 @@ DEFAULT_WEIGHTS = {
 
 def load_course_weights() -> pd.DataFrame:
     """Load course SG weights from Data Golf mapping."""
-    weights_path = Path("/Users/jacklegnon/Desktop/golf_data/data/course_sg_weights.csv")
+    weights_path = Path(__file__).resolve().parents[2] / "data" / "course_sg_weights.csv"
 
     if not weights_path.exists():
         print(f"  ⚠️  Course weights file not found: {weights_path}")

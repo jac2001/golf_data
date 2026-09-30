@@ -47,7 +47,7 @@ print("━━━━━━━━━━━━━━━━━━━━━━━━�
 print()
 
 # Paths
-DATA_DIR = Path("/Users/jacklegnon/Desktop/golf_data/data")
+DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 print('DATA DIR:', DATA_DIR)
 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 MODEL_DIR = DATA_DIR / "models"

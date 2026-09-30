@@ -57,7 +57,7 @@ except ImportError:
 # Configuration
 # ============================================================================
 
-PROJECT_ROOT = Path("/Users/jacklegnon/Desktop/golf_data")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data"
 SCHEDULE_PATH = DATA_DIR / "raw" / "schedule_2026.csv"
 
