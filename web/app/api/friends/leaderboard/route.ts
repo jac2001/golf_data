@@ -10,6 +10,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { visibleUserIds } from "@/lib/gameScope";
+import { openEventLocks, pickVisible } from "@/lib/eventLocks";
 
 type PickRow = { user_id: string; user_name: string; tournament_id: string; player_name: string };
 type EarningsResp = {
@@ -34,9 +35,15 @@ export async function GET(req: Request) {
   if (!ids) {
     return Response.json({ error: "Not a member of this group." }, { status: 403 });
   }
-  const picks = await sql`
-    SELECT user_id, user_name, tournament_id, player_name FROM picks
-    WHERE user_id = ANY(${ids})` as PickRow[];
+  // Reveal-at-lock: others' picks for events that haven't started were
+  // returned here in full — anyone could read (and copy) a friend's
+  // picks from this JSON before lock. Now filtered at the source.
+  const [allPicks, locks] = await Promise.all([
+    sql`SELECT user_id, user_name, tournament_id, player_name FROM picks
+        WHERE user_id = ANY(${ids})`,
+    openEventLocks(),
+  ]);
+  const picks = (allPicks as PickRow[]).filter(p => pickVisible(locks, p.tournament_id, p.user_id, userId));
 
   // One earnings fetch per distinct event, not per pick. projected=1
   // gives mid-tournament purse-split estimates from live positions —

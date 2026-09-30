@@ -16,6 +16,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { visibleUserIds } from "@/lib/gameScope";
+import { openEventLocks } from "@/lib/eventLocks";
 
 type PickRow = { user_id: string; user_name: string; player_name: string };
 type EarningsResp = {
@@ -89,16 +90,11 @@ export async function GET(req: Request) {
   }
   if (!tid) return seasonStandings(ids, userId);
 
-  // Locked yet? Events off the open list are past, therefore visible.
-  let locked = true;
-  try {
-    const res = await fetch(`${MODEL_API}/api/events/open`, { next: { revalidate: 120 } });
-    if (res.ok) {
-      const { events } = await res.json();
-      const ev = (events ?? []).find((e: { tournament_id: string }) => e.tournament_id === tid);
-      if (ev) locked = !!ev.locked;
-    }
-  } catch { /* treat as locked/past */ }
+  // Locked yet? Events off an AVAILABLE open list are past, therefore
+  // visible. An unavailable list (Render down or mid-deploy) fails
+  // closed — this used to default to locked and reveal every fade.
+  const locks = await openEventLocks();
+  const locked = locks ? (locks.get(tid) ?? true) : false;
 
   const sql = getSql();
   const picks = await sql`

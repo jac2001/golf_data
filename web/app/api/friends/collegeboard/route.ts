@@ -10,6 +10,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { visibleUserIds } from "@/lib/gameScope";
+import { openEventLocks } from "@/lib/eventLocks";
 
 type PickRow = { user_id: string; user_name: string; tournament_id: string; school: string };
 type EarningsResp = {
@@ -81,11 +82,10 @@ export async function GET(req: Request) {
     return Response.json({ season: true, standings, me: userId });
   }
 
-  // Per-event board.
-  let locked = true;
-  const open = await fetchJson<{ events: { tournament_id: string; locked: boolean }[] }>(`${MODEL_API}/api/events/open`);
-  const ev = (open?.events ?? []).find(e => e.tournament_id === tid);
-  if (ev) locked = !!ev.locked;
+  // Per-event board. An unavailable open list fails closed (hidden);
+  // this used to default to locked and reveal every school pick.
+  const locks = await openEventLocks();
+  const locked = locks ? (locks.get(tid) ?? true) : false;
 
   const picks = await sql`
     SELECT user_id, user_name, school FROM college_picks
