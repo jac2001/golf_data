@@ -13,6 +13,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { PageHead, SubTabs } from "@/components/broadcast";
+import LetItRideTab from "@/components/LetItRideTab";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
@@ -222,12 +223,13 @@ export default function FriendsPage() {
 
 // ── Games: one tab, three modes ──────────────────────────────────────────────
 
-type GameMode = "picks" | "rounds" | "fades" | "college";
+type GameMode = "picks" | "rounds" | "fades" | "college" | "ride";
 const GAME_MODES: { id: GameMode; name: string; tag: string }[] = [
   { id: "picks",   name: "Weekly 3",     tag: "Pick 3 · most money wins" },
   { id: "rounds",  name: "Round Game",   tag: "1 per round · to par" },
   { id: "fades",   name: "Fade Game",    tag: "Fade 3 stars · least money wins" },
   { id: "college", name: "College Game", tag: "Claim a school · best 2 alumni count" },
+  { id: "ride",    name: "Let It Ride",  tag: "Season game · spend or save your golfers" },
 ];
 
 function GamesTab() {
@@ -236,7 +238,7 @@ function GamesTab() {
   const [mode, setMode] = useState<GameMode>(() => {
     try {
       const m = localStorage.getItem("friends-game-mode");
-      if (m === "picks" || m === "rounds" || m === "fades" || m === "college") return m;
+      if (m === "picks" || m === "rounds" || m === "fades" || m === "college" || m === "ride") return m;
     } catch { /* default below */ }
     return "picks";
   });
@@ -274,6 +276,7 @@ function GamesTab() {
       {mode === "rounds" && <RoundGameTab />}
       {mode === "fades" && <FadeTab />}
       {mode === "college" && <CollegeTab />}
+      {mode === "ride" && <LetItRideTab />}
     </>
   );
 }

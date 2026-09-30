@@ -56,9 +56,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const roster = rosterRaw as { user_id: string; user_name: string }[];
 
   // Uses count every pick you've made, locked or not — you're spending
-  // budget the moment you pick.
+  // budget the moment you pick. Keyed by player_key (nameKey), because
+  // the two tours' field files spell the same golfer differently.
   const myUses: Record<string, number> = {};
-  for (const p of all) if (p.user_id === userId) myUses[p.player_name] = (myUses[p.player_name] ?? 0) + 1;
+  for (const p of all) if (p.user_id === userId) myUses[p.player_key] = (myUses[p.player_key] ?? 0) + 1;
 
   const picks = all.filter(p => pickVisible(locks, p.tournament_id, p.user_id, userId));
 

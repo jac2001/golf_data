@@ -4037,6 +4037,39 @@ def bet_outcomes(ids: str = "") -> dict:
     return {"outcomes": out}
 
 
+@app.get("/api/schedule/upcoming")
+def schedule_upcoming(tour: str = "pga", after: str = "", limit: int = 12) -> dict:
+    """Events on one tour starting after a date, with purses — the
+    horizon Let It Ride's spend-vs-save logic prices a use against.
+    Reads every season file on disk, so next season's big purses become
+    visible the moment that schedule is fetched."""
+    tour = "euro" if tour == "euro" else "pga"
+    pattern = "schedule_euro_2*.csv" if tour == "euro" else "schedule_2*.csv"
+    cutoff = pd.to_datetime(after, errors="coerce") if after else pd.Timestamp.now().normalize()
+    rows = []
+    for sp in sorted((DATA_DIR / "raw").glob(pattern)):
+        try:
+            sched = pd.read_csv(sp)
+        except Exception:
+            continue
+        for _, r in sched.iterrows():
+            start = pd.to_datetime(r.get("start_date"), errors="coerce")
+            if pd.isna(start) or start <= cutoff:
+                continue
+            try:
+                purse = float(str(r.get("purse", "")).replace("$", "").replace(",", ""))
+            except Exception:
+                purse = None
+            rows.append({"tournament_id": str(r["tournament_id"]), "name": str(r["tournament_name"]),
+                         "start_date": str(r["start_date"]), "purse": purse})
+    seen, out = set(), []
+    for e in sorted(rows, key=lambda e: e["start_date"]):
+        if e["tournament_id"] not in seen:
+            seen.add(e["tournament_id"])
+            out.append(e)
+    return {"tour": tour, "events": out[:max(1, min(limit, 52))]}
+
+
 @app.get("/api/events/open")
 def events_open() -> dict:
     """Events the Friends Game can pick on this week, across tours.

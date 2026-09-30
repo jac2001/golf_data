@@ -20,7 +20,8 @@
  */
 
 import { getSql, MODEL_API } from "@/lib/db";
-import { expectedPayout, modelCollegePick, modelFadePicks, modelRoundPick, Probs } from "@/lib/modelBrain";
+import { expectedPayout, modelCollegePick, modelFadePicks, modelLetItRidePick, modelRoundPick, Probs } from "@/lib/modelBrain";
+import { nameKey } from "@/lib/names";
 
 const MODEL_ID = "model";
 const MODEL_NAME = "The Model";
@@ -29,7 +30,7 @@ type OpenEvent = {
   tournament_id: string; name: string; tour: string; start_date: string;
   purse: number | null; locked: boolean; has_model: boolean;
 };
-type PredRow = Probs & { player_name: string };
+type PredRow = Probs & { player_name: string; world_rank?: number | null };
 
 function roundLocked(startDate: string, round: number): boolean {
   const base = new Date(`${startDate.slice(0, 10)}T00:00:00`);
@@ -139,6 +140,52 @@ export async function GET(req: Request) {
             log.push(`${tid}: college → ${school}`);
           }
         } catch { /* no college data — the game just has no model this week */ }
+      }
+    }
+
+    // ── Let It Ride: one slate per active league that plays this tour ──
+    // The model is a member of every league, under the same budget. Uses
+    // are counted across every tournament in the league (a use belongs to
+    // the golfer, not the tour); the save horizon is this tour's upcoming
+    // purses (Jack's modelLetItRidePick).
+    if (!ev.locked && ev.purse) {
+      const leagues = await sql`
+        SELECT id, uses_per_player, players_per_week FROM leagues
+        WHERE status = 'active' AND ${ev.tour} = ANY(tours)
+          AND season_start <= ${ev.start_date}::date
+          AND (season_end IS NULL OR season_end >= ${ev.start_date}::date)` as
+        { id: number; uses_per_player: number; players_per_week: number }[];
+      if (leagues.length) {
+        let upcoming: number[] = [];
+        try {
+          const res = await fetch(
+            `${MODEL_API}/api/schedule/upcoming?tour=${ev.tour}&after=${ev.start_date}`, { cache: "no-store" });
+          if (res.ok) upcoming = ((await res.json()).events ?? [])
+            .map((e: { purse: number | null }) => e.purse).filter((p: number | null): p is number => !!p);
+        } catch { /* empty horizon: the model plays greedy, which is safe */ }
+
+        for (const lg of leagues) {
+          const have = await sql`
+            SELECT 1 FROM league_picks
+            WHERE league_id = ${lg.id} AND user_id = ${MODEL_ID} AND tournament_id = ${tid} LIMIT 1` as unknown[];
+          if (have.length) continue;
+          const spent = await sql`
+            SELECT player_key, count(*)::int AS n FROM league_picks
+            WHERE league_id = ${lg.id} AND user_id = ${MODEL_ID}
+            GROUP BY player_key` as { player_key: string; n: number }[];
+          const usesLeft: Record<string, number> = {};
+          for (const s of spent) usesLeft[s.player_key] = lg.uses_per_player - s.n;
+
+          const slate = modelLetItRidePick(preds, ev.purse, usesLeft, lg.uses_per_player,
+                                           lg.players_per_week, upcoming);
+          for (const name of slate) {
+            await sql`
+              INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key)
+              VALUES (${lg.id}, ${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${name}, ${nameKey(name)})
+              ON CONFLICT DO NOTHING`;
+          }
+          log.push(`${tid}: league ${lg.id} → ${slate.join(", ")}`);
+        }
       }
     }
 

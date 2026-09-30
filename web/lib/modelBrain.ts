@@ -156,7 +156,7 @@ export function modelCollegePick(
  *  Returns up to `slots` golfer names (fewer only if the field runs out).
  */
 export function modelLetItRidePick(
-  field: (Probs & { player_name: string })[],
+  field: (Probs & { player_name: string;  world_rank?: number | null })[],
   purse: number,
   usesLeft: Record<string, number>,
   usesPerPlayer: number,
@@ -183,6 +183,9 @@ export function modelLetItRidePick(
   //
   // Use nameKey(p.player_name) to look golfers up in usesLeft.
   const biggerAhead = upcomingPurses.filter(p => p > purse).sort((a, b) => b - a);
+  const worthSaving = Math.ceil((slots * biggerAhead.length) / usesPerPlayer); // heuristic: how many uses to hoard for the big events
+
+
 
   const scored = field.flatMap(p => {
     const left = usesLeft[nameKey(p.player_name)] ?? usesPerPlayer;
@@ -192,10 +195,15 @@ export function modelLetItRidePick(
 
     const now = expectedPayout(purse, p);
 
+    // Only a golfer who'd actually fill a future big-event slot has a use
+    // worth protecting. World rank is field-independent, so a weak field
+    // can't make a #57 look like someone worth hoarding.
+    const elite = p.world_rank != null && p.world_rank <= worthSaving;
     let cost = 0;
-    if (left <= biggerAhead.length) {
+    if (elite && left <= biggerAhead.length) {
       cost = Math.max(expectedPayout(biggerAhead[left - 1], p) - now, 0);
     }
+    
     return [{ name: p.player_name, score: now - cost }];
   });
 
