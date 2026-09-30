@@ -131,21 +131,30 @@ export async function GET(req: Request) {
     // purses (Jack's modelLetItRidePick).
     if (!ev.locked && ev.purse) {
       const leagues = await sql`
-        SELECT id, uses_per_player, players_per_week FROM leagues
+        SELECT id, uses_per_player, players_per_week, tours FROM leagues
         WHERE status = 'active' AND ${ev.tour} = ANY(tours)
           AND season_start <= ${ev.start_date}::date
           AND (season_end IS NULL OR season_end >= ${ev.start_date}::date)` as
-        { id: number; uses_per_player: number; players_per_week: number }[];
+        { id: number; uses_per_player: number; players_per_week: number; tours: string[] }[];
       if (leagues.length) {
-        let upcoming: number[] = [];
-        try {
-          const res = await fetch(
-            `${MODEL_API}/api/schedule/upcoming?tour=${ev.tour}&after=${ev.start_date}`, { cache: "no-store" });
-          if (res.ok) upcoming = ((await res.json()).events ?? [])
-            .map((e: { purse: number | null }) => e.purse).filter((p: number | null): p is number => !!p);
-        } catch { /* empty horizon: the model plays greedy, which is safe */ }
+        // The save horizon spans EVERY tour the league plays: a use
+        // belongs to the golfer across tours, so a world #4 spent at a $5M
+        // DPWT event is a use he can't spend at a $20M PGA event. A
+        // same-tour-only horizon (the first version) saw only Spain's $3M
+        // and burned Fitzpatrick at Dunhill.
+        const horizonByTour = new Map<string, number[]>();
+        for (const t of new Set(leagues.flatMap(l => l.tours))) {
+          try {
+            const res = await fetch(
+              `${MODEL_API}/api/schedule/upcoming?tour=${t}&after=${ev.start_date}`, { cache: "no-store" });
+            horizonByTour.set(t, res.ok ? ((await res.json()).events ?? [])
+              .map((e: { purse: number | null }) => e.purse)
+              .filter((p: number | null): p is number => !!p) : []);
+          } catch { horizonByTour.set(t, []); }  // empty horizon: greedy, which is safe
+        }
 
         for (const lg of leagues) {
+          const upcoming = lg.tours.flatMap(t => horizonByTour.get(t) ?? []);
           const have = await sql`
             SELECT 1 FROM league_picks
             WHERE league_id = ${lg.id} AND user_id = ${MODEL_ID} AND tournament_id = ${tid} LIMIT 1` as unknown[];
