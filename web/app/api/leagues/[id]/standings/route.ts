@@ -41,10 +41,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const sql = getSql();
   const league = await sql`
-    SELECT l.id, l.group_id, l.name, l.uses_per_player, l.players_per_week
+    SELECT l.id, l.group_id, l.name, l.uses_per_player, l.players_per_week, l.uses_scope
     FROM leagues l JOIN group_members m ON m.group_id = l.group_id
     WHERE l.id = ${leagueId} AND m.user_id = ${userId}` as
-    { id: number; group_id: number; name: string; uses_per_player: number; players_per_week: number }[];
+    { id: number; group_id: number; name: string; uses_per_player: number; players_per_week: number; uses_scope: string }[];
   if (!league.length) return Response.json({ error: "Not your league" }, { status: 403 });
 
   const [allRaw, locks, rosterRaw] = await Promise.all([
@@ -60,7 +60,13 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   // budget the moment you pick. Keyed by player_key (nameKey), because
   // the two tours' field files spell the same golfer differently.
   const myUses: Record<string, number> = {};
-  for (const p of all) if (p.user_id === userId) myUses[p.player_key] = (myUses[p.player_key] ?? 0) + 1;
+  const myUsesByTour: Record<"pga" | "euro", Record<string, number>> = { pga: {}, euro: {} };
+  for (const p of all) {
+    if (p.user_id !== userId) continue;
+    myUses[p.player_key] = (myUses[p.player_key] ?? 0) + 1;
+    const t = p.tournament_id.startsWith("E") ? "euro" : "pga";
+    myUsesByTour[t][p.player_key] = (myUsesByTour[t][p.player_key] ?? 0) + 1;
+  }
 
   const picks = all.filter(p => pickVisible(locks, p.tournament_id, p.user_id, userId));
 
@@ -114,6 +120,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   return Response.json({
     weekly_winners: winners,
     league: league[0], standings, me: userId,
-    my_uses: myUses, locks_unavailable: locks === null,
+    my_uses: myUses, my_uses_by_tour: myUsesByTour, locks_unavailable: locks === null,
   });
 }

@@ -131,11 +131,11 @@ export async function GET(req: Request) {
     // purses (Jack's modelLetItRidePick).
     if (!ev.locked && ev.purse) {
       const leagues = await sql`
-        SELECT id, uses_per_player, players_per_week, tours FROM leagues
+        SELECT id, uses_per_player, players_per_week, tours, uses_scope FROM leagues
         WHERE status = 'active' AND ${ev.tour} = ANY(tours)
           AND season_start <= ${ev.start_date}::date
           AND (season_end IS NULL OR season_end >= ${ev.start_date}::date)` as
-        { id: number; uses_per_player: number; players_per_week: number; tours: string[] }[];
+        { id: number; uses_per_player: number; players_per_week: number; tours: string[]; uses_scope: string }[];
       if (leagues.length) {
         // The save horizon spans EVERY tour the league plays: a use
         // belongs to the golfer across tours, so a world #4 spent at a $5M
@@ -154,7 +154,10 @@ export async function GET(req: Request) {
         }
 
         for (const lg of leagues) {
-          const upcoming = lg.tours.flatMap(t => horizonByTour.get(t) ?? []);
+          // Per-tour budgets ('tour' scope): a DPWT use can only be spent on
+          // the DPWT, so only this tour's future purses compete for it.
+          const perTour = lg.uses_scope === "tour";
+          const upcoming = (perTour ? [ev.tour] : lg.tours).flatMap(t => horizonByTour.get(t) ?? []);
           const have = await sql`
             SELECT 1 FROM league_picks
             WHERE league_id = ${lg.id} AND user_id = ${MODEL_ID} AND tournament_id = ${tid} LIMIT 1` as unknown[];
@@ -162,6 +165,7 @@ export async function GET(req: Request) {
           const spent = await sql`
             SELECT player_key, count(*)::int AS n FROM league_picks
             WHERE league_id = ${lg.id} AND user_id = ${MODEL_ID}
+              AND (${!perTour} OR left(tournament_id, 1) = ${tid.slice(0, 1)})
             GROUP BY player_key` as { player_key: string; n: number }[];
           const usesLeft: Record<string, number> = {};
           for (const s of spent) usesLeft[s.player_key] = lg.uses_per_player - s.n;

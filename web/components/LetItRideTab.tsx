@@ -18,6 +18,7 @@ type Group = { id: number; name: string; is_owner: boolean };
 type League = {
   id: number; name: string; season_start: string; season_end: string | null;
   tours: string[]; uses_per_player: number; players_per_week: number;
+  uses_scope: "golfer" | "tour";
 };
 type SlatePick = { user_id: string; user_name: string; player_name: string };
 type Standing = {
@@ -94,7 +95,7 @@ export default function LetItRideTab() {
       {err && <div style={{ ...card, color: "var(--bc-red-text)" }}>{err}</div>}
       {league === undefined && <p style={{ color: "var(--bc-muted)" }}>Loading…</p>}
       {league === null && <StartSeason group={group} onStarted={loadLeague} />}
-      {league && <Season league={league} />}
+      {league && <Season league={league} isOwner={group.is_owner} onChanged={loadLeague} />}
     </>
   );
 }
@@ -105,6 +106,7 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
   const [tours, setTours] = useState<string[]>(["pga", "euro"]);
   const [uses, setUses] = useState(3);
   const [perWeek, setPerWeek] = useState(3);
+  const [scope, setScope] = useState<"golfer" | "tour">("tour");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -124,7 +126,7 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
     try {
       await call("/api/leagues", json("POST", {
         group_id: group.id, name, season_start: start, tours,
-        uses_per_player: uses, players_per_week: perWeek,
+        uses_per_player: uses, players_per_week: perWeek, uses_scope: scope,
       }));
       onStarted();
     } catch (e) { setMsg((e as Error).message); }
@@ -160,6 +162,7 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
         <button onClick={() => toggle("pga")} style={btn(tours.includes("pga"))}>PGA Tour</button>
         <button onClick={() => toggle("euro")} style={btn(tours.includes("euro"))}>DP World Tour</button>
       </div>
+      <ScopeChoice scope={scope} setScope={setScope} />
       <p style={{ color: "var(--bc-muted)", fontSize: "0.76em", margin: "0 0 12px" }}>
         The season runs open-ended — you close it when the group decides.
       </p>
@@ -184,12 +187,14 @@ const STATUS_COLOR: Record<Week["status"], string> = {
 const shortDate = (d: string) =>
   new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
-function Season({ league }: { league: League }) {
+function Season({ league, isOwner, onChanged }: { league: League; isOwner: boolean; onChanged: () => void }) {
+  const [editing, setEditing] = useState(false);
   const [weeks, setWeeks] = useState<Week[] | null>(null);
   const [tour, setTour] = useState<"pga" | "euro">(league.tours.includes("pga") ? "pga" : "euro");
   const [tid, setTid] = useState("");
   const [standings, setStandings] = useState<Standing[]>([]);
   const [myUses, setMyUses] = useState<Record<string, number>>({});
+  const [myUsesByTour, setMyUsesByTour] = useState<Record<string, Record<string, number>>>({});
   const [winners, setWinners] = useState<Record<string, string[]>>({});
   const [me, setMe] = useState("");
 
@@ -197,6 +202,7 @@ function Season({ league }: { league: League }) {
     call(`/api/leagues/${league.id}/standings`).then(d => {
       setStandings((d.standings as Standing[]) ?? []);
       setMyUses((d.my_uses as Record<string, number>) ?? {});
+      setMyUsesByTour((d.my_uses_by_tour as Record<string, Record<string, number>>) ?? {});
       setWinners((d.weekly_winners as Record<string, string[]>) ?? {});
       setMe(String(d.me ?? ""));
     }).catch(() => {});
@@ -235,11 +241,15 @@ function Season({ league }: { league: League }) {
         <div>
           <div style={{ fontWeight: 900, fontSize: "1.1em" }}>{league.name}</div>
           <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginTop: 2 }}>
-            {league.players_per_week} golfers per event · {league.uses_per_player} uses per golfer all
-            season · {tourNames} · since {league.season_start}
+            {league.players_per_week} golfers per event · {league.uses_per_player} uses per golfer
+            {league.uses_scope === "tour" && league.tours.length > 1 ? " on each tour" : " all season"} · {tourNames} · since {league.season_start}
           </div>
         </div>
+        {isOwner && (
+          <button onClick={() => setEditing(e => !e)} style={btn(editing)}>{editing ? "Close" : "Season settings"}</button>
+        )}
       </div>
+      {editing && <SeasonSettings league={league} onSaved={() => { setEditing(false); onChanged(); }} />}
 
       {league.tours.length > 1 && (
         <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
@@ -265,7 +275,8 @@ function Season({ league }: { league: League }) {
                 </p>
               </div>
             ) : (
-              <Slate key={week.tournament_id} league={league} me={me} myUses={myUses} onChange={loadStandings}
+              <Slate key={week.tournament_id} league={league} me={me} onChange={loadStandings}
+                myUses={league.uses_scope === "tour" ? (myUsesByTour[week.tour] ?? {}) : myUses}
                 ev={{ tournament_id: week.tournament_id, name: week.name, tour: week.tour,
                       start_date: week.start_date, end_date: "", locked: week.status !== "open",
                       finished: week.status === "completed", purse: null, has_model: true, field_available: true }}
@@ -624,5 +635,95 @@ export function LetItRideStandings({ groupId, compact = false }: { groupId?: num
       {label && !compact && <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginBottom: 8 }}>{label}</div>}
       <SeasonStandings standings={rows} me={me} />
     </>
+  );
+}
+
+/** Uses budget: one per golfer across tours, or a separate one per tour. */
+function ScopeChoice({ scope, setScope }: { scope: "golfer" | "tour"; setScope: (s: "golfer" | "tour") => void }) {
+  return (
+    <div style={{ margin: "0 0 12px" }}>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <span style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Uses:</span>
+        <button onClick={() => setScope("tour")} style={btn(scope === "tour")}>Separate per tour</button>
+        <button onClick={() => setScope("golfer")} style={btn(scope === "golfer")}>Shared across tours</button>
+      </div>
+      <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", margin: "6px 0 0", lineHeight: 1.5 }}>
+        {scope === "tour"
+          ? "A golfer who plays both tours can be picked his full number of times on each — a DP World Tour pick never costs a PGA use."
+          : "One budget per golfer, whichever tour you spend it on — spending a star on a small event costs you at the big ones."}
+      </p>
+    </div>
+  );
+}
+
+/** Owner-only season editor. Changes apply going forward; existing
+ *  picks always stand. Ending the season is final. */
+function SeasonSettings({ league, onSaved }: { league: League; onSaved: () => void }) {
+  const [name, setName] = useState(league.name);
+  const [tours, setTours] = useState<string[]>(league.tours);
+  const [uses, setUses] = useState(league.uses_per_player);
+  const [perWeek, setPerWeek] = useState(league.players_per_week);
+  const [scope, setScope] = useState<"golfer" | "tour">(league.uses_scope);
+  const [end, setEnd] = useState(league.season_end ?? "");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [confirmEnd, setConfirmEnd] = useState(false);
+
+  async function save(extra: Record<string, unknown> = {}) {
+    setBusy(true); setMsg("");
+    try {
+      await call(`/api/leagues/${league.id}`, json("PATCH", {
+        name, tours, uses_per_player: uses, players_per_week: perWeek,
+        uses_scope: scope, season_end: end || null, ...extra,
+      }));
+      onSaved();
+    } catch (e) { setMsg((e as Error).message); }
+    finally { setBusy(false); }
+  }
+
+  const input: React.CSSProperties = {
+    background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
+    color: "var(--bc-text)", padding: "7px 10px", fontSize: "0.88em", fontFamily: "inherit", width: "100%",
+    boxSizing: "border-box",
+  };
+  const label: React.CSSProperties = { fontSize: "0.78em", color: "var(--bc-muted)" };
+  const toggle = (t: string) => setTours(ts => ts.includes(t) ? ts.filter(x => x !== t) : [...ts, t]);
+
+  return (
+    <div style={{ ...card, borderColor: "var(--bc-yellow)" }}>
+      <div style={{ fontWeight: 900, marginBottom: 12 }}>Season settings</div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 12, marginBottom: 12 }}>
+        <label style={label}>Season name<br /><input style={input} value={name} maxLength={60} onChange={e => setName(e.target.value)} /></label>
+        <label style={label}>Uses per golfer<br /><input style={input} type="number" min={1} max={10} value={uses} onChange={e => setUses(Number(e.target.value))} /></label>
+        <label style={label}>Golfers per event<br /><input style={input} type="number" min={1} max={10} value={perWeek} onChange={e => setPerWeek(Number(e.target.value))} /></label>
+        <label style={label}>Ends (optional)<br /><input style={input} type="date" value={end} min={league.season_start} onChange={e => setEnd(e.target.value)} /></label>
+      </div>
+      <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12 }}>
+        <span style={label}>Tours:</span>
+        <button onClick={() => toggle("pga")} style={btn(tours.includes("pga"))}>PGA Tour</button>
+        <button onClick={() => toggle("euro")} style={btn(tours.includes("euro"))}>DP World Tour</button>
+      </div>
+      <ScopeChoice scope={scope} setScope={setScope} />
+      <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", margin: "0 0 12px" }}>
+        Changes apply from now on. Picks already made always stand.
+      </p>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+        <button onClick={() => save()} disabled={busy || !name.trim() || !tours.length} style={btn(true)}>
+          {busy ? "Saving…" : "Save changes"}
+        </button>
+        {!confirmEnd ? (
+          <button onClick={() => setConfirmEnd(true)} style={btn(false)}>End season</button>
+        ) : (
+          <>
+            <span style={{ fontSize: "0.8em", color: "var(--bc-red-text)" }}>End it for everyone? This is final.</span>
+            <button onClick={() => save({ status: "complete" })} disabled={busy} style={{ ...btn(false), color: "var(--bc-red-text)", borderColor: "var(--bc-red-text)" }}>
+              Yes, end season
+            </button>
+            <button onClick={() => setConfirmEnd(false)} style={btn(false)}>Cancel</button>
+          </>
+        )}
+      </div>
+      {msg && <div style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{msg}</div>}
+    </div>
   );
 }

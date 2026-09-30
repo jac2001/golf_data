@@ -22,6 +22,16 @@ await sql`
     created_at       timestamptz NOT NULL DEFAULT now()
   )`;
 
+// How uses are budgeted: 'golfer' = one budget per golfer across every
+// tour; 'tour' = a separate budget per golfer per tour (a golfer who
+// plays both tours gets uses_per_player on each). Added 2026-09-30.
+await sql`
+  ALTER TABLE leagues ADD COLUMN IF NOT EXISTS uses_scope text NOT NULL DEFAULT 'golfer'`;
+await sql`
+  DO $$ BEGIN
+    ALTER TABLE leagues ADD CONSTRAINT leagues_uses_scope_check CHECK (uses_scope IN ('golfer', 'tour'));
+  EXCEPTION WHEN duplicate_object THEN NULL; END $$`;
+
 // One active season per group — the database refuses a second, so no
 // race between two owners' clicks can create one.
 await sql`

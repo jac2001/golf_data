@@ -15,7 +15,7 @@ import { getSql } from "@/lib/db";
 type League = {
   id: number; group_id: number; name: string;
   season_start: string; season_end: string | null; tours: string[];
-  uses_per_player: number; players_per_week: number; status: string;
+  uses_per_player: number; players_per_week: number; uses_scope: string; status: string;
 };
 
 export async function GET(req: Request) {
@@ -44,7 +44,7 @@ export async function GET(req: Request) {
 
   const rows = await sql`
     SELECT id, group_id, name, season_start::text, season_end::text, tours,
-           uses_per_player, players_per_week, status
+           uses_per_player, players_per_week, uses_scope, status
     FROM leagues WHERE group_id = ${groupId} AND status = 'active'` as League[];
   return Response.json({ league: rows[0] ?? null });
 }
@@ -62,6 +62,7 @@ export async function POST(req: Request) {
     ? body.tours.filter((t: unknown) => t === "pga" || t === "euro") : ["pga", "euro"];
   const uses = Number(body.uses_per_player ?? 3);
   const perWeek = Number(body.players_per_week ?? 3);
+  const scope = body.uses_scope === "tour" ? "tour" : "golfer";
 
   if (!groupId || !name || !/^\d{4}-\d{2}-\d{2}$/.test(start)) {
     return Response.json({ error: "group_id, name and season_start (YYYY-MM-DD) are required" }, { status: 400 });
@@ -80,8 +81,8 @@ export async function POST(req: Request) {
   try {
     const rows = await sql`
       INSERT INTO leagues (group_id, name, season_start, season_end, tours,
-                           uses_per_player, players_per_week, created_by)
-      VALUES (${groupId}, ${name}, ${start}, ${end}, ${tours}, ${uses}, ${perWeek}, ${userId})
+                           uses_per_player, players_per_week, uses_scope, created_by)
+      VALUES (${groupId}, ${name}, ${start}, ${end}, ${tours}, ${uses}, ${perWeek}, ${scope}, ${userId})
       RETURNING id` as { id: number }[];
     return Response.json({ id: rows[0].id }, { status: 201 });
   } catch (e) {

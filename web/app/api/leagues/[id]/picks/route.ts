@@ -19,6 +19,7 @@ import { openEventLocks } from "@/lib/eventLocks";
 type League = {
   id: number; group_id: number; season_start: string; season_end: string | null;
   tours: string[]; uses_per_player: number; players_per_week: number; status: string;
+  uses_scope: "golfer" | "tour";
 };
 type Slate = { tid: string; tour: string; locked: boolean; startDate: string };
 
@@ -26,7 +27,7 @@ async function memberLeague(leagueId: number, userId: string): Promise<League | 
   const sql = getSql();
   const rows = await sql`
     SELECT l.id, l.group_id, l.season_start::text, l.season_end::text, l.tours,
-           l.uses_per_player, l.players_per_week, l.status
+           l.uses_per_player, l.players_per_week, l.status, l.uses_scope
     FROM leagues l JOIN group_members m ON m.group_id = l.group_id
     WHERE l.id = ${leagueId} AND m.user_id = ${userId}` as League[];
   return rows[0] ?? null;
@@ -89,10 +90,15 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!s) return Response.json({ error: "Unknown or closed event" }, { status: 404 });
 
   const key = nameKey(golfer);
+  // Which picks spend the same budget: every tour ('golfer' scope) or
+  // only this slate's tour ('tour' scope). Tour is the tid's prefix.
+  const allTours = league.uses_scope !== "tour";
+  const prefix = s.tid.slice(0, 1);
   const sql = getSql();
   const [{ uses, slate_n, dup }] = await sql`
     SELECT
-      count(*) FILTER (WHERE player_key = ${key})::int                               AS uses,
+      count(*) FILTER (WHERE player_key = ${key}
+        AND (${allTours} OR left(tournament_id, 1) = ${prefix}))::int                AS uses,
       count(*) FILTER (WHERE tournament_id = ${s.tid})::int                          AS slate_n,
       count(*) FILTER (WHERE tournament_id = ${s.tid} AND player_key = ${key})::int  AS dup
     FROM league_picks WHERE league_id = ${league.id} AND user_id = ${userId}` as
@@ -125,7 +131,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key)
       SELECT ${league.id}, ${userId}, ${userName}, ${s.tid}, ${golfer}, ${key}
       WHERE (SELECT count(*) FROM league_picks
-             WHERE league_id = ${league.id} AND user_id = ${userId} AND player_key = ${key})
+             WHERE league_id = ${league.id} AND user_id = ${userId} AND player_key = ${key}
+               AND (${allTours} OR left(tournament_id, 1) = ${prefix}))
             < ${league.uses_per_player}
         AND (SELECT count(*) FROM league_picks
              WHERE league_id = ${league.id} AND user_id = ${userId} AND tournament_id = ${s.tid})
