@@ -125,3 +125,20 @@ Target: steps 1–5 live before the Oct 8 lock.
 3. **A use belongs to the golfer, across tours.** Uses are counted per
    `(league, member, golfer)` over every tournament — picking Åberg in
    Spain spends the same budget as picking him at a PGA event.
+
+## Status (2026-09-30)
+
+Steps 1–5 shipped. Let It Ride is live as the fifth Friends Game mode:
+seasons, picks with enforcement (Jack's validateLeaguePick + a
+per-member advisory lock — a race test stored 5 uses against 3 before
+it), standings, the model as a member (Jack's modelLetItRidePick with
+capacity-aware saving), and the pick screen.
+
+**Known model limitation:** option value assumes a golfer's chances at
+a future event match this week's. World rank gates WHO is worth saving,
+but the size of the save still scales this week's probabilities. Fix
+when there's a forecast for future fields (the stateless strategy
+engine is the natural home).
+
+**Next:** step 6 — the per-member advice view (stateless
+get_season_strategy). Not a launch gate.
