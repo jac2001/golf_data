@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "player_name": "Eckroat, Austin",
+    "player_id": "57362",
+    "status": "WITHDRAWN",
+    "source": "pga_field_api_missing",
+    "detected_at": "2026-09-30T11:32:35.499836"
+  }
+]
