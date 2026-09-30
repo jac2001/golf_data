@@ -1,5 +1,5 @@
 /**
- * /api/receipt?tid=R2026557&u=<user_id>&game=weekly|rounds|fades — receipt cards.
+ * /api/receipt?tid=R2026557&u=<user_id>&game=ride|rounds|fades[&l=<league_id>] — receipt cards.
  * =========================================================================
  * A shareable PNG of one player's week: picks, money (or round scores),
  * rank, and the verdict vs The Model. Rendered server-side with next/og
@@ -36,7 +36,8 @@ export async function GET(req: Request) {
   const tid = (url.searchParams.get("tid") ?? "").toUpperCase();
   const uid = url.searchParams.get("u") ?? "";
   const raw = url.searchParams.get("game");
-  const game = raw === "rounds" ? "rounds" : raw === "fades" ? "fades" : "weekly";
+  const game = raw === "rounds" ? "rounds" : raw === "fades" ? "fades" : "ride";
+  const leagueId = Number(url.searchParams.get("l") || 0);
   if (!tid || !uid) return new Response("tid and u required", { status: 400 });
 
   // Locked events only — receipts never leak live picks.
@@ -54,8 +55,8 @@ export async function GET(req: Request) {
   let totalLabel = "", totalValue = "", verdict = "", rankText = "";
   let userName = "";
 
-  if (game === "weekly" || game === "fades") {
-    // The fade game is the weekly game through a mirror: same earnings
+  if (game === "ride" || game === "fades") {
+    // The fade game is Let It Ride through a mirror: same earnings
     // table, but LOW is the win and cashing big is the disaster.
     const fade = game === "fades";
     const picks = (fade
@@ -63,8 +64,8 @@ export async function GET(req: Request) {
         SELECT user_id, user_name, player_name FROM fade_picks
         WHERE tournament_id = ${tid}`
       : await sql`
-        SELECT user_id, user_name, player_name FROM picks
-        WHERE tournament_id = ${tid}`) as { user_id: string; user_name: string; player_name: string }[];
+        SELECT user_id, user_name, player_name FROM league_picks
+        WHERE tournament_id = ${tid} AND league_id = ${leagueId}`) as { user_id: string; user_name: string; player_name: string }[];
     const mine = picks.filter(p => p.user_id === uid);
     if (!mine.length) return new Response("no picks for this user/event", { status: 404 });
     userName = mine[0].user_name;

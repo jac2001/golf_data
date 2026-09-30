@@ -6,7 +6,9 @@
  * challenge. Built to be dropped into the group chat Sunday night —
  * the product's whole retention bet in one image.
  *
- * tid omitted → the most recent SETTLED event this group has picks in.
+ * Reads the group's Let It Ride season (the active one, else the most
+ * recent): the week's winner is that slate's weekly winner.
+ * tid omitted → the most recent SETTLED event the season has picks in.
  * Settled events only (the receipt rule: nothing leaks early).
  *
  * MEMBERS ONLY, unlike receipts: a receipt URL carries an unguessable
@@ -55,6 +57,12 @@ export async function GET(req: Request) {
   if (!ids.includes(userId)) return new Response("Not a member of this group.", { status: 403 });
   ids.push("model");
 
+  const league = await sql`
+    SELECT id FROM leagues WHERE group_id = ${groupId}
+    ORDER BY (status = 'active') DESC, created_at DESC LIMIT 1` as { id: number }[];
+  if (!league.length) return new Response("this group has no Let It Ride season yet", { status: 404 });
+  const leagueId = league[0].id;
+
   // Which settled events does this group have picks in?
   type Ev = { tournament_id: string; name: string; finished: boolean; start_date: string; locked: boolean };
   const open = await modelApi("/api/events/open");
@@ -67,7 +75,7 @@ export async function GET(req: Request) {
   if (!tid) {
     for (const t of settledTids) {
       const has = await sql`
-        SELECT 1 FROM picks WHERE tournament_id = ${t} AND user_id = ANY(${ids}) LIMIT 1` as unknown[];
+        SELECT 1 FROM league_picks WHERE tournament_id = ${t} AND league_id = ${leagueId} LIMIT 1` as unknown[];
       if (has.length) { tid = t; break; }
     }
   }
@@ -76,8 +84,8 @@ export async function GET(req: Request) {
   if (evMeta && !evMeta.finished) return new Response("event not settled yet", { status: 403 });
 
   const picks = await sql`
-    SELECT user_id, user_name, player_name FROM picks
-    WHERE tournament_id = ${tid} AND user_id = ANY(${ids})` as
+    SELECT user_id, user_name, player_name FROM league_picks
+    WHERE tournament_id = ${tid} AND league_id = ${leagueId}` as
     { user_id: string; user_name: string; player_name: string }[];
   if (!picks.length) return new Response("no picks for this group/event", { status: 404 });
 
@@ -128,7 +136,12 @@ export async function GET(req: Request) {
             {winner.user_name}
           </div>
           <div style={{ display: "flex", fontSize: 30, fontWeight: 900 }}>{money(winner.total)}</div>
-          <div style={{ display: "flex", fontSize: 20, color: MUTED }}>takes the week</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 20, color: YELLOW }}>
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path fill={YELLOW} d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" />
+            </svg>
+            takes the week
+          </div>
         </div>
         {runnerUp && (
           <div style={{ display: "flex", fontSize: 20, color: MUTED, marginTop: 6 }}>

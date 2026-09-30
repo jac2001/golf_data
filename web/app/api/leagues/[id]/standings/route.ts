@@ -16,6 +16,7 @@ import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { nameKey } from "@/lib/names";
 import { openEventLocks, pickVisible } from "@/lib/eventLocks";
+import { weeklyWinners } from "@/lib/weeklyWinners";
 
 type PickRow = { user_id: string; user_name: string; tournament_id: string; player_name: string; player_key: string };
 type EarningsResp = {
@@ -103,8 +104,15 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     members.set(p.user_id, m);
   }
 
-  const standings = [...members.values()].sort((a, b) => b.total - a.total);
+  const { winners, stars } = weeklyWinners([...members.values()].flatMap(m =>
+    Object.entries(m.events).map(([tid, ev]) =>
+      ({ user_id: m.user_id, tid, total: ev.event_total, settled: ev.settled }))));
+
+  const standings = [...members.values()]
+    .map(m => ({ ...m, stars: stars.get(m.user_id) ?? 0 }))
+    .sort((a, b) => b.total - a.total);
   return Response.json({
+    weekly_winners: winners,
     league: league[0], standings, me: userId,
     my_uses: myUses, locks_unavailable: locks === null,
   });

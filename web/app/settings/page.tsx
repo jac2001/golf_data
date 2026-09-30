@@ -178,7 +178,7 @@ export default function SettingsPage() {
         <div style={{ fontWeight: 800, marginBottom: 6 }}>Pick reminders</div>
         {prefs && (
           <>
-            <Row label="Weekly 3 reminders" sub="Nudge the day before an event locks when your 3 picks aren't in — all devices">
+            <Row label="Let It Ride reminders" sub="Nudge the day before an event locks when your season picks aren't in — all devices">
               <Toggle on={prefs.remind_weekly} busy={busyPref === "remind_weekly"} onClick={() => flipPref("remind_weekly")} />
             </Row>
             <Row label="Fade Game reminders" sub="Same nudge for missing fades — all devices">

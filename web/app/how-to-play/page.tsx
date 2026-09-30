@@ -25,7 +25,7 @@ const money = (v: number) =>
   v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
 
 const GAMES = [
-  { name: "Weekly 3", tag: "Pick 3 golfers before Thursday. Your score is their combined prize money. Most money in your group wins the week." },
+  { name: "Let It Ride", tag: "Pick 3 golfers each week — their prize money is your score. The catch: each golfer can only be used 3 times all season, so every week you choose who to spend and who to save. Best week earns a star; most money wins the season." },
   { name: "Round Game", tag: "One golfer per round, each player once per event, scored against par. Miss the cut with your pick and it costs you +5." },
   { name: "Fade Game", tag: "Pick 3 of the top-20 favorites you think will FLOP. Lowest combined earnings wins — fade the champion and you eat his whole check." },
 ];
@@ -125,14 +125,15 @@ export default function HowToPlayPage() {
       <div style={card}>
         <div style={{ fontWeight: 800, marginBottom: 8 }}>Scoring, in one example</div>
         <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", lineHeight: 1.6, margin: 0 }}>
-          Say your Weekly 3 are Bridgeman, Scheffler and Poston. Bridgeman
+          Say this week you pick Bridgeman, Scheffler and Poston. Bridgeman
           wins (<strong style={{ color: "var(--bc-text)" }}>$1.08M</strong>),
           Scheffler ties 5th (<strong style={{ color: "var(--bc-text)" }}>$245K</strong>),
           Poston misses the cut (<strong style={{ color: "var(--bc-text)" }}>$0</strong>).
           Your week: <strong style={{ color: "var(--bc-yellow)" }}>$1.33M</strong>.
-          Highest total in your group takes the week; season standings add up
-          every week you play. Everyone&apos;s picks stay hidden until tee-off,
-          so nobody copies.
+          Highest total in your group takes the week and a star; the season
+          adds up every week — and each of those three just spent one of his
+          three uses. Everyone&apos;s picks stay hidden until tee-off, so
+          nobody copies.
         </p>
       </div>
 

@@ -22,6 +22,7 @@ type League = {
 type SlatePick = { user_id: string; user_name: string; player_name: string };
 type Standing = {
   user_id: string; user_name: string; total: number; pga_total: number; euro_total: number;
+  stars: number;
 };
 
 const money = (v: number) =>
@@ -175,12 +176,14 @@ function Season({ league }: { league: League }) {
   const [tid, setTid] = useState("");
   const [standings, setStandings] = useState<Standing[]>([]);
   const [myUses, setMyUses] = useState<Record<string, number>>({});
+  const [winners, setWinners] = useState<Record<string, string[]>>({});
   const [me, setMe] = useState("");
 
   const loadStandings = useCallback(() => {
     call(`/api/leagues/${league.id}/standings`).then(d => {
       setStandings((d.standings as Standing[]) ?? []);
       setMyUses((d.my_uses as Record<string, number>) ?? {});
+      setWinners((d.weekly_winners as Record<string, string[]>) ?? {});
       setMe(String(d.me ?? ""));
     }).catch(() => {});
   }, [league.id]);
@@ -222,7 +225,8 @@ function Season({ league }: { league: League }) {
               </button>
             ))}
           </div>
-          {ev && <Slate key={ev.tournament_id} league={league} ev={ev} myUses={myUses} me={me} onChange={loadStandings} />}
+          {ev && <Slate key={ev.tournament_id} league={league} ev={ev} myUses={myUses} me={me} onChange={loadStandings}
+            winners={(winners[ev.tournament_id] ?? []).map(id => standings.find(s => s.user_id === id)?.user_name ?? "")} />}
         </>
       )}
 
@@ -231,8 +235,9 @@ function Season({ league }: { league: League }) {
   );
 }
 
-function Slate({ league, ev, myUses, me, onChange }: {
+function Slate({ league, ev, myUses, me, onChange, winners }: {
   league: League; ev: OpenEvent; myUses: Record<string, number>; me: string; onChange: () => void;
+  winners: string[];
 }) {
   const [picks, setPicks] = useState<SlatePick[]>([]);
   const [locked, setLocked] = useState(ev.locked);
@@ -290,6 +295,16 @@ function Slate({ league, ev, myUses, me, onChange }: {
           {locked ? "Locked — picks revealed" : `${mine.length} of ${league.players_per_week} picked`}
         </div>
       </div>
+      {winners.length > 0 && (
+        <div style={{ color: "var(--bc-yellow)", fontWeight: 800, fontSize: "0.86em", marginBottom: 10 }}>
+          <Star /> Week winner: {winners.join(" & ")}
+        </div>
+      )}
+      {locked && mine.length > 0 && (
+        <button onClick={() => shareReceipt(league.id, ev.tournament_id, me)} style={{ ...btn(false), marginBottom: 12 }}>
+          Share my picks
+        </button>
+      )}
 
       {msg && (
         <div style={{ background: "color-mix(in srgb, var(--bc-red) 10%, transparent)", borderRadius: 6,
@@ -403,13 +418,17 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead><tr>
           <th style={{ ...th, textAlign: "left" }}>Member</th>
-          <th style={th}>PGA</th><th style={th}>DPWT</th><th style={th}>Total</th>
+          <th style={th}>Wins</th><th style={th}>PGA</th><th style={th}>DPWT</th><th style={th}>Total</th>
         </tr></thead>
         <tbody>
           {standings.map((s, i) => (
             <tr key={s.user_id}>
               <td style={{ ...td, textAlign: "left", fontWeight: 700, color: s.user_id === me ? "var(--bc-yellow)" : "var(--bc-text)" }}>
                 {i + 1}. {s.user_name}
+              </td>
+              <td style={{ ...td, color: "var(--bc-yellow)", whiteSpace: "nowrap" }}>
+                {s.stars > 0 ? Array.from({ length: Math.min(s.stars, 5) }).map((_, i) => <Star key={i} />) : "—"}
+                {s.stars > 5 && <span style={{ fontSize: "0.82em", marginLeft: 3 }}>×{s.stars}</span>}
               </td>
               <td style={{ ...td, color: "var(--bc-muted)" }}>{money(s.pga_total)}</td>
               <td style={{ ...td, color: "var(--bc-muted)" }}>{money(s.euro_total)}</td>
@@ -419,5 +438,72 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
         </tbody>
       </table>
     </div>
+  );
+}
+
+/** A weekly win. Drawn, not an emoji glyph, so it renders identically everywhere. */
+function Star() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" aria-label="weekly win"
+      style={{ verticalAlign: "-1px", marginRight: 2 }}>
+      <path fill="currentColor"
+        d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" />
+    </svg>
+  );
+}
+
+/** Receipt PNG: shares the image file on phones with Web Share, else opens it. */
+async function shareReceipt(leagueId: number, tid: string, uid: string) {
+  const url = `/api/receipt?game=ride&l=${leagueId}&tid=${encodeURIComponent(tid)}&u=${encodeURIComponent(uid)}`;
+  if (typeof navigator.share === "function" && typeof navigator.canShare === "function") {
+    try {
+      const blob = await fetch(url).then(r => r.blob());
+      const file = new File([blob], `golf-edge-${tid}.png`, { type: "image/png" });
+      if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file] }); return; }
+    } catch { /* fall through to opening it */ }
+  }
+  window.open(url, "_blank");
+}
+
+/** Season standings on their own (Friends Game → Standings, group feed):
+ *  resolves the group's active season and reuses SeasonStandings. With
+ *  no groupId, uses the first group that has a season. */
+export function LetItRideStandings({ groupId, compact = false }: { groupId?: number; compact?: boolean }) {
+  const [rows, setRows] = useState<Standing[] | null>(null);
+  const [me, setMe] = useState("");
+  const [label, setLabel] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      try {
+        let leagueId: number | null = null;
+        if (groupId) {
+          const d = await call(`/api/leagues?group_id=${groupId}`);
+          const l = d.league as League | null;
+          if (l) { leagueId = l.id; setLabel(l.name); }
+        } else {
+          const d = await call("/api/leagues");
+          const first = ((d.active as { id: number; name: string; group_name: string }[]) ?? [])[0];
+          if (first) { leagueId = first.id; setLabel(`${first.name} · ${first.group_name}`); }
+        }
+        if (!leagueId) { setRows([]); return; }
+        const s = await call(`/api/leagues/${leagueId}/standings`);
+        setRows((s.standings as Standing[]) ?? []);
+        setMe(String(s.me ?? ""));
+      } catch { setRows([]); }
+    })();
+  }, [groupId]);
+
+  if (rows === null) return compact ? null : <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
+  if (rows.length === 0) {
+    return compact ? null : (
+      <div style={card}>No Let It Ride season yet — the group owner starts one from Games → Let It Ride.</div>
+    );
+  }
+  return (
+    <>
+      {label && !compact && <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginBottom: 8 }}>{label}</div>}
+      <SeasonStandings standings={rows} me={me} />
+    </>
   );
 }

@@ -21,7 +21,7 @@ export const runtime = "nodejs";
 const WINDOW_H = 40;
 
 type OpenEvent = {
-  tournament_id: string; name: string; start_date: string;
+  tournament_id: string; name: string; start_date: string; tour: string;
   locked: boolean; has_model: boolean; finished: boolean;
 };
 type SubRow = { user_id: string; endpoint: string; p256dh: string; auth: string };
@@ -60,7 +60,7 @@ export async function GET(req: Request) {
   for (const ev of finished.slice(0, 1)) {
     const tid = ev.tournament_id.toUpperCase();
     const anyPicks = await sql`
-      SELECT 1 FROM picks WHERE tournament_id = ${tid} LIMIT 1` as unknown[];
+      SELECT 1 FROM league_picks WHERE tournament_id = ${tid} LIMIT 1` as unknown[];
     if (!anyPicks.length) continue;
     let settled = false;
     try {
@@ -104,21 +104,35 @@ export async function GET(req: Request) {
 
   for (const ev of soon) {
     const tid = ev.tournament_id.toUpperCase();
-    const picks = await sql`
-      SELECT user_id, count(*)::int AS n FROM picks
-      WHERE tournament_id = ${tid} GROUP BY user_id` as { user_id: string; n: number }[];
+    // Let It Ride: members of every active season covering this event,
+    // with how many golfers each still needs. The season's own
+    // players_per_week sets the target; if a member is in two seasons,
+    // the emptier slate wins the reminder.
+    const needs = await sql`
+      SELECT m.user_id,
+             max(l.players_per_week - coalesce(p.n, 0))::int AS short
+      FROM leagues l
+      JOIN group_members m ON m.group_id = l.group_id
+      LEFT JOIN (
+        SELECT league_id, user_id, count(*)::int AS n FROM league_picks
+        WHERE tournament_id = ${tid} GROUP BY league_id, user_id
+      ) p ON p.league_id = l.id AND p.user_id = m.user_id
+      WHERE l.status = 'active' AND ${ev.tour} = ANY(l.tours)
+        AND l.season_start <= ${ev.start_date}::date
+        AND (l.season_end IS NULL OR l.season_end >= ${ev.start_date}::date)
+      GROUP BY m.user_id` as { user_id: string; short: number }[];
     const fades = await sql`
       SELECT user_id, count(*)::int AS n FROM fade_picks
       WHERE tournament_id = ${tid} GROUP BY user_id` as { user_id: string; n: number }[];
-    const nPicks = new Map(picks.map(r => [r.user_id, r.n]));
+    const shortBy = new Map(needs.map(r => [r.user_id, r.short]));
     const nFades = new Map(fades.map(r => [r.user_id, r.n]));
 
     for (const sub of subs) {
       const pref = prefs.get(sub.user_id);
       const missing: string[] = [];
-      const p = nPicks.get(sub.user_id) ?? 0;
-      if ((pref?.remind_weekly ?? true) && p < 3) {
-        missing.push(`${3 - p} pick${3 - p === 1 ? "" : "s"}`);
+      const short = shortBy.get(sub.user_id) ?? 0;
+      if ((pref?.remind_weekly ?? true) && short > 0) {
+        missing.push(`${short} Let It Ride pick${short === 1 ? "" : "s"}`);
       }
       if (ev.has_model && (pref?.remind_fades ?? true)) {
         const f = nFades.get(sub.user_id) ?? 0;

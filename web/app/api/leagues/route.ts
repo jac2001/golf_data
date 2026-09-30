@@ -25,8 +25,7 @@ export async function GET(req: Request) {
   const sql = getSql();
 
   // No group_id: which of MY groups are running a season, plus how many
-  // groups I'm in — Weekly 3 uses this to point season players at Let It
-  // Ride instead of taking a second set of picks.
+  // groups I'm in — the standings view uses this to find a season.
   if (!groupId) {
     const rows = await sql`
       SELECT l.id, l.name, g.id AS group_id, g.name AS group_name

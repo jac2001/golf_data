@@ -87,16 +87,14 @@ needed for it.
 5. **Onboarding polish** driven by the next playtest: first-run
    pointers on the six tabs; invite-flow friction.
 
-6. **Fold Weekly 3 into Let It Ride** (decided 2026-09-30, after the Fall
-   Series proves the format). Weekly 3 is Let It Ride with unlimited uses,
-   so it becomes a preset — "one-week season, unlimited uses" — on the
-   same engine: migrate `picks`, the Sunday recap, reminders, the demo,
-   and the model's weekly trio onto the league tables, and drop the
-   duplicate code (the Weekly board is where a reveal-at-lock leak lived).
-   Decide first: whether picks stay per-user (one lineup, all groups) or
-   become per-league. Launch-week stopgap already shipped: groups running
-   a season see a pointer to Let It Ride instead of a second weekly
-   lineup.
+6. [x] **Weekly 3 retired into Let It Ride** (done 2026-09-30, Jack's
+   call — earlier than planned). Let It Ride is the pick-3 game; each
+   settled slate crowns a weekly winner with a star (ties share, live
+   slates crown nobody). Recap, receipts, reminders, feed, and the How
+   to Play copy all read the league tables; the model's Weekly trio and
+   the two Weekly routes are gone. No history migrated (one week of
+   picks existed). Trade-off accepted: no zero-setup game — a group
+   needs a season to play.
 
 ## Later
 

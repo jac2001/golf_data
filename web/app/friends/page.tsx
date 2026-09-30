@@ -13,7 +13,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { PageHead, SubTabs } from "@/components/broadcast";
-import LetItRideTab from "@/components/LetItRideTab";
+import LetItRideTab, { LetItRideStandings } from "@/components/LetItRideTab";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
@@ -223,13 +223,12 @@ export default function FriendsPage() {
 
 // ── Games: one tab, three modes ──────────────────────────────────────────────
 
-type GameMode = "picks" | "rounds" | "fades" | "college" | "ride";
+type GameMode = "ride" | "rounds" | "fades" | "college";
 const GAME_MODES: { id: GameMode; name: string; tag: string }[] = [
-  { id: "picks",   name: "Weekly 3",     tag: "Pick 3 · most money wins" },
+  { id: "ride",    name: "Let It Ride",  tag: "Pick 3 · most money wins · uses budgeted all season" },
   { id: "rounds",  name: "Round Game",   tag: "1 per round · to par" },
   { id: "fades",   name: "Fade Game",    tag: "Fade 3 stars · least money wins" },
   { id: "college", name: "College Game", tag: "Claim a school · best 2 alumni count" },
-  { id: "ride",    name: "Let It Ride",  tag: "Season game · spend or save your golfers" },
 ];
 
 function GamesTab() {
@@ -238,9 +237,9 @@ function GamesTab() {
   const [mode, setMode] = useState<GameMode>(() => {
     try {
       const m = localStorage.getItem("friends-game-mode");
-      if (m === "picks" || m === "rounds" || m === "fades" || m === "college" || m === "ride") return m;
+      if (m === "rounds" || m === "fades" || m === "college" || m === "ride") return m;
     } catch { /* default below */ }
-    return "picks";
+    return "ride";   // a remembered "picks" (Weekly 3, retired) lands here
   });
 
   function pick(m: GameMode) {
@@ -272,56 +271,12 @@ function GamesTab() {
           );
         })}
       </div>
-      {mode === "picks" && <WeeklyOrSeason onGoToRide={() => pick("ride")} />}
       {mode === "rounds" && <RoundGameTab />}
       {mode === "fades" && <FadeTab />}
       {mode === "college" && <CollegeTab />}
       {mode === "ride" && <LetItRideTab />}
     </>
   );
-}
-
-// ── Weekly 3 vs Let It Ride ──────────────────────────────────────────────────
-// Let It Ride is Weekly 3 plus a season budget, so a group running a
-// season makes its picks THERE — asking for a second weekly lineup is
-// double entry nobody sustains. Every group in a season: pointer only.
-// Some groups: a banner, and Weekly 3 still serves the rest. None: as-is.
-// (Folding Weekly 3 into Let It Ride as a one-week, unlimited-uses
-// preset is the planned consolidation — see ROADMAP.)
-
-function WeeklyOrSeason({ onGoToRide }: { onGoToRide: () => void }) {
-  const api = useApi();
-  const [state, setState] = useState<{ active: { group_name: string }[]; group_count: number } | null>(null);
-
-  useEffect(() => {
-    api("/api/leagues")
-      .then(d => setState({ active: (d.active as { group_name: string }[]) ?? [], group_count: Number(d.group_count ?? 0) }))
-      .catch(() => setState({ active: [], group_count: 0 }));   // fail open: Weekly 3 just shows
-  }, [api]);
-
-  if (!state) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
-  if (state.active.length === 0) return <PicksTab />;
-
-  const names = state.active.map(a => a.group_name).join(", ");
-  const everyGroup = state.active.length >= state.group_count;
-  const pointer = (
-    <div style={{ ...card, borderColor: "var(--bc-yellow)" }}>
-      <div style={{ fontWeight: 900, marginBottom: 4 }}>
-        {names} {state.active.length > 1 ? "are" : "is"} playing Let It Ride
-      </div>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "0 0 12px", lineHeight: 1.5 }}>
-        {everyGroup
-          ? "Your weekly picks happen there now — same pick-three game, plus a season budget of uses per golfer."
-          : "Make that group\u2019s picks in Let It Ride. Weekly 3 below still counts for your other groups."}
-      </p>
-      <button onClick={onGoToRide} style={{
-        cursor: "pointer", fontFamily: "inherit", fontWeight: 900, fontSize: "0.76em",
-        textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5, padding: "8px 14px",
-        background: "var(--bc-yellow)", color: "#081f14", border: "1px solid var(--bc-yellow)",
-      }}>Go to Let It Ride</button>
-    </div>
-  );
-  return everyGroup ? pointer : <>{pointer}<PicksTab /></>;
 }
 
 // ── My Picks ─────────────────────────────────────────────────────────────────
@@ -344,276 +299,11 @@ const chipRow: React.CSSProperties = {
   WebkitOverflowScrolling: "touch" as never,
 };
 
-function PicksTab() {
-  const api = useApi();
-  const [events, setEvents] = useState<OpenEvent[]>([]);
-  const [selected, setSelected] = useState<string>("");
-  const [event, setEvent]   = useState<EventInfo | null>(null);
-  const [picks, setPicks]   = useState<string[]>([]);
-  const [field, setField]   = useState<FieldRow[]>([]);
-  const [numbersSource, setNumbersSource] = useState("");
-  const [query, setQuery]   = useState("");
-  const [err, setErr]       = useState("");
-  const [loading, setLoading] = useState(true);
-
-  // Which events are pickable this week (PGA + DP World Tour can run
-  // concurrently, so this is a list, not "the" tournament).
-  useEffect(() => {
-    getOpenEvents().then(d => {
-      const evs = d.events ?? [];
-      setEvents(evs);
-      const firstOpen = evs.find(e => !e.locked) ?? evs.find(e => !e.finished) ?? evs[evs.length - 1];
-      if (firstOpen) setSelected(firstOpen.tournament_id);
-      else setLoading(false);
-    }).catch(() => setLoading(false));
-  }, []);
-
-  const load = useCallback(() => {
-    if (!selected) return;
-    setLoading(true); setErr("");
-    api(`/api/friends/picks?tournament_id=${encodeURIComponent(selected)}`)
-      .then(d => { setEvent(d.event as EventInfo); setPicks(d.picks as string[]); })
-      .catch(e => setErr(`Could not load your picks — ${e.message}`))
-      .finally(() => setLoading(false));
-  }, [api, selected]);
-
-  useEffect(() => {
-    if (!selected) return;
-    load();
-    setField([]); setQuery(""); setNumbersSource("");
-    // Every event gets the same treatment: ask for its predictions (our
-    // model for PGA, DataGolf's euro model for DPWT — the API labels
-    // the source), trust the payload's own tournament label, and fall
-    // back to the plain field list when no numbers exist yet.
-    getPredictions(200, selected)
-      .then(d => {
-        if (String(d.tournament_id ?? "").toUpperCase() !== selected.toUpperCase()) {
-          throw new Error("predictions are for a different event");
-        }
-        setNumbersSource(d.source ?? "model");
-        setField(
-          (d.players ?? [])
-            .filter((r: FieldRow) => r.player_name)
-            .sort((a: FieldRow, b: FieldRow) => (b.win_prob ?? 0) - (a.win_prob ?? 0))
-        );
-      })
-      .catch(() =>
-        getEventField(selected)
-          .then(d => setField((d.players ?? []).map(p => ({
-            player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
-          }))))
-          .catch(() => {})
-      );
-  }, [load, selected]);
-
-  async function add(player: string) {
-    setErr("");
-    try {
-      const d = await api("/api/friends/picks", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ player_name: player, tournament_id: selected }),
-      });
-      setPicks(d.picks as string[]); setQuery("");
-    } catch (e) { setErr((e as Error).message); }
-  }
-
-  async function remove(player: string) {
-    setErr("");
-    try {
-      const d = await api("/api/friends/picks", {
-        method: "DELETE", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ player_name: player, tournament_id: selected }),
-      });
-      setPicks(d.picks as string[]);
-    } catch (e) { setErr((e as Error).message); }
-  }
-
-  if (loading) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
-  if (!event) return (
-    <div style={card}>
-      <p style={{ color: "var(--bc-muted)", margin: 0 }}>
-        {err || "No tournament to pick for right now — check back Tuesday of tournament week."}
-      </p>
-    </div>
-  );
-
-  // Derived state: computed from query + field on every render, never
-  // stored — one source of truth, nothing to keep in sync.
-  const visible = query.length >= 2
-    ? field.filter(r => r.player_name.toLowerCase().includes(query.toLowerCase()))
-    : field;
-
-  return (
-    <>
-      {events.length > 1 && (
-        <div style={chipRow}>
-          {chipOrder(events).map(ev => (
-            <button key={ev.tournament_id} onClick={() => setSelected(ev.tournament_id)} style={{
-              ...btnQuiet, padding: "7px 14px", whiteSpace: "nowrap", flexShrink: 0,
-              color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
-              background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
-              borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
-            }}>
-              {ev.name}
-              <span style={{ marginLeft: 6, fontSize: "0.85em", opacity: 0.75 }}>
-                {ev.tour === "euro" ? "DPWT" : "PGA"}
-                {ev.finished ? " · final" : ev.locked ? " · live" : ""}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
-      <div style={card}>
-        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-          <div>
-            <div style={{ fontWeight: 800, fontSize: "1.05em" }}>{event.name || event.tid}</div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 2 }}>
-              {event.locked
-                ? (events.find(e => e.tournament_id === selected)?.finished
-                    ? "Final — graded below."
-                    : "Picks are locked — tournament underway.")
-                : `Picks lock ${event.startDate?.slice(0, 10) || "at tee-off"} · ${3 - picks.length} of 3 remaining`}
-            </div>
-          </div>
-        </div>
-
-        {/* Current picks */}
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 16 }}>
-          {picks.map(p => (
-            <span key={p} style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
-              borderRadius: 6, padding: "8px 12px", fontSize: "0.9em", fontWeight: 700,
-            }}>
-              <PlayerLink name={p} />
-              {!event.locked && (
-                <button onClick={() => remove(p)} aria-label={`Remove ${p}`} style={{
-                  background: "none", border: "none", color: "var(--bc-muted)",
-                  cursor: "pointer", fontSize: "1em", padding: 0, lineHeight: 1,
-                }}>✕</button>
-              )}
-            </span>
-          ))}
-          {picks.length === 0 && (
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>No picks yet.</span>
-          )}
-        </div>
-
-        {/* The anti-chalk fact, surfaced when it applies: matching the
-            model's exact trio caps you at a TIE with it, never a win. */}
-        {!event.locked && picks.length === 3 && field.length >= 3 && field[0].win_prob != null &&
-          field.slice(0, 3).every(f => picks.includes(f.player_name)) && (
-          <p style={{ color: "var(--bc-yellow)", fontSize: "0.8em", marginTop: 10, fontWeight: 600 }}>
-            That&apos;s the model&apos;s exact trio — you can tie it, never beat
-            it. Swapping even one pick is your only path to the win.
-          </p>
-        )}
-
-        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
-      </div>
-
-      {field.length === 0 && !event.locked && (
-        <div style={{ ...card, background: "var(--bc-panel)" }}>
-          <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.88em" }}>
-            The field for {event.name} isn&apos;t announced yet — DP World Tour
-            fields publish once the current event finishes (usually Friday).
-            Check back this weekend; picks stay open until Thursday.
-          </p>
-        </div>
-      )}
-
-      {/* The field board: browse this week's field with the model's numbers
-          and pick straight from the row. Names link to full profiles. */}
-      {field.length > 0 && (
-        <div style={{ ...card, padding: 0, overflow: "hidden" }}>
-          {numbersSource === "datagolf" && (
-            <div style={{ padding: "12px 16px 0", color: "var(--bc-muted)", fontSize: "0.76em" }}>
-              Numbers by DataGolf&apos;s euro model, displayed with permission —
-              ours covers the DP World Tour after the January retrain.
-            </div>
-          )}
-          <div style={{ padding: "14px 16px 0" }}>
-            <input
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              placeholder="Filter the field…"
-              style={{ ...inputStyle, width: "100%", boxSizing: "border-box" }}
-            />
-          </div>
-          <div style={{ maxHeight: 420, overflowY: "auto", marginTop: 10 }}>
-            <table style={{ borderCollapse: "collapse", width: "100%" }}>
-              <thead><tr>
-                <th style={hdr}>Player</th>
-                <th style={{ ...hdr, textAlign: "right" }}>World rank</th>
-                <th style={{ ...hdr, textAlign: "right" }}>Win chance</th>
-                <th style={{ ...hdr, textAlign: "right" }}>Top-10</th>
-                <th style={{ ...hdr, textAlign: "right" }}>Makes cut</th>
-                <th style={hdr} />
-              </tr></thead>
-              <tbody>
-                {visible.map(r => {
-                  const picked = picks.includes(r.player_name);
-                  return (
-                    <tr key={r.player_name}
-                        style={{ background: picked ? "var(--bc-card-hi)" : "transparent" }}>
-                      <td style={{ ...cell, fontWeight: 600 }}>
-                        <PlayerLink name={r.player_name} />
-                      </td>
-                      <td style={{ ...cell, textAlign: "right", color: "var(--bc-muted)", fontVariantNumeric: "tabular-nums" }}>
-                        {r.world_rank != null ? `#${Math.round(r.world_rank)}` : "—"}
-                      </td>
-                      <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
-                        {r.win_prob != null ? `${(r.win_prob * 100).toFixed(1)}%` : "—"}
-                      </td>
-                      <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums", color: "var(--bc-muted)" }}>
-                        {r.top10_prob != null ? `${(r.top10_prob * 100).toFixed(0)}%` : "—"}
-                      </td>
-                      <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums", color: "var(--bc-muted)" }}>
-                        {r.cut_prob != null ? `${(r.cut_prob * 100).toFixed(0)}%` : "—"}
-                      </td>
-                      <td style={{ ...cell, textAlign: "right" }}>
-                        {picked ? (
-                          !event.locked
-                            ? <button onClick={() => remove(r.player_name)}
-                                style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em", color: "var(--bc-green)" }}>
-                                Picked ✓</button>
-                            : <span style={{ color: "var(--bc-green)", fontSize: "0.78em", fontWeight: 700 }}>Picked ✓</span>
-                        ) : (
-                          <button onClick={() => add(r.player_name)}
-                            disabled={event.locked || picks.length >= 3}
-                            style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em",
-                              opacity: event.locked || picks.length >= 3 ? 0.4 : 1,
-                              cursor: event.locked || picks.length >= 3 ? "default" : "pointer" }}>
-                            Pick</button>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      <div style={{ ...card, background: "var(--bc-panel)" }}>
-        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
-          How it works: pick 3 players per event before it starts. Your score is
-          their combined prize money — real for PGA weeks, estimated from the
-          purse and standard payout table for DP World Tour weeks (DataGolf
-          doesn&apos;t publish euro prize money). Season standings live on the
-          next tab — the model plays too, once its Tuesday lineup goes live.
-        </p>
-      </div>
-    </>
-  );
-}
-
 // ── Standings ────────────────────────────────────────────────────────────────
 
 /** Opens the PNG in a new tab; on phones with Web Share, offers the sheet
  *  with the image attached so it drops straight into a chat. */
-async function shareReceipt(tid: string, uid: string, game: "weekly" | "rounds" | "fades") {
+async function shareReceipt(tid: string, uid: string, game: "rounds" | "fades") {
   const url = `/api/receipt?tid=${encodeURIComponent(tid)}&u=${encodeURIComponent(uid)}&game=${game}`;
   if (typeof navigator.share === "function" && typeof navigator.canShare === "function") {
     try {
@@ -633,12 +323,12 @@ function StandingsTab() {
   // Round Game is per-tournament by design (its whole-event board
   // lives on the Games tab), so no "rounds" pill here and a
   // remembered "rounds" mode falls back to picks.
-  const [mode, setMode] = useState<"picks" | "fades" | "college">(() => {
+  const [mode, setMode] = useState<"ride" | "fades" | "college">(() => {
     try {
       const m = localStorage.getItem("friends-game-mode");
-      if (m === "picks" || m === "fades" || m === "college") return m;
+      if (m === "ride" || m === "fades" || m === "college") return m;
     } catch { /* default below */ }
-    return "picks";
+    return "ride";
   });
 
   return (
@@ -647,7 +337,7 @@ function StandingsTab() {
         {GAME_MODES.filter(g => g.id !== "rounds").map(g => {
           const on = mode === g.id;
           return (
-            <button key={g.id} onClick={() => setMode(g.id as "picks" | "fades" | "college")} style={{
+            <button key={g.id} onClick={() => setMode(g.id as "ride" | "fades" | "college")} style={{
               ...btnQuiet, padding: "7px 14px",
               color: on ? "#081f14" : "var(--bc-muted)",
               background: on ? "var(--bc-yellow)" : "transparent",
@@ -658,117 +348,9 @@ function StandingsTab() {
           );
         })}
       </div>
-      {mode === "picks" && <WeeklyStandings />}
+      {mode === "ride" && <LetItRideStandings />}
       {mode === "fades" && <FadeStandings />}
       {mode === "college" && <CollegeStandings />}
-    </>
-  );
-}
-
-function WeeklyStandings() {
-  const api = useApi();
-  const [standings, setStandings] = useState<Standing[] | null>(null);
-  const [me, setMe] = useState("");
-  const [open, setOpen] = useState<string | null>(null);
-
-  useEffect(() => {
-    api("/api/friends/leaderboard")
-      .then(d => { setStandings((d.standings as Standing[]) ?? []); setMe((d.me as string) ?? ""); })
-      .catch(() => setStandings([]));
-  }, [api]);
-
-  if (!standings) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
-  if (standings.length === 0) return (
-    <div style={card}>
-      <p style={{ color: "var(--bc-muted)", margin: 0 }}>
-        Nobody has made a pick yet. Be the first — the leaderboard starts with you.
-      </p>
-    </div>
-  );
-
-  // The rivalry line: where you stand and exactly what it takes.
-  const anyLive = standings.some(s => Object.values(s.events).some(e => e.projected));
-  const myIdx = standings.findIndex(s => s.user_id === me);
-  const rivalry = (() => {
-    if (myIdx < 0 || standings.length < 2) return "";
-    if (myIdx === 0) {
-      const chaser = standings[1];
-      return `You lead — ${chaser.user_name} is ${money(standings[0].total - chaser.total)} back.`;
-    }
-    const ahead = standings[myIdx - 1];
-    return `You're #${myIdx + 1} — ${money(ahead.total - standings[myIdx].total)} behind ${ahead.user_name}.`;
-  })();
-
-  return (
-    <>
-    {rivalry && (
-      <div style={{ ...card, padding: "12px 18px", display: "flex", alignItems: "center", gap: 10,
-        border: "1px solid color-mix(in srgb, var(--bc-yellow) 40%, transparent)" }}>
-        <span style={{ fontWeight: 800, fontSize: "0.92em" }}>{rivalry}</span>
-        {anyLive && (
-          <span style={{ marginLeft: "auto", color: "var(--bc-yellow)", fontSize: "0.72em",
-            fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            live · projected
-          </span>
-        )}
-      </div>
-    )}
-    <div style={{ ...card, padding: 0, overflow: "hidden" }}>
-      <table style={{ borderCollapse: "collapse", width: "100%" }}>
-        <thead><tr>
-          <th style={hdr}>#</th><th style={hdr}>Player</th>
-          <th style={{ ...hdr, textAlign: "right" }}>Season earnings</th>
-          <th style={{ ...hdr, textAlign: "right" }}>Weeks</th>
-        </tr></thead>
-        <tbody>
-          {standings.map((s, i) => (
-            <React.Fragment key={s.user_id}>
-              <tr onClick={() => setOpen(open === s.user_id ? null : s.user_id)}
-                  style={{ cursor: "pointer", background: s.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
-                <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
-                <td style={{ ...cell, fontWeight: 700 }}>
-                  {s.user_name}
-                  {s.user_id === "model" && <ModelBadge />}
-                  {s.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
-                </td>
-                <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums", fontWeight: 700 }}>
-                  {money(s.total)}
-                </td>
-                <td style={{ ...cell, textAlign: "right", color: "var(--bc-muted)" }}>
-                  {Object.keys(s.events).length}
-                </td>
-              </tr>
-              {open === s.user_id && Object.entries(s.events).map(([tid, ev]) => (
-                <tr key={tid}>
-                  <td style={cell} />
-                  <td colSpan={3} style={{ ...cell, background: "var(--bc-panel)", fontSize: "0.8em" }}>
-                    <button onClick={() => shareReceipt(tid, s.user_id, "weekly")}
-                      title="Share this week's receipt" style={{
-                        background: "transparent", border: "1px solid var(--bc-line)",
-                        borderRadius: 4, color: "var(--bc-yellow)", cursor: "pointer",
-                        fontSize: "0.9em", padding: "1px 8px", marginRight: 8 }}>
-                      Receipt
-                    </button>
-                    <span style={{ color: "var(--bc-muted)" }}>{tid} · </span>
-                    {ev.picks.map((p, pi) => (
-                      <React.Fragment key={p.player}>
-                        {pi > 0 && " · "}
-                        <PlayerLink name={p.player} />
-                        {p.earnings != null ? ` (${money(p.earnings)})` : " (pending)"}
-                      </React.Fragment>
-                    ))}
-                    <span style={{ float: "right", fontWeight: 700 }}>
-                      {ev.settled ? money(ev.event_total)
-                        : ev.projected ? `${money(ev.event_total)} projected` : "pending"}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
-    </div>
     </>
   );
 }
@@ -1342,15 +924,10 @@ function GroupFeed({ groupId }: { groupId: number }) {
   const [feed, setFeed] = useState<{ openNames?: string[];
     bets: FeedBet[]; picks: FeedPick[];
     modelMoves?: { event: string; game: string; text: string }[] } | null>(null);
-  const [standings, setStandings] = useState<Standing[] | null>(null);
-
   useEffect(() => {
     api(`/api/friends/feed?group_id=${groupId}`)
       .then(d => setFeed(d as never))
       .catch(() => setFeed({ openNames: [], bets: [], picks: [] }));
-    api(`/api/friends/leaderboard?group_id=${groupId}`)
-      .then(d => setStandings((d.standings as Standing[]) ?? []))
-      .catch(() => setStandings([]));
   }, [groupId, api]);
 
   if (!feed) return <p style={{ color: "var(--bc-muted)", marginTop: 12 }}>Loading…</p>;
@@ -1384,21 +961,8 @@ function GroupFeed({ groupId }: { groupId: number }) {
         </div>
       )}
 
-      {/* Standings strip */}
-      {standings && standings.length > 0 && (
-        <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
-          <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", fontWeight: 700,
-            textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Standings</div>
-          {standings.map((st, i) => (
-            <div key={st.user_id} style={{ display: "flex", fontSize: "0.86em", padding: "2px 0" }}>
-              <span style={{ color: "var(--bc-yellow)", fontWeight: 800, width: 24 }}>{i + 1}</span>
-              <span style={{ fontWeight: 600 }}>{st.user_name}</span>
-              <span style={{ marginLeft: "auto", fontVariantNumeric: "tabular-nums" }}>{money(st.total)}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
+      {/* Season standings — the group's Let It Ride season */}
+      <LetItRideStandings groupId={groupId} compact />
       {/* Picks — revealed per event once it locks */}
       <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
         <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", fontWeight: 700,
@@ -1628,7 +1192,7 @@ function RoundGameTab() {
       .then(d => { setBoard((d.standings as RoundRow[]) ?? []); setMe((d.me as string) ?? ""); })
       .catch(() => setBoard([]));
     // Field with numbers when the event has them (our model or DG's
-    // euro model), plain names otherwise — same pattern as PicksTab.
+    // euro model), plain names otherwise — same pattern as the Let It Ride field list.
     getPredictions(200, selected)
       .then(d => {
         if (String(d.tournament_id ?? "").toUpperCase() !== selected.toUpperCase()) {

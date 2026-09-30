@@ -3,8 +3,8 @@
  * ============================================
  * Called by a daily Vercel Cron (and callable manually). For every open,
  * unlocked, PGA event with fresh predictions the model:
- *   - weekly game: picks its 3 highest EXPECTED-PAYOUT players
- *     (Jack's expectedPayout in lib/modelBrain.ts)
+ *   - Let It Ride: one slate per active season, spend-vs-save under the
+ *     same use budget as members (Jack's modelLetItRidePick)
  *   - fade game: fades the 3 LOWEST expected payouts among its own
  *     top-20 pool (Jack's modelFadePicks) — the favorites it believes
  *     in least
@@ -20,7 +20,7 @@
  */
 
 import { getSql, MODEL_API } from "@/lib/db";
-import { expectedPayout, modelCollegePick, modelFadePicks, modelLetItRidePick, modelRoundPick, Probs } from "@/lib/modelBrain";
+import { modelCollegePick, modelFadePicks, modelLetItRidePick, modelRoundPick, Probs } from "@/lib/modelBrain";
 import { nameKey } from "@/lib/names";
 
 const MODEL_ID = "model";
@@ -86,25 +86,6 @@ export async function GET(req: Request) {
     if (preds.length < MIN_FIELD && !ev.locked) {
       log.push(`${tid}: field too small to bet (${preds.length} players) — waiting for the full field`);
       continue;
-    }
-
-    // ── Weekly trio ──
-    if (!ev.locked && ev.purse) {
-      const have = await sql`
-        SELECT 1 FROM picks WHERE user_id = ${MODEL_ID} AND tournament_id = ${tid} LIMIT 1` as unknown[];
-      if (have.length === 0) {
-        const trio = preds
-          .map(p => ({ name: p.player_name, ev$: expectedPayout(ev.purse!, p) }))
-          .sort((a, b) => b.ev$ - a.ev$)
-          .slice(0, 3);
-        for (const p of trio) {
-          await sql`
-            INSERT INTO picks (user_id, user_name, tournament_id, player_name)
-            VALUES (${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${p.name})
-            ON CONFLICT (user_id, tournament_id, player_name) DO NOTHING`;
-        }
-        log.push(`${tid}: weekly trio ${trio.map(t => t.name).join(", ")}`);
-      }
     }
 
     // ── Fade trio: the top-20 favorites it believes in least ──

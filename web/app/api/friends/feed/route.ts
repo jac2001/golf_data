@@ -1,7 +1,7 @@
 /**
  * /api/friends/feed?group_id=N — what your group is up to.
  * =========================================================
- * Members' SHARED bets, plus everyone's picks for the current event —
+ * Members' SHARED bets, plus everyone's Let It Ride picks for the current event —
  * but picks only appear once the event is locked, so nobody can copy a
  * pick before tee-off. Membership is checked server-side.
  */
@@ -25,6 +25,12 @@ export async function GET(req: Request) {
   }
   memberIds.push("model");  // its picks reveal at lock like anyone's
 
+  // The group's season: its picks are the ones this feed shows.
+  const leagueRow = await sql`
+    SELECT id FROM leagues WHERE group_id = ${groupId}
+    ORDER BY (status = 'active') DESC, created_at DESC LIMIT 1` as { id: number }[];
+  const leagueId = leagueRow[0]?.id ?? 0;
+
   const bets = await sql`
     SELECT user_name, description, odds_american, stake_units, outcome, tournament_id, created_at
     FROM user_bets
@@ -45,8 +51,8 @@ export async function GET(req: Request) {
       if (locked.length) {
         const tids = locked.map((e: { tournament_id: string }) => e.tournament_id);
         const rows = await sql`
-          SELECT tournament_id, user_name, player_name FROM picks
-          WHERE tournament_id = ANY(${tids}) AND user_id = ANY(${memberIds})
+          SELECT tournament_id, user_name, player_name FROM league_picks
+          WHERE tournament_id = ANY(${tids}) AND league_id = ${leagueId}
           ORDER BY user_name, created_at` as
           { tournament_id: string; user_name: string; player_name: string }[];
         const nameByTid = new Map(locked.map((e: { tournament_id: string; name: string }) => [e.tournament_id, e.name]));
@@ -88,11 +94,12 @@ export async function GET(req: Request) {
           return w ? `${name} (${w})` : name;
         };
 
-        const weekly = await sql`
-          SELECT player_name FROM picks WHERE user_id = 'model' AND tournament_id = ${tid}
+        const ride = await sql`
+          SELECT player_name FROM league_picks
+          WHERE league_id = ${leagueId} AND user_id = 'model' AND tournament_id = ${tid}
           ORDER BY created_at` as { player_name: string }[];
-        if (weekly.length) modelMoves.push({ event: ev.name, game: "Weekly 3",
-          text: `Backing ${weekly.map(w => say(w.player_name)).join(", ")}.` });
+        if (ride.length) modelMoves.push({ event: ev.name, game: "Let It Ride",
+          text: `Spending uses on ${ride.map(w => say(w.player_name)).join(", ")}.` });
 
         const fades = await sql`
           SELECT player_name FROM fade_picks WHERE user_id = 'model' AND tournament_id = ${tid}
