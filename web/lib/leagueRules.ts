@@ -43,5 +43,30 @@ export type PickVerdict =
  *     "You've used Scottie Scheffler 3 of 3 times this season."
  */
 export function validateLeaguePick(ctx: PickContext): PickVerdict {
-  throw new Error("TODO(Jack): validateLeaguePick not written yet");
+
+  if (ctx.locked) {
+    return { ok: false, status: 409, error: "Picks are locked for this slate." };
+  }
+  if (!ctx.inSeason) {
+    return { ok: false, status: 400, error: "This event is outside the league's season." };
+  }
+  if (!ctx.tourInLeague) {
+    return { ok: false, status: 400, error: "This event's tour is not in the league." };
+  }
+  if (ctx.alreadyPicked) {
+    return { ok: false, status: 409, error: `You've already picked ${ctx.golferName} for this slate.` };
+  }
+  if (ctx.picksThisSlate >= ctx.playersPerWeek) {
+    return { ok: false, status: 422, error: `You've already picked ${ctx.picksThisSlate} of ${ctx.playersPerWeek} players for this slate drop one and swap in someone else.` };
+  }
+  if (ctx.usesOfThisGolfer >= ctx.usesPerPlayer) {
+    return { ok: false, status: 422, error: `You've used ${ctx.golferName} ${ctx.usesOfThisGolfer} of ${ctx.usesPerPlayer} times this season.` };
+  }
+  
+
+
+  return { ok: true };
+
+
+
 }

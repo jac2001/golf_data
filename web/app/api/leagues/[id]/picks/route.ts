@@ -107,18 +107,25 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const user = await currentUser();
   const userName = user?.firstName || user?.username || "Player";
-  // Atomic backstop: inserts only if BOTH budgets still hold at write time.
-  const inserted = await sql`
-    INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key)
-    SELECT ${league.id}, ${userId}, ${userName}, ${s.tid}, ${golfer}, ${key}
-    WHERE (SELECT count(*) FROM league_picks
-           WHERE league_id = ${league.id} AND user_id = ${userId} AND player_key = ${key})
-          < ${league.uses_per_player}
-      AND (SELECT count(*) FROM league_picks
-           WHERE league_id = ${league.id} AND user_id = ${userId} AND tournament_id = ${s.tid})
-          < ${league.players_per_week}
-    ON CONFLICT DO NOTHING
-    RETURNING id` as { id: number }[];
+  // Backstop: inserts only if BOTH budgets still hold at write time. The
+  // advisory lock serializes one member's pick writes — without it,
+  // concurrent inserts each count the same stale total and all succeed
+  // (race test: 5 stored against a limit of 3). Per-(league, member), so
+  // other members' picks never wait. Released at commit.
+  const [, inserted] = await sql.transaction([
+    sql`SELECT pg_advisory_xact_lock(hashtextextended(${`${league.id}:${userId}`}, 0))`,
+    sql`
+      INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key)
+      SELECT ${league.id}, ${userId}, ${userName}, ${s.tid}, ${golfer}, ${key}
+      WHERE (SELECT count(*) FROM league_picks
+             WHERE league_id = ${league.id} AND user_id = ${userId} AND player_key = ${key})
+            < ${league.uses_per_player}
+        AND (SELECT count(*) FROM league_picks
+             WHERE league_id = ${league.id} AND user_id = ${userId} AND tournament_id = ${s.tid})
+            < ${league.players_per_week}
+      ON CONFLICT DO NOTHING
+      RETURNING id`,
+  ]) as [unknown, { id: number }[]];
   if (!inserted.length) {
     return Response.json({ error: "That pick no longer fits your budget — refresh and try again" }, { status: 409 });
   }
