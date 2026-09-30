@@ -135,3 +135,52 @@ export function modelCollegePick(
 
   return bestSchool;
 }
+/** Let It Ride: the model's picks for one slate (docs/PHASE2_DESIGN.md).
+ *
+ *  The model plays under the member rules — `slots` golfers this slate,
+ *  and each golfer only as many times as it has uses left, across both
+ *  tours. It picks from THIS event's field, but the interesting part is
+ *  what it gives up: a use spent on Scheffler at a $6M fall event is a
+ *  use it can't spend at a $9M event later.
+ *
+ *  Inputs
+ *    field          this event's predictions (win/top5/top10/top20/cut)
+ *    purse          this event's purse
+ *    usesLeft       nameKey(golfer) -> uses remaining; a golfer who isn't
+ *                   listed still has his full budget (usesPerPlayer)
+ *    usesPerPlayer  league config (3)
+ *    slots          golfers to pick this slate (3)
+ *    upcomingPurses purses of the next few known events on this tour —
+ *                   the horizon the save decision can see
+ *
+ *  Returns up to `slots` golfer names (fewer only if the field runs out).
+ */
+export function modelLetItRidePick(
+  field: (Probs & { player_name: string })[],
+  purse: number,
+  usesLeft: Record<string, number>,
+  usesPerPlayer: number,
+  slots: number,
+  upcomingPurses: number[],
+): string[] {
+  // TODO(Jack): pick the model's golfers for this slate.
+  //
+  // A greedy version is one line of thinking: rank the field by
+  // expectedPayout(purse, probs) and take the top `slots` that still
+  // have uses. It's the baseline — and the Lessons doc's spend-now bias
+  // finding says it burns every elite golfer in October.
+  //
+  // The upgrade is to price a use's OPTION VALUE: what that same golfer
+  // would be worth at a better event still coming. Some ways to think
+  // about it:
+  //   - A golfer's EV scales with purse (same probs, bigger pot), so
+  //     expectedPayout(bestUpcomingPurse, probs) is what saving him is
+  //     worth — IF he still has a use to spend there.
+  //   - Scarcity matters: with 3 uses left the cost of spending one now
+  //     is low; with 1 left, spending it here means never at the big one.
+  //   - Score = value now − (cost of the use), then take the top `slots`.
+  //     How you define that cost IS the strategy.
+  //
+  // Use nameKey(p.player_name) to look golfers up in usesLeft.
+  throw new Error("TODO(Jack): modelLetItRidePick not written yet");
+}
