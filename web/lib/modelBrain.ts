@@ -182,5 +182,22 @@ export function modelLetItRidePick(
   //     How you define that cost IS the strategy.
   //
   // Use nameKey(p.player_name) to look golfers up in usesLeft.
-  throw new Error("TODO(Jack): modelLetItRidePick not written yet");
+  const biggerAhead = upcomingPurses.filter(p => p > purse).sort((a, b) => b - a);
+
+  const scored = field.flatMap(p => {
+    const left = usesLeft[nameKey(p.player_name)] ?? usesPerPlayer;
+    if (left <= 0) {
+      return [];
+    }
+
+    const now = expectedPayout(purse, p);
+
+    let cost = 0;
+    if (left <= biggerAhead.length) {
+      cost = Math.max(expectedPayout(biggerAhead[left - 1], p) - now, 0);
+    }
+    return [{ name: p.player_name, score: now - cost }];
+  });
+
+  return scored.sort((a, b) => b.score - a.score).slice(0, slots).map(s => s.name);
 }
