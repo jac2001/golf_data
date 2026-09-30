@@ -272,13 +272,56 @@ function GamesTab() {
           );
         })}
       </div>
-      {mode === "picks" && <PicksTab />}
+      {mode === "picks" && <WeeklyOrSeason onGoToRide={() => pick("ride")} />}
       {mode === "rounds" && <RoundGameTab />}
       {mode === "fades" && <FadeTab />}
       {mode === "college" && <CollegeTab />}
       {mode === "ride" && <LetItRideTab />}
     </>
   );
+}
+
+// ── Weekly 3 vs Let It Ride ──────────────────────────────────────────────────
+// Let It Ride is Weekly 3 plus a season budget, so a group running a
+// season makes its picks THERE — asking for a second weekly lineup is
+// double entry nobody sustains. Every group in a season: pointer only.
+// Some groups: a banner, and Weekly 3 still serves the rest. None: as-is.
+// (Folding Weekly 3 into Let It Ride as a one-week, unlimited-uses
+// preset is the planned consolidation — see ROADMAP.)
+
+function WeeklyOrSeason({ onGoToRide }: { onGoToRide: () => void }) {
+  const api = useApi();
+  const [state, setState] = useState<{ active: { group_name: string }[]; group_count: number } | null>(null);
+
+  useEffect(() => {
+    api("/api/leagues")
+      .then(d => setState({ active: (d.active as { group_name: string }[]) ?? [], group_count: Number(d.group_count ?? 0) }))
+      .catch(() => setState({ active: [], group_count: 0 }));   // fail open: Weekly 3 just shows
+  }, [api]);
+
+  if (!state) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
+  if (state.active.length === 0) return <PicksTab />;
+
+  const names = state.active.map(a => a.group_name).join(", ");
+  const everyGroup = state.active.length >= state.group_count;
+  const pointer = (
+    <div style={{ ...card, borderColor: "var(--bc-yellow)" }}>
+      <div style={{ fontWeight: 900, marginBottom: 4 }}>
+        {names} {state.active.length > 1 ? "are" : "is"} playing Let It Ride
+      </div>
+      <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "0 0 12px", lineHeight: 1.5 }}>
+        {everyGroup
+          ? "Your weekly picks happen there now — same pick-three game, plus a season budget of uses per golfer."
+          : "Make that group\u2019s picks in Let It Ride. Weekly 3 below still counts for your other groups."}
+      </p>
+      <button onClick={onGoToRide} style={{
+        cursor: "pointer", fontFamily: "inherit", fontWeight: 900, fontSize: "0.76em",
+        textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5, padding: "8px 14px",
+        background: "var(--bc-yellow)", color: "#081f14", border: "1px solid var(--bc-yellow)",
+      }}>Go to Let It Ride</button>
+    </div>
+  );
+  return everyGroup ? pointer : <>{pointer}<PicksTab /></>;
 }
 
 // ── My Picks ─────────────────────────────────────────────────────────────────

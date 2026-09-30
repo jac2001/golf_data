@@ -22,9 +22,23 @@ export async function GET(req: Request) {
   const { userId } = await auth();
   if (!userId) return Response.json({ error: "Sign in" }, { status: 401 });
   const groupId = Number(new URL(req.url).searchParams.get("group_id"));
-  if (!groupId) return Response.json({ error: "group_id required" }, { status: 400 });
-
   const sql = getSql();
+
+  // No group_id: which of MY groups are running a season, plus how many
+  // groups I'm in — Weekly 3 uses this to point season players at Let It
+  // Ride instead of taking a second set of picks.
+  if (!groupId) {
+    const rows = await sql`
+      SELECT l.id, l.name, g.id AS group_id, g.name AS group_name
+      FROM group_members m
+      JOIN groups g ON g.id = m.group_id
+      JOIN leagues l ON l.group_id = g.id AND l.status = 'active'
+      WHERE m.user_id = ${userId}` as { id: number; name: string; group_id: number; group_name: string }[];
+    const [{ n }] = await sql`
+      SELECT count(*)::int AS n FROM group_members WHERE user_id = ${userId}` as { n: number }[];
+    return Response.json({ active: rows, group_count: n });
+  }
+
   const member = await sql`
     SELECT 1 FROM group_members WHERE group_id = ${groupId} AND user_id = ${userId}` as unknown[];
   if (!member.length) return Response.json({ error: "Not a member of this group" }, { status: 403 });
