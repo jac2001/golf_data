@@ -106,6 +106,19 @@ jobs:
           python3 scripts/scrapers/fetch_euro_events.py --teetimes || true
           python3 scripts/predictions/predict_euro.py              || true
 
+      - name: Euro field + OUR model predictions (Tue/Wed — after DG rolls over)
+        # Monday's step often runs while DG still serves LAST week's euro
+        # event, so the new field never arrived (Dunhill Links, 9/30, had
+        # no field or predictions the day before it started). The Tue/Wed
+        # slots catch the rollover; every fetch is event-name guarded and
+        # idempotent, so a repeat is a no-op.
+        if: contains(fromJSON('["0 11 * * 2","0 23 * * 2","0 11 * * 3","0 23 * * 3"]'), github.event.schedule) && inputs.dry_run != true
+        run: |
+          python3 scripts/scrapers/fetch_euro_events.py --field    || true
+          python3 scripts/scrapers/fetch_euro_events.py --teetimes || true
+          python3 scripts/scrapers/fetch_euro_events.py --preds    || true
+          python3 scripts/predictions/predict_euro.py              || true
+
       - name: Euro rounds snapshot + refreshed predictions (tournament evenings)
         if: steps.pick.outputs.schedule == 'euro-rounds' && inputs.dry_run != true
         run: |
