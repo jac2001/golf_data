@@ -12,6 +12,7 @@
  */
 
 import { auth } from "@clerk/nextjs/server";
+import { roundLockAt } from "@/lib/lockTime";
 import { getSql, MODEL_API } from "@/lib/db";
 import { visibleUserIds } from "@/lib/gameScope";
 
@@ -45,20 +46,26 @@ export async function GET(req: Request) {
   }
   const sql = getSql();
 
-  // Which rounds are locked (visible) per event comes from the open list;
-  // finished events are entirely visible.
-  let lockedRounds = new Map<string, number>();  // tid -> highest locked round (4 = all)
+  // Which rounds are locked (visible) per event, from the open list on the
+  // tour's own clock (lib/lockTime.ts). Events off an AVAILABLE list are
+  // past, so fully visible. An unavailable list fails CLOSED — this used
+  // to reveal every round's picks whenever Render was down or deploying.
+  const lockedRounds = new Map<string, number>();  // tid -> highest locked round (4 = all)
+  let openKnown = false;
   try {
     const res = await fetch(`${MODEL_API}/api/events/open`, { next: { revalidate: 120 } });
     if (res.ok) {
       const { events } = await res.json();
+      openKnown = Array.isArray(events);
       for (const e of events ?? []) {
-        const start = new Date(`${String(e.start_date).slice(0, 10)}T00:00:00`);
-        const days = Math.floor((Date.now() - start.getTime()) / 86400000) + 1;
-        lockedRounds.set(e.tournament_id, Math.max(0, Math.min(4, days)));
+        let n = 0;
+        for (let r = 1; r <= 4; r++) {
+          if (Date.now() >= roundLockAt(String(e.start_date), String(e.tour), r).getTime()) n = r;
+        }
+        lockedRounds.set(e.tournament_id, n);
       }
     }
-  } catch { /* events not in the open list are past -> fully visible */ }
+  } catch { /* openKnown stays false: nothing revealed */ }
 
   const picks = await sql`
     SELECT user_id, user_name, tournament_id, round, player_name
@@ -73,7 +80,7 @@ export async function GET(req: Request) {
   const users = new Map<string, Row>();
 
   for (const p of picks) {
-    const maxLocked = lockedRounds.get(p.tournament_id) ?? 4;
+    const maxLocked = lockedRounds.get(p.tournament_id) ?? (openKnown ? 4 : 0);
     const visible = p.round <= maxLocked;
     const table = roundsByTid.get(p.tournament_id);
     const avail = table?.rounds_available ?? 0;

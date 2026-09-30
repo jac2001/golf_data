@@ -7941,7 +7941,10 @@ def _home_euro(today: pd.Timestamp) -> dict:
                 "course": str(row.get("course", "") or "").split(";")[0],
                 "location": str(row.get("location", "") or ""),
                 "type": "DP World Tour",
-                "is_live": bool(len(live)),
+                # Featured from 2 days out, but LIVE only once the start date
+                # arrives on the tour's own clock ("Rounds in progress" showed
+                # the day before Bank of Utah teed off).
+                "is_live": _started(row, "Europe/London"),
             }
             season_start = str(sched["_s"].min().date())
 
@@ -7977,6 +7980,13 @@ def _home_euro(today: pd.Timestamp) -> dict:
             "benchmark": {"value": "±5%", "label": "of the industry-leading model"},
         },
     }
+
+
+def _started(row, tz: str) -> bool:
+    """Has this schedule row's event started, on the tour's own clock?"""
+    from zoneinfo import ZoneInfo
+    local_today = pd.Timestamp(datetime.now(ZoneInfo(tz)).date())
+    return bool(pd.notna(row["_s"]) and row["_s"] <= local_today <= row["_e"])
 
 
 @app.get("/api/home")
@@ -8020,7 +8030,7 @@ def get_home(tour: str = "pga") -> dict:
                 "course": str(row.get("course", "") or "").split(";")[0],
                 "location": str(row.get("location", "") or ""),
                 "type": str(row.get("tournament_type", "") or ""),
-                "is_live": bool(len(live)),
+                "is_live": _started(row, "America/New_York"),
             }
             season_start = str(sched["_s"].min().date())
 

@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { PageHead, SubTabs } from "@/components/broadcast";
 import LetItRideTab, { LetItRideStandings } from "@/components/LetItRideTab";
+import LockCountdown from "@/components/LockCountdown";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
@@ -502,13 +503,20 @@ function CollegeTab() {
       )}
 
       <div style={card}>
-        <div style={{ fontWeight: 800, fontSize: "1.05em" }}>{event.name || event.tid}</div>
+        <div style={{ fontWeight: 800, fontSize: "1.05em" }}>
+          {event.name || events.find(e => e.tournament_id === event.tid)?.name || "Loading…"}
+        </div>
+        {!event.locked && event.startDate && (
+          <div style={{ fontSize: "0.78em", marginTop: 3 }}>
+            <LockCountdown startDate={event.startDate} tour={event.tour} />
+          </div>
+        )}
         <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 2 }}>
           {event.locked
             ? (event.finished ? "Final — graded below." : "Schools are locked — tournament underway.")
             : pick
               ? <>Your school: <strong style={{ color: "var(--bc-yellow)" }}>{pick}</strong> · best 2 alumni checks count</>
-              : "Claim one school before tee-off · its best 2 finishers score for you"}
+              : "Claim one school before lock · its best 2 finishers score for you"}
         </div>
         {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
       </div>
@@ -583,7 +591,7 @@ function CollegeTab() {
 
       <div style={{ ...card, background: "var(--bc-panel)" }}>
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
-          How it works: claim ONE school per event before tee-off — only
+          How it works: claim ONE school per event before lock (midnight ET the night before round 1 (UK time for DP World Tour events)) — only
           schools with alumni in the field exist that week. Your score is the
           combined prize money of your school&apos;s best two finishers
           (best-ball, so depth doesn&apos;t auto-win). Highest total takes the
@@ -866,7 +874,7 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
           <p style={{ color: "var(--bc-muted)", margin: 0, fontSize: "0.88em" }}>
             No groups yet. Create one and text the invite code to your friends —
             group standings, shared bets, and everyone&apos;s picks (revealed at
-            tee-off) live here.
+            lock) live here.
           </p>
         </div>
       )}
@@ -972,7 +980,7 @@ function GroupFeed({ groupId }: { groupId: number }) {
         {byEvent.size === 0 ? (
           <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
             {feed.openNames?.length
-              ? `Hidden until tee-off — picks open for ${feed.openNames.join(", ")}.`
+              ? `Hidden until lock — picks open for ${feed.openNames.join(", ")}.`
               : "No locked events with picks yet."}
           </span>
         ) : (
@@ -1155,7 +1163,7 @@ function MyBetsTab() {
 // ── Round Game ───────────────────────────────────────────────────────────────
 
 type RoundPicksState = { rounds: Record<string, string | null>; used: string[];
-  locks: Record<string, boolean> };
+  locks: Record<string, boolean>; event?: EventInfo };
 type RoundRow = { user_id: string; user_name: string; total: number; scored: number;
   rounds: Record<string, { player: string; score: number | null; visible: boolean }> };
 
@@ -1258,7 +1266,9 @@ function RoundGameTab() {
       )}
 
       <div style={card}>
-        <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 4 }}>{eventName || selected}</div>
+        <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 4 }}>
+          {eventName || events.find(e => e.tournament_id === selected)?.name || "Loading…"}
+        </div>
         <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginBottom: 14 }}>
           One player per round, each player once per event. Score is their round
           to par; a missed round costs +{5}. Lowest total wins.
@@ -1276,6 +1286,11 @@ function RoundGameTab() {
                 : <span style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>
                     {locked ? "no pick — +5" : "no pick yet"}
                   </span>}
+              {!locked && state?.event?.startDate && (
+                <span style={{ fontSize: "0.72em" }}>
+                  <LockCountdown startDate={state.event.startDate} tour={state.event.tour} addDays={r - 1} />
+                </span>
+              )}
               {!locked && (
                 <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
                   <button onClick={() => { setPickingRound(pickingRound === r ? null : r); setQuery(""); }}
@@ -1385,8 +1400,9 @@ function RoundGameTab() {
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
           How it works: one pick per round, each player only once per event,
           scored by that round&apos;s score to par — lowest event total wins.
-          Round 1 locks at midnight the night before Thursday&apos;s tee-off;
-          each later round locks at midnight before its own day. The +5: if
+          Round 1 locks at midnight ET the night before Thursday (UK time for
+          DP World Tour events); each later round locks at the same midnight
+          before its own day. The +5: if
           your pick doesn&apos;t post a score for a locked round — missed the
           cut, withdrew, or never teed off — you take +5 for it, but only
           once the field has finished that round (until then it just shows
@@ -1498,7 +1514,14 @@ function FadeTab() {
       )}
 
       <div style={card}>
-        <div style={{ fontWeight: 800, fontSize: "1.05em" }}>{event.name || event.tid}</div>
+        <div style={{ fontWeight: 800, fontSize: "1.05em" }}>
+          {event.name || events.find(e => e.tournament_id === event.tid)?.name || "Loading…"}
+        </div>
+        {!event.locked && event.startDate && (
+          <div style={{ fontSize: "0.78em", marginTop: 3 }}>
+            <LockCountdown startDate={event.startDate} tour={event.tour} />
+          </div>
+        )}
         <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 2 }}>
           {event.locked
             ? (events.find(e => e.tournament_id === selected)?.finished
@@ -1669,14 +1692,14 @@ function FadeTab() {
             The pool for {event.name} isn&apos;t set yet. Fades open once the
             model&apos;s numbers post for this event — usually Tuesday, when
             the full field is announced and predictions run. Your 3 fades
-            stay open until tee-off Thursday, so there&apos;s no rush.
+            stay open until midnight ET the night before round 1 (UK time for DP World Tour events), so there&apos;s no rush.
           </p>
         </div>
       )}
 
       <div style={{ ...card, background: "var(--bc-panel)" }}>
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
-          How it works: before tee-off, fade 3 players from the top 20 —
+          How it works: before lock (midnight ET the night before round 1 (UK time for DP World Tour events)), fade 3 players from the top 20 —
           the favorites you think are overhyped. Your score is their combined
           prize money and the LOWEST total wins, so fading the eventual champion
           is a disaster. The model plays too: it fades the three players in its

@@ -19,6 +19,7 @@
  * CRON_SECRET is set, callers must present it (Vercel Cron does).
  */
 
+import { roundLockAt } from "@/lib/lockTime";
 import { getSql, MODEL_API } from "@/lib/db";
 import { modelCollegePick, modelFadePicks, modelLetItRidePick, modelRoundPick, Probs } from "@/lib/modelBrain";
 import { nameKey } from "@/lib/names";
@@ -32,11 +33,9 @@ type OpenEvent = {
 };
 type PredRow = Probs & { player_name: string; world_rank?: number | null };
 
-function roundLocked(startDate: string, round: number): boolean {
-  const base = new Date(`${startDate.slice(0, 10)}T00:00:00`);
-  const day = new Date(base);
-  day.setDate(base.getDate() + (round - 1));
-  return isNaN(day.getTime()) || new Date() >= day;
+function roundLocked(startDate: string, tour: string, round: number): boolean {
+  const at = roundLockAt(startDate, tour, round);
+  return isNaN(at.getTime()) || Date.now() >= at.getTime();
 }
 
 export async function GET(req: Request) {
@@ -189,11 +188,11 @@ export async function GET(req: Request) {
       WHERE user_id = ${MODEL_ID} AND tournament_id = ${tid}` as { round: number; player_name: string }[];
     const used = mine.map(m => m.player_name);
     for (let r = 1; r <= 4; r++) {
-      if (roundLocked(ev.start_date, r)) continue;
+      if (roundLocked(ev.start_date, ev.tour, r)) continue;
       // Never pick more than one round ahead: round r opens for the model
       // only once r-1 has locked. Without this, any extra invocation
       // (retry, manual call) would fill the whole week on day one.
-      if (r > 1 && !roundLocked(ev.start_date, r - 1)) break;
+      if (r > 1 && !roundLocked(ev.start_date, ev.tour, r - 1)) break;
       if (mine.some(m => m.round === r)) continue;
       const pick = modelRoundPick(preds, used);
       if (!pick) break;

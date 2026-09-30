@@ -13,6 +13,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { getEventField, getPredictions, OpenEvent } from "@/lib/api";
 import { nameKey } from "@/lib/names";
+import LockCountdown from "@/components/LockCountdown";
 
 type Group = { id: number; name: string; is_owner: boolean };
 type League = {
@@ -425,6 +426,11 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
           {locked ? "Locked — picks revealed" : `${mine.length} of ${league.players_per_week} picked`}
         </div>
       </div>
+      {!locked && ev.start_date && (
+        <div style={{ fontSize: "0.78em", marginBottom: 10 }}>
+          <LockCountdown startDate={ev.start_date} tour={ev.tour} />
+        </div>
+      )}
       {winners.length > 0 && (
         <div style={{ color: "var(--bc-yellow)", fontWeight: 800, fontSize: "0.86em", marginBottom: 10 }}>
           <Star /> Week winner: {winners.join(" & ")}

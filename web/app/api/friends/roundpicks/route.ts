@@ -11,6 +11,7 @@
  */
 
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { roundLockAt } from "@/lib/lockTime";
 import { getSql, MODEL_API } from "@/lib/db";
 import { nameOf } from "@/lib/displayName";
 
@@ -31,13 +32,13 @@ async function openEvent(tid: string | null): Promise<EventInfo | null> {
 }
 
 /** Round N's day is start_date + (N-1); it locks when that day arrives. */
-function roundLocks(startDate: string): Record<number, boolean> {
+function roundLocks(startDate: string, tour: string): Record<number, boolean> {
+  // Tour-local midnight before each round's day (lib/lockTime.ts) — the
+  // old server-local Date locked PGA rounds at 8pm ET the evening before.
   const locks: Record<number, boolean> = {};
-  const base = new Date(`${startDate.slice(0, 10)}T00:00:00`);
   for (let r = 1; r <= 4; r++) {
-    const day = new Date(base);
-    day.setDate(base.getDate() + (r - 1));
-    locks[r] = !isNaN(day.getTime()) && new Date() >= day;
+    const at = roundLockAt(startDate, tour, r);
+    locks[r] = !isNaN(at.getTime()) && Date.now() >= at.getTime();
   }
   return locks;
 }
@@ -58,7 +59,7 @@ export async function GET(req: Request) {
   if (!ev) return Response.json({ error: "No open tournament" }, { status: 503 });
   const sql = getSql();
   const mine = await myPicks(sql, userId, ev.tid);
-  return Response.json({ event: ev, ...mine, locks: roundLocks(ev.startDate) });
+  return Response.json({ event: ev, ...mine, locks: roundLocks(ev.startDate, ev.tour) });
 }
 
 export async function POST(req: Request) {
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
 
   const round = Number(body.round);
   if (!(round >= 1 && round <= 4)) return Response.json({ error: "round must be 1-4" }, { status: 400 });
-  if (roundLocks(ev.startDate)[round]) {
+  if (roundLocks(ev.startDate, ev.tour)[round]) {
     return Response.json({ error: `Round ${round} is locked.` }, { status: 409 });
   }
   const player = String(body.player_name ?? "").trim();
@@ -95,7 +96,7 @@ export async function POST(req: Request) {
     ON CONFLICT (user_id, tournament_id, round)
     DO UPDATE SET player_name = EXCLUDED.player_name, user_name = EXCLUDED.user_name`;
   const mine = await myPicks(sql, userId, ev.tid);
-  return Response.json({ event: ev, ...mine, locks: roundLocks(ev.startDate) });
+  return Response.json({ event: ev, ...mine, locks: roundLocks(ev.startDate, ev.tour) });
 }
 
 export async function DELETE(req: Request) {
@@ -106,7 +107,7 @@ export async function DELETE(req: Request) {
   const ev = await openEvent(String(body.tournament_id ?? "") || null);
   if (!ev) return Response.json({ error: "No open tournament" }, { status: 503 });
   const round = Number(body.round);
-  if (roundLocks(ev.startDate)[round]) {
+  if (roundLocks(ev.startDate, ev.tour)[round]) {
     return Response.json({ error: `Round ${round} is locked.` }, { status: 409 });
   }
   const sql = getSql();
@@ -114,5 +115,5 @@ export async function DELETE(req: Request) {
     DELETE FROM round_picks
     WHERE user_id = ${userId} AND tournament_id = ${ev.tid} AND round = ${round}`;
   const mine = await myPicks(sql, userId, ev.tid);
-  return Response.json({ event: ev, ...mine, locks: roundLocks(ev.startDate) });
+  return Response.json({ event: ev, ...mine, locks: roundLocks(ev.startDate, ev.tour) });
 }

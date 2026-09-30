@@ -104,7 +104,7 @@ export default function HowToPlayPage() {
           <span style={{ color: "var(--bc-yellow)" }}>Beat the model.</span>
         </div>
         <p style={{ color: "var(--bc-muted)", fontSize: "0.92em", lineHeight: 1.6, maxWidth: 620, marginBottom: 0 }}>
-          Every tournament week you make picks before Thursday&apos;s tee-off,
+          Every tournament week you make picks before they lock — midnight ET the night before Thursday&apos;s first round (UK time for DP World Tour events),
           follow the leaderboard with your group, and settle it Sunday when the
           real prize money posts. Our prediction model plays too, under the
           same rules — beating it is the badge.
@@ -132,7 +132,7 @@ export default function HowToPlayPage() {
           Your week: <strong style={{ color: "var(--bc-yellow)" }}>$1.33M</strong>.
           Highest total in your group takes the week and a star; the season
           adds up every week — and each of those three just spent one of his
-          three uses. Everyone&apos;s picks stay hidden until tee-off, so
+          three uses. Everyone&apos;s picks stay hidden until lock, so
           nobody copies.
         </p>
       </div>
