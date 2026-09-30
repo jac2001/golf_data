@@ -76,6 +76,10 @@ export async function GET(req: Request) {
       if (!table?.settled) continue;
       const totals = entrants.map(p => ({ p, total: schoolScore(p.school, rosters, table).total ?? 0 }));
       const best = Math.max(...totals.map(t2 => t2.total));
+      // Ties share the win (two friends on the same school tie by
+      // definition); a week where nobody's school earned a cent crowns
+      // nobody — same rule as Let It Ride's weekly stars.
+      if (best <= 0) continue;
       for (const t2 of totals) if (t2.total === best) row(t2.p).wins += 1;
     }
     const standings = [...users.values()].sort((a, b) => b.wins - a.wins || a.user_name.localeCompare(b.user_name));

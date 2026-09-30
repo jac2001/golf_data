@@ -4037,6 +4037,66 @@ def bet_outcomes(ids: str = "") -> dict:
     return {"outcomes": out}
 
 
+@app.get("/api/demo/challenges")
+def demo_challenges(limit: int = 5) -> dict:
+    """How to Play's historical challenges: settled PGA events where a
+    visitor can actually BEAT the model. The demo shows the Tuesday
+    board's top 20 and the model's trio (its top 3 by win chance); at
+    Biltmore those three were the pool's three biggest earners, so the
+    best any visitor could do was tie. Only events where some other trio
+    from the same pool out-earned the model's make the list — newest
+    first, with how much a perfect lineup would have won by."""
+    def key(n: str) -> str:
+        return " ".join(sorted(str(n).lower().replace(",", " ").split()))
+
+    earn_by_tid: dict[str, dict[str, float]] = {}
+    for lb_path in sorted((DATA_DIR / "historical").glob("leaderboards_2*.csv")):
+        if "euro" in lb_path.name:
+            continue
+        try:
+            lb = pd.read_csv(lb_path, usecols=["tournament_id", "player_name", "earnings"])
+        except Exception:
+            continue
+        lb["_e"] = pd.to_numeric(lb["earnings"].astype(str).str.replace(r"[$,]", "", regex=True),
+                                 errors="coerce").fillna(0)
+        for tid, grp in lb.groupby("tournament_id"):
+            if grp["_e"].sum() > 0:
+                earn_by_tid[str(tid).upper()] = dict(zip(grp["player_name"].map(key), grp["_e"]))
+
+    names = {}
+    for sp in sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+        try:
+            s = pd.read_csv(sp)
+            names.update(dict(zip(s["tournament_id"].astype(str).str.upper(),
+                                  zip(s["tournament_name"], s["start_date"]))))
+        except Exception:
+            continue
+
+    out = []
+    for path in (DATA_DIR / "prediction_tracking").glob("pred_R*.csv"):
+        tid = path.stem.replace("pred_", "").upper()
+        table = earn_by_tid.get(tid)
+        if not table:
+            continue
+        try:
+            pr = pd.read_csv(path, usecols=["player_name", "win_prob"])
+        except Exception:
+            continue
+        pool = pr.dropna(subset=["win_prob"]).sort_values("win_prob", ascending=False).head(20)
+        if len(pool) < 6:
+            continue
+        money = [table.get(key(n), 0.0) for n in pool["player_name"]]
+        model = sum(money[:3])
+        best = sum(sorted(money, reverse=True)[:3])
+        if best <= model:
+            continue  # the model's trio was already the pool's best — unbeatable
+        name, start = names.get(tid, (tid, ""))
+        out.append({"tournament_id": tid, "name": str(name), "start_date": str(start),
+                    "model_total": round(model), "best_total": round(best)})
+    out.sort(key=lambda e: e["start_date"], reverse=True)
+    return {"challenges": out[:max(1, min(limit, 12))]}
+
+
 @app.get("/api/schedule/upcoming")
 def schedule_upcoming(tour: str = "pga", after: str = "", limit: int = 12) -> dict:
     """Events on one tour starting after a date, with purses — the
