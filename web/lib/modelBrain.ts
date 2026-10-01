@@ -1,5 +1,6 @@
 // web/lib/modelBrain.ts  — YOUR function to write
 
+import { nameKey } from "@/lib/names";
 
 /** Average % of purse paid per finishing bucket (PGA standard table). */
 const BUCKET_PAYOUT_PCT = {
@@ -94,12 +95,6 @@ export function modelFadePicks(
     return sortedScoredPool.slice(0, 3).map(p => p.player_name);
 
 }
-
-/** Canonical key for name joins: lowercase sorted tokens, so
- *  "Last, First" / "First Last" / stray punctuation all collide.
- *  Raw-string joins fail SILENTLY (a mismatched player prices at $0). */
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 /** College Game: the school whose BEST TWO alumni carry the highest
  *  combined expected payout — the model optimizes the game's actual

@@ -10,6 +10,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { visibleUserIds } from "@/lib/gameScope";
+import { nameKey } from "@/lib/names";
 
 type PickRow = { user_id: string; user_name: string; tournament_id: string; school: string };
 type EarningsResp = {
@@ -17,9 +18,6 @@ type EarningsResp = {
   players: Record<string, { player_name: string; earnings: number; position: string }>;
 };
 type School = { school: string; players: string[] };
-
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 async function fetchJson<T>(url: string): Promise<T | null> {
   try {

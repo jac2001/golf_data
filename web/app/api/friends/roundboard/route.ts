@@ -14,10 +14,9 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { visibleUserIds } from "@/lib/gameScope";
+import { nameKey } from "@/lib/names";
 
 const PENALTY = 5;
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 type PickRow = { user_id: string; user_name: string; tournament_id: string; round: number; player_name: string };
 type RoundsResp = { rounds_available: number;

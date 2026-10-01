@@ -19,6 +19,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { ImageResponse } from "next/og";
 import { getSql, MODEL_API } from "@/lib/db";
+import { nameKey } from "@/lib/names";
 
 export const runtime = "nodejs";
 
@@ -27,8 +28,6 @@ const TEXT = "#f2f7f0", MUTED = "#9dbfa9", YELLOW = "#ffd24a", GREEN = "#6fd49a"
 
 const money = (v: number) =>
   v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 async function modelApi(path: string): Promise<Record<string, unknown> | null> {
   try {

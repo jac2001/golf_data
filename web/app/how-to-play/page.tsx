@@ -13,9 +13,7 @@ import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
 import { getPredictions, getOpenEvents, getEventEarnings, PlayerPrediction, EarningsTable } from "@/lib/api";
 import { expectedPayout } from "@/lib/modelBrain";
-
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
+import { nameKey } from "@/lib/names";
 
 const card: React.CSSProperties = {
   background: "var(--bc-card)", border: "1px solid var(--bc-line)",

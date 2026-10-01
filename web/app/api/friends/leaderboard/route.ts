@@ -10,6 +10,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { visibleUserIds } from "@/lib/gameScope";
+import { nameKey } from "@/lib/names";
 
 type PickRow = { user_id: string; user_name: string; tournament_id: string; player_name: string };
 type EarningsResp = {
@@ -17,9 +18,6 @@ type EarningsResp = {
   projected?: boolean;
   players: Record<string, { player_name: string; earnings: number; position: string }>;
 };
-
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 export async function GET(req: Request) {
   const { userId } = await auth();

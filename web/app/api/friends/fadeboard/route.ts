@@ -16,6 +16,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { visibleUserIds } from "@/lib/gameScope";
+import { nameKey } from "@/lib/names";
 
 type PickRow = { user_id: string; user_name: string; player_name: string };
 type EarningsResp = {
@@ -23,9 +24,6 @@ type EarningsResp = {
   earnings_estimated?: boolean;
   players: Record<string, { player_name: string; earnings: number; position: string }>;
 };
-
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 async function earningsFor(tid: string): Promise<EarningsResp | null> {
   try {
