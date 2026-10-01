@@ -10,6 +10,8 @@ type Props = {
   lastUpdate: string;
   holeScores?: Record<string, Record<string, HoleData[]>>;
   myPicks?: string[];
+  /** Fetch one player's card when his row opens (round -> holes). */
+  loadScorecard?: (playerName: string) => Promise<Record<string, HoleData[]> | null>;
 };
 
 function normName(n: string) {
@@ -179,8 +181,22 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
   );
 }
 
-export default function InPlayLeaderboard({ players, currentRound, lastUpdate, holeScores, myPicks = [] }: Props) {
+export default function InPlayLeaderboard({ players, currentRound, lastUpdate, holeScores, myPicks = [], loadScorecard }: Props) {
   const [expandedPlayer, setExpandedPlayer] = useState<string | null>(null);
+  // On-demand cards: fetched the first time a row opens, kept for the visit.
+  const [cards, setCards] = useState<Record<string, Record<string, HoleData[]> | "loading" | "none">>({});
+  const canExpand = !!(holeScores || loadScorecard);
+
+  function toggle(name: string) {
+    const opening = expandedPlayer !== name;
+    setExpandedPlayer(opening ? name : null);
+    if (opening && loadScorecard && !holeScores?.[name] && cards[name] === undefined) {
+      setCards(c => ({ ...c, [name]: "loading" }));
+      loadScorecard(name)
+        .then(r => setCards(c => ({ ...c, [name]: r && Object.keys(r).length ? r : "none" })))
+        .catch(() => setCards(c => ({ ...c, [name]: "none" })));
+    }
+  }
   const myPicksNorm = new Set(myPicks.map(normName));
 
   if (!players.length) {
@@ -237,7 +253,9 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
               const bg = isPick ? "#091a0f" : i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
               const isCut = p.made_cut === false;
               const isExpanded = expandedPlayer === p.player_name;
-              const playerHoles = holeScores ? holeScores[p.player_name] ?? null : null;
+              const card = cards[p.player_name];
+              const playerHoles = holeScores?.[p.player_name]
+                ?? (card && card !== "loading" && card !== "none" ? card : null);
 
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid var(--bc-card)",
@@ -255,16 +273,16 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                   <tr
                     style={{
                       opacity: isCut ? 0.55 : 1,
-                      cursor: holeScores ? "pointer" : "default",
+                      cursor: canExpand ? "pointer" : "default",
                       borderLeft: isPick ? "2px solid var(--bc-green)" : "2px solid transparent",
                     }}
-                    onClick={() => holeScores && setExpandedPlayer(isExpanded ? null : p.player_name)}
+                    onClick={() => canExpand && toggle(p.player_name)}
                   >
                     <td style={{ ...td, textAlign: "left", color: "var(--bc-muted)", fontWeight: 700 }}>
                       {p.position ?? "—"}
                     </td>
                     <td style={{ ...td, textAlign: "left", fontWeight: 600, whiteSpace: "nowrap" }}>
-                      {holeScores && (
+                      {canExpand && (
                         <span style={{ marginRight: 6, color: isExpanded ? "var(--bc-green)" : "var(--bc-muted)", fontSize: "0.8em" }}>
                           {isExpanded ? "▾" : "▸"}
                         </span>
@@ -331,7 +349,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                             ))
                         ) : (
                           <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
-                            No hole-by-hole data for {p.player_name}
+                            {card === "loading" ? "Loading scorecard…" : `No hole-by-hole card for ${p.player_name} yet`}
                           </span>
                         )}
                       </td>
@@ -360,7 +378,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
 
       <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>
         {lastUpdate && `DataGolf last updated: ${lastUpdate}`}
-        {holeScores && " · click any row to expand scorecard"}
+        {canExpand && " · tap any row for the hole-by-hole scorecard"}
       </p>
     </div>
   );

@@ -722,6 +722,14 @@ export type HoleScoresResponse = {
   by_player: Record<string, Record<string, HoleData[]>>;  // player → round# → 18 holes
 };
 
+/** One golfer's hole-by-hole card, fetched on demand (PGA Tour only). */
+export async function getScorecard(playerName: string, tournamentId = ""): Promise<Record<string, HoleData[]> | null> {
+  const q = new URLSearchParams({ player: playerName, ...(tournamentId ? { tournament_id: tournamentId } : {}) });
+  const res = await apiFetch(`${API_BASE}/api/live/scorecard?${q}`, { cache: "no-store" });
+  if (!res.ok) return null;
+  return (await res.json()).rounds ?? null;
+}
+
 export async function getHoleScores(): Promise<HoleScoresResponse> {
   const res = await apiFetch(`${API_BASE}/api/live/hole-scores`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load hole scores");

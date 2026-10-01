@@ -2318,6 +2318,62 @@ def get_live_hole_stats(round_param: str = "event_avg", tour: str = "pga") -> di
     return result
 
 
+_scorecard_cache: dict[tuple[str, str], tuple[float, dict]] = {}
+
+
+@app.get("/api/live/scorecard")
+def get_live_scorecard(player: str, tournament_id: str = "") -> dict:
+    """One golfer's hole-by-hole scorecard, fetched ON DEMAND from the PGA
+    Tour feed and cached 3 minutes. DataGolf publishes no per-player hole
+    scores (in-play has round totals + thru only), so the scorecard grid
+    needs the Tour's own data — and the bulk scraper that used to write
+    hole_scores_{tid}.csv doesn't run on cloud weekends. Fetching the one
+    card someone opens is cheaper than scraping 120 every few minutes.
+    PGA events only (player ids come from the PGA field file)."""
+    tid = (tournament_id or _get_tournament_id()).strip().upper()
+    if not tid.startswith("R"):
+        raise HTTPException(status_code=404, detail="Scorecards are PGA Tour only")
+    key = (tid, _name_key(player))
+    hit = _scorecard_cache.get(key)
+    if hit and time.time() - hit[0] < 180:
+        return hit[1]
+
+    field_path = DATA_DIR / "fields" / f"field_{tid}.csv"
+    if not field_path.exists():
+        raise HTTPException(status_code=404, detail="No field for this event")
+    field = pd.read_csv(field_path)
+    match = field[field["player_name"].map(_name_key) == key[1]]
+    if match.empty or "player_id" not in field.columns:
+        raise HTTPException(status_code=404, detail=f"{player} not in this field")
+    row = match.iloc[0]
+
+    scrapers = str(PROJECT_ROOT / "scripts" / "scrapers")
+    if scrapers not in sys.path:
+        sys.path.insert(0, scrapers)
+    from fetch_hole_scores import fetch_compressed_scorecard  # type: ignore
+    try:
+        rows = fetch_compressed_scorecard(tid, str(int(row["player_id"])), str(row["player_name"]))
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"PGA Tour scorecard unavailable: {type(e).__name__}")
+
+    rounds: dict[str, list] = {}
+    for r in rows:
+        rnd = str(int(float(r.get("round", 1))))
+        holes = []
+        for h in range(1, 19):
+            st, par, rel = _safe(r.get(f"h{h}")), _safe(r.get(f"h{h}_par")), _safe(r.get(f"h{h}_rel"))
+            running = r.get(f"h{h}_running")
+            running = str(running).strip() if running is not None and str(running).strip() not in ("", "nan", "None") else None
+            holes.append({"hole": h, "strokes": int(st) if st is not None else None,
+                          "par": int(par) if par is not None else None,
+                          "rel": int(rel) if rel is not None else None, "running": running})
+        rounds[rnd] = holes
+    out = {"tournament_id": tid, "player_name": _flip(str(row["player_name"])),
+           "rounds": rounds, "fetched_at": time.time()}
+    _scorecard_cache[key] = (time.time(), out)
+    return out
+
+
 @app.get("/api/live/hole-scores")
 def get_hole_scores() -> dict:
     """Per-hole scores indexed by player name and round number."""

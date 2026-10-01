@@ -17,7 +17,7 @@ import {
   refreshHoleScores, getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
   Tournament, InPlayResponse, VsPredPlayer, MyLineupResponse, SgStatsResponse, HoleScoresResponse,
   HoleStatsResponse, LivePulse as LivePulseData, WithdrawalsResponse,
-  getOpenEvents, getEuroLive, EuroLive, getEuroCourse,
+  getOpenEvents, getEuroLive, EuroLive, getEuroCourse, getScorecard,
 } from "@/lib/api";
 import InPlayLeaderboard from "@/components/InPlayLeaderboard";
 import VsPredictions from "@/components/VsPredictions";
@@ -312,6 +312,7 @@ export default function LivePage() {
               lastUpdate={inPlay.last_update}
               holeScores={holeScores?.by_player}
               myPicks={myPicks}
+              loadScorecard={name => getScorecard(name, inPlay.tournament_id ?? "")}
             />
           </>
         ) : <Empty text="No leaderboard data. Tournament may not have started." />
