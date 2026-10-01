@@ -470,11 +470,20 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
               </td>
               <td style={{ ...td, color: "var(--bc-muted)" }}>{money(s.pga_total)}</td>
               <td style={{ ...td, color: "var(--bc-muted)" }}>{money(s.euro_total)}</td>
-              <td style={{ ...td, fontWeight: 800 }}>{money(s.total)}</td>
+              <td style={{ ...td, fontWeight: 700, color: "var(--bc-text)" }}>
+                {money(s.banked)}
+                {
+                  s.live > 0 && <span style={{ color: "var(--bc-green)", fontSize: "0.82em", marginLeft: 4 }}>+
+                  {money(s.live)} live</span>
+                }
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", margin: "8px 0 0" }}>
+  Totals are banked prize money; + live is projected from events still in play.
+</p>
     </div>
   );
 }

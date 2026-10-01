@@ -109,6 +109,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       //   - table?.settled  → the money is final: it's banked
       //   - table?.projected → the event is still live: it's projected
       // m.total should still equal m.banked + m.live when you're done.
+      if (table?.projected) m.live += earned; else m.banked += earned;
       if (table?.settled) ev.settled = true;
       if (table?.projected) ev.projected = true;
     }
@@ -122,7 +123,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const standings = [...members.values()]
     .map(m => ({ ...m, stars: stars.get(m.user_id) ?? 0 }))
-    .sort((a, b) => b.total - a.total);
+    .sort((a, b) => b.banked - a.banked || b.live - a.live);
   return Response.json({
     weekly_winners: winners,
     league: league[0], standings, me: userId,
