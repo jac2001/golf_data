@@ -848,6 +848,11 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
         const res = await fetch(url);
         if (!res.ok) { window.open(url, "_blank"); return; }
         const file = new File([await res.blob()], `golf-edge-recap.png`, { type: "image/png" });
+        // The rematch link rides along as text, so the group chat gets a
+        // tappable way back to next week's picks — not just a picture.
+        const rematch = { files: [file], text: "Rematch — next week's picks are open:",
+          url: "https://playgolfedge.com/friends" };
+        if (navigator.canShare(rematch)) { await navigator.share(rematch); return; }
         if (navigator.canShare({ files: [file] })) {
           await navigator.share({ files: [file] });
           return;

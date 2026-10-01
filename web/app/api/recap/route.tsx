@@ -93,16 +93,16 @@ export async function GET(req: Request) {
   const table = (earn?.players ?? {}) as Record<string, { earnings: number; position: string }>;
   if (!earn?.settled) return new Response("event not settled yet", { status: 403 });
 
-  type Row = { user_id: string; user_name: string; total: number;
-    best: { player: string; earnings: number; position: string } };
+  type Golf = { player: string; earnings: number; position: string };
+  type Row = { user_id: string; user_name: string; total: number; golfers: Golf[] };
   const rows = new Map<string, Row>();
   for (const p of picks) {
     const hit = table[nameKey(p.player_name)];
-    const e = hit?.earnings ?? 0;
-    const r = rows.get(p.user_id) ?? { user_id: p.user_id, user_name: p.user_name, total: 0,
-      best: { player: p.player_name, earnings: -1, position: "—" } };
-    r.total += e;
-    if (e > r.best.earnings) r.best = { player: p.player_name, earnings: e, position: hit?.position ?? "—" };
+    const r = rows.get(p.user_id) ?? { user_id: p.user_id,
+      user_name: p.user_id === "model" ? "The Model" : p.user_name, total: 0, golfers: [] };
+    const g = { player: p.player_name, earnings: hit?.earnings ?? 0, position: hit?.position ?? "—" };
+    r.total += g.earnings;
+    r.golfers.push(g);
     rows.set(p.user_id, r);
   }
   const board = [...rows.values()].sort((a, b) => b.total - a.total);
@@ -110,31 +110,39 @@ export async function GET(req: Request) {
   const runnerUp = board[1];
   const model = board.find(r => r.user_id === "model");
   const humans = board.filter(r => r.user_id !== "model");
-  const beatModel = model ? humans.filter(h => h.total > model.total).length : 0;
+  const beaters = model ? humans.filter(h => h.total > model.total) : [];
+
+  // The golfer who DECIDED the week: the winner's best earner that the
+  // runner-up didn't also have — a shared golfer cancels out. Falls back
+  // to the winner's top earner when everything was shared.
+  const rivalKeys = new Set((runnerUp?.golfers ?? []).map(g => nameKey(g.player)));
+  const byMoney = [...winner.golfers].sort((a, b) => b.earnings - a.earnings);
+  const decisive = byMoney.find(g => !rivalKeys.has(nameKey(g.player))) ?? byMoney[0];
 
   const eventName = evMeta?.name ?? tid;
   const next = events.find(e => !e.finished && !e.locked) ?? events.find(e => !e.finished);
 
   const verdict = !model ? "" :
     winner.user_id === "model"
-      ? `THE MODEL TOOK THE WEEK — best human ${money((humans[0]?.total ?? 0))}`
-      : beatModel > 0
-        ? `${beatModel} OF ${humans.length} BEAT THE MODEL`
-        : "NOBODY BEAT THE MODEL";
+      ? "THE MODEL TOOK THE WEEK"
+      : beaters.length === humans.length
+        ? "EVERYONE BEAT THE MODEL"
+        : beaters.length > 0
+          ? `${beaters.length} OF ${humans.length} BEAT THE MODEL`
+          : "NOBODY BEAT THE MODEL";
+  const verdictGood = beaters.length > 0 && winner.user_id !== "model";
 
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column",
-        background: BG, color: TEXT, fontFamily: "sans-serif", padding: 48 }}>
+        background: BG, color: TEXT, fontFamily: "sans-serif", padding: 44 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 900, letterSpacing: 2 }}>SUNDAY RECAP</div>
+          <div style={{ display: "flex", fontSize: 28, fontWeight: 900, letterSpacing: 2 }}>SUNDAY RECAP</div>
           <div style={{ display: "flex", fontSize: 20, color: MUTED }}>{grp[0].name} · {eventName}</div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 30 }}>
-          <div style={{ display: "flex", fontSize: 52, fontWeight: 900, color: YELLOW }}>
-            {winner.user_name}
-          </div>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 24 }}>
+          <div style={{ display: "flex", fontSize: 50, fontWeight: 900, color: YELLOW }}>{winner.user_name}</div>
           <div style={{ display: "flex", fontSize: 30, fontWeight: 900 }}>{money(winner.total)}</div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 20, color: YELLOW }}>
             <svg width="22" height="22" viewBox="0 0 24 24">
@@ -144,41 +152,66 @@ export async function GET(req: Request) {
           </div>
         </div>
         {runnerUp && (
-          <div style={{ display: "flex", fontSize: 20, color: MUTED, marginTop: 6 }}>
+          <div style={{ display: "flex", fontSize: 20, color: MUTED, marginTop: 4 }}>
             {money(winner.total - runnerUp.total)} clear of {runnerUp.user_name}
           </div>
         )}
 
-        <div style={{ display: "flex", flexDirection: "column", marginTop: 26, background: CARD,
-          borderRadius: 14, border: `1px solid ${LINE}`, padding: "16px 26px" }}>
-          <div style={{ display: "flex", fontSize: 18, color: MUTED, letterSpacing: 1 }}>THE DECISIVE GOLFER</div>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 14, marginTop: 6 }}>
-            <div style={{ display: "flex", fontSize: 30, fontWeight: 900 }}>{winner.best.player}</div>
-            <div style={{ display: "flex", fontSize: 24, fontWeight: 700, color: GREEN }}>
-              {money(Math.max(winner.best.earnings, 0))}
+        <div style={{ display: "flex", gap: 22, marginTop: 22 }}>
+          {/* Final standings */}
+          <div style={{ display: "flex", flexDirection: "column", flex: 1, background: CARD,
+            borderRadius: 14, border: `1px solid ${LINE}`, padding: "14px 22px" }}>
+            <div style={{ display: "flex", fontSize: 16, color: MUTED, letterSpacing: 1, marginBottom: 6 }}>FINAL STANDINGS</div>
+            {board.slice(0, 6).map((r, i) => (
+              <div key={r.user_id} style={{ display: "flex", alignItems: "baseline", gap: 12, fontSize: 22, padding: "3px 0" }}>
+                <div style={{ display: "flex", width: 24, fontWeight: 900, color: YELLOW }}>{i + 1}</div>
+                <div style={{ display: "flex", fontWeight: 800, color: r.user_id === "model" ? YELLOW : TEXT }}>
+                  {r.user_name}
+                </div>
+                <div style={{ display: "flex", marginLeft: "auto", fontWeight: 800 }}>{money(r.total)}</div>
+              </div>
+            ))}
+            {board.length > 6 && (
+              <div style={{ display: "flex", fontSize: 16, color: MUTED, marginTop: 4 }}>+{board.length - 6} more</div>
+            )}
+          </div>
+
+          {/* The golfer who decided it + the model verdict */}
+          <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 14 }}>
+            <div style={{ display: "flex", flexDirection: "column", background: CARD, borderRadius: 14,
+              border: `1px solid ${LINE}`, padding: "14px 22px" }}>
+              <div style={{ display: "flex", fontSize: 16, color: MUTED, letterSpacing: 1 }}>THE GOLFER WHO DECIDED IT</div>
+              <div style={{ display: "flex", fontSize: 28, fontWeight: 900, marginTop: 6 }}>{decisive.player}</div>
+              <div style={{ display: "flex", fontSize: 19, color: MUTED, marginTop: 2 }}>
+                <span style={{ color: GREEN, fontWeight: 700 }}>{money(Math.max(decisive.earnings, 0))}</span>
+                <span>&nbsp;· finished {decisive.position} for {winner.user_name}</span>
+              </div>
             </div>
-            <div style={{ display: "flex", fontSize: 20, color: MUTED }}>
-              finished {winner.best.position} for {winner.user_name}
-            </div>
+            {verdict && (
+              <div style={{ display: "flex", flexDirection: "column", background: CARD, borderRadius: 14,
+                border: `1px solid ${LINE}`, padding: "14px 22px" }}>
+                <div style={{ display: "flex", fontSize: 24, fontWeight: 900, letterSpacing: 1, color: verdictGood ? GREEN : RED }}>
+                  {verdict}
+                </div>
+                {beaters.length > 0 && beaters.length < humans.length && (
+                  <div style={{ display: "flex", fontSize: 19, color: MUTED, marginTop: 4 }}>
+                    {beaters.slice(0, 4).map(b => b.user_name).join(", ")}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
-        {verdict && (
-          <div style={{ display: "flex", marginTop: 20, fontSize: 26, fontWeight: 900, letterSpacing: 1,
-            color: verdict.startsWith("NOBODY") || verdict.startsWith("THE MODEL") ? RED : GREEN }}>
-            {verdict}
-          </div>
-        )}
-
         <div style={{ display: "flex", marginTop: "auto", justifyContent: "space-between",
-          borderTop: `3px solid ${YELLOW}`, paddingTop: 16, alignItems: "center" }}>
-          <div style={{ display: "flex", fontSize: 20, color: MUTED }}>
-            {next ? `Next week: ${next.name} — picks open now` : "playgolfedge.com"}
+          borderTop: `3px solid ${YELLOW}`, paddingTop: 14, alignItems: "center" }}>
+          <div style={{ display: "flex", fontSize: 21, fontWeight: 800 }}>
+            {next ? `REMATCH: ${next.name} — picks open now` : "Rematch next week"}
           </div>
-          <div style={{ display: "flex", fontSize: 18, color: MUTED }}>playgolfedge.com</div>
+          <div style={{ display: "flex", fontSize: 18, color: MUTED }}>playgolfedge.com/friends</div>
         </div>
       </div>
     ),
-    { width: 1000, height: 560 },
+    { width: 1000, height: 640 },
   );
 }
