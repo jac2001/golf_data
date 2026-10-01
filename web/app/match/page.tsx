@@ -14,12 +14,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
+import { displaySurnames } from "@/lib/names";
 
 type Golfer = { name: string; position: string; earnings: number; up_one: number; thru: string };
 type Line = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number };
 type Slate = {
   tournament_id: string; name: string; tour: "pga" | "euro"; status: "open" | "live" | "settling" | "final";
-  projected: boolean; lines: Line[]; me_id: string;
+  projected: boolean; lines: Line[]; me_id: string; data_updated?: string;
   rival: { user_id: string; user_name: string; total: number } | null; gap: number; story: string;
   beating_model: number | null; humans: number;
 };
@@ -27,7 +28,8 @@ type CollegeLine = { user_id: string; user_name: string; school: string; total: 
   counting: { name: string; position: string; earnings: number }[] };
 type College = { tournament_id: string; name: string; status: Slate["status"]; projected: boolean;
   lines: CollegeLine[]; me_id: string; story: string } | null;
-type Match = { league: { id: number; name: string } | null; slates: Slate[]; college: College };
+type Match = { group?: { id: number; name: string; members: number };
+  league: { id: number; name: string } | null; slates: Slate[]; college: College; checked_at?: string };
 type Group = { id: number; name: string };
 
 const money = (v: number) =>
@@ -128,7 +130,14 @@ export default function MatchCenterPage() {
 
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
-      <PageHead kicker={data?.league ? `${data.league.name} · updates every 2 minutes during play` : "Your group's weekend"} title="Match Center" />
+      <PageHead kicker={data?.league ? `${data.group?.name ? data.group.name + " · " : ""}${data.league.name}` : "Your group's weekend"} title="Match Center" />
+      {data?.checked_at && (
+        <div style={{ color: "var(--bc-muted)", fontSize: "0.76em", margin: "-6px 0 12px" }}>
+          Checked {new Date(data.checked_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit", timeZoneName: "short" })}
+          {data.slates.find(s => s.data_updated)?.data_updated && ` · live scores as of ${data.slates.find(s => s.data_updated)!.data_updated} (DataGolf)`}
+          {" · refreshes every 2 minutes during play"}
+        </div>
+      )}
 
       {groups.length > 1 && (
         <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
@@ -156,7 +165,7 @@ export default function MatchCenterPage() {
           <div style={card}>No Let It Ride season in this group yet — the owner starts one from <Link href="/friends" style={{ color: "var(--bc-yellow)" }}>Friends → Let It Ride</Link>.</div>
         ) : (
           <>
-            {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} />)}
+            {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} groupName={data.group?.name ?? ""} />)}
             {data.college && data.college.lines.length > 0 && <CollegeCard c={data.college} />}
           </>
         )}
@@ -180,7 +189,7 @@ function StatusTag({ status, projected }: { status: Slate["status"]; projected: 
   return <span style={{ fontSize: "0.68em", fontWeight: 800, color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>;
 }
 
-function SlateCard({ s }: { s: Slate }) {
+function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
   const me = s.lines.find(l => l.user_id === s.me_id);
   const tourLabel = s.tour === "euro" ? "DP World Tour" : "PGA Tour";
 
@@ -191,7 +200,7 @@ function SlateCard({ s }: { s: Slate }) {
           <span style={{ fontWeight: 900 }}>{s.name}</span><StatusTag status={s.status} projected={false} />
         </div>
         <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "8px 0 0" }}>
-          {me ? `Your picks: ${me.golfers.map(g => last(g.name)).join(", ")}. ` : "You haven't picked yet. "}
+          {me ? `Your picks: ${displaySurnames(me.golfers.map(g => g.name)).join(", ")}. ` : "You haven't picked yet. "}
           Everyone&apos;s picks appear here once the event locks. <Link href="/friends" style={{ color: "var(--bc-yellow)" }}>Make picks →</Link>
         </p>
       </div>
@@ -241,7 +250,8 @@ function SlateCard({ s }: { s: Slate }) {
 
       <div style={{ marginTop: 14 }}>
         <div style={{ fontSize: "0.68em", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
-          The group{s.projected ? " · projected" : ""}
+          {s.humans <= 1 && s.lines.some(l => l.user_id === "model") ? "You vs. the model" : (groupName || "Your group")}
+          {s.projected ? " · projected" : ""}
         </div>
         {s.lines.map(l => {
           const isMe = l.user_id === s.me_id, isModel = l.user_id === "model", isRival = l.user_id === s.rival?.user_id;
@@ -255,7 +265,7 @@ function SlateCard({ s }: { s: Slate }) {
               {isModel && <span style={tag("var(--bc-yellow)")}>Model</span>}
               {isRival && !isModel && <span style={tag("var(--bc-orange)")}>Rival</span>}
               <span style={{ color: "var(--bc-muted)", fontSize: "0.82em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {l.golfers.map(g => last(g.name)).join(", ")}
+                {displaySurnames(l.golfers.map(g => g.name)).join(", ")}
               </span>
               <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(l.total)}</span>
             </div>

@@ -8,6 +8,7 @@
  */
 
 import React, { useEffect, useState } from "react";
+import { useStoredChoice } from "@/lib/useStoredChoice";
 import Link from "next/link";
 import { getHome, HomeData } from "@/lib/api";
 import { Show } from "@clerk/nextjs";
@@ -33,10 +34,7 @@ function fmtDates(start: string, end: string): string {
 
 export default function Home() {
   const [data, setData] = useState<HomeData | null>(null);
-  const [tour, setTour] = useState<"pga" | "euro">(() => {
-    try { return localStorage.getItem("favorite-tour") === "euro" ? "euro" : "pga"; }
-    catch { return "pga"; }
-  });
+  const [tour, setTour] = useStoredChoice<"pga" | "euro">("favorite-tour", ["pga", "euro"], "pga", false);
   const [err, setErr]   = useState("");
 
   useEffect(() => { getHome(tour).then(setData).catch(e => setErr(String(e))); }, [tour]);
@@ -70,6 +68,32 @@ export default function Home() {
               textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
               padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap" }}>
               How to play · try a demo
+            </Link>
+          </div>
+        </div>
+      </Show>
+
+      {/* ── Signed in? Your game comes before the forecast. ───────────── */}
+      <Show when="signed-in">
+        <div style={{ marginTop: 24, padding: "18px 22px", borderRadius: 10,
+          background: "var(--bc-card)", border: "1px solid var(--bc-yellow)",
+          display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+          <div style={{ flex: "1 1 300px" }}>
+            <div style={{ fontWeight: 900, fontSize: "1.1em" }}>Your matchup</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", marginTop: 4 }}>
+              Where you stand against your group and the model — live during every round.
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <Link href="/match" style={{
+              background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+              textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
+              padding: "11px 18px", borderRadius: 4, whiteSpace: "nowrap" }}>
+              View your matchup
+            </Link>
+            <Link href="/friends" style={{ fontWeight: 700, fontSize: "0.78em", textTransform: "uppercase",
+              letterSpacing: "0.06em", color: "var(--bc-yellow)", whiteSpace: "nowrap" }}>
+              Make picks →
             </Link>
           </div>
         </div>

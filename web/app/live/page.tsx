@@ -12,6 +12,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useStoredChoice } from "@/lib/useStoredChoice";
 import {
   getTournament, getInPlay, getVsPredictions, getMyLineupLive, getSgStats, getHoleScores,
   refreshHoleScores, getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
@@ -43,10 +44,7 @@ const POLL_INTERVAL_MS = 60_000; // refresh leaderboard every 60 seconds
 
 export default function LivePage() {
 
-  const [tour, setTour] = useState<"pga" | "euro">(() => {
-    try { return localStorage.getItem("favorite-tour") === "euro" ? "euro" : "pga"; }
-    catch { return "pga"; }
-  });
+  const [tour, setTour] = useStoredChoice<"pga" | "euro">("favorite-tour", ["pga", "euro"], "pga", false);
   const [activeTab, setActiveTab] = useState<Tab>("leaderboard");
   const [loaded, setLoaded] = useState<Set<Tab>>(new Set(["leaderboard"]));
   const [settingsLoaded, setSettingsLoaded] = useState(false);

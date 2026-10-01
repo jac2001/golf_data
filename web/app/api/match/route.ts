@@ -22,7 +22,7 @@ type Ev = { tournament_id: string; name: string; tour: "pga" | "euro"; start_dat
   locked: boolean; finished: boolean };
 type PlayerMoney = { player_name: string; earnings: number; position: string;
   up_one?: number; thru?: string; today?: number | null };
-type Earnings = { settled: boolean; projected?: boolean; players: Record<string, PlayerMoney> };
+type Earnings = { settled: boolean; projected?: boolean; data_updated?: string; players: Record<string, PlayerMoney> };
 
 const money = (v: number) =>
   v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
@@ -48,6 +48,7 @@ export async function GET(req: Request) {
   if (!roster.some(m => m.user_id === userId)) {
     return Response.json({ error: "Not a member of this group" }, { status: 403 });
   }
+  const grp = await sql`SELECT name FROM groups WHERE id = ${groupId}` as { name: string }[];
   const leagueRows = await sql`
     SELECT id, name, tours FROM leagues WHERE group_id = ${groupId} AND status = 'active'` as
     { id: number; name: string; tours: string[] }[];
@@ -92,6 +93,7 @@ export async function GET(req: Request) {
       status: ev.finished ? (table?.settled ? "final" : "settling") : ev.locked ? "live" : "open",
       start_date: ev.start_date,
       projected: !table?.settled && !!table?.projected,
+      data_updated: table?.data_updated ?? "",
       me_id: userId, ...sum,
     });
   }
@@ -141,5 +143,9 @@ export async function GET(req: Request) {
     };
   }
 
-  return Response.json({ league: league ? { id: league.id, name: league.name } : null, slates, college });
+  return Response.json({
+    group: { id: groupId, name: grp[0]?.name ?? "", members: roster.length },
+    league: league ? { id: league.id, name: league.name } : null,
+    slates, college, checked_at: new Date().toISOString(),
+  });
 }

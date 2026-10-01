@@ -11,31 +11,34 @@ import React, { useEffect, useRef } from "react";
 
 export type NavEvent = {
   tournament_id: string; name: string; tour: "pga" | "euro"; start_date: string;
-  status: "open" | "live" | "completed" | "upcoming";
+  status: "open" | "awaiting" | "live" | "completed" | "upcoming";
 };
 
 const STATUS_LABEL: Record<NavEvent["status"], string> = {
-  open: "Picks open", live: "Live", completed: "Final", upcoming: "Opens soon",
+  open: "Picks open", awaiting: "Awaiting field", live: "Live", completed: "Final", upcoming: "Opens soon",
 };
 const STATUS_COLOR: Record<NavEvent["status"], string> = {
-  open: "var(--bc-green)", live: "var(--bc-yellow)", completed: "var(--bc-muted)", upcoming: "var(--bc-muted)",
+  open: "var(--bc-green)", awaiting: "var(--bc-muted)", live: "var(--bc-yellow)",
+  completed: "var(--bc-muted)", upcoming: "var(--bc-muted)",
 };
 const shortDate = (d: string) =>
   new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
 /** events/open rows → NavEvents (the per-event games' source). */
 export function fromOpenEvents(evs: { tournament_id: string; name: string; tour: string; start_date: string;
-  locked: boolean; finished: boolean }[]): NavEvent[] {
+  locked: boolean; finished: boolean; field_available?: boolean }[]): NavEvent[] {
   return evs.map(e => ({
     tournament_id: e.tournament_id, name: e.name, tour: e.tour === "euro" ? "euro" : "pga",
     start_date: e.start_date,
-    status: e.finished ? "completed" : e.locked ? "live" : "open",
+    // "Picks open" only when there's a field to pick from.
+    status: e.finished ? "completed" : e.locked ? "live" : e.field_available === false ? "awaiting" : "open",
   }));
 }
 
 /** Where to land: an open slate, else a live one, else the latest final. */
 export function landingEvent(evs: NavEvent[]): NavEvent | undefined {
   return evs.find(w => w.status === "open") ?? evs.find(w => w.status === "live")
+    ?? evs.find(w => w.status === "awaiting")
     ?? [...evs].filter(w => w.status === "completed").sort((a, b) => b.start_date.localeCompare(a.start_date))[0]
     ?? evs[0];
 }

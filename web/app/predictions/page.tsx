@@ -15,6 +15,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useStoredChoice } from "@/lib/useStoredChoice";
 import {
   getTournament, getPredictions, getLineup, getTeeTimes, getCourse, getModelComparison,
   getWeather, getIntel, refreshIntel, generateLineup,
@@ -37,7 +38,7 @@ type Tab = "field" | "lineup" | "teetimes" | "course" | "dg" | "coursefit";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "field",     label: "Field"        },
-  { id: "lineup",    label: "Lineup"       },
+  { id: "lineup",    label: "Model lineup" },
   { id: "teetimes",  label: "Tee Times"    },
   { id: "course",    label: "Course Guide" },
   { id: "dg",        label: "vs DataGolf"  },
@@ -48,10 +49,7 @@ export default function PredictionsPage() {
 
   // ── Tab state ────────────────────────────────────────────────────────────────
   const [activeTab, setActiveTab] = useState<Tab>("field");
-  const [tour, setTour] = useState<"pga" | "euro">(() => {
-    try { return localStorage.getItem("favorite-tour") === "euro" ? "euro" : "pga"; }
-    catch { return "pga"; }
-  });
+  const [tour, setTour] = useStoredChoice<"pga" | "euro">("favorite-tour", ["pga", "euro"], "pga", false);
   const [eventState, setEventState] = useState<{ finished: boolean; nextName: string; nextStart: string } | null>(null);
 
   // Track which tabs have ever been activated (so we only fetch each once)
@@ -239,7 +237,11 @@ export default function PredictionsPage() {
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}
       {preds && !loadingField && (
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-          <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)} accent="var(--bc-yellow)" />
+          <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)}
+            sub={preds.field_size && preds.field_size !== preds.count
+              ? `${preds.count} projected · the field changed after the model ran (late entries or withdrawals)`
+              : undefined}
+            accent="var(--bc-yellow)" />
           <GlanceCard
             label="Location"
             value={tournament?.location || "—"}
@@ -263,9 +265,9 @@ export default function PredictionsPage() {
             accent="var(--bc-orange)"
           />
           <GlanceCard
-            label="Lineup Picks"
-            value={lineup?.confirmed && lineup.picks.length ? lineup.picks.map(p => p.player_name.split(" ").pop()).join(", ") : "Not set"}
-            sub={lineup?.confirmed ? "confirmed this week" : "no picks confirmed yet"}
+            label="Model lineup"
+            value={lineup?.confirmed && lineup.picks.length ? lineup.picks.map(p => p.player_name.split(" ").pop()).join(", ") : "Not generated yet"}
+            sub={lineup?.confirmed ? "the model's suggested trio" : "your game picks live in Friends Game"}
             accent="var(--bc-orange)"
             onClick={() => setActiveTab("lineup")}
           />
@@ -331,7 +333,8 @@ export default function PredictionsPage() {
         lineup?.stale ? (
           <div style={{ padding: "32px 24px", textAlign: "center", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
             <div style={{ color: "var(--bc-muted)", fontSize: "0.95em", marginBottom: 8 }}>
-              No lineup generated for this tournament yet.
+              The model hasn&apos;t generated a lineup for this tournament yet.
+              This is its suggestion — your own picks are in the Friends Game.
             </div>
             <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginBottom: 20 }}>
               Last generated for: <span style={{ color: "var(--bc-muted)" }}>{lineup.stale_tournament}</span>

@@ -195,6 +195,8 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
         </button>
         <span style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
           {sorted.length} players · click column to sort
+          {players.some(p => p.win_prob_sim != null && p.win_prob != null) &&
+            " · chances come from 10,000 simulated tournaments; “base model” is the machine-learning model's direct estimate — both pre-tournament"}
         </span>
 
         {pickerOpen && (
@@ -362,7 +364,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                         </span>
                         {p.win_prob != null && (
                           <div style={{ color: "#2a5040", fontSize: "0.68em", marginTop: 1 }}>
-                            model {(p.win_prob * 100).toFixed(1)}%
+                            base model {(p.win_prob * 100).toFixed(1)}%
                           </div>
                         )}
                       </div>
@@ -384,7 +386,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                         </span>
                         {p.top10_prob != null && (
                           <div style={{ color: "var(--bc-card)", fontSize: "0.68em", marginTop: 1 }}>
-                            model {(p.top10_prob * 100).toFixed(1)}%
+                            base model {(p.top10_prob * 100).toFixed(1)}%
                           </div>
                         )}
                       </div>

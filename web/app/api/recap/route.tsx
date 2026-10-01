@@ -44,23 +44,29 @@ export async function GET(req: Request) {
   if (!userId) return new Response("Unauthorized", { status: 401 });
 
   const url = new URL(req.url);
+  // ?check=1 answers "is there a recap?" as JSON without rendering it, so
+  // the Groups tab can disable the button instead of opening an error.
+  const check = url.searchParams.get("check") === "1";
+  const fail = (msg: string, status: number) => check
+    ? Response.json({ available: false, reason: msg })
+    : new Response(msg, { status });
   const groupId = Number(url.searchParams.get("group_id") || 0);
   let tid = (url.searchParams.get("tid") ?? "").toUpperCase();
-  if (!groupId) return new Response("group_id required", { status: 400 });
+  if (!groupId) return fail("group_id required", 400);
 
   const sql = getSql();
   const grp = await sql`SELECT name FROM groups WHERE id = ${groupId}` as { name: string }[];
-  if (!grp.length) return new Response("no such group", { status: 404 });
+  if (!grp.length) return fail("no such group", 404);
   const members = await sql`
     SELECT user_id FROM group_members WHERE group_id = ${groupId}` as { user_id: string }[];
   const ids = members.map(m => m.user_id);
-  if (!ids.includes(userId)) return new Response("Not a member of this group.", { status: 403 });
+  if (!ids.includes(userId)) return fail("Not a member of this group.", 403);
   ids.push("model");
 
   const league = await sql`
     SELECT id FROM leagues WHERE group_id = ${groupId}
     ORDER BY (status = 'active') DESC, created_at DESC LIMIT 1` as { id: number }[];
-  if (!league.length) return new Response("this group has no Let It Ride season yet", { status: 404 });
+  if (!league.length) return fail("this group has no Let It Ride season yet", 404);
   const leagueId = league[0].id;
 
   // Which settled events does this group have picks in?
@@ -79,19 +85,19 @@ export async function GET(req: Request) {
       if (has.length) { tid = t; break; }
     }
   }
-  if (!tid) return new Response("no settled event with picks for this group", { status: 404 });
+  if (!tid) return fail("no settled event with picks for this group", 404);
   const evMeta = events.find(e => e.tournament_id === tid);
-  if (evMeta && !evMeta.finished) return new Response("event not settled yet", { status: 403 });
+  if (evMeta && !evMeta.finished) return fail("event not settled yet", 403);
 
   const picks = await sql`
     SELECT user_id, user_name, player_name FROM league_picks
     WHERE tournament_id = ${tid} AND league_id = ${leagueId}` as
     { user_id: string; user_name: string; player_name: string }[];
-  if (!picks.length) return new Response("no picks for this group/event", { status: 404 });
+  if (!picks.length) return fail("no picks for this group/event", 404);
 
   const earn = await modelApi(`/api/results/earnings?tournament_id=${tid}`);
   const table = (earn?.players ?? {}) as Record<string, { earnings: number; position: string }>;
-  if (!earn?.settled) return new Response("event not settled yet", { status: 403 });
+  if (!earn?.settled) return fail("event not settled yet", 403);
 
   type Golf = { player: string; earnings: number; position: string };
   type Row = { user_id: string; user_name: string; total: number; golfers: Golf[] };
@@ -131,6 +137,8 @@ export async function GET(req: Request) {
           ? `${beaters.length} OF ${humans.length} BEAT THE MODEL`
           : "NOBODY BEAT THE MODEL";
   const verdictGood = beaters.length > 0 && winner.user_id !== "model";
+
+  if (check) return Response.json({ available: true, tournament_id: tid, event: eventName });
 
   return new ImageResponse(
     (

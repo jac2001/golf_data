@@ -4767,7 +4767,8 @@ def _dg_live_board(tid: str) -> pd.DataFrame | None:
             d = pd.DataFrame(data)
             if len(d) and "current_pos" in d.columns:
                 df = d.rename(columns={"current_pos": "position"})
-        _dg_live_cache[tour] = {"ts": now, "tid": tid.upper() if df is not None else "", "df": df}
+        _dg_live_cache[tour] = {"ts": now, "tid": tid.upper() if df is not None else "", "df": df,
+                                "updated": str(info.get("last_update", "") or "")}
         return df
     except Exception:
         return None
@@ -4926,8 +4927,11 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
                                 "up_one": float(up.loc[i]),
                                 "thru": str(r.get("thru", "") or ""),
                                 "today": _safe(pd.to_numeric(r.get("today"), errors="coerce"))}
+                tour_key = "euro" if tid.startswith("E") else "pga"
+                updated = _dg_live_cache.get(tour_key, {}).get("updated", "") if live_source == "live" else ""
                 return {"tournament_id": tid, "settled": False, "projected": True,
-                        "earnings_estimated": True, "live_source": live_source, "players": out}
+                        "earnings_estimated": True, "live_source": live_source,
+                        "data_updated": updated, "players": out}
             except Exception:
                 pass
     return {"tournament_id": tid, "settled": False, "players": {}}

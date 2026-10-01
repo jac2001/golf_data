@@ -16,7 +16,7 @@ import { getSql, MODEL_API } from "@/lib/db";
 
 type Week = {
   tournament_id: string; name: string; tour: "pga" | "euro"; start_date: string;
-  status: "open" | "live" | "completed" | "upcoming";
+  status: "open" | "awaiting" | "live" | "completed" | "upcoming";
 };
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -32,11 +32,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const league = rows[0];
 
   // Status for events inside the open window.
-  const open = new Map<string, { locked: boolean; finished: boolean }>();
+  const open = new Map<string, { locked: boolean; finished: boolean; field: boolean }>();
   try {
     const res = await fetch(`${MODEL_API}/api/events/open`, { next: { revalidate: 120 } });
     if (res.ok) for (const e of (await res.json()).events ?? []) {
-      open.set(String(e.tournament_id).toUpperCase(), { locked: !!e.locked, finished: !!e.finished });
+      open.set(String(e.tournament_id).toUpperCase(), { locked: !!e.locked, finished: !!e.finished,
+        field: e.field_available !== false });
     }
   } catch { /* statuses fall back to the calendar below */ }
 
@@ -57,7 +58,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
         const tid = String(e.tournament_id).toUpperCase();
         const o = open.get(tid);
         const status: Week["status"] = o
-          ? (o.finished ? "completed" : o.locked ? "live" : "open")
+          ? (o.finished ? "completed" : o.locked ? "live" : o.field ? "open" : "awaiting")
           : (e.start_date < today ? "completed" : "upcoming");
         weeks.push({ tournament_id: tid, name: e.name, tour: tour as "pga" | "euro",
                      start_date: e.start_date, status });

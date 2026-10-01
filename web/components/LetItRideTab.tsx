@@ -240,11 +240,13 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
         ) : (
           <>
             <EventNav events={weeks} selected={tid} onPick={setTid} starred={winners} />
-            {week && (week.status === "upcoming" ? (
+            {week && (week.status === "upcoming" || week.status === "awaiting" ? (
               <div style={card}>
                 <strong>{week.name}</strong>
                 <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "6px 0 0" }}>
-                  Starts {shortDate(week.start_date)}. Picks open the week before, once the field is set.
+                  {week.status === "awaiting"
+                    ? `Starts ${shortDate(week.start_date)}. The field hasn't posted yet — picks open as soon as it does, usually by Tuesday.`
+                    : `Starts ${shortDate(week.start_date)}. Picks open the week before, once the field is set.`}
                 </p>
               </div>
             ) : (

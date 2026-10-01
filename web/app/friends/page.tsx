@@ -17,6 +17,7 @@ import LetItRideTab, { LetItRideStandings } from "@/components/LetItRideTab";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { fromOpenEvents } from "@/components/EventNav";
 import RecapPreview from "@/components/RecapPreview";
+import { useStoredChoice } from "@/lib/useStoredChoice";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
@@ -215,7 +216,8 @@ export default function FriendsPage() {
           friend&apos;s message below and hit Join.
         </div>
       )}
-      {tab === "games" && <><ReminderBell /><GamesTab /></>}
+      {/* The game first; reminders are a setting, not the headline. */}
+      {tab === "games" && <><GamesTab /><ReminderBell /></>}
       {tab === "standings" && <StandingsTab />}
       {tab === "groups" && <GroupsTab focusJoin={invited} />}
       {tab === "bets" && <MyBetsTab />}
@@ -237,22 +239,13 @@ const GAME_MODES: { id: GameMode; name: string; tag: string }[] = [
 function GamesTab() {
   // Remembered per device — a convenience, so the page still renders
   // fine when storage is unavailable (private mode, prerender).
-  const [mode, setMode] = useState<GameMode>(() => {
-    try {
-      const m = localStorage.getItem("friends-game-mode");
-      if (m === "rounds" || m === "fades" || m === "college" || m === "ride") return m;
-    } catch { /* default below */ }
-    return "ride";   // a remembered "picks" (Weekly 3, retired) lands here
-  });
-
-  function pick(m: GameMode) {
-    setMode(m);
-    try { localStorage.setItem("friends-game-mode", m); } catch { /* fine */ }
-  }
+  // A remembered "picks" (Weekly 3, retired) isn't allowed, so it lands on "ride".
+  const [mode, pick] = useStoredChoice<GameMode>("friends-game-mode",
+    ["ride", "rounds", "fades", "college"], "ride");
 
   return (
     <>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
         gap: 8, marginBottom: 16 }}>
         {GAME_MODES.map(g => {
           const on = mode === g.id;
@@ -312,13 +305,8 @@ function StandingsTab() {
   // Round Game is per-tournament by design (its whole-event board
   // lives on the Games tab), so no "rounds" pill here and a
   // remembered "rounds" mode falls back to picks.
-  const [mode, setMode] = useState<"ride" | "fades" | "college">(() => {
-    try {
-      const m = localStorage.getItem("friends-game-mode");
-      if (m === "ride" || m === "fades" || m === "college") return m;
-    } catch { /* default below */ }
-    return "ride";
-  });
+  const [mode, setMode] = useStoredChoice<"ride" | "fades" | "college">("friends-game-mode",
+    ["ride", "fades", "college"], "ride", false);
 
   return (
     <>
@@ -726,6 +714,8 @@ const inputStyle: React.CSSProperties = {
 
 function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
   const [recapFor, setRecapFor] = useState<Group | null>(null);
+  // Per group: is a recap available yet? (undefined = still checking)
+  const [recapOk, setRecapOk] = useState<Record<number, boolean>>({});
   const api = useApi();
   const joinRef = React.useRef<HTMLInputElement>(null);
   useEffect(() => { if (focusJoin) joinRef.current?.focus(); }, [focusJoin]);
@@ -814,6 +804,14 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
 
   /** The Sunday recap PNG for this group's latest settled event —
    *  built to be dropped straight into the group chat. */
+  useEffect(() => {
+    for (const g of groups ?? []) {
+      fetch(`/api/recap?group_id=${g.id}&check=1`).then(r => r.json())
+        .then(d => setRecapOk(o => ({ ...o, [g.id]: !!d.available })))
+        .catch(() => setRecapOk(o => ({ ...o, [g.id]: true })));   // unknown: let the preview explain
+    }
+  }, [groups]);
+
   if (!groups) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
 
   return (
@@ -861,13 +859,20 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
             }}>
               Share
             </button>
-            <button onClick={() => setRecapFor(g)}
-              title="Share this group's Sunday recap card" style={{
-              ...btnQuiet, padding: "4px 10px", color: "var(--bc-yellow)",
-              borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
-            }}>
-              Sunday recap
-            </button>
+            {recapOk[g.id] === false ? (
+              <span title="The recap is built once an event your group played is final"
+                style={{ ...btnQuiet, padding: "4px 10px", opacity: 0.6, cursor: "default" }}>
+                Recap after your first completed event
+              </span>
+            ) : (
+              <button onClick={() => setRecapFor(g)}
+                title="Share this group's Sunday recap card" style={{
+                ...btnQuiet, padding: "4px 10px", color: "var(--bc-yellow)",
+                borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
+              }}>
+                Sunday recap
+              </button>
+            )}
             <button onClick={() => copyLink(g)} title="Copy the invite message" style={{
               ...btnQuiet, padding: "4px 10px",
               color: copied === g.id ? "var(--bc-green)" : "var(--bc-yellow)",
