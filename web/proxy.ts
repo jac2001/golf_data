@@ -17,6 +17,7 @@ import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server
 // burns API credits per question) needs the free account.
 const isProtected = createRouteMatcher([
   "/friends(.*)",
+  "/match(.*)",
   "/betting(.*)",
   "/live(.*)",
   "/players(.*)",

@@ -23,6 +23,7 @@ const PUBLIC_LINKS = [
   { href: "/live",        label: "Live" },
   { href: "/players",     label: "Players" },
   { href: "/friends",     label: "Friends Game" },
+  { href: "/match",       label: "Match Center" },
   { href: "/how-to-play", label: "How to Play" },
   { href: "/assistant",   label: "Assistant" },
 ];

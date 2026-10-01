@@ -4674,6 +4674,79 @@ _PAYOUT_PCT = [
     0.227, 0.225, 0.223, 0.221, 0.219,
 ]
 
+_dg_live_cache: dict[str, dict] = {}
+
+
+def _dg_live_board(tid: str) -> pd.DataFrame | None:
+    """DataGolf's in-play leaderboard for an event, either tour, as a
+    DataFrame with `position` — or None. 5-minute cache per tour (DG
+    refreshes about that often), and the payload's own event name must
+    match ours (label provenance: DG serves 'the current event').
+    Before this, PGA weekends graded live from a leaderboard CSV that no
+    cloud job writes during rounds."""
+    tour = "euro" if tid.upper().startswith("E") else "pga"
+    now = time.time()
+    c = _dg_live_cache.get(tour)
+    if c and now - c["ts"] < 300:
+        return c["df"] if c["tid"] == tid.upper() else None
+    try:
+        scrapers = str(PROJECT_ROOT / "scripts" / "scrapers")
+        if scrapers not in sys.path:
+            sys.path.insert(0, scrapers)
+        from dg_client import dg_get  # type: ignore
+        from event_guard import names_match  # type: ignore
+        live = dg_get("/preds/in-play", {"tour": tour, "file_format": "json"})
+        info = live.get("info", {}) if isinstance(live, dict) else {}
+        expected = ""
+        pattern = "schedule_euro_2*.csv" if tour == "euro" else "schedule_2*.csv"
+        for sp in sorted((DATA_DIR / "raw").glob(pattern)):
+            s = pd.read_csv(sp)
+            row = s[s["tournament_id"].astype(str).str.upper() == tid.upper()]
+            if not row.empty:
+                expected = str(row.iloc[0]["tournament_name"])
+                break
+        df = None
+        if expected and names_match(str(info.get("event_name", "")), expected):
+            data = live.get("data", live) if isinstance(live, dict) else live
+            d = pd.DataFrame(data)
+            if len(d) and "current_pos" in d.columns:
+                df = d.rename(columns={"current_pos": "position"})
+        _dg_live_cache[tour] = {"ts": now, "tid": tid.upper() if df is not None else "", "df": df}
+        return df
+    except Exception:
+        return None
+
+
+def _up_one_spot(sub: pd.DataFrame, tid: str) -> pd.Series:
+    """What each golfer would earn one position higher (solo), for the
+    match center's 'moving up one spot is worth $X'. Purse x the payout
+    share of the spot above; nothing for the leader or anyone unpaid."""
+    est_now = _estimate_earnings_for_event(sub, tid)
+    purse = None
+    for sp in sorted((DATA_DIR / "raw").glob("schedule*_2*.csv")) + sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+        try:
+            s = pd.read_csv(sp)
+        except Exception:
+            continue
+        row = s[s["tournament_id"].astype(str).str.upper() == tid]
+        if not row.empty:
+            try:
+                purse = float(str(row.iloc[0]["purse"]).replace("$", "").replace(",", ""))
+            except Exception:
+                purse = None
+            break
+    def one(i):
+        sv = str(sub.loc[i, "position"]).strip().upper().replace("T", "")
+        try:
+            p = int(float(sv))
+        except Exception:
+            return 0.0
+        if not purse or p <= 1 or p - 1 > len(_PAYOUT_PCT):
+            return 0.0
+        return max(round(purse * _PAYOUT_PCT[p - 2] / 100.0, 2) - float(est_now.loc[i]), 0.0)
+    return pd.Series([one(i) for i in sub.index], index=sub.index)
+
+
 def _estimate_earnings_for_event(sub: pd.DataFrame, tid: str) -> pd.Series:
     """Purse x standard payout share by finish, dead-heat splits included —
     used when a settled event's official money hasn't posted yet. Same
@@ -4766,29 +4839,39 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
                 "earnings_estimated": bool(est is not None), "players": out}
 
     if projected:
-        live = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
-        if not live.exists():
-            # Euro events keep their live state in rounds_{tid}.csv with
-            # current_pos — without this the France weekend's group
-            # standings were blank while PGA weekends had numbers.
-            live = DATA_DIR / "live" / f"rounds_{tid}.csv"
-        if live.exists():
+        # Live first: DataGolf's in-play board (either tour, 5-min cache).
+        # Files are the fallback — a PGA leaderboard CSV only exists if
+        # some job wrote one, and none does during cloud weekends.
+        sub = _dg_live_board(tid)
+        live_source = "live" if sub is not None else ""
+        if sub is None:
+            live = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
+            if not live.exists():
+                live = DATA_DIR / "live" / f"rounds_{tid}.csv"
+            if live.exists():
+                try:
+                    sub = pd.read_csv(live)
+                    if "position" not in sub.columns and "current_pos" in sub.columns:
+                        sub = sub.rename(columns={"current_pos": "position"})
+                    live_source = "snapshot"
+                except Exception:
+                    sub = None
+        if sub is not None and "position" in sub.columns and len(sub):
             try:
-                sub = pd.read_csv(live)
-                if "position" not in sub.columns and "current_pos" in sub.columns:
-                    sub = sub.rename(columns={"current_pos": "position"})
-                if "position" in sub.columns and len(sub):
-                    est = _estimate_earnings_for_event(sub, tid)
-                    if est is not None:
-                        out = {}
-                        for _, r in sub.iterrows():
-                            name = str(r.get("player_name", ""))
-                            key = " ".join(sorted(name.lower().replace(",", "").split()))
-                            out[key] = {"player_name": name,
-                                        "earnings": float(est.loc[r.name]),
-                                        "position": str(r.get("position", ""))}
-                        return {"tournament_id": tid, "settled": False, "projected": True,
-                                "earnings_estimated": True, "players": out}
+                est = _estimate_earnings_for_event(sub, tid)
+                up = _up_one_spot(sub, tid)
+                out = {}
+                for i, r in sub.iterrows():
+                    name = str(r.get("player_name", ""))
+                    key = " ".join(sorted(name.lower().replace(",", "").split()))
+                    out[key] = {"player_name": name,
+                                "earnings": float(est.loc[i]),
+                                "position": str(r.get("position", "")),
+                                "up_one": float(up.loc[i]),
+                                "thru": str(r.get("thru", "") or ""),
+                                "today": _safe(pd.to_numeric(r.get("today"), errors="coerce"))}
+                return {"tournament_id": tid, "settled": False, "projected": True,
+                        "earnings_estimated": True, "live_source": live_source, "players": out}
             except Exception:
                 pass
     return {"tournament_id": tid, "settled": False, "players": {}}
