@@ -96,6 +96,18 @@ needed for it.
    picks existed). Trade-off accepted: no zero-setup game — a group
    needs a season to play.
 
+7. [x] **Group Match Center + Sunday recap** (2026-10-01). /match answers
+   "what needs to happen for me to beat my friends?" per tour's current
+   event: position, closest rival and gap, the one-spot move that flips
+   it, the group vs the model, College school race with its two counting
+   alumni; change alerts since your last look; projected vs final always
+   labeled. Live money now comes from DataGolf's in-play board for BOTH
+   tours (no PGA leaderboard file is written during cloud weekends).
+   Recap card: final standings, named model-beaters, the golfer who
+   decided it (not shared with the runner-up), rematch link. Decisions:
+   College = new school each week; v1 covers Let It Ride + College.
+   First real recap: Bank of Utah, Sunday night.
+
 ## Later
 
 - **January retrain of the PGA model** (2025-26 data in, Tuesday trio
