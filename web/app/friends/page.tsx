@@ -15,6 +15,7 @@ import { useAuth } from "@clerk/nextjs";
 import { PageHead, SubTabs } from "@/components/broadcast";
 import LetItRideTab, { LetItRideStandings } from "@/components/LetItRideTab";
 import LockCountdown from "@/components/LockCountdown";
+import EventNav, { fromOpenEvents } from "@/components/EventNav";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
@@ -285,20 +286,6 @@ function GamesTab() {
 type FieldRow = { player_name: string; world_rank: number | null;
   win_prob: number | null; top10_prob: number | null; cut_prob: number | null };
 
-/** Chips order: this week's action first, then history newest-first. */
-function chipOrder(evs: OpenEvent[]): OpenEvent[] {
-  const open = evs.filter(e => !e.finished);
-  const done = evs.filter(e => e.finished)
-    .sort((a, b) => b.start_date.localeCompare(a.start_date));
-  return [...open, ...done];
-}
-
-const chipRow: React.CSSProperties = {
-  display: "flex", gap: 8, marginBottom: 14,
-  overflowX: "auto", flexWrap: "nowrap",
-  paddingBottom: 4,          // keep the scrollbar off the chips
-  WebkitOverflowScrolling: "touch" as never,
-};
 
 // ── Standings ────────────────────────────────────────────────────────────────
 
@@ -484,23 +471,7 @@ function CollegeTab() {
 
   return (
     <>
-      {events.length > 1 && (
-        <div style={chipRow}>
-          {chipOrder(events).map(ev => (
-            <button key={ev.tournament_id} onClick={() => setSelected(ev.tournament_id)} style={{
-              ...btnQuiet, padding: "7px 14px", whiteSpace: "nowrap", flexShrink: 0,
-              color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
-              background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
-              borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
-            }}>
-              {ev.name}
-              <span style={{ marginLeft: 6, fontSize: "0.85em", opacity: 0.75 }}>
-                {ev.finished ? "final" : ev.locked ? "live" : ""}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
+      <EventNav events={fromOpenEvents(events)} selected={selected} onPick={setSelected} />
 
       <div style={card}>
         <div style={{ fontWeight: 800, fontSize: "1.05em" }}>
@@ -1263,21 +1234,8 @@ function RoundGameTab() {
 
   return (
     <>
-      {events.length > 1 && (
-        <div style={chipRow}>
-          {chipOrder(events).map(ev => (
-            <button key={ev.tournament_id} onClick={() => { setSelected(ev.tournament_id); setPickingRound(null); }} style={{
-              ...btnQuiet, padding: "7px 14px", whiteSpace: "nowrap", flexShrink: 0,
-              color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
-              background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
-              borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
-            }}>
-              {ev.name}
-              {ev.finished && <span style={{ marginLeft: 6, fontSize: "0.85em", opacity: 0.75 }}>final</span>}
-            </button>
-          ))}
-        </div>
-      )}
+      <EventNav events={fromOpenEvents(events)} selected={selected}
+        onPick={tid => { setSelected(tid); setPickingRound(null); }} />
 
       <div style={card}>
         <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 4 }}>
@@ -1509,23 +1467,7 @@ function FadeTab() {
 
   return (
     <>
-      {events.length > 1 && (
-        <div style={chipRow}>
-          {chipOrder(events).map(ev => (
-            <button key={ev.tournament_id} onClick={() => setSelected(ev.tournament_id)} style={{
-              ...btnQuiet, padding: "7px 14px", whiteSpace: "nowrap", flexShrink: 0,
-              color: selected === ev.tournament_id ? "#081f14" : "var(--bc-muted)",
-              background: selected === ev.tournament_id ? "var(--bc-yellow)" : "transparent",
-              borderColor: selected === ev.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)",
-            }}>
-              {ev.name}
-              <span style={{ marginLeft: 6, fontSize: "0.85em", opacity: 0.75 }}>
-                {ev.finished ? "final" : ev.locked ? "live" : ""}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
+      <EventNav events={fromOpenEvents(events)} selected={selected} onPick={setSelected} />
 
       <div style={card}>
         <div style={{ fontWeight: 800, fontSize: "1.05em" }}>

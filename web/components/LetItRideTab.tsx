@@ -14,6 +14,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { getEventField, getPredictions, OpenEvent } from "@/lib/api";
 import { nameKey } from "@/lib/names";
 import LockCountdown from "@/components/LockCountdown";
+import EventNav, { NavEvent, landingEvent, Star } from "@/components/EventNav";
 
 type Group = { id: number; name: string; is_owner: boolean };
 type League = {
@@ -175,23 +176,13 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
   );
 }
 
-type Week = {
-  tournament_id: string; name: string; tour: "pga" | "euro"; start_date: string;
-  status: "open" | "live" | "completed" | "upcoming";
-};
-const STATUS_LABEL: Record<Week["status"], string> = {
-  open: "Picks open", live: "Live", completed: "Final", upcoming: "Opens soon",
-};
-const STATUS_COLOR: Record<Week["status"], string> = {
-  open: "var(--bc-green)", live: "var(--bc-yellow)", completed: "var(--bc-muted)", upcoming: "var(--bc-muted)",
-};
+type Week = NavEvent;
 const shortDate = (d: string) =>
   new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
 function Season({ league, isOwner, onChanged }: { league: League; isOwner: boolean; onChanged: () => void }) {
   const [editing, setEditing] = useState(false);
   const [weeks, setWeeks] = useState<Week[] | null>(null);
-  const [tour, setTour] = useState<"pga" | "euro">(league.tours.includes("pga") ? "pga" : "euro");
   const [tid, setTid] = useState("");
   const [standings, setStandings] = useState<Standing[]>([]);
   const [myUses, setMyUses] = useState<Record<string, number>>({});
@@ -215,24 +206,13 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
     call(`/api/leagues/${league.id}/weeks`).then(d => {
       const ws = (d.weeks as Week[]) ?? [];
       setWeeks(ws);
-      const land = ws.find(w => w.status === "open") ?? ws.find(w => w.status === "live")
-        ?? [...ws].reverse().find(w => w.status === "completed") ?? ws[0];
-      if (land) { setTour(land.tour); setTid(land.tournament_id); }
+      const land = landingEvent(ws);
+      if (land) setTid(land.tournament_id);
     }).catch(() => setWeeks([]));
     loadStandings();
   }, [league.id, loadStandings]);
 
-  const tourWeeks = (weeks ?? []).filter(w => w.tour === tour);
-  const idx = tourWeeks.findIndex(w => w.tournament_id === tid);
-  const week = idx >= 0 ? tourWeeks[idx] : undefined;
-
-  function switchTour(t: "pga" | "euro") {
-    setTour(t);
-    const ws = (weeks ?? []).filter(w => w.tour === t);
-    const land = ws.find(w => w.status === "open") ?? ws.find(w => w.status === "live")
-      ?? [...ws].reverse().find(w => w.status === "completed") ?? ws[0];
-    setTid(land?.tournament_id ?? "");
-  }
+  const week = (weeks ?? []).find(w => w.tournament_id === tid);
 
   const tourNames = league.tours.map(t => t === "euro" ? "DP World Tour" : "PGA Tour").join(" + ");
 
@@ -252,22 +232,12 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
       </div>
       {editing && <SeasonSettings league={league} onSaved={() => { setEditing(false); onChanged(); }} />}
 
-      {league.tours.length > 1 && (
-        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-          {(["pga", "euro"] as const).filter(t => league.tours.includes(t)).map(t => (
-            <button key={t} onClick={() => switchTour(t)} style={btn(tour === t)}>
-              {t === "euro" ? "DP World Tour" : "PGA Tour"}
-            </button>
-          ))}
-        </div>
-      )}
-
       {weeks === null ? <p style={{ color: "var(--bc-muted)" }}>Loading…</p>
-        : tourWeeks.length === 0 ? (
-          <div style={card}>No {tour === "euro" ? "DP World Tour" : "PGA Tour"} events in this season yet.</div>
+        : weeks.length === 0 ? (
+          <div style={card}>No events in this season yet.</div>
         ) : (
           <>
-            <WeekNav weeks={tourWeeks} idx={idx} onPick={setTid} winners={winners} />
+            <EventNav events={weeks} selected={tid} onPick={setTid} starred={winners} />
             {week && (week.status === "upcoming" ? (
               <div style={card}>
                 <strong>{week.name}</strong>
@@ -288,81 +258,6 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
 
       <SeasonStandings standings={standings} me={me} />
     </>
-  );
-}
-
-/** Prev/next through one tour's weeks, plus a scrollable strip grouped
- *  Completed | This week | Upcoming that keeps the selection in view. */
-function WeekNav({ weeks, idx, onPick, winners }: {
-  weeks: Week[]; idx: number; onPick: (tid: string) => void; winners: Record<string, string[]>;
-}) {
-  const stripRef = React.useRef<HTMLDivElement | null>(null);
-  const selRef = React.useRef<HTMLButtonElement | null>(null);
-  useEffect(() => {
-    selRef.current?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
-  }, [idx]);
-
-  const cur = weeks[idx];
-  const arrow = (dir: -1 | 1) => {
-    const target = weeks[idx + dir];
-    return (
-      <button onClick={() => target && onPick(target.tournament_id)} disabled={!target}
-        aria-label={dir < 0 ? "Previous event" : "Next event"}
-        style={{ ...btn(false), padding: "7px 11px", opacity: target ? 1 : 0.35 }}>
-        {dir < 0 ? "‹" : "›"}
-      </button>
-    );
-  };
-  const group = (w: Week) => w.status === "completed" ? "Completed" : w.status === "upcoming" ? "Upcoming" : "This week";
-
-  return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-        {arrow(-1)}
-        <div style={{ flex: 1, textAlign: "center", minWidth: 0 }}>
-          <div style={{ fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {cur?.name ?? "—"}
-          </div>
-          {cur && (
-            <div style={{ fontSize: "0.72em", fontWeight: 700, color: STATUS_COLOR[cur.status] }}>
-              {STATUS_LABEL[cur.status]} · {shortDate(cur.start_date)}
-            </div>
-          )}
-        </div>
-        {arrow(1)}
-      </div>
-      <div ref={stripRef} style={{ display: "flex", gap: 6, overflowX: "auto", scrollSnapType: "x mandatory",
-        paddingBottom: 4, WebkitOverflowScrolling: "touch" as never }}>
-        {weeks.map((w, i) => {
-          const first = i === 0 || group(weeks[i - 1]) !== group(w);
-          const on = i === idx;
-          return (
-            <React.Fragment key={w.tournament_id}>
-              {first && (
-                <span style={{ alignSelf: "center", fontSize: "0.62em", fontWeight: 800, color: "var(--bc-muted)",
-                  textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap",
-                  marginLeft: i === 0 ? 0 : 8 }}>{group(w)}</span>
-              )}
-              <button ref={on ? selRef : undefined} onClick={() => onPick(w.tournament_id)} style={{
-                scrollSnapAlign: "center", flexShrink: 0, cursor: "pointer", fontFamily: "inherit",
-                textAlign: "left", borderRadius: 6, padding: "6px 10px", minWidth: 118,
-                background: on ? "color-mix(in srgb, var(--bc-yellow) 12%, var(--bc-card))" : "var(--bc-card)",
-                border: `1px solid ${on ? "var(--bc-yellow)" : "var(--bc-line)"}`,
-              }}>
-                <div style={{ fontSize: "0.62em", fontWeight: 700, color: STATUS_COLOR[w.status] }}>
-                  {shortDate(w.start_date)} · {STATUS_LABEL[w.status]}
-                  {winners[w.tournament_id]?.length ? <span style={{ color: "var(--bc-yellow)", marginLeft: 4 }}><Star /></span> : null}
-                </div>
-                <div style={{ fontSize: "0.78em", fontWeight: 700, color: on ? "var(--bc-text)" : "var(--bc-muted)",
-                  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 150 }}>
-                  {w.name}
-                </div>
-              </button>
-            </React.Fragment>
-          );
-        })}
-      </div>
-    </div>
   );
 }
 
@@ -577,16 +472,6 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
   );
 }
 
-/** A weekly win. Drawn, not an emoji glyph, so it renders identically everywhere. */
-function Star() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" aria-label="weekly win"
-      style={{ verticalAlign: "-1px", marginRight: 2 }}>
-      <path fill="currentColor"
-        d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" />
-    </svg>
-  );
-}
 
 /** Receipt PNG: shares the image file on phones with Web Share, else opens it. */
 async function shareReceipt(leagueId: number, tid: string, uid: string) {
