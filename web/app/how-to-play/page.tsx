@@ -208,7 +208,7 @@ export default function HowToPlayPage() {
           )}
           <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", margin: "6px 0 12px" }}>
             {mode === "history"
-              ? "This tournament already happened. Pick three off the Tuesday board, lock them, and see Sunday's real money — against the model's three favorites."
+              ? "This tournament already happened. Pick three off the Tuesday board and lock them — then see Sunday's real money next to the model's three, revealed only once you've committed."
               : "Tap three. We'll price your trio with the model's expected prize money against its own three favorites."}
           </p>
           <div style={{ display: "grid", gap: 6, gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
@@ -255,6 +255,36 @@ export default function HowToPlayPage() {
               padding: "10px 18px", borderRadius: 4, border: "none" }}>
               Lock picks · reveal Sunday&apos;s results
             </button>
+          )}
+
+          {/* Side by side, only after you commit: your three vs the model's,
+              each golfer's result — the disagreements are the lesson. Shown
+              before the reveal it would just be a lineup to copy. */}
+          {(revealed || (mode === "ev" && picks.length === 3 && !matchedModel)) && (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10, marginTop: 14 }}>
+              {([["Your three", picks], ["The model's three", modelTrio.map(p => p.player_name)]] as const).map(([title, names]) => (
+                <div key={title} style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "10px 12px" }}>
+                  <div style={{ fontSize: "0.7em", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
+                    {title}
+                  </div>
+                  {names.map(n => {
+                    const p = field.find(f => f.player_name === n);
+                    const shared = picks.includes(n) && modelTrio.some(m => m.player_name === n);
+                    const value = mode === "history" ? realEarn(n) : (p ? expectedPayout(purse, p) : 0);
+                    return (
+                      <div key={n} style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: "0.84em", padding: "3px 0" }}>
+                        <span style={{ fontWeight: 700 }}>{n}</span>
+                        {shared && <span style={{ fontSize: "0.72em", color: "var(--bc-yellow)" }}>both</span>}
+                        <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                          {mode === "history" && `${realPos(n)} · `}{money(value)}
+                          {p?.win_prob != null && <span style={{ fontSize: "0.85em" }}> · {(p.win_prob * 100).toFixed(1)}% pre</span>}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           )}
 
           {(revealed || (mode === "ev" && picks.length === 3 && !matchedModel)) && (
