@@ -16,6 +16,7 @@ import { PageHead, SubTabs } from "@/components/broadcast";
 import LetItRideTab, { LetItRideStandings } from "@/components/LetItRideTab";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { fromOpenEvents } from "@/components/EventNav";
+import RecapPreview from "@/components/RecapPreview";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
@@ -724,6 +725,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
+  const [recapFor, setRecapFor] = useState<Group | null>(null);
   const api = useApi();
   const joinRef = React.useRef<HTMLInputElement>(null);
   useEffect(() => { if (focusJoin) joinRef.current?.focus(); }, [focusJoin]);
@@ -812,31 +814,11 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
 
   /** The Sunday recap PNG for this group's latest settled event —
    *  built to be dropped straight into the group chat. */
-  async function shareRecap(g: Group) {
-    const url = `/api/recap?group_id=${g.id}`;
-    if (typeof navigator.share === "function" && typeof navigator.canShare === "function") {
-      try {
-        const res = await fetch(url);
-        if (!res.ok) { window.open(url, "_blank"); return; }
-        const file = new File([await res.blob()], `golf-edge-recap.png`, { type: "image/png" });
-        // The rematch link rides along as text, so the group chat gets a
-        // tappable way back to next week's picks — not just a picture.
-        const rematch = { files: [file], text: "Rematch — next week's picks are open:",
-          url: "https://playgolfedge.com/friends" };
-        if (navigator.canShare(rematch)) { await navigator.share(rematch); return; }
-        if (navigator.canShare({ files: [file] })) {
-          await navigator.share({ files: [file] });
-          return;
-        }
-      } catch { /* fall through to opening it */ }
-    }
-    window.open(url, "_blank");
-  }
-
   if (!groups) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
 
   return (
     <>
+      {recapFor && <RecapPreview groupId={recapFor.id} groupName={recapFor.name} onClose={() => setRecapFor(null)} />}
       <div style={{ ...card, display: "flex", gap: 20, flexWrap: "wrap" }}>
         <div style={{ display: "flex", gap: 8 }}>
           <input value={newName} onChange={e => setNewName(e.target.value)}
@@ -879,7 +861,7 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
             }}>
               Share
             </button>
-            <button onClick={() => shareRecap(g)}
+            <button onClick={() => setRecapFor(g)}
               title="Share this group's Sunday recap card" style={{
               ...btnQuiet, padding: "4px 10px", color: "var(--bc-yellow)",
               borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",

@@ -26,6 +26,8 @@ type SlatePick = { user_id: string; user_name: string; player_name: string };
 type Standing = {
   user_id: string; user_name: string; total: number; pga_total: number; euro_total: number;
   stars: number;
+  banked: number;   // settled money (from the standings route)
+  live: number;     // projected money from events still in progress
 };
 
 const money = (v: number) =>
@@ -434,6 +436,11 @@ function LockedSlate({ picks, me }: { picks: SlatePick[]; me: string }) {
   );
 }
 
+// TODO(Jack): label banked vs projected in this table.
+//   Right now the Total column shows s.total, which mixes final money with
+//   money still moving. Show s.banked as the season total and, when
+//   s.live > 0, a small "+$X live" next to it (and a caption explaining it).
+//   Think about: what should sorting use — banked, or banked + live?
 function SeasonStandings({ standings, me }: { standings: Standing[]; me: string }) {
   const th: React.CSSProperties = {
     padding: "7px 12px", fontSize: "0.7em", color: "var(--bc-muted)", fontWeight: 700,

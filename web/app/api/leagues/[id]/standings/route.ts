@@ -31,6 +31,8 @@ type EventLine = {
 type MemberRow = {
   user_id: string; user_name: string;
   total: number; pga_total: number; euro_total: number;
+  banked: number;   // settled money only — final, never moves again
+  live: number;     // projected money from events still in progress
   events: Record<string, EventLine>;
 };
 
@@ -86,12 +88,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const members = new Map<string, MemberRow>();
   for (const r of [...roster, { user_id: "model", user_name: "The Model" }]) {
     members.set(r.user_id, { user_id: r.user_id, user_name: r.user_name || "Player",
-      total: 0, pga_total: 0, euro_total: 0, events: {} });
+      total: 0, pga_total: 0, euro_total: 0, banked: 0, live: 0, events: {} });
   }
   for (const p of picks) {
     const m = members.get(p.user_id)
       ?? { user_id: p.user_id, user_name: p.user_name || (p.user_id === "model" ? "The Model" : "Player"),
-           total: 0, pga_total: 0, euro_total: 0, events: {} };
+           total: 0, pga_total: 0, euro_total: 0, banked: 0, live: 0, events: {} };
     const tour: "pga" | "euro" = p.tournament_id.startsWith("E") ? "euro" : "pga";
     const ev = m.events[p.tournament_id] ?? { tour, picks: [], event_total: 0, settled: false, projected: false };
     const table = earnings.get(p.tournament_id);
@@ -103,6 +105,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       ev.event_total += earned;
       m.total += earned;
       if (tour === "euro") m.euro_total += earned; else m.pga_total += earned;
+      // TODO(Jack): split `earned` into m.banked vs m.live.
+      //   - table?.settled  → the money is final: it's banked
+      //   - table?.projected → the event is still live: it's projected
+      // m.total should still equal m.banked + m.live when you're done.
       if (table?.settled) ev.settled = true;
       if (table?.projected) ev.projected = true;
     }

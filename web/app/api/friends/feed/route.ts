@@ -8,6 +8,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { roundLockAt } from "@/lib/lockTime";
 
 export async function GET(req: Request) {
   const { userId } = await auth();
@@ -73,8 +74,12 @@ export async function GET(req: Request) {
     const res = await fetch(`${MODEL_API}/api/events/open`, { next: { revalidate: 120 } });
     if (res.ok) {
       const { events } = await res.json();
-      const locked = (events ?? []).filter((e: { locked: boolean }) => e.locked);
-      for (const ev of locked.slice(0, 3)) {
+      // THIS week only: events that have locked but not finished. A
+      // finished event stays "locked" for three weeks in the open list,
+      // which is how Biltmore's Round 3 pick lingered into the next week.
+      // Between events (Mon-Wed) the card is simply absent.
+      const live = (events ?? []).filter((e: { locked: boolean; finished: boolean }) => e.locked && !e.finished);
+      for (const ev of live.slice(0, 3)) {
         const tid = ev.tournament_id;
         // The model's numbers for this event, for the "why" line.
         let why = new Map<string, string>();
@@ -116,8 +121,12 @@ export async function GET(req: Request) {
         const rounds = await sql`
           SELECT round, player_name FROM round_picks WHERE user_id = 'model' AND tournament_id = ${tid}
           ORDER BY round` as { round: number; player_name: string }[];
-        for (const r of rounds) modelMoves.push({ event: ev.name, game: `Round ${r.round}`,
-          text: `Riding ${say(r.player_name)}.` });
+        // Reveal-at-lock per ROUND: the model picks a round a day early,
+        // and that pick stays hidden until the round itself locks.
+        for (const r of rounds) {
+          if (Date.now() < roundLockAt(String(ev.start_date), String(ev.tour), r.round).getTime()) continue;
+          modelMoves.push({ event: ev.name, game: `Round ${r.round}`, text: `Riding ${say(r.player_name)}.` });
+        }
       }
     }
   } catch { /* feed still works without the model's commentary */ }
