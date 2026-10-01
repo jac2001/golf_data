@@ -11,7 +11,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
-import { getPredictions, getOpenEvents, getEventEarnings, PlayerPrediction, EarningsTable } from "@/lib/api";
+import { getPredictions, getOpenEvents, getEventEarnings, getDemoChallenges, DemoChallenge, PlayerPrediction, EarningsTable } from "@/lib/api";
 import { expectedPayout } from "@/lib/modelBrain";
 
 const nameKey = (n: string) =>
@@ -44,32 +44,46 @@ export default function HowToPlayPage() {
   const [earnings, setEarnings] = useState<EarningsTable | null>(null);
   const [revealed, setRevealed] = useState(false);
 
+  const [challenges, setChallenges] = useState<DemoChallenge[]>([]);
+  const [challenge, setChallenge] = useState("");
+
+  // Load one historical challenge: that event's Tuesday top 20 and its
+  // real Sunday money. Picks reset — a new board is a new attempt.
+  async function loadChallenge(tid: string, name: string) {
+    const [preds, earn] = await Promise.all([getPredictions(20, tid), getEventEarnings(tid)]);
+    if (!earn.settled || (preds.players ?? []).length < 6) return false;
+    setMode("history");
+    setChallenge(tid);
+    setEventName(name);
+    setField((preds.players ?? []).filter(p => p.player_name));
+    setEarnings(earn);
+    setPicks([]);
+    setRevealed(false);
+    return true;
+  }
+
   useEffect(() => {
-    getOpenEvents().then(async o => {
-      const evs = o.events ?? [];
-      const done = evs.find(e => e.finished && e.has_model);
-      if (done) {
-        try {
-          const [preds, earn] = await Promise.all([
-            getPredictions(20, done.tournament_id),
-            getEventEarnings(done.tournament_id),
-          ]);
-          if (earn.settled && (preds.players ?? []).length >= 6) {
-            setMode("history");
-            setEventName(done.name);
-            setField((preds.players ?? []).filter(p => p.player_name));
-            setEarnings(earn);
-            return;
-          }
-        } catch { /* fall through to EV mode */ }
+    (async () => {
+      // Challenges are pre-screened server-side: only events where some
+      // other trio from the pool out-earned the model's. (Biltmore, the
+      // old default, was unbeatable — the model held the pool's three
+      // biggest checks, so the best a visitor could do was tie.)
+      const cs = await getDemoChallenges().catch(() => [] as DemoChallenge[]);
+      setChallenges(cs);
+      for (const c of cs) {
+        try { if (await loadChallenge(c.tournament_id, c.name)) return; } catch { /* next */ }
       }
-      const d = await getPredictions(20);
-      setField((d.players ?? []).filter(p => p.player_name));
-      const ev = evs.find(e => e.tournament_id.toUpperCase() === String(d.tournament_id ?? "").toUpperCase());
-      if (ev?.purse) setPurse(ev.purse);
-      setEventName(ev?.name ?? String(d.tournament_id ?? ""));
-    }).catch(() => {});
-  }, []);
+      // Fallback: no challenge loads — expected-value compare on this week.
+      try {
+        const o = await getOpenEvents();
+        const d = await getPredictions(20);
+        setField((d.players ?? []).filter(p => p.player_name));
+        const ev = (o.events ?? []).find(e => e.tournament_id.toUpperCase() === String(d.tournament_id ?? "").toUpperCase());
+        if (ev?.purse) setPurse(ev.purse);
+        setEventName(ev?.name ?? "");
+      } catch { /* demo stays empty */ }
+    })();
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
   const realEarn = (name: string) => earnings?.players?.[nameKey(name)]?.earnings ?? 0;
   const realPos = (name: string) => earnings?.players?.[nameKey(name)]?.position ?? "—";
@@ -175,6 +189,23 @@ export default function HowToPlayPage() {
               {eventName}{mode === "history" ? " · as the board stood Tuesday" : " · model win chances shown"}
             </span>
           </div>
+          {mode === "history" && challenges.length > 1 && (
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", margin: "10px 0 0" }}>
+              <span style={{ alignSelf: "center", fontSize: "0.72em", color: "var(--bc-muted)" }}>Challenge:</span>
+              {challenges.map(c => (
+                <button key={c.tournament_id} onClick={() => loadChallenge(c.tournament_id, c.name).catch(() => {})}
+                  style={{
+                    cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.7em",
+                    textTransform: "uppercase", letterSpacing: "0.04em", borderRadius: 4, padding: "5px 10px",
+                    color: challenge === c.tournament_id ? "#081f14" : "var(--bc-muted)",
+                    background: challenge === c.tournament_id ? "var(--bc-yellow)" : "transparent",
+                    border: `1px solid ${challenge === c.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+                  }}>
+                  {c.name}
+                </button>
+              ))}
+            </div>
+          )}
           <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", margin: "6px 0 12px" }}>
             {mode === "history"
               ? "This tournament already happened. Pick three off the Tuesday board, lock them, and see Sunday's real money — against the model's three favorites."

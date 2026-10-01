@@ -391,6 +391,18 @@ export type EarningsTable = {
 };
 
 /** Settled per-player earnings for one event (keys are sorted-token name keys). */
+export type DemoChallenge = {
+  tournament_id: string; name: string; start_date: string;
+  model_total: number; best_total: number;
+};
+
+/** Settled events where some trio from the demo pool beat the model's. */
+export async function getDemoChallenges(): Promise<DemoChallenge[]> {
+  const res = await apiFetch(`${API_BASE}/api/demo/challenges`, { cache: "no-store" });
+  if (!res.ok) return [];
+  return (await res.json()).challenges ?? [];
+}
+
 export async function getEventEarnings(tournamentId: string): Promise<EarningsTable> {
   const res = await apiFetch(`${API_BASE}/api/results/earnings?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load earnings");
