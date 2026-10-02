@@ -455,20 +455,23 @@ function LockedSlate({ picks, me }: { picks: SlatePick[]; me: string }) {
 //   Think about: what should sorting use — banked, or banked + live?
 function SeasonStandings({ standings, me }: { standings: Standing[]; me: string }) {
   const th: React.CSSProperties = {
-    padding: "7px 12px", fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-muted)", fontWeight: 700,
+    padding: "7px 8px", fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-muted)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right", borderBottom: "1px solid var(--bc-line)",
   };
   const td: React.CSSProperties = {
-    padding: "8px 12px", fontSize: "0.86em", textAlign: "right", borderBottom: "1px solid var(--bc-line)",
+    padding: "8px 8px", fontSize: "0.86em", textAlign: "right", borderBottom: "1px solid var(--bc-line)",
     fontVariantNumeric: "tabular-nums",
   };
   return (
     <div style={card}>
       <div style={{ fontWeight: 900, marginBottom: 8 }}>Season standings</div>
+      {/* Phones: the per-tour columns drop out (Total is the answer at a
+          glance) and the table scrolls inside its card if it still can't fit. */}
+      <div className="table-scroll">
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead><tr>
           <th style={{ ...th, textAlign: "left" }}>Member</th>
-          <th style={th}>Wins</th><th style={th}>PGA</th><th style={th}>DPWT</th><th style={th}>Total</th>
+          <th style={th}>Wins</th><th className="mobile-hidden" style={th}>PGA</th><th className="mobile-hidden" style={th}>DPWT</th><th style={th}>Total</th>
         </tr></thead>
         <tbody>
           {standings.map((s, i) => (
@@ -478,24 +481,26 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
               </td>
               <td style={{ ...td, color: "var(--bc-yellow)", whiteSpace: "nowrap" }}>
                 {s.stars > 0 ? Array.from({ length: Math.min(s.stars, 5) }).map((_, i) => <Star key={i} />) : "—"}
-                {s.stars > 5 && <span style={{ fontSize: "0.82em", marginLeft: 3 }}>×{s.stars}</span>}
+                {s.stars > 5 && <span style={{ fontSize: "max(var(--fs-min-xs), 0.82em)", marginLeft: 3 }}>×{s.stars}</span>}
               </td>
-              <td style={{ ...td, color: "var(--bc-muted)" }}>{money(s.pga_total)}</td>
-              <td style={{ ...td, color: "var(--bc-muted)" }}>{money(s.euro_total)}</td>
-              <td style={{ ...td, fontWeight: 700, color: "var(--bc-text)" }}>
+              <td className="mobile-hidden" style={{ ...td, color: "var(--bc-muted)" }}>{money(s.pga_total)}</td>
+              <td className="mobile-hidden" style={{ ...td, color: "var(--bc-muted)" }}>{money(s.euro_total)}</td>
+              <td style={{ ...td, fontWeight: 700, color: "var(--bc-text)", whiteSpace: "nowrap" }}>
                 {money(s.banked)}
-                {
-                  s.live > 0 && <span style={{ color: "var(--bc-green)", fontSize: "0.82em", marginLeft: 4 }}>+
-                  {money(s.live)} live</span>
-                }
+                {s.live > 0 && (
+                  <div style={{ color: "var(--bc-green)", fontSize: "max(var(--fs-min-xs), 0.82em)", fontWeight: 600 }}>
+                    +{money(s.live)} live
+                  </div>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
       <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)", margin: "8px 0 0" }}>
-  Totals are banked prize money; + live is projected from events still in play.
-</p>
+        Totals are banked prize money; + live is projected from events still in play.
+      </p>
     </div>
   );
 }
