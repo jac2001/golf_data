@@ -58,10 +58,9 @@ needed for it.
 1. **Pre-strangers loose ends** — confirm admin@playgolfedge.com
    receives mail (ToS/privacy contact); decide whether self-serve
    account deletion is needed.
-2. **Phase 2 step 6 — per-member advice view**: stateless
-   get_season_strategy (usage state + season events + purse map in,
-   strategy out), "who to spend this week" inside Let It Ride. The last
-   unbuilt Phase 2 piece; it's what keeps the optimizer from orphaning.
+2. **Advice view, step 5 (Mon Oct 5, after the first real recap):**
+   model-sync switches to adviseSlate; model reasons in Match Center
+   after lock. Steps 1-4 shipped 2026-10-02 (docs/ADVICE_VIEW_DESIGN.md).
 3. **Licensing follow-ups**: DataGolf (two-week nudge due ~Oct 6;
    gates euro DG displays + public growth, not our own models) and the
    PGA Tour data team's three questions (reply drafted 2026-09-28).
@@ -93,6 +92,9 @@ needed for it.
   + API (/health reports `sentry`), collection locked down (no bodies,
   headers, cookies, user info, locals, or AI prompts). Test route:
   /api/debug/sentry-test, gated by CHAT_PROXY_SECRET.
+- [x] Advice view steps 1-4 (2026-10-02): Jack's golferVerdict (10
+  tests, `npm test` imports lib/ directly), /api/advice/values,
+  per-member route, Spend / Save tags in the pick list.
 - [x] Tie-for-first headline (Jack, test-first). Follow-up idea: a
   real test runner that resolves `@/` so tests import lib/ directly.
 
