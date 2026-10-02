@@ -20,6 +20,7 @@
  */
 
 import { roundLockAt } from "@/lib/lockTime";
+import { cronUnauthorized } from "@/lib/cronAuth";
 import { getSql, MODEL_API } from "@/lib/db";
 import { modelCollegePick, modelFadePicks, modelLetItRidePick, modelRoundPick, Probs } from "@/lib/modelBrain";
 import { nameKey } from "@/lib/names";
@@ -39,10 +40,8 @@ function roundLocked(startDate: string, tour: string, round: number): boolean {
 }
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.get("authorization") !== `Bearer ${secret}`) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const denied = cronUnauthorized(req);
+  if (denied) return denied;
 
   const sql = getSql();
   const log: string[] = [];

@@ -31,6 +31,8 @@ env:
   # golf-pipeline workspace key — powers the intel fetch; the step
   # skips gracefully when the secret is unset or out of credits.
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  # Shared with Vercel's env: authenticates the post-pipeline model-sync call.
+  CRON_SECRET: ${{ secrets.CRON_SECRET }}
   PYTHONUNBUFFERED: "1"
 
 jobs:
@@ -95,7 +97,9 @@ jobs:
             echo "render serves: $fresh · open PGA event: $open_tid"
             if [ -n "$fresh" ] && [ "$fresh" = "$open_tid" ]; then
               echo "Render is serving this week's predictions — running model-sync."
-              curl -s "https://playgolfedge.com/api/model-sync" | tee -a "$GITHUB_STEP_SUMMARY"
+              # Same secret Vercel Cron presents — model-sync refuses callers without it.
+              curl -s -H "Authorization: Bearer $CRON_SECRET" "https://playgolfedge.com/api/model-sync" \
+                | tee -a "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
           done

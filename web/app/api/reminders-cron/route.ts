@@ -14,6 +14,7 @@
  */
 
 import webpush from "web-push";
+import { cronUnauthorized } from "@/lib/cronAuth";
 import { getSql, MODEL_API } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -27,10 +28,8 @@ type OpenEvent = {
 type SubRow = { user_id: string; endpoint: string; p256dh: string; auth: string };
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.get("authorization") !== `Bearer ${secret}`) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const denied = cronUnauthorized(req);
+  if (denied) return denied;
   const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   const priv = process.env.VAPID_PRIVATE_KEY;
   if (!pub || !priv) return Response.json({ error: "VAPID keys not configured" }, { status: 500 });
