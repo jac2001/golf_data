@@ -132,8 +132,7 @@ export default function Home() {
             {h?.course && ` · ${h.course}`}
           </div>
           <h1 style={{ margin: 0, fontWeight: 900, fontStretch: "120%",
-                       fontSize: "clamp(2.2em, 9vw, 4em)", lineHeight: 0.98, textTransform: "uppercase",
-                       overflowWrap: "anywhere",
+                       fontSize: "clamp(1.8em, 7vw, 4em)", lineHeight: 0.98, textTransform: "uppercase",
                        letterSpacing: "-0.01em" }}>
             {h ? h.name : "See you in January"}
           </h1>
