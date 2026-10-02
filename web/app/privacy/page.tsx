@@ -21,18 +21,18 @@ export default function PrivacyPage() {
 
       <H>What we collect</H>
       <List items={[
-        <><strong>Account details.</strong> When you sign up, our sign-in provider (Clerk) collects your
+        <><strong>Account details.</strong>{" "}When you sign up, our sign-in provider (Clerk) collects your
           email address, your name and any profile image that you or your sign-in provider share.</>,
-        <><strong>Game activity.</strong> The groups you create or join, your display name, your picks,
+        <><strong>Game activity.</strong>{" "}The groups you create or join, your display name, your picks,
           season settings, and the results and standings calculated from them.</>,
-        <><strong>Notification settings.</strong> If you turn on reminders, we store your browser&rsquo;s
+        <><strong>Notification settings.</strong>{" "}If you turn on reminders, we store your browser&rsquo;s
           push subscription (a delivery address and keys issued by your browser), your reminder preferences,
           and a record of which reminders we&rsquo;ve sent so you don&rsquo;t get duplicates.</>,
-        <><strong>Assistant conversations.</strong> Questions you ask the AI assistant, its answers, and any
+        <><strong>Assistant conversations.</strong>{" "}Questions you ask the AI assistant, its answers, and any
           thumbs-up or thumbs-down rating you give may be saved so we can improve it.</>,
-        <><strong>Technical data.</strong> Your IP address is used briefly, in memory only, to enforce rate
+        <><strong>Technical data.</strong>{" "}Your IP address is used briefly, in memory only, to enforce rate
           limits and usage quotas. Our hosting providers also keep standard request logs.</>,
-        <><strong>On your device.</strong> The site saves small preferences, such as which tab or tour you
+        <><strong>On your device.</strong>{" "}The site saves small preferences, such as which tab or tour you
           last viewed, in your browser&rsquo;s local storage. Clerk uses cookies to keep you signed in.</>,
       ]} />
 
@@ -47,12 +47,12 @@ export default function PrivacyPage() {
 
       <H>Who can see it</H>
       <List items={[
-        <><strong>Your groups.</strong> Members of a group see your display name, and see your picks once
+        <><strong>Your groups.</strong>{" "}Members of a group see your display name, and see your picks once
           they lock. Results and standings are shared with the group.</>,
-        <><strong>Service providers</strong> that run the site for us, under their own privacy terms:
+        <><strong>Service providers</strong>{" "}that run the site for us, under their own privacy terms:
           Clerk (accounts and sign-in), Neon (database), Vercel and Render (hosting), Anthropic (the AI model
           that answers assistant questions), and your browser&rsquo;s push service (for reminders).</>,
-        <><strong>Legal requests.</strong> We&rsquo;ll disclose information if the law requires it.</>,
+        <><strong>Legal requests.</strong>{" "}We&rsquo;ll disclose information if the law requires it.</>,
       ]} />
       <Para>
         Assistant questions are sent to Anthropic to generate the answer. Please don&rsquo;t put personal or
