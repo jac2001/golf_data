@@ -31,5 +31,19 @@ export const surname = (n: string) =>
  *     for "First Last" it's the first word.
  */
 export function displaySurnames(names: string[]): string[] {
-  return names.map(surname);
+  // Pass 1 — count each surname, case-insensitively (the KEY is lowercase).
+  const counts = new Map<string, number>();
+  for (const n of names) {
+    const key = surname(n).toLowerCase();
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+
+  // Pass 2 — look up by the same lowercase key, but DISPLAY the original
+  // capitalization; only a shared surname gets the first initial.
+  return names.map((n) => {
+    const display = surname(n);
+    if (counts.get(display.toLowerCase()) === 1) return display;
+    const first = n.includes(",") ? n.split(",")[1].trim() : n.trim().split(/\s+/)[0];
+    return `${first.charAt(0)}. ${display}`;
+  });
 }
