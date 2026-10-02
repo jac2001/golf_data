@@ -15,27 +15,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
 import { displaySurnames } from "@/lib/names";
+import { College, Group, Match, Slate, isMatch, money, ordinal, slateHeadline } from "@/lib/matchTypes";
 
-type Golfer = { name: string; position: string; earnings: number; up_one: number; thru: string };
-type Line = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number };
-type Slate = {
-  tournament_id: string; name: string; tour: "pga" | "euro"; status: "open" | "live" | "settling" | "final";
-  projected: boolean; lines: Line[]; me_id: string; data_updated?: string;
-  rival: { user_id: string; user_name: string; total: number } | null; gap: number; story: string;
-  beating_model: number | null; humans: number;
-};
-type CollegeLine = { user_id: string; user_name: string; school: string; total: number; rank: number;
-  counting: { name: string; position: string; earnings: number }[] };
-type College = { tournament_id: string; name: string; status: Slate["status"]; projected: boolean;
-  lines: CollegeLine[]; me_id: string; story: string } | null;
-type Match = { group?: { id: number; name: string; members: number };
-  league: { id: number; name: string } | null; slates: Slate[]; college: College; checked_at?: string };
-type Group = { id: number; name: string };
-
-const money = (v: number) =>
-  v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
 const last = (n: string) => n.includes(",") ? n.split(",")[0].trim() : (n.trim().split(/\s+/).pop() ?? n);
-const ordinal = (n: number) => `${n}${["th", "st", "nd", "rd"][((n % 100) - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th"}`;
 const card: React.CSSProperties = {
   background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10, padding: 18, marginBottom: 16,
 };
@@ -48,14 +30,6 @@ async function call<T>(url: string): Promise<T> {
 }
 
 /** What changed since this device last looked — the "meaningful changes". */
-/** A response (or saved snapshot) we can safely read. Anything else —
- *  an error body, a cached page, a snapshot from an older version of this
- *  page — is treated as absent rather than crashing the render. */
-function isMatch(x: unknown): x is Match {
-  const m = x as Match | null;
-  return !!m && typeof m === "object" && Array.isArray(m.slates);
-}
-
 function changesBetween(prev: Match | null, next: Match): string[] {
   if (!isMatch(prev)) return [];
   const out: string[] = [];
@@ -224,12 +198,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
   }
 
   const leader = s.lines[0];
-  const headline = !me ? "You didn't play this one."
-    : me.rank === 1 && s.lines.filter(l => l.rank === 1).length === 1
-      ? (s.status === "final" ? "You won the week." : "You're leading.")
-      : s.rival && me.rank > 1
-        ? `You're ${ordinal(me.rank)}. ${s.rival.user_name} leads you by ${money(s.gap)}.`
-        : `You're ${ordinal(me.rank)}.`;
+  const headline = slateHeadline(s);
 
   return (
     <div style={card}>

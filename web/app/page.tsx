@@ -13,6 +13,8 @@ import Link from "next/link";
 import { getHome, HomeData } from "@/lib/api";
 import { Show } from "@clerk/nextjs";
 import { Panel, SectionTag, StatStrip, pct } from "@/components/broadcast";
+import LiveMatchCard from "@/components/LiveMatchCard";
+import { useLiveEvents } from "@/lib/useLiveEvents";
 
 const STORY_COLORS: Record<string, string> = {
   yellow: "var(--bc-yellow)", green: "var(--bc-green)", orange: "var(--bc-orange)",
@@ -36,6 +38,7 @@ export default function Home() {
   const [data, setData] = useState<HomeData | null>(null);
   const [tour, setTour] = useStoredChoice<"pga" | "euro">("favorite-tour", ["pga", "euro"], "pga", false);
   const [err, setErr]   = useState("");
+  const live            = useLiveEvents();
 
   useEffect(() => { getHome(tour).then(setData).catch(e => setErr(String(e))); }, [tour]);
 
@@ -43,6 +46,30 @@ export default function Home() {
   if (!data) return <div style={{ color: "var(--bc-muted)", padding: 24 }}>Loading…</div>;
 
   const h = data.hero;
+  const matchupBanner = (
+    <div style={{ marginTop: 24, padding: "18px 22px", borderRadius: 10,
+      background: "var(--bc-card)", border: "1px solid var(--bc-yellow)",
+      display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+      <div style={{ flex: "1 1 300px" }}>
+        <div style={{ fontWeight: 900, fontSize: "1.1em" }}>Your matchup</div>
+        <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", marginTop: 4 }}>
+          Where you stand against your group and the model — live during every round.
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <Link href="/match" style={{
+          background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+          textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
+          padding: "11px 18px", borderRadius: 4, whiteSpace: "nowrap" }}>
+          View your matchup
+        </Link>
+        <Link href="/friends" style={{ fontWeight: 700, fontSize: "0.78em", textTransform: "uppercase",
+          letterSpacing: "0.06em", color: "var(--bc-yellow)", whiteSpace: "nowrap" }}>
+          Make picks →
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
     <div style={{ maxWidth: 1180, margin: "0 auto" }}>
@@ -73,30 +100,11 @@ export default function Home() {
         </div>
       </Show>
 
-      {/* ── Signed in? Your game comes before the forecast. ───────────── */}
+      {/* ── Signed in? Your game comes before the forecast. During play the
+           live matchup leads; off-weeks (or with no live slate) it's the
+           plain banner. ─────────────────────────────────────────────── */}
       <Show when="signed-in">
-        <div style={{ marginTop: 24, padding: "18px 22px", borderRadius: 10,
-          background: "var(--bc-card)", border: "1px solid var(--bc-yellow)",
-          display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-          <div style={{ flex: "1 1 300px" }}>
-            <div style={{ fontWeight: 900, fontSize: "1.1em" }}>Your matchup</div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", marginTop: 4 }}>
-              Where you stand against your group and the model — live during every round.
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <Link href="/match" style={{
-              background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-              textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
-              padding: "11px 18px", borderRadius: 4, whiteSpace: "nowrap" }}>
-              View your matchup
-            </Link>
-            <Link href="/friends" style={{ fontWeight: 700, fontSize: "0.78em", textTransform: "uppercase",
-              letterSpacing: "0.06em", color: "var(--bc-yellow)", whiteSpace: "nowrap" }}>
-              Make picks →
-            </Link>
-          </div>
-        </div>
+        {live.length > 0 ? <LiveMatchCard fallback={matchupBanner} /> : matchupBanner}
       </Show>
 
       {/* ── Tour switch: PGA is home, the DPWT one tap away ─────────────── */}

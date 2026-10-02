@@ -10,13 +10,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Show, UserButton } from "@clerk/nextjs";
+import { Show, UserButton, useAuth } from "@clerk/nextjs";
+import { useLiveEvents } from "@/lib/useLiveEvents";
 
 // Order follows the golf week: research (Forecast, Board) → watch (Live) →
 // reference (Players) → trust (How It Works) → utility (Assistant).
 // /history stays routable but leaves the nav: its tabs now live on the
 // Betting Board (Ledger, My Slip) and in How It Works (Results).
-const PUBLIC_LINKS = [
+type NavLink = { href: string; label: string; exact?: boolean; live?: boolean };
+
+const PUBLIC_LINKS: NavLink[] = [
   { href: "/",            label: "Home", exact: true },
   { href: "/predictions", label: "This Week" },
   { href: "/betting",     label: "Betting Board" },
@@ -32,7 +35,16 @@ export default function NavBar() {
   const pathname                        = usePathname();
   const [menuOpen, setMenuOpen]         = useState(false);
 
-  const links = PUBLIC_LINKS;
+  const { isSignedIn }                  = useAuth();
+  const liveEvents                      = useLiveEvents();
+
+  // Tournament weekend + signed in: Match Center moves up next to Home and
+  // carries a live dot. Off-weeks the order is the research-first one above.
+  const matchFirst = !!isSignedIn && liveEvents.length > 0;
+  const links: NavLink[] = matchFirst
+    ? [PUBLIC_LINKS[0], { ...PUBLIC_LINKS.find(l => l.href === "/match")!, live: true },
+       ...PUBLIC_LINKS.slice(1).filter(l => l.href !== "/match")]
+    : PUBLIC_LINKS;
 
   const bar     = "var(--bc-panel)";
   const rule    = "var(--bc-yellow)";
@@ -86,6 +98,8 @@ export default function NavBar() {
               transition: "color 0.15s, background 0.15s",
             }}>
               {l.label}
+              {l.live && <span aria-label="live" style={{ width: 7, height: 7, borderRadius: "50%",
+                background: "var(--bc-green)", marginLeft: 7, flexShrink: 0 }} />}
             </Link>
           ))}
         </div>
@@ -163,6 +177,8 @@ export default function NavBar() {
               }}
             >
               {l.label}
+              {l.live && <span aria-label="live" style={{ width: 7, height: 7, borderRadius: "50%",
+                background: "var(--bc-green)", marginLeft: 8, display: "inline-block", verticalAlign: "middle", flexShrink: 0 }} />}
             </Link>
           ))}
         </div>
