@@ -139,3 +139,18 @@ adviseSlate once its tests pass.
 4. **Claude:** verdict tags + reasons in the Let It Ride pick list.
 5. **Together:** model-sync → adviseSlate; model reasons in Match
    Center after lock.
+
+## Step 2 notes (built 2026-10-02)
+
+- `scripts/predictions/advice_values.py` + `GET /api/advice/values`.
+  Future EV anchors on THIS week's calibrated EV (the dashboard's rank
+  proxy gives a world #25 ~12% to win anywhere — comparing that with a
+  calibrated "now" makes everyone a save). Adjustments: purse ratio,
+  field strength (S_now/S_future)^k (k 0.6 top-10, 1.0 else),
+  course-fit ratio (PGA), qualification (2025 field; new restricted
+  events: world top 60). Constants are v1 judgment calls — calibrate
+  against settled weeks.
+- No `key` from Python: the site keys uses with its own nameKey.
+- DPWT horizon is short (the euro schedule only lists events DG has
+  published, ~2 weeks out), so DPWT advice leans "spend" until the
+  schedule file covers more of the season.

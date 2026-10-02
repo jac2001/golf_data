@@ -4314,6 +4314,36 @@ def schedule_upcoming(tour: str = "pga", after: str = "", limit: int = 12) -> di
     return {"tour": tour, "events": out[:max(1, min(limit, 52))]}
 
 
+_advice_cache: dict[tuple[str, int], tuple[float, dict]] = {}
+
+
+@app.get("/api/advice/values")
+def advice_values(tournament_id: str, limit: int = 60) -> dict:
+    """What each golfer in an event's field is worth now and at each
+    upcoming event on the same tour — the shared half of Let It Ride's
+    spend/save advice (docs/ADVICE_VIEW_DESIGN.md). Same for every
+    member, so cached 10 minutes per event; the site applies each
+    member's uses left (web/lib/advice.ts)."""
+    tid = tournament_id.strip().upper()
+    if not re.fullmatch(r"[RE]\d{7}", tid):
+        raise HTTPException(status_code=400, detail="tournament_id like R2026554 or E2026144")
+    limit = max(1, min(limit, 120))
+    hit = _advice_cache.get((tid, limit))
+    if hit and time.time() - hit[0] < 600:
+        return hit[1]
+    preds = get_predictions(limit=200, tournament_id=tid)  # raises 404 when none
+    if str(preds.get("tournament_id", "")).upper() != tid:
+        raise HTTPException(status_code=404, detail=f"No predictions for {tid}")
+    pred_dir = str(PROJECT_ROOT / "scripts" / "predictions")
+    if pred_dir not in sys.path:
+        sys.path.insert(0, pred_dir)
+    from advice_values import golfer_values  # type: ignore
+    out = golfer_values(tid, preds.get("players", []), limit=limit)
+    out["source"] = preds.get("source", "model")
+    _advice_cache[(tid, limit)] = (time.time(), out)
+    return out
+
+
 @app.get("/api/events/open")
 def events_open() -> dict:
     """Events the Friends Game can pick on this week, across tours.
