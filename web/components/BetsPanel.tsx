@@ -14,7 +14,7 @@ import {
 
 const cell: React.CSSProperties = {
   padding: "9px 12px", borderBottom: "1px solid var(--bc-line)", textAlign: "left",
-  fontSize: "0.84em", color: "var(--bc-text)",
+  fontSize: "max(var(--fs-min), 0.84em)", color: "var(--bc-text)",
 };
 const hdr: React.CSSProperties = {
   ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.78em)",
@@ -90,7 +90,7 @@ function BetsTab() {
                       {t.markets.map(m => (
                         <span key={m.market} style={{
                           background: "var(--bc-card)", border: "1px solid var(--bc-line)",
-                          borderRadius: 6, padding: "4px 10px", fontSize: "0.82em",
+                          borderRadius: 6, padding: "4px 10px", fontSize: "max(var(--fs-min), 0.82em)",
                         }}>
                           <span style={{ color: "var(--bc-muted)" }}>{m.market}</span>
                           {" "}{m.wins}/{m.bets}
@@ -165,13 +165,13 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
           <div>
             <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
             {" "}
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>${stats.starting_bankroll?.toLocaleString()}</span>
-            <span style={{ color: "var(--bc-line)", fontSize: "0.82em", margin: "0 6px" }}>→</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>${stats.starting_bankroll?.toLocaleString()}</span>
+            <span style={{ color: "var(--bc-line)", fontSize: "max(var(--fs-min), 0.82em)", margin: "0 6px" }}>→</span>
             <span style={{ color: pnlColor(pnlDollars), fontWeight: 700, fontSize: "1.05em" }}>
               ${stats.current_bankroll?.toLocaleString()}
             </span>
           </div>
-          <div style={{ color: pnlColor(pnlDollars), fontSize: "0.88em", fontWeight: 600 }}>
+          <div style={{ color: pnlColor(pnlDollars), fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 600 }}>
             {pnlDollars >= 0 ? "+" : ""}${pnlDollars.toFixed(2)} season
           </div>
           <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>
@@ -257,7 +257,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
             <span style={{ color: scoreColor, fontWeight: 700, fontSize: "0.95em" }}>
               {bet.live_total ?? "E"}
             </span>
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
               {bet.live_thru === "F" ? "F" : bet.live_thru ? `thru ${bet.live_thru}` : ""}
             </span>
           </div>
@@ -325,7 +325,7 @@ function MySlipTab() {
   if (!bets.length) return (
     <div style={{ padding: 40, textAlign: "center", color: "var(--bc-muted)" }}>
       <div style={{ fontSize: "1.1em", marginBottom: 8, color: "var(--bc-muted)" }}>No tracked bets yet</div>
-      <div style={{ fontSize: "0.85em" }}>Tap "Track Bet" on any bet card to start logging your picks.</div>
+      <div style={{ fontSize: "max(var(--fs-min), 0.85em)" }}>Tap "Track Bet" on any bet card to start logging your picks.</div>
     </div>
   );
 

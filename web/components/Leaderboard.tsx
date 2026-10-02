@@ -41,7 +41,7 @@ function MovementArrow({ dir }: { dir: string | null }) {
 function PosDelta({ delta }: { delta: number | null }) {
   if (delta == null || delta === 0) return <span style={{ color: "var(--bc-muted)" }}>—</span>;
   const color = delta > 0 ? "var(--bc-green)" : "var(--bc-red-text)";
-  return <span style={{ color, fontSize: "0.8em" }}>{delta > 0 ? "↑" : "↓"}{Math.abs(delta)}</span>;
+  return <span style={{ color, fontSize: "max(var(--fs-min), 0.8em)" }}>{delta > 0 ? "↑" : "↓"}{Math.abs(delta)}</span>;
 }
 
 function holeRelColor(rel: number | null): { bg: string; fg: string } {
@@ -64,7 +64,7 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
     return (
       <div style={{ textAlign: "center", minWidth: 28 }}>
         <div style={{ fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-muted)", marginBottom: 1 }}>{h.hole}</div>
-        <div style={{ background: bg, color: fg, fontWeight: 700, fontSize: "0.8em", padding: "3px 4px", borderRadius: 3, minWidth: 24 }}>
+        <div style={{ background: bg, color: fg, fontWeight: 700, fontSize: "max(var(--fs-min), 0.8em)", padding: "3px 4px", borderRadius: 3, minWidth: 24 }}>
           {h.strokes ?? "·"}
         </div>
         <div style={{ fontSize: "max(var(--fs-min-xs), 0.5em)", color: "var(--bc-muted)", marginTop: 1 }}>{h.par ?? ""}</div>
@@ -79,12 +79,12 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
         {front.map(h => <HoleCell key={h.hole} h={h} />)}
         <div style={{ minWidth: 28, textAlign: "center", borderLeft: "1px solid var(--bc-line)", paddingLeft: 4 }}>
           <div style={{ fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-muted)", marginBottom: 1 }}>OUT</div>
-          <div style={{ fontSize: "0.8em", fontWeight: 700, color: "var(--bc-muted)" }}>{frontTotal || "—"}</div>
+          <div style={{ fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700, color: "var(--bc-muted)" }}>{frontTotal || "—"}</div>
         </div>
         {back.map(h => <HoleCell key={h.hole} h={h} />)}
         <div style={{ minWidth: 28, textAlign: "center", borderLeft: "1px solid var(--bc-line)", paddingLeft: 4 }}>
           <div style={{ fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-muted)", marginBottom: 1 }}>IN</div>
-          <div style={{ fontSize: "0.8em", fontWeight: 700, color: "var(--bc-muted)" }}>{backTotal || "—"}</div>
+          <div style={{ fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700, color: "var(--bc-muted)" }}>{backTotal || "—"}</div>
         </div>
       </div>
     </div>
@@ -166,7 +166,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
               const bg = i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid var(--bc-card)",
-                background: bg, textAlign: "center", fontSize: "0.85em",
+                background: bg, textAlign: "center", fontSize: "max(var(--fs-min), 0.85em)",
               };
               const { str: totalStr, color: totalColor } = fmtTotal(p.total, p.total_numeric);
               const isCut      = p.made_cut === false;
@@ -186,7 +186,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
                     </td>
                     <td style={{ ...td, textAlign: "left", color: isCut ? "var(--bc-muted)" : "var(--bc-text)", fontWeight: 600, whiteSpace: "nowrap" }}>
                       {holeScores && (
-                        <span style={{ marginRight: 6, color: isExpanded ? "var(--bc-green)" : "var(--bc-muted)", fontSize: "0.8em" }}>
+                        <span style={{ marginRight: 6, color: isExpanded ? "var(--bc-green)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>
                           {isExpanded ? "▾" : "▸"}
                         </span>
                       )}
@@ -216,7 +216,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
                               <ScorecardRow key={rnd} holes={holes} round={rnd} />
                             ))
                         ) : (
-                          <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
+                          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>
                             No hole-by-hole data for {p.player_name}
                           </span>
                         )}

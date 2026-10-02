@@ -54,7 +54,7 @@ function ScoreCell({ h }: { h: HoleData }) {
   let boxStyle: React.CSSProperties = {
     display: "inline-flex", alignItems: "center", justifyContent: "center",
     width: 28, height: 28, fontWeight: played && rel !== 0 ? 700 : 500,
-    fontSize: "0.88em", color,
+    fontSize: "max(var(--fs-min), 0.88em)", color,
   };
 
   if (played && rel != null) {
@@ -259,7 +259,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
 
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid var(--bc-card)",
-                background: bg, textAlign: "center", fontSize: "0.85em",
+                background: bg, textAlign: "center", fontSize: "max(var(--fs-min), 0.85em)",
               };
 
               const totalColor = scoreColor(p.total_numeric);
@@ -283,7 +283,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                     </td>
                     <td style={{ ...td, textAlign: "left", fontWeight: 600, whiteSpace: "nowrap" }}>
                       {canExpand && (
-                        <span style={{ marginRight: 6, color: isExpanded ? "var(--bc-green)" : "var(--bc-muted)", fontSize: "0.8em" }}>
+                        <span style={{ marginRight: 6, color: isExpanded ? "var(--bc-green)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>
                           {isExpanded ? "▾" : "▸"}
                         </span>
                       )}
@@ -348,7 +348,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                               <ScorecardRow key={rnd} holes={holes} round={rnd} />
                             ))
                         ) : (
-                          <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
+                          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>
                             {card === "loading" ? "Loading scorecard…" : `No hole-by-hole card for ${p.player_name} yet`}
                           </span>
                         )}

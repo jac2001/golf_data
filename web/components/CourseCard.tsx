@@ -341,6 +341,6 @@ const th: React.CSSProperties = {
 const cell: React.CSSProperties = {
   padding: "6px 8px",
   borderBottom: "1px solid var(--bc-card)",
-  fontSize: "0.83em",
+  fontSize: "max(var(--fs-min), 0.83em)",
   textAlign: "center",
 };

@@ -121,7 +121,7 @@ function ReminderBell() {
   const on = state === "on";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14,
-      color: "var(--bc-muted)", fontSize: "0.8em" }}>
+      color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>
       <span>Pick reminders — a nudge the day before an event locks if your picks aren&apos;t in.</span>
       <button onClick={toggle} disabled={state === "busy"} style={{
         ...btnQuiet, padding: "4px 12px", fontSize: "0.9em",
@@ -166,7 +166,7 @@ const card: React.CSSProperties = {
 };
 const cell: React.CSSProperties = {
   padding: "8px 12px", borderBottom: "1px solid var(--bc-line)",
-  fontSize: "0.86em", color: "var(--bc-text)", textAlign: "left",
+  fontSize: "max(var(--fs-min), 0.86em)", color: "var(--bc-text)", textAlign: "left",
 };
 const hdr: React.CSSProperties = {
   ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.74em)",
@@ -255,7 +255,7 @@ function GamesTab() {
               border: on ? "1px solid var(--bc-line-hi)" : "1px solid var(--bc-line)",
               borderRadius: 8, padding: "10px 12px", minWidth: 0,
             }}>
-              <div style={{ fontWeight: 900, fontSize: "0.86em", letterSpacing: "0.02em",
+              <div style={{ fontWeight: 900, fontSize: "max(var(--fs-min), 0.86em)", letterSpacing: "0.02em",
                 color: "var(--bc-text)" }}>
                 {g.name}
               </div>
@@ -470,14 +470,14 @@ function CollegeTab() {
             <LockCountdown startDate={event.startDate} tour={event.tour} />
           </div>
         )}
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 2 }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 2 }}>
           {event.locked
             ? (event.finished ? "Final — graded below." : "Schools are locked — tournament underway.")
             : pick
               ? <>Your school: <strong style={{ color: "var(--bc-text)" }}>{pick}</strong> · best 2 alumni checks count</>
               : "Claim one school before lock · its best 2 finishers score for you"}
         </div>
-        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
+        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 10 }}>{err}</p>}
       </div>
 
       {board && board.standings.length > 0 && (
@@ -496,7 +496,7 @@ function CollegeTab() {
                   <td style={{ ...cell, fontWeight: 700 }}>
                     {r.user_name}
                     {r.user_id === board.me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
-                    <div style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.82em" }}>
+                    <div style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.82em)" }}>
                       {r.school}{r.counted.length > 0 &&
                         ` — ${r.counted.map(c => `${lastName(c.player)} ${c.position}`).join(", ")}`}
                     </div>
@@ -520,7 +520,7 @@ function CollegeTab() {
             </span>
           </div>
           {schools.length === 0 && (
-            <p style={{ padding: "0 16px 14px", color: "var(--bc-muted)", fontSize: "0.85em" }}>
+            <p style={{ padding: "0 16px 14px", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>
               No field (or no college data) for this event yet — check back
               once the field posts.
             </p>
@@ -549,13 +549,13 @@ function CollegeTab() {
       )}
 
       <div style={{ ...card, background: "var(--bc-panel)" }}>
-        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
+        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
           How it works: claim ONE school per event — you can change it until
           lock, midnight ET the night before round 1 (UK time for DP World Tour
           events). Only schools with alumni in that week&apos;s field can be
           claimed. Schools stay hidden until lock.
         </p>
-        <ul style={{ margin: "8px 0 0", paddingLeft: 18, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
+        <ul style={{ margin: "8px 0 0", paddingLeft: 18, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
           <li><strong style={{ color: "var(--bc-text)" }}>Schools aren&apos;t exclusive.</strong> Two
             friends can claim the same school — they&apos;ll post the same score and tie.</li>
           <li><strong style={{ color: "var(--bc-text)" }}>Best two count.</strong> Your score is the
@@ -698,7 +698,7 @@ type FeedPick = { event: string; user_name: string; player_name: string };
 
 const btn: React.CSSProperties = {
   background: "var(--bc-yellow)", color: "#081f14", border: "none",
-  borderRadius: 6, padding: "9px 16px", fontWeight: 800, fontSize: "0.8em",
+  borderRadius: 6, padding: "9px 16px", fontWeight: 800, fontSize: "max(var(--fs-min), 0.8em)",
   textTransform: "uppercase", letterSpacing: "0.05em", cursor: "pointer",
 };
 const btnQuiet: React.CSSProperties = {
@@ -706,7 +706,7 @@ const btnQuiet: React.CSSProperties = {
   border: "1px solid var(--bc-line)", fontWeight: 700,
 };
 const inputStyle: React.CSSProperties = {
-  padding: "9px 12px", borderRadius: 6, fontSize: "0.88em",
+  padding: "9px 12px", borderRadius: 6, fontSize: "max(var(--fs-min), 0.88em)",
   background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
   color: "var(--bc-text)", outline: "none",
 };
@@ -830,12 +830,12 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
             onKeyDown={e => e.key === "Enter" && join()} />
           <button onClick={join} style={btnQuiet}>Join</button>
         </div>
-        {err && <span style={{ color: "var(--bc-red-text)", fontSize: "0.84em", alignSelf: "center" }}>{err}</span>}
+        {err && <span style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", alignSelf: "center" }}>{err}</span>}
       </div>
 
       {groups.length === 0 && (
         <div style={card}>
-          <p style={{ color: "var(--bc-muted)", margin: 0, fontSize: "0.88em" }}>
+          <p style={{ color: "var(--bc-muted)", margin: 0, fontSize: "max(var(--fs-min), 0.88em)" }}>
             No groups yet. Create one and text the invite code to your friends —
             group standings, shared bets, and everyone&apos;s picks (revealed at
             lock) live here.
@@ -879,7 +879,7 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
             }}>
               {copied === g.id ? "Copied!" : "Copy invite"}
             </button>
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>
               {g.members.map(m => m.user_name).join(" · ")}
             </span>
             <span style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
@@ -930,7 +930,7 @@ function GroupFeed({ groupId }: { groupId: number }) {
           </div>
           <div style={{ display: "grid", gap: 6 }}>
             {(feed.modelMoves ?? []).map((m, i) => (
-              <div key={i} style={{ fontSize: "0.84em", lineHeight: 1.5 }}>
+              <div key={i} style={{ fontSize: "max(var(--fs-min), 0.84em)", lineHeight: 1.5 }}>
                 <span style={{ color: "var(--bc-text)", fontWeight: 700 }}>{m.game}</span>
                 <span style={{ color: "var(--bc-muted)" }}> · {m.event} — </span>
                 {m.text}
@@ -949,7 +949,7 @@ function GroupFeed({ groupId }: { groupId: number }) {
           Picks
         </div>
         {byEvent.size === 0 ? (
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)" }}>
             {feed.openNames?.length
               ? `Hidden until lock — picks open for ${feed.openNames.join(", ")}.`
               : "No locked events with picks yet."}
@@ -957,9 +957,9 @@ function GroupFeed({ groupId }: { groupId: number }) {
         ) : (
           [...byEvent.entries()].map(([evName, byUser]) => (
             <div key={evName} style={{ marginBottom: 8 }}>
-              <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", fontWeight: 700 }}>{evName}</div>
+              <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700 }}>{evName}</div>
               {[...byUser.entries()].map(([user, ps]) => (
-                <div key={user} style={{ fontSize: "0.86em", padding: "2px 0" }}>
+                <div key={user} style={{ fontSize: "max(var(--fs-min), 0.86em)", padding: "2px 0" }}>
                   <span style={{ fontWeight: 600 }}>{user}</span>
                   <span style={{ color: "var(--bc-muted)" }}> — </span>
                   {ps.map((pl, pi) => (
@@ -980,11 +980,11 @@ function GroupFeed({ groupId }: { groupId: number }) {
         <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700,
           textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Shared bets</div>
         {feed.bets.length === 0 ? (
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)" }}>
             Nothing shared yet — log a bet on the My Bets tab and flip it to shared.
           </span>
         ) : feed.bets.map((b, i) => (
-          <div key={i} style={{ display: "flex", gap: 8, fontSize: "0.86em", padding: "3px 0", flexWrap: "wrap" }}>
+          <div key={i} style={{ display: "flex", gap: 8, fontSize: "max(var(--fs-min), 0.86em)", padding: "3px 0", flexWrap: "wrap" }}>
             <span style={{ fontWeight: 600 }}>{b.user_name}</span>
             <span>{b.description}</span>
             {b.odds_american != null && (
@@ -1077,18 +1077,18 @@ function MyBetsTab() {
           <input value={stake} onChange={e => setStake(e.target.value)}
             placeholder="1" title="Stake (units)" style={{ ...inputStyle, width: 50 }} />
           <label style={{ display: "flex", alignItems: "center", gap: 6,
-            color: "var(--bc-muted)", fontSize: "0.82em", cursor: "pointer" }}>
+            color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", cursor: "pointer" }}>
             <input type="checkbox" checked={shared} onChange={e => setShared(e.target.checked)} />
             share with my groups
           </label>
           <button onClick={add} style={btn}>Log bet</button>
         </div>
-        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", margin: "10px 0 0" }}>{err}</p>}
+        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", margin: "10px 0 0" }}>{err}</p>}
       </div>
 
       {bets.length === 0 ? (
         <div style={card}>
-          <p style={{ color: "var(--bc-muted)", margin: 0, fontSize: "0.88em" }}>
+          <p style={{ color: "var(--bc-muted)", margin: 0, fontSize: "max(var(--fs-min), 0.88em)" }}>
             No bets logged. Anything you bet anywhere can live here — mark it
             shared and your groups see it in their feed.
           </p>
@@ -1098,11 +1098,11 @@ function MyBetsTab() {
           gap: 10, alignItems: "center", flexWrap: "wrap" }}>
           <span style={{ fontWeight: 600, fontSize: "0.9em" }}>{b.description}</span>
           {b.odds_american != null && (
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)" }}>
               {b.odds_american > 0 ? `+${b.odds_american}` : b.odds_american}
             </span>
           )}
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>{b.stake_units}u</span>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>{b.stake_units}u</span>
           <span style={{ marginLeft: "auto", display: "flex", gap: 6, alignItems: "center" }}>
             {(["won", "lost", "pending"] as const).map(o => (
               <button key={o} onClick={() => patch(b.id, { outcome: o })} style={{
@@ -1227,7 +1227,7 @@ function RoundGameTab() {
         <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 4 }}>
           {eventName || events.find(e => e.tournament_id === selected)?.name || "Loading…"}
         </div>
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginBottom: 14 }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginBottom: 14 }}>
           One player per round, each player once per event. Score is their round
           to par; a missed round costs +{5}. Lowest total wins.
         </div>
@@ -1241,7 +1241,7 @@ function RoundGameTab() {
               <span style={{ fontWeight: 800, width: 32, color: locked ? "var(--bc-muted)" : "var(--bc-text)" }}>R{r}</span>
               {current
                 ? <span style={{ fontWeight: 600 }}><PlayerLink name={current} /></span>
-                : <span style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>
+                : <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {locked ? "no pick — +5" : "no pick yet"}
                   </span>}
               {!locked && state?.event?.startDate && (
@@ -1277,7 +1277,7 @@ function RoundGameTab() {
                             onClick={() => pick(r, row.player_name)} style={{
                               display: "flex", alignItems: "center", width: "100%", textAlign: "left",
                               background: "none", border: "none", cursor: used ? "default" : "pointer",
-                              padding: "9px 14px", fontSize: "0.88em",
+                              padding: "9px 14px", fontSize: "max(var(--fs-min), 0.88em)",
                               color: used ? "var(--bc-muted)" : "var(--bc-text)",
                               borderBottom: "1px solid var(--bc-line)" }}>
                             <span style={{ fontWeight: 600 }}>{row.player_name}</span>
@@ -1298,7 +1298,7 @@ function RoundGameTab() {
             </div>
           );
         })}
-        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
+        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 10 }}>{err}</p>}
       </div>
 
       {/* Event board */}
@@ -1322,7 +1322,7 @@ function RoundGameTab() {
                   {[1, 2, 3, 4].map(r => {
                     const c = row.rounds[String(r)];
                     return (
-                      <td key={r} style={{ ...cell, textAlign: "right", fontSize: "0.8em" }}>
+                      <td key={r} style={{ ...cell, textAlign: "right", fontSize: "max(var(--fs-min), 0.8em)" }}>
                         {!c ? <span style={{ color: "var(--bc-muted)" }}>—</span>
                           : !c.visible ? <span style={{ color: "var(--bc-muted)" }}>hidden</span>
                           : <>
@@ -1355,7 +1355,7 @@ function RoundGameTab() {
       )}
 
       <div style={{ ...card, background: "var(--bc-panel)" }}>
-        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
+        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
           How it works: one pick per round, each player only once per event,
           scored by that round&apos;s score to par — lowest event total wins.
           Round 1 locks at midnight ET the night before Thursday (UK time for
@@ -1447,7 +1447,7 @@ function FadeTab() {
         prize money to fade. It opens back up on Tuesday of the next
         PGA tournament week.
       </p>
-      {err && <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 10 }}>{err}</p>}
+      {err && <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 10 }}>{err}</p>}
     </div>
   );
 
@@ -1464,7 +1464,7 @@ function FadeTab() {
             <LockCountdown startDate={event.startDate} tour={event.tour} />
           </div>
         )}
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginTop: 2 }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 2 }}>
           {event.locked
             ? (events.find(e => e.tournament_id === selected)?.finished
                 ? "Final — the fadeboard below is graded."
@@ -1489,7 +1489,7 @@ function FadeTab() {
             </span>
           ))}
           {fades.length === 0 && (
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>No fades yet.</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>No fades yet.</span>
           )}
         </div>
 
@@ -1501,13 +1501,13 @@ function FadeTab() {
             .slice(0, 3).map(p => p.player_name);
           return obvious.every(n => fades.includes(n));
         })() && (
-          <p style={{ color: "var(--bc-orange)", fontSize: "0.85em", marginTop: 10, fontWeight: 600 }}>
+          <p style={{ color: "var(--bc-orange)", fontSize: "max(var(--fs-min), 0.85em)", marginTop: 10, fontWeight: 600 }}>
             These are the model&apos;s own three fades — you can tie it, never
             beat it. Your edge is a favorite the model still believes in.
           </p>
         )}
 
-        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
+        {err && <p style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 10 }}>{err}</p>}
       </div>
 
       {/* Post-lock: how everyone's fades are cashing (least money on top). */}
@@ -1534,7 +1534,7 @@ function FadeTab() {
                     {row.user_id === "model" && <ModelBadge />}
                     {row.user_id === board.me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
                   </td>
-                  <td style={{ ...cell, fontSize: "0.8em", color: "var(--bc-muted)" }}>
+                  <td style={{ ...cell, fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-muted)" }}>
                     {row.fades.map(f => (
                       <span key={f.player} style={{ marginRight: 10, whiteSpace: "nowrap" }}>
                         {lastName(f.player)}
@@ -1578,7 +1578,7 @@ function FadeTab() {
           {partial && (
             <div style={{ margin: "4px 16px 0", padding: "8px 12px", borderRadius: 6,
               background: "var(--bc-raised)", border: "1px solid var(--bc-line-hi)",
-              color: "var(--bc-text)", fontSize: "0.85em", fontWeight: 600 }}>
+              color: "var(--bc-text)", fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 600 }}>
               Early field — only the first commitments are in. Numbers and the
               pool firm up once the full field posts (usually Tuesday).
             </div>
@@ -1629,7 +1629,7 @@ function FadeTab() {
 
       {!event.locked && pool.length === 0 && (
         <div style={{ ...card, background: "var(--bc-panel)" }}>
-          <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.88em", lineHeight: 1.6 }}>
+          <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.6 }}>
             The pool for {event.name} isn&apos;t set yet. Fades open once the
             model&apos;s numbers post for this event — usually Tuesday, when
             the full field is announced and predictions run. Your 3 fades
@@ -1639,7 +1639,7 @@ function FadeTab() {
       )}
 
       <div style={{ ...card, background: "var(--bc-panel)" }}>
-        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
+        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
           How it works: before lock (midnight ET the night before round 1 (UK time for DP World Tour events)), fade 3 players from the top 20 —
           the favorites you think are overhyped. Your score is their combined
           prize money and the LOWEST total wins, so fading the eventual champion

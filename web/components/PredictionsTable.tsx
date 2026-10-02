@@ -178,7 +178,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
           onChange={e => setSearch(e.target.value)}
           style={{
             background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-            color: "var(--bc-text)", padding: "7px 12px", fontSize: "0.85em",
+            color: "var(--bc-text)", padding: "7px 12px", fontSize: "max(var(--fs-min), 0.85em)",
             outline: "none", width: 200,
           }}
         />
@@ -188,7 +188,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
             background: pickerOpen ? "var(--bc-card)" : "var(--bc-panel)",
             border: `1px solid ${pickerOpen ? "color-mix(in srgb, var(--bc-green) 27%, transparent)" : "var(--bc-line)"}`,
             borderRadius: 6, color: pickerOpen ? "var(--bc-green)" : "var(--bc-muted)",
-            padding: "6px 12px", fontSize: "0.8em", fontWeight: 600, cursor: "pointer",
+            padding: "6px 12px", fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 600, cursor: "pointer",
           }}
         >
           + Columns
@@ -209,7 +209,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
             {TOGGLE_COLS.map(c => (
               <label key={c.key} style={{
                 display: "flex", alignItems: "center", gap: 6,
-                fontSize: "0.8em", color: "var(--bc-text)", cursor: "pointer",
+                fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-text)", cursor: "pointer",
                 padding: "3px 4px", whiteSpace: "nowrap",
               }}>
                 <input
@@ -279,7 +279,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   <td style={{ ...td, color: "var(--bc-muted)", textAlign: "center", fontSize: "max(var(--fs-min), 0.78em)" }}>{i + 1}</td>
 
                   {/* Player name + intel */}
-                  <td style={{ ...td, fontSize: "0.85em", maxWidth: 280 }}>
+                  <td style={{ ...td, fontSize: "max(var(--fs-min), 0.85em)", maxWidth: 280 }}>
                     {/* Row 1: name + badges */}
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                       <Link
@@ -359,7 +359,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.win_prob_sim != null ? (
                       <div>
-                        <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "0.88em" }}>
+                        <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
                           {(p.win_prob_sim * 100).toFixed(1)}%
                         </span>
                         {p.win_prob != null && (
@@ -369,7 +369,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                         )}
                       </div>
                     ) : (
-                      <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "0.88em" }}>
+                      <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
                         {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
                       </span>
                     )}
@@ -381,7 +381,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.top10_prob_sim != null ? (
                       <div>
-                        <span style={{ color: "var(--bc-yellow)", fontWeight: 600, fontSize: "0.85em" }}>
+                        <span style={{ color: "var(--bc-yellow)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.85em)" }}>
                           {(p.top10_prob_sim * 100).toFixed(1)}%
                         </span>
                         {p.top10_prob != null && (
@@ -391,7 +391,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                         )}
                       </div>
                     ) : (
-                      <span style={{ color: "var(--bc-yellow)", fontSize: "0.85em", fontWeight: 600 }}>
+                      <span style={{ color: "var(--bc-yellow)", fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 600 }}>
                         {p.top10_prob != null ? `${(p.top10_prob * 100).toFixed(1)}%` : "—"}
                       </span>
                     )}
@@ -400,49 +400,49 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
 
                   {/* Cut% */}
                   {visibleCols.has("cut") && (
-                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.85em" }}>
+                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.cut_prob != null ? `${(p.cut_prob * 100).toFixed(0)}%` : "—"}
                   </td>
                   )}
 
                   {/* OWGR */}
                   {visibleCols.has("owgr") && (
-                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.82em" }}>
+                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {p.world_rank ?? "—"}
                   </td>
                   )}
 
                   {/* SG Total */}
                   {visibleCols.has("sg") && (
-                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.82em" }}>
+                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {p.season_sg_total != null ? (p.season_sg_total > 0 ? `+${p.season_sg_total.toFixed(2)}` : p.season_sg_total.toFixed(2)) : "—"}
                   </td>
                   )}
 
                   {/* Form */}
                   {visibleCols.has("form") && (
-                  <td style={{ ...td, textAlign: "center", color: formColor, fontWeight: 600, fontSize: "0.82em" }}>
+                  <td style={{ ...td, textAlign: "center", color: formColor, fontWeight: 600, fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {formStr}
                   </td>
                   )}
 
                   {/* Edge vs Vegas */}
                   {visibleCols.has("edge") && (
-                  <td style={{ ...td, textAlign: "center", color: edgeColor, fontWeight: edgeVal && edgeVal > 3 ? 700 : 400, fontSize: "0.82em" }}>
+                  <td style={{ ...td, textAlign: "center", color: edgeColor, fontWeight: edgeVal && edgeVal > 3 ? 700 : 400, fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {edgeVal != null ? `${edgeVal > 0 ? "+" : ""}${edgeVal.toFixed(1)}pp` : "—"}
                   </td>
                   )}
 
                   {/* Odds */}
                   {visibleCols.has("odds") && (
-                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.82em" }}>
+                  <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {oddsStr}
                   </td>
                   )}
 
                   {/* Drift */}
                   {visibleCols.has("move") && (
-                  <td style={{ ...td, textAlign: "center", color: driftColor, fontWeight: 700, fontSize: "0.88em" }}>
+                  <td style={{ ...td, textAlign: "center", color: driftColor, fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
                     {DRIFT_ARROW[drift] ?? "—"}
                   </td>
                   )}

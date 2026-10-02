@@ -52,7 +52,7 @@ export default function Home() {
       display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
       <div style={{ flex: "1 1 300px" }}>
         <div style={{ fontWeight: 900, fontSize: "1.1em" }}>Your matchup</div>
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", marginTop: 4 }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 4 }}>
           Where you stand against your group and the model — live during every round.
         </div>
       </div>
@@ -83,7 +83,7 @@ export default function Home() {
               Pick your golfers. Challenge your friends.{" "}
               <span style={{ color: "var(--bc-yellow)" }}>Beat the model.</span>
             </div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.86em", marginTop: 6, lineHeight: 1.55 }}>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", marginTop: 6, lineHeight: 1.55 }}>
               A weekly picks game graded by real prize money — thirty seconds
               to play, all Sunday to trash-talk. Try a pick before you sign up.
             </div>
@@ -125,7 +125,7 @@ export default function Home() {
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div style={{ display: "flex", gap: "28px 48px", padding: "24px 0 30px", flexWrap: "wrap" }}>
         <div style={{ flex: "1 1 320px", minWidth: 0, display: "flex", flexDirection: "column", gap: 14 }}>
-          <div style={{ fontSize: "0.82em", fontWeight: 700, letterSpacing: "0.16em",
+          <div style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, letterSpacing: "0.16em",
                         textTransform: "uppercase", color: h?.is_live ? "var(--bc-green)" : "var(--bc-muted)" }}>
             {h ? (h.is_live ? "Live this week" : "Next on tour") : "Offseason"}
             {h && ` · ${fmtDates(h.start_date, h.end_date)}`}
@@ -151,7 +151,7 @@ export default function Home() {
                 primary action. */}
             <Link href="/predictions" style={{
               border: "1px solid var(--bc-line-hi)", color: "var(--bc-text)", fontWeight: 800,
-              textTransform: "uppercase", fontSize: "0.82em", letterSpacing: "0.06em",
+              textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
               padding: "12px 22px", borderRadius: 4 }}>
               This week's forecast
             </Link>
@@ -193,7 +193,7 @@ export default function Home() {
               </div>
             ))}
             {data.board.length === 0 && (
-              <div style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>
+              <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>
                 Predictions publish the Tuesday of tournament week.
               </div>
             )}
@@ -217,7 +217,7 @@ export default function Home() {
               <div style={{ fontWeight: 700, fontSize: "1.1em", lineHeight: 1.25, marginBottom: 8 }}>
                 {s.headline}
               </div>
-              <div style={{ fontSize: "0.82em", color: "var(--bc-muted)", lineHeight: 1.5 }}>{s.sub}</div>
+              <div style={{ fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-muted)", lineHeight: 1.5 }}>{s.sub}</div>
             </Panel>
           ))}
         </div>

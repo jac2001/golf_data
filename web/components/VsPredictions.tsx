@@ -45,7 +45,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {overPerf.map(p => (
                   <div key={p.player} style={{ background: "#0d2218", border: "1px solid rgba(0,196,79,0.2)", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
-                    <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "0.85em" }}>
+                    <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
                       <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
                     </div>
                     <div style={{ fontSize: "max(var(--fs-min), 0.72em)", marginTop: 3 }}>
@@ -67,7 +67,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {underPerf.map(p => (
                   <div key={p.player} style={{ background: "rgba(224,85,85,0.10)", border: "1px solid rgba(231,76,60,0.2)", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
-                    <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "0.85em" }}>
+                    <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
                       <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
                     </div>
                     <div style={{ fontSize: "max(var(--fs-min), 0.72em)", marginTop: 3 }}>
@@ -104,7 +104,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
               const bg = isPick ? "#091a0f" : i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid var(--bc-card)",
-                background: bg, textAlign: "center", fontSize: "0.85em",
+                background: bg, textAlign: "center", fontSize: "max(var(--fs-min), 0.85em)",
               };
 
               const isCut = p.made_cut === false;

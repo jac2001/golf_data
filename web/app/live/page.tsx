@@ -298,7 +298,7 @@ export default function LivePage() {
               <div style={{
                 marginBottom: 12, padding: "6px 12px",
                 background: "#1a0a00", border: "1px solid #7a3a00",
-                borderRadius: 6, fontSize: "0.8em", color: "var(--bc-orange)",
+                borderRadius: 6, fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-orange)",
               }}>
                 <span style={{ fontWeight: 700 }}>WD this week: </span>
                 {wds.withdrawals.map(w => w.player_name).join(", ")}
@@ -452,7 +452,7 @@ function EuroLiveView() {
   };
   const td: React.CSSProperties = {
     padding: "6px 12px", borderBottom: "1px solid var(--bc-card)",
-    fontSize: "0.85em", textAlign: "right", fontVariantNumeric: "tabular-nums",
+    fontSize: "max(var(--fs-min), 0.85em)", textAlign: "right", fontVariantNumeric: "tabular-nums",
   };
 
   return (
@@ -492,7 +492,7 @@ function EuroLiveView() {
                 {p.rounds.map((r, ri) => (
                   <td key={ri} style={{ ...td, color: "var(--bc-muted)" }}>{r != null ? Math.round(r) : "—"}</td>
                 ))}
-                <td style={{ ...td, color: "var(--bc-text)", fontSize: "0.85em" }}>
+                <td style={{ ...td, color: "var(--bc-text)", fontSize: "max(var(--fs-min), 0.85em)" }}>
                   {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
                 </td>
               </tr>
@@ -533,7 +533,7 @@ function EuroLiveView() {
             value={cardSearch}
             onChange={e => setCardSearch(e.target.value)}
             style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-              color: "var(--bc-text)", padding: "7px 12px", fontSize: "0.85em", outline: "none", width: 200 }}
+              color: "var(--bc-text)", padding: "7px 12px", fontSize: "max(var(--fs-min), 0.85em)", outline: "none", width: 200 }}
           />
           <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>
             Round scores{par != null ? ` · par ${par}` : ""} — hole-level detail has no DP World Tour source,

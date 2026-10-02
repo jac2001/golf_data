@@ -116,7 +116,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
             border: `1px solid ${wave === w ? GREEN : BORDER}`,
             color: wave === w ? GREEN : MUTED,
             borderRadius: 6, padding: "4px 12px",
-            fontSize: "0.8em", fontWeight: wave === w ? 700 : 400, cursor: "pointer",
+            fontSize: "max(var(--fs-min), 0.8em)", fontWeight: wave === w ? 700 : 400, cursor: "pointer",
           }}>
             {w.charAt(0).toUpperCase() + w.slice(1)}
           </button>
@@ -169,7 +169,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
               const vp = w.vs_par;
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid var(--bc-card)",
-                background: bg, textAlign: "center", fontSize: "0.83em",
+                background: bg, textAlign: "center", fontSize: "max(var(--fs-min), 0.83em)",
               };
 
               return (

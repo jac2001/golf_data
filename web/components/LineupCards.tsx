@@ -205,7 +205,7 @@ export default function LineupCards({ picks, narrative, generatedAt }: Props) {
           <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
             Weekly Analysis
           </div>
-          <p style={{ color: "var(--bc-muted)", fontSize: "0.85em", lineHeight: 1.6, margin: 0 }}>
+          <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)", lineHeight: 1.6, margin: 0 }}>
             {narrative}
           </p>
           {generatedAt && (

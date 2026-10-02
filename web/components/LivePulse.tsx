@@ -31,7 +31,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
         display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
       }}>
         <div>
-          <div style={{ fontSize: "0.88em", fontWeight: 700, color: TEXT, marginBottom: 2 }}>
+          <div style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700, color: TEXT, marginBottom: 2 }}>
             Live Pulse
           </div>
           <div style={{ fontSize: "max(var(--fs-min), 0.75em)", color: MUTED }}>
@@ -41,7 +41,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
         <button onClick={onGenerate} style={{
           background: GREEN + "22", border: `1px solid ${GREEN}55`,
           color: GREEN, borderRadius: 8, padding: "8px 18px",
-          fontSize: "0.82em", fontWeight: 700, cursor: "pointer", flexShrink: 0,
+          fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, cursor: "pointer", flexShrink: 0,
           whiteSpace: "nowrap",
         }}>
           Generate Pulse
@@ -57,7 +57,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
         background: BG, border: `1px dashed ${BORDER}`, borderRadius: 10,
         padding: "20px", marginBottom: 20, textAlign: "center",
       }}>
-        <div style={{ fontSize: "0.85em", color: MUTED }}>Generating live pulse…</div>
+        <div style={{ fontSize: "max(var(--fs-min), 0.85em)", color: MUTED }}>Generating live pulse…</div>
         <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: LABEL, marginTop: 4 }}>
           Reading leaderboard + SG stats and asking Claude
         </div>
@@ -72,7 +72,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
         background: "#1a0808", border: `1px solid ${RED}44`, borderRadius: 10,
         padding: "14px 20px", marginBottom: 20,
       }}>
-        <span style={{ fontSize: "0.82em", color: RED }}>{error}</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: RED }}>{error}</span>
         <button onClick={onGenerate} style={{
           marginLeft: 12, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED,
           background: "none", border: "none", cursor: "pointer", textDecoration: "underline",
@@ -186,7 +186,7 @@ function Section({ label, color, children }: {
       }}>
         {label}
       </div>
-      <p style={{ margin: 0, fontSize: "0.82em", color: TEXT, lineHeight: 1.65 }}>
+      <p style={{ margin: 0, fontSize: "max(var(--fs-min), 0.82em)", color: TEXT, lineHeight: 1.65 }}>
         {children}
       </p>
     </div>
@@ -216,7 +216,7 @@ function PlayerListSection({ label, color, players }: {
             }}>
               {p.name.split(" ").slice(-1)[0]}
             </span>
-            <p style={{ margin: 0, fontSize: "0.80em", color: TEXT, lineHeight: 1.6 }}>
+            <p style={{ margin: 0, fontSize: "max(var(--fs-min), 0.80em)", color: TEXT, lineHeight: 1.6 }}>
               {p.blurb}
             </p>
           </div>

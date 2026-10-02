@@ -58,7 +58,7 @@ function DayCard({ day }: { day: WeatherDay }) {
       </div>
 
       {/* Temp range */}
-      <div style={{ fontSize: "0.82em", fontWeight: 700, color: "var(--bc-text)", marginBottom: 4 }}>
+      <div style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, color: "var(--bc-text)", marginBottom: 4 }}>
         {day.high_f}
         <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min-xs), 0.85em)" }}>
           {" "}/{" "}{day.low_f}

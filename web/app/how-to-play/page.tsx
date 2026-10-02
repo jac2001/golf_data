@@ -131,7 +131,7 @@ export default function HowToPlayPage() {
         {GAMES.map(g => (
           <div key={g.name} style={{ ...card, marginBottom: 0 }}>
             <div style={{ fontWeight: 900, color: "var(--bc-text)", marginBottom: 6 }}>{g.name}</div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", lineHeight: 1.55 }}>{g.tag}</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", lineHeight: 1.55 }}>{g.tag}</div>
           </div>
         ))}
       </div>
@@ -139,7 +139,7 @@ export default function HowToPlayPage() {
       {/* Scoring example */}
       <div style={card}>
         <div style={{ fontWeight: 800, marginBottom: 8 }}>Scoring, in one example</div>
-        <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", lineHeight: 1.6, margin: 0 }}>
+        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", lineHeight: 1.6, margin: 0 }}>
           Say this week you pick Bridgeman, Scheffler and Poston. Bridgeman
           wins (<strong style={{ color: "var(--bc-text)" }}>$1.08M</strong>),
           Scheffler ties 5th (<strong style={{ color: "var(--bc-text)" }}>$245K</strong>),
@@ -206,7 +206,7 @@ export default function HowToPlayPage() {
               ))}
             </div>
           )}
-          <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", margin: "6px 0 12px" }}>
+          <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", margin: "6px 0 12px" }}>
             {mode === "history"
               ? "This tournament already happened. Pick three off the Tuesday board and lock them — then see Sunday's real money next to the model's three, revealed only once you've committed."
               : "Tap three. We'll price your trio with the model's expected prize money against its own three favorites."}
@@ -218,7 +218,7 @@ export default function HowToPlayPage() {
                 <button key={p.player_name} onClick={() => toggle(p.player_name)} style={{
                   cursor: revealed ? "default" : "pointer", fontFamily: "inherit", textAlign: "left",
                   display: "flex", alignItems: "center", gap: 8,
-                  padding: "8px 12px", borderRadius: 6, fontSize: "0.84em",
+                  padding: "8px 12px", borderRadius: 6, fontSize: "max(var(--fs-min), 0.84em)",
                   color: on ? "#081f14" : "var(--bc-text)",
                   background: on ? "var(--bc-raised)" : "var(--bc-panel)",
                   border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
@@ -272,12 +272,12 @@ export default function HowToPlayPage() {
                     const shared = picks.includes(n) && modelTrio.some(m => m.player_name === n);
                     const value = mode === "history" ? realEarn(n) : (p ? expectedPayout(purse, p) : 0);
                     return (
-                      <div key={n} style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: "0.84em", padding: "3px 0" }}>
+                      <div key={n} style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: "max(var(--fs-min), 0.84em)", padding: "3px 0" }}>
                         <span style={{ fontWeight: 700 }}>{n}</span>
                         {shared && <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>both</span>}
                         <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
                           {mode === "history" && `${realPos(n)} · `}{money(value)}
-                          {p?.win_prob != null && <span style={{ fontSize: "0.85em" }}> · {(p.win_prob * 100).toFixed(1)}% pre</span>}
+                          {p?.win_prob != null && <span style={{ fontSize: "max(var(--fs-min), 0.85em)" }}> · {(p.win_prob * 100).toFixed(1)}% pre</span>}
                         </span>
                       </div>
                     );
@@ -289,16 +289,16 @@ export default function HowToPlayPage() {
 
           {(revealed || (mode === "ev" && picks.length === 3 && !matchedModel)) && (
             <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 16, marginTop: 14 }}>
-              <div style={{ fontSize: "0.88em" }}>
+              <div style={{ fontSize: "max(var(--fs-min), 0.88em)" }}>
                 <span style={{ color: "var(--bc-muted)" }}>Your trio: </span>
                 <strong>{money(trioValue)}</strong>
                 {mode === "ev" && <span style={{ color: "var(--bc-muted)" }}> expected</span>}
               </div>
-              <div style={{ fontSize: "0.88em" }}>
+              <div style={{ fontSize: "max(var(--fs-min), 0.88em)" }}>
                 <span style={{ color: "var(--bc-muted)" }}>The model&apos;s trio: </span>
                 <strong>{money(modelValue)}</strong>
               </div>
-              <div style={{ fontSize: "0.88em", fontWeight: 800,
+              <div style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 800,
                 color: trioValue > modelValue ? "var(--bc-green)"
                   : trioValue < modelValue ? "var(--bc-red-text)" : "var(--bc-yellow)" }}>
                 {trioValue > modelValue
@@ -333,7 +333,7 @@ export default function HowToPlayPage() {
       <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", margin: "22px 0 8px" }}>
         <Link href="/sign-up" style={{
           background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-          textTransform: "uppercase", fontSize: "0.82em", letterSpacing: "0.06em",
+          textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
           padding: "13px 24px", borderRadius: 4 }}>
           Create a free account
         </Link>
@@ -341,7 +341,7 @@ export default function HowToPlayPage() {
           Already playing? Your group →
         </Link>
       </div>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", lineHeight: 1.6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", lineHeight: 1.6 }}>
         Groups are invite-only: create one, text a friend the code, done. No
         money changes hands — the stakes are strictly bragging rights.
         Curious how the model actually works? That story lives at{" "}

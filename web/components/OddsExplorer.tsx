@@ -104,7 +104,7 @@ export default function OddsExplorer() {
         </div>
 
         {/* Pos EV filter */}
-        <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", color: "var(--bc-muted)", fontSize: "0.85em", marginTop: 18 }}>
+        <label style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)", marginTop: 18 }}>
           <input
             type="checkbox"
             checked={posEvOnly}
@@ -183,10 +183,10 @@ export default function OddsExplorer() {
                 const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid var(--bc-card)", background: bg };
                 return (
                   <tr key={p.player}>
-                    <td style={{ ...tdBase, color: "var(--bc-text)", fontWeight: 500, fontSize: "0.85em", whiteSpace: "nowrap" }}>
+                    <td style={{ ...tdBase, color: "var(--bc-text)", fontWeight: 500, fontSize: "max(var(--fs-min), 0.85em)", whiteSpace: "nowrap" }}>
                       {p.player}
                     </td>
-                    <td style={{ ...tdBase, textAlign: "center", background: i % 2 === 0 ? "#0a1e38" : "#091929", color: "var(--bc-yellow)", fontWeight: 700, fontSize: "0.85em" }}>
+                    <td style={{ ...tdBase, textAlign: "center", background: i % 2 === 0 ? "#0a1e38" : "#091929", color: "var(--bc-yellow)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
                       {p.dg_prob != null ? `${p.dg_prob.toFixed(1)}%` : "—"}
                     </td>
                     {booksShown.map(b => {
@@ -199,7 +199,7 @@ export default function OddsExplorer() {
                               <div style={{
                                 color: isPos ? "var(--bc-green)" : "var(--bc-muted)",
                                 fontWeight: isPos ? 700 : 400,
-                                fontSize: "0.85em",
+                                fontSize: "max(var(--fs-min), 0.85em)",
                                 background: isPos ? "rgba(0,196,79,0.12)" : "transparent",
                                 padding: isPos ? "1px 5px" : undefined,
                                 borderRadius: isPos ? 3 : undefined,
@@ -239,7 +239,7 @@ export default function OddsExplorer() {
 
 const btnStyle: React.CSSProperties = {
   background: "var(--bc-line)", border: "1px solid var(--bc-line)", borderRadius: 6,
-  color: "var(--bc-text)", padding: "6px 14px", fontSize: "0.85em",
+  color: "var(--bc-text)", padding: "6px 14px", fontSize: "max(var(--fs-min), 0.85em)",
   fontWeight: 600, cursor: "pointer",
 };
 
@@ -249,6 +249,6 @@ const selectStyle: React.CSSProperties = {
   borderRadius: 6,
   color: "var(--bc-text)",
   padding: "6px 10px",
-  fontSize: "0.85em",
+  fontSize: "max(var(--fs-min), 0.85em)",
   outline: "none",
 };

@@ -263,9 +263,9 @@ function FieldBrowser({ onPick }: { onPick: (name: string) => void }) {
           </button>
         ))}
       </div>
-      {field === null && <p style={{ color: MUTED, fontSize: "0.85em", margin: 0 }}>Loading field…</p>}
+      {field === null && <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.85em)", margin: 0 }}>Loading field…</p>}
       {field !== null && field.length === 0 && (
-        <p style={{ color: MUTED, fontSize: "0.85em", margin: 0 }}>
+        <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.85em)", margin: 0 }}>
           The field for this event hasn&apos;t been published yet — check back
           closer to tournament week.
         </p>
@@ -277,7 +277,7 @@ function FieldBrowser({ onPick }: { onPick: (name: string) => void }) {
             <button key={name} onClick={() => onPick(name)} style={{
               cursor: "pointer", fontFamily: "inherit", textAlign: "left",
               background: "none", border: "none", padding: "3px 0",
-              color: TEXT, fontSize: "0.86em",
+              color: TEXT, fontSize: "max(var(--fs-min), 0.86em)",
               borderBottom: "1px dotted transparent",
             }}
             onMouseEnter={e => { (e.target as HTMLElement).style.color = GOLD; }}
@@ -325,7 +325,7 @@ function SynopsisCard({
         background: "var(--bc-panel)", border: `1px dashed ${BORDER}`,
       }}>
         <div>
-          <div style={{ fontSize: "0.88em", color: TEXT, fontWeight: 600, marginBottom: 2 }}>
+          <div style={{ fontSize: "max(var(--fs-min), 0.88em)", color: TEXT, fontWeight: 600, marginBottom: 2 }}>
             AI Player Analysis
           </div>
           <div style={{ fontSize: "max(var(--fs-min), 0.75em)", color: MUTED }}>
@@ -337,7 +337,7 @@ function SynopsisCard({
           style={{
             background: GREEN + "22", border: `1px solid ${GREEN}44`,
             color: GREEN, borderRadius: 8, padding: "8px 18px",
-            fontSize: "0.82em", fontWeight: 700, cursor: "pointer", flexShrink: 0,
+            fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, cursor: "pointer", flexShrink: 0,
           }}
         >
           Generate Analysis
@@ -349,7 +349,7 @@ function SynopsisCard({
   if (loading) {
     return (
       <div style={{ ...card, background: "var(--bc-panel)", border: `1px dashed ${BORDER}`, textAlign: "center", padding: "28px 20px" }}>
-        <div style={{ fontSize: "0.85em", color: MUTED }}>Generating analysis…</div>
+        <div style={{ fontSize: "max(var(--fs-min), 0.85em)", color: MUTED }}>Generating analysis…</div>
         <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: LABEL, marginTop: 4 }}>
           Gathering stats and asking Claude for a take
         </div>
@@ -360,7 +360,7 @@ function SynopsisCard({
   if (error) {
     return (
       <div style={{ ...card, background: "#1a0808", border: `1px solid ${RED}44` }}>
-        <div style={{ fontSize: "0.82em", color: RED }}>{error}</div>
+        <div style={{ fontSize: "max(var(--fs-min), 0.82em)", color: RED }}>{error}</div>
         <button onClick={onGenerate} style={{ marginTop: 8, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>
           Try again
         </button>
@@ -415,7 +415,7 @@ function SynopsisCard({
               }}>
                 {label}
               </span>
-              <p style={{ margin: 0, fontSize: "0.85em", color: TEXT, lineHeight: 1.65 }}>
+              <p style={{ margin: 0, fontSize: "max(var(--fs-min), 0.85em)", color: TEXT, lineHeight: 1.65 }}>
                 {text}
               </p>
             </div>
@@ -470,7 +470,7 @@ function PlayersPageInner() {
       onClick={() => setPageTab(key)}
       style={{
         background: "transparent", borderTop: "none", borderLeft: "none", borderRight: "none", cursor: "pointer",
-        padding: "8px 16px", fontSize: "0.88em", fontWeight: pageTab === key ? 700 : 500,
+        padding: "8px 16px", fontSize: "max(var(--fs-min), 0.88em)", fontWeight: pageTab === key ? 700 : 500,
         color: pageTab === key ? TEXT : MUTED,
         borderBottom: `2px solid ${pageTab === key ? GREEN : "transparent"}`,
         marginBottom: -1, transition: "color 0.15s",
@@ -676,7 +676,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
   function sgCell(val: number | null, rank: number | null, i: number) {
     return (
       <td style={{ ...tdStyle(i), textAlign: "center" }}>
-        <span style={{ color: val != null && val >= 0 ? GREEN : RED, fontWeight: 600, fontSize: "0.85em" }}>
+        <span style={{ color: val != null && val >= 0 ? GREEN : RED, fontWeight: 600, fontSize: "max(var(--fs-min), 0.85em)" }}>
           {val != null ? `${val >= 0 ? "+" : ""}${val.toFixed(2)}` : "—"}
         </span>
         {rank != null && (
@@ -699,7 +699,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
         onChange={e => setSearch(e.target.value)}
         style={{
           background: CARD_BG, border: `1px solid ${BORDER}`, borderRadius: 6,
-          color: TEXT, padding: "7px 12px", marginBottom: 12, width: 200, fontSize: "0.85em",
+          color: TEXT, padding: "7px 12px", marginBottom: 12, width: 200, fontSize: "max(var(--fs-min), 0.85em)",
           outline: "none",
         }}
       />
@@ -713,7 +713,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
               background: view === v.key ? GREEN + "22" : "transparent",
               border: `1px solid ${view === v.key ? GREEN : BORDER}`,
               borderRadius: 6, color: view === v.key ? GREEN : MUTED,
-              padding: "5px 14px", fontSize: "0.82em", fontWeight: 600, cursor: "pointer",
+              padding: "5px 14px", fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600, cursor: "pointer",
             }}
           >
             {v.label}
@@ -770,7 +770,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
               return (
               <tr key={p.player_name} style={isPick ? { background: "var(--bc-panel)" } : undefined}>
                 <td style={{ ...tdStyle(i), textAlign: "center", color: LABEL, fontSize: "max(var(--fs-min), 0.75em)", ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>{i + 1}</td>
-                <td style={{ ...tdStyle(i), fontSize: "0.85em", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid var(--bc-green)" : undefined, ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>
+                <td style={{ ...tdStyle(i), fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid var(--bc-green)" : undefined, ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>
                   <Link
                     href={`/players?player=${encodeURIComponent(p.player_name)}`}
                     style={{ color: isPick ? GREEN : TEXT, textDecoration: "none" }}
@@ -795,19 +795,19 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
                 </>}
 
                 {view === "course" && <>
-                  <td style={{ ...tdStyle(i), textAlign: "center", fontSize: "0.85em", color: (p.course_sg_total_avg ?? 0) >= 0 ? GREEN : RED, fontWeight: 600 }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", fontSize: "max(var(--fs-min), 0.85em)", color: (p.course_sg_total_avg ?? 0) >= 0 ? GREEN : RED, fontWeight: 600 }}>
                     {p.course_sg_starts ? (p.course_sg_total_avg != null ? `${p.course_sg_total_avg >= 0 ? "+" : ""}${p.course_sg_total_avg.toFixed(2)}` : "—") : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: MUTED, fontSize: "0.85em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: MUTED, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.course_sg_starts ? Math.round(p.course_sg_starts) : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", fontSize: "0.85em", color: p.course_made_cut_rate != null ? (p.course_made_cut_rate >= 0.8 ? GREEN : MUTED) : MUTED }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", fontSize: "max(var(--fs-min), 0.85em)", color: p.course_made_cut_rate != null ? (p.course_made_cut_rate >= 0.8 ? GREEN : MUTED) : MUTED }}>
                     {p.course_sg_starts ? (p.course_made_cut_rate != null ? `${(p.course_made_cut_rate * 100).toFixed(0)}%` : "—") : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: GOLD, fontSize: "0.85em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: GOLD, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.course_sg_starts && p.course_win_rate ? `${(p.course_win_rate * 100).toFixed(1)}%` : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", fontWeight: 600, fontSize: "0.85em",
+                  <td style={{ ...tdStyle(i), textAlign: "center", fontWeight: 600, fontSize: "max(var(--fs-min), 0.85em)",
                       color: p.dg_course_fit_delta_pct != null ? (p.dg_course_fit_delta_pct >= 0 ? GREEN : RED) : MUTED }}>
                     {p.dg_course_fit_delta_pct != null
                       ? `${p.dg_course_fit_delta_pct >= 0 ? "+" : ""}${(p.dg_course_fit_delta_pct * 100).toFixed(1)}%`
@@ -816,38 +816,38 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
                 </>}
 
                 {view === "form" && <>
-                  <td style={{ ...tdStyle(i), textAlign: "center", fontWeight: 700, fontSize: "0.88em",
+                  <td style={{ ...tdStyle(i), textAlign: "center", fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)",
                       color: (p.form_trend ?? 0) > 0.2 ? GREEN : (p.form_trend ?? 0) < -0.1 ? RED : MUTED }}>
                     {p.form_trend != null ? `${p.form_trend >= 0 ? "+" : ""}${p.form_trend.toFixed(2)}` : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: (p.consecutive_cuts ?? 0) >= 5 ? GREEN : TEXT, fontSize: "0.85em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: (p.consecutive_cuts ?? 0) >= 5 ? GREEN : TEXT, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.consecutive_cuts ?? "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontSize: "0.85em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.recent_top10s != null ? p.recent_top10s.toFixed(1) : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: p.recent_wins ? GOLD : MUTED, fontWeight: p.recent_wins ? 700 : 400, fontSize: "0.85em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: p.recent_wins ? GOLD : MUTED, fontWeight: p.recent_wins ? 700 : 400, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.recent_wins ?? 0}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: (p.consecutive_top10s ?? 0) >= 2 ? GREEN : MUTED, fontSize: "0.85em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: (p.consecutive_top10s ?? 0) >= 2 ? GREEN : MUTED, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.consecutive_top10s ?? 0}
                   </td>
                 </>}
 
                 {view === "dg" && <>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontWeight: 700, fontSize: "0.88em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
                     {p.dg_win != null ? `${(p.dg_win * 100).toFixed(1)}%` : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: GREEN, fontWeight: 700, fontSize: "0.88em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: GREEN, fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
                     {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontSize: "0.85em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.dg_top10 != null ? `${(p.dg_top10 * 100).toFixed(1)}%` : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: GREEN, fontSize: "0.85em" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: GREEN, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.top10_prob != null ? `${(p.top10_prob * 100).toFixed(1)}%` : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", fontWeight: 600, fontSize: "0.85em",
+                  <td style={{ ...tdStyle(i), textAlign: "center", fontWeight: 600, fontSize: "max(var(--fs-min), 0.85em)",
                       color: p.dg_course_fit_delta_pct != null ? (p.dg_course_fit_delta_pct >= 0 ? GREEN : RED) : MUTED }}>
                     {p.dg_course_fit_delta_pct != null
                       ? `${p.dg_course_fit_delta_pct >= 0 ? "+" : ""}${(p.dg_course_fit_delta_pct * 100).toFixed(1)}%`
@@ -915,7 +915,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
             <h2 style={{ margin: 0, fontSize: "1.3em", fontWeight: 800, color: TEXT }}>
               {data.course_name ?? data.tournament_name}
             </h2>
-            <p style={{ margin: "2px 0 0", fontSize: "0.82em", color: MUTED }}>{data.tournament_name}</p>
+            <p style={{ margin: "2px 0 0", fontSize: "max(var(--fs-min), 0.82em)", color: MUTED }}>{data.tournament_name}</p>
           </div>
           {data.is_default ? (
             <span style={{
@@ -942,11 +942,11 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
             ["Putting",          profile.putt_pct, "var(--bc-orange)"],
           ] as const).map(([label, pct, color]) => (
             <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-              <span style={{ width: 140, fontSize: "0.8em", color: MUTED, flexShrink: 0 }}>{label}</span>
+              <span style={{ width: 140, fontSize: "max(var(--fs-min), 0.8em)", color: MUTED, flexShrink: 0 }}>{label}</span>
               <div style={{ flex: 1, background: "var(--bc-panel)", borderRadius: 4, height: 10, border: `1px solid ${BORDER}` }}>
                 <div style={{ width: `${pct}%`, background: color, borderRadius: 4, height: 10 }} />
               </div>
-              <span style={{ width: 46, textAlign: "right", fontSize: "0.85em", fontWeight: 700, color }}>
+              <span style={{ width: 46, textAlign: "right", fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 700, color }}>
                 {pct.toFixed(0)}%
               </span>
             </div>
@@ -961,7 +961,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
         onChange={e => setSearch(e.target.value)}
         style={{
           background: CARD_BG, border: `1px solid ${BORDER}`, borderRadius: 6,
-          color: TEXT, padding: "7px 12px", marginBottom: 12, width: 200, fontSize: "0.85em",
+          color: TEXT, padding: "7px 12px", marginBottom: 12, width: 200, fontSize: "max(var(--fs-min), 0.85em)",
           outline: "none",
         }}
       />
@@ -993,7 +993,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
                       borderLeft: isPick ? `2px solid ${GREEN}` : undefined,
                     }}
                   >
-                    <td style={{ padding: "6px 10px", textAlign: "center", color: LABEL, fontSize: "0.8em", borderBottom: "1px solid var(--bc-card)" }}>
+                    <td style={{ padding: "6px 10px", textAlign: "center", color: LABEL, fontSize: "max(var(--fs-min), 0.8em)", borderBottom: "1px solid var(--bc-card)" }}>
                       {i + 1}
                     </td>
                     <td style={{ padding: "6px 10px", borderBottom: "1px solid var(--bc-card)" }}>
@@ -1001,7 +1001,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
                         <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: isExpanded ? BLUE : "var(--bc-line)" }}>
                           {isExpanded ? "▲" : "▼"}
                         </span>
-                        <span style={{ color: isPick ? GREEN : TEXT, fontWeight: isPick ? 700 : 500, fontSize: "0.88em" }}>
+                        <span style={{ color: isPick ? GREEN : TEXT, fontWeight: isPick ? 700 : 500, fontSize: "max(var(--fs-min), 0.88em)" }}>
                           {p.player_name}
                         </span>
                         {isPick && (
@@ -1011,7 +1011,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
                         )}
                       </span>
                     </td>
-                    <td style={{ padding: "6px 10px", textAlign: "center", color: MUTED, fontSize: "0.85em", borderBottom: "1px solid var(--bc-card)" }}>
+                    <td style={{ padding: "6px 10px", textAlign: "center", color: MUTED, fontSize: "max(var(--fs-min), 0.85em)", borderBottom: "1px solid var(--bc-card)" }}>
                       {p.world_rank != null ? `#${p.world_rank}` : "—"}
                     </td>
                     <td style={{ padding: "6px 10px", textAlign: "center", fontWeight: 700, fontSize: "0.9em", borderBottom: "1px solid var(--bc-card)",
@@ -1107,7 +1107,7 @@ function H2HTab({ players }: { players: string[] }) {
       {ready && <H2HView p1={p1!} p2={p2!} />}
 
       {!p1Name && !p2Name && (
-        <div style={{ textAlign: "center", padding: "48px 0", color: LABEL, fontSize: "0.88em" }}>
+        <div style={{ textAlign: "center", padding: "48px 0", color: LABEL, fontSize: "max(var(--fs-min), 0.88em)" }}>
           Select two players above to compare them head-to-head.
         </div>
       )}
@@ -1348,7 +1348,7 @@ function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
   };
   function cell(i: number): React.CSSProperties {
     return {
-      padding: "5px 10px", fontSize: "0.8em", textAlign: "center",
+      padding: "5px 10px", fontSize: "max(var(--fs-min), 0.8em)", textAlign: "center",
       background: i % 2 === 0 ? CELL : "var(--bc-panel)",
       borderBottom: `1px solid ${BORD}`,
     };
@@ -1439,8 +1439,8 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
       .catch(() => setError(true));
   }, [tid]);
 
-  if (error) return <p style={{ color: RED, fontSize: "0.8em", margin: "8px 0 0" }}>Failed to load.</p>;
-  if (!rows)  return <p style={{ color: MUTED, fontSize: "0.8em", margin: "8px 0 0" }}>Loading leaderboard…</p>;
+  if (error) return <p style={{ color: RED, fontSize: "max(var(--fs-min), 0.8em)", margin: "8px 0 0" }}>Failed to load.</p>;
+  if (!rows)  return <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.8em)", margin: "8px 0 0" }}>Loading leaderboard…</p>;
 
   const hasEarnings = rows.some(r => r.earnings != null);
   const hasSg = rows.some(r => r.sg_total != null);
@@ -1454,7 +1454,7 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
     borderBottom: `1px solid ${BORDER}`,
   };
   const tdS = (isPick: boolean, i: number): React.CSSProperties => ({
-    padding: "4px 8px", fontSize: "0.8em",
+    padding: "4px 8px", fontSize: "max(var(--fs-min), 0.8em)",
     borderBottom: "1px solid var(--bc-card)",
     background: isPick ? "var(--bc-panel)" : i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-card)",
   });
@@ -1566,7 +1566,7 @@ function CareerCard({ playerName }: { playerName: string }) {
     borderBottom: `1px solid ${BORDER}`, whiteSpace: "nowrap",
   };
   const tdBase = (i: number): React.CSSProperties => ({
-    padding: "5px 10px", borderBottom: `1px solid var(--bc-card)`, fontSize: "0.83em",
+    padding: "5px 10px", borderBottom: `1px solid var(--bc-card)`, fontSize: "max(var(--fs-min), 0.83em)",
     background: i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)",
   });
 
@@ -1609,7 +1609,7 @@ function CareerCard({ playerName }: { playerName: string }) {
         )}
       </div>
 
-      {loading && <p style={{ color: MUTED, fontSize: "0.85em" }}>Loading…</p>}
+      {loading && <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.85em)" }}>Loading…</p>}
 
       {/* ── By Year view ─────────────────────────────────────────────────── */}
       {loaded && career && view === "yearly" && (
@@ -1799,7 +1799,7 @@ function CareerCard({ playerName }: { playerName: string }) {
       )}
 
       {loaded && !loading && (!career || (!career.recent.length && !career.by_year.length)) && (
-        <p style={{ color: MUTED, fontSize: "0.83em" }}>No career data found.</p>
+        <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.83em)" }}>No career data found.</p>
       )}
     </div>
   );
@@ -1822,7 +1822,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               </h1>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 6 }}>
-              <span style={{ fontSize: "0.82em", color: MUTED }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: MUTED }}>
                 {m.world_rank != null ? `World #${Math.round(m.world_rank)}` : "World rank —"}
               </span>
             </div>
@@ -1861,7 +1861,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
           )}
         </div>
         {m.explanation && (
-          <p style={{ fontSize: "0.85em", color: TEXT, margin: "0 0 8px 0", lineHeight: 1.5 }}>
+          <p style={{ fontSize: "max(var(--fs-min), 0.85em)", color: TEXT, margin: "0 0 8px 0", lineHeight: 1.5 }}>
             {m.explanation}
           </p>
         )}
@@ -1912,12 +1912,12 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               background: "var(--bc-panel)", border: `1px solid ${BORDER}`, borderRadius: 8,
               padding: "10px 14px",
             }}>
-              <span style={{ fontSize: "0.8em", color: LABEL }}>Course fit</span>
-              <span style={{ fontSize: "0.88em", color: MUTED, fontVariantNumeric: "tabular-nums" }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: LABEL }}>Course fit</span>
+              <span style={{ fontSize: "max(var(--fs-min), 0.88em)", color: MUTED, fontVariantNumeric: "tabular-nums" }}>
                 {fmtPct(profile.dg_prediction.baseline_win)} baseline
               </span>
-              <span style={{ fontSize: "0.8em", color: LABEL }}>→</span>
-              <span style={{ fontSize: "0.88em", fontWeight: 700, color: BLUE, fontVariantNumeric: "tabular-nums" }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: LABEL }}>→</span>
+              <span style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700, color: BLUE, fontVariantNumeric: "tabular-nums" }}>
                 {fmtPct(profile.dg_prediction.bhf_win)} adjusted
               </span>
               {profile.dg_prediction.course_fit_delta_pct != null && (
@@ -2049,7 +2049,7 @@ function SkillRatingsCard({ sr }: { sr: import("@/lib/api").PlayerSkillRatings }
           <div style={{ borderTop: `1px solid ${BORDER}`, margin: "8px 0" }} />
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ width: 160, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, flexShrink: 0 }}>Drive Distance</span>
-            <span style={{ fontSize: "0.88em", fontWeight: 700, color: sr.dist >= 0 ? GREEN : RED }}>
+            <span style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700, color: sr.dist >= 0 ? GREEN : RED }}>
               {sr.dist >= 0 ? "+" : ""}{sr.dist.toFixed(1)} yds vs avg
             </span>
           </div>
@@ -2075,7 +2075,7 @@ function ApproachCard({ ap }: { ap: PlayerApproachSkill }) {
     <div style={card}>
       <p style={sectionLabel}>Approach Skill</p>
       {ap.overall_prox != null && (
-        <p style={{ fontSize: "0.8em", color: MUTED, marginBottom: 12 }}>
+        <p style={{ fontSize: "max(var(--fs-min), 0.8em)", color: MUTED, marginBottom: 12 }}>
           Overall proximity: <span style={{ color: BLUE }}>{fmt(ap.overall_prox, 1)} ft</span>
         </p>
       )}
@@ -2089,13 +2089,13 @@ function ApproachCard({ ap }: { ap: PlayerApproachSkill }) {
             }}>
               <div style={{ fontSize: "max(var(--fs-min), 0.7em)", color: LABEL, marginBottom: 3 }}>{label}</div>
               <div style={{ display: "flex", gap: 16 }}>
-                <span style={{ fontSize: "0.82em" }}>
+                <span style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
                   <span style={{ color: MUTED }}>SG </span>
                   <span style={{ color: sgColor(band.sg), fontWeight: 600 }}>
                     {band.sg != null ? `${band.sg >= 0 ? "+" : ""}${fmt(band.sg, 3)}` : "—"}
                   </span>
                 </span>
-                <span style={{ fontSize: "0.82em" }}>
+                <span style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
                   <span style={{ color: MUTED }}>Prox </span>
                   <span style={{ color: TEXT }}>{band.prox != null ? `${fmt(band.prox, 1)} ft` : "—"}</span>
                 </span>
@@ -2138,7 +2138,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
       {bp.summary && (
         <div style={{
           borderLeft: "3px solid var(--bc-line)", paddingLeft: 12,
-          marginBottom: 16, color: MUTED, fontSize: "0.85em", lineHeight: 1.65,
+          marginBottom: 16, color: MUTED, fontSize: "max(var(--fs-min), 0.85em)", lineHeight: 1.65,
         }}>
           {bp.summary}
         </div>
@@ -2191,27 +2191,27 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
       {/* Driving + scoring stats row */}
       <div style={{ display: "flex", gap: 20, marginBottom: 14, flexWrap: "wrap" }}>
         {bp.driving_distance != null && (
-          <span style={{ fontSize: "0.82em", color: TEXT }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
             <span style={{ color: LABEL }}>Drive </span>{fmt(bp.driving_distance, 1)} yd
           </span>
         )}
         {bp.driving_accuracy != null && (
-          <span style={{ fontSize: "0.82em", color: TEXT }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
             <span style={{ color: LABEL }}>Acc </span>{fmt(bp.driving_accuracy, 1)}%
           </span>
         )}
         {bp.gir_pct && (
-          <span style={{ fontSize: "0.82em", color: TEXT }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
             <span style={{ color: LABEL }}>GIR </span>{bp.gir_pct}
           </span>
         )}
         {bp.scrambling_pct && (
-          <span style={{ fontSize: "0.82em", color: TEXT }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
             <span style={{ color: LABEL }}>Scramble </span>{bp.scrambling_pct}
           </span>
         )}
         {bp.fedex_rank != null && (
-          <span style={{ fontSize: "0.82em", color: TEXT }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
             <span style={{ color: LABEL }}>FedEx </span>#{Math.round(bp.fedex_rank)}
           </span>
         )}
@@ -2223,7 +2223,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
           <p style={{ ...sectionLabel, marginTop: 4 }}>Key Insights</p>
           <ul style={{ margin: "0 0 16px 0", paddingLeft: 18 }}>
             {keyBullets.map((b, i) => (
-              <li key={i} style={{ fontSize: "0.82em", color: MUTED, lineHeight: 1.6, marginBottom: 4 }}>
+              <li key={i} style={{ fontSize: "max(var(--fs-min), 0.82em)", color: MUTED, lineHeight: 1.6, marginBottom: 4 }}>
                 {b}
               </li>
             ))}
@@ -2236,7 +2236,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
         <>
           <p style={{ ...sectionLabel, marginTop: 4 }}>Recent Results</p>
           <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}`, marginBottom: 16 }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)", fontSize: "0.82em" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)", fontSize: "max(var(--fs-min), 0.82em)" }}>
               <thead>
                 <tr>
                   {["Finish", "Tournament", "Score", "Year"].map(h => (

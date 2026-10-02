@@ -297,7 +297,7 @@ export default function BettingPage() {
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: showTable ? 12 : 0 }}>
           <button
             onClick={() => setShowTable(!showTable)}
-            style={{ ...btnStyle, background: showTable ? "var(--bc-line)" : "transparent", fontSize: "0.85em" }}
+            style={{ ...btnStyle, background: showTable ? "var(--bc-line)" : "transparent", fontSize: "max(var(--fs-min), 0.85em)" }}
           >
             {showTable ? "▲ Hide" : "▼ Show"} Book Comparison
           </button>
@@ -306,7 +306,7 @@ export default function BettingPage() {
             <select
               value={tableMarket}
               onChange={(e) => setTableMarket(e.target.value)}
-              style={{ ...selectStyle, fontSize: "0.85em" }}
+              style={{ ...selectStyle, fontSize: "max(var(--fs-min), 0.85em)" }}
             >
               {["top10", "top5", "top20", "outright"].map((m) => (
                 <option key={m} value={m}>{MARKET_LABELS[m] ?? m}</option>
@@ -438,14 +438,14 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
             MY PICK
           </span>
         )}
-        <span style={{ fontSize: "0.88em", color: "var(--bc-muted)" }}>
+        <span style={{ fontSize: "max(var(--fs-min), 0.88em)", color: "var(--bc-muted)" }}>
           {bet.market_label} · {bet.odds_str} · {bet.book}
         </span>
       </div>
 
       {/* Reasoning */}
       {bet.reasoning && (
-        <p style={{ margin: 0, fontSize: "0.84em", color: "var(--bc-muted)", lineHeight: 1.65 }}>
+        <p style={{ margin: 0, fontSize: "max(var(--fs-min), 0.84em)", color: "var(--bc-muted)", lineHeight: 1.65 }}>
           {bet.reasoning}
         </p>
       )}
@@ -473,7 +473,7 @@ const selectStyle: React.CSSProperties = {
   borderRadius: 6,
   color: "var(--bc-text)",
   padding: "6px 10px",
-  fontSize: "0.88em",
+  fontSize: "max(var(--fs-min), 0.88em)",
   outline: "none",
 };
 
@@ -483,7 +483,7 @@ const btnStyle: React.CSSProperties = {
   borderRadius: 6,
   color: "var(--bc-text)",
   padding: "7px 14px",
-  fontSize: "0.88em",
+  fontSize: "max(var(--fs-min), 0.88em)",
   fontWeight: 600,
   cursor: "pointer",
 };

@@ -50,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <footer style={{
             borderTop: "1px solid var(--bc-line)", padding: "14px 24px",
             display: "flex", flexWrap: "wrap", gap: "6px 18px", justifyContent: "center",
-            color: "var(--bc-muted)", fontSize: "0.82em",
+            color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)",
           }}>
             <span>Golf Edge · free to play, no money changes hands</span>
             <Link href="/terms" style={{ color: "inherit" }}>Terms</Link>

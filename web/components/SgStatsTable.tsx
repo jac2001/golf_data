@@ -94,7 +94,7 @@ function ScoreCell({ h }: { h: HoleData }) {
   let boxStyle: React.CSSProperties = {
     display: "inline-flex", alignItems: "center", justifyContent: "center",
     width: 26, height: 26, fontWeight: played && h.rel !== 0 ? 700 : 500,
-    fontSize: "0.85em", color,
+    fontSize: "max(var(--fs-min), 0.85em)", color,
   };
   if (played && h.rel != null) {
     if (h.rel <= -2) boxStyle = { ...boxStyle, border: `2px solid ${GOLD}`, borderRadius: "50%", background: "rgba(255,210,74,0.08)" };
@@ -270,7 +270,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
               border: `1px solid ${roundParam === opt.key ? GREEN : BORDER}`,
               color: roundParam === opt.key ? GREEN : MUTED,
               borderRadius: 6, padding: "4px 12px",
-              fontSize: "0.8em", fontWeight: roundParam === opt.key ? 700 : 400,
+              fontSize: "max(var(--fs-min), 0.8em)", fontWeight: roundParam === opt.key ? 700 : 400,
               cursor: "pointer",
             }}
           >
@@ -319,7 +319,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
 
                 const td: React.CSSProperties = {
                   padding: "6px 10px", borderBottom: "1px solid var(--bc-card)",
-                  background: bg, textAlign: "center", fontSize: "0.83em",
+                  background: bg, textAlign: "center", fontSize: "max(var(--fs-min), 0.83em)",
                 };
 
                 return (
@@ -340,7 +340,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
                       {/* Player name */}
                       <td style={{ ...td, textAlign: "left", fontWeight: 600, whiteSpace: "nowrap" }}>
                         {clickable && (
-                          <span style={{ marginRight: 5, color: isExpanded ? GREEN : "var(--bc-line)", fontSize: "0.8em" }}>
+                          <span style={{ marginRight: 5, color: isExpanded ? GREEN : "var(--bc-line)", fontSize: "max(var(--fs-min), 0.8em)" }}>
                             {isExpanded ? "▾" : "▸"}
                           </span>
                         )}
@@ -391,7 +391,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
                                 <ScorecardRow key={rnd} holes={holes} round={rnd} />
                               ))
                           ) : (
-                            <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>
+                            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>
                               No hole-by-hole data for {p.player}
                             </span>
                           )}

@@ -44,7 +44,7 @@ export default function UpdateToast() {
       position: "fixed", bottom: 18, left: "50%", transform: "translateX(-50%)",
       zIndex: 1000, cursor: "pointer", fontFamily: "inherit",
       background: "var(--bc-yellow)", color: "#081f14", fontWeight: 800,
-      fontSize: "0.82em", padding: "11px 20px", borderRadius: 999,
+      fontSize: "max(var(--fs-min), 0.82em)", padding: "11px 20px", borderRadius: 999,
       border: "none", boxShadow: "0 4px 18px rgba(0,0,0,0.45)",
     }}>
       Golf Edge updated — tap to reload

@@ -16,7 +16,7 @@ const card: React.CSSProperties = {
 };
 const cell: React.CSSProperties = {
   padding: "8px 12px", borderBottom: "1px solid var(--bc-line)",
-  fontSize: "0.84em", color: "var(--bc-text)", textAlign: "left",
+  fontSize: "max(var(--fs-min), 0.84em)", color: "var(--bc-text)", textAlign: "left",
 };
 const hdr: React.CSSProperties = {
   ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.76em)",
@@ -66,12 +66,12 @@ export default function LeagueRetro() {
           <span style={{ fontSize: "1.4em", fontWeight: 800, color: "var(--bc-yellow)",
             fontVariantNumeric: "tabular-nums" }}>{money(w.total)}</span>
           {champion && w.margin != null && (
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.88em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)" }}>
               won by {money(Math.abs(w.margin))}
             </span>
           )}
         </div>
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", marginTop: 6, lineHeight: 1.5 }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 6, lineHeight: 1.5 }}>
           {w.weeks} weeks · {w.total_uses} uses · {money(w.per_use)} per use · {w.bust_count} busts —
           and {w.wins === 0
             ? "not a single weekly win: a championship built entirely on never having a bad Sunday."
@@ -108,7 +108,7 @@ export default function LeagueRetro() {
                   ? "var(--bc-card-hi)" : "transparent" }}>
                   <td style={{ ...cell, color: "var(--bc-muted)", width: 40 }}>{t.place}</td>
                   <td style={{ ...cell, fontWeight: 600 }}>
-                    {t.team} <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.85em" }}>{t.owner}</span>
+                    {t.team} <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.85em)" }}>{t.owner}</span>
                   </td>
                   <td style={num}>{money(t.earnings)}</td>
                 </tr>
@@ -121,7 +121,7 @@ export default function LeagueRetro() {
         <div style={{ ...card, marginBottom: 0 }}>
           <div style={{ fontWeight: 700, marginBottom: 8 }}>Hall of Fame Picks</div>
           {w.best_picks.map(p => (
-            <div key={p.player + p.week} style={{ display: "flex", gap: 8, fontSize: "0.84em",
+            <div key={p.player + p.week} style={{ display: "flex", gap: 8, fontSize: "max(var(--fs-min), 0.84em)",
               padding: "4px 0", borderBottom: "1px solid var(--bc-line)" }}>
               <span style={{ fontWeight: 600 }}>{p.player}</span>
               <span style={{ color: "var(--bc-muted)" }}>{p.tournament} · {p.result}</span>
@@ -131,7 +131,7 @@ export default function LeagueRetro() {
           ))}
           <div style={{ fontWeight: 700, margin: "14px 0 8px" }}>Stars, by the numbers</div>
           {w.stars.slice(0, 5).map(st => (
-            <div key={st.player} style={{ display: "flex", gap: 8, fontSize: "0.82em", padding: "3px 0" }}>
+            <div key={st.player} style={{ display: "flex", gap: 8, fontSize: "max(var(--fs-min), 0.82em)", padding: "3px 0" }}>
               <span>{st.player}</span>
               <span style={{ color: "var(--bc-muted)" }}>{st.uses} use{st.uses === 1 ? "" : "s"}</span>
               <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontVariantNumeric: "tabular-nums" }}>
@@ -155,7 +155,7 @@ export default function LeagueRetro() {
               { label: "Hindsight-perfect", v: s.ladder.hindsight_ceiling },
             ].map(r => (
               <div key={r.label} style={{ marginBottom: 10 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.84em" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "max(var(--fs-min), 0.84em)" }}>
                   <span style={{ color: r.label.includes("WineTime") ? "var(--bc-yellow)" : "var(--bc-text)" }}>{r.label}</span>
                   <span style={{ fontVariantNumeric: "tabular-nums" }}>{money(r.v)}</span>
                 </div>

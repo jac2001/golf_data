@@ -10,7 +10,7 @@ type SortMode = "model" | "boost" | "history";
 const cell: React.CSSProperties = {
   padding: "8px 12px",
   borderBottom: "1px solid var(--bc-line)",
-  fontSize: "0.83em",
+  fontSize: "max(var(--fs-min), 0.83em)",
   color: "var(--bc-text)",
   textAlign: "left",
 };
@@ -73,7 +73,7 @@ function SgBar({ value }: { value: number | null }) {
   const color  = sgColor(value);
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
-      <span style={{ color, fontSize: "0.82em", width: 36, textAlign: "right" }}>
+      <span style={{ color, fontSize: "max(var(--fs-min), 0.82em)", width: 36, textAlign: "right" }}>
         {(value >= 0 ? "+" : "") + value.toFixed(2)}
       </span>
       <span style={{ display: "inline-block", height: 6, width: Math.max(barW, 2), background: color, borderRadius: 3, opacity: 0.8 }} />
@@ -89,7 +89,7 @@ function AdjBar({ value, scale = 0.35 }: { value: number | null; scale?: number 
   const color  = adjColor(value);
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
-      <span style={{ color, fontSize: "0.82em", width: 38, textAlign: "right" }}>
+      <span style={{ color, fontSize: "max(var(--fs-min), 0.82em)", width: 38, textAlign: "right" }}>
         {fmtAdj(value)}
       </span>
       <span style={{ display: "inline-block", height: 6, width: Math.max(barW, 2), background: color, borderRadius: 3, opacity: 0.8 }} />
@@ -118,11 +118,11 @@ function CourseProfile({ profile }: { profile: CourseFitResponse["course_profile
           const barColor = val > 0.3 ? "var(--bc-green)" : val > 0.18 ? "var(--bc-yellow)" : "#2a5a7a";
           return (
             <div key={key} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ width: 110, fontSize: "0.82em", color: "var(--bc-text)", flexShrink: 0 }}>{label}</div>
+              <div style={{ width: 110, fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-text)", flexShrink: 0 }}>{label}</div>
               <div style={{ flex: 1, height: 8, background: "var(--bc-panel)", borderRadius: 4, overflow: "hidden" }}>
                 <div style={{ width: `${val * 100}%`, height: "100%", background: barColor, borderRadius: 4, transition: "width 0.3s ease" }} />
               </div>
-              <div style={{ width: 36, fontSize: "0.82em", color: "var(--bc-muted)", textAlign: "right", flexShrink: 0 }}>{Math.round(val * 100)}%</div>
+              <div style={{ width: 36, fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-muted)", textAlign: "right", flexShrink: 0 }}>{Math.round(val * 100)}%</div>
               <div style={{ width: 200, fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>{desc}</div>
             </div>
           );
@@ -174,7 +174,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
               {idx > 0 && <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>}
               <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>{s.label}</span>
               <span style={{
-                fontSize: "0.82em", fontWeight: 600,
+                fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600,
                 color: idx === 0 ? "var(--bc-muted)" : adjColor(s.value),
               }}>
                 {idx === 0
@@ -188,7 +188,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
             <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>
               <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>+ other</span>
-              <span style={{ fontSize: "0.82em", fontWeight: 600, color: adjColor(remaining) }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600, color: adjColor(remaining) }}>
                 {fmtAdj(remaining)}
               </span>
             </span>
@@ -197,7 +197,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
             <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>
             <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>DG final</span>
             <span style={{
-              fontSize: "0.88em", fontWeight: 700,
+              fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700,
               color: final >= 1.5 ? "var(--bc-green)" : final >= 0 ? "var(--bc-green)" : "var(--bc-muted)",
             }}>
               {(final >= 0 ? "+" : "") + final.toFixed(2)} SG
@@ -206,7 +206,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
           <span style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 20 }}>
             <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>DG win%</span>
             <span style={{
-              fontSize: "0.88em", fontWeight: 700,
+              fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700,
               color: (p.dg_win ?? 0) > 0.08 ? "var(--bc-green)" : (p.dg_win ?? 0) > 0.03 ? "var(--bc-yellow)" : "var(--bc-muted)",
             }}>
               {p.dg_win != null ? fmtPct(p.dg_win) : "—"}
@@ -214,7 +214,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 8 }}>
             <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>Model win%</span>
-            <span style={{ fontSize: "0.88em", fontWeight: 700, color: "var(--bc-muted)" }}>
+            <span style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700, color: "var(--bc-muted)" }}>
               {p.win_prob != null ? fmtPct(p.win_prob) : "—"}
             </span>
           </span>
@@ -257,7 +257,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
         {/* Player name + uses badge */}
         <td style={{ ...cell, minWidth: 170 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.88em" }}>{name}</span>
+            <span style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.88em)" }}>{name}</span>
             <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: expanded ? "var(--bc-green)" : "var(--bc-line)", marginLeft: 2 }}>
               {expanded ? "▲" : "▼"}
             </span>
@@ -277,7 +277,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
         {/* Venue / tournament history record */}
         <td style={{ ...cell, textAlign: "center" }}>
           {p.venue_starts > 0 ? (
-            <div style={{ fontSize: "0.82em" }}>
+            <div style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
               <span style={{ color: "var(--bc-muted)" }}>{p.venue_starts} starts</span>
               {p.venue_top10s > 0 && (
                 <span style={{ marginLeft: 6, color: "var(--bc-yellow)", fontWeight: 600 }}>
@@ -296,14 +296,14 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
         {/* Tourney record */}
         <td style={{ ...cell, textAlign: "center" }}>
           {p.has_history && p.course_starts != null ? (
-            <div style={{ fontSize: "0.82em" }}>
+            <div style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
               {p.avg_to_par != null && (
                 <span style={{ fontWeight: 600, color: p.avg_to_par < 0 ? "var(--bc-green)" : "var(--bc-red)" }}>
                   {p.avg_to_par > 0 ? "+" : ""}{p.avg_to_par}
                 </span>
               )}
               {p.cut_rate != null && (
-                <span style={{ marginLeft: 6, fontSize: "0.85em", color: "var(--bc-muted)" }}>
+                <span style={{ marginLeft: 6, fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-muted)" }}>
                   {Math.round(p.cut_rate * 100)}% cut
                 </span>
               )}
@@ -323,7 +323,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
 
         {/* Course boost (our model) */}
         <td style={{ ...cell, textAlign: "right" }}>
-          <span style={{ color: shiftColor(p.win_prob_shift), fontWeight: Math.abs(shift) > 0.005 ? 700 : 400, fontSize: "0.88em" }}>
+          <span style={{ color: shiftColor(p.win_prob_shift), fontWeight: Math.abs(shift) > 0.005 ? 700 : 400, fontSize: "max(var(--fs-min), 0.88em)" }}>
             {shift > 0.0005 ? "+" : ""}{shift !== 0 ? fmtPct(p.win_prob_shift, 2) : "—"}
           </span>
         </td>
@@ -331,7 +331,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
         {/* DG Win% */}
         <td style={{ ...cell, textAlign: "right" }}>
           <span style={{
-            fontSize: "0.88em", fontWeight: 600,
+            fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 600,
             color: (p.dg_win ?? 0) > 0.08 ? "var(--bc-green)" : (p.dg_win ?? 0) > 0.03 ? "var(--bc-yellow)" : "var(--bc-muted)",
           }}>
             {p.dg_win != null ? fmtPct(p.dg_win) : "—"}
@@ -453,7 +453,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
         <div style={{
           background: "#1a1000", border: "1px solid #5a4000",
           borderRadius: 8, padding: "10px 16px", marginBottom: 16,
-          fontSize: "0.82em", color: "#c09040", lineHeight: 1.6,
+          fontSize: "max(var(--fs-min), 0.82em)", color: "#c09040", lineHeight: 1.6,
         }}>
           <strong>Note:</strong> "Venue Record" shows {venueLabel} history across all years in our database. The SG vs avg values and course boost reflect that same multi-year history.
         </div>
@@ -466,7 +466,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
             background: sortMode === mode ? "#1a3a5f" : "var(--bc-panel)",
             border: `1px solid ${sortMode === mode ? "var(--bc-green)" : "var(--bc-line)"}`,
             color: sortMode === mode ? "var(--bc-text)" : "var(--bc-muted)",
-            borderRadius: 6, padding: "5px 12px", fontSize: "0.8em", cursor: "pointer",
+            borderRadius: 6, padding: "5px 12px", fontSize: "max(var(--fs-min), 0.8em)", cursor: "pointer",
           }}>
             {SORT_LABELS[mode]}
           </button>
@@ -477,7 +477,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
           onChange={e => setSearch(e.target.value)}
           style={{
             background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-            color: "var(--bc-text)", padding: "5px 10px", fontSize: "0.8em",
+            color: "var(--bc-text)", padding: "5px 10px", fontSize: "max(var(--fs-min), 0.8em)",
             outline: "none", marginLeft: "auto",
           }}
         />

@@ -14,7 +14,7 @@ import {
 
 const cell: React.CSSProperties = {
   padding: "9px 12px", borderBottom: "1px solid var(--bc-line)", textAlign: "left",
-  fontSize: "0.84em", color: "var(--bc-text)",
+  fontSize: "max(var(--fs-min), 0.84em)", color: "var(--bc-text)",
 };
 const hdr: React.CSSProperties = {
   ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.78em)",
@@ -65,9 +65,9 @@ function TournamentLeaderboard({
       .catch(() => setError(true));
   }, [tid]);
 
-  if (error) return <p style={{ color: "var(--negative)", fontSize: "0.82em" }}>Failed to load results.</p>;
-  if (!rows) return <p style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>Loading results…</p>;
-  if (!rows.length) return <p style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>No results found.</p>;
+  if (error) return <p style={{ color: "var(--negative)", fontSize: "max(var(--fs-min), 0.82em)" }}>Failed to load results.</p>;
+  if (!rows) return <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>Loading results…</p>;
+  if (!rows.length) return <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>No results found.</p>;
 
   // Detect which rounds have data
   const hasR3 = rows.some(r => r.r3 != null);
@@ -84,7 +84,7 @@ function TournamentLeaderboard({
     color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: "1px solid var(--bc-line)", whiteSpace: "nowrap", textAlign: "center",
   };
-  const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid #0d1e2e", textAlign: "center", fontSize: "0.83em" };
+  const tdBase: React.CSSProperties = { padding: "5px 10px", borderBottom: "1px solid #0d1e2e", textAlign: "center", fontSize: "max(var(--fs-min), 0.83em)" };
 
   return (
     <div style={{ overflowX: "auto", borderRadius: 8, border: "1px solid var(--bc-line)" }}>
@@ -233,7 +233,7 @@ function ResultsTab() {
                     {/* Recap narrative */}
                     {t.recap && (
                       <p style={{
-                        color: "#b0c8e0", fontSize: "0.85em", lineHeight: 1.6,
+                        color: "#b0c8e0", fontSize: "max(var(--fs-min), 0.85em)", lineHeight: 1.6,
                         margin: "0 0 16px", borderLeft: "2px solid var(--bc-green)",
                         paddingLeft: 12, fontStyle: "italic",
                       }}>
@@ -268,7 +268,7 @@ function ModelTab() {
     if (actual === null) return <span style={{ color: "var(--bc-muted)" }}>—</span>;
     const ratio = actual / pred;
     const col = ratio >= 0.85 && ratio <= 1.15 ? "var(--bc-green)" : ratio >= 0.7 && ratio <= 1.3 ? "var(--bc-yellow)" : "var(--negative)";
-    return <span style={{ color: col }}>{actual.toFixed(1)}% <span style={{ color: "#555", fontSize: "0.85em" }}>({ratio.toFixed(2)}x)</span></span>;
+    return <span style={{ color: col }}>{actual.toFixed(1)}% <span style={{ color: "#555", fontSize: "max(var(--fs-min), 0.85em)" }}>({ratio.toFixed(2)}x)</span></span>;
   }
 
   return (
@@ -276,7 +276,7 @@ function ModelTab() {
 
       {data?.length ? (
       <>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.82em", padding: "8px 0 16px", marginTop: 0 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", padding: "8px 0 16px", marginTop: 0 }}>
         Calibration ratio: 1.0x = perfect. Actual% / Predicted%. Green = within 15%.
       </p>
       <table style={{ width: "100%", borderCollapse: "collapse" }}>

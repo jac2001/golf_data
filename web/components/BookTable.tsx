@@ -38,7 +38,7 @@ export default function BookTable({ data }: Props) {
   const td: React.CSSProperties = {
     padding: "7px 12px",
     borderBottom: "1px solid var(--bc-card)",
-    fontSize: "0.85em",
+    fontSize: "max(var(--fs-min), 0.85em)",
   };
 
   return (

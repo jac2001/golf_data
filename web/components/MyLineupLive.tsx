@@ -46,7 +46,7 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
     const color  = played ? relColor(h.rel) : "#1e3050";
     let boxStyle: React.CSSProperties = {
       display: "inline-flex", alignItems: "center", justifyContent: "center",
-      width: 24, height: 24, fontSize: "0.8em", fontWeight: played && h.rel !== 0 ? 700 : 400, color,
+      width: 24, height: 24, fontSize: "max(var(--fs-min), 0.8em)", fontWeight: played && h.rel !== 0 ? 700 : 400, color,
     };
     if (played && h.rel != null) {
       if (h.rel <= -2) boxStyle = { ...boxStyle, border: "2px solid var(--bc-yellow)", borderRadius: "50%", background: "rgba(255,210,74,0.08)" };
@@ -144,7 +144,7 @@ function RoundPip({ score, label }: { score: number | null; label: string }) {
   return (
     <div style={{ textAlign: "center" }}>
       <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", color: "var(--bc-muted)", textTransform: "uppercase", marginBottom: 2 }}>{label}</div>
-      <div style={{ fontWeight: 700, fontSize: "0.85em", color }}>
+      <div style={{ fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)", color }}>
         {score == null ? "—" : String(score)}
       </div>
     </div>
@@ -183,7 +183,7 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
   return (
     <div>
       {tournament && (
-        <p style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginBottom: 14 }}>{tournament}</p>
+        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginBottom: 14 }}>{tournament}</p>
       )}
       <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
         {picks.map((p, i) => {

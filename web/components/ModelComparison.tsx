@@ -57,7 +57,7 @@ export default function ModelComparison({ players }: Props) {
             </div>
             {wePrefer.map(p => (
               <div key={p.player} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                <span style={{ fontSize: "0.82em", fontWeight: 600 }}>{playerLink(p.player)}</span>
+                <span style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600 }}>{playerLink(p.player)}</span>
                 <span style={{ fontSize: "max(var(--fs-min), 0.75em)" }}>
                   <span style={{ color: GREEN }}>Us #{p.our_rank}</span>
                   <span style={{ color: MUTED, margin: "0 5px" }}>vs</span>
@@ -74,7 +74,7 @@ export default function ModelComparison({ players }: Props) {
             </div>
             {dgPrefers.map(p => (
               <div key={p.player} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                <span style={{ fontSize: "0.82em", fontWeight: 600 }}>{playerLink(p.player)}</span>
+                <span style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600 }}>{playerLink(p.player)}</span>
                 <span style={{ fontSize: "max(var(--fs-min), 0.75em)" }}>
                   <span style={{ color: GREEN }}>Us #{p.our_rank}</span>
                   <span style={{ color: MUTED, margin: "0 5px" }}>vs</span>
@@ -127,7 +127,7 @@ export default function ModelComparison({ players }: Props) {
 
               const td: React.CSSProperties = {
                 padding: "6px 10px", background: bg,
-                borderBottom: "1px solid var(--bc-card)", fontSize: "0.85em",
+                borderBottom: "1px solid var(--bc-card)", fontSize: "max(var(--fs-min), 0.85em)",
               };
 
               return (
@@ -152,14 +152,14 @@ export default function ModelComparison({ players }: Props) {
                   {/* Win % dual bar */}
                   <td style={{ ...td, padding: "6px 14px" }}>
                     <div style={{ display: "grid", gridTemplateColumns: "52px 1fr 52px", alignItems: "center", gap: 8 }}>
-                      <span style={{ color: GREEN, fontWeight: weUp ? 700 : 400, textAlign: "right", fontSize: "0.88em" }}>
+                      <span style={{ color: GREEN, fontWeight: weUp ? 700 : 400, textAlign: "right", fontSize: "max(var(--fs-min), 0.88em)" }}>
                         {p.our_win != null ? `${p.our_win.toFixed(1)}%` : "—"}
                       </span>
                       <div style={{ display: "grid", gridTemplateColumns: `${wA.toFixed(1)}fr ${wB.toFixed(1)}fr`, height: 7, borderRadius: 4, overflow: "hidden" }}>
                         <div style={{ background: weUp ? GREEN : "color-mix(in srgb, var(--bc-green) 15%, transparent)" }} />
                         <div style={{ background: dgUp ? BLUE : "var(--bc-card)" }} />
                       </div>
-                      <span style={{ color: BLUE, fontWeight: dgUp ? 700 : 400, fontSize: "0.88em" }}>
+                      <span style={{ color: BLUE, fontWeight: dgUp ? 700 : 400, fontSize: "max(var(--fs-min), 0.88em)" }}>
                         {p.dg_win != null ? `${p.dg_win.toFixed(1)}%` : "—"}
                       </span>
                     </div>
@@ -168,14 +168,14 @@ export default function ModelComparison({ players }: Props) {
                   {/* Top 10 % dual bar */}
                   <td style={{ ...td, padding: "6px 14px" }}>
                     <div style={{ display: "grid", gridTemplateColumns: "52px 1fr 52px", alignItems: "center", gap: 8 }}>
-                      <span style={{ color: GREEN, fontWeight: weUp ? 700 : 400, textAlign: "right", fontSize: "0.88em" }}>
+                      <span style={{ color: GREEN, fontWeight: weUp ? 700 : 400, textAlign: "right", fontSize: "max(var(--fs-min), 0.88em)" }}>
                         {p.our_top10 != null ? `${p.our_top10.toFixed(1)}%` : "—"}
                       </span>
                       <div style={{ display: "grid", gridTemplateColumns: `${tA.toFixed(1)}fr ${tB.toFixed(1)}fr`, height: 7, borderRadius: 4, overflow: "hidden" }}>
                         <div style={{ background: weUp ? GREEN : "color-mix(in srgb, var(--bc-green) 15%, transparent)" }} />
                         <div style={{ background: dgUp ? BLUE : "var(--bc-card)" }} />
                       </div>
-                      <span style={{ color: BLUE, fontWeight: dgUp ? 700 : 400, fontSize: "0.88em" }}>
+                      <span style={{ color: BLUE, fontWeight: dgUp ? 700 : 400, fontSize: "max(var(--fs-min), 0.88em)" }}>
                         {p.dg_top10 != null ? `${p.dg_top10.toFixed(1)}%` : "—"}
                       </span>
                     </div>

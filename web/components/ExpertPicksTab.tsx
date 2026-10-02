@@ -50,10 +50,10 @@ function ConsensusTable({ rows, nExperts }: { rows: ExpertConsensusPlayer[]; nEx
                 <td style={{ padding: "7px 10px", textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", width: 32 }}>
                   {i + 1}
                 </td>
-                <td style={{ padding: "7px 12px", fontWeight: 600, fontSize: "0.88em", color: isTopWinner ? "var(--bc-text)" : "var(--bc-muted)", whiteSpace: "nowrap" }}>
+                <td style={{ padding: "7px 12px", fontWeight: 600, fontSize: "max(var(--fs-min), 0.88em)", color: isTopWinner ? "var(--bc-text)" : "var(--bc-muted)", whiteSpace: "nowrap" }}>
                   {r.player_name}
                 </td>
-                <td style={{ padding: "7px 10px", textAlign: "center", fontSize: "0.82em", color: "var(--bc-green)", fontWeight: 700, width: 60 }}>
+                <td style={{ padding: "7px 10px", textAlign: "center", fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-green)", fontWeight: 700, width: 60 }}>
                   {r.lineup_mentions}/{nExperts}
                 </td>
                 <td style={{ padding: "7px 10px", width: 120 }}>
@@ -64,7 +64,7 @@ function ConsensusTable({ rows, nExperts }: { rows: ExpertConsensusPlayer[]; nEx
                     </span>
                   </div>
                 </td>
-                <td style={{ padding: "7px 10px", textAlign: "center", fontSize: "0.82em", color: isTopWinner ? "var(--bc-yellow)" : "var(--bc-muted)", fontWeight: isTopWinner ? 800 : 400, width: 60 }}>
+                <td style={{ padding: "7px 10px", textAlign: "center", fontSize: "max(var(--fs-min), 0.82em)", color: isTopWinner ? "var(--bc-yellow)" : "var(--bc-muted)", fontWeight: isTopWinner ? 800 : 400, width: 60 }}>
                   {r.winner_picks > 0 ? `${r.winner_picks}/${nExperts}` : "—"}
                 </td>
                 <td style={{ padding: "7px 10px", width: 100 }}>
@@ -131,12 +131,12 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
           {expert.winner_pick && (
             <div style={{ textAlign: "right" }}>
               <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Winner</div>
-              <div style={{ fontSize: "0.82em", fontWeight: 800, color: "var(--bc-yellow)" }}>
+              <div style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 800, color: "var(--bc-yellow)" }}>
                 {expert.winner_pick.split(" ").pop()}
               </div>
             </div>
           )}
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.8em" }}>{expanded ? "▲" : "▼"}</span>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>{expanded ? "▲" : "▼"}</span>
         </div>
       </button>
 
@@ -199,7 +199,7 @@ function ExpertCard({ expert }: { expert: ExpertPick }) {
               borderLeft: "3px solid var(--bc-line)",
               background: "var(--bc-panel)", borderRadius: "0 6px 6px 0",
             }}>
-              <p style={{ margin: 0, fontSize: "0.82em", color: "var(--bc-muted)", lineHeight: 1.6 }}>
+              <p style={{ margin: 0, fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-muted)", lineHeight: 1.6 }}>
                 {expert.comment}
               </p>
             </div>
@@ -256,7 +256,7 @@ export default function ExpertPicksTab({ experts, consensus, tournament }: Props
               background: view === v ? "color-mix(in srgb, var(--bc-green) 13%, transparent)" : "transparent",
               border: `1px solid ${view === v ? "var(--bc-green)" : "var(--bc-line)"}`,
               borderRadius: 6, color: view === v ? "var(--bc-green)" : "var(--bc-muted)",
-              padding: "5px 14px", fontSize: "0.82em", fontWeight: 600, cursor: "pointer",
+              padding: "5px 14px", fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600, cursor: "pointer",
             }}
           >
             {v === "consensus" ? "Consensus Board" : "By Expert"}

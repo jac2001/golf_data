@@ -97,7 +97,7 @@ function MessageBubble({
           border: `1px solid ${isUser ? "var(--bc-line)" : "var(--bc-line)"}`,
           borderRadius: isUser ? "16px 16px 4px 16px" : "4px 16px 16px 16px",
           padding: "10px 14px",
-          fontSize: "0.88em",
+          fontSize: "max(var(--fs-min), 0.88em)",
           color: "var(--bc-text)",
           lineHeight: 1.65,
         }}>
@@ -238,7 +238,7 @@ export default function AssistantPage() {
           <div style={{ margin: "auto 0", paddingBottom: 24 }}>
             <div style={{
               textAlign: "center", color: "var(--bc-muted)",
-              fontSize: "0.88em", marginBottom: 24,
+              fontSize: "max(var(--fs-min), 0.88em)", marginBottom: 24,
             }}>
               Ask anything about this week's tournament, players, bets, or your lineup.
             </div>
@@ -250,7 +250,7 @@ export default function AssistantPage() {
                   style={{
                     background: "var(--bc-card)", border: "1px solid var(--bc-line)",
                     borderRadius: 20, color: "var(--bc-muted)",
-                    padding: "7px 14px", fontSize: "0.82em",
+                    padding: "7px 14px", fontSize: "max(var(--fs-min), 0.82em)",
                     cursor: "pointer", transition: "border-color 0.15s, color 0.15s",
                   }}
                 >
@@ -276,7 +276,7 @@ export default function AssistantPage() {
         {error && (
           <div style={{
             background: "rgba(224,85,85,0.10)", border: "1px solid rgba(224,85,85,0.35)", borderRadius: 8,
-            padding: "10px 14px", color: "var(--bc-red-text)", fontSize: "0.82em", marginBottom: 12,
+            padding: "10px 14px", color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.82em)", marginBottom: 12,
           }}>
             {error}
           </div>
@@ -311,7 +311,7 @@ export default function AssistantPage() {
             style={{
               flex: 1, background: "var(--bc-card)", border: "1px solid var(--bc-line)",
               borderRadius: 10, color: "var(--bc-text)", padding: "10px 14px",
-              fontSize: "0.88em", lineHeight: 1.5, resize: "none",
+              fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.5, resize: "none",
               outline: "none", fontFamily: "inherit",
             }}
           />
@@ -321,7 +321,7 @@ export default function AssistantPage() {
             style={{
               background: input.trim() && !streaming ? "var(--bc-green)" : "var(--bc-line)",
               border: "none", borderRadius: 10, color: "#fff",
-              padding: "10px 18px", fontSize: "0.88em", fontWeight: 700,
+              padding: "10px 18px", fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700,
               cursor: input.trim() && !streaming ? "pointer" : "default",
               transition: "background 0.15s", flexShrink: 0, alignSelf: "stretch",
             }}

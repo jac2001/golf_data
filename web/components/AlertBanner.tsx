@@ -107,7 +107,7 @@ export default function AlertBanner() {
                     background: colors.dot, flexShrink: 0,
                     display: "inline-block",
                   }} />
-                  <span style={{ fontSize: "0.82em", fontWeight: 700, color: "var(--bc-text)" }}>
+                  <span style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, color: "var(--bc-text)" }}>
                     {toast.title}
                   </span>
                 </div>

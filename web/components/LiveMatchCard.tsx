@@ -44,18 +44,18 @@ export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode 
     <div style={shell}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
         <span style={liveDot} aria-hidden />
-        <span style={{ fontSize: "0.8em", fontWeight: 800, letterSpacing: "0.08em",
+        <span style={{ fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 800, letterSpacing: "0.08em",
           textTransform: "uppercase", color: "var(--bc-green)" }}>
           Your matchup · live
         </span>
-        {data.group?.name && <span style={{ fontSize: "0.85em", color: "var(--bc-muted)" }}>{data.group.name}</span>}
+        {data.group?.name && <span style={{ fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-muted)" }}>{data.group.name}</span>}
       </div>
 
       {slates.map(s => {
         const me = s.lines.find(l => l.user_id === s.me_id);
         return (
           <div key={s.tournament_id} style={{ padding: "10px 0", borderTop: "1px solid var(--bc-line)" }}>
-            <div style={{ fontSize: "0.85em", color: "var(--bc-muted)", fontWeight: 700 }}>
+            <div style={{ fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-muted)", fontWeight: 700 }}>
               {s.tour === "euro" ? "DP World Tour" : "PGA Tour"} · {s.name}{s.projected ? " · projected money" : ""}
             </div>
             <div style={{ fontWeight: 900, fontSize: "1.4em", lineHeight: 1.2, margin: "4px 0" }}>
@@ -80,7 +80,7 @@ export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode 
       <div style={{ display: "flex", gap: 16, alignItems: "center", marginTop: 12, flexWrap: "wrap" }}>
         <Link href="/match" style={{
           background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-          textTransform: "uppercase", fontSize: "0.85em", letterSpacing: "0.06em",
+          textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.85em)", letterSpacing: "0.06em",
           padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap" }}>
           Open Match Center
         </Link>

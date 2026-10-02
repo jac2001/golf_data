@@ -17,11 +17,11 @@ export function LegalPage({ title, kicker, children }: {
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
       <PageHead kicker={kicker} title={title} />
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.85em", margin: "0 0 8px" }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)", margin: "0 0 8px" }}>
         Effective {EFFECTIVE}
       </p>
       {children}
-      <p style={{ ...P, color: "var(--bc-muted)", marginTop: 40, fontSize: "0.88em" }}>
+      <p style={{ ...P, color: "var(--bc-muted)", marginTop: 40, fontSize: "max(var(--fs-min), 0.88em)" }}>
         See also: <Link href="/terms">Terms of Service</Link> · <Link href="/privacy">Privacy Policy</Link>
       </p>
     </div>

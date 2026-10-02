@@ -128,7 +128,7 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
     return (
       <div style={card}>
         <strong>No Let It Ride season in {group.name} yet.</strong>
-        <p style={{ color: "var(--bc-muted)", fontSize: "0.88em", margin: "6px 0 0" }}>
+        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", margin: "6px 0 0" }}>
           The group owner starts one — nudge them.
         </p>
       </div>
@@ -149,14 +149,14 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
 
   const input: React.CSSProperties = {
     background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-    color: "var(--bc-text)", padding: "7px 10px", fontSize: "0.88em", fontFamily: "inherit",
+    color: "var(--bc-text)", padding: "7px 10px", fontSize: "max(var(--fs-min), 0.88em)", fontFamily: "inherit",
   };
   const toggle = (t: string) => setTours(ts => ts.includes(t) ? ts.filter(x => x !== t) : [...ts, t]);
 
   return (
     <div style={card}>
       <div style={{ fontWeight: 900, fontSize: "1.05em", marginBottom: 4 }}>Start a Let It Ride season</div>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.84em", margin: "0 0 14px", lineHeight: 1.5 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", margin: "0 0 14px", lineHeight: 1.5 }}>
         Every week, pick golfers for each tour&apos;s event. Each golfer can only be used a few
         times all season — on either tour — so the question is always who to spend now and who
         to save. Most prize money wins. The model plays too, under the same budget.
@@ -183,7 +183,7 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
       <button onClick={submit} disabled={busy || !name.trim() || !tours.length} style={btn(true)}>
         {busy ? "Starting…" : "Start season"}
       </button>
-      {msg && <div style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{msg}</div>}
+      {msg && <div style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 10 }}>{msg}</div>}
     </div>
   );
 }
@@ -253,7 +253,7 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
             {week && (week.status === "upcoming" || week.status === "awaiting" ? (
               <div style={card}>
                 <strong>{week.name}</strong>
-                <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "6px 0 0" }}>
+                <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", margin: "6px 0 0" }}>
                   {week.status === "awaiting"
                     ? `Starts ${shortDate(week.start_date)}. The field hasn't posted yet — picks open as soon as it does, usually by Tuesday.`
                     : `Starts ${shortDate(week.start_date)}. Picks open the week before, once the field is set.`}
@@ -341,7 +341,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
         </div>
       )}
       {winners.length > 0 && (
-        <div style={{ color: "var(--bc-yellow)", fontWeight: 800, fontSize: "0.86em", marginBottom: 10 }}>
+        <div style={{ color: "var(--bc-yellow)", fontWeight: 800, fontSize: "max(var(--fs-min), 0.86em)", marginBottom: 10 }}>
           <Star /> Week winner: {winners.join(" & ")}
         </div>
       )}
@@ -353,7 +353,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
 
       {msg && (
         <div style={{ background: "color-mix(in srgb, var(--bc-red) 10%, transparent)", borderRadius: 6,
-          padding: "8px 12px", marginBottom: 10, color: "var(--bc-red-text)", fontSize: "0.86em" }}>{msg}</div>
+          padding: "8px 12px", marginBottom: 10, color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.86em)" }}>{msg}</div>
       )}
 
       {/* My slate */}
@@ -363,7 +363,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
           return (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
               background: "var(--bc-panel)", border: "1px dashed var(--bc-line)", borderRadius: 6, padding: "8px 12px" }}>
-              <span style={{ fontWeight: p ? 700 : 400, color: p ? "var(--bc-text)" : "var(--bc-muted)", fontSize: "0.88em" }}>
+              <span style={{ fontWeight: p ? 700 : 400, color: p ? "var(--bc-text)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)" }}>
                 {p ? p.player_name : `Slot ${i + 1} — open`}
               </span>
               {p && (
@@ -389,7 +389,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
         <>
           <input placeholder="Search the field…" value={q} onChange={e => setQ(e.target.value)} style={{
             background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-            color: "var(--bc-text)", padding: "7px 12px", fontSize: "0.86em", width: "100%",
+            color: "var(--bc-text)", padding: "7px 12px", fontSize: "max(var(--fs-min), 0.86em)", width: "100%",
             boxSizing: "border-box", marginBottom: 8, fontFamily: "inherit" }} />
           <div style={{ maxHeight: 360, overflowY: "auto", display: "grid", gap: 4 }}>
             {shown.map(f => {
@@ -398,9 +398,9 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
               return (
                 <div key={f.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
                   padding: "6px 10px", borderBottom: "1px solid var(--bc-line)", opacity: spent ? 0.45 : 1 }}>
-                  <span style={{ fontSize: "0.86em" }}>
+                  <span style={{ fontSize: "max(var(--fs-min), 0.86em)" }}>
                     {f.name}
-                    {f.win != null && <span style={{ color: "var(--bc-muted)", fontSize: "0.82em", marginLeft: 8 }}>{(f.win * 100).toFixed(1)}% to win</span>}
+                    {f.win != null && <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginLeft: 8 }}>{(f.win * 100).toFixed(1)}% to win</span>}
                   </span>
                   <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
                     {/* Budget meter: one pip per use, filled = spent. */}
@@ -417,7 +417,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
                 </div>
               );
             })}
-            {shown.length === 0 && <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", padding: 8 }}>
+            {shown.length === 0 && <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", padding: 8 }}>
               {field.length ? "No golfers match." : "The field hasn't posted yet."}</div>}
           </div>
         </>
@@ -439,7 +439,7 @@ function LockedSlate({ picks, me }: { picks: SlatePick[]; me: string }) {
         Everyone&apos;s picks
       </div>
       {[...byUser.entries()].map(([id, u]) => (
-        <div key={id} style={{ fontSize: "0.86em" }}>
+        <div key={id} style={{ fontSize: "max(var(--fs-min), 0.86em)" }}>
           <strong style={{ color: id === me ? "var(--bc-green)" : "var(--bc-text)" }}>{u.name}</strong>
           <span style={{ color: "var(--bc-muted)" }}> — {u.players.join(", ")}</span>
         </div>
@@ -459,7 +459,7 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
     textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right", borderBottom: "1px solid var(--bc-line)",
   };
   const td: React.CSSProperties = {
-    padding: "8px 8px", fontSize: "0.86em", textAlign: "right", borderBottom: "1px solid var(--bc-line)",
+    padding: "8px 8px", fontSize: "max(var(--fs-min), 0.86em)", textAlign: "right", borderBottom: "1px solid var(--bc-line)",
     fontVariantNumeric: "tabular-nums",
   };
   return (
@@ -607,7 +607,7 @@ function SeasonSettings({ league, onSaved }: { league: League; onSaved: () => vo
 
   const input: React.CSSProperties = {
     background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-    color: "var(--bc-text)", padding: "7px 10px", fontSize: "0.88em", fontFamily: "inherit", width: "100%",
+    color: "var(--bc-text)", padding: "7px 10px", fontSize: "max(var(--fs-min), 0.88em)", fontFamily: "inherit", width: "100%",
     boxSizing: "border-box",
   };
   const label: React.CSSProperties = { fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" };
@@ -639,7 +639,7 @@ function SeasonSettings({ league, onSaved }: { league: League; onSaved: () => vo
           <button onClick={() => setConfirmEnd(true)} style={btn(false)}>End season</button>
         ) : (
           <>
-            <span style={{ fontSize: "0.8em", color: "var(--bc-red-text)" }}>End it for everyone? This is final.</span>
+            <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-red-text)" }}>End it for everyone? This is final.</span>
             <button onClick={() => save({ status: "complete" })} disabled={busy} style={{ ...btn(false), color: "var(--bc-red-text)", borderColor: "var(--bc-red-text)" }}>
               Yes, end season
             </button>
@@ -647,7 +647,7 @@ function SeasonSettings({ league, onSaved }: { league: League; onSaved: () => vo
           </>
         )}
       </div>
-      {msg && <div style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{msg}</div>}
+      {msg && <div style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 10 }}>{msg}</div>}
     </div>
   );
 }

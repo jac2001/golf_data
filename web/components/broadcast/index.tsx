@@ -24,7 +24,7 @@ export function PageHead({ kicker, title, right, zone = "public" }: {
   return (
     <div style={{ display: "flex", alignItems: "flex-end", gap: 24, padding: "34px 0 18px" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <div style={{ fontSize: "0.8em", fontWeight: 700, letterSpacing: "0.16em",
+        <div style={{ fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700, letterSpacing: "0.16em",
                       textTransform: "uppercase", color: z.muted }}>{kicker}</div>
         <div style={{ fontWeight: 900, fontStretch: "118%", fontSize: "2.6em",
                       textTransform: "uppercase", letterSpacing: "-0.01em",
@@ -52,7 +52,7 @@ export function SubTabs<T extends string>({ tabs, active, onChange, zone = "publ
             cursor: "pointer", background: "transparent", border: "none",
             borderBottom: `2px solid ${on ? z.accent : "transparent"}`, marginBottom: -1,
             color: on ? z.text : z.muted, fontWeight: on ? 800 : 600,
-            fontSize: "0.8em", textTransform: "uppercase", letterSpacing: "0.05em",
+            fontSize: "max(var(--fs-min), 0.8em)", textTransform: "uppercase", letterSpacing: "0.05em",
             padding: "10px 12px", fontFamily: "inherit",
           }}>
             {t.label}
@@ -73,7 +73,7 @@ export function SubTabs<T extends string>({ tabs, active, onChange, zone = "publ
    Selected = raised surface + text color, never the accent fill. */
 export function choice(on: boolean): React.CSSProperties {
   return {
-    cursor: "pointer", fontFamily: "inherit", fontWeight: on ? 800 : 600, fontSize: "0.8em",
+    cursor: "pointer", fontFamily: "inherit", fontWeight: on ? 800 : 600, fontSize: "max(var(--fs-min), 0.8em)",
     textTransform: "uppercase", letterSpacing: "0.05em", padding: "8px 14px", borderRadius: 4,
     color: on ? "var(--bc-text)" : "var(--bc-muted)",
     background: on ? "var(--bc-raised)" : "transparent",
@@ -84,7 +84,7 @@ export function choice(on: boolean): React.CSSProperties {
 /* ── Primary button: the screen's ONE yellow action ─────────────────────── */
 export const primaryBtn: React.CSSProperties = {
   background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-  textTransform: "uppercase", fontSize: "0.85em", letterSpacing: "0.06em",
+  textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.85em)", letterSpacing: "0.06em",
   padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap", border: "none",
   cursor: "pointer", fontFamily: "inherit", display: "inline-block",
 };
@@ -172,7 +172,7 @@ export function StatStrip({ title, stats, right, zone = "public" }: {
   return (
     <div style={{ display: "flex", gap: 40, alignItems: "center", padding: "20px 26px",
                   background: z.panel, borderRadius: 8, flexWrap: "wrap" }}>
-      <div style={{ fontWeight: 900, textTransform: "uppercase", fontSize: "0.82em",
+      <div style={{ fontWeight: 900, textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)",
                     letterSpacing: "0.09em", color: z.muted }}>{title}</div>
       <div style={{ display: "flex", gap: 36, flexWrap: "wrap" }}>
         {stats.map(s => (

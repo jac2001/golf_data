@@ -89,7 +89,7 @@ export default function RecapPreview({ groupId, groupName, onClose }: {
               {canCopy && <button onClick={copy} style={btn(!canShare)}>Copy image</button>}
               <a href={state.url} download="golf-edge-recap.png" style={{ ...btn(false), textDecoration: "none" }}>Download</a>
             </div>
-            {note && <p style={{ color: "var(--bc-green)", fontSize: "0.84em", margin: "10px 0 0" }}>{note}</p>}
+            {note && <p style={{ color: "var(--bc-green)", fontSize: "max(var(--fs-min), 0.84em)", margin: "10px 0 0" }}>{note}</p>}
           </>
         )}
       </div>

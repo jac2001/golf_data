@@ -29,11 +29,11 @@ const h2: React.CSSProperties = {
 const p: React.CSSProperties = { color: "var(--bc-text)", lineHeight: 1.65, margin: "12px 0", fontSize: "0.95em" };
 const note: React.CSSProperties = {
   background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
-  padding: "12px 16px", margin: "16px 0", color: "var(--bc-muted)", fontSize: "0.88em", lineHeight: 1.6,
+  padding: "12px 16px", margin: "16px 0", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.6,
 };
 const cell: React.CSSProperties = {
   padding: "8px 12px", borderBottom: "1px solid var(--bc-line)", textAlign: "right",
-  fontSize: "0.86em", color: "var(--bc-text)",
+  fontSize: "max(var(--fs-min), 0.86em)", color: "var(--bc-text)",
 };
 const cellL: React.CSSProperties = { ...cell, textAlign: "left" };
 const hdr: React.CSSProperties = {
@@ -55,7 +55,7 @@ export default function MethodologyPage() {
       <PageHead kicker="The full modeling story — with the losing numbers too" title="How the Model Works" />
       <div style={{ marginBottom: 14, padding: "10px 14px", borderRadius: 8,
         background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
-        color: "var(--bc-muted)", fontSize: "0.84em" }}>
+        color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)" }}>
         This page is the machine-learning story. Looking for how to{" "}
         <em>play</em>?{" "}
         <Link href="/how-to-play" style={{ color: "var(--bc-yellow)", fontWeight: 700 }}>

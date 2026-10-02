@@ -75,7 +75,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                 borderBottom: `1px solid ${hasUse ? "color-mix(in srgb, var(--bc-green) 20%, transparent)" : "var(--bc-line)"}`,
                 display: "flex", justifyContent: "space-between", alignItems: "center",
               }}>
-                <span style={{ color: hasUse ? "var(--bc-green)" : "var(--bc-yellow)", fontWeight: 700, fontSize: "0.85em" }}>
+                <span style={{ color: hasUse ? "var(--bc-green)" : "var(--bc-yellow)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
                   {group.tee_time}
                 </span>
                 <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -141,7 +141,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                             style={{
                               color: isPick ? "var(--bc-green)" : isEdge ? "var(--bc-text)" : "#c0cce0",
                               fontWeight: isPick || isEdge ? 700 : 600,
-                              fontSize: "0.85em",
+                              fontSize: "max(var(--fs-min), 0.85em)",
                               whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                               textDecoration: "none",
                             }}
@@ -175,7 +175,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                     {/* Right: Win% · Top10% · Edge */}
                     <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 8 }}>
                       <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "baseline" }}>
-                        <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "0.82em" }}>
+                        <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.82em)" }}>
                           {p.win_prob != null ? `${p.win_prob.toFixed(1)}%` : "—"}
                         </span>
                         {p.top10_prob != null && (

@@ -305,13 +305,13 @@ export default function PredictionsPage() {
                     <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 6 }}>
                       That&apos;s the top 10 of {preds.field_size ?? preds.count} players
                     </div>
-                    <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "0 0 14px", lineHeight: 1.6 }}>
+                    <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", margin: "0 0 14px", lineHeight: 1.6 }}>
                       A free account unlocks the whole field, the betting board,
                       live tracking, player profiles, and the Friends Game.
                     </p>
                     <Link href="/sign-up" style={{
                       display: "inline-block", background: "var(--bc-yellow)", color: "#081f14",
-                      fontWeight: 900, textTransform: "uppercase", fontSize: "0.8em",
+                      fontWeight: 900, textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.8em)",
                       letterSpacing: "0.06em", padding: "12px 22px", borderRadius: 5,
                     }}>
                       Create free account
@@ -330,7 +330,7 @@ export default function PredictionsPage() {
               The model hasn&apos;t generated a lineup for this tournament yet.
               This is its suggestion — your own picks are in the Friends Game.
             </div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", marginBottom: 20 }}>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginBottom: 20 }}>
               Last generated for: <span style={{ color: "var(--bc-muted)" }}>{lineup.stale_tournament}</span>
             </div>
             <button
@@ -351,14 +351,14 @@ export default function PredictionsPage() {
                 background: generatingLineup ? "var(--bc-panel)" : "#0a1f3a",
                 border: "1px solid #1e5a3f", borderRadius: 6,
                 color: generatingLineup ? "var(--bc-muted)" : "var(--bc-green)",
-                padding: "8px 20px", fontSize: "0.85em", fontWeight: 700,
+                padding: "8px 20px", fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 700,
                 cursor: generatingLineup ? "default" : "pointer",
               }}
             >
               {generatingLineup ? "Starting…" : "Generate Lineup"}
             </button>
             {generateMsg && (
-              <div style={{ marginTop: 12, color: "var(--bc-muted)", fontSize: "0.85em" }}>{generateMsg}</div>
+              <div style={{ marginTop: 12, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>{generateMsg}</div>
             )}
           </div>
         ) :
@@ -526,7 +526,7 @@ function EuroWeek() {
 
   const emptyTab = (what: string, why: string) => (
     <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",
-      borderRadius: 10, padding: 24, color: "var(--bc-muted)", fontSize: "0.88em", lineHeight: 1.6 }}>
+      borderRadius: 10, padding: 24, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.6 }}>
       <strong style={{ color: "var(--bc-text)" }}>{what}</strong> isn&apos;t available for
       DP World Tour events yet — {why}
     </div>
@@ -566,8 +566,8 @@ function EuroWeek() {
             <tbody>
               {liveRows.map((p, i) => (
                 <tr key={i}>
-                  <td style={{ padding: "6px 18px", fontWeight: 600, fontSize: "0.86em", borderBottom: "1px solid var(--bc-line)" }}>{p.name}</td>
-                  <td style={{ padding: "6px 18px", textAlign: "right", fontSize: "0.84em", color: "var(--bc-muted)", borderBottom: "1px solid var(--bc-line)" }}>
+                  <td style={{ padding: "6px 18px", fontWeight: 600, fontSize: "max(var(--fs-min), 0.86em)", borderBottom: "1px solid var(--bc-line)" }}>{p.name}</td>
+                  <td style={{ padding: "6px 18px", textAlign: "right", fontSize: "max(var(--fs-min), 0.84em)", color: "var(--bc-muted)", borderBottom: "1px solid var(--bc-line)" }}>
                     {p.scores.map(([r, v]) => `R${r} ${v > 0 ? "+" + v : v === 0 ? "E" : v}`).join(" · ")}
                   </td>
                   <td style={{ padding: "6px 18px", textAlign: "right", fontWeight: 800, fontVariantNumeric: "tabular-nums", borderBottom: "1px solid var(--bc-line)",
@@ -623,7 +623,7 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
             background: round === rn ? "#0a1f3a" : "var(--bc-panel)",
             border: `1px solid ${round === rn ? "#1e5a3f" : "var(--bc-line)"}`,
             borderRadius: 5, color: round === rn ? "var(--bc-green)" : "var(--bc-muted)",
-            padding: "5px 14px", fontSize: "0.8em", fontWeight: 700, cursor: "pointer",
+            padding: "5px 14px", fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700, cursor: "pointer",
           }}>R{rn}</button>
         ))}
         <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", marginLeft: "auto" }}>
@@ -634,13 +634,13 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
         <tbody>
           {rows.map((g, i) => (
             <tr key={i}>
-              <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", whiteSpace: "nowrap", fontWeight: 700, fontSize: "0.85em", fontVariantNumeric: "tabular-nums", width: 90 }}>
+              <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", whiteSpace: "nowrap", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)", fontVariantNumeric: "tabular-nums", width: 90 }}>
                 {g[0].teetime.slice(11)}
               </td>
               <td style={{ padding: "7px 10px", borderTop: "1px solid var(--bc-line)", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", whiteSpace: "nowrap", width: 70 }}>
                 Hole {g[0].start_hole ?? "—"}
               </td>
-              <td style={{ padding: "7px 18px 7px 10px", borderTop: "1px solid var(--bc-line)", fontSize: "0.86em" }}>
+              <td style={{ padding: "7px 18px 7px 10px", borderTop: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min), 0.86em)" }}>
                 {g.map(p => p.player_name).join(" · ")}
               </td>
               <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", textAlign: "right", fontSize: "max(var(--fs-min), 0.72em)", textTransform: "uppercase", letterSpacing: "0.05em", width: 70,
@@ -662,7 +662,7 @@ function EuroCourseGuideView({ data }: { data: EuroCourseGuide }) {
     letterSpacing: "0.05em", textAlign: "left", whiteSpace: "nowrap",
   };
   const td: React.CSSProperties = {
-    padding: "7px 14px", borderBottom: "1px solid var(--bc-line)", fontSize: "0.84em",
+    padding: "7px 14px", borderBottom: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min), 0.84em)",
   };
   return (
     <div style={{ display: "grid", gap: 16 }}>
@@ -784,12 +784,12 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
         </button>
       </div>
       {text
-        ? <p style={{ color: "var(--bc-muted)", fontSize: "0.88em", lineHeight: 1.65, margin: 0 }}>{text}</p>
-        : <p style={{ color: "var(--bc-muted)", fontSize: "0.84em", margin: 0, fontStyle: "italic" }}>
+        ? <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.65, margin: 0 }}>{text}</p>
+        : <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", margin: 0, fontStyle: "italic" }}>
             No analysis for this week yet. Click Rerun to generate (~60 seconds).
           </p>
       }
-      {msg && <p style={{ color: "var(--bc-muted)", fontSize: "0.85em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
+      {msg && <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
     </div>
   );
 }
@@ -914,27 +914,27 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
           </div>
           <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 8 }}>
             {cc.rough_length && (
-              <span style={{ fontSize: "0.8em", color: "var(--bc-muted)" }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-muted)" }}>
                 <span style={{ color: "var(--bc-muted)" }}>Rough </span>{cc.rough_length}
               </span>
             )}
             {cc.green_speed && (
-              <span style={{ fontSize: "0.8em", color: "var(--bc-muted)" }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-muted)" }}>
                 <span style={{ color: "var(--bc-muted)" }}>Greens </span>{cc.green_speed}
               </span>
             )}
-            <span style={{ fontSize: "0.8em" }}>
+            <span style={{ fontSize: "max(var(--fs-min), 0.8em)" }}>
               <span style={{ color: "var(--bc-muted)" }}>Scoring </span>
               <span style={{ color: outlookColor, fontWeight: 600, textTransform: "capitalize" }}>{cc.scoring_outlook}</span>
             </span>
             {injuredCount > 0 && (
-              <span style={{ fontSize: "0.8em", color: "var(--bc-red)", fontWeight: 600 }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-red)", fontWeight: 600 }}>
                 {injuredCount} injury flag{injuredCount > 1 ? "s" : ""}
               </span>
             )}
           </div>
           {cc.setup_notes && (
-            <p style={{ color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6, margin: 0 }}>{cc.setup_notes}</p>
+            <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6, margin: 0 }}>{cc.setup_notes}</p>
           )}
         </div>
         <button
@@ -945,7 +945,7 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
           {refreshing ? "Running…" : "Refresh Intel"}
         </button>
       </div>
-      {msg && <p style={{ color: "var(--bc-muted)", fontSize: "0.85em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
+      {msg && <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
     </div>
   );
 }

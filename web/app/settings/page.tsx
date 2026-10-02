@@ -231,7 +231,7 @@ export default function SettingsPage() {
 
       <div style={card}>
         <div style={{ fontWeight: 800, marginBottom: 6 }}>Your data</div>
-        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "0.82em", lineHeight: 1.6 }}>
+        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
           What we store: your account (managed by Clerk — email, optional
           username), your picks, fades, round picks, bets and tails, group
           memberships, notification devices, and the reminder switches above.

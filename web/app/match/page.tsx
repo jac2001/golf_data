@@ -139,7 +139,7 @@ export default function MatchCenterPage() {
         </div>
       )}
 
-      {err && <div style={{ ...card, color: "var(--bc-muted)", fontSize: "0.88em" }}>{err}</div>}
+      {err && <div style={{ ...card, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)" }}>{err}</div>}
 
       {changes.length > 0 && (
         <div style={{ ...card, borderColor: "var(--bc-green)" }}>
@@ -189,7 +189,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
           <span style={{ fontWeight: 900 }}>{s.name}</span><StatusTag status={s.status} projected={false} />
         </div>
-        <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "8px 0 0" }}>
+        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", margin: "8px 0 0" }}>
           {me ? `Your picks: ${displaySurnames(me.golfers.map(g => g.name)).join(", ")}. ` : "You haven't picked yet. "}
           Everyone&apos;s picks appear here once the event locks. <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Make picks →</Link>
         </p>
@@ -209,7 +209,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
       <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{headline}</div>
       {s.story && <div style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.92em" }}>{s.story}</div>}
       {s.beating_model != null && s.humans > 0 && (
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", marginTop: 4 }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 4 }}>
           {s.beating_model} of {s.humans} {s.humans === 1 ? "player is" : "players are"} beating the model{s.status === "final" ? "" : " right now"}.
         </div>
       )}
@@ -220,10 +220,10 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
             Your golfers
           </div>
           {me.golfers.map(g => (
-            <div key={g.name} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "4px 0", borderBottom: "1px solid var(--bc-line)", fontSize: "0.88em" }}>
+            <div key={g.name} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "4px 0", borderBottom: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min), 0.88em)" }}>
               <span style={{ fontWeight: 800, width: 42, color: "var(--bc-muted)" }}>{g.position}</span>
               <span style={{ fontWeight: 700 }}>{g.name}</span>
-              {g.thru && s.status === "live" && <span style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>thru {g.thru}</span>}
+              {g.thru && s.status === "live" && <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>thru {g.thru}</span>}
               <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(g.earnings)}</span>
               {s.status === "live" && g.up_one > 0 && (
                 <span style={{ color: "var(--bc-green)", fontSize: "max(var(--fs-min), 0.78em)", whiteSpace: "nowrap" }}>+{money(g.up_one)} one spot up</span>
@@ -241,7 +241,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
         {s.lines.map(l => {
           const isMe = l.user_id === s.me_id, isModel = l.user_id === "model", isRival = l.user_id === s.rival?.user_id;
           return (
-            <div key={l.user_id} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "5px 0", fontSize: "0.88em",
+            <div key={l.user_id} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "5px 0", fontSize: "max(var(--fs-min), 0.88em)",
               borderBottom: "1px solid var(--bc-line)" }}>
               <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
               <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)" }}>
@@ -249,7 +249,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
               </span>
               {isModel && <span style={tag("var(--bc-line-hi)", "var(--bc-text)")}>Model</span>}
               {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>Rival</span>}
-              <span style={{ color: "var(--bc-muted)", fontSize: "0.82em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {displaySurnames(l.golfers.map(g => g.name)).join(", ")}
               </span>
               <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(l.total)}</span>
@@ -283,12 +283,12 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
         <>
           <div style={{ fontWeight: 900, fontSize: "1.6em", color: "var(--bc-text)", margin: "6px 0 0", letterSpacing: "-0.01em" }}>{me.school}</div>
           <div style={{ fontWeight: 800, fontSize: "0.95em" }}>{ordinal(me.rank)} in the school race · {money(me.total)}</div>
-          {c.story && <div style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.88em", marginTop: 4 }}>{c.story}</div>}
+          {c.story && <div style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.88em)", marginTop: 4 }}>{c.story}</div>}
           <div style={{ marginTop: 10, fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             Your two counting golfers
           </div>
           {me.counting.map(g => (
-            <div key={g.name} style={{ display: "flex", gap: 10, padding: "4px 0", fontSize: "0.88em", borderBottom: "1px solid var(--bc-line)" }}>
+            <div key={g.name} style={{ display: "flex", gap: 10, padding: "4px 0", fontSize: "max(var(--fs-min), 0.88em)", borderBottom: "1px solid var(--bc-line)" }}>
               <span style={{ width: 42, fontWeight: 800, color: "var(--bc-muted)" }}>{g.position}</span>
               <span style={{ fontWeight: 700 }}>{g.name}</span>
               <span style={{ marginLeft: "auto", fontWeight: 800 }}>{money(g.earnings)}</span>
@@ -296,12 +296,12 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
           ))}
         </>
       ) : (
-        <p style={{ color: "var(--bc-muted)", fontSize: "0.86em" }}>You didn&apos;t claim a school this week.</p>
+        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)" }}>You didn&apos;t claim a school this week.</p>
       )}
       {c.lines.length > 1 && (
         <div style={{ marginTop: 12 }}>
           {c.lines.map(l => (
-            <div key={l.user_id} style={{ display: "flex", gap: 10, fontSize: "0.86em", padding: "3px 0" }}>
+            <div key={l.user_id} style={{ display: "flex", gap: 10, fontSize: "max(var(--fs-min), 0.86em)", padding: "3px 0" }}>
               <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
               <span style={{ fontWeight: 800 }}>{l.school}</span>
               <span style={{ color: "var(--bc-muted)" }}>{l.user_id === c.me_id ? "you" : l.user_name}</span>

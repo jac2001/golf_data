@@ -165,7 +165,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
             )}
           </div>
           {opponent && (
-            <div style={{ fontSize: "0.80em", color: "var(--bc-muted)", marginTop: 3, fontWeight: 500 }}>
+            <div style={{ fontSize: "max(var(--fs-min), 0.80em)", color: "var(--bc-muted)", marginTop: 3, fontWeight: 500 }}>
               vs{" "}
               <Link
                 href={`/players?player=${encodeURIComponent(opponent)}`}
@@ -213,7 +213,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                   }}>
                     {bet.live_position}
                   </span>
-                  <span style={{ fontSize: "0.82em", fontWeight: 700, color: scoreColor }}>
+                  <span style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, color: scoreColor }}>
                     {bet.live_total ?? "E"}
                   </span>
                   {bet.live_thru && (
@@ -255,7 +255,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           <div style={{ flex: 1, background: "var(--bc-card)", borderRadius: 3, height: 5 }}>
             <div style={{ width: `${modelBar}%`, background: "var(--bc-green)", borderRadius: 3, height: 5 }} />
           </div>
-          <span style={{ color: "var(--bc-green)", fontSize: "0.82em", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
+          <span style={{ color: "var(--bc-green)", fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
             {modelPct.toFixed(1)}%
           </span>
         </div>
@@ -266,7 +266,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           <div style={{ flex: 1, background: "var(--bc-card)", borderRadius: 3, height: 5 }}>
             <div style={{ width: `${marketBar}%`, background: "var(--bc-yellow)", borderRadius: 3, height: 5 }} />
           </div>
-          <span style={{ color: "var(--bc-yellow)", fontSize: "0.82em", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
+          <span style={{ color: "var(--bc-yellow)", fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, width: 46, textAlign: "right", flexShrink: 0 }}>
             {marketPct.toFixed(1)}%
           </span>
         </div>
@@ -345,7 +345,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
         </div>
 
         {reasonOpen && (
-          <div style={{ marginTop: 10, fontSize: "0.82em", lineHeight: 1.6, color: "var(--bc-muted)" }}>
+          <div style={{ marginTop: 10, fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6, color: "var(--bc-muted)" }}>
             {reasonLoading
               ? <span style={{ color: "var(--bc-muted)" }}>Generating…</span>
               : reason}
@@ -415,7 +415,7 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
       {open && (
         <div style={{ marginTop: 10 }}>
           {loading ? (
-            <span style={{ fontSize: "0.8em", color: "var(--bc-muted)" }}>Loading…</span>
+            <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-muted)" }}>Loading…</span>
           ) : lines ? (
             <>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "max(var(--fs-min), 0.78em)" }}>
@@ -459,7 +459,7 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
               )}
             </>
           ) : (
-            <span style={{ fontSize: "0.8em", color: "var(--bc-red)" }}>No line data available.</span>
+            <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-red)" }}>No line data available.</span>
           )}
         </div>
       )}
