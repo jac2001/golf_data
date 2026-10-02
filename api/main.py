@@ -3622,7 +3622,48 @@ def _build_course_history(tid: str) -> dict | None:
 
 @app.get("/api/course")
 def get_course() -> dict:
-    """Hole-by-hole course layout for the current tournament."""
+    """Hole-by-hole course layout for the current tournament — every
+    response normalized by _normalize_course (see there for the three
+    bugs it closes)."""
+    return _normalize_course(_get_course_raw())
+
+
+def _normalize_course(d: dict) -> dict:
+    """Make the course payload internally consistent, whatever the source:
+    - hole_par arrives as TEXT from the Tour feed ("4"), so the UI's nine
+      subtotals concatenated it ("0443444535"). Cast to int.
+    - scoring_avg held the vs-par value (0.109, identical to scoring_diff),
+      so hole 1 showed 0.11 instead of 4.11. Real average = par + diff.
+    - The header used the course's listed yardage (7,421) while the hole
+      rows sum this week's tees (7,290). With all 18 holes measured, the
+      header uses the holes' sum; the listing stays as yardage_listed."""
+    if not isinstance(d, dict):
+        return d
+    holes = d.get("holes") or []
+    for h in holes:
+        try:
+            h["hole_par"] = int(float(h["hole_par"])) if h.get("hole_par") not in (None, "") else None
+        except (TypeError, ValueError):
+            h["hole_par"] = None
+        try:
+            h["hole_yards"] = int(float(h["hole_yards"])) if h.get("hole_yards") not in (None, "") else None
+        except (TypeError, ValueError):
+            h["hole_yards"] = None
+        diff = h.get("scoring_diff")
+        if diff is not None and h["hole_par"]:
+            h["scoring_avg"] = round(h["hole_par"] + float(diff), 3)
+    yards = [h["hole_yards"] for h in holes if h.get("hole_yards")]
+    if len(holes) == 18 and len(yards) == 18:
+        d["yardage_listed"] = d.get("yardage")
+        d["yardage"] = sum(yards)
+    pars = [h["hole_par"] for h in holes if h.get("hole_par")]
+    if len(holes) == 18 and len(pars) == 18 and not d.get("par"):
+        d["par"] = sum(pars)
+    return d
+
+
+def _get_course_raw() -> dict:
+    """Hole-by-hole course layout for the current tournament (unnormalized)."""
     tid = _get_tournament_id()
     history = _build_course_history(tid)
 

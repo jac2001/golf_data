@@ -117,9 +117,10 @@ function HoleRow({ hole, isAlt }: { hole: CourseHole; isAlt: boolean }) {
 }
 
 function NineSubtotal({ holes, label }: { holes: CourseHole[]; label: string }) {
-  const yards = holes.reduce((s, h) => s + (h.hole_yards ?? 0), 0);
-  const par   = holes.reduce((s, h) => s + (h.hole_par   ?? 0), 0);
-  const avgSum = holes.reduce((s, h) => s + (h.scoring_avg ?? 0), 0);
+  // Number(): a value arriving as text ("4") would otherwise concatenate.
+  const yards = holes.reduce((s, h) => s + Number(h.hole_yards ?? 0), 0);
+  const par   = holes.reduce((s, h) => s + Number(h.hole_par   ?? 0), 0);
+  const avgSum = holes.reduce((s, h) => s + Number(h.scoring_avg ?? 0), 0);
   return (
     <tr style={{ background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line)" }}>
       <td style={{ width: 3, padding: 0 }} />

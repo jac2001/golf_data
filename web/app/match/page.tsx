@@ -48,8 +48,16 @@ async function call<T>(url: string): Promise<T> {
 }
 
 /** What changed since this device last looked — the "meaningful changes". */
+/** A response (or saved snapshot) we can safely read. Anything else —
+ *  an error body, a cached page, a snapshot from an older version of this
+ *  page — is treated as absent rather than crashing the render. */
+function isMatch(x: unknown): x is Match {
+  const m = x as Match | null;
+  return !!m && typeof m === "object" && Array.isArray(m.slates);
+}
+
 function changesBetween(prev: Match | null, next: Match): string[] {
-  if (!prev) return [];
+  if (!isMatch(prev)) return [];
   const out: string[] = [];
   for (const s of next.slates) {
     const p = prev.slates.find(x => x.tournament_id === s.tournament_id);
@@ -102,6 +110,12 @@ export default function MatchCenterPage() {
   const load = useCallback(() => {
     if (!groupId) return;
     call<Match>(`/api/match?group_id=${groupId}`).then(next => {
+      if (!isMatch(next)) {
+        // Keep whatever was on screen; say so plainly instead of a stack-trace message.
+        setErr("Couldn't refresh the match center just now — it retries every 2 minutes.");
+        return;
+      }
+      setErr("");
       const key = `match-snap-${groupId}`;
       let prev: Match | null = null;
       try { prev = JSON.parse(localStorage.getItem(key) ?? "null"); } catch { /* fine */ }
@@ -109,7 +123,9 @@ export default function MatchCenterPage() {
       if (ch.length) setChanges(ch);
       try { localStorage.setItem(key, JSON.stringify(next)); } catch { /* fine */ }
       setData(next);
-    }).catch(e => setErr(e.message));
+    }).catch(e => setErr(/unauthor|sign in/i.test(String(e.message))
+      ? "Sign in to see your group's match center."
+      : "Couldn't refresh the match center just now — it retries every 2 minutes."));
   }, [groupId]);
 
   useEffect(() => {
@@ -149,7 +165,7 @@ export default function MatchCenterPage() {
         </div>
       )}
 
-      {err && <div style={{ ...card, color: "var(--bc-red-text)" }}>{err}</div>}
+      {err && <div style={{ ...card, color: "var(--bc-muted)", fontSize: "0.88em" }}>{err}</div>}
 
       {changes.length > 0 && (
         <div style={{ ...card, borderColor: "var(--bc-yellow)", background: "color-mix(in srgb, var(--bc-yellow) 8%, var(--bc-card))" }}>
