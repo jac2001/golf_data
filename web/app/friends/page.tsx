@@ -125,9 +125,9 @@ function ReminderBell() {
       <span>Pick reminders — a nudge the day before an event locks if your picks aren&apos;t in.</span>
       <button onClick={toggle} disabled={state === "busy"} style={{
         ...btnQuiet, padding: "4px 12px", fontSize: "0.9em",
-        color: on ? "#081f14" : "var(--bc-muted)",
-        background: on ? "var(--bc-yellow)" : "transparent",
-        borderColor: on ? "var(--bc-yellow)" : "var(--bc-line)",
+        color: on ? "var(--bc-text)" : "var(--bc-muted)",
+        background: on ? "var(--bc-raised)" : "transparent",
+        borderColor: on ? "var(--bc-line-hi)" : "var(--bc-line)",
       }}>
         {state === "busy" ? "…" : on ? "On" : "Off"}
       </button>
@@ -175,7 +175,7 @@ const hdr: React.CSSProperties = {
 
 const ModelBadge = () => (
   <span style={{ marginLeft: 6, fontSize: "0.62em", fontWeight: 900, letterSpacing: "0.08em",
-    color: "#081f14", background: "var(--bc-yellow)", borderRadius: 3, padding: "2px 6px",
+    color: "var(--bc-text)", background: "var(--bc-line-hi)", borderRadius: 3, padding: "2px 6px",
     textTransform: "uppercase", verticalAlign: "middle" }}>
     Model
   </span>
@@ -208,10 +208,9 @@ export default function FriendsPage() {
       />
       <SubTabs tabs={TABS} active={tab} onChange={setTab} />
       {invited && (
-        <div style={{ background: "color-mix(in srgb, var(--bc-yellow) 10%, transparent)",
-          border: "1px solid color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
+        <div style={{ background: "var(--bc-raised)", border: "1px solid var(--bc-line-hi)",
           borderRadius: 8, padding: "10px 14px", marginBottom: 14,
-          color: "var(--bc-yellow)", fontSize: "0.88em", fontWeight: 600 }}>
+          color: "var(--bc-text)", fontSize: "0.9em", fontWeight: 600 }}>
           You&apos;ve been invited to a group — type the invite code from your
           friend&apos;s message below and hit Join.
         </div>
@@ -252,12 +251,12 @@ function GamesTab() {
           return (
             <button key={g.id} onClick={() => pick(g.id)} style={{
               cursor: "pointer", textAlign: "left", fontFamily: "inherit",
-              background: on ? "color-mix(in srgb, var(--bc-yellow) 10%, var(--bc-card))" : "var(--bc-card)",
-              border: on ? "1px solid var(--bc-yellow)" : "1px solid var(--bc-line)",
+              background: on ? "var(--bc-raised)" : "var(--bc-card)",
+              border: on ? "1px solid var(--bc-line-hi)" : "1px solid var(--bc-line)",
               borderRadius: 8, padding: "10px 12px", minWidth: 0,
             }}>
               <div style={{ fontWeight: 900, fontSize: "0.86em", letterSpacing: "0.02em",
-                color: on ? "var(--bc-yellow)" : "var(--bc-text)" }}>
+                color: "var(--bc-text)" }}>
                 {g.name}
               </div>
               <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", marginTop: 3, lineHeight: 1.35 }}>
@@ -316,9 +315,9 @@ function StandingsTab() {
           return (
             <button key={g.id} onClick={() => setMode(g.id as "ride" | "fades" | "college")} style={{
               ...btnQuiet, padding: "7px 14px",
-              color: on ? "#081f14" : "var(--bc-muted)",
-              background: on ? "var(--bc-yellow)" : "transparent",
-              borderColor: on ? "var(--bc-yellow)" : "var(--bc-line)",
+              color: on ? "var(--bc-text)" : "var(--bc-muted)",
+              background: on ? "var(--bc-raised)" : "transparent",
+              borderColor: on ? "var(--bc-line-hi)" : "var(--bc-line)",
             }}>
               {g.name}
             </button>
@@ -369,7 +368,7 @@ function FadeStandings() {
           <tbody>
             {rows.map((r, i) => (
               <tr key={r.user_id} style={{ background: r.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
-                <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
+                <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)" }}>{i + 1}</td>
                 <td style={{ ...cell, fontWeight: 700 }}>
                   {r.user_name}
                   {r.user_id === "model" && <ModelBadge />}
@@ -475,7 +474,7 @@ function CollegeTab() {
           {event.locked
             ? (event.finished ? "Final — graded below." : "Schools are locked — tournament underway.")
             : pick
-              ? <>Your school: <strong style={{ color: "var(--bc-yellow)" }}>{pick}</strong> · best 2 alumni checks count</>
+              ? <>Your school: <strong style={{ color: "var(--bc-text)" }}>{pick}</strong> · best 2 alumni checks count</>
               : "Claim one school before lock · its best 2 finishers score for you"}
         </div>
         {err && <p style={{ color: "var(--bc-red-text)", fontSize: "0.84em", marginTop: 10 }}>{err}</p>}
@@ -493,7 +492,7 @@ function CollegeTab() {
             <tbody>
               {board.standings.map((r, i) => (
                 <tr key={r.user_id} style={{ background: r.user_id === board.me ? "var(--bc-card-hi)" : "transparent" }}>
-                  <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)", width: 34 }}>{i + 1}</td>
+                  <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)", width: 34 }}>{i + 1}</td>
                   <td style={{ ...cell, fontWeight: 700 }}>
                     {r.user_name}
                     {r.user_id === board.me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
@@ -536,7 +535,7 @@ function CollegeTab() {
                   border: "none", borderBottom: "1px solid var(--bc-line)", padding: "10px 16px",
                 }}>
                   <span style={{ fontWeight: 800, fontSize: "0.9em",
-                    color: mine ? "var(--bc-yellow)" : "var(--bc-text)" }}>
+                    color: mine ? "var(--bc-green)" : "var(--bc-text)" }}>
                     {s.school}{mine && " ✓"}
                   </span>
                   <span style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginLeft: 8 }}>
@@ -601,7 +600,7 @@ function CollegeStandings() {
         <tbody>
           {rows.map((r, i) => (
             <tr key={r.user_id} style={{ background: r.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
-              <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
+              <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)" }}>{i + 1}</td>
               <td style={{ ...cell, fontWeight: 700 }}>
                 {r.user_name}
                 {r.user_id === me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
@@ -855,7 +854,7 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
               {copied === g.id ? "Copied!" : g.invite_code}
             </button>
             <button onClick={() => share(g)} title="Share the invite (message + code)" style={{
-              ...btn, padding: "5px 12px", fontSize: "0.72em",
+              ...btnQuiet, padding: "4px 10px", color: "var(--bc-text)", borderColor: "var(--bc-line-hi)",
             }}>
               Share
             </button>
@@ -867,16 +866,16 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
             ) : (
               <button onClick={() => setRecapFor(g)}
                 title="Share this group's Sunday recap card" style={{
-                ...btnQuiet, padding: "4px 10px", color: "var(--bc-yellow)",
-                borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
+                ...btnQuiet, padding: "4px 10px", color: "var(--bc-text)",
+                borderColor: "var(--bc-line-hi)",
               }}>
                 Sunday recap
               </button>
             )}
             <button onClick={() => copyLink(g)} title="Copy the invite message" style={{
               ...btnQuiet, padding: "4px 10px",
-              color: copied === g.id ? "var(--bc-green)" : "var(--bc-yellow)",
-              borderColor: "color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
+              color: copied === g.id ? "var(--bc-green)" : "var(--bc-text)",
+              borderColor: "var(--bc-line-hi)",
             }}>
               {copied === g.id ? "Copied!" : "Copy invite"}
             </button>
@@ -925,14 +924,14 @@ function GroupFeed({ groupId }: { groupId: number }) {
       {/* The Model's week — its locked-in moves, in its own voice. */}
       {(feed.modelMoves ?? []).length > 0 && (
         <div style={{ ...card, marginBottom: 0,
-          border: "1px solid color-mix(in srgb, var(--bc-yellow) 35%, transparent)" }}>
+          border: "1px solid var(--bc-line-hi)" }}>
           <div style={{ fontWeight: 800, marginBottom: 8 }}>
             The Model&apos;s week <ModelBadge />
           </div>
           <div style={{ display: "grid", gap: 6 }}>
             {(feed.modelMoves ?? []).map((m, i) => (
               <div key={i} style={{ fontSize: "0.84em", lineHeight: 1.5 }}>
-                <span style={{ color: "var(--bc-yellow)", fontWeight: 700 }}>{m.game}</span>
+                <span style={{ color: "var(--bc-text)", fontWeight: 700 }}>{m.game}</span>
                 <span style={{ color: "var(--bc-muted)" }}> · {m.event} — </span>
                 {m.text}
               </div>
@@ -958,7 +957,7 @@ function GroupFeed({ groupId }: { groupId: number }) {
         ) : (
           [...byEvent.entries()].map(([evName, byUser]) => (
             <div key={evName} style={{ marginBottom: 8 }}>
-              <div style={{ color: "var(--bc-yellow)", fontSize: "0.76em", fontWeight: 700 }}>{evName}</div>
+              <div style={{ color: "var(--bc-muted)", fontSize: "0.8em", fontWeight: 700 }}>{evName}</div>
               {[...byUser.entries()].map(([user, ps]) => (
                 <div key={user} style={{ fontSize: "0.86em", padding: "2px 0" }}>
                   <span style={{ fontWeight: 600 }}>{user}</span>
@@ -1109,7 +1108,7 @@ function MyBetsTab() {
               <button key={o} onClick={() => patch(b.id, { outcome: o })} style={{
                 ...btnQuiet, padding: "3px 9px", fontSize: "0.72em",
                 color: b.outcome === o
-                  ? (o === "won" ? "var(--bc-green)" : o === "lost" ? "var(--bc-red-text)" : "var(--bc-yellow)")
+                  ? (o === "won" ? "var(--bc-green)" : o === "lost" ? "var(--bc-red-text)" : "var(--bc-text)")
                   : "var(--bc-muted)",
                 borderColor: b.outcome === o ? "currentColor" : "var(--bc-line)",
               }}>
@@ -1118,7 +1117,7 @@ function MyBetsTab() {
             ))}
             <button onClick={() => patch(b.id, { shared: !b.shared })} title="Visible to your groups?" style={{
               ...btnQuiet, padding: "3px 9px", fontSize: "0.72em",
-              color: b.shared ? "var(--bc-yellow)" : "var(--bc-muted)",
+              color: b.shared ? "var(--bc-text)" : "var(--bc-muted)",
               borderColor: b.shared ? "currentColor" : "var(--bc-line)",
             }}>
               {b.shared ? "shared" : "private"}
@@ -1239,7 +1238,7 @@ function RoundGameTab() {
           return (
             <div key={r} style={{ display: "flex", alignItems: "center", gap: 10,
               padding: "8px 0", borderBottom: "1px solid var(--bc-line)", flexWrap: "wrap" }}>
-              <span style={{ fontWeight: 800, width: 32, color: locked ? "var(--bc-muted)" : "var(--bc-yellow)" }}>R{r}</span>
+              <span style={{ fontWeight: 800, width: 32, color: locked ? "var(--bc-muted)" : "var(--bc-text)" }}>R{r}</span>
               {current
                 ? <span style={{ fontWeight: 600 }}><PlayerLink name={current} /></span>
                 : <span style={{ color: "var(--bc-muted)", fontSize: "0.85em" }}>
@@ -1314,7 +1313,7 @@ function RoundGameTab() {
             <tbody>
               {board.map((row, i) => (
                 <tr key={row.user_id} style={{ background: row.user_id === me ? "var(--bc-card-hi)" : "transparent" }}>
-                  <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
+                  <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)" }}>{i + 1}</td>
                   <td style={{ ...cell, fontWeight: 700 }}>
                     {row.user_name}
                     {row.user_id === "model" && <ModelBadge />}
@@ -1342,7 +1341,7 @@ function RoundGameTab() {
                       <button onClick={() => shareReceipt(selected, row.user_id, "rounds")}
                         title="Share receipt" style={{
                           background: "transparent", border: "1px solid var(--bc-line)",
-                          borderRadius: 4, color: "var(--bc-yellow)", cursor: "pointer",
+                          borderRadius: 4, color: "var(--bc-muted)", cursor: "pointer",
                           fontSize: "0.72em", padding: "1px 7px", marginLeft: 8 }}>
                         ⇪
                       </button>
@@ -1502,7 +1501,7 @@ function FadeTab() {
             .slice(0, 3).map(p => p.player_name);
           return obvious.every(n => fades.includes(n));
         })() && (
-          <p style={{ color: "var(--bc-yellow)", fontSize: "0.8em", marginTop: 10, fontWeight: 600 }}>
+          <p style={{ color: "var(--bc-orange)", fontSize: "0.85em", marginTop: 10, fontWeight: 600 }}>
             These are the model&apos;s own three fades — you can tie it, never
             beat it. Your edge is a favorite the model still believes in.
           </p>
@@ -1529,7 +1528,7 @@ function FadeTab() {
             <tbody>
               {board.standings.map((row, i) => (
                 <tr key={row.user_id} style={{ background: row.user_id === board.me ? "var(--bc-card-hi)" : "transparent" }}>
-                  <td style={{ ...cell, fontWeight: 800, color: "var(--bc-yellow)" }}>{i + 1}</td>
+                  <td style={{ ...cell, fontWeight: 800, color: "var(--bc-muted)" }}>{i + 1}</td>
                   <td style={{ ...cell, fontWeight: 700 }}>
                     {row.user_name}
                     {row.user_id === "model" && <ModelBadge />}
@@ -1554,7 +1553,7 @@ function FadeTab() {
                       <button onClick={() => shareReceipt(selected, row.user_id, "fades")}
                         title="Share receipt" style={{
                           background: "transparent", border: "1px solid var(--bc-line)",
-                          borderRadius: 4, color: "var(--bc-yellow)", cursor: "pointer",
+                          borderRadius: 4, color: "var(--bc-muted)", cursor: "pointer",
                           fontSize: "0.72em", padding: "1px 7px", marginLeft: 8 }}>
                         ⇪
                       </button>
@@ -1578,9 +1577,8 @@ function FadeTab() {
           </div>
           {partial && (
             <div style={{ margin: "4px 16px 0", padding: "8px 12px", borderRadius: 6,
-              background: "color-mix(in srgb, var(--bc-yellow) 10%, transparent)",
-              border: "1px solid color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
-              color: "var(--bc-yellow)", fontSize: "0.78em", fontWeight: 600 }}>
+              background: "var(--bc-raised)", border: "1px solid var(--bc-line-hi)",
+              color: "var(--bc-text)", fontSize: "0.85em", fontWeight: 600 }}>
               Early field — only the first commitments are in. Numbers and the
               pool firm up once the full field posts (usually Tuesday).
             </div>

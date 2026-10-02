@@ -14,6 +14,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { getEventField, getPredictions, OpenEvent } from "@/lib/api";
 import { nameKey } from "@/lib/names";
 import LockCountdown from "@/components/LockCountdown";
+import { choice } from "@/components/broadcast";
 import EventNav, { NavEvent, landingEvent, Star } from "@/components/EventNav";
 
 type Group = { id: number; name: string; is_owner: boolean };
@@ -36,6 +37,9 @@ const card: React.CSSProperties = {
   background: "var(--bc-card)", border: "1px solid var(--bc-line)",
   borderRadius: 10, padding: 18, marginBottom: 16,
 };
+// btn(true) is the screen's ONE yellow action (start / save a season).
+// Toggles use choice(); per-row actions (Pick, Remove) use rowBtn so a
+// 60-golfer list isn't 60 yellow buttons.
 const btn = (primary: boolean): React.CSSProperties => ({
   cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.76em",
   textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5,
@@ -43,6 +47,12 @@ const btn = (primary: boolean): React.CSSProperties => ({
   background: primary ? "var(--bc-yellow)" : "transparent",
   color: primary ? "#081f14" : "var(--bc-muted)",
   border: `1px solid ${primary ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+});
+
+const rowBtn = (enabled: boolean): React.CSSProperties => ({
+  ...btn(false),
+  color: enabled ? "var(--bc-text)" : "var(--bc-muted)",
+  border: `1px solid ${enabled ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
 });
 
 /** Server messages arrive as "422: You've used…" — show the sentence. */
@@ -92,7 +102,7 @@ export default function LetItRideTab() {
       {groups.length > 1 && (
         <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
           {groups.map(g => (
-            <button key={g.id} onClick={() => setGroupId(g.id)} style={btn(g.id === group.id)}>{g.name}</button>
+            <button key={g.id} onClick={() => setGroupId(g.id)} style={choice(g.id === group.id)}>{g.name}</button>
           ))}
         </div>
       )}
@@ -163,8 +173,8 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
       </div>
       <div style={{ display: "flex", gap: 8, margin: "14px 0", alignItems: "center" }}>
         <span style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Tours:</span>
-        <button onClick={() => toggle("pga")} style={btn(tours.includes("pga"))}>PGA Tour</button>
-        <button onClick={() => toggle("euro")} style={btn(tours.includes("euro"))}>DP World Tour</button>
+        <button onClick={() => toggle("pga")} style={choice(tours.includes("pga"))}>PGA Tour</button>
+        <button onClick={() => toggle("euro")} style={choice(tours.includes("euro"))}>DP World Tour</button>
       </div>
       <ScopeChoice scope={scope} setScope={setScope} />
       <p style={{ color: "var(--bc-muted)", fontSize: "0.76em", margin: "0 0 12px" }}>
@@ -229,7 +239,7 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
           </div>
         </div>
         {isOwner && (
-          <button onClick={() => setEditing(e => !e)} style={btn(editing)}>{editing ? "Close" : "Season settings"}</button>
+          <button onClick={() => setEditing(e => !e)} style={choice(editing)}>{editing ? "Close" : "Season settings"}</button>
         )}
       </div>
       {editing && <SeasonSettings league={league} onSaved={() => { setEditing(false); onChanged(); }} />}
@@ -362,7 +372,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
                     use {usedOf(p.player_name)} of {league.uses_per_player}
                   </span>
                   {!locked && (
-                    <button onClick={() => act("DELETE", p.player_name)} disabled={busy === p.player_name} style={btn(false)}>
+                    <button onClick={() => act("DELETE", p.player_name)} disabled={busy === p.player_name} style={rowBtn(true)}>
                       Drop
                     </button>
                   )}
@@ -400,7 +410,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
                           background: i < used ? "var(--bc-muted)" : "var(--bc-green)" }} />
                       ))}
                     </span>
-                    <button onClick={() => act("POST", f.name)} disabled={full || spent || busy === f.name} style={btn(!full && !spent)}>
+                    <button onClick={() => act("POST", f.name)} disabled={full || spent || busy === f.name} style={rowBtn(!full && !spent)}>
                       {spent ? "Spent" : "Pick"}
                     </button>
                   </span>
@@ -430,7 +440,7 @@ function LockedSlate({ picks, me }: { picks: SlatePick[]; me: string }) {
       </div>
       {[...byUser.entries()].map(([id, u]) => (
         <div key={id} style={{ fontSize: "0.86em" }}>
-          <strong style={{ color: id === me ? "var(--bc-yellow)" : "var(--bc-text)" }}>{u.name}</strong>
+          <strong style={{ color: id === me ? "var(--bc-green)" : "var(--bc-text)" }}>{u.name}</strong>
           <span style={{ color: "var(--bc-muted)" }}> — {u.players.join(", ")}</span>
         </div>
       ))}
@@ -463,7 +473,7 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
         <tbody>
           {standings.map((s, i) => (
             <tr key={s.user_id}>
-              <td style={{ ...td, textAlign: "left", fontWeight: 700, color: s.user_id === me ? "var(--bc-yellow)" : "var(--bc-text)" }}>
+              <td style={{ ...td, textAlign: "left", fontWeight: 700, color: s.user_id === me ? "var(--bc-green)" : "var(--bc-text)" }}>
                 {i + 1}. {s.user_name}
               </td>
               <td style={{ ...td, color: "var(--bc-yellow)", whiteSpace: "nowrap" }}>
@@ -553,8 +563,8 @@ function ScopeChoice({ scope, setScope }: { scope: "golfer" | "tour"; setScope: 
     <div style={{ margin: "0 0 12px" }}>
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <span style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Uses:</span>
-        <button onClick={() => setScope("tour")} style={btn(scope === "tour")}>Separate per tour</button>
-        <button onClick={() => setScope("golfer")} style={btn(scope === "golfer")}>Shared across tours</button>
+        <button onClick={() => setScope("tour")} style={choice(scope === "tour")}>Separate per tour</button>
+        <button onClick={() => setScope("golfer")} style={choice(scope === "golfer")}>Shared across tours</button>
       </div>
       <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", margin: "6px 0 0", lineHeight: 1.5 }}>
         {scope === "tour"
@@ -599,7 +609,7 @@ function SeasonSettings({ league, onSaved }: { league: League; onSaved: () => vo
   const toggle = (t: string) => setTours(ts => ts.includes(t) ? ts.filter(x => x !== t) : [...ts, t]);
 
   return (
-    <div style={{ ...card, borderColor: "var(--bc-yellow)" }}>
+    <div style={{ ...card, borderColor: "var(--bc-line-hi)" }}>
       <div style={{ fontWeight: 900, marginBottom: 12 }}>Season settings</div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 12, marginBottom: 12 }}>
         <label style={label}>Season name<br /><input style={input} value={name} maxLength={60} onChange={e => setName(e.target.value)} /></label>
@@ -609,8 +619,8 @@ function SeasonSettings({ league, onSaved }: { league: League; onSaved: () => vo
       </div>
       <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12 }}>
         <span style={label}>Tours:</span>
-        <button onClick={() => toggle("pga")} style={btn(tours.includes("pga"))}>PGA Tour</button>
-        <button onClick={() => toggle("euro")} style={btn(tours.includes("euro"))}>DP World Tour</button>
+        <button onClick={() => toggle("pga")} style={choice(tours.includes("pga"))}>PGA Tour</button>
+        <button onClick={() => toggle("euro")} style={choice(tours.includes("euro"))}>DP World Tour</button>
       </div>
       <ScopeChoice scope={scope} setScope={setScope} />
       <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", margin: "0 0 12px" }}>

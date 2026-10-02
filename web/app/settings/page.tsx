@@ -49,9 +49,9 @@ function Toggle({ on, busy, onClick }: { on: boolean; busy?: boolean; onClick: (
   return (
     <button onClick={onClick} disabled={busy} style={{
       ...btnQuiet, marginLeft: "auto", minWidth: 52,
-      color: on ? "#081f14" : "var(--bc-muted)",
-      background: on ? "var(--bc-yellow)" : "transparent",
-      borderColor: on ? "var(--bc-yellow)" : "var(--bc-line)",
+      color: on ? "var(--bc-text)" : "var(--bc-muted)",
+      background: on ? "var(--bc-raised)" : "transparent",
+      borderColor: on ? "var(--bc-line-hi)" : "var(--bc-line)",
     }}>
       {busy ? "…" : on ? "On" : "Off"}
     </button>
@@ -219,9 +219,9 @@ export default function SettingsPage() {
             {([["pga", "PGA"], ["euro", "DPWT"]] as const).map(([id, label]) => (
               <button key={id} onClick={() => pickTour(id)} style={{
                 ...btnQuiet,
-                color: tour === id ? "#081f14" : "var(--bc-muted)",
-                background: tour === id ? "var(--bc-yellow)" : "transparent",
-                borderColor: tour === id ? "var(--bc-yellow)" : "var(--bc-line)",
+                color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
+                background: tour === id ? "var(--bc-raised)" : "transparent",
+                borderColor: tour === id ? "var(--bc-line-hi)" : "var(--bc-line)",
               }}>{label}</button>
             ))}
           </div>

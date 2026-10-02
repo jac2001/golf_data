@@ -218,16 +218,15 @@ export default function PredictionsPage() {
 
       {eventState?.finished && (
         <div style={{ marginBottom: 16, padding: "12px 16px", borderRadius: 8,
-          background: "color-mix(in srgb, var(--bc-yellow) 10%, transparent)",
-          border: "1px solid color-mix(in srgb, var(--bc-yellow) 35%, transparent)",
-          color: "var(--bc-yellow)", fontSize: "0.86em", fontWeight: 600 }}>
+          background: "var(--bc-raised)", border: "1px solid var(--bc-line-hi)",
+          color: "var(--bc-text)", fontSize: "0.9em", fontWeight: 600 }}>
           Final — this tournament is over; you&apos;re viewing its last
           predictions and results.
           {eventState.nextName && (
             <> Next up: <strong>{eventState.nextName}</strong>
             {eventState.nextStart && ` (starts ${eventState.nextStart})`} — fresh
             predictions land Tuesday, and picks are open now on the{" "}
-            <Link href="/friends" style={{ color: "var(--bc-yellow)", textDecoration: "underline" }}>
+            <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>
               Friends Game
             </Link>.</>
           )}
@@ -240,12 +239,10 @@ export default function PredictionsPage() {
           <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)}
             sub={preds.field_size && preds.field_size !== preds.count
               ? `${preds.count} projected · the field changed after the model ran (late entries or withdrawals)`
-              : undefined}
-            accent="var(--bc-yellow)" />
+              : undefined} />
           <GlanceCard
             label="Location"
             value={tournament?.location || "—"}
-            accent="var(--bc-green)"
           />
           <GlanceCard
             label="Purse"
@@ -256,19 +253,16 @@ export default function PredictionsPage() {
               const n = parseFloat(s);
               return isNaN(n) ? String(p) : `$${Math.round(n).toLocaleString()}`;
             })()}
-            accent="var(--bc-yellow)"
           />
           <GlanceCard
             label="Defending Champ"
             value={tournament?.defending_champion || "—"}
             sub={tournament?.defending_champion_year ? `${tournament.defending_champion_year} winner` : undefined}
-            accent="var(--bc-orange)"
           />
           <GlanceCard
             label="Model lineup"
             value={lineup?.confirmed && lineup.picks.length ? lineup.picks.map(p => p.player_name.split(" ").pop()).join(", ") : "Not generated yet"}
             sub={lineup?.confirmed ? "the model's suggested trio" : "your game picks live in Friends Game"}
-            accent="var(--bc-orange)"
             onClick={() => setActiveTab("lineup")}
           />
           <FieldStrengthCard players={preds.players} />
@@ -364,7 +358,7 @@ export default function PredictionsPage() {
               {generatingLineup ? "Starting…" : "Generate Lineup"}
             </button>
             {generateMsg && (
-              <div style={{ marginTop: 12, color: "var(--bc-yellow)", fontSize: "0.78em" }}>{generateMsg}</div>
+              <div style={{ marginTop: 12, color: "var(--bc-muted)", fontSize: "0.85em" }}>{generateMsg}</div>
             )}
           </div>
         ) :
@@ -441,9 +435,9 @@ function TourPills({ tour, setTour }: {
           cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
           textTransform: "uppercase", letterSpacing: "0.06em",
           padding: "7px 15px", borderRadius: 4,
-          color: tour === id ? "#081f14" : "var(--bc-muted)",
-          background: tour === id ? "var(--bc-yellow)" : "transparent",
-          border: `1px solid ${tour === id ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+          color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
+          background: tour === id ? "var(--bc-raised)" : "transparent",
+          border: `1px solid ${tour === id ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
         }}>
           {label}
         </button>
@@ -542,19 +536,18 @@ function EuroWeek() {
     <>
       {meta && (
         <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
-          <GlanceCard label="Course" value={meta.course} sub={meta.location} accent="var(--bc-yellow)" />
-          <GlanceCard label="Dates" value={`${meta.start_date.slice(5)} → ${meta.end_date.slice(5)}`} accent="var(--bc-yellow)" />
-          <GlanceCard label="Field Size" value={String(meta.field_size || rows.length)} accent="var(--bc-yellow)" />
+          <GlanceCard label="Course" value={meta.course} sub={meta.location} />
+          <GlanceCard label="Dates" value={`${meta.start_date.slice(5)} → ${meta.end_date.slice(5)}`} />
+          <GlanceCard label="Field Size" value={String(meta.field_size || rows.length)} />
           {meta.purse != null && (
             <GlanceCard label="Purse" value={money(meta.purse)}
-              sub={meta.purse_estimated ? "estimated" : undefined} accent="var(--bc-yellow)" />
+              sub={meta.purse_estimated ? "estimated" : undefined} />
           )}
           {meta.defending_champion && (
             <GlanceCard label="Defending Champ" value={meta.defending_champion}
-              sub={meta.defending_champion_year ? `${meta.defending_champion_year} winner` : undefined}
-              accent="var(--bc-orange)" />
+              sub={meta.defending_champion_year ? `${meta.defending_champion_year} winner` : undefined} />
           )}
-          <GlanceCard label="Model" value={src === "model" ? "Golf Edge euro" : "DataGolf"} accent="var(--bc-yellow)" />
+          <GlanceCard label="Model" value={src === "model" ? "Golf Edge euro" : "DataGolf"} />
         </div>
       )}
 
@@ -651,7 +644,7 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
                 {g.map(p => p.player_name).join(" · ")}
               </td>
               <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", textAlign: "right", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em", width: 70,
-                color: g[0].wave === "early" ? "var(--bc-yellow)" : "var(--bc-muted)" }}>
+                color: g[0].wave === "early" ? "var(--bc-text)" : "var(--bc-muted)" }}>
                 {g[0].wave}
               </td>
             </tr>
@@ -696,7 +689,7 @@ function EuroCourseGuideView({ data }: { data: EuroCourseGuide }) {
                     ? `${y.avg_score.toFixed(1)} (${y.avg_score - data.par > 0 ? "+" : ""}${(y.avg_score - data.par).toFixed(1)})`
                     : y.avg_score?.toFixed(1) ?? "—"}
                 </td>
-                <td style={{ ...td, fontWeight: 600, color: "var(--bc-yellow)" }}>{y.champion ?? "—"}</td>
+                <td style={{ ...td, fontWeight: 700, color: "var(--bc-text)" }}>{y.champion ?? "—"}</td>
               </tr>
             ))}
           </tbody>
@@ -796,7 +789,7 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
             No analysis for this week yet. Click Rerun to generate (~60 seconds).
           </p>
       }
-      {msg && <p style={{ color: "var(--bc-yellow)", fontSize: "0.78em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
+      {msg && <p style={{ color: "var(--bc-muted)", fontSize: "0.85em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
     </div>
   );
 }
@@ -854,7 +847,7 @@ function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
   );
 }
 
-function GlanceCard({ label, value, sub, accent = "var(--bc-yellow)", onClick }: {
+function GlanceCard({ label, value, sub, accent = "var(--bc-line-hi)", onClick }: {
   label: string; value: string; sub?: string; accent?: string; onClick?: () => void;
 }) {
   return (
@@ -910,7 +903,7 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
   }
 
   return (
-    <div style={{ background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)", borderLeft: "3px solid var(--bc-yellow)", borderRadius: 8, padding: "14px 18px", marginBottom: 16 }}>
+    <div style={{ background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)", borderLeft: "3px solid var(--bc-line-hi)", borderRadius: 8, padding: "14px 18px", marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 8 }}>
         <div>
           <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>
@@ -952,7 +945,7 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
           {refreshing ? "Running…" : "Refresh Intel"}
         </button>
       </div>
-      {msg && <p style={{ color: "var(--bc-yellow)", fontSize: "0.78em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
+      {msg && <p style={{ color: "var(--bc-muted)", fontSize: "0.85em", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
     </div>
   );
 }

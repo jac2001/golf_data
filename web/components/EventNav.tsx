@@ -18,7 +18,7 @@ const STATUS_LABEL: Record<NavEvent["status"], string> = {
   open: "Picks open", awaiting: "Awaiting field", live: "Live", completed: "Final", upcoming: "Opens soon",
 };
 const STATUS_COLOR: Record<NavEvent["status"], string> = {
-  open: "var(--bc-green)", awaiting: "var(--bc-muted)", live: "var(--bc-yellow)",
+  open: "var(--bc-green)", awaiting: "var(--bc-muted)", live: "var(--bc-green)",
   completed: "var(--bc-muted)", upcoming: "var(--bc-muted)",
 };
 const shortDate = (d: string) =>
@@ -55,8 +55,8 @@ export function Star() {
 const btn = (on: boolean): React.CSSProperties => ({
   cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.76em",
   textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5, padding: "7px 12px",
-  background: on ? "var(--bc-yellow)" : "transparent", color: on ? "#081f14" : "var(--bc-muted)",
-  border: `1px solid ${on ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+  background: on ? "var(--bc-raised)" : "transparent", color: on ? "var(--bc-text)" : "var(--bc-muted)",
+  border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
 });
 
 export default function EventNav({ events, selected, onPick, starred = {} }: {
@@ -137,8 +137,8 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
               <button ref={on ? selRef : undefined} onClick={() => onPick(e.tournament_id)} style={{
                 scrollSnapAlign: "center", flexShrink: 0, cursor: "pointer", fontFamily: "inherit",
                 textAlign: "left", borderRadius: 6, padding: "6px 10px", minWidth: 118,
-                background: on ? "color-mix(in srgb, var(--bc-yellow) 12%, var(--bc-card))" : "var(--bc-card)",
-                border: `1px solid ${on ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+                background: on ? "var(--bc-raised)" : "var(--bc-card)",
+                border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
               }}>
                 <div style={{ fontSize: "0.62em", fontWeight: 700, color: STATUS_COLOR[e.status] }}>
                   {shortDate(e.start_date)} · {STATUS_LABEL[e.status]}

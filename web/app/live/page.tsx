@@ -237,9 +237,9 @@ export default function LivePage() {
               onClick={() => fetchLeaderboard(false)}
               disabled={refreshing}
               style={{
-                background: refreshing ? "transparent" : "var(--bc-yellow)",
-                border: "1px solid var(--bc-yellow)", borderRadius: 4,
-                color: refreshing ? "var(--bc-muted)" : "#081f14",
+                background: "transparent",
+                border: "1px solid var(--bc-line-hi)", borderRadius: 4,
+                color: refreshing ? "var(--bc-muted)" : "var(--bc-text)",
                 padding: "9px 16px", fontSize: "0.72em", fontWeight: 900,
                 textTransform: "uppercase", letterSpacing: "0.06em",
                 cursor: refreshing ? "default" : "pointer", fontFamily: "inherit",
@@ -376,9 +376,9 @@ function TourPills({ tour, setTour }: {
           cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
           textTransform: "uppercase", letterSpacing: "0.06em",
           padding: "7px 15px", borderRadius: 4,
-          color: tour === id ? "#081f14" : "var(--bc-muted)",
-          background: tour === id ? "var(--bc-yellow)" : "transparent",
-          border: `1px solid ${tour === id ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+          color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
+          background: tour === id ? "var(--bc-raised)" : "transparent",
+          border: `1px solid ${tour === id ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
         }}>
           {label}
         </button>
@@ -492,7 +492,7 @@ function EuroLiveView() {
                 {p.rounds.map((r, ri) => (
                   <td key={ri} style={{ ...td, color: "var(--bc-muted)" }}>{r != null ? Math.round(r) : "—"}</td>
                 ))}
-                <td style={{ ...td, color: "var(--bc-yellow)", fontSize: "0.8em" }}>
+                <td style={{ ...td, color: "var(--bc-text)", fontSize: "0.85em" }}>
                   {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
                 </td>
               </tr>

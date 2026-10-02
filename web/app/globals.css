@@ -19,7 +19,14 @@
   --bc-red:       #e05555;   /* fills only — 4.1:1 on --bc-bg, fails AA as text */
   --bc-red-text:  #ff6b6b;   /* red as text on green surfaces (5.6:1) */
   --bc-hover:     #143d29;   /* row / card hover surface */
+  --bc-raised:    #1d5038;   /* selected toggle / segment surface */
+  --bc-line-hi:   #3f7358;   /* selected toggle border, stronger dividers */
   --bc-focus:     var(--bc-yellow);
+
+  /* Yellow budget: the nav rule, the active nav item, and ONE solid
+     primary button per screen. Selection uses --bc-raised; labels and
+     secondary links use text/muted. Data encodings (eagles, tiers,
+     chart series) may still use yellow — they carry meaning. */
 
   /* Semantic aliases — components read these, not the raw hues, so a
      palette change is a one-line edit here. */

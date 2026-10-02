@@ -12,7 +12,7 @@ import { useStoredChoice } from "@/lib/useStoredChoice";
 import Link from "next/link";
 import { getHome, HomeData } from "@/lib/api";
 import { Show } from "@clerk/nextjs";
-import { Panel, SectionTag, StatStrip, pct } from "@/components/broadcast";
+import { Panel, SectionTag, StatStrip, pct, textLink } from "@/components/broadcast";
 import LiveMatchCard from "@/components/LiveMatchCard";
 import { useLiveEvents } from "@/lib/useLiveEvents";
 
@@ -48,7 +48,7 @@ export default function Home() {
   const h = data.hero;
   const matchupBanner = (
     <div style={{ marginTop: 24, padding: "18px 22px", borderRadius: 10,
-      background: "var(--bc-card)", border: "1px solid var(--bc-yellow)",
+      background: "var(--bc-card)", border: "1px solid var(--bc-line)",
       display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
       <div style={{ flex: "1 1 300px" }}>
         <div style={{ fontWeight: 900, fontSize: "1.1em" }}>Your matchup</div>
@@ -63,8 +63,7 @@ export default function Home() {
           padding: "11px 18px", borderRadius: 4, whiteSpace: "nowrap" }}>
           View your matchup
         </Link>
-        <Link href="/friends" style={{ fontWeight: 700, fontSize: "0.78em", textTransform: "uppercase",
-          letterSpacing: "0.06em", color: "var(--bc-yellow)", whiteSpace: "nowrap" }}>
+        <Link href="/friends" style={textLink}>
           Make picks →
         </Link>
       </div>
@@ -77,7 +76,7 @@ export default function Home() {
       {/* ── New visitor? The game comes before the forecast. ────────────── */}
       <Show when="signed-out">
         <div style={{ marginTop: 24, padding: "22px 26px", borderRadius: 10,
-          background: "var(--bc-card)", border: "1px solid var(--bc-yellow)",
+          background: "var(--bc-card)", border: "1px solid var(--bc-line)",
           display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
           <div style={{ flex: "1 1 380px" }}>
             <div style={{ fontWeight: 900, fontSize: "1.25em", lineHeight: 1.3 }}>
@@ -114,9 +113,9 @@ export default function Home() {
             cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
             textTransform: "uppercase", letterSpacing: "0.06em",
             padding: "7px 15px", borderRadius: 4,
-            color: tour === id ? "#081f14" : "var(--bc-muted)",
-            background: tour === id ? "var(--bc-yellow)" : "transparent",
-            border: `1px solid ${tour === id ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+            color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
+            background: tour === id ? "var(--bc-raised)" : "transparent",
+            border: `1px solid ${tour === id ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
           }}>
             {label}
           </button>
@@ -127,7 +126,7 @@ export default function Home() {
       <div style={{ display: "flex", gap: 48, padding: "24px 0 30px", flexWrap: "wrap" }}>
         <div style={{ flex: "1 1 480px", display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ fontSize: "0.82em", fontWeight: 700, letterSpacing: "0.16em",
-                        textTransform: "uppercase", color: "var(--bc-yellow)" }}>
+                        textTransform: "uppercase", color: h?.is_live ? "var(--bc-green)" : "var(--bc-muted)" }}>
             {h ? (h.is_live ? "Live this week" : "Next on tour") : "Offseason"}
             {h && ` · ${fmtDates(h.start_date, h.end_date)}`}
             {h?.course && ` · ${h.course}`}
@@ -148,14 +147,15 @@ export default function Home() {
                 : "The model is in the offseason lab."}
           </div>
           <div style={{ display: "flex", gap: 14, alignItems: "center", marginTop: 8 }}>
+            {/* Outlined, not yellow: the game card above owns the page's one
+                primary action. */}
             <Link href="/predictions" style={{
-              background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+              border: "1px solid var(--bc-line-hi)", color: "var(--bc-text)", fontWeight: 800,
               textTransform: "uppercase", fontSize: "0.82em", letterSpacing: "0.06em",
-              padding: "13px 24px", borderRadius: 4 }}>
+              padding: "12px 22px", borderRadius: 4 }}>
               This week's forecast
             </Link>
-            <Link href="/betting" style={{ fontWeight: 700, fontSize: "0.82em",
-              textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--bc-yellow)" }}>
+            <Link href="/betting" style={textLink}>
               Betting board →
             </Link>
           </div>
@@ -169,7 +169,7 @@ export default function Home() {
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {data.board.map((b, i) => (
               <div key={b.player} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{ fontWeight: 900, fontSize: "1.4em", color: "var(--bc-yellow)", width: 24 }}>{i + 1}</div>
+                <div style={{ fontWeight: 900, fontSize: "1.4em", color: "var(--bc-muted)", width: 24 }}>{i + 1}</div>
                 <div style={{ flexGrow: 1 }}>
                   <div style={{ fontWeight: 700, fontSize: "1em" }}>{b.player}</div>
                   <div style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>{b.why}</div>
@@ -228,8 +228,7 @@ export default function Home() {
         <StatStrip
           title="Track record"
           stats={Object.values(data.trust).map(t => ({ value: t.value, label: t.label }))}
-          right={<Link href="/methodology" style={{ fontWeight: 700, fontSize: "0.8em",
-            textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--bc-yellow)" }}>
+          right={<Link href="/methodology" style={textLink}>
             How it works →</Link>}
         />
       </div>

@@ -113,7 +113,7 @@ export default function MatchCenterPage() {
     return (
       <div style={{ maxWidth: 760, margin: "0 auto" }}>
         <PageHead kicker="Your group's weekend" title="Match Center" />
-        <div style={card}>The match center follows a group. <Link href="/friends" style={{ color: "var(--bc-yellow)" }}>Create or join one</Link> first.</div>
+        <div style={card}>The match center follows a group. <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Create or join one</Link> first.</div>
       </div>
     );
   }
@@ -142,8 +142,8 @@ export default function MatchCenterPage() {
       {err && <div style={{ ...card, color: "var(--bc-muted)", fontSize: "0.88em" }}>{err}</div>}
 
       {changes.length > 0 && (
-        <div style={{ ...card, borderColor: "var(--bc-yellow)", background: "color-mix(in srgb, var(--bc-yellow) 8%, var(--bc-card))" }}>
-          <div style={{ fontSize: "0.7em", fontWeight: 800, color: "var(--bc-yellow)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
+        <div style={{ ...card, borderColor: "var(--bc-green)" }}>
+          <div style={{ fontSize: "0.78em", fontWeight: 800, color: "var(--bc-green)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
             Since you last looked
           </div>
           {changes.map((c, i) => <div key={i} style={{ fontWeight: 700, fontSize: "0.92em", padding: "2px 0" }}>{c}</div>)}
@@ -152,7 +152,7 @@ export default function MatchCenterPage() {
 
       {!data ? <p style={{ color: "var(--bc-muted)" }}>Loading…</p>
         : !data.league ? (
-          <div style={card}>No Let It Ride season in this group yet — the owner starts one from <Link href="/friends" style={{ color: "var(--bc-yellow)" }}>Friends → Let It Ride</Link>.</div>
+          <div style={card}>No Let It Ride season in this group yet — the owner starts one from <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Friends → Let It Ride</Link>.</div>
         ) : (
           <>
             {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} groupName={data.group?.name ?? ""} />)}
@@ -167,15 +167,15 @@ function pill(on: boolean): React.CSSProperties {
   return {
     cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.74em", textTransform: "uppercase",
     letterSpacing: "0.05em", padding: "7px 13px", borderRadius: 4,
-    color: on ? "#081f14" : "var(--bc-muted)", background: on ? "var(--bc-yellow)" : "transparent",
-    border: `1px solid ${on ? "var(--bc-yellow)" : "var(--bc-line)"}`,
+    color: on ? "var(--bc-text)" : "var(--bc-muted)", background: on ? "var(--bc-raised)" : "transparent",
+    border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
   };
 }
 
 function StatusTag({ status, projected }: { status: Slate["status"]; projected: boolean }) {
   const label = status === "final" ? "Final" : status === "settling" ? "Final · money settling"
     : status === "live" ? (projected ? "Live · projected" : "Live") : "Picks open";
-  const color = status === "final" ? "var(--bc-muted)" : status === "live" ? "var(--bc-green)" : "var(--bc-yellow)";
+  const color = status === "final" ? "var(--bc-muted)" : status === "live" ? "var(--bc-green)" : "var(--bc-text)";
   return <span style={{ fontSize: "0.68em", fontWeight: 800, color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>;
 }
 
@@ -191,7 +191,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
         </div>
         <p style={{ color: "var(--bc-muted)", fontSize: "0.86em", margin: "8px 0 0" }}>
           {me ? `Your picks: ${displaySurnames(me.golfers.map(g => g.name)).join(", ")}. ` : "You haven't picked yet. "}
-          Everyone&apos;s picks appear here once the event locks. <Link href="/friends" style={{ color: "var(--bc-yellow)" }}>Make picks →</Link>
+          Everyone&apos;s picks appear here once the event locks. <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Make picks →</Link>
         </p>
       </div>
     );
@@ -207,7 +207,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
         <StatusTag status={s.status} projected={s.projected} />
       </div>
       <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{headline}</div>
-      {s.story && <div style={{ color: "var(--bc-yellow)", fontWeight: 700, fontSize: "0.92em" }}>{s.story}</div>}
+      {s.story && <div style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.92em" }}>{s.story}</div>}
       {s.beating_model != null && s.humans > 0 && (
         <div style={{ color: "var(--bc-muted)", fontSize: "0.84em", marginTop: 4 }}>
           {s.beating_model} of {s.humans} {s.humans === 1 ? "player is" : "players are"} beating the model{s.status === "final" ? "" : " right now"}.
@@ -243,12 +243,12 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
           return (
             <div key={l.user_id} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "5px 0", fontSize: "0.88em",
               borderBottom: "1px solid var(--bc-line)" }}>
-              <span style={{ width: 22, fontWeight: 900, color: "var(--bc-yellow)" }}>{l.rank}</span>
-              <span style={{ fontWeight: 800, color: isMe ? "var(--bc-yellow)" : "var(--bc-text)" }}>
+              <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
+              <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)" }}>
                 {isMe ? "You" : l.user_name}
               </span>
-              {isModel && <span style={tag("var(--bc-yellow)")}>Model</span>}
-              {isRival && !isModel && <span style={tag("var(--bc-orange)")}>Rival</span>}
+              {isModel && <span style={tag("var(--bc-line-hi)", "var(--bc-text)")}>Model</span>}
+              {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>Rival</span>}
               <span style={{ color: "var(--bc-muted)", fontSize: "0.82em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {displaySurnames(l.golfers.map(g => g.name)).join(", ")}
               </span>
@@ -266,9 +266,9 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
   );
 }
 
-function tag(color: string): React.CSSProperties {
-  return { fontSize: "0.62em", fontWeight: 900, letterSpacing: "0.06em", textTransform: "uppercase",
-    color: "#081f14", background: color, borderRadius: 3, padding: "1px 5px" };
+function tag(bg: string, fg: string): React.CSSProperties {
+  return { fontSize: "0.7em", fontWeight: 900, letterSpacing: "0.06em", textTransform: "uppercase",
+    color: fg, background: bg, borderRadius: 3, padding: "1px 5px" };
 }
 
 function CollegeCard({ c }: { c: NonNullable<College> }) {
@@ -281,9 +281,9 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
       </div>
       {me ? (
         <>
-          <div style={{ fontWeight: 900, fontSize: "1.6em", color: "var(--bc-yellow)", margin: "6px 0 0", letterSpacing: "-0.01em" }}>{me.school}</div>
+          <div style={{ fontWeight: 900, fontSize: "1.6em", color: "var(--bc-text)", margin: "6px 0 0", letterSpacing: "-0.01em" }}>{me.school}</div>
           <div style={{ fontWeight: 800, fontSize: "0.95em" }}>{ordinal(me.rank)} in the school race · {money(me.total)}</div>
-          {c.story && <div style={{ color: "var(--bc-yellow)", fontWeight: 700, fontSize: "0.88em", marginTop: 4 }}>{c.story}</div>}
+          {c.story && <div style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.88em", marginTop: 4 }}>{c.story}</div>}
           <div style={{ marginTop: 10, fontSize: "0.68em", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             Your two counting golfers
           </div>
@@ -302,7 +302,7 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
         <div style={{ marginTop: 12 }}>
           {c.lines.map(l => (
             <div key={l.user_id} style={{ display: "flex", gap: 10, fontSize: "0.86em", padding: "3px 0" }}>
-              <span style={{ width: 22, fontWeight: 900, color: "var(--bc-yellow)" }}>{l.rank}</span>
+              <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
               <span style={{ fontWeight: 800 }}>{l.school}</span>
               <span style={{ color: "var(--bc-muted)" }}>{l.user_id === c.me_id ? "you" : l.user_name}</span>
               <span style={{ marginLeft: "auto", fontWeight: 800 }}>{money(l.total)}</span>
