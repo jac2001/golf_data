@@ -156,7 +156,54 @@ except Exception:
 
 app = FastAPI(title="Golf Data API", version="1.0.0")
 
-# Allow the Next.js dev server (localhost:3000) to call this API
+# ── Flood guard ──────────────────────────────────────────────────────────────
+# Sliding window per IP across every /api/* path. Generous on purpose:
+# browsers call this API directly (the live page polls a few endpoints a
+# minute), but Vercel's server routes share a small pool of egress IPs, so
+# a tight cap would throttle every user at once. This only stops a script
+# hammering the API; the expensive things (LLM calls, upstream fetches)
+# carry their own tighter limits. In-memory, per instance — a restart
+# forgives everyone, which only ever errs generous.
+_FLOOD_MAX = int(os.environ.get("API_FLOOD_MAX", "600"))
+_FLOOD_WINDOW = 60.0
+_flood_lock = threading.Lock()
+_flood_hits: dict[str, list[float]] = defaultdict(list)
+
+
+def _window_ok(store: dict, key: str, max_n: int, window: float) -> tuple[bool, float]:
+    """Sliding-window check-and-record. Returns (allowed, seconds until the
+    oldest hit in the window expires). Prunes the whole store when it grows
+    large so one-off IPs don't accumulate forever. Caller holds the lock."""
+    now = time.time()
+    cutoff = now - window
+    hits = [t for t in store.get(key, ()) if t > cutoff]
+    if len(store) > 20_000:
+        for k in [k for k, v in store.items() if not v or v[-1] <= cutoff]:
+            del store[k]
+    if len(hits) >= max_n:
+        store[key] = hits
+        return False, max(1.0, hits[0] + window - now)
+    hits.append(now)
+    store[key] = hits
+    return True, 0.0
+
+
+@app.middleware("http")
+async def _flood_guard(request: Request, call_next):
+    if request.url.path.startswith("/api/") and request.method != "OPTIONS":
+        with _flood_lock:
+            ok, retry = _window_ok(_flood_hits, _client_ip(request), _FLOOD_MAX, _FLOOD_WINDOW)
+        if not ok:
+            from fastapi.responses import JSONResponse
+            return JSONResponse({"error": "Too many requests"}, status_code=429,
+                                headers={"Retry-After": str(int(retry) + 1)})
+    return await call_next(request)
+
+
+# Allow the Next.js dev server (localhost:3000) to call this API.
+# Registered AFTER the flood guard so CORS is the outer layer: a 429 still
+# carries CORS headers and the browser sees "too many requests", not a
+# misleading CORS failure.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -2133,6 +2180,9 @@ def get_live_sg_stats(round_param: str = "event_avg") -> dict:
     DG live SG stats — reads from DB, auto-refreshes from DG if data is >5 minutes old.
     round_param: event_avg | 1 | 2 | 3 | 4
     """
+    # Anything else would reach DG verbatim on a stale read.
+    if round_param not in _ROUND_PARAM_TO_NUM:
+        round_param = "event_avg"
     tid = _get_tournament_id()
     round_num = _ROUND_PARAM_TO_NUM.get(round_param, 0)
 
@@ -2220,6 +2270,10 @@ def get_live_hole_stats(round_param: str = "event_avg", tour: str = "pga") -> di
     """
     if tour not in ("pga", "euro"):
         tour = "pga"
+    # Whitelisted: every distinct value is its own cache key, so a free
+    # string let anyone mint uncached DG calls (?round_param=a, b, c...).
+    if round_param not in _ROUND_PARAM_TO_NUM:
+        round_param = "event_avg"
     cache_key = f"{tour}:{round_param}"
     cached = _HOLE_STATS_CACHE.get(cache_key)
     if cached and time.time() - cached["_ts"] < _HOLE_STATS_TTL:
@@ -2319,10 +2373,11 @@ def get_live_hole_stats(round_param: str = "event_avg", tour: str = "pga") -> di
 
 
 _scorecard_cache: dict[tuple[str, str], tuple[float, dict]] = {}
+_scorecard_hits: dict[str, list[float]] = {}
 
 
 @app.get("/api/live/scorecard")
-def get_live_scorecard(player: str, tournament_id: str = "") -> dict:
+def get_live_scorecard(request: Request, player: str, tournament_id: str = "") -> dict:
     """One golfer's hole-by-hole scorecard, fetched ON DEMAND from the PGA
     Tour feed and cached 3 minutes. DataGolf publishes no per-player hole
     scores (in-play has round totals + thru only), so the scorecard grid
@@ -2331,12 +2386,21 @@ def get_live_scorecard(player: str, tournament_id: str = "") -> dict:
     card someone opens is cheaper than scraping 120 every few minutes.
     PGA events only (player ids come from the PGA field file)."""
     tid = (tournament_id or _get_tournament_id()).strip().upper()
-    if not tid.startswith("R"):
+    if not re.fullmatch(r"R\d{7}", tid):
         raise HTTPException(status_code=404, detail="Scorecards are PGA Tour only")
     key = (tid, _name_key(player))
     hit = _scorecard_cache.get(key)
     if hit and time.time() - hit[0] < 180:
         return hit[1]
+    # Cache misses go to the PGA Tour's feed — budget them per IP and
+    # globally. Checked here, after the cache, so re-opening a card
+    # someone already loaded costs nothing.
+    with _flood_lock:
+        ok_ip, retry = _window_ok(_scorecard_hits, f"ip:{_client_ip(request)}", 30, 60.0)
+        ok_all, retry_all = _window_ok(_scorecard_hits, "global", 120, 60.0) if ok_ip else (False, retry)
+    if not (ok_ip and ok_all):
+        raise HTTPException(status_code=429, detail="Scorecards are busy — try again shortly",
+                            headers={"Retry-After": str(int(max(retry, retry_all)) + 1)})
 
     field_path = DATA_DIR / "fields" / f"field_{tid}.csv"
     if not field_path.exists():
