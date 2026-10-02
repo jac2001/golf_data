@@ -6,7 +6,8 @@
     "dev": "next dev",
     "dev:restart": "lsof -ti:3000 | xargs kill -9 2>/dev/null; sleep 1; next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "node --test 'lib/**/*.test.ts'"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.9.4",
