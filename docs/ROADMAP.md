@@ -55,10 +55,9 @@ needed for it.
 
 ## Next (October)
 
-1. **Production checklist, pre-strangers tier** — remaining: error
-   monitoring (Sentry; Jack creates the account, then wire web + API).
-   Also confirm admin@playgolfedge.com receives mail (ToS/privacy
-   contact) and decide whether self-serve account deletion is needed.
+1. **Pre-strangers loose ends** — confirm admin@playgolfedge.com
+   receives mail (ToS/privacy contact); decide whether self-serve
+   account deletion is needed.
 2. **Phase 2 step 6 — per-member advice view**: stateless
    get_season_strategy (usage state + season events + purse map in,
    strategy out), "who to spend this week" inside Let It Ride. The last
@@ -90,6 +89,10 @@ needed for it.
   live events (home card + nav), yellow budget (one primary per
   screen, quiet tabs/toggles), type floors (13px/12px via max()) and
   phone-width fixes, verified with the console audit on every page.
+- [x] Sentry error monitoring (2026-10-02): web (DSN in code, prod only)
+  + API (/health reports `sentry`), collection locked down (no bodies,
+  headers, cookies, user info, locals, or AI prompts). Test route:
+  /api/debug/sentry-test, gated by CHAT_PROXY_SECRET.
 - [x] Tie-for-first headline (Jack, test-first). Follow-up idea: a
   real test runner that resolves `@/` so tests import lib/ directly.
 
