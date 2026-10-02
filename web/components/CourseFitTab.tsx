@@ -19,7 +19,7 @@ const hdr: React.CSSProperties = {
   ...cell,
   color: "var(--bc-muted)",
   fontWeight: 600,
-  fontSize: "0.76em",
+  fontSize: "max(var(--fs-min), 0.76em)",
   textTransform: "uppercase",
   letterSpacing: "0.04em",
   borderBottom: "1px solid var(--bc-line)",
@@ -109,7 +109,7 @@ function CourseProfile({ profile }: { profile: CourseFitResponse["course_profile
 
   return (
     <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "14px 18px", marginBottom: 20 }}>
-      <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 12 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 12 }}>
         Course Demand Profile — what this course rewards most
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -123,12 +123,12 @@ function CourseProfile({ profile }: { profile: CourseFitResponse["course_profile
                 <div style={{ width: `${val * 100}%`, height: "100%", background: barColor, borderRadius: 4, transition: "width 0.3s ease" }} />
               </div>
               <div style={{ width: 36, fontSize: "0.82em", color: "var(--bc-muted)", textAlign: "right", flexShrink: 0 }}>{Math.round(val * 100)}%</div>
-              <div style={{ width: 200, fontSize: "0.72em", color: "var(--bc-muted)" }}>{desc}</div>
+              <div style={{ width: 200, fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>{desc}</div>
             </div>
           );
         })}
       </div>
-      <div style={{ marginTop: 10, fontSize: "0.68em", color: "var(--bc-line)" }}>
+      <div style={{ marginTop: 10, fontSize: "max(var(--fs-min-xs), 0.68em)", color: "var(--bc-line)" }}>
         Higher % = this skill is more differentiating at this course vs. an average PGA Tour event.
       </div>
     </div>
@@ -147,7 +147,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
   if (base == null || final == null) {
     return (
       <tr>
-        <td colSpan={COL_SPAN} style={{ ...cell, background: "var(--bc-panel)", color: "var(--bc-muted)", fontStyle: "italic", fontSize: "0.78em" }}>
+        <td colSpan={COL_SPAN} style={{ ...cell, background: "var(--bc-panel)", color: "var(--bc-muted)", fontStyle: "italic", fontSize: "max(var(--fs-min), 0.78em)" }}>
           No DG decomposition available for this player.
         </td>
       </tr>
@@ -172,7 +172,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
           {steps.map((s, idx) => (
             <span key={idx} style={{ display: "flex", alignItems: "center", gap: 6 }}>
               {idx > 0 && <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>}
-              <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>{s.label}</span>
+              <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>{s.label}</span>
               <span style={{
                 fontSize: "0.82em", fontWeight: 600,
                 color: idx === 0 ? "var(--bc-muted)" : adjColor(s.value),
@@ -187,7 +187,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
           {remaining != null && Math.abs(remaining) > 0.005 && (
             <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>
-              <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>+ other</span>
+              <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>+ other</span>
               <span style={{ fontSize: "0.82em", fontWeight: 600, color: adjColor(remaining) }}>
                 {fmtAdj(remaining)}
               </span>
@@ -195,7 +195,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
           )}
           <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>
-            <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>DG final</span>
+            <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>DG final</span>
             <span style={{
               fontSize: "0.88em", fontWeight: 700,
               color: final >= 1.5 ? "var(--bc-green)" : final >= 0 ? "var(--bc-green)" : "var(--bc-muted)",
@@ -204,7 +204,7 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
             </span>
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 20 }}>
-            <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>DG win%</span>
+            <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>DG win%</span>
             <span style={{
               fontSize: "0.88em", fontWeight: 700,
               color: (p.dg_win ?? 0) > 0.08 ? "var(--bc-green)" : (p.dg_win ?? 0) > 0.03 ? "var(--bc-yellow)" : "var(--bc-muted)",
@@ -213,13 +213,13 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
             </span>
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 8 }}>
-            <span style={{ fontSize: "0.74em", color: "var(--bc-muted)" }}>Model win%</span>
+            <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>Model win%</span>
             <span style={{ fontSize: "0.88em", fontWeight: 700, color: "var(--bc-muted)" }}>
               {p.win_prob != null ? fmtPct(p.win_prob) : "—"}
             </span>
           </span>
         </div>
-        <div style={{ marginTop: 6, fontSize: "0.7em", color: "var(--bc-line)" }}>
+        <div style={{ marginTop: 6, fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-line)" }}>
           Baseline = DG skill rating (pure SG, no course context). Positive timing = currently above expected form.
         </div>
       </td>
@@ -258,16 +258,16 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
         <td style={{ ...cell, minWidth: 170 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <span style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.88em" }}>{name}</span>
-            <span style={{ fontSize: "0.68em", color: expanded ? "var(--bc-green)" : "var(--bc-line)", marginLeft: 2 }}>
+            <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: expanded ? "var(--bc-green)" : "var(--bc-line)", marginLeft: 2 }}>
               {expanded ? "▲" : "▼"}
             </span>
           </div>
           <div style={{ display: "flex", gap: 4, marginTop: 2, flexWrap: "wrap" }}>
             {p.world_rank != null && (
-              <span style={{ fontSize: "0.7em", color: "var(--bc-muted)" }}>#{p.world_rank}</span>
+              <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-muted)" }}>#{p.world_rank}</span>
             )}
             {!p.has_history && (
-              <span style={{ fontSize: "0.68em", color: "#4a5060", background: "#0d1520", border: "1px solid #1e2a3a", borderRadius: 3, padding: "1px 5px" }}>
+              <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: "#4a5060", background: "#0d1520", border: "1px solid #1e2a3a", borderRadius: 3, padding: "1px 5px" }}>
                 no history
               </span>
             )}
@@ -289,7 +289,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
               )}
             </div>
           ) : (
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>—</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>—</span>
           )}
         </td>
 
@@ -309,7 +309,7 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
               )}
             </div>
           ) : (
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>—</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>—</span>
           )}
         </td>
 
@@ -362,7 +362,7 @@ function SectionHeader({ label, count, color }: { label: string; count: number; 
     <tr>
       <td colSpan={COL_SPAN} style={{
         padding: "8px 12px 4px",
-        fontSize: "0.72em",
+        fontSize: "max(var(--fs-min), 0.72em)",
         color,
         fontWeight: 700,
         textTransform: "uppercase",
@@ -485,13 +485,13 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
 
       {/* Min starts + uses legend */}
       <div style={{ display: "flex", gap: 6, marginBottom: 16, alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: "0.75em", color: "var(--bc-muted)", marginRight: 4 }}>Min starts:</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: "var(--bc-muted)", marginRight: 4 }}>Min starts:</span>
         {startCounts.map(({ n, count }) => (
           <button key={n} onClick={() => setMinStarts(n)} style={{
             background: minStarts === n ? "#1a2a40" : "var(--bc-panel)",
             border: `1px solid ${minStarts === n ? "var(--bc-muted)" : "var(--bc-line)"}`,
             color: minStarts === n ? "var(--bc-text)" : "var(--bc-muted)",
-            borderRadius: 5, padding: "3px 10px", fontSize: "0.77em", cursor: "pointer",
+            borderRadius: 5, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.77em)", cursor: "pointer",
           }}>
             {n === 0 ? "All" : `${n}+`}
             <span style={{ marginLeft: 4, color: "#3a5070" }}>({count})</span>
@@ -553,7 +553,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
           </tbody>
         </table>
       </div>
-      <div style={{ marginTop: 10, fontSize: "0.72em", color: "var(--bc-line)" }}>
+      <div style={{ marginTop: 10, fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-line)" }}>
         Click any row to expand DG decomposition. Timing = DG form adjustment. Fit Adj = course suitability adjustment. DG Win% = DataGolf model.
       </div>
     </div>

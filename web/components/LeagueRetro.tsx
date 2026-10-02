@@ -19,7 +19,7 @@ const cell: React.CSSProperties = {
   fontSize: "0.84em", color: "var(--bc-text)", textAlign: "left",
 };
 const hdr: React.CSSProperties = {
-  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "0.76em",
+  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.76em)",
   textTransform: "uppercase", letterSpacing: "0.04em",
 };
 const num: React.CSSProperties = { ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums" };
@@ -53,11 +53,11 @@ export default function LeagueRetro() {
       <div style={{ ...card, border: "1px solid var(--bc-yellow)",
         background: "color-mix(in srgb, var(--bc-yellow) 7%, var(--bc-card))" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 14, flexWrap: "wrap" }}>
-          <span style={{ fontSize: "0.72em", fontWeight: 800, letterSpacing: "0.14em",
+          <span style={{ fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 800, letterSpacing: "0.14em",
             textTransform: "uppercase", color: "var(--bc-yellow)" }}>
             {w.season} League Season
           </span>
-          {champion && <span style={{ fontSize: "0.72em", fontWeight: 800, letterSpacing: "0.1em",
+          {champion && <span style={{ fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 800, letterSpacing: "0.1em",
             color: "#081f14", background: "var(--bc-yellow)", borderRadius: 3, padding: "2px 8px",
             textTransform: "uppercase" }}>Champions</span>}
         </div>
@@ -82,7 +82,7 @@ export default function LeagueRetro() {
       {/* The climb */}
       <div style={card}>
         <div style={{ fontWeight: 700, marginBottom: 2 }}>The Climb</div>
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginBottom: 10 }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginBottom: 10 }}>
           cumulative earnings, week 1 → {w.weeks}
           {w.best_week && <> · biggest week: {w.best_week.tournament} ({money(w.best_week.earnings)})</>}
         </div>
@@ -147,7 +147,7 @@ export default function LeagueRetro() {
         <>
           <div style={card}>
             <div style={{ fontWeight: 700, marginBottom: 4 }}>The 2026 Ladder</div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginBottom: 14 }}>{s.ladder.note}</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginBottom: 14 }}>{s.ladder.note}</div>
             {[
               { label: "Static preseason plan", v: s.ladder.static_plan },
               { label: "Rolling replay", v: s.ladder.rolling_replay },
@@ -181,9 +181,9 @@ export default function LeagueRetro() {
                 {s.ledger.map(r => (
                   <tr key={r.tid}>
                     <td style={cell}>{r.date}</td>
-                    <td style={{ ...cell, fontSize: "0.78em" }}>{r.jack_picks || "—"}</td>
+                    <td style={{ ...cell, fontSize: "max(var(--fs-min), 0.78em)" }}>{r.jack_picks || "—"}</td>
                     <td style={num}>{money(r.jack_earn)}</td>
-                    <td style={{ ...cell, fontSize: "0.78em", color: "var(--bc-muted)" }}>{r.replay_picks}</td>
+                    <td style={{ ...cell, fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>{r.replay_picks}</td>
                     <td style={num}>{money(r.replay_earn)}</td>
                     <td style={{ ...num, color: r.delta == null ? "var(--bc-muted)"
                       : r.delta > 0 ? "var(--bc-green)" : "var(--bc-red-text)" }}>

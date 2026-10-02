@@ -138,13 +138,13 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
         <div style={{ flex: 1, minWidth: 0, marginRight: 12 }}>
           <div style={{ marginBottom: 5, display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
             <span style={{
-              fontSize: "0.65em", fontWeight: 700, color: "var(--bc-green)",
+              fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700, color: "var(--bc-green)",
               background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", padding: "2px 7px", borderRadius: 4,
               border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
             }}>
               {bookLbl}
             </span>
-            <span style={{ fontSize: "0.65em", fontWeight: 600, color, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 600, color, textTransform: "uppercase", letterSpacing: "0.05em" }}>
               {marketLbl}
             </span>
           </div>
@@ -159,7 +159,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
               {bet.player_name}
             </Link>
             {isPick && (
-              <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
+              <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px", whiteSpace: "nowrap" }}>
                 MY PICK
               </span>
             )}
@@ -181,7 +181,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           {/* ── Intel warning ── */}
           {bet.intel_warning && (
             <div style={{
-              marginTop: 5, fontSize: "0.68em", fontWeight: 600,
+              marginTop: 5, fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 600,
               color: "var(--bc-orange)", background: "rgba(255,210,74,0.08)",
               border: "1px solid rgba(95,74,0,0.27)", borderRadius: 4,
               padding: "2px 7px", display: "inline-block",
@@ -205,7 +205,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                 {/* Position + total + thru */}
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span style={{
-                    fontSize: "0.72em", fontWeight: 700,
+                    fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 700,
                     color: isLeader ? "var(--bc-orange)" : "var(--bc-muted)",
                     background: isLeader ? "rgba(255,210,74,0.10)" : "var(--bc-panel)",
                     padding: "2px 8px", borderRadius: 4,
@@ -217,14 +217,14 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                     {bet.live_total ?? "E"}
                   </span>
                   {bet.live_thru && (
-                    <span style={{ fontSize: "0.72em", color: "var(--bc-muted)" }}>
+                    <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>
                       {bet.live_thru === "F" ? "Finished" : `thru ${bet.live_thru}`}
                     </span>
                   )}
                 </div>
                 {/* Round-by-round scores */}
                 {rounds && (
-                  <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", letterSpacing: "0.03em" }}>
+                  <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: "var(--bc-muted)", letterSpacing: "0.03em" }}>
                     {rounds}
                   </div>
                 )}
@@ -238,7 +238,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
             {fmtOdds(bet.odds_american)}
           </div>
           <span style={{
-            fontSize: "0.68em", fontWeight: 700, color: confColor,
+            fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: confColor,
             background: "rgba(255,255,255,0.07)", padding: "2px 7px", borderRadius: 4,
           }}>
             {confLabel}
@@ -251,7 +251,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
 
         {/* Model bar */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.72em", width: 52, flexShrink: 0 }}>Model</span>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)", width: 52, flexShrink: 0 }}>Model</span>
           <div style={{ flex: 1, background: "var(--bc-card)", borderRadius: 3, height: 5 }}>
             <div style={{ width: `${modelBar}%`, background: "var(--bc-green)", borderRadius: 3, height: 5 }} />
           </div>
@@ -262,7 +262,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
 
         {/* Market bar */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.72em", width: 52, flexShrink: 0 }}>Market</span>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)", width: 52, flexShrink: 0 }}>Market</span>
           <div style={{ flex: 1, background: "var(--bc-card)", borderRadius: 3, height: 5 }}>
             <div style={{ width: `${marketBar}%`, background: "var(--bc-yellow)", borderRadius: 3, height: 5 }} />
           </div>
@@ -295,7 +295,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
               border: "1px solid var(--bc-line)",
               borderRadius: 5,
               color: reasonOpen ? "var(--bc-muted)" : "var(--bc-yellow)",
-              fontSize: "0.75em",
+              fontSize: "max(var(--fs-min), 0.75em)",
               fontWeight: 600,
               padding: "4px 10px",
               cursor: "pointer",
@@ -313,7 +313,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                 border: `1px solid ${tracked ? "color-mix(in srgb, var(--bc-green) 27%, transparent)" : "var(--bc-line)"}`,
                 borderRadius: 5,
                 color: tracked ? "var(--bc-green)" : "var(--bc-muted)",
-                fontSize: "0.75em",
+                fontSize: "max(var(--fs-min), 0.75em)",
                 fontWeight: 600,
                 padding: "4px 10px",
                 cursor: tracked ? "default" : "pointer",
@@ -332,7 +332,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
                     border: `1px solid ${tailed ? "color-mix(in srgb, var(--bc-yellow) 40%, transparent)" : "var(--bc-line)"}`,
                     borderRadius: 5,
                     color: tailed ? "var(--bc-yellow)" : "var(--bc-muted)",
-                    fontSize: "0.75em",
+                    fontSize: "max(var(--fs-min), 0.75em)",
                     fontWeight: 600,
                     padding: "4px 10px",
                     cursor: "pointer",
@@ -362,7 +362,7 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
 function Stat({ label, value, color }: { label: string; value: string; color: string }) {
   return (
     <div>
-      <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </div>
       <div style={{ fontSize: "1em", fontWeight: 800, color }}>{value}</div>
@@ -403,7 +403,7 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
           border: "1px solid var(--bc-line)",
           borderRadius: 5,
           color: open ? "var(--bc-muted)" : "var(--bc-orange)",
-          fontSize: "0.75em",
+          fontSize: "max(var(--fs-min), 0.75em)",
           fontWeight: 600,
           padding: "4px 10px",
           cursor: "pointer",
@@ -418,7 +418,7 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
             <span style={{ fontSize: "0.8em", color: "var(--bc-muted)" }}>Loading…</span>
           ) : lines ? (
             <>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.78em" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "max(var(--fs-min), 0.78em)" }}>
                 <thead>
                   <tr style={{ color: "var(--bc-muted)" }}>
                     <th style={{ paddingBottom: 4, fontWeight: 600, textAlign: "left" }}>Book</th>
@@ -453,7 +453,7 @@ function LineShopButton({ player, market }: { player: string; market: string }) 
                 </tbody>
               </table>
               {lines.last_updated && (
-                <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", marginTop: 6 }}>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: "var(--bc-muted)", marginTop: 6 }}>
                   DG updated {lines.last_updated}
                 </div>
               )}

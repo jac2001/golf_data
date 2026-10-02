@@ -115,7 +115,7 @@ export default function NavBar() {
           <Show when="signed-out">
             <Link href="/sign-in" style={{
               border: `1px solid var(--bc-line)`,
-              color: muted, fontWeight: 700, fontSize: "0.72em",
+              color: muted, fontWeight: 700, fontSize: "max(var(--fs-min), 0.72em)",
               textTransform: "uppercase", letterSpacing: "0.05em",
               padding: "8px 12px", borderRadius: 4,
             }}>

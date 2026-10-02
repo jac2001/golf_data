@@ -17,7 +17,7 @@ const cell: React.CSSProperties = {
   fontSize: "0.84em", color: "var(--bc-text)",
 };
 const hdr: React.CSSProperties = {
-  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "0.78em",
+  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.78em)",
   textTransform: "uppercase", letterSpacing: "0.04em", borderBottom: "1px solid var(--bc-line)",
 };
 function pnlColor(v: number) { return v > 0 ? "var(--bc-green)" : v < 0 ? "var(--bc-red)" : "var(--bc-muted)"; }
@@ -52,7 +52,7 @@ function BetsTab() {
           { label: "ROI", value: `${ov.roi >= 0 ? "+" : ""}${ov.roi.toFixed(1)}%`, color: pnlColor(ov.roi) },
         ].map(s => (
           <div key={s.label}>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.75em", marginBottom: 2 }}>{s.label}</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", marginBottom: 2 }}>{s.label}</div>
             <div style={{ color: s.color ?? "var(--bc-text)", fontWeight: 700, fontSize: "1.1em" }}>{s.value}</div>
           </div>
         ))}
@@ -147,7 +147,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
       }}>
         {statItems.map(s => (
           <div key={s.label} style={{ minWidth: 70 }}>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{s.label}</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{s.label}</div>
             <div style={{ color: s.color ?? "var(--bc-text)", fontWeight: 700, fontSize: "1.05em" }}>{s.value}</div>
           </div>
         ))}
@@ -163,7 +163,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
           borderTop: "1px solid var(--bc-line)",
         }}>
           <div>
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Bankroll</span>
             {" "}
             <span style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>${stats.starting_bankroll?.toLocaleString()}</span>
             <span style={{ color: "var(--bc-line)", fontSize: "0.82em", margin: "0 6px" }}>→</span>
@@ -174,7 +174,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
           <div style={{ color: pnlColor(pnlDollars), fontSize: "0.88em", fontWeight: 600 }}>
             {pnlDollars >= 0 ? "+" : ""}${pnlDollars.toFixed(2)} season
           </div>
-          <div style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>
             ${stats.unit_size}/unit
           </div>
 
@@ -184,7 +184,7 @@ function SlipStatsStrip({ stats }: { stats: SlipStats }) {
               {stats.by_tournament.map((t: TournamentPnl) => (
                 <span key={t.tid} style={{
                   background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
-                  borderRadius: 5, padding: "3px 8px", fontSize: "0.75em",
+                  borderRadius: 5, padding: "3px 8px", fontSize: "max(var(--fs-min), 0.75em)",
                 }}>
                   <span style={{ color: "var(--bc-muted)" }}>{t.tid.replace("R2026", "")}</span>
                   {" "}
@@ -276,7 +276,7 @@ function SlipRow({ bet, onRemove }: { bet: SlipBet; onRemove: (id: string) => vo
             onClick={() => onRemove(bet.id)}
             style={{
               background: "transparent", border: "1px solid var(--bc-line)",
-              borderRadius: 4, color: "var(--bc-muted)", fontSize: "0.72em",
+              borderRadius: 4, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)",
               padding: "2px 8px", cursor: "pointer",
             }}
           >
@@ -343,7 +343,7 @@ function MySlipTab() {
 
       {/* Last updated indicator */}
       {updatedAt && (
-        <div style={{ fontSize: "0.72em", color: "var(--bc-line)", marginBottom: 12, paddingLeft: 2 }}>
+        <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-line)", marginBottom: 12, paddingLeft: 2 }}>
           Live · updated {updatedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
           <span style={{ color: "var(--bc-muted)", marginLeft: 8 }}>auto-refreshes every 2 min</span>
         </div>
@@ -364,7 +364,7 @@ function MySlipTab() {
               <tr>
                 <td colSpan={7} style={{
                   padding: "8px 12px", background: "#081220",
-                  color: "var(--bc-muted)", fontSize: "0.75em", fontWeight: 700,
+                  color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", fontWeight: 700,
                   textTransform: "uppercase", letterSpacing: "0.06em",
                   borderBottom: "1px solid var(--bc-line)",
                 }}>

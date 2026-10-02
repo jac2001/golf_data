@@ -206,7 +206,7 @@ export default function BettingPage() {
                 key={key}
                 onClick={() => setMarket(key)}
                 style={{
-                  padding: "5px 12px", borderRadius: 20, fontSize: "0.78em", fontWeight: 600,
+                  padding: "5px 12px", borderRadius: 20, fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 600,
                   cursor: "pointer", transition: "all 0.15s",
                   background: active ? "var(--bc-green)" : "transparent",
                   color:      active ? "#000"    : "var(--bc-muted)",
@@ -315,7 +315,7 @@ export default function BettingPage() {
           )}
 
           {showTable && oddsData && (
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
               {oddsData.players.length} players · {oddsData.books.length} books
             </span>
           )}
@@ -337,7 +337,7 @@ export default function BettingPage() {
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
-      fontSize: "0.70em", fontWeight: 700, color: "var(--bc-muted)",
+      fontSize: "max(var(--fs-min), 0.70em)", fontWeight: 700, color: "var(--bc-muted)",
       textTransform: "uppercase", letterSpacing: "0.08em",
       marginBottom: 10,
     }}>
@@ -352,7 +352,7 @@ function Metric({ label, value }: { label: string; value: string }) {
       background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
       padding: "10px 16px", flex: "1 1 120px", minWidth: 100,
     }}>
-      <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </div>
       <div style={{ fontSize: "1.1em", fontWeight: 700, color: "var(--bc-text)", marginTop: 2 }}>
@@ -365,7 +365,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 function FilterGroup({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div style={{ fontSize: "0.68em", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
         {label}
       </div>
       {children}
@@ -402,22 +402,22 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{
-            fontSize: "0.62em", fontWeight: 800, color: "var(--bc-green)",
+            fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 800, color: "var(--bc-green)",
             textTransform: "uppercase", letterSpacing: "0.12em",
             background: "color-mix(in srgb, var(--bc-green) 9%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)",
             borderRadius: 4, padding: "2px 8px",
           }}>
             Best Bet
           </span>
-          <span style={{ fontSize: "0.75em", color: "var(--bc-muted)" }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: "var(--bc-muted)" }}>
             {bet.tournament_name}
           </span>
         </div>
         <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-          <span style={{ fontSize: "0.78em", color: "var(--bc-green)", fontWeight: 700 }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-green)", fontWeight: 700 }}>
             +{bet.edge_pts.toFixed(1)}pp edge
           </span>
-          <span style={{ fontSize: "0.78em", color: "var(--bc-yellow)" }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-yellow)" }}>
             +{bet.ev_pct.toFixed(1)}% EV
           </span>
         </div>
@@ -434,7 +434,7 @@ function BestBetCard({ bet, myPicks = [] }: { bet: BestBet; myPicks?: string[] }
           {bet.player_name}
         </Link>
         {isPick && (
-          <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px" }}>
+          <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 3, padding: "2px 5px" }}>
             MY PICK
           </span>
         )}

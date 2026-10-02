@@ -45,7 +45,7 @@ function fmtPct(n: number | null): string {
 function DistBar({ birdie, par, bogey, dbl, thru }: {
   birdie: number; par: number; bogey: number; dbl: number; thru: number;
 }) {
-  if (!thru) return <span style={{ color: "var(--bc-muted)", fontSize: "0.7em" }}>—</span>;
+  if (!thru) return <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)" }}>—</span>;
   const total = birdie + par + bogey + dbl;
   const pct = (n: number) => total > 0 ? Math.round(n / total * 100) : 0;
   const segments = [
@@ -95,7 +95,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
 
   const th: React.CSSProperties = {
     background: "var(--bc-panel)", color: MUTED,
-    fontSize: "0.68em", fontWeight: 700,
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: `1px solid ${BORDER}`,
     textAlign: "center", whiteSpace: "nowrap",
@@ -109,7 +109,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
     <div>
       {/* Controls */}
       <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: "0.75em", color: MUTED, marginRight: 4 }}>Wave:</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: MUTED, marginRight: 4 }}>Wave:</span>
         {(["total", "morning", "afternoon"] as Wave[]).map(w => (
           <button key={w} onClick={() => setWave(w)} style={{
             background: wave === w ? "color-mix(in srgb, var(--bc-green) 15%, transparent)" : "var(--bc-panel)",
@@ -121,7 +121,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
             {w.charAt(0).toUpperCase() + w.slice(1)}
           </button>
         ))}
-        <span style={{ fontSize: "0.68em", color: "var(--bc-muted)", marginLeft: 8 }}>
+        <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: "var(--bc-muted)", marginLeft: 8 }}>
           {round && `Round ${round}`}{updated && ` · DG ${updated}`}
         </span>
       </div>
@@ -129,14 +129,14 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
       {/* Summary chips */}
       <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
         {hardest && (
-          <div style={{ background: "#1a0808", border: `1px solid ${RED}44`, borderRadius: 8, padding: "6px 14px", fontSize: "0.78em" }}>
+          <div style={{ background: "#1a0808", border: `1px solid ${RED}44`, borderRadius: 8, padding: "6px 14px", fontSize: "max(var(--fs-min), 0.78em)" }}>
             <span style={{ color: "#5a3030" }}>Hardest: </span>
             <span style={{ color: RED, fontWeight: 700 }}>Hole {hardest.hole}</span>
             <span style={{ color: "#4a3030" }}> ({fmtVsPar(hardest.vs_par)})</span>
           </div>
         )}
         {easiest && (
-          <div style={{ background: "#081a08", border: `1px solid ${GREEN}44`, borderRadius: 8, padding: "6px 14px", fontSize: "0.78em" }}>
+          <div style={{ background: "#081a08", border: `1px solid ${GREEN}44`, borderRadius: 8, padding: "6px 14px", fontSize: "max(var(--fs-min), 0.78em)" }}>
             <span style={{ color: "#2a5030" }}>Easiest: </span>
             <span style={{ color: GREEN, fontWeight: 700 }}>Hole {easiest.hole}</span>
             <span style={{ color: "#2a4030" }}> ({fmtVsPar(easiest.vs_par)})</span>
@@ -211,7 +211,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
         </table>
       </div>
 
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 6 }}>
         vs Par: negative = playing easy (green), positive = playing hard (red) · distribution bar: <span style={{ color: GREEN }}>birdie</span> / <span style={{ color: "var(--bc-muted)" }}>par</span> / <span style={{ color: BLUE }}>bogey</span> / <span style={{ color: "#7030a0" }}>double+</span>
       </p>
     </div>

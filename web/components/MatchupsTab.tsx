@@ -116,7 +116,7 @@ export default function MatchupsTab() {
           </label>
           <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
             {(data?.updated) && (
-              <span style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
+              <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>
                 Updated: {data.updated}
               </span>
             )}
@@ -128,7 +128,7 @@ export default function MatchupsTab() {
       )}
 
       {refreshErr && (
-        <div style={{ color: "var(--bc-red)", fontSize: "0.78em", marginBottom: 8 }}>{refreshErr}</div>
+        <div style={{ color: "var(--bc-red)", fontSize: "max(var(--fs-min), 0.78em)", marginBottom: 8 }}>{refreshErr}</div>
       )}
 
       {/* 3-ball refresh bar */}
@@ -164,7 +164,7 @@ export default function MatchupsTab() {
 function MatchupTable({ data }: { data: MatchupsResponse }) {
   const th: React.CSSProperties = {
     background: "var(--bc-panel)", color: "var(--bc-muted)",
-    fontSize: "0.68em", fontWeight: 700,
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     whiteSpace: "nowrap",
@@ -222,14 +222,14 @@ function MatchupTable({ data }: { data: MatchupsResponse }) {
                           borderRadius: isPos ? 3 : undefined,
                         }}>
                           {bk.p1_odds ?? "—"}
-                          {isPos && <span style={{ fontSize: "0.75em", display: "block", color: "var(--bc-green)" }}>+{ev!.toFixed(1)}%</span>}
+                          {isPos && <span style={{ fontSize: "max(var(--fs-min), 0.75em)", display: "block", color: "var(--bc-green)" }}>+{ev!.toFixed(1)}%</span>}
                         </span>
                       ) : <span style={{ color: "var(--bc-line)" }}>—</span>}
                     </td>
                   );
                 })}
                 {/* vs */}
-                <td style={{ ...td, color: "var(--bc-line)", fontWeight: 900, textAlign: "center", fontSize: "0.75em" }}>vs</td>
+                <td style={{ ...td, color: "var(--bc-line)", fontWeight: 900, textAlign: "center", fontSize: "max(var(--fs-min), 0.75em)" }}>vs</td>
                 {/* P2 name */}
                 <td style={{ ...td, color: "var(--bc-text)", fontWeight: 600, whiteSpace: "nowrap", fontSize: "0.85em" }}>{m.p2}</td>
                 {/* DG P2 */}
@@ -251,7 +251,7 @@ function MatchupTable({ data }: { data: MatchupsResponse }) {
                           borderRadius: isPos ? 3 : undefined,
                         }}>
                           {bk.p2_odds ?? "—"}
-                          {isPos && <span style={{ fontSize: "0.75em", display: "block", color: "var(--bc-green)" }}>+{ev!.toFixed(1)}%</span>}
+                          {isPos && <span style={{ fontSize: "max(var(--fs-min), 0.75em)", display: "block", color: "var(--bc-green)" }}>+{ev!.toFixed(1)}%</span>}
                         </span>
                       ) : <span style={{ color: "var(--bc-line)" }}>—</span>}
                     </td>
@@ -262,7 +262,7 @@ function MatchupTable({ data }: { data: MatchupsResponse }) {
           })}
         </tbody>
       </table>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", padding: "6px 12px", margin: 0 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", padding: "6px 12px", margin: 0 }}>
         {data.matchups.length} matchups · DG% = DataGolf no-vig model probability · Green = positive EV
       </p>
     </div>
@@ -274,7 +274,7 @@ function MatchupTable({ data }: { data: MatchupsResponse }) {
 function ThreeBallTable({ data }: { data: ThreeBallResponse }) {
   const th: React.CSSProperties = {
     background: "var(--bc-panel)", color: "var(--bc-muted)",
-    fontSize: "0.68em", fontWeight: 700,
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     whiteSpace: "nowrap",
@@ -283,7 +283,7 @@ function ThreeBallTable({ data }: { data: ThreeBallResponse }) {
   return (
     <div style={{ overflowX: "auto", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
       {data.updated && (
-        <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", padding: "6px 12px", margin: 0 }}>
+        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", padding: "6px 12px", margin: 0 }}>
           Updated: {data.updated}
         </p>
       )}
@@ -317,7 +317,7 @@ function ThreeBallTable({ data }: { data: ThreeBallResponse }) {
           })}
         </tbody>
       </table>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", padding: "6px 12px", margin: 0 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", padding: "6px 12px", margin: 0 }}>
         {data.pairings.length} pairings · Round {data.pairings[0]?.round ?? "—"}
       </p>
     </div>

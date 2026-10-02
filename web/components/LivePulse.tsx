@@ -34,7 +34,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
           <div style={{ fontSize: "0.88em", fontWeight: 700, color: TEXT, marginBottom: 2 }}>
             Live Pulse
           </div>
-          <div style={{ fontSize: "0.75em", color: MUTED }}>
+          <div style={{ fontSize: "max(var(--fs-min), 0.75em)", color: MUTED }}>
             AI analysis of what&apos;s happening right now — leaders, hot players, your picks.
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
         padding: "20px", marginBottom: 20, textAlign: "center",
       }}>
         <div style={{ fontSize: "0.85em", color: MUTED }}>Generating live pulse…</div>
-        <div style={{ fontSize: "0.72em", color: LABEL, marginTop: 4 }}>
+        <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: LABEL, marginTop: 4 }}>
           Reading leaderboard + SG stats and asking Claude
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
       }}>
         <span style={{ fontSize: "0.82em", color: RED }}>{error}</span>
         <button onClick={onGenerate} style={{
-          marginLeft: 12, fontSize: "0.78em", color: MUTED,
+          marginLeft: 12, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED,
           background: "none", border: "none", cursor: "pointer", textDecoration: "underline",
         }}>
           Try again
@@ -103,25 +103,25 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{
-            fontSize: "0.65em", fontWeight: 800, color: GREEN,
+            fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 800, color: GREEN,
             textTransform: "uppercase", letterSpacing: "0.12em",
             background: GREEN + "18", border: `1px solid ${GREEN}33`,
             borderRadius: 4, padding: "2px 8px",
           }}>
             Live Pulse
           </span>
-          <span style={{ fontSize: "0.72em", color: MUTED }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color: MUTED }}>
             R{pulse.current_round} · {pulse.tournament_name}
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {pulse.cached && ts && (
-            <span style={{ fontSize: "0.65em", color: LABEL }}>updated {ts}</span>
+            <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL }}>updated {ts}</span>
           )}
           <button onClick={onRefresh} style={{
             background: "none", border: `1px solid ${BORDER}`,
             color: MUTED, borderRadius: 6, padding: "3px 10px",
-            fontSize: "0.72em", cursor: "pointer",
+            fontSize: "max(var(--fs-min), 0.72em)", cursor: "pointer",
           }}>
             Refresh
           </button>
@@ -181,7 +181,7 @@ function Section({ label, color, children }: {
   return (
     <div style={{ padding: "12px 16px", borderBottom: `1px solid ${BORDER}` }}>
       <div style={{
-        fontSize: "0.62em", fontWeight: 800, color,
+        fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 800, color,
         textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6,
       }}>
         {label}
@@ -200,7 +200,7 @@ function PlayerListSection({ label, color, players }: {
   return (
     <div style={{ padding: "12px 16px", borderBottom: `1px solid ${BORDER}` }}>
       <div style={{
-        fontSize: "0.62em", fontWeight: 800, color,
+        fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 800, color,
         textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8,
       }}>
         {label}
@@ -209,7 +209,7 @@ function PlayerListSection({ label, color, players }: {
         {players.map((p, i) => (
           <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
             <span style={{
-              fontSize: "0.7em", fontWeight: 700, color,
+              fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700, color,
               background: color + "18", border: `1px solid ${color}33`,
               borderRadius: 4, padding: "2px 7px", flexShrink: 0, marginTop: 1,
               whiteSpace: "nowrap",

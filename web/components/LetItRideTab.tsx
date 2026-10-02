@@ -41,7 +41,7 @@ const card: React.CSSProperties = {
 // Toggles use choice(); per-row actions (Pick, Remove) use rowBtn so a
 // 60-golfer list isn't 60 yellow buttons.
 const btn = (primary: boolean): React.CSSProperties => ({
-  cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.76em",
+  cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.76em)",
   textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5,
   padding: "7px 12px",
   background: primary ? "var(--bc-yellow)" : "transparent",
@@ -162,22 +162,22 @@ function StartSeason({ group, onStarted }: { group: Group; onStarted: () => void
         to save. Most prize money wins. The model plays too, under the same budget.
       </p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12 }}>
-        <label style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Season name<br />
+        <label style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>Season name<br />
           <input style={{ ...input, width: "100%" }} value={name} maxLength={60} onChange={e => setName(e.target.value)} /></label>
-        <label style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Starts<br />
+        <label style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>Starts<br />
           <input style={{ ...input, width: "100%" }} type="date" value={start} onChange={e => setStart(e.target.value)} /></label>
-        <label style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Uses per golfer<br />
+        <label style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>Uses per golfer<br />
           <input style={{ ...input, width: "100%" }} type="number" min={1} max={10} value={uses} onChange={e => setUses(Number(e.target.value))} /></label>
-        <label style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Golfers per event<br />
+        <label style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>Golfers per event<br />
           <input style={{ ...input, width: "100%" }} type="number" min={1} max={10} value={perWeek} onChange={e => setPerWeek(Number(e.target.value))} /></label>
       </div>
       <div style={{ display: "flex", gap: 8, margin: "14px 0", alignItems: "center" }}>
-        <span style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Tours:</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>Tours:</span>
         <button onClick={() => toggle("pga")} style={choice(tours.includes("pga"))}>PGA Tour</button>
         <button onClick={() => toggle("euro")} style={choice(tours.includes("euro"))}>DP World Tour</button>
       </div>
       <ScopeChoice scope={scope} setScope={setScope} />
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.76em", margin: "0 0 12px" }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.76em)", margin: "0 0 12px" }}>
         The season runs open-ended — you close it when the group decides.
       </p>
       <button onClick={submit} disabled={busy || !name.trim() || !tours.length} style={btn(true)}>
@@ -233,7 +233,7 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
       <div style={{ ...card, display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 8 }}>
         <div>
           <div style={{ fontWeight: 900, fontSize: "1.1em" }}>{league.name}</div>
-          <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginTop: 2 }}>
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 2 }}>
             {league.players_per_week} golfers per event · {league.uses_per_player} uses per golfer
             {league.uses_scope === "tour" && league.tours.length > 1 ? " on each tour" : " all season"} · {tourNames} · since {league.season_start}
           </div>
@@ -331,12 +331,12 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
     <div style={card}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10, flexWrap: "wrap", gap: 6 }}>
         <div style={{ fontWeight: 800 }}>{ev.name}</div>
-        <div style={{ color: locked ? "var(--bc-muted)" : "var(--bc-green)", fontSize: "0.78em", fontWeight: 700 }}>
+        <div style={{ color: locked ? "var(--bc-muted)" : "var(--bc-green)", fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700 }}>
           {locked ? "Locked — picks revealed" : `${mine.length} of ${league.players_per_week} picked`}
         </div>
       </div>
       {!locked && ev.start_date && (
-        <div style={{ fontSize: "0.78em", marginBottom: 10 }}>
+        <div style={{ fontSize: "max(var(--fs-min), 0.78em)", marginBottom: 10 }}>
           <LockCountdown startDate={ev.start_date} tour={ev.tour} />
         </div>
       )}
@@ -368,7 +368,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
               </span>
               {p && (
                 <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                  <span style={{ color: "var(--bc-muted)", fontSize: "0.74em" }}>
+                  <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)" }}>
                     use {usedOf(p.player_name)} of {league.uses_per_player}
                   </span>
                   {!locked && (
@@ -435,7 +435,7 @@ function LockedSlate({ picks, me }: { picks: SlatePick[]; me: string }) {
   }
   return (
     <div style={{ display: "grid", gap: 6 }}>
-      <div style={{ color: "var(--bc-muted)", fontSize: "0.74em", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         Everyone&apos;s picks
       </div>
       {[...byUser.entries()].map(([id, u]) => (
@@ -455,7 +455,7 @@ function LockedSlate({ picks, me }: { picks: SlatePick[]; me: string }) {
 //   Think about: what should sorting use — banked, or banked + live?
 function SeasonStandings({ standings, me }: { standings: Standing[]; me: string }) {
   const th: React.CSSProperties = {
-    padding: "7px 12px", fontSize: "0.7em", color: "var(--bc-muted)", fontWeight: 700,
+    padding: "7px 12px", fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-muted)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right", borderBottom: "1px solid var(--bc-line)",
   };
   const td: React.CSSProperties = {
@@ -493,7 +493,7 @@ function SeasonStandings({ standings, me }: { standings: Standing[]; me: string 
           ))}
         </tbody>
       </table>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", margin: "8px 0 0" }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)", margin: "8px 0 0" }}>
   Totals are banked prize money; + live is projected from events still in play.
 </p>
     </div>
@@ -551,7 +551,7 @@ export function LetItRideStandings({ groupId, compact = false }: { groupId?: num
   }
   return (
     <>
-      {label && !compact && <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginBottom: 8 }}>{label}</div>}
+      {label && !compact && <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginBottom: 8 }}>{label}</div>}
       <SeasonStandings standings={rows} me={me} />
     </>
   );
@@ -562,11 +562,11 @@ function ScopeChoice({ scope, setScope }: { scope: "golfer" | "tour"; setScope: 
   return (
     <div style={{ margin: "0 0 12px" }}>
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>Uses:</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>Uses:</span>
         <button onClick={() => setScope("tour")} style={choice(scope === "tour")}>Separate per tour</button>
         <button onClick={() => setScope("golfer")} style={choice(scope === "golfer")}>Shared across tours</button>
       </div>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", margin: "6px 0 0", lineHeight: 1.5 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)", margin: "6px 0 0", lineHeight: 1.5 }}>
         {scope === "tour"
           ? "A golfer who plays both tours can be picked his full number of times on each — a DP World Tour pick never costs a PGA use."
           : "One budget per golfer, whichever tour you spend it on — spending a star on a small event costs you at the big ones."}
@@ -605,7 +605,7 @@ function SeasonSettings({ league, onSaved }: { league: League; onSaved: () => vo
     color: "var(--bc-text)", padding: "7px 10px", fontSize: "0.88em", fontFamily: "inherit", width: "100%",
     boxSizing: "border-box",
   };
-  const label: React.CSSProperties = { fontSize: "0.78em", color: "var(--bc-muted)" };
+  const label: React.CSSProperties = { fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" };
   const toggle = (t: string) => setTours(ts => ts.includes(t) ? ts.filter(x => x !== t) : [...ts, t]);
 
   return (
@@ -623,7 +623,7 @@ function SeasonSettings({ league, onSaved }: { league: League; onSaved: () => vo
         <button onClick={() => toggle("euro")} style={choice(tours.includes("euro"))}>DP World Tour</button>
       </div>
       <ScopeChoice scope={scope} setScope={setScope} />
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", margin: "0 0 12px" }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)", margin: "0 0 12px" }}>
         Changes apply from now on. Picks already made always stand.
       </p>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>

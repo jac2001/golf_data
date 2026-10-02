@@ -60,7 +60,7 @@ export default function OddsExplorer() {
 
   const th: React.CSSProperties = {
     background: "var(--bc-panel)", color: "var(--bc-muted)",
-    fontSize: "0.68em", fontWeight: 700,
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     whiteSpace: "nowrap", position: "sticky", top: 0,
@@ -76,7 +76,7 @@ export default function OddsExplorer() {
       }}>
         {/* Market select */}
         <div>
-          <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
             Market
           </div>
           <select
@@ -92,7 +92,7 @@ export default function OddsExplorer() {
 
         {/* Search */}
         <div>
-          <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.04em" }}>
             Search
           </div>
           <input
@@ -117,7 +117,7 @@ export default function OddsExplorer() {
         {/* Refresh + meta */}
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "flex-end", gap: 12 }}>
           {data?.updated && (
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.72em" }}>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>
               DG updated: {data.updated}
             </span>
           )}
@@ -126,7 +126,7 @@ export default function OddsExplorer() {
           </button>
         </div>
         {refreshErr && (
-          <span style={{ color: "var(--bc-red)", fontSize: "0.75em", width: "100%", marginTop: 4 }}>
+          <span style={{ color: "var(--bc-red)", fontSize: "max(var(--fs-min), 0.75em)", width: "100%", marginTop: 4 }}>
             {refreshErr}
           </span>
         )}
@@ -135,13 +135,13 @@ export default function OddsExplorer() {
       {/* Summary strip */}
       {data && !loading && (
         <div style={{ display: "flex", gap: 16, marginBottom: 12 }}>
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
             {players.length} players
           </span>
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
             {players.filter(p => p.has_pos_ev).length} with positive-EV cells
           </span>
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
             {booksShown.length} books
           </span>
         </div>
@@ -209,7 +209,7 @@ export default function OddsExplorer() {
                               </div>
                               {cell.ev != null && (
                                 <div style={{
-                                  fontSize: "0.68em",
+                                  fontSize: "max(var(--fs-min-xs), 0.68em)",
                                   color: isPos ? "var(--bc-green)" : "var(--bc-muted)",
                                   marginTop: 1,
                                 }}>
@@ -228,7 +228,7 @@ export default function OddsExplorer() {
               })}
             </tbody>
           </table>
-          <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", padding: "6px 12px", margin: 0 }}>
+          <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", padding: "6px 12px", margin: 0 }}>
             EV = DG model probability × decimal odds − 1. Pinnacle shown for reference — not available in US.
           </p>
         </div>

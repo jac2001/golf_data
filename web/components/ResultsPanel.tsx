@@ -17,7 +17,7 @@ const cell: React.CSSProperties = {
   fontSize: "0.84em", color: "var(--bc-text)",
 };
 const hdr: React.CSSProperties = {
-  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "0.78em",
+  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.78em)",
   textTransform: "uppercase", letterSpacing: "0.04em", borderBottom: "1px solid var(--bc-line)",
 };
 function pnlColor(v: number) { return v > 0 ? "var(--bc-green)" : v < 0 ? "var(--negative)" : "var(--bc-muted)"; }
@@ -80,7 +80,7 @@ function TournamentLeaderboard({
   const fmtPct = (v: number | null) => v == null ? "—" : `${v.toFixed(0)}%`;
 
   const thStyle: React.CSSProperties = {
-    padding: "6px 10px", background: "var(--bc-panel)", fontSize: "0.7em", fontWeight: 700,
+    padding: "6px 10px", background: "var(--bc-panel)", fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700,
     color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: "1px solid var(--bc-line)", whiteSpace: "nowrap", textAlign: "center",
   };
@@ -132,7 +132,7 @@ function TournamentLeaderboard({
                   </Link>
                   {isPick && (
                     <span style={{
-                      marginLeft: 7, fontSize: "0.65em", fontWeight: 800,
+                      marginLeft: 7, fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 800,
                       color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 9%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)",
                       borderRadius: 4, padding: "1px 5px",
                     }}>MY PICK</span>
@@ -157,7 +157,7 @@ function TournamentLeaderboard({
                   </>
                 )}
                 {hasEarnings && (
-                  <td style={{ ...tdBase, textAlign: "right", color: "var(--bc-muted)", fontSize: "0.78em" }}>
+                  <td style={{ ...tdBase, textAlign: "right", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>
                     {r.earnings ?? "—"}
                   </td>
                 )}
@@ -213,7 +213,7 @@ function ResultsTab() {
                 <td style={{ ...cell, color: "var(--bc-text)", fontWeight: 600 }}>
                   <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     {t.name}
-                    <span style={{ fontSize: "0.72em", color: expanded === t.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)" }}>
+                    <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color: expanded === t.tournament_id ? "var(--bc-yellow)" : "var(--bc-line)" }}>
                       {expanded === t.tournament_id ? "▲" : "▼"}
                     </span>
                   </span>

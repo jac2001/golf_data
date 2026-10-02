@@ -69,7 +69,7 @@ function sgColor(v: number | null): string {
 }
 
 const sectionLabel: React.CSSProperties = {
-  fontSize: "0.68em",
+  fontSize: "max(var(--fs-min-xs), 0.68em)",
   fontWeight: 700,
   letterSpacing: "0.12em",
   textTransform: "uppercase",
@@ -95,7 +95,7 @@ function Chip({ label, value, color = TEXT }: { label: string; value: string; co
       padding: "10px 16px", minWidth: 80,
     }}>
       <span style={{ fontSize: "1.15em", fontWeight: 700, color }}>{value}</span>
-      <span style={{ fontSize: "0.68em", color: MUTED, marginTop: 2 }}>{label}</span>
+      <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: MUTED, marginTop: 2 }}>{label}</span>
     </div>
   );
 }
@@ -107,7 +107,7 @@ function AdjBar({ label, value, maxAbs }: { label: string; value: number | null;
   const positive = (value ?? 0) >= 0;
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 7 }}>
-      <span style={{ width: 160, fontSize: "0.78em", color: MUTED, flexShrink: 0 }}>{label}</span>
+      <span style={{ width: 160, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, flexShrink: 0 }}>{label}</span>
       <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6 }}>
         {/* left half */}
         <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
@@ -131,7 +131,7 @@ function AdjBar({ label, value, maxAbs }: { label: string; value: number | null;
         </div>
       </div>
       <span style={{
-        width: 44, fontSize: "0.78em", textAlign: "right", flexShrink: 0,
+        width: 44, fontSize: "max(var(--fs-min), 0.78em)", textAlign: "right", flexShrink: 0,
         color: value == null ? MUTED : (positive ? GREEN : RED),
         fontVariantNumeric: "tabular-nums",
       }}>
@@ -245,14 +245,14 @@ function FieldBrowser({ onPick }: { onPick: (name: string) => void }) {
       borderRadius: 10, padding: 20, marginTop: 4 }}>
       <div style={{ fontWeight: 800, marginBottom: 10 }}>
         This week&apos;s fields
-        <span style={{ color: MUTED, fontWeight: 400, fontSize: "0.78em", marginLeft: 8 }}>
+        <span style={{ color: MUTED, fontWeight: 400, fontSize: "max(var(--fs-min), 0.78em)", marginLeft: 8 }}>
           or search any player above
         </span>
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
         {events.map(ev => (
           <button key={ev.tournament_id} onClick={() => setSelected(ev.tournament_id)} style={{
-            cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "0.78em",
+            cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "max(var(--fs-min), 0.78em)",
             padding: "6px 13px", borderRadius: 5,
             color: selected === ev.tournament_id ? "#081f14" : MUTED,
             background: selected === ev.tournament_id ? GOLD : "transparent",
@@ -328,7 +328,7 @@ function SynopsisCard({
           <div style={{ fontSize: "0.88em", color: TEXT, fontWeight: 600, marginBottom: 2 }}>
             AI Player Analysis
           </div>
-          <div style={{ fontSize: "0.75em", color: MUTED }}>
+          <div style={{ fontSize: "max(var(--fs-min), 0.75em)", color: MUTED }}>
             Generate a synopsis using form, course fit, and betting context.
           </div>
         </div>
@@ -350,7 +350,7 @@ function SynopsisCard({
     return (
       <div style={{ ...card, background: "var(--bc-panel)", border: `1px dashed ${BORDER}`, textAlign: "center", padding: "28px 20px" }}>
         <div style={{ fontSize: "0.85em", color: MUTED }}>Generating analysis…</div>
-        <div style={{ fontSize: "0.72em", color: LABEL, marginTop: 4 }}>
+        <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: LABEL, marginTop: 4 }}>
           Gathering stats and asking Claude for a take
         </div>
       </div>
@@ -361,7 +361,7 @@ function SynopsisCard({
     return (
       <div style={{ ...card, background: "#1a0808", border: `1px solid ${RED}44` }}>
         <div style={{ fontSize: "0.82em", color: RED }}>{error}</div>
-        <button onClick={onGenerate} style={{ marginTop: 8, fontSize: "0.78em", color: MUTED, background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>
+        <button onClick={onGenerate} style={{ marginTop: 8, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>
           Try again
         </button>
       </div>
@@ -376,23 +376,23 @@ function SynopsisCard({
     <div style={{ ...card, background: "var(--bc-panel)", border: `1px solid var(--bc-line)`, marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
         <div>
-          <span style={{ fontSize: "0.68em", color: LABEL, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>
+          <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>
             AI Analysis
           </span>
-          <span style={{ fontSize: "0.65em", color: LABEL, marginLeft: 8 }}>
+          <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL, marginLeft: 8 }}>
             {synopsis.tournament_name} · {synopsis.course_name}
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {synopsis.cached && (
-            <span style={{ fontSize: "0.65em", color: LABEL }}>cached {ts}</span>
+            <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL }}>cached {ts}</span>
           )}
           <button
             onClick={onRegenerate}
             style={{
               background: "none", border: `1px solid ${BORDER}`,
               color: MUTED, borderRadius: 6, padding: "3px 10px",
-              fontSize: "0.72em", cursor: "pointer",
+              fontSize: "max(var(--fs-min), 0.72em)", cursor: "pointer",
             }}
           >
             Regenerate
@@ -407,7 +407,7 @@ function SynopsisCard({
           return (
             <div key={key} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
               <span style={{
-                fontSize: "0.65em", fontWeight: 800, color,
+                fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 800, color,
                 textTransform: "uppercase", letterSpacing: "0.1em",
                 background: color + "18", border: `1px solid ${color}33`,
                 borderRadius: 4, padding: "2px 7px", flexShrink: 0, marginTop: 2,
@@ -657,7 +657,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
       onClick={() => handleSort(col)}
       style={{
         padding: "7px 10px", background: "var(--bc-panel)", cursor: "pointer", userSelect: "none",
-        textAlign: align, fontSize: "0.68em", fontWeight: 700, letterSpacing: "0.05em",
+        textAlign: align, fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, letterSpacing: "0.05em",
         textTransform: "uppercase", whiteSpace: "nowrap",
         color: sortCol === col ? GREEN : LABEL,
         borderBottom: `1px solid ${BORDER}`,
@@ -680,7 +680,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
           {val != null ? `${val >= 0 ? "+" : ""}${val.toFixed(2)}` : "—"}
         </span>
         {rank != null && (
-          <span style={{ display: "block", fontSize: "0.65em", color: rankColor(rank) }}>
+          <span style={{ display: "block", fontSize: "max(var(--fs-min-xs), 0.65em)", color: rankColor(rank) }}>
             #{Math.round(rank)}
           </span>
         )}
@@ -719,7 +719,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
             {v.label}
           </button>
         ))}
-        <span style={{ marginLeft: "auto", fontSize: "0.75em", color: LABEL, alignSelf: "center" }}>
+        <span style={{ marginLeft: "auto", fontSize: "max(var(--fs-min), 0.75em)", color: LABEL, alignSelf: "center" }}>
           {sorted.length} players · click column to sort
         </span>
       </div>
@@ -728,7 +728,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
         <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
               {th("player_name", "Player", "left")}
 
               {view === "sg" && <>
@@ -769,7 +769,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
               const isPick = myPicksNorm.has(normName(p.player_name));
               return (
               <tr key={p.player_name} style={isPick ? { background: "var(--bc-panel)" } : undefined}>
-                <td style={{ ...tdStyle(i), textAlign: "center", color: LABEL, fontSize: "0.75em", ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>{i + 1}</td>
+                <td style={{ ...tdStyle(i), textAlign: "center", color: LABEL, fontSize: "max(var(--fs-min), 0.75em)", ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>{i + 1}</td>
                 <td style={{ ...tdStyle(i), fontSize: "0.85em", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid var(--bc-green)" : undefined, ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>
                   <Link
                     href={`/players?player=${encodeURIComponent(p.player_name)}`}
@@ -779,7 +779,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
                   </Link>
                   {isPick && (
                     <span style={{
-                      marginLeft: 8, fontSize: "0.65em", fontWeight: 800,
+                      marginLeft: 8, fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 800,
                       color: GREEN, background: "color-mix(in srgb, var(--bc-green) 9%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)",
                       borderRadius: 4, padding: "1px 6px", letterSpacing: "0.07em",
                     }}>MY PICK</span>
@@ -919,14 +919,14 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
           </div>
           {data.is_default ? (
             <span style={{
-              fontSize: "0.72em", fontWeight: 700, color: GOLD, background: "#2a1f00",
+              fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 700, color: GOLD, background: "#2a1f00",
               border: "1px solid color-mix(in srgb, var(--bc-yellow) 27%, transparent)", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
             }}>
               No course-specific data yet — showing field-average importance
             </span>
           ) : (
             <span style={{
-              fontSize: "0.72em", fontWeight: 700, color: GREEN, background: "var(--bc-card)",
+              fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 700, color: GREEN, background: "var(--bc-card)",
               border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
             }}>
               Derived from {data.n_players_in_derivation} historical results · {(data.confidence * 100).toFixed(0)}% confidence
@@ -965,7 +965,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
           outline: "none",
         }}
       />
-      <p style={{ fontSize: "0.75em", color: LABEL, margin: "0 0 10px" }}>
+      <p style={{ fontSize: "max(var(--fs-min), 0.75em)", color: LABEL, margin: "0 0 10px" }}>
         {filtered.length} players · ranked by fit to this course · click a row for the breakdown
       </p>
 
@@ -973,10 +973,10 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
         <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "left", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Player</th>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>World Rank</th>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "0.68em", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Fit Score</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "left", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Player</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>World Rank</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Fit Score</th>
             </tr>
           </thead>
           <tbody>
@@ -998,14 +998,14 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
                     </td>
                     <td style={{ padding: "6px 10px", borderBottom: "1px solid var(--bc-card)" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ fontSize: "0.7em", color: isExpanded ? BLUE : "var(--bc-line)" }}>
+                        <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: isExpanded ? BLUE : "var(--bc-line)" }}>
                           {isExpanded ? "▲" : "▼"}
                         </span>
                         <span style={{ color: isPick ? GREEN : TEXT, fontWeight: isPick ? 700 : 500, fontSize: "0.88em" }}>
                           {p.player_name}
                         </span>
                         {isPick && (
-                          <span style={{ fontSize: "0.58em", fontWeight: 800, color: GREEN, background: "var(--bc-card)", border: `1px solid ${GREEN}44`, borderRadius: 3, padding: "2px 5px" }}>
+                          <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", fontWeight: 800, color: GREEN, background: "var(--bc-card)", border: `1px solid ${GREEN}44`, borderRadius: 3, padding: "2px 5px" }}>
                             MY PICK
                           </span>
                         )}
@@ -1028,7 +1028,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
                             const pct = Math.min(100, Math.abs(val) / maxAbsFit * 100);
                             return (
                               <div key={c.key} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                                <span style={{ width: 130, fontSize: "0.78em", color: MUTED, flexShrink: 0 }}>{c.label}</span>
+                                <span style={{ width: 130, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, flexShrink: 0 }}>{c.label}</span>
                                 <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6 }}>
                                   <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
                                     {val < 0 && <div style={{ width: `${pct}%`, height: 7, borderRadius: 2, background: RED, maxWidth: "100%" }} />}
@@ -1038,7 +1038,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
                                     {val >= 0 && <div style={{ width: `${pct}%`, height: 7, borderRadius: 2, background: c.color, maxWidth: "100%" }} />}
                                   </div>
                                 </div>
-                                <span style={{ width: 50, textAlign: "right", fontSize: "0.78em", fontWeight: 600, color: val >= 0 ? c.color : RED }}>
+                                <span style={{ width: 50, textAlign: "right", fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 600, color: val >= 0 ? c.color : RED }}>
                                   {val >= 0 ? "+" : ""}{val.toFixed(2)}
                                 </span>
                               </div>
@@ -1046,7 +1046,7 @@ function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
                           })}
                           <Link
                             href={`/players?player=${encodeURIComponent(p.player_name)}`}
-                            style={{ marginTop: 6, fontSize: "0.78em", color: BLUE, textDecoration: "none", fontWeight: 600 }}
+                            style={{ marginTop: 6, fontSize: "max(var(--fs-min), 0.78em)", color: BLUE, textDecoration: "none", fontWeight: 600 }}
                           >
                             View full profile →
                           </Link>
@@ -1127,7 +1127,7 @@ function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 48px 1fr", gap: 0, marginBottom: 20, alignItems: "stretch" }}>
         <H2HHeaderCard profile={p1} accent={GREEN} />
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ fontSize: "0.78em", fontWeight: 900, color: "var(--bc-line)" }}>VS</span>
+          <span style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 900, color: "var(--bc-line)" }}>VS</span>
         </div>
         <H2HHeaderCard profile={p2} accent={BLUE} />
       </div>
@@ -1190,7 +1190,7 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
         <div style={{ fontSize: "1.25em", fontWeight: 800, color: TEXT, marginBottom: 2 }}>
           {profile.player_name.split(" ").slice(-1)[0]}
         </div>
-        <div style={{ fontSize: "0.72em", color: LABEL, marginBottom: 12 }}>
+        <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: LABEL, marginBottom: 12 }}>
           {profile.player_name}
           {m.world_rank != null && ` · #${Math.round(m.world_rank)} World`}
         </div>
@@ -1203,13 +1203,13 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
         ].map(([lbl, val]) => (
           <div key={lbl}>
             <div style={{ fontSize: "1.35em", fontWeight: 800, color: accent }}>{val}</div>
-            <div style={{ fontSize: "0.62em", color: LABEL, textTransform: "uppercase", letterSpacing: "0.08em" }}>{lbl}</div>
+            <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: LABEL, textTransform: "uppercase", letterSpacing: "0.08em" }}>{lbl}</div>
           </div>
         ))}
       </div>
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         {m.odds_to_win != null && (
-          <span style={{ fontSize: "0.78em", color: MUTED }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: MUTED }}>
             {m.odds_to_win >= 0 ? "+" : ""}{Math.round(m.odds_to_win)}
           </span>
         )}
@@ -1224,7 +1224,7 @@ function H2HSection({ label }: { label: string }) {
   return (
     <div style={{
       background: "var(--bc-panel)", padding: "6px 16px",
-      fontSize: "0.65em", fontWeight: 700, color: LABEL,
+      fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700, color: LABEL,
       textTransform: "uppercase", letterSpacing: "0.1em",
       borderTop: `1px solid ${BORDER}`,
     }}>
@@ -1279,7 +1279,7 @@ function H2HRow({
     <div>
       {/* Label row */}
       <div style={{
-        textAlign: "center", fontSize: "0.65em", color: "var(--bc-line)",
+        textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-line)",
         textTransform: "uppercase", letterSpacing: "0.09em", paddingTop: 9,
       }}>
         {label}
@@ -1336,13 +1336,13 @@ function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
   }
 
   const th: React.CSSProperties = {
-    padding: "5px 10px", fontSize: "0.68em", fontWeight: 700,
+    padding: "5px 10px", fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     color: MUT, textTransform: "uppercase", letterSpacing: "0.05em",
     background: BG, textAlign: "center", whiteSpace: "nowrap",
     borderBottom: `1px solid ${BORD}`,
   };
   const label: React.CSSProperties = {
-    padding: "5px 10px", fontSize: "0.75em", color: MUT,
+    padding: "5px 10px", fontSize: "max(var(--fs-min), 0.75em)", color: MUT,
     background: BG, borderRight: `1px solid ${BORD}`,
     borderBottom: `1px solid ${BORD}`, whiteSpace: "nowrap",
   };
@@ -1370,7 +1370,7 @@ function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
 
   return (
     <div style={{ marginBottom: 14 }}>
-      <p style={{ fontSize: "0.7em", color: MUT, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
+      <p style={{ fontSize: "max(var(--fs-min), 0.7em)", color: MUT, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
         Round-by-Round Breakdown
       </p>
       <div style={{ overflowX: "auto", border: `1px solid ${BORD}`, borderRadius: 8 }}>
@@ -1449,7 +1449,7 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
   const fmtPct3 = (v: number | null) => v == null ? "—" : `${v.toFixed(0)}%`;
 
   const thS: React.CSSProperties = {
-    padding: "5px 8px", background: "var(--bc-panel)", fontSize: "0.67em", fontWeight: 700,
+    padding: "5px 8px", background: "var(--bc-panel)", fontSize: "max(var(--fs-min-xs), 0.67em)", fontWeight: 700,
     color: LABEL, textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: `1px solid ${BORDER}`,
   };
@@ -1523,7 +1523,7 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
                   </>
                 )}
                 {hasEarnings && (
-                  <td style={{ ...tdS(isPick, i), textAlign: "right", color: MUTED, fontSize: "0.75em" }}>
+                  <td style={{ ...tdS(isPick, i), textAlign: "right", color: MUTED, fontSize: "max(var(--fs-min), 0.75em)" }}>
                     {r.earnings ?? "—"}
                   </td>
                 )}
@@ -1561,7 +1561,7 @@ function CareerCard({ playerName }: { playerName: string }) {
   }
 
   const thStyle: React.CSSProperties = {
-    padding: "6px 10px", background: "var(--bc-panel)", fontSize: "0.68em", fontWeight: 700,
+    padding: "6px 10px", background: "var(--bc-panel)", fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     color: LABEL, textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: `1px solid ${BORDER}`, whiteSpace: "nowrap",
   };
@@ -1578,7 +1578,7 @@ function CareerCard({ playerName }: { playerName: string }) {
           <button onClick={load} style={{
             background: BLUE + "22", border: `1px solid ${BLUE}44`,
             color: BLUE, borderRadius: 7, padding: "5px 14px",
-            fontSize: "0.78em", fontWeight: 700, cursor: "pointer",
+            fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700, cursor: "pointer",
           }}>
             Load Career Stats
           </button>
@@ -1590,7 +1590,7 @@ function CareerCard({ playerName }: { playerName: string }) {
                 background: view === v ? GREEN + "22" : "transparent",
                 border: `1px solid ${view === v ? GREEN : BORDER}`,
                 borderRadius: 6, color: view === v ? GREEN : MUTED,
-                padding: "4px 12px", fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
+                padding: "4px 12px", fontSize: "max(var(--fs-min), 0.75em)", fontWeight: 600, cursor: "pointer",
               }}>
                 {v === "yearly" ? "By Year" : "Recent Starts"}
               </button>
@@ -1600,7 +1600,7 @@ function CareerCard({ playerName }: { playerName: string }) {
                 background: majorsOnly ? GOLD + "22" : "transparent",
                 border: `1px solid ${majorsOnly ? GOLD : BORDER}`,
                 borderRadius: 6, color: majorsOnly ? GOLD : MUTED,
-                padding: "4px 12px", fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
+                padding: "4px 12px", fontSize: "max(var(--fs-min), 0.75em)", fontWeight: 600, cursor: "pointer",
               }}>
                 Majors Only
               </button>
@@ -1710,7 +1710,7 @@ function CareerCard({ playerName }: { playerName: string }) {
                         <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           <span style={{ color: TEXT }}>{r.tournament_name}</span>
                           {canExpand && (
-                            <span style={{ fontSize: "0.7em", color: isExpanded ? BLUE : "var(--bc-line)" }}>
+                            <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: isExpanded ? BLUE : "var(--bc-line)" }}>
                               {isExpanded ? "▲" : "▼"}
                             </span>
                           )}
@@ -1746,7 +1746,7 @@ function CareerCard({ playerName }: { playerName: string }) {
                       <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
                         {r.scrambling != null ? `${r.scrambling.toFixed(0)}%` : "—"}
                       </td>
-                      <td style={{ ...tdBase(i), textAlign: "right", color: MUTED, fontSize: "0.78em" }}>
+                      <td style={{ ...tdBase(i), textAlign: "right", color: MUTED, fontSize: "max(var(--fs-min), 0.78em)" }}>
                         {r.earnings ?? "—"}
                       </td>
                     </tr>
@@ -1763,7 +1763,7 @@ function CareerCard({ playerName }: { playerName: string }) {
                                   border: `1px solid ${expandedTab === "rounds" ? GREEN : "var(--bc-line)"}`,
                                   color: expandedTab === "rounds" ? GREEN : "var(--bc-muted)",
                                   borderRadius: 6, padding: "4px 14px",
-                                  fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
+                                  fontSize: "max(var(--fs-min), 0.75em)", fontWeight: 600, cursor: "pointer",
                                 }}>
                                 My Rounds
                               </button>
@@ -1775,7 +1775,7 @@ function CareerCard({ playerName }: { playerName: string }) {
                                 border: `1px solid ${expandedTab === "leaderboard" ? BLUE : "var(--bc-line)"}`,
                                 color: expandedTab === "leaderboard" ? BLUE : "var(--bc-muted)",
                                 borderRadius: 6, padding: "4px 14px",
-                                fontSize: "0.75em", fontWeight: 600, cursor: "pointer",
+                                fontSize: "max(var(--fs-min), 0.75em)", fontWeight: 600, cursor: "pointer",
                               }}>
                               Leaderboard
                             </button>
@@ -1833,13 +1833,13 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               <div style={{ fontSize: "1.6em", fontWeight: 800, color: BLUE }}>
                 {m.win_rank != null ? `#${m.win_rank}` : "—"}
               </div>
-              <div style={{ fontSize: "0.68em", color: LABEL }}>WIN RANK</div>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL }}>WIN RANK</div>
             </div>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "1.6em", fontWeight: 800, color: BLUE }}>
                 {m.top10_rank != null ? `#${m.top10_rank}` : "—"}
               </div>
-              <div style={{ fontSize: "0.68em", color: LABEL }}>TOP10 RANK</div>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL }}>TOP10 RANK</div>
             </div>
           </div>
         </div>
@@ -1867,23 +1867,23 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
         )}
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 8 }}>
           {m.recommendation && (
-            <span style={{ fontSize: "0.78em", color: MUTED }}>
+            <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: MUTED }}>
               <span style={{ color: LABEL }}>REC </span>{m.recommendation}
             </span>
           )}
           {m.this_week_ev != null && (
-            <span style={{ fontSize: "0.78em", color: GOLD }}>
+            <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: GOLD }}>
               <span style={{ color: LABEL }}>EV </span>{fmtEv(m.this_week_ev)}
             </span>
           )}
           {m.form_trend != null && (
-            <span style={{ fontSize: "0.78em", color: sgColor(m.form_trend) }}>
+            <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: sgColor(m.form_trend) }}>
               <span style={{ color: LABEL }}>Form </span>
               {m.form_trend > 0 ? "+" : ""}{fmt(m.form_trend, 2)}
             </span>
           )}
           {m.dk_odds_direction && (
-            <span style={{ fontSize: "0.78em", color: m.dk_odds_direction === "UP" ? GREEN : m.dk_odds_direction === "DOWN" ? RED : MUTED }}>
+            <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: m.dk_odds_direction === "UP" ? GREEN : m.dk_odds_direction === "DOWN" ? RED : MUTED }}>
               <span style={{ color: LABEL }}>Drift </span>
               {m.dk_odds_direction === "UP" ? "▲" : m.dk_odds_direction === "DOWN" ? "▼" : "→"}
             </span>
@@ -1922,7 +1922,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               </span>
               {profile.dg_prediction.course_fit_delta_pct != null && (
                 <span style={{
-                  fontSize: "0.78em", fontWeight: 700,
+                  fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700,
                   color: profile.dg_prediction.course_fit_delta_pct >= 0 ? GREEN : RED,
                 }}>
                   ({profile.dg_prediction.course_fit_delta_pct >= 0 ? "+" : ""}
@@ -1977,7 +1977,7 @@ function DecompositionsCard({ dec }: { dec: PlayerDecompositions }) {
       {/* Axis label */}
       <div style={{
         display: "flex", justifyContent: "space-between",
-        fontSize: "0.65em", color: LABEL, marginBottom: 10,
+        fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL, marginBottom: 10,
         paddingLeft: 170, paddingRight: 48,
       }}>
         <span>← negative</span>
@@ -2025,14 +2025,14 @@ function SkillRatingsCard({ sr }: { sr: import("@/lib/api").PlayerSkillRatings }
           <span style={{ fontSize: "2em", fontWeight: 800, color: sr.total >= 0 ? GREEN : RED }}>
             {sr.total >= 0 ? "+" : ""}{sr.total.toFixed(2)}
           </span>
-          <span style={{ fontSize: "0.75em", color: LABEL }}>SG / round vs field avg</span>
+          <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: LABEL }}>SG / round vs field avg</span>
         </div>
       )}
 
       {/* Axis label */}
       <div style={{
         display: "flex", justifyContent: "space-between",
-        fontSize: "0.65em", color: LABEL, marginBottom: 10,
+        fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL, marginBottom: 10,
         paddingLeft: 170, paddingRight: 48,
       }}>
         <span>← negative</span>
@@ -2048,7 +2048,7 @@ function SkillRatingsCard({ sr }: { sr: import("@/lib/api").PlayerSkillRatings }
         <>
           <div style={{ borderTop: `1px solid ${BORDER}`, margin: "8px 0" }} />
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ width: 160, fontSize: "0.78em", color: MUTED, flexShrink: 0 }}>Drive Distance</span>
+            <span style={{ width: 160, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, flexShrink: 0 }}>Drive Distance</span>
             <span style={{ fontSize: "0.88em", fontWeight: 700, color: sr.dist >= 0 ? GREEN : RED }}>
               {sr.dist >= 0 ? "+" : ""}{sr.dist.toFixed(1)} yds vs avg
             </span>
@@ -2087,7 +2087,7 @@ function ApproachCard({ ap }: { ap: PlayerApproachSkill }) {
               background: "var(--bc-panel)", borderRadius: 7, padding: "8px 12px",
               border: `1px solid ${BORDER}`,
             }}>
-              <div style={{ fontSize: "0.7em", color: LABEL, marginBottom: 3 }}>{label}</div>
+              <div style={{ fontSize: "max(var(--fs-min), 0.7em)", color: LABEL, marginBottom: 3 }}>{label}</div>
               <div style={{ display: "flex", gap: 16 }}>
                 <span style={{ fontSize: "0.82em" }}>
                   <span style={{ color: MUTED }}>SG </span>
@@ -2158,7 +2158,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
               padding: "8px 14px", textAlign: "center", minWidth: 70,
             }}>
               <div style={{ fontSize: "1.1em", fontWeight: 800, color: col ?? TEXT }}>{val}</div>
-              <div style={{ fontSize: "0.65em", color: LABEL, marginTop: 1 }}>{label}</div>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL, marginTop: 1 }}>{label}</div>
             </div>
           ) : null)}
         </div>
@@ -2177,12 +2177,12 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
             background: "var(--bc-panel)", border: `1px solid ${BORDER}`,
             borderRadius: 7, padding: "8px 12px",
           }}>
-            <div style={{ fontSize: "0.68em", color: LABEL }}>{label}</div>
+            <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL }}>{label}</div>
             <div style={{ fontSize: "1em", fontWeight: 700, color: sgColor(val) }}>
               {`${val >= 0 ? "+" : ""}${fmt(val, 2)}`}
             </div>
             {rank != null && (
-              <div style={{ fontSize: "0.68em", color: MUTED }}>Rank #{Math.round(rank)}</div>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: MUTED }}>Rank #{Math.round(rank)}</div>
             )}
           </div>
         ) : null)}
@@ -2242,7 +2242,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
                   {["Finish", "Tournament", "Score", "Year"].map(h => (
                     <th key={h} style={{
                       padding: "6px 10px", textAlign: h === "Finish" ? "center" : "left",
-                      fontSize: "0.7em", fontWeight: 700, color: LABEL,
+                      fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700, color: LABEL,
                       textTransform: "uppercase", letterSpacing: "0.05em",
                       borderBottom: `1px solid ${BORDER}`, background: "var(--bc-panel)",
                     }}>{h}</th>
@@ -2276,11 +2276,11 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
           <p style={{ ...sectionLabel, marginTop: 4 }}>Course History</p>
           {courseHistory.map(course => (
             <div key={course.course_name} style={{ marginBottom: 10 }}>
-              <div style={{ fontSize: "0.75em", color: BLUE, marginBottom: 4 }}>{course.course_name}</div>
+              <div style={{ fontSize: "max(var(--fs-min), 0.75em)", color: BLUE, marginBottom: 4 }}>{course.course_name}</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {course.tournaments.slice(0, 8).map((t, i) => (
                   <div key={i} style={{
-                    fontSize: "0.72em", background: "var(--bc-panel)", border: `1px solid ${BORDER}`,
+                    fontSize: "max(var(--fs-min), 0.72em)", background: "var(--bc-panel)", border: `1px solid ${BORDER}`,
                     borderRadius: 5, padding: "3px 8px", display: "flex", gap: 6, alignItems: "center",
                   }}>
                     <span style={{ color: MUTED }}>{t.year}</span>

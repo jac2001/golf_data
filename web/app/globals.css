@@ -35,6 +35,13 @@
   --warning:      var(--bc-orange);
   --highlight:    var(--bc-yellow);
 
+  /* Type floors. Small inline sizes are written max(floor, Nem): text
+     never renders below the floor, however deeply em sizes compound,
+     and text inside a larger context keeps its size. rem so the floors
+     follow the reader's browser font setting. */
+  --fs-min:       0.8125rem; /* 13px — labels, captions, table detail */
+  --fs-min-xs:    0.75rem;   /* 12px — chips and badges only */
+
   /* Type: Archivo carries display + body; numbers get a mono stack. */
   --font-mono:    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 

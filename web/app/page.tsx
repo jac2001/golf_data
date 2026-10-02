@@ -59,7 +59,7 @@ export default function Home() {
       <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
         <Link href="/match" style={{
           background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-          textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
+          textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.78em)", letterSpacing: "0.06em",
           padding: "11px 18px", borderRadius: 4, whiteSpace: "nowrap" }}>
           View your matchup
         </Link>
@@ -91,7 +91,7 @@ export default function Home() {
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
             <Link href="/how-to-play" style={{
               background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-              textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
+              textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.78em)", letterSpacing: "0.06em",
               padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap" }}>
               How to play · try a demo
             </Link>
@@ -110,7 +110,7 @@ export default function Home() {
       <div style={{ display: "flex", gap: 8, paddingTop: 20 }}>
         {([["pga", "PGA Tour"], ["euro", "DP World Tour"]] as const).map(([id, label]) => (
           <button key={id} onClick={() => setTour(id)} style={{
-            cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
+            cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.72em)",
             textTransform: "uppercase", letterSpacing: "0.06em",
             padding: "7px 15px", borderRadius: 4,
             color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
@@ -123,8 +123,8 @@ export default function Home() {
       </div>
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <div style={{ display: "flex", gap: 48, padding: "24px 0 30px", flexWrap: "wrap" }}>
-        <div style={{ flex: "1 1 480px", display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ display: "flex", gap: "28px 48px", padding: "24px 0 30px", flexWrap: "wrap" }}>
+        <div style={{ flex: "1 1 320px", minWidth: 0, display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ fontSize: "0.82em", fontWeight: 700, letterSpacing: "0.16em",
                         textTransform: "uppercase", color: h?.is_live ? "var(--bc-green)" : "var(--bc-muted)" }}>
             {h ? (h.is_live ? "Live this week" : "Next on tour") : "Offseason"}
@@ -132,7 +132,8 @@ export default function Home() {
             {h?.course && ` · ${h.course}`}
           </div>
           <h1 style={{ margin: 0, fontWeight: 900, fontStretch: "120%",
-                       fontSize: "4em", lineHeight: 0.98, textTransform: "uppercase",
+                       fontSize: "clamp(2.2em, 9vw, 4em)", lineHeight: 0.98, textTransform: "uppercase",
+                       overflowWrap: "anywhere",
                        letterSpacing: "-0.01em" }}>
             {h ? h.name : "See you in January"}
           </h1>
@@ -146,7 +147,7 @@ export default function Home() {
                   : `The tour heads to ${h.course || h.location} next. Predictions go live the Tuesday of tournament week.`
                 : "The model is in the offseason lab."}
           </div>
-          <div style={{ display: "flex", gap: 14, alignItems: "center", marginTop: 8 }}>
+          <div style={{ display: "flex", gap: 14, alignItems: "center", marginTop: 8, flexWrap: "wrap" }}>
             {/* Outlined, not yellow: the game card above owns the page's one
                 primary action. */}
             <Link href="/predictions" style={{
@@ -162,7 +163,7 @@ export default function Home() {
         </div>
 
         {/* Model board */}
-        <Panel style={{ flex: "0 1 460px", minWidth: 380 }}>
+        <Panel style={{ flex: "1 1 340px", maxWidth: 520, minWidth: 0 }}>
           <SectionTag>
             {data.board_is_hero ? "Who the model likes" : `Last time out · ${data.board_event ?? ""}`}
           </SectionTag>
@@ -172,7 +173,7 @@ export default function Home() {
                 <div style={{ fontWeight: 900, fontSize: "1.4em", color: "var(--bc-muted)", width: 24 }}>{i + 1}</div>
                 <div style={{ flexGrow: 1 }}>
                   <div style={{ fontWeight: 700, fontSize: "1em" }}>{b.player}</div>
-                  <div style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>{b.why}</div>
+                  <div style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>{b.why}</div>
                 </div>
                 {/* Finished event: the pick's actual result leads, the
                     pre-event number demotes to context. */}
@@ -182,12 +183,12 @@ export default function Home() {
                       color: b.finish === "WON" ? "var(--bc-yellow)" : b.finish === "MC" ? "var(--bc-muted)" : "var(--bc-text)" }}>
                       {b.finish}
                     </div>
-                    <div style={{ fontSize: "0.72em", color: "var(--bc-muted)" }}>picked at {pct(b.win_prob)}</div>
+                    <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>picked at {pct(b.win_prob)}</div>
                   </div>
                 ) : (
                   <div style={{ textAlign: "right" }}>
                     <div style={{ fontWeight: 900, fontSize: "1.15em" }}>{pct(b.win_prob)}</div>
-                    <div style={{ fontSize: "0.72em", color: "var(--bc-muted)" }}>win chance</div>
+                    <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>win chance</div>
                   </div>
                 )}
               </div>
@@ -199,7 +200,7 @@ export default function Home() {
             )}
           </div>
           <div style={{ borderTop: "1px solid var(--bc-card)", marginTop: 16, paddingTop: 12,
-                        fontSize: "0.76em", color: "var(--bc-muted)" }}>
+                        fontSize: "max(var(--fs-min), 0.76em)", color: "var(--bc-muted)" }}>
             Probabilities calibrated on 3,171 graded predictions ·{" "}
             <Link href="/predictions" style={{ color: "var(--bc-green)" }}>full field →</Link>
           </div>

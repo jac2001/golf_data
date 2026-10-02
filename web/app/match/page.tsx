@@ -122,7 +122,7 @@ export default function MatchCenterPage() {
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
       <PageHead kicker={data?.league ? `${data.group?.name ? data.group.name + " · " : ""}${data.league.name}` : "Your group's weekend"} title="Match Center" />
       {data?.checked_at && (
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.76em", margin: "-6px 0 12px" }}>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.76em)", margin: "-6px 0 12px" }}>
           Checked {new Date(data.checked_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit", timeZoneName: "short" })}
           {data.slates.find(s => s.data_updated)?.data_updated && ` · live scores as of ${data.slates.find(s => s.data_updated)!.data_updated} (DataGolf)`}
           {" · refreshes every 2 minutes during play"}
@@ -143,7 +143,7 @@ export default function MatchCenterPage() {
 
       {changes.length > 0 && (
         <div style={{ ...card, borderColor: "var(--bc-green)" }}>
-          <div style={{ fontSize: "0.78em", fontWeight: 800, color: "var(--bc-green)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
+          <div style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 800, color: "var(--bc-green)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
             Since you last looked
           </div>
           {changes.map((c, i) => <div key={i} style={{ fontWeight: 700, fontSize: "0.92em", padding: "2px 0" }}>{c}</div>)}
@@ -165,7 +165,7 @@ export default function MatchCenterPage() {
 
 function pill(on: boolean): React.CSSProperties {
   return {
-    cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.74em", textTransform: "uppercase",
+    cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.74em)", textTransform: "uppercase",
     letterSpacing: "0.05em", padding: "7px 13px", borderRadius: 4,
     color: on ? "var(--bc-text)" : "var(--bc-muted)", background: on ? "var(--bc-raised)" : "transparent",
     border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
@@ -176,7 +176,7 @@ function StatusTag({ status, projected }: { status: Slate["status"]; projected: 
   const label = status === "final" ? "Final" : status === "settling" ? "Final · money settling"
     : status === "live" ? (projected ? "Live · projected" : "Live") : "Picks open";
   const color = status === "final" ? "var(--bc-muted)" : status === "live" ? "var(--bc-green)" : "var(--bc-text)";
-  return <span style={{ fontSize: "0.68em", fontWeight: 800, color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>;
+  return <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>;
 }
 
 function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
@@ -203,7 +203,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
   return (
     <div style={card}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
-        <span style={{ fontSize: "0.74em", color: "var(--bc-muted)", fontWeight: 700 }}>{tourLabel} · {s.name}</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)", fontWeight: 700 }}>{tourLabel} · {s.name}</span>
         <StatusTag status={s.status} projected={s.projected} />
       </div>
       <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{headline}</div>
@@ -216,7 +216,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
 
       {me && me.golfers.length > 0 && (
         <div style={{ marginTop: 14 }}>
-          <div style={{ fontSize: "0.68em", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
             Your golfers
           </div>
           {me.golfers.map(g => (
@@ -226,7 +226,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
               {g.thru && s.status === "live" && <span style={{ color: "var(--bc-muted)", fontSize: "0.82em" }}>thru {g.thru}</span>}
               <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(g.earnings)}</span>
               {s.status === "live" && g.up_one > 0 && (
-                <span style={{ color: "var(--bc-green)", fontSize: "0.78em", whiteSpace: "nowrap" }}>+{money(g.up_one)} one spot up</span>
+                <span style={{ color: "var(--bc-green)", fontSize: "max(var(--fs-min), 0.78em)", whiteSpace: "nowrap" }}>+{money(g.up_one)} one spot up</span>
               )}
             </div>
           ))}
@@ -234,7 +234,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
       )}
 
       <div style={{ marginTop: 14 }}>
-        <div style={{ fontSize: "0.68em", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
           {s.humans <= 1 && s.lines.some(l => l.user_id === "model") ? "You vs. the model" : (groupName || "Your group")}
           {s.projected ? " · projected" : ""}
         </div>
@@ -257,7 +257,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
           );
         })}
         {leader && s.status === "final" && (
-          <div style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginTop: 8 }}>
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 8 }}>
             Sunday recap card: Friends → Groups → Share recap.
           </div>
         )}
@@ -267,7 +267,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
 }
 
 function tag(bg: string, fg: string): React.CSSProperties {
-  return { fontSize: "0.7em", fontWeight: 900, letterSpacing: "0.06em", textTransform: "uppercase",
+  return { fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 900, letterSpacing: "0.06em", textTransform: "uppercase",
     color: fg, background: bg, borderRadius: 3, padding: "1px 5px" };
 }
 
@@ -276,7 +276,7 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
   return (
     <div style={card}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-        <span style={{ fontSize: "0.74em", color: "var(--bc-muted)", fontWeight: 700 }}>College Game · {c.name}</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)", fontWeight: 700 }}>College Game · {c.name}</span>
         <StatusTag status={c.status} projected={c.projected} />
       </div>
       {me ? (
@@ -284,7 +284,7 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
           <div style={{ fontWeight: 900, fontSize: "1.6em", color: "var(--bc-text)", margin: "6px 0 0", letterSpacing: "-0.01em" }}>{me.school}</div>
           <div style={{ fontWeight: 800, fontSize: "0.95em" }}>{ordinal(me.rank)} in the school race · {money(me.total)}</div>
           {c.story && <div style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.88em", marginTop: 4 }}>{c.story}</div>}
-          <div style={{ marginTop: 10, fontSize: "0.68em", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+          <div style={{ marginTop: 10, fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             Your two counting golfers
           </div>
           {me.counting.map(g => (

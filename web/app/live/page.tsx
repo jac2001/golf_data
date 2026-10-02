@@ -240,14 +240,14 @@ export default function LivePage() {
                 background: "transparent",
                 border: "1px solid var(--bc-line-hi)", borderRadius: 4,
                 color: refreshing ? "var(--bc-muted)" : "var(--bc-text)",
-                padding: "9px 16px", fontSize: "0.72em", fontWeight: 900,
+                padding: "9px 16px", fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 900,
                 textTransform: "uppercase", letterSpacing: "0.06em",
                 cursor: refreshing ? "default" : "pointer", fontFamily: "inherit",
               }}
             >
               {refreshing ? "Refreshing…" : "Refresh Now"}
             </button>
-            <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginTop: 4 }}>
+            <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginTop: 4 }}>
               {lastPollAt && `Updated ${lastPollAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
               {lastPollAt && ` · next in ${nextPollIn}s`}
             </div>
@@ -373,7 +373,7 @@ function TourPills({ tour, setTour }: {
     <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
       {([["pga", "PGA Tour"], ["euro", "DP World Tour"]] as const).map(([id, label]) => (
         <button key={id} onClick={() => setTour(id)} style={{
-          cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
+          cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.72em)",
           textTransform: "uppercase", letterSpacing: "0.06em",
           padding: "7px 15px", borderRadius: 4,
           color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
@@ -446,7 +446,7 @@ function EuroLiveView() {
       ? `scores through R${data.rounds_complete}${data.rounds_complete < 4 ? ` · R${data.rounds_complete + 1} may be underway` : " · final"}`
       : "";
   const th: React.CSSProperties = {
-    padding: "7px 12px", borderBottom: "1px solid var(--bc-line)", fontSize: "0.68em",
+    padding: "7px 12px", borderBottom: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.68em)",
     fontWeight: 700, color: "var(--bc-muted)", textTransform: "uppercase",
     letterSpacing: "0.05em", whiteSpace: "nowrap", textAlign: "right",
   };
@@ -462,7 +462,7 @@ function EuroLiveView() {
     <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
       <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
         {eventName}
-        <span style={{ color: isLiveFeed ? "var(--bc-green)" : "var(--bc-muted)", fontWeight: isLiveFeed ? 700 : 400, fontSize: "0.72em", marginLeft: 8 }}>
+        <span style={{ color: isLiveFeed ? "var(--bc-green)" : "var(--bc-muted)", fontWeight: isLiveFeed ? 700 : 400, fontSize: "max(var(--fs-min), 0.72em)", marginLeft: 8 }}>
           {isLiveFeed ? `LIVE · updated ${age === 0 ? "just now" : ageStr}` : `snapshot ${ageStr}`}
           {coverage ? ` · ${coverage}` : ""}
         </span>
@@ -481,7 +481,7 @@ function EuroLiveView() {
           <tbody>
             {data.players.map((p, i) => (
               <tr key={i}>
-                <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "0.78em" }}>{p.position || "—"}</td>
+                <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>{p.position || "—"}</td>
                 <td style={{ ...td, textAlign: "left", fontWeight: i < 3 ? 700 : 600 }}>{p.player_name}</td>
                 <td style={{ ...td, fontWeight: 800,
                   color: (p.total ?? 0) < 0 ? "var(--bc-green)" : (p.total ?? 0) > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
@@ -508,14 +508,14 @@ function EuroLiveView() {
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
             <span style={{ fontWeight: 800 }}>{eventName}</span>
-            <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>hole scoring by round</span>
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>hole scoring by round</span>
             <div style={{ display: "flex", gap: 8, marginLeft: "auto" }}>
               {["event_avg", "1", "2", "3", "4"].map(r => (
                 <button key={r} onClick={() => setHoleRound(r)} style={{
                   background: holeRound === r ? "#0a1f3a" : "var(--bc-panel)",
                   border: `1px solid ${holeRound === r ? "#1e5a3f" : "var(--bc-line)"}`,
                   borderRadius: 5, color: holeRound === r ? "var(--bc-green)" : "var(--bc-muted)",
-                  padding: "4px 12px", fontSize: "0.76em", fontWeight: 700, cursor: "pointer",
+                  padding: "4px 12px", fontSize: "max(var(--fs-min), 0.76em)", fontWeight: 700, cursor: "pointer",
                 }}>{r === "event_avg" ? "Current" : `R${r}`}</button>
               ))}
             </div>
@@ -535,7 +535,7 @@ function EuroLiveView() {
             style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
               color: "var(--bc-text)", padding: "7px 12px", fontSize: "0.85em", outline: "none", width: 200 }}
           />
-          <span style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
+          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>
             Round scores{par != null ? ` · par ${par}` : ""} — hole-level detail has no DP World Tour source,
             so these are round cards, not hole cards.
           </span>
@@ -559,7 +559,7 @@ function EuroLiveView() {
                       <div key={ri} style={{ flex: 1, textAlign: "center", borderRadius: 5, padding: "6px 0",
                         background: vs == null ? "var(--bc-panel)" : vs < 0 ? "#0a1e12" : vs > 0 ? "#1e0d0d" : "var(--bc-panel)",
                         border: `1px solid ${vs == null ? "var(--bc-line)" : vs < 0 ? "#1e5a3f" : vs > 0 ? "#5a2a2a" : "var(--bc-line)"}` }}>
-                        <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase" }}>R{ri + 1}</div>
+                        <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase" }}>R{ri + 1}</div>
                         <div style={{ fontWeight: 800, fontSize: "0.92em", fontVariantNumeric: "tabular-nums",
                           color: vs == null ? "var(--bc-muted)" : vs < 0 ? "var(--bc-green)" : vs > 0 ? "var(--bc-red-text)" : "var(--bc-text)" }}>
                           {r != null ? Math.round(r) : "—"}
@@ -569,7 +569,7 @@ function EuroLiveView() {
                   })}
                 </div>
                 {p.thru && p.thru !== "—" && p.today != null && (
-                  <div style={{ marginTop: 6, fontSize: "0.72em", color: "var(--bc-muted)" }}>
+                  <div style={{ marginTop: 6, fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>
                     today {fmtScore(p.today)} · thru {p.thru}
                   </div>
                 )}
@@ -588,13 +588,13 @@ function GlanceCard({ label, value, sub }: { label: string; value: string; sub?:
       background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
       padding: "10px 16px", flex: "1 1 140px", minWidth: 120,
     }}>
-      <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </div>
       <div style={{ fontSize: "1em", fontWeight: 700, color: "var(--bc-text)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
         {value}
       </div>
-      {sub && <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginTop: 2 }}>{sub}</div>}
+      {sub && <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginTop: 2 }}>{sub}</div>}
     </div>
   );
 }

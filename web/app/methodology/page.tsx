@@ -37,7 +37,7 @@ const cell: React.CSSProperties = {
 };
 const cellL: React.CSSProperties = { ...cell, textAlign: "left" };
 const hdr: React.CSSProperties = {
-  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "0.76em",
+  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.76em)",
   textTransform: "uppercase", letterSpacing: "0.04em", borderBottom: "1px solid var(--bc-line)",
 };
 const hdrL: React.CSSProperties = { ...hdr, textAlign: "left" };

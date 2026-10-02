@@ -91,18 +91,18 @@ function HoleRow({ hole, isAlt }: { hole: CourseHole; isAlt: boolean }) {
       </td>
 
       {/* Difficulty label */}
-      <td style={{ ...cell, color: dColor, fontSize: "0.68em", width: 70 }}>
+      <td style={{ ...cell, color: dColor, fontSize: "max(var(--fs-min-xs), 0.68em)", width: 70 }}>
         {diffLabel(diff)}
       </td>
 
       {/* Birdie vs Bogey visual bar */}
       <td style={{ ...cell, minWidth: 160, paddingLeft: 10, paddingRight: 10 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: "0.72em", color: "var(--bc-green)", width: 36, textAlign: "right", flexShrink: 0 }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-green)", width: 36, textAlign: "right", flexShrink: 0 }}>
             {hole.birdies != null ? `${hole.birdies.toFixed(0)}%` : "—"}
           </span>
           <BirdieBogeyBar birdies={hole.birdies} bogeys={hole.bogeys} />
-          <span style={{ fontSize: "0.72em", color: "var(--bc-red)", width: 36, flexShrink: 0 }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-red)", width: 36, flexShrink: 0 }}>
             {hole.bogeys != null ? `${hole.bogeys.toFixed(0)}%` : "—"}
           </span>
         </div>
@@ -124,12 +124,12 @@ function NineSubtotal({ holes, label }: { holes: CourseHole[]; label: string }) 
   return (
     <tr style={{ background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line)" }}>
       <td style={{ width: 3, padding: 0 }} />
-      <td colSpan={2} style={{ ...cell, color: "var(--bc-muted)", fontWeight: 700, fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+      <td colSpan={2} style={{ ...cell, color: "var(--bc-muted)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.72em)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
         {label}
       </td>
       <td style={{ ...cell, color: "var(--bc-muted)", fontWeight: 600 }}>{yards}</td>
       <td style={{ ...cell, color: "var(--bc-text)", fontWeight: 600 }}>{fmt(avgSum)}</td>
-      <td colSpan={4} style={{ ...cell, color: "var(--bc-muted)", fontSize: "0.75em" }}>par {par}</td>
+      <td colSpan={4} style={{ ...cell, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>par {par}</td>
     </tr>
   );
 }
@@ -163,9 +163,9 @@ export default function CourseCard({ data }: Props) {
         padding: "14px 18px", display: "flex", gap: 24, flexWrap: "wrap", alignItems: "flex-start",
       }}>
         <div style={{ flex: 1, minWidth: 160 }}>
-          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Course</div>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Course</div>
           <div style={{ color: "var(--bc-text)", fontWeight: 800, fontSize: "1em", marginTop: 2 }}>{data.course_name || "—"}</div>
-          <div style={{ color: "var(--bc-muted)", fontSize: "0.75em", marginTop: 4 }}>
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", marginTop: 4 }}>
             Par {data.par ?? "—"} &nbsp;·&nbsp; {data.yardage?.toLocaleString() ?? "—"} yards
           </div>
         </div>
@@ -179,7 +179,7 @@ export default function CourseCard({ data }: Props) {
         )}
 
         {/* Legend */}
-        <div style={{ fontSize: "0.65em", color: "var(--bc-line)", display: "flex", gap: 10, alignSelf: "flex-end", flexWrap: "wrap" }}>
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-line)", display: "flex", gap: 10, alignSelf: "flex-end", flexWrap: "wrap" }}>
           <span><span style={{ color: "var(--bc-green)" }}>■</span> Birdie%</span>
           <span><span style={{ color: "var(--bc-red)" }}>■</span> Bogey%</span>
           <span><span style={{ color: "var(--warning)" }}>■</span> Hard</span>
@@ -216,7 +216,7 @@ export default function CourseCard({ data }: Props) {
         </table>
       </div>
 
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.68em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.68em)", marginTop: 6 }}>
         vs Par = avg strokes above/below par · Rank 1 = hardest hole on course
       </p>
     </div>
@@ -241,7 +241,7 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
     <div style={{ marginBottom: 16, background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, padding: "16px 18px" }}>
       <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
         <span style={{ color: "var(--bc-text)", fontWeight: 800, fontSize: "0.95em" }}>Course History</span>
-        <span style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
+        <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>
           {history.editions} past edition{history.editions !== 1 ? "s" : ""}
           {history.years.length > 0 && ` · ${history.years[0]}–${history.years[history.years.length - 1]}`}
         </span>
@@ -250,7 +250,7 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
       {unplayedCount > 0 && (
         <div style={{
           background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-          padding: "6px 10px", marginBottom: 14, fontSize: "0.75em", color: "var(--bc-muted)",
+          padding: "6px 10px", marginBottom: 14, fontSize: "max(var(--fs-min), 0.75em)", color: "var(--bc-muted)",
         }}>
           {unplayedCount} hole{unplayedCount > 1 ? "s" : ""} below {unplayedCount > 1 ? "haven't" : "hasn't"} been played yet this week (showing —) —
           the trends here are how this course has played across {history.editions} past edition{history.editions !== 1 ? "s" : ""} in the meantime.
@@ -260,13 +260,13 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
       <div style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
         {/* Round-by-round average score */}
         <div style={{ minWidth: 220 }}>
-          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
             Avg Score by Round
           </div>
           <div style={{ display: "flex", gap: 14 }}>
             {([["R1", r.r1], ["R2", r.r2], ["R3", r.r3], ["R4", r.r4]] as const).map(([label, v]) => (
               <div key={label} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginBottom: 2 }}>{label}</div>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginBottom: 2 }}>{label}</div>
                 <div style={{ fontSize: "1.05em", fontWeight: 800, color: roundColor(v) }}>{v != null ? v.toFixed(1) : "—"}</div>
               </div>
             ))}
@@ -275,20 +275,20 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
 
         {/* Scoring distribution */}
         <div style={{ minWidth: 220 }}>
-          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
             Avg Per Round
           </div>
           <div style={{ display: "flex", gap: 18 }}>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "0.65em", color: "var(--bc-green)", marginBottom: 2 }}>Birdies</div>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-green)", marginBottom: 2 }}>Birdies</div>
               <div style={{ fontSize: "1.05em", fontWeight: 800, color: "var(--bc-green)" }}>{sd.avg_birdies != null ? sd.avg_birdies.toFixed(2) : "—"}</div>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "0.65em", color: "var(--bc-red)", marginBottom: 2 }}>Bogeys</div>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-red)", marginBottom: 2 }}>Bogeys</div>
               <div style={{ fontSize: "1.05em", fontWeight: 800, color: "var(--bc-red)" }}>{sd.avg_bogeys != null ? sd.avg_bogeys.toFixed(2) : "—"}</div>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "0.65em", color: "var(--bc-yellow)", marginBottom: 2 }}>Eagles</div>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-yellow)", marginBottom: 2 }}>Eagles</div>
               <div style={{ fontSize: "1.05em", fontWeight: 800, color: "var(--bc-yellow)" }}>{sd.avg_eagles != null ? sd.avg_eagles.toFixed(2) : "—"}</div>
             </div>
           </div>
@@ -298,7 +298,7 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
       {/* Winning score trend */}
       {winning_scores.length > 0 && (
         <div style={{ marginTop: 18 }}>
-          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
             Winning Score by Year
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -307,9 +307,9 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
                 background: "#081220", border: "1px solid var(--bc-line)", borderRadius: 6,
                 padding: "6px 10px", minWidth: 86, textAlign: "center",
               }}>
-                <div style={{ fontSize: "0.62em", color: "var(--bc-muted)" }}>{w.year}</div>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)" }}>{w.year}</div>
                 <div style={{ fontSize: "0.95em", fontWeight: 800, color: "var(--bc-green)", marginTop: 2 }}>{w.to_par || "—"}</div>
-                <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginTop: 2, whiteSpace: "nowrap" }}>{w.winner_name}</div>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginTop: 2, whiteSpace: "nowrap" }}>{w.winner_name}</div>
               </div>
             ))}
           </div>
@@ -322,9 +322,9 @@ function CourseHistorySection({ history, unplayedCount = 0 }: { history: CourseH
 function Callout({ label, hole, color }: { label: string; hole: CourseHole; color: string }) {
   return (
     <div style={{ background: `${color}11`, border: `1px solid ${color}33`, borderRadius: 8, padding: "8px 14px", minWidth: 100 }}>
-      <div style={{ fontSize: "0.6em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</div>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</div>
       <div style={{ fontWeight: 800, color, fontSize: "1.1em", marginTop: 2 }}>Hole {hole.hole_num}</div>
-      <div style={{ fontSize: "0.72em", color: "var(--bc-muted)", marginTop: 2 }}>
+      <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)", marginTop: 2 }}>
         Par {hole.hole_par} · {fmtDiff(hole.scoring_diff)} vs par
       </div>
     </div>
@@ -332,7 +332,7 @@ function Callout({ label, hole, color }: { label: string; hole: CourseHole; colo
 }
 
 const th: React.CSSProperties = {
-  color: "var(--bc-muted)", fontSize: "0.65em", fontWeight: 700,
+  color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700,
   textTransform: "uppercase", letterSpacing: "0.05em",
   padding: "6px 8px", borderBottom: "1px solid var(--bc-line)",
   textAlign: "center", whiteSpace: "nowrap",

@@ -47,14 +47,14 @@ function DayCard({ day }: { day: WeatherDay }) {
       padding: "10px 14px", flex: "1 1 100px", minWidth: 90,
     }}>
       {/* Day label */}
-      <div style={{ fontSize: "0.68em", fontWeight: 700, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
         {day.day}
       </div>
 
       {/* Condition icon + label */}
       <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
         <span style={{ fontSize: "1.1em", color, lineHeight: 1 }}>{icon}</span>
-        <span style={{ fontSize: "0.72em", color, fontWeight: 600 }}>{label}</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color, fontWeight: 600 }}>{label}</span>
       </div>
 
       {/* Temp range */}
@@ -66,12 +66,12 @@ function DayCard({ day }: { day: WeatherDay }) {
       </div>
 
       {/* Wind */}
-      <div style={{ fontSize: "0.68em", color: windColor, marginBottom: 2 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: windColor, marginBottom: 2 }}>
         {day.wind_mph} mph {windLabel(day.wind_dir)}
       </div>
 
       {/* Precip */}
-      <div style={{ fontSize: "0.65em", color: pColor }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: pColor }}>
         {day.precip_pct} rain
       </div>
     </div>
@@ -83,7 +83,7 @@ export default function WeatherStrip({ days, savedAt }: Props) {
 
   return (
     <div style={{ marginBottom: 20 }}>
-      <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
         Round Week Forecast
         {savedAt && <span style={{ marginLeft: 10, color: "var(--bc-line)" }}>· {savedAt.slice(0, 10)}</span>}
       </div>

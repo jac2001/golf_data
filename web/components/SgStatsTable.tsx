@@ -106,7 +106,7 @@ function ScoreCell({ h }: { h: HoleData }) {
     <td style={{ padding: "2px 1px", textAlign: "center", minWidth: 30 }}>
       <div style={boxStyle}>{played ? h.strokes : "·"}</div>
       {played && h.running && (
-        <div style={{ fontSize: "0.5em", color: runningColor(h.running), textAlign: "center", marginTop: 1 }}>
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.5em)", color: runningColor(h.running), textAlign: "center", marginTop: 1 }}>
           {h.running}
         </div>
       )}
@@ -129,18 +129,18 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
   const vsParStr     = vsPar == null ? "—" : vsPar === 0 ? "E" : vsPar > 0 ? `+${vsPar}` : String(vsPar);
   const vsParColor   = vsPar == null ? "var(--bc-muted)" : vsPar < 0 ? GREEN : vsPar > 0 ? RED : "var(--bc-muted)";
 
-  const thStyle: React.CSSProperties = { fontSize: "0.58em", color: "var(--bc-line)", textAlign: "center", padding: "2px 1px", minWidth: 30, fontWeight: 700 };
-  const parStyle: React.CSSProperties = { fontSize: "0.62em", color: "var(--bc-muted)", textAlign: "center", padding: "2px 1px" };
-  const subStyle: React.CSSProperties = { fontSize: "0.72em", color: "var(--bc-muted)", fontWeight: 700, textAlign: "center", padding: "3px 6px", minWidth: 38, borderLeft: `1px solid ${BORDER}` };
+  const thStyle: React.CSSProperties = { fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)", textAlign: "center", padding: "2px 1px", minWidth: 30, fontWeight: 700 };
+  const parStyle: React.CSSProperties = { fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textAlign: "center", padding: "2px 1px" };
+  const subStyle: React.CSSProperties = { fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)", fontWeight: 700, textAlign: "center", padding: "3px 6px", minWidth: 38, borderLeft: `1px solid ${BORDER}` };
 
   return (
     <div style={{ marginBottom: 10 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-        <span style={{ fontSize: "0.62em", color: MUTED, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: MUTED, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
           Round {round}
         </span>
         {(frontPlayed || backPlayed) && (
-          <span style={{ fontSize: "0.7em", fontWeight: 800, color: vsParColor }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 800, color: vsParColor }}>
             {vsParStr} ({totalStrokes})
           </span>
         )}
@@ -150,26 +150,26 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
           <thead>
             <tr>
               {front.map(h => <td key={h.hole} style={thStyle}>{h.hole}</td>)}
-              <td style={{ ...subStyle, fontSize: "0.58em", color: "var(--bc-line)" }}>OUT</td>
+              <td style={{ ...subStyle, fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)" }}>OUT</td>
               {back.map(h => <td key={h.hole} style={thStyle}>{h.hole}</td>)}
-              <td style={{ ...subStyle, fontSize: "0.58em", color: "var(--bc-line)" }}>IN</td>
-              <td style={{ ...subStyle, fontSize: "0.58em", color: "var(--bc-line)" }}>TOT</td>
+              <td style={{ ...subStyle, fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)" }}>IN</td>
+              <td style={{ ...subStyle, fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)" }}>TOT</td>
             </tr>
           </thead>
           <tbody>
             <tr>
               {front.map(h => <td key={h.hole} style={parStyle}>{h.par ?? "—"}</td>)}
-              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "0.6em" }}>{frontPar || "—"}</td>
+              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.6em)" }}>{frontPar || "—"}</td>
               {back.map(h => <td key={h.hole} style={parStyle}>{h.par ?? "—"}</td>)}
-              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "0.6em" }}>{backPar || "—"}</td>
-              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "0.6em" }}>{totalPar || "—"}</td>
+              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.6em)" }}>{backPar || "—"}</td>
+              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.6em)" }}>{totalPar || "—"}</td>
             </tr>
             <tr>
               {front.map(h => <ScoreCell key={h.hole} h={h} />)}
               <td style={{ ...subStyle }}>
                 {frontPlayed ? frontStrokes : "—"}
                 {frontPlayed && (
-                  <div style={{ fontSize: "0.6em", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? GREEN : v > 0 ? RED : "var(--bc-muted)"; })() }}>
+                  <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? GREEN : v > 0 ? RED : "var(--bc-muted)"; })() }}>
                     {(() => { const v = frontStrokes - frontPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
@@ -178,14 +178,14 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
               <td style={{ ...subStyle }}>
                 {backPlayed ? backStrokes : "—"}
                 {backPlayed && (
-                  <div style={{ fontSize: "0.6em", color: (() => { const v = backStrokes - backPar; return v < 0 ? GREEN : v > 0 ? RED : "var(--bc-muted)"; })() }}>
+                  <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", color: (() => { const v = backStrokes - backPar; return v < 0 ? GREEN : v > 0 ? RED : "var(--bc-muted)"; })() }}>
                     {(() => { const v = backStrokes - backPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
               </td>
               <td style={{ ...subStyle, color: vsParColor, fontWeight: 800 }}>
                 {(frontPlayed || backPlayed) ? totalStrokes : "—"}
-                {vsPar != null && <div style={{ fontSize: "0.6em" }}>{vsParStr}</div>}
+                {vsPar != null && <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)" }}>{vsParStr}</div>}
               </td>
             </tr>
           </tbody>
@@ -233,7 +233,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
 
   const th: React.CSSProperties = {
     background: "var(--bc-panel)", color: MUTED,
-    fontSize: "0.68em", fontWeight: 700,
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: `1px solid ${BORDER}`,
     textAlign: "center", whiteSpace: "nowrap",
@@ -260,7 +260,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
     <div>
       {/* Round selector */}
       <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap", alignItems: "center" }}>
-        <span style={{ fontSize: "0.75em", color: "var(--bc-muted)", marginRight: 4 }}>Round:</span>
+        <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: "var(--bc-muted)", marginRight: 4 }}>Round:</span>
         {ROUND_OPTIONS.map(opt => (
           <button
             key={opt.key}
@@ -278,10 +278,10 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
           </button>
         ))}
         {updated && (
-          <span style={{ fontSize: "0.68em", color: "var(--bc-muted)", marginLeft: 8 }}>Updated {updated}</span>
+          <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: "var(--bc-muted)", marginLeft: 8 }}>Updated {updated}</span>
         )}
         {holeScores && (
-          <span style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginLeft: 8 }}>· click row for scorecard</span>
+          <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginLeft: 8 }}>· click row for scorecard</span>
         )}
       </div>
 
@@ -354,7 +354,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
                           {p.player}
                         </Link>
                         {isPick && (
-                          <span style={{ fontSize: "0.55em", fontWeight: 800, color: GREEN, background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6 }}>
+                          <span style={{ fontSize: "max(var(--fs-min-xs), 0.55em)", fontWeight: 800, color: GREEN, background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6 }}>
                             MY PICK
                           </span>
                         )}
@@ -406,7 +406,7 @@ export default function SgStatsTable({ players, roundParam, updated, onRoundChan
         </div>
       )}
 
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 6 }}>
         SG = Strokes Gained vs field average · OTT = Off the Tee · App = Approach · ArG = Around Green · T2G = Tee to Green
         {!hasDrivingData && " · Driving stats not available for this round"}
         {" · click column headers to sort · click row for scorecard"}

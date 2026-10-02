@@ -63,27 +63,27 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
     const { bg, fg } = holeRelColor(h.rel);
     return (
       <div style={{ textAlign: "center", minWidth: 28 }}>
-        <div style={{ fontSize: "0.55em", color: "var(--bc-muted)", marginBottom: 1 }}>{h.hole}</div>
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-muted)", marginBottom: 1 }}>{h.hole}</div>
         <div style={{ background: bg, color: fg, fontWeight: 700, fontSize: "0.8em", padding: "3px 4px", borderRadius: 3, minWidth: 24 }}>
           {h.strokes ?? "·"}
         </div>
-        <div style={{ fontSize: "0.5em", color: "var(--bc-muted)", marginTop: 1 }}>{h.par ?? ""}</div>
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.5em)", color: "var(--bc-muted)", marginTop: 1 }}>{h.par ?? ""}</div>
       </div>
     );
   }
 
   return (
     <div style={{ marginBottom: 6 }}>
-      <div style={{ fontSize: "0.6em", color: "var(--bc-muted)", marginBottom: 4 }}>Round {round}</div>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", color: "var(--bc-muted)", marginBottom: 4 }}>Round {round}</div>
       <div style={{ display: "flex", gap: 4, alignItems: "flex-end", flexWrap: "wrap" }}>
         {front.map(h => <HoleCell key={h.hole} h={h} />)}
         <div style={{ minWidth: 28, textAlign: "center", borderLeft: "1px solid var(--bc-line)", paddingLeft: 4 }}>
-          <div style={{ fontSize: "0.55em", color: "var(--bc-muted)", marginBottom: 1 }}>OUT</div>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-muted)", marginBottom: 1 }}>OUT</div>
           <div style={{ fontSize: "0.8em", fontWeight: 700, color: "var(--bc-muted)" }}>{frontTotal || "—"}</div>
         </div>
         {back.map(h => <HoleCell key={h.hole} h={h} />)}
         <div style={{ minWidth: 28, textAlign: "center", borderLeft: "1px solid var(--bc-line)", paddingLeft: 4 }}>
-          <div style={{ fontSize: "0.55em", color: "var(--bc-muted)", marginBottom: 1 }}>IN</div>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-muted)", marginBottom: 1 }}>IN</div>
           <div style={{ fontSize: "0.8em", fontWeight: 700, color: "var(--bc-muted)" }}>{backTotal || "—"}</div>
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
 
   const th: React.CSSProperties = {
     background: "var(--bc-panel)", color: "var(--bc-muted)",
-    fontSize: "0.68em", fontWeight: 700,
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     textAlign: "center", whiteSpace: "nowrap",
@@ -140,7 +140,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
       )}
 
       {holeScores && (
-        <p style={{ fontSize: "0.72em", color: "var(--bc-muted)", marginBottom: 10 }}>
+        <p style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)", marginBottom: 10 }}>
           Click any row to see hole-by-hole scores
         </p>
       )}
@@ -192,7 +192,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
                       )}
                       {p.player_name}
                       {isCut && (
-                        <span style={{ fontSize: "0.7em", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>
+                        <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>
                       )}
                     </td>
                     <td style={{ ...td, color: totalColor, fontWeight: 700 }}>{totalStr}</td>
@@ -230,7 +230,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
                       <td colSpan={totalCols} style={{
                         padding: "4px 10px", background: "rgba(224,85,85,0.10)",
                         borderBottom: "1px solid rgba(224,85,85,0.35)", textAlign: "center",
-                        fontSize: "0.65em", color: "#7f3030",
+                        fontSize: "max(var(--fs-min-xs), 0.65em)", color: "#7f3030",
                         letterSpacing: "0.1em", fontWeight: 700, textTransform: "uppercase",
                       }}>
                         — Cut Line —
@@ -251,7 +251,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
       </div>
 
       {fetchedAt && (
-        <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>Updated {fetchedAt}</p>
+        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 6 }}>Updated {fetchedAt}</p>
       )}
     </div>
   );
@@ -262,7 +262,7 @@ function CutChip({ label, value, highlight, dim }: { label: string; value: strin
   const bg    = highlight ? "#2a1f0a" : dim ? "#0a1220" : "var(--bc-card)";
   return (
     <div style={{ background: bg, border: "1px solid var(--bc-line)", borderRadius: 8, padding: "8px 14px" }}>
-      <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>
       <div style={{ fontSize: "1em", fontWeight: 700, color, marginTop: 2 }}>{value}</div>
     </div>
   );

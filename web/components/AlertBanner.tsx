@@ -111,7 +111,7 @@ export default function AlertBanner() {
                     {toast.title}
                   </span>
                 </div>
-                <p style={{ margin: 0, fontSize: "0.75em", color: "var(--bc-muted)", lineHeight: 1.4 }}>
+                <p style={{ margin: 0, fontSize: "max(var(--fs-min), 0.75em)", color: "var(--bc-muted)", lineHeight: 1.4 }}>
                   {toast.body}
                 </p>
               </div>

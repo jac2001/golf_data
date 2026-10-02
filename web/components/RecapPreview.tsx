@@ -15,7 +15,7 @@ type State =
   | { kind: "none"; reason: string };
 
 const btn = (primary: boolean): React.CSSProperties => ({
-  cursor: "pointer", fontFamily: "inherit", fontWeight: 900, fontSize: "0.74em",
+  cursor: "pointer", fontFamily: "inherit", fontWeight: 900, fontSize: "max(var(--fs-min), 0.74em)",
   textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5, padding: "9px 14px",
   background: primary ? "var(--bc-yellow)" : "transparent",
   color: primary ? "#081f14" : "var(--bc-text)",

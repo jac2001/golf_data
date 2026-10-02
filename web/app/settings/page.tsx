@@ -23,7 +23,7 @@ const rowStyle: React.CSSProperties = {
   borderBottom: "1px solid var(--bc-line)",
 };
 const btnQuiet: React.CSSProperties = {
-  cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "0.78em",
+  cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "max(var(--fs-min), 0.78em)",
   padding: "7px 14px", borderRadius: 5, background: "transparent",
   color: "var(--bc-muted)", border: "1px solid var(--bc-line)",
 };
@@ -65,7 +65,7 @@ function Row({ label, sub, children }: {
     <div style={rowStyle}>
       <div style={{ minWidth: 0 }}>
         <div style={{ fontSize: "0.9em", fontWeight: 600 }}>{label}</div>
-        {sub && <div style={{ fontSize: "0.76em", color: "var(--bc-muted)", marginTop: 2 }}>{sub}</div>}
+        {sub && <div style={{ fontSize: "max(var(--fs-min), 0.76em)", color: "var(--bc-muted)", marginTop: 2 }}>{sub}</div>}
       </div>
       {children}
     </div>
@@ -208,7 +208,7 @@ export default function SettingsPage() {
         )}
         <div style={{ display: "flex", alignItems: "center", gap: 12, paddingTop: 12 }}>
           <button onClick={testPush} style={btnQuiet}>Send test notification</button>
-          {testMsg && <span style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>{testMsg}</span>}
+          {testMsg && <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>{testMsg}</span>}
         </div>
       </div>
 
@@ -240,7 +240,7 @@ export default function SettingsPage() {
           something deleted? Leave your groups and remove devices here, or
           ask Jack to purge your rows.
         </p>
-        <p style={{ margin: "10px 0 0", fontSize: "0.78em" }}>
+        <p style={{ margin: "10px 0 0", fontSize: "max(var(--fs-min), 0.78em)" }}>
           <a href="/history/league" style={{ color: "var(--bc-muted)" }}>
             2026 family-league archive →
           </a>

@@ -53,7 +53,7 @@ export function Star() {
 }
 
 const btn = (on: boolean): React.CSSProperties => ({
-  cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.76em",
+  cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.76em)",
   textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5, padding: "7px 12px",
   background: on ? "var(--bc-raised)" : "transparent", color: on ? "var(--bc-text)" : "var(--bc-muted)",
   border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
@@ -115,7 +115,7 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
             {cur?.name ?? "—"}
           </div>
           {cur && (
-            <div style={{ fontSize: "0.72em", fontWeight: 700, color: STATUS_COLOR[cur.status] }}>
+            <div style={{ fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 700, color: STATUS_COLOR[cur.status] }}>
               {STATUS_LABEL[cur.status]} · {shortDate(cur.start_date)}
             </div>
           )}
@@ -130,7 +130,7 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
           return (
             <React.Fragment key={e.tournament_id}>
               {first && (
-                <span style={{ alignSelf: "center", fontSize: "0.62em", fontWeight: 800, color: "var(--bc-muted)",
+                <span style={{ alignSelf: "center", fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 800, color: "var(--bc-muted)",
                   textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap",
                   marginLeft: i === 0 ? 0 : 8 }}>{group(e)}</span>
               )}
@@ -140,11 +140,11 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
                 background: on ? "var(--bc-raised)" : "var(--bc-card)",
                 border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
               }}>
-                <div style={{ fontSize: "0.62em", fontWeight: 700, color: STATUS_COLOR[e.status] }}>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 700, color: STATUS_COLOR[e.status] }}>
                   {shortDate(e.start_date)} · {STATUS_LABEL[e.status]}
                   {starred[e.tournament_id] ? <span style={{ color: "var(--bc-yellow)", marginLeft: 4 }}><Star /></span> : null}
                 </div>
-                <div style={{ fontSize: "0.78em", fontWeight: 700, color: on ? "var(--bc-text)" : "var(--bc-muted)",
+                <div style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700, color: on ? "var(--bc-text)" : "var(--bc-muted)",
                   whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 150 }}>
                   {e.name}
                 </div>

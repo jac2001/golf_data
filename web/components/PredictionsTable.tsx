@@ -160,7 +160,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
 
   const th: React.CSSProperties = {
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
-    fontSize: "0.68em", fontWeight: 700, color: "var(--bc-muted)",
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-muted)",
     textTransform: "uppercase", letterSpacing: "0.05em",
     background: "var(--bc-panel)", whiteSpace: "nowrap", cursor: "pointer",
     userSelect: "none",
@@ -193,7 +193,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
         >
           + Columns
         </button>
-        <span style={{ color: "var(--bc-muted)", fontSize: "0.75em" }}>
+        <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>
           {sorted.length} players · click column to sort
           {players.some(p => p.win_prob_sim != null && p.win_prob != null) &&
             " · chances come from 10,000 simulated tournaments; “base model” is the machine-learning model's direct estimate — both pre-tournament"}
@@ -276,7 +276,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   background: "#0a1e12",
                   borderLeft: "2px solid var(--bc-green)",
                 } : undefined}>
-                  <td style={{ ...td, color: "var(--bc-muted)", textAlign: "center", fontSize: "0.78em" }}>{i + 1}</td>
+                  <td style={{ ...td, color: "var(--bc-muted)", textAlign: "center", fontSize: "max(var(--fs-min), 0.78em)" }}>{i + 1}</td>
 
                   {/* Player name + intel */}
                   <td style={{ ...td, fontSize: "0.85em", maxWidth: 280 }}>
@@ -292,14 +292,14 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       </Link>
                       {isPick && (
                         <span style={{
-                          fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)",
+                          fontSize: "max(var(--fs-min-xs), 0.6em)", fontWeight: 800, color: "var(--bc-green)",
                           background: "var(--bc-card)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
                           borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
                         }}>MY PICK</span>
                       )}
                       {playerIntel?.injury_flag && (
                         <span style={{
-                          fontSize: "0.68em", fontWeight: 700, color: "var(--bc-red)",
+                          fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-red)",
                           background: "#1a0808", border: "1px solid rgba(224,85,85,0.35)44",
                           borderRadius: 4, padding: "1px 6px", whiteSpace: "nowrap",
                         }}>
@@ -312,14 +312,14 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       )}
                       {playerIntel?.trend === "trending_up" && (
                         <span style={{
-                          fontSize: "0.68em", fontWeight: 700, color: "var(--bc-green)",
+                          fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-green)",
                           background: "var(--bc-card)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
                           borderRadius: 4, padding: "1px 6px",
                         }}>↑ hot</span>
                       )}
                       {playerIntel?.trend === "trending_down" && (
                         <span style={{
-                          fontSize: "0.68em", fontWeight: 700, color: "var(--bc-orange)",
+                          fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-orange)",
                           background: "rgba(255,210,74,0.08)", border: "1px solid rgba(255,210,74,0.3)44",
                           borderRadius: 4, padding: "1px 6px",
                         }}>↓ cold</span>
@@ -328,14 +328,14 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
 
                     {/* Row 2: model explanation */}
                     {p.explanation && (
-                      <div style={{ color: "#3a5a70", fontSize: "0.75em", marginTop: 3 }}>
+                      <div style={{ color: "#3a5a70", fontSize: "max(var(--fs-min), 0.75em)", marginTop: 3 }}>
                         {p.explanation}
                       </div>
                     )}
 
                     {/* Row 3: intel form summary */}
                     {playerIntel?.recent_form_summary && (
-                      <div style={{ color: "#4a6a80", fontSize: "0.72em", marginTop: 3, lineHeight: 1.4 }}>
+                      <div style={{ color: "#4a6a80", fontSize: "max(var(--fs-min), 0.72em)", marginTop: 3, lineHeight: 1.4 }}>
                         {playerIntel.recent_form_summary}
                       </div>
                     )}
@@ -345,7 +345,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 4 }}>
                         {playerIntel.last_3_results.slice(0, 3).map((r, ri) => (
                           <span key={ri} style={{
-                            fontSize: "0.65em", color: "var(--bc-muted)",
+                            fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)",
                             background: "#0a1520", border: "1px solid var(--bc-line)",
                             borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
                           }}>{r}</span>
@@ -363,7 +363,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                           {(p.win_prob_sim * 100).toFixed(1)}%
                         </span>
                         {p.win_prob != null && (
-                          <div style={{ color: "#2a5040", fontSize: "0.68em", marginTop: 1 }}>
+                          <div style={{ color: "#2a5040", fontSize: "max(var(--fs-min-xs), 0.68em)", marginTop: 1 }}>
                             base model {(p.win_prob * 100).toFixed(1)}%
                           </div>
                         )}
@@ -385,7 +385,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                           {(p.top10_prob_sim * 100).toFixed(1)}%
                         </span>
                         {p.top10_prob != null && (
-                          <div style={{ color: "var(--bc-card)", fontSize: "0.68em", marginTop: 1 }}>
+                          <div style={{ color: "var(--bc-card)", fontSize: "max(var(--fs-min-xs), 0.68em)", marginTop: 1 }}>
                             base model {(p.top10_prob * 100).toFixed(1)}%
                           </div>
                         )}
@@ -451,12 +451,12 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   {visibleCols.has("ev") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.this_week_ev != null ? (
-                      <span style={{ fontSize: "0.72em", color: "var(--bc-yellow)", fontWeight: 600 }}>
+                      <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-yellow)", fontWeight: 600 }}>
                         {p.this_week_ev >= 1000
                           ? `${(p.this_week_ev / 1000).toFixed(0)}k`
                           : String(p.this_week_ev)}
                       </span>
-                    ) : <span style={{ color: "var(--bc-muted)", fontSize: "0.72em" }}>—</span>}
+                    ) : <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>—</span>}
                   </td>
                   )}
 

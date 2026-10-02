@@ -156,7 +156,7 @@ export default function HowToPlayPage() {
       <div style={{ ...card, padding: 0, overflow: "hidden" }}>
         <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
           A group, Sunday night
-          <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.74em", marginLeft: 8 }}>example</span>
+          <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.74em)", marginLeft: 8 }}>example</span>
         </div>
         <table style={{ borderCollapse: "collapse", width: "100%" }}>
           <tbody>
@@ -167,7 +167,7 @@ export default function HowToPlayPage() {
                   borderBottom: "1px solid var(--bc-line)" }}>{rk}</td>
                 <td style={{ padding: "8px 12px", fontWeight: 700, borderBottom: "1px solid var(--bc-line)" }}>
                   {nm}
-                  {isModel ? <span style={{ marginLeft: 8, fontSize: "0.62em", fontWeight: 900, letterSpacing: "0.08em",
+                  {isModel ? <span style={{ marginLeft: 8, fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 900, letterSpacing: "0.08em",
                     color: "var(--bc-text)", background: "var(--bc-line-hi)", borderRadius: 3, padding: "2px 6px" }}>MODEL</span> : null}
                 </td>
                 <td style={{ padding: "8px 18px", textAlign: "right", fontWeight: 800,
@@ -185,17 +185,17 @@ export default function HowToPlayPage() {
         <div style={card}>
           <div style={{ fontWeight: 800 }}>
             Try it — no account needed
-            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.76em", marginLeft: 8 }}>
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.76em)", marginLeft: 8 }}>
               {eventName}{mode === "history" ? " · as the board stood Tuesday" : " · model win chances shown"}
             </span>
           </div>
           {mode === "history" && challenges.length > 1 && (
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap", margin: "10px 0 0" }}>
-              <span style={{ alignSelf: "center", fontSize: "0.72em", color: "var(--bc-muted)" }}>Challenge:</span>
+              <span style={{ alignSelf: "center", fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>Challenge:</span>
               {challenges.map(c => (
                 <button key={c.tournament_id} onClick={() => loadChallenge(c.tournament_id, c.name).catch(() => {})}
                   style={{
-                    cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.7em",
+                    cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.7em)",
                     textTransform: "uppercase", letterSpacing: "0.04em", borderRadius: 4, padding: "5px 10px",
                     color: challenge === c.tournament_id ? "var(--bc-text)" : "var(--bc-muted)",
                     background: challenge === c.tournament_id ? "var(--bc-raised)" : "transparent",
@@ -226,7 +226,7 @@ export default function HowToPlayPage() {
                   <span style={{ fontWeight: 700, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {p.player_name}
                     {mode === "history" && i < 3 && revealed && (
-                      <span style={{ marginLeft: 6, fontSize: "0.72em", opacity: 0.8 }}>· model</span>
+                      <span style={{ marginLeft: 6, fontSize: "max(var(--fs-min), 0.72em)", opacity: 0.8 }}>· model</span>
                     )}
                   </span>
                   <span style={{ marginLeft: "auto", fontVariantNumeric: "tabular-nums",
@@ -251,7 +251,7 @@ export default function HowToPlayPage() {
             <button onClick={() => setRevealed(true)} style={{
               marginTop: 12, cursor: "pointer", fontFamily: "inherit",
               background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-              textTransform: "uppercase", fontSize: "0.78em", letterSpacing: "0.06em",
+              textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.78em)", letterSpacing: "0.06em",
               padding: "10px 18px", borderRadius: 4, border: "none" }}>
               Lock picks · reveal Sunday&apos;s results
             </button>
@@ -264,7 +264,7 @@ export default function HowToPlayPage() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10, marginTop: 14 }}>
               {([["Your three", picks], ["The model's three", modelTrio.map(p => p.player_name)]] as const).map(([title, names]) => (
                 <div key={title} style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "10px 12px" }}>
-                  <div style={{ fontSize: "0.7em", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
+                  <div style={{ fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
                     {title}
                   </div>
                   {names.map(n => {
@@ -274,7 +274,7 @@ export default function HowToPlayPage() {
                     return (
                       <div key={n} style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: "0.84em", padding: "3px 0" }}>
                         <span style={{ fontWeight: 700 }}>{n}</span>
-                        {shared && <span style={{ fontSize: "0.78em", color: "var(--bc-muted)" }}>both</span>}
+                        {shared && <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: "var(--bc-muted)" }}>both</span>}
                         <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
                           {mode === "history" && `${realPos(n)} · `}{money(value)}
                           {p?.win_prob != null && <span style={{ fontSize: "0.85em" }}> · {(p.win_prob * 100).toFixed(1)}% pre</span>}
@@ -313,7 +313,7 @@ export default function HowToPlayPage() {
               </div>
               {mode === "history" && (
                 <button onClick={() => { setRevealed(false); setPicks([]); }} style={{
-                  cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "0.76em",
+                  cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "max(var(--fs-min), 0.76em)",
                   padding: "6px 13px", borderRadius: 5, background: "transparent",
                   color: "var(--bc-muted)", border: "1px solid var(--bc-line)" }}>
                   Pick again
@@ -321,7 +321,7 @@ export default function HowToPlayPage() {
               )}
             </div>
           )}
-          <p style={{ color: "var(--bc-muted)", fontSize: "0.74em", marginTop: 10, marginBottom: 0 }}>
+          <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)", marginTop: 10, marginBottom: 0 }}>
             {mode === "history"
               ? "Real event, real prize money — the win chances are exactly what the model published before Thursday's tee-off."
               : "Expected value is pre-tournament projection; real games grade on the actual purse Sunday night."}

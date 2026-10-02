@@ -52,13 +52,13 @@ export default function ModelComparison({ players }: Props) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
           {/* We prefer */}
           <div style={{ background: "#0a1a10", border: `1px solid ${GREEN}33`, borderRadius: 8, padding: "12px 14px" }}>
-            <div style={{ fontSize: "0.65em", fontWeight: 700, color: GREEN, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
+            <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700, color: GREEN, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
               We rank higher than DG
             </div>
             {wePrefer.map(p => (
               <div key={p.player} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                 <span style={{ fontSize: "0.82em", fontWeight: 600 }}>{playerLink(p.player)}</span>
-                <span style={{ fontSize: "0.75em" }}>
+                <span style={{ fontSize: "max(var(--fs-min), 0.75em)" }}>
                   <span style={{ color: GREEN }}>Us #{p.our_rank}</span>
                   <span style={{ color: MUTED, margin: "0 5px" }}>vs</span>
                   <span style={{ color: BLUE }}>DG #{p.dg_rank}</span>
@@ -69,13 +69,13 @@ export default function ModelComparison({ players }: Props) {
           </div>
           {/* DG prefers */}
           <div style={{ background: "var(--bc-panel)", border: `1px solid ${BLUE}33`, borderRadius: 8, padding: "12px 14px" }}>
-            <div style={{ fontSize: "0.65em", fontWeight: 700, color: BLUE, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
+            <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700, color: BLUE, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
               DG ranks higher than us
             </div>
             {dgPrefers.map(p => (
               <div key={p.player} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                 <span style={{ fontSize: "0.82em", fontWeight: 600 }}>{playerLink(p.player)}</span>
-                <span style={{ fontSize: "0.75em" }}>
+                <span style={{ fontSize: "max(var(--fs-min), 0.75em)" }}>
                   <span style={{ color: GREEN }}>Us #{p.our_rank}</span>
                   <span style={{ color: MUTED, margin: "0 5px" }}>vs</span>
                   <span style={{ color: BLUE }}>DG #{p.dg_rank}</span>
@@ -103,7 +103,7 @@ export default function ModelComparison({ players }: Props) {
               ].map(({ label, color, align, width, minWidth }) => (
                 <th key={label} style={{
                   padding: "7px 10px", background: "var(--bc-panel)",
-                  fontSize: "0.68em", fontWeight: 700, color,
+                  fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color,
                   textTransform: "uppercase", letterSpacing: "0.05em",
                   borderBottom: `1px solid ${BORDER}`,
                   textAlign: align, whiteSpace: "nowrap",
@@ -132,7 +132,7 @@ export default function ModelComparison({ players }: Props) {
 
               return (
                 <tr key={`${p.player}-${i}`}>
-                  <td style={{ ...td, textAlign: "center", color: MUTED, fontSize: "0.75em" }}>{i + 1}</td>
+                  <td style={{ ...td, textAlign: "center", color: MUTED, fontSize: "max(var(--fs-min), 0.75em)" }}>{i + 1}</td>
 
                   <td style={{ ...td, textAlign: "left", fontWeight: 600, whiteSpace: "nowrap" }}>
                     {playerLink(p.player)}
@@ -187,7 +187,7 @@ export default function ModelComparison({ players }: Props) {
         </table>
       </div>
 
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 6 }}>
         Δ = DG rank − our rank · <span style={{ color: GREEN }}>green = we rank higher</span> · <span style={{ color: BLUE }}>blue = DG ranks higher</span>
       </p>
     </div>

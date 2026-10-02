@@ -169,12 +169,12 @@ const cell: React.CSSProperties = {
   fontSize: "0.86em", color: "var(--bc-text)", textAlign: "left",
 };
 const hdr: React.CSSProperties = {
-  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "0.74em",
+  ...cell, color: "var(--bc-muted)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.74em)",
   textTransform: "uppercase", letterSpacing: "0.04em",
 };
 
 const ModelBadge = () => (
-  <span style={{ marginLeft: 6, fontSize: "0.62em", fontWeight: 900, letterSpacing: "0.08em",
+  <span style={{ marginLeft: 6, fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 900, letterSpacing: "0.08em",
     color: "var(--bc-text)", background: "var(--bc-line-hi)", borderRadius: 3, padding: "2px 6px",
     textTransform: "uppercase", verticalAlign: "middle" }}>
     Model
@@ -259,7 +259,7 @@ function GamesTab() {
                 color: "var(--bc-text)" }}>
                 {g.name}
               </div>
-              <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", marginTop: 3, lineHeight: 1.35 }}>
+              <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)", marginTop: 3, lineHeight: 1.35 }}>
                 {g.tag}
               </div>
             </button>
@@ -383,7 +383,7 @@ function FadeStandings() {
           </tbody>
         </table>
       </div>
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginTop: 10 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 10 }}>
         Scored in event wins — lowest combined earnings takes the week.
         Weekly boards live inside the Fade Game on the Games tab.
       </p>
@@ -466,7 +466,7 @@ function CollegeTab() {
           {event.name || events.find(e => e.tournament_id === event.tid)?.name || "Loading…"}
         </div>
         {!event.locked && event.startDate && (
-          <div style={{ fontSize: "0.78em", marginTop: 3 }}>
+          <div style={{ fontSize: "max(var(--fs-min), 0.78em)", marginTop: 3 }}>
             <LockCountdown startDate={event.startDate} tour={event.tour} />
           </div>
         )}
@@ -484,7 +484,7 @@ function CollegeTab() {
         <div style={{ ...card, padding: 0, overflow: "hidden" }}>
           <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>
             School board
-            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.78em", marginLeft: 8 }}>
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.78em)", marginLeft: 8 }}>
               best 2 alumni · highest wins{board.projected && !board.settled ? " · live projected" : ""}
             </span>
           </div>
@@ -515,7 +515,7 @@ function CollegeTab() {
         <div style={{ ...card, padding: 0, overflow: "hidden" }}>
           <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>
             Schools in this field
-            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.78em", marginLeft: 8 }}>
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.78em)", marginLeft: 8 }}>
               {schools.length} with alumni playing
             </span>
           </div>
@@ -538,7 +538,7 @@ function CollegeTab() {
                     color: mine ? "var(--bc-green)" : "var(--bc-text)" }}>
                     {s.school}{mine && " ✓"}
                   </span>
-                  <span style={{ color: "var(--bc-muted)", fontSize: "0.78em", marginLeft: 8 }}>
+                  <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginLeft: 8 }}>
                     {s.players.map(lastName).join(" · ")}
                   </span>
                 </button>
@@ -648,11 +648,11 @@ function TailsTab() {
               color: summary.pnl >= 0 ? "var(--bc-green)" : "var(--bc-red-text)" }}>
               {summary.pnl >= 0 ? "+" : ""}{summary.pnl.toFixed(2)}u
             </div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.72em" }}>NET P&L</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>NET P&L</div>
           </div>
           <div>
             <div style={{ fontWeight: 900, fontSize: "1.3em" }}>{summary.won}/{summary.settled}</div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.72em" }}>SETTLED WINS</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>SETTLED WINS</div>
           </div>
         </div>
       )}
@@ -944,7 +944,7 @@ function GroupFeed({ groupId }: { groupId: number }) {
       <LetItRideStandings groupId={groupId} compact />
       {/* Picks — revealed per event once it locks */}
       <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", fontWeight: 700,
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700,
           textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
           Picks
         </div>
@@ -977,7 +977,7 @@ function GroupFeed({ groupId }: { groupId: number }) {
 
       {/* Shared bets */}
       <div style={{ background: "var(--bc-panel)", borderRadius: 8, padding: "10px 14px" }}>
-        <div style={{ color: "var(--bc-muted)", fontSize: "0.7em", fontWeight: 700,
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700,
           textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>Shared bets</div>
         {feed.bets.length === 0 ? (
           <span style={{ color: "var(--bc-muted)", fontSize: "0.84em" }}>
@@ -1106,7 +1106,7 @@ function MyBetsTab() {
           <span style={{ marginLeft: "auto", display: "flex", gap: 6, alignItems: "center" }}>
             {(["won", "lost", "pending"] as const).map(o => (
               <button key={o} onClick={() => patch(b.id, { outcome: o })} style={{
-                ...btnQuiet, padding: "3px 9px", fontSize: "0.72em",
+                ...btnQuiet, padding: "3px 9px", fontSize: "max(var(--fs-min), 0.72em)",
                 color: b.outcome === o
                   ? (o === "won" ? "var(--bc-green)" : o === "lost" ? "var(--bc-red-text)" : "var(--bc-text)")
                   : "var(--bc-muted)",
@@ -1116,14 +1116,14 @@ function MyBetsTab() {
               </button>
             ))}
             <button onClick={() => patch(b.id, { shared: !b.shared })} title="Visible to your groups?" style={{
-              ...btnQuiet, padding: "3px 9px", fontSize: "0.72em",
+              ...btnQuiet, padding: "3px 9px", fontSize: "max(var(--fs-min), 0.72em)",
               color: b.shared ? "var(--bc-text)" : "var(--bc-muted)",
               borderColor: b.shared ? "currentColor" : "var(--bc-line)",
             }}>
               {b.shared ? "shared" : "private"}
             </button>
             <button onClick={() => del(b.id)} aria-label="Delete bet" style={{
-              ...btnQuiet, padding: "3px 9px", fontSize: "0.72em" }}>✕</button>
+              ...btnQuiet, padding: "3px 9px", fontSize: "max(var(--fs-min), 0.72em)" }}>✕</button>
           </span>
         </div>
       ))}
@@ -1245,22 +1245,22 @@ function RoundGameTab() {
                     {locked ? "no pick — +5" : "no pick yet"}
                   </span>}
               {!locked && state?.event?.startDate && (
-                <span style={{ fontSize: "0.72em" }}>
+                <span style={{ fontSize: "max(var(--fs-min), 0.72em)" }}>
                   <LockCountdown startDate={state.event.startDate} tour={state.event.tour} addDays={r - 1} />
                 </span>
               )}
               {!locked && (
                 <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
                   <button onClick={() => { setPickingRound(pickingRound === r ? null : r); setQuery(""); }}
-                    style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em" }}>
+                    style={{ ...btnQuiet, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.74em)" }}>
                     {current ? "Change" : "Pick"}
                   </button>
                   {current && (
-                    <button onClick={() => clear(r)} style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em" }}>✕</button>
+                    <button onClick={() => clear(r)} style={{ ...btnQuiet, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.74em)" }}>✕</button>
                   )}
                 </span>
               )}
-              {locked && <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: "0.72em" }}>locked</span>}
+              {locked && <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>locked</span>}
               {pickingRound === r && !locked && (
                 <div style={{ flexBasis: "100%" }}>
                   <input autoFocus value={query} onChange={e => setQuery(e.target.value)}
@@ -1281,7 +1281,7 @@ function RoundGameTab() {
                               color: used ? "var(--bc-muted)" : "var(--bc-text)",
                               borderBottom: "1px solid var(--bc-line)" }}>
                             <span style={{ fontWeight: 600 }}>{row.player_name}</span>
-                            {used && <span style={{ marginLeft: 8, fontSize: "0.78em" }}>· used</span>}
+                            {used && <span style={{ marginLeft: 8, fontSize: "max(var(--fs-min), 0.78em)" }}>· used</span>}
                             {row.win_prob != null && (
                               <span style={{ marginLeft: "auto", color: "var(--bc-muted)",
                                 fontVariantNumeric: "tabular-nums" }}>
@@ -1342,7 +1342,7 @@ function RoundGameTab() {
                         title="Share receipt" style={{
                           background: "transparent", border: "1px solid var(--bc-line)",
                           borderRadius: 4, color: "var(--bc-muted)", cursor: "pointer",
-                          fontSize: "0.72em", padding: "1px 7px", marginLeft: 8 }}>
+                          fontSize: "max(var(--fs-min), 0.72em)", padding: "1px 7px", marginLeft: 8 }}>
                         ⇪
                       </button>
                     )}
@@ -1460,7 +1460,7 @@ function FadeTab() {
           {event.name || events.find(e => e.tournament_id === event.tid)?.name || "Loading…"}
         </div>
         {!event.locked && event.startDate && (
-          <div style={{ fontSize: "0.78em", marginTop: 3 }}>
+          <div style={{ fontSize: "max(var(--fs-min), 0.78em)", marginTop: 3 }}>
             <LockCountdown startDate={event.startDate} tour={event.tour} />
           </div>
         )}
@@ -1515,7 +1515,7 @@ function FadeTab() {
         <div style={{ ...card, padding: 0, overflow: "hidden" }}>
           <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>
             Fadeboard
-            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.78em", marginLeft: 8 }}>
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.78em)", marginLeft: 8 }}>
               lowest total wins{board.earnings_estimated ? " · est. purse split" : ""}
             </span>
           </div>
@@ -1554,7 +1554,7 @@ function FadeTab() {
                         title="Share receipt" style={{
                           background: "transparent", border: "1px solid var(--bc-line)",
                           borderRadius: 4, color: "var(--bc-muted)", cursor: "pointer",
-                          fontSize: "0.72em", padding: "1px 7px", marginLeft: 8 }}>
+                          fontSize: "max(var(--fs-min), 0.72em)", padding: "1px 7px", marginLeft: 8 }}>
                         ⇪
                       </button>
                     )}
@@ -1571,7 +1571,7 @@ function FadeTab() {
         <div style={{ ...card, padding: 0, overflow: "hidden" }}>
           <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>
             The pool
-            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.78em", marginLeft: 8 }}>
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.78em)", marginLeft: 8 }}>
               top 20 by model win chance — pick the ones you don&apos;t believe in
             </span>
           </div>
@@ -1608,12 +1608,12 @@ function FadeTab() {
                     <td style={{ ...cell, textAlign: "right" }}>
                       {faded ? (
                         <button onClick={() => toggle(r.player_name, true)}
-                          style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em", color: "var(--bc-red-text)" }}>
+                          style={{ ...btnQuiet, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-red-text)" }}>
                           Faded ✕</button>
                       ) : (
                         <button onClick={() => toggle(r.player_name, false)}
                           disabled={fades.length >= 3}
-                          style={{ ...btnQuiet, padding: "3px 10px", fontSize: "0.74em",
+                          style={{ ...btnQuiet, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.74em)",
                             opacity: fades.length >= 3 ? 0.4 : 1,
                             cursor: fades.length >= 3 ? "default" : "pointer" }}>
                           Fade</button>

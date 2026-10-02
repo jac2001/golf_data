@@ -35,7 +35,7 @@ function RatingButtons({
 }) {
   if (rated) {
     return (
-      <div style={{ marginTop: 6, fontSize: "0.7em", color: "var(--bc-green)" }}>
+      <div style={{ marginTop: 6, fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-green)" }}>
         {rated === "up" ? "👍 Thanks" : "👎 Noted"}
       </div>
     );
@@ -53,7 +53,7 @@ function RatingButtons({
             borderRadius: 6,
             color: "var(--bc-muted)",
             padding: "2px 8px",
-            fontSize: "0.78em",
+            fontSize: "max(var(--fs-min), 0.78em)",
             cursor: "pointer",
             lineHeight: 1.4,
           }}
@@ -86,7 +86,7 @@ function MessageBubble({
           background: "rgba(53,197,116,0.13)", border: "1px solid rgba(53,197,116,0.27)",
           display: "flex", alignItems: "center", justifyContent: "center",
           flexShrink: 0, marginRight: 10, marginTop: 2,
-          fontSize: "0.72em", fontWeight: 800, color: "var(--bc-green)",
+          fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 800, color: "var(--bc-green)",
         }}>
           G
         </div>
@@ -218,7 +218,7 @@ export default function AssistantPage() {
               style={{
                 background: "transparent", border: "1px solid var(--bc-line)",
                 borderRadius: 6, color: "var(--bc-muted)", padding: "5px 12px",
-                fontSize: "0.78em", cursor: "pointer",
+                fontSize: "max(var(--fs-min), 0.78em)", cursor: "pointer",
               }}
             >
               Clear chat
@@ -286,7 +286,7 @@ export default function AssistantPage() {
         {showLimitWarning && (
           <div style={{
             background: "rgba(255,210,74,0.08)", border: "1px solid rgba(255,210,74,0.3)", borderRadius: 8,
-            padding: "8px 14px", color: "var(--warning)", fontSize: "0.78em",
+            padding: "8px 14px", color: "var(--warning)", fontSize: "max(var(--fs-min), 0.78em)",
             marginBottom: 12, textAlign: "center",
           }}>
             Long conversation — consider clearing the chat to keep responses fast and costs low.
@@ -329,7 +329,7 @@ export default function AssistantPage() {
             {streaming ? "…" : "Send"}
           </button>
         </div>
-        <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginTop: 6, textAlign: "right" }}>
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginTop: 6, textAlign: "right" }}>
           Enter to send · Shift+Enter for newline
           {userMsgCount > 0 && ` · ${userMsgCount} messages this session`}
         </div>

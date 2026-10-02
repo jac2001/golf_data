@@ -58,7 +58,7 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
       <td style={{ padding: "2px 1px", textAlign: "center", minWidth: 28 }}>
         <div style={boxStyle}>{played ? h.strokes : "·"}</div>
         {played && h.running && (
-          <div style={{ fontSize: "0.48em", color: runningColor(h.running), textAlign: "center", marginTop: 1 }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.48em)", color: runningColor(h.running), textAlign: "center", marginTop: 1 }}>
             {h.running}
           </div>
         )}
@@ -66,18 +66,18 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
     );
   }
 
-  const thStyle: React.CSSProperties = { fontSize: "0.55em", color: "var(--bc-line)", textAlign: "center", padding: "2px 1px", minWidth: 28, fontWeight: 700 };
-  const parStyle: React.CSSProperties = { fontSize: "0.6em", color: "var(--bc-muted)", textAlign: "center", padding: "1px 1px" };
-  const subStyle: React.CSSProperties = { fontSize: "0.72em", color: "var(--bc-muted)", fontWeight: 700, textAlign: "center", padding: "2px 6px", minWidth: 36, borderLeft: "1px solid var(--bc-line)" };
+  const thStyle: React.CSSProperties = { fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-line)", textAlign: "center", padding: "2px 1px", minWidth: 28, fontWeight: 700 };
+  const parStyle: React.CSSProperties = { fontSize: "max(var(--fs-min-xs), 0.6em)", color: "var(--bc-muted)", textAlign: "center", padding: "1px 1px" };
+  const subStyle: React.CSSProperties = { fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)", fontWeight: 700, textAlign: "center", padding: "2px 6px", minWidth: 36, borderLeft: "1px solid var(--bc-line)" };
 
   return (
     <div style={{ marginTop: 14, borderTop: "1px solid var(--bc-card)", paddingTop: 10 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-        <span style={{ fontSize: "0.62em", color: "var(--bc-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
           Round {round}
         </span>
         {(frontPlayed || backPlayed) && (
-          <span style={{ fontSize: "0.72em", fontWeight: 800, color: vsParColor }}>
+          <span style={{ fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 800, color: vsParColor }}>
             {vsParStr} ({totalStrokes})
           </span>
         )}
@@ -87,26 +87,26 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
           <thead>
             <tr>
               {front.map(h => <td key={h.hole} style={thStyle}>{h.hole}</td>)}
-              <td style={{ ...subStyle, fontSize: "0.55em", color: "var(--bc-line)" }}>OUT</td>
+              <td style={{ ...subStyle, fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-line)" }}>OUT</td>
               {back.map(h => <td key={h.hole} style={thStyle}>{h.hole}</td>)}
-              <td style={{ ...subStyle, fontSize: "0.55em", color: "var(--bc-line)" }}>IN</td>
-              <td style={{ ...subStyle, fontSize: "0.55em", color: "var(--bc-line)" }}>TOT</td>
+              <td style={{ ...subStyle, fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-line)" }}>IN</td>
+              <td style={{ ...subStyle, fontSize: "max(var(--fs-min-xs), 0.55em)", color: "var(--bc-line)" }}>TOT</td>
             </tr>
           </thead>
           <tbody>
             <tr>
               {front.map(h => <td key={h.hole} style={parStyle}>{h.par ?? "—"}</td>)}
-              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "0.6em" }}>{frontPar || "—"}</td>
+              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.6em)" }}>{frontPar || "—"}</td>
               {back.map(h => <td key={h.hole} style={parStyle}>{h.par ?? "—"}</td>)}
-              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "0.6em" }}>{backPar || "—"}</td>
-              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "0.6em" }}>{totalPar || "—"}</td>
+              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.6em)" }}>{backPar || "—"}</td>
+              <td style={{ ...subStyle, color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.6em)" }}>{totalPar || "—"}</td>
             </tr>
             <tr>
               {front.map(h => <HCell key={h.hole} h={h} />)}
               <td style={{ ...subStyle }}>
                 {frontPlayed ? frontStrokes : "—"}
                 {frontPlayed && (
-                  <div style={{ fontSize: "0.62em", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? "var(--bc-green)" : v > 0 ? "var(--bc-red-text)" : "var(--bc-muted)"; })() }}>
+                  <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? "var(--bc-green)" : v > 0 ? "var(--bc-red-text)" : "var(--bc-muted)"; })() }}>
                     {(() => { const v = frontStrokes - frontPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
@@ -115,14 +115,14 @@ function MiniScoreCard({ holes, round }: { holes: HoleData[]; round: string }) {
               <td style={{ ...subStyle }}>
                 {backPlayed ? backStrokes : "—"}
                 {backPlayed && (
-                  <div style={{ fontSize: "0.62em", color: (() => { const v = backStrokes - backPar; return v < 0 ? "var(--bc-green)" : v > 0 ? "var(--bc-red-text)" : "var(--bc-muted)"; })() }}>
+                  <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: (() => { const v = backStrokes - backPar; return v < 0 ? "var(--bc-green)" : v > 0 ? "var(--bc-red-text)" : "var(--bc-muted)"; })() }}>
                     {(() => { const v = backStrokes - backPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
               </td>
               <td style={{ ...subStyle, color: vsParColor, fontWeight: 800 }}>
                 {(frontPlayed || backPlayed) ? totalStrokes : "—"}
-                {vsPar != null && <div style={{ fontSize: "0.62em" }}>{vsParStr}</div>}
+                {vsPar != null && <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)" }}>{vsParStr}</div>}
               </td>
             </tr>
           </tbody>
@@ -143,7 +143,7 @@ function RoundPip({ score, label }: { score: number | null; label: string }) {
   const color = score == null ? "var(--bc-muted)" : scoreColor(score);
   return (
     <div style={{ textAlign: "center" }}>
-      <div style={{ fontSize: "0.6em", color: "var(--bc-muted)", textTransform: "uppercase", marginBottom: 2 }}>{label}</div>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", color: "var(--bc-muted)", textTransform: "uppercase", marginBottom: 2 }}>{label}</div>
       <div style={{ fontWeight: 700, fontSize: "0.85em", color }}>
         {score == null ? "—" : String(score)}
       </div>
@@ -153,13 +153,13 @@ function RoundPip({ score, label }: { score: number | null; label: string }) {
 
 function StatusBadge({ status, madeCut }: { status: string | null; madeCut: boolean | null }) {
   if (madeCut === false) {
-    return <span style={{ fontSize: "0.7em", fontWeight: 700, color: "var(--bc-red-text)", background: "#2a0f0f", padding: "2px 7px", borderRadius: 3, border: "1px solid #5a1a1a" }}>MISSED CUT</span>;
+    return <span style={{ fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700, color: "var(--bc-red-text)", background: "#2a0f0f", padding: "2px 7px", borderRadius: 3, border: "1px solid #5a1a1a" }}>MISSED CUT</span>;
   }
   if (status === "W") {
-    return <span style={{ fontSize: "0.7em", fontWeight: 800, color: "var(--bc-yellow)", background: "#1f1800", padding: "2px 7px", borderRadius: 3, border: "1px solid #5a4a00" }}>WON</span>;
+    return <span style={{ fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 800, color: "var(--bc-yellow)", background: "#1f1800", padding: "2px 7px", borderRadius: 3, border: "1px solid #5a4a00" }}>WON</span>;
   }
   if (madeCut === true) {
-    return <span style={{ fontSize: "0.7em", fontWeight: 700, color: "var(--bc-green)", background: "#0d2218", padding: "2px 7px", borderRadius: 3, border: "1px solid #004422" }}>MADE CUT</span>;
+    return <span style={{ fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700, color: "var(--bc-green)", background: "#0d2218", padding: "2px 7px", borderRadius: 3, border: "1px solid #004422" }}>MADE CUT</span>;
   }
   return null;
 }
@@ -168,7 +168,7 @@ function MoveDelta({ delta }: { delta: number | null }) {
   if (delta == null || delta === 0) return null;
   const color = delta > 0 ? "var(--bc-green)" : "var(--bc-red-text)";
   const arrow = delta > 0 ? "↑" : "↓";
-  return <span style={{ fontSize: "0.75em", color, marginLeft: 8 }}>{arrow}{Math.abs(delta)}</span>;
+  return <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color, marginLeft: 8 }}>{arrow}{Math.abs(delta)}</span>;
 }
 
 export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
@@ -220,11 +220,11 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
                 </div>
                 <div style={{ textAlign: "right" }}>
                   <div style={{ color: totalColor, fontWeight: 800, fontSize: "1.6em", lineHeight: 1 }}>{totalStr}</div>
-                  <div style={{ color: "var(--bc-muted)", fontSize: "0.72em", marginTop: 3 }}>
+                  <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)", marginTop: 3 }}>
                     {p.position ? `${p.position}` : "—"}
                     <MoveDelta delta={p.position_change} />
                   </div>
-                  {p.thru && <div style={{ color: "var(--bc-muted)", fontSize: "0.68em" }}>Thru {p.thru}</div>}
+                  {p.thru && <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.68em)" }}>Thru {p.thru}</div>}
                 </div>
               </div>
 
@@ -248,7 +248,7 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
         })}
       </div>
 
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 10 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 10 }}>
         Your 3 picks for this week. Round scores are raw strokes.
       </p>
     </div>

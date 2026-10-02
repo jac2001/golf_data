@@ -116,7 +116,7 @@ export function SectionTag({ children, color, zone = "public" }: {
   children: React.ReactNode; color?: string; zone?: Zone;
 }) {
   return (
-    <div style={{ fontSize: "0.72em", fontWeight: 900, textTransform: "uppercase",
+    <div style={{ fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 900, textTransform: "uppercase",
                   letterSpacing: "0.12em", color: color ?? Z[zone].muted, marginBottom: 10 }}>
       {children}
     </div>
@@ -144,7 +144,7 @@ export function ScoreTable<Row>({ cols, rows, rowKey, highlight, zone = "public"
   return (
     <div className="tabular" style={{ background: z.panel, borderRadius: 8, overflow: "hidden" }}>
       <div style={{ display: "flex", gap: 14, padding: "12px 22px", background: z.card,
-                    fontSize: "0.7em", fontWeight: 700, textTransform: "uppercase",
+                    fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700, textTransform: "uppercase",
                     letterSpacing: "0.1em", color: z.muted }}>
         {cols.map(c => <div key={c.key} style={cellBase(c)}>{c.label}</div>)}
       </div>
@@ -178,7 +178,7 @@ export function StatStrip({ title, stats, right, zone = "public" }: {
         {stats.map(s => (
           <div key={s.label} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <div style={{ fontWeight: 900, fontSize: "1.35em", color: s.color ?? z.text }}>{s.value}</div>
-            <div style={{ fontSize: "0.76em", color: z.muted }}>{s.label}</div>
+            <div style={{ fontSize: "max(var(--fs-min), 0.76em)", color: z.muted }}>{s.label}</div>
           </div>
         ))}
       </div>

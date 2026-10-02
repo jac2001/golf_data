@@ -25,7 +25,7 @@ export default function BookTable({ data }: Props) {
   const th: React.CSSProperties = {
     background: "var(--bc-panel)",
     color: "var(--bc-muted)",
-    fontSize: "0.70em",
+    fontSize: "max(var(--fs-min), 0.70em)",
     fontWeight: 600,
     textTransform: "uppercase",
     letterSpacing: "0.04em",
@@ -103,7 +103,7 @@ export default function BookTable({ data }: Props) {
         </tbody>
       </table>
 
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.72em", padding: "8px 12px", margin: 0 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)", padding: "8px 12px", margin: 0 }}>
         Sorted by model edge vs {BOOK_ABBR[data.ref_book] ?? data.ref_book}. No-vig normalized.
         Sharp books (PIN) are shown for reference only — not available in the US.
       </p>

@@ -42,7 +42,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
   return (
     <div>
       {/* Summary strip */}
-      <div style={{ color: "var(--bc-muted)", fontSize: "0.75em", marginBottom: 14, display: "flex", gap: 16, flexWrap: "wrap" }}>
+      <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", marginBottom: 14, display: "flex", gap: 16, flexWrap: "wrap" }}>
         <span>Round {data.round}</span>
         <span>·</span>
         <span>{data.groups.length} tee times</span>
@@ -80,12 +80,12 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                 </span>
                 <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                   {group.players[0]?.start_tee && (
-                    <span style={{ color: "var(--bc-muted)", fontSize: "0.68em" }}>
+                    <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.68em)" }}>
                       Hole {group.players[0].start_tee}
                     </span>
                   )}
                   {hasUse && (
-                    <span style={{ fontSize: "0.6em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", padding: "2px 5px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" }}>
+                    <span style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", padding: "2px 5px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" }}>
                       VALUE
                     </span>
                   )}
@@ -98,8 +98,8 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                   display: "grid", gridTemplateColumns: "1fr auto",
                   padding: "3px 12px", borderBottom: "1px solid var(--bc-panel)",
                 }}>
-                  <span style={{ fontSize: "0.58em", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Player</span>
-                  <span style={{ fontSize: "0.58em", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right" }}>
+                  <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Player</span>
+                  <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right" }}>
                     Win% · Top10% · Edge
                   </span>
                 </div>
@@ -127,7 +127,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                     {/* Left: rank badge + name */}
                     <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
                       <span style={{
-                        fontSize: "0.62em", fontWeight: 800, color: rColor,
+                        fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 800, color: rColor,
                         background: "var(--bc-panel)", padding: "2px 5px", borderRadius: 3,
                         minWidth: 28, textAlign: "center", flexShrink: 0,
                         border: `1px solid ${rColor}33`,
@@ -152,13 +152,13 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           </Link>
                           {isPick && (
                             <span style={{
-                              fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)",
+                              fontSize: "max(var(--fs-min-xs), 0.58em)", fontWeight: 800, color: "var(--bc-green)",
                               background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
                               borderRadius: 3, padding: "1px 4px", whiteSpace: "nowrap", flexShrink: 0,
                             }}>MY PICK</span>
                           )}
                         </div>
-                        <div style={{ color: "var(--bc-muted)", fontSize: "0.64em", marginTop: 1 }}>
+                        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.64em)", marginTop: 1 }}>
                           OWGR #{p.world_rank ?? "—"}
                           {drift && (
                             <span style={{ color: drift.c, marginLeft: 5 }}>{drift.s}</span>
@@ -179,13 +179,13 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           {p.win_prob != null ? `${p.win_prob.toFixed(1)}%` : "—"}
                         </span>
                         {p.top10_prob != null && (
-                          <span style={{ color: "var(--bc-muted)", fontSize: "0.72em" }}>
+                          <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>
                             {p.top10_prob.toFixed(0)}%
                           </span>
                         )}
                       </div>
                       {p.edge != null && (
-                        <div style={{ color: edgeColor, fontSize: "0.68em", fontWeight: isEdge ? 700 : 400, marginTop: 2 }}>
+                        <div style={{ color: edgeColor, fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: isEdge ? 700 : 400, marginTop: 2 }}>
                           {p.edge > 0 ? "+" : ""}{p.edge.toFixed(1)}pp edge
                         </div>
                       )}

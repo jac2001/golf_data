@@ -73,7 +73,7 @@ function ScoreCell({ h }: { h: HoleData }) {
     <td style={{ padding: "3px 2px", textAlign: "center", minWidth: 34 }}>
       <div style={boxStyle}>{played ? h.strokes : "·"}</div>
       {played && h.running && (
-        <div style={{ fontSize: "0.55em", color: runningColor(h.running), marginTop: 1, textAlign: "center" }}>
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.55em)", color: runningColor(h.running), marginTop: 1, textAlign: "center" }}>
           {h.running}
         </div>
       )}
@@ -97,16 +97,16 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
   const totalStr     = totalVsPar == null ? "—" : totalVsPar === 0 ? "E" : totalVsPar > 0 ? `+${totalVsPar}` : String(totalVsPar);
 
   const thCell: React.CSSProperties = {
-    textAlign: "center", fontSize: "0.62em", color: "var(--bc-muted)",
+    textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)",
     fontWeight: 700, padding: "3px 2px", minWidth: 34,
     textTransform: "uppercase", letterSpacing: "0.03em",
   };
   const parCell: React.CSSProperties = {
-    textAlign: "center", fontSize: "0.7em", color: "var(--bc-muted)",
+    textAlign: "center", fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-muted)",
     padding: "2px 2px",
   };
   const subtotalCell: React.CSSProperties = {
-    textAlign: "center", fontSize: "0.78em", fontWeight: 700,
+    textAlign: "center", fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700,
     color: "var(--bc-muted)", padding: "3px 6px", minWidth: 40,
     borderLeft: "1px solid var(--bc-line)",
   };
@@ -114,12 +114,12 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
   return (
     <div style={{ marginBottom: 10 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-        <span style={{ fontSize: "0.65em", color: "var(--bc-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
           Round {round}
         </span>
         {(frontPlayed || backPlayed) && (
           <span style={{
-            fontSize: "0.72em", fontWeight: 800,
+            fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 800,
             color: totalVsPar != null && totalVsPar < 0 ? "var(--bc-green)" : totalVsPar != null && totalVsPar > 0 ? "var(--bc-red-text)" : "var(--bc-muted)",
           }}>
             {totalStr} ({totalStrokes})
@@ -132,28 +132,28 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
             <tr>
               <td style={{ ...thCell, textAlign: "left", minWidth: 40 }}></td>
               {front.map(h => <td key={h.hole} style={thCell}>{h.hole}</td>)}
-              <td style={{ ...subtotalCell, fontSize: "0.62em", color: "var(--bc-muted)", fontWeight: 700 }}>OUT</td>
+              <td style={{ ...subtotalCell, fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", fontWeight: 700 }}>OUT</td>
               {back.map(h => <td key={h.hole} style={thCell}>{h.hole}</td>)}
-              <td style={{ ...subtotalCell, fontSize: "0.62em", color: "var(--bc-muted)", fontWeight: 700 }}>IN</td>
-              <td style={{ ...subtotalCell, fontSize: "0.62em", color: "var(--bc-muted)", fontWeight: 700 }}>TOT</td>
+              <td style={{ ...subtotalCell, fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", fontWeight: 700 }}>IN</td>
+              <td style={{ ...subtotalCell, fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", fontWeight: 700 }}>TOT</td>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style={{ ...parCell, textAlign: "left", color: "var(--bc-line)", fontSize: "0.62em", paddingRight: 6 }}>PAR</td>
+              <td style={{ ...parCell, textAlign: "left", color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.62em)", paddingRight: 6 }}>PAR</td>
               {front.map(h => <td key={h.hole} style={parCell}>{h.par ?? "—"}</td>)}
-              <td style={{ ...subtotalCell, color: "var(--bc-muted)", fontSize: "0.7em" }}>{frontPar || "—"}</td>
+              <td style={{ ...subtotalCell, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)" }}>{frontPar || "—"}</td>
               {back.map(h => <td key={h.hole} style={parCell}>{h.par ?? "—"}</td>)}
-              <td style={{ ...subtotalCell, color: "var(--bc-muted)", fontSize: "0.7em" }}>{backPar || "—"}</td>
-              <td style={{ ...subtotalCell, color: "var(--bc-muted)", fontSize: "0.7em" }}>{totalPar || "—"}</td>
+              <td style={{ ...subtotalCell, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)" }}>{backPar || "—"}</td>
+              <td style={{ ...subtotalCell, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)" }}>{totalPar || "—"}</td>
             </tr>
             <tr>
-              <td style={{ ...parCell, textAlign: "left", color: "var(--bc-line)", fontSize: "0.62em", paddingRight: 6 }}>SCORE</td>
+              <td style={{ ...parCell, textAlign: "left", color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.62em)", paddingRight: 6 }}>SCORE</td>
               {front.map(h => <ScoreCell key={h.hole} h={h} />)}
               <td style={{ ...subtotalCell }}>
                 {frontPlayed ? frontStrokes : "—"}
                 {frontPlayed && (
-                  <div style={{ fontSize: "0.62em", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? "var(--bc-green)" : v > 0 ? "var(--bc-red-text)" : "var(--bc-muted)"; })() }}>
+                  <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: (() => { const v = frontStrokes - frontPar; return v < 0 ? "var(--bc-green)" : v > 0 ? "var(--bc-red-text)" : "var(--bc-muted)"; })() }}>
                     {(() => { const v = frontStrokes - frontPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
@@ -162,7 +162,7 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
               <td style={{ ...subtotalCell }}>
                 {backPlayed ? backStrokes : "—"}
                 {backPlayed && (
-                  <div style={{ fontSize: "0.62em", color: (() => { const v = backStrokes - backPar; return v < 0 ? "var(--bc-green)" : v > 0 ? "var(--bc-red-text)" : "var(--bc-muted)"; })() }}>
+                  <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: (() => { const v = backStrokes - backPar; return v < 0 ? "var(--bc-green)" : v > 0 ? "var(--bc-red-text)" : "var(--bc-muted)"; })() }}>
                     {(() => { const v = backStrokes - backPar; return v === 0 ? "E" : v > 0 ? `+${v}` : String(v); })()}
                   </div>
                 )}
@@ -170,7 +170,7 @@ function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
               <td style={{ ...subtotalCell, color: totalVsPar != null && totalVsPar < 0 ? "var(--bc-green)" : totalVsPar != null && totalVsPar > 0 ? "var(--bc-red-text)" : "var(--bc-muted)", fontWeight: 800 }}>
                 {frontPlayed || backPlayed ? totalStrokes : "—"}
                 {totalVsPar != null && (
-                  <div style={{ fontSize: "0.62em" }}>{totalStr}</div>
+                  <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)" }}>{totalStr}</div>
                 )}
               </td>
             </tr>
@@ -222,7 +222,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
 
   const th: React.CSSProperties = {
     background: "var(--bc-panel)", color: "var(--bc-muted)",
-    fontSize: "0.68em", fontWeight: 700,
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     textAlign: "center", whiteSpace: "nowrap",
@@ -288,7 +288,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                         </span>
                       )}
                       {p.movement && p.movement !== "CONSTANT" && (
-                        <span style={{ fontSize: "0.75em", color: p.movement === "UP" ? "var(--bc-red-text)" : "var(--bc-green)", marginRight: 4 }}>
+                        <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: p.movement === "UP" ? "var(--bc-red-text)" : "var(--bc-green)", marginRight: 4 }}>
                           {p.movement === "UP" ? "▲" : "▼"}
                         </span>
                       )}
@@ -306,12 +306,12 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                         {p.player_name}
                       </Link>
                       {isPick && (
-                        <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6, whiteSpace: "nowrap" }}>
+                        <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6, whiteSpace: "nowrap" }}>
                           MY PICK
                         </span>
                       )}
                       {isCut && (
-                        <span style={{ fontSize: "0.7em", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>
+                        <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>
                       )}
                     </td>
                     <td style={{ ...td, color: totalColor, fontWeight: 700 }}>{p.total ?? "E"}</td>
@@ -362,7 +362,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
                       <td colSpan={totalCols} style={{
                         padding: "4px 10px", background: "rgba(224,85,85,0.10)",
                         borderBottom: "1px solid rgba(224,85,85,0.35)", textAlign: "center",
-                        fontSize: "0.65em", color: "#7f3030",
+                        fontSize: "max(var(--fs-min-xs), 0.65em)", color: "#7f3030",
                         letterSpacing: "0.1em", fontWeight: 700, textTransform: "uppercase",
                       }}>
                         — Cut Line —
@@ -376,7 +376,7 @@ export default function InPlayLeaderboard({ players, currentRound, lastUpdate, h
         </table>
       </div>
 
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 6 }}>
         {lastUpdate && `DataGolf last updated: ${lastUpdate}`}
         {canExpand && " · tap any row for the hole-by-hole scorecard"}
       </p>

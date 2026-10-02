@@ -26,7 +26,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
 
   const th: React.CSSProperties = {
     background: "var(--bc-panel)", color: "var(--bc-muted)",
-    fontSize: "0.68em", fontWeight: 700,
+    fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
     textTransform: "uppercase", letterSpacing: "0.05em",
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     textAlign: "center", whiteSpace: "nowrap",
@@ -39,7 +39,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
         <div style={{ display: "flex", gap: 16, marginBottom: 16, flexWrap: "wrap" }}>
           {overPerf.length > 0 && (
             <div style={{ flex: "1 1 240px" }}>
-              <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
                 Outperforming Model
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -48,7 +48,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
                     <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "0.85em" }}>
                       <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
                     </div>
-                    <div style={{ fontSize: "0.72em", marginTop: 3 }}>
+                    <div style={{ fontSize: "max(var(--fs-min), 0.72em)", marginTop: 3 }}>
                       <span style={{ color: "var(--bc-green)" }}>Live #{p.position ?? "?"}</span>
                       <span style={{ color: "var(--bc-muted)", margin: "0 5px" }}>vs</span>
                       <span style={{ color: "var(--bc-muted)" }}>Model #{p.model_rank}</span>
@@ -61,7 +61,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
           )}
           {underPerf.length > 0 && (
             <div style={{ flex: "1 1 240px" }}>
-              <div style={{ fontSize: "0.65em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>
                 Underperforming Model
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -70,7 +70,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
                     <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "0.85em" }}>
                       <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
                     </div>
-                    <div style={{ fontSize: "0.72em", marginTop: 3 }}>
+                    <div style={{ fontSize: "max(var(--fs-min), 0.72em)", marginTop: 3 }}>
                       <span style={{ color: "var(--bc-red-text)" }}>Live #{p.position ?? "?"}</span>
                       <span style={{ color: "var(--bc-muted)", margin: "0 5px" }}>vs</span>
                       <span style={{ color: "var(--bc-muted)" }}>Model #{p.model_rank}</span>
@@ -129,11 +129,11 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
                       {p.player}
                     </Link>
                     {isPick && (
-                      <span style={{ fontSize: "0.58em", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6 }}>
+                      <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", border: "1px solid rgba(0,196,79,0.27)", borderRadius: 3, padding: "1px 4px", marginLeft: 6 }}>
                         MY PICK
                       </span>
                     )}
-                    {isCut && <span style={{ fontSize: "0.7em", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>}
+                    {isCut && <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>}
                   </td>
                   <td style={{ ...td, color: "var(--bc-muted)", fontWeight: 700 }}>{p.position ?? "—"}</td>
                   <td style={{ ...td, color: totalColor, fontWeight: 700 }}>{p.total ?? "—"}</td>
@@ -152,7 +152,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
         </table>
       </div>
 
-      <p style={{ color: "var(--bc-muted)", fontSize: "0.70em", marginTop: 6 }}>
+      <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 6 }}>
         Δ Rank = Live position minus model rank · green = beating prediction · red = below prediction
       </p>
     </div>

@@ -36,7 +36,7 @@ function UsePips({ count }: { count: number | null }) {
           boxShadow: i < filled ? "0 0 4px color-mix(in srgb, var(--bc-green) 27%, transparent)" : "none",
         }} />
       ))}
-      <span style={{ fontSize: "0.65em", color: "var(--bc-muted)", marginLeft: 4 }}>
+      <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", marginLeft: 4 }}>
         {count ?? 0} use{count !== 1 ? "s" : ""} left
       </span>
     </div>
@@ -52,7 +52,7 @@ function StatBox({ label, value, color }: { label: string; value: string; color:
       padding: "8px 10px",
       textAlign: "center",
     }}>
-      <div style={{ fontSize: "0.58em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 3 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 3 }}>
         {label}
       </div>
       <div style={{ fontSize: "1.05em", fontWeight: 800, color }}>{value}</div>
@@ -96,7 +96,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
       {/* Header: rank+tier on left, recommendation on right */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, gap: 6 }}>
         <span style={{
-          fontSize: "0.6em", fontWeight: 800, color,
+          fontSize: "max(var(--fs-min-xs), 0.6em)", fontWeight: 800, color,
           background: `${color}15`, padding: "2px 8px",
           borderRadius: 4, border: `1px solid ${color}30`,
           textTransform: "uppercase", letterSpacing: "0.06em",
@@ -105,7 +105,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
           Pick {rank} · {pick.tier}
         </span>
         <span style={{
-          fontSize: "0.6em", fontWeight: 700, color: "var(--bc-green)",
+          fontSize: "max(var(--fs-min-xs), 0.6em)", fontWeight: 700, color: "var(--bc-green)",
           background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", padding: "2px 7px",
           borderRadius: 4, border: "1px solid color-mix(in srgb, var(--bc-green) 19%, transparent)",
           whiteSpace: "nowrap",
@@ -129,7 +129,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
       </Link>
 
       {/* Sub-info: rank · odds · drift */}
-      <div style={{ fontSize: "0.72em", color: "var(--bc-muted)", display: "flex", gap: 8, alignItems: "center", marginBottom: 14, flexWrap: "wrap" }}>
+      <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)", display: "flex", gap: 8, alignItems: "center", marginBottom: 14, flexWrap: "wrap" }}>
         {pick.world_rank != null && <span>World #{pick.world_rank}</span>}
         {pick.odds_to_win && pick.odds_to_win !== "—" && (
           <span style={{ color: "#3a5070" }}>{pick.odds_to_win} to win</span>
@@ -160,7 +160,7 @@ function PickCard({ pick, rank }: { pick: LineupPick; rank: number }) {
       {/* Narrative */}
       {pick.narrative && (
         <p style={{
-          fontSize: "0.74em", color: "#6a8090",
+          fontSize: "max(var(--fs-min), 0.74em)", color: "#6a8090",
           lineHeight: 1.55, borderTop: "1px solid var(--bc-card)", paddingTop: 10,
           margin: "12px 0 0",
         }}>
@@ -202,14 +202,14 @@ export default function LineupCards({ picks, narrative, generatedAt }: Props) {
           borderLeft: "3px solid var(--bc-green)",
           borderRadius: 10, padding: "14px 18px",
         }}>
-          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
             Weekly Analysis
           </div>
           <p style={{ color: "var(--bc-muted)", fontSize: "0.85em", lineHeight: 1.6, margin: 0 }}>
             {narrative}
           </p>
           {generatedAt && (
-            <p style={{ color: "var(--bc-line)", fontSize: "0.68em", marginTop: 8, marginBottom: 0 }}>
+            <p style={{ color: "var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.68em)", marginTop: 8, marginBottom: 0 }}>
               Generated: {generatedAt.slice(0, 16)}
             </p>
           )}

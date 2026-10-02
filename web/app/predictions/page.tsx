@@ -402,7 +402,7 @@ export default function PredictionsPage() {
                     <span style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "1em" }}>
                       vs DataGolf — {dgMeta.tournament_name}
                     </span>
-                    <span style={{ color: "var(--bc-muted)", fontSize: "0.78em" }}>{dgMeta.players_compared} players matched</span>
+                    <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>{dgMeta.players_compared} players matched</span>
                   </div>
                 )}
                 <ModelComparison players={dgComp} />
@@ -432,7 +432,7 @@ function TourPills({ tour, setTour }: {
     <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
       {([["pga", "PGA Tour"], ["euro", "DP World Tour"]] as const).map(([id, label]) => (
         <button key={id} onClick={() => setTour(id)} style={{
-          cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "0.72em",
+          cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.72em)",
           textTransform: "uppercase", letterSpacing: "0.06em",
           padding: "7px 15px", borderRadius: 4,
           color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
@@ -558,7 +558,7 @@ function EuroWeek() {
           borderRadius: 10, overflow: "hidden", marginBottom: 16 }}>
           <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
             {eventName} — live
-            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.72em)", marginLeft: 8 }}>
               {live!.rounds_available} round{live!.rounds_available === 1 ? "" : "s"} posted · top 10 to par
             </span>
           </div>
@@ -626,7 +626,7 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
             padding: "5px 14px", fontSize: "0.8em", fontWeight: 700, cursor: "pointer",
           }}>R{rn}</button>
         ))}
-        <span style={{ color: "var(--bc-muted)", fontSize: "0.75em", marginLeft: "auto" }}>
+        <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", marginLeft: "auto" }}>
           {rows.length} groups · times local to the course
         </span>
       </div>
@@ -637,13 +637,13 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
               <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", whiteSpace: "nowrap", fontWeight: 700, fontSize: "0.85em", fontVariantNumeric: "tabular-nums", width: 90 }}>
                 {g[0].teetime.slice(11)}
               </td>
-              <td style={{ padding: "7px 10px", borderTop: "1px solid var(--bc-line)", color: "var(--bc-muted)", fontSize: "0.78em", whiteSpace: "nowrap", width: 70 }}>
+              <td style={{ padding: "7px 10px", borderTop: "1px solid var(--bc-line)", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", whiteSpace: "nowrap", width: 70 }}>
                 Hole {g[0].start_hole ?? "—"}
               </td>
               <td style={{ padding: "7px 18px 7px 10px", borderTop: "1px solid var(--bc-line)", fontSize: "0.86em" }}>
                 {g.map(p => p.player_name).join(" · ")}
               </td>
-              <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", textAlign: "right", fontSize: "0.72em", textTransform: "uppercase", letterSpacing: "0.05em", width: 70,
+              <td style={{ padding: "7px 18px", borderTop: "1px solid var(--bc-line)", textAlign: "right", fontSize: "max(var(--fs-min), 0.72em)", textTransform: "uppercase", letterSpacing: "0.05em", width: 70,
                 color: g[0].wave === "early" ? "var(--bc-text)" : "var(--bc-muted)" }}>
                 {g[0].wave}
               </td>
@@ -657,7 +657,7 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
 
 function EuroCourseGuideView({ data }: { data: EuroCourseGuide }) {
   const th: React.CSSProperties = {
-    padding: "7px 14px", borderBottom: "1px solid var(--bc-line)", fontSize: "0.68em",
+    padding: "7px 14px", borderBottom: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min-xs), 0.68em)",
     fontWeight: 700, color: "var(--bc-muted)", textTransform: "uppercase",
     letterSpacing: "0.05em", textAlign: "left", whiteSpace: "nowrap",
   };
@@ -669,7 +669,7 @@ function EuroCourseGuideView({ data }: { data: EuroCourseGuide }) {
       <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
         <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
           {data.course}
-          <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
+          <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.72em)", marginLeft: 8 }}>
             {data.par != null ? `par ${data.par} · ` : ""}{data.years.length} DP World Tour editions in our history
           </span>
         </div>
@@ -700,7 +700,7 @@ function EuroCourseGuideView({ data }: { data: EuroCourseGuide }) {
         <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10, overflow: "hidden" }}>
           <div style={{ padding: "14px 18px 6px", fontWeight: 800 }}>
             Course horses in this field
-            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "0.72em", marginLeft: 8 }}>
+            <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.72em)", marginLeft: 8 }}>
               best career scoring here, minimum 6 rounds
             </span>
           </div>
@@ -767,7 +767,7 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
       marginBottom: 20,
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: text ? 8 : 0 }}>
-        <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em" }}>
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em" }}>
           Weekly Analysis
           {generatedAt && text && <span style={{ marginLeft: 12, color: "var(--bc-line)" }}>{generatedAt}</span>}
         </div>
@@ -776,7 +776,7 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
           disabled={running}
           style={{
             background: "none", border: "1px solid var(--bc-line)", borderRadius: 5,
-            color: running ? "var(--bc-muted)" : "var(--bc-muted)", fontSize: "0.75em",
+            color: running ? "var(--bc-muted)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)",
             padding: "3px 10px", cursor: running ? "default" : "pointer",
           }}
         >
@@ -831,16 +831,16 @@ function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
       flex: "1 1 160px", minWidth: 150,
       position: "relative", overflow: "hidden",
     }}>
-      <div style={{ fontSize: "0.62em", color: `${color}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: `${color}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
         Field Strength
       </div>
       <div style={{ fontSize: "1.1em", fontWeight: 800, color, marginTop: 4 }}>
         {label}
       </div>
-      <div style={{ fontSize: "0.66em", color: "var(--bc-muted)", marginTop: 3 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.66em)", color: "var(--bc-muted)", marginTop: 3 }}>
         {top10} top-10 · {top25} top-25 · {top50} top-50
       </div>
-      <div style={{ fontSize: "0.66em", color: "var(--bc-muted)", marginTop: 1 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.66em)", color: "var(--bc-muted)", marginTop: 1 }}>
         Median rank #{medRank}
       </div>
     </div>
@@ -867,7 +867,7 @@ function GlanceCard({ label, value, sub, accent = "var(--bc-line-hi)", onClick }
       onMouseEnter={onClick ? e => (e.currentTarget.style.borderColor = accent) : undefined}
       onMouseLeave={onClick ? e => (e.currentTarget.style.borderColor = "var(--bc-line)") : undefined}
     >
-      <div style={{ fontSize: "0.62em", color: `${accent}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: `${accent}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
         {label}
       </div>
       <div style={{
@@ -876,8 +876,8 @@ function GlanceCard({ label, value, sub, accent = "var(--bc-line-hi)", onClick }
       }}>
         {value}
       </div>
-      {sub && <div style={{ fontSize: "0.66em", color: "var(--bc-muted)", marginTop: 3 }}>{sub}</div>}
-      {onClick && <div style={{ fontSize: "0.6em", color: `${accent}66`, marginTop: 4 }}>click to view</div>}
+      {sub && <div style={{ fontSize: "max(var(--fs-min-xs), 0.66em)", color: "var(--bc-muted)", marginTop: 3 }}>{sub}</div>}
+      {onClick && <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", color: `${accent}66`, marginTop: 4 }}>click to view</div>}
     </div>
   );
 }
@@ -906,7 +906,7 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
     <div style={{ background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)", borderLeft: "3px solid var(--bc-line-hi)", borderRadius: 8, padding: "14px 18px", marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 8 }}>
         <div>
-          <div style={{ fontSize: "0.62em", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>
+          <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 4 }}>
             Course Intel · {cc.course_name}
             {intel.age_hours != null && (
               <span style={{ marginLeft: 10, color: "var(--bc-line)" }}>as of {intel.age_hours.toFixed(0)}h ago</span>
@@ -940,7 +940,7 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
         <button
           onClick={handleRefresh}
           disabled={refreshing}
-          style={{ background: "none", border: "1px solid var(--bc-line)", borderRadius: 5, color: refreshing ? "var(--bc-muted)" : "var(--bc-muted)", fontSize: "0.75em", padding: "3px 10px", cursor: refreshing ? "default" : "pointer", whiteSpace: "nowrap" }}
+          style={{ background: "none", border: "1px solid var(--bc-line)", borderRadius: 5, color: refreshing ? "var(--bc-muted)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", padding: "3px 10px", cursor: refreshing ? "default" : "pointer", whiteSpace: "nowrap" }}
         >
           {refreshing ? "Running…" : "Refresh Intel"}
         </button>
