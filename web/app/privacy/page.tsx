@@ -31,7 +31,9 @@ export default function PrivacyPage() {
         <><strong>Assistant conversations.</strong>{" "}Questions you ask the AI assistant, its answers, and any
           thumbs-up or thumbs-down rating you give may be saved so we can improve it.</>,
         <><strong>Technical data.</strong>{" "}Your IP address is used briefly, in memory only, to enforce rate
-          limits and usage quotas. Our hosting providers also keep standard request logs.</>,
+          limits and usage quotas. Our hosting providers also keep standard request logs. When something
+          breaks, an error report (what failed, on which page, and your browser type) goes to Sentry,
+          without your name, email, cookies or anything you typed.</>,
         <><strong>On your device.</strong>{" "}The site saves small preferences, such as which tab or tour you
           last viewed, in your browser&rsquo;s local storage. Clerk uses cookies to keep you signed in.</>,
       ]} />
@@ -51,7 +53,8 @@ export default function PrivacyPage() {
           they lock. Results and standings are shared with the group.</>,
         <><strong>Service providers</strong>{" "}that run the site for us, under their own privacy terms:
           Clerk (accounts and sign-in), Neon (database), Vercel and Render (hosting), Anthropic (the AI model
-          that answers assistant questions), and your browser&rsquo;s push service (for reminders).</>,
+          that answers assistant questions), Sentry (error reports), and your browser&rsquo;s push service
+          (for reminders).</>,
         <><strong>Legal requests.</strong>{" "}We&rsquo;ll disclose information if the law requires it.</>,
       ]} />
       <Para>

@@ -154,6 +154,29 @@ try:
 except Exception:
     _DB_AVAILABLE = False
 
+# ── Error monitoring ─────────────────────────────────────────────────────────
+# Sentry turns on only when SENTRY_DSN is set (Render). Privacy-tight:
+# no request bodies (chat questions), no headers/cookies/IPs, and no local
+# variables in stack frames — a frame's locals can hold API keys or a
+# user's prompt. Stack traces + the failing route are what we need.
+if os.environ.get("SENTRY_DSN"):
+    import sentry_sdk
+    _sentry_integrations = []
+    try:  # auto-enabled when anthropic is installed; never record prompts/answers
+        from sentry_sdk.integrations.anthropic import AnthropicIntegration
+        _sentry_integrations.append(AnthropicIntegration(include_prompts=False))
+    except Exception:
+        pass
+    sentry_sdk.init(
+        dsn=os.environ["SENTRY_DSN"],
+        integrations=_sentry_integrations,
+        environment=os.environ.get("RENDER_SERVICE_NAME", "local"),
+        send_default_pii=False,
+        max_request_body_size="never",
+        include_local_variables=False,
+        traces_sample_rate=0.1,
+    )
+
 app = FastAPI(title="Golf Data API", version="1.0.0")
 
 # ── Flood guard ──────────────────────────────────────────────────────────────
