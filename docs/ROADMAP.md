@@ -55,10 +55,10 @@ needed for it.
 
 ## Next (October)
 
-1. **Production checklist, pre-strangers tier** — do before Rick's
-   invite spreads the link: CRON_SECRET (model-sync is callable by
-   anyone today — harmless, idempotent, but open), rate limits on
-   public endpoints, ToS/privacy pages, error monitoring (Sentry).
+1. **Production checklist, pre-strangers tier** — remaining: error
+   monitoring (Sentry; Jack creates the account, then wire web + API).
+   Also confirm admin@playgolfedge.com receives mail (ToS/privacy
+   contact) and decide whether self-serve account deletion is needed.
 2. **Phase 2 step 6 — per-member advice view**: stateless
    get_season_strategy (usage state + season events + purse map in,
    strategy out), "who to spend this week" inside Let It Ride. The last
@@ -83,6 +83,15 @@ needed for it.
 - [x] Review cleanups (2026-10-01/02): live scorecards on demand, one
   event navigator for all games, Awaiting field, honest recap/lineup/
   field-count states, safe hydration, Course Guide numbers.
+- [x] Checklist, first three (2026-10-02): cron routes fail closed on
+  CRON_SECRET (Vercel + Actions), API flood guard + scorecard upstream
+  budget + whitelisted cache-key params, /terms + /privacy + footer.
+- [x] Visual hierarchy pass (2026-10-02): Match Center leads during
+  live events (home card + nav), yellow budget (one primary per
+  screen, quiet tabs/toggles), type floors (13px/12px via max()) and
+  phone-width fixes, verified with the console audit on every page.
+- [x] Tie-for-first headline (Jack, test-first). Follow-up idea: a
+  real test runner that resolves `@/` so tests import lib/ directly.
 
 ## Later
 
