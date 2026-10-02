@@ -11,6 +11,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import Link from "next/link";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import UpdateToast from "@/components/UpdateToast";
@@ -46,6 +47,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main style={{ flex: 1, padding: "24px 24px 48px" }}>
             {children}
           </main>
+          <footer style={{
+            borderTop: "1px solid var(--bc-line)", padding: "14px 24px",
+            display: "flex", flexWrap: "wrap", gap: "6px 18px", justifyContent: "center",
+            color: "var(--bc-muted)", fontSize: "0.82em",
+          }}>
+            <span>Golf Edge · free to play, no money changes hands</span>
+            <Link href="/terms" style={{ color: "inherit" }}>Terms</Link>
+            <Link href="/privacy" style={{ color: "inherit" }}>Privacy</Link>
+          </footer>
           <UpdateToast />
         </body>
       </html>
