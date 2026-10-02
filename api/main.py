@@ -7014,6 +7014,18 @@ class RateRequest(BaseModel):
     tid: str = ""
 
 
+@app.get("/api/debug/sentry-test")
+def sentry_test(request: Request):
+    """Deliberately raise an unhandled error so Sentry's FastAPI hook
+    reports it — proves SENTRY_DSN is wired on Render. Locked to callers
+    holding CHAT_PROXY_SECRET (fails closed when it's unset), so it can't
+    be used to spam the error quota."""
+    secret = os.environ.get("CHAT_PROXY_SECRET", "")
+    if not secret or request.headers.get("x-chat-proxy-secret") != secret:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    raise RuntimeError("Sentry test error from the Golf Edge API (expected)")
+
+
 @app.post("/api/chat/rate")
 def rate_chat(body: RateRequest):
     """Log a thumbs-up or thumbs-down rating for a chat response."""
