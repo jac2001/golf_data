@@ -58,7 +58,21 @@ const money = (v: number) =>
  * from web/ and make them pass.
  */
 export function golferVerdict(g: GolferValue, left: number): Verdict {
-  throw new Error("golferVerdict: not written yet");
+  left = Math.max(left, 0);
+  const now = g.now_ev;
+  const future = [...g.future].sort((a, b) => b.ev - a.ev);
+  const cost = left > 0 && left <= future.length ? future[left - 1].ev : 0;
+  if (left === 0) {
+    return { verdict: "spent", score: -Infinity, reason: `${money(now)} now — spent.` };
+  } else if (now >= cost) {
+    const reason = cost === 0
+      ? `${money(now)} now, nothing better ahead — spend.`
+      : `${money(now)} now beats ${money(cost)} at ${future[left - 1].name} — spend.`;
+    return { verdict: "spend", score: now, reason };
+  } else {
+    const saveFor = future[left - 1];
+    return { verdict: "save", score: now - (cost - now), saveFor, reason: `${money(now)} now vs ${money(cost)} at ${saveFor.name} — save.` };
+  }
 }
 
 /**

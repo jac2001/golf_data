@@ -11,6 +11,7 @@ import assert from "node:assert/strict";
 import { golferVerdict, adviseSlate } from "./advice.ts";
 import type { GolferValue, FutureWindow } from "./advice.ts";
 
+
 const win = (name: string, ev: number): FutureWindow =>
   ({ tid: name, name, start_date: "2026-10-15", purse: ev * 20, ev });
 
@@ -68,4 +69,17 @@ test("slate takes the top scores and skips spent golfers", () => {
   ];
   const { slate } = adviseSlate(field, { "spent star": 0 }, 3, 2);
   assert.deepEqual(slate, ["Ready One", "Ready Two"]);
+});
+
+
+
+test("doesn't reorder the caller's windows", () => {
+  const windows = [win("C", 400_000), win("A", 900_000)];
+  golferVerdict(golfer(500_000, windows), 2);
+  assert.deepEqual(windows.map(w => w.name), ["C", "A"]);
+});
+
+test("nothing ahead → reason doesn't mention $0", () => {
+  const v = golferVerdict(golfer(500_000, []), 3);
+  assert.doesNotMatch(v.reason, /\$0/);
 });
