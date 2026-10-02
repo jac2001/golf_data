@@ -33,12 +33,21 @@ export function isMatch(x: unknown): x is Match {
   return !!m && typeof m === "object" && Array.isArray(m.slates);
 }
 
-/** The one-line answer to "where do I stand?" for a locked slate. */
 export function slateHeadline(s: Slate): string {
   const me = s.lines.find(l => l.user_id === s.me_id);
   if (!me) return "You didn't play this one.";
   if (me.rank === 1 && s.lines.filter(l => l.rank === 1).length === 1) {
     return s.status === "final" ? "You won the week." : "You're leading.";
+  }
+  // Tied for first: name who you're sharing it with.
+  if (me.rank === 1) {
+    const others = s.lines
+      .filter(l => l.rank === 1 && l.user_id !== s.me_id)
+      .map(l => l.user_name)
+      .join(" & ");
+    return s.status === "final"
+      ? `You shared the week with ${others}.`
+      : `You're tied for the lead with ${others}.`;
   }
   if (s.rival && me.rank > 1) return `You're ${ordinal(me.rank)}. ${s.rival.user_name} leads you by ${money(s.gap)}.`;
   return `You're ${ordinal(me.rank)}.`;
