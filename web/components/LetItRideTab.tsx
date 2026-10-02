@@ -55,6 +55,25 @@ const rowBtn = (enabled: boolean): React.CSSProperties => ({
   border: `1px solid ${enabled ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
 });
 
+type Advice = { verdict: "spend" | "save" | "spent"; reason: string; save_for?: string };
+
+/** Spend / Save tag on a golfer; tap for the one-line why. Quiet colors:
+ *  it's a hint, not a call to action (no yellow). */
+function AdviceTag({ a, open, onToggle }: { a?: Advice; open: boolean; onToggle: () => void }) {
+  if (!a || a.verdict === "spent") return null;
+  const save = a.verdict === "save";
+  return (
+    <button onClick={onToggle} aria-expanded={open} title={a.reason} style={{
+      cursor: "pointer", fontFamily: "inherit", background: "transparent", padding: "1px 6px", borderRadius: 3,
+      fontSize: "max(var(--fs-min-xs), 0.72em)", fontWeight: 800, letterSpacing: "0.04em", textTransform: "uppercase",
+      color: save ? "var(--bc-orange)" : "var(--bc-green)",
+      border: `1px solid color-mix(in srgb, ${save ? "var(--bc-orange)" : "var(--bc-green)"} 45%, transparent)`,
+    }}>
+      {save ? `Save${a.save_for ? ` → ${a.save_for.replace(/ (Championship|Invitational|Tournament|presented by.*)$/i, "")}` : ""}` : "Spend"}
+    </button>
+  );
+}
+
 /** Server messages arrive as "422: You've used…" — show the sentence. */
 async function call(url: string, init?: RequestInit): Promise<Record<string, unknown>> {
   const res = await fetch(url, init);
@@ -285,6 +304,20 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
   const [q, setQ] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState("");
+  // Spend/save advice for MY uses (private, pre-lock only), keyed by nameKey.
+  const [advice, setAdvice] = useState<Record<string, Advice>>({});
+  const [why, setWhy] = useState("");
+
+  useEffect(() => {
+    if (ev.locked) return;
+    call(`/api/leagues/${league.id}/advice?tid=${ev.tournament_id}`)
+      .then(d => {
+        const out: Record<string, Advice> = {};
+        for (const [name, a] of Object.entries((d.verdicts ?? {}) as Record<string, Advice>)) out[nameKey(name)] = a;
+        setAdvice(out);
+      })
+      .catch(() => setAdvice({}));  // advice is a bonus; the slate works without it
+  }, [league.id, ev.tournament_id, ev.locked]);
 
   const load = useCallback(() => {
     call(`/api/leagues/${league.id}/picks?tid=${ev.tournament_id}`)
@@ -361,13 +394,16 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
         {Array.from({ length: league.players_per_week }).map((_, i) => {
           const p = mine[i];
           return (
-            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
+            <div key={i}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
               background: "var(--bc-panel)", border: "1px dashed var(--bc-line)", borderRadius: 6, padding: "8px 12px" }}>
               <span style={{ fontWeight: p ? 700 : 400, color: p ? "var(--bc-text)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)" }}>
                 {p ? p.player_name : `Slot ${i + 1} — open`}
               </span>
               {p && (
                 <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  {!locked && <AdviceTag a={advice[nameKey(p.player_name)]} open={why === p.player_name}
+                    onToggle={() => setWhy(w => w === p.player_name ? "" : p.player_name)} />}
                   <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)" }}>
                     use {usedOf(p.player_name)} of {league.uses_per_player}
                   </span>
@@ -378,6 +414,12 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
                   )}
                 </span>
               )}
+            </div>
+            {p && why === p.player_name && advice[nameKey(p.player_name)] && (
+              <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", padding: "4px 12px 0" }}>
+                {advice[nameKey(p.player_name)].reason}
+              </div>
+            )}
             </div>
           );
         })}
@@ -396,11 +438,13 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
               const used = usedOf(f.name);
               const spent = used >= league.uses_per_player;
               return (
-                <div key={f.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
-                  padding: "6px 10px", borderBottom: "1px solid var(--bc-line)", opacity: spent ? 0.45 : 1 }}>
-                  <span style={{ fontSize: "max(var(--fs-min), 0.86em)" }}>
+                <div key={f.name} style={{ padding: "6px 10px", borderBottom: "1px solid var(--bc-line)", opacity: spent ? 0.45 : 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: "max(var(--fs-min), 0.86em)", display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "2px 8px" }}>
                     {f.name}
-                    {f.win != null && <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginLeft: 8 }}>{(f.win * 100).toFixed(1)}% to win</span>}
+                    {f.win != null && <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>{(f.win * 100).toFixed(1)}% to win</span>}
+                    {!spent && <AdviceTag a={advice[nameKey(f.name)]} open={why === f.name}
+                      onToggle={() => setWhy(w => w === f.name ? "" : f.name)} />}
                   </span>
                   <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
                     {/* Budget meter: one pip per use, filled = spent. */}
@@ -414,6 +458,12 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
                       {spent ? "Spent" : "Pick"}
                     </button>
                   </span>
+                </div>
+                {why === f.name && advice[nameKey(f.name)] && (
+                  <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginTop: 4 }}>
+                    {advice[nameKey(f.name)].reason}
+                  </div>
+                )}
                 </div>
               );
             })}

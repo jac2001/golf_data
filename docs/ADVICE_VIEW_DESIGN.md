@@ -154,3 +154,11 @@ adviseSlate once its tests pass.
 - DPWT horizon is short (the euro schedule only lists events DG has
   published, ~2 weeks out), so DPWT advice leans "spend" until the
   schedule file covers more of the season.
+- Added after the first real-data run (Bank of Utah): future windows
+  are maybes — × p_plays (0.9 qualified restricted / 0.6 open) ×
+  0.98^weeks_away. Before: 10 of 80 "save" with 3 uses, the week's top
+  values all saving for Feb 2027 events. After: 5 of 80; top values
+  spend, McNealy saves for THE PLAYERS. With 1 use left: 13 saves.
+- Step 3 (`/api/leagues/[id]/advice`) and step 4 (Spend / Save → event
+  tags, tap for the reason) shipped the same day. Pre-lock only, own
+  picks only; this slate's picks don't count against uses left.

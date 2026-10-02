@@ -19,6 +19,8 @@ So future EV starts from THIS week's expected prize money and adjusts:
               × (S_now / S_future) ** k                tougher field, lower odds
               × course_mult_future / course_mult_now   venue fit (PGA)
               × qual_mult                              likely not in a restricted field
+              × p_plays                                he may skip the event
+              × DECAY ** weeks_away                    the further out, the less we know
 
 S = field-strength index by event type. k = 0.6 for the world top 10
 (elite odds hold up better against strong fields) and 1.0 otherwise.
@@ -51,6 +53,12 @@ K_ELITE, K_REST = 0.6, 1.0
 NOT_QUALIFIED_MULT = 0.15   # premium event, not in last year's field
 QUALIFY_RANK = 60           # restricted event with no history (new event): world top 60 assumed in
 HORIZON = 15
+# A future window is a maybe, not a promise. Without these, every decent
+# golfer "saves" for an event four months out (found on Bank of Utah's
+# real values, 2026-10-02). v1 judgment calls — calibrate on settled weeks.
+P_PLAYS_RESTRICTED = 0.90   # qualified for a major/signature/playoff: almost always enters
+P_PLAYS_OPEN = 0.60         # open events: a typical player enters ~60% of them
+DECAY_PER_WEEK = 0.98       # form/health uncertainty, compounding per week out
 
 
 def _strength(event_type: str) -> float:
@@ -125,6 +133,10 @@ def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> d
     else:
         tid_to_course, fit_map, hist_fields = {}, {}, {}
 
+    start_now = pd.to_datetime(ev["start_date"])
+    for h in horizon:
+        h["weeks_away"] = max(0.0, (pd.to_datetime(h["start_date"]) - start_now).days / 7)
+
     out = []
     for p in players:
         name = str(p.get("player_name", "")).strip()
@@ -142,11 +154,16 @@ def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> d
         for h in horizon:
             mult = (h["purse"] / purse_now) * (s_now / _strength(h["type"])) ** k
             mult *= _course_mult(key, h["tid"], tid_to_course, fit_map) / cm_now
-            if tour == "pga" and _is_restricted(h["type"], h["purse"]):
+            restricted = _is_restricted(h["type"], h["purse"])
+            p_plays = P_PLAYS_OPEN
+            if tour == "pga" and restricted:
                 field = hist_fields.get(_normalize_tournament_name(h["name"]), set())
                 qualified = (key in field) if field else (rank is not None and rank <= QUALIFY_RANK)
-                if not qualified:
+                if qualified:
+                    p_plays = P_PLAYS_RESTRICTED
+                else:
                     mult *= NOT_QUALIFIED_MULT
+            mult *= p_plays * DECAY_PER_WEEK ** h["weeks_away"]
             future.append({"tid": h["tid"], "name": h["name"], "start_date": h["start_date"],
                            "purse": h["purse"], "ev": round(now_ev * mult)})
         # No key here: the site keys uses with its own nameKey (keeps accents
@@ -158,5 +175,6 @@ def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> d
     return {
         "tournament_id": tid, "tour": tour,
         "event": {"name": str(ev["tournament_name"]), "purse": purse_now, "type": str(ev["tournament_type"])},
-        "horizon": horizon, "golfers": out[:limit],
+        "horizon": [{k: v for k, v in h.items() if k != "weeks_away"} for h in horizon],
+        "golfers": out[:limit],
     }
