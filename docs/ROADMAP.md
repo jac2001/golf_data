@@ -39,12 +39,13 @@ needed for it.
       snapshot leaderboard with age + round coverage + pre-event win%.
 - [ ] **Jack + Rick play the week** (weekly picks minimum; fades and
       a school make the boards interesting).
-- [ ] **First real Sunday recap** renders, gets shared, recap push
-      fires Monday. Fix whatever the first real settle exposes.
-- [ ] **France settles** Sunday (euro --results Monday cron) — first
-      graded euro week for the Round Game + weekly picks; grades the
-      euro model's debut (form pick Gerard vs class picks Åberg/
-      Hovland vs course horse Winther).
+- [ ] **First real Sunday recap** — Bank of Utah + Dunhill settle Sun
+      Oct 4. First real run of the recap card, weekly stars, and banked
+      vs live standings. Check Monday morning; fix what it exposes.
+- [x] **France settled** (2026-09-28, manual dispatch after GitHub's
+      cron ran hours late). Fitzpatrick won — model #7; 6 of its top 20
+      finished top 10 (~1.4 random). Market benchmark lost to mid-event
+      odds overwrites; predict_euro now freezes a pre-event copy.
 - [ ] Cross-group 403 check with Rick's session (60 seconds, closes
       the last untested auth path).
 - [x] **Timezone-aware locks** (fixed 2026-09-25 — was a trust bug in
@@ -54,59 +55,34 @@ needed for it.
 
 ## Next (October)
 
-1. **Euro model, built now** (rescheduled 2026-09-23 — Jack: "golf is
-   always happening"; the DPWT plays weekly all fall, so an early
-   model gets live DG-benchmark reps every week instead of launching
-   cold in January). Data is banked; sequence: training table →
-   train + walk-forward → live weekly benchmark vs DG → earns
-   `source: "model"` for E-events. Building our own model on DG
-   features matches existing live PGA practice; the licensing letter's
-   clarifications remain pending but gate only DG-prediction DISPLAY.
-2. **Phase 2 — Let It Ride, built now, shaken down this fall** (design in `docs/PHASE2_DESIGN.md`, 2026-09-28 — group mode, game first, 3/3, Fall Series opens Oct 8): the
-   customizable-season design means an October–December "Fall Series"
-   league (PGA fall + DPWT) is the format's beta season before the
-   family league's 2027 stakes. Design after the euro training table
-   is underway.
-3. **DataGolf licensing resolution.** Reply timing unknown; follow up
-   after 2 weeks. It gates: euro DG-prediction display
-   (`SHOW_DG_EURO_PREDS`) and any public growth — NOT our own model
-   work. The hold on their displays stays until written permission.
-2. **Season formats that need weeks to accumulate**: watch pick
+1. **Production checklist, pre-strangers tier** — do before Rick's
+   invite spreads the link: CRON_SECRET (model-sync is callable by
+   anyone today — harmless, idempotent, but open), rate limits on
+   public endpoints, ToS/privacy pages, error monitoring (Sentry).
+2. **Phase 2 step 6 — per-member advice view**: stateless
+   get_season_strategy (usage state + season events + purse map in,
+   strategy out), "who to spend this week" inside Let It Ride. The last
+   unbuilt Phase 2 piece; it's what keeps the optimizer from orphaning.
+3. **Licensing follow-ups**: DataGolf (two-week nudge due ~Oct 6;
+   gates euro DG displays + public growth, not our own models) and the
+   PGA Tour data team's three questions (reply drafted 2026-09-28).
+4. **Season formats that need weeks to accumulate**: watch pick
    diversity (do real groups converge on chalk?) before inventing
    mechanics; College/Fade season boards earn their first real rows.
-3. **Production checklist, pre-strangers tier** (from the compete
-   assessment): ToS/privacy pages, Sentry, rate limiting on public
-   endpoints, CRON_SECRET set, Render league endpoints behind a
-   shared secret if anyone outside the family gets a link.
-4. **Timezone-aware locks** (found 2026-09-23 during the model's euro
-   debut, which missed France's weekly window by ~20 min of deploy
-   latency): locks evaluate at midnight UTC — right-ish for euro
-   events (~2am CET), but PGA picks quietly lock ~7-8pm ET the
-   evening BEFORE. Fix: lock at event-local midnight (store tz per
-   event, or lock at a fixed offset from first tee time).
-5. **Onboarding polish** driven by the next playtest: first-run
-   pointers on the six tabs; invite-flow friction.
+5. **Onboarding polish** driven by Rick's first session: first-run
+   pointers, invite-flow friction.
 
-6. [x] **Weekly 3 retired into Let It Ride** (done 2026-09-30, Jack's
-   call — earlier than planned). Let It Ride is the pick-3 game; each
-   settled slate crowns a weekly winner with a star (ties share, live
-   slates crown nobody). Recap, receipts, reminders, feed, and the How
-   to Play copy all read the league tables; the model's Weekly trio and
-   the two Weekly routes are gone. No history migrated (one week of
-   picks existed). Trade-off accepted: no zero-setup game — a group
-   needs a season to play.
-
-7. [x] **Group Match Center + Sunday recap** (2026-10-01). /match answers
-   "what needs to happen for me to beat my friends?" per tour's current
-   event: position, closest rival and gap, the one-spot move that flips
-   it, the group vs the model, College school race with its two counting
-   alumni; change alerts since your last look; projected vs final always
-   labeled. Live money now comes from DataGolf's in-play board for BOTH
-   tours (no PGA leaderboard file is written during cloud weekends).
-   Recap card: final standings, named model-beaters, the golfer who
-   decided it (not shared with the runner-up), rematch link. Decisions:
-   College = new school each week; v1 covers Let It Ride + College.
-   First real recap: Bank of Utah, Sunday night.
+### Done from this list (moved up and shipped)
+- [x] Euro model (2026-09-23) — serving `source: "model"`.
+- [x] Phase 2 MVP (2026-09-30) — seasons, picks + per-member lock,
+  standings with stars and banked/live split, model member with
+  capacity-aware saving, per-tour budgets, settings editor, navigator.
+- [x] Timezone-aware locks (event + Round Game, DST-safe lib/lockTime).
+- [x] Weekly 3 retired into Let It Ride (2026-09-30).
+- [x] Group Match Center + Sunday recap upgrade (2026-10-01).
+- [x] Review cleanups (2026-10-01/02): live scorecards on demand, one
+  event navigator for all games, Awaiting field, honest recap/lineup/
+  field-count states, safe hydration, Course Guide numbers.
 
 ## Later
 
