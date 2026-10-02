@@ -7903,7 +7903,14 @@ def refresh_intel(top_n: int = 20) -> dict:
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok", "timestamp": datetime.utcnow().isoformat() + "Z"}
+    # sentry: whether error monitoring actually initialized (DSN present and
+    # the SDK installed) — a yes/no, never the DSN itself.
+    try:
+        import sentry_sdk
+        sentry_on = sentry_sdk.get_client().is_active()
+    except Exception:
+        sentry_on = False
+    return {"status": "ok", "sentry": sentry_on, "timestamp": datetime.utcnow().isoformat() + "Z"}
 
 
  # ── Bet Slip ──────────────────────────────────────────────────────────────────
