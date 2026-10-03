@@ -162,3 +162,19 @@ adviseSlate once its tests pass.
 - Step 3 (`/api/leagues/[id]/advice`) and step 4 (Spend / Save → event
   tags, tap for the reason) shipped the same day. Pre-lock only, own
   picks only; this slate's picks don't count against uses left.
+
+## Calibration (Jack, 2026-10-03)
+
+`notebooks/analysis/advice_calibration.ipynb` on 23,445 golfer × later-event
+pairs (2026). Findings that replaced the v1 guesses:
+- Play rates depend on world rank × event kind — one constant can't fit:
+  top-10 play 96% of restricted events but 18% of open ones; rank 61–120
+  play 37% / 67%; 120+ play 6% / 54%. Now `PLAY_RATE` (it also absorbs the
+  old ×0.15 not-qualified discount).
+- Decay: median ratio of the model's later EV to our extrapolation stays
+  ~1.0 from 1 to 17 weeks; log fit through the origin → 0.9992/week. Set
+  0.995 (small hedge). Was 0.98.
+- Effect on Bank of Utah: fringe golfers (#85–#123) stop "saving" for
+  Sentry/Genesis; top-60 golfers save for Signature events they play.
+- Known gap: winners-only events (The Sentry) are rated like any
+  restricted event. Fix: a winners-only flag + last season's winners list.

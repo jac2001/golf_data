@@ -1,6 +1,6 @@
 """
 Build the dataset for calibrating the advice constants
-(scripts/predictions/advice_values.py: P_PLAYS_*, DECAY_PER_WEEK).
+(scripts/predictions/advice_values.py: PLAY_RATE, DECAY_PER_WEEK).
 
 One row per (golfer, event A, later event B):
   - A is an event with a Tuesday prediction archive (the "now" week)

@@ -18,8 +18,8 @@ So future EV starts from THIS week's expected prize money and adjusts:
               × purse_future / purse_now               bigger pot, same odds
               × (S_now / S_future) ** k                tougher field, lower odds
               × course_mult_future / course_mult_now   venue fit (PGA)
-              × qual_mult                              likely not in a restricted field
-              × p_plays                                he may skip the event
+              × play_rate(rank, restricted)            measured: how often a golfer
+                                                       like him plays an event like this
               × DECAY ** weeks_away                    the further out, the less we know
 
 S = field-strength index by event type. k = 0.6 for the world top 10
@@ -50,15 +50,32 @@ FIELD_STRENGTH = {
 }
 ELITE_RANK = 10
 K_ELITE, K_REST = 0.6, 1.0
-NOT_QUALIFIED_MULT = 0.15   # premium event, not in last year's field
-QUALIFY_RANK = 60           # restricted event with no history (new event): world top 60 assumed in
 HORIZON = 15
-# A future window is a maybe, not a promise. Without these, every decent
-# golfer "saves" for an event four months out (found on Bank of Utah's
-# real values, 2026-10-02). v1 judgment calls — calibrate on settled weeks.
-P_PLAYS_RESTRICTED = 0.90   # qualified for a major/signature/playoff: almost always enters
-P_PLAYS_OPEN = 0.60         # open events: a typical player enters ~60% of them
-DECAY_PER_WEEK = 0.98       # form/health uncertainty, compounding per week out
+# A future window is a maybe, not a promise. Calibrated 2026-10-03 by Jack
+# (notebooks/analysis/advice_calibration.ipynb, 23,445 golfer × later-event
+# pairs from the 2026 season): how often a golfer of this world rank
+# actually teed it up at a later event of this kind. The restricted column
+# already includes "couldn't get in", so it replaces the old qualification
+# discount. Replaces the v1 guesses 0.6 open / 0.9 restricted.
+#   (max world rank, restricted, open)
+PLAY_RATE = [
+    (10,   0.96, 0.18),   # n = 609 / 584
+    (30,   0.87, 0.26),   # n = 1,291 / 1,205
+    (60,   0.75, 0.40),   # n = 2,004 / 1,868
+    (120,  0.37, 0.67),   # n = 3,172 / 2,793
+    (None, 0.06, 0.54),   # n = 5,321 / 4,598  (rank > 120 or unknown)
+]
+# Measured decay is 0.9992/week (the model's view of a golfer barely moves
+# over 17 weeks); 0.995 keeps a small hedge for injuries and slumps the
+# model can't see coming. Was 0.98.
+DECAY_PER_WEEK = 0.995
+
+
+def _play_rate(rank, restricted: bool) -> float:
+    for cap, r_rate, o_rate in PLAY_RATE:
+        if cap is None or (rank is not None and rank <= cap):
+            return r_rate if restricted else o_rate
+    return PLAY_RATE[-1][1 if restricted else 2]
 
 
 def _strength(event_type: str) -> float:
@@ -154,16 +171,8 @@ def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> d
         for h in horizon:
             mult = (h["purse"] / purse_now) * (s_now / _strength(h["type"])) ** k
             mult *= _course_mult(key, h["tid"], tid_to_course, fit_map) / cm_now
-            restricted = _is_restricted(h["type"], h["purse"])
-            p_plays = P_PLAYS_OPEN
-            if tour == "pga" and restricted:
-                field = hist_fields.get(_normalize_tournament_name(h["name"]), set())
-                qualified = (key in field) if field else (rank is not None and rank <= QUALIFY_RANK)
-                if qualified:
-                    p_plays = P_PLAYS_RESTRICTED
-                else:
-                    mult *= NOT_QUALIFIED_MULT
-            mult *= p_plays * DECAY_PER_WEEK ** h["weeks_away"]
+            restricted = tour == "pga" and _is_restricted(h["type"], h["purse"])
+            mult *= _play_rate(rank, restricted) * DECAY_PER_WEEK ** h["weeks_away"]
             future.append({"tid": h["tid"], "name": h["name"], "start_date": h["start_date"],
                            "purse": h["purse"], "ev": round(now_ev * mult)})
         # No key here: the site keys uses with its own nameKey (keeps accents
