@@ -69,6 +69,12 @@ needed for it.
    mechanics; College/Fade season boards earn their first real rows.
 5. **Onboarding polish** driven by Rick's first session: first-run
    pointers, invite-flow friction.
+6. **Ongoing as fields change:** add badge colors for new schools
+   (`web/lib/schoolBadges.ts`; unknowns fall back to a neutral badge).
+7. **Candidates, not yet sequenced:** calibrate the advice constants
+   (p_plays 0.6/0.9, 0.98/week decay) against the season's pred_R
+   archives + results; full DPWT schedule so euro advice can "save";
+   self-serve account deletion.
 
 ### Done from this list (moved up and shipped)
 - [x] Euro model (2026-09-23) — serving `source: "model"`.
@@ -95,6 +101,14 @@ needed for it.
 - [x] Advice view steps 1-4 (2026-10-02): Jack's golferVerdict (10
   tests, `npm test` imports lib/ directly), /api/advice/values,
   per-member route, Spend / Save tags in the pick list.
+- [x] Match Center cards, round 2 (2026-10-02/03, from external review):
+  three layers (am I winning / who am I watching / details on request)
+  for Let It Ride AND College; "Estimated payouts if the tournament
+  ended now" replaces bare "projected"; golfer rows with to-par and
+  round progress; "Scores updated <viewer's time>" (DG reports
+  course-local time, converted to UTC server-side); school monogram
+  badges (colors, deliberately no logos); fixed degree-suffixed schools
+  splitting alumni (FSU Finance, OSU Education, UCLA PoliSci).
 - [x] Tie-for-first headline (Jack, test-first). Follow-up idea: a
   real test runner that resolves `@/` so tests import lib/ directly.
 
