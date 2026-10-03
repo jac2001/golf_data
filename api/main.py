@@ -5084,7 +5084,11 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
                                 "position": str(r.get("position", "")),
                                 "up_one": float(up.loc[i]),
                                 "thru": str(r.get("thru", "") or ""),
-                                "today": _safe(pd.to_numeric(r.get("today"), errors="coerce"))}
+                                "today": _safe(pd.to_numeric(r.get("today"), errors="coerce")),
+                                # Tournament score to par + current round, for the
+                                # match center's golfer rows (DG: current_score/round).
+                                "to_par": _safe(pd.to_numeric(r.get("current_score", r.get("total")), errors="coerce")),
+                                "round": _safe(pd.to_numeric(r.get("round"), errors="coerce"))}
                 tour_key = "euro" if tid.startswith("E") else "pga"
                 updated = _dg_live_cache.get(tour_key, {}).get("updated", "") if live_source == "live" else ""
                 return {"tournament_id": tid, "settled": False, "projected": True,
