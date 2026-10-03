@@ -236,9 +236,7 @@ export default function SettingsPage() {
           username), your picks, fades, round picks, bets and tails, group
           memberships, notification devices, and the reminder switches above.
           Picks stay hidden from other players until each event locks.
-          Nothing is sold or shared; the site keeps no ad trackers. Want
-          something deleted? Leave your groups and remove devices here, or
-          ask Jack to purge your rows.
+          Nothing is sold or shared; the site keeps no ad trackers.
         </p>
         <p style={{ margin: "10px 0 0", fontSize: "max(var(--fs-min), 0.78em)" }}>
           <a href="/history/league" style={{ color: "var(--bc-muted)" }}>
@@ -246,6 +244,57 @@ export default function SettingsPage() {
           </a>
         </p>
       </div>
+
+      <DeleteAccount onDeleted={() => clerk.signOut({ redirectUrl: "/" })} />
+    </div>
+  );
+}
+
+/** Self-serve account deletion. Two steps (reveal, then type DELETE) so
+ *  it can't happen by accident; the server does the work in one go. */
+function DeleteAccount({ onDeleted }: { onDeleted: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  async function go() {
+    setBusy(true); setErr("");
+    try {
+      const res = await fetch("/api/account", { method: "DELETE", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: typed.trim() }) });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.error ?? `Request failed (${res.status})`);
+      onDeleted();
+    } catch (e) { setErr((e as Error).message); setBusy(false); }
+  }
+  return (
+    <div style={{ ...card, borderColor: "color-mix(in srgb, var(--bc-red) 45%, var(--bc-line))" }}>
+      <div style={{ fontWeight: 800, marginBottom: 6 }}>Delete account</div>
+      <p style={{ margin: "0 0 10px", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)", lineHeight: 1.6 }}>
+        Deletes your sign-in, notification devices, preferences, bet log, and
+        picks in events that haven&apos;t locked. Picks from weeks already played
+        stay in your groups&apos; history as &ldquo;Former player&rdquo; so their
+        standings still add up. Groups you own pass to the longest-standing
+        member. This can&apos;t be undone.
+      </p>
+      {!open ? (
+        <button onClick={() => setOpen(true)} style={{ ...btnQuiet, color: "var(--bc-red-text)",
+          borderColor: "color-mix(in srgb, var(--bc-red) 50%, transparent)" }}>Delete my account…</button>
+      ) : (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+          <input value={typed} onChange={e => setTyped(e.target.value)} placeholder="Type DELETE"
+            aria-label="Type DELETE to confirm" autoComplete="off" style={{
+              background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
+              color: "var(--bc-text)", padding: "8px 12px", fontFamily: "inherit", fontSize: "max(var(--fs-min), 0.9em)" }} />
+          <button onClick={go} disabled={busy || typed.trim() !== "DELETE"} style={{ ...btnQuiet,
+            background: typed.trim() === "DELETE" ? "var(--bc-red)" : "transparent",
+            color: typed.trim() === "DELETE" ? "#fff" : "var(--bc-muted)", borderColor: "var(--bc-red)" }}>
+            {busy ? "Deleting…" : "Delete forever"}
+          </button>
+          <button onClick={() => { setOpen(false); setTyped(""); }} style={btnQuiet}>Cancel</button>
+        </div>
+      )}
+      {err && <p style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.85em)", margin: "8px 0 0" }}>{err}</p>}
     </div>
   );
 }

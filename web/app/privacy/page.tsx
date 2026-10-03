@@ -73,9 +73,10 @@ export default function PrivacyPage() {
       <List items={[
         "Turn reminders off at any time in Settings or in your browser's notification settings.",
         "Update your name, email address or profile image in your account settings.",
-        <>Ask us for a copy of your data, or to delete your account and game data, by emailing{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Picks that were part of a group&rsquo;s
-          finished season may be kept in an anonymized form so the group&rsquo;s results still add up.</>,
+        <>Delete your account any time in Settings → Delete account. Picks from weeks already played
+          stay in your groups&rsquo; history as &ldquo;Former player&rdquo; so their results still add up;
+          everything else tied to you is removed. For a copy of your data, email{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</>,
       ]} />
 
       <H>Children</H>
