@@ -55,26 +55,25 @@ needed for it.
 
 ## Next (October)
 
-1. **Pre-strangers loose ends** — confirm admin@playgolfedge.com
-   receives mail (ToS/privacy contact); decide whether self-serve
-   account deletion is needed.
-2. **Advice view, step 5 (Mon Oct 5, after the first real recap):**
+1. **Advice view, step 5 (Mon Oct 5, after the first real recap):**
    model-sync switches to adviseSlate; model reasons in Match Center
    after lock. Steps 1-4 shipped 2026-10-02 (docs/ADVICE_VIEW_DESIGN.md).
-3. **Licensing follow-ups**: DataGolf (two-week nudge due ~Oct 6;
+2. **Licensing follow-ups**: DataGolf (two-week nudge due ~Oct 6;
    gates euro DG displays + public growth, not our own models) and the
    PGA Tour data team's three questions (reply drafted 2026-09-28).
-4. **Season formats that need weeks to accumulate**: watch pick
+3. **Season formats that need weeks to accumulate**: watch pick
    diversity (do real groups converge on chalk?) before inventing
    mechanics; College/Fade season boards earn their first real rows.
-5. **Onboarding polish** driven by Rick's first session: first-run
+4. **Onboarding polish** driven by Rick's first session: first-run
    pointers, invite-flow friction.
-6. **Ongoing as fields change:** add badge colors for new schools
+5. **Ongoing as fields change:** add badge colors for new schools
    (`web/lib/schoolBadges.ts`; unknowns fall back to a neutral badge).
-7. **Candidates, not yet sequenced:** calibrate the advice constants
-   (p_plays 0.6/0.9, 0.98/week decay) against the season's pred_R
-   archives + results; full DPWT schedule so euro advice can "save";
-   self-serve account deletion.
+6. **Candidates, not yet sequenced:** winners-only flag for The Sentry
+   (advice rates it like any restricted event); full DPWT schedule so
+   euro advice can "save"; Clerk dashboard: turn off Clerk's own
+   "delete account" so deletion always runs our cleanup.
+7. **PGA Tour meeting (Tue Oct 6):** data-team questions, what we use
+   (on-demand scorecards, weather, power rankings), what we'd ask for.
 
 ### Done from this list (moved up and shipped)
 - [x] Euro model (2026-09-23) — serving `source: "model"`.
@@ -109,6 +108,12 @@ needed for it.
   course-local time, converted to UTC server-side); school monogram
   badges (colors, deliberately no logos); fixed degree-suffixed schools
   splitting alumni (FSU Finance, OSU Education, UCLA PoliSci).
+- [x] Pre-strangers loose ends (2026-10-03): self-serve account
+  deletion (Settings; purge verified on Neon with throwaway users),
+  admin@playgolfedge.com forwarding via ImprovMX (MX + SPF on Vercel
+  DNS, delivery confirmed in ImprovMX logs).
+- [x] Advice constants calibrated (Jack, 2026-10-03): play rate by world
+  rank × event kind, decay 0.995 (notebooks/analysis/advice_calibration).
 - [x] Tie-for-first headline (Jack, test-first). Follow-up idea: a
   real test runner that resolves `@/` so tests import lib/ directly.
 
