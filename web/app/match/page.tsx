@@ -15,7 +15,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
 import { displaySurnames } from "@/lib/names";
-import { College, Group, Match, Slate, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
+import { College, CollegeGolfer, Group, Match, Slate, collegeHeadline, collegeTotals, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
 
 const last = (n: string) => n.includes(",") ? n.split(",")[0].trim() : (n.trim().split(/\s+/).pop() ?? n);
 const card: React.CSSProperties = {
@@ -314,42 +314,81 @@ function tag(bg: string, fg: string): React.CSSProperties {
 
 function CollegeCard({ c }: { c: NonNullable<College> }) {
   const me = c.lines.find(l => l.user_id === c.me_id);
+  const solo = c.lines.length <= 2 && c.lines.some(l => l.user_id === "model");
+  const label: React.CSSProperties = { fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)",
+    textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 };
+  const golferRow = (g: CollegeGolfer, dim = false) => (
+    <div key={g.name} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "6px 0",
+      borderBottom: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min), 0.9em)", opacity: dim ? 0.75 : 1 }}>
+      <span style={{ width: 40, flexShrink: 0, fontWeight: 800, color: "var(--bc-muted)" }}>{g.position}</span>
+      <span style={{ minWidth: 0 }}>
+        <span style={{ fontWeight: 700 }}>{g.name}</span>
+        {golferProgress(g, c.status) && (
+          <span style={{ display: "block", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>{golferProgress(g, c.status)}</span>
+        )}
+      </span>
+      <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(g.earnings)}</span>
+    </div>
+  );
+  const race = (
+    <div style={{ marginTop: 14 }}>
+      <div style={label}>School race</div>
+      {c.lines.map(l => (
+        <div key={l.user_id} style={{ display: "flex", gap: 10, fontSize: "max(var(--fs-min), 0.88em)", padding: "5px 0",
+          borderBottom: "1px solid var(--bc-line)" }}>
+          <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
+          <span style={{ fontWeight: 800, color: l.user_id === c.me_id ? "var(--bc-green)" : "var(--bc-text)" }}>{l.school}</span>
+          <span style={{ color: "var(--bc-muted)" }}>{l.user_id === c.me_id ? "you" : l.user_id === "model" ? "the model" : l.user_name}</span>
+          <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(l.total)}</span>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div style={card}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
         <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)", fontWeight: 700 }}>College Game · {c.name}</span>
-        <StatusTag status={c.status} projected={c.projected} />
+        <StatusTag status={c.status} projected={false} />
       </div>
-      {me ? (
-        <>
-          <div style={{ fontWeight: 900, fontSize: "1.6em", color: "var(--bc-text)", margin: "6px 0 0", letterSpacing: "-0.01em" }}>{me.school}</div>
-          <div style={{ fontWeight: 800, fontSize: "0.95em" }}>{ordinal(me.rank)} in the school race · {money(me.total)}</div>
-          {c.story && <div style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.88em)", marginTop: 4 }}>{c.story}</div>}
-          <div style={{ marginTop: 10, fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            Your two counting golfers
-          </div>
-          {me.counting.map(g => (
-            <div key={g.name} style={{ display: "flex", gap: 10, padding: "4px 0", fontSize: "max(var(--fs-min), 0.88em)", borderBottom: "1px solid var(--bc-line)" }}>
-              <span style={{ width: 42, fontWeight: 800, color: "var(--bc-muted)" }}>{g.position}</span>
-              <span style={{ fontWeight: 700 }}>{g.name}</span>
-              <span style={{ marginLeft: "auto", fontWeight: 800 }}>{money(g.earnings)}</span>
-            </div>
-          ))}
-        </>
-      ) : (
-        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)" }}>You didn&apos;t claim a school this week.</p>
-      )}
-      {c.lines.length > 1 && (
-        <div style={{ marginTop: 12 }}>
-          {c.lines.map(l => (
-            <div key={l.user_id} style={{ display: "flex", gap: 10, fontSize: "max(var(--fs-min), 0.86em)", padding: "3px 0" }}>
-              <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
-              <span style={{ fontWeight: 800 }}>{l.school}</span>
-              <span style={{ color: "var(--bc-muted)" }}>{l.user_id === c.me_id ? "you" : l.user_name}</span>
-              <span style={{ marginLeft: "auto", fontWeight: 800 }}>{money(l.total)}</span>
-            </div>
-          ))}
+
+      {/* Layer 1 — is my school winning? */}
+      <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{collegeHeadline(c)}</div>
+      {me && c.lines.length > 1 && <div style={{ fontWeight: 700, fontSize: "max(var(--fs-min), 0.95em)", fontVariantNumeric: "tabular-nums" }}>{collegeTotals(c)}</div>}
+      {me && <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginTop: 2 }}>{moneyNote({ status: c.status } as Slate)}</div>}
+
+      {/* Layer 2 — the two alumni who count */}
+      {me && me.counting.length > 0 && (
+        <div style={{ marginTop: 14 }}>
+          <div style={label}>Your two counting golfers</div>
+          {me.counting.map(g => golferRow(g))}
         </div>
+      )}
+
+      {!solo && c.lines.length > 1 && race}
+
+      {/* Layer 3 — the math, on request */}
+      {me && (
+        <details style={{ marginTop: 12 }}>
+          <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)", color: "var(--bc-text)" }}>
+            View scoring details
+          </summary>
+          <div style={{ marginTop: 8, display: "grid", gap: 10 }}>
+            {c.story && c.status === "live" && <div style={{ fontSize: "max(var(--fs-min), 0.88em)" }}>{c.story}</div>}
+            {(me.bench ?? []).length > 0 && (
+              <div>
+                <div style={label}>Next in line (don&apos;t count yet)</div>
+                {(me.bench ?? []).map(g => golferRow(g, true))}
+              </div>
+            )}
+            {solo && c.lines.length > 1 && race}
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5 }}>
+              A school scores its two best-paid alumni in the field. {c.status === "final"
+                ? "Totals are official prize money."
+                : "Totals use current leaderboard positions and the purse's payout table — where things stand now, not a forecast."}
+            </div>
+          </div>
+        </details>
       )}
     </div>
   );

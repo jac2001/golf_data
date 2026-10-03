@@ -57,3 +57,28 @@ test("golfer progress", () => {
   assert.equal(golferProgress(g("0", 2, 3), "live"), "+2 · Not started");
   assert.equal(golferProgress(g("F", -11, 4), "final"), "−11");
 });
+
+// ── College card ────────────────────────────────────────────────────────
+import { collegeHeadline, collegeTotals } from "./matchTypes.ts";
+import type { College, CollegeLine } from "./matchTypes.ts";
+
+const school = (user_id: string, school: string, rank: number, total: number, user_name = user_id): CollegeLine =>
+  ({ user_id, user_name, school, rank, total, counting: [] });
+const college = (lines: CollegeLine[], status: Slate["status"] = "live"): NonNullable<College> =>
+  ({ tournament_id: "R2026554", name: "Bank of Utah", status, projected: true, lines, me_id: "me", story: "" });
+
+test("college: leading alone", () => {
+  const c = college([school("me", "Stanford", 1, 412_000), school("model", "Texas", 2, 389_500, "The Model")]);
+  assert.equal(collegeHeadline(c), "Stanford leads the school race.");
+  assert.equal(collegeTotals(c), "Stanford $412,000 · Texas $389,500");
+});
+
+test("college: trailing names the leader and its owner", () => {
+  const c = college([school("sam", "Texas", 1, 500_000, "Sam"), school("me", "Stanford", 2, 300_000)]);
+  assert.equal(collegeHeadline(c), "Stanford is 2nd. Texas (Sam) leads by $200,000.");
+});
+
+test("college: tied for first with the model, final", () => {
+  const c = college([school("me", "Stanford", 1, 400_000), school("model", "Texas", 1, 400_000, "The Model")], "final");
+  assert.equal(collegeHeadline(c), "Stanford shared the school race with Texas (the model).");
+});

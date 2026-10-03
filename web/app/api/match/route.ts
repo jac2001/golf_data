@@ -21,7 +21,7 @@ import { openEventLocks, pickVisible } from "@/lib/eventLocks";
 type Ev = { tournament_id: string; name: string; tour: "pga" | "euro"; start_date: string;
   locked: boolean; finished: boolean };
 type PlayerMoney = { player_name: string; earnings: number; position: string;
-  up_one?: number; thru?: string; today?: number | null };
+  up_one?: number; thru?: string; today?: number | null; to_par?: number | null; round?: number | null };
 type Earnings = { settled: boolean; projected?: boolean; data_updated?: string; players: Record<string, PlayerMoney> };
 
 const money = (v: number) =>
@@ -117,7 +117,8 @@ export async function GET(req: Request) {
       const alumni = (field?.schools ?? []).find(s => s.school === school)?.players ?? [];
       const counted = alumni.map(n => {
         const hit = table?.players?.[nameKey(n)];
-        return { name: n, position: hit?.position ?? "—", earnings: graded ? (hit?.earnings ?? 0) : 0 };
+        return { name: n, position: hit?.position ?? "—", earnings: graded ? (hit?.earnings ?? 0) : 0,
+                 thru: hit?.thru ?? "", to_par: hit?.to_par ?? null, round: hit?.round ?? null };
       }).sort((a, b) => b.earnings - a.earnings);
       return { counting: counted.slice(0, 2), bench: counted.slice(2, 4),
                total: counted.slice(0, 2).reduce((s, c) => s + c.earnings, 0) };

@@ -12,8 +12,10 @@ export type Slate = {
   rival: { user_id: string; user_name: string; total: number } | null; gap: number; story: string;
   beating_model: number | null; humans: number;
 };
+export type CollegeGolfer = { name: string; position: string; earnings: number;
+  thru?: string; to_par?: number | null; round?: number | null };
 export type CollegeLine = { user_id: string; user_name: string; school: string; total: number; rank: number;
-  counting: { name: string; position: string; earnings: number }[] };
+  counting: CollegeGolfer[]; bench?: CollegeGolfer[] };
 export type College = { tournament_id: string; name: string; status: Slate["status"]; projected: boolean;
   lines: CollegeLine[]; me_id: string; story: string } | null;
 export type Match = { group?: { id: number; name: string; members: number };
@@ -93,7 +95,7 @@ export function moneyNote(s: Slate): string {
 }
 
 /** "−6 · Thru 12" / "E · Round 3 done" / "Not started" for one golfer. */
-export function golferProgress(g: Golfer, status: Slate["status"]): string {
+export function golferProgress(g: { thru?: string; to_par?: number | null; round?: number | null }, status: Slate["status"]): string {
   const par = g.to_par == null ? "" : g.to_par === 0 ? "E" : g.to_par > 0 ? `+${g.to_par}` : `−${Math.abs(g.to_par)}`;
   const t = String(g.thru ?? "").trim().toUpperCase();
   let where = "";
@@ -102,4 +104,35 @@ export function golferProgress(g: Golfer, status: Slate["status"]): string {
   else if (t && t !== "0" && t !== "-") where = `Thru ${t}`;
   else where = "Not started";
   return [par, where].filter(Boolean).join(" · ");
+}
+
+/** College card's top line. Schools are the competitors, so they lead;
+ *  owners ride along in parentheses ("Texas (Sam)"). */
+export function collegeHeadline(c: NonNullable<College>): string {
+  const me = c.lines.find(l => l.user_id === c.me_id);
+  if (!me) return "You didn't claim a school this week.";
+  const final = c.status === "final";
+  const tied = c.lines.filter(l => l.rank === me.rank && l.user_id !== me.user_id);
+  const owner = (l: CollegeLine) => l.user_id === "model" ? "the model" : l.user_name;
+  if (me.rank === 1 && tied.length === 0) {
+    if (c.lines.length === 1) return `${me.school}: ${money(me.total)} from its best two.`;
+    return final ? `${me.school} won the school race.` : `${me.school} leads the school race.`;
+  }
+  if (me.rank === 1) {
+    const with_ = tied.map(l => `${l.school} (${owner(l)})`).join(" & ");
+    return final ? `${me.school} shared the school race with ${with_}.` : `${me.school} is tied for the lead with ${with_}.`;
+  }
+  const leader = c.lines.find(l => l.rank === 1)!;
+  return `${me.school} is ${ordinal(me.rank)}. ${leader.school} (${owner(leader)}) leads by ${money(leader.total - me.total)}.`;
+}
+
+/** "Stanford $412,000 · Texas $389,500" — your school vs the leader, or
+ *  vs the closest chaser when you lead. */
+export function collegeTotals(c: NonNullable<College>): string {
+  const me = c.lines.find(l => l.user_id === c.me_id);
+  if (!me) return "";
+  const other = me.rank === 1
+    ? c.lines.filter(l => l.user_id !== me.user_id).sort((a, b) => b.total - a.total)[0]
+    : c.lines.find(l => l.rank === 1);
+  return other ? `${me.school} ${money(me.total)} · ${other.school} ${money(other.total)}` : `${me.school} ${money(me.total)}`;
 }
