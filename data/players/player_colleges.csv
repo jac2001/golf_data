@@ -387,7 +387,7 @@ player_id,player_name,school
 45157,Cam Davis,
 33199,Matteo Manassero,
 30756,Andrea Pavan,
-46402,Talor Gooch,Oklahoma State University Education
+46402,Talor Gooch,Oklahoma State University
 57321,Matthew Anderson,University of San Francisco
 56762,Will Gordon,Vanderbilt University
 45609,Tyler Duncan,Purdue University
@@ -577,7 +577,7 @@ player_id,player_name,school
 39859,Cristobal Del Solar,Florida State University
 59467,Dan Erickson,Texas A&M University
 56190,Wooyoung Cho,
-47056,Rikuya Hoshino,Japan College
+47056,Rikuya Hoshino,
 57474,Maxence Giboudot,
 60736,Tobias Jonsson,
 61520,Santiago de la Fuente,University of Houston
@@ -624,7 +624,7 @@ player_id,player_name,school
 34314,Sebastian Cappelen,University of Arkansas
 47472,MJ Maguire,University of North Florida
 51137,Kevin Yuan,
-59837,Cole Anderson,Florida State University Finance
+59837,Cole Anderson,Florida State University
 51313,Andrea Romano(June-2000),
 37076,Marcelo Rozo,Lynn University
 48822,Sebastián Muñoz,University of North Texas
@@ -635,7 +635,7 @@ player_id,player_name,school
 31016,Tomoharu Otsuki,
 36693,Bjorn Hellgren,
 32070,Rafael Campos,Virginia Commonwealth University
-65432,Mason Greene,UCLA Political Science
+65432,Mason Greene,UCLA
 48586,Per Langfors,
 39436,Joshua Creel,University of Central Oklahoma
 58989,Brandon Berry,Loyola University Maryland
@@ -662,7 +662,7 @@ player_id,player_name,school
 56974,Christiaan Burke,
 48699,Callum Tarren,Radford University
 27140,Justin Walters,
-35557,Aaron Cockerill,Finance
+35557,Aaron Cockerill,
 35862,Min-Jun Kim,
 26476,Chez Reavie,Arizona State University
 31420,Anirban Lahiri,
@@ -748,7 +748,7 @@ player_id,player_name,school
 53122,Mark Power,
 59211,Trey Winstead,Louisiana State University
 55415,Ryan Lumsden,Northwestern University
-26503,Alfredo Garcia-Heredia,Spain College
+26503,Alfredo Garcia-Heredia,
 30944,Jason Kokrak,Xavier University
 50856,David Lundgren,
 63554,Dillon Stewart,Oklahoma State University

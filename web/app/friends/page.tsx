@@ -13,6 +13,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { PageHead, SubTabs } from "@/components/broadcast";
+import SchoolBadge from "@/components/SchoolBadge";
 import LetItRideTab, { LetItRideStandings } from "@/components/LetItRideTab";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { fromOpenEvents } from "@/components/EventNav";
@@ -474,7 +475,7 @@ function CollegeTab() {
           {event.locked
             ? (event.finished ? "Final — graded below." : "Schools are locked — tournament underway.")
             : pick
-              ? <>Your school: <strong style={{ color: "var(--bc-text)" }}>{pick}</strong> · best 2 alumni checks count</>
+              ? <>Your school: <SchoolBadge school={pick} /> <strong style={{ color: "var(--bc-text)" }}>{pick}</strong> · best 2 alumni checks count</>
               : "Claim one school before lock · its best 2 finishers score for you"}
         </div>
         {err && <p style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 10 }}>{err}</p>}
@@ -497,7 +498,7 @@ function CollegeTab() {
                     {r.user_name}
                     {r.user_id === board.me && <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}> · you</span>}
                     <div style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.82em)" }}>
-                      {r.school}{r.counted.length > 0 &&
+                      <SchoolBadge school={r.school} size={0.9} /> {r.school}{r.counted.length > 0 &&
                         ` — ${r.counted.map(c => `${lastName(c.player)} ${c.position}`).join(", ")}`}
                     </div>
                   </td>
@@ -534,6 +535,7 @@ function CollegeTab() {
                   fontFamily: "inherit", background: mine ? "var(--bc-card-hi)" : "none",
                   border: "none", borderBottom: "1px solid var(--bc-line)", padding: "10px 16px",
                 }}>
+                  <SchoolBadge school={s.school} />{" "}
                   <span style={{ fontWeight: 800, fontSize: "0.9em",
                     color: mine ? "var(--bc-green)" : "var(--bc-text)" }}>
                     {s.school}{mine && " ✓"}

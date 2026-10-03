@@ -4803,6 +4803,15 @@ def colleges_field(tournament_id: str) -> dict:
         # becomes a 27-alumni school called nan. Empty means empty.
         if s.lower() in ("nan", "none", ""):
             return ""
+        # Bios sometimes append the degree: "Florida State University
+        # Finance", "UCLA Political Science". Cut at the institution word
+        # so those alumni count for their real school.
+        s = re.sub(r"\s+(Finance|Education|Political Science|Business|Economics|Marketing|"
+                   r"Management|Communications?|Kinesiology|Accounting|Psychology|History)$", "", s)
+        if s.startswith("UCLA "):
+            s = "UCLA"
+        if s in ("Finance", "Japan College", "Spain College"):
+            return ""
         for pre in ("University of ", "The University of "):
             if s.startswith(pre):
                 s = s[len(pre):]

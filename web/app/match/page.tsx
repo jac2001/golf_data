@@ -14,6 +14,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
+import SchoolBadge from "@/components/SchoolBadge";
 import { displaySurnames } from "@/lib/names";
 import { College, CollegeGolfer, Group, Match, Slate, collegeHeadline, collegeTotals, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
 
@@ -346,6 +347,7 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
         <div key={l.user_id} style={{ display: "flex", gap: 10, fontSize: "max(var(--fs-min), 0.88em)", padding: "5px 0",
           borderBottom: "1px solid var(--bc-line)" }}>
           <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
+          <SchoolBadge school={l.school} size={0.9} />
           <span style={{ fontWeight: 800, color: l.user_id === c.me_id ? "var(--bc-green)" : "var(--bc-text)" }}>{l.school}</span>
           <span style={{ color: "var(--bc-muted)" }}>{l.user_id === c.me_id ? "you" : l.user_id === "model" ? "the model" : l.user_name}</span>
           <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(l.total)}</span>
@@ -362,7 +364,10 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
       </div>
 
       {/* Layer 1 — is my school winning? */}
-      <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{collegeHeadline(c)}</div>
+      <div style={{ display: "flex", gap: 10, alignItems: "center", margin: "6px 0 4px" }}>
+        {me && <SchoolBadge school={me.school} size={1.3} />}
+        <div style={{ fontWeight: 900, fontSize: "1.35em", lineHeight: 1.2 }}>{collegeHeadline(c)}</div>
+      </div>
       {me && c.lines.length > 1 && <div style={{ fontWeight: 700, fontSize: "max(var(--fs-min), 0.95em)", fontVariantNumeric: "tabular-nums" }}>{collegeTotals(c)}</div>}
       {me && <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginTop: 2 }}>{moneyNote({ status: c.status } as Slate)}</div>}
 
