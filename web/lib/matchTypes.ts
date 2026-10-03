@@ -8,7 +8,7 @@ export type Golfer = { name: string; position: string; earnings: number; up_one:
 export type Line = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number };
 export type Slate = {
   tournament_id: string; name: string; tour: "pga" | "euro"; status: "open" | "live" | "settling" | "final";
-  projected: boolean; lines: Line[]; me_id: string; data_updated?: string;
+  projected: boolean; lines: Line[]; me_id: string; data_updated?: string; data_updated_utc?: string;
   rival: { user_id: string; user_name: string; total: number } | null; gap: number; story: string;
   beating_model: number | null; humans: number;
 };
@@ -116,7 +116,9 @@ export function collegeHeadline(c: NonNullable<College>): string {
   const owner = (l: CollegeLine) => l.user_id === "model" ? "the model" : l.user_name;
   if (me.rank === 1 && tied.length === 0) {
     if (c.lines.length === 1) return `${me.school}: ${money(me.total)} from its best two.`;
-    return final ? `${me.school} won the school race.` : `${me.school} leads the school race.`;
+    const next = c.lines.filter(l => l.user_id !== me.user_id).sort((a, b) => b.total - a.total)[0];
+    const gap = money(me.total - next.total);
+    return final ? `${me.school} beat ${next.school} by ${gap}.` : `${me.school} leads ${next.school} by ${gap}.`;
   }
   if (me.rank === 1) {
     const with_ = tied.map(l => `${l.school} (${owner(l)})`).join(" & ");

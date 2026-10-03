@@ -69,7 +69,7 @@ const college = (lines: CollegeLine[], status: Slate["status"] = "live"): NonNul
 
 test("college: leading alone", () => {
   const c = college([school("me", "Stanford", 1, 412_000), school("model", "Texas", 2, 389_500, "The Model")]);
-  assert.equal(collegeHeadline(c), "Stanford leads the school race.");
+  assert.equal(collegeHeadline(c), "Stanford leads Texas by $22,500.");
   assert.equal(collegeTotals(c), "Stanford $412,000 · Texas $389,500");
 });
 

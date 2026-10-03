@@ -28,7 +28,7 @@ import sys
 import threading
 import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -4932,6 +4932,24 @@ def _dg_live_board(tid: str) -> pd.DataFrame | None:
         return None
 
 
+def _dg_update_utc(local_str: str, fetched_ts: float) -> str:
+    """DataGolf's in-play 'last_update' is wall-clock time AT THE COURSE
+    ('2026-10-03 7:40 AM' in Utah, '2:39 PM' in Scotland) with no zone.
+    We fetched it at a known UTC moment shortly after, so the course's UTC
+    offset is the whole half-hour that puts the update just before the
+    fetch. Returns ISO UTC ('...Z'), or "" when it can't be parsed."""
+    try:
+        naive = datetime.strptime(local_str.strip(), "%Y-%m-%d %I:%M %p")
+    except Exception:
+        return ""
+    fetched = datetime.utcfromtimestamp(fetched_ts)
+    half_hours = round((naive - fetched).total_seconds() / 1800)
+    utc = naive - timedelta(minutes=30 * half_hours)
+    if utc > fetched:                      # an update can't postdate our fetch
+        utc -= timedelta(minutes=30)
+    return utc.strftime("%Y-%m-%dT%H:%M:00Z")
+
+
 def _up_one_spot(sub: pd.DataFrame, tid: str) -> pd.Series:
     """What each golfer would earn one position higher (solo), for the
     match center's 'moving up one spot is worth $X'. Purse x the payout
@@ -5090,10 +5108,12 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
                                 "to_par": _safe(pd.to_numeric(r.get("current_score", r.get("total")), errors="coerce")),
                                 "round": _safe(pd.to_numeric(r.get("round"), errors="coerce"))}
                 tour_key = "euro" if tid.startswith("E") else "pga"
-                updated = _dg_live_cache.get(tour_key, {}).get("updated", "") if live_source == "live" else ""
+                c = _dg_live_cache.get(tour_key, {}) if live_source == "live" else {}
+                updated = c.get("updated", "")
+                updated_utc = _dg_update_utc(updated, c.get("ts", time.time())) if updated else ""
                 return {"tournament_id": tid, "settled": False, "projected": True,
                         "earnings_estimated": True, "live_source": live_source,
-                        "data_updated": updated, "players": out}
+                        "data_updated": updated, "data_updated_utc": updated_utc, "players": out}
             except Exception:
                 pass
     return {"tournament_id": tid, "settled": False, "players": {}}

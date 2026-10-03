@@ -22,7 +22,8 @@ type Ev = { tournament_id: string; name: string; tour: "pga" | "euro"; start_dat
   locked: boolean; finished: boolean };
 type PlayerMoney = { player_name: string; earnings: number; position: string;
   up_one?: number; thru?: string; today?: number | null; to_par?: number | null; round?: number | null };
-type Earnings = { settled: boolean; projected?: boolean; data_updated?: string; players: Record<string, PlayerMoney> };
+type Earnings = { settled: boolean; projected?: boolean; data_updated?: string; data_updated_utc?: string;
+  players: Record<string, PlayerMoney> };
 
 const money = (v: number) =>
   v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
@@ -94,6 +95,7 @@ export async function GET(req: Request) {
       start_date: ev.start_date,
       projected: !table?.settled && !!table?.projected,
       data_updated: table?.data_updated ?? "",
+      data_updated_utc: table?.data_updated_utc ?? "",
       me_id: userId, ...sum,
     });
   }

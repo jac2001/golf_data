@@ -121,13 +121,16 @@ export default function MatchCenterPage() {
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
       <PageHead kicker={data?.league ? `${data.group?.name ? data.group.name + " · " : ""}${data.league.name}` : "Your group's weekend"} title="Match Center" />
-      {data?.checked_at && (
-        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.76em)", margin: "-6px 0 12px" }}>
-          Checked {new Date(data.checked_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit", timeZoneName: "short" })}
-          {data.slates.find(s => s.data_updated)?.data_updated && ` · live scores as of ${data.slates.find(s => s.data_updated)!.data_updated} (DataGolf)`}
-          {" · refreshes every 2 minutes during play"}
-        </div>
-      )}
+      {/* One plain timestamp up top, in the viewer's own timezone. The
+          source and refresh cadence live in each card's details. */}
+      {(() => {
+        const at = data?.slates.map(s => s.data_updated_utc).filter(Boolean).sort().pop();
+        return at ? (
+          <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)", margin: "-6px 0 12px" }}>
+            Scores updated {clock(at)}
+          </div>
+        ) : null;
+      })()}
 
       {groups.length > 1 && (
         <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
@@ -155,7 +158,7 @@ export default function MatchCenterPage() {
           <div style={card}>No Let It Ride season in this group yet — the owner starts one from <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Friends → Let It Ride</Link>.</div>
         ) : (
           <>
-            {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} groupName={data.group?.name ?? ""} />)}
+            {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} groupName={data.group?.name ?? ""} checkedAt={data.checked_at} />)}
             {data.college && data.college.lines.length > 0 && <CollegeCard c={data.college} />}
           </>
         )}
@@ -179,7 +182,13 @@ function StatusTag({ status, projected }: { status: Slate["status"]; projected: 
   return <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>;
 }
 
-function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
+/** "9:40 AM EDT" in the viewer's own timezone. */
+function clock(iso: string): string {
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? "" : d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+}
+
+function SlateCard({ s, groupName, checkedAt }: { s: Slate; groupName: string; checkedAt?: string }) {
   const me = s.lines.find(l => l.user_id === s.me_id);
   const tourLabel = s.tour === "euro" ? "DP World Tour" : "PGA Tour";
 
@@ -269,7 +278,7 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
             {s.status === "final"
               ? "Totals are each golfer's official prize money."
               : "Totals use each golfer's current position on the live leaderboard and the purse's payout table, with tied positions sharing the money. They show where things stand now, not a forecast of where they'll finish."}
-            {s.data_updated && ` Live scores as of ${s.data_updated} (DataGolf).`}
+            {live && ` Live scores come from DataGolf${s.data_updated_utc ? ` (last update ${clock(s.data_updated_utc)})` : ""}; this page re-checks every 2 minutes during play${checkedAt ? `, last at ${clock(checkedAt)}` : ""}.`}
           </div>
           {s.status === "final" && (
             <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
