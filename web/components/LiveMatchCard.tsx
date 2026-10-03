@@ -11,7 +11,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Group, Match, isMatch, money, slateHeadline } from "@/lib/matchTypes";
+import { Group, Match, isMatch, matchHeadline, money, moneyNote, totalsLine } from "@/lib/matchTypes";
 import { displaySurnames } from "@/lib/names";
 
 export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode }) {
@@ -56,12 +56,13 @@ export default function LiveMatchCard({ fallback }: { fallback: React.ReactNode 
         return (
           <div key={s.tournament_id} style={{ padding: "10px 0", borderTop: "1px solid var(--bc-line)" }}>
             <div style={{ fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-muted)", fontWeight: 700 }}>
-              {s.tour === "euro" ? "DP World Tour" : "PGA Tour"} · {s.name}{s.projected ? " · projected money" : ""}
+              {s.tour === "euro" ? "DP World Tour" : "PGA Tour"} · {s.name}
             </div>
             <div style={{ fontWeight: 900, fontSize: "1.4em", lineHeight: 1.2, margin: "4px 0" }}>
-              {slateHeadline(s)}
+              {matchHeadline(s)}
             </div>
-            {s.story && <div style={{ fontSize: "0.95em", fontWeight: 600 }}>{s.story}</div>}
+            <div style={{ fontWeight: 700, fontSize: "0.95em", fontVariantNumeric: "tabular-nums" }}>{totalsLine(s)}</div>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>{moneyNote(s)}</div>
             {me && me.golfers.length > 0 && (
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 18px", marginTop: 8, fontSize: "0.92em" }}>
                 {me.golfers.map((g, i) => (

@@ -15,7 +15,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
 import { displaySurnames } from "@/lib/names";
-import { College, Group, Match, Slate, isMatch, money, ordinal, slateHeadline } from "@/lib/matchTypes";
+import { College, Group, Match, Slate, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
 
 const last = (n: string) => n.includes(",") ? n.split(",")[0].trim() : (n.trim().split(/\s+/).pop() ?? n);
 const card: React.CSSProperties = {
@@ -174,7 +174,7 @@ function pill(on: boolean): React.CSSProperties {
 
 function StatusTag({ status, projected }: { status: Slate["status"]; projected: boolean }) {
   const label = status === "final" ? "Final" : status === "settling" ? "Final · money settling"
-    : status === "live" ? (projected ? "Live · projected" : "Live") : "Picks open";
+    : status === "live" ? "Live" : "Picks open";  // what the money means lives in moneyNote, not here
   const color = status === "final" ? "var(--bc-muted)" : status === "live" ? "var(--bc-green)" : "var(--bc-text)";
   return <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>;
 }
@@ -197,71 +197,112 @@ function SlateCard({ s, groupName }: { s: Slate; groupName: string }) {
     );
   }
 
-  const leader = s.lines[0];
-  const headline = slateHeadline(s);
+  const solo = isSoloVsModel(s);
+  const live = s.status === "live";
+  const others = s.lines.filter(l => l.user_id !== s.me_id);
+  const label: React.CSSProperties = { fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)",
+    textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 };
 
   return (
     <div style={card}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
         <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)", fontWeight: 700 }}>{tourLabel} · {s.name}</span>
-        <StatusTag status={s.status} projected={s.projected} />
+        <StatusTag status={s.status} projected={false} />
       </div>
-      <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{headline}</div>
-      {s.story && <div style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "0.92em" }}>{s.story}</div>}
-      {s.beating_model != null && s.humans > 0 && (
-        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 4 }}>
-          {s.beating_model} of {s.humans} {s.humans === 1 ? "player is" : "players are"} beating the model{s.status === "final" ? "" : " right now"}.
-        </div>
-      )}
 
+      {/* Layer 1 — am I winning? */}
+      <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{matchHeadline(s)}</div>
+      {me && <div style={{ fontWeight: 700, fontSize: "max(var(--fs-min), 0.95em)", fontVariantNumeric: "tabular-nums" }}>{totalsLine(s)}</div>}
+      <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginTop: 2 }}>{moneyNote(s)}</div>
+
+      {/* Layer 2 — who am I watching? */}
       {me && me.golfers.length > 0 && (
         <div style={{ marginTop: 14 }}>
-          <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
-            Your golfers
-          </div>
+          <div style={label}>Your golfers</div>
           {me.golfers.map(g => (
-            <div key={g.name} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "4px 0", borderBottom: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min), 0.88em)" }}>
-              <span style={{ fontWeight: 800, width: 42, color: "var(--bc-muted)" }}>{g.position}</span>
-              <span style={{ fontWeight: 700 }}>{g.name}</span>
-              {g.thru && s.status === "live" && <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>thru {g.thru}</span>}
+            <div key={g.name} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "6px 0",
+              borderBottom: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min), 0.9em)" }}>
+              <span style={{ fontWeight: 800, width: 40, flexShrink: 0, color: "var(--bc-muted)" }}>{g.position}</span>
+              <span style={{ minWidth: 0 }}>
+                <span style={{ fontWeight: 700 }}>{g.name}</span>
+                {golferProgress(g, s.status) && (
+                  <span style={{ display: "block", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>
+                    {golferProgress(g, s.status)}
+                  </span>
+                )}
+              </span>
               <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(g.earnings)}</span>
-              {s.status === "live" && g.up_one > 0 && (
-                <span style={{ color: "var(--bc-green)", fontSize: "max(var(--fs-min), 0.78em)", whiteSpace: "nowrap" }}>+{money(g.up_one)} one spot up</span>
-              )}
             </div>
           ))}
         </div>
       )}
 
-      <div style={{ marginTop: 14 }}>
-        <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>
-          {s.humans <= 1 && s.lines.some(l => l.user_id === "model") ? "You vs. the model" : (groupName || "Your group")}
-          {s.projected ? " · projected" : ""}
+      {/* Group standings stay up top for groups — "am I winning" needs them.
+          Solo, the totals line already says it all, so the table moves down. */}
+      {!solo && others.length > 0 && <Standings s={s} title={groupName || "Your group"} />}
+      {!solo && s.beating_model != null && s.humans > 1 && (
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", marginTop: 8 }}>
+          {s.beating_model} of {s.humans} players {s.status === "final" ? "beat" : "are beating"} the model.
         </div>
-        {s.lines.map(l => {
-          const isMe = l.user_id === s.me_id, isModel = l.user_id === "model", isRival = l.user_id === s.rival?.user_id;
-          return (
-            <div key={l.user_id} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "5px 0", fontSize: "max(var(--fs-min), 0.88em)",
-              borderBottom: "1px solid var(--bc-line)" }}>
-              <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
-              <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)" }}>
-                {isMe ? "You" : l.user_name}
-              </span>
-              {isModel && <span style={tag("var(--bc-line-hi)", "var(--bc-text)")}>Model</span>}
-              {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>Rival</span>}
-              <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {displaySurnames(l.golfers.map(g => g.name)).join(", ")}
-              </span>
-              <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(l.total)}</span>
+      )}
+
+      {/* Layer 3 — the math, on request */}
+      <details style={{ marginTop: 12 }}>
+        <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)", color: "var(--bc-text)" }}>
+          View scoring details
+        </summary>
+        <div style={{ marginTop: 8, display: "grid", gap: 10 }}>
+          {s.story && live && <div style={{ fontSize: "max(var(--fs-min), 0.88em)" }}>{s.story}</div>}
+          {live && me && me.golfers.some(g => g.up_one > 0) && (
+            <div>
+              <div style={label}>If each golfer moved up one spot</div>
+              {me.golfers.filter(g => g.up_one > 0).map(g => (
+                <div key={g.name} style={{ display: "flex", fontSize: "max(var(--fs-min), 0.86em)", padding: "2px 0" }}>
+                  <span>{g.name}</span>
+                  <span style={{ marginLeft: "auto", color: "var(--bc-green)", fontVariantNumeric: "tabular-nums" }}>+{money(g.up_one)}</span>
+                </div>
+              ))}
             </div>
-          );
-        })}
-        {leader && s.status === "final" && (
-          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 8 }}>
-            Sunday recap card: Friends → Groups → Share recap.
+          )}
+          {solo && <Standings s={s} title="You vs. the model" />}
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5 }}>
+            {s.status === "final"
+              ? "Totals are each golfer's official prize money."
+              : "Totals use each golfer's current position on the live leaderboard and the purse's payout table, with tied positions sharing the money. They show where things stand now, not a forecast of where they'll finish."}
+            {s.data_updated && ` Live scores as of ${s.data_updated} (DataGolf).`}
           </div>
-        )}
-      </div>
+          {s.status === "final" && (
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
+              Sunday recap card: Friends → Groups → Share recap.
+            </div>
+          )}
+        </div>
+      </details>
+    </div>
+  );
+}
+
+function Standings({ s, title }: { s: Slate; title: string }) {
+  return (
+    <div style={{ marginTop: 14 }}>
+      <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color: "var(--bc-muted)",
+        textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 4 }}>{title}</div>
+      {s.lines.map(l => {
+        const isMe = l.user_id === s.me_id, isModel = l.user_id === "model", isRival = l.user_id === s.rival?.user_id;
+        return (
+          <div key={l.user_id} style={{ display: "flex", gap: 10, alignItems: "baseline", padding: "5px 0", fontSize: "max(var(--fs-min), 0.88em)",
+            borderBottom: "1px solid var(--bc-line)" }}>
+            <span style={{ width: 22, fontWeight: 900, color: "var(--bc-muted)" }}>{l.rank}</span>
+            <span style={{ fontWeight: 800, color: isMe ? "var(--bc-green)" : "var(--bc-text)" }}>{isMe ? "You" : l.user_name}</span>
+            {isModel && <span style={tag("var(--bc-line-hi)", "var(--bc-text)")}>Model</span>}
+            {isRival && !isModel && <span style={tag("var(--bc-orange)", "#081f14")}>Rival</span>}
+            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {displaySurnames(l.golfers.map(g => g.name)).join(", ")}
+            </span>
+            <span style={{ marginLeft: "auto", fontWeight: 800, fontVariantNumeric: "tabular-nums" }}>{money(l.total)}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }

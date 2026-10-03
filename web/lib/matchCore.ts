@@ -6,8 +6,9 @@
 import { nameKey } from "./names";
 
 export type PlayerMoney = { player_name: string; earnings: number; position: string;
-  up_one?: number; thru?: string };
-export type Golfer = { name: string; position: string; earnings: number; up_one: number; thru: string };
+  up_one?: number; thru?: string; to_par?: number | null; round?: number | null };
+export type Golfer = { name: string; position: string; earnings: number; up_one: number; thru: string;
+  to_par: number | null; round: number | null };
 export type MemberLine = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number };
 
 const money = (v: number) =>
@@ -35,6 +36,7 @@ export function summarizeSlate(
       name: p.player_name, position: hit?.position ?? "—",
       earnings: graded ? (hit?.earnings ?? 0) : 0,
       up_one: hit?.up_one ?? 0, thru: hit?.thru ?? "",
+      to_par: hit?.to_par ?? null, round: hit?.round ?? null,
     }]);
   }
   const lines: MemberLine[] = ranked([...byUser.entries()].map(([uid, golfers]) => ({
