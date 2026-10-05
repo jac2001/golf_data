@@ -34,7 +34,11 @@ const nameKey = (n: string) =>
 
 async function modelApi(path: string): Promise<Record<string, unknown> | null> {
   try {
-    const res = await fetch(`${MODEL_API}${path}`, { next: { revalidate: 300 } });
+    // No caching: whether an event is settled is exactly what this route
+    // gates on, and a cached "not settled" kept the recap button disabled
+    // for minutes after the first real settlement (2026-10-05). Both API
+    // calls are cheap.
+    const res = await fetch(`${MODEL_API}${path}`, { cache: "no-store" });
     return res.ok ? await res.json() : null;
   } catch { return null; }
 }
