@@ -1,15 +1,27 @@
 # Golf Model — Season Context
-_Updated: 2026-09-15 16:05_
+_Updated: 2026-10-05 09:24_
 
 ## Season Summary (2026 PGA Tour)
-- Tournaments tracked: **29**
-- Tournaments with results: **29**
-- Top pick finished top 10: **16/29** (55%)
+- Tournaments tracked: **31**
+- Tournaments with results: **31**
+- Top pick finished top 10: **17/31** (55%)
 - Top-5 predictions → top-10 rate: **37%** (expected: ~33%)
-- Average rank of actual winner in our presets: **#23.2**
-- Times our #1 pick won: **6**
+- Average rank of actual winner in our presets: **#23.0**
+- Times our #1 pick won: **7**
 
 ## Recent Tournament Results (Last 4)
+
+### Bank of Utah Championship (R2026554)
+- **Winner**: Austin Smotherman
+- Winner was our **#37** ranked player pre-tournament
+- Our **#1 pick**: Jackson Koivun — finished #65
+- Top-10 predictions hit: **1/10** finished inside top 10
+
+### Biltmore Championship Asheville (R2026557)
+- **Winner**: Jacob Bridgeman
+- Winner was our **#1** ranked player pre-tournament
+- Our **#1 pick**: Jacob Bridgeman — finished #1
+- Top-10 predictions hit: **4/10** finished inside top 10
 
 ### TOUR Championship (R2026060)
 - **Winner**: Scottie Scheffler
@@ -23,34 +35,22 @@ _Updated: 2026-09-15 16:05_
 - Our **#1 pick**: Scottie Scheffler — finished #12
 - Top-10 predictions hit: **4/10** finished inside top 10
 
-### FedEx St. Jude Invitational (R2026027)
-- **Winner**: Scottie Scheffler
-- Winner was our **#1** ranked player pre-tournament
-- Our **#1 pick**: Scottie Scheffler — finished #1
-- Top-10 predictions hit: **5/10** finished inside top 10
-
-### Wyndham Championship (R2026013)
-- **Winner**: Michael Brennan
-- Winner was our **#27** ranked player pre-tournament
-- Our **#1 pick**: Cameron Young — finished #61
-- Top-10 predictions hit: **2/10** finished inside top 10
-
 ## Bet Performance (Recommended Bets — Priced Only)
-Season totals: **4105 bets**, **689 wins** (17%), ROI **-38.7%**
+Season totals: **4171 bets**, **736 wins** (18%), ROI **-37.7%**
 
 | Tournament | Bets | Wins | Win% | ROI |
 |---|---|---|---|---|
+| R2026554 | 29 | 21 | 72.4% | +26.4% |
+| R2026557 | 11 | 9 | 81.8% | +40.2% |
 | R2026060 | 8 | 6 | 75.0% | +403.9% |
 | R2026028 | 3 | 0 | 0.0% | -100.0% |
 | R2026027 | 9 | 3 | 33.3% | -40.6% |
-| R2026524 | 16 | 6 | 37.5% | -17.0% |
-| R2026014 | 28 | 14 | 50.0% | +27.2% |
 
 Note: Most bets are outright/top-10/top-20 markets. High volume because the system prices many combinations; actual staked bets are a subset.
 
 ## Closing Line Value (CLV)
 CLV measures whether our model priced players better than the closing market. Positive CLV = we got value; negative = we were wrong about the price.
-- Tournaments with CLV data: **12**
+- Tournaments with CLV data: **13**
 - Average CLV: **+0.07pp** (percentage points vs closing line)
 - % of picks with positive CLV: **72%**
 
@@ -64,16 +64,16 @@ What the model weighs most when ranking players this week:
 
 | # | Feature | Importance |
 |---|---|---|
-| 1 | dg_fit_arg | 12.2% |
-| 2 | recent_sg_arg_weighted | 10.2% |
-| 3 | field_avg_season_sg_putt | 5.8% |
-| 4 | recent_sg_ott_weighted | 3.4% |
-| 5 | closing_delta_field_pct | 2.8% |
-| 6 | Recent SG (weighted last 5 events) | 2.7% |
-| 7 | field_avg_season_sg_total | 2.6% |
-| 8 | recent_par3_scoring_field_pct | 2.5% |
-| 9 | field_avg_season_sg_ott | 2.4% |
-| 10 | dg_fit_putt | 2.3% |
+| 1 | recent_sand_save | 19.9% |
+| 2 | field_avg_season_sg_ott | 4.9% |
+| 3 | field_avg_season_sg_arg | 4.5% |
+| 4 | recent_par4_scoring_field_pct | 4.3% |
+| 5 | Total strokes gained | 3.4% |
+| 6 | temp_f_avg | 3.4% |
+| 7 | recent_bounce_back | 3.1% |
+| 8 | dg_top10 | 3.0% |
+| 9 | recent_r4_avg_field_pct | 3.0% |
+| 10 | recent_sg_ott_weighted | 2.7% |
 
 ## Model Architecture Notes
 - 4 XGBoost models: win, top-5, top-10, top-20 probability
