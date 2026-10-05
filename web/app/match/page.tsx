@@ -275,6 +275,22 @@ function SlateCard({ s, groupName, checkedAt }: { s: Slate; groupName: string; c
             </div>
           )}
           {solo && <Standings s={s} title="You vs. the model" />}
+          {(() => {
+            // The model's own spend/save reasoning — saved with its picks,
+            // visible here only after lock (reveal-at-lock hides them before).
+            const why = s.lines.find(l => l.user_id === "model")?.golfers.filter(g => g.reason) ?? [];
+            return why.length ? (
+              <div>
+                <div style={label}>Why the model picked them</div>
+                {why.map(g => (
+                  <div key={g.name} style={{ fontSize: "max(var(--fs-min), 0.86em)", padding: "3px 0" }}>
+                    <span style={{ fontWeight: 700 }}>{g.name}</span>
+                    <span style={{ color: "var(--bc-muted)" }}> — {g.reason}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null;
+          })()}
           <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5 }}>
             {s.status === "final"
               ? "Totals are each golfer's official prize money."

@@ -4,7 +4,7 @@
  */
 
 export type Golfer = { name: string; position: string; earnings: number; up_one: number; thru: string;
-  to_par?: number | null; round?: number | null };
+  to_par?: number | null; round?: number | null; reason?: string | null };
 export type Line = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number };
 export type Slate = {
   tournament_id: string; name: string; tour: "pga" | "euro"; status: "open" | "live" | "settling" | "final";

@@ -4,7 +4,10 @@
  * Called by a daily Vercel Cron (and callable manually). For every open,
  * unlocked, PGA event with fresh predictions the model:
  *   - Let It Ride: one slate per active season, spend-vs-save under the
- *     same use budget as members (Jack's modelLetItRidePick)
+ *     same use budget as members. Per-tour seasons use Jack's adviseSlate
+ *     on the calibrated advice values (the same function and numbers as
+ *     members' Spend / Save tags) and store a reason per pick; shared-use
+ *     seasons keep modelLetItRidePick, whose horizon spans both tours.
  *   - fade game: fades the 3 LOWEST expected payouts among its own
  *     top-20 pool (Jack's modelFadePicks) — the favorites it believes
  *     in least
@@ -23,6 +26,7 @@ import { roundLockAt } from "@/lib/lockTime";
 import { cronUnauthorized } from "@/lib/cronAuth";
 import { getSql, MODEL_API } from "@/lib/db";
 import { modelCollegePick, modelFadePicks, modelLetItRidePick, modelRoundPick, Probs } from "@/lib/modelBrain";
+import { adviseSlate, GolferValue } from "@/lib/advice";
 import { nameKey } from "@/lib/names";
 
 const MODEL_ID = "model";
@@ -151,6 +155,16 @@ export async function GET(req: Request) {
           } catch { horizonByTour.set(t, []); }  // empty horizon: greedy, which is safe
         }
 
+        // The calibrated values (same table members' advice uses), once per event.
+        let values: GolferValue[] | null = null;
+        try {
+          const res = await fetch(`${MODEL_API}/api/advice/values?tournament_id=${tid}&limit=80`, { cache: "no-store" });
+          const d = res.ok ? await res.json() : null;
+          if (d && String(d.tournament_id ?? "").toUpperCase() === tid && Array.isArray(d.golfers) && d.golfers.length) {
+            values = d.golfers.map((g: Omit<GolferValue, "key">) => ({ ...g, key: nameKey(g.player_name) }));
+          }
+        } catch { /* fall back to the older brain below */ }
+
         for (const lg of leagues) {
           // Per-tour budgets ('tour' scope): a DPWT use can only be spent on
           // the DPWT, so only this tour's future purses compete for it.
@@ -168,15 +182,26 @@ export async function GET(req: Request) {
           const usesLeft: Record<string, number> = {};
           for (const s of spent) usesLeft[s.player_key] = lg.uses_per_player - s.n;
 
-          const slate = modelLetItRidePick(preds, ev.purse, usesLeft, lg.uses_per_player,
-                                           lg.players_per_week, upcoming);
+          // adviseSlate's horizon is same-tour, which is right only when uses
+          // are per tour; a shared budget needs both tours' events (the
+          // cross-tour gap is what once burned Fitzpatrick at Dunhill).
+          let slate: string[];
+          const reasons: Record<string, string> = {};
+          if (values && perTour) {
+            const advice = adviseSlate(values, usesLeft, lg.uses_per_player, lg.players_per_week);
+            slate = advice.slate;
+            for (const name of slate) reasons[name] = advice.verdicts[nameKey(name)]?.reason ?? "";
+          } else {
+            slate = modelLetItRidePick(preds, ev.purse, usesLeft, lg.uses_per_player,
+                                       lg.players_per_week, upcoming);
+          }
           for (const name of slate) {
             await sql`
-              INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key)
-              VALUES (${lg.id}, ${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${name}, ${nameKey(name)})
+              INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key, reason)
+              VALUES (${lg.id}, ${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${name}, ${nameKey(name)}, ${reasons[name] || null})
               ON CONFLICT DO NOTHING`;
           }
-          log.push(`${tid}: league ${lg.id} → ${slate.join(", ")}`);
+          log.push(`${tid}: league ${lg.id} → ${slate.join(", ")}${values && perTour ? " (adviseSlate)" : " (modelLetItRidePick)"}`);
         }
       }
     }

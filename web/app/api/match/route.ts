@@ -80,11 +80,11 @@ export async function GET(req: Request) {
     if (!ev || !league) continue;
     const tid = ev.tournament_id.toUpperCase();
     const [picksRaw, table] = await Promise.all([
-      sql`SELECT user_id, player_name FROM league_picks
+      sql`SELECT user_id, player_name, reason FROM league_picks
           WHERE league_id = ${league.id} AND tournament_id = ${tid}`,
       api<Earnings>(`/api/results/earnings?tournament_id=${tid}&projected=1`),
     ]);
-    const picks = picksRaw as { user_id: string; player_name: string }[];
+    const picks = picksRaw as { user_id: string; player_name: string; reason: string | null }[];
     const visible = picks.filter(p => pickVisible(locks, tid, p.user_id, userId));
     const graded = !!(table?.settled || table?.projected);
     const sum = summarizeSlate(visible, table?.players ?? null, graded, nameOf, userId);

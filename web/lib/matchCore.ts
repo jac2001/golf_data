@@ -8,7 +8,7 @@ import { nameKey } from "./names";
 export type PlayerMoney = { player_name: string; earnings: number; position: string;
   up_one?: number; thru?: string; to_par?: number | null; round?: number | null };
 export type Golfer = { name: string; position: string; earnings: number; up_one: number; thru: string;
-  to_par: number | null; round: number | null };
+  to_par: number | null; round: number | null; reason?: string | null };
 export type MemberLine = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number };
 
 const money = (v: number) =>
@@ -23,7 +23,7 @@ export function ranked<T extends { total: number }>(rows: T[]): (T & { rank: num
 }
 
 export function summarizeSlate(
-  picks: { user_id: string; player_name: string }[],
+  picks: { user_id: string; player_name: string; reason?: string | null }[],
   table: Record<string, PlayerMoney> | null,
   graded: boolean,
   nameOf: (uid: string) => string,
@@ -37,6 +37,7 @@ export function summarizeSlate(
       earnings: graded ? (hit?.earnings ?? 0) : 0,
       up_one: hit?.up_one ?? 0, thru: hit?.thru ?? "",
       to_par: hit?.to_par ?? null, round: hit?.round ?? null,
+      ...(p.reason ? { reason: p.reason } : {}),
     }]);
   }
   const lines: MemberLine[] = ranked([...byUser.entries()].map(([uid, golfers]) => ({
