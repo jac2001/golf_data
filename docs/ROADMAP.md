@@ -55,24 +55,25 @@ needed for it.
 
 ## Next (October)
 
-1. **Advice view, step 5 (Mon Oct 5, after the first real recap):**
-   model-sync switches to adviseSlate; model reasons in Match Center
-   after lock. Steps 1-4 shipped 2026-10-02 (docs/ADVICE_VIEW_DESIGN.md).
-2. **Licensing follow-ups**: DataGolf (two-week nudge due ~Oct 6;
+1. **Licensing follow-ups**: DataGolf (two-week nudge due ~Oct 6;
    gates euro DG displays + public growth, not our own models) and the
    PGA Tour data team's three questions (reply drafted 2026-09-28).
-3. **Season formats that need weeks to accumulate**: watch pick
+2. **Season formats that need weeks to accumulate**: watch pick
    diversity (do real groups converge on chalk?) before inventing
    mechanics; College/Fade season boards earn their first real rows.
-4. **Onboarding polish** driven by Rick's first session: first-run
+3. **Onboarding polish** driven by Rick's first session: first-run
    pointers, invite-flow friction.
-5. **Ongoing as fields change:** add badge colors for new schools
+4. **Ongoing as fields change:** add badge colors for new schools
    (`web/lib/schoolBadges.ts`; unknowns fall back to a neutral badge).
-6. **Candidates, not yet sequenced:** winners-only flag for The Sentry
+5. **Candidates, not yet sequenced:** settlement safety net (GitHub
+   dropped/delayed 3 of 4 Sunday-night jobs on Oct 4 — a Monday check
+   that dispatches the settle when a finished event is still unsettled);
+   advice values spanning both tours so shared-use seasons can use
+   adviseSlate; winners-only flag for The Sentry
    (advice rates it like any restricted event); full DPWT schedule so
    euro advice can "save"; Clerk dashboard: turn off Clerk's own
    "delete account" so deletion always runs our cleanup.
-7. **PGA Tour meeting (Tue Oct 6):** data-team questions, what we use
+6. **PGA Tour meeting (Tue Oct 6):** data-team questions, what we use
    (on-demand scorecards, weather, power rankings), what we'd ask for.
 
 ### Done from this list (moved up and shipped)
@@ -114,6 +115,13 @@ needed for it.
   DNS, delivery confirmed in ImprovMX logs).
 - [x] Advice constants calibrated (Jack, 2026-10-03): play rate by world
   rank × event kind, decay 0.995 (notebooks/analysis/advice_calibration).
+- [x] First real settlement week (2026-10-05): settle job fixed (the
+  CI auto-retrain blew the 25-min budget and cancelled publishing),
+  recap fetches settlement fresh, Sunday recap rebuilt as a WEEKLY card
+  (both tours, a star per tour, lineup earnings, Golf Edge branding,
+  "Decided it" only when true). Model switched to adviseSlate for
+  per-tour seasons, reasons stored (league_picks.reason) and shown in
+  Match Center after lock.
 - [x] Tie-for-first headline (Jack, test-first). Follow-up idea: a
   real test runner that resolves `@/` so tests import lib/ directly.
 
