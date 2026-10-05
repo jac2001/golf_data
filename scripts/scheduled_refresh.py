@@ -56,6 +56,7 @@ Cron Examples (add to crontab -e):
 """
 
 import argparse
+import os
 import re
 import subprocess
 import sys
@@ -1439,7 +1440,15 @@ def run_post_tournament_refresh(dry_run: bool = False):
     tournaments_since = retrain_data.get("tournaments_since_retrain", 0) + 1
     did_retrain = False
 
-    if tournaments_since >= TOURNAMENTS_PER_RETRAIN:
+    on_ci = os.environ.get("GITHUB_ACTIONS") == "true"
+    if tournaments_since >= TOURNAMENTS_PER_RETRAIN and on_ci:
+        # The cloud job has a 25-minute budget and no DuckDB; a full retrain
+        # there ran past the limit and GitHub cancelled the WHOLE job before
+        # it published the settled results (Bank of Utah, 2026-10-05).
+        # Retraining is a deliberate offline step (January plan) — skip it
+        # here, keep counting, and let results ship.
+        log(f"Retrain threshold reached ({tournaments_since}) — skipped on CI; retrain runs offline")
+    elif tournaments_since >= TOURNAMENTS_PER_RETRAIN:
         log(f"Retrain threshold reached: {tournaments_since} tournaments since last retrain — running full retrain pipeline")
         retrain_steps = [
             # 1. Pull new tournament results into master_training_data_*.csv
