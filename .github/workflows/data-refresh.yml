@@ -112,7 +112,9 @@ jobs:
         # no field or predictions the day before it started). The Tue/Wed
         # slots catch the rollover; every fetch is event-name guarded and
         # idempotent, so a repeat is a no-op.
-        if: contains(fromJSON('["0 11 * * 2","0 23 * * 2","0 11 * * 3","0 23 * * 3"]'), github.event.schedule) && inputs.dry_run != true
+        # Scheduled Tue/Wed slots, or a manual/watchdog dispatch of those slots
+        # (GitHub's scheduler drops runs; /api/watchdog re-dispatches them).
+        if: (contains(fromJSON('["0 11 * * 2","0 23 * * 2","0 11 * * 3","0 23 * * 3"]'), github.event.schedule) || contains(fromJSON('["tuesday-morning","tuesday-evening","wednesday-morning","wednesday-evening"]'), inputs.schedule)) && inputs.dry_run != true
         run: |
           python3 scripts/scrapers/fetch_euro_events.py --field    || true
           python3 scripts/scrapers/fetch_euro_events.py --teetimes || true
