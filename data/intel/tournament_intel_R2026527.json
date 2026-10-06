@@ -1,0 +1,427 @@
+{
+  "tid": "R2026527",
+  "tournament_name": "Baycurrent Classic",
+  "generated_at": "2026-10-06T13:25:01.953589",
+  "course_conditions": {
+    "course_name": "Yokohama Country Club",
+    "rough_length": "3 inches",
+    "green_speed": "11.5 stimp",
+    "setup_notes": "Greens will play slower due to persistent precipitation in the region prior to the tournament. The 18th hole has been lengthened to 482 yards with additional rough added to holes 2 and 15. Fairway line adjustments and new bunkers have been implemented for 2026.",
+    "scoring_outlook": "moderate",
+    "sources": [
+      "https://www.pgatour.com/article/news/power-rankings/2026/10/05/rankings-baycurrent-classic-yokohama-country-club-odds-betting-fantasy-picks",
+      "https://www.golfbettingsystem.co.uk/baycurrent-classic-tips-2026/",
+      "https://www.pgatour.com/article/news/the-first-look/2026/10/05/storylines-baycurrent-classic-preview-field-tee-times-how-to-watch-rickie-fowler-jordan-spieth-xander-schauffele"
+    ]
+  },
+  "players": [
+    {
+      "player_name": "Brennan, Michael",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Michael Brennan finished T7 at the Bank of Utah Championship (Oct 1-4) after winning the Wyndham Championship in August. He has five top-25 finishes in his last six starts with improved putting form.",
+      "last_3_results": [
+        "T7 at Bank of Utah Championship (-11)",
+        "T10 at BMW Championship (-8)",
+        "T42 at FedEx St. Jude Championship (+1)"
+      ],
+      "trend": "trending_up",
+      "key_quote": "I don't want to be done playing golf. Unfortunately, I've had a couple of tough Sundays. Outside of that, I had been playing really solid.",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.golfchannel.com/pga-tour/news/michael-brennan-wins-wyndham-championship-and-qualifies-for-pga-tour-postseason",
+        "https://insights.betfred.com/golf/pga-tour/baycurrent-classic-2026-tips-picks-betting-predictions/"
+      ],
+      "win_prob": 0.0275676634964732,
+      "world_rank": 33.0
+    },
+    {
+      "player_name": "Ghim, Doug",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Ghim has finished inside the top 20 in four consecutive events, most recently finishing second at the Bank of Utah Championship with a 24-under total. He shot a second-round 62 and a third-round 64, demonstrating strong recent form heading into the Baycurrent Classic.",
+      "last_3_results": [
+        "2nd at Bank of Utah Championship (24-under)",
+        "T17 at Biltmore Championship Asheville (17-under)",
+        "T19 at Wyndham Championship (11-under)"
+      ],
+      "trend": "trending_up",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://dknetwork.draftkings.com/2026/10/05/draftkings-dfs-fantasy-golf-cheat-sheet-2026-pga-tour-baycurrent-classic-picks/",
+        "https://news.bet365.com/en-us/article/2026-baycurrent-classic-picks-predictions-odds/2026100611471107911",
+        "https://www.pgatour.com/article/news/the-first-look/2026/10/05/storylines-baycurrent-classic-preview-field-tee-times-how-to-watch-rickie-fowler-jordan-spieth-xander-schauffele"
+      ],
+      "win_prob": 0.0245196716098057,
+      "world_rank": 103.0
+    },
+    {
+      "player_name": "McNealy, Maverick",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Struggling recently with two missed cuts and one T52 finish. Lost 2.31 strokes putting at Bank of Utah Championship. Driving accuracy is a concern at Yokohama where he ranks 128th in accuracy.",
+      "last_3_results": [
+        "MC at A Military Tribute at The Greenbrier",
+        "MC at Sanderson Farms Championship",
+        "T52 at Safeway Open"
+      ],
+      "trend": "trending_down",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.rotoballer.com/player-news/maverick-mcnealy-attempts-to-erase-utah-from-his-memory/1959266",
+        "https://pgatour.bluegolf.com/bluegolfw/pgatour19/profile/mmcnealy18/tresults.htm"
+      ],
+      "win_prob": 0.0256430213009274,
+      "world_rank": 49.0
+    },
+    {
+      "player_name": "Wallace, Matt",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Wallace finished T5 at Rocket Classic and T7 at Wyndham Championship in August, showing improved form with two top-10 finishes in his last 11 events.",
+      "last_3_results": [
+        "T5 at Rocket Classic",
+        "T7 at Wyndham Championship",
+        "T40 at Open Championship"
+      ],
+      "trend": "trending_up",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.todays-golfer.com/news-and-events/tour-news/2026-baycurrent-classic-betting-tips/",
+        "https://www.espn.com/golf/player/results/_/id/10548/matt-wallace",
+        "https://www.pgatour.com/article/news/betting-profile/2026/wyndham-championship/matt-wallace-pga-tour-betting-profile-wyndham-championship-2026"
+      ],
+      "win_prob": 0.0164283658413144,
+      "world_rank": 54.0
+    },
+    {
+      "player_name": "Suber, Jackson",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Suber has shown inconsistent form with three top-10s in 2026 but struggles with putting. Recent results include a T6 at Biltmore Championship and a T67 at Charles Schwab Challenge after a fourth-place finish at CJ Cup Byron Nelson.",
+      "last_3_results": [
+        "T6 at Biltmore Championship",
+        "T28 at Houston Open",
+        "4 at RBC Canadian Open"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.rotowire.com/golf/player/jackson-suber-2116",
+        "https://www.rotoballer.com/player-news/jackson-suber-looking-to-keep-strong-form-going/1954442",
+        "https://www.cbssports.com/golf/players/27020833/jackson-suber/tournament-results/"
+      ],
+      "win_prob": 0.009569607682236,
+      "world_rank": 96.0
+    },
+    {
+      "player_name": "Smith, Jordan",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Mixed recent results with strong finish at Bank of Utah Championship (T26, -16) after poor showing at FedEx St. Jude (T46, +1). Consistent ball-striker but struggles with putting.",
+      "last_3_results": [
+        "T26 at Bank of Utah Championship",
+        "T46 at FedEx St. Jude Championship",
+        "T31 at Rocket Classic"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.pgatour.com/tournaments/2026/bank-of-utah-championship/R2026554/leaderboard",
+        "https://www.espn.com/golf/leaderboard/_/tournamentId/401811962",
+        "https://www.golfpost.com/tournaments/pga-tour-rocket-mortgage-classic-2026/leaderboard/"
+      ],
+      "win_prob": 0.011004356927033,
+      "world_rank": 73.0
+    },
+    {
+      "player_name": "Yu, Kevin",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Yu posted a T10 at Bank of Utah Championship (Oct 1-4), following a T24 at Biltmore Championship (Sept 17-20) and T4 at Wyndham Championship (Aug 6-9). Form has been trending positive recently with strong finishes in Fall events.",
+      "last_3_results": [
+        "T10 at Bank of Utah Championship",
+        "T24 at Biltmore Championship",
+        "4th at Wyndham Championship"
+      ],
+      "trend": "trending_up",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://www.foxsports.com/golf/chun-an-yu-player",
+        "https://www.espn.com/golf/player/results/_/id/4349547/kevin-yu",
+        "https://www.pgatour.com/player/45242/kevin-yu"
+      ],
+      "win_prob": 0.0132333276670434,
+      "world_rank": 107.0
+    },
+    {
+      "player_name": "Thompson, Davis",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Thompson finished T14 at Wyndham Championship, missed the cut at Biltmore Championship after shooting 70-75, then rebounded with T62 finish at Bank of Utah Championship (70-66-68-71). His form has been inconsistent with elite ball-striking but continued putting struggles.",
+      "last_3_results": [
+        "MC at Biltmore Championship",
+        "T14 at Wyndham Championship",
+        "T8 at Rocket Classic"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.pgatour.com/tournaments/2026/bank-of-utah-championship/R2026554/leaderboard",
+        "https://www.rte.ie/sport/results/golf/pga-tour-1/28348/biltmore-championship-asheville-920206/",
+        "https://www.rotowire.com/betting/golf/player/davis-thompson-odds-1868"
+      ],
+      "win_prob": 0.0181991407362894,
+      "world_rank": 130.0
+    },
+    {
+      "player_name": "Kitayama, Kurt",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Kitayama has shown solid form with a T15 at Black Desert Championship and is competing in Japan this week with familiarity from prior Baycurrent appearances. He ranks highly in strokes gained approach metrics and is 32nd in FedExCup Fall standings.",
+      "last_3_results": [
+        "T15 Black Desert Championship",
+        "T48 Zozo Championship",
+        "T12 FedEx St. Jude Championship"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.pgatour.com/article/news/betting-profile/2026/baycurrent-classic/",
+        "https://thegolfnewsnet.com/profile/kurt-kitayama-profile/",
+        "https://www.pgatour.com/player/48117/kurt-kitayama"
+      ],
+      "win_prob": 0.0479058112410012,
+      "world_rank": 41.0
+    },
+    {
+      "player_name": "Morikawa, Collin",
+      "injury_flag": true,
+      "injury_detail": "Recurring back injury that began in March 2026 at THE PLAYERS Championship; still causing discomfort as of May/June per multiple reports",
+      "recent_form_summary": "Mixed results with strong finish at BMW Championship (T4) followed by decline to T14 at Tour Championship. One win this season at Pebble Beach Pro-Am in February; overall 2026 season described as disappointing.",
+      "last_3_results": [
+        "T52 at FedEx St. Jude Championship",
+        "T4 at BMW Championship",
+        "T14 at TOUR Championship"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.espn.com/golf/player/results/_/id/10592/collin-morikawa",
+        "https://womensgolfjournal.com/p/baycurrent-classic-2026-power-rankings/",
+        "https://www.golfdigest.com/story/pga-championship-2026-collin-morikawa-back-injury"
+      ],
+      "win_prob": 0.0608096375896472,
+      "world_rank": 11.0
+    },
+    {
+      "player_name": "Keefer, Johnny",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Strong start to FedExCup Fall with back-to-back top-10 finishes in Asheville and Utah, showing improved putting and ball-striking.",
+      "last_3_results": [
+        "T10 at Bank of Utah Championship",
+        "T7 at Biltmore Championship Asheville",
+        "T3 at Genesis Scottish Open"
+      ],
+      "trend": "trending_up",
+      "key_quote": "Just between swing and distance controls and putting and all of that, it's kind of all coming together real nicely and helping me stay pretty steady",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.pgatour.com/tournaments/2026/bank-of-utah-championship/R2026554",
+        "https://www.pgatour.com/article/news/latest/2026/10/03/ben-james-johnny-keefer-bank-of-utah-championship-black-desert-resort-first-time-tour-win-trend-fedexcup-fall",
+        "https://sports.yahoo.com/articles/2026-baycurrent-classic-tee-times-170120854.html"
+      ],
+      "win_prob": 0.0109263531496038,
+      "world_rank": 62.0
+    },
+    {
+      "player_name": "Meissner, Mac",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Mixed form heading into Baycurrent with missed cuts at Wyndham Championship and 3M Open but solid T26 finish at Rocket Classic. Remains in danger of missing playoffs.",
+      "last_3_results": [
+        "MC at Wyndham Championship",
+        "MC at 3M Open",
+        "T26 at Rocket Classic"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.pgatour.com/player/59143/mac-meissner",
+        "https://www.pgatour.com/article/news/betting-profile/2026/wyndham-championship/mac-meissner-pga-tour-betting-profile-wyndham-championship-2026"
+      ],
+      "win_prob": 0.0037830955138286,
+      "world_rank": 91.0
+    },
+    {
+      "player_name": "Sunagawa, Kosuke",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Won Shinhan Donghae Open on September 13, 2026, capturing first professional victory at 16-under par. Limited tournament history available before this breakthrough win.",
+      "last_3_results": [
+        "W at Shinhan Donghae Open"
+      ],
+      "trend": "trending_up",
+      "key_quote": null,
+      "sentiment": "positive",
+      "sources": [
+        "https://www.pgatour.com/tournaments/2026/baycurrent-classic/",
+        "https://en.sedaily.com/sports/2026/09/13/sunagawa-wins-first-pro-title-at-shinhan-donghae-open-in",
+        "https://newsonjapan.com/article/150743.php"
+      ],
+      "win_prob": 0.0019742313606174,
+      "world_rank": 369.0
+    },
+    {
+      "player_name": "Thorbjornsen, Michael",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Won the Rocket Classic in early August for his first PGA Tour title. Strong form at FedEx St. Jude Championship (T2) in mid-August, though recent results show mixed play. Returns to Yokohama where he finished T3 last year.",
+      "last_3_results": [
+        "1st at Rocket Classic (Aug 2)",
+        "T2 at FedEx St. Jude Championship (Aug 16)",
+        "T7 at Genesis Scottish Open (Jul 12)"
+      ],
+      "trend": "trending_up",
+      "key_quote": "It was such a battle, playing with some great players",
+      "sentiment": "positive",
+      "sources": [
+        "https://www.pgatour.com/article/news/daily-wrapup/2026/08/02/round-four-rocket-classic-scores-leaderboards-results-detroit-golf-club",
+        "https://www.golfchannel.com/pga-tour/news/baycurrent-classic-2026-odds-favorites-for-yokohama-country-club",
+        "https://en.wikipedia.org/wiki/Michael_Thorbjornsen"
+      ],
+      "win_prob": 0.02057451067599,
+      "world_rank": 40.0
+    },
+    {
+      "player_name": "Ishizaka, Tomohiro",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Won Token Homemate Cup in April 2026. Made cut at Singapore Open with T3 finish in April, shooting 67-68-70-70=275 (-9). CUT at International Series Morocco in early 2026 season.",
+      "last_3_results": [
+        "W at Token Homemate Cup (April 2026)",
+        "T3 at Singapore Open (-9, April 2026)",
+        "CUT at International Series Morocco (2026)"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Japan_Golf_Tour",
+        "https://www.internationalseries.com/en/players/tomohiro-ishizaka",
+        "https://thegolfnewsnet.com/golfnewsnetteam/2026/04/26/2026-singapore-open-final-results-prize-money-payout-leaderboard-and-how-much-each-asian-tour-golfer-won-142445/"
+      ],
+      "win_prob": 0.0019742595748865,
+      "world_rank": 379.0
+    },
+    {
+      "player_name": "Hossler, Beau",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Finished runner-up at Wyndham with a brilliant 19-under performance, but form has declined since with a missed cut at Biltmore and a T81 at Bank of Utah.",
+      "last_3_results": [
+        "T81 at Bank of Utah Championship",
+        "MC at Biltmore Championship",
+        "2 at Wyndham Championship"
+      ],
+      "trend": "trending_down",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.espn.com/golf/player/_/id/6011/beau-hossler",
+        "https://www.pgatour.com/player/35461/beau-hossler"
+      ],
+      "win_prob": 0.0024674946971194,
+      "world_rank": 98.0
+    },
+    {
+      "player_name": "Ventura, Kristoffer",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Mixed recent form with some solid performances in July and August 2026, followed by a decline. Posted a T5 at Rocket Classic in early August, but finished T54 at Wyndham Championship and T24 at Bank of Utah Championship.",
+      "last_3_results": [
+        "T24 at Bank of Utah Championship",
+        "T54 at Wyndham Championship",
+        "T5 at Rocket Classic"
+      ],
+      "trend": "trending_down",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.espn.com/golf/player/_/id/4351896/kristoffer-ventura",
+        "https://www.golfdigest.com/story/bank-of-utah-championship-picks-2026",
+        "https://www.pgatour.com/article/news/betting-profile/2026/wyndham-championship/kristoffer-ventura-pga-tour-betting-profile-wyndham-championship-2026"
+      ],
+      "win_prob": 0.0037925019243515,
+      "world_rank": 194.0
+    },
+    {
+      "player_name": "Iwata, Hiroshi",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Won Drugstore Cosmos Cup on Japan Golf Tour on October 4, 2026 with -13 score. Competing at Baycurrent Classic in Yokohama this week.",
+      "last_3_results": [
+        "W at Drugstore Cosmos Cup (Oct 4, 2026)",
+        "Insufficient recent PGA Tour data",
+        "Insufficient recent PGA Tour data"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.jgto.org/en/",
+        "https://www.bozemandailychronicle.com/wire/sports/pga-tour-heads-to-japan-and-europe-has-a-strong-field-at-the-spanish-open/article_8fd85488-59c6-5052-b8d2-5ad471daed29.html"
+      ],
+      "win_prob": 0.0019559470703681,
+      "world_rank": 280.0
+    },
+    {
+      "player_name": "Iwasaki, Aguri",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Limited PGA Tour activity in 2026; won Japan Players Championship in July. Strokes Gained metrics show struggles with putting and driving based on pre-season data.",
+      "last_3_results": [
+        "29 at International Series Japan",
+        "Win at Japan Players Championship",
+        "T67 at Baycurrent Classic 2023"
+      ],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.pgatour.com/article/news/betting-profile/2026/baycurrent-classic/aguri-iwasaki-pga-tour-betting-profile-baycurrent-classic-2026",
+        "https://www.internationalseries.com/en/players/aguri-iwasaki",
+        "https://en.wikipedia.org/wiki/2026_Japan_Golf_Tour"
+      ],
+      "win_prob": 0.0019559380639693,
+      "world_rank": 377.0
+    },
+    {
+      "player_name": "Hosono, Yusaku",
+      "injury_flag": false,
+      "injury_detail": null,
+      "recent_form_summary": "Insufficient data available for recent PGA Tour performance. Limited tournament participation found in available sources.",
+      "last_3_results": [],
+      "trend": "stable",
+      "key_quote": null,
+      "sentiment": "neutral",
+      "sources": [
+        "https://www.golfmagic.com/tour/pga-tour/baycurrent-classic-tee-times-2026-rounds-1-2-japan",
+        "https://baycurrentclassic.com/en"
+      ],
+      "win_prob": 0.001974295802725,
+      "world_rank": 266.0
+    }
+  ]
+}

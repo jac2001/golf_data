@@ -1,0 +1,340 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Baycurrent Classic",
+      "tableTitle": "Power Rankings for Baycurrent Classic ",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "63454",
+            "firstName": "Johnny",
+            "lastName": "Keefer",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_63454.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The PGA Tour rookie has fortified his position at 72nd in the FedExCup with a pair of top 10s in the FedExCup Fall, so any residual pressure to perform has been allayed. Reserve power when he needs it and a surgeon on approach."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "52375",
+            "firstName": "Doug",
+            "lastName": "Ghim",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_52375.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a T17 and a solo second to open the FedExCup Fall, the ball-striker promptly has climbed from 93rd to 58th in the FedExCup, but he also ended the regular season with consecutive top 20s, so his confidence is unwavering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "48887",
+            "firstName": "Matt",
+            "lastName": "Wallace",
+            "countryFlag": "ENG",
+            "countryName": "England",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48887.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "When the Brit missed the cut on the number at Black Desert last week, it extinguished his blaze of six straight top 15s worldwide. The upshot is that extra rest positions him nicely to improve on last year\u2019s T10 at Yokohama."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "57364",
+            "firstName": "Michael",
+            "lastName": "Thorbjornsen",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57364.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Off since the BMW Championship, his failure to advance to the finale is secondary to his coronation at the Rocket Classic. Nothing if not dynamic, that trait was on display throughout a solo third at Yokohama a year ago."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "46340",
+            "firstName": "Alex",
+            "lastName": "Smalley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_46340.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Back after last year\u2019s T4 that sparked four top-four finishes, the last two contributing to what\u2019s been a career year for the 29-year-old. After advancing to the Tour Championship, all that\u2019s missing is a breakthrough victory."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "59018",
+            "firstName": "Ryan",
+            "lastName": "Gerard",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_59018.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Proved at the end of 2025 that his game travels and has again in recent months with a series of strong performances bracketing a solo third at the Tour Championship, so he\u2019s poised to improve on last year\u2019s T27 at Yokohama."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "24502",
+            "firstName": "Adam",
+            "lastName": "Scott",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_24502.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Arguably the most consistently strong of his generation, the 46-year-old is turning the corner on another loss in the Presidents Cup. A T2 at the BMW PGA Championship immediately before it was his fifth straight top 20 worldwide."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "51766",
+            "firstName": "Wyndham",
+            "lastName": "Clark",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51766.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The latest of his all-or-nothing outings was a 1-4-0 record for the victorious Americans at the Presidents Cup, but play on his own ball has been phenomenal for months. He\u2019s complemented three wins with three top fives."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "33448",
+            "firstName": "Justin",
+            "lastName": "Thomas",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_33448.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Yokohama debut. He\u2019s had a solid but unspectacular season after returning from back surgery, so there are unfulfilled goals at this time of year. Makes the most amid middling irons and a beast in the absence of a cut."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "60004",
+            "firstName": "Jacob",
+            "lastName": "Bridgeman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_60004.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Refusing to rest, the recent winner of the Biltmore Championship Asheville is making his Baycurrent debut. Also made his first start at the Presidents Cup where he went 1-2-0. The Tour\u2019s best putter is fourth in par-4 scoring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "32839",
+            "firstName": "Hideki",
+            "lastName": "Matsuyama",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_32839.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "The long-running top-ranked golfer from the host country is rested after going 2-2-0 at the Presidents Cup. It\u2019s a departure from how he concluded the FedExCup season with seven straight starts that included a T3-T5-T7-T7 burst."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "39971",
+            "firstName": "Sungjae",
+            "lastName": "Im",
+            "countryFlag": "KOR",
+            "countryName": "South Korea",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39971.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Couldn\u2019t make up for time lost to injury early in the year and placed 37th in the FedExCup, but he surged with T15, T14, T5 and T10 at the end. Also went 2-2-1 at the Presidents Cup. Splashed at Yokohama with a T20 last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "50525",
+            "firstName": "Collin",
+            "lastName": "Morikawa",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50525.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "One of three in the field who teed it up in each of the first seven editions, he prevailed in 2023 at the previous site. His focus is singular after reaching the Tour Championship and post-Presidents Cup (2-2-0). T14 here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "37378",
+            "firstName": "Min Woo",
+            "lastName": "Lee",
+            "countryFlag": "AUS",
+            "countryName": "Australia",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_37378.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After finishing T4 at the Tour Championship, he contributed 2.5 points in defeat at the Presidents Cup, so his form is fine. Also delivered a T10 at Yokohama last year where you\u2019d expect his scoring mentality to run free."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "48081",
+            "firstName": "Xander",
+            "lastName": "Schauffele",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_48081.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Finally fulfilled his wish to win in Japan here a year ago, but it\u2019s a getaway that he\u2019s always enjoyed privately with family. Returns in a similar spot of having gone winless on the year but finished the 2026 Playoffs stronger."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
