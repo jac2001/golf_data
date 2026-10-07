@@ -2544,8 +2544,20 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     # course_fit_delta = final_pred - baseline_pred (how course helps/hurts this player)
     # Saves as pass-through columns; activate in SCORE_FEATURES after retrain.
     try:
-        _dc_path = DATA_DIR / "datagolf" / "dg_decompositions_latest.csv"
+        # This event's own file first; the "latest" file only if its OWN
+        # event_name matches. A stale latest (last week's field) once gave
+        # half the field another course's final_pred and the top 10 none.
+        _dc_path = DATA_DIR / "datagolf" / f"dg_decompositions_{str(tournament_id or '').upper()}.csv"
+        if not _dc_path.exists():
+            _dc_path = DATA_DIR / "datagolf" / "dg_decompositions_latest.csv"
+        _dc_ok = False
         if _dc_path.exists():
+            from scripts.scrapers.event_guard import names_match as _names_match
+            _dc_event = str(pd.read_csv(_dc_path, usecols=["event_name"], nrows=1)["event_name"].iloc[0])
+            _dc_ok = _names_match(_dc_event, str(tournament_name))
+            if not _dc_ok:
+                print(f"  DG decompositions SKIPPED: file is for '{_dc_event}', not '{tournament_name}'")
+        if _dc_ok:
             _dc_df = pd.read_csv(_dc_path, usecols=[
                 "player_name", "baseline_pred", "final_pred", "course_fit_delta",
                 "driving_accuracy_adjustment", "driving_distance_adjustment",
@@ -2562,8 +2574,8 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
             features_df["dg_final_pred_vs_field"] = features_df["final_pred"] - _dc_field_mean
             _m = features_df["final_pred"].notna().sum()
             print(f"  DG decompositions merged: {_m}/{len(features_df)} players matched")
-        else:
-            print(f"  DG decompositions: dg_decompositions_latest.csv not found — run fetch_dg_decompositions.py")
+        elif not _dc_path.exists():
+            print(f"  DG decompositions: no file found — run fetch_dg_decompositions.py")
     except Exception as _dc_e:
         print(f"  DG decompositions merge skipped: {_dc_e}")
 

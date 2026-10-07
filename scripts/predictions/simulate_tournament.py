@@ -207,12 +207,16 @@ def build_player_profiles(preds_df: pd.DataFrame,
     # DG's final_pred is the best available signal; use it if >50% field covered
     use_final_pred = final_pred.notna().mean() > 0.50
     if use_final_pred:
-        mu_raw = final_pred.fillna(
-            (pred_sg.fillna(pred_sg.median()) * 0.70 +
-             recent_sg.fillna(recent_sg.median()) * 0.30 +
-             fit.fillna(0.0))
-        )
-        mu_source = "DG final_pred"
+        # Missing final_pred must be filled on the SAME scale (DG strokes
+        # gained per round). Our blend runs ~5x narrower, so filling with it
+        # simulated every unmatched player as field-average — including,
+        # once, the whole top 10 (Schauffele 6.1% model → 1.2% sim).
+        # DG skill + fit is DG's own pre-course number: the right stand-in.
+        skill = _col("dg_skill_total")
+        blend = (pred_sg.fillna(pred_sg.median()) * 0.70 +
+                 recent_sg.fillna(recent_sg.median()) * 0.30 + fit.fillna(0.0))
+        mu_raw = final_pred.fillna(skill + fit.fillna(0.0)).fillna(blend)
+        mu_source = "DG final_pred (missing → DG skill + fit)"
     else:
         pred_sg   = pred_sg.fillna(pred_sg.median())
         recent_sg = recent_sg.fillna(recent_sg.median())

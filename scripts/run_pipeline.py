@@ -513,6 +513,14 @@ def run_predictions(
     tournament_id: str = None,
 ) -> Path:
     """Run the prediction model."""
+    # DG decompositions (final_pred, std_deviation) are event-specific. The
+    # Tuesday data-refresh used to be the only thing fetching them, and when
+    # GitHub dropped that run the model silently read LAST week's file
+    # (Baycurrent got Bank of Utah's — top-10 players missing, 2026-10-06).
+    # Fetch them here; the merge in predict_tournament checks the event.
+    if tournament_id:
+        subprocess.run(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_dg_decompositions.py"),
+                        "--tournament-id", tournament_id], capture_output=True, text=True, timeout=120)
     print_header("GENERATING PREDICTIONS")
 
     # Build output path
