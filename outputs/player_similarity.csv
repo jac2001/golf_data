@@ -1,7 +1,7 @@
 player_name,similar_player,similarity_score,similar_rank,similar_win_prob,similar_world_rank
 "Schauffele, Xander","Scott, Adam",0.9314,1,0.04101,45
 "Schauffele, Xander","Hisatsune, Ryo",0.9244,2,0.03747,70
-"Schauffele, Xander","Morikawa, Collin",0.9211,3,0.06072,11
+"Schauffele, Xander","Morikawa, Collin",0.9211,3,0.06082,11
 "Schauffele, Xander","Mitchell, Keith",0.9179,4,0.02231,76
 "Schauffele, Xander","Gerard, Ryan",0.8697,5,0.02502,23
 "Schauffele, Xander","Neergaard-Petersen, Rasmus",0.8303,6,0.01337,77
@@ -10,7 +10,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Schauffele, Xander","Smith, Jordan",0.7725,9,0.011,73
 "Schauffele, Xander","Kohles, Ben",0.719,10,0.02038,93
 "Morikawa, Collin","Gerard, Ryan",0.942,1,0.02502,23
-"Morikawa, Collin","Schauffele, Xander",0.9211,2,0.06156,10
+"Morikawa, Collin","Schauffele, Xander",0.9211,2,0.06155,10
 "Morikawa, Collin","Scott, Adam",0.8839,3,0.04101,45
 "Morikawa, Collin","Kitayama, Kurt",0.8677,4,0.0479,41
 "Morikawa, Collin","Kohles, Ben",0.8105,5,0.02038,93
@@ -30,8 +30,8 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Clark, Wyndham","McNealy, Maverick",0.6311,9,0.02564,49
 "Clark, Wyndham","Parry, John",0.6294,10,0.00857,106
 "Bridgeman, Jacob","Gerard, Ryan",0.893,1,0.02502,23
-"Bridgeman, Jacob","Morikawa, Collin",0.7866,2,0.06072,11
-"Bridgeman, Jacob","Schauffele, Xander",0.6698,3,0.06156,10
+"Bridgeman, Jacob","Morikawa, Collin",0.7866,2,0.06082,11
+"Bridgeman, Jacob","Schauffele, Xander",0.6698,3,0.06155,10
 "Bridgeman, Jacob","Smalley, Alex",0.6667,4,0.01905,46
 "Bridgeman, Jacob","Bauchou, Zach",0.6343,5,0.00185,151
 "Bridgeman, Jacob","Fowler, Rickie",0.5807,6,0.02995,48
@@ -40,7 +40,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Bridgeman, Jacob","Spieth, Jordan",0.5198,9,0.01104,60
 "Bridgeman, Jacob","Kitayama, Kurt",0.4562,10,0.0479,41
 "Matsuyama, Hideki","Meissner, Mac",0.9847,1,0.00378,91
-"Matsuyama, Hideki","Clark, Wyndham",0.9608,2,0.05334,5
+"Matsuyama, Hideki","Clark, Wyndham",0.9608,2,0.05325,5
 "Matsuyama, Hideki","Thomas, Justin",0.8504,3,0.0264,27
 "Matsuyama, Hideki","Theegala, Sahith",0.8146,4,0.00566,90
 "Matsuyama, Hideki","Parry, John",0.7959,5,0.00857,106
@@ -51,17 +51,17 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Matsuyama, Hideki","Spieth, Jordan",0.6448,10,0.01104,60
 "Scott, Adam","Kitayama, Kurt",0.9527,1,0.0479,41
 "Scott, Adam","Mitchell, Keith",0.9402,2,0.02231,76
-"Scott, Adam","Schauffele, Xander",0.9314,3,0.06156,10
+"Scott, Adam","Schauffele, Xander",0.9314,3,0.06155,10
 "Scott, Adam","Hisatsune, Ryo",0.9151,4,0.03747,70
 "Scott, Adam","Smith, Jordan",0.9141,5,0.011,73
-"Scott, Adam","Morikawa, Collin",0.8839,6,0.06072,11
+"Scott, Adam","Morikawa, Collin",0.8839,6,0.06082,11
 "Scott, Adam","Gerard, Ryan",0.867,7,0.02502,23
 "Scott, Adam","Neergaard-Petersen, Rasmus",0.8649,8,0.01337,77
 "Scott, Adam","Kohles, Ben",0.8105,9,0.02038,93
 "Scott, Adam","Thompson, Davis",0.7299,10,0.0182,130
-"Gerard, Ryan","Morikawa, Collin",0.942,1,0.06072,11
+"Gerard, Ryan","Morikawa, Collin",0.942,1,0.06082,11
 "Gerard, Ryan","Bridgeman, Jacob",0.893,2,0.04699,20
-"Gerard, Ryan","Schauffele, Xander",0.8697,3,0.06156,10
+"Gerard, Ryan","Schauffele, Xander",0.8697,3,0.06155,10
 "Gerard, Ryan","Scott, Adam",0.867,4,0.04101,45
 "Gerard, Ryan","Kitayama, Kurt",0.8002,5,0.0479,41
 "Gerard, Ryan","Smalley, Alex",0.7571,6,0.01905,46
@@ -74,7 +74,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "McNealy, Maverick","Spieth, Jordan",0.6801,3,0.01104,60
 "McNealy, Maverick","Thomas, Justin",0.6743,4,0.0264,27
 "McNealy, Maverick","Taylor, Nick",0.6503,5,0.00576,88
-"McNealy, Maverick","Clark, Wyndham",0.6311,6,0.05334,5
+"McNealy, Maverick","Clark, Wyndham",0.6311,6,0.05325,5
 "McNealy, Maverick","Matsuyama, Hideki",0.5859,7,0.03682,26
 "McNealy, Maverick","Castillo, Ricky",0.535,8,0.00845,83
 "McNealy, Maverick","Theegala, Sahith",0.5163,9,0.00566,90
@@ -86,15 +86,15 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Thomas, Justin","Theegala, Sahith",0.8017,5,0.00566,90
 "Thomas, Justin","Bradley, Keegan",0.757,6,0.03279,51
 "Thomas, Justin","Parry, John",0.7568,7,0.00857,106
-"Thomas, Justin","Clark, Wyndham",0.7137,8,0.05334,5
+"Thomas, Justin","Clark, Wyndham",0.7137,8,0.05325,5
 "Thomas, Justin","McNealy, Maverick",0.6743,9,0.02564,49
 "Thomas, Justin","Lee, Min Woo",0.6152,10,0.02525,31
 "Kitayama, Kurt","Scott, Adam",0.9527,1,0.04101,45
 "Kitayama, Kurt","Kohles, Ben",0.9337,2,0.02038,93
 "Kitayama, Kurt","Smith, Jordan",0.8776,3,0.011,73
-"Kitayama, Kurt","Morikawa, Collin",0.8677,4,0.06072,11
+"Kitayama, Kurt","Morikawa, Collin",0.8677,4,0.06082,11
 "Kitayama, Kurt","Hisatsune, Ryo",0.8562,5,0.03747,70
-"Kitayama, Kurt","Schauffele, Xander",0.8285,6,0.06156,10
+"Kitayama, Kurt","Schauffele, Xander",0.8285,6,0.06155,10
 "Kitayama, Kurt","Thompson, Davis",0.8259,7,0.0182,130
 "Kitayama, Kurt","Mitchell, Keith",0.8128,8,0.02231,76
 "Kitayama, Kurt","Gerard, Ryan",0.8002,9,0.02502,23
@@ -105,7 +105,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Brennan, Michael","Smith, Jordan",0.76,4,0.011,73
 "Brennan, Michael","Fowler, Rickie",0.7528,5,0.02995,48
 "Brennan, Michael","Scott, Adam",0.7281,6,0.04101,45
-"Brennan, Michael","Schauffele, Xander",0.6569,7,0.06156,10
+"Brennan, Michael","Schauffele, Xander",0.6569,7,0.06155,10
 "Brennan, Michael","Hisatsune, Ryo",0.6166,8,0.03747,70
 "Brennan, Michael","Gerard, Ryan",0.6088,9,0.02502,23
 "Brennan, Michael","Potgieter, Aldrich",0.5727,10,0.0074,94
@@ -115,20 +115,20 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Wallace, Matt","Kohles, Ben",0.8295,4,0.02038,93
 "Wallace, Matt","Suber, Jackson",0.8066,5,0.00957,96
 "Wallace, Matt","Matsuyama, Hideki",0.7933,6,0.03682,26
-"Wallace, Matt","Clark, Wyndham",0.7212,7,0.05334,5
+"Wallace, Matt","Clark, Wyndham",0.7212,7,0.05325,5
 "Wallace, Matt","Bradley, Keegan",0.7131,8,0.03279,51
 "Wallace, Matt","Ghim, Doug",0.5859,9,0.02452,103
 "Wallace, Matt","Kitayama, Kurt",0.5783,10,0.0479,41
 "Ghim, Doug","Hisatsune, Ryo",0.9116,1,0.03747,70
 "Ghim, Doug","Bradley, Keegan",0.8863,2,0.03279,51
-"Ghim, Doug","Schauffele, Xander",0.8278,3,0.06156,10
+"Ghim, Doug","Schauffele, Xander",0.8278,3,0.06155,10
 "Ghim, Doug","Thompson, Davis",0.8172,4,0.0182,130
 "Ghim, Doug","Neergaard-Petersen, Rasmus",0.7736,5,0.01337,77
 "Ghim, Doug","Lee, Min Woo",0.7586,6,0.02525,31
 "Ghim, Doug","Mitchell, Keith",0.753,7,0.02231,76
 "Ghim, Doug","Scott, Adam",0.6955,8,0.04101,45
 "Ghim, Doug","Kohles, Ben",0.6885,9,0.02038,93
-"Ghim, Doug","Clark, Wyndham",0.6778,10,0.05334,5
+"Ghim, Doug","Clark, Wyndham",0.6778,10,0.05325,5
 "Fowler, Rickie","Homa, Max",0.8827,1,0.00778,78
 "Fowler, Rickie","Hodges, Lee",0.8458,2,0.00431,137
 "Fowler, Rickie","Coody, Pierceson",0.785,3,0.00568,71
@@ -148,7 +148,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Bradley, Keegan","Parry, John",0.7309,7,0.00857,106
 "Bradley, Keegan","Wallace, Matt",0.7131,8,0.01643,54
 "Bradley, Keegan","Hisatsune, Ryo",0.6878,9,0.03747,70
-"Bradley, Keegan","Clark, Wyndham",0.6769,10,0.05334,5
+"Bradley, Keegan","Clark, Wyndham",0.6769,10,0.05325,5
 "Lee, Min Woo","Bradley, Keegan",0.8361,1,0.03279,51
 "Lee, Min Woo","Thorbjornsen, Michael",0.7594,2,0.02057,40
 "Lee, Min Woo","Ghim, Doug",0.7586,3,0.02452,103
@@ -183,13 +183,13 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Mitchell, Keith","Scott, Adam",0.9402,2,0.04101,45
 "Mitchell, Keith","Hisatsune, Ryo",0.9366,3,0.03747,70
 "Mitchell, Keith","Smith, Jordan",0.927,4,0.011,73
-"Mitchell, Keith","Schauffele, Xander",0.9179,5,0.06156,10
+"Mitchell, Keith","Schauffele, Xander",0.9179,5,0.06155,10
 "Mitchell, Keith","Brennan, Michael",0.8516,6,0.02757,33
 "Mitchell, Keith","Kitayama, Kurt",0.8128,7,0.0479,41
 "Mitchell, Keith","Ghim, Doug",0.753,8,0.02452,103
-"Mitchell, Keith","Morikawa, Collin",0.7407,9,0.06072,11
+"Mitchell, Keith","Morikawa, Collin",0.7407,9,0.06082,11
 "Mitchell, Keith","Gerard, Ryan",0.7393,10,0.02502,23
-"Smalley, Alex","Morikawa, Collin",0.8074,1,0.06072,11
+"Smalley, Alex","Morikawa, Collin",0.8074,1,0.06082,11
 "Smalley, Alex","Gerard, Ryan",0.7571,2,0.02502,23
 "Smalley, Alex","Kohles, Ben",0.7516,3,0.02038,93
 "Smalley, Alex","Kitayama, Kurt",0.7183,4,0.0479,41
@@ -198,7 +198,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Smalley, Alex","Bauchou, Zach",0.6037,7,0.00185,151
 "Smalley, Alex","Scott, Adam",0.5831,8,0.04101,45
 "Smalley, Alex","Wallace, Matt",0.5435,9,0.01643,54
-"Smalley, Alex","Clark, Wyndham",0.5206,10,0.05334,5
+"Smalley, Alex","Clark, Wyndham",0.5206,10,0.05325,5
 "Harman, Brian","Putnam, Andrew",0.8635,1,0.00199,116
 "Harman, Brian","Lipsky, David",0.7652,2,0.00187,136
 "Harman, Brian","Hoge, Tom",0.7472,3,0.00214,148
@@ -221,7 +221,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Kim, Michael","Jaeger, Stephan",0.822,10,0.00632,127
 "Spieth, Jordan","Bezuidenhout, Christiaan",0.8861,1,0.00405,109
 "Spieth, Jordan","Theegala, Sahith",0.7667,2,0.00566,90
-"Spieth, Jordan","Clark, Wyndham",0.7646,3,0.05334,5
+"Spieth, Jordan","Clark, Wyndham",0.7646,3,0.05325,5
 "Spieth, Jordan","Taylor, Nick",0.7319,4,0.00576,88
 "Spieth, Jordan","McNealy, Maverick",0.6801,5,0.02564,49
 "Spieth, Jordan","Matsuyama, Hideki",0.6448,6,0.03682,26
@@ -232,12 +232,12 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Kohles, Ben","Kitayama, Kurt",0.9337,1,0.0479,41
 "Kohles, Ben","Thompson, Davis",0.9227,2,0.0182,130
 "Kohles, Ben","Wallace, Matt",0.8295,3,0.01643,54
-"Kohles, Ben","Morikawa, Collin",0.8105,4,0.06072,11
+"Kohles, Ben","Morikawa, Collin",0.8105,4,0.06082,11
 "Kohles, Ben","Scott, Adam",0.8105,5,0.04101,45
 "Kohles, Ben","Hisatsune, Ryo",0.7976,6,0.03747,70
 "Kohles, Ben","Smalley, Alex",0.7516,7,0.01905,46
 "Kohles, Ben","Smith, Jordan",0.7361,8,0.011,73
-"Kohles, Ben","Schauffele, Xander",0.719,9,0.06156,10
+"Kohles, Ben","Schauffele, Xander",0.719,9,0.06155,10
 "Kohles, Ben","Ghim, Doug",0.6885,10,0.02452,103
 "Yu, Kevin","Thorbjornsen, Michael",0.9407,1,0.02057,40
 "Yu, Kevin","Pendrith, Taylor",0.9062,2,0.00657,110
@@ -295,7 +295,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Smith, Jordan","Hisatsune, Ryo",0.8979,4,0.03747,70
 "Smith, Jordan","Kitayama, Kurt",0.8776,5,0.0479,41
 "Smith, Jordan","Thompson, Davis",0.7796,6,0.0182,130
-"Smith, Jordan","Schauffele, Xander",0.7725,7,0.06156,10
+"Smith, Jordan","Schauffele, Xander",0.7725,7,0.06155,10
 "Smith, Jordan","Brennan, Michael",0.76,8,0.02757,33
 "Smith, Jordan","Kohles, Ben",0.7361,9,0.02038,93
 "Smith, Jordan","Keefer, Johnny",0.7008,10,0.01093,62
@@ -328,7 +328,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Thompson, Davis","Smith, Jordan",0.7796,7,0.011,73
 "Thompson, Davis","Scott, Adam",0.7299,8,0.04101,45
 "Thompson, Davis","Neergaard-Petersen, Rasmus",0.699,9,0.01337,77
-"Thompson, Davis","Schauffele, Xander",0.6633,10,0.06156,10
+"Thompson, Davis","Schauffele, Xander",0.6633,10,0.06155,10
 "Horschel, Billy","Hoge, Tom",0.9307,1,0.00214,148
 "Horschel, Billy","Bauchou, Zach",0.8126,2,0.00185,151
 "Horschel, Billy","Nakajima, Keita",0.7527,3,0.00854,99
@@ -340,7 +340,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Horschel, Billy","Suber, Jackson",0.5207,9,0.00957,96
 "Horschel, Billy","Homa, Max",0.4828,10,0.00778,78
 "Meissner, Mac","Matsuyama, Hideki",0.9847,1,0.03682,26
-"Meissner, Mac","Clark, Wyndham",0.9345,2,0.05334,5
+"Meissner, Mac","Clark, Wyndham",0.9345,2,0.05325,5
 "Meissner, Mac","Wallace, Matt",0.8763,3,0.01643,54
 "Meissner, Mac","Parry, John",0.8625,4,0.00857,106
 "Meissner, Mac","Thomas, Justin",0.8136,5,0.0264,27
@@ -361,14 +361,14 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Taylor, Nick","Castillo, Ricky",0.6641,10,0.00845,83
 "Hisatsune, Ryo","Mitchell, Keith",0.9366,1,0.02231,76
 "Hisatsune, Ryo","Neergaard-Petersen, Rasmus",0.9312,2,0.01337,77
-"Hisatsune, Ryo","Schauffele, Xander",0.9244,3,0.06156,10
+"Hisatsune, Ryo","Schauffele, Xander",0.9244,3,0.06155,10
 "Hisatsune, Ryo","Scott, Adam",0.9151,4,0.04101,45
 "Hisatsune, Ryo","Ghim, Doug",0.9116,5,0.02452,103
 "Hisatsune, Ryo","Smith, Jordan",0.8979,6,0.011,73
 "Hisatsune, Ryo","Thompson, Davis",0.857,7,0.0182,130
 "Hisatsune, Ryo","Kitayama, Kurt",0.8562,8,0.0479,41
 "Hisatsune, Ryo","Kohles, Ben",0.7976,9,0.02038,93
-"Hisatsune, Ryo","Morikawa, Collin",0.7849,10,0.06072,11
+"Hisatsune, Ryo","Morikawa, Collin",0.7849,10,0.06082,11
 "Nakajima, Keita","Horschel, Billy",0.7527,1,0.00198,157
 "Nakajima, Keita","Hoge, Tom",0.7289,2,0.00214,148
 "Nakajima, Keita","Keefer, Johnny",0.7128,3,0.01093,62
@@ -393,7 +393,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Neergaard-Petersen, Rasmus","Smith, Jordan",0.941,2,0.011,73
 "Neergaard-Petersen, Rasmus","Hisatsune, Ryo",0.9312,3,0.03747,70
 "Neergaard-Petersen, Rasmus","Scott, Adam",0.8649,4,0.04101,45
-"Neergaard-Petersen, Rasmus","Schauffele, Xander",0.8303,5,0.06156,10
+"Neergaard-Petersen, Rasmus","Schauffele, Xander",0.8303,5,0.06155,10
 "Neergaard-Petersen, Rasmus","Brennan, Michael",0.8184,6,0.02757,33
 "Neergaard-Petersen, Rasmus","Ghim, Doug",0.7736,7,0.02452,103
 "Neergaard-Petersen, Rasmus","Kitayama, Kurt",0.7434,8,0.0479,41
@@ -446,7 +446,7 @@ player_name,similar_player,similarity_score,similar_rank,similar_win_prob,simila
 "Theegala, Sahith","Thomas, Justin",0.8017,5,0.0264,27
 "Theegala, Sahith","Meissner, Mac",0.8009,6,0.00378,91
 "Theegala, Sahith","Spieth, Jordan",0.7667,7,0.01104,60
-"Theegala, Sahith","Clark, Wyndham",0.7494,8,0.05334,5
+"Theegala, Sahith","Clark, Wyndham",0.7494,8,0.05325,5
 "Theegala, Sahith","Parry, John",0.7115,9,0.00857,106
 "Theegala, Sahith","Jaeger, Stephan",0.6116,10,0.00632,127
 "Hodges, Lee","Homa, Max",0.9128,1,0.00778,78
