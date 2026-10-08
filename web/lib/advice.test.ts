@@ -83,3 +83,8 @@ test("nothing ahead → reason doesn't mention $0", () => {
   const v = golferVerdict(golfer(500_000, []), 3);
   assert.doesNotMatch(v.reason, /\$0/);
 });
+
+test("windows filtered out → says he wouldn't be a top pick", () => {
+  const v = golferVerdict({ ...golfer(125_000, []), allWindows: 3 }, 3);
+  assert.match(v.reason, /top pick/);
+});

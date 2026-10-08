@@ -21,6 +21,7 @@ export type GolferValue = {
   key: string;              // nameKey(player_name) — how uses are looked up
   now_ev: number;           // expected prize money THIS week
   future: FutureWindow[];   // upcoming events on this tour, any order
+  allWindows?: number;      // windows before contestedFutures filtered them (set by adviseSlate)
 };
 
 export type Verdict = {
@@ -66,7 +67,9 @@ export function golferVerdict(g: GolferValue, left: number): Verdict {
     return { verdict: "spent", score: -Infinity, reason: `${money(now)} now — spent.` };
   } else if (now >= cost) {
     const reason = cost === 0
-      ? `${money(now)} now, nothing better ahead — spend.`
+      ? ((g.allWindows ?? 0) > g.future.length
+          ? `${money(now)} now — no later event where he'd be a top pick — spend.`
+          : `${money(now)} now, nothing better ahead — spend.`)
       : `${money(now)} now beats ${money(cost)} at ${future[left - 1].name} — spend.`;
     return { verdict: "spend", score: now, reason };
   } else {
@@ -114,7 +117,7 @@ export function adviseSlate(
   const futures = contestedFutures(field, slots);
   const verdicts: Record<string, Verdict> = {};
   for (const g of field) {
-    verdicts[g.key] = golferVerdict({ ...g, future: futures.get(g.key) ?? [] }, usesLeft[g.key] ?? usesPerPlayer);
+    verdicts[g.key] = golferVerdict({ ...g, future: futures.get(g.key) ?? [], allWindows: g.future.length }, usesLeft[g.key] ?? usesPerPlayer);
   }
   const slate = field
     .filter(g => verdicts[g.key].verdict !== "spent")
