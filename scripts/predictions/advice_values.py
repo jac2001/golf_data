@@ -83,6 +83,29 @@ def _strength(event_type: str) -> float:
     return next((v for k, v in FIELD_STRENGTH.items() if k in t), FIELD_STRENGTH["standard"])
 
 
+# Winners-only events: eligibility is a fact, not a rate. The Sentry takes
+# the previous season's PGA TOUR winners; everyone else needs to win before
+# it starts (small chance — the rest of the season's events).
+WINNERS_ONLY = ("sentry",)
+P_PLAYS_WINNER = 0.96        # same as a top-10 golfer at a restricted event
+P_PLAYS_NOT_YET_WINNER = 0.03
+
+
+@lru_cache(maxsize=4)
+def _season_winners(season: int) -> frozenset:
+    path = RAW_DIR.parent / "historical" / f"leaderboards_{season}.csv"
+    try:
+        lb = pd.read_csv(path, usecols=["player_name", "position"])
+    except Exception:
+        return frozenset()
+    won = lb[lb["position"].astype(str).str.strip() == "1"]["player_name"]
+    return frozenset(_name_key(str(n)) for n in won)
+
+
+def _winners_only(name: str) -> bool:
+    return any(w in str(name).lower() for w in WINNERS_ONLY)
+
+
 def _is_restricted(event_type: str, purse: float) -> bool:
     t = str(event_type).lower()
     return any(k in t for k in ("major", "playoff", "signature")) or purse >= 18_000_000
@@ -172,7 +195,13 @@ def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> d
             mult = (h["purse"] / purse_now) * (s_now / _strength(h["type"])) ** k
             mult *= _course_mult(key, h["tid"], tid_to_course, fit_map) / cm_now
             restricted = tour == "pga" and _is_restricted(h["type"], h["purse"])
-            mult *= _play_rate(rank, restricted) * DECAY_PER_WEEK ** h["weeks_away"]
+            if tour == "pga" and _winners_only(h["name"]):
+                # The Sentry of season Y takes season Y-1's winners.
+                winners = _season_winners(int(h["start_date"][:4]) - 1)
+                p_plays = P_PLAYS_WINNER if key in winners else P_PLAYS_NOT_YET_WINNER
+            else:
+                p_plays = _play_rate(rank, restricted)
+            mult *= p_plays * DECAY_PER_WEEK ** h["weeks_away"]
             future.append({"tid": h["tid"], "name": h["name"], "start_date": h["start_date"],
                            "purse": h["purse"], "ev": round(now_ev * mult)})
         # No key here: the site keys uses with its own nameKey (keeps accents
