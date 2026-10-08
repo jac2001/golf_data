@@ -95,6 +95,15 @@ def main():
 
     event_name = data.get("event_name", "unknown")
     print(f"[INFO] Event: {event_name} | Updated: {data.get('last_updated', '')}")
+    # Refuse another event's payload: DG serves "this week", which before its
+    # Monday rollover is LAST week. Writing that under this tid (or as
+    # "latest") is how Baycurrent got Bank of Utah's numbers.
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from event_guard import expected_name, names_match
+    _want = expected_name(tid) if tid not in ("", "LATEST") else ""
+    if _want and not names_match(event_name, _want):
+        print(f"[REFUSED] DG is serving '{event_name}', not {tid} '{_want}' — nothing saved")
+        sys.exit(2)
 
     df = parse_response(data)
     print(f"[INFO] {len(df)} rows ({len(df)//2} players × 2 models)")

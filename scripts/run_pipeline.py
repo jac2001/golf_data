@@ -841,6 +841,35 @@ def run_post_run_sanity_checks(
         except Exception as e:
             failures.append(f"Predictions output unreadable: {pred_path} ({e})")
 
+    # 2b) Integrity gate: refuse predictions built on another event's DG data
+    #     (scripts/validation/prediction_integrity.py — thresholds set on real
+    #     broken/good weeks). A failure here keeps the last good board live.
+    if pred_path.exists():
+        try:
+            sys.path.insert(0, str(SCRIPTS_DIR / "validation"))
+            from prediction_integrity import check as _integrity_check
+            _ig_fail, _ig_notes = _integrity_check(pd.read_csv(OUTPUTS_DIR / "latest_predictions.csv"))
+            failures.extend(f"Integrity: {m}" for m in _ig_fail)
+            notes.extend(_ig_notes)
+        except Exception as e:
+            failures.append(f"Integrity gate could not run: {e}")
+        # Provenance: which DG files (and which event each says it is) went in.
+        try:
+            _manifest = {"tournament_id": tid, "tournament_name": tournament_name,
+                         "generated_at": datetime.now().isoformat(), "inputs": {}}
+            for _kind in ("decompositions", "pre_tournament", "field"):
+                _p = DATA_DIR / "datagolf" / f"dg_{_kind}_{tid}.csv"
+                if _p.exists():
+                    _ev = pd.read_csv(_p, nrows=1)
+                    _manifest["inputs"][_kind] = {
+                        "file": _p.name,
+                        "event_name": str(_ev["event_name"].iloc[0]) if "event_name" in _ev else "",
+                        "modified": datetime.fromtimestamp(_p.stat().st_mtime).isoformat()}
+            (OUTPUTS_DIR / f"prediction_inputs_{tid}.json").write_text(json.dumps(_manifest, indent=2))
+            notes.append(f"✓ Inputs manifest: prediction_inputs_{tid}.json")
+        except Exception as e:
+            notes.append(f"ℹ Inputs manifest not written: {e}")
+
     # 3) latest_predictions.csv must also be updated this run (dashboard dependency).
     latest_preds = OUTPUTS_DIR / "latest_predictions.csv"
     if not latest_preds.exists():

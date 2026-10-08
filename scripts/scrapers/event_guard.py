@@ -27,13 +27,15 @@ _STOP = {"the", "at", "of", "presented", "by", "championship", "classic",
 
 def expected_name(tournament_id: str) -> str:
     """The schedule's tournament_name for a tid ('' when unknown)."""
-    sched = PROJECT_ROOT / "data" / "raw" / "schedule_2026.csv"
-    try:
-        df = pd.read_csv(sched, usecols=["tournament_id", "tournament_name"])
+    for sched in sorted((PROJECT_ROOT / "data" / "raw").glob("schedule*_2*.csv")):
+        try:
+            df = pd.read_csv(sched, usecols=["tournament_id", "tournament_name"])
+        except Exception:
+            continue
         hit = df[df["tournament_id"].astype(str).str.upper() == tournament_id.upper()]
-        return str(hit.iloc[0]["tournament_name"]) if not hit.empty else ""
-    except Exception:
-        return ""
+        if not hit.empty:
+            return str(hit.iloc[0]["tournament_name"])
+    return ""
 
 
 def _tokens(name: str) -> set[str]:

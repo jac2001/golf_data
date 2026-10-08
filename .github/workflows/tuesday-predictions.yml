@@ -51,6 +51,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-api.txt shap
 
+      - name: Integrity gate tests (a weakened gate must not ship)
+        run: python3 scripts/validation/test_prediction_integrity.py
+
       - name: Run weekly pipeline
         run: |
           python3 scripts/run_pipeline.py \
