@@ -4314,11 +4314,11 @@ def schedule_upcoming(tour: str = "pga", after: str = "", limit: int = 12) -> di
     return {"tour": tour, "events": out[:max(1, min(limit, 52))]}
 
 
-_advice_cache: dict[tuple[str, int], tuple[float, dict]] = {}
+_advice_cache: dict[tuple[str, int, str], tuple[float, dict]] = {}
 
 
 @app.get("/api/advice/values")
-def advice_values(tournament_id: str, limit: int = 60) -> dict:
+def advice_values(tournament_id: str, limit: int = 60, tours: str = "") -> dict:
     """What each golfer in an event's field is worth now and at each
     upcoming event on the same tour — the shared half of Let It Ride's
     spend/save advice (docs/ADVICE_VIEW_DESIGN.md). Same for every
@@ -4328,7 +4328,9 @@ def advice_values(tournament_id: str, limit: int = 60) -> dict:
     if not re.fullmatch(r"[RE]\d{7}", tid):
         raise HTTPException(status_code=400, detail="tournament_id like R2026554 or E2026144")
     limit = max(1, min(limit, 120))
-    hit = _advice_cache.get((tid, limit))
+    # tours=pga,euro → a shared-use season: windows on both tours.
+    tour_list = sorted({t for t in tours.lower().split(",") if t in ("pga", "euro")})
+    hit = _advice_cache.get((tid, limit, ",".join(tour_list)))
     if hit and time.time() - hit[0] < 600:
         return hit[1]
     preds = get_predictions(limit=200, tournament_id=tid)  # raises 404 when none
@@ -4338,9 +4340,9 @@ def advice_values(tournament_id: str, limit: int = 60) -> dict:
     if pred_dir not in sys.path:
         sys.path.insert(0, pred_dir)
     from advice_values import golfer_values  # type: ignore
-    out = golfer_values(tid, preds.get("players", []), limit=limit)
+    out = golfer_values(tid, preds.get("players", []), limit=limit, tours=tour_list or None)
     out["source"] = preds.get("source", "model")
-    _advice_cache[(tid, limit)] = (time.time(), out)
+    _advice_cache[(tid, limit, ",".join(tour_list))] = (time.time(), out)
     return out
 
 

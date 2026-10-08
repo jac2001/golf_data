@@ -131,6 +131,41 @@ def _schedule(tour: str) -> pd.DataFrame:
     return df.sort_values("start_date").reset_index(drop=True)
 
 
+# ── Cross-tour windows (shared-use seasons) ─────────────────────────────────
+# DPWT fields are weaker than PGA ones, so the same golfer's chances rise
+# there. Same index as FIELD_STRENGTH (major = 1.0).
+EURO_STRENGTH_ROLEX = 0.45     # Rolex Series-size purses (≥ $9M)
+EURO_STRENGTH_STANDARD = 0.35
+# How often he plays the OTHER tour, measured per golfer from this season's
+# results and shrunk toward a low prior (DPWT results only start in Sept
+# 2026, so "3 of 3" must not read as certainty).
+CROSS_PRIOR_RATE = 0.05
+CROSS_PRIOR_EVENTS = 4
+
+
+def _event_strength(tour: str, event_type: str, purse: float) -> float:
+    if tour == "euro":
+        return EURO_STRENGTH_ROLEX if purse >= 9_000_000 else EURO_STRENGTH_STANDARD
+    return _strength(event_type)
+
+
+@lru_cache(maxsize=4)
+def _participation(tour: str, season: int) -> tuple[dict, int]:
+    """(name_key → events played, events in the file) for one tour's season."""
+    name = f"leaderboards_euro_{season}.csv" if tour == "euro" else f"leaderboards_{season}.csv"
+    try:
+        lb = pd.read_csv(RAW_DIR.parent / "historical" / name, usecols=["tournament_id", "player_name"])
+    except Exception:
+        return {}, 0
+    lb["k"] = lb["player_name"].map(lambda n: _name_key(str(n)))
+    return lb.groupby("k")["tournament_id"].nunique().to_dict(), int(lb["tournament_id"].nunique())
+
+
+def _cross_rate(key: str, tour: str, season: int) -> float:
+    played, n = _participation(tour, season)
+    return (played.get(key, 0) + CROSS_PRIOR_RATE * CROSS_PRIOR_EVENTS) / (n + CROSS_PRIOR_EVENTS)
+
+
 @lru_cache(maxsize=1)
 def _pga_lookups():
     """Course fit + last year's fields — loaded once per process (8 MB CSVs)."""
@@ -145,10 +180,13 @@ def _course_mult(key: str, tid: str, tid_to_course: dict, fit_map: dict) -> floa
     return max(COURSE_FIT_MIN, min(COURSE_FIT_MAX, 1.0 + COURSE_FIT_SCALE * sg))
 
 
-def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> dict:
+def golfer_values(tournament_id: str, players: list[dict], limit: int = 60,
+                  tours: list[str] | None = None) -> dict:
     """
     players: this event's predictions — dicts with player_name, world_rank,
              win_prob, top5_prob, top10_prob, top20_prob, cut_prob.
+    tours:   whose upcoming events count as windows. Default: this event's
+             tour only (per-tour seasons). A shared-use season passes both.
     Returns {tournament_id, tour, event, horizon: [...], golfers: [...]}.
     """
     tid = tournament_id.upper()
@@ -159,16 +197,24 @@ def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> d
         return {"tournament_id": tid, "tour": tour, "error": "event not on the schedule", "golfers": []}
     ev = row.iloc[0]
     purse_now = float(ev["purse_num"]) or 0.0
-    s_now = _strength(ev["tournament_type"])
+    s_now = _event_strength(tour, ev["tournament_type"], purse_now)
+    tours = [t for t in (tours or [tour]) if t in ("pga", "euro")] or [tour]
+    season = int(str(ev["start_date"])[:4])
 
-    upcoming = sched[sched["start_date"] > ev["start_date"]].head(HORIZON)
-    horizon = [{
-        "tid": str(u["tournament_id"]), "name": str(u["tournament_name"]),
-        "start_date": str(u["start_date"]), "purse": float(u["purse_num"]),
-        "type": str(u["tournament_type"]),
-    } for _, u in upcoming.iterrows() if float(u["purse_num"]) > 0]
+    horizon, seen = [], set()
+    for t in sorted(tours, key=lambda t: t != "pga"):     # PGA first: co-sanctioned events keep the PGA row
+        tsched = _schedule(t)
+        for _, u in tsched[tsched["start_date"] > ev["start_date"]].head(HORIZON).iterrows():
+            nm = _normalize_tournament_name(str(u["tournament_name"]))
+            if float(u["purse_num"]) <= 0 or nm in seen:
+                continue
+            seen.add(nm)
+            horizon.append({"tid": str(u["tournament_id"]), "name": str(u["tournament_name"]),
+                            "start_date": str(u["start_date"]), "purse": float(u["purse_num"]),
+                            "type": str(u["tournament_type"]), "tour": t})
+    horizon.sort(key=lambda h: h["start_date"])
 
-    if tour == "pga":
+    if "pga" in tours or tour == "pga":
         tid_to_course, fit_map, hist_fields = _pga_lookups()
     else:
         tid_to_course, fit_map, hist_fields = {}, {}, {}
@@ -192,18 +238,25 @@ def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> d
 
         future = []
         for h in horizon:
-            mult = (h["purse"] / purse_now) * (s_now / _strength(h["type"])) ** k
+            wt = h["tour"]
+            mult = (h["purse"] / purse_now) * (s_now / _event_strength(wt, h["type"], h["purse"])) ** k
             mult *= _course_mult(key, h["tid"], tid_to_course, fit_map) / cm_now
-            restricted = tour == "pga" and _is_restricted(h["type"], h["purse"])
-            if tour == "pga" and _winners_only(h["name"]):
+            restricted = wt == "pga" and _is_restricted(h["type"], h["purse"])
+            if wt == "pga" and _winners_only(h["name"]):
                 # The Sentry of season Y takes season Y-1's winners.
                 winners = _season_winners(int(h["start_date"][:4]) - 1)
                 p_plays = P_PLAYS_WINNER if key in winners else P_PLAYS_NOT_YET_WINNER
-            else:
+            elif wt == tour:
                 p_plays = _play_rate(rank, restricted)
+            else:
+                # The other tour: how often HE has played it this season,
+                # capped by the field-entry rate for restricted PGA events.
+                p_plays = _cross_rate(key, wt, season)
+                if restricted:
+                    p_plays = min(p_plays, _play_rate(rank, True))
             mult *= p_plays * DECAY_PER_WEEK ** h["weeks_away"]
             future.append({"tid": h["tid"], "name": h["name"], "start_date": h["start_date"],
-                           "purse": h["purse"], "ev": round(now_ev * mult)})
+                           "purse": h["purse"], "tour": wt, "ev": round(now_ev * mult)})
         # No key here: the site keys uses with its own nameKey (keeps accents
         # and punctuation; _name_key strips them), so it derives the key.
         out.append({"player_name": name, "world_rank": rank,
@@ -211,7 +264,7 @@ def golfer_values(tournament_id: str, players: list[dict], limit: int = 60) -> d
 
     out.sort(key=lambda g: g["now_ev"], reverse=True)
     return {
-        "tournament_id": tid, "tour": tour,
+        "tournament_id": tid, "tour": tour, "tours": tours,
         "event": {"name": str(ev["tournament_name"]), "purse": purse_now, "type": str(ev["tournament_type"])},
         "horizon": [{k: v for k, v in h.items() if k != "weeks_away"} for h in horizon],
         "golfers": out[:limit],

@@ -45,7 +45,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
   let values: Values | null = null;
   try {
-    const res = await fetch(`${MODEL_API}/api/advice/values?tournament_id=${encodeURIComponent(tid)}&limit=80`,
+    // Shared-use season: a use spent here can't be spent on the other tour,
+    // so windows on BOTH tours compete for it.
+    const toursParam = league.uses_scope !== "tour" && league.tours.length > 1 ? `&tours=${league.tours.join(",")}` : "";
+    const res = await fetch(`${MODEL_API}/api/advice/values?tournament_id=${encodeURIComponent(tid)}&limit=80${toursParam}`,
       { next: { revalidate: 600 } });
     values = res.ok ? await res.json() as Values : null;
   } catch { /* no advice this time */ }
