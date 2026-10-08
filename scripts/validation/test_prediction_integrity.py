@@ -64,6 +64,17 @@ def test_clean_field_passes():
     assert check(field())[0] == []
 
 
+def test_freshness_flags_old_and_passes_new(tmp=Path("/tmp")):
+    from datetime import datetime, timezone
+    sys.path.insert(0, str(HERE)); from data_freshness import stale_inputs
+    old, new = tmp / "fresh_old.csv", tmp / "fresh_new.csv"
+    pd.DataFrame({"last_updated": ["2026-04-20 13:09:21 UTC"]}).to_csv(old, index=False)
+    pd.DataFrame({"last_updated": ["2026-10-06 12:00:00 UTC"]}).to_csv(new, index=False)
+    now = datetime(2026, 10, 7, tzinfo=timezone.utc)
+    fails, _ = stale_inputs([("old", old, "last_updated", 10), ("new", new, "last_updated", 10)], now=now)
+    assert len(fails) == 1 and fails[0].startswith("old is 169 days old"), fails
+
+
 if __name__ == "__main__":
     tests = [v for k, v in dict(globals()).items() if k.startswith("test_")]
     bad = 0

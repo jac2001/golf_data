@@ -665,7 +665,16 @@ def get_season_strategy(
     
     # ── DG Rankings — more current world rank for all players ─────────────────
     dg_rank_map: dict[str, float] = {}
-    if DG_RANKINGS_FILE.exists():
+    # Fallback only, and only if fresh: its fetcher was removed and the file
+    # froze in April 2026 — a frozen rank is worse than none (OWGR is primary).
+    _dg_rk_fresh = False
+    try:
+        _ts = pd.to_datetime(pd.read_csv(DG_RANKINGS_FILE, usecols=["last_updated"], nrows=1)["last_updated"]
+                             .astype(str).str.replace(" UTC", "").iloc[0])
+        _dg_rk_fresh = (datetime.now() - _ts.to_pydatetime().replace(tzinfo=None)).days <= 21
+    except Exception:
+        pass
+    if DG_RANKINGS_FILE.exists() and _dg_rk_fresh:
         try:
             dg_rk = pd.read_csv(DG_RANKINGS_FILE, usecols=["player_name", "owgr_rank"])
             for _, row in dg_rk.iterrows():

@@ -521,6 +521,12 @@ def run_predictions(
     if tournament_id:
         subprocess.run(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_dg_decompositions.py"),
                         "--tournament-id", tournament_id], capture_output=True, text=True, timeout=120)
+    # Same lesson for inputs with no event: skill ratings + approach skill were
+    # only fetched by the dropped Tuesday refresh, and went 9 days stale.
+    # data_freshness (post-run checks) blocks publishing if they're still old.
+    for _fetch in (["fetch_dg_skill_ratings.py"], ["fetch_dg_approach_skill.py", "--period", "l24"]):
+        subprocess.run(["python3", str(SCRIPTS_DIR / "scrapers" / _fetch[0]), *_fetch[1:]],
+                       capture_output=True, text=True, timeout=120)
     print_header("GENERATING PREDICTIONS")
 
     # Build output path
@@ -869,6 +875,17 @@ def run_post_run_sanity_checks(
             notes.append(f"✓ Inputs manifest: prediction_inputs_{tid}.json")
         except Exception as e:
             notes.append(f"ℹ Inputs manifest not written: {e}")
+
+    # 2c) Freshness: inputs with no event (skill ratings, approach skill, world
+    #     ranking) must be recent, judged by the date inside each file.
+    try:
+        sys.path.insert(0, str(SCRIPTS_DIR / "validation"))
+        from data_freshness import stale_inputs as _stale_inputs
+        _fr_fail, _fr_notes = _stale_inputs()
+        failures.extend(f"Freshness: {m}" for m in _fr_fail)
+        notes.extend(_fr_notes)
+    except Exception as e:
+        failures.append(f"Freshness check could not run: {e}")
 
     # 3) latest_predictions.csv must also be updated this run (dashboard dependency).
     latest_preds = OUTPUTS_DIR / "latest_predictions.csv"
