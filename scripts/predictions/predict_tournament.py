@@ -2581,9 +2581,24 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
 
     # ADD DG PRE-TOURNAMENT PROBABILITIES (dg_win, dg_top10, dg_make_cut for this week)
     # These match trained SCORE_FEATURES — populated here at inference so model sees real values not NaN.
-    try:
+    # Event check (same rule as decompositions): this event's own file, else
+    # "latest" only when its own event_name is this tournament. Course fit is
+    # written by the same fetch, so it rides on the same verdict.
+    _pt_path = DATA_DIR / "datagolf" / f"dg_pre_tournament_{str(tournament_id or '').upper()}.csv"
+    if not _pt_path.exists():
         _pt_path = DATA_DIR / "datagolf" / "dg_pre_tournament_latest.csv"
+    _pt_ok = False
+    try:
         if _pt_path.exists():
+            from scripts.scrapers.event_guard import names_match as _names_match
+            _pt_event = str(pd.read_csv(_pt_path, usecols=["event_name"], nrows=1)["event_name"].iloc[0])
+            _pt_ok = _names_match(_pt_event, str(tournament_name))
+            if not _pt_ok:
+                print(f"  DG pre-tournament + course fit SKIPPED: file is for '{_pt_event}', not '{tournament_name}'")
+    except Exception as _pt_chk:
+        print(f"  DG pre-tournament event check failed ({_pt_chk}) — skipping")
+    try:
+        if _pt_ok:
             _pt_df = pd.read_csv(_pt_path)
             _pt_df = _pt_df[_pt_df["model"] == "baseline_history_fit"].copy()
             _pt_df = _pt_df[["player_name", "win", "top_10", "make_cut"]].rename(columns={
@@ -2598,7 +2613,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
             features_df.drop(columns=["_nk"], inplace=True, errors="ignore")
             _m = features_df["dg_win"].notna().sum()
             print(f"  DG pre-tournament merged: {_m}/{len(features_df)} players (dg_win/top10/make_cut)")
-        else:
+        elif not _pt_path.exists():
             print("  DG pre-tournament: not found — run fetch_dg_pre_tournament.py")
     except Exception as _pt_e:
         print(f"  DG pre-tournament merge skipped: {_pt_e}")
@@ -2607,7 +2622,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     
     try:
         _fit_path = DATA_DIR / "datagolf" / "dg_course_fit_latest.csv"
-        if _fit_path.exists():
+        if _fit_path.exists() and _pt_ok:
             _fit_df = pd.read_csv(_fit_path)[["player_name", "course_fit_delta", "course_fit_delta_pct"]]
             _fit_df = _fit_df.rename(columns={
                 "course_fit_delta":     "dg_course_fit_delta",
@@ -2620,7 +2635,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
             features_df.drop(columns=["_nk"], inplace=True, errors="ignore")
             _m_fit = features_df["dg_course_fit_delta"].notna().sum()
             print(f"  DG course fit merged: {_m_fit}/{len(features_df)} players (dg_course_fit_delta)")
-        else:
+        elif not _fit_path.exists():
             print("  DG course fit: not found — run fetch_dg_pre_tournament.py")
     except Exception as _fit_e:
         print(f"  DG course fit merge skipped: {_fit_e}")
