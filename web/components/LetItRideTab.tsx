@@ -15,6 +15,7 @@ import { getEventField, getPredictions, OpenEvent } from "@/lib/api";
 import { nameKey } from "@/lib/names";
 import LockCountdown from "@/components/LockCountdown";
 import { choice } from "@/components/broadcast";
+import { useStoredChoice } from "@/lib/useStoredChoice";
 import EventNav, { NavEvent, landingEvent, Star } from "@/components/EventNav";
 
 type Group = { id: number; name: string; is_owner: boolean };
@@ -57,20 +58,43 @@ const rowBtn = (enabled: boolean): React.CSSProperties => ({
 
 type Advice = { verdict: "spend" | "save" | "spent"; reason: string; save_for?: string };
 
-/** Spend / Save tag on a golfer; tap for the one-line why. Quiet colors:
- *  it's a hint, not a call to action (no yellow). */
+/** Spend / Save tag on a golfer — a short fixed-width word so rows never
+ *  wrap; tapping shows the why in the shared reason bar above the list.
+ *  Quiet colors: it's a hint, not a call to action (no yellow). */
 function AdviceTag({ a, open, onToggle }: { a?: Advice; open: boolean; onToggle: () => void }) {
   if (!a || a.verdict === "spent") return null;
   const save = a.verdict === "save";
+  const c = save ? "var(--bc-orange)" : "var(--bc-green)";
   return (
-    <button onClick={onToggle} aria-expanded={open} title={a.reason} style={{
-      cursor: "pointer", fontFamily: "inherit", background: "transparent", padding: "1px 6px", borderRadius: 3,
-      fontSize: "max(var(--fs-min-xs), 0.72em)", fontWeight: 800, letterSpacing: "0.04em", textTransform: "uppercase",
-      color: save ? "var(--bc-orange)" : "var(--bc-green)",
-      border: `1px solid color-mix(in srgb, ${save ? "var(--bc-orange)" : "var(--bc-green)"} 45%, transparent)`,
+    <button onClick={onToggle} aria-pressed={open} aria-label={`${save ? "Save" : "Spend"}: ${a.reason}`} style={{
+      cursor: "pointer", fontFamily: "inherit", padding: "1px 5px", borderRadius: 3, flexShrink: 0,
+      fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, letterSpacing: "0.03em", textTransform: "uppercase",
+      color: open ? "#081f14" : c, background: open ? c : "transparent",
+      border: `1px solid color-mix(in srgb, ${c} 45%, transparent)`,
     }}>
-      {save ? `Save${a.save_for ? ` → ${a.save_for.replace(/ (Championship|Invitational|Tournament|presented by.*)$/i, "")}` : ""}` : "Spend"}
+      {save ? "Save" : "Spend"}
     </button>
+  );
+}
+
+/** The one place a reason shows: a single line above the list, so tapping a
+ *  tag never changes row heights. With nothing selected it explains the tags. */
+function AdviceBar({ name, a, onClose }: { name: string; a?: Advice; onClose: () => void }) {
+  return (
+    <div style={{ display: "flex", gap: 8, alignItems: "flex-start", minHeight: 22, marginBottom: 6,
+      color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", lineHeight: 1.4 }}>
+      {a ? (
+        <>
+          <span><strong style={{ color: "var(--bc-text)" }}>{name}:</strong> {a.reason}</span>
+          <button onClick={onClose} aria-label="Close" style={{ marginLeft: "auto", background: "none", border: "none",
+            color: "var(--bc-muted)", cursor: "pointer", fontSize: "1em", padding: 0, fontFamily: "inherit" }}>✕</button>
+        </>
+      ) : (
+        <span>Advice for your uses: <span style={{ color: "var(--bc-green)", fontWeight: 700 }}>Spend</span> = this week is
+          one of his best windows · <span style={{ color: "var(--bc-orange)", fontWeight: 700 }}>Save</span> = he&apos;s
+          worth more later. Tap a tag for why.</span>
+      )}
+    </div>
   );
 }
 
@@ -307,6 +331,10 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
   // Spend/save advice for MY uses (private, pre-lock only), keyed by nameKey.
   const [advice, setAdvice] = useState<Record<string, Advice>>({});
   const [why, setWhy] = useState("");
+  // Per-device preference; some players want a plain list.
+  const [adviceMode, setAdviceMode] = useStoredChoice<"on" | "off">("lir-advice", ["on", "off"], "on");
+  const showAdvice = adviceMode === "on";
+  const setShowAdvice = (on: boolean) => setAdviceMode(on ? "on" : "off");
 
   useEffect(() => {
     if (ev.locked) return;
@@ -402,7 +430,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
               </span>
               {p && (
                 <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                  {!locked && <AdviceTag a={advice[nameKey(p.player_name)]} open={why === p.player_name}
+                  {!locked && showAdvice && <AdviceTag a={advice[nameKey(p.player_name)]} open={why === p.player_name}
                     onToggle={() => setWhy(w => w === p.player_name ? "" : p.player_name)} />}
                   <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)" }}>
                     use {usedOf(p.player_name)} of {league.uses_per_player}
@@ -415,11 +443,6 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
                 </span>
               )}
             </div>
-            {p && why === p.player_name && advice[nameKey(p.player_name)] && (
-              <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", padding: "4px 12px 0" }}>
-                {advice[nameKey(p.player_name)].reason}
-              </div>
-            )}
             </div>
           );
         })}
@@ -433,6 +456,18 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
             background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
             color: "var(--bc-text)", padding: "7px 12px", fontSize: "max(var(--fs-min), 0.86em)", width: "100%",
             boxSizing: "border-box", marginBottom: 8, fontFamily: "inherit" }} />
+          {Object.keys(advice).length > 0 && (
+            <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {showAdvice && <AdviceBar name={why} a={why ? advice[nameKey(why)] : undefined} onClose={() => setWhy("")} />}
+              </div>
+              <button onClick={() => { setShowAdvice(!showAdvice); setWhy(""); }} style={{ background: "none", border: "none",
+                cursor: "pointer", color: "var(--bc-muted)", fontFamily: "inherit", fontSize: "max(var(--fs-min), 0.78em)",
+                textDecoration: "underline", padding: 0, whiteSpace: "nowrap" }}>
+                {showAdvice ? "Hide advice" : "Show advice"}
+              </button>
+            </div>
+          )}
           <div style={{ maxHeight: 360, overflowY: "auto", display: "grid", gap: 4 }}>
             {shown.map(f => {
               const used = usedOf(f.name);
@@ -440,13 +475,13 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
               return (
                 <div key={f.name} style={{ padding: "6px 10px", borderBottom: "1px solid var(--bc-line)", opacity: spent ? 0.45 : 1 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: "max(var(--fs-min), 0.86em)", display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "2px 8px" }}>
+                  <span style={{ fontSize: "max(var(--fs-min), 0.86em)", minWidth: 0 }}>
                     {f.name}
-                    {f.win != null && <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>{(f.win * 100).toFixed(1)}% to win</span>}
-                    {!spent && <AdviceTag a={advice[nameKey(f.name)]} open={why === f.name}
-                      onToggle={() => setWhy(w => w === f.name ? "" : f.name)} />}
+                    {f.win != null && <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginLeft: 8, whiteSpace: "nowrap" }}>{(f.win * 100).toFixed(1)}%</span>}
                   </span>
-                  <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <span style={{ display: "flex", gap: 8, alignItems: "center", flexShrink: 0 }}>
+                    {showAdvice && !spent && <AdviceTag a={advice[nameKey(f.name)]} open={why === f.name}
+                      onToggle={() => setWhy(w => w === f.name ? "" : f.name)} />}
                     {/* Budget meter: one pip per use, filled = spent. */}
                     <span title={`${used} of ${league.uses_per_player} uses spent`} style={{ display: "flex", gap: 3 }}>
                       {Array.from({ length: league.uses_per_player }).map((_, i) => (
@@ -459,11 +494,6 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
                     </button>
                   </span>
                 </div>
-                {why === f.name && advice[nameKey(f.name)] && (
-                  <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginTop: 4 }}>
-                    {advice[nameKey(f.name)].reason}
-                  </div>
-                )}
                 </div>
               );
             })}
