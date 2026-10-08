@@ -1,0 +1,22 @@
+{
+  "tournament_id": "R2026527",
+  "tournament_name": "Baycurrent Classic",
+  "generated_at": "2026-10-07T20:39:49.238286",
+  "inputs": {
+    "decompositions": {
+      "file": "dg_decompositions_R2026527.csv",
+      "event_name": "Baycurrent Classic",
+      "modified": "2026-10-07T20:39:22.893275"
+    },
+    "pre_tournament": {
+      "file": "dg_pre_tournament_R2026527.csv",
+      "event_name": "Baycurrent Classic",
+      "modified": "2026-10-07T20:34:02.719625"
+    },
+    "field": {
+      "file": "dg_field_R2026527.csv",
+      "event_name": "Baycurrent Classic",
+      "modified": "2026-10-07T20:34:02.679624"
+    }
+  }
+}
