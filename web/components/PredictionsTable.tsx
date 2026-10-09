@@ -15,7 +15,7 @@
  *    If you click the same column twice, sortDir flips between "asc"/"desc".
  */
 
-import { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { PlayerPrediction, PlayerIntel } from "@/lib/api";
 
@@ -101,6 +101,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
   const [sortCol, setSortCol]   = useState<SortCol>("win_prob_sim");
   const [sortDir, setSortDir]   = useState<"asc" | "desc">("desc");
   const [search, setSearch]     = useState("");
+  const [openRow, setOpenRow]   = useState<string | null>(null);
 
   // Column visibility — defaults are read once on first render; localStorage
   // is only touched client-side (loadVisibleCols guards on `typeof window`),
@@ -271,85 +272,43 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
 
               const playerIntel = intelMap.get(p.player_name.toLowerCase());
               const isPick = myPicksNorm.has(normName(p.player_name));
+              const hasMore = !!(playerIntel?.recent_form_summary || playerIntel?.last_3_results?.length
+                || (playerIntel?.injury_flag && playerIntel?.injury_detail));
+              const isOpen = openRow === p.player_name;
               return (
-                <tr key={p.player_name ?? `row-${i}`} style={isPick ? {
-                  background: "#0a1e12",
-                  borderLeft: "2px solid var(--bc-green)",
-                } : undefined}>
+                <React.Fragment key={p.player_name ?? `row-${i}`}>
+                <tr onClick={hasMore ? () => setOpenRow(isOpen ? null : p.player_name) : undefined}
+                  style={{ cursor: hasMore ? "pointer" : undefined,
+                    ...(isPick ? { background: "#0a1e12", borderLeft: "2px solid var(--bc-green)" } : {}) }}>
                   <td style={{ ...td, color: "var(--bc-muted)", textAlign: "center", fontSize: "max(var(--fs-min), 0.78em)" }}>{i + 1}</td>
 
                   {/* Player name + intel */}
                   <td style={{ ...td, fontSize: "max(var(--fs-min), 0.85em)", maxWidth: 280 }}>
-                    {/* Row 1: name + badges */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                    {/* One compact line + one line of reason; the write-up, injury
+                        note and recent finishes open in a detail row on tap, so
+                        every row stays the same height (2026-10-07). */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
                       <Link
                         href={`/players?player=${encodeURIComponent(p.player_name)}`}
+                        onClick={e => e.stopPropagation()}
                         style={{ color: isPick ? "var(--bc-green)" : "var(--bc-text)", fontWeight: isPick ? 700 : 600, whiteSpace: "nowrap", textDecoration: "none" }}
-                        onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
-                        onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : "var(--bc-text)")}
                       >
                         {p.player_name}
                       </Link>
-                      {isPick && (
-                        <span style={{
-                          fontSize: "max(var(--fs-min-xs), 0.6em)", fontWeight: 800, color: "var(--bc-green)",
-                          background: "var(--bc-card)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
-                          borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
-                        }}>MY PICK</span>
-                      )}
-                      {playerIntel?.injury_flag && (
-                        <span style={{
-                          fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-red)",
-                          background: "#1a0808", border: "1px solid rgba(224,85,85,0.35)44",
-                          borderRadius: 4, padding: "1px 6px", whiteSpace: "nowrap",
-                        }}>
-                          {playerIntel.injury_detail
-                            ? playerIntel.injury_detail.length > 30
-                              ? playerIntel.injury_detail.slice(0, 30) + "…"
-                              : playerIntel.injury_detail
-                            : "injury risk"}
+                      {isPick && <span style={badge("var(--bc-green)")}>My pick</span>}
+                      {playerIntel?.injury_flag && <span title={playerIntel.injury_detail || "injury risk"} style={badge("var(--bc-red-text)")}>Injury</span>}
+                      {playerIntel?.trend === "trending_up" && <span style={badge("var(--bc-green)")}>↑ hot</span>}
+                      {playerIntel?.trend === "trending_down" && <span style={badge("var(--bc-orange)")}>↓ cold</span>}
+                      {hasMore && (
+                        <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.72em)", whiteSpace: "nowrap" }}>
+                          {isOpen ? "Less ▾" : "More ▸"}
                         </span>
                       )}
-                      {playerIntel?.trend === "trending_up" && (
-                        <span style={{
-                          fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-green)",
-                          background: "var(--bc-card)", border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)",
-                          borderRadius: 4, padding: "1px 6px",
-                        }}>↑ hot</span>
-                      )}
-                      {playerIntel?.trend === "trending_down" && (
-                        <span style={{
-                          fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-orange)",
-                          background: "rgba(255,210,74,0.08)", border: "1px solid rgba(255,210,74,0.3)44",
-                          borderRadius: 4, padding: "1px 6px",
-                        }}>↓ cold</span>
-                      )}
                     </div>
-
-                    {/* Row 2: model explanation */}
                     {p.explanation && (
-                      <div style={{ color: "#3a5a70", fontSize: "max(var(--fs-min), 0.75em)", marginTop: 3 }}>
+                      <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", marginTop: 2,
+                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {p.explanation}
-                      </div>
-                    )}
-
-                    {/* Row 3: intel form summary */}
-                    {playerIntel?.recent_form_summary && (
-                      <div style={{ color: "#4a6a80", fontSize: "max(var(--fs-min), 0.72em)", marginTop: 3, lineHeight: 1.4 }}>
-                        {playerIntel.recent_form_summary}
-                      </div>
-                    )}
-
-                    {/* Row 4: last 3 results chips */}
-                    {playerIntel?.last_3_results?.length && (
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 4 }}>
-                        {playerIntel.last_3_results.slice(0, 3).map((r, ri) => (
-                          <span key={ri} style={{
-                            fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)",
-                            background: "#0a1520", border: "1px solid var(--bc-line)",
-                            borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap",
-                          }}>{r}</span>
-                        ))}
                       </div>
                     )}
                   </td>
@@ -461,6 +420,28 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                   )}
 
                 </tr>
+                {isOpen && (
+                  <tr>
+                    <td colSpan={2 + visibleCols.size} style={{ ...td, background: "var(--bc-panel)", padding: "10px 14px 12px 46px" }}>
+                      {playerIntel?.injury_flag && playerIntel?.injury_detail && (
+                        <div style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.82em)", marginBottom: 6 }}>
+                          <strong>Injury:</strong> {playerIntel.injury_detail}
+                        </div>
+                      )}
+                      {playerIntel?.recent_form_summary && (
+                        <div style={{ color: "var(--bc-text)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5, maxWidth: 760 }}>
+                          {playerIntel.recent_form_summary}
+                        </div>
+                      )}
+                      {!!playerIntel?.last_3_results?.length && (
+                        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 6 }}>
+                          Last 3: {playerIntel.last_3_results.slice(0, 3).join(" · ")}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                )}
+                </React.Fragment>
               );
             })}
           </tbody>
@@ -468,4 +449,13 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
       </div>
     </div>
   );
+}
+
+/** Small outlined badge next to a player name (My pick / Injury / hot / cold). */
+function badge(color: string): React.CSSProperties {
+  return {
+    fontSize: "max(var(--fs-min-xs), 0.66em)", fontWeight: 800, color, whiteSpace: "nowrap", flexShrink: 0,
+    border: `1px solid color-mix(in srgb, ${color} 40%, transparent)`, borderRadius: 3, padding: "0 5px",
+    textTransform: "uppercase", letterSpacing: "0.03em",
+  };
 }
