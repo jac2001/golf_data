@@ -90,12 +90,19 @@ def cmd_schedule(year: int) -> None:
     print(f"Wrote {len(df)} euro events -> {out.relative_to(PROJECT_ROOT)}")
 
 
+def _fold(name: str) -> str:
+    """Lowercase, accents removed: DG's in-play feed says "Open de España",
+    its schedule feed "Open de Espana" — the same event (2026-10-12)."""
+    import unicodedata
+    return unicodedata.normalize("NFKD", str(name)).encode("ascii", "ignore").decode().lower().strip()
+
+
 def _current_event(year: int) -> tuple[str, str, dict]:
     """The euro event DG's field endpoint currently serves."""
     raw = dg_get("/field-updates", {"tour": "euro", "file_format": "json"})
     name = str(raw.get("event_name", ""))
     sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
-    row = sched[sched["tournament_name"].str.lower() == name.lower()]
+    row = sched[sched["tournament_name"].map(_fold) == _fold(name)]
     if row.empty:
         raise SystemExit(f"Euro event '{name}' not in schedule_euro_{year}.csv — refetch --schedule")
     return str(row.iloc[0]["tournament_id"]), name, raw
@@ -150,7 +157,7 @@ def cmd_preds(year: int) -> None:
     raw = dg_get("/preds/pre-tournament", {"tour": "euro", "dead_heat": "yes", "file_format": "json"})
     name = str(raw.get("event_name", ""))
     sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
-    row = sched[sched["tournament_name"].str.lower() == name.lower()]
+    row = sched[sched["tournament_name"].map(_fold) == _fold(name)]
     if row.empty:
         raise SystemExit(f"preds event '{name}' not in schedule_euro_{year}.csv — refusing to write")
     tid = str(row.iloc[0]["tournament_id"])
@@ -226,7 +233,7 @@ def _event_from_inplay(year: int, live: dict) -> tuple[str, str]:
     if not name:
         raise SystemExit("in-play payload carries no event_name — refusing to guess")
     sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
-    row = sched[sched["tournament_name"].str.lower() == name.lower()]
+    row = sched[sched["tournament_name"].map(_fold) == _fold(name)]
     if row.empty:
         raise SystemExit(f"in-play event '{name}' not in schedule_euro_{year}.csv")
     return str(row.iloc[0]["tournament_id"]), name
