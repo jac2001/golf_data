@@ -39,7 +39,10 @@ def expected_name(tournament_id: str) -> str:
 
 
 def _tokens(name: str) -> set[str]:
-    toks = {t for t in str(name).lower().replace("-", " ").split() if t.isalnum()}
+    # Fold accents first: DG writes "Open de España", our schedule "Espana".
+    import unicodedata
+    folded = unicodedata.normalize("NFKD", str(name)).encode("ascii", "ignore").decode()
+    toks = {t for t in folded.lower().replace("-", " ").split() if t.isalnum()}
     return toks - _STOP
 
 

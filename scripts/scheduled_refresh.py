@@ -1133,7 +1133,9 @@ def is_tournament_official(tid: str) -> bool:
                 # playing: every player is either finished (complete + thru=F)
                 # or out of the event entirely.
                 status = lb["status"].astype(str).str.lower()
-                done_playing = (status == "complete") & (lb["thru"].astype(str) == "F")
+                # "F*" = finished, started on the back nine (half of a two-tee
+                # field — Baycurrent sat unsettled until this matched).
+                done_playing = (status == "complete") & lb["thru"].astype(str).str.strip().str.upper().str.startswith("F")
                 out_of_event = status.isin(["withdrawn", "disqualified", "cut", "wd", "dq"])
                 if "position" in lb.columns:
                     out_of_event |= lb["position"].astype(str).str.upper() == "CUT"
