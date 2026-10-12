@@ -1,4 +1,76 @@
 player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament_name,year,stat_value_numeric
+61522,Michael Brennan,1,120,Scoring Average,68.452,R2026527,Baycurrent Classic,2026,68.452
+60004,Jacob Bridgeman,2,120,Scoring Average,68.702,R2026527,Baycurrent Classic,2026,68.702
+39546,Keith Mitchell,2,120,Scoring Average,68.702,R2026527,Baycurrent Classic,2026,68.702
+59018,Ryan Gerard,4,120,Scoring Average,69.202,R2026527,Baycurrent Classic,2026,69.202
+27644,Brian Harman,4,120,Scoring Average,69.202,R2026527,Baycurrent Classic,2026,69.202
+36799,Stephan Jaeger,4,120,Scoring Average,69.202,R2026527,Baycurrent Classic,2026,69.202
+48081,Xander Schauffele,4,120,Scoring Average,69.202,R2026527,Baycurrent Classic,2026,69.202
+46464,Jordan Smith,4,120,Scoring Average,69.202,R2026527,Baycurrent Classic,2026,69.202
+48001,Zach Bauchou,9,120,Scoring Average,69.452,R2026527,Baycurrent Classic,2026,69.452
+39971,Sungjae Im,9,120,Scoring Average,69.452,R2026527,Baycurrent Classic,2026,69.452
+37378,Min Woo Lee,9,120,Scoring Average,69.452,R2026527,Baycurrent Classic,2026,69.452
+56100,Ren Yonezawa,9,120,Scoring Average,69.452,R2026527,Baycurrent Classic,2026,69.452
+39977,Max Homa,13,120,Scoring Average,69.702,R2026527,Baycurrent Classic,2026,69.702
+39335,Kevin Roy,13,120,Scoring Average,69.702,R2026527,Baycurrent Classic,2026,69.702
+24502,Adam Scott,13,120,Scoring Average,69.702,R2026527,Baycurrent Classic,2026,69.702
+34046,Jordan Spieth,13,120,Scoring Average,69.702,R2026527,Baycurrent Classic,2026,69.702
+45522,Christiaan Bezuidenhout,17,120,Scoring Average,69.952,R2026527,Baycurrent Classic,2026,69.952
+52375,Doug Ghim,17,120,Scoring Average,69.952,R2026527,Baycurrent Classic,2026,69.952
+39975,Michael Kim,17,120,Scoring Average,69.952,R2026527,Baycurrent Classic,2026,69.952
+36884,Ben Kohles,17,120,Scoring Average,69.952,R2026527,Baycurrent Classic,2026,69.952
+29420,Billy Horschel,21,120,Scoring Average,70.202,R2026527,Baycurrent Classic,2026,70.202
+32839,Hideki Matsuyama,21,120,Scoring Average,70.202,R2026527,Baycurrent Classic,2026,70.202
+47917,Takumi Kanaya,23,120,Scoring Average,70.452,R2026527,Baycurrent Classic,2026,70.452
+59143,Mac Meissner,23,120,Scoring Average,70.452,R2026527,Baycurrent Classic,2026,70.452
+52689,Rasmus Neergaard-Petersen,23,120,Scoring Average,70.452,R2026527,Baycurrent Classic,2026,70.452
+28723,John Parry,23,120,Scoring Average,70.452,R2026527,Baycurrent Classic,2026,70.452
+47889,Kosuke Sunagawa,23,120,Scoring Average,70.452,R2026527,Baycurrent Classic,2026,70.452
+33448,Justin Thomas,23,120,Scoring Average,70.452,R2026527,Baycurrent Classic,2026,70.452
+59440,Ricky Castillo,29,120,Scoring Average,70.702,R2026527,Baycurrent Classic,2026,70.702
+55908,Tomohiro Ishizaka,29,120,Scoring Average,70.702,R2026527,Baycurrent Classic,2026,70.702
+47993,Denny McCarthy,29,120,Scoring Average,70.702,R2026527,Baycurrent Classic,2026,70.702
+36699,Patrick Rodgers,29,120,Scoring Average,70.702,R2026527,Baycurrent Classic,2026,70.702
+51349,Nico Echavarria,33,120,Scoring Average,70.952,R2026527,Baycurrent Classic,2026,70.952
+29833,Yoshinori Fujimoto,33,120,Scoring Average,70.952,R2026527,Baycurrent Classic,2026,70.952
+54628,Lee Hodges,33,120,Scoring Average,70.952,R2026527,Baycurrent Classic,2026,70.952
+56165,Yusaku Hosono,33,120,Scoring Average,70.952,R2026527,Baycurrent Classic,2026,70.952
+63454,Johnny Keefer,33,120,Scoring Average,70.952,R2026527,Baycurrent Classic,2026,70.952
+50525,Collin Morikawa,33,120,Scoring Average,70.952,R2026527,Baycurrent Classic,2026,70.952
+34256,Andrew Putnam,33,120,Scoring Average,70.952,R2026527,Baycurrent Classic,2026,70.952
+57364,Michael Thorbjornsen,33,120,Scoring Average,70.952,R2026527,Baycurrent Classic,2026,70.952
+33141,Keegan Bradley,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+29725,Tony Finau,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+51287,Ryo Hisatsune,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+35461,Beau Hossler,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+33689,Jinichiro Kozuma,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+49947,Taylor Moore,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+60019,Jackson Suber,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+25493,Nick Taylor,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+35658,Kristoffer Ventura,41,120,Scoring Average,71.202,R2026527,Baycurrent Classic,2026,71.202
+59836,Pierceson Coody,50,120,Scoring Average,71.452,R2026527,Baycurrent Classic,2026,71.452
+59141,Matt McCarty,50,120,Scoring Average,71.452,R2026527,Baycurrent Classic,2026,71.452
+49228,Keita Nakajima,50,120,Scoring Average,71.452,R2026527,Baycurrent Classic,2026,71.452
+48887,Matt Wallace,50,120,Scoring Average,71.452,R2026527,Baycurrent Classic,2026,71.452
+59743,Aguri Iwasaki,54,120,Scoring Average,71.702,R2026527,Baycurrent Classic,2026,71.702
+36326,David Lipsky,54,120,Scoring Average,71.702,R2026527,Baycurrent Classic,2026,71.702
+40250,Taylor Pendrith,54,120,Scoring Average,71.702,R2026527,Baycurrent Classic,2026,71.702
+57900,Chandler Phillips,54,120,Scoring Average,71.702,R2026527,Baycurrent Classic,2026,71.702
+58168,Davis Thompson,54,120,Scoring Average,71.702,R2026527,Baycurrent Classic,2026,71.702
+46442,Maverick McNealy,59,120,Scoring Average,71.952,R2026527,Baycurrent Classic,2026,71.952
+45242,Kevin Yu,59,120,Scoring Average,71.952,R2026527,Baycurrent Classic,2026,71.952
+51977,Max Greyserman,61,120,Scoring Average,72.202,R2026527,Baycurrent Classic,2026,72.202
+48117,Kurt Kitayama,61,120,Scoring Average,72.202,R2026527,Baycurrent Classic,2026,72.202
+51766,Wyndham Clark,63,120,Scoring Average,72.702,R2026527,Baycurrent Classic,2026,72.702
+46340,Alex Smalley,63,120,Scoring Average,72.702,R2026527,Baycurrent Classic,2026,72.702
+33232,Sang-hee Lee,65,120,Scoring Average,72.952,R2026527,Baycurrent Classic,2026,72.952
+57123,Steven Fisk,66,120,Scoring Average,73.202,R2026527,Baycurrent Classic,2026,73.202
+27747,Hiroshi Iwata,67,120,Scoring Average,73.452,R2026527,Baycurrent Classic,2026,73.452
+51634,Sahith Theegala,68,120,Scoring Average,73.702,R2026527,Baycurrent Classic,2026,73.702
+65922,Koshin Nagasaki,69,120,Scoring Average,73.952,R2026527,Baycurrent Classic,2026,73.952
+35532,Tom Hoge,70,120,Scoring Average,74.202,R2026527,Baycurrent Classic,2026,74.202
+32102,Rickie Fowler,71,120,Scoring Average,74.702,R2026527,Baycurrent Classic,2026,74.702
+63343,Aldrich Potgieter,72,120,Scoring Average,75.202,R2026527,Baycurrent Classic,2026,75.202
 50095,Austin Smotherman,1,120,Scoring Average,67.446,R2026554,Bank of Utah Championship,2026,67.446
 52375,Doug Ghim,2,120,Scoring Average,67.946,R2026554,Bank of Utah Championship,2026,67.946
 52514,Trace Crowe,3,120,Scoring Average,68.196,R2026554,Bank of Utah Championship,2026,68.196
@@ -2645,6 +2717,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47983,Chad Ramey,71,120,Scoring Average,71.033,R2026006,Sony Open in Hawaii,2026,71.033
 61148,Kota Kaneko,73,120,Scoring Average,71.533,R2026006,Sony Open in Hawaii,2026,71.533
 29420,Billy Horschel,74,120,Scoring Average,71.783,R2026006,Sony Open in Hawaii,2026,71.783
+60004,Jacob Bridgeman,1,156,Birdie Average,5.75,R2026527,Baycurrent Classic,2026,5.75
+59018,Ryan Gerard,2,156,Birdie Average,5.50,R2026527,Baycurrent Classic,2026,5.5
+39546,Keith Mitchell,2,156,Birdie Average,5.50,R2026527,Baycurrent Classic,2026,5.5
+50525,Collin Morikawa,2,156,Birdie Average,5.50,R2026527,Baycurrent Classic,2026,5.5
+48001,Zach Bauchou,5,156,Birdie Average,5.25,R2026527,Baycurrent Classic,2026,5.25
+39975,Michael Kim,5,156,Birdie Average,5.25,R2026527,Baycurrent Classic,2026,5.25
+52689,Rasmus Neergaard-Petersen,5,156,Birdie Average,5.25,R2026527,Baycurrent Classic,2026,5.25
+48081,Xander Schauffele,5,156,Birdie Average,5.25,R2026527,Baycurrent Classic,2026,5.25
+46464,Jordan Smith,5,156,Birdie Average,5.25,R2026527,Baycurrent Classic,2026,5.25
+61522,Michael Brennan,10,156,Birdie Average,5.00,R2026527,Baycurrent Classic,2026,5.0
+36799,Stephan Jaeger,10,156,Birdie Average,5.00,R2026527,Baycurrent Classic,2026,5.0
+32839,Hideki Matsuyama,10,156,Birdie Average,5.00,R2026527,Baycurrent Classic,2026,5.0
+39335,Kevin Roy,10,156,Birdie Average,5.00,R2026527,Baycurrent Classic,2026,5.0
+47889,Kosuke Sunagawa,10,156,Birdie Average,5.00,R2026527,Baycurrent Classic,2026,5.0
+57364,Michael Thorbjornsen,10,156,Birdie Average,5.00,R2026527,Baycurrent Classic,2026,5.0
+59440,Ricky Castillo,16,156,Birdie Average,4.75,R2026527,Baycurrent Classic,2026,4.75
+29420,Billy Horschel,16,156,Birdie Average,4.75,R2026527,Baycurrent Classic,2026,4.75
+37378,Min Woo Lee,16,156,Birdie Average,4.75,R2026527,Baycurrent Classic,2026,4.75
+56100,Ren Yonezawa,16,156,Birdie Average,4.75,R2026527,Baycurrent Classic,2026,4.75
+45522,Christiaan Bezuidenhout,20,156,Birdie Average,4.50,R2026527,Baycurrent Classic,2026,4.5
+52375,Doug Ghim,20,156,Birdie Average,4.50,R2026527,Baycurrent Classic,2026,4.5
+39977,Max Homa,20,156,Birdie Average,4.50,R2026527,Baycurrent Classic,2026,4.5
+55908,Tomohiro Ishizaka,20,156,Birdie Average,4.50,R2026527,Baycurrent Classic,2026,4.5
+63454,Johnny Keefer,20,156,Birdie Average,4.50,R2026527,Baycurrent Classic,2026,4.5
+46442,Maverick McNealy,20,156,Birdie Average,4.50,R2026527,Baycurrent Classic,2026,4.5
+24502,Adam Scott,20,156,Birdie Average,4.50,R2026527,Baycurrent Classic,2026,4.5
+34046,Jordan Spieth,20,156,Birdie Average,4.50,R2026527,Baycurrent Classic,2026,4.5
+27644,Brian Harman,28,156,Birdie Average,4.25,R2026527,Baycurrent Classic,2026,4.25
+35461,Beau Hossler,28,156,Birdie Average,4.25,R2026527,Baycurrent Classic,2026,4.25
+39971,Sungjae Im,28,156,Birdie Average,4.25,R2026527,Baycurrent Classic,2026,4.25
+47917,Takumi Kanaya,28,156,Birdie Average,4.25,R2026527,Baycurrent Classic,2026,4.25
+25493,Nick Taylor,28,156,Birdie Average,4.25,R2026527,Baycurrent Classic,2026,4.25
+59836,Pierceson Coody,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+29725,Tony Finau,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+57123,Steven Fisk,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+54628,Lee Hodges,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+59743,Aguri Iwasaki,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+48117,Kurt Kitayama,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+36884,Ben Kohles,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+33689,Jinichiro Kozuma,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+36326,David Lipsky,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+47993,Denny McCarthy,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+49947,Taylor Moore,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+57900,Chandler Phillips,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+63343,Aldrich Potgieter,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+36699,Patrick Rodgers,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+60019,Jackson Suber,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+33448,Justin Thomas,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+58168,Davis Thompson,33,156,Birdie Average,4.00,R2026527,Baycurrent Classic,2026,4.0
+33141,Keegan Bradley,50,156,Birdie Average,3.75,R2026527,Baycurrent Classic,2026,3.75
+51349,Nico Echavarria,50,156,Birdie Average,3.75,R2026527,Baycurrent Classic,2026,3.75
+29833,Yoshinori Fujimoto,50,156,Birdie Average,3.75,R2026527,Baycurrent Classic,2026,3.75
+51977,Max Greyserman,50,156,Birdie Average,3.75,R2026527,Baycurrent Classic,2026,3.75
+59143,Mac Meissner,50,156,Birdie Average,3.75,R2026527,Baycurrent Classic,2026,3.75
+35658,Kristoffer Ventura,50,156,Birdie Average,3.75,R2026527,Baycurrent Classic,2026,3.75
+45242,Kevin Yu,50,156,Birdie Average,3.75,R2026527,Baycurrent Classic,2026,3.75
+51766,Wyndham Clark,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+51287,Ryo Hisatsune,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+56165,Yusaku Hosono,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+33232,Sang-hee Lee,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+59141,Matt McCarty,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+49228,Keita Nakajima,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+40250,Taylor Pendrith,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+34256,Andrew Putnam,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+51634,Sahith Theegala,57,156,Birdie Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+35532,Tom Hoge,66,156,Birdie Average,3.25,R2026527,Baycurrent Classic,2026,3.25
+27747,Hiroshi Iwata,66,156,Birdie Average,3.25,R2026527,Baycurrent Classic,2026,3.25
+28723,John Parry,66,156,Birdie Average,3.25,R2026527,Baycurrent Classic,2026,3.25
+65922,Koshin Nagasaki,69,156,Birdie Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+32102,Rickie Fowler,70,156,Birdie Average,2.50,R2026527,Baycurrent Classic,2026,2.5
+48887,Matt Wallace,70,156,Birdie Average,2.50,R2026527,Baycurrent Classic,2026,2.5
+46340,Alex Smalley,72,156,Birdie Average,2.25,R2026527,Baycurrent Classic,2026,2.25
 50095,Austin Smotherman,1,156,Birdie Average,8.00,R2026554,Bank of Utah Championship,2026,8.0
 52375,Doug Ghim,2,156,Birdie Average,7.00,R2026554,Bank of Utah Championship,2026,7.0
 40162,Justin Lower,3,156,Birdie Average,6.75,R2026554,Bank of Utah Championship,2026,6.75
@@ -5291,6 +5435,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47917,Takumi Kanaya,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
 46464,Jordan Smith,71,156,Birdie Average,2.50,R2026006,Sony Open in Hawaii,2026,2.5
 29420,Billy Horschel,74,156,Birdie Average,2.25,R2026006,Sony Open in Hawaii,2026,2.25
+60004,Jacob Bridgeman,1,352,Bogey Avoidance,31.94%,R2026527,Baycurrent Classic,2026,31.94
+59018,Ryan Gerard,1,352,Bogey Avoidance,31.94%,R2026527,Baycurrent Classic,2026,31.94
+39546,Keith Mitchell,1,352,Bogey Avoidance,31.94%,R2026527,Baycurrent Classic,2026,31.94
+48081,Xander Schauffele,1,352,Bogey Avoidance,31.94%,R2026527,Baycurrent Classic,2026,31.94
+48001,Zach Bauchou,5,352,Bogey Avoidance,30.56%,R2026527,Baycurrent Classic,2026,30.56
+50525,Collin Morikawa,5,352,Bogey Avoidance,30.56%,R2026527,Baycurrent Classic,2026,30.56
+61522,Michael Brennan,7,352,Bogey Avoidance,29.17%,R2026527,Baycurrent Classic,2026,29.17
+39975,Michael Kim,7,352,Bogey Avoidance,29.17%,R2026527,Baycurrent Classic,2026,29.17
+32839,Hideki Matsuyama,7,352,Bogey Avoidance,29.17%,R2026527,Baycurrent Classic,2026,29.17
+52689,Rasmus Neergaard-Petersen,7,352,Bogey Avoidance,29.17%,R2026527,Baycurrent Classic,2026,29.17
+39335,Kevin Roy,7,352,Bogey Avoidance,29.17%,R2026527,Baycurrent Classic,2026,29.17
+46464,Jordan Smith,7,352,Bogey Avoidance,29.17%,R2026527,Baycurrent Classic,2026,29.17
+59440,Ricky Castillo,13,352,Bogey Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+52375,Doug Ghim,13,352,Bogey Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+29420,Billy Horschel,13,352,Bogey Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+36799,Stephan Jaeger,13,352,Bogey Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+24502,Adam Scott,13,352,Bogey Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+47889,Kosuke Sunagawa,13,352,Bogey Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+57364,Michael Thorbjornsen,13,352,Bogey Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+56100,Ren Yonezawa,13,352,Bogey Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+45522,Christiaan Bezuidenhout,21,352,Bogey Avoidance,26.39%,R2026527,Baycurrent Classic,2026,26.39
+63454,Johnny Keefer,21,352,Bogey Avoidance,26.39%,R2026527,Baycurrent Classic,2026,26.39
+37378,Min Woo Lee,21,352,Bogey Avoidance,26.39%,R2026527,Baycurrent Classic,2026,26.39
+46442,Maverick McNealy,21,352,Bogey Avoidance,26.39%,R2026527,Baycurrent Classic,2026,26.39
+34046,Jordan Spieth,21,352,Bogey Avoidance,26.39%,R2026527,Baycurrent Classic,2026,26.39
+39977,Max Homa,26,352,Bogey Avoidance,25.00%,R2026527,Baycurrent Classic,2026,25.0
+55908,Tomohiro Ishizaka,26,352,Bogey Avoidance,25.00%,R2026527,Baycurrent Classic,2026,25.0
+58168,Davis Thompson,26,352,Bogey Avoidance,25.00%,R2026527,Baycurrent Classic,2026,25.0
+59836,Pierceson Coody,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+27644,Brian Harman,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+54628,Lee Hodges,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+35461,Beau Hossler,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+39971,Sungjae Im,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+59743,Aguri Iwasaki,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+47917,Takumi Kanaya,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+36884,Ben Kohles,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+47993,Denny McCarthy,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+57900,Chandler Phillips,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+63343,Aldrich Potgieter,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+36699,Patrick Rodgers,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+25493,Nick Taylor,29,352,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+33141,Keegan Bradley,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+51349,Nico Echavarria,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+29725,Tony Finau,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+57123,Steven Fisk,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+29833,Yoshinori Fujimoto,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+48117,Kurt Kitayama,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+33689,Jinichiro Kozuma,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+36326,David Lipsky,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+59141,Matt McCarty,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+59143,Mac Meissner,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+49947,Taylor Moore,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+49228,Keita Nakajima,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+60019,Jackson Suber,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+33448,Justin Thomas,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+45242,Kevin Yu,42,352,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+51766,Wyndham Clark,57,352,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+51977,Max Greyserman,57,352,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+51287,Ryo Hisatsune,57,352,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+33232,Sang-hee Lee,57,352,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+35658,Kristoffer Ventura,57,352,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+56165,Yusaku Hosono,62,352,Bogey Avoidance,19.44%,R2026527,Baycurrent Classic,2026,19.44
+28723,John Parry,62,352,Bogey Avoidance,19.44%,R2026527,Baycurrent Classic,2026,19.44
+40250,Taylor Pendrith,62,352,Bogey Avoidance,19.44%,R2026527,Baycurrent Classic,2026,19.44
+34256,Andrew Putnam,62,352,Bogey Avoidance,19.44%,R2026527,Baycurrent Classic,2026,19.44
+51634,Sahith Theegala,62,352,Bogey Avoidance,19.44%,R2026527,Baycurrent Classic,2026,19.44
+35532,Tom Hoge,67,352,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+27747,Hiroshi Iwata,67,352,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+65922,Koshin Nagasaki,69,352,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+48887,Matt Wallace,70,352,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+32102,Rickie Fowler,71,352,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+46340,Alex Smalley,71,352,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
 50095,Austin Smotherman,1,352,Bogey Avoidance,44.44%,R2026554,Bank of Utah Championship,2026,44.44
 52375,Doug Ghim,2,352,Bogey Avoidance,38.89%,R2026554,Bank of Utah Championship,2026,38.89
 38991,Alejandro Tosti,2,352,Bogey Avoidance,38.89%,R2026554,Bank of Utah Championship,2026,38.89
@@ -7937,6 +8153,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 36801,Mark Hubbard,72,352,Bogey Avoidance,15.28%,R2026006,Sony Open in Hawaii,2026,15.28
 46464,Jordan Smith,73,352,Bogey Avoidance,13.89%,R2026006,Sony Open in Hawaii,2026,13.89
 29420,Billy Horschel,74,352,Bogey Avoidance,12.50%,R2026006,Sony Open in Hawaii,2026,12.5
+33448,Justin Thomas,1,103,GIR Percentage,79.17%,R2026527,Baycurrent Classic,2026,79.17
+59143,Mac Meissner,2,103,GIR Percentage,77.78%,R2026527,Baycurrent Classic,2026,77.78
+60004,Jacob Bridgeman,3,103,GIR Percentage,76.39%,R2026527,Baycurrent Classic,2026,76.39
+52375,Doug Ghim,3,103,GIR Percentage,76.39%,R2026527,Baycurrent Classic,2026,76.39
+51287,Ryo Hisatsune,3,103,GIR Percentage,76.39%,R2026527,Baycurrent Classic,2026,76.39
+34256,Andrew Putnam,3,103,GIR Percentage,76.39%,R2026527,Baycurrent Classic,2026,76.39
+24502,Adam Scott,3,103,GIR Percentage,76.39%,R2026527,Baycurrent Classic,2026,76.39
+34046,Jordan Spieth,3,103,GIR Percentage,76.39%,R2026527,Baycurrent Classic,2026,76.39
+61522,Michael Brennan,9,103,GIR Percentage,75.00%,R2026527,Baycurrent Classic,2026,75.0
+29420,Billy Horschel,9,103,GIR Percentage,75.00%,R2026527,Baycurrent Classic,2026,75.0
+36884,Ben Kohles,9,103,GIR Percentage,75.00%,R2026527,Baycurrent Classic,2026,75.0
+45522,Christiaan Bezuidenhout,12,103,GIR Percentage,72.22%,R2026527,Baycurrent Classic,2026,72.22
+36799,Stephan Jaeger,12,103,GIR Percentage,72.22%,R2026527,Baycurrent Classic,2026,72.22
+49228,Keita Nakajima,12,103,GIR Percentage,72.22%,R2026527,Baycurrent Classic,2026,72.22
+28723,John Parry,12,103,GIR Percentage,72.22%,R2026527,Baycurrent Classic,2026,72.22
+36699,Patrick Rodgers,12,103,GIR Percentage,72.22%,R2026527,Baycurrent Classic,2026,72.22
+35658,Kristoffer Ventura,12,103,GIR Percentage,72.22%,R2026527,Baycurrent Classic,2026,72.22
+59440,Ricky Castillo,18,103,GIR Percentage,70.83%,R2026527,Baycurrent Classic,2026,70.83
+59018,Ryan Gerard,18,103,GIR Percentage,70.83%,R2026527,Baycurrent Classic,2026,70.83
+39971,Sungjae Im,18,103,GIR Percentage,70.83%,R2026527,Baycurrent Classic,2026,70.83
+59743,Aguri Iwasaki,18,103,GIR Percentage,70.83%,R2026527,Baycurrent Classic,2026,70.83
+39546,Keith Mitchell,18,103,GIR Percentage,70.83%,R2026527,Baycurrent Classic,2026,70.83
+54628,Lee Hodges,23,103,GIR Percentage,69.44%,R2026527,Baycurrent Classic,2026,69.44
+39975,Michael Kim,23,103,GIR Percentage,69.44%,R2026527,Baycurrent Classic,2026,69.44
+48117,Kurt Kitayama,23,103,GIR Percentage,69.44%,R2026527,Baycurrent Classic,2026,69.44
+49947,Taylor Moore,23,103,GIR Percentage,69.44%,R2026527,Baycurrent Classic,2026,69.44
+52689,Rasmus Neergaard-Petersen,23,103,GIR Percentage,69.44%,R2026527,Baycurrent Classic,2026,69.44
+40250,Taylor Pendrith,23,103,GIR Percentage,69.44%,R2026527,Baycurrent Classic,2026,69.44
+60019,Jackson Suber,23,103,GIR Percentage,69.44%,R2026527,Baycurrent Classic,2026,69.44
+29833,Yoshinori Fujimoto,30,103,GIR Percentage,68.06%,R2026527,Baycurrent Classic,2026,68.06
+27644,Brian Harman,30,103,GIR Percentage,68.06%,R2026527,Baycurrent Classic,2026,68.06
+56165,Yusaku Hosono,30,103,GIR Percentage,68.06%,R2026527,Baycurrent Classic,2026,68.06
+50525,Collin Morikawa,30,103,GIR Percentage,68.06%,R2026527,Baycurrent Classic,2026,68.06
+57900,Chandler Phillips,30,103,GIR Percentage,68.06%,R2026527,Baycurrent Classic,2026,68.06
+39335,Kevin Roy,30,103,GIR Percentage,68.06%,R2026527,Baycurrent Classic,2026,68.06
+48081,Xander Schauffele,30,103,GIR Percentage,68.06%,R2026527,Baycurrent Classic,2026,68.06
+58168,Davis Thompson,30,103,GIR Percentage,68.06%,R2026527,Baycurrent Classic,2026,68.06
+59836,Pierceson Coody,38,103,GIR Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+29725,Tony Finau,38,103,GIR Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+46340,Alex Smalley,38,103,GIR Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+57364,Michael Thorbjornsen,38,103,GIR Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+56100,Ren Yonezawa,38,103,GIR Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+48001,Zach Bauchou,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+51766,Wyndham Clark,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+57123,Steven Fisk,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+39977,Max Homa,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+35461,Beau Hossler,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+47917,Takumi Kanaya,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+33689,Jinichiro Kozuma,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+32839,Hideki Matsuyama,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+47993,Denny McCarthy,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+46464,Jordan Smith,43,103,GIR Percentage,65.28%,R2026527,Baycurrent Classic,2026,65.28
+33141,Keegan Bradley,53,103,GIR Percentage,63.89%,R2026527,Baycurrent Classic,2026,63.89
+51349,Nico Echavarria,53,103,GIR Percentage,63.89%,R2026527,Baycurrent Classic,2026,63.89
+51977,Max Greyserman,53,103,GIR Percentage,63.89%,R2026527,Baycurrent Classic,2026,63.89
+27747,Hiroshi Iwata,53,103,GIR Percentage,63.89%,R2026527,Baycurrent Classic,2026,63.89
+37378,Min Woo Lee,53,103,GIR Percentage,63.89%,R2026527,Baycurrent Classic,2026,63.89
+36326,David Lipsky,53,103,GIR Percentage,63.89%,R2026527,Baycurrent Classic,2026,63.89
+59141,Matt McCarty,53,103,GIR Percentage,63.89%,R2026527,Baycurrent Classic,2026,63.89
+45242,Kevin Yu,53,103,GIR Percentage,63.89%,R2026527,Baycurrent Classic,2026,63.89
+63454,Johnny Keefer,61,103,GIR Percentage,62.50%,R2026527,Baycurrent Classic,2026,62.5
+33232,Sang-hee Lee,61,103,GIR Percentage,62.50%,R2026527,Baycurrent Classic,2026,62.5
+46442,Maverick McNealy,61,103,GIR Percentage,62.50%,R2026527,Baycurrent Classic,2026,62.5
+65922,Koshin Nagasaki,61,103,GIR Percentage,62.50%,R2026527,Baycurrent Classic,2026,62.5
+25493,Nick Taylor,61,103,GIR Percentage,62.50%,R2026527,Baycurrent Classic,2026,62.5
+55908,Tomohiro Ishizaka,66,103,GIR Percentage,61.11%,R2026527,Baycurrent Classic,2026,61.11
+32102,Rickie Fowler,67,103,GIR Percentage,59.72%,R2026527,Baycurrent Classic,2026,59.72
+35532,Tom Hoge,68,103,GIR Percentage,58.33%,R2026527,Baycurrent Classic,2026,58.33
+51634,Sahith Theegala,68,103,GIR Percentage,58.33%,R2026527,Baycurrent Classic,2026,58.33
+63343,Aldrich Potgieter,70,103,GIR Percentage,56.94%,R2026527,Baycurrent Classic,2026,56.94
+48887,Matt Wallace,70,103,GIR Percentage,56.94%,R2026527,Baycurrent Classic,2026,56.94
+47889,Kosuke Sunagawa,72,103,GIR Percentage,54.17%,R2026527,Baycurrent Classic,2026,54.17
 57123,Steven Fisk,1,103,GIR Percentage,91.67%,R2026554,Bank of Utah Championship,2026,91.67
 50095,Austin Smotherman,2,103,GIR Percentage,88.89%,R2026554,Bank of Utah Championship,2026,88.89
 57869,Ben James,3,103,GIR Percentage,86.11%,R2026554,Bank of Utah Championship,2026,86.11
@@ -10583,6 +10871,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39335,Kevin Roy,71,103,GIR Percentage,61.11%,R2026006,Sony Open in Hawaii,2026,61.11
 48153,Matthieu Pavon,73,103,GIR Percentage,58.33%,R2026006,Sony Open in Hawaii,2026,58.33
 32757,Patton Kizzire,74,103,GIR Percentage,55.56%,R2026006,Sony Open in Hawaii,2026,55.56
+59440,Ricky Castillo,1,101,Driving Distance,327.4,R2026527,Baycurrent Classic,2026,327.4
+63454,Johnny Keefer,2,101,Driving Distance,326.3,R2026527,Baycurrent Classic,2026,326.3
+59018,Ryan Gerard,3,101,Driving Distance,322.3,R2026527,Baycurrent Classic,2026,322.3
+39546,Keith Mitchell,4,101,Driving Distance,321.8,R2026527,Baycurrent Classic,2026,321.8
+33448,Justin Thomas,5,101,Driving Distance,320.0,R2026527,Baycurrent Classic,2026,320.0
+61522,Michael Brennan,6,101,Driving Distance,317.4,R2026527,Baycurrent Classic,2026,317.4
+60019,Jackson Suber,7,101,Driving Distance,317.1,R2026527,Baycurrent Classic,2026,317.1
+57364,Michael Thorbjornsen,8,101,Driving Distance,316.8,R2026527,Baycurrent Classic,2026,316.8
+49947,Taylor Moore,9,101,Driving Distance,315.1,R2026527,Baycurrent Classic,2026,315.1
+39335,Kevin Roy,10,101,Driving Distance,314.5,R2026527,Baycurrent Classic,2026,314.5
+40250,Taylor Pendrith,11,101,Driving Distance,313.1,R2026527,Baycurrent Classic,2026,313.1
+36699,Patrick Rodgers,12,101,Driving Distance,312.8,R2026527,Baycurrent Classic,2026,312.8
+45242,Kevin Yu,13,101,Driving Distance,312.6,R2026527,Baycurrent Classic,2026,312.6
+34046,Jordan Spieth,14,101,Driving Distance,312.3,R2026527,Baycurrent Classic,2026,312.3
+46442,Maverick McNealy,15,101,Driving Distance,311.6,R2026527,Baycurrent Classic,2026,311.6
+63343,Aldrich Potgieter,16,101,Driving Distance,311.0,R2026527,Baycurrent Classic,2026,311.0
+32839,Hideki Matsuyama,17,101,Driving Distance,310.3,R2026527,Baycurrent Classic,2026,310.3
+57123,Steven Fisk,18,101,Driving Distance,309.5,R2026527,Baycurrent Classic,2026,309.5
+51287,Ryo Hisatsune,19,101,Driving Distance,309.0,R2026527,Baycurrent Classic,2026,309.0
+57900,Chandler Phillips,20,101,Driving Distance,308.1,R2026527,Baycurrent Classic,2026,308.1
+35658,Kristoffer Ventura,21,101,Driving Distance,307.9,R2026527,Baycurrent Classic,2026,307.9
+46464,Jordan Smith,22,101,Driving Distance,307.6,R2026527,Baycurrent Classic,2026,307.6
+65922,Koshin Nagasaki,23,101,Driving Distance,307.4,R2026527,Baycurrent Classic,2026,307.4
+49228,Keita Nakajima,24,101,Driving Distance,307.3,R2026527,Baycurrent Classic,2026,307.3
+37378,Min Woo Lee,25,101,Driving Distance,307.0,R2026527,Baycurrent Classic,2026,307.0
+33689,Jinichiro Kozuma,26,101,Driving Distance,306.9,R2026527,Baycurrent Classic,2026,306.9
+59743,Aguri Iwasaki,27,101,Driving Distance,306.5,R2026527,Baycurrent Classic,2026,306.5
+51634,Sahith Theegala,28,101,Driving Distance,306.4,R2026527,Baycurrent Classic,2026,306.4
+48081,Xander Schauffele,29,101,Driving Distance,306.3,R2026527,Baycurrent Classic,2026,306.3
+48887,Matt Wallace,30,101,Driving Distance,306.1,R2026527,Baycurrent Classic,2026,306.1
+52689,Rasmus Neergaard-Petersen,31,101,Driving Distance,305.8,R2026527,Baycurrent Classic,2026,305.8
+46340,Alex Smalley,32,101,Driving Distance,303.8,R2026527,Baycurrent Classic,2026,303.8
+39977,Max Homa,33,101,Driving Distance,303.6,R2026527,Baycurrent Classic,2026,303.6
+51766,Wyndham Clark,34,101,Driving Distance,302.3,R2026527,Baycurrent Classic,2026,302.3
+29725,Tony Finau,34,101,Driving Distance,302.3,R2026527,Baycurrent Classic,2026,302.3
+51977,Max Greyserman,36,101,Driving Distance,301.8,R2026527,Baycurrent Classic,2026,301.8
+50525,Collin Morikawa,36,101,Driving Distance,301.8,R2026527,Baycurrent Classic,2026,301.8
+52375,Doug Ghim,38,101,Driving Distance,301.5,R2026527,Baycurrent Classic,2026,301.5
+35461,Beau Hossler,39,101,Driving Distance,300.9,R2026527,Baycurrent Classic,2026,300.9
+56165,Yusaku Hosono,40,101,Driving Distance,300.8,R2026527,Baycurrent Classic,2026,300.8
+48001,Zach Bauchou,41,101,Driving Distance,300.3,R2026527,Baycurrent Classic,2026,300.3
+59836,Pierceson Coody,42,101,Driving Distance,300.0,R2026527,Baycurrent Classic,2026,300.0
+33232,Sang-hee Lee,43,101,Driving Distance,299.5,R2026527,Baycurrent Classic,2026,299.5
+59141,Matt McCarty,44,101,Driving Distance,299.4,R2026527,Baycurrent Classic,2026,299.4
+59143,Mac Meissner,45,101,Driving Distance,299.3,R2026527,Baycurrent Classic,2026,299.3
+35532,Tom Hoge,46,101,Driving Distance,298.1,R2026527,Baycurrent Classic,2026,298.1
+39971,Sungjae Im,46,101,Driving Distance,298.1,R2026527,Baycurrent Classic,2026,298.1
+28723,John Parry,48,101,Driving Distance,297.9,R2026527,Baycurrent Classic,2026,297.9
+25493,Nick Taylor,49,101,Driving Distance,297.4,R2026527,Baycurrent Classic,2026,297.4
+47917,Takumi Kanaya,50,101,Driving Distance,297.0,R2026527,Baycurrent Classic,2026,297.0
+27747,Hiroshi Iwata,51,101,Driving Distance,296.6,R2026527,Baycurrent Classic,2026,296.6
+32102,Rickie Fowler,52,101,Driving Distance,296.3,R2026527,Baycurrent Classic,2026,296.3
+36326,David Lipsky,53,101,Driving Distance,295.8,R2026527,Baycurrent Classic,2026,295.8
+56100,Ren Yonezawa,54,101,Driving Distance,295.3,R2026527,Baycurrent Classic,2026,295.3
+36799,Stephan Jaeger,55,101,Driving Distance,295.0,R2026527,Baycurrent Classic,2026,295.0
+39975,Michael Kim,55,101,Driving Distance,295.0,R2026527,Baycurrent Classic,2026,295.0
+45522,Christiaan Bezuidenhout,57,101,Driving Distance,294.5,R2026527,Baycurrent Classic,2026,294.5
+55908,Tomohiro Ishizaka,58,101,Driving Distance,294.4,R2026527,Baycurrent Classic,2026,294.4
+27644,Brian Harman,59,101,Driving Distance,294.3,R2026527,Baycurrent Classic,2026,294.3
+58168,Davis Thompson,60,101,Driving Distance,294.0,R2026527,Baycurrent Classic,2026,294.0
+51349,Nico Echavarria,61,101,Driving Distance,293.0,R2026527,Baycurrent Classic,2026,293.0
+54628,Lee Hodges,62,101,Driving Distance,291.6,R2026527,Baycurrent Classic,2026,291.6
+33141,Keegan Bradley,63,101,Driving Distance,290.4,R2026527,Baycurrent Classic,2026,290.4
+29420,Billy Horschel,64,101,Driving Distance,288.6,R2026527,Baycurrent Classic,2026,288.6
+47889,Kosuke Sunagawa,65,101,Driving Distance,285.8,R2026527,Baycurrent Classic,2026,285.8
+60004,Jacob Bridgeman,66,101,Driving Distance,285.6,R2026527,Baycurrent Classic,2026,285.6
+29833,Yoshinori Fujimoto,67,101,Driving Distance,285.0,R2026527,Baycurrent Classic,2026,285.0
+48117,Kurt Kitayama,68,101,Driving Distance,283.9,R2026527,Baycurrent Classic,2026,283.9
+34256,Andrew Putnam,69,101,Driving Distance,283.4,R2026527,Baycurrent Classic,2026,283.4
+36884,Ben Kohles,70,101,Driving Distance,283.0,R2026527,Baycurrent Classic,2026,283.0
+47993,Denny McCarthy,71,101,Driving Distance,281.8,R2026527,Baycurrent Classic,2026,281.8
+24502,Adam Scott,72,101,Driving Distance,281.1,R2026527,Baycurrent Classic,2026,281.1
 63454,Johnny Keefer,1,101,Driving Distance,345.3,R2026554,Bank of Utah Championship,2026,345.3
 57586,Jesper Svensson,2,101,Driving Distance,339.3,R2026554,Bank of Utah Championship,2026,339.3
 51696,Rico Hoey,3,101,Driving Distance,335.3,R2026554,Bank of Utah Championship,2026,335.3
@@ -13229,6 +13589,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 6567,Vijay Singh,72,101,Driving Distance,287.0,R2026006,Sony Open in Hawaii,2026,287.0
 40058,Zac Blair,73,101,Driving Distance,285.6,R2026006,Sony Open in Hawaii,2026,285.6
 47995,Davis Riley,74,101,Driving Distance,278.4,R2026006,Sony Open in Hawaii,2026,278.4
+61522,Michael Brennan,1,102,Driving Accuracy,91.67%,R2026527,Baycurrent Classic,2026,91.67
+55908,Tomohiro Ishizaka,2,102,Driving Accuracy,88.33%,R2026527,Baycurrent Classic,2026,88.33
+36884,Ben Kohles,3,102,Driving Accuracy,83.33%,R2026527,Baycurrent Classic,2026,83.33
+45522,Christiaan Bezuidenhout,4,102,Driving Accuracy,81.67%,R2026527,Baycurrent Classic,2026,81.67
+28723,John Parry,4,102,Driving Accuracy,81.67%,R2026527,Baycurrent Classic,2026,81.67
+40250,Taylor Pendrith,4,102,Driving Accuracy,81.67%,R2026527,Baycurrent Classic,2026,81.67
+48001,Zach Bauchou,7,102,Driving Accuracy,80.00%,R2026527,Baycurrent Classic,2026,80.0
+60004,Jacob Bridgeman,7,102,Driving Accuracy,80.00%,R2026527,Baycurrent Classic,2026,80.0
+39977,Max Homa,7,102,Driving Accuracy,80.00%,R2026527,Baycurrent Classic,2026,80.0
+48117,Kurt Kitayama,7,102,Driving Accuracy,80.00%,R2026527,Baycurrent Classic,2026,80.0
+47993,Denny McCarthy,7,102,Driving Accuracy,80.00%,R2026527,Baycurrent Classic,2026,80.0
+35461,Beau Hossler,12,102,Driving Accuracy,78.33%,R2026527,Baycurrent Classic,2026,78.33
+47917,Takumi Kanaya,12,102,Driving Accuracy,78.33%,R2026527,Baycurrent Classic,2026,78.33
+59141,Matt McCarty,12,102,Driving Accuracy,78.33%,R2026527,Baycurrent Classic,2026,78.33
+49228,Keita Nakajima,12,102,Driving Accuracy,78.33%,R2026527,Baycurrent Classic,2026,78.33
+46340,Alex Smalley,12,102,Driving Accuracy,78.33%,R2026527,Baycurrent Classic,2026,78.33
+54628,Lee Hodges,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+29420,Billy Horschel,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+59743,Aguri Iwasaki,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+33232,Sang-hee Lee,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+46442,Maverick McNealy,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+59143,Mac Meissner,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+52689,Rasmus Neergaard-Petersen,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+60019,Jackson Suber,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+33448,Justin Thomas,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+57364,Michael Thorbjornsen,17,102,Driving Accuracy,76.67%,R2026527,Baycurrent Classic,2026,76.67
+59440,Ricky Castillo,27,102,Driving Accuracy,75.00%,R2026527,Baycurrent Classic,2026,75.0
+37378,Min Woo Lee,27,102,Driving Accuracy,75.00%,R2026527,Baycurrent Classic,2026,75.0
+34256,Andrew Putnam,27,102,Driving Accuracy,75.00%,R2026527,Baycurrent Classic,2026,75.0
+47889,Kosuke Sunagawa,27,102,Driving Accuracy,75.00%,R2026527,Baycurrent Classic,2026,75.0
+56100,Ren Yonezawa,27,102,Driving Accuracy,75.00%,R2026527,Baycurrent Classic,2026,75.0
+57123,Steven Fisk,32,102,Driving Accuracy,73.33%,R2026527,Baycurrent Classic,2026,73.33
+27644,Brian Harman,32,102,Driving Accuracy,73.33%,R2026527,Baycurrent Classic,2026,73.33
+39971,Sungjae Im,32,102,Driving Accuracy,73.33%,R2026527,Baycurrent Classic,2026,73.33
+49947,Taylor Moore,32,102,Driving Accuracy,73.33%,R2026527,Baycurrent Classic,2026,73.33
+50525,Collin Morikawa,32,102,Driving Accuracy,73.33%,R2026527,Baycurrent Classic,2026,73.33
+57900,Chandler Phillips,32,102,Driving Accuracy,73.33%,R2026527,Baycurrent Classic,2026,73.33
+58168,Davis Thompson,32,102,Driving Accuracy,73.33%,R2026527,Baycurrent Classic,2026,73.33
+39975,Michael Kim,39,102,Driving Accuracy,71.67%,R2026527,Baycurrent Classic,2026,71.67
+36326,David Lipsky,39,102,Driving Accuracy,71.67%,R2026527,Baycurrent Classic,2026,71.67
+39546,Keith Mitchell,39,102,Driving Accuracy,71.67%,R2026527,Baycurrent Classic,2026,71.67
+48081,Xander Schauffele,39,102,Driving Accuracy,71.67%,R2026527,Baycurrent Classic,2026,71.67
+59018,Ryan Gerard,43,102,Driving Accuracy,70.00%,R2026527,Baycurrent Classic,2026,70.0
+51287,Ryo Hisatsune,43,102,Driving Accuracy,70.00%,R2026527,Baycurrent Classic,2026,70.0
+56165,Yusaku Hosono,43,102,Driving Accuracy,70.00%,R2026527,Baycurrent Classic,2026,70.0
+32839,Hideki Matsuyama,43,102,Driving Accuracy,70.00%,R2026527,Baycurrent Classic,2026,70.0
+39335,Kevin Roy,43,102,Driving Accuracy,70.00%,R2026527,Baycurrent Classic,2026,70.0
+25493,Nick Taylor,43,102,Driving Accuracy,70.00%,R2026527,Baycurrent Classic,2026,70.0
+35658,Kristoffer Ventura,43,102,Driving Accuracy,70.00%,R2026527,Baycurrent Classic,2026,70.0
+29833,Yoshinori Fujimoto,50,102,Driving Accuracy,68.33%,R2026527,Baycurrent Classic,2026,68.33
+27747,Hiroshi Iwata,50,102,Driving Accuracy,68.33%,R2026527,Baycurrent Classic,2026,68.33
+34046,Jordan Spieth,50,102,Driving Accuracy,68.33%,R2026527,Baycurrent Classic,2026,68.33
+45242,Kevin Yu,50,102,Driving Accuracy,68.33%,R2026527,Baycurrent Classic,2026,68.33
+33141,Keegan Bradley,54,102,Driving Accuracy,66.67%,R2026527,Baycurrent Classic,2026,66.67
+51766,Wyndham Clark,54,102,Driving Accuracy,66.67%,R2026527,Baycurrent Classic,2026,66.67
+51349,Nico Echavarria,54,102,Driving Accuracy,66.67%,R2026527,Baycurrent Classic,2026,66.67
+36799,Stephan Jaeger,54,102,Driving Accuracy,66.67%,R2026527,Baycurrent Classic,2026,66.67
+63454,Johnny Keefer,54,102,Driving Accuracy,66.67%,R2026527,Baycurrent Classic,2026,66.67
+33689,Jinichiro Kozuma,54,102,Driving Accuracy,66.67%,R2026527,Baycurrent Classic,2026,66.67
+65922,Koshin Nagasaki,54,102,Driving Accuracy,66.67%,R2026527,Baycurrent Classic,2026,66.67
+24502,Adam Scott,54,102,Driving Accuracy,66.67%,R2026527,Baycurrent Classic,2026,66.67
+59836,Pierceson Coody,62,102,Driving Accuracy,65.00%,R2026527,Baycurrent Classic,2026,65.0
+29725,Tony Finau,62,102,Driving Accuracy,65.00%,R2026527,Baycurrent Classic,2026,65.0
+48887,Matt Wallace,62,102,Driving Accuracy,65.00%,R2026527,Baycurrent Classic,2026,65.0
+52375,Doug Ghim,65,102,Driving Accuracy,63.33%,R2026527,Baycurrent Classic,2026,63.33
+36699,Patrick Rodgers,65,102,Driving Accuracy,63.33%,R2026527,Baycurrent Classic,2026,63.33
+35532,Tom Hoge,67,102,Driving Accuracy,61.67%,R2026527,Baycurrent Classic,2026,61.67
+51634,Sahith Theegala,67,102,Driving Accuracy,61.67%,R2026527,Baycurrent Classic,2026,61.67
+46464,Jordan Smith,69,102,Driving Accuracy,60.00%,R2026527,Baycurrent Classic,2026,60.0
+32102,Rickie Fowler,70,102,Driving Accuracy,58.33%,R2026527,Baycurrent Classic,2026,58.33
+51977,Max Greyserman,70,102,Driving Accuracy,58.33%,R2026527,Baycurrent Classic,2026,58.33
+63343,Aldrich Potgieter,72,102,Driving Accuracy,55.00%,R2026527,Baycurrent Classic,2026,55.0
 52375,Doug Ghim,1,102,Driving Accuracy,98.21%,R2026554,Bank of Utah Championship,2026,98.21
 29535,Brice Garnett,2,102,Driving Accuracy,96.43%,R2026554,Bank of Utah Championship,2026,96.43
 35658,Kristoffer Ventura,2,102,Driving Accuracy,96.43%,R2026554,Bank of Utah Championship,2026,96.43
@@ -18321,6 +18753,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 59567,Emilio Gonzalez,72,331,Proximity to Hole,"40' 9""",R2026006,Sony Open in Hawaii,2026,
 48153,Matthieu Pavon,73,331,Proximity to Hole,"43' 10""",R2026006,Sony Open in Hawaii,2026,
 37338,Zecheng Dou,74,331,Proximity to Hole,"45' 1""",R2026006,Sony Open in Hawaii,2026,
+27644,Brian Harman,1,130,Scrambling,82.61%,R2026527,Baycurrent Classic,2026,82.61
+39977,Max Homa,2,130,Scrambling,80.00%,R2026527,Baycurrent Classic,2026,80.0
+61522,Michael Brennan,3,130,Scrambling,77.78%,R2026527,Baycurrent Classic,2026,77.78
+36884,Ben Kohles,3,130,Scrambling,77.78%,R2026527,Baycurrent Classic,2026,77.78
+48887,Matt Wallace,5,130,Scrambling,77.42%,R2026527,Baycurrent Classic,2026,77.42
+39971,Sungjae Im,6,130,Scrambling,76.19%,R2026527,Baycurrent Classic,2026,76.19
+56165,Yusaku Hosono,7,130,Scrambling,73.91%,R2026527,Baycurrent Classic,2026,73.91
+37378,Min Woo Lee,8,130,Scrambling,73.08%,R2026527,Baycurrent Classic,2026,73.08
+45522,Christiaan Bezuidenhout,9,130,Scrambling,70.00%,R2026527,Baycurrent Classic,2026,70.0
+36799,Stephan Jaeger,9,130,Scrambling,70.00%,R2026527,Baycurrent Classic,2026,70.0
+47889,Kosuke Sunagawa,11,130,Scrambling,69.70%,R2026527,Baycurrent Classic,2026,69.7
+48001,Zach Bauchou,12,130,Scrambling,68.00%,R2026527,Baycurrent Classic,2026,68.0
+47917,Takumi Kanaya,12,130,Scrambling,68.00%,R2026527,Baycurrent Classic,2026,68.0
+46464,Jordan Smith,12,130,Scrambling,68.00%,R2026527,Baycurrent Classic,2026,68.0
+55908,Tomohiro Ishizaka,15,130,Scrambling,67.86%,R2026527,Baycurrent Classic,2026,67.86
+29725,Tony Finau,16,130,Scrambling,66.67%,R2026527,Baycurrent Classic,2026,66.67
+59018,Ryan Gerard,16,130,Scrambling,66.67%,R2026527,Baycurrent Classic,2026,66.67
+33448,Justin Thomas,16,130,Scrambling,66.67%,R2026527,Baycurrent Classic,2026,66.67
+56100,Ren Yonezawa,16,130,Scrambling,66.67%,R2026527,Baycurrent Classic,2026,66.67
+51349,Nico Echavarria,20,130,Scrambling,65.38%,R2026527,Baycurrent Classic,2026,65.38
+29833,Yoshinori Fujimoto,21,130,Scrambling,65.22%,R2026527,Baycurrent Classic,2026,65.22
+28723,John Parry,22,130,Scrambling,65.00%,R2026527,Baycurrent Classic,2026,65.0
+35658,Kristoffer Ventura,22,130,Scrambling,65.00%,R2026527,Baycurrent Classic,2026,65.0
+60004,Jacob Bridgeman,24,130,Scrambling,64.71%,R2026527,Baycurrent Classic,2026,64.71
+48117,Kurt Kitayama,25,130,Scrambling,63.64%,R2026527,Baycurrent Classic,2026,63.64
+60019,Jackson Suber,25,130,Scrambling,63.64%,R2026527,Baycurrent Classic,2026,63.64
+25493,Nick Taylor,27,130,Scrambling,62.96%,R2026527,Baycurrent Classic,2026,62.96
+39546,Keith Mitchell,28,130,Scrambling,61.90%,R2026527,Baycurrent Classic,2026,61.9
+51977,Max Greyserman,29,130,Scrambling,61.54%,R2026527,Baycurrent Classic,2026,61.54
+48081,Xander Schauffele,30,130,Scrambling,60.87%,R2026527,Baycurrent Classic,2026,60.87
+33689,Jinichiro Kozuma,31,130,Scrambling,60.00%,R2026527,Baycurrent Classic,2026,60.0
+47993,Denny McCarthy,31,130,Scrambling,60.00%,R2026527,Baycurrent Classic,2026,60.0
+63454,Johnny Keefer,33,130,Scrambling,59.26%,R2026527,Baycurrent Classic,2026,59.26
+52689,Rasmus Neergaard-Petersen,34,130,Scrambling,59.09%,R2026527,Baycurrent Classic,2026,59.09
+34256,Andrew Putnam,35,130,Scrambling,58.82%,R2026527,Baycurrent Classic,2026,58.82
+34046,Jordan Spieth,35,130,Scrambling,58.82%,R2026527,Baycurrent Classic,2026,58.82
+59836,Pierceson Coody,37,130,Scrambling,58.33%,R2026527,Baycurrent Classic,2026,58.33
+33141,Keegan Bradley,38,130,Scrambling,57.69%,R2026527,Baycurrent Classic,2026,57.69
+36326,David Lipsky,38,130,Scrambling,57.69%,R2026527,Baycurrent Classic,2026,57.69
+39335,Kevin Roy,40,130,Scrambling,56.52%,R2026527,Baycurrent Classic,2026,56.52
+59143,Mac Meissner,41,130,Scrambling,56.25%,R2026527,Baycurrent Classic,2026,56.25
+35461,Beau Hossler,42,130,Scrambling,56.00%,R2026527,Baycurrent Classic,2026,56.0
+32839,Hideki Matsuyama,42,130,Scrambling,56.00%,R2026527,Baycurrent Classic,2026,56.0
+33232,Sang-hee Lee,44,130,Scrambling,55.56%,R2026527,Baycurrent Classic,2026,55.56
+65922,Koshin Nagasaki,44,130,Scrambling,55.56%,R2026527,Baycurrent Classic,2026,55.56
+36699,Patrick Rodgers,46,130,Scrambling,55.00%,R2026527,Baycurrent Classic,2026,55.0
+54628,Lee Hodges,47,130,Scrambling,54.55%,R2026527,Baycurrent Classic,2026,54.55
+39975,Michael Kim,47,130,Scrambling,54.55%,R2026527,Baycurrent Classic,2026,54.55
+40250,Taylor Pendrith,47,130,Scrambling,54.55%,R2026527,Baycurrent Classic,2026,54.55
+46340,Alex Smalley,50,130,Scrambling,54.17%,R2026527,Baycurrent Classic,2026,54.17
+57364,Michael Thorbjornsen,50,130,Scrambling,54.17%,R2026527,Baycurrent Classic,2026,54.17
+27747,Hiroshi Iwata,52,130,Scrambling,53.85%,R2026527,Baycurrent Classic,2026,53.85
+59141,Matt McCarty,52,130,Scrambling,53.85%,R2026527,Baycurrent Classic,2026,53.85
+24502,Adam Scott,54,130,Scrambling,52.94%,R2026527,Baycurrent Classic,2026,52.94
+59440,Ricky Castillo,55,130,Scrambling,52.38%,R2026527,Baycurrent Classic,2026,52.38
+46442,Maverick McNealy,56,130,Scrambling,51.85%,R2026527,Baycurrent Classic,2026,51.85
+32102,Rickie Fowler,57,130,Scrambling,51.72%,R2026527,Baycurrent Classic,2026,51.72
+35532,Tom Hoge,58,130,Scrambling,50.00%,R2026527,Baycurrent Classic,2026,50.0
+29420,Billy Horschel,58,130,Scrambling,50.00%,R2026527,Baycurrent Classic,2026,50.0
+49947,Taylor Moore,58,130,Scrambling,50.00%,R2026527,Baycurrent Classic,2026,50.0
+51634,Sahith Theegala,58,130,Scrambling,50.00%,R2026527,Baycurrent Classic,2026,50.0
+45242,Kevin Yu,58,130,Scrambling,50.00%,R2026527,Baycurrent Classic,2026,50.0
+51766,Wyndham Clark,63,130,Scrambling,48.00%,R2026527,Baycurrent Classic,2026,48.0
+59743,Aguri Iwasaki,64,130,Scrambling,47.62%,R2026527,Baycurrent Classic,2026,47.62
+51287,Ryo Hisatsune,65,130,Scrambling,47.06%,R2026527,Baycurrent Classic,2026,47.06
+49228,Keita Nakajima,66,130,Scrambling,45.00%,R2026527,Baycurrent Classic,2026,45.0
+57123,Steven Fisk,67,130,Scrambling,44.00%,R2026527,Baycurrent Classic,2026,44.0
+57900,Chandler Phillips,68,130,Scrambling,43.48%,R2026527,Baycurrent Classic,2026,43.48
+58168,Davis Thompson,68,130,Scrambling,43.48%,R2026527,Baycurrent Classic,2026,43.48
+52375,Doug Ghim,70,130,Scrambling,41.18%,R2026527,Baycurrent Classic,2026,41.18
+50525,Collin Morikawa,71,130,Scrambling,34.78%,R2026527,Baycurrent Classic,2026,34.78
+63343,Aldrich Potgieter,72,130,Scrambling,25.81%,R2026527,Baycurrent Classic,2026,25.81
 65256,David Ford,1,130,Scrambling,85.71%,R2026554,Bank of Utah Championship,2026,85.71
 57123,Steven Fisk,2,130,Scrambling,83.33%,R2026554,Bank of Utah Championship,2026,83.33
 27214,Kevin Streelman,3,130,Scrambling,81.82%,R2026554,Bank of Utah Championship,2026,81.82
@@ -20967,6 +21471,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 63454,Johnny Keefer,72,130,Scrambling,43.75%,R2026006,Sony Open in Hawaii,2026,43.75
 48001,Zach Bauchou,73,130,Scrambling,42.11%,R2026006,Sony Open in Hawaii,2026,42.11
 54783,Dylan Wu,74,130,Scrambling,40.00%,R2026006,Sony Open in Hawaii,2026,40.0
+39977,Max Homa,1,111,Sand Save Percentage,85.71%,R2026527,Baycurrent Classic,2026,85.71
+36799,Stephan Jaeger,2,111,Sand Save Percentage,83.33%,R2026527,Baycurrent Classic,2026,83.33
+48117,Kurt Kitayama,2,111,Sand Save Percentage,83.33%,R2026527,Baycurrent Classic,2026,83.33
+56165,Yusaku Hosono,4,111,Sand Save Percentage,80.00%,R2026527,Baycurrent Classic,2026,80.0
+28723,John Parry,4,111,Sand Save Percentage,80.00%,R2026527,Baycurrent Classic,2026,80.0
+36699,Patrick Rodgers,4,111,Sand Save Percentage,80.00%,R2026527,Baycurrent Classic,2026,80.0
+48081,Xander Schauffele,4,111,Sand Save Percentage,80.00%,R2026527,Baycurrent Classic,2026,80.0
+46464,Jordan Smith,4,111,Sand Save Percentage,80.00%,R2026527,Baycurrent Classic,2026,80.0
+37378,Min Woo Lee,9,111,Sand Save Percentage,75.00%,R2026527,Baycurrent Classic,2026,75.0
+39335,Kevin Roy,9,111,Sand Save Percentage,75.00%,R2026527,Baycurrent Classic,2026,75.0
+35461,Beau Hossler,11,111,Sand Save Percentage,72.73%,R2026527,Baycurrent Classic,2026,72.73
+45522,Christiaan Bezuidenhout,12,111,Sand Save Percentage,71.43%,R2026527,Baycurrent Classic,2026,71.43
+51349,Nico Echavarria,13,111,Sand Save Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+35532,Tom Hoge,13,111,Sand Save Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+39975,Michael Kim,13,111,Sand Save Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+34046,Jordan Spieth,13,111,Sand Save Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+33448,Justin Thomas,13,111,Sand Save Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+48887,Matt Wallace,13,111,Sand Save Percentage,66.67%,R2026527,Baycurrent Classic,2026,66.67
+36326,David Lipsky,19,111,Sand Save Percentage,62.50%,R2026527,Baycurrent Classic,2026,62.5
+59836,Pierceson Coody,20,111,Sand Save Percentage,60.00%,R2026527,Baycurrent Classic,2026,60.0
+59743,Aguri Iwasaki,20,111,Sand Save Percentage,60.00%,R2026527,Baycurrent Classic,2026,60.0
+63454,Johnny Keefer,20,111,Sand Save Percentage,60.00%,R2026527,Baycurrent Classic,2026,60.0
+47993,Denny McCarthy,20,111,Sand Save Percentage,60.00%,R2026527,Baycurrent Classic,2026,60.0
+47889,Kosuke Sunagawa,20,111,Sand Save Percentage,60.00%,R2026527,Baycurrent Classic,2026,60.0
+40250,Taylor Pendrith,25,111,Sand Save Percentage,57.14%,R2026527,Baycurrent Classic,2026,57.14
+57900,Chandler Phillips,25,111,Sand Save Percentage,57.14%,R2026527,Baycurrent Classic,2026,57.14
+32839,Hideki Matsuyama,27,111,Sand Save Percentage,55.56%,R2026527,Baycurrent Classic,2026,55.56
+46442,Maverick McNealy,27,111,Sand Save Percentage,55.56%,R2026527,Baycurrent Classic,2026,55.56
+25493,Nick Taylor,29,111,Sand Save Percentage,54.55%,R2026527,Baycurrent Classic,2026,54.55
+61522,Michael Brennan,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+60004,Jacob Bridgeman,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+59018,Ryan Gerard,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+27644,Brian Harman,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+27747,Hiroshi Iwata,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+39546,Keith Mitchell,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+52689,Rasmus Neergaard-Petersen,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+24502,Adam Scott,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+51634,Sahith Theegala,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+35658,Kristoffer Ventura,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+45242,Kevin Yu,30,111,Sand Save Percentage,50.00%,R2026527,Baycurrent Classic,2026,50.0
+29833,Yoshinori Fujimoto,41,111,Sand Save Percentage,45.45%,R2026527,Baycurrent Classic,2026,45.45
+47917,Takumi Kanaya,41,111,Sand Save Percentage,45.45%,R2026527,Baycurrent Classic,2026,45.45
+48001,Zach Bauchou,43,111,Sand Save Percentage,44.44%,R2026527,Baycurrent Classic,2026,44.44
+51766,Wyndham Clark,43,111,Sand Save Percentage,44.44%,R2026527,Baycurrent Classic,2026,44.44
+51977,Max Greyserman,43,111,Sand Save Percentage,44.44%,R2026527,Baycurrent Classic,2026,44.44
+39971,Sungjae Im,43,111,Sand Save Percentage,44.44%,R2026527,Baycurrent Classic,2026,44.44
+29725,Tony Finau,47,111,Sand Save Percentage,42.86%,R2026527,Baycurrent Classic,2026,42.86
+54628,Lee Hodges,47,111,Sand Save Percentage,42.86%,R2026527,Baycurrent Classic,2026,42.86
+36884,Ben Kohles,47,111,Sand Save Percentage,42.86%,R2026527,Baycurrent Classic,2026,42.86
+50525,Collin Morikawa,47,111,Sand Save Percentage,42.86%,R2026527,Baycurrent Classic,2026,42.86
+60019,Jackson Suber,47,111,Sand Save Percentage,42.86%,R2026527,Baycurrent Classic,2026,42.86
+56100,Ren Yonezawa,52,111,Sand Save Percentage,40.00%,R2026527,Baycurrent Classic,2026,40.0
+59440,Ricky Castillo,53,111,Sand Save Percentage,33.33%,R2026527,Baycurrent Classic,2026,33.33
+52375,Doug Ghim,53,111,Sand Save Percentage,33.33%,R2026527,Baycurrent Classic,2026,33.33
+51287,Ryo Hisatsune,53,111,Sand Save Percentage,33.33%,R2026527,Baycurrent Classic,2026,33.33
+55908,Tomohiro Ishizaka,53,111,Sand Save Percentage,33.33%,R2026527,Baycurrent Classic,2026,33.33
+49947,Taylor Moore,53,111,Sand Save Percentage,33.33%,R2026527,Baycurrent Classic,2026,33.33
+46340,Alex Smalley,53,111,Sand Save Percentage,33.33%,R2026527,Baycurrent Classic,2026,33.33
+33141,Keegan Bradley,59,111,Sand Save Percentage,30.00%,R2026527,Baycurrent Classic,2026,30.0
+65922,Koshin Nagasaki,59,111,Sand Save Percentage,30.00%,R2026527,Baycurrent Classic,2026,30.0
+32102,Rickie Fowler,61,111,Sand Save Percentage,28.57%,R2026527,Baycurrent Classic,2026,28.57
+33689,Jinichiro Kozuma,61,111,Sand Save Percentage,28.57%,R2026527,Baycurrent Classic,2026,28.57
+49228,Keita Nakajima,61,111,Sand Save Percentage,28.57%,R2026527,Baycurrent Classic,2026,28.57
+29420,Billy Horschel,64,111,Sand Save Percentage,25.00%,R2026527,Baycurrent Classic,2026,25.0
+34256,Andrew Putnam,64,111,Sand Save Percentage,25.00%,R2026527,Baycurrent Classic,2026,25.0
+33232,Sang-hee Lee,66,111,Sand Save Percentage,22.22%,R2026527,Baycurrent Classic,2026,22.22
+59141,Matt McCarty,66,111,Sand Save Percentage,22.22%,R2026527,Baycurrent Classic,2026,22.22
+63343,Aldrich Potgieter,66,111,Sand Save Percentage,22.22%,R2026527,Baycurrent Classic,2026,22.22
+58168,Davis Thompson,69,111,Sand Save Percentage,14.29%,R2026527,Baycurrent Classic,2026,14.29
+57364,Michael Thorbjornsen,69,111,Sand Save Percentage,14.29%,R2026527,Baycurrent Classic,2026,14.29
+57123,Steven Fisk,71,111,Sand Save Percentage,0.00%,R2026527,Baycurrent Classic,2026,0.0
+59143,Mac Meissner,71,111,Sand Save Percentage,0.00%,R2026527,Baycurrent Classic,2026,0.0
 45522,Christiaan Bezuidenhout,1,111,Sand Save Percentage,100.00%,R2026554,Bank of Utah Championship,2026,100.0
 40058,Zac Blair,1,111,Sand Save Percentage,100.00%,R2026554,Bank of Utah Championship,2026,100.0
 50286,A.J. Ewart,1,111,Sand Save Percentage,100.00%,R2026554,Bank of Utah Championship,2026,100.0
@@ -23579,6 +24155,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 60004,Jacob Bridgeman,72,111,Sand Save Percentage,20.00%,R2026006,Sony Open in Hawaii,2026,20.0
 47993,Denny McCarthy,73,111,Sand Save Percentage,16.67%,R2026006,Sony Open in Hawaii,2026,16.67
 63454,Johnny Keefer,74,111,Sand Save Percentage,0.00%,R2026006,Sony Open in Hawaii,2026,0.0
+39546,Keith Mitchell,1,104,Putts Per Round,1.569,R2026527,Baycurrent Classic,2026,1.569
+50525,Collin Morikawa,2,104,Putts Per Round,1.592,R2026527,Baycurrent Classic,2026,1.592
+46464,Jordan Smith,3,104,Putts Per Round,1.596,R2026527,Baycurrent Classic,2026,1.596
+48081,Xander Schauffele,4,104,Putts Per Round,1.612,R2026527,Baycurrent Classic,2026,1.612
+47889,Kosuke Sunagawa,5,104,Putts Per Round,1.615,R2026527,Baycurrent Classic,2026,1.615
+59018,Ryan Gerard,6,104,Putts Per Round,1.627,R2026527,Baycurrent Classic,2026,1.627
+48001,Zach Bauchou,7,104,Putts Per Round,1.660,R2026527,Baycurrent Classic,2026,1.66
+35461,Beau Hossler,7,104,Putts Per Round,1.660,R2026527,Baycurrent Classic,2026,1.66
+59440,Ricky Castillo,9,104,Putts Per Round,1.667,R2026527,Baycurrent Classic,2026,1.667
+46442,Maverick McNealy,9,104,Putts Per Round,1.667,R2026527,Baycurrent Classic,2026,1.667
+39335,Kevin Roy,11,104,Putts Per Round,1.673,R2026527,Baycurrent Classic,2026,1.673
+33141,Keegan Bradley,12,104,Putts Per Round,1.674,R2026527,Baycurrent Classic,2026,1.674
+39975,Michael Kim,13,104,Putts Per Round,1.680,R2026527,Baycurrent Classic,2026,1.68
+52689,Rasmus Neergaard-Petersen,13,104,Putts Per Round,1.680,R2026527,Baycurrent Classic,2026,1.68
+47917,Takumi Kanaya,15,104,Putts Per Round,1.681,R2026527,Baycurrent Classic,2026,1.681
+55908,Tomohiro Ishizaka,16,104,Putts Per Round,1.682,R2026527,Baycurrent Classic,2026,1.682
+63343,Aldrich Potgieter,17,104,Putts Per Round,1.683,R2026527,Baycurrent Classic,2026,1.683
+25493,Nick Taylor,18,104,Putts Per Round,1.689,R2026527,Baycurrent Classic,2026,1.689
+60004,Jacob Bridgeman,19,104,Putts Per Round,1.691,R2026527,Baycurrent Classic,2026,1.691
+52375,Doug Ghim,19,104,Putts Per Round,1.691,R2026527,Baycurrent Classic,2026,1.691
+24502,Adam Scott,19,104,Putts Per Round,1.691,R2026527,Baycurrent Classic,2026,1.691
+45522,Christiaan Bezuidenhout,22,104,Putts Per Round,1.692,R2026527,Baycurrent Classic,2026,1.692
+36799,Stephan Jaeger,22,104,Putts Per Round,1.692,R2026527,Baycurrent Classic,2026,1.692
+51349,Nico Echavarria,24,104,Putts Per Round,1.696,R2026527,Baycurrent Classic,2026,1.696
+37378,Min Woo Lee,24,104,Putts Per Round,1.696,R2026527,Baycurrent Classic,2026,1.696
+45242,Kevin Yu,24,104,Putts Per Round,1.696,R2026527,Baycurrent Classic,2026,1.696
+61522,Michael Brennan,27,104,Putts Per Round,1.704,R2026527,Baycurrent Classic,2026,1.704
+39971,Sungjae Im,28,104,Putts Per Round,1.706,R2026527,Baycurrent Classic,2026,1.706
+59836,Pierceson Coody,29,104,Putts Per Round,1.708,R2026527,Baycurrent Classic,2026,1.708
+57364,Michael Thorbjornsen,29,104,Putts Per Round,1.708,R2026527,Baycurrent Classic,2026,1.708
+56100,Ren Yonezawa,29,104,Putts Per Round,1.708,R2026527,Baycurrent Classic,2026,1.708
+63454,Johnny Keefer,32,104,Putts Per Round,1.711,R2026527,Baycurrent Classic,2026,1.711
+36699,Patrick Rodgers,33,104,Putts Per Round,1.712,R2026527,Baycurrent Classic,2026,1.712
+27644,Brian Harman,34,104,Putts Per Round,1.714,R2026527,Baycurrent Classic,2026,1.714
+51977,Max Greyserman,35,104,Putts Per Round,1.717,R2026527,Baycurrent Classic,2026,1.717
+59141,Matt McCarty,35,104,Putts Per Round,1.717,R2026527,Baycurrent Classic,2026,1.717
+29420,Billy Horschel,37,104,Putts Per Round,1.722,R2026527,Baycurrent Classic,2026,1.722
+33689,Jinichiro Kozuma,38,104,Putts Per Round,1.723,R2026527,Baycurrent Classic,2026,1.723
+32839,Hideki Matsuyama,38,104,Putts Per Round,1.723,R2026527,Baycurrent Classic,2026,1.723
+47993,Denny McCarthy,38,104,Putts Per Round,1.723,R2026527,Baycurrent Classic,2026,1.723
+34046,Jordan Spieth,41,104,Putts Per Round,1.727,R2026527,Baycurrent Classic,2026,1.727
+29833,Yoshinori Fujimoto,42,104,Putts Per Round,1.735,R2026527,Baycurrent Classic,2026,1.735
+57900,Chandler Phillips,42,104,Putts Per Round,1.735,R2026527,Baycurrent Classic,2026,1.735
+58168,Davis Thompson,42,104,Putts Per Round,1.735,R2026527,Baycurrent Classic,2026,1.735
+36326,David Lipsky,45,104,Putts Per Round,1.739,R2026527,Baycurrent Classic,2026,1.739
+39977,Max Homa,46,104,Putts Per Round,1.745,R2026527,Baycurrent Classic,2026,1.745
+59743,Aguri Iwasaki,46,104,Putts Per Round,1.745,R2026527,Baycurrent Classic,2026,1.745
+29725,Tony Finau,48,104,Putts Per Round,1.750,R2026527,Baycurrent Classic,2026,1.75
+49228,Keita Nakajima,48,104,Putts Per Round,1.750,R2026527,Baycurrent Classic,2026,1.75
+56165,Yusaku Hosono,50,104,Putts Per Round,1.755,R2026527,Baycurrent Classic,2026,1.755
+36884,Ben Kohles,51,104,Putts Per Round,1.759,R2026527,Baycurrent Classic,2026,1.759
+54628,Lee Hodges,52,104,Putts Per Round,1.760,R2026527,Baycurrent Classic,2026,1.76
+49947,Taylor Moore,52,104,Putts Per Round,1.760,R2026527,Baycurrent Classic,2026,1.76
+51634,Sahith Theegala,54,104,Putts Per Round,1.762,R2026527,Baycurrent Classic,2026,1.762
+35658,Kristoffer Ventura,55,104,Putts Per Round,1.788,R2026527,Baycurrent Classic,2026,1.788
+32102,Rickie Fowler,56,104,Putts Per Round,1.791,R2026527,Baycurrent Classic,2026,1.791
+48117,Kurt Kitayama,57,104,Putts Per Round,1.800,R2026527,Baycurrent Classic,2026,1.8
+33232,Sang-hee Lee,57,104,Putts Per Round,1.800,R2026527,Baycurrent Classic,2026,1.8
+40250,Taylor Pendrith,57,104,Putts Per Round,1.800,R2026527,Baycurrent Classic,2026,1.8
+48887,Matt Wallace,60,104,Putts Per Round,1.805,R2026527,Baycurrent Classic,2026,1.805
+33448,Justin Thomas,61,104,Putts Per Round,1.807,R2026527,Baycurrent Classic,2026,1.807
+28723,John Parry,62,104,Putts Per Round,1.808,R2026527,Baycurrent Classic,2026,1.808
+51766,Wyndham Clark,63,104,Putts Per Round,1.809,R2026527,Baycurrent Classic,2026,1.809
+57123,Steven Fisk,63,104,Putts Per Round,1.809,R2026527,Baycurrent Classic,2026,1.809
+35532,Tom Hoge,65,104,Putts Per Round,1.810,R2026527,Baycurrent Classic,2026,1.81
+51287,Ryo Hisatsune,66,104,Putts Per Round,1.818,R2026527,Baycurrent Classic,2026,1.818
+34256,Andrew Putnam,67,104,Putts Per Round,1.836,R2026527,Baycurrent Classic,2026,1.836
+59143,Mac Meissner,68,104,Putts Per Round,1.839,R2026527,Baycurrent Classic,2026,1.839
+27747,Hiroshi Iwata,69,104,Putts Per Round,1.848,R2026527,Baycurrent Classic,2026,1.848
+60019,Jackson Suber,70,104,Putts Per Round,1.860,R2026527,Baycurrent Classic,2026,1.86
+65922,Koshin Nagasaki,71,104,Putts Per Round,1.867,R2026527,Baycurrent Classic,2026,1.867
+46340,Alex Smalley,72,104,Putts Per Round,1.875,R2026527,Baycurrent Classic,2026,1.875
 36801,Mark Hubbard,1,104,Putts Per Round,1.532,R2026554,Bank of Utah Championship,2026,1.532
 32757,Patton Kizzire,2,104,Putts Per Round,1.537,R2026554,Bank of Utah Championship,2026,1.537
 35461,Beau Hossler,3,104,Putts Per Round,1.600,R2026554,Bank of Utah Championship,2026,1.6
@@ -26225,6 +26873,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 56100,Ren Yonezawa,72,104,Putts Per Round,1.897,R2026006,Sony Open in Hawaii,2026,1.897
 46414,Aaron Rai,73,104,Putts Per Round,1.907,R2026006,Sony Open in Hawaii,2026,1.907
 65256,David Ford,74,104,Putts Per Round,1.911,R2026006,Sony Open in Hawaii,2026,1.911
+47889,Kosuke Sunagawa,1,413,3-Putt Avoidance,61.11%,R2026527,Baycurrent Classic,2026,61.11
+45522,Christiaan Bezuidenhout,2,413,3-Putt Avoidance,51.39%,R2026527,Baycurrent Classic,2026,51.39
+37378,Min Woo Lee,2,413,3-Putt Avoidance,51.39%,R2026527,Baycurrent Classic,2026,51.39
+51349,Nico Echavarria,4,413,3-Putt Avoidance,50.00%,R2026527,Baycurrent Classic,2026,50.0
+59018,Ryan Gerard,5,413,3-Putt Avoidance,48.61%,R2026527,Baycurrent Classic,2026,48.61
+48081,Xander Schauffele,5,413,3-Putt Avoidance,48.61%,R2026527,Baycurrent Classic,2026,48.61
+46464,Jordan Smith,5,413,3-Putt Avoidance,48.61%,R2026527,Baycurrent Classic,2026,48.61
+48001,Zach Bauchou,8,413,3-Putt Avoidance,47.22%,R2026527,Baycurrent Classic,2026,47.22
+39971,Sungjae Im,8,413,3-Putt Avoidance,47.22%,R2026527,Baycurrent Classic,2026,47.22
+55908,Tomohiro Ishizaka,8,413,3-Putt Avoidance,47.22%,R2026527,Baycurrent Classic,2026,47.22
+39546,Keith Mitchell,8,413,3-Putt Avoidance,47.22%,R2026527,Baycurrent Classic,2026,47.22
+27644,Brian Harman,12,413,3-Putt Avoidance,45.83%,R2026527,Baycurrent Classic,2026,45.83
+39977,Max Homa,12,413,3-Putt Avoidance,45.83%,R2026527,Baycurrent Classic,2026,45.83
+35461,Beau Hossler,12,413,3-Putt Avoidance,45.83%,R2026527,Baycurrent Classic,2026,45.83
+52689,Rasmus Neergaard-Petersen,12,413,3-Putt Avoidance,45.83%,R2026527,Baycurrent Classic,2026,45.83
+39335,Kevin Roy,12,413,3-Putt Avoidance,45.83%,R2026527,Baycurrent Classic,2026,45.83
+25493,Nick Taylor,12,413,3-Putt Avoidance,45.83%,R2026527,Baycurrent Classic,2026,45.83
+51634,Sahith Theegala,12,413,3-Putt Avoidance,45.83%,R2026527,Baycurrent Classic,2026,45.83
+51977,Max Greyserman,19,413,3-Putt Avoidance,44.44%,R2026527,Baycurrent Classic,2026,44.44
+56165,Yusaku Hosono,19,413,3-Putt Avoidance,44.44%,R2026527,Baycurrent Classic,2026,44.44
+47917,Takumi Kanaya,19,413,3-Putt Avoidance,44.44%,R2026527,Baycurrent Classic,2026,44.44
+46442,Maverick McNealy,19,413,3-Putt Avoidance,44.44%,R2026527,Baycurrent Classic,2026,44.44
+48887,Matt Wallace,19,413,3-Putt Avoidance,44.44%,R2026527,Baycurrent Classic,2026,44.44
+61522,Michael Brennan,24,413,3-Putt Avoidance,43.06%,R2026527,Baycurrent Classic,2026,43.06
+60004,Jacob Bridgeman,24,413,3-Putt Avoidance,43.06%,R2026527,Baycurrent Classic,2026,43.06
+29833,Yoshinori Fujimoto,24,413,3-Putt Avoidance,43.06%,R2026527,Baycurrent Classic,2026,43.06
+36799,Stephan Jaeger,24,413,3-Putt Avoidance,43.06%,R2026527,Baycurrent Classic,2026,43.06
+36326,David Lipsky,24,413,3-Putt Avoidance,43.06%,R2026527,Baycurrent Classic,2026,43.06
+33141,Keegan Bradley,29,413,3-Putt Avoidance,41.67%,R2026527,Baycurrent Classic,2026,41.67
+59836,Pierceson Coody,29,413,3-Putt Avoidance,41.67%,R2026527,Baycurrent Classic,2026,41.67
+33689,Jinichiro Kozuma,29,413,3-Putt Avoidance,41.67%,R2026527,Baycurrent Classic,2026,41.67
+33232,Sang-hee Lee,29,413,3-Putt Avoidance,41.67%,R2026527,Baycurrent Classic,2026,41.67
+50525,Collin Morikawa,29,413,3-Putt Avoidance,41.67%,R2026527,Baycurrent Classic,2026,41.67
+57364,Michael Thorbjornsen,29,413,3-Putt Avoidance,41.67%,R2026527,Baycurrent Classic,2026,41.67
+56100,Ren Yonezawa,29,413,3-Putt Avoidance,41.67%,R2026527,Baycurrent Classic,2026,41.67
+39975,Michael Kim,36,413,3-Putt Avoidance,40.28%,R2026527,Baycurrent Classic,2026,40.28
+36884,Ben Kohles,36,413,3-Putt Avoidance,40.28%,R2026527,Baycurrent Classic,2026,40.28
+29725,Tony Finau,38,413,3-Putt Avoidance,38.89%,R2026527,Baycurrent Classic,2026,38.89
+35532,Tom Hoge,38,413,3-Putt Avoidance,38.89%,R2026527,Baycurrent Classic,2026,38.89
+59743,Aguri Iwasaki,38,413,3-Putt Avoidance,38.89%,R2026527,Baycurrent Classic,2026,38.89
+32839,Hideki Matsuyama,38,413,3-Putt Avoidance,38.89%,R2026527,Baycurrent Classic,2026,38.89
+47993,Denny McCarthy,38,413,3-Putt Avoidance,38.89%,R2026527,Baycurrent Classic,2026,38.89
+65922,Koshin Nagasaki,38,413,3-Putt Avoidance,38.89%,R2026527,Baycurrent Classic,2026,38.89
+45242,Kevin Yu,38,413,3-Putt Avoidance,38.89%,R2026527,Baycurrent Classic,2026,38.89
+59440,Ricky Castillo,45,413,3-Putt Avoidance,37.50%,R2026527,Baycurrent Classic,2026,37.5
+29420,Billy Horschel,45,413,3-Putt Avoidance,37.50%,R2026527,Baycurrent Classic,2026,37.5
+63454,Johnny Keefer,45,413,3-Putt Avoidance,37.50%,R2026527,Baycurrent Classic,2026,37.5
+59141,Matt McCarty,45,413,3-Putt Avoidance,37.50%,R2026527,Baycurrent Classic,2026,37.5
+36699,Patrick Rodgers,45,413,3-Putt Avoidance,37.50%,R2026527,Baycurrent Classic,2026,37.5
+35658,Kristoffer Ventura,45,413,3-Putt Avoidance,37.50%,R2026527,Baycurrent Classic,2026,37.5
+32102,Rickie Fowler,51,413,3-Putt Avoidance,36.11%,R2026527,Baycurrent Classic,2026,36.11
+52375,Doug Ghim,51,413,3-Putt Avoidance,36.11%,R2026527,Baycurrent Classic,2026,36.11
+54628,Lee Hodges,51,413,3-Putt Avoidance,36.11%,R2026527,Baycurrent Classic,2026,36.11
+48117,Kurt Kitayama,51,413,3-Putt Avoidance,36.11%,R2026527,Baycurrent Classic,2026,36.11
+24502,Adam Scott,51,413,3-Putt Avoidance,36.11%,R2026527,Baycurrent Classic,2026,36.11
+34046,Jordan Spieth,51,413,3-Putt Avoidance,36.11%,R2026527,Baycurrent Classic,2026,36.11
+58168,Davis Thompson,51,413,3-Putt Avoidance,36.11%,R2026527,Baycurrent Classic,2026,36.11
+51766,Wyndham Clark,58,413,3-Putt Avoidance,34.72%,R2026527,Baycurrent Classic,2026,34.72
+49947,Taylor Moore,58,413,3-Putt Avoidance,34.72%,R2026527,Baycurrent Classic,2026,34.72
+49228,Keita Nakajima,58,413,3-Putt Avoidance,34.72%,R2026527,Baycurrent Classic,2026,34.72
+60019,Jackson Suber,58,413,3-Putt Avoidance,34.72%,R2026527,Baycurrent Classic,2026,34.72
+33448,Justin Thomas,58,413,3-Putt Avoidance,34.72%,R2026527,Baycurrent Classic,2026,34.72
+28723,John Parry,63,413,3-Putt Avoidance,33.33%,R2026527,Baycurrent Classic,2026,33.33
+57900,Chandler Phillips,63,413,3-Putt Avoidance,33.33%,R2026527,Baycurrent Classic,2026,33.33
+57123,Steven Fisk,65,413,3-Putt Avoidance,31.94%,R2026527,Baycurrent Classic,2026,31.94
+63343,Aldrich Potgieter,65,413,3-Putt Avoidance,31.94%,R2026527,Baycurrent Classic,2026,31.94
+46340,Alex Smalley,65,413,3-Putt Avoidance,31.94%,R2026527,Baycurrent Classic,2026,31.94
+27747,Hiroshi Iwata,68,413,3-Putt Avoidance,30.56%,R2026527,Baycurrent Classic,2026,30.56
+40250,Taylor Pendrith,68,413,3-Putt Avoidance,30.56%,R2026527,Baycurrent Classic,2026,30.56
+34256,Andrew Putnam,68,413,3-Putt Avoidance,30.56%,R2026527,Baycurrent Classic,2026,30.56
+51287,Ryo Hisatsune,71,413,3-Putt Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
+59143,Mac Meissner,71,413,3-Putt Avoidance,27.78%,R2026527,Baycurrent Classic,2026,27.78
 35461,Beau Hossler,1,413,3-Putt Avoidance,52.78%,R2026554,Bank of Utah Championship,2026,52.78
 36801,Mark Hubbard,2,413,3-Putt Avoidance,50.00%,R2026554,Bank of Utah Championship,2026,50.0
 52375,Doug Ghim,3,413,3-Putt Avoidance,48.61%,R2026554,Bank of Utah Championship,2026,48.61
@@ -28871,6 +29591,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 65256,David Ford,72,413,3-Putt Avoidance,26.39%,R2026006,Sony Open in Hawaii,2026,26.39
 56100,Ren Yonezawa,72,413,3-Putt Avoidance,26.39%,R2026006,Sony Open in Hawaii,2026,26.39
 49120,Kensei Hirata,74,413,3-Putt Avoidance,25.00%,R2026006,Sony Open in Hawaii,2026,25.0
+47889,Kosuke Sunagawa,1,119,1-Putt Percentage,25.25,R2026527,Baycurrent Classic,2026,25.25
+46464,Jordan Smith,2,119,1-Putt Percentage,25.75,R2026527,Baycurrent Classic,2026,25.75
+55908,Tomohiro Ishizaka,3,119,1-Putt Percentage,26.75,R2026527,Baycurrent Classic,2026,26.75
+48001,Zach Bauchou,4,119,1-Putt Percentage,27.00,R2026527,Baycurrent Classic,2026,27.0
+51349,Nico Echavarria,4,119,1-Putt Percentage,27.00,R2026527,Baycurrent Classic,2026,27.0
+39977,Max Homa,4,119,1-Putt Percentage,27.00,R2026527,Baycurrent Classic,2026,27.0
+45522,Christiaan Bezuidenhout,7,119,1-Putt Percentage,27.25,R2026527,Baycurrent Classic,2026,27.25
+37378,Min Woo Lee,7,119,1-Putt Percentage,27.25,R2026527,Baycurrent Classic,2026,27.25
+39546,Keith Mitchell,7,119,1-Putt Percentage,27.25,R2026527,Baycurrent Classic,2026,27.25
+48081,Xander Schauffele,7,119,1-Putt Percentage,27.25,R2026527,Baycurrent Classic,2026,27.25
+59018,Ryan Gerard,11,119,1-Putt Percentage,27.50,R2026527,Baycurrent Classic,2026,27.5
+39971,Sungjae Im,11,119,1-Putt Percentage,27.50,R2026527,Baycurrent Classic,2026,27.5
+27644,Brian Harman,13,119,1-Putt Percentage,27.75,R2026527,Baycurrent Classic,2026,27.75
+48887,Matt Wallace,13,119,1-Putt Percentage,27.75,R2026527,Baycurrent Classic,2026,27.75
+33141,Keegan Bradley,15,119,1-Putt Percentage,28.00,R2026527,Baycurrent Classic,2026,28.0
+29833,Yoshinori Fujimoto,15,119,1-Putt Percentage,28.00,R2026527,Baycurrent Classic,2026,28.0
+51977,Max Greyserman,15,119,1-Putt Percentage,28.00,R2026527,Baycurrent Classic,2026,28.0
+35461,Beau Hossler,15,119,1-Putt Percentage,28.00,R2026527,Baycurrent Classic,2026,28.0
+47917,Takumi Kanaya,15,119,1-Putt Percentage,28.00,R2026527,Baycurrent Classic,2026,28.0
+63454,Johnny Keefer,15,119,1-Putt Percentage,28.00,R2026527,Baycurrent Classic,2026,28.0
+32839,Hideki Matsuyama,15,119,1-Putt Percentage,28.00,R2026527,Baycurrent Classic,2026,28.0
+52689,Rasmus Neergaard-Petersen,15,119,1-Putt Percentage,28.00,R2026527,Baycurrent Classic,2026,28.0
+60004,Jacob Bridgeman,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+29725,Tony Finau,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+56165,Yusaku Hosono,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+36326,David Lipsky,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+47993,Denny McCarthy,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+46442,Maverick McNealy,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+39335,Kevin Roy,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+25493,Nick Taylor,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+56100,Ren Yonezawa,23,119,1-Putt Percentage,28.25,R2026527,Baycurrent Classic,2026,28.25
+61522,Michael Brennan,32,119,1-Putt Percentage,28.50,R2026527,Baycurrent Classic,2026,28.5
+36799,Stephan Jaeger,32,119,1-Putt Percentage,28.50,R2026527,Baycurrent Classic,2026,28.5
+39975,Michael Kim,32,119,1-Putt Percentage,28.50,R2026527,Baycurrent Classic,2026,28.5
+33689,Jinichiro Kozuma,32,119,1-Putt Percentage,28.50,R2026527,Baycurrent Classic,2026,28.5
+51634,Sahith Theegala,32,119,1-Putt Percentage,28.50,R2026527,Baycurrent Classic,2026,28.5
+57364,Michael Thorbjornsen,32,119,1-Putt Percentage,28.50,R2026527,Baycurrent Classic,2026,28.5
+59836,Pierceson Coody,38,119,1-Putt Percentage,28.75,R2026527,Baycurrent Classic,2026,28.75
+54628,Lee Hodges,38,119,1-Putt Percentage,28.75,R2026527,Baycurrent Classic,2026,28.75
+36884,Ben Kohles,38,119,1-Putt Percentage,28.75,R2026527,Baycurrent Classic,2026,28.75
+33232,Sang-hee Lee,38,119,1-Putt Percentage,28.75,R2026527,Baycurrent Classic,2026,28.75
+49947,Taylor Moore,38,119,1-Putt Percentage,28.75,R2026527,Baycurrent Classic,2026,28.75
+50525,Collin Morikawa,38,119,1-Putt Percentage,28.75,R2026527,Baycurrent Classic,2026,28.75
+45242,Kevin Yu,38,119,1-Putt Percentage,28.75,R2026527,Baycurrent Classic,2026,28.75
+59440,Ricky Castillo,45,119,1-Putt Percentage,29.00,R2026527,Baycurrent Classic,2026,29.0
+59141,Matt McCarty,45,119,1-Putt Percentage,29.00,R2026527,Baycurrent Classic,2026,29.0
+36699,Patrick Rodgers,45,119,1-Putt Percentage,29.00,R2026527,Baycurrent Classic,2026,29.0
+24502,Adam Scott,45,119,1-Putt Percentage,29.00,R2026527,Baycurrent Classic,2026,29.0
+32102,Rickie Fowler,49,119,1-Putt Percentage,29.25,R2026527,Baycurrent Classic,2026,29.25
+34046,Jordan Spieth,49,119,1-Putt Percentage,29.25,R2026527,Baycurrent Classic,2026,29.25
+59743,Aguri Iwasaki,51,119,1-Putt Percentage,29.50,R2026527,Baycurrent Classic,2026,29.5
+48117,Kurt Kitayama,51,119,1-Putt Percentage,29.50,R2026527,Baycurrent Classic,2026,29.5
+57900,Chandler Phillips,51,119,1-Putt Percentage,29.50,R2026527,Baycurrent Classic,2026,29.5
+58168,Davis Thompson,51,119,1-Putt Percentage,29.50,R2026527,Baycurrent Classic,2026,29.5
+52375,Doug Ghim,55,119,1-Putt Percentage,29.75,R2026527,Baycurrent Classic,2026,29.75
+29420,Billy Horschel,55,119,1-Putt Percentage,29.75,R2026527,Baycurrent Classic,2026,29.75
+35658,Kristoffer Ventura,55,119,1-Putt Percentage,29.75,R2026527,Baycurrent Classic,2026,29.75
+35532,Tom Hoge,58,119,1-Putt Percentage,30.00,R2026527,Baycurrent Classic,2026,30.0
+49228,Keita Nakajima,58,119,1-Putt Percentage,30.00,R2026527,Baycurrent Classic,2026,30.0
+28723,John Parry,58,119,1-Putt Percentage,30.00,R2026527,Baycurrent Classic,2026,30.0
+63343,Aldrich Potgieter,58,119,1-Putt Percentage,30.00,R2026527,Baycurrent Classic,2026,30.0
+60019,Jackson Suber,58,119,1-Putt Percentage,30.00,R2026527,Baycurrent Classic,2026,30.0
+51766,Wyndham Clark,63,119,1-Putt Percentage,30.25,R2026527,Baycurrent Classic,2026,30.25
+27747,Hiroshi Iwata,63,119,1-Putt Percentage,30.25,R2026527,Baycurrent Classic,2026,30.25
+65922,Koshin Nagasaki,63,119,1-Putt Percentage,30.25,R2026527,Baycurrent Classic,2026,30.25
+40250,Taylor Pendrith,63,119,1-Putt Percentage,30.25,R2026527,Baycurrent Classic,2026,30.25
+33448,Justin Thomas,63,119,1-Putt Percentage,30.25,R2026527,Baycurrent Classic,2026,30.25
+46340,Alex Smalley,68,119,1-Putt Percentage,30.50,R2026527,Baycurrent Classic,2026,30.5
+57123,Steven Fisk,69,119,1-Putt Percentage,30.75,R2026527,Baycurrent Classic,2026,30.75
+34256,Andrew Putnam,69,119,1-Putt Percentage,30.75,R2026527,Baycurrent Classic,2026,30.75
+59143,Mac Meissner,71,119,1-Putt Percentage,31.00,R2026527,Baycurrent Classic,2026,31.0
+51287,Ryo Hisatsune,72,119,1-Putt Percentage,31.25,R2026527,Baycurrent Classic,2026,31.25
 35461,Beau Hossler,1,119,1-Putt Percentage,26.75,R2026554,Bank of Utah Championship,2026,26.75
 36801,Mark Hubbard,2,119,1-Putt Percentage,27.00,R2026554,Bank of Utah Championship,2026,27.0
 32757,Patton Kizzire,2,119,1-Putt Percentage,27.00,R2026554,Bank of Utah Championship,2026,27.0
@@ -31517,6 +32309,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 63454,Johnny Keefer,72,119,1-Putt Percentage,32.00,R2026006,Sony Open in Hawaii,2026,32.0
 65256,David Ford,73,119,1-Putt Percentage,32.25,R2026006,Sony Open in Hawaii,2026,32.25
 49120,Kensei Hirata,73,119,1-Putt Percentage,32.25,R2026006,Sony Open in Hawaii,2026,32.25
+61522,Michael Brennan,1,160,Bounce Back,75.00%,R2026527,Baycurrent Classic,2026,75.0
+48081,Xander Schauffele,2,160,Bounce Back,62.50%,R2026527,Baycurrent Classic,2026,62.5
+39971,Sungjae Im,3,160,Bounce Back,50.00%,R2026527,Baycurrent Classic,2026,50.0
+51766,Wyndham Clark,4,160,Bounce Back,46.15%,R2026527,Baycurrent Classic,2026,46.15
+57364,Michael Thorbjornsen,4,160,Bounce Back,46.15%,R2026527,Baycurrent Classic,2026,46.15
+29420,Billy Horschel,6,160,Bounce Back,45.45%,R2026527,Baycurrent Classic,2026,45.45
+57900,Chandler Phillips,6,160,Bounce Back,45.45%,R2026527,Baycurrent Classic,2026,45.45
+39335,Kevin Roy,6,160,Bounce Back,45.45%,R2026527,Baycurrent Classic,2026,45.45
+39975,Michael Kim,9,160,Bounce Back,44.44%,R2026527,Baycurrent Classic,2026,44.44
+60004,Jacob Bridgeman,10,160,Bounce Back,42.86%,R2026527,Baycurrent Classic,2026,42.86
+36799,Stephan Jaeger,11,160,Bounce Back,40.00%,R2026527,Baycurrent Classic,2026,40.0
+36884,Ben Kohles,11,160,Bounce Back,40.00%,R2026527,Baycurrent Classic,2026,40.0
+49947,Taylor Moore,11,160,Bounce Back,40.00%,R2026527,Baycurrent Classic,2026,40.0
+47917,Takumi Kanaya,14,160,Bounce Back,37.50%,R2026527,Baycurrent Classic,2026,37.5
+47889,Kosuke Sunagawa,15,160,Bounce Back,36.36%,R2026527,Baycurrent Classic,2026,36.36
+46442,Maverick McNealy,16,160,Bounce Back,35.71%,R2026527,Baycurrent Classic,2026,35.71
+50525,Collin Morikawa,16,160,Bounce Back,35.71%,R2026527,Baycurrent Classic,2026,35.71
+33141,Keegan Bradley,18,160,Bounce Back,33.33%,R2026527,Baycurrent Classic,2026,33.33
+35461,Beau Hossler,19,160,Bounce Back,30.00%,R2026527,Baycurrent Classic,2026,30.0
+40250,Taylor Pendrith,19,160,Bounce Back,30.00%,R2026527,Baycurrent Classic,2026,30.0
+46340,Alex Smalley,19,160,Bounce Back,30.00%,R2026527,Baycurrent Classic,2026,30.0
+29725,Tony Finau,22,160,Bounce Back,28.57%,R2026527,Baycurrent Classic,2026,28.57
+32102,Rickie Fowler,22,160,Bounce Back,28.57%,R2026527,Baycurrent Classic,2026,28.57
+56165,Yusaku Hosono,22,160,Bounce Back,28.57%,R2026527,Baycurrent Classic,2026,28.57
+37378,Min Woo Lee,22,160,Bounce Back,28.57%,R2026527,Baycurrent Classic,2026,28.57
+34046,Jordan Spieth,22,160,Bounce Back,28.57%,R2026527,Baycurrent Classic,2026,28.57
+58168,Davis Thompson,22,160,Bounce Back,28.57%,R2026527,Baycurrent Classic,2026,28.57
+59836,Pierceson Coody,28,160,Bounce Back,27.27%,R2026527,Baycurrent Classic,2026,27.27
+52375,Doug Ghim,28,160,Bounce Back,27.27%,R2026527,Baycurrent Classic,2026,27.27
+49228,Keita Nakajima,28,160,Bounce Back,27.27%,R2026527,Baycurrent Classic,2026,27.27
+60019,Jackson Suber,28,160,Bounce Back,27.27%,R2026527,Baycurrent Classic,2026,27.27
+57123,Steven Fisk,32,160,Bounce Back,26.67%,R2026527,Baycurrent Classic,2026,26.67
+45522,Christiaan Bezuidenhout,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+27644,Brian Harman,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+35532,Tom Hoge,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+59141,Matt McCarty,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+52689,Rasmus Neergaard-Petersen,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+46464,Jordan Smith,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+35658,Kristoffer Ventura,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+56100,Ren Yonezawa,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+45242,Kevin Yu,33,160,Bounce Back,25.00%,R2026527,Baycurrent Classic,2026,25.0
+59743,Aguri Iwasaki,42,160,Bounce Back,23.08%,R2026527,Baycurrent Classic,2026,23.08
+51287,Ryo Hisatsune,43,160,Bounce Back,22.22%,R2026527,Baycurrent Classic,2026,22.22
+54628,Lee Hodges,43,160,Bounce Back,22.22%,R2026527,Baycurrent Classic,2026,22.22
+48117,Kurt Kitayama,43,160,Bounce Back,22.22%,R2026527,Baycurrent Classic,2026,22.22
+39546,Keith Mitchell,43,160,Bounce Back,22.22%,R2026527,Baycurrent Classic,2026,22.22
+59440,Ricky Castillo,47,160,Bounce Back,20.00%,R2026527,Baycurrent Classic,2026,20.0
+39977,Max Homa,47,160,Bounce Back,20.00%,R2026527,Baycurrent Classic,2026,20.0
+55908,Tomohiro Ishizaka,47,160,Bounce Back,20.00%,R2026527,Baycurrent Classic,2026,20.0
+33689,Jinichiro Kozuma,47,160,Bounce Back,20.00%,R2026527,Baycurrent Classic,2026,20.0
+24502,Adam Scott,47,160,Bounce Back,20.00%,R2026527,Baycurrent Classic,2026,20.0
+25493,Nick Taylor,52,160,Bounce Back,18.18%,R2026527,Baycurrent Classic,2026,18.18
+51634,Sahith Theegala,53,160,Bounce Back,17.65%,R2026527,Baycurrent Classic,2026,17.65
+59018,Ryan Gerard,54,160,Bounce Back,16.67%,R2026527,Baycurrent Classic,2026,16.67
+63454,Johnny Keefer,54,160,Bounce Back,16.67%,R2026527,Baycurrent Classic,2026,16.67
+32839,Hideki Matsuyama,54,160,Bounce Back,16.67%,R2026527,Baycurrent Classic,2026,16.67
+28723,John Parry,54,160,Bounce Back,16.67%,R2026527,Baycurrent Classic,2026,16.67
+63343,Aldrich Potgieter,58,160,Bounce Back,14.29%,R2026527,Baycurrent Classic,2026,14.29
+48887,Matt Wallace,58,160,Bounce Back,14.29%,R2026527,Baycurrent Classic,2026,14.29
+59143,Mac Meissner,60,160,Bounce Back,12.50%,R2026527,Baycurrent Classic,2026,12.5
+65922,Koshin Nagasaki,60,160,Bounce Back,12.50%,R2026527,Baycurrent Classic,2026,12.5
+29833,Yoshinori Fujimoto,62,160,Bounce Back,11.11%,R2026527,Baycurrent Classic,2026,11.11
+36699,Patrick Rodgers,62,160,Bounce Back,11.11%,R2026527,Baycurrent Classic,2026,11.11
+51977,Max Greyserman,64,160,Bounce Back,10.00%,R2026527,Baycurrent Classic,2026,10.0
+47993,Denny McCarthy,64,160,Bounce Back,10.00%,R2026527,Baycurrent Classic,2026,10.0
+51349,Nico Echavarria,66,160,Bounce Back,9.09%,R2026527,Baycurrent Classic,2026,9.09
+36326,David Lipsky,66,160,Bounce Back,9.09%,R2026527,Baycurrent Classic,2026,9.09
+27747,Hiroshi Iwata,68,160,Bounce Back,8.33%,R2026527,Baycurrent Classic,2026,8.33
+33232,Sang-hee Lee,69,160,Bounce Back,7.14%,R2026527,Baycurrent Classic,2026,7.14
+48001,Zach Bauchou,70,160,Bounce Back,.00%,R2026527,Baycurrent Classic,2026,0.0
+34256,Andrew Putnam,70,160,Bounce Back,.00%,R2026527,Baycurrent Classic,2026,0.0
+33448,Justin Thomas,70,160,Bounce Back,.00%,R2026527,Baycurrent Classic,2026,0.0
 52514,Trace Crowe,1,160,Bounce Back,83.33%,R2026554,Bank of Utah Championship,2026,83.33
 50286,A.J. Ewart,2,160,Bounce Back,80.00%,R2026554,Bank of Utah Championship,2026,80.0
 50095,Austin Smotherman,2,160,Bounce Back,80.00%,R2026554,Bank of Utah Championship,2026,80.0
@@ -34163,6 +35027,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 50188,S.H. Kim,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
 39335,Kevin Roy,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
 51894,Vince Whaley,70,160,Bounce Back,.00%,R2026006,Sony Open in Hawaii,2026,0.0
+27644,Brian Harman,1,02414,Bogey Avoidance,5.56%,R2026527,Baycurrent Classic,2026,5.56
+61522,Michael Brennan,2,02414,Bogey Avoidance,6.94%,R2026527,Baycurrent Classic,2026,6.94
+39971,Sungjae Im,2,02414,Bogey Avoidance,6.94%,R2026527,Baycurrent Classic,2026,6.94
+39977,Max Homa,4,02414,Bogey Avoidance,8.33%,R2026527,Baycurrent Classic,2026,8.33
+36884,Ben Kohles,4,02414,Bogey Avoidance,8.33%,R2026527,Baycurrent Classic,2026,8.33
+56165,Yusaku Hosono,6,02414,Bogey Avoidance,9.72%,R2026527,Baycurrent Classic,2026,9.72
+36799,Stephan Jaeger,6,02414,Bogey Avoidance,9.72%,R2026527,Baycurrent Classic,2026,9.72
+37378,Min Woo Lee,6,02414,Bogey Avoidance,9.72%,R2026527,Baycurrent Classic,2026,9.72
+28723,John Parry,6,02414,Bogey Avoidance,9.72%,R2026527,Baycurrent Classic,2026,9.72
+33448,Justin Thomas,6,02414,Bogey Avoidance,9.72%,R2026527,Baycurrent Classic,2026,9.72
+45522,Christiaan Bezuidenhout,11,02414,Bogey Avoidance,11.11%,R2026527,Baycurrent Classic,2026,11.11
+60004,Jacob Bridgeman,11,02414,Bogey Avoidance,11.11%,R2026527,Baycurrent Classic,2026,11.11
+59018,Ryan Gerard,11,02414,Bogey Avoidance,11.11%,R2026527,Baycurrent Classic,2026,11.11
+47917,Takumi Kanaya,11,02414,Bogey Avoidance,11.11%,R2026527,Baycurrent Classic,2026,11.11
+34256,Andrew Putnam,11,02414,Bogey Avoidance,11.11%,R2026527,Baycurrent Classic,2026,11.11
+46464,Jordan Smith,11,02414,Bogey Avoidance,11.11%,R2026527,Baycurrent Classic,2026,11.11
+34046,Jordan Spieth,11,02414,Bogey Avoidance,11.11%,R2026527,Baycurrent Classic,2026,11.11
+48887,Matt Wallace,11,02414,Bogey Avoidance,11.11%,R2026527,Baycurrent Classic,2026,11.11
+29725,Tony Finau,19,02414,Bogey Avoidance,12.50%,R2026527,Baycurrent Classic,2026,12.5
+29833,Yoshinori Fujimoto,19,02414,Bogey Avoidance,12.50%,R2026527,Baycurrent Classic,2026,12.5
+48117,Kurt Kitayama,19,02414,Bogey Avoidance,12.50%,R2026527,Baycurrent Classic,2026,12.5
+59143,Mac Meissner,19,02414,Bogey Avoidance,12.50%,R2026527,Baycurrent Classic,2026,12.5
+39546,Keith Mitchell,19,02414,Bogey Avoidance,12.50%,R2026527,Baycurrent Classic,2026,12.5
+35658,Kristoffer Ventura,19,02414,Bogey Avoidance,12.50%,R2026527,Baycurrent Classic,2026,12.5
+56100,Ren Yonezawa,19,02414,Bogey Avoidance,12.50%,R2026527,Baycurrent Classic,2026,12.5
+48001,Zach Bauchou,26,02414,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+51287,Ryo Hisatsune,26,02414,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+55908,Tomohiro Ishizaka,26,02414,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+39975,Michael Kim,26,02414,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+33689,Jinichiro Kozuma,26,02414,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+36699,Patrick Rodgers,26,02414,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+48081,Xander Schauffele,26,02414,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+24502,Adam Scott,26,02414,Bogey Avoidance,13.89%,R2026527,Baycurrent Classic,2026,13.89
+33141,Keegan Bradley,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+59440,Ricky Castillo,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+59836,Pierceson Coody,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+51349,Nico Echavarria,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+52375,Doug Ghim,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+54628,Lee Hodges,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+29420,Billy Horschel,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+47993,Denny McCarthy,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+49947,Taylor Moore,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+40250,Taylor Pendrith,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+39335,Kevin Roy,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+60019,Jackson Suber,34,02414,Bogey Avoidance,15.28%,R2026527,Baycurrent Classic,2026,15.28
+51977,Max Greyserman,46,02414,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+35461,Beau Hossler,46,02414,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+63454,Johnny Keefer,46,02414,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+49228,Keita Nakajima,46,02414,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+52689,Rasmus Neergaard-Petersen,46,02414,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+46340,Alex Smalley,46,02414,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+47889,Kosuke Sunagawa,46,02414,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+25493,Nick Taylor,46,02414,Bogey Avoidance,16.67%,R2026527,Baycurrent Classic,2026,16.67
+59743,Aguri Iwasaki,54,02414,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+36326,David Lipsky,54,02414,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+32839,Hideki Matsuyama,54,02414,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+59141,Matt McCarty,54,02414,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+57900,Chandler Phillips,54,02414,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+57364,Michael Thorbjornsen,54,02414,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+45242,Kevin Yu,54,02414,Bogey Avoidance,18.06%,R2026527,Baycurrent Classic,2026,18.06
+27747,Hiroshi Iwata,61,02414,Bogey Avoidance,19.44%,R2026527,Baycurrent Classic,2026,19.44
+51766,Wyndham Clark,62,02414,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+32102,Rickie Fowler,62,02414,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+33232,Sang-hee Lee,62,02414,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+46442,Maverick McNealy,62,02414,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+50525,Collin Morikawa,62,02414,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+58168,Davis Thompson,62,02414,Bogey Avoidance,20.83%,R2026527,Baycurrent Classic,2026,20.83
+57123,Steven Fisk,68,02414,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+65922,Koshin Nagasaki,68,02414,Bogey Avoidance,22.22%,R2026527,Baycurrent Classic,2026,22.22
+35532,Tom Hoge,70,02414,Bogey Avoidance,23.61%,R2026527,Baycurrent Classic,2026,23.61
+51634,Sahith Theegala,71,02414,Bogey Avoidance,25.00%,R2026527,Baycurrent Classic,2026,25.0
+63343,Aldrich Potgieter,72,02414,Bogey Avoidance,31.94%,R2026527,Baycurrent Classic,2026,31.94
 57123,Steven Fisk,1,02414,Bogey Avoidance,2.78%,R2026554,Bank of Utah Championship,2026,2.78
 65256,David Ford,1,02414,Bogey Avoidance,2.78%,R2026554,Bank of Utah Championship,2026,2.78
 66743,Luke Clanton,3,02414,Bogey Avoidance,4.17%,R2026554,Bank of Utah Championship,2026,4.17
@@ -36809,6 +37745,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39324,J.J. Spaun,69,02414,Bogey Avoidance,19.44%,R2026006,Sony Open in Hawaii,2026,19.44
 48001,Zach Bauchou,73,02414,Bogey Avoidance,20.83%,R2026006,Sony Open in Hawaii,2026,20.83
 61148,Kota Kaneko,74,02414,Bogey Avoidance,23.61%,R2026006,Sony Open in Hawaii,2026,23.61
+61522,Michael Brennan,1,02419,Bogey Average,1.00,R2026527,Baycurrent Classic,2026,1.0
+27644,Brian Harman,1,02419,Bogey Average,1.00,R2026527,Baycurrent Classic,2026,1.0
+59018,Ryan Gerard,3,02419,Bogey Average,1.25,R2026527,Baycurrent Classic,2026,1.25
+39977,Max Homa,3,02419,Bogey Average,1.25,R2026527,Baycurrent Classic,2026,1.25
+39971,Sungjae Im,3,02419,Bogey Average,1.25,R2026527,Baycurrent Classic,2026,1.25
+36884,Ben Kohles,3,02419,Bogey Average,1.25,R2026527,Baycurrent Classic,2026,1.25
+56165,Yusaku Hosono,7,02419,Bogey Average,1.50,R2026527,Baycurrent Classic,2026,1.5
+48117,Kurt Kitayama,7,02419,Bogey Average,1.50,R2026527,Baycurrent Classic,2026,1.5
+33448,Justin Thomas,7,02419,Bogey Average,1.50,R2026527,Baycurrent Classic,2026,1.5
+45522,Christiaan Bezuidenhout,10,02419,Bogey Average,1.75,R2026527,Baycurrent Classic,2026,1.75
+29725,Tony Finau,10,02419,Bogey Average,1.75,R2026527,Baycurrent Classic,2026,1.75
+36799,Stephan Jaeger,10,02419,Bogey Average,1.75,R2026527,Baycurrent Classic,2026,1.75
+47917,Takumi Kanaya,10,02419,Bogey Average,1.75,R2026527,Baycurrent Classic,2026,1.75
+37378,Min Woo Lee,10,02419,Bogey Average,1.75,R2026527,Baycurrent Classic,2026,1.75
+28723,John Parry,10,02419,Bogey Average,1.75,R2026527,Baycurrent Classic,2026,1.75
+34046,Jordan Spieth,10,02419,Bogey Average,1.75,R2026527,Baycurrent Classic,2026,1.75
+60004,Jacob Bridgeman,17,02419,Bogey Average,2.00,R2026527,Baycurrent Classic,2026,2.0
+59836,Pierceson Coody,17,02419,Bogey Average,2.00,R2026527,Baycurrent Classic,2026,2.0
+29833,Yoshinori Fujimoto,17,02419,Bogey Average,2.00,R2026527,Baycurrent Classic,2026,2.0
+34256,Andrew Putnam,17,02419,Bogey Average,2.00,R2026527,Baycurrent Classic,2026,2.0
+48081,Xander Schauffele,17,02419,Bogey Average,2.00,R2026527,Baycurrent Classic,2026,2.0
+46464,Jordan Smith,17,02419,Bogey Average,2.00,R2026527,Baycurrent Classic,2026,2.0
+35658,Kristoffer Ventura,17,02419,Bogey Average,2.00,R2026527,Baycurrent Classic,2026,2.0
+48887,Matt Wallace,17,02419,Bogey Average,2.00,R2026527,Baycurrent Classic,2026,2.0
+48001,Zach Bauchou,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+59440,Ricky Castillo,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+51287,Ryo Hisatsune,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+55908,Tomohiro Ishizaka,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+39975,Michael Kim,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+33689,Jinichiro Kozuma,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+59143,Mac Meissner,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+39546,Keith Mitchell,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+36699,Patrick Rodgers,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+24502,Adam Scott,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+56100,Ren Yonezawa,25,02419,Bogey Average,2.25,R2026527,Baycurrent Classic,2026,2.25
+33141,Keegan Bradley,36,02419,Bogey Average,2.50,R2026527,Baycurrent Classic,2026,2.5
+52375,Doug Ghim,36,02419,Bogey Average,2.50,R2026527,Baycurrent Classic,2026,2.5
+51977,Max Greyserman,36,02419,Bogey Average,2.50,R2026527,Baycurrent Classic,2026,2.5
+54628,Lee Hodges,36,02419,Bogey Average,2.50,R2026527,Baycurrent Classic,2026,2.5
+29420,Billy Horschel,36,02419,Bogey Average,2.50,R2026527,Baycurrent Classic,2026,2.5
+49228,Keita Nakajima,36,02419,Bogey Average,2.50,R2026527,Baycurrent Classic,2026,2.5
+51349,Nico Echavarria,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+32102,Rickie Fowler,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+27747,Hiroshi Iwata,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+63454,Johnny Keefer,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+47993,Denny McCarthy,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+49947,Taylor Moore,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+52689,Rasmus Neergaard-Petersen,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+40250,Taylor Pendrith,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+39335,Kevin Roy,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+60019,Jackson Suber,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+45242,Kevin Yu,42,02419,Bogey Average,2.75,R2026527,Baycurrent Classic,2026,2.75
+35461,Beau Hossler,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+59743,Aguri Iwasaki,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+59141,Matt McCarty,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+46442,Maverick McNealy,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+57900,Chandler Phillips,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+46340,Alex Smalley,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+47889,Kosuke Sunagawa,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+25493,Nick Taylor,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+57364,Michael Thorbjornsen,53,02419,Bogey Average,3.00,R2026527,Baycurrent Classic,2026,3.0
+51766,Wyndham Clark,62,02419,Bogey Average,3.25,R2026527,Baycurrent Classic,2026,3.25
+36326,David Lipsky,62,02419,Bogey Average,3.25,R2026527,Baycurrent Classic,2026,3.25
+32839,Hideki Matsuyama,62,02419,Bogey Average,3.25,R2026527,Baycurrent Classic,2026,3.25
+57123,Steven Fisk,65,02419,Bogey Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+35532,Tom Hoge,65,02419,Bogey Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+33232,Sang-hee Lee,65,02419,Bogey Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+50525,Collin Morikawa,65,02419,Bogey Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+65922,Koshin Nagasaki,65,02419,Bogey Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+58168,Davis Thompson,65,02419,Bogey Average,3.50,R2026527,Baycurrent Classic,2026,3.5
+51634,Sahith Theegala,71,02419,Bogey Average,4.25,R2026527,Baycurrent Classic,2026,4.25
+63343,Aldrich Potgieter,72,02419,Bogey Average,4.50,R2026527,Baycurrent Classic,2026,4.5
 65256,David Ford,1,02419,Bogey Average,0.25,R2026554,Bank of Utah Championship,2026,0.25
 66743,Luke Clanton,2,02419,Bogey Average,0.50,R2026554,Bank of Utah Championship,2026,0.5
 57123,Steven Fisk,2,02419,Bogey Average,0.50,R2026554,Bank of Utah Championship,2026,0.5
@@ -39455,6 +40463,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 39546,Keith Mitchell,71,02419,Bogey Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
 39324,J.J. Spaun,71,02419,Bogey Average,3.50,R2026006,Sony Open in Hawaii,2026,3.5
 48001,Zach Bauchou,74,02419,Bogey Average,3.75,R2026006,Sony Open in Hawaii,2026,3.75
+61522,Michael Brennan,1,108,Birdie or Better %,67.00,R2026527,Baycurrent Classic,2026,67.0
+60004,Jacob Bridgeman,2,108,Birdie or Better %,67.25,R2026527,Baycurrent Classic,2026,67.25
+39546,Keith Mitchell,2,108,Birdie or Better %,67.25,R2026527,Baycurrent Classic,2026,67.25
+59018,Ryan Gerard,4,108,Birdie or Better %,67.75,R2026527,Baycurrent Classic,2026,67.75
+27644,Brian Harman,4,108,Birdie or Better %,67.75,R2026527,Baycurrent Classic,2026,67.75
+36799,Stephan Jaeger,4,108,Birdie or Better %,67.75,R2026527,Baycurrent Classic,2026,67.75
+48081,Xander Schauffele,4,108,Birdie or Better %,67.75,R2026527,Baycurrent Classic,2026,67.75
+46464,Jordan Smith,4,108,Birdie or Better %,67.75,R2026527,Baycurrent Classic,2026,67.75
+48001,Zach Bauchou,9,108,Birdie or Better %,68.00,R2026527,Baycurrent Classic,2026,68.0
+39971,Sungjae Im,9,108,Birdie or Better %,68.00,R2026527,Baycurrent Classic,2026,68.0
+37378,Min Woo Lee,9,108,Birdie or Better %,68.00,R2026527,Baycurrent Classic,2026,68.0
+56100,Ren Yonezawa,9,108,Birdie or Better %,68.00,R2026527,Baycurrent Classic,2026,68.0
+39977,Max Homa,13,108,Birdie or Better %,68.25,R2026527,Baycurrent Classic,2026,68.25
+39335,Kevin Roy,13,108,Birdie or Better %,68.25,R2026527,Baycurrent Classic,2026,68.25
+24502,Adam Scott,13,108,Birdie or Better %,68.25,R2026527,Baycurrent Classic,2026,68.25
+34046,Jordan Spieth,13,108,Birdie or Better %,68.25,R2026527,Baycurrent Classic,2026,68.25
+45522,Christiaan Bezuidenhout,17,108,Birdie or Better %,68.50,R2026527,Baycurrent Classic,2026,68.5
+52375,Doug Ghim,17,108,Birdie or Better %,68.50,R2026527,Baycurrent Classic,2026,68.5
+39975,Michael Kim,17,108,Birdie or Better %,68.50,R2026527,Baycurrent Classic,2026,68.5
+36884,Ben Kohles,17,108,Birdie or Better %,68.50,R2026527,Baycurrent Classic,2026,68.5
+29420,Billy Horschel,21,108,Birdie or Better %,68.75,R2026527,Baycurrent Classic,2026,68.75
+32839,Hideki Matsuyama,21,108,Birdie or Better %,68.75,R2026527,Baycurrent Classic,2026,68.75
+47917,Takumi Kanaya,23,108,Birdie or Better %,69.00,R2026527,Baycurrent Classic,2026,69.0
+59143,Mac Meissner,23,108,Birdie or Better %,69.00,R2026527,Baycurrent Classic,2026,69.0
+52689,Rasmus Neergaard-Petersen,23,108,Birdie or Better %,69.00,R2026527,Baycurrent Classic,2026,69.0
+28723,John Parry,23,108,Birdie or Better %,69.00,R2026527,Baycurrent Classic,2026,69.0
+47889,Kosuke Sunagawa,23,108,Birdie or Better %,69.00,R2026527,Baycurrent Classic,2026,69.0
+33448,Justin Thomas,23,108,Birdie or Better %,69.00,R2026527,Baycurrent Classic,2026,69.0
+59440,Ricky Castillo,29,108,Birdie or Better %,69.25,R2026527,Baycurrent Classic,2026,69.25
+55908,Tomohiro Ishizaka,29,108,Birdie or Better %,69.25,R2026527,Baycurrent Classic,2026,69.25
+47993,Denny McCarthy,29,108,Birdie or Better %,69.25,R2026527,Baycurrent Classic,2026,69.25
+36699,Patrick Rodgers,29,108,Birdie or Better %,69.25,R2026527,Baycurrent Classic,2026,69.25
+51349,Nico Echavarria,33,108,Birdie or Better %,69.50,R2026527,Baycurrent Classic,2026,69.5
+29833,Yoshinori Fujimoto,33,108,Birdie or Better %,69.50,R2026527,Baycurrent Classic,2026,69.5
+54628,Lee Hodges,33,108,Birdie or Better %,69.50,R2026527,Baycurrent Classic,2026,69.5
+56165,Yusaku Hosono,33,108,Birdie or Better %,69.50,R2026527,Baycurrent Classic,2026,69.5
+63454,Johnny Keefer,33,108,Birdie or Better %,69.50,R2026527,Baycurrent Classic,2026,69.5
+50525,Collin Morikawa,33,108,Birdie or Better %,69.50,R2026527,Baycurrent Classic,2026,69.5
+34256,Andrew Putnam,33,108,Birdie or Better %,69.50,R2026527,Baycurrent Classic,2026,69.5
+57364,Michael Thorbjornsen,33,108,Birdie or Better %,69.50,R2026527,Baycurrent Classic,2026,69.5
+33141,Keegan Bradley,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+29725,Tony Finau,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+51287,Ryo Hisatsune,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+35461,Beau Hossler,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+33689,Jinichiro Kozuma,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+49947,Taylor Moore,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+60019,Jackson Suber,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+25493,Nick Taylor,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+35658,Kristoffer Ventura,41,108,Birdie or Better %,69.75,R2026527,Baycurrent Classic,2026,69.75
+59836,Pierceson Coody,50,108,Birdie or Better %,70.00,R2026527,Baycurrent Classic,2026,70.0
+59141,Matt McCarty,50,108,Birdie or Better %,70.00,R2026527,Baycurrent Classic,2026,70.0
+49228,Keita Nakajima,50,108,Birdie or Better %,70.00,R2026527,Baycurrent Classic,2026,70.0
+48887,Matt Wallace,50,108,Birdie or Better %,70.00,R2026527,Baycurrent Classic,2026,70.0
+59743,Aguri Iwasaki,54,108,Birdie or Better %,70.25,R2026527,Baycurrent Classic,2026,70.25
+36326,David Lipsky,54,108,Birdie or Better %,70.25,R2026527,Baycurrent Classic,2026,70.25
+40250,Taylor Pendrith,54,108,Birdie or Better %,70.25,R2026527,Baycurrent Classic,2026,70.25
+57900,Chandler Phillips,54,108,Birdie or Better %,70.25,R2026527,Baycurrent Classic,2026,70.25
+58168,Davis Thompson,54,108,Birdie or Better %,70.25,R2026527,Baycurrent Classic,2026,70.25
+46442,Maverick McNealy,59,108,Birdie or Better %,70.50,R2026527,Baycurrent Classic,2026,70.5
+45242,Kevin Yu,59,108,Birdie or Better %,70.50,R2026527,Baycurrent Classic,2026,70.5
+51977,Max Greyserman,61,108,Birdie or Better %,70.75,R2026527,Baycurrent Classic,2026,70.75
+48117,Kurt Kitayama,61,108,Birdie or Better %,70.75,R2026527,Baycurrent Classic,2026,70.75
+51766,Wyndham Clark,63,108,Birdie or Better %,71.25,R2026527,Baycurrent Classic,2026,71.25
+46340,Alex Smalley,63,108,Birdie or Better %,71.25,R2026527,Baycurrent Classic,2026,71.25
+33232,Sang-hee Lee,65,108,Birdie or Better %,71.50,R2026527,Baycurrent Classic,2026,71.5
+57123,Steven Fisk,66,108,Birdie or Better %,71.75,R2026527,Baycurrent Classic,2026,71.75
+27747,Hiroshi Iwata,67,108,Birdie or Better %,72.00,R2026527,Baycurrent Classic,2026,72.0
+51634,Sahith Theegala,68,108,Birdie or Better %,72.25,R2026527,Baycurrent Classic,2026,72.25
+65922,Koshin Nagasaki,69,108,Birdie or Better %,72.50,R2026527,Baycurrent Classic,2026,72.5
+35532,Tom Hoge,70,108,Birdie or Better %,72.75,R2026527,Baycurrent Classic,2026,72.75
+32102,Rickie Fowler,71,108,Birdie or Better %,73.25,R2026527,Baycurrent Classic,2026,73.25
+63343,Aldrich Potgieter,72,108,Birdie or Better %,73.75,R2026527,Baycurrent Classic,2026,73.75
 50095,Austin Smotherman,1,108,Birdie or Better %,64.50,R2026554,Bank of Utah Championship,2026,64.5
 52375,Doug Ghim,2,108,Birdie or Better %,65.00,R2026554,Bank of Utah Championship,2026,65.0
 52514,Trace Crowe,3,108,Birdie or Better %,65.25,R2026554,Bank of Utah Championship,2026,65.25
@@ -42101,6 +43181,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 47983,Chad Ramey,71,108,Birdie or Better %,70.25,R2026006,Sony Open in Hawaii,2026,70.25
 61148,Kota Kaneko,73,108,Birdie or Better %,70.75,R2026006,Sony Open in Hawaii,2026,70.75
 29420,Billy Horschel,74,108,Birdie or Better %,71.00,R2026006,Sony Open in Hawaii,2026,71.0
+36884,Ben Kohles,1,299,Par 3 Scoring,62,R2026527,Baycurrent Classic,2026,62.0
+60004,Jacob Bridgeman,2,299,Par 3 Scoring,63,R2026527,Baycurrent Classic,2026,63.0
+48001,Zach Bauchou,3,299,Par 3 Scoring,64,R2026527,Baycurrent Classic,2026,64.0
+46464,Jordan Smith,3,299,Par 3 Scoring,64,R2026527,Baycurrent Classic,2026,64.0
+56100,Ren Yonezawa,3,299,Par 3 Scoring,64,R2026527,Baycurrent Classic,2026,64.0
+61522,Michael Brennan,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+59440,Ricky Castillo,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+59836,Pierceson Coody,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+39977,Max Homa,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+36799,Stephan Jaeger,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+59141,Matt McCarty,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+59143,Mac Meissner,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+39546,Keith Mitchell,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+49947,Taylor Moore,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+36699,Patrick Rodgers,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+48081,Xander Schauffele,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+24502,Adam Scott,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+33448,Justin Thomas,6,299,Par 3 Scoring,65,R2026527,Baycurrent Classic,2026,65.0
+33141,Keegan Bradley,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+29833,Yoshinori Fujimoto,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+59018,Ryan Gerard,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+48117,Kurt Kitayama,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+37378,Min Woo Lee,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+36326,David Lipsky,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+63343,Aldrich Potgieter,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+34256,Andrew Putnam,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+39335,Kevin Roy,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+34046,Jordan Spieth,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+57364,Michael Thorbjornsen,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+35658,Kristoffer Ventura,19,299,Par 3 Scoring,66,R2026527,Baycurrent Classic,2026,66.0
+51349,Nico Echavarria,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+57123,Steven Fisk,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+52375,Doug Ghim,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+27644,Brian Harman,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+51287,Ryo Hisatsune,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+29420,Billy Horschel,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+56165,Yusaku Hosono,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+35461,Beau Hossler,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+39971,Sungjae Im,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+55908,Tomohiro Ishizaka,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+59743,Aguri Iwasaki,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+63454,Johnny Keefer,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+32839,Hideki Matsuyama,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+46442,Maverick McNealy,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+50525,Collin Morikawa,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+52689,Rasmus Neergaard-Petersen,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+40250,Taylor Pendrith,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+60019,Jackson Suber,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+47889,Kosuke Sunagawa,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+25493,Nick Taylor,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+45242,Kevin Yu,31,299,Par 3 Scoring,67,R2026527,Baycurrent Classic,2026,67.0
+45522,Christiaan Bezuidenhout,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+29725,Tony Finau,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+51977,Max Greyserman,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+54628,Lee Hodges,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+35532,Tom Hoge,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+27747,Hiroshi Iwata,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+47917,Takumi Kanaya,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+39975,Michael Kim,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+33689,Jinichiro Kozuma,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+47993,Denny McCarthy,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+49228,Keita Nakajima,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+28723,John Parry,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+58168,Davis Thompson,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+48887,Matt Wallace,52,299,Par 3 Scoring,68,R2026527,Baycurrent Classic,2026,68.0
+51766,Wyndham Clark,66,299,Par 3 Scoring,69,R2026527,Baycurrent Classic,2026,69.0
+65922,Koshin Nagasaki,66,299,Par 3 Scoring,69,R2026527,Baycurrent Classic,2026,69.0
+57900,Chandler Phillips,66,299,Par 3 Scoring,69,R2026527,Baycurrent Classic,2026,69.0
+46340,Alex Smalley,66,299,Par 3 Scoring,69,R2026527,Baycurrent Classic,2026,69.0
+33232,Sang-hee Lee,70,299,Par 3 Scoring,70,R2026527,Baycurrent Classic,2026,70.0
+51634,Sahith Theegala,71,299,Par 3 Scoring,71,R2026527,Baycurrent Classic,2026,71.0
+32102,Rickie Fowler,72,299,Par 3 Scoring,72,R2026527,Baycurrent Classic,2026,72.0
 48001,Zach Bauchou,1,299,Par 3 Scoring,62,R2026554,Bank of Utah Championship,2026,62.0
 66743,Luke Clanton,1,299,Par 3 Scoring,62,R2026554,Bank of Utah Championship,2026,62.0
 52375,Doug Ghim,1,299,Par 3 Scoring,62,R2026554,Bank of Utah Championship,2026,62.0
@@ -44747,6 +45899,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 29420,Billy Horschel,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
 36801,Mark Hubbard,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
 63121,William Mouw,72,299,Par 3 Scoring,69,R2026006,Sony Open in Hawaii,2026,69.0
+61522,Michael Brennan,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+39977,Max Homa,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+56165,Yusaku Hosono,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+35461,Beau Hossler,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+36799,Stephan Jaeger,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+63454,Johnny Keefer,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+39975,Michael Kim,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+32839,Hideki Matsuyama,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+57900,Chandler Phillips,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+46464,Jordan Smith,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+57364,Michael Thorbjornsen,1,142,Par 4 Scoring,2.83,R2026527,Baycurrent Classic,2026,2.83
+51349,Nico Echavarria,12,142,Par 4 Scoring,2.92,R2026527,Baycurrent Classic,2026,2.92
+51977,Max Greyserman,12,142,Par 4 Scoring,2.92,R2026527,Baycurrent Classic,2026,2.92
+35532,Tom Hoge,12,142,Par 4 Scoring,2.92,R2026527,Baycurrent Classic,2026,2.92
+29420,Billy Horschel,12,142,Par 4 Scoring,2.92,R2026527,Baycurrent Classic,2026,2.92
+39971,Sungjae Im,12,142,Par 4 Scoring,2.92,R2026527,Baycurrent Classic,2026,2.92
+34256,Andrew Putnam,12,142,Par 4 Scoring,2.92,R2026527,Baycurrent Classic,2026,2.92
+39335,Kevin Roy,12,142,Par 4 Scoring,2.92,R2026527,Baycurrent Classic,2026,2.92
+60019,Jackson Suber,12,142,Par 4 Scoring,2.92,R2026527,Baycurrent Classic,2026,2.92
+48001,Zach Bauchou,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+29725,Tony Finau,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+29833,Yoshinori Fujimoto,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+59018,Ryan Gerard,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+27644,Brian Harman,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+55908,Tomohiro Ishizaka,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+48117,Kurt Kitayama,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+36884,Ben Kohles,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+37378,Min Woo Lee,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+36326,David Lipsky,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+47993,Denny McCarthy,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+49947,Taylor Moore,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+28723,John Parry,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+48081,Xander Schauffele,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+47889,Kosuke Sunagawa,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+25493,Nick Taylor,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+56100,Ren Yonezawa,20,142,Par 4 Scoring,3.00,R2026527,Baycurrent Classic,2026,3.0
+45522,Christiaan Bezuidenhout,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+60004,Jacob Bridgeman,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+59440,Ricky Castillo,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+51766,Wyndham Clark,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+59836,Pierceson Coody,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+54628,Lee Hodges,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+59743,Aguri Iwasaki,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+27747,Hiroshi Iwata,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+59141,Matt McCarty,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+39546,Keith Mitchell,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+50525,Collin Morikawa,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+40250,Taylor Pendrith,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+36699,Patrick Rodgers,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+24502,Adam Scott,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+34046,Jordan Spieth,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+33448,Justin Thomas,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+35658,Kristoffer Ventura,37,142,Par 4 Scoring,3.08,R2026527,Baycurrent Classic,2026,3.08
+33141,Keegan Bradley,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+32102,Rickie Fowler,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+51287,Ryo Hisatsune,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+47917,Takumi Kanaya,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+59143,Mac Meissner,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+52689,Rasmus Neergaard-Petersen,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+63343,Aldrich Potgieter,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+46340,Alex Smalley,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+51634,Sahith Theegala,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+48887,Matt Wallace,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+45242,Kevin Yu,54,142,Par 4 Scoring,3.17,R2026527,Baycurrent Classic,2026,3.17
+57123,Steven Fisk,65,142,Par 4 Scoring,3.25,R2026527,Baycurrent Classic,2026,3.25
+33689,Jinichiro Kozuma,65,142,Par 4 Scoring,3.25,R2026527,Baycurrent Classic,2026,3.25
+33232,Sang-hee Lee,65,142,Par 4 Scoring,3.25,R2026527,Baycurrent Classic,2026,3.25
+65922,Koshin Nagasaki,65,142,Par 4 Scoring,3.25,R2026527,Baycurrent Classic,2026,3.25
+49228,Keita Nakajima,65,142,Par 4 Scoring,3.25,R2026527,Baycurrent Classic,2026,3.25
+52375,Doug Ghim,70,142,Par 4 Scoring,3.33,R2026527,Baycurrent Classic,2026,3.33
+58168,Davis Thompson,70,142,Par 4 Scoring,3.33,R2026527,Baycurrent Classic,2026,3.33
+46442,Maverick McNealy,72,142,Par 4 Scoring,3.58,R2026527,Baycurrent Classic,2026,3.58
 35461,Beau Hossler,1,142,Par 4 Scoring,2.63,R2026554,Bank of Utah Championship,2026,2.63
 36326,David Lipsky,1,142,Par 4 Scoring,2.63,R2026554,Bank of Utah Championship,2026,2.63
 51950,Max McGreevy,1,142,Par 4 Scoring,2.63,R2026554,Bank of Utah Championship,2026,2.63
@@ -47393,6 +48617,78 @@ player_id,player_name,rank,stat_id,stat_name,stat_value,tournament_id,tournament
 34046,Jordan Spieth,70,142,Par 4 Scoring,3.25,R2026006,Sony Open in Hawaii,2026,3.25
 35296,Haotong Li,73,142,Par 4 Scoring,3.31,R2026006,Sony Open in Hawaii,2026,3.31
 59143,Mac Meissner,74,142,Par 4 Scoring,3.38,R2026006,Sony Open in Hawaii,2026,3.38
+60004,Jacob Bridgeman,1,143,Par 5 Scoring,3.79,R2026527,Baycurrent Classic,2026,3.79
+39546,Keith Mitchell,2,143,Par 5 Scoring,3.81,R2026527,Baycurrent Classic,2026,3.81
+46464,Jordan Smith,2,143,Par 5 Scoring,3.81,R2026527,Baycurrent Classic,2026,3.81
+27644,Brian Harman,4,143,Par 5 Scoring,3.83,R2026527,Baycurrent Classic,2026,3.83
+61522,Michael Brennan,5,143,Par 5 Scoring,3.85,R2026527,Baycurrent Classic,2026,3.85
+39971,Sungjae Im,5,143,Par 5 Scoring,3.85,R2026527,Baycurrent Classic,2026,3.85
+52689,Rasmus Neergaard-Petersen,7,143,Par 5 Scoring,3.87,R2026527,Baycurrent Classic,2026,3.87
+48081,Xander Schauffele,7,143,Par 5 Scoring,3.87,R2026527,Baycurrent Classic,2026,3.87
+52375,Doug Ghim,9,143,Par 5 Scoring,3.88,R2026527,Baycurrent Classic,2026,3.88
+37378,Min Woo Lee,9,143,Par 5 Scoring,3.88,R2026527,Baycurrent Classic,2026,3.88
+24502,Adam Scott,9,143,Par 5 Scoring,3.88,R2026527,Baycurrent Classic,2026,3.88
+34046,Jordan Spieth,9,143,Par 5 Scoring,3.88,R2026527,Baycurrent Classic,2026,3.88
+48001,Zach Bauchou,13,143,Par 5 Scoring,3.90,R2026527,Baycurrent Classic,2026,3.9
+59440,Ricky Castillo,13,143,Par 5 Scoring,3.90,R2026527,Baycurrent Classic,2026,3.9
+51349,Nico Echavarria,13,143,Par 5 Scoring,3.90,R2026527,Baycurrent Classic,2026,3.9
+59018,Ryan Gerard,13,143,Par 5 Scoring,3.90,R2026527,Baycurrent Classic,2026,3.9
+47917,Takumi Kanaya,13,143,Par 5 Scoring,3.90,R2026527,Baycurrent Classic,2026,3.9
+36699,Patrick Rodgers,13,143,Par 5 Scoring,3.90,R2026527,Baycurrent Classic,2026,3.9
+56100,Ren Yonezawa,13,143,Par 5 Scoring,3.90,R2026527,Baycurrent Classic,2026,3.9
+45522,Christiaan Bezuidenhout,20,143,Par 5 Scoring,3.92,R2026527,Baycurrent Classic,2026,3.92
+33141,Keegan Bradley,20,143,Par 5 Scoring,3.92,R2026527,Baycurrent Classic,2026,3.92
+39977,Max Homa,20,143,Par 5 Scoring,3.92,R2026527,Baycurrent Classic,2026,3.92
+29420,Billy Horschel,20,143,Par 5 Scoring,3.92,R2026527,Baycurrent Classic,2026,3.92
+36799,Stephan Jaeger,20,143,Par 5 Scoring,3.92,R2026527,Baycurrent Classic,2026,3.92
+36884,Ben Kohles,20,143,Par 5 Scoring,3.92,R2026527,Baycurrent Classic,2026,3.92
+33689,Jinichiro Kozuma,20,143,Par 5 Scoring,3.92,R2026527,Baycurrent Classic,2026,3.92
+39335,Kevin Roy,20,143,Par 5 Scoring,3.92,R2026527,Baycurrent Classic,2026,3.92
+46442,Maverick McNealy,28,143,Par 5 Scoring,3.94,R2026527,Baycurrent Classic,2026,3.94
+59143,Mac Meissner,28,143,Par 5 Scoring,3.94,R2026527,Baycurrent Classic,2026,3.94
+50525,Collin Morikawa,28,143,Par 5 Scoring,3.94,R2026527,Baycurrent Classic,2026,3.94
+47889,Kosuke Sunagawa,28,143,Par 5 Scoring,3.94,R2026527,Baycurrent Classic,2026,3.94
+33448,Justin Thomas,28,143,Par 5 Scoring,3.94,R2026527,Baycurrent Classic,2026,3.94
+29833,Yoshinori Fujimoto,33,143,Par 5 Scoring,3.96,R2026527,Baycurrent Classic,2026,3.96
+55908,Tomohiro Ishizaka,33,143,Par 5 Scoring,3.96,R2026527,Baycurrent Classic,2026,3.96
+39975,Michael Kim,33,143,Par 5 Scoring,3.96,R2026527,Baycurrent Classic,2026,3.96
+32839,Hideki Matsuyama,33,143,Par 5 Scoring,3.96,R2026527,Baycurrent Classic,2026,3.96
+49228,Keita Nakajima,33,143,Par 5 Scoring,3.96,R2026527,Baycurrent Classic,2026,3.96
+48887,Matt Wallace,33,143,Par 5 Scoring,3.96,R2026527,Baycurrent Classic,2026,3.96
+29725,Tony Finau,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+54628,Lee Hodges,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+56165,Yusaku Hosono,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+36326,David Lipsky,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+47993,Denny McCarthy,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+49947,Taylor Moore,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+28723,John Parry,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+40250,Taylor Pendrith,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+34256,Andrew Putnam,39,143,Par 5 Scoring,3.98,R2026527,Baycurrent Classic,2026,3.98
+51287,Ryo Hisatsune,48,143,Par 5 Scoring,4.00,R2026527,Baycurrent Classic,2026,4.0
+63454,Johnny Keefer,48,143,Par 5 Scoring,4.00,R2026527,Baycurrent Classic,2026,4.0
+60019,Jackson Suber,48,143,Par 5 Scoring,4.00,R2026527,Baycurrent Classic,2026,4.0
+57364,Michael Thorbjornsen,48,143,Par 5 Scoring,4.00,R2026527,Baycurrent Classic,2026,4.0
+35658,Kristoffer Ventura,48,143,Par 5 Scoring,4.00,R2026527,Baycurrent Classic,2026,4.0
+59836,Pierceson Coody,53,143,Par 5 Scoring,4.04,R2026527,Baycurrent Classic,2026,4.04
+59743,Aguri Iwasaki,53,143,Par 5 Scoring,4.04,R2026527,Baycurrent Classic,2026,4.04
+59141,Matt McCarty,53,143,Par 5 Scoring,4.04,R2026527,Baycurrent Classic,2026,4.04
+25493,Nick Taylor,53,143,Par 5 Scoring,4.04,R2026527,Baycurrent Classic,2026,4.04
+58168,Davis Thompson,53,143,Par 5 Scoring,4.04,R2026527,Baycurrent Classic,2026,4.04
+45242,Kevin Yu,53,143,Par 5 Scoring,4.04,R2026527,Baycurrent Classic,2026,4.04
+51977,Max Greyserman,59,143,Par 5 Scoring,4.06,R2026527,Baycurrent Classic,2026,4.06
+35461,Beau Hossler,59,143,Par 5 Scoring,4.06,R2026527,Baycurrent Classic,2026,4.06
+57123,Steven Fisk,61,143,Par 5 Scoring,4.08,R2026527,Baycurrent Classic,2026,4.08
+48117,Kurt Kitayama,61,143,Par 5 Scoring,4.08,R2026527,Baycurrent Classic,2026,4.08
+33232,Sang-hee Lee,61,143,Par 5 Scoring,4.08,R2026527,Baycurrent Classic,2026,4.08
+51634,Sahith Theegala,61,143,Par 5 Scoring,4.08,R2026527,Baycurrent Classic,2026,4.08
+57900,Chandler Phillips,65,143,Par 5 Scoring,4.10,R2026527,Baycurrent Classic,2026,4.1
+46340,Alex Smalley,65,143,Par 5 Scoring,4.10,R2026527,Baycurrent Classic,2026,4.1
+51766,Wyndham Clark,67,143,Par 5 Scoring,4.12,R2026527,Baycurrent Classic,2026,4.12
+27747,Hiroshi Iwata,67,143,Par 5 Scoring,4.12,R2026527,Baycurrent Classic,2026,4.12
+65922,Koshin Nagasaki,67,143,Par 5 Scoring,4.12,R2026527,Baycurrent Classic,2026,4.12
+32102,Rickie Fowler,70,143,Par 5 Scoring,4.17,R2026527,Baycurrent Classic,2026,4.17
+35532,Tom Hoge,71,143,Par 5 Scoring,4.21,R2026527,Baycurrent Classic,2026,4.21
+63343,Aldrich Potgieter,72,143,Par 5 Scoring,4.27,R2026527,Baycurrent Classic,2026,4.27
 65256,David Ford,1,143,Par 5 Scoring,3.61,R2026554,Bank of Utah Championship,2026,3.61
 50095,Austin Smotherman,2,143,Par 5 Scoring,3.66,R2026554,Bank of Utah Championship,2026,3.66
 57869,Ben James,3,143,Par 5 Scoring,3.68,R2026554,Bank of Utah Championship,2026,3.68
