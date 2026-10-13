@@ -21,6 +21,7 @@ Output:
 """
 
 import sys
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -37,6 +38,7 @@ from dg_client import dg_get  # noqa: E402
 from event_guard import names_match  # noqa: E402
 from fetch_dg_odds import american_to_prob  # noqa: E402
 from scripts.features.build_euro_training_table import FEATURE_WINDOW_DAYS, rolling_form_features  # noqa: E402
+from scripts.validation.euro_integrity import check as euro_integrity_check  # noqa: E402
 
 MODEL_DIR = PROJECT_ROOT / "data" / "models" / "euro"
 OUT_DIR = PROJECT_ROOT / "data" / "predictions_euro"
@@ -49,21 +51,32 @@ TARGETS = {"won": "win_prob", "top5": "top5_prob", "top10": "top10_prob",
            "top20": "top20_prob", "made_cut": "cut_prob"}
 
 
+def load_euro_schedule() -> pd.DataFrame:
+    """Every euro season file, not just 2026: the 2026 file ends Oct 25,
+    and a hardcoded year would silently switch the freshness check off
+    (no 'last finished event' ever newer than that) from then on."""
+    files = sorted((PROJECT_ROOT / "data" / "raw").glob("schedule_euro_2*.csv"))
+    return pd.concat([pd.read_csv(f, parse_dates=["start_date", "end_date"]) for f in files],
+                     ignore_index=True)
+
+
 def current_euro_event() -> tuple[str, str, str]:
     """(tid, name, start_date) — resolved by the FIELD payload's own
     event name against the euro schedule. The feed serves 'the current
     event'; its label decides, never our assumption."""
     raw = dg_get("/field-updates", {"tour": "euro", "file_format": "json"})
     name = str(raw.get("event_name", ""))
-    sched = pd.read_csv(PROJECT_ROOT / "data" / "raw" / "schedule_euro_2026.csv")
+    sched = load_euro_schedule()
     row = sched[sched["tournament_name"].str.lower() == name.lower()]
     if row.empty:
         raise SystemExit(f"euro field feed serves '{name}' — not in the schedule; refusing to guess")
-    return str(row.iloc[0]["tournament_id"]), name, str(row.iloc[0]["start_date"])
+    return str(row.iloc[0]["tournament_id"]), name, str(row.iloc[0]["start_date"].date())
 
 
-def fetch_recent_rounds(before: pd.Timestamp) -> pd.DataFrame:
-    """All euro archive rounds from the last HISTORY_DAYS before `before`."""
+def fetch_recent_rounds(before: pd.Timestamp) -> tuple[pd.DataFrame, dict]:
+    """All euro archive rounds from the last HISTORY_DAYS before `before`,
+    plus what the fetch expected vs got — a failed event fetch used to be
+    a printed warning while every player's history silently thinned."""
     events = dg_get("/historical-raw-data/event-list", {"file_format": "json"})
     cutoff = before - timedelta(days=HISTORY_DAYS)
     recent = [e for e in events
@@ -73,22 +86,43 @@ def fetch_recent_rounds(before: pd.Timestamp) -> pd.DataFrame:
     print(f"history: {len(recent)} euro events in the last {HISTORY_DAYS} days")
 
     rows = []
+    failed: list[str] = []
     for ev in recent:
-        try:
-            raw = dg_get("/historical-raw-data/rounds",
-                         {"tour": "euro", "event_id": ev["event_id"],
-                          "year": ev["calendar_year"], "file_format": "json"})
-            for p in raw.get("scores", []):
-                for rnd in (1, 2, 3, 4):
-                    r = p.get(f"round_{rnd}")
-                    if isinstance(r, dict):
-                        rows.append({"dg_id": p.get("dg_id"), "date": ev.get("date"),
-                                     "round_num": rnd, **r})
-        except Exception as e:
-            print(f"  [warn] {ev.get('event_name')}: {str(e)[:60]}")
+        # dg_get retries only 429s; one timeout or 5xx among ~55 calls
+        # would otherwise block the whole board (the gate blocks on ANY
+        # failed event). Two attempts, then it counts as failed.
+        raw, err = None, None
+        for attempt in (1, 2):
+            try:
+                raw = dg_get("/historical-raw-data/rounds",
+                             {"tour": "euro", "event_id": ev["event_id"],
+                              "year": ev["calendar_year"], "file_format": "json"})
+                break
+            except Exception as e:
+                err = e
+                if attempt == 1:
+                    time.sleep(5)
+        # An empty body is not "fetched": zero players means the archive
+        # gave us nothing, and the gate must see that.
+        if raw is None or not raw.get("scores"):
+            failed.append(str(ev.get("event_name")))
+            print(f"  [warn] {ev.get('event_name')}: {str(err)[:60] if err else 'empty payload'}")
+            continue
+        for p in raw["scores"]:
+            for rnd in (1, 2, 3, 4):
+                r = p.get(f"round_{rnd}")
+                if isinstance(r, dict):
+                    rows.append({"dg_id": p.get("dg_id"), "date": ev.get("date"),
+                                 "round_num": rnd, **r})
     df = pd.DataFrame(rows)
     df["date"] = pd.to_datetime(df["date"])
-    return df
+    stats = {
+        "events_expected": len(recent),
+        "events_fetched": len(recent) - len(failed),
+        "events_failed": failed,
+        "newest_round": df["date"].max() if len(df) else None,
+    }
+    return df, stats
 
 
 def main() -> None:
@@ -101,7 +135,7 @@ def main() -> None:
         raise SystemExit(f"no field file {field_path.name} — run fetch_euro_events --field first")
     field = pd.read_csv(field_path)
 
-    history = fetch_recent_rounds(before=pd.Timestamp.now())
+    history, history_stats = fetch_recent_rounds(before=pd.Timestamp.now())
     by_player = dict(tuple(history.groupby("dg_id"))) if len(history) else {}
 
     feats = []
@@ -257,6 +291,24 @@ def main() -> None:
 
     out.insert(0, "tournament_id", tid)
     out = out.sort_values("win_prob", ascending=False)
+
+    # Integrity gate: refuse to publish a board built on broken inputs.
+    # Nothing is written on failure, so the site keeps the last good
+    # file (and the frozen _pre copy); the watchdog re-dispatches if this
+    # event has no predictions at all. ::error:: surfaces it in the
+    # Actions run summary even though the workflow step is `|| true`.
+    sched = load_euro_schedule()
+    finished = sched[sched["end_date"] <= pd.Timestamp.now().normalize() - pd.Timedelta(days=2)]
+    history_stats["last_finished_event_end"] = finished["end_date"].max() if len(finished) else None
+    failures, notes = euro_integrity_check(
+        out, history_stats, pre_event=pd.Timestamp.now().normalize() < event_start)
+    for n in notes:
+        print(f"  {n}")
+    if failures:
+        for f in failures:
+            print(f"::error title=Euro predictions blocked ({tid})::{f}")
+        raise SystemExit(3)
+
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     path = OUT_DIR / f"euro_model_{tid}.csv"
     out.to_csv(path, index=False)

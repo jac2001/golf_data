@@ -42,6 +42,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Is there a PGA TOUR event this week?
+        # Off weeks (e.g. Oct 15-18, 2026) have no event to predict:
+        # run_pipeline falls back to the NEXT event, whose field DataGolf
+        # doesn't publish until its own week, so the field guard refuses
+        # and the run went red with a failure email for a non-problem.
+        # The watchdog re-dispatches inside 3 days of a start, so nothing
+        # real is lost by skipping here.
+        id: week
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import csv, datetime
+          today = datetime.date.today()
+          rows = csv.DictReader(open("data/raw/schedule_2026.csv"))
+          soon = [r["tournament_name"] for r in rows
+                  if 0 <= (datetime.date.fromisoformat(r["start_date"]) - today).days <= 6]
+          print(f"pga_week={'true' if soon else 'false'}")
+          PY
+          if grep -q "pga_week=false" "$GITHUB_OUTPUT"; then
+            echo "::notice::No PGA TOUR event starts in the next 6 days (off week) — skipping the weekly pipeline."
+          fi
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -52,9 +73,13 @@ jobs:
         run: pip install -r requirements-api.txt shap
 
       - name: Integrity gate tests (a weakened gate must not ship)
-        run: python3 scripts/validation/test_prediction_integrity.py
+        run: |
+          python3 scripts/validation/test_prediction_integrity.py
+          python3 scripts/validation/test_euro_integrity.py
+          python3 scripts/features/test_euro_features.py
 
       - name: Run weekly pipeline
+        if: steps.week.outputs.pga_week == 'true'
         run: |
           python3 scripts/run_pipeline.py \
             --auto-weekly --lineup --calibrate --save-tracking \
@@ -62,6 +87,7 @@ jobs:
           tail -30 pipeline.log >> "$GITHUB_STEP_SUMMARY"
 
       - name: Verify the pipeline actually produced predictions
+        if: steps.week.outputs.pga_week == 'true'
         # NOT an mtime check: git checkout stamps every file with checkout
         # time, so on CI "the file is 3 minutes old" is always true and
         # means nothing. The pipeline's own verdict is the truth — its
@@ -76,6 +102,7 @@ jobs:
           echo "Pipeline reported success."
 
       - name: Commit and push outputs
+        if: steps.week.outputs.pga_week == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -87,6 +114,7 @@ jobs:
           git push origin main
 
       - name: Wait for Render, then let the model take its turn
+        if: steps.week.outputs.pga_week == 'true'
         run: |
           for i in $(seq 1 20); do
             sleep 60
