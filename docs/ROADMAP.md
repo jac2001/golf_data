@@ -15,66 +15,41 @@ honest states).
 
 ---
 
-## Now (this week — Bank of Utah launch week)
+## Now (week of Oct 12 — DPWT-only week: India Championship; PGA resumes Oct 22, Bermuda)
 
-The first complete production week. Nothing new ships that isn't
-needed for it.
+The production loop now runs itself: data refresh → Tuesday predictions
+→ model picks → lock → live Match Center → settlement → Sunday recap,
+with the Vercel watchdog re-dispatching anything GitHub drops and the
+integrity + freshness gates refusing to publish bad predictions.
 
-- [x] **Euro model** — built, calibrated, serving `source: "model"`
-      (2026-09-23, way ahead of the January plan). This Week/Live/chat
-      all euro-aware; France is its live benchmark week (Gerard T2
-      through 36 as the #1 pick).
-- [x] **Bank of Utah preflight** (2026-09-24): schedule/weather/course
-      history verified, defending-champ CSV fallback fixed (was
-      DB-only, blank on prod all season). DG rolls over Monday;
-      Tuesday pipeline takes it from there.
-- [x] **LLM spend protection** (2026-09-24/25): key split by
-      workspace, chat behind Clerk + proxy secret, per-user 15/day,
-      per-IP regen quotas, global daily breaker, generate-analysis
-      owner-only. Externally probed. Assistant live on prod.
-- [x] **Between-events + euro chat context** (2026-09-25): stale-board
-      guard, standing DPWT block with live leaderboard, snapshot age,
-      round coverage, priors-vs-live framing.
-- [x] **Live euro on the Live page** (2026-09-25): PGA/DPWT pills,
-      snapshot leaderboard with age + round coverage + pre-event win%.
-- [ ] **Jack + Rick play the week** (weekly picks minimum; fades and
-      a school make the boards interesting).
-- [ ] **First real Sunday recap** — Bank of Utah + Dunhill settle Sun
-      Oct 4. First real run of the recap card, weekly stars, and banked
-      vs live standings. Check Monday morning; fix what it exposes.
-- [x] **France settled** (2026-09-28, manual dispatch after GitHub's
-      cron ran hours late). Fitzpatrick won — model #7; 6 of its top 20
-      finished top 10 (~1.4 random). Market benchmark lost to mid-event
-      odds overwrites; predict_euro now freezes a pre-event copy.
-- [ ] Cross-group 403 check with Rick's session (60 seconds, closes
-      the last untested auth path).
-- [x] **Timezone-aware locks** (fixed 2026-09-25 — was a trust bug in
-      launch week): locks evaluate at UTC midnight, so PGA picks
-      quietly close ~7-8pm ET the evening before. Lock at event-local
-      midnight or a fixed offset from first tee time.
+- [ ] **Watch the first fully hands-off week.** India (Thu) is the first
+      event since the España fix; Bermuda (Oct 22) the first PGA week
+      with the watchdog armed from the start. Check Sentry for any
+      "Watchdog: … dispatched" alert and Monday's recap.
+- [ ] **Get Rick (and others) playing** — every group member adds pick
+      data the season-format work needs; Rick's session also closes the
+      cross-group 403 check and drives onboarding polish.
+- [ ] **Clerk dashboard:** turn off Clerk's own "delete account" so
+      deletion always runs our cleanup (Jack, 1 minute).
 
 ## Next (October)
 
-1. **Licensing follow-ups**: DataGolf (two-week nudge due ~Oct 6;
-   gates euro DG displays + public growth, not our own models) and the
-   PGA Tour data team's three questions (reply drafted 2026-09-28).
-2. **Season formats that need weeks to accumulate**: watch pick
-   diversity (do real groups converge on chalk?) before inventing
-   mechanics; College/Fade season boards earn their first real rows.
-3. **Onboarding polish** driven by Rick's first session: first-run
-   pointers, invite-flow friction.
-4. **Ongoing as fields change:** add badge colors for new schools
-   (`web/lib/schoolBadges.ts`; unknowns fall back to a neutral badge).
-5. **Candidates, not yet sequenced:** settlement safety net (GitHub
-   dropped/delayed 3 of 4 Sunday-night jobs on Oct 4 — a Monday check
-   that dispatches the settle when a finished event is still unsettled);
-   advice values spanning both tours so shared-use seasons can use
-   adviseSlate; winners-only flag for The Sentry
-   (advice rates it like any restricted event); full DPWT schedule so
-   euro advice can "save"; Clerk dashboard: turn off Clerk's own
-   "delete account" so deletion always runs our cleanup.
-6. **PGA Tour meeting (Tue Oct 6):** data-team questions, what we use
-   (on-demand scorecards, weather, power rankings), what we'd ask for.
+1. **Full DPWT schedule (#4)** — the euro schedule only reaches ~2 weeks
+   ahead (DG assigns euro ids late), so euro advice almost never says
+   "save". Pull the rest of the season (and the 2027 Race to Dubai
+   start, late Nov) with provisional ids, reconciled when DG publishes.
+2. **Gate the euro pipeline too** — predict_euro has no integrity /
+   freshness checks yet; the España accent bug silently skipped a whole
+   week of euro predictions (no board, no advice, no model picks).
+3. **Licensing:** DataGolf follow-up on euro displays (nudge was due
+   ~Oct 6 — confirm it went out). PGA TOUR: verbal "free while
+   non-commercial" from Grant (Oct 6); wait for written terms, then
+   replace the scraped GraphQL scorecards/weather with the official API.
+4. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
+   twice, duplicated data files, and corrupted the Next build cache.
+5. **Season formats that need weeks to accumulate**: pick diversity,
+   College/Fade season boards — once there are real rows.
+6. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
 - [x] Euro model (2026-09-23) — serving `source: "model"`.
@@ -122,6 +97,13 @@ needed for it.
   "Decided it" only when true). Model switched to adviseSlate for
   per-tour seasons, reasons stored (league_picks.reason) and shown in
   Match Center after lock.
+- [x] Week of Oct 5–12: integrity gate (DG coverage / top-10 / sim
+  agreement — blocks RBC Canadian, Biltmore, Baycurrent-style failures),
+  freshness gate, fetchers refuse wrong-event payloads, Vercel watchdog
+  armed (GITHUB_DISPATCH_TOKEN), advice across both tours, Sentry
+  winners-only rule, compact advice + compact This Week table, Jack's
+  "top pick" reason fix, settlement fixes ("F*" finishers, accent-folded
+  event names). Baycurrent: Jack $1.23M vs model $358K (Brennan won).
 - [x] Tie-for-first headline (Jack, test-first). Follow-up idea: a
   real test runner that resolves `@/` so tests import lib/ directly.
 
