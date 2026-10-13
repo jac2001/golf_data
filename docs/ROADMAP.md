@@ -34,24 +34,42 @@ integrity + freshness gates refusing to publish bad predictions.
 
 ## Next (October)
 
-1. **Full DPWT schedule (#4)** — the euro schedule only reaches ~2 weeks
-   ahead (DG assigns euro ids late), so euro advice almost never says
-   "save". Pull the rest of the season (and the 2027 Race to Dubai
-   start, late Nov) with provisional ids, reconciled when DG publishes.
-2. **Gate the euro pipeline too** — predict_euro has no integrity /
-   freshness checks yet; the España accent bug silently skipped a whole
-   week of euro predictions (no board, no advice, no model picks).
-3. **Licensing:** DataGolf follow-up on euro displays (nudge was due
+1. **Full DPWT schedule (#4) — now has a deadline: Oct 25.**
+   `schedule_euro_2026.csv` ends Oct 25; after that predict_euro's
+   `current_euro_event` finds no row and refuses ("not in the schedule"),
+   so there are no euro boards until a later schedule exists. It also
+   only reaches ~2 weeks ahead (DG assigns euro ids late), so euro advice
+   almost never says "save". Pull the rest of the season (and the 2027
+   Race to Dubai start, late Nov) with provisional ids, reconciled when
+   DG publishes. `load_euro_schedule()` already reads every
+   `schedule_euro_2*.csv`.
+2. **Pin scikit-learn to the training version** (found Oct 13). Euro models
+   are trained locally on sklearn 1.6.1; CI unpickles them on 1.9.1
+   (`InconsistentVersionWarning`). Output is identical today (max diff
+   7e-10), but a future release could shift a board silently. Pin in
+   `requirements-api.txt` (also affects the PGA pipeline and Render:
+   check the PGA models' pickle version first), or retrain on CI.
+3. **What is the euro model for?** Walk-forward win log-loss: model
+   0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
+   market worse on win. Before the January retrain: tune the blend
+   weight (walk-forward, not in-sample), or show the model only where
+   it adds information (made cut?).
+4. **Licensing:** DataGolf follow-up on euro displays (nudge was due
    ~Oct 6 — confirm it went out). PGA TOUR: verbal "free while
    non-commercial" from Grant (Oct 6); wait for written terms, then
    replace the scraped GraphQL scorecards/weather with the official API.
-4. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
+5. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
    twice, duplicated data files, and corrupted the Next build cache.
-5. **Season formats that need weeks to accumulate**: pick diversity,
+6. **Season formats that need weeks to accumulate**: pick diversity,
    College/Fade season boards — once there are real rows.
-6. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
+7. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
+- [x] Euro pipeline gate (2026-10-13) — `scripts/validation/euro_integrity.py`
+  (checks by Jack): blocks on missing/failed/stale history or a top-10
+  player without history; notes coverage and market agreement. Same day:
+  window-bounded euro features (training now matches serving), Tuesday
+  workflow skips PGA off weeks.
 - [x] Euro model (2026-09-23) — serving `source: "model"`.
 - [x] Phase 2 MVP (2026-09-30) — seasons, picks + per-member lock,
   standings with stars and banked/live split, model member with
