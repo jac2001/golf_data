@@ -34,6 +34,13 @@ DB_PATH = PROJECT_ROOT / "data" / "golf_data.db"
 OUT = PROJECT_ROOT / "data" / "processed" / "euro_training_2017_2026.csv"
 
 
+# The furthest back any feature may look, in days before the event.
+# Serving (predict_euro.py) only fetches HISTORY_DAYS of rounds and
+# asserts HISTORY_DAYS >= this, so a feature that stays inside the
+# window computes the same value in training and in production.
+FEATURE_WINDOW_DAYS = 400
+
+
 def parse_finish(fin: str) -> float:
     """'1' → 1, 'T5' → 5, 'CUT'/'WD'/'DQ'/'' → NaN (did not finish)."""
     s = str(fin).strip().upper().lstrip("T")
@@ -61,26 +68,41 @@ def parse_finish(fin: str) -> float:
 # Watch: sample sizes (a 3-round history "mean" is noise — consider
 # returning the count too, so the model can learn to distrust it).
 
-def rolling_form_features(prior_rounds: pd.DataFrame, event_date: pd.Timestamp) -> dict:
-    # (Jack wrote this; review fixed two seams: the activity window is
-    # anchored to EVENT_DATE, not the player's own last round — a window
-    # anchored to the data's own extent can't see a layoff — and
-    # bogey_avoid was renamed bogey_rate because it counts bogeys,
-    # higher = worse, and names are contracts.)
-    prior_rounds = prior_rounds.sort_values("date", ascending=False)
+# ── Window-bounded features (Oct 13 stats review) ───────────────────────────
+# Training used to hand this function a player's whole career while
+# serving fetched ~420 days, so prior_rounds_count was 648 in training
+# and 82 live for the same player. Now every feature looks only inside
+# FEATURE_WINDOW_DAYS, so the function can't tell training from serving.
+# test_euro_features.py pins that: full career == serving slice.
+# Decisions (Jack): average whatever rounds the window holds, and
+# events_in_window (distinct dates; serving rows have no event_id)
+# tells the model how far to trust those averages.
 
-    sg5 = prior_rounds["sg_total"].head(5).mean()
-    sg20 = prior_rounds["sg_total"].head(20).mean()
+def rolling_form_features(prior_rounds: pd.DataFrame, event_date: pd.Timestamp) -> dict:
+    # 1. The window: keep only rounds the serving side can also see.
+    #    Use >= and FEATURE_WINDOW_DAYS, exactly like the tests cut.
+    window_start = event_date - pd.Timedelta(days=FEATURE_WINDOW_DAYS)
+    recent = prior_rounds[(prior_rounds["date"] >= window_start) & (prior_rounds["date"] < event_date)]
+
+    # Newest first; round_num breaks ties inside an event (same date).
+    recent = recent.sort_values(["date", "round_num"], ascending=False)
+
+
+    # Averaging of what's there at least gives us a signal; of the sg. Yes, it is a smaller sample but it is a more recent sample. The model can learn to trust it less if the sample is small.
+    sg5 = recent["sg_total"].head(5).mean()
+    sg20 = recent["sg_total"].head(20).mean()
 
     return {
-        "prior_rounds_count": len(prior_rounds),
+        # 3. Distinct events in the window. Not event_id: serving rows
+        #    don't have it. One event per player per date, so count dates.
+        "events_in_window": int(recent["date"].nunique()),
         "sg_last5": sg5,
         "sg_last20": sg20,
         "sg_trend": sg5 - sg20,
-        "score_vs_par_last10": (prior_rounds["score"] - prior_rounds["course_par"]).head(10).mean(),
-        "birdie_rate_last10": prior_rounds["birdies"].head(10).mean(),
-        "bogey_rate_last10": (prior_rounds["bogies"] + prior_rounds["doubles_or_worse"]).head(10).mean(),
-        "rounds_played_365d": int((prior_rounds["date"] >= event_date - pd.Timedelta(days=365)).sum()),
+        "score_vs_par_last10": (recent["score"] - recent["course_par"]).head(10).mean(),
+        "birdie_rate_last10": recent["birdies"].head(10).mean(),
+        "bogey_rate_last10": (recent["bogies"] + recent["doubles_or_worse"]).head(10).mean(),
+        "rounds_played_365d": int((recent["date"] >= event_date - pd.Timedelta(days=365)).sum()),
     }
 
 

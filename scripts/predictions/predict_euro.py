@@ -36,11 +36,14 @@ import unicodedata
 from dg_client import dg_get  # noqa: E402
 from event_guard import names_match  # noqa: E402
 from fetch_dg_odds import american_to_prob  # noqa: E402
-from scripts.features.build_euro_training_table import rolling_form_features  # noqa: E402
+from scripts.features.build_euro_training_table import FEATURE_WINDOW_DAYS, rolling_form_features  # noqa: E402
 
 MODEL_DIR = PROJECT_ROOT / "data" / "models" / "euro"
 OUT_DIR = PROJECT_ROOT / "data" / "predictions_euro"
 HISTORY_DAYS = 420  # covers every window the features use, with slack
+# If a feature could look further back than we fetch, serving would
+# silently compute a different number than training did.
+assert HISTORY_DAYS >= FEATURE_WINDOW_DAYS + 14, "serving history shorter than the feature window"
 
 TARGETS = {"won": "win_prob", "top5": "top5_prob", "top10": "top10_prob",
            "top20": "top20_prob", "made_cut": "cut_prob"}
@@ -106,7 +109,10 @@ def main() -> None:
         prior_all = by_player.get(p["dg_id"], history.iloc[0:0])
         prior = prior_all[prior_all["date"] < event_start]
         row = {"player_name": p["player_name"], "dg_id": p["dg_id"]}
-        row.update(rolling_form_features(prior, event_start))
+        # Window anchor = the Sunday finish, because training anchors on
+        # DataGolf's event date (the Sunday every round is stamped with).
+        # Same anchor on both sides → same rounds in every window.
+        row.update(rolling_form_features(prior, event_start + pd.Timedelta(days=3)))
         feats.append(row)
     fdf = pd.DataFrame(feats)
 

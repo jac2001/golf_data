@@ -68,6 +68,7 @@ Spend/save advice = `scripts/predictions/advice_values.py` (values) + `web/lib/a
 | any `web/` code | `cd web && npm run build` (also type-checks) |
 | `scripts/validation`, `scripts/predictions` | `python3 scripts/validation/test_prediction_integrity.py` |
 | pipeline behavior | dispatch the workflow (`gh workflow run …`) and read its log; check the API serves the new data |
+| training, features, validation, calibration, benchmarks, advice constants | spawn the `stats-reviewer` subagent (`.claude/agents/`) before reporting a metric; it checks leakage, contamination, p-hacking, baselines |
 
 Hooks run the fast checks automatically after edits (see `.claude/settings.json`).
 Python: use `/Library/Frameworks/Python.framework/Versions/3.13/bin/python3` locally

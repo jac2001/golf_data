@@ -19,6 +19,7 @@ Usage:
 Saves final all-data models to data/models/euro/euro_{target}_model.pkl
 """
 
+import sys
 from pathlib import Path
 
 import joblib
@@ -29,13 +30,15 @@ from sklearn.metrics import log_loss, roc_auc_score
 from xgboost import XGBClassifier
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(PROJECT_ROOT))
+from scripts.features.build_euro_training_table import FEATURE_WINDOW_DAYS  # noqa: E402
 TABLE = PROJECT_ROOT / "data" / "processed" / "euro_training_2017_2026.csv"
 MODEL_DIR = PROJECT_ROOT / "data" / "models" / "euro"
 
 FEATURES = [
     "sg_last5", "sg_last20", "sg_trend", "score_vs_par_last10",
     "birdie_rate_last10", "bogey_rate_last10",
-    "rounds_played_365d", "prior_rounds_count",
+    "rounds_played_365d", "events_in_window",
 ]
 TARGETS = ["won", "top5", "top10", "top20", "made_cut"]
 
@@ -57,8 +60,15 @@ def blend(model_p: np.ndarray, market_p: np.ndarray, w: float = 0.5) -> np.ndarr
 
 
 def main() -> None:
-    df = pd.read_csv(TABLE)
-    print(f"{len(df)} rows, features: {FEATURES}\n")
+    df = pd.read_csv(TABLE, parse_dates=["event_date"])
+    # The archive starts Jan 2017, so events in its first 400 days have
+    # truncated windows: a 2017 regular shows ~8 events_in_window where
+    # a later regular shows ~17. Serving never sees a truncated window,
+    # so train only on rows whose full window exists.
+    full_window = df["event_date"].min() + pd.Timedelta(days=FEATURE_WINDOW_DAYS)
+    dropped = int((df["event_date"] < full_window).sum())
+    df = df[df["event_date"] >= full_window].reset_index(drop=True)
+    print(f"{len(df)} rows ({dropped} burn-in rows before {full_window.date()} dropped), features: {FEATURES}\n")
 
     # ── Walk-forward: the only honest evaluation for a time series ──
     print(f"{'year':>5} {'target':>9} {'model AUC':>10} {'model LL':>9} {'mkt LL':>8} {'blend LL':>9} {'n':>6}")
