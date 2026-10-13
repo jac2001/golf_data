@@ -1,19 +1,7 @@
 {
-  "tournament_id": "R2026527",
-  "tournament_name": "Baycurrent Classic",
-  "player_name": "Coody, Pierceson",
-  "market": "h2h_r1",
-  "market_label": "R1 H2H",
-  "selection_label": "Coody, Pierceson to beat Kohles, Ben (R1)",
-  "book": "BETONLINE",
-  "odds_american": 113,
-  "odds_str": "+113",
-  "edge_pts": 3.3,
-  "ev_per_1": 0.029,
-  "ev_pct": 2.9,
-  "model_prob": 48.3,
-  "book_prob": 45.0,
-  "confidence": 0.7,
-  "reasoning": "Model shows +3.3pp edge on h2h_r1 market.",
-  "generated_at": "2026-10-08T02:40:50.259833+00:00"
+  "tournament_id": "R2026528",
+  "tournament_name": "Butterfield Bermuda Championship",
+  "player_name": null,
+  "reasoning": null,
+  "generated_at": "2026-10-13T17:58:30.861925+00:00"
 }
