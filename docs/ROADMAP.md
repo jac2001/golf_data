@@ -34,19 +34,13 @@ integrity + freshness gates refusing to publish bad predictions.
 
 ## Next (October)
 
-1. **Euro purses: verify, then decide on rescoring.** Purses now come
-   from `data/raw/euro_purses.csv` (approx 2025-26, every row "verify").
-   (a) Check the table against the DP World Tour site, Rolex Series and
-   finale first, since those swing advice most. (b) Game-rules call,
-   with the group: rescore this season's already-settled euro weeks
-   with table purses (Irish Open was scored at $3M; table says $6M), or
-   leave past weeks as scored.
-2. **Pin scikit-learn to the training version** (found Oct 13). Euro models
-   are trained locally on sklearn 1.6.1; CI unpickles them on 1.9.1
-   (`InconsistentVersionWarning`). Output is identical today (max diff
-   7e-10), but a future release could shift a board silently. Pin in
-   `requirements-api.txt` (also affects the PGA pipeline and Render:
-   check the PGA models' pickle version first), or retrain on CI.
+2. **pandas: CI 3.0.6 vs local 2.2.3** (found Oct 14 while pinning
+   sklearn). Models train locally on pandas 2; GitHub Actions builds the
+   features they predict on with pandas 3 (copy-on-write, new default
+   string dtype). Same risk class as the euro window fix: training and
+   serving computing features differently. Check: rebuild one week's
+   PGA feature table under both versions and diff it; then pin pandas
+   to whichever version the code is correct under.
 3. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
@@ -63,6 +57,11 @@ integrity + freshness gates refusing to publish bad predictions.
 7. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
+- [x] Euro purses verified + settled weeks rescored, sklearn pinned
+  (2026-10-14): purses checked against the 2026 calendar; France and
+  Spain rescored $3M -> $3.75M (`scripts/maintenance/rescore_euro_purses.py`,
+  idempotent); scikit-learn==1.6.1 and xgboost==3.2.0 pinned to match
+  every committed model's pickle.
 - [x] Full DPWT schedule (2026-10-13/14) — every event for this season
   and next, provisional ids for TBD rows (never pickable), one
   resolver for every reader (`euro_schedule.resolve_event`, Jack),

@@ -11,10 +11,19 @@ numpy>=1.24.0
 scipy>=1.11.0
 narwhals>=1.0.0
 
-# ML models
-scikit-learn>=1.3.0
+# ML models — PINNED to the versions every committed model in
+# data/models/ was trained and pickled with (verified 2026-10-14 from the
+# pickles' own _sklearn_version stamps). Pickled estimators are only
+# guaranteed to load identically in the version that saved them: CI ran
+# sklearn 1.9.1 against 1.6.1 models (InconsistentVersionWarning). Bump
+# these ONLY together with a retrain that re-saves every model.
+# 1.6.1 ships wheels for Python <= 3.13. Models load only on GitHub
+# Actions (Python 3.11); Render's API never unpickles a model, so on a
+# newer Python (Render's default can move) any recent version is fine.
+scikit-learn==1.6.1; python_version < "3.14"
+scikit-learn>=1.6.1; python_version >= "3.14"
 joblib>=1.3.0
-xgboost>=2.0.0
+xgboost==3.2.0
 
 # LLM / chat — httpx is anthropic's transitive dep but the chat stream
 # imports it directly, and groq is the credit-exhaustion fallback:
