@@ -1,33 +1,33 @@
 start_date,end_date,tournament_name,tour,location,course,purse,purse_source,tournament_id
-2026-11-26,2026-11-29,BMW Australian PGA Championship,euro,"Eastlakes, NSW, Australia",The Lakes GC,1500000.0,table,E2027T11261
-2026-12-03,2026-12-06,Capital.com Australian Open,euro,"Melbourne, Victoria, Australia",Kingston Heath GC,1700000.0,table,E2027T12031
+2026-11-26,2026-11-29,BMW Australian PGA Championship,euro,"Eastlakes, NSW, Australia",The Lakes GC,1630000.0,table,E2027T11261
+2026-12-03,2026-12-06,Capital.com Australian Open,euro,"Melbourne, Victoria, Australia",Kingston Heath GC,1300000.0,table,E2027T12031
 2026-12-03,2026-12-06,Nedbank Golf Challenge in honour of Gary Player,euro,"Sun City, South Africa",Gary Player CC,6000000.0,table,E2027T12032
-2026-12-10,2026-12-13,AfrAsia Bank Mauritius Open,euro,"Grand-Baie, Mauritius",Mont Choisy Le Golf,1000000.0,table,E2027T12101
+2026-12-10,2026-12-13,AfrAsia Bank Mauritius Open,euro,"Grand-Baie, Mauritius",Mont Choisy Le Golf,1200000.0,table,E2027T12101
 2027-01-21,2027-01-24,Hero Dubai Desert Classic,euro,"Dubai, UAE",Emirates GC,9000000.0,table,E2027T01211
-2027-01-28,2027-01-31,Bapco Energies Bahrain Championship,euro,"Al Mazrowiah, Bahrain",Royal GC,2500000.0,table,E2027T01281
-2027-02-04,2027-02-07,Qatar Masters,euro,"Doha, Qatar",Doha GC,2500000.0,table,E2027T02041
-2027-02-18,2027-02-21,Magical Kenya Open,euro,"Nairobi, Kenya",Karen CC,2750000.0,table,E2027T02181
-2027-02-25,2027-02-28,Alfred Dunhill Championship,euro,"Durban, South Africa",Durban CC,1500000.0,table,E2027T02251
+2027-01-28,2027-01-31,Bapco Energies Bahrain Championship,euro,"Al Mazrowiah, Bahrain",Royal GC,2750000.0,table,E2027T01281
+2027-02-04,2027-02-07,Qatar Masters,euro,"Doha, Qatar",Doha GC,2750000.0,table,E2027T02041
+2027-02-18,2027-02-21,Magical Kenya Open,euro,"Nairobi, Kenya",Karen CC,2700000.0,table,E2027T02181
+2027-02-25,2027-02-28,Alfred Dunhill Championship,euro,"Durban, South Africa",Durban CC,1730000.0,table,E2027T02251
 2027-03-04,2027-03-07,Investec South African Open Championship,euro,"Stellenbosch, South Africa",Stellenbosch GC,1500000.0,table,E2027T03041
-2027-03-11,2027-03-14,Joburg Open,euro,"Randpark, South Africa",Randpark GC,1500000.0,table,E2027T03111
-2027-03-25,2027-03-28,China Classic,euro,"Hainan Island, China",Mission Hills Resort Haikou,2500000.0,table,E2027T03251
-2027-04-15,2027-04-18,Deutsche Bank Singapore Open,euro,Singapore,Sentosa GC,2500000.0,table,E2027T04151
-2027-04-22,2027-04-25,Volvo China Open,euro,"Jiading District, China",Enhance Anting GC,2550000.0,table,E2027T04221
-2027-04-29,2027-05-02,Turkish Airlines Open,euro,"Antalya, Turkey",National GC,3000000.0,table,E2027T04291
-2027-05-06,2027-05-09,Estrella Damm Catalunya Championship,euro,TBD,Emporda Golf,2500000.0,table,E2027T05061
+2027-03-11,2027-03-14,Joburg Open,euro,"Randpark, South Africa",Randpark GC,1170000.0,table,E2027T03111
+2027-03-25,2027-03-28,China Classic,euro,"Hainan Island, China",Mission Hills Resort Haikou,2550000.0,table,E2027T03251
+2027-04-15,2027-04-18,Deutsche Bank Singapore Open,euro,Singapore,Sentosa GC,2750000.0,table,E2027T04151
+2027-04-22,2027-04-25,Volvo China Open,euro,"Jiading District, China",Enhance Anting GC,2750000.0,table,E2027T04221
+2027-04-29,2027-05-02,Turkish Airlines Open,euro,"Antalya, Turkey",National GC,2750000.0,table,E2027T04291
+2027-05-06,2027-05-09,Estrella Damm Catalunya Championship,euro,TBD,Emporda Golf,2750000.0,table,E2027T05061
 2027-05-13,2027-05-16,Open de Portugal | Cascais - Lisboa,euro,"Cascais, Portugal",Oitavos Dunes Links Golf,2750000.0,table,E2027T05131
-2027-05-27,2027-05-30,BMW International Open,euro,"Munich, Germany",Golfclub Munchen Eichenried,2750000.0,table,E2027T05271
-2027-06-03,2027-06-06,Soudal Open,euro,"Schilde, Belgium",Rinkven International GC,2500000.0,table,E2027T06031
-2027-06-10,2027-06-13,KLM Open,euro,"Zandvoort, Netherlands",Kennemer G&CC,2500000.0,table,E2027T06101
-2027-06-24,2027-06-27,DS Automobiles 84deg Open d'Italia,euro,TBD,TBC,3250000.0,table,E2027T06241
+2027-05-27,2027-05-30,BMW International Open,euro,"Munich, Germany",Golfclub Munchen Eichenried,3000000.0,table,E2027T05271
+2027-06-03,2027-06-06,Soudal Open,euro,"Schilde, Belgium",Rinkven International GC,2750000.0,table,E2027T06031
+2027-06-10,2027-06-13,KLM Open,euro,"Zandvoort, Netherlands",Kennemer G&CC,2750000.0,table,E2027T06101
+2027-06-24,2027-06-27,DS Automobiles 84deg Open d'Italia,euro,TBD,TBC,3000000.0,table,E2027T06241
 2027-07-01,2027-07-04,Amgen Irish Open,euro,"Straffan, Ireland",The K Club,6000000.0,table,E2027T07011
-2027-08-19,2027-08-22,Husqvarna British Masters hosted by Sir Nick Faldo,euro,"Sutton Coldfield, England",The Belfry Hotel & Resort,3250000.0,table,E2027T08191
-2027-09-02,2027-09-05,Omega European Masters,euro,"Crans-Montana, Switzerland",Crans-sur-Sierre GC,2750000.0,table,E2027T09021
-2027-09-09,2027-09-12,FedEx Open de France,euro,"Guyancourt, France",Le Golf National,3250000.0,table,E2027T09091
+2027-08-19,2027-08-22,Husqvarna British Masters hosted by Sir Nick Faldo,euro,"Sutton Coldfield, England",The Belfry Hotel & Resort,3500000.0,table,E2027T08191
+2027-09-02,2027-09-05,Omega European Masters,euro,"Crans-Montana, Switzerland",Crans-sur-Sierre GC,3750000.0,table,E2027T09021
+2027-09-09,2027-09-12,FedEx Open de France,euro,"Guyancourt, France",Le Golf National,3750000.0,table,E2027T09091
 2027-09-23,2027-09-26,BMW PGA Championship,euro,"Virgina Water, Surrey, England",Wentworth Club,9000000.0,table,E2027T09231
 2027-09-30,2027-10-03,Alfred Dunhill Links Championship,euro,"Fife, Scotland",Old Course St. Andrews;Carnoustie;Kingsbarns Golf Links,5000000.0,table,E2027T09301
-2027-10-07,2027-10-10,Open de Espana presented by Madrid,euro,"Madrid, Spain",Club de Campo Villa de Madrid,2750000.0,table,E2027T10071
+2027-10-07,2027-10-10,Open de Espana presented by Madrid,euro,"Madrid, Spain",Club de Campo Villa de Madrid,3750000.0,table,E2027T10071
 2027-10-14,2027-10-17,DP World India Championship,euro,TBD,TBC,4000000.0,table,E2027T10141
-2027-10-21,2027-10-24,Hong Kong Open,euro,"Sheung Shui, Hong Kong",Hong Kong GC,2000000.0,table,E2027T10211
+2027-10-21,2027-10-24,Hong Kong Open,euro,"Sheung Shui, Hong Kong",Hong Kong GC,2750000.0,table,E2027T10211
 2027-11-04,2027-11-07,Abu Dhabi Championship,euro,"Abu Dhabi, UAE",Yas Links,9000000.0,table,E2027T11041
 2027-11-11,2027-11-14,DP World Tour Championship,euro,"Dubai, UAE",Jumeirah Golf Estates,10000000.0,table,E2027T11111

@@ -1,40 +1,40 @@
 event,purse_usd,tier,source
-DP World Tour Championship,10000000,finale,approx 2025-26; verify
-Abu Dhabi Championship,9000000,rolex,approx 2025-26; verify
-Dubai Desert Classic,9000000,rolex,approx 2025-26; verify
-BMW PGA Championship,9000000,rolex,approx 2025-26; verify
-Nedbank Golf Challenge,6000000,major_purse,approx 2025-26; verify
-Irish Open,6000000,major_purse,approx 2025-26; verify
-Alfred Dunhill Links,5000000,major_purse,approx 2025-26; verify
-DP World India Championship,4000000,standard,approx 2025-26; verify
-Genesis Championship,4000000,standard,approx 2025-26; verify
-Open de France,3250000,standard,approx 2025-26; verify
-British Masters,3250000,standard,approx 2025-26; verify
-Open d'Italia,3250000,standard,approx 2025-26; verify
-Turkish Airlines Open,3000000,standard,approx 2025-26; verify
-BMW International Open,2750000,standard,approx 2025-26; verify
-European Masters,2750000,standard,approx 2025-26; verify
-Kenya Open,2750000,standard,approx 2025-26; verify
-Open de Espana,2750000,standard,approx 2025-26; verify
-Open de Portugal,2750000,standard,approx 2025-26; verify
-China Open,2550000,standard,approx 2025-26; verify
-Dubai Invitational,2500000,standard,approx 2025-26; verify
-Bahrain Championship,2500000,standard,approx 2025-26; verify
-Qatar Masters,2500000,standard,approx 2025-26; verify
-Catalunya Championship,2500000,standard,approx 2025-26; verify
-Soudal Open,2500000,standard,approx 2025-26; verify
-KLM Open,2500000,standard,approx 2025-26; verify
-Danish Golf Championship,2500000,standard,approx 2025-26; verify
-Nexo Championship,2500000,standard,approx 2025-26; verify
-Singapore Open,2500000,standard,approx 2025-26; verify
-Hainan Classic,2500000,standard,approx 2025-26; verify
-China Classic,2500000,standard,new for 2027 (Hainan Island; likely the Hainan Classic renamed); verify
-Austrian Alpine Open,2500000,standard,approx 2025-26; verify
-Indian Open,2250000,standard,approx 2025-26; verify
-Hong Kong Open,2000000,standard,approx 2025-26; verify
-Australian Open,1700000,standard,approx 2025-26 (A$2.5M); verify
-Australian PGA Championship,1500000,standard,approx 2025-26 (A$2M); verify
-South African Open,1500000,standard,approx 2025-26; verify
-Joburg Open,1500000,standard,approx 2025-26; verify
-Alfred Dunhill Championship,1500000,standard,approx 2025-26; verify
-Mauritius Open,1000000,standard,approx 2025-26; verify
+DP World Tour Championship,10000000,finale,2026 season (Wikipedia 2026 European Tour; matches europeantour.com) checked 2026-10-14
+Abu Dhabi,9000000,rolex,2026 season checked 2026-10-14; key is 2 words because the event is also called 'Abu Dhabi Aldar Championship'
+Dubai Desert Classic,9000000,rolex,2026 season checked 2026-10-14
+BMW PGA Championship,9000000,rolex,2026 season checked 2026-10-14
+Nedbank Golf Challenge,6000000,major_purse,2026 season checked 2026-10-14
+Irish Open,6000000,major_purse,2026 season checked 2026-10-14
+Alfred Dunhill Links,5000000,major_purse,2026 season checked 2026-10-14
+DP World India Championship,4000000,standard,2026 season checked 2026-10-14
+Genesis Championship,4000000,standard,2026 season checked 2026-10-14
+Open de France,3750000,standard,2026 season checked 2026-10-14
+European Masters,3750000,standard,2026 season checked 2026-10-14
+Open de Espana,3750000,standard,2026 season checked 2026-10-14
+British Masters,3500000,standard,2026 season checked 2026-10-14
+Open d'Italia,3000000,standard,2026 season checked 2026-10-14
+BMW International Open,3000000,standard,2026 season checked 2026-10-14
+Danish Golf Championship,3000000,standard,2026 season checked 2026-10-14
+Nexo Championship,3000000,standard,2026 season checked 2026-10-14
+Dubai Invitational,2750000,standard,2026 season checked 2026-10-14
+Bahrain Championship,2750000,standard,2026 season checked 2026-10-14
+Qatar Masters,2750000,standard,2026 season checked 2026-10-14
+China Open,2750000,standard,2026 season checked 2026-10-14
+Turkish Airlines Open,2750000,standard,2026 season checked 2026-10-14
+Catalunya Championship,2750000,standard,2026 season checked 2026-10-14
+Soudal Open,2750000,standard,2026 season checked 2026-10-14
+Austrian Alpine Open,2750000,standard,2026 season checked 2026-10-14
+KLM Open,2750000,standard,2026 season checked 2026-10-14
+Kenya Open,2700000,standard,2026 season checked 2026-10-14
+Hainan Classic,2550000,standard,2026 season checked 2026-10-14
+Indian Open,2550000,standard,2026 season checked 2026-10-14
+Alfred Dunhill Championship,1730000,standard,2026 season EUR 1.5M at ~1.15 USD/EUR; checked 2026-10-14
+Australian PGA Championship,1630000,standard,2026 season AUD 2.5M at ~0.65 USD/AUD; checked 2026-10-14
+South African Open,1500000,standard,2026 season checked 2026-10-14
+Australian Open,1300000,standard,2026 season AUD 2.0M at ~0.65 USD/AUD; checked 2026-10-14
+Mauritius Open,1200000,standard,2026 season checked 2026-10-14
+Joburg Open,1170000,standard,2026 season ZAR 20.5M at ~0.057 USD/ZAR; checked 2026-10-14
+China Classic,2550000,standard,ESTIMATE: new 2027 event at Hainan Island; assumed = Hainan Classic
+Singapore Open,2750000,standard,ESTIMATE: not on the 2026 calendar; assumed standard 2026 purse
+Open de Portugal,2750000,standard,ESTIMATE: not on the 2026 calendar; assumed standard 2026 purse
+Hong Kong Open,2750000,standard,ESTIMATE: not on the 2026 calendar; assumed standard 2026 purse

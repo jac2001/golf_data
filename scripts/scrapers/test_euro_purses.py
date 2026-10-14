@@ -29,32 +29,39 @@ def test_sponsor_prefix():
 
 
 def test_sponsor_changes_between_seasons():
-    assert p("Crown Australian Open") == 1_700_000
-    assert p("Capital.com Australian Open") == 1_700_000
+    assert p("Crown Australian Open") == 1_300_000
+    assert p("Capital.com Australian Open") == 1_300_000
 
 
 def test_sponsor_suffix_and_punctuation():
-    assert p("Open de Espana presented by Madrid") == 2_750_000
-    assert p("DS Automobiles 84deg Open d'Italia") == 3_250_000
+    assert p("Open de Espana presented by Madrid") == 3_750_000
+    assert p("DS Automobiles 84deg Open d'Italia") == 3_000_000
     assert p("Open de Portugal | Cascais - Lisboa") == 2_750_000
 
 
 def test_links_is_not_the_championship():
     """Same sponsor, different events, 3x apart."""
     assert p("Alfred Dunhill Links Championship") == 5_000_000
-    assert p("Alfred Dunhill Championship") == 1_500_000
+    assert p("Alfred Dunhill Championship") == 1_730_000
 
 
 def test_bmw_pga_is_not_the_australian_pga():
     """'BMW PGA Championship' is not consecutive inside 'BMW Australian
     PGA Championship': the Rolex event must not leak 6x its purse."""
     assert p("BMW PGA Championship") == 9_000_000
-    assert p("BMW Australian PGA Championship") == 1_500_000
+    assert p("BMW Australian PGA Championship") == 1_630_000
 
 
 def test_two_tour_championships():
     assert p("DP World Tour Championship") == 10_000_000
     assert p("DP World India Championship") == 4_000_000
+
+
+def test_abu_dhabi_under_its_full_name():
+    """The 2026 event is also 'Abu Dhabi Aldar Championship': 'Aldar' sits
+    mid-name, so the key is just 'Abu Dhabi' to survive DG adopting it."""
+    assert p("Abu Dhabi Championship") == 9_000_000
+    assert p("Abu Dhabi Aldar Championship") == 9_000_000
 
 
 def test_unknown_event_is_none():
