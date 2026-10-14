@@ -35,6 +35,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "scrapers"))
 import unicodedata
 
 from dg_client import dg_get  # noqa: E402
+import euro_schedule  # noqa: E402
 from event_guard import names_match  # noqa: E402
 from fetch_dg_odds import american_to_prob  # noqa: E402
 from scripts.features.build_euro_training_table import FEATURE_WINDOW_DAYS, rolling_form_features  # noqa: E402
@@ -51,26 +52,14 @@ TARGETS = {"won": "win_prob", "top5": "top5_prob", "top10": "top10_prob",
            "top20": "top20_prob", "made_cut": "cut_prob"}
 
 
-def load_euro_schedule() -> pd.DataFrame:
-    """Every euro season file, not just 2026: the 2026 file ends Oct 25,
-    and a hardcoded year would silently switch the freshness check off
-    (no 'last finished event' ever newer than that) from then on."""
-    files = sorted((PROJECT_ROOT / "data" / "raw").glob("schedule_euro_2*.csv"))
-    return pd.concat([pd.read_csv(f, parse_dates=["start_date", "end_date"]) for f in files],
-                     ignore_index=True)
-
-
 def current_euro_event() -> tuple[str, str, str]:
     """(tid, name, start_date) — resolved by the FIELD payload's own
     event name against the euro schedule. The feed serves 'the current
     event'; its label decides, never our assumption."""
     raw = dg_get("/field-updates", {"tour": "euro", "file_format": "json"})
     name = str(raw.get("event_name", ""))
-    sched = load_euro_schedule()
-    row = sched[sched["tournament_name"].str.lower() == name.lower()]
-    if row.empty:
-        raise SystemExit(f"euro field feed serves '{name}' — not in the schedule; refusing to guess")
-    return str(row.iloc[0]["tournament_id"]), name, str(row.iloc[0]["start_date"].date())
+    row = euro_schedule.row_for_write(name, "field")
+    return str(row["tournament_id"]), name, f"{row['start_date']:%Y-%m-%d}"
 
 
 def fetch_recent_rounds(before: pd.Timestamp) -> tuple[pd.DataFrame, dict]:
@@ -297,7 +286,7 @@ def main() -> None:
     # file (and the frozen _pre copy); the watchdog re-dispatches if this
     # event has no predictions at all. ::error:: surfaces it in the
     # Actions run summary even though the workflow step is `|| true`.
-    sched = load_euro_schedule()
+    sched = euro_schedule.load()
     finished = sched[sched["end_date"] <= pd.Timestamp.now().normalize() - pd.Timedelta(days=2)]
     history_stats["last_finished_event_end"] = finished["end_date"].max() if len(finished) else None
     failures, notes = euro_integrity_check(

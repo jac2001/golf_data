@@ -77,6 +77,7 @@ jobs:
           python3 scripts/validation/test_prediction_integrity.py
           python3 scripts/validation/test_euro_integrity.py
           python3 scripts/features/test_euro_features.py
+          python3 scripts/scrapers/test_euro_schedule.py
 
       - name: Run weekly pipeline
         if: steps.week.outputs.pga_week == 'true'

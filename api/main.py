@@ -4380,6 +4380,11 @@ def events_open() -> dict:
         window = sched[(sched["_e"] >= today - pd.Timedelta(days=21)) & (sched["_s"] <= today + pd.Timedelta(days=10))]
         for _, r in window.iterrows():
             tid = str(r["tournament_id"])
+            # Provisional euro ids (E2027T01211: DG hasn't assigned one yet)
+            # are replaced on the next schedule refresh. Picks store the id,
+            # so a pick made now would orphan — fail closed: never open.
+            if tid[5:6] == "T":
+                continue
             try:
                 purse = float(str(r.get("purse", "")).replace("$", "").replace(",", ""))
             except Exception:
@@ -4503,6 +4508,29 @@ def league_season_wrap() -> dict:
     }
 
 
+def _euro_schedule_mod():
+    """scripts/scrapers/euro_schedule.py: every season file, one resolver."""
+    scrapers = str(PROJECT_ROOT / "scripts" / "scrapers")
+    if scrapers not in sys.path:
+        sys.path.insert(0, scrapers)
+    import euro_schedule  # type: ignore
+    return euro_schedule
+
+
+def _euro_row(tid: str):
+    """The schedule row for a euro tid, searching every season file (the
+    2027 season starts Nov 26, 2026 and lives in schedule_euro_2027.csv)."""
+    sched = _euro_schedule_mod().load()
+    row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
+    if row.empty:
+        return None
+    r = row.iloc[0].copy()
+    # load() parses dates; callers (and the JSON) want 'YYYY-MM-DD'.
+    for c in ("start_date", "end_date"):
+        r[c] = f"{r[c]:%Y-%m-%d}"
+    return r
+
+
 @app.get("/api/euro/week")
 def euro_week(tournament_id: str) -> dict:
     """This Week parity for DPWT events: event meta from the euro
@@ -4510,14 +4538,9 @@ def euro_week(tournament_id: str) -> dict:
     Open-Meteo forecast for the event days. Weather caches per event
     for 12h; geocode failures degrade to no-weather, never an error."""
     tid = tournament_id.strip().upper()
-    sched_path = DATA_DIR / "raw" / "schedule_euro_2026.csv"
-    if not sched_path.exists():
-        raise HTTPException(status_code=404, detail="No euro schedule")
-    sched = pd.read_csv(sched_path)
-    row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
-    if row.empty:
+    r = _euro_row(tid)
+    if r is None:
         raise HTTPException(status_code=404, detail=f"{tid} not in euro schedule")
-    r = row.iloc[0]
 
     field_path = DATA_DIR / "fields" / f"field_{tid}.csv"
     field_size = 0
@@ -4639,12 +4662,9 @@ def euro_course(tournament_id: str) -> dict:
         except Exception:
             pass
     if not course_name:
-        sched_path = DATA_DIR / "raw" / "schedule_euro_2026.csv"
-        if sched_path.exists():
-            sched = pd.read_csv(sched_path)
-            row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
-            if not row.empty:
-                course_name = str(row.iloc[0].get("course", "") or "")
+        r = _euro_row(tid)
+        if r is not None:
+            course_name = str(r.get("course", "") or "")
     if not course_name:
         raise HTTPException(status_code=404, detail=f"No course known for {tid}")
     key = course_name.strip().lower()
@@ -4708,13 +4728,16 @@ def euro_live(tournament_id: str) -> dict:
             if scrapers not in sys.path:
                 sys.path.insert(0, scrapers)
             from dg_client import dg_get  # type: ignore
-            from event_guard import names_match  # type: ignore
             live = dg_get("/preds/in-play", {"tour": "euro", "file_format": "json"})
             info = live.get("info", {}) if isinstance(live, dict) else {}
-            sched = pd.read_csv(DATA_DIR / "raw" / f"schedule_euro_{tid[1:5]}.csv")
-            row = sched[sched["tournament_id"].astype(str).str.upper() == tid]
-            expected = str(row.iloc[0]["tournament_name"]) if not row.empty else ""
-            if expected and names_match(str(info.get("event_name", "")), expected):
+            # Which event is in-play serving? Resolve ITS label (date window,
+            # then name) and serve it only if that's the event asked for.
+            # names_match alone said 'DP World India' == 'DP World Tour
+            # Championship'.
+            es = _euro_schedule_mod()
+            served = es.resolve_event(es.load(), str(info.get("event_name", "")),
+                                      pd.Timestamp.now().normalize())
+            if served is not None and str(served["tournament_id"]).upper() == tid:
                 data = live.get("data", live) if isinstance(live, dict) else live
                 ldf = pd.DataFrame(data)
                 if len(ldf) and "current_score" in ldf.columns:

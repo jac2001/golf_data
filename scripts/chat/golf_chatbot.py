@@ -6364,7 +6364,7 @@ def _event_status_block(tid: str) -> str:
                 f"{n['start_date']}. Its predictions post the Tuesday of tournament week.")
 
         try:
-            esched = pd.read_csv(DATA / "raw" / f"schedule_euro_{today.year}.csv")
+            esched = pd.concat([pd.read_csv(f) for f in sorted((DATA / "raw").glob("schedule_euro_2*.csv"))], ignore_index=True)  # all seasons: 2027 starts 2026-11-26
             live = esched[(pd.to_datetime(esched["start_date"], errors="coerce") <= today)
                           & (today <= pd.to_datetime(esched["end_date"], errors="coerce"))]
             if not live.empty:
@@ -6397,7 +6397,7 @@ def _euro_week_block() -> str:
     model's top ten with market odds and edge, and the course horses."""
     try:
         today = pd.Timestamp.now().normalize()
-        esched = pd.read_csv(DATA / "raw" / f"schedule_euro_{today.year}.csv")
+        esched = pd.concat([pd.read_csv(f) for f in sorted((DATA / "raw").glob("schedule_euro_2*.csv"))], ignore_index=True)  # all seasons: 2027 starts 2026-11-26
         starts = pd.to_datetime(esched["start_date"], errors="coerce")
         ends = pd.to_datetime(esched["end_date"], errors="coerce")
         cur = esched[(starts <= today + pd.Timedelta(days=3)) & (today <= ends)]

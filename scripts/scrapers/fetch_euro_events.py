@@ -31,6 +31,7 @@ FIELDS_DIR = PROJECT_ROOT / "data" / "fields"
 HIST_DIR = PROJECT_ROOT / "data" / "historical"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from dg_client import dg_get  # noqa: E402
+import euro_schedule  # noqa: E402
 
 # Standard DPWT prize distribution by finish position (fraction of purse).
 # Approximate but stable season to season; used ONLY for friends-game
@@ -64,14 +65,32 @@ def eid(year: int, event_id) -> str:
 
 
 def cmd_schedule(year: int) -> None:
+    """Write schedule_euro_{year}.csv with EVERY event DG lists for that
+    season. DG gives most events event_id "TBD" until ~2 weeks out; those
+    used to be dropped, so the schedule only reached two weeks ahead.
+    They now get a provisional id, E{season}T{MMDD}{n}, which the next
+    refresh replaces with DG's id. Provisional events never open for
+    picks (euro_schedule.is_provisional), so no stored pick can point at
+    an id that later changes."""
     data = dg_get("/get-schedule", {"tour": "euro", "season": str(year),
                                     "upcoming_only": "no", "file_format": "json"})
     sched = data.get("schedule", data) if isinstance(data, dict) else data
-    rows = []
-    for ev in sched:
-        if not str(ev.get("event_id", "")).strip().isdigit():
-            continue  # placeholder rows (event_id "TBD") — no field/results anyway
+    if not sched:
+        print(f"DG has no euro schedule for season {year} yet — nothing written")
+        return
+    rows, tbd_count = [], {}
+    for ev in sorted(sched, key=lambda e: (e.get("start_date", ""), e.get("event_name", ""))):
+        if not ev.get("start_date"):
+            continue
         start = date.fromisoformat(ev["start_date"])
+        raw_id = str(ev.get("event_id", "")).strip()
+        if raw_id.isdigit():
+            tid = eid(year, raw_id)
+        else:
+            # Same-day events (Dec 3, 2026: Australian Open + Nedbank) are
+            # numbered by name, so the id is stable across refreshes.
+            n = tbd_count[start] = tbd_count.get(start, 0) + 1
+            tid = f"E{year}T{start:%m%d}{n}"
         purse = PURSE_OVERRIDES.get(ev["event_name"].lower(), DEFAULT_PURSE)
         rows.append({
             "start_date": start.isoformat(),
@@ -82,30 +101,21 @@ def cmd_schedule(year: int) -> None:
             "course": ev.get("course", ""),
             "purse": purse,
             "purse_source": "estimate",
-            "tournament_id": eid(year, ev["event_id"]),
+            "tournament_id": tid,
         })
     df = pd.DataFrame(rows).sort_values("start_date").reset_index(drop=True)
     out = RAW_DIR / f"schedule_euro_{year}.csv"
     df.to_csv(out, index=False)
-    print(f"Wrote {len(df)} euro events -> {out.relative_to(PROJECT_ROOT)}")
-
-
-def _fold(name: str) -> str:
-    """Lowercase, accents removed: DG's in-play feed says "Open de España",
-    its schedule feed "Open de Espana" — the same event (2026-10-12)."""
-    import unicodedata
-    return unicodedata.normalize("NFKD", str(name)).encode("ascii", "ignore").decode().lower().strip()
+    n_prov = int(df["tournament_id"].str[5].eq("T").sum())
+    print(f"Wrote {len(df)} euro events ({n_prov} provisional ids) -> {out.relative_to(PROJECT_ROOT)}")
 
 
 def _current_event(year: int) -> tuple[str, str, dict]:
     """The euro event DG's field endpoint currently serves."""
     raw = dg_get("/field-updates", {"tour": "euro", "file_format": "json"})
     name = str(raw.get("event_name", ""))
-    sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
-    row = sched[sched["tournament_name"].map(_fold) == _fold(name)]
-    if row.empty:
-        raise SystemExit(f"Euro event '{name}' not in schedule_euro_{year}.csv — refetch --schedule")
-    return str(row.iloc[0]["tournament_id"]), name, raw
+    row = euro_schedule.row_for_write(name, "field")
+    return str(row["tournament_id"]), name, raw
 
 
 def cmd_field(year: int) -> None:
@@ -156,11 +166,7 @@ def cmd_preds(year: int) -> None:
     # raw feed Jack reads, so the site and the feed never disagree.
     raw = dg_get("/preds/pre-tournament", {"tour": "euro", "dead_heat": "yes", "file_format": "json"})
     name = str(raw.get("event_name", ""))
-    sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
-    row = sched[sched["tournament_name"].map(_fold) == _fold(name)]
-    if row.empty:
-        raise SystemExit(f"preds event '{name}' not in schedule_euro_{year}.csv — refusing to write")
-    tid = str(row.iloc[0]["tournament_id"])
+    tid = str(euro_schedule.row_for_write(name, "preds")["tournament_id"])
 
     players = raw.get("baseline_history_fit") or raw.get("baseline") or []
     df = pd.DataFrame([{
@@ -191,9 +197,10 @@ def cmd_weather(year: int) -> None:
     per-IP free quota on other tenants' traffic — request-time fetching
     from the server can never be reliable there."""
     import requests
-    tid, name, raw = _current_event(year)
-    sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
-    row = sched[sched["tournament_id"] == tid].iloc[0]
+    raw = dg_get("/field-updates", {"tour": "euro", "file_format": "json"})
+    name = str(raw.get("event_name", ""))
+    row = euro_schedule.row_for_write(name, "field")
+    tid = str(row["tournament_id"])
     loc = str(row.get("location", "")).split(",")[0].strip()
 
     geo = requests.get("https://geocoding-api.open-meteo.com/v1/search",
@@ -205,7 +212,7 @@ def cmd_weather(year: int) -> None:
         "latitude": hits[0]["latitude"], "longitude": hits[0]["longitude"],
         "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max",
         "temperature_unit": "fahrenheit", "wind_speed_unit": "mph",
-        "start_date": str(row["start_date"]), "end_date": str(row["end_date"]),
+        "start_date": f"{row['start_date']:%Y-%m-%d}", "end_date": f"{row['end_date']:%Y-%m-%d}",
     }, timeout=10).json()
     d = fc.get("daily", {})
     if not d.get("time"):
@@ -232,11 +239,7 @@ def _event_from_inplay(year: int, live: dict) -> tuple[str, str]:
     name = str((live.get("info") or {}).get("event_name", ""))
     if not name:
         raise SystemExit("in-play payload carries no event_name — refusing to guess")
-    sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
-    row = sched[sched["tournament_name"].map(_fold) == _fold(name)]
-    if row.empty:
-        raise SystemExit(f"in-play event '{name}' not in schedule_euro_{year}.csv")
-    return str(row.iloc[0]["tournament_id"]), name
+    return str(euro_schedule.row_for_write(name, "in-play")["tournament_id"]), name
 
 
 def cmd_results(year: int, force: bool = False) -> None:
@@ -253,8 +256,11 @@ def cmd_results(year: int, force: bool = False) -> None:
     if not finished.all() and not force:
         raise SystemExit(f"{name} not finished ({int((~finished).sum())} players mid-round) — rerun after Sunday or --force")
 
-    sched = pd.read_csv(RAW_DIR / f"schedule_euro_{year}.csv")
+    sched = euro_schedule.load()
     purse = float(sched.loc[sched["tournament_id"] == tid, "purse"].iloc[0])
+    # The event's SEASON (from its id), not the calendar year: the
+    # Australian PGA on 2026-11-26 is season 2027 and settles there.
+    season = int(tid[1:5])
 
     def pos_num(p) -> int | None:
         s = str(p).strip().upper()
@@ -279,7 +285,7 @@ def cmd_results(year: int, force: bool = False) -> None:
 
     rows = pd.DataFrame({
         "tournament_id": tid,
-        "year": year,
+        "year": season,
         "player_name": df["player_name"],
         "position": df["current_pos"].astype(str),
         "earnings": df["_pos"].map(earnings),
@@ -287,7 +293,7 @@ def cmd_results(year: int, force: bool = False) -> None:
         "tournament_name": name,
     })
 
-    out = HIST_DIR / f"leaderboards_euro_{year}.csv"
+    out = HIST_DIR / f"leaderboards_euro_{season}.csv"
     if out.exists():
         old = pd.read_csv(out)
         old = old[old["tournament_id"] != tid]  # settle is idempotent
@@ -315,7 +321,7 @@ def cmd_rounds(year: int) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="DPWT events for the Friends Game")
-    ap.add_argument("--year", type=int, default=2026)
+    ap.add_argument("--year", type=int, default=date.today().year)  # --schedule also fetches year+1
     ap.add_argument("--schedule", action="store_true")
     ap.add_argument("--field", action="store_true")
     ap.add_argument("--results", action="store_true")
@@ -325,7 +331,10 @@ def main() -> None:
     ap.add_argument("--force", action="store_true", help="settle even if mid-event")
     args = ap.parse_args()
     if args.schedule:
+        # This season and the next: DG's season N+1 starts in late
+        # November of year N (2027's Australian PGA: 2026-11-26).
         cmd_schedule(args.year)
+        cmd_schedule(args.year + 1)
     if args.field:
         cmd_field(args.year)
     if args.results:
