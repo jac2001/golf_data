@@ -527,6 +527,15 @@ for model_name, target_col in targets.items():
     joblib.dump(rf, model_file)
     print(f"\n  ✓ Saved to: {model_file}")
 
+    # Serving fills unknown values with THESE medians (predict_tournament's
+    # _prepare_matrix); written with every model save so the two can't drift.
+    import json as _json
+    (MODEL_DIR / "feature_medians.json").write_text(_json.dumps({
+        "source": f"{data_file.name}, train_df (years < 2025, rows with targets)",
+        "computed": __import__("datetime").date.today().isoformat(),
+        "medians": {k: float(v) for k, v in feature_medians.items() if pd.notna(v)},
+    }, indent=1))
+
     models[model_name] = rf
     results.append({
         'model': model_name,

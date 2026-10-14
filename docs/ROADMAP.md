@@ -34,18 +34,21 @@ integrity + freshness gates refusing to publish bad predictions.
 
 ## Next (October)
 
-1. **PGA model gets 8 trained features as zeros every week** (found
-   Oct 14 during the pandas check). `make_predictions` fills features
-   absent at serving with 0: weather (`temp_f_avg`, `wind_mph_avg/max`,
-   `precip_mm`) and `recent_par3/4/5_scoring_field_pct`,
-   `recent_sg_arg_weighted`. In training they're real in ~94% of rows
-   (temp 72°F, par-pct 0.50); live they're 0°F and an extreme
-   percentile. Measured on Baycurrent's field: refilling them with
-   training medians moves the raw win ranking (rank corr 0.976, top-10
-   overlap 7/10, one player's win prob 262%); top-10 probs barely move
-   (0.994). Fix: compute them at serving (weather is already fetched to
-   `data/weather/`; par scoring from hole stats), or retrain without
-   them. Stats-reviewer before and after.
+1. **PGA features: date order + the last 3 serving features** (Oct 14).
+   (a) Training orders "prior" events by tournament_id string, which is
+   not calendar order (~25% of 2024-26 event pairs), so season/recent
+   form features include later events. Sized with the production setup
+   (RF + isotonic, median fill; 26 of 58 features recomputed in date
+   order, validated by exact reproduction in id order): reported vs real
+   win log-loss 0.0428 vs 0.0431, AUC equal, within year-to-year noise.
+   Real bug, not urgent: fix in the January retrain. Needs event dates
+   for 2016-23 (DG returns schedules for 2024+ only on this plan).
+   (b) recent_par3/4/5_scoring_field_pct still have no serving column
+   (median-filled). Jack's `serving_form.recent_par_scoring_field_pct`
+   is scaffolded with parity tests; write it against DATE order once (a)
+   lands. (c) Weather: training uses observed weather, serving a
+   forecast (minor leak, importance ~0.003 each); retrain on archived
+   forecasts (Open-Meteo historical-forecast API).
 2. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
@@ -62,6 +65,10 @@ integrity + freshness gates refusing to publish bad predictions.
 6. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
+- [x] PGA serving fixes (2026-10-14): unknown features filled with
+  training medians (was 0.0, e.g. 0°F); weather via Open-Meteo forecast
+  + training's summarise_weather; field_size/no_cut; SG around-the-green
+  (stat 2570). Baycurrent raw win ranking vs old: rank corr 0.922.
 - [x] pandas check (2026-10-14): CI's pandas 3.0.6 vs local 2.2.3 give
   IDENTICAL features (241 cols) and predictions (260 cols) for all 72
   Baycurrent players (harness: predict_tournament's own steps, DuckDB

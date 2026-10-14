@@ -18,8 +18,10 @@ plus public PGA TOUR / DP World Tour predictions.
 | Watchdog | `web/app/api/watchdog` — daily Vercel cron | Re-dispatches settlement/prediction runs GitHub's scheduler drops. |
 | Legacy | `dashboard.py` (Streamlit, local only) | Not the product anymore; don't build new features there. |
 
-Models: PGA = 4 XGBoost classifiers (`scripts/predictions/predict_tournament.py`,
-`ProbabilityCalibrator.MAX_WIN_PROB = 0.20`); DPWT = `scripts/predictions/predict_euro.py`.
+Models: PGA = random forests in isotonic `CalibratedClassifierCV` (win/top5/top10;
+`train_final_models.py`, NaN → training medians, saved as `data/models/feature_medians.json`
+and used by serving), `ProbabilityCalibrator.MAX_WIN_PROB = 0.20`; DPWT = XGBoost in
+`scripts/predictions/predict_euro.py`.
 Spend/save advice = `scripts/predictions/advice_values.py` (values) + `web/lib/advice.ts`
 (per-member verdicts, Jack's `golferVerdict`). Design notes: `docs/ADVICE_VIEW_DESIGN.md`.
 

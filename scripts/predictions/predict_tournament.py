@@ -193,6 +193,21 @@ def get_current_world_rankings() -> pd.DataFrame:
    
 
 
+# Training's NaN imputation values (train_final_models.py writes this file
+# next to the models). Serving must fill unknowns with the same numbers.
+def _load_feature_medians() -> dict:
+    import json as _json
+    _p = Path(__file__).resolve().parents[2] / "data" / "models" / "feature_medians.json"
+    try:
+        return _json.loads(_p.read_text())["medians"]
+    except Exception as _e:
+        print(f"  ⚠️  feature_medians.json unreadable ({_e}) — unknown features will be 0")
+        return {}
+
+
+_FEATURE_MEDIANS = _load_feature_medians()
+
+
 SCORE_FEATURES = [
     "season_sg_total", "season_sg_ott", "season_sg_app", "season_sg_arg",
     "season_sg_t2g", "season_sg_putt", "season_sg_arg_vs_field",
@@ -842,6 +857,7 @@ def get_recent_sg_stats(
         # Per-category recent form (OTT, APP, PUTT) — same decay window as sg_total
         _SG_CAT = {'2568': 'recent_sg_ott_weighted',
                    '2569': 'recent_sg_app_weighted',
+                   '2570': 'recent_sg_arg_weighted',   # training has it; serving omitted it until 2026-10-14
                    '2564': 'recent_sg_putt_weighted'}
         for _cat_id, _cat_col in _SG_CAT.items():
             _cur_cat = stats_pivot[_cat_id].dropna().values if _cat_id in stats_pivot.columns else np.array([])
@@ -2661,43 +2677,57 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                       f"precip={_row.iloc[0]['precip_mm']:.1f}mm  temp={_row.iloc[0]['temp_f_avg']}°F")
                 _weather_added = True
 
-        # 2. Fall back to PGA Tour weather JSON (current tournament forecast)
+        # 2. The upcoming event: the archive never has it yet, so use
+        #    Open-Meteo's hourly FORECAST with the archive call's exact
+        #    parameters, collapsed by training's own summarise_weather()
+        #    (daytime 8am-6pm wind/temp, all-hours rain total). Same
+        #    function, units and hours as the training rows. (The old
+        #    route parsed a PGA TOUR JSON that rarely existed pre-event and
+        #    differed from training; when it missed, the columns were never
+        #    created and make_predictions filled them with 0 — 0°F, 0 mph.)
         if not _weather_added and _tid_str:
-            _wj_path = DATA_DIR / "weather" / f"{_tid_str}.json"
-            if _wj_path.exists():
-                import json as _json
-                _wdata = _json.loads(_wj_path.read_text())
-                _daily = _wdata.get("daily", [])
-                # Filter to tournament rounds (Thu–Sun) if available, else use all
-                _round_days = {"Thu", "Fri", "Sat", "Sun"}
-                _round_entries = [d for d in _daily if d.get("title", "") in _round_days] or _daily
-                _winds, _temps = [], []
-                for _d in _round_entries:
-                    try:
-                        _winds.append(float(_d.get("windSpeedMPH", 0) or 0))
-                    except (ValueError, TypeError):
-                        pass
-                    try:
-                        _hi = float(str(_d.get("temperature", {}).get("maxTempF", "")).replace("°F", "") or 0)
-                        _lo = float(str(_d.get("temperature", {}).get("minTempF", "")).replace("°F", "") or 0)
-                        if _hi and _lo:
-                            _temps.append((_hi + _lo) / 2)
-                    except (ValueError, TypeError):
-                        pass
-                if _winds:
-                    features_df["wind_mph_avg"] = round(sum(_winds) / len(_winds), 2)
-                    features_df["wind_mph_max"] = round(max(_winds), 2)
-                    features_df["temp_f_avg"]   = round(sum(_temps) / len(_temps), 1) if _temps else float("nan")
-                    features_df["precip_mm"]    = float("nan")  # PGA Tour weather has % not mm
-                    print(f"  Weather (forecast JSON): wind={features_df['wind_mph_avg'].iloc[0]:.1f}mph  "
-                          f"temp={features_df['temp_f_avg'].iloc[0]}°F")
-                    _weather_added = True
+            try:
+                import requests as _rq
+                from scripts.scrapers.fetch_historical_weather import summarise_weather as _summarise
+                _sched = pd.concat([pd.read_csv(f) for f in sorted((DATA_DIR / "raw").glob("schedule_2*.csv"))],
+                                   ignore_index=True)
+                _ev = _sched[_sched["tournament_id"].astype(str).str.upper() == _tid_str]
+                if not _ev.empty and pd.notna(_ev.iloc[0].get("latitude")):
+                    _e = _ev.iloc[0]
+                    _resp = _rq.get("https://api.open-meteo.com/v1/forecast", params={
+                        "latitude": float(_e["latitude"]), "longitude": float(_e["longitude"]),
+                        "start_date": str(_e["start_date"])[:10], "end_date": str(_e["end_date"])[:10],
+                        "hourly": "windspeed_10m,precipitation,temperature_2m",
+                        "wind_speed_unit": "mph", "temperature_unit": "fahrenheit", "timezone": "auto",
+                    }, timeout=20)
+                    _resp.raise_for_status()
+                    _sum = _summarise(_resp.json())
+                    if _sum:
+                        for _col in ["wind_mph_avg", "wind_mph_max", "precip_mm", "temp_f_avg"]:
+                            features_df[_col] = float(_sum[_col]) if _sum.get(_col) is not None else float("nan")
+                        print(f"  Weather (Open-Meteo forecast): wind={_sum['wind_mph_avg']:.1f}mph  "
+                              f"max={_sum['wind_mph_max']:.1f}  precip={_sum['precip_mm']:.1f}mm  temp={_sum['temp_f_avg']}°F")
+                        _weather_added = True
+            except Exception as _fe:
+                print(f"  Weather forecast failed: {_fe}")
 
         if not _weather_added:
-            print("  Weather: no data available — wind features will be NaN (XGBoost handles gracefully)")
+            for _col in ["wind_mph_avg", "wind_mph_max", "precip_mm", "temp_f_avg"]:
+                features_df[_col] = float("nan")
+            print("  Weather: no data available — weather features set to NaN (as in ~12% of training rows)")
     except Exception as _we:
         print(f"  Weather merge skipped: {_we}")
 
+    # Field structure, defined exactly as train_final_models.py: field_size =
+    # players in the event, no_cut = field of 90 or fewer.
+    features_df["field_size"] = len(features_df)
+    features_df["no_cut"] = int(len(features_df) <= 90)
+    # Training counts players who STARTED; a Tuesday field file can still
+    # list alternates/WDs (1-4 more in 15 of 28 checked events), which can
+    # flip no_cut near 90. Low importance (<=0.005), so flag rather than guess.
+    if 85 <= len(features_df) <= 95:
+        print(f"  ⚠️  field_size {len(features_df)} is near the 90-player no_cut line — "
+              f"alternates/WDs in the field file could flip it")
 
 
 
@@ -2937,18 +2967,30 @@ def make_predictions(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
         if "course_sg_vs_avg" in cols and "course_sg_vs_avg" not in df.columns and "course_sg_total_vs_avg" in df.columns:
             df["course_sg_vs_avg"] = pd.to_numeric(df["course_sg_total_vs_avg"], errors="coerce")
 
+        # Unknown values must be filled the way TRAINING filled them:
+        # train_final_models.py imputes every NaN with the median of the
+        # training rows (years < 2025), saved in data/models/feature_medians.json.
+        # Until 2026-10-14 this filled 0.0, so an unknown became an extreme
+        # (0°F, 0 mph, the worst field percentile, a 0.0 season SG), and 8
+        # trained features with no serving column arrived as zeros every week.
         missing_cols = [c for c in cols if c not in df.columns]
         for c in missing_cols:
-            df[c] = 0.0
-
+            df[c] = float("nan")
         if missing_cols:
-            preview = ", ".join(missing_cols[:8])
-            suffix = "..." if len(missing_cols) > 8 else ""
-            print(f"  Added {len(missing_cols)} missing model features with 0 defaults: {preview}{suffix}")
+            print(f"  ⚠️  {len(missing_cols)} trained features have NO serving column "
+                  f"(filled with training medians): {', '.join(missing_cols)}")
 
         x = df[cols].copy()
-        x = x.apply(pd.to_numeric, errors="coerce").fillna(0.0)
-        return x
+        x = x.apply(pd.to_numeric, errors="coerce")
+        n_nan = int(x.isna().sum().sum())
+        x = x.fillna(pd.Series({c: _FEATURE_MEDIANS[c] for c in cols if c in _FEATURE_MEDIANS}))
+        no_median = [c for c in cols if c not in _FEATURE_MEDIANS]
+        if no_median:
+            print(f"  ⚠️  no training median for {no_median} — falling back to 0")
+        if n_nan:
+            print(f"  Filled {n_nan} unknown values with training medians "
+                  f"({n_nan / x.size:.1%} of the matrix)")
+        return x.fillna(0.0)
 
     # Predict probabilities
     for model_key, out_col in (("win", "win_prob"), ("top5", "top5_prob"), ("top10", "top10_prob")):
