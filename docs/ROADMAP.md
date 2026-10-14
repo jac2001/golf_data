@@ -34,27 +34,27 @@ integrity + freshness gates refusing to publish bad predictions.
 
 ## Next (October)
 
-2. **pandas: CI 3.0.6 vs local 2.2.3** (found Oct 14 while pinning
+1. **pandas: CI 3.0.6 vs local 2.2.3** (found Oct 14 while pinning
    sklearn). Models train locally on pandas 2; GitHub Actions builds the
    features they predict on with pandas 3 (copy-on-write, new default
    string dtype). Same risk class as the euro window fix: training and
    serving computing features differently. Check: rebuild one week's
    PGA feature table under both versions and diff it; then pin pandas
    to whichever version the code is correct under.
-3. **What is the euro model for?** Walk-forward win log-loss: model
+2. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
    weight (walk-forward, not in-sample), or show the model only where
    it adds information (made cut?).
-4. **Licensing:** DataGolf follow-up on euro displays (nudge was due
+3. **Licensing:** DataGolf follow-up on euro displays (nudge was due
    ~Oct 6 — confirm it went out). PGA TOUR: verbal "free while
    non-commercial" from Grant (Oct 6); wait for written terms, then
    replace the scraped GraphQL scorecards/weather with the official API.
-5. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
+4. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
    twice, duplicated data files, and corrupted the Next build cache.
-6. **Season formats that need weeks to accumulate**: pick diversity,
+5. **Season formats that need weeks to accumulate**: pick diversity,
    College/Fade season boards — once there are real rows.
-7. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
+6. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
 - [x] Euro purses verified + settled weeks rescored, sklearn pinned
