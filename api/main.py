@@ -4614,7 +4614,10 @@ def euro_week(tournament_id: str) -> dict:
         "location": str(r.get("location", "") or ""),
         "course": str(r.get("course", "") or ""),
         "purse": float(r["purse"]) if pd.notna(r.get("purse")) else None,
-        "purse_estimated": str(r.get("purse_source", "")) == "estimate",
+        # Every euro purse is an estimate (DG carries no euro prize money):
+        # "table" = euro_purses.csv, "default" = no row. Only a source we
+        # could stand behind ("official") would show unlabeled.
+        "purse_estimated": str(r.get("purse_source", "")) != "official",
         "field_size": field_size,
         "defending_champion": defending_champion,
         "defending_champion_year": defending_year,

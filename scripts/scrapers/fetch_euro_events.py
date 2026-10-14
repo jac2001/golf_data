@@ -46,16 +46,11 @@ PAYOUT_PCT = [
     0.31, 0.30, 0.29, 0.28, 0.27, 0.26, 0.25, 0.24, 0.23, 0.22,
     0.21, 0.20, 0.19, 0.18, 0.17,
 ]
-DEFAULT_PURSE = 3_000_000  # standard DPWT event, flagged as estimate
-
-# Known bigger events (rough, still estimates)
-PURSE_OVERRIDES = {
-    "bmw pga championship": 9_000_000,
-    "dp world tour championship": 10_500_000,
-    "abu dhabi championship": 9_000_000,
-    "genesis championship": 4_000_000,
-    "alfred dunhill links championship": 5_000_000,
-}
+# Purses: data/raw/euro_purses.csv, matched by euro_schedule.purse_for
+# (sponsor-free key inside DG's name). An event with no row gets the
+# default and purse_source "default", so a miss is visible, not silent.
+# Default = the table's median non-Rolex purse.
+DEFAULT_PURSE = 2_500_000
 
 
 def eid(year: int, event_id) -> str:
@@ -79,6 +74,7 @@ def cmd_schedule(year: int) -> None:
         print(f"DG has no euro schedule for season {year} yet — nothing written")
         return
     rows, tbd_count = [], {}
+    purse_table = euro_schedule.load_purses()
     for ev in sorted(sched, key=lambda e: (e.get("start_date", ""), e.get("event_name", ""))):
         if not ev.get("start_date"):
             continue
@@ -91,7 +87,8 @@ def cmd_schedule(year: int) -> None:
             # numbered by name, so the id is stable across refreshes.
             n = tbd_count[start] = tbd_count.get(start, 0) + 1
             tid = f"E{year}T{start:%m%d}{n}"
-        purse = PURSE_OVERRIDES.get(ev["event_name"].lower(), DEFAULT_PURSE)
+        found = euro_schedule.purse_for(ev["event_name"], purse_table)
+        purse = found if found is not None else DEFAULT_PURSE
         rows.append({
             "start_date": start.isoformat(),
             "end_date": (start + timedelta(days=3)).isoformat(),
@@ -100,7 +97,7 @@ def cmd_schedule(year: int) -> None:
             "location": ev.get("location", ""),
             "course": ev.get("course", ""),
             "purse": purse,
-            "purse_source": "estimate",
+            "purse_source": "table" if found is not None else "default",
             "tournament_id": tid,
         })
     df = pd.DataFrame(rows).sort_values("start_date").reset_index(drop=True)

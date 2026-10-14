@@ -12,7 +12,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from scripts.scrapers.euro_schedule import is_provisional, resolve_event  # noqa: E402
+from scripts.scrapers.euro_schedule import is_provisional, purse_for, resolve_event  # noqa: E402
 
 ROWS = [
     # start,       name,                                  tid
@@ -119,7 +119,12 @@ def test_fallback_needs_whole_words():
 def test_provisional_ids():
     assert is_provisional("E2027T12031")
     assert not is_provisional("E2026140")
-
+    
+def test_tied_keys_are_none():
+    """The same key twice (a stale row left beside a new one): refuse to guess."""
+    t = pd.DataFrame({"event": ["Irish Open", "Irish Open"],
+                      "purse_usd": [6_000_000, 7_000_000]})
+    assert purse_for("Amgen Irish Open", t) is None
 
 if __name__ == "__main__":
     tests = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]

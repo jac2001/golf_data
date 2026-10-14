@@ -150,3 +150,50 @@ def row_for_write(name: str, feed: str, today: pd.Timestamp | None = None) -> pd
         raise SystemExit(f"{feed} event '{name}' only has provisional id {tid} — run "
                          "fetch_euro_events --schedule first; refusing to write under an id that will change")
     return row
+
+
+# ── Purses ───────────────────────────────────────────────────────────────────
+# DG carries no euro prize money, and purses drive the advice: a $9M Rolex
+# Series week is worth ~3x a $3M week. data/raw/euro_purses.csv holds one
+# row per event under a short sponsor-free name ("Australian Open"),
+# because DG's names change sponsors between seasons ("Crown Australian
+# Open" → "Capital.com Australian Open", "83deg Open d'Italia" → "84deg").
+
+PURSES_PATH = RAW_DIR / "euro_purses.csv"
+
+
+def load_purses(path: Path = PURSES_PATH) -> pd.DataFrame:
+    """columns: event, purse_usd, tier, source."""
+    return pd.read_csv(path)
+
+
+
+def purse_for(name: str, table: pd.DataFrame) -> float | None:
+    words = _words(name)
+    if not words:
+        return None 
+    matches = []
+    #Checking the reverse would let a short DataGolf name match inside a longer key, 
+    # so a feed that says just “Australian Open” would get the purse of a “Capital.com Australian Open” row.
+    for _, row in table.iterrows():
+        key = _words(row['event'])
+        if len(key) < MIN_FALLBACK_WORDS:
+            continue 
+        k = len(key)
+        if any(words[i:i + k] == key for i in range(len(words) - k + 1)):
+            matches.append((k, float(row['purse_usd'])))
+    
+    
+    if not matches:
+        return None
+    
+    # the longest key wins, and a tie returns None because it usually means the table has a duplicate row.
+  
+        
+    
+    matches.sort(key=lambda x: -x[0])
+    if len(matches) > 1 and matches[0][0] == matches[1][0]:
+        return None 
+    
+    
+    return matches[0][1]
