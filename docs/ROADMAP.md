@@ -34,13 +34,18 @@ integrity + freshness gates refusing to publish bad predictions.
 
 ## Next (October)
 
-1. **pandas: CI 3.0.6 vs local 2.2.3** (found Oct 14 while pinning
-   sklearn). Models train locally on pandas 2; GitHub Actions builds the
-   features they predict on with pandas 3 (copy-on-write, new default
-   string dtype). Same risk class as the euro window fix: training and
-   serving computing features differently. Check: rebuild one week's
-   PGA feature table under both versions and diff it; then pin pandas
-   to whichever version the code is correct under.
+1. **PGA model gets 8 trained features as zeros every week** (found
+   Oct 14 during the pandas check). `make_predictions` fills features
+   absent at serving with 0: weather (`temp_f_avg`, `wind_mph_avg/max`,
+   `precip_mm`) and `recent_par3/4/5_scoring_field_pct`,
+   `recent_sg_arg_weighted`. In training they're real in ~94% of rows
+   (temp 72°F, par-pct 0.50); live they're 0°F and an extreme
+   percentile. Measured on Baycurrent's field: refilling them with
+   training medians moves the raw win ranking (rank corr 0.976, top-10
+   overlap 7/10, one player's win prob 262%); top-10 probs barely move
+   (0.994). Fix: compute them at serving (weather is already fetched to
+   `data/weather/`; par scoring from hole stats), or retrain without
+   them. Stats-reviewer before and after.
 2. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
@@ -57,6 +62,10 @@ integrity + freshness gates refusing to publish bad predictions.
 6. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
+- [x] pandas check (2026-10-14): CI's pandas 3.0.6 vs local 2.2.3 give
+  IDENTICAL features (241 cols) and predictions (260 cols) for all 72
+  Baycurrent players (harness: predict_tournament's own steps, DuckDB
+  hidden as on CI). No pin needed. Found the zero-fill skew instead.
 - [x] Euro purses verified + settled weeks rescored, sklearn pinned
   (2026-10-14): purses checked against the 2026 calendar; France and
   Spain rescored $3M -> $3.75M (`scripts/maintenance/rescore_euro_purses.py`,
