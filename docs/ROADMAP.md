@@ -34,15 +34,13 @@ integrity + freshness gates refusing to publish bad predictions.
 
 ## Next (October)
 
-1. **Full DPWT schedule (#4) — now has a deadline: Oct 25.**
-   `schedule_euro_2026.csv` ends Oct 25; after that predict_euro's
-   `current_euro_event` finds no row and refuses ("not in the schedule"),
-   so there are no euro boards until a later schedule exists. It also
-   only reaches ~2 weeks ahead (DG assigns euro ids late), so euro advice
-   almost never says "save". Pull the rest of the season (and the 2027
-   Race to Dubai start, late Nov) with provisional ids, reconciled when
-   DG publishes. `load_euro_schedule()` already reads every
-   `schedule_euro_2*.csv`.
+1. **Euro purses: verify, then decide on rescoring.** Purses now come
+   from `data/raw/euro_purses.csv` (approx 2025-26, every row "verify").
+   (a) Check the table against the DP World Tour site, Rolex Series and
+   finale first, since those swing advice most. (b) Game-rules call,
+   with the group: rescore this season's already-settled euro weeks
+   with table purses (Irish Open was scored at $3M; table says $6M), or
+   leave past weeks as scored.
 2. **Pin scikit-learn to the training version** (found Oct 13). Euro models
    are trained locally on sklearn 1.6.1; CI unpickles them on 1.9.1
    (`InconsistentVersionWarning`). Output is identical today (max diff
@@ -65,6 +63,10 @@ integrity + freshness gates refusing to publish bad predictions.
 7. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
+- [x] Full DPWT schedule (2026-10-13/14) — every event for this season
+  and next, provisional ids for TBD rows (never pickable), one
+  resolver for every reader (`euro_schedule.resolve_event`, Jack),
+  purse table matched through sponsor renames (`purse_for`, Jack).
 - [x] Euro pipeline gate (2026-10-13) — `scripts/validation/euro_integrity.py`
   (checks by Jack): blocks on missing/failed/stale history or a top-10
   player without history; notes coverage and market agreement. Same day:
