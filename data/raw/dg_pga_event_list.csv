@@ -1,0 +1,588 @@
+calendar_year,event_id,date,event_name
+2014,16,2014-01-06,Hyundai Tournament of Champions
+2014,6,2014-01-12,Sony Open in Hawaii
+2014,2,2014-01-19,Humana Challenge in partnership with the Clinton Foundation
+2014,4,2014-01-26,Farmers Insurance Open
+2014,3,2014-02-02,Waste Management Phoenix Open
+2014,5,2014-02-09,AT&T Pebble Beach National Pro-Am
+2014,7,2014-02-16,Northern Trust Open
+2014,10,2014-03-02,The Honda Classic
+2014,473,2014-03-09,World Golf Championships-Cadillac Championship
+2014,483,2014-03-09,Puerto Rico Open presented by seepuertorico.com
+2014,475,2014-03-16,Valspar Championship
+2014,9,2014-03-23,Arnold Palmer Invitational presented by MasterCard
+2014,41,2014-03-30,Valero Texas Open
+2014,20,2014-04-06,Shell Houston Open
+2014,14,2014-04-13,Masters Tournament
+2014,12,2014-04-20,RBC Heritage
+2014,480,2014-05-04,Wells Fargo Championship
+2014,11,2014-05-11,THE PLAYERS Championship
+2014,19,2014-05-18,HP Byron Nelson Championship
+2014,21,2014-05-25,Crowne Plaza Invitational at Colonial
+2014,23,2014-06-01,the Memorial Tournament presented by Nationwide Insurance
+2014,25,2014-06-08,FedEx St. Jude Classic
+2014,26,2014-06-15,U.S. Open
+2014,34,2014-06-22,Travelers Championship
+2014,471,2014-06-29,Quicken Loans National
+2014,490,2014-07-06,The Greenbrier Classic
+2014,30,2014-07-13,John Deere Classic
+2014,100,2014-07-20,The Open Championship
+2014,32,2014-07-27,RBC Canadian Open
+2014,476,2014-08-03,World Golf Championships-Bridgestone Invitational
+2014,33,2014-08-10,PGA Championship
+2014,13,2014-08-17,Wyndham Championship
+2014,27,2014-08-24,The Barclays
+2014,505,2014-09-01,Deutsche Bank Championship
+2014,28,2014-09-07,BMW Championship
+2014,60,2014-09-14,TOUR Championship by Coca-Cola
+2014,464,2014-10-12,Frys.com Open
+2014,47,2014-10-19,Shriners Hospitals for Children Open
+2014,493,2014-10-26,The McGladrey Classic
+2014,494,2014-11-02,CIMB Classic
+2014,54,2014-11-09,Sanderson Farms Championship
+2014,489,2014-11-09,World Golf Championships-HSBC Champions
+2014,457,2014-11-16,OHL Classic at Mayakoba
+2014,478,2014-12-07,Hero World Challenge
+2015,16,2015-01-12,Hyundai Tournament of Champions
+2015,6,2015-01-18,Sony Open in Hawaii
+2015,2,2015-01-25,Humana Challenge in partnership with the Clinton Foundation
+2015,3,2015-02-01,Waste Management Phoenix Open
+2015,4,2015-02-08,Farmers Insurance Open
+2015,5,2015-02-15,AT&T Pebble Beach National Pro-Am
+2015,7,2015-02-22,Northern Trust Open
+2015,10,2015-03-01,The Honda Classic
+2015,473,2015-03-08,World Golf Championships-Cadillac Championship
+2015,483,2015-03-08,Puerto Rico Open
+2015,475,2015-03-15,Valspar Championship
+2015,9,2015-03-22,Arnold Palmer Invitational presented by MasterCard
+2015,41,2015-03-29,Valero Texas Open
+2015,20,2015-04-05,Shell Houston Open
+2015,14,2015-04-12,Masters Tournament
+2015,12,2015-04-19,RBC Heritage
+2015,11,2015-05-10,THE PLAYERS Championship
+2015,480,2015-05-17,Wells Fargo Championship
+2015,21,2015-05-24,Crowne Plaza Invitational at  Colonial
+2015,19,2015-05-31,AT&T Byron Nelson
+2015,23,2015-06-07,the Memorial Tournament presented by Nationwide
+2015,25,2015-06-14,FedEx St. Jude Classic
+2015,26,2015-06-21,U.S. Open
+2015,34,2015-06-28,Travelers Championship
+2015,490,2015-07-05,The Greenbrier Classic
+2015,30,2015-07-12,John Deere Classic
+2015,100,2015-07-19,The Open Championship
+2015,518,2015-07-19,Barbasol Championship
+2015,32,2015-07-26,RBC Canadian Open
+2015,471,2015-08-02,Quicken Loans National
+2015,476,2015-08-09,World Golf Championships-Bridgestone Invitational
+2015,33,2015-08-16,PGA Championship
+2015,13,2015-08-23,Wyndham Championship
+2015,27,2015-08-30,The Barclays
+2015,505,2015-09-07,Deutsche Bank Championship
+2015,28,2015-09-20,BMW Championship
+2015,60,2015-09-27,TOUR Championship by Coca-Cola
+2015,464,2015-10-18,Frys.com Open
+2015,47,2015-10-25,Shriners Hospitals for Children Open
+2015,494,2015-11-01,CIMB Classic
+2015,54,2015-11-08,Sanderson Farms Championship
+2015,489,2015-11-08,World Golf Championships-HSBC Champions
+2015,457,2015-11-15,OHL Classic at Mayakoba
+2015,493,2015-11-22,The RSM Classic
+2015,478,2015-12-06,Hero World Challenge
+2016,16,2016-01-10,Hyundai Tournament of Champions
+2016,6,2016-01-17,Sony Open in Hawaii
+2016,2,2016-01-24,CareerBuilder Challenge in partnership with the Clinton Foundation
+2016,4,2016-01-31,Farmers Insurance Open
+2016,3,2016-02-07,Waste Management Phoenix Open
+2016,5,2016-02-14,AT&T Pebble Beach Pro-Am
+2016,7,2016-02-21,Northern Trust Open
+2016,10,2016-02-28,The Honda Classic
+2016,473,2016-03-06,World Golf Championships-Cadillac Championship
+2016,475,2016-03-13,Valspar Championship
+2016,9,2016-03-20,Arnold Palmer Invitational presented by MasterCard
+2016,483,2016-03-27,Puerto Rico Open at Coco Beach
+2016,20,2016-04-03,Shell Houston Open
+2016,14,2016-04-10,Masters Tournament
+2016,12,2016-04-17,RBC Heritage
+2016,41,2016-04-24,Valero Texas Open
+2016,480,2016-05-08,Wells Fargo Championship
+2016,11,2016-05-15,THE PLAYERS Championship
+2016,19,2016-05-22,AT&T Byron Nelson
+2016,21,2016-05-29,DEAN & DELUCA Invitational
+2016,23,2016-06-05,the Memorial Tournament presented by Nationwide
+2016,25,2016-06-12,FedEx St. Jude Classic
+2016,26,2016-06-19,U.S. Open
+2016,471,2016-06-26,Quicken Loans National
+2016,476,2016-07-03,World Golf Championships-Bridgestone Invitational
+2016,100,2016-07-17,The Open Championship
+2016,518,2016-07-17,Barbasol Championship
+2016,32,2016-07-24,RBC Canadian Open
+2016,33,2016-07-31,PGA Championship
+2016,34,2016-08-07,Travelers Championship
+2016,30,2016-08-14,John Deere Classic
+2016,13,2016-08-21,Wyndham Championship
+2016,27,2016-08-28,The Barclays
+2016,505,2016-09-05,Deutsche Bank Championship
+2016,28,2016-09-11,BMW Championship
+2016,60,2016-09-25,TOUR Championship
+2016,464,2016-10-16,Safeway Open
+2016,494,2016-10-23,CIMB Classic
+2016,54,2016-10-30,Sanderson Farms Championship
+2016,489,2016-10-30,World Golf Championships-HSBC Champions
+2016,47,2016-11-06,Shriners Hospitals for Children Open
+2016,457,2016-11-13,OHL Classic at Mayakoba
+2016,493,2016-11-20,The RSM Classic
+2016,478,2016-12-04,Hero World Challenge
+2017,16,2017-01-08,SBS Tournament of Champions
+2017,6,2017-01-15,Sony Open in Hawaii
+2017,2,2017-01-22,CareerBuilder Challenge
+2017,4,2017-01-29,Farmers Insurance Open
+2017,3,2017-02-05,Waste Management Phoenix Open
+2017,5,2017-02-12,AT&T Pebble Beach Pro-Am
+2017,7,2017-02-19,Genesis Open
+2017,10,2017-02-26,The Honda Classic
+2017,473,2017-03-05,World Golf Championships-Mexico Championship
+2017,475,2017-03-12,Valspar Championship
+2017,9,2017-03-19,Arnold Palmer Invitational presented by Mastercard
+2017,483,2017-03-26,Puerto Rico Open
+2017,20,2017-04-02,Shell Houston Open
+2017,14,2017-04-09,Masters Tournament
+2017,12,2017-04-16,RBC Heritage
+2017,41,2017-04-23,Valero Texas Open
+2017,480,2017-05-07,Wells Fargo Championship
+2017,11,2017-05-14,THE PLAYERS Championship
+2017,19,2017-05-21,AT&T Byron Nelson
+2017,21,2017-05-28,DEAN & DELUCA Invitational
+2017,23,2017-06-04,the Memorial Tournament presented by Nationwide
+2017,25,2017-06-11,FedEx St. Jude Classic
+2017,26,2017-06-18,U.S. Open
+2017,34,2017-06-25,Travelers Championship
+2017,471,2017-07-02,Quicken Loans National
+2017,490,2017-07-09,The Greenbrier Classic
+2017,30,2017-07-16,John Deere Classic
+2017,100,2017-07-23,The Open Championship
+2017,518,2017-07-23,Barbasol Championship
+2017,32,2017-07-30,RBC Canadian Open
+2017,476,2017-08-06,World Golf Championships-Bridgestone Invitational
+2017,33,2017-08-13,PGA Championship
+2017,13,2017-08-20,Wyndham Championship
+2017,27,2017-08-27,THE NORTHERN TRUST
+2017,505,2017-09-04,Dell Technologies Championship
+2017,28,2017-09-17,BMW Championship
+2017,60,2017-09-24,TOUR Championship
+2017,464,2017-10-08,Safeway Open
+2017,494,2017-10-15,CIMB Classic
+2017,521,2017-10-22,THE CJ CUP @ NINE BRIDGES
+2017,54,2017-10-29,Sanderson Farms Championship
+2017,489,2017-10-29,World Golf Championships-HSBC Champions
+2017,47,2017-11-05,Shriners Hospitals for Children Open
+2017,457,2017-11-12,OHL Classic at Mayakoba
+2017,493,2017-11-19,The RSM Classic
+2017,478,2017-12-03,Hero World Challenge
+2018,16,2018-01-07,Sentry Tournament of Champions
+2018,6,2018-01-14,Sony Open in Hawaii
+2018,2,2018-01-21,CareerBuilder Challenge
+2018,4,2018-01-28,Farmers Insurance Open
+2018,3,2018-02-04,Waste Management Phoenix Open
+2018,5,2018-02-11,AT&T Pebble Beach Pro-Am
+2018,7,2018-02-18,Genesis Open
+2018,10,2018-02-25,The Honda Classic
+2018,473,2018-03-04,World Golf Championships-Mexico Championship
+2018,475,2018-03-11,Valspar Championship
+2018,9,2018-03-18,Arnold Palmer Invitational presented by Mastercard
+2018,522,2018-03-25,Corales Puntacana Resort & Club Championship
+2018,20,2018-04-01,Houston Open
+2018,14,2018-04-08,Masters Tournament
+2018,12,2018-04-15,RBC Heritage
+2018,41,2018-04-22,Valero Texas Open
+2018,480,2018-05-06,Wells Fargo Championship
+2018,11,2018-05-13,THE PLAYERS Championship
+2018,19,2018-05-20,AT&T Byron Nelson
+2018,21,2018-05-27,Fort Worth Invitational
+2018,23,2018-06-03,the Memorial Tournament presented by Nationwide
+2018,25,2018-06-10,FedEx St. Jude Classic
+2018,26,2018-06-17,U.S. Open
+2018,34,2018-06-24,Travelers Championship
+2018,471,2018-07-01,Quicken Loans National
+2018,490,2018-07-08,A Military Tribute at The Greenbrier
+2018,30,2018-07-15,John Deere Classic
+2018,100,2018-07-22,The Open Championship
+2018,518,2018-07-22,Barbasol Championship
+2018,32,2018-07-29,RBC Canadian Open
+2018,476,2018-08-05,World Golf Championships-Bridgestone Invitational
+2018,33,2018-08-12,PGA Championship
+2018,13,2018-08-19,Wyndham Championship
+2018,27,2018-08-26,THE NORTHERN TRUST
+2018,505,2018-09-03,Dell Technologies Championship
+2018,28,2018-09-09,BMW Championship
+2018,60,2018-09-23,TOUR Championship
+2018,464,2018-10-07,Safeway Open
+2018,494,2018-10-14,CIMB Classic
+2018,521,2018-10-21,THE CJ CUP @ NINE BRIDGES
+2018,54,2018-10-28,Sanderson Farms Championship
+2018,489,2018-10-28,World Golf Championships-HSBC Champions
+2018,47,2018-11-04,Shriners Hospitals for Children Open
+2018,457,2018-11-11,Mayakoba Golf Classic
+2018,493,2018-11-18,The RSM Classic
+2018,478,2018-12-02,Hero World Challenge
+2019,16,2019-01-06,Sentry Tournament of Champions
+2019,6,2019-01-13,Sony Open in Hawaii
+2019,2,2019-01-20,Desert Classic
+2019,4,2019-01-27,Farmers Insurance Open
+2019,3,2019-02-03,Waste Management Phoenix Open
+2019,5,2019-02-10,AT&T Pebble Beach Pro-Am
+2019,7,2019-02-17,Genesis Open
+2019,473,2019-02-24,World Golf Championships-Mexico Championship
+2019,483,2019-02-24,Puerto Rico Open
+2019,10,2019-03-03,The Honda Classic
+2019,9,2019-03-10,Arnold Palmer Invitational presented by Mastercard
+2019,11,2019-03-17,THE PLAYERS Championship
+2019,475,2019-03-24,Valspar Championship
+2019,522,2019-03-31,Corales Puntacana Resort & Club Championship
+2019,41,2019-04-07,Valero Texas Open
+2019,14,2019-04-14,The Masters
+2019,12,2019-04-21,RBC Heritage
+2019,480,2019-05-05,Wells Fargo Championship
+2019,19,2019-05-12,AT&T Byron Nelson
+2019,33,2019-05-19,PGA Championship
+2019,21,2019-05-26,Charles Schwab Challenge
+2019,23,2019-06-02,the Memorial Tournament presented by Nationwide
+2019,32,2019-06-09,RBC Canadian Open
+2019,26,2019-06-16,U.S. Open
+2019,34,2019-06-23,Travelers Championship
+2019,524,2019-06-30,Rocket Mortgage Classic
+2019,525,2019-07-07,3M Open
+2019,30,2019-07-14,John Deere Classic
+2019,100,2019-07-21,The Open Championship
+2019,518,2019-07-21,Barbasol Championship
+2019,472,2019-07-28,Barracuda Championship
+2019,476,2019-07-28,World Golf Championships-FedEx St. Jude Invitational
+2019,13,2019-08-04,Wyndham Championship
+2019,27,2019-08-11,THE NORTHERN TRUST
+2019,28,2019-08-18,BMW Championship
+2019,60,2019-08-25,TOUR Championship
+2019,490,2019-09-15,A Military Tribute at The Greenbrier
+2019,54,2019-09-22,Sanderson Farms Championship
+2019,464,2019-09-29,Safeway Open
+2019,47,2019-10-06,Shriners Hospitals for Children Open
+2019,20,2019-10-13,Houston Open
+2019,521,2019-10-20,THE CJ CUP @ NINE BRIDGES
+2019,527,2019-10-27,ZOZO CHAMPIONSHIP
+2019,489,2019-11-03,World Golf Championships-HSBC Champions
+2019,528,2019-11-03,Bermuda Championship
+2019,457,2019-11-17,Mayakoba Golf Classic
+2019,493,2019-11-24,The RSM Classic
+2019,478,2019-12-07,Hero World Challenge
+2020,16,2020-01-05,Sentry Tournament of Champions
+2020,6,2020-01-12,Sony Open in Hawaii
+2020,2,2020-01-19,The American Express
+2020,4,2020-01-26,Farmers Insurance Open
+2020,3,2020-02-02,Waste Management Phoenix Open
+2020,5,2020-02-09,AT&T Pebble Beach Pro-Am
+2020,7,2020-02-16,The Genesis Invitational
+2020,473,2020-02-23,World Golf Championships-Mexico Championship
+2020,483,2020-02-23,Puerto Rico Open
+2020,10,2020-03-01,The Honda Classic
+2020,9,2020-03-08,Arnold Palmer Invitational presented by Mastercard
+2020,11,2020-03-15,THE PLAYERS Championship
+2020,21,2020-06-14,Charles Schwab Challenge
+2020,12,2020-06-21,RBC Heritage
+2020,34,2020-06-28,Travelers Championship
+2020,524,2020-07-05,Rocket Mortgage Classic
+2020,533,2020-07-12,Workday Charity Open
+2020,23,2020-07-19,the Memorial Tournament presented by Nationwide
+2020,525,2020-07-26,3M Open
+2020,472,2020-08-02,Barracuda Championship
+2020,476,2020-08-02,World Golf Championships-FedEx St. Jude Invitational
+2020,33,2020-08-09,PGA Championship
+2020,13,2020-08-16,Wyndham Championship
+2020,27,2020-08-23,THE NORTHERN TRUST
+2020,28,2020-08-30,BMW Championship
+2020,60,2020-09-07,TOUR Championship
+2020,464,2020-09-13,Safeway Open
+2020,26,2020-09-20,U.S. Open
+2020,522,2020-09-27,Corales Puntacana Resort & Club Championship
+2020,54,2020-10-04,Sanderson Farms Championship
+2020,47,2020-10-11,Shriners Hospitals for Children Open
+2020,521,2020-10-18,THE CJ CUP @ SHADOW CREEK
+2020,527,2020-10-25,ZOZO CHAMPIONSHIP @ SHERWOOD
+2020,528,2020-11-01,Bermuda Championship
+2020,20,2020-11-08,Vivint Houston Open
+2020,14,2020-11-15,The Masters
+2020,493,2020-11-22,The RSM Classic
+2020,457,2020-12-06,Mayakoba Golf Classic presented by UNIFIN
+2021,16,2021-01-10,Sentry Tournament of Champions
+2021,6,2021-01-17,Sony Open in Hawaii
+2021,2,2021-01-24,The American Express
+2021,4,2021-01-31,Farmers Insurance Open
+2021,3,2021-02-07,Waste Management Phoenix Open
+2021,5,2021-02-14,AT&T Pebble Beach Pro-Am
+2021,7,2021-02-21,The Genesis Invitational
+2021,473,2021-02-28,World Golf Championships-Workday Championship at The Concession
+2021,483,2021-02-28,Puerto Rico Open
+2021,9,2021-03-07,Arnold Palmer Invitational presented by Mastercard
+2021,11,2021-03-14,THE PLAYERS Championship
+2021,10,2021-03-21,The Honda Classic
+2021,534,2021-03-28,Corales Puntacana Resort & Club Championship #2
+2021,41,2021-04-04,Valero Texas Open
+2021,536,2021-04-11,The Masters #2
+2021,12,2021-04-18,RBC Heritage
+2021,475,2021-05-02,Valspar Championship
+2021,480,2021-05-09,Wells Fargo Championship
+2021,19,2021-05-16,AT&T Byron Nelson
+2021,33,2021-05-23,PGA Championship
+2021,21,2021-05-30,Charles Schwab Challenge
+2021,23,2021-06-06,the Memorial Tournament presented by Nationwide
+2021,538,2021-06-13,Palmetto Championship at Congaree
+2021,535,2021-06-20,U.S. Open #2
+2021,34,2021-06-27,Travelers Championship
+2021,524,2021-07-04,Rocket Mortgage Classic
+2021,30,2021-07-11,John Deere Classic
+2021,100,2021-07-18,The Open Championship
+2021,518,2021-07-18,Barbasol Championship
+2021,525,2021-07-25,3M Open
+2021,519,2021-08-01,Olympic Men's Golf Competition
+2021,472,2021-08-08,Barracuda Championship
+2021,476,2021-08-08,World Golf Championships-FedEx St. Jude Invitational
+2021,13,2021-08-15,Wyndham Championship
+2021,27,2021-08-22,THE NORTHERN TRUST
+2021,28,2021-08-29,BMW Championship
+2021,60,2021-09-05,TOUR Championship
+2021,464,2021-09-19,Fortinet Championship
+2021,54,2021-10-03,Sanderson Farms Championship
+2021,47,2021-10-10,Shriners Children's Open
+2021,521,2021-10-17,THE CJ CUP @ SUMMIT
+2021,527,2021-10-24,ZOZO CHAMPIONSHIP
+2021,528,2021-10-31,Butterfield Bermuda Championship
+2021,457,2021-11-07,World Wide Technology Championship at Mayakoba
+2021,20,2021-11-14,Hewlett Packard Enterprise Houston Open
+2021,493,2021-11-21,The RSM Classic
+2021,478,2021-12-05,Hero World Challenge
+2022,16,2022-01-09,Sentry Tournament of Champions
+2022,6,2022-01-16,Sony Open in Hawaii
+2022,2,2022-01-23,The American Express
+2022,4,2022-01-29,Farmers Insurance Open
+2022,5,2022-02-06,AT&T Pebble Beach Pro-Am
+2022,3,2022-02-13,WM Phoenix Open
+2022,7,2022-02-20,The Genesis Invitational
+2022,10,2022-02-27,The Honda Classic
+2022,9,2022-03-06,Arnold Palmer Invitational presented by Mastercard
+2022,483,2022-03-06,Puerto Rico Open
+2022,11,2022-03-13,THE PLAYERS Championship
+2022,475,2022-03-20,Valspar Championship
+2022,522,2022-03-27,Corales Puntacana Championship
+2022,41,2022-04-03,Valero Texas Open
+2022,14,2022-04-10,The Masters
+2022,12,2022-04-17,RBC Heritage
+2022,540,2022-05-01,Mexico Open at Vidanta
+2022,480,2022-05-08,Wells Fargo Championship
+2022,19,2022-05-15,AT&T Byron Nelson
+2022,33,2022-05-22,PGA Championship
+2022,21,2022-05-29,Charles Schwab Challenge
+2022,23,2022-06-05,the Memorial Tournament presented by Workday
+2022,32,2022-06-12,RBC Canadian Open
+2022,26,2022-06-19,U.S. Open
+2022,34,2022-06-26,Travelers Championship
+2022,30,2022-07-03,John Deere Classic
+2022,518,2022-07-10,Barbasol Championship
+2022,541,2022-07-10,Genesis Scottish Open
+2022,100,2022-07-17,The Open Championship
+2022,472,2022-07-17,Barracuda Championship
+2022,525,2022-07-24,3M Open
+2022,524,2022-07-31,Rocket Mortgage Classic
+2022,13,2022-08-07,Wyndham Championship
+2022,27,2022-08-14,FedEx St. Jude Championship
+2022,28,2022-08-21,BMW Championship
+2022,60,2022-08-28,TOUR Championship
+2022,464,2022-09-18,Fortinet Championship
+2022,54,2022-10-02,Sanderson Farms Championship
+2022,47,2022-10-09,Shriners Children's Open
+2022,527,2022-10-16,ZOZO CHAMPIONSHIP
+2022,521,2022-10-23,THE CJ CUP in South Carolina
+2022,528,2022-10-30,Butterfield Bermuda Championship
+2022,457,2022-11-06,World Wide Technology Championship at Mayakoba
+2022,20,2022-11-13,Cadence Bank Houston Open
+2022,493,2022-11-20,The RSM Classic
+2022,478,2022-12-04,Hero World Challenge
+2023,16,2023-01-08,Sentry Tournament of Champions
+2023,6,2023-01-15,Sony Open in Hawaii
+2023,2,2023-01-22,The American Express
+2023,4,2023-01-28,Farmers Insurance Open
+2023,5,2023-02-05,AT&T Pebble Beach Pro-Am
+2023,3,2023-02-12,WM Phoenix Open
+2023,7,2023-02-19,The Genesis Invitational
+2023,10,2023-02-26,The Honda Classic
+2023,9,2023-03-05,Arnold Palmer Invitational presented by Mastercard
+2023,483,2023-03-05,Puerto Rico Open
+2023,11,2023-03-12,THE PLAYERS Championship
+2023,475,2023-03-19,Valspar Championship
+2023,522,2023-03-26,Corales Puntacana Championship
+2023,41,2023-04-02,Valero Texas Open
+2023,14,2023-04-09,Masters Tournament
+2023,12,2023-04-16,RBC Heritage
+2023,18,2023-04-23,Zurich Classic of New Orleans
+2023,540,2023-04-30,Mexico Open at Vidanta
+2023,480,2023-05-07,Wells Fargo Championship
+2023,19,2023-05-14,AT&T Byron Nelson
+2023,33,2023-05-21,PGA Championship
+2023,21,2023-05-28,Charles Schwab Challenge
+2023,23,2023-06-04,the Memorial Tournament presented by Workday
+2023,32,2023-06-11,RBC Canadian Open
+2023,26,2023-06-18,U.S. Open
+2023,34,2023-06-25,Travelers Championship
+2023,524,2023-07-02,Rocket Mortgage Classic
+2023,30,2023-07-09,John Deere Classic
+2023,518,2023-07-16,Barbasol Championship
+2023,541,2023-07-16,Genesis Scottish Open
+2023,100,2023-07-23,The Open Championship
+2023,472,2023-07-23,Barracuda Championship
+2023,525,2023-07-30,3M Open
+2023,13,2023-08-06,Wyndham Championship
+2023,27,2023-08-13,FedEx St. Jude Championship
+2023,28,2023-08-20,BMW Championship
+2023,60,2023-08-27,TOUR Championship
+2023,543,2023-09-17,Fortinet Championship #2
+2023,544,2023-10-08,Sanderson Farms Championship #2
+2023,545,2023-10-15,Shriners Children's Open #2
+2023,546,2023-10-22,ZOZO CHAMPIONSHIP #2
+2023,547,2023-11-05,World Wide Technology Championship #2
+2023,548,2023-11-12,Butterfield Bermuda Championship #2
+2023,549,2023-11-19,The RSM Classic #2
+2023,550,2023-12-03,Hero World Challenge #2
+2023,88,2023-12-17,PGA TOUR Q-School presented by Korn Ferry
+2024,16,2024-01-07,The Sentry
+2024,6,2024-01-14,Sony Open in Hawaii
+2024,2,2024-01-21,The American Express
+2024,4,2024-01-27,Farmers Insurance Open
+2024,5,2024-02-04,AT&T Pebble Beach Pro-Am
+2024,3,2024-02-11,WM Phoenix Open
+2024,7,2024-02-18,The Genesis Invitational
+2024,540,2024-02-25,Mexico Open at Vidanta
+2024,10,2024-03-03,Cognizant Classic in The Palm Beaches
+2024,9,2024-03-10,Arnold Palmer Invitational presented by Mastercard
+2024,483,2024-03-10,Puerto Rico Open
+2024,11,2024-03-17,THE PLAYERS Championship
+2024,475,2024-03-24,Valspar Championship
+2024,20,2024-03-31,Texas Children's Houston Open
+2024,41,2024-04-07,Valero Texas Open
+2024,14,2024-04-14,Masters Tournament
+2024,12,2024-04-21,RBC Heritage
+2024,522,2024-04-21,Corales Puntacana Championship
+2024,19,2024-05-05,THE CJ CUP Byron Nelson
+2024,480,2024-05-12,Wells Fargo Championship
+2024,553,2024-05-12,Myrtle Beach Classic
+2024,33,2024-05-19,PGA Championship
+2024,21,2024-05-26,Charles Schwab Challenge
+2024,32,2024-06-02,RBC Canadian Open
+2024,23,2024-06-09,the Memorial Tournament presented by Workday
+2024,26,2024-06-16,U.S. Open
+2024,34,2024-06-23,Travelers Championship
+2024,524,2024-06-30,Rocket Mortgage Classic
+2024,30,2024-07-07,John Deere Classic
+2024,518,2024-07-14,ISCO Championship
+2024,541,2024-07-14,Genesis Scottish Open
+2024,100,2024-07-21,The Open Championship
+2024,472,2024-07-21,Barracuda Championship
+2024,525,2024-07-28,3M Open
+2024,519,2024-08-04,Olympic Men's Golf Competition
+2024,13,2024-08-11,Wyndham Championship
+2024,27,2024-08-18,FedEx St. Jude Championship
+2024,28,2024-08-25,BMW Championship
+2024,60,2024-09-01,TOUR Championship
+2024,464,2024-09-15,Procore Championship
+2024,54,2024-10-06,Sanderson Farms Championship
+2024,554,2024-10-13,Black Desert Championship
+2024,47,2024-10-20,Shriners Children's Open
+2024,527,2024-10-27,ZOZO CHAMPIONSHIP
+2024,457,2024-11-10,World Wide Technology Championship
+2024,528,2024-11-17,Butterfield Bermuda Championship
+2024,493,2024-11-24,The RSM Classic
+2024,478,2024-12-08,Hero World Challenge
+2024,88,2024-12-15,PGA TOUR Q-School presented by Korn Ferry
+2025,16,2025-01-05,The Sentry
+2025,6,2025-01-12,Sony Open in Hawaii
+2025,2,2025-01-19,The American Express
+2025,4,2025-01-25,Farmers Insurance Open
+2025,5,2025-02-02,AT&T Pebble Beach Pro-Am
+2025,3,2025-02-09,WM Phoenix Open
+2025,7,2025-02-16,The Genesis Invitational
+2025,540,2025-02-23,Mexico Open at VidantaWorld
+2025,10,2025-03-02,Cognizant Classic in The Palm Beaches
+2025,9,2025-03-09,Arnold Palmer Invitational presented by Mastercard
+2025,483,2025-03-09,Puerto Rico Open
+2025,11,2025-03-16,THE PLAYERS Championship
+2025,475,2025-03-23,Valspar Championship
+2025,20,2025-03-30,Texas Children's Houston Open
+2025,41,2025-04-06,Valero Texas Open
+2025,14,2025-04-13,Masters Tournament
+2025,12,2025-04-20,RBC Heritage
+2025,522,2025-04-20,Corales Puntacana Championship
+2025,18,2025-04-27,Zurich Classic of New Orleans
+2025,19,2025-05-04,THE CJ CUP Byron Nelson
+2025,480,2025-05-11,Truist Championship
+2025,553,2025-05-11,ONEflight Myrtle Beach Classic
+2025,33,2025-05-18,PGA Championship
+2025,21,2025-05-25,Charles Schwab Challenge
+2025,23,2025-06-01,the Memorial Tournament presented by Workday
+2025,32,2025-06-08,RBC Canadian Open
+2025,26,2025-06-15,U.S. Open
+2025,34,2025-06-22,Travelers Championship
+2025,524,2025-06-29,Rocket Classic
+2025,30,2025-07-06,John Deere Classic
+2025,518,2025-07-13,ISCO Championship
+2025,541,2025-07-13,Genesis Scottish Open
+2025,100,2025-07-20,The Open Championship
+2025,472,2025-07-20,Barracuda Championship
+2025,525,2025-07-27,3M Open
+2025,13,2025-08-03,Wyndham Championship
+2025,27,2025-08-10,FedEx St. Jude Championship
+2025,28,2025-08-17,BMW Championship
+2025,60,2025-08-24,TOUR Championship
+2025,464,2025-09-14,Procore Championship
+2025,54,2025-10-05,Sanderson Farms Championship
+2025,527,2025-10-12,Baycurrent Classic
+2025,554,2025-10-26,Bank of Utah Championship
+2025,457,2025-11-09,World Wide Technology Championship
+2025,528,2025-11-16,Butterfield Bermuda Championship
+2025,493,2025-11-23,The RSM Classic
+2025,478,2025-12-07,Hero World Challenge
+2025,88,2025-12-14,PGA TOUR Q-School presented by Korn Ferry
+2026,6,2026-01-18,Sony Open in Hawaii
+2026,2,2026-01-25,The American Express
+2026,4,2026-02-01,Farmers Insurance Open
+2026,3,2026-02-08,WM Phoenix Open
+2026,5,2026-02-15,AT&T Pebble Beach Pro-Am
+2026,7,2026-02-22,The Genesis Invitational
+2026,10,2026-03-01,Cognizant Classic in The Palm Beaches
+2026,9,2026-03-08,Arnold Palmer Invitational presented by Mastercard
+2026,483,2026-03-08,Puerto Rico Open
+2026,11,2026-03-15,THE PLAYERS Championship
+2026,475,2026-03-22,Valspar Championship
+2026,20,2026-03-29,Texas Children's Houston Open
+2026,41,2026-04-05,Valero Texas Open
+2026,14,2026-04-12,Masters Tournament
+2026,12,2026-04-19,RBC Heritage
+2026,18,2026-04-26,Zurich Classic of New Orleans
+2026,556,2026-05-03,Cadillac Championship
+2026,480,2026-05-10,Truist Championship
+2026,553,2026-05-10,ONEflight Myrtle Beach Classic
+2026,33,2026-05-17,PGA Championship
+2026,19,2026-05-24,THE CJ CUP Byron Nelson
+2026,21,2026-05-31,Charles Schwab Challenge
+2026,23,2026-06-07,the Memorial Tournament presented by Workday
+2026,32,2026-06-14,RBC Canadian Open
+2026,26,2026-06-21,U.S. Open
+2026,34,2026-06-28,Travelers Championship
+2026,30,2026-07-05,John Deere Classic
+2026,518,2026-07-12,ISCO Championship
+2026,541,2026-07-12,Genesis Scottish Open
+2026,100,2026-07-19,The Open Championship
+2026,522,2026-07-19,Corales Puntacana Championship
+2026,525,2026-07-26,3M Open
+2026,524,2026-08-02,Rocket Classic
+2026,13,2026-08-09,Wyndham Championship
+2026,27,2026-08-16,FedEx St. Jude Championship
+2026,28,2026-08-23,BMW Championship
+2026,60,2026-08-30,TOUR Championship
+2026,557,2026-09-20,Biltmore Championship Asheville
+2026,554,2026-10-04,Bank of Utah Championship
+2026,527,2026-10-11,Baycurrent Classic

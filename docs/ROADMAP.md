@@ -49,6 +49,16 @@ integrity + freshness gates refusing to publish bad predictions.
    lands. (c) Weather: training uses observed weather, serving a
    forecast (minor leak, importance ~0.003 each); retrain on archived
    forecasts (Open-Meteo historical-forecast API).
+   (d) Data check found while mapping dates: `R2021535` "U.S. Open
+   (2021)" lists J.J. Spaun as winner (he won the 2025 U.S. Open; 2021
+   was Jon Rahm), so that event's rows look mislabeled. Check before the
+   retrain uses them.
+   Retrain plan (Oct 14): build now, ship on evidence. Step 1 scaffolded:
+   `scripts/features/event_dates.py` (Jack: season-aware tid -> date;
+   source `data/raw/dg_pga_event_list.csv`); then date-ordered merge,
+   rebuilt table, par features on date order, identical walk-forward
+   (current vs retrained incl. 2025 data) + stats review, ship only if it
+   beats noise; the group decides on a mid-season model change.
 2. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
