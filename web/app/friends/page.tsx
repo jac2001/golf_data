@@ -726,6 +726,11 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
   const [code, setCode]       = useState("");
   const [err, setErr]         = useState("");
   const [copied, setCopied]   = useState<number | null>(null);
+  // One-tap invite link per group (/api/friends/invites): fetched on the
+  // first tap, shared on the second. iOS Safari only opens the share sheet
+  // as a DIRECT response to a tap; awaiting a fetch first can lose that.
+  const [inviteLink, setInviteLink] = useState<Record<number, string>>({});
+  const [inviteErr, setInviteErr] = useState<Record<number, string>>({});
 
   const load = useCallback(() => {
     api("/api/friends/groups")
@@ -789,18 +794,41 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
     } catch { /* clipboard blocked */ }
   }
 
-  // Native share sheet where the platform has one (iMessage/WhatsApp on
-  // phones), clipboard fallback everywhere else. navigator.share exists
-  // only in secure contexts and mostly on mobile — feature-detect, never
-  // assume. A dismissed share sheet rejects with AbortError; that's the
-  // user changing their mind, not an error to surface.
-  async function share(g: Group) {
-    const text = inviteMessage(g);
-    if (typeof navigator.share === "function") {
-      try { await navigator.share({ text }); return; }
-      catch { return; /* dismissed or unsupported payload — no fallback spam */ }
+  // Reuse a still-working link this member made; otherwise make one.
+  async function getInviteLink(g: Group) {
+    setInviteErr(e => ({ ...e, [g.id]: "" }));
+    try {
+      const listed = await fetch(`/api/friends/invites?group_id=${g.id}`, { cache: "no-store" }).then(r => r.json());
+      const live = (listed.links ?? []).find((l: { mine: boolean; revoked: boolean; expires_at: string; uses: number; max_uses: number }) =>
+        l.mine && !l.revoked && new Date(l.expires_at).getTime() > Date.now() && l.uses < l.max_uses);
+      if (live) { setInviteLink(m => ({ ...m, [g.id]: live.url })); return; }
+      const r = await fetch("/api/friends/invites", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ group_id: g.id }),
+      });
+      const d = await r.json();
+      if (!r.ok || !d.url) throw new Error(d.error || "Couldn't make a link");
+      setInviteLink(m => ({ ...m, [g.id]: d.url }));
+    } catch {
+      setInviteErr(e => ({ ...e, [g.id]: "Couldn't make a link — share the invite code instead." }));
     }
-    copyLink(g);
+  }
+
+  function inviteText(g: Group) {
+    return `Join my group "${g.name}" on Golf Edge — one tap: ${inviteLink[g.id]}`;
+  }
+
+  async function shareLink(g: Group) {
+    const text = inviteText(g);
+    if (typeof navigator.share === "function") {
+      try { await navigator.share({ text }); return; } catch { return; }
+    }
+    copyInvite(g);
+  }
+
+  function copyInvite(g: Group) {
+    try { navigator.clipboard.writeText(inviteText(g)); setCopied(g.id);
+      setTimeout(() => setCopied(null), 1500); } catch { /* clipboard blocked */ }
   }
 
   /** The Sunday recap PNG for this group's latest settled event —
@@ -855,10 +883,10 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
             }}>
               {copied === g.id ? "Copied!" : g.invite_code}
             </button>
-            <button onClick={() => share(g)} title="Share the invite (message + code)" style={{
+            <button onClick={() => getInviteLink(g)} title="Make a one-tap invite link" style={{
               ...btnQuiet, padding: "4px 10px", color: "var(--bc-text)", borderColor: "var(--bc-line-hi)",
             }}>
-              Share
+              Invite friends
             </button>
             {recapOk[g.id] === false ? (
               <span title="The recap is built once an event your group played is final"
@@ -893,6 +921,30 @@ function GroupsTab({ focusJoin = false }: { focusJoin?: boolean }) {
               </button>
             </span>
           </div>
+          {(inviteLink[g.id] || inviteErr[g.id]) && (
+            <div style={{ marginTop: 10, padding: "10px 12px", borderRadius: 10,
+                          background: "var(--bc-panel)", border: "1px solid var(--bc-line)" }}>
+              {inviteErr[g.id] ? (
+                <span style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.84em)" }}>{inviteErr[g.id]}</span>
+              ) : (
+                <>
+                  <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginBottom: 8 }}>
+                    One tap to join for up to 20 friends · works for 7 days
+                  </div>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                    <button onClick={() => shareLink(g)} style={{ ...btn, minHeight: 44, padding: "0 18px" }}>Share link</button>
+                    <button onClick={() => copyInvite(g)} style={{ ...btnQuiet, minHeight: 44, padding: "0 14px",
+                      color: copied === g.id ? "var(--bc-green)" : "var(--bc-text)" }}>
+                      {copied === g.id ? "Copied!" : "Copy"}
+                    </button>
+                    <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.74em)", wordBreak: "break-all" }}>
+                      {inviteLink[g.id]}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
           {open === g.id && <GroupFeed groupId={g.id} />}
         </div>
       ))}

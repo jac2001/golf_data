@@ -51,13 +51,37 @@ export type InviteStatus = "ok" | "already_member" | "revoked" | "expired" | "us
 // you've added one test of your own for the precedence you chose.
 
 export function inviteExpiry(now: Date): Date {
-  throw new Error("Jack: inviteExpiry");
+  const invitationDate = new Date(now.getTime() + INVITE_TTL_DAYS * 24 * 60 * 60 * 1000);
+  return invitationDate;
 }
 
 export function inviteStatus(link: InviteLink, now: Date, isMember: boolean): InviteStatus {
-  throw new Error("Jack: inviteStatus");
+  if (isMember) {
+    return "already_member";
+  } else if (link.revoked_at !== null) {
+    return "revoked";
+  } else if (now >= link.expires_at) {
+    return "expired";
+  } else if (link.uses >= link.max_uses) {
+    return "used_up";
+  } else {
+    return "ok";
+  }
 }
 
 export function inviteMessage(status: InviteStatus, groupName: string): string {
-  throw new Error("Jack: inviteMessage");
+  switch (status) {
+    case "ok":
+      return `You're invited to join ${groupName}!`;
+    case "already_member":
+      return `You're already a member of ${groupName}.`;
+    case "revoked":
+      return `This invite to ${groupName} was turned off — ask whoever sent it for a new link.`;
+    case "expired":
+      return `This invite to ${groupName} has expired — ask whoever sent it for a new link.`;
+    case "used_up":
+      return `This invite to ${groupName} has been used up — ask whoever sent it for a new link.`;
+    default:
+      return `Unknown status for ${groupName}.`;
+  }
 }

@@ -94,3 +94,12 @@ test("messages differ per status", () => {
 // TODO(Jack): add a test for the precedence you chose in inviteStatus,
 // e.g. a link that is BOTH expired and revoked, or an existing member
 // opening an expired link.
+test("a member opening an old, revoked, expired link just gets to their group", () => {
+  const dead = link({ expires_at: new Date(NOW.getTime() - DAY), revoked_at: NOW, uses: INVITE_MAX_USES });
+  assert.equal(inviteStatus(dead, NOW, true), "already_member");
+});
+
+test("revoked beats expired: the owner's choice is the reason that matters", () => {
+  const both = link({ expires_at: new Date(NOW.getTime() - DAY), revoked_at: NOW });
+  assert.equal(inviteStatus(both, NOW, false), "revoked");
+});
