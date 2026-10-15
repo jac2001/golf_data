@@ -34,22 +34,25 @@ integrity + freshness gates refusing to publish bad predictions.
 
 ## Next (October)
 
-1. **PGA retrain: step 4 left** (steps 1-3 done Oct 14-15).
-   Done: season-aware event dates (Jack, `event_dates.py`); training
-   table ordered by date (`MERGE_ORDER`, verified: 81 order-dependent
-   columns change, nothing else; independent recompute 100%); serving
-   ordered by date + Jack's par features, stats-reviewed and live from
-   Bermuda (Oct 22); event list refreshed weekly.
-   Step 4: retrain on the date-ordered table (incl. 2025 data, which the
-   production models never saw: they fit years < 2025) and compare with
-   the current models under one identical walk-forward protocol; stats
-   review; ship only if it beats year-to-year noise, and the group
-   decides on a mid-season model change. Open data checks first:
-   `R2021535` "U.S. Open (2021)" lists the 2025 winner (likely
-   mislabeled rows); 9 stats-only events carry the wrong season's id.
-   Also known: serving blends season SG with the prior year, training
-   doesn't (median 0.075 strokes now, larger early-season); weather
-   trains on observed, serves forecast.
+1. **PGA retrain: decided Oct 15, don't ship mid-season; January.**
+   Steps 1-3 done and live (dates, date-ordered table + serving, Jack's
+   par features, weekly event list). Step 4 compared, all models scored on
+   the date-ordered features serving now produces
+   (`scripts/validation/compare_retrain.py`, stats-reviewed; 3 fit seeds;
+   fake 2021 U.S. Open dropped from both tables):
+   - Same training years, clean 2026 test: date-ordered training better,
+     top5 log-loss -2.6% on all 3 seeds (win mixed, top10 ~0).
+   - Ship test (production fit <2025 vs candidate fit <2026, on 2026):
+     candidate WORSE on all 3 seeds (win +1.8%, top5 +0.8%, top10 +0.6%).
+     So ADDING 2025 hurt 2026. Unexplained: before January, inspect the
+     2025 rows (feature coverage, e.g. DG-archive features; recency
+     weighting leaning on an unusual year).
+   - 2025 is in-sample for the production features (chosen on 2025 test
+     AUC), so judge on 2026 (+2024 loosely).
+   January: retrain on the date-ordered table with full 2026, ideally on
+   DataGolf SG (#2), judged by compare_retrain.py.
+   Known: serving blends season SG with the prior year, training doesn't;
+   weather trains on observed, serves forecast.
 2. **Move off pgatour.com data** (Oct 15). PGA TOUR (Grant, Oct 15)
    paused free ShotLink data "while we formulate a strategy for 2027 and
    beyond" and encouraged us to keep building; the Oct 6 verbal "free
