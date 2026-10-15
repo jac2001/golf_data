@@ -59,20 +59,29 @@ integrity + freshness gates refusing to publish bad predictions.
    rebuilt table, par features on date order, identical walk-forward
    (current vs retrained incl. 2025 data) + stats review, ship only if it
    beats noise; the group decides on a mid-season model change.
-2. **What is the euro model for?** Walk-forward win log-loss: model
+2. **Mobile-first Golf Edge** (decided direction, Oct 15): most players
+   won't be golf fans, so make join → pick → follow work on a phone in
+   a minute. Design: `docs/MOBILE_FIRST_DESIGN.md` (decisions A–D open).
+   Starts right after the retrain. First: instrument the flows, then
+   one-tap invite links (biggest drop-off: today a friend signs in via
+   the link, then must type a separately-sent code). The installable
+   app and push already exist; missing are install guidance (iOS only
+   allows push once installed) and a phone shell (bottom nav, split the
+   1,654-line friends page). Native app: not until people return weekly.
+3. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
    weight (walk-forward, not in-sample), or show the model only where
    it adds information (made cut?).
-3. **Licensing:** DataGolf follow-up on euro displays (nudge was due
+4. **Licensing:** DataGolf follow-up on euro displays (nudge was due
    ~Oct 6 — confirm it went out). PGA TOUR: verbal "free while
    non-commercial" from Grant (Oct 6); wait for written terms, then
    replace the scraped GraphQL scorecards/weather with the official API.
-4. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
+5. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
    twice, duplicated data files, and corrupted the Next build cache.
-5. **Season formats that need weeks to accumulate**: pick diversity,
+6. **Season formats that need weeks to accumulate**: pick diversity,
    College/Fade season boards — once there are real rows.
-6. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
+7. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
 - [x] PGA serving fixes (2026-10-14): unknown features filled with
