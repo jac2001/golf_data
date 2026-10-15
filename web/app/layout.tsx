@@ -16,6 +16,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import UpdateToast from "@/components/UpdateToast";
 import InstallCard from "@/components/InstallCard";
+import BottomNav from "@/components/BottomNav";
 
 // Broadcast display face — variable weight + width axes so headers can use
 // the condensed-900 treatment (font-stretch) from the design system.
@@ -36,6 +37,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,   // allow pinch-zoom but don't lock it
+  viewportFit: "cover",  // lets the phone tab bar pad for the iPhone home indicator
   themeColor: "#081f14",  // colors the browser/status bar to match the nav
 };
 
@@ -59,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </footer>
           <UpdateToast />
           <InstallCard />
+          <BottomNav />
         </body>
       </html>
     </ClerkProvider>

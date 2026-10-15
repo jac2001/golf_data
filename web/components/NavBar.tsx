@@ -5,9 +5,9 @@
  * Public zone: fairway green bar, 3px yellow rule, yellow active tab.
  * League zone (/league/*, plus legacy /fantasy /mypicks): charcoal bar,
  * green rule — so you always know which side of the site you're on.
+ * Phones: links live in the bottom tab bar (BottomNav), not a hamburger.
  */
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Show, UserButton, useAuth } from "@clerk/nextjs";
@@ -33,7 +33,6 @@ const PUBLIC_LINKS: NavLink[] = [
 
 export default function NavBar() {
   const pathname                        = usePathname();
-  const [menuOpen, setMenuOpen]         = useState(false);
 
   const { isSignedIn }                  = useAuth();
   const liveEvents                      = useLiveEvents();
@@ -56,8 +55,6 @@ export default function NavBar() {
   const isActive = (l: { href: string; exact?: boolean }) =>
     l.exact ? pathname === l.href : pathname.startsWith(l.href);
 
-  function handleNavClick() { setMenuOpen(false); }
-
   return (
     <>
       <nav style={{
@@ -72,7 +69,7 @@ export default function NavBar() {
         zIndex: 200,
       }}>
         {/* Wordmark */}
-        <Link href="/" onClick={handleNavClick} style={{
+        <Link href="/" style={{
           display: "flex", alignItems: "center", gap: 10,
           fontWeight: 900, fontSize: "1.15em",
           fontStretch: "115%", textTransform: "uppercase",
@@ -132,69 +129,8 @@ export default function NavBar() {
               </Link>
             </Show>
 
-          <button
-            className="mobile-only"
-            onClick={() => setMenuOpen(o => !o)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            style={{
-              background: "none", border: "none",
-              color: text, cursor: "pointer",
-              padding: "6px 8px", borderRadius: 6,
-              fontSize: "1.2em", lineHeight: 1,
-            }}
-          >
-            {menuOpen ? "✕" : "☰"}
-          </button>
         </div>
       </nav>
-
-      {/* Mobile drawer */}
-      {menuOpen && (
-        <div
-          className="mobile-only"
-          style={{
-            position: "fixed", top: 56, left: 0, right: 0,
-            background: bar,
-            borderBottom: `1px solid var(--bc-line)`,
-            zIndex: 199,
-            padding: "8px 0 16px",
-          }}
-        >
-          {links.map(l => (
-            <Link
-              key={l.href + l.label}
-              href={l.href}
-              onClick={handleNavClick}
-              style={{
-                display: "block",
-                padding: "12px 24px",
-                color:      isActive(l) ? rule : text,
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                fontSize:   "0.85em",
-                borderLeft: isActive(l) ? `3px solid ${rule}` : "3px solid transparent",
-              }}
-            >
-              {l.label}
-              {l.live && <span aria-label="live" style={{ width: 7, height: 7, borderRadius: "50%",
-                background: "var(--bc-green)", marginLeft: 8, display: "inline-block", verticalAlign: "middle", flexShrink: 0 }} />}
-            </Link>
-          ))}
-        </div>
-      )}
-
-      {menuOpen && (
-        <div
-          className="mobile-only"
-          onClick={() => setMenuOpen(false)}
-          style={{
-            position: "fixed", inset: 0, top: 56,
-            zIndex: 198,
-            background: "rgba(0,0,0,0.4)",
-          }}
-        />
-      )}
 
     </>
   );

@@ -116,10 +116,25 @@ a {
 }
 .tab-bar::-webkit-scrollbar { display: none; }
 
+/* Phone tab bar (components/BottomNav.tsx). --bottom-offset is what any
+   fixed bottom element (install card, update toast) sits above. */
+:root {
+  --bottom-nav-bar: 58px;
+  --bottom-nav-h: 0px;
+  --bottom-offset: 12px;
+}
+
 /* ── Breakpoint: ≤ 768px (phones + small tablets) ───────────────────────── */
 @media (max-width: 768px) {
+  :root {
+    --bottom-nav-h: calc(var(--bottom-nav-bar) + env(safe-area-inset-bottom));
+    --bottom-offset: calc(var(--bottom-nav-h) + 10px);
+  }
+
   /* Tighten global page padding */
   main { padding: 16px 16px 40px !important; }
+  /* Room for the tab bar under the footer */
+  body { padding-bottom: var(--bottom-nav-h); }
 
   /* Page wrappers need no horizontal overflow */
   .page-wrap, .page-wrap-md, .page-wrap-sm { overflow-x: hidden; }

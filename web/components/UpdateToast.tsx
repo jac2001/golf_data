@@ -41,7 +41,7 @@ export default function UpdateToast() {
   if (!stale) return null;
   return (
     <button onClick={() => location.reload()} style={{
-      position: "fixed", bottom: 18, left: "50%", transform: "translateX(-50%)",
+      position: "fixed", bottom: "calc(var(--bottom-offset) + 6px)", left: "50%", transform: "translateX(-50%)",
       zIndex: 1000, cursor: "pointer", fontFamily: "inherit",
       background: "var(--bc-yellow)", color: "#081f14", fontWeight: 800,
       fontSize: "max(var(--fs-min), 0.82em)", padding: "11px 20px", borderRadius: 999,

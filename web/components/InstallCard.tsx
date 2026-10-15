@@ -157,7 +157,7 @@ export default function InstallCard() {
 
   return (
     <div role="dialog" aria-label={copy.title} style={{
-      position: "fixed", left: 12, right: 12, bottom: 12, zIndex: 999,
+      position: "fixed", left: 12, right: 12, bottom: "var(--bottom-offset)", zIndex: 999,
       maxWidth: 440, margin: "0 auto",
       background: "var(--bc-raised)", color: "var(--bc-text)",
       border: "1px solid var(--bc-line-hi)", borderRadius: 10,
