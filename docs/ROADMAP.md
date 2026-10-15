@@ -29,7 +29,7 @@ integrity + freshness gates refusing to publish bad predictions.
 - [ ] **Get Rick (and others) playing** — every group member adds pick
       data the season-format work needs; Rick's session also closes the
       cross-group 403 check and drives onboarding polish.
-- [ ] **Clerk dashboard:** turn off Clerk's own "delete account" so
+- [x] **Clerk dashboard:** (done Oct 15) turn off Clerk's own "delete account" so
       deletion always runs our cleanup (Jack, 1 minute).
 
 ## Next (October)
