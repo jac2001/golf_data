@@ -12,6 +12,7 @@
  */
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { track } from "@/lib/track";
 import { validateLeaguePick } from "@/lib/leagueRules";
 import { nameKey } from "@/lib/names";
 import { openEventLocks } from "@/lib/eventLocks";
@@ -143,6 +144,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!inserted.length) {
     return Response.json({ error: "That pick no longer fits your budget — refresh and try again" }, { status: 409 });
   }
+  await track(sql, userId, "pick_made", { game: "let_it_ride", tournament_id: s.tid }, league.group_id);
   return Response.json({ ok: true }, { status: 201 });
 }
 

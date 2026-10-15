@@ -14,6 +14,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { roundLockAt } from "@/lib/lockTime";
 import { getSql, MODEL_API } from "@/lib/db";
 import { nameOf } from "@/lib/displayName";
+import { track } from "@/lib/track";
 
 type EventInfo = { tid: string; name: string; tour: string; startDate: string };
 
@@ -95,6 +96,7 @@ export async function POST(req: Request) {
     VALUES (${userId}, ${name}, ${ev.tid}, ${round}, ${player})
     ON CONFLICT (user_id, tournament_id, round)
     DO UPDATE SET player_name = EXCLUDED.player_name, user_name = EXCLUDED.user_name`;
+  await track(sql, userId, "pick_made", { game: "round", tournament_id: ev.tid, round });
   const mine = await myPicks(sql, userId, ev.tid);
   return Response.json({ event: ev, ...mine, locks: roundLocks(ev.startDate, ev.tour) });
 }

@@ -10,6 +10,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql } from "@/lib/db";
 import { nameOf, syncStoredNames } from "@/lib/displayName";
+import { track } from "@/lib/track";
 
 async function displayName(): Promise<string> {
   return nameOf(await currentUser());
@@ -85,6 +86,7 @@ export async function PUT(req: Request) {
     INSERT INTO group_members (group_id, user_id, user_name)
     VALUES (${g[0].id}, ${userId}, ${me})
     ON CONFLICT (group_id, user_id) DO NOTHING`;
+  await track(sql, userId, "joined_group", { source: "code" }, g[0].id);
   return Response.json({ joined: g[0] });
 }
 

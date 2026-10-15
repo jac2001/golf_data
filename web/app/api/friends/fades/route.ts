@@ -20,6 +20,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { nameOf } from "@/lib/displayName";
+import { track } from "@/lib/track";
 import { fadePool, expectedPayout, Probs } from "@/lib/modelBrain";
 
 type EventInfo = {
@@ -138,6 +139,7 @@ export async function POST(req: Request) {
     INSERT INTO fade_picks (user_id, user_name, tournament_id, player_name)
     VALUES (${userId}, ${displayName}, ${ev.tid}, ${player})
     ON CONFLICT (user_id, tournament_id, player_name) DO NOTHING`;
+  await track(sql, userId, "pick_made", { game: "fade", tournament_id: ev.tid });
 
   return Response.json({ event: ev, fades: await myFades(userId, ev.tid) });
 }

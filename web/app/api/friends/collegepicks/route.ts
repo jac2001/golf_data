@@ -17,6 +17,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
 import { nameOf } from "@/lib/displayName";
+import { track } from "@/lib/track";
 
 type EventInfo = { tid: string; name: string; tour: string; locked: boolean; startDate: string; finished: boolean };
 type School = { school: string; players: string[] };
@@ -88,6 +89,7 @@ export async function POST(req: Request) {
     VALUES (${userId}, ${displayName}, ${ev.tid}, ${school})
     ON CONFLICT (user_id, tournament_id) DO UPDATE
     SET school = ${school}, user_name = ${displayName}`;
+  await track(sql, userId, "pick_made", { game: "college", tournament_id: ev.tid });
   return Response.json({ event: ev, pick: school });
 }
 
