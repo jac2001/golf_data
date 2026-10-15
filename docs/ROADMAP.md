@@ -61,13 +61,18 @@ integrity + freshness gates refusing to publish bad predictions.
    beats noise; the group decides on a mid-season model change.
 2. **Mobile-first Golf Edge** (decided direction, Oct 15): most players
    won't be golf fans, so make join → pick → follow work on a phone in
-   a minute. Design: `docs/MOBILE_FIRST_DESIGN.md` (decisions A–D open).
+   a minute. Design: `docs/MOBILE_FIRST_DESIGN.md` (decisions A–D decided Oct 15).
    Starts right after the retrain. First: instrument the flows, then
    one-tap invite links (biggest drop-off: today a friend signs in via
    the link, then must type a separately-sent code). The installable
    app and push already exist; missing are install guidance (iOS only
    allows push once installed) and a phone shell (bottom nav, split the
    1,654-line friends page). Native app: not until people return weekly.
+   Speed (measured Oct 15, This Week): HTML 0.27s, JS boots ~1.3s,
+   board ~4.6s. Fixed: /api/predictions called DataGolf live on every
+   request (2.4-3.4s → ms) and a second fetch wave queued behind it.
+   Remaining for the mobile work: data fetches start only after the JS
+   boots (fetch on the server / prefetch), 1.8MB of JS on first load.
 3. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend

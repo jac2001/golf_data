@@ -110,16 +110,19 @@ export default function PredictionsPage() {
 
   // ── Core data fetch (called on mount + every 5 min) ──────────────────────────
   const fetchCore = useCallback(async (silent = false) => {
+    // Lineup, weather and intel don't depend on the predictions, so they
+    // start alongside them instead of waiting for them (they used to queue
+    // behind /api/predictions: a second wave ~3s into the page).
+    if (!silent) {
+      getLineup().then(setLineup).catch(() => {});
+      getWeather().then(setWeather).catch(() => {});
+      getIntel().then(setIntel).catch(() => {});
+    }
     try {
       const [t, p] = await Promise.all([getTournament(), getPredictions(200)]);
       setTournament(t);
       setPreds(p);
       setLastUpdated(new Date());
-      if (!silent) {
-        getLineup().then(setLineup).catch(() => {});
-        getWeather().then(setWeather).catch(() => {});
-        getIntel().then(setIntel).catch(() => {});
-      }
     } catch {
       if (!silent) setError("Could not connect to the API. Is FastAPI running on port 8000?");
     } finally {

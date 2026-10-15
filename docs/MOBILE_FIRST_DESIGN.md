@@ -1,6 +1,6 @@
 # Mobile-first Golf Edge — design
 
-Drafted 2026-10-15. Status: **proposed**; decisions A–D below are open.
+Drafted 2026-10-15. Status: **decided** (A–D as recommended, Jack, 2026-10-15).
 Build order at the bottom. Sequenced on the roadmap after the PGA retrain.
 
 ## Goal
@@ -97,18 +97,18 @@ bar with four tabs:
 `app/friends/page.tsx` gets split behind Home and Play: one component
 per game, so a non-fan never scrolls past the Fade Game to find Weekly 3.
 
-## Decisions (open)
+## Decisions (decided 2026-10-15: all four as recommended)
 
 - **A. Invite links: single-use, or expiring multi-use?** Single-use is
-  safest, but one link can't go in a group chat. **Recommend:**
+  safest, but one link can't go in a group chat. **Decided:**
   multi-use, expiring in 7 days, max 20 uses, revocable. That's safer
   than today's permanent code, and it still works in a group text.
-- **B. Can someone see the group before signing in?** **Recommend:**
+- **B. Can someone see the group before signing in?** **Decided:**
   group name and inviter's first name only. No members, no picks.
-- **C. Which game does a new member land on?** **Recommend:** the group's
+- **C. Which game does a new member land on?** **Decided:** the group's
   most-played game this week; Weekly 3 if there's no history.
 - **D. Plain-English "why" lines on golfer cards: template or model?**
-  **Recommend:** templates from data we already have (form, course
+  **Decided:** templates from data we already have (form, course
   history, the model's reason). Fast, free, and never wrong in tone.
 
 ## Not now

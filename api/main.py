@@ -1705,6 +1705,51 @@ def get_odds_comparison(market: str = "top10") -> dict:
     }
 
 
+_field_size_cache: dict[str, tuple[float, int | None]] = {}
+_FIELD_SIZE_TTL = 600  # seconds
+
+
+def _field_size_for(tid: str, default: int) -> int:
+    """This week's field size without making a visitor wait on DataGolf.
+
+    Until 2026-10-15 every /api/predictions request called DG's
+    /field-updates live (up to twice, through the rate-limited client)
+    whenever the tee-times cache didn't match — every request of an off
+    week — which made the This Week board take 2.4-3.4s. Now: the tee-
+    times cache if warm, else our committed field file, else DG at most
+    once per event per 10 minutes (an empty answer is cached too)."""
+    cached_tt = _tee_times_cache.get("data")
+    if cached_tt and cached_tt.get("tournament_id") == tid and cached_tt.get("field_size"):
+        return int(cached_tt["field_size"])
+    field_file = DATA_DIR / "fields" / f"field_{tid}.csv"
+    if field_file.exists():
+        try:
+            n = sum(1 for _ in open(field_file)) - 1
+            if n > 0:
+                return n
+        except Exception:
+            pass
+    now = time.time()
+    hit = _field_size_cache.get(tid)
+    if hit and now - hit[0] < _FIELD_SIZE_TTL:
+        return hit[1] if hit[1] else default
+    size = None
+    try:
+        from scripts.scrapers.dg_client import dg_get as _dg_get  # type: ignore
+        for _tour in ("pga", "upcoming_pga"):
+            try:
+                _raw = _dg_get("/field-updates", {"tour": _tour, "file_format": "json"})
+                if _raw.get("field"):
+                    size = len(_raw["field"])
+                    break
+            except Exception:
+                pass
+    except Exception:
+        pass
+    _field_size_cache[tid] = (now, size)
+    return size if size else default
+
+
 @app.get("/api/predictions")
 def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     """Top N players from latest_predictions.csv (the authoritative file).
@@ -1878,22 +1923,7 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     # archived event.
     field_size = len(records)
     if not archived:
-        try:
-            cached_tt = _tee_times_cache.get("data")
-            if cached_tt and cached_tt.get("tournament_id") == tid:
-                field_size = cached_tt.get("field_size", field_size)
-            else:
-                from scripts.scrapers.dg_client import dg_get as _dg_get  # type: ignore
-                for _tour in ("pga", "upcoming_pga"):
-                    try:
-                        _raw = _dg_get("/field-updates", {"tour": _tour, "file_format": "json"})
-                        if _raw.get("field"):
-                            field_size = len(_raw["field"])
-                            break
-                    except Exception:
-                        pass
-        except Exception:
-            pass
+        field_size = _field_size_for(tid, default=field_size)
 
     return {
         "tournament_id":         tid,
