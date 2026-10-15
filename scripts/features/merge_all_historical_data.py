@@ -52,6 +52,53 @@ YEARS = [y for y in _all_candidate_years
          and (HISTORICAL_DIR / f"tournament_stats_{y}.csv").exists()]
 print(f"Detected years with full data: {YEARS}")
 
+# ── Event ordering ───────────────────────────────────────────────────────────
+# "Prior event" means EARLIER IN TIME. Until 2026-10 this file compared
+# tournament_id strings, but PGA ids are not in calendar order (~25% of
+# event pairs; fall events have high ids yet open the season), so form
+# features included LATER events. Every ordering below now uses
+# order_key = "YYYY-MM-DD|tid" from scripts/features/event_dates.py
+# (season-aware: R2016464 was played 2015-10-18). MERGE_ORDER=tid
+# rebuilds the old id-ordered table, only for before/after comparisons.
+import os
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from scripts.features.event_dates import load_events, load_overrides, training_event_date
+
+MERGE_ORDER = os.environ.get("MERGE_ORDER", "date")
+assert MERGE_ORDER in ("date", "tid"), MERGE_ORDER
+OUTPUT_DIR = Path(os.environ.get("MERGE_OUTPUT_DIR", str(PROCESSED_DIR)))
+_EVENTS, _OVERRIDES = load_events(), load_overrides()
+_KEYS: dict = {}
+
+
+def order_key(tid, name=""):
+    """Sortable position of an event in time; None = can't place it."""
+    tid = str(tid)
+    if MERGE_ORDER == "tid":
+        return tid
+    if tid not in _KEYS:
+        d = training_event_date(tid, str(name), _EVENTS, _OVERRIDES)
+        _KEYS[tid] = None if d is None else f"{d:%Y-%m-%d}|{tid}"
+    return _KEYS[tid]
+
+
+def with_order_key(df, label):
+    """Add order_key; drop rows whose event can't be placed in time (an
+    undated event can't safely be anyone's 'prior')."""
+    df = df.copy()
+    names = df["tournament_name"] if "tournament_name" in df.columns else pd.Series("", index=df.index)
+    df["order_key"] = [order_key(t, n) for t, n in zip(df["tournament_id"], names)]
+    undated = df["order_key"].isna()
+    if undated.any():
+        print(f"  ⚠️  {label}: {df.loc[undated, 'tournament_id'].nunique()} undated events "
+              f"({int(undated.sum()):,} rows) left out of ordering: "
+              f"{sorted(df.loc[undated, 'tournament_id'].unique())[:12]}")
+    return df[~undated]
+
+
+print(f"Event ordering: {MERGE_ORDER}")
+
 def _canon_pid(v):
     """Canonical player_id string: 51349 / '51349' / 51349.0 → '51349'.
 
@@ -95,6 +142,7 @@ if not all_leaderboards:
 
 leaderboards = pd.concat(all_leaderboards, ignore_index=True)
 leaderboards['player_id'] = leaderboards['player_id'].map(_canon_pid)
+leaderboards = with_order_key(leaderboards, "leaderboards")
 print(f"\n📊 Combined leaderboards: {len(leaderboards):,} total records")
 print(f"   Years: {sorted(leaderboards['year'].unique())}")
 print(f"   Tournaments: {leaderboards['tournament_id'].nunique()}")
@@ -287,7 +335,8 @@ if ADD_SEASON_SG and tournament_stats is not None:
     print("-" * 60)
     
     stats_avg = tournament_stats[tournament_stats['stat_component'] == 'Avg'].copy()
-    stats_avg = stats_avg.sort_values(['player_id', 'year', 'tournament_id'])
+    stats_avg = with_order_key(stats_avg, "season SG stats")
+    stats_avg = stats_avg.sort_values(['player_id', 'year', 'order_key'])
 
     stats_avg['season_sg_prior'] = (
         stats_avg.groupby(['player_id', 'year', 'stat_id'])['stat_value']
@@ -361,19 +410,20 @@ if ADD_SEASON_SG and tournament_stats is not None:
         cat_hist = tournament_stats[
             (tournament_stats['stat_component'] == 'Avg') &
             (tournament_stats['stat_id'].astype(str).isin(_SG_CAT_IDS))
-        ][['player_id', 'year', 'tournament_id', 'stat_id', 'stat_value']].copy()
+        ][['player_id', 'year', 'tournament_id', 'tournament_name', 'stat_id', 'stat_value']].copy()
+        cat_hist = with_order_key(cat_hist, "recent SG stats").drop(columns=['tournament_name'])
         cat_hist['player_id'] = cat_hist['player_id'].astype(str)
         cat_hist['stat_id']   = cat_hist['stat_id'].astype(str)
         cat_hist['stat_name'] = cat_hist['stat_id'].map(_SG_CAT_IDS)
 
         # One row per (player, year, tournament), one col per stat
         cat_pivot = cat_hist.pivot_table(
-            index=['player_id', 'year', 'tournament_id'],
+            index=['player_id', 'year', 'tournament_id', 'order_key'],
             columns='stat_name',
             values='stat_value',
             aggfunc='first'
         ).reset_index()
-        cat_pivot = cat_pivot.sort_values(['player_id', 'year', 'tournament_id'])
+        cat_pivot = cat_pivot.sort_values(['player_id', 'year', 'order_key'])
 
         def _decay_weighted(arr, decay=0.85, n=8):
             """Return (weighted_avg, trend) arrays with look-ahead leakage blocked."""
@@ -450,7 +500,7 @@ print("-" * 60)
 print("  Generating course history features from tournament history...")
 
 # Sort by year+tournament to ensure proper temporal ordering
-merged = merged.sort_values(['year', 'tournament_id'])
+merged = merged.sort_values(['year', 'order_key'])
 
 # Normalize tournament names (as proxy for venue) with aliases
 def _normalize_venue_name(name: str) -> str:
@@ -841,6 +891,7 @@ if ADD_FORM_FEATURES:
             # (astype(str) for the decay features merge). Keeping both as str ensures the
             # player_id filter in the form loop always matches.
             form_stats_df['player_id'] = form_stats_df['player_id'].astype(str)
+            form_stats_df = with_order_key(form_stats_df, "form_stats")
             print(f"  ✓ Total form_stats records: {len(form_stats_df):,}")
         else:
             form_stats_df = pd.DataFrame()
@@ -879,7 +930,7 @@ if ADD_FORM_FEATURES:
             stat_data = player_stats[player_stats['stat_id'] == stat_id]
             if len(stat_data) == 0:
                 return np.nan
-            recent = stat_data.sort_values('tournament_id').tail(n_events)
+            recent = stat_data.sort_values('order_key').tail(n_events)
             values = recent['stat_value'].apply(parse_numeric).dropna()
             if len(values) > 0:
                 return float(values.mean())
@@ -892,19 +943,19 @@ if ADD_FORM_FEATURES:
         form_features_list = []
 
         # Sort by tournament_id to ensure temporal ordering
-        merged_sorted = merged.sort_values(['player_id', 'tournament_id'])
+        merged_sorted = merged.sort_values(['player_id', 'order_key'])
 
         # Get unique player-tournament pairs
-        unique_pairs = merged_sorted[['player_id', 'tournament_id']].drop_duplicates()
+        unique_pairs = merged_sorted[['player_id', 'tournament_id', 'order_key']].drop_duplicates()
 
-        for idx, (player_id, tournament_id) in enumerate(unique_pairs.itertuples(index=False)):
+        for idx, (player_id, tournament_id, this_key) in enumerate(unique_pairs.itertuples(index=False)):
             if idx % 5000 == 0 and idx > 0:
                 print(f"    Progress: {idx:,}/{len(unique_pairs):,}")
 
             # Get prior tournaments for this player from merged data
             prior_data = merged_sorted[
                 (merged_sorted['player_id'] == player_id) &
-                (merged_sorted['tournament_id'] < tournament_id)
+                (merged_sorted['order_key'] < this_key)
             ]
 
             # Get prior form_stats for this player
@@ -912,7 +963,7 @@ if ADD_FORM_FEATURES:
             if len(form_stats_df) > 0:
                 prior_form_stats = form_stats_df[
                     (form_stats_df['player_id'] == player_id) &
-                    (form_stats_df['tournament_id'] < tournament_id)
+                    (form_stats_df['order_key'] < this_key)
                 ]
 
             # Calculate basic form metrics from prior performance
@@ -1346,7 +1397,11 @@ print("-" * 60)
 
 _yr_min = min(YEARS) if YEARS else 2016
 _yr_max = max(YEARS) if YEARS else 2025
-output_file = PROCESSED_DIR / f"master_training_data_{_yr_min}_{_yr_max}.csv"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+output_file = OUTPUT_DIR / f"master_training_data_{_yr_min}_{_yr_max}.csv"
+if MERGE_ORDER == "date":
+    merged["event_date"] = merged["order_key"].str[:10]
+merged = merged.drop(columns=["order_key"])
 merged.to_csv(output_file, index=False)
 
 print(f"  ✓ Saved to: {output_file}")

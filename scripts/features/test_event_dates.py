@@ -12,9 +12,10 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from scripts.features.event_dates import event_date, load_events  # noqa: E402
+from scripts.features.event_dates import event_date, load_events, load_overrides, training_event_date  # noqa: E402
 
 EV = load_events()
+OV = load_overrides()
 day = pd.Timestamp
 
 
@@ -123,6 +124,24 @@ def test_every_resolved_training_date_falls_in_its_season():
         print(f"      (None for {len(nones)}: {nones})")
     assert not out_of_season, f"dates outside their season: {out_of_season[:5]}"
     assert len(nones) <= 3, f"too many unresolved: {nones}"
+
+
+def test_override_fills_the_gap():
+    """The 2016 Zurich isn't in DG's list; the override file supplies it."""
+    assert training_event_date("R2016018", "Zurich Classic of New Orleans", EV, OV) == day("2016-04-28")
+    assert training_event_date("R2016464", "Frys.com Open", EV, OV) == day("2015-10-18")
+
+
+def test_overrides_only_cover_what_the_data_cannot():
+    """An override for an event the data CAN resolve hides a disagreement:
+    drop it, or find out which date is wrong. And it must sit in its season."""
+    for tid, date in OV.items():
+        assert d(tid) is None, f"{tid}: data now resolves it; remove the override"
+        season = int(tid[1:5])
+        if season >= 2024:
+            assert date.year == season, tid
+        else:
+            assert _finale(season - 1) < date <= _finale(season), tid
 
 
 if __name__ == "__main__":

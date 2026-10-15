@@ -30,13 +30,12 @@ R2023464 = Sept 2022 (Max Homa), R2023543 = Sept 2023 (Sahith Theegala).
 """
 
 from __future__ import annotations
-
 from pathlib import Path
-
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
 EVENTS_PATH = ROOT / "data" / "raw" / "dg_pga_event_list.csv"
+OVERRIDES_PATH = ROOT / "data" / "raw" / "event_date_overrides.csv"
 TOUR_CHAMPIONSHIP = 60
 CALENDAR_SEASONS_FROM = 2024
 
@@ -47,6 +46,26 @@ def load_events(path: Path = EVENTS_PATH) -> pd.DataFrame:
     df["date"] = pd.to_datetime(df["date"])
     df["event_id"] = df["event_id"].astype(int)
     return df
+
+
+def load_overrides(path: Path = OVERRIDES_PATH) -> dict[str, pd.Timestamp]:
+    """tid -> date for events DG's list can't resolve. Every row carries a
+    `source`; the file is the one place exceptions live."""
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path)
+    missing = df[df["source"].fillna("").str.strip() == ""]
+    if not missing.empty:
+        raise ValueError(f"override without a source: {list(missing['tournament_id'])}")
+    return dict(zip(df["tournament_id"], pd.to_datetime(df["date"])))
+
+
+def training_event_date(tid: str, our_name: str, events: pd.DataFrame,
+                        overrides: dict[str, pd.Timestamp]) -> pd.Timestamp | None:
+    """What callers use: a sourced override first, else what the data says."""
+    if tid in overrides:
+        return overrides[tid]
+    return event_date(tid, our_name, events)
 
 
 # ── TODO(Jack): event_date ───────────────────────────────────────────────────
@@ -80,5 +99,25 @@ def load_events(path: Path = EVENTS_PATH) -> pd.DataFrame:
 #
 # Done when: python3 scripts/features/test_event_dates.py → all pass.
 
+def _finale(season: int, events: pd.DataFrame) -> pd.Timestamp:
+    """The TOUR Championship date for season S is the event_id 60 row in
+    calendar year S (it's always played in its own season's year)."""
+    finale = events[(events["calendar_year"] == season) & (events["event_id"] == TOUR_CHAMPIONSHIP)]
+    if len(finale) != 1:
+        raise ValueError(f"season {season} has {len(finale)} finale rows")
+    return finale.iloc[0]["date"]
+
 def event_date(tid: str, our_name: str, events: pd.DataFrame) -> pd.Timestamp | None:
-    raise NotImplementedError("Jack: event_date")
+    """Return the start date of tid's event, or None when you can't be sure."""
+    season, event_id = int(tid[1:5]), int(tid[5:])
+    if season >= CALENDAR_SEASONS_FROM:
+        start, end = pd.Timestamp(f"{season}-01-01"), pd.Timestamp(f"{season}-12-31")
+    elif season == 2023:
+        start, end = _finale(season - 1, events) + pd.Timedelta(days=1), pd.Timestamp("2023-12-31")
+    else:
+        start, end = _finale(season - 1, events) + pd.Timedelta(days=1), _finale(season, events)
+    # candidates: rows with this event_id whose date is in the window.
+    # Exactly one → its date. Zero or two → None (the caller decides what None means; don't guess a date).
+    candidates = events[(events['event_id'] == event_id) & (events['date'] >= start) & (events['date'] <= end)]
+    return candidates.iloc[0]['date'] if len(candidates) == 1 else None
+    
