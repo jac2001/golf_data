@@ -171,25 +171,6 @@ export function CollegeTab() {
           </div>
         </div>
       )}
-
-      <div style={{ ...card, background: "var(--bc-panel)" }}>
-        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
-          How it works: claim ONE school per event — you can change it until
-          lock, midnight ET the night before round 1 (UK time for DP World Tour
-          events). Only schools with alumni in that week&apos;s field can be
-          claimed. Schools stay hidden until lock.
-        </p>
-        <ul style={{ margin: "8px 0 0", paddingLeft: 18, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
-          <li><strong style={{ color: "var(--bc-text)" }}>Schools aren&apos;t exclusive.</strong> Two
-            friends can claim the same school — they&apos;ll post the same score and tie.</li>
-          <li><strong style={{ color: "var(--bc-text)" }}>Best two count.</strong> Your score is the
-            prize money of your school&apos;s two best finishers. With only one alumnus in the
-            field, his earnings are your whole score.</li>
-          <li><strong style={{ color: "var(--bc-text)" }}>Ties share the week.</strong> Everyone tied
-            for the top score gets a win; if nobody&apos;s school earns anything, nobody does. The
-            season ranks event wins.</li>
-        </ul>
-      </div>
     </>
   );
 }

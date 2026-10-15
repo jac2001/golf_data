@@ -236,21 +236,6 @@ export function RoundGameTab() {
           </table>
         </div>
       )}
-
-      <div style={{ ...card, background: "var(--bc-panel)" }}>
-        <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
-          How it works: one pick per round, each player only once per event,
-          scored by that round&apos;s score to par — lowest event total wins.
-          Round 1 locks at midnight ET the night before Thursday (UK time for
-          DP World Tour events); each later round locks at the same midnight
-          before its own day. The +5: if
-          your pick doesn&apos;t post a score for a locked round — missed the
-          cut, withdrew, or never teed off — you take +5 for it, but only
-          once the field has finished that round (until then it just shows
-          pending). Boards hide everyone&apos;s pick for a round until that
-          round locks.
-        </p>
-      </div>
     </>
   );
 }

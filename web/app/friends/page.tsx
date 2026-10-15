@@ -15,14 +15,12 @@ import { PageHead, SubTabs } from "@/components/broadcast";
 import { MyBetsTab } from "./_components/MyBetsTab";
 import { GamesTab } from "./_components/GamesTab";
 import { GroupsTab } from "./_components/GroupsTab";
-import { StandingsTab } from "./_components/StandingsTab";
 import { TailsTab } from "./_components/TailsTab";
 import { ReminderBell } from "./_components/shared";
 
-type GameTab = "games" | "standings" | "groups" | "bets" | "tails";
+type GameTab = "games" | "groups" | "bets" | "tails";
 const TABS: { id: GameTab; label: string }[] = [
   { id: "games",     label: "Games" },
-  { id: "standings", label: "Standings" },
   { id: "groups",    label: "Groups" },
   { id: "bets",      label: "My Bets" },
   { id: "tails",     label: "My Tails" },
@@ -64,7 +62,6 @@ export default function FriendsPage() {
       )}
       {/* The game first; reminders are a setting, not the headline. */}
       {tab === "games" && <><GamesTab /><ReminderBell /></>}
-      {tab === "standings" && <StandingsTab />}
       {tab === "groups" && <GroupsTab focusJoin={invited} />}
       {tab === "bets" && <MyBetsTab />}
       {tab === "tails" && <TailsTab />}

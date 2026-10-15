@@ -9,12 +9,15 @@
  * remembered: a landing the page chose isn't saved as their choice.
  */
 
-import LetItRideTab from "@/components/LetItRideTab";
+import LetItRideTab, { LetItRideStandings } from "@/components/LetItRideTab";
 import { useEffect, useState } from "react";
 import { getOpenEvents } from "@/lib/api";
 import { GAME_IDS, landingGame } from "@/lib/landing";
 import type { GameId } from "@/lib/landing";
-import { useApi } from "./shared";
+import { HowToPlay } from "./HowToPlay";
+import { FadeStandings } from "./FadeStandings";
+import { CollegeStandings } from "./CollegeGame";
+import { card, useApi } from "./shared";
 import { CollegeTab } from "./CollegeGame";
 import { FadeTab } from "./FadeGame";
 import { RoundGameTab } from "./RoundGame";
@@ -25,21 +28,33 @@ export type GameMode = GameId;
 
 const STORE_KEY = "friends-game-mode";
 
+/** Inside each game: make picks, see the season, read the rules. */
+type View = "picks" | "standings" | "rules";
+const VIEWS: { id: View; label: string }[] = [
+  { id: "picks", label: "Picks" },
+  { id: "standings", label: "Standings" },
+  { id: "rules", label: "How to play" },
+];
+
 const isGame = (v: string | null): v is GameId => !!v && (GAME_IDS as readonly string[]).includes(v);
-export const GAME_MODES: { id: GameMode; name: string; tag: string }[] = [
-  { id: "ride",    name: "Let It Ride",  tag: "Pick 3 · most money wins · uses budgeted all season" },
-  { id: "rounds",  name: "Round Game",   tag: "1 per round · to par" },
-  { id: "fades",   name: "Fade Game",    tag: "Fade 3 stars · least money wins" },
-  { id: "college", name: "College Game", tag: "Claim a school · best 2 alumni count" },
+export const GAME_MODES: { id: GameMode; name: string; short: string; tag: string }[] = [
+  { id: "ride",    name: "Let It Ride",  short: "Let It Ride", tag: "Pick 3 · most money wins · uses budgeted all season" },
+  { id: "rounds",  name: "Round Game",   short: "Round",   tag: "1 per round · to par" },
+  { id: "fades",   name: "Fade Game",    short: "Fade",    tag: "Fade 3 stars · least money wins" },
+  { id: "college", name: "College Game", short: "College", tag: "Claim a school · best 2 alumni count" },
 ];
 
 export function GamesTab() {
   const api = useApi();
   const [mode, setMode] = useState<GameMode | null>(null);
+  const [view, setView] = useState<View>("picks");
 
   useEffect(() => {
     // 1. A link that names a game (/friends?game=rounds) wins outright.
-    const linked = new URLSearchParams(window.location.search).get("game");
+    const q = new URLSearchParams(window.location.search);
+    const v = q.get("view");
+    if (v === "standings" || v === "rules") setView(v);
+    const linked = q.get("game");
     if (isGame(linked)) { setMode(linked); return; }
 
     // 2. Otherwise Jack's rule. Storage can throw (private mode): no tap then.
@@ -79,35 +94,60 @@ export function GamesTab() {
     try { localStorage.setItem(STORE_KEY, g); } catch { /* fine */ }
   }
 
+  const tabBtn = (on: boolean): React.CSSProperties => ({
+    flex: 1, minHeight: 44, cursor: "pointer", fontFamily: "inherit", background: "transparent",
+    border: "none", borderBottom: `3px solid ${on ? "var(--bc-yellow)" : "transparent"}`,
+    color: on ? "var(--bc-text)" : "var(--bc-muted)", fontWeight: on ? 900 : 800,
+    fontSize: "max(var(--fs-min), 0.8em)", textTransform: "uppercase", letterSpacing: "0.06em",
+  });
+
   return (
     <>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-        gap: 8, marginBottom: 16 }}>
+      <nav aria-label="Games" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+        gap: 4, background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10,
+        padding: 4, marginBottom: 12 }}>
         {GAME_MODES.map(g => {
           const on = mode === g.id;
           return (
-            <button key={g.id} onClick={() => pick(g.id)} style={{
-              cursor: "pointer", textAlign: "left", fontFamily: "inherit",
-              background: on ? "var(--bc-raised)" : "var(--bc-card)",
-              border: on ? "1px solid var(--bc-line-hi)" : "1px solid var(--bc-line)",
-              borderRadius: 8, padding: "10px 12px", minWidth: 0,
+            <button key={g.id} onClick={() => pick(g.id)} aria-pressed={on} title={g.tag} style={{
+              minHeight: 44, cursor: "pointer", fontFamily: "inherit", borderRadius: 7, minWidth: 0,
+              padding: "0 2px", fontSize: "max(var(--fs-min), 0.84em)", fontWeight: on ? 900 : 800,
+              background: on ? "var(--bc-raised)" : "transparent",
+              border: `1px solid ${on ? "var(--bc-line-hi)" : "transparent"}`,
+              color: on ? "var(--bc-text)" : "var(--bc-muted)",
             }}>
-              <div style={{ fontWeight: 900, fontSize: "max(var(--fs-min), 0.86em)", letterSpacing: "0.02em",
-                color: "var(--bc-text)" }}>
-                {g.name}
-              </div>
-              <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.7em)", marginTop: 3, lineHeight: 1.35 }}>
-                {g.tag}
-              </div>
+              {g.short}
             </button>
           );
         })}
+      </nav>
+      <div role="tablist" style={{ display: "flex", borderBottom: "1px solid var(--bc-line)", marginBottom: 14 }}>
+        {VIEWS.map(v => (
+          <button key={v.id} role="tab" aria-selected={view === v.id} onClick={() => setView(v.id)}
+            style={tabBtn(view === v.id)}>{v.label}</button>
+        ))}
       </div>
       {mode === null && <p style={{ color: "var(--bc-muted)" }}>Loading…</p>}
-      {mode === "rounds" && <RoundGameTab />}
-      {mode === "fades" && <FadeTab />}
-      {mode === "college" && <CollegeTab />}
-      {mode === "ride" && <LetItRideTab />}
+      {mode !== null && view === "picks" && <>
+        {mode === "rounds" && <RoundGameTab />}
+        {mode === "fades" && <FadeTab />}
+        {mode === "college" && <CollegeTab />}
+        {mode === "ride" && <LetItRideTab />}
+      </>}
+      {mode !== null && view === "standings" && <>
+        {mode === "ride" && <LetItRideStandings />}
+        {mode === "fades" && <FadeStandings />}
+        {mode === "college" && <CollegeStandings />}
+        {mode === "rounds" && (
+          <div style={card}>
+            <p style={{ margin: 0, color: "var(--bc-muted)", lineHeight: 1.6 }}>
+              The Round Game is scored one event at a time, so there&apos;s no
+              season table: the event board is on the Picks tab.
+            </p>
+          </div>
+        )}
+      </>}
+      {mode !== null && view === "rules" && <HowToPlay game={mode} />}
     </>
   );
 }

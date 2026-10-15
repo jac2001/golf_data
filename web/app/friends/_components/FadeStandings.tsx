@@ -1,48 +1,12 @@
 "use client";
 
 /**
- * Season standings for every game.
- * Split out of app/friends/page.tsx unchanged.
+ * The Fade Game's season standings. (Each game's Standings tab picks its
+ * own table in GamesTab; the others live with their games.)
  */
 
 import { useEffect, useState } from "react";
-import { LetItRideStandings } from "@/components/LetItRideTab";
-import { useStoredChoice } from "@/lib/useStoredChoice";
-import { CollegeStandings } from "./CollegeGame";
-import { GAME_MODES } from "./GamesTab";
-import { ModelBadge, btnQuiet, card, cell, hdr, useApi } from "./shared";
-
-export function StandingsTab() {
-  // Season standings exist for the weekly and fade games only — the
-  // Round Game is per-tournament by design (its whole-event board
-  // lives on the Games tab), so no "rounds" pill here and a
-  // remembered "rounds" mode falls back to picks.
-  const [mode, setMode] = useStoredChoice<"ride" | "fades" | "college">("friends-game-mode",
-    ["ride", "fades", "college"], "ride", false);
-
-  return (
-    <>
-      <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
-        {GAME_MODES.filter(g => g.id !== "rounds").map(g => {
-          const on = mode === g.id;
-          return (
-            <button key={g.id} onClick={() => setMode(g.id as "ride" | "fades" | "college")} style={{
-              ...btnQuiet, padding: "7px 14px",
-              color: on ? "var(--bc-text)" : "var(--bc-muted)",
-              background: on ? "var(--bc-raised)" : "transparent",
-              borderColor: on ? "var(--bc-line-hi)" : "var(--bc-line)",
-            }}>
-              {g.name}
-            </button>
-          );
-        })}
-      </div>
-      {mode === "ride" && <LetItRideStandings />}
-      {mode === "fades" && <FadeStandings />}
-      {mode === "college" && <CollegeStandings />}
-    </>
-  );
-}
+import { ModelBadge, card, cell, hdr, useApi } from "./shared";
 
 /** Fade Game season: EVENT WINS, not a money sum — summing a
  *  lowest-wins score would reward never playing. */
