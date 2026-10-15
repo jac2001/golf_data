@@ -96,9 +96,10 @@ integrity + freshness gates refusing to publish bad predictions.
    After the fix (re-measured live): all data in 3.3s (was ~5.5s), but
    /api/predictions alone is 0.3s yet 1.7s in a page that fires six
    calls at once: Render's free tier is a fraction of a CPU, so parallel
-   requests queue. Options: paid instance (~$7/mo, simplest) or cache
-   read-only GETs at the edge for 1-2 min (free; repeat visits skip
-   Render).
+   requests queue. Done: Render Starter ($7/mo, Oct 15) + empty tee-times
+   cached + course cache 1h. Re-measured This Week: all data at 1.5s on a
+   first visit, 0.9s on a repeat (was ~5.5s). Left: data still starts
+   only after the JS boots, /api/events/open fires twice, 1.8MB of JS.
 4. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
