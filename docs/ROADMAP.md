@@ -59,7 +59,27 @@ integrity + freshness gates refusing to publish bad predictions.
    rebuilt table, par features on date order, identical walk-forward
    (current vs retrained incl. 2025 data) + stats review, ship only if it
    beats noise; the group decides on a mid-season model change.
-2. **Mobile-first Golf Edge** (decided direction, Oct 15): most players
+2. **Move off pgatour.com data** (Oct 15). PGA TOUR (Grant, Oct 15)
+   paused free ShotLink data "while we formulate a strategy for 2027 and
+   beyond" and encouraged us to keep building; the Oct 6 verbal "free
+   while non-commercial" can no longer be relied on long term. We still
+   read pgatour.com's GraphQL for a lot (since the Feb 2026 first commit,
+   before DataGolf): the model's strokes-gained + form stats
+   (`multi_year_stats_scraper_fixed`, `fetch_form_stats`), world
+   rankings, player database, live leaderboard, results + official prize
+   money (`auto_record_results`), tee times, hole scores, weather widget,
+   power rankings, betting profiles, withdrawals, colleges.
+   Plan: (a) training SG from DataGolf historical raw data (licensed,
+   round-level SG by category; the euro model already trains on it); do
+   it WITH the retrain, since the table is being rebuilt anyway.
+   (b) live scores/positions → DG in-play; results → DG raw data.
+   (c) Prize money: DG has none; the open question to PGA TOUR (draft
+   reply to Grant asks: OK to keep using posted results/prize money
+   non-commercially meanwhile? Is there a paid license that fits, and
+   whom to ask?). Fallback: purse × standard payout table, labeled
+   estimated (as euro does). (d) No new pgatour.com dependencies; stay
+   strictly non-commercial. Check DG's terms for display use (open).
+3. **Mobile-first Golf Edge** (decided direction, Oct 15): most players
    won't be golf fans, so make join → pick → follow work on a phone in
    a minute. Design: `docs/MOBILE_FIRST_DESIGN.md` (decisions A–D decided Oct 15).
    Starts right after the retrain. First: instrument the flows, then
@@ -79,20 +99,20 @@ integrity + freshness gates refusing to publish bad predictions.
    requests queue. Options: paid instance (~$7/mo, simplest) or cache
    read-only GETs at the edge for 1-2 min (free; repeat visits skip
    Render).
-3. **What is the euro model for?** Walk-forward win log-loss: model
+4. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
    weight (walk-forward, not in-sample), or show the model only where
    it adds information (made cut?).
-4. **Licensing:** DataGolf follow-up on euro displays (nudge was due
+5. **Licensing:** DataGolf follow-up on euro displays (nudge was due
    ~Oct 6 — confirm it went out). PGA TOUR: verbal "free while
    non-commercial" from Grant (Oct 6); wait for written terms, then
    replace the scraped GraphQL scorecards/weather with the official API.
-5. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
+6. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
    twice, duplicated data files, and corrupted the Next build cache.
-6. **Season formats that need weeks to accumulate**: pick diversity,
+7. **Season formats that need weeks to accumulate**: pick diversity,
    College/Fade season boards — once there are real rows.
-7. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
+8. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
 
 ### Done from this list (moved up and shipped)
 - [x] PGA serving fixes (2026-10-14): unknown features filled with
