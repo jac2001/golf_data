@@ -73,6 +73,12 @@ integrity + freshness gates refusing to publish bad predictions.
    request (2.4-3.4s → ms) and a second fetch wave queued behind it.
    Remaining for the mobile work: data fetches start only after the JS
    boots (fetch on the server / prefetch), 1.8MB of JS on first load.
+   After the fix (re-measured live): all data in 3.3s (was ~5.5s), but
+   /api/predictions alone is 0.3s yet 1.7s in a page that fires six
+   calls at once: Render's free tier is a fraction of a CPU, so parallel
+   requests queue. Options: paid instance (~$7/mo, simplest) or cache
+   read-only GETs at the edge for 1-2 min (free; repeat visits skip
+   Render).
 3. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
