@@ -69,31 +69,34 @@ def load_form_stats(hist_dir: Path = ROOT / "data" / "historical") -> pd.DataFra
     return df[df["event_date"].notna()].reset_index(drop=True)
 
 
-# ── TODO(Jack): recent_par_scoring_field_pct ────────────────────────────────
-# form_stats:  load_form_stats()'s output (every year)
-# field_ids:   this event's player_ids, as strings
-# before_date: this event's date (pd.Timestamp); only rows whose
-#              event_date is EARLIER count. Not tournament_id: ids aren't
-#              in calendar order, which is the leak training just fixed.
-#
-# Return a DataFrame with one row per field player: player_id, then for
-# each of the three PAR_STATS columns the raw average AND the
-# "_field_pct" percentile (6 columns + player_id).
-#
-# Follow training's order of operations EXACTLY (the docstring above):
-# tail(N_EVENTS) comes BEFORE dropping NaNs, so a NaN in the last 5 rows
-# leaves only 4 to average; it doesn't reach back for a 6th. Parity is
-# the point: a "better" version that differs from training is a new
-# train/serve skew.
-#
-# Hints: filter to prior rows once, outside the loop. Sort by event_date
-# (then tournament_id, to break ties the same way every time).
-# groupby("player_id") per stat. pd.to_numeric(..., errors="coerce") parses. .map() puts the
-# per-player averages onto the field.
-#
-# Done when: python3 scripts/features/test_serving_form.py → all pass,
-# including the parity tests against the real training table.
+"""
+The field-relative par-scoring features are the only ones that need
+the whole field's form_stats rows to compute. The others are per-player
+and can be computed in a single pass over the player's prior rounds. The
+field-relative features are computed in training by merge_all_historical_data.py
+and in serving by recent_par_scoring_field_pct() below. The tests check
+that the serving function reproduces the exact numbers in the DATE-ORDERED
+training table (frozen in fixtures/par_scoring_date_order.csv from the
+verified rebuild of Oct 15; in those events 91-99% of rows differ from
+the old id-ordered values).
+"""
 
 def recent_par_scoring_field_pct(form_stats: pd.DataFrame, field_ids: list[str],
                                  before_date: pd.Timestamp) -> pd.DataFrame:
-    raise NotImplementedError("Jack: recent_par_scoring_field_pct")
+    prior = form_stats[form_stats['event_date'] < before_date]
+    prior = prior.sort_values(['event_date', 'tournament_id'])
+    out = pd.DataFrame({'player_id': field_ids})
+    for col, stat_id in PAR_STATS.items():
+        s = prior[prior['stat_id'] == stat_id]
+        last5 = s.groupby("player_id").tail(N_EVENTS)
+        values = pd.to_numeric(last5['stat_value'], errors='coerce')
+        avg = values.groupby(last5['player_id']).apply(lambda v: v.mean()) 
+        # Per-player Series.mean(), the same summation training's get_recent_stat_avg
+        # uses. groupby().mean() adds in a different order and can differ in the last
+        # bit, which reorders tied players in the percentile rank (found by the parity
+        # test, Oct 15).
+        out[col] = out['player_id'].map(avg)
+        out[f"{col}_field_pct"] = out[col].rank(ascending=False, pct=True)
+    return out
+  
+  

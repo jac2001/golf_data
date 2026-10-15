@@ -208,6 +208,104 @@ def _load_feature_medians() -> dict:
 _FEATURE_MEDIANS = _load_feature_medians()
 
 
+# Event ORDER, same as training (merge_all_historical_data.py): a player's
+# history is sorted by the event's real DATE ("YYYY-MM-DD|tid"), never by
+# tournament_id. PGA ids aren't in calendar order (fall events have high ids
+# but open the season), so id order picked the wrong "most recent" events —
+# and an id cutoff dropped events played BEFORE an upcoming one (R2026528
+# Bermuda dropped R2026554/556/557). Undated events are left out, as training
+# leaves them out.
+_ORDER_CACHE: dict = {}
+_EVENTS_DF = None
+
+
+def _event_order_key(tid) -> str | None:
+    global _EVENTS_DF
+    tid = str(tid)
+    if tid not in _ORDER_CACHE:
+        from scripts.features.event_dates import load_events, load_overrides, training_event_date
+        if _EVENTS_DF is None:
+            _EVENTS_DF = (load_events(), load_overrides())
+        d = training_event_date(tid, "", *_EVENTS_DF)
+        if d is None and tid.startswith("R"):
+            # Not in data/raw/dg_pga_event_list.csv yet (refreshed weekly by
+            # fetch_dg_event_list.py; DG's archive can lag a played event).
+            # Fall back to the schedule's start date rather than DROP the
+            # event from every player's form, and say so: the stats review
+            # (2026-10-15) found a frozen list would silently lose one more
+            # event each week. Ordering between weeks is unaffected by start
+            # vs final-round date.
+            d = _schedule_start(tid)
+            if d is not None:
+                print(f"  ⚠️  {tid} not in the DG event list — ordered by its scheduled start "
+                      f"{d.date()} (run fetch_dg_event_list.py)")
+        _ORDER_CACHE[tid] = None if d is None else f"{d:%Y-%m-%d}|{tid}"
+    return _ORDER_CACHE[tid]
+
+
+_SCHED_STARTS: dict | None = None
+
+
+def _schedule_start(tid: str) -> pd.Timestamp | None:
+    """Scheduled start date of a PGA event from data/raw/schedule_2*.csv."""
+    global _SCHED_STARTS
+    if _SCHED_STARTS is None:
+        _SCHED_STARTS = {}
+        for f in sorted((DATA_DIR / "raw").glob("schedule_2*.csv")):
+            try:
+                sc = pd.read_csv(f, usecols=["tournament_id", "start_date"])
+                for t, d in zip(sc["tournament_id"].astype(str).str.upper(), sc["start_date"]):
+                    _SCHED_STARTS.setdefault(t, pd.Timestamp(str(d)[:10]))
+            except Exception:
+                pass
+    return _SCHED_STARTS.get(str(tid).upper())
+
+
+def _canon_pid(v) -> str:
+    """51349 / '51349' / 51349.0 -> '51349'; DataGolf-only ids ('DG13412')
+    pass through unchanged instead of crashing an int() conversion."""
+    t = str(v).strip()
+    try:
+        return str(int(float(t)))
+    except ValueError:
+        return t
+
+
+def _sort_by_event_date(df: pd.DataFrame, col: str = "tournament_id") -> pd.DataFrame:
+    """Rows sorted oldest -> newest by event date; undated events dropped."""
+    if df is None or df.empty or col not in df.columns:
+        return df
+    k = df[col].map(_event_order_key)
+    return df.assign(_order_key=k).dropna(subset=["_order_key"]).sort_values("_order_key").drop(columns="_order_key")
+
+
+def _before_event(df: pd.DataFrame, tid, col: str = "tournament_id") -> pd.DataFrame:
+    """Rows from events played BEFORE `tid`, by date (the id-string cutoff
+    this replaces kept events with smaller ids, dropping recent fall events
+    and keeping none of the order right). Unknown cutoff: drop the event
+    itself only. Undated rows are dropped, as training drops them."""
+    if df is None or df.empty or not tid or col not in df.columns:
+        return df
+    cut = _event_cutoff_date(tid)
+    keys = df[col].map(_event_order_key)
+    if cut is None:
+        return df[keys.notna() & (df[col].astype(str) != str(tid))].copy()
+    return df[keys.notna() & (keys.str[:10] < f"{cut:%Y-%m-%d}")].copy()
+
+
+def _event_cutoff_date(tid) -> pd.Timestamp | None:
+    """The date before which events count as 'prior' for this event: its
+    real date if DG lists it (past events), else its scheduled start."""
+    # The event being predicted usually isn't in DG's archive yet (it hasn't
+    # been played): its scheduled start is the right cutoff, no warning.
+    from scripts.features.event_dates import load_events, load_overrides, training_event_date
+    global _EVENTS_DF
+    if _EVENTS_DF is None:
+        _EVENTS_DF = (load_events(), load_overrides())
+    d = training_event_date(str(tid), "", *_EVENTS_DF)
+    return d if d is not None else _schedule_start(str(tid))
+
+
 SCORE_FEATURES = [
     "season_sg_total", "season_sg_ott", "season_sg_app", "season_sg_arg",
     "season_sg_t2g", "season_sg_putt", "season_sg_arg_vs_field",
@@ -725,7 +823,7 @@ def get_recent_sg_stats(
                 (prior_stats_df['player_id'] == pid_str) &
                 (prior_stats_df['stat_component'] == 'Avg') &
                 (prior_stats_df['stat_id'].astype(str) == '2567')
-            ].sort_values('tournament_id')
+            ].pipe(_sort_by_event_date)
             sg_vals = _prior_player['stat_value'].dropna().values
             if len(sg_vals) > 0:
                 _n = min(8, len(sg_vals))
@@ -747,7 +845,8 @@ def get_recent_sg_stats(
             values='stat_value',
             aggfunc='first'
         )
-        stats_pivot = stats_pivot.sort_index()
+        _ordered = sorted((t for t in stats_pivot.index if _event_order_key(t)), key=_event_order_key)
+        stats_pivot = stats_pivot.loc[_ordered]          # oldest -> newest by DATE
 
         # Apply selected method for per-tournament stats
         if method == 'season_avg':
@@ -832,7 +931,7 @@ def get_recent_sg_stats(
                 (prior_stats_df['player_id'] == pid_str) &
                 (prior_stats_df['stat_component'] == 'Avg') &
                 (prior_stats_df['stat_id'].astype(str) == sg_total_col)
-            ].sort_values('tournament_id')
+            ].pipe(_sort_by_event_date)
             prior_sg = _prior_player['stat_value'].dropna().values
 
         # Combine: prior events first, then current events (chronological order)
@@ -867,7 +966,7 @@ def get_recent_sg_stats(
                     (prior_stats_df['player_id'] == pid_str) &
                     (prior_stats_df['stat_component'] == 'Avg') &
                     (prior_stats_df['stat_id'].astype(str) == _cat_id)
-                ].sort_values('tournament_id')
+                ].pipe(_sort_by_event_date)
                 _prior_cat = _pc['stat_value'].dropna().values
             _cat_vals = np.concatenate([_prior_cat, _cur_cat]) if len(_prior_cat) > 0 else _cur_cat
             if len(_cat_vals) > 0:
@@ -1684,7 +1783,7 @@ def add_situational_features(
         if not lb.empty and "player_id" in lb.columns:
             player_lb = lb[lb["player_id"] == pid]
             if "tournament_id" in player_lb.columns:
-                player_lb = player_lb.sort_values("tournament_id")
+                player_lb = _sort_by_event_date(player_lb)   # last_pos / streaks need TIME order
             n_starts = len(player_lb)
         else:
             player_lb = pd.DataFrame()
@@ -1812,7 +1911,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     print(f"  Using SG method: {sg_method}")
     
     if tournament_id:
-        stats_current = stats_current[stats_current['tournament_id'] < tournament_id].copy()
+        stats_current = _before_event(stats_current, tournament_id)
     
     # Check if we're blending with prior year
     blend_with_prior = stats_prior is not None and not stats_prior.empty
@@ -1932,7 +2031,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                 fs['stat_id'] = fs['stat_id'].astype(str)
                 # Get most recent value per player per stat (last tournament entry)
                 fs_latest = (
-                    fs.sort_values('tournament_id')
+                    _sort_by_event_date(fs)                    # "latest" = most recent by DATE
                     .groupby(['player_id', 'stat_id'])
                     .tail(1)
                 )
@@ -1977,12 +2076,14 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                                      'r1_to_par', 'r2_to_par', 'r3_to_par', 'r4_to_par']])
             _lb_df = pd.concat(_lb_all, ignore_index=True)
             _lb_df['player_id'] = _lb_df['player_id'].astype(str)
-            if tournament_id:
-                _lb_df = _lb_df[_lb_df['tournament_id'] < tournament_id]
+            # Prior = played BEFORE this event, by date. (An id cutoff,
+            # `tournament_id < this tid`, dropped events played before an
+            # upcoming one whose id is smaller, e.g. R2026554 vs R2026528.)
+            _lb_df = _sort_by_event_date(_before_event(_lb_df, tournament_id))
 
             _weekend_rows = []
-            for _pid, _grp in _lb_df.groupby('player_id'):
-                _grp = _grp.sort_values('tournament_id').tail(20)
+            for _pid, _grp in _lb_df.groupby('player_id', sort=False):
+                _grp = _grp.tail(20)                           # already in date order
                 _r1 = _grp['r1_to_par'].dropna()
                 _r2 = _grp['r2_to_par'].dropna()
                 _r3 = _grp['r3_to_par'].dropna()
@@ -2029,7 +2130,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                 _fs_extra = pd.read_csv(_fs_path)
                 # Apply same tournament_id cutoff as tournament_stats if needed
                 if tournament_id and 'tournament_id' in _fs_extra.columns:
-                    _fs_extra = _fs_extra[_fs_extra['tournament_id'] < tournament_id].copy()
+                    _fs_extra = _before_event(_fs_extra, tournament_id)
                 form_stats = pd.concat([form_stats, _fs_extra], ignore_index=True)
                 print(f"  + form_stats_{_fs_year}.csv merged ({len(_fs_extra)} rows, adds scoring/birdie/GIR stats)")
 
@@ -2438,7 +2539,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
                 _ec_fs = pd.read_csv(_ec_path, usecols=['player_id', 'tournament_id'])
                 _ec_fs['player_id'] = _ec_fs['player_id'].astype(str)
                 if tournament_id:
-                    _ec_fs = _ec_fs[_ec_fs['tournament_id'] < tournament_id]
+                    _ec_fs = _before_event(_ec_fs, tournament_id)
                 _event_counts = (
                     _ec_fs.groupby('player_id')['tournament_id']
                     .nunique()
@@ -2717,6 +2818,26 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
             print("  Weather: no data available — weather features set to NaN (as in ~12% of training rows)")
     except Exception as _we:
         print(f"  Weather merge skipped: {_we}")
+
+    # Par-scoring field percentiles (recent_par3/4/5_scoring_field_pct),
+    # computed the way the date-ordered training table computes them:
+    # scripts/features/serving_form.py (Jack's recent_par_scoring_field_pct,
+    # parity-tested against that table). Ids go in as STRINGS — the field
+    # stores ints, and an int id would silently match nothing.
+    try:
+        from scripts.features.serving_form import load_form_stats, recent_par_scoring_field_pct
+        _cut = _event_cutoff_date(tournament_id) if tournament_id else None
+        if _cut is not None:
+            _ids = [_canon_pid(x) for x in features_df["player_id"]]
+            _par = recent_par_scoring_field_pct(load_form_stats(), _ids, _cut).set_index("player_id")
+            for _c in _par.columns:
+                features_df[_c] = [_par[_c].get(i, float("nan")) for i in _ids]
+            _cov = features_df["recent_par4_scoring_field_pct"].notna().mean()
+            print(f"  Par-scoring percentiles: {_cov:.0%} of the field (events before {_cut.date()})")
+        else:
+            print("  Par-scoring percentiles skipped: no date for this event (medians fill them)")
+    except Exception as _pe:
+        print(f"  Par-scoring percentiles failed: {_pe}")
 
     # Field structure, defined exactly as train_final_models.py: field_size =
     # players in the event, no_cut = field of 90 or fewer.

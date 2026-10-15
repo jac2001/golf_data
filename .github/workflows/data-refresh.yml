@@ -99,6 +99,7 @@ jobs:
           # DG assigns euro event ids only ~2 weeks ahead (later ones are
           # "TBD" and skipped) — refetch weekly or the DPWT falls off the
           # calendar once the known window runs out.
+          python3 scripts/scrapers/fetch_dg_event_list.py           || true  # event dates for date-ordered features
           python3 scripts/scrapers/fetch_euro_events.py --schedule || true
           python3 scripts/scrapers/fetch_euro_events.py --results  || true
           python3 scripts/scrapers/fetch_euro_events.py --field    || true

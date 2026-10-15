@@ -83,6 +83,9 @@ jobs:
       - name: Run weekly pipeline
         if: steps.week.outputs.pga_week == 'true'
         run: |
+          # Fresh event dates first: features order each player's history by date,
+          # and an event missing from this list would be dropped from his form.
+          python3 scripts/scrapers/fetch_dg_event_list.py || true
           python3 scripts/run_pipeline.py \
             --auto-weekly --lineup --calibrate --save-tracking \
             2>&1 | tee pipeline.log || true
