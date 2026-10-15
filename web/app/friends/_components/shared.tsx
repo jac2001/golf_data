@@ -8,6 +8,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
+import { subscribeThisDevice } from "@/lib/pushClient";
 
 /** Link a player name to their profile page. The profile page already
  *  reads ?player= (a "deep link" — state carried in the URL, so it
@@ -54,14 +55,6 @@ export async function fetchJson(url: string, init?: RequestInit): Promise<Record
   }
 }
 
-/** Push subscribe wants the VAPID public key as raw bytes, but it ships
- *  as URL-safe base64 — the standard little decoder. */
-export function vapidKeyBytes(b64: string): Uint8Array {
-  const pad = "=".repeat((4 - (b64.length % 4)) % 4);
-  const raw = atob((b64 + pad).replace(/-/g, "+").replace(/_/g, "/"));
-  return Uint8Array.from(raw, c => c.charCodeAt(0));
-}
-
 /** One-line toggle for pick reminders. Renders nothing where push can't
  *  work (iOS Safari needs the app added to the Home Screen first). */
 export function ReminderBell() {
@@ -92,16 +85,7 @@ export function ReminderBell() {
         }
         setState("off");
       } else {
-        if ((await Notification.requestPermission()) !== "granted") { setState("off"); return; }
-        const sub = await reg.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: vapidKeyBytes(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? "") as BufferSource,
-        });
-        await api("/api/friends/reminders", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ subscription: sub.toJSON() }),
-        });
-        setState("on");
+        setState((await subscribeThisDevice(api)) ? "on" : "off");
       }
     } catch { setState(prev === "busy" ? "off" : prev); }
   }

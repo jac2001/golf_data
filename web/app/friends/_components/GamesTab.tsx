@@ -2,18 +2,30 @@
 
 /**
  * The Games tab: the four game cards and whichever game is chosen.
- * Split out of app/friends/page.tsx unchanged.
+ *
+ * Which game opens (lib/landing.ts landingGame, Jack's rule): a ?game=
+ * link wins; otherwise this device's last tap, the group's most-played
+ * game, and what's open this week decide. Only a person's own TAP is
+ * remembered: a landing the page chose isn't saved as their choice.
  */
 
 import LetItRideTab from "@/components/LetItRideTab";
-import { useStoredChoice } from "@/lib/useStoredChoice";
+import { useEffect, useState } from "react";
+import { getOpenEvents } from "@/lib/api";
+import { GAME_IDS, landingGame } from "@/lib/landing";
+import type { GameId } from "@/lib/landing";
+import { useApi } from "./shared";
 import { CollegeTab } from "./CollegeGame";
 import { FadeTab } from "./FadeGame";
 import { RoundGameTab } from "./RoundGame";
 
 // ── Games: one tab, three modes ──────────────────────────────────────────────
 
-export type GameMode = "ride" | "rounds" | "fades" | "college";
+export type GameMode = GameId;
+
+const STORE_KEY = "friends-game-mode";
+
+const isGame = (v: string | null): v is GameId => !!v && (GAME_IDS as readonly string[]).includes(v);
 export const GAME_MODES: { id: GameMode; name: string; tag: string }[] = [
   { id: "ride",    name: "Let It Ride",  tag: "Pick 3 · most money wins · uses budgeted all season" },
   { id: "rounds",  name: "Round Game",   tag: "1 per round · to par" },
@@ -22,11 +34,50 @@ export const GAME_MODES: { id: GameMode; name: string; tag: string }[] = [
 ];
 
 export function GamesTab() {
-  // Remembered per device — a convenience, so the page still renders
-  // fine when storage is unavailable (private mode, prerender).
-  // A remembered "picks" (Weekly 3, retired) isn't allowed, so it lands on "ride".
-  const [mode, pick] = useStoredChoice<GameMode>("friends-game-mode",
-    ["ride", "rounds", "fades", "college"], "ride");
+  const api = useApi();
+  const [mode, setMode] = useState<GameMode | null>(null);
+
+  useEffect(() => {
+    // 1. A link that names a game (/friends?game=rounds) wins outright.
+    const linked = new URLSearchParams(window.location.search).get("game");
+    if (isGame(linked)) { setMode(linked); return; }
+
+    // 2. Otherwise Jack's rule. Storage can throw (private mode): no tap then.
+    let lastChosen: GameId | null = null;
+    try { const v = localStorage.getItem(STORE_KEY); if (isGame(v)) lastChosen = v; } catch { /* none */ }
+
+    let cancelled = false;
+    Promise.all([
+      api("/api/friends/landing").then(d => d.groupPicks as Record<GameId, number>).catch(() => null),
+      getOpenEvents().then(d => d.events ?? []).catch(() => null),
+    ]).then(([groupPicks, events]) => {
+      if (cancelled) return;
+      const evs = events ?? [];
+      const pickable = evs.filter(e => !e.locked && !e.finished);
+      const open: Record<GameId, boolean> = events === null
+        ? { ride: true, rounds: true, fades: true, college: true }   // unknown: don't rule games out
+        : {
+            ride: pickable.length > 0,
+            rounds: evs.some(e => !e.finished),                      // picks run round by round
+            fades: pickable.some(e => e.has_model),
+            college: pickable.some(e => e.tour !== "euro"),
+          };
+      let chosen: GameId;
+      try {
+        chosen = landingGame({ groupPicks: groupPicks ?? { ride: 0, rounds: 0, fades: 0, college: 0 }, lastChosen, open });
+      } catch {
+        chosen = lastChosen ?? "ride";
+      }
+      setMode(chosen);
+    });
+    return () => { cancelled = true; };
+  }, [api]);
+
+  /** A person's own tap: show it and remember it on this device. */
+  function pick(g: GameMode) {
+    setMode(g);
+    try { localStorage.setItem(STORE_KEY, g); } catch { /* fine */ }
+  }
 
   return (
     <>
@@ -52,6 +103,7 @@ export function GamesTab() {
           );
         })}
       </div>
+      {mode === null && <p style={{ color: "var(--bc-muted)" }}>Loading…</p>}
       {mode === "rounds" && <RoundGameTab />}
       {mode === "fades" && <FadeTab />}
       {mode === "college" && <CollegeTab />}
