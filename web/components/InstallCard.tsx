@@ -77,7 +77,10 @@ export default function InstallCard() {
         canPromptInstall: deferred.current !== null,
         notifications: pushSupported() ? Notification.permission : "unsupported",
         subscribed: (await currentEndpoint()) !== "",
-        hasPicked: hasPicked(),
+        // The home-screen app has its own storage on iPhone (separate from
+        // Safari), so the "picked" flag set in Safari isn't visible here.
+        // Installing only happens after the card, i.e. after a pick.
+        hasPicked: hasPicked() || isInstalled(),
         dismissCount: dismissed.count,
         lastDismissedAt: dismissed.at,
       };
@@ -192,7 +195,7 @@ export default function InstallCard() {
 /** The real steps, with Safari's Share glyph drawn so people can find it. */
 function IosSteps() {
   const share = (
-    <svg width="14" height="16" viewBox="0 0 14 16" aria-label="Share" style={{ verticalAlign: "-2px", margin: "0 2px" }}>
+    <svg width="14" height="16" viewBox="0 0 14 16" aria-label="Share" style={{ display: "inline", verticalAlign: "-2px", margin: "0 2px" }}>
       <path d="M7 1v9M4 4l3-3 3 3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M4.5 6.5H2.5v8h9v-8h-2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
     </svg>
