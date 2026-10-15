@@ -13,6 +13,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 import { PageHead } from "@/components/broadcast";
+import { subscribeThisDevice } from "@/lib/pushClient";
 
 const card: React.CSSProperties = {
   background: "var(--bc-card)", border: "1px solid var(--bc-line)",
@@ -135,20 +136,12 @@ export default function SettingsPage() {
     } catch { /* row stays */ }
   }
 
-  async function subscribeThisDevice() {
+  async function subscribeHere() {
     try {
-      if ((await Notification.requestPermission()) !== "granted") return;
-      const reg = await navigator.serviceWorker.ready;
-      const raw = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? "";
-      const pad = "=".repeat((4 - (raw.length % 4)) % 4);
-      const bytes = Uint8Array.from(atob((raw + pad).replace(/-/g, "+").replace(/_/g, "/")), c => c.charCodeAt(0));
-      const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: bytes as BufferSource });
-      await api("/api/friends/reminders", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subscription: sub.toJSON() }),
-      });
-      setThisEndpoint(sub.endpoint);
-      setDevices(dv => [...(dv ?? []), { endpoint: sub.endpoint, created_at: new Date().toISOString() }]);
+      const endpoint = await subscribeThisDevice(api);
+      if (!endpoint) return;
+      setThisEndpoint(endpoint);
+      setDevices(dv => [...(dv ?? []), { endpoint, created_at: new Date().toISOString() }]);
     } catch { /* permission denied or unsupported */ }
   }
 
@@ -189,7 +182,7 @@ export default function SettingsPage() {
         {devices !== null && devices.length === 0 && (
           <Row label="No devices subscribed"
             sub="Reminders arrive as push notifications — subscribe this device to get them.">
-            <button onClick={subscribeThisDevice} style={{ ...btnQuiet, marginLeft: "auto" }}>Subscribe</button>
+            <button onClick={subscribeHere} style={{ ...btnQuiet, marginLeft: "auto" }}>Subscribe</button>
           </Row>
         )}
         {(devices ?? []).map(d => (
@@ -203,7 +196,7 @@ export default function SettingsPage() {
         ))}
         {devices !== null && devices.length > 0 && !thisEndpoint && "PushManager" in window && (
           <Row label="This device isn't subscribed" sub="Add it to get reminders here too.">
-            <button onClick={subscribeThisDevice} style={{ ...btnQuiet, marginLeft: "auto" }}>Subscribe</button>
+            <button onClick={subscribeHere} style={{ ...btnQuiet, marginLeft: "auto" }}>Subscribe</button>
           </Row>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: 12, paddingTop: 12 }}>

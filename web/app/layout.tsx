@@ -15,6 +15,7 @@ import Link from "next/link";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import UpdateToast from "@/components/UpdateToast";
+import InstallCard from "@/components/InstallCard";
 
 // Broadcast display face — variable weight + width axes so headers can use
 // the condensed-900 treatment (font-stretch) from the design system.
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/privacy" style={{ color: "inherit" }}>Privacy</Link>
           </footer>
           <UpdateToast />
+          <InstallCard />
         </body>
       </html>
     </ClerkProvider>

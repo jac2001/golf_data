@@ -10,6 +10,8 @@
  *   invite_opened  { token_prefix }                      (signed out, no user)
  *   joined_group   { source: "code" | "link", link_id? }
  *   pick_made      { game: "let_it_ride" | "round" | "college" | "fade", tournament_id? }
+ *   install_card_shown / _accepted / _dismissed, reminders_enabled
+ *                  (browser-only; posted to /api/events, which allowlists them)
  */
 
 import type { getSql } from "@/lib/db";

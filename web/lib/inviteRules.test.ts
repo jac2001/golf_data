@@ -103,3 +103,4 @@ test("revoked beats expired: the owner's choice is the reason that matters", () 
   const both = link({ expires_at: new Date(NOW.getTime() - DAY), revoked_at: NOW });
   assert.equal(inviteStatus(both, NOW, false), "revoked");
 });
+

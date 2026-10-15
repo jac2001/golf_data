@@ -19,6 +19,7 @@ import LockCountdown from "@/components/LockCountdown";
 import EventNav, { fromOpenEvents } from "@/components/EventNav";
 import RecapPreview from "@/components/RecapPreview";
 import { useStoredChoice } from "@/lib/useStoredChoice";
+import { markPicked } from "@/lib/pushClient";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
@@ -446,6 +447,7 @@ function CollegeTab() {
         body: JSON.stringify(pick === school ? { tournament_id: selected } : { tournament_id: selected, school }),
       });
       setPick((d.pick as string | null) ?? null);
+      if (d.pick) markPicked();
     } catch (e) { setErr((e as Error).message); }
   }
 
@@ -1252,6 +1254,7 @@ function RoundGameTab() {
         body: JSON.stringify({ tournament_id: selected, round, player_name: player }),
       });
       setState(d as never); setPickingRound(null); setQuery("");
+      markPicked();
     } catch (e) { setErr((e as Error).message); }
   }
 
@@ -1488,6 +1491,7 @@ function FadeTab() {
         body: JSON.stringify({ player_name: player, tournament_id: selected }),
       });
       setFades(d.fades as string[]);
+      if (!faded) markPicked();
     } catch (e) { setErr((e as Error).message); }
   }
 

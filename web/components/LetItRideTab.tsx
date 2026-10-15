@@ -16,6 +16,7 @@ import { nameKey } from "@/lib/names";
 import LockCountdown from "@/components/LockCountdown";
 import { choice } from "@/components/broadcast";
 import { useStoredChoice } from "@/lib/useStoredChoice";
+import { markPicked } from "@/lib/pushClient";
 import EventNav, { NavEvent, landingEvent, Star } from "@/components/EventNav";
 
 type Group = { id: number; name: string; is_owner: boolean };
@@ -377,6 +378,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
     setBusy(player); setMsg("");
     try {
       await call(`/api/leagues/${league.id}/picks`, json(method, { tid: ev.tournament_id, player_name: player }));
+      if (method === "POST") markPicked();
       load(); onChange();
     } catch (e) { setMsg((e as Error).message); }
     finally { setBusy(""); }
