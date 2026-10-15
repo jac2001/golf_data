@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import LockCountdown from "@/components/LockCountdown";
-import EventNav, { fromOpenEvents } from "@/components/EventNav";
+import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
 import { markPicked } from "@/lib/pushClient";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 import { EventInfo, FieldRow, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, inputStyle, lastName, shareReceipt, useApi } from "./shared";
@@ -36,8 +36,9 @@ export function RoundGameTab() {
     getOpenEvents().then(d => {
       const evs = d.events ?? [];
       setEvents(evs);
-      // Default to this week's action; history stays one chip away.
-      const current = evs.find(e => !e.finished) ?? evs[evs.length - 1];
+      // Default to this week's action (favorite tour, PGA by default);
+      // history stays one chip away.
+      const current = landingEvent(fromOpenEvents(evs), favoriteTour());
       if (current) setSelected(current.tournament_id);
     }).catch(() => {});
   }, []);

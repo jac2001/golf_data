@@ -8,7 +8,7 @@
 import { useEffect, useState } from "react";
 import SchoolBadge from "@/components/SchoolBadge";
 import LockCountdown from "@/components/LockCountdown";
-import EventNav, { fromOpenEvents } from "@/components/EventNav";
+import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
 import { markPicked } from "@/lib/pushClient";
 import { getOpenEvents, OpenEvent } from "@/lib/api";
 import { EventInfo, card, cell, hdr, lastName, money, useApi } from "./shared";
@@ -34,7 +34,7 @@ export function CollegeTab() {
     getOpenEvents().then(d => {
       const evs = (d.events ?? []).filter(e => e.tour !== "euro");
       setEvents(evs);
-      const first = evs.find(e => !e.locked) ?? evs.find(e => !e.finished) ?? evs[evs.length - 1];
+      const first = landingEvent(fromOpenEvents(evs), favoriteTour());
       if (first) setSelected(first.tournament_id);
       else setLoading(false);
     }).catch(() => setLoading(false));

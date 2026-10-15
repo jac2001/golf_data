@@ -8,6 +8,7 @@
  * the selection centered. Selecting is the caller's job (onPick).
  */
 import React, { useEffect, useRef } from "react";
+import { landingEvent, favoriteTour } from "@/lib/landing";
 
 export type NavEvent = {
   tournament_id: string; name: string; tour: "pga" | "euro"; start_date: string;
@@ -35,13 +36,8 @@ export function fromOpenEvents(evs: { tournament_id: string; name: string; tour:
   }));
 }
 
-/** Where to land: an open slate, else a live one, else the latest final. */
-export function landingEvent(evs: NavEvent[]): NavEvent | undefined {
-  return evs.find(w => w.status === "open") ?? evs.find(w => w.status === "live")
-    ?? evs.find(w => w.status === "awaiting")
-    ?? [...evs].filter(w => w.status === "completed").sort((a, b) => b.start_date.localeCompare(a.start_date))[0]
-    ?? evs[0];
-}
+/** Where to land (favorite tour first, PGA by default): see lib/landing.ts. */
+export { landingEvent, favoriteTour };
 
 /** A weekly win. Drawn, not an emoji glyph, so it renders identically everywhere. */
 export function Star() {

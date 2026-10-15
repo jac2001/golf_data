@@ -17,7 +17,7 @@ import LockCountdown from "@/components/LockCountdown";
 import { choice } from "@/components/broadcast";
 import { useStoredChoice } from "@/lib/useStoredChoice";
 import { markPicked } from "@/lib/pushClient";
-import EventNav, { NavEvent, landingEvent, Star } from "@/components/EventNav";
+import EventNav, { NavEvent, landingEvent, favoriteTour, Star } from "@/components/EventNav";
 
 type Group = { id: number; name: string; is_owner: boolean };
 type League = {
@@ -257,12 +257,12 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
   }, [league.id]);
 
   // Land on the week that needs you: an open slate first, else a live
-  // one, else the most recent final — on the tour that has it.
+  // one, else the most recent final. Favorite tour first (PGA by default).
   useEffect(() => {
     call(`/api/leagues/${league.id}/weeks`).then(d => {
       const ws = (d.weeks as Week[]) ?? [];
       setWeeks(ws);
-      const land = landingEvent(ws);
+      const land = landingEvent(ws, favoriteTour());
       if (land) setTid(land.tournament_id);
     }).catch(() => setWeeks([]));
     loadStandings();

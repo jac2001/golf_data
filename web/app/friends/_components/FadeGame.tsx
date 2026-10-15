@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import LockCountdown from "@/components/LockCountdown";
-import EventNav, { fromOpenEvents } from "@/components/EventNav";
+import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
 import { markPicked } from "@/lib/pushClient";
 import { getOpenEvents, OpenEvent } from "@/lib/api";
 import { EventInfo, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, lastName, money, shareReceipt, useApi } from "./shared";
@@ -38,7 +38,7 @@ export function FadeTab() {
     getOpenEvents().then(d => {
       const evs = (d.events ?? []).filter(e => e.has_model);
       setEvents(evs);
-      const first = evs.find(e => !e.locked) ?? evs.find(e => !e.finished) ?? evs[evs.length - 1];
+      const first = landingEvent(fromOpenEvents(evs), favoriteTour());
       if (first) setSelected(first.tournament_id);
       else setLoading(false);
     }).catch(() => setLoading(false));
