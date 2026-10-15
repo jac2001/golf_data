@@ -34,31 +34,22 @@ integrity + freshness gates refusing to publish bad predictions.
 
 ## Next (October)
 
-1. **PGA features: date order + the last 3 serving features** (Oct 14).
-   (a) Training orders "prior" events by tournament_id string, which is
-   not calendar order (~25% of 2024-26 event pairs), so season/recent
-   form features include later events. Sized with the production setup
-   (RF + isotonic, median fill; 26 of 58 features recomputed in date
-   order, validated by exact reproduction in id order): reported vs real
-   win log-loss 0.0428 vs 0.0431, AUC equal, within year-to-year noise.
-   Real bug, not urgent: fix in the January retrain. Needs event dates
-   for 2016-23 (DG returns schedules for 2024+ only on this plan).
-   (b) recent_par3/4/5_scoring_field_pct still have no serving column
-   (median-filled). Jack's `serving_form.recent_par_scoring_field_pct`
-   is scaffolded with parity tests; write it against DATE order once (a)
-   lands. (c) Weather: training uses observed weather, serving a
-   forecast (minor leak, importance ~0.003 each); retrain on archived
-   forecasts (Open-Meteo historical-forecast API).
-   (d) Data check found while mapping dates: `R2021535` "U.S. Open
-   (2021)" lists J.J. Spaun as winner (he won the 2025 U.S. Open; 2021
-   was Jon Rahm), so that event's rows look mislabeled. Check before the
-   retrain uses them.
-   Retrain plan (Oct 14): build now, ship on evidence. Step 1 scaffolded:
-   `scripts/features/event_dates.py` (Jack: season-aware tid -> date;
-   source `data/raw/dg_pga_event_list.csv`); then date-ordered merge,
-   rebuilt table, par features on date order, identical walk-forward
-   (current vs retrained incl. 2025 data) + stats review, ship only if it
-   beats noise; the group decides on a mid-season model change.
+1. **PGA retrain: step 4 left** (steps 1-3 done Oct 14-15).
+   Done: season-aware event dates (Jack, `event_dates.py`); training
+   table ordered by date (`MERGE_ORDER`, verified: 81 order-dependent
+   columns change, nothing else; independent recompute 100%); serving
+   ordered by date + Jack's par features, stats-reviewed and live from
+   Bermuda (Oct 22); event list refreshed weekly.
+   Step 4: retrain on the date-ordered table (incl. 2025 data, which the
+   production models never saw: they fit years < 2025) and compare with
+   the current models under one identical walk-forward protocol; stats
+   review; ship only if it beats year-to-year noise, and the group
+   decides on a mid-season model change. Open data checks first:
+   `R2021535` "U.S. Open (2021)" lists the 2025 winner (likely
+   mislabeled rows); 9 stats-only events carry the wrong season's id.
+   Also known: serving blends season SG with the prior year, training
+   doesn't (median 0.075 strokes now, larger early-season); weather
+   trains on observed, serves forecast.
 2. **Move off pgatour.com data** (Oct 15). PGA TOUR (Grant, Oct 15)
    paused free ShotLink data "while we formulate a strategy for 2027 and
    beyond" and encouraged us to keep building; the Oct 6 verbal "free
