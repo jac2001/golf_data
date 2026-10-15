@@ -3441,7 +3441,7 @@ _tee_times_cache: dict = {"ts": 0.0, "data": None}
 _TEE_TIMES_TTL = 300  # 5 minutes — tee times don't change often
 
 _course_cache: dict = {"ts": 0.0, "data": None}
-_COURSE_TTL = 300
+_COURSE_TTL = 3600  # 1 hour: a course does not change mid-week; misses cost a 2s pgatour.com call (2026-10-15)
 
 _PGAT_URL = "https://orchestrator.pgatour.com/graphql"
 _PGAT_HEADERS = {
@@ -3504,7 +3504,13 @@ def get_tee_times() -> dict:
             pass
 
     if not raw:
-        return {"tournament_id": tid, "round": None, "groups": []}
+        # Cache the empty answer too. Off weeks (no PGA field) used to skip
+        # the cache, so EVERY request made two live DG calls: 2-3s each
+        # (measured 2026-10-15).
+        empty = {"tournament_id": tid, "round": None, "groups": []}
+        _tee_times_cache["data"] = empty
+        _tee_times_cache["ts"] = time.time()
+        return empty
 
     current_round = int(raw.get("current_round") or 1)
     field = raw.get("field", [])
