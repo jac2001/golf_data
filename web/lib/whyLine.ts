@@ -98,7 +98,7 @@ export function whyLine(g: GolferFacts): string {
 
   if (g.recent[0] === 1) return "Won his last start";
   if (n >= MIN_RECENT_STARTS && t10 >= Math.ceil(n * HOT_SHARE)) return `Top-10 in ${t10} of his last ${n} starts`;
-  if (g.courseStarts >= MIN_COURSE_STARTS && g.courseCuts === g.courseStarts) return `Made the cut here ${g.courseCuts} of ${g.courseStarts} times`;
+  if (g.courseStarts >= MIN_COURSE_STARTS && g.courseCuts === g.courseStarts) return `Made the cut at this event ${g.courseCuts} of ${g.courseStarts} times`;
   if (n >= MIN_RECENT_STARTS && missed >= COLD_MISSES) return `Missed ${missed} of his last ${n} cuts`;
   if (g.winProb !== null && g.winProb >= FAVORITE_WIN) return `Model favorite: about a ${oneIn(g.winProb)} chance`;
   if (g.winProb !== null && g.winProb < LONG_SHOT_WIN) return `Long shot: about a ${oneIn(g.winProb)} chance to win`;
