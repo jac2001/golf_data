@@ -14,7 +14,12 @@ D = pd.Timestamp
 
 
 def hist(rows):
-    return pd.DataFrame(rows, columns=["tournament_id", "player_id", "finish", "date"])
+    df = pd.DataFrame(rows, columns=["tournament_id", "player_id", "finish", "date"])
+    df["had_cut"] = ~df["tournament_id"].isin(NO_CUT)
+    return df
+
+
+NO_CUT = {"R2025028", "R2024028"}   # BMW Championship editions: no cut
 
 
 # Player "1" — ids deliberately out of calendar order: R2026010 is the
@@ -67,6 +72,12 @@ def test_rotating_majors_have_no_event_record():
     assert f["event_starts"] == 0 and f["event_cuts"] == 0
 
 
+def test_no_cut_editions_never_count_as_made_cuts():
+    h = pd.concat([H, hist([("R2025028", "1", 30, D("2025-08-17")), ("R2024028", "1", 12, D("2024-08-18"))])])
+    f = golfer_facts(h, ["1"], "R2026028", BEFORE)["1"]
+    assert f["event_starts"] == 0 and f["event_cuts"] == 0, f
+
+
 def test_unknown_player_gets_empty_facts():
     f = golfer_facts(H, ["999"], "R2026557", BEFORE)["999"]
     assert f == {"recent": [], "event_starts": 0, "event_cuts": 0}
@@ -76,6 +87,9 @@ def test_real_history_loads_with_dates():
     h = load_history()
     assert len(h) > 10_000, len(h)
     assert h["date"].notna().all() and h["player_id"].str.fullmatch(r"(DG)?\d+").all()   # DG-only golfers carry a DG prefix
+    # the 2025 BMW (no cut) and a regular event (has one)
+    assert not h.loc[h["tournament_id"] == "R2025028", "had_cut"].any()
+    assert h.loc[h["tournament_id"] == "R2025010", "had_cut"].all()
 
 
 if __name__ == "__main__":

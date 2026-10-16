@@ -19,7 +19,9 @@ this counts past editions of the EVENT, named `event_starts` /
 `event_cuts`, not "course". Rotating majors move every year and get no
 record at all. Some events changed venue under the same id (event 527:
 the Zozo at Narashino through 2024, the Baycurrent at Yokohama from
-2025), so a line must say "at this event", never "here".
+2025), so a line must say "at this event", never "here". And "made the
+cut" only means something where there IS a cut: editions with no CUT
+rows (playoffs, signature events, the Sentry) don't count at all.
 """
 from __future__ import annotations
 
@@ -67,16 +69,19 @@ def load_history(hist_dir: Path = HIST) -> pd.DataFrame:
         frames.append(pd.read_csv(f, usecols=["tournament_id", "player_id", "position", "tournament_name"],
                                   dtype={"player_id": str, "position": str}))
     if not frames:
-        return pd.DataFrame(columns=["tournament_id", "player_id", "finish", "date"])
+        return pd.DataFrame(columns=["tournament_id", "player_id", "finish", "date", "had_cut"])
     lb = pd.concat(frames, ignore_index=True)
     lb["player_id"] = lb["player_id"].str.replace(r"\.0$", "", regex=True)
     lb["finish"] = lb["position"].map(parse_finish)
+    # An edition "had a cut" when anyone in it is listed CUT (WDs alone don't make one).
+    had_cut = lb.assign(c=lb["position"].str.strip().str.upper().eq("CUT")).groupby("tournament_id")["c"].any()
+    lb["had_cut"] = lb["tournament_id"].map(had_cut).fillna(False).astype(bool)
 
     ev, ov = load_events(), load_overrides()
     names = lb.drop_duplicates("tournament_id").set_index("tournament_id")["tournament_name"]
     dates = {tid: training_event_date(tid, str(name), ev, ov) for tid, name in names.items()}
     lb["date"] = lb["tournament_id"].map(dates)
-    return lb.dropna(subset=["date", "finish"])[["tournament_id", "player_id", "finish", "date"]]
+    return lb.dropna(subset=["date", "finish"])[["tournament_id", "player_id", "finish", "date", "had_cut"]]
 
 
 def golfer_facts(history: pd.DataFrame, player_ids: list[str], tournament_id: str,
@@ -89,13 +94,15 @@ def golfer_facts(history: pd.DataFrame, player_ids: list[str], tournament_id: st
     h = history[history["tournament_id"] != tid]
     if before is not None:
         h = h[h["date"] < before]
-    h = h[h["player_id"].isin(set(player_ids))].sort_values("date", ascending=False)
+    h = h[h["player_id"].isin(set(player_ids))].sort_values("date", ascending=False).reset_index(drop=True)
 
     event_id = tid[5:]
     same_event = pd.Series(False, index=h.index)
     if event_id not in ROTATING_EVENTS:
         cutoff = (before or pd.Timestamp.now()) - pd.DateOffset(years=COURSE_YEARS)
         same_event = (h["tournament_id"].str[5:] == event_id) & (h["date"] >= cutoff)
+        if "had_cut" in h.columns:
+            same_event &= h["had_cut"]          # no cut → "made the cut" says nothing
 
     out: dict[str, dict] = {}
     for pid in player_ids:
