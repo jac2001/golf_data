@@ -9,6 +9,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { subscribeThisDevice } from "@/lib/pushClient";
+import { getOpenEvents } from "@/lib/api";
+import type { OpenEvent } from "@/lib/api";
 
 /** Link a player name to their profile page. The profile page already
  *  reads ?player= (a "deep link" — state carried in the URL, so it
@@ -184,3 +186,21 @@ export const inputStyle: React.CSSProperties = {
   background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
   color: "var(--bc-text)", outline: "none",
 };
+
+/** A per-event game's event list: the open window (events/open, 21 days
+ *  back to 10 ahead) plus finished events this person's groups played in
+ *  `game` (/api/friends/past-events), so old results stay reachable. The
+ *  open list wins on overlap: it knows what's live right now. */
+export async function openPlusPast(
+  api: (url: string, init?: RequestInit) => Promise<Record<string, unknown>>,
+  game: "rounds" | "fades" | "college",
+): Promise<OpenEvent[]> {
+  const [open, past] = await Promise.all([
+    getOpenEvents().then(d => d.events ?? []).catch(() => [] as OpenEvent[]),
+    api(`/api/friends/past-events?game=${game}`).then(d => (d.events as OpenEvent[]) ?? []).catch(() => [] as OpenEvent[]),
+  ]);
+  const live = new Set(open.map(e => e.tournament_id));
+  return [...past.filter(e => !live.has(e.tournament_id)), ...open]
+    .sort((a, b) => a.start_date.localeCompare(b.start_date));
+}
+

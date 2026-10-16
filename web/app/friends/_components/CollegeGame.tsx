@@ -10,8 +10,8 @@ import SchoolBadge from "@/components/SchoolBadge";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
 import { markPicked } from "@/lib/pushClient";
-import { getOpenEvents, OpenEvent } from "@/lib/api";
-import { EventInfo, card, cell, hdr, lastName, money, useApi } from "./shared";
+import { OpenEvent } from "@/lib/api";
+import { EventInfo, card, cell, hdr, lastName, money, openPlusPast, useApi } from "./shared";
 import { useActiveGroup } from "./ActiveGroup";
 
 // ── College Game ─────────────────────────────────────────────────────────────
@@ -33,14 +33,14 @@ export function CollegeTab() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getOpenEvents().then(d => {
-      const evs = (d.events ?? []).filter(e => e.tour !== "euro");
+    openPlusPast(api, "college").then(all => {
+      const evs = all.filter(e => e.tour !== "euro");
       setEvents(evs);
       const first = landingEvent(fromOpenEvents(evs), favoriteTour());
       if (first) setSelected(first.tournament_id);
       else setLoading(false);
     }).catch(() => setLoading(false));
-  }, []);
+  }, [api]);
 
   useEffect(() => {
     if (!selected) return;
@@ -110,7 +110,7 @@ export function CollegeTab() {
           <div style={{ padding: "14px 16px 6px", fontWeight: 800 }}>
             School board
             <span style={{ color: "var(--bc-muted)", fontWeight: 400, fontSize: "max(var(--fs-min), 0.78em)", marginLeft: 8 }}>
-              best 2 alumni · highest wins{board.projected && !board.settled ? " · live projected" : ""}
+              best 2 alumni · highest wins{board.projected && !board.settled ? " · estimated payouts if it ended now" : ""}
             </span>
           </div>
           <table style={{ borderCollapse: "collapse", width: "100%" }}>

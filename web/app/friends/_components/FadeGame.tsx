@@ -9,8 +9,8 @@ import { useCallback, useEffect, useState } from "react";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
 import { markPicked } from "@/lib/pushClient";
-import { getOpenEvents, OpenEvent } from "@/lib/api";
-import { EventInfo, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, lastName, money, shareReceipt, useApi } from "./shared";
+import { OpenEvent } from "@/lib/api";
+import { EventInfo, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, lastName, money, shareReceipt, openPlusPast, useApi } from "./shared";
 import { useActiveGroup } from "./ActiveGroup";
 
 // ── Fade Game ────────────────────────────────────────────────────────────────
@@ -37,14 +37,14 @@ export function FadeTab() {
   // The fade pool is defined by model win chances, so only PGA
   // (has_model) events are playable.
   useEffect(() => {
-    getOpenEvents().then(d => {
-      const evs = (d.events ?? []).filter(e => e.has_model);
+    openPlusPast(api, "fades").then(all => {
+      const evs = all.filter(e => e.has_model);
       setEvents(evs);
       const first = landingEvent(fromOpenEvents(evs), favoriteTour());
       if (first) setSelected(first.tournament_id);
       else setLoading(false);
     }).catch(() => setLoading(false));
-  }, []);
+  }, [api]);
 
   const load = useCallback(() => {
     if (!selected) return;
