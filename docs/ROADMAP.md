@@ -7,11 +7,41 @@ we noticed we were steering by whatever was shiniest.)
 
 ## North star
 
-The Sunday ritual, for one group chat at a time: make picks Thursday,
-trash-talk a model that plays under the same rules, watch the rivalry
-line all weekend, share the recap card Sunday night. Everything ships
-in service of that loop or of trusting it (data integrity, security,
-honest states).
+**Golf Edge turns professional golf into a weekly rivalry among
+friends: use your golf knowledge, or our guidance, to beat them.**
+(Jack's launch plan, Oct 15: `Audience_Product_Launch_Plan.pdf`.)
+
+The main product question is **"Was this week fun enough to play
+again?"** A more accurate model can help; so can a close matchup, an
+understandable leaderboard, or a recap a friend shares. Keep improving
+the model, but judge the product by repeat group play, not sign-ups.
+
+The loop, for one group chat at a time: receive an invite → join the
+right group → make picks → understand the matchup → see the result →
+play again. The model plays under the same rules as an opponent people
+enjoy beating. Everything ships in service of that loop or of trusting
+it (data integrity, security, honest states, data rights).
+
+**Development rule (before adding anything):** will this help someone
+join, make picks, follow their friends, or return next week? If the
+answer is unclear, it goes in the backlog until the next tournament
+teaches us.
+
+**Per game, three questions** (make the existing modes satisfying
+before adding new ones): what makes choosing interesting? what makes
+following the tournament exciting? what makes someone want a rematch,
+even after losing? (College: school loyalty. Fade: rooting against a
+favorite. Let It Ride: lineup strategy and season decisions.) The pilot
+tells us which ones create conversation.
+
+**First audience:** golf fans who enjoy fantasy sports and can bring a
+few friends; the most valuable early user is the ORGANIZER. Beginners
+are welcome but aren't the early growth plan.
+
+**Postponed until the pilot shows a need:** new game formats, a native
+app, paid marketing, more complex prediction displays, another major
+redesign, subscriptions or monetization. (Reliability, privacy, scoring
+accuracy and data permissions continue regardless.)
 
 ---
 
@@ -32,7 +62,51 @@ integrity + freshness gates refusing to publish bad predictions.
 - [x] **Clerk dashboard:** (done Oct 15) turn off Clerk's own "delete account" so
       deletion always runs our cleanup (Jack, 1 minute).
 
-## Next (October)
+## Pilot readiness (first: before recruiting the pilot groups)
+
+The pilot: five organizers, each bringing three to six friends, three
+tournaments (1: watch first use, 2: engagement, 3: repeat play with less
+prompting). Milestone: three of five groups active through all three
+events with multiple players each. Order below = the plan's build
+priorities; each has its completion test.
+
+- [x] **Remove friction, part 1** (Oct 15): one-tap invites, install
+      card + reminders, phone tab bar, Friends page redesign (group bar,
+      game picker, per-game tabs, one-line event bar). See #3 below.
+- [ ] **Pick confirmation.** "Whether their picks have been saved" is a
+      must-understand: a confirmation screen ("You're in: A, B, C. Picks
+      lock Wed at midnight ET. We'll remind you.") instead of a list
+      that just updates. Test: a first-time player joins and submits
+      valid picks without anyone explaining the interface.
+- [ ] **Golfer "why" lines** (in progress: Jack's `web/lib/whyLine.ts`;
+      Claude adds real last-5 finishes + course starts to the API from
+      leaderboard history, since `recent_top10s` is a weighted score and
+      `venue_avg_finish` is filler).
+- [ ] **"Help me pick"**: an optional, editable suggested lineup that
+      respects eligibility and remaining uses, one plain sentence per
+      golfer (the why lines), clearly not a guaranteed outcome. Test: a
+      beginner makes picks and can say what must happen for them to win.
+- [ ] **The organizer's view**: who has joined and who still needs to
+      pick, without revealing hidden picks; share the result and start
+      the next week. Test: an organizer runs a second tournament without
+      Jack's help.
+- [ ] **Match Center check** against the plan's questions: am I winning,
+      who am I chasing, which golfers help or hurt, live estimate or
+      final? Answer first, details underneath.
+- [ ] **Recap check**: who won and by how much, the turning point the
+      data supports, how the group did against the model, the next event
+      with a way to play. Lineup earnings never read as cash.
+- [ ] **Weekly scorecard** from `app_events` (logging since Oct 15):
+      invited players who submit first picks; first-week players who
+      pick again; groups with several active players across all three
+      events; Match Center checks during play; invites sent unprompted;
+      support needed per group. Optional golf-fan / not-golf-fan
+      self-description to split them.
+- [ ] **Licensing alongside the pilot**: confirm agreed data rights
+      cover public display, game scoring, derived outputs and any future
+      commercial use (see #2, #5).
+
+## Next (after pilot readiness; the retrain stays January)
 
 1. **PGA retrain: decided Oct 15, don't ship mid-season; January.**
    Steps 1-3 done and live (dates, date-ordered table + serving, Jack's
