@@ -32,6 +32,12 @@ type Standing = {
   stars: number;
   banked: number;   // settled money (from the standings route)
   live: number;     // projected money from events still in progress
+  /** Per event: this member's picks with finish + lineup earnings. Other
+   *  members' unlocked picks never arrive (the route hides them). */
+  events?: Record<string, {
+    picks: { player: string; earnings: number | null; position: string | null }[];
+    event_total: number; settled: boolean; projected: boolean;
+  }>;
 };
 
 const money = (v: number) =>
@@ -292,7 +298,8 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
                 ev={{ tournament_id: week.tournament_id, name: week.name, tour: week.tour,
                       start_date: week.start_date, end_date: "", locked: week.status !== "open",
                       finished: week.status === "completed", purse: null, has_model: true, field_available: true }}
-                winners={(winners[week.tournament_id] ?? []).map(id => standings.find(s => s.user_id === id)?.user_name ?? "")} />
+                winners={(winners[week.tournament_id] ?? []).map(id => standings.find(s => s.user_id === id)?.user_name ?? "")}
+                standings={standings} />
             ))}
           </>
         )}
@@ -302,9 +309,9 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
   );
 }
 
-function Slate({ league, ev, myUses, me, onChange, winners }: {
+function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   league: League; ev: OpenEvent; myUses: Record<string, number>; me: string; onChange: () => void;
-  winners: string[];
+  winners: string[]; standings: Standing[];
 }) {
   const [picks, setPicks] = useState<SlatePick[]>([]);
   const [locked, setLocked] = useState(ev.locked);
@@ -368,6 +375,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
   const mine = picks.filter(p => p.user_id === me);
   const full = mine.length >= league.players_per_week;
   const usedOf = (n: string) => myUses[nameKey(n)] ?? 0;
+  const [showField, setShowField] = useState(false);
   const whyOf = (n: string) => field.find(f => nameKey(f.name) === nameKey(n))?.why ?? "";
 
   async function act(method: "POST" | "DELETE", player: string) {
@@ -449,7 +457,27 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
       </div>
 
       {locked ? (
-        <LockedSlate picks={picks} me={me} />
+        <>
+          {standings.some(s => s.events?.[ev.tournament_id])
+            ? <WeekResults tid={ev.tournament_id} standings={standings} me={me} />
+            : <LockedSlate picks={picks} me={me} />}
+          <button onClick={() => setShowField(v => !v)} style={{ background: "none", border: "none", cursor: "pointer",
+            color: "var(--bc-yellow)", fontFamily: "inherit", fontWeight: 700, padding: "10px 0 0", minHeight: 44 }}>
+            {showField ? "Hide the field" : `Show the field (${field.length})`}
+          </button>
+          {showField && (
+            <div style={{ maxHeight: 360, overflowY: "auto", display: "grid", gap: 4, marginTop: 6 }}>
+              {field.map(f => (
+                <div key={f.name} style={{ padding: "6px 10px", borderBottom: "1px solid var(--bc-line)",
+                  fontSize: "max(var(--fs-min), 0.86em)" }}>
+                  {f.name}
+                  {f.why && <span style={{ display: "block", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.9em)", marginTop: 2 }}>{f.why}</span>}
+                </div>
+              ))}
+              {field.length === 0 && <div style={{ color: "var(--bc-muted)", padding: 8 }}>No field list for this event.</div>}
+            </div>
+          )}
+        </>
       ) : (
         <>
           <input placeholder="Search the field…" value={q} onChange={e => setQ(e.target.value)} style={{
@@ -503,6 +531,48 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+/** A locked week's results: members ranked by the week's lineup earnings,
+ *  each pick's finish and money. "Final" only once settled; until then the
+ *  numbers are estimated payouts if the tournament ended now (rule 6). */
+function WeekResults({ tid, standings, me }: { tid: string; standings: Standing[]; me: string }) {
+  const rows = standings
+    .map(s => ({ s, line: s.events?.[tid] }))
+    .filter((r): r is { s: Standing; line: NonNullable<Standing["events"]>[string] } => !!r.line)
+    .sort((a, b) => b.line.event_total - a.line.event_total);
+  const settled = rows.length > 0 && rows.every(r => r.line.settled);
+  const projected = rows.some(r => r.line.projected);
+  const label = settled ? "Final" : projected ? "Estimated payouts if the tournament ended now" : "Scores post once play starts";
+  return (
+    <div style={{ display: "grid", gap: 8 }}>
+      <div style={{ color: settled ? "var(--bc-text)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)",
+        textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 700 }}>
+        {label} · lineup earnings
+      </div>
+      {rows.map(({ s, line }, i) => (
+        <div key={s.user_id} style={{ background: s.user_id === me ? "var(--bc-card-hi)" : "var(--bc-panel)",
+          border: "1px solid var(--bc-line)", borderRadius: 8, padding: "10px 12px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
+            <span style={{ fontWeight: 800 }}>
+              <span style={{ color: i === 0 && settled ? "var(--bc-yellow)" : "var(--bc-muted)", marginRight: 8 }}>{i + 1}</span>
+              {s.user_id === "model" ? "The Model" : s.user_name}{s.user_id === me ? " (you)" : ""}
+            </span>
+            <span style={{ fontWeight: 900 }}>{money(line.event_total)}</span>
+          </div>
+          <div style={{ display: "grid", gap: 2, marginTop: 6 }}>
+            {line.picks.map(p => (
+              <div key={p.player} style={{ display: "flex", justifyContent: "space-between", gap: 8,
+                color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)" }}>
+                <span>{p.player}{p.position ? ` · ${p.position}` : ""}</span>
+                <span>{p.earnings != null ? money(p.earnings) : "—"}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
