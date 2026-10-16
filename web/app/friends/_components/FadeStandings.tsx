@@ -7,6 +7,7 @@
 
 import { useEffect, useState } from "react";
 import { ModelBadge, card, cell, hdr, useApi } from "./shared";
+import { useActiveGroup } from "./ActiveGroup";
 
 /** Fade Game season: EVENT WINS, not a money sum — summing a
  *  lowest-wins score would reward never playing. */
@@ -14,14 +15,15 @@ export type FadeSeasonRow = { user_id: string; user_name: string; wins: number; 
 
 export function FadeStandings() {
   const api = useApi();
+  const { groupQuery } = useActiveGroup();
   const [rows, setRows] = useState<FadeSeasonRow[] | null>(null);
   const [me, setMe] = useState("");
 
   useEffect(() => {
-    api("/api/friends/fadeboard")
+    api(`/api/friends/fadeboard?${groupQuery.slice(1)}`)   // season table, this group
       .then(d => { setRows((d.standings as FadeSeasonRow[]) ?? []); setMe((d.me as string) ?? ""); })
       .catch(() => setRows([]));
-  }, [api]);
+  }, [api, groupQuery]);
 
   if (!rows) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
   if (rows.length === 0) return (

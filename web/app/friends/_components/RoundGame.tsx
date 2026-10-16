@@ -11,6 +11,7 @@ import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/componen
 import { markPicked } from "@/lib/pushClient";
 import { getPredictions, getOpenEvents, getEventField, OpenEvent } from "@/lib/api";
 import { EventInfo, FieldRow, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, inputStyle, lastName, shareReceipt, useApi } from "./shared";
+import { useActiveGroup } from "./ActiveGroup";
 
 // ── Round Game ───────────────────────────────────────────────────────────────
 
@@ -21,6 +22,7 @@ export type RoundRow = { user_id: string; user_name: string; total: number; scor
 
 export function RoundGameTab() {
   const api = useApi();
+  const { groupQuery } = useActiveGroup();
   const [events, setEvents] = useState<OpenEvent[]>([]);
   const [selected, setSelected] = useState("");
   const [state, setState] = useState<RoundPicksState | null>(null);
@@ -49,7 +51,7 @@ export function RoundGameTab() {
     api(`/api/friends/roundpicks?tournament_id=${encodeURIComponent(selected)}`)
       .then(d => { setState(d as never); setEventName((d.event as EventInfo).name); })
       .catch(e => setErr(e.message));
-    api(`/api/friends/roundboard?tournament_id=${encodeURIComponent(selected)}`)
+    api(`/api/friends/roundboard?tournament_id=${encodeURIComponent(selected)}${groupQuery}`)
       .then(d => { setBoard((d.standings as RoundRow[]) ?? []); setMe((d.me as string) ?? ""); })
       .catch(() => setBoard([]));
     // Field with numbers when the event has them (our model or DG's
@@ -69,7 +71,7 @@ export function RoundGameTab() {
             player_name: p, world_rank: null, win_prob: null, top10_prob: null, cut_prob: null,
           }))))
           .catch(() => setField([])));
-  }, [api, selected]);
+  }, [api, selected, groupQuery]);
   useEffect(load, [load]);
 
   async function pick(round: number, player: string) {

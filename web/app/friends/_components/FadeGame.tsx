@@ -11,6 +11,7 @@ import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/componen
 import { markPicked } from "@/lib/pushClient";
 import { getOpenEvents, OpenEvent } from "@/lib/api";
 import { EventInfo, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, lastName, money, shareReceipt, useApi } from "./shared";
+import { useActiveGroup } from "./ActiveGroup";
 
 // ── Fade Game ────────────────────────────────────────────────────────────────
 
@@ -21,6 +22,7 @@ export type FadeBoardRow = { user_id: string; user_name: string; total: number |
 
 export function FadeTab() {
   const api = useApi();
+  const { groupQuery } = useActiveGroup();
   const [events, setEvents] = useState<OpenEvent[]>([]);
   const [selected, setSelected] = useState<string>("");
   const [event, setEvent] = useState<FadeEvent | null>(null);
@@ -55,13 +57,13 @@ export function FadeTab() {
         setPartial(!!d.partial);
         setFades((d.fades as string[]) ?? []);
         if (ev.locked) {
-          api(`/api/friends/fadeboard?tournament_id=${encodeURIComponent(selected)}`)
+          api(`/api/friends/fadeboard?tournament_id=${encodeURIComponent(selected)}${groupQuery}`)
             .then(b => setBoard(b as never)).catch(() => {});
         }
       })
       .catch(e => setErr(`Could not load the fade game — ${e.message}`))
       .finally(() => setLoading(false));
-  }, [api, selected]);
+  }, [api, selected, groupQuery]);
 
   useEffect(() => { load(); }, [load]);
 

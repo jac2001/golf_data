@@ -18,6 +18,7 @@ import { HowToPlay } from "./HowToPlay";
 import { FadeStandings } from "./FadeStandings";
 import { CollegeStandings } from "./CollegeGame";
 import { card, useApi } from "./shared";
+import { useActiveGroup } from "./ActiveGroup";
 import { CollegeTab } from "./CollegeGame";
 import { FadeTab } from "./FadeGame";
 import { RoundGameTab } from "./RoundGame";
@@ -46,6 +47,7 @@ export const GAME_MODES: { id: GameMode; name: string; short: string; tag: strin
 
 export function GamesTab() {
   const api = useApi();
+  const { group } = useActiveGroup();
   const [mode, setMode] = useState<GameMode | null>(null);
   const [view, setView] = useState<View>("picks");
 
@@ -132,10 +134,10 @@ export function GamesTab() {
         {mode === "rounds" && <RoundGameTab />}
         {mode === "fades" && <FadeTab />}
         {mode === "college" && <CollegeTab />}
-        {mode === "ride" && <LetItRideTab />}
+        {mode === "ride" && <LetItRideTab group={group} />}
       </>}
       {mode !== null && view === "standings" && <>
-        {mode === "ride" && <LetItRideStandings />}
+        {mode === "ride" && (group ? <LetItRideStandings groupId={group.id} /> : <LetItRideStandings />)}
         {mode === "fades" && <FadeStandings />}
         {mode === "college" && <CollegeStandings />}
         {mode === "rounds" && (

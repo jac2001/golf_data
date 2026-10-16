@@ -12,6 +12,7 @@ import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/componen
 import { markPicked } from "@/lib/pushClient";
 import { getOpenEvents, OpenEvent } from "@/lib/api";
 import { EventInfo, card, cell, hdr, lastName, money, useApi } from "./shared";
+import { useActiveGroup } from "./ActiveGroup";
 
 // ── College Game ─────────────────────────────────────────────────────────────
 
@@ -21,6 +22,7 @@ export type CollegeBoardRow = { user_id: string; user_name: string; school: stri
 
 export function CollegeTab() {
   const api = useApi();
+  const { groupQuery } = useActiveGroup();
   const [events, setEvents] = useState<OpenEvent[]>([]);
   const [selected, setSelected] = useState("");
   const [event, setEvent] = useState<(EventInfo & { finished?: boolean }) | null>(null);
@@ -50,13 +52,13 @@ export function CollegeTab() {
         setSchools((d.schools as CollegeSchool[]) ?? []);
         setPick((d.pick as string | null) ?? null);
         if (ev.locked) {
-          api(`/api/friends/collegeboard?tournament_id=${encodeURIComponent(selected)}`)
+          api(`/api/friends/collegeboard?tournament_id=${encodeURIComponent(selected)}${groupQuery}`)
             .then(b => setBoard(b as never)).catch(() => {});
         }
       })
       .catch(e => setErr(`Could not load the college game — ${e.message}`))
       .finally(() => setLoading(false));
-  }, [api, selected]);
+  }, [api, selected, groupQuery]);
 
   async function choose(school: string) {
     setErr("");
@@ -177,14 +179,15 @@ export function CollegeTab() {
 
 export function CollegeStandings() {
   const api = useApi();
+  const { groupQuery } = useActiveGroup();
   const [rows, setRows] = useState<{ user_id: string; user_name: string; wins: number; entered: number }[] | null>(null);
   const [me, setMe] = useState("");
 
   useEffect(() => {
-    api("/api/friends/collegeboard")
+    api(`/api/friends/collegeboard?${groupQuery.slice(1)}`)   // season table, this group
       .then(d => { setRows((d.standings as never) ?? []); setMe((d.me as string) ?? ""); })
       .catch(() => setRows([]));
-  }, [api]);
+  }, [api, groupQuery]);
 
   if (!rows) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
   if (rows.length === 0) return (

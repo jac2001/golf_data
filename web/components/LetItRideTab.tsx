@@ -110,21 +110,12 @@ const json = (method: string, body: unknown): RequestInit => ({
   method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
 });
 
-export default function LetItRideTab() {
-  const [groups, setGroups] = useState<Group[] | null>(null);
-  const [groupId, setGroupId] = useState<number | null>(null);
+/** The group comes from the Friends page's group bar (its switcher
+ *  replaces the group buttons this tab used to draw). null = in no group. */
+export default function LetItRideTab({ group }: { group: Group | null }) {
   const [league, setLeague] = useState<League | null | undefined>(undefined);
   const [err, setErr] = useState("");
-
-  useEffect(() => {
-    call("/api/friends/groups")
-      .then(d => {
-        const gs = (d.groups as Group[]) ?? [];
-        setGroups(gs);
-        if (gs.length) setGroupId(gs[0].id);
-      })
-      .catch(e => { setErr(e.message); setGroups([]); });
-  }, []);
+  const groupId = group?.id ?? null;
 
   const loadLeague = useCallback(() => {
     if (!groupId) return;
@@ -135,21 +126,12 @@ export default function LetItRideTab() {
   }, [groupId]);
   useEffect(loadLeague, [loadLeague]);
 
-  if (groups === null) return <p style={{ color: "var(--bc-muted)" }}>Loading…</p>;
-  if (groups.length === 0) {
-    return <div style={card}>Let It Ride is played inside a group. Create or join one on the Groups tab first.</div>;
+  if (!group) {
+    return <div style={card}>Let It Ride is played inside a group. Tap the group name at the top to create or join one.</div>;
   }
-  const group = groups.find(g => g.id === groupId) ?? groups[0];
 
   return (
     <>
-      {groups.length > 1 && (
-        <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
-          {groups.map(g => (
-            <button key={g.id} onClick={() => setGroupId(g.id)} style={choice(g.id === group.id)}>{g.name}</button>
-          ))}
-        </div>
-      )}
       {err && <div style={{ ...card, color: "var(--bc-red-text)" }}>{err}</div>}
       {league === undefined && <p style={{ color: "var(--bc-muted)" }}>Loading…</p>}
       {league === null && <StartSeason group={group} onStarted={loadLeague} />}

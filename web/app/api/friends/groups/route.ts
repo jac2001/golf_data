@@ -24,10 +24,11 @@ export async function GET() {
   // Lazy name refresh: if the user picked/changed a username since their
   // rows were written, catch the stored copies up now.
   await syncStoredNames(sql, userId, await displayName());
+  // Oldest JOINED first: lib/activeGroup.ts (which group opens) relies on it.
   const groups = await sql`
     SELECT g.id, g.name, g.invite_code, g.owner_id
     FROM groups g JOIN group_members m ON m.group_id = g.id
-    WHERE m.user_id = ${userId} ORDER BY g.created_at` as
+    WHERE m.user_id = ${userId} ORDER BY m.joined_at, g.id` as
     { id: number; name: string; invite_code: string; owner_id: string }[];
 
   const ids = groups.map(g => g.id);
