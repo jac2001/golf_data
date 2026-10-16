@@ -28,8 +28,10 @@ import OddsExplorer from "@/components/OddsExplorer";
 import ExpertPicksTab from "@/components/ExpertPicksTab";
 import { BetsLedger, BetSlipPanel } from "@/components/BetsPanel";
 import { PageHead, SubTabs, StatStrip } from "@/components/broadcast";
+import { MyBetsTab } from "@/components/MyBetsTab";
+import { TailsTab } from "@/components/TailsTab";
 
-type BoardTab = "bets" | "matchups" | "odds" | "expert" | "ledger" | "slip";
+type BoardTab = "bets" | "matchups" | "odds" | "expert" | "ledger" | "slip" | "mybets" | "tails";
 const BOARD_TABS: { id: BoardTab; label: string }[] = [
   { id: "bets",     label: "Value Bets"    },
   { id: "matchups", label: "Matchups"      },
@@ -37,6 +39,8 @@ const BOARD_TABS: { id: BoardTab; label: string }[] = [
   { id: "expert",   label: "Expert Picks"  },
   { id: "ledger",   label: "Ledger"        },
   { id: "slip",     label: "My Slip"       },
+  { id: "mybets",   label: "My Bets"       },
+  { id: "tails",    label: "My Tails"      },
 ];
 
 // Markets available as filter pills
@@ -172,6 +176,8 @@ export default function BettingPage() {
 
       {activeTab === "ledger" && <BetsLedger />}
       {activeTab === "slip" && <BetSlipPanel />}
+      {activeTab === "mybets" && <MyBetsTab />}
+      {activeTab === "tails" && <TailsTab />}
       {activeTab === "matchups" && <MatchupsTab />}
       {activeTab === "odds" && <OddsExplorer />}
       {activeTab === "expert" && (

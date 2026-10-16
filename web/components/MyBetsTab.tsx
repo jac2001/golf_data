@@ -2,11 +2,12 @@
 
 /**
  * My Bets: this person's logged bets.
- * Split out of app/friends/page.tsx unchanged.
+ * Lives on the Betting Board (it moved off the Friends page in the 2026
+ * redesign: bets aren't one of the friends games).
  */
 
 import { useCallback, useEffect, useState } from "react";
-import { btn, btnQuiet, card, inputStyle, useApi } from "./shared";
+import { btn, btnQuiet, card, inputStyle, useApi } from "@/app/friends/_components/shared";
 
 // ── My Bets ──────────────────────────────────────────────────────────────────
 

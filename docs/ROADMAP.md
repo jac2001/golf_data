@@ -94,6 +94,16 @@ integrity + freshness gates refusing to publish bad predictions.
    cached + course cache 1h. Re-measured This Week: all data at 1.5s on a
    first visit, 0.9s on a repeat (was ~5.5s). Left: data still starts
    only after the JS boots, /api/events/open fires twice, 1.8MB of JS.
+   **Done Oct 15** (each tested on Jack's phone): app_events instrumentation;
+   one-tap invite links (/join/<token>); install card after a first pick +
+   in-context push ask; phone tab bar (Home / Play / Matchup / More);
+   Friends page split into per-game files and redesigned per the phone
+   mockup (group bar + sheet scoping every board, four-button game picker,
+   Picks / Standings / How to play per game, one-line event bar, PGA-first
+   landing, group's most-played game opens); My Bets / My Tails moved to
+   the Betting Board. Left: phone golfer cards with template "why" lines
+   (decision D), the confirmation screen after a pick, the Round Game's
+   live round number in the event bar, then the speed items above.
 4. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend

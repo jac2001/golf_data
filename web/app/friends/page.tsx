@@ -12,19 +12,17 @@
 
 import { useEffect, useState } from "react";
 import { PageHead } from "@/components/broadcast";
-import { MyBetsTab } from "./_components/MyBetsTab";
 import { GamesTab } from "./_components/GamesTab";
 import { GroupsTab } from "./_components/GroupsTab";
-import { TailsTab } from "./_components/TailsTab";
 import { ReminderBell } from "./_components/shared";
 import { ActiveGroupProvider, useActiveGroup } from "./_components/ActiveGroup";
 import { GroupBar } from "./_components/GroupBar";
 
 // The page answers four questions, top to bottom: who (the group bar),
 // which game, which event, what to do (both inside GamesTab). Groups'
-// full screen opens from the group sheet; My Bets / My Tails sit at the
-// bottom until they move to the Betting Board.
-type View = "play" | "manage" | "bets" | "tails";
+// full screen opens from the group sheet. My Bets / My Tails live on the
+// Betting Board.
+type View = "play" | "manage";
 
 export default function FriendsPage() {
   return (
@@ -59,8 +57,6 @@ function FriendsBody() {
       ‹ Back to the games
     </button>
   );
-  const quiet = { background: "transparent", border: "none", color: "var(--bc-muted)", fontFamily: "inherit",
-    fontWeight: 700, cursor: "pointer", minHeight: 44, padding: "0 6px" } as const;
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
@@ -82,15 +78,8 @@ function FriendsBody() {
         <GroupBar startJoin={invited} onManage={() => setView("manage")} />
         <GamesTab />
         <ReminderBell />
-        <div style={{ display: "flex", justifyContent: "center", gap: 4, marginTop: 8 }}>
-          <button onClick={() => setView("bets")} style={quiet}>My bets</button>
-          <span aria-hidden="true" style={{ color: "var(--bc-line-hi)", alignSelf: "center" }}>·</span>
-          <button onClick={() => setView("tails")} style={quiet}>My tails</button>
-        </div>
       </>}
       {view === "manage" && <>{backBtn}<GroupsTab /></>}
-      {view === "bets" && <>{backBtn}<MyBetsTab /></>}
-      {view === "tails" && <>{backBtn}<TailsTab /></>}
     </div>
   );
 }

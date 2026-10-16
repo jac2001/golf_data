@@ -2,11 +2,12 @@
 
 /**
  * My Tails: the model bets this person has tailed.
- * Split out of app/friends/page.tsx unchanged.
+ * Lives on the Betting Board (it moved off the Friends page in the 2026
+ * redesign: bets aren't one of the friends games).
  */
 
 import { useEffect, useState } from "react";
-import { Tail, card, cell, hdr, useApi } from "./shared";
+import { Tail, card, cell, hdr, useApi } from "@/app/friends/_components/shared";
 
 // ── My Tails ─────────────────────────────────────────────────────────────────
 
