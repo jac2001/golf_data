@@ -5,7 +5,7 @@ Generate Plain-English Player Card Explanations
 For every player in this week's field, produces a one-liner like:
 
   "Elite approach play · trending up · good value vs. market"
-  "Strong ball striking · 4 top-10s here in 6 starts · priced in"
+  "Strong ball striking · 4/6 top-10s at this event · priced in"
   "Cold lately · weak putter · tough course fit"
 
 How it works:
@@ -47,10 +47,10 @@ FEATURE_LABELS = {
     "recent_sg_weighted":         ("hot recent form",      "cold recent form"),
     "recent_sg_trend":            ("improving form",       "fading form"),
     # Course
-    "has_course_sg_history":      ("course experience",    "first time here"),
+    "has_course_sg_history":      ("course experience",    "first time at this event"),
     "course_sg_total_weighted":   ("strong course SG",     "poor course SG"),
-    "has_made_cut_here":          ("cuts made here",       "cut struggles here"),
-    "hist_cut_rate":              ("cuts made here",       "cut risk"),   # same concept as has_made_cut_here
+    "has_made_cut_here":          ("cuts made at this event",       "cut struggles at this event"),
+    "hist_cut_rate":              ("cuts made at this event",       "cut risk"),   # same concept as has_made_cut_here
     "course_perf_score":          ("strong course record", "poor course record"),
     # Fit
     "dg_fit_total":               ("good course fit",      "poor course fit"),
@@ -120,18 +120,20 @@ def _shap_label(feature: str, shap_val: float, player_field_pcts: dict | None = 
 
 
 def _course_context(row: pd.Series) -> str | None:
-    """Generate a short course-history phrase from predictions columns."""
+    """Generate a short history phrase from predictions columns. "at this
+    event", never "here": course_starts counts past editions of the EVENT,
+    and some events changed venue under the same id (Zozo -> Baycurrent)."""
     starts = int(row.get("course_starts", 0) or 0)
     if starts == 0:
         return None
     t10_rate = float(row.get("course_top_10_rate", 0) or 0)
     best     = row.get("course_best_finish")
     if starts >= 3 and t10_rate >= 0.35:
-        return f"{int(t10_rate * starts)}/{starts} top-10s here"
+        return f"{int(t10_rate * starts)}/{starts} top-10s at this event"
     if starts >= 2 and pd.notna(best) and int(best) <= 5:
-        return f"top-5 finish here before"
+        return "top-5 finish at this event before"
     if starts >= 4:
-        return f"{starts} starts here"
+        return f"{starts} starts at this event"
     return None
 
 
@@ -166,7 +168,7 @@ def generate_explanation(player_name: str, shap_row: pd.Series,
     field_pcts: {feature_name: player's percentile rank in the field (0-1)}
     """
     # Skip course-generic features — use field_medians to filter out non-differentiating signals
-    SKIP_IF_common = {"cuts made here", "course experience"}
+    SKIP_IF_common = {"cuts made at this event", "course experience"}
 
     # Semantic groups: once a label from a group is chosen, skip others in the same group.
     # Maps label → group name (both positive and negative versions)

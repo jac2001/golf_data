@@ -22,7 +22,7 @@ import {
   Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
   ModelCompPlayer, WeatherResponse, CourseFitResponse,
   getCourseFit, getOpenEvents, getEuroWeek, getEventRounds, EuroWeekMeta, EventRounds, PlayerPrediction, IntelResponse,
-  getEuroTeeTimes, getEuroCourse, EuroTeeTimes, EuroTeeTime, EuroCourseGuide,
+  getEuroTeeTimes, getEuroCourse, EuroTeeTimes, EuroTeeTime, EuroCourseGuide, getGolferForm, GolferForm,
 } from "@/lib/api";
 import PredictionsTable from "@/components/PredictionsTable";
 import LineupCards from "@/components/LineupCards";
@@ -84,6 +84,15 @@ export default function PredictionsPage() {
         nextStart: next?.start_date?.slice(0, 10) ?? "",
       });
     }).catch(() => {});
+  }, [preds?.tournament_id]);
+
+  // Each golfer's real recent results, for the plain-language "why" line
+  // beside the model's reasons (lib/whyLine.ts). PGA only; none → no line.
+  const [form, setForm] = useState<GolferForm[]>([]);
+  useEffect(() => {
+    const tid = preds?.tournament_id;
+    if (!tid) return;
+    getGolferForm(tid).then(d => setForm(d.players ?? [])).catch(() => setForm([]));
   }, [preds?.tournament_id]);
   const [teeTimes, setTeeTimes]       = useState<TeeTimesResponse | null>(null);
   const [course, setCourse]           = useState<CourseResponse | null>(null);
@@ -299,6 +308,7 @@ export default function PredictionsPage() {
                   players={isSignedIn ? preds.players : preds.players.slice(0, 10)}
                   intel={intel?.players ?? []}
                   myPicks={lineup?.confirmed ? lineup.picks.map(p => p.player_name) : []}
+                  form={form}
                 />
                 {!isSignedIn && (
                   <div style={{

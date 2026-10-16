@@ -25,6 +25,7 @@ test("helpers: countTopN and oneIn", () => {
   assert.equal(countTopN(COLD, 10), 0);
   assert.equal(oneIn(0.0167), "1 in 60");
   assert.equal(oneIn(0.25), "1 in 4");
+  assert.equal(oneIn(0.085), "1 in 12");   // contenders: exact, never rounded up to a better chance
   assert.equal(oneIn(0), null);
   assert.equal(oneIn(null), null);
 });

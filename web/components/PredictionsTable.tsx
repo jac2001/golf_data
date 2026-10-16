@@ -17,12 +17,17 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { PlayerPrediction, PlayerIntel } from "@/lib/api";
+import { PlayerPrediction, PlayerIntel, GolferForm } from "@/lib/api";
+import { nameKey } from "@/lib/names";
+import { whyLine } from "@/lib/whyLine";
 
 type Props = {
   players: PlayerPrediction[];
   intel?: PlayerIntel[];
   myPicks?: string[];  // confirmed pick names in "First Last" format
+  /** Real recent results per golfer (/api/golfer-form): feeds the plain
+   *  "why" line shown above the model's reasons. Omit for none. */
+  form?: GolferForm[];
 };
 
 type SortCol = "world_rank" | "win_prob_sim" | "win_prob" | "top10_prob_sim" | "top10_prob" | "cut_prob" | "season_sg_total" | "form_trend" | "model_vs_vegas_edge";
@@ -90,7 +95,27 @@ function normName(n: string) {
   return n.toLowerCase().replace(",", "").split(/\s+/).sort().join(" ");
 }
 
-export default function PredictionsTable({ players, intel = [], myPicks = [] }: Props) {
+export default function PredictionsTable({ players, intel = [], myPicks = [], form = [] }: Props) {
+  // One true sentence per golfer from his results + the model's chances
+  // (Jack's whyLine). The model's own reasons (p.explanation) stay below it:
+  // the fact is for anyone, the reasons are for golf fans.
+  const whyByName = useMemo(() => {
+    const facts = new Map(form.map(f => [nameKey(f.player_name), f]));
+    const out = new Map<string, string>();
+    if (!facts.size) return out;
+    for (const p of players) {
+      const f = facts.get(nameKey(p.player_name));
+      try {
+        out.set(p.player_name, whyLine({
+          recent: f?.recent ?? [], courseStarts: f?.event_starts ?? 0, courseCuts: f?.event_cuts ?? 0,
+          // The chance the Win column shows (simulation first), so the line and the column agree.
+          winProb: p.win_prob_sim ?? p.win_prob ?? null, top10Prob: p.top10_prob_sim ?? p.top10_prob ?? null,
+          worldRank: p.world_rank ?? null,
+        }));
+      } catch { /* no line beats a wrong one */ }
+    }
+    return out;
+  }, [form, players]);
   const myPicksNorm = useMemo(() => new Set(myPicks.map(normName)), [myPicks]);
   // Build a lowercase name → intel lookup so we can match "First Last" from either source
   const intelMap = useMemo(() => {
@@ -305,6 +330,12 @@ export default function PredictionsTable({ players, intel = [], myPicks = [] }: 
                         </span>
                       )}
                     </div>
+                    {whyByName.get(p.player_name) && (
+                      <div style={{ color: "var(--bc-text)", fontSize: "max(var(--fs-min), 0.75em)", marginTop: 2,
+                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {whyByName.get(p.player_name)}
+                      </div>
+                    )}
                     {p.explanation && (
                       <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", marginTop: 2,
                         whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>

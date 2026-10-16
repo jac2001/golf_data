@@ -52,7 +52,9 @@ export function countTopN(recent: Finish[], n: number): number {
 export function oneIn(p: number | null): string | null {
   if (p === null || !(p > 0)) return null;
   const n = 1 / p;
-  const nice = n < 10 ? Math.round(n) : n < 100 ? Math.round(n / 5) * 5 : Math.round(n / 25) * 25;
+  // Exact below 20 (8.5% is "1 in 12", not "1 in 10": rounding to 5s there
+  // would overstate a contender's chance), then friendlier steps.
+  const nice = n < 20 ? Math.round(n) : n < 100 ? Math.round(n / 5) * 5 : Math.round(n / 25) * 25;
   return `1 in ${Math.max(2, nice)}`;
 }
 
