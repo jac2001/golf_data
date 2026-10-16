@@ -47,7 +47,7 @@ test("only 3 starts on record → never claims 'last 5'", () => {
 
 test("no course history → never mentions 'here' or the course", () => {
   for (const facts of [g({ recent: HOT }), g({ winProb: 0.2, top10Prob: 0.6 }), g({ winProb: 0.004 })]) {
-    assert.doesNotMatch(whyLine(facts).toLowerCase(), /\bhere\b|course/);
+    assert.doesNotMatch(whyLine(facts).toLowerCase(), /\bhere\b|course|this event/);
   }
 });
 
@@ -86,8 +86,8 @@ test("no money words", () => {
 });
 
 test("a long shot's chance is said as a chance", () => {
-  const s = whyLine(g({ winProb: 0.0167 }));
-  assert.match(s, /1 in 60|long shot/i);
+  const s = whyLine(g({ winProb: 0.004 }));   // under LONG_SHOT_WIN (0.5%)
+  assert.equal(s, "Long shot: about a 1 in 250 chance to win");
 });
 
 test("same facts, same line", () => {
@@ -117,6 +117,10 @@ test("a top model chance beats a long shot (decision a)", () => {
 });
 
 test("a long shot beats a cold streak (decision a)", () => {
-  const s = whyLine(g({ winProb: 0.0167, top10Prob: 0.08, worldRank: 140 }));
-  assert.match(s, /1 in 60|long shot/i);
+  const s = whyLine(g({ winProb: 0.004, top10Prob: 0.03, worldRank: 140 }));
+  assert.match(s, /long shot/i);
+});
+
+test("a contender is never called a long shot", () => {
+  assert.doesNotMatch(whyLine(g({ winProb: 0.048 })), /long shot/i);
 });

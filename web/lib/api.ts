@@ -316,6 +316,19 @@ export async function getEventField(tournamentId: string): Promise<{ players: st
   return res.json();
 }
 
+/** Real results behind the pick cards' why lines (api /api/golfer-form):
+ *  last 5 finishes before the event ("MC" = missed cut / WD / DQ) and the
+ *  golfer's record at past editions of this event. PGA only; [] otherwise. */
+export type GolferForm = {
+  player_name: string; recent: (number | "MC")[]; event_starts: number; event_cuts: number;
+};
+
+export async function getGolferForm(tournamentId: string): Promise<{ players: GolferForm[] }> {
+  const res = await apiFetch(`${API_BASE}/api/golfer-form?tournament_id=${encodeURIComponent(tournamentId)}`, { cache: "no-store" });
+  if (!res.ok) return { players: [] };
+  return res.json();
+}
+
 export type EuroWeekMeta = {
   tournament_id: string; name: string; start_date: string; end_date: string;
   location: string; course: string; purse: number | null; purse_estimated: boolean;

@@ -11,7 +11,8 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { getEventField, getPredictions, OpenEvent } from "@/lib/api";
+import { getEventField, getGolferForm, getPredictions, OpenEvent } from "@/lib/api";
+import { whyLine } from "@/lib/whyLine";
 import { nameKey } from "@/lib/names";
 import LockCountdown from "@/components/LockCountdown";
 import { choice } from "@/components/broadcast";
@@ -307,7 +308,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
 }) {
   const [picks, setPicks] = useState<SlatePick[]>([]);
   const [locked, setLocked] = useState(ev.locked);
-  const [field, setField] = useState<{ name: string; win: number | null }[]>([]);
+  const [field, setField] = useState<{ name: string; win: number | null; why: string }[]>([]);
   const [q, setQ] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState("");
@@ -339,22 +340,35 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
   useEffect(() => {
     load();
     // Field names from the event's field file; win chances (when the
-    // model has this event) order the list so the contenders lead.
+    // model has this event) order the list so the contenders lead. Each
+    // golfer gets Jack's one-line why (lib/whyLine.ts) from his REAL
+    // results (/api/golfer-form) plus the model's chances.
     Promise.all([
       getEventField(ev.tournament_id).catch(() => ({ players: [] as string[] })),
       getPredictions(200, ev.tournament_id).catch(() => null),
-    ]).then(([f, p]) => {
-      const win = new Map<string, number | null>(
-        (p?.players ?? []).map(x => [nameKey(x.player_name), x.win_prob ?? null]));
+      getGolferForm(ev.tournament_id).catch(() => ({ players: [] })),
+    ]).then(([f, p, form]) => {
+      const pred = new Map((p?.players ?? []).map(x => [nameKey(x.player_name), x]));
+      const facts = new Map(form.players.map(x => [nameKey(x.player_name), x]));
       const names = f.players.length ? f.players : (p?.players ?? []).map(x => x.player_name);
-      setField(names.map(n => ({ name: n, win: win.get(nameKey(n)) ?? null }))
-        .sort((a, b) => (b.win ?? -1) - (a.win ?? -1)));
+      setField(names.map(n => {
+        const k = nameKey(n), pr = pred.get(k), fm = facts.get(k);
+        let why = "";
+        try {
+          why = whyLine({
+            recent: fm?.recent ?? [], courseStarts: fm?.event_starts ?? 0, courseCuts: fm?.event_cuts ?? 0,
+            winProb: pr?.win_prob ?? null, top10Prob: pr?.top10_prob ?? null, worldRank: pr?.world_rank ?? null,
+          });
+        } catch { /* no line beats a wrong one */ }
+        return { name: n, win: pr?.win_prob ?? null, why };
+      }).sort((a, b) => (b.win ?? -1) - (a.win ?? -1)));
     });
   }, [ev.tournament_id, load]);
 
   const mine = picks.filter(p => p.user_id === me);
   const full = mine.length >= league.players_per_week;
   const usedOf = (n: string) => myUses[nameKey(n)] ?? 0;
+  const whyOf = (n: string) => field.find(f => nameKey(f.name) === nameKey(n))?.why ?? "";
 
   async function act(method: "POST" | "DELETE", player: string) {
     setBusy(player); setMsg("");
@@ -409,8 +423,10 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
             <div key={i}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
               background: "var(--bc-panel)", border: "1px dashed var(--bc-line)", borderRadius: 6, padding: "8px 12px" }}>
-              <span style={{ fontWeight: p ? 700 : 400, color: p ? "var(--bc-text)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)" }}>
+              <span style={{ fontWeight: p ? 700 : 400, color: p ? "var(--bc-text)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", minWidth: 0 }}>
                 {p ? p.player_name : `Slot ${i + 1} — open`}
+                {p && whyOf(p.player_name) && <span style={{ display: "block", fontWeight: 400, color: "var(--bc-muted)",
+                  fontSize: "max(var(--fs-min), 0.86em)", marginTop: 2 }}>{whyOf(p.player_name)}</span>}
               </span>
               {p && (
                 <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -462,6 +478,7 @@ function Slate({ league, ev, myUses, me, onChange, winners }: {
                   <span style={{ fontSize: "max(var(--fs-min), 0.86em)", minWidth: 0 }}>
                     {f.name}
                     {f.win != null && <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginLeft: 8, whiteSpace: "nowrap" }}>{(f.win * 100).toFixed(1)}%</span>}
+                    {f.why && <span style={{ display: "block", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 2 }}>{f.why}</span>}
                   </span>
                   <span style={{ display: "flex", gap: 8, alignItems: "center", flexShrink: 0 }}>
                     {showAdvice && !spent && <AdviceTag a={advice[nameKey(f.name)]} open={why === f.name}

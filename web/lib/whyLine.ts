@@ -6,7 +6,7 @@
  * understands, and never make it sound like a promise.
  *
  *   Scottie Scheffler      Top-10 in 4 of his last 5 starts
- *   Brian Harman           Made the cut here 5 of 5 times
+ *   Brian Harman           Made the cut at this event 5 of 5 times
  *   Taylor Moore           Long shot: about a 1 in 60 chance to win
  *
  * Pure function, no imports from "@/": `npm test` runs it. The facts come
@@ -20,7 +20,7 @@ export type GolferFacts = {
   /** His last starts, MOST RECENT FIRST, at most 5. May be shorter (new
    *  player, injury) or empty. Only real results: no filled values. */
   recent: Finish[];
-  /** Times he has played this course before, and cuts made there. */
+  /** Times he has played at this event before, and cuts made there. */
   courseStarts: number;
   courseCuts: number;
   /** Our model's chances this week (0–1), or null if no model this week. */
@@ -38,8 +38,8 @@ export const MIN_RECENT_STARTS = 3;  // recent-form lines need at least this man
 export const MIN_COURSE_STARTS = 3;  // a course line needs at least this many starts there
 export const HOT_SHARE = 0.6;        // hot = top-10 in at least 60% of known starts
 export const COLD_MISSES = 3;        // cold = at least this many missed cuts in known starts
-export const FAVORITE_WIN = 0.10;    // model favorite = 10%+ to win
-export const LONG_SHOT_WIN = 0.02;   // long shot = under 2% (worse than 1 in 50)
+export const FAVORITE_WIN = 0.05;    // 5%+: model favorite (our model rarely gives anyone 10%)
+export const LONG_SHOT_WIN = 0.005;   // 0.5%: worse than 1 in 200
 
 // ── helpers (Claude's) ───────────────────────────────────────────────────────
 
