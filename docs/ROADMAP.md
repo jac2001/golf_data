@@ -9,7 +9,7 @@ we noticed we were steering by whatever was shiniest.)
 
 **Golf Edge turns professional golf into a weekly rivalry among
 friends: use your golf knowledge, or our guidance, to beat them.**
-(Jack's launch plan, Oct 15: `Audience_Product_Launch_Plan.pdf`.)
+(Jack's launch plan, Oct 15: `docs/Audience_Product_Launch_Plan.pdf`.)
 
 The main product question is **"Was this week fun enough to play
 again?"** A more accurate model can help; so can a close matchup, an
