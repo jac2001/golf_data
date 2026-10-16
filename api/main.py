@@ -4451,6 +4451,57 @@ def events_open() -> dict:
     return {"events": out}
 
 
+_GOLFER_FORM_LOCK = threading.Lock()
+_GOLFER_FORM_HIST: dict = {"key": None, "df": None}
+_GOLFER_FORM_CACHE: dict[str, tuple[float, dict]] = {}
+_GOLFER_FORM_TTL = 3600
+
+
+@app.get("/api/golfer-form")
+def golfer_form(tournament_id: str) -> dict:
+    """The facts behind the pick cards' "why" lines (web/lib/whyLine.ts) for
+    one event's field: each golfer's last 5 real finishes before this event
+    (by event DATE, not tournament_id) and his record at past editions of
+    this EVENT (event_starts / event_cuts; none for rotating majors; not
+    "course": venues aren't known before 2026). scripts/features/golfer_form.py
+    does the work; real results only, never model features."""
+    tid = tournament_id.strip().upper()
+    hit = _GOLFER_FORM_CACHE.get(tid)
+    if hit and time.time() - hit[0] < _GOLFER_FORM_TTL:
+        return hit[1]
+
+    fp = DATA_DIR / "fields" / f"field_{tid}.csv"
+    if not tid.startswith("R") or not fp.exists():
+        return {"tournament_id": tid, "players": []}   # PGA only: our leaderboards are PGA
+    try:
+        if str(PROJECT_ROOT) not in sys.path:
+            sys.path.insert(0, str(PROJECT_ROOT))
+        from scripts.features.golfer_form import golfer_facts, load_history
+        from scripts.features.event_dates import load_events, load_overrides, training_event_date
+
+        hist_files = sorted((DATA_DIR / "historical").glob("leaderboards_20*.csv"))
+        key = tuple((f.name, f.stat().st_mtime) for f in hist_files)
+        with _GOLFER_FORM_LOCK:
+            if _GOLFER_FORM_HIST["key"] != key:
+                _GOLFER_FORM_HIST.update(key=key, df=load_history())
+            hist = _GOLFER_FORM_HIST["df"]
+
+        field = pd.read_csv(fp, dtype={"player_id": str})
+        field["player_id"] = field["player_id"].str.replace(r"\.0$", "", regex=True)
+        # A finished event's date excludes its own result and later ones;
+        # an upcoming event isn't in DG's list yet: all history counts.
+        before = training_event_date(tid, "", load_events(), load_overrides())
+        facts = golfer_facts(hist, field["player_id"].tolist(), tid, before)
+        players = [{"player_name": _flip_to_first_last(str(r.player_name)), **facts[r.player_id]}
+                   for r in field.itertuples(index=False)]
+        out = {"tournament_id": tid, "players": players}
+    except Exception as e:
+        print(f"golfer-form {tid} failed: {e}")
+        return {"tournament_id": tid, "players": []}   # no facts → no why lines, never wrong ones
+    _GOLFER_FORM_CACHE[tid] = (time.time(), out)
+    return out
+
+
 @app.get("/api/events/field")
 def events_field(tournament_id: str) -> dict:
     """Player list for any event's field file — powers euro picking, where
