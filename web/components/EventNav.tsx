@@ -6,8 +6,15 @@
  * both tours, prev/next through one tour's events in date order, and a
  * scroll-snap strip grouped Completed | This week | Upcoming that keeps
  * the selection centered. Selecting is the caller's job (onPick).
+ *
+ * Closed (the default) it is one bar: the event's name and ONE status line
+ * (lib/eventStatus.ts, Jack's eventStatusLine) between prev/next arrows.
+ * Tapping the name opens the tour pills and the full strip.
  */
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { eventStatusLine } from "@/lib/eventStatus";
+import type { StatusLine } from "@/lib/eventStatus";
+import { lockAt } from "@/lib/lockTime";
 import { landingEvent, favoriteTour } from "@/lib/landing";
 
 export type NavEvent = {
@@ -66,10 +73,18 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
   const idx = list.findIndex(e => e.tournament_id === selected);
   const cur = list[idx];
 
+  const [open, setOpen] = useState(false);
+  const [now, setNow] = useState(() => new Date());
+  // The countdown is minutes-precise: re-render once a minute.
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(t);
+  }, []);
+
   const selRef = useRef<HTMLButtonElement | null>(null);
   useEffect(() => {
-    selRef.current?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
-  }, [selected]);
+    if (open) selRef.current?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  }, [selected, open]);
 
   if (!events.length) return null;
 
@@ -87,14 +102,45 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
     return (
       <button onClick={() => target && onPick(target.tournament_id)} disabled={!target}
         aria-label={dir < 0 ? "Previous event" : "Next event"}
-        style={{ ...btn(false), padding: "7px 11px", opacity: target ? 1 : 0.35 }}>
+        style={{ ...btn(false), border: "none", width: 40, height: 44, padding: 0, fontSize: "1.2em", opacity: target ? 1 : 0.35 }}>
         {dir < 0 ? "‹" : "›"}
       </button>
     );
   };
 
+  // Jack's line; if it ever throws, fall back to the plain status label.
+  let line: StatusLine | null = null;
+  if (cur) {
+    try {
+      line = eventStatusLine({ status: cur.status, tour: cur.tour, startDate: cur.start_date,
+        lockAt: lockAt(cur.start_date, cur.tour), round: null }, now);
+    } catch {
+      line = { state: STATUS_LABEL[cur.status], detail: shortDate(cur.start_date), tone: "quiet" };
+    }
+  }
+  const toneColor = (t: StatusLine["tone"]) => t === "quiet" ? "var(--bc-muted)" : "var(--bc-green)";
+
   return (
     <div style={{ marginBottom: 14 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 4, background: "var(--bc-card)",
+        border: "1px solid var(--bc-line)", borderRadius: 10, padding: 6 }}>
+        {arrow(-1)}
+        <button onClick={() => setOpen(o => !o)} aria-expanded={open} aria-label={`${cur?.name ?? "Event"}: show all events`}
+          style={{ flex: 1, minWidth: 0, minHeight: 44, background: "transparent", border: "none", cursor: "pointer",
+            fontFamily: "inherit", color: "var(--bc-text)", textAlign: "center", padding: "2px 0" }}>
+          <div style={{ fontWeight: 900, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {cur?.name ?? "—"}
+          </div>
+          {line && (
+            <div style={{ fontSize: "max(var(--fs-min), 0.8em)", marginTop: 2 }}>
+              <span style={{ color: toneColor(line.tone), fontWeight: 800 }}>{line.state}</span>
+              {line.detail && <span style={{ color: "var(--bc-muted)" }}> · {line.detail}</span>}
+            </div>
+          )}
+        </button>
+        {arrow(1)}
+      </div>
+      {open && <div style={{ marginTop: 10 }}>
       {tours.length > 1 && (
         <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
           {(["pga", "euro"] as const).filter(t => tours.includes(t)).map(t => (
@@ -104,20 +150,6 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
           ))}
         </div>
       )}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-        {arrow(-1)}
-        <div style={{ flex: 1, textAlign: "center", minWidth: 0 }}>
-          <div style={{ fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            {cur?.name ?? "—"}
-          </div>
-          {cur && (
-            <div style={{ fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 700, color: STATUS_COLOR[cur.status] }}>
-              {STATUS_LABEL[cur.status]} · {shortDate(cur.start_date)}
-            </div>
-          )}
-        </div>
-        {arrow(1)}
-      </div>
       <div style={{ display: "flex", gap: 6, overflowX: "auto", scrollSnapType: "x mandatory",
         paddingBottom: 4, WebkitOverflowScrolling: "touch" as never }}>
         {list.map((e, i) => {
@@ -149,6 +181,7 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
           );
         })}
       </div>
+      </div>}
     </div>
   );
 }
