@@ -73,12 +73,12 @@ priorities; each has its completion test.
 - [x] **Remove friction, part 1** (Oct 15): one-tap invites, install
       card + reminders, phone tab bar, Friends page redesign (group bar,
       game picker, per-game tabs, one-line event bar). See #3 below.
-- [ ] **Pick confirmation.** "Whether their picks have been saved" is a
+- [x] **Pick confirmation** (Oct 17, all four games). "Whether their picks have been saved" is a
       must-understand: a confirmation screen ("You're in: A, B, C. Picks
       lock Wed at midnight ET. We'll remind you.") instead of a list
       that just updates. Test: a first-time player joins and submits
       valid picks without anyone explaining the interface.
-- [ ] **Golfer "why" lines** (in progress: Jack's `web/lib/whyLine.ts`;
+- [x] **Golfer "why" lines** (Oct 16: Let It Ride cards + This Week; Jack's `web/lib/whyLine.ts`;
       Claude adds real last-5 finishes + course starts to the API from
       leaderboard history, since `recent_top10s` is a weighted score and
       `venue_avg_finish` is filler).
@@ -93,6 +93,20 @@ priorities; each has its completion test.
 - [ ] **Match Center check** against the plan's questions: am I winning,
       who am I chasing, which golfers help or hurt, live estimate or
       final? Answer first, details underneath.
+- [ ] **Group chirps** (Jack, Oct 17; after the Match Center check, before
+      any new game mode): one thread per group per tournament (past weeks
+      kept), a "Send a chirp" button ON the matchup and result cards, a few
+      preset lines tied to what just happened ("Don't look now", "Check the
+      leaderboard", "So much for the expert", "There's always next week")
+      plus short custom messages, simple reactions, an unread badge inside
+      the group. Always sent by the player, never automatic. Members only;
+      report a message, organizer can remove it; a shared card never
+      reveals hidden picks. Social notifications separate from game
+      reminders, with mute. Skip for v1: DMs, images, alerts on every
+      standings change. The question to test with the first groups: will
+      friends talk here when they already have a group text? The reason to
+      would be the game context next to the message ("Jack just passed you"
+      on the actual matchup); generic chat alone likely isn't enough.
 - [ ] **Recap check**: who won and by how much, the turning point the
       data supports, how the group did against the model, the next event
       with a way to play. Lineup earnings never read as cash.
