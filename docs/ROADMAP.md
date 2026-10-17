@@ -45,68 +45,95 @@ accuracy and data permissions continue regardless.)
 
 ---
 
-## Now (week of Oct 12 — DPWT-only week: India Championship; PGA resumes Oct 22, Bermuda)
+## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
-The production loop now runs itself: data refresh → Tuesday predictions
-→ model picks → lock → live Match Center → settlement → Sunday recap,
-with the Vercel watchdog re-dispatching anything GitHub drops and the
-integrity + freshness gates refusing to publish bad predictions.
+The production loop runs itself: data refresh → Tuesday predictions →
+model picks → lock → live Match Center → settlement → Sunday recap, with
+the Vercel watchdog re-dispatching anything GitHub drops and the
+integrity + freshness gates refusing to publish bad predictions. Jack's
+review (Oct 17): don't wait on a long build list; get one group playing
+and fix what watching them reveals.
 
-- [ ] **Watch the first fully hands-off week.** India (Thu) is the first
-      event since the España fix; Bermuda (Oct 22) the first PGA week
-      with the watchdog armed from the start. Check Sentry for any
-      "Watchdog: … dispatched" alert and Monday's recap.
-- [ ] **Get Rick (and others) playing** — every group member adds pick
-      data the season-format work needs; Rick's session also closes the
-      cross-group 403 check and drives onboarding polish.
-- [x] **Clerk dashboard:** (done Oct 15) turn off Clerk's own "delete account" so
-      deletion always runs our cleanup (Jack, 1 minute).
+1. [ ] **Verify the unattended cycle through settlement and recap.**
+       Bermuda is the first PGA week with the watchdog armed from the
+       start. Tuesday Oct 20: read the prediction run's log (first live
+       "Weather (Open-Meteo forecast)", "Par-scoring percentiles", the
+       "at this event" wording in the model's reasons, Bermuda's
+       /api/golfer-form). Monday Oct 26: settlement + recap landed, no
+       Sentry "Watchdog: … dispatched" alerts.
+2. [ ] **Finish the mobile blockers and verify group isolation.** The
+       "Before the first group" list below. Group isolation with
+       CONTROLLED test accounts (two groups, two throwaway users): one
+       group can't see another's members, picks, boards, invites or feed
+       (every route through lib/gameScope.ts should 403). Not Rick's job.
+3. [ ] **One place for data permissions.** What we use from DataGolf
+       and PGA TOUR, what we have (subscription access vs confirmed
+       permission for each use: public display, game scoring, derived
+       outputs, any commercial use), and the open questions. See #2, #5.
+4. [ ] **Recruit one organizer and watch their group play** (Rick is
+       the natural first), using the plan's invitation. Tournament 1
+       of the pilot: watch first use without coaching.
+5. [ ] **Fix the largest obstacle that session reveals.**
+6. [ ] **Move the repo out of iCloud** (~/Desktop sync broke git refs
+       twice, duplicated data files, corrupted the Next build cache, and
+       dropped unsaved edits more than once). Recurring disruption to
+       everything else, so it moves up from Next.
 
-## Pilot readiness (first: before recruiting the pilot groups)
+## Pilot
 
-The pilot: five organizers, each bringing three to six friends, three
-tournaments (1: watch first use, 2: engagement, 3: repeat play with less
-prompting). Milestone: three of five groups active through all three
-events with multiple players each. Order below = the plan's build
-priorities; each has its completion test.
+The milestone: five organizers, each bringing three to six friends,
+three tournaments (1: watch first use, 2: engagement, 3: repeat play
+with less prompting); three of five groups active through all three
+events with multiple players each. Start with ONE group; don't wait to
+assemble all five. The distinction that matters: what must work before
+someone plays, versus what we improve because we watched them play.
 
-- [x] **Remove friction, part 1** (Oct 15): one-tap invites, install
-      card + reminders, phone tab bar, Friends page redesign (group bar,
-      game picker, per-game tabs, one-line event bar). See #3 below.
-- [x] **Pick confirmation** (Oct 17, all four games). "Whether their picks have been saved" is a
-      must-understand: a confirmation screen ("You're in: A, B, C. Picks
-      lock Wed at midnight ET. We'll remind you.") instead of a list
-      that just updates. Test: a first-time player joins and submits
-      valid picks without anyone explaining the interface.
-- [x] **Golfer "why" lines** (Oct 16: Let It Ride cards + This Week; Jack's `web/lib/whyLine.ts`;
-      Claude adds real last-5 finishes + course starts to the API from
-      leaderboard history, since `recent_top10s` is a weighted score and
-      `venue_avg_finish` is filler).
-- [ ] **"Help me pick"**: an optional, editable suggested lineup that
-      respects eligibility and remaining uses, one plain sentence per
-      golfer (the why lines), clearly not a guaranteed outcome. Test: a
-      beginner makes picks and can say what must happen for them to win.
+### Before the first group plays (required)
+
+- [x] **Mobile joining** (Oct 15): one-tap invite links, phone tab bar,
+      Friends page redesign (group bar + sheet, game picker, per-game
+      tabs, one-line event bar), install card + reminders.
+- [x] **Clear saved confirmation** (Oct 17, all four games): "You're in"
+      sheet naming every pick and the lock; a "Saved" note per pick.
+- [x] **Golfer why lines** (Oct 16): one true sentence per golfer on the
+      Let It Ride cards and This Week (Jack's `web/lib/whyLine.ts`, facts
+      from `/api/golfer-form`: real last-5 finishes and past editions of
+      the event, "at this event" since venues before 2026 aren't known,
+      no-cut editions excluded).
+- [x] **Results reachable** (Oct 16): finished Let It Ride weeks show
+      results and the field; Round/Fade/College keep past events.
+- [ ] **Group isolation verified** with controlled test accounts (Now #2).
+- [ ] **Trustworthy scoring and locks** confirmed on a real PGA week
+      (Bermuda: locks fire on time, settlement matches official results).
+- [ ] **Understandable matchup and results**: the Match Center check
+      against the plan's questions (am I winning, who am I chasing,
+      which golfers help or hurt, live estimate or final), answer first.
+- [ ] **Data permissions fit what the pilot shows** (Now #3).
+- [ ] Test: a first-time player joins and submits valid picks without
+      anyone explaining the interface.
+
+### Improve during the pilot (learn from watching, don't block on)
+
+- [ ] **"Help me pick"** (scaffolded Oct 17: Jack's
+      `web/lib/helpMePick.ts`): an optional, editable suggested lineup
+      that respects eligibility and remaining uses, one plain sentence
+      per golfer (the why lines), clearly not a guaranteed outcome.
+      Test: a beginner makes picks and can say what must happen to win.
 - [ ] **The organizer's view**: who has joined and who still needs to
       pick, without revealing hidden picks; share the result and start
-      the next week. Test: an organizer runs a second tournament without
-      Jack's help.
-- [ ] **Match Center check** against the plan's questions: am I winning,
-      who am I chasing, which golfers help or hurt, live estimate or
-      final? Answer first, details underneath.
-- [ ] **Group chirps** (Jack, Oct 17; after the Match Center check, before
-      any new game mode): one thread per group per tournament (past weeks
-      kept), a "Send a chirp" button ON the matchup and result cards, a few
-      preset lines tied to what just happened ("Don't look now", "Check the
-      leaderboard", "So much for the expert", "There's always next week")
-      plus short custom messages, simple reactions, an unread badge inside
-      the group. Always sent by the player, never automatic. Members only;
-      report a message, organizer can remove it; a shared card never
-      reveals hidden picks. Social notifications separate from game
-      reminders, with mute. Skip for v1: DMs, images, alerts on every
-      standings change. The question to test with the first groups: will
-      friends talk here when they already have a group text? The reason to
-      would be the game context next to the message ("Jack just passed you"
-      on the actual matchup); generic chat alone likely isn't enough.
+      the next week. Test: an organizer runs a second tournament alone.
+- [ ] **Group chirps** (Jack, Oct 17): one thread per group per
+      tournament (past weeks kept), "Send a chirp" ON the matchup and
+      result cards, a few preset lines tied to what just happened ("Don't
+      look now", "Check the leaderboard", "So much for the expert",
+      "There's always next week") plus short custom messages, simple
+      reactions, an unread badge inside the group. Always sent by the
+      player, never automatic. Members only; report a message, organizer
+      can remove it; a shared card never reveals hidden picks. Social
+      notifications separate from game reminders, with mute. Skip for
+      v1: DMs, images, alerts on every standings change. The question to
+      test: will friends talk here when they already have a group text?
+      The reason to would be the game context next to the message.
 - [ ] **Recap check**: who won and by how much, the turning point the
       data supports, how the group did against the model, the next event
       with a way to play. Lineup earnings never read as cash.
@@ -114,13 +141,11 @@ priorities; each has its completion test.
       invited players who submit first picks; first-week players who
       pick again; groups with several active players across all three
       events; Match Center checks during play; invites sent unprompted;
-      support needed per group. Optional golf-fan / not-golf-fan
-      self-description to split them.
-- [ ] **Licensing alongside the pilot**: confirm agreed data rights
-      cover public display, game scoring, derived outputs and any future
-      commercial use (see #2, #5).
+      support needed per group. Optional golf-fan self-description.
+- [ ] Small: why lines on the Round and Fade pick lists; the Round
+      Game's live round number in the event bar.
 
-## Next (after pilot readiness; the retrain stays January)
+## Next (alongside the pilot; the retrain stays January)
 
 1. **PGA retrain: decided Oct 15, don't ship mid-season; January.**
    Steps 1-3 done and live (dates, date-ordered table + serving, Jack's
@@ -151,8 +176,9 @@ priorities; each has its completion test.
    rankings, player database, live leaderboard, results + official prize
    money (`auto_record_results`), tee times, hole scores, weather widget,
    power rankings, betting profiles, withdrawals, colleges.
-   Plan: (a) training SG from DataGolf historical raw data (licensed,
-   round-level SG by category; the euro model already trains on it); do
+   Plan: (a) training SG from DataGolf historical raw data (in our
+   subscription; permission for each use, e.g. public display of derived
+   numbers, still to confirm; round-level SG by category; the euro model already trains on it); do
    it WITH the retrain, since the table is being rebuilt anyway.
    (b) live scores/positions → DG in-play; results → DG raw data.
    (c) Prize money: DG has none; the open question to PGA TOUR (draft
@@ -161,48 +187,30 @@ priorities; each has its completion test.
    whom to ask?). Fallback: purse × standard payout table, labeled
    estimated (as euro does). (d) No new pgatour.com dependencies; stay
    strictly non-commercial. Check DG's terms for display use (open).
-3. **Mobile-first Golf Edge** (decided direction, Oct 15): most players
-   won't be golf fans, so make join → pick → follow work on a phone in
-   a minute. Design: `docs/MOBILE_FIRST_DESIGN.md` (decisions A–D decided Oct 15).
-   Starts right after the retrain. First: instrument the flows, then
-   one-tap invite links (biggest drop-off: today a friend signs in via
-   the link, then must type a separately-sent code). The installable
-   app and push already exist; missing are install guidance (iOS only
-   allows push once installed) and a phone shell (bottom nav, split the
-   1,654-line friends page). Native app: not until people return weekly.
-   Speed (measured Oct 15, This Week): HTML 0.27s, JS boots ~1.3s,
-   board ~4.6s. Fixed: /api/predictions called DataGolf live on every
-   request (2.4-3.4s → ms) and a second fetch wave queued behind it.
-   Remaining for the mobile work: data fetches start only after the JS
-   boots (fetch on the server / prefetch), 1.8MB of JS on first load.
-   After the fix (re-measured live): all data in 3.3s (was ~5.5s), but
-   /api/predictions alone is 0.3s yet 1.7s in a page that fires six
-   calls at once: Render's free tier is a fraction of a CPU, so parallel
-   requests queue. Done: Render Starter ($7/mo, Oct 15) + empty tee-times
-   cached + course cache 1h. Re-measured This Week: all data at 1.5s on a
-   first visit, 0.9s on a repeat (was ~5.5s). Left: data still starts
-   only after the JS boots, /api/events/open fires twice, 1.8MB of JS.
-   **Done Oct 15** (each tested on Jack's phone): app_events instrumentation;
-   one-tap invite links (/join/<token>); install card after a first pick +
-   in-context push ask; phone tab bar (Home / Play / Matchup / More);
-   Friends page split into per-game files and redesigned per the phone
-   mockup (group bar + sheet scoping every board, four-button game picker,
-   Picks / Standings / How to play per game, one-line event bar, PGA-first
-   landing, group's most-played game opens); My Bets / My Tails moved to
-   the Betting Board. Left: phone golfer cards with template "why" lines
-   (decision D), the confirmation screen after a pick, the Round Game's
-   live round number in the event bar, then the speed items above.
+3. **Mobile-first Golf Edge** (Oct 15). Recruit golf fans who organize
+   groups; make joining easy for their less experienced friends. Design:
+   `docs/MOBILE_FIRST_DESIGN.md`. What shipped is under Pilot; what's
+   left here is speed: data fetches start only after the JS boots
+   (fetch on the server / prefetch), /api/events/open fires twice, 1.8MB
+   of JS on first load. (Re-measured Oct 15 after Render Starter: This
+   Week's data at 1.5s first visit, 0.9s repeat, was ~5.5s.) Native app:
+   not until people return weekly.
 4. **What is the euro model for?** Walk-forward win log-loss: model
    0.0403, market 0.0370, 50/50 blend 0.0379. The blend makes the
    market worse on win. Before the January retrain: tune the blend
    weight (walk-forward, not in-sample), or show the model only where
    it adds information (made cut?).
-5. **Licensing:** DataGolf follow-up on euro displays (nudge was due
-   ~Oct 6 — confirm it went out). PGA TOUR: verbal "free while
-   non-commercial" from Grant (Oct 6); wait for written terms, then
-   replace the scraped GraphQL scorecards/weather with the official API.
-6. **Move the repo out of iCloud (#6)** — ~/Desktop sync broke git refs
-   twice, duplicated data files, and corrupted the Next build cache.
+5. **Licensing / data permissions** (see Now #3). PGA TOUR (Grant,
+   Oct 15) paused free ShotLink data "while we formulate a strategy for
+   2027 and beyond"; the Oct 6 verbal "free while non-commercial" can't
+   be relied on, and nothing is in writing. Open with PGA TOUR: may we
+   keep using posted results / prize money non-commercially meanwhile;
+   is there a paid license that fits, and whom to ask (draft reply to
+   Grant saved in Gmail, not yet sent). Open with DataGolf: display of
+   derived numbers on a public site (euro displays nudge was due ~Oct 6;
+   confirm it went out). Until answered: no new pgatour.com dependencies,
+   strictly non-commercial.
+6. (moved to Now: the iCloud move)
 7. **Season formats that need weeks to accumulate**: pick diversity,
    College/Fade season boards — once there are real rows.
 8. **Ongoing:** badge colors for new schools (`web/lib/schoolBadges.ts`).
@@ -287,6 +295,16 @@ priorities; each has its completion test.
 
 ## Later
 
+- **Season plan view per member** (from the archived Phase 2 plan): the
+  ILP optimizer (pulp/CBC) as a "your season plan" view, re-run weekly
+  as a rolling replay. Needs `season_strategy.get_season_strategy`
+  parameterized (it reads ONE global tracker JSON today: usage state,
+  season window, purse map per league/member).
+- **"You vs your own Tuesday suggestion"**: the miss ledger + ladder
+  (`/history/league`) as a per-member in-game view.
+- **Optimizer validation per league** with `scripts/strategy/dg_proxy_replay.py`
+  (and the spend-now bias finding: the advisor must price option value
+  or say it can't).
 - **January retrain of the PGA model** (2025-26 data in, Tuesday trio
   wiring, calibration drift check) — this one genuinely waits for the
   season boundary. NEW (2026-09-25): the DG plan verifiably includes
@@ -305,51 +323,13 @@ priorities; each has its completion test.
   the market. Also consider a world-rank/class prior — the other gap the
   Gerard-vs-Åberg week exposed.
 
-## The two big builds (moved to Next, 2026-09-23)
-
-### Euro model (data is banked)
-
-Training data already in DuckDB (147,320 player-rounds with sg_total,
-30,233 odds rows). Build: scoring-form + sg_total features, market
-prior, walk-forward by season, live benchmark vs DG until it earns
-`source: "model"` for E-events. Enables euro fade pool and full model
-participation in euro weeks.
-
-### Phase 2 — Let It Ride as a hostable game
-
-The family league's FORMAT becomes a platform game. **Design
-constraints (Jack, 2026-09-23):** season length is per-league
-(start/end dates or week count — golf runs year-round worldwide),
-tour selection per league (PGA / DPWT / both), uses-per-player and
-players-per-week configurable (default 3/3).
-
-**THE OPTIMIZER WORK CARRIES FORWARD — nothing gets orphaned.** The
-league zone's UI died in Phase 1; its brains are the whole point of
-Phase 2. Asset-by-asset:
-
-| Asset | What it is | Phase 2 role |
-|---|---|---|
-| `scripts/predictions/season_strategy.py` (`get_season_strategy`) | uses-left, opportunity cost, save signals, weekly lineup | THE per-player strategy engine. Refactor: it reads ONE global tracker JSON today — parameterize its inputs (usage state, season window, purse map) so it serves any league instance and any member. This refactor IS the preservation. |
-| ILP optimizer (pulp/CBC, ~8K binary vars) | optimal season plan under uses/slots constraints | "Season plan" view per player; re-runs weekly as a rolling replay |
-| `scripts/strategy/dg_proxy_replay.py` | rolling-replay evaluation harness | how we validate the optimizer against any league's season, incl. the $19.2M/$27.0M/$41.3M/$111M ladder methodology |
-| `scripts/validation/walk_forward_cv.py` | Jack's CV harness | validates the euro model AND any strategy backtest |
-| Miss ledger + ladder (now in `/history/league`) | you-vs-machine accounting | becomes a per-player in-game view: "you vs your own Tuesday suggestion" |
-| Spend-now bias finding (Lessons doc) | rolling optimizers overspend early | a design input: the in-game advisor must price option value or say it can't |
-
-**Schema sketch** (build in January, not before): `leagues` (config:
-season_start, season_end, tours, uses_per_player, players_per_week),
-`league_members`, `league_picks` (user, league, event, players[],
-uses enforced by count-per-player-per-league ≤ config). The model
-joins as a member with the same budget. Tuesday-Call advice becomes a
-per-member view computed from the parameterized strategy engine.
-
 ## Parked (deliberately, with reasons)
 
 - **College exclusivity/drafts** — v1 (shared schools, best-2) needs
   real weeks first.
 - **Survivor mode, badges, luck-vs-skill splits** — retention layer
   after the core ritual proves itself.
-- **Public launch anything** — gated on licensing + checklist above.
+- **Public launch anything** — gated on data permissions (Now #3) and the pilot.
 - **Old league-site scraping** (league_picks_raw.html etc.) — dies
   when the league moves on-platform.
 - **My League vs Star Budget earnings discrepancy** — moot: both
@@ -357,11 +337,11 @@ per-member view computed from the parameterized strategy engine.
 
 ## Standing gates
 
-1. **DataGolf licensing** → euro displays, public growth.
-2. **A second real user (Rick)** → cross-group auth test, pick-
-   diversity data, first true recap.
-3. **January** → euro model + Phase 2 (designed together; both are
-   season-2027 features).
+1. **Data permissions** (Now #3) → public growth, any commercial use,
+   euro displays.
+2. **One group playing through a tournament** (Now #4) → the rest of
+   the pilot; learn before building more.
+3. **January** → the PGA retrain and the euro course-fit retrain.
 
 ## Process
 
