@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 import SchoolBadge from "@/components/SchoolBadge";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
-import { markPicked } from "@/lib/pushClient";
+import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
+import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { OpenEvent } from "@/lib/api";
 import { EventInfo, card, cell, hdr, lastName, money, openPlusPast, useApi } from "./shared";
 import { useActiveGroup } from "./ActiveGroup";
@@ -60,6 +61,7 @@ export function CollegeTab() {
       .finally(() => setLoading(false));
   }, [api, selected, groupQuery]);
 
+  const [confirm, setConfirm] = useState<ConfirmCopy | null>(null);
   async function choose(school: string) {
     setErr("");
     try {
@@ -69,7 +71,10 @@ export function CollegeTab() {
         body: JSON.stringify(pick === school ? { tournament_id: selected } : { tournament_id: selected, school }),
       });
       setPick((d.pick as string | null) ?? null);
-      if (d.pick) markPicked();
+      if (d.pick && event?.startDate) {
+        setConfirm(await buildConfirm({ picked: [String(d.pick)], needed: 1, startDate: event.startDate,
+          tour: event.tour === "euro" ? "euro" : "pga" }));
+      }
     } catch (e) { setErr((e as Error).message); }
   }
 
@@ -84,6 +89,7 @@ export function CollegeTab() {
 
   return (
     <>
+      <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
       <EventNav events={fromOpenEvents(events)} selected={selected} onPick={setSelected} />
 
       <div style={card}>

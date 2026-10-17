@@ -8,7 +8,8 @@
 import { useCallback, useEffect, useState } from "react";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
-import { markPicked } from "@/lib/pushClient";
+import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
+import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { OpenEvent } from "@/lib/api";
 import { EventInfo, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, lastName, money, shareReceipt, openPlusPast, useApi } from "./shared";
 import { useActiveGroup } from "./ActiveGroup";
@@ -67,6 +68,7 @@ export function FadeTab() {
 
   useEffect(() => { load(); }, [load]);
 
+  const [confirm, setConfirm] = useState<ConfirmCopy | null>(null);
   async function toggle(player: string, faded: boolean) {
     setErr("");
     try {
@@ -76,7 +78,10 @@ export function FadeTab() {
         body: JSON.stringify({ player_name: player, tournament_id: selected }),
       });
       setFades(d.fades as string[]);
-      if (!faded) markPicked();
+      if (!faded && event?.startDate) {
+        setConfirm(await buildConfirm({ picked: d.fades as string[], needed: 3, startDate: event.startDate,
+          tour: event.tour === "euro" ? "euro" : "pga" }));
+      }
     } catch (e) { setErr((e as Error).message); }
   }
 
@@ -96,6 +101,7 @@ export function FadeTab() {
 
   return (
     <>
+      <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
       <EventNav events={fromOpenEvents(events)} selected={selected} onPick={setSelected} />
 
       <div style={card}>

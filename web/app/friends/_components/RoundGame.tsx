@@ -8,7 +8,9 @@
 import { useCallback, useEffect, useState } from "react";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
-import { markPicked } from "@/lib/pushClient";
+import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
+import { roundLockAt } from "@/lib/lockTime";
+import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { getPredictions, getEventField, OpenEvent } from "@/lib/api";
 import { EventInfo, FieldRow, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, inputStyle, lastName, shareReceipt, openPlusPast, useApi } from "./shared";
 import { useActiveGroup } from "./ActiveGroup";
@@ -74,6 +76,7 @@ export function RoundGameTab() {
   }, [api, selected, groupQuery]);
   useEffect(load, [load]);
 
+  const [confirm, setConfirm] = useState<ConfirmCopy | null>(null);
   async function pick(round: number, player: string) {
     setErr("");
     try {
@@ -82,7 +85,16 @@ export function RoundGameTab() {
         body: JSON.stringify({ tournament_id: selected, round, player_name: player }),
       });
       setState(d as never); setPickingRound(null); setQuery("");
-      markPicked();
+      // "Did it save?": this round's own lock, and the rounds picked so far.
+      const st = d as unknown as RoundPicksState;
+      const picked = Object.entries(st.rounds ?? {}).sort(([a], [b]) => Number(a) - Number(b))
+        .map(([, n]) => n).filter((n): n is string => !!n);
+      const ev = st.event;
+      if (ev?.startDate) {
+        const tour = ev.tour === "euro" ? "euro" : "pga";
+        setConfirm(await buildConfirm({ picked, needed: 4, startDate: ev.startDate, tour,
+          lock: roundLockAt(ev.startDate, tour, round) }));
+      }
     } catch (e) { setErr((e as Error).message); }
   }
 
@@ -105,6 +117,7 @@ export function RoundGameTab() {
 
   return (
     <>
+      <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
       <EventNav events={fromOpenEvents(events)} selected={selected}
         onPick={tid => { setSelected(tid); setPickingRound(null); }} />
 

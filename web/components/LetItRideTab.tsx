@@ -17,7 +17,8 @@ import { nameKey } from "@/lib/names";
 import LockCountdown from "@/components/LockCountdown";
 import { choice } from "@/components/broadcast";
 import { useStoredChoice } from "@/lib/useStoredChoice";
-import { markPicked } from "@/lib/pushClient";
+import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
+import type { ConfirmCopy } from "@/lib/pickConfirm";
 import EventNav, { NavEvent, landingEvent, favoriteTour, Star } from "@/components/EventNav";
 
 type Group = { id: number; name: string; is_owner: boolean };
@@ -376,14 +377,19 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   const full = mine.length >= league.players_per_week;
   const usedOf = (n: string) => myUses[nameKey(n)] ?? 0;
   const [showField, setShowField] = useState(false);
+  const [confirm, setConfirm] = useState<ConfirmCopy | null>(null);
   const whyOf = (n: string) => field.find(f => nameKey(f.name) === nameKey(n))?.why ?? "";
 
   async function act(method: "POST" | "DELETE", player: string) {
     setBusy(player); setMsg("");
     try {
       await call(`/api/leagues/${league.id}/picks`, json(method, { tid: ev.tournament_id, player_name: player }));
-      if (method === "POST") markPicked();
       load(); onChange();
+      // "Did it save?" answered every time (closing it fires markPicked).
+      if (method === "POST") {
+        setConfirm(await buildConfirm({ picked: [...mine.map(p => p.player_name), player],
+          needed: league.players_per_week, startDate: ev.start_date, tour: ev.tour === "euro" ? "euro" : "pga" }));
+      }
     } catch (e) { setMsg((e as Error).message); }
     finally { setBusy(""); }
   }
@@ -396,6 +402,7 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
 
   return (
     <div style={card}>
+      <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10, flexWrap: "wrap", gap: 6 }}>
         <div style={{ fontWeight: 800 }}>{ev.name}</div>
         <div style={{ color: locked ? "var(--bc-muted)" : "var(--bc-green)", fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700 }}>
