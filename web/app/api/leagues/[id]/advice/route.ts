@@ -68,10 +68,13 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const field: GolferValue[] = values.golfers.map(g => ({ ...g, key: nameKey(g.player_name) }));
   const { verdicts } = adviseSlate(field, usesLeft, league.uses_per_player, league.players_per_week);
 
-  const byName: Record<string, { verdict: string; reason: string; save_for?: string }> = {};
+  // score: adviseSlate's ranking for THIS member (Help me pick ranks by it);
+  // null for "spent" (its -Infinity doesn't survive JSON).
+  const byName: Record<string, { verdict: string; reason: string; score: number | null; save_for?: string }> = {};
   for (const g of field) {
     const v = verdicts[g.key];
-    if (v) byName[g.player_name] = { verdict: v.verdict, reason: v.reason, ...(v.saveFor ? { save_for: v.saveFor.name } : {}) };
+    if (v) byName[g.player_name] = { verdict: v.verdict, reason: v.reason,
+      score: Number.isFinite(v.score) ? v.score : null, ...(v.saveFor ? { save_for: v.saveFor.name } : {}) };
   }
   return Response.json({ tid, locked: false, verdicts: byName });
 }

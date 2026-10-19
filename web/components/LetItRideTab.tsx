@@ -13,6 +13,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { getEventField, getGolferForm, getPredictions, OpenEvent } from "@/lib/api";
 import { whyLine } from "@/lib/whyLine";
+import { helpMePick } from "@/lib/helpMePick";
+import type { Candidate, Suggestion } from "@/lib/helpMePick";
 import { nameKey } from "@/lib/names";
 import LockCountdown from "@/components/LockCountdown";
 import { choice } from "@/components/broadcast";
@@ -65,7 +67,7 @@ const rowBtn = (enabled: boolean): React.CSSProperties => ({
   border: `1px solid ${enabled ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
 });
 
-type Advice = { verdict: "spend" | "save" | "spent"; reason: string; save_for?: string };
+type Advice = { verdict: "spend" | "save" | "spent"; reason: string; score?: number | null; save_for?: string };
 
 /** Spend / Save tag on a golfer — a short fixed-width word so rows never
  *  wrap; tapping shows the why in the shared reason bar above the list.
@@ -323,6 +325,7 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   // Spend/save advice for MY uses (private, pre-lock only), keyed by nameKey.
   const [advice, setAdvice] = useState<Record<string, Advice>>({});
   const [why, setWhy] = useState("");
+  const [suggest, setSuggest] = useState<Suggestion[] | null>(null);
   // Per-device preference; some players want a plain list.
   const [adviceMode, setAdviceMode] = useStoredChoice<"on" | "off">("lir-advice", ["on", "off"], "on");
   const showAdvice = adviceMode === "on";
@@ -379,6 +382,40 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   const [showField, setShowField] = useState(false);
   const [confirm, setConfirm] = useState<ConfirmCopy | null>(null);
   const whyOf = (n: string) => field.find(f => nameKey(f.name) === nameKey(n))?.why ?? "";
+
+  /** Help me pick: Jack's helpMePick over this member's field, uses and advice. */
+  function openSuggestions() {
+    const cands: Candidate[] = field.map(f => {
+      const a = advice[nameKey(f.name)];
+      return {
+        name: f.name, key: nameKey(f.name), usesLeft: league.uses_per_player - usedOf(f.name),
+        advice: a && a.score != null ? { verdict: a.verdict, score: a.score }
+              : a?.verdict === "spent" ? { verdict: "spent", score: -Infinity } : null,
+        winProb: f.win, why: f.why,
+      };
+    });
+    try { setSuggest(helpMePick(cands, mine.map(p => nameKey(p.player_name)), league.players_per_week)); }
+    catch { setSuggest([]); }
+  }
+
+  /** Accept every suggestion: one save each, then ONE confirmation. */
+  async function useSuggestions(names: string[]) {
+    setBusy("__all"); setMsg("");
+    const added: string[] = [];
+    try {
+      for (const n of names) {
+        await call(`/api/leagues/${league.id}/picks`, json("POST", { tid: ev.tournament_id, player_name: n }));
+        added.push(n);
+      }
+    } catch (e) { setMsg((e as Error).message); }
+    finally {
+      setBusy(""); setSuggest(null); load(); onChange();
+      if (added.length) {
+        setConfirm(await buildConfirm({ picked: [...mine.map(p => p.player_name), ...added],
+          needed: league.players_per_week, startDate: ev.start_date, tour: ev.tour === "euro" ? "euro" : "pga" }));
+      }
+    }
+  }
 
   async function act(method: "POST" | "DELETE", player: string) {
     setBusy(player); setMsg("");
@@ -487,6 +524,49 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
         </>
       ) : (
         <>
+          {!full && field.length > 0 && suggest === null && (
+            <button onClick={openSuggestions} style={{ width: "100%", minHeight: 44, marginBottom: 8, cursor: "pointer",
+              fontFamily: "inherit", fontWeight: 800, background: "transparent", color: "var(--bc-text)",
+              border: "1px solid var(--bc-line-hi)", borderRadius: 8 }}>
+              Help me pick
+            </button>
+          )}
+          {suggest !== null && (() => {
+            const fresh = suggest.filter(s => !s.kept);
+            return (
+              <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line-hi)", borderRadius: 8,
+                padding: "10px 12px", marginBottom: 10 }}>
+                <div style={{ fontWeight: 800, marginBottom: 2 }}>Suggested for your open {fresh.length === 1 ? "spot" : "spots"}</div>
+                <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginBottom: 8 }}>
+                  From the model&apos;s numbers and your uses left. A suggestion, not a guarantee: change anything.
+                </div>
+                {fresh.length === 0 && <div style={{ color: "var(--bc-muted)" }}>No eligible golfers to suggest.</div>}
+                {fresh.map(s => (
+                  <div key={s.key} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0",
+                    borderTop: "1px solid var(--bc-line)" }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 700 }}>{s.name}</div>
+                      <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)" }}>{s.line}</div>
+                    </div>
+                    <button onClick={() => { act("POST", s.name); setSuggest(v => v && v.filter(x => x.key !== s.key)); }}
+                      disabled={!!busy} style={rowBtn(true)}>Pick</button>
+                  </div>
+                ))}
+                <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                  {fresh.length > 1 && (
+                    <button onClick={() => useSuggestions(fresh.map(s => s.name))} disabled={!!busy} style={{ flex: 1,
+                      minHeight: 44, cursor: "pointer", fontFamily: "inherit", fontWeight: 900, border: "none",
+                      borderRadius: 8, background: "var(--bc-yellow)", color: "#081f14" }}>
+                      {busy === "__all" ? "Saving…" : `Pick all ${fresh.length}`}
+                    </button>
+                  )}
+                  <button onClick={() => setSuggest(null)} style={{ minHeight: 44, padding: "0 14px", cursor: "pointer",
+                    fontFamily: "inherit", fontWeight: 700, background: "transparent", color: "var(--bc-muted)",
+                    border: "1px solid var(--bc-line)", borderRadius: 8 }}>Close</button>
+                </div>
+              </div>
+            );
+          })()}
           <input placeholder="Search the field…" value={q} onChange={e => setQ(e.target.value)} style={{
             background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
             color: "var(--bc-text)", padding: "7px 12px", fontSize: "max(var(--fs-min), 0.86em)", width: "100%",

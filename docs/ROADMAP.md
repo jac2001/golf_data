@@ -114,8 +114,8 @@ someone plays, versus what we improve because we watched them play.
 
 ### Improve during the pilot (learn from watching, don't block on)
 
-- [ ] **"Help me pick"** (scaffolded Oct 17: Jack's
-      `web/lib/helpMePick.ts`): an optional, editable suggested lineup
+- [x] **"Help me pick"** (Oct 19, Let It Ride: Jack's
+      `web/lib/helpMePick.ts`, spend golfers before save ones): an optional, editable suggested lineup
       that respects eligibility and remaining uses, one plain sentence
       per golfer (the why lines), clearly not a guaranteed outcome.
       Test: a beginner makes picks and can say what must happen to win.
