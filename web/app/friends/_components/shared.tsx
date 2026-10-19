@@ -5,12 +5,16 @@
  * Split out of app/friends/page.tsx unchanged.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { subscribeThisDevice } from "@/lib/pushClient";
 import { getOpenEvents } from "@/lib/api";
 import type { OpenEvent } from "@/lib/api";
+import { getGolferForm } from "@/lib/api";
+import type { GolferForm } from "@/lib/api";
+import { nameKey } from "@/lib/names";
+import { whyLine } from "@/lib/whyLine";
 
 /** Link a player name to their profile page. The profile page already
  *  reads ?player= (a "deep link" — state carried in the URL, so it
@@ -202,5 +206,37 @@ export async function openPlusPast(
   const live = new Set(open.map(e => e.tournament_id));
   return [...past.filter(e => !live.has(e.tournament_id)), ...open]
     .sort((a, b) => a.start_date.localeCompare(b.start_date));
+}
+
+/** Jack's one-line why (lib/whyLine.ts) for every golfer in a list, from
+ *  his real results (/api/golfer-form) plus the list's own model chances.
+ *  name -> line; a golfer with nothing honest to say has no entry. */
+export function useWhyLines(
+  tid: string,
+  rows: { player_name: string; win_prob: number | null; top10_prob?: number | null; world_rank?: number | null }[],
+): Map<string, string> {
+  const [form, setForm] = useState<GolferForm[]>([]);
+  useEffect(() => {
+    if (!tid) return;
+    let cancelled = false;
+    getGolferForm(tid).then(d => { if (!cancelled) setForm(d.players ?? []); }).catch(() => setForm([]));
+    return () => { cancelled = true; };
+  }, [tid]);
+  return useMemo(() => {
+    const out = new Map<string, string>();
+    if (!form.length) return out;
+    const facts = new Map(form.map(f => [nameKey(f.player_name), f]));
+    for (const r of rows) {
+      const f = facts.get(nameKey(r.player_name));
+      try {
+        const line = whyLine({
+          recent: f?.recent ?? [], courseStarts: f?.event_starts ?? 0, courseCuts: f?.event_cuts ?? 0,
+          winProb: r.win_prob ?? null, top10Prob: r.top10_prob ?? null, worldRank: r.world_rank ?? null,
+        });
+        if (line) out.set(r.player_name, line);
+      } catch { /* no line beats a wrong one */ }
+    }
+    return out;
+  }, [form, rows]);
 }
 

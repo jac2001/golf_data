@@ -12,7 +12,7 @@ import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
 import { roundLockAt } from "@/lib/lockTime";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { getPredictions, getEventField, OpenEvent } from "@/lib/api";
-import { EventInfo, FieldRow, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, inputStyle, lastName, shareReceipt, openPlusPast, useApi } from "./shared";
+import { EventInfo, FieldRow, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, inputStyle, lastName, shareReceipt, openPlusPast, useApi, useWhyLines } from "./shared";
 import { useActiveGroup } from "./ActiveGroup";
 
 // ── Round Game ───────────────────────────────────────────────────────────────
@@ -110,6 +110,7 @@ export function RoundGameTab() {
   }
 
   // The whole field, always browsable — filter narrows, never gates.
+  const why = useWhyLines(selected, field);
   const visibleField = field.filter(r =>
     !query || r.player_name.toLowerCase().includes(query.toLowerCase()));
 
@@ -178,8 +179,14 @@ export function RoundGameTab() {
                               padding: "9px 14px", fontSize: "max(var(--fs-min), 0.88em)",
                               color: used ? "var(--bc-muted)" : "var(--bc-text)",
                               borderBottom: "1px solid var(--bc-line)" }}>
-                            <span style={{ fontWeight: 600 }}>{row.player_name}</span>
-                            {used && <span style={{ marginLeft: 8, fontSize: "max(var(--fs-min), 0.78em)" }}>· used</span>}
+                            <span style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+                              <span>
+                                <span style={{ fontWeight: 600 }}>{row.player_name}</span>
+                                {used && <span style={{ marginLeft: 8, fontSize: "max(var(--fs-min), 0.78em)" }}>· used</span>}
+                              </span>
+                              {why.get(row.player_name) && <span style={{ color: "var(--bc-muted)",
+                                fontSize: "max(var(--fs-min), 0.86em)", marginTop: 2 }}>{why.get(row.player_name)}</span>}
+                            </span>
                             {row.win_prob != null && (
                               <span style={{ marginLeft: "auto", color: "var(--bc-muted)",
                                 fontVariantNumeric: "tabular-nums" }}>

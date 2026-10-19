@@ -11,7 +11,7 @@ import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/componen
 import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { OpenEvent } from "@/lib/api";
-import { EventInfo, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, lastName, money, shareReceipt, openPlusPast, useApi } from "./shared";
+import { EventInfo, ModelBadge, PlayerLink, btnQuiet, card, cell, hdr, lastName, money, shareReceipt, openPlusPast, useApi, useWhyLines } from "./shared";
 import { useActiveGroup } from "./ActiveGroup";
 
 // ── Fade Game ────────────────────────────────────────────────────────────────
@@ -33,6 +33,7 @@ export function FadeTab() {
   const [board, setBoard] = useState<{ settled: boolean; earnings_estimated: boolean;
     standings: FadeBoardRow[]; me: string } | null>(null);
   const [err, setErr]     = useState("");
+  const why = useWhyLines(selected, pool);
   const [loading, setLoading] = useState(true);
 
   // The fade pool is defined by model win chances, so only PGA
@@ -247,6 +248,8 @@ export function FadeTab() {
                       style={{ background: faded ? "var(--bc-card-hi)" : "transparent" }}>
                     <td style={{ ...cell, fontWeight: 600 }}>
                       <PlayerLink name={r.player_name} />
+                      {why.get(r.player_name) && <div style={{ color: "var(--bc-muted)", fontWeight: 400,
+                        fontSize: "max(var(--fs-min), 0.86em)", marginTop: 2 }}>{why.get(r.player_name)}</div>}
                     </td>
                     <td style={{ ...cell, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
                       {r.win_prob != null ? `${(r.win_prob * 100).toFixed(1)}%` : "—"}

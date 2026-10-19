@@ -302,6 +302,8 @@ export type OpenEvent = {
   start_date: string; end_date: string; locked: boolean;
   finished: boolean; purse: number | null;
   has_model: boolean; field_available: boolean;
+  /** The round in play (1-4) while live, from fresh live data; else null/absent. */
+  current_round?: number | null;
 };
 
 export async function getOpenEvents(): Promise<{ events: OpenEvent[] }> {

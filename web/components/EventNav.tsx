@@ -20,6 +20,8 @@ import { landingEvent, favoriteTour } from "@/lib/landing";
 export type NavEvent = {
   tournament_id: string; name: string; tour: "pga" | "euro"; start_date: string;
   status: "open" | "awaiting" | "live" | "completed" | "upcoming";
+  /** Round in play while live (from events/open), else null/absent. */
+  round?: number | null;
 };
 
 const STATUS_LABEL: Record<NavEvent["status"], string> = {
@@ -34,12 +36,13 @@ const shortDate = (d: string) =>
 
 /** events/open rows → NavEvents (the per-event games' source). */
 export function fromOpenEvents(evs: { tournament_id: string; name: string; tour: string; start_date: string;
-  locked: boolean; finished: boolean; field_available?: boolean }[]): NavEvent[] {
+  locked: boolean; finished: boolean; field_available?: boolean; current_round?: number | null }[]): NavEvent[] {
   return evs.map(e => ({
     tournament_id: e.tournament_id, name: e.name, tour: e.tour === "euro" ? "euro" : "pga",
     start_date: e.start_date,
     // "Picks open" only when there's a field to pick from.
     status: e.finished ? "completed" : e.locked ? "live" : e.field_available === false ? "awaiting" : "open",
+    round: e.current_round ?? null,
   }));
 }
 
@@ -113,7 +116,7 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
   if (cur) {
     try {
       line = eventStatusLine({ status: cur.status, tour: cur.tour, startDate: cur.start_date,
-        lockAt: lockAt(cur.start_date, cur.tour), round: null }, now);
+        lockAt: lockAt(cur.start_date, cur.tour), round: cur.round ?? null }, now);
     } catch {
       line = { state: STATUS_LABEL[cur.status], detail: shortDate(cur.start_date), tone: "quiet" };
     }

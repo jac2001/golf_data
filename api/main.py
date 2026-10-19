@@ -4440,6 +4440,7 @@ def events_open() -> dict:
                 "has_model": tid.startswith("R")
                              or (DATA_DIR / "predictions_euro" / f"euro_model_{tid}.csv").exists(),
                 "field_available": (DATA_DIR / "fields" / f"field_{tid}.csv").exists(),
+                "current_round": _live_round(tid) if (r["_s"] <= _tour_today[tour] and not r["_e"] < _tour_today[tour]) else None,
             })
     # de-dup (PGA files can overlap seasons) and sort by start
     seen, out = set(), []
@@ -4500,6 +4501,27 @@ def golfer_form(tournament_id: str) -> dict:
         return {"tournament_id": tid, "players": []}   # no facts → no why lines, never wrong ones
     _GOLFER_FORM_CACHE[tid] = (time.time(), out)
     return out
+
+
+def _live_round(tid: str) -> int | None:
+    """The round being played, from the live leaderboard's meta file, for
+    the event bar's "Live · Round 2". None unless the file is about THIS
+    event (event provenance) and fresh (written in the last 12 hours): a
+    stale round number is worse than plain "Live"."""
+    fp = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
+    try:
+        meta = json.loads(fp.read_text())
+        if str(meta.get("tournament_id", "")).upper() != tid.upper():
+            return None
+        fetched = pd.Timestamp(meta.get("fetched_at"))
+        if fetched.tzinfo is None:
+            fetched = fetched.tz_localize("UTC")
+        if pd.Timestamp.now(tz="UTC") - fetched > pd.Timedelta(hours=12):
+            return None
+        rnd = int(meta.get("current_round"))
+        return rnd if 1 <= rnd <= 4 else None
+    except Exception:
+        return None
 
 
 @app.get("/api/events/field")
