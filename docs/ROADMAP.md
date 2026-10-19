@@ -142,8 +142,8 @@ someone plays, versus what we improve because we watched them play.
       pick again; groups with several active players across all three
       events; Match Center checks during play; invites sent unprompted;
       support needed per group. Optional golf-fan self-description.
-- [ ] Small: why lines on the Round and Fade pick lists; the Round
-      Game's live round number in the event bar.
+- [x] Small (Oct 19): why lines on the Round and Fade pick lists; the
+      event bar's live round ("Live · Round 2", fresh live data only).
 
 ## Next (alongside the pilot; the retrain stays January)
 
