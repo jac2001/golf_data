@@ -74,8 +74,11 @@ export default function PrivacyPage() {
         "Turn reminders off at any time in Settings or in your browser's notification settings.",
         "Update your name, email address or profile image in your account settings.",
         <>Delete your account any time in Settings → Delete account. Picks from weeks already played
-          stay in your groups&rsquo; history as &ldquo;Former player&rdquo; so their results still add up;
-          everything else tied to you is removed. For a copy of your data, email{" "}
+          stay in your groups&rsquo; history as &ldquo;Former player&rdquo; so their results still add up,
+          and your name in friends&rsquo; chirps becomes &ldquo;Former player&rdquo; too. Your chirps,
+          reactions and activity records are deleted. A report you filed stays with the group&rsquo;s
+          owner without your name, and invite links you made keep working for your friends without
+          your name. Everything else tied to you is removed. For a copy of your data, email{" "}
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</>,
       ]} />
 

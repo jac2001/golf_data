@@ -19,6 +19,10 @@ export async function purgeUserData(sql: NeonQueryFunction<any, any>, userId: st
     heirs.set(g.id, next[0]?.user_id ?? null);
   }
   const orphaned = [...heirs].filter(([, h]) => !h).map(([id]) => id);
+  // The names friends saw for this person (chirp snapshots store the leader
+  // by name), from the groups they were in.
+  const shown = (await sql`SELECT DISTINCT user_name FROM group_members WHERE user_id = ${userId}` as
+    { user_name: string }[]).map(r => r.user_name).filter(Boolean);
 
   const steps = [
     // Personal, never shared: gone.
@@ -28,7 +32,34 @@ export async function purgeUserData(sql: NeonQueryFunction<any, any>, userId: st
     sql`DELETE FROM user_bets WHERE user_id = ${userId}`,
     sql`DELETE FROM tailed_bets WHERE user_id = ${userId}`,
     sql`DELETE FROM picks WHERE user_id = ${userId}`,
-    // Groups nobody else is in: delete with their seasons and picks.
+    // Measurement events and invite attributions: gone (2026-10-20 review:
+    // these tables postdated the purge and kept user ids and names).
+    sql`DELETE FROM app_events   WHERE user_id = ${userId}`,
+    sql`DELETE FROM invite_joins WHERE user_id = ${userId}`,
+    // Chirps they wrote go, with the reactions and reports on them; their own
+    // reactions and read markers go too. Reports THEY filed stay for the
+    // group owner, without the reporter; "removed by" marks lose the id.
+    sql`DELETE FROM chirp_reactions WHERE chirp_id IN (SELECT id FROM chirps WHERE user_id = ${userId})`,
+    sql`DELETE FROM chirp_reports   WHERE chirp_id IN (SELECT id FROM chirps WHERE user_id = ${userId})`,
+    sql`DELETE FROM chirps          WHERE user_id = ${userId}`,
+    sql`DELETE FROM chirp_reactions WHERE user_id = ${userId}`,
+    sql`DELETE FROM chirp_reads     WHERE user_id = ${userId}`,
+    sql`UPDATE chirp_reports SET user_id = ${anon} WHERE user_id = ${userId}`,
+    sql`UPDATE chirps SET removed_by = ${anon} WHERE removed_by = ${userId}`,
+    // Their name inside OTHER people's chirp snapshots ("Jack leads by …"),
+    // in the groups they were in: "Former player", like their picks.
+    sql`UPDATE chirps SET card = jsonb_set(card, '{leader}', to_jsonb(${FORMER}::text))
+        WHERE group_id IN (SELECT group_id FROM group_members WHERE user_id = ${userId})
+          AND card->>'leader' = ANY(${shown})`,
+    // Invite links they made keep working for friends, with no creator.
+    sql`UPDATE invite_links SET created_by = ${anon} WHERE created_by = ${userId}`,
+    // Groups nobody else is in: delete with their seasons, picks, chirps and links.
+    sql`DELETE FROM chirp_reactions WHERE chirp_id IN (SELECT id FROM chirps WHERE group_id = ANY(${orphaned}))`,
+    sql`DELETE FROM chirp_reports   WHERE chirp_id IN (SELECT id FROM chirps WHERE group_id = ANY(${orphaned}))`,
+    sql`DELETE FROM chirps      WHERE group_id = ANY(${orphaned})`,
+    sql`DELETE FROM chirp_reads WHERE group_id = ANY(${orphaned})`,
+    sql`DELETE FROM invite_joins WHERE link_id IN (SELECT id FROM invite_links WHERE group_id = ANY(${orphaned}))`,
+    sql`DELETE FROM invite_links WHERE group_id = ANY(${orphaned})`,
     sql`DELETE FROM league_picks WHERE league_id IN (SELECT id FROM leagues WHERE group_id = ANY(${orphaned}))`,
     sql`DELETE FROM leagues WHERE group_id = ANY(${orphaned})`,
     sql`DELETE FROM group_members WHERE group_id = ANY(${orphaned})`,
