@@ -211,18 +211,24 @@ export default function HowToPlayPage() {
               ? "This tournament already happened. Pick three off the Tuesday board and lock them — then see Sunday's real money next to the model's three, revealed only once you've committed."
               : "Tap three. We'll price your trio with the model's expected prize money against its own three favorites."}
           </p>
+          <div aria-live="polite" style={{ fontWeight: 800, fontSize: "max(var(--fs-min), 0.84em)", marginBottom: 8,
+            color: picks.length === 3 ? "var(--bc-green)" : "var(--bc-text)" }}>
+            {picks.length} of 3 picked
+          </div>
           <div style={{ display: "grid", gap: 6, gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
             {field.map((p, i) => {
               const on = picks.includes(p.player_name);
               return (
-                <button key={p.player_name} onClick={() => toggle(p.player_name)} style={{
+                <button key={p.player_name} onClick={() => toggle(p.player_name)} aria-pressed={on} style={{
                   cursor: revealed ? "default" : "pointer", fontFamily: "inherit", textAlign: "left",
                   display: "flex", alignItems: "center", gap: 8,
                   padding: "8px 12px", borderRadius: 6, fontSize: "max(var(--fs-min), 0.84em)",
-                  color: on ? "#081f14" : "var(--bc-text)",
+                  color: "var(--bc-text)",   // light text stays readable on the selected green
                   background: on ? "var(--bc-raised)" : "var(--bc-panel)",
                   border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
                 }}>
+                  {on && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bc-green)" strokeWidth="3"
+                    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M5 12l5 5L20 7" /></svg>}
                   <span style={{ fontWeight: 700, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {p.player_name}
                     {mode === "history" && i < 3 && revealed && (
@@ -243,11 +249,11 @@ export default function HowToPlayPage() {
           {/* Matching the model gets its own message — before any reveal. */}
           {matchedModel && !revealed && (
             <p style={{ color: "var(--bc-text)", fontSize: "0.9em", fontWeight: 700, marginTop: 12, marginBottom: 0 }}>
-              You matched the model&apos;s picks. Can you find a trio you like better?
+              Same three as the model: the best you can do is tie it. Lock them in to see, or try a trio of your own.
             </p>
           )}
 
-          {mode === "history" && picks.length === 3 && !revealed && !matchedModel && (
+          {mode === "history" && picks.length === 3 && !revealed && (
             <button onClick={() => setRevealed(true)} style={{
               marginTop: 12, cursor: "pointer", fontFamily: "inherit",
               background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
@@ -260,7 +266,7 @@ export default function HowToPlayPage() {
           {/* Side by side, only after you commit: your three vs the model's,
               each golfer's result — the disagreements are the lesson. Shown
               before the reveal it would just be a lineup to copy. */}
-          {(revealed || (mode === "ev" && picks.length === 3 && !matchedModel)) && (
+          {(revealed || (mode === "ev" && picks.length === 3)) && (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10, marginTop: 14 }}>
               {([["Your three", picks], ["The model's three", modelTrio.map(p => p.player_name)]] as const).map(([title, names]) => (
                 <div key={title} style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "10px 12px" }}>
@@ -287,7 +293,7 @@ export default function HowToPlayPage() {
             </div>
           )}
 
-          {(revealed || (mode === "ev" && picks.length === 3 && !matchedModel)) && (
+          {(revealed || (mode === "ev" && picks.length === 3)) && (
             <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 16, marginTop: 14 }}>
               <div style={{ fontSize: "max(var(--fs-min), 0.88em)" }}>
                 <span style={{ color: "var(--bc-muted)" }}>Your trio: </span>
@@ -309,7 +315,7 @@ export default function HowToPlayPage() {
                     ? (mode === "history"
                         ? `The model took this one by ${money(modelValue - trioValue)}. Different week, different answer.`
                         : `Model projects ${money(modelValue - trioValue)} ahead — prove it wrong.`)
-                    : "Dead even with the model."}
+                    : matchedModel ? "Dead even with the model: same three. Try a trio of your own." : "Dead even with the model."}
               </div>
               {mode === "history" && (
                 <button onClick={() => { setRevealed(false); setPicks([]); }} style={{
