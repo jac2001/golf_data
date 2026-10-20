@@ -33,8 +33,11 @@ const money = (v: number) =>
   v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
 const ordinal = (n: number) =>
   `${n}${["th", "st", "nd", "rd"][((n % 100) - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th"}`;
+// Lookup key into the results table: order-free and accent-blind (the
+// results API sends ASCII names; a pick spelled "Åberg" must still match).
 const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
+  n.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(",", "")
+    .split(/\s+/).filter(Boolean).sort().join(" ");
 const shortName = (n: string) => n.replace(/ presented by.*$/i, "");
 
 async function modelApi(path: string): Promise<Record<string, unknown> | null> {
@@ -48,7 +51,8 @@ async function modelApi(path: string): Promise<Record<string, unknown> | null> {
   } catch { return null; }
 }
 
-type Ev = { tournament_id: string; name: string; finished: boolean; start_date: string; locked: boolean };
+type Ev = { tournament_id: string; name: string; finished: boolean; start_date: string; locked: boolean;
+  field_available?: boolean };
 type Golf = { player: string; earnings: number; position: string };
 type Row = { user_id: string; user_name: string; total: number; golfers: Golf[] };
 type Slate = { ev: Ev; board: Row[]; star: Row; credit: { golfer: Golf; decided: boolean } | null };
@@ -141,15 +145,22 @@ export async function GET(req: Request) {
   const model = weekBoard.find(r => r.user_id === "model");
   const humans = weekBoard.filter(r => r.user_id !== "model");
   const beaters = model ? humans.filter(h => h.total > model.total) : [];
+  const tiers = model ? humans.filter(h => h.total === model.total) : [];
   const twoTours = slates.length > 1;
+  // A tie with the model is a tie, not a loss (recap check, 2026-10-20).
   const verdict = !model || !humans.length ? "" : humans.length === 1
-    ? (beaters.length ? `${humans[0].user_name.toUpperCase()} BEAT THE MODEL` : `THE MODEL BEAT ${humans[0].user_name.toUpperCase()}`)
-      + (twoTours ? " THIS WEEK" : "")
-    : `${beaters.length} OF ${humans.length} PLAYERS BEAT THE MODEL`;
+    ? (beaters.length ? `${humans[0].user_name.toUpperCase()} BEAT THE MODEL`
+      : tiers.length ? `${humans[0].user_name.toUpperCase()} TIED THE MODEL`
+      : `THE MODEL BEAT ${humans[0].user_name.toUpperCase()}`) + (twoTours ? " THIS WEEK" : "")
+    : `${beaters.length} OF ${humans.length} PLAYERS BEAT THE MODEL` + (tiers.length ? ` · ${tiers.length} TIED IT` : "");
   const verdictGood = beaters.length > 0;
 
   const upcoming = events.filter(e => !e.finished && !e.locked).sort((a, b) => a.start_date.localeCompare(b.start_date));
-  const nextWeek = upcoming.filter(e => days(e.start_date, upcoming[0].start_date) <= 3).map(e => shortName(e.name));
+  const nextEvents = upcoming.filter(e => days(e.start_date, upcoming[0].start_date) <= 3);
+  const nextWeek = nextEvents.map(e => shortName(e.name));
+  // "Picks open now" only when there's a field to pick from (review item 2's rule).
+  const picksOpen = nextEvents.some(e => e.field_available !== false);
+  const coLeaders = weekBoard.filter(r => r.total === top.total);
   const s0 = new Date(anchor.start_date.slice(0, 10) + "T12:00:00Z");
   const e0 = new Date(s0.getTime() + 3 * 86_400_000);
   const dates = `${s0.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" })} ${s0.getUTCDate()}–${e0.getUTCDate()}`;
@@ -186,7 +197,9 @@ export async function GET(req: Request) {
         </div>
         {runnerUp && (
           <div style={{ display: "flex", fontSize: 20, color: MUTED, marginTop: 2 }}>
-            {money(top.total - runnerUp.total)} clear of {runnerUp.user_name}{twoTours ? " for the week" : ""}
+            {coLeaders.length > 1
+              ? `Tied for the week with ${coLeaders.filter(r => r.user_id !== top.user_id).map(r => r.user_name).join(" & ")}`
+              : `${money(top.total - runnerUp.total)} clear of ${runnerUp.user_name}${twoTours ? " for the week" : ""}`}
           </div>
         )}
 
@@ -235,7 +248,9 @@ export async function GET(req: Request) {
         <div style={{ display: "flex", marginTop: "auto", justifyContent: "space-between",
           borderTop: `3px solid ${YELLOW}`, paddingTop: 12, alignItems: "center" }}>
           <div style={{ display: "flex", fontSize: 20, fontWeight: 800 }}>
-            {nextWeek.length ? `REMATCH: ${nextWeek.join(" + ")} — picks open now` : "Rematch next week"}
+            {nextWeek.length
+              ? `REMATCH: ${nextWeek.join(" + ")} — ${picksOpen ? "picks open now" : "picks open when the field posts"}`
+              : "Rematch next week"}
           </div>
           <div style={{ display: "flex", fontSize: 17, color: MUTED }}>playgolfedge.com</div>
         </div>
