@@ -111,7 +111,7 @@ someone plays, versus what we improve because we watched them play.
 - [ ] **Group isolation verified** with controlled test accounts (Now #2).
 - [ ] **Trustworthy scoring and locks** confirmed on a real PGA week
       (Bermuda: locks fire on time, settlement matches official results).
-- [ ] **Understandable matchup and results**: the Match Center check
+- [x] **Understandable matchup and results** (checked Oct 20: headline answers winning/chasing, golfer rows with progress, estimate vs final; review fixes for availability and links): the Match Center check
       against the plan's questions (am I winning, who am I chasing,
       which golfers help or hurt, live estimate or final), answer first.
 - [ ] **Data permissions fit what the pilot shows** (Now #3).
@@ -142,7 +142,7 @@ someone plays, versus what we improve because we watched them play.
       v1: DMs, images, alerts on every standings change. The question to
       test: will friends talk here when they already have a group text?
       The reason to would be the game context next to the message.
-- [ ] **Recap check**: who won and by how much, the turning point the
+- [x] **Recap check** (Oct 20: ties read as ties, model ties, honest rematch line): who won and by how much, the turning point the
       data supports, how the group did against the model, the next event
       with a way to play. Lineup earnings never read as cash.
 - [ ] **Weekly scorecard** from `app_events` (logging since Oct 15):

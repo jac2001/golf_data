@@ -15,6 +15,7 @@ import { eventStatusLine } from "@/lib/eventStatus";
 import { lockAt, roundLockAt } from "@/lib/lockTime";
 import { useActiveGroup } from "./ActiveGroup";
 import { useApi } from "./shared";
+import { logEvent } from "@/lib/logEvent";
 
 export function WhosInCard({ game, tid, eventName, startDate, tour, round, refreshKey = 0 }: {
   game: "ride" | "rounds" | "fades" | "college";
@@ -57,6 +58,7 @@ export function WhosInCard({ game, tid, eventName, startDate, tour, round, refre
 
   async function share() {
     if (!view?.shareText) return;
+    logEvent("nudge_shared", { game, group_id: group?.id ?? 0, via: typeof navigator.share === "function" ? "share" : "copy" });
     if (typeof navigator.share === "function") {
       try { await navigator.share({ text: view.shareText }); return; } catch { return; }
     }

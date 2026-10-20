@@ -9,6 +9,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useActiveGroup } from "./ActiveGroup";
+import { logEvent } from "@/lib/logEvent";
 import { btn, btnQuiet, inputStyle, useApi } from "./shared";
 
 type InviteRow = { mine: boolean; revoked: boolean; expires_at: string; uses: number; max_uses: number; url: string };
@@ -94,12 +95,14 @@ function GroupSheet({ inviteFirst, focusJoin, onClose, onManage }: {
 
   const inviteText = () => `Join my group "${group?.name}" on Golf Edge, one tap: ${link}`;
   async function share() {
+    if (group) logEvent("invite_shared", { group_id: group.id, via: typeof navigator.share === "function" ? "share" : "copy" });
     if (typeof navigator.share === "function") {
       try { await navigator.share({ text: inviteText() }); return; } catch { return; }
     }
     copy();
   }
   function copy() {
+    if (group) logEvent("invite_shared", { group_id: group.id, via: "copy" });
     try { navigator.clipboard.writeText(inviteText()); setCopied(true); setTimeout(() => setCopied(false), 1500); }
     catch { /* clipboard blocked */ }
   }

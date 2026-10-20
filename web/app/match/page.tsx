@@ -11,10 +11,11 @@
  * since your last look ("You took the lead") come from comparing with
  * the previous snapshot kept on this device.
  */
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
 import ChirpThread from "@/components/ChirpThread";
+import { logEvent } from "@/lib/logEvent";
 import SchoolBadge from "@/components/SchoolBadge";
 import { displaySurnames } from "@/lib/names";
 import { College, CollegeGolfer, Group, Match, Slate, collegeHeadline, collegeTotals, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
@@ -70,6 +71,7 @@ export default function MatchCenterPage() {
   const [data, setData] = useState<Match | null>(null);
   const [changes, setChanges] = useState<string[]>([]);
   const [err, setErr] = useState("");
+  const viewed = useRef<Set<number>>(new Set());
 
   useEffect(() => {
     call<{ groups: Group[] }>("/api/friends/groups")
@@ -98,6 +100,12 @@ export default function MatchCenterPage() {
       const ch = changesBetween(prev, next);
       if (ch.length) setChanges(ch);
       try { localStorage.setItem(key, JSON.stringify(next)); } catch { /* fine */ }
+      // One "viewed" per group per visit (the scorecard's Match Center measure),
+      // not one per 2-minute refresh.
+      if (!viewed.current.has(groupId)) {
+        viewed.current.add(groupId);
+        logEvent("match_viewed", { group_id: groupId, status: next.slates.map(s => s.status).join(",") || "none" });
+      }
       setData(next);
     }).catch(e => setErr(/unauthor|sign in/i.test(String(e.message))
       ? "Sign in to see your group's match center."
