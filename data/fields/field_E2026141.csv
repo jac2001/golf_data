@@ -36,7 +36,6 @@ player_name,dg_id,owgr_rank,country
 "Guillamoundeguy, Oihan",28239,257.0,FRA
 "Gumberg, Jordan",23892,421.0,USA
 "Halvorsen, Andreas",17747,442.0,NOR
-"Helligkilde, Marcus",20190,,DEN
 "Hidalgo, Angel",24127,156.0,ESP
 "Hillier, Daniel",21362,77.0,NZL
 "Hoshino, Rikuya",19190,,JPN
@@ -121,6 +120,7 @@ player_name,dg_id,owgr_rank,country
 "Von Dellingshausen, Nicolai",22231,312.0,GER
 "Walker, Euan",27147,487.0,SCO
 "Wang, Jeunghun",15366,320.0,KOR
+"Williams, Robin",24093,,RSA
 "Wu, Ashun",11763,327.0,CHN
 "Yang, Jiho",14419,,KOR
 "Young, Daniel",19908,484.0,SCO
