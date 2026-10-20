@@ -1,0 +1,352 @@
+{
+  "data": {
+    "getPowerRankingsTable": {
+      "tournamentName": "Butterfield Bermuda Championship",
+      "tableTitle": "Power Rankings for Butterfield Bermuda Championship ",
+      "powerRankingsTableRow": [
+        {
+          "rank": 15,
+          "player": {
+            "id": "51894",
+            "firstName": "Vince",
+            "lastName": "Whaley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51894.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He has a dozen top 10s in 163 PGA Tour starts, "
+                },
+                {
+                  "value": "four"
+                },
+                {
+                  "value": " of them at Port Royal. Since 2021, he\u2019s rattled off a T7-T8-T5-T3 record with a scoring average of 67.75. However, he\u2019s without a top 25 anywhere since last year\u2019s podium."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 14,
+          "player": {
+            "id": "40162",
+            "firstName": "Justin",
+            "lastName": "Lower",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40162.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Before last year\u2019s stumble, the horse for the course opened his Port Royal experience with a T17, a T8, a T20 and a T5. He\u2019s scuffled this year, but he\u2019s cashed in four in a row for his longest streak since 2024. T21 in his last."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 13,
+          "player": {
+            "id": "39997",
+            "firstName": "Corey",
+            "lastName": "Conners",
+            "countryFlag": "CAN",
+            "countryName": "Canada",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39997.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "He\u2019s 61st in the Official World Golf Ranking, tops in the field. The cut-making machine managed only three top 25s in his last 15 starts. Debuting at Port Royal at 66th in the FedExCup, outside the bubble of the "
+                },
+                {
+                  "value": "Aon Next 10"
+                },
+                {
+                  "value": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 12,
+          "player": {
+            "id": "57900",
+            "firstName": "Chandler",
+            "lastName": "Phillips",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57900.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "His solo second in his first appearance at Port Royal last year would be just as much out of nowhere now as it was then, but it\u2019s the kind of evidence that connects dots between wind and why Texans are threats in it, like he is."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 11,
+          "player": {
+            "id": "56100",
+            "firstName": "Ren",
+            "lastName": "Yonezawa",
+            "countryFlag": "JPN",
+            "countryName": "Japan",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_56100.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "In the field via his top 10 at the Baycurrent Classic on a course (Yokohama Country Club) in which he\u2019s had much success, the 27-year-old finished 19th at the Japan Open on Sunday. It\u2019s a long trip but he arrives with momentum."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 10,
+          "player": {
+            "id": "63807",
+            "firstName": "Neal",
+            "lastName": "Shipley",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_63807.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "After concluding the regular season with a modest three consecutive cuts made to finish 183rd in the FedExCup, he opened the FedExCup Fall with a T3-T10 burst. Now 123rd in points and No. 1 in Strokes Gained: Off-the-Tee."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 9,
+          "player": {
+            "id": "40058",
+            "firstName": "Zac",
+            "lastName": "Blair",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_40058.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Given that he forfeits distance off the tee, it makes sense how he emerges on shorter tracks protected by wind. Ranks third in fairways hit, eighth in proximity, third in scrambling and sixth in bogey avoidance. T9 here last year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 8,
+          "player": {
+            "id": "45242",
+            "firstName": "Kevin",
+            "lastName": "Yu",
+            "countryFlag": "TPE",
+            "countryName": "Chinese Taipei",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_45242.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Streaky amid maladies, the 28-year-old ball-striker is 7-for-7 since a T24 in comparable conditions at the Corales Puntacana Championship. It\u2019s one of four top 25s during this stretch. Debuted at Port Royal with a T3 in 2022."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 7,
+          "player": {
+            "id": "51696",
+            "firstName": "Rico",
+            "lastName": "Hoey",
+            "countryFlag": "PHI",
+            "countryName": "Philippines",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51696.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Of course he connected for his first top 10 of the season in the FedExCup Fall \u2013 a T10 at the Bank of Utah Championship. The ball-striker/autumn whisperer has cashed in seven straight. Top 25s in both prior trips to Port Royal."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 6,
+          "player": {
+            "id": "39335",
+            "firstName": "Kevin",
+            "lastName": "Roy",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_39335.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Pretty comfortable at 82nd in the FedExCup, just not content. After all, he\u2019s riding a streak of eight paydays, four of which for a top 25, the most recent a T13 at the Baycurrent Classic. Also rose for a T8 at Port Royal in 2023."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 5,
+          "player": {
+            "id": "51997",
+            "firstName": "Andrew",
+            "lastName": "Novak",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_51997.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Fully exempt as a winner next season but failed to qualify for the Playoffs despite access into all Signature Events. Undeterred, he bracketed the Playoffs with a T7 and a T17. Runner-up in his last trip to Port Royal in 2024."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 4,
+          "player": {
+            "id": "36884",
+            "firstName": "Ben",
+            "lastName": "Kohles",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_36884.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "On an undeniable heater since winning the BMW Charity Pro-Am in early June. Top 20s in each of the first three FedExCup Fall events. Leads the PGA Tour in fairways and greens hit. Second in proximity and 3-for-3 at Port Royal."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 3,
+          "player": {
+            "id": "28252",
+            "firstName": "Seamus",
+            "lastName": "Power",
+            "countryFlag": "IRL",
+            "countryName": "Ireland",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_28252.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "With a win (2022) among four top 25s contributing to his 6-for-6 slate at Port Royal, he\u2019s the tournament\u2019s all-time earnings leader. He also arrives having hung up a T7 and a T21 in his last two starts. Vastly improved putting."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 2,
+          "player": {
+            "id": "50095",
+            "firstName": "Austin",
+            "lastName": "Smotherman",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_50095.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "Having withdrawn early from the Baycurrent Classic, this is his first action since breaking through at the Bank of Utah Championship where he capitalized on greens similar in size to Port Royal\u2019s. This is his fifth appearance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "rank": 1,
+          "player": {
+            "id": "57869",
+            "firstName": "Ben",
+            "lastName": "James",
+            "countryFlag": "USA",
+            "countryName": "United States of America",
+            "headshot": "https://pga-tour-res.cloudinary.com/image/upload/c_thumb,g_face,w_200,h_200,z_0.7/headshots_57869.jpg"
+          },
+          "comment": "",
+          "commentNodes": [
+            {
+              "__typename": "NewsArticleParagraph",
+              "segments": [
+                {
+                  "value": "First looks every time he commits haven\u2019t stopped the rookie from scaling to 62nd in the FedExCup. With a second, a third, a T4 and a T5 already on the card, it\u2019s covered ... well, almost. It lacks the biggie for the bingo."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

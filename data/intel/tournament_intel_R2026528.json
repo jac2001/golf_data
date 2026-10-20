@@ -1,0 +1,130 @@
+{
+  "tid": "R2026528",
+  "tournament_name": "Butterfield Bermuda Championship",
+  "generated_at": "2026-10-20T09:46:36.231152",
+  "course_conditions": {
+    "error": "API call failed"
+  },
+  "players": [
+    {
+      "player_name": "James, Ben",
+      "error": "API call failed",
+      "win_prob": 0.0591961624442758,
+      "world_rank": 85.0
+    },
+    {
+      "player_name": "Yu, Kevin",
+      "error": "API call failed",
+      "win_prob": 0.0245256647843945,
+      "world_rank": 112.0
+    },
+    {
+      "player_name": "Conners, Corey",
+      "error": "API call failed",
+      "win_prob": 0.0632871668188586,
+      "world_rank": 61.0
+    },
+    {
+      "player_name": "Novak, Andrew",
+      "error": "API call failed",
+      "win_prob": 0.029940821836383,
+      "world_rank": 88.0
+    },
+    {
+      "player_name": "Ventura, Kristoffer",
+      "error": "API call failed",
+      "win_prob": 0.0094549973274476,
+      "world_rank": 203.0
+    },
+    {
+      "player_name": "Cole, Eric",
+      "error": "API call failed",
+      "win_prob": 0.0227619801782739,
+      "world_rank": 83.0
+    },
+    {
+      "player_name": "Hoey, Rico",
+      "error": "API call failed",
+      "win_prob": 0.031060131083588,
+      "world_rank": 108.0
+    },
+    {
+      "player_name": "Kirk, Chris",
+      "error": "API call failed",
+      "win_prob": 0.0149242655229193,
+      "world_rank": 114.0
+    },
+    {
+      "player_name": "Roy, Kevin",
+      "error": "API call failed",
+      "win_prob": 0.011465095253801,
+      "world_rank": 115.0
+    },
+    {
+      "player_name": "Power, Seamus",
+      "error": "API call failed",
+      "win_prob": 0.010108677349355,
+      "world_rank": 196.0
+    },
+    {
+      "player_name": "Smotherman, Austin",
+      "error": "API call failed",
+      "win_prob": 0.0520651840654664,
+      "world_rank": 66.0
+    },
+    {
+      "player_name": "Greyserman, Max",
+      "error": "API call failed",
+      "win_prob": 0.0202473626519324,
+      "world_rank": 101.0
+    },
+    {
+      "player_name": "Shipley, Neal",
+      "error": "API call failed",
+      "win_prob": 0.0096780962219921,
+      "world_rank": 163.0
+    },
+    {
+      "player_name": "Ford, David",
+      "error": "API call failed",
+      "win_prob": 0.0115662108017127,
+      "world_rank": 236.0
+    },
+    {
+      "player_name": "Thompson, Davis",
+      "error": "API call failed",
+      "win_prob": 0.027370114578655,
+      "world_rank": 133.0
+    },
+    {
+      "player_name": "Kohles, Ben",
+      "error": "API call failed",
+      "win_prob": 0.0417003294154946,
+      "world_rank": 92.0
+    },
+    {
+      "player_name": "Crowe, Trace",
+      "error": "API call failed",
+      "win_prob": 0.0122764548163124,
+      "world_rank": 181.0
+    },
+    {
+      "player_name": "McGreevy, Max",
+      "error": "API call failed",
+      "win_prob": 0.0071010230505282,
+      "world_rank": 136.0
+    },
+    {
+      "player_name": "Hughes, Mackenzie",
+      "error": "API call failed",
+      "win_prob": 0.006747101320229,
+      "world_rank": 179.0
+    },
+    {
+      "player_name": "McCarthy, Denny",
+      "error": "API call failed",
+      "win_prob": 0.0097385631964953,
+      "world_rank": 113.0
+    }
+  ]
+}

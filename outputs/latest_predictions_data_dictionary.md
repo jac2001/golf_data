@@ -1,6 +1,6 @@
 # Predictions Data Dictionary
 
-Generated: 2026-10-07 21:40
+Generated: 2026-10-20 09:46
 
 | Column | Description |
 |--------|-------------|
@@ -31,6 +31,7 @@ Generated: 2026-10-07 21:40
 | recent_sg_trend | No description available |
 | recent_sg_ott_weighted | No description available |
 | recent_sg_app_weighted | No description available |
+| recent_sg_arg_weighted | No description available |
 | recent_sg_putt_weighted | No description available |
 | sg_blend_current_weight | No description available |
 | sg_blend_prior_weight | No description available |
@@ -246,14 +247,16 @@ Generated: 2026-10-07 21:40
 | dg_make_cut | No description available |
 | dg_course_fit_delta | No description available |
 | dg_course_fit_delta_pct | No description available |
-| recent_par3_scoring_field_pct | No description available |
-| recent_par4_scoring_field_pct | No description available |
-| recent_par5_scoring_field_pct | No description available |
-| recent_sg_arg_weighted | No description available |
 | wind_mph_avg | No description available |
 | wind_mph_max | No description available |
 | precip_mm | No description available |
 | temp_f_avg | No description available |
+| recent_par3_scoring | No description available |
+| recent_par3_scoring_field_pct | No description available |
+| recent_par4_scoring | No description available |
+| recent_par4_scoring_field_pct | No description available |
+| recent_par5_scoring | No description available |
+| recent_par5_scoring_field_pct | No description available |
 | field_size | No description available |
 | no_cut | No description available |
 | win_prob | Predicted win probability (0-1) |
