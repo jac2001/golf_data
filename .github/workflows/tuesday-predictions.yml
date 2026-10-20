@@ -55,9 +55,10 @@ jobs:
           import csv, datetime
           today = datetime.date.today()
           rows = csv.DictReader(open("data/raw/schedule_2026.csv"))
-          soon = [r["tournament_name"] for r in rows
+          soon = [r for r in rows
                   if 0 <= (datetime.date.fromisoformat(r["start_date"]) - today).days <= 6]
           print(f"pga_week={'true' if soon else 'false'}")
+          print(f"tid={soon[0]['tournament_id'].strip().upper() if soon else ''}")
           PY
           if grep -q "pga_week=false" "$GITHUB_OUTPUT"; then
             echo "::notice::No PGA TOUR event starts in the next 6 days (off week) — skipping the weekly pipeline."
@@ -86,6 +87,16 @@ jobs:
           # Fresh event dates first: features order each player's history by date,
           # and an event missing from this list would be dropped from his form.
           python3 scripts/scrapers/fetch_dg_event_list.py || true
+          # DataGolf's pre-tournament predictions + decompositions for THIS
+          # week's event, fetched here instead of trusting the 06:00 CT
+          # refresh to have run: GitHub dropped that slot on Oct 20 and the
+          # pipeline found last week's file (the guard + integrity gate caught
+          # it). Each fetcher checks DataGolf's event name and refuses a
+          # mismatch, so a feed still on another event can't be merged.
+          if [ -n "${{ steps.week.outputs.tid }}" ]; then
+            python3 scripts/scrapers/fetch_dg_pre_tournament.py --tournament-id "${{ steps.week.outputs.tid }}" || echo "::warning::DG pre-tournament fetch refused or failed"
+            python3 scripts/scrapers/fetch_dg_decompositions.py --tournament-id "${{ steps.week.outputs.tid }}" || echo "::warning::DG decompositions fetch refused or failed"
+          fi
           python3 scripts/run_pipeline.py \
             --auto-weekly --lineup --calibrate --save-tracking \
             2>&1 | tee pipeline.log || true
