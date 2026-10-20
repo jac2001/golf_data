@@ -200,7 +200,7 @@ export default function Home() {
           </div>
           <div style={{ borderTop: "1px solid var(--bc-card)", marginTop: 16, paddingTop: 12,
                         fontSize: "max(var(--fs-min), 0.76em)", color: "var(--bc-muted)" }}>
-            Probabilities calibrated on 3,171 graded predictions ·{" "}
+            Pre-tournament model numbers ·{" "}
             <Link href="/predictions" style={{ color: "var(--bc-green)" }}>full field →</Link>
           </div>
         </Panel>

@@ -8532,12 +8532,59 @@ def _home_euro(today: pd.Timestamp) -> dict:
         "board": board, "board_event": board_event, "board_is_hero": board_is_hero,
         "source": "datagolf",
         "storylines": [],
-        "trust": {
-            "calibration": {"value": "10.5%", "label": "actual top-10 rate when we said 10%"},
-            "seasons": {"value": "7", "label": "seasons of walk-forward testing"},
-            "benchmark": {"value": "±5%", "label": "of the industry-leading model"},
-        },
+        "trust": _trust_facts(),
     }
+
+
+def _trust_facts() -> dict:
+    """The homepage's track-record strip, generated from the evaluation files
+    themselves (2026-10-20 review item 16): each item says what was measured,
+    over what, and when, using the date INSIDE the file (deploy mtimes are
+    meaningless). No performance percentages here until a stats review signs
+    off on them; the methodology page carries the detail. An item whose file
+    is missing is left out rather than guessed."""
+    out: dict = {}
+    try:
+        wf = pd.read_csv(OUTPUTS_DIR / "walk_forward_cv.csv")
+        yrs = sorted(int(y) for y in wf["test_year"].dropna().unique())
+        if yrs:
+            out["seasons"] = {"value": str(len(yrs)),
+                              "label": f"seasons of walk-forward testing ({yrs[0]}–{yrs[-1]}), each scored on data the model hadn't seen"}
+    except Exception:
+        pass
+    try:
+        bm = json.loads((OUTPUTS_DIR / "benchmark_vs_dg_summary.json").read_text())
+        n = int(bm["markets"]["win"]["ours"]["n"])
+        # The latest event by its real DATE (tournament ids aren't calendar order).
+        through = ""
+        try:
+            if str(PROJECT_ROOT) not in sys.path:
+                sys.path.insert(0, str(PROJECT_ROOT))
+            from scripts.features.event_dates import load_events, load_overrides, training_event_date
+            ev, ov = load_events(), load_overrides()
+            dated = sorted((d, t) for t in bm.get("tournaments", [])
+                           if (d := training_event_date(t, "", ev, ov)) is not None)
+            if dated:
+                d, t = dated[-1]
+                row = ev[(ev["calendar_year"] == d.year) & (ev["event_id"] == int(t[5:]))]
+                name = str(row["event_name"].iloc[0]) if len(row) else ""
+                through = f" through the {name}, {d.strftime('%b %-d, %Y')}" if name else f" through {d.strftime('%b %-d, %Y')}"
+        except Exception:
+            pass
+        out["benchmark"] = {"value": f"{n:,}",
+                            "label": f"predictions graded against DataGolf's: {bm.get('events', '?')} events{through}"}
+    except Exception:
+        pass
+    try:
+        txt = (OUTPUTS_DIR / "calibration_report_latest.md").read_text()
+        import re as _re
+        mm = _re.search(r"Generated at:\s*(\d{4}-\d{2}-\d{2})", txt)
+        if mm:
+            d = pd.Timestamp(mm.group(1))
+            out["calibration"] = {"value": d.strftime("%b %-d"), "label": "latest calibration check, rerun with each week's predictions"}
+    except Exception:
+        pass
+    return out
 
 
 def _started(row, tz: str) -> bool:
@@ -8735,9 +8782,5 @@ def get_home(tour: str = "pga") -> dict:
         "season_start": season_start,
         "board": board, "board_event": board_event, "board_is_hero": board_is_hero,
         "storylines": stories[:3],
-        "trust": {
-            "calibration": {"value": "10.5%", "label": "actual top-10 rate when we said 10%"},
-            "seasons": {"value": "7", "label": "seasons of walk-forward testing"},
-            "benchmark": {"value": "±5%", "label": "of the industry-leading model"},
-        },
+        "trust": _trust_facts(),
     }
