@@ -64,6 +64,10 @@ test("same inputs, same answer (no randomness)", () => {
 // TODO(Jack): one test for decision (a): lastChosen "rounds" while the group
 // mostly plays "ride", both open. What lands, and why (in the test name).
 
+test("lastChosen beats the group's favorite (decision a)", () => {
+  const s = sig({ lastChosen: "rounds", groupPicks: { ride: 5, rounds: 3, fades: 0, college: 0 } });
+  assert.equal(landingGame(s), "rounds");
+});
 // ── landingEvent: the PGA default ────────────────────────────────────────────
 
 const ev = (tournament_id: string, tour: "pga" | "euro", status: LandingEvent["status"], start_date = "2026-10-22"): LandingEvent =>

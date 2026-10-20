@@ -53,7 +53,27 @@ export const DEFAULT_GAME: GameId = "ride";
 // of your own for decision (a).
 
 export function landingGame(s: LandingSignals): GameId {
-  throw new Error("TODO(Jack): landingGame");
+  // decision a: lastChosen should always default to the person's own choice
+  // decision b: fixed order, first in GAME_IDS wins
+  // decision c: return to the game with the most picks, or DEFAULT_GAME if all are 0
+  const openGames = GAME_IDS.filter(g => s.open[g]);
+  // decision a: lastChosen should always default to the person's own choice
+  if (s.lastChosen && openGames.includes(s.lastChosen)) {
+    return s.lastChosen;
+  }
+  if (openGames.length > 0) {
+    const maxPicks = Math.max(...openGames.map(g => s.groupPicks[g]));
+    const candidates = openGames.filter(g => s.groupPicks[g] === maxPicks);
+    return candidates[0]; // decision b: fixed order, first in GAME_IDS wins
+  }
+  
+  // decision c: if no games are open, return the game with the most groupPicks, or DEFAULT_GAME if all are 0
+  const maxPicks = Math.max(...GAME_IDS.map(g => s.groupPicks[g]));
+  if (maxPicks > 0) {
+    const candidates = GAME_IDS.filter(g => s.groupPicks[g] === maxPicks);
+    return candidates[0]; // decision b: fixed order, first in GAME_IDS wins
+  }
+  return DEFAULT_GAME;
 }
 
 // ── events (Claude's: the PGA default) ───────────────────────────────────────

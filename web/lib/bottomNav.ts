@@ -77,9 +77,7 @@ export function activeTab(pathname: string): Tab | null {
     return "matchup";
   } else if (MORE_LINKS.some(link => pathname === link.href || pathname.startsWith(link.href + "/"))) {
     return "more";
-  } else if (pathname === "/fantasy" || pathname === "/mypicks" || pathname.startsWith("/history/league")) {
-    return null;
-  } else {
+  }  else {
     return null;
   }
 }
