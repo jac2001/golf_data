@@ -140,9 +140,11 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
       body: JSON.stringify({ id }) }); load(); } catch (e) { setErr((e as Error).message); }
   }
   async function report(id: string) {
-    if (!confirm("Flag this chirp for the group's owner to review?")) return;
+    // Owners review reports on members' chirps; a report about the owner's
+    // own chirp goes to the site admin. Either way someone real reviews it.
+    if (!confirm("Flag this chirp for review?")) return;
     try { await call("/api/friends/chirps/report", { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }) }); setErr("Flagged. The group's owner will see it in this thread."); }
+      body: JSON.stringify({ id }) }); setErr("Flagged for review. Thanks."); }
     catch (e) { setErr((e as Error).message); }
   }
   /** Owner: dismiss the reports, or remove the chirp (resolves them). */

@@ -72,9 +72,12 @@ export async function GET(req: Request) {
   // The group owner's review queue (review item 8): open reports per chirp.
   // Only the owner sees counts; reporters stay unnamed.
   const openReports = new Map<string, number>();
-  if (isOwner && rows.length) {
+  // A report about the owner's OWN chirp goes to the site admin instead
+  // (lib/admin.ts): nobody reviews a report about themselves.
+  const reviewable = rows.filter(r => r.user_id !== userId).map(r => r.id);
+  if (isOwner && reviewable.length) {
     const rep = await sql`SELECT chirp_id::text AS chirp_id, count(*)::int AS n FROM chirp_reports
-      WHERE resolved_at IS NULL AND chirp_id = ANY(${rows.map(r => r.id)}::bigint[]) GROUP BY 1` as { chirp_id: string; n: number }[];
+      WHERE resolved_at IS NULL AND chirp_id = ANY(${reviewable}::bigint[]) GROUP BY 1` as { chirp_id: string; n: number }[];
     for (const r of rep) openReports.set(r.chirp_id, r.n);
   }
   // Mark read up to the newest chirp actually DELIVERED (not "now"): one
