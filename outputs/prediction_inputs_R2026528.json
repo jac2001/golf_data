@@ -1,22 +1,22 @@
 {
   "tournament_id": "R2026528",
   "tournament_name": "Butterfield Bermuda Championship",
-  "generated_at": "2026-10-20T09:46:36.526966",
+  "generated_at": "2026-10-20T10:41:45.621440",
   "inputs": {
     "decompositions": {
       "file": "dg_decompositions_R2026528.csv",
       "event_name": "Butterfield Bermuda Championship",
-      "modified": "2026-10-20T09:46:00.304986"
+      "modified": "2026-10-20T10:41:11.090735"
     },
     "pre_tournament": {
       "file": "dg_pre_tournament_R2026528.csv",
       "event_name": "Butterfield Bermuda Championship",
-      "modified": "2026-10-20T09:45:30.833042"
+      "modified": "2026-10-20T10:40:53.063704"
     },
     "field": {
       "file": "dg_field_R2026528.csv",
       "event_name": "Butterfield Bermuda Championship",
-      "modified": "2026-10-20T09:40:16.730502"
+      "modified": "2026-10-20T10:34:37.387871"
     }
   }
 }

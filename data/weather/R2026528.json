@@ -26,11 +26,11 @@
       "windSpeedKPH": "4",
       "windSpeedMPH": "3",
       "humidity": "51%",
-      "precipitation": "4%",
+      "precipitation": "5%",
       "temperature": {
         "__typename": "RangeWeatherTemp",
-        "minTempC": "8\u00b0C",
-        "minTempF": "47\u00b0F",
+        "minTempC": "7\u00b0C",
+        "minTempF": "46\u00b0F",
         "maxTempC": "26\u00b0C",
         "maxTempF": "80\u00b0F"
       }
@@ -41,7 +41,7 @@
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "16",
       "windSpeedMPH": "10",
-      "humidity": "50%",
+      "humidity": "49%",
       "precipitation": "4%",
       "temperature": {
         "__typename": "RangeWeatherTemp",
@@ -55,14 +55,14 @@
       "title": "Sat",
       "condition": "DAY_SUNNY",
       "windDirection": "NORTH_EAST",
-      "windSpeedKPH": "20",
-      "windSpeedMPH": "13",
+      "windSpeedKPH": "19",
+      "windSpeedMPH": "12",
       "humidity": "53%",
-      "precipitation": "2%",
+      "precipitation": "3%",
       "temperature": {
         "__typename": "RangeWeatherTemp",
-        "minTempC": "11\u00b0C",
-        "minTempF": "52\u00b0F",
+        "minTempC": "10\u00b0C",
+        "minTempF": "51\u00b0F",
         "maxTempC": "23\u00b0C",
         "maxTempF": "74\u00b0F"
       }
@@ -73,14 +73,14 @@
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "20",
       "windSpeedMPH": "13",
-      "humidity": "55%",
-      "precipitation": "2%",
+      "humidity": "56%",
+      "precipitation": "3%",
       "temperature": {
         "__typename": "RangeWeatherTemp",
-        "minTempC": "10\u00b0C",
-        "minTempF": "50\u00b0F",
-        "maxTempC": "24\u00b0C",
-        "maxTempF": "76\u00b0F"
+        "minTempC": "9\u00b0C",
+        "minTempF": "49\u00b0F",
+        "maxTempC": "23\u00b0C",
+        "maxTempF": "75\u00b0F"
       }
     },
     {
@@ -89,12 +89,12 @@
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "16",
       "windSpeedMPH": "10",
-      "humidity": "52%",
+      "humidity": "53%",
       "precipitation": "4%",
       "temperature": {
         "__typename": "RangeWeatherTemp",
         "minTempC": "8\u00b0C",
-        "minTempF": "48\u00b0F",
+        "minTempF": "47\u00b0F",
         "maxTempC": "24\u00b0C",
         "maxTempF": "76\u00b0F"
       }
@@ -105,7 +105,7 @@
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "12",
       "windSpeedMPH": "8",
-      "humidity": "50%",
+      "humidity": "49%",
       "precipitation": "4%",
       "temperature": {
         "__typename": "RangeWeatherTemp",
@@ -118,30 +118,16 @@
   ],
   "hourly": [
     {
-      "title": "11AM",
-      "condition": "DAY_SUNNY",
-      "windDirection": "NORTH_EAST",
-      "windSpeedKPH": "11",
-      "windSpeedMPH": "7",
-      "humidity": "47%",
-      "precipitation": "0%",
-      "temperature": {
-        "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
-        "tempF": "63\u00b0F"
-      }
-    },
-    {
       "title": "12PM",
       "condition": "DAY_SUNNY",
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "12",
       "windSpeedMPH": "8",
-      "humidity": "38%",
+      "humidity": "36%",
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "67\u00b0F"
       }
     },
@@ -151,11 +137,11 @@
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "12",
       "windSpeedMPH": "8",
-      "humidity": "33%",
+      "humidity": "31%",
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "70\u00b0F"
       }
     },
@@ -163,13 +149,13 @@
       "title": "2PM",
       "condition": "DAY_SUNNY",
       "windDirection": "NORTH_EAST",
-      "windSpeedKPH": "12",
-      "windSpeedMPH": "8",
-      "humidity": "29%",
+      "windSpeedKPH": "11",
+      "windSpeedMPH": "7",
+      "humidity": "28%",
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "72\u00b0F"
       }
     },
@@ -179,11 +165,11 @@
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "11",
       "windSpeedMPH": "7",
-      "humidity": "28%",
+      "humidity": "27%",
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "73\u00b0F"
       }
     },
@@ -197,7 +183,7 @@
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "74\u00b0F"
       }
     },
@@ -207,12 +193,12 @@
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "9",
       "windSpeedMPH": "6",
-      "humidity": "27%",
+      "humidity": "26%",
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
-        "tempF": "73\u00b0F"
+        "tempC": "19\u00b0C",
+        "tempF": "74\u00b0F"
       }
     },
     {
@@ -225,7 +211,7 @@
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "71\u00b0F"
       }
     },
@@ -239,7 +225,7 @@
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "65\u00b0F"
       }
     },
@@ -249,11 +235,11 @@
       "windDirection": "NORTH_EAST",
       "windSpeedKPH": "3",
       "windSpeedMPH": "2",
-      "humidity": "60%",
+      "humidity": "61%",
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "59\u00b0F"
       }
     },
@@ -267,7 +253,7 @@
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "56\u00b0F"
       }
     },
@@ -281,10 +267,24 @@
       "precipitation": "0%",
       "temperature": {
         "__typename": "StandardWeatherTemp",
-        "tempC": "17\u00b0C",
+        "tempC": "19\u00b0C",
         "tempF": "55\u00b0F"
+      }
+    },
+    {
+      "title": "11PM",
+      "condition": "NIGHT_CLEAR",
+      "windDirection": "NORTH_EAST",
+      "windSpeedKPH": "3",
+      "windSpeedMPH": "2",
+      "humidity": "72%",
+      "precipitation": "0%",
+      "temperature": {
+        "__typename": "StandardWeatherTemp",
+        "tempC": "19\u00b0C",
+        "tempF": "53\u00b0F"
       }
     }
   ],
-  "saved_at": "2026-10-20T09:46:37.622540"
+  "saved_at": "2026-10-20T10:41:46.497569"
 }
