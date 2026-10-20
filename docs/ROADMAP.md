@@ -74,7 +74,7 @@ and fix what watching them reveals.
        the natural first), using the plan's invitation. Tournament 1
        of the pilot: watch first use without coaching.
 5. [ ] **Fix the largest obstacle that session reveals.**
-6. [ ] **Watchdog for the refresh slots.** GitHub dropped Tuesday's
+6. [x] **Watchdog for the refresh slots** (done Oct 20: check 4, `web/lib/refreshSlots.ts`). GitHub dropped Tuesday's
        06:00 CT refresh on Oct 20 (no run at all); the watchdog only
        re-dispatches prediction/settlement runs, so it went unnoticed until
        the pipeline found last week's DG file. Fixed for that case (the

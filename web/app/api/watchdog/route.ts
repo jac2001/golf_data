@@ -14,6 +14,11 @@
  *        → tuesday-predictions
  *   3. Wed+ and an open DPWT event starting within 3 days with no predictions
  *        → data-refresh, schedule=wednesday-morning
+ *   4. A Mon–Wed data-refresh slot that passed 3+ hours ago with NO
+ *      data-refresh run since (lib/refreshSlots.ts) → that slot. Checks 1–3
+ *      look at outcomes; this one catches a dropped run whose outcome looks
+ *      fine (Oct 20: Tuesday's 06:00 CT slot never ran, so the pipeline found
+ *      last week's DataGolf file; predictions "existed", just stale).
  *
  * Safe to run any time: a workflow already queued/running, or dispatched
  * in the last 3 hours, is left alone. Every dispatch is reported to Sentry
@@ -25,6 +30,7 @@
 import * as Sentry from "@sentry/nextjs";
 import { cronUnauthorized } from "@/lib/cronAuth";
 import { MODEL_API } from "@/lib/db";
+import { missedSlot } from "@/lib/refreshSlots";
 
 const REPO = "jac2001/golf_data";
 const COOLDOWN_MS = 3 * 3_600_000;
@@ -94,6 +100,17 @@ export async function GET(req: Request) {
       ? { workflow: "data-refresh.yml", schedule: "wednesday-morning", why: `${e.name} has no predictions yet` }
       : { workflow: "tuesday-predictions.yml", why: `${e.name} has no predictions yet` });
   }
+
+  // 4. A dropped refresh slot (any data-refresh run since the slot covers it).
+  try {
+    const since = new Date(now - 48 * 3_600_000).toISOString();
+    const res = await github(`/actions/workflows/data-refresh.yml/runs?per_page=50&created=>=${since}`);
+    if (res.ok) {
+      const { workflow_runs } = await res.json() as { workflow_runs: { created_at: string }[] };
+      const slot = missedSlot(new Date(now), workflow_runs.map(r => r.created_at));
+      if (slot) needs.push({ workflow: "data-refresh.yml", schedule: slot, why: `the ${slot} data refresh never ran` });
+    }
+  } catch { /* can't tell: leave it (the outcome checks above still run) */ }
 
   const log: string[] = [];
   if (!needs.length) return Response.json({ ok: true, log: ["all good — nothing missing"] });
