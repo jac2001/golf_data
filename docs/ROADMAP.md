@@ -74,7 +74,13 @@ and fix what watching them reveals.
        the natural first), using the plan's invitation. Tournament 1
        of the pilot: watch first use without coaching.
 5. [ ] **Fix the largest obstacle that session reveals.**
-6. [ ] **Move the repo out of iCloud** (~/Desktop sync broke git refs
+6. [ ] **Watchdog for the refresh slots.** GitHub dropped Tuesday's
+       06:00 CT refresh on Oct 20 (no run at all); the watchdog only
+       re-dispatches prediction/settlement runs, so it went unnoticed until
+       the pipeline found last week's DG file. Fixed for that case (the
+       Tuesday job now fetches its own DG files, 95ff7ea); the general fix
+       is the watchdog checking each day's refresh slots ran.
+7. [ ] **Move the repo out of iCloud** (~/Desktop sync broke git refs
        twice, duplicated data files, corrupted the Next build cache, and
        dropped unsaved edits more than once). Recurring disruption to
        everything else, so it moves up from Next.
@@ -123,7 +129,8 @@ someone plays, versus what we improve because we watched them play.
       "Nudge the group" share; Jack's `web/lib/whosIn.ts`): who has joined and who still needs to
       pick, without revealing hidden picks; share the result and start
       the next week. Test: an organizer runs a second tournament alone.
-- [ ] **Group chirps** (Jack, Oct 17): one thread per group per
+- [x] **Group chirps** (Oct 20, v1 on the Match Center: Jack's `web/lib/chirpPresets.ts`;
+      design `docs/CHIRPS_DESIGN.md`) (Jack, Oct 17): one thread per group per
       tournament (past weeks kept), "Send a chirp" ON the matchup and
       result cards, a few preset lines tied to what just happened ("Don't
       look now", "Check the leaderboard", "So much for the expert",

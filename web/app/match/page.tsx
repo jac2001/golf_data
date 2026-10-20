@@ -14,6 +14,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
+import ChirpThread from "@/components/ChirpThread";
 import SchoolBadge from "@/components/SchoolBadge";
 import { displaySurnames } from "@/lib/names";
 import { College, CollegeGolfer, Group, Match, Slate, collegeHeadline, collegeTotals, golferProgress, isMatch, isSoloVsModel, matchHeadline, money, moneyNote, ordinal, totalsLine } from "@/lib/matchTypes";
@@ -159,7 +160,7 @@ export default function MatchCenterPage() {
           <div style={card}>No Let It Ride season in this group yet — the owner starts one from <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Friends → Let It Ride</Link>.</div>
         ) : (
           <>
-            {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} groupName={data.group?.name ?? ""} checkedAt={data.checked_at} />)}
+            {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} groupId={groupId} groupName={data.group?.name ?? ""} checkedAt={data.checked_at} />)}
             {data.college && data.college.lines.length > 0 && <CollegeCard c={data.college} />}
           </>
         )}
@@ -189,7 +190,7 @@ function clock(iso: string): string {
   return isNaN(d.getTime()) ? "" : d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit", timeZoneName: "short" });
 }
 
-function SlateCard({ s, groupName, checkedAt }: { s: Slate; groupName: string; checkedAt?: string }) {
+function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: number | null; groupName: string; checkedAt?: string }) {
   const me = s.lines.find(l => l.user_id === s.me_id);
   const tourLabel = s.tour === "euro" ? "DP World Tour" : "PGA Tour";
 
@@ -203,6 +204,7 @@ function SlateCard({ s, groupName, checkedAt }: { s: Slate; groupName: string; c
           {me ? `Your picks: ${displaySurnames(me.golfers.map(g => g.name)).join(", ")}. ` : "You haven't picked yet. "}
           Everyone&apos;s picks appear here once the event locks. <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Make picks →</Link>
         </p>
+        {groupId && <ChirpThread groupId={groupId} slate={s} />}
       </div>
     );
   }
@@ -224,6 +226,7 @@ function SlateCard({ s, groupName, checkedAt }: { s: Slate; groupName: string; c
       <div style={{ fontWeight: 900, fontSize: "1.35em", margin: "6px 0 4px", lineHeight: 1.2 }}>{matchHeadline(s)}</div>
       {me && <div style={{ fontWeight: 700, fontSize: "max(var(--fs-min), 0.95em)", fontVariantNumeric: "tabular-nums" }}>{totalsLine(s)}</div>}
       <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", marginTop: 2 }}>{moneyNote(s)}</div>
+      {groupId && <ChirpThread groupId={groupId} slate={s} />}
 
       {/* Layer 2 — who am I watching? */}
       {me && me.golfers.length > 0 && (
