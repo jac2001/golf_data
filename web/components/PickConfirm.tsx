@@ -13,6 +13,7 @@
  */
 
 import { useEffect } from "react";
+import Sheet from "@/components/Sheet";
 import { confirmCopy } from "@/lib/pickConfirm";
 import type { ConfirmCopy, ConfirmInput } from "@/lib/pickConfirm";
 import { eventStatusLine } from "@/lib/eventStatus";
@@ -73,13 +74,8 @@ export default function PickConfirm({ copy, onClose }: { copy: ConfirmCopy | nul
   }
 
   return (
-    <>
-      <div onClick={close} aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 998, background: "rgba(0,0,0,0.5)" }} />
-      <div role="dialog" aria-label={copy.title} style={{
-        position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 999, maxWidth: 560, margin: "0 auto",
-        background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line-hi)", borderRadius: "16px 16px 0 0",
-        padding: "22px 20px calc(20px + var(--bottom-nav-h))", textAlign: "center",
-      }}>
+    <Sheet label={copy.title} onClose={close} zIndex={998} initialFocus="button" style={{
+      padding: "22px 20px calc(20px + var(--bottom-nav-h))", textAlign: "center" }}>
         <div aria-hidden="true" style={{ width: 52, height: 52, borderRadius: "50%", margin: "0 auto 12px",
           background: "var(--bc-raised)", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--bc-green)" strokeWidth="2.6"
@@ -87,12 +83,11 @@ export default function PickConfirm({ copy, onClose }: { copy: ConfirmCopy | nul
         </div>
         <div style={{ fontWeight: 900, fontSize: "1.4em", textTransform: "uppercase", fontStretch: "110%" }}>{copy.title}</div>
         {copy.body && <p style={{ color: "var(--bc-muted)", lineHeight: 1.5, margin: "8px 0 18px" }}>{copy.body}</p>}
-        <button onClick={close} autoFocus style={{
+        <button onClick={close} style={{
           width: "100%", minHeight: 52, background: "var(--bc-yellow)", color: "#081f14", border: "none",
           borderRadius: 10, fontWeight: 900, fontSize: "1em", textTransform: "uppercase", letterSpacing: "0.05em",
           cursor: "pointer", fontFamily: "inherit",
         }}>Done</button>
-      </div>
-    </>
+    </Sheet>
   );
 }

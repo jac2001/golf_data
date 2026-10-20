@@ -13,11 +13,16 @@ import { chirpPresets } from "@/lib/chirpPresets";
 import type { ChirpContext, Preset } from "@/lib/chirpPresets";
 import type { Slate } from "@/lib/matchTypes";
 import { money, ordinal } from "@/lib/matchTypes";
+import Sheet from "@/components/Sheet";
 
 type Card = { event: string; status: string; rank: number | null; players: number; total: number | null;
   leader: string | null; gap: number | null; estimated: boolean };
 type Chirp = { id: string; user_id: string; user_name: string; created_at: string; removed: boolean;
-  preset_id?: string | null; text?: string; card?: Card; reactions?: { emoji: string; n: number; mine: boolean }[] };
+  preset_id?: string | null; text?: string; card?: Card; reactions?: { emoji: string; n: number; mine: boolean }[];
+  /** Owner only: open reports on this chirp. */
+  open_reports?: number };
+
+const POLL_MS = 15_000;
 
 const MAX_TEXT = 140;
 
@@ -70,20 +75,48 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  const [more, setMore] = useState(false);
   const tid = slate.tournament_id;
 
   useEffect(() => {
     call(`/api/friends/chirps?group_id=${groupId}&unread=1`).then(d => setUnread(Number(d.unread ?? 0))).catch(() => {});
   }, [groupId, tid]);
 
+  // The latest page; keeps any older pages already loaded above it.
   const load = useCallback(() => {
     call(`/api/friends/chirps?group_id=${groupId}&tournament_id=${encodeURIComponent(tid)}`).then(d => {
-      setChirps((d.chirps as Chirp[]) ?? []); setIsOwner(!!d.is_owner); setMe(String(d.me ?? ""));
+      const latest = (d.chirps as Chirp[]) ?? [];
+      setChirps(prev => {
+        if (!prev || !latest.length) return latest;
+        const firstLatest = Number(latest[0].id);
+        return [...prev.filter(c => Number(c.id) < firstLatest), ...latest];
+      });
+      setMore(prev => prev || !!d.more);
+      setIsOwner(!!d.is_owner); setMe(String(d.me ?? ""));
       setReactions((d.reactions as string[]) ?? []); setUnread(0);
-    }).catch(e => { setErr(e.message); setChirps([]); });
+    }).catch(e => { setErr(e.message); setChirps(c => c ?? []); });
   }, [groupId, tid]);
 
-  useEffect(() => { if (open) load(); }, [open, load]);
+  // Open: load, then check for new chirps every 15s while the page is
+  // visible; catch up as soon as it's visible again (review item 7).
+  useEffect(() => {
+    if (!open) return;
+    load();
+    const tick = () => { if (document.visibilityState === "visible") load(); };
+    const t = setInterval(tick, POLL_MS);
+    document.addEventListener("visibilitychange", tick);
+    return () => { clearInterval(t); document.removeEventListener("visibilitychange", tick); };
+  }, [open, load]);
+
+  async function loadEarlier() {
+    const oldest = chirps?.[0]?.id;
+    if (!oldest) return;
+    try {
+      const d = await call(`/api/friends/chirps?group_id=${groupId}&tournament_id=${encodeURIComponent(tid)}&before=${oldest}`);
+      setChirps(c => [...((d.chirps as Chirp[]) ?? []), ...(c ?? [])]);
+      setMore(!!d.more);
+    } catch (e) { setErr((e as Error).message); }
+  }
 
   let presets: Preset[] = [];
   try { presets = chirpPresets(contextFor(slate)); } catch { /* no chips; the custom box still works */ }
@@ -107,9 +140,16 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
       body: JSON.stringify({ id }) }); load(); } catch (e) { setErr((e as Error).message); }
   }
   async function report(id: string) {
-    if (!confirm("Report this chirp to the group's owner?")) return;
+    if (!confirm("Flag this chirp for the group's owner to review?")) return;
     try { await call("/api/friends/chirps/report", { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }) }); setErr("Reported. Thanks."); } catch (e) { setErr((e as Error).message); }
+      body: JSON.stringify({ id }) }); setErr("Flagged. The group's owner will see it in this thread."); }
+    catch (e) { setErr((e as Error).message); }
+  }
+  /** Owner: dismiss the reports, or remove the chirp (resolves them). */
+  async function resolve(id: string, action: "dismiss" | "remove") {
+    if (action === "remove" && !confirm("Remove this chirp for everyone?")) return;
+    try { await call("/api/friends/chirps/resolve", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, action }) }); load(); } catch (e) { setErr((e as Error).message); }
   }
 
   const quiet: React.CSSProperties = { background: "transparent", border: "none", color: "var(--bc-muted)",
@@ -126,19 +166,17 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
           borderRadius: 999, padding: "1px 8px", fontSize: "0.8em", fontWeight: 900 }}>{unread}</span>}
       </button>
 
-      {open && <>
-        <div onClick={() => setOpen(false)} aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.55)" }} />
-        <div role="dialog" aria-label="Group chirps" style={{
-          position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 401, maxWidth: 560, margin: "0 auto",
-          maxHeight: "85vh", display: "flex", flexDirection: "column", background: "var(--bc-panel)",
-          borderTop: "1px solid var(--bc-line-hi)", borderRadius: "16px 16px 0 0",
+      {open && (
+        <Sheet label={`Chirps · ${slate.name}`} onClose={() => setOpen(false)} initialFocus="#chirp-text" style={{
+          maxHeight: "85vh", display: "flex", flexDirection: "column",
           padding: "10px 16px calc(16px + env(safe-area-inset-bottom))" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ fontWeight: 900 }}>Chirps · {slate.name}</div>
             <button onClick={() => setOpen(false)} aria-label="Close" style={{ ...quiet, fontSize: "1.4em", minWidth: 44, minHeight: 44 }}>×</button>
           </div>
 
           <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 8, padding: "6px 0" }}>
+            {more && <button onClick={loadEarlier} style={{ ...quiet, alignSelf: "center" }}>Load earlier</button>}
             {chirps === null && <div style={{ color: "var(--bc-muted)" }}>Loading…</div>}
             {chirps?.length === 0 && <div style={{ color: "var(--bc-muted)" }}>Nothing yet. Start it.</div>}
             {chirps?.map(c => (
@@ -150,6 +188,16 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
                 </div>
                 {c.removed ? <div style={{ color: "var(--bc-muted)", fontStyle: "italic", marginTop: 2 }}>Removed</div> : <>
                   <div style={{ fontWeight: 700, margin: "3px 0" }}>{c.text}</div>
+                  {isOwner && !!c.open_reports && (
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, margin: "4px 0", padding: "4px 8px",
+                      borderRadius: 6, border: "1px solid var(--bc-orange)", fontSize: "max(var(--fs-min), 0.78em)" }}>
+                      <span style={{ color: "var(--bc-orange)", fontWeight: 800 }}>Reported ({c.open_reports})</span>
+                      <span style={{ marginLeft: "auto" }}>
+                        <button onClick={() => resolve(c.id, "dismiss")} style={quiet}>Dismiss</button>
+                        <button onClick={() => resolve(c.id, "remove")} style={quiet}>Remove</button>
+                      </span>
+                    </div>
+                  )}
                   {cardLine(c.card) && <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>{cardLine(c.card)}</div>}
                   <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 4, flexWrap: "wrap" }}>
                     {reactions.map(e => {
@@ -194,9 +242,9 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
               cursor: "pointer", fontFamily: "inherit", fontWeight: 900, border: "none", borderRadius: 8,
               background: "var(--bc-yellow)", color: "#081f14" }}>Send</button>
           </form>
-          {err && <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 6 }}>{err}</div>}
-        </div>
-      </>}
+          {err && <div role="status" style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 6 }}>{err}</div>}
+        </Sheet>
+      )}
     </>
   );
 }

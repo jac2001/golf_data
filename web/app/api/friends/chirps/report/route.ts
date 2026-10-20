@@ -21,7 +21,9 @@ export async function POST(req: Request) {
   if (!c.length) return Response.json({ error: "No such chirp." }, { status: 404 });
   if (!(await visibleUserIds(userId, c[0].group_id))) return Response.json({ error: "Not a member of this group." }, { status: 403 });
 
-  await sql`INSERT INTO chirp_reports (chirp_id, user_id, reason) VALUES (${id}, ${userId}, ${reason})`;
+  // One report per person per chirp (unique index chirp_reports_once).
+  await sql`INSERT INTO chirp_reports (chirp_id, user_id, reason) VALUES (${id}, ${userId}, ${reason})
+    ON CONFLICT (chirp_id, user_id) DO NOTHING`;
   await track(sql, userId, "chirp_reported", {}, c[0].group_id);
   return Response.json({ reported: true });
 }

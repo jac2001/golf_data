@@ -1,8 +1,10 @@
 /**
  * /api/friends/chirps — a group's thread for one tournament (docs/CHIRPS_DESIGN.md).
  * ===================================================================================
- * GET    ?group_id&tournament_id → { chirps, is_owner, me }   (also marks the thread read)
- * GET    ?group_id&unread=1 → { unread }   (chirps by others since you last opened; doesn't mark)
+ * GET    ?group_id&tournament_id[&before=<id>] → { chirps, is_owner, me, more }
+ *          the latest PAGE chirps (older pages with before=); the latest page
+ *          marks THIS thread read up to the newest chirp it delivered
+ * GET    ?group_id&unread=1 → { unread }   (others' chirps past your marker, every thread; doesn't mark)
  * POST   { group_id, tournament_id, preset_id?, text } → the new chirp
  * DELETE { id } → remove (the author, or the group's owner)
  *
@@ -20,6 +22,8 @@ import { LINES } from "@/lib/chirpPresets";
 import { buildChirpCard } from "@/lib/chirpCard";
 
 const MAX_TEXT = 140;
+const PAGE = 100;              // chirps per page (review item 9: bounded history)
+const RATE_PER_MIN = 6;        // sends per person per group per minute
 const REACTIONS = ["👏", "😂", "🔥", "😬"];   // route files may only export handlers
 
 type Row = { id: string; user_id: string; user_name: string; preset_id: string | null; text: string;
@@ -36,37 +40,61 @@ export async function GET(req: Request) {
   const sql = getSql();
 
   if (url.searchParams.get("unread") === "1") {
+    // Per thread (group AND tournament): reading the PGA thread leaves the
+    // DPWT thread's chirps unread (review item 6).
     const r = await sql`
       SELECT count(*)::int AS n FROM chirps c
-      LEFT JOIN chirp_reads rd ON rd.group_id = c.group_id AND rd.user_id = ${userId}
+      LEFT JOIN chirp_thread_reads rd
+        ON rd.group_id = c.group_id AND rd.tournament_id = c.tournament_id AND rd.user_id = ${userId}
       WHERE c.group_id = ${groupId} AND c.user_id <> ${userId} AND c.removed_at IS NULL
-        AND (rd.last_read_at IS NULL OR c.created_at > rd.last_read_at)` as { n: number }[];
+        AND c.id > COALESCE(rd.last_id, 0)` as { n: number }[];
     return Response.json({ unread: r[0]?.n ?? 0 });
   }
   if (!tid) return Response.json({ error: "tournament_id required" }, { status: 400 });
 
+  const before = Number(url.searchParams.get("before") || 0);
   const [rowsRaw, reactsRaw, ownerRaw] = await Promise.all([
+    // Newest PAGE+1 (the extra one says whether there's more), returned oldest first.
     sql`SELECT id::text, user_id, user_name, preset_id, text, card, created_at::text, removed_at::text
-        FROM chirps WHERE group_id = ${groupId} AND tournament_id = ${tid} ORDER BY created_at, id`,
+        FROM chirps WHERE group_id = ${groupId} AND tournament_id = ${tid}
+          AND (${before} = 0 OR id < ${before})
+        ORDER BY id DESC LIMIT ${PAGE + 1}`,
     sql`SELECT r.chirp_id::text AS chirp_id, r.emoji, count(*)::int AS n, bool_or(r.user_id = ${userId}) AS mine
         FROM chirp_reactions r JOIN chirps c ON c.id = r.chirp_id
         WHERE c.group_id = ${groupId} AND c.tournament_id = ${tid} GROUP BY 1, 2`,
     sql`SELECT owner_id FROM groups WHERE id = ${groupId}`,
   ]);
-  const rows = rowsRaw as Row[];
+  const more = (rowsRaw as Row[]).length > PAGE;
+  const rows = (rowsRaw as Row[]).slice(0, PAGE).reverse();
   const reacts = reactsRaw as { chirp_id: string; emoji: string; n: number; mine: boolean }[];
   const owner = ownerRaw as { owner_id: string }[];
-  // Opening the thread reads it (the unread badge counts from here).
-  await sql`INSERT INTO chirp_reads (group_id, user_id, last_read_at) VALUES (${groupId}, ${userId}, now())
-    ON CONFLICT (group_id, user_id) DO UPDATE SET last_read_at = now()`;
+  const isOwner = owner[0]?.owner_id === userId;
+  // The group owner's review queue (review item 8): open reports per chirp.
+  // Only the owner sees counts; reporters stay unnamed.
+  const openReports = new Map<string, number>();
+  if (isOwner && rows.length) {
+    const rep = await sql`SELECT chirp_id::text AS chirp_id, count(*)::int AS n FROM chirp_reports
+      WHERE resolved_at IS NULL AND chirp_id = ANY(${rows.map(r => r.id)}::bigint[]) GROUP BY 1` as { chirp_id: string; n: number }[];
+    for (const r of rep) openReports.set(r.chirp_id, r.n);
+  }
+  // Mark read up to the newest chirp actually DELIVERED (not "now"): one
+  // arriving between this query and the mark stays unread.
+  const newest = rows.length ? Number(rows[rows.length - 1].id) : 0;
+  if (!before && newest) {
+    await sql`INSERT INTO chirp_thread_reads (group_id, tournament_id, user_id, last_id)
+      VALUES (${groupId}, ${tid}, ${userId}, ${newest})
+      ON CONFLICT (group_id, tournament_id, user_id)
+      DO UPDATE SET last_id = GREATEST(chirp_thread_reads.last_id, EXCLUDED.last_id)`;
+  }
 
   const byChirp = new Map<string, { emoji: string; n: number; mine: boolean }[]>();
   for (const r of reacts) byChirp.set(r.chirp_id, [...(byChirp.get(r.chirp_id) ?? []), { emoji: r.emoji, n: r.n, mine: r.mine }]);
   const chirps = rows.map(r => r.removed_at
     ? { id: r.id, user_id: r.user_id, user_name: r.user_name, removed: true, created_at: r.created_at }
     : { id: r.id, user_id: r.user_id, user_name: r.user_name, preset_id: r.preset_id, text: r.text, card: r.card,
-        created_at: r.created_at, removed: false, reactions: byChirp.get(r.id) ?? [] });
-  return Response.json({ chirps, is_owner: owner[0]?.owner_id === userId, me: userId, reactions: REACTIONS });
+        created_at: r.created_at, removed: false, reactions: byChirp.get(r.id) ?? [],
+        ...(isOwner && openReports.get(r.id) ? { open_reports: openReports.get(r.id) } : {}) });
+  return Response.json({ chirps, more, is_owner: isOwner, me: userId, reactions: REACTIONS });
 }
 
 export async function POST(req: Request) {
@@ -89,14 +117,18 @@ export async function POST(req: Request) {
   if (!(await visibleUserIds(userId, groupId))) return Response.json({ error: "Not a member of this group." }, { status: 403 });
 
   const sql = getSql();
+  // A modest cap per person per group (review item 9).
+  const recent = await sql`SELECT count(*)::int AS n FROM chirps
+    WHERE user_id = ${userId} AND group_id = ${groupId} AND created_at > now() - interval '1 minute'` as { n: number }[];
+  if ((recent[0]?.n ?? 0) >= RATE_PER_MIN) {
+    return Response.json({ error: "That's a lot of chirps. Give it a minute." }, { status: 429 });
+  }
   const card = await buildChirpCard(groupId, tid, userId);
   const me = nameOf(await currentUser());
   const rows = await sql`
     INSERT INTO chirps (group_id, tournament_id, user_id, user_name, preset_id, text, card)
     VALUES (${groupId}, ${tid}, ${userId}, ${me}, ${presetId}, ${text}, ${JSON.stringify(card)}::jsonb)
     RETURNING id::text, created_at::text` as { id: string; created_at: string }[];
-  await sql`INSERT INTO chirp_reads (group_id, user_id, last_read_at) VALUES (${groupId}, ${userId}, now())
-    ON CONFLICT (group_id, user_id) DO UPDATE SET last_read_at = now()`;
   await track(sql, userId, "chirp_sent", { preset_id: presetId ?? "custom", tournament_id: tid }, groupId);
   return Response.json({ chirp: { id: rows[0].id, user_id: userId, user_name: me, preset_id: presetId, text, card,
     created_at: rows[0].created_at, removed: false, reactions: [] } });
