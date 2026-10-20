@@ -255,7 +255,10 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
     call(`/api/leagues/${league.id}/weeks`).then(d => {
       const ws = (d.weeks as Week[]) ?? [];
       setWeeks(ws);
-      const land = landingEvent(ws, favoriteTour());
+      // A link that names an event (Match Center's "Make picks") opens it,
+      // if it's in this season; otherwise the usual landing.
+      const linked = new URLSearchParams(window.location.search).get("tid")?.toUpperCase();
+      const land = (linked && ws.find(w => w.tournament_id.toUpperCase() === linked)) || landingEvent(ws, favoriteTour());
       if (land) setTid(land.tournament_id);
     }).catch(() => setWeeks([]));
     loadStandings();

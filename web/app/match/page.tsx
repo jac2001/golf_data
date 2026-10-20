@@ -157,7 +157,7 @@ export default function MatchCenterPage() {
 
       {!data ? <p style={{ color: "var(--bc-muted)" }}>Loading…</p>
         : !data.league ? (
-          <div style={card}>No Let It Ride season in this group yet — the owner starts one from <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Friends → Let It Ride</Link>.</div>
+          <div style={card}>No Let It Ride season in this group yet — the owner starts one from <Link href={groupId ? `/friends?game=ride&group=${groupId}` : "/friends"} style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Friends → Let It Ride</Link>.</div>
         ) : (
           <>
             {data.slates.map(s => <SlateCard key={s.tournament_id} s={s} groupId={groupId} groupName={data.group?.name ?? ""} checkedAt={data.checked_at} />)}
@@ -166,6 +166,14 @@ export default function MatchCenterPage() {
         )}
     </div>
   );
+}
+
+/** "Make picks" opens THIS event, in this game and this group (review item 12):
+ *  the Friends page reads ?game and ?group, Let It Ride reads ?tid. */
+function picksLink(s: Slate, groupId: number | null): string {
+  const q = new URLSearchParams({ game: "ride", tid: s.tournament_id });
+  if (groupId) q.set("group", String(groupId));
+  return `/friends?${q.toString()}`;
 }
 
 function pill(on: boolean): React.CSSProperties {
@@ -215,7 +223,7 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
         </div>
         <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", margin: "8px 0 0" }}>
           {me ? `Your picks: ${displaySurnames(me.golfers.map(g => g.name)).join(", ")}. ` : "You haven't picked yet. "}
-          Everyone&apos;s picks appear here once the event locks. <Link href="/friends" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Make picks →</Link>
+          Everyone&apos;s picks appear here once the event locks. <Link href={picksLink(s, groupId)} style={{ color: "var(--bc-text)", textDecoration: "underline" }}>Make picks →</Link>
         </p>
         {groupId && <ChirpThread groupId={groupId} slate={s} />}
       </div>
