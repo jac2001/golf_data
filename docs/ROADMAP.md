@@ -66,10 +66,10 @@ and fix what watching them reveals.
        CONTROLLED test accounts (two groups, two throwaway users): one
        group can't see another's members, picks, boards, invites or feed
        (every route through lib/gameScope.ts should 403). Not Rick's job.
-3. [~] **One place for data permissions.** Drafted Oct 20: `docs/DATA_PERMISSIONS.md`. Left: Jack's call on hiding raw DG displays; written questions to DataGolf and to Grant (PGA TOUR); the 78-event history gap waits on the PGA TOUR answer + January retrain. What we use from DataGolf
-       and PGA TOUR, what we have (subscription access vs confirmed
-       permission for each use: public display, game scoring, derived
-       outputs, any commercial use), and the open questions. See #2, #5.
+3. [~] **One place for data permissions.** Drafted Oct 20: `docs/DATA_PERMISSIONS.md`. Left: Jack's call on hiding raw DG displays; written questions to DataGolf and to Grant (PGA TOUR); the 78-event history gap is a DataGolf backfill (DG has every event) for the January retrain.
+       Next from it: **move off PGA TOUR** where DataGolf covers it (table in the doc), starting with
+       `fetch_dg_historical_results.py` writing the CSVs the cloud reads (today: local DuckDB only).
+       Power rankings dropped Oct 20.
 4. [ ] **Recruit one organizer and watch their group play** (Rick is
        the natural first), using the plan's invitation. Tournament 1
        of the pilot: watch first use without coaching.
