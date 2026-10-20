@@ -268,22 +268,14 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
 
   const tourNames = league.tours.map(t => t === "euro" ? "DP World Tour" : "PGA Tour").join(" + ");
 
+  // The week first (review item 15): event bar, then picks; the season's
+  // setup is a one-line summary underneath, and standings live in the
+  // Standings tab, not under Picks.
+  const lastFinal = [...(weeks ?? [])].filter(w => w.status === "completed")
+    .sort((a, b) => b.start_date.localeCompare(a.start_date))[0];
+
   return (
     <>
-      <div style={{ ...card, display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 8 }}>
-        <div>
-          <div style={{ fontWeight: 900, fontSize: "1.1em" }}>{league.name}</div>
-          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", marginTop: 2 }}>
-            {league.players_per_week} golfers per event · {league.uses_per_player} uses per golfer
-            {league.uses_scope === "tour" && league.tours.length > 1 ? " on each tour" : " all season"} · {tourNames} · since {league.season_start}
-          </div>
-        </div>
-        {isOwner && (
-          <button onClick={() => setEditing(e => !e)} style={choice(editing)}>{editing ? "Close" : "Season settings"}</button>
-        )}
-      </div>
-      {editing && <SeasonSettings league={league} onSaved={() => { setEditing(false); onChanged(); }} />}
-
       {weeks === null ? <p style={{ color: "var(--bc-muted)" }}>Loading…</p>
         : weeks.length === 0 ? (
           <div style={card}>No events in this season yet.</div>
@@ -291,13 +283,19 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
           <>
             <EventNav events={weeks} selected={tid} onPick={setTid} starred={winners} />
             {week && (week.status === "upcoming" || week.status === "awaiting" ? (
+              // The event bar already says why there's nothing to pick; this
+              // offers the useful next thing instead of repeating it.
               <div style={card}>
-                <strong>{week.name}</strong>
-                <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", margin: "6px 0 0" }}>
+                <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", margin: 0 }}>
                   {week.status === "awaiting"
-                    ? `Starts ${shortDate(week.start_date)}. The field hasn't posted yet — picks open as soon as it does, usually by Tuesday.`
-                    : `Starts ${shortDate(week.start_date)}. Picks open the week before, once the field is set.`}
+                    ? `Starts ${shortDate(week.start_date)}. Picks open when the field posts, usually by Tuesday.`
+                    : `Starts ${shortDate(week.start_date)}. Picks open the week before.`}
                 </p>
+                {lastFinal && (
+                  <button onClick={() => setTid(lastFinal.tournament_id)} style={{ ...choice(false), marginTop: 10 }}>
+                    See last week&apos;s results ({lastFinal.name})
+                  </button>
+                )}
               </div>
             ) : (
               <Slate key={week.tournament_id} league={league} me={me} onChange={loadStandings}
@@ -311,7 +309,20 @@ function Season({ league, isOwner, onChanged }: { league: League; isOwner: boole
           </>
         )}
 
-      <SeasonStandings standings={standings} me={me} />
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8, flexWrap: "wrap",
+        color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)", margin: "4px 2px 12px" }}>
+        <span>
+          <strong style={{ color: "var(--bc-text)" }}>{league.name}</strong> · {league.players_per_week} golfers per event
+          · {league.uses_per_player} uses per golfer{league.uses_scope === "tour" && league.tours.length > 1 ? " on each tour" : ""} · {tourNames}
+        </span>
+        {isOwner && (
+          <button onClick={() => setEditing(e => !e)} style={{ background: "none", border: "none", cursor: "pointer",
+            fontFamily: "inherit", color: "var(--bc-yellow)", fontWeight: 700, padding: 0, minHeight: 32 }}>
+            {editing ? "Close settings" : "Settings"}
+          </button>
+        )}
+      </div>
+      {editing && <SeasonSettings league={league} onSaved={() => { setEditing(false); onChanged(); }} />}
     </>
   );
 }
