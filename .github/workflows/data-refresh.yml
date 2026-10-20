@@ -13,7 +13,8 @@
 # Live-tab data needs no job at all: Render self-freshens (CLOUD_FETCH).
 
 name: Data Refresh
-
+run-name: >-
+  Data Refresh | ${{ github.event_name == 'schedule' && github.event.schedule || inputs.schedule }}
 on:
   schedule:
     - cron: '0 11 * * 1'      # Mon 06:00 CT — monday refresh (+ euro settle/field)

@@ -106,8 +106,14 @@ export async function GET(req: Request) {
     const since = new Date(now - 48 * 3_600_000).toISOString();
     const res = await github(`/actions/workflows/data-refresh.yml/runs?per_page=50&created=>=${since}`);
     if (res.ok) {
-      const { workflow_runs } = await res.json() as { workflow_runs: { created_at: string }[] };
-      const slot = missedSlot(new Date(now), workflow_runs.map(r => r.created_at));
+      const { workflow_runs } = await res.json() as {
+        workflow_runs: {
+          created_at: string;
+          conclusion: string | null;
+          display_title: string ;
+        }[];
+      };
+      const slot = missedSlot(new Date(now), workflow_runs);
       if (slot) needs.push({ workflow: "data-refresh.yml", schedule: slot, why: `the ${slot} data refresh never ran` });
     }
   } catch { /* can't tell: leave it (the outcome checks above still run) */ }
