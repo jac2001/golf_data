@@ -119,7 +119,8 @@ someone plays, versus what we improve because we watched them play.
       that respects eligibility and remaining uses, one plain sentence
       per golfer (the why lines), clearly not a guaranteed outcome.
       Test: a beginner makes picks and can say what must happen to win.
-- [ ] **The organizer's view**: who has joined and who still needs to
+- [x] **The organizer's view** (Oct 19, all four games: "Who's in" card +
+      "Nudge the group" share; Jack's `web/lib/whosIn.ts`): who has joined and who still needs to
       pick, without revealing hidden picks; share the result and start
       the next week. Test: an organizer runs a second tournament alone.
 - [ ] **Group chirps** (Jack, Oct 17): one thread per group per

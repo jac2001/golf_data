@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
 import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
+import { WhosInCard } from "./WhosInCard";
 import { roundLockAt } from "@/lib/lockTime";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { getPredictions, getEventField, OpenEvent } from "@/lib/api";
@@ -111,6 +112,8 @@ export function RoundGameTab() {
 
   // The whole field, always browsable — filter narrows, never gates.
   const why = useWhyLines(selected, field);
+  // The round still open for picks (the organizer's view counts that one).
+  const openRound = [1, 2, 3, 4].find(r => !state?.locks?.[String(r)]);
   const visibleField = field.filter(r =>
     !query || r.player_name.toLowerCase().includes(query.toLowerCase()));
 
@@ -119,6 +122,10 @@ export function RoundGameTab() {
   return (
     <>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
+      {state?.event && openRound && (
+        <WhosInCard game="rounds" tid={selected} eventName={state.event.name} startDate={state.event.startDate}
+          tour={state.event.tour} round={openRound} refreshKey={Object.values(state.rounds ?? {}).filter(Boolean).length} />
+      )}
       <EventNav events={fromOpenEvents(events)} selected={selected}
         onPick={tid => { setSelected(tid); setPickingRound(null); }} />
 

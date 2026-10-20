@@ -20,6 +20,7 @@ import LockCountdown from "@/components/LockCountdown";
 import { choice } from "@/components/broadcast";
 import { useStoredChoice } from "@/lib/useStoredChoice";
 import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
+import { WhosInCard } from "@/app/friends/_components/WhosInCard";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import EventNav, { NavEvent, landingEvent, favoriteTour, Star } from "@/components/EventNav";
 
@@ -440,6 +441,10 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   return (
     <div style={card}>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
+      {!locked && (
+        <WhosInCard game="ride" tid={ev.tournament_id} eventName={ev.name} startDate={ev.start_date}
+          tour={ev.tour} refreshKey={mine.length} />
+      )}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10, flexWrap: "wrap", gap: 6 }}>
         <div style={{ fontWeight: 800 }}>{ev.name}</div>
         <div style={{ color: locked ? "var(--bc-muted)" : "var(--bc-green)", fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700 }}>

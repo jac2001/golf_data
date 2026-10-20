@@ -10,6 +10,7 @@ import SchoolBadge from "@/components/SchoolBadge";
 import LockCountdown from "@/components/LockCountdown";
 import EventNav, { favoriteTour, fromOpenEvents, landingEvent } from "@/components/EventNav";
 import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
+import { WhosInCard } from "./WhosInCard";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import { OpenEvent } from "@/lib/api";
 import { EventInfo, card, cell, hdr, lastName, money, openPlusPast, useApi } from "./shared";
@@ -90,6 +91,10 @@ export function CollegeTab() {
   return (
     <>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
+      {event && !event.locked && (
+        <WhosInCard game="college" tid={selected} eventName={event.name} startDate={event.startDate}
+          tour={event.tour} refreshKey={pick ? 1 : 0} />
+      )}
       <EventNav events={fromOpenEvents(events)} selected={selected} onPick={setSelected} />
 
       <div style={card}>
