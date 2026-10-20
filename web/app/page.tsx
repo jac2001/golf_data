@@ -78,22 +78,34 @@ export default function Home() {
         <div style={{ marginTop: 24, padding: "22px 26px", borderRadius: 10,
           background: "var(--bc-card)", border: "1px solid var(--bc-line)",
           display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+          {/* The game is the main path (review item 14); forecasts support it. */}
           <div style={{ flex: "1 1 380px" }}>
-            <div style={{ fontWeight: 900, fontSize: "1.25em", lineHeight: 1.3 }}>
+            <h1 style={{ margin: 0, fontWeight: 900, fontStretch: "115%", fontSize: "clamp(1.6em, 5.5vw, 2.6em)",
+              lineHeight: 1.05, textTransform: "uppercase" }}>
               Pick your golfers. Challenge your friends.{" "}
               <span style={{ color: "var(--bc-yellow)" }}>Beat the model.</span>
+            </h1>
+            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.92em)", marginTop: 10, lineHeight: 1.55 }}>
+              A weekly picks game for your group, graded by real prize money. A few minutes
+              to pick, all Sunday to trash-talk.
             </div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", marginTop: 6, lineHeight: 1.55 }}>
-              A weekly picks game graded by real prize money — a few minutes
-              to pick, all Sunday to trash-talk. Try a pick before you sign up.
+            <div style={{ marginTop: 12, padding: "10px 12px", borderRadius: 8, background: "var(--bc-panel)",
+              border: "1px solid var(--bc-line)", fontSize: "max(var(--fs-min), 0.84em)" }}>
+              <span style={{ color: "var(--bc-muted)", fontWeight: 700, textTransform: "uppercase",
+                letterSpacing: "0.06em", fontSize: "0.85em" }}>What you&apos;d see Sunday · example</span>
+              <div style={{ fontWeight: 800, marginTop: 4 }}>You&apos;re 2nd. Sam leads you by $38,000.</div>
+              <div style={{ color: "var(--bc-muted)" }}>You $412,000 · Sam $450,000 · the model $301,000 (lineup earnings)</div>
             </div>
           </div>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <Link href="/how-to-play" style={{
+          <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+            <Link href="/sign-up?redirect_url=%2Ffriends" style={{
               background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-              textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.78em)", letterSpacing: "0.06em",
-              padding: "12px 20px", borderRadius: 4, whiteSpace: "nowrap" }}>
-              How to play · try a demo
+              textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
+              padding: "13px 22px", borderRadius: 4, whiteSpace: "nowrap" }}>
+              Start a group
+            </Link>
+            <Link href="/how-to-play" style={{ ...textLink, whiteSpace: "nowrap" }}>
+              Try the demo first →
             </Link>
           </div>
         </div>
@@ -127,15 +139,15 @@ export default function Home() {
         <div style={{ flex: "1 1 320px", minWidth: 0, display: "flex", flexDirection: "column", gap: 14 }}>
           <div style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, letterSpacing: "0.16em",
                         textTransform: "uppercase", color: h?.is_live ? "var(--bc-green)" : "var(--bc-muted)" }}>
-            {h ? (h.is_live ? "Live this week" : "Next on tour") : "Offseason"}
+            {h ? (h.is_live ? "This week on tour · live" : "This week on tour") : "Offseason"}
             {h && ` · ${fmtDates(h.start_date, h.end_date)}`}
             {h?.course && ` · ${h.course}`}
           </div>
-          <h1 style={{ margin: 0, fontWeight: 900, fontStretch: "120%",
-                       fontSize: "clamp(1.8em, 7vw, 4em)", lineHeight: 0.98, textTransform: "uppercase",
+          <h2 style={{ margin: 0, fontWeight: 900, fontStretch: "115%",
+                       fontSize: "clamp(1.4em, 4.5vw, 2.4em)", lineHeight: 1.02, textTransform: "uppercase",
                        letterSpacing: "-0.01em" }}>
             {h ? h.name : "See you in January"}
-          </h1>
+          </h2>
           <div style={{ fontSize: "1em", lineHeight: 1.55, color: "var(--bc-muted)",
                         maxWidth: 560, textWrap: "pretty" as never }}>
             {h?.is_live
@@ -154,9 +166,6 @@ export default function Home() {
               textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
               padding: "12px 22px", borderRadius: 4 }}>
               This week's forecast
-            </Link>
-            <Link href="/betting" style={textLink}>
-              Betting board →
             </Link>
           </div>
         </div>

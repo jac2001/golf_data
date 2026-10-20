@@ -8,25 +8,28 @@
  * Phones: links live in the bottom tab bar (BottomNav), not a hamburger.
  */
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Show, UserButton, useAuth } from "@clerk/nextjs";
 import { useLiveEvents } from "@/lib/useLiveEvents";
 
-// Order follows the golf week: research (Forecast, Board) → watch (Live) →
-// reference (Players) → trust (How It Works) → utility (Assistant).
+// Desktop: the game first (review item 14). Four links up front; the rest
+// under Explore. Phones use the bottom tab bar (BottomNav), unchanged.
 // /history stays routable but leaves the nav: its tabs now live on the
 // Betting Board (Ledger, My Slip) and in How It Works (Results).
 type NavLink = { href: string; label: string; exact?: boolean; live?: boolean };
 
 const PUBLIC_LINKS: NavLink[] = [
   { href: "/",            label: "Home", exact: true },
+  { href: "/friends",     label: "Friends Game" },
+  { href: "/match",       label: "Match Center" },
   { href: "/predictions", label: "This Week" },
+];
+const EXPLORE_LINKS: NavLink[] = [
   { href: "/betting",     label: "Betting Board" },
   { href: "/live",        label: "Live" },
   { href: "/players",     label: "Players" },
-  { href: "/friends",     label: "Friends Game" },
-  { href: "/match",       label: "Match Center" },
   { href: "/how-to-play", label: "How to Play" },
   { href: "/assistant",   label: "Assistant" },
 ];
@@ -54,6 +57,20 @@ export default function NavBar() {
 
   const isActive = (l: { href: string; exact?: boolean }) =>
     l.exact ? pathname === l.href : pathname.startsWith(l.href);
+
+  // Explore menu: closes on Escape, an outside click, or navigating.
+  const [explore, setExplore] = useState(false);
+  const exploreRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => { setExplore(false); }, [pathname]);
+  useEffect(() => {
+    if (!explore) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setExplore(false); };
+    const onDown = (e: MouseEvent) => { if (!exploreRef.current?.contains(e.target as Node)) setExplore(false); };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onDown);
+    return () => { document.removeEventListener("keydown", onKey); document.removeEventListener("mousedown", onDown); };
+  }, [explore]);
+  const exploreActive = EXPLORE_LINKS.some(isActive);
 
   return (
     <>
@@ -99,6 +116,31 @@ export default function NavBar() {
                 background: "var(--bc-green)", marginLeft: 7, flexShrink: 0 }} />}
             </Link>
           ))}
+          <div ref={exploreRef} style={{ position: "relative", display: "flex", alignItems: "stretch" }}>
+            <button onClick={() => setExplore(o => !o)} aria-expanded={explore} aria-haspopup="menu" style={{
+              display: "flex", alignItems: "center", gap: 6, padding: "0 12px", cursor: "pointer",
+              fontFamily: "inherit", border: "none", fontSize: "0.8em", fontWeight: 700,
+              textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap",
+              color: exploreActive ? activeFg : muted, background: exploreActive ? activeBg : "transparent",
+            }}>
+              Explore
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"
+                strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+            </button>
+            {explore && (
+              <div role="menu" style={{ position: "absolute", top: "100%", left: 0, minWidth: 200, zIndex: 210,
+                background: bar, border: "1px solid var(--bc-line-hi)", borderRadius: "0 0 8px 8px", padding: "6px 0",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.45)" }}>
+                {EXPLORE_LINKS.map(l => (
+                  <Link key={l.href} href={l.href} role="menuitem" style={{ display: "block", padding: "10px 16px",
+                    color: isActive(l) ? rule : text, fontWeight: 700, fontSize: "0.85em",
+                    textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    {l.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Right controls */}
