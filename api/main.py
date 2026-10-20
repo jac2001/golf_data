@@ -312,6 +312,14 @@ def _flip_to_last_first(n: str) -> str:
     return f"{parts[-1]}, {' '.join(parts[:-1])}" if len(parts) >= 2 else s
 
 
+def _board_name_key(n: str) -> str:
+    """Accent-folded, order-free name key: "Schauffele, Xander" and "Xander
+    Schauffele" give the same key. A fallback only: player_id comes first."""
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(n)).encode("ascii", "ignore").decode().lower()
+    return " ".join(sorted(t for t in s.replace(",", " ").replace(".", " ").split() if t))
+
+
 def _flip_to_first_last(n: str) -> str:
     s = str(n).strip()
     return f"{s.split(',')[1].strip()} {s.split(',')[0].strip()}" if "," in s else s
@@ -8601,24 +8609,45 @@ def get_home(tour: str = "pga") -> dict:
         # Between events the board is a RECAP, not a forecast: pre-event
         # win chances styled like live picks read as this week's board.
         # Join the settled leaderboard so each pick carries its finish.
-        results: dict[str, str] = {}
+        # Join by player_id; a normalized name is only the fallback (the two
+        # files spell names differently: "Schauffele, Xander" vs "Xander
+        # Schauffele", which once showed T4/T33/T63 finishers as MC). A
+        # golfer we can't match has NO finish, never a guessed "MC".
+        results_by_id: dict[str, str] = {}
+        results_by_name: dict[str, str] = {}
+        winners: list[dict] = []
         if not board_is_hero and len(board_tid) >= 5:
             lb_path = DATA_DIR / "historical" / f"leaderboards_{board_tid[1:5]}.csv"
             if lb_path.exists():
                 try:
-                    lb = pd.read_csv(lb_path)
+                    lb = pd.read_csv(lb_path, dtype={"player_id": str, "position": str})
                     lb = lb[lb["tournament_id"].astype(str).str.upper() == board_tid.upper()]
-                    results = dict(zip(lb["player_name"].astype(str),
-                                       lb["position"].astype(str)))
+                    for _, x in lb.iterrows():
+                        pos = str(x["position"]).strip()
+                        pid = str(x.get("player_id", "")).replace(".0", "").strip()
+                        if pid and pid != "nan":
+                            results_by_id[pid] = pos
+                        results_by_name[_board_name_key(str(x["player_name"]))] = pos
+                        if pos in ("1", "T1"):
+                            winners.append({"pid": pid, "name": str(x["player_name"])})
                 except Exception:
-                    results = {}
+                    results_by_id, results_by_name, winners = {}, {}, []
+        settled = bool(results_by_id or results_by_name)
 
-        def _finish(name: str) -> str | None:
-            if not results:
+        def _finish(r) -> str | None:
+            if not settled:
                 return None  # not settled yet — no finish column at all
-            pos = results.get(name)
+            pid = str(r.get("player_id", "")).replace(".0", "").strip()
+            pos = results_by_id.get(pid) if pid and pid != "nan" else None
             if pos is None:
-                return "MC"  # settled leaderboards carry finishers only
+                pos = results_by_name.get(_board_name_key(str(r["player_name"])))
+            if pos is None:
+                return None  # unmatched: "result unavailable", never a guessed MC
+            pos = pos.upper()
+            if pos in ("CUT", "MC"):
+                return "MC"
+            if pos in ("WD", "W/D", "DQ"):
+                return pos.replace("W/D", "WD")
             return "WON" if pos in ("1", "T1") else pos
 
         def _why(r) -> str:
@@ -8640,7 +8669,7 @@ def get_home(tour: str = "pga") -> dict:
                 "top10_prob": round(float(r.get("top10_prob", float("nan"))), 4)
                               if pd.notna(r.get("top10_prob")) else None,
                 "why": _why(r),
-                "finish": _finish(str(r["player_name"])),
+                "finish": _finish(r),
             })
 
         # Storylines from the same frame (top-40 by win prob). Only when
@@ -8649,11 +8678,18 @@ def get_home(tour: str = "pga") -> dict:
         pool = df.nlargest(min(40, len(df)), "win_prob")
         stories = []
         if not board_is_hero:
-            winner = next((n for n, p in results.items() if p in ("1", "T1")), None)
-            if winner:
-                wrow = df[df["player_name"].astype(str) == winner]
+            w = winners[0] if winners else None
+            if w:
+                winner = w["name"]
+                # Same identity rule: player_id first, normalized name second.
+                ids = df["player_id"].astype(str).str.replace(".0", "", regex=False).str.strip() \
+                    if "player_id" in df.columns else pd.Series([""] * len(df), index=df.index)
+                wrow = df[ids == w["pid"]] if w["pid"] else df.iloc[0:0]
+                if not len(wrow):
+                    wrow = df[df["player_name"].astype(str).map(_board_name_key) == _board_name_key(winner)]
                 first = winner.split(",")[-1].strip() + " " + winner.split(",")[0].strip() \
                     if "," in winner else winner
+                in_field = (w["pid"] and w["pid"] in set(ids)) or len(wrow) > 0
                 if len(wrow):
                     wp = float(wrow["win_prob"].iloc[0])
                     wrank = int((df["win_prob"] > wp).sum()) + 1
@@ -8665,10 +8701,14 @@ def get_home(tour: str = "pga") -> dict:
                         stories.append({"tag": "Last week", "color": "yellow",
                                         "headline": f"{first} won the {board_event}",
                                         "sub": f"The model had him No. {wrank} pre-tournament at {wp*100:.1f}% to win."})
-                else:
+                elif not in_field and len(df) >= 100:
+                    # Only a full board can say he wasn't on it; otherwise say nothing about the model.
                     stories.append({"tag": "Last week", "color": "yellow",
                                     "headline": f"{first} won the {board_event}",
-                                    "sub": "Outside the model's pre-tournament board."})
+                                    "sub": "Not on the model's pre-tournament board."})
+                else:
+                    stories.append({"tag": "Last week", "color": "yellow",
+                                    "headline": f"{first} won the {board_event}", "sub": ""})
         elif "recent_sg_trend" in pool and pool["recent_sg_trend"].notna().any():
             h = pool.loc[pool["recent_sg_trend"].idxmax()]
             stories.append({"tag": "In form", "color": "yellow",
