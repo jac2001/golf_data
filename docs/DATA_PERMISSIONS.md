@@ -13,7 +13,7 @@ provider in writing, not to decide it ourselves.
 | Source | What we use | Status | Biggest gap |
 |---|---|---|---|
 | DataGolf API | predictions, odds, fields, live scores, skill ratings | Paid subscription (Scratch Plus) | Terms say personal, non-commercial use and no redistribution. We display DG numbers publicly. |
-| PGA TOUR (pgatour.com + GraphQL) | stats, leaderboards, results, tee times, weather, rankings | Verbal "free while non-commercial" (Oct 6 call, Grant Bardelli) | Not in writing; scope never spelled out; we scrape far more than the call covered. |
+| PGA TOUR (pgatour.com + GraphQL) | stats, leaderboards, results, tee times, weather, rankings | Verbal "free while non-commercial" (Oct 6 call, Grant Bardelli) | Not in writing. Most of it can move to DataGolf (see "Moving off PGA TOUR"). |
 | Open-Meteo | DP World Tour forecasts, historical weather | Free tier, non-commercial | CC BY 4.0 attribution: added Oct 20. Ends if the site carries ads or subscriptions. |
 | protourfantasygolf.com | Jack's original league: picks, usage, scorecards | Jack's own account | Third-party site; used for the legacy league only. |
 | Anthropic, Groq | assistant, tournament intel, recaps | Paid API keys | Standard API terms; nothing redistributed beyond generated text. |
@@ -26,8 +26,9 @@ pre-tournament predictions and the pre-tournament archive, player
 decompositions, skill ratings, approach skill, field updates, schedule,
 outright and matchup odds (`betting-tools`), in-play predictions, live
 tournament and hole stats. Code also calls `historical-raw-data/*` and
-`historical-odds/*`; our subscription has no historical access, so those
-return nothing useful.
+`historical-odds/*`. Our plan DOES include `historical-raw-data`
+(per-round scores and strokes gained back to the 1980s for majors;
+verified Sep 25 and again Oct 20); prediction archives are limited.
 
 **How it reaches users:**
 - *Raw, publicly displayed:* "DG Model" / "DG Win" columns on /players;
@@ -71,8 +72,7 @@ model's core features), `fetch_live_leaderboard`, `fetch_past_results`
 (historical results: training labels, recent form, the why lines),
 `fetch_tee_times`, `fetch_withdrawals`, `fetch_world_rankings`,
 `fetch_player_database`, `fetch_expert_picks_pga`,
-`fetch_betting_profiles`, `fetch_hole_scores`, `fetch_power_rankings`,
-plus weather (GraphQL `Weather`) for PGA events. `fetch_player_colleges`
+`fetch_betting_profiles`, `fetch_hole_scores`, plus weather (GraphQL `Weather`) for PGA events. `fetch_player_colleges`
 (College Game) uses GraphQL `Player`. Requests use the public web app's
 API key and headers.
 
@@ -88,10 +88,8 @@ results at this scale.
 **Open questions (follow up with Grant in writing):**
 1. Confirm non-commercial use in writing, listing what we pull (the
    list above) and how it's shown.
-2. Historical results: may we backfill missing events from past-results
-   pages? (See "Known data gap" below.)
-3. Is there an official feed we should use instead of the web API?
-4. What the revenue share would cover, if we ever monetize.
+2. Is there an official feed we should use instead of the web API?
+3. What the revenue share would cover, if we ever monetize.
 
 **Known data gap (found Oct 20):** `data/historical/leaderboards_*.csv`
 is missing 78 events since 2019 that the stats files have, mostly
@@ -100,8 +98,34 @@ Corales, ZOZO, WWT, Hero) plus The Open 2024 and 2025. 2026 misses only
 Puerto Rico and Myrtle Beach. Effects: the why lines can't state an
 event record for those events (they fail safe and say nothing), recent
 form skips those starts, and course-history features are thin for those
-events (Bermuda: 37.5% coverage). Backfilling waits on question 2 and
-belongs with the January retrain (stats-reviewer).
+events (Bermuda: 37.5% coverage). DataGolf's historical rounds have
+every one of these events (checked Oct 20), so the backfill is a
+DataGolf job, not a PGA TOUR one. It changes model inputs, so it goes
+with the January retrain (stats-reviewer).
+
+**Why PGA TOUR still supplies results (found Oct 20):** the DataGolf
+replacement exists (`fetch_dg_historical_results.py`, run after every
+event) but writes only to DuckDB, which exists on Jack's Mac and not on
+GitHub Actions. The CSVs the cloud pipeline reads are still filled by
+the PGA TOUR scrapers.
+
+## Moving off PGA TOUR
+
+Power rankings: dropped Oct 20 (nothing used them).
+
+| PGA TOUR scraper | DataGolf replacement | Notes |
+|---|---|---|
+| `fetch_past_results`, history CSVs | `historical-raw-data/rounds` | Make `fetch_dg_historical_results` write the CSVs, then backfill. |
+| `fetch_tournament_stats`, `fetch_form_stats` | `historical-raw-data/rounds` (SG by round) | Some events have no SG (`sg_categories: no`, e.g. Baycurrent). Model features: January retrain. |
+| `fetch_tee_times`, `fetch_withdrawals` | `field-updates` | Already pulled every refresh. Verify tee times are present for both rounds. |
+| `fetch_world_rankings` | DG rankings (OWGR column) | Verify the field. |
+| PGA weather | Open-Meteo | Already used for DP World Tour. |
+| `fetch_live_leaderboard` (settlement) | DG live stats for positions | DataGolf has no prize money. Official earnings need the purse payout table applied to final positions, or a PGA TOUR source. Decide before switching. |
+| `fetch_hole_scores` | none | Per-player hole scores exist only at PGA TOUR (Live scorecard grid). |
+| `fetch_player_colleges` | none | College Game needs it. |
+| `fetch_course_stats`, `fetch_course_characteristics` | partial (`live-hole-stats` during events) | Course-fit features; keep until the retrain decides. |
+| `fetch_expert_picks_pga` | none | PGA TOUR editorial picks feed a 12% expert-consensus blend in published predictions. Dropping it changes the model: decide with the retrain. |
+| `fetch_betting_profiles` | none | Read by the chatbot, planning tools and the API. Check what's user-facing before dropping. |
 
 ## Open-Meteo
 

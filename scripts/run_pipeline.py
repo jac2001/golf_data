@@ -1010,12 +1010,7 @@ def fetch_tournament_assets(
         run_command(bp_cmd, description="Fetch betting profiles", timeout=120)
     stage_idx += 1
 
-    print_stage(stage_idx, total_stages, "Fetch power rankings")
-    slug = power_slug or slugify(tournament_name)
-    run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_power_rankings.py"),
-                 "--slug", slug, "--allow-fail"],
-                description="Fetch power rankings", timeout=45)
-    stage_idx += 1
+    # (PGA TOUR power rankings dropped Oct 20: nothing used them.)
 
     print_stage(stage_idx, total_stages, "Fetch course characteristics")
     run_command(["python3", str(SCRIPTS_DIR / "scrapers" / "fetch_course_characteristics.py"),

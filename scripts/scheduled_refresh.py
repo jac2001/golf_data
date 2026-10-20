@@ -446,7 +446,6 @@ def run_tuesday_morning(dry_run: bool = False):
 
     tournament_name = tournament.get("tournament_name", "")
     tournament_id = str(tournament.get("tournament_id", ""))
-    power_slug = str(tournament.get("power_slug", ""))
 
     log(f"Tournament: {tournament_name} (ID: {tournament_id})")
 
@@ -468,8 +467,6 @@ def run_tuesday_morning(dry_run: bool = False):
                       "--tournament-id", tournament_id, "--auto-update-field"]),
         ("Course Info", ["python3", "scripts/scrapers/fetch_course_characteristics.py",
                          "--tournament-id", tournament_id, "--profile"]),
-        ("Power Rankings", ["python3", "scripts/scrapers/fetch_power_rankings.py",
-                            "--slug", power_slug or tournament_name.lower().replace(" ", "-"), "--allow-fail"]),
         ("Betting Profiles", ["python3", "scripts/scrapers/fetch_betting_profiles.py",
                               "--tournament-id", tournament_id, "--field", field_path]),
         ("DG Approach Skill", ["python3", "scripts/scrapers/fetch_dg_approach_skill.py",
