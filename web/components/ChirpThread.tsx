@@ -34,7 +34,8 @@ function contextFor(s: Slate): ChirpContext {
   const out = (pos: string) => /^(CUT|MC|WD|W\/D|DQ|MDF)$/i.test(pos.trim());
   const model = s.lines.find(l => l.user_id === "model");
   return {
-    status: s.status,
+    // No field yet = nothing has happened: the same neutral lines as before lock.
+    status: s.status === "awaiting" ? "open" : s.status,
     myRank: me?.rank ?? null,
     players: s.lines.length,
     tied: !!me && s.lines.filter(l => l.rank === me.rank).length > 1,
