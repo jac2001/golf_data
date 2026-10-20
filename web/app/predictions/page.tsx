@@ -564,7 +564,7 @@ function EuroWeek() {
         </div>
       )}
 
-      {weatherDays.length > 0 && <WeatherStrip days={weatherDays} />}
+      {weatherDays.length > 0 && <WeatherStrip days={weatherDays} credit={{ label: "Open-Meteo.com", href: "https://open-meteo.com/" }} />}
 
       {liveRows.length > 0 && (
         <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)",

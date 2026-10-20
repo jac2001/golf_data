@@ -61,12 +61,12 @@ and fix what watching them reveals.
        "at this event" wording in the model's reasons, Bermuda's
        /api/golfer-form). Monday Oct 26: settlement + recap landed, no
        Sentry "Watchdog: … dispatched" alerts.
-2. [ ] **Finish the mobile blockers and verify group isolation.** The
+2. [x] **Finish the mobile blockers and verify group isolation.** (Isolation done Oct 18: 27 routes audited, 20-combination DB check, 0 leaks; Jack's live two-account test passed.) The
        "Before the first group" list below. Group isolation with
        CONTROLLED test accounts (two groups, two throwaway users): one
        group can't see another's members, picks, boards, invites or feed
        (every route through lib/gameScope.ts should 403). Not Rick's job.
-3. [ ] **One place for data permissions.** What we use from DataGolf
+3. [~] **One place for data permissions.** Drafted Oct 20: `docs/DATA_PERMISSIONS.md`. Left: Jack's call on hiding raw DG displays; written questions to DataGolf and to Grant (PGA TOUR); the 78-event history gap waits on the PGA TOUR answer + January retrain. What we use from DataGolf
        and PGA TOUR, what we have (subscription access vs confirmed
        permission for each use: public display, game scoring, derived
        outputs, any commercial use), and the open questions. See #2, #5.
@@ -108,7 +108,7 @@ someone plays, versus what we improve because we watched them play.
       no-cut editions excluded).
 - [x] **Results reachable** (Oct 16): finished Let It Ride weeks show
       results and the field; Round/Fade/College keep past events.
-- [ ] **Group isolation verified** with controlled test accounts (Now #2).
+- [x] **Group isolation verified** with controlled test accounts (Now #2).
 - [ ] **Trustworthy scoring and locks** confirmed on a real PGA week
       (Bermuda: locks fire on time, settlement matches official results).
 - [x] **Understandable matchup and results** (checked Oct 20: headline answers winning/chasing, golfer rows with progress, estimate vs final; review fixes for availability and links): the Match Center check

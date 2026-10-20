@@ -2,7 +2,8 @@
 
 import { WeatherDay } from "@/lib/api";
 
-type Props = { days: WeatherDay[]; savedAt?: string };
+// credit: a source whose licence requires attribution (Open-Meteo: CC BY 4.0).
+type Props = { days: WeatherDay[]; savedAt?: string; credit?: { label: string; href: string } };
 
 // Condition code → short label + color
 function conditionMeta(code: string): { label: string; color: string; icon: string } {
@@ -78,7 +79,7 @@ function DayCard({ day }: { day: WeatherDay }) {
   );
 }
 
-export default function WeatherStrip({ days, savedAt }: Props) {
+export default function WeatherStrip({ days, savedAt, credit }: Props) {
   if (!days.length) return null;
 
   return (
@@ -90,6 +91,11 @@ export default function WeatherStrip({ days, savedAt }: Props) {
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {days.map(d => <DayCard key={d.day} day={d} />)}
       </div>
+      {credit && (
+        <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", marginTop: 6 }}>
+          Weather data by <a href={credit.href} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>{credit.label}</a> (CC BY 4.0)
+        </div>
+      )}
     </div>
   );
 }

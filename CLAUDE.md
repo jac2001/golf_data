@@ -45,8 +45,10 @@ Spend/save advice = `scripts/predictions/advice_values.py` (values) + `web/lib/a
    cron routes refuse without `CRON_SECRET`, unknown lock state = locked.
 5. **DataGolf is the only odds/stats source**, via `scripts/scrapers/dg_client.py`
    `dg_get()` (rate-limited). Never reintroduce DraftKings/FanDuel fetchers.
-   PGA TOUR GraphQL is used only for on-demand scorecards, weather, power rankings
-   (licensing: verbal "free while non-commercial", not yet in writing).
+   PGA TOUR (pgatour.com + GraphQL) supplies stats, results, leaderboards, tee
+   times and weather (verbal "free while non-commercial", not in writing). Every
+   source's terms and open questions: `docs/DATA_PERMISSIONS.md`. Don't add a
+   source or a new public display of one without updating it.
 6. **Money is lineup earnings, not cash.** Golfers' real prize money is the score;
    live numbers are "estimated payouts if the tournament ended now", never
    "projected" on its own.

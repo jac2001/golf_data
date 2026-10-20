@@ -70,8 +70,8 @@ export default function MethodologyPage() {
       {/* ── 1. Overview ─────────────────────────────────────────────── */}
       <h2 style={h2}>1 · The pipeline at a glance</h2>
       <p style={p}>
-        Every week the system ingests data from five sources (DataGolf, the PGA Tour&apos;s
-        GraphQL API, DraftKings, Open-Meteo weather, and a fantasy league site) through ~30
+        Every week the system ingests data from four sources (DataGolf, the PGA Tour&apos;s
+        GraphQL API, Open-Meteo weather, and a fantasy league site) through ~30
         scraper scripts into a DuckDB database — 1.4M+ tournament-stat rows covering
         2016–2026. From that history it computes 62 features per player, runs them through
         calibrated Random Forest classifiers to produce win / top-5 / top-10 / top-20
