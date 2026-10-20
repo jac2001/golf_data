@@ -76,27 +76,48 @@ export async function POST(_req: Request, { params }: { params: Promise<{ token:
     return Response.json({ joined: link.group_id, status: "already_member",
                            message: inviteMessage("already_member", link.group_name) });
 
-  // The enforcement: count this use only if the link is still valid AT
-  // THIS INSTANT. One statement, so concurrent taps can't both take the
-  // 20th seat.
-  const claimed = await sql`
-    UPDATE invite_links SET uses = uses + 1
-    WHERE id = ${link.id} AND revoked_at IS NULL AND expires_at > now() AND uses < max_uses
-    RETURNING id` as { id: number }[];
-  if (!claimed.length) {
+  // Atomic and idempotent, in ONE statement (Postgres runs it as one
+  // transaction): lock the link, add the membership only if the link is
+  // still valid at this instant, count a use only if that insert created a
+  // NEW member, and record the join. A failure anywhere consumes nothing;
+  // concurrent or repeated taps by one person add one member and one use;
+  // concurrent taps by different people can't both take the 20th seat
+  // (FOR UPDATE serializes them on the link row).
+  const me = nameOf(await currentUser());   // before the statement: if this fails, nothing is used
+  const r = await sql`
+    WITH link AS (
+      SELECT id, group_id FROM invite_links
+      WHERE id = ${link.id} AND revoked_at IS NULL AND expires_at > now() AND uses < max_uses
+      FOR UPDATE
+    ), member AS (
+      INSERT INTO group_members (group_id, user_id, user_name)
+      SELECT group_id, ${userId}, ${me} FROM link
+      ON CONFLICT (group_id, user_id) DO NOTHING
+      RETURNING group_id
+    ), bump AS (
+      UPDATE invite_links SET uses = uses + 1
+      WHERE id IN (SELECT id FROM link) AND EXISTS (SELECT 1 FROM member)
+      RETURNING id
+    ), attrib AS (
+      INSERT INTO invite_joins (link_id, user_id, user_name)
+      SELECT id, ${userId}, ${me} FROM link WHERE EXISTS (SELECT 1 FROM member)
+      ON CONFLICT (link_id, user_id) DO NOTHING
+      RETURNING link_id
+    )
+    SELECT (SELECT count(*) FROM link)::int AS valid, (SELECT count(*) FROM member)::int AS added` as
+    { valid: number; added: number }[];
+
+  if (!r[0]?.valid) {
     const fresh = (await loadLink(sql, token)) ?? link;
     const status = inviteStatus(asRule(fresh), new Date(), false);
     return Response.json({ status, message: inviteMessage(status, link.group_name) }, { status: 409 });
   }
+  if (!r[0].added) {
+    // A second tap that lost the race to the first: already in, no use spent.
+    return Response.json({ joined: link.group_id, status: "already_member",
+                           message: inviteMessage("already_member", link.group_name) });
+  }
 
-  const me = nameOf(await currentUser());
-  await sql`
-    INSERT INTO group_members (group_id, user_id, user_name)
-    VALUES (${link.group_id}, ${userId}, ${me})
-    ON CONFLICT (group_id, user_id) DO NOTHING`;
-  await sql`
-    INSERT INTO invite_joins (link_id, user_id, user_name) VALUES (${link.id}, ${userId}, ${me})
-    ON CONFLICT (link_id, user_id) DO NOTHING`;
   await track(sql, userId, "joined_group", { source: "link", link_id: link.id }, link.group_id);
   return Response.json({ joined: link.group_id, status: "ok" });
 }
