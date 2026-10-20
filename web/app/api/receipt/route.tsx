@@ -12,6 +12,7 @@
 
 import { ImageResponse } from "next/og";
 import { getSql, MODEL_API } from "@/lib/db";
+import { openEventLocks } from "@/lib/eventLocks";
 
 export const runtime = "nodejs";
 
@@ -40,11 +41,17 @@ export async function GET(req: Request) {
   const leagueId = Number(url.searchParams.get("l") || 0);
   if (!tid || !uid) return new Response("tid and u required", { status: 400 });
 
-  // Locked events only — receipts never leak live picks.
+  // Locked events only — receipts never leak live picks. Same rule as every
+  // board (lib/eventLocks.ts): a list we couldn't fetch reveals NOTHING (this
+  // used to skip the check when events/open was down, so a receipt URL could
+  // show picks before lock); an event missing from a fetched list is older
+  // than its window, so it locked long ago.
   const open = await modelApi("/api/events/open");
+  const locks = await openEventLocks();
+  if (!locks) return new Response("lock state unavailable, try again shortly", { status: 503 });
+  if (!(locks.get(tid) ?? true)) return new Response("event not locked", { status: 403 });
   const ev = ((open?.events as { tournament_id: string; locked: boolean; name: string }[]) ?? [])
     .find(e => e.tournament_id === tid);
-  if (ev && !ev.locked) return new Response("event not locked", { status: 403 });
 
   // Event display name (open list, else earnings payload, else the id)
   let eventName = ev?.name ?? "";
