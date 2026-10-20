@@ -83,6 +83,23 @@ def test_unknown_player_gets_empty_facts():
     assert f == {"recent": [], "event_starts": 0, "event_cuts": 0}
 
 
+def test_datagolf_history_only_adds_missing_events():
+    """leaderboards_dg_* fills events the PGA TOUR files lack; where both
+    have an event, the PGA TOUR rows stand (no double counting)."""
+    import tempfile
+    cols = "tournament_id,year,player_id,player_name,position,tournament_name\n"
+    with tempfile.TemporaryDirectory() as d:
+        Path(d, "leaderboards_2025.csv").write_text(
+            cols + "R2025003,2025,1,A,T5,WM Phoenix Open\nR2025003,2025,2,B,CUT,WM Phoenix Open\n")
+        Path(d, "leaderboards_dg_2025.csv").write_text(
+            cols + "R2025003,2025,1,A,T9,WM Phoenix Open\n"           # PGA TOUR's row wins
+                   "R2025528,2025,1,A,T3,Butterfield Bermuda Championship\n")
+        h = load_history(Path(d))
+        a = h[h["player_id"] == "1"].set_index("tournament_id")["finish"].to_dict()
+        assert a == {"R2025003": 5, "R2025528": 3}, a
+        assert len(h[h["tournament_id"] == "R2025003"]) == 2
+
+
 def test_real_history_loads_with_dates():
     h = load_history()
     assert len(h) > 10_000, len(h)

@@ -58,16 +58,28 @@ def load_history(hist_dir: Path = HIST) -> pd.DataFrame:
     """PGA leaderboards with player_id (str), tournament_id, finish, and the
     event's real date. Rows whose date or finish can't be resolved are
     dropped rather than guessed."""
-    frames = []
-    for f in sorted(hist_dir.glob("leaderboards_20*.csv")):
-        try:
-            season = int(f.stem.split("_")[1])
-        except ValueError:
-            continue                                    # leaderboards_euro_*.csv
-        if season < FIRST_SEASON:
-            continue
-        frames.append(pd.read_csv(f, usecols=["tournament_id", "player_id", "position", "tournament_name"],
-                                  dtype={"player_id": str, "position": str}))
+    def read(pattern: str, season_at: int) -> list[pd.DataFrame]:
+        out = []
+        for f in sorted(hist_dir.glob(pattern)):
+            try:
+                season = int(f.stem.split("_")[season_at])
+            except ValueError:
+                continue                                # leaderboards_euro_*.csv
+            if season < FIRST_SEASON:
+                continue
+            out.append(pd.read_csv(f, usecols=["tournament_id", "player_id", "position", "tournament_name"],
+                                   dtype={"player_id": str, "position": str}))
+        return out
+
+    frames = read("leaderboards_20*.csv", 1)
+    # DataGolf's history (fetch_dg_historical_results.py) fills events the
+    # PGA TOUR files never got (Bermuda, Puerto Rico, the fall swing, ...).
+    # It only ADDS events: where both have one, the PGA TOUR rows stand.
+    dg = read("leaderboards_dg_20*.csv", 2)
+    if dg:
+        have = set(pd.concat(frames)["tournament_id"]) if frames else set()
+        dg_all = pd.concat(dg)
+        frames.append(dg_all[~dg_all["tournament_id"].isin(have)])
     if not frames:
         return pd.DataFrame(columns=["tournament_id", "player_id", "finish", "date", "had_cut"])
     lb = pd.concat(frames, ignore_index=True)

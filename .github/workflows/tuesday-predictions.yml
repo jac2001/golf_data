@@ -80,6 +80,10 @@ jobs:
           python3 scripts/features/test_euro_features.py
           python3 scripts/scrapers/test_euro_schedule.py
           python3 scripts/scrapers/test_euro_purses.py
+          python3 scripts/scrapers/test_event_guard.py
+          python3 scripts/scrapers/test_dg_historical.py
+          python3 scripts/features/test_event_dates.py
+          python3 scripts/features/test_golfer_form.py
 
       - name: Run weekly pipeline
         if: steps.week.outputs.pga_week == 'true'

@@ -38,12 +38,17 @@ def expected_name(tournament_id: str) -> str:
     return ""
 
 
-def _tokens(name: str) -> set[str]:
+def _words(name: str) -> list[str]:
     # Fold accents first: DG writes "Open de España", our schedule "Espana".
+    # Punctuation inside a word goes ("U.S." -> "us"), hyphens split.
     import unicodedata
     folded = unicodedata.normalize("NFKD", str(name)).encode("ascii", "ignore").decode()
-    toks = {t for t in folded.lower().replace("-", " ").split() if t.isalnum()}
-    return toks - _STOP
+    words = ("".join(c for c in w if c.isalnum()) for w in folded.lower().replace("-", " ").split())
+    return [w for w in words if w]
+
+
+def _tokens(name: str) -> set[str]:
+    return set(_words(name)) - _STOP
 
 
 def names_match(payload_name: str, schedule_name: str) -> bool:
@@ -55,6 +60,11 @@ def names_match(payload_name: str, schedule_name: str) -> bool:
     (missing tid) fails CLOSED — no label, no write.
     """
     a, b = _tokens(payload_name), _tokens(schedule_name)
+    if not a and not b:
+        # Names made only of filler ("The Open Championship", "U.S. Open"):
+        # nothing distinctive to overlap, so they must match word for word.
+        wa, wb = _words(payload_name), _words(schedule_name)
+        return bool(wa) and wa == wb
     if not a or not b:
         return False
     overlap = len(a & b) / min(len(a), len(b))

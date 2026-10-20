@@ -476,6 +476,11 @@ def run_tuesday_morning(dry_run: bool = False):
                                "--tournament-id", tournament_id]),
         ("DG Pre-Tournament", ["python3", "scripts/scrapers/fetch_dg_pre_tournament.py",
                                "--tournament-id", tournament_id]),
+        # Any finished event not yet in leaderboards_dg_{season}.csv (the why
+        # lines' history; the model doesn't read it until the January retrain).
+        ("DG History Catch-up", ["python3", "scripts/scrapers/fetch_dg_historical_results.py",
+                                 "--start-year", str(int(tournament_id[1:5]) - 1),
+                                 "--end-year", tournament_id[1:5], "--missing-only"]),
         ("Predictions", ["python3", "scripts/run_pipeline.py",
                          "--tournament", tournament_name,
                          "--pga-id", tournament_id,

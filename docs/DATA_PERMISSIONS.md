@@ -103,11 +103,17 @@ every one of these events (checked Oct 20), so the backfill is a
 DataGolf job, not a PGA TOUR one. It changes model inputs, so it goes
 with the January retrain (stats-reviewer).
 
-**Why PGA TOUR still supplies results (found Oct 20):** the DataGolf
-replacement exists (`fetch_dg_historical_results.py`, run after every
-event) but writes only to DuckDB, which exists on Jack's Mac and not on
-GitHub Actions. The CSVs the cloud pipeline reads are still filled by
-the PGA TOUR scrapers.
+**Why PGA TOUR still supplied results (found and fixed Oct 20):** the
+DataGolf replacement (`fetch_dg_historical_results.py`) wrote only to
+DuckDB, which exists on Jack's Mac and not on GitHub Actions, and it
+mapped ids by calendar year (a year off for every fall event before
+2024). It now writes `data/historical/leaderboards_dg_{season}.csv`,
+maps ids by season, and checks each event's name, date and winner
+against ours before writing. Backfilled 2016-2026 on Oct 20; the
+Tuesday refresh catches up anything new. The why lines read it now;
+the model reads it from the January retrain, once
+`scripts/validation/compare_leaderboard_sources.py` shows the two
+sources agree.
 
 ## Moving off PGA TOUR
 
@@ -115,7 +121,7 @@ Power rankings: dropped Oct 20 (nothing used them).
 
 | PGA TOUR scraper | DataGolf replacement | Notes |
 |---|---|---|
-| `fetch_past_results`, history CSVs | `historical-raw-data/rounds` | Make `fetch_dg_historical_results` write the CSVs, then backfill. |
+| `fetch_past_results`, history CSVs | `historical-raw-data/rounds` | Done Oct 20: `leaderboards_dg_*.csv`. Retire the PGA TOUR step after the agreement check and the retrain. |
 | `fetch_tournament_stats`, `fetch_form_stats` | `historical-raw-data/rounds` (SG by round) | Some events have no SG (`sg_categories: no`, e.g. Baycurrent). Model features: January retrain. |
 | `fetch_tee_times`, `fetch_withdrawals` | `field-updates` | Already pulled every refresh. Verify tee times are present for both rounds. |
 | `fetch_world_rankings` | DG rankings (OWGR column) | Verify the field. |

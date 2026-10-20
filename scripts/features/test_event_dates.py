@@ -144,6 +144,27 @@ def test_overrides_only_cover_what_the_data_cannot():
             assert _finale(season - 1) < date <= _finale(season), tid
 
 
+def test_season_for_inverts_the_windows():
+    """DataGolf dates -> our season ids, across every boundary case above."""
+    from scripts.features.event_dates import season_for
+    assert season_for(day("2015-10-18"), EV) == 2016      # Frys.com Open, fall before
+    assert season_for(day("2020-09-07"), EV) == 2020      # 2020 TOUR Championship
+    assert season_for(day("2020-09-20"), EV) == 2021      # U.S. Open two weeks later
+    assert season_for(day("2020-11-15"), EV) == 2021      # November Masters
+    assert season_for(day("2022-09-18"), EV) == 2023      # transition season began
+    assert season_for(day("2023-09-17"), EV) == 2023      # Fortinet #2, same season
+    assert season_for(day("2024-09-15"), EV) == 2024      # calendar seasons
+
+
+def test_season_for_round_trips_every_resolvable_event():
+    """For every DG row 2016+, the id season_for builds resolves back to that date."""
+    from scripts.features.event_dates import season_for
+    for r in EV[EV["calendar_year"] >= 2016].itertuples():
+        tid = f"R{season_for(r.date, EV)}{int(r.event_id):03d}"
+        got = d(tid)
+        assert got is None or got == r.date, f"{tid}: {got} != {r.date} ({r.event_name})"
+
+
 if __name__ == "__main__":
     tests = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]
     failed = 0

@@ -107,6 +107,21 @@ def _finale(season: int, events: pd.DataFrame) -> pd.Timestamp:
         raise ValueError(f"season {season} has {len(finale)} finale rows")
     return finale.iloc[0]["date"]
 
+def season_for(date: pd.Timestamp, events: pd.DataFrame) -> int:
+    """The PGA TOUR season an event played on `date` belongs to: the inverse
+    of event_date's windows. DataGolf rows carry a calendar year; our ids
+    carry the season, so R{season_for(date)}{event_id:03d} is the id."""
+    date = pd.Timestamp(date)
+    year = date.year
+    if year >= CALENDAR_SEASONS_FROM:
+        return year
+    if year == 2023:
+        return 2023            # transition season: fall 2022 through Dec 2023
+    # Before 2023 a season ends at its TOUR Championship; later that calendar
+    # year is the next season (fall 2022 also falls into 2023 this way).
+    return year if date <= _finale(year, events) else year + 1
+
+
 def event_date(tid: str, our_name: str, events: pd.DataFrame) -> pd.Timestamp | None:
     """Return the start date of tid's event, or None when you can't be sure."""
     season, event_id = int(tid[1:5]), int(tid[5:])
