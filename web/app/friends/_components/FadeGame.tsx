@@ -104,7 +104,7 @@ export function FadeTab() {
   return (
     <>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
-      {event && !event.locked && (
+      {event && !event.locked && pool.length > 0 && (
         <WhosInCard game="fades" tid={selected} eventName={event.name} startDate={event.startDate}
           tour={event.tour} refreshKey={fades.length} />
       )}

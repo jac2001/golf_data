@@ -179,7 +179,7 @@ function pill(on: boolean): React.CSSProperties {
 
 function StatusTag({ status, projected }: { status: Slate["status"]; projected: boolean }) {
   const label = status === "final" ? "Final" : status === "settling" ? "Final · money settling"
-    : status === "live" ? "Live" : "Picks open";  // what the money means lives in moneyNote, not here
+    : status === "live" ? "Live" : status === "awaiting" ? "Field not out yet" : "Picks open";  // what the money means lives in moneyNote, not here
   const color = status === "final" ? "var(--bc-muted)" : status === "live" ? "var(--bc-green)" : "var(--bc-text)";
   return <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 800, color, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</span>;
 }
@@ -193,6 +193,19 @@ function clock(iso: string): string {
 function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: number | null; groupName: string; checkedAt?: string }) {
   const me = s.lines.find(l => l.user_id === s.me_id);
   const tourLabel = s.tour === "euro" ? "DP World Tour" : "PGA Tour";
+
+  if (s.status === "awaiting") {
+    return (
+      <div style={card}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+          <span style={{ fontWeight: 900 }}>{s.name}</span><StatusTag status={s.status} projected={false} />
+        </div>
+        <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", margin: "8px 0 0" }}>
+          The field isn&apos;t out yet, so there&apos;s nothing to pick. Picks open as soon as it posts, usually by Tuesday.
+        </p>
+      </div>
+    );
+  }
 
   if (s.status === "open") {
     return (

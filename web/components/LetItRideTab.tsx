@@ -441,7 +441,7 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   return (
     <div style={card}>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
-      {!locked && (
+      {!locked && field.length > 0 && (
         <WhosInCard game="ride" tid={ev.tournament_id} eventName={ev.name} startDate={ev.start_date}
           tour={ev.tour} refreshKey={mine.length} />
       )}

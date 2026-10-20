@@ -91,7 +91,7 @@ export function CollegeTab() {
   return (
     <>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
-      {event && !event.locked && (
+      {event && !event.locked && schools.length > 0 && (
         <WhosInCard game="college" tid={selected} eventName={event.name} startDate={event.startDate}
           tour={event.tour} refreshKey={pick ? 1 : 0} />
       )}

@@ -19,7 +19,7 @@ import { summarizeSlate, ranked, lastName as last } from "@/lib/matchCore";
 import { openEventLocks, pickVisible } from "@/lib/eventLocks";
 
 type Ev = { tournament_id: string; name: string; tour: "pga" | "euro"; start_date: string;
-  locked: boolean; finished: boolean };
+  locked: boolean; finished: boolean; field_available?: boolean };
 type PlayerMoney = { player_name: string; earnings: number; position: string;
   up_one?: number; thru?: string; today?: number | null; to_par?: number | null; round?: number | null };
 type Earnings = { settled: boolean; projected?: boolean; data_updated?: string; data_updated_utc?: string;
@@ -91,7 +91,9 @@ export async function GET(req: Request) {
 
     slates.push({
       tournament_id: tid, name: ev.name, tour,
-      status: ev.finished ? (table?.settled ? "final" : "settling") : ev.locked ? "live" : "open",
+      // Same states as the pick screens: no field yet means nothing to pick.
+      status: ev.finished ? (table?.settled ? "final" : "settling") : ev.locked ? "live"
+        : ev.field_available === false ? "awaiting" : "open",
       start_date: ev.start_date,
       projected: !table?.settled && !!table?.projected,
       data_updated: table?.data_updated ?? "",

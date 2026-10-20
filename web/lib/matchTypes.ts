@@ -7,7 +7,7 @@ export type Golfer = { name: string; position: string; earnings: number; up_one:
   to_par?: number | null; round?: number | null; reason?: string | null };
 export type Line = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number };
 export type Slate = {
-  tournament_id: string; name: string; tour: "pga" | "euro"; status: "open" | "live" | "settling" | "final";
+  tournament_id: string; name: string; tour: "pga" | "euro"; status: "awaiting" | "open" | "live" | "settling" | "final";
   projected: boolean; lines: Line[]; me_id: string; data_updated?: string; data_updated_utc?: string;
   rival: { user_id: string; user_name: string; total: number } | null; gap: number; story: string;
   beating_model: number | null; humans: number;

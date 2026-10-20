@@ -122,7 +122,7 @@ export function RoundGameTab() {
   return (
     <>
       <PickConfirm copy={confirm} onClose={() => setConfirm(null)} />
-      {state?.event && openRound && (
+      {state?.event && openRound && field.length > 0 && (
         <WhosInCard game="rounds" tid={selected} eventName={state.event.name} startDate={state.event.startDate}
           tour={state.event.tour} round={openRound} refreshKey={Object.values(state.rounds ?? {}).filter(Boolean).length} />
       )}
