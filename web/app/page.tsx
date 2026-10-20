@@ -84,8 +84,8 @@ export default function Home() {
               <span style={{ color: "var(--bc-yellow)" }}>Beat the model.</span>
             </div>
             <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.86em)", marginTop: 6, lineHeight: 1.55 }}>
-              A weekly picks game graded by real prize money — thirty seconds
-              to play, all Sunday to trash-talk. Try a pick before you sign up.
+              A weekly picks game graded by real prize money — a few minutes
+              to pick, all Sunday to trash-talk. Try a pick before you sign up.
             </div>
           </div>
           <div style={{ display: "flex", gap: 12, alignItems: "center" }}>

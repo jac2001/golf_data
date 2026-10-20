@@ -28,7 +28,7 @@ export function HowToPlay({ game }: { game: GameMode }) {
         <p style={{ margin: 0, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6 }}>
           one pick per round, each player only once per event,
           scored by that round&apos;s score to par — lowest event total wins.
-          Round 1 locks at midnight ET the night before Thursday (UK time for
+          Round 1 locks at midnight ET the night before it starts (UK time for
           DP World Tour events); each later round locks at the same midnight
           before its own day. The +5: if
           your pick doesn&apos;t post a score for a locked round — missed the

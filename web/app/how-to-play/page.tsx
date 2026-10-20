@@ -11,6 +11,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { PageHead } from "@/components/broadcast";
+import { Show } from "@clerk/nextjs";
 import { getPredictions, getOpenEvents, getEventEarnings, getDemoChallenges, DemoChallenge, PlayerPrediction, EarningsTable } from "@/lib/api";
 import { expectedPayout } from "@/lib/modelBrain";
 
@@ -28,7 +29,7 @@ const GAMES = [
   { name: "Let It Ride", tag: "Pick 3 golfers each week — their prize money is your score. The catch: each golfer can only be used a few times a season (your group sets it — 3 per tour by default), so every week you choose who to spend and who to save. Best week earns a star; most money wins the season." },
   { name: "Round Game", tag: "One golfer per round, each player once per event, scored against par. Miss the cut with your pick and it costs you +5." },
   { name: "Fade Game", tag: "Pick 3 of the top-20 favorites you think will FLOP. Lowest combined earnings wins — fade the champion and you eat his whole check." },
-  { name: "College Game", tag: "Root for your school instead of a golfer. Claim one college each week; its two best alumni in the field score their prize money for you. Auburn vs. Alabama, settled on Sunday — friends can share a school, and ties split the win." },
+  { name: "College Game", tag: "Root for your school instead of a golfer. Claim one college each week; its two best alumni in the field score their prize money for you. Auburn vs. Alabama, settled on Sunday — friends can share a school, and each tied school gets a win." },
 ];
 
 export default function HowToPlayPage() {
@@ -110,7 +111,7 @@ export default function HowToPlayPage() {
 
   return (
     <div style={{ maxWidth: 860, margin: "0 auto" }}>
-      <PageHead kicker="Thirty seconds a week · bragging rights all Sunday" title="How to Play" />
+      <PageHead kicker="A few minutes a week · bragging rights all Sunday" title="How to Play" />
 
       {/* The pitch */}
       <div style={{ ...card, padding: 28 }}>
@@ -119,7 +120,7 @@ export default function HowToPlayPage() {
           <span style={{ color: "var(--bc-yellow)" }}>Beat the model.</span>
         </div>
         <p style={{ color: "var(--bc-muted)", fontSize: "0.92em", lineHeight: 1.6, maxWidth: 620, marginBottom: 0 }}>
-          Every tournament week you make picks before they lock — midnight ET the night before Thursday&apos;s first round (UK time for DP World Tour events),
+          Every tournament week you make picks before they lock — midnight ET the night before the first round (UK time for DP World Tour events),
           follow the leaderboard with your group, and settle it Sunday when the
           real prize money posts. Our prediction model plays too, under the
           same rules — beating it is the badge.
@@ -329,7 +330,7 @@ export default function HowToPlayPage() {
           )}
           <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.74em)", marginTop: 10, marginBottom: 0 }}>
             {mode === "history"
-              ? "Real event, real prize money — the win chances are exactly what the model published before Thursday's tee-off."
+              ? "Real event, real prize money — the win chances are exactly what the model published before the first round."
               : "Expected value is pre-tournament projection; real games grade on the actual purse Sunday night."}
           </p>
         </div>
@@ -337,18 +338,29 @@ export default function HowToPlayPage() {
 
       {/* CTAs */}
       <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", margin: "22px 0 8px" }}>
-        <Link href="/sign-up" style={{
-          background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
-          textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
-          padding: "13px 24px", borderRadius: 4 }}>
-          Create a free account
-        </Link>
-        <Link href="/friends" style={{ fontWeight: 700, fontSize: "0.9em", color: "var(--bc-text)" }}>
-          Already playing? Your group →
-        </Link>
+        {/* Signed in: the next step is your group, not an account you already have. */}
+        <Show when="signed-out">
+          <Link href="/sign-up" style={{
+            background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+            textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
+            padding: "13px 24px", borderRadius: 4 }}>
+            Create a free account
+          </Link>
+          <Link href="/friends" style={{ fontWeight: 700, fontSize: "0.9em", color: "var(--bc-text)" }}>
+            Already playing? Your group →
+          </Link>
+        </Show>
+        <Show when="signed-in">
+          <Link href="/friends" style={{
+            background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+            textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
+            padding: "13px 24px", borderRadius: 4 }}>
+            Go to your group
+          </Link>
+        </Show>
       </div>
       <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", lineHeight: 1.6 }}>
-        Groups are invite-only: create one, text a friend the code, done. No
+        Groups are invite-only: create one and share its invite link, done. No
         money changes hands — the stakes are strictly bragging rights.
         Curious how the model actually works? That story lives at{" "}
         <Link href="/methodology" style={{ color: "var(--bc-text)", textDecoration: "underline" }}>How the model works</Link>.
