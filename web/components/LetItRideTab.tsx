@@ -607,7 +607,14 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
           {considered && (
             <div style={{ background: "var(--bc-raised)", border: "1px solid var(--bc-line-hi)", borderRadius: 8,
               padding: "8px 12px", marginBottom: 8, fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-text)" }}>
-              From This Week: <strong>{considered}</strong>. Not picked yet; tap Pick if you want him.
+              From This Week: <strong>{considered}</strong>.{" "}
+              {mine.some(p => nameKey(p.player_name) === nameKey(considered))
+                ? "He's already in your lineup."
+                : usedOf(considered) >= league.uses_per_player
+                  ? `You've used all ${league.uses_per_player} picks of ${considered} this season.`
+                  : full
+                    ? `Your lineup is full: drop a golfer to pick ${considered}.`
+                    : "Not picked yet; tap Pick if you want him."}
             </div>
           )}
           <input placeholder="Search the field…" value={q} onChange={e => setQ(e.target.value)} style={{

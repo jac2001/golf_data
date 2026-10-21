@@ -1,0 +1,37 @@
+.pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  width: 260px;
+  max-width: calc(100vw - 16px);
+  background: var(--bc-raised);
+  border: 1px solid var(--bc-line-hi);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  color: var(--bc-text);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: normal;
+  text-align: left;
+  cursor: default;
+}
+
+/* Phones: a sheet above the bottom nav, never past either screen edge. */
+@media (max-width: 600px) {
+  .pop {
+    position: fixed;
+    top: auto;
+    left: 12px;
+    right: 12px;
+    bottom: calc(var(--bottom-offset, 12px) + 4px);
+    width: auto;
+    max-width: none;
+    z-index: 300;
+    font-size: 14px;
+  }
+}

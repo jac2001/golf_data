@@ -10,14 +10,17 @@
  * doesn't re-sort when you ask what the column means. An unknown term
  * renders just the label.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getGlossaryEntry } from "@/lib/glossary";
+import styles from "./Term.module.css";
 
 type Help = { label: string; definition: string; example: string };
 
 export default function Term({ term, help, children }: { term?: string; help?: Help; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const box = useRef<HTMLSpanElement>(null);
+  const pop = useRef<HTMLSpanElement>(null);
+  const [shift, setShift] = useState(0);   // px left, so the box never crosses the right edge
   const entry = help ?? getGlossaryEntry(term);
 
   useEffect(() => {
@@ -27,6 +30,16 @@ export default function Term({ term, help, children }: { term?: string; help?: H
     document.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onDown);
     return () => { document.removeEventListener("keydown", onKey); document.removeEventListener("pointerdown", onDown); };
+  }, [open]);
+
+  // Wider screens: after opening, measure and slide left if the box would
+  // cross the viewport's right edge (phones use the fixed sheet instead).
+  useLayoutEffect(() => {
+    if (!open) { setShift(0); return; }
+    const el = pop.current;
+    if (!el || getComputedStyle(el).position === "fixed") return;
+    const over = el.getBoundingClientRect().right - (window.innerWidth - 8);
+    if (over > 0) setShift(over);
   }, [open]);
 
   if (!entry) return <>{children}</>;
@@ -47,17 +60,12 @@ export default function Term({ term, help, children }: { term?: string; help?: H
       >?</button>
       {open && (
         <span
+          ref={pop}
           role="dialog"
           aria-label={entry.label}
+          className={styles.pop}
           onClick={e => e.stopPropagation()}
-          style={{
-            position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 50, width: 260,
-            background: "var(--bc-raised)", border: "1px solid var(--bc-line-hi)", borderRadius: 8,
-            padding: "10px 12px", boxShadow: "0 8px 24px rgba(0,0,0,0.45)",
-            color: "var(--bc-text)", fontSize: 13, fontWeight: 400, lineHeight: 1.5,
-            textTransform: "none", letterSpacing: "normal", whiteSpace: "normal", textAlign: "left",
-            cursor: "default",
-          }}
+          style={shift ? { left: -shift } : undefined}
         >
           <strong style={{ display: "block", marginBottom: 4 }}>{entry.label}</strong>
           {entry.definition}

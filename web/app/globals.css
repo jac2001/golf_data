@@ -136,8 +136,12 @@ a {
   /* Room for the tab bar under the footer */
   body { padding-bottom: var(--bottom-nav-h); }
 
-  /* Page wrappers need no horizontal overflow */
-  .page-wrap, .page-wrap-md, .page-wrap-sm { overflow-x: hidden; }
+  /* Page wrappers need no horizontal overflow. clip, not hidden: hidden
+     makes the wrapper a scroll container, and position: sticky inside it
+     (This Week's tabs) then sticks to a box that never scrolls. clip is in
+     every current phone browser (Safari 16+, Chrome 90+); a hidden fallback
+     line gets merged away by the CSS build, so there isn't one. */
+  .page-wrap, .page-wrap-md, .page-wrap-sm { overflow-x: clip; }
 
   /* Show/hide helpers */
   .mobile-hidden { display: none !important; }

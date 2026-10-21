@@ -311,6 +311,15 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
         </div>
       ) : <>
       <div className={styles.cards}>
+        <label style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--bc-text)", fontSize: 14 }}>
+          Sort by
+          <select value={sortCol} onChange={e => { const c = COLS.find(x => x.key === e.target.value);
+              if (c) { setSortCol(c.key); setSortDir(c.higherBetter ? "desc" : "asc"); } }}
+            style={{ flex: 1, minHeight: 44, background: "var(--bc-panel)", color: "var(--bc-text)",
+              border: "1px solid var(--bc-line)", borderRadius: 6, padding: "0 10px", fontFamily: "inherit", fontSize: 14 }}>
+            {COLS.filter(c => shownCols.has(c.toggleKey)).map(c => <option key={c.key} value={c.key}>{c.label}</option>)}
+          </select>
+        </label>
         {sorted.map((p, i) => {
           const playerIntel = intelMap.get(p.player_name.toLowerCase());
           const isPick = myPicksNorm.has(normName(p.player_name));
@@ -327,7 +336,12 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                 </Link>
                 {isPick && <span style={badge("var(--bc-green)")}>My pick</span>}
                 {playerIntel?.injury_flag && <span style={badge("var(--bc-red-text)")}>Injury</span>}
-                <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: 12 }}>{isOpen ? "Less ▾" : "More ▸"}</span>
+                <button type="button" aria-expanded={isOpen} aria-label={`${isOpen ? "Hide" : "Show"} more about ${p.player_name}`}
+                  onClick={e => { e.stopPropagation(); setOpenRow(isOpen ? null : p.player_name); }}
+                  style={{ marginLeft: "auto", background: "none", border: "none", color: "var(--bc-muted)",
+                    fontSize: 12, fontFamily: "inherit", cursor: "pointer", minHeight: 44, minWidth: 44, padding: "0 4px", flexShrink: 0 }}>
+                  {isOpen ? "Less ▾" : "More ▸"}
+                </button>
               </div>
               <div className={styles.chips}>
                 {CARD_ORDER.filter(k => shownCols.has(k)).map(k => {
