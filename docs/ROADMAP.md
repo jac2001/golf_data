@@ -193,6 +193,13 @@ height on phones. In order (each its own commit, preview-verified at 375px):
       always with a word (Jack's `web/lib/holeVerdict.ts`), tap for yardage / plain-words
       scoring / birdie and bogey rates. [ ] Check 9 tiles fit a 375px phone.
 
+## Next: Players page (audit Oct 21, `docs/PLAYERS_AUDIT.md`)
+
+25 findings, 6 P1: Jack's tracker + dead strategy file public via /api/players/profile
+(REC/EV shown); base-model vs sim chances disagree across pages (top-10 17.5% vs 33.8%);
+edge 100x too small; H2H "Season Wins" shows top-10s; missing data shown as 0 / World #500;
+the AI synopsis shows Anthropic's billing error. Work in the audit's suggested order.
+
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
 The production loop runs itself: data refresh → Tuesday predictions →
