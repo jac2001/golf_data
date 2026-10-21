@@ -92,6 +92,7 @@ jobs:
           python3 scripts/scrapers/test_dg_historical.py
           python3 scripts/test_season_resolver.py
           python3 scripts/test_publish_restore.py
+          python3 scripts/predictions/test_odds_move.py
           python3 scripts/features/test_event_dates.py
           python3 scripts/features/test_golfer_form.py
 

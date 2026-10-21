@@ -30,16 +30,22 @@ MIN_POINTS = 0.002    # and at least 0.2 percentage points in absolute terms
 def odds_move(open_prob: float | None, now_prob: float | None) -> Move:
     """Which way the market moved on one golfer, or None.
 
-    TODO(Jack): implement.
-    Facts the tests pin:
-      - Chance up enough on BOTH thresholds -> "DOWN" (odds shortened).
-      - Chance down enough on BOTH thresholds -> "UP" (odds lengthened).
-      - Below either threshold -> None (noise, mostly longshots).
-      - Missing (None or NaN), zero or negative, or above 1 on either side
-        -> None. NaN is what pandas gives for a golfer missing from one file.
-      - Exactly on a threshold counts as a move (>=, not >).
-    Hints: math.isnan; relative change = (now - open) / open. Floating
-    point: 0.022 - 0.02 is 0.0019999999999999983, not 0.002, so "exactly on
-    a threshold" needs a tiny tolerance (e.g. 1e-9) in the comparison.
+    Jack's rule (Oct 21): a move counts only when the implied chance changed
+    by at least MIN_RELATIVE of its opening value AND at least MIN_POINTS
+    in absolute terms (exactly on a threshold counts, within 1e-9 for
+    floating point). Missing, NaN, zero, negative or >1 inputs -> None.
     """
-    raise NotImplementedError("TODO(Jack): odds_move")
+    if open_prob is None or now_prob is None:
+        return None
+    # NaN fails every comparison, so this range check also rejects NaN.
+    if not (0 < open_prob <= 1) or not (0 < now_prob <= 1):
+        return None
+
+    change = now_prob - open_prob
+    magnitude = abs(change)
+    relative_change = magnitude / open_prob
+
+    tolerance = 1e-9
+    if magnitude + tolerance < MIN_POINTS or relative_change + tolerance < MIN_RELATIVE:
+        return None
+    return "DOWN" if change > 0 else "UP"

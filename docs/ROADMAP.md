@@ -170,8 +170,8 @@ height on phones. In order (each its own commit, preview-verified at 375px):
       strategy file, died in June). Odds = DataGolf consensus (`odds_{tid}.csv`), Move =
       consensus now vs the opening line (`odds_open_{tid}.csv`, saved once per event by
       fetch_dg_odds; Bermuda's backfilled from the first committed line, Oct 20 09:48 CT).
-      [ ] Jack: `scripts/predictions/odds_move.py` (spec: test_odds_move.py); Move stays
-      hidden until it lands. Then add the test to Tuesday's gate.
+      Jack's `scripts/predictions/odds_move.py` (10% relative AND 0.2pp absolute) landed Oct 21;
+      its test is in Tuesday's gate. Bermuda: 3 real moves since the opening line.
 
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
