@@ -13,7 +13,7 @@
  */
 import { resultKey } from "./resultKey.ts";
 
-// ── TODO(Jack): resolveConsider ───────────────────────────────────────────────
+// ── resolveConsider ───────────────────────────────────────────────
 //
 // raw:   the ?consider= value, already URL-decoded by URLSearchParams
 //        (null when the link has none).
@@ -36,8 +36,14 @@ import { resultKey } from "./resultKey.ts";
 // screen, just without a golfer pre-filled.
 
 export function resolveConsider(raw: string | null | undefined, field: readonly string[]): string | null {
-  void resultKey;
-  throw new Error("TODO(Jack): resolveConsider");
+  if (raw == null || raw.trim() === "" || raw.length > 80) {
+    return null;
+  }
+  const key = resultKey(raw);
+
+  if (!key) return null;
+  const matches = field.filter(name => resultKey(name) === key);
+  return matches.length === 1 ? matches[0] : null;
 }
 
 /** The link This Week puts on a golfer. Plumbing (Claude's). */
