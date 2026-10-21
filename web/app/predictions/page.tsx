@@ -27,7 +27,7 @@ import {
 } from "@/lib/api";
 import PredictionsTable from "@/components/PredictionsTable";
 import TeeTimesGrid from "@/components/TeeTimesGrid";
-import CourseCard from "@/components/CourseCard";
+import CourseGuide from "@/components/CourseGuide";
 import ModelComparison from "@/components/ModelComparison";
 import WeatherStrip from "@/components/WeatherStrip";
 import CourseFitTab from "@/components/CourseFitTab";
@@ -181,7 +181,8 @@ export default function PredictionsPage() {
   }, [loaded]);
 
   useEffect(() => {
-    if (!loaded.has("coursefit") || courseFit) return;
+    // Course Guide's "things to watch" uses the course profile too.
+    if (!(loaded.has("coursefit") || loaded.has("course")) || courseFit) return;
     setLoadingCourseFit(true);
     getCourseFit().then(setCourseFit).finally(() => setLoadingCourseFit(false));
   }, [loaded]);
@@ -365,12 +366,16 @@ export default function PredictionsPage() {
 
       {activeTab === "course" && (
         <>
-          {intel && <CourseConditionsCard intel={intel} />}
+          {/* The intel card only when it holds real conditions: a failed
+              fetch saves {error: ...} and rendered an empty "Course Intel". */}
+          {intel && typeof intel.course_conditions === "object" && intel.course_conditions?.scoring_outlook
+            && <CourseConditionsCard intel={intel} />}
           {loadingCourse
             ? <Spinner />
-            : course
-              ? <CourseCard data={course} />
-              : <Empty text="No course data available." />}
+            : course && (course.course_name || course.holes.length)
+              ? <CourseGuide course={course} fit={courseFit} weather={weather?.days ?? []}
+                  location={tournament?.location} onExploreFit={() => activateTab("coursefit")} />
+              : <Empty text="No course information for this event yet." />}
         </>
       )}
 

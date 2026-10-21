@@ -35,6 +35,7 @@ function fmtDiff(diff: number | null): string {
 
 // Visual bar: birdie% (green, left) vs bogey% (red, right) with neutral in between
 function BirdieBogeyBar({ birdies, bogeys }: { birdies: number | null; bogeys: number | null }) {
+  if (birdies == null && bogeys == null) return null;   // not played: no bar, not a 0% bar
   const b = birdies ?? 0;
   const bg = bogeys  ?? 0;
   const max = Math.max(b, bg, 25); // normalize against at least 25%
@@ -120,7 +121,9 @@ function NineSubtotal({ holes, label }: { holes: CourseHole[]; label: string }) 
   // Number(): a value arriving as text ("4") would otherwise concatenate.
   const yards = holes.reduce((s, h) => s + Number(h.hole_yards ?? 0), 0);
   const par   = holes.reduce((s, h) => s + Number(h.hole_par   ?? 0), 0);
-  const avgSum = holes.reduce((s, h) => s + Number(h.scoring_avg ?? 0), 0);
+  // A nine with any unplayed hole has no scoring total: "—", never 0.00.
+  const avgSum = holes.some(h => h.scoring_avg == null) ? null
+    : holes.reduce((s, h) => s + Number(h.scoring_avg), 0);
   return (
     <tr style={{ background: "var(--bc-panel)", borderTop: "1px solid var(--bc-line)" }}>
       <td style={{ width: 3, padding: 0 }} />

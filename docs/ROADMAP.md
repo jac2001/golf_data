@@ -182,6 +182,15 @@ height on phones. In order (each its own commit, preview-verified at 375px):
       has data for 76. The tab now keys off course_starts and hides empty lines; find why the
       venue record isn't joined.
 
+- [~] **Course Guide v1 (Jack's plan, Oct 21):** at a glance (course, location, par,
+      yardage, par 3/4/5 counts); three things to watch from real data only, each with its
+      source ([ ] Jack: `web/lib/thingsToWatch.ts`, 6 todo tests; section hidden until then);
+      scoring with This week and History kept apart, each with coverage; scorecard collapsed on
+      phones; Explore course fit link. Unplayed holes show as not played (the pre-round feed
+      sends avg = par, 0/0), never 0% or neutral; the failed course-intel card is hidden.
+      [ ] Next: the 18-hole strip (par per tile, color only with real scoring + text labels,
+      tap for yardage / average / birdie and bogey rates).
+
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
 The production loop runs itself: data refresh → Tuesday predictions →
