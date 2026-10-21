@@ -18,10 +18,6 @@ on:
     - cron: '30 12 * * 2'   # Tue 07:30 CT (after the 06:00 CT refresh)
   workflow_dispatch:
 
-concurrency:
-  group: tuesday-predictions
-  cancel-in-progress: false
-
 permissions:
   contents: write
 
@@ -39,8 +35,16 @@ jobs:
   predict:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    # Shared with data-refresh.yml: one publisher at a time (see the note there).
+    concurrency:
+      group: publish-main
+      cancel-in-progress: false
+    outputs:
+      pga_week: ${{ steps.week.outputs.pga_week }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Is there a PGA TOUR event this week?
         # Off weeks (e.g. Oct 15-18, 2026) have no event to predict:
@@ -82,6 +86,7 @@ jobs:
           python3 scripts/features/test_euro_features.py
           python3 scripts/scrapers/test_euro_schedule.py
           python3 scripts/scrapers/test_euro_purses.py
+          python3 scripts/validation/test_model_manifest.py
           python3 scripts/scrapers/test_event_guard.py
           python3 scripts/scrapers/test_dg_historical.py
           python3 scripts/test_season_resolver.py
@@ -153,8 +158,15 @@ jobs:
           git pull --rebase --autostash origin main
           git push origin main
 
+  # Outside the publish lock: waiting on Render publishes nothing, and
+  # holding the lock for 20 minutes would queue (and risk dropping) refreshes.
+  model-sync:
+    needs: predict
+    if: needs.predict.outputs.pga_week == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
       - name: Wait for Render, then let the model take its turn
-        if: steps.week.outputs.pga_week == 'true'
         run: |
           for i in $(seq 1 20); do
             sleep 60

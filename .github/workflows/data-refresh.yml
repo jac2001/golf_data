@@ -39,11 +39,6 @@ on:
         type: boolean
         default: false
 
-# Never two refreshes at once — they'd race each other's git pushes.
-concurrency:
-  group: data-refresh
-  cancel-in-progress: false
-
 permissions:
   contents: write
 
@@ -56,8 +51,22 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    # One publisher at a time across BOTH publishing workflows (data-refresh and
+    # tuesday-predictions push data/ + outputs/ to main; audit finding 15). A
+    # queued run waits for the running one, then checks out main (ref: main
+    # below), so it computes from what was just published, not from its
+    # trigger-time commit. GitHub keeps ONE pending run per group: a third
+    # arrival cancels the pending one. That takes a cron slot, a watchdog
+    # dispatch and a running job inside a few minutes; the watchdog checks
+    # outcomes (predictions present, event settled), so it re-dispatches a
+    # cancelled run.
+    concurrency:
+      group: publish-main
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
