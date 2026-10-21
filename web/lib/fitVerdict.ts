@@ -19,7 +19,7 @@ export type FitVerdict = { verdict: Verdict; edge: number };
 /** Strokes per round the course has to be worth, either way, to say so. */
 export const VERDICT_THRESHOLD = 0.10;
 
-// ── TODO(Jack): fitVerdict ────────────────────────────────────────────────────
+// ── fitVerdict (Jack, Oct 21) ────────────────────────────────────────────────────
 //
 // edge = fit + history (strokes per round).
 //
@@ -40,6 +40,20 @@ export function fitVerdict(
   fit: number | null | undefined,
   history: number | null | undefined,
 ): FitVerdict | null {
-  void VERDICT_THRESHOLD;
-  throw new Error("TODO(Jack): fitVerdict");
+  // isFinite rejects NaN and Infinity: no fit number, no verdict.
+  if (fit == null || !Number.isFinite(fit)) {
+    return null;
+  }
+  const historyValue = history != null && Number.isFinite(history) ? history : 0;
+  const total = fit + historyValue;
+  const tolerance = 1e-9;
+
+  let verdict: Verdict = "neutral";
+  if (total >= VERDICT_THRESHOLD - tolerance) {
+    verdict = "suits";
+  } else if (total <= -VERDICT_THRESHOLD + tolerance) {
+    verdict = "hurts";
+  }
+  const edge = Number(total.toFixed(2));
+  return { verdict, edge };
 }
