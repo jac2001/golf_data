@@ -15,18 +15,17 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { lookupResult } from "@/lib/resultLookup";
 import { visibleUserIds } from "@/lib/gameScope";
 import { openEventLocks } from "@/lib/eventLocks";
 
-type PickRow = { user_id: string; user_name: string; player_name: string };
+type PickRow = { user_id: string; user_name: string; player_name: string; player_id: string | null };
 type EarningsResp = {
   settled: boolean;
   earnings_estimated?: boolean;
   players: Record<string, { player_name: string; earnings: number; position: string }>;
 };
 
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 async function earningsFor(tid: string): Promise<EarningsResp | null> {
   try {
@@ -42,7 +41,7 @@ async function earningsFor(tid: string): Promise<EarningsResp | null> {
 async function seasonStandings(ids: string[], me: string) {
   const sql = getSql();
   const picks = await sql`
-    SELECT user_id, user_name, tournament_id, player_name FROM fade_picks
+    SELECT user_id, user_name, tournament_id, player_name, player_id FROM fade_picks
     WHERE user_id = ANY(${ids})` as (PickRow & { tournament_id: string })[];
 
   const tids = [...new Set(picks.map(p => p.tournament_id))];
@@ -62,7 +61,7 @@ async function seasonStandings(ids: string[], me: string) {
     const entrants = new Map<string, { u: { user_id: string; user_name: string }; total: number }>();
     for (const p of picks.filter(p => p.tournament_id === t)) {
       const e = entrants.get(p.user_id) ?? { u: p, total: 0 };
-      e.total += table?.players?.[nameKey(p.player_name)]?.earnings ?? 0;
+      e.total += lookupResult(table?.players, p, "fadeboard")?.earnings ?? 0;
       entrants.set(p.user_id, e);
     }
     for (const e of entrants.values()) row(e.u).entered += 1;
@@ -98,7 +97,7 @@ export async function GET(req: Request) {
 
   const sql = getSql();
   const picks = await sql`
-    SELECT user_id, user_name, player_name FROM fade_picks
+    SELECT user_id, user_name, player_name, player_id FROM fade_picks
     WHERE tournament_id = ${tid} AND user_id = ANY(${ids})
     ORDER BY user_name, created_at` as PickRow[];
 
@@ -120,7 +119,7 @@ export async function GET(req: Request) {
     if (!locked) {
       u.fades.push({ player: "hidden", earnings: null, position: null });
     } else {
-      const hit = table?.players?.[nameKey(p.player_name)];
+      const hit = lookupResult(table?.players, p, "fadeboard");
       const earnings = table?.settled ? (hit?.earnings ?? 0) : null;
       u.fades.push({ player: p.player_name, earnings, position: hit?.position ?? null });
       if (earnings != null) u.total = (u.total ?? 0) + earnings;

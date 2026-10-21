@@ -23,6 +23,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { ImageResponse } from "next/og";
 import { getSql, MODEL_API } from "@/lib/db";
+import { lookupResult } from "@/lib/resultLookup";
 
 export const runtime = "nodejs";
 
@@ -107,14 +108,14 @@ export async function GET(req: Request) {
     const earn = await modelApi(`/api/results/earnings?tournament_id=${ev.tournament_id}`);
     if (!earn?.settled) return fail("event not settled yet", 403);
     estimated ||= !!earn.earnings_estimated;
-    const table = (earn.players ?? {}) as Record<string, { earnings: number; position: string }>;
+    const table = (earn.players ?? {}) as Record<string, { player_name?: string; player_id?: string | null; earnings: number; position: string }>;
     const picks = await sql`
-      SELECT user_id, user_name, player_name FROM league_picks
+      SELECT user_id, user_name, player_name, player_id FROM league_picks
       WHERE tournament_id = ${ev.tournament_id} AND league_id = ${leagueId}` as
-      { user_id: string; user_name: string; player_name: string }[];
+      { user_id: string; user_name: string; player_name: string; player_id: string | null }[];
     const rows = new Map<string, Row>();
     for (const p of picks) {
-      const hit = table[nameKey(p.player_name)];
+      const hit = lookupResult(table, p, "recap");
       const r = rows.get(p.user_id) ?? { user_id: p.user_id,
         user_name: p.user_id === "model" ? "The Model" : p.user_name, total: 0, golfers: [] };
       const g = { player: p.player_name, earnings: hit?.earnings ?? 0, position: hit?.position ?? "—" };

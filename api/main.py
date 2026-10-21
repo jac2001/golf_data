@@ -341,6 +341,32 @@ def _name_key(n: str) -> str:
     return " ".join(sorted(str(n).replace(",", "").strip().lower().split()))
 
 
+def _pid(v) -> str | None:
+    """A PGA TOUR player_id as text ("6567", never "6567.0" or "06567"),
+    None when missing. Picks store it; scoring matches on it first."""
+    if v is None or (isinstance(v, float) and pd.isna(v)):
+        return None
+    s = str(v).strip()
+    if s.endswith(".0"):
+        s = s[:-2]
+    s = s.lstrip("0") or s
+    return s or None
+
+
+def _results_table(rows: list[tuple[str, dict]]) -> dict:
+    """Name-keyed results table that never drops a golfer. Two golfers can
+    share a name (the two Zach Johnsons, 2018 and 2020 PGA Championships);
+    the second used to overwrite the first. A repeated key now gets the
+    player_id appended, so both rows reach the site, which matches by id
+    first and refuses an ambiguous name (web/lib/resultKey.ts)."""
+    out: dict = {}
+    for key, row in rows:
+        if key in out:
+            key = f"{key}#{row.get('player_id') or len(out)}"
+        out[key] = row
+    return out
+
+
 def _last_name(n: str) -> str:
     """Normalize to lowercase last name for cross-format tracker matching
     (tracker keys are last-name-only or 'Initial Last', e.g. 'McIlroy' / 'B Griffin')."""
@@ -1844,7 +1870,7 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     df = pd.read_csv(pred_path)
 
     keep_cols = [c for c in [
-        "player_name", "world_rank", "win_prob", "top5_prob", "top10_prob",
+        "player_name", "player_id", "world_rank", "win_prob", "top5_prob", "top10_prob",
         "top20_prob", "cut_prob", "season_sg_total", "model_vs_vegas_edge",
         "form_trend", "odds_to_win", "dk_odds_direction",
         "win_prob_sim", "top5_prob_sim", "top10_prob_sim",
@@ -1852,6 +1878,8 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     ] if c in df.columns]
 
     df = df[keep_cols].copy()
+    if "player_id" in df.columns:
+        df["player_id"] = df["player_id"].map(_pid)
     for col in ["win_prob", "top5_prob", "top10_prob", "top20_prob",
                 "cut_prob", "world_rank", "season_sg_total", "model_vs_vegas_edge", "form_trend",
                 "win_prob_sim", "top5_prob_sim", "top10_prob_sim", "top20_prob_sim", "make_cut_prob_sim"]:
@@ -5048,7 +5076,7 @@ def events_rounds(tournament_id: str) -> dict:
     pars = ((est["_strokes"] - est["_to_par"]) / est["_n"]).round()
     par = int(pars.median()) if len(pars) else 72
 
-    players: dict[str, dict] = {}
+    rows = []
     max_round = 0
     for _, r in df.iterrows():
         name = str(r.get("player_name", ""))
@@ -5059,8 +5087,9 @@ def events_rounds(tournament_id: str) -> dict:
             if pd.notna(v):
                 rounds[str(i)] = int(v) - par
                 max_round = max(max_round, i)
-        players[key] = {"player_name": name, "rounds": rounds,
-                        "status": str(r.get("status", r.get("current_pos", "")))}
+        rows.append((key, {"player_name": name, "player_id": _pid(r.get("player_id")), "rounds": rounds,
+                           "status": str(r.get("status", r.get("current_pos", "")))}))
+    players = _results_table(rows)
     return {"tournament_id": tid, "par": par, "rounds_available": max_round, "players": players}
 
 
@@ -5241,7 +5270,7 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
         raw_earn = sub["earnings"].map(lambda v: str(v).replace("$", "").replace(",", ""))
         have_money = pd.to_numeric(raw_earn, errors="coerce").fillna(0).sum() > 0
         est = None if have_money else _estimate_earnings_for_event(sub, tid)
-        out = {}
+        rows = []
         for _, r in sub.iterrows():
             name = str(r.get("player_name", ""))
             key = " ".join(sorted(name.lower().replace(",", "").split()))
@@ -5252,8 +5281,9 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
                 earn = 0.0
             if est is not None:
                 earn = float(est.loc[r.name])
-            out[key] = {"player_name": name, "earnings": earn,
-                        "position": str(r.get("position", ""))}
+            rows.append((key, {"player_name": name, "player_id": _pid(r.get("player_id")),
+                               "earnings": earn, "position": str(r.get("position", ""))}))
+        out = _results_table(rows)
         return {"tournament_id": tid, "settled": True,
                 "earnings_estimated": bool(est is not None), "players": out}
 
@@ -5279,11 +5309,12 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
             try:
                 est = _estimate_earnings_for_event(sub, tid)
                 up = _up_one_spot(sub, tid)
-                out = {}
+                rows = []
                 for i, r in sub.iterrows():
                     name = str(r.get("player_name", ""))
                     key = " ".join(sorted(name.lower().replace(",", "").split()))
-                    out[key] = {"player_name": name,
+                    rows.append((key, {"player_name": name,
+                                "player_id": _pid(r.get("player_id")),
                                 "earnings": float(est.loc[i]),
                                 "position": str(r.get("position", "")),
                                 "up_one": float(up.loc[i]),
@@ -5292,7 +5323,8 @@ def results_earnings(tournament_id: str, projected: int = 0) -> dict:
                                 # Tournament score to par + current round, for the
                                 # match center's golfer rows (DG: current_score/round).
                                 "to_par": _safe(pd.to_numeric(r.get("current_score", r.get("total")), errors="coerce")),
-                                "round": _safe(pd.to_numeric(r.get("round"), errors="coerce"))}
+                                "round": _safe(pd.to_numeric(r.get("round"), errors="coerce"))}))
+                out = _results_table(rows)
                 tour_key = "euro" if tid.startswith("E") else "pga"
                 c = _dg_live_cache.get(tour_key, {}) if live_source == "live" else {}
                 updated = c.get("updated", "")

@@ -14,7 +14,7 @@
  */
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
-import { nameKey } from "@/lib/names";
+import { lookupResult } from "@/lib/resultLookup";
 import { summarizeSlate, ranked, lastName as last } from "@/lib/matchCore";
 import { openEventLocks, pickVisible } from "@/lib/eventLocks";
 
@@ -80,11 +80,11 @@ export async function GET(req: Request) {
     if (!ev || !league) continue;
     const tid = ev.tournament_id.toUpperCase();
     const [picksRaw, table] = await Promise.all([
-      sql`SELECT user_id, player_name, reason FROM league_picks
+      sql`SELECT user_id, player_name, player_id, reason FROM league_picks
           WHERE league_id = ${league.id} AND tournament_id = ${tid}`,
       api<Earnings>(`/api/results/earnings?tournament_id=${tid}&projected=1`),
     ]);
-    const picks = picksRaw as { user_id: string; player_name: string; reason: string | null }[];
+    const picks = picksRaw as { user_id: string; player_name: string; player_id: string | null; reason: string | null }[];
     const visible = picks.filter(p => pickVisible(locks, tid, p.user_id, userId));
     const graded = !!(table?.settled || table?.projected);
     const sum = summarizeSlate(visible, table?.players ?? null, graded, nameOf, userId);
@@ -121,7 +121,7 @@ export async function GET(req: Request) {
     const score = (school: string) => {
       const alumni = (field?.schools ?? []).find(s => s.school === school)?.players ?? [];
       const counted = alumni.map(n => {
-        const hit = table?.players?.[nameKey(n)];
+        const hit = lookupResult(table?.players, { player_name: n }, "match/college");
         return { name: n, position: hit?.position ?? "—", earnings: graded ? (hit?.earnings ?? 0) : 0,
                  thru: hit?.thru ?? "", to_par: hit?.to_par ?? null, round: hit?.round ?? null };
       }).sort((a, b) => b.earnings - a.earnings);

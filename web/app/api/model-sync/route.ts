@@ -26,6 +26,7 @@
 import { roundLockAt } from "@/lib/lockTime";
 import { cronUnauthorized } from "@/lib/cronAuth";
 import { getSql, MODEL_API } from "@/lib/db";
+import { resultKey } from "@/lib/resultKey";
 import { modelCollegePick, modelFadePicks, modelLetItRidePick, modelRoundPick, Probs } from "@/lib/modelBrain";
 import { adviseSlate, GolferValue } from "@/lib/advice";
 import { nameKey } from "@/lib/names";
@@ -37,7 +38,18 @@ type OpenEvent = {
   tournament_id: string; name: string; tour: string; start_date: string;
   purse: number | null; locked: boolean; has_model: boolean;
 };
-type PredRow = Probs & { player_name: string; world_rank?: number | null };
+type PredRow = Probs & { player_name: string; player_id?: string | null; world_rank?: number | null };
+
+/** name -> PGA player_id from this event's predictions, unique names only
+ *  (a shared name stores no id and falls back to name matching). */
+function idsFrom(preds: PredRow[]): (name: string) => string | null {
+  const seen = new Map<string, string | null>();
+  for (const p of preds) {
+    const k = resultKey(p.player_name);
+    seen.set(k, seen.has(k) ? null : (p.player_id ?? null));
+  }
+  return name => seen.get(resultKey(name)) ?? null;
+}
 
 function roundLocked(startDate: string, tour: string, round: number): boolean {
   const at = roundLockAt(startDate, tour, round);
@@ -97,10 +109,11 @@ export async function GET(req: Request) {
         SELECT 1 FROM fade_picks WHERE user_id = ${MODEL_ID} AND tournament_id = ${tid} LIMIT 1` as unknown[];
       if (have.length === 0) {
         const fades = modelFadePicks(preds, ev.purse);
+        const idOf = idsFrom(preds);
         for (const name of fades) {
           await sql`
-            INSERT INTO fade_picks (user_id, user_name, tournament_id, player_name)
-            VALUES (${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${name})
+            INSERT INTO fade_picks (user_id, user_name, tournament_id, player_name, player_id)
+            VALUES (${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${name}, ${idOf(name)})
             ON CONFLICT (user_id, tournament_id, player_name) DO NOTHING`;
         }
         log.push(`${tid}: fade trio ${fades.join(", ")}`);
@@ -204,10 +217,11 @@ export async function GET(req: Request) {
             slate = modelLetItRidePick(preds, ev.purse, usesLeft, lg.uses_per_player,
                                        lg.players_per_week, upcoming);
           }
+          const idOf = idsFrom(preds);
           for (const name of slate) {
             await sql`
-              INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key, reason)
-              VALUES (${lg.id}, ${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${name}, ${nameKey(name)}, ${reasons[name] || null})
+              INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key, reason, player_id)
+              VALUES (${lg.id}, ${MODEL_ID}, ${MODEL_NAME}, ${tid}, ${name}, ${nameKey(name)}, ${reasons[name] || null}, ${idOf(name)})
               ON CONFLICT DO NOTHING`;
           }
           log.push(`${tid}: league ${lg.id} → ${slate.join(", ")}${values ? " (adviseSlate)" : " (modelLetItRidePick fallback)"}`);

@@ -9,6 +9,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { lookupResult } from "@/lib/resultLookup";
 import { visibleUserIds } from "@/lib/gameScope";
 import { openEventLocks } from "@/lib/eventLocks";
 
@@ -19,8 +20,6 @@ type EarningsResp = {
 };
 type School = { school: string; players: string[] };
 
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 async function fetchJson<T>(url: string): Promise<T | null> {
   try {
@@ -35,7 +34,7 @@ function schoolScore(school: string, rosters: School[], table: EarningsResp | nu
   if (!table || (!table.settled && !table.projected)) return { total: null, counted: [] };
   const roster = rosters.find(s => s.school === school)?.players ?? [];
   const earned = roster.map(p => {
-    const hit = table.players?.[nameKey(p)];
+    const hit = lookupResult(table.players, { player_name: p }, "collegeboard");
     return { player: p, earnings: hit?.earnings ?? 0, position: hit?.position ?? "—" };
   }).sort((a, b) => b.earnings - a.earnings).slice(0, 2);
   return { total: earned.reduce((s, e) => s + e.earnings, 0), counted: earned };

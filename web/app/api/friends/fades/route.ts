@@ -19,6 +19,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { fieldPlayerId } from "@/lib/fieldIds";
 import { nameOf } from "@/lib/displayName";
 import { track } from "@/lib/track";
 import { fadePool, expectedPayout, Probs } from "@/lib/modelBrain";
@@ -135,9 +136,10 @@ export async function POST(req: Request) {
   }
 
   const displayName = nameOf(await currentUser());
+  const playerId = await fieldPlayerId(ev.tid, player);   // id-first scoring (lib/resultKey)
   await sql`
-    INSERT INTO fade_picks (user_id, user_name, tournament_id, player_name)
-    VALUES (${userId}, ${displayName}, ${ev.tid}, ${player})
+    INSERT INTO fade_picks (user_id, user_name, tournament_id, player_name, player_id)
+    VALUES (${userId}, ${displayName}, ${ev.tid}, ${player}, ${playerId})
     ON CONFLICT (user_id, tournament_id, player_name) DO NOTHING`;
   await track(sql, userId, "pick_made", { game: "fade", tournament_id: ev.tid });
 

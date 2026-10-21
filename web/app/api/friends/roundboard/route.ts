@@ -14,15 +14,14 @@
 import { auth } from "@clerk/nextjs/server";
 import { roundLockAt } from "@/lib/lockTime";
 import { getSql, MODEL_API } from "@/lib/db";
+import { lookupResult } from "@/lib/resultLookup";
 import { visibleUserIds } from "@/lib/gameScope";
 
 const PENALTY = 5;
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
-type PickRow = { user_id: string; user_name: string; tournament_id: string; round: number; player_name: string };
+type PickRow = { user_id: string; user_name: string; tournament_id: string; round: number; player_name: string; player_id: string | null };
 type RoundsResp = { rounds_available: number;
-  players: Record<string, { rounds: Record<string, number> }> };
+  players: Record<string, { player_name?: string; player_id?: string | null; rounds: Record<string, number> }> };
 
 async function roundsFor(tid: string): Promise<RoundsResp | null> {
   try {
@@ -68,7 +67,7 @@ export async function GET(req: Request) {
   } catch { /* openKnown stays false: nothing revealed */ }
 
   const picks = await sql`
-    SELECT user_id, user_name, tournament_id, round, player_name
+    SELECT user_id, user_name, tournament_id, round, player_name, player_id
     FROM round_picks WHERE tournament_id = ${tid} AND user_id = ANY(${ids})` as PickRow[];
 
   const tids = [...new Set(picks.map(p => p.tournament_id))];
@@ -84,7 +83,7 @@ export async function GET(req: Request) {
     const visible = p.round <= maxLocked;
     const table = roundsByTid.get(p.tournament_id);
     const avail = table?.rounds_available ?? 0;
-    const hit = table?.players?.[nameKey(p.player_name)];
+    const hit = lookupResult(table?.players, p, "roundboard");
     let score: number | null = null;
     if (visible) {
       const s = hit?.rounds?.[String(p.round)];

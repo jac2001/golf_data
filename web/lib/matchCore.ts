@@ -3,7 +3,7 @@
  * event's money table, rank the group and answer "what needs to happen?"
  * Pure, so it's testable without a session (the route wraps it).
  */
-import { nameKey } from "./names";
+import { lookupResult } from "./resultLookup";
 
 export type PlayerMoney = { player_name: string; earnings: number; position: string;
   up_one?: number; thru?: string; to_par?: number | null; round?: number | null };
@@ -23,7 +23,7 @@ export function ranked<T extends { total: number }>(rows: T[]): (T & { rank: num
 }
 
 export function summarizeSlate(
-  picks: { user_id: string; player_name: string; reason?: string | null }[],
+  picks: { user_id: string; player_name: string; player_id?: string | null; reason?: string | null }[],
   table: Record<string, PlayerMoney> | null,
   graded: boolean,
   nameOf: (uid: string) => string,
@@ -31,7 +31,7 @@ export function summarizeSlate(
 ) {
   const byUser = new Map<string, Golfer[]>();
   for (const p of picks) {
-    const hit = table?.[nameKey(p.player_name)];
+    const hit = lookupResult(table, p, "match");
     byUser.set(p.user_id, [...(byUser.get(p.user_id) ?? []), {
       name: p.player_name, position: hit?.position ?? "—",
       earnings: graded ? (hit?.earnings ?? 0) : 0,

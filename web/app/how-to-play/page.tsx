@@ -14,9 +14,8 @@ import { PageHead } from "@/components/broadcast";
 import { Show } from "@clerk/nextjs";
 import { getPredictions, getOpenEvents, getEventEarnings, getDemoChallenges, DemoChallenge, PlayerPrediction, EarningsTable } from "@/lib/api";
 import { expectedPayout } from "@/lib/modelBrain";
+import { lookupResult } from "@/lib/resultLookup";
 
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 const card: React.CSSProperties = {
   background: "var(--bc-card)", border: "1px solid var(--bc-line)",
@@ -86,8 +85,8 @@ export default function HowToPlayPage() {
     })();
   }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
-  const realEarn = (name: string) => earnings?.players?.[nameKey(name)]?.earnings ?? 0;
-  const realPos = (name: string) => earnings?.players?.[nameKey(name)]?.position ?? "—";
+  const realEarn = (name: string) => lookupResult(earnings?.players, { player_name: name }, "how-to-play")?.earnings ?? 0;
+  const realPos = (name: string) => lookupResult(earnings?.players, { player_name: name }, "how-to-play")?.position ?? "—";
 
   const trioValue = useMemo(() =>
     picks.reduce((s, name) => {

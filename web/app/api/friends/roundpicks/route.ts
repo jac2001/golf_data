@@ -13,6 +13,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { roundLockAt } from "@/lib/lockTime";
 import { getSql, MODEL_API } from "@/lib/db";
+import { fieldPlayerId } from "@/lib/fieldIds";
 import { nameOf } from "@/lib/displayName";
 import { track } from "@/lib/track";
 
@@ -91,11 +92,12 @@ export async function POST(req: Request) {
   }
 
   const name = nameOf(await currentUser());
+  const playerId = await fieldPlayerId(ev.tid, player);   // id-first scoring (lib/resultKey)
   await sql`
-    INSERT INTO round_picks (user_id, user_name, tournament_id, round, player_name)
-    VALUES (${userId}, ${name}, ${ev.tid}, ${round}, ${player})
+    INSERT INTO round_picks (user_id, user_name, tournament_id, round, player_name, player_id)
+    VALUES (${userId}, ${name}, ${ev.tid}, ${round}, ${player}, ${playerId})
     ON CONFLICT (user_id, tournament_id, round)
-    DO UPDATE SET player_name = EXCLUDED.player_name, user_name = EXCLUDED.user_name`;
+    DO UPDATE SET player_name = EXCLUDED.player_name, player_id = EXCLUDED.player_id, user_name = EXCLUDED.user_name`;
   await track(sql, userId, "pick_made", { game: "round", tournament_id: ev.tid, round });
   const mine = await myPicks(sql, userId, ev.tid);
   return Response.json({ event: ev, ...mine, locks: roundLocks(ev.startDate, ev.tour) });

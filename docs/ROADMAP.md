@@ -67,9 +67,13 @@ workspace, then consolidate, then delete leftovers.
        if the refresh failed (euro still publishes). Tuesday: real exit status
        (PIPESTATUS), verified by latest_predictions.csv carrying this week's tid;
        its week check no longer hardcodes schedule_2026.csv.
-4. [ ] One result-identity contract: recap misses accented names (Aberg);
-       shared fixture across Match Center, standings, recap, Fade, College;
-       carry `earnings_estimated` everywhere.
+4. [x] One result-identity contract (Oct 21): picks store the PGA player_id
+       (additive column, approved), the API sends it and keeps same-name golfers
+       apart (the two Zach Johnsons), and every scoring view resolves through
+       Jack's `resolveResult` (id, then a unique accent/punctuation-free name,
+       else "ambiguous", logged). Aberg pick: $0 before, $259,500 now.
+       `earnings_estimated` carried to Match Center + recap. Known gap: DP World
+       Tour has no ids (name-only); DataGolf's live board has no PGA ids.
 5. [ ] Event-specific leaderboard selection (Live reads the newest file).
 
 **Phase B: workspace** (Jack): move out of iCloud, then quarantine the " 2" duplicates.

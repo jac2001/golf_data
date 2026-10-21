@@ -12,6 +12,7 @@
 
 import { ImageResponse } from "next/og";
 import { getSql, MODEL_API } from "@/lib/db";
+import { lookupResult } from "@/lib/resultLookup";
 import { openEventLocks } from "@/lib/eventLocks";
 
 export const runtime = "nodejs";
@@ -22,8 +23,6 @@ const TEXT = "#f2f7f0", MUTED = "#9dbfa9", YELLOW = "#ffd24a", GREEN = "#6fd49a"
 const money = (v: number) =>
   v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
 const toPar = (v: number) => (v > 0 ? `+${v}` : v === 0 ? "E" : String(v));
-const nameKey = (n: string) =>
-  n.toLowerCase().replace(",", "").split(/\s+/).filter(Boolean).sort().join(" ");
 
 async function modelApi(path: string): Promise<Record<string, unknown> | null> {
   try {
@@ -68,11 +67,11 @@ export async function GET(req: Request) {
     const fade = game === "fades";
     const picks = (fade
       ? await sql`
-        SELECT user_id, user_name, player_name FROM fade_picks
+        SELECT user_id, user_name, player_name, player_id FROM fade_picks
         WHERE tournament_id = ${tid}`
       : await sql`
-        SELECT user_id, user_name, player_name FROM league_picks
-        WHERE tournament_id = ${tid} AND league_id = ${leagueId}`) as { user_id: string; user_name: string; player_name: string }[];
+        SELECT user_id, user_name, player_name, player_id FROM league_picks
+        WHERE tournament_id = ${tid} AND league_id = ${leagueId}`) as { user_id: string; user_name: string; player_name: string; player_id: string | null }[];
     const mine = picks.filter(p => p.user_id === uid);
     if (!mine.length) return new Response("no picks for this user/event", { status: 404 });
     userName = mine[0].user_name;
@@ -81,11 +80,11 @@ export async function GET(req: Request) {
     const table = (earn?.players ?? {}) as Record<string, { earnings: number; position: string; player_name: string }>;
     const estimated = !!earn?.earnings_estimated;
 
-    const scoreOf = (ps: { player_name: string }[]) =>
-      ps.reduce((s, p) => s + (table[nameKey(p.player_name)]?.earnings ?? 0), 0);
+    const scoreOf = (ps: { player_name: string; player_id?: string | null }[]) =>
+      ps.reduce((s, p) => s + (lookupResult(table, p, "receipt")?.earnings ?? 0), 0);
 
     lines = mine.map(p => {
-      const hit = table[nameKey(p.player_name)];
+      const hit = lookupResult(table, p, "receipt");
       return {
         label: hit?.position ? `#${hit.position}` : "—",
         player: p.player_name,
@@ -114,22 +113,22 @@ export async function GET(req: Request) {
     }
   } else {
     const picks = await sql`
-      SELECT user_id, user_name, round, player_name FROM round_picks
-      WHERE tournament_id = ${tid}` as { user_id: string; user_name: string; round: number; player_name: string }[];
+      SELECT user_id, user_name, round, player_name, player_id FROM round_picks
+      WHERE tournament_id = ${tid}` as { user_id: string; user_name: string; round: number; player_name: string; player_id: string | null }[];
     const mine = picks.filter(p => p.user_id === uid).sort((a, b) => a.round - b.round);
     if (!mine.length) return new Response("no round picks for this user/event", { status: 404 });
     userName = mine[0].user_name;
 
     const rounds = await modelApi(`/api/events/rounds?tournament_id=${tid}`);
-    const table = (rounds?.players ?? {}) as Record<string, { rounds: Record<string, number> }>;
+    const table = (rounds?.players ?? {}) as Record<string, { player_name?: string; player_id?: string | null; rounds: Record<string, number> }>;
     const avail = Number(rounds?.rounds_available ?? 0);
 
-    const scoreRow = (p: { round: number; player_name: string }): number | null => {
-      const s = table[nameKey(p.player_name)]?.rounds?.[String(p.round)];
+    const scoreRow = (p: { round: number; player_name: string; player_id?: string | null }): number | null => {
+      const s = lookupResult(table, p, "receipt/round")?.rounds?.[String(p.round)];
       if (s !== undefined) return s;
       return p.round <= avail ? 5 : null;  // missed round penalty
     };
-    const scoreOf = (ps: { round: number; player_name: string }[]) =>
+    const scoreOf = (ps: { round: number; player_name: string; player_id?: string | null }[]) =>
       ps.reduce((s, p) => s + (scoreRow(p) ?? 0), 0);
 
     lines = mine.map(p => {

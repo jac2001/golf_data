@@ -12,6 +12,7 @@
  */
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { fieldPlayerId } from "@/lib/fieldIds";
 import { track } from "@/lib/track";
 import { validateLeaguePick } from "@/lib/leagueRules";
 import { nameKey } from "@/lib/names";
@@ -126,11 +127,12 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   // concurrent inserts each count the same stale total and all succeed
   // (race test: 5 stored against a limit of 3). Per-(league, member), so
   // other members' picks never wait. Released at commit.
+  const playerId = await fieldPlayerId(s.tid, golfer);   // id-first scoring (lib/resultKey)
   const [, inserted] = await sql.transaction([
     sql`SELECT pg_advisory_xact_lock(hashtextextended(${`${league.id}:${userId}`}, 0))`,
     sql`
-      INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key)
-      SELECT ${league.id}, ${userId}, ${userName}, ${s.tid}, ${golfer}, ${key}
+      INSERT INTO league_picks (league_id, user_id, user_name, tournament_id, player_name, player_key, player_id)
+      SELECT ${league.id}, ${userId}, ${userName}, ${s.tid}, ${golfer}, ${key}, ${playerId}
       WHERE (SELECT count(*) FROM league_picks
              WHERE league_id = ${league.id} AND user_id = ${userId} AND player_key = ${key}
                AND (${allTours} OR left(tournament_id, 1) = ${prefix}))

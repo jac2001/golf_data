@@ -14,11 +14,12 @@
  */
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
+import { lookupResult } from "@/lib/resultLookup";
 import { nameKey } from "@/lib/names";
 import { openEventLocks, pickVisible } from "@/lib/eventLocks";
 import { weeklyWinners } from "@/lib/weeklyWinners";
 
-type PickRow = { user_id: string; user_name: string; tournament_id: string; player_name: string; player_key: string };
+type PickRow = { user_id: string; user_name: string; tournament_id: string; player_name: string; player_key: string; player_id: string | null };
 type EarningsResp = {
   settled: boolean; projected?: boolean;
   players: Record<string, { player_name: string; earnings: number; position: string }>;
@@ -50,7 +51,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   if (!league.length) return Response.json({ error: "Not your league" }, { status: 403 });
 
   const [allRaw, locks, rosterRaw] = await Promise.all([
-    sql`SELECT user_id, user_name, tournament_id, player_name, player_key
+    sql`SELECT user_id, user_name, tournament_id, player_name, player_key, player_id
         FROM league_picks WHERE league_id = ${leagueId}`,
     openEventLocks(),
     sql`SELECT user_id, user_name FROM group_members WHERE group_id = ${league[0].group_id}`,
@@ -97,7 +98,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     const tour: "pga" | "euro" = p.tournament_id.startsWith("E") ? "euro" : "pga";
     const ev = m.events[p.tournament_id] ?? { tour, picks: [], event_total: 0, settled: false, projected: false };
     const table = earnings.get(p.tournament_id);
-    const hit = table?.players?.[nameKey(p.player_name)];
+    const hit = lookupResult(table?.players, p, "standings");
     const gradable = !!(table?.settled || table?.projected);
     const earned = gradable ? (hit?.earnings ?? 0) : null;
     ev.picks.push({ player: p.player_name, earnings: earned, position: hit?.position ?? null });
