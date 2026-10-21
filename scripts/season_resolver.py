@@ -46,7 +46,7 @@ from datetime import date
 # your own that pins your LEAD_DAYS (the day before the window opens and the
 # day it opens).
 
-# A week is an acceptable gap give that there is a golf tournament usually each 
+# A week is an acceptable gap give that there is a golf tournament usually each week
 LEAD_DAYS = 7
 
 
