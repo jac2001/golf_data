@@ -17,7 +17,7 @@ case "$f" in
     out=$("$PY" -m py_compile "$f" 2>&1) || fail "Syntax error in ${f#$ROOT/}:" "$out"
     case "$f" in
       "$ROOT"/scripts/validation/*|"$ROOT"/scripts/predictions/*|"$ROOT"/scripts/features/*|"$ROOT"/scripts/scrapers/*|"$ROOT"/api/*)
-        for t in scripts/validation/test_prediction_integrity.py scripts/validation/test_euro_integrity.py \
+        for t in scripts/validation/test_prediction_integrity.py scripts/validation/test_euro_integrity.py scripts/validation/test_model_manifest.py \
                  scripts/features/test_euro_features.py scripts/scrapers/test_euro_schedule.py scripts/scrapers/test_euro_purses.py \
                  api/test_routes.py api/test_owner_guard.py; do
           out=$(cd "$ROOT" && "$PY" "$t" 2>&1) || fail "$t failed after editing ${f#$ROOT/}:" "$out"

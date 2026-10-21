@@ -1,0 +1,112 @@
+{
+  "_doc": "Every model artifact serving loads. required = must be present and match (fails post-run checks). in_git=false = local only: CI runs without it. Re-record after a deliberate retrain: python3 scripts/validation/model_manifest.py --write. Audit finding 11.",
+  "artifacts": {
+    "data/models/win_model_final.pkl": {
+      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
+      "required": true,
+      "in_git": true,
+      "sha256": "2c80ddae2177dc585556345fe6335f9a65ed6fb12a9ecf92e429df77c7d94e43"
+    },
+    "data/models/top5_model_final.pkl": {
+      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
+      "required": true,
+      "in_git": true,
+      "sha256": "cbda54d94deb5e5e9bf06db7ce58d2648ca83e311e563399ed6dc2d1ca1cde31"
+    },
+    "data/models/top10_model_final.pkl": {
+      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
+      "required": true,
+      "in_git": true,
+      "sha256": "b1cf4d9bb537f4706c70526cb54182842e4c39cf5488f0a19029e206a62bcade"
+    },
+    "data/models/top20_model_final.pkl": {
+      "loaded_by": "scripts/validation/generate_calibration_data.py",
+      "required": true,
+      "in_git": true,
+      "sha256": "fa3feff4ed9eb3939244c6cfba467e585a09eb418443e9644995a35884456a76"
+    },
+    "data/models/feature_medians.json": {
+      "loaded_by": "predict_tournament.py (NaN fill = training medians)",
+      "required": true,
+      "in_git": true,
+      "sha256": "ec356f09afcc3b3e25cb1a4e0a566df79552336ed3ca0fc6679bcba0af59f2bb"
+    },
+    "data/models/cut_model.pkl": {
+      "loaded_by": "scripts/predictions/cut_model.py",
+      "required": true,
+      "in_git": true,
+      "sha256": "956a226b2d182d4863364646562e138ea63bf45509239a120273ad9287844019"
+    },
+    "data/models/cut_model_features.txt": {
+      "loaded_by": "scripts/predictions/cut_model.py",
+      "required": true,
+      "in_git": true,
+      "sha256": "229222fb303d9c83de5ce7b7448620f9778dd8070a27f3f40ecf2b0bd9cbce85"
+    },
+    "data/models/euro/euro_won_model.pkl": {
+      "loaded_by": "scripts/predictions/predict_euro.py",
+      "required": true,
+      "in_git": true,
+      "sha256": "ca00c2967d184cd7e8a8e90f5195df865624130738b1c63acb85dd2a5e7328da"
+    },
+    "data/models/euro/euro_top5_model.pkl": {
+      "loaded_by": "scripts/predictions/predict_euro.py",
+      "required": true,
+      "in_git": true,
+      "sha256": "6068c4233735c09cd6fb00867581b058436047e7e0c698f841c08feef4677f29"
+    },
+    "data/models/euro/euro_top10_model.pkl": {
+      "loaded_by": "scripts/predictions/predict_euro.py",
+      "required": true,
+      "in_git": true,
+      "sha256": "e20ff10ca7f6bbc1a29ce18dfa4d5c8acfe43a2c70b7d92f07187860f2f1efee"
+    },
+    "data/models/euro/euro_top20_model.pkl": {
+      "loaded_by": "scripts/predictions/predict_euro.py",
+      "required": true,
+      "in_git": true,
+      "sha256": "66b34f9e2bb5bc49287d18fa7d02e54f312412ce1b94c5e9cc4f26a6c9996c4a"
+    },
+    "data/models/euro/euro_made_cut_model.pkl": {
+      "loaded_by": "scripts/predictions/predict_euro.py",
+      "required": true,
+      "in_git": true,
+      "sha256": "585ac8acc4e773a9344a2a182830e04fb9587cb08d02a0f5e40b1c3cabb97991"
+    },
+    "data/models/score_model_final.pkl": {
+      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
+      "required": false,
+      "in_git": false,
+      "sha256": "821ce62ddbe7bd6ab5c66e835aa2e3c1b4ff343a94a71a5e25ecd3e4849d0b39",
+      "effect_when_absent": "no projected_score / proj_ceiling / proj_median / proj_floor columns; live_update_predictions uses 0.0 for remaining rounds"
+    },
+    "data/models/score_model_q10.pkl": {
+      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
+      "required": false,
+      "in_git": false,
+      "sha256": "65c225f1d10b1cc4b128e63f8ac5bcd97d6e1ab03f7c55f0b73e6584a5f0c910",
+      "effect_when_absent": "no proj_ceiling column"
+    },
+    "data/models/score_model_q50.pkl": {
+      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
+      "required": false,
+      "in_git": false,
+      "sha256": "4ca8f5a4296b972c6acf3ee4394f95c436263ce1e4da49dc06c3329c2bfa0a8e",
+      "effect_when_absent": "no proj_median column"
+    },
+    "data/models/score_model_q90.pkl": {
+      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
+      "required": false,
+      "in_git": false,
+      "sha256": "f93cd2c5449a6acd22c4ce4f31140045cc894c3ed58b460b2ef889c0df0187e8",
+      "effect_when_absent": "no proj_floor column"
+    },
+    "data/models/round_matchup_model.pkl": {
+      "loaded_by": "scripts/models/recommend_bets.py _load_round_matchup_model",
+      "required": false,
+      "in_git": false,
+      "sha256": "fa438310fe6bfe31b06311138fd02c67004cd2cf666cb1ff517a22547d7caeb2",
+      "effect_when_absent": "round matchup recommendations skip the per-round h2h model"
+    }
+  }
+}

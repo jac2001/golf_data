@@ -871,6 +871,9 @@ def run_post_run_sanity_checks(
                         "file": _p.name,
                         "event_name": str(_ev["event_name"].iloc[0]) if "event_name" in _ev else "",
                         "modified": datetime.fromtimestamp(_p.stat().st_mtime).isoformat()}
+            # Which model artifacts this environment actually had (local vs CI).
+            from model_manifest import present as _artifacts_present
+            _manifest["model_artifacts"] = _artifacts_present()
             (OUTPUTS_DIR / f"prediction_inputs_{tid}.json").write_text(json.dumps(_manifest, indent=2))
             notes.append(f"✓ Inputs manifest: prediction_inputs_{tid}.json")
         except Exception as e:
@@ -886,6 +889,17 @@ def run_post_run_sanity_checks(
         notes.extend(_fr_notes)
     except Exception as e:
         failures.append(f"Freshness check could not run: {e}")
+
+    # 2d) Model artifacts: required ones present and unchanged; optional
+    #     local-only ones reported, so a local run and a CI run are comparable.
+    try:
+        sys.path.insert(0, str(SCRIPTS_DIR / "validation"))
+        from model_manifest import check as _artifact_check
+        _ma_fail, _ma_notes = _artifact_check()
+        failures.extend(f"Model artifacts: {m}" for m in _ma_fail)
+        notes.extend(_ma_notes)
+    except Exception as e:
+        failures.append(f"Model artifact check could not run: {e}")
 
     # 3) latest_predictions.csv must also be updated this run (dashboard dependency).
     latest_preds = OUTPUTS_DIR / "latest_predictions.csv"
