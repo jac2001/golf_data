@@ -33,8 +33,7 @@
   line-height: 1.5;
 }
 
-.value,
-.lineupValue {
+.value {
   display: block;
   margin-top: 5px;
   color: var(--bc-text);
@@ -52,38 +51,6 @@
   line-height: 1.5;
 }
 
-.lineup {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  margin-top: 12px;
-  padding: 16px;
-  border: 1px solid var(--bc-line-hi);
-  border-radius: 10px;
-  background: var(--bc-card);
-  font-family: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
-.lineupValue {
-  font-size: 17px;
-}
-
-.action {
-  flex-shrink: 0;
-  color: var(--bc-text);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.lineup:hover {
-  background: var(--bc-raised);
-}
-
-.lineup:focus-visible,
 .card:focus-visible,
 .details summary:focus-visible {
   outline: 2px solid var(--bc-yellow);
@@ -122,11 +89,5 @@
 
   .value {
     font-size: 18px;
-  }
-
-  .lineup {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 10px;
   }
 }

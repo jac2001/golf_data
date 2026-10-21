@@ -2135,132 +2135,6 @@ def get_live_vs_predictions() -> dict:
     return {"tournament_id": tid, "players": players}
 
 
-@app.get("/api/live/my-lineup")
-def get_my_lineup_live() -> dict:
-    """This week's 3 picks with live leaderboard status.
-    Source priority: tracker weekly_lineups for current week → strategy_reasoning.json.
-    """
-    tid = _get_tournament_id()
-
-
-    picks: list[str] = []
-    tournament_name = ""
-
-    # 1. Try tracker weekly_lineups for current week (most reliable source of actual picks)
-    try:
-        sched = pd.read_csv(_SCHED_CSV)
-        sched_row = sched[sched["tournament_id"].astype(str) == tid]
-        if not sched_row.empty:
-            current_week = int(sched_row["week"].iloc[0])
-            tournament_name = str(sched_row["tournament_name"].iloc[0])
-            tracker_path = _TRACKER_JSON
-            if tracker_path.exists():
-                tracker = json.loads(tracker_path.read_text())
-                week_key = f"week_{current_week}"
-                week_entry = tracker.get("weekly_lineups", {}).get(week_key, {})
-                raw_lineup = week_entry.get("lineup", [])
-                if raw_lineup:
-                    picks = [_flip(str(n)) for n in raw_lineup]
-    except Exception:
-        pass
-
-    # 2. Fall back to strategy_reasoning.json (model-recommended lineup)
-    if not picks:
-        sr_path = OUTPUTS_DIR / "strategy_reasoning.json"
-        if sr_path.exists():
-            with open(sr_path) as f:
-                sr = json.load(f)
-            # Same rule as /api/lineup: an unversioned or other-event file is
-            # stale, never this week's lineup (audit finding 9).
-            if str(sr.get("tournament_id", "")) == tid:
-                tournament_name = sr.get("tournament", tournament_name)
-                picks = [_flip(n) for n in sr.get("lineup", [])]
-
-    if not picks:
-        return {"tournament_id": tid, "picks": [], "tournament": tournament_name}
-
-    def _score_str_local(n) -> str | None:
-        if n is None: return None
-        try:
-            n = int(n)
-            return "E" if n == 0 else (f"+{n}" if n > 0 else str(n))
-        except (ValueError, TypeError):
-            return str(n)
-
-    # Build lb_map: DB (freshest) → in-play cache → CSV fallback
-    lb_map: dict[str, dict] = {}
-
-    if _DB_AVAILABLE:
-        try:
-            with _get_db_conn() as conn:
-                df_lb = conn.execute(
-                    "SELECT * FROM live_leaderboard WHERE tournament_id=?", [tid]
-                ).fetchdf()
-            for _, row in df_lb.iterrows():
-                lb_map[str(row.get("player_name", "")).strip().lower()] = {
-                    "position":      _safe(row.get("position")),
-                    "total":         _score_str_local(row.get("total_numeric")),
-                    "total_numeric": _safe(row.get("total_numeric")),
-                    "thru":          _safe(row.get("thru")),
-                    "R1": _safe(row.get("r1")), "R2": _safe(row.get("r2")),
-                    "R3": _safe(row.get("r3")), "R4": _safe(row.get("r4")),
-                    "made_cut":      _safe(row.get("made_cut")),
-                    "win_prob":      _safe(row.get("win_prob")),
-                    "top10_prob":    _safe(row.get("top10_prob")),
-                }
-        except Exception:
-            pass
-
-    # In-play cache fallback (populated on each /api/live/inplay hit)
-    if not lb_map:
-        for p in (_inplay_cache.get("data") or {}).get("players", []):
-            name_key = str(p.get("player_name", "")).strip().lower()
-            lb_map[name_key] = {
-                "position": p.get("position"), "total": p.get("total"),
-                "total_numeric": p.get("total_numeric"), "thru": p.get("thru"),
-                "R1": p.get("R1"), "R2": p.get("R2"), "R3": p.get("R3"), "R4": p.get("R4"),
-                "made_cut": p.get("made_cut"), "win_prob": p.get("win_prob"), "top10_prob": p.get("top10_prob"),
-            }
-
-    # CSV final fallback
-    if not lb_map:
-        lb_path, _ = _live_board_files(_get_tournament_id())
-        if lb_path is not None:
-            lb = pd.read_csv(lb_path)
-            for col in ["total_numeric", "R1", "R2", "R3", "R4"]:
-                if col in lb.columns: lb[col] = pd.to_numeric(lb[col], errors="coerce")
-            for _, row in lb.iterrows():
-                lb_map[str(row.get("player_name", "")).strip().lower()] = {
-                    "position": _safe(row.get("position")), "total": _safe(row.get("total")),
-                    "total_numeric": _safe(row.get("total_numeric")), "thru": _safe(row.get("thru")),
-                    "R1": _safe(row.get("R1")), "R2": _safe(row.get("R2")),
-                    "R3": _safe(row.get("R3")), "R4": _safe(row.get("R4")),
-                    "made_cut": _safe(row.get("made_cut")),
-                }
-
-    # Build a last-name → full-name lookup so short tracker names (e.g. "Scheffler") resolve
-    lastname_map: dict[str, str] = {}
-    for full_lower in lb_map:
-        parts = full_lower.split()
-        if parts:
-            lastname_map[parts[-1]] = full_lower  # last token → full key
-
-    result = []
-    for name in picks:
-        key = name.lower()
-        lb_info = lb_map.get(key)
-        if lb_info is None:
-            # Try matching on last name token
-            last = key.split()[-1]
-            resolved = lastname_map.get(last)
-            if resolved:
-                lb_info = lb_map[resolved]
-                name = " ".join(w.capitalize() for w in resolved.split())  # pretty-print full name
-        result.append({"player": name, **(lb_info or {})})
-
-    return {"tournament_id": tid, "tournament": tournament_name, "picks": result}
-
-
 _SG_STATS_TTL_SECS = 300  # re-fetch from DG if DB row is older than 5 minutes
 _ROUND_PARAM_TO_NUM = {"event_avg": 0, "1": 1, "2": 2, "3": 3, "4": 4}
 
@@ -2754,7 +2628,7 @@ def get_inplay() -> dict:
     _inplay_cache["ts"]   = time.time()
     _inplay_cache["data"] = result
 
-    # Write to live_leaderboard DB so my-lineup and other endpoints always have fresh data
+    # Write to live_leaderboard DB so the live endpoints always have fresh data
     if _DB_AVAILABLE and rows:
         try:
             tid = result["tournament_id"]

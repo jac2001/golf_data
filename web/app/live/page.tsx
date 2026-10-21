@@ -1,7 +1,8 @@
 /**
  * app/live/page.tsx — Live tournament page
  * =========================================
- * Four tabs: Leaderboard, vs Predictions, My Lineup, SG Stats.
+ * Tabs: Leaderboard, vs Forecast, My Lineup (a link to Match Center, where
+ * each member's real game picks live), Strokes Gained, Hole Stats.
  *
  * Uses the same lazy-loading pattern as the predictions page:
  * - "leaderboard" tab loads on mount
@@ -11,18 +12,18 @@
 
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useStoredChoice } from "@/lib/useStoredChoice";
 import {
-  getTournament, getInPlay, getVsPredictions, getMyLineupLive, getSgStats, getHoleScores,
+  getTournament, getInPlay, getVsPredictions, getSgStats, getHoleScores,
   getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
-  Tournament, InPlayResponse, VsPredPlayer, MyLineupResponse, SgStatsResponse, HoleScoresResponse,
+  Tournament, InPlayResponse, VsPredPlayer, SgStatsResponse, HoleScoresResponse,
   HoleStatsResponse, LivePulse as LivePulseData, WithdrawalsResponse,
   getOpenEvents, getEuroLive, EuroLive, getEuroCourse, getScorecard,
 } from "@/lib/api";
 import InPlayLeaderboard from "@/components/InPlayLeaderboard";
 import VsPredictions from "@/components/VsPredictions";
-import MyLineupLive from "@/components/MyLineupLive";
 import SgStatsTable from "@/components/SgStatsTable";
 import HoleStatsTable from "@/components/HoleStatsTable";
 import LivePulse from "@/components/LivePulse";
@@ -59,7 +60,6 @@ export default function LivePage() {
   const [inPlay,       setInPlay]       = useState<InPlayResponse | null>(null);
   const [holeScores,   setHoleScores]   = useState<HoleScoresResponse | null>(null);
   const [vsData,       setVsData]       = useState<VsPredPlayer[] | null>(null);
-  const [lineupData,   setLineupData]   = useState<MyLineupResponse | null>(null);
   const [sgData,       setSgData]       = useState<SgStatsResponse | null>(null);
   const [sgRound,      setSgRound]      = useState("event_avg");
   const [holeStatsData, setHoleStatsData] = useState<HoleStatsResponse | null>(null);
@@ -74,7 +74,6 @@ export default function LivePage() {
   const [loadingLb,     setLoadingLb]     = useState(true);
   const [refreshing,    setRefreshing]    = useState(false);
   const [loadingVs,     setLoadingVs]     = useState(false);
-  const [loadingLineup, setLoadingLineup] = useState(false);
   const [loadingSg,     setLoadingSg]     = useState(false);
   const [error,         setError]         = useState<string | null>(null);
   const [lastPollAt,    setLastPollAt]    = useState<Date | null>(null);
@@ -152,13 +151,6 @@ export default function LivePage() {
     if (!loaded.has("vspred") || vsData) return;
     setLoadingVs(true);
     getVsPredictions().then(d => setVsData(d.players)).finally(() => setLoadingVs(false));
-  }, [loaded]);
-
-  // ── Lazy load: my lineup ─────────────────────────────────────────────────────
-  useEffect(() => {
-    if (!loaded.has("mylineup") || lineupData) return;
-    setLoadingLineup(true);
-    getMyLineupLive().then(setLineupData).finally(() => setLoadingLineup(false));
   }, [loaded]);
 
   // ── Lazy load: SG stats (also re-fetches when round selector changes) ────────
@@ -322,9 +314,16 @@ export default function LivePage() {
       )}
 
       {activeTab === "mylineup" && (
-        loadingLineup ? <Spinner /> : lineupData ? (
-          <MyLineupLive picks={lineupData.picks} tournament={lineupData.tournament} holeScores={holeScores?.by_player} />
-        ) : <Empty text="No lineup for this event yet." />
+        // Your lineup is your game picks, per group and league: Match Center
+        // has them (audit finding 9 retired the global strategy-file trio).
+        <div style={{ padding: "32px 24px", textAlign: "center", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+          <div style={{ color: "var(--bc-muted)", marginBottom: 16 }}>
+            Your lineup lives with your group&apos;s game.
+          </div>
+          <Link href="/match" style={{ color: "var(--bc-green)", fontWeight: 700 }}>
+            Open Match Center <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       )}
 
       {activeTab === "sg" && (

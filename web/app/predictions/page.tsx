@@ -1,8 +1,9 @@
 /**
  * app/predictions/page.tsx — This Week page
  * ==========================================
- * Four tabs: Field (predictions table), Lineup (3 picks),
- * Tee Times (grouped by time slot), Course (hole scorecard).
+ * Tabs: Field (predictions table), Tee Times (grouped by time slot),
+ * Course Guide, vs DataGolf, Course Fit. (The strategy-file "Model lineup"
+ * tab was retired Oct 21: the model's real picks are its league picks.)
  *
  * Data loading pattern here is slightly different from betting/page.tsx:
  * - The tournament header loads immediately on mount (like betting page)
@@ -18,14 +19,13 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useStoredChoice } from "@/lib/useStoredChoice";
 import {
   getTournament, getPredictions, getLineup, getTeeTimes, getCourse, getModelComparison,
-  getWeather, getIntel, refreshIntel, generateLineup,
+  getWeather, getIntel, refreshIntel,
   Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
   ModelCompPlayer, WeatherResponse, CourseFitResponse,
   getCourseFit, getOpenEvents, getEuroWeek, getEventRounds, EuroWeekMeta, EventRounds, PlayerPrediction, IntelResponse,
   getEuroTeeTimes, getEuroCourse, EuroTeeTimes, EuroTeeTime, EuroCourseGuide, getGolferForm, GolferForm,
 } from "@/lib/api";
 import PredictionsTable from "@/components/PredictionsTable";
-import LineupCards from "@/components/LineupCards";
 import TeeTimesGrid from "@/components/TeeTimesGrid";
 import CourseCard from "@/components/CourseCard";
 import ModelComparison from "@/components/ModelComparison";
@@ -36,11 +36,10 @@ import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import styles from "./summary.module.css";
 import { useIsAdmin } from "@/lib/useIsAdmin";
-type Tab = "field" | "lineup" | "teetimes" | "course" | "dg" | "coursefit";
+type Tab = "field" | "teetimes" | "course" | "dg" | "coursefit";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "field",     label: "Field"        },
-  { id: "lineup",    label: "Model lineup" },
   { id: "teetimes",  label: "Tee Times"    },
   { id: "course",    label: "Course Guide" },
   { id: "dg",        label: "vs DataGolf"  },
@@ -103,11 +102,7 @@ export default function PredictionsPage() {
   const [weather, setWeather]         = useState<WeatherResponse | null>(null);
   const [intel, setIntel]             = useState<IntelResponse | null>(null);
 
-  const [generatingLineup, setGeneratingLineup] = useState(false);
-  const [generateMsg, setGenerateMsg]           = useState<string | null>(null);
-
   const [loadingField, setLoadingField]       = useState(true);
-  const [loadingLineup, setLoadingLineup]     = useState(false);
   const [loadingTT, setLoadingTT]             = useState(false);
   const [loadingCourse, setLoadingCourse]     = useState(false);
   const [loadingDg, setLoadingDg]             = useState(false);
@@ -121,7 +116,7 @@ export default function PredictionsPage() {
 
   // ── Core data fetch (called on mount + every 5 min) ──────────────────────────
   const fetchCore = useCallback(async (silent = false) => {
-    // Lineup, weather and intel don't depend on the predictions, so they
+    // Lineup (for pick highlights), weather and intel don't depend on the predictions, so they
     // start alongside them instead of waiting for them (they used to queue
     // behind /api/predictions: a second wave ~3s into the page).
     if (!silent) {
@@ -147,13 +142,6 @@ export default function PredictionsPage() {
     pollTimer.current = setInterval(() => fetchCore(true), REFRESH_MS);
     return () => { if (pollTimer.current) clearInterval(pollTimer.current); };
   }, [fetchCore]);
-
-  // ── Lazy load: lineup (no-op if already loaded eagerly on mount) ─────────────
-  useEffect(() => {
-    if (!loaded.has("lineup") || lineup) return;
-    setLoadingLineup(true);
-    getLineup().then(setLineup).catch(() => {}).finally(() => setLoadingLineup(false));
-  }, [loaded]);
 
   // ── Lazy load: tee times ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -270,20 +258,6 @@ export default function PredictionsPage() {
           />
           <FieldStrengthCard players={preds.players} />
           </div>
-          {isSignedIn && (
-            <button type="button" className={styles.lineup} onClick={() => activateTab("lineup")}>
-              <span>
-                <span className={styles.label}>Model lineup</span>
-                <span className={styles.lineupValue}>
-                  {lineup?.confirmed && lineup.picks.length
-                    ? lineup.picks.map(p => p.player_name).join(" · ")
-                    : "Not generated yet"}
-                </span>
-                <span className={styles.support}>Your game picks are in Friends Game.</span>
-              </span>
-              <span className={styles.action}>View lineup <span aria-hidden="true">→</span></span>
-            </button>
-          )}
           {tournament?.defending_champion && (
             <details className={styles.details}>
               <summary>Tournament details</summary>
@@ -347,53 +321,6 @@ export default function PredictionsPage() {
                 )}
               </>
             : <Empty text="No predictions available." />
-      )}
-
-      {activeTab === "lineup" && (
-        loadingLineup ? <Spinner /> :
-        lineup?.stale ? (
-          <div style={{ padding: "32px 24px", textAlign: "center", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
-            <div style={{ color: "var(--bc-muted)", fontSize: "0.95em", marginBottom: 8 }}>
-              The model hasn&apos;t generated a lineup for this tournament yet.
-              This is its suggestion — your own picks are in the Friends Game.
-            </div>
-            <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginBottom: 20 }}>
-              Last generated for: <span style={{ color: "var(--bc-muted)" }}>{lineup.stale_tournament}</span>
-            </div>
-            <button
-              onClick={async () => {
-                setGeneratingLineup(true);
-                setGenerateMsg(null);
-                try {
-                  const r = await generateLineup();
-                  setGenerateMsg(r.message ?? "Running in background — reload in ~30 seconds.");
-                } catch {
-                  setGenerateMsg("Failed to start. Is the API running?");
-                } finally {
-                  setGeneratingLineup(false);
-                }
-              }}
-              disabled={generatingLineup}
-              style={{
-                background: generatingLineup ? "var(--bc-panel)" : "#0a1f3a",
-                border: "1px solid #1e5a3f", borderRadius: 6,
-                color: generatingLineup ? "var(--bc-muted)" : "var(--bc-green)",
-                padding: "8px 20px", fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 700,
-                cursor: generatingLineup ? "default" : "pointer",
-              }}
-            >
-              {generatingLineup ? "Starting…" : "Generate Lineup"}
-            </button>
-            {generateMsg && (
-              <div style={{ marginTop: 12, color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>{generateMsg}</div>
-            )}
-          </div>
-        ) :
-        lineup ? (
-          <LineupCards picks={lineup.picks} narrative={lineup.weekly_narrative} generatedAt={lineup.generated_at} />
-        ) : (
-          <Empty text="No lineup data. Run the season strategy pipeline." />
-        )
       )}
 
       {activeTab === "teetimes" && (

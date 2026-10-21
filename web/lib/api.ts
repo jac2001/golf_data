@@ -228,13 +228,6 @@ export type LineupResponse = {
   confirmed: boolean;
 };
 
-export async function generateLineup(): Promise<{ status: string; message?: string }> {
-  // Same-origin: the owner-gated relay holds the proxy secret.
-  const res = await apiFetch(`/api/generate-analysis`, { method: "POST", cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to start lineup generation");
-  return res.json();
-}
-
 export type TeeTimePlayer = {
   name: string;
   start_tee: number | null;
@@ -643,28 +636,6 @@ export type VsPredPlayer = {
   rank_diff: number | null;  // positive = outperforming model, negative = underperforming
 };
 
-export type MyPickPlayer = {
-  player: string;
-  position: string | null;
-  total: string | null;
-  total_numeric: number | null;
-  thru: string | null;
-  R1: number | null;
-  R2: number | null;
-  R3: number | null;
-  R4: number | null;
-  made_cut: boolean | null;
-  status: string | null;
-  position_change: number | null;
-  movement: string | null;
-};
-
-export type MyLineupResponse = {
-  tournament_id: string;
-  tournament: string;
-  picks: MyPickPlayer[];
-};
-
 export type SgStatPlayer = {
   player: string;
   position: string | null;  // "1", "T3", "WD" etc.
@@ -710,12 +681,6 @@ export async function getLeaderboard(): Promise<LeaderboardResponse> {
 export async function getVsPredictions(): Promise<{ tournament_id: string; players: VsPredPlayer[] }> {
   const res = await apiFetch(`${API_BASE}/api/live/vs-predictions`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load vs-predictions");
-  return res.json();
-}
-
-export async function getMyLineupLive(): Promise<MyLineupResponse> {
-  const res = await apiFetch(`${API_BASE}/api/live/my-lineup`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load my lineup");
   return res.json();
 }
 
