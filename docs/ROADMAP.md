@@ -97,14 +97,16 @@ were silently off after the move; it now uses `$CLAUDE_PROJECT_DIR`.
       `_latest` only for its own event. `api/test_routes.py`: route uniqueness + contract.
 - [x] #9 lineup (Jack, Oct 21): strategy-file trio views deleted (This Week "Model lineup" tab +
       tile, `/api/live/my-lineup`, LineupCards, MyLineupLive); Live "My Lineup" links to Match
-      Center. Still open: pick highlights on Live/This Week/Betting/Players/Results come from
-      `/api/lineup` `confirmed` (Jack's personal tracker); owner-only, or the member's own picks?
-- [x] #11 `data/models/manifest.json` + `validation/model_manifest.py` in post-run checks. Jack's
-      call: CI lacks the score models + round_matchup_model, so production has no
-      projected_score/proj_* and live win probs use 0.0 for remaining rounds. Publish them, or
-      disable that path everywhere (a model change: stats-reviewer).
-- [x] #13 hidden euro-schedule test runs (16/16); one `fetch_current_weather`. [ ] Jack:
-      implement `validation/duplicate_defs.py` (9 tests waiting), then add it to the hook and CI.
+      Center. Pick highlights are owner-only (`/api/owner-picks` via the admin relay).
+- [x] #11 `data/models/manifest.json` + `validation/model_manifest.py` in post-run checks.
+      Score models disabled everywhere (Jack, Oct 21; stats-reviewer clean: no published column or
+      metric changes vs CI). Note for any live-bet evaluation: events before Sept 21 (local
+      launchd = production) used the score-model live sim; later ones the flat 0.0 / 4.9 sim.
+      Split at 2026-09-21. Open question: the flat sim ignores skill, so a weak leader can look
+      like "edge" vs a market that prices skill (recommend_bets live outright/R2 leader).
+      round_matchup_model.pkl is still optional and local-only.
+- [x] #13 hidden euro-schedule test runs (16/16); one `fetch_current_weather`. Jack's
+      `validation/duplicate_defs.py` (13 tests) runs in the post-edit hook and `checks.yml`.
 - [x] #15 data-refresh + tuesday-predictions share the `publish-main` lock and check out `main`;
       model-sync wait runs outside the lock.
 

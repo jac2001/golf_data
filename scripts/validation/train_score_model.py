@@ -2,6 +2,9 @@
 """
 Train score regression model: predicts 4-round to-par total (relative to field avg).
 
+NOT SERVED (Oct 21, 2026, audit finding 11): predict_tournament no longer loads
+these models. They were never in git, so CI ran without them. Offline only.
+
 This script trains FOUR models total:
 
   1. Mean model  — predicts the expected (average) outcome for a player.

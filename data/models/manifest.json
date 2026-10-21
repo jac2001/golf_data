@@ -1,5 +1,5 @@
 {
-  "_doc": "Every model artifact serving loads. required = must be present and match (fails post-run checks). in_git=false = local only: CI runs without it. Re-record after a deliberate retrain: python3 scripts/validation/model_manifest.py --write. Audit finding 11.",
+  "_doc": "Every model artifact serving loads. required = must be present and match (fails post-run checks). in_git=false = local only: CI runs without it. Re-record after a deliberate retrain: python3 scripts/validation/model_manifest.py --write. Audit finding 11. The score regression/quantile models are not served (disabled Oct 21).",
   "artifacts": {
     "data/models/win_model_final.pkl": {
       "loaded_by": "scripts/predictions/predict_tournament.py load_models",
@@ -72,34 +72,6 @@
       "required": true,
       "in_git": true,
       "sha256": "585ac8acc4e773a9344a2a182830e04fb9587cb08d02a0f5e40b1c3cabb97991"
-    },
-    "data/models/score_model_final.pkl": {
-      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
-      "required": false,
-      "in_git": false,
-      "sha256": "821ce62ddbe7bd6ab5c66e835aa2e3c1b4ff343a94a71a5e25ecd3e4849d0b39",
-      "effect_when_absent": "no projected_score / proj_ceiling / proj_median / proj_floor columns; live_update_predictions uses 0.0 for remaining rounds"
-    },
-    "data/models/score_model_q10.pkl": {
-      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
-      "required": false,
-      "in_git": false,
-      "sha256": "65c225f1d10b1cc4b128e63f8ac5bcd97d6e1ab03f7c55f0b73e6584a5f0c910",
-      "effect_when_absent": "no proj_ceiling column"
-    },
-    "data/models/score_model_q50.pkl": {
-      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
-      "required": false,
-      "in_git": false,
-      "sha256": "4ca8f5a4296b972c6acf3ee4394f95c436263ce1e4da49dc06c3329c2bfa0a8e",
-      "effect_when_absent": "no proj_median column"
-    },
-    "data/models/score_model_q90.pkl": {
-      "loaded_by": "scripts/predictions/predict_tournament.py load_models",
-      "required": false,
-      "in_git": false,
-      "sha256": "f93cd2c5449a6acd22c4ce4f31140045cc894c3ed58b460b2ef889c0df0187e8",
-      "effect_when_absent": "no proj_floor column"
     },
     "data/models/round_matchup_model.pkl": {
       "loaded_by": "scripts/models/recommend_bets.py _load_round_matchup_model",

@@ -62,8 +62,10 @@ def test_optional_present_flagged_local_only():
 def test_real_manifest_lists_what_serving_loads():
     arts = json.loads(MANIFEST.read_text())["artifacts"]
     for rel in ["data/models/win_model_final.pkl", "data/models/feature_medians.json",
-                "data/models/euro/euro_won_model.pkl", "data/models/score_model_final.pkl"]:
+                "data/models/euro/euro_won_model.pkl", "data/models/round_matchup_model.pkl"]:
         assert rel in arts, rel
+    # Disabled Oct 21: nothing serves the score models, so they aren't listed.
+    assert not any("score_model" in r for r in arts)
     # Every required artifact must be one git distributes, or CI can never pass.
     assert all(e["in_git"] for e in arts.values() if e["required"])
     assert all((ROOT / r).exists() for r, e in arts.items() if e["required"])

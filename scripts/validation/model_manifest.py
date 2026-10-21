@@ -1,12 +1,11 @@
 """
 model_manifest.py — which model artifacts this run actually loaded.
 ===================================================================
-Serving code loads some pickles only "if present". The score models
-(score_model_final/q10/q50/q90.pkl) and round_matchup_model.pkl exist on
-Jack's machine but not in git, so CI silently runs without them: a local run
-writes projected_score / proj_* columns and live_update_predictions uses
-them; CI writes neither (audit finding 11). "Works locally" proved nothing
-about production.
+Serving code loaded some pickles only "if present". The score models
+existed on Jack's machine but not in git, so CI silently ran without them
+while local runs wrote projected_score / proj_* columns (audit finding 11).
+They are disabled everywhere now (Oct 21); round_matchup_model.pkl is still
+optional and local-only. "Works locally" proves nothing about production.
 
 data/models/manifest.json lists every serving artifact: who loads it,
 required or optional, whether git distributes it, and its sha256.

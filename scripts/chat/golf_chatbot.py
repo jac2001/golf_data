@@ -2478,16 +2478,6 @@ def _predictions_block(top_n: int = 15, supplement_odds_tid: str | None = None) 
         out["Est. Win%"]   = (df["win_prob"] * 100).round(1).astype(str) + "%"
         out["World Rank"]  = df["world_rank"].apply(lambda x: f"#{int(x)}" if pd.notna(x) else "—")
 
-        # Projected score — the single authoritative projection number
-        if "projected_score" in df.columns:
-            out["Proj Score"] = df["projected_score"].apply(
-                lambda x: f"{x:+.1f}" if pd.notna(x) else "—"
-            )
-        if "proj_median" in df.columns:
-            out["Proj Median"] = df["proj_median"].apply(
-                lambda x: f"{x:+.1f}" if pd.notna(x) else "—"
-            )
-
         out["Top 10%"]     = (df["top10_prob"] * 100).round(0).astype(int).astype(str) + "%"
 
         # Build course history from leaderboard CSVs (more reliable than predictions columns)
@@ -3084,19 +3074,6 @@ def _player_deep_dive_block(player_names: list[str], tid: str | None = None, inc
                     round_parts.append(f"loses strokes on Sundays vs Thursday (delta {cd:+.2f})")
             if round_parts:
                 lines.append(f"**Round tendencies**: {' · '.join(round_parts)}")
-
-            # --- Projected score (median + range) ---
-            proj_vs  = r.get("projected_score_vs_field")
-            p_floor  = r.get("proj_floor")
-            p_median = r.get("proj_median")
-            p_ceil   = r.get("proj_ceiling")
-            if pd.notna(p_median):
-                proj_str = f"median {float(p_median):+.1f} vs field"
-                if pd.notna(p_floor) and pd.notna(p_ceil):
-                    proj_str += f" | range: {float(p_floor):+.1f} (floor) to {float(p_ceil):+.1f} (ceiling)"
-                lines.append(f"**Projection**: {proj_str}")
-            elif pd.notna(proj_vs):
-                lines.append(f"**Projection**: {float(proj_vs):+.1f} vs field average")
 
             # --- Live position if tournament in progress ---
             if "live_position" in r and pd.notna(r.get("live_position")):
@@ -3717,10 +3694,6 @@ def _player_form_context_block(top_n: int = 20, tid: str | None = None) -> str:
                 extras.append("Round scoring: " + " | ".join(_rnd_parts))                                         
                                         
                     
-            proj = row.get("projected_score")
-            if pd.notna(proj):
-                extras.append(f"projected {float(proj):+.1f} for the week")
-
             if extras:
                 line += f" Key: {' · '.join(extras)}."
             lines.append(line)

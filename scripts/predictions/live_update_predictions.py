@@ -13,20 +13,17 @@ It doesn't know what McIlroy shot in Round 1. Once R1 finishes,
 we have real evidence. This script incorporates that evidence.
 
 THE MATH:
-A 4-round tournament is 4 equal slices of information.
-After R1, we know 1 slice is real. We keep the model for the rest.
+A 4-round tournament is 4 equal slices of information. Completed rounds
+are real; the remaining rounds are modeled at field average (0.0), with
+noise that shrinks as rounds complete.
 
-updated = actual_vs_field + (model_projection × rounds_remaining/4)
+updated = actual_vs_field + (0.0 × rounds_remaining/4)
 
 "vs field" means we subtract the field average so a score of 0.0
 means exactly average. Negative = better than field, positive = worse.
-
-EXAMPLE after Round 1:
-McIlroy's model projected_score_vs_field = -2.5
-He shot 72 (E). Field averaged 70.3 → actual_r1_vs_field = +1.7
-updated = +1.7 + (-2.5 × 3/4)
-        = +1.7 + (-1.875)
-        = -0.175   ← now projected very close to field average
+Until Oct 21, 2026 a score regression model's projection filled the
+remaining rounds locally; it was never served in CI and is now disabled
+everywhere (audit finding 11).
 """
 
 import argparse
@@ -58,7 +55,7 @@ def run_live_update(tournament_id: str = None) -> pd.DataFrame:
 
     # ── STEP 1: Load pre-tournament predictions ────────────────────────────
     # latest_predictions.csv has one row per player with columns like:
-    #   win_prob, projected_score_vs_field, player_id, player_name, etc.
+    #   win_prob, player_id, player_name, etc.
     preds_path = OUTPUTS_DIR / "latest_predictions.csv"
     if not preds_path.exists():
         print("ERROR: outputs/latest_predictions.csv not found.")
@@ -187,18 +184,13 @@ def run_live_update(tournament_id: str = None) -> pd.DataFrame:
     #   After R2: 2 rounds remain → 2/4 = 0.50
     #   After R3: 1 round remains → 1/4 = 0.25
     #
-    # projected_score_vs_field is the pre-tournament model's prediction of
-    # the player's 4-round total vs field. We scale it by remaining_weight
-    # to represent only the remaining rounds.
-    
+    # The remaining rounds are modeled at field average (0.0 vs field): the
+    # score regression model that used to project them is not served
+    # (disabled Oct 21, audit finding 11; CI never had it).
+
     rounds_remaining = 4 - rounds_complete
-    remaining_weight = rounds_remaining / 4.0 
-    
-    if "projected_score_vs_field" in preds.columns:
-        pre_proj = _to_float(preds["projected_score_vs_field"]).fillna(0.0)
-    else:
-        print("WARN: projected_score_vs_field not found — using 0.0 for remaining rounds.")
-        pre_proj = pd.Series(0.0, index=preds.index)
+    remaining_weight = rounds_remaining / 4.0
+    pre_proj = pd.Series(0.0, index=preds.index)
 
     actual = preds["_actual_vs_field"].fillna(0.0)
     
@@ -218,16 +210,9 @@ def run_live_update(tournament_id: str = None) -> pd.DataFrame:
     # scores replace model uncertainty.
     N_SIMS = 10_000
 
-    # Player-specific variance: derived from Q10/Q90 quantile spread
-    # proj_floor = Q10 (bad scenario), proj_ceiling = Q90 (good scenario)
-    # std ≈ spread / (2 * 1.28) based on normal distribution quantile relationship
-    if "proj_ceiling" in preds.columns and "proj_floor" in preds.columns:
-        full_std = (
-            pd.to_numeric(preds["proj_floor"], errors="coerce").fillna(5) -
-            pd.to_numeric(preds["proj_ceiling"], errors="coerce").fillna(-10)
-        ) / (2 * 1.28)
-    else:
-        full_std = pd.Series(4.9, index=preds.index)
+    # One 4-round standard deviation for every player (the quantile models
+    # that gave per-player spreads are not served; see above).
+    full_std = pd.Series(4.9, index=preds.index)
 
     full_std = full_std.clip(lower=1.0)  # floor at 1 stroke std
 
@@ -279,7 +264,7 @@ def run_live_update(tournament_id: str = None) -> pd.DataFrame:
     print(f"\nTop 10 by live projection:")
     show_cols = [c for c in [
         "player_name", "live_projected_score", "live_score_rank",
-        "live_win_prob", "live_win_prob_change", "win_prob", "projected_score_vs_field"
+        "live_win_prob", "live_win_prob_change", "win_prob",
     ] if c in preds.columns]
     print(preds.nsmallest(10, "live_projected_score")[show_cols].to_string(index=False))
 

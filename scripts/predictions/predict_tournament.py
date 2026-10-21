@@ -130,8 +130,6 @@ def write_data_dictionary(predictions_df: pd.DataFrame, output_path: Path):
         "win_prob": "Predicted win probability (0-1)",
         "top5_prob": "Predicted top-5 probability (0-1)",
         "top10_prob": "Predicted top-10 probability (0-1)",
-        "projected_score": "Regression model: predicted 4-round to-par total (e.g. -12.5)",
-        "score_rank": "Field rank by projected_score (1 = best/lowest projected score)",
         "expected_value": "Expected earnings value based on purse + probabilities (USD)",
         # Cut probability
         "cut_prob": "Probability of making the cut (0-1, higher = safer)",
@@ -306,65 +304,19 @@ def _event_cutoff_date(tid) -> pd.Timestamp | None:
     return d if d is not None else _schedule_start(str(tid))
 
 
-SCORE_FEATURES = [
-    "season_sg_total", "season_sg_ott", "season_sg_app", "season_sg_arg",
-    "season_sg_t2g", "season_sg_putt", "season_sg_arg_vs_field",
-    "season_sg_total_vs_field", "season_sg_ott_vs_field",
-    "season_sg_app_vs_field", "season_sg_putt_vs_field",
-    "season_sg_ott_field_pct", "season_sg_app_field_pct", "season_sg_putt_field_pct",
-    "recent_sg_weighted", "recent_sg_trend",
-    "recent_sg_ott_weighted", "recent_sg_app_weighted", "recent_sg_putt_weighted",
-    "hist_times_played", "hist_avg_finish", "hist_best_finish",
-    "hist_wins", "hist_top5s", "hist_top10s", "hist_cut_rate", "hist_missed_cuts",
-    "has_won_here", "has_course_history", "has_made_cut_here",
-    "venue_avg_finish", "venue_finish_std",
-    "form_trend", "finish_consistency", "recent_top10s", "recent_top5s",
-    "recent_cuts_pct", "recent_birdie_avg", "recent_scoring_avg",
-    "dg_fit_ott", "dg_fit_app", "dg_fit_arg", "dg_fit_putt",
-    "dg_fit_total", "predictive_sg_weighted",
-    "world_rank",
-    "world_rank_log",
-    # DG archive features — activated 2026-04 (have historical data 2020-2025 via dg_archive_all.csv)
-    # NaN for pre-2020 or non-covered events; tree models handle this gracefully.
-    "dg_win",                # DG pre-tournament win probability
-    "dg_top10",              # DG pre-tournament top-10 probability
-    "dg_make_cut",           # DG pre-tournament make-cut probability
-    # Weather features — tournament-level signal (same value for all players in a tournament).
-    # The model learns how conditions affect scoring variance and player-type advantages.
-    # Added 2026-05: activate after retraining with weather in master training data.
-    "wind_mph_avg",          # mean daytime wind during tournament (most predictive)
-    "wind_mph_max",          # peak wind hour (captures "brutal day" signal)
-    "precip_mm",             # total precipitation over 4 rounds
-    "temp_f_avg",            # mean daytime temperature
-    # DG inference-only features (no historical equivalents — activate after architecture change)
-    # "approach_skill_sg",
-    # "final_pred",            # DG's full course-adjusted prediction
-    # "course_fit_delta",      # final_pred - baseline_pred (course uplift/drag)
-    # "driving_accuracy_adjustment",
-    # "driving_distance_adjustment",
-    # "dg_skill_total",
-    # "dg_top20",
-]
-
-
 def load_models():
-    """Load trained win/top5/top10 models (+ optional score regression model)"""
+    """Load the trained win/top5/top10 models.
+
+    The score regression + quantile models (train_score_model.py) are not
+    served: they were never in git, so CI ran without them while local runs
+    added projected_score / proj_* columns. Disabled everywhere Oct 21
+    (audit finding 11, Jack's call); local and CI now load the same set.
+    """
     models = {
         'win': joblib.load(MODEL_DIR / 'win_model_final.pkl'),
         'top5': joblib.load(MODEL_DIR / 'top5_model_final.pkl'),
         'top10': joblib.load(MODEL_DIR / 'top10_model_final.pkl')
     }
-    _score_path = MODEL_DIR / 'score_model_final.pkl'
-    if _score_path.exists():
-        models['score'] = joblib.load(_score_path)
-        _feats_path = MODEL_DIR / 'score_model_features.txt'
-        if _feats_path.exists():
-            models['score_features'] = _feats_path.read_text().splitlines()
-        # Quantile models: Q10=ceiling (best 10% of weeks), Q90=floor (worst 10%)
-        for _q in ('q10', 'q50', 'q90'):
-            _qpath = MODEL_DIR / f'score_model_{_q}.pkl'
-            if _qpath.exists():
-                models[f'score_{_q}'] = joblib.load(_qpath)
     return models
 
 def _load_tournament_stats_from_db(year: int) -> pd.DataFrame:
@@ -2659,7 +2611,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
     # ADD DG PLAYER DECOMPOSITIONS (event-specific — updates each week)
     # final_pred = DG's full course-adjusted SG prediction for this event
     # course_fit_delta = final_pred - baseline_pred (how course helps/hurts this player)
-    # Saves as pass-through columns; activate in SCORE_FEATURES after retrain.
+    # Saved as pass-through columns.
     try:
         # This event's own file first; the "latest" file only if its OWN
         # event_name matches. A stale latest (last week's field) once gave
@@ -2697,7 +2649,7 @@ def build_feature_matrix(field_df, tournament_name, master_df, stats_current, sg
         print(f"  DG decompositions merge skipped: {_dc_e}")
 
     # ADD DG PRE-TOURNAMENT PROBABILITIES (dg_win, dg_top10, dg_make_cut for this week)
-    # These match trained SCORE_FEATURES — populated here at inference so model sees real values not NaN.
+    # Populated at inference so the models see real values, not NaN.
     # Event check (same rule as decompositions): this event's own file, else
     # "latest" only when its own event_name is this tournament. Course fit is
     # written by the same fetch, so it rides on the same verdict.
@@ -3001,43 +2953,6 @@ def fill_missing_values(features_df, stats_2025, master_df):
 
 # Step 8: Make Predictions
 
-def _apply_score_model(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
-    """Apply score regression + quantile models to add projected score columns.
-
-    Mean model  → projected_score_vs_field  (best for RANKING players)
-    Q10 model   → proj_ceiling  (best 10% of weeks — upside scenario)
-    Q50 model   → proj_median   (typical week)
-    Q90 model   → proj_floor    (worst 10% of weeks — downside scenario)
-
-    All values are vs-field (negative = better than average).
-    """
-    if 'score' not in models:
-        return features_df
-    sf: list = models.get('score_features') or SCORE_FEATURES
-    sf = [f for f in sf if f in features_df.columns]
-    Xs = features_df[sf].apply(pd.to_numeric, errors='coerce').fillna(0).values
-
-    # Mean model — predicts conditional mean, best for ranking
-    relative = models['score'].predict(Xs)
-    if 'recent_scoring_avg' in features_df.columns:
-        field_scoring = pd.to_numeric(features_df['recent_scoring_avg'], errors='coerce')
-        field_offset = float(field_scoring.median() - 72)
-    else:
-        field_offset = 0.0
-    features_df['projected_score'] = (relative + field_offset).round(1)
-    features_df['projected_score_vs_field'] = relative.round(2)
-    features_df['score_rank'] = features_df['projected_score_vs_field'].rank(method='min').astype(int)
-
-    # Quantile models — ceiling/median/floor range
-    # These are trained with pinball loss to target specific percentiles,
-    # so they give a realistic spread rather than compressed means.
-    for _q, _col in (('q10', 'proj_ceiling'), ('q50', 'proj_median'), ('q90', 'proj_floor')):
-        if f'score_{_q}' in models:
-            features_df[_col] = models[f'score_{_q}'].predict(Xs).round(1)
-
-    return features_df
-
-
 def make_predictions(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
     """
     Generate win/top5/top10 probabilities
@@ -3118,9 +3033,6 @@ def make_predictions(features_df: pd.DataFrame, models: dict) -> pd.DataFrame:
         model_cols = _resolve_model_feature_cols(models[model_key], fallback_feature_cols)
         X = _prepare_matrix(features_df, model_cols)
         features_df[out_col] = models[model_key].predict_proba(X)[:, 1]
-
-    # Score regression model — delegated to top-level helper to avoid Pylance scope issues
-    features_df = _apply_score_model(features_df, models)
 
     return features_df
 
