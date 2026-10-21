@@ -79,8 +79,10 @@ workspace, then consolidate, then delete leftovers.
        this event has none; `_freshen` ages THIS event's file; betting profile
        and withdrawals no longer borrow another event's file. Phase A done.
 
-**Phase B: workspace**: [x] moved out of iCloud (Oct 21, `~/Developer/golf_data`). [ ] Compare the old
-copy's " 2" duplicates against the clone and recover anything unique, then retire the old copy.
+**Phase B: workspace**: [x] moved out of iCloud (Oct 21, `~/Developer/golf_data`). [x] Compared the old
+copy's 29 " 2" duplicates against git history (Oct 21): 4 identical to current, 23 exact older
+committed versions, 2 older DataGolf downloads (one a Bank of Utah-named file holding Biltmore
+data: the provenance bug). Nothing unique to recover. [ ] Jack renames the old copy, deletes later.
 
 **Phase C: consolidate:** weather refresh args (#7), duplicate
 `/api/model-comparison` (#8), one meaning of "lineup" (#9), model artifact
