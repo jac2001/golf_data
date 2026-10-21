@@ -126,10 +126,13 @@ were silently off after the move; it now uses `$CLAUDE_PROJECT_DIR`.
       standings follow: Baycurrent winner $1.08M -> $1.44M; per-player gap to DG official now
       median $1.6K / $250. Affected: 6 Let It Ride, 3 Fade, 1 College pick (Baycurrent).
       Still open: settle from DG's official earnings instead (check DG display terms first).
-- [ ] **`event_guard.names_match` false positive on shared sponsor words**: "RBC Heritage" ==
-      "RBC Canadian Open", "Genesis Scottish Open" == "Genesis Invitational" (one distinctive
-      token each side is a 0.5 overlap). Rule 1's guard; RBC Canadian is one of the four
-      shipped provenance bugs. Fix with tests (teaching candidate).
+- [ ] **`event_guard.names_match` false positives** (Oct 21): an audit of all 103 schedule + DG
+      names found 47 pairs it calls the same event, ~28 of them wrong: RBC Heritage == RBC
+      Canadian Open, PGA Championship == BMW PGA Championship, Masters Tournament == Qatar
+      Masters, Open de Espana == FedEx Open de France. Jack: implement
+      `scrapers/event_names.same_event` (spec: `test_event_names.py`, 46 real pairs; checked
+      satisfiable). Then names_match delegates to it, test_event_guard still passes, and
+      test_event_names joins Tuesday's gate tests + the hook.
 
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
