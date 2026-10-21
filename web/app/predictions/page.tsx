@@ -51,7 +51,7 @@ export default function PredictionsPage() {
   // ── Tab state ────────────────────────────────────────────────────────────────
   const [activeTab, setActiveTab] = useState<Tab>("field");
   const [tour, setTour] = useStoredChoice<"pga" | "euro">("favorite-tour", ["pga", "euro"], "pga", false);
-  const [eventState, setEventState] = useState<{ finished: boolean; nextName: string; nextStart: string } | null>(null);
+  const [eventState, setEventState] = useState<{ finished: boolean; open: boolean; nextName: string; nextStart: string } | null>(null);
 
   // Track which tabs have ever been activated (so we only fetch each once)
   const [loaded, setLoaded] = useState<Set<Tab>>(new Set(["field"]));
@@ -86,6 +86,8 @@ export default function PredictionsPage() {
       const next = evs.find(e => !e.finished && e.tour !== "euro");
       setEventState({
         finished: !!cur?.finished,
+        // Picks still open for this event: the table offers "Consider for my picks".
+        open: !!cur && !cur.finished && !cur.locked,
         nextName: next?.name ?? "",
         nextStart: next?.start_date?.slice(0, 10) ?? "",
       });
@@ -298,6 +300,7 @@ export default function PredictionsPage() {
             ? <>
                 <PredictionsTable
                   players={isSignedIn ? preds.players : preds.players.slice(0, 10)}
+                  considerTid={isSignedIn && eventState?.open ? preds.tournament_id : null}
                   intel={intel?.players ?? []}
                   myPicks={myPicks}
                   form={form}

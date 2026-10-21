@@ -20,6 +20,7 @@ import Link from "next/link";
 import { PlayerPrediction, PlayerIntel, GolferForm } from "@/lib/api";
 import { nameKey } from "@/lib/names";
 import { whyLine } from "@/lib/whyLine";
+import { considerHref } from "@/lib/consider";
 
 type Props = {
   players: PlayerPrediction[];
@@ -28,6 +29,9 @@ type Props = {
   /** Real recent results per golfer (/api/golfer-form): feeds the plain
    *  "why" line shown above the model's reasons. Omit for none. */
   form?: GolferForm[];
+  /** Signed in, this event open for picks: each row's detail carries a
+   *  "Consider for my picks" link to the pick screen (lib/consider.ts). */
+  considerTid?: string | null;
 };
 
 type SortCol = "world_rank" | "win_prob_sim" | "win_prob" | "top10_prob_sim" | "top10_prob" | "cut_prob" | "season_sg_total" | "form_trend" | "model_vs_vegas_edge";
@@ -95,7 +99,7 @@ function normName(n: string) {
   return n.toLowerCase().replace(",", "").split(/\s+/).sort().join(" ");
 }
 
-export default function PredictionsTable({ players, intel = [], myPicks = [], form = [] }: Props) {
+export default function PredictionsTable({ players, intel = [], myPicks = [], form = [], considerTid = null }: Props) {
   // One true sentence per golfer from his results + the model's chances
   // (Jack's whyLine). The model's own reasons (p.explanation) stay below it:
   // the fact is for anyone, the reasons are for golf fans.
@@ -297,7 +301,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
 
               const playerIntel = intelMap.get(p.player_name.toLowerCase());
               const isPick = myPicksNorm.has(normName(p.player_name));
-              const hasMore = !!(playerIntel?.recent_form_summary || playerIntel?.last_3_results?.length
+              const hasMore = !!(considerTid || playerIntel?.recent_form_summary || playerIntel?.last_3_results?.length
                 || (playerIntel?.injury_flag && playerIntel?.injury_detail));
               const isOpen = openRow === p.player_name;
               return (
@@ -454,6 +458,14 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                 {isOpen && (
                   <tr>
                     <td colSpan={2 + visibleCols.size} style={{ ...td, background: "var(--bc-panel)", padding: "10px 14px 12px 46px" }}>
+                      {considerTid && (
+                        <Link href={considerHref(p.player_name, considerTid)} onClick={e => e.stopPropagation()}
+                          style={{ display: "inline-flex", alignItems: "center", minHeight: 44, marginBottom: 4,
+                            color: "var(--bc-yellow)", fontWeight: 800, textDecoration: "none",
+                            fontSize: "max(var(--fs-min), 0.85em)" }}>
+                          Consider {p.player_name} for my picks →
+                        </Link>
+                      )}
                       {playerIntel?.injury_flag && playerIntel?.injury_detail && (
                         <div style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.82em)", marginBottom: 6 }}>
                           <strong>Injury:</strong> {playerIntel.injury_detail}

@@ -23,6 +23,7 @@ import PickConfirm, { buildConfirm } from "@/components/PickConfirm";
 import { WhosInCard } from "@/app/friends/_components/WhosInCard";
 import type { ConfirmCopy } from "@/lib/pickConfirm";
 import EventNav, { NavEvent, landingEvent, favoriteTour, Star } from "@/components/EventNav";
+import { resolveConsider } from "@/lib/consider";
 
 type Group = { id: number; name: string; is_owner: boolean };
 type League = {
@@ -335,6 +336,7 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   const [locked, setLocked] = useState(ev.locked);
   const [field, setField] = useState<{ name: string; win: number | null; why: string }[]>([]);
   const [q, setQ] = useState("");
+  const [considered, setConsidered] = useState<string | null>(null);
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState("");
   // Spend/save advice for MY uses (private, pre-lock only), keyed by nameKey.
@@ -445,6 +447,22 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
     } catch (e) { setMsg((e as Error).message); }
     finally { setBusy(""); }
   }
+
+  // "Consider for my picks" from This Week (lib/consider.ts): once this
+  // event's field loads, the linked golfer goes in the search box with his
+  // advice open. Never submitted. A link for another event, or a name not
+  // in this field, does nothing. try: until resolveConsider exists (Jack's
+  // TODO) it throws, and the pick screen must still open.
+  useEffect(() => {
+    if (!field.length || considered !== null) return;
+    const u = new URLSearchParams(window.location.search);
+    const tid = u.get("tid")?.toUpperCase();
+    if (!u.get("consider") || (tid && tid !== ev.tournament_id.toUpperCase())) return;
+    let name: string | null = null;
+    try { name = resolveConsider(u.get("consider"), field.map(f => f.name)); } catch { name = null; }
+    if (!name) return;
+    setConsidered(name); setQ(name); setWhy(name);
+  }, [field, ev.tournament_id, considered]);
 
   const shown = useMemo(() => {
     const ql = q.trim().toLowerCase();
@@ -586,6 +604,12 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
               </div>
             );
           })()}
+          {considered && (
+            <div style={{ background: "var(--bc-raised)", border: "1px solid var(--bc-line-hi)", borderRadius: 8,
+              padding: "8px 12px", marginBottom: 8, fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-text)" }}>
+              From This Week: <strong>{considered}</strong>. Not picked yet; tap Pick if you want him.
+            </div>
+          )}
           <input placeholder="Search the field…" value={q} onChange={e => setQ(e.target.value)} style={{
             background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
             color: "var(--bc-text)", padding: "7px 12px", fontSize: "max(var(--fs-min), 0.86em)", width: "100%",
