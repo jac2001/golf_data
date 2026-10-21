@@ -49,21 +49,19 @@ test("missing data is skipped, never invented", () => {
   assert.deepEqual(thingsToWatch({ holes: [] }), []);
 });
 
-// ── Follow-up (Oct 21): three gaps in the first spec. TODO(Jack): make these
-// pass, then delete the flag. Each one is a sentence that would be untrue.
-const FOLLOW_UP = { todo: "Jack: follow-up wording cases" };
+// Follow-up wording cases: keep the displayed numbers and claims consistent.
 
-test("a winning average that rounds to 0 is 'around even par'", FOLLOW_UP, () => {
+test("a winning average that rounds to 0 is 'around even par'", () => {
   assert.equal(thingsToWatch({ holes: [], history: { years: [2024, 2025], winning_to_par: [-1, 0.2] } })[0]?.text,
     "Winners have finished around even par here.");
 });
 
-test("a profile tie names both skills, not one 'more than anything else'", FOLLOW_UP, () => {
+test("a profile tie names both skills, not one 'more than anything else'", () => {
   assert.equal(thingsToWatch({ holes: [], profile: { ott: 0.3, app: 0.3, arg: 0.2, putt: 0.2 } })[0]?.text,
     "Approach play and driving matter most here (30% each).");
 });
 
-test("wind is judged on the number we show", FOLLOW_UP, () => {
+test("wind is judged on the number we show", () => {
   // 14.6 shows as 15 mph, so it must read as the 15+ sentence, not 'light'.
   assert.equal(thingsToWatch({ holes: [], forecast: [{ day: "Sat", wind_mph: 14.6 }] })[0]?.text,
     "Wind up to 15 mph on Sat could push scores up.");

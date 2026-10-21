@@ -81,7 +81,9 @@ export function thingsToWatch(input: WatchInput): Watch[] {
       const lastYear = Math.max(...years);
 
       watches.push({
-        text: `Winners have finished an average of ${magnitude} ${direction} par here.`,
+        text: magnitude === 0
+          ? "Winners have finished around even par here."
+          : `Winners have finished an average of ${magnitude} ${direction} par here.`,
         source: `Past winners, ${firstYear}–${lastYear}`,
       });
     }
@@ -98,14 +100,22 @@ export function thingsToWatch(input: WatchInput): Watch[] {
     );
 
     if (validProfile && skills.some(skill => profile[skill] > 0)) {
-      const strongest = skills.reduce((best, skill) =>
-        profile[skill] > profile[best] ? skill : best
-      );
+      const highestShare = Math.max(...skills.map(skill => profile[skill]));
+      const leaders = skills
+        .filter(skill => profile[skill] === highestShare)
+        .map(skill => SKILL_NAMES[skill])
+        .sort();
+      const percentage = Math.round(highestShare * 100);
 
-      const percentage = Math.round(profile[strongest] * 100);
+      // A tie names every leader: "Approach play and driving matter most".
+      const names = new Intl.ListFormat("en", { style: "long", type: "conjunction" })
+        .format(leaders.map(name => name.toLowerCase()));
+      const sentenceNames = names.charAt(0).toUpperCase() + names.slice(1);
 
       watches.push({
-        text: `${SKILL_NAMES[strongest]} separates the field more than anything else here (${percentage}% of what matters).`,
+        text: leaders.length === 1
+          ? `${leaders[0]} separates the field more than anything else here (${percentage}% of what matters).`
+          : `${sentenceNames} matter most here (${percentage}% each).`,
         source: "DataGolf course profile",
       });
     }
@@ -126,7 +136,7 @@ export function thingsToWatch(input: WatchInput): Watch[] {
     const wind = Math.round(strongest.wind_mph);
 
     watches.push({
-      text: strongest.wind_mph >= 15
+      text: wind >= 15
         ? `Wind up to ${wind} mph on ${strongest.day} could push scores up.`
         : `Light winds forecast (up to ${wind} mph), good for scoring.`,
       source: "This week's forecast",
