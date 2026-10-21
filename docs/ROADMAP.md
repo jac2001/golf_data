@@ -127,10 +127,10 @@ were silently off after the move; it now uses `$CLAUDE_PROJECT_DIR`.
       median $1.6K / $250. Affected: 6 Let It Ride, 3 Fade, 1 College pick (Baycurrent).
       Still open: settle from DG's official earnings instead (check DG display terms first).
 - [ ] **`event_guard.names_match` false positives** (Oct 21): an audit of all 103 schedule + DG
-      names found 47 pairs it calls the same event, ~28 of them wrong: RBC Heritage == RBC
+      names found 47 pairs it calls the same event, at least 28 of them wrong: RBC Heritage == RBC
       Canadian Open, PGA Championship == BMW PGA Championship, Masters Tournament == Qatar
       Masters, Open de Espana == FedEx Open de France. Jack: implement
-      `scrapers/event_names.same_event` (spec: `test_event_names.py`, 46 real pairs; checked
+      `scrapers/event_names.same_event` (spec: `test_event_names.py`, 42 real pairs: 14 same, 28 different; checked
       satisfiable). Then names_match delegates to it, test_event_guard still passes, and
       test_event_names joins Tuesday's gate tests + the hook.
 
