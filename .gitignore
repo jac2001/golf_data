@@ -14,8 +14,10 @@ venv/
 .vscode/
 .idea/
 
-# Claude
-.claude/
+# Claude: settings.json, hooks/, agents/, launch.json are shared; these stay local
+.claude/settings.local.json
+.claude/worktrees/
+.claude/*.local.*
 
 # Large data files
 # data/historical/*.csv

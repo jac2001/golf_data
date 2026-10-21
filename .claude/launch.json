@@ -1,0 +1,32 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "golf-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--prefix",
+        "web"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "golf-web-prodapi",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "NEXT_PUBLIC_API_URL=https://golf-app-a3yw.onrender.com",
+        "npm",
+        "run",
+        "dev",
+        "--prefix",
+        "web",
+        "--",
+        "--port",
+        "3001"
+      ],
+      "port": 3001
+    }
+  ]
+}
