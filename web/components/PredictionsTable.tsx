@@ -21,6 +21,8 @@ import { PlayerPrediction, PlayerIntel, GolferForm } from "@/lib/api";
 import { nameKey } from "@/lib/names";
 import { whyLine } from "@/lib/whyLine";
 import { considerHref } from "@/lib/consider";
+import Term from "@/components/Term";
+import styles from "./PredictionsTable.module.css";
 
 type Props = {
   players: PlayerPrediction[];
@@ -52,6 +54,9 @@ const COLS: { key: SortCol; label: string; higherBetter: boolean; toggleKey: Col
   { key: "form_trend",         label: "Form",     higherBetter: true,  toggleKey: "form"  },
   { key: "model_vs_vegas_edge",label: "Our edge",     higherBetter: true,  toggleKey: "edge"  },
 ];
+// Header labels that have a plain-language explanation (Jack's lib/glossary.ts).
+const TERM_FOR: Partial<Record<ColKey, string>> = { sg: "SG", edge: "pp", ev: "EV" };
+
 const TOGGLE_COLS: { key: ColKey; label: string; default: boolean }[] = [
   { key: "win",   label: "Win chance",     default: true  },
   { key: "top10", label: "Top-10 chance",  default: true  },
@@ -188,6 +193,35 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
     return list;
   }, [players, sortCol, sortDir, search]);
 
+  /** The tap-to-open detail for one golfer: same in the table row and the phone card. */
+  const detailOf = (p: PlayerPrediction, playerIntel: PlayerIntel | undefined) => (
+    <>
+        {considerTid && (
+          <Link href={considerHref(p.player_name, considerTid)} onClick={e => e.stopPropagation()}
+            style={{ display: "inline-flex", alignItems: "center", minHeight: 44, marginBottom: 4,
+              color: "var(--bc-yellow)", fontWeight: 800, textDecoration: "none",
+              fontSize: "max(var(--fs-min), 0.85em)" }}>
+            Consider {p.player_name} for my picks →
+          </Link>
+        )}
+        {playerIntel?.injury_flag && playerIntel?.injury_detail && (
+          <div style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.82em)", marginBottom: 6 }}>
+            <strong>Injury:</strong> {playerIntel.injury_detail}
+          </div>
+        )}
+        {playerIntel?.recent_form_summary && (
+          <div style={{ color: "var(--bc-text)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5, maxWidth: 760 }}>
+            {playerIntel.recent_form_summary}
+          </div>
+        )}
+        {!!playerIntel?.last_3_results?.length && (
+          <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 6 }}>
+            Last 3: {playerIntel.last_3_results.slice(0, 3).join(" · ")}
+          </div>
+        )}
+    </>
+  );
+
   const th: React.CSSProperties = {
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-muted)",
@@ -201,7 +235,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
   return (
     <div>
       {/* Search + column picker */}
-      <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 12, position: "relative" }}>
+      <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: "8px 12px", flexWrap: "wrap", position: "relative" }}>
         <input
           placeholder="Search player…"
           value={search}
@@ -213,6 +247,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
           }}
         />
         <button
+          className={styles.desktopOnly}
           onClick={() => setPickerOpen(o => !o)}
           style={{
             background: pickerOpen ? "var(--bc-card)" : "var(--bc-panel)",
@@ -223,8 +258,8 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
         >
           + Columns
         </button>
-        <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)" }}>
-          {sorted.length} players · click column to sort
+        <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", flex: "1 1 260px" }}>
+          {sorted.length} players<span className={styles.desktopOnly}> · click column to sort</span>
           {players.some(p => p.win_prob_sim != null && p.win_prob != null) &&
             " · chances come from 10,000 simulated tournaments; “base model” is the machine-learning model's direct estimate — both pre-tournament"}
         </span>
@@ -255,7 +290,55 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
         )}
       </div>
 
-      <div style={{ overflowX: "auto", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
+      {sorted.length === 0 && search.trim() ? (
+        <div style={{ padding: "20px 16px", background: "var(--bc-panel)", border: "1px solid var(--bc-line)",
+          borderRadius: 10, color: "var(--bc-text)" }}>
+          No golfers match &ldquo;{search.trim()}&rdquo;.{" "}
+          <button type="button" onClick={() => setSearch("")} style={{ background: "none", border: "none",
+            color: "var(--bc-yellow)", fontWeight: 800, cursor: "pointer", font: "inherit", minHeight: 44, padding: 0 }}>
+            Clear search
+          </button>
+        </div>
+      ) : <>
+      <div className={styles.cards}>
+        {sorted.map((p, i) => {
+          const playerIntel = intelMap.get(p.player_name.toLowerCase());
+          const isPick = myPicksNorm.has(normName(p.player_name));
+          const isOpen = openRow === p.player_name;
+          const pctOf = (sim?: number | null, base?: number | null, dp = 1) => {
+            const v = sim ?? base; return v == null ? "—" : `${(v * 100).toFixed(dp)}%`;
+          };
+          return (
+            <div key={p.player_name} className={`${styles.card} ${isPick ? styles.pick : ""}`}
+              onClick={() => setOpenRow(isOpen ? null : p.player_name)}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+                <span style={{ color: "var(--bc-muted)", fontSize: 12, width: 22 }}>{i + 1}</span>
+                <Link href={`/players?player=${encodeURIComponent(p.player_name)}`} onClick={e => e.stopPropagation()}
+                  style={{ color: isPick ? "var(--bc-green)" : "var(--bc-text)", fontWeight: 700, textDecoration: "none",
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {p.player_name}
+                </Link>
+                {isPick && <span style={badge("var(--bc-green)")}>My pick</span>}
+                {playerIntel?.injury_flag && <span style={badge("var(--bc-red-text)")}>Injury</span>}
+                <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: 12 }}>{isOpen ? "Less ▾" : "More ▸"}</span>
+              </div>
+              <div className={styles.chips}>
+                <span className={styles.chip}><span className={styles.chipLabel}>Win</span>
+                  <span className={styles.chipValue} style={{ color: "var(--bc-green)" }}>{pctOf(p.win_prob_sim, p.win_prob)}</span></span>
+                <span className={styles.chip}><span className={styles.chipLabel}>Top 10</span>
+                  <span className={styles.chipValue} style={{ color: "var(--bc-yellow)" }}>{pctOf(p.top10_prob_sim, p.top10_prob)}</span></span>
+                <span className={styles.chip}><span className={styles.chipLabel}>Makes cut</span>
+                  <span className={styles.chipValue}>{pctOf(p.cut_prob, null, 0)}</span></span>
+              </div>
+              {whyByName.get(p.player_name) && (
+                <div style={{ color: "var(--bc-text)", fontSize: 13, marginTop: 6 }}>{whyByName.get(p.player_name)}</div>
+              )}
+              {isOpen && <div style={{ marginTop: 8 }}>{detailOf(p, playerIntel)}</div>}
+            </div>
+          );
+        })}
+      </div>
+      <div className={styles.table} style={{ overflowX: "auto", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
         <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
@@ -267,7 +350,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                   style={sortCol === c.key ? { ...thActive, textAlign: "center" } : { ...th, textAlign: "center" }}
                   onClick={() => handleSort(c.key)}
                 >
-                  {c.label}
+                  {TERM_FOR[c.toggleKey] ? <Term term={TERM_FOR[c.toggleKey]!}>{c.label}</Term> : c.label}
                   {sortCol === c.key && (
                     <span style={{ marginLeft: 4 }}>{sortDir === "desc" ? "↓" : "↑"}</span>
                   )}
@@ -275,7 +358,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
               ))}
               {visibleCols.has("odds") && <th style={{ ...th, textAlign: "center" }}>Odds</th>}
               {visibleCols.has("move") && <th style={{ ...th, textAlign: "center" }}>Move</th>}
-              {visibleCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "var(--bc-yellow)" }}>EV</th>}
+              {visibleCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "var(--bc-yellow)" }}><Term term="EV">EV</Term></th>}
             </tr>
           </thead>
           <tbody>
@@ -458,29 +541,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                 {isOpen && (
                   <tr>
                     <td colSpan={2 + visibleCols.size} style={{ ...td, background: "var(--bc-panel)", padding: "10px 14px 12px 46px" }}>
-                      {considerTid && (
-                        <Link href={considerHref(p.player_name, considerTid)} onClick={e => e.stopPropagation()}
-                          style={{ display: "inline-flex", alignItems: "center", minHeight: 44, marginBottom: 4,
-                            color: "var(--bc-yellow)", fontWeight: 800, textDecoration: "none",
-                            fontSize: "max(var(--fs-min), 0.85em)" }}>
-                          Consider {p.player_name} for my picks →
-                        </Link>
-                      )}
-                      {playerIntel?.injury_flag && playerIntel?.injury_detail && (
-                        <div style={{ color: "var(--bc-red-text)", fontSize: "max(var(--fs-min), 0.82em)", marginBottom: 6 }}>
-                          <strong>Injury:</strong> {playerIntel.injury_detail}
-                        </div>
-                      )}
-                      {playerIntel?.recent_form_summary && (
-                        <div style={{ color: "var(--bc-text)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5, maxWidth: 760 }}>
-                          {playerIntel.recent_form_summary}
-                        </div>
-                      )}
-                      {!!playerIntel?.last_3_results?.length && (
-                        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 6 }}>
-                          Last 3: {playerIntel.last_3_results.slice(0, 3).join(" · ")}
-                        </div>
-                      )}
+                      {detailOf(p, playerIntel)}
                     </td>
                   </tr>
                 )}
@@ -490,6 +551,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
           </tbody>
         </table>
       </div>
+      </>}
     </div>
   );
 }

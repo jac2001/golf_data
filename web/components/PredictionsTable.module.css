@@ -1,0 +1,23 @@
+/* Phones (under 600px): one card per golfer instead of the wide table,
+   so win / top-10 / cut sit beside the name, not offscreen (phone review). */
+.cards { display: none; }
+
+@media (max-width: 600px) {
+  .table { display: none; }
+  .desktopOnly { display: none; }
+  .cards { display: flex; flex-direction: column; gap: 8px; }
+}
+
+.card {
+  background: var(--bc-panel);
+  border: 1px solid var(--bc-line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.card.pick { border-left: 3px solid var(--bc-green); background: #0a1e12; }
+
+.chips { display: flex; gap: 16px; margin-top: 6px; }
+.chip { display: flex; flex-direction: column; }
+.chipLabel { font-size: 11px; color: var(--bc-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.chipValue { font-size: 16px; font-weight: 800; }
