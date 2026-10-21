@@ -29,9 +29,9 @@ week,start_date,end_date,tournament_name,tournament_type,location,purse,winner_s
 28,2026-08-13,2026-08-16,FedEx St. Jude Invitational,Playoff,Memphis TN,"$20,000,000.00","$3,600,000.00",R2026027,fedex-st-jude-invitational,,,,,
 29,2026-08-20,2026-08-23,BMW Championship,Playoff,St. Louis MO,"$20,000,000.00","$3,600,000.00",R2026028,bmw-championship,,,,,
 30,2026-08-27,2026-08-30,TOUR Championship,Playoff,Atlanta GA,"$20,000,000.00","$3,600,000.00",R2026060,tour-championship,,,,,
-31,2026-09-17,2026-09-20,Biltmore Championship Asheville,Standard,"Arden, NC","$6,000,000.00","$1,080,000.00",R2026557,biltmore-championship-asheville,The Cliffs at Walnut Cove,942,35.463,-82.602,estimate
+31,2026-09-17,2026-09-20,Biltmore Championship Asheville,Standard,"Arden, NC","$5,000,000.00","$900,000.00",R2026557,biltmore-championship-asheville,The Cliffs at Walnut Cove,942,35.463,-82.602,official
 32,2026-10-01,2026-10-04,Bank of Utah Championship,Standard,"Ivins, UT","$6,000,000.00","$1,080,000.00",R2026554,bank-of-utah-championship,Black Desert Resort,930,37.168,-113.653,estimate
-33,2026-10-08,2026-10-11,Baycurrent Classic,Standard,"Yokohama, Kanagawa, Japan","$6,000,000.00","$1,080,000.00",R2026527,baycurrent-classic,Yokohama Country Club (West Course),936,35.446,139.549,estimate
+33,2026-10-08,2026-10-11,Baycurrent Classic,Standard,"Yokohama, Kanagawa, Japan","$8,000,000.00","$1,440,000.00",R2026527,baycurrent-classic,Yokohama Country Club (West Course),936,35.446,139.549,official
 34,2026-10-22,2026-10-25,Butterfield Bermuda Championship,Standard,"Southampton, Bermuda","$6,000,000.00","$1,080,000.00",R2026528,butterfield-bermuda-championship,Port Royal Golf Course,765,32.261,-64.874,estimate
 35,2026-10-29,2026-11-01,VidantaWorld Mexico Open,Standard,"Vallarta, Mexico","$6,000,000.00","$1,080,000.00",R2026540,vidantaworld-mexico-open,Vidanta Vallarta,978,20.7,-105.3,estimate
 36,2026-11-05,2026-11-08,World Wide Technology Championship,Standard,"Cabo San Lucas, Mexico","$6,000,000.00","$1,080,000.00",R2026457,world-wide-technology-championship,El Cardonal at Diamante,919,22.901,-109.985,estimate

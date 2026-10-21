@@ -119,13 +119,13 @@ were silently off after the move; it now uses `$CLAUDE_PROJECT_DIR`.
       scripts that exist. CLAUDE.md: Render Starter, `dashboard.py` gone (deleted Sep 15).
       LeagueGate no longer says the Friends Game is "coming soon". The integrity/freshness
       gates do block publishing end to end since Phase A #3.
-- [ ] **Settlement money is estimated for 16 of 2026's settled PGA events** (no official
-      earnings in our leaderboards), from the schedule purse. Two purses are wrong vs DataGolf's
-      official totals: Baycurrent $6M vs $7.97M paid (winner shown $1.08M, paid $1.44M;
-      lineups ~25% low), Biltmore $6M vs $5.10M (~18% high). Jack decides: correct those
-      purses and rescore (like `maintenance/rescore_euro_purses.py`), and/or settle from DG's
-      official earnings (`historical-event-data/events`; our key gets it; a new public display
-      of DG data, so check DG's display terms first, DATA_PERMISSIONS.md).
+- [x] **Settlement purses** (Jack, Oct 21): 16 of 2026's settled PGA events are scored from the
+      schedule purse (no official earnings in our leaderboards). Baycurrent $6M -> $8M and
+      Biltmore $6M -> $5M (the winner's official 18% share in DG's earnings), `purse_source`
+      official. Earnings are computed live from the schedule (nothing stored in Neon), so
+      standings follow: Baycurrent winner $1.08M -> $1.44M; per-player gap to DG official now
+      median $1.6K / $250. Affected: 6 Let It Ride, 3 Fade, 1 College pick (Baycurrent).
+      Still open: settle from DG's official earnings instead (check DG display terms first).
 - [ ] **`event_guard.names_match` false positive on shared sponsor words**: "RBC Heritage" ==
       "RBC Canadian Open", "Genesis Scottish Open" == "Genesis Invitational" (one distinctive
       token each side is a 0.5 overlap). Rule 1's guard; RBC Canadian is one of the four
