@@ -66,6 +66,7 @@ CLOUD_FETCH = os.environ.get("CLOUD_FETCH", "") == "1"
 _FRESHEN_SPECS: dict[str, dict] = {
     "leaderboard": {
         "glob": "live/leaderboard_r*.csv",
+        "path": lambda tid: f"live/leaderboard_{tid.lower()}.csv",
         "ttl": 300,
         "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_live_leaderboard.py",
                             "--tournament-id", tid],
@@ -73,6 +74,7 @@ _FRESHEN_SPECS: dict[str, dict] = {
     },
     "odds": {
         "glob": "datagolf/dg_outrights_R*.csv",
+        "path": lambda tid: f"datagolf/dg_outrights_{tid.upper()}.csv",
         "ttl": 900,
         "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_dg_odds.py",
                             "--tournament-id", tid, "--market", "all"],
@@ -80,6 +82,7 @@ _FRESHEN_SPECS: dict[str, dict] = {
     },
     "weather": {
         "glob": "weather/R*.json",
+        "path": lambda tid: f"weather/{tid.upper()}.json",
         "ttl": 3 * 3600,
         "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_weather_openmetro.py",
                             "--tid", tid],
@@ -113,9 +116,12 @@ def _freshen(kind: str) -> None:
     if spec is None:
         return
     try:
-        files = sorted(DATA_DIR.glob(spec["glob"]),
-                       key=lambda p: p.stat().st_mtime, reverse=True)
-        age = (time.time() - files[0].stat().st_mtime) if files else float("inf")
+        # Age of THIS event's file: a fresh file for another event (last
+        # week's, an iCloud copy) must not stop this week's refetch
+        # (audit finding 6). The mtime is the running instance's own write.
+        cur = _get_tournament_id()
+        own = DATA_DIR / spec["path"](cur) if cur and "path" in spec else None
+        age = (time.time() - own.stat().st_mtime) if own is not None and own.exists() else float("inf")
         if age <= spec["ttl"]:
             return
         now = time.time()
@@ -1979,17 +1985,41 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     }
 
 
+def _live_board_files(tid: str) -> tuple[Path | None, dict]:
+    """This event's live leaderboard CSV and meta, never another event's.
+    Picking "the newest leaderboard_r*.csv" served last week's rows under
+    this week's id whenever an old file was touched later (audit finding 6).
+    A meta whose own tournament_id names another event is treated as
+    missing and logged."""
+    if not tid:
+        return None, {}
+    live = DATA_DIR / "live"
+    csv_path = live / f"leaderboard_{tid.lower()}.csv"
+    meta_path = live / f"leaderboard_{tid.lower()}_meta.json"
+    meta: dict = {}
+    if meta_path.exists():
+        try:
+            with open(meta_path) as f:
+                meta = json.load(f)
+        except Exception:
+            meta = {}
+        inner = str(meta.get("tournament_id", "")).strip().upper()
+        if inner and inner != tid.upper():
+            print(f"live board: {meta_path.name} says {inner}, not {tid}; ignored")
+            return None, {}
+    return (csv_path if csv_path.exists() else None), meta
+
+
 @app.get("/api/leaderboard")
 def get_leaderboard() -> dict:
-    """Live leaderboard from the newest CSV (freshened from source when stale)."""
+    """This event's live leaderboard (freshened from source when stale).
+    No file for this event yet: an honest empty board, never another event's."""
     _freshen("leaderboard")     # pull-based: refetch if stale (no-op unless CLOUD_FETCH=1)
     tid      = _get_tournament_id()
-    live_dir = DATA_DIR / "live"
-    lb_files = sorted(live_dir.glob("leaderboard_r*.csv"),
-                      key=lambda p: p.stat().st_mtime, reverse=True)
-    if not lb_files:
-        raise HTTPException(status_code=404, detail="No leaderboard found")
-    df = pd.read_csv(lb_files[0])
+    lb_path, raw_meta = _live_board_files(tid)
+    if lb_path is None:
+        return {"tournament_id": tid, "players": [], "count": 0, "available": False}
+    df = pd.read_csv(lb_path)
 
     # Numeric coercions
     for col in ["total_numeric", "R1", "R2", "R3", "R4", "position_change"]:
@@ -2002,38 +2032,28 @@ def get_leaderboard() -> dict:
                          "made_cut", "status", "movement"] if c in df.columns]
     records = _df_to_records(df[keep])
 
-    # Meta
+    # Meta: the SAME event's file (it used to be picked separately, by mtime).
     meta: dict = {}
-    meta_files = sorted(live_dir.glob("leaderboard_r*_meta.json"),
-                        key=lambda p: p.stat().st_mtime, reverse=True)
-    if meta_files:
-        try:
-            with open(meta_files[0]) as f:
-                raw_meta = json.load(f)
-            meta = {
-                "current_round":   raw_meta.get("current_round"),
-                "round_status":    raw_meta.get("round_status"),
-                "cut_projection":  raw_meta.get("cut_projection"),
-                "fetched_at":      raw_meta.get("fetched_at", "")[:16],
-            }
-        except Exception:
-            pass
+    if raw_meta:
+        meta = {
+            "current_round":   raw_meta.get("current_round"),
+            "round_status":    raw_meta.get("round_status"),
+            "cut_projection":  raw_meta.get("cut_projection"),
+            "fetched_at":      str(raw_meta.get("fetched_at", ""))[:16],
+        }
 
-    return {"tournament_id": tid, "players": records, "count": len(records), **meta}
+    return {"tournament_id": tid, "players": records, "count": len(records), "available": True, **meta}
 
 
 @app.get("/api/live/vs-predictions")
 def get_live_vs_predictions() -> dict:
     """Leaderboard merged with our model predictions — compare live position vs model rank."""
     tid = _get_tournament_id()
-    live_dir = DATA_DIR / "live"
+    lb_path, _ = _live_board_files(tid)
+    if lb_path is None:
+        raise HTTPException(status_code=404, detail=f"No live leaderboard for {tid} yet")
 
-    lb_files = sorted(live_dir.glob("leaderboard_r*.csv"),
-                      key=lambda p: p.stat().st_mtime, reverse=True)
-    if not lb_files:
-        raise HTTPException(status_code=404, detail="No leaderboard found")
-
-    lb = pd.read_csv(lb_files[0])
+    lb = pd.read_csv(lb_path)
     for col in ["total_numeric", "position_change"]:
         if col in lb.columns:
             lb[col] = pd.to_numeric(lb[col], errors="coerce")
@@ -2091,7 +2111,6 @@ def get_my_lineup_live() -> dict:
     Source priority: tracker weekly_lineups for current week → strategy_reasoning.json.
     """
     tid = _get_tournament_id()
-    live_dir = DATA_DIR / "live"
 
 
     picks: list[str] = []
@@ -2172,10 +2191,9 @@ def get_my_lineup_live() -> dict:
 
     # CSV final fallback
     if not lb_map:
-        lb_files = sorted(live_dir.glob("leaderboard_r*.csv"),
-                          key=lambda p: p.stat().st_mtime, reverse=True)
-        if lb_files:
-            lb = pd.read_csv(lb_files[0])
+        lb_path, _ = _live_board_files(_get_tournament_id())
+        if lb_path is not None:
+            lb = pd.read_csv(lb_path)
             for col in ["total_numeric", "R1", "R2", "R3", "R4"]:
                 if col in lb.columns: lb[col] = pd.to_numeric(lb[col], errors="coerce")
             for _, row in lb.iterrows():
@@ -5584,13 +5602,8 @@ def get_player_profile(player: str) -> dict:
 
     # ── Betting profile ───────────────────────────────────────────────────────
     betting_profile: dict | None = None
+    # This event's profile only: another event's numbers are wrong here.
     bp_path = DATA_DIR / "betting_profiles" / f"betting_profiles_{tid}.csv"
-    if not bp_path.exists():
-        candidates = sorted(
-            (DATA_DIR / "betting_profiles").glob("betting_profiles_R*.csv"),
-            key=lambda p: p.stat().st_mtime, reverse=True,
-        )
-        bp_path = candidates[0] if candidates else None  # type: ignore[assignment]
 
     if bp_path and Path(bp_path).exists():
         try:
@@ -7468,12 +7481,9 @@ def get_withdrawals() -> dict:
     wd_dir = DATA_DIR / "news"
     path = wd_dir / f"withdrawals_{tid}.json"
 
+    # This event's withdrawals only: last week's list is not this week's.
     if not path.exists():
-        files = sorted(wd_dir.glob("withdrawals_R*.json"),
-                       key=lambda p: p.stat().st_mtime, reverse=True)
-        if not files:
-            return {"tournament_id": tid, "withdrawals": [], "count": 0, "confirmed_count": 0}
-        path = files[0]
+        return {"tournament_id": tid, "withdrawals": [], "count": 0, "confirmed_count": 0}
 
     with open(path) as f:
         raw = json.load(f)

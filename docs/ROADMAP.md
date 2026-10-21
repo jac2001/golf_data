@@ -74,7 +74,10 @@ workspace, then consolidate, then delete leftovers.
        else "ambiguous", logged). Aberg pick: $0 before, $259,500 now.
        `earnings_estimated` carried to Match Center + recap. Known gap: DP World
        Tour has no ids (name-only); DataGolf's live board has no PGA ids.
-5. [ ] Event-specific leaderboard selection (Live reads the newest file).
+5. [x] Event-specific files (Oct 21): live leaderboard + meta read by tournament
+       id (a meta naming another event is ignored), an honest empty board when
+       this event has none; `_freshen` ages THIS event's file; betting profile
+       and withdrawals no longer borrow another event's file. Phase A done.
 
 **Phase B: workspace** (Jack): move out of iCloud, then quarantine the " 2" duplicates.
 

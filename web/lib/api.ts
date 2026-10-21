@@ -622,6 +622,7 @@ export type LeaderboardResponse = {
   tournament_id: string;
   players: LeaderboardPlayer[];
   count: number;
+  available?: boolean;   // false: no board for this event yet (never another event's)
   current_round: number | null;
   round_status: string | null;
   cut_projection: CutProjection | null;
