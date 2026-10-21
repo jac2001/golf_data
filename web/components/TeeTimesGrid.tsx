@@ -36,9 +36,6 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
 
   const totalPlayers = data.groups.reduce((s, g) => s + g.players.length, 0);
 
-  // Count USE players for the summary
-  const usePlayers = data.groups.flatMap(g => g.players).filter(p => p.edge != null && p.edge > 3);
-
   return (
     <div>
       {/* Summary strip */}
@@ -48,34 +45,25 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
         <span>{data.groups.length} tee times</span>
         <span>·</span>
         <span>{totalPlayers} players</span>
-        {usePlayers.length > 0 && (
-          <>
-            <span>·</span>
-            <span style={{ color: "var(--bc-green)", fontWeight: 700 }}>
-              {usePlayers.length} high-edge player{usePlayers.length !== 1 ? "s" : ""}
-            </span>
-          </>
-        )}
       </div>
 
       {/* Grid of tee time cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 10 }}>
         {data.groups.map(group => {
-          const hasUse = group.players.some(p => p.edge != null && p.edge > 3);
           return (
             <div key={group.tee_time} style={{
               background: "var(--bc-panel)",
-              border: `1px solid ${hasUse ? "color-mix(in srgb, var(--bc-green) 27%, transparent)" : "var(--bc-line)"}`,
+              border: "1px solid var(--bc-line)",
               borderRadius: 8, overflow: "hidden",
             }}>
               {/* Tee time header */}
               <div style={{
-                background: hasUse ? "#0a1e14" : "var(--bc-panel)",
+                background: "var(--bc-panel)",
                 padding: "6px 12px",
-                borderBottom: `1px solid ${hasUse ? "color-mix(in srgb, var(--bc-green) 20%, transparent)" : "var(--bc-line)"}`,
+                borderBottom: "1px solid var(--bc-line)",
                 display: "flex", justifyContent: "space-between", alignItems: "center",
               }}>
-                <span style={{ color: hasUse ? "var(--bc-green)" : "var(--bc-yellow)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
+                <span style={{ color: "var(--bc-yellow)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
                   {group.tee_time}
                 </span>
                 <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -84,44 +72,35 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                       Hole {group.players[0].start_tee}
                     </span>
                   )}
-                  {hasUse && (
-                    <span style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", fontWeight: 800, color: "var(--bc-green)", background: "color-mix(in srgb, var(--bc-green) 15%, transparent)", padding: "2px 5px", borderRadius: 3, border: "1px solid color-mix(in srgb, var(--bc-green) 20%, transparent)" }}>
-                      VALUE
-                    </span>
-                  )}
                 </div>
               </div>
 
-              {/* Column headers — only show if we have edge data */}
-              {group.players.some(p => p.edge != null) && (
-                <div style={{
-                  display: "grid", gridTemplateColumns: "1fr auto",
-                  padding: "3px 12px", borderBottom: "1px solid var(--bc-panel)",
-                }}>
-                  <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Player</span>
-                  <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right" }}>
-                    Win% · Top10% · Edge
-                  </span>
-                </div>
-              )}
+              {/* Column headers. Edge left the tee sheet (Jack, Oct 21): it's a
+                  betting number, not what you look for in a tee time. */}
+              <div style={{
+                display: "grid", gridTemplateColumns: "1fr auto",
+                padding: "3px 12px", borderBottom: "1px solid var(--bc-panel)",
+              }}>
+                <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Player</span>
+                <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", color: "var(--bc-line)", textTransform: "uppercase", letterSpacing: "0.05em", textAlign: "right" }}>
+                  Win% · Top10%
+                </span>
+              </div>
 
               {/* Players */}
               {group.players.map((p, i) => {
                 const drift = DRIFT_ARROW[p.drift] ?? null;
-                const isEdge = p.edge != null && p.edge > 3;
                 const isPick = myPicksNorm.has(normName(p.name));
                 const formColor = (p.form_trend ?? 0) > 0.2 ? "var(--bc-green)"
                   : (p.form_trend ?? 0) < -0.1 ? "var(--bc-red)" : "var(--bc-muted)";
                 const rColor = rankColor(p.model_rank);
-                const edgeColor = p.edge == null ? "var(--bc-muted)"
-                  : p.edge > 5 ? "var(--bc-green)" : p.edge > 2 ? "var(--warning)" : "var(--bc-muted)";
 
                 return (
                   <div key={p.name} style={{
                     padding: "8px 12px",
                     borderBottom: i < group.players.length - 1 ? "1px solid var(--bc-card)" : "none",
-                    borderLeft: isPick ? "2px solid var(--bc-green)" : isEdge ? "2px solid var(--bc-yellow)" : "2px solid transparent",
-                    background: isPick ? "#091a0f" : isEdge ? "#0a1a10" : "transparent",
+                    borderLeft: isPick ? "2px solid var(--bc-green)" : "2px solid transparent",
+                    background: isPick ? "#091a0f" : "transparent",
                     display: "flex", justifyContent: "space-between", alignItems: "center",
                   }}>
                     {/* Left: rank badge + name */}
@@ -139,14 +118,14 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           <Link
                             href={`/players?player=${encodeURIComponent(p.name)}`}
                             style={{
-                              color: isPick ? "var(--bc-green)" : isEdge ? "var(--bc-text)" : "#c0cce0",
-                              fontWeight: isPick || isEdge ? 700 : 600,
+                              color: isPick ? "var(--bc-green)" : "#c0cce0",
+                              fontWeight: isPick ? 700 : 600,
                               fontSize: "max(var(--fs-min), 0.85em)",
                               whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                               textDecoration: "none",
                             }}
                             onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
-                            onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : isEdge ? "var(--bc-text)" : "#c0cce0")}
+                            onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : "#c0cce0")}
                           >
                             {p.name}
                           </Link>
@@ -172,7 +151,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                       </div>
                     </div>
 
-                    {/* Right: Win% · Top10% · Edge */}
+                    {/* Right: Win% · Top10% */}
                     <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 8 }}>
                       <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "baseline" }}>
                         <span style={{ color: "var(--bc-green)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.82em)" }}>
@@ -184,11 +163,6 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           </span>
                         )}
                       </div>
-                      {p.edge != null && (
-                        <div style={{ color: edgeColor, fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: isEdge ? 700 : 400, marginTop: 2 }}>
-                          {p.edge > 0 ? "+" : ""}{p.edge.toFixed(1)}pp edge
-                        </div>
-                      )}
                     </div>
                   </div>
                 );
