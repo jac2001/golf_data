@@ -17,7 +17,7 @@
 
 import { useState, useEffect } from "react";
 import {
-  getBets, getOddsComparison, getTournament, refreshBets, getExpertPicks, getBestBet, getLineup,
+  getBets, getOddsComparison, getTournament, refreshBets, getExpertPicks, getBestBet, getOwnerPicks,
   Bet, OddsComparison, Tournament, MARKET_LABELS, ExpertPicksResponse, BestBet,
 } from "@/lib/api";
 import Link from "next/link";
@@ -71,6 +71,10 @@ export default function BettingPage() {
   const [loading, setLoading]         = useState(true);
   const [refreshing, setRefreshing]   = useState(false);
   const admin = useIsAdmin();
+  // Pick highlights are Jack's personal-league picks: owner-only (audit #9).
+  useEffect(() => {
+    if (admin) getOwnerPicks().then(setMyPicks).catch(() => {});
+  }, [admin]);
   const [showTable, setShowTable]     = useState(false);
   const [tableMarket, setTableMarket] = useState("top10");
   const [expertData, setExpertData]   = useState<ExpertPicksResponse | null>(null);
@@ -96,9 +100,6 @@ export default function BettingPage() {
         setBets(b.bets);
         setOddsData(o);
         if (bb?.available) setBestBet(bb);
-        getLineup().then(l => {
-          if (l.confirmed) setMyPicks(l.picks.map(p => p.player_name));
-        }).catch(() => {});
       } catch (e) {
         setError("Could not connect to the API. Make sure FastAPI is running on port 8000.");
       } finally {

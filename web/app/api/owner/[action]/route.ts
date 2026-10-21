@@ -21,6 +21,7 @@ const ACTIONS: Record<string, { path: string; methods: string[] }> = {
   "refresh-hole-scores": { path: "/api/live/refresh-hole-scores",  methods: ["POST"] },
   "picks":               { path: "/api/picks",                     methods: ["POST", "DELETE"] },
   "settings":            { path: "/api/settings",                  methods: ["PATCH"] },
+  "owner-picks":         { path: "/api/owner-picks",               methods: ["GET"] },
 };
 
 async function relay(req: Request, params: Promise<{ action: string }>) {
@@ -60,9 +61,9 @@ type Ctx = { params: Promise<{ action: string }> };
 // counts it as an admin. Production and development Clerk instances give the
 // same person different ids, so this is how to find the right one to list.
 // User ids aren't secrets; nothing else is exposed.
-export async function GET(_req: Request, { params }: Ctx) {
+export async function GET(req: Request, { params }: Ctx) {
   const { action } = await params;
-  if (action !== "whoami") return Response.json({ detail: "Unknown action." }, { status: 404 });
+  if (action !== "whoami") return relay(req, params);
   const { userId } = await auth();
   return Response.json({ userId: userId ?? null, admin: isAdmin(userId) });
 }

@@ -200,34 +200,6 @@ export type PredictionsResponse = {
   analysis_generated_at: string;
 };
 
-export type LineupPick = {
-  player_name: string;
-  recommendation: string;
-  tier: string;
-  uses_left: number | null;
-  in_field: boolean;
-  narrative: string;
-  win_prob: number | null;
-  top10_prob: number | null;
-  world_rank: number | null;
-  odds_to_win: string;
-  form_trend: number | null;
-  season_sg: number | null;
-  drift: string;
-  this_week_ev: number | null;
-};
-
-export type LineupResponse = {
-  tournament_id: string;
-  tournament: string;
-  generated_at: string;
-  weekly_narrative: string;
-  picks: LineupPick[];
-  stale: boolean;
-  stale_tournament: string;
-  confirmed: boolean;
-};
-
 export type TeeTimePlayer = {
   name: string;
   start_tee: number | null;
@@ -426,10 +398,14 @@ export async function getPredictions(limit = 80, tournamentId = ""): Promise<Pre
   return res.json();
 }
 
-export async function getLineup(): Promise<LineupResponse> {
-  const res = await apiFetch(`${API_BASE}/api/lineup`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load lineup");
-  return res.json();
+/** Jack's personal-league picks this event, for the pick highlights.
+ *  Owner-only (audit finding 9): the relay and Render both refuse anyone
+ *  else, and callers only ask when useIsAdmin() is true. [] otherwise. */
+export async function getOwnerPicks(): Promise<string[]> {
+  const res = await apiFetch(`/api/owner/owner-picks`, { cache: "no-store" });
+  if (!res.ok) return [];
+  const d = await res.json() as { picks?: string[] };
+  return d.picks ?? [];
 }
 
 export async function getTeeTimes(): Promise<TeeTimesResponse> {

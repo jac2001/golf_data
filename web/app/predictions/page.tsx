@@ -18,9 +18,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useStoredChoice } from "@/lib/useStoredChoice";
 import {
-  getTournament, getPredictions, getLineup, getTeeTimes, getCourse, getModelComparison,
+  getTournament, getPredictions, getOwnerPicks, getTeeTimes, getCourse, getModelComparison,
   getWeather, getIntel, refreshIntel,
-  Tournament, PredictionsResponse, LineupResponse, TeeTimesResponse, CourseResponse,
+  Tournament, PredictionsResponse, TeeTimesResponse, CourseResponse,
   ModelCompPlayer, WeatherResponse, CourseFitResponse,
   getCourseFit, getOpenEvents, getEuroWeek, getEventRounds, EuroWeekMeta, EventRounds, PlayerPrediction, IntelResponse,
   getEuroTeeTimes, getEuroCourse, EuroTeeTimes, EuroTeeTime, EuroCourseGuide, getGolferForm, GolferForm,
@@ -67,7 +67,12 @@ export default function PredictionsPage() {
   // free account unlocks the full forecast and the other tabs.
   const { isSignedIn } = useUser();
   const [preds, setPreds]             = useState<PredictionsResponse | null>(null);
-  const [lineup, setLineup]           = useState<LineupResponse | null>(null);
+  const [myPicks, setMyPicks]         = useState<string[]>([]);
+  const admin = useIsAdmin();
+  // Pick highlights are Jack's personal-league picks: owner-only (audit #9).
+  useEffect(() => {
+    if (admin) getOwnerPicks().then(setMyPicks).catch(() => {});
+  }, [admin]);
 
   // Between tournaments this page shows the LAST completed event (its
   // predictions are the newest that exist) — say so explicitly, and say
@@ -116,11 +121,10 @@ export default function PredictionsPage() {
 
   // ── Core data fetch (called on mount + every 5 min) ──────────────────────────
   const fetchCore = useCallback(async (silent = false) => {
-    // Lineup (for pick highlights), weather and intel don't depend on the predictions, so they
+    // Weather and intel don't depend on the predictions, so they
     // start alongside them instead of waiting for them (they used to queue
     // behind /api/predictions: a second wave ~3s into the page).
     if (!silent) {
-      getLineup().then(setLineup).catch(() => {});
       getWeather().then(setWeather).catch(() => {});
       getIntel().then(setIntel).catch(() => {});
     }
@@ -295,7 +299,7 @@ export default function PredictionsPage() {
                 <PredictionsTable
                   players={isSignedIn ? preds.players : preds.players.slice(0, 10)}
                   intel={intel?.players ?? []}
-                  myPicks={lineup?.confirmed ? lineup.picks.map(p => p.player_name) : []}
+                  myPicks={myPicks}
                   form={form}
                 />
                 {!isSignedIn && (
@@ -329,7 +333,7 @@ export default function PredictionsPage() {
           : teeTimes
             ? <TeeTimesGrid
                 data={teeTimes}
-                myPicks={lineup?.confirmed ? lineup.picks.map(p => p.player_name) : []}
+                myPicks={myPicks}
               />
             : <Empty text="No tee times available." />
       )}

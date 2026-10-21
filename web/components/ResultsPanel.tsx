@@ -7,8 +7,9 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useIsAdmin } from "@/lib/useIsAdmin";
 import {
-  getHistoryTournaments, getHistoryModel, getTournamentLeaderboard, getLineup,
+  getHistoryTournaments, getHistoryModel, getTournamentLeaderboard, getOwnerPicks,
   HistoryTournament, HistoryModelRow, TournamentLeaderboardRow,
 } from "@/lib/api";
 
@@ -175,13 +176,16 @@ function ResultsTab() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [loading, setLoading]   = useState(true);
   const [myPicks, setMyPicks]   = useState<string[]>([]);
+  const admin = useIsAdmin();
 
   useEffect(() => {
     getHistoryTournaments().then(setData).finally(() => setLoading(false));
-    getLineup()
-      .then(l => { if (l.confirmed) setMyPicks(l.picks.map(p => p.player_name)); })
-      .catch(() => {});
   }, []);
+
+  // Pick highlights are Jack's personal-league picks: owner-only (audit #9).
+  useEffect(() => {
+    if (admin) getOwnerPicks().then(setMyPicks).catch(() => {});
+  }, [admin]);
 
   const myPicksNorm = React.useMemo(() => new Set(myPicks.map(normName)), [myPicks]);
 

@@ -3259,176 +3259,51 @@ def get_model_comparison() -> dict:
     }
 
 
-@app.get("/api/lineup")
-def get_lineup() -> dict:
-    """
-    Weekly lineup recommendation from strategy_reasoning.json,
-    merged with latest prediction probabilities.
+@app.get("/api/owner-picks", dependencies=OWNER_ONLY)
+def get_owner_picks() -> dict:
+    """Jack's personal-league picks for the current event, as full names.
+
+    Owner-only (audit finding 9): these are one person's picks, so the
+    site's pick highlights show them to admins only. Source: the usage
+    tracker's weekly_lineups entry for this event's schedule week. Tracker
+    names are short ('W Clark', 'Burns'); they resolve against this event's
+    predictions, else stay as written.
     """
     tid = _get_tournament_id()
-    sr_path = OUTPUTS_DIR / "strategy_reasoning.json"
-    if not sr_path.exists():
-        return {"tournament_id": tid, "picks": [], "weekly_narrative": ""}
-
-    with open(sr_path) as f:
-        sr = json.load(f)
-
-    # Load predictions for prob columns
-    prob_map: dict = {}
-    pred_path = OUTPUTS_DIR / "latest_predictions.csv"
-    if pred_path.exists():
-        preds = pd.read_csv(pred_path)
-        for col in ["win_prob", "top5_prob", "top10_prob", "top20_prob", "cut_prob",
-                    "world_rank", "odds_to_win", "form_trend", "season_sg_total",
-                    "dk_odds_direction", "model_vs_vegas_edge"]:
-            if col not in preds.columns:
-                preds[col] = None
-        for _, row in preds.iterrows():
-            name = str(row["player_name"]).strip()
-            prob_map[name] = {c: _safe(row[c]) for c in [
-                "win_prob", "top5_prob", "top10_prob", "top20_prob", "cut_prob",
-                "world_rank", "odds_to_win", "form_trend", "season_sg_total",
-                "dk_odds_direction", "model_vs_vegas_edge",
-            ]}
-
-
-    def _lookup_tracker_name(short: str) -> tuple[dict, str]:
-        """Match tracker short name ('N Taylor', 'Fleetwood') to (prob_map entry, matched key)."""
-        s = short.strip()
-        if s in prob_map:
-            return prob_map[s], s
-        parts = s.split()
-        if len(parts) >= 2:
-            last = parts[-1].lower()
-            initial = parts[0][0].lower()
-            for key in prob_map:
-                if "," in key:
-                    lp, fp = key.split(",", 1)
-                    if lp.strip().lower() == last and fp.strip().lower().startswith(initial):
-                        return prob_map[key], key
-            for key in prob_map:
-                if "," in key and key.split(",")[0].strip().lower() == last:
-                    return prob_map[key], key
-        else:
-            last = s.lower()
-            for key in prob_map:
-                if "," in key and key.split(",")[0].strip().lower() == last:
-                    return prob_map[key], key
-        return {}, short
-
-    lineup_names: list[str] = sr.get("lineup", [])
-    players_data: dict = sr.get("players", {})
-
-    picks = []
-    for raw_name in lineup_names:
-        sr_info = players_data.get(raw_name, {})
-        preds_info = prob_map.get(raw_name, {})
-        wp  = preds_info.get("win_prob")
-        t10 = preds_info.get("top10_prob")
-        picks.append({
-            "player_name":   _flip(raw_name),
-            "recommendation": sr_info.get("recommendation", ""),
-            "tier":          sr_info.get("tier", ""),
-            "uses_left":     sr_info.get("uses_left"),
-            "in_field":      sr_info.get("in_field", True),
-            "narrative":     sr_info.get("narrative", ""),
-            "this_week_ev":  sr_info.get("this_week_ev"),
-            "win_prob":      round(float(wp) * 100, 1) if wp is not None else None,
-            "top10_prob":    round(float(t10) * 100, 1) if t10 is not None else None,
-            "world_rank":    preds_info.get("world_rank"),
-            "odds_to_win":   _fmt_odds(preds_info.get("odds_to_win")),
-            "form_trend":    _safe(preds_info.get("form_trend")),
-            "season_sg":     _safe(preds_info.get("season_sg_total")),
-            "drift":         str(preds_info.get("dk_odds_direction") or ""),
-        })
-
-    # A missing tournament_id means an old, unversioned file — treat that as
-    # stale too (same convention as /api/predictions), not just a mismatch.
-    sr_tid = str(sr.get("tournament_id", ""))
-    stale  = (not sr_tid) or (sr_tid != tid)
-
-    # Check usage tracker for confirmed picks this week
-    confirmed = False
-    confirmed_names: list[str] = []
-    tracker_uses: dict[str, int] = {}
-    tracker_path = _TRACKER_JSON
-    tour_name = sr.get("tournament", "")
+    out = {"tournament_id": tid, "picks": []}
     try:
-        with open(tracker_path) as f:
-            tracker = json.load(f)
-        for wk_data in tracker.get("weekly_lineups", {}).values():
-            if wk_data.get("tournament", "") == tour_name and wk_data.get("lineup"):
-                confirmed = True
-                confirmed_names = wk_data["lineup"]
-                break
-        # Build uses_left lookup from picks section
-        for pname, pdata in tracker.get("picks", {}).items():
-            tracker_uses[pname.lower()] = int(pdata.get("remaining_uses", 0))
+        sched = pd.read_csv(_SCHED_CSV)
+        row = sched[sched["tournament_id"].astype(str).str.upper() == str(tid).upper()]
+        if row.empty or not _TRACKER_JSON.exists():
+            return out
+        week = json.loads(_TRACKER_JSON.read_text()).get("weekly_lineups", {}).get(
+            f"week_{int(row['week'].iloc[0])}", {})
+        raw = week.get("lineup", [])
     except Exception:
-        pass
+        return out
 
-    def _uses_left(short: str) -> int | None:
-        """Look up remaining uses for a tracker short name."""
-        s = short.strip().lower()
-        if s in tracker_uses:
-            return tracker_uses[s]
-        parts = s.split()
-        if len(parts) >= 2:
-            last = parts[-1]
-            for k, v in tracker_uses.items():
-                if k.split()[-1] == last:
-                    return v
-        else:
-            for k, v in tracker_uses.items():
-                if k.split()[-1] == s:
-                    return v
-        return None
+    # This event's field: the live file if it is this event's, else its archive.
+    names: list[str] = []
+    for pred_path in (OUTPUTS_DIR / "latest_predictions.csv",
+                      DATA_DIR / "prediction_tracking" / f"pred_{str(tid).upper()}.csv"):
+        if not pred_path.exists():
+            continue
+        preds = pd.read_csv(pred_path, usecols=lambda c: c in ("player_name", "tournament_id"))
+        if "tournament_id" in preds.columns and set(preds["tournament_id"].astype(str).str.upper()) == {str(tid).upper()}:
+            names = [str(n).strip() for n in preds["player_name"]]
+            break
 
-    # If confirmed picks exist in tracker, build pick objects from those names.
-    # Must check `stale` first — `confirmed` only matches tracker weekly_lineups
-    # against sr's OWN tournament name, which is itself a stale value when
-    # strategy_reasoning.json hasn't been regenerated for the current week yet.
-    # Without this, a confirmed lineup from a past tournament (e.g. last week's
-    # picks, still sitting in the tracker) gets shown as if it were this week's.
-    if stale:
-        final_picks = []
-    elif confirmed and confirmed_names:
-        confirmed_picks = []
-        for raw_name in confirmed_names:
-            preds_info, matched_key = _lookup_tracker_name(raw_name)
-            full_name = _flip(matched_key) if matched_key != raw_name else _flip(raw_name)
-            wp  = preds_info.get("win_prob")
-            t10 = preds_info.get("top10_prob")
-            confirmed_picks.append({
-                "player_name":   full_name,
-                "recommendation": "CONFIRMED",
-                "tier":          "",
-                "uses_left":     _uses_left(raw_name),
-                "in_field":      True,
-                "narrative":     "",
-                "this_week_ev":  None,
-                "win_prob":      round(float(wp) * 100, 1) if wp is not None else None,
-                "top10_prob":    round(float(t10) * 100, 1) if t10 is not None else None,
-                "world_rank":    preds_info.get("world_rank"),
-                "odds_to_win":   _fmt_odds(preds_info.get("odds_to_win")),
-                "form_trend":    _safe(preds_info.get("form_trend")),
-                "season_sg":     _safe(preds_info.get("season_sg_total")),
-                "drift":         str(preds_info.get("dk_odds_direction") or ""),
-            })
-        final_picks = confirmed_picks
-    else:
-        final_picks = picks
+    def _resolve(short: str) -> str:
+        """'W Clark' -> 'Clark, Wyndham' when exactly one field name fits."""
+        parts = short.strip().split()
+        last = parts[-1].lower()
+        initial = parts[0][0].lower() if len(parts) >= 2 else ""
+        hits = [n for n in names if "," in n and n.split(",")[0].strip().lower() == last
+                and (not initial or n.split(",", 1)[1].strip().lower().startswith(initial))]
+        return hits[0] if len(hits) == 1 else short
 
-    return {
-        "tournament_id":    tid,
-        "tournament":       tour_name,
-        "generated_at":     sr.get("generated_at", ""),
-        "weekly_narrative": sr.get("weekly_narrative", ""),
-        "picks":            final_picks,
-        "stale":            stale,
-        "stale_tournament": tour_name if stale else "",
-        "confirmed":        confirmed,
-    }
+    out["picks"] = [_flip(_resolve(str(n))) for n in raw]
+    return out
 
 
 _tee_times_cache: dict = {"ts": 0.0, "data": None}

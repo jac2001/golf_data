@@ -52,6 +52,12 @@ def test_dg_latest_refused_for_another_event():
     assert m._dg_pre_tournament_path("R1999999") is None
 
 
+def test_owner_picks_refuse_anonymous():
+    # One person's picks: the site shows them to admins only (audit finding 9).
+    assert client.get("/api/owner-picks").status_code == 403
+    assert client.get("/api/owner-picks", headers={"X-Chat-Proxy-Secret": "wrong"}).status_code == 403
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_") and callable(fn):

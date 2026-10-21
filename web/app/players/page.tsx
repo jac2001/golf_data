@@ -15,7 +15,7 @@ import {
   getPlayerSynopsis,
   getPlayerCareer,
   getTournamentLeaderboard,
-  getLineup,
+  getOwnerPicks,
   getCourseFitWeights,
   PlayerProfile,
   PlayerDecompositions,
@@ -31,6 +31,7 @@ import {
   CourseFitWeights,
   CourseFitRankedPlayer,
 } from "@/lib/api";
+import { useIsAdmin } from "@/lib/useIsAdmin";
 
 const BG       = "var(--bc-bg)";
 const CARD_BG  = "var(--bc-panel)";
@@ -446,15 +447,18 @@ function PlayersPageInner() {
   const [players, setPlayers]       = useState<string[]>([]);
   const [listLoading, setListLoading] = useState(true);
   const [myPicks, setMyPicks]       = useState<string[]>([]);
+  const admin = useIsAdmin();
 
   useEffect(() => {
     getAllPlayers()
       .then(d => setPlayers(d.players))
       .finally(() => setListLoading(false));
-    getLineup()
-      .then(l => { if (l.confirmed) setMyPicks(l.picks.map(p => p.player_name)); })
-      .catch(() => {});
   }, []);
+
+  // Pick highlights are Jack's personal-league picks: owner-only (audit #9).
+  useEffect(() => {
+    if (admin) getOwnerPicks().then(setMyPicks).catch(() => {});
+  }, [admin]);
 
   // Jump to the Lookup tab whenever a ?player= link is followed — needed
   // because clicking a player link while already on /players (e.g. from the

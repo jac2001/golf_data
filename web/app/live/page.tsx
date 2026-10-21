@@ -15,9 +15,10 @@
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useStoredChoice } from "@/lib/useStoredChoice";
+import { useIsAdmin } from "@/lib/useIsAdmin";
 import {
   getTournament, getInPlay, getVsPredictions, getSgStats, getHoleScores,
-  getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
+  getLivePulse, getHoleStats, getSettings, getWithdrawals, getOwnerPicks,
   Tournament, InPlayResponse, VsPredPlayer, SgStatsResponse, HoleScoresResponse,
   HoleStatsResponse, LivePulse as LivePulseData, WithdrawalsResponse,
   getOpenEvents, getEuroLive, EuroLive, getEuroCourse, getScorecard,
@@ -66,6 +67,11 @@ export default function LivePage() {
   const [loadingHoles,  setLoadingHoles]  = useState(false);
 
   const [myPicks,       setMyPicks]       = useState<string[]>([]);
+  const admin = useIsAdmin();
+  // Pick highlights are Jack's personal-league picks: owner-only (audit #9).
+  useEffect(() => {
+    if (admin) getOwnerPicks().then(setMyPicks).catch(() => {});
+  }, [admin]);
   const [wds,           setWds]           = useState<WithdrawalsResponse | null>(null);
   const [pulse,         setPulse]         = useState<LivePulseData | null>(null);
   const [pulseLoading,  setPulseLoading]  = useState(false);
@@ -108,9 +114,6 @@ export default function LivePage() {
           getTournament(), getInPlay(), getHoleScores(), getSettings(),
         ]);
         getWithdrawals().then(setWds).catch(() => {});
-        getLineup().then(l => {
-          if (l.confirmed) setMyPicks(l.picks.map(p => p.player_name));
-        }).catch(() => {});
         setTournament(t);
         setInPlay(ip);
         setHoleScores(hs);
