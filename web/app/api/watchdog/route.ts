@@ -114,7 +114,7 @@ export async function GET(req: Request) {
         }[];
       };
       const slot = missedSlot(new Date(now), workflow_runs);
-      if (slot) needs.push({ workflow: "data-refresh.yml", schedule: slot, why: `the ${slot} data refresh never ran` });
+      if (slot) needs.push({ workflow: "data-refresh.yml", schedule: slot, why: `the ${slot} data refresh has no successful matching run` });
     }
   } catch { /* can't tell: leave it (the outcome checks above still run) */ }
 

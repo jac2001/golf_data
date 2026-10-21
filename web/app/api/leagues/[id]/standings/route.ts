@@ -105,11 +105,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       ev.event_total += earned;
       m.total += earned;
       if (tour === "euro") m.euro_total += earned; else m.pga_total += earned;
-      // TODO(Jack): split `earned` into m.banked vs m.live.
-      //   - table?.settled  → the money is final: it's banked
-      //   - table?.projected → the event is still live: it's projected
-      // m.total should still equal m.banked + m.live when you're done.
-      if (table?.projected) m.live += earned; else m.banked += earned;
+      if (table?.settled) m.banked += earned;
+      else if (table?.projected) m.live += earned;
       if (table?.settled) ev.settled = true;
       if (table?.projected) ev.projected = true;
     }

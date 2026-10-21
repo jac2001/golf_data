@@ -34,6 +34,7 @@ import CourseFitTab from "@/components/CourseFitTab";
 import { PageHead, SubTabs } from "@/components/broadcast";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import styles from "./summary.module.css";
 type Tab = "field" | "lineup" | "teetimes" | "course" | "dg" | "coursefit";
 
 const TABS: { id: Tab; label: string }[] = [
@@ -247,15 +248,15 @@ export default function PredictionsPage() {
 
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}
       {preds && !loadingField && (
-        <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+        <section className={styles.summary} aria-label="Tournament overview">
+          {tournament?.location && (
+            <p className={styles.location}>{tournament.location}</p>
+          )}
+          <div className={styles.grid}>
           <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)}
             sub={preds.field_size && preds.field_size !== preds.count
               ? `${preds.count} projected · the field changed after the model ran (late entries or withdrawals)`
               : undefined} />
-          <GlanceCard
-            label="Location"
-            value={tournament?.location || "—"}
-          />
           <GlanceCard
             label="Purse"
             value={(() => {
@@ -266,19 +267,31 @@ export default function PredictionsPage() {
               return isNaN(n) ? String(p) : `$${Math.round(n).toLocaleString()}`;
             })()}
           />
-          <GlanceCard
-            label="Defending Champ"
-            value={tournament?.defending_champion || "—"}
-            sub={tournament?.defending_champion_year ? `${tournament.defending_champion_year} winner` : undefined}
-          />
-          <GlanceCard
-            label="Model lineup"
-            value={lineup?.confirmed && lineup.picks.length ? lineup.picks.map(p => p.player_name.split(" ").pop()).join(", ") : "Not generated yet"}
-            sub={lineup?.confirmed ? "the model's suggested trio" : "your game picks live in Friends Game"}
-            onClick={() => setActiveTab("lineup")}
-          />
           <FieldStrengthCard players={preds.players} />
-        </div>
+          </div>
+          {isSignedIn && (
+            <button type="button" className={styles.lineup} onClick={() => activateTab("lineup")}>
+              <span>
+                <span className={styles.label}>Model lineup</span>
+                <span className={styles.lineupValue}>
+                  {lineup?.confirmed && lineup.picks.length
+                    ? lineup.picks.map(p => p.player_name).join(" · ")
+                    : "Not generated yet"}
+                </span>
+                <span className={styles.support}>Your game picks are in Friends Game.</span>
+              </span>
+              <span className={styles.action}>View lineup <span aria-hidden="true">→</span></span>
+            </button>
+          )}
+          {tournament?.defending_champion && (
+            <details className={styles.details}>
+              <summary>Tournament details</summary>
+              <p>Defending champion: <strong>{tournament.defending_champion}</strong>
+                {tournament.defending_champion_year && ` (${tournament.defending_champion_year})`}
+              </p>
+            </details>
+          )}
+        </section>
       )}
 
       {/* ── Weather strip ────────────────────────────────────────────────── */}
@@ -548,7 +561,7 @@ function EuroWeek() {
   return (
     <>
       {meta && (
-        <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+        <div className={`${styles.grid} ${styles.summary}`}>
           <GlanceCard label="Course" value={meta.course} sub={meta.location} />
           <GlanceCard label="Dates" value={`${meta.start_date.slice(5)} → ${meta.end_date.slice(5)}`} />
           <GlanceCard label="Field Size" value={String(meta.field_size || rows.length)} />
@@ -835,27 +848,14 @@ function fieldStrength(players: PlayerPrediction[]): {
 function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
   const { label, color, top10, top25, top50, medRank } = fieldStrength(players);
   return (
-    <div style={{
-      background: `linear-gradient(180deg, ${color}12 0%, var(--bc-panel) 55%)`,
-      borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
-      borderTop: `3px solid ${color}`,
-      borderRadius: 8,
-      padding: "12px 16px",
-      flex: "1 1 160px", minWidth: 150,
-      position: "relative", overflow: "hidden",
-    }}>
-      <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: `${color}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
-        Field Strength
-      </div>
-      <div style={{ fontSize: "1.1em", fontWeight: 800, color, marginTop: 4 }}>
-        {label}
-      </div>
-      <div style={{ fontSize: "max(var(--fs-min-xs), 0.66em)", color: "var(--bc-muted)", marginTop: 3 }}>
-        {top10} top-10 · {top25} top-25 · {top50} top-50
-      </div>
-      <div style={{ fontSize: "max(var(--fs-min-xs), 0.66em)", color: "var(--bc-muted)", marginTop: 1 }}>
-        Median rank #{medRank}
-      </div>
+    <div className={`${styles.card} ${styles.strength}`}>
+      <div className={styles.label}>Field strength</div>
+      <div className={styles.value} style={{ color }}>{label}</div>
+      <details className={styles.details}>
+        <summary>World ranking breakdown</summary>
+        <p className={styles.support}>{top10} in top 10 · {top25} in top 25 · {top50} in top 50</p>
+        <p className={styles.support}>Median rank #{medRank}</p>
+      </details>
     </div>
   );
 }
@@ -863,36 +863,14 @@ function FieldStrengthCard({ players }: { players: PlayerPrediction[] }) {
 function GlanceCard({ label, value, sub, accent = "var(--bc-line-hi)", onClick }: {
   label: string; value: string; sub?: string; accent?: string; onClick?: () => void;
 }) {
-  return (
-    <div
-      onClick={onClick}
-      style={{
-        background: `linear-gradient(180deg, ${accent}12 0%, var(--bc-panel) 55%)`,
-        borderLeft: "1px solid var(--bc-line)", borderRight: "1px solid var(--bc-line)", borderBottom: "1px solid var(--bc-line)",
-        borderTop: `3px solid ${accent}`,
-        borderRadius: 8,
-        padding: "12px 16px",
-        flex: "1 1 140px", minWidth: 130,
-        position: "relative", overflow: "hidden",
-        cursor: onClick ? "pointer" : "default",
-        transition: onClick ? "border-color 0.15s, background 0.15s" : undefined,
-      }}
-      onMouseEnter={onClick ? e => (e.currentTarget.style.borderColor = accent) : undefined}
-      onMouseLeave={onClick ? e => (e.currentTarget.style.borderColor = "var(--bc-line)") : undefined}
-    >
-      <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: `${accent}99`, textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 600 }}>
-        {label}
-      </div>
-      <div style={{
-        fontSize: "1.1em", fontWeight: 800, color: "var(--bc-text)",
-        marginTop: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-      }}>
-        {value}
-      </div>
-      {sub && <div style={{ fontSize: "max(var(--fs-min-xs), 0.66em)", color: "var(--bc-muted)", marginTop: 3 }}>{sub}</div>}
-      {onClick && <div style={{ fontSize: "max(var(--fs-min-xs), 0.6em)", color: `${accent}66`, marginTop: 4 }}>click to view</div>}
-    </div>
-  );
+  const content = <>
+    <span className={styles.label}>{label}</span>
+    <span className={styles.value}>{value}</span>
+    {sub && <span className={styles.support}>{sub}</span>}
+  </>;
+  return onClick
+    ? <button type="button" className={styles.card} style={{ borderTopColor: accent }} onClick={onClick}>{content}</button>
+    : <div className={styles.card} style={{ borderTopColor: accent }}>{content}</div>;
 }
 
 function CourseConditionsCard({ intel }: { intel: IntelResponse }) {

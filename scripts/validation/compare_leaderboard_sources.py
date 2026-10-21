@@ -59,7 +59,7 @@ COLS = ["tournament_id", "player_id", "player_name", "position"]
 # passes, plus one test of your own for decision (a) or (b).
 # Yes, 5 should agree with T5 because its still worth the same place
 # No a cut is different than a withdraw. WD should be treated differently no matter when it happens
-# 
+# TRUST SHOULD BE 99 so we are not losing any stats/values from over the years and we know all player ids and tourney ids are correct
 TRUST_RATE = 0.99
 
 

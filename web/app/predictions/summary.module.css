@@ -1,0 +1,132 @@
+.summary {
+  margin-bottom: 20px;
+}
+
+.location {
+  margin: 0 0 12px;
+  color: var(--bc-text);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  min-width: 0;
+  padding: 16px;
+  background: var(--bc-panel);
+  border: 1px solid var(--bc-line-hi);
+  border-radius: 10px;
+  text-align: left;
+  font-family: inherit;
+}
+
+.label {
+  display: block;
+  color: var(--bc-muted);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.value,
+.lineupValue {
+  display: block;
+  margin-top: 5px;
+  color: var(--bc-text);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.support {
+  display: block;
+  margin: 6px 0 0;
+  color: var(--bc-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.lineup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid var(--bc-line-hi);
+  border-radius: 10px;
+  background: var(--bc-card);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lineupValue {
+  font-size: 17px;
+}
+
+.action {
+  flex-shrink: 0;
+  color: var(--bc-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.lineup:hover {
+  background: var(--bc-raised);
+}
+
+.lineup:focus-visible,
+.card:focus-visible,
+.details summary:focus-visible {
+  outline: 2px solid var(--bc-yellow);
+  outline-offset: 4px;
+}
+
+.details {
+  margin-top: 10px;
+  color: var(--bc-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.details summary {
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+.details p {
+  margin: 6px 0;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .strength {
+    grid-column: 1 / -1;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .value {
+    font-size: 18px;
+  }
+
+  .lineup {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
