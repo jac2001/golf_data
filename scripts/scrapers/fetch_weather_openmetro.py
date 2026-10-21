@@ -58,19 +58,6 @@ COURSE_COORDINATES = {
     "royal birkdale": (53.6389, -3.0314),
 }
 
-def fetch_weather(lat: float, lon: float) -> dict:
-    url = (
-        "https://api.open-meteo.com/v1/forecast"
-        f"?latitude={lat}&longitude={lon}"
-        "&hourly=temperature_2m,precipitation_probability,wind_speed_10m,wind_gusts_10m"
-        "&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto"
-    )
-    r = requests.get(url, timeout=20)
-    r.raise_for_status()
-    return r.json()
-
-
-
 def get_course_coordinates(course_name: str) -> tuple:                                                                
     """Get lat/lon for a course, or default to Pebble Beach."""                                                       
     if not course_name:                                                                                               
@@ -85,7 +72,7 @@ def get_course_coordinates(course_name: str) -> tuple:
     return COURSE_COORDINATES["pebble beach"]                                                                         
     
 
-def fetch_weather(lat: float, lon: float) -> dict:                                                                    
+def fetch_current_weather(lat: float, lon: float) -> dict:                                                                    
     """Fetch current weather from Open-Meteo API (free, no key needed)."""                                            
     try:                                                                                                              
         url = f"https://api.open-meteo.com/v1/forecast"                                                               
@@ -202,7 +189,7 @@ def main() -> int:
             print(json.dumps(records[:24], indent=2))
         return 0
 
-    data = fetch_weather(lat, lon)
+    data = fetch_current_weather(lat, lon)
 
     if args.output:
         with open(args.output, "w") as f:

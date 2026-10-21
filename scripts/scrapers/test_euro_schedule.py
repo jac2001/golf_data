@@ -98,7 +98,7 @@ def test_right_name_wrong_time_is_none():
 def test_unknown_event_is_none():
     assert tid("Presidents Cup", "2026-10-13") is None
     
-def test_right_name_wrong_time_is_none():
+def test_empty_or_out_of_window_name_is_none():
     assert tid("", "2026-10-13") is None
     assert tid("DP World Tour Championship", "2026-10-13") is None
 
