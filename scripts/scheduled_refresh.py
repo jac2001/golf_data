@@ -116,79 +116,9 @@ def _find_course_coords(tournament_name: str):
 
 
 def save_weather_snapshot(tid: str, tournament_name: str) -> bool:
-    """Fetch tournament weather forecast from PGA Tour API and save to data/weather/{tid}.json.
-
-    Returns True on success.
-    """
-    import requests as _requests
-    import json as _json
-
-    weather_dir = DATA_DIR / "weather"
-    weather_dir.mkdir(parents=True, exist_ok=True)
-    out_path = weather_dir / f"{tid}.json"
-
-    try:
-        resp = _requests.post(
-            "https://orchestrator.pgatour.com/graphql",
-            json={
-                "query": """
-query Weather($tournamentId: ID!) {
-  weather(tournamentId: $tournamentId) {
-    title
-    hourly {
-      title condition windDirection windSpeedKPH windSpeedMPH humidity precipitation
-      temperature {
-        ... on StandardWeatherTemp { __typename tempC tempF }
-        ... on RangeWeatherTemp { __typename minTempC minTempF maxTempC maxTempF }
-      }
-    }
-    daily {
-      title condition windDirection windSpeedKPH windSpeedMPH humidity precipitation
-      temperature {
-        ... on StandardWeatherTemp { __typename tempC tempF }
-        ... on RangeWeatherTemp { __typename minTempC minTempF maxTempC maxTempF }
-      }
-    }
-  }
-}
-""",
-                "variables": {"tournamentId": tid},
-                "operationName": "Weather",
-            },
-            headers={
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "x-pgat-platform": "web",
-                "x-api-key": "da2-gsrx5bibzbb4njvhl7t37wqyl4",
-                "Origin": "https://www.pgatour.com",
-                "Referer": "https://www.pgatour.com/",
-            },
-            timeout=15,
-        )
-        resp.raise_for_status()
-        _body = resp.json()
-        if _body.get("errors"):
-            raise RuntimeError(_body["errors"][0].get("message", "Weather query failed"))
-        _w = _body.get("data", {}).get("weather")
-        if _w and _w.get("daily"):
-            from datetime import datetime as _dt
-            result = {
-                "success": True,
-                "source": "pgatour",
-                "title": _w.get("title", ""),
-                "daily": _w["daily"],
-                "hourly": _w.get("hourly", []),
-                "saved_at": _dt.now().isoformat(),
-            }
-            out_path.write_text(_json.dumps(result, indent=2))
-            log(f"  Weather saved: {len(_w['daily'])} days for {tid}")
-            return True
-        else:
-            log(f"  PGA Tour weather API returned no daily data for {tid}")
-            return False
-    except Exception as e:
-        log(f"  Weather snapshot failed for {tid}: {e}")
-        return False
+    """PGA TOUR forecast → data/weather/{tid}.json (the file /api/weather serves)."""
+    from scrapers.fetch_weather_pga import save_weather_snapshot as _save
+    return _save(tid, log=log)
 
 
 STEP_TIMEOUTS = {

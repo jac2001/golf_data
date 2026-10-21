@@ -68,7 +68,7 @@ _FRESHEN_SPECS: dict[str, dict] = {
         "glob": "live/leaderboard_r*.csv",
         "path": lambda tid: f"live/leaderboard_{tid.lower()}.csv",
         "ttl": 300,
-        "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_live_leaderboard.py",
+        "cmd": lambda tid: [sys.executable, "scripts/scrapers/fetch_live_leaderboard.py",
                             "--tournament-id", tid],
         "timeout": 60,
     },
@@ -76,7 +76,7 @@ _FRESHEN_SPECS: dict[str, dict] = {
         "glob": "datagolf/dg_outrights_R*.csv",
         "path": lambda tid: f"datagolf/dg_outrights_{tid.upper()}.csv",
         "ttl": 900,
-        "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_dg_odds.py",
+        "cmd": lambda tid: [sys.executable, "scripts/scrapers/fetch_dg_odds.py",
                             "--tournament-id", tid, "--market", "all"],
         "timeout": 90,
     },
@@ -84,7 +84,7 @@ _FRESHEN_SPECS: dict[str, dict] = {
         "glob": "weather/R*.json",
         "path": lambda tid: f"weather/{tid.upper()}.json",
         "ttl": 3 * 3600,
-        "cmd": lambda tid: ["python3", "scripts/scrapers/fetch_weather_openmetro.py",
+        "cmd": lambda tid: [sys.executable, "scripts/scrapers/fetch_weather_pga.py",
                             "--tid", tid],
         "timeout": 45,
     },
@@ -132,12 +132,17 @@ def _freshen(kind: str) -> None:
             tid = _get_tournament_id()
             if not tid:
                 return
-            subprocess.run(
+            proc = subprocess.run(
                 spec["cmd"](tid), cwd=PROJECT_ROOT,
-                capture_output=True, timeout=spec["timeout"],
+                capture_output=True, text=True, timeout=spec["timeout"],
             )
-    except Exception:
-        pass  # stale-but-served beats fresh-but-crashed
+            if proc.returncode != 0:
+                # Still served stale, but say so (audit finding 7: this
+                # failed silently for weeks).
+                tail = (proc.stderr or proc.stdout or "").strip().splitlines()[-3:]
+                print(f"freshen {kind} {tid} failed (exit {proc.returncode}): {' | '.join(tail)}")
+    except Exception as e:
+        print(f"freshen {kind} failed: {e}")  # stale-but-served beats fresh-but-crashed
 
 sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
 from config import (  # noqa: E402
