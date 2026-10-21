@@ -1,596 +1,228 @@
 "use client";
 
-import { useState, useMemo } from "react";
+/**
+ * CourseFitTab — does this course suit him? (This Week, redesigned Oct 21)
+ * =========================================================================
+ * One question, one number, plain words. Each golfer gets a verdict from
+ * Jack's lib/fitVerdict.ts (DataGolf course fit + course history, strokes
+ * per round) and sits in Suits / Neutral / Hurts. "First time here" is a
+ * tag, not a group: no history is a different fact from the course hurting
+ * him. Record, form and DataGolf's full breakdown open on tap. App tokens
+ * only, same cards on phones and desktop.
+ */
+import { useMemo, useState } from "react";
+import Link from "next/link";
 import { CourseFitResponse, CourseFitPlayer } from "@/lib/api";
+import { fitVerdict, type Verdict } from "@/lib/fitVerdict";
 import Term from "@/components/Term";
 
-type SortMode = "model" | "boost" | "history";
+const pct = (v: number | null | undefined, dp = 1) => v == null ? "—" : `${(v * 100).toFixed(dp)}%`;
+const signed = (v: number | null | undefined, dp = 2) => v == null ? "—" : `${v > 0 ? "+" : ""}${v.toFixed(dp)}`;
+const tone = (v: number | null | undefined) =>
+  v == null || Math.abs(v) < 0.005 ? "var(--bc-muted)" : v > 0 ? "var(--bc-green)" : "var(--bc-red-text)";
+const flip = (n: string) => n.includes(",") ? n.split(",").reverse().join(" ").trim() : n;
 
-// ── Shared table styles ───────────────────────────────────────────────────────
+const GROUPS: { key: Verdict | "none"; title: string; blurb: string; color: string }[] = [
+  { key: "suits",   title: "Course suits him", blurb: "Worth at least a tenth of a shot per round to him here.", color: "var(--bc-green)" },
+  { key: "neutral", title: "Neutral",          blurb: "The course neither helps nor hurts him much.",           color: "var(--bc-muted)" },
+  { key: "hurts",   title: "Course hurts him", blurb: "Costs him at least a tenth of a shot per round here.",    color: "var(--bc-red-text)" },
+  { key: "none",    title: "No course-fit data", blurb: "DataGolf has no fit number for these golfers.",         color: "var(--bc-muted)" },
+];
 
-const cell: React.CSSProperties = {
-  padding: "8px 12px",
-  borderBottom: "1px solid var(--bc-line)",
-  fontSize: "max(var(--fs-min), 0.83em)",
-  color: "var(--bc-text)",
-  textAlign: "left",
-};
+// ── What the course rewards ───────────────────────────────────────────────────
 
-const hdr: React.CSSProperties = {
-  ...cell,
-  color: "var(--bc-muted)",
-  fontWeight: 600,
-  fontSize: "max(var(--fs-min), 0.76em)",
-  textTransform: "uppercase",
-  letterSpacing: "0.04em",
-  borderBottom: "1px solid var(--bc-line)",
-  whiteSpace: "nowrap",
-};
+const SKILLS = [
+  { key: "app"  as const, label: "Approach",     term: "APP",  sg: "sg_app_vs_avg"  as const },
+  { key: "ott"  as const, label: "Off the tee",  term: "OTT",  sg: "sg_ott_vs_avg"  as const },
+  { key: "arg"  as const, label: "Around green", term: "ARG",  sg: null },
+  { key: "putt" as const, label: "Putting",      term: "PUTT", sg: "sg_putt_vs_avg" as const },
+];
 
-const COL_SPAN = 12;
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function fmtPct(v: number | null, decimals = 1): string {
-  if (v == null) return "—";
-  return `${(v * 100).toFixed(decimals)}%`;
-}
-
-function sgColor(v: number | null): string {
-  if (v == null) return "var(--bc-muted)";
-  if (v >= 0.3)  return "var(--bc-green)";
-  if (v >= 0.1)  return "var(--bc-green)";
-  if (v <= -0.3) return "var(--bc-red)";
-  if (v <= -0.1) return "#c08888";
-  return "var(--bc-muted)";
-}
-
-function adjColor(v: number | null): string {
-  if (v == null) return "var(--bc-muted)";
-  if (v >= 0.08)  return "var(--bc-green)";
-  if (v >= 0.02)  return "var(--bc-green)";
-  if (v <= -0.08) return "var(--bc-red)";
-  if (v <= -0.02) return "#c08888";
-  return "var(--bc-muted)";
-}
-
-function shiftColor(v: number | null): string {
-  if (v == null) return "var(--bc-muted)";
-  if (v > 0.004)  return "var(--bc-green)";
-  if (v < -0.004) return "var(--bc-red)";
-  return "var(--bc-muted)";
-}
-
-function fmtAdj(v: number | null): string {
-  if (v == null) return "—";
-  return (v >= 0 ? "+" : "") + v.toFixed(2);
-}
-
-// Mini SG bar (scale ±1.5)
-function SgBar({ value }: { value: number | null }) {
-  if (value == null) return <span style={{ color: "var(--bc-muted)" }}>—</span>;
-  const capped = Math.max(-1.5, Math.min(1.5, value));
-  const barW   = Math.abs(capped / 1.5) * 28;
-  const color  = sgColor(value);
+function CourseProfile({ profile, players }: { profile: CourseFitResponse["course_profile"]; players: CourseFitPlayer[] }) {
+  const items = [...SKILLS].sort((a, b) => profile[b.key] - profile[a.key]);
+  const top = items[0];
+  // Point the abstract bars at real golfers: the field's best at what wins here.
+  const best = top.sg
+    ? [...players].filter(p => p[top.sg!] != null).sort((a, b) => (b[top.sg!] ?? 0) - (a[top.sg!] ?? 0)).slice(0, 3)
+    : [];
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
-      <span style={{ color, fontSize: "max(var(--fs-min), 0.82em)", width: 36, textAlign: "right" }}>
-        {(value >= 0 ? "+" : "") + value.toFixed(2)}
-      </span>
-      <span style={{ display: "inline-block", height: 6, width: Math.max(barW, 2), background: color, borderRadius: 3, opacity: 0.8 }} />
-    </span>
-  );
-}
-
-// Mini adjustment bar (scale configurable, default ±0.35)
-function AdjBar({ value, scale = 0.35 }: { value: number | null; scale?: number }) {
-  if (value == null) return <span style={{ color: "var(--bc-muted)" }}>—</span>;
-  const capped = Math.max(-scale, Math.min(scale, value));
-  const barW   = Math.abs(capped / scale) * 28;
-  const color  = adjColor(value);
-  return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
-      <span style={{ color, fontSize: "max(var(--fs-min), 0.82em)", width: 38, textAlign: "right" }}>
-        {fmtAdj(value)}
-      </span>
-      <span style={{ display: "inline-block", height: 6, width: Math.max(barW, 2), background: color, borderRadius: 3, opacity: 0.8 }} />
-    </span>
-  );
-}
-
-// ── Course profile bars ───────────────────────────────────────────────────────
-
-function CourseProfile({ profile }: { profile: CourseFitResponse["course_profile"] }) {
-  const ITEMS = [
-    { key: "arg"  as const, label: "Around Green", desc: "Chipping, pitching, bunker play" },
-    { key: "ott"  as const, label: "Off the Tee",  desc: "Driving distance & accuracy" },
-    { key: "putt" as const, label: "Putting",       desc: "Strokes gained on the greens" },
-    { key: "app"  as const, label: "Approach",      desc: "Iron play into greens" },
-  ].sort((a, b) => profile[b.key] - profile[a.key]);
-
-  return (
-    <div style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8, padding: "14px 18px", marginBottom: 20 }}>
-      <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 12 }}>
-        Course Demand Profile — what this course rewards most
-      </div>
+    <section style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
+      <h3 style={{ margin: "0 0 4px", fontSize: 16, color: "var(--bc-text)" }}>What this course rewards</h3>
+      <p style={{ margin: "0 0 12px", fontSize: 14, color: "var(--bc-text)", lineHeight: 1.5 }}>
+        <strong>{top.label}</strong> matters most here, then {items[1].label.toLowerCase()}.
+        {best.length > 0 && <> Best {top.label.toLowerCase()} players in the field: {best.map(p => flip(p.player_name)).join(", ")}.</>}
+      </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {ITEMS.map(({ key, label, desc }) => {
-          const val = profile[key];
-          const barColor = val > 0.3 ? "var(--bc-green)" : val > 0.18 ? "var(--bc-yellow)" : "#2a5a7a";
+        {items.map(({ key, label, term }) => {
+          const v = profile[key];
           return (
-            <div key={key} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ width: 110, fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-text)", flexShrink: 0 }}>{label}</div>
-              <div style={{ flex: 1, height: 8, background: "var(--bc-panel)", borderRadius: 4, overflow: "hidden" }}>
-                <div style={{ width: `${val * 100}%`, height: "100%", background: barColor, borderRadius: 4, transition: "width 0.3s ease" }} />
-              </div>
-              <div style={{ width: 36, fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-muted)", textAlign: "right", flexShrink: 0 }}>{Math.round(val * 100)}%</div>
-              <div style={{ width: 200, fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-muted)" }}>{desc}</div>
+            <div key={key} style={{ display: "grid", gridTemplateColumns: "120px 1fr 40px", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 14, color: "var(--bc-text)" }}><Term term={term}>{label}</Term></span>
+              <span style={{ height: 8, background: "var(--bc-card)", borderRadius: 4, overflow: "hidden" }}>
+                <span style={{ display: "block", width: `${v * 100}%`, height: "100%", borderRadius: 4,
+                  background: key === top.key ? "var(--bc-yellow)" : "var(--bc-green)" }} />
+              </span>
+              <span style={{ fontSize: 13, color: "var(--bc-muted)", textAlign: "right" }}>{Math.round(v * 100)}%</span>
             </div>
           );
         })}
       </div>
-      <div style={{ marginTop: 10, fontSize: "max(var(--fs-min-xs), 0.68em)", color: "var(--bc-line)" }}>
-        Higher % = this skill is more differentiating at this course vs. an average PGA Tour event.
+      <p style={{ margin: "10px 0 0", fontSize: 13, color: "var(--bc-muted)" }}>
+        Share of what separates players at this course, compared with an average tour event.
+      </p>
+    </section>
+  );
+}
+
+// ── One golfer ────────────────────────────────────────────────────────────────
+
+function Detail({ p }: { p: CourseFitPlayer }) {
+  const row = (label: React.ReactNode, value: React.ReactNode, color?: string) => (
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 12, fontSize: 14, padding: "3px 0" }}>
+      <span style={{ color: "var(--bc-muted)" }}>{label}</span>
+      <span style={{ color: color ?? "var(--bc-text)", fontWeight: 600 }}>{value}</span>
+    </div>
+  );
+  // course_starts is the field with data; has_history and the venue_* /
+  // avg_to_par / cut_rate fields came back empty for every Bermuda golfer
+  // (Oct 21, roadmap follow-up), so each line shows only when it has a value.
+  const starts = p.course_starts ?? 0;
+  const top10s = p.venue_starts ? p.venue_top10s : null;
+  return (
+    <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px solid var(--bc-line)", display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "4px 24px" }}>
+      <div>
+        <div style={{ fontSize: 12, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 4 }}>His record here</div>
+        {starts > 0 ? <>
+          {row("Starts", starts)}
+          {top10s != null && row("Top 10s · wins", `${top10s} · ${p.venue_wins ?? 0}`)}
+          {p.avg_to_par != null && row("Average to par", signed(p.avg_to_par, 1))}
+          {p.cut_rate != null && row("Made cuts", pct(p.cut_rate, 0))}
+          {row("What history adds (DataGolf)", signed(p.dg_hist_adj), tone(p.dg_hist_adj))}
+        </> : <div style={{ fontSize: 14, color: "var(--bc-muted)" }}>Hasn&apos;t played here.</div>}
+      </div>
+      <div>
+        <div style={{ fontSize: 12, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 4 }}>
+          DataGolf&apos;s view, strokes per round
+        </div>
+        {row("His skill (baseline)", signed(p.dg_baseline_pred))}
+        {row("Recent form", signed(p.dg_timing_adj), tone(p.dg_timing_adj))}
+        {row("Course fit", signed(p.dg_fit_adj), tone(p.dg_fit_adj))}
+        {row("Course history", signed(p.dg_hist_adj), tone(p.dg_hist_adj))}
+        {row("Expected here", signed(p.dg_final_pred))}
+      </div>
+      <div>
+        <div style={{ fontSize: 12, color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 4 }}>
+          His game vs the tour
+        </div>
+        {row(<Term term="OTT">Off the tee</Term>, signed(p.sg_ott_vs_avg), tone(p.sg_ott_vs_avg))}
+        {row(<Term term="APP">Approach</Term>, signed(p.sg_app_vs_avg), tone(p.sg_app_vs_avg))}
+        {row(<Term term="PUTT">Putting</Term>, signed(p.sg_putt_vs_avg), tone(p.sg_putt_vs_avg))}
+        {row("DataGolf win chance", pct(p.dg_win))}
       </div>
     </div>
   );
 }
 
-// ── Decomposition detail panel (expand row) ───────────────────────────────────
-
-function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
-  const base   = p.dg_baseline_pred;
-  const final  = p.dg_final_pred;
-  const timing = p.dg_timing_adj;
-  const fit    = p.dg_fit_adj;
-  const hist   = p.dg_hist_adj;
-
-  if (base == null || final == null) {
-    return (
-      <tr>
-        <td colSpan={COL_SPAN} style={{ ...cell, background: "var(--bc-panel)", color: "var(--bc-muted)", fontStyle: "italic", fontSize: "max(var(--fs-min), 0.78em)" }}>
-          No DG decomposition available for this player.
-        </td>
-      </tr>
-    );
-  }
-
-  const steps: { label: string; value: number | null; color?: string }[] = [
-    { label: "Skill baseline", value: base,   color: "var(--bc-muted)" },
-    { label: "+ Timing / form", value: timing, color: adjColor(timing) },
-    { label: "+ Course fit",    value: fit,    color: adjColor(fit) },
-    { label: "+ History",       value: hist,   color: adjColor(hist) },
-  ];
-
-  const remaining = final != null && base != null
-    ? final - base - (timing ?? 0) - (fit ?? 0) - (hist ?? 0)
-    : null;
-
-  return (
-    <tr>
-      <td colSpan={COL_SPAN} style={{ background: "var(--bc-panel)", padding: "10px 20px 14px 48px", borderBottom: "1px solid var(--bc-line)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 0, flexWrap: "wrap", rowGap: 6 }}>
-          {steps.map((s, idx) => (
-            <span key={idx} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              {idx > 0 && <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>}
-              <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>{s.label}</span>
-              <span style={{
-                fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600,
-                color: idx === 0 ? "var(--bc-muted)" : adjColor(s.value),
-              }}>
-                {idx === 0
-                  ? (s.value != null ? (s.value >= 0 ? "+" : "") + s.value.toFixed(2) : "—")
-                  : fmtAdj(s.value)
-                }
-              </span>
-            </span>
-          ))}
-          {remaining != null && Math.abs(remaining) > 0.005 && (
-            <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>
-              <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>+ other</span>
-              <span style={{ fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600, color: adjColor(remaining) }}>
-                {fmtAdj(remaining)}
-              </span>
-            </span>
-          )}
-          <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ color: "var(--bc-line)", margin: "0 6px" }}>→</span>
-            <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>DG final</span>
-            <span style={{
-              fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700,
-              color: final >= 1.5 ? "var(--bc-green)" : final >= 0 ? "var(--bc-green)" : "var(--bc-muted)",
-            }}>
-              {(final >= 0 ? "+" : "") + final.toFixed(2)} SG
-            </span>
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 20 }}>
-            <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>DG win%</span>
-            <span style={{
-              fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700,
-              color: (p.dg_win ?? 0) > 0.08 ? "var(--bc-green)" : (p.dg_win ?? 0) > 0.03 ? "var(--bc-yellow)" : "var(--bc-muted)",
-            }}>
-              {p.dg_win != null ? fmtPct(p.dg_win) : "—"}
-            </span>
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: 6, marginLeft: 8 }}>
-            <span style={{ fontSize: "max(var(--fs-min), 0.74em)", color: "var(--bc-muted)" }}>Model win%</span>
-            <span style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700, color: "var(--bc-muted)" }}>
-              {p.win_prob != null ? fmtPct(p.win_prob) : "—"}
-            </span>
-          </span>
-        </div>
-        <div style={{ marginTop: 6, fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-line)" }}>
-          Baseline = DG skill rating (pure SG, no course context). Positive timing = currently above expected form.
-        </div>
-      </td>
-    </tr>
-  );
-}
-
-// ── Player row ────────────────────────────────────────────────────────────────
-
-function PlayerRow({ player: p, index: i, historyType, expanded, onToggle, more }: {
-  /** more: the opt-in columns (Avg Score, OTT, APP, Timing, DG Win%, T10%) are shown. */
-  more: boolean;
-  player: CourseFitPlayer;
-  index: number;
-  historyType: "venue" | "tournament";
-  expanded: boolean;
-  onToggle: () => void;
+function GolferCard({ p, v, open, onToggle }: {
+  p: CourseFitPlayer; v: ReturnType<typeof fitVerdict>; open: boolean; onToggle: () => void;
 }) {
-  const shift = p.win_prob_shift ?? 0;
-  const name  = p.player_name.includes(",")
-    ? p.player_name.split(",").reverse().join(" ").trim()
-    : p.player_name;
-
-  const rowBg = expanded ? "var(--bc-panel)" : (i % 2 === 0 ? "transparent" : "#050c18");
-
+  const name = flip(p.player_name);
+  const chipColor = v?.verdict === "suits" ? "var(--bc-green)" : v?.verdict === "hurts" ? "var(--bc-red-text)" : "var(--bc-muted)";
   return (
-    <>
-      <tr
-        onClick={onToggle}
-        style={{ background: rowBg, cursor: "pointer" }}
-        title="Click to see DG decomposition"
-      >
-
-        {/* Rank */}
-        <td style={{ ...cell, color: "var(--bc-muted)", width: 32 }}>{p.overall_rank}</td>
-
-        {/* Player name + uses badge */}
-        <td style={{ ...cell, minWidth: 170 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ color: "var(--bc-text)", fontWeight: 600, fontSize: "max(var(--fs-min), 0.88em)" }}>{name}</span>
-            <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: expanded ? "var(--bc-green)" : "var(--bc-line)", marginLeft: 2 }}>
-              {expanded ? "▲" : "▼"}
-            </span>
-          </div>
-          <div style={{ display: "flex", gap: 4, marginTop: 2, flexWrap: "wrap" }}>
-            {p.world_rank != null && (
-              <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-muted)" }}>#{p.world_rank}</span>
-            )}
-            {!p.has_history && (
-              <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: "#4a5060", background: "#0d1520", border: "1px solid #1e2a3a", borderRadius: 3, padding: "1px 5px" }}>
-                no history
+    <div onClick={onToggle} style={{ background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10,
+      padding: "10px 12px", cursor: "pointer" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+        <span style={{ fontSize: 12, fontWeight: 800, color: "var(--bc-muted)", minWidth: 28 }}>#{p.overall_rank}</span>
+        <div style={{ minWidth: 0, flex: 1 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+            <Link href={`/players?player=${encodeURIComponent(name)}`} onClick={e => e.stopPropagation()}
+              style={{ color: "var(--bc-text)", fontWeight: 700, textDecoration: "none" }}>{name}</Link>
+            {!(p.course_starts ?? 0) && (
+              <span style={{ fontSize: 11, color: "var(--bc-muted)", border: "1px solid var(--bc-line-hi)", borderRadius: 4, padding: "0 5px" }}>
+                First time here
               </span>
             )}
           </div>
-        </td>
-
-        {/* Venue / tournament history record */}
-        <td style={{ ...cell, textAlign: "center" }}>
-          {p.venue_starts > 0 ? (
-            <div style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
-              <span style={{ color: "var(--bc-muted)" }}>{p.venue_starts} starts</span>
-              {p.venue_top10s > 0 && (
-                <span style={{ marginLeft: 6, color: "var(--bc-yellow)", fontWeight: 600 }}>
-                  T10×{p.venue_top10s}
-                </span>
-              )}
-              {p.venue_wins > 0 && (
-                <span style={{ marginLeft: 4, color: "var(--bc-green)", fontWeight: 700 }}>W</span>
-              )}
+          {v && (
+            <div style={{ fontSize: 13, color: chipColor, fontWeight: 700, marginTop: 2 }}>
+              {v.verdict === "suits" ? "Suits him" : v.verdict === "hurts" ? "Hurts him" : "Neutral"} · {signed(v.edge)} strokes/round
             </div>
-          ) : (
-            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>—</span>
           )}
-        </td>
-
-        {more && (<>
-{/* Tourney record */}
-        <td style={{ ...cell, textAlign: "center" }}>
-          {p.has_history && p.course_starts != null ? (
-            <div style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
-              {p.avg_to_par != null && (
-                <span style={{ fontWeight: 600, color: p.avg_to_par < 0 ? "var(--bc-green)" : "var(--bc-red)" }}>
-                  {p.avg_to_par > 0 ? "+" : ""}{p.avg_to_par}
-                </span>
-              )}
-              {p.cut_rate != null && (
-                <span style={{ marginLeft: 6, fontSize: "max(var(--fs-min), 0.85em)", color: "var(--bc-muted)" }}>
-                  {Math.round(p.cut_rate * 100)}% cut
-                </span>
-              )}
-            </div>
-          ) : (
-            <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.78em)" }}>—</span>
-          )}
-        </td>
-
-        
-        </>)}
-
-        {more && (<>
-{/* SG OTT / APP vs avg */}
-        <td style={{ ...cell, textAlign: "center" }}><SgBar value={p.sg_ott_vs_avg} /></td>
-        <td style={{ ...cell, textAlign: "center" }}><SgBar value={p.sg_app_vs_avg} /></td>
-
-        
-        </>)}
-
-        {/* DG adjustments: Timing + Course Fit */}
-        {more && <td style={{ ...cell, textAlign: "center" }}><AdjBar value={p.dg_timing_adj} scale={0.4} /></td>}
-        <td style={{ ...cell, textAlign: "center" }}><AdjBar value={p.dg_fit_adj} scale={0.2} /></td>
-
-        {/* Course boost (our model) */}
-        <td style={{ ...cell, textAlign: "right" }}>
-          <span style={{ color: shiftColor(p.win_prob_shift), fontWeight: Math.abs(shift) > 0.005 ? 700 : 400, fontSize: "max(var(--fs-min), 0.88em)" }}>
-            {shift > 0.0005 ? "+" : ""}{shift !== 0 ? fmtPct(p.win_prob_shift, 2) : "—"}
-          </span>
-        </td>
-
-        {more && (<>
-{/* DG Win% */}
-        <td style={{ ...cell, textAlign: "right" }}>
-          <span style={{
-            fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 600,
-            color: (p.dg_win ?? 0) > 0.08 ? "var(--bc-green)" : (p.dg_win ?? 0) > 0.03 ? "var(--bc-yellow)" : "var(--bc-muted)",
-          }}>
-            {p.dg_win != null ? fmtPct(p.dg_win) : "—"}
-          </span>
-        </td>
-
-        
-        </>)}
-
-        {/* Model Win% */}
-        <td style={{ ...cell, textAlign: "right", fontWeight: 600, color: "var(--bc-text)" }}>
-          {fmtPct(p.win_prob)}
-        </td>
-
-        {more && (<>
-{/* Top 10% */}
-        <td style={{ ...cell, textAlign: "right" }}>
-          {fmtPct(p.top10_prob)}
-        </td>
-        </>)}
-
-              </tr>
-
-      {/* Expand panel */}
-      {expanded && <DecompPanel player={p} />}
-    </>
+        </div>
+        <div style={{ textAlign: "right", flexShrink: 0 }}>
+          <div style={{ color: "var(--bc-green)", fontWeight: 800 }}>{pct(p.win_prob)}</div>
+          <div style={{ color: "var(--bc-muted)", fontSize: 12 }}>top 10 {pct(p.top10_prob, 0)}</div>
+        </div>
+        <button type="button" aria-expanded={open} aria-label={`${open ? "Hide" : "Show"} details for ${name}`}
+          onClick={e => { e.stopPropagation(); onToggle(); }}
+          style={{ background: "none", border: "none", color: "var(--bc-muted)", fontFamily: "inherit", fontSize: 12,
+            cursor: "pointer", minHeight: 44, minWidth: 44, padding: 0, flexShrink: 0 }}>
+          {open ? "Less ▾" : "More ▸"}
+        </button>
+      </div>
+      {open && <Detail p={p} />}
+    </div>
   );
 }
 
-// ── Section divider ───────────────────────────────────────────────────────────
-
-function SectionHeader({ label, count, color }: { label: string; count: number; color: string }) {
-  return (
-    <tr>
-      <td colSpan={COL_SPAN} style={{
-        padding: "8px 12px 4px",
-        fontSize: "max(var(--fs-min), 0.72em)",
-        color,
-        fontWeight: 700,
-        textTransform: "uppercase",
-        letterSpacing: "0.08em",
-        borderBottom: `1px solid ${color}30`,
-        background: `${color}08`,
-      }}>
-        {label} <span style={{ fontWeight: 400, opacity: 0.6 }}>({count})</span>
-      </td>
-    </tr>
-  );
-}
-
-// ── Main component ────────────────────────────────────────────────────────────
+// ── The tab ───────────────────────────────────────────────────────────────────
 
 export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
-  const venueLabel = data.venue_label || "Venue";
-  const [sortMode, setSortMode]   = useState<SortMode>("boost");
-  const [search, setSearch]       = useState("");
-  const [minStarts, setMinStarts] = useState(1);
-  const [expanded, setExpanded]   = useState<Set<string>>(new Set());
-  // Six columns by default; the rest on request (phone review, Oct 21).
-  const [more, setMore]           = useState(false);
+  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState<string | null>(null);
 
-  function toggleExpand(name: string) {
-    setExpanded(prev => {
-      const next = new Set(prev);
-      next.has(name) ? next.delete(name) : next.add(name);
-      return next;
-    });
-  }
+  const graded = useMemo(() => data.players.map(p => {
+    let v: ReturnType<typeof fitVerdict> = null;
+    try { v = fitVerdict(p.dg_fit_adj, p.dg_hist_adj); } catch { v = null; }   // until Jack's rule lands
+    const edge = v?.edge ?? (p.dg_fit_adj == null ? null : p.dg_fit_adj + (p.dg_hist_adj ?? 0));
+    return { p, v, edge };
+  }), [data.players]);
+  const ruled = graded.some(g => g.v);
 
-  const startCounts = [0, 1, 2, 3, 4].map(n => ({
-    n,
-    count: data.players.filter(p => (p.course_starts ?? 0) >= n).length,
-  }));
+  const shown = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return graded.filter(g => !q || flip(g.p.player_name).toLowerCase().includes(q))
+      .sort((a, b) => (b.edge ?? -Infinity) - (a.edge ?? -Infinity));
+  }, [graded, search]);
 
-  const filtered = useMemo(() => {
-    let list = [...data.players].filter(p => (p.course_starts ?? 0) >= minStarts);
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      list = list.filter(p => p.player_name.toLowerCase().includes(q));
-    }
-    return list;
-  }, [data.players, minStarts, search]);
-
-  const { risers, fallers } = useMemo(() => {
-    let list = [...filtered];
-
-    if (sortMode === "model") {
-      list.sort((a, b) => (b.win_prob ?? 0) - (a.win_prob ?? 0));
-      return { risers: list, fallers: [] };
-    }
-
-    if (sortMode === "history") {
-      list.sort((a, b) => {
-        if (!a.has_history && b.has_history) return 1;
-        if (a.has_history && !b.has_history) return -1;
-        return (a.avg_to_par ?? 99) - (b.avg_to_par ?? 99);
-      });
-      return { risers: list, fallers: [] };
-    }
-
-    const r = list
-      .filter(p => p.has_history && (p.win_prob_shift ?? 0) > 0.0001)
-      .sort((a, b) => (b.win_prob_shift ?? 0) - (a.win_prob_shift ?? 0));
-    const f = list
-      .filter(p => !p.has_history || (p.win_prob_shift ?? 0) <= 0.0001)
-      .sort((a, b) => {
-        if (!a.has_history && b.has_history) return 1;
-        if (a.has_history && !b.has_history) return -1;
-        return (a.win_prob_shift ?? 0) - (b.win_prob_shift ?? 0);
-      });
-    return { risers: r, fallers: f };
-  }, [filtered, sortMode]);
-
-  const SORT_LABELS: Record<SortMode, string> = {
-    boost:   "Risers & Fallers",
-    model:   "By Model Rank",
-    history: "By Course History",
-  };
-
-  const showSplit = sortMode === "boost";
+  const groups = ruled
+    ? GROUPS.map(g => ({ ...g, rows: shown.filter(r => (r.v?.verdict ?? "none") === g.key) })).filter(g => g.rows.length)
+    : [{ key: "all", title: "Best course fit first", blurb: "DataGolf course fit plus course history, strokes per round.",
+         color: "var(--bc-muted)", rows: shown }];
 
   return (
     <div>
-      <CourseProfile profile={data.course_profile} />
+      <CourseProfile profile={data.course_profile} players={data.players} />
 
-      {data.course_history_type === "tournament" && (
-        <div style={{
-          background: "#1a1000", border: "1px solid #5a4000",
-          borderRadius: 8, padding: "10px 16px", marginBottom: 16,
-          fontSize: "max(var(--fs-min), 0.82em)", color: "#c09040", lineHeight: 1.6,
-        }}>
-          <strong>Note:</strong> "Venue Record" shows {venueLabel} history across all years in our database. The SG vs avg values and course boost reflect that same multi-year history.
+      <input placeholder="Search player…" value={search} onChange={e => setSearch(e.target.value)} style={{
+        background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6, color: "var(--bc-text)",
+        padding: "8px 12px", fontSize: 14, width: "100%", maxWidth: 320, boxSizing: "border-box", marginBottom: 12, fontFamily: "inherit",
+      }} />
+
+      {shown.length === 0 && search.trim() ? (
+        <div style={{ padding: "16px", background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10, color: "var(--bc-text)" }}>
+          No golfers match &ldquo;{search.trim()}&rdquo;.{" "}
+          <button type="button" onClick={() => setSearch("")} style={{ background: "none", border: "none", color: "var(--bc-yellow)",
+            fontWeight: 800, cursor: "pointer", font: "inherit", minHeight: 44, padding: 0 }}>Clear search</button>
         </div>
-      )}
+      ) : groups.map(g => (
+        <section key={g.key} style={{ marginBottom: 18 }}>
+          <h3 style={{ margin: "0 0 2px", fontSize: 15, color: g.color }}>{g.title} <span style={{ color: "var(--bc-muted)", fontWeight: 400 }}>({g.rows.length})</span></h3>
+          <p style={{ margin: "0 0 8px", fontSize: 13, color: "var(--bc-muted)" }}>{g.blurb}</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {g.rows.map(({ p, v }) => (
+              <GolferCard key={p.player_name} p={p} v={v} open={open === p.player_name}
+                onToggle={() => setOpen(o => o === p.player_name ? null : p.player_name)} />
+            ))}
+          </div>
+        </section>
+      ))}
 
-      {/* Sort buttons + search */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap", alignItems: "center" }}>
-        {(["boost", "model", "history"] as SortMode[]).map(mode => (
-          <button key={mode} onClick={() => setSortMode(mode)} style={{
-            background: sortMode === mode ? "#1a3a5f" : "var(--bc-panel)",
-            border: `1px solid ${sortMode === mode ? "var(--bc-green)" : "var(--bc-line)"}`,
-            color: sortMode === mode ? "var(--bc-text)" : "var(--bc-muted)",
-            borderRadius: 6, padding: "5px 12px", fontSize: "max(var(--fs-min), 0.8em)", cursor: "pointer",
-          }}>
-            {SORT_LABELS[mode]}
-          </button>
-        ))}
-        <input
-          placeholder="Search player…"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          style={{
-            background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-            color: "var(--bc-text)", padding: "5px 10px", fontSize: "max(var(--fs-min), 0.8em)",
-            outline: "none", marginLeft: "auto",
-          }}
-        />
-      </div>
-
-      {/* Min starts + uses legend */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 16, alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: "var(--bc-muted)", marginRight: 4 }}>Min starts:</span>
-        {startCounts.map(({ n, count }) => (
-          <button key={n} onClick={() => setMinStarts(n)} style={{
-            background: minStarts === n ? "#1a2a40" : "var(--bc-panel)",
-            border: `1px solid ${minStarts === n ? "var(--bc-muted)" : "var(--bc-line)"}`,
-            color: minStarts === n ? "var(--bc-text)" : "var(--bc-muted)",
-            borderRadius: 5, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.77em)", cursor: "pointer",
-          }}>
-            {n === 0 ? "All" : `${n}+`}
-            <span style={{ marginLeft: 4, color: "#3a5070" }}>({count})</span>
-          </button>
-        ))}
-      </div>
-
-      <button type="button" onClick={() => setMore(m => !m)} style={{
-        background: more ? "var(--bc-card)" : "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
-        color: "var(--bc-text)", padding: "6px 12px", minHeight: 36, fontSize: "max(var(--fs-min), 0.8em)",
-        fontWeight: 600, cursor: "pointer", marginBottom: 10, fontFamily: "inherit",
-      }}>
-        {more ? "Fewer columns" : "More columns"}
-      </button>
-
-      {/* Table */}
-      <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: more ? 980 : 0 }}>
-          <thead>
-            <tr>
-              <th style={hdr}>#</th>
-              <th style={hdr}>Player</th>
-              <th style={{ ...hdr, textAlign: "center" }}>{venueLabel}</th>
-              {more && <th style={{ ...hdr, textAlign: "center" }}>Avg Score</th>}
-              {more && <th style={{ ...hdr, textAlign: "center" }}><Term term="OTT">OTT</Term></th>}
-              {more && <th style={{ ...hdr, textAlign: "center" }}><Term term="APP">APP</Term></th>}
-              {more && <th style={{ ...hdr, textAlign: "center" }}>Timing</th>}
-              <th style={{ ...hdr, textAlign: "center" }}>Fit Adj</th>
-              <th style={{ ...hdr, textAlign: "right" }}>Boost</th>
-              {more && <th style={{ ...hdr, textAlign: "right" }}>DG Win%</th>}
-              <th style={{ ...hdr, textAlign: "right" }}>Win%</th>
-              {more && <th style={{ ...hdr, textAlign: "right" }}>T10%</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {showSplit ? (
-              <>
-                <SectionHeader label="Course suits" count={risers.length} color="var(--bc-green)" />
-                {risers.map((p, i) => (
-                  <PlayerRow
-                    key={p.player_name} player={p} index={i}
-                    historyType={data.course_history_type}
-                    expanded={expanded.has(p.player_name)}
-                    onToggle={() => toggleExpand(p.player_name)} more={more}
-                  />
-                ))}
-                <SectionHeader label="Course hurts / no data" count={fallers.length} color="var(--bc-red)" />
-                {fallers.map((p, i) => (
-                  <PlayerRow
-                    key={p.player_name} player={p} index={i}
-                    historyType={data.course_history_type}
-                    expanded={expanded.has(p.player_name)}
-                    onToggle={() => toggleExpand(p.player_name)} more={more}
-                  />
-                ))}
-              </>
-            ) : (
-              (sortMode === "model" ? risers : risers).map((p, i) => (
-                <PlayerRow
-                  key={p.player_name} player={p} index={i}
-                  historyType={data.course_history_type}
-                  expanded={expanded.has(p.player_name)}
-                  onToggle={() => toggleExpand(p.player_name)} more={more}
-                />
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-      <div style={{ marginTop: 12, fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-text)", lineHeight: 1.6 }}>
-        <strong>How to read this.</strong> {venueLabel}: his record at this course.
-        {" "}Fit Adj: how much this course suits his game, in strokes per round (DataGolf; positive = suits him).
-        {" "}Boost: how much our win chance moved after adding course fit and history.
-        {" "}Win%: our final chance to win.
-        {more && <> Avg Score: his average to par here. OTT / APP: tee and approach play vs the field
-          (tap ? for more). Timing: DataGolf&apos;s recent-form adjustment. DG Win%: DataGolf&apos;s chance.
-          T10%: our top-10 chance.</>}
-        {" "}Tap a row for the full breakdown.
-      </div>
+      <p style={{ fontSize: 13, color: "var(--bc-muted)", lineHeight: 1.6 }}>
+        The verdict adds DataGolf&apos;s course-fit and course-history adjustments, in strokes per round against
+        his own baseline. Win and top-10 are our model&apos;s chances. Tap a golfer for his record here and the full breakdown.
+      </p>
     </div>
   );
 }

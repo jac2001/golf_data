@@ -173,6 +173,15 @@ height on phones. In order (each its own commit, preview-verified at 375px):
       Jack's `scripts/predictions/odds_move.py` (10% relative AND 0.2pp absolute) landed Oct 21;
       its test is in Tuesday's gate. Bermuda: 3 real moves since the opening line.
 
+- [~] **Course Fit redesign (Oct 21):** one verdict per golfer (Suits / Neutral / Hurts from
+      DataGolf fit + history, strokes per round), app tokens, cards, details on tap; "What this
+      course rewards" names the field's best at it. [ ] Jack: `web/lib/fitVerdict.ts` (6 todo
+      tests); until then the list is one group sorted by edge.
+- [ ] **/api/course-fit history fields are empty** (Bermuda, Oct 21): has_history, venue_starts,
+      venue_top10s, avg_to_par, cut_rate are false/0/null for all 120 golfers while course_starts
+      has data for 76. The tab now keys off course_starts and hides empty lines; find why the
+      venue record isn't joined.
+
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
 The production loop runs itself: data refresh → Tuesday predictions →
