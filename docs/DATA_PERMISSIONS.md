@@ -34,7 +34,11 @@ verified Sep 25 and again Oct 20); prediction archives are limited.
 - *Raw, publicly displayed:* "DG Model" / "DG Win" columns on /players;
   the DG tab on This Week; live scores in the Match Center ("Live scores
   come from DataGolf"); sportsbook prices on the Betting Board (from DG's
-  betting-tools feed).
+  betting-tools feed). Added Oct 21 (Jack's call): This Week's Odds
+  column (DG consensus win odds, `data/odds/odds_{tid}.csv`) and Move
+  (consensus now vs the event's opening line, `odds_open_{tid}.csv`).
+  Both are raw-ish DG odds on a public page, so they fall under open
+  question 1 below and the interim step at the end of this section.
 - *Derived:* our model blends DG's pre-tournament probabilities
   (weight 0.50) and DG odds into its published predictions; the
   integrity gate checks DG coverage.

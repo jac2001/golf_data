@@ -42,7 +42,7 @@ type SortCol = "world_rank" | "win_prob_sim" | "win_prob" | "top10_prob_sim" | "
 // Every column that can be shown/hidden, sortable or not (DataGolf-style
 // "add columns" picker). `default: true` = visible out of the box; the rest
 // are opt-in, since the unfiltered table was too dense to scan at a glance.
-type ColKey = "win" | "top10" | "cut" | "owgr" | "sg" | "form" | "edge" | "odds" | "move" | "ev";
+type ColKey = "win" | "top10" | "cut" | "owgr" | "sg" | "form" | "edge" | "odds" | "move";
 
 // Maps each sortable column to a label, sort direction, and the ColKey that
 // controls its visibility in the picker.
@@ -56,14 +56,13 @@ const COLS: { key: SortCol; label: string; higherBetter: boolean; toggleKey: Col
   { key: "model_vs_vegas_edge",label: "Our edge",     higherBetter: true,  toggleKey: "edge"  },
 ];
 // Does this week's data have anything for a column? Columns with nothing
-// (Odds, Move and EV since the DraftKings feed and the season strategy file
-// stopped) leave the picker instead of showing a column of dashes, and come
-// back on their own when a source does.
+// (Move until an event has an opening line) leave the picker instead of
+// showing a column of dashes, and come back on their own when it does.
+// Odds and Move are DataGolf's (api _dg_odds_for); EV was dropped Oct 21.
 const VALUE_OF: Record<ColKey, (p: PlayerPrediction) => unknown> = {
   win: p => p.win_prob_sim ?? p.win_prob, top10: p => p.top10_prob_sim ?? p.top10_prob,
   cut: p => p.cut_prob, owgr: p => p.world_rank, sg: p => p.season_sg_total, form: p => p.form_trend,
   edge: p => p.model_vs_vegas_edge, odds: p => p.odds_to_win, move: p => p.dk_odds_direction || null,
-  ev: p => p.this_week_ev,
 };
 
 const TOGGLE_COLS: { key: ColKey; label: string; default: boolean }[] = [
@@ -76,7 +75,6 @@ const TOGGLE_COLS: { key: ColKey; label: string; default: boolean }[] = [
   { key: "form",  label: "Form",     default: false },
   { key: "edge",  label: "Our edge",     default: false },
   { key: "move",  label: "Move",     default: false },
-  { key: "ev",    label: "EV",       default: false },
 ];
 const DEFAULT_VISIBLE_COLS: ColKey[] = TOGGLE_COLS.filter(c => c.default).map(c => c.key);
 const ALL_COL_KEYS = new Set<string>(TOGGLE_COLS.map(c => c.key));
@@ -370,7 +368,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
               ))}
               {shownCols.has("odds") && <th style={{ ...th, textAlign: "center" }}><Term help={COLUMN_HELP.odds}>Odds</Term></th>}
               {shownCols.has("move") && <th style={{ ...th, textAlign: "center" }}><Term help={COLUMN_HELP.move}>Move</Term></th>}
-              {shownCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "var(--bc-yellow)" }}><Term help={COLUMN_HELP.ev}>EV</Term></th>}
+              
             </tr>
           </thead>
           <tbody>
@@ -537,18 +535,6 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                   </td>
                   )}
 
-                  {/* Season EV */}
-                  {shownCols.has("ev") && (
-                  <td style={{ ...td, textAlign: "center" }}>
-                    {p.this_week_ev != null ? (
-                      <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-yellow)", fontWeight: 600 }}>
-                        {p.this_week_ev >= 1000
-                          ? `${(p.this_week_ev / 1000).toFixed(0)}k`
-                          : String(p.this_week_ev)}
-                      </span>
-                    ) : <span style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>—</span>}
-                  </td>
-                  )}
 
                 </tr>
                 {isOpen && (
@@ -570,9 +556,9 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
 }
 
 // Phone cards: one chip per column the member has chosen, in table order.
-const CARD_ORDER: ColKey[] = ["win", "top10", "cut", "owgr", "sg", "form", "edge", "odds", "move", "ev"];
+const CARD_ORDER: ColKey[] = ["win", "top10", "cut", "owgr", "sg", "form", "edge", "odds", "move"];
 const CHIP_LABEL: Record<ColKey, string> = { win: "Win", top10: "Top 10", cut: "Makes cut", owgr: "World rank",
-  sg: "SG", form: "Form", edge: "Our edge", odds: "Odds", move: "Move", ev: "EV" };
+  sg: "SG", form: "Form", edge: "Our edge", odds: "Odds", move: "Move" };
 
 function chipOf(k: ColKey, p: PlayerPrediction): { text: string; color?: string } {
   const pct = (v: number | null | undefined, dp = 1) => v == null ? "—" : `${(v * 100).toFixed(dp)}%`;
@@ -589,7 +575,6 @@ function chipOf(k: ColKey, p: PlayerPrediction): { text: string; color?: string 
                            color: (p.model_vs_vegas_edge ?? 0) * 100 > 3 ? "var(--bc-green)" : undefined };
     case "odds":  return { text: p.odds_to_win == null ? "—" : p.odds_to_win >= 0 ? `+${Math.round(p.odds_to_win)}` : String(Math.round(p.odds_to_win)) };
     case "move":  return { text: String(p.dk_odds_direction ?? "") === "UP" ? "↑" : String(p.dk_odds_direction ?? "") === "DOWN" ? "↓" : "—" };
-    case "ev":    return { text: p.this_week_ev == null ? "—" : p.this_week_ev >= 1000 ? `${(p.this_week_ev / 1000).toFixed(0)}k` : String(p.this_week_ev) };
   }
 }
 

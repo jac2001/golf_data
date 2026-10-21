@@ -2039,6 +2039,7 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
         except Exception:
             pass
 
+    dg_odds = _dg_odds_for(tid)
     records = []
     for _, row in df.iterrows():
         name = str(row["player_name"])
@@ -2052,6 +2053,13 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
         entry["badge"]          = badge
         entry["this_week_ev"]   = ev_map.get(name)
         entry["explanation"]    = explanation_map.get(name, "")
+        # Odds and Move from DataGolf (the DraftKings columns these names
+        # come from are gone). The field name dk_odds_direction is kept
+        # because the player page and tee times read it too.
+        dg = dg_odds.get(_name_key(name))
+        if dg:
+            entry["odds_to_win"] = dg["odds_to_win"]
+            entry["dk_odds_direction"] = dg["dk_odds_direction"]
         records.append(entry)
 
     # Actual field size from DG /field-updates (reuse tee-times cache if
@@ -2069,6 +2077,47 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
         "weekly_narrative":      weekly_narrative,
         "analysis_generated_at": analysis_generated_at,
     }
+
+
+def _dg_odds_for(tid: str) -> dict[str, dict]:
+    """DataGolf consensus win odds + this week's move, keyed by _name_key.
+
+    odds_{tid}.csv is the per-player consensus fetch_dg_odds derives from
+    the event-checked dg_outrights_{tid}.csv; odds_open_{tid}.csv is the
+    first such line saved for the event (never overwritten). Move is Jack's
+    odds_move(open, now): "UP" (odds lengthened), "DOWN" (shortened) or None.
+    Jack's call (Oct 21): show DG odds and move publicly; DATA_PERMISSIONS.md.
+    """
+    odds_dir = DATA_DIR / "odds"
+    now_p, open_p = odds_dir / f"odds_{tid.upper()}.csv", odds_dir / f"odds_open_{tid.upper()}.csv"
+    if not tid or not now_p.exists():
+        return {}
+    try:
+        now = pd.read_csv(now_p)
+        opening = pd.read_csv(open_p) if open_p.exists() else pd.DataFrame(columns=["player_name", "implied_prob"])
+    except Exception as e:
+        print(f"dg odds {tid} unreadable: {e}")
+        return {}
+    try:
+        from predictions.odds_move import odds_move  # scripts/ is on sys.path
+    except Exception:
+        odds_move = None
+    open_prob = {_name_key(n): p for n, p in zip(opening["player_name"], opening["implied_prob"])}
+    out: dict[str, dict] = {}
+    for _, r in now.iterrows():
+        k = _name_key(r["player_name"])
+        try:
+            american = int(str(r["odds_american"]).replace("+", ""))
+        except (TypeError, ValueError):
+            american = None
+        move = None
+        if odds_move is not None:
+            try:
+                move = odds_move(open_prob.get(k), float(r["implied_prob"]))
+            except Exception:
+                move = None   # until Jack's odds_move is in, no Move column
+        out[k] = {"odds_to_win": american, "dk_odds_direction": move}
+    return out
 
 
 def _live_board_files(tid: str) -> tuple[Path | None, dict]:

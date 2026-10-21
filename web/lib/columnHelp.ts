@@ -51,18 +51,13 @@ export const COLUMN_HELP = {
   },
   odds: {
     label: "Odds",
-    definition: "His betting odds to win, in American format: +1200 means a $100 bet would return $1,200 profit.",
+    definition: "His odds to win: DataGolf's consensus across sportsbooks, in American format. +1200 means a $100 bet would return $1,200 profit.",
     example: "+1200 implies roughly a 7.7% chance before the bookmaker's margin.",
   },
   move: {
     label: "Move",
-    definition: "Which way his betting odds have moved this week. Odds getting longer (up) means the market has cooled on him; shorter (down) means it's warming up.",
-    example: "↓ means his odds shortened: the market now rates him higher than earlier in the week.",
-  },
-  ev: {
-    label: "EV",
-    definition: "Expected earnings for a Let It Ride pick this week, used as game points, not money. See the EV ? for how expected value works.",
-    example: "52k means picking him is worth about 52,000 points on average.",
+    definition: "Which way his DataGolf consensus odds have moved since the event's opening line. Up (longer odds) means the market has cooled on him; down (shorter) means it's warming to him. Small wobbles, common for longshots, don't count.",
+    example: "↓ means his odds shortened: the market rates him higher than when the line opened.",
   },
 } as const satisfies Record<string, ColumnHelp>;
 

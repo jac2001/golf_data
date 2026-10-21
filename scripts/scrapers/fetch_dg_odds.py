@@ -351,6 +351,13 @@ def main():
             win_path = odds_dir / f"odds_{tid}.csv"
             per_player.to_csv(win_path, index=False)
             print(f"[OK] Win odds (per player) → {win_path}  ({len(per_player)} players)")
+            # The event's OPENING line: the first consensus saved for it,
+            # never overwritten. This Week's Move column compares it with
+            # the current line (scripts/predictions/odds_move.py).
+            open_path = odds_dir / f"odds_open_{tid}.csv"
+            if not open_path.exists():
+                per_player.assign(captured_at=datetime.now(timezone.utc).isoformat()).to_csv(open_path, index=False)
+                print(f"[OK] Opening line saved → {open_path}")
 
     if not df_m.empty:
         m_path = DG_DIR / f"dg_matchups_{tid}.csv"
