@@ -23,7 +23,7 @@ export type WatchInput = {
 
 export const SKILL_NAMES = { ott: "Driving", app: "Approach play", arg: "The short game", putt: "Putting" } as const;
 
-// ── TODO(Jack): thingsToWatch ─────────────────────────────────────────────────
+// ── thingsToWatch ─────────────────────────────────────────────────
 //
 // Build up to THREE lines, in this priority order, skipping any whose data
 // is missing:
@@ -53,6 +53,97 @@ export const SKILL_NAMES = { ott: "Driving", app: "Approach play", arg: "The sho
 // Return at most 3, in that order. Nothing usable -> [].
 
 export function thingsToWatch(input: WatchInput): Watch[] {
-  void input;
-  throw new Error("TODO(Jack): thingsToWatch");
+  const watches: Watch[] = [];
+  const history = input.history;
+
+  if (history) {
+    const editions = history.years
+      .map((year, index) => ({
+        year,
+        score: history.winning_to_par[index],
+      }))
+      .filter(({ year, score }) =>
+        Number.isFinite(year) && Number.isFinite(score)
+      );
+
+    if (editions.length >= 2) {
+      const total = editions.reduce(
+        (sum, edition) => sum + edition.score,
+        0
+      );
+      const mean = total / editions.length;
+
+      const magnitude = Math.round(Math.abs(mean));
+      const direction = mean > 0 ? "over" : "under";
+
+      const years = editions.map(edition => edition.year);
+      const firstYear = Math.min(...years);
+      const lastYear = Math.max(...years);
+
+      watches.push({
+        text: `Winners have finished an average of ${magnitude} ${direction} par here.`,
+        source: `Past winners, ${firstYear}–${lastYear}`,
+      });
+    }
+  }
+  const profile = input.profile;
+
+  if (profile) {
+    const skills = ["ott", "app", "arg", "putt"] as const;
+
+    const validProfile = skills.every(skill =>
+      Number.isFinite(profile[skill]) &&
+      profile[skill] >= 0 &&
+      profile[skill] <= 1
+    );
+
+    if (validProfile && skills.some(skill => profile[skill] > 0)) {
+      const strongest = skills.reduce((best, skill) =>
+        profile[skill] > profile[best] ? skill : best
+      );
+
+      const percentage = Math.round(profile[strongest] * 100);
+
+      watches.push({
+        text: `${SKILL_NAMES[strongest]} separates the field more than anything else here (${percentage}% of what matters).`,
+        source: "DataGolf course profile",
+      });
+    }
+  }
+
+  const windyDays = (input.forecast ?? []).filter(
+    (day): day is { day: string; wind_mph: number } =>
+      day.wind_mph != null &&
+      Number.isFinite(day.wind_mph) &&
+      day.wind_mph >= 0
+  );
+
+  if (windyDays.length > 0) {
+    const strongest = windyDays.reduce((best, day) =>
+      day.wind_mph > best.wind_mph ? day : best
+    );
+
+    const wind = Math.round(strongest.wind_mph);
+
+    watches.push({
+      text: strongest.wind_mph >= 15
+        ? `Wind up to ${wind} mph on ${strongest.day} could push scores up.`
+        : `Light winds forecast (up to ${wind} mph), good for scoring.`,
+      source: "This week's forecast",
+    });
+  }
+  const par5Count = input.holes.filter(
+    hole => hole.hole_par === 5
+  ).length;
+
+  if (par5Count > 0) {
+    watches.push({
+      text: par5Count === 1
+        ? "1 par 5 is the best birdie chance."
+        : `${par5Count} par 5s are the best birdie chances.`,
+      source: "Scorecard",
+    });
+  }
+
+  return watches.slice(0, 3);
 }
