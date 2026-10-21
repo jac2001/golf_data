@@ -1,0 +1,25 @@
+# Code checks on every push: cheap, stdlib-only, publish nothing.
+# duplicate_defs (Jack's, audit finding 13): a later def silently replacing an
+# earlier one hid a test case and registered /api/model-comparison twice.
+name: Checks
+
+on:
+  push:
+    branches: [main]
+    paths: ['**.py', '.github/workflows/checks.yml']
+  pull_request:
+    paths: ['**.py']
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Duplicate definitions
+        run: |
+          python3 scripts/validation/test_duplicate_defs.py
+          python3 scripts/validation/duplicate_defs.py

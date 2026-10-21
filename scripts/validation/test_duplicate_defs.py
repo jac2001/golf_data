@@ -102,6 +102,43 @@ def test_three_definitions_report_each_replacement():
     """) == [Duplicate("f", 2, 3), Duplicate("f", 3, 4)]
 
 
+def test_nested_classes_and_source_order():
+    assert dupes("""
+        class A:
+            class B:
+                def f(self): ...
+                def f(self): ...
+        class A: ...
+    """) == [Duplicate("A.B.f", 4, 5), Duplicate("A", 2, 6)]
+
+
+def test_qualified_overload_and_duplicate_implementation():
+    assert dupes("""
+        @typing.overload
+        def f(x: int): ...
+        def f(x): ...
+        def f(x): ...
+    """) == [Duplicate("f", 4, 5)]
+
+
+def test_repeated_property_getter_counts():
+    assert dupes("""
+        class T:
+            @property
+            def x(self): ...
+            @property
+            def x(self): ...
+    """) == [Duplicate("T.x", 4, 6)]
+
+
+def test_function_local_definitions_are_ignored():
+    assert dupes("""
+        def outer():
+            def f(): ...
+            def f(): ...
+    """) == []
+
+
 if __name__ == "__main__":
     passed = 0
     tests = [(n, fn) for n, fn in list(globals().items()) if n.startswith("test_") and callable(fn)]

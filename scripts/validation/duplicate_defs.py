@@ -30,7 +30,7 @@ class Duplicate(NamedTuple):
 def duplicate_defs(source: str) -> list[Duplicate]:
     """Every def/async def/class that replaces an earlier one in the same scope.
 
-    TODO(Jack): implement. Scopes to check: the module body, and each class
+    Scopes to check: the module body, and each class
     body (report methods as "Klass.method"). Not duplicates (see the tests):
       - the same name in two different classes
       - @property / @<name>.setter / @<name>.deleter pairs
@@ -42,7 +42,48 @@ def duplicate_defs(source: str) -> list[Duplicate]:
     stmt.decorator_list holds ast.Name / ast.Attribute nodes.
     Return them in source order.
     """
-    raise NotImplementedError
+    duplicates: list[Duplicate] = []
+
+    def check_scope(body: list[ast.stmt], prefix: str = "") -> None:
+        seen: dict[str, int] = {}
+        properties: set[str] = set()
+        for stmt in body:
+            if not isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                continue
+            decorators = stmt.decorator_list
+            is_overload = any(
+                isinstance(d, ast.Name) and d.id == "overload"
+                or isinstance(d, ast.Attribute)
+                and isinstance(d.value, ast.Name)
+                and d.value.id == "typing" and d.attr == "overload"
+                for d in decorators
+            )
+            if is_overload:
+                continue
+            is_property = any(
+                isinstance(d, ast.Name) and d.id == "property"
+                for d in decorators
+            )
+            is_accessor = stmt.name in properties and any(
+                isinstance(d, ast.Attribute)
+                and isinstance(d.value, ast.Name)
+                and d.value.id == stmt.name
+                and d.attr in {"setter", "deleter"}
+                for d in decorators
+            )
+            name = prefix + stmt.name
+            if stmt.name in seen and not is_accessor:
+                duplicates.append(Duplicate(name, seen[stmt.name], stmt.lineno))
+            seen[stmt.name] = stmt.lineno
+            if is_property:
+                properties.add(stmt.name)
+            elif not is_accessor:
+                properties.discard(stmt.name)
+            if isinstance(stmt, ast.ClassDef):
+                check_scope(stmt.body, name + ".")
+
+    check_scope(ast.parse(source).body)
+    return sorted(duplicates, key=lambda d: d.line)
 
 
 def tracked_python_files() -> list[Path]:
