@@ -111,6 +111,17 @@ were silently off after the move; it now uses `$CLAUDE_PROJECT_DIR`.
 - [x] #15 data-refresh + tuesday-predictions share the `publish-main` lock and check out `main`;
       model-sync wait runs outside the lock.
 
+**Follow-up review (Oct 21), all four verified and fixed:**
+- [x] Failed-run recovery restored outputs/ + data/prediction_tracking/ from HEAD, erasing local
+      edits made before the run. Now snapshots the exact pre-run state and restores that
+      (`scripts/test_publish_restore.py`, in Tuesday's gate).
+- [x] `/api/alerts` had one read state for every visitor and its "my pick" alerts were Jack's
+      picks: owner-only (relay `/api/owner/alerts`, banner mounted for admins). 403 live.
+- [x] Ambiguous result matches scored $0: now "unresolved" (`?`, totals incomplete, no verdicts
+      off them). Exposure checked: 0 of 55 picks ambiguous.
+- [x] `_freshen` by inner timestamps (see Phase C #7). Live: weather refetched once after the
+      deploy (saved_at 2026-10-21T16:03:58Z), then held.
+
 **Phase D: cleanup + docs (#17, #18)** (Oct 21)
 - [x] 16 pre-product guides moved to `docs/archive/` with a "historical" banner; one short
       `docs/RUNBOOK.md`. Old scripts deleted (git history keeps them): launch_dashboard.sh,
