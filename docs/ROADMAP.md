@@ -166,6 +166,12 @@ height on phones. In order (each its own commit, preview-verified at 375px):
 6. [x] **Course Fit table**: fewer default columns, a one-line explainer per column, the rest
        behind "More columns".
 
+- [ ] **Empty field columns (Oct 21), Jack decides:** Odds, Move and EV have no data (0/120):
+      `odds_to_win` and `dk_odds_direction` came from the retired DraftKings feed, `this_week_ev`
+      from the season strategy file dead since June. They're hidden until a source returns.
+      Odds/Move from DataGolf would be a new public display of DG data (DATA_PERMISSIONS);
+      EV would need a live source (advice_values?), or drop it.
+
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
 The production loop runs itself: data refresh → Tuesday predictions →
