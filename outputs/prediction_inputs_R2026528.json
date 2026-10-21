@@ -1,22 +1,37 @@
 {
   "tournament_id": "R2026528",
   "tournament_name": "Butterfield Bermuda Championship",
-  "generated_at": "2026-10-20T20:12:55.523563",
+  "generated_at": "2026-10-21T10:42:09.631127",
   "inputs": {
     "decompositions": {
       "file": "dg_decompositions_R2026528.csv",
       "event_name": "Butterfield Bermuda Championship",
-      "modified": "2026-10-20T20:12:21.503087"
+      "modified": "2026-10-21T10:41:35.799205"
     },
     "pre_tournament": {
       "file": "dg_pre_tournament_R2026528.csv",
       "event_name": "Butterfield Bermuda Championship",
-      "modified": "2026-10-20T20:11:48.211654"
+      "modified": "2026-10-21T10:40:40.183288"
     },
     "field": {
       "file": "dg_field_R2026528.csv",
       "event_name": "Butterfield Bermuda Championship",
-      "modified": "2026-10-20T20:11:12.729186"
+      "modified": "2026-10-21T10:40:40.140287"
     }
+  },
+  "model_artifacts": {
+    "data/models/win_model_final.pkl": "2c80ddae2177dc585556345fe6335f9a65ed6fb12a9ecf92e429df77c7d94e43",
+    "data/models/top5_model_final.pkl": "cbda54d94deb5e5e9bf06db7ce58d2648ca83e311e563399ed6dc2d1ca1cde31",
+    "data/models/top10_model_final.pkl": "b1cf4d9bb537f4706c70526cb54182842e4c39cf5488f0a19029e206a62bcade",
+    "data/models/top20_model_final.pkl": "fa3feff4ed9eb3939244c6cfba467e585a09eb418443e9644995a35884456a76",
+    "data/models/feature_medians.json": "ec356f09afcc3b3e25cb1a4e0a566df79552336ed3ca0fc6679bcba0af59f2bb",
+    "data/models/cut_model.pkl": "956a226b2d182d4863364646562e138ea63bf45509239a120273ad9287844019",
+    "data/models/cut_model_features.txt": "229222fb303d9c83de5ce7b7448620f9778dd8070a27f3f40ecf2b0bd9cbce85",
+    "data/models/euro/euro_won_model.pkl": "ca00c2967d184cd7e8a8e90f5195df865624130738b1c63acb85dd2a5e7328da",
+    "data/models/euro/euro_top5_model.pkl": "6068c4233735c09cd6fb00867581b058436047e7e0c698f841c08feef4677f29",
+    "data/models/euro/euro_top10_model.pkl": "e20ff10ca7f6bbc1a29ce18dfa4d5c8acfe43a2c70b7d92f07187860f2f1efee",
+    "data/models/euro/euro_top20_model.pkl": "66b34f9e2bb5bc49287d18fa7d02e54f312412ce1b94c5e9cc4f26a6c9996c4a",
+    "data/models/euro/euro_made_cut_model.pkl": "585ac8acc4e773a9344a2a182830e04fb9587cb08d02a0f5e40b1c3cabb97991",
+    "data/models/round_matchup_model.pkl": null
   }
 }
