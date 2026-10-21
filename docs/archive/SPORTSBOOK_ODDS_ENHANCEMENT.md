@@ -1,3 +1,5 @@
+> **Historical (archived Oct 21, 2026).** Written before the web product and the GitHub Actions pipeline; paths, scripts and steps here may no longer exist. Current: `CLAUDE.md`, `docs/RUNBOOK.md`, `docs/ROADMAP.md`.
+
 # Sportsbook Odds Integration - Enhancement Plan
 
 ## Overview

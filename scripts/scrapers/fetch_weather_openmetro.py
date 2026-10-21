@@ -4,8 +4,10 @@
 Fetch weather data from Open-Meteo.
 
 Usage:
-  python3 scripts/scrapers/fetch_weather_openmeteo.py --lat 36.5686 --lon -121.9487
-  python3 scripts/scrapers/fetch_weather_openmeteo.py --lat 36.5686 --lon -121.9487 --output /tmp/weather.json
+  python3 scripts/scrapers/fetch_weather_openmetro.py --lat 36.5686 --lon -121.9487
+  python3 scripts/scrapers/fetch_weather_openmetro.py --lat 36.5686 --lon -121.9487 --hourly --tid R2026527
+
+The tournament forecast /api/weather serves comes from fetch_weather_pga.py.
 """
 
 import argparse

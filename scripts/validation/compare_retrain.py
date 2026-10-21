@@ -36,7 +36,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
 
 warnings.simplefilter("ignore")
-ROOT = Path("/Users/jacklegnon/Desktop/golf_data")
+ROOT = Path(__file__).resolve().parents[2]
 S = Path(__file__).resolve().parent
 import argparse as _ap
 _p = _ap.ArgumentParser()

@@ -4,7 +4,7 @@
 # Usage:
 #   ./restart_api.sh
 
-cd /Users/jacklegnon/Desktop/golf_data
+cd "$(dirname "$0")"   # the repo root, wherever it lives
 
 PORT=8000
 PID=$(lsof -ti:$PORT)

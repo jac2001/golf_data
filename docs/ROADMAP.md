@@ -110,9 +110,26 @@ were silently off after the move; it now uses `$CLAUDE_PROJECT_DIR`.
 - [x] #15 data-refresh + tuesday-predictions share the `publish-main` lock and check out `main`;
       model-sync wait runs outside the lock.
 
-**Phase D: cleanup + docs (#17, #18):** stale guides and destructive old
-scripts; CLAUDE.md facts (Render tier, `dashboard.py`); check whether
-DataGolf now offers earnings (permissions doc says none).
+**Phase D: cleanup + docs (#17, #18)** (Oct 21)
+- [x] 16 pre-product guides moved to `docs/archive/` with a "historical" banner; one short
+      `docs/RUNBOOK.md`. Old scripts deleted (git history keeps them): launch_dashboard.sh,
+      cleanup_project.sh (rm -rf), organize_project.sh (would move CLAUDE.md),
+      weekly_predictions.sh (called a missing ESPN scraper), setup_scheduler.sh,
+      schedule_config.json. No tracked code points at `~/Desktop` any more; printed hints name
+      scripts that exist. CLAUDE.md: Render Starter, `dashboard.py` gone (deleted Sep 15).
+      LeagueGate no longer says the Friends Game is "coming soon". The integrity/freshness
+      gates do block publishing end to end since Phase A #3.
+- [ ] **Settlement money is estimated for 16 of 2026's settled PGA events** (no official
+      earnings in our leaderboards), from the schedule purse. Two purses are wrong vs DataGolf's
+      official totals: Baycurrent $6M vs $7.97M paid (winner shown $1.08M, paid $1.44M;
+      lineups ~25% low), Biltmore $6M vs $5.10M (~18% high). Jack decides: correct those
+      purses and rescore (like `maintenance/rescore_euro_purses.py`), and/or settle from DG's
+      official earnings (`historical-event-data/events`; our key gets it; a new public display
+      of DG data, so check DG's display terms first, DATA_PERMISSIONS.md).
+- [ ] **`event_guard.names_match` false positive on shared sponsor words**: "RBC Heritage" ==
+      "RBC Canadian Open", "Genesis Scottish Open" == "Genesis Invitational" (one distinctive
+      token each side is a 0.5 overlap). Rule 1's guard; RBC Canadian is one of the four
+      shipped provenance bugs. Fix with tests (teaching candidate).
 
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 

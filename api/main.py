@@ -1,11 +1,9 @@
 """
 Golf Data API — FastAPI backend
 ================================
-Serves the same data the Streamlit dashboard reads, as clean JSON endpoints.
-The Next.js frontend calls these endpoints to render pages.
+Serves the committed data/ + outputs/ files as JSON for the Next.js site
+(web/). Production runs on Render; locally, from the repo root:
 
-Run:
-    cd /Users/jacklegnon/Desktop/golf_data
     uvicorn api.main:app --reload --port 8000
 
 Endpoints:

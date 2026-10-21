@@ -441,7 +441,7 @@ def display_results(result: dict):
             print(f"  • {player} @ {tournament}")                                                                     
         print()                                                                                                       
         print("  💡 Tip: Make sure leaderboard data is up to date")                                                   
-        print("     Run: python scripts/scrapers/fetch_leaderboard.py")                                               
+        print("     Run: python3 scripts/scheduled_refresh.py --schedule record")                                               
         print()                                                                                                       
                                                                                                                     
     already = result.get("already_recorded", [])                                                                      

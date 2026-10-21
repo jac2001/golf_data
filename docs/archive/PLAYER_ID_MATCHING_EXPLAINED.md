@@ -1,3 +1,5 @@
+> **Historical (archived Oct 21, 2026).** Written before the web product and the GitHub Actions pipeline; paths, scripts and steps here may no longer exist. Current: `CLAUDE.md`, `docs/RUNBOOK.md`, `docs/ROADMAP.md`.
+
 # Player ID Matching: ESPN to PGA Tour IDs
 
 ## The Problem

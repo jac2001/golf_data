@@ -1,3 +1,5 @@
+> **Historical (archived Oct 21, 2026).** Written before the web product and the GitHub Actions pipeline; paths, scripts and steps here may no longer exist. Current: `CLAUDE.md`, `docs/RUNBOOK.md`, `docs/ROADMAP.md`.
+
 # Weekly Golf Prediction Workflow
 
 > Last updated: 2026-02-16

@@ -2,7 +2,8 @@
 
 Loaded into every session. Keep it true and short: when something here goes
 stale, fix it in the same change. The working plan lives in `docs/ROADMAP.md`
-(read it first; new ideas get sequenced there, not chased mid-session).
+(read it first; new ideas get sequenced there, not chased mid-session). How to
+operate it: `docs/RUNBOOK.md`. `docs/archive/` is history, not instructions.
 
 ## What this is
 
@@ -13,10 +14,9 @@ plus public PGA TOUR / DP World Tour predictions.
 | Piece | Where | Notes |
 |---|---|---|
 | Web app | `web/` — Next.js 16 on **Vercel** | Clerk auth, Neon Postgres. Read `web/AGENTS.md`: this Next.js has breaking changes vs. training data. |
-| API | `api/main.py` — FastAPI on **Render** (`golf-app-a3yw.onrender.com`) | Reads committed CSVs under `data/` + `outputs/`. Free tier sleeps: first call can be slow. |
+| API | `api/main.py` — FastAPI on **Render** (`golf-app-a3yw.onrender.com`) | Reads committed CSVs under `data/` + `outputs/`. Starter plan since Oct 15 (no sleep). |
 | Pipeline | `scripts/` on **GitHub Actions** | `.github/workflows/data-refresh.yml` (cron slots), `tuesday-predictions.yml`. Commits data → Render redeploys. |
 | Watchdog | `web/app/api/watchdog` — daily Vercel cron | Re-dispatches settlement/prediction runs GitHub's scheduler drops. |
-| Legacy | `dashboard.py` (Streamlit, local only) | Not the product anymore; don't build new features there. |
 
 Models: PGA = random forests in isotonic `CalibratedClassifierCV` (win/top5/top10;
 `train_final_models.py`, NaN → training medians, saved as `data/models/feature_medians.json`
@@ -84,7 +84,7 @@ Python: use `/Library/Frameworks/Python.framework/Versions/3.13/bin/python3` loc
 - **git push only.** Vercel and Render deploy from `main`. Never `vercel deploy`.
 - `git pull --rebase --autostash` before pushing (tracked `logs/` are always dirty).
 - Pipeline auto-deploy commits and the friends-game feature commit→push loop are
-  pre-authorized. Dashboard (`dashboard.py`) work: ask before committing.
+  pre-authorized. (The Streamlit `dashboard.py` was deleted Sep 15; the site replaced it.)
 - The repo lives at `~/Developer/golf_data` (moved out of iCloud-synced
   `~/Desktop` on Oct 21, 2026, after sync broke git refs and duplicated files).
   Keep it out of iCloud. Local-only files (`.env*`, `.claude/`, `data/golf_data.db`,

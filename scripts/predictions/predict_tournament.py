@@ -4533,9 +4533,8 @@ Examples:
     if _field_age_hours and _field_age_hours > 72:
         print(f"\n  ⚠️  FIELD FILE MAY BE STALE: {_field_age_hours:.0f}h old (>{72}h threshold)")
         print(f"      Withdrawals/changes since fetch may not be reflected.")
-        print(f"      Re-run: python3 scripts/scrapers/fetch_field_from_pgatour.py "
-              f"--pga-id {args.tournament_id or 'RYYYYNNN'} --name \"<name>\" "
-              f"--output {args.field} --match-ids")
+        print(f"      Re-run: python3 scripts/scrapers/fetch_dg_field.py "
+              f"--tournament-id {args.tournament_id or 'RYYYYNNN'}")
     elif _field_age_hours:
         print(f"    ✓ Field freshness: {_field_age_hours:.1f}h old (OK)")
 

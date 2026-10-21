@@ -35,24 +35,8 @@ Usage:
     # Dry run (show what would run)
     python3 scripts/scheduled_refresh.py --dry-run
 
-Cron Examples (add to crontab -e):
-    # Monday 6am - post tournament
-    0 6 * * 1 cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule monday >> logs/scheduler.log 2>&1
-
-    # Tuesday 6am - tournament prep
-    0 6 * * 2 cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule tuesday-morning >> logs/scheduler.log 2>&1
-
-    # Tuesday 6pm - odds refresh
-    0 18 * * 2 cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule tuesday-evening >> logs/scheduler.log 2>&1
-
-    # Wednesday 6am - final prep
-    0 6 * * 3 cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule wednesday-morning >> logs/scheduler.log 2>&1
-
-    # Thursday-Sunday 8am, 2pm, 8pm - live updates
-    0 8,14,20 * * 4-7 cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule live >> logs/scheduler.log 2>&1
-
-    # Sunday 11pm - record results
-    0 23 * * 0 cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule record >> logs/scheduler.log 2>&1
+Scheduling: GitHub Actions runs these slots (.github/workflows/data-refresh.yml,
+times in America/Chicago); the old crontab/launchd setup is retired.
 """
 
 import argparse

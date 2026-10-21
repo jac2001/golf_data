@@ -578,15 +578,11 @@ Direct `TRY_CAST(position AS INTEGER) <= 10` undercounts by 4x (misses all T-pre
 | `live` | Thu–Sun hourly | Live leaderboard, hole scores, live SG stats, weather, live pulse narrative |
 | `post-tournament` | Sun night | Settle results, grade bets, update fantasy tracker, sync DuckDB |
 
-### Cron Setup
+### Where it runs
 
-```cron
-0 6  * * 1   cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule monday
-0 6  * * 2   cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule tuesday-morning
-0 18 * * 2   cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule tuesday-evening
-0 6  * * 3   cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule wednesday-morning
-0 *  * * 4,5,6,0  cd /Users/jacklegnon/Desktop/golf_data && python3 scripts/scheduled_refresh.py --schedule live
-```
+GitHub Actions: `.github/workflows/data-refresh.yml` runs these slots (times in
+America/Chicago) and `tuesday-predictions.yml` runs the full weekly pipeline.
+Both share one publish lock. The old crontab/launchd setup is retired.
 
 ### Full Pipeline (`scripts/run_pipeline.py`)
 
@@ -776,12 +772,11 @@ Runs all 5 steps: scrape → sync DuckDB → stats refresh → prediction backfi
 ## Running the Servers
 
 ```bash
-# API (port 8000)
-cd /Users/jacklegnon/Desktop/golf_data
+# API (port 8000), from the repo root (~/Developer/golf_data)
 uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
 # Frontend (port 3000)
-cd /Users/jacklegnon/Desktop/golf_data/web
+cd web
 PATH="/opt/homebrew/bin:$PATH" npm run dev
 ```
 

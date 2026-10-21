@@ -37,7 +37,7 @@ export default async function LeagueGate({ children }: { children: React.ReactNo
         <p style={{ color: "var(--bc-muted)", fontSize: "0.9em", lineHeight: 1.6, margin: 0 }}>
           This zone holds one team&apos;s weekly strategy — and you might be the
           competition. The public side of the site (predictions, betting board,
-          live) is all yours, and the Friends Game is coming soon.
+          live) is all yours, and the Friends Game is open: start or join a group.
         </p>
       </div>
     </div>
