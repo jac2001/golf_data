@@ -10,7 +10,7 @@
  * the server's own messages (Jack's validateLeaguePick) verbatim.
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getEventField, getGolferForm, getPredictions, OpenEvent } from "@/lib/api";
 import { whyLine } from "@/lib/whyLine";
 import { helpMePick } from "@/lib/helpMePick";
@@ -337,6 +337,9 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   const [field, setField] = useState<{ name: string; win: number | null; why: string }[]>([]);
   const [q, setQ] = useState("");
   const [considered, setConsidered] = useState<string | null>(null);
+  // The link is applied once per visit; whether he was already picked then.
+  const consideredApplied = useRef(false);
+  const consideredWasMine = useRef(false);
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState("");
   // Spend/save advice for MY uses (private, pre-lock only), keyed by nameKey.
@@ -454,15 +457,29 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
   // in this field, does nothing. try: until resolveConsider exists (Jack's
   // TODO) it throws, and the pick screen must still open.
   useEffect(() => {
-    if (!field.length || considered !== null) return;
+    if (!field.length || consideredApplied.current) return;
     const u = new URLSearchParams(window.location.search);
     const tid = u.get("tid")?.toUpperCase();
     if (!u.get("consider") || (tid && tid !== ev.tournament_id.toUpperCase())) return;
     let name: string | null = null;
     try { name = resolveConsider(u.get("consider"), field.map(f => f.name)); } catch { name = null; }
     if (!name) return;
+    consideredApplied.current = true;
+    consideredWasMine.current = mine.some(p => nameKey(p.player_name) === nameKey(name!));
+    // Used once: a reload or Back shouldn't bring him back after he's dealt with.
+    u.delete("consider");
+    window.history.replaceState(null, "", `${window.location.pathname}?${u.toString()}`);
     setConsidered(name); setQ(name); setWhy(name);
-  }, [field, ev.tournament_id, considered]);
+  }, [field, ev.tournament_id, mine]);
+
+  // Dealt with: picked here (Jack, Oct 21), or set aside ("Not now", or
+  // searching for someone else). The note, search and his advice clear.
+  const clearConsidered = useCallback(() => { setConsidered(null); setQ(""); setWhy(""); }, []);
+  useEffect(() => {
+    if (considered && !consideredWasMine.current && mine.some(p => nameKey(p.player_name) === nameKey(considered))) {
+      clearConsidered();
+    }
+  }, [mine, considered, clearConsidered]);
 
   const shown = useMemo(() => {
     const ql = q.trim().toLowerCase();
@@ -615,9 +632,18 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
                   : full
                     ? `Your lineup is full: drop a golfer to pick ${considered}.`
                     : "Not picked yet; tap Pick if you want him."}
+              {" "}
+              <button type="button" onClick={clearConsidered} style={{ background: "none", border: "none",
+                color: "var(--bc-yellow)", fontWeight: 800, cursor: "pointer", fontFamily: "inherit",
+                fontSize: "inherit", padding: "0 2px", minHeight: 32 }}>
+                Not now
+              </button>
             </div>
           )}
-          <input placeholder="Search the field…" value={q} onChange={e => setQ(e.target.value)} style={{
+          <input placeholder="Search the field…" value={q} onChange={e => {
+            setQ(e.target.value);
+            if (considered && e.target.value !== considered) { setConsidered(null); setWhy(""); }   // moved on
+          }} style={{
             background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
             color: "var(--bc-text)", padding: "7px 12px", fontSize: "max(var(--fs-min), 0.86em)", width: "100%",
             boxSizing: "border-box", marginBottom: 8, fontFamily: "inherit" }} />
