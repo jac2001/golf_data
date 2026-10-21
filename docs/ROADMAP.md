@@ -161,7 +161,8 @@ height on phones. In order (each its own commit, preview-verified at 375px):
        probabilities aren't offscreen behind a wide name column.
 4. [ ] **Empty search**: "No golfers match '...'" + Clear search, instead of an empty table.
 5. [ ] **Jargon on tap**: SG, OTT, APP, ARG, PUTT, EV, "pp" explained in a small glossary
-       popover. Glossary data + tests: Jack scaffold candidate.
+       popover. Jack's `web/lib/glossary.ts` (definitions + exact lookup, tests green, Oct 21).
+       UI wiring pending.
 6. [ ] **Course Fit table**: fewer default columns, a one-line explainer per column, the rest
        behind "More columns".
 
