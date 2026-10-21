@@ -55,6 +55,18 @@ async function relay(req: Request, params: Promise<{ action: string }>) {
 }
 
 type Ctx = { params: Promise<{ action: string }> };
+
+// GET /api/owner/whoami: the signed-in account's id and whether lib/admin.ts
+// counts it as an admin. Production and development Clerk instances give the
+// same person different ids, so this is how to find the right one to list.
+// User ids aren't secrets; nothing else is exposed.
+export async function GET(_req: Request, { params }: Ctx) {
+  const { action } = await params;
+  if (action !== "whoami") return Response.json({ detail: "Unknown action." }, { status: 404 });
+  const { userId } = await auth();
+  return Response.json({ userId: userId ?? null, admin: isAdmin(userId) });
+}
+
 export const POST = (req: Request, { params }: Ctx) => relay(req, params);
 export const DELETE = (req: Request, { params }: Ctx) => relay(req, params);
 export const PATCH = (req: Request, { params }: Ctx) => relay(req, params);
