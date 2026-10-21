@@ -60,8 +60,13 @@ workspace, then consolidate, then delete leftovers.
        picks the season from today and the PGA schedules' dates (a season takes
        over 7 days before its opener). config.SEASON and scheduled_refresh use
        it; SEASON was 2027 just because `schedule_2027.csv` existed.
-3. [ ] Publish only validated output: a failed critical task blocks the
-       deploy and fails the workflow; drop Tuesday's `|| true` + log-phrase check.
+3. [x] Publish only validated output (Oct 20): a failed Predictions task
+       blocks deploy_site, restores outputs/ + data/prediction_tracking/ to main
+       (new files moved to logs/rejected_outputs/), and exits 1 so the run goes
+       red and the watchdog re-dispatches. data-refresh's commit step re-restores
+       if the refresh failed (euro still publishes). Tuesday: real exit status
+       (PIPESTATUS), verified by latest_predictions.csv carrying this week's tid;
+       its week check no longer hardcodes schedule_2026.csv.
 4. [ ] One result-identity contract: recap misses accented names (Aberg);
        shared fixture across Match Center, standings, recap, Fade, College;
        carry `earnings_estimated` everywhere.

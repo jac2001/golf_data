@@ -275,6 +275,34 @@ def run_command(cmd: list, description: str, timeout: int = 180) -> bool:
         return False
 
 
+# A failed critical task means this run's model outputs were rejected
+# (run_pipeline exits nonzero when the integrity/freshness gates refuse).
+# Nothing it wrote under these paths may be published (audit finding 4).
+CRITICAL_TASKS = {"Predictions"}
+PREDICTION_PATHS = ["outputs", "data/prediction_tracking"]
+
+
+def restore_prediction_outputs(run_started: float) -> None:
+    """Put the prediction files back the way they are on main, so the rejected
+    ones can't be committed by deploy_site or the workflow's final commit.
+    Tracked files: restored from HEAD. New files this run created: moved to
+    logs/rejected_outputs/ (moved, never deleted; local runs keep them)."""
+    import shutil
+    subprocess.run(["git", "-C", str(PROJECT_ROOT), "checkout", "HEAD", "--", *PREDICTION_PATHS],
+                   capture_output=True, text=True)
+    new = subprocess.run(["git", "-C", str(PROJECT_ROOT), "ls-files", "--others", "--exclude-standard",
+                          *PREDICTION_PATHS], capture_output=True, text=True).stdout.split("\n")
+    dest = LOGS_DIR / "rejected_outputs" / datetime.now().strftime("%Y%m%d_%H%M%S")
+    moved = 0
+    for rel in filter(None, new):
+        src = PROJECT_ROOT / rel
+        if src.is_file() and src.stat().st_mtime >= run_started:
+            (dest / rel).parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(src), str(dest / rel))
+            moved += 1
+    log(f"  Restored {', '.join(PREDICTION_PATHS)} to main; moved {moved} new file(s) to {dest}")
+
+
 def deploy_site(reason: str, dry_run: bool = False) -> bool:
     """Commit refreshed data/outputs and push so Render redeploys the live site.
 
@@ -1597,6 +1625,7 @@ def main():
     parser.add_argument("--interval", type=int, default=5,
                         help="Minutes between refreshes in --watch mode (default: 5)")
     args = parser.parse_args()
+    run_started = time.time()
 
     # Watch mode: run indefinitely, refreshing during active rounds
     if args.watch:
@@ -1640,7 +1669,12 @@ def main():
     # Deploy: weekly runs push refreshed data so Render redeploys the live
     # site. Live refresh is excluded — it fires every 10 minutes and would
     # keep the site in a permanent rebuild loop.
-    if schedule != "live" and results:
+    critical_failed = [d for d, ok in results if not ok and d in CRITICAL_TASKS]
+    if critical_failed:
+        log(f"  ✗ {', '.join(critical_failed)} failed: NOT publishing this run's outputs")
+        if not args.dry_run:
+            restore_prediction_outputs(run_started)
+    elif schedule != "live" and results:
         deploy_ok = deploy_site(schedule, dry_run=args.dry_run)
         results.append(("Deploy Site", deploy_ok))
 
@@ -1704,6 +1738,9 @@ def main():
     # Keep last 100 runs
     history = history[-100:]
     log_file.write_text(json.dumps(history, indent=2))
+
+    if critical_failed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

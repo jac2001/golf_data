@@ -88,6 +88,10 @@ jobs:
           echo "Running schedule: $S"
 
       - name: Run scheduled refresh
+        id: refresh
+        # Exits 1 when a critical task (Predictions) fails: it publishes
+        # nothing from outputs/ and the run goes red, so the watchdog
+        # re-dispatches the slot (audit finding 4).
         if: steps.pick.outputs.schedule != 'euro-rounds'
         run: |
           python3 scripts/scheduled_refresh.py \
@@ -95,7 +99,7 @@ jobs:
             ${{ inputs.dry_run == true && '--dry-run' || '' }}
 
       - name: Euro settle + new field + OUR model predictions (Mondays)
-        if: (github.event.schedule == '0 11 * * 1' || inputs.schedule == 'monday') && inputs.dry_run != true
+        if: "!cancelled() && (github.event.schedule == '0 11 * * 1' || inputs.schedule == 'monday') && inputs.dry_run != true"
         run: |
           # DG assigns euro event ids only ~2 weeks ahead (later ones are
           # "TBD" and skipped) — refetch weekly or the DPWT falls off the
@@ -116,7 +120,7 @@ jobs:
         # idempotent, so a repeat is a no-op.
         # Scheduled Tue/Wed slots, or a manual/watchdog dispatch of those slots
         # (GitHub's scheduler drops runs; /api/watchdog re-dispatches them).
-        if: (contains(fromJSON('["0 11 * * 2","0 23 * * 2","0 11 * * 3","0 23 * * 3"]'), github.event.schedule) || contains(fromJSON('["tuesday-morning","tuesday-evening","wednesday-morning","wednesday-evening"]'), inputs.schedule)) && inputs.dry_run != true
+        if: "!cancelled() && (contains(fromJSON('[\"0 11 * * 2\",\"0 23 * * 2\",\"0 11 * * 3\",\"0 23 * * 3\"]'), github.event.schedule) || contains(fromJSON('[\"tuesday-morning\",\"tuesday-evening\",\"wednesday-morning\",\"wednesday-evening\"]'), inputs.schedule)) && inputs.dry_run != true"
         run: |
           # Schedule first: DG may assign this week's event id after
           # Monday's refresh, and a field written under a provisional id
@@ -128,7 +132,7 @@ jobs:
           python3 scripts/predictions/predict_euro.py              || true
 
       - name: Euro rounds snapshot + refreshed predictions (tournament evenings)
-        if: steps.pick.outputs.schedule == 'euro-rounds' && inputs.dry_run != true
+        if: "!cancelled() && steps.pick.outputs.schedule == 'euro-rounds' && inputs.dry_run != true"
         run: |
           python3 scripts/scrapers/fetch_euro_events.py --rounds   || true
           python3 scripts/scrapers/fetch_euro_events.py --preds    || true
@@ -136,10 +140,18 @@ jobs:
           python3 scripts/predictions/predict_euro.py              || true
 
       - name: Commit euro output; push anything stranded
-        if: inputs.dry_run != true
+        if: "!cancelled() && inputs.dry_run != true"
         # Also rescues a commit deploy_site made but failed to push (race
         # with another push): the rebase+push below is a no-op when in sync.
         run: |
+          # If the PGA refresh failed, its prediction outputs were rejected:
+          # put them back to main before staging, even if the script crashed
+          # before restoring them itself. (CI checkout: safe to clean.)
+          if [ "${{ steps.refresh.outcome }}" = "failure" ]; then
+            git checkout HEAD -- outputs data/prediction_tracking
+            git clean -fdq -- outputs data/prediction_tracking
+            echo "::warning::PGA refresh failed: committing euro output and inputs only."
+          fi
           git add data/ outputs/
           if ! git diff --cached --quiet; then
             git commit -m "Auto-deploy: ${{ steps.pick.outputs.schedule }} (Actions)"

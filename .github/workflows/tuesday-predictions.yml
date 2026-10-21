@@ -52,9 +52,11 @@ jobs:
         id: week
         run: |
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import csv, datetime
+          import csv, datetime, sys
+          sys.path.insert(0, "scripts")
+          from config import schedule_csv   # the active season (season_resolver), not a hardcoded year
           today = datetime.date.today()
-          rows = csv.DictReader(open("data/raw/schedule_2026.csv"))
+          rows = csv.DictReader(open(schedule_csv()))
           soon = [r for r in rows
                   if 0 <= (datetime.date.fromisoformat(r["start_date"]) - today).days <= 6]
           print(f"pga_week={'true' if soon else 'false'}")
@@ -102,25 +104,42 @@ jobs:
             python3 scripts/scrapers/fetch_dg_pre_tournament.py --tournament-id "${{ steps.week.outputs.tid }}" || echo "::warning::DG pre-tournament fetch refused or failed"
             python3 scripts/scrapers/fetch_dg_decompositions.py --tournament-id "${{ steps.week.outputs.tid }}" || echo "::warning::DG decompositions fetch refused or failed"
           fi
+          # The pipeline's own exit status is the verdict (it exits 1 when the
+          # integrity/freshness gates refuse). PIPESTATUS, because a plain
+          # pipe reports tee's status. On failure, put the prediction files
+          # back to main so nothing later can commit them (audit finding 16).
+          set +e
           python3 scripts/run_pipeline.py \
             --auto-weekly --lineup --calibrate --save-tracking \
-            2>&1 | tee pipeline.log || true
+            2>&1 | tee pipeline.log
+          status=${PIPESTATUS[0]}
+          set -e
           tail -30 pipeline.log >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Verify the pipeline actually produced predictions
-        if: steps.week.outputs.pga_week == 'true'
-        # NOT an mtime check: git checkout stamps every file with checkout
-        # time, so on CI "the file is 3 minutes old" is always true and
-        # means nothing. The pipeline's own verdict is the truth — its
-        # sanity stage prints "Pipeline failed:" on any refusal (including
-        # the event guard refusing a mislabeled field, which must make
-        # this run RED, not quietly green).
-        run: |
-          if grep -q "Pipeline failed:" pipeline.log; then
-            echo "::error::run_pipeline reported failure — see the log tail in the step summary."
+          if [ "$status" -ne 0 ]; then
+            git checkout HEAD -- outputs data/prediction_tracking
+            git clean -fdq -- outputs data/prediction_tracking
+            echo "::error::run_pipeline exited $status: predictions rejected, nothing published. See the log tail in the step summary."
             exit 1
           fi
-          echo "Pipeline reported success."
+
+      - name: Verify the predictions are for this week's event
+        if: steps.week.outputs.pga_week == 'true'
+        # A success artifact, not the absence of an error phrase: the file the
+        # site serves must exist, hold rows, and be labeled with THIS week's
+        # tournament (an early return or a stale file fails here).
+        run: |
+          python3 - <<'PY'
+          import csv, sys
+          want = "${{ steps.week.outputs.tid }}"
+          try:
+              rows = list(csv.DictReader(open("outputs/latest_predictions.csv")))
+          except FileNotFoundError:
+              sys.exit("::error::outputs/latest_predictions.csv is missing")
+          got = {r.get("tournament_id", "").strip().upper() for r in rows}
+          if not rows or got != {want}:
+              sys.exit(f"::error::latest_predictions.csv is for {sorted(got) or 'nothing'}, expected {want}")
+          print(f"latest_predictions.csv: {len(rows)} players for {want}")
+          PY
 
       - name: Commit and push outputs
         if: steps.week.outputs.pga_week == 'true'
