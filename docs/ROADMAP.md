@@ -182,9 +182,10 @@ height on phones. In order (each its own commit, preview-verified at 375px):
       has data for 76. The tab now keys off course_starts and hides empty lines; find why the
       venue record isn't joined.
 
-- [~] **Course Guide v1 (Jack's plan, Oct 21):** at a glance (course, location, par,
+- [x] **Course Guide v1 (Jack's plan, Oct 21):** at a glance (course, location, par,
       yardage, par 3/4/5 counts); three things to watch from real data only, each with its
-      source ([ ] Jack: `web/lib/thingsToWatch.ts`, 6 todo tests; section hidden until then);
+      source (Jack's `web/lib/thingsToWatch.ts`, live Oct 21; [ ] 3 follow-up todo tests: even
+      par, profile tie, wind judged on the shown number);
       scoring with This week and History kept apart, each with coverage; scorecard collapsed on
       phones; Explore course fit link. Unplayed holes show as not played (the pre-round feed
       sends avg = par, 0/0), never 0% or neutral; the failed course-intel card is hidden.
