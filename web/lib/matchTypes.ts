@@ -9,6 +9,9 @@ export type Line = { user_id: string; user_name: string; total: number; golfers:
 export type Slate = {
   tournament_id: string; name: string; tour: "pga" | "euro"; status: "awaiting" | "open" | "live" | "settling" | "final";
   projected: boolean; lines: Line[]; me_id: string; data_updated?: string; data_updated_utc?: string;
+  // Final, but official prize money wasn't available: totals are the purse
+  // split by final position. Every view that says "official" checks this.
+  estimated?: boolean;
   rival: { user_id: string; user_name: string; total: number } | null; gap: number; story: string;
   beating_model: number | null; humans: number;
 };
@@ -16,7 +19,7 @@ export type CollegeGolfer = { name: string; position: string; earnings: number;
   thru?: string; to_par?: number | null; round?: number | null };
 export type CollegeLine = { user_id: string; user_name: string; school: string; total: number; rank: number;
   counting: CollegeGolfer[]; bench?: CollegeGolfer[] };
-export type College = { tournament_id: string; name: string; status: Slate["status"]; projected: boolean;
+export type College = { tournament_id: string; name: string; status: Slate["status"]; projected: boolean; estimated?: boolean;
   lines: CollegeLine[]; me_id: string; story: string } | null;
 export type Match = { group?: { id: number; name: string; members: number };
   league: { id: number; name: string } | null; slates: Slate[]; college: College; checked_at?: string };

@@ -325,7 +325,9 @@ function SlateCard({ s, groupId, groupName, checkedAt }: { s: Slate; groupId: nu
           })()}
           <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5 }}>
             {s.status === "final"
-              ? "Totals are each golfer's official prize money."
+              ? (s.estimated
+                ? "Final totals, estimated: official prize money wasn't available, so each golfer's final position is paid from the purse's payout table."
+                : "Totals are each golfer's official prize money.")
               : "Totals use each golfer's current position on the live leaderboard and the purse's payout table, with tied positions sharing the money. They show where things stand now, not a forecast of where they'll finish."}
             {live && ` Live scores come from DataGolf${s.data_updated_utc ? ` (last update ${clock(s.data_updated_utc)})` : ""}; this page re-checks every 2 minutes during play${checkedAt ? `, last at ${clock(checkedAt)}` : ""}.`}
           </div>
@@ -446,7 +448,7 @@ function CollegeCard({ c }: { c: NonNullable<College> }) {
             {solo && c.lines.length > 1 && race}
             <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.5 }}>
               A school scores its two best-paid alumni in the field. {c.status === "final"
-                ? "Totals are official prize money."
+                ? (c.estimated ? "Final totals, estimated from final positions and the purse's payout table." : "Totals are official prize money.")
                 : "Totals use current leaderboard positions and the purse's payout table — where things stand now, not a forecast."}
             </div>
           </div>

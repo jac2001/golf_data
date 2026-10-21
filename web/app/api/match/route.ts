@@ -22,7 +22,7 @@ type Ev = { tournament_id: string; name: string; tour: "pga" | "euro"; start_dat
   locked: boolean; finished: boolean; field_available?: boolean };
 type PlayerMoney = { player_name: string; earnings: number; position: string;
   up_one?: number; thru?: string; today?: number | null; to_par?: number | null; round?: number | null };
-type Earnings = { settled: boolean; projected?: boolean; data_updated?: string; data_updated_utc?: string;
+type Earnings = { settled: boolean; projected?: boolean; earnings_estimated?: boolean; data_updated?: string; data_updated_utc?: string;
   players: Record<string, PlayerMoney> };
 
 const money = (v: number) =>
@@ -96,6 +96,7 @@ export async function GET(req: Request) {
         : ev.field_available === false ? "awaiting" : "open",
       start_date: ev.start_date,
       projected: !table?.settled && !!table?.projected,
+      estimated: !!(table?.settled && table?.earnings_estimated),
       data_updated: table?.data_updated ?? "",
       data_updated_utc: table?.data_updated_utc ?? "",
       me_id: userId, ...sum,
@@ -144,6 +145,7 @@ export async function GET(req: Request) {
       tournament_id: tid, name: pgaEv.name,
       status: pgaEv.finished ? (table?.settled ? "final" : "settling") : pgaEv.locked ? "live" : "open",
       projected: !table?.settled && !!table?.projected,
+      estimated: !!(table?.settled && table?.earnings_estimated),
       lines, me_id: userId, story: story.trim(),
     };
   }

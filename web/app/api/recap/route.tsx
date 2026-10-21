@@ -102,9 +102,11 @@ export async function GET(req: Request) {
 
   // ── One board per event ─────────────────────────────────────────────────
   const slates: Slate[] = [];
+  let estimated = false;   // any event paid from the purse table, not official money
   for (const ev of weekEvents) {
     const earn = await modelApi(`/api/results/earnings?tournament_id=${ev.tournament_id}`);
     if (!earn?.settled) return fail("event not settled yet", 403);
+    estimated ||= !!earn.earnings_estimated;
     const table = (earn.players ?? {}) as Record<string, { earnings: number; position: string }>;
     const picks = await sql`
       SELECT user_id, user_name, player_name FROM league_picks
@@ -252,7 +254,9 @@ export async function GET(req: Request) {
               ? `REMATCH: ${nextWeek.join(" + ")} — ${picksOpen ? "picks open now" : "picks open when the field posts"}`
               : "Rematch next week"}
           </div>
-          <div style={{ display: "flex", fontSize: 17, color: MUTED }}>playgolfedge.com</div>
+          <div style={{ display: "flex", fontSize: 17, color: MUTED }}>
+            {estimated ? "Est. purse split · playgolfedge.com" : "playgolfedge.com"}
+          </div>
         </div>
       </div>
     ),
