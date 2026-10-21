@@ -79,7 +79,8 @@ workspace, then consolidate, then delete leftovers.
        this event has none; `_freshen` ages THIS event's file; betting profile
        and withdrawals no longer borrow another event's file. Phase A done.
 
-**Phase B: workspace** (Jack): move out of iCloud, then quarantine the " 2" duplicates.
+**Phase B: workspace**: [x] moved out of iCloud (Oct 21, `~/Developer/golf_data`). [ ] Compare the old
+copy's " 2" duplicates against the clone and recover anything unique, then retire the old copy.
 
 **Phase C: consolidate:** weather refresh args (#7), duplicate
 `/api/model-comparison` (#8), one meaning of "lineup" (#9), model artifact
@@ -129,7 +130,7 @@ and fix what watching them reveals.
        the pipeline found last week's DG file. Fixed for that case (the
        Tuesday job now fetches its own DG files, 95ff7ea); the general fix
        is the watchdog checking each day's refresh slots ran.
-7. [ ] **Move the repo out of iCloud** (~/Desktop sync broke git refs
+7. [x] **Move the repo out of iCloud** (done Oct 21: fresh clone at `~/Developer/golf_data` + local-only files copied; old copy kept at ~/Desktop until checked) (~/Desktop sync broke git refs
        twice, duplicated data files, corrupted the Next build cache, and
        dropped unsaved edits more than once). Recurring disruption to
        everything else, so it moves up from Next.

@@ -84,9 +84,10 @@ Python: use `/Library/Frameworks/Python.framework/Versions/3.13/bin/python3` loc
 - `git pull --rebase --autostash` before pushing (tracked `logs/` are always dirty).
 - Pipeline auto-deploy commits and the friends-game feature commit→push loop are
   pre-authorized. Dashboard (`dashboard.py`) work: ask before committing.
-- The repo lives in iCloud-synced `~/Desktop`: if git reports a bad ref or the
-  Next build fails with `ENOTEMPTY`, look for `* 2` duplicate files (move aside,
-  don't delete) — sync duplicates, not code bugs.
+- The repo lives at `~/Developer/golf_data` (moved out of iCloud-synced
+  `~/Desktop` on Oct 21, 2026, after sync broke git refs and duplicated files).
+  Keep it out of iCloud. Local-only files (`.env*`, `.claude/`, `data/golf_data.db`,
+  the score-model pickles) aren't in git: copy them when setting up a new clone.
 
 ## Working with Jack
 
