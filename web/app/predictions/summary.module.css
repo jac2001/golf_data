@@ -91,3 +91,35 @@
     font-size: 18px;
   }
 }
+
+/* Compact event line under the title: where, when, status, Make picks. */
+.eventLine {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px 16px;
+  margin: -4px 0 10px;
+  color: var(--bc-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.makePicks {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--bc-yellow);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* Tabs stay reachable while scrolling: pinned under the 56px + 3px nav bar. */
+.stickyTabs {
+  position: sticky;
+  top: 59px;
+  z-index: 100;
+  background: var(--bc-bg);
+  margin: 0 -4px 12px;
+  padding: 4px 4px 0;
+}

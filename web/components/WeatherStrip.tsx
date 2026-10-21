@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { WeatherDay } from "@/lib/api";
+import styles from "./WeatherStrip.module.css";
 
 // credit: a source whose licence requires attribution (Open-Meteo: CC BY 4.0).
 type Props = { days: WeatherDay[]; savedAt?: string; credit?: { label: string; href: string } };
@@ -80,15 +82,27 @@ function DayCard({ day }: { day: WeatherDay }) {
 }
 
 export default function WeatherStrip({ days, savedAt, credit }: Props) {
+  const [open, setOpen] = useState(false);   // phones only; desktop always shows the days
   if (!days.length) return null;
+
+  // Phone summary: the week's range in one line ("Thu–Sun · 74–80°F · wind 3–12 mph").
+  const nums = (k: "high_f" | "wind_mph") => days.map(d => parseInt(String(d[k]))).filter(n => !isNaN(n));
+  const range = (xs: number[], unit: string) => xs.length
+    ? `${Math.min(...xs)}${Math.min(...xs) === Math.max(...xs) ? "" : `–${Math.max(...xs)}`}${unit}` : "";
+  const summary = [`${days[0].day}–${days[days.length - 1].day}`,
+    range(nums("high_f"), "°F"), range(nums("wind_mph"), " mph wind")].filter(Boolean).join(" · ");
 
   return (
     <div style={{ marginBottom: 20 }}>
-      <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
+      <button type="button" className={styles.toggle} aria-expanded={open} onClick={() => setOpen(o => !o)}>
+        <span>Forecast: {summary}</span>
+        <span aria-hidden="true">{open ? "▾" : "▸"}</span>
+      </button>
+      <div className={styles.heading} style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>
         Round Week Forecast
         {savedAt && <span style={{ marginLeft: 10, color: "var(--bc-line)" }}>· {savedAt.slice(0, 10)}</span>}
       </div>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+      <div className={`${styles.days} ${open ? styles.open : ""}`}>
         {days.map(d => <DayCard key={d.day} day={d} />)}
       </div>
       {credit && (

@@ -51,7 +51,7 @@ export default function PredictionsPage() {
   // ── Tab state ────────────────────────────────────────────────────────────────
   const [activeTab, setActiveTab] = useState<Tab>("field");
   const [tour, setTour] = useStoredChoice<"pga" | "euro">("favorite-tour", ["pga", "euro"], "pga", false);
-  const [eventState, setEventState] = useState<{ finished: boolean; open: boolean; nextName: string; nextStart: string } | null>(null);
+  const [eventState, setEventState] = useState<{ finished: boolean; open: boolean; locked: boolean; start: string; end: string; nextName: string; nextStart: string } | null>(null);
 
   // Track which tabs have ever been activated (so we only fetch each once)
   const [loaded, setLoaded] = useState<Set<Tab>>(new Set(["field"]));
@@ -88,6 +88,9 @@ export default function PredictionsPage() {
         finished: !!cur?.finished,
         // Picks still open for this event: the table offers "Consider for my picks".
         open: !!cur && !cur.finished && !cur.locked,
+        locked: !!cur?.locked,
+        start: cur?.start_date?.slice(0, 10) ?? "",
+        end: cur?.end_date?.slice(0, 10) ?? "",
         nextName: next?.name ?? "",
         nextStart: next?.start_date?.slice(0, 10) ?? "",
       });
@@ -222,6 +225,31 @@ export default function PredictionsPage() {
         title="This Week"
       />
 
+      {/* ── Compact event line (phone review, Oct 21): where, when, status,
+          and the way to the pick screen, before anything else. ─────────── */}
+      {preds && (
+        <div className={styles.eventLine}>
+          <span>
+            {[tournament?.location, eventDates(eventState?.start, eventState?.end),
+              eventState ? (eventState.finished ? "Final" : eventState.open ? "Picks open" : eventState.locked ? "Locked · in play" : null) : null,
+            ].filter(Boolean).join(" · ")}
+          </span>
+          {isSignedIn && eventState?.open && (
+            <Link href={`/friends?game=ride&tid=${encodeURIComponent(preds.tournament_id)}`} className={styles.makePicks}>
+              Make picks →
+            </Link>
+          )}
+        </div>
+      )}
+
+      {/* ── Tabs: directly under the header and sticky while scrolling, so
+          switching research views never means scrolling back up 120 rows. ─ */}
+      {isSignedIn && (
+        <div className={styles.stickyTabs}>
+          <SubTabs tabs={TABS} active={activeTab} onChange={activateTab} />
+        </div>
+      )}
+
       <TourPills tour={tour} setTour={setTour} />
 
       {eventState?.finished && (
@@ -242,11 +270,8 @@ export default function PredictionsPage() {
       )}
 
       {/* ── At-a-glance strip ────────────────────────────────────────────── */}
-      {preds && !loadingField && (
+      {activeTab === "field" && preds && !loadingField && (
         <section className={styles.summary} aria-label="Tournament overview">
-          {tournament?.location && (
-            <p className={styles.location}>{tournament.location}</p>
-          )}
           <div className={styles.grid}>
           <GlanceCard label="Field Size" value={String(preds.field_size ?? preds.count)}
             sub={preds.field_size && preds.field_size !== preds.count
@@ -276,20 +301,17 @@ export default function PredictionsPage() {
       )}
 
       {/* ── Weather strip ────────────────────────────────────────────────── */}
-      {weather && weather.days.length > 0 && (
+      {activeTab === "field" && weather && weather.days.length > 0 && (
         <WeatherStrip days={weather.days} savedAt={weather.saved_at} />
       )}
 
       {/* ── Weekly narrative ─────────────────────────────────────────────── */}
-      {preds && (
+      {activeTab === "field" && preds && (
         <WeeklyNarrative
           text={preds.weekly_narrative ?? ""}
           generatedAt={preds.analysis_generated_at ?? ""}
         />
       )}
-
-      {/* ── Tab switcher (full tab set is signed-in only) ────────────────── */}
-      {isSignedIn && <SubTabs tabs={TABS} active={activeTab} onChange={activateTab} />}
 
       {/* ── Tab content ──────────────────────────────────────────────────── */}
 
@@ -700,6 +722,16 @@ function EuroCourseGuideView({ data }: { data: EuroCourseGuide }) {
   );
 }
 
+/** "Oct 22–25" (or "Oct 29–Nov 1") from ISO dates; "" when unknown. */
+function eventDates(start?: string, end?: string): string {
+  if (!start) return "";
+  const d = (iso: string) => new Date(iso + "T12:00:00Z");
+  const m = (x: Date) => x.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+  const a = d(start), b = end ? d(end) : null;
+  if (!b) return `${m(a)} ${a.getUTCDate()}`;
+  return m(a) === m(b) ? `${m(a)} ${a.getUTCDate()}–${b.getUTCDate()}` : `${m(a)} ${a.getUTCDate()}–${m(b)} ${b.getUTCDate()}`;
+}
+
 function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: string }) {
   const admin = useIsAdmin();   // reruns are admin-only (LLM batch); the server checks too
   const [running, setRunning] = useState(false);
@@ -718,6 +750,9 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
       setRunning(false);
     }
   }
+
+  // Nothing to read and nothing to do: take no space (phone review, Oct 21).
+  if (!text && !admin) return null;
 
   return (
     <div style={{
