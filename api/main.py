@@ -1245,6 +1245,31 @@ def _get_tournament_name(tid: str) -> str:
         return ""
 
 
+def _dg_pre_tournament_path(tid: str) -> Path | None:
+    """This event's DataGolf pre-tournament file, or None.
+
+    dg_pre_tournament_latest.csv is whatever DG served last; it is used only
+    when its own event_name matches tid's schedule name (domain rule 1)."""
+    own = DG_DIR / f"dg_pre_tournament_{tid}.csv"
+    if own.exists():
+        return own
+    latest = DG_DIR / "dg_pre_tournament_latest.csv"
+    if not (tid and latest.exists()):
+        return None
+    try:
+        scrapers = str(PROJECT_ROOT / "scripts" / "scrapers")
+        if scrapers not in sys.path:
+            sys.path.insert(0, scrapers)
+        from event_guard import expected_name, names_match  # type: ignore
+        names = pd.read_csv(latest, usecols=["event_name"])["event_name"].dropna()
+        if len(names) and names_match(str(names.iloc[0]), expected_name(tid)):
+            return latest
+        print(f"dg_pre_tournament_latest.csv is {names.iloc[0] if len(names) else '?'}, not {tid}; ignored")
+    except Exception as e:
+        print(f"dg_pre_tournament_latest.csv unreadable: {e}")
+    return None
+
+
 def _get_tournament_id() -> str:
     """Find the current tournament ID from the latest recommendations file."""
     # Try latest predictions file first
@@ -3236,17 +3261,18 @@ def get_model_comparison() -> dict:
         raise HTTPException(status_code=404, detail="No predictions file found")
 
     preds = pd.read_csv(pred_path)
+    pred_tid = str(preds["tournament_id"].iloc[0]).upper() if "tournament_id" in preds.columns and len(preds) else ""
+    if pred_tid != str(tid).upper():
+        raise HTTPException(status_code=404, detail=f"latest predictions are for {pred_tid or 'an unknown event'}, not {tid}")
     for col in ["win_prob", "top10_prob"]:
         if col in preds.columns:
             preds[col] = pd.to_numeric(preds[col], errors="coerce")
     preds = preds.dropna(subset=["win_prob"])
 
     # Load DG pre-tournament probabilities
-    dg_path = DG_DIR / f"dg_pre_tournament_{tid}.csv"
-    if not dg_path.exists():
-        dg_path = DG_DIR / "dg_pre_tournament_latest.csv"
-    if not dg_path.exists():
-        raise HTTPException(status_code=404, detail="No DG pre-tournament file found")
+    dg_path = _dg_pre_tournament_path(tid)
+    if dg_path is None:
+        raise HTTPException(status_code=404, detail=f"No DG pre-tournament file for {tid}")
 
     dg = pd.read_csv(dg_path)
     if "model" in dg.columns:
@@ -5507,10 +5533,8 @@ def get_player_profile(player: str) -> dict:
 
     # ── DG pre-tournament prediction ──────────────────────────────────────────
     dg_prediction: dict | None = None
-    dg_path = DG_DIR / f"dg_pre_tournament_{tid}.csv"
-    if not dg_path.exists():
-        dg_path = DG_DIR / "dg_pre_tournament_latest.csv"
-    if dg_path.exists():
+    dg_path = _dg_pre_tournament_path(tid)
+    if dg_path is not None:
         try:
             dg_df = pd.read_csv(dg_path)
             dg_row = _find_row(dg_df)
@@ -6220,10 +6244,8 @@ def get_player_synopsis(request: Request, player: str, force: bool = False) -> d
             pass
 
     # DG pre-tournament
-    dg_path = DG_DIR / f"dg_pre_tournament_{tid}.csv"
-    if not dg_path.exists():
-        dg_path = DG_DIR / "dg_pre_tournament_latest.csv"
-    if dg_path.exists():
+    dg_path = _dg_pre_tournament_path(tid)
+    if dg_path is not None:
         try:
             dg_df = pd.read_csv(dg_path)
             row = _find(dg_df)
@@ -7335,113 +7357,6 @@ def rate_chat(body: RateRequest):
     with open(feedback_dir / "chat_ratings.jsonl", "a") as fh:
         fh.write(_json.dumps(entry) + "\n")
     return {"ok": True}
-
-
-@app.get("/api/model-comparison")
-def get_model_comparison() -> dict:
-    """
-    Compare our model's pre-tournament probabilities vs DataGolf's published predictions.
-
-    Returns:
-      - rank_correlation: Spearman ρ between our win_prob ranks and DG's win ranks
-      - disagreements: players where our prob differs from DG by >5pp (potential edges)
-      - our_top10 / dg_top10: each model's top-10 predicted finishers
-      - markets: per-market correlation (win, top5, top10, top20, make_cut)
-    """
-    from scipy.stats import spearmanr  # type: ignore
-
-    preds_path = OUTPUTS_DIR / "latest_predictions.csv"
-    dg_path    = DG_DIR / "dg_pre_tournament_latest.csv"
-
-    if not preds_path.exists():
-        raise HTTPException(status_code=404, detail="No predictions found")
-    if not dg_path.exists():
-        raise HTTPException(status_code=404, detail="No DataGolf pre-tournament data found")
-
-    our  = pd.read_csv(preds_path, low_memory=False)
-    dg   = pd.read_csv(dg_path,    low_memory=False)
-
-    # ── Name normalization ────────────────────────────────────────────────────
-    def _sort_key(name: str) -> str:
-        return " ".join(sorted(str(name).replace(",", "").lower().split()))
-
-    our["_key"] = our["player_name"].fillna("").apply(_sort_key)
-    # DG has two model variants — use baseline only
-    if "model" in dg.columns:
-        dg = dg[dg["model"] == "baseline"]
-    dg["_key"] = dg["player_name"].fillna("").apply(_sort_key)
-
-    # Use calibrated probabilities if available, fall back to raw
-    our_win   = "win_prob_calibrated"   if "win_prob_calibrated"   in our.columns else "win_prob"
-    our_top5  = "top5_prob_calibrated"  if "top5_prob_calibrated"  in our.columns else "top5_prob"
-    our_top10 = "top10_prob_calibrated" if "top10_prob_calibrated" in our.columns else "top10_prob"
-    our_top20 = "top20_prob_calibrated" if "top20_prob_calibrated" in our.columns else "top20_prob"
-
-    # ── Merge on sort key ─────────────────────────────────────────────────────
-    merged = our.merge(
-        dg[["_key", "win", "top_5", "top_10", "top_20", "make_cut"]],
-        on="_key", how="inner"
-    )
-    if merged.empty:
-        raise HTTPException(status_code=404, detail="No player overlap between our predictions and DataGolf")
-
-    # ── Per-market Spearman rank correlations ─────────────────────────────────
-    markets: list[dict] = []
-    market_map = [
-        ("win",      our_win,   "win"),
-        ("top5",     our_top5,  "top_5"),
-        ("top10",    our_top10, "top_10"),
-        ("top20",    our_top20, "top_20"),
-        ("make_cut", "make_cut_prob" if "make_cut_prob" in our.columns else our_win, "make_cut"),
-    ]
-    for label, our_col, dg_col in market_map:
-        if our_col not in merged.columns or dg_col not in merged.columns:
-            continue
-        rho, _ = spearmanr(merged[our_col].fillna(0), merged[dg_col].fillna(0))
-        markets.append({"market": label, "spearman_rho": round(float(rho), 3)})
-
-    # Overall win-prob correlation
-    overall_rho = next((m["spearman_rho"] for m in markets if m["market"] == "win"), None)
-
-    # ── Disagreements: players where win prob differs by >4pp ─────────────────
-    merged["diff_pp"] = (merged[our_win].fillna(0) - merged["win"].fillna(0)) * 100
-    disagreements: list[dict] = []
-    for _, row in merged[merged["diff_pp"].abs() > 4].sort_values("diff_pp", key=abs, ascending=False).head(15).iterrows():
-        disagreements.append({
-            "player_name":  row["player_name"],
-            "our_win_pct":  round(float(row[our_win]) * 100, 1),
-            "dg_win_pct":   round(float(row["win"]) * 100, 1),
-            "diff_pp":      round(float(row["diff_pp"]), 1),
-            "our_top10":    round(float(row[our_top10]) * 100, 1) if our_top10 in row else None,
-            "dg_top10":     round(float(row["top_10"]) * 100, 1),
-            "direction":    "higher" if row["diff_pp"] > 0 else "lower",
-        })
-
-    # ── Top-10 predicted finishers for each model ─────────────────────────────
-    def _top10_list(df: pd.DataFrame, prob_col: str, name_col: str) -> list[dict]:
-        return [
-            {"player": r[name_col], "prob": round(float(r[prob_col]) * 100, 1)}
-            for _, r in df.nlargest(10, prob_col).iterrows()
-            if pd.notna(r.get(prob_col))
-        ]
-
-    our_top10_list = _top10_list(merged, our_win, "player_name")
-    dg_top10_list  = _top10_list(merged, "win",   "player_name")
-
-    # Tournament context
-    tid  = _get_tournament_id() or ""
-    name = _get_tournament_name(tid) or "Current Tournament"
-
-    return {
-        "tournament_id":   tid,
-        "tournament_name": name,
-        "players_compared": len(merged),
-        "overall_spearman_rho": overall_rho,
-        "markets":         markets,
-        "our_top10":       our_top10_list,
-        "dg_top10":        dg_top10_list,
-        "disagreements":   disagreements,
-    }
 
 
 @app.get("/api/weather")

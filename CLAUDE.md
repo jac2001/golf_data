@@ -71,6 +71,7 @@ Spend/save advice = `scripts/predictions/advice_values.py` (values) + `web/lib/a
 | `web/lib/*.ts` | `cd web && npm test` (node:test, imports the real files) |
 | any `web/` code | `cd web && npm run build` (also type-checks) |
 | `scripts/validation`, `scripts/predictions` | `python3 scripts/validation/test_prediction_integrity.py` |
+| `api/main.py` | `python3 api/test_routes.py` (one handler per route, response contracts) |
 | pipeline behavior | dispatch the workflow (`gh workflow run …`) and read its log; check the API serves the new data |
 | training, features, validation, calibration, benchmarks, advice constants | spawn the `stats-reviewer` subagent (`.claude/agents/`) before reporting a metric; it checks leakage, contamination, p-hacking, baselines |
 
