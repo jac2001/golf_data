@@ -16,7 +16,7 @@ export type HoleLabel = "chance" | "par" | "tough";
 /** Shots relative to par a hole must play, either way, to stand out. */
 export const HOLE_THRESHOLD = 0.15;
 
-// ── TODO(Jack): holeVerdict ───────────────────────────────────────────────────
+// ── holeVerdict + holeSentence (Jack, Oct 21) ───────────────────────────────────────────────────
 //
 // Facts the tests pin:
 //   - diff <= -0.15 -> "chance"   (plays easier than par: a birdie chance)
@@ -33,11 +33,29 @@ export const HOLE_THRESHOLD = 0.15;
 //   - exactly 1.00 either way      -> "shot", not "shots": "Playing 1.00 shot over par."
 
 export function holeVerdict(diff: number | null | undefined): HoleLabel | null {
-  void diff; void HOLE_THRESHOLD;
-  throw new Error("TODO(Jack): holeVerdict");
+  // Not played (null, NaN, Infinity): no label at all.
+  if (diff == null || !Number.isFinite(diff)) {
+    return null;
+  }
+  const tolerance = 1e-9;   // 0.35 - 0.2 is 0.14999999999999997 and must count
+  if (diff <= -HOLE_THRESHOLD + tolerance) {
+    return "chance";
+  }
+  if (diff >= HOLE_THRESHOLD - tolerance) {
+    return "tough";
+  }
+  return "par";
 }
 
 export function holeSentence(diff: number | null | undefined): string {
-  void diff;
-  throw new Error("TODO(Jack): holeSentence");
+  if (diff == null || !Number.isFinite(diff)) {
+    return "Not played yet this week.";
+  }
+  // Format the size once, after abs: (-0.004).toFixed(2) would be "-0.00".
+  const shown = Math.abs(diff).toFixed(2);
+  if (shown === "0.00") {
+    return "Playing right at par.";
+  }
+  const shots = shown === "1.00" ? "shot" : "shots";
+  return `Playing ${shown} ${shots} ${diff > 0 ? "over" : "under"} par.`;
 }
