@@ -5,12 +5,6 @@ import { TeeTimesResponse } from "@/lib/api";
 
 type Props = { data: TeeTimesResponse; myPicks?: string[] };
 
-const DRIFT_ARROW: Record<string, { s: string; c: string }> = {
-  UP:       { s: "▲", c: "var(--bc-red)" },
-  DOWN:     { s: "▼", c: "var(--bc-green)" },
-  CONSTANT: { s: "→", c: "var(--bc-muted)" },
-};
-
 // Rank badge color
 function rankColor(rank: number | null): string {
   if (rank == null) return "var(--bc-muted)";
@@ -89,10 +83,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
 
               {/* Players */}
               {group.players.map((p, i) => {
-                const drift = DRIFT_ARROW[p.drift] ?? null;
                 const isPick = myPicksNorm.has(normName(p.name));
-                const formColor = (p.form_trend ?? 0) > 0.2 ? "var(--bc-green)"
-                  : (p.form_trend ?? 0) < -0.1 ? "var(--bc-red)" : "var(--bc-muted)";
                 const rColor = rankColor(p.model_rank);
 
                 return (
@@ -138,15 +129,8 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           )}
                         </div>
                         <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min-xs), 0.64em)", marginTop: 1 }}>
+                          {/* Jack, Oct 21: tee cards carry model rank, OWGR, win and top-10 only. */}
                           OWGR #{p.world_rank ?? "—"}
-                          {drift && (
-                            <span style={{ color: drift.c, marginLeft: 5 }}>{drift.s}</span>
-                          )}
-                          {(p.form_trend ?? 0) !== 0 && (
-                            <span style={{ color: formColor, marginLeft: 5 }}>
-                              Form {p.form_trend! > 0 ? "+" : ""}{p.form_trend!.toFixed(2)}
-                            </span>
-                          )}
                         </div>
                       </div>
                     </div>
