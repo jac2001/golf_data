@@ -46,3 +46,4 @@ Budget-App/
 
 # Prediction outputs a failed run produced (scheduled_refresh restores main and moves them here)
 logs/rejected_outputs/
+logs/pre_run_snapshot/

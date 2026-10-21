@@ -15,6 +15,9 @@ case "$f" in
     ;;
   "$ROOT"/*.py)
     out=$("$PY" -m py_compile "$f" 2>&1) || fail "Syntax error in ${f#$ROOT/}:" "$out"
+    if [ "$f" = "$ROOT/scripts/scheduled_refresh.py" ]; then
+      out=$(cd "$ROOT" && "$PY" scripts/test_publish_restore.py 2>&1) || fail "scripts/test_publish_restore.py failed after editing scheduled_refresh.py:" "$out"
+    fi
     out=$("$PY" "$ROOT/scripts/validation/duplicate_defs.py" "$f" 2>&1) || fail "Duplicate definition in ${f#$ROOT/}:" "$out"
     case "$f" in
       "$ROOT"/scripts/validation/*|"$ROOT"/scripts/predictions/*|"$ROOT"/scripts/features/*|"$ROOT"/scripts/scrapers/*|"$ROOT"/api/*)

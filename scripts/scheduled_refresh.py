@@ -196,25 +196,71 @@ CRITICAL_TASKS = {"Predictions"}
 PREDICTION_PATHS = ["outputs", "data/prediction_tracking"]
 
 
-def restore_prediction_outputs(run_started: float) -> None:
-    """Put the prediction files back the way they are on main, so the rejected
-    ones can't be committed by deploy_site or the workflow's final commit.
-    Tracked files: restored from HEAD. New files this run created: moved to
-    logs/rejected_outputs/ (moved, never deleted; local runs keep them)."""
+def _tree_hashes(root: Path, paths: list[str]) -> dict[str, str]:
+    """sha256 of every file under `paths` (relative to root), keyed by relative path."""
+    import hashlib
+    out: dict[str, str] = {}
+    for p in paths:
+        base = root / p
+        if not base.exists():
+            continue
+        for f in sorted(base.rglob("*")):
+            if f.is_file():
+                out[str(f.relative_to(root))] = hashlib.sha256(f.read_bytes()).hexdigest()
+    return out
+
+
+def snapshot_prediction_outputs(root: Path = PROJECT_ROOT, paths: list[str] = PREDICTION_PATHS,
+                                stash_dir: Path | None = None) -> dict:
+    """The exact pre-run state of the prediction paths, so a failed run can put
+    back precisely that (audit: restoring from HEAD erased local edits made
+    before the run). Hashes every file; copies aside only files that differ
+    from HEAD (local edits, untracked files). On a clean CI checkout the copy
+    is empty."""
     import shutil
-    subprocess.run(["git", "-C", str(PROJECT_ROOT), "checkout", "HEAD", "--", *PREDICTION_PATHS],
+    status = subprocess.run(["git", "-C", str(root), "status", "--porcelain", "-uall", "--", *paths],
+                            capture_output=True, text=True).stdout.splitlines()
+    stash = stash_dir or (LOGS_DIR / "pre_run_snapshot" / datetime.now().strftime("%Y%m%d_%H%M%S"))
+    saved: list[str] = []
+    for line in status:
+        rel = line[3:].strip().strip('"')
+        if " -> " in rel:                      # rename: the new path is what exists
+            rel = rel.split(" -> ", 1)[1]
+        src = root / rel
+        if src.is_file():
+            (stash / rel).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, stash / rel)
+            saved.append(rel)
+    return {"root": root, "paths": list(paths), "hashes": _tree_hashes(root, paths),
+            "stash": stash, "saved": saved}
+
+
+def restore_prediction_outputs(snap: dict, rejected_dir: Path | None = None) -> bool:
+    """Put the prediction paths back exactly as they were before the run, so
+    the rejected outputs can't be committed by deploy_site or the workflow's
+    final commit. This run's new or changed files are moved to
+    logs/rejected_outputs/ first (kept, never deleted). True when the result
+    matches the pre-run hashes."""
+    import shutil
+    root, paths, before = snap["root"], snap["paths"], snap["hashes"]
+    now = _tree_hashes(root, paths)
+    dest = rejected_dir or (LOGS_DIR / "rejected_outputs" / datetime.now().strftime("%Y%m%d_%H%M%S"))
+    changed = [rel for rel, h in now.items() if before.get(rel) != h]
+    for rel in changed:                        # evidence of what this run wrote
+        (dest / rel).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(root / rel, dest / rel)
+    subprocess.run(["git", "-C", str(root), "checkout", "HEAD", "--", *paths],
                    capture_output=True, text=True)
-    new = subprocess.run(["git", "-C", str(PROJECT_ROOT), "ls-files", "--others", "--exclude-standard",
-                          *PREDICTION_PATHS], capture_output=True, text=True).stdout.split("\n")
-    dest = LOGS_DIR / "rejected_outputs" / datetime.now().strftime("%Y%m%d_%H%M%S")
-    moved = 0
-    for rel in filter(None, new):
-        src = PROJECT_ROOT / rel
-        if src.is_file() and src.stat().st_mtime >= run_started:
-            (dest / rel).parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(src), str(dest / rel))
-            moved += 1
-    log(f"  Restored {', '.join(PREDICTION_PATHS)} to main; moved {moved} new file(s) to {dest}")
+    for rel in snap["saved"]:                  # local edits / untracked files from before the run
+        (root / rel).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(snap["stash"] / rel, root / rel)
+    for rel in _tree_hashes(root, paths):      # anything that didn't exist before the run
+        if rel not in before:
+            (root / rel).unlink()
+    ok = _tree_hashes(root, paths) == before
+    log(f"  Restored {', '.join(paths)} to their pre-run state; {len(changed)} file(s) this run "
+        f"wrote kept in {dest}" + ("" if ok else " — WARNING: tree does not match the pre-run state"))
+    return ok
 
 
 def deploy_site(reason: str, dry_run: bool = False) -> bool:
@@ -1539,7 +1585,7 @@ def main():
     parser.add_argument("--interval", type=int, default=5,
                         help="Minutes between refreshes in --watch mode (default: 5)")
     args = parser.parse_args()
-    run_started = time.time()
+    pre_run = snapshot_prediction_outputs() if not args.dry_run else None
 
     # Watch mode: run indefinitely, refreshing during active rounds
     if args.watch:
@@ -1587,7 +1633,7 @@ def main():
     if critical_failed:
         log(f"  ✗ {', '.join(critical_failed)} failed: NOT publishing this run's outputs")
         if not args.dry_run:
-            restore_prediction_outputs(run_started)
+            restore_prediction_outputs(pre_run)
     elif schedule != "live" and results:
         deploy_ok = deploy_site(schedule, dry_run=args.dry_run)
         results.append(("Deploy Site", deploy_ok))
