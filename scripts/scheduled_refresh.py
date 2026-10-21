@@ -69,7 +69,11 @@ import json
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
 LOGS_DIR = PROJECT_ROOT / "logs"
-SCHEDULE_PATH = DATA_DIR / "raw" / "schedule_2026.csv"
+# The ACTIVE season's schedule (config.SEASON via season_resolver), not a
+# hardcoded year: in January the 2027 events are only in schedule_2027.csv.
+sys.path.insert(0, str(PROJECT_ROOT / "scripts"))
+from config import schedule_csv  # noqa: E402
+SCHEDULE_PATH = schedule_csv()
 
 # Ensure logs directory exists
 LOGS_DIR.mkdir(exist_ok=True)

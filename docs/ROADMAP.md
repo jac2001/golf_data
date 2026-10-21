@@ -56,8 +56,10 @@ workspace, then consolidate, then delete leftovers.
        (fails closed), admin relay `web/app/api/owner/[action]`, controls hidden
        for non-admins. Track Bet / bet slip retired (Tail replaces it). Live
        scorecards refresh server-side, at most one scrape per 10 minutes.
-2. [ ] Season resolver: `SEASON` is 2027 because `schedule_2027.csv` exists.
-       Pick the season from today and the schedule (Jack's scaffold).
+2. [x] Season resolver (Oct 20): Jack's `scripts/season_resolver.active_season`
+       picks the season from today and the PGA schedules' dates (a season takes
+       over 7 days before its opener). config.SEASON and scheduled_refresh use
+       it; SEASON was 2027 just because `schedule_2027.csv` existed.
 3. [ ] Publish only validated output: a failed critical task blocks the
        deploy and fails the workflow; drop Tuesday's `|| true` + log-phrase check.
 4. [ ] One result-identity contract: recap misses accented names (Aberg);

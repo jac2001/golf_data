@@ -16,18 +16,32 @@ OUTPUTS_DIR  = PROJECT_ROOT / "outputs"
 
 
 def _detect_season() -> int:
-    """Return the active PGA Tour season year from the schedule CSV, or calendar year."""
-    sched_candidates = sorted(DATA_DIR.glob("raw/schedule_*.csv"), reverse=True)
-    for path in sched_candidates:
-        # e.g. schedule_2026.csv → 2026
-        stem = path.stem  # "schedule_2026"
-        parts = stem.split("_")
-        for part in parts:
-            if part.isdigit() and len(part) == 4:
-                return int(part)
-    # Last-resort fallback
-    return date.today().year
+    """The active PGA TOUR season, from today's date and each PGA schedule's
+    event dates (season_resolver.active_season, Jack's). Never "the newest
+    schedule file": schedule_2027.csv appearing in October 2026 made every
+    script think it was 2027 (audit finding 3). schedule_euro_* files have
+    their own seasons and are left out."""
+    import csv
+    try:
+        from season_resolver import active_season
+    except ImportError:                          # imported as scripts.config
+        from scripts.season_resolver import active_season
 
+    schedules: dict[int, list[tuple[date, date]]] = {}
+    for path in DATA_DIR.glob("raw/schedule_*.csv"):
+        year = path.stem.split("_", 1)[1]
+        if not (year.isdigit() and len(year) == 4):
+            continue                             # schedule_euro_2026, ...
+        events = []
+        with open(path, newline="") as f:
+            for row in csv.DictReader(f):
+                try:
+                    events.append((date.fromisoformat(row["start_date"]),
+                                   date.fromisoformat(row["end_date"])))
+                except (KeyError, TypeError, ValueError):
+                    continue
+        schedules[int(year)] = events
+    return active_season(date.today(), schedules)
 
 SEASON: int = _detect_season()
 
