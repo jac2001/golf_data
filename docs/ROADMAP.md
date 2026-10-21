@@ -189,8 +189,10 @@ height on phones. In order (each its own commit, preview-verified at 375px):
       scoring with This week and History kept apart, each with coverage; scorecard collapsed on
       phones; Explore course fit link. Unplayed holes show as not played (the pre-round feed
       sends avg = par, 0/0), never 0% or neutral; the failed course-intel card is hidden.
-      [ ] Next: the 18-hole strip (par per tile, color only with real scoring + text labels,
-      tap for yardage / average / birdie and bogey rates).
+      [~] 18-hole strip (Oct 21): par per tile, color only with real scoring this week and
+      always with a word, tap for yardage / plain-words scoring / birdie and bogey rates.
+      [ ] Jack: `web/lib/holeVerdict.ts` (holeVerdict + holeSentence, 4 todo tests); tiles stay
+      neutral until then. Check 9 tiles fit a 375px phone.
 
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 

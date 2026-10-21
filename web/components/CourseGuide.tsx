@@ -14,6 +14,7 @@ import { CourseResponse, CourseHole, CourseFitResponse, WeatherDay } from "@/lib
 import { thingsToWatch, type Watch } from "@/lib/thingsToWatch";
 import { scoringPlayed } from "@/lib/courseScoring";
 import CourseCard from "@/components/CourseCard";
+import HoleStrip from "@/components/HoleStrip";
 import styles from "./CourseGuide.module.css";
 
 const unplayed = (h: CourseHole): CourseHole =>
@@ -99,6 +100,9 @@ export default function CourseGuide({ course, fit, weather, location, onExploreF
             : "we don't have past scoring for this course."}
         </p>
       </section>
+
+      {/* 3b. The 18-hole strip */}
+      {course.holes.length > 0 && <HoleStrip holes={holes} played={played} />}
 
       {/* 4. Hole-by-hole, collapsed on phones */}
       {course.holes.length > 0 && (
