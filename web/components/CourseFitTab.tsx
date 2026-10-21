@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { CourseFitResponse, CourseFitPlayer } from "@/lib/api";
+import Term from "@/components/Term";
 
 type SortMode = "model" | "boost" | "history";
 
@@ -229,7 +230,9 @@ function DecompPanel({ player: p }: { player: CourseFitPlayer }) {
 
 // ── Player row ────────────────────────────────────────────────────────────────
 
-function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
+function PlayerRow({ player: p, index: i, historyType, expanded, onToggle, more }: {
+  /** more: the opt-in columns (Avg Score, OTT, APP, Timing, DG Win%, T10%) are shown. */
+  more: boolean;
   player: CourseFitPlayer;
   index: number;
   historyType: "venue" | "tournament";
@@ -293,7 +296,8 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
           )}
         </td>
 
-        {/* Tourney record */}
+        {more && (<>
+{/* Tourney record */}
         <td style={{ ...cell, textAlign: "center" }}>
           {p.has_history && p.course_starts != null ? (
             <div style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
@@ -313,12 +317,19 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
           )}
         </td>
 
-        {/* SG OTT / APP vs avg */}
+        
+        </>)}
+
+        {more && (<>
+{/* SG OTT / APP vs avg */}
         <td style={{ ...cell, textAlign: "center" }}><SgBar value={p.sg_ott_vs_avg} /></td>
         <td style={{ ...cell, textAlign: "center" }}><SgBar value={p.sg_app_vs_avg} /></td>
 
+        
+        </>)}
+
         {/* DG adjustments: Timing + Course Fit */}
-        <td style={{ ...cell, textAlign: "center" }}><AdjBar value={p.dg_timing_adj} scale={0.4} /></td>
+        {more && <td style={{ ...cell, textAlign: "center" }}><AdjBar value={p.dg_timing_adj} scale={0.4} /></td>}
         <td style={{ ...cell, textAlign: "center" }}><AdjBar value={p.dg_fit_adj} scale={0.2} /></td>
 
         {/* Course boost (our model) */}
@@ -328,7 +339,8 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
           </span>
         </td>
 
-        {/* DG Win% */}
+        {more && (<>
+{/* DG Win% */}
         <td style={{ ...cell, textAlign: "right" }}>
           <span style={{
             fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 600,
@@ -338,16 +350,22 @@ function PlayerRow({ player: p, index: i, historyType, expanded, onToggle }: {
           </span>
         </td>
 
+        
+        </>)}
+
         {/* Model Win% */}
         <td style={{ ...cell, textAlign: "right", fontWeight: 600, color: "var(--bc-text)" }}>
           {fmtPct(p.win_prob)}
         </td>
 
-        {/* Top 10% */}
+        {more && (<>
+{/* Top 10% */}
         <td style={{ ...cell, textAlign: "right" }}>
           {fmtPct(p.top10_prob)}
         </td>
-      </tr>
+        </>)}
+
+              </tr>
 
       {/* Expand panel */}
       {expanded && <DecompPanel player={p} />}
@@ -384,6 +402,8 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
   const [search, setSearch]       = useState("");
   const [minStarts, setMinStarts] = useState(1);
   const [expanded, setExpanded]   = useState<Set<string>>(new Set());
+  // Six columns by default; the rest on request (phone review, Oct 21).
+  const [more, setMore]           = useState(false);
 
   function toggleExpand(name: string) {
     setExpanded(prev => {
@@ -499,23 +519,31 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
         ))}
       </div>
 
+      <button type="button" onClick={() => setMore(m => !m)} style={{
+        background: more ? "var(--bc-card)" : "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 6,
+        color: "var(--bc-text)", padding: "6px 12px", minHeight: 36, fontSize: "max(var(--fs-min), 0.8em)",
+        fontWeight: 600, cursor: "pointer", marginBottom: 10, fontFamily: "inherit",
+      }}>
+        {more ? "Fewer columns" : "More columns"}
+      </button>
+
       {/* Table */}
       <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 980 }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: more ? 980 : 0 }}>
           <thead>
             <tr>
               <th style={hdr}>#</th>
               <th style={hdr}>Player</th>
               <th style={{ ...hdr, textAlign: "center" }}>{venueLabel}</th>
-              <th style={{ ...hdr, textAlign: "center" }}>Avg Score</th>
-              <th style={{ ...hdr, textAlign: "center" }}>OTT</th>
-              <th style={{ ...hdr, textAlign: "center" }}>APP</th>
-              <th style={{ ...hdr, textAlign: "center" }}>Timing</th>
+              {more && <th style={{ ...hdr, textAlign: "center" }}>Avg Score</th>}
+              {more && <th style={{ ...hdr, textAlign: "center" }}><Term term="OTT">OTT</Term></th>}
+              {more && <th style={{ ...hdr, textAlign: "center" }}><Term term="APP">APP</Term></th>}
+              {more && <th style={{ ...hdr, textAlign: "center" }}>Timing</th>}
               <th style={{ ...hdr, textAlign: "center" }}>Fit Adj</th>
               <th style={{ ...hdr, textAlign: "right" }}>Boost</th>
-              <th style={{ ...hdr, textAlign: "right" }}>DG Win%</th>
+              {more && <th style={{ ...hdr, textAlign: "right" }}>DG Win%</th>}
               <th style={{ ...hdr, textAlign: "right" }}>Win%</th>
-              <th style={{ ...hdr, textAlign: "right" }}>T10%</th>
+              {more && <th style={{ ...hdr, textAlign: "right" }}>T10%</th>}
             </tr>
           </thead>
           <tbody>
@@ -527,7 +555,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
                     key={p.player_name} player={p} index={i}
                     historyType={data.course_history_type}
                     expanded={expanded.has(p.player_name)}
-                    onToggle={() => toggleExpand(p.player_name)}
+                    onToggle={() => toggleExpand(p.player_name)} more={more}
                   />
                 ))}
                 <SectionHeader label="Course hurts / no data" count={fallers.length} color="var(--bc-red)" />
@@ -536,7 +564,7 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
                     key={p.player_name} player={p} index={i}
                     historyType={data.course_history_type}
                     expanded={expanded.has(p.player_name)}
-                    onToggle={() => toggleExpand(p.player_name)}
+                    onToggle={() => toggleExpand(p.player_name)} more={more}
                   />
                 ))}
               </>
@@ -546,15 +574,22 @@ export default function CourseFitTab({ data }: { data: CourseFitResponse }) {
                   key={p.player_name} player={p} index={i}
                   historyType={data.course_history_type}
                   expanded={expanded.has(p.player_name)}
-                  onToggle={() => toggleExpand(p.player_name)}
+                  onToggle={() => toggleExpand(p.player_name)} more={more}
                 />
               ))
             )}
           </tbody>
         </table>
       </div>
-      <div style={{ marginTop: 10, fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-line)" }}>
-        Click any row to expand DG decomposition. Timing = DG form adjustment. Fit Adj = course suitability adjustment. DG Win% = DataGolf model.
+      <div style={{ marginTop: 12, fontSize: "max(var(--fs-min), 0.82em)", color: "var(--bc-text)", lineHeight: 1.6 }}>
+        <strong>How to read this.</strong> {venueLabel}: his record at this course.
+        {" "}Fit Adj: how much this course suits his game, in strokes per round (DataGolf; positive = suits him).
+        {" "}Boost: how much our win chance moved after adding course fit and history.
+        {" "}Win%: our final chance to win.
+        {more && <> Avg Score: his average to par here. OTT / APP: tee and approach play vs the field
+          (tap ? for more). Timing: DataGolf&apos;s recent-form adjustment. DG Win%: DataGolf&apos;s chance.
+          T10%: our top-10 chance.</>}
+        {" "}Tap a row for the full breakdown.
       </div>
     </div>
   );

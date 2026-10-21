@@ -145,25 +145,25 @@ were silently off after the move; it now uses `$CLAUDE_PROJECT_DIR`.
       no regressions on 31 real feed pairs, 73 PGA and 35 DPWT schedule pairings. A new
       wording no alias covers is refused (red run): add the alias.
 
-## Next: This Week page (Oct 21 review; audit done, roadmap resumes here)
+## Done: This Week page (Oct 21 review). Signed-in views need Jack's eyes on a phone
 
 Keep: deep green / cream / gold, the Course Fit demand profile. Fix hierarchy, contrast,
 height on phones. In order (each its own commit, preview-verified at 375px):
-1. [ ] **Research -> picks bridge.** "Consider for my picks" on a golfer (row, card, Course
+1. [x] **Research -> picks bridge.** "Consider for my picks" on a golfer (row, card, Course
        Fit) links to `/friends?consider=<name>`: the pick screen opens on the active group with
        that golfer highlighted / scrolled to, never submitted. `/friends` reads no URL params
        today; parse + validate it (unknown name = ignored), Jack scaffold candidate.
-2. [ ] **Phone layout.** Compact event header (tournament, course, dates, status, "Make picks"
+2. [x] **Phone layout.** Compact event header (tournament, course, dates, status, "Make picks"
        link); tabs directly under it and sticky while scrolling; weather collapsed by default
        on phones, 2x2 when open (today 3 narrow cards + a full-width Sunday); the Weekly
        Analysis box hidden when empty (the admin Rerun control stays admin-only).
-3. [ ] **Compact player cards under 600px**: name, win / top-10 / cut on one card, so the
+3. [x] **Compact player cards under 600px**: name, win / top-10 / cut on one card, so the
        probabilities aren't offscreen behind a wide name column.
-4. [ ] **Empty search**: "No golfers match '...'" + Clear search, instead of an empty table.
-5. [ ] **Jargon on tap**: SG, OTT, APP, ARG, PUTT, EV, "pp" explained in a small glossary
-       popover. Jack's `web/lib/glossary.ts` (definitions + exact lookup, tests green, Oct 21).
-       UI wiring pending.
-6. [ ] **Course Fit table**: fewer default columns, a one-line explainer per column, the rest
+4. [x] **Empty search**: "No golfers match '...'" + Clear search, instead of an empty table.
+5. [x] **Jargon on tap**: SG, OTT, APP, ARG, PUTT, EV, "pp" explained in a small glossary
+       popover. Jack's `web/lib/glossary.ts`; `components/Term` on Strokes gained, Our edge,
+       EV (Field) and OTT, APP (Course Fit).
+6. [x] **Course Fit table**: fewer default columns, a one-line explainer per column, the rest
        behind "More columns".
 
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
