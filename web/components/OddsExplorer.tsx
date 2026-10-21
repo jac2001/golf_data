@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useIsAdmin } from "@/lib/useIsAdmin";
 import { getOddsExplorer, refreshDgOdds, OddsExplorerResponse } from "@/lib/api";
 
 const MARKET_OPTS = [
@@ -24,6 +25,7 @@ export default function OddsExplorer() {
   const [posEvOnly, setPosEvOnly]   = useState(false);
   const [search, setSearch]         = useState("");
   const [refreshing, setRefreshing] = useState(false);
+  const admin = useIsAdmin();   // refreshes are admin-only; the pipeline refreshes odds for everyone
   const [refreshErr, setRefreshErr] = useState<string | null>(null);
 
   function load() {
@@ -40,7 +42,7 @@ export default function OddsExplorer() {
       await refreshDgOdds();
       load();
     } catch {
-      setRefreshErr("Refresh failed — check FastAPI logs.");
+      setRefreshErr("Refresh failed.");
     } finally {
       setRefreshing(false);
     }
@@ -121,9 +123,11 @@ export default function OddsExplorer() {
               DG updated: {data.updated}
             </span>
           )}
-          <button onClick={handleRefresh} disabled={refreshing} style={btnStyle}>
-            {refreshing ? "Refreshing…" : "Refresh Odds"}
-          </button>
+          {admin && (
+            <button onClick={handleRefresh} disabled={refreshing} style={btnStyle}>
+              {refreshing ? "Refreshing…" : "Refresh Odds"}
+            </button>
+          )}
         </div>
         {refreshErr && (
           <span style={{ color: "var(--bc-red)", fontSize: "max(var(--fs-min), 0.75em)", width: "100%", marginTop: 4 }}>

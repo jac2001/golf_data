@@ -3,18 +3,16 @@
  *
  * The Render endpoint kicks a BATCH of LLM calls, so it now demands the
  * proxy secret; this route holds the secret server-side and only fires
- * for the site owner (same LEAGUE_OWNER_EMAIL gate as the league zone).
+ * for site admins (lib/admin.ts, the same list as /api/owner/*).
  */
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
+import { isAdmin } from "@/lib/admin";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export async function POST() {
-  const user = await currentUser();
-  const owner = (process.env.LEAGUE_OWNER_EMAIL ?? "").toLowerCase();
-  const isOwner = !!owner && (user?.emailAddresses ?? [])
-    .some(e => e.emailAddress.toLowerCase() === owner);
-  if (!isOwner) {
+  const { userId } = await auth();
+  if (!isAdmin(userId)) {
     return Response.json({ detail: "Analysis reruns are owner-only." }, { status: 403 });
   }
 

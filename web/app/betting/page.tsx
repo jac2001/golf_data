@@ -26,19 +26,19 @@ import BookTable from "@/components/BookTable";
 import MatchupsTab from "@/components/MatchupsTab";
 import OddsExplorer from "@/components/OddsExplorer";
 import ExpertPicksTab from "@/components/ExpertPicksTab";
-import { BetsLedger, BetSlipPanel } from "@/components/BetsPanel";
+import { BetsLedger } from "@/components/BetsPanel";
+import { useIsAdmin } from "@/lib/useIsAdmin";
 import { PageHead, SubTabs, StatStrip } from "@/components/broadcast";
 import { MyBetsTab } from "@/components/MyBetsTab";
 import { TailsTab } from "@/components/TailsTab";
 
-type BoardTab = "bets" | "matchups" | "odds" | "expert" | "ledger" | "slip" | "mybets" | "tails";
+type BoardTab = "bets" | "matchups" | "odds" | "expert" | "ledger" | "mybets" | "tails";
 const BOARD_TABS: { id: BoardTab; label: string }[] = [
   { id: "bets",     label: "Value Bets"    },
   { id: "matchups", label: "Matchups"      },
   { id: "odds",     label: "Odds Explorer" },
   { id: "expert",   label: "Expert Picks"  },
   { id: "ledger",   label: "Ledger"        },
-  { id: "slip",     label: "My Slip"       },
   { id: "mybets",   label: "My Bets"       },
   { id: "tails",    label: "My Tails"      },
 ];
@@ -70,6 +70,7 @@ export default function BettingPage() {
   const [bankroll, setBankroll]       = useState(1000);
   const [loading, setLoading]         = useState(true);
   const [refreshing, setRefreshing]   = useState(false);
+  const admin = useIsAdmin();
   const [showTable, setShowTable]     = useState(false);
   const [tableMarket, setTableMarket] = useState("top10");
   const [expertData, setExpertData]   = useState<ExpertPicksResponse | null>(null);
@@ -175,7 +176,6 @@ export default function BettingPage() {
       <SubTabs tabs={BOARD_TABS} active={activeTab} onChange={setActiveTab} />
 
       {activeTab === "ledger" && <BetsLedger />}
-      {activeTab === "slip" && <BetSlipPanel />}
       {activeTab === "mybets" && <MyBetsTab />}
       {activeTab === "tails" && <TailsTab />}
       {activeTab === "matchups" && <MatchupsTab />}
@@ -252,9 +252,12 @@ export default function BettingPage() {
 
           <div style={{ flex: 1 }} />
 
-          <button onClick={handleRefresh} disabled={refreshing} style={btnStyle}>
-            {refreshing ? "Refreshing…" : "Refresh Bets"}
-          </button>
+          {/* Admin-only: the scheduled pipeline refreshes bets for everyone. */}
+          {admin && (
+            <button onClick={handleRefresh} disabled={refreshing} style={btnStyle}>
+              {refreshing ? "Refreshing…" : "Refresh Bets"}
+            </button>
+          )}
         </div>
       </div>
 

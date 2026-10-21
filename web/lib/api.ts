@@ -157,7 +157,7 @@ export async function getOddsComparison(market = "top10"): Promise<OddsCompariso
 }
 
 export async function refreshBets(): Promise<BetsResponse> {
-  const res = await apiFetch(`${API_BASE}/api/refresh-bets`, { method: "POST" });
+  const res = await apiFetch(`/api/owner/refresh-bets`, { method: "POST" });
   if (!res.ok) throw new Error("Refresh failed");
   return res.json();
 }
@@ -555,7 +555,7 @@ export async function getOddsExplorer(market = "top_10"): Promise<OddsExplorerRe
 }
 
 export async function refreshDgOdds(): Promise<{ ok: boolean; updated: string | null }> {
-  const res = await apiFetch(`${API_BASE}/api/refresh-dg-odds`, { method: "POST" });
+  const res = await apiFetch(`/api/owner/refresh-dg-odds`, { method: "POST" });
   if (!res.ok) throw new Error("Refresh failed");
   return res.json();
 }
@@ -695,7 +695,7 @@ export async function getInPlay(): Promise<InPlayResponse> {
 }
 
 export async function refreshHoleScores(): Promise<{ ok: boolean; message: string }> {
-  const res = await apiFetch(`${API_BASE}/api/live/refresh-hole-scores`, { method: "POST" });
+  const res = await apiFetch(`/api/owner/refresh-hole-scores`, { method: "POST" });
   if (!res.ok) throw new Error("Hole scores refresh failed");
   return res.json();
 }
@@ -1016,7 +1016,7 @@ export async function getMyPicks(): Promise<MyPicksResponse> {
 }
 
 export async function setMyPicks(tournamentId: string, picks: string[]): Promise<{ status: string; tournament: string; picks: string[] }> {
-  const res = await apiFetch(`${API_BASE}/api/picks`, {
+  const res = await apiFetch(`/api/owner/picks`, {
     method: "POST", cache: "no-store",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tournament_id: tournamentId, picks }),
@@ -1029,7 +1029,7 @@ export async function setMyPicks(tournamentId: string, picks: string[]): Promise
 }
 
 export async function clearMyPicks(tournamentId: string): Promise<{ status: string; removed: string[] }> {
-  const res = await apiFetch(`${API_BASE}/api/picks`, {
+  const res = await apiFetch(`/api/owner/picks`, {
     method: "DELETE", cache: "no-store",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tournament_id: tournamentId }),
@@ -1148,7 +1148,7 @@ export async function getSettings(): Promise<AppSettings> {
 }
 
 export async function patchSettings(patch: Record<string, unknown>): Promise<AppSettings> {
-  const res = await apiFetch(`${API_BASE}/api/settings`, {
+  const res = await apiFetch(`/api/owner/settings`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(patch),
@@ -1716,108 +1716,10 @@ export async function getIntel(): Promise<IntelResponse> {
 }
 
 export async function refreshIntel(topN = 20): Promise<{ ok: boolean; message: string }> {
-  const res = await apiFetch(`${API_BASE}/api/refresh-intel?top_n=${topN}`, { method: "POST" });
+  const res = await apiFetch(`/api/owner/refresh-intel?top_n=${topN}`, { method: "POST" });
   if (!res.ok) throw new Error(`refresh-intel ${res.status}`);
   return res.json();
 }
-// ── Bet Slip ──────────────────────────────────────────────────────────────────
-
-  // A single bet you've chosen to track
-export type SlipBet = {
-    id: string;
-    recommendation_id: string | null;
-    tournament_id: string;
-    player_name: string;
-    market: string;
-    selection_label: string;
-    odds_american: number;
-    stake_units: number;
-    placed_at: string;
-    // Filled in automatically after the tournament settles:
-    outcome_status: "pending" | "won" | "lost";
-    outcome_win: boolean | null;
-    pnl_per_unit: number | null;
-    pnl_usd: number | null;
-    // Live tournament context (null if pre-tournament or not yet on course):
-    live_position: string | null;
-    live_total:    string | null;
-    live_thru:     string | null;
-    live_r1:       string | null;
-    live_r2:       string | null;
-    live_r3:       string | null;
-    live_r4:       string | null;
-    live_status:   "on_track" | "marginal" | "off_track" | "finished" | "tracking" | null;
-};
-  
-
-
-
-// Season-wide summary stats
-export type TournamentPnl = {
-  tid: string;
-  won: number;
-  total: number;
-  pnl_units: number;
-  pnl_dollars: number;
-};
-
-export type SlipStats = {
-  total_bets: number;
-  graded: number;
-  pending: number;
-  won: number;
-  lost: number;
-  total_staked: number;
-  total_pnl: number;          // in units
-  total_pnl_dollars: number;  // in real $
-  roi_pct: number | null;
-  hit_rate: number | null;
-  // Bankroll
-  starting_bankroll: number | null;
-  unit_size: number;
-  current_bankroll: number | null;
-  by_tournament: TournamentPnl[];
-};
-
-export type BetSlipResponse = {
-  bets: SlipBet[];
-  stats: SlipStats;
-};
-
-// What we send to the API when adding a bet
-export type BetSlipEntry = {
-  recommendation_id?: string | null;
-  tournament_id: string;
-  player_name: string;
-  market: string;
-  selection_label: string;
-  odds_american: number;
-  stake_units?: number;
-};
-
-export async function getBetSlip(): Promise<BetSlipResponse> {
-  const res = await apiFetch(`${API_BASE}/api/bet-slip`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`bet-slip ${res.status}`);
-  return res.json();
-}
-
-
-export async function addToBetSlip(entry: BetSlipEntry): Promise<{ ok: boolean; id?: string; message?: string }> {
-  const res = await apiFetch(`${API_BASE}/api/bet-slip`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(entry),
-  });
-  if (!res.ok) throw new Error(`add-slip ${res.status}`);
-  return res.json();
-}
-
-export async function removeFromBetSlip(id: string): Promise<{ ok: boolean }> {
-  const res = await apiFetch(`${API_BASE}/api/bet-slip/${id}`, { method: "DELETE" });
-  if (!res.ok) throw new Error(`remove-slip ${res.status}`);
-  return res.json();
-}
-
 // ── Model vs DataGolf comparison (rich endpoint) ──────────────────────────────
 
 export type MarketCorrelation = {

@@ -35,6 +35,7 @@ import { PageHead, SubTabs } from "@/components/broadcast";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import styles from "./summary.module.css";
+import { useIsAdmin } from "@/lib/useIsAdmin";
 type Tab = "field" | "lineup" | "teetimes" | "course" | "dg" | "coursefit";
 
 const TABS: { id: Tab; label: string }[] = [
@@ -766,6 +767,7 @@ function EuroCourseGuideView({ data }: { data: EuroCourseGuide }) {
 }
 
 function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: string }) {
+  const admin = useIsAdmin();   // reruns are admin-only (LLM batch); the server checks too
   const [running, setRunning] = useState(false);
   const [msg, setMsg]         = useState("");
 
@@ -797,7 +799,7 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
           Weekly Analysis
           {generatedAt && text && <span style={{ marginLeft: 12, color: "var(--bc-line)" }}>{generatedAt}</span>}
         </div>
-        <button
+        {admin && <button
           onClick={rerun}
           disabled={running}
           style={{
@@ -807,12 +809,12 @@ function WeeklyNarrative({ text, generatedAt }: { text: string; generatedAt: str
           }}
         >
           {running ? "Running…" : "Rerun"}
-        </button>
+        </button>}
       </div>
       {text
         ? <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.65, margin: 0 }}>{text}</p>
         : <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.84em)", margin: 0, fontStyle: "italic" }}>
-            No analysis for this week yet. Click Rerun to generate (~60 seconds).
+            {admin ? "No analysis for this week yet. Click Rerun to generate (~60 seconds)." : "No analysis for this week yet."}
           </p>
       }
       {msg && <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
@@ -874,6 +876,7 @@ function GlanceCard({ label, value, sub, accent = "var(--bc-line-hi)", onClick }
 }
 
 function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
+  const admin = useIsAdmin();   // intel refresh launches LLM work: admin-only
   const [refreshing, setRefreshing] = useState(false);
   const [msg, setMsg] = useState("");
   const cc = intel.course_conditions;
@@ -928,13 +931,13 @@ function CourseConditionsCard({ intel }: { intel: IntelResponse }) {
             <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)", lineHeight: 1.6, margin: 0 }}>{cc.setup_notes}</p>
           )}
         </div>
-        <button
+        {admin && <button
           onClick={handleRefresh}
           disabled={refreshing}
           style={{ background: "none", border: "1px solid var(--bc-line)", borderRadius: 5, color: refreshing ? "var(--bc-muted)" : "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.75em)", padding: "3px 10px", cursor: refreshing ? "default" : "pointer", whiteSpace: "nowrap" }}
         >
           {refreshing ? "Running…" : "Refresh Intel"}
-        </button>
+        </button>}
       </div>
       {msg && <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)", marginTop: 8, marginBottom: 0 }}>{msg}</p>}
     </div>

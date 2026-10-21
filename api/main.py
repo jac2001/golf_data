@@ -44,7 +44,7 @@ except ImportError:
 
 import numpy as np
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -86,6 +86,14 @@ _FRESHEN_SPECS: dict[str, dict] = {
         "timeout": 45,
     },
 }
+
+try:                                             # uvicorn api.main:app (Render)
+    from api.owner_guard import require_owner
+except ImportError:                              # run from inside api/
+    from owner_guard import require_owner
+
+OWNER_ONLY = [Depends(require_owner)]
+
 
 _freshen_lock = threading.Lock()
 _freshen_last_attempt: dict[str, float] = {}
@@ -715,7 +723,7 @@ def get_settings() -> dict:
     return _load_settings()
 
 
-@app.patch("/api/settings")
+@app.patch("/api/settings", dependencies=OWNER_ONLY)
 def patch_settings(body: dict) -> dict:
     """
     Deep-merge body into the current settings and save.
@@ -2499,11 +2507,35 @@ def get_live_scorecard(request: Request, player: str, tournament_id: str = "") -
     return out
 
 
+_HOLE_SCORES_TTL = 600            # seconds: at most one scrape per 10 minutes
+_hole_scores_lock = threading.Lock()
+_hole_scores_started: dict[str, float] = {}
+
+
+def _maybe_refresh_hole_scores(tid: str, path: Path) -> None:
+    """Single-flight, budgeted scorecard refresh. The scrape makes about one
+    PGA TOUR call per player, so it used to be triggered by every visitor's
+    refresh; now the server starts at most one per TTL, however many people
+    are watching. Background only: the request serves what's on disk."""
+    if not CLOUD_FETCH or not tid:
+        return
+    now = time.time()
+    with _hole_scores_lock:
+        fresh = path.exists() and now - path.stat().st_mtime < _HOLE_SCORES_TTL
+        if fresh or now - _hole_scores_started.get(tid, 0) < _HOLE_SCORES_TTL:
+            return
+        _hole_scores_started[tid] = now
+    subprocess.Popen(["python3", str(PROJECT_ROOT / "scripts" / "scrapers" / "fetch_hole_scores.py"),
+                      "--tournament-id", tid], cwd=PROJECT_ROOT,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
 @app.get("/api/live/hole-scores")
 def get_hole_scores() -> dict:
     """Per-hole scores indexed by player name and round number."""
     tid = _get_tournament_id()
     path = DATA_DIR / "live" / f"hole_scores_{tid.lower()}.csv"
+    _maybe_refresh_hole_scores(tid, path)
     if not path.exists():
         return {"tournament_id": tid, "by_player": {}}
 
@@ -2686,7 +2718,7 @@ def get_inplay() -> dict:
     return result
 
 
-@app.post("/api/live/refresh-hole-scores")
+@app.post("/api/live/refresh-hole-scores", dependencies=OWNER_ONLY)
 def refresh_hole_scores() -> dict:
     """
     Trigger fetch_hole_scores.py in the background so the frontend doesn't wait.
@@ -3062,7 +3094,7 @@ Output format: JSON only, no markdown fences. Exactly this structure:
     return result
 
 
-@app.post("/api/refresh-bets")
+@app.post("/api/refresh-bets", dependencies=OWNER_ONLY)
 def refresh_bets() -> dict:
     """Trigger recommend_bets.py and return the updated bets."""
     tid = _get_tournament_id()
@@ -3089,7 +3121,7 @@ def refresh_bets() -> dict:
     }
 
 
-@app.post("/api/refresh-odds")
+@app.post("/api/refresh-odds", dependencies=OWNER_ONLY)
 def refresh_odds() -> dict:
     """Trigger refresh_odds.py (updates latest_predictions.csv odds columns)."""
     tid = _get_tournament_id()
@@ -3108,7 +3140,7 @@ def refresh_odds() -> dict:
     return {"tournament_id": tid, "ok": True, "log": result.stdout[-800:]}
 
 
-@app.post("/api/refresh-dg-odds")
+@app.post("/api/refresh-dg-odds", dependencies=OWNER_ONLY)
 def refresh_dg_odds() -> dict:
     """Fetch fresh DG outrights (all markets) — updates dg_outrights_{tid}.csv."""
     tid = _get_tournament_id()
@@ -6636,7 +6668,7 @@ def get_my_picks() -> dict:
     }
 
 
-@app.post("/api/picks")
+@app.post("/api/picks", dependencies=OWNER_ONLY)
 def set_picks(payload: dict) -> dict:
     """
     Confirm this week's lineup picks.
@@ -6718,7 +6750,7 @@ def set_picks(payload: dict) -> dict:
     return {"status": "ok", "tournament": tour_name, "picks": picks_in}
 
 
-@app.delete("/api/picks")
+@app.delete("/api/picks", dependencies=OWNER_ONLY)
 def clear_picks(payload: dict) -> dict:
     """Remove picks for a tournament so they can be re-entered. Body: { 'tournament_id': '...' }"""
     tid: str = str(payload.get("tournament_id", _get_tournament_id())).upper()
@@ -7439,7 +7471,7 @@ def get_withdrawals() -> dict:
     }
 
 
-@app.post("/api/generate-analysis")
+@app.post("/api/generate-analysis", dependencies=OWNER_ONLY)
 def generate_analysis(request: Request) -> dict:
     """Trigger generate_strategy_reasoning.py in the background. Returns immediately.
 
@@ -7447,9 +7479,7 @@ def generate_analysis(request: Request) -> dict:
     the server, and it was anonymously triggerable. Owner-only now: the
     site's server route checks the owner email, then relays with the
     proxy secret; the raw endpoint refuses everything else."""
-    proxy_secret = os.environ.get("CHAT_PROXY_SECRET", "")
-    if proxy_secret and request.headers.get("x-chat-proxy-secret") != proxy_secret:
-        raise HTTPException(status_code=403, detail="Analysis reruns must come through the site")
+    # require_owner (the route's dependency) checks the secret, failing closed.
     import threading
     def _run():
         subprocess.run(
@@ -8066,7 +8096,7 @@ def get_intel() -> dict:
     return data
 
 
-@app.post("/api/refresh-intel")
+@app.post("/api/refresh-intel", dependencies=OWNER_ONLY)
 def refresh_intel(top_n: int = 20) -> dict:
     """Trigger fetch_tournament_intel.py for the current tournament."""
     tid = _get_tournament_id()
@@ -8121,293 +8151,10 @@ def health() -> dict:
     return {"status": "ok", "sentry": sentry_on, "timestamp": datetime.utcnow().isoformat() + "Z"}
 
 
- # ── Bet Slip ──────────────────────────────────────────────────────────────────
-
-SLIP_PATH = DATA_DIR / "bets" / "slip.json"
-
-
-class BetSlipEntry(BaseModel):
-    recommendation_id: str | None = None
-    tournament_id: str
-    player_name: str
-    market: str
-    selection_label: str
-    odds_american: float
-    stake_units: float = 1.0
-
-
-def _load_slip() -> list[dict]:
-    if not SLIP_PATH.exists():
-        return []
-    try:
-        return json.loads(SLIP_PATH.read_text()).get("bets", [])
-    except Exception:
-        return []
-
-
-def _name_sort_key(name: str) -> str:
-    """Normalize 'First Last' or 'Last, First' to a sorted-token key for matching."""
-    return " ".join(sorted(name.replace(",", "").lower().split()))
-
-
-_ON_TRACK_THRESHOLDS: dict[str, tuple[int, int]] = {
-    "outright": (5, 12),
-    "top5":     (5, 8),
-    "top10":    (10, 14),
-    "top20":    (20, 25),
-    "top30":    (30, 37),
-}
-
-
-def _attach_live_context(bets: list[dict]) -> list[dict]:
-    """For each pending bet, attach live leaderboard position/score data."""
-    pending_tids = {b["tournament_id"] for b in bets
-                    if b.get("outcome_status") == "pending" and b.get("tournament_id")}
-    if not pending_tids:
-        return bets
-
-    lb_cache: dict[str, pd.DataFrame] = {}
-    cut_cache: dict[str, float | None] = {}
-
-    for tid in pending_tids:
-        lb_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}.csv"
-        if not lb_path.exists():
-            continue
-        try:
-            df = pd.read_csv(lb_path, low_memory=False)
-            df["_name_key"] = df["player_name"].fillna("").apply(_name_sort_key)
-            lb_cache[tid] = df
-        except Exception:
-            pass
-
-        meta_path = DATA_DIR / "live" / f"leaderboard_{tid.lower()}_meta.json"
-        projected_cut = None
-        if meta_path.exists():
-            try:
-                meta = json.loads(meta_path.read_text())
-                projected_cut = meta.get("cut_projection", {}).get("projected_cut_score")
-            except Exception:
-                pass
-        cut_cache[tid] = projected_cut
-
-    enriched = []
-    for bet in bets:
-        b = dict(bet)
-        tid = b.get("tournament_id", "")
-
-        if b.get("outcome_status") != "pending" or tid not in lb_cache:
-            enriched.append(b)
-            continue
-
-        df = lb_cache[tid]
-        player_key = _name_sort_key(b.get("player_name", ""))
-        rows = df[df["_name_key"] == player_key]
-
-        if rows.empty:
-            enriched.append(b)
-            continue
-
-        row = rows.iloc[0]
-
-        def _str(col: str) -> str | None:
-            v = row.get(col)
-            s = str(v).strip() if pd.notna(v) else None
-            return None if not s or s in ("nan", "") else s
-
-        b["live_position"] = _str("position")
-        b["live_total"]    = _str("total")
-        b["live_thru"]     = _str("thru")
-        b["live_r1"]       = _str("R1")
-        b["live_r2"]       = _str("R2")
-        b["live_r3"]       = _str("R3")
-        b["live_r4"]       = _str("R4")
-
-        pos_str = b["live_position"] or ""
-        thru    = b["live_thru"] or ""
-        market  = b.get("market", "")
-
-        pos_num: int | None = None
-        try:
-            pos_num = int(pos_str.lstrip("Tt"))
-        except (ValueError, AttributeError):
-            pass
-
-        live_status: str | None = None
-
-        if thru == "F" and str(row.get("status", "")).lower() in ("complete", "wd", "cut"):
-            live_status = "finished"
-        elif market in _ON_TRACK_THRESHOLDS and pos_num is not None:
-            on_t, margin_t = _ON_TRACK_THRESHOLDS[market]
-            live_status = "on_track" if pos_num <= on_t else "marginal" if pos_num <= margin_t else "off_track"
-        elif market == "make_cut":
-            total_numeric = row.get("total_numeric")
-            projected_cut = cut_cache.get(tid)
-            if pd.notna(total_numeric) and projected_cut is not None:
-                diff = float(total_numeric) - float(projected_cut)
-                live_status = "on_track" if diff <= 0 else "marginal" if diff <= 2 else "off_track"
-        elif market.startswith("h2h") or market in ("matchup", "group_winner"):
-            live_status = "tracking"
-
-        b["live_status"] = live_status
-        enriched.append(b)
-
-    return enriched
-
-
-def _save_slip(bets: list[dict]) -> None:
-    SLIP_PATH.parent.mkdir(parents=True, exist_ok=True)
-    SLIP_PATH.write_text(json.dumps({"bets": bets}, indent=2))
-
-
-def _merge_outcomes(bets: list[dict]) -> list[dict]:
-    """Cross-reference slip entries against graded results to fill outcomes."""
-    results_path = DATA_DIR / "odds" / "recommended_bets_results.csv"
-    if not results_path.exists():
-        return bets
-    try:
-        results = pd.read_csv(results_path, low_memory=False)
-        by_rec_id: dict[str, Any] = {}
-        if "recommendation_id" in results.columns:
-            for _, r in results.iterrows():
-                by_rec_id[str(r["recommendation_id"])] = r
-        by_key: dict[tuple, Any] = {}
-        for _, r in results.iterrows():
-            if str(r.get("outcome_status", "")) in ("won", "lost"):
-                key = (str(r.get("tournament_id", "")),
-                        str(r.get("player_name", "")).lower().strip(),
-                        str(r.get("market", "")))
-                by_key[key] = r
-    except Exception:
-        return bets
-
-    merged = []
-    for bet in bets:
-        b = dict(bet)
-        result = None
-        if b.get("recommendation_id") and b["recommendation_id"] in by_rec_id:
-            result = by_rec_id[b["recommendation_id"]]
-        else:
-            key = (str(b.get("tournament_id", "")),
-                    str(b.get("player_name", "")).lower().strip(),
-                    str(b.get("market", "")))
-            result = by_key.get(key)
-
-        if result is not None and str(result.get("outcome_status", "")) in ("won", "lost"):
-            b["outcome_status"] = str(result["outcome_status"])
-            b["outcome_win"] = bool(result.get("outcome_win", False))
-            pnl = result.get("pnl_per_1")
-            b["pnl_per_unit"] = float(pnl) if pd.notna(pnl) else None
-            b["pnl_usd"] = round(float(b["stake_units"]) * float(pnl), 2) if pd.notna(pnl) else None
-        else:
-            b.setdefault("outcome_status", "pending")
-            b["outcome_win"] = None
-            b["pnl_per_unit"] = None
-            b["pnl_usd"] = None
-        merged.append(b)
-    return merged
-
-
-BANKROLL_PATH = DATA_DIR / "bets" / "bankroll.json"
-
-
-def _load_bankroll() -> dict:
-    try:
-        return json.loads(BANKROLL_PATH.read_text()) if BANKROLL_PATH.exists() else {}
-    except Exception:
-        return {}
-
-
-def _slip_stats(bets: list[dict]) -> dict:
-    graded = [b for b in bets if b.get("outcome_status") in ("won", "lost")]
-    won    = [b for b in graded if b.get("outcome_status") == "won"]
-    total_staked = sum(b.get("stake_units", 1.0) for b in graded)
-    # pnl_usd in slip is already stake_units * pnl_per_unit (unit-based P&L)
-    total_pnl_units = sum(b.get("pnl_usd") or 0 for b in graded)
-
-    bankroll = _load_bankroll()
-    starting  = float(bankroll.get("starting_bankroll", 0))
-    unit_size = float(bankroll.get("unit_size", 1))
-
-    # Convert unit P&L to real dollars
-    total_pnl_dollars = round(total_pnl_units * unit_size, 2)
-    current_bankroll  = round(starting + total_pnl_dollars, 2) if starting else None
-
-    # P&L grouped by tournament (for the mini breakdown table)
-    by_tid: dict[str, dict] = {}
-    for b in graded:
-        tid = b.get("tournament_id", "unknown")
-        if tid not in by_tid:
-            by_tid[tid] = {"won": 0, "total": 0, "pnl_units": 0.0}
-        by_tid[tid]["total"] += 1
-        if b.get("outcome_status") == "won":
-            by_tid[tid]["won"] += 1
-        by_tid[tid]["pnl_units"] += b.get("pnl_usd") or 0
-
-    return {
-        "total_bets":   len(bets),
-        "graded":       len(graded),
-        "pending":      len(bets) - len(graded),
-        "won":          len(won),
-        "lost":         len(graded) - len(won),
-        "total_staked": round(total_staked, 2),
-        "total_pnl":    round(total_pnl_units, 2),       # in units
-        "total_pnl_dollars": total_pnl_dollars,          # in real $
-        "roi_pct":  round(total_pnl_units / total_staked * 100, 1) if total_staked > 0 else None,
-        "hit_rate": round(len(won) / len(graded) * 100, 1) if graded else None,
-        # Bankroll
-        "starting_bankroll": starting or None,
-        "unit_size":         unit_size,
-        "current_bankroll":  current_bankroll,
-        # Per-tournament breakdown
-        "by_tournament": [
-            {"tid": tid, **vals, "pnl_dollars": round(vals["pnl_units"] * unit_size, 2)}
-            for tid, vals in by_tid.items()
-        ],
-    }
-
-
-@app.get("/api/bet-slip")
-def get_bet_slip() -> dict:
-    bets = _merge_outcomes(_load_slip())
-    bets = _attach_live_context(bets)
-    return {"bets": bets, "stats": _slip_stats(bets)}
-
-
-@app.post("/api/bet-slip")
-def add_to_bet_slip(entry: BetSlipEntry) -> dict:
-    import uuid
-    bets = _load_slip()
-    for b in bets:
-        if entry.recommendation_id and b.get("recommendation_id") == entry.recommendation_id:
-            return {"ok": False, "message": "Already tracking this bet"}
-        if (b.get("tournament_id") == entry.tournament_id
-                and b.get("player_name") == entry.player_name
-                and b.get("market") == entry.market):
-            return {"ok": False, "message": "Already tracking this bet"}
-    bet = {
-        "id": uuid.uuid4().hex[:12],
-        "recommendation_id": entry.recommendation_id,
-        "tournament_id": entry.tournament_id,
-        "player_name": entry.player_name,
-        "market": entry.market,
-        "selection_label": entry.selection_label,
-        "odds_american": entry.odds_american,
-        "stake_units": entry.stake_units,
-        "placed_at": datetime.utcnow().isoformat() + "Z",
-    }
-    bets.append(bet)
-    _save_slip(bets)
-    return {"ok": True, "id": bet["id"]}
-
-
-@app.delete("/api/bet-slip/{bet_id}")
-def remove_from_bet_slip(bet_id: str) -> dict:
-    bets = _load_slip()
-    filtered = [b for b in bets if b.get("id") != bet_id]
-    if len(filtered) == len(bets):
-        raise HTTPException(status_code=404, detail="Bet not found")
-    _save_slip(filtered)
-    return {"ok": True}
+# ── Bet Slip: retired Oct 20, 2026 ───────────────────────────────────────────
+# /api/bet-slip wrote ONE shared file every visitor could change, and Render's
+# disk resets on deploy. Tail (account-scoped, Neon) replaced it. History of
+# data/bets/slip.json stays in git.
 
 # ── Fantasy Strategy (Tuesday decision-support view) ──────────────────────────
 

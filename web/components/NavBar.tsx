@@ -17,7 +17,7 @@ import { useLiveEvents } from "@/lib/useLiveEvents";
 // Desktop: the game first (review item 14). Four links up front; the rest
 // under Explore. Phones use the bottom tab bar (BottomNav), unchanged.
 // /history stays routable but leaves the nav: its tabs now live on the
-// Betting Board (Ledger, My Slip) and in How It Works (Results).
+// Betting Board (Ledger) and in How It Works (Results).
 type NavLink = { href: string; label: string; exact?: boolean; live?: boolean };
 
 const PUBLIC_LINKS: NavLink[] = [

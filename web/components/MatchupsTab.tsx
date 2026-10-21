@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useIsAdmin } from "@/lib/useIsAdmin";
 import {
   getMatchups, get3Ball, refreshDgOdds,
   MatchupsResponse, ThreeBallResponse,
@@ -19,6 +20,7 @@ export default function MatchupsTab() {
   const [threeBall, setThreeBall]   = useState<ThreeBallResponse | null>(null);
   const [loading, setLoading]       = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const admin = useIsAdmin();   // refreshes are admin-only; the pipeline refreshes odds for everyone
   const [refreshErr, setRefreshErr] = useState<string | null>(null);
   const [search, setSearch]         = useState("");
   const [posEvOnly, setPosEvOnly]   = useState(false);
@@ -56,7 +58,7 @@ export default function MatchupsTab() {
         get3Ball().then(setThreeBall).finally(() => setLoading(false));
       }
     } catch {
-      setRefreshErr("Refresh failed — check FastAPI logs.");
+      setRefreshErr("Refresh failed.");
     } finally {
       setRefreshing(false);
     }
@@ -120,9 +122,11 @@ export default function MatchupsTab() {
                 Updated: {data.updated}
               </span>
             )}
-            <button onClick={handleRefresh} disabled={refreshing} style={btnStyle}>
-              {refreshing ? "Refreshing…" : "Refresh Odds"}
-            </button>
+            {admin && (
+              <button onClick={handleRefresh} disabled={refreshing} style={btnStyle}>
+                {refreshing ? "Refreshing…" : "Refresh Odds"}
+              </button>
+            )}
           </div>
         </div>
       )}

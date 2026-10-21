@@ -15,7 +15,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useStoredChoice } from "@/lib/useStoredChoice";
 import {
   getTournament, getInPlay, getVsPredictions, getMyLineupLive, getSgStats, getHoleScores,
-  refreshHoleScores, getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
+  getLivePulse, getHoleStats, getSettings, getWithdrawals, getLineup,
   Tournament, InPlayResponse, VsPredPlayer, MyLineupResponse, SgStatsResponse, HoleScoresResponse,
   HoleStatsResponse, LivePulse as LivePulseData, WithdrawalsResponse,
   getOpenEvents, getEuroLive, EuroLive, getEuroCourse, getScorecard,
@@ -92,9 +92,8 @@ export default function LivePage() {
       setHoleScores(hs);
       setLastPollAt(new Date());
       setNextPollIn(POLL_INTERVAL_MS / 1000);
-      // On manual refresh, kick off a background hole-scores scrape
-      // (takes ~30s; the next auto-poll will pick up the results)
-      if (!silent) refreshHoleScores().catch(() => {});
+      // Scorecards refresh server-side (at most one scrape per 10 minutes,
+      // however many people are watching): /api/live/hole-scores.
     } catch {
       // silently ignore poll errors to avoid flashing the error screen
     } finally {

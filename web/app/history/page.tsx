@@ -1,7 +1,7 @@
 /**
  * history/page.tsx — retired route
  * =================================
- * Every tab moved in the Broadcast redesign: Bets + My Slip live on the
+ * Every tab moved in the Broadcast redesign: Bets (the Ledger) lives on the
  * Betting Board (/betting), Results + Model on How It Works (/methodology).
  * Kept as a redirect so old bookmarks keep working.
  */

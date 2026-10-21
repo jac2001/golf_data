@@ -45,6 +45,37 @@ accuracy and data permissions continue regardless.)
 
 ---
 
+## Audit first (Oct 20): the roadmap is paused until Phase A is done
+
+Source: `Golf-Edge-Legacy-Code-Audit-2026-10-20.md` (18 findings; every P1
+re-verified against the code Oct 20). Order: contain risk, then the
+workspace, then consolidate, then delete leftovers.
+
+**Phase A: contain active risk**
+1. [x] Legacy writes and refreshes are owner-only (Oct 20): `api/owner_guard.py`
+       (fails closed), admin relay `web/app/api/owner/[action]`, controls hidden
+       for non-admins. Track Bet / bet slip retired (Tail replaces it). Live
+       scorecards refresh server-side, at most one scrape per 10 minutes.
+2. [ ] Season resolver: `SEASON` is 2027 because `schedule_2027.csv` exists.
+       Pick the season from today and the schedule (Jack's scaffold).
+3. [ ] Publish only validated output: a failed critical task blocks the
+       deploy and fails the workflow; drop Tuesday's `|| true` + log-phrase check.
+4. [ ] One result-identity contract: recap misses accented names (Aberg);
+       shared fixture across Match Center, standings, recap, Fade, College;
+       carry `earnings_estimated` everywhere.
+5. [ ] Event-specific leaderboard selection (Live reads the newest file).
+
+**Phase B: workspace** (Jack): move out of iCloud, then quarantine the " 2" duplicates.
+
+**Phase C: consolidate:** weather refresh args (#7), duplicate
+`/api/model-comparison` (#8), one meaning of "lineup" (#9), model artifact
+manifest (#11), duplicate Python defs incl. a hidden test (#13), one
+publishing boundary across both workflows (#15).
+
+**Phase D: cleanup + docs (#17, #18):** stale guides and destructive old
+scripts; CLAUDE.md facts (Render tier, `dashboard.py`); check whether
+DataGolf now offers earnings (permissions doc says none).
+
 ## Now (Oct 17; PGA resumes Oct 22, Bermuda)
 
 The production loop runs itself: data refresh → Tuesday predictions →

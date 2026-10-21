@@ -5,7 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
     Bet, fmtOdds, MARKET_COLORS, MARKET_LABELS, BOOK_ABBR,
-    getBetReason, getBetLines, BetLinesResponse, addToBetSlip,
+    getBetReason, getBetLines, BetLinesResponse,
   } from "@/lib/api";
 
 function normName(n: string) {
@@ -43,37 +43,12 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
   const [reason,        setReason]        = useState<string | null>(null);
   const [reasonLoading, setReasonLoading] = useState(false);
   const [reasonOpen,    setReasonOpen]    = useState(false);
-  const [tracked,       setTracked]       = useState(false);
-  const [tracking,      setTracking]      = useState(false);
-
-
-  async function handleTrack() {
-    if (tracked || tracking) return;
-    setTracking(true);
-    try {
-      const res = await addToBetSlip({
-        recommendation_id: bet.recommendation_id ?? null,
-        tournament_id:     bet.tournament_id ?? "",
-        player_name:       bet.player_name,
-        market:            bet.market,
-        selection_label:   bet.selection_label ?? bet.player_name,
-        odds_american:     bet.odds_american,
-        stake_units:       1.0,
-      });
-      if (res.ok || res.message?.includes("Already")) setTracked(true);
-    } catch {
-      // silently fail — don't disrupt the UI
-    } finally {
-      setTracking(false);
-    }
-  }
-
   const [tailed, setTailed]   = useState(false);
   const [tailing, setTailing] = useState(false);
   const { getToken } = useAuth();
 
-  // "Tail" = the Friends Game version of Track: logs this bet against YOUR
-  // account (Neon), graded later by the honest ledger.
+  // "Tail" logs this bet against YOUR account (Neon), graded later by the
+  // honest ledger. (It replaced the shared "Track Bet" slip, retired Oct 20.)
   async function handleTail() {
     if (tailing || !bet.recommendation_id) return;
     setTailing(true);
@@ -305,22 +280,6 @@ export default function BetCard({ bet, bankroll, myPicks = [] }: Props) {
           </button>
 
           <LineShopButton player={bet.player_name} market={bet.market} />
-            <button
-              onClick={handleTrack}
-              disabled={tracked || tracking}
-              style={{
-                background: tracked ? "#0c1f14" : "transparent",
-                border: `1px solid ${tracked ? "color-mix(in srgb, var(--bc-green) 27%, transparent)" : "var(--bc-line)"}`,
-                borderRadius: 5,
-                color: tracked ? "var(--bc-green)" : "var(--bc-muted)",
-                fontSize: "max(var(--fs-min), 0.75em)",
-                fontWeight: 600,
-                padding: "4px 10px",
-                cursor: tracked ? "default" : "pointer",
-              }}
-            >
-              {tracking ? "Adding…" : tracked ? "Tracked ✓" : "Track Bet"}
-            </button>
             {bet.recommendation_id && (
               <Show when="signed-in">
                 <button
