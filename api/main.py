@@ -1239,11 +1239,15 @@ def get_bet_reason(request: Request, player: str, market: str, opponent: str = "
 
 # ── /api/alerts endpoint ─────────────────────────────────────────────────────
 
-@app.get("/api/alerts")
+@app.get("/api/alerts", dependencies=OWNER_ONLY)
 def get_alerts(mark_read: bool = True) -> dict:
     """
     Return all pending alerts. If mark_read=true (default), marks them read so
     the next poll only returns new alerts.
+
+    Owner-only (audit, Oct 21): the read state is one file for everyone, and
+    the "my pick" alerts are Jack's personal-league picks. Admins reach it
+    through /api/owner/alerts.
     """
     alerts = _load_pending()
     unread = [a for a in alerts if not a.get("read")]

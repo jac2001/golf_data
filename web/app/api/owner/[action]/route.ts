@@ -22,6 +22,7 @@ const ACTIONS: Record<string, { path: string; methods: string[] }> = {
   "picks":               { path: "/api/picks",                     methods: ["POST", "DELETE"] },
   "settings":            { path: "/api/settings",                  methods: ["PATCH"] },
   "owner-picks":         { path: "/api/owner-picks",               methods: ["GET"] },
+  "alerts":              { path: "/api/alerts",                    methods: ["GET"] },
 };
 
 async function relay(req: Request, params: Promise<{ action: string }>) {

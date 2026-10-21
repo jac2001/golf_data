@@ -1116,11 +1116,10 @@ export type AlertsResponse = {
   total_unread:  number;
 };
 
-export async function getAlerts(markRead = true): Promise<AlertsResponse> {
-  const res = await apiFetch(
-    `${API_BASE}/api/alerts?mark_read=${markRead}`,
-    { cache: "no-store" },
-  );
+/** Live alert toasts: owner-only (one shared read state, and the "my pick"
+ *  alerts are Jack's picks). Marks them read; the relay sends no options. */
+export async function getAlerts(): Promise<AlertsResponse> {
+  const res = await apiFetch(`/api/owner/alerts`, { cache: "no-store" });
   if (!res.ok) return { alerts: [], total_unread: 0 };
   return res.json();
 }

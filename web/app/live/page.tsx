@@ -204,7 +204,7 @@ export default function LivePage() {
   if (tour === "euro") {
     return (
       <div className="page-wrap">
-        <AlertBanner />
+        {admin && <AlertBanner />}
         <PageHead kicker="DP World Tour" title="Live" />
         <TourPills tour={tour} setTour={setTour} />
         <EuroLiveView />
@@ -214,7 +214,7 @@ export default function LivePage() {
 
   return (
     <div className="page-wrap">
-      <AlertBanner />
+      {admin && <AlertBanner />}
 
       {/* ── Tournament header ────────────────────────────────────────────── */}
       <PageHead

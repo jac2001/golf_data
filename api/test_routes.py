@@ -58,6 +58,12 @@ def test_owner_picks_refuse_anonymous():
     assert client.get("/api/owner-picks", headers={"X-Chat-Proxy-Secret": "wrong"}).status_code == 403
 
 
+def test_alerts_refuse_anonymous():
+    # One shared read state and Jack's picks in the "my pick" alerts (audit, Oct 21).
+    assert client.get("/api/alerts").status_code == 403
+    assert client.get("/api/alerts?mark_read=false").status_code == 403
+
+
 
 def _freshen_harness(tmp, kind, write):
     """Run m._freshen(kind) against a temp data dir; return how many fetches it ran."""

@@ -3,7 +3,8 @@
 /**
  * AlertBanner — Live tournament alert toasts
  * ==========================================
- * Polls GET /api/alerts every 30s. When new alerts arrive, stacks them as
+ * Admin-only (mounted for admins on /live). Polls the owner relay
+ * /api/owner/alerts every 30s. When new alerts arrive, stacks them as
  * floating cards in the bottom-right corner. Each card auto-dismisses after 8s.
  *
  * Severity colours:
@@ -36,7 +37,7 @@ export default function AlertBanner() {
 
   const poll = useCallback(async () => {
     try {
-      const { alerts } = await getAlerts(true);
+      const { alerts } = await getAlerts();
       if (!alerts.length) return;
       const now = Date.now();
       setToasts(prev => {
