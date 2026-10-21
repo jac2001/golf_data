@@ -19,7 +19,7 @@ case "$f" in
     case "$f" in
       "$ROOT"/scripts/validation/*|"$ROOT"/scripts/predictions/*|"$ROOT"/scripts/features/*|"$ROOT"/scripts/scrapers/*|"$ROOT"/api/*)
         for t in scripts/validation/test_prediction_integrity.py scripts/validation/test_euro_integrity.py scripts/validation/test_model_manifest.py scripts/validation/test_duplicate_defs.py \
-                 scripts/features/test_euro_features.py scripts/scrapers/test_euro_schedule.py scripts/scrapers/test_euro_purses.py \
+                 scripts/features/test_euro_features.py scripts/scrapers/test_euro_schedule.py scripts/scrapers/test_euro_purses.py scripts/scrapers/test_event_guard.py scripts/scrapers/test_event_names.py \
                  api/test_routes.py api/test_owner_guard.py; do
           out=$(cd "$ROOT" && "$PY" "$t" 2>&1) || fail "$t failed after editing ${f#$ROOT/}:" "$out"
         done

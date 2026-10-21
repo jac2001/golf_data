@@ -88,6 +88,7 @@ jobs:
           python3 scripts/scrapers/test_euro_purses.py
           python3 scripts/validation/test_model_manifest.py
           python3 scripts/scrapers/test_event_guard.py
+          python3 scripts/scrapers/test_event_names.py
           python3 scripts/scrapers/test_dg_historical.py
           python3 scripts/test_season_resolver.py
           python3 scripts/features/test_event_dates.py

@@ -90,6 +90,15 @@ def test_unknown_name_fails_closed():
     assert not same_event("", "")
 
 
+def test_guard_uses_same_event_rules():
+    from event_guard import names_match
+
+    for a, b in SAME:
+        assert names_match(a, b) and names_match(b, a), (a, b)
+    for a, b in DIFFERENT:
+        assert not names_match(a, b) and not names_match(b, a), (a, b)
+
+
 if __name__ == "__main__":
     tests = [(n, f) for n, f in list(globals().items()) if n.startswith("test_") and callable(f)]
     passed = 0

@@ -52,20 +52,8 @@ def _tokens(name: str) -> set[str]:
 
 
 def names_match(payload_name: str, schedule_name: str) -> bool:
-    """Do two event names plausibly describe the same tournament?
+    """Compare event labels using conservative normalization and known aliases."""
+    # Import at call time: event_names imports our shared _words helper.
+    from event_names import same_event
 
-    Distinctive-token overlap: 'Bank of Utah Championship' vs
-    'Presidents Cup' shares nothing; 'THE CJ CUP Byron Nelson' vs
-    'CJ Cup Byron Nelson' overlaps fully. Unknown schedule name
-    (missing tid) fails CLOSED — no label, no write.
-    """
-    a, b = _tokens(payload_name), _tokens(schedule_name)
-    if not a and not b:
-        # Names made only of filler ("The Open Championship", "U.S. Open"):
-        # nothing distinctive to overlap, so they must match word for word.
-        wa, wb = _words(payload_name), _words(schedule_name)
-        return bool(wa) and wa == wb
-    if not a or not b:
-        return False
-    overlap = len(a & b) / min(len(a), len(b))
-    return overlap >= 0.5
+    return same_event(payload_name, schedule_name)

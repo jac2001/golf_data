@@ -53,29 +53,52 @@ def schedule_names() -> tuple[str, ...]:
 
 
 def same_event(payload_name: str, schedule_name: str) -> bool:
-    """True when the two names plausibly describe the same tournament.
+    """True when the two names describe the same tournament.
 
-    TODO(Jack): implement. The tests in test_event_names.py are the spec:
-    SAME pairs must match and DIFFERENT pairs must not, plus the old
-    behaviour (accents fold, an empty name fails closed, names made only
-    of filler match only themselves).
-
-    Tools: _words(name) folds accents and punctuation and lowercases
-    ("Open de España" -> ["open", "de", "espana"]); _STOP is the current
-    filler set; schedule_names() is the corpus. Two directions people
-    take, pick one and say why in a comment:
-      - a hand list of sponsor / generic words that never count alone
-      - data: weigh each word by how many different events use it
-    Whatever the rule, it must fail CLOSED: when unsure, say different.
-    A refused feed costs a re-fetch; an accepted wrong one is the bug.
-
-    Two traps found while checking that the tests can all pass together:
-      - If you count words per event, PGA ids keep their number across
-        years (R2025010 / R2026010) but DP World Tour ids don't, so one
-        renamed DPWT event looks like several.
-      - _STOP mixes two kinds of word. "the", "presented", "by" never
-        identify anything; "championship" vs "invitational" is the only
-        difference between "Genesis Championship" and "Genesis
-        Invitational".
+    Jack's rule (Oct 21): exact match after normalizing (accents and
+    punctuation folded, "the" dropped, anything from "presented by" on cut,
+    DS Automobiles' year-numbered "NNdeg" token dropped), else a hand
+    alias table for known rewordings. Fails closed: a new wording no alias
+    covers is refused (a red run and a re-fetch, never another event's
+    data). Spec: test_event_names.py.
     """
-    raise NotImplementedError
+    
+    # Explicit aliases preserve event identity; removing sponsors globally
+    # would collapse PGA Championship and BMW PGA Championship, for example.
+    aliases = {
+        "butterfield bermuda championship": "bermuda championship",
+        "abu dhabi aldar championship": "abu dhabi championship",
+        "cognizant classic in palm beaches": "cognizant classic",
+        "mexico open at vidantaworld": "vidantaworld mexico open",
+        "waste management phoenix open": "wm phoenix open",
+        "fedex st jude invitational": "fedex st jude championship",
+        "masters tournament": "masters",
+    }
+    
+    def normalize(name: str) -> list[str]:
+        words = [word for word in _words(name) if word != "the"]
+        if (
+            len(words) == 5
+            and words[:2] == ["ds", "automobiles"]
+            and words[3:] == ["open", "ditalia"]
+            and words[2].endswith("deg")
+            and words[2][:-3].isdigit()
+        ):
+            words = words[:2] + words[3:]
+        for i in range(len(words) - 1):
+            if words[i:i + 2] == ['presented', 'by']:
+                return words[:i]
+        return words
+    a = normalize(payload_name)
+    b = normalize(schedule_name)
+    if not a or not b:
+        return False
+    
+    if a == b:
+        return True
+    
+    a_name = " ".join(a)
+    b_name = " ".join(b)
+    a_name = aliases.get(a_name, a_name)
+    b_name = aliases.get(b_name, b_name)
+    return a_name == b_name
