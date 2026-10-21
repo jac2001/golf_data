@@ -91,8 +91,9 @@ were silently off after the move; it now uses `$CLAUDE_PROJECT_DIR`.
 **Phase C: consolidate** (Oct 21)
 - [x] #7 weather: `_freshen` called the Open-Meteo script (exit 1, other format). The PGA daily
       snapshot is `scrapers/fetch_weather_pga.py`; `_freshen` logs failures and uses the API's own
-      interpreter. Follow-up: `_freshen` ages files by mtime, which on Render is the deploy time, so a
-      stale file looks fresh for one TTL after every deploy. Age by the date inside the file (rule 2).
+      interpreter. `_freshen` now ages files by the time written inside them (leaderboard
+      meta `fetched_at`, weather `saved_at`, DG odds `last_updated`) or this process's last good
+      fetch, never mtime (Oct 21); weather stamps are written in UTC.
 - [x] #8 one `/api/model-comparison` (the HTTP-served one); `_dg_pre_tournament_path` accepts
       `_latest` only for its own event. `api/test_routes.py`: route uniqueness + contract.
 - [x] #9 lineup (Jack, Oct 21): strategy-file trio views deleted (This Week "Model lineup" tab +

@@ -60,11 +60,55 @@ OUTPUTS_DIR  = PROJECT_ROOT / "outputs"
 # falls back to the newest existing file (served with its honest timestamp).
 CLOUD_FETCH = os.environ.get("CLOUD_FETCH", "") == "1"
 
-# kind → (newest-file glob under data/, TTL seconds, command builder)
+def _parse_stamp(raw) -> float | None:
+    """Epoch seconds from a timestamp written INSIDE a data file.
+
+    Offsets are honoured ("…+00:00", "… UTC"). A naive stamp is read as
+    America/Chicago, where CI writes; a naive stamp Render wrote in UTC then
+    only looks older, which costs one refetch, never a stale file served as
+    fresh. Unparseable -> None (treated as stale).
+    """
+    from datetime import datetime as _dt
+    from zoneinfo import ZoneInfo
+    s = str(raw or "").strip()
+    if not s:
+        return None
+    s = s.replace(" UTC", "+00:00").replace("Z", "+00:00")
+    try:
+        d = _dt.fromisoformat(s)
+    except ValueError:
+        return None
+    if d.tzinfo is None:
+        d = d.replace(tzinfo=ZoneInfo("America/Chicago"))
+    return d.timestamp()
+
+
+def _stamp_json(rel: str, key: str):
+    def read(_path: Path) -> float | None:
+        try:
+            return _parse_stamp(json.loads((DATA_DIR / rel).read_text()).get(key))
+        except Exception:
+            return None
+    return read
+
+
+def _stamp_csv(col: str):
+    def read(path: Path) -> float | None:
+        try:
+            return _parse_stamp(pd.read_csv(path, usecols=[col], nrows=1)[col].iloc[0])
+        except Exception:
+            return None
+    return read
+
+
+# kind → this event's file, TTL, command builder, and "stamp": the time
+# written INSIDE the file. Never the mtime: Render and CI check files out
+# fresh, so after a deploy every file looked minutes old (rule 2).
 _FRESHEN_SPECS: dict[str, dict] = {
     "leaderboard": {
         "glob": "live/leaderboard_r*.csv",
         "path": lambda tid: f"live/leaderboard_{tid.lower()}.csv",
+        "stamp": lambda tid: _stamp_json(f"live/leaderboard_{tid.lower()}_meta.json", "fetched_at"),
         "ttl": 300,
         "cmd": lambda tid: [sys.executable, "scripts/scrapers/fetch_live_leaderboard.py",
                             "--tournament-id", tid],
@@ -73,6 +117,9 @@ _FRESHEN_SPECS: dict[str, dict] = {
     "odds": {
         "glob": "datagolf/dg_outrights_R*.csv",
         "path": lambda tid: f"datagolf/dg_outrights_{tid.upper()}.csv",
+        # DG's own last_updated: can be hours old overnight even right after
+        # a fetch; _freshen_fetched_ok keeps that from refetching each minute.
+        "stamp": lambda tid: _stamp_csv("last_updated"),
         "ttl": 900,
         "cmd": lambda tid: [sys.executable, "scripts/scrapers/fetch_dg_odds.py",
                             "--tournament-id", tid, "--market", "all"],
@@ -81,6 +128,7 @@ _FRESHEN_SPECS: dict[str, dict] = {
     "weather": {
         "glob": "weather/R*.json",
         "path": lambda tid: f"weather/{tid.upper()}.json",
+        "stamp": lambda tid: _stamp_json(f"weather/{tid.upper()}.json", "saved_at"),
         "ttl": 3 * 3600,
         "cmd": lambda tid: [sys.executable, "scripts/scrapers/fetch_weather_pga.py",
                             "--tid", tid],
@@ -98,6 +146,7 @@ OWNER_ONLY = [Depends(require_owner)]
 
 _freshen_lock = threading.Lock()
 _freshen_last_attempt: dict[str, float] = {}
+_freshen_fetched_ok: dict[tuple[str, str], float] = {}  # (kind, tid) -> this process's last good fetch
 _FRESHEN_RETRY_COOLDOWN = 60  # seconds between fetch attempts after a failure
 
 
@@ -114,12 +163,15 @@ def _freshen(kind: str) -> None:
     if spec is None:
         return
     try:
-        # Age of THIS event's file: a fresh file for another event (last
-        # week's, an iCloud copy) must not stop this week's refetch
-        # (audit finding 6). The mtime is the running instance's own write.
+        # Age of THIS event's file (audit finding 6), by the newer of the
+        # time written inside it and this process's own last good fetch.
         cur = _get_tournament_id()
-        own = DATA_DIR / spec["path"](cur) if cur and "path" in spec else None
-        age = (time.time() - own.stat().st_mtime) if own is not None and own.exists() else float("inf")
+        own = DATA_DIR / spec["path"](cur) if cur else None
+        stamps = [_freshen_fetched_ok.get((kind, cur))]
+        if own is not None and own.exists():
+            stamps.append(spec["stamp"](cur)(own))
+        newest = max((t for t in stamps if t is not None), default=None)
+        age = time.time() - newest if newest is not None else float("inf")
         if age <= spec["ttl"]:
             return
         now = time.time()
@@ -134,7 +186,9 @@ def _freshen(kind: str) -> None:
                 spec["cmd"](tid), cwd=PROJECT_ROOT,
                 capture_output=True, text=True, timeout=spec["timeout"],
             )
-            if proc.returncode != 0:
+            if proc.returncode == 0:
+                _freshen_fetched_ok[(kind, tid)] = time.time()
+            else:
                 # Still served stale, but say so (audit finding 7: this
                 # failed silently for weeks).
                 tail = (proc.stderr or proc.stdout or "").strip().splitlines()[-3:]

@@ -16,7 +16,7 @@ its saved_at stays an honest stale timestamp.
 import argparse
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -82,7 +82,7 @@ def save_weather_snapshot(tid: str, log=print) -> bool:
             "title": w.get("title", ""),
             "daily": w["daily"],
             "hourly": w.get("hourly", []),
-            "saved_at": datetime.now().isoformat(),
+            "saved_at": datetime.now(timezone.utc).isoformat(),
         }
         WEATHER_DIR.mkdir(parents=True, exist_ok=True)
         out_path.write_text(json.dumps(result, indent=2))
