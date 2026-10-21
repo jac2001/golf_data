@@ -23,7 +23,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { ImageResponse } from "next/og";
 import { getSql, MODEL_API } from "@/lib/db";
-import { lookupResult } from "@/lib/resultLookup";
+import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 
 export const runtime = "nodejs";
 
@@ -104,7 +104,9 @@ export async function GET(req: Request) {
   // ── One board per event ─────────────────────────────────────────────────
   const slates: Slate[] = [];
   let estimated = false;   // any event paid from the purse table, not official money
+  let weekIncomplete = false;  // a golfer's result couldn't be matched (shared name, no id)
   for (const ev of weekEvents) {
+    let incomplete = false;
     const earn = await modelApi(`/api/results/earnings?tournament_id=${ev.tournament_id}`);
     if (!earn?.settled) return fail("event not settled yet", 403);
     estimated ||= !!earn.earnings_estimated;
@@ -115,10 +117,12 @@ export async function GET(req: Request) {
       { user_id: string; user_name: string; player_name: string; player_id: string | null }[];
     const rows = new Map<string, Row>();
     for (const p of picks) {
-      const hit = lookupResult(table, p, "recap");
+      const { hit, unresolved } = resolvePick(table, p, "recap");
       const r = rows.get(p.user_id) ?? { user_id: p.user_id,
         user_name: p.user_id === "model" ? "The Model" : p.user_name, total: 0, golfers: [] };
-      const g = { player: p.player_name, earnings: hit?.earnings ?? 0, position: hit?.position ?? "—" };
+      const g = { player: p.player_name, earnings: hit?.earnings ?? 0,
+                  position: unresolved ? UNRESOLVED_POS : hit?.position ?? "—" };
+      if (unresolved) incomplete = true;
       r.total += g.earnings; r.golfers.push(g); rows.set(p.user_id, r);
     }
     const board = [...rows.values()].sort((a, b) => b.total - a.total);
@@ -133,7 +137,9 @@ export async function GET(req: Request) {
     const decider = byMoney.find(g => !shared.has(nameKey(g.player)) && g.earnings > margin);
     const credit = decider ? { golfer: decider, decided: true }
       : byMoney[0] && byMoney[0].earnings > 0 ? { golfer: byMoney[0], decided: false } : null;
-    slates.push({ ev, board, star, credit });
+    weekIncomplete ||= incomplete;
+    // No "decided it" off a board with an unmatched golfer: it may not be true.
+    slates.push({ ev, board, star, credit: incomplete ? null : credit });
   }
   if (!slates.length) return fail("no picks for this group/event", 404);
 
@@ -151,12 +157,14 @@ export async function GET(req: Request) {
   const tiers = model ? humans.filter(h => h.total === model.total) : [];
   const twoTours = slates.length > 1;
   // A tie with the model is a tie, not a loss (recap check, 2026-10-20).
-  const verdict = !model || !humans.length ? "" : humans.length === 1
+  const verdict = !model || !humans.length ? "" : weekIncomplete
+    ? "RESULT INCOMPLETE: A GOLFER IS UNRESOLVED"
+    : humans.length === 1
     ? (beaters.length ? `${humans[0].user_name.toUpperCase()} BEAT THE MODEL`
       : tiers.length ? `${humans[0].user_name.toUpperCase()} TIED THE MODEL`
       : `THE MODEL BEAT ${humans[0].user_name.toUpperCase()}`) + (twoTours ? " THIS WEEK" : "")
     : `${beaters.length} OF ${humans.length} PLAYERS BEAT THE MODEL` + (tiers.length ? ` · ${tiers.length} TIED IT` : "");
-  const verdictGood = beaters.length > 0;
+  const verdictGood = !weekIncomplete && beaters.length > 0;
 
   const upcoming = events.filter(e => !e.finished && !e.locked).sort((a, b) => a.start_date.localeCompare(b.start_date));
   const nextEvents = upcoming.filter(e => days(e.start_date, upcoming[0].start_date) <= 3);

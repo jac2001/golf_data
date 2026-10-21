@@ -14,7 +14,7 @@
  */
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
-import { lookupResult } from "@/lib/resultLookup";
+import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 import { summarizeSlate, ranked, lastName as last } from "@/lib/matchCore";
 import { openEventLocks, pickVisible } from "@/lib/eventLocks";
 
@@ -121,12 +121,16 @@ export async function GET(req: Request) {
     const score = (school: string) => {
       const alumni = (field?.schools ?? []).find(s => s.school === school)?.players ?? [];
       const counted = alumni.map(n => {
-        const hit = lookupResult(table?.players, { player_name: n }, "match/college");
-        return { name: n, position: hit?.position ?? "—", earnings: graded ? (hit?.earnings ?? 0) : 0,
-                 thru: hit?.thru ?? "", to_par: hit?.to_par ?? null, round: hit?.round ?? null };
+        const { hit, unresolved } = resolvePick(table?.players, { player_name: n }, "match/college");
+        return { name: n, position: unresolved ? UNRESOLVED_POS : hit?.position ?? "—",
+                 earnings: graded ? (hit?.earnings ?? 0) : 0,
+                 thru: hit?.thru ?? "", to_par: hit?.to_par ?? null, round: hit?.round ?? null,
+                 ...(unresolved ? { unresolved: true } : {}) };
       }).sort((a, b) => b.earnings - a.earnings);
+      // An unresolved alumnus could belong in the counting two: the total is a floor.
       return { counting: counted.slice(0, 2), bench: counted.slice(2, 4),
-               total: counted.slice(0, 2).reduce((s, c) => s + c.earnings, 0) };
+               total: counted.slice(0, 2).reduce((s, c) => s + c.earnings, 0),
+               ...(counted.some(c => c.unresolved) ? { incomplete: true } : {}) };
     };
     const lines = ranked(visible.map(p => ({ user_id: p.user_id, user_name: nameOf(p.user_id),
       school: p.school, ...score(p.school) })));

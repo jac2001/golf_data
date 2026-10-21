@@ -3,13 +3,15 @@
  * event's money table, rank the group and answer "what needs to happen?"
  * Pure, so it's testable without a session (the route wraps it).
  */
-import { lookupResult } from "./resultLookup";
+import { resolvePick, UNRESOLVED_POS } from "./resultLookup.ts";
 
 export type PlayerMoney = { player_name: string; earnings: number; position: string;
   up_one?: number; thru?: string; to_par?: number | null; round?: number | null };
 export type Golfer = { name: string; position: string; earnings: number; up_one: number; thru: string;
-  to_par: number | null; round: number | null; reason?: string | null };
-export type MemberLine = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number };
+  to_par: number | null; round: number | null; reason?: string | null; unresolved?: boolean };
+/** incomplete: a golfer's result couldn't be matched (shared name, no id), so total is a floor. */
+export type MemberLine = { user_id: string; user_name: string; total: number; golfers: Golfer[]; rank: number;
+  incomplete?: boolean };
 
 const money = (v: number) =>
   v >= 1_000_000 ? `$${(v / 1_000_000).toFixed(2)}M` : `$${Math.round(v).toLocaleString()}`;
@@ -31,9 +33,10 @@ export function summarizeSlate(
 ) {
   const byUser = new Map<string, Golfer[]>();
   for (const p of picks) {
-    const hit = lookupResult(table, p, "match");
+    const { hit, unresolved } = resolvePick(table, p, "match");
     byUser.set(p.user_id, [...(byUser.get(p.user_id) ?? []), {
-      name: p.player_name, position: hit?.position ?? "—",
+      name: p.player_name, position: unresolved ? UNRESOLVED_POS : hit?.position ?? "—",
+      ...(unresolved ? { unresolved: true } : {}),
       earnings: graded ? (hit?.earnings ?? 0) : 0,
       up_one: hit?.up_one ?? 0, thru: hit?.thru ?? "",
       to_par: hit?.to_par ?? null, round: hit?.round ?? null,
@@ -44,7 +47,9 @@ export function summarizeSlate(
     user_id: uid, user_name: nameOf(uid),
     total: golfers.reduce((s, g) => s + g.earnings, 0),
     golfers: golfers.sort((a, b) => b.earnings - a.earnings),
+    ...(golfers.some(g => g.unresolved) ? { incomplete: true } : {}),
   })));
+  const incomplete = lines.some(l => l.incomplete);
 
   const mine = lines.find(l => l.user_id === me) ?? null;
   const humans = lines.filter(l => l.user_id !== "model");
@@ -54,7 +59,9 @@ export function summarizeSlate(
   // chasing you. The model counts — it's in the race.
   let rival: MemberLine | null = null;
   let story = "";
-  if (mine && graded && lines.length > 1) {
+  if (mine && graded && incomplete) {
+    story = "A golfer's result can't be matched yet (two players share the name), so these totals are incomplete.";
+  } else if (mine && graded && lines.length > 1) {
     const above = lines.filter(l => l.total > mine.total).sort((a, b) => a.total - b.total)[0];
     const below = lines.filter(l => l.user_id !== mine.user_id && l.total <= mine.total)
       .sort((a, b) => b.total - a.total)[0];
@@ -73,6 +80,7 @@ export function summarizeSlate(
   }
   return {
     lines,
+    incomplete,
     rival: rival ? { user_id: rival.user_id, user_name: rival.user_name, total: rival.total } : null,
     gap: rival && mine ? rival.total - mine.total : 0,
     story,

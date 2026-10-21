@@ -9,7 +9,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
-import { lookupResult } from "@/lib/resultLookup";
+import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 import { visibleUserIds } from "@/lib/gameScope";
 import { openEventLocks } from "@/lib/eventLocks";
 
@@ -30,14 +30,19 @@ async function fetchJson<T>(url: string): Promise<T | null> {
 
 /** A school's score: its best two alumni checks that week. */
 function schoolScore(school: string, rosters: School[], table: EarningsResp | null):
-  { total: number | null; counted: { player: string; earnings: number; position: string }[] } {
+  { total: number | null; counted: { player: string; earnings: number; position: string; unresolved?: boolean }[];
+    incomplete?: boolean } {
   if (!table || (!table.settled && !table.projected)) return { total: null, counted: [] };
   const roster = rosters.find(s => s.school === school)?.players ?? [];
-  const earned = roster.map(p => {
-    const hit = lookupResult(table.players, { player_name: p }, "collegeboard");
-    return { player: p, earnings: hit?.earnings ?? 0, position: hit?.position ?? "—" };
-  }).sort((a, b) => b.earnings - a.earnings).slice(0, 2);
-  return { total: earned.reduce((s, e) => s + e.earnings, 0), counted: earned };
+  const all = roster.map(p => {
+    const { hit, unresolved } = resolvePick(table.players, { player_name: p }, "collegeboard");
+    return { player: p, earnings: hit?.earnings ?? 0, position: unresolved ? UNRESOLVED_POS : hit?.position ?? "—",
+             ...(unresolved ? { unresolved: true } : {}) };
+  }).sort((a, b) => b.earnings - a.earnings);
+  const earned = all.slice(0, 2);
+  // An unresolved alumnus could belong in the best two: the total is a floor.
+  return { total: earned.reduce((s, e) => s + e.earnings, 0), counted: earned,
+           ...(all.some(e => e.unresolved) ? { incomplete: true } : {}) };
 }
 
 export async function GET(req: Request) {

@@ -12,7 +12,7 @@
 
 import { ImageResponse } from "next/og";
 import { getSql, MODEL_API } from "@/lib/db";
-import { lookupResult } from "@/lib/resultLookup";
+import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 import { openEventLocks } from "@/lib/eventLocks";
 
 export const runtime = "nodejs";
@@ -81,14 +81,18 @@ export async function GET(req: Request) {
     const estimated = !!earn?.earnings_estimated;
 
     const scoreOf = (ps: { player_name: string; player_id?: string | null }[]) =>
-      ps.reduce((s, p) => s + (lookupResult(table, p, "receipt")?.earnings ?? 0), 0);
+      ps.reduce((s, p) => s + (resolvePick(table, p, "receipt").hit?.earnings ?? 0), 0);
+    // A golfer whose result can't be matched (shared name, no id) makes every
+    // total that includes him a floor: say so instead of ranking on it.
+    const unresolvedIn = (ps: { player_name: string; player_id?: string | null }[]) =>
+      ps.some(p => resolvePick(table, p, "receipt").unresolved);
 
     lines = mine.map(p => {
-      const hit = lookupResult(table, p, "receipt");
+      const { hit, unresolved } = resolvePick(table, p, "receipt");
       return {
-        label: hit?.position ? `#${hit.position}` : "—",
+        label: unresolved ? UNRESOLVED_POS : hit?.position ? `#${hit.position}` : "—",
         player: p.player_name,
-        value: hit ? money(hit.earnings) : "$0",
+        value: unresolved ? "unresolved" : hit ? money(hit.earnings) : "$0",
         // In the fade game a player who cashed is the mistake.
         color: hit && hit.earnings > 0 ? (fade ? RED : GREEN) : (fade ? GREEN : MUTED),
       };
@@ -105,9 +109,12 @@ export async function GET(req: Request) {
     for (const [u] of totals) totals.set(u, scoreOf(picks.filter(p => p.user_id === u)));
     const sorted = [...totals.entries()].sort((a, b) => fade ? a[1] - b[1] : b[1] - a[1]);
     const rank = sorted.findIndex(([u]) => u === uid) + 1;
-    rankText = `#${rank} of ${sorted.length}`;
+    const incomplete = unresolvedIn(picks);
+    rankText = incomplete ? `#${rank} of ${sorted.length} (incomplete)` : `#${rank} of ${sorted.length}`;
     const modelTotal = totals.get("model");
-    if (modelTotal != null && uid !== "model") {
+    if (incomplete && uid !== "model") {
+      verdict = "RESULT INCOMPLETE";
+    } else if (modelTotal != null && uid !== "model") {
       const d = fade ? modelTotal - myTotal : myTotal - modelTotal;
       verdict = d >= 0 ? `BEAT THE MODEL BY ${money(d)}` : `MODEL WINS BY ${money(-d)}`;
     }
@@ -124,7 +131,9 @@ export async function GET(req: Request) {
     const avail = Number(rounds?.rounds_available ?? 0);
 
     const scoreRow = (p: { round: number; player_name: string; player_id?: string | null }): number | null => {
-      const s = lookupResult(table, p, "receipt/round")?.rounds?.[String(p.round)];
+      const { hit, unresolved } = resolvePick(table, p, "receipt/round");
+      if (unresolved) return null;           // can't tell whose round it is: no score, no penalty
+      const s = hit?.rounds?.[String(p.round)];
       if (s !== undefined) return s;
       return p.round <= avail ? 5 : null;  // missed round penalty
     };

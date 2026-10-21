@@ -15,7 +15,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
-import { lookupResult } from "@/lib/resultLookup";
+import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 import { visibleUserIds } from "@/lib/gameScope";
 import { openEventLocks } from "@/lib/eventLocks";
 
@@ -59,13 +59,17 @@ async function seasonStandings(ids: string[], me: string) {
   for (const t of tids) {
     const table = earningsByTid.get(t);
     const entrants = new Map<string, { u: { user_id: string; user_name: string }; total: number }>();
+    let unresolved = false;
     for (const p of picks.filter(p => p.tournament_id === t)) {
       const e = entrants.get(p.user_id) ?? { u: p, total: 0 };
-      e.total += lookupResult(table?.players, p, "fadeboard")?.earnings ?? 0;
+      const r = resolvePick(table?.players, p, "fadeboard");
+      e.total += r.hit?.earnings ?? 0;
+      unresolved ||= r.unresolved;
       entrants.set(p.user_id, e);
     }
     for (const e of entrants.values()) row(e.u).entered += 1;
-    if (!table?.settled) continue;
+    // No win awarded off an event with an unmatched golfer: it may not be true.
+    if (!table?.settled || unresolved) continue;
     for (const e of entrants.values()) row(e.u).settled += 1;
     const best = Math.min(...[...entrants.values()].map(e => e.total));
     for (const e of entrants.values()) if (e.total === best) row(e.u).wins += 1;
@@ -111,7 +115,8 @@ export async function GET(req: Request) {
   }
 
   type Row = { user_id: string; user_name: string; total: number | null;
-    fades: { player: string; earnings: number | null; position: string | null }[] };
+    fades: { player: string; earnings: number | null; position: string | null; unresolved?: boolean }[];
+    incomplete?: boolean };
   const users = new Map<string, Row>();
 
   for (const p of picks) {
@@ -119,9 +124,11 @@ export async function GET(req: Request) {
     if (!locked) {
       u.fades.push({ player: "hidden", earnings: null, position: null });
     } else {
-      const hit = lookupResult(table?.players, p, "fadeboard");
-      const earnings = table?.settled ? (hit?.earnings ?? 0) : null;
-      u.fades.push({ player: p.player_name, earnings, position: hit?.position ?? null });
+      const { hit, unresolved } = resolvePick(table?.players, p, "fadeboard");
+      const earnings = table?.settled && !unresolved ? (hit?.earnings ?? 0) : null;
+      u.fades.push({ player: p.player_name, earnings, position: unresolved ? UNRESOLVED_POS : hit?.position ?? null,
+                     ...(unresolved ? { unresolved: true } : {}) });
+      if (unresolved && table?.settled) u.incomplete = true;
       if (earnings != null) u.total = (u.total ?? 0) + earnings;
     }
     users.set(p.user_id, u);

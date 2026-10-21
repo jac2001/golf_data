@@ -14,7 +14,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { roundLockAt } from "@/lib/lockTime";
 import { getSql, MODEL_API } from "@/lib/db";
-import { lookupResult } from "@/lib/resultLookup";
+import { resolvePick } from "@/lib/resultLookup";
 import { visibleUserIds } from "@/lib/gameScope";
 
 const PENALTY = 5;
@@ -75,7 +75,8 @@ export async function GET(req: Request) {
   await Promise.all(tids.map(async t => roundsByTid.set(t, await roundsFor(t))));
 
   type Row = { user_id: string; user_name: string; total: number; scored: number;
-    rounds: Record<string, { player: string; score: number | null; visible: boolean }> };
+    rounds: Record<string, { player: string; score: number | null; visible: boolean; unresolved?: boolean }>;
+    incomplete?: boolean };
   const users = new Map<string, Row>();
 
   for (const p of picks) {
@@ -83,9 +84,11 @@ export async function GET(req: Request) {
     const visible = p.round <= maxLocked;
     const table = roundsByTid.get(p.tournament_id);
     const avail = table?.rounds_available ?? 0;
-    const hit = lookupResult(table?.players, p, "roundboard");
+    const { hit, unresolved } = resolvePick(table?.players, p, "roundboard");
     let score: number | null = null;
-    if (visible) {
+    // Unresolved (shared name, no id): we can't tell whose round it is, so
+    // no score and no missed-round penalty; the row says so.
+    if (visible && !unresolved) {
       const s = hit?.rounds?.[String(p.round)];
       if (s !== undefined) score = s;
       // Penalty only once the field has finished that round — before that
@@ -93,7 +96,9 @@ export async function GET(req: Request) {
       else if (p.round < avail || (p.round <= avail && maxLocked > p.round)) score = PENALTY;
     }
     const u = users.get(p.user_id) ?? { user_id: p.user_id, user_name: p.user_name, total: 0, scored: 0, rounds: {} };
-    u.rounds[String(p.round)] = { player: visible ? p.player_name : "hidden", score, visible };
+    u.rounds[String(p.round)] = { player: visible ? p.player_name : "hidden", score, visible,
+                                  ...(visible && unresolved ? { unresolved: true } : {}) };
+    if (visible && unresolved) u.incomplete = true;
     if (score != null) { u.total += score; u.scored += 1; }
     users.set(p.user_id, u);
   }

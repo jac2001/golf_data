@@ -14,7 +14,7 @@
  */
 import { auth } from "@clerk/nextjs/server";
 import { getSql, MODEL_API } from "@/lib/db";
-import { lookupResult } from "@/lib/resultLookup";
+import { resolvePick, UNRESOLVED_POS } from "@/lib/resultLookup";
 import { nameKey } from "@/lib/names";
 import { openEventLocks, pickVisible } from "@/lib/eventLocks";
 import { weeklyWinners } from "@/lib/weeklyWinners";
@@ -26,8 +26,9 @@ type EarningsResp = {
 };
 type EventLine = {
   tour: "pga" | "euro";
-  picks: { player: string; earnings: number | null; position: string | null }[];
+  picks: { player: string; earnings: number | null; position: string | null; unresolved?: boolean }[];
   event_total: number; settled: boolean; projected: boolean;
+  incomplete?: boolean;   // a pick's result couldn't be matched: event_total is a floor
 };
 type MemberRow = {
   user_id: string; user_name: string;
@@ -35,6 +36,7 @@ type MemberRow = {
   banked: number;   // settled money only — final, never moves again
   live: number;     // projected money from events still in progress
   events: Record<string, EventLine>;
+  incomplete?: boolean;
 };
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -98,10 +100,15 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     const tour: "pga" | "euro" = p.tournament_id.startsWith("E") ? "euro" : "pga";
     const ev = m.events[p.tournament_id] ?? { tour, picks: [], event_total: 0, settled: false, projected: false };
     const table = earnings.get(p.tournament_id);
-    const hit = lookupResult(table?.players, p, "standings");
+    const { hit, unresolved } = resolvePick(table?.players, p, "standings");
     const gradable = !!(table?.settled || table?.projected);
-    const earned = gradable ? (hit?.earnings ?? 0) : null;
-    ev.picks.push({ player: p.player_name, earnings: earned, position: hit?.position ?? null });
+    // Unresolved (shared name, no id): no money until it's matched, and the
+    // event total says it's incomplete rather than showing a $0 golfer.
+    const earned = gradable && !unresolved ? (hit?.earnings ?? 0) : null;
+    ev.picks.push({ player: p.player_name, earnings: earned,
+                    position: unresolved ? UNRESOLVED_POS : hit?.position ?? null,
+                    ...(unresolved ? { unresolved: true } : {}) });
+    if (unresolved && gradable) { ev.incomplete = true; m.incomplete = true; }
     if (earned != null) {
       ev.event_total += earned;
       m.total += earned;
