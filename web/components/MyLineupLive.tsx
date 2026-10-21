@@ -175,7 +175,7 @@ export default function MyLineupLive({ picks, tournament, holeScores }: Props) {
   if (!picks.length) {
     return (
       <div style={{ padding: 24, textAlign: "center", color: "var(--bc-muted)", background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 10 }}>
-        No lineup found. Run the season strategy pipeline to generate picks.
+        No lineup for this event yet.
       </div>
     );
   }

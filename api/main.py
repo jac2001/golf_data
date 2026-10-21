@@ -2170,8 +2170,11 @@ def get_my_lineup_live() -> dict:
         if sr_path.exists():
             with open(sr_path) as f:
                 sr = json.load(f)
-            tournament_name = sr.get("tournament", tournament_name)
-            picks = [_flip(n) for n in sr.get("lineup", [])]
+            # Same rule as /api/lineup: an unversioned or other-event file is
+            # stale, never this week's lineup (audit finding 9).
+            if str(sr.get("tournament_id", "")) == tid:
+                tournament_name = sr.get("tournament", tournament_name)
+                picks = [_flip(n) for n in sr.get("lineup", [])]
 
     if not picks:
         return {"tournament_id": tid, "picks": [], "tournament": tournament_name}

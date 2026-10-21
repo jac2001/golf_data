@@ -324,7 +324,7 @@ export default function LivePage() {
       {activeTab === "mylineup" && (
         loadingLineup ? <Spinner /> : lineupData ? (
           <MyLineupLive picks={lineupData.picks} tournament={lineupData.tournament} holeScores={holeScores?.by_player} />
-        ) : <Empty text="No lineup found. Run the season strategy pipeline." />
+        ) : <Empty text="No lineup for this event yet." />
       )}
 
       {activeTab === "sg" && (
