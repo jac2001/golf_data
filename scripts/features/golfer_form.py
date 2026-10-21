@@ -39,7 +39,10 @@ COURSE_YEARS = 10          # an event's venue rarely stays put longer than this
 FIRST_SEASON = 2016        # older files have no reliable event dates
 # Events that move courses every year (event_id = tournament_id[5:]).
 ROTATING_EVENTS = {"026", "033", "100"}   # U.S. Open, PGA Championship, The Open
-MISSED = {"CUT", "MC", "WD", "W/D", "DQ", "MDF", "RTD"}
+# MDF ("made cut, didn't finish": the TOUR rule through 2019, Pebble Beach later) is NOT a
+# missed cut: the player made it. It carries no place, so parse_finish
+# returns None and the start is left out rather than called a miss.
+MISSED = {"CUT", "MC", "WD", "W/D", "DQ", "RTD"}
 
 
 def parse_finish(pos) -> int | str | None:

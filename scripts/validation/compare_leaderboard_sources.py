@@ -57,13 +57,41 @@ COLS = ["tournament_id", "player_id", "player_name", "position"]
 #
 # Done when: python3 scripts/validation/test_compare_leaderboard_sources.py
 # passes, plus one test of your own for decision (a) or (b).
-
-TRUST_RATE = None  # TODO(Jack): decision (c)
+# Yes, 5 should agree with T5 because its still worth the same place
+# No a cut is different than a withdraw. WD should be treated differently no matter when it happens
+# 
+TRUST_RATE = 0.99
 
 
 def agreement(pga: pd.DataFrame, dg: pd.DataFrame, worst_n: int = 5) -> dict:
-    raise NotImplementedError("TODO(Jack): agreement")
+    shared_events = set(pga['tournament_id']) & set(dg['tournament_id'])
+    pga_shared = pga[pga['tournament_id'].isin(shared_events)]
+    dg_shared = dg[dg["tournament_id"].isin(shared_events)]
+    compared = pga_shared.merge(
+        dg_shared,
+        on=['tournament_id', 'player_id'],
+        how='outer',
+        suffixes=('_pga', '_dg'),
+        indicator=True
+    )
+    both = compared[compared['_merge'] == 'both'].copy()
+    for column in ["position_pga", "position_dg"]:
+        both[column] = (
+        both[column]
+        .str.replace(r"^T(?=\d+$)", "", regex=True)
+        .replace({"W/D": "WD"})
+    )
 
+    both["matches"] = both["position_pga"] == both["position_dg"]
+    per_event = both.groupby('tournament_id')['matches'].mean().sort_values(kind='stable')
+    return {
+        "events": len(shared_events),
+        "pairs": len(both),
+        "match_rate": float(both["matches"].mean()) if len(both) else 0.0,
+        "only_pga": int((compared["_merge"] == "left_only").sum()),
+        "only_dg": int((compared['_merge'] == 'right_only').sum()),
+        "worst": [(tid, float(rate)) for tid, rate in per_event.head(worst_n).items()],
+    }
 
 # ── plumbing ──────────────────────────────────────────────────────────────────
 

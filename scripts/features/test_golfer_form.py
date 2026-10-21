@@ -48,6 +48,7 @@ def test_parse_finish():
     assert parse_finish("1") == 1
     assert parse_finish("CUT") == "MC" and parse_finish("W/D") == "MC" and parse_finish("DQ") == "MC"
     assert parse_finish("nan") is None
+    assert parse_finish("MDF") is None        # made the cut: never "MC"
 
 
 def test_recent_is_by_date_most_recent_first_max_5():

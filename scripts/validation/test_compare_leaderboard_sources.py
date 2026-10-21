@@ -64,7 +64,14 @@ def test_nothing_shared():
 
 
 # TODO(Jack): one test for decision (a) or (b).
-
+def test_untied_and_tied_spelling_agree():          # decision (a)
+    r = agreement(frame([("R2025003", "1", "5")]), frame([("R2025003", "1", "T5")]))
+    assert r["match_rate"] == 1.0
+    
+def test_cut_wd():
+    r = agreement(frame([("R2025528", "1", "CUT")]), frame([("R2025528", "1", "WD")]))
+    assert r['pairs'] == 1 and r['match_rate'] == 0.0
+    
 
 if __name__ == "__main__":
     tests = [(n, f) for n, f in sorted(globals().items()) if n.startswith("test_")]

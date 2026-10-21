@@ -69,7 +69,10 @@ and fix what watching them reveals.
 3. [~] **One place for data permissions.** Drafted Oct 20: `docs/DATA_PERMISSIONS.md`. Left: Jack's call on hiding raw DG displays; written questions to DataGolf and to Grant (PGA TOUR); the 78-event history gap is a DataGolf backfill (DG has every event) for the January retrain.
        Next from it: **move off PGA TOUR** where DataGolf covers it (table in the doc). Step 1 done Oct 20:
        `leaderboards_dg_*.csv` (season-correct ids, name/date/winner guard, 2016-2026 backfill, Tuesday
-       catch-up); why lines read it. Step 2: Jack's agreement check (`compare_leaderboard_sources.py`).
+       catch-up); why lines read it. Step 2 done Oct 20: Jack's agreement check passes, 99.75% of
+       49,491 finishes across 385 events (threshold 99%). The disagreements are MDF (the pre-2020 rule, and Pebble Beach's 54-hole cut after that)
+       (PGA TOUR gives a place, DG writes "MDF"). For the retrain: many scripts count MDF as a missed
+       cut (prediction_tracker made_cut labels, predict_tournament); fix before the model reads DG files.
        Power rankings dropped Oct 20.
 4. [ ] **Recruit one organizer and watch their group play** (Rick is
        the natural first), using the plan's invitation. Tournament 1
