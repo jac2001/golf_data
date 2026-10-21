@@ -1,32 +1,27 @@
-/* Phones (phone review, Oct 21): a one-line summary with a toggle; open,
-   the days sit in a 2x2 grid instead of 3 narrow cards + a wide Sunday.
-   Desktop: unchanged, the toggle never shows. */
-.toggle { display: none; }
-.days { display: flex; gap: 8px; flex-wrap: wrap; }
+/* Collapsed by default everywhere (Jack, Oct 21): a one-line summary with a
+   toggle. Open: a row of day cards on desktop, a 2x2 grid on phones (not 3
+   narrow cards + a wide Sunday). */
+.toggle {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  background: var(--bc-panel);
+  border: 1px solid var(--bc-line);
+  border-radius: 8px;
+  color: var(--bc-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+.heading { display: none; }
+.days { display: none; }
+.days.open { display: flex; gap: 8px; flex-wrap: wrap; }
 
 @media (max-width: 600px) {
-  .toggle {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 44px;
-    padding: 8px 12px;
-    background: var(--bc-panel);
-    border: 1px solid var(--bc-line);
-    border-radius: 8px;
-    color: var(--bc-text);
-    font: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 8px;
-  }
-  .days { display: none; }
-  .days.open {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .heading { display: none; }
+  .days.open { display: grid; grid-template-columns: 1fr 1fr; }
 }

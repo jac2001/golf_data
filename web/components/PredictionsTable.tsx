@@ -22,6 +22,7 @@ import { nameKey } from "@/lib/names";
 import { whyLine } from "@/lib/whyLine";
 import { considerHref } from "@/lib/consider";
 import Term from "@/components/Term";
+import { COLUMN_HELP } from "@/lib/columnHelp";
 import styles from "./PredictionsTable.module.css";
 
 type Props = {
@@ -54,14 +55,22 @@ const COLS: { key: SortCol; label: string; higherBetter: boolean; toggleKey: Col
   { key: "form_trend",         label: "Form",     higherBetter: true,  toggleKey: "form"  },
   { key: "model_vs_vegas_edge",label: "Our edge",     higherBetter: true,  toggleKey: "edge"  },
 ];
-// Header labels that have a plain-language explanation (Jack's lib/glossary.ts).
-const TERM_FOR: Partial<Record<ColKey, string>> = { sg: "SG", edge: "pp", ev: "EV" };
+// Does this week's data have anything for a column? Columns with nothing
+// (Odds, Move and EV since the DraftKings feed and the season strategy file
+// stopped) leave the picker instead of showing a column of dashes, and come
+// back on their own when a source does.
+const VALUE_OF: Record<ColKey, (p: PlayerPrediction) => unknown> = {
+  win: p => p.win_prob_sim ?? p.win_prob, top10: p => p.top10_prob_sim ?? p.top10_prob,
+  cut: p => p.cut_prob, owgr: p => p.world_rank, sg: p => p.season_sg_total, form: p => p.form_trend,
+  edge: p => p.model_vs_vegas_edge, odds: p => p.odds_to_win, move: p => p.dk_odds_direction || null,
+  ev: p => p.this_week_ev,
+};
 
 const TOGGLE_COLS: { key: ColKey; label: string; default: boolean }[] = [
   { key: "win",   label: "Win chance",     default: true  },
   { key: "top10", label: "Top-10 chance",  default: true  },
   { key: "odds",  label: "Odds",     default: true  },
-  { key: "cut",   label: "Makes cut",     default: false },
+  { key: "cut",   label: "Makes cut",     default: true  },
   { key: "owgr",  label: "World rank",     default: false },
   { key: "sg",    label: "Strokes gained", default: false },
   { key: "form",  label: "Form",     default: false },
@@ -222,6 +231,10 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
     </>
   );
 
+  const available = useMemo(() => new Set(TOGGLE_COLS.map(c => c.key)
+    .filter(k => players.some(p => { const v = VALUE_OF[k](p); return v != null && v !== ""; }))), [players]);
+  const shownCols = useMemo(() => new Set([...visibleCols].filter(k => available.has(k))), [visibleCols, available]);
+
   const th: React.CSSProperties = {
     padding: "7px 10px", borderBottom: "1px solid var(--bc-line)",
     fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, color: "var(--bc-muted)",
@@ -247,7 +260,6 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
           }}
         />
         <button
-          className={styles.desktopOnly}
           onClick={() => setPickerOpen(o => !o)}
           style={{
             background: pickerOpen ? "var(--bc-card)" : "var(--bc-panel)",
@@ -266,12 +278,12 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
 
         {pickerOpen && (
           <div style={{
-            position: "absolute", top: "calc(100% + 6px)", left: 212, zIndex: 20,
+            position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 20,
             background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 8,
             padding: 10, boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
             display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px",
           }}>
-            {TOGGLE_COLS.map(c => (
+            {TOGGLE_COLS.filter(c => available.has(c.key)).map(c => (
               <label key={c.key} style={{
                 display: "flex", alignItems: "center", gap: 6,
                 fontSize: "max(var(--fs-min), 0.8em)", color: "var(--bc-text)", cursor: "pointer",
@@ -283,7 +295,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                   onChange={() => toggleCol(c.key)}
                   style={{ accentColor: "var(--bc-green)", cursor: "pointer" }}
                 />
-                {c.label}
+                <Term help={COLUMN_HELP[c.key]}>{c.label}</Term>
               </label>
             ))}
           </div>
@@ -305,9 +317,6 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
           const playerIntel = intelMap.get(p.player_name.toLowerCase());
           const isPick = myPicksNorm.has(normName(p.player_name));
           const isOpen = openRow === p.player_name;
-          const pctOf = (sim?: number | null, base?: number | null, dp = 1) => {
-            const v = sim ?? base; return v == null ? "—" : `${(v * 100).toFixed(dp)}%`;
-          };
           return (
             <div key={p.player_name} className={`${styles.card} ${isPick ? styles.pick : ""}`}
               onClick={() => setOpenRow(isOpen ? null : p.player_name)}>
@@ -323,12 +332,15 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                 <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: 12 }}>{isOpen ? "Less ▾" : "More ▸"}</span>
               </div>
               <div className={styles.chips}>
-                <span className={styles.chip}><span className={styles.chipLabel}>Win</span>
-                  <span className={styles.chipValue} style={{ color: "var(--bc-green)" }}>{pctOf(p.win_prob_sim, p.win_prob)}</span></span>
-                <span className={styles.chip}><span className={styles.chipLabel}>Top 10</span>
-                  <span className={styles.chipValue} style={{ color: "var(--bc-yellow)" }}>{pctOf(p.top10_prob_sim, p.top10_prob)}</span></span>
-                <span className={styles.chip}><span className={styles.chipLabel}>Makes cut</span>
-                  <span className={styles.chipValue}>{pctOf(p.cut_prob, null, 0)}</span></span>
+                {CARD_ORDER.filter(k => shownCols.has(k)).map(k => {
+                  const c = chipOf(k, p);
+                  return (
+                    <span key={k} className={styles.chip}>
+                      <span className={styles.chipLabel}>{CHIP_LABEL[k]}</span>
+                      <span className={styles.chipValue} style={{ color: c.color }}>{c.text}</span>
+                    </span>
+                  );
+                })}
               </div>
               {whyByName.get(p.player_name) && (
                 <div style={{ color: "var(--bc-text)", fontSize: 13, marginTop: 6 }}>{whyByName.get(p.player_name)}</div>
@@ -344,21 +356,21 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
             <tr>
               <th style={{ ...th, textAlign: "center", width: 36 }}>#</th>
               <th style={{ ...th, textAlign: "left", minWidth: 160 }}>Player</th>
-              {COLS.filter(c => visibleCols.has(c.toggleKey)).map(c => (
+              {COLS.filter(c => shownCols.has(c.toggleKey)).map(c => (
                 <th
                   key={c.key}
                   style={sortCol === c.key ? { ...thActive, textAlign: "center" } : { ...th, textAlign: "center" }}
                   onClick={() => handleSort(c.key)}
                 >
-                  {TERM_FOR[c.toggleKey] ? <Term term={TERM_FOR[c.toggleKey]!}>{c.label}</Term> : c.label}
+                  <Term help={COLUMN_HELP[c.toggleKey]}>{c.label}</Term>
                   {sortCol === c.key && (
                     <span style={{ marginLeft: 4 }}>{sortDir === "desc" ? "↓" : "↑"}</span>
                   )}
                 </th>
               ))}
-              {visibleCols.has("odds") && <th style={{ ...th, textAlign: "center" }}>Odds</th>}
-              {visibleCols.has("move") && <th style={{ ...th, textAlign: "center" }}>Move</th>}
-              {visibleCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "var(--bc-yellow)" }}><Term term="EV">EV</Term></th>}
+              {shownCols.has("odds") && <th style={{ ...th, textAlign: "center" }}><Term help={COLUMN_HELP.odds}>Odds</Term></th>}
+              {shownCols.has("move") && <th style={{ ...th, textAlign: "center" }}><Term help={COLUMN_HELP.move}>Move</Term></th>}
+              {shownCols.has("ev")   && <th style={{ ...th, textAlign: "center", color: "var(--bc-yellow)" }}><Term help={COLUMN_HELP.ev}>EV</Term></th>}
             </tr>
           </thead>
           <tbody>
@@ -372,7 +384,8 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
               const formColor = formVal > 0.3 ? "var(--bc-green)" : formVal > 0 ? "var(--bc-muted)" : "var(--bc-red)";
               const formStr   = formVal > 0 ? `+${formVal.toFixed(2)}` : formVal.toFixed(2);
 
-              const edgeVal   = p.model_vs_vegas_edge;
+              // The API sends a fraction (0.037); shown in percentage points (+3.7pp).
+              const edgeVal   = p.model_vs_vegas_edge == null ? null : p.model_vs_vegas_edge * 100;
               const edgeColor = edgeVal == null ? "var(--bc-muted)" : edgeVal > 3 ? "var(--bc-green)" : edgeVal > 0 ? "var(--bc-orange)" : "var(--bc-muted)";
 
               const drift    = String(p.dk_odds_direction ?? "");
@@ -432,7 +445,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                   </td>
 
                   {/* Win% — sim primary, xgb subscript */}
-                  {visibleCols.has("win") && (
+                  {shownCols.has("win") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.win_prob_sim != null ? (
                       <div>
@@ -454,7 +467,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                   )}
 
                   {/* Top 10% — sim primary, xgb subscript */}
-                  {visibleCols.has("top10") && (
+                  {shownCols.has("top10") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.top10_prob_sim != null ? (
                       <div>
@@ -476,56 +489,56 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                   )}
 
                   {/* Cut% */}
-                  {visibleCols.has("cut") && (
+                  {shownCols.has("cut") && (
                   <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.cut_prob != null ? `${(p.cut_prob * 100).toFixed(0)}%` : "—"}
                   </td>
                   )}
 
                   {/* OWGR */}
-                  {visibleCols.has("owgr") && (
+                  {shownCols.has("owgr") && (
                   <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {p.world_rank ?? "—"}
                   </td>
                   )}
 
                   {/* SG Total */}
-                  {visibleCols.has("sg") && (
+                  {shownCols.has("sg") && (
                   <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {p.season_sg_total != null ? (p.season_sg_total > 0 ? `+${p.season_sg_total.toFixed(2)}` : p.season_sg_total.toFixed(2)) : "—"}
                   </td>
                   )}
 
                   {/* Form */}
-                  {visibleCols.has("form") && (
+                  {shownCols.has("form") && (
                   <td style={{ ...td, textAlign: "center", color: formColor, fontWeight: 600, fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {formStr}
                   </td>
                   )}
 
                   {/* Edge vs Vegas */}
-                  {visibleCols.has("edge") && (
+                  {shownCols.has("edge") && (
                   <td style={{ ...td, textAlign: "center", color: edgeColor, fontWeight: edgeVal && edgeVal > 3 ? 700 : 400, fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {edgeVal != null ? `${edgeVal > 0 ? "+" : ""}${edgeVal.toFixed(1)}pp` : "—"}
                   </td>
                   )}
 
                   {/* Odds */}
-                  {visibleCols.has("odds") && (
+                  {shownCols.has("odds") && (
                   <td style={{ ...td, textAlign: "center", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>
                     {oddsStr}
                   </td>
                   )}
 
                   {/* Drift */}
-                  {visibleCols.has("move") && (
+                  {shownCols.has("move") && (
                   <td style={{ ...td, textAlign: "center", color: driftColor, fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
                     {DRIFT_ARROW[drift] ?? "—"}
                   </td>
                   )}
 
                   {/* Season EV */}
-                  {visibleCols.has("ev") && (
+                  {shownCols.has("ev") && (
                   <td style={{ ...td, textAlign: "center" }}>
                     {p.this_week_ev != null ? (
                       <span style={{ fontSize: "max(var(--fs-min), 0.72em)", color: "var(--bc-yellow)", fontWeight: 600 }}>
@@ -540,7 +553,7 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
                 </tr>
                 {isOpen && (
                   <tr>
-                    <td colSpan={2 + visibleCols.size} style={{ ...td, background: "var(--bc-panel)", padding: "10px 14px 12px 46px" }}>
+                    <td colSpan={2 + shownCols.size} style={{ ...td, background: "var(--bc-panel)", padding: "10px 14px 12px 46px" }}>
                       {detailOf(p, playerIntel)}
                     </td>
                   </tr>
@@ -554,6 +567,30 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
       </>}
     </div>
   );
+}
+
+// Phone cards: one chip per column the member has chosen, in table order.
+const CARD_ORDER: ColKey[] = ["win", "top10", "cut", "owgr", "sg", "form", "edge", "odds", "move", "ev"];
+const CHIP_LABEL: Record<ColKey, string> = { win: "Win", top10: "Top 10", cut: "Makes cut", owgr: "World rank",
+  sg: "SG", form: "Form", edge: "Our edge", odds: "Odds", move: "Move", ev: "EV" };
+
+function chipOf(k: ColKey, p: PlayerPrediction): { text: string; color?: string } {
+  const pct = (v: number | null | undefined, dp = 1) => v == null ? "—" : `${(v * 100).toFixed(dp)}%`;
+  const signed = (v: number | null | undefined, dp = 2, unit = "") => v == null ? "—" : `${v > 0 ? "+" : ""}${v.toFixed(dp)}${unit}`;
+  switch (k) {
+    case "win":   return { text: pct(p.win_prob_sim ?? p.win_prob), color: "var(--bc-green)" };
+    case "top10": return { text: pct(p.top10_prob_sim ?? p.top10_prob), color: "var(--bc-yellow)" };
+    case "cut":   return { text: pct(p.cut_prob, 0) };
+    case "owgr":  return { text: p.world_rank != null ? `#${Math.round(p.world_rank)}` : "—" };
+    case "sg":    return { text: signed(p.season_sg_total) };
+    case "form":  return { text: signed(p.form_trend),
+                           color: (p.form_trend ?? 0) > 0.3 ? "var(--bc-green)" : (p.form_trend ?? 0) < 0 ? "var(--bc-red)" : undefined };
+    case "edge":  return { text: signed(p.model_vs_vegas_edge == null ? null : p.model_vs_vegas_edge * 100, 1, "pp"),
+                           color: (p.model_vs_vegas_edge ?? 0) * 100 > 3 ? "var(--bc-green)" : undefined };
+    case "odds":  return { text: p.odds_to_win == null ? "—" : p.odds_to_win >= 0 ? `+${Math.round(p.odds_to_win)}` : String(Math.round(p.odds_to_win)) };
+    case "move":  return { text: String(p.dk_odds_direction ?? "") === "UP" ? "↑" : String(p.dk_odds_direction ?? "") === "DOWN" ? "↓" : "—" };
+    case "ev":    return { text: p.this_week_ev == null ? "—" : p.this_week_ev >= 1000 ? `${(p.this_week_ev / 1000).toFixed(0)}k` : String(p.this_week_ev) };
+  }
 }
 
 /** Small outlined badge next to a player name (My pick / Injury / hot / cold). */

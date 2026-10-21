@@ -3,7 +3,8 @@
 /**
  * Term — a "?" beside a label that explains it in plain language.
  * ================================================================
- * Content is Jack's glossary (lib/glossary.ts). Opens on tap, Enter or
+ * Content is Jack's glossary (lib/glossary.ts), or an explicit `help`
+ * entry (lib/columnHelp.ts for table columns). Opens on tap, Enter or
  * Space (it's a real button); closes on Escape, an outside tap, or a second
  * tap. Never lets the tap reach its container, so a sortable column header
  * doesn't re-sort when you ask what the column means. An unknown term
@@ -12,10 +13,12 @@
 import { useEffect, useRef, useState } from "react";
 import { getGlossaryEntry } from "@/lib/glossary";
 
-export default function Term({ term, children }: { term: string; children: React.ReactNode }) {
+type Help = { label: string; definition: string; example: string };
+
+export default function Term({ term, help, children }: { term?: string; help?: Help; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const box = useRef<HTMLSpanElement>(null);
-  const entry = getGlossaryEntry(term);
+  const entry = help ?? getGlossaryEntry(term);
 
   useEffect(() => {
     if (!open) return;

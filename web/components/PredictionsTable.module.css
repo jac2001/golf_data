@@ -17,7 +17,7 @@
 }
 .card.pick { border-left: 3px solid var(--bc-green); background: #0a1e12; }
 
-.chips { display: flex; gap: 16px; margin-top: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 6px; }
 .chip { display: flex; flex-direction: column; }
 .chipLabel { font-size: 11px; color: var(--bc-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 .chipValue { font-size: 16px; font-weight: 800; }
