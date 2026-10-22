@@ -57,11 +57,13 @@ misleading or broken · **P3** clarity, design, code health.
     0 players): Bermuda "Around the green 35.7%" vs This Week's DataGolf profile
     "Approach 34.7%". Two pages, opposite answers. Fix: retire this tab in favor
     of This Week's redesigned Course Fit (link there), or feed it DG's profile.
-11. **[Jack's scaffold] The PGA TOUR betting profile is mostly empty.** Ranks, driving accuracy,
+11. **[fixed Oct 22, Jack's helpers] The PGA TOUR betting profile is mostly empty.** (Correction: the
+    card already skipped empty fields one by one; the real bug was a blank summary "  " drawing an
+    empty box. presentFields now drives the summary and the stat row.) Ranks, driving accuracy,
     GIR, FedEx, summary, bullets null/empty for Ben James. The card shows a wall
     of "—". Fix: show only fields with values, or drop the card (it's also a
     "Moving off PGA TOUR" candidate, DATA_PERMISSIONS).
-12. **[Jack's scaffold] No "not in this week's field" state.** Scheffler (not playing): an "Our
+12. **[fixed Oct 22, Jack's helpers] No "not in this week's field" state.** Scheffler (not playing): an "Our
     Model" card of dashes, WIN RANK "—". Fix: say "Not in the Bermuda field",
     show his season/skill sections, hide this-week sections.
 13. **[fixed Oct 22] Two "course fit delta" values with different signs.** Ben James:
@@ -71,7 +73,7 @@ misleading or broken · **P3** clarity, design, code health.
 14. **[fixed Oct 22] Three different "SG Total" rows in H2H** (our season SG, DG skill rating,
     PGA TOUR betting profile) with no explanation; values differ (0.34 / 1.28 /
     1.50 for Ben James). Fix: one, named by source and period.
-15. **[Jack's scaffold] Career earnings are blank for 2026** (`earnings` null, e.g. 2nd at
+15. **[fixed Oct 22, Jack's helpers] Career earnings are blank for 2026** (`earnings` null, e.g. 2nd at
     Biltmore): a column of "—"; when present they print unformatted. Fix: hide
     the column when empty; format as money when present. (Settlement estimates
     exist in /api/results/earnings; don't mix them in unlabeled.)

@@ -29,6 +29,8 @@ import {
   RoundStat,
 } from "@/lib/api";
 import { useIsAdmin } from "@/lib/useIsAdmin";
+import { hasAny, presentFields, type FieldSpec } from "@/lib/presentFields";
+import { profileSections, type Section } from "@/lib/profileSections";
 
 const BG       = "var(--bc-bg)";
 const CARD_BG  = "var(--bc-panel)";
@@ -49,6 +51,12 @@ function fmt(n: number | null | undefined, decimals = 1): string {
 function fmtPct(n: number | null | undefined, decimals = 1): string {
   if (n == null) return "—";
   return `${(n * 100).toFixed(decimals)}%`;
+}
+
+/** Real prize money from results: "$1,440,000"; "—" when missing. */
+function fmtMoney(v: number | string | null | undefined): string {
+  const n = typeof v === "string" ? Number(v.replace(/[$,]/g, "")) : v;
+  return n != null && Number.isFinite(n) ? `$${Math.round(n).toLocaleString()}` : "—";
 }
 
 function fmtOdds(n: number | null | undefined): string {
@@ -1478,7 +1486,8 @@ function CareerCard({ playerName }: { playerName: string }) {
                   ["SG Tot", "center"], ["OTT", "center"],
                   ["APP", "center"], ["ARG", "center"], ["Putt", "center"],
                   ["Dist", "center"], ["Acc%", "center"], ["GIR%", "center"], ["Scrmb%", "center"],
-                  ["Earnings", "right"],
+                  // Earnings only when some start has them (2026 has none yet: audit #15).
+                  ...(hasAny(career.recent, "earnings") ? [["Earnings", "right"]] : []),
                 ].map(([h, align]) => (
                   <th key={h} style={{ ...thStyle, textAlign: align as "left" | "center" | "right" }}>{h}</th>
                 ))}
@@ -1544,9 +1553,11 @@ function CareerCard({ playerName }: { playerName: string }) {
                       <td style={{ ...tdBase(i), textAlign: "center", color: MUTED }}>
                         {r.scrambling != null ? `${r.scrambling.toFixed(0)}%` : "—"}
                       </td>
-                      <td style={{ ...tdBase(i), textAlign: "right", color: MUTED, fontSize: "max(var(--fs-min), 0.78em)" }}>
-                        {r.earnings ?? "—"}
-                      </td>
+                      {hasAny(career.recent, "earnings") && (
+                        <td style={{ ...tdBase(i), textAlign: "right", color: MUTED, fontSize: "max(var(--fs-min), 0.78em)" }}>
+                          {fmtMoney(r.earnings)}
+                        </td>
+                      )}
                     </tr>
                     {isExpanded && (
                       <tr>
@@ -1608,37 +1619,17 @@ function CareerCard({ playerName }: { playerName: string }) {
 function ProfileView({ profile }: { profile: PlayerProfile }) {
   const m = profile.our_model;
 
-  return (
-    <>
-      {/* Section 1: Header */}
-      <div style={{ ...card, marginBottom: 16 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-              <h1 style={{ margin: 0, fontSize: "1.6em", fontWeight: 800, letterSpacing: "-0.02em" }}>
-                {profile.player_name}
-              </h1>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 6 }}>
-              <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: MUTED }}>
-                {m.world_rank != null ? `World #${Math.round(m.world_rank)}` : "World rank —"}
-              </span>
-            </div>
-          </div>
-          {/* The chances are the headline (Jack, Oct 22), the field rank under
-              each. Same simulation numbers This Week shows (api _published_chances). */}
-          <div style={{ display: "flex", gap: 20 }}>
-            {([["Win chance", m.win_prob, m.win_rank], ["Top-10 chance", m.top10_prob, m.top10_rank]] as const).map(([lbl, v, rank]) => (
-              <div key={lbl} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "1.6em", fontWeight: 800, color: GREEN }}>{v != null ? fmtPct(v) : "—"}</div>
-                <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, textTransform: "uppercase" }}>{lbl}</div>
-                {rank != null && <div style={{ fontSize: 12, color: MUTED }}>#{rank} in the field</div>}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+  // Which cards show, and in what order: Jack's profileSections (#12). A
+  // golfer not in this week's field gets a note, not cards of dashes.
+  const [eventName, setEventName] = useState<string | null>(null);
+  useEffect(() => {
+    getOpenEvents().then(d => setEventName(d.events?.find(e =>
+      e.tournament_id.toUpperCase() === String(profile.tournament_id ?? "").toUpperCase())?.name ?? null)).catch(() => {});
+  }, [profile.tournament_id]);
+  const plan = profileSections(profile, eventName);
 
+  const cards: Record<Section, React.ReactNode> = {
+    thisWeek: <>
       {/* Section 2: Our Model */}
       <div style={card}>
         <p style={sectionLabel}>Our Model</p>
@@ -1678,10 +1669,12 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
           )}
         </div>
       </div>
-
+    </>,
+    career: <>
       {/* Section 3: Career Stats */}
       <CareerCard playerName={profile.player_name} />
-
+    </>,
+    dgPrediction: <>
       {/* Section 4: DG Tournament Prediction */}
       {profile.dg_prediction && (
         <div style={card}>
@@ -1723,18 +1716,58 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
           )}
         </div>
       )}
-
+    </>,
+    courseFit: <>
       {/* Section 4: Course Decompositions */}
       {profile.decompositions && <DecompositionsCard dec={profile.decompositions} />}
-
+    </>,
+    skills: <>
       {/* Section 5: DG Skill Ratings */}
       {profile.skill_ratings && <SkillRatingsCard sr={profile.skill_ratings} />}
-
+    </>,
+    approach: <>
       {/* Section 6: Approach Skill */}
       {profile.approach_skill && <ApproachCard ap={profile.approach_skill} />}
-
+    </>,
+    season: <>
       {/* Section 7: Betting Profile */}
       {profile.betting_profile && <BettingProfileCard bp={profile.betting_profile} />}
+    </>,
+  };
+
+  return (
+    <>
+      {/* Section 1: Header */}
+      <div style={{ ...card, marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+              <h1 style={{ margin: 0, fontSize: "1.6em", fontWeight: 800, letterSpacing: "-0.02em" }}>
+                {profile.player_name}
+              </h1>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 6 }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: MUTED }}>
+                {m.world_rank != null ? `World #${Math.round(m.world_rank)}` : "Unranked"}
+              </span>
+              {plan.note && <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>{plan.note}</span>}
+            </div>
+          </div>
+          {/* The chances are the headline (Jack, Oct 22), the field rank under
+              each. Same simulation numbers This Week shows (api _published_chances). */}
+          {plan.inField && <div style={{ display: "flex", gap: 20 }}>
+            {([["Win chance", m.win_prob, m.win_rank], ["Top-10 chance", m.top10_prob, m.top10_rank]] as const).map(([lbl, v, rank]) => (
+              <div key={lbl} style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "1.6em", fontWeight: 800, color: GREEN }}>{v != null ? fmtPct(v) : "—"}</div>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, textTransform: "uppercase" }}>{lbl}</div>
+                {rank != null && <div style={{ fontSize: 12, color: MUTED }}>#{rank} in the field</div>}
+              </div>
+            ))}
+          </div>}
+        </div>
+      </div>
+
+      {plan.show.map(sec => <React.Fragment key={sec}>{cards[sec]}</React.Fragment>)}
     </>
   );
 }
@@ -1907,6 +1940,14 @@ function parseRecentResults(raw: string | null): RecentResult[] {
   try { return JSON.parse(raw) as RecentResult[]; } catch { return []; }
 }
 
+const BP_STATS: FieldSpec<import("@/lib/api").PlayerBettingProfile>[] = [
+  { key: "driving_distance", label: "Drive", format: (v: number) => `${v.toFixed(1)} yd` },
+  { key: "driving_accuracy", label: "Acc", format: (v: number) => `${v.toFixed(1)}%` },
+  { key: "gir_pct", label: "GIR" },
+  { key: "scrambling_pct", label: "Scramble" },
+  { key: "fedex_rank", label: "FedEx", format: (v: number) => `#${Math.round(v)}` },
+];
+
 function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfile }) {
   const courseHistory  = parseCourseHistory(bp.course_history_raw);
   const recentResults  = parseRecentResults(bp.recent_results_raw);
@@ -1916,7 +1957,9 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
 
   // A profile row with nothing in it renders as an empty shell with just a
   // header — hide the card entirely unless something is worth showing.
-  const hasContent = !!bp.summary || keyBullets.length > 0 || courseHistory.length > 0
+  const summary = presentFields(bp, [{ key: "summary", label: "Summary" }])[0]?.text ?? null;   // "  " is not a summary
+  const statRow = presentFields(bp, BP_STATS);
+  const hasContent = !!summary || keyBullets.length > 0 || courseHistory.length > 0
     || recentResults.length > 0 || bp.events_played != null || bp.wins != null;
   if (!hasContent) return null;
 
@@ -1927,12 +1970,12 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
       <p style={sectionLabel}>PGA TOUR season profile (from pgatour.com)</p>
 
       {/* Summary narrative */}
-      {bp.summary && (
+      {summary && (
         <div style={{
           borderLeft: "3px solid var(--bc-line)", paddingLeft: 12,
           marginBottom: 16, color: MUTED, fontSize: "max(var(--fs-min), 0.85em)", lineHeight: 1.65,
         }}>
-          {bp.summary}
+          {summary}
         </div>
       )}
 
@@ -1980,34 +2023,16 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
         ) : null)}
       </div>
 
-      {/* Driving + scoring stats row */}
-      <div style={{ display: "flex", gap: 20, marginBottom: 14, flexWrap: "wrap" }}>
-        {bp.driving_distance != null && (
-          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
-            <span style={{ color: LABEL }}>Drive </span>{fmt(bp.driving_distance, 1)} yd
-          </span>
-        )}
-        {bp.driving_accuracy != null && (
-          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
-            <span style={{ color: LABEL }}>Acc </span>{fmt(bp.driving_accuracy, 1)}%
-          </span>
-        )}
-        {bp.gir_pct && (
-          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
-            <span style={{ color: LABEL }}>GIR </span>{bp.gir_pct}
-          </span>
-        )}
-        {bp.scrambling_pct && (
-          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
-            <span style={{ color: LABEL }}>Scramble </span>{bp.scrambling_pct}
-          </span>
-        )}
-        {bp.fedex_rank != null && (
-          <span style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
-            <span style={{ color: LABEL }}>FedEx </span>#{Math.round(bp.fedex_rank)}
-          </span>
-        )}
-      </div>
+      {/* Driving + scoring stats row: only the stats with a value (Jack's presentFields). */}
+      {statRow.length > 0 && (
+        <div style={{ display: "flex", gap: 20, marginBottom: 14, flexWrap: "wrap" }}>
+          {statRow.map(f => (
+            <span key={f.label} style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
+              <span style={{ color: LABEL }}>{f.label} </span>{f.text}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Key insights bullets */}
       {keyBullets.length > 0 && (
