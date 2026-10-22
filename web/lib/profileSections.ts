@@ -32,7 +32,7 @@ export type ProfilePlan = { inField: boolean; note: string | null; show: Section
 /** Display order, this-week sections first. */
 export const ORDER: readonly Section[] = ["thisWeek", "dgPrediction", "courseFit", "skills", "approach", "season", "career"];
 
-// ── TODO(Jack): profileSections ───────────────────────────────────────────────
+// ── profileSections (Jack, Oct 22) ───────────────────────────────────────────────
 //
 // eventName: this week's event ("Butterfield Bermuda Championship").
 //
@@ -50,6 +50,21 @@ export const ORDER: readonly Section[] = ["thisWeek", "dgPrediction", "courseFit
 //     empty card.
 
 export function profileSections(p: ProfileInput, eventName?: string | null): ProfilePlan {
-  void p; void eventName; void ORDER;
-  throw new Error("TODO(Jack): profileSections");
+  const win = p.our_model?.win_prob;
+  const hasWin = typeof win === "number" && Number.isFinite(win);
+  const inField = hasWin || p.dg_prediction != null;
+  const has: Record<Section, boolean> = {
+    thisWeek: hasWin,
+    dgPrediction: p.dg_prediction != null,
+    courseFit: p.decompositions != null,
+    skills: p.skill_ratings != null,
+    approach: p.approach_skill != null,
+    season: p.betting_profile != null,
+    career: true,
+  };
+  const SEASON_LEVEL = new Set<Section>(["skills", "approach", "season", "career"]);
+  const allowed = (s: Section) => inField || SEASON_LEVEL.has(s);
+  const show = ORDER.filter(s => has[s] && allowed(s));
+  const note = inField ? null : (eventName ? `Not in the ${eventName} field this week.` : "Not in this week's field.");
+  return { inField, note, show };
 }
