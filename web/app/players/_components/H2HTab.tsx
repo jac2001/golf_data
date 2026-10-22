@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { PlayerProfile, getPlayerProfile } from "@/lib/api";
-import { BLUE, BORDER, CARD_BG, GREEN, LABEL, MUTED, TEXT, card, fmt, sectionLabel } from "./shared";
+import { GOLD, BORDER, CARD_BG, GREEN, MUTED, TEXT, card, fmt, sectionLabel } from "./shared";
 import { PlayerSelect } from "./PlayerPicker";
 
 
@@ -53,7 +53,7 @@ export function H2HTab({ players }: { players: string[] }) {
       {ready && <H2HView p1={p1!} p2={p2!} />}
 
       {!p1Name && !p2Name && (
-        <div style={{ textAlign: "center", padding: "48px 0", color: LABEL, fontSize: "max(var(--fs-min), 0.88em)" }}>
+        <div style={{ textAlign: "center", padding: "48px 0", color: MUTED, fontSize: "max(var(--fs-min), 0.88em)" }}>
           Select two players above to compare them head-to-head.
         </div>
       )}
@@ -76,7 +76,7 @@ function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
           <span style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 900, color: "var(--bc-line)" }}>VS</span>
         </div>
-        <H2HHeaderCard profile={p2} accent={BLUE} />
+        <H2HHeaderCard profile={p2} accent={GOLD} />
       </div>
 
       {/* Comparison grid */}
@@ -105,7 +105,7 @@ function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
         <H2HRow label="Around Green" va={p1.skill_ratings?.arg} vb={p2.skill_ratings?.arg} fmt="+.2f" higherBetter />
         <H2HRow label="Putting" va={p1.skill_ratings?.putt} vb={p2.skill_ratings?.putt} fmt="+.2f" higherBetter />
 
-        <H2HSection label="Course Fit" />
+        <H2HSection label="This week's DataGolf adjustments" />
         <H2HRow label="Course fit (strokes/round)" va={p1.decompositions?.total_fit_adjustment} vb={p2.decompositions?.total_fit_adjustment} fmt="+.2f" higherBetter />
         <H2HRow label="Distance Adj." va={p1.decompositions?.driving_distance_adjustment} vb={p2.decompositions?.driving_distance_adjustment} fmt="+.3f" higherBetter />
         <H2HRow label="Timing Adj." va={p1.decompositions?.timing_adjustment} vb={p2.decompositions?.timing_adjustment} fmt="+.3f" higherBetter />
@@ -138,7 +138,7 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
         <div style={{ fontSize: "1.25em", fontWeight: 800, color: TEXT, marginBottom: 2 }}>
           {profile.player_name.split(" ").slice(-1)[0]}
         </div>
-        <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: LABEL, marginBottom: 12 }}>
+        <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: MUTED, marginBottom: 12 }}>
           {profile.player_name}
           {m.world_rank != null && ` · #${Math.round(m.world_rank)} World`}
         </div>
@@ -151,7 +151,7 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
         ].map(([lbl, val]) => (
           <div key={lbl}>
             <div style={{ fontSize: "1.35em", fontWeight: 800, color: accent }}>{val}</div>
-            <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: LABEL, textTransform: "uppercase", letterSpacing: "0.08em" }}>{lbl}</div>
+            <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: MUTED, textTransform: "uppercase", letterSpacing: "0.08em" }}>{lbl}</div>
           </div>
         ))}
       </div>
@@ -173,7 +173,7 @@ function H2HSection({ label }: { label: string }) {
   return (
     <div style={{
       background: "var(--bc-panel)", padding: "6px 16px",
-      fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700, color: LABEL,
+      fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700, color: MUTED,
       textTransform: "uppercase", letterSpacing: "0.1em",
       borderTop: `1px solid ${BORDER}`,
     }}>
@@ -222,9 +222,9 @@ function H2HRow({
   const bStr = b != null ? fmtH2H(b, fmt, prefix, suffix) : "—";
 
   const aColor = aWins ? GREEN : bWins ? "var(--bc-muted)" : TEXT;
-  const bColor = bWins ? BLUE  : aWins ? "var(--bc-muted)" : TEXT;
+  const bColor = bWins ? GOLD  : aWins ? "var(--bc-muted)" : TEXT;
   const barA   = aWins ? GREEN : "var(--bc-card)";
-  const barB   = bWins ? BLUE  : "var(--bc-card)";
+  const barB   = bWins ? GOLD  : "var(--bc-card)";
 
   return (
     <div>

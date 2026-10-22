@@ -6,7 +6,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { FieldStatsPlayer, getFieldStats } from "@/lib/api";
-import { BLUE, BORDER, CARD_BG, GOLD, GREEN, LABEL, MUTED, RED, TEXT, card, normName, rankColor } from "./shared";
+import { GOLD, BORDER, CARD_BG, GREEN, MUTED, RED, TEXT, card, normName, rankColor } from "./shared";
+import Term from "@/components/Term";
+import { COLUMN_HELP } from "@/lib/columnHelp";
 
 
 // ── Stats tab ─────────────────────────────────────────────────────────────────
@@ -16,7 +18,7 @@ type StatsView = "sg" | "course" | "form" | "dg";
 
 const VIEWS: { key: StatsView; label: string }[] = [
   { key: "sg",     label: "SG Breakdown" },
-  { key: "course", label: "Course Fit" },
+  { key: "course", label: "At this course" },   // course history, not fit (audit #21)
   { key: "form",   label: "Form" },
   { key: "dg",     label: "DG Model" },
 ];
@@ -67,7 +69,7 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
 
   // ── shared table header / cell styles ───────────────────────────────────────
 
-  const th = (col: keyof FieldStatsPlayer, label: string, align: "left" | "center" = "center") => (
+  const th = (col: keyof FieldStatsPlayer, label: React.ReactNode, align: "left" | "center" = "center") => (
     <th
       key={col as string}
       onClick={() => handleSort(col)}
@@ -75,7 +77,7 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
         padding: "7px 10px", background: "var(--bc-panel)", cursor: "pointer", userSelect: "none",
         textAlign: align, fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700, letterSpacing: "0.05em",
         textTransform: "uppercase", whiteSpace: "nowrap",
-        color: sortCol === col ? GREEN : LABEL,
+        color: sortCol === col ? GREEN : MUTED,
         borderBottom: `1px solid ${BORDER}`,
       }}
     >
@@ -135,7 +137,7 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
             {v.label}
           </button>
         ))}
-        <span style={{ marginLeft: "auto", fontSize: "max(var(--fs-min), 0.75em)", color: LABEL, alignSelf: "center" }}>
+        <span style={{ marginLeft: "auto", fontSize: "max(var(--fs-min), 0.75em)", color: MUTED, alignSelf: "center" }}>
           {sorted.length} players · click column to sort
         </span>
       </div>
@@ -144,15 +146,15 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
         <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
+              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: MUTED, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
               {th("player_name", "Player", "left")}
 
               {view === "sg" && <>
-                {th("season_sg_total",         "Total")}
-                {th("season_sg_ott",           "OTT")}
-                {th("season_sg_app",           "APP")}
-                {th("season_sg_arg",           "ARG")}
-                {th("season_sg_putt",          "Putt")}
+                {th("season_sg_total",         <Term term="SG">Total</Term>)}
+                {th("season_sg_ott",           <Term term="OTT">OTT</Term>)}
+                {th("season_sg_app",           <Term term="APP">APP</Term>)}
+                {th("season_sg_arg",           <Term term="ARG">ARG</Term>)}
+                {th("season_sg_putt",          <Term term="PUTT">Putt</Term>)}
               </>}
 
               {view === "course" && <>
@@ -160,11 +162,11 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
                 {th("course_sg_starts",     "Starts")}
                 {th("course_made_cut_rate", "Cut%")}
                 {th("course_win_rate",      "Win%")}
-                {th("dg_course_fit_delta_pct", "DG Fit Δ%")}
+                {th("dg_course_fit_delta_pct", "Fit effect on win %")}
               </>}
 
               {view === "form" && <>
-                {th("form_trend",       "Form")}
+                {th("form_trend",       <Term help={COLUMN_HELP.form}>Form</Term>)}
                 {th("consecutive_cuts", "Consec. Cuts")}
                 {th("recent_top10s",    "Recent top 10s")}
                 {th("recent_wins",      "Recent Wins")}
@@ -176,7 +178,7 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
                 {th("win_prob",            "Our Win%")}
                 {th("dg_top10",            "DG Top10%")}
                 {th("top10_prob",          "Our Top10%")}
-                {th("dg_course_fit_delta_pct", "Course Fit Δ%")}
+                {th("dg_course_fit_delta_pct", "Fit effect on win %")}
               </>}
             </tr>
           </thead>
@@ -185,7 +187,7 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
               const isPick = myPicksNorm.has(normName(p.player_name));
               return (
               <tr key={p.player_name} style={isPick ? { background: "var(--bc-panel)" } : undefined}>
-                <td style={{ ...tdStyle(i), textAlign: "center", color: LABEL, fontSize: "max(var(--fs-min), 0.75em)", ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>{i + 1}</td>
+                <td style={{ ...tdStyle(i), textAlign: "center", color: MUTED, fontSize: "max(var(--fs-min), 0.75em)", ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>{i + 1}</td>
                 <td style={{ ...tdStyle(i), fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid var(--bc-green)" : undefined, ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>
                   <Link
                     href={`/players?player=${encodeURIComponent(p.player_name)}`}
@@ -239,7 +241,7 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
                   <td style={{ ...tdStyle(i), textAlign: "center", color: (p.consecutive_cuts ?? 0) >= 5 ? GREEN : TEXT, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.consecutive_cuts ?? "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontSize: "max(var(--fs-min), 0.85em)" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: GOLD, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.recent_top10s != null ? p.recent_top10s.toFixed(1) : "—"}
                   </td>
                   <td style={{ ...tdStyle(i), textAlign: "center", color: p.recent_wins ? GOLD : MUTED, fontWeight: p.recent_wins ? 700 : 400, fontSize: "max(var(--fs-min), 0.85em)" }}>
@@ -251,13 +253,13 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
                 </>}
 
                 {view === "dg" && <>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: GOLD, fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
                     {p.dg_win != null ? `${(p.dg_win * 100).toFixed(1)}%` : "—"}
                   </td>
                   <td style={{ ...tdStyle(i), textAlign: "center", color: GREEN, fontWeight: 700, fontSize: "max(var(--fs-min), 0.88em)" }}>
                     {p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
                   </td>
-                  <td style={{ ...tdStyle(i), textAlign: "center", color: BLUE, fontSize: "max(var(--fs-min), 0.85em)" }}>
+                  <td style={{ ...tdStyle(i), textAlign: "center", color: GOLD, fontSize: "max(var(--fs-min), 0.85em)" }}>
                     {p.dg_top10 != null ? `${(p.dg_top10 * 100).toFixed(1)}%` : "—"}
                   </td>
                   <td style={{ ...tdStyle(i), textAlign: "center", color: GREEN, fontSize: "max(var(--fs-min), 0.85em)" }}>

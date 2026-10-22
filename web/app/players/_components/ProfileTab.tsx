@@ -8,7 +8,7 @@ import Link from "next/link";
 import { PlayerApproachSkill, PlayerCareer, PlayerDecompositions, PlayerProfile, PlayerSkillRatings, PlayerSynopsis, RoundStat, getOpenEvents, getPlayerCareer, getPlayerProfile, getPlayerSynopsis, getTournamentLeaderboard } from "@/lib/api";
 import { hasAny, presentFields, type FieldSpec } from "@/lib/presentFields";
 import { profileSections, type Section } from "@/lib/profileSections";
-import { AdjBar, BG, BLUE, BORDER, Chip, GOLD, GREEN, LABEL, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, parseCourseHistory, parseRecentResults, posColor, posColor2, sectionLabel, sgColor, sgColor2, toParColor2 } from "./shared";
+import { AdjBar, BG, GOLD, BORDER, Chip, GREEN, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, parseCourseHistory, parseRecentResults, posColor, posColor2, sectionLabel, sgColor, sgColor2, toParColor2 } from "./shared";
 import { FieldBrowser, PlayerSelect } from "./PlayerPicker";
 
 
@@ -16,7 +16,7 @@ import { FieldBrowser, PlayerSelect } from "./PlayerPicker";
 
 const SECTION_META: { key: keyof PlayerSynopsis["sections"]; label: string; color: string }[] = [
   { key: "form",          label: "Form",          color: GREEN },
-  { key: "course_fit",    label: "Course Fit",    color: BLUE  },
+  { key: "course_fit",    label: "Course fit",    color: GOLD  },
   { key: "betting_angle", label: "Betting Angle", color: GOLD  },
   { key: "fantasy",       label: "Fantasy",       color: "var(--bc-orange)" },
 ];
@@ -72,7 +72,7 @@ function SynopsisCard({
     return (
       <div style={{ ...card, background: "var(--bc-panel)", border: `1px dashed ${BORDER}`, textAlign: "center", padding: "28px 20px" }}>
         <div style={{ fontSize: "max(var(--fs-min), 0.85em)", color: MUTED }}>Generating analysis…</div>
-        <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: LABEL, marginTop: 4 }}>
+        <div style={{ fontSize: "max(var(--fs-min), 0.72em)", color: MUTED, marginTop: 4 }}>
           Gathering stats and asking Claude for a take
         </div>
       </div>
@@ -98,16 +98,16 @@ function SynopsisCard({
     <div style={{ ...card, background: "var(--bc-panel)", border: `1px solid var(--bc-line)`, marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
         <div>
-          <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>
+          <span style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: MUTED, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>
             AI Analysis
           </span>
-          <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL, marginLeft: 8 }}>
+          <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: MUTED, marginLeft: 8 }}>
             {synopsis.tournament_name} · {synopsis.course_name}
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {synopsis.cached && (
-            <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL }}>cached {ts}</span>
+            <span style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: MUTED }}>cached {ts}</span>
           )}
           <button
             onClick={onRegenerate}
@@ -283,7 +283,7 @@ function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
     { key: "bogies",   label: "Bogies",   fmt: r => <span style={{ color: r.bogies ? RED : MUT }}>{r.bogies || "—"}</span> },
     { key: "eagles",   label: "Eagles",   fmt: r => <span style={{ color: r.eagles_or_better ? GOLD : MUT }}>{r.eagles_or_better || "—"}</span> },
     { key: "dist",     label: "Drive",    fmt: r => <span style={{ color: MUT }}>{r.driving_dist != null ? `${r.driving_dist.toFixed(0)} yds` : "—"}</span> },
-    { key: "prox_fw",  label: "Prox FW",  fmt: r => <span style={{ color: MUT }}>{r.prox_fw != null ? `${r.prox_fw.toFixed(1)} ft` : "—"}</span> },
+    { key: "prox_fw",  label: "Proximity (fairway)",  fmt: r => <span style={{ color: MUT }}>{r.prox_fw != null ? `${r.prox_fw.toFixed(1)} ft` : "—"}</span> },
   ];
 
   return (
@@ -341,7 +341,7 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
 
   const thS: React.CSSProperties = {
     padding: "5px 8px", background: "var(--bc-panel)", fontSize: "max(var(--fs-min-xs), 0.67em)", fontWeight: 700,
-    color: LABEL, textTransform: "uppercase", letterSpacing: "0.05em",
+    color: MUTED, textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: `1px solid ${BORDER}`,
   };
   const tdS = (isPick: boolean, i: number): React.CSSProperties => ({
@@ -448,7 +448,7 @@ function CareerCard({ playerName }: { playerName: string }) {
 
   const thStyle: React.CSSProperties = {
     padding: "6px 10px", background: "var(--bc-panel)", fontSize: "max(var(--fs-min-xs), 0.68em)", fontWeight: 700,
-    color: LABEL, textTransform: "uppercase", letterSpacing: "0.05em",
+    color: MUTED, textTransform: "uppercase", letterSpacing: "0.05em",
     borderBottom: `1px solid ${BORDER}`, whiteSpace: "nowrap",
   };
   const tdBase = (i: number): React.CSSProperties => ({
@@ -462,8 +462,8 @@ function CareerCard({ playerName }: { playerName: string }) {
         <p style={{ ...sectionLabel, margin: 0 }}>Career stats (events in our results)</p>
         {!loaded && !loading && (
           <button onClick={load} style={{
-            background: BLUE + "22", border: `1px solid ${BLUE}44`,
-            color: BLUE, borderRadius: 7, padding: "5px 14px",
+            background: GOLD + "22", border: `1px solid ${GOLD}44`,
+            color: GOLD, borderRadius: 7, padding: "5px 14px",
             fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700, cursor: "pointer",
           }}>
             Load Career Stats
@@ -597,7 +597,7 @@ function CareerCard({ playerName }: { playerName: string }) {
                         <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           <span style={{ color: TEXT }}>{r.tournament_name}</span>
                           {canExpand && (
-                            <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: isExpanded ? BLUE : "var(--bc-line)" }}>
+                            <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: isExpanded ? GOLD : "var(--bc-line)" }}>
                               {isExpanded ? "▲" : "▼"}
                             </span>
                           )}
@@ -661,8 +661,8 @@ function CareerCard({ playerName }: { playerName: string }) {
                               onClick={e => { e.stopPropagation(); setExpandedTab("leaderboard"); }}
                               style={{
                                 background: expandedTab === "leaderboard" ? "var(--bc-card)" : "transparent",
-                                border: `1px solid ${expandedTab === "leaderboard" ? BLUE : "var(--bc-line)"}`,
-                                color: expandedTab === "leaderboard" ? BLUE : "var(--bc-muted)",
+                                border: `1px solid ${expandedTab === "leaderboard" ? GOLD : "var(--bc-line)"}`,
+                                color: expandedTab === "leaderboard" ? GOLD : "var(--bc-muted)",
                                 borderRadius: 6, padding: "4px 14px",
                                 fontSize: "max(var(--fs-min), 0.75em)", fontWeight: 600, cursor: "pointer",
                               }}>
@@ -735,7 +735,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 8 }}>
           {m.form_trend != null && (
             <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: sgColor(m.form_trend) }}>
-              <span style={{ color: LABEL }}>Form </span>
+              <span style={{ color: MUTED }}>Form </span>
               {m.form_trend > 0 ? "+" : ""}{fmt(m.form_trend, 2)}
             </span>
           )}
@@ -744,7 +744,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               It was colored the other way round (Players audit #8). */}
           {(m.dk_odds_direction === "UP" || m.dk_odds_direction === "DOWN") && (
             <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: m.dk_odds_direction === "DOWN" ? GREEN : RED }}>
-              <span style={{ color: LABEL }}>Move </span>
+              <span style={{ color: MUTED }}>Move </span>
               {m.dk_odds_direction === "DOWN" ? "↓ odds shorter since the line opened" : "↑ odds longer since the line opened"}
             </span>
           )}
@@ -776,12 +776,12 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               background: "var(--bc-panel)", border: `1px solid ${BORDER}`, borderRadius: 8,
               padding: "10px 14px",
             }}>
-              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: LABEL }}>Before course fit and history</span>
+              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: MUTED }}>Before course fit and history</span>
               <span style={{ fontSize: "max(var(--fs-min), 0.88em)", color: MUTED, fontVariantNumeric: "tabular-nums" }}>
                 {fmtPct(profile.dg_prediction.baseline_win)}
               </span>
-              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: LABEL }}>→</span>
-              <span style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700, color: BLUE, fontVariantNumeric: "tabular-nums" }}>
+              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: MUTED }}>→</span>
+              <span style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700, color: GOLD, fontVariantNumeric: "tabular-nums" }}>
                 {fmtPct(profile.dg_prediction.bhf_win)} at this course
               </span>
               {profile.dg_prediction.course_fit_delta_pct != null && (
@@ -840,7 +840,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
             {([["Win chance", m.win_prob, m.win_rank], ["Top-10 chance", m.top10_prob, m.top10_rank]] as const).map(([lbl, v, rank]) => (
               <div key={lbl} style={{ textAlign: "center" }}>
                 <div style={{ fontSize: "1.6em", fontWeight: 800, color: GREEN }}>{v != null ? fmtPct(v) : "—"}</div>
-                <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, textTransform: "uppercase" }}>{lbl}</div>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: MUTED, textTransform: "uppercase" }}>{lbl}</div>
                 {rank != null && <div style={{ fontSize: 12, color: MUTED }}>#{rank} in the field</div>}
               </div>
             ))}
@@ -857,12 +857,13 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
 // ── Decompositions card ───────────────────────────────────────────────────────
 
 const DEC_ROWS: { key: keyof PlayerDecompositions; label: string }[] = [
-  { key: "course_fit_delta",                   label: "Course Fit (total)" },
+  // course_fit_delta = DG final_pred - baseline_pred: every adjustment, not just fit (#21)
+  { key: "course_fit_delta",                   label: "All adjustments vs his baseline" },
   { key: "total_course_history_adjustment",    label: "Course History" },
   { key: "driving_distance_adjustment",        label: "Driving Distance" },
   { key: "driving_accuracy_adjustment",        label: "Driving Accuracy" },
   { key: "strokes_gained_category_adjustment", label: "SG Category" },
-  { key: "timing_adjustment",                  label: "Timing / Hot Streak" },
+  { key: "timing_adjustment",                  label: "Recent form" },
   { key: "age_adjustment",                     label: "Age" },
   { key: "true_sg_adjustments",                label: "True SG Adj." },
 ];
@@ -884,7 +885,7 @@ function DecompositionsCard({ dec }: { dec: PlayerDecompositions }) {
       {/* Axis label */}
       <div style={{
         display: "flex", justifyContent: "space-between",
-        fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL, marginBottom: 10,
+        fontSize: "max(var(--fs-min-xs), 0.65em)", color: MUTED, marginBottom: 10,
         paddingLeft: 170, paddingRight: 48,
       }}>
         <span>← negative</span>
@@ -934,14 +935,14 @@ function SkillRatingsCard({ sr }: { sr: import("@/lib/api").PlayerSkillRatings }
           <span style={{ fontSize: "2em", fontWeight: 800, color: sr.total >= 0 ? GREEN : RED }}>
             {sr.total >= 0 ? "+" : ""}{sr.total.toFixed(2)}
           </span>
-          <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: LABEL }}>SG / round vs field avg</span>
+          <span style={{ fontSize: "max(var(--fs-min), 0.75em)", color: MUTED }}>SG / round vs field avg</span>
         </div>
       )}
 
       {/* Axis label */}
       <div style={{
         display: "flex", justifyContent: "space-between",
-        fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL, marginBottom: 10,
+        fontSize: "max(var(--fs-min-xs), 0.65em)", color: MUTED, marginBottom: 10,
         paddingLeft: 170, paddingRight: 48,
       }}>
         <span>← negative</span>
@@ -987,7 +988,7 @@ function ApproachCard({ ap }: { ap: PlayerApproachSkill }) {
       <p style={sectionLabel}>Approach Skill</p>
       {ap.overall_prox != null && (
         <p style={{ fontSize: "max(var(--fs-min), 0.8em)", color: MUTED, marginBottom: 12 }}>
-          Overall proximity: <span style={{ color: BLUE }}>{fmt(ap.overall_prox, 1)} ft</span>
+          Overall proximity: <span style={{ color: GOLD }}>{fmt(ap.overall_prox, 1)} ft</span>
         </p>
       )}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px" }}>
@@ -998,7 +999,7 @@ function ApproachCard({ ap }: { ap: PlayerApproachSkill }) {
               background: "var(--bc-panel)", borderRadius: 7, padding: "8px 12px",
               border: `1px solid ${BORDER}`,
             }}>
-              <div style={{ fontSize: "max(var(--fs-min), 0.7em)", color: LABEL, marginBottom: 3 }}>{label}</div>
+              <div style={{ fontSize: "max(var(--fs-min), 0.7em)", color: MUTED, marginBottom: 3 }}>{label}</div>
               <div style={{ display: "flex", gap: 16 }}>
                 <span style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
                   <span style={{ color: MUTED }}>SG </span>
@@ -1074,7 +1075,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
               padding: "8px 14px", textAlign: "center", minWidth: 70,
             }}>
               <div style={{ fontSize: "1.1em", fontWeight: 800, color: col ?? TEXT }}>{val}</div>
-              <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: LABEL, marginTop: 1 }}>{label}</div>
+              <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", color: MUTED, marginTop: 1 }}>{label}</div>
             </div>
           ) : null)}
         </div>
@@ -1093,7 +1094,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
             background: "var(--bc-panel)", border: `1px solid ${BORDER}`,
             borderRadius: 7, padding: "8px 12px",
           }}>
-            <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL }}>{label}</div>
+            <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: MUTED }}>{label}</div>
             <div style={{ fontSize: "1em", fontWeight: 700, color: sgColor(val) }}>
               {`${val >= 0 ? "+" : ""}${fmt(val, 2)}`}
             </div>
@@ -1109,7 +1110,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
         <div style={{ display: "flex", gap: 20, marginBottom: 14, flexWrap: "wrap" }}>
           {statRow.map(f => (
             <span key={f.label} style={{ fontSize: "max(var(--fs-min), 0.82em)", color: TEXT }}>
-              <span style={{ color: LABEL }}>{f.label} </span>{f.text}
+              <span style={{ color: MUTED }}>{f.label} </span>{f.text}
             </span>
           ))}
         </div>
@@ -1140,7 +1141,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
                   {["Finish", "Tournament", "Score", "Year"].map(h => (
                     <th key={h} style={{
                       padding: "6px 10px", textAlign: h === "Finish" ? "center" : "left",
-                      fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700, color: LABEL,
+                      fontSize: "max(var(--fs-min), 0.7em)", fontWeight: 700, color: MUTED,
                       textTransform: "uppercase", letterSpacing: "0.05em",
                       borderBottom: `1px solid ${BORDER}`, background: "var(--bc-panel)",
                     }}>{h}</th>
@@ -1159,7 +1160,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
                     <td style={{ padding: "5px 10px", color: r.to_par.startsWith("-") ? GREEN : r.to_par === "E" ? MUTED : RED, fontWeight: 600 }}>
                       {r.to_par}
                     </td>
-                    <td style={{ padding: "5px 10px", color: LABEL }}>{r.year}</td>
+                    <td style={{ padding: "5px 10px", color: MUTED }}>{r.year}</td>
                   </tr>
                 ))}
               </tbody>
@@ -1174,7 +1175,7 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
           <p style={{ ...sectionLabel, marginTop: 4 }}>Course History</p>
           {courseHistory.map(course => (
             <div key={course.course_name} style={{ marginBottom: 10 }}>
-              <div style={{ fontSize: "max(var(--fs-min), 0.75em)", color: BLUE, marginBottom: 4 }}>{course.course_name}</div>
+              <div style={{ fontSize: "max(var(--fs-min), 0.75em)", color: GOLD, marginBottom: 4 }}>{course.course_name}</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {course.tournaments.slice(0, 8).map((t, i) => (
                   <div key={i} style={{

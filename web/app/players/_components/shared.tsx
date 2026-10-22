@@ -16,13 +16,11 @@ export const TEXT      = "var(--bc-text)";
 
 export const MUTED     = "var(--bc-muted)";
 
-export const LABEL     = "var(--bc-muted)";
 
 export const GREEN     = "var(--bc-green)";
 
-export const BLUE      = "var(--bc-yellow)";  // H2H player B — yellow in Broadcast
 
-export const GOLD      = "var(--bc-yellow)";
+export const GOLD      = "var(--bc-yellow)";  // also H2H player B (it had a second name, "BLUE", though it is yellow)
 
 export const RED       = "var(--negative)";
 
@@ -63,7 +61,7 @@ export const sectionLabel: React.CSSProperties = {
   fontWeight: 700,
   letterSpacing: "0.12em",
   textTransform: "uppercase",
-  color: LABEL,
+  color: MUTED,
   marginBottom: 10,
 };
 
@@ -158,7 +156,7 @@ export function posColor(pos: string): string {
   if (isNaN(n)) return MUTED;
   if (n === 1) return GOLD;
   if (n <= 5) return GREEN;
-  if (n <= 10) return BLUE;
+  if (n <= 10) return GOLD;
   return MUTED;
 }
 
@@ -171,7 +169,7 @@ export function normName(n: string): string {
 export function rankColor(rank: number | null): string {
   if (rank == null) return MUTED;
   if (rank <= 5)  return GREEN;
-  if (rank <= 15) return BLUE;
+  if (rank <= 15) return GOLD;
   if (rank <= 30) return TEXT;
   return MUTED;
 }
@@ -184,7 +182,7 @@ export function posColor2(pos: string): string {
   if (isNaN(n)) return MUTED;
   if (n === 1) return GOLD;
   if (n <= 5)  return GREEN;
-  if (n <= 10) return BLUE;
+  if (n <= 10) return GOLD;
   return TEXT;
 }
 
