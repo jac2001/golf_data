@@ -59,11 +59,6 @@ function fmtOdds(n: number | null | undefined): string {
   return n >= 0 ? `+${Math.round(n)}` : String(Math.round(n));
 }
 
-function fmtEv(n: number | null | undefined): string {
-  if (n == null) return "—";
-  return `$${n.toLocaleString()}`;
-}
-
 function sgColor(v: number | null): string {
   if (v == null) return MUTED;
   return v >= 0 ? GREEN : RED;
@@ -1143,7 +1138,7 @@ function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
         <H2HRow label="Win %" va={m1.win_prob != null ? m1.win_prob * 100 : null} vb={m2.win_prob != null ? m2.win_prob * 100 : null} fmt=".1f" suffix="%" higherBetter />
         <H2HRow label="Top 10 %" va={m1.top10_prob != null ? m1.top10_prob * 100 : null} vb={m2.top10_prob != null ? m2.top10_prob * 100 : null} fmt=".1f" suffix="%" higherBetter />
         <H2HRow label="Cut %" va={m1.cut_prob != null ? m1.cut_prob * 100 : null} vb={m2.cut_prob != null ? m2.cut_prob * 100 : null} fmt=".0f" suffix="%" higherBetter />
-        <H2HRow label="Edge vs Vegas" va={m1.model_vs_vegas_edge} vb={m2.model_vs_vegas_edge} fmt=".1f" suffix="pp" higherBetter />
+        <H2HRow label="Our edge vs market" va={m1.model_vs_vegas_edge != null ? m1.model_vs_vegas_edge * 100 : null} vb={m2.model_vs_vegas_edge != null ? m2.model_vs_vegas_edge * 100 : null} fmt="+.1f" suffix="pp" higherBetter />
 
         <H2HSection label="DG Model" />
         <H2HRow label="DG Win %" va={p1.dg_prediction?.win != null ? p1.dg_prediction.win * 100 : null} vb={p2.dg_prediction?.win != null ? p2.dg_prediction.win * 100 : null} fmt=".1f" suffix="%" higherBetter />
@@ -1173,7 +1168,7 @@ function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
         <H2HRow label="SG Approach" va={p1.betting_profile?.sg_app} vb={p2.betting_profile?.sg_app} fmt="+.2f" higherBetter />
         <H2HRow label="SG Putt" va={p1.betting_profile?.sg_putt} vb={p2.betting_profile?.sg_putt} fmt="+.2f" higherBetter />
         <H2HRow label="Drive Distance" va={p1.betting_profile?.driving_distance} vb={p2.betting_profile?.driving_distance} fmt=".1f" suffix=" yd" higherBetter />
-        <H2HRow label="Season Wins" va={p1.betting_profile?.top_10s} vb={p2.betting_profile?.top_10s} fmt=".0f" higherBetter />
+        <H2HRow label="Season Wins" va={p1.betting_profile?.wins} vb={p2.betting_profile?.wins} fmt=".0f" higherBetter />
       </div>
     </>
   );
@@ -1203,7 +1198,7 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
         {[
           ["WIN", m.win_prob != null ? `${(m.win_prob * 100).toFixed(1)}%` : "—"],
           ["TOP 10", m.top10_prob != null ? `${(m.top10_prob * 100).toFixed(1)}%` : "—"],
-          ["EV", m.this_week_ev != null ? `$${(m.this_week_ev / 1000).toFixed(0)}k` : "—"],
+          ["MAKES CUT", m.cut_prob != null ? `${(m.cut_prob * 100).toFixed(0)}%` : "—"],
         ].map(([lbl, val]) => (
           <div key={lbl}>
             <div style={{ fontSize: "1.35em", fontWeight: 800, color: accent }}>{val}</div>
@@ -1831,20 +1826,16 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               </span>
             </div>
           </div>
-          {/* vs field ranks */}
-          <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "1.6em", fontWeight: 800, color: BLUE }}>
-                {m.win_rank != null ? `#${m.win_rank}` : "—"}
+          {/* The chances are the headline (Jack, Oct 22), the field rank under
+              each. Same simulation numbers This Week shows (api _published_chances). */}
+          <div style={{ display: "flex", gap: 20 }}>
+            {([["Win chance", m.win_prob, m.win_rank], ["Top-10 chance", m.top10_prob, m.top10_rank]] as const).map(([lbl, v, rank]) => (
+              <div key={lbl} style={{ textAlign: "center" }}>
+                <div style={{ fontSize: "1.6em", fontWeight: 800, color: GREEN }}>{v != null ? fmtPct(v) : "—"}</div>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, textTransform: "uppercase" }}>{lbl}</div>
+                {rank != null && <div style={{ fontSize: 12, color: MUTED }}>#{rank} in the field</div>}
               </div>
-              <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL }}>WIN RANK</div>
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "1.6em", fontWeight: 800, color: BLUE }}>
-                {m.top10_rank != null ? `#${m.top10_rank}` : "—"}
-              </div>
-              <div style={{ fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL }}>TOP10 RANK</div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -1861,7 +1852,8 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
             <Chip label="DK Odds" value={fmtOdds(m.odds_to_win)} />
           )}
           {m.model_vs_vegas_edge != null && (
-            <Chip label="Edge" value={`${m.model_vs_vegas_edge > 0 ? "+" : ""}${fmt(m.model_vs_vegas_edge)}pp`} color={m.model_vs_vegas_edge > 0 ? GREEN : RED} />
+            // The API sends a fraction (0.037); shown in percentage points (+3.7pp).
+            <Chip label="Our edge" value={`${m.model_vs_vegas_edge > 0 ? "+" : ""}${fmt(m.model_vs_vegas_edge * 100)}pp`} color={m.model_vs_vegas_edge > 0 ? GREEN : RED} />
           )}
         </div>
         {m.explanation && (
@@ -1870,16 +1862,6 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
           </p>
         )}
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 8 }}>
-          {m.recommendation && (
-            <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: MUTED }}>
-              <span style={{ color: LABEL }}>REC </span>{m.recommendation}
-            </span>
-          )}
-          {m.this_week_ev != null && (
-            <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: GOLD }}>
-              <span style={{ color: LABEL }}>EV </span>{fmtEv(m.this_week_ev)}
-            </span>
-          )}
           {m.form_trend != null && (
             <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: sgColor(m.form_trend) }}>
               <span style={{ color: LABEL }}>Form </span>

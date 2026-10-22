@@ -2079,6 +2079,40 @@ def get_predictions(limit: int = 50, tournament_id: str = "") -> dict:
     }
 
 
+_SEASON_SG_COLS = ["season_sg_total", "season_sg_ott", "season_sg_app", "season_sg_arg", "season_sg_putt"]
+
+
+def _published_chances(df: pd.DataFrame) -> pd.DataFrame:
+    """The chances we publish, the same everywhere: the 10,000-run simulation
+    when it exists (what This Week shows), else the base model. Players used
+    the base model, so a golfer's top-10 read 17.5% there and 33.8% on This
+    Week (Players audit #2). Overwrites win_prob/top10_prob in place."""
+    for base, sim in (("win_prob", "win_prob_sim"), ("top10_prob", "top10_prob_sim")):
+        if sim in df.columns:
+            s = pd.to_numeric(df[sim], errors="coerce")
+            df[base] = s.where(s.notna(), pd.to_numeric(df.get(base), errors="coerce")) if base in df.columns else s
+    return df
+
+
+def _null_placeholders(df: pd.DataFrame, maybe_unfilled: list[str]) -> pd.DataFrame:
+    """Missing data the pipeline wrote as numbers becomes null (Players audit #5).
+    - A column that is 0 for EVERY golfer in the field was never filled
+      (course cut rate, win rate, course SG by category on Bermuda).
+    - A golfer with world rank exactly 500 and every season SG exactly 0 is
+      a no-data row: both are placeholders, not "World #500, field average"."""
+    for c in maybe_unfilled:
+        if c in df.columns:
+            v = pd.to_numeric(df[c], errors="coerce")
+            if len(v) and (v.fillna(0) == 0).all():
+                df[c] = np.nan
+    sg = [c for c in _SEASON_SG_COLS if c in df.columns]
+    if "world_rank" in df.columns and sg:
+        blank = (pd.to_numeric(df["world_rank"], errors="coerce") == 500) & \
+                (df[sg].apply(pd.to_numeric, errors="coerce").fillna(0) == 0).all(axis=1)
+        df.loc[blank, ["world_rank"] + sg] = np.nan
+    return df
+
+
 def _dg_odds_for(tid: str) -> dict[str, dict]:
     """DataGolf consensus win odds + this week's move, keyed by _name_key.
 
@@ -3108,7 +3142,10 @@ Output format: JSON only, no markdown fences. Exactly this structure:
             "round_story": _extract("round_story"),
         }
     except Exception as e:
-        raise HTTPException(status_code=502, detail=f"LLM error: {e}")
+        # The provider's message (billing, request ids) stays in the log;
+        # members get a plain sentence (Players audit #6).
+        print(f"LLM call failed: {e}")
+        raise HTTPException(status_code=503, detail="This analysis isn't available right now.")
 
     result = {
         "tournament_id":   tid,
@@ -5320,7 +5357,7 @@ def get_player_profile(player: str) -> dict:
     pred_path = OUTPUTS_DIR / "latest_predictions.csv"
     if pred_path.exists():
         try:
-            preds = pd.read_csv(pred_path)
+            preds = _null_placeholders(_published_chances(pd.read_csv(pred_path)), [])
             for col in ["win_prob", "top10_prob", "cut_prob", "world_rank",
                         "season_sg_total", "form_trend", "model_vs_vegas_edge", "odds_to_win"]:
                 if col in preds.columns:
@@ -5346,35 +5383,8 @@ def get_player_profile(player: str) -> dict:
     our_model["win_rank"]   = win_rank
     our_model["top10_rank"] = top10_rank
 
-    # ── Strategy reasoning (uses_left, badge, recommendation, EV) ────────────
-    our_model["uses_remaining"] = 3
-    our_model["badge"]          = ""
-    our_model["recommendation"] = ""
-    our_model["this_week_ev"]   = None
-
-    def _flip_to_first_last_safe(n: str) -> str:
-        return _flip_to_first_last(str(n).strip())
-
-    sr_path = OUTPUTS_DIR / "strategy_reasoning.json"
-    if sr_path.exists():
-        try:
-            with open(sr_path) as f:
-                sr = json.load(f)
-            fl_player = _flip_to_first_last(_flip_to_last_first(player))
-            for raw_name, info in sr.get("players", {}).items():
-                display = _flip_to_first_last(str(raw_name).strip())
-                if _name_key(display) == _name_key(fl_player):
-                    rec = info.get("recommendation", "")
-                    uses = info.get("uses_left", 3)
-                    our_model["recommendation"] = rec
-                    our_model["uses_remaining"] = uses if uses is not None else 3
-                    badge = "MAXED" if uses == 0 else ("USE" if "USE" in str(rec).upper() else ("SAVE" if "SAVE" in str(rec).upper() else ""))
-                    our_model["badge"] = badge
-                    ev = info.get("this_week_ev")
-                    our_model["this_week_ev"] = int(ev) if ev is not None else None
-                    break
-        except Exception:
-            pass
+    # No uses / badge / recommendation / EV here (Players audit #1): they were
+    # Jack's personal tracker and the dead strategy file, served to anyone.
 
     # ── Explanation ───────────────────────────────────────────────────────────
     our_model["explanation"] = ""
@@ -6290,7 +6300,10 @@ Respond with JSON only, no markdown. Exactly this structure:
         # If LLM didn't return valid JSON, wrap in a single block
         sections = {"form": raw, "course_fit": "", "betting_angle": "", "fantasy": ""}
     except Exception as e:
-        raise HTTPException(status_code=502, detail=f"LLM error: {e}")
+        # The provider's message (billing, request ids) stays in the log;
+        # members get a plain sentence (Players audit #6).
+        print(f"LLM call failed: {e}")
+        raise HTTPException(status_code=503, detail="This analysis isn't available right now.")
 
     result = {
         "player_name":     player,
@@ -6476,6 +6489,9 @@ def get_field_stats() -> dict:
         "win_prob", "top10_prob",
     ]
 
+    df = _published_chances(df)
+    df = _null_placeholders(df, ["course_made_cut_rate", "course_win_rate", "course_sg_ott_avg",
+                                 "course_sg_app_avg", "course_sg_putt_avg", "course_sg_total_avg"])
     cols = [c for c in WANT if c in df.columns]
     for col in cols:
         if col != "player_name":
@@ -6489,7 +6505,7 @@ def get_field_stats() -> dict:
     return {"players": records}
 
 
-@app.get("/api/mypicks")
+@app.get("/api/mypicks", dependencies=OWNER_ONLY)
 def get_my_picks() -> dict:
     """Season usage tracker — weekly lineups + player roster.
 
