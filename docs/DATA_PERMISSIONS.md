@@ -85,6 +85,16 @@ tables (the DG views on /players and This Week, This Week's Odds/Move
 columns, sportsbook prices on the Betting Board) are closest to
 "full contents"; a single golfer's DG number on a profile is a "piece".
 
+**Decision (Jack, Oct 22): remove nothing for now while the site is
+free.** Revisit before the site goes public beyond friends, or before any
+paid feature. Ranked by risk if revisited: the Betting Board odds tools
+(gate the API response, not just the tab), full-field DG predictions on
+/players, full-field consensus Odds/Move, the This Week DG comparison;
+then whether every profile's DG stats add up to the whole paid dataset.
+Still open: whether our predictions may blend DG's forecasts (distinct
+from training on historical data), and whether DG live scoring may feed
+a shared game.
+
 **Before Matt's answer, the interim plan was (Jack's call):** the lowest-risk interim step is to
 stop showing raw DG columns (/players DG views, This Week's DG tab,
 sportsbook prices on the Betting Board) while keeping DG as a model input and
