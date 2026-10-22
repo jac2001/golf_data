@@ -61,7 +61,31 @@ from DG is the most important use for the game.
 3. May we use in-play data to score a free friends game?
 4. What changes if Golf Edge later earns money?
 
-**Until answered (Jack's call):** the lowest-risk interim step is to
+**Answer (Matt Courchene, email Oct 22):**
+- The API is personal use only. That is a condition of DG's data
+  partnership with the PGA TOUR, so DG can't license it for a commercial
+  product. Commercial rights would have to come from the TOUR, which
+  "will probably be accommodating" once a site reaches some size. DG
+  started out scraping and grew into its TOUR deal.
+- Displaying DG probabilities, model output or adjusted stats: DG doesn't
+  want "the full contents of our paywalled pages" on a third-party site,
+  but "you could display pieces of it". Whether the TOUR would allow DG
+  probabilities in a commercial app is a grey area even to DG, which is
+  why DG calls the whole API non-commercial.
+- Historical event finishes and earnings: updated Sunday evening or (more
+  often) Monday morning. PGA TOUR only, no DP World Tour.
+- Not addressed: Q2 (publishing our own model that uses DG inputs) and
+  Q3 (using in-play data to score a free game). No commercial path
+  through DG (Q4).
+
+**Read:** this is an informal, non-binding answer, not a license. Matt
+can't grant more than the TOUR partnership allows. Staying free and
+non-commercial is the condition everything rests on. Full-field DG
+tables (the DG views on /players and This Week, This Week's Odds/Move
+columns, sportsbook prices on the Betting Board) are closest to
+"full contents"; a single golfer's DG number on a profile is a "piece".
+
+**Before Matt's answer, the interim plan was (Jack's call):** the lowest-risk interim step is to
 stop showing raw DG columns (/players DG views, This Week's DG tab,
 sportsbook prices on the Betting Board) while keeping DG as a model input and
 for live scoring, which the game needs.
