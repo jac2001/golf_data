@@ -9,6 +9,7 @@ import { FieldStatsPlayer, getFieldStats } from "@/lib/api";
 import { GOLD, BORDER, CARD_BG, GREEN, MUTED, RED, TEXT, card, normName, rankColor, tint, Notice } from "./shared";
 import Term from "@/components/Term";
 import { COLUMN_HELP } from "@/lib/columnHelp";
+import styles from "./players.module.css";
 
 
 // ── Stats tab ─────────────────────────────────────────────────────────────────
@@ -22,6 +23,18 @@ const VIEWS: { key: StatsView; label: string }[] = [
   { key: "form",   label: "Form" },
   { key: "dg",     label: "DG Model" },
 ];
+
+// Plain labels for the phone sort picker (column headers are too small to tap).
+const SORT_COLS: Record<StatsView, [keyof FieldStatsPlayer, string][]> = {
+  sg:     [["season_sg_total", "SG total"], ["season_sg_ott", "Off the tee"], ["season_sg_app", "Approach"],
+           ["season_sg_arg", "Around the green"], ["season_sg_putt", "Putting"]],
+  course: [["course_sg_total_avg", "SG avg here"], ["course_sg_starts", "Starts"], ["course_made_cut_rate", "Cut %"],
+           ["course_win_rate", "Win %"], ["dg_course_fit_delta_pct", "Fit effect"]],
+  form:   [["form_trend", "Form"], ["consecutive_cuts", "Consecutive cuts"], ["recent_top10s", "Recent top 10s"],
+           ["recent_wins", "Recent wins"], ["consecutive_top10s", "Consecutive top 10s"]],
+  dg:     [["dg_win", "DG win %"], ["win_prob", "Our win %"], ["dg_top10", "DG top 10 %"],
+           ["top10_prob", "Our top 10 %"], ["dg_course_fit_delta_pct", "Fit effect"]],
+};
 
 
 export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
@@ -75,6 +88,7 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
   const th = (col: keyof FieldStatsPlayer, label: React.ReactNode, align: "left" | "center" = "center") => (
     <th
       key={col as string}
+      className={col === "player_name" ? styles.pin : undefined}
       onClick={() => handleSort(col)}
       style={{
         padding: "7px 10px", background: "var(--bc-panel)", cursor: "pointer", userSelect: "none",
@@ -114,7 +128,8 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
 
   return (
     <>
-      <input 
+      <input
+        className={styles.search}
         placeholder='Filter player...'
         value={search}
         onChange={e => setSearch(e.target.value)}
@@ -140,16 +155,35 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
             {v.label}
           </button>
         ))}
-        <span style={{ marginLeft: "auto", fontSize: "max(var(--fs-min), 0.75em)", color: MUTED, alignSelf: "center" }}>
+        <span className={styles.clickHint} style={{ marginLeft: "auto", fontSize: "max(var(--fs-min), 0.75em)", color: MUTED, alignSelf: "center" }}>
           {sorted.length} players · click column to sort
         </span>
       </div>
 
+      <div className={styles.sortPicker}>
+        <label htmlFor="stats-sort" style={{ fontSize: "max(var(--fs-min), 0.8em)", color: MUTED }}>Sort by</label>
+        <select
+          id="stats-sort"
+          value={sortCol as string}
+          onChange={e => { setSortCol(e.target.value as keyof FieldStatsPlayer); setSortDir("desc"); }}
+          style={{ background: CARD_BG, border: `1px solid ${BORDER}`, borderRadius: 6, color: TEXT, padding: "6px 8px", flex: 1 }}
+        >
+          {SORT_COLS[view].map(([col, label]) => <option key={col as string} value={col as string}>{label}</option>)}
+        </select>
+        <button
+          onClick={() => setSortDir(d => d === "desc" ? "asc" : "desc")}
+          aria-label={sortDir === "desc" ? "Highest first; tap for lowest first" : "Lowest first; tap for highest first"}
+          style={{ background: "transparent", border: `1px solid ${BORDER}`, borderRadius: 6, color: TEXT, padding: "6px 10px" }}
+        >
+          {sortDir === "desc" ? "↓" : "↑"}
+        </button>
+      </div>
+
       <div style={{ overflowX: "auto", border: `1px solid ${BORDER}`, borderRadius: 10 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
+        <table className={styles.wide} style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
           <thead>
             <tr>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: MUTED, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
+              <th className={styles.phoneHide} style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: MUTED, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
               {th("player_name", "Player", "left")}
 
               {view === "sg" && <>
@@ -190,8 +224,8 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
               const isPick = myPicksNorm.has(normName(p.player_name));
               return (
               <tr key={p.player_name} style={isPick ? { background: "var(--bc-panel)" } : undefined}>
-                <td style={{ ...tdStyle(i), textAlign: "center", color: MUTED, fontSize: "max(var(--fs-min), 0.75em)", ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>{i + 1}</td>
-                <td style={{ ...tdStyle(i), fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid var(--bc-green)" : undefined, ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>
+                <td className={styles.phoneHide} style={{ ...tdStyle(i), textAlign: "center", color: MUTED, fontSize: "max(var(--fs-min), 0.75em)", ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>{i + 1}</td>
+                <td className={styles.pin} style={{ ...tdStyle(i), fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 600, whiteSpace: "nowrap", borderLeft: isPick ? "2px solid var(--bc-green)" : undefined, ...(isPick ? { background: "var(--bc-panel)" } : {}) }}>
                   <Link
                     href={`/players?player=${encodeURIComponent(p.player_name)}`}
                     style={{ color: isPick ? GREEN : TEXT, textDecoration: "none" }}

@@ -10,6 +10,7 @@ import { hasAny, presentFields, type FieldSpec } from "@/lib/presentFields";
 import { profileSections, type Section } from "@/lib/profileSections";
 import { AdjBar, BG, GOLD, BORDER, Chip, GREEN, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, parseCourseHistory, parseRecentResults, posColor, posColor2, sectionLabel, sgColor, sgColor2, toParColor2, tint, Notice } from "./shared";
 import { FieldBrowser, PlayerSelect } from "./PlayerPicker";
+import styles from "./players.module.css";
 
 
 // ── Synopsis card ─────────────────────────────────────────────────────────────
@@ -292,7 +293,7 @@ function RoundBreakdownPanel({ rounds }: { rounds: RoundStat[] }) {
         Round-by-Round Breakdown
       </p>
       <div style={{ overflowX: "auto", border: `1px solid ${BORD}`, borderRadius: 8 }}>
-        <table style={{ borderCollapse: "collapse", background: BG }}>
+        <table className={styles.wide} style={{ borderCollapse: "collapse", background: BG }}>
           <thead>
             <tr>
               <th style={{ ...th, textAlign: "left", minWidth: 80 }}></th>
@@ -498,12 +499,12 @@ function CareerCard({ playerName }: { playerName: string }) {
       </div>
       {careerFailed && <Notice kind="error" onRetry={load}>Couldn&apos;t load career stats.</Notice>}
 
-      {loading && <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.85em)" }}>Loading…</p>}
+      {loading && <Notice kind="loading">Loading career stats…</Notice>}
 
       {/* ── By Year view ─────────────────────────────────────────────────── */}
       {loaded && career && view === "yearly" && (
         <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}` }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
+          <table className={styles.wide} style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
             <thead>
               <tr>
                 {[
@@ -560,7 +561,7 @@ function CareerCard({ playerName }: { playerName: string }) {
       {/* ── Recent Starts view ───────────────────────────────────────────── */}
       {loaded && career && view === "recent" && (
         <div style={{ overflowX: "auto", borderRadius: 8, border: `1px solid ${BORDER}` }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
+          <table className={styles.wide} style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
             <thead>
               <tr>
                 {[

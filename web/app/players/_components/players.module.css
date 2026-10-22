@@ -1,0 +1,19 @@
+/* Phone layout for the Players page's wide tables (Players audit #20).
+   On a phone the golfer's name (or the row label) stays pinned while the
+   numbers scroll under it, and cells tighten up. Inline styles set the
+   desktop padding, hence !important here. */
+
+.sortPicker { display: none; }
+
+@media (max-width: 600px) {
+  .wide th, .wide td { padding: 6px 7px !important; }
+  .wide th:first-child, .wide td:first-child, .wide .pin {
+    position: sticky; left: 0; z-index: 1;
+    background: var(--bc-panel);
+    box-shadow: 1px 0 0 var(--bc-line);
+  }
+  .phoneHide { display: none; }
+  .search { width: 100% !important; }
+  .sortPicker { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; }
+  .clickHint { display: none; }
+}
