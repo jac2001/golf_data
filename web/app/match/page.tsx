@@ -188,8 +188,8 @@ function pill(on: boolean): React.CSSProperties {
   return {
     cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.74em)", textTransform: "uppercase",
     letterSpacing: "0.05em", padding: "7px 13px", borderRadius: 4,
-    color: on ? "var(--bc-text)" : "var(--bc-muted)", background: on ? "var(--bc-raised)" : "transparent",
-    border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+    color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)", background: on ? "var(--bc-sel-bg)" : "transparent",
+    border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
   };
 }
 

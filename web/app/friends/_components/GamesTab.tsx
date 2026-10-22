@@ -100,7 +100,7 @@ export function GamesTab() {
   const tabBtn = (on: boolean): React.CSSProperties => ({
     flex: 1, minHeight: 44, cursor: "pointer", fontFamily: "inherit", background: "transparent",
     border: "none", borderBottom: `3px solid ${on ? "var(--bc-yellow)" : "transparent"}`,
-    color: on ? "var(--bc-text)" : "var(--bc-muted)", fontWeight: on ? 900 : 800,
+    color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)", fontWeight: on ? 900 : 800,
     fontSize: "max(var(--fs-min), 0.8em)", textTransform: "uppercase", letterSpacing: "0.06em",
   });
 
@@ -116,9 +116,9 @@ export function GamesTab() {
             <button key={g.id} onClick={() => pick(g.id)} aria-pressed={on} title={g.tag} style={{
               minHeight: 44, cursor: "pointer", fontFamily: "inherit", borderRadius: 7, minWidth: 0,
               padding: "0 2px", fontSize: "max(var(--fs-min), 0.84em)", fontWeight: on ? 900 : 800,
-              background: on ? "var(--bc-raised)" : "transparent",
-              border: `1px solid ${on ? "var(--bc-line-hi)" : "transparent"}`,
-              color: on ? "var(--bc-text)" : "var(--bc-muted)",
+              background: on ? "var(--bc-sel-bg)" : "transparent",
+              border: `1px solid ${on ? "var(--bc-sel-line)" : "transparent"}`,
+              color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)",
             }}>
               {g.short}
             </button>

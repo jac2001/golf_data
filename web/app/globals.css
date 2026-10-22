@@ -33,6 +33,15 @@
   --bc-bad-bg:    color-mix(in srgb, var(--bc-red) 12%, var(--bc-panel));
   --bc-bad-line:  color-mix(in srgb, var(--bc-red) 40%, var(--bc-panel));
   --bc-red-dim:   color-mix(in srgb, var(--bc-red-text) 55%, var(--bc-panel));   /* quiet "CUT" labels */
+  /* Buttons and toggles (light mode makes these solid; see below). */
+  --bc-sel-bg:    var(--bc-raised);   /* selected toggle */
+  --bc-sel-fg:    var(--bc-text);
+  --bc-sel-line:  var(--bc-line-hi);
+  --bc-btn2-bg:   transparent;        /* secondary button */
+  --bc-btn2-fg:   var(--bc-text);
+  --bc-btn2-line: var(--bc-line-hi);
+  --bc-quiet-fg:  var(--bc-muted);    /* quiet button (Pick, Share) */
+  --bc-quiet-line: var(--bc-line);
   color-scheme: dark;
 
   /* Yellow budget: the nav rule, the active nav item, and ONE solid
@@ -106,6 +115,14 @@ html, body {
   --bc-hover:     #eef3ee;
   --bc-raised:    #e1ede4;
   --bc-line-hi:   #9ab9a6;
+  --bc-sel-bg:    #15603a;
+  --bc-sel-fg:    #ffffff;
+  --bc-sel-line:  #15603a;
+  --bc-btn2-bg:   #15603a;
+  --bc-btn2-fg:   #ffffff;
+  --bc-btn2-line: #15603a;
+  --bc-quiet-fg:  #15603a;
+  --bc-quiet-line: #15603a;
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
@@ -128,6 +145,14 @@ html, body {
     --bc-hover:     #eef3ee;
     --bc-raised:    #e1ede4;
     --bc-line-hi:   #9ab9a6;
+    --bc-sel-bg:    #15603a;
+    --bc-sel-fg:    #ffffff;
+    --bc-sel-line:  #15603a;
+    --bc-btn2-bg:   #15603a;
+    --bc-btn2-fg:   #ffffff;
+    --bc-btn2-line: #15603a;
+    --bc-quiet-fg:  #15603a;
+    --bc-quiet-line: #15603a;
     color-scheme: light;
   }
 }

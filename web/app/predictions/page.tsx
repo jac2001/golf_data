@@ -430,9 +430,9 @@ function TourPills({ tour, setTour }: {
           cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.72em)",
           textTransform: "uppercase", letterSpacing: "0.06em",
           padding: "7px 15px", borderRadius: 4,
-          color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
-          background: tour === id ? "var(--bc-raised)" : "transparent",
-          border: `1px solid ${tour === id ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+          color: tour === id ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+          background: tour === id ? "var(--bc-sel-bg)" : "transparent",
+          border: `1px solid ${tour === id ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
         }}>
           {label}
         </button>
@@ -615,7 +615,7 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
       <div style={{ display: "flex", gap: 8, padding: "14px 18px", alignItems: "center" }}>
         {roundNums.map(rn => (
           <button key={rn} onClick={() => setRound(rn)} style={{
-            background: round === rn ? "var(--bc-raised)" : "var(--bc-panel)",
+            background: round === rn ? "var(--bc-sel-bg)" : "var(--bc-panel)",
             border: `1px solid ${round === rn ? "var(--bc-good-line)" : "var(--bc-line)"}`,
             borderRadius: 5, color: round === rn ? "var(--bc-green)" : "var(--bc-muted)",
             padding: "5px 14px", fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700, cursor: "pointer",

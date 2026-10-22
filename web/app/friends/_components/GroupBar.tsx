@@ -180,8 +180,8 @@ function GroupSheet({ inviteFirst, focusJoin, onClose, onManage }: {
               return (
                 <button key={g.id} onClick={() => choose(g.id)} aria-pressed={on} style={{
                   display: "flex", alignItems: "center", gap: 12, minHeight: 56, padding: "0 14px", textAlign: "left",
-                  background: on ? "var(--bc-raised)" : "var(--bc-card)", cursor: "pointer", fontFamily: "inherit",
-                  border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`, borderRadius: 10, color: "var(--bc-text)",
+                  background: on ? "var(--bc-sel-bg)" : "var(--bc-card)", cursor: "pointer", fontFamily: "inherit",
+                  border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`, borderRadius: 10, color: "var(--bc-text)",
                 }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 900, textTransform: "uppercase" }}>{g.name}</div>

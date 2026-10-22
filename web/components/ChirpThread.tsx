@@ -207,8 +207,8 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
                       return (
                         <button key={e} onClick={() => react(c.id, e)} aria-pressed={!!r?.mine} style={{ cursor: "pointer",
                           fontFamily: "inherit", borderRadius: 999, padding: "2px 8px", minHeight: 30,
-                          background: r?.mine ? "var(--bc-raised)" : "transparent",
-                          border: `1px solid ${r?.mine ? "var(--bc-line-hi)" : "var(--bc-line)"}`, color: "var(--bc-text)" }}>
+                          background: r?.mine ? "var(--bc-sel-bg)" : "transparent",
+                          border: `1px solid ${r?.mine ? "var(--bc-sel-line)" : "var(--bc-line)"}`, color: "var(--bc-text)" }}>
                           {e}{r ? ` ${r.n}` : ""}
                         </button>
                       );

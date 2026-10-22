@@ -39,8 +39,8 @@ export default function LivePulse({ pulse, loading, error, onGenerate, onRefresh
           </div>
         </div>
         <button onClick={onGenerate} style={{
-          background: `color-mix(in srgb, ${GREEN} 13%, transparent)`, border: `1px solid color-mix(in srgb, ${GREEN} 33%, transparent)`,
-          color: GREEN, borderRadius: 8, padding: "8px 18px",
+          background: "var(--bc-btn2-bg)", border: "1px solid var(--bc-btn2-line)",
+          color: "var(--bc-btn2-fg)", borderRadius: 8, padding: "8px 18px",
           fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, cursor: "pointer", flexShrink: 0,
           whiteSpace: "nowrap",
         }}>

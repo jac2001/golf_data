@@ -260,9 +260,9 @@ export default function PredictionsTable({ players, intel = [], myPicks = [], fo
         <button
           onClick={() => setPickerOpen(o => !o)}
           style={{
-            background: pickerOpen ? "var(--bc-card)" : "var(--bc-panel)",
-            border: `1px solid ${pickerOpen ? "color-mix(in srgb, var(--bc-green) 27%, transparent)" : "var(--bc-line)"}`,
-            borderRadius: 6, color: pickerOpen ? "var(--bc-green)" : "var(--bc-muted)",
+            background: pickerOpen ? "var(--bc-sel-bg)" : "transparent",
+            border: `1px solid ${pickerOpen ? "var(--bc-sel-line)" : "var(--bc-quiet-line)"}`,
+            borderRadius: 6, color: pickerOpen ? "var(--bc-sel-fg)" : "var(--bc-quiet-fg)",
             padding: "6px 12px", fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 600, cursor: "pointer",
           }}
         >

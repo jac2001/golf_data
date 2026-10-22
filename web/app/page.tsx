@@ -125,9 +125,9 @@ export default function Home() {
             cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.72em)",
             textTransform: "uppercase", letterSpacing: "0.06em",
             padding: "7px 15px", borderRadius: 4,
-            color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
-            background: tour === id ? "var(--bc-raised)" : "transparent",
-            border: `1px solid ${tour === id ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+            color: tour === id ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+            background: tour === id ? "var(--bc-sel-bg)" : "transparent",
+            border: `1px solid ${tour === id ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
           }}>
             {label}
           </button>
@@ -162,7 +162,7 @@ export default function Home() {
             {/* Outlined, not yellow: the game card above owns the page's one
                 primary action. */}
             <Link href="/predictions" style={{
-              border: "1px solid var(--bc-line-hi)", color: "var(--bc-text)", fontWeight: 800,
+              border: "1px solid var(--bc-btn2-line)", color: "var(--bc-btn2-fg)", background: "var(--bc-btn2-bg)", fontWeight: 800,
               textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
               padding: "12px 22px", borderRadius: 4 }}>
               This week's forecast

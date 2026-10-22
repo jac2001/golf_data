@@ -75,9 +75,9 @@ export function choice(on: boolean): React.CSSProperties {
   return {
     cursor: "pointer", fontFamily: "inherit", fontWeight: on ? 800 : 600, fontSize: "max(var(--fs-min), 0.8em)",
     textTransform: "uppercase", letterSpacing: "0.05em", padding: "8px 14px", borderRadius: 4,
-    color: on ? "var(--bc-text)" : "var(--bc-muted)",
-    background: on ? "var(--bc-raised)" : "transparent",
-    border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+    color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+    background: on ? "var(--bc-sel-bg)" : "transparent",
+    border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
   };
 }
 

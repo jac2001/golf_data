@@ -377,9 +377,9 @@ function TourPills({ tour, setTour }: {
           cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.72em)",
           textTransform: "uppercase", letterSpacing: "0.06em",
           padding: "7px 15px", borderRadius: 4,
-          color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
-          background: tour === id ? "var(--bc-raised)" : "transparent",
-          border: `1px solid ${tour === id ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+          color: tour === id ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+          background: tour === id ? "var(--bc-sel-bg)" : "transparent",
+          border: `1px solid ${tour === id ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
         }}>
           {label}
         </button>
@@ -513,7 +513,7 @@ function EuroLiveView() {
             <div style={{ display: "flex", gap: 8, marginLeft: "auto" }}>
               {["event_avg", "1", "2", "3", "4"].map(r => (
                 <button key={r} onClick={() => setHoleRound(r)} style={{
-                  background: holeRound === r ? "var(--bc-raised)" : "var(--bc-panel)",
+                  background: holeRound === r ? "var(--bc-sel-bg)" : "var(--bc-panel)",
                   border: `1px solid ${holeRound === r ? "var(--bc-good-line)" : "var(--bc-line)"}`,
                   borderRadius: 5, color: holeRound === r ? "var(--bc-green)" : "var(--bc-muted)",
                   padding: "4px 12px", fontSize: "max(var(--fs-min), 0.76em)", fontWeight: 700, cursor: "pointer",

@@ -61,8 +61,8 @@ export function Star() {
 const btn = (on: boolean): React.CSSProperties => ({
   cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.76em)",
   textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5, padding: "7px 12px",
-  background: on ? "var(--bc-raised)" : "transparent", color: on ? "var(--bc-text)" : "var(--bc-muted)",
-  border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+  background: on ? "var(--bc-sel-bg)" : "transparent", color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+  border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
 });
 
 export default function EventNav({ events, selected, onPick, starred = {} }: {
@@ -168,14 +168,14 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
               <button ref={on ? selRef : undefined} onClick={() => onPick(e.tournament_id)} style={{
                 scrollSnapAlign: "center", flexShrink: 0, cursor: "pointer", fontFamily: "inherit",
                 textAlign: "left", borderRadius: 6, padding: "6px 10px", minWidth: 118,
-                background: on ? "var(--bc-raised)" : "var(--bc-card)",
-                border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+                background: on ? "var(--bc-sel-bg)" : "var(--bc-card)",
+                border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
               }}>
                 <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 700, color: STATUS_COLOR[e.status] }}>
                   {shortDate(e.start_date)} · {STATUS_LABEL[e.status]}
                   {starred[e.tournament_id] ? <span style={{ color: "var(--bc-yellow)", marginLeft: 4 }}><Star /></span> : null}
                 </div>
-                <div style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700, color: on ? "var(--bc-text)" : "var(--bc-muted)",
+                <div style={{ fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700, color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)",
                   whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 150 }}>
                   {e.name}
                 </div>

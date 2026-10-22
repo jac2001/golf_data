@@ -50,9 +50,9 @@ function Toggle({ on, busy, onClick }: { on: boolean; busy?: boolean; onClick: (
   return (
     <button onClick={onClick} disabled={busy} style={{
       ...btnQuiet, marginLeft: "auto", minWidth: 52,
-      color: on ? "var(--bc-text)" : "var(--bc-muted)",
-      background: on ? "var(--bc-raised)" : "transparent",
-      borderColor: on ? "var(--bc-line-hi)" : "var(--bc-line)",
+      color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+      background: on ? "var(--bc-sel-bg)" : "transparent",
+      borderColor: on ? "var(--bc-sel-line)" : "var(--bc-line)",
     }}>
       {busy ? "…" : on ? "On" : "Off"}
     </button>
@@ -224,9 +224,9 @@ export default function SettingsPage() {
             {([["pga", "PGA"], ["euro", "DPWT"]] as const).map(([id, label]) => (
               <button key={id} onClick={() => pickTour(id)} style={{
                 ...btnQuiet,
-                color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
-                background: tour === id ? "var(--bc-raised)" : "transparent",
-                borderColor: tour === id ? "var(--bc-line-hi)" : "var(--bc-line)",
+                color: tour === id ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+                background: tour === id ? "var(--bc-sel-bg)" : "transparent",
+                borderColor: tour === id ? "var(--bc-sel-line)" : "var(--bc-line)",
               }}>{label}</button>
             ))}
           </div>
@@ -236,9 +236,9 @@ export default function SettingsPage() {
             {([["system", "Auto"], ["light", "Light"], ["dark", "Dark"]] as const).map(([id, label]) => (
               <button key={id} onClick={() => pickTheme(id)} aria-pressed={theme === id} style={{
                 ...btnQuiet,
-                color: theme === id ? "var(--bc-text)" : "var(--bc-muted)",
-                background: theme === id ? "var(--bc-raised)" : "transparent",
-                borderColor: theme === id ? "var(--bc-line-hi)" : "var(--bc-line)",
+                color: theme === id ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+                background: theme === id ? "var(--bc-sel-bg)" : "transparent",
+                borderColor: theme === id ? "var(--bc-sel-line)" : "var(--bc-line)",
               }}>{label}</button>
             ))}
           </div>
