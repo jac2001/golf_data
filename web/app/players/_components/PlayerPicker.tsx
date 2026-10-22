@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { OpenEvent, getEventField, getOpenEvents } from "@/lib/api";
-import { BORDER, CARD_BG, GOLD, MUTED, TEXT } from "./shared";
+import { BORDER, CARD_BG, GOLD, MUTED, TEXT, Notice } from "./shared";
 
 
 // ── Player select helper (reused by both tabs) ────────────────────────────────
@@ -103,7 +103,7 @@ export function FieldBrowser({ onPick }: { onPick: (name: string) => void }) {
           </button>
         ))}
       </div>
-      {field === null && <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.85em)", margin: 0 }}>Loading field…</p>}
+      {field === null && <Notice kind="loading">Loading this week&apos;s field…</Notice>}
       {field !== null && field.length === 0 && (
         <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.85em)", margin: 0 }}>
           The field for this event hasn&apos;t been published yet — check back

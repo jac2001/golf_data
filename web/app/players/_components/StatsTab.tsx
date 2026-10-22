@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { FieldStatsPlayer, getFieldStats } from "@/lib/api";
-import { GOLD, BORDER, CARD_BG, GREEN, MUTED, RED, TEXT, card, normName, rankColor } from "./shared";
+import { GOLD, BORDER, CARD_BG, GREEN, MUTED, RED, TEXT, card, normName, rankColor, tint, Notice } from "./shared";
 import Term from "@/components/Term";
 import { COLUMN_HELP } from "@/lib/columnHelp";
 
@@ -34,9 +34,12 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    getFieldStats().then(d => setPlayers(d.players)).finally(() => setLoading(false));
-  }, []);
+  const [failed, setFailed] = useState(false);
+  const load = () => {
+    setLoading(true); setFailed(false);
+    getFieldStats().then(d => setPlayers(d.players)).catch(() => setFailed(true)).finally(() => setLoading(false));
+  };
+  useEffect(load, []);
 
   // Reset default sort when view changes
   useEffect(() => {
@@ -106,8 +109,8 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
     );
   }
 
-  if (loading) return <p style={{ color: MUTED }}>Loading…</p>;
-  if (!players) return <p style={{ color: RED }}>Failed to load stats.</p>;
+  if (loading) return <Notice kind="loading">Loading the field&apos;s stats…</Notice>;
+  if (failed || !players) return <Notice kind="error" onRetry={load}>Couldn&apos;t load the field&apos;s stats.</Notice>;
 
   return (
     <>
@@ -128,7 +131,7 @@ export function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
             key={v.key}
             onClick={() => setView(v.key)}
             style={{
-              background: view === v.key ? GREEN + "22" : "transparent",
+              background: view === v.key ? tint(GREEN, 13) : "transparent",
               border: `1px solid ${view === v.key ? GREEN : BORDER}`,
               borderRadius: 6, color: view === v.key ? GREEN : MUTED,
               padding: "5px 14px", fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 600, cursor: "pointer",

@@ -8,7 +8,7 @@ import Link from "next/link";
 import { PlayerApproachSkill, PlayerCareer, PlayerDecompositions, PlayerProfile, PlayerSkillRatings, PlayerSynopsis, RoundStat, getOpenEvents, getPlayerCareer, getPlayerProfile, getPlayerSynopsis, getTournamentLeaderboard } from "@/lib/api";
 import { hasAny, presentFields, type FieldSpec } from "@/lib/presentFields";
 import { profileSections, type Section } from "@/lib/profileSections";
-import { AdjBar, BG, GOLD, BORDER, Chip, GREEN, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, parseCourseHistory, parseRecentResults, posColor, posColor2, sectionLabel, sgColor, sgColor2, toParColor2 } from "./shared";
+import { AdjBar, BG, GOLD, BORDER, Chip, GREEN, MUTED, RED, TEXT, card, fmt, fmtMoney, fmtOdds, fmtPct, fmtSg, isMajor, normName, parseCourseHistory, parseRecentResults, posColor, posColor2, sectionLabel, sgColor, sgColor2, toParColor2, tint, Notice } from "./shared";
 import { FieldBrowser, PlayerSelect } from "./PlayerPicker";
 
 
@@ -57,7 +57,7 @@ function SynopsisCard({
         <button
           onClick={onGenerate}
           style={{
-            background: GREEN + "22", border: `1px solid ${GREEN}44`,
+            background: tint(GREEN, 13), border: `1px solid ${tint(GREEN, 27)}`,
             color: GREEN, borderRadius: 8, padding: "8px 18px",
             fontSize: "max(var(--fs-min), 0.82em)", fontWeight: 700, cursor: "pointer", flexShrink: 0,
           }}
@@ -81,7 +81,7 @@ function SynopsisCard({
 
   if (error) {
     return (
-      <div style={{ ...card, background: "#1a0808", border: `1px solid ${RED}44` }}>
+      <div style={{ ...card, background: "#1a0808", border: `1px solid ${tint(RED, 27)}` }}>
         <div style={{ fontSize: "max(var(--fs-min), 0.82em)", color: RED }}>{error}</div>
         <button onClick={onGenerate} style={{ marginTop: 8, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>
           Try again
@@ -131,7 +131,7 @@ function SynopsisCard({
               <span style={{
                 fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 800, color,
                 textTransform: "uppercase", letterSpacing: "0.1em",
-                background: color + "18", border: `1px solid ${color}33`,
+                background: tint(color, 9), border: `1px solid ${tint(color, 20)}`,
                 borderRadius: 4, padding: "2px 7px", flexShrink: 0, marginTop: 2,
                 minWidth: 80, textAlign: "center",
               }}>
@@ -170,7 +170,7 @@ export function LookupTab({ players, defaultPlayer }: { players: string[]; defau
     setSynopsisError(null);
     getPlayerProfile(name)
       .then(setProfile)
-      .catch(() => setError("Failed to load player profile."))
+      .catch(() => setError(name))   // the name, so Try again can reload it
       .finally(() => setLoading(false));
   }, []);
 
@@ -200,8 +200,8 @@ export function LookupTab({ players, defaultPlayer }: { players: string[]; defau
         <PlayerSelect players={players} value={selected} onChange={handleSelect} id="lookup" placeholder="Search player…" />
       </div>
 
-      {error && <p style={{ color: RED }}>{error}</p>}
-      {loading && <p style={{ color: MUTED }}>Loading profile…</p>}
+      {error && <Notice kind="error" onRetry={() => fetchProfile(error)}>Couldn&apos;t load {error}&apos;s profile.</Notice>}
+      {loading && <Notice kind="loading">Loading profile…</Notice>}
 
       {!profile && !loading && <FieldBrowser onPick={handleSelect} />}
 
@@ -330,8 +330,8 @@ function TournamentResultsPanel({ tid, highlightPlayer }: { tid: string; highlig
       .catch(() => setError(true));
   }, [tid]);
 
-  if (error) return <p style={{ color: RED, fontSize: "max(var(--fs-min), 0.8em)", margin: "8px 0 0" }}>Failed to load.</p>;
-  if (!rows)  return <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.8em)", margin: "8px 0 0" }}>Loading leaderboard…</p>;
+  if (error) return <Notice kind="error">Couldn&apos;t load this event&apos;s leaderboard.</Notice>;
+  if (!rows)  return <Notice kind="loading">Loading leaderboard…</Notice>;
 
   const hasEarnings = rows.some(r => r.earnings != null);
   const hasSg = rows.some(r => r.sg_total != null);
@@ -434,15 +434,17 @@ function CareerCard({ playerName }: { playerName: string }) {
   const [loaded, setLoaded]       = useState(false);
   const [view, setView]           = useState<"recent" | "yearly">("yearly");
   const [majorsOnly, setMajorsOnly] = useState(false);
+  const [careerFailed, setCareerFailed] = useState(false);
   // tracks which tournament row is expanded in Recent Starts, and which tab is active
   const [expandedTid, setExpandedTid] = useState<string | null>(null);
   const [expandedTab, setExpandedTab] = useState<"rounds" | "leaderboard">("rounds");
 
   function load() {
     setLoading(true);
+    setCareerFailed(false);
     getPlayerCareer(playerName)
       .then(d => { setCareer(d); setLoaded(true); })
-      .catch(() => setLoaded(true))
+      .catch(() => setCareerFailed(true))   // was: marked loaded with no data, so the card showed nothing
       .finally(() => setLoading(false));
   }
 
@@ -462,7 +464,7 @@ function CareerCard({ playerName }: { playerName: string }) {
         <p style={{ ...sectionLabel, margin: 0 }}>Career stats (events in our results)</p>
         {!loaded && !loading && (
           <button onClick={load} style={{
-            background: GOLD + "22", border: `1px solid ${GOLD}44`,
+            background: tint(GOLD, 13), border: `1px solid ${tint(GOLD, 27)}`,
             color: GOLD, borderRadius: 7, padding: "5px 14px",
             fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 700, cursor: "pointer",
           }}>
@@ -473,7 +475,7 @@ function CareerCard({ playerName }: { playerName: string }) {
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {(["yearly", "recent"] as const).map(v => (
               <button key={v} onClick={() => { setView(v); if (v !== "recent") setMajorsOnly(false); }} style={{
-                background: view === v ? GREEN + "22" : "transparent",
+                background: view === v ? tint(GREEN, 13) : "transparent",
                 border: `1px solid ${view === v ? GREEN : BORDER}`,
                 borderRadius: 6, color: view === v ? GREEN : MUTED,
                 padding: "4px 12px", fontSize: "max(var(--fs-min), 0.75em)", fontWeight: 600, cursor: "pointer",
@@ -483,7 +485,7 @@ function CareerCard({ playerName }: { playerName: string }) {
             ))}
             {view === "recent" && (
               <button onClick={() => setMajorsOnly(m => !m)} style={{
-                background: majorsOnly ? GOLD + "22" : "transparent",
+                background: majorsOnly ? tint(GOLD, 13) : "transparent",
                 border: `1px solid ${majorsOnly ? GOLD : BORDER}`,
                 borderRadius: 6, color: majorsOnly ? GOLD : MUTED,
                 padding: "4px 12px", fontSize: "max(var(--fs-min), 0.75em)", fontWeight: 600, cursor: "pointer",
@@ -494,6 +496,7 @@ function CareerCard({ playerName }: { playerName: string }) {
           </div>
         )}
       </div>
+      {careerFailed && <Notice kind="error" onRetry={load}>Couldn&apos;t load career stats.</Notice>}
 
       {loading && <p style={{ color: MUTED, fontSize: "max(var(--fs-min), 0.85em)" }}>Loading…</p>}
 

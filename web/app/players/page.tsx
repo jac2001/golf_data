@@ -9,7 +9,7 @@ import Link from "next/link";
 import { getAllPlayers, getOwnerPicks } from "@/lib/api";
 import { useIsAdmin } from "@/lib/useIsAdmin";
 import { PageHead, SubTabs } from "@/components/broadcast";
-import { BG, GREEN, MUTED, TEXT } from "./_components/shared";
+import { BG, GREEN, MUTED, TEXT, Notice } from "./_components/shared";
 import { LookupTab } from "./_components/ProfileTab";
 import { StatsTab } from "./_components/StatsTab";
 import { H2HTab } from "./_components/H2HTab";
@@ -86,7 +86,7 @@ function PlayersPageInner() {
         </Link>
 
         {listLoading ? (
-          <p style={{ color: MUTED }}>Loading players…</p>
+          <Notice kind="loading">Loading players…</Notice>
         ) : pageTab === "lookup" ? (
           <LookupTab players={players} defaultPlayer={deepLinkPlayer} />
         ) : pageTab === "h2h" ? (

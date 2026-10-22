@@ -56,6 +56,34 @@ export function sgColor(v: number | null): string {
 }
 
 
+/** A see-through tint of a theme color. `tint(GOLD, 13)` made "var(--bc-yellow)22",
+ *  which isn't a color, so those backgrounds and borders never drew (audit #22). */
+export function tint(color: string, pct: number): string {
+  return `color-mix(in srgb, ${color} ${pct}%, transparent)`;
+}
+
+/** One look for loading, empty and error states across Players (audit #25).
+ *  Errors say what didn't load and offer a retry when one is possible. */
+export function Notice({ kind, children, onRetry }: {
+  kind: "loading" | "empty" | "error"; children: React.ReactNode; onRetry?: () => void;
+}) {
+  return (
+    <div role={kind === "error" ? "alert" : "status"} style={{
+      padding: "14px 16px", margin: "8px 0", borderRadius: 10, fontSize: 14, lineHeight: 1.5,
+      background: CARD_BG, border: `1px solid ${kind === "error" ? tint(RED, 40) : BORDER}`,
+      color: kind === "error" ? TEXT : MUTED,
+    }}>
+      {children}
+      {onRetry && (
+        <button type="button" onClick={onRetry} style={{ marginLeft: 8, background: "none", border: "none",
+          color: GOLD, fontWeight: 800, cursor: "pointer", font: "inherit", padding: 0, minHeight: 32 }}>
+          Try again
+        </button>
+      )}
+    </div>
+  );
+}
+
 export const sectionLabel: React.CSSProperties = {
   fontSize: "max(var(--fs-min-xs), 0.68em)",
   fontWeight: 700,

@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { PlayerProfile, getPlayerProfile } from "@/lib/api";
-import { GOLD, BORDER, CARD_BG, GREEN, MUTED, TEXT, card, fmt, sectionLabel } from "./shared";
+import { GOLD, BORDER, CARD_BG, GREEN, MUTED, TEXT, card, fmt, sectionLabel, tint, Notice } from "./shared";
 import { PlayerSelect } from "./PlayerPicker";
 
 
@@ -19,13 +19,15 @@ export function H2HTab({ players }: { players: string[] }) {
   const [p2, setP2]             = useState<PlayerProfile | null>(null);
   const [loadingP1, setLoadingP1] = useState(false);
   const [loadingP2, setLoadingP2] = useState(false);
+  const [failed, setFailed]       = useState<string | null>(null);   // the golfer whose profile didn't load
 
   function load(name: string, which: 1 | 2) {
     const setLoading = which === 1 ? setLoadingP1 : setLoadingP2;
     const setData    = which === 1 ? setP1 : setP2;
     setLoading(true);
     setData(null);
-    getPlayerProfile(name).then(setData).finally(() => setLoading(false));
+    setFailed(null);
+    getPlayerProfile(name).then(setData).catch(() => setFailed(name)).finally(() => setLoading(false));
   }
 
   function handleP1(name: string) { setP1Name(name); if (name) load(name, 1); }
@@ -48,7 +50,8 @@ export function H2HTab({ players }: { players: string[] }) {
         </div>
       </div>
 
-      {(loadingP1 || loadingP2) && <p style={{ color: MUTED }}>Loading…</p>}
+      {(loadingP1 || loadingP2) && <Notice kind="loading">Loading…</Notice>}
+      {failed && <Notice kind="error">Couldn&apos;t load {failed}&apos;s profile. Pick the golfer again to retry.</Notice>}
 
       {ready && <H2HView p1={p1!} p2={p2!} />}
 
@@ -128,7 +131,7 @@ function H2HHeaderCard({ profile, accent }: { profile: PlayerProfile; accent: st
   const isGreen = accent === GREEN;
   return (
     <div style={{
-      background: CARD_BG, border: `1px solid ${accent}44`,
+      background: CARD_BG, border: `1px solid ${tint(accent, 27)}`,
       borderRadius: 12, padding: "18px 16px", textAlign: "center",
     }}>
       <Link
