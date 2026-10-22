@@ -22,6 +22,7 @@ import { useActiveGroup } from "./ActiveGroup";
 import { CollegeTab } from "./CollegeGame";
 import { FadeTab } from "./FadeGame";
 import { RoundGameTab } from "./RoundGame";
+import { WeekChecklist } from "./WeekChecklist";
 
 // ── Games: one tab, three modes ──────────────────────────────────────────────
 
@@ -105,6 +106,7 @@ export function GamesTab() {
 
   return (
     <>
+      {group && <WeekChecklist groupId={group.id} refreshKey={`${mode}:${view}`} onPick={g => { pick(g); setView("picks"); }} />}
       <nav aria-label="Games" style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
         gap: 4, background: "var(--bc-panel)", border: "1px solid var(--bc-line)", borderRadius: 10,
         padding: 4, marginBottom: 12 }}>
