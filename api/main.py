@@ -5383,6 +5383,13 @@ def get_player_profile(player: str) -> dict:
     our_model["win_rank"]   = win_rank
     our_model["top10_rank"] = top10_rank
 
+    # Odds and Move from DataGolf, as This Week shows them (Players audit
+    # #7/#8): the DraftKings columns these names came from are gone.
+    dg_odds = _dg_odds_for(tid)
+    dg = dg_odds.get(_name_key(_flip_to_last_first(player))) or dg_odds.get(_name_key(player))
+    our_model["odds_to_win"] = dg["odds_to_win"] if dg else None
+    our_model["dk_odds_direction"] = dg["dk_odds_direction"] if dg else None
+
     # No uses / badge / recommendation / EV here (Players audit #1): they were
     # Jack's personal tracker and the dead strategy file, served to anyone.
 

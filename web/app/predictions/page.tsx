@@ -61,6 +61,13 @@ export default function PredictionsPage() {
     setLoaded(prev => new Set([...prev, tab]));
   }
 
+  // A link can open a tab (/predictions?tab=coursefit): Players' retired
+  // Course Fit tab points here. One-shot, like /friends?consider=.
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get("tab");
+    if (t && TABS.some(x => x.id === t)) activateTab(t as Tab);
+  }, []);   // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Data state ───────────────────────────────────────────────────────────────
   const [tournament, setTournament]   = useState<Tournament | null>(null);
   // Signed-out visitors get a top-10 teaser of the field tab only — the

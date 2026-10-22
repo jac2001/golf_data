@@ -16,7 +16,6 @@ import {
   getPlayerCareer,
   getTournamentLeaderboard,
   getOwnerPicks,
-  getCourseFitWeights,
   PlayerProfile,
   PlayerDecompositions,
   PlayerSkillRatings,
@@ -28,8 +27,6 @@ import {
   CareerResult,
   CareerYearSummary,
   RoundStat,
-  CourseFitWeights,
-  CourseFitRankedPlayer,
 } from "@/lib/api";
 import { useIsAdmin } from "@/lib/useIsAdmin";
 
@@ -426,12 +423,11 @@ function SynopsisCard({
 
 import { PageHead, SubTabs } from "@/components/broadcast";
 
-type PageTab = "lookup" | "h2h" | "stats" | "course-fit";
+type PageTab = "lookup" | "h2h" | "stats";
 const PAGE_TABS: { id: PageTab; label: string }[] = [
   { id: "lookup",     label: "Profiles"     },
   { id: "h2h",        label: "Head-to-Head" },
   { id: "stats",      label: "Stats"        },
-  { id: "course-fit", label: "Course Fit"   },
 ];
 
 function PlayersPageInner() {
@@ -488,6 +484,12 @@ function PlayersPageInner() {
 
         {/* Tab bar */}
         <SubTabs tabs={PAGE_TABS} active={pageTab} onChange={setPageTab} />
+        {/* Course fit has one home (Players audit #10): this page's own tab
+            ran on a default profile in production and contradicted it. */}
+        <Link href="/predictions?tab=coursefit" style={{ display: "inline-flex", alignItems: "center", minHeight: 44,
+          color: "var(--bc-yellow)", fontWeight: 700, textDecoration: "none", fontSize: 14 }}>
+          Which golfers suit this week&apos;s course? See Course Fit on This Week →
+        </Link>
 
         {listLoading ? (
           <p style={{ color: MUTED }}>Loading players…</p>
@@ -495,10 +497,8 @@ function PlayersPageInner() {
           <LookupTab players={players} defaultPlayer={deepLinkPlayer} />
         ) : pageTab === "h2h" ? (
           <H2HTab players={players} />
-        ) : pageTab === "stats" ? (
-          <StatsTab myPicks={myPicks} />
         ) : (
-          <CourseFitWeightsTab myPicks={myPicks} />
+          <StatsTab myPicks={myPicks} />
         )}
       </div>
     </main>
@@ -749,7 +749,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
               {view === "form" && <>
                 {th("form_trend",       "Form")}
                 {th("consecutive_cuts", "Consec. Cuts")}
-                {th("recent_top10s",    "Top10 Score")}
+                {th("recent_top10s",    "Recent top 10s")}
                 {th("recent_wins",      "Recent Wins")}
                 {th("consecutive_top10s", "Consec. Top10s")}
               </>}
@@ -862,208 +862,7 @@ function StatsTab({ myPicks = [] }: { myPicks?: string[] }) {
   );
 }
 
-// ── Course Fit tab ───────────────────────────────────────────────────────────
-
-const FIT_CATEGORIES: { key: keyof CourseFitRankedPlayer; label: string; color: string }[] = [
-  { key: "fit_ott",  label: "Off the Tee",      color: BLUE },
-  { key: "fit_app",  label: "Approach",          color: GREEN },
-  { key: "fit_arg",  label: "Around the Green",  color: GOLD },
-  { key: "fit_putt", label: "Putting",           color: "var(--bc-orange)" },
-];
-
-function CourseFitWeightsTab({ myPicks = [] }: { myPicks?: string[] }) {
-  const myPicksNorm = useMemo(() => new Set(myPicks.map(normName)), [myPicks]);
-
-  const [data, setData]       = useState<CourseFitWeights | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState<string | null>(null);
-  const [search, setSearch]   = useState("");
-  const [expanded, setExpanded] = useState<string | null>(null);
-
-  useEffect(() => {
-    getCourseFitWeights()
-      .then(setData)
-      .catch(() => setError("Failed to load course fit."))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const filtered = useMemo(() => {
-    if (!data) return [];
-    const q = search.trim().toLowerCase();
-    return data.players.filter(p => !q || p.player_name.toLowerCase().includes(q));
-  }, [data, search]);
-
-  if (loading) return <p style={{ color: MUTED }}>Loading course fit…</p>;
-  if (error || !data) return <p style={{ color: RED }}>{error ?? "Failed to load course fit."}</p>;
-
-  const { profile } = data;
-  // Find the biggest fit_total magnitude in the field so every player's mini
-  // breakdown bars share one consistent scale.
-  const maxAbsFit = Math.max(
-    0.05,
-    ...data.players.flatMap(p => FIT_CATEGORIES.map(c => Math.abs(p[c.key] as number)))
-  );
-
-  return (
-    <>
-      {/* ── Course profile card ──────────────────────────────────────────── */}
-      <div style={{ ...card, marginBottom: 20 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10 }}>
-          <div>
-            <p style={{ ...sectionLabel, margin: "0 0 4px" }}>Course Profile</p>
-            <h2 style={{ margin: 0, fontSize: "1.3em", fontWeight: 800, color: TEXT }}>
-              {data.course_name ?? data.tournament_name}
-            </h2>
-            <p style={{ margin: "2px 0 0", fontSize: "max(var(--fs-min), 0.82em)", color: MUTED }}>{data.tournament_name}</p>
-          </div>
-          {data.is_default ? (
-            <span style={{
-              fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 700, color: GOLD, background: "#2a1f00",
-              border: "1px solid color-mix(in srgb, var(--bc-yellow) 27%, transparent)", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
-            }}>
-              No course-specific data yet — showing field-average importance
-            </span>
-          ) : (
-            <span style={{
-              fontSize: "max(var(--fs-min), 0.72em)", fontWeight: 700, color: GREEN, background: "var(--bc-card)",
-              border: "1px solid color-mix(in srgb, var(--bc-green) 27%, transparent)", borderRadius: 6, padding: "5px 12px", whiteSpace: "nowrap",
-            }}>
-              Derived from {data.n_players_in_derivation} historical results · {(data.confidence * 100).toFixed(0)}% confidence
-            </span>
-          )}
-        </div>
-
-        <div style={{ marginTop: 18 }}>
-          {([
-            ["Off the Tee",      profile.ott_pct,  BLUE],
-            ["Approach",         profile.app_pct,  GREEN],
-            ["Around the Green", profile.arg_pct,  GOLD],
-            ["Putting",          profile.putt_pct, "var(--bc-orange)"],
-          ] as const).map(([label, pct, color]) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-              <span style={{ width: 140, fontSize: "max(var(--fs-min), 0.8em)", color: MUTED, flexShrink: 0 }}>{label}</span>
-              <div style={{ flex: 1, background: "var(--bc-panel)", borderRadius: 4, height: 10, border: `1px solid ${BORDER}` }}>
-                <div style={{ width: `${pct}%`, background: color, borderRadius: 4, height: 10 }} />
-              </div>
-              <span style={{ width: 46, textAlign: "right", fontSize: "max(var(--fs-min), 0.85em)", fontWeight: 700, color }}>
-                {pct.toFixed(0)}%
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Ranked field ─────────────────────────────────────────────────── */}
-      <input
-        placeholder="Filter player..."
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        style={{
-          background: CARD_BG, border: `1px solid ${BORDER}`, borderRadius: 6,
-          color: TEXT, padding: "7px 12px", marginBottom: 12, width: 200, fontSize: "max(var(--fs-min), 0.85em)",
-          outline: "none",
-        }}
-      />
-      <p style={{ fontSize: "max(var(--fs-min), 0.75em)", color: LABEL, margin: "0 0 10px" }}>
-        {filtered.length} players · ranked by fit to this course · click a row for the breakdown
-      </p>
-
-      <div style={{ overflowX: "auto", border: `1px solid ${BORDER}`, borderRadius: 10 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", background: "var(--bc-panel)" }}>
-          <thead>
-            <tr>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}`, width: 36 }}>#</th>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "left", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Player</th>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>World Rank</th>
-              <th style={{ padding: "7px 10px", background: "var(--bc-panel)", textAlign: "center", fontSize: "max(var(--fs-min-xs), 0.68em)", color: LABEL, borderBottom: `1px solid ${BORDER}` }}>Fit Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((p, i) => {
-              const isPick = myPicksNorm.has(normName(p.player_name));
-              const isExpanded = expanded === p.player_name;
-              return (
-                <React.Fragment key={p.player_name}>
-                  <tr
-                    onClick={() => setExpanded(isExpanded ? null : p.player_name)}
-                    style={{
-                      cursor: "pointer",
-                      background: isPick ? "var(--bc-panel)" : (i % 2 === 0 ? "var(--bc-panel)" : "var(--bc-panel)"),
-                      borderLeft: isPick ? `2px solid ${GREEN}` : undefined,
-                    }}
-                  >
-                    <td style={{ padding: "6px 10px", textAlign: "center", color: LABEL, fontSize: "max(var(--fs-min), 0.8em)", borderBottom: "1px solid var(--bc-card)" }}>
-                      {i + 1}
-                    </td>
-                    <td style={{ padding: "6px 10px", borderBottom: "1px solid var(--bc-card)" }}>
-                      <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: isExpanded ? BLUE : "var(--bc-line)" }}>
-                          {isExpanded ? "▲" : "▼"}
-                        </span>
-                        <span style={{ color: isPick ? GREEN : TEXT, fontWeight: isPick ? 700 : 500, fontSize: "max(var(--fs-min), 0.88em)" }}>
-                          {p.player_name}
-                        </span>
-                        {isPick && (
-                          <span style={{ fontSize: "max(var(--fs-min-xs), 0.58em)", fontWeight: 800, color: GREEN, background: "var(--bc-card)", border: `1px solid ${GREEN}44`, borderRadius: 3, padding: "2px 5px" }}>
-                            MY PICK
-                          </span>
-                        )}
-                      </span>
-                    </td>
-                    <td style={{ padding: "6px 10px", textAlign: "center", color: MUTED, fontSize: "max(var(--fs-min), 0.85em)", borderBottom: "1px solid var(--bc-card)" }}>
-                      {p.world_rank != null ? `#${p.world_rank}` : "—"}
-                    </td>
-                    <td style={{ padding: "6px 10px", textAlign: "center", fontWeight: 700, fontSize: "0.9em", borderBottom: "1px solid var(--bc-card)",
-                        color: p.fit_total >= 0 ? GREEN : RED }}>
-                      {p.fit_total >= 0 ? "+" : ""}{p.fit_total.toFixed(2)}
-                    </td>
-                  </tr>
-                  {isExpanded && (
-                    <tr>
-                      <td colSpan={4} style={{ background: "var(--bc-panel)", padding: "14px 16px", borderBottom: "1px solid var(--bc-card)" }}>
-                        <div style={{ display: "flex", flexDirection: "column", gap: 6, maxWidth: 480 }}>
-                          {FIT_CATEGORIES.map(c => {
-                            const val = p[c.key] as number;
-                            const pct = Math.min(100, Math.abs(val) / maxAbsFit * 100);
-                            return (
-                              <div key={c.key} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                                <span style={{ width: 130, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, flexShrink: 0 }}>{c.label}</span>
-                                <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6 }}>
-                                  <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-                                    {val < 0 && <div style={{ width: `${pct}%`, height: 7, borderRadius: 2, background: RED, maxWidth: "100%" }} />}
-                                  </div>
-                                  <div style={{ width: 1, height: 12, background: BORDER, flexShrink: 0 }} />
-                                  <div style={{ flex: 1 }}>
-                                    {val >= 0 && <div style={{ width: `${pct}%`, height: 7, borderRadius: 2, background: c.color, maxWidth: "100%" }} />}
-                                  </div>
-                                </div>
-                                <span style={{ width: 50, textAlign: "right", fontSize: "max(var(--fs-min), 0.78em)", fontWeight: 600, color: val >= 0 ? c.color : RED }}>
-                                  {val >= 0 ? "+" : ""}{val.toFixed(2)}
-                                </span>
-                              </div>
-                            );
-                          })}
-                          <Link
-                            href={`/players?player=${encodeURIComponent(p.player_name)}`}
-                            style={{ marginTop: 6, fontSize: "max(var(--fs-min), 0.78em)", color: BLUE, textDecoration: "none", fontWeight: 600 }}
-                          >
-                            View full profile →
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
-}
-
-// ── H2H tab ───────────────────────────────────────────────────────────────────
+// ── Head-to-Head tab ─────────────────────────────────────────────────────────
 
 function H2HTab({ players }: { players: string[] }) {
   const [p1Name, setP1Name]     = useState("");
@@ -1146,24 +945,24 @@ function H2HView({ p1, p2 }: { p1: PlayerProfile; p2: PlayerProfile }) {
         <H2HRow label="DG Course-Adj Win%" va={p1.dg_prediction?.bhf_win != null ? p1.dg_prediction.bhf_win * 100 : null} vb={p2.dg_prediction?.bhf_win != null ? p2.dg_prediction.bhf_win * 100 : null} fmt=".1f" suffix="%" higherBetter />
 
         <H2HSection label="Season Form" />
-        <H2HRow label="Season SG Total" va={m1.season_sg_total} vb={m2.season_sg_total} fmt="+.2f" higherBetter />
+        <H2HRow label="Season SG (our data)" va={m1.season_sg_total} vb={m2.season_sg_total} fmt="+.2f" higherBetter />
         <H2HRow label="Form Trend" va={m1.form_trend} vb={m2.form_trend} fmt="+.2f" higherBetter />
         <H2HRow label="World Rank" va={m1.world_rank} vb={m2.world_rank} fmt=".0f" higherBetter={false} prefix="#" />
 
         <H2HSection label="Skill Ratings (DG)" />
-        <H2HRow label="SG Total" va={p1.skill_ratings?.total} vb={p2.skill_ratings?.total} fmt="+.2f" higherBetter />
+        <H2HRow label="Skill rating (DataGolf)" va={p1.skill_ratings?.total} vb={p2.skill_ratings?.total} fmt="+.2f" higherBetter />
         <H2HRow label="Off the Tee" va={p1.skill_ratings?.ott} vb={p2.skill_ratings?.ott} fmt="+.2f" higherBetter />
         <H2HRow label="Approach" va={p1.skill_ratings?.app} vb={p2.skill_ratings?.app} fmt="+.2f" higherBetter />
         <H2HRow label="Around Green" va={p1.skill_ratings?.arg} vb={p2.skill_ratings?.arg} fmt="+.2f" higherBetter />
         <H2HRow label="Putting" va={p1.skill_ratings?.putt} vb={p2.skill_ratings?.putt} fmt="+.2f" higherBetter />
 
         <H2HSection label="Course Fit" />
-        <H2HRow label="Course Fit Adj." va={p1.decompositions?.course_fit_delta} vb={p2.decompositions?.course_fit_delta} fmt="+.3f" higherBetter />
+        <H2HRow label="Course fit (strokes/round)" va={p1.decompositions?.total_fit_adjustment} vb={p2.decompositions?.total_fit_adjustment} fmt="+.2f" higherBetter />
         <H2HRow label="Distance Adj." va={p1.decompositions?.driving_distance_adjustment} vb={p2.decompositions?.driving_distance_adjustment} fmt="+.3f" higherBetter />
         <H2HRow label="Timing Adj." va={p1.decompositions?.timing_adjustment} vb={p2.decompositions?.timing_adjustment} fmt="+.3f" higherBetter />
 
         <H2HSection label="PGA Tour Stats" />
-        <H2HRow label="SG Total" va={p1.betting_profile?.sg_total} vb={p2.betting_profile?.sg_total} fmt="+.2f" higherBetter />
+        <H2HRow label="Season SG (PGA TOUR)" va={p1.betting_profile?.sg_total} vb={p2.betting_profile?.sg_total} fmt="+.2f" higherBetter />
         <H2HRow label="SG OTT" va={p1.betting_profile?.sg_ott} vb={p2.betting_profile?.sg_ott} fmt="+.2f" higherBetter />
         <H2HRow label="SG Approach" va={p1.betting_profile?.sg_app} vb={p2.betting_profile?.sg_app} fmt="+.2f" higherBetter />
         <H2HRow label="SG Putt" va={p1.betting_profile?.sg_putt} vb={p2.betting_profile?.sg_putt} fmt="+.2f" higherBetter />
@@ -1572,7 +1371,7 @@ function CareerCard({ playerName }: { playerName: string }) {
   return (
     <div style={card}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-        <p style={{ ...sectionLabel, margin: 0 }}>Career Stats</p>
+        <p style={{ ...sectionLabel, margin: 0 }}>Career stats (events in our results)</p>
         {!loaded && !loading && (
           <button onClick={load} style={{
             background: BLUE + "22", border: `1px solid ${BLUE}44`,
@@ -1849,7 +1648,7 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
           <Chip label="Cut%" value={fmtPct(m.cut_prob)} />
           <Chip label="Season SG" value={fmt(m.season_sg_total, 2)} color={sgColor(m.season_sg_total)} />
           {m.odds_to_win != null && (
-            <Chip label="DK Odds" value={fmtOdds(m.odds_to_win)} />
+            <Chip label="Odds (DataGolf)" value={fmtOdds(m.odds_to_win)} />
           )}
           {m.model_vs_vegas_edge != null && (
             // The API sends a fraction (0.037); shown in percentage points (+3.7pp).
@@ -1868,10 +1667,13 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               {m.form_trend > 0 ? "+" : ""}{fmt(m.form_trend, 2)}
             </span>
           )}
-          {m.dk_odds_direction && (
-            <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: m.dk_odds_direction === "UP" ? GREEN : m.dk_odds_direction === "DOWN" ? RED : MUTED }}>
-              <span style={{ color: LABEL }}>Drift </span>
-              {m.dk_odds_direction === "UP" ? "▲" : m.dk_odds_direction === "DOWN" ? "▼" : "→"}
+          {/* Move: DataGolf odds since the opening line, same meaning as This
+              Week (UP = odds longer = the market cooled; DOWN = warmed to him).
+              It was colored the other way round (Players audit #8). */}
+          {(m.dk_odds_direction === "UP" || m.dk_odds_direction === "DOWN") && (
+            <span style={{ fontSize: "max(var(--fs-min), 0.78em)", color: m.dk_odds_direction === "DOWN" ? GREEN : RED }}>
+              <span style={{ color: LABEL }}>Move </span>
+              {m.dk_odds_direction === "DOWN" ? "↓ odds shorter since the line opened" : "↑ odds longer since the line opened"}
             </span>
           )}
         </div>
@@ -1885,7 +1687,9 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
         <div style={card}>
           <p style={sectionLabel}>DG Tournament Prediction</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
-            <Chip label="DG Win%"    value={fmtPct(profile.dg_prediction.win)} />
+            {/* DataGolf's real prediction is the course-adjusted one (bhf);
+                "win" is its baseline before course fit and history (#9). */}
+            <Chip label="DG Win%"    value={fmtPct(profile.dg_prediction.bhf_win ?? profile.dg_prediction.win)} />
             <Chip label="Top 5%"     value={fmtPct(profile.dg_prediction.top_5)} />
             <Chip label="Top 10%"    value={fmtPct(profile.dg_prediction.top_10)} />
             <Chip label="Top 20%"    value={fmtPct(profile.dg_prediction.top_20)} />
@@ -1898,13 +1702,13 @@ function ProfileView({ profile }: { profile: PlayerProfile }) {
               background: "var(--bc-panel)", border: `1px solid ${BORDER}`, borderRadius: 8,
               padding: "10px 14px",
             }}>
-              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: LABEL }}>Course fit</span>
+              <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: LABEL }}>Before course fit and history</span>
               <span style={{ fontSize: "max(var(--fs-min), 0.88em)", color: MUTED, fontVariantNumeric: "tabular-nums" }}>
-                {fmtPct(profile.dg_prediction.baseline_win)} baseline
+                {fmtPct(profile.dg_prediction.baseline_win)}
               </span>
               <span style={{ fontSize: "max(var(--fs-min), 0.8em)", color: LABEL }}>→</span>
               <span style={{ fontSize: "max(var(--fs-min), 0.88em)", fontWeight: 700, color: BLUE, fontVariantNumeric: "tabular-nums" }}>
-                {fmtPct(profile.dg_prediction.bhf_win)} adjusted
+                {fmtPct(profile.dg_prediction.bhf_win)} at this course
               </span>
               {profile.dg_prediction.course_fit_delta_pct != null && (
                 <span style={{
@@ -2118,7 +1922,9 @@ function BettingProfileCard({ bp }: { bp: import("@/lib/api").PlayerBettingProfi
 
   return (
     <div style={card}>
-      <p style={sectionLabel}>PGA Tour Insights</p>
+      {/* Named by source (Players audit #16): PGA TOUR's season counts can
+          differ from Career Stats, which counts the events in our results. */}
+      <p style={sectionLabel}>PGA TOUR season profile (from pgatour.com)</p>
 
       {/* Summary narrative */}
       {bp.summary && (
