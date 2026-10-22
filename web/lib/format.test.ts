@@ -22,6 +22,7 @@ test("fmtPct: a fraction as a percent", () => {
   assert.equal(fmtPct(0.3377, 0), "34%");
   assert.equal(fmtPct(1), "100.0%");
   assert.equal(fmtPct(0), "0.0%");              // a real 0% chance prints
+  assert.equal(fmtPct(-0.0001), "0.0%");       // rounds to zero: no "-0.0%"
   for (const b of BAD) assert.equal(fmtPct(b), MISSING);
 });
 

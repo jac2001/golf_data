@@ -51,8 +51,10 @@ export function fmtSigned(v: number | null | undefined, dp = 2): string {
 
 export function fmtPct(v: number | null | undefined, dp = 1): string {
   if (!isNum(v)) return MISSING;
-
-return `${(v * 100).toFixed(dp)}%`;
+  const text = (100 * v).toFixed(dp);
+  const rounded = Number(text);
+  // Number() then toFixed() drops the sign of a rounded -0: -0.0001 -> "0.0%".
+  return `${rounded.toFixed(dp)}%`;
 }
 
 export function fmtOdds(v: number | null | undefined): string {
