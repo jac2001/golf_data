@@ -91,7 +91,7 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                     padding: "8px 12px",
                     borderBottom: i < group.players.length - 1 ? "1px solid var(--bc-card)" : "none",
                     borderLeft: isPick ? "2px solid var(--bc-green)" : "2px solid transparent",
-                    background: isPick ? "#091a0f" : "transparent",
+                    background: isPick ? "var(--bc-pick-bg)" : "transparent",
                     display: "flex", justifyContent: "space-between", alignItems: "center",
                   }}>
                     {/* Left: rank badge + name */}
@@ -109,14 +109,14 @@ export default function TeeTimesGrid({ data, myPicks = [] }: Props) {
                           <Link
                             href={`/players?player=${encodeURIComponent(p.name)}`}
                             style={{
-                              color: isPick ? "var(--bc-green)" : "#c0cce0",
+                              color: isPick ? "var(--bc-green)" : "var(--bc-text)",
                               fontWeight: isPick ? 700 : 600,
                               fontSize: "max(var(--fs-min), 0.85em)",
                               whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                               textDecoration: "none",
                             }}
                             onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")}
-                            onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : "#c0cce0")}
+                            onMouseLeave={e => (e.currentTarget.style.color = isPick ? "var(--bc-green)" : "var(--bc-text)")}
                           >
                             {p.name}
                           </Link>

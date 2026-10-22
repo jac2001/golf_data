@@ -104,9 +104,9 @@ export function ReminderBell() {
       <span>Pick reminders — a nudge the day before an event locks if your picks aren&apos;t in.</span>
       <button onClick={toggle} disabled={state === "busy"} style={{
         ...btnQuiet, padding: "4px 12px", fontSize: "0.9em",
-        color: on ? "var(--bc-text)" : "var(--bc-muted)",
-        background: on ? "var(--bc-raised)" : "transparent",
-        borderColor: on ? "var(--bc-line-hi)" : "var(--bc-line)",
+        color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+        background: on ? "var(--bc-sel-bg)" : "transparent",
+        borderColor: on ? "var(--bc-sel-line)" : "var(--bc-line)",
       }}>
         {state === "busy" ? "…" : on ? "On" : "Off"}
       </button>
@@ -177,13 +177,13 @@ export async function shareReceipt(tid: string, uid: string, game: "rounds" | "f
 }
 
 export const btn: React.CSSProperties = {
-  background: "var(--bc-yellow)", color: "#081f14", border: "none",
+  background: "var(--bc-yellow-fill)", color: "#081f14", border: "none",
   borderRadius: 6, padding: "9px 16px", fontWeight: 800, fontSize: "max(var(--fs-min), 0.8em)",
   textTransform: "uppercase", letterSpacing: "0.05em", cursor: "pointer",
 };
 export const btnQuiet: React.CSSProperties = {
-  ...btn, background: "transparent", color: "var(--bc-muted)",
-  border: "1px solid var(--bc-line)", fontWeight: 700,
+  ...btn, background: "transparent", color: "var(--bc-quiet-fg)",
+  border: "1px solid var(--bc-quiet-line)", fontWeight: 700,
 };
 export const inputStyle: React.CSSProperties = {
   padding: "9px 12px", borderRadius: 6, fontSize: "max(var(--fs-min), 0.88em)",

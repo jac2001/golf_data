@@ -46,11 +46,11 @@ function PosDelta({ delta }: { delta: number | null }) {
 
 function holeRelColor(rel: number | null): { bg: string; fg: string } {
   if (rel == null) return { bg: "var(--bc-panel)", fg: "var(--bc-muted)"  };  // not played
-  if (rel <= -2)   return { bg: "#3a2800", fg: "var(--bc-yellow)"  };  // eagle — gold
-  if (rel === -1)  return { bg: "#2a0a0a", fg: "var(--bc-red-text)"  };  // birdie — red
+  if (rel <= -2)   return { bg: "color-mix(in srgb, var(--bc-yellow-fill) 22%, var(--bc-panel))", fg: "var(--bc-yellow)"  };  // eagle — gold
+  if (rel === -1)  return { bg: "var(--bc-bad-bg)", fg: "var(--bc-red-text)"  };  // birdie — red
   if (rel === 0)   return { bg: "var(--bc-card)", fg: "var(--bc-muted)"  };  // par — muted
-  if (rel === 1)   return { bg: "#0d1e38", fg: "#4cb8ff"  };  // bogey — blue
-  return             { bg: "#0a0d1a", fg: "#7f5090"  };        // double+ — purple
+  if (rel === 1)   return { bg: "color-mix(in srgb, var(--bc-blue) 14%, var(--bc-panel))", fg: "var(--bc-blue)"  };  // bogey — blue
+  return             { bg: "color-mix(in srgb, var(--bc-purple) 14%, var(--bc-panel))", fg: "var(--bc-purple)"  };        // double+ — purple
 }
 
 function ScorecardRow({ holes, round }: { holes: HoleData[]; round: string }) {
@@ -192,7 +192,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
                       )}
                       {p.player_name}
                       {isCut && (
-                        <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>
+                        <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-red-dim)", marginLeft: 6, background: "var(--bc-bad-bg)", padding: "1px 4px", borderRadius: 3 }}>CUT</span>
                       )}
                     </td>
                     <td style={{ ...td, color: totalColor, fontWeight: 700 }}>{totalStr}</td>
@@ -230,7 +230,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
                       <td colSpan={totalCols} style={{
                         padding: "4px 10px", background: "rgba(224,85,85,0.10)",
                         borderBottom: "1px solid rgba(224,85,85,0.35)", textAlign: "center",
-                        fontSize: "max(var(--fs-min-xs), 0.65em)", color: "#7f3030",
+                        fontSize: "max(var(--fs-min-xs), 0.65em)", color: "var(--bc-red-dim)",
                         letterSpacing: "0.1em", fontWeight: 700, textTransform: "uppercase",
                       }}>
                         — Cut Line —
@@ -259,7 +259,7 @@ export default function Leaderboard({ players, currentRound, cutProjection, fetc
 
 function CutChip({ label, value, highlight, dim }: { label: string; value: string; highlight?: boolean; dim?: boolean }) {
   const color = highlight ? "var(--warning)" : dim ? "var(--bc-muted)" : "var(--bc-muted)";
-  const bg    = highlight ? "#2a1f0a" : dim ? "#0a1220" : "var(--bc-card)";
+  const bg    = highlight ? "color-mix(in srgb, var(--bc-yellow-fill) 14%, var(--bc-panel))" : dim ? "var(--bc-panel)" : "var(--bc-card)";
   return (
     <div style={{ background: bg, border: "1px solid var(--bc-line)", borderRadius: 8, padding: "8px 14px" }}>
       <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", color: "var(--bc-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</div>

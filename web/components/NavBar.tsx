@@ -49,7 +49,7 @@ export default function NavBar() {
     : PUBLIC_LINKS;
 
   const bar     = "var(--bc-panel)";
-  const rule    = "var(--bc-yellow)";
+  const rule    = "var(--bc-yellow-fill)";  // a surface: the nav rule and active tab
   const muted   = "var(--bc-muted)";
   const text    = "var(--bc-text)";
   const activeBg = rule;

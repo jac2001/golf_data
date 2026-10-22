@@ -44,7 +44,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {overPerf.map(p => (
-                  <div key={p.player} style={{ background: "#0d2218", border: "1px solid rgba(0,196,79,0.2)", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
+                  <div key={p.player} style={{ background: "var(--bc-good-bg)", border: "1px solid rgba(0,196,79,0.2)", borderRadius: 8, padding: "8px 12px", flex: "1 1 120px" }}>
                     <div style={{ color: "var(--bc-text)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
                       <Link href={`/players?player=${encodeURIComponent(p.player)}`} style={{ color: "var(--bc-text)", textDecoration: "none" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--bc-yellow)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--bc-text)")}>{p.player}</Link>
                     </div>
@@ -101,7 +101,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
           <tbody>
             {players.map((p, i) => {
               const isPick = myPicksNorm.has(normName(p.player));
-              const bg = isPick ? "#091a0f" : i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
+              const bg = isPick ? "var(--bc-pick-bg)" : i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)";
               const td: React.CSSProperties = {
                 padding: "6px 10px", borderBottom: "1px solid var(--bc-card)",
                 background: bg, textAlign: "center", fontSize: "max(var(--fs-min), 0.85em)",
@@ -133,7 +133,7 @@ export default function VsPredictions({ players, myPicks = [] }: Props) {
                         MY PICK
                       </span>
                     )}
-                    {isCut && <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "#5a2020", marginLeft: 6, background: "#2a0f0f", padding: "1px 4px", borderRadius: 3 }}>CUT</span>}
+                    {isCut && <span style={{ fontSize: "max(var(--fs-min), 0.7em)", color: "var(--bc-red-dim)", marginLeft: 6, background: "var(--bc-bad-bg)", padding: "1px 4px", borderRadius: 3 }}>CUT</span>}
                   </td>
                   <td style={{ ...td, color: "var(--bc-muted)", fontWeight: 700 }}>{p.position ?? "—"}</td>
                   <td style={{ ...td, color: totalColor, fontWeight: 700 }}>{p.total ?? "—"}</td>

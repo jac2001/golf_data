@@ -20,9 +20,9 @@ const POLL_MS    = 30_000;
 const DISMISS_MS = 8_000;
 
 const SEV_COLORS: Record<string, { border: string; bg: string; dot: string }> = {
-  high:   { border: "var(--bc-green)", bg: "#061a0e", dot: "var(--bc-green)" },
+  high:   { border: "var(--bc-green)", bg: "var(--bc-good-bg)", dot: "var(--bc-green)" },
   normal: { border: "var(--bc-yellow)", bg: "var(--bc-panel)", dot: "var(--bc-yellow)" },
-  low:    { border: "var(--bc-muted)", bg: "#091520", dot: "var(--bc-muted)" },
+  low:    { border: "var(--bc-muted)", bg: "var(--bc-card)", dot: "var(--bc-muted)" },
 };
 
 type ToastItem = LiveAlert & { expires: number };

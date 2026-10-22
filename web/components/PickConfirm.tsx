@@ -84,7 +84,7 @@ export default function PickConfirm({ copy, onClose }: { copy: ConfirmCopy | nul
         <div style={{ fontWeight: 900, fontSize: "1.4em", textTransform: "uppercase", fontStretch: "110%" }}>{copy.title}</div>
         {copy.body && <p style={{ color: "var(--bc-muted)", lineHeight: 1.5, margin: "8px 0 18px" }}>{copy.body}</p>}
         <button onClick={close} style={{
-          width: "100%", minHeight: 52, background: "var(--bc-yellow)", color: "#081f14", border: "none",
+          width: "100%", minHeight: 52, background: "var(--bc-yellow-fill)", color: "#081f14", border: "none",
           borderRadius: 10, fontWeight: 900, fontSize: "1em", textTransform: "uppercase", letterSpacing: "0.05em",
           cursor: "pointer", fontFamily: "inherit",
         }}>Done</button>

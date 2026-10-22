@@ -82,7 +82,7 @@ function SynopsisCard({
 
   if (error) {
     return (
-      <div style={{ ...card, background: "#1a0808", border: `1px solid ${tint(RED, 27)}` }}>
+      <div style={{ ...card, background: "var(--bc-bad-bg)", border: `1px solid ${tint(RED, 27)}` }}>
         <div style={{ fontSize: "max(var(--fs-min), 0.82em)", color: RED }}>{error}</div>
         <button onClick={onGenerate} style={{ marginTop: 8, fontSize: "max(var(--fs-min), 0.78em)", color: MUTED, background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>
           Try again

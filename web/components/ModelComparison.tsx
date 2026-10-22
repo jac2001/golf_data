@@ -51,7 +51,7 @@ export default function ModelComparison({ players }: Props) {
       {(wePrefer.length > 0 || dgPrefers.length > 0) && (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
           {/* We prefer */}
-          <div style={{ background: "#0a1a10", border: `1px solid ${GREEN}33`, borderRadius: 8, padding: "12px 14px" }}>
+          <div style={{ background: "var(--bc-good-bg)", border: `1px solid color-mix(in srgb, ${GREEN} 20%, transparent)`, borderRadius: 8, padding: "12px 14px" }}>
             <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700, color: GREEN, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
               We rank higher than DG
             </div>
@@ -68,7 +68,7 @@ export default function ModelComparison({ players }: Props) {
             ))}
           </div>
           {/* DG prefers */}
-          <div style={{ background: "var(--bc-panel)", border: `1px solid ${BLUE}33`, borderRadius: 8, padding: "12px 14px" }}>
+          <div style={{ background: "var(--bc-panel)", border: `1px solid color-mix(in srgb, ${BLUE} 20%, transparent)`, borderRadius: 8, padding: "12px 14px" }}>
             <div style={{ fontSize: "max(var(--fs-min-xs), 0.65em)", fontWeight: 700, color: BLUE, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>
               DG ranks higher than us
             </div>

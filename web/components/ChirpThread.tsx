@@ -164,7 +164,7 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
         border: "1px solid var(--bc-line-hi)", borderRadius: 8, display: "flex", alignItems: "center",
         justifyContent: "center", gap: 8 }}>
         Send a chirp
-        {unread > 0 && <span aria-label={`${unread} unread`} style={{ background: "var(--bc-yellow)", color: "#081f14",
+        {unread > 0 && <span aria-label={`${unread} unread`} style={{ background: "var(--bc-yellow-fill)", color: "#081f14",
           borderRadius: 999, padding: "1px 8px", fontSize: "0.8em", fontWeight: 900 }}>{unread}</span>}
       </button>
 
@@ -207,8 +207,8 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
                       return (
                         <button key={e} onClick={() => react(c.id, e)} aria-pressed={!!r?.mine} style={{ cursor: "pointer",
                           fontFamily: "inherit", borderRadius: 999, padding: "2px 8px", minHeight: 30,
-                          background: r?.mine ? "var(--bc-raised)" : "transparent",
-                          border: `1px solid ${r?.mine ? "var(--bc-line-hi)" : "var(--bc-line)"}`, color: "var(--bc-text)" }}>
+                          background: r?.mine ? "var(--bc-sel-bg)" : "transparent",
+                          border: `1px solid ${r?.mine ? "var(--bc-sel-line)" : "var(--bc-line)"}`, color: r?.mine ? "var(--bc-sel-fg)" : "var(--bc-text)" }}>
                           {e}{r ? ` ${r.n}` : ""}
                         </button>
                       );
@@ -242,7 +242,7 @@ export default function ChirpThread({ groupId, slate }: { groupId: number; slate
                 color: "var(--bc-text)", fontFamily: "inherit" }} />
             <button type="submit" disabled={busy || !text.trim()} style={{ minHeight: 44, padding: "0 16px",
               cursor: "pointer", fontFamily: "inherit", fontWeight: 900, border: "none", borderRadius: 8,
-              background: "var(--bc-yellow)", color: "#081f14" }}>Send</button>
+              background: "var(--bc-yellow-fill)", color: "#081f14" }}>Send</button>
           </form>
           {err && <div role="status" style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginTop: 6 }}>{err}</div>}
         </Sheet>

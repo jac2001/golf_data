@@ -18,16 +18,16 @@ const MUTED  = "var(--bc-muted)";
 const GREEN  = "var(--bc-green)";
 const RED    = "var(--bc-red-text)";
 const GOLD   = "var(--bc-yellow)";
-const BLUE   = "#4cb8ff";
+const BLUE   = "var(--bc-blue)";
 
 // vs_par → difficulty color (positive = hard = red, negative = easy = green)
 function diffColor(vp: number | null): string {
   if (vp == null) return MUTED;
   if (vp <= -0.15) return GREEN;
-  if (vp <= -0.05) return "#4cb856";
+  if (vp <= -0.05) return "var(--bc-green)";
   if (vp < 0.05)   return "var(--bc-muted)";
-  if (vp < 0.15)   return "#e0a040";
-  if (vp < 0.30)   return "#e06040";
+  if (vp < 0.15)   return "var(--bc-orange)";
+  if (vp < 0.30)   return "var(--bc-red-text)";
   return RED;
 }
 
@@ -52,7 +52,7 @@ function DistBar({ birdie, par, bogey, dbl, thru }: {
     { w: pct(birdie), color: GREEN   },
     { w: pct(par),    color: "var(--bc-muted)" },
     { w: pct(bogey),  color: BLUE    },
-    { w: pct(dbl),    color: "#7030a0" },
+    { w: pct(dbl),    color: "var(--bc-purple)" },
   ].filter(s => s.w > 0);
 
   return (
@@ -129,17 +129,17 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
       {/* Summary chips */}
       <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
         {hardest && (
-          <div style={{ background: "#1a0808", border: `1px solid ${RED}44`, borderRadius: 8, padding: "6px 14px", fontSize: "max(var(--fs-min), 0.78em)" }}>
-            <span style={{ color: "#5a3030" }}>Hardest: </span>
+          <div style={{ background: "var(--bc-bad-bg)", border: `1px solid color-mix(in srgb, ${RED} 27%, transparent)`, borderRadius: 8, padding: "6px 14px", fontSize: "max(var(--fs-min), 0.78em)" }}>
+            <span style={{ color: "var(--bc-red-dim)" }}>Hardest: </span>
             <span style={{ color: RED, fontWeight: 700 }}>Hole {hardest.hole}</span>
-            <span style={{ color: "#4a3030" }}> ({fmtVsPar(hardest.vs_par)})</span>
+            <span style={{ color: "var(--bc-red-dim)" }}> ({fmtVsPar(hardest.vs_par)})</span>
           </div>
         )}
         {easiest && (
-          <div style={{ background: "#081a08", border: `1px solid ${GREEN}44`, borderRadius: 8, padding: "6px 14px", fontSize: "max(var(--fs-min), 0.78em)" }}>
-            <span style={{ color: "#2a5030" }}>Easiest: </span>
+          <div style={{ background: "var(--bc-good-bg)", border: `1px solid color-mix(in srgb, ${GREEN} 27%, transparent)`, borderRadius: 8, padding: "6px 14px", fontSize: "max(var(--fs-min), 0.78em)" }}>
+            <span style={{ color: "var(--bc-muted)" }}>Easiest: </span>
             <span style={{ color: GREEN, fontWeight: 700 }}>Hole {easiest.hole}</span>
-            <span style={{ color: "#2a4030" }}> ({fmtVsPar(easiest.vs_par)})</span>
+            <span style={{ color: "var(--bc-muted)" }}> ({fmtVsPar(easiest.vs_par)})</span>
           </div>
         )}
       </div>
@@ -153,12 +153,12 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
               <th style={{ ...th }}>Yards</th>
               <th style={{ ...th }}>Players</th>
               <th style={{ ...th }}>Avg Score</th>
-              <th style={{ ...th, color: "#e0a040" }}>vs Par</th>
+              <th style={{ ...th, color: "var(--bc-orange)" }}>vs Par</th>
               <th style={{ ...th, color: GOLD }}>Eagles</th>
               <th style={{ ...th, color: GREEN }}>Birdies</th>
               <th style={{ ...th, color: MUTED }}>Pars</th>
               <th style={{ ...th, color: BLUE }}>Bogeys</th>
-              <th style={{ ...th, color: "#a060d0" }}>Dbl+</th>
+              <th style={{ ...th, color: "var(--bc-purple)" }}>Dbl+</th>
               <th style={{ ...th, minWidth: 90 }}>Distribution</th>
             </tr>
           </thead>
@@ -194,7 +194,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
                   <td style={{ ...td, color: w.bogeys > 0 ? BLUE : "var(--bc-muted)" }}>
                     {w.bogeys > 0 ? `${w.bogeys} (${fmtPct(w.bogey_pct)})` : "—"}
                   </td>
-                  <td style={{ ...td, color: w.doubles > 0 ? "#a060d0" : "var(--bc-muted)" }}>
+                  <td style={{ ...td, color: w.doubles > 0 ? "var(--bc-purple)" : "var(--bc-muted)" }}>
                     {w.doubles > 0 ? `${w.doubles} (${fmtPct(w.double_pct)})` : "—"}
                   </td>
                   <td style={{ ...td }}>
@@ -212,7 +212,7 @@ export default function HoleStatsTable({ holes, round, updated }: Props) {
       </div>
 
       <p style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.70em)", marginTop: 6 }}>
-        vs Par: negative = playing easy (green), positive = playing hard (red) · distribution bar: <span style={{ color: GREEN }}>birdie</span> / <span style={{ color: "var(--bc-muted)" }}>par</span> / <span style={{ color: BLUE }}>bogey</span> / <span style={{ color: "#7030a0" }}>double+</span>
+        vs Par: negative = playing easy (green), positive = playing hard (red) · distribution bar: <span style={{ color: GREEN }}>birdie</span> / <span style={{ color: "var(--bc-muted)" }}>par</span> / <span style={{ color: BLUE }}>bogey</span> / <span style={{ color: "var(--bc-purple)" }}>double+</span>
       </p>
     </div>
   );

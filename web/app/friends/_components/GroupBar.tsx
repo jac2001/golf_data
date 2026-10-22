@@ -51,6 +51,16 @@ export function GroupBar({ onManage, startJoin = false }: { onManage: () => void
           </button>
         )}
       </div>
+      {!group && (
+        <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 8,
+          padding: "10px 14px", marginBottom: 12, fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.5 }}>
+          <strong>No group yet.</strong>{" "}The Round, Fade and College games work on your own,
+          against The Model. Let It Ride and your friends&apos; boards need a group.
+          <div style={{ marginTop: 8 }}>
+            <button onClick={() => setSheet("menu")} style={{ ...btnQuiet, minHeight: 40 }}>Start or join a group</button>
+          </div>
+        </div>
+      )}
       {sheet && <GroupSheet inviteFirst={sheet === "invite"} focusJoin={startJoin && !group}
         onClose={() => setSheet(null)} onManage={() => { setSheet(null); onManage(); }} />}
     </>

@@ -197,9 +197,9 @@ export default function HowToPlayPage() {
                   style={{
                     cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.7em)",
                     textTransform: "uppercase", letterSpacing: "0.04em", borderRadius: 4, padding: "5px 10px",
-                    color: challenge === c.tournament_id ? "var(--bc-text)" : "var(--bc-muted)",
-                    background: challenge === c.tournament_id ? "var(--bc-raised)" : "transparent",
-                    border: `1px solid ${challenge === c.tournament_id ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+                    color: challenge === c.tournament_id ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+                    background: challenge === c.tournament_id ? "var(--bc-sel-bg)" : "transparent",
+                    border: `1px solid ${challenge === c.tournament_id ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
                   }}>
                   {c.name}
                 </button>
@@ -223,11 +223,11 @@ export default function HowToPlayPage() {
                   cursor: revealed ? "default" : "pointer", fontFamily: "inherit", textAlign: "left",
                   display: "flex", alignItems: "center", gap: 8,
                   padding: "8px 12px", borderRadius: 6, fontSize: "max(var(--fs-min), 0.84em)",
-                  color: "var(--bc-text)",   // light text stays readable on the selected green
-                  background: on ? "var(--bc-raised)" : "var(--bc-panel)",
-                  border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
+                  color: on ? "var(--bc-sel-fg)" : "var(--bc-text)",
+                  background: on ? "var(--bc-sel-bg)" : "var(--bc-panel)",
+                  border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
                 }}>
-                  {on && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bc-green)" strokeWidth="3"
+                  {on && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bc-sel-fg)" strokeWidth="3"
                     strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M5 12l5 5L20 7" /></svg>}
                   <span style={{ fontWeight: 700, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {p.player_name}
@@ -236,7 +236,7 @@ export default function HowToPlayPage() {
                     )}
                   </span>
                   <span style={{ marginLeft: "auto", fontVariantNumeric: "tabular-nums",
-                    color: on ? "var(--bc-text)" : "var(--bc-muted)" }}>
+                    color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)" }}>
                     {revealed && mode === "history"
                       ? `${realPos(p.player_name)} · ${money(realEarn(p.player_name))}`
                       : p.win_prob != null ? `${(p.win_prob * 100).toFixed(1)}%` : "—"}
@@ -256,7 +256,7 @@ export default function HowToPlayPage() {
           {mode === "history" && picks.length === 3 && !revealed && (
             <button onClick={() => setRevealed(true)} style={{
               marginTop: 12, cursor: "pointer", fontFamily: "inherit",
-              background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+              background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
               textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.78em)", letterSpacing: "0.06em",
               padding: "10px 18px", borderRadius: 4, border: "none" }}>
               Lock picks · reveal Sunday&apos;s results
@@ -340,7 +340,7 @@ export default function HowToPlayPage() {
         {/* Signed in: the next step is your group, not an account you already have. */}
         <Show when="signed-out">
           <Link href="/sign-up" style={{
-            background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+            background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
             textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
             padding: "13px 24px", borderRadius: 4 }}>
             Create a free account
@@ -351,7 +351,7 @@ export default function HowToPlayPage() {
         </Show>
         <Show when="signed-in">
           <Link href="/friends" style={{
-            background: "var(--bc-yellow)", color: "#081f14", fontWeight: 900,
+            background: "var(--bc-yellow-fill)", color: "#081f14", fontWeight: 900,
             textTransform: "uppercase", fontSize: "max(var(--fs-min), 0.82em)", letterSpacing: "0.06em",
             padding: "13px 24px", borderRadius: 4 }}>
             Go to your group

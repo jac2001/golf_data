@@ -58,7 +58,7 @@ const btn = (primary: boolean): React.CSSProperties => ({
   cursor: "pointer", fontFamily: "inherit", fontWeight: 800, fontSize: "max(var(--fs-min), 0.76em)",
   textTransform: "uppercase", letterSpacing: "0.05em", borderRadius: 5,
   padding: "7px 12px",
-  background: primary ? "var(--bc-yellow)" : "transparent",
+  background: primary ? "var(--bc-yellow-fill)" : "transparent",
   color: primary ? "#081f14" : "var(--bc-muted)",
   border: `1px solid ${primary ? "var(--bc-yellow)" : "var(--bc-line)"}`,
 });
@@ -610,7 +610,7 @@ function Slate({ league, ev, myUses, me, onChange, winners, standings }: {
                   {fresh.length > 1 && (
                     <button onClick={() => useSuggestions(fresh.map(s => s.name))} disabled={!!busy} style={{ flex: 1,
                       minHeight: 44, cursor: "pointer", fontFamily: "inherit", fontWeight: 900, border: "none",
-                      borderRadius: 8, background: "var(--bc-yellow)", color: "#081f14" }}>
+                      borderRadius: 8, background: "var(--bc-yellow-fill)", color: "#081f14" }}>
                       {busy === "__all" ? "Saving…" : `Pick all ${fresh.length}`}
                     </button>
                   )}

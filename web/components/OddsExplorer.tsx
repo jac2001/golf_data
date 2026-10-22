@@ -171,7 +171,7 @@ export default function OddsExplorer() {
             <thead>
               <tr>
                 <th style={{ ...th, textAlign: "left", minWidth: 140 }}>Player</th>
-                <th style={{ ...th, textAlign: "center", background: "#0a1e38", color: "var(--bc-yellow)", minWidth: 70 }}>
+                <th style={{ ...th, textAlign: "center", background: "var(--bc-card)", color: "var(--bc-yellow)", minWidth: 70 }}>
                   DG Model
                 </th>
                 {booksShown.map(b => (
@@ -190,7 +190,7 @@ export default function OddsExplorer() {
                     <td style={{ ...tdBase, color: "var(--bc-text)", fontWeight: 500, fontSize: "max(var(--fs-min), 0.85em)", whiteSpace: "nowrap" }}>
                       {p.player}
                     </td>
-                    <td style={{ ...tdBase, textAlign: "center", background: i % 2 === 0 ? "#0a1e38" : "#091929", color: "var(--bc-yellow)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
+                    <td style={{ ...tdBase, textAlign: "center", background: i % 2 === 0 ? "var(--bc-card)" : "var(--bc-panel)", color: "var(--bc-yellow)", fontWeight: 700, fontSize: "max(var(--fs-min), 0.85em)" }}>
                       {p.dg_prob != null ? `${p.dg_prob.toFixed(1)}%` : "—"}
                     </td>
                     {booksShown.map(b => {

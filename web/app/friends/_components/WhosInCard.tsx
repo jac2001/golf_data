@@ -68,8 +68,8 @@ export function WhosInCard({ game, tid, eventName, startDate, tour, round, refre
 
   const chip = (name: string, isIn: boolean) => (
     <span key={name} style={{ padding: "4px 10px", borderRadius: 999, fontSize: "max(var(--fs-min), 0.8em)",
-      fontWeight: 700, border: `1px solid ${isIn ? "var(--bc-line-hi)" : "var(--bc-line)"}`,
-      background: isIn ? "var(--bc-raised)" : "transparent", color: isIn ? "var(--bc-text)" : "var(--bc-muted)",
+      fontWeight: 700, border: `1px solid ${isIn ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
+      background: isIn ? "var(--bc-sel-bg)" : "transparent", color: isIn ? "var(--bc-sel-fg)" : "var(--bc-muted)",
       display: "inline-flex", alignItems: "center", gap: 5 }}>
       {isIn && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--bc-green)" strokeWidth="3"
         strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>}

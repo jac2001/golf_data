@@ -50,9 +50,9 @@ function Toggle({ on, busy, onClick }: { on: boolean; busy?: boolean; onClick: (
   return (
     <button onClick={onClick} disabled={busy} style={{
       ...btnQuiet, marginLeft: "auto", minWidth: 52,
-      color: on ? "var(--bc-text)" : "var(--bc-muted)",
-      background: on ? "var(--bc-raised)" : "transparent",
-      borderColor: on ? "var(--bc-line-hi)" : "var(--bc-line)",
+      color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+      background: on ? "var(--bc-sel-bg)" : "transparent",
+      borderColor: on ? "var(--bc-sel-line)" : "var(--bc-line)",
     }}>
       {busy ? "…" : on ? "On" : "Off"}
     </button>
@@ -84,6 +84,7 @@ export default function SettingsPage() {
   const [thisEndpoint, setThisEndpoint] = useState("");
   const [testMsg, setTestMsg] = useState("");
   const [tour, setTour] = useState<"pga" | "euro">("pga");
+  const [theme, setTheme] = useState<"system" | "light" | "dark">("system");
 
   useEffect(() => {
     api("/api/friends/prefs").then(d => setPrefs(d as never)).catch(() => setPrefs({ remind_weekly: true, remind_fades: true }));
@@ -91,6 +92,8 @@ export default function SettingsPage() {
     try {
       const t = localStorage.getItem("favorite-tour");
       if (t === "euro" || t === "pga") setTour(t);
+      const th = localStorage.getItem("theme");
+      if (th === "light" || th === "dark") setTheme(th);
     } catch { /* default */ }
     if ("serviceWorker" in navigator && "PushManager" in window) {
       navigator.serviceWorker.register("/sw.js")
@@ -148,6 +151,15 @@ export default function SettingsPage() {
   function pickTour(t: "pga" | "euro") {
     setTour(t);
     try { localStorage.setItem("favorite-tour", t); } catch { /* fine */ }
+  }
+
+  /** Light / dark / follow the phone. Applied at once, and before paint on
+   *  later loads by the script in app/layout.tsx (same "theme" key). */
+  function pickTheme(t: "system" | "light" | "dark") {
+    setTheme(t);
+    try { if (t === "system") localStorage.removeItem("theme"); else localStorage.setItem("theme", t); } catch { /* fine */ }
+    if (t === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", t);
   }
 
   const displayName = user?.username || user?.firstName || user?.primaryEmailAddress?.emailAddress?.split("@")[0] || "…";
@@ -212,9 +224,21 @@ export default function SettingsPage() {
             {([["pga", "PGA"], ["euro", "DPWT"]] as const).map(([id, label]) => (
               <button key={id} onClick={() => pickTour(id)} style={{
                 ...btnQuiet,
-                color: tour === id ? "var(--bc-text)" : "var(--bc-muted)",
-                background: tour === id ? "var(--bc-raised)" : "transparent",
-                borderColor: tour === id ? "var(--bc-line-hi)" : "var(--bc-line)",
+                color: tour === id ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+                background: tour === id ? "var(--bc-sel-bg)" : "transparent",
+                borderColor: tour === id ? "var(--bc-sel-line)" : "var(--bc-line)",
+              }}>{label}</button>
+            ))}
+          </div>
+        </Row>
+        <Row label="Appearance" sub="Follow your phone, or always light or dark (this device)">
+          <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
+            {([["system", "Auto"], ["light", "Light"], ["dark", "Dark"]] as const).map(([id, label]) => (
+              <button key={id} onClick={() => pickTheme(id)} aria-pressed={theme === id} style={{
+                ...btnQuiet,
+                color: theme === id ? "var(--bc-sel-fg)" : "var(--bc-muted)",
+                background: theme === id ? "var(--bc-sel-bg)" : "transparent",
+                borderColor: theme === id ? "var(--bc-sel-line)" : "var(--bc-line)",
               }}>{label}</button>
             ))}
           </div>

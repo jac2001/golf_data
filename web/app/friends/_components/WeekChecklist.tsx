@@ -117,7 +117,7 @@ export function WeekChecklist({ groupId, refreshKey, onPick }: {
           </div>
           <button onClick={() => onPick(r.game)} aria-label={`Pick: ${r.label}`} style={{
             minHeight: 40, padding: "0 14px", borderRadius: 7, cursor: "pointer", fontFamily: "inherit",
-            fontWeight: 900, background: "var(--bc-yellow)", color: "var(--bc-bg)", border: "none",
+            fontWeight: 900, background: "var(--bc-yellow-fill)", color: "#081f14", border: "none",
           }}>Pick</button>
         </div>
       ))}
