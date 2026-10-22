@@ -222,6 +222,13 @@ and fix what watching them reveals.
        group can't see another's members, picks, boards, invites or feed
        (every route through lib/gameScope.ts should 403). Not Rick's job.
 3. [~] **One place for data permissions.** Drafted Oct 20: `docs/DATA_PERMISSIONS.md`. DataGolf answered Oct 22 (Matt: API is personal use under their PGA TOUR deal; "pieces" OK, not full paywalled pages; no commercial path via DG). Jack's call Oct 22: remove nothing while free; revisit list in the doc. Left: ask Grant (PGA TOUR) to confirm in writing what a free friends game may display; the 78-event history gap is a DataGolf backfill (DG has every event) for the January retrain.
+       Continuity (Jack's plan, Oct 22; condensed into DATA_PERMISSIONS.md "Continuity"):
+       **(a) now: un-starve the live-scoring fallback.** Match Center's only live source during
+       PGA rounds is DG in-play; the PGA TOUR fallback file is never written (no cron slot for the
+       `live` schedule). Fix after Bermuda settles (Oct 26), not mid-event: on a DG in-play
+       failure the API fetches the PGA TOUR leaderboard itself (no commit/redeploy loop), with
+       the source shown in the response. **(b) with the January retrain:** model dependency map
+       (training vs serving blend), the register, per-feature reduced-data states.
        Next from it: **move off PGA TOUR** where DataGolf covers it (table in the doc). Step 1 done Oct 20:
        `leaderboards_dg_*.csv` (season-correct ids, name/date/winner guard, 2016-2026 backfill, Tuesday
        catch-up); why lines read it. Step 2 done Oct 20: Jack's agreement check passes, 99.75% of

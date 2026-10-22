@@ -188,6 +188,53 @@ read Jack's original league on a third-party fantasy site, for the
 legacy league and dashboard. Not part of the Golf Edge game. If it keeps
 running, check that site's terms; otherwise retire the fetchers.
 
+## Continuity (from Jack's plan, Oct 22)
+
+Goal: know what each feature depends on, so a change at a provider is an
+orderly switch, not an outage. Not a migration plan; nothing moves until
+a trigger below fires.
+
+**Five uses of data.** One provider can feed several; judge each separately.
+
+| Use | Example | What a change costs |
+|---|---|---|
+| Direct display | DG win % on a profile | A response + page change |
+| Derived display | Move (two DG odds snapshots) | Trace the inputs; computing it ourselves settles nothing |
+| Training input | Historical round SG in the PGA model | Rebuild history, retrain, re-evaluate |
+| Serving blend | DG forecast mixed into this week's chances | A model change even with no retrain: re-evaluate the published output |
+| Game scoring | Live positions, earnings | Identity, ties, timing, revisions checked before switching |
+
+Hiding a DG column removes nothing from the model, and moving a source
+behind the scenes doesn't settle its permission.
+
+**Triggers, most likely first:**
+1. PGA TOUR's 2027 data plan: free ShotLink distribution is paused, and
+   strokes gained (season stats, form, model features) is ShotLink.
+2. DataGolf price or access changes.
+3. Golf Edge opens beyond friends or adds anything paid (the revisit list above).
+
+**Per tour:** DP World Tour has no alternative source (europeantour.com
+blocks scrapers), so for the Euro model the options are keep or reduce
+coverage. PGA has two sources for most game data.
+
+**Game scoring today (checked in code Oct 22):**
+- Live standings (Match Center, `/api/results/earnings?projected=1`):
+  DataGolf in-play first (`dg_get("/preds/in-play")`, cached on Render),
+  then `data/live/leaderboard_{tid}.csv` (PGA TOUR) as the fallback.
+- The fallback is starved during PGA rounds: the `live` schedule
+  (`run_live_refresh`, which runs `fetch_live_leaderboard`) has no cron
+  slot since the move to GitHub Actions, so no PGA live file exists
+  mid-event (none for R2026528 on Oct 22). A DataGolf in-play failure
+  leaves Match Center with no live standings. Roadmap #3 has the fix.
+- Settlement: official results (`leaderboards_*.csv`) or a purse estimate.
+
+**Register.** One row per user-visible metric or scoring input; record
+unknowns as unknown. Filled in with the January retrain, scoring first.
+
+| Metric | Consumer | Source and fetcher | Use | Who sees it | Permission evidence | Fallback | Open question |
+|---|---|---|---|---|---|---|---|
+| Live positions + estimated payouts | Match Center | DG in-play, `api/main.py results_earnings` | scoring | signed-in, group-scoped | Matt Oct 22 (informal); open: Q3 | PGA live CSV (starved, see above) | Is DG live data OK for a shared free game? |
+
 ## When this changes
 
 Re-check every row before any of: ads, subscriptions, paid features,
