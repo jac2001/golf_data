@@ -515,7 +515,7 @@ function EuroLiveView() {
                 <button key={r} onClick={() => setHoleRound(r)} style={{
                   background: holeRound === r ? "var(--bc-sel-bg)" : "var(--bc-panel)",
                   border: `1px solid ${holeRound === r ? "var(--bc-good-line)" : "var(--bc-line)"}`,
-                  borderRadius: 5, color: holeRound === r ? "var(--bc-green)" : "var(--bc-muted)",
+                  borderRadius: 5, color: holeRound === r ? "var(--bc-sel-fg)" : "var(--bc-muted)",
                   padding: "4px 12px", fontSize: "max(var(--fs-min), 0.76em)", fontWeight: 700, cursor: "pointer",
                 }}>{r === "event_avg" ? "Current" : `R${r}`}</button>
               ))}

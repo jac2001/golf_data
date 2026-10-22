@@ -42,6 +42,8 @@
   --bc-btn2-line: var(--bc-line-hi);
   --bc-quiet-fg:  var(--bc-muted);    /* quiet button (Pick, Share) */
   --bc-quiet-line: var(--bc-line);
+  --bc-go-bg:     var(--bc-green);    /* the next step's button (Pick for Round 2) */
+  --bc-go-fg:     #081f14;
   color-scheme: dark;
 
   /* Yellow budget: the nav rule, the active nav item, and ONE solid
@@ -103,7 +105,7 @@ html, body {
   --bc-card-hi:   #edf4ee;
   --bc-line:      #dbe3dc;
   --bc-text:      #0f2219;
-  --bc-muted:     #556a5e;   /* 5.6:1 on panel */
+  --bc-muted:     #4a5e52;   /* 6.6:1 on panel */
   --bc-yellow:    #8a6200;   /* gold as TEXT: 5.3:1 on panel; #ffd24a is unreadable on white */
   --bc-yellow-fill: #f5be1a; /* gold as a surface, with dark text */
   --bc-green:     #15804a;   /* 4.9:1 */
@@ -123,6 +125,8 @@ html, body {
   --bc-btn2-line: #15603a;
   --bc-quiet-fg:  #15603a;
   --bc-quiet-line: #15603a;
+  --bc-go-bg:     #15603a;
+  --bc-go-fg:     #ffffff;
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
@@ -133,7 +137,7 @@ html, body {
     --bc-card-hi:   #edf4ee;
     --bc-line:      #dbe3dc;
     --bc-text:      #0f2219;
-    --bc-muted:     #556a5e;   /* 5.6:1 on panel */
+    --bc-muted:     #4a5e52;   /* 6.6:1 on panel */
     --bc-yellow:    #8a6200;   /* gold as TEXT: 5.3:1 on panel; #ffd24a is unreadable on white */
     --bc-yellow-fill: #f5be1a; /* gold as a surface, with dark text */
     --bc-green:     #15804a;   /* 4.9:1 */
@@ -153,6 +157,8 @@ html, body {
     --bc-btn2-line: #15603a;
     --bc-quiet-fg:  #15603a;
     --bc-quiet-line: #15603a;
+    --bc-go-bg:     #15603a;
+    --bc-go-fg:     #ffffff;
     color-scheme: light;
   }
 }

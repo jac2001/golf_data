@@ -223,11 +223,11 @@ export default function HowToPlayPage() {
                   cursor: revealed ? "default" : "pointer", fontFamily: "inherit", textAlign: "left",
                   display: "flex", alignItems: "center", gap: 8,
                   padding: "8px 12px", borderRadius: 6, fontSize: "max(var(--fs-min), 0.84em)",
-                  color: "var(--bc-text)",   // light text stays readable on the selected green
+                  color: on ? "var(--bc-sel-fg)" : "var(--bc-text)",
                   background: on ? "var(--bc-sel-bg)" : "var(--bc-panel)",
                   border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
                 }}>
-                  {on && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bc-green)" strokeWidth="3"
+                  {on && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bc-sel-fg)" strokeWidth="3"
                     strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M5 12l5 5L20 7" /></svg>}
                   <span style={{ fontWeight: 700, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {p.player_name}

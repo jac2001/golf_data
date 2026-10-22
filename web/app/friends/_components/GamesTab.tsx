@@ -99,8 +99,8 @@ export function GamesTab() {
 
   const tabBtn = (on: boolean): React.CSSProperties => ({
     flex: 1, minHeight: 44, cursor: "pointer", fontFamily: "inherit", background: "transparent",
-    border: "none", borderBottom: `3px solid ${on ? "var(--bc-yellow)" : "transparent"}`,
-    color: on ? "var(--bc-sel-fg)" : "var(--bc-muted)", fontWeight: on ? 900 : 800,
+    border: "none", borderBottom: `3px solid ${on ? "var(--bc-yellow-fill)" : "transparent"}`,
+    color: on ? "var(--bc-text)" : "var(--bc-muted)", fontWeight: on ? 900 : 800,
     fontSize: "max(var(--fs-min), 0.8em)", textTransform: "uppercase", letterSpacing: "0.06em",
   });
 

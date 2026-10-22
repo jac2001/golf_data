@@ -130,10 +130,9 @@ export function RoundGameTab() {
         onPick={tid => { setSelected(tid); setPickingRound(null); }} />
 
       <div style={card}>
-        <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 4 }}>
-          {eventName || events.find(e => e.tournament_id === selected)?.name || "Loading…"}
-        </div>
-        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.8em)", marginBottom: 14 }}>
+        {/* The event is named in the selector above; the card is about your picks. */}
+        <div style={{ fontWeight: 800, fontSize: "1.05em", marginBottom: 4 }}>Your round picks</div>
+        <div style={{ color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.5, marginBottom: 14 }}>
           One player per round, each player once per event. Score is their round
           to par; a missed round costs +{5}. Lowest total wins.
         </div>
@@ -151,22 +150,31 @@ export function RoundGameTab() {
                     {locked ? "no pick — +5" : "no pick yet"}
                   </span>}
               {!locked && state?.event?.startDate && (
-                <span style={{ fontSize: "max(var(--fs-min), 0.72em)" }}>
+                <span style={{ fontSize: "max(var(--fs-min), 0.82em)" }}>
                   <LockCountdown startDate={state.event.startDate} tour={state.event.tour} addDays={r - 1} />
                 </span>
               )}
               {!locked && (
                 <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-                  <button onClick={() => { setPickingRound(pickingRound === r ? null : r); setQuery(""); }}
-                    style={{ ...btnQuiet, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.74em)" }}>
-                    {current ? "Change" : "Pick"}
-                  </button>
+                  {/* The next round to fill is the screen's one clear action. */}
+                  {r === openRound && !current ? (
+                    <button onClick={() => { setPickingRound(pickingRound === r ? null : r); setQuery(""); }}
+                      style={{ ...btnQuiet, background: "var(--bc-go-bg)", color: "var(--bc-go-fg)", border: "none",
+                        fontWeight: 900, padding: "8px 14px", minHeight: 40, fontSize: "max(var(--fs-min), 0.85em)" }}>
+                      Pick for Round {r}
+                    </button>
+                  ) : (
+                    <button onClick={() => { setPickingRound(pickingRound === r ? null : r); setQuery(""); }}
+                      style={{ ...btnQuiet, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.78em)" }}>
+                      {current ? "Change" : "Pick"}
+                    </button>
+                  )}
                   {current && (
                     <button onClick={() => clear(r)} style={{ ...btnQuiet, padding: "3px 10px", fontSize: "max(var(--fs-min), 0.74em)" }}>✕</button>
                   )}
                 </span>
               )}
-              {locked && <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.72em)" }}>locked</span>}
+              {locked && <span style={{ marginLeft: "auto", color: "var(--bc-muted)", fontSize: "max(var(--fs-min), 0.82em)" }}>locked</span>}
               {pickingRound === r && !locked && (
                 <div style={{ flexBasis: "100%" }}>
                   <input autoFocus value={query} onChange={e => setQuery(e.target.value)}

@@ -617,7 +617,7 @@ function EuroTeeTimesView({ data }: { data: EuroTeeTimes }) {
           <button key={rn} onClick={() => setRound(rn)} style={{
             background: round === rn ? "var(--bc-sel-bg)" : "var(--bc-panel)",
             border: `1px solid ${round === rn ? "var(--bc-good-line)" : "var(--bc-line)"}`,
-            borderRadius: 5, color: round === rn ? "var(--bc-green)" : "var(--bc-muted)",
+            borderRadius: 5, color: round === rn ? "var(--bc-sel-fg)" : "var(--bc-muted)",
             padding: "5px 14px", fontSize: "max(var(--fs-min), 0.8em)", fontWeight: 700, cursor: "pointer",
           }}>R{rn}</button>
         ))}

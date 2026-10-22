@@ -51,6 +51,16 @@ export function GroupBar({ onManage, startJoin = false }: { onManage: () => void
           </button>
         )}
       </div>
+      {!group && (
+        <div style={{ background: "var(--bc-card)", border: "1px solid var(--bc-line)", borderRadius: 8,
+          padding: "10px 14px", marginBottom: 12, fontSize: "max(var(--fs-min), 0.88em)", lineHeight: 1.5 }}>
+          <strong>No group yet.</strong>{" "}The Round, Fade and College games work on your own,
+          against The Model. Let It Ride and your friends&apos; boards need a group.
+          <div style={{ marginTop: 8 }}>
+            <button onClick={() => setSheet("menu")} style={{ ...btnQuiet, minHeight: 40 }}>Start or join a group</button>
+          </div>
+        </div>
+      )}
       {sheet && <GroupSheet inviteFirst={sheet === "invite"} focusJoin={startJoin && !group}
         onClose={() => setSheet(null)} onManage={() => { setSheet(null); onManage(); }} />}
     </>
@@ -180,8 +190,8 @@ function GroupSheet({ inviteFirst, focusJoin, onClose, onManage }: {
               return (
                 <button key={g.id} onClick={() => choose(g.id)} aria-pressed={on} style={{
                   display: "flex", alignItems: "center", gap: 12, minHeight: 56, padding: "0 14px", textAlign: "left",
-                  background: on ? "var(--bc-sel-bg)" : "var(--bc-card)", cursor: "pointer", fontFamily: "inherit",
-                  border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`, borderRadius: 10, color: "var(--bc-text)",
+                  background: on ? "var(--bc-raised)" : "var(--bc-card)", cursor: "pointer", fontFamily: "inherit",
+                  border: `1px solid ${on ? "var(--bc-line-hi)" : "var(--bc-line)"}`, borderRadius: 10, color: "var(--bc-text)",
                 }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 900, textTransform: "uppercase" }}>{g.name}</div>

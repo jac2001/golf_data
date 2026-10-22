@@ -171,7 +171,7 @@ export default function EventNav({ events, selected, onPick, starred = {} }: {
                 background: on ? "var(--bc-sel-bg)" : "var(--bc-card)",
                 border: `1px solid ${on ? "var(--bc-sel-line)" : "var(--bc-line)"}`,
               }}>
-                <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 700, color: STATUS_COLOR[e.status] }}>
+                <div style={{ fontSize: "max(var(--fs-min-xs), 0.62em)", fontWeight: 700, color: on ? "var(--bc-sel-fg)" : STATUS_COLOR[e.status] }}>
                   {shortDate(e.start_date)} · {STATUS_LABEL[e.status]}
                   {starred[e.tournament_id] ? <span style={{ color: "var(--bc-yellow)", marginLeft: 4 }}><Star /></span> : null}
                 </div>
