@@ -90,7 +90,7 @@ misleading or broken · **P3** clarity, design, code health.
     "Prox FW", "DG Fit Δ%" appear with no explanation. Fix: `Term` + the
     glossary/column help (This Week pattern); plain labels ("Recent form" not
     "Timing adj.").
-20. **Wide tables on phones.** Stats (up to ~14 columns), career, round
+20. **[fixed Oct 22, b1a42b5] Wide tables on phones.** (Pinned name column, tighter cells, Sort by picker on Stats.) Stats (up to ~14 columns), career, round
     breakdown, approach buckets. Fix: cards or a sort selector on phones (Field
     tab pattern); fewer default columns with "More columns".
 21. **Three sub-views named "Course Fit"** (page tab, profile sub-tab, stats
@@ -101,7 +101,7 @@ misleading or broken · **P3** clarity, design, code health.
     `toParColor2`. One each, in `lib/`.
 24. **2,304-line file** with 20+ components; split by tab
     (`app/players/_components/…`) so each can be tested and reviewed.
-25. **Loading/empty/error states** are inconsistent: some "Failed to load.",
+25. **[fixed Oct 22, 51e2082] Loading/empty/error states** (one Notice; added the missing catches and Try again) are inconsistent: some "Failed to load.",
     some red raw errors, some nothing.
 
 ## Fixed Oct 22 (P1)
