@@ -6,9 +6,6 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { hasAny, presentFields, type FieldSpec } from "./presentFields.ts";
 
-// TODO(Jack): delete this flag once both helpers pass.
-const TODO = { todo: "Jack: implement presentFields + hasAny" };
-
 type BP = { sg_total: number | null; sg_total_rank: number | null; wins: number | null;
   gir_pct: string | null; summary: string | null; bullets: string[] };
 
@@ -23,14 +20,14 @@ const SPEC: FieldSpec<BP>[] = [
   { key: "bullets", label: "Notes" },
 ];
 
-test("only real values come back, in spec order, formatted", TODO, () => {
+test("only real values come back, in spec order, formatted", () => {
   assert.deepEqual(presentFields(BEN, SPEC), [
     { label: "SG total", text: "+1.50" },
     { label: "Wins", text: "0" },          // 0 wins is a fact, not missing
   ]);
 });
 
-test("NaN, Infinity, blank strings and empty arrays are missing", TODO, () => {
+test("NaN, Infinity, blank strings and empty arrays are missing", () => {
   type R = { a: number; b: number; c: string; d: string[]; e: boolean };
   const spec: FieldSpec<R>[] = [{ key: "a", label: "A" }, { key: "b", label: "B" }, { key: "c", label: "C" },
     { key: "d", label: "D" }, { key: "e", label: "E" }];
@@ -38,12 +35,12 @@ test("NaN, Infinity, blank strings and empty arrays are missing", TODO, () => {
     [{ label: "E", text: "false" }]);
 });
 
-test("no row, no fields", TODO, () => {
+test("no row, no fields", () => {
   assert.deepEqual(presentFields(null, SPEC), []);
   assert.deepEqual(presentFields(undefined, SPEC), []);
 });
 
-test("hasAny: hide the Earnings column when every row is blank", TODO, () => {
+test("hasAny: hide the Earnings column when every row is blank", () => {
   const recent = [{ earnings: null as number | null }, { earnings: null }, { earnings: null }];
   assert.equal(hasAny(recent, "earnings"), false);
   assert.equal(hasAny([...recent, { earnings: 0 }], "earnings"), true);
